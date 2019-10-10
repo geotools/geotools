@@ -193,7 +193,6 @@ public class MosaicTest extends GridProcessingTestBase {
         GridCoverage2D mosaic = simpleMosaic(coverage1, coverage2);
 
         // Coverage and RenderedImage disposal
-        mosaic.dispose(true);
         disposeCoveragePlanarImage(mosaic);
     }
 
@@ -302,7 +301,6 @@ public class MosaicTest extends GridProcessingTestBase {
         assertEquals(boundsMosaic, roi.getBounds());
 
         // Coverage and RenderedImage disposal
-        mosaic.dispose(true);
         disposeCoveragePlanarImage(mosaic);
     }
 
@@ -396,7 +394,6 @@ public class MosaicTest extends GridProcessingTestBase {
         Assert.assertNotEquals(nodata, result, TOLERANCE);
 
         // Coverage and RenderedImage disposal
-        mosaic.dispose(true);
         disposeCoveragePlanarImage(mosaic);
     }
 
@@ -456,7 +453,6 @@ public class MosaicTest extends GridProcessingTestBase {
         Assert.assertNotEquals(nodata, result, TOLERANCE);
 
         // Coverage and RenderedImage disposal
-        mosaic.dispose(true);
         disposeCoveragePlanarImage(mosaic);
     }
 
@@ -528,7 +524,6 @@ public class MosaicTest extends GridProcessingTestBase {
         Assert.assertNotEquals(nodata, result, TOLERANCE);
 
         // Coverage and RenderedImage disposal
-        mosaic.dispose(true);
         disposeCoveragePlanarImage(mosaic);
     }
 
@@ -617,10 +612,8 @@ public class MosaicTest extends GridProcessingTestBase {
         Assert.assertNotEquals(nodata, result, TOLERANCE);
 
         // Coverage and RenderedImage disposal
-        mosaic.dispose(true);
-        resampled.dispose(true);
-        disposeCoveragePlanarImage(mosaic);
         disposeCoveragePlanarImage(resampled);
+        disposeCoveragePlanarImage(mosaic);
     }
 
     // Test which mosaics two input coverages and creates a final GridCoverage with the best
@@ -688,8 +681,6 @@ public class MosaicTest extends GridProcessingTestBase {
         Assert.assertNotEquals(nodata, result, TOLERANCE);
 
         // Coverage and RenderedImage disposal
-        mosaic.dispose(true);
-        resampled.dispose(true);
         disposeCoveragePlanarImage(mosaic);
         disposeCoveragePlanarImage(resampled);
     }
@@ -790,7 +781,6 @@ public class MosaicTest extends GridProcessingTestBase {
         Assert.assertNotEquals(nodata, result, TOLERANCE);
 
         // Coverage and RenderedImage disposal
-        mosaic.dispose(true);
         disposeCoveragePlanarImage(mosaic);
     }
 
@@ -858,7 +848,6 @@ public class MosaicTest extends GridProcessingTestBase {
         Assert.assertNotEquals(nodata, result, TOLERANCE);
 
         // Coverage and RenderedImage disposal
-        mosaic.dispose(true);
         disposeCoveragePlanarImage(mosaic);
     }
 
@@ -915,8 +904,6 @@ public class MosaicTest extends GridProcessingTestBase {
     @AfterClass
     public static void finalStep() {
         // Coverage and RenderedImage disposal
-        coverage1.dispose(true);
-        coverage2.dispose(true);
         disposeCoveragePlanarImage(coverage1);
         disposeCoveragePlanarImage(coverage2);
     }
@@ -927,7 +914,9 @@ public class MosaicTest extends GridProcessingTestBase {
      * @param coverage
      */
     private static void disposeCoveragePlanarImage(GridCoverage2D coverage) {
-        ImageUtilities.disposePlanarImageChain(
+        // Dispose the single planar image since some images are input of other tests and
+        // disposing the whole chain may therefore throw exceptions
+        ImageUtilities.disposeSinglePlanarImage(
                 PlanarImage.wrapRenderedImage(coverage.getRenderedImage()));
     }
 
@@ -1092,7 +1081,6 @@ public class MosaicTest extends GridProcessingTestBase {
         assertEquals(targetGG.getEnvelope2D(), mosaic.getEnvelope2D());
 
         // Coverage and RenderedImage disposal
-        mosaic.dispose(true);
         disposeCoveragePlanarImage(mosaic);
     }
 }

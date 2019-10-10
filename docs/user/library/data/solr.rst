@@ -17,18 +17,18 @@ Connection Parameters
 The following connection parameters are available:
 
 +-------------------------+----------------------------------------------------+
-| Param                   | Description                                        |
+| Parameter               | Description                                        |
 +=========================+====================================================+
-| "solr_url"              | Url to a SOLR server CORE                          |
+| ``solr_url``            | URL to a SOLR server CORE                          |
 +-------------------------+----------------------------------------------------+
-| "layer_mapper"          | Controls how documents are mapped to layers        |
+| ``layer_mapper``        | Controls how documents are mapped to layers        |
 +-------------------------+----------------------------------------------------+
-| "layer_name_field"      | Field used in SOLR that holds the layer names      |
+| ``layer_name_field``    | Field used in SOLR that holds the layer names      |
 +-------------------------+----------------------------------------------------+
-| "namespace"             | Namespace prefixs                                  |
+| ``namespace``           | Namespace prefix                                   |
 +-------------------------+----------------------------------------------------+
 
-Notes: "layer_mapper" and "layer_name_field" are deprecated, a single layer is exposed now by default, use 
+Notes: ``layer_mapper`` and ``layer_name_field`` are deprecated, a single layer is exposed now by default, use 
 the ``SolrLayerConfiguration`` class to configure more layers
 
 Example use:

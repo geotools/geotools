@@ -129,7 +129,7 @@ public final class OptionalDependencies {
     /**
      * Returns a copy of the tree starting at the given node.
      *
-     * @param tree The tree to copy (may be {@code null}).
+     * @param node The tree to copy (may be {@code null}).
      * @return A mutable copy of the given tree, or {@code null} if the tree was null.
      * @todo Use {@code getUserObject} when we can.
      * @since 2.5
@@ -278,7 +278,7 @@ public final class OptionalDependencies {
      * Display the given tree in a Swing frame. This is a convenience method for debugging purpose
      * only.
      *
-     * @param tree The tree to display in a Swing frame.
+     * @param node The tree to display in a Swing frame.
      * @param title The frame title, or {@code null} if none.
      * @since 2.5
      */

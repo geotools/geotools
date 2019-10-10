@@ -25,17 +25,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.geotools.feature.GeometryAttributeImpl;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.Types;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
 import org.geotools.util.Converters;
+import org.geotools.util.SuppressFBWarnings;
 import org.geotools.util.Utilities;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.GeometryAttribute;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -388,6 +389,7 @@ public class SimpleFeatureImpl implements SimpleFeature {
      * @param obj the Object to test for equality.
      * @return <code>true</code> if the object is equal, <code>false</code> otherwise.
      */
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
     public boolean equals(Object obj) {
         if (obj == null) {
             return false;
@@ -536,7 +538,7 @@ public class SimpleFeatureImpl implements SimpleFeature {
         /**
          * Override of equals.
          *
-         * @param other the object to be tested for equality.
+         * @param obj the object to be tested for equality.
          * @return whether other is equal to this attribute Type.
          */
         public boolean equals(Object obj) {

@@ -1,9 +1,25 @@
 /*
- * (c) 2004 Mike Nidel
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
  *
- * Take, Modify, Distribute freely
- * Buy, Sell, Pass it off as your own
+ *    (C) 2004-2016, Open Source Geospatial Foundation (OSGeo)
  *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
+/*
+* (c) 2004 Mike Nidel
+*
+* Take, Modify, Distribute freely
+* Buy, Sell, Pass it off as your own
+*
 
 This code is now made available under the MIT License:
 
@@ -29,28 +45,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
- * If you feel like it, send any suggestions for improvement or
- * bug fixes, or modified source code to mike 'at' gelbin.org
- *
- * Do not taunt Happy Fun Ball.
- *
- */
-/*
- *    GeoTools - The Open Source Java GIS Toolkit
- *    http://geotools.org
- *
- *    (C) 2004-2016, Open Source Geospatial Foundation (OSGeo)
- *
- *    This library is free software; you can redistribute it and/or
- *    modify it under the terms of the GNU Lesser General Public
- *    License as published by the Free Software Foundation;
- *    version 2.1 of the License.
- *
- *    This library is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *    Lesser General Public License for more details.
- */
+* If you feel like it, send any suggestions for improvement or
+* bug fixes, or modified source code to mike 'at' gelbin.org
+*
+* Do not taunt Happy Fun Ball.
+*
+*/
 package org.geotools.coverage.grid.io.imageio.geotiff;
 
 import it.geosolutions.imageio.plugins.tiff.GeoTIFFTagSet;
@@ -173,43 +173,25 @@ public final class GeoTiffIIOMetadataDecoder {
     /**
      * Gets the version of the GeoKey directory. This is typically a value of 1 and can be used to
      * check that the data is of a valid format.
-     *
-     * @return DOCUMENT ME!
-     * @throws UnsupportedOperationException DOCUMENT ME!
      */
     public int getGeoKeyDirectoryVersion() {
         // now get the value from the correct TIFFShort location
         return geoKeyDirVersion;
     }
 
-    /**
-     * Gets the revision number of the GeoKeys in this metadata.
-     *
-     * @return DOCUMENT ME!
-     * @throws UnsupportedOperationException DOCUMENT ME!
-     */
+    /** Gets the revision number of the GeoKeys in this metadata. */
     public int getGeoKeyRevision() {
         // Get the value from the correct TIFFShort
         return geoKeyRevision;
     }
 
-    /**
-     * Gets the minor revision number of the GeoKeys in this metadata.
-     *
-     * @return DOCUMENT ME!
-     * @throws UnsupportedOperationException DOCUMENT ME!
-     */
+    /** Gets the minor revision number of the GeoKeys in this metadata. */
     public int getGeoKeyMinorRevision() {
         // Get the value from the correct TIFFShort
         return geoKeyMinorRevision;
     }
 
-    /**
-     * Gets the number of GeoKeys in the geokeys directory.
-     *
-     * @return DOCUMENT ME!
-     * @throws UnsupportedOperationException DOCUMENT ME!
-     */
+    /** Gets the number of GeoKeys in the geokeys directory. */
     public int getNumGeoKeys() {
         return geoKeyDirTagsNum;
     }
@@ -254,9 +236,7 @@ public final class GeoTiffIIOMetadataDecoder {
      * Gets a record containing the four TIFFShort values for a geokey entry. For more information
      * see the GeoTIFFWritingUtilities specification.
      *
-     * @param keyID DOCUMENT ME!
      * @return the record with the given keyID, or null if none is found
-     * @throws UnsupportedOperationException DOCUMENT ME!
      */
     public GeoKeyEntry getGeoKeyRecord(int keyID) {
         return geoKeys.get(keyID);
@@ -363,7 +343,7 @@ public final class GeoTiffIIOMetadataDecoder {
 
     /**
      * Tells me if the underlying {@link IIOMetadata} contains ModelTiepointTag tag for {@link
-     * TiePoint}.
+     * org.geotools.coverage.grid.io.imageio.geotiff.TiePoint}.
      *
      * @return true if ModelTiepointTag is present, false otherwise.
      */
@@ -373,7 +353,7 @@ public final class GeoTiffIIOMetadataDecoder {
 
     /**
      * Tells me if the underlying {@link IIOMetadata} contains ModelTiepointTag tag for {@link
-     * TiePoint}.
+     * org.geotools.coverage.grid.io.imageio.geotiff.TiePoint}.
      *
      * @return true if ModelTiepointTag is present, false otherwise.
      */
@@ -469,12 +449,7 @@ public final class GeoTiffIIOMetadataDecoder {
         return node.getAttributes().getNamedItem(GeoTiffConstants.VALUE_ATTRIBUTE).getNodeValue();
     }
 
-    /**
-     * Gets the value attribute's contents and parses it as an int
-     *
-     * @param node DOCUMENT ME!
-     * @return DOCUMENT ME!
-     */
+    /** Gets the value attribute's contents and parses it as an int */
     private int getIntValueAttribute(Node node) {
         return Integer.parseInt(getValueAttribute(node));
     }
@@ -482,9 +457,6 @@ public final class GeoTiffIIOMetadataDecoder {
     /**
      * Gets a TIFFField node with the given tag number. This is done by searching for a TIFFField
      * with attribute number whose value is the specified tag value.
-     *
-     * @param tag DOCUMENT ME!
-     * @return DOCUMENT ME!
      */
     private IIOMetadataNode getTiffField(Node rootNode, final int tag) {
         Node node = rootNode.getFirstChild();
@@ -506,7 +478,6 @@ public final class GeoTiffIIOMetadataDecoder {
      * @param tiffField An IIOMetadataNode pointing to a TIFFField element that contains a
      *     TIFFShorts element.
      * @param index The 0-based index of the desired short value
-     * @return DOCUMENT ME!
      */
     private int getTiffShort(final IIOMetadataNode tiffField, final int index) {
 
@@ -521,7 +492,6 @@ public final class GeoTiffIIOMetadataDecoder {
      *
      * @param tiffField An IIOMetadataNode pointing to a TIFFField element that contains a
      *     TIFFDoubles element.
-     * @return DOCUMENT ME!
      */
     private double[] getTiffDoubles(final IIOMetadataNode tiffField) {
 
@@ -545,8 +515,6 @@ public final class GeoTiffIIOMetadataDecoder {
      *
      * @param tiffField An IIOMetadataNode pointing to a TIFFField element that contains a
      *     TIFFAsciis element. This element should contain a single TiffAscii element.
-     * @param start DOCUMENT ME!
-     * @param length DOCUMENT ME!
      * @return A substring of the value contained in the TIFFAscii node, with the final '|'
      *     character removed.
      */

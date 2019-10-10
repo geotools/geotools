@@ -74,7 +74,7 @@ public class GeometriesTest {
         Geometry point = geomFactory.createPoint(coords[0]);
         assertEquals(Geometries.POINT, Geometries.get(point));
 
-        Geometry multiPoint = geomFactory.createMultiPoint(coords);
+        Geometry multiPoint = geomFactory.createMultiPoint(new CoordinateArraySequence(coords));
         assertEquals(Geometries.MULTIPOINT, Geometries.get(multiPoint));
 
         Geometry line = geomFactory.createLineString(coords);

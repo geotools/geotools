@@ -106,7 +106,7 @@ public class CoordinateFormat extends Format {
     private UnitConverter[] toMillis;
 
     /** Dummy field position. */
-    private final FieldPosition dummy = new FieldPosition(0);
+    private final transient FieldPosition dummy = new FieldPosition(0);
 
     /** The locale for formatting coordinates and numbers. */
     private final Locale locale;

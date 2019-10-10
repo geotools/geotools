@@ -2,6 +2,24 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ *
+ */
+
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
  *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -26,6 +44,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Objects;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -85,15 +104,6 @@ public class DirectPosition2D extends Point2D.Double implements DirectPosition, 
      * Returns always {@code this}, the direct position for this {@linkplain
      * org.opengis.geometry.coordinate.Position position}.
      */
-    @Deprecated
-    public DirectPosition getPosition() {
-        return this;
-    }
-
-    /**
-     * Returns always {@code this}, the direct position for this {@linkplain
-     * org.opengis.geometry.coordinate.Position position}.
-     */
     public DirectPosition getDirectPosition() {
         return this;
     }
@@ -137,11 +147,6 @@ public class DirectPosition2D extends Point2D.Double implements DirectPosition, 
      */
     public double[] getCoordinate() {
         return new double[] {x, y};
-    }
-
-    @Deprecated
-    public double[] getCoordinates() {
-        return getCoordinate();
     }
 
     /**
@@ -209,7 +214,16 @@ public class DirectPosition2D extends Point2D.Double implements DirectPosition, 
      * dependent. It is usually provided for debugging purposes.
      */
     public String toString() {
-        return toString(this, getCoordinates());
+        return toString(this, getCoordinate());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        DirectPosition2D that = (DirectPosition2D) o;
+        return Objects.equals(crs, that.crs);
     }
 
     /**

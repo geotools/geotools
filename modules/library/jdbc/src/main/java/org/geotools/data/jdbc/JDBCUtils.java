@@ -77,11 +77,8 @@ public class JDBCUtils {
             } catch (SQLException e) {
                 String msg = "Error closing JDBC ResultSet";
                 LOGGER.log(Level.WARNING, msg, e);
-            } catch (Exception e) { // oracle drivers are crapping out
-
-                String msg = "Error closing JDBC ResultSet";
-
-                // LOGGER.log(Level.WARNING, msg, e);
+            } catch (Exception e) {
+                LOGGER.log(Level.FINE, "Error closing JDBC ResultSet", e);
             }
         }
     }

@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.geotools.data.DataAccess;
-import org.geotools.data.complex.config.Types;
+import org.geotools.data.complex.feature.type.Types;
 import org.geotools.data.util.FeatureStreams;
 import org.geotools.test.AppSchemaTestSupport;
 import org.junit.After;

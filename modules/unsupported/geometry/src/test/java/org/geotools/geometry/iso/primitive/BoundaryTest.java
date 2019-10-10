@@ -25,6 +25,7 @@ import org.geotools.geometry.iso.coordinate.GeometryFactoryImpl;
 import org.geotools.geometry.iso.coordinate.PositionImpl;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.geometry.DirectPosition;
+import org.opengis.geometry.PositionFactory;
 import org.opengis.geometry.coordinate.Position;
 import org.opengis.geometry.primitive.CurveBoundary;
 import org.opengis.geometry.primitive.CurveSegment;
@@ -50,11 +51,12 @@ public class BoundaryTest extends TestCase {
     private void _testCurveBoundary1(GeometryBuilder builder) {
 
         GeometryFactoryImpl tCoordFactory = (GeometryFactoryImpl) builder.getGeometryFactory();
+        PositionFactory pf = builder.getPositionFactory();
         PrimitiveFactoryImpl tPrimitiveFactory =
                 (PrimitiveFactoryImpl) builder.getPrimitiveFactory();
 
-        DirectPosition dp1 = tCoordFactory.createDirectPosition(new double[] {0, 0});
-        DirectPosition dp2 = tCoordFactory.createDirectPosition(new double[] {100, 100});
+        DirectPosition dp1 = pf.createDirectPosition(new double[] {0, 0});
+        DirectPosition dp2 = pf.createDirectPosition(new double[] {100, 100});
 
         CurveBoundary curveBoundary1 = tPrimitiveFactory.createCurveBoundary(dp1, dp2);
 
@@ -109,7 +111,7 @@ public class BoundaryTest extends TestCase {
         assertTrue(b2.equals((Object) b2));
         assertFalse(b2.equals((Object) dp1));
         assertFalse(b2.equals((Object) null));
-        DirectPosition dp3 = tCoordFactory.createDirectPosition(new double[] {3, 3});
+        DirectPosition dp3 = pf.createDirectPosition(new double[] {3, 3});
         PointImpl point3 = new PointImpl(dp3);
         assertFalse(b2.equals((Object) new CurveBoundaryImpl(this.crs, point1, point3)));
 
@@ -119,30 +121,31 @@ public class BoundaryTest extends TestCase {
     private void _testSurfaceBoundary1(GeometryBuilder builder) {
 
         GeometryFactoryImpl tCoordFactory = (GeometryFactoryImpl) builder.getGeometryFactory();
+        PositionFactory pf = builder.getPositionFactory();
         PrimitiveFactoryImpl tPrimFactory = (PrimitiveFactoryImpl) builder.getPrimitiveFactory();
 
         /* Defining Positions for LineStrings */
         ArrayList<Position> line1 = new ArrayList<Position>();
-        line1.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {50, 20})));
-        line1.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {30, 30})));
-        line1.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {20, 50})));
-        line1.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {20, 70})));
+        line1.add(new PositionImpl(pf.createDirectPosition(new double[] {50, 20})));
+        line1.add(new PositionImpl(pf.createDirectPosition(new double[] {30, 30})));
+        line1.add(new PositionImpl(pf.createDirectPosition(new double[] {20, 50})));
+        line1.add(new PositionImpl(pf.createDirectPosition(new double[] {20, 70})));
 
         ArrayList<Position> line2 = new ArrayList<Position>();
-        line2.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {20, 70})));
-        line2.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {40, 80})));
-        line2.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {70, 80})));
+        line2.add(new PositionImpl(pf.createDirectPosition(new double[] {20, 70})));
+        line2.add(new PositionImpl(pf.createDirectPosition(new double[] {40, 80})));
+        line2.add(new PositionImpl(pf.createDirectPosition(new double[] {70, 80})));
 
         ArrayList<Position> line3 = new ArrayList<Position>();
-        line3.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {70, 80})));
-        line3.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {90, 70})));
-        line3.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {100, 60})));
-        line3.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {100, 40})));
+        line3.add(new PositionImpl(pf.createDirectPosition(new double[] {70, 80})));
+        line3.add(new PositionImpl(pf.createDirectPosition(new double[] {90, 70})));
+        line3.add(new PositionImpl(pf.createDirectPosition(new double[] {100, 60})));
+        line3.add(new PositionImpl(pf.createDirectPosition(new double[] {100, 40})));
 
         ArrayList<Position> line4 = new ArrayList<Position>();
-        line4.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {100, 40})));
-        line4.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {80, 30})));
-        line4.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {50, 20})));
+        line4.add(new PositionImpl(pf.createDirectPosition(new double[] {100, 40})));
+        line4.add(new PositionImpl(pf.createDirectPosition(new double[] {80, 30})));
+        line4.add(new PositionImpl(pf.createDirectPosition(new double[] {50, 20})));
 
         /* Setting up Array of these LineStrings */
         ArrayList<CurveSegment> tLineList1 = new ArrayList<CurveSegment>();

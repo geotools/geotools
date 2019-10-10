@@ -25,8 +25,6 @@ import org.opengis.feature.type.FeatureType;
 /**
  * A simple event object to represent all events triggered by FeatureCollection instances (typically
  * change events).
- *
- * @deprecated Use {@link FeatureEvent}
  */
 public class CollectionEvent extends EventObject {
     private static final long serialVersionUID = -1864190177730929948L;
@@ -79,8 +77,6 @@ public class CollectionEvent extends EventObject {
      * Constructs a new CollectionEvent.
      *
      * @param source the collection which triggered the event
-     * @param involvedFeatures DOCUMENT ME!
-     * @param type DOCUMENT ME!
      */
     public CollectionEvent(
             FeatureCollection<? extends FeatureType, ? extends Feature> source,

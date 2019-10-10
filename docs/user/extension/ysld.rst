@@ -12,7 +12,7 @@ The **gt-ysld** module provides a YAML parser/encoder for GeoTools style objects
 References:
 
 * :geoserver:`YSLD <styling/ysld/index>` (GeoServer User Guide)
-* :doc:`gt-api style layer descriptor </library/api/sld>` (interfaces)
+* :doc:`gt-main style layer descriptor </library/main/sld>` (interfaces)
 * :doc:`gt-opengis symbology encoding</library/opengis/se>` (interfaces)
 * :doc:`style </tutorial/map/style>` (tutorial)
 * :doc:`gt-render style </library/render/style>` (code examples)
@@ -108,7 +108,7 @@ Color examples:
       fill-color: rgb(255,0,255)
 
 Color literals can be specified either as a 6 digit hex string or a 3 argument 
-rgb function call.
+``rgb``  function call.
 
 Filters
 '''''''
@@ -166,7 +166,7 @@ Lists and arrays are specified as space delimited. For example:
 Anchors & References
 ''''''''''''''''''''
 
-With Yaml it is possible to reference other parts of a document. With this 
+With YAML it is possible to reference other parts of a document. With this 
 it is possible to support variables and mix ins. An example of a color variable:
 
 .. code-block:: yaml
@@ -619,7 +619,7 @@ Additional hints for working with graphic fills:
 Using YSLD
 ^^^^^^^^^^
 
-YSLD relies on the :doc:`gt-api style layer descriptor </library/api/sld>`. Style files are parsed to a StyledLayerDescripter object, which can then be used by the GeoTools style renderer.
+YSLD relies on the :doc:`gt-main style layer descriptor </library/main/sld>`. Style files are parsed to a StyledLayerDescripter object, which can then be used by the GeoTools style renderer.
 
 To read a YSLD style:
 

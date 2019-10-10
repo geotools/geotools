@@ -16,8 +16,15 @@
  */
 package org.geotools.styling;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLStreamHandler;
 import junit.framework.TestCase;
 import org.geotools.util.URLs;
 
@@ -59,5 +66,44 @@ public class DefaultResourceLocatorTest extends TestCase {
     void checkURL(URL url) {
         File f = URLs.urlToFile(url);
         assertTrue(f.exists());
+    }
+
+    public void testInvalidPath() throws Exception {
+        DefaultResourceLocator locator = new DefaultResourceLocator();
+        URL testURL =
+                new URL(
+                        "resource",
+                        null,
+                        -1,
+                        "target",
+                        new URLStreamHandler() {
+
+                            @Override
+                            protected URLConnection openConnection(URL u) throws IOException {
+                                return new URLConnection(u) {
+
+                                    @Override
+                                    public void connect() throws IOException {}
+
+                                    @Override
+                                    public long getLastModified() {
+                                        return 0;
+                                    }
+
+                                    @Override
+                                    public InputStream getInputStream() throws IOException {
+                                        return new ByteArrayInputStream(new byte[0]);
+                                    }
+
+                                    @Override
+                                    public OutputStream getOutputStream() throws IOException {
+                                        return new ByteArrayOutputStream();
+                                    }
+                                };
+                            }
+                        });
+        locator.setSourceUrl(testURL);
+        // used to go NPE here
+        assertEquals(new URL("file://test"), locator.locateResource("file://test"));
     }
 }

@@ -113,7 +113,7 @@ final class PropertyAccessor {
     /**
      * Creates a new property reader for the specified metadata implementation.
      *
-     * @param metadata The metadata implementation to wrap.
+     * @param implementation The metadata implementation to wrap.
      * @param type The interface implemented by the metadata. Should be the value returned by {@link
      *     #getType}.
      */
@@ -209,7 +209,7 @@ final class PropertyAccessor {
      * Returns the metadata interface implemented by the specified implementation. Only one metadata
      * interface can be implemented.
      *
-     * @param metadata The metadata implementation to wraps.
+     * @param implementation The metadata implementation to wraps.
      * @param interfacePackage The root package for metadata interfaces.
      * @return The single interface, or {@code null} if none where found.
      */

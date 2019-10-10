@@ -276,6 +276,7 @@ public class GeneralDirectPosition extends AbstractDirectPosition
 
     /** Returns a hash value for this coordinate. */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         int code = Arrays.hashCode(ordinates);
         if (crs != null) {
@@ -288,6 +289,12 @@ public class GeneralDirectPosition extends AbstractDirectPosition
     /** Returns a deep copy of this position. */
     @Override
     public GeneralDirectPosition clone() {
+        try {
+            super.clone();
+        } catch (CloneNotSupportedException e) {
+            // should not happen
+            throw new RuntimeException(e);
+        }
         return new GeneralDirectPosition(ordinates);
     }
 }

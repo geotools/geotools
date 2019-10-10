@@ -1,5 +1,25 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ *
+ */
+
 package org.geotools.xml;
 
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import org.geotools.filter.FilterHandler;
 import org.geotools.gml.GMLFilterDocument;
 import org.geotools.gml.GMLFilterGeometry;
@@ -9,7 +29,6 @@ import org.opengis.filter.Filter;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
-import org.xml.sax.helpers.XMLReaderFactory;
 
 @SuppressWarnings("unused")
 public class FilterXMLExamples {
@@ -33,7 +52,10 @@ public class FilterXMLExamples {
         GMLFilterDocument filterDocument = new GMLFilterDocument(filterGeometry);
 
         // parse xml
-        XMLReader reader = XMLReaderFactory.createXMLReader();
+        SAXParserFactory parserFactory = SAXParserFactory.newInstance();
+        parserFactory.setNamespaceAware(true);
+        SAXParser parser = parserFactory.newSAXParser();
+        XMLReader reader = parser.getXMLReader();
         reader.setContentHandler(filterDocument);
         reader.parse(input);
         Filter filter = simpleFilterHandler.filter;

@@ -207,11 +207,6 @@ public class AbstractDerivedCRS extends AbstractSingleCRS implements GeneralDeri
         this(properties, new DefaultOperationMethod(baseToDerived), base, baseToDerived, derivedCS);
     }
 
-    /**
-     * @deprecated Create explicitly a {@link DefiningConversion} instead.
-     * @todo Move the implementation in the previous constructor after we removed the deprecated
-     *     signature.
-     */
     AbstractDerivedCRS(
             final Map<String, ?> properties,
             final OperationMethod method,
@@ -341,6 +336,7 @@ public class AbstractDerivedCRS extends AbstractSingleCRS implements GeneralDeri
      *     versions of this class.
      */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         /*
          * Do not invoke 'conversionFromBase.hashCode()' in order to avoid a never-ending loop.

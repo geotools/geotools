@@ -72,20 +72,12 @@ public class AppSchemaDataAccessDTO implements Serializable {
 
     private String oasisCatalogUri;
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
+    /** */
     public List getTargetSchemasUris() {
         return new ArrayList(targetSchemasUris);
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param targetSchemasUris DOCUMENT ME!
-     */
+    /** */
     public void setTargetSchemasUris(List targetSchemasUris) {
         this.targetSchemasUris = new CheckedArrayList(String.class);
 
@@ -94,11 +86,7 @@ public class AppSchemaDataAccessDTO implements Serializable {
         }
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param nameSpaces DOCUMENT ME!
-     */
+    /** */
     public void setNamespaces(Map nameSpaces) {
         if (nameSpaces == null) {
             this.namespaces = Collections.EMPTY_MAP;
@@ -108,11 +96,7 @@ public class AppSchemaDataAccessDTO implements Serializable {
         }
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
+    /** */
     public Map getNamespaces() {
         return new HashMap(namespaces);
     }
@@ -138,11 +122,7 @@ public class AppSchemaDataAccessDTO implements Serializable {
         return includes;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param dataStores DOCUMENT ME!
-     */
+    /** */
     public void setSourceDataStores(List /* <SourceDataStore> */ dataStores) {
         if (dataStores == null) {
             this.sourceDataStores = Collections.EMPTY_LIST;
@@ -152,20 +132,12 @@ public class AppSchemaDataAccessDTO implements Serializable {
         }
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
+    /** */
     public List getSourceDataStores() {
         return new ArrayList(sourceDataStores);
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param typeMappings DOCUMENT ME!
-     */
+    /** */
     public void setTypeMappings(Set typeMappings) {
         this.typeMappings = new CheckedHashSet(TypeMapping.class);
 
@@ -174,18 +146,12 @@ public class AppSchemaDataAccessDTO implements Serializable {
         }
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
+    /** */
     public Set getTypeMappings() {
         return new HashSet(typeMappings);
     }
 
     /**
-     * DOCUMENT ME!
-     *
      * @return a non null URL for the base location of the resource files in order to serve as the
      *     base to resolve relative configuration paths.
      */
@@ -194,8 +160,6 @@ public class AppSchemaDataAccessDTO implements Serializable {
     }
 
     /**
-     * DOCUMENT ME!
-     *
      * @param baseSchemasUrl URL of a resource which's going to be taken as the base location to
      *     resolve configuration path elements expressed as relative paths.
      */

@@ -23,7 +23,6 @@ import org.geotools.validation.ValidationResults;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -133,18 +132,5 @@ public class LineNoSelfOverlappingValidation extends DefaultFeatureValidation {
 
         // LOGGER.log(Level.FINEST, getName() + "(" + feature.getID() + ") passed");
         return true;
-    }
-    /*
-     * touchesSegment
-     * iterates all segments and returns true as soon as the point is found to intersect with the linestring
-     * */
-    private boolean touchesSegment(LineString[] segments, Point p1) {
-        for (int i = 0; i < segments.length; i++) {
-            // using intersects will handle a point that is not  an end point on the line segment
-            if (p1.intersects(segments[i])) {
-                return true;
-            }
-        }
-        return false;
     }
 }

@@ -1,21 +1,23 @@
 Main FAQ
 --------
 
-Q: What is gt-main responsible for?
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Q: What is ``gt-main`` responsible for?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The gt-main module is responsible for the default implementations of the formal interfaces provided by gt-api and gt-opengis. This includes the default implementations for the feature model, filter support, and style definition.
+The ``gt-main`` completes the GeoTools API with additional interfaces extending the concepts provided by ``gt-opengis``.
 
-The gt-main module makes this functionality available through the plug-in system allowing you to make use of CommonFactoryFinder rather than directly depend on the default implementations provided here.
+The ``gt-main`` module is responsible for the default implementation of the interfaces in  ``gt-main`` and ``gt-opengis``. This includes the default implementations for the feature model, filter support, and style definition.
+
+The ``gt-main`` module makes this functionality available through the plug-in system allowing you to make use of CommonFactoryFinder rather than directly depend on the default implementations provided here.
 
 Q: How do I make a FeatureType?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You can make a feature type quickly using using the DataUtilities class:
+You can make a feature type quickly using using the DataUtilities class::
 
     SimpleFeatureType lineType = DataUtilities.createType("LINE", "centerline:LineString,name:\"\",id:0");
 
-For greater control consider direct use of a FeatureTypeBuilder::
+For greater control consider direct use of a ``FeatureTypeBuilde``::
   
   SimpleFeatureTypeBuilder b = new SimpleFeatureTypeBuilder();
   
@@ -62,3 +64,9 @@ the iterator after we are finished with it:
 This requirement prevents us implementing Collection (and being compatible with 'for each' syntax.
 I am afraid this is a fundamental limitation of Java and not something that can or should be
 addressed in a future release.
+
+Q: Why does ``gt-main`` define its own Style interfaces?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The GeoTools interfaces for Style are a straight extension of the ``gt-opengis`` interfaces allowing mutability. This does come with a drawback; we need to ask you to be careful of thread safety.
+

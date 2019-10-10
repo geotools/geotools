@@ -19,7 +19,7 @@ package org.geotools.filter.function;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.feature.FeatureCollections;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -44,12 +44,12 @@ public class JenksFunctionTest extends FunctionTestSupport {
     }
 
     public void testInstance() {
-        Function equInt = ff.function("Jenks", ff.literal(FeatureCollections.newCollection()));
+        Function equInt = ff.function("Jenks", ff.literal(new DefaultFeatureCollection()));
         assertNotNull(equInt);
     }
 
     public void testGetName() {
-        Function qInt = ff.function("Jenks", ff.literal(FeatureCollections.newCollection()));
+        Function qInt = ff.function("Jenks", ff.literal(new DefaultFeatureCollection()));
         assertEquals("Jenks", qInt.getName());
     }
 
@@ -127,7 +127,7 @@ public class JenksFunctionTest extends FunctionTestSupport {
             myfeatures[i] =
                     SimpleFeatureBuilder.build(
                             dataType,
-                            new Object[] {new Integer(i + 1), new Integer(iVal[i])},
+                            new Object[] {Integer.valueOf(i + 1), Integer.valueOf(iVal[i])},
                             "classification.test1" + (i + 1));
         }
         SimpleFeatureSource source = DataUtilities.source(myfeatures);
@@ -167,7 +167,7 @@ public class JenksFunctionTest extends FunctionTestSupport {
             myfeatures[i] =
                     SimpleFeatureBuilder.build(
                             dataType,
-                            new Object[] {new Integer(i + 1), new Integer(iVal[i])},
+                            new Object[] {Integer.valueOf(i + 1), Integer.valueOf(iVal[i])},
                             "classification.t" + (i + 1));
         }
         SimpleFeatureSource source = DataUtilities.source(myfeatures);
@@ -187,26 +187,26 @@ public class JenksFunctionTest extends FunctionTestSupport {
                 DataUtilities.createType("classification.nullnan", "id:0,foo:int,bar:double");
         Integer iVal[] =
                 new Integer[] {
-                    new Integer(0),
-                    new Integer(0),
-                    new Integer(0),
-                    new Integer(13),
-                    new Integer(13),
-                    new Integer(13),
+                    Integer.valueOf(0),
+                    Integer.valueOf(0),
+                    Integer.valueOf(0),
+                    Integer.valueOf(13),
+                    Integer.valueOf(13),
+                    Integer.valueOf(13),
                     null,
                     null,
                     null
                 };
         Double dVal[] =
                 new Double[] {
-                    new Double(0.0),
-                    new Double(50.01),
+                    Double.valueOf(0.0),
+                    Double.valueOf(50.01),
                     null,
-                    new Double(0.0),
-                    new Double(50.01),
+                    Double.valueOf(0.0),
+                    Double.valueOf(50.01),
                     null,
-                    new Double(0.0),
-                    new Double(50.01),
+                    Double.valueOf(0.0),
+                    Double.valueOf(50.01),
                     null
                 };
 
@@ -217,7 +217,7 @@ public class JenksFunctionTest extends FunctionTestSupport {
                     SimpleFeatureBuilder.build(
                             ft,
                             new Object[] {
-                                new Integer(i + 1), iVal[i], dVal[i],
+                                Integer.valueOf(i + 1), iVal[i], dVal[i],
                             },
                             "nantest.t" + (i + 1));
         }
@@ -233,5 +233,14 @@ public class JenksFunctionTest extends FunctionTestSupport {
         assertEquals(3, range.getSize()); // 2 or 3?
         assertEquals("0..0", range.getTitle(0));
         assertEquals("0..0", range.getTitle(1));
+    }
+
+    public void testConstantValuesNumeric() {
+        Function function = ff.function("jenks", ff.property("v"), ff.literal(12));
+        RangedClassifier classifier = (RangedClassifier) function.evaluate(constantCollection);
+        assertNotNull(classifier);
+        assertEquals(1, classifier.getSize());
+        assertEquals(123.123, (Double) classifier.getMin(0), 0d);
+        assertEquals(123.123, (Double) classifier.getMax(0), 0d);
     }
 }

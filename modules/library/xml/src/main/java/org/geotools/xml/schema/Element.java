@@ -57,7 +57,6 @@ public interface Element extends ElementGrouping {
      */
     public String getName();
 
-    /** DOCUMENT ME! */
     public URI getNamespace();
 
     /** Returns true when the element is nillable, false otherwise */

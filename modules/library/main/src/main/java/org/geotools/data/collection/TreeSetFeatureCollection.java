@@ -118,7 +118,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
      * customize any generated collections.
      *
      * @param id may be null ... feature id
-     * @param featureType optional, may be null
+     * @param memberType optional, may be null
      */
     public TreeSetFeatureCollection(String id, SimpleFeatureType memberType) {
         this.id = id == null ? "featureCollection" : id;
@@ -163,7 +163,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
      * <tt>false</tt> ). This preserves the invariant that a collection always contains the
      * specified element after this call returns.
      *
-     * @param o element whose presence in this collection is to be ensured.
+     * @param feature element whose presence in this collection is to be ensured.
      * @return <tt>true</tt> if this collection changed as a result of the call
      */
     public boolean add(SimpleFeature feature) {
@@ -187,11 +187,6 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
         // TODO check inheritance with FeatureType here!!!
         contents.put(ID, feature);
         return true;
-    }
-
-    @Deprecated
-    protected boolean add(SimpleFeature feature, boolean fire) {
-        return add(feature);
     }
 
     /**

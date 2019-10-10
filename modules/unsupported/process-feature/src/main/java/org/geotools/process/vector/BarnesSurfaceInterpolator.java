@@ -151,7 +151,7 @@ public class BarnesSurfaceInterpolator {
      * data is provided as an array of {@link Coordinate} values, where the X,Y ordinates are the
      * observation location, and the Z ordinate contains the observation value.
      *
-     * @param data the observed data values
+     * @param observationData the observed data values
      */
     public BarnesSurfaceInterpolator(Coordinate[] observationData) {
         this.inputObs = observationData;
@@ -264,7 +264,7 @@ public class BarnesSurfaceInterpolator {
             Coordinate dp = inputObs[i];
             float est = (float) estimatedValue(dp.x, dp.y);
             if (!Float.isNaN(est)) estimate[i] = est;
-            else estimate[i] = (float) inputObs[i].z;
+            else estimate[i] = (float) inputObs[i].getZ();
         }
         return estimate;
     }
@@ -275,7 +275,7 @@ public class BarnesSurfaceInterpolator {
             Coordinate dp = inputObs[i];
             float del = (float) refinedDelta(dp.x, dp.y, convergenceFactor);
             if (!Float.isNaN(del)) estimate[i] = (float) currEst[i] + del;
-            else estimate[i] = (float) inputObs[i].z;
+            else estimate[i] = (float) inputObs[i].getZ();
         }
         return estimate;
     }
@@ -361,7 +361,7 @@ public class BarnesSurfaceInterpolator {
             /** Skip observation if unusable due to too great a distance */
             if (Double.isNaN(wgt)) continue;
 
-            sumWgtVal += wgt * inputObs[i].z;
+            sumWgtVal += wgt * inputObs[i].getZ();
             sumWgt += wgt;
             dataCount++;
         }
@@ -390,7 +390,7 @@ public class BarnesSurfaceInterpolator {
             /** Check if observation is unusable (e.g. due to too great a distance) */
             if (Double.isNaN(wgt)) continue;
 
-            sumWgtVal += wgt * (inputObs[i].z - estimatedObs[i]);
+            sumWgtVal += wgt * (inputObs[i].getZ() - estimatedObs[i]);
             sumWgt += wgt;
             dataCount++;
         }
@@ -434,21 +434,5 @@ public class BarnesSurfaceInterpolator {
         double w = Math.exp(-(dr * dr / convergenceFactor));
         // if (dist > cutoffRadius) System.out.println(w);
         return w;
-    }
-
-    /**
-     * Computes effective radius which is determined by the specified cutoff weight and the radius
-     * of the decay function.
-     *
-     * @param cutoffWeight
-     * @param radius
-     * @return
-     */
-    private double effectiveRadius(double cutoffWeight, double radius) {
-        double cutoffFactor = Math.sqrt(-Math.log(cutoffWeight));
-        double effRadius = radius * cutoffFactor;
-        double w = weight(effRadius, radius, 1.0);
-        // System.out.println(cutoffWeight + "   " + w);
-        return effRadius;
     }
 }

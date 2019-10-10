@@ -43,6 +43,7 @@ import org.opengis.feature.GeometryAttribute;
 import org.opengis.feature.Property;
 
 /** @author tkunicki@boundlessgeo.com */
+@SuppressWarnings("deprecation") // DB was replaced by MongoDatabase but API is not the same
 public class MongoTestUtil {
 
     static final int PORT;
@@ -61,6 +62,7 @@ public class MongoTestUtil {
         // System.out.println("EmbedMongo Port is " + PORT);
     }
 
+    @Test
     public void testConnect() throws UnknownHostException {
         MongoClient mc = new MongoClient("localhost", PORT);
         try {

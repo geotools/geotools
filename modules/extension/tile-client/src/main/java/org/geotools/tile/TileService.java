@@ -108,12 +108,7 @@ public abstract class TileService {
         return this.baseURL;
     }
 
-    /**
-     * The CRS that is used when the extent is cut in tiles.
-     *
-     * @deprecated is it really meaningful?
-     */
-    @Deprecated
+    /** The CRS that is used when the extent is cut in tiles. */
     public CoordinateReferenceSystem getTileCrs() {
         return DefaultGeographicCRS.WGS84;
     }
@@ -130,11 +125,11 @@ public abstract class TileService {
     public int getZoomLevelFromMapScale(ScaleZoomLevelMatcher zoomLevelMatcher, int scaleFactor) {
         // fallback scale-list
         double[] scaleList = getScaleList();
+        assert (scaleList != null && scaleList.length > 0);
+
         // during the calculations this list caches already calculated scales
         double[] tempScaleList = new double[scaleList.length];
         Arrays.fill(tempScaleList, Double.NaN);
-
-        assert (scaleList != null && scaleList.length > 0);
 
         int zoomLevel = zoomLevelMatcher.getZoomLevelFromScale(this, tempScaleList);
 

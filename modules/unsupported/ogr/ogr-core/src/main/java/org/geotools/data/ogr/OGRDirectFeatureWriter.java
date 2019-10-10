@@ -43,7 +43,7 @@ class OGRDirectFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
 
     private Object layer;
 
-    private Object dataSource;
+    private OGRDataSource dataSource;
 
     private FeatureMapper mapper;
 
@@ -61,7 +61,7 @@ class OGRDirectFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
      * @param layer
      */
     public OGRDirectFeatureWriter(
-            Object dataSource,
+            OGRDataSource dataSource,
             Object layer,
             FeatureReader<SimpleFeatureType, SimpleFeature> reader,
             SimpleFeatureType originalSchema,
@@ -79,17 +79,20 @@ class OGRDirectFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
 
     public void close() throws IOException {
         if (reader != null) {
-            original = null;
-            live = null;
-            Object driver = ogr.DataSourceGetDriver(dataSource);
-            String driverName = ogr.DriverGetName(driver);
+            try {
+                original = null;
+                live = null;
+                Object driver = dataSource.getDriver();
+                String driverName = ogr.DriverGetName(driver);
 
-            if ("ESRI Shapefile".equals(driverName) && deletedFeatures) {
-                String layerName = ogr.LayerGetName(layer);
-                ogr.DataSourceExecuteSQL(dataSource, "REPACK " + layerName, null);
+                if ("ESRI Shapefile".equals(driverName) && deletedFeatures) {
+                    String layerName = ogr.LayerGetName(layer);
+                    dataSource.executeSQL("REPACK " + layerName, null);
+                }
+                ogr.LayerSyncToDisk(layer);
+            } finally {
+                reader.close();
             }
-            ogr.LayerSyncToDisk(layer);
-            reader.close();
         }
     }
 
@@ -130,19 +133,19 @@ class OGRDirectFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
 
         // this will return true only in update mode, otherwise original is null
         boolean changed = !live.equals(original);
-        if (!changed && original != null) {
-            // nothing to do, just skip
-        } else if (original != null) {
-            // not equals, we're updating an existing one
-            Object ogrFeature = mapper.convertGTFeature(layerDefinition, live);
-            ogr.CheckError(ogr.LayerSetFeature(layer, ogrFeature));
-        } else {
-            Object ogrFeature = mapper.convertGTFeature(layerDefinition, live);
+        if (changed || original == null) {
+            if (original != null) {
+                // not equals, we're updating an existing one
+                Object ogrFeature = mapper.convertGTFeature(layerDefinition, live);
+                ogr.CheckError(ogr.LayerSetFeature(layer, ogrFeature));
+            } else {
+                Object ogrFeature = mapper.convertGTFeature(layerDefinition, live);
 
-            ogr.CheckError(ogr.LayerCreateFeature(layer, ogrFeature));
-            String geotoolsId = mapper.convertOGRFID(featureType, ogrFeature);
-            ((FeatureIdImpl) live.getIdentifier()).setID(geotoolsId);
-            ogr.FeatureDestroy(ogrFeature);
+                ogr.CheckError(ogr.LayerCreateFeature(layer, ogrFeature));
+                String geotoolsId = mapper.convertOGRFID(featureType, ogrFeature);
+                ((FeatureIdImpl) live.getIdentifier()).setID(geotoolsId);
+                ogr.FeatureDestroy(ogrFeature);
+            }
         }
 
         // reset state

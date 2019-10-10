@@ -90,7 +90,7 @@ public class Collection_AverageFunction extends FunctionExpressionImpl {
      *
      * <p>To refer to all 'X': <code>featureMember/asterisk/X</code>
      *
-     * @param args function paremeters
+     * @param params function parameters
      * @throws IllegalArgumentException
      */
     public void setParameters(List params) {
@@ -106,7 +106,7 @@ public class Collection_AverageFunction extends FunctionExpressionImpl {
     @SuppressWarnings("unchecked")
     public Object evaluate(Object feature) {
         if (feature == null) {
-            return new Integer(0); // no features were visited in the making of this answer
+            return Integer.valueOf(0); // no features were visited in the making of this answer
         }
         FeatureCollection<FeatureType, Feature> featureCollection =
                 (FeatureCollection<FeatureType, Feature>) feature;

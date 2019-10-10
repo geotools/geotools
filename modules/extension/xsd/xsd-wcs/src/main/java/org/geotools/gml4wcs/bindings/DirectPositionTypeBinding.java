@@ -1,3 +1,21 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ *
+ */
+
 package org.geotools.gml4wcs.bindings;
 
 import javax.xml.namespace.QName;
@@ -86,20 +104,20 @@ public class DirectPositionTypeBinding extends AbstractComplexBinding {
             value.appendChild(
                     document.createElementNS(
                             GML.NAMESPACE, org.geotools.gml3.GML.Null.getLocalPart()));
-        }
+        } else {
+            double[] coordinates = dp.getCoordinate();
+            StringBuilder sb = new StringBuilder();
 
-        double[] coordinates = dp.getCoordinate();
-        StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < coordinates.length; i++) {
+                sb.append(String.valueOf(coordinates[i]));
 
-        for (int i = 0; i < coordinates.length; i++) {
-            sb.append(String.valueOf(coordinates[i]));
-
-            if (i != (coordinates.length - 1)) {
-                sb.append(" ");
+                if (i != (coordinates.length - 1)) {
+                    sb.append(" ");
+                }
             }
-        }
 
-        value.appendChild(document.createTextNode(sb.toString()));
+            value.appendChild(document.createTextNode(sb.toString()));
+        }
         return null;
     }
 

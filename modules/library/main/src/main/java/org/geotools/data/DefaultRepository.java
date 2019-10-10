@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.NameImpl;
 import org.opengis.feature.type.Name;
@@ -49,7 +50,7 @@ import org.opengis.feature.type.Name;
 public class DefaultRepository implements Repository {
 
     /** Holds the DataStores so we can clean up when closed */
-    protected Map<Name, DataAccess<?, ?>> repository = new HashMap<Name, DataAccess<?, ?>>();
+    protected Map<Name, DataAccess<?, ?>> repository = new ConcurrentHashMap<>();
 
     //
     // lookup methods provided by Repository interface
@@ -209,7 +210,6 @@ public class DefaultRepository implements Repository {
      * <p>Description ...
      *
      * @see org.geotools.data.Catalog#registerDataStore(org.geotools.data.DataStore)
-     * @param String namespace Namespace to
      * @param dataStore
      * @throws IOException
      */

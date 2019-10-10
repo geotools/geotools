@@ -18,6 +18,7 @@ package org.geotools.styling;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Logger;
 import org.geotools.util.Utilities;
 
@@ -185,5 +186,10 @@ public class StyledLayerDescriptorImpl implements StyledLayerDescriptor {
         }
 
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, title, abstractStr, layers);
     }
 }

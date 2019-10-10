@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 import org.junit.Test;
 
 /**
@@ -78,19 +79,18 @@ public final class WeakValueHashMapTest {
     public void testWeakReferences() throws InterruptedException {
         final Random random = new Random();
         for (int pass = 0; pass < 2; pass++) {
-            final WeakValueHashMap<Integer, Integer> weakMap =
-                    new WeakValueHashMap<Integer, Integer>();
-            final HashMap<Integer, Integer> strongMap = new HashMap<Integer, Integer>();
+            final WeakValueHashMap<UUID, UUID> weakMap = new WeakValueHashMap<>();
+            final HashMap<UUID, UUID> strongMap = new HashMap<>();
             for (int i = 0; i < SAMPLE_SIZE; i++) {
                 // We really want new instances here.
-                final Integer key = new Integer(random.nextInt(SAMPLE_SIZE));
-                final Integer value = new Integer(random.nextInt(SAMPLE_SIZE));
+                final UUID key = UUID.randomUUID();
+                final UUID value = UUID.randomUUID();
                 if (random.nextBoolean()) {
                     /*
                      * Tests addition.
                      */
-                    final Integer weakPrevious = weakMap.put(key, value);
-                    final Integer strongPrevious = strongMap.put(key, value);
+                    final UUID weakPrevious = weakMap.put(key, value);
+                    final UUID strongPrevious = strongMap.put(key, value);
                     if (weakPrevious == null) {
                         // If the element was not in the WeakValueHashMap (i.e. if the garbage
                         // collector has cleared it), then it must not been in HashMap neither
@@ -108,8 +108,8 @@ public final class WeakValueHashMapTest {
                     /*
                      * Tests remove
                      */
-                    final Integer weakPrevious = weakMap.get(key);
-                    final Integer strongPrevious = strongMap.remove(key);
+                    final UUID weakPrevious = weakMap.get(key);
+                    final UUID strongPrevious = strongMap.remove(key);
                     if (strongPrevious != null) {
                         assertSame("remove:", strongPrevious, weakPrevious);
                     }
@@ -136,26 +136,26 @@ public final class WeakValueHashMapTest {
         WeakValueHashMap<Integer, Integer> map = new WeakValueHashMap<Integer, Integer>(10);
         List<Integer> values = new ArrayList<Integer>();
         for (int i = 0; i < 7; i++) {
-            Integer v = new Integer(i);
+            Integer v = Integer.valueOf(i);
             values.add(v);
             map.put(v, v);
         }
-        Integer last = new Integer(9);
+        Integer last = Integer.valueOf(9);
         map.put(last, last);
 
         // reduce the size enough that we put the map on its threshold for shrinking
         for (int i = 0; i < 5; i++) {
-            map.remove(new Integer(i));
+            map.remove(Integer.valueOf(i));
         }
 
         // now replace the last element, which will force the map to shrink
-        last = new Integer(9);
+        last = Integer.valueOf(9);
         values.add(last);
         map.put(last, last); // it used to throw the arrays out of bound here
 
         assertEquals(3, map.size());
-        assertTrue(map.containsKey(new Integer(5)));
-        assertTrue(map.containsKey(new Integer(6)));
-        assertTrue(map.containsKey(new Integer(9)));
+        assertTrue(map.containsKey(Integer.valueOf(5)));
+        assertTrue(map.containsKey(Integer.valueOf(6)));
+        assertTrue(map.containsKey(Integer.valueOf(9)));
     }
 }

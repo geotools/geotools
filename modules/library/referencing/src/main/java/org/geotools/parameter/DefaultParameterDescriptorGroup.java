@@ -309,6 +309,7 @@ public class DefaultParameterDescriptorGroup extends AbstractParameterDescriptor
      *     versions of this class.
      */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         int code = super.hashCode();
         // TODO: We should use Arrays.deepHashCode instead in J2SE 1.5.

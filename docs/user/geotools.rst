@@ -53,7 +53,7 @@ Core Features
   GeoTools also operates as part of a wider community with a staging area used to foster new
   talent and promote experimentation.
   
-  Some highlights are swing support (used in our tutorials!), swt, local and web process support,
+  Some highlights are swing support (used in our tutorials!), SWT, local and web process support,
   additional symbology, additional data formats, generation of grids and a couple of implementations
   of ISO Geometry.
 
@@ -62,21 +62,57 @@ Supported Formats
 
 * raster formats and data access
   
-  arcsde, arcgrid, geotiff, grassraster, image (JPEG, TIFF, GIF, PNG), imageio-ext-gdal, 
-  imagemosaic, imagepyramid, JP2K, matlab
+  + ``arcsde``  
+  + ``arcgrid``  
+  + ``geotiff``  
+  + ``grassraster``  
+  + image ( ``JPEG``  ``TIFF`` ``GIF``  ``PNG`` ), 
+  + ``imageio-ext-gdal``  
+  + ``imagemosaic``  
+  + ``imagepyramid``  
+  + ``JP2K``  
+  + ``matlab`` 
   
-* Database "jdbc-ng" support
+* Database ``jdbc-ng`` support
   
-  db2, h2, mysql, oracle, postgis, spatialite, sqlserver
+  + ``db2``  
+  + ``h2``  
+  + ``mysql``  
+  + ``oracle``  
+  + ``postgis``  
+  + ``spatialite``  
+  + ``sqlserver`` 
 
 * Vector formats and data access
   
-  app-schema, arcsde, csv, dxf, edigeo, excel, geojson, org, property, shapefile, wfs
+
+  + ``app-schema``  
+  + ``arcsde``  
+  + ``csv``  
+  + ``dxf``  
+  + ``geojson``  
+  + ``property``  
+  + ``shapefile``  
+  + ``wfs`` 
+
 
 * XML Bindings
 
   Java data structures and bindings provided for the following:
-  xsd-core (xml simple types), fes, filter, gml2, gml3, kml, ows, sld, wcs, wfs, wms, wps.
+  
+  + ``xsd-core`` (xml simple types) 
+  + ``fes``  
+  + ``filter``  
+  + ``gml2``  
+  + ``gml3``  
+  + ``kml``  
+  + ``ows``  
+  + ``sld``  
+  + ``wcs``  
+  + ``wfs``  
+  + ``wms`` 
+  + ``wmts``  
+  + ``wps`` 
   
   Additional Geometry, Filter and Style parser/encoders available for DOM and SAX applications.
   

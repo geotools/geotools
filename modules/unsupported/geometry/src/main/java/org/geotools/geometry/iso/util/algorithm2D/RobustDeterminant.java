@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2006  Vivid Solutions
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2006  Vivid Solutions
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -102,8 +102,7 @@ public class RobustDeterminant {
          */
         if (0.0 < y1) {
             if (0.0 < y2) {
-                if (y1 <= y2) {;
-                } else {
+                if (y1 > y2) {
                     sign = -sign;
                     swap = x1;
                     x1 = x2;
@@ -146,7 +145,6 @@ public class RobustDeterminant {
                     y1 = -y1;
                     x2 = -x2;
                     y2 = -y2;
-                    ;
                 } else {
                     sign = -sign;
                     swap = -x1;
@@ -167,8 +165,7 @@ public class RobustDeterminant {
          */
         if (0.0 < x1) {
             if (0.0 < x2) {
-                if (x1 <= x2) {;
-                } else {
+                if (x1 > x2) {
                     return sign;
                 }
             } else {
@@ -182,7 +179,6 @@ public class RobustDeterminant {
                     sign = -sign;
                     x1 = -x1;
                     x2 = -x2;
-                    ;
                 } else {
                     return -sign;
                 }

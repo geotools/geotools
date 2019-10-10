@@ -124,13 +124,8 @@ public abstract class AbstractFilterBuilder {
     protected final String getStatement() {
         return this.cqlSource;
     }
-    /**
-     * Adds in the result stack the partial result associated to node.
-     *
-     * @param built partial result
-     * @param token
-     * @param type node associated to partial result
-     */
+
+    /** Adds in the result stack the partial result associated to node. */
     public void pushResult(final Result result) {
 
         this.resultStack.push(result);
@@ -446,19 +441,6 @@ public abstract class AbstractFilterBuilder {
             return m.group(3) != null ? m.group(3).toUpperCase() : "";
         }
         return "";
-    }
-
-    /**
-     * Remove the ":". The Z format is [sign]hhmm
-     *
-     * @param cqlTimeZone [sign]hh:mm
-     * @return [sign]hhmm
-     */
-    private String toTimeZone(final String cqlTimeZone) {
-
-        String[] str = cqlTimeZone.split(":");
-        assert str.length == 2;
-        return str[0].concat(str[1]);
     }
 
     /**

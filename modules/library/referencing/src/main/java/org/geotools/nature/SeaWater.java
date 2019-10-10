@@ -555,7 +555,7 @@ public final class SeaWater {
      * tableau ne contient pas au moins 1 élément.
      *
      * @param x Valeur x à laquelle calculer le polynôme.
-     * @param C Coéfficients C du polynôme.
+     * @param c Coéfficients C du polynôme.
      * @return La valeur du polynôme au x spécifié.
      * @see #polynome(double,double[])
      */

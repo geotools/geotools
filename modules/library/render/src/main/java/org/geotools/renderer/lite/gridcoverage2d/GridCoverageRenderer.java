@@ -17,6 +17,7 @@
 package org.geotools.renderer.lite.gridcoverage2d;
 
 import it.geosolutions.jaiext.range.Range;
+import it.geosolutions.jaiext.scale.Scale2OpImage;
 import it.geosolutions.jaiext.utilities.ImageLayout2;
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import java.awt.AlphaComposite;
@@ -26,7 +27,6 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.ImagingOpException;
@@ -52,7 +52,6 @@ import javax.media.jai.InterpolationNearest;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
-import javax.media.jai.operator.ConstantDescriptor;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
@@ -138,12 +137,12 @@ public final class GridCoverageRenderer {
             final File tempDir = new File(System.getProperty("user.home"), "gt-renderer");
             if (!tempDir.exists()) {
                 if (!tempDir.mkdir())
-                    System.out.println("Unable to create debug dir, exiting application!!!");
+                    LOGGER.severe("Unable to create debug dir, exiting application!!!");
                 DEBUG = false;
                 DUMP_DIRECTORY = null;
             } else {
                 DUMP_DIRECTORY = tempDir.getAbsolutePath();
-                System.out.println("Rendering debug dir " + DUMP_DIRECTORY);
+                LOGGER.info("Rendering debug dir " + DUMP_DIRECTORY);
             }
         }
     }
@@ -646,15 +645,16 @@ public final class GridCoverageRenderer {
 
         // paranoiac check to avoid that JAI freaks out when computing its internal layouT on images
         // that are too small
-        Rectangle2D finalLayout =
-                GridCoverageRendererUtilities.layoutHelper(
+        ImageLayout finalLayout =
+                Scale2OpImage.layoutHelper(
                         finalImage,
                         (float) Math.abs(finalRasterTransformation.getScaleX()),
                         (float) Math.abs(finalRasterTransformation.getScaleY()),
                         (float) finalRasterTransformation.getTranslateX(),
                         (float) finalRasterTransformation.getTranslateY(),
-                        interpolation);
-        if (finalLayout.isEmpty()) {
+                        interpolation,
+                        null);
+        if (finalLayout.getWidth(null) < 1 || finalLayout.getHeight(null) < 1) {
             if (LOGGER.isLoggable(java.util.logging.Level.FINE))
                 LOGGER.fine(
                         "Unable to create a granuleDescriptor "
@@ -722,7 +722,7 @@ public final class GridCoverageRenderer {
      *     bounds
      * @throws FactoryException
      * @throws TransformException
-     * @throws NoninvertibleTransformException @Deprecated
+     * @throws NoninvertibleTransformException
      */
     public RenderedImage renderImage(
             final GridCoverage2D gridCoverage,
@@ -1015,13 +1015,11 @@ public final class GridCoverageRenderer {
 
         // symbolize each bit (done here to make sure we can perform the warp/affine reduction)
         List<GridCoverage2D> symbolizedCoverages = new ArrayList<>();
-        int ii = 0;
         for (GridCoverage2D displaced : displacedCoverages) {
             GridCoverage2D symbolized = symbolize(displaced, finalSymbolizer, bgValues);
             if (symbolized != null) {
                 symbolizedCoverages.add(symbolized);
             }
-            ii++;
         }
 
         // Parameters used for taking into account an optional removal of the alpha band
@@ -1108,47 +1106,6 @@ public final class GridCoverageRenderer {
         } else {
             return coverage;
         }
-    }
-
-    /**
-     * Method for creating an alpha band to use for mosaiking
-     *
-     * @param coverage
-     * @return a new GridCoverage containing a single band with the same size of the input Coverage
-     */
-    private GridCoverage2D createAlphaBand(GridCoverage2D coverage) {
-        // Getting input image
-        RenderedImage input = coverage.getRenderedImage();
-        // Define image layout
-        ImageLayout layout = new ImageLayout();
-        layout.setMinX(input.getMinX());
-        layout.setMinY(input.getMinY());
-        layout.setWidth(input.getWidth());
-        layout.setHeight(input.getHeight());
-        layout.setTileHeight(input.getTileHeight());
-        layout.setTileWidth(input.getTileWidth());
-        // Define rendering hints
-        RenderingHints renderHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout);
-        // Create an image with all 255
-        RenderedImage alpha =
-                ConstantDescriptor.create(
-                        Float.valueOf(input.getWidth()),
-                        Float.valueOf(input.getHeight()),
-                        new Byte[] {(byte) 255},
-                        renderHints);
-        // Format Image
-        ImageWorker w = new ImageWorker(alpha).format(input.getSampleModel().getDataType());
-
-        // Create the GridCoverage
-        GridCoverage2D newCoverage =
-                gridCoverageFactory.create(
-                        coverage.getName() + "Alpha",
-                        w.getRenderedImage(),
-                        coverage.getGridGeometry(),
-                        null,
-                        new GridCoverage2D[] {coverage},
-                        coverage.getProperties());
-        return newCoverage;
     }
 
     private double[] getTranslationFactors(Polygon reference, Polygon displaced) {
@@ -1446,7 +1403,10 @@ public final class GridCoverageRenderer {
      */
     public static RasterSymbolizer setupSymbolizerForBandsSelection(RasterSymbolizer symbolizer) {
         ChannelSelection selection = symbolizer.getChannelSelection();
-        final SelectedChannelType[] originalChannels = selection.getSelectedChannels();
+        SelectedChannelType[] originalChannels = selection.getRGBChannels();
+        if (originalChannels == null && selection.getGrayChannel() != null) {
+            originalChannels = new SelectedChannelType[] {selection.getGrayChannel()};
+        }
         if (originalChannels != null) {
             int i = 0;
             SelectedChannelType[] channels = new SelectedChannelType[originalChannels.length];

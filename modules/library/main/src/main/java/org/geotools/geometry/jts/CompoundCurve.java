@@ -182,7 +182,6 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
                 return false;
             }
         }
-        ;
         return true;
     }
 

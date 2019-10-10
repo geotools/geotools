@@ -217,8 +217,7 @@ public class Parser extends MathTransformParser {
     /**
      * Parses a coordinate reference system element.
      *
-     * @param parent The parent element.
-     * @return The next element as a {@link CoordinateReferenceSystem} object.
+     * @return element The next element as a {@link CoordinateReferenceSystem} object.
      * @throws ParseException if the next element can't be parsed.
      */
     private CoordinateReferenceSystem parseCoordinateReferenceSystem(final Element element)
@@ -397,7 +396,7 @@ public class Parser extends MathTransformParser {
         final Element element = parent.pullElement("UNIT");
         final String name = element.pullString("name");
         final double factor = element.pullDouble("factor");
-        final Map<String, ?> properties = parseAuthority(element, name);
+        parseAuthority(element, name);
         element.close();
         Unit<T> finalUnit = (factor != 1) ? unit.multiply(factor) : unit;
         return Units.autoCorrect(finalUnit);
@@ -615,7 +614,7 @@ public class Parser extends MathTransformParser {
             throws ParseException {
         final Element element = parent.pullElement("PROJECTION");
         final String classification = element.pullString("name");
-        final Map<String, ?> properties = parseAuthority(element, classification);
+        parseAuthority(element, classification);
         element.close();
         /*
          * Set the list of parameters.  NOTE: Parameters are defined in
@@ -764,7 +763,7 @@ public class Parser extends MathTransformParser {
     private EngineeringDatum parseLocalDatum(final Element parent) throws ParseException {
         final Element element = parent.pullElement("LOCAL_DATUM");
         final String name = element.pullString("name");
-        final int datum = element.pullInteger("datum");
+        element.pullInteger("datum");
         final Map<String, ?> properties = parseAuthority(element, name);
         element.close();
         try {
@@ -1186,7 +1185,7 @@ public class Parser extends MathTransformParser {
         final Arguments arguments = new Arguments(args);
         final Integer indentation = arguments.getOptionalInteger(Formattable.INDENTATION);
         final String authority = arguments.getOptionalString("-authority");
-        args = arguments.getRemainingArguments(0);
+        arguments.getRemainingArguments(0);
         if (indentation != null) {
             Formattable.setIndentation(indentation.intValue());
         }

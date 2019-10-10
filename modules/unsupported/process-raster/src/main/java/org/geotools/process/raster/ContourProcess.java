@@ -92,7 +92,7 @@ public class ContourProcess implements RasterProcess {
      * will be integer multiples of the specified interval. If both {@code levels} and {@code
      * interval} are supplied the {@code interval} argument is ignored.
      *
-     * @param data the input grid coverage
+     * @param gc2d the input grid coverage
      * @param band the coverage band to process; defaults to 0 if {@code null}
      * @param levels the values for which contours should be generated
      * @param interval the interval between contour values (if {@code levels} is not provided)

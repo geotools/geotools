@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2006  Vivid Solutions
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2006  Vivid Solutions
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -36,7 +36,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 public class CentroidPoint {
 
     // private FeatGeomFactoryImpl factory = null;
-    private CoordinateReferenceSystem crs = null;
     private int ptCount = 0;
     DirectPositionImpl centSum = null;
 
@@ -46,7 +45,6 @@ public class CentroidPoint {
      * @param crs
      */
     public CentroidPoint(CoordinateReferenceSystem crs) {
-        this.crs = crs;
         this.centSum =
                 new DirectPositionImpl(
                         crs); // this.factory.getGeometryFactoryImpl().createDirectPosition();
@@ -71,11 +69,6 @@ public class CentroidPoint {
         }
     }
 
-    /**
-     * Adds the length defined by an array of coordinates.
-     *
-     * @param pts an array of {@link Coordinate}s
-     */
     private void add(DirectPositionImpl pt) {
         this.ptCount += 1;
         this.centSum.add(pt.getCoordinate());

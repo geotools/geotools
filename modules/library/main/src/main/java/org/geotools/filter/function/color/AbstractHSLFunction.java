@@ -59,13 +59,13 @@ public abstract class AbstractHSLFunction extends FunctionImpl {
         if (method == Method.absolute) {
             adjustAbsolute(amount, hsl);
         } else {
-            adjstRelative(amount, hsl);
+            adjustRelative(amount, hsl);
         }
 
         return hsl.toRGB();
     }
 
-    protected abstract void adjstRelative(float amount, HSLColor hsl);
+    protected abstract void adjustRelative(float amount, HSLColor hsl);
 
     protected abstract void adjustAbsolute(float amount, HSLColor hsl);
 

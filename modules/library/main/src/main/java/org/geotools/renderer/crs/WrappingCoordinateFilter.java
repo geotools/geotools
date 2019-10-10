@@ -112,7 +112,7 @@ class WrappingCoordinateFilter implements GeometryComponentFilter {
                     if (ordinateIdx == 0) {
                         src = new double[] {lastOrdinate, cs.getY(i - 1), ordinate, cs.getY(i)};
                     } else {
-                        src = new double[] {cs.getX(i - i), lastOrdinate, cs.getX(i), ordinate};
+                        src = new double[] {cs.getX(i - 1), lastOrdinate, cs.getX(i), ordinate};
                     }
                     double[] dest = new double[4];
                     try {

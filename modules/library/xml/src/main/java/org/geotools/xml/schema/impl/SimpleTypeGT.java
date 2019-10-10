@@ -36,11 +36,7 @@ import org.geotools.xml.schema.SimpleType;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-/**
- * DOCUMENT ME!
- *
- * @author dzwiers
- */
+/** @author dzwiers */
 public class SimpleTypeGT implements SimpleType {
     // file visible to avoid set* methods
     private int finaL;
@@ -55,17 +51,7 @@ public class SimpleTypeGT implements SimpleType {
         // should not be called
     }
 
-    /**
-     * Creates a new SimpleTypeGT object.
-     *
-     * @param id DOCUMENT ME!
-     * @param name DOCUMENT ME!
-     * @param namespace DOCUMENT ME!
-     * @param type DOCUMENT ME!
-     * @param parents DOCUMENT ME!
-     * @param constraints DOCUMENT ME!
-     * @param finaL DOCUMENT ME!
-     */
+    /** Creates a new SimpleTypeGT object. */
     public SimpleTypeGT(
             String id,
             String name,

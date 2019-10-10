@@ -54,6 +54,7 @@ final class BandSelector2D extends GridCoverage2D {
      * The mapping to bands in the source grid coverage. May be {@code null} if all bands were
      * keept.
      */
+    @SuppressWarnings("PMD.UnusedPrivateField")
     private final int[] bandIndices;
 
     /**
@@ -92,7 +93,7 @@ final class BandSelector2D extends GridCoverage2D {
      * Applies the band select operation to a grid coverage.
      *
      * @param parameters List of name value pairs for the parameters.
-     * @param A set of rendering hints, or {@code null} if none.
+     * @param hints A set of rendering hints, or {@code null} if none.
      * @return The result as a grid coverage.
      */
     static GridCoverage2D create(final ParameterValueGroup parameters, Hints hints) {
@@ -186,7 +187,6 @@ final class BandSelector2D extends GridCoverage2D {
          * operation. A color model will be defined only if the user didn't specify an explicit
          * one.
          */
-        String operation = "Null";
         ImageLayout layout = null;
         if (hints != null) {
             layout = (ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT);

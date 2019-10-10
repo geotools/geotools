@@ -1,8 +1,8 @@
 /*
- *    GeoTools - OpenSource mapping toolkit
+ *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *   (C) 2000-2016, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2000-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -42,9 +42,6 @@ import org.opengis.referencing.operation.MathTransform;
  * increases rapidly with increasing distance from the central meridian.
  */
 public class CassiniSoldner extends MapProjection {
-
-    /** Maximum number of iterations for iterative computations. */
-    private static final int MAXIMUM_ITERATIONS = 15;
 
     /**
      * Meridian distance at the {@code latitudeOfOrigin}. Used for calculations for the ellipsoid.

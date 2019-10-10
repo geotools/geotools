@@ -54,8 +54,6 @@ class WFSRemoteTransactionState implements State {
 
     private final WFSDataStore dataStore;
 
-    private Transaction transaction;
-
     private Map<Name, WFSContentState> localStates;
 
     public WFSRemoteTransactionState(WFSDataStore dataStore) {
@@ -73,9 +71,7 @@ class WFSRemoteTransactionState implements State {
     }
 
     @Override
-    public void setTransaction(Transaction transaction) {
-        this.transaction = transaction;
-    }
+    public void setTransaction(Transaction transaction) {}
 
     @Override
     public void rollback() throws IOException {

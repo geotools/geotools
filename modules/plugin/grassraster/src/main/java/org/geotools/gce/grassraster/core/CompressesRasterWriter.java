@@ -102,7 +102,6 @@ public class CompressesRasterWriter {
      * @param theCreatedFile - handler for the main map file
      * @param theCreatedNullFile - handler for the file of the null map (in cell_misc)
      * @param renderedImage
-     * @return successfull or not
      * @throws IOException
      */
     public void compressAndWrite(

@@ -40,7 +40,6 @@ import org.geotools.feature.FeatureReaderIterator;
 import org.geotools.feature.collection.DelegateSimpleFeatureIterator;
 import org.geotools.feature.collection.SubFeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.opengis.feature.Feature;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -165,7 +164,7 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
      * <p>So when we implement FeatureCollection.iterator() this will work out of the box.
      */
     public SimpleFeatureIterator features() {
-        SimpleFeatureIterator iterator = new DelegateSimpleFeatureIterator(this, iterator());
+        SimpleFeatureIterator iterator = new DelegateSimpleFeatureIterator(iterator());
         open.add(iterator);
         return iterator;
     }
@@ -219,9 +218,7 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
     }
 
     protected void closeIterator(Iterator<SimpleFeature> close) throws IOException {
-        if (close == null) {
-            // iterator probably failed during consturction !
-        } else if (close instanceof FeatureReaderIterator) {
+        if (close instanceof FeatureReaderIterator) {
             FeatureReaderIterator<SimpleFeature> iterator =
                     (FeatureReaderIterator<SimpleFeature>) close;
             iterator.close(); // only needs package visability
@@ -388,7 +385,7 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
             try {
                 // skip to end
                 while (writer.hasNext()) {
-                    Feature feature = writer.next();
+                    writer.next();
                 }
                 for (Object obj : collection) {
                     if (obj instanceof SimpleFeature) {

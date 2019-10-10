@@ -1,4 +1,3 @@
-package org.geotools.xsd;
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
@@ -15,6 +14,7 @@ package org.geotools.xsd;
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+package org.geotools.xsd;
 
 import java.lang.reflect.Method;
 import javax.xml.namespace.QName;
@@ -67,10 +67,20 @@ public class EnumSimpleBinding extends AbstractSimpleBinding {
     }
 
     Object get(String value) throws Exception {
-        if (get != null) {
-            return get.invoke(null, value);
+        try {
+            if (get != null) {
+                return get.invoke(null, value);
+            }
+        } catch (Exception e1) {
+            try {
+                if (valueOf != null) {
+                    return valueOf.invoke(null, value);
+                }
+            } catch (Exception e2) {
+                return null;
+            }
         }
 
-        return valueOf.invoke(null, value);
+        return null;
     }
 }

@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2006  Vivid Solutions
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2006  Vivid Solutions
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -182,9 +182,9 @@ public class RobustLineIntersector extends LineIntersector {
          * 1195618.7333999649) LINESTRING (1889281.8148903656 1997547.0560044837, 2259977.3672235999
          * 483675.17050843034) int point = (2097408.2633752143,1144595.8008114607)
          */
-        if (!isInSegmentEnvelopes(intPt)) {
-            // System.out.println("Intersection outside segment envelopes: " + intPt);
-        }
+        // if (!isInSegmentEnvelopes(intPt)) {
+        // System.out.println("Intersection outside segment envelopes: " + intPt);
+        // }
         /*
          * // disabled until a better solution is found if (!
          * isInSegmentEnvelopes(intPt)) { // System.out.println("first value
@@ -205,31 +205,6 @@ public class RobustLineIntersector extends LineIntersector {
         }
 
         return intPt;
-    }
-
-    /**
-     * Normalize the supplied coordinates so that their minimum ordinate values lie at the origin.
-     * NOTE: this normalization technique appears to cause large errors in the position of the
-     * intersection point for some cases.
-     *
-     * @param n1
-     * @param n2
-     * @param n3
-     * @param n4
-     * @param normPt
-     */
-    private void normalizeToMinimum(
-            Coordinate n1, Coordinate n2, Coordinate n3, Coordinate n4, Coordinate normPt) {
-        normPt.x = smallestInAbsValue(n1.x, n2.x, n3.x, n4.x);
-        normPt.y = smallestInAbsValue(n1.y, n2.y, n3.y, n4.y);
-        n1.x -= normPt.x;
-        n1.y -= normPt.y;
-        n2.x -= normPt.x;
-        n2.y -= normPt.y;
-        n3.x -= normPt.x;
-        n3.y -= normPt.y;
-        n4.x -= normPt.x;
-        n4.y -= normPt.y;
     }
 
     /**
@@ -281,35 +256,5 @@ public class RobustLineIntersector extends LineIntersector {
         n10.y -= normPt.y;
         n11.x -= normPt.x;
         n11.y -= normPt.y;
-    }
-
-    private double smallestInAbsValue(double x1, double x2, double x3, double x4) {
-        double x = x1;
-        double xabs = Math.abs(x);
-        if (Math.abs(x2) < xabs) {
-            x = x2;
-            xabs = Math.abs(x2);
-        }
-        if (Math.abs(x3) < xabs) {
-            x = x3;
-            xabs = Math.abs(x3);
-        }
-        if (Math.abs(x4) < xabs) {
-            x = x4;
-        }
-        return x;
-    }
-
-    /**
-     * Test whether a point lies in the envelopes of both input segments. A correctly computed
-     * intersection point should return <code>true</code> for this test. Since this test is for
-     * debugging purposes only, no attempt is made to optimize the envelope test.
-     *
-     * @return <code>true</code> if the input point lies within both input segment envelopes
-     */
-    private boolean isInSegmentEnvelopes(Coordinate intPt) {
-        Envelope env0 = new Envelope(inputLines[0][0], inputLines[0][1]);
-        Envelope env1 = new Envelope(inputLines[1][0], inputLines[1][1]);
-        return env0.contains(intPt) && env1.contains(intPt);
     }
 }

@@ -54,6 +54,6 @@ public class ClassifyFunction extends FunctionExpressionImpl {
     public Object evaluate(Object feature) {
         Classifier classifier = getClassifier(feature);
         org.opengis.filter.expression.Expression expression = getExpression();
-        return new Integer(classifier.classify(expression, feature));
+        return Integer.valueOf(classifier.classify(expression, feature));
     }
 }

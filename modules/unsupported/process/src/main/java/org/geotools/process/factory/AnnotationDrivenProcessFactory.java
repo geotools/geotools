@@ -179,7 +179,7 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
 
         // metadata
         Map<String, Object> metadata = null;
-        if (info != null && info.meta() != null && info.meta().length > 0) {
+        if (info.meta() != null && info.meta().length > 0) {
             String[] meta = info.meta();
             metadata = new HashMap<String, Object>();
             fillParameterMetadata(meta, metadata);
@@ -408,6 +408,9 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
         }
     }
 
+    @SuppressWarnings(
+            "deprecation") // Method.isAccessible is deprecated but replacement not available in
+    // Java 8
     private Object getConstantValue(String path, Class<?> holder, Class<?> target) {
         Field field = null;
         try {

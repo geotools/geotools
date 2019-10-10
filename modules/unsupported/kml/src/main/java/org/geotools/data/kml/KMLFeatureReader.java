@@ -85,10 +85,10 @@ public class KMLFeatureReader implements FeatureReader<SimpleFeatureType, Simple
     }
 
     /**
-     * DOCUMENT ME!
+
      *
-     * @return DOCUMENT ME!
-     * @throws IOException DOCUMENT ME!
+
+
      */
     public boolean hasNext() throws IOException {
         return f != null;

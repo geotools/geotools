@@ -224,6 +224,7 @@ public class GeneralMatrixTest {
         GeneralMatrix.epsilonEquals(gma, gma2, EPSILON_TOLERANCE);
     }
 
+    @Test
     public void invertAccuracyTest() {
         // the following is a regression noticed during change to EJML
         // OrderedAxisAuthorityFactoryTest relies on DefaultCoordinateOperationFactory checking

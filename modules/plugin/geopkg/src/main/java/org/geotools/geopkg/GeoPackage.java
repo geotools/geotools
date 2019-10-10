@@ -1327,6 +1327,7 @@ public class GeoPackage {
      * @return
      * @throws IOException
      */
+    @SuppressWarnings("PMD.CloseResource") // cx and st get into the TileReader
     public TileReader reader(
             TileEntry entry,
             Integer lowZoom,
@@ -1337,35 +1338,36 @@ public class GeoPackage {
             Integer highRow)
             throws IOException {
 
-        try {
-            List<String> q = new ArrayList();
-            addRange("zoom_level", lowZoom, highZoom, q);
-            addRange("tile_column", lowCol, highCol, q);
-            addRange("tile_row", lowRow, highRow, q);
+        List<String> q = new ArrayList();
+        addRange("zoom_level", lowZoom, highZoom, q);
+        addRange("tile_column", lowCol, highCol, q);
+        addRange("tile_row", lowRow, highRow, q);
 
-            StringBuffer sql = new StringBuffer("SELECT * FROM ").append(entry.getTableName());
-            if (!q.isEmpty()) {
-                sql.append(" WHERE ");
-                for (String s : q) {
-                    sql.append(s).append(" AND ");
-                }
-                sql.setLength(sql.length() - 5);
+        StringBuffer sql = new StringBuffer("SELECT * FROM ").append(entry.getTableName());
+        if (!q.isEmpty()) {
+            sql.append(" WHERE ");
+            for (String s : q) {
+                sql.append(s).append(" AND ");
             }
-
-            Connection cx = connPool.getConnection();
-
-            Statement st = cx.createStatement();
+            sql.setLength(sql.length() - 5);
+        }
+        Connection cx = null;
+        Statement st = null;
+        try {
+            cx = connPool.getConnection();
+            st = cx.createStatement();
             ResultSet rs = st.executeQuery(sql.toString());
 
-            return new TileReader(rs, cx);
-
+            return new TileReader(rs, st, cx);
         } catch (SQLException e) {
+            close(st);
+            close(cx);
             throw new IOException(e);
         }
     }
 
     public void addRange(String attribute, Integer low, Integer high, List<String> q) {
-        if (low != null && high != null && low == high) {
+        if (low != null && high != null && low.equals(high)) {
             q.add(attribute + " = " + low);
         } else {
             if (low != null) {
@@ -1523,7 +1525,10 @@ public class GeoPackage {
                 try {
                     ResultSet rs = st.executeQuery(sql.toString());
                     try {
-                        rs.next();
+                        if (!rs.next()) {
+                            throw new SQLException(
+                                    "Could not compute tile bounds, query did not return any record");
+                        }
                         tileBounds = rs.getInt(1);
                     } finally {
                         close(rs);

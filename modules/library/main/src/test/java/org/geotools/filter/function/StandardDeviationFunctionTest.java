@@ -18,7 +18,7 @@ package org.geotools.filter.function;
 
 import java.util.logging.Logger;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.feature.FeatureCollections;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
@@ -46,13 +46,13 @@ public class StandardDeviationFunctionTest extends FunctionTestSupport {
 
     public void testInstance() {
         Function stdDev =
-                ff.function("StandardDeviation", ff.literal(FeatureCollections.newCollection()));
+                ff.function("StandardDeviation", ff.literal(new DefaultFeatureCollection()));
         assertNotNull(stdDev);
     }
 
     public void testGetName() {
         Function equInt =
-                ff.function("StandardDeviation", ff.literal(FeatureCollections.newCollection()));
+                ff.function("StandardDeviation", ff.literal(new DefaultFeatureCollection()));
         LOGGER.finer("testGetName");
         assertEquals("StandardDeviation", equInt.getName());
     }
@@ -137,5 +137,14 @@ public class StandardDeviationFunctionTest extends FunctionTestSupport {
         f = list.next();
         slot = classify.evaluate(f, Integer.class);
         assertEquals("value " + f.getAttribute("foo"), 1, slot.intValue());
+    }
+
+    public void testConstantValuesNumeric() {
+        Function function = ff.function("StandardDeviation", ff.property("v"), ff.literal(12));
+        RangedClassifier classifier = (RangedClassifier) function.evaluate(constantCollection);
+        assertNotNull(classifier);
+        assertEquals(1, classifier.getSize());
+        assertEquals(123.123, (Double) classifier.getMin(0), 0d);
+        assertEquals(123.123, (Double) classifier.getMax(0), 0d);
     }
 }

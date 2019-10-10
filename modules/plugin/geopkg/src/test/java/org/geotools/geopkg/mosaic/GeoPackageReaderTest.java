@@ -16,18 +16,28 @@
  */
 package org.geotools.geopkg.mosaic;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-import java.awt.Rectangle;
+import java.awt.*;
+import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.IntStream;
+import javax.media.jai.Interpolation;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geopkg.GeoPackageTest;
+import org.geotools.image.ImageWorker;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
@@ -256,5 +266,66 @@ public class GeoPackageReaderTest {
         File referenceFull = new File("./src/test/resources/org/geotools/geopkg/giantPolyFull.png");
         ImageAssert.assertEquals(referenceFull, img, 1000);
         reader.dispose();
+    }
+
+    @Test
+    public void testNumberOverviews() throws IOException {
+        GeoPackageReader reader =
+                new GeoPackageReader(GeoPackageTest.class.getResource("Blue_Marble.gpkg"), null);
+        assertEquals(4, reader.getDatasetLayout().getNumInternalOverviews());
+
+        // get all
+        final double[][] resolutionLevels = reader.getResolutionLevels();
+        assertArrayEquals(new double[] {0.015, 0.015}, resolutionLevels[0], 0.01);
+        assertArrayEquals(new double[] {0.03, 0.03}, resolutionLevels[1], 0.01);
+        assertArrayEquals(new double[] {0.06, 0.06}, resolutionLevels[2], 0.01);
+        assertArrayEquals(new double[] {0.12, 0.12}, resolutionLevels[3], 0.01);
+        assertArrayEquals(new double[] {0.24, 0.24}, resolutionLevels[4], 0.01);
+
+        final double[] readingResolutions =
+                reader.getReadingResolutions(OverviewPolicy.NEAREST, new double[] {0.03, 0.03});
+        assertArrayEquals(new double[] {0.03, 0.03}, readingResolutions, 0.01);
+    }
+
+    @Test
+    public void testAlphaInterpolation() throws Exception {
+        // Read RGBA GeoPackage tiles with non-opaque values
+        GeoPackageReader reader =
+                new GeoPackageReader(GeoPackageTest.class.getResource("rivers.gpkg"), null);
+        GeneralParameterValue[] parameters = new GeneralParameterValue[1];
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:3857", true);
+        GridGeometry2D gg =
+                new GridGeometry2D(
+                        new GridEnvelope2D(new Rectangle(128, 128)),
+                        new ReferencedEnvelope(-9000000, 2000000, -8000000, 3000000, crs));
+        parameters[0] = new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
+        GridCoverage2D gc = reader.read(parameters);
+        RenderedImage rgbA = gc.getRenderedImage();
+
+        // Get the distinct alpha values from the input image
+        Set<Integer> alphas = new TreeSet<>();
+        int[] samples = new int[rgbA.getWidth() * rgbA.getHeight()];
+        rgbA.getData().getSamples(0, 0, rgbA.getWidth(), rgbA.getHeight(), 3, samples);
+        IntStream.of(samples).forEach(alphas::add);
+
+        // Scale the image with bilinear interpolation
+        Interpolation bilinear = Interpolation.getInstance(Interpolation.INTERP_BILINEAR);
+        ImageWorker scalingWorker = new ImageWorker(rgbA).scale(0.5, 0.5, 0, 0, bilinear);
+        RenderedImage result = scalingWorker.getRenderedImage();
+        reader.dispose();
+
+        // Check that the result image still has an alpha band
+        assertEquals(4, result.getSampleModel().getNumBands());
+        assertTrue(result.getColorModel().hasAlpha());
+
+        // Check that the alpha band has not been interpolated by looking
+        // for alpha values that were not in the original input
+        Raster alpha = result.getData();
+        for (int i = 0; i < result.getWidth(); i++) {
+            for (int j = 0; j < result.getHeight(); j++) {
+                int sample = alpha.getSample(i, j, 3);
+                assertTrue(alphas.contains(sample));
+            }
+        }
     }
 }

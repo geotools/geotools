@@ -85,9 +85,6 @@ public class SubstitutionGroupLeakPreventer implements Adapter {
                 // version of the element
                 ArrayList<XSDElementDeclaration> removed = new ArrayList();
                 for (int i = toremove.size() - 2; i > -1; i--) {
-                    XSDElementDeclaration se =
-                            (XSDElementDeclaration)
-                                    e.getSubstitutionGroup().remove(toremove.get(i).intValue());
                     removed.add(e);
                 }
 

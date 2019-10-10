@@ -18,7 +18,7 @@ package org.geotools.data.shapefile.shp;
 
 import org.geotools.geometry.jts.JTS;
 import org.geotools.util.factory.Hints;
-import org.locationtech.jts.algorithm.CGAlgorithms;
+import org.locationtech.jts.algorithm.Orientation;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
@@ -31,7 +31,6 @@ import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 import org.opengis.feature.type.GeometryDescriptor;
 
 /**
@@ -42,22 +41,7 @@ import org.opengis.feature.type.GeometryDescriptor;
  */
 public class JTSUtilities {
 
-    static final CGAlgorithms cga = new CGAlgorithms();
-
     private JTSUtilities() {}
-
-    /**
-     * Determine the min and max "z" values in an array of Coordinates.
-     *
-     * @param cs The array to search.
-     * @return An array of size 2, index 0 is min, index 1 is max.
-     * @deprecated use zMinMax(CoordinateSequence)
-     */
-    public static final double[] zMinMax(final Coordinate[] cs) {
-        double[] result = {Double.NaN, Double.NaN};
-        zMinMax(new CoordinateArraySequence(cs), result);
-        return result;
-    }
 
     /**
      * Determine the min and max "z" values in an array of Coordinates.
@@ -193,7 +177,7 @@ public class JTSUtilities {
 
         coords = p.getExteriorRing().getCoordinates();
 
-        if (CGAlgorithms.isCCW(coords)) {
+        if (Orientation.isCCW(coords)) {
             outer = reverseRing((LinearRing) p.getExteriorRing());
         } else {
             outer = (LinearRing) p.getExteriorRing();
@@ -202,7 +186,7 @@ public class JTSUtilities {
         for (int t = 0, tt = p.getNumInteriorRing(); t < tt; t++) {
             coords = p.getInteriorRingN(t).getCoordinates();
 
-            if (!(CGAlgorithms.isCCW(coords))) {
+            if (!(Orientation.isCCW(coords))) {
                 holes[t] = reverseRing((LinearRing) p.getInteriorRingN(t));
             } else {
                 holes[t] = (LinearRing) p.getInteriorRingN(t);
@@ -245,7 +229,7 @@ public class JTSUtilities {
         int dims = 2;
 
         for (int t = cs.length - 1; t >= 0; t--) {
-            if (!(Double.isNaN(cs[t].z))) {
+            if (!(Double.isNaN(cs[t].getZ()))) {
                 dims = 4;
                 break;
             }

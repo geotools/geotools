@@ -27,11 +27,7 @@ import org.geotools.xml.gml.FCBuffer;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-/**
- * DOCUMENT ME! @
- *
- * @author dzwiers www.refractions.net
- */
+/** @author dzwiers www.refractions.net */
 public class GMLStreamingParserStressTest extends TestCase {
 
     //    public void testOSDNFFeatures() throws SAXException, IOException {

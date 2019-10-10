@@ -95,16 +95,16 @@ public class ArcSDEAdapter {
         sde2JavaTypes.put(Integer.valueOf(SeColumnDefinition.TYPE_FLOAT64), Double.class);
         sde2JavaTypes.put(Integer.valueOf(SeColumnDefinition.TYPE_DATE), Date.class);
         // @TODO: not at all, only for capable open table with GeoServer
-        // sde2JavaTypes.put(new Integer(SeColumnDefinition.TYPE_BLOB),
+        // sde2JavaTypes.put(Integer.valueOf(SeColumnDefinition.TYPE_BLOB),
         // byte[].class);
         sde2JavaTypes.put(Integer.valueOf(SeColumnDefinition.TYPE_CLOB), String.class);
         sde2JavaTypes.put(Integer.valueOf(SeColumnDefinition.TYPE_NCLOB), String.class);
 
-        // @TODO sde2JavaTypes.put(new Integer(SeColumnDefinition.TYPE_CLOB),
+        // @TODO sde2JavaTypes.put(Integer.valueOf(SeColumnDefinition.TYPE_CLOB),
         // String.class);
         // @Tested for view
         sde2JavaTypes.put(Integer.valueOf(SeColumnDefinition.TYPE_UUID), String.class);
-        // @TODO sde2JavaTypes.put(new Integer(SeColumnDefinition.TYPE_XML),
+        // @TODO sde2JavaTypes.put(Integer.valueOf(SeColumnDefinition.TYPE_XML),
         // org.w3c.dom.Document.class);
 
         // deprecated codes as for ArcSDE 9.0+. Adding them to maintain < 9.0
@@ -274,7 +274,7 @@ public class ArcSDEAdapter {
                                 @Override
                                 public Integer execute(ISession session, SeConnection connection)
                                         throws SeException, IOException {
-                                    return new Integer(table.getPermissions());
+                                    return Integer.valueOf(table.getPermissions());
                                 }
                             });
             final boolean hasWritePermissions = userHasWritePermissions(permMask.intValue());
@@ -613,7 +613,7 @@ public class ArcSDEAdapter {
      * @throws IllegalArgumentException
      */
     public static Class<? extends Geometry> getGeometryTypeFromLayerMask(int seShapeType) {
-        Class<? extends Geometry> clazz = org.locationtech.jts.geom.Geometry.class;
+        Class<? extends Geometry> clazz;
         final int MULTIPART_MASK = SeLayer.SE_MULTIPART_TYPE_MASK;
         final int POINT_MASK = SeLayer.SE_POINT_TYPE_MASK;
         final int SIMPLE_LINE_MASK = SeLayer.SE_SIMPLE_LINE_TYPE_MASK;
@@ -764,7 +764,7 @@ public class ArcSDEAdapter {
      * Returns the numeric identifier of a FeatureId, given by the full qualified name of the
      * featureclass prepended to the ArcSDE feature id. ej: SDE.SDE.SOME_LAYER.1
      *
-     * @param id a geotools FeatureID
+     * @param fid a geotools FeatureID
      * @return an ArcSDE feature ID
      * @throws IllegalArgumentException If the given string is not properly formatted
      *     [anystring].[long value]
@@ -938,7 +938,6 @@ public class ArcSDEAdapter {
 
                         // flag to know if the table was created by us when catching an
                         // exception.
-                        boolean tableCreated = false;
 
                         // table/layer creation hints information
                         int rowIdType = SeRegistration.SE_REGISTRATION_ROW_ID_COLUMN_TYPE_NONE;
@@ -963,10 +962,6 @@ public class ArcSDEAdapter {
                         if (hints.get("rowid.column.name") instanceof String) {
                             rowIdColumn = (String) hints.get("rowid.column.name");
                         }
-
-                        // placeholder to a catched exception to know in the finally block
-                        // if we should cleanup the crap we left in the database
-                        Exception error = null;
 
                         try {
                             // create a table with provided username
@@ -998,7 +993,6 @@ public class ArcSDEAdapter {
                                             qualifiedName,
                                             HACK_COL_NAME,
                                             configKeyword);
-                            tableCreated = true;
 
                             final List<AttributeDescriptor> atts =
                                     featureType.getAttributeDescriptors();
@@ -1067,11 +1061,13 @@ public class ArcSDEAdapter {
                         } catch (SeException e) {
                             LOGGER.log(Level.WARNING, e.getSeError().getErrDesc(), e);
                             throw e;
-                        } finally {
-                            if ((error != null) && tableCreated) {
-                                // TODO: remove table if created and then failed
-                            }
                         }
+                        // TODO: remove table if created and then failed
+                        //                        } finally {
+                        //                            if ((error != null) && tableCreated) {
+                        //
+                        //                            }
+                        //                        }
                         return null;
                     }
                 };

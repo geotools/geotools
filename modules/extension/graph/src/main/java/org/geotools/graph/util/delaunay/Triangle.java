@@ -18,6 +18,7 @@ package org.geotools.graph.util.delaunay;
 
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
+import java.util.Objects;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Node;
 import org.geotools.graph.structure.line.XYNode;
@@ -361,6 +362,11 @@ public class Triangle {
             ret = false;
         }
         return ret;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(edge1, edge2, edge3, node1, node2, node3, fact);
     }
 
     public String toString() {

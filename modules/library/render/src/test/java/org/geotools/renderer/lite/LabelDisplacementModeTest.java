@@ -35,6 +35,7 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.styling.Style;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeature;
@@ -51,6 +52,7 @@ public class LabelDisplacementModeTest extends TestCase {
     private static final long TIME = 5000;
     SimpleFeatureSource fs;
     SimpleFeatureSource fs2;
+
     ReferencedEnvelope bounds;
 
     @Override
@@ -370,6 +372,94 @@ public class LabelDisplacementModeTest extends TestCase {
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth_conflict_disabled_multi.png";
         ImageAssert.assertEquals(new File(refPath), image, 900);
+    }
+
+    // https://osgeo-org.atlassian.net/browse/GEOS-8975
+    // https://osgeo-org.atlassian.net/projects/GEOT/issues/GEOT-6253
+    public void testMultiLineLabelDisplacementY() throws Exception {
+        GeometryFactory gf = new GeometryFactory();
+
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.add("the_geom", LineString.class);
+        builder.add("TEXTSTRING", String.class);
+        builder.add("FONTNAME", String.class);
+        builder.add("FONTSIZE", Integer.class);
+        builder.add("FONTSTYLE", String.class);
+        builder.add("ANGLE", Integer.class);
+        builder.add("ANCHORY", Integer.class);
+        builder.setName("geos8975");
+        SimpleFeatureType type = builder.buildFeatureType();
+
+        // a horizontal line with label with line breaks
+        // Formata-CondensedMedium(windows) ,// Formata-Condensed(other OS) was reported.
+        SimpleFeature f11 =
+                SimpleFeatureBuilder.build(
+                        type,
+                        new Object[] {
+                            gf.createLineString( // straight line
+                                    new Coordinate[] {
+                                        new Coordinate(2, 5),
+                                        new Coordinate(3, 5),
+                                        new Coordinate(4, 5),
+                                        new Coordinate(5, 5),
+                                        new Coordinate(6, 5),
+                                        new Coordinate(7, 5),
+                                        new Coordinate(8, 5)
+                                    }),
+                            "Espace\nPierrey\nBetazg", // label with decender and line breaks
+                            "Bitstream Vera Sans",
+                            10,
+                            "Bold",
+                            0,
+                            0 // anchorY
+                        },
+                        null);
+        SimpleFeature f12 =
+                SimpleFeatureBuilder.build(
+                        type,
+                        new Object[] {
+                            gf.createLineString( // straight line
+                                    new Coordinate[] {
+                                        new Coordinate(2, 3),
+                                        new Coordinate(3, 3),
+                                        new Coordinate(4, 3),
+                                        new Coordinate(5, 3),
+                                        new Coordinate(6, 3),
+                                        new Coordinate(7, 3),
+                                        new Coordinate(8, 3)
+                                    }),
+                            "Liney 1\nLineg", // label with decender and line breaks
+                            "Bitstream Vera Sans",
+                            10,
+                            "Bold",
+                            0,
+                            1 // anchorY
+                        },
+                        null);
+
+        Style style =
+                RendererBaseTest.loadStyle(
+                        this, "displacementMode/testMultiLineLabelDisplacementY.sld");
+        assertNotNull(style);
+
+        MemoryDataStore data = new MemoryDataStore();
+
+        data.addFeature(f11);
+        data.addFeature(f12);
+
+        SimpleFeatureSource fs3 = data.getFeatureSource("geos8975");
+
+        BufferedImage image = renderLabels(fs3, style, "GEOS-8975, Multi Line Label Placement");
+        //        ImageIO.write(
+        //                image,
+        //                "PNG",
+        //                new File(
+        //
+        // "./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/testMultiLineLabelDisplacementY.png"));
+
+        String refPath =
+                "./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/testMultiLineLabelDisplacementY.png";
+        ImageAssert.assertEquals(new File(refPath), image, 1100);
     }
 
     private BufferedImage renderLabels(SimpleFeatureSource fs, Style style, String title)

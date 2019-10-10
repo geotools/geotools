@@ -43,7 +43,7 @@ public class GeometryTypeConverterTest extends TestCase {
                 "Cannot get ConverterFactory for "
                         + source.getClass().getName()
                         + " -> "
-                        + target.getClass().getName()
+                        + target.getName()
                         + " conversion");
         return null;
     }

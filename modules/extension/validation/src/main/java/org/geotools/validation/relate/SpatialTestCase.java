@@ -37,9 +37,6 @@ import org.opengis.filter.FilterFactory;
  *     Created Apr 29, 2004<br>
  * @version <br>
  *     <b>Puropse:</b><br>
- *     <p>DOCUMENT ME!! <b>Description:</b><br>
- *     <p>DOCUMENT ME!! <b>Usage:</b><br>
- *     <p>DOCUMENT ME!!
  */
 public class SpatialTestCase extends TestCase {
     protected GeometryFactory gf;
@@ -121,16 +118,16 @@ public class SpatialTestCase extends TestCase {
         lineType = DataUtilities.createType("my.line", "id:0,geom:LineString,name:String");
         lineFeatures[0] =
                 SimpleFeatureBuilder.build(
-                        lineType, new Object[] {new Integer(0), ls0, "line0"}, "line.line0");
+                        lineType, new Object[] {Integer.valueOf(0), ls0, "line0"}, "line.line0");
         lineFeatures[1] =
                 SimpleFeatureBuilder.build(
-                        lineType, new Object[] {new Integer(1), ls1, "line1"}, "line.line1");
+                        lineType, new Object[] {Integer.valueOf(1), ls1, "line1"}, "line.line1");
         lineFeatures[2] =
                 SimpleFeatureBuilder.build(
-                        lineType, new Object[] {new Integer(2), ls2, "line2"}, "line.line2");
+                        lineType, new Object[] {Integer.valueOf(2), ls2, "line2"}, "line.line2");
         lineFeatures[3] =
                 SimpleFeatureBuilder.build(
-                        lineType, new Object[] {new Integer(3), ls3, "line3"}, "line.line3");
+                        lineType, new Object[] {Integer.valueOf(3), ls3, "line3"}, "line.line3");
         lineBounds = new ReferencedEnvelope();
         lineBounds.include(lineFeatures[0].getBounds());
         lineBounds.include(lineFeatures[1].getBounds());

@@ -29,11 +29,7 @@ import org.geotools.TestData;
 import org.geotools.xml.schema.Schema;
 import org.xml.sax.SAXException;
 
-/**
- * DOCUMENT ME! @
- *
- * @author dzwiers www.refractions.net
- */
+/** @author dzwiers www.refractions.net */
 public class XMLParserTest extends TestCase {
 
     public void testNestedFeature() throws Throwable {

@@ -177,7 +177,7 @@ public final class FeatureUtilities {
     /**
      * Wraps a grid coverage into a Feature. Code lifted from ArcGridDataSource (temporary).
      *
-     * @param reader the grid coverage reader.
+     * @param gridCoverageReader the grid coverage reader.
      * @return a feature with the grid coverage envelope as the geometry and the grid coverage
      *     itself in the "grid" attribute.
      */

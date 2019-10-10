@@ -20,9 +20,9 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 import org.geotools.data.FeatureReader;
 import org.geotools.feature.FeatureTypes;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -76,8 +76,6 @@ public class ForceCoordinateSystemFeatureReader
      * @param reader
      * @param cs
      * @throws SchemaException
-     * @throws NullPointerException DOCUMENT ME!
-     * @throws IllegalArgumentException DOCUMENT ME!
      */
     public ForceCoordinateSystemFeatureReader(
             FeatureReader<SimpleFeatureType, SimpleFeature> reader, CoordinateReferenceSystem cs)
@@ -91,8 +89,6 @@ public class ForceCoordinateSystemFeatureReader
      * @param reader
      * @param cs
      * @throws SchemaException
-     * @throws NullPointerException DOCUMENT ME!
-     * @throws IllegalArgumentException DOCUMENT ME!
      */
     public ForceCoordinateSystemFeatureReader(
             FeatureReader<SimpleFeatureType, SimpleFeature> reader,

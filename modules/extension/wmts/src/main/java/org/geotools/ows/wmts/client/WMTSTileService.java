@@ -16,7 +16,6 @@
  */
 package org.geotools.ows.wmts.client;
 
-import java.io.File;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -85,8 +84,6 @@ public class WMTSTileService extends TileService {
 
     private String format = "image/png";
 
-    private File cachedGetCapabilities = null;
-
     private Map<String, String> dimensions = new HashMap<>();
 
     private Map<String, Object> extrainfo = new HashMap<>();
@@ -94,11 +91,11 @@ public class WMTSTileService extends TileService {
     /**
      * create a service directly with out parsing the capabilties again.
      *
-     * @param requestURL - where to ask for tiles
+     * @param templateURL - where to ask for tiles
      * @param type - KVP or REST
-     * @param layerName - name of the layer to request
+     * @param layer - the layer to request
      * @param styleName - name of the style to use?
-     * @param tileMatrixSetName - matrixset name
+     * @param tileMatrixSet - the tile matrix set to use
      */
     public WMTSTileService(
             String templateURL,

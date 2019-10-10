@@ -65,10 +65,8 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
      * @param filterFactory
      */
     public ECQLCompiler(final String txtSource, final FilterFactory filterFactory) {
-
         super(new StringReader(txtSource));
 
-        assert txtSource != null : "txtSource cannot be null";
         assert filterFactory != null : "filterFactory cannot be null";
 
         this.source = txtSource;

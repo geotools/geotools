@@ -147,7 +147,6 @@ public class TemporalConverterFactory implements ConverterFactory {
                     // Calendar -> Time is not saf
                     return null;
                 }
-                final Class fTarget = target;
                 return new Converter() {
                     public Object convert(Object source, Class target) throws Exception {
                         Calendar calendar = (Calendar) source;

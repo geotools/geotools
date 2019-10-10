@@ -298,6 +298,7 @@ public class DefaultOperationMethod extends AbstractIdentifiedObject implements 
 
     /** Returns a hash code value for this operation method. */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         int code = (int) serialVersionUID + sourceDimensions + 37 * targetDimensions;
         if (parameters != null) {

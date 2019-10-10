@@ -19,6 +19,7 @@
  */
 package org.geotools.util;
 
+import java.util.Objects;
 import org.opengis.util.MemberName;
 import org.opengis.util.TypeName;
 
@@ -53,7 +54,7 @@ public class MemberNameImpl extends LocalName implements MemberName {
      * Constructs a member name from the specified string with no scope.
      *
      * @param name The local name (never {@code null}).
-     * @param type The type associated with this name.
+     * @param typeName The type associated with this name.
      */
     public MemberNameImpl(final CharSequence name, final TypeName typeName) {
         super(name);
@@ -78,5 +79,10 @@ public class MemberNameImpl extends LocalName implements MemberName {
             return Utilities.equals(this.typeName, that.typeName);
         }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), typeName);
     }
 }

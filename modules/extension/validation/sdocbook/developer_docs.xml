@@ -387,7 +387,7 @@ public class NullZeroValidationTest extends TestCase {
 
     
     feature = type.create(new Object[] {
-        new Integer(1),
+        Integer.valueOf(1),
         gf.createLineString(coords),
         "r1",
       },

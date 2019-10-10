@@ -137,7 +137,6 @@ public class WorldFileReader {
      * Constructor for a {@link WorldFileReader}.
      *
      * @param worldfile {@link URL} where to read from.
-     * @param bufferSize to buffer when reading.
      * @throws IOException in case something bad happens.
      */
     public WorldFileReader(final URL worldfile) throws IOException {

@@ -40,6 +40,7 @@ public class ExtensionHandler extends XSIElementHandler {
     private List attributeDec;
 
     /** @see java.lang.Object#hashCode() */
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return LOCALNAME.hashCode()
                 * ((base == null) ? 1 : base.hashCode())

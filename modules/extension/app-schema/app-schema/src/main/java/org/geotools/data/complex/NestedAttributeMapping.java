@@ -28,8 +28,9 @@ import net.opengis.wfs20.ResolveValueType;
 import org.geotools.appschema.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
-import org.geotools.data.complex.config.Types;
-import org.geotools.data.complex.filter.XPathUtil.StepList;
+import org.geotools.data.complex.feature.type.Types;
+import org.geotools.data.complex.util.ComplexFeatureConstants;
+import org.geotools.data.complex.util.XPathUtil.StepList;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.util.Converters;
@@ -95,7 +96,6 @@ public class NestedAttributeMapping extends AttributeMapping {
      * @param clientProperties
      * @param sourceElement parent feature element type
      * @param sourcePath XPath link to nested feature
-     * @param parentSource parent feature source
      * @throws IOException
      */
     public NestedAttributeMapping(

@@ -257,6 +257,7 @@ public class DefaultTemporalCRS extends AbstractSingleCRS implements TemporalCRS
      *     versions of this class.
      */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return (int) serialVersionUID ^ super.hashCode();
     }

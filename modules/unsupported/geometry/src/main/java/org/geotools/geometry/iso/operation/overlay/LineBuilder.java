@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2006  Vivid Solutions
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2006  Vivid Solutions
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -52,7 +52,7 @@ public class LineBuilder {
 
     // private PrimitiveFactoryImpl primitiveFactory;
 
-    private PointLocator ptLocator;
+    // private PointLocator ptLocator;
 
     private List lineEdgesList = new ArrayList();
 
@@ -63,7 +63,7 @@ public class LineBuilder {
         this.crs = crs;
         // this.coordinateFactory = featGeomFactory.getGeometryFactoryImpl();
         // this.primitiveFactory = featGeomFactory.getPrimitiveFactory();
-        this.ptLocator = ptLocator;
+        // this.ptLocator = ptLocator;
     }
 
     /** @return a list of the LineStrings in the result of the specified overlay operation */
@@ -168,7 +168,6 @@ public class LineBuilder {
         for (Iterator it = this.lineEdgesList.iterator(); it.hasNext(); ) {
 
             Edge e = (Edge) it.next();
-            Label label = e.getLabel();
 
             List<Position> positions = CoordinateArrays.toPositionList(crs, e.getCoordinates());
             LineString line =
@@ -185,23 +184,5 @@ public class LineBuilder {
             resultLineList.add(curve);
             e.setInResult(true);
         }
-    }
-
-    private void labelIsolatedLines(List edgesList) {
-        for (Iterator it = edgesList.iterator(); it.hasNext(); ) {
-            Edge e = (Edge) it.next();
-            Label label = e.getLabel();
-            // n.print(System.out);
-            if (e.isIsolated()) {
-                if (label.isNull(0)) labelIsolatedLine(e, 0);
-                else labelIsolatedLine(e, 1);
-            }
-        }
-    }
-
-    /** Label an isolated node with its relationship to the target geometry. */
-    private void labelIsolatedLine(Edge e, int targetIndex) {
-        int loc = ptLocator.locate(e.getCoordinate(), op.getArgGeometry(targetIndex));
-        e.getLabel().setLocation(targetIndex, loc);
     }
 }

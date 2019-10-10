@@ -22,21 +22,12 @@ import java.util.logging.Logger;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.IllegalFilterException;
-import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.util.factory.FactoryRegistryException;
 import org.geotools.validation.ValidationResults;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.spatial.Disjoint;
-import org.opengis.geometry.BoundingBox;
 
 /**
  * CrossesIntegrity<br>
@@ -61,7 +52,7 @@ import org.opengis.geometry.BoundingBox;
 public class CrossesIntegrity extends RelationIntegrity {
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(CrossesIntegrity.class);
-    private static HashSet usedIDs;
+    private HashSet usedIDs;
 
     /** CrossesIntegrity Constructor */
     public CrossesIntegrity() {
@@ -127,7 +118,6 @@ public class CrossesIntegrity extends RelationIntegrity {
             throws Exception {
         boolean success = true;
 
-        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Filter filter = null;
 
         // JD: fix this!!
@@ -170,7 +160,7 @@ public class CrossesIntegrity extends RelationIntegrity {
                 }
             }
         } finally {
-            fr1.close();
+            if (fr1 != null) fr1.close();
             if (fr2 != null) fr2.close();
         }
 
@@ -209,10 +199,6 @@ public class CrossesIntegrity extends RelationIntegrity {
             throws Exception {
         boolean success = true;
 
-        SimpleFeatureType ft = featureSourceA.getSchema();
-
-        Filter filter = filterBBox(bBox, ft);
-
         // FeatureResults featureResults = featureSourceA.getFeatures(filter);
         SimpleFeatureCollection featureResults = featureSourceA.getFeatures();
 
@@ -233,11 +219,6 @@ public class CrossesIntegrity extends RelationIntegrity {
                 //				System.out.println("env1 = " + bBox);
 
                 Geometry g1 = (Geometry) f1.getDefaultGeometry();
-                Filter filter2 =
-                        filterBBox(
-                                ReferencedEnvelope.reference(
-                                        g1.getEnvelope().getEnvelopeInternal()),
-                                ft);
 
                 // FeatureResults featureResults2 = featureSourceA.getFeatures(filter2);
                 SimpleFeatureCollection featureResults2 = featureSourceA.getFeatures();
@@ -294,20 +275,10 @@ public class CrossesIntegrity extends RelationIntegrity {
                 usedIDs.add(f1.getID());
             }
         } finally {
-            fr1.close();
+            if (fr1 != null) fr1.close();
             if (fr2 != null) fr2.close();
         }
 
         return success;
-    }
-
-    private Filter filterBBox(ReferencedEnvelope bBox, SimpleFeatureType ft)
-            throws FactoryRegistryException, IllegalFilterException {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
-        Disjoint filter =
-                ff.disjoint(
-                        ff.property(ft.getGeometryDescriptor().getLocalName()),
-                        ff.literal(JTS.toGeometry((BoundingBox) bBox)));
-        return filter;
     }
 }

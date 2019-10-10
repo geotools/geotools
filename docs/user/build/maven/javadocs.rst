@@ -1,7 +1,7 @@
 Generating Javadocs
 -------------------
 
-Javadoc can be generated using the standard mvn javadoc:javadoc command.
+Javadoc can be generated using the standard ``mvn javadoc:javadoc`` command.
 
 * It can be generated for an individual module::
      
@@ -16,9 +16,9 @@ Javadoc can be generated using the standard mvn javadoc:javadoc command.
 Dependencies in aggregated javadoc
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-As of October 2006, aggregated javadoc using maven-javadoc-plugin version 2.0 fails to resolve all
-external dependencies like JTS. It may be related to MJAVADOC-66, but the later said that the bug
-is already fixed.
+As of October 2006, aggregated javadoc using ``maven-javadoc-plugin`` version
+2.0 fails to resolve all external dependencies like JTS. It may be related to
+MJAVADOC-66, but the later said that the bug is already fixed.
 
 Waiting for the next maven-javadoc-plugin release in the hope that it will be fixed there.
 
@@ -30,9 +30,10 @@ The **trunk/pom.xml** file contains the javadoc:javadoc goal configuration. This
 
 Excluded packages are:
 
-* com.\*
-* org.geotools.maven.\*
-* org.geotools.referencing.util.\*
+  * ``com.\*`` 
+  * ``org.geotools.maven.\*`` 
+  * ``org.geotools.referencing.util.\*`` 
+  * ``org.geotools.maven.\*`` * ``org.geotools.referencing.util.\*``
 
 When Maven fails to generate the javadoc
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

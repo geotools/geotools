@@ -131,7 +131,7 @@ public class MBObjectStops {
             if (current < maxZoom) {
                 range[0] = current;
                 range[1] = layerStops.get(i + 1);
-            } else if (current == maxZoom) {
+            } else if (current.equals(maxZoom)) {
                 range[0] = current;
                 range[1] = maxZoom;
             }
@@ -156,7 +156,7 @@ public class MBObjectStops {
             if (current < maxZoom) {
                 range[0] = current;
                 range[1] = stops.get(i + 1);
-            } else if (current == maxZoom) {
+            } else if (current.equals(maxZoom)) {
                 range[0] = current;
                 range[1] = -1;
             }
@@ -204,8 +204,6 @@ public class MBObjectStops {
     }
 
     LayerStops containsStops(JSONObject jsonObject, LayerStops ls) {
-        Boolean hasStops = false;
-
         Set<?> keySet = jsonObject.keySet();
         Iterator<?> keys = keySet.iterator();
         while (keys.hasNext()) {

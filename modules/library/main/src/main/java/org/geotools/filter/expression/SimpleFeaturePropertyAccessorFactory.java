@@ -17,9 +17,9 @@
 package org.geotools.filter.expression;
 
 import java.util.regex.Pattern;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -215,11 +215,11 @@ public class SimpleFeaturePropertyAccessorFactory implements PropertyAccessorFac
             xpath = stripPrefixIndex(xpath);
 
             if (object instanceof SimpleFeature) {
-                return ((SimpleFeature) object).getType().getDescriptor(xpath) != null;
+                return ((SimpleFeature) object).getType().indexOf(xpath) >= 0;
             }
 
             if (object instanceof SimpleFeatureType) {
-                return ((SimpleFeatureType) object).getDescriptor(xpath) != null;
+                return ((SimpleFeatureType) object).indexOf(xpath) >= 0;
             }
 
             return false;

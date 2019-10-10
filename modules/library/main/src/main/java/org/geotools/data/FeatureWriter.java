@@ -78,8 +78,6 @@ public interface FeatureWriter<T extends FeatureType, F extends Feature> extends
      *
      * <p>When the current Feature has been provided as new content, this method "cancels" the add
      * opperation (and notification needed).
-     *
-     * @throws IOException DOCUMENT ME!
      */
     void remove() throws IOException;
 

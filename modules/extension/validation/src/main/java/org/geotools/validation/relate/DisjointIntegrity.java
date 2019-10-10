@@ -21,13 +21,11 @@ import java.util.logging.Logger;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.validation.ValidationResults;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
 
 /**
  * Tests to see if a Geometry is disjoint with another Geometry.
@@ -98,7 +96,6 @@ public class DisjointIntegrity extends RelationIntegrity {
             throws Exception {
         boolean success = true;
 
-        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Filter filter = null;
 
         SimpleFeatureCollection FeatureCollectionA = featureSourceA.getFeatures(filter);
@@ -136,8 +133,8 @@ public class DisjointIntegrity extends RelationIntegrity {
                 }
             }
         } finally {
-            fr1.close();
-            fr2.close();
+            if (fr1 != null) fr1.close();
+            if (fr2 != null) fr2.close();
         }
 
         return success;
@@ -172,7 +169,6 @@ public class DisjointIntegrity extends RelationIntegrity {
             throws Exception {
         boolean success = true;
 
-        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Filter filter = null;
 
         // JD: fix this!!
@@ -216,8 +212,8 @@ public class DisjointIntegrity extends RelationIntegrity {
                 }
             }
         } finally {
-            fr1.close();
-            fr2.close();
+            if (fr1 != null) fr1.close();
+            if (fr2 != null) fr2.close();
         }
 
         return success;

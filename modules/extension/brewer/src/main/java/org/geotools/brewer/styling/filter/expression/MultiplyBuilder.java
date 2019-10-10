@@ -68,7 +68,7 @@ public class MultiplyBuilder implements Builder<Multiply> {
     }
 
     public ChildExpressionBuilder<MultiplyBuilder> expr1() {
-        return expr1();
+        return expr1;
     }
 
     public MultiplyBuilder expr1(Object literal) {

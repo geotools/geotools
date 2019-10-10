@@ -167,13 +167,11 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
         for (AttributeContext attribute : ftContext.attributes) {
             QualifiedName name = attribute.name;
             Object value1 = null;
-            AttributeDescriptor ad = null;
             if (boundedBy.equals(name) && featureBounds) {
                 value1 = f.getBounds();
             } else {
                 int idx = attribute.attributeIndex;
                 value1 = f.getAttribute(idx);
-                ad = f.getFeatureType().getDescriptor(idx);
             }
             Object value = value1;
 
@@ -406,9 +404,7 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
                     // gml:name is a code type which is actually complex, but since we don't
                     // support code types for simple features, we just use xs:string
                     attribute.binding = new XSStringBinding();
-                } else if (boundedBy.equals(contentName)) {
-                    // no need for a binding here
-                } else {
+                } else if (!boundedBy.equals(contentName)) {
                     XSDTypeDefinition contentType = content.getTypeDefinition();
                     if (contentType.getName() == null) {
                         // move up to a parent which is not null

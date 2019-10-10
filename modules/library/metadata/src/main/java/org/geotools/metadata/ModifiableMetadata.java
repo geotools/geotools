@@ -222,10 +222,9 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
                 collection = UnmodifiableArrayList.wrap(array);
                 if (collection instanceof Set) {
                     collection = Collections.unmodifiableSet(new LinkedHashSet<Object>(collection));
-                } else {
-                    // Conservatively assumes a List if we are not sure to have a Set,
-                    // since the list is less destructive (no removal of duplicated).
                 }
+                // Conservatively assumes a List if we are not sure to have a Set,
+                // since the list is less destructive (no removal of duplicated).
             }
             return collection;
         }
@@ -280,17 +279,9 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
      * @throws UnmodifiableMetadataException if this metadata is unmodifiable.
      */
     protected void checkWritePermission() throws UnmodifiableMetadataException {
-        assert Thread.holdsLock(this);
         if (!isModifiable()) {
             throw new UnmodifiableMetadataException(Errors.format(ErrorKeys.UNMODIFIABLE_METADATA));
         }
-        invalidate();
-    }
-
-    /** Invoked when the metadata changed. Some cached informations will need to be recomputed. */
-    @Override
-    final void invalidate() {
-        super.invalidate();
         unmodifiable = null;
     }
 
@@ -428,7 +419,6 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
      */
     protected final <E> Collection<E> nonNullCollection(
             final Collection<E> c, final Class<E> elementType) {
-        assert Thread.holdsLock(this);
         if (c != null) {
             return c;
         }
@@ -449,7 +439,6 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
      * @since 2.5
      */
     protected final <E> Set<E> nonNullSet(final Set<E> c, final Class<E> elementType) {
-        assert Thread.holdsLock(this);
         if (c != null) {
             return c;
         }
@@ -469,7 +458,6 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
      * @return {@code c}, or a new list if {@code c} is null.
      */
     protected final <E> List<E> nonNullList(final List<E> c, final Class<E> elementType) {
-        assert Thread.holdsLock(this);
         if (c != null) {
             return c;
         }

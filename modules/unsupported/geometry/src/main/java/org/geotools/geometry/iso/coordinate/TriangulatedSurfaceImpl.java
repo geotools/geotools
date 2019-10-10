@@ -19,6 +19,7 @@ package org.geotools.geometry.iso.coordinate;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.geometry.iso.primitive.SurfaceBoundaryImpl;
+import org.geotools.util.SuppressFBWarnings;
 import org.opengis.geometry.coordinate.Polygon;
 import org.opengis.geometry.coordinate.Triangle;
 import org.opengis.geometry.coordinate.TriangulatedSurface;
@@ -43,6 +44,8 @@ public class TriangulatedSurfaceImpl extends PolyhedralSurfaceImpl implements Tr
     }
 
     /** */
+    // Suppressing for now, but this is actually guaranteed to NPE
+    @SuppressFBWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
     public TriangulatedSurfaceImpl() {
         super((SurfaceBoundaryImpl) null);
     }

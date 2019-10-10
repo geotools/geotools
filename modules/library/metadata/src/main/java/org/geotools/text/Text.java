@@ -49,7 +49,7 @@ public class Text {
      * Create an international string based on provided key, and resource bundle.
      *
      * @param key The key for the resource to fetch
-     * @param resources The name of the resource bundle, as a fully qualified class name.
+     * @param resourceBundle The name of the resource bundle, as a fully qualified class name.
      * @return ResourceInternationalString
      */
     public static InternationalString text(String key, String resourceBundle) {

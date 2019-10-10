@@ -21,7 +21,6 @@ import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;
-import org.geotools.swing.JMapPane;
 import org.geotools.swing.event.MapMouseEvent;
 import org.geotools.swing.locale.LocaleUtils;
 
@@ -85,7 +84,7 @@ public class PanTool extends CursorTool {
         if (panning) {
             Point pos = ev.getPoint();
             if (!pos.equals(panePos)) {
-                ((JMapPane) getMapPane()).moveImage(pos.x - panePos.x, pos.y - panePos.y);
+                getMapPane().moveImage(pos.x - panePos.x, pos.y - panePos.y);
                 panePos = pos;
             }
         }

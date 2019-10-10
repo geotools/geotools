@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.data.collection;
 
 import java.io.IOException;
@@ -18,7 +34,6 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.store.EmptyFeatureCollection;
 import org.geotools.data.store.ReTypingFeatureCollection;
 import org.geotools.data.store.ReprojectingFeatureCollection;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.collection.MaxSimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -29,7 +44,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.And;
 import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
@@ -58,8 +72,6 @@ import org.opengis.filter.spatial.Within;
  */
 public class SpatialIndexFeatureSource implements SimpleFeatureSource {
     SpatialIndexFeatureCollection contents;
-
-    private static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     private static final Set<Class> supportedFilterTypes =
             new HashSet<Class>(
@@ -120,7 +132,7 @@ public class SpatialIndexFeatureSource implements SimpleFeatureSource {
             throws IOException {
         query = DataUtilities.resolvePropertyNames(query, getSchema());
         final int offset = query.getStartIndex() != null ? query.getStartIndex() : 0;
-        if (offset > 0 & query.getSortBy() == null) {
+        if (offset > 0 && query.getSortBy() == null) {
             if (!getQueryCapabilities().supportsSorting(query.getSortBy())) {
                 throw new IllegalStateException(
                         "Feature source does not support this sorting "
@@ -217,16 +229,6 @@ public class SpatialIndexFeatureSource implements SimpleFeatureSource {
             }
         }
         return result;
-    }
-
-    private BBOX bboxFilter(Envelope bbox) {
-        return ff.bbox(
-                contents.getSchema().getGeometryDescriptor().getLocalName(),
-                bbox.getMinX(),
-                bbox.getMinY(),
-                bbox.getMaxX(),
-                bbox.getMaxY(),
-                null);
     }
 
     public ResourceInfo getInfo() {

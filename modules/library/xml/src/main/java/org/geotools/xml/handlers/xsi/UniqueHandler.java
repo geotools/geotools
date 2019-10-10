@@ -43,6 +43,7 @@ public class UniqueHandler extends XSIElementHandler {
     private List fields;
 
     /** @see java.lang.Object#hashCode() */
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return LOCALNAME.hashCode()
                 * ((id == null) ? 1 : id.hashCode())
@@ -108,38 +109,22 @@ public class UniqueHandler extends XSIElementHandler {
         return LOCALNAME;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return the id attribute value
-     */
+    /** @return the id attribute value */
     public String getId() {
         return id;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return the xpath attribute value
-     */
+    /** @return the xpath attribute value */
     public String getXpath() {
         return xpath;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return List of FieldHandlers representing sub-elements
-     */
+    /** @return List of FieldHandlers representing sub-elements */
     public List getFields() {
         return fields;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return the selector sub-element
-     */
+    /** @return the selector sub-element */
     public SelectorHandler getSelector() {
         return selector;
     }

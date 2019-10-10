@@ -1,13 +1,13 @@
 Dialog classes
 --------------
 
-JFileDataStoreChooser
-^^^^^^^^^^^^^^^^^^^^^
+``JFileDataStoreChooser``
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This is a dialog class to prompt a user for a data store such as a shapefile. It relieves you of having to work with JFileChooser and FileFilters directly.
+This is a dialog class to prompt a user for a data store such as a shapefile. It relieves you of having to work with ``JFileChooser`` and ``FileFilters`` directly.
 
 * To prompt for a file of given format you can use the static
-  showOpenFile method as in this snippet::
+  ``showOpenFile`` method as in this snippet::
     
     // Prompt the user for a shapefile (the null argument here is
     // for a parent frame or dialog)
@@ -23,7 +23,7 @@ This is a dialog class to prompt a user for a data store such as a shapefile. It
 
 * Formats with alternate file extensions
   
-  Another form of the showOpenFile method allows alternate file extensions to be
+  Another form of the ``showOpenFile`` method allows alternate file extensions to be
   specified::
     
     // Prompt for a geotiff file that may have a tif or tiff
@@ -35,8 +35,8 @@ This is a dialog class to prompt a user for a data store such as a shapefile. It
 
 * Prompting for an output file name
   
-  In this snippet, taken from the GeoTools example demo Shp2Shp.java, we create
-  a JFileDataStoreChooser object and prompt the user for the name of an output
+  In this snippet, taken from the GeoTools example demo ``Shp2Shp.java,`` we create
+  a ``JFileDataStoreChooser`` object and prompt the user for the name of an output
   shapefile::
     
     String newPath = ...
@@ -50,12 +50,12 @@ This is a dialog class to prompt a user for a data store such as a shapefile. It
     }
     File newFile = chooser.getSelectedFile();
 
-JFontChooser
-^^^^^^^^^^^^
+``JFontChooser``
+^^^^^^^^^^^^^^^^
 
 No surprises here... it's a font dialog.
 
-This is used by JSimpleStyleDialog but is also available for general use. It includes a static helper method to display the dialog and return a GeoTools Font object.
+This is used by ``JSimpleStyleDialog`` but is also available for general use. It includes a static helper method to display the dialog and return a GeoTools ``Font`` object.
 
 .. image:: /images/font_dialog.gif
    :scale: 60
@@ -87,8 +87,8 @@ This is used by JSimpleStyleDialog but is also available for general use. It inc
         selectedFont = myFaveFont;
     }
 
-JSimpleStyleDialog
-^^^^^^^^^^^^^^^^^^
+``JSimpleStyleDialog``
+^^^^^^^^^^^^^^^^^^^^^^^
 
 This dialog presents basic options for point, line, polygon and text styling. It saves you from having to provide SLD documents or write styling code for your application when the feature styling requirements are modest.
 

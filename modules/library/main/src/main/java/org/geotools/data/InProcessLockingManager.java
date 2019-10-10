@@ -22,8 +22,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
 import org.geotools.data.Transaction.State;
+import org.geotools.util.SuppressFBWarnings;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -45,10 +45,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *     solution, but there should be something that is less confusing.
  */
 public class InProcessLockingManager implements LockingManager {
-    /** The logger for the postgis module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(InProcessLockingManager.class);
-
     /** lockTable access by typeName stores Transactions or MemoryLocks */
     protected Map lockTables = new HashMap();
 
@@ -63,6 +59,7 @@ public class InProcessLockingManager implements LockingManager {
      * @param featureLock FeatureLock describing lock request
      * @throws FeatureLockException Indicates a problem with the lock request
      */
+    @SuppressFBWarnings("UW_UNCOND_WAIT")
     public synchronized void lockFeatureID(
             String typeName, String featureID, Transaction transaction, FeatureLock featureLock)
             throws FeatureLockException {

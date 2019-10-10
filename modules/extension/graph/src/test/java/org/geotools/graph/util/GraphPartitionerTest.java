@@ -94,7 +94,7 @@ public class GraphPartitionerTest extends TestCase {
 
         List partitions = parter.getPartitions();
 
-        assertTrue(partitions.size() == 2);
+        assertEquals(2, partitions.size());
 
         Graph left = (Graph) partitions.get(0);
         Graph right = (Graph) partitions.get(1);

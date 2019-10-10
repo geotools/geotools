@@ -58,7 +58,6 @@ public class CRSListModel extends AbstractListModel {
      * JCRSChooser#DEFAULT_AUTHORITY}.
      *
      * @param authority the authority name
-     * @param showDefaults show GeoTools default reference systems
      */
     public CRSListModel(String authority) {
         try {

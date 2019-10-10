@@ -48,8 +48,6 @@ public class DefaultCalendarEra implements CalendarEra {
      * datatype for TM_Period.begin and Tm_Period.end shall be JulianDate.
      */
     private Period epochOfUse;
-    /** Collection of TM_Calendars that use this TM_CalendarEra as a reference for dating. */
-    private Collection<Calendar> datingSystem;
 
     public DefaultCalendarEra(
             InternationalString name,
@@ -105,16 +103,15 @@ public class DefaultCalendarEra implements CalendarEra {
     }
 
     public Collection<Calendar> getDatingSystem() {
-        return datingSystem;
+        return null;
     }
 
     @Override
     public boolean equals(final Object object) {
-        if (object instanceof CalendarEra) {
+        if (object instanceof DefaultCalendarEra) {
             final DefaultCalendarEra that = (DefaultCalendarEra) object;
 
-            return Utilities.equals(this.datingSystem, that.datingSystem)
-                    && Utilities.equals(this.epochOfUse, that.epochOfUse)
+            return Utilities.equals(this.epochOfUse, that.epochOfUse)
                     && Utilities.equals(this.julianReference, that.julianReference)
                     && Utilities.equals(this.name, that.name)
                     && Utilities.equals(this.referenceDate, that.referenceDate)
@@ -126,7 +123,6 @@ public class DefaultCalendarEra implements CalendarEra {
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 37 * hash + (this.datingSystem != null ? this.datingSystem.hashCode() : 0);
         hash = 37 * hash + (this.epochOfUse != null ? this.epochOfUse.hashCode() : 0);
         hash = 37 * hash + (this.julianReference != null ? this.julianReference.hashCode() : 0);
         hash = 37 * hash + (this.name != null ? this.name.hashCode() : 0);
@@ -152,9 +148,6 @@ public class DefaultCalendarEra implements CalendarEra {
         }
         if (julianReference != null) {
             s.append("julianReference:").append(julianReference).append('\n');
-        }
-        if (datingSystem != null) {
-            s.append("datingSystem:").append(datingSystem).append('\n');
         }
         return s.toString();
     }

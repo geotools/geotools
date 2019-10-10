@@ -97,7 +97,6 @@ public class LineSymbolizerImpl extends AbstractSymbolizer implements LineSymbol
      * Creates a deep copy clone.
      *
      * @return The deep copy clone.
-     * @throws RuntimeException DOCUMENT ME!
      */
     public Object clone() {
         LineSymbolizerImpl clone;

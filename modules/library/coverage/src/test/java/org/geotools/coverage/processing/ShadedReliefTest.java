@@ -18,7 +18,6 @@ package org.geotools.coverage.processing;
 
 import static org.junit.Assert.*;
 
-import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.shadedrelief.ShadedReliefAlgorithm;
 import java.awt.image.RenderedImage;
 import javax.media.jai.PlanarImage;
@@ -40,10 +39,6 @@ public class ShadedReliefTest extends GridProcessingTestBase {
     private CoverageProcessor processor;
 
     GridCoverage2D indexedCoverage;
-
-    public ShadedReliefTest() {
-        JAIExt.initJAIEXT();
-    }
 
     /** Set up common objects used for all tests. */
     @Before

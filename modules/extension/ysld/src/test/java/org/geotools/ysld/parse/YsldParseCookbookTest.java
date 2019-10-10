@@ -59,7 +59,9 @@ public class YsldParseCookbookTest {
         //   </FeatureTypeStyle>
         // </UserStyle>
         Style style = parse("point", "simple.sld");
-        assertEquals("SLD Cook Book: Simple Point With Stroke", style.getTitle());
+        assertEquals(
+                "SLD Cook Book: Simple Point With Stroke",
+                style.getDescription().getTitle().toString());
 
         PointSymbolizer point = SLD.pointSymbolizer(style);
         assertEquals("circle", SLD.wellKnownName(SLD.mark(point)));
@@ -132,6 +134,51 @@ public class YsldParseCookbookTest {
         ExternalGraphic external = (ExternalGraphic) graphic.graphicalSymbols().get(0);
         assertEquals("smileyface.png", external.getLocation().getPath());
         assertEquals("image/png", external.getFormat());
+    }
+
+    @Test
+    public void testPointWithLegend() throws Exception {
+        // <UserStyle>
+        //   <Title>Simple Point With Legend Graphic</Title>
+        //   <FeatureTypeStyle>
+        //     <Rule>
+        //       <LegendGraphic>
+        //         <Graphic>
+        //           <ExternalGraphic>
+        //             <OnlineResource xlink:href="smileyface.png" />
+        //             <Format>image/png</Format>
+        //           </ExternalGraphic>
+        //           <Size>32</Size>
+        //         </Graphic>
+        //       </LegendGraphic>
+        //       <PointSymbolizer>
+        //         <Graphic>
+        //           <Mark>
+        //             <WellKnownName>circle</WellKnownName>
+        //             <Fill>
+        //               <CssParameter name="fill">#FF0000</CssParameter>
+        //             </Fill>
+        //           </Mark>
+        //           <Size>6</Size>
+        //         </Graphic>
+        //       </PointSymbolizer>
+        //     </Rule>
+        //   </FeatureTypeStyle>
+        // </UserStyle>
+        Style style = parse("point", "legend.sld");
+
+        GraphicLegend legend = (GraphicLegend) SLD.rules(style)[0].getLegend();
+        assertEquals(32, Filters.asInt(legend.getSize()));
+
+        ExternalGraphic external = (ExternalGraphic) legend.graphicalSymbols().get(0);
+        assertEquals("smileyface.png", external.getLocation().getPath());
+        assertEquals("image/png", external.getFormat());
+
+        PointSymbolizer point = SLD.pointSymbolizer(style);
+        assertEquals("circle", SLD.wellKnownName(SLD.mark(point)));
+        assertEquals(1, point.getGraphic().graphicalSymbols().size());
+        assertEquals(Color.red, SLD.color(SLD.fill(point)));
+        assertEquals(6, SLD.pointSize(point));
     }
 
     @Test
@@ -1099,7 +1146,7 @@ public class YsldParseCookbookTest {
         assertEquals(Color.black, SLD.color(text.getFill()));
 
         Font font = SLD.font(text);
-        assertEquals("Arial", Filters.asString(font.getFontFamily()));
+        assertEquals("Arial", Filters.asString(font.getFamily().get(0)));
         assertEquals(10, Filters.asInt(font.getSize()));
         assertEquals("normal", Filters.asString(font.getStyle()));
         assertEquals("bold", Filters.asString(font.getWeight()));
@@ -1455,7 +1502,7 @@ public class YsldParseCookbookTest {
         assertEquals(0.5, Filters.asDouble(place.getAnchorPoint().getAnchorPointY()), 0.1);
 
         Font font = SLD.font(text);
-        assertEquals("Arial", Filters.asString(font.getFontFamily()));
+        assertEquals("Arial", Filters.asString(font.getFamily().get(0)));
         assertEquals(11, Filters.asInt(font.getSize()));
         assertEquals("normal", Filters.asString(font.getStyle()));
         assertEquals("bold", Filters.asString(font.getWeight()));
@@ -1848,7 +1895,7 @@ public class YsldParseCookbookTest {
     Style parse(String dir, String file) throws IOException {
         StringWriter writer = new StringWriter();
         transform(YsldTests.sld(dir, file), writer);
-        // System.out.println(writer.toString());
+
         YsldParser p = new YsldParser(new StringReader(writer.toString()));
         return SLD.defaultStyle(p.parse());
     }

@@ -71,23 +71,23 @@ public class TemporalExtentImpl extends MetadataEntity implements TemporalExtent
     }
 
     /** The start date and time for the content of the dataset. */
-    public synchronized Date getStartTime() {
+    public Date getStartTime() {
         return (startTime != Long.MIN_VALUE) ? new Date(startTime) : null;
     }
 
     /** Set the start date and time for the content of the dataset. */
-    public synchronized void setStartTime(final Date newValue) {
+    public void setStartTime(final Date newValue) {
         checkWritePermission();
         startTime = (newValue != null) ? newValue.getTime() : Long.MIN_VALUE;
     }
 
     /** Returns the end date and time for the content of the dataset. */
-    public synchronized Date getEndTime() {
+    public Date getEndTime() {
         return (endTime != Long.MIN_VALUE) ? new Date(endTime) : null;
     }
 
     /** Set the end date and time for the content of the dataset. */
-    public synchronized void setEndTime(final Date newValue) {
+    public void setEndTime(final Date newValue) {
         checkWritePermission();
         endTime = (newValue != null) ? newValue.getTime() : Long.MIN_VALUE;
     }
@@ -107,7 +107,7 @@ public class TemporalExtentImpl extends MetadataEntity implements TemporalExtent
      *
      * @since 2.4
      */
-    public synchronized void setExtent(final TemporalPrimitive newValue) {
+    public void setExtent(final TemporalPrimitive newValue) {
         checkWritePermission();
         extent = newValue;
     }

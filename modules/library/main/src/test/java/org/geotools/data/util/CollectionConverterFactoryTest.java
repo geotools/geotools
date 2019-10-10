@@ -46,8 +46,8 @@ public class CollectionConverterFactoryTest extends TestCase {
                 CollectionConverterFactory.CollectionToArray.convert(source, Integer[].class);
         assertTrue(converted instanceof Integer[]);
         Integer[] target = (Integer[]) converted;
-        assertEquals(new Integer(1), target[0]);
-        assertEquals(new Integer(2), target[1]);
+        assertEquals(Integer.valueOf(1), target[0]);
+        assertEquals(Integer.valueOf(2), target[1]);
     }
 
     public void testArrayToCollection() throws Exception {
@@ -56,8 +56,8 @@ public class CollectionConverterFactoryTest extends TestCase {
         Object converted = CollectionConverterFactory.ArrayToCollection.convert(source, List.class);
         assertTrue(converted instanceof List);
         List target = (List) converted;
-        assertEquals(new Integer(1), target.get(0));
-        assertEquals(new Integer(2), target.get(1));
+        assertEquals(Integer.valueOf(1), target.get(0));
+        assertEquals(Integer.valueOf(2), target.get(1));
     }
 
     public void testArrayToArray() throws Exception {

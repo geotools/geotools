@@ -19,11 +19,10 @@ package org.geotools.filter.v1_0;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.namespace.QName;
+import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.spatial.BinarySpatialOperator;
 import org.picocontainer.MutablePicoContainer;
@@ -55,13 +54,6 @@ import org.picocontainer.MutablePicoContainer;
  * @generated
  */
 public class OGCBinarySpatialOpTypeBinding extends AbstractComplexBinding {
-    private FilterFactory2 factory;
-    private GeometryFactory gFactory;
-
-    public OGCBinarySpatialOpTypeBinding(FilterFactory2 factory, GeometryFactory gFactory) {
-        this.factory = factory;
-        this.gFactory = gFactory;
-    }
 
     /** @generated */
     public QName getTarget() {
@@ -185,7 +177,8 @@ public class OGCBinarySpatialOpTypeBinding extends AbstractComplexBinding {
         return OGCUtils.property(operator.getExpression1(), operator.getExpression2(), name);
     }
 
-    public List getProperties(Object object) throws Exception {
+    @Override
+    public List getProperties(Object object, XSDElementDeclaration element) throws Exception {
         // special hack for Functions, while not mandated by the spec we handle it
         // here
         BinarySpatialOperator operator = (BinarySpatialOperator) object;
@@ -195,6 +188,6 @@ public class OGCBinarySpatialOpTypeBinding extends AbstractComplexBinding {
             return props;
         }
 
-        return super.getProperties(object);
+        return super.getProperties(object, element);
     }
 }

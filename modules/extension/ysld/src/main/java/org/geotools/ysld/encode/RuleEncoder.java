@@ -17,14 +17,21 @@
  */
 package org.geotools.ysld.encode;
 
+import java.util.Optional;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.Graphic;
+import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.Rule;
+import org.geotools.styling.StyleFactory;
 import org.geotools.ysld.Tuple;
 import org.opengis.filter.Filter;
 
 /** Encodes a {@link Rule} as YSLD. Delegates to {@link SymbolizersEncoder}. */
 public class RuleEncoder extends YsldEncodeHandler<Rule> {
+
+    private static StyleFactory sf = CommonFactoryFinder.getStyleFactory();
 
     public RuleEncoder(FeatureTypeStyle featureStyle) {
         super(featureStyle.rules().iterator());
@@ -33,8 +40,30 @@ public class RuleEncoder extends YsldEncodeHandler<Rule> {
     @Override
     protected void encode(Rule rule) {
         put("name", rule.getName());
-        put("title", rule.getTitle());
-        put("abstract", rule.getAbstract());
+        put(
+                "title",
+                Optional.ofNullable(rule.getDescription())
+                        .map(d -> d.getTitle())
+                        .map(t -> t.toString())
+                        .orElse(null));
+        put(
+                "abstract",
+                Optional.ofNullable(rule.getDescription())
+                        .map(d -> d.getAbstract())
+                        .map(t -> t.toString())
+                        .orElse(null));
+        if (rule.getLegend() != null) {
+            Graphic graphic = null;
+            if (rule.getLegend() instanceof Graphic) {
+                graphic = (Graphic) rule.getLegend();
+            } else {
+                // convert org.opengis.style.GraphicLegend to org.geotools.styling.Graphic
+                PointSymbolizer point = sf.createPointSymbolizer();
+                point.setGraphic(rule.getLegend());
+                graphic = point.getGraphic();
+            }
+            push("legend").inline(new GraphicEncoder(graphic)).pop();
+        }
         if (rule.getFilter() != null && rule.getFilter() != Filter.INCLUDE) {
             put(
                     "filter",
@@ -52,7 +81,6 @@ public class RuleEncoder extends YsldEncodeHandler<Rule> {
             put("scale", t);
         }
 
-        // legend:?
         put("symbolizers", new SymbolizersEncoder(rule));
     }
 

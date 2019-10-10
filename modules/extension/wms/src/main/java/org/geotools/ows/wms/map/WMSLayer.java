@@ -28,7 +28,6 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.GridReaderLayer;
-import org.geotools.map.MapLayer;
 import org.geotools.ows.wms.Layer;
 import org.geotools.ows.wms.WebMapServer;
 import org.geotools.ows.wms.request.GetMapRequest;
@@ -43,7 +42,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
 /**
- * Wraps a WMS layer into a {@link MapLayer} for interactive rendering usage TODO: expose a
+ * Wraps a WMS layer into a {@link Layer} for interactive rendering usage TODO: expose a
  * GetFeatureInfo that returns a feature collection TODO: expose the list of named styles and allow
  * choosing which style to use
  *
@@ -87,6 +86,10 @@ public class WMSLayer extends GridReaderLayer {
      */
     public WMSLayer(WebMapServer wms, Layer layer, String style) {
         super(new WMSCoverageReader(wms, layer, style), STYLE);
+    }
+
+    public WMSLayer(WebMapServer wms, Layer layer, String style, String imageFromat) {
+        super(new WMSCoverageReader(wms, layer, style, imageFromat), STYLE);
     }
 
     public WMSCoverageReader getReader() {

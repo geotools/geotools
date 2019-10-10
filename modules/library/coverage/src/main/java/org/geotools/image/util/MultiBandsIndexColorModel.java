@@ -54,12 +54,12 @@ final class MultiBandsIndexColorModel extends IndexColorModel {
      * @param size The size of the color component arrays.
      * @param cmap The array of color components.
      * @param start The starting offset of the first color component.
-     * @param hasalpha Indicates whether alpha values are contained in the {@code cmap} array.
+     * @param hasAlpha Indicates whether alpha values are contained in the {@code cmap} array.
      * @param transparent The index of the fully transparent pixel.
      * @param transferType The data type of the array used to represent pixel values. The data type
      *     must be either {@code DataBuffer.TYPE_BYTE} or {@code DataBuffer.TYPE_USHORT}.
      * @param numBands The number of bands.
-     * @param visibleBands The band to display.
+     * @param visibleBand The band to display.
      * @throws IllegalArgumentException if {@code bits} is less than 1 or greater than 16.
      * @throws IllegalArgumentException if {@code size} is less than 1.
      * @throws IllegalArgumentException if {@code transferType} is not one of {@code

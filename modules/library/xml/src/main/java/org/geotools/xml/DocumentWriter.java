@@ -58,7 +58,7 @@ import org.xml.sax.helpers.AttributesImpl;
  * @author dzwiers
  */
 public class DocumentWriter {
-    /** DOCUMENT ME! */
+
     public static final Logger logger =
             org.geotools.util.logging.Logging.getLogger(DocumentWriter.class);
 
@@ -271,14 +271,7 @@ public class DocumentWriter {
         }
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param schema DOCUMENT ME!
-     * @param w DOCUMENT ME!
-     * @param hints DOCUMENT ME!
-     * @throws IOException
-     */
+    /** @throws IOException */
     public static void writeSchema(Schema schema, Writer w, Map hints) throws IOException {
         WriterContentHandler wch =
                 new WriterContentHandler(schema, w, hints); // should deal with xmlns declarations
@@ -323,11 +316,11 @@ public class DocumentWriter {
                     imports[i].getTargetNamespace().toString());
         }
 
-        if ((schema.getId() != null) && (schema.getId() != "")) {
+        if ((schema.getId() != null) && (!schema.getId().isEmpty())) {
             ai.addAttribute("", "id", "", "ID", schema.getId());
         }
 
-        if ((schema.getVersion() != null) && (schema.getVersion() != "")) {
+        if ((schema.getVersion() != null) && (!schema.getVersion().isEmpty())) {
             ai.addAttribute("", "version", "", "String", schema.getVersion());
         }
 
@@ -404,7 +397,7 @@ public class DocumentWriter {
     private static void writeImport(Schema schema, PrintHandler ph) throws IOException {
         AttributesImpl ai = new AttributesImpl();
 
-        if ((schema.getId() != null) && (schema.getId() != "")) {
+        if ((schema.getId() != null) && (!schema.getId().isEmpty())) {
             ai.addAttribute("", "id", "", "ID", schema.getId());
         }
 
@@ -421,7 +414,7 @@ public class DocumentWriter {
             throws IOException {
         AttributesImpl ai = new AttributesImpl();
 
-        if ((element.getId() != null) && (element.getId() != "")) {
+        if ((element.getId() != null) && (!element.getId().isEmpty())) {
             ai.addAttribute("", "id", "", "ID", element.getId());
         }
 
@@ -460,7 +453,7 @@ public class DocumentWriter {
                     XSISAXHandler.setLogLevel(logger.getLevel());
                     Schema s = SchemaFactory.getInstance(element.getNamespace());
 
-                    if ((element.getName() != null) && (element.getName() != "")) {
+                    if ((element.getName() != null) && (!element.getName().isEmpty())) {
                         ai.addAttribute("", "name", "", "QName", element.getName());
                     }
 
@@ -481,7 +474,7 @@ public class DocumentWriter {
                     if (element.getType().getName().equals(types[i].getName())) {
                         found = true;
 
-                        if ((element.getName() != null) && (element.getName() != "")) {
+                        if ((element.getName() != null) && (!element.getName().isEmpty())) {
                             ai.addAttribute("", "name", "", "QName", element.getName());
                         }
 
@@ -496,7 +489,7 @@ public class DocumentWriter {
                     if (element.getType().getName().equals(types[i].getName())) {
                         found = true;
 
-                        if ((element.getName() != null) && (element.getName() != "")) {
+                        if ((element.getName() != null) && (!element.getName().isEmpty())) {
                             ai.addAttribute("", "name", "", "QName", element.getName());
                         }
 
@@ -507,7 +500,7 @@ public class DocumentWriter {
                     // 	we are nested  ... log this
                     nested = true;
 
-                    if ((element.getName() != null) && (element.getName() != "")) {
+                    if ((element.getName() != null) && (!element.getName().isEmpty())) {
                         ai.addAttribute("", "name", "", "QName", element.getName());
                     }
                 }
@@ -522,10 +515,10 @@ public class DocumentWriter {
             ai.addAttribute("", "nillable", "", "boolean", "true");
         }
 
-        if ((element.getDefault() != null) && (element.getDefault() != "")) {
+        if ((element.getDefault() != null) && (!element.getDefault().isEmpty())) {
             ai.addAttribute("", "default", "", "String", element.getDefault());
         } else {
-            if ((element.getFixed() != null) && (element.getFixed() != "")) {
+            if ((element.getFixed() != null) && (!element.getFixed().isEmpty())) {
                 ai.addAttribute("", "fixed", "", "String", element.getFixed());
             }
         }
@@ -580,7 +573,7 @@ public class DocumentWriter {
             Attribute attribute, Schema schema, PrintHandler ph, Map hints) throws IOException {
         AttributesImpl ai = new AttributesImpl();
 
-        if ((attribute.getId() != null) && (attribute.getId() != "")) {
+        if ((attribute.getId() != null) && (!attribute.getId().isEmpty())) {
             ai.addAttribute("", "id", "", "ID", attribute.getId());
         }
 
@@ -604,7 +597,7 @@ public class DocumentWriter {
                     XSISAXHandler.setLogLevel(logger.getLevel());
                     Schema s = SchemaFactory.getInstance(attribute.getNamespace());
 
-                    if ((attribute.getName() != null) && (attribute.getName() != "")) {
+                    if ((attribute.getName() != null) && (!attribute.getName().isEmpty())) {
                         ai.addAttribute("", "name", "", "QName", attribute.getName());
                     }
 
@@ -625,7 +618,7 @@ public class DocumentWriter {
                     if (attribute.getSimpleType().getName().equals(types[i].getName())) {
                         found = true;
 
-                        if ((attribute.getName() != null) && (attribute.getName() != "")) {
+                        if ((attribute.getName() != null) && (!attribute.getName().isEmpty())) {
                             ai.addAttribute("", "name", "", "QName", attribute.getName());
                         }
 
@@ -637,7 +630,7 @@ public class DocumentWriter {
                     // 	we are nested  ... log this
                     nested = true;
 
-                    if ((attribute.getName() != null) && (attribute.getName() != "")) {
+                    if ((attribute.getName() != null) && (!attribute.getName().isEmpty())) {
                         ai.addAttribute("", "name", "", "QName", attribute.getName());
                     }
                 }
@@ -653,10 +646,10 @@ public class DocumentWriter {
                     "", "use", "", "NMTOKEN", AttributeHandler.writeUse(attribute.getUse()));
         }
 
-        if ((attribute.getDefault() != null) && (attribute.getDefault() != "")) {
+        if ((attribute.getDefault() != null) && (!attribute.getDefault().isEmpty())) {
             ai.addAttribute("", "default", "", "String", attribute.getDefault());
         } else {
-            if ((attribute.getFixed() != null) && (attribute.getFixed() != "")) {
+            if ((attribute.getFixed() != null) && (!attribute.getFixed().isEmpty())) {
                 ai.addAttribute("", "fixed", "", "String", attribute.getFixed());
             }
         }
@@ -678,7 +671,7 @@ public class DocumentWriter {
             throws IOException {
         AttributesImpl ai = new AttributesImpl();
 
-        if ((group.getId() != null) && (group.getId() != "")) {
+        if ((group.getId() != null) && (!group.getId().isEmpty())) {
             ai.addAttribute("", "id", "", "ID", group.getId());
         }
 
@@ -739,7 +732,7 @@ public class DocumentWriter {
             throws IOException {
         AttributesImpl ai = new AttributesImpl();
 
-        if ((attributeGroup.getId() != null) && (attributeGroup.getId() != "")) {
+        if ((attributeGroup.getId() != null) && (!attributeGroup.getId().isEmpty())) {
             ai.addAttribute("", "id", "", "ID", attributeGroup.getId());
         }
 
@@ -789,18 +782,13 @@ public class DocumentWriter {
 
     private static void writeSimpleType(
             SimpleType simpleType, Schema schema, PrintHandler ph, Map hints) throws IOException {
-        if (XSISimpleTypes.NAMESPACE.equals(simpleType.getNamespace())) {
-            // error - not sure what to do
-            // TODO log the type error - throw an exception?
-        }
-
         AttributesImpl ai = new AttributesImpl();
 
-        if ((simpleType.getId() != null) && (simpleType.getId() != "")) {
+        if ((simpleType.getId() != null) && (!simpleType.getId().isEmpty())) {
             ai.addAttribute("", "id", "", "ID", simpleType.getId());
         }
 
-        if ((simpleType.getName() != null) && (simpleType.getName() != "")) {
+        if ((simpleType.getName() != null) && (!simpleType.getName().isEmpty())) {
             ai.addAttribute("", "name", "", "NCName", simpleType.getName());
         }
 
@@ -823,7 +811,7 @@ public class DocumentWriter {
                 ai = null;
 
                 if (schema.getTargetNamespace().equals(st.getNamespace())) {
-                    if ((st.getName() != null) && (st.getName() != "")) {
+                    if ((st.getName() != null) && (!st.getName().isEmpty())) {
                         SimpleType[] sts = schema.getSimpleTypes();
 
                         if (sts != null) {
@@ -864,7 +852,7 @@ public class DocumentWriter {
                 ai = null;
 
                 if (schema.getTargetNamespace().equals(st.getNamespace())) {
-                    if ((st.getName() != null) && (st.getName() != "")) {
+                    if ((st.getName() != null) && (!st.getName().isEmpty())) {
                         SimpleType[] sts = schema.getSimpleTypes();
 
                         if (sts != null) {
@@ -907,7 +895,7 @@ public class DocumentWriter {
                         if (schema.getTargetNamespace().equals(st.getNamespace())) {
                             boolean found = false;
 
-                            if ((st.getName() != null) && (st.getName() != "")) {
+                            if ((st.getName() != null) && (!st.getName().isEmpty())) {
                                 SimpleType[] sts2 = schema.getSimpleTypes();
 
                                 if (sts2 != null) {
@@ -966,7 +954,7 @@ public class DocumentWriter {
             throws IOException {
         AttributesImpl ai = new AttributesImpl();
 
-        if ((choice.getId() != null) && (choice.getId() != "")) {
+        if ((choice.getId() != null) && (!choice.getId().isEmpty())) {
             ai.addAttribute("", "id", "", "ID", choice.getId());
         }
 
@@ -1033,7 +1021,7 @@ public class DocumentWriter {
             throws IOException {
         AttributesImpl ai = new AttributesImpl();
 
-        if ((sequence.getId() != null) && (sequence.getId() != "")) {
+        if ((sequence.getId() != null) && (!sequence.getId().isEmpty())) {
             ai.addAttribute("", "id", "", "ID", sequence.getId());
         }
 
@@ -1095,7 +1083,7 @@ public class DocumentWriter {
             throws IOException {
         AttributesImpl ai = new AttributesImpl();
 
-        if ((all.getId() != null) && (all.getId() != "")) {
+        if ((all.getId() != null) && (!all.getId().isEmpty())) {
             ai.addAttribute("", "id", "", "ID", all.getId());
         }
 
@@ -1131,7 +1119,7 @@ public class DocumentWriter {
     private static void writeAny(Any any, PrintHandler ph) throws IOException {
         AttributesImpl ai = new AttributesImpl();
 
-        if ((any.getId() != null) && (any.getId() != "")) {
+        if ((any.getId() != null) && (!any.getId().isEmpty())) {
             ai.addAttribute("", "id", "", "ID", any.getId());
         }
 
@@ -1161,11 +1149,11 @@ public class DocumentWriter {
             ComplexType complexType, Schema schema, PrintHandler ph, Map hints) throws IOException {
         AttributesImpl ai = new AttributesImpl();
 
-        if ((complexType.getId() != null) && (complexType.getId() != "")) {
+        if ((complexType.getId() != null) && (!complexType.getId().isEmpty())) {
             ai.addAttribute("", "id", "", "ID", complexType.getId());
         }
 
-        if ((complexType.getName() != null) && (complexType.getName() != "")) {
+        if ((complexType.getName() != null) && (!complexType.getName().isEmpty())) {
             ai.addAttribute("", "name", "", "NCName", complexType.getName());
         }
 
@@ -1435,7 +1423,7 @@ public class DocumentWriter {
                         prefix = "";
                     }
 
-                    if (prefix != "") {
+                    if (!prefix.isEmpty()) {
                         prefix += ":";
                     }
                 }
@@ -1492,7 +1480,7 @@ public class DocumentWriter {
                         prefix = "";
                     }
 
-                    if (prefix != "") {
+                    if (!prefix.isEmpty()) {
                         prefix += ":";
                     }
                 }
@@ -1547,7 +1535,7 @@ public class DocumentWriter {
                         prefix = "";
                     }
 
-                    if (prefix != "") {
+                    if (!prefix.isEmpty()) {
                         prefix += ":";
                     }
                 }

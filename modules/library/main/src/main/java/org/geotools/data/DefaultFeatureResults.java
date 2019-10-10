@@ -89,11 +89,8 @@ public class DefaultFeatureResults extends DataFeatureCollection {
             // option 1: remove Query.getTypeName
             // option 2: throw a warning
             // option 3: restore exception code
-            this.query = new DefaultQuery(query);
-            ((DefaultQuery) this.query).setTypeName(typeName);
-            // ((DefaultQuery) this.query).setCoordinateSystem(query.getCoordinateSystem());
-            // ((DefaultQuery)
-            // this.query).setCoordinateSystemReproject(query.getCoordinateSystemReproject());
+            this.query = new Query(query);
+            this.query.setTypeName(typeName);
         }
 
         if (originalType.getGeometryDescriptor() == null) {
@@ -167,10 +164,6 @@ public class DefaultFeatureResults extends DataFeatureCollection {
      *
      * <p>If query.getPropertyNames() is used to limit the result of the Query a sub type will be
      * returned based on FeatureSource.getSchema().
-     *
-     * @return DOCUMENT ME!
-     * @throws IOException DOCUMENT ME!
-     * @throws DataSourceException DOCUMENT ME!
      */
     public SimpleFeatureType getSchema() {
         return super.getSchema();
@@ -227,7 +220,7 @@ public class DefaultFeatureResults extends DataFeatureCollection {
             if (at instanceof GeometryDescriptorImpl) attributes.add(at.getLocalName());
         }
 
-        DefaultQuery q = new DefaultQuery(query);
+        Query q = new Query(query);
         q.setPropertyNames(attributes);
         FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                 ((DataStore) featureSource.getDataStore()).getFeatureReader(q, getTransaction());

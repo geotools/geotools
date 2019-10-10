@@ -75,7 +75,7 @@ public class CssBaseTest {
     }
 
     protected String readResource(String resource) throws IOException {
-        return IOUtils.toString(ParserSyntheticTest.class.getResourceAsStream(resource));
+        return IOUtils.toString(ParserSyntheticTest.class.getResourceAsStream(resource), "UTF-8");
     }
 
     protected Style translate(String css) {

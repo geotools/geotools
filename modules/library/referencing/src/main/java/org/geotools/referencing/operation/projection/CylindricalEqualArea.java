@@ -29,9 +29,6 @@ import org.opengis.referencing.operation.MathTransform;
 
 public class CylindricalEqualArea extends MapProjection {
 
-    private static final double EPS = 1.0E-6;
-    private static final double EPS10 = 1.0e-10;
-    private static final double RTD = 180.0 / Math.PI;
     private static final double DTR = Math.PI / 180.0;
     private static final double HALFPI = Math.PI / 2.;
     private double qp;
@@ -108,16 +105,12 @@ public class CylindricalEqualArea extends MapProjection {
 
             double t = Math.abs(y *= scaleFactor);
             // if (t - EPS <= 1.) {//if (true) { //if ((t = fabs(xy.y *= P->k0)) - EPS <= 1.) {
-            if (true) {
-                if (t >= 1.) {
-                    phi = y < 0. ? -HALFPI : HALFPI;
-                } else {
-                    phi = Math.asin(y);
-                }
-                lam = x / scaleFactor;
+            if (t >= 1.) {
+                phi = y < 0. ? -HALFPI : HALFPI;
             } else {
-                throw new ProjectionException();
+                phi = Math.asin(y);
             }
+            lam = x / scaleFactor;
         } else {
             phi = ProjectionMath.authlat(Math.asin(2. * y * scaleFactor / qp), apa);
             lam = x / scaleFactor;
@@ -129,15 +122,6 @@ public class CylindricalEqualArea extends MapProjection {
         } else {
             return new Point2D.Double(lam, phi);
         }
-    }
-
-    /** Compares the specified object with this map projection for equality. */
-    @Override
-    public boolean equals(final Object object) {
-        if (object == this) {
-            return true;
-        }
-        return super.equals(object);
     }
 
     public static class Provider extends AbstractProvider {

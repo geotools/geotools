@@ -25,6 +25,7 @@ import java.util.AbstractList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Locale;
+import java.util.Objects;
 import javax.measure.Unit;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
@@ -35,8 +36,6 @@ import org.geotools.util.AbstractInternationalString;
 import org.geotools.util.Classes;
 import org.geotools.util.NumberRange;
 import org.geotools.util.Utilities;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.util.InternationalString;
 
 /**
@@ -454,8 +453,8 @@ class CategoryList extends AbstractList<Category> implements Comparator<Category
      * Format the specified value using the specified locale convention.
      *
      * @param value The value to format.
-     * @param writeUnit {@code true} if unit symbol should be formatted after the number. Ignored if
-     *     this category list has no unit.
+     * @param writeUnits {@code true} if unit symbol should be formatted after the number. Ignored
+     *     if this category list has no unit.
      * @param locale The locale, or {@code null} for a default one.
      * @param buffer The buffer where to format.
      * @return The buffer {@code buffer} for convenience.
@@ -690,6 +689,24 @@ class CategoryList extends AbstractList<Category> implements Comparator<Category
         return (overflowFallback == null) && super.equals(object);
     }
 
+    @Override
+    public int hashCode() {
+        int result =
+                Objects.hash(
+                        super.hashCode(),
+                        range,
+                        main,
+                        nodata,
+                        overflowFallback,
+                        last,
+                        hasGaps,
+                        name,
+                        unit);
+        result = 31 * result + Arrays.hashCode(minimums);
+        result = 31 * result + Arrays.hashCode(categories);
+        return result;
+    }
+
     /** Reset the {@link #last} field to a non-null value after deserialization. */
     private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
@@ -714,15 +731,6 @@ class CategoryList extends AbstractList<Category> implements Comparator<Category
     /** Tests whether this transform does not move any points. */
     public boolean isIdentity() {
         return false;
-    }
-
-    /** Ensure the specified point is one-dimensional. */
-    private static void checkDimension(final DirectPosition point) {
-        final int dim = point.getDimension();
-        if (dim != 1) {
-            throw new MismatchedDimensionException(
-                    Errors.format(ErrorKeys.MISMATCHED_DIMENSION_$2, 1, dim));
-        }
     }
 
     /**

@@ -2,7 +2,8 @@
 Graph
 =====
 
-The gt-graph package defines the concept of a graph (or network) made up of geotools Features.
+The ``gt-graph`` package defines the concept of a graph (or network) made up of
+GeoTools Features.
 
 **Maven**::
    
@@ -26,19 +27,20 @@ ported to GeoTools.
 
 The Graph module makes use of concepts and (classes) from the GeoTools core:
 
-* Feature - atomic unit of geographic information
-* FeatureType - keeps track of what attributes each Feature can hold
-* FeatureID - a unique id associated with each Feature (must start with a non-numeric character)
+  * ``Feature`` - atomic unit of geographic information 
+  * ``FeatureType`` - keeps track of what attributes each Feature can hold
+  * ``FeatureID`` - a unique id associated with each Feature (must start with
+    a non-numeric character)
 
 In addition to the Feature API from core, the graph module makes use of relationships.
 Usually relationships are based on spatial comparisons between features, although you
 may be able to quickly establish a relationship using your feature attributes.
 
-* Graph constructed from LineStrings based on "shared end points"
+* Graph constructed from ``LineStrings`` based on "shared end points"
   
   Example a road network used for navigation.
 
-* Graph constructed from Polygons based on "touches"
+* Graph constructed from ``Polygons`` based on "touches"
   
   Example graph of watersheds used for ground water analysis.
 
@@ -80,25 +82,25 @@ Graph Access
 
 A Graph supports simple direct access is supported using:
 
-* Graph.getNodes()
-* Graph.getEdges()
+  + ``Graph.getNodes()`` 
+  + ``Graph.getEdges()``
 
 You can also pass in a visitor in order to traverse the graph contents:
 
-* Graph.visitNodes( visitor )
-* Graph.visitEdges( visitor )
+  + ``Graph.visitNodes( visitor )`` 
+  + ``Graph.visitEdges( visitor )``
 
 The visitor can also control when to stop the process using:
 
-* Graph.queryNodes( visitor )
-* Graph.queryEdges( visitor )
+  * ``Graph.queryNodes( visitor )`` 
+  * ``Graph.queryEdges( visitor )``
   
   To provide control your visitor can indicate when it wants to stop, backtrack or continue using:
   
-  * GraphTraversal.CONTINUE
-  * GraphTraversal.KILL_BRANCH
-  * GraphTraversal.STOP
-  * GraphTraversal.SUSPEND
+    * ``GraphTraversal.CONTINUE`` 
+    * ``GraphTraversal.KILL_BRANCH`` 
+    * ``GraphTraversal.STOP`` 
+    * ``GraphTraversal.SUSPEND``
 
 Graph Traversal
 ^^^^^^^^^^^^^^^
@@ -112,7 +114,7 @@ An alternative to direct access is the configure a **GraphTraversal** using:
   
 * **GraphWalker**: walker being iterated over the graph (usually to accomplish a specific goal)
   
-   GeoTools provides out of the box implementations for many common problems: finding the the
+   GeoTools provides out of the box implementations for many common problems: finding the
    shortest path, partition a graph into sections, or visiting all the elements.
 
 Directed Graph
@@ -131,12 +133,13 @@ Building
 GraphBuilder
 ^^^^^^^^^^^^
 
-At a low level graph creation is handled using a GraphBuilder. We have a range
+At a low level graph creation is handled using a ``GraphBuilder``. We have a range
 of implementations available. The important point is that you control them by
-calling buildNode, and buildEdge repeatedly allowing it to build up an internal
+calling ``buildNode``, and ``buildEdge`` repeatedly allowing it to build up an internal
 representation of your Graph.
 
-When you are satisfied with the result you can call getGraph() to retrieve the result.
+When you are satisfied with the result you can call ``getGraph()`` to retrieve
+the result.
 
 
 .. image:: /images/graph_builder.PNG
@@ -151,11 +154,11 @@ Example
     :start-after: // graphExample start
     :end-before: // graphExample end
    
-2. To make use of your graph we will use a GraphVisitor:
+2. To make use of your graph we will use a ``GraphVisitor``:
    
-   The following OrphanVistor is called for "each" GraphComponent where
-   it has a chance to check if the GraphComponent is an orphan (ie has
-   no relationships) or not.
+   The following ``OrphanVistor`` is called for "each" ``GraphComponent`` where it
+   has a chance to check if the ``GraphComponent`` is an orphan (i.e. has no
+   relationships) or not.
 
   .. literalinclude:: /../src/main/java/org/geotools/graph/GraphExamples.java
     :language: java
@@ -168,14 +171,14 @@ GraphGenerator
 ^^^^^^^^^^^^^^
 
 The other approach is we have a number of generators which will automatically create a
-Graph for you based on information you feed in. The GraphGenerators use a GraphBuilder
+Graph for you based on information you feed in. The ``GraphGenerators`` use a ``GraphBuilder``
 to build up each node and edge internally; so you will need to be careful to construct them
 with the correct builder for the problem you are wishing to solve.
 
 
 .. image:: /images/graph_generator.PNG
 
-Each one of these implementations is set up to handle different kinds of data (Features, LineStrings, etc...)
+Each one of these implementations is set up to handle different kinds of data (``Features``, ``LineStrings``, etc...)
 so please be sure to read the javadocs. 
 
 Building Graph from a FeatureCollection
@@ -229,11 +232,12 @@ Building Graph from Line Segments
 Building a FeatureCollection from your Graph
 --------------------------------------------
 
-Once the graph is built each, edge#getObject() will hold the original feature used to built it.
+Once the graph is built each, ``edge.getObject()`` will hold the original
+feature used to built it.
 
-You can traverse your graph and build up FeatureCollection as you go.::
+You can traverse your graph and build up ``FeatureCollection`` as you go.::
     
-    SimpleFeatureCollection features = FeatureCollections.newInstance();
+    SimpleFeatureCollection features = new DefaultFeatureCollection();
     
     for ( Iterator e = graph.getEdges().iterator(); e.hasNext(); ) {
        Edge edge = (Edge) e.next();

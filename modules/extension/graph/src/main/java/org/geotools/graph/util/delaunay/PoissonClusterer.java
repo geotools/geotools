@@ -91,7 +91,6 @@ public class PoissonClusterer {
                         SimpleFeature neighborFeature = neighbor.getFeature();
                         newNodes.add(neighbor);
 
-                        Object neighborsBaseObj = base.evaluate(nextFeature);
                         if (!(baseObj instanceof Number)) {
                             throw new RuntimeException(
                                     "Expression "
@@ -99,7 +98,6 @@ public class PoissonClusterer {
                                             + " must evaluate to a number on feature "
                                             + neighborFeature);
                         }
-                        Object neighborsTargetObj = target.evaluate(nextFeature);
                         if (!(targetObj instanceof Number)) {
                             throw new RuntimeException(
                                     "Expression "
@@ -149,7 +147,6 @@ public class PoissonClusterer {
                 while (newNodeIt.hasNext()) {
                     DelaunayNode nextNode = (DelaunayNode) newNodeIt.next();
                     SimpleFeature nextFeature2 = nextNode.getFeature();
-                    Object neighborsBaseObj = base.evaluate(nextFeature2);
                     if (!(baseObj instanceof Number)) {
                         throw new RuntimeException(
                                 "Expression "
@@ -157,7 +154,6 @@ public class PoissonClusterer {
                                         + " must evaluate to a number on feature "
                                         + nextFeature2);
                     }
-                    Object neighborsTargetObj = target.evaluate(nextFeature2);
                     if (!(targetObj instanceof Number)) {
                         throw new RuntimeException(
                                 "Expression "

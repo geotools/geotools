@@ -125,16 +125,6 @@ public class AbstractReferenceSystem extends AbstractIdentifiedObject implements
     }
 
     /**
-     * Area for which the (coordinate) reference system is valid. Returns {@code null} if not
-     * available.
-     *
-     * @deprecated Renamed {@link #getDomainOfValidity}.
-     */
-    public Extent getValidArea() {
-        return domainOfValidity;
-    }
-
-    /**
      * Description of domain of usage, or limitations of usage, for which this (coordinate)
      * reference system object is valid. Returns {@code null} if not available.
      */
@@ -145,7 +135,7 @@ public class AbstractReferenceSystem extends AbstractIdentifiedObject implements
     /**
      * Compare this reference system with the specified object for equality. If {@code
      * compareMetadata} is {@code true}, then all available properties are compared including
-     * {@linkplain #getValidArea valid area} and {@linkplain #getScope scope}.
+     * {@linkplain #getDomainOfValidity()} valid area} and {@linkplain #getScope scope}.
      *
      * @param object The object to compare to {@code this}.
      * @param compareMetadata {@code true} for performing a strict comparaison, or {@code false} for

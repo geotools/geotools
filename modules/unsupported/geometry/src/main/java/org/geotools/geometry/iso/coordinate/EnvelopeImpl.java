@@ -22,7 +22,6 @@ import org.geotools.geometry.iso.UnsupportedDimensionException;
 import org.geotools.geometry.iso.util.algorithmND.AlgoRectangleND;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Envelope;
-import org.opengis.geometry.PositionFactory;
 import org.opengis.geometry.coordinate.Position;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -42,9 +41,6 @@ public class EnvelopeImpl implements Envelope, Serializable {
 
     // protected DirectPositionImpl pMax = null; // Upper Corner (Right top)
     private DirectPosition pMax = null; // Upper Corner (Right top)
-
-    /** Used to create Envelope on request */
-    private PositionFactory factory;
 
     /**
      * Constructor
@@ -66,11 +62,10 @@ public class EnvelopeImpl implements Envelope, Serializable {
         this.setValues(p0, p1);
     }
 
-    /** @param p0 */
     public EnvelopeImpl(Position position) {
         this(position.getDirectPosition());
     }
-    /** @param p0 */
+
     public EnvelopeImpl(DirectPosition position) {
         this.pMin = new DirectPositionImpl(position);
         this.pMax = new DirectPositionImpl(position);

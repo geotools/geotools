@@ -23,6 +23,7 @@ import org.geotools.geometry.GeometryBuilder;
 import org.geotools.geometry.iso.primitive.PrimitiveFactoryImpl;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.geometry.DirectPosition;
+import org.opengis.geometry.PositionFactory;
 import org.opengis.geometry.complex.ComplexFactory;
 import org.opengis.geometry.complex.CompositeSurface;
 import org.opengis.geometry.coordinate.GeometryFactory;
@@ -43,14 +44,15 @@ public class CompositeSurfaceTest extends TestCase {
         ComplexFactory complf = builder.getComplexFactory();
         PrimitiveFactoryImpl pf = (PrimitiveFactoryImpl) builder.getPrimitiveFactory();
         GeometryFactory cf = builder.getGeometryFactory();
+        PositionFactory posf = builder.getPositionFactory();
 
         List<DirectPosition> directPositionList = new ArrayList<DirectPosition>();
-        directPositionList.add(cf.createDirectPosition(new double[] {20, 10}));
-        directPositionList.add(cf.createDirectPosition(new double[] {40, 10}));
-        directPositionList.add(cf.createDirectPosition(new double[] {50, 40}));
-        directPositionList.add(cf.createDirectPosition(new double[] {30, 50}));
-        directPositionList.add(cf.createDirectPosition(new double[] {10, 30}));
-        directPositionList.add(cf.createDirectPosition(new double[] {20, 10}));
+        directPositionList.add(posf.createDirectPosition(new double[] {20, 10}));
+        directPositionList.add(posf.createDirectPosition(new double[] {40, 10}));
+        directPositionList.add(posf.createDirectPosition(new double[] {50, 40}));
+        directPositionList.add(posf.createDirectPosition(new double[] {30, 50}));
+        directPositionList.add(posf.createDirectPosition(new double[] {10, 30}));
+        directPositionList.add(posf.createDirectPosition(new double[] {20, 10}));
 
         Surface s1 = pf.createSurfaceByDirectPositions(directPositionList);
 

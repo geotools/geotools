@@ -52,7 +52,7 @@ public class AreaFunction extends FunctionExpressionImpl {
         geom = (org.opengis.filter.expression.Expression) getParameters().get(0);
         Geometry g = (Geometry) geom.evaluate(feature);
 
-        return new Double(getArea(g));
+        return Double.valueOf(getArea(g));
     }
 
     /**

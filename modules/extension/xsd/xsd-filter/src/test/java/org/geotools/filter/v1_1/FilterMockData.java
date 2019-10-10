@@ -88,7 +88,7 @@ public class FilterMockData {
         resourceId.setStartTime(new Date(1000));
         resourceId.setEndTime(new Date(2000));
 
-        Integer testInt = new Integer(1234567890);
+        Integer testInt = Integer.valueOf(1234567890);
 
         return f.id(
                 new LinkedHashSet<Identifier>(

@@ -86,11 +86,9 @@ public class SdeRow {
                 statusIndicator = row.getIndicator(i);
                 colStatusIndicator[i] = statusIndicator;
 
-                if (statusIndicator == SeRow.SE_IS_ALREADY_FETCHED
-                        || statusIndicator == SeRow.SE_IS_REPEATED_FEATURE
-                        || statusIndicator == SeRow.SE_IS_NULL_VALUE) {
-                    // ignore, will use previous values
-                } else {
+                if (statusIndicator != SeRow.SE_IS_ALREADY_FETCHED
+                        && statusIndicator != SeRow.SE_IS_REPEATED_FEATURE
+                        && statusIndicator != SeRow.SE_IS_NULL_VALUE) {
                     if (this.geometryFactory != null && this.geometryIndex == i) {
                         values[i] = row.getGeometry(geometryFactory, i);
                     } else {
@@ -165,44 +163,22 @@ public class SdeRow {
         }
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param index DOCUMENT ME!
-     * @return DOCUMENT ME!
-     * @throws IOException DOCUMENT ME!
-     */
+    /** */
     public Object getObject(int index) throws IOException {
         return values[index];
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
+    /** */
     public Object[] getAll() {
         return values;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param index DOCUMENT ME!
-     * @return DOCUMENT ME!
-     * @throws IOException DOCUMENT ME!
-     */
+    /** */
     public Long getLong(int index) throws IOException {
         return (Long) getObject(index);
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param index DOCUMENT ME!
-     * @return DOCUMENT ME!
-     * @throws IOException DOCUMENT ME!
-     */
+    /** */
     public SeShape getShape(int index) throws IOException {
         return (SeShape) getObject(index);
     }

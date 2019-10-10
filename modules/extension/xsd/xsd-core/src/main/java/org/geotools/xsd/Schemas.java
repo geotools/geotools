@@ -132,7 +132,7 @@ public class Schemas {
                 LOGGER.fine("looking up schema for " + conf.getNamespaceURI());
             }
 
-            XSDSchemaLocator locator = conf.getSchemaLocator();
+            XSDSchemaLocator locator = new SchemaLocator(conf.getXSD());
 
             if (locator == null) {
                 LOGGER.fine("No schema locator for " + conf.getNamespaceURI());
@@ -144,7 +144,7 @@ public class Schemas {
             String schemaLocation = null;
 
             try {
-                URL location = new URL(conf.getSchemaFileURL());
+                URL location = new URL(conf.getXSD().getSchemaLocation());
                 schemaLocation = location.toExternalForm();
             } catch (MalformedURLException e) {
                 throw new RuntimeException(e);
@@ -181,7 +181,7 @@ public class Schemas {
         for (Iterator c = all.iterator(); c.hasNext(); ) {
             configuration = (Configuration) c.next();
 
-            XSDSchemaLocationResolver resolver = configuration.getSchemaLocationResolver();
+            XSDSchemaLocationResolver resolver = new SchemaLocationResolver(configuration.getXSD());
 
             if (resolver != null) {
                 resolvers.add(resolver);
@@ -200,27 +200,6 @@ public class Schemas {
      */
     public static final XSDSchema parse(String location) throws IOException {
         return parse(location, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
-    }
-
-    /**
-     * Parses a schema at the specified location.
-     *
-     * @param location A uri pointing to the location of the schema.
-     * @param locators An array of schema locator objects to be used when parsing imports/includes
-     *     of the main schema.
-     * @param resolvers An array of schema location resolvers used to override schema locations
-     *     encountered in an instance document or an imported schema.
-     * @return The parsed schema, or null if the schema could not be parsed.
-     * @throws IOException In the event of a schema parsing error.
-     * @deprecated use {@link #parse(String, List, List)}
-     */
-    public static final XSDSchema parse(
-            String location, XSDSchemaLocator[] locators, XSDSchemaLocationResolver[] resolvers)
-            throws IOException {
-        return parse(
-                location,
-                (locators != null) ? Arrays.asList(locators) : Collections.EMPTY_LIST,
-                (resolvers != null) ? Arrays.asList(resolvers) : Collections.EMPTY_LIST);
     }
 
     /**
@@ -633,8 +612,6 @@ public class Schemas {
                                 resolver.resolveSchemaLocation(null, namespace, location);
                         if (resolvedSchemaLocation != null) {
                             return resolvedSchemaLocation;
-                        } else {
-                            // should not happen, but just continue
                         }
                     }
                 }
@@ -675,18 +652,6 @@ public class Schemas {
     }
 
     /**
-     * Returns a list of all child element declarations of the specified element, no order is
-     * guaranteed.
-     *
-     * @param element The parent element.
-     * @return A list of @link XSDElementDeclaration objects, one for each child element.
-     * @deprecated use {@link #getChildElementDeclarations(XSDTypeDefinition)}
-     */
-    public static final List getChildElementDeclarations(XSDElementDeclaration element) {
-        return getChildElementDeclarations(element.getType());
-    }
-
-    /**
      * Returns a list of all child element declarations of the specified type, no order is
      * guaranteed.
      *
@@ -695,22 +660,6 @@ public class Schemas {
      */
     public static final List getChildElementDeclarations(XSDTypeDefinition type) {
         return getChildElementDeclarations(type, true);
-    }
-
-    /**
-     * Returns a list of all child element declarations of the specified element.
-     *
-     * <p>The <code>includeParents</code> flag controls if this method should returns those elements
-     * defined on parent types.
-     *
-     * @param element The parent element.
-     * @param includeParents Flag indicating if parent types should be processed.
-     * @return A list of @link XSDElementDeclaration objects, one for each child element.
-     * @deprecated use {@link #getChildElementDeclarations(XSDTypeDefinition, boolean)}
-     */
-    public static final List getChildElementDeclarations(
-            XSDElementDeclaration element, boolean includeParents) {
-        return getChildElementDeclarations(element.getType(), includeParents);
     }
 
     /**
@@ -1028,12 +977,12 @@ public class Schemas {
 
                         if (decl == fElement) {
                             if (particle.isSetMinOccurs()) {
-                                minOccurs.add(new Integer(particle.getMinOccurs()));
+                                minOccurs.add(Integer.valueOf(particle.getMinOccurs()));
                             } else if (particle.getContainer() instanceof XSDModelGroup
                                     && particle.getContainer().getContainer()
                                             instanceof XSDParticle) {
                                 particle = (XSDParticle) particle.getContainer().getContainer();
-                                minOccurs.add(new Integer(particle.getMinOccurs()));
+                                minOccurs.add(Integer.valueOf(particle.getMinOccurs()));
                             } else {
                                 minOccurs.add(1);
                             }
@@ -1076,12 +1025,12 @@ public class Schemas {
 
                         if (decl == fElement) {
                             if (particle.isSetMaxOccurs()) {
-                                maxOccurs.add(new Integer(particle.getMaxOccurs()));
+                                maxOccurs.add(Integer.valueOf(particle.getMaxOccurs()));
                             } else if (particle.getContainer() instanceof XSDModelGroup
                                     && particle.getContainer().getContainer()
                                             instanceof XSDParticle) {
                                 particle = (XSDParticle) particle.getContainer().getContainer();
-                                maxOccurs.add(new Integer(particle.getMaxOccurs()));
+                                maxOccurs.add(Integer.valueOf(particle.getMaxOccurs()));
                             } else {
                                 maxOccurs.add(1);
                             }
@@ -1201,7 +1150,7 @@ public class Schemas {
     public static final XSDElementDeclaration getChildElementDeclaration(
             XSDElementDeclaration parent, QName qName) {
         // look for a match in a direct child
-        List children = getChildElementDeclarations(parent);
+        List children = getChildElementDeclarations(parent.getType());
 
         for (Iterator itr = children.iterator(); itr.hasNext(); ) {
             XSDElementDeclaration element = (XSDElementDeclaration) itr.next();
@@ -1287,7 +1236,7 @@ public class Schemas {
      * Returns a list of all attribute declarations declared in the type (or any base type) of the
      * specified element.
      *
-     * @param element The element.
+     * @param type The type definition
      * @return A list of @link XSDAttributeDeclaration objects, one for each attribute of the
      *     element.
      */
@@ -1299,7 +1248,7 @@ public class Schemas {
      * Returns a list of all attribute declarations declared in the type (and optionally any base
      * type) of the specified element.
      *
-     * @param element The element.
+     * @param type The element type
      * @param includeParents Wether to include parent types.
      * @return A list of @link XSDAttributeDeclaration objects, one for each attribute of the
      *     element.

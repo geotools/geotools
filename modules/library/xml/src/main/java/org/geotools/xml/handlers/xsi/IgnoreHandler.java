@@ -36,6 +36,7 @@ public class IgnoreHandler extends XSIElementHandler {
     }
 
     /** @see java.lang.Object#hashCode() */
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return 0;
     }

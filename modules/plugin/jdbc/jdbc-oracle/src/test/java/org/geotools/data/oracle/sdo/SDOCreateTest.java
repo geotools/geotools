@@ -39,10 +39,6 @@ public class SDOCreateTest {
 
     private static final int NULL = 0;
 
-    public void testTest() throws Exception {
-        testXYZM_MultiLineString();
-    }
-
     @Test
     public void testXY_Point() throws Exception {
         SDO_GEOMETRY oraGeom =

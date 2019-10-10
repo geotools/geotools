@@ -108,4 +108,23 @@ public class RecodeFunctionTest extends SEFunctionTestBase {
             parameters.add(ff2.literal(values[i]));
         }
     }
+
+    @Test
+    public void testEqualsHashCode() {
+        setupParameters(words, ints);
+        Function fn1 = finder.findFunction("interpolate", parameters);
+        Function fn2 = finder.findFunction("interpolate", parameters);
+        setupParameters(words, new Integer[] {1, 2, 5});
+        Function fn3 = finder.findFunction("interpolate", parameters);
+
+        // symmetric
+        assertEquals(fn1, fn2);
+        assertEquals(fn2, fn1);
+        // same hashcode
+        assertEquals(fn1.hashCode(), fn2.hashCode());
+
+        // but not equal to fn3
+        assertNotEquals(fn1, fn3);
+        assertNotEquals(fn2, fn3);
+    }
 }

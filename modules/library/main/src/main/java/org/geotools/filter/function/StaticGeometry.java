@@ -17,6 +17,8 @@
  */
 package org.geotools.filter.function;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.WordUtils;
 import org.geotools.factory.CommonFactoryFinder;
 import org.locationtech.jts.algorithm.MinimumBoundingCircle;
 import org.locationtech.jts.algorithm.MinimumDiameter;
@@ -458,24 +460,20 @@ public class StaticGeometry {
         return s1.toUpperCase();
     }
 
+    public static String strAbbreviate(String s, Integer lower, Integer upper, String toAppend) {
+        return WordUtils.abbreviate(s, lower, upper, toAppend);
+    }
+
     public static String strCapitalize(String s) {
-        if (s == null) return null;
-        int strLength = s.length();
-        StringBuilder sb = new StringBuilder(strLength);
-        boolean titleCaseNext = true;
-        for (int i = 0; i < strLength; i++) {
-            char ch = s.charAt(i);
-            if (Character.isWhitespace(ch)) {
-                sb.append(ch);
-                titleCaseNext = true;
-            } else if (titleCaseNext) {
-                sb.append(Character.toTitleCase(ch));
-                titleCaseNext = false;
-            } else {
-                sb.append(Character.toLowerCase(ch));
-            }
-        }
-        return sb.toString();
+        return WordUtils.capitalizeFully(s);
+    }
+
+    public static String strDefaultIfBlank(String s, String defaultStr) {
+        return StringUtils.defaultIfBlank(s, defaultStr);
+    }
+
+    public static String strStripAccents(String s) {
+        return StringUtils.stripAccents(s);
     }
 
     public static boolean strMatches(String s1, String s2) {

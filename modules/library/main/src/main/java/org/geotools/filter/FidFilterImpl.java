@@ -21,8 +21,8 @@ package org.geotools.filter;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.expression.PropertyAccessor;
@@ -51,26 +51,9 @@ public class FidFilterImpl extends AbstractFilter implements Id {
             org.geotools.util.logging.Logging.getLogger(FidFilterImpl.class);
 
     /** List of the Identifer. */
-    private Set<Identifier> fids = new HashSet<Identifier>();
+    private Set<Identifier> fids = new LinkedHashSet<>();
 
-    private Set<String> ids = new HashSet<String>();
-
-    /**
-     * Empty constructor.
-     *
-     * @deprecated use {@link #FidFilterImpl(Set)}
-     */
-    protected FidFilterImpl() {}
-
-    /**
-     * Constructor with first fid set
-     *
-     * @param initialFid The type of comparison.
-     * @deprecated use {@link #FidFilterImpl(Set)}
-     */
-    protected FidFilterImpl(String initialFid) {
-        addFid(initialFid);
-    }
+    private Set<String> ids = new LinkedHashSet<>();
 
     /** Constructor which takes {@link org.opengis.filter.identity.Identifier}, not String. */
     protected FidFilterImpl(Set /* <Identifier> */ fids) {
@@ -81,20 +64,10 @@ public class FidFilterImpl extends AbstractFilter implements Id {
                 throw new ClassCastException(
                         "Fids must implement Identifier, " + next.getClass() + " does not");
         }
-        this.fids = fids;
+        this.fids = new LinkedHashSet<>(fids);
         for (Identifier identifier : this.fids) {
             ids.add(identifier.getID().toString());
         }
-    }
-
-    /**
-     * Returns all the fids in this filter.
-     *
-     * @return An array of all the fids in this filter.
-     * @deprecated use {@link #getIDs()}
-     */
-    public final String[] getFids() {
-        return (String[]) fids().toArray(new String[0]);
     }
 
     /** @see org.opengis.filter.Id#getIDs() */
@@ -136,7 +109,6 @@ public class FidFilterImpl extends AbstractFilter implements Id {
      * Adds a feature ID to the filter.
      *
      * @param fid A single feature ID.
-     * @deprecated
      */
     public final void addFid(String fid) {
         LOGGER.finest("got fid: " + fid);
@@ -263,16 +235,7 @@ public class FidFilterImpl extends AbstractFilter implements Id {
 
         if ((filter != null) && (filter.getClass() == this.getClass())) {
             FidFilterImpl other = (FidFilterImpl) filter;
-            int filterType = Filters.getFilterType(other);
-            if (LOGGER.isLoggable(Level.FINEST)) {
-                LOGGER.finest("condition: " + filterType);
-            }
-
-            if (filterType == AbstractFilter.FID) {
-                return fids.equals(other.fids);
-            } else {
-                return false;
-            }
+            return fids.equals(other.fids);
         } else {
             return false;
         }

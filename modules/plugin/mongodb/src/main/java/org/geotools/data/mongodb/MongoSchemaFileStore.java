@@ -17,7 +17,6 @@
  */
 package org.geotools.data.mongodb;
 
-import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -37,8 +36,12 @@ import org.opengis.feature.type.Name;
 public class MongoSchemaFileStore implements MongoSchemaStore {
 
     static final String SUFFIX_json = ".json";
+    // covers http(s) also
+    static final String PRE_FIX_HTTP = "http";
 
-    final File schemaStoreFile;
+    static final String SUFFIX_ZIP = ".zip";
+
+    protected File schemaStoreFile;
 
     public MongoSchemaFileStore(String uri) throws IOException, URISyntaxException {
         this(new URI(uri));
@@ -77,22 +80,8 @@ public class MongoSchemaFileStore implements MongoSchemaStore {
             return null;
         }
         BufferedReader reader = new BufferedReader(new FileReader(schemaFile));
-        try {
-            String lineSeparator = System.getProperty("line.separator");
-            StringBuilder jsonBuilder = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                jsonBuilder.append(line);
-                jsonBuilder.append(lineSeparator);
-            }
-            Object o = JSON.parse(jsonBuilder.toString());
-            if (o instanceof DBObject) {
-                return FeatureTypeDBObject.convert((DBObject) o, name);
-            }
-        } finally {
-            reader.close();
-        }
-        return null;
+
+        return MongoUtil.getSimpleFeatureType(reader, name);
     }
 
     @Override
@@ -106,8 +95,11 @@ public class MongoSchemaFileStore implements MongoSchemaStore {
     @Override
     public List<String> typeNames() {
         List<String> typeNames = new ArrayList<String>();
-        for (File schemaFile : schemaStoreFile.listFiles(new SchemaFilter())) {
-            typeNames.add(typeName(schemaFile));
+        File[] files = schemaStoreFile.listFiles(new SchemaFilter());
+        if (files != null) {
+            for (File schemaFile : files) {
+                typeNames.add(typeName(schemaFile));
+            }
         }
         return typeNames;
     }

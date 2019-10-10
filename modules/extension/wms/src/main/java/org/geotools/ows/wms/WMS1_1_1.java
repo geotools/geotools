@@ -39,21 +39,12 @@ import org.geotools.ows.wms.response.PutStylesResponse;
 public class WMS1_1_1 extends WMS1_1_0 {
     public WMS1_1_1() {}
 
-    /**
-     * Expected version attribute for root element.
-     *
-     * @return DOCUMENT ME!
-     */
+    /** Expected version attribute for root element. */
     public String getVersion() {
         return "1.1.1";
     }
 
-    /**
-     * Factory method to create WMS 1.1.1 GetCapabilities Request
-     *
-     * @param server DOCUMENT ME!
-     * @return DOCUMENT ME!
-     */
+    /** Factory method to create WMS 1.1.1 GetCapabilities Request */
     public GetCapabilitiesRequest createGetCapabilitiesRequest(URL server) {
         return new GetCapsRequest(server);
     }

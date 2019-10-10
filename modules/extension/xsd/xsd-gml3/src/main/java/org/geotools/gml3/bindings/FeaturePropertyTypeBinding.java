@@ -146,7 +146,6 @@ public class FeaturePropertyTypeBinding extends AbstractComplexBinding {
      * Check if the complex attribute contains a feature which id is pre-existing in the document.
      * If it's true, make sure it's only encoded as an xlink:href to the existing id.
      *
-     * @param value The complex attribute value
      * @param att The complex attribute itself
      */
     private void checkXlinkHref(ComplexAttribute att) {
@@ -177,8 +176,6 @@ public class FeaturePropertyTypeBinding extends AbstractComplexBinding {
             // make sure the value is not encoded
             att.setValue(Collections.emptyList());
         }
-
-        return;
     }
 
     /**

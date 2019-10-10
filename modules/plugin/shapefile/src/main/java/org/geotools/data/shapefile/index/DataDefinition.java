@@ -34,7 +34,7 @@ public class DataDefinition {
     }
 
     public final boolean isValid() {
-        return (this.charset != null) && !this.charset.equals("") && (this.fields.size() > 0);
+        return (this.charset != null) && (this.fields.size() > 0);
     }
 
     public int getFieldsCount() {
@@ -58,7 +58,6 @@ public class DataDefinition {
      * </ul>
      *
      * @param clazz
-     * @throws TreeException DOCUMENT ME!
      */
     public void addField(Class clazz) {
         if (clazz.isAssignableFrom(Short.class)) {
@@ -138,17 +137,14 @@ public class DataDefinition {
             this.len = len;
         }
 
-        /** DOCUMENT ME! */
         public Class getFieldClass() {
             return clazz;
         }
 
-        /** DOCUMENT ME! */
         public int getLen() {
             return len;
         }
 
-        /** DOCUMENT ME! */
         public int getEncodedLen() {
             int ret = this.len;
 

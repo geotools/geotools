@@ -28,6 +28,10 @@ public class ShapeFilePreGeneralizedFeatureSourceTest
         return new DSFinderRepository();
     }
 
+    public void testPropertySelection() {
+        testPropertySelection(ConfigName);
+    }
+
     public void testGetCount() {
         testGetCount(ConfigName);
     }

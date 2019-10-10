@@ -91,7 +91,7 @@ public class CoordinatesTypeBinding extends AbstractSimpleBinding {
             c.y = Double.parseDouble(st.nextToken());
 
             if (st.hasMoreTokens()) {
-                c.z = Double.parseDouble(st.nextToken());
+                c.setZ(Double.parseDouble(st.nextToken()));
             }
 
             coordinates[i] = c;
@@ -106,8 +106,8 @@ public class CoordinatesTypeBinding extends AbstractSimpleBinding {
         for (int i = 0; i < cs.size(); i++) {
             Coordinate c = cs.getCoordinate(i);
             sb.append(c.x).append(",").append(c.y);
-            if (cs.getDimension() == 3 && !Double.isNaN(c.z)) {
-                sb.append(",").append(c.z);
+            if (cs.getDimension() == 3 && !Double.isNaN(c.getZ())) {
+                sb.append(",").append(c.getZ());
             }
             sb.append(" ");
         }

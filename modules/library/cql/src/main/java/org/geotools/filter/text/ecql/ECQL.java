@@ -87,7 +87,7 @@ public class ECQL {
      * Parses the input string in ECQL format into a Filter, using the systems default FilterFactory
      * implementation.
      *
-     * @param ECQLPredicate a string containing a query predicate in ECQL format.
+     * @param ecqlPredicate a string containing a query predicate in ECQL format.
      * @return a {@link Filter} equivalent to the constraint specified in <code>ecqlPredicate</code>
      *     .
      */
@@ -246,6 +246,7 @@ public class ECQL {
      *
      * @param args
      */
+    @SuppressWarnings("PMD.SystemPrintln")
     public static final void main(String[] args) {
         System.out.println("ECQL Filters Tester");
         System.out.println("Seperate with \";\" or \"quit\" to finish)");
@@ -262,7 +263,7 @@ public class ECQL {
             try {
                 line = reader.readLine();
 
-                if (line.equals("quit")) {
+                if (line == null || line.equals("quit")) {
                     System.out.println("Bye!");
                     break;
                 }

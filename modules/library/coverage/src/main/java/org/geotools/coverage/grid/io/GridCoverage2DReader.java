@@ -292,28 +292,6 @@ public interface GridCoverage2DReader extends GridCoverageReader {
             throws IOException;
 
     /**
-     * Number of predetermined overviews for the default coverage.
-     *
-     * @return The number of predetermined overviews for the default coverage. Zero if none are
-     *     available, -1 if infinite are available, otherwise a positive number.
-     * @deprecated It should be used getDatasetLayout().getNumInternalOverviews() instead
-     */
-    int getNumOverviews();
-
-    /**
-     * Number of predetermined overviews for the specified coverage.
-     *
-     * @param coverageName the name of the coverage for which we do want to get the number of
-     *     overviews.
-     * @return The number of predetermined overviews for the specified coverage. 0 if none are
-     *     available, -1 if infinite are available, otherwise a positive number.
-     * @throws NullPointerException if the specified coverageName is <code>null</code>
-     * @throws IllegalArgumentException if the specified coverageName does not exist
-     * @deprecated It should be used getDatasetLayout().getNumInternalOverviews() instead
-     */
-    int getNumOverviews(String coverageName);
-
-    /**
      * Returns the {@link DatasetLayout} for the coverage.
      *
      * @return a {@link DatasetLayout} object containing info about Overview number and Image masks.

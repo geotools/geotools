@@ -73,20 +73,6 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
         this(serverURL, new SimpleHttpClient(), null);
     }
 
-    /** @deprecated use {@link #AbstractOpenWebService(OWSConfig)} */
-    public AbstractOpenWebService(final URL serverURL, int requestTimeout)
-            throws IOException, ServiceException {
-        this(serverURL, new SimpleHttpClient(), null);
-        this.httpClient.setConnectTimeout(requestTimeout);
-        this.httpClient.setReadTimeout(requestTimeout);
-    }
-
-    /** @deprecated use {@link #AbstractOpenWebService(OWSConfig, Capabilities)} */
-    public AbstractOpenWebService(C capabilties, URL serverURL)
-            throws ServiceException, IOException {
-        this(serverURL, new SimpleHttpClient(), capabilties);
-    }
-
     public AbstractOpenWebService(
             final URL serverURL, final HTTPClient httpClient, final C capabilities)
             throws ServiceException, IOException {
@@ -166,8 +152,11 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
      * @return description of this service.
      */
     public ServiceInfo getInfo() {
+        if (capabilities == null) {
+            return null;
+        }
         synchronized (capabilities) {
-            if (info == null && capabilities != null) {
+            if (info == null) {
                 info = createInfo();
             }
             return info;
@@ -181,6 +170,9 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
     protected abstract ServiceInfo createInfo();
 
     public ResourceInfo getInfo(R resource) {
+        if (capabilities == null) {
+            return null;
+        }
         synchronized (capabilities) {
             if (!resourceInfo.containsKey(resource)) {
                 resourceInfo.put(resource, createInfo(resource));
@@ -190,10 +182,6 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
     }
 
     protected abstract ResourceInfo createInfo(R resource);
-
-    private void syncrhonized(Capabilities capabilities2) {
-        // TODO Auto-generated method stub
-    }
 
     /** Sets up the specifications/versions that this server is capable of communicating with. */
     protected abstract void setupSpecifications();
@@ -420,7 +408,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
      */
     protected Response internalIssueRequest(Request request) throws IOException, ServiceException {
         final URL finalURL = request.getFinalURL();
-
+        LOGGER.fine("FinalURL:" + finalURL);
         boolean success = false;
         try {
             final HTTPResponse httpResponse;
@@ -431,8 +419,14 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
 
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 request.performPostOutput(out);
-                InputStream in = new ByteArrayInputStream(out.toByteArray());
-
+                InputStream in;
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    byte[] byteArray = out.toByteArray();
+                    LOGGER.fine(new String(byteArray));
+                    in = new ByteArrayInputStream(byteArray);
+                } else {
+                    in = new ByteArrayInputStream(out.toByteArray());
+                }
                 try {
                     httpResponse = httpClient.post(finalURL, in, postContentType);
                 } finally {

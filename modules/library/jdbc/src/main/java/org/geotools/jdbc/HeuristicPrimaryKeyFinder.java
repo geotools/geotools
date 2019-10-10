@@ -115,16 +115,21 @@ public class HeuristicPrimaryKeyFinder extends PrimaryKeyFinder {
                             store.escapeNamePattern(metaData, databaseSchema),
                             store.escapeNamePattern(metaData, tableName),
                             store.escapeNamePattern(metaData, columnName));
-            columns.next();
+            Class columnType;
+            try {
+                columns.next();
 
-            Class columnType = store.getSQLDialect().getMapping(columns, cx);
-            if (columnType == null) {
-                int binding = columns.getInt("DATA_TYPE");
-                columnType = store.getMapping(binding);
+                columnType = store.getSQLDialect().getMapping(columns, cx);
                 if (columnType == null) {
-                    LOGGER.warning("No class for sql type " + binding);
-                    columnType = Object.class;
+                    int binding = columns.getInt("DATA_TYPE");
+                    columnType = store.getMapping(binding);
+                    if (columnType == null) {
+                        LOGGER.warning("No class for sql type " + binding);
+                        columnType = Object.class;
+                    }
                 }
+            } finally {
+                store.closeSafe(columns);
             }
 
             // determine which type of primary key we have
@@ -139,7 +144,7 @@ public class HeuristicPrimaryKeyFinder extends PrimaryKeyFinder {
 
                 StringBuffer sql = new StringBuffer();
                 sql.append("SELECT ");
-                store.getSQLDialect().encodeColumnName(columnName, sql);
+                store.getSQLDialect().encodeColumnName(null, columnName, sql);
                 sql.append(" FROM ");
                 store.encodeTableName(tableName, sql, null);
 

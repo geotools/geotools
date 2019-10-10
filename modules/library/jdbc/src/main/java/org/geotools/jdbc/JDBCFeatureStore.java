@@ -54,8 +54,6 @@ import org.opengis.filter.Filter;
  */
 public final class JDBCFeatureStore extends ContentFeatureStore {
 
-    private static final Query QUERY_NONE = new Query(null, Filter.EXCLUDE);
-
     /**
      * jdbc feature source to delegate to, we do this b/c we can't inherit from both
      * ContentFeatureStore and JDBCFeatureSource at the same time
@@ -243,6 +241,7 @@ public final class JDBCFeatureStore extends ContentFeatureStore {
     //     features.update(type, value);
     // }
 
+    @SuppressWarnings("PMD.CloseResource") // the cx is passed to the reader which will close it
     protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(
             Query query, int flags) throws IOException {
 
@@ -341,7 +340,7 @@ public final class JDBCFeatureStore extends ContentFeatureStore {
         if (postFilter != null && !Filter.INCLUDE.equals(postFilter)) {
             // we don't have a fast way to perform this update, let's do it the
             // feature by feature way then
-            super.modifyFeatures(innerTypes, values, filter);
+            super.modifyFeatures(names, values, filter);
         } else {
             // let's grab the connection
             Connection cx = null;

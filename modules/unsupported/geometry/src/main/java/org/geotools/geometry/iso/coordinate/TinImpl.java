@@ -19,6 +19,7 @@ package org.geotools.geometry.iso.coordinate;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.geometry.iso.primitive.SurfaceBoundaryImpl;
+import org.geotools.util.SuppressFBWarnings;
 import org.opengis.geometry.primitive.SurfacePatch;
 
 /**
@@ -179,6 +180,8 @@ public class TinImpl extends TriangulatedSurfaceImpl {
      * @param breakLines
      * @param maxLength
      */
+    // Suppressing for now, but this is actually guaranteed to NPE
+    @SuppressFBWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
     public TinImpl(
             PositionImpl[] post,
             LineStringImpl[] stopLines,

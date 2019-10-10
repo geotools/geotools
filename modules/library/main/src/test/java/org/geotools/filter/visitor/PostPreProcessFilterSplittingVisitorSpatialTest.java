@@ -68,7 +68,7 @@ public class PostPreProcessFilterSplittingVisitorSpatialTest
         runTest(f, new FilterCapabilities(Disjoint.class), geomAtt);
     }
 
-    public void tesDWITHINt() throws Exception {
+    public void testDWITHIN() throws Exception {
         Filter f = ff.dwithin(geomAtt, geom, 10, "");
         runTest(f, new FilterCapabilities(DWithin.class), geomAtt);
     }

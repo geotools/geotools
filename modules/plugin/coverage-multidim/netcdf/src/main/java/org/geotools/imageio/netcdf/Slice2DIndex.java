@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteOrder;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -76,7 +77,11 @@ public class Slice2DIndex {
 
     @Override
     public String toString() {
-        return "UnidataVariableIndex [index=" + index + ", variableName=" + variableName + "]";
+        return "UnidataVariableIndex [index="
+                + Arrays.toString(index)
+                + ", variableName="
+                + variableName
+                + "]";
     }
 
     @Override
@@ -263,6 +268,7 @@ public class Slice2DIndex {
         }
 
         @Override
+        @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
         protected void finalize() throws Throwable {
             if (raf != null) {
                 LOGGER.warning(

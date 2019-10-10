@@ -84,6 +84,8 @@ public class DataTestCase extends TestCase {
     protected ReferencedEnvelope buildingBounds;
     protected FilterFactory2 ff;
 
+    public DataTestCase() {}
+
     /** Creates a default test case with the given name. */
     public DataTestCase(final String name) {
         super(name);
@@ -126,7 +128,7 @@ public class DataTestCase extends TestCase {
                 SimpleFeatureBuilder.build(
                         roadType,
                         new Object[] {
-                            new Integer(1),
+                            Integer.valueOf(1),
                             line(new int[] {1, 1, 2, 2, 4, 2, 5, 1}),
                             "r1",
                             UUID.randomUUID()
@@ -142,7 +144,7 @@ public class DataTestCase extends TestCase {
                 SimpleFeatureBuilder.build(
                         roadType,
                         new Object[] {
-                            new Integer(2),
+                            Integer.valueOf(2),
                             line(new int[] {3, 0, 3, 2, 3, 3, 3, 4}),
                             "r2",
                             UUID.randomUUID()
@@ -156,7 +158,7 @@ public class DataTestCase extends TestCase {
                 SimpleFeatureBuilder.build(
                         roadType,
                         new Object[] {
-                            new Integer(3),
+                            Integer.valueOf(3),
                             line(new int[] {3, 2, 4, 2, 5, 3}),
                             "r3",
                             UUID.randomUUID()
@@ -187,7 +189,10 @@ public class DataTestCase extends TestCase {
                 SimpleFeatureBuilder.build(
                         roadType,
                         new Object[] {
-                            new Integer(4), line(new int[] {1, 2, 2, 3}), "r4", UUID.randomUUID()
+                            Integer.valueOf(4),
+                            line(new int[] {1, 2, 2, 3}),
+                            "r4",
+                            UUID.randomUUID()
                         },
                         "road.rd4");
 
@@ -208,7 +213,7 @@ public class DataTestCase extends TestCase {
                 SimpleFeatureBuilder.build(
                         riverType,
                         new Object[] {
-                            new Integer(1),
+                            Integer.valueOf(1),
                             lines(
                                     new int[][] {
                                         {5, 5, 7, 4},
@@ -216,7 +221,7 @@ public class DataTestCase extends TestCase {
                                         {7, 5, 9, 3, 11, 3}
                                     }),
                             "rv1",
-                            new Double(4.5)
+                            Double.valueOf(4.5)
                         },
                         "river.rv1");
 
@@ -229,10 +234,10 @@ public class DataTestCase extends TestCase {
                 SimpleFeatureBuilder.build(
                         riverType,
                         new Object[] {
-                            new Integer(2),
+                            Integer.valueOf(2),
                             lines(new int[][] {{4, 6, 4, 8, 6, 10}}),
                             "rv2",
-                            new Double(3.0)
+                            Double.valueOf(3.0)
                         },
                         "river.rv2");
         riverBounds = new ReferencedEnvelope();
@@ -250,10 +255,10 @@ public class DataTestCase extends TestCase {
                 SimpleFeatureBuilder.build(
                         riverType,
                         new Object[] {
-                            new Integer(3),
+                            Integer.valueOf(3),
                             lines(new int[][] {{9, 5, 11, 5, 13, 3}}),
                             "rv3",
-                            new Double(1.5)
+                            Double.valueOf(1.5)
                         },
                         "river.rv3");
 
@@ -271,7 +276,7 @@ public class DataTestCase extends TestCase {
                 SimpleFeatureBuilder.build(
                         lakeType,
                         new Object[] {
-                            new Integer(0),
+                            Integer.valueOf(0),
                             polygon(new int[] {12, 6, 14, 8, 16, 6, 16, 4, 14, 4, 12, 6}),
                             "muddy"
                         },
@@ -293,7 +298,7 @@ public class DataTestCase extends TestCase {
                 SimpleFeatureBuilder.build(
                         invalidGeomType,
                         new Object[] {
-                            new Integer(0),
+                            Integer.valueOf(0),
                             polygon(new int[] {12, 6, 14, 8, 16, 6, 12, 8, 12, 6}),
                             "notvalid"
                         },
@@ -314,7 +319,7 @@ public class DataTestCase extends TestCase {
                 SimpleFeatureBuilder.build(
                         lakeType,
                         new Object[] {
-                            new Integer(0),
+                            Integer.valueOf(0),
                             polygon(new int[] {12, 6, 14, 8, 16, 6, 16, 4, 12, 4, 12, 6}),
                             "church"
                         },

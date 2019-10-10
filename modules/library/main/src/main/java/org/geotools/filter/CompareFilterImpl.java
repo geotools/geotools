@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.logging.Logger;
 import org.geotools.util.Converters;
 import org.opengis.filter.FilterVisitor;
+import org.opengis.filter.PropertyIsLessThanOrEqualTo;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -43,16 +44,6 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract {
     /** The logger for the default core module. */
     static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(CompareFilterImpl.class);
-
-    /**
-     * Constructor with filter type.
-     *
-     * @param filterType The type of comparison.
-     * @throws IllegalFilterException Non-compare type.
-     * @deprecated use {@link #CompareFilterImpl(org.opengis.filter.FilterFactory,
-     *     org.opengis.filter.expression.Expression, org.opengis.filter.expression.Expression)}
-     */
-    protected CompareFilterImpl() throws IllegalFilterException {}
 
     protected CompareFilterImpl(
             org.opengis.filter.expression.Expression e1,
@@ -82,6 +73,9 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract {
      * @return same contract as {@link Comparable#compareTo(java.lang.Object)}.
      */
     protected int compare(Comparable leftObj, Comparable rightObj) {
+        if (leftObj == null || rightObj == null) {
+            throw new NullPointerException("Left and right objects are meant to be non null)");
+        }
         // implements a lax compare, doing some back flips for numbers
         if (!(leftObj instanceof Number && rightObj instanceof Number)) {
             // check for case of one number one string
@@ -90,29 +84,34 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract {
                 // the class hierarchy
                 if (leftObj instanceof Date || rightObj instanceof Date) {
                     // they do compare fine if they are both dates, otherwise we need to convert
+                    Date leftConverted = null;
+                    Date rightConverted = null;
                     if (!(leftObj instanceof Date)) {
-                        leftObj = Converters.convert(leftObj, Date.class);
+                        leftConverted = Converters.convert(leftObj, Date.class);
                     }
                     if (!(rightObj instanceof Date)) {
-                        rightObj = Converters.convert(rightObj, Date.class);
+                        rightConverted = Converters.convert(rightObj, Date.class);
                     }
                     // if conversion failed fall back on string comparison
-                    if (leftObj == null || rightObj == null) {
+                    if (leftConverted == null || rightConverted == null) {
                         leftObj = leftObj.toString();
                         rightObj = rightObj.toString();
+                    } else {
+                        leftObj = leftConverted;
+                        rightObj = rightConverted;
                     }
                 } else if (leftObj instanceof Number && (rightObj.getClass() == String.class)) {
                     try {
-                        rightObj = new Double(Double.parseDouble((String) rightObj));
-                        leftObj = new Double(((Number) leftObj).doubleValue());
+                        rightObj = Double.valueOf(Double.parseDouble((String) rightObj));
+                        leftObj = Double.valueOf(((Number) leftObj).doubleValue());
                     } catch (Exception e) {
                         leftObj = leftObj.toString();
                         rightObj = rightObj.toString();
                     }
                 } else if ((leftObj.getClass() == String.class) && rightObj instanceof Number) {
                     try {
-                        leftObj = new Double(Double.parseDouble((String) leftObj));
-                        rightObj = new Double(((Number) rightObj).doubleValue());
+                        leftObj = Double.valueOf(Double.parseDouble((String) leftObj));
+                        rightObj = Double.valueOf(((Number) rightObj).doubleValue());
                     } catch (Exception e) {
                         leftObj = leftObj.toString();
                         rightObj = rightObj.toString();
@@ -124,8 +123,8 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract {
             } else if (leftObj instanceof String && rightObj instanceof String) {
                 // Check for case of strings that can both be converted to Numbers
                 try {
-                    leftObj = new Double(Double.parseDouble((String) leftObj));
-                    rightObj = new Double(Double.parseDouble((String) rightObj));
+                    leftObj = Double.valueOf(Double.parseDouble((String) leftObj));
+                    rightObj = Double.valueOf(Double.parseDouble((String) rightObj));
                 } catch (Exception e) {
                     leftObj = leftObj.toString();
                     rightObj = rightObj.toString();
@@ -146,33 +145,23 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract {
      * @return String representation of the compare filter.
      */
     public String toString() {
-        int filterType = Filters.getFilterType(this);
-        if (filterType == NULL) {
+        if (this instanceof IsNullImpl) {
             return "[ " + expression1 + " IS NULL ]";
+        } else if (this instanceof IsNilImpl) {
+            return "[ " + expression1 + " IS NIL ]";
         }
         String operator = null;
-
-        if (filterType == COMPARE_EQUALS) {
+        if (this instanceof IsEqualsToImpl) {
             operator = " = ";
-        }
-
-        if (filterType == COMPARE_LESS_THAN) {
+        } else if (this instanceof IsLessThenImpl) {
             operator = " < ";
-        }
-
-        if (filterType == COMPARE_GREATER_THAN) {
+        } else if (this instanceof IsGreaterThanImpl) {
             operator = " > ";
-        }
-
-        if (filterType == COMPARE_LESS_THAN_EQUAL) {
+        } else if (this instanceof PropertyIsLessThanOrEqualTo) {
             operator = " <= ";
-        }
-
-        if (filterType == COMPARE_GREATER_THAN_EQUAL) {
+        } else if (this instanceof IsGreaterThanOrEqualToImpl) {
             operator = " >= ";
-        }
-
-        if (filterType == COMPARE_NOT_EQUALS) {
+        } else if (this instanceof IsNotEqualToImpl) {
             operator = " != ";
         }
 
@@ -190,6 +179,9 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract {
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
+        }
+        if (obj == null) {
+            return false;
         }
 
         if (obj.getClass().equals(this.getClass())) {
@@ -213,9 +205,7 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract {
      */
     public int hashCode() {
         int result = 17;
-        int filterType = Filters.getFilterType(this);
-
-        result = (37 * result) + filterType;
+        result = (37 * result) + this.getClass().hashCode();
         result = (37 * result) + ((expression1 == null) ? 0 : expression1.hashCode());
         result = (37 * result) + ((expression2 == null) ? 0 : expression2.hashCode());
 

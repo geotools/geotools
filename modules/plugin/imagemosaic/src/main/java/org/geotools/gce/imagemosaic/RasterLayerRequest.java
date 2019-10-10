@@ -154,6 +154,9 @@ public class RasterLayerRequest {
      */
     private ExcessGranulePolicy excessGranuleRemovalPolicy;
 
+    /** Enables/disables pixel rescaling if the image metadata contains such information */
+    private boolean rescalingEnabled = true;
+
     private GeneralParameterValue[] params;
 
     private Envelope2D requestedBounds;
@@ -877,6 +880,11 @@ public class RasterLayerRequest {
             setRoiProperty = ((Boolean) value).booleanValue();
             return;
         }
+
+        if (name.equals(AbstractGridFormat.RESCALE_PIXELS.getName())) {
+            rescalingEnabled = Boolean.TRUE.equals(param.getValue());
+            return;
+        }
     }
 
     /** @return the accurateResolution */
@@ -893,9 +901,6 @@ public class RasterLayerRequest {
      * Check the type of read operation which will be performed and return {@code true} if a JAI
      * imageRead operation need to be performed or {@code false} if a simple read operation is
      * needed.
-     *
-     * @return {@code true} if the read operation will use a JAI ImageRead operation instead of a
-     *     simple {@code ImageReader.read(...)} call.
      */
     private void checkReadType() {
         // //
@@ -1031,5 +1036,9 @@ public class RasterLayerRequest {
         builder.append(spatialRequestHelper).append("\n");
         builder.append("\tReadType=").append(readType);
         return builder.toString();
+    }
+
+    public boolean isRescalingEnabled() {
+        return rescalingEnabled;
     }
 }

@@ -108,14 +108,14 @@ public class ValidationBeanInfo extends SimpleBeanInfo {
         PropertyDescriptor pd = new PropertyDescriptor(name, cls);
         String s = resourceBundle.getString(pd.getName() + ".DisplayName");
 
-        if ((s == null) || (s == "")) {
+        if ((s == null) || s.isEmpty()) {
             s = pd.getDisplayName();
         }
 
         pd.setDisplayName(s);
         s = resourceBundle.getString(pd.getName() + ".Description");
 
-        if ((s == null) || (s == "")) {
+        if ((s == null) || s.isEmpty()) {
             s = pd.getShortDescription();
         }
 

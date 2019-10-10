@@ -22,12 +22,12 @@ import org.geotools.data.DataSourceException;
 import org.geotools.data.DelegatingFeatureReader;
 import org.geotools.data.FeatureReader;
 import org.geotools.feature.FeatureTypes;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
 import org.geotools.referencing.CRS;
 import org.locationtech.jts.geom.Geometry;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.FactoryException;
@@ -132,7 +132,6 @@ public class ReprojectFeatureReader
      *
      * <p>Description ...
      *
-     * @throws IllegalStateException DOCUMENT ME!
      * @see org.geotools.data.FeatureReader#getFeatureType()
      */
     public SimpleFeatureType getFeatureType() {
@@ -151,8 +150,6 @@ public class ReprojectFeatureReader
      * @throws IOException
      * @throws IllegalAttributeException
      * @throws NoSuchElementException
-     * @throws IllegalStateException DOCUMENT ME!
-     * @throws DataSourceException DOCUMENT ME!
      * @see org.geotools.data.FeatureReader#next()
      */
     public SimpleFeature next()
@@ -187,7 +184,6 @@ public class ReprojectFeatureReader
      * <p>Description ...
      *
      * @throws IOException
-     * @throws IllegalStateException DOCUMENT ME!
      * @see org.geotools.data.FeatureReader#hasNext()
      */
     public boolean hasNext() throws IOException {
@@ -204,7 +200,6 @@ public class ReprojectFeatureReader
      * <p>Description ...
      *
      * @throws IOException
-     * @throws IllegalStateException DOCUMENT ME!
      * @see org.geotools.data.FeatureReader#close()
      */
     public void close() throws IOException {

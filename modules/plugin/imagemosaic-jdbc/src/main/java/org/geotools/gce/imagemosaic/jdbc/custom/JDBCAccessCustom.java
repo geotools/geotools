@@ -1,5 +1,5 @@
 /*
- *    GeoTools+ - The Open Source Java GIS Toolkit
+ *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
@@ -112,11 +112,7 @@ public abstract class JDBCAccessCustom implements JDBCAccess {
         return con;
     }
 
-    /**
-     * closeConnection
-     *
-     * @param conn Connection Object passed to be closed
-     */
+    /** closeConnection */
     protected void closeConnection(Connection con) {
         try {
 
@@ -212,8 +208,6 @@ public abstract class JDBCAccessCustom implements JDBCAccess {
         } catch (Exception e) {
             LOGGER.severe("Cannot parse Decode CRS from Config File " + e.getMessage());
             throw new RuntimeException(e);
-        } finally {
-
         }
 
         LOGGER.fine("Returning CRS Result");

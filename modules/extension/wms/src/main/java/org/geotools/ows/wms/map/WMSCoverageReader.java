@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.ows.wms.map;
 
 import java.awt.Color;
@@ -15,7 +31,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -105,17 +120,32 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
 
         // best guess at the format with a preference for PNG (since it's normally transparent)
         List<String> formats = wms.getCapabilities().getRequest().getGetMap().getFormats();
-        this.format = formats.iterator().next();
+        this.format = getDefaultFormat(formats);
+    }
+
+    public WMSCoverageReader(WebMapServer wms, Layer layer, String style, String preferredFormat) {
+        this.wms = wms;
+        // init the reader
+        addLayer(layer, style);
+        List<String> formats = wms.getCapabilities().getRequest().getGetMap().getFormats();
+        this.format = preferredFormat;
+        // verify if preferred Format is supported else fallback to default functionality
+        if (!formats.contains(preferredFormat)) this.format = getDefaultFormat(formats);
+    }
+
+    public String getDefaultFormat(List<String> formats) {
+
+        // if preferred format is not supported default to first available
         for (String format : formats) {
             if ("image/png".equals(format)
                     || "image/png24".equals(format)
                     || "png".equals(format)
                     || "png24".equals(format)
                     || "image/png; mode=24bit".equals(format)) {
-                this.format = format;
-                break;
+                return format;
             }
         }
+        return null;
     }
 
     void addLayer(Layer layer) {
@@ -284,17 +314,14 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Issuing request: " + mapRequest.getFinalURL());
             }
-            InputStream is = null;
             GetMapResponse response = wms.issueRequest(mapRequest);
-            try {
-                is = response.getInputStream();
+            try (InputStream is = response.getInputStream()) {
                 RenderedImage image = ImageIOExt.read(is);
                 if (image == null) {
                     throw new IOException("GetMap failed: " + mapRequest.getFinalURL());
                 }
                 return gcf.create(layers.get(0).getLayer().getTitle(), image, gridEnvelope);
             } finally {
-                IOUtils.closeQuietly(is);
                 response.dispose();
             }
         } catch (ServiceException e) {
@@ -333,7 +360,7 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
                 requestSrs = code;
             } else {
                 // first reproject to the map CRS
-                gridEnvelope = bbox.transform(getCrs(), true);
+                gridEnvelope = bbox.transform(getCoordinateReferenceSystem(), true);
 
                 // then adjust the form factor
                 if (gridEnvelope.getWidth() < gridEnvelope.getHeight()) {

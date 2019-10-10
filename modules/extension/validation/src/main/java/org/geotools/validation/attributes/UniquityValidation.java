@@ -17,7 +17,6 @@
 package org.geotools.validation.attributes;
 
 import java.util.Map;
-import java.util.logging.Logger;
 import org.geotools.validation.DefaultIntegrityValidation;
 import org.geotools.validation.ValidationResults;
 import org.locationtech.jts.geom.Envelope;
@@ -32,13 +31,6 @@ import org.locationtech.jts.geom.Envelope;
  * @version $Id$
  */
 public class UniquityValidation extends DefaultIntegrityValidation {
-    /** The logger for the validation module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(UniquityValidation.class);
-
-    /** Attribute name to check for uniquity */
-    private String attributeName;
-
     /** No argument constructor, required by the Java Bean Specification. */
     public UniquityValidation() {}
 
@@ -61,7 +53,6 @@ public class UniquityValidation extends DefaultIntegrityValidation {
      * @param envelope The bounding box that encloses the unvalidated data
      * @param results Used to coallate results information
      * @return <code>true</code> if all the features pass this test.
-     * @throws Exception DOCUMENT ME!
      */
     public boolean validate(Map layers, Envelope envelope, ValidationResults results)
             throws Exception {

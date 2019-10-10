@@ -253,6 +253,7 @@ public class JWizard extends JDialog {
         JPage page = model.get(id);
         if (page == null) {
             close(ERROR);
+            return;
         }
         current = page;
 
@@ -267,10 +268,11 @@ public class JWizard extends JDialog {
         if (panel == null) {
             // lazy create panel
             panel = page.getPanel();
-            panel.setName(id);
             if (panel == null) {
                 close(ERROR); // card panel not provided
+                return;
             }
+            panel.setName(id);
             cardPanel.add(panel, id);
         }
         controller.syncButtonsToPage();

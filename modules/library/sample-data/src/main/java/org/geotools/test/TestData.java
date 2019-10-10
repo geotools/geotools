@@ -148,7 +148,9 @@ public class TestData implements Runnable {
                                                 // invoke
                                                 final Object paramsObj[] = {};
 
-                                                final Object o = mImage.newInstance();
+                                                final Object o =
+                                                        mImage.getDeclaredConstructor()
+                                                                .newInstance();
                                                 return (Boolean) method.invoke(o, paramsObj);
                                             } catch (Throwable e) {
                                                 return false;
@@ -372,31 +374,6 @@ public class TestData implements Runnable {
     }
 
     /**
-     * Provides a {@link java.io.BufferedReader} for named test data. It is the caller
-     * responsability to close this reader after usage.
-     *
-     * @param caller The class of the object associated with named data.
-     * @param name of test data to load.
-     * @return The reader, or {@code null} if the named test data are not found.
-     * @throws IOException if an error occurs during an input operation.
-     * @deprecated Use {@link #openReader} instead. The {@code openReader} method throws an
-     *     exception if the resource is not found, instead of returning null. This make debugging
-     *     easier, since it replaces infamous {@link NullPointerException} by a more explicit error
-     *     message during tests. Furthermore, the {@code openReader} name make it more obvious that
-     *     the stream is not closed automatically and is also consistent with other method names in
-     *     this class.
-     */
-    @Deprecated
-    public static BufferedReader getReader(final Object caller, final String name)
-            throws IOException {
-        final URL url = getResource(caller, name);
-        if (url == null) {
-            return null; // echo handling of getResource( ... )
-        }
-        return new BufferedReader(new InputStreamReader(url.openStream()));
-    }
-
-    /**
      * Provides a channel for named test data. It is the caller responsability to close this chanel
      * after usage.
      *
@@ -548,6 +525,7 @@ public class TestData implements Runnable {
      * Deletes all temporary files. This method is invoked automatically at shutdown time and should
      * not be invoked directly. It is public only as an implementation side effect.
      */
+    @SuppressWarnings("PMD.SystemPrintln")
     public void run() {
         int iteration = 5; // Maximum number of iterations
         synchronized (toDelete) {
@@ -571,14 +549,14 @@ public class TestData implements Runnable {
                         }
                     } catch (SecurityException e) {
                         if (iteration == 0) {
-                            // System.err.print(e.getClass().getName());
-                            // System.err.print(": ");
+                            System.err.print(e.getClass().getName());
+                            System.err.print(": ");
                         }
                     }
                     // Can't use logging, since logger are not available anymore at shutdown time.
                     if (iteration == 0 && !f.canIgnore()) {
-                        // System.err.print("Can't delete ");
-                        // System.err.println(f);
+                        System.err.print("Can't delete ");
+                        System.err.println(f);
                     }
                 }
             }

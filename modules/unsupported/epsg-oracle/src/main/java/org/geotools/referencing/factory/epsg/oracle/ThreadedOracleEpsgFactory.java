@@ -151,8 +151,7 @@ public class ThreadedOracleEpsgFactory extends ThreadedEpsgFactory {
             p.load(in);
             in.close();
         } catch (IOException exception) {
-            Logging.unexpectedException(
-                    "org.geotools.referencing.factory", DataSource.class, "<init>", exception);
+            Logging.unexpectedException(LOGGER, DataSource.class, "<init>", exception);
             // Continue. We will try to work with whatever properties are available.
         }
         return p;
@@ -165,20 +164,20 @@ public class ThreadedOracleEpsgFactory extends ThreadedEpsgFactory {
             return source;
         }
         final Properties p = load();
-        int portNumber;
-        try {
-            portNumber = Integer.parseInt(p.getProperty("portNumber", "5432"));
-        } catch (NumberFormatException exception) {
-            portNumber = 5432;
-            Logging.unexpectedException(
-                    "org.geotools.referencing.factory", DataSource.class, "<init>", exception);
-        }
-        String serverName = p.getProperty("serverName", "localhost");
-        String databaseName = p.getProperty("databaseName", "EPSG");
-        String user = p.getProperty("user", "Geotools");
-        String password = p.getProperty("password", "Geotools");
+        //        int portNumber;
+        //        try {
+        //            portNumber = Integer.parseInt(p.getProperty("portNumber", "5432"));
+        //        } catch (NumberFormatException exception) {
+        //            portNumber = 5432;
+        //            Logging.unexpectedException(
+        //                    "org.geotools.referencing.factory", DataSource.class, "<init>",
+        // exception);
+        //        }
+        //        String serverName = p.getProperty("serverName", "localhost");
+        //        String databaseName = p.getProperty("databaseName", "EPSG");
+        //        String user = p.getProperty("user", "Geotools");
+        //        String password = p.getProperty("password", "Geotools");
         schema = p.getProperty("schema", null);
-
         return source;
     }
 
@@ -190,11 +189,12 @@ public class ThreadedOracleEpsgFactory extends ThreadedEpsgFactory {
      * @throws SQLException if connection to the database failed.
      */
     protected AbstractAuthorityFactory createBackingStore(final Hints hints) throws SQLException {
-        final Connection connection = getDataSource().getConnection();
-        final FactoryUsingOracleSQL factory = new FactoryUsingOracleSQL(hints, connection);
-        if (schema != null) {
-            factory.setSchema(schema);
+        try (Connection connection = getDataSource().getConnection()) {
+            final FactoryUsingOracleSQL factory = new FactoryUsingOracleSQL(hints, connection);
+            if (schema != null) {
+                factory.setSchema(schema);
+            }
+            return factory;
         }
-        return factory;
     }
 }

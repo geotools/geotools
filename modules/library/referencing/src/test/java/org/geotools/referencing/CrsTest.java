@@ -109,6 +109,7 @@ public final class CrsTest {
      *
      * @throws Exception
      */
+    @Test
     public void testAxisAliases() throws Exception {
         String wkt1 =
                 "PROJCS[\"NAD_1927_Texas_Statewide_Mapping_System\","
@@ -138,7 +139,7 @@ public final class CrsTest {
                         + "PARAMETER[\"Standard_Parallel_1\",27.416666666666668],"
                         + "PARAMETER[\"Standard_Parallel_2\",34.916666666666664],"
                         + "PARAMETER[\"Latitude_Of_Origin\",31.166666666666668],"
-                        + "UNIT[\"Foot\",0.3048]"
+                        + "UNIT[\"Foot\",0.3048],"
                         + "AXIS[\"Easting\", EAST],"
                         + "AXIS[\"Northing\", NORTH]]";
 
@@ -195,8 +196,10 @@ public final class CrsTest {
         assertEquals(transformed.getMaximum(0), firstEnvelope.getMaximum(0), EPS);
         assertEquals(transformed.getMaximum(1), firstEnvelope.getMaximum(1), EPS);
     }
-    /** Test "densification" during envelope transform in order to avoid clipping(GEOT-3634). */
-    public void XtestEnvelopeTransformClipping() throws Exception {
+
+    @Test
+    @Ignore
+    public void testEnvelopeTransformClipping() throws Exception {
         final CoordinateReferenceSystem source = WGS84;
         final CoordinateReferenceSystem target;
         target =
@@ -291,7 +294,6 @@ public final class CrsTest {
                         + "UNIT[\"degree\", 0.017453292519943295],"
                         + "AXIS[\"Geodetic longitude\", EAST],"
                         + "AXIS[\"Geodetic latitude\", NORTH]]";
-        assertEquals(AxisOrder.LON_LAT, CRS.getAxisOrder(CRS.parseWKT(wkt)));
         assertEquals(AxisOrder.EAST_NORTH, CRS.getAxisOrder(CRS.parseWKT(wkt)));
 
         wkt =
@@ -302,7 +304,6 @@ public final class CrsTest {
                         + "UNIT[\"degree\", 0.017453292519943295],"
                         + "AXIS[\"Geodetic latitude\", NORTH],"
                         + "AXIS[\"Geodetic longitude\", EAST]]";
-        assertEquals(AxisOrder.LAT_LON, CRS.getAxisOrder(CRS.parseWKT(wkt)));
         assertEquals(AxisOrder.NORTH_EAST, CRS.getAxisOrder(CRS.parseWKT(wkt)));
 
         assertEquals(

@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import org.geotools.util.SuppressFBWarnings;
 
 /**
  * @author roehrig
@@ -43,7 +44,6 @@ public class AlgoPoint2D {
     /**
      * Compares coodinates of Direct Positions
      *
-     * @param Direct Position to compare with
      * @return TRUE, if coordinates accord, FALSE if they dont.
      */
     public static boolean equals(Point2D p0, Point2D p1, double tol) {
@@ -65,7 +65,6 @@ public class AlgoPoint2D {
     /**
      * Adds a DirectPosition to the position
      *
-     * @param DirectPosition to add
      * @return new Position
      */
     public static Point2D createAdd(Point2D p0, Point2D p1) {
@@ -79,7 +78,6 @@ public class AlgoPoint2D {
     /**
      * Subtracts a direct position from the position
      *
-     * @param DirectPosition to subtract
      * @return new Position
      */
     public static Point2D subtract(Point2D p0, Point2D p1) {
@@ -106,7 +104,6 @@ public class AlgoPoint2D {
     /**
      * Builds the scalar product
      *
-     * @param DirectPosition to multiply with
      * @return Scalar product
      */
     public static double scalar(Point2D p0, Point2D p1) {
@@ -147,8 +144,6 @@ public class AlgoPoint2D {
         double ya = y0; // swap coordinates
         double xb = x1; // swap coordinates
         double yb = y1; // swap coordinates
-        double max_x = Math.max(x0, x1); // maximum x coordinate
-        double min_x = Math.min(x0, x1); // minimum x coordinate
         double max_y = Math.max(y0, y1); // maximum y coordinate
         double min_y = Math.min(y0, y1); // minimum y coordinate
 
@@ -203,7 +198,7 @@ public class AlgoPoint2D {
 
     public static Point2D[] split(Point2D p0, Point2D p1, double maxLength) {
         // The first and last node are not inserted
-        if (maxLength <= 0.0 || maxLength == Double.NaN) return null;
+        if (maxLength <= 0.0 || Double.isNaN(maxLength)) return null;
         int n = (int) Math.ceil(p0.distance(p1) / maxLength);
         if (n == 0) return null;
         double x1 = p0.getX();
@@ -250,6 +245,7 @@ public class AlgoPoint2D {
         return pointList;
     }
 
+    @SuppressFBWarnings("NP_BOOLEAN_RETURN_NULL")
     public static Boolean pointsOrientation(Collection points) {
         double result = 0.0;
         Iterator it = points.iterator();
@@ -262,14 +258,12 @@ public class AlgoPoint2D {
 
         Point2D p10 = AlgoPoint2D.subtract(p1, p0);
 
-        double sum = 0.0;
-
         while (it.hasNext()) {
             Point2D p = (Point2D) it.next();
             result += AlgoPoint2D.cross(p10, (AlgoPoint2D.subtract(p, p0)));
         }
 
-        return new Boolean(result > 0.0);
+        return Boolean.valueOf(result > 0.0);
     }
 
     /**

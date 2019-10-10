@@ -44,7 +44,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -74,17 +73,16 @@ import javax.media.jai.TileScheduler;
 import javax.media.jai.remote.SerializableRenderedImage;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.DataStoreFactorySpi;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.visitor.DefaultFilterVisitor;
@@ -116,7 +114,6 @@ import org.geotools.util.factory.Hints.Key;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.TopologyException;
 import org.locationtech.jts.operation.overlay.snap.GeometrySnapper;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -138,8 +135,6 @@ import org.opengis.referencing.operation.TransformException;
 public class Utils {
 
     public static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
-
-    private static GeometryFactory GEOM_FACTORY = new GeometryFactory();
 
     private static final String DATABASE_KEY = "database";
 
@@ -576,7 +571,7 @@ public class Utils {
         //
         URL propsURL = sourceURL;
         if (!sourceURL.toExternalForm().endsWith(".properties")) {
-            propsURL = DataUtilities.changeUrlExt(sourceURL, "properties");
+            propsURL = URLs.changeUrlExt(sourceURL, "properties");
             if (propsURL.getProtocol().equals("file")) {
                 final File sourceFile = URLs.urlToFile(propsURL);
                 if (!sourceFile.exists()) {
@@ -821,7 +816,11 @@ public class Utils {
                                             Prop.ABSOLUTE_PATH,
                                             Boolean.toString(Utils.DEFAULT_PATH_BEHAVIOR))
                                     .trim());
-            catalogConfigurationBean.setAbsolutePath(absolutePath);
+            if (absolutePath) {
+                catalogConfigurationBean.setPathType(PathType.ABSOLUTE);
+            } else {
+                catalogConfigurationBean.setPathType(PathType.RELATIVE);
+            }
         }
 
         if (!ignoreSome || !ignorePropertiesSet.contains(Prop.PATH_TYPE)) {
@@ -1005,7 +1004,6 @@ public class Utils {
      * or an {@link IllegalArgumentException} will be thrown.
      *
      * @param imageIndex the index of the image to get the dimensions for.
-     * @param inStream the {@link ImageInputStream} to use as an input
      * @param reader the {@link ImageReader} to decode the image dimensions.
      * @return a {@link Rectangle} that contains the dimensions for the image at index <code>
      *     imageIndex</code>
@@ -1185,7 +1183,8 @@ public class Utils {
         try {
             // create a datastore as instructed
             final DataStoreFactorySpi spi =
-                    (DataStoreFactorySpi) Class.forName(SPIClass).newInstance();
+                    (DataStoreFactorySpi)
+                            Class.forName(SPIClass).getDeclaredConstructor().newInstance();
             return createDataStoreParamsFromPropertiesFile(properties, spi);
         } catch (Exception e) {
             final IOException ioe = new IOException();
@@ -1208,23 +1207,10 @@ public class Utils {
         SampleImage sampleImage = new SampleImage(defaultSM, defaultCM);
 
         // serialize it
-        OutputStream outStream = null;
-        ObjectOutputStream ooStream = null;
-        try {
-            outStream = new BufferedOutputStream(new FileOutputStream(sampleImageFile));
-            ooStream = new ObjectOutputStream(outStream);
+        try (ObjectOutputStream ooStream =
+                new ObjectOutputStream(
+                        new BufferedOutputStream(new FileOutputStream(sampleImageFile)))) {
             ooStream.writeObject(sampleImage);
-        } finally {
-            try {
-                if (ooStream != null) ooStream.close();
-            } catch (Throwable e) {
-                IOUtils.closeQuietly(ooStream);
-            }
-            try {
-                if (outStream != null) outStream.close();
-            } catch (Throwable e) {
-                IOUtils.closeQuietly(outStream);
-            }
         }
     }
 
@@ -1536,10 +1522,6 @@ public class Utils {
                                     ? URLs.fileToUrl(dataStoreProperties)
                                     : URLs.fileToUrl(shapeFile);
             }
-        } else {
-            // SK: We don't set SourceURL to null now, just because it doesn't
-            // point to a file
-            // sourceURL=null;
         }
         return sourceURL;
     }
@@ -1720,7 +1702,7 @@ public class Utils {
             if (ehcache.isElementInMemory(file)) {
                 final Element element = ehcache.get(file);
                 if (element != null) {
-                    final Serializable value = element.getValue();
+                    final Object value = element.getObjectValue();
                     if (value != null && value instanceof Histogram) {
                         histogram = (Histogram) value;
                         return histogram;
@@ -1731,12 +1713,8 @@ public class Utils {
 
         // No histogram in cache. Deserializing...
         if (histogram == null) {
-            FileInputStream fileStream = null;
-            ObjectInputStream objectStream = null;
-            try {
-
-                fileStream = new FileInputStream(file);
-                objectStream = new ObjectInputStream(fileStream);
+            try (ObjectInputStream objectStream =
+                    new ObjectInputStream(new FileInputStream(file))) {
                 histogram = (Histogram) objectStream.readObject();
                 if (ehcache != null) {
                     ehcache.put(new Element(file, histogram));
@@ -1752,13 +1730,6 @@ public class Utils {
             } catch (ClassNotFoundException e) {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine("Unable to parse Histogram:" + e.getLocalizedMessage());
-                }
-            } finally {
-                if (objectStream != null) {
-                    IOUtils.closeQuietly(objectStream);
-                }
-                if (fileStream != null) {
-                    IOUtils.closeQuietly(fileStream);
                 }
             }
         }
@@ -2016,17 +1987,8 @@ public class Utils {
             final String tempSource = (String) source;
             File tempFile = new File(tempSource);
             if (!tempFile.exists()) {
-                // is it a URL
-                try {
-                    sourceURL = new URL(tempSource);
-                    source = URLs.urlToFile(sourceURL);
-                } catch (MalformedURLException e) {
-                    sourceURL = null;
-                    source = null;
-                }
+                return false;
             } else {
-                sourceURL = URLs.fileToUrl(tempFile);
-
                 // so that we can do our magic here below
                 sourceFile = tempFile;
             }
@@ -2078,6 +2040,19 @@ public class Utils {
             indexer = (Indexer) unmarshaller.unmarshal(indexerFile);
         }
         return indexer;
+    }
+
+    /**
+     * Marshals the Indexer object to the specified file
+     *
+     * @param indexerFile
+     * @return
+     * @throws JAXBException
+     */
+    public static void marshal(Indexer indexer, File indexerFile) throws JAXBException {
+        Marshaller marshaller = CONTEXT.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        marshaller.marshal(indexer, indexerFile);
     }
 
     /**

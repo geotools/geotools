@@ -43,11 +43,7 @@ import org.opengis.parameter.ParameterValueGroup;
 public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
     private final Random generator = new Random();
 
-    /**
-     * Creates a new instance of ArcGridReadWriteTest
-     *
-     * @param name DOCUMENT ME!
-     */
+    /** Creates a new instance of ArcGridReadWriteTest */
     public ArcGridReadWriteTest(String name) {
         super(name);
     }
@@ -114,8 +110,8 @@ public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
         }
 
         /** Checking values */
-        final Double noData1 = new Double(ArcGridWriter.getCandidateNoData(gc1));
-        final Double noData2 = new Double(ArcGridWriter.getCandidateNoData(gc2));
+        final Double noData1 = Double.valueOf(ArcGridWriter.getCandidateNoData(gc1));
+        final Double noData2 = Double.valueOf(ArcGridWriter.getCandidateNoData(gc2));
         final int minTileX1 = gc1.getRenderedImage().getMinTileX();
         final int minTileY1 = gc1.getRenderedImage().getMinTileY();
         final int width = gc1.getRenderedImage().getTileWidth();

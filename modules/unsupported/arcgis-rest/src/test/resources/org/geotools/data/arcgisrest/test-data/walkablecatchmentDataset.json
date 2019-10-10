@@ -1,0 +1,168 @@
+{
+  "currentVersion" : 10.61,
+  "id" : 0,
+  "name" : "OS_WalkableCatchment_400m_SP",
+  "type" : "Feature Layer",
+  "serviceItemId" : "d8ed62f0e51f47d59bc16b73aff405d9",
+  "displayField" : "",
+  "description" : "",
+  "copyrightText" : "",
+  "defaultVisibility" : true,
+  "editingInfo" : {
+    "lastEditDate" : 1508296332947
+  },
+  "relationships" : [],
+  "isDataVersioned" : false,
+  "supportsAppend" : true,
+  "supportsCalculate" : true,
+  "supportsASyncCalculate" : true,
+  "supportsTruncate" : true,
+  "supportsAttachmentsByUploadId" : true,
+  "supportsAttachmentsResizing" : true,
+  "supportsRollbackOnFailureParameter" : true,
+  "supportsStatistics" : true,
+  "supportsExceedsLimitStatistics" : true,
+  "supportsAdvancedQueries" : true,
+  "supportsValidateSql" : true,
+  "supportsCoordinatesQuantization" : true,
+  "supportsFieldDescriptionProperty" : true,
+  "supportsQuantizationEditMode" : true,
+  "supportsApplyEditsWithGlobalIds" : false,
+  "supportsMultiScaleGeometry" : true,
+  "supportsReturningQueryGeometry" : true,
+  "advancedQueryCapabilities" : {
+    "supportsPagination" : true,
+    "supportsPaginationOnAggregatedQueries" : true,
+    "supportsQueryRelatedPagination" : true,
+    "supportsQueryWithDistance" : true,
+    "supportsReturningQueryExtent" : true,
+    "supportsStatistics" : true,
+    "supportsOrderBy" : true,
+    "supportsDistinct" : true,
+    "supportsQueryWithResultType" : true,
+    "supportsSqlExpression" : true,
+    "supportsAdvancedQueryRelated" : true,
+    "supportsCountDistinct" : true,
+    "supportsLod" : true,
+    "supportsReturningGeometryCentroid" : true,
+    "supportsReturningGeometryProperties" : true,
+    "supportsQueryWithDatumTransformation" : true,
+    "supportsHavingClause" : true,
+    "supportsOutFieldSQLExpression" : true,
+    "supportsMaxRecordCountFactor" : true,
+    "supportsTopFeaturesQuery" : true,
+    "supportsDisjointSpatialRel" : true
+  },
+  "useStandardizedQueries" : true,
+  "geometryType" : "esriGeometryPolygon",
+  "minScale" : 2311163,
+  "maxScale" : 1128,
+  "extent" : {
+    "xmin" : 16080202.191456957,
+    "ymin" : -4651636.9422612861,
+    "xmax" : 16232074.465958552,
+    "ymax" : -4492315.5022853082,
+    "spatialReference" : {
+      "wkt" : "PROJCS[\"GDA94_MGA_zone_55\",GEOGCS[\"GCS_GDA_1994\",DATUM[\"D_GDA_1994\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"false_easting\",500000.0],PARAMETER[\"false_northing\",10000000.0],PARAMETER[\"central_meridian\",147.0],PARAMETER[\"scale_factor\",0.9996],PARAMETER[\"latitude_of_origin\",0.0],UNIT[\"Meter\",1.0]]"
+    }
+  },
+  "drawingInfo":{"renderer":{"type":"simple","symbol":{"color":[210,190,150,162],"outline":{"color":[210,190,150,255],"width":0.75,"type":"esriSLS","style":"esriSLSSolid"},"type":"esriSFS","style":"esriSFSSolid"}},"transparency":0},
+  "allowGeometryUpdates" : true,
+  "hasAttachments" : false,
+  "htmlPopupType" : "esriServerHTMLPopupTypeNone",
+  "hasM" : false,
+  "hasZ" : false,
+  "objectIdField" : "FID",
+  "uniqueIdField" :
+  {
+    "name" : "FID",
+    "isSystemMaintained" : true
+  },
+  "globalIdField" : "",
+  "typeIdField" : "",
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "actualType" : "int",
+      "alias" : "FID",
+      "sqlType" : "sqlTypeInteger",
+      "nullable" : false,
+      "editable" : false,
+      "domain" : null,
+      "defaultValue" : null
+    },
+    {
+      "name" : "Shape_Leng",
+      "type" : "esriFieldTypeDouble",
+      "actualType" : "float",
+      "alias" : "Shape_Leng",
+      "sqlType" : "sqlTypeFloat",
+      "nullable" : true,
+      "editable" : true,
+      "domain" : null,
+      "defaultValue" : null
+    },
+    {
+      "name" : "Shape_Area",
+      "type" : "esriFieldTypeDouble",
+      "actualType" : "float",
+      "alias" : "Shape_Area",
+      "sqlType" : "sqlTypeFloat",
+      "nullable" : true,
+      "editable" : true,
+      "domain" : null,
+      "defaultValue" : null
+    }
+  ],
+  "indexes" : [
+    {
+      "name" : "PK__OS_WALKA__C1BEA5A23E7BC8ED",
+      "fields" : "FID",
+      "isAscending" : true,
+      "isUnique" : true,
+      "description" : "clustered, unique, primary key"
+    },
+    {
+      "name" : "user_5420.OS_WALKABLECATCHMENT_400M_SP_OS_WALKABLECATCHMENT_400M_SP_Shape_sidx",
+      "fields" : "Shape",
+      "isAscending" : false,
+      "isUnique" : false,
+      "description" : "Shape Index"
+    }
+  ],
+  "types" : [],
+  "templates" : [
+    {
+      "name" : "New Feature",
+      "description" : "",
+      "drawingTool" : "esriFeatureEditToolPolygon",
+      "prototype" : {
+        "attributes" : {
+          "FID_OSWith" : null,
+          "Id" : null,
+          "FID_LGA_PO" : null,
+          "PFI" : null,
+          "LGA_CODE" : null,
+          "LGA_NAME" : null,
+          "GAZ_LGA" : null,
+          "GAZREGN" : null,
+          "PFI_CR" : null,
+          "UFI" : null,
+          "UFI_CR" : null,
+          "UFI_OLD" : null,
+          "Shape_Leng" : null,
+          "Shape_Area" : null,
+          "ORIG_FID" : null
+        }
+      }
+    }
+  ],
+  "supportedQueryFormats" : "JSON, geoJSON, PBF",
+  "hasStaticData" : true,
+  "maxRecordCount" : 2000,
+  "standardMaxRecordCount" : 4000,
+  "tileMaxRecordCount" : 4000,
+  "maxRecordCountFactor" : 1,
+  "capabilities" : "Query,Extract"
+}

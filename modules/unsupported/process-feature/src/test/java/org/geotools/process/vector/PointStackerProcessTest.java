@@ -16,7 +16,7 @@
  */
 package org.geotools.process.vector;
 
-import static junit.framework.Assert.*;
+import static org.junit.Assert.*;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -426,7 +426,7 @@ public class PointStackerProcessTest {
         for (Coordinate p : pts) {
             Geometry point = factory.createPoint(p);
             fb.add(point);
-            fb.add(p.z);
+            fb.add(p.getZ());
             fc.add(fb.buildFeature(null));
         }
 

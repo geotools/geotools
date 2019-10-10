@@ -13,7 +13,7 @@ Supports direct access to an Oracle database.
       <version>${geotools.version}</version>
     </dependency>
 
-Note that the groupId is **org.geotools.jdbc** for this and other JDBC plugin modules.
+Note that the ``groupId`` is ``org.geotools.jdbc`` for this and other JDBC plugin modules.
 
 Connection Parameters
 ^^^^^^^^^^^^^^^^^^^^^
@@ -21,13 +21,13 @@ Connection Parameters
 ============== =============================
 Parameter      Description
 ============== =============================
-"dbtype"       Must be the string "oracle"
-"host"         Machine name or IP address to connect to
-"port"         Port number to connect to, default 1521
-"schema"       The database schema to access
-"database"     The database to connect to
-"user"         User name
-"passwd"       Password
+``dbtype``       Must be the string ``oracle``
+``host``         Machine name or IP address to connect to
+``port``         Port number to connect to, default 1521
+``schema``       The database schema to access
+``database``     The database to connect to
+``user``         User name
+``passwd``       Password
 ============== =============================
 
 Creation
@@ -49,26 +49,26 @@ Connect using DataStore finder::
 Advanced
 ^^^^^^^^
 
-+---------------------+------------------------------------------------+
-| Parameter           | Description                                    |
-+=====================+================================================+
-| "loose bbox"        | Flag controlling loose bbox comparisons,       |
-|                     | default is true                                |
-+---------------------+------------------------------------------------+
-| "Estimated extends" | Use the spatial index information to quickly   |
-|                     | get an estimate of the data bounds             |
-+---------------------+------------------------------------------------+
-| "Geometry metadata  | An alternative table where geometry            |
-| table"              | metadata information can be looked up          |
-+---------------------+------------------------------------------------+
-| "Metadata bbox"     | Flag controlling the use of                    |
-|                     | MDSYS.USER_SDO_GEOM_METADATA or                |
-|                     | MDSYS.ALL_SDO_GEOM_METADATA table for bounding |
-|                     | box calculations, this brings a better         |
-|                     | performance if the views access is fast and    |
-|                     | the bounds are configured right in the tables  |
-|                     | default is false                               |
-+---------------------+------------------------------------------------+
++-----------------------+------------------------------------------------+
+| Parameter             | Description                                    |
++=======================+================================================+
+| ``loose bbox``        | Flag controlling loose ``bbox`` comparisons,   |
+|                       | default is true                                |
++-----------------------+------------------------------------------------+
+| ``Estimated extends`` | Use the spatial index information to quickly   |
+|                       | get an estimate of the data bounds             |
++-----------------------+------------------------------------------------+
+| ``Geometry metadata`` | An alternative table where geometry            |
+| ``table``             | metadata information can be looked up          |
++-----------------------+------------------------------------------------+
+| ``Metadata bbox``     | Flag controlling the use of                    |
+|                       | MDSYS.USER_SDO_GEOM_METADATA or                |
+|                       | MDSYS.ALL_SDO_GEOM_METADATA table for bounding |
+|                       | box calculations, this brings a better         |
+|                       | performance if the views access is fast and    |
+|                       | the bounds are configured right in the tables  |
+|                       | default is false                               |
++-----------------------+------------------------------------------------+
 
 Example use::
   
@@ -86,7 +86,7 @@ user owns (for the ``MDSYS.USER_SDO*`` views) or can otherwise access (for the `
 There are a few hiccups in this process:
 
   * if the connection pool user cannot access the tables (because impersonation is being used) 
-    the MDSYS views will be empty, making it impossible to determine either the geometry type and the native SRID
+    the ``MDSYS`` views will be empty, making it impossible to determine either the geometry type and the native SRID
   * the geometry type can be specified only while building the spatial indexes, as a index constraint, however 
     such information is often not included when creating the indexes
   * the views are populated dynamically based on the current user, if the database has thousands of tables and users
@@ -108,7 +108,7 @@ The table has the following structure (the table name is free, just indicate the
 	   CHECK(TYPE IN ('POINT','LINE', 'POLYGON', 'COLLECTION', 'MULTIPOINT', 'MULTILINE', 'MULTIPOLYGON', 'GEOMETRY') ));
 	   
 When the table is present the store will first search it for information about each geometry column
-to be classified, and fall back on the MDSYS views only if such table does not contain any information.
+to be classified, and fall back on the ``MDSYS`` views only if such table does not contain any information.
 
 Setup
 ^^^^^
@@ -120,6 +120,6 @@ Setup
 
 * JDBC vs JDBC-NG
   
-  The oracle support has been rewritten for GeoTools 2.6. This rewrite is
-  called "jdbc-ng" and is easier to maintain. By in large the same
+  The Oracle support has been rewritten for GeoTools 2.6. This rewrite is
+  called ``jdbc-ng`` and is easier to maintain. By in large the same
   connection parameters can be used.

@@ -180,11 +180,7 @@ class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
         this.maxDbfSize = maxDbfSize;
     }
 
-    /**
-     * Go back and update the headers with the required info.
-     *
-     * @throws IOException DOCUMENT ME!
-     */
+    /** Go back and update the headers with the required info. */
     protected void flush() throws IOException {
         // not sure the check for records <=0 is necessary,
         // but if records > 0 and shapeType is null there's probably
@@ -202,11 +198,8 @@ class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
         dbfHeader.writeHeader(dbfChannel);
     }
 
-    /**
-     * In case someone doesn't close me.
-     *
-     * @throws Throwable DOCUMENT ME!
-     */
+    /** In case someone doesn't close me. */
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         if (featureReader != null) {
             try {
@@ -217,20 +210,12 @@ class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
         }
     }
 
-    /**
-     * Clean up our temporary write if there was one
-     *
-     * @throws IOException DOCUMENT ME!
-     */
+    /** Clean up our temporary write if there was one */
     protected void clean() throws IOException {
         StorageFile.replaceOriginals(storageFiles.values().toArray(new StorageFile[0]));
     }
 
-    /**
-     * Release resources and flush the header information.
-     *
-     * @throws IOException DOCUMENT ME!
-     */
+    /** Release resources and flush the header information. */
     public void close() throws IOException {
         if (featureReader == null) {
             // already closed

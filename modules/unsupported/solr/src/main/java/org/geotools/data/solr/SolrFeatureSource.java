@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *     (C) 2002-2016, Open Source Geospatial Foundation (OSGeo).
+ *     (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -169,7 +169,7 @@ public class SolrFeatureSource extends ContentFeatureSource {
                 HttpSolrClient server = store.getSolrServer();
                 QueryResponse rsp = server.query(q);
                 count =
-                        new Long(rsp.getResults().getNumFound() - rsp.getResults().getStart())
+                        Long.valueOf(rsp.getResults().getNumFound() - rsp.getResults().getStart())
                                 .intValue();
                 // Manage max manually
                 if (query.getMaxFeatures() > 0 && query.getMaxFeatures() < Integer.MAX_VALUE) {
@@ -246,7 +246,6 @@ public class SolrFeatureSource extends ContentFeatureSource {
             SolrDataStore store = getDataStore();
             Filter[] split = splitFilter(query.getFilter(), this);
             Filter preFilter = split[0];
-            Filter postFilter = split[1];
             Query preQuery = new Query(query);
             preQuery.setFilter(preFilter);
             // set start and maz results in query
@@ -410,7 +409,6 @@ public class SolrFeatureSource extends ContentFeatureSource {
         Filter[] split = new Filter[2];
         if (original != null) {
             SolrFeatureSource featureSource = (SolrFeatureSource) source;
-            ;
             PostPreProcessFilterSplittingVisitor splitter =
                     new PostPreProcessFilterSplittingVisitor(
                             getDataStore().getFilterCapabilities(),

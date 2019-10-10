@@ -38,7 +38,6 @@ public class CustomGlyphRenderer implements GlyphRenderer {
     static final Logger LOGGER = Logging.getLogger(CustomGlyphRenderer.class);
 
     private GlyphPropertiesList list = new GlyphPropertiesList();
-    private boolean maxFound = false;
     private int maxBarHeight = 0;
 
     /** Creates a new instance of CustomGlyphRenderer */

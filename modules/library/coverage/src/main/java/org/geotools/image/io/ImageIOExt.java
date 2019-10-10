@@ -126,7 +126,7 @@ public class ImageIOExt {
      * Sets the directory where cache files are to be created. If set to null (the default value)
      * {@link ImageIO#getCacheDirectory()} will be used as the value
      *
-     * @param cacheDirectory a <code>File</code> specifying a directory.
+     * @param cache a <code>File</code> specifying a directory.
      */
     public static void setCacheDirectory(File cache) {
         ImageIOExt.cacheDirectory = cache;
@@ -310,7 +310,7 @@ public class ImageIOExt {
         for (int i = 0; i < bands; i++) {
             bits += image.getSampleModel().getSampleSize(i);
         }
-        return (long) Math.ceil(bits / 8) * image.getWidth() * image.getHeight();
+        return (long) Math.ceil(bits / 8d) * image.getWidth() * image.getHeight();
     }
 
     /**

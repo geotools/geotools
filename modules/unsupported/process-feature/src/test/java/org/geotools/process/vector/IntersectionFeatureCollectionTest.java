@@ -43,7 +43,7 @@ import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.geom.PrecisionModel;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -266,7 +266,7 @@ public class IntersectionFeatureCollectionTest {
             array[2] = new Coordinate(1, 1);
             array[3] = new Coordinate(0, 1);
             array[4] = new Coordinate(0, 0);
-            LinearRing shell = new LinearRing(array, new PrecisionModel(), 0);
+            LinearRing shell = gf.createLinearRing(new CoordinateArraySequence(array));
             b.add(gf.createPolygon(shell, null));
             b.add(0);
             firstArrayGeometry[0] = gf.createPolygon(shell, null);
@@ -283,7 +283,7 @@ public class IntersectionFeatureCollectionTest {
             array[2] = new Coordinate(centre.x + 1, centre.y + 1);
             array[3] = new Coordinate(centre.x, centre.y + 1);
             array[4] = new Coordinate(centre.x, centre.y);
-            LinearRing shell = new LinearRing(array, new PrecisionModel(), 0);
+            LinearRing shell = gf.createLinearRing(new CoordinateArraySequence(array));
             b.add(gf.createPolygon(shell, null));
             b.add(0);
             secondArrayGeometry[0] = gf.createPolygon(shell, null);

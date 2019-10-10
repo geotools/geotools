@@ -53,9 +53,6 @@ public class LRSGeocodeProcess implements VectorProcess {
      * Process the input data set.
      *
      * @param featureCollection the data set
-     * @param crs the CRS
-     * @param point the given point
-     * @return the snapped to feature
      * @throws ProcessException error
      */
     @DescribeResult(name = "result", description = "Output feature collection")
@@ -171,8 +168,6 @@ public class LRSGeocodeProcess implements VectorProcess {
      *
      * @param feature the source feature
      * @param targetFeatureType the modified feature type
-     * @param nearestDistance the snap distance
-     * @param nearestBearing the snap bearing
      * @return the modified feature
      * @throws ProcessException error
      */

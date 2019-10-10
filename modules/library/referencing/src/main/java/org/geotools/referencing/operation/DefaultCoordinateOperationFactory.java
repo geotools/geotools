@@ -195,9 +195,6 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
      *
      * @param sourceCRS Input coordinate reference system.
      * @param targetCRS Output coordinate reference system.
-     * @param limit The maximum number of operations to be returned. Use -1 to return all the
-     *     available operations. Use 1 to return just one operation. Currently, the behavior for
-     *     other values of {@code limit} is undefined.
      * @return A coordinate operation from {@code sourceCRS} to {@code targetCRS}.
      * @throws OperationNotFoundException if no operation path was found from {@code sourceCRS} to
      *     {@code targetCRS}.
@@ -473,7 +470,6 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
      * @throws OperationNotFoundException if no operation path was found from {@code sourceCRS} to
      *     {@code targetCRS}.
      * @throws FactoryException if the operation creation failed for some other reason.
-     * @deprecated Current implementation ignore the {@code method} argument.
      */
     public CoordinateOperation createOperation(
             final CoordinateReferenceSystem sourceCRS,
@@ -590,7 +586,7 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
     /**
      * Returns {@code true} if the specified coordinate system use standard axis and units.
      *
-     * @param crs The coordinate system to test.
+     * @param cs The coordinate system to test.
      * @param standard The coordinate system that defines the standard. Usually {@link
      *     DefaultEllipsoidalCS#GEODETIC_2D} or {@link DefaultCartesianCS#PROJECTED}.
      */
@@ -897,10 +893,9 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
                                     identifier, normSourceCRS, normTargetCRS, parameters);
                     step3 = createOperationStep(normTargetCRS, targetCRS);
                     return concatenate(step1, step2, step3);
-                } else {
-                    // TODO: Need some way to pass 'targetDim' to Molodenski.
-                    //       Fallback on geocentric transformations for now.
                 }
+                // TODO: Need some way to pass 'targetDim' to Molodenski.
+                //       Fallback on geocentric transformations for now.
             }
         }
         /*
@@ -1577,7 +1572,10 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
          * for any target coordinates.
          */
         assert count == targets.size() : count;
-        while (count != 0 && steps[--count].getMathTransform().isIdentity()) ;
+        count--;
+        while (count != 0 && steps[count].getMathTransform().isIdentity()) {
+            count--;
+        }
         final ReferencingFactoryContainer factories = getFactoryContainer();
         CoordinateOperation operation = null;
         CoordinateReferenceSystem sourceStepCRS = sourceCRS;

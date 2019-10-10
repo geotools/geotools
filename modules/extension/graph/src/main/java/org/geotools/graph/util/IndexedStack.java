@@ -27,7 +27,7 @@ public class IndexedStack extends java.util.Stack {
     }
 
     public Object push(Object item) {
-        m_index.put(item, new Integer(size()));
+        m_index.put(item, Integer.valueOf(size()));
         return super.push(item);
     }
 

@@ -341,18 +341,20 @@ public class ThreadedEpsgFactory extends DeferredAuthorityFactory
      */
     protected AbstractAuthorityFactory createBackingStore(final Hints hints) throws SQLException {
         final DataSource source = getDataSource();
-        final Connection connection = source.getConnection();
-        final String quote = connection.getMetaData().getIdentifierQuoteString();
-        if (quote.equals("\"")) {
-            /*
-             * PostgreSQL quotes the indentifiers with "..." while MS-Access quotes the
-             * identifiers with [...], so we use the identifier quote string metadata as
-             * a way to distinguish the two cases. However I'm not sure that it is a robust
-             * criterion. Subclasses should always override as a safety.
-             */
-            return new FactoryUsingAnsiSQL(hints, connection);
+        try (Connection connection = source.getConnection()) {
+
+            final String quote = connection.getMetaData().getIdentifierQuoteString();
+            if (quote.equals("\"")) {
+                /*
+                 * PostgreSQL quotes the indentifiers with "..." while MS-Access quotes the
+                 * identifiers with [...], so we use the identifier quote string metadata as
+                 * a way to distinguish the two cases. However I'm not sure that it is a robust
+                 * criterion. Subclasses should always override as a safety.
+                 */
+                return new FactoryUsingAnsiSQL(hints, connection);
+            }
+            return new FactoryUsingSQL(hints, connection);
         }
-        return new FactoryUsingSQL(hints, connection);
     }
 
     /**

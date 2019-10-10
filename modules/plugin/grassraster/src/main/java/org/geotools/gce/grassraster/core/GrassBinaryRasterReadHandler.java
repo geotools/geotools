@@ -442,7 +442,7 @@ public class GrassBinaryRasterReadHandler {
                 }
                 /* Now read the reclass table */
                 while ((line = cellhead.readLine()) != null) {
-                    reclassTable.addElement(new Integer(line));
+                    reclassTable.addElement(Integer.valueOf(line));
                 }
                 // set new reclass environment and check for new reclass header
                 readerGrassEnv.setReclassed(reclassedMapset, reclassedFile);
@@ -545,7 +545,7 @@ public class GrassBinaryRasterReadHandler {
             }
 
             if (!readerFileHeaderMap.get("format").equals("")) {
-                readerMapType = new Integer(readerFileHeaderMap.get("format")).intValue();
+                readerMapType = Integer.valueOf(readerFileHeaderMap.get("format")).intValue();
                 if (readerMapType > -1) {
                     readerMapType++;
                     /*
@@ -872,7 +872,6 @@ public class GrassBinaryRasterReadHandler {
                 readUncompressedIntegerRowByNumber(rowdata, currentrow);
             }
         }
-        return;
     }
 
     /**

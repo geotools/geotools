@@ -77,7 +77,6 @@ public class LazySearchIterator implements CloseableIterator<Data> {
         this.bounds = bounds;
         this.closed = false;
         this.next = null;
-        this.indexfile = indexfile;
     }
 
     public boolean hasNext() {
@@ -138,7 +137,7 @@ public class LazySearchIterator implements CloseableIterator<Data> {
                 int recno = indices.get(i);
                 Data data = new Data(DATA_DEFINITION);
                 data.addValue(recno + 1);
-                data.addValue(new Long(indexfile.getOffsetInBytes(recno)));
+                data.addValue(Long.valueOf(indexfile.getOffsetInBytes(recno)));
                 dataList.add(data);
             }
         } catch (IOException e) {

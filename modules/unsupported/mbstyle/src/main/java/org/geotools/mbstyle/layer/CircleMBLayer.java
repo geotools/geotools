@@ -53,15 +53,12 @@ public class CircleMBLayer extends MBLayer {
 
     private JSONObject paint;
 
-    private JSONObject layout;
-
     private static String TYPE = "circle";
 
     public CircleMBLayer(JSONObject json) {
         super(json, new MBObjectParser(CircleMBLayer.class));
 
         paint = paint();
-        layout = layout();
     }
 
     @Override
@@ -378,7 +375,6 @@ public class CircleMBLayer extends MBLayer {
                         filter.filter());
 
         rules.add(rule);
-        rule.setLegendGraphic(new Graphic[0]);
 
         return Collections.singletonList(
                 sf.featureTypeStyle(

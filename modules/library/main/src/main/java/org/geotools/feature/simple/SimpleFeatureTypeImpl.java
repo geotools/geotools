@@ -38,7 +38,7 @@ import org.opengis.util.InternationalString;
 public class SimpleFeatureTypeImpl extends FeatureTypeImpl implements SimpleFeatureType {
 
     // list of types
-    List<AttributeType> types = null;
+    volatile List<AttributeType> types = null;
 
     Map<String, Integer> index;
 
@@ -183,7 +183,6 @@ public class SimpleFeatureTypeImpl extends FeatureTypeImpl implements SimpleFeat
     static Map<String, AttributeDescriptor> buildDescriptorIndex(SimpleFeatureType featureType) {
         // build an index of attribute name to index
         Map<String, AttributeDescriptor> index = new HashMap<>();
-        int i = 0;
         for (AttributeDescriptor ad : featureType.getAttributeDescriptors()) {
             index.put(ad.getLocalName(), ad);
         }

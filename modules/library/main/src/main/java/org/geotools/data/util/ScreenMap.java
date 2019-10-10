@@ -51,9 +51,8 @@ import org.opengis.referencing.operation.TransformException;
  * @author Andrea Aime - OpenGeo
  */
 public class ScreenMap {
-    double[] point = new double[2];
 
-    int[] pixels;
+    double[] point = new double[2];
 
     int width;
 
@@ -69,15 +68,28 @@ public class ScreenMap {
 
     double spanY;
 
+    BitFieldMatrix bitfield;
+
     public ScreenMap(int x, int y, int width, int height, MathTransform mt) {
         this.width = width;
         this.height = height;
         this.minx = x;
         this.miny = y;
 
-        int arraySize = ((width * height) / 32) + 1;
-        pixels = new int[arraySize];
         this.mt = mt;
+    }
+
+    /**
+     * Returns the bitfield, azyly instantiating it as needed
+     *
+     * @return
+     */
+    private BitFieldMatrix getBitField() {
+        if (this.bitfield == null) {
+            this.bitfield = new BitFieldMatrix();
+        }
+
+        return bitfield;
     }
 
     public ScreenMap(ScreenMap original, int expandBy) {
@@ -123,26 +135,7 @@ public class ScreenMap {
      * in a pixel that has already been used
      */
     public boolean checkAndSet(int x, int y) {
-        // if it's outside of the screenmap we cannot say whether it's busy or not, and
-        // we cannot skip it because rendering or geometry transformation might put the geometry
-        // right in the map
-        if ((x - minx) < 0 || (x - minx) > width - 1 || (y - miny) < 0 || (y - miny) > height - 1)
-            return false;
-        int bit = bit(x - minx, y - miny);
-        int index = bit / 32;
-        int offset = bit % 32;
-        int mask = 1 << offset;
-
-        try {
-            if ((pixels[index] & mask) != 0) {
-                return true;
-            } else {
-                pixels[index] = pixels[index] | mask;
-                return false;
-            }
-        } catch (Exception e) {
-            return true;
-        }
+        return getBitField().checkAndSet(x, y);
     }
 
     public boolean get(Envelope envelope) throws TransformException {
@@ -160,26 +153,7 @@ public class ScreenMap {
 
     /** Returns true if the pixel at location x,y is set or out of bounds. */
     public boolean get(int x, int y) {
-        // if it's outside of the screenmap we cannot say whether it's busy or not, and
-        // we cannot skip it because rendering or geometry transformation might put the geometry
-        // right in the map
-        if ((x - minx) < 0 || (x - minx) > width - 1 || (y - miny) < 0 || (y - miny) > height - 1)
-            return false;
-        int bit = bit(x - minx, y - miny);
-        int index = bit / 32;
-        int offset = bit % 32;
-        int mask = 1 << offset;
-
-        try {
-            return ((pixels[index] & mask) != 0) ? true : false;
-        } catch (Exception e) {
-
-            return true;
-        }
-    }
-
-    private int bit(int x, int y) {
-        return (width * y) + x;
+        return getBitField().get(x, y);
     }
 
     /**
@@ -280,22 +254,92 @@ public class ScreenMap {
 
     /** Sets location at position x,y to the value. */
     public void set(int x, int y, boolean value) {
-        if ((x - minx) < 0 || (x - minx) > width - 1 || (y - miny) < 0 || (y - miny) > height - 1)
-            return;
-        int bit = bit(x - minx, y - miny);
-        int index = bit / 32;
-        int offset = bit % 32;
-        int mask = 1;
-        mask = mask << offset;
+        getBitField().set(x, y, value);
+    }
 
-        if (value) {
-            pixels[index] = pixels[index] | mask;
-        } else {
-            int tmp = pixels[index];
-            tmp = ~tmp;
-            tmp = (tmp | mask);
-            tmp = ~tmp;
-            pixels[index] = tmp;
+    /**
+     * Incapsulates the bitfield representation and access logic, allows for lazy creation of the
+     * bitfield at the first time we actually need to use it (only fairly zoomed in requestes not
+     * pixel might ever be set)
+     */
+    final class BitFieldMatrix {
+        int[] pixels;
+
+        public BitFieldMatrix() {
+            int arraySize = ((width * height) / 32) + 1;
+            pixels = new int[arraySize];
+        }
+
+        public boolean checkAndSet(int x, int y) {
+            // if it's outside of the screenmap we cannot say whether it's busy or not, and
+            // we cannot skip it because rendering or geometry transformation might put the geometry
+            // right in the map
+            if ((x - minx) < 0
+                    || (x - minx) > width - 1
+                    || (y - miny) < 0
+                    || (y - miny) > height - 1) return false;
+            int bit = bit(x - minx, y - miny);
+            int index = bit / 32;
+            int offset = bit % 32;
+            int mask = 1 << offset;
+
+            try {
+                if ((pixels[index] & mask) != 0) {
+                    return true;
+                } else {
+                    pixels[index] = pixels[index] | mask;
+                    return false;
+                }
+            } catch (Exception e) {
+                return true;
+            }
+        }
+
+        public boolean get(int x, int y) {
+            // if it's outside of the screenmap we cannot say whether it's busy or not, and
+            // we cannot skip it because rendering or geometry transformation might put the geometry
+            // right in the map
+            if ((x - minx) < 0
+                    || (x - minx) > width - 1
+                    || (y - miny) < 0
+                    || (y - miny) > height - 1) return false;
+            int bit = bit(x - minx, y - miny);
+            int index = bit / 32;
+            int offset = bit % 32;
+            int mask = 1 << offset;
+
+            try {
+                return ((pixels[index] & mask) != 0) ? true : false;
+            } catch (Exception e) {
+
+                return true;
+            }
+        }
+
+        public void set(int x, int y, boolean value) {
+            if ((x - minx) < 0
+                    || (x - minx) > width - 1
+                    || (y - miny) < 0
+                    || (y - miny) > height - 1) return;
+            int bit = bit(x - minx, y - miny);
+            int index = bit / 32;
+            int offset = bit % 32;
+            int mask = 1;
+            mask = mask << offset;
+
+            if (value) {
+                pixels[index] = pixels[index] | mask;
+            } else {
+                int tmp = pixels[index];
+                tmp = ~tmp;
+                tmp = (tmp | mask);
+                tmp = ~tmp;
+                pixels[index] = tmp;
+            }
+        }
+
+        private int bit(int x, int y) {
+            return (width * y) + x;
         }
     }
 }

@@ -151,21 +151,18 @@ public class DB2SQLDialect extends SQLDialect {
      */
     @Override
     public CoordinateReferenceSystem createCRS(int srid, Connection cx) throws SQLException {
-
-        PreparedStatement ps = cx.prepareStatement(SELECT_CRS_WKT);
-        ps.setInt(1, srid);
-        ResultSet rs = ps.executeQuery();
         String org = null, wkt = null;
         int orgid = 0;
-
-        if (rs.next()) {
-            wkt = rs.getString(1);
-            org = rs.getString(2);
-            orgid = rs.getInt(3);
+        try (PreparedStatement ps = cx.prepareStatement(SELECT_CRS_WKT)) {
+            ps.setInt(1, srid);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    wkt = rs.getString(1);
+                    org = rs.getString(2);
+                    orgid = rs.getInt(3);
+                }
+            }
         }
-        ps.close();
-        rs.close();
-
         if (orgid != 0 && org != null) {
             try {
                 return CRS.decode(org + ":" + orgid);
@@ -534,26 +531,27 @@ public class DB2SQLDialect extends SQLDialect {
                 String srsName = null;
                 Integer srsId = (Integer) gDescr.getUserData().get(JDBCDataStore.JDBC_NATIVE_SRID);
                 if (srsId != null) {
-                    PreparedStatement ps1 = cx.prepareStatement(SELECT_SRS_NAME_FROM_ID);
-                    ps1.setInt(1, srsId);
-                    ResultSet rs = ps1.executeQuery();
-                    if (rs.next()) srsName = rs.getString(1);
-                    rs.close();
-                    ps1.close();
+                    try (PreparedStatement ps1 = cx.prepareStatement(SELECT_SRS_NAME_FROM_ID)) {
+                        ps1.setInt(1, srsId);
+                        try (ResultSet rs = ps1.executeQuery()) {
+                            if (rs.next()) srsName = rs.getString(1);
+                        }
+                    }
                 }
                 if (srsName == null && gDescr.getCoordinateReferenceSystem() != null) {
                     for (ReferenceIdentifier ident :
                             gDescr.getCoordinateReferenceSystem().getIdentifiers()) {
-                        PreparedStatement ps1 = cx.prepareStatement(SELECT_SRS_NAME_FROM_ORG);
-                        ps1.setString(1, ident.getCodeSpace());
-                        ps1.setInt(2, new Integer(ident.getCode()));
-                        ResultSet rs = ps1.executeQuery();
-                        if (rs.next()) {
-                            srsName = rs.getString(1);
-                            srsId = rs.getInt(2);
+                        try (PreparedStatement ps1 =
+                                cx.prepareStatement(SELECT_SRS_NAME_FROM_ORG)) {
+                            ps1.setString(1, ident.getCodeSpace());
+                            ps1.setInt(2, Integer.valueOf(ident.getCode()));
+                            try (ResultSet rs = ps1.executeQuery()) {
+                                if (rs.next()) {
+                                    srsName = rs.getString(1);
+                                    srsId = rs.getInt(2);
+                                }
+                            }
                         }
-                        rs.close();
-                        ps1.close();
                         if (srsName != null) break;
                     }
                 }
@@ -613,7 +611,9 @@ public class DB2SQLDialect extends SQLDialect {
         try {
             ResultSet rs = st.executeQuery(sql.toString());
             try {
-                rs.next();
+                if (!rs.next()) {
+                    throw new SQLException("Could not get next value for sequence");
+                }
                 return rs.getInt(1);
             } finally {
                 dataStore.closeSafe(rs);
@@ -748,17 +748,14 @@ public class DB2SQLDialect extends SQLDialect {
                 if (rs != null) rs.close();
             } catch (SQLException ex1) {
             }
-            ;
             try {
                 if (ps != null) ps.close();
             } catch (SQLException ex1) {
             }
-            ;
             try {
                 if (con != null) con.close();
             } catch (SQLException ex1) {
             }
-            ;
         }
     }
 
@@ -780,17 +777,14 @@ public class DB2SQLDialect extends SQLDialect {
                 if (rs != null) rs.close();
             } catch (SQLException ex1) {
             }
-            ;
             try {
                 if (ps != null) ps.close();
             } catch (SQLException ex1) {
             }
-            ;
             try {
                 if (con != null) con.close();
             } catch (SQLException ex1) {
             }
-            ;
         }
     }
 

@@ -129,7 +129,7 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
     }
 
     protected Integer getNativeSRID() {
-        return new Integer(getEpsgCode());
+        return Integer.valueOf(getEpsgCode());
     }
 
     protected abstract int getEpsgCode();
@@ -138,7 +138,7 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
         SimpleFeatureType schema = dataStore.getSchema(tname(getLine3d()));
         CoordinateReferenceSystem crs =
                 schema.getGeometryDescriptor().getCoordinateReferenceSystem();
-        assertEquals(new Integer(getEpsgCode()), CRS.lookupEpsgCode(crs, false));
+        assertEquals(Integer.valueOf(getEpsgCode()), CRS.lookupEpsgCode(crs, false));
         assertEquals(
                 getNativeSRID(),
                 schema.getGeometryDescriptor().getUserData().get(JDBCDataStore.JDBC_NATIVE_SRID));
@@ -349,7 +349,7 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
         Coordinate[] pt1 = g1.getCoordinates();
         Map<Coordinate, Double> coordZMap = new HashMap<Coordinate, Double>();
         for (int i = 0; i < pt1.length; i++) {
-            coordZMap.put(pt1[i], pt1[i].z);
+            coordZMap.put(pt1[i], pt1[i].getZ());
         }
 
         Coordinate[] pt2 = g2.getCoordinates();
@@ -357,7 +357,7 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
         for (int i2 = 0; i2 < pt2.length; i2++) {
             Coordinate p2 = pt2[i2];
             double z = coordZMap.get(p2);
-            boolean isEqualZ = p2.z == z || (Double.isNaN(p2.z) && Double.isNaN(z));
+            boolean isEqualZ = p2.getZ() == z || (Double.isNaN(p2.getZ()) && Double.isNaN(z));
             if (!isEqualZ) return false;
         }
 

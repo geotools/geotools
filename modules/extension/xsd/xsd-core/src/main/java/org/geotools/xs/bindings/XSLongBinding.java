@@ -95,7 +95,7 @@ public class XSLongBinding implements SimpleBinding {
             text = text.substring(1);
         }
 
-        return new Long(text);
+        return Long.valueOf(text);
     }
 
     /**

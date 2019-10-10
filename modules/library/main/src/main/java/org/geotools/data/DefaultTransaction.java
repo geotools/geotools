@@ -84,14 +84,19 @@ public class DefaultTransaction implements Transaction {
 
             if (state == current) {
                 throw new IllegalArgumentException(
-                        "Transaction already has an this State for key: "
+                        "Transaction "
+                                + handle
+                                + " already has an this State for key: "
                                 + key
                                 + ". Please check for existing State before creating your own.");
             } else {
                 throw new IllegalArgumentException(
-                        "Transaction already has an entry for key:"
+                        "Transaction "
+                                + handle
+                                + " already has an entry for key:"
                                 + key
-                                + ". Please check for existing State before creating your own.");
+                                + ". Please check for existing State before creating your own: "
+                                + current);
             }
         } else {
             stateLookup.put(key, state);
@@ -322,6 +327,7 @@ public class DefaultTransaction implements Transaction {
         propertyLookup.put(key, value);
     }
 
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         if (stateLookup != null) {
             LOGGER.severe(

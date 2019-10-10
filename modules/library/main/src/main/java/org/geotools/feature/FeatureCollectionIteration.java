@@ -20,7 +20,6 @@ package org.geotools.feature;
 
 import org.opengis.feature.Feature;
 import org.opengis.feature.Property;
-import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.PropertyDescriptor;
 
 /**
@@ -114,9 +113,6 @@ public class FeatureCollectionIteration {
      * @param feature The Feature to explore.
      */
     protected void walker(Feature feature) {
-        final FeatureType schema = feature.getType();
-        // final int cnt = schema.getAttributeCount();
-
         handler.handleFeature(feature);
 
         for (Property property : feature.getProperties()) {

@@ -12,7 +12,7 @@ For our example, let's create a geometry buffer process (the code for this is al
 
 0. Create a New Project
    
-   Create a new project for your process using your favourite IDE or maven.
+   Create a new project for your process using your favorite IDE or maven.
 
 1. Create Process Factory
    
@@ -149,22 +149,22 @@ For our example, let's create a geometry buffer process (the code for this is al
         }
         
 3. Finally, we need to make sure our new factory will get found and listed by the
-   Processors FactoryFinder.
+   Processors ``FactoryFinder``.
    
    Create a "services" file to list your factory with the plugin system:
    
-   * /src/main/resources/META-INF/services/org.geotools.process.ProcessFactory
+   * :file:`/src/main/resources/META-INF/services/org.geotools.process.ProcessFactory`
    
 4. List your factories (one per line) in the above file::
       
       org.geotools.process.BufferFactory
       
-5. When this is combined into a jar; the ProcessFactoryFinder will use the files
-   in META-INF to "discover" your process factory.
+5. When this is combined into a jar; the ``ProcessFactoryFinder`` will use the files
+   in ``META-INF`` to "discover" your process factory.
 
 4. Now we can use the new process. Let's write a JUnit test to ensure it works.
    
-   Create a JUnit test case in the test folder, let's call it MyProcessTest.java::
+   Create a JUnit test case in the test folder, let's call it ``MyProcessTest.java``::
 
         public class MyProcessTest extends TestCase {
          

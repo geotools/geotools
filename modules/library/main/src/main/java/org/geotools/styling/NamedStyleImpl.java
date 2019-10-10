@@ -16,7 +16,6 @@
  */
 package org.geotools.styling;
 
-import org.opengis.style.FeatureTypeStyle;
 import org.opengis.style.StyleVisitor;
 
 /**
@@ -68,78 +67,42 @@ public class NamedStyleImpl extends StyleImpl implements NamedStyle {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
+    /** */
     public String getAbstract() {
         return "";
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param abstractStr DOCUMENT ME!
-     * @throws UnsupportedOperationException DOCUMENT ME!
-     */
+    /** */
     public void setAbstract(String abstractStr) {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
+    /** */
     public boolean isDefault() {
         return false;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param isDefault DOCUMENT ME!
-     * @throws UnsupportedOperationException DOCUMENT ME!
-     */
+    /** */
     public void setDefault(boolean isDefault) {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
+    /** */
     public org.geotools.styling.FeatureTypeStyle[] getFeatureTypeStyles() {
         return new org.geotools.styling.FeatureTypeStyle[0];
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param types DOCUMENT ME!
-     * @throws UnsupportedOperationException DOCUMENT ME!
-     */
-    public void setFeatureTypeStyles(FeatureTypeStyle[] types) {
+    /** */
+    public void setFeatureTypeStyles(org.geotools.styling.FeatureTypeStyle[] types) {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param type DOCUMENT ME!
-     * @throws UnsupportedOperationException DOCUMENT ME!
-     */
-    public void addFeatureTypeStyle(FeatureTypeStyle type) {
+    /** */
+    public void addFeatureTypeStyle(org.geotools.styling.FeatureTypeStyle type) {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param visitor DOCUMENT ME!
-     */
+    /** */
     public Object accept(StyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }

@@ -39,6 +39,7 @@ public class ListHandler extends XSIElementHandler {
     private SimpleTypeHandler simpleType;
 
     /** @see java.lang.Object#hashCode() */
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return LOCALNAME.hashCode()
                 * ((id == null) ? 1 : id.hashCode())

@@ -66,11 +66,7 @@ public class ExpressionTest extends TestCase {
     /** Test suite for this test case */
     TestSuite suite = null;
 
-    /**
-     * Constructor with test name.
-     *
-     * @param testName DOCUMENT ME!
-     */
+    /** Constructor with test name. */
     public ExpressionTest(String testName) {
         super(testName);
     }
@@ -137,14 +133,14 @@ public class ExpressionTest extends TestCase {
         Object[] attributes = new Object[10];
         GeometryFactory gf = new GeometryFactory(new PrecisionModel());
         attributes[0] = gf.createLineString(coords);
-        attributes[1] = new Boolean(true);
-        attributes[2] = new Character('t');
-        attributes[3] = new Byte("10");
-        attributes[4] = new Short("101");
-        attributes[5] = new Integer(1002);
-        attributes[6] = new Long(10003);
-        attributes[7] = new Float(10000.4);
-        attributes[8] = new Double(100000.5);
+        attributes[1] = Boolean.valueOf(true);
+        attributes[2] = Character.valueOf('t');
+        attributes[3] = Byte.valueOf("10");
+        attributes[4] = Short.valueOf("101");
+        attributes[5] = Integer.valueOf(1002);
+        attributes[6] = Long.valueOf(10003);
+        attributes[7] = Float.valueOf(10000.4f);
+        attributes[8] = Double.valueOf(100000.5);
         attributes[9] = "test string data";
 
         // Creates the feature itself
@@ -162,7 +158,7 @@ public class ExpressionTest extends TestCase {
         // Test integer attribute
         Expression testAttribute = new AttributeExpressionImpl(testSchema, "testInteger");
         LOGGER.fine("integer attribute expression equals: " + testAttribute.evaluate(testFeature));
-        assertEquals(new Integer(1002), testAttribute.evaluate(testFeature));
+        assertEquals(Integer.valueOf(1002), testAttribute.evaluate(testFeature));
 
         // Test string attribute
         testAttribute = new AttributeExpressionImpl(testSchema, "testString");
@@ -182,7 +178,7 @@ public class ExpressionTest extends TestCase {
         org.opengis.filter.expression.Expression testAttribute =
                 new AttributeExpressionImpl("intVal");
 
-        assertEquals(new Integer(10), testAttribute.evaluate(testFeature));
+        assertEquals(Integer.valueOf(10), testAttribute.evaluate(testFeature));
 
         // Test string attribute
         testAttribute = new AttributeExpressionImpl("stringVal");
@@ -197,9 +193,9 @@ public class ExpressionTest extends TestCase {
      */
     public void testLiteral() throws IllegalFilterException {
         // Test integer attribute
-        Expression testLiteral = new LiteralExpressionImpl(new Integer(1002));
+        Expression testLiteral = new LiteralExpressionImpl(Integer.valueOf(1002));
         LOGGER.fine("integer literal expression equals: " + testLiteral.evaluate(testFeature));
-        assertEquals(new Integer(1002), testLiteral.evaluate(testFeature));
+        assertEquals(Integer.valueOf(1002), testLiteral.evaluate(testFeature));
 
         // Test string attribute
         testLiteral = new LiteralExpressionImpl("test string data");
@@ -217,9 +213,9 @@ public class ExpressionTest extends TestCase {
 
         // Test integer attribute
         org.opengis.filter.expression.Expression testLiteral =
-                new LiteralExpressionImpl(new Integer(1002));
+                new LiteralExpressionImpl(Integer.valueOf(1002));
 
-        assertEquals(new Integer(1002), testLiteral.evaluate(testObj));
+        assertEquals(Integer.valueOf(1002), testLiteral.evaluate(testObj));
 
         // Test string attribute
         testLiteral = new LiteralExpressionImpl("test string data");
@@ -242,14 +238,14 @@ public class ExpressionTest extends TestCase {
     public void testMinFunctionOld() throws IllegalFilterException {
         org.opengis.filter.expression.Expression a, b;
         a = new AttributeExpressionImpl(testSchema, "testInteger");
-        b = new LiteralExpressionImpl(new Double(1004));
+        b = new LiteralExpressionImpl(Double.valueOf(1004));
 
         Function min = ff.function("min", a, b);
 
         Object value = min.evaluate(testFeature);
         assertEquals(1002d, ((Double) value).doubleValue(), 0);
 
-        b = ff.literal(new Double(-100.001));
+        b = ff.literal(Double.valueOf(-100.001));
         min = ff.function("min", a, b);
 
         value = min.evaluate(testFeature);
@@ -278,12 +274,12 @@ public class ExpressionTest extends TestCase {
     public void testMaxFunction() throws IllegalFilterException {
         org.opengis.filter.expression.Expression a, b;
         a = new AttributeExpressionImpl(testSchema, "testInteger");
-        b = new LiteralExpressionImpl(new Double(1004));
+        b = new LiteralExpressionImpl(Double.valueOf(1004));
 
         Function max = ff.function("max", a, b);
         assertEquals(1004d, ((Double) max.evaluate(testFeature)).doubleValue(), 0);
 
-        b = new LiteralExpressionImpl(new Double(-100.001));
+        b = new LiteralExpressionImpl(Double.valueOf(-100.001));
         max = ff.function("max", a, b);
         assertEquals(1002d, ((Double) max.evaluate(testFeature)).doubleValue(), 0);
     }
@@ -296,7 +292,8 @@ public class ExpressionTest extends TestCase {
     public void testMaxFunctionObject() throws IllegalFilterException {
         MockDataObject testObj = new MockDataObject(10, "diez");
         org.opengis.filter.expression.Expression a = new AttributeExpressionImpl("intVal");
-        org.opengis.filter.expression.Expression b = new LiteralExpressionImpl(new Double(1004));
+        org.opengis.filter.expression.Expression b =
+                new LiteralExpressionImpl(Double.valueOf(1004));
 
         Function max = ff.function("max", a, b);
         assertEquals("max", max.getName());
@@ -304,7 +301,7 @@ public class ExpressionTest extends TestCase {
         Object maxValue = max.evaluate(testObj);
         assertEquals(1004d, ((Double) maxValue).doubleValue(), 0);
 
-        b = new LiteralExpressionImpl(new Double(-100.001));
+        b = new LiteralExpressionImpl(Double.valueOf(-100.001));
 
         max = ff.function("max", a, b);
         maxValue = max.evaluate(testObj);
@@ -313,7 +310,7 @@ public class ExpressionTest extends TestCase {
     }
 
     public void testIncompleteMathExpression() throws IllegalFilterException {
-        Expression testAttribute1 = new LiteralExpressionImpl(new Integer(4));
+        Expression testAttribute1 = new LiteralExpressionImpl(Integer.valueOf(4));
 
         MathExpressionImpl mathTest = new AddImpl(null, null);
         mathTest.setExpression1(testAttribute1);
@@ -338,8 +335,8 @@ public class ExpressionTest extends TestCase {
      */
     public void testMath() throws IllegalFilterException {
         // Test integer attribute
-        Expression testAttribute1 = new LiteralExpressionImpl(new Integer(4));
-        Expression testAttribute2 = new LiteralExpressionImpl(new Integer(2));
+        Expression testAttribute1 = new LiteralExpressionImpl(Integer.valueOf(4));
+        Expression testAttribute2 = new LiteralExpressionImpl(Integer.valueOf(2));
 
         // Test addition
         MathExpressionImpl mathTest = new AddImpl(null, null);
@@ -352,7 +349,7 @@ public class ExpressionTest extends TestCase {
                         + testAttribute2.evaluate(testFeature)
                         + " = "
                         + mathTest.evaluate(testFeature));
-        assertEquals(new Integer(6), mathTest.evaluate(testFeature, Integer.class));
+        assertEquals(Integer.valueOf(6), mathTest.evaluate(testFeature, Integer.class));
 
         // Test subtraction
         mathTest = new SubtractImpl(null, null);
@@ -365,7 +362,7 @@ public class ExpressionTest extends TestCase {
                         + testAttribute2.evaluate(testFeature)
                         + " = "
                         + mathTest.evaluate(testFeature));
-        assertEquals(new Integer(2), mathTest.evaluate(testFeature, Integer.class));
+        assertEquals(Integer.valueOf(2), mathTest.evaluate(testFeature, Integer.class));
 
         // Test multiplication
         mathTest = new MultiplyImpl(null, null);
@@ -378,7 +375,7 @@ public class ExpressionTest extends TestCase {
                         + testAttribute2.evaluate(testFeature)
                         + " = "
                         + mathTest.evaluate(testFeature));
-        assertEquals(new Integer(8), mathTest.evaluate(testFeature, Integer.class));
+        assertEquals(Integer.valueOf(8), mathTest.evaluate(testFeature, Integer.class));
 
         // Test division
         mathTest = new DivideImpl(null, null);
@@ -391,7 +388,7 @@ public class ExpressionTest extends TestCase {
                         + testAttribute2.evaluate(testFeature)
                         + " = "
                         + mathTest.evaluate(testFeature));
-        assertEquals(new Double(2), mathTest.evaluate(testFeature));
+        assertEquals(Double.valueOf(2), mathTest.evaluate(testFeature));
     }
 
     /**
@@ -404,36 +401,36 @@ public class ExpressionTest extends TestCase {
 
         // Test integer attribute
         org.opengis.filter.expression.Expression testAttribute1 =
-                new LiteralExpressionImpl(new Integer(4));
+                new LiteralExpressionImpl(Integer.valueOf(4));
         org.opengis.filter.expression.Expression testAttribute2 =
-                new LiteralExpressionImpl(new Integer(2));
+                new LiteralExpressionImpl(Integer.valueOf(2));
 
         // Test addition
         MathExpressionImpl mathTest = new AddImpl(null, null);
         mathTest.setExpression1(testAttribute1);
         mathTest.setExpression2(testAttribute2);
 
-        assertEquals(new Integer(6), mathTest.evaluate(testObject, Integer.class));
+        assertEquals(Integer.valueOf(6), mathTest.evaluate(testObject, Integer.class));
 
         // Test subtraction
         mathTest = new SubtractImpl(null, null);
         mathTest.setExpression1(testAttribute1);
         mathTest.setExpression2(testAttribute2);
 
-        assertEquals(new Integer(2), mathTest.evaluate(testObject, Integer.class));
+        assertEquals(Integer.valueOf(2), mathTest.evaluate(testObject, Integer.class));
 
         // Test multiplication
         mathTest = new MultiplyImpl(null, null);
         mathTest.setExpression1(testAttribute1);
         mathTest.setExpression2(testAttribute2);
 
-        assertEquals(new Integer(8), mathTest.evaluate(testObject, Integer.class));
+        assertEquals(Integer.valueOf(8), mathTest.evaluate(testObject, Integer.class));
 
         // Test division
         mathTest = new DivideImpl(null, null);
         mathTest.setExpression1(testAttribute1);
         mathTest.setExpression2(testAttribute2);
 
-        assertEquals(new Double(2), mathTest.evaluate(testObject));
+        assertEquals(Double.valueOf(2), mathTest.evaluate(testObject));
     }
 }

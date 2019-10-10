@@ -21,9 +21,9 @@ import org.geotools.data.DataTestCase;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.validation.spatial.IsValidGeometryValidation;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 
 /**
@@ -100,7 +100,7 @@ public class ValidationProcessorTest extends DataTestCase {
             this.newRoad =
                     SimpleFeatureBuilder.build(
                             this.roadType,
-                            new Object[] {new Integer(2), line(new int[] {1, 2, 1, 2}), "r4"},
+                            new Object[] {Integer.valueOf(2), line(new int[] {1, 2, 1, 2}), "r4"},
                             "road.rd4");
         } catch (IllegalAttributeException e) {
         }

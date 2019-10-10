@@ -130,9 +130,6 @@ public class JLayeredMapPane extends AbstractMapPane {
             op.graphics = op.image.createGraphics();
             // op.graphics.setBackground(getBackground());
 
-        } else {
-            // op.graphics.setBackground(getBackground());
-            // op.graphics.clearRect(0, 0, r.width, r.height);
         }
 
         if (op.renderer == null) {

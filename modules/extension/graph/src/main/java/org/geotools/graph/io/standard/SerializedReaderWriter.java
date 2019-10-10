@@ -61,7 +61,7 @@ public class SerializedReaderWriter extends AbstractReaderWriter implements File
                                 new FileInputStream((String) getProperty(FILENAME))));
 
         // read header
-        int nnodes = objin.readInt();
+        objin.readInt(); // nnodes, not used
         int nedges = objin.readInt();
 
         // rebuild edge collection, upon reading an edge, at the edge to the

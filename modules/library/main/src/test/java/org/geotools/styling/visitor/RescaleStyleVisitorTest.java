@@ -19,9 +19,10 @@ package org.geotools.styling.visitor;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Arrays;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.NameImpl;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.FeatureTypeStyle;
@@ -43,6 +44,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
+import org.opengis.style.SemanticType;
 import si.uom.SI;
 
 /**
@@ -71,8 +73,13 @@ public class RescaleStyleVisitorTest {
     public void testStyleDuplication() throws IllegalFilterException {
         // create a style
         Style oldStyle = sb.createStyle("FTSName", sf.createPolygonSymbolizer());
-        oldStyle.getFeatureTypeStyles()[0].setSemanticTypeIdentifiers(
-                new String[] {"simple", "generic:geometry"});
+        oldStyle.featureTypeStyles()
+                .get(0)
+                .semanticTypeIdentifiers()
+                .addAll(
+                        Arrays.asList(
+                                SemanticType.valueOf("simple"),
+                                SemanticType.valueOf("generic:geometry")));
         // duplicate it
         oldStyle.accept(visitor);
         Style newStyle = (Style) visitor.getCopy();
@@ -84,13 +91,13 @@ public class RescaleStyleVisitorTest {
     @Test
     public void testStyle() throws Exception {
         FeatureTypeStyle fts = sf.createFeatureTypeStyle();
-        fts.setFeatureTypeName("feature-type-1");
+        fts.featureTypeNames().add(new NameImpl("feature-type-1"));
 
         FeatureTypeStyle fts2 = fts2();
 
         Style style = sf.getDefaultStyle();
-        style.addFeatureTypeStyle(fts);
-        style.addFeatureTypeStyle(fts2);
+        style.featureTypeStyles().add(fts);
+        style.featureTypeStyles().add(fts2);
 
         style.accept(visitor);
         Style copy = (Style) visitor.getCopy();
@@ -98,14 +105,14 @@ public class RescaleStyleVisitorTest {
         Style notEq = sf.getDefaultStyle();
 
         fts2 = fts2();
-        notEq.addFeatureTypeStyle(fts2);
+        notEq.featureTypeStyles().add(fts2);
     }
 
     private FeatureTypeStyle fts2() {
         FeatureTypeStyle fts2 = sf.createFeatureTypeStyle();
         Rule rule = sf.createRule();
-        fts2.addRule(rule);
-        fts2.setFeatureTypeName("feature-type-2");
+        fts2.rules().add(rule);
+        fts2.featureTypeNames().add(new NameImpl("feature-type-2"));
 
         return fts2;
     }
@@ -120,7 +127,7 @@ public class RescaleStyleVisitorTest {
         RasterSymbolizer symb3 = sf.createRasterSymbolizer();
 
         Rule rule = sf.createRule();
-        rule.setSymbolizers(new Symbolizer[] {symb1, symb2, symb3});
+        rule.symbolizers().addAll(Arrays.asList(symb1, symb2, symb3));
 
         rule.accept(visitor);
         Rule clone = (Rule) visitor.getCopy();

@@ -22,6 +22,7 @@ import static java.lang.Math.pow;
 
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -84,6 +85,83 @@ public class WarpBuilder {
     }
 
     /**
+     * Returns true if the given domain is valid for the splitting alghoritm. Can be called before
+     * getRowColsSplit to prevent exceptions.
+     *
+     * @param domain domain to check
+     * @return
+     */
+    public boolean isValidDomain(Rectangle2D.Double domain) {
+        return isValidDomain(
+                domain.getMinX(), domain.getMaxX(), domain.getMinY(), domain.getMaxY());
+    }
+
+    private boolean isValidDomain(double minx, double maxx, double miny, double maxy) {
+        final int width = (int) (maxx - minx);
+        final int height = (int) (maxy - miny);
+        return width > 0 && height > 0;
+    }
+
+    /**
+     * Given a math transform and a source domain, return the number of rows and cols by which the
+     * domain should be split to avoid transform linearity issues, or null if it could not be found.
+     *
+     * @param mt
+     * @param domain
+     * @return
+     */
+    public int[] getRowColsSplit(MathTransform2D mt, Rectangle2D.Double domain) {
+        // first simple case, the tx is affine
+        if (mt instanceof AffineTransform2D) {
+            return new int[] {1, 1};
+        }
+
+        // second simple case, the caller does not want any optimization
+        if (maxDistanceSquared == 0) {
+            return null;
+        }
+
+        // get the bounds and perform sanity check
+        final double minx = domain.getMinX();
+        final double maxx = domain.getMaxX();
+        final double miny = domain.getMinY();
+        final double maxy = domain.getMaxY();
+        if (!isValidDomain(minx, maxx, miny, maxy)) {
+            throw new IllegalArgumentException("The domain is empty!");
+        }
+
+        /*
+         * Prepare to build a warp grid. A warp grid requires a set of uniform cells, but the
+         * number of rows and cols may differ. The following method will drill down using a
+         * recursive division algorithm to find the optimal number of divisions along the
+         * x and y axis
+         */
+        int[] rowCols;
+        try {
+            rowCols =
+                    computeOptimalDepths(
+                            mt,
+                            minx,
+                            maxx,
+                            miny,
+                            maxy,
+                            0,
+                            0,
+                            (minx1, maxx1, miny1, maxy1, rowDepth, colDepth) -> {
+                                if (rowDepth + colDepth > 20) {
+                                    // this would take 2^(20) points, way too much already
+                                    throw new ExcessiveDepthException(
+                                            "Warp grid getting too large to fit in memory, bailing out");
+                                }
+                            });
+        } catch (Exception e) {
+            return null;
+        }
+
+        return new int[] {(int) pow(2, rowCols[0]), (int) pow(2, rowCols[1])};
+    }
+
+    /**
      * @param mt The math transform to be approximated
      * @param domain The domain in which the transform will be approximated
      * @param tolerance
@@ -119,7 +197,34 @@ public class WarpBuilder {
          */
         int[] rowCols;
         try {
-            rowCols = computeOptimalDepths(mt, minx, maxx, miny, maxy, 0, 0);
+            rowCols =
+                    computeOptimalDepths(
+                            mt,
+                            minx,
+                            maxx,
+                            miny,
+                            maxy,
+                            0,
+                            0,
+                            new DomainValidator() {
+                                @Override
+                                public void validateDomain(
+                                        double minx,
+                                        double maxx,
+                                        double miny,
+                                        double maxy,
+                                        int rowDepth,
+                                        int colDepth) {
+                                    if (maxx - minx < 4 || maxy - miny < 4) {
+                                        throw new ExcessiveDepthException(
+                                                "Warp grid getting as dense as the original data");
+                                    } else if (rowDepth + colDepth > 20) {
+                                        // this would take 2^(20) points, way too much already
+                                        throw new ExcessiveDepthException(
+                                                "Warp grid getting too large to fit in memory, bailing out");
+                                    }
+                                }
+                            });
         } catch (Exception e) {
             return new WarpAdapter(null, mt);
         }
@@ -235,6 +340,11 @@ public class WarpBuilder {
         }
     }
 
+    interface DomainValidator {
+        public void validateDomain(
+                double minx, double maxx, double miny, double maxy, int rowDepth, int colDepth);
+    }
+
     /**
      * Performs recursive slicing of the area to find the optimal number of subdivisions along the x
      * and y axis.
@@ -252,15 +362,10 @@ public class WarpBuilder {
             double miny,
             double maxy,
             int rowDepth,
-            int colDepth)
+            int colDepth,
+            DomainValidator validator)
             throws TransformException {
-        if (maxx - minx < 4 || maxy - miny < 4) {
-            throw new ExcessiveDepthException("Warp grid getting as dense as the original data");
-        } else if (rowDepth + colDepth > 20) {
-            // this would take 2^(20) points, way too much already
-            throw new ExcessiveDepthException(
-                    "Warp grid getting too large to fit in memory, bailing out");
-        }
+        validator.validateDomain(minx, maxx, miny, maxy, rowDepth, colDepth);
 
         // center of this rectangle
         final double midx = (minx + maxx) / 2;
@@ -289,24 +394,32 @@ public class WarpBuilder {
             // quad split
             rowDepth++;
             colDepth++;
-            int[] d1 = computeOptimalDepths(mt, minx, midx, miny, midy, rowDepth, colDepth);
-            int[] d2 = computeOptimalDepths(mt, minx, midx, midy, maxy, rowDepth, colDepth);
-            int[] d3 = computeOptimalDepths(mt, midx, maxx, miny, midy, rowDepth, colDepth);
-            int[] d4 = computeOptimalDepths(mt, midx, maxx, midy, maxy, rowDepth, colDepth);
+            int[] d1 =
+                    computeOptimalDepths(mt, minx, midx, miny, midy, rowDepth, colDepth, validator);
+            int[] d2 =
+                    computeOptimalDepths(mt, minx, midx, midy, maxy, rowDepth, colDepth, validator);
+            int[] d3 =
+                    computeOptimalDepths(mt, midx, maxx, miny, midy, rowDepth, colDepth, validator);
+            int[] d4 =
+                    computeOptimalDepths(mt, midx, maxx, midy, maxy, rowDepth, colDepth, validator);
             return new int[] {
                 max(max(d1[0], d2[0]), max(d3[0], d4[0])), max(max(d1[1], d2[1]), max(d3[1], d4[1]))
             };
         } else if (!withinTolHorizontal) {
             // slice in two at midx (creating two more colums)
             colDepth++;
-            int[] d1 = computeOptimalDepths(mt, minx, midx, miny, maxy, rowDepth, colDepth);
-            int[] d2 = computeOptimalDepths(mt, midx, maxx, miny, maxy, rowDepth, colDepth);
+            int[] d1 =
+                    computeOptimalDepths(mt, minx, midx, miny, maxy, rowDepth, colDepth, validator);
+            int[] d2 =
+                    computeOptimalDepths(mt, midx, maxx, miny, maxy, rowDepth, colDepth, validator);
             return new int[] {max(d1[0], d2[0]), max(d1[1], d2[1])};
         } else if (!withinTolVertical) {
             // slice in two at midy (creating two rows)
             rowDepth++;
-            int[] d1 = computeOptimalDepths(mt, minx, maxx, miny, midy, rowDepth, colDepth);
-            int[] d2 = computeOptimalDepths(mt, minx, maxx, midy, maxy, rowDepth, colDepth);
+            int[] d1 =
+                    computeOptimalDepths(mt, minx, maxx, miny, midy, rowDepth, colDepth, validator);
+            int[] d2 =
+                    computeOptimalDepths(mt, minx, maxx, midy, maxy, rowDepth, colDepth, validator);
             return new int[] {max(d1[0], d2[0]), max(d1[1], d2[1])};
         }
 

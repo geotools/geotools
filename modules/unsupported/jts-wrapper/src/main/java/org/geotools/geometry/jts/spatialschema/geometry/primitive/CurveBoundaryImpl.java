@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 /*$************************************************************************************************
  **
  ** $Id$
@@ -9,10 +25,7 @@
  *************************************************************************************************/
 package org.geotools.geometry.jts.spatialschema.geometry.primitive;
 
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.Set;
-import org.opengis.geometry.complex.Complex;
 import org.opengis.geometry.primitive.CurveBoundary;
 import org.opengis.geometry.primitive.Point;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -27,18 +40,10 @@ public class CurveBoundaryImpl extends PrimitiveBoundaryImpl implements CurveBou
     // *************************************************************************
     //
     // *************************************************************************
-    /** Comment for {@code EMPTY_COMPLEX_ARRAY}. */
-    private static final Complex[] EMPTY_COMPLEX_ARRAY = new Complex[0];
-
-    // *************************************************************************
-    //
-    // *************************************************************************
 
     private Point startPoint;
 
     private Point endPoint;
-
-    private Set pointSet;
 
     // *************************************************************************
     //
@@ -57,7 +62,6 @@ public class CurveBoundaryImpl extends PrimitiveBoundaryImpl implements CurveBou
         if (endPoint != null) {
             tempSet.add(endPoint);
         }
-        this.pointSet = Collections.unmodifiableSet(tempSet);
     }
 
     // *************************************************************************

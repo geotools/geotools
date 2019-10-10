@@ -18,6 +18,7 @@ package org.geotools.coverage.io;
 
 import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
+import java.util.Objects;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 
@@ -36,7 +37,7 @@ import org.geotools.metadata.i18n.Errors;
  * following the change. This allows multiple modifications to be made in a single expression. This
  * provides a way of modifying an <code>RasterLayout</code> within a superclass constructor call.
  */
-public class RasterLayout {
+public class RasterLayout implements Cloneable {
 
     /** The image's minimum X coordinate. */
     int minX = 0;
@@ -77,8 +78,6 @@ public class RasterLayout {
      * @param tileGridYOffset the Y coordinate of tile (0, 0).
      * @param tileWidth the width of a tile.
      * @param tileHeight the height of a tile.
-     * @param sampleModel the image's <code>SampleModel</code>.
-     * @param colorModel the image's <code>ColorModel</code>.
      */
     public RasterLayout(
             int minX,
@@ -150,7 +149,6 @@ public class RasterLayout {
      * the supplied <code>RenderedImage</code>. If <code>minX</code> is not valid and fallback is
      * null, 0 is returned.
      *
-     * @param fallback the <code>RenderedImage</code> fallback.
      * @return the appropriate value of minX.
      */
     public int getMinX() {
@@ -173,7 +171,6 @@ public class RasterLayout {
      * the supplied <code>RenderedImage</code>. If <code>minY</code> is not valid and fallback is
      * null, 0 is returned.
      *
-     * @param fallback the <code>RenderedImage</code> fallback.
      * @return the appropriate value of minY.
      */
     public int getMinY() {
@@ -196,7 +193,6 @@ public class RasterLayout {
      * the supplied <code>RenderedImage</code>. If <code>width</code> is not valid and fallback is
      * null, 0 is returned.
      *
-     * @param fallback the <code>RenderedImage</code> fallback.
      * @return the appropriate value of width.
      */
     public int getWidth() {
@@ -222,7 +218,6 @@ public class RasterLayout {
      * Returns the value of height if it is valid, and otherwise returns the value from the supplied
      * <code>RenderedImage</code>. If height is not valid and fallback is null, 0 is returned.
      *
-     * @param fallback the <code>RenderedImage</code> fallback.
      * @return the appropriate value of height.
      */
     public int getHeight() {
@@ -249,7 +244,6 @@ public class RasterLayout {
      * value from the supplied <code>RenderedImage</code>. If <code>tileGridXOffset</code> is not
      * valid and fallback is null, 0 is returned.
      *
-     * @param fallback the <code>RenderedImage</code> fallback.
      * @return the appropriate value of tileGridXOffset.
      */
     public int getTileGridXOffset() {
@@ -272,7 +266,6 @@ public class RasterLayout {
      * value from the supplied <code>RenderedImage</code>. If <code>tileGridYOffset</code> is not
      * valid and fallback is null, 0 is returned.
      *
-     * @param fallback the <code>RenderedImage</code> fallback.
      * @return the appropriate value of tileGridYOffset.
      */
     public int getTileGridYOffset() {
@@ -295,7 +288,6 @@ public class RasterLayout {
      * from the supplied <code>RenderedImage</code>. If <code>tileWidth</code> is not valid and
      * fallback is null, 0 is returned.
      *
-     * @param fallback the <code>RenderedImage</code> fallback.
      * @return the appropriate value of tileWidth.
      */
     public int getTileWidth() {
@@ -322,7 +314,6 @@ public class RasterLayout {
      * supplied <code>RenderedImage</code>. If tileHeight is not valid and fallback is null, 0 is
      * returned.
      *
-     * @param fallback the <code>RenderedImage</code> fallback.
      * @return the appropriate value of tileHeight.
      */
     public int getTileHeight() {
@@ -409,5 +400,11 @@ public class RasterLayout {
                 && (tileWidth == il.tileWidth)
                 && (tileGridXOffset == il.tileGridXOffset)
                 && (tileGridYOffset == il.tileGridYOffset);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                minX, minY, width, height, tileGridXOffset, tileGridYOffset, tileWidth, tileHeight);
     }
 }

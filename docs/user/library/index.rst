@@ -2,7 +2,7 @@
 Library
 *******
 
-The GeoTools library is organised into a series of jars. These jars form a software stack,
+The GeoTools library is organized into a series of jars. These jars form a software stack,
 each building on the services of the others. Individual jars such as "data" are extended
 with plugins in order to support additional capabilities. For data these plugins include
 support for common spatial formats such as shapefiles.
@@ -12,7 +12,6 @@ support for common spatial formats such as shapefiles.
    
    opengis/index
    jts/index
-   api/index
    metadata/index
    referencing/index
    coverage/index

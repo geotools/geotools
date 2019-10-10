@@ -32,7 +32,6 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
@@ -77,10 +76,10 @@ class Utils {
                 // is it a URL
                 try {
                     sourceURL = new URL(tempSource);
-                    source = URLs.urlToFile(sourceURL);
+                    sourceFile = URLs.urlToFile(sourceURL);
                 } catch (MalformedURLException e) {
                     sourceURL = null;
-                    source = null;
+                    sourceFile = null;
                 }
             } else {
                 sourceURL = URLs.fileToUrl(tempFile);
@@ -143,7 +142,7 @@ class Utils {
         File[] directories = directory.listFiles((FileFilter) directoryFilter);
 
         // do we have at least one numeric? sub-directory?
-        if (numericDirectories.length == 0) {
+        if (numericDirectories == null || numericDirectories.length == 0) {
             if (LOGGER.isLoggable(Level.INFO)) {
                 LOGGER.info(
                         "I was unable to determine a structure similar to the GDAL Retile one for the provided path: "
@@ -153,7 +152,8 @@ class Utils {
         }
 
         // check the gdal case and move files if necessary
-        if (!zeroLevelDirectory.exists() && numericDirectories.length == directories.length) {
+        if (!zeroLevelDirectory.exists()
+                && (directories != null && numericDirectories.length == directories.length)) {
             LOGGER.log(
                     Level.INFO,
                     "Detected gdal_retile file structure, "
@@ -163,24 +163,27 @@ class Utils {
                     LOGGER.fine("Created '0' subidr, now moving files");
                 }
                 FileFilter notDirFilter = FileFilterUtils.notFileFilter(directoryFilter);
-                for (File f : directory.listFiles(notDirFilter)) {
-                    if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.fine("Moving file" + f.getAbsolutePath());
+                File[] files = directory.listFiles(notDirFilter);
+                if (files != null) {
+                    for (File f : files) {
+                        if (LOGGER.isLoggable(Level.FINE)) {
+                            LOGGER.fine("Moving file" + f.getAbsolutePath());
+                        }
+                        if (LOGGER.isLoggable(Level.FINEST)) {
+                            LOGGER.finest(fileStatus(f));
+                        }
+                        if (!f.renameTo(new File(zeroLevelDirectory, f.getName())))
+                            LOGGER.log(
+                                    Level.WARNING,
+                                    "Could not move "
+                                            + f.getAbsolutePath()
+                                            + " to "
+                                            + zeroLevelDirectory
+                                            + " check the permission inside the source directory "
+                                            + f.getParent()
+                                            + " and target directory "
+                                            + zeroLevelDirectory);
                     }
-                    if (LOGGER.isLoggable(Level.FINEST)) {
-                        LOGGER.finest(fileStatus(f));
-                    }
-                    if (!f.renameTo(new File(zeroLevelDirectory, f.getName())))
-                        LOGGER.log(
-                                Level.WARNING,
-                                "Could not move "
-                                        + f.getAbsolutePath()
-                                        + " to "
-                                        + zeroLevelDirectory
-                                        + " check the permission inside the source directory "
-                                        + f.getParent()
-                                        + " and target directory "
-                                        + zeroLevelDirectory);
                 }
                 directories = directory.listFiles((FileFilter) directoryFilter);
             } else {
@@ -196,31 +199,35 @@ class Utils {
         // scan each subdirectory and try to build a mosaic in it, accumulate the resulting mosaics
         List<MosaicInfo> mosaics = new ArrayList<MosaicInfo>();
         ImageMosaicFormat mosaicFactory = new ImageMosaicFormat();
-        for (File subdir : directories) {
-            if (mosaicFactory.accepts(subdir, hints)) {
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(
-                            "Trying to build mosaic for the directory:" + subdir.getAbsolutePath());
-                }
-                ImageMosaicReader reader = null;
-                try {
-                    reader = mosaicFactory.getReader(subdir, hints);
-                    String referenceName = checkConsistency(reader);
-                    MosaicInfo mosaicInfo = new MosaicInfo(subdir, reader, referenceName);
-                    mosaics.add(mosaicInfo);
-                } finally {
-                    if (reader != null) {
-                        try {
-                            reader.dispose();
-                        } catch (Throwable t) {
-                            // Does nothing
+        if (directories != null) {
+            for (File subdir : directories) {
+                if (mosaicFactory.accepts(subdir, hints)) {
+                    if (LOGGER.isLoggable(Level.FINE)) {
+                        LOGGER.fine(
+                                "Trying to build mosaic for the directory:"
+                                        + subdir.getAbsolutePath());
+                    }
+                    ImageMosaicReader reader = null;
+                    try {
+                        reader = mosaicFactory.getReader(subdir, hints);
+                        String referenceName = checkConsistency(reader);
+                        MosaicInfo mosaicInfo = new MosaicInfo(subdir, reader, referenceName);
+                        mosaics.add(mosaicInfo);
+                    } finally {
+                        if (reader != null) {
+                            try {
+                                reader.dispose();
+                            } catch (Throwable t) {
+                                // Does nothing
+                            }
                         }
                     }
-                }
-            } else {
-                if (LOGGER.isLoggable(Level.INFO)) {
-                    LOGGER.info(
-                            "Unable to build mosaic for the directory:" + subdir.getAbsolutePath());
+                } else {
+                    if (LOGGER.isLoggable(Level.INFO)) {
+                        LOGGER.info(
+                                "Unable to build mosaic for the directory:"
+                                        + subdir.getAbsolutePath());
+                    }
                 }
             }
         }
@@ -275,9 +282,8 @@ class Utils {
                         + envelope.getMaximum(0)
                         + ","
                         + envelope.getMaximum(1));
-        OutputStream os = null;
-        try {
-            os = new FileOutputStream(sourceFile);
+
+        try (OutputStream os = new FileOutputStream(sourceFile)) {
             properties.store(os, "Automatically generated");
         } catch (IOException e) {
             LOGGER.log(
@@ -285,10 +291,6 @@ class Utils {
                     "We could not generate the pyramid property file " + sourceFile.getPath(),
                     e);
             return null;
-        } finally {
-            if (os != null) {
-                IOUtils.closeQuietly(os);
-            }
         }
 
         // build the .prj file if possible
@@ -305,7 +307,7 @@ class Utils {
                         e);
                 return null;
             } finally {
-                pw.close();
+                if (pw != null) pw.close();
             }
         }
 

@@ -84,7 +84,6 @@ public class StrokeImpl implements Stroke, Cloneable {
      *
      * @param color The color of the stroke encoded as a hexidecimal RGB value. This must not be
      *     null.
-     * @throws IllegalArgumentException DOCUMENT ME!
      */
     public void setColor(Expression color) {
         if (this.color == color) {
@@ -462,25 +461,6 @@ public class StrokeImpl implements Stroke, Cloneable {
 
         if (dashArray != null) {
             result = (PRIME * result) + dashArray.hashCode();
-        }
-
-        return result;
-    }
-
-    /*
-     * Helper method to compute the hashCode of float arrays.
-     */
-    private int hashCodeDashArray(float[] a) {
-        final int PRIME = 1000003;
-
-        if (a == null) {
-            return 0;
-        }
-
-        int result = 0;
-
-        for (int i = 0; i < a.length; i++) {
-            result = (PRIME * result) + Float.floatToIntBits(a[i]);
         }
 
         return result;

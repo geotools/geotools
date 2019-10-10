@@ -72,10 +72,10 @@ public class GraphFuser {
     private int m_ndegree2;
 
     /** collection of node sets to fuse * */
-    private ArrayList m_sets;
+    private ArrayList<ArrayList<Graphable>> m_sets;
 
     /** individual node set * */
-    private ArrayList m_nodes;
+    private ArrayList<Graphable> m_nodes;
 
     /**
      * Constructs a GraphFuser.
@@ -101,6 +101,7 @@ public class GraphFuser {
         // set of nodes, else it starts a new set
         m_walker =
                 new GraphWalker() {
+                    @Override
                     public int visit(Graphable element, GraphTraversal traversal) {
                         Node node = (Node) element;
 
@@ -116,11 +117,12 @@ public class GraphFuser {
                         return (GraphTraversal.CONTINUE);
                     }
 
+                    @Override
                     public void finish() {
                         // no need to recreate if empty
                         if (!m_nodes.isEmpty()) {
                             m_sets.add(m_nodes);
-                            m_nodes = new ArrayList();
+                            m_nodes = new ArrayList<>();
                         }
                     }
                 };
@@ -130,8 +132,8 @@ public class GraphFuser {
                 new BasicGraphTraversal(m_graph, m_walker, new DepthFirstTopologicalIterator());
 
         // initialise set and node collections
-        m_sets = new ArrayList();
-        m_nodes = new ArrayList();
+        m_sets = new ArrayList<>();
+        m_nodes = new ArrayList<>();
 
         m_ndegree2 = m_graph.getNodesOfDegree(2).size();
         if (m_ndegree2 == 0) return (true); // nothing to fuse
@@ -141,6 +143,7 @@ public class GraphFuser {
         // reset edge visited flags
         m_graph.visitNodes(
                 new GraphVisitor() {
+                    @Override
                     public int visit(Graphable component) {
                         component.setVisited(false);
                         return 0;
@@ -158,14 +161,15 @@ public class GraphFuser {
             // internal to the cycle, so the strategy for the second stage is to
             // find all unvisited nodes of degree 2 that are not visited and start
             // a no bifurcation traversal from them
-            Iterator sources =
+            Iterator<?> sources =
                     m_graph.queryNodes(
                                     new GraphVisitor() {
+                                        @Override
                                         public int visit(Graphable component) {
                                             Node node = (Node) component;
                                             if (!node.isVisited() && node.getDegree() == 2) {
                                                 // check for adjacent node of degree > 2
-                                                for (Iterator itr = node.getRelated();
+                                                for (Iterator<?> itr = node.getRelated();
                                                         itr.hasNext(); ) {
                                                     Node rel = (Node) itr.next();
                                                     if (rel.getDegree() > 2)
@@ -183,6 +187,7 @@ public class GraphFuser {
                 sources =
                         m_graph.queryNodes(
                                         new GraphVisitor() {
+                                            @Override
                                             public int visit(Graphable component) {
                                                 if (!component.isVisited())
                                                     return (Graph.PASS_AND_STOP);
@@ -196,22 +201,24 @@ public class GraphFuser {
             // current node set
             m_walker =
                     new GraphWalker() {
+                        @Override
                         public int visit(Graphable element, GraphTraversal traversal) {
                             m_ndegree2--;
                             m_nodes.add(element);
                             return (GraphTraversal.CONTINUE);
                         }
 
+                        @Override
                         public void finish() {
                             m_sets.add(m_nodes);
-                            m_nodes = new ArrayList();
+                            m_nodes = new ArrayList<>();
                         }
                     };
             m_traversal.setWalker(m_walker);
             m_traversal.setIterator(new NoBifurcationIterator());
 
             // clear current node list
-            m_nodes = new ArrayList();
+            m_nodes = new ArrayList<>();
 
             Node source = null;
             while (sources.hasNext()) {
@@ -229,15 +236,15 @@ public class GraphFuser {
         if (m_ndegree2 == 0) {
 
             // build the fused graph
-            for (Iterator sitr = m_sets.iterator(); sitr.hasNext(); ) {
-                ArrayList nodes = (ArrayList) sitr.next();
-                ArrayList edges = new ArrayList();
+            for (Iterator<ArrayList<Graphable>> sitr = m_sets.iterator(); sitr.hasNext(); ) {
+                ArrayList<Graphable> nodes = sitr.next();
+                ArrayList<Edge> edges = new ArrayList<>();
                 Node first = null; // node of degree != 2 adjacent to first node in set
                 Node last = null; // node of degree != 2 adjacent to last node in set
 
                 if (nodes.size() == 1) {
                     // set first and last to be related nodes
-                    Iterator related = ((Node) nodes.get(0)).getRelated();
+                    Iterator<?> related = nodes.get(0).getRelated();
                     first = (Node) related.next();
                     last = (Node) related.next();
 
@@ -246,7 +253,7 @@ public class GraphFuser {
 
                     // get the node of degree != 2 adjacent to first node in set
                     Node node = (Node) nodes.get(0);
-                    Iterator rel = node.getRelated();
+                    Iterator<?> rel = node.getRelated();
                     first = (Node) rel.next();
                     if (first.equals(nodes.get(1))) first = (Node) rel.next();
 
@@ -308,15 +315,15 @@ public class GraphFuser {
         return (false);
     }
 
-    //  /**
-    //   * Sets the object for the newly created edge.
-    //   *
-    //   * @param newEdge The edge created to represented the merged object.
-    //   * @param merged The merged object.
-    //   */
-    //  public void setObject(Edge newEdge, Object merged) {
-    //    newEdge.setObject(merged);
-    //  }
+    // /**
+    // * Sets the object for the newly created edge.
+    // *
+    // * @param newEdge The edge created to represented the merged object.
+    // * @param merged The merged object.
+    // */
+    // public void setObject(Edge newEdge, Object merged) {
+    // newEdge.setObject(merged);
+    // }
 
     /**
      * Merges the underlying objects represented by a number of edges into a single object.
@@ -332,7 +339,7 @@ public class GraphFuser {
          * @param edges A collection of edges.
          * @return A single object.
          */
-        public Object merge(List edges);
+        public Object merge(List<?> edges);
 
         /**
          * Sets the object for the edge created to represented the merged object.
@@ -341,6 +348,6 @@ public class GraphFuser {
          * @param merged The merged object.
          * @param edges The original edges that were merged
          */
-        public void setMergedObject(Edge newEdge, Object merged, List edges);
+        public void setMergedObject(Edge newEdge, Object merged, List<?> edges);
     }
 }

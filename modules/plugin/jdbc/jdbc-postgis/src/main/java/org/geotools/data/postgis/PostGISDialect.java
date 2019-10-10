@@ -161,6 +161,8 @@ public class PostGISDialect extends BasicSQLDialect {
                 }
             };
 
+    private GeometryColumnEncoder geometryColumnEncoder;
+
     @Override
     public boolean isAggregatedSortSupported(String function) {
         return "distinct".equalsIgnoreCase(function);
@@ -191,6 +193,8 @@ public class PostGISDialect extends BasicSQLDialect {
     boolean functionEncodingEnabled = false;
 
     boolean simplifyEnabled = true;
+
+    boolean base64EncodingEnabled = true;
 
     Version version, pgsqlVersion;
 
@@ -229,6 +233,11 @@ public class PostGISDialect extends BasicSQLDialect {
 
     public boolean isSimplifyEnabled() {
         return simplifyEnabled;
+    }
+
+    public boolean canSimplifyPoints() {
+        // TWKB encoding is a form of simplified points representation (reduced precision)
+        return version != null && version.compareTo(V_2_2_0) >= 0 && isSimplifyEnabled();
     }
 
     /**
@@ -271,6 +280,7 @@ public class PostGISDialect extends BasicSQLDialect {
     }
 
     ThreadLocal<WKBAttributeIO> wkbReader = new ThreadLocal<WKBAttributeIO>();
+    ThreadLocal<TWKBAttributeIO> twkbReader = new ThreadLocal<TWKBAttributeIO>();
 
     @Override
     public Geometry decodeGeometryValue(
@@ -281,9 +291,17 @@ public class PostGISDialect extends BasicSQLDialect {
             Connection cx,
             Hints hints)
             throws IOException, SQLException {
-        WKBAttributeIO reader = getWKBReader(factory);
+        // did we use WKB or TWKB encoding? See #encodeGeometryColumnSimplified
+        if (isTWKBTransferEnabled(cx, descriptor, hints)) {
+            TWKBAttributeIO reader = getTWKBReader(factory);
 
-        return (Geometry) reader.read(rs, column);
+            Geometry g = (Geometry) reader.read(rs, column, descriptor.getType().getBinding());
+            return g;
+        } else {
+            WKBAttributeIO reader = getWKBReader(factory);
+
+            return (Geometry) reader.read(rs, column);
+        }
     }
 
     public Geometry decodeGeometryValue(
@@ -294,15 +312,41 @@ public class PostGISDialect extends BasicSQLDialect {
             Connection cx,
             Hints hints)
             throws IOException, SQLException {
-        WKBAttributeIO reader = getWKBReader(factory);
+        // did we use WKB or TWKB encoding? See #encodeGeometryColumnSimplified
+        if (isTWKBTransferEnabled(cx, descriptor, hints)) {
+            TWKBAttributeIO reader = getTWKBReader(factory);
 
-        return (Geometry) reader.read(rs, column);
+            Geometry g = (Geometry) reader.read(rs, column, descriptor.getType().getBinding());
+            return g;
+        } else {
+            WKBAttributeIO reader = getWKBReader(factory);
+
+            return (Geometry) reader.read(rs, column);
+        }
+    }
+
+    private boolean isTWKBTransferEnabled(Connection cx, GeometryDescriptor descriptor, Hints hints)
+            throws SQLException {
+        Double distance = (Double) hints.get(Hints.GEOMETRY_SIMPLIFICATION);
+        return isTWKBTransferEnabled(cx, descriptor, distance);
+    }
+
+    private boolean isTWKBTransferEnabled(
+            Connection cx, GeometryDescriptor descriptor, Double distance) throws SQLException {
+        boolean geography =
+                "geography"
+                        .equals(descriptor.getUserData().get(JDBCDataStore.JDBC_NATIVE_TYPENAME));
+        return !geography
+                && distance != null
+                && getVersion(cx).compareTo(V_2_2_0) >= 0
+                && isStraightSegmentsGeometry(descriptor);
     }
 
     private WKBAttributeIO getWKBReader(GeometryFactory factory) {
         WKBAttributeIO reader = wkbReader.get();
         if (reader == null) {
             reader = new WKBAttributeIO(factory);
+            reader.setBase64EncodingEnabled(base64EncodingEnabled);
             wkbReader.set(reader);
         } else {
             reader.setGeometryFactory(factory);
@@ -310,83 +354,53 @@ public class PostGISDialect extends BasicSQLDialect {
         return reader;
     }
 
-    @Override
-    public void encodeGeometryColumn(
-            GeometryDescriptor gatt, String prefix, int srid, StringBuffer sql) {
-        encodeGeometryColumn(gatt, prefix, srid, null, sql);
+    private TWKBAttributeIO getTWKBReader(GeometryFactory factory) {
+        TWKBAttributeIO reader = twkbReader.get();
+        if (reader == null) {
+            reader = new TWKBAttributeIO(factory);
+            reader.setBase64EncodingEnabled(base64EncodingEnabled);
+            twkbReader.set(reader);
+        } else {
+            reader.setGeometryFactory(factory);
+        }
+        return reader;
+    }
+
+    private GeometryColumnEncoder getGeometryColumnEncoder() {
+        // not thread safe, but creating this object is cheap, so did not bother with a
+        // synchronization
+        if (this.geometryColumnEncoder == null) {
+            this.geometryColumnEncoder =
+                    new GeometryColumnEncoder(
+                            this.version, isSimplifyEnabled(), base64EncodingEnabled, this);
+        }
+        return geometryColumnEncoder;
     }
 
     @Override
     public void encodeGeometryColumn(
             GeometryDescriptor gatt, String prefix, int srid, Hints hints, StringBuffer sql) {
-
-        boolean geography =
-                "geography".equals(gatt.getUserData().get(JDBCDataStore.JDBC_NATIVE_TYPENAME));
-
-        if (geography) {
-            sql.append("encode(ST_AsBinary(");
-            encodeColumnName(prefix, gatt.getLocalName(), sql);
-            sql.append("),'base64')");
-        } else {
-            boolean force2D =
-                    hints != null
-                            && hints.containsKey(Hints.FEATURE_2D)
-                            && Boolean.TRUE.equals(hints.get(Hints.FEATURE_2D));
-
-            if (force2D) {
-                sql.append("encode(ST_AsBinary(" + getForce2DFunction() + "(");
-                encodeColumnName(prefix, gatt.getLocalName(), sql);
-                sql.append(")),'base64')");
-            } else {
-                sql.append("encode(ST_AsEWKB(");
-                encodeColumnName(prefix, gatt.getLocalName(), sql);
-                sql.append("),'base64')");
-            }
-        }
+        boolean force2D =
+                hints != null
+                        && hints.containsKey(Hints.FEATURE_2D)
+                        && Boolean.TRUE.equals(hints.get(Hints.FEATURE_2D));
+        getGeometryColumnEncoder().encode(gatt, prefix, sql, force2D, null);
     }
 
     @Override
     public void encodeGeometryColumnSimplified(
             GeometryDescriptor gatt, String prefix, int srid, StringBuffer sql, Double distance) {
-        if (!isSimplifyEnabled()) {
-            super.encodeGeometryColumnSimplified(gatt, prefix, srid, sql, distance);
-        } else {
-            // add preserveCollapsed argument if it's supported (PostGIS 2.2+)
-            // http://postgis.net/docs/manual-2.2/ST_Simplify.html
-            String preserveCollapsed = version.compareTo(V_2_2_0) >= 0 ? ", true" : "";
+        getGeometryColumnEncoder().encode(gatt, prefix, sql, true, distance);
+    }
 
-            boolean geography =
-                    "geography".equals(gatt.getUserData().get(JDBCDataStore.JDBC_NATIVE_TYPENAME));
-
-            if (geography) {
-                sql.append("encode(ST_AsBinary(");
-                encodeColumnName(prefix, gatt.getLocalName(), sql);
-                sql.append("),'base64')");
-            } else {
-                if (NON_CURVED_GEOMETRY_CLASSES.contains(gatt.getType().getBinding())) {
-                    sql.append("encode(ST_AsBinary(ST_Simplify(" + getForce2DFunction() + "(");
-                    encodeColumnName(prefix, gatt.getLocalName(), sql);
-                    sql.append("), " + distance + preserveCollapsed + ")),'base64')");
-                } else {
-                    // we can have curves mixed in
-                    sql.append("encode(ST_AsBinary(");
-                    sql.append("CASE WHEN ST_HasArc(");
-                    encodeColumnName(prefix, gatt.getLocalName(), sql);
-                    sql.append(") THEN ");
-                    encodeColumnName(prefix, gatt.getLocalName(), sql);
-                    sql.append(" ELSE ");
-                    sql.append("ST_Simplify(" + getForce2DFunction() + "(");
-                    encodeColumnName(prefix, gatt.getLocalName(), sql);
-                    sql.append("), " + distance + preserveCollapsed + ") END),'base64')");
-                }
-            }
-        }
+    protected boolean isStraightSegmentsGeometry(GeometryDescriptor gatt) {
+        return NON_CURVED_GEOMETRY_CLASSES.contains(gatt.getType().getBinding());
     }
 
     @Override
     public void encodeGeometryEnvelope(String tableName, String geometryColumn, StringBuffer sql) {
         sql.append("ST_AsText(" + getForce2DFunction() + "(ST_Envelope(");
-        sql.append("ST_Extent(\"" + geometryColumn + "\"::geometry))))");
+        sql.append("ST_Extent(" + escapeName(geometryColumn) + "::geometry))))");
     }
 
     @Override
@@ -569,7 +583,6 @@ public class PostGISDialect extends BasicSQLDialect {
         String schemaName = columnMetaData.getString("TABLE_SCHEM");
 
         // first attempt, try with the geometry metadata
-        Connection conn = null;
         Statement statement = null;
         ResultSet result = null;
 
@@ -735,17 +748,17 @@ public class PostGISDialect extends BasicSQLDialect {
 
             if (srid == null || (getVersion(cx).compareTo(V_2_0_0) >= 0 && srid == 0)) {
                 String sqlStatement =
-                        "SELECT ST_SRID(\""
-                                + columnName
-                                + "\") "
-                                + "FROM \""
-                                + schemaName
-                                + "\".\""
-                                + tableName
-                                + "\" "
-                                + "WHERE \""
-                                + columnName
-                                + "\" IS NOT NULL "
+                        "SELECT ST_SRID("
+                                + escapeName(columnName)
+                                + ") "
+                                + "FROM "
+                                + escapeName(schemaName)
+                                + "."
+                                + escapeName(tableName)
+                                + " "
+                                + "WHERE "
+                                + escapeName(columnName)
+                                + " IS NOT NULL "
                                 + "LIMIT 1";
                 result = statement.executeQuery(sqlStatement);
                 if (result.next()) {
@@ -878,16 +891,16 @@ public class PostGISDialect extends BasicSQLDialect {
             String sqlStatement =
                     "SELECT "
                             + dimFunction
-                            + "(\""
-                            + columnName
-                            + "\"::geometry) "
-                            + "FROM \""
-                            + schemaName
-                            + "\".\""
-                            + tableName
-                            + "\" "
+                            + "("
+                            + escapeName(columnName)
+                            + "::geometry) "
+                            + "FROM "
+                            + escapeName(schemaName)
+                            + "."
+                            + escapeName(tableName)
+                            + " "
                             + "WHERE "
-                            + columnName
+                            + escapeName(columnName)
                             + " IS NOT NULL "
                             + "LIMIT 1";
             statement = cx.createStatement();
@@ -922,9 +935,9 @@ public class PostGISDialect extends BasicSQLDialect {
         try {
             // pg_get_serial_sequence oddity: table name needs to be
             // escaped with "", whilst column name, doesn't...
-            String sql = "SELECT pg_get_serial_sequence('\"";
-            if (schemaName != null && !"".equals(schemaName)) sql += schemaName + "\".\"";
-            sql += tableName + "\"', '" + columnName + "')";
+            String sql = "SELECT pg_get_serial_sequence('";
+            if (schemaName != null && !"".equals(schemaName)) sql += escapeName(schemaName) + ".";
+            sql += escapeName(tableName) + "', '" + columnName + "')";
 
             dataStore.getLogger().fine(sql);
             ResultSet rs = st.executeQuery(sql);
@@ -1059,7 +1072,7 @@ public class PostGISDialect extends BasicSQLDialect {
 
     @Override
     public void encodePrimaryKey(String column, StringBuffer sql) {
-        encodeColumnName(column, sql);
+        encodeColumnName(null, column, sql);
         sql.append(" SERIAL PRIMARY KEY");
     }
 
@@ -1126,14 +1139,14 @@ public class PostGISDialect extends BasicSQLDialect {
                         }
 
                         sql =
-                                "ALTER TABLE \""
-                                        + schemaName
-                                        + "\".\""
-                                        + tableName
-                                        + "\" "
-                                        + "ALTER COLUMN \""
-                                        + gd.getLocalName()
-                                        + "\" "
+                                "ALTER TABLE "
+                                        + escapeName(schemaName)
+                                        + "."
+                                        + escapeName(tableName)
+                                        + " "
+                                        + "ALTER COLUMN "
+                                        + escapeName(gd.getLocalName())
+                                        + " "
                                         + "TYPE geometry ("
                                         + geomType
                                         + ", "
@@ -1186,20 +1199,13 @@ public class PostGISDialect extends BasicSQLDialect {
                         if (srid > -1) {
                             sql =
                                     "ALTER TABLE " //
-                                            + "\""
-                                            + schemaName
-                                            + "\"" //
+                                            + escapeName(schemaName)
                                             + "." //
-                                            + "\""
-                                            + tableName
-                                            + "\"" //
-                                            + " ADD CONSTRAINT \"enforce_srid_" //
-                                            + gd.getLocalName()
-                                            + "\"" //
+                                            + escapeName(tableName)
+                                            + " ADD CONSTRAINT " //
+                                            + escapeName("enforce_srid_" + gd.getLocalName())
                                             + " CHECK (ST_SRID(" //
-                                            + "\""
-                                            + gd.getLocalName()
-                                            + "\"" //
+                                            + escapeName(gd.getLocalName())
                                             + ") = "
                                             + srid
                                             + ")";
@@ -1210,19 +1216,14 @@ public class PostGISDialect extends BasicSQLDialect {
                         // add dimension checks
                         sql =
                                 "ALTER TABLE " //
-                                        + "\""
-                                        + schemaName
-                                        + "\"" //
+                                        + escapeName(schemaName)
                                         + "." //
-                                        + "\""
-                                        + tableName
-                                        + "\"" //
-                                        + " ADD CONSTRAINT \"enforce_dims_" //
-                                        + gd.getLocalName()
-                                        + "\"" //
-                                        + " CHECK (st_ndims(\""
-                                        + gd.getLocalName()
-                                        + "\")" //
+                                        + escapeName(tableName)
+                                        + " ADD CONSTRAINT " //
+                                        + escapeName("enforce_dims_" + gd.getLocalName())
+                                        + " CHECK (st_ndims("
+                                        + escapeName(gd.getLocalName())
+                                        + ")" //
                                         + " = "
                                         + dimensions
                                         + ")";
@@ -1233,26 +1234,18 @@ public class PostGISDialect extends BasicSQLDialect {
                         if (!geomType.equals("GEOMETRY")) {
                             sql =
                                     "ALTER TABLE " //
-                                            + "\""
-                                            + schemaName
-                                            + "\"" //
+                                            + escapeName(schemaName)
                                             + "." //
-                                            + "\""
-                                            + tableName
-                                            + "\"" //
-                                            + " ADD CONSTRAINT \"enforce_geotype_" //
-                                            + gd.getLocalName()
-                                            + "\"" //
+                                            + escapeName(tableName)
+                                            + " ADD CONSTRAINT " //
+                                            + escapeName("enforce_geotype_" + gd.getLocalName())
                                             + " CHECK (geometrytype(" //
-                                            + "\""
-                                            + gd.getLocalName()
-                                            + "\"" //
+                                            + escapeName(gd.getLocalName())
                                             + ") = '"
                                             + geomType
                                             + "'::text "
-                                            + "OR \""
-                                            + gd.getLocalName()
-                                            + "\"" //
+                                            + "OR "
+                                            + escapeName(gd.getLocalName())
                                             + " IS NULL)";
                             LOGGER.fine(sql);
                             st.execute(sql);
@@ -1261,23 +1254,18 @@ public class PostGISDialect extends BasicSQLDialect {
 
                     // add the spatial index
                     sql =
-                            "CREATE INDEX \"spatial_"
-                                    + tableName //
-                                    + "_"
-                                    + gd.getLocalName().toLowerCase()
-                                    + "\"" //
+                            "CREATE INDEX "
+                                    + escapeName(
+                                            "spatial_"
+                                                    + tableName
+                                                    + "_"
+                                                    + gd.getLocalName().toLowerCase())
                                     + " ON " //
-                                    + "\""
-                                    + schemaName
-                                    + "\"" //
+                                    + escapeName(schemaName)
                                     + "." //
-                                    + "\""
-                                    + tableName
-                                    + "\"" //
+                                    + escapeName(tableName)
                                     + " USING GIST (" //
-                                    + "\""
-                                    + gd.getLocalName()
-                                    + "\"" //
+                                    + escapeName(gd.getLocalName())
                                     + ")";
                     LOGGER.fine(sql);
                     st.execute(sql);

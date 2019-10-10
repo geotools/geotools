@@ -97,5 +97,5 @@ public interface Graphable {
      * @return Iterator An iterator over other components of the graph that are related to the
      *     component.
      */
-    public Iterator getRelated();
+    public Iterator<? extends Graphable> getRelated();
 }

@@ -1,4 +1,20 @@
 /*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
+/*
  * Copyright 2001-2005 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -143,6 +159,7 @@ public class JJTreeJavaCC extends AbstractMojo {
      *
      * @throws MojoExecutionException if the plugin execution failed.
      */
+    @SuppressWarnings("PMD.SystemPrintln")
     public void execute() throws MojoExecutionException, MojoFailureException {
         // if not windows, don't rewrite file
         final boolean windowsOs = System.getProperty("os.name").indexOf("Windows") != -1;
@@ -362,7 +379,7 @@ public class JJTreeJavaCC extends AbstractMojo {
     /**
      * Gets the arguments to pass to {@code javacc}.
      *
-     * @param sourceFilename The {@code .jj} file name (including the path).
+     * @param sourceInput The {@code .jj} file name (including the path).
      * @return The arguments to pass to {@code javacc}.
      */
     private String[] generateJavaCCArgumentList(final String sourceInput) {

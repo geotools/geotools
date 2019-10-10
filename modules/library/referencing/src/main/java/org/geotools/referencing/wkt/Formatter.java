@@ -872,7 +872,7 @@ public class Formatter {
     public static void main(String[] args) {
         final Arguments arguments = new Arguments(args);
         final int indentation = arguments.getRequiredInteger(Formattable.INDENTATION);
-        args = arguments.getRemainingArguments(0);
+        arguments.getRemainingArguments(0);
         Formattable.setIndentation(indentation);
     }
 }

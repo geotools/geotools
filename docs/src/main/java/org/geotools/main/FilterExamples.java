@@ -1,3 +1,21 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ *
+ */
+
 package org.geotools.main;
 
 import java.awt.Rectangle;
@@ -26,6 +44,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.swing.JMapFrame;
 import org.geotools.swing.event.MapMouseEvent;
+import org.geotools.util.SuppressFBWarnings;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
@@ -51,6 +70,7 @@ import org.opengis.referencing.operation.MathTransform;
  * @author Jody Garnett
  */
 public class FilterExamples {
+    @SuppressFBWarnings("NP_UNWRITTEN_FIELD")
     SimpleFeatureSource featureSource;
 
     /**
@@ -129,6 +149,7 @@ public class FilterExamples {
     }
 
     // grabSelectedNames end
+
     /**
      * What features on in this bounding Box?
      *
@@ -218,6 +239,7 @@ public class FilterExamples {
 
     // grabFeaturesOnScreen end
 
+    @SuppressFBWarnings("NP_UNWRITTEN_FIELD")
     private JMapFrame mapFrame;
 
     // click1 start
@@ -256,7 +278,7 @@ public class FilterExamples {
 
     // distance start
     SimpleFeatureCollection distance(MapMouseEvent ev) throws Exception {
-        DirectPosition2D worldPosition = ev.getMapPosition();
+        DirectPosition2D worldPosition = ev.getWorldPos();
 
         // get the unit of measurement
         SimpleFeatureType schema = featureSource.getSchema();
@@ -283,6 +305,7 @@ public class FilterExamples {
 
     // distance end
 
+    @SuppressFBWarnings
     // polygonInteraction start
     void polygonInteraction() {
         SimpleFeatureCollection polygonCollection = null;
@@ -417,10 +440,10 @@ public class FilterExamples {
 
         for (FunctionFactory factory : functionFactories) {
             String factoryName = factory.getClass().getSimpleName();
-            System.out.println(factoryName);
+            System.out.println(codeBlock + factoryName + codeBlock);
             System.out.println(
-                    "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
-                            .substring(0, factoryName.length()));
+                    "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+                            .substring(0, factoryName.length() + 4));
             System.out.println();
 
             List<FunctionName> functionNames = factory.getFunctionNames();
@@ -444,7 +467,9 @@ public class FilterExamples {
                 Parameter<?> result = functionName.getReturn();
 
                 StringBuilder fn = new StringBuilder();
+                fn.append(codeBlock);
                 fn.append(functionName.getName());
+
                 fn.append("(");
                 int i = 0;
                 for (Parameter<?> argument : functionName.getArguments()) {
@@ -454,7 +479,8 @@ public class FilterExamples {
                     fn.append(argument.getName());
                 }
                 fn.append(")");
-                fn.append(": " + result.getName());
+                fn.append(codeBlock);
+                fn.append(": returns " + codeBlock + result.getName() + codeBlock);
 
                 System.out.println(fn.toString());
                 for (int h = 0; h < fn.length(); h++) {
@@ -467,35 +493,48 @@ public class FilterExamples {
                     System.out.println("* " + argument(argument));
                     System.out.println();
                 }
-                System.out.println("* " + argument(result));
+                System.out.println("* " + argument(result, true));
                 System.out.println();
             }
         }
     }
 
+    static final String codeBlock = "``";
+
     public static String argument(Parameter<?> argument) {
+        return argument(argument, false);
+    }
+
+    public static String argument(Parameter<?> argument, boolean result) {
+
         StringBuilder arg = new StringBuilder();
+        arg.append(codeBlock);
         arg.append(argument.getName());
+        arg.append(codeBlock);
         Class<?> type = argument.getType();
 
         if (type == null || (type == Object.class && argument.isRequired())) {
             // nothing more is known
         } else {
+            arg.append(" (" + codeBlock);
+            arg.append(type.getSimpleName());
+            arg.append(codeBlock + ")");
             int min = argument.getMinOccurs();
             int max = argument.getMaxOccurs();
-
-            arg.append(": ");
-            arg.append(type.getSimpleName());
-
-            arg.append(" ");
-            arg.append(min);
-            arg.append(":");
-            arg.append(max == Integer.MAX_VALUE ? "unbounded" : max);
-
-            if (argument.isRequired()) {
-                arg.append(" required");
-            } else if (argument.getMinOccurs() == 0 && argument.getMaxOccurs() == 1) {
-                arg.append(" optional");
+            if (min > 1 && max > 1) {
+                arg.append(": ");
+                arg.append(" min=");
+                arg.append(min);
+                arg.append(" max=");
+                arg.append(max == Integer.MAX_VALUE ? "unbounded" : max);
+            } else {
+                if (!result) {
+                    if (argument.isRequired()) {
+                        arg.append(" required");
+                    } else if (argument.getMinOccurs() == 0 && argument.getMaxOccurs() == 1) {
+                        arg.append(" optional");
+                    }
+                }
             }
         }
         return arg.toString();

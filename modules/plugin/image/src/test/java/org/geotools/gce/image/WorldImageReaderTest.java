@@ -342,9 +342,6 @@ public class WorldImageReaderTest extends WorldImageBaseTestCase {
      * Read, test and show a coverage from the supplied source.
      *
      * @param source Object
-     * @throws FileNotFoundException DOCUMENT ME!
-     * @throws IOException DOCUMENT ME!
-     * @throws IllegalArgumentException DOCUMENT ME!
      */
     private void read(Object source)
             throws FileNotFoundException, IOException, IllegalArgumentException {

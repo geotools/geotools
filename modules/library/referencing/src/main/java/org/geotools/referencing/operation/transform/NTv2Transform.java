@@ -117,7 +117,6 @@ public class NTv2Transform extends AbstractMathTransform implements MathTransfor
                 return result;
             }
         }
-        ;
 
         return null;
     }
@@ -340,13 +339,7 @@ public class NTv2Transform extends AbstractMathTransform implements MathTransfor
             return (MathTransform2D) super.inverse();
         }
 
-        /**
-         * Restore reference to this object after deserialization.
-         *
-         * @param in DOCUMENT ME!
-         * @throws IOException DOCUMENT ME!
-         * @throws ClassNotFoundException DOCUMENT ME!
-         */
+        /** Restore reference to this object after deserialization. */
         private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
             in.defaultReadObject();
             NTv2Transform.this.inverse = this;

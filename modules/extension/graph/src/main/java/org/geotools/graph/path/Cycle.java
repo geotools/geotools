@@ -30,7 +30,6 @@ import org.geotools.graph.structure.Node;
  */
 public class Cycle extends Walk {
 
-    // TODO: DOCUMENT ME!
     public Cycle(Collection nodes) {
         super(nodes);
     }

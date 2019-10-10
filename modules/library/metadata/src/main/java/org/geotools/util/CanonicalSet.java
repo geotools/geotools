@@ -48,13 +48,6 @@ package org.geotools.util;
  */
 public class CanonicalSet<E> extends WeakHashSet<E> {
     /**
-     * Constructs a {@code CanonicalSet}.
-     *
-     * @deprecated Use {@link #newInstance} instead.
-     */
-    public CanonicalSet() {}
-
-    /**
      * Constructs a {@code CanonicalSet} for elements of the specified type.
      *
      * @param type The type of elements in the set.

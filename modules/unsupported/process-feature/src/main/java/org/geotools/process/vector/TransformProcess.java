@@ -125,8 +125,6 @@ public class TransformProcess implements VectorProcess {
         public Class<?> binding;
     }
 
-    private static final String DEF_DELIMITER = ";";
-
     @DescribeResult(name = "result", description = "Transformed feature collection")
     public SimpleFeatureCollection execute(
             @DescribeParameter(name = "features", description = "Input feature collection")
@@ -258,8 +256,6 @@ public class TransformProcess implements VectorProcess {
             Class<?> binding = def.binding; // make use of any default binding hint provided by user
             if (value == null) {
                 if (expression instanceof PropertyName) {
-                    PropertyName propertyName = (PropertyName) expression;
-                    String path = propertyName.getPropertyName();
                     AttributeDescriptor descriptor = origional.getDescriptor(name);
                     AttributeType attributeType = descriptor.getType();
                     binding = attributeType.getBinding();

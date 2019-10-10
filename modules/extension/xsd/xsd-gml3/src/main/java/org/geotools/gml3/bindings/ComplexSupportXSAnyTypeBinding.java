@@ -246,6 +246,7 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
                 // get collection of features from this attribute
                 complexAtts = ((ComplexAttribute) object).getProperties();
             }
+            if (complexAtts == null) complexAtts = Collections.emptyList();
 
             // If child elements can't be retrieved from
             // Schemas.getChildElementParticles(element.getTypeDefinition(), true)),
@@ -384,7 +385,6 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
                 att.setValue(Collections.emptyList());
             }
         }
-        return;
     }
 
     /**

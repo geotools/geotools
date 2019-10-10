@@ -30,7 +30,7 @@ import org.geotools.data.complex.AttributeMapping;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.NestedAttributeMapping;
 import org.geotools.data.complex.filter.XPath;
-import org.geotools.data.complex.filter.XPathUtil.StepList;
+import org.geotools.data.complex.util.XPathUtil.StepList;
 import org.geotools.factory.CommonFactoryFinder;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
@@ -103,7 +103,7 @@ public final class IndexQueryUtils {
             FeatureTypeMapping mapping, AttributeMapping attMapping, String xpath) {
         StepList simplifiedSteps =
                 XPath.steps(mapping.getTargetFeature(), xpath, mapping.getNamespaces());
-        return Objects.equals(attMapping, simplifiedSteps);
+        return Objects.equals(attMapping.getTargetXPath(), simplifiedSteps);
     }
 
     /**

@@ -75,13 +75,7 @@ public interface SimpleType extends Type {
     public AttributeValue toAttribute(Attribute attribute, Object value, Map hints)
             throws OperationNotSupportedException;
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param attribute DOCUMENT ME!
-     * @param value DOCUMENT ME!
-     * @param hints DOCUMENT ME!
-     */
+    /** */
     public boolean canCreateAttributes(Attribute attribute, Object value, Map hints);
 
     /** Returns an int of either List, Union or Restriction */

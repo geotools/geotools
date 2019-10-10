@@ -74,7 +74,7 @@ public class Collection_CountFunction extends FunctionExpressionImpl {
 
     public Object evaluate(Object feature) {
         if (feature == null) {
-            return new Integer(0); // no features were visited in the making of this answer
+            return Integer.valueOf(0); // no features were visited in the making of this answer
         }
         SimpleFeatureCollection featureCollection = (SimpleFeatureCollection) feature;
         synchronized (featureCollection) {

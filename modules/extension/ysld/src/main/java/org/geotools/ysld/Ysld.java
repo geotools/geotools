@@ -244,7 +244,6 @@ public class Ysld {
             return validator.validate(in.reader);
         } finally {
             in.close();
-            ;
         }
     }
 

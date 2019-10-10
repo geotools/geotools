@@ -386,6 +386,10 @@ public class AngleFormat extends Format {
                 case ROUND_HALF_UP:
                     rounded = Math.round(scaledValue);
                     return rounded / scale;
+
+                    // Include impossible case to allow detection of new entries in RoundingMethod.
+                case ROUND_HALF_EVEN:
+                    throw new AssertionError(rm);
             }
         }
 

@@ -19,7 +19,7 @@ package org.geotools.appschema.feature;
 
 import java.util.logging.Logger;
 import org.geotools.data.complex.config.NonFeatureTypeProxy;
-import org.geotools.data.complex.config.Types;
+import org.geotools.data.complex.feature.type.Types;
 import org.geotools.feature.AttributeBuilder;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.GeometryDescriptorImpl;

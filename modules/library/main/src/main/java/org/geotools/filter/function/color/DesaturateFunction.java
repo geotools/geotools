@@ -27,7 +27,7 @@ public class DesaturateFunction extends AbstractHSLFunction {
         super("desaturate");
     }
 
-    protected void adjstRelative(float amount, HSLColor hsl) {
+    protected void adjustRelative(float amount, HSLColor hsl) {
         hsl.setSaturation(hsl.getSaturation() * (1 - amount));
     }
 

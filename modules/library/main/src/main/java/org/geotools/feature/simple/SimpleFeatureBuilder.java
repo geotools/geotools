@@ -467,7 +467,7 @@ public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
      * value for, the value in the resulting feature is set to <code>null</code>.
      *
      * @param feature The original feature.
-     * @param SimpleFeatureBuilder A builder for the target feature type
+     * @param builder A builder for the target feature type
      * @return The copied feature, with a new type.
      * @since 2.5.3
      */
@@ -501,6 +501,18 @@ public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
             userData[index] = new HashMap<Object, Object>();
         }
         userData[index].put(key, value);
+        return this;
+    }
+
+    /** Sets the feature wide user data copying them from the template feature provided */
+    public SimpleFeatureBuilder featureUserData(SimpleFeature source) {
+        Map<Object, Object> sourceUserData = source.getUserData();
+        if (sourceUserData != null && !sourceUserData.isEmpty()) {
+            if (featureUserData == null) {
+                featureUserData = new HashMap<Object, Object>();
+            }
+            featureUserData.putAll(sourceUserData);
+        }
         return this;
     }
 

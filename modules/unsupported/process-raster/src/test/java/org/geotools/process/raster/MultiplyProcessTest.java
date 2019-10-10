@@ -13,25 +13,13 @@ import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.factory.GeoTools;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 /** Unit test for the 'Multiply' process */
 public class MultiplyProcessTest {
 
     GridCoverageFactory covFactory;
-
-    @BeforeClass
-    public static void setupJaiExt() {
-        JAIExt.initJAIEXT(true, true);
-    }
-
-    @AfterClass
-    public static void teardownJaiExt() {
-        JAIExt.initJAIEXT(false, false);
-    }
 
     @Before
     public void setUp() {

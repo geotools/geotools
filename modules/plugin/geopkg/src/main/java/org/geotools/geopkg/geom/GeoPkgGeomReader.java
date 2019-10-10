@@ -58,7 +58,6 @@ public class GeoPkgGeomReader {
 
     private GeometryFactory factory = DEFAULT_GEOM_FACTORY;
 
-    private Hints hints;
     private Number simplificationDistance;
     private Class geometryType;
 
@@ -263,7 +262,6 @@ public class GeoPkgGeomReader {
         if (hints != null) {
             this.simplificationDistance = (Number) hints.get(Hints.GEOMETRY_DISTANCE);
         }
-        this.hints = hints;
     }
 
     public void setGeometryType(Class geometryType) {

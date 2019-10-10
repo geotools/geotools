@@ -277,7 +277,7 @@ class FIDSQuery extends Query {
      */
     @Override
     public void setCoordinateSystem(CoordinateReferenceSystem system) {
-        new UnsupportedOperationException(
+        throw new UnsupportedOperationException(
                 "Query.ALL cannot be changed, please just use as a default.");
     }
     /**
@@ -287,7 +287,7 @@ class FIDSQuery extends Query {
      */
     @Override
     public void setCoordinateSystemReproject(CoordinateReferenceSystem system) {
-        new UnsupportedOperationException(
+        throw new UnsupportedOperationException(
                 "Query.ALL cannot be changed, please just use as a default.");
     }
     /**
@@ -297,7 +297,7 @@ class FIDSQuery extends Query {
      */
     @Override
     public void setFilter(Filter filter) {
-        new UnsupportedOperationException(
+        throw new UnsupportedOperationException(
                 "Query.ALL cannot be changed, please just use as a default.");
     }
     /**
@@ -307,7 +307,7 @@ class FIDSQuery extends Query {
      */
     @Override
     public void setHandle(String handle) {
-        new UnsupportedOperationException(
+        throw new UnsupportedOperationException(
                 "Query.ALL cannot be changed, please just use as a default.");
     }
     /**
@@ -317,7 +317,7 @@ class FIDSQuery extends Query {
      */
     @Override
     public void setHints(Hints hints) {
-        new UnsupportedOperationException(
+        throw new UnsupportedOperationException(
                 "Query.ALL cannot be changed, please just use as a default.");
     }
     /**
@@ -327,7 +327,7 @@ class FIDSQuery extends Query {
      */
     @Override
     public void setMaxFeatures(int maxFeatures) {
-        new UnsupportedOperationException(
+        throw new UnsupportedOperationException(
                 "Query.ALL cannot be changed, please just use as a default.");
     }
     /**
@@ -337,7 +337,7 @@ class FIDSQuery extends Query {
      */
     @Override
     public void setNamespace(URI namespace) {
-        new UnsupportedOperationException(
+        throw new UnsupportedOperationException(
                 "Query.ALL cannot be changed, please just use as a default.");
     }
     /**
@@ -347,7 +347,7 @@ class FIDSQuery extends Query {
      */
     @Override
     public void setPropertyNames(List<String> propNames) {
-        new UnsupportedOperationException(
+        throw new UnsupportedOperationException(
                 "Query.FIDS cannot be changed, please just use as a default.");
     }
     /**
@@ -357,7 +357,7 @@ class FIDSQuery extends Query {
      */
     @Override
     public void setPropertyNames(String[] propNames) {
-        new UnsupportedOperationException(
+        throw new UnsupportedOperationException(
                 "Query.FIDS cannot be changed, please just use as a default.");
     }
     /**
@@ -367,7 +367,7 @@ class FIDSQuery extends Query {
      */
     @Override
     public void setSortBy(SortBy[] sortBy) {
-        new UnsupportedOperationException(
+        throw new UnsupportedOperationException(
                 "Query.FIDS cannot be changed, please just use as a default.");
     }
     /**
@@ -377,7 +377,7 @@ class FIDSQuery extends Query {
      */
     @Override
     public void setStartIndex(Integer startIndex) {
-        new UnsupportedOperationException(
+        throw new UnsupportedOperationException(
                 "Query.FIDS cannot be changed, please just use as a default.");
     }
     /**
@@ -387,7 +387,7 @@ class FIDSQuery extends Query {
      */
     @Override
     public void setTypeName(String typeName) {
-        new UnsupportedOperationException(
+        throw new UnsupportedOperationException(
                 "Query.FIDS cannot be changed, please just use as a default.");
     }
     /**
@@ -397,7 +397,7 @@ class FIDSQuery extends Query {
      */
     @Override
     public void setVersion(String version) {
-        new UnsupportedOperationException(
+        throw new UnsupportedOperationException(
                 "Query.FIDS cannot be changed, please just use as a default.");
     }
 }

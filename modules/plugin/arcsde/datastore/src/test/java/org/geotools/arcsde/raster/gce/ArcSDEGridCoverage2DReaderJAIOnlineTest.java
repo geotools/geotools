@@ -32,7 +32,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import org.geotools.arcsde.ArcSDERasterFormatFactory;
+import org.geotools.arcsde.data.ArcSDERasterFormatFactory;
 import org.geotools.arcsde.raster.info.RasterCellType;
 import org.geotools.arcsde.session.ArcSDEConnectionConfig;
 import org.geotools.coverage.grid.GridCoverage2D;

@@ -35,14 +35,10 @@ public final class JdbcMultipleValueEncoder extends DuplicatingFilterVisitor {
 
     private final JDBCDataStore store;
     private final Writer output;
-    private final FeatureTypeMapping typeMapping;
-    private final SimpleFeatureType featureType;
 
     public JdbcMultipleValueEncoder(FeatureTypeMapping typeMapping, Writer output) {
         this.store = (JDBCDataStore) typeMapping.getSource().getDataStore();
         this.output = output;
-        this.typeMapping = typeMapping;
-        this.featureType = (SimpleFeatureType) typeMapping.getSource().getSchema();
     }
 
     @Override

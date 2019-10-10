@@ -116,8 +116,8 @@ public abstract class GeoToolsUnitFormat extends SimpleUnitFormat {
                 java.lang.reflect.Field unitToNameField =
                         DefaultFormat.class.getDeclaredField("_unitToName");
                 unitToNameField.setAccessible(true);
-                HashMap<String, Unit<?>> unitToNameMap =
-                        (HashMap<String, Unit<?>>) unitToNameField.get(base);
+                HashMap<Unit<?>, String> unitToNameMap =
+                        (HashMap<Unit<?>, String>) unitToNameField.get(base);
                 for (Map.Entry<String, Unit<?>> entry : nameToUnitMap.entrySet()) {
                     String name = entry.getKey();
                     Unit<?> unit = entry.getValue();

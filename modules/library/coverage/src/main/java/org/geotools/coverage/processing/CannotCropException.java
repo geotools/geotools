@@ -46,7 +46,7 @@ public class CannotCropException extends CoverageProcessingException {
      * @param message the detail message.
      * @param cause The cause of this exception.
      */
-    public CannotCropException(String message, Throwable exception) {
-        super(message, exception);
+    public CannotCropException(String message, Throwable cause) {
+        super(message, cause);
     }
 }

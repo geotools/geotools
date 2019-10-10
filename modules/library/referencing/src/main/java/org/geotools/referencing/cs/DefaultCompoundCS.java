@@ -96,7 +96,6 @@ public class DefaultCompoundCS extends AbstractCS {
      * Constructs a name from a merge of the name of all coordinate systems.
      *
      * @param cs The coordinate systems.
-     * @param locale The locale for the name.
      */
     private static String getName(final CoordinateSystem[] cs) {
         final StringBuilder buffer = new StringBuilder();

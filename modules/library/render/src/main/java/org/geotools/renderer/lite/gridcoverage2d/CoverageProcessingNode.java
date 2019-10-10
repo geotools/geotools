@@ -105,7 +105,7 @@ public interface CoverageProcessingNode {
      * Removes a source {@link CoverageProcessingNode} to the list of sources for this {@link
      * CoverageProcessingNode}.
      *
-     * @param sources the {@link CoverageProcessingNode} to remove from the {@link List} of sources
+     * @param source the {@link CoverageProcessingNode} to remove from the {@link List} of sources
      *     for this {@link CoverageProcessingNode}.
      * @return <code>true</code> in case we remove something, <code>false</code> otherwise.
      */
@@ -134,7 +134,7 @@ public interface CoverageProcessingNode {
      * Adds a sink {@link CoverageProcessingNode} to the list of sinks for this {@link
      * CoverageProcessingNode}.
      *
-     * @param source the {@link CoverageProcessingNode} to add to the {@link List} of sinks for this
+     * @param sink the {@link CoverageProcessingNode} to add to the {@link List} of sinks for this
      *     {@link CoverageProcessingNode}.
      */
     public void addSink(final CoverageProcessingNode sink);

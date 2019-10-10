@@ -23,7 +23,10 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeImpl;
@@ -31,12 +34,15 @@ import org.geotools.filter.LengthFunction;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.FactoryRegistryException;
+import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Geometry;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.feature.type.PropertyType;
 import org.opengis.filter.BinaryComparisonOperator;
@@ -67,6 +73,8 @@ import org.opengis.referencing.operation.TransformException;
  */
 public class FeatureTypes {
 
+    static final Logger LOGGER = Logging.getLogger(FeatureTypes.class);
+
     /** the default namespace for feature types */
     // public static final URI = GMLSchema.NAMESPACE;
     public static final URI DEFAULT_NAMESPACE;
@@ -76,7 +84,7 @@ public class FeatureTypes {
         try {
             uri = new URI("http://www.opengis.net/gml");
         } catch (URISyntaxException e) {
-            uri = null; // will never happen
+            throw new RuntimeException("Unexpected URI syntax exception", e);
         }
         DEFAULT_NAMESPACE = uri;
     }
@@ -121,7 +129,7 @@ public class FeatureTypes {
      * <p>This code is copied from the ShapefileDataStore where it was written (probably by
      * dzwiers). Cholmes is providing documentation.
      *
-     * @param type the AttributeType
+     * @param descriptor the descriptor whose lenght is to be investigated
      * @return an int indicating the max length of field in characters, or ANY_LENGTH
      */
     public static int getFieldLength(PropertyDescriptor descriptor) {
@@ -205,12 +213,10 @@ public class FeatureTypes {
         tb.setNamespaceURI(schema.getName().getNamespaceURI());
         tb.setAbstract(schema.isAbstract());
 
-        GeometryDescriptor defaultGeometryType = null;
         for (int i = 0; i < schema.getAttributeCount(); i++) {
             AttributeDescriptor attributeType = schema.getDescriptor(i);
             if (attributeType instanceof GeometryDescriptor) {
                 GeometryDescriptor geometryType = (GeometryDescriptor) attributeType;
-                AttributeDescriptor forced;
 
                 tb.descriptor(geometryType);
                 if (!forceOnlyMissing || geometryType.getCoordinateReferenceSystem() == null) {
@@ -428,6 +434,34 @@ public class FeatureTypes {
     }
 
     /**
+     * Whether the feature type has the specified name, or is a descendent from it
+     *
+     * @param featureType typeName with parentage in question
+     * @param name name to match against
+     * @return true if featureType has the same name, or is a descendent of the indicated name
+     */
+    public static boolean matches(FeatureType featureType, Name name) {
+        if (featureType.getName().equals(name)
+                || (name.getNamespaceURI() == null
+                        && featureType
+                                .getName()
+                                .getLocalPart()
+                                .equalsIgnoreCase(name.getLocalPart()))) {
+            return true;
+        }
+
+        try {
+            return isDecendedFrom(
+                    featureType,
+                    name.getNamespaceURI() != null ? new URI(name.getNamespaceURI()) : null,
+                    name.getLocalPart());
+        } catch (URISyntaxException e) {
+            LOGGER.log(Level.FINE, "Unexpected failure while feature type", e);
+            return false;
+        }
+    }
+
+    /**
      * A query of the the types ancestor information.
      *
      * <p>This utility method may be used as common implementation for <code>
@@ -618,16 +652,10 @@ public class FeatureTypes {
 
         String typeNameA = typeA.getTypeName();
         String typeNameB = typeB.getTypeName();
-        if (typeNameA == null && typeNameB != null) return false;
-        else if (!typeNameA.equals(typeNameB)) return false;
+        if (!Objects.equals(typeNameA, typeNameB)) return false;
 
         String namespaceA = typeA.getName().getNamespaceURI();
         String namespaceB = typeB.getName().getNamespaceURI();
-        if (namespaceA == null && namespaceB == null) return true;
-
-        if (namespaceA == null && namespaceB != null) return false;
-        else if (!namespaceA.equals(namespaceB)) return false;
-
-        return true;
+        return Objects.equals(namespaceA, namespaceB);
     }
 }

@@ -84,7 +84,7 @@ public class ProcessStepImpl extends MetadataEntity implements ProcessStep {
     }
 
     /** Set the description of the event, including related parameters or tolerances. */
-    public synchronized void setDescription(final InternationalString newValue) {
+    public void setDescription(final InternationalString newValue) {
         checkWritePermission();
         description = newValue;
     }
@@ -95,7 +95,7 @@ public class ProcessStepImpl extends MetadataEntity implements ProcessStep {
     }
 
     /** Set the requirement or purpose for the process step. */
-    public synchronized void setRationale(final InternationalString newValue) {
+    public void setRationale(final InternationalString newValue) {
         checkWritePermission();
         rationale = newValue;
     }
@@ -104,14 +104,14 @@ public class ProcessStepImpl extends MetadataEntity implements ProcessStep {
      * Returns the date and time or range of date and time on or over which the process step
      * occurred.
      */
-    public synchronized Date getDate() {
+    public Date getDate() {
         return (date != Long.MIN_VALUE) ? new Date(date) : null;
     }
 
     /**
      * Set the date and time or range of date and time on or over which the process step occurred.
      */
-    public synchronized void setDate(final Date newValue) {
+    public void setDate(final Date newValue) {
         checkWritePermission();
         date = (newValue != null) ? newValue.getTime() : Long.MIN_VALUE;
     }
@@ -120,7 +120,7 @@ public class ProcessStepImpl extends MetadataEntity implements ProcessStep {
      * Returns the identification of, and means of communication with, person(s) and organization(s)
      * associated with the process step.
      */
-    public synchronized Collection<ResponsibleParty> getProcessors() {
+    public Collection<ResponsibleParty> getProcessors() {
         return (processors = nonNullCollection(processors, ResponsibleParty.class));
     }
 
@@ -128,7 +128,7 @@ public class ProcessStepImpl extends MetadataEntity implements ProcessStep {
      * Identification of, and means of communication with, person(s) and organization(s) associated
      * with the process step.
      */
-    public synchronized void setProcessors(final Collection<? extends ResponsibleParty> newValues) {
+    public void setProcessors(final Collection<? extends ResponsibleParty> newValues) {
         processors = copyCollection(newValues, processors, ResponsibleParty.class);
     }
 
@@ -136,12 +136,12 @@ public class ProcessStepImpl extends MetadataEntity implements ProcessStep {
      * Returns the information about the source data used in creating the data specified by the
      * scope.
      */
-    public synchronized Collection<Source> getSources() {
+    public Collection<Source> getSources() {
         return (sources = nonNullCollection(sources, Source.class));
     }
 
     /** Information about the source data used in creating the data specified by the scope. */
-    public synchronized void setSources(final Collection<? extends Source> newValues) {
+    public void setSources(final Collection<? extends Source> newValues) {
         sources = copyCollection(newValues, sources, Source.class);
     }
 }

@@ -18,6 +18,7 @@ package org.geotools.graph.util;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.Objects;
 import javax.swing.filechooser.FileFilter;
 
 public class SimpleFileFilter extends FileFilter implements Serializable {
@@ -53,6 +54,11 @@ public class SimpleFileFilter extends FileFilter implements Serializable {
             SimpleFileFilter other = (SimpleFileFilter) o;
             return (m_ext.equals(other.m_ext));
         }
-        return (false);
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(m_ext);
     }
 }

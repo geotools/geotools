@@ -34,8 +34,8 @@ public class BooleanConverterFactoryTest extends TestCase {
     }
 
     public void testFromInteger() throws Exception {
-        assertEquals(Boolean.TRUE, convert(new Integer(1)));
-        assertEquals(Boolean.FALSE, convert(new Integer(0)));
+        assertEquals(Boolean.TRUE, convert(Integer.valueOf(1)));
+        assertEquals(Boolean.FALSE, convert(Integer.valueOf(0)));
     }
 
     Boolean convert(Object value) throws Exception {

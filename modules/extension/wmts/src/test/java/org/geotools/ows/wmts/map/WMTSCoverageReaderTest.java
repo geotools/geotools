@@ -16,6 +16,7 @@
  */
 package org.geotools.ows.wmts.map;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.*;
 
 import java.io.File;
@@ -24,10 +25,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import javax.xml.parsers.ParserConfigurationException;
 import net.opengis.wmts.v_1.CapabilitiesType;
-import org.apache.commons.io.IOUtils;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.ServiceException;
 import org.geotools.ows.wmts.WebMapTileServer;
@@ -64,14 +66,30 @@ public class WMTSCoverageReaderTest {
     @Test
     public void testKVPInitMapRequest() throws Exception {
         WebMapTileServer server = createServer(KVP_CAPA_RESOURCENAME);
-        WMTSLayer layer = (WMTSLayer) server.getCapabilities().getLayer("topp:states");
+        WMTSLayer layer = server.getCapabilities().getLayer("topp:states");
         WMTSCoverageReader wcr = new WMTSCoverageReader(server, layer);
         ReferencedEnvelope bbox =
                 new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326"));
         testInitMapRequest(wcr, bbox);
     }
 
-    public void testInitMapRequest(WMTSCoverageReader wcr, ReferencedEnvelope bbox)
+    @Test
+    public void testKVPInitMapRequestJpegOnly() throws Exception {
+        WebMapTileServer server = createServer(KVP_CAPA_RESOURCENAME);
+        WMTSLayer layer = server.getCapabilities().getLayer("topp:states_jpeg");
+        WMTSCoverageReader wcr = new WMTSCoverageReader(server, layer);
+        ReferencedEnvelope bbox =
+                new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326"));
+        List<Tile> responses = testInitMapRequest(wcr, bbox);
+        assertFalse(responses.isEmpty());
+        URL url = responses.get(0).getUrl();
+        assertThat(
+                "Expect format=image/jpeg in the request url",
+                url.toString(),
+                containsString("format=image%2Fjpeg"));
+    }
+
+    public List<Tile> testInitMapRequest(WMTSCoverageReader wcr, ReferencedEnvelope bbox)
             throws Exception {
 
         int width = 400;
@@ -86,6 +104,7 @@ public class WMTSCoverageReaderTest {
             // System.out.println(t.getTileIdentifier() + " " + t.getExtent());*/
             assertNotNull(t);
         }
+        return new ArrayList<>(responses);
     }
 
     private WebMapTileServer createServer(String resourceName) throws Exception {
@@ -97,19 +116,14 @@ public class WMTSCoverageReaderTest {
 
     private WMTSCapabilities createCapabilities(File capa) throws ServiceException {
         Object object;
-        InputStream inputStream = null;
-        try {
-            inputStream = new FileInputStream(capa);
+        try (InputStream inputStream = new FileInputStream(capa)) {
             Parser parser = new Parser(new WMTSConfiguration());
 
             object = parser.parse(new InputSource(inputStream));
 
         } catch (SAXException | ParserConfigurationException | IOException e) {
             throw (ServiceException) new ServiceException("Error while parsing XML.").initCause(e);
-        } finally {
-            IOUtils.closeQuietly(inputStream);
         }
-
         if (object instanceof ServiceException) {
             throw (ServiceException) object;
         }

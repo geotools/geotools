@@ -20,11 +20,7 @@ import java.net.URI;
 import org.geotools.xml.schema.Attribute;
 import org.geotools.xml.schema.AttributeGroup;
 
-/**
- * DOCUMENT ME!
- *
- * @author dzwiers
- */
+/** @author dzwiers */
 public class AttributeGroupGT implements AttributeGroup {
     private String anyAttributeNamespace;
     private Attribute[] attributes;
@@ -36,15 +32,7 @@ public class AttributeGroupGT implements AttributeGroup {
         // do nothing
     }
 
-    /**
-     * Creates a new AttributeGroupGT object.
-     *
-     * @param id DOCUMENT ME!
-     * @param name DOCUMENT ME!
-     * @param namespace DOCUMENT ME!
-     * @param attributes DOCUMENT ME!
-     * @param anyAttributeNamespace DOCUMENT ME!
-     */
+    /** Creates a new AttributeGroupGT object. */
     public AttributeGroupGT(
             String id,
             String name,

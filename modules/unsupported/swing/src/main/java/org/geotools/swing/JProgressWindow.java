@@ -231,22 +231,8 @@ public class JProgressWindow implements ProgressListener {
         set(Caller.TITLE, title);
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @deprecated
-     */
-    public String getDescription() {
-        return (String) get(Caller.LABEL);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @deprecated
-     */
-    public void setDescription(final String description) {
-        set(Caller.LABEL, description);
+    public void setTask(InternationalString task) {
+        set(Caller.LABEL, task.toString());
     }
 
     /**
@@ -262,7 +248,7 @@ public class JProgressWindow implements ProgressListener {
         int p = (int) percent; // round toward 0
         if (p < 0) p = 0;
         if (p > 100) p = 100;
-        set(Caller.PROGRESS, new Integer(p));
+        set(Caller.PROGRESS, Integer.valueOf(p));
     }
 
     public float getProgress() {
@@ -592,11 +578,7 @@ public class JProgressWindow implements ProgressListener {
         }
     }
 
-    public void setTask(InternationalString task) {
-        setDescription(task.toString());
-    }
-
     public InternationalString getTask() {
-        return new SimpleInternationalString(getDescription());
+        return new SimpleInternationalString((String) get(Caller.LABEL));
     }
 }

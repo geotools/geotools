@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.FilteringFeatureReader;
@@ -198,14 +197,11 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                 String name = column.name;
 
                 // do not include primary key in the type if not exposing primary key columns
-                boolean pkColumn = false;
                 for (PrimaryKeyColumn pkeycol : pkey.getColumns()) {
                     if (name.equals(pkeycol.getName())) {
                         if (!state.isExposePrimaryKeyColumns()) {
                             name = null;
                             break;
-                        } else {
-                            pkColumn = true;
                         }
                     }
                     // in views we don't know the pk type, grab it now
@@ -397,7 +393,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
     }
 
     protected int getCountInternal(Query query) throws IOException {
-        JDBCDataStore dataStore = getDataStore();
+        JDBCDataStore store = getDataStore();
 
         // split the filter
         Filter[] split = splitFilter(query.getFilter());
@@ -439,14 +435,14 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         } else {
             // no post filter, we have a preFilter, or preFilter is null..
             // either way we can use the datastore optimization
-            Connection cx = dataStore.getConnection(getState());
+            Connection cx = store.getConnection(getState());
             try {
-                DefaultQuery q = new DefaultQuery(query);
+                Query q = new Query(query);
                 q.setFilter(preFilter);
-                int count = dataStore.getCount(getSchema(), q, cx);
+                int count = store.getCount(getSchema(), q, cx);
                 // if native support for limit and offset is not implemented, we have to ajust the
                 // result
-                if (!dataStore.getSQLDialect().isLimitOffsetSupported()) {
+                if (!store.getSQLDialect().isLimitOffsetSupported()) {
                     if (query.getStartIndex() != null && query.getStartIndex() > 0) {
                         if (query.getStartIndex() > count) count = 0;
                         else count -= query.getStartIndex();
@@ -456,7 +452,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                 }
                 return count;
             } finally {
-                dataStore.releaseConnection(cx, getState());
+                store.releaseConnection(cx, getState());
             }
         }
     }
@@ -485,7 +481,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                 ReferencedEnvelope bounds = new ReferencedEnvelope(flatCRS);
 
                 // grab a reader
-                DefaultQuery q = new DefaultQuery(query);
+                Query q = new Query(query);
                 q.setFilter(postFilter);
                 FeatureReader<SimpleFeatureType, SimpleFeature> i = getReader(q);
                 try {
@@ -508,7 +504,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                 // use datastore optimization
                 Connection cx = dataStore.getConnection(getState());
                 try {
-                    DefaultQuery q = new DefaultQuery(query);
+                    Query q = new Query(query);
                     q.setFilter(preFilter);
                     return dataStore.getBounds(getSchema(), q, cx);
                 } finally {
@@ -547,6 +543,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         return true;
     }
 
+    @SuppressWarnings("PMD.CloseResource") // the cx is passed to the reader which will close it
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {
         // split the filter
@@ -556,7 +553,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         boolean postFilterRequired = postFilter != null && postFilter != Filter.INCLUDE;
 
         // rebuild a new query with the same params, but just the pre-filter
-        DefaultQuery preQuery = new DefaultQuery(query);
+        Query preQuery = new Query(query);
         preQuery.setFilter(preFilter);
         // in case of post filtering, we cannot do native paging
         if (postFilterRequired) {
@@ -714,7 +711,6 @@ public class JDBCFeatureSource extends ContentFeatureSource {
      *
      * @param query
      * @param visitor
-     * @param nearest value, or null if not supported
      * @throws IOException
      */
     private boolean handleNearestVisitor(Query query, FeatureVisitor visitor) throws IOException {
@@ -815,11 +811,10 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                         getDataStore().escapeNamePattern(metaData, databaseSchema),
                         getDataStore().escapeNamePattern(metaData, tableName),
                         "%");
-        if (getDataStore().getFetchSize() > 0) {
-            columns.setFetchSize(getDataStore().getFetchSize());
-        }
-
         try {
+            if (getDataStore().getFetchSize() > 0) {
+                columns.setFetchSize(getDataStore().getFetchSize());
+            }
             while (columns.next()) {
                 ColumnMetadata column = new ColumnMetadata();
                 column.name = columns.getString("COLUMN_NAME");

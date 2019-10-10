@@ -92,11 +92,11 @@ public class NumericConverterFactory implements ConverterFactory {
                     if (c != BigDecimal.class && c != BigInteger.class) {
                         if (c == Float.class) {
                             // this is done to avoid coordinate drift
-                            return (T) new Double(number.toString());
+                            return (T) Double.valueOf(number.toString());
                         }
 
                         return (T) Double.valueOf(number.doubleValue());
-                        // return (T) new Double(source.toString());
+                        // return (T) Double.valueOf(source.toString());
                     }
                 } else if (Float.class.equals(target)) {
                     if (c == Float.class
@@ -104,7 +104,7 @@ public class NumericConverterFactory implements ConverterFactory {
                             || c == Short.class
                             || c == Byte.class) {
                         return (T) Float.valueOf(number.floatValue());
-                        // return (T) new Float(source.toString());
+                        // return (T) Float.valueOf(source.toString());
                     }
                 } else if (BigInteger.class.equals(target)) {
                     if (BigInteger.class.isAssignableFrom(c)
@@ -121,22 +121,22 @@ public class NumericConverterFactory implements ConverterFactory {
                             || c == Short.class
                             || c == Byte.class) {
                         return (T) Long.valueOf(number.longValue());
-                        // return (T) new Long(source.toString());
+                        // return (T) Long.valueOf(source.toString());
                     }
                 } else if (Integer.class.equals(target)) {
                     if (c == Integer.class || c == Short.class || c == Byte.class) {
                         return (T) Integer.valueOf(number.intValue());
-                        // return (T) new Integer(source.toString());
+                        // return (T) Integer.valueOf(source.toString());
                     }
                 } else if (Short.class.equals(target)) {
                     if (c == Short.class || c == Byte.class) {
                         return (T) Short.valueOf(number.shortValue());
-                        // return (T) new Short(source.toString());
+                        // return (T) Short.valueOf(source.toString());
                     }
                 } else if (Byte.class.equals(target)) {
                     if (c == Byte.class) {
                         return (T) Byte.valueOf(number.byteValue());
-                        // return (T) new Byte(source.toString());
+                        // return (T) Byte.valueOf(source.toString());
                     }
                 }
             } else if (source instanceof String) {
@@ -147,25 +147,25 @@ public class NumericConverterFactory implements ConverterFactory {
                         // if (x.toString().equals(src))
                         //    return (T) x;
                     } else if (target == Double.class) {
-                        Double x = new Double(src);
+                        Double x = Double.valueOf(src);
                         if (x.toString().equals(src)) return (T) x;
                     } else if (target == Float.class) {
-                        Float x = new Float(src);
+                        Float x = Float.valueOf(src);
                         if (x.toString().equals(src)) return (T) x;
                     } else if (BigInteger.class.isAssignableFrom(target)) {
                         BigInteger x = new BigInteger(src);
                         if (x.toString().equals(src)) return (T) x;
                     } else if (target == Long.class) {
-                        Long x = new Long(src);
+                        Long x = Long.valueOf(src);
                         if (x.toString().equals(src)) return (T) x;
                     } else if (target == Integer.class) {
-                        Integer x = new Integer(src);
+                        Integer x = Integer.valueOf(src);
                         if (x.toString().equals(src)) return (T) x;
                     } else if (target == Short.class) {
-                        Short x = new Short(src);
+                        Short x = Short.valueOf(src);
                         if (x.toString().equals(src)) return (T) x;
                     } else if (target == Byte.class) {
-                        Byte x = new Byte(src);
+                        Byte x = Byte.valueOf(src);
                         if (x.toString().equals(src)) return (T) x;
                     }
                 } catch (Exception ex) {
@@ -186,16 +186,16 @@ public class NumericConverterFactory implements ConverterFactory {
 
                 // integral
                 if (Long.class.equals(target)) {
-                    return new Long(s.longValue());
+                    return Long.valueOf(s.longValue());
                 }
                 if (Integer.class.equals(target)) {
-                    return new Integer(s.intValue());
+                    return Integer.valueOf(s.intValue());
                 }
                 if (Short.class.equals(target)) {
-                    return new Short(s.shortValue());
+                    return Short.valueOf(s.shortValue());
                 }
                 if (Byte.class.equals(target)) {
-                    return new Byte(s.byteValue());
+                    return Byte.valueOf(s.byteValue());
                 }
                 if (BigInteger.class.equals(target)) {
                     return BigInteger.valueOf(s.longValue());
@@ -206,10 +206,10 @@ public class NumericConverterFactory implements ConverterFactory {
                 // drift due to precision issues, there could be some
                 // performance issues with this.
                 if (Double.class.equals(target)) {
-                    return new Double(s.toString());
+                    return Double.valueOf(s.toString());
                 }
                 if (Float.class.equals(target)) {
-                    return new Float(s.toString());
+                    return Float.valueOf(s.toString());
                 }
                 if (BigDecimal.class.equals(target)) {
                     return new BigDecimal(s.toString());
@@ -217,7 +217,7 @@ public class NumericConverterFactory implements ConverterFactory {
 
                 if (Number.class.equals(target)) {
                     try {
-                        return new Integer(s.toString());
+                        return Integer.valueOf(s.toString());
                     } catch (Exception e) {
                     }
 
@@ -227,7 +227,7 @@ public class NumericConverterFactory implements ConverterFactory {
                     }
 
                     try {
-                        return new Double(s.toString());
+                        return Double.valueOf(s.toString());
                     } catch (Exception e) {
                     }
 
@@ -245,10 +245,10 @@ public class NumericConverterFactory implements ConverterFactory {
 
                 // floating point
                 if (Double.class.equals(target)) {
-                    return new Double(s);
+                    return Double.valueOf(s);
                 }
                 if (Float.class.equals(target)) {
-                    return new Float(s);
+                    return Float.valueOf(s);
                 }
                 if (BigDecimal.class.equals(target)) {
                     return new BigDecimal(s);
@@ -256,16 +256,16 @@ public class NumericConverterFactory implements ConverterFactory {
 
                 // textual
                 if (Long.class.equals(target)) {
-                    return new Long(integral);
+                    return Long.valueOf(integral);
                 }
                 if (Integer.class.equals(target)) {
-                    return new Integer(integral);
+                    return Integer.valueOf(integral);
                 }
                 if (Short.class.equals(target)) {
-                    return new Short(integral);
+                    return Short.valueOf(integral);
                 }
                 if (Byte.class.equals(target)) {
-                    return new Byte(integral);
+                    return Byte.valueOf(integral);
                 }
                 if (BigInteger.class.equals(target)) {
                     return new BigInteger(integral);
@@ -276,7 +276,7 @@ public class NumericConverterFactory implements ConverterFactory {
                     if (integral.equals(s)) {
                         // we think this is an integer of some sort
                         try {
-                            return new Integer(integral);
+                            return Integer.valueOf(integral);
                         } catch (Exception e) {
                         }
 
@@ -286,7 +286,7 @@ public class NumericConverterFactory implements ConverterFactory {
                         }
                     }
                     try {
-                        return new Double(s);
+                        return Double.valueOf(s);
                     } catch (Exception e) {
                     }
 

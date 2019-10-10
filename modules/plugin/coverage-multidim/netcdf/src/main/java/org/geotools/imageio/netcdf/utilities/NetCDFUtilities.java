@@ -140,7 +140,7 @@ public class NetCDFUtilities {
 
     public static final String EXTERNAL_DATA_DIR;
 
-    private static final String NETCDF_DATA_DIR = "NETCDF_DATA_DIR";
+    public static final String NETCDF_DATA_DIR = "NETCDF_DATA_DIR";
 
     public static final String FILL_VALUE = "_FillValue";
 
@@ -886,7 +886,7 @@ public class NetCDFUtilities {
             }
         }
         // check
-        if (guessedFile.exists() && !guessedFile.isDirectory()) {
+        if (guessedFile != null && guessedFile.exists() && !guessedFile.isDirectory()) {
             return guessedFile;
         }
         return null;
@@ -997,7 +997,7 @@ public class NetCDFUtilities {
             }
         }
         pattern = pattern.replace('-', dateSeparator);
-        int lastColon = prototype.lastIndexOf(":"); // $NON-NLS-1$
+        int lastColon = prototype != null ? prototype.lastIndexOf(":") : -1; // $NON-NLS-1$
         if (lastColon != -1) {
             pattern += addT ? "'T'" : " ";
             pattern += prototype != null && lastColon >= 16 ? "HH:mm:ss" : "HH:mm";
@@ -1181,7 +1181,7 @@ public class NetCDFUtilities {
     /**
      * Transcode a DataBuffer type into a NetCDF DataType .
      *
-     * @param type the beam {@link ProductData} type to transcode.
+     * @param dataType the beam {@link ProductData} type to transcode.
      * @return an NetCDF DataType type.
      */
     public static DataType transcodeImageDataType(final int dataType) {

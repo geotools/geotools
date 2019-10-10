@@ -63,8 +63,8 @@ public class Collection_NearestFunction extends FunctionImpl {
     /**
      * Calculate nearest using {@link NearestVisitor}.
      *
-     * @param Collection collection to calculate the maximum
-     * @param Expression Single Expression argument
+     * @param collection collection to calculate the maximum
+     * @param expression Single Expression argument
      * @param value Attribute value used for nearest search
      * @return An object containing the maximum value of the attributes
      * @throws IllegalFilterException

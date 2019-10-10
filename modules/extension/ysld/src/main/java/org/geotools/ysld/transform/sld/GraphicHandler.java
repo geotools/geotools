@@ -35,8 +35,6 @@ public class GraphicHandler extends SldTransformHandler {
             context.scalar("symbols").sequence().push(new SymbolsHandler());
         } else if ("Size".equals(name) || "Opacity".equals(name) || "Rotation".equals(name)) {
             context.scalar(name.toLowerCase()).push(new ExpressionHandler());
-        } else if ("Displacment".equals(name) || "AnchorPoint".equals(name)) {
-            // context.scalar(name.toLowerCase()).push(new TupleHandler());
         }
     }
 

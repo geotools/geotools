@@ -68,11 +68,6 @@ public class FiltersTest {
     }
 
     @Test
-    public void testGetFilterType() {
-        assertEquals(FilterType.COMPARE_GREATER_THAN, Filters.getFilterType(a));
-    }
-
-    @Test
     public void testAsInt() {
         assertEquals(1, filters.asInt(ff.literal(1)));
         assertEquals(1, filters.asInt(ff.literal("1")));
@@ -96,12 +91,6 @@ public class FiltersTest {
     }
 
     @Test
-    public void testAsType() {
-        assertEquals(1.0, Filters.asType(ff.literal("1"), double.class), DELTA);
-        assertEquals(Color.BLUE, Filters.asType(ff.literal("#0000FF"), Color.class));
-    }
-
-    @Test
     public void testNumber() {
         assertEquals(1.0, Filters.number("1.0"), DELTA);
         assertEquals(1, Filters.number("1"), DELTA);
@@ -109,7 +98,7 @@ public class FiltersTest {
 
     @Test
     public void testGets() throws Throwable {
-        assertEquals(new Long(1l), Filters.gets("1.0", Long.class));
+        assertEquals(Long.valueOf(1l), Filters.gets("1.0", Long.class));
     }
 
     @Test

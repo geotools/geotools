@@ -16,6 +16,8 @@
  */
 package org.geotools.temporal.object;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.*;
 
 import org.geotools.metadata.iso.citation.Citations;
@@ -53,7 +55,7 @@ public class DefaultClockTimeTest {
     @Test
     public void testGetClockTime() {
         Number[] result = clockTime1.getClockTime();
-        assertFalse(clockTime2.getClockTime().equals(result));
+        assertThat(clockTime2.getClockTime(), not(equalTo(result)));
     }
 
     /** Test of setClockTime method, of class DefaultClockTime. */
@@ -62,7 +64,7 @@ public class DefaultClockTimeTest {
         Number[] result = clockTime1.getClockTime();
         Number[] clcktime = {14, 15, 0};
         ((DefaultClockTime) clockTime1).setClockTime(clcktime);
-        assertFalse(clockTime1.getClockTime().equals(result));
+        assertThat(clockTime1.getClockTime(), not(equalTo(result)));
     }
 
     /** Test of equals method, of class DefaultClockTime. */

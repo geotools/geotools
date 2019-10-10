@@ -136,8 +136,8 @@ public class Encoder {
     /**
      * Special name recognized by the encoder as a comment.
      *
-     * <p>Bindings can return this name in {@link ComplexBinding#getProperties(Object)} to provide
-     * comments to be encoded.
+     * <p>Bindings can return this name in {@link ComplexBinding#getProperties(Object,
+     * XSDElementDeclaration)} to provide comments to be encoded.
      */
     public static final QName COMMENT = new QName("http://www.geotools.org", "comment");
 
@@ -206,7 +206,15 @@ public class Encoder {
      * @param configuration The encoder configuration.
      */
     public Encoder(Configuration configuration) {
-        this(configuration, configuration.schema());
+        this(configuration, getSchema(configuration));
+    }
+
+    public static XSDSchema getSchema(Configuration configuration) {
+        try {
+            return configuration.getXSD().getSchema();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -451,17 +459,6 @@ public class Encoder {
     }
 
     /**
-     * True if we are encoding a full document, false if the xml headers should be omitted (the
-     * encoder is used to generate part of a large document)
-     *
-     * @param encodeFullDocument
-     * @deprecated use {@link #setInline(boolean)}.
-     */
-    public void setEncodeFullDocument(boolean encodeFullDocument) {
-        this.inline = !encodeFullDocument;
-    }
-
-    /**
      * Sets the encoder to "inline" mode.
      *
      * <p>When this flag is set {@link #encode(Object, QName, ContentHandler)} should be used to
@@ -478,7 +475,7 @@ public class Encoder {
      * <p>This method is used in cases where the element being encoded is not declared as global in
      * the schema.
      *
-     * @param typeName The type name of the root element.
+     * @param rootElementType The type name of the root element.
      * @since 8.0
      */
     public void setRootElementType(QName rootElementType) {
@@ -511,12 +508,6 @@ public class Encoder {
     /** @return the schema. */
     public XSDSchema getSchema() {
         return schema;
-    }
-
-    /** @deprecated use {@link #encode(Object, QName, OutputStream)}. */
-    public void write(Object object, QName name, OutputStream out)
-            throws IOException, SAXException {
-        encode(object, name, out);
     }
 
     /** @return The document used as a factory to create dom nodes. */
@@ -589,7 +580,10 @@ public class Encoder {
                 .stream()
                 .allMatch(
                         property ->
-                                property.getType().getName().equals(complex.getType().getName()))) {
+                                property == null
+                                        || property.getType()
+                                                .getName()
+                                                .equals(complex.getType().getName()))) {
             // different types which means we are not in the case of nested complex features
             return false;
         }
@@ -1000,6 +994,10 @@ public class Encoder {
                                 XSDParticle particle = (XSDParticle) tuple[0];
                                 XSDElementDeclaration child =
                                         (XSDElementDeclaration) particle.getContent();
+
+                                if (child == null) {
+                                    continue;
+                                }
 
                                 // check for a comment
                                 if ((child != null)

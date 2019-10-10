@@ -16,18 +16,11 @@
  */
 package org.geotools.map.legend;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.Shape;
-import java.awt.Stroke;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
@@ -41,6 +34,7 @@ import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.renderer.style.Style2D;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.LineSymbolizer;
+import org.geotools.styling.Mark;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.RasterSymbolizer;
@@ -98,8 +92,7 @@ public class Drawer {
      * <p>You may call this method multiple times to draw several features onto the same Image (say
      * for glyph creation).
      *
-     * @param image Image to render on to
-     * @param display Needed to create Colors for image
+     * @param bi Image to render on to
      * @param feature Feature to be rendered
      * @param style Style to render feature with
      */
@@ -151,14 +144,10 @@ public class Drawer {
     }
 
     Symbolizer[] getSymbolizers(Style style) {
-        List<Symbolizer> symbs = new ArrayList<Symbolizer>();
-        FeatureTypeStyle[] styles = style.getFeatureTypeStyles();
-        for (int i = 0; i < styles.length; i++) {
-            FeatureTypeStyle fstyle = styles[i];
-            Rule[] rules = fstyle.getRules();
-            for (int j = 0; j < rules.length; j++) {
-                Rule rule = rules[j];
-                symbs.addAll(Arrays.asList(rule.getSymbolizers()));
+        List<Symbolizer> symbs = new ArrayList<>();
+        for (FeatureTypeStyle fstyle : style.featureTypeStyles()) {
+            for (Rule rule : fstyle.rules()) {
+                symbs.addAll(rule.symbolizers());
             }
         }
         return symbs.toArray(new Symbolizer[symbs.size()]);
@@ -166,7 +155,7 @@ public class Drawer {
 
     Symbolizer[] getSymbolizers(Rule rule) {
         List<Symbolizer> symbs = new ArrayList<Symbolizer>();
-        symbs.addAll(Arrays.asList(rule.getSymbolizers()));
+        symbs.addAll(rule.symbolizers());
         return symbs.toArray(new Symbolizer[symbs.size()]);
     }
 
@@ -195,7 +184,8 @@ public class Drawer {
                                             .literal(10));
 
             // danger assumes a Mark!
-            point.getGraphic().getMarks()[0].setFill(builder.createFill(baseColor));
+            Mark mark = (Mark) point.getGraphic().graphicalSymbols().get(0);
+            mark.setFill(builder.createFill(baseColor));
             syms[0] = point;
         }
         if (Polygon.class.isAssignableFrom(type) || MultiPolygon.class.isAssignableFrom(type)) {
@@ -233,9 +223,7 @@ public class Drawer {
 
         Graphics graphics = bi.getGraphics();
 
-        if (symbolizer instanceof RasterSymbolizer) {
-            // TODO
-        } else {
+        if (!(symbolizer instanceof RasterSymbolizer)) {
             Geometry g = findGeometry(feature, symbolizer);
             if (g == null) return;
             if (mathTransform != null) {
@@ -390,7 +378,6 @@ public class Drawer {
      *
      * @param f The victim
      * @param s The symbolizer
-     * @param style the resolved style for the specified victim
      * @return The geometry requested in the symbolizer, or the default geometry if none is
      *     specified
      */

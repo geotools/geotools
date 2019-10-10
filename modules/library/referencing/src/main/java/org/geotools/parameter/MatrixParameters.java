@@ -17,8 +17,10 @@
 package org.geotools.parameter;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import org.geotools.referencing.operation.matrix.MatrixFactory;
 import org.geotools.util.TableWriter;
@@ -396,6 +398,13 @@ public class MatrixParameters extends ParameterGroup implements ParameterDescrip
             return true;
         }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(super.hashCode(), numRow, numCol);
+        result = 31 * result + Arrays.hashCode(matrixValues);
+        return result;
     }
 
     /** Returns a clone of this parameter group. */

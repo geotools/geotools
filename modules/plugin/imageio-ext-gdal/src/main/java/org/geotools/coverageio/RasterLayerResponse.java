@@ -173,12 +173,11 @@ class RasterLayerResponse {
      * This method creates the GridCoverage2D from the underlying file given a specified envelope,
      * and a requested dimension.
      *
-     * @param iUseJAI specify if the underlying read process should leverage on a JAI ImageRead
+     * @param useJAI specify if the underlying read process should leverage on a JAI ImageRead
      *     operation or a simple direct call to the {@code read} method of a proper {@code
      *     ImageReader}.
      * @param useMultithreading specify if the underlying read process should use multithreading
      *     when a JAI ImageRead operation is requested
-     * @param overviewPolicy the overview policy which need to be adopted
      * @return a {@code GridCoverage}
      * @throws java.io.IOException
      */

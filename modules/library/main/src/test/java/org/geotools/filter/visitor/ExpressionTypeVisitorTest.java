@@ -52,7 +52,7 @@ public class ExpressionTypeVisitorTest {
 
     @Test
     public void testNumbers() {
-        Add add = ff.add(ff.literal(new Byte((byte) 1)), ff.property("s"));
+        Add add = ff.add(ff.literal(Byte.valueOf((byte) 1)), ff.property("s"));
         assertEquals(Short.class, add.accept(visitor, null));
         Multiply mul = ff.multiply(ff.property("l"), ff.property("s"));
         assertEquals(Long.class, mul.accept(visitor, null));

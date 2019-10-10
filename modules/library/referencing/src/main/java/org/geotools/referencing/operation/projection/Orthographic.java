@@ -87,17 +87,6 @@ public abstract class Orthographic extends MapProjection {
         return Provider.PARAMETERS;
     }
 
-    /** Compares the specified object with this map projection for equality. */
-    @Override
-    public boolean equals(final Object object) {
-        if (object == this) {
-            // Slight optimization
-            return true;
-        }
-        // Relevant parameters are already compared in MapProjection
-        return super.equals(object);
-    }
-
     //////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////
     ////////                                                                          ////////

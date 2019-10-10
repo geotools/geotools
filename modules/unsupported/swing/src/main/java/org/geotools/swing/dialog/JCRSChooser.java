@@ -71,9 +71,6 @@ public class JCRSChooser {
     /** Default dialog title */
     public static final String DEFAULT_TITLE = "Choose a projection";
 
-    private CRSDialog dialog;
-    private CoordinateReferenceSystem crs;
-
     /** Constructor is hidden. */
     private JCRSChooser() {}
 

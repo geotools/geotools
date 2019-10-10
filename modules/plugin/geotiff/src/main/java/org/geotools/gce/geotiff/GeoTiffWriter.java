@@ -19,7 +19,7 @@ package org.geotools.gce.geotiff;
 import it.geosolutions.imageio.plugins.tiff.TIFFImageWriteParam;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageMetadata;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageWriter;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import java.io.BufferedWriter;
@@ -61,12 +61,6 @@ import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.jdom2.Document;
-import org.jdom2.Element;
-import org.jdom2.JDOMException;
-import org.jdom2.Parent;
-import org.jdom2.input.DOMBuilder;
-import org.jdom2.output.DOMOutputter;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.grid.GridCoverageWriter;
@@ -76,6 +70,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.crs.ProjectedCRS;
 import org.opengis.util.ProgressListener;
+import org.w3c.dom.Node;
 
 /**
  * {@link AbstractGridCoverageWriter} implementation for the geotiff format.
@@ -178,41 +173,40 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
         ProgressListener listener = null;
         boolean retainAxesOrder = false;
         boolean writeNodata = GeoTiffFormat.WRITE_NODATA.getDefaultValue();
+        // /////////////////////////////////////////////////////////////////////
+        //
+        // Checking params
+        //
+        // /////////////////////////////////////////////////////////////////////
         if (params != null) {
-            // /////////////////////////////////////////////////////////////////////
-            //
-            // Checking params
-            //
-            // /////////////////////////////////////////////////////////////////////
-            if (params != null) {
-                Parameter<?> param;
-                final int length = params.length;
-                for (int i = 0; i < length; i++) {
-                    param = (Parameter) params[i];
-                    final ReferenceIdentifier name = param.getDescriptor().getName();
-                    if (name.equals(AbstractGridFormat.GEOTOOLS_WRITE_PARAMS.getName())) {
-                        gtParams = (GeoToolsWriteParams) param.getValue();
-                        continue;
-                    }
-                    if (name.equals(GeoTiffFormat.WRITE_TFW.getName())) {
-                        writeTfw = (Boolean) param.getValue();
-                        continue;
-                    }
-                    if (name.equals(GeoTiffFormat.PROGRESS_LISTENER.getName())) {
-                        listener = (ProgressListener) param.getValue();
-                        continue;
-                    }
-                    if (name.equals(GeoTiffFormat.RETAIN_AXES_ORDER.getName())) {
-                        retainAxesOrder = (Boolean) param.getValue();
-                        continue;
-                    }
-                    if (name.equals(GeoTiffFormat.WRITE_NODATA.getName())) {
-                        writeNodata = (Boolean) param.getValue();
-                        continue;
-                    }
+            Parameter<?> param;
+            final int length = params.length;
+            for (int i = 0; i < length; i++) {
+                param = (Parameter) params[i];
+                final ReferenceIdentifier name = param.getDescriptor().getName();
+                if (name.equals(AbstractGridFormat.GEOTOOLS_WRITE_PARAMS.getName())) {
+                    gtParams = (GeoToolsWriteParams) param.getValue();
+                    continue;
+                }
+                if (name.equals(GeoTiffFormat.WRITE_TFW.getName())) {
+                    writeTfw = (Boolean) param.getValue();
+                    continue;
+                }
+                if (name.equals(GeoTiffFormat.PROGRESS_LISTENER.getName())) {
+                    listener = (ProgressListener) param.getValue();
+                    continue;
+                }
+                if (name.equals(GeoTiffFormat.RETAIN_AXES_ORDER.getName())) {
+                    retainAxesOrder = (Boolean) param.getValue();
+                    continue;
+                }
+                if (name.equals(GeoTiffFormat.WRITE_NODATA.getName())) {
+                    writeNodata = (Boolean) param.getValue();
+                    continue;
                 }
             }
         }
+
         if (gtParams == null) gtParams = new GeoTiffWriteParams();
 
         //
@@ -284,15 +278,15 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
         final String name = destFile.getName();
         final File tfw = new File(parentFile, name.replace("tif", "tfw"));
         final File prj = new File(parentFile, name.replace("tif", "prj"));
-        final WorldFileWriter writer = new WorldFileWriter(tfw, tr);
         final BufferedWriter outW = new BufferedWriter(new FileWriter(prj));
+        new WorldFileWriter(tfw, tr); // side effect of creation writes the file
         try {
             outW.write(gc.getCoordinateReferenceSystem().toWKT());
         } finally {
             try {
                 outW.close();
             } catch (Exception e) {
-                // ssshhh :)
+                LOGGER.log(Level.FINER, "Failed to close output writer", e);
             }
         }
     }
@@ -331,7 +325,6 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
         final AffineTransform modifiedRasterToModel = new AffineTransform(rasterToModel);
         // move the internal grid to world to corner from center
         modifiedRasterToModel.concatenate(CoverageUtilities.CENTER_TO_CORNER);
-        ;
         int minx = range.getLow(0), miny = range.getLow(1);
         if (minx != 0 || miny != 0) {
             // //
@@ -400,14 +393,13 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
         //
         final TIFFImageWriter writer =
                 (TIFFImageWriter) GeoTiffFormat.IMAGEIO_WRITER_FACTORY.createWriterInstance();
-        final IIOMetadata metadata =
-                createGeoTiffIIOMetadata(
-                        writer,
-                        ImageTypeSpecifier.createFromRenderedImage(image),
-                        geoTIFFMetadata,
-                        params);
-
         try {
+            final IIOMetadata metadata =
+                    createGeoTiffIIOMetadata(
+                            writer,
+                            ImageTypeSpecifier.createFromRenderedImage(image),
+                            geoTIFFMetadata,
+                            params);
 
             //
             // IMAGEWRITE
@@ -473,24 +465,13 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
         org.w3c.dom.Element w3cElement =
                 (org.w3c.dom.Element)
                         imageMetadata.getAsTree(GeoTiffConstants.GEOTIFF_IIO_METADATA_FORMAT_NAME);
-        final Element element = new DOMBuilder().build(w3cElement);
 
-        geoTIFFMetadata.assignTo(element);
-
-        final Parent parent = element.getParent();
-        parent.removeContent(element);
-
-        final Document document = new Document(element);
-
+        geoTIFFMetadata.assignTo(w3cElement);
         try {
-            final org.w3c.dom.Document w3cDoc = new DOMOutputter().output(document);
+            Node TIFFIFD = w3cElement.getChildNodes().item(0);
             final IIOMetadata iioMetadata =
-                    new TIFFImageMetadata(
-                            TIFFImageMetadata.parseIFD(
-                                    w3cDoc.getDocumentElement().getFirstChild()));
+                    new TIFFImageMetadata(TIFFImageMetadata.parseIFD(TIFFIFD));
             imageMetadata = iioMetadata;
-        } catch (JDOMException e) {
-            throw new IIOException("Failed to set GeoTIFFWritingUtilities specific tags.", e);
         } catch (IIOInvalidTreeException e) {
             throw new IIOException("Failed to set GeoTIFFWritingUtilities specific tags.", e);
         }

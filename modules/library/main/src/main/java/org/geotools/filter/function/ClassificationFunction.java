@@ -107,19 +107,9 @@ public abstract class ClassificationFunction extends DefaultExpression
         this.progress = progress;
     }
 
-    /** @deprecated use getClasses() */
-    public int getNumberOfClasses() {
-        return getClasses();
-    }
-
     public int getClasses() {
         Literal classes = (Literal) getParameters().get(1);
         return ((Integer) classes.evaluate(null, Integer.class)).intValue();
-    }
-
-    /** @deprecated use setClasses() */
-    public void setNumberOfClasses(int classes) {
-        setClasses(classes);
     }
 
     public void setClasses(int classes) {
@@ -139,13 +129,16 @@ public abstract class ClassificationFunction extends DefaultExpression
      * @param slotWidth
      */
     protected int decimalPlaces(double slotWidth) {
+        if (slotWidth == 0) {
+            return 5;
+        }
         String str = Double.toString(slotWidth);
         if (str.indexOf(".") > -1) {
             while (str.endsWith("0")) {
                 str = str.substring(0, str.length() - 1);
             }
         }
-        int intPart = new Double(Math.floor(slotWidth)).intValue();
+        int intPart = Double.valueOf(Math.floor(slotWidth)).intValue();
         double decPart = slotWidth - intPart;
         int intPoints = Integer.toString(intPart).length();
         int decPoints = str.length() - intPoints;

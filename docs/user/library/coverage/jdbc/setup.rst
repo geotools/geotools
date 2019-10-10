@@ -5,8 +5,8 @@ Setup Example
    
    Prepare your image data in advance. The size of the images has a big influence on performance.
    
-   Here, we are not talking about the size of an encoded image (jpeg,png), the size of the decoded
-   image requesting java heap memory is interesting.
+   Here, we are not talking about the size of an encoded image (``jpeg``, ``png``), the size of the decoded
+   image requesting Java heap memory is interesting.
    
    * One of the best possibilities is to use an image with one band and  an indexed color table.
    * A not so good solution is using a RGBA image needing four bands and requesting 3-4 times more
@@ -26,8 +26,8 @@ Setup Example
 
 2. The next step is to create the table for the meta info.
    
-   Attention: All the table and attribute names have to correspond to the xml mapping fragment,
-   otherwise the plugin will not work. If there is a valid xml config, you can use the following
+   Attention: All the table and attribute names have to correspond to the XML mapping fragment,
+   otherwise the plugin will not work. If there is a valid XML configuration, you can use the following
    utility to create ddl script templates.
    
    .. toctree::
@@ -47,7 +47,7 @@ Setup Example
    
    * The other options are dedicated to selected databases using their spatial extension.
      
-     The spatialExtension element in the xml mapping fragment is used to specify the option to use.
+     The ``spatialExtension`` element in the XML mapping fragment is used to specify the option to use.
      
    .. toctree::
       :maxdepth: 1

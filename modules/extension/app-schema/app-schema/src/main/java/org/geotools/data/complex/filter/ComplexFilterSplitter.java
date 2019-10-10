@@ -17,7 +17,7 @@
 
 package org.geotools.data.complex.filter;
 
-import static org.geotools.data.complex.ComplexFeatureConstants.DEFAULT_GEOMETRY_LOCAL_NAME;
+import static org.geotools.data.complex.util.ComplexFeatureConstants.DEFAULT_GEOMETRY_LOCAL_NAME;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,12 +29,12 @@ import org.geotools.data.complex.AttributeMapping;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.NestedAttributeMapping;
 import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
-import org.geotools.data.complex.config.Types;
 import org.geotools.data.complex.expression.FeaturePropertyAccessorFactory;
+import org.geotools.data.complex.feature.type.Types;
 import org.geotools.data.complex.filter.FeatureChainedAttributeVisitor.FeatureChainLink;
 import org.geotools.data.complex.filter.FeatureChainedAttributeVisitor.FeatureChainedAttributeDescriptor;
-import org.geotools.data.complex.filter.XPathUtil.Step;
-import org.geotools.data.complex.filter.XPathUtil.StepList;
+import org.geotools.data.complex.util.XPathUtil.Step;
+import org.geotools.data.complex.util.XPathUtil.StepList;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.expression.PropertyAccessor;
 import org.geotools.filter.expression.PropertyAccessorFactory;
@@ -316,7 +316,8 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
             checkAttributeFound(
                     expression, exprSteps, nestedAttrExtractor, existsAttrExtractor, fcAttrs);
             // encoding of filters on multiple nested attributes is not (yet) supported
-            if (fcAttrs.size() == 1) {
+            if (fcAttrs.size() == 1
+                    || (fcAttrs.size() >= 1 && validateNoClientProperties(fcAttrs))) {
                 FeatureChainedAttributeDescriptor nestedAttrDescr = fcAttrs.get(0);
                 if (nestedAttrDescr.chainSize() > 1 && nestedAttrDescr.isJoiningEnabled()) {
                     FeatureTypeMapping featureMapping =
@@ -402,6 +403,19 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
         return super.visit(expression, notUsed);
     }
 
+    private boolean validateNoClientProperties(List<FeatureChainedAttributeDescriptor> fcAttrs) {
+        for (FeatureChainedAttributeDescriptor ad : fcAttrs) {
+            if (ad.getFeatureChain() == null) continue;
+            for (FeatureChainLink clink : ad.getFeatureChain()) {
+                if (clink.getNestedFeatureAttribute() == null) continue;
+                if (clink.getNestedFeatureAttribute().getClientProperties() != null
+                        && !clink.getNestedFeatureAttribute().getClientProperties().isEmpty())
+                    return false;
+            }
+        }
+        return true;
+    }
+
     /** Attribute error check */
     protected void checkAttributeFound(
             PropertyName expression,
@@ -412,6 +426,7 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
         if (fcAttrs.size() == 0
                 && !nestedAttrExtractor.conditionalMappingWasFound()
                 && !isXlinkHRef(exprSteps)
+                && !existsAttrExtractor.isUnboundedNestedElementFound()
                 && existsAttrExtractor.getFeatureChainedAttributes().isEmpty()) {
             throw new IllegalArgumentException(
                     String.format(

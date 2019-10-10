@@ -155,8 +155,7 @@ final class Resampler2D extends GridCoverage2D {
      * @param image The image.
      * @param geometry The grid geometry (including the new CRS).
      * @param operation The operation used to resample the coverage
-     * @param wapr The warp configuration in case a warp is being used
-     * @param finalView The view for the target coverage.
+     * @param warp The warp configuration in case a warp is being used
      */
     private static GridCoverage2D create(
             final GridCoverage2D source,
@@ -305,7 +304,7 @@ final class Resampler2D extends GridCoverage2D {
             // we have been provided with interpolation, let's override hints
             hints.put(JAI.KEY_INTERPOLATION, interpolation);
         }
-        if (!hints.containsKey(JAI.KEY_BORDER_EXTENDER)) {
+        if (hints != null && !hints.containsKey(JAI.KEY_BORDER_EXTENDER)) {
             hints.put(
                     JAI.KEY_BORDER_EXTENDER,
                     BorderExtender.createInstance(BorderExtender.BORDER_COPY));
@@ -897,17 +896,6 @@ final class Resampler2D extends GridCoverage2D {
         return coverage;
     }
 
-    /** Gets the JAI instance to use from the rendering hints. */
-    private static JAI getJAI(final Hints hints) {
-        if (hints != null) {
-            final Object property = hints.get(Hints.JAI_INSTANCE);
-            if (property instanceof JAI) {
-                return (JAI) property;
-            }
-        }
-        return JAI.getDefaultInstance();
-    }
-
     /**
      * Returns {@code true} if the image or tile location and size are totally undefined.
      *
@@ -1117,28 +1105,8 @@ final class Resampler2D extends GridCoverage2D {
              * progressive empirical adjustment in order to get the rectangles to fit.
              */
             final Warp warp = wb.buildWarp(transform, targetBB);
-            if (true) {
-                return warp;
-            }
-
-            //            // remainder is disabled for now since it break Geoserver build.
-            //            if (sourceBB == null || targetBB == null) {
-            //                return warp;
-            //            }
-            //            actualBB = warp.mapSourceRect(sourceBB); // May be null
-            //            if (actualBB != null && targetBB.contains(sourceBB)) {
-            //                return warp;
-            //            }
-            //            actualBB = warp.mapDestRect(targetBB); // Should never be null.
-            //            if (actualBB != null && targetBB.contains(sourceBB)) {
-            //                return warp;
-            //            }
-            //            // The loop below intentionally tries one more iteration than the constant
-            // in case we need
-            //            // to apply slightly more than the above scale and translation because of
-            // rounding errors.
+            return warp;
         } while (step++ <= EMPIRICAL_ADJUSTMENT_STEPS);
-        throw new FactoryException(Errors.format(ErrorKeys.CANT_REPROJECT_$1, name));
     }
 
     /** Logs a message. */

@@ -1,8 +1,19 @@
-/* (c) 2017 Open Source Geospatial Foundation - all rights reserved
- * This code is licensed under the GPL 2.0 license, available at the root
- * application directory.
- */
-package org.geotools.renderer.style.svg;
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */ package org.geotools.renderer.style.svg;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -34,7 +45,6 @@ class RenderableSVG {
     /**
      * Retrieves an SVG document's specified bounds.
      *
-     * @param svgLocation an URL that specifies the SVG.
      * @return a {@link Rectangle2D} with the corresponding bounds. If the SVG document does not
      *     specify any bounds, then null is returned.
      * @throws IOException
@@ -68,7 +78,7 @@ class RenderableSVG {
     /**
      * Retrieves a Batik {@link GraphicsNode} for a given SVG.
      *
-     * @param svgLocation an URL that specifies the SVG.
+     * @param doc the {@link Document} representing the SVG
      * @return the corresponding GraphicsNode.
      * @throws IOException
      * @throws URISyntaxException

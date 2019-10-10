@@ -185,6 +185,7 @@ public class DefaultTemporalDatum extends AbstractDatum implements TemporalDatum
      *     versions of this class.
      */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return super.hashCode() ^ (int) origin ^ (int) (origin >>> 32);
     }

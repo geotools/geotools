@@ -100,7 +100,7 @@ public class TestData {
                 SimpleFeatureBuilder.build(
                         roadType,
                         new Object[] {
-                            new Integer(1), line(new int[] {1, 1, 2, 2, 4, 2, 5, 1}), "r1",
+                            Integer.valueOf(1), line(new int[] {1, 1, 2, 2, 4, 2, 5, 1}), "r1",
                         },
                         ROAD + "." + (initialFidValue));
 
@@ -113,7 +113,7 @@ public class TestData {
                 SimpleFeatureBuilder.build(
                         roadType,
                         new Object[] {
-                            new Integer(2), line(new int[] {3, 0, 3, 2, 3, 3, 3, 4}), "r2"
+                            Integer.valueOf(2), line(new int[] {3, 0, 3, 2, 3, 3, 3, 4}), "r2"
                         },
                         ROAD + "." + (initialFidValue + 1));
 
@@ -123,7 +123,7 @@ public class TestData {
         roadFeatures[2] =
                 SimpleFeatureBuilder.build(
                         roadType,
-                        new Object[] {new Integer(3), line(new int[] {3, 2, 4, 2, 5, 3}), "r3"},
+                        new Object[] {Integer.valueOf(3), line(new int[] {3, 2, 4, 2, 5, 3}), "r3"},
                         ROAD + "." + (initialFidValue + 2));
         roadBounds = new ReferencedEnvelope(CRS.decode("EPSG:4326", forceLongitudeFirst));
         roadBounds.expandToInclude(new ReferencedEnvelope(roadFeatures[0].getBounds()));
@@ -147,7 +147,7 @@ public class TestData {
         newRoad =
                 SimpleFeatureBuilder.build(
                         roadType,
-                        new Object[] {new Integer(4), line(new int[] {1, 2, 2, 3}), "r4"},
+                        new Object[] {Integer.valueOf(4), line(new int[] {1, 2, 2, 3}), "r4"},
                         ROAD + "." + (initialFidValue + 3));
     }
 
@@ -179,7 +179,7 @@ public class TestData {
                 SimpleFeatureBuilder.build(
                         riverType,
                         new Object[] {
-                            new Integer(1),
+                            Integer.valueOf(1),
                             lines(
                                     new int[][] {
                                         {5, 5, 7, 4},
@@ -187,7 +187,7 @@ public class TestData {
                                         {7, 5, 9, 3, 11, 3}
                                     }),
                             "rv1",
-                            new Double(4.5)
+                            Double.valueOf(4.5)
                         },
                         RIVER + "." + (initialFidValue));
 
@@ -200,10 +200,10 @@ public class TestData {
                 SimpleFeatureBuilder.build(
                         riverType,
                         new Object[] {
-                            new Integer(2),
+                            Integer.valueOf(2),
                             lines(new int[][] {{4, 6, 4, 8, 6, 10}}),
                             "rv2",
-                            new Double(3.0)
+                            Double.valueOf(3.0)
                         },
                         RIVER + "." + (initialFidValue + 1));
         riverBounds = new ReferencedEnvelope(CRS.decode("EPSG:4326", forceLongitudeFirst));
@@ -222,10 +222,10 @@ public class TestData {
                 SimpleFeatureBuilder.build(
                         riverType,
                         new Object[] {
-                            new Integer(3),
+                            Integer.valueOf(3),
                             lines(new int[][] {{9, 5, 11, 5, 13, 3}}),
                             "rv3",
-                            new Double(1.5)
+                            Double.valueOf(1.5)
                         },
                         RIVER + "." + (initialFidValue + 2));
     }

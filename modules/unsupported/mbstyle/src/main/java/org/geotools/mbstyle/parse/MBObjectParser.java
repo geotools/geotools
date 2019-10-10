@@ -831,10 +831,10 @@ public class MBObjectParser {
                     Object value = array.get(i);
                     if (Number.class.isAssignableFrom(type) && value instanceof Number) {
                         if (type == Double.class) {
-                            returnArray[i] = (T) new Double(((Number) value).doubleValue());
+                            returnArray[i] = (T) Double.valueOf(((Number) value).doubleValue());
                             continue;
                         } else if (type == Integer.class) {
-                            returnArray[i] = (T) new Integer(((Number) value).intValue());
+                            returnArray[i] = (T) Integer.valueOf(((Number) value).intValue());
                             continue;
                         }
                     }

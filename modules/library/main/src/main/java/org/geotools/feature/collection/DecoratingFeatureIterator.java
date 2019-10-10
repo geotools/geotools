@@ -26,7 +26,7 @@ import org.opengis.feature.Feature;
  * @author Jody Garnett
  */
 public class DecoratingFeatureIterator<F extends Feature> implements FeatureIterator<F> {
-    FeatureIterator<F> delegate;
+    protected FeatureIterator<F> delegate;
 
     /**
      * Wrap the provided FeatureIterator.

@@ -191,7 +191,6 @@ public class XLinkSchema implements Schema {
         }
     }
 
-    /** DOCUMENT ME! */
     public String getPrefix() {
         return "xLink";
     }

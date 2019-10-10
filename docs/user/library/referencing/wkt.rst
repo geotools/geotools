@@ -1,11 +1,11 @@
 EPSG WKT Plugin
 ^^^^^^^^^^^^^^^
 
-The plugin provides an Coordinate Reference System Authority based on a text file (actually a Java **epsg.properties** file).
+The plugin provides an Coordinate Reference System Authority based on a text file (actually a Java ``epsg.properties`` file).
 
-This epsg plugin is well suited for use in situations where your application does not have write access to the filesystem (and thus gt-epsh-hsql is not available).
+  This EPSG plugin is well suited for use in situations where your application does not have write access to the file system (and thus ``gt-epsh-hsql`` is not available).
 
-It is not quite as good as the official epsg database; as the codes represented here do not express the full range of bursa wolf parameters available in the official epsg database. Some liberty has also been taken with axis order with the contents often presented is "x/y" order as expected by a simple drawing application.
+It is not quite as good as the official EPSG database; as the codes represented here do not express the full range of bursa wolf parameters available in the official EPSG database. Some liberty has also been taken with axis order with the contents often presented is "x/y" order as expected by a simple drawing application.
 
 This plugin is well suited for use in a Java Applet or other restricted environment.
 
@@ -20,7 +20,7 @@ The Plugin will work out of the box, include it in your CLASSPATH.
 Beyond EPSG Database
 ''''''''''''''''''''
 
-The **epsg.properties** file does contain definitions that go beyond those defined by the EPSG database. Traditionally this has been limited to those needed to work by the module maintainer for the Canadian Region; and a few donated on the mailing list for areas like New Zealand.
+The ``epsg.properties`` file does contain definitions that go beyond those defined by the EPSG database. Traditionally this has been limited to those needed to work by the module maintainer for the Canadian Region; and a few donated on the mailing list for areas like New Zealand.
 
 If you have any additions or corrections please raise a bug report.
 

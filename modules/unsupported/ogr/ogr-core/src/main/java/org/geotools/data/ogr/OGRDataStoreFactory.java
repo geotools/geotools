@@ -17,17 +17,13 @@
 package org.geotools.data.ogr;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.data.DataSourceException;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.util.logging.Logging;
@@ -36,7 +32,6 @@ import org.geotools.util.logging.Logging;
  * Implementation of the DataStore service provider interface for OGR.
  *
  * @author Andrea Aime, GeoSolution
-
  * @version $Id$
  */
 @SuppressWarnings("rawtypes")
@@ -56,17 +51,79 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
                     "DriverName",
                     String.class,
                     "Name of the OGR driver to be used. Required to create a new data source, optional when opening an existing one",
-                    false);
+                    false,
+                    null);
 
     public static final Param NAMESPACEP =
             new Param("namespace", URI.class, "uri to a the namespace", false); // not required
 
-    /**
-     * Caches opened data stores. TODO: is this beneficial or problematic? It's a static cache, so
-     * opening a lot of datastore (thousands, hundreds of thousands...) may become a memory problem.
-     * Plus OGR is not designed to be thread safe.
-     */
-    private Map liveStores = new HashMap();
+    protected static final Integer DEFAULT_MAXCONN = Integer.valueOf(20);
+
+    /** Maximum number of connections in the connection pool */
+    public static final Param MAXCONN =
+            new Param(
+                    "max connections",
+                    Integer.class,
+                    "maximum number of pooled data source connections",
+                    false,
+                    DEFAULT_MAXCONN);
+
+    protected static final Integer DEFAULT_MINCONN = Integer.valueOf(1);
+
+    /** Minimum number of connections in the connection pool */
+    public static final Param MINCONN =
+            new Param(
+                    "min connections",
+                    Integer.class,
+                    "minimum number of pooled data source connection connection",
+                    false,
+                    DEFAULT_MINCONN);
+
+    protected static final int DEFAULT_MAXWAIT = 20;
+
+    /** Maximum amount of time the pool will wait when trying to grab a new connection * */
+    public static final Param MAXWAIT =
+            new Param(
+                    "Connection timeout",
+                    Integer.class,
+                    "number of seconds the pool will wait before timing out attempting to get a new data source (default, 20 seconds)",
+                    false,
+                    DEFAULT_MAXWAIT);
+
+    protected static final int DEFAULT_EVICTABLE_TIME = 300;
+
+    /** Min time for a connection to be idle in order to be evicted * */
+    public static final Param MIN_EVICTABLE_TIME =
+            new Param(
+                    "Max data source idle time",
+                    Integer.class,
+                    "number of seconds a data source needs to stay idle for the evictor to consider closing it",
+                    false,
+                    DEFAULT_EVICTABLE_TIME);
+
+    public static final int DEFAULT_EVICTOR_TESTS_PER_RUN = 3;
+
+    /** Number of connections checked during a single evictor run * */
+    public static final Param EVICTOR_TESTS_PER_RUN =
+            new Param(
+                    "Evictor tests per run",
+                    Integer.class,
+                    "number of data source checked by the idle connection evictor for each of its runs (defaults to 3)",
+                    false,
+                    DEFAULT_EVICTOR_TESTS_PER_RUN);
+
+    public static final boolean DEFAULT_PRIME_DATASOURCE = false;
+
+    /** Whether to try to initialize a datasource with a full data read before using it* */
+    public static final Param PRIME_DATASOURCE =
+            new Param(
+                    "Prime DataSources",
+                    Boolean.class,
+                    "Performs a full data read on data source creation, in some formats this generates a in memory cache, or a spatial index (check the OGR documentation for details)",
+                    false,
+                    DEFAULT_PRIME_DATASOURCE);
+
+    static Boolean AVAILABLE = null;
 
     protected abstract OGR createOGR();
 
@@ -90,18 +147,7 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
     }
 
     public DataStore createDataStore(Map params) throws IOException {
-        DataStore ds = null;
-        if (!liveStores.containsKey(params)) {
-
-            URL url = null;
-            try {
-                ds = createNewDataStore(params);
-                liveStores.put(params, ds);
-            } catch (MalformedURLException mue) {
-                throw new DataSourceException("Unable to attatch datastore to " + url, mue);
-            }
-        } else ds = (DataStore) liveStores.get(params);
-        return ds;
+        return createNewDataStore(params);
     }
 
     /**
@@ -109,17 +155,18 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
      *
      * @param params
      * @throws IOException
-     * @throws IOException DOCUMENT ME!
      * @throws UnsupportedOperationException
      */
     public DataStore createNewDataStore(Map params) throws IOException {
 
-        DataStore ds = null;
+        DataStore ds;
 
         String ogrName = (String) OGR_NAME.lookUp(params);
         String ogrDriver = (String) OGR_DRIVER_NAME.lookUp(params);
         URI namespace = (URI) NAMESPACEP.lookUp(params);
-        ds = new OGRDataStore(ogrName, ogrDriver, namespace, createOGR());
+        OGR ogr = createOGR();
+        OGRDataSourcePool dataSourcePool = new OGRDataSourcePool(ogr, ogrName, ogrDriver, params);
+        ds = new OGRDataStore(ogrName, ogrDriver, namespace, ogr, dataSourcePool);
 
         return ds;
     }
@@ -157,16 +204,20 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
      * logged, and return false
      */
     public final boolean isAvailable(boolean handleError) {
-        try {
-            return doIsAvailable();
-        } catch (Throwable t) {
-            if (handleError) {
-                LOGGER.log(Level.FINE, "Error initializing GDAL/OGR library", t);
-                return false;
-            } else {
-                throw new RuntimeException(t);
+        if (AVAILABLE == null) {
+            try {
+                AVAILABLE = doIsAvailable();
+            } catch (Throwable t) {
+                if (handleError) {
+                    LOGGER.log(Level.WARNING, "Error initializing GDAL/OGR library", t);
+                    return false;
+                } else {
+                    throw new RuntimeException(t);
+                }
             }
         }
+
+        return AVAILABLE;
     }
 
     /**
@@ -182,7 +233,17 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
      * @see org.geotools.data.DataStoreFactorySpi#getParametersInfo()
      */
     public Param[] getParametersInfo() {
-        return new Param[] {OGR_NAME, OGR_DRIVER_NAME, NAMESPACEP};
+        return new Param[] {
+            OGR_NAME,
+            OGR_DRIVER_NAME,
+            NAMESPACEP,
+            MAXCONN,
+            MINCONN,
+            MAXWAIT,
+            MIN_EVICTABLE_TIME,
+            EVICTOR_TESTS_PER_RUN,
+            PRIME_DATASOURCE
+        };
     }
 
     /**
@@ -195,6 +256,9 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
      */
     public boolean canProcess(String ogrName, String driverName) {
         OGR ogr = createOGR();
+        if (ogrName == null) {
+            return false;
+        }
         Object dataset = ogr.OpenShared(ogrName, 0);
 
         if (dataset != null) {

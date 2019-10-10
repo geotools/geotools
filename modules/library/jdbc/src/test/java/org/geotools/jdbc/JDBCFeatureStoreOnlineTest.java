@@ -40,6 +40,7 @@ import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.DefaultFeatureCollection;
+import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Coordinate;
@@ -48,7 +49,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Id;
@@ -72,7 +73,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
         FeatureEventWatcher watcher = new FeatureEventWatcher();
 
         for (int i = 3; i < 6; i++) {
-            b.set(aname("intProperty"), new Integer(i));
+            b.set(aname("intProperty"), Integer.valueOf(i));
             b.set(aname("geometry"), new GeometryFactory().createPoint(new Coordinate(i, i)));
             collection.add(b.buildFeature(null));
         }
@@ -122,7 +123,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
             final int LOOPS = 32;
             for (int i = 0; i < LOOPS; i++) {
                 final String theProperty = aname("intProperty");
-                final Integer theValue = new Integer(i + 3);
+                final Integer theValue = Integer.valueOf(i + 3);
                 b.set(theProperty, theValue);
                 SimpleFeature feature = b.buildFeature(null);
                 cs.submit(
@@ -160,7 +161,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
 
         String typeName = b.getFeatureType().getTypeName();
         for (int i = 3; i < 6; i++) {
-            b.set(aname("intProperty"), new Integer(i));
+            b.set(aname("intProperty"), Integer.valueOf(i));
             b.set(aname("geometry"), new GeometryFactory().createPoint(new Coordinate(i, i)));
             b.featureUserData(Hints.USE_PROVIDED_FID, Boolean.TRUE);
             collection.add(b.buildFeature(typeName + "." + (i * 10)));
@@ -198,7 +199,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
         DefaultFeatureCollection collection =
                 new DefaultFeatureCollection(null, featureStore.getSchema());
 
-        b.set(aname("intProperty"), new Integer(3));
+        b.set(aname("intProperty"), Integer.valueOf(3));
         b.set(aname("geometry"), new GeometryFactory().createPoint(new Coordinate(3, 3)));
         collection.add(b.buildFeature(null));
 
@@ -230,7 +231,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
         DefaultFeatureCollection collection =
                 new DefaultFeatureCollection(null, featureStore.getSchema());
 
-        b.set(aname("intProperty"), new Integer(3));
+        b.set(aname("intProperty"), Integer.valueOf(3));
         b.set(aname("geometry"), new GeometryFactory().createPoint(new Coordinate(3, 3)));
         collection.add(b.buildFeature(null));
 
@@ -302,7 +303,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
                 new DefaultFeatureCollection(null, featureStore.getSchema());
 
         for (int i = 3; i < 6; i++) {
-            b.set(aname("intProperty"), new Integer(i));
+            b.set(aname("intProperty"), Integer.valueOf(i));
             b.set(aname("geometry"), new GeometryFactory().createPoint(new Coordinate(i, i)));
             collection.add(b.buildFeature(null));
         }
@@ -318,9 +319,9 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
 
         try (SimpleFeatureIterator iterator = features.features()) {
             HashSet<Integer> numbers = new HashSet<Integer>();
-            numbers.add(new Integer(3));
-            numbers.add(new Integer(4));
-            numbers.add(new Integer(5));
+            numbers.add(Integer.valueOf(3));
+            numbers.add(Integer.valueOf(4));
+            numbers.add(Integer.valueOf(5));
 
             for (int i = 3; iterator.hasNext(); i++) {
                 SimpleFeature feature = (SimpleFeature) iterator.next();
@@ -338,7 +339,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
 
         featureStore.addFeatureListener(watcher);
         featureStore.modifyFeatures(
-                new AttributeDescriptor[] {t.getDescriptor(aname("stringProperty"))},
+                new Name[] {new NameImpl(aname("stringProperty"))},
                 new Object[] {"foo"},
                 Filter.INCLUDE);
 
@@ -363,9 +364,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
         GeometryFactory gf = new GeometryFactory();
         Point point = gf.createPoint(new Coordinate(-10, 0));
         featureStore.modifyFeatures(
-                new AttributeDescriptor[] {t.getDescriptor(aname("geometry"))},
-                new Object[] {point},
-                Filter.INCLUDE);
+                new Name[] {new NameImpl(aname("geometry"))}, new Object[] {point}, Filter.INCLUDE);
 
         SimpleFeatureCollection features = featureStore.getFeatures();
         try (SimpleFeatureIterator i = features.features()) {
@@ -388,10 +387,8 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
         // in chains of retyping where attributes are rebuilt
         AttributeTypeBuilder ab = new AttributeTypeBuilder();
         ab.binding(Point.class);
-        AttributeDescriptor madeUp = ab.buildDescriptor(aname("geometry"));
 
-        featureStore.modifyFeatures(
-                new AttributeDescriptor[] {madeUp}, new Object[] {point}, Filter.INCLUDE);
+        featureStore.modifyFeatures(new NameImpl(aname("geometry")), point, Filter.INCLUDE);
 
         SimpleFeatureCollection features = featureStore.getFeatures();
         try (SimpleFeatureIterator i = features.features()) {
@@ -406,8 +403,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
 
     public void testModifyFeaturesSingleAttribute() throws IOException {
         SimpleFeatureType t = featureStore.getSchema();
-        featureStore.modifyFeatures(
-                t.getDescriptor(aname("stringProperty")), "foo", Filter.INCLUDE);
+        featureStore.modifyFeatures(new NameImpl(aname("stringProperty")), "foo", Filter.INCLUDE);
 
         SimpleFeatureCollection features = featureStore.getFeatures();
         try (SimpleFeatureIterator i = features.features()) {
@@ -426,10 +422,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
         PropertyIsEqualTo f = ff.equals(ff.property("invalidAttribute"), ff.literal(5));
 
         try {
-            featureStore.modifyFeatures(
-                    new AttributeDescriptor[] {t.getDescriptor(aname("stringProperty"))},
-                    new Object[] {"foo"},
-                    f);
+            featureStore.modifyFeatures(new NameImpl(aname("stringProperty")), "foo", f);
             fail("This should have failed with an exception reporting the invalid filter");
         } catch (Exception e) {
             //  fine

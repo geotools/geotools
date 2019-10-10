@@ -152,7 +152,7 @@ public final class CropTest extends GridProcessingTestBase {
     @Test
     public void testCropNoData() {
         Map<String, Object> properties = new HashMap<>();
-        final Double theNoData = new Double(-123);
+        final Double theNoData = Double.valueOf(-123);
         CoverageUtilities.setNoDataProperty(properties, theNoData);
         GridCoverage2D source =
                 new GridCoverageFactory()

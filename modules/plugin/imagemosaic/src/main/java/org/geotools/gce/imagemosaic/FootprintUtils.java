@@ -28,7 +28,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.commons.io.IOUtils;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.feature.FeatureCollection;
@@ -94,10 +93,7 @@ class FootprintUtils {
         }
         Utilities.ensureNonNull("footprintsID_GeometryMap", footprintsIDGeometryMap);
 
-        FileReader reader = null;
-        try {
-            reader = new FileReader(footprintSummaryFile);
-            BufferedReader bReader = new BufferedReader(reader);
+        try (BufferedReader bReader = new BufferedReader(new FileReader(footprintSummaryFile))) {
             String footprint;
 
             final WKTReader geometryReader = new WKTReader();
@@ -117,17 +113,6 @@ class FootprintUtils {
 
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
-            }
-        } finally {
-            try {
-                if (reader != null) {
-                    reader.close();
-                }
-            } catch (Throwable e) {
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
-                }
-                IOUtils.closeQuietly(reader);
             }
         }
     }
@@ -271,9 +256,8 @@ class FootprintUtils {
 
         if (footprintsLocationGeometryMap.isEmpty()) return;
 
-        FileWriter footprintWriter = null;
         FeatureIterator<SimpleFeature> it = null;
-        try {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(footprintSummaryFile))) {
             final String[] typeNames = store.getTypeNames();
             if (typeNames.length <= 0) {
                 throw new IllegalArgumentException(
@@ -299,8 +283,6 @@ class FootprintUtils {
                 throw new IllegalArgumentException(
                         "The provided FeatureCollection<SimpleFeatureType, SimpleFeature>  or empty, it's impossible to create an index!");
 
-            footprintWriter = new FileWriter(footprintSummaryFile);
-            final BufferedWriter writer = new BufferedWriter(footprintWriter);
             final WKTWriter geometryWriter = new WKTWriter();
 
             // Scan the index shapefile to get granules location
@@ -340,19 +322,6 @@ class FootprintUtils {
                 if (LOGGER.isLoggable(Level.FINEST))
                     LOGGER.log(Level.FINEST, e.getLocalizedMessage(), e);
             }
-
-            try {
-                if (footprintWriter != null) {
-                    footprintWriter.flush();
-
-                    footprintWriter.close();
-                }
-            } catch (Throwable e) {
-                if (LOGGER.isLoggable(Level.FINEST))
-                    LOGGER.log(Level.FINEST, e.getLocalizedMessage(), e);
-                IOUtils.closeQuietly(footprintWriter);
-            }
-            footprintWriter = null;
 
             try {
                 store.dispose();

@@ -36,9 +36,9 @@ public class GMLMultiPolygonPropertyTypeBindingTest extends AbstractGMLBindingTe
                 createElement(
                         GML.NAMESPACE,
                         "myMultiPolygonProperty",
-                        GML.MULTIPOLYGONPROPERTYTYPE,
+                        GML.MultiPolygonPropertyType,
                         null);
-        geometry = createElement(GML.NAMESPACE, "myMultiPolygon", GML.MULTIPOINTTYPE, null);
+        geometry = createElement(GML.NAMESPACE, "myMultiPolygon", GML.MultiPointType, null);
 
         container = new DefaultPicoContainer();
         container.registerComponentImplementation(GeometryFactory.class);

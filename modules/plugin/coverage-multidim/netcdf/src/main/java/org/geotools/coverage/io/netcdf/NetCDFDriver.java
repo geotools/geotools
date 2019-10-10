@@ -95,7 +95,14 @@ public class NetCDFDriver extends DefaultFileDriver implements FileDriver, Drive
     public CoverageAccess connect(
             Map<String, Serializable> params, Hints hints, ProgressListener listener)
             throws IOException {
-        return new NetCDFAccess(this, null, params, hints, listener);
+        if (params == null) throw new IllegalArgumentException("Invalid or no input provided.");
+        if (!params.containsKey(URL.key))
+            throw new IllegalArgumentException(
+                    "Unable to find parameter URL in parameters " + params.toString());
+
+        // get the URL
+        final URL url = (URL) params.get(URL.key);
+        return new NetCDFAccess(this, url, params, hints, listener);
     }
 
     public boolean isAvailable() {

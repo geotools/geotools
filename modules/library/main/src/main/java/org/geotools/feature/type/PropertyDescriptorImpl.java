@@ -110,9 +110,7 @@ public class PropertyDescriptorImpl implements PropertyDescriptor {
         if (isNillable) {
             sb.append(" nillable");
         }
-        if (minOccurs == 1 && maxOccurs == 1) {
-            // ignore the 1:1
-        } else {
+        if (minOccurs != 1 && maxOccurs != 1) {
             sb.append(" ");
             sb.append(minOccurs);
             sb.append(":");

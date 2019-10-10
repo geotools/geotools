@@ -138,6 +138,7 @@ public class JTSTest extends JTSTestBase {
     /*
      * Tests the transformation of an envelope.
      */
+    @Test
     public void testTransformEnvelopeMathTransform() throws FactoryException, TransformException {
         Envelope envelope = new Envelope(0, 10, 0, 10);
         AffineTransform at = AffineTransform.getScaleInstance(0.5, 1);
@@ -177,6 +178,7 @@ public class JTSTest extends JTSTestBase {
     }
 
     /** Tests the distance between points function */
+    @Test
     public void testOrthodromicDistance() throws Exception {
         final Parser parser = new Parser();
         final DefaultProjectedCRS crs = (DefaultProjectedCRS) parser.parseObject(NAD83_BC);
@@ -189,6 +191,7 @@ public class JTSTest extends JTSTestBase {
         assertEquals(realValue, d, 0.1);
     }
 
+    @Test
     public void testCheckCoordinateRange() throws Exception {
         DefaultGeographicCRS crs = DefaultGeographicCRS.WGS84;
 
@@ -212,6 +215,7 @@ public class JTSTest extends JTSTestBase {
         }
     }
 
+    @Test
     public void testToGeoemtry() {
         DefaultGeographicCRS crs = DefaultGeographicCRS.WGS84;
 
@@ -361,7 +365,7 @@ public class JTSTest extends JTSTestBase {
         // just wanted to make sure there was no exception
         assertEquals(dest0.x, -dest180.x, TOL);
         assertEquals(dest0.y, dest180.y, TOL);
-        assertEquals(dest0.z, dest180.z, TOL);
+        assertEquals(dest0.getZ(), dest180.getZ(), TOL);
     }
 
     @Test

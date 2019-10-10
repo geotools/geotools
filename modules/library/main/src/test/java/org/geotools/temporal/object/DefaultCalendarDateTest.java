@@ -16,6 +16,8 @@
  */
 package org.geotools.temporal.object;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.*;
 
 import org.geotools.metadata.iso.citation.Citations;
@@ -63,7 +65,7 @@ public class DefaultCalendarDateTest {
     @Test
     public void testGetCalendarDate() {
         int[] result = calendarDate1.getCalendarDate();
-        assertFalse(calendarDate2.getCalendarDate().equals(result));
+        assertThat(calendarDate2.getCalendarDate(), not(equalTo(result)));
     }
 
     /** Test of setCalendarEraName method, of class DefaultCalendarDate. */
@@ -81,7 +83,7 @@ public class DefaultCalendarDateTest {
         int[] result = calendarDate1.getCalendarDate();
         int[] caldate = {1995, 5, 5};
         ((DefaultCalendarDate) calendarDate1).setCalendarDate(caldate);
-        assertFalse(calendarDate1.getCalendarDate().equals(result));
+        assertThat(calendarDate1.getCalendarDate(), not(equalTo((result))));
     }
 
     /** Test of equals method, of class DefaultCalendarDate. */

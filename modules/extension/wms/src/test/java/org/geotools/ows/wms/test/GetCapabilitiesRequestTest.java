@@ -58,11 +58,7 @@ public class GetCapabilitiesRequestTest extends ServerTestCase {
     }
 
     protected class Request extends AbstractGetCapabilitiesRequest {
-        /**
-         * DOCUMENT ME!
-         *
-         * @param serverURL
-         */
+        /** @param serverURL */
         public Request(URL serverURL) {
             super(serverURL);
 

@@ -193,7 +193,7 @@ class SexagesimalConverter extends AbstractConverter {
 
     @Override
     public Number convert(Number value) {
-        return convert(value);
+        return convert(value.doubleValue());
     }
 
     @Override

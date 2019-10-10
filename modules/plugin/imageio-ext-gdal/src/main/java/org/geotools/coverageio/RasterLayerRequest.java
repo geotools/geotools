@@ -444,7 +444,6 @@ class RasterLayerRequest {
      * Return a crop region from a specified envelope, leveraging on the grid to world
      * transformation.
      *
-     * @param refinedRequestedBBox the crop envelope
      * @return a {@code Rectangle} representing the crop region.
      * @throws TransformException in case a problem occurs when going back to raster space.
      */
@@ -463,11 +462,6 @@ class RasterLayerRequest {
      * <p>It sets the passed {@link ImageReadParam} in terms of decimation on reading using the
      * provided requestedEnvelope and requestedDim to evaluate the needed resolution.
      *
-     * @param overviewPolicy it can be one of {@link OverviewPolicy}. It specifies the policy to
-     *     compute the overviews level upon request.
-     * @param readParam an instance of {@link ImageReadParam} for setting the subsampling factors.
-     * @param requestedEnvelope the {@link GeneralEnvelope} we are requesting.
-     * @param requestedDim the requested dimensions.
      * @throws IOException
      * @throws TransformException
      * @todo this versions is deeply GDAL based.
@@ -536,17 +530,6 @@ class RasterLayerRequest {
      * rectangle which is suitable for a successive read operation with {@link ImageIO} to do
      * crop-on-read.
      *
-     * @param requestedBBox is the envelope we are requested to load.
-     * @param sourceRasterArea represents the area to load in raster space. This parameter cannot be
-     *     null since it gets filled with whatever the crop region is depending on the <code>
-     *     requestedEnvelope</code>.
-     * @param requestedRasterArea is the requested region where to load data of the specified
-     *     envelope.
-     * @param readGridToWorld the Grid to world transformation to be used
-     * @return the adjusted requested envelope, empty if no requestedEnvelope has been specified,
-     *     {@code null} in case the requested envelope does not intersect the coverage envelope or
-     *     in case the adjusted requested envelope is covered by a too small raster region (an empty
-     *     region).
      * @throws DataSourceException in case something bad occurs
      */
     private void prepareRequestResponseSpatialElements() throws DataSourceException {
@@ -667,7 +650,6 @@ class RasterLayerRequest {
      * resolution level has been found in case we have support for overviews, or starting from the
      * original coverage in case there are no overviews available.
      *
-     * @param readP the imageRead parameter to be set
      * @param requestedRes the requested resolutions from which to determine the decimation
      *     parameters.
      */
@@ -727,11 +709,6 @@ class RasterLayerRequest {
     /**
      * Returns the intersection between the base envelope and the requested envelope.
      *
-     * @param requestedBBox the requested 2D envelope to be intersected with the base envelope.
-     * @param requestedDim is the requested region where to load data of the specified envelope.
-     * @param readGridToWorld the Grid to world transformation to be used in read
-     * @return the resulting intersection of envelopes. In case of empty intersection, this method
-     *     is allowed to return {@code null}
      * @throws TransformException
      * @throws FactoryException
      */

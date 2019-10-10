@@ -16,7 +16,13 @@
  */
 package org.geotools.gce.imagemosaic;
 
-import java.awt.Color;
+import static org.apache.commons.io.filefilter.FileFilterUtils.and;
+import static org.apache.commons.io.filefilter.FileFilterUtils.makeFileOnly;
+import static org.apache.commons.io.filefilter.FileFilterUtils.nameFileFilter;
+import static org.apache.commons.io.filefilter.FileFilterUtils.notFileFilter;
+import static org.apache.commons.io.filefilter.FileFilterUtils.suffixFileFilter;
+
+import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FilenameFilter;
@@ -31,14 +37,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.media.jai.Interpolation;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
 import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBean;
@@ -91,13 +94,14 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *       i.e., intensity is really low and transform them into transparent areas. It is obvious that
  *       depending on the nature of the input images it might interfere with the original values.
  *   <li>---ALPHA_THRESHOLD = new DefaultParameterDescriptor( "AlphaThreshold", Double.class, null,
- *       new Double(1));--- Controls the transparency addition by specifying the treshold to use.
+ *       Double.valueOf(1));--- Controls the transparency addition by specifying the treshold to
+ *       use.
  *   <li>INPUT_IMAGE_THRESHOLD = new DefaultParameterDescriptor( "InputImageROI", Boolean.class,
  *       null, Boolean.FALSE)--- INPUT_IMAGE_THRESHOLD_VALUE = new DefaultParameterDescriptor(
- *       "InputImageROIThreshold", Integer.class, null, new Integer(1));--- These two can be used to
- *       control the application of ROIs on the input images based on tresholding values. Basically
- *       using the threshold you can ask the mosaic plugin to load or not certain pixels of the
- *       original images.
+ *       "InputImageROIThreshold", Integer.class, null, Integer.valueOf(1));--- These two can be
+ *       used to control the application of ROIs on the input images based on tresholding values.
+ *       Basically using the threshold you can ask the mosaic plugin to load or not certain pixels
+ *       of the original images.
  *
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for
@@ -288,7 +292,8 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                                     FOOTPRINT_BEHAVIOR,
                                     OVERVIEW_POLICY,
                                     BANDS,
-                                    EXCESS_GRANULE_REMOVAL
+                                    EXCESS_GRANULE_REMOVAL,
+                                    RESCALE_PIXELS
                                 }));
 
         // reading parameters
@@ -409,18 +414,16 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                     // load spi anche check it
                     // read the properties file
                     final Properties properties = new Properties();
-                    final FileInputStream stream = new FileInputStream(sourceF);
-                    try {
+                    try (FileInputStream stream = new FileInputStream(sourceF)) {
                         properties.load(stream);
-                    } finally {
-                        IOUtils.closeQuietly(stream);
                     }
 
                     // SPI
                     final String SPIClass = properties.getProperty("SPI");
                     // create a datastore as instructed
                     final DataStoreFactorySpi spi =
-                            (DataStoreFactorySpi) Class.forName(SPIClass).newInstance();
+                            (DataStoreFactorySpi)
+                                    Class.forName(SPIClass).getDeclaredConstructor().newInstance();
 
                     // get the params
                     final Map<String, Serializable> params = new HashMap<String, Serializable>();
@@ -449,7 +452,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                     if (tileIndexStore == null) return false;
 
                 } else {
-                    URL testPropertiesUrl = DataUtilities.changeUrlExt(sourceURL, "properties");
+                    URL testPropertiesUrl = URLs.changeUrlExt(sourceURL, "properties");
                     File testFile = URLs.urlToFile(testPropertiesUrl);
                     if (!testFile.exists()) {
                         return false;
@@ -464,7 +467,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                 // Now look for the properties file and try to parse relevant fields
                 //
                 URL propsUrl = null;
-                if (shapefile) propsUrl = DataUtilities.changeUrlExt(sourceURL, "properties");
+                if (shapefile) propsUrl = URLs.changeUrlExt(sourceURL, "properties");
                 else {
                     //
                     // do we have a datastore properties file? It will preempt on the shapefile
@@ -475,29 +478,32 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                     final File[] properties =
                             parent.listFiles(
                                     (FilenameFilter)
-                                            FileFilterUtils.and(
-                                                    FileFilterUtils.notFileFilter(
-                                                            FileFilterUtils.nameFileFilter(
-                                                                    "indexer.properties")),
-                                                    FileFilterUtils.and(
-                                                            FileFilterUtils.notFileFilter(
-                                                                    FileFilterUtils.nameFileFilter(
+                                            and(
+                                                    notFileFilter(
+                                                            nameFileFilter("indexer.properties")),
+                                                    and(
+                                                            notFileFilter(
+                                                                    nameFileFilter(
                                                                             "datastore.properties")),
-                                                            FileFilterUtils.makeFileOnly(
-                                                                    FileFilterUtils
-                                                                            .suffixFileFilter(
-                                                                                    ".properties")))));
+                                                            makeFileOnly(
+                                                                    suffixFileFilter(
+                                                                            ".properties")))));
 
                     // do we have a valid datastore + mosaic properties pair?
-                    for (File propFile : properties)
-                        if (Utils.checkFileReadable(propFile)
-                                && Utils.loadMosaicProperties(URLs.fileToUrl(propFile)) != null) {
-                            propsUrl = URLs.fileToUrl(propFile);
-                            break;
+                    if (properties != null) {
+                        for (File propFile : properties) {
+                            if (Utils.checkFileReadable(propFile)
+                                    && Utils.loadMosaicProperties(URLs.fileToUrl(propFile))
+                                            != null) {
+                                propsUrl = URLs.fileToUrl(propFile);
+                                break;
+                            }
                         }
+                    }
                 }
 
                 // get the properties file
+                if (propsUrl == null) return false;
                 final MosaicConfigurationBean configuration = Utils.loadMosaicProperties(propsUrl);
                 if (configuration == null) return false;
 
@@ -524,7 +530,9 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                 }
 
                 final SimpleFeatureType schema = featureSource.getSchema();
-                if (schema == null) return false;
+                if (schema == null) {
+                    return false;
+                }
 
                 crs =
                         featureSource
@@ -534,9 +542,13 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                 if (crs == null) return false;
                 // looking for the location attribute
                 final String locationAttributeName = catalogBean.getLocationAttribute();
-                if (schema.getDescriptor(locationAttributeName) == null
-                        && schema.getDescriptor(locationAttributeName.toUpperCase()) == null)
+                if (locationAttributeName != null
+                        && schema != null
+                        && (schema.getDescriptor(locationAttributeName) == null
+                                && schema.getDescriptor(locationAttributeName.toUpperCase())
+                                        == null)) {
                     return false;
+                }
 
                 return true;
 

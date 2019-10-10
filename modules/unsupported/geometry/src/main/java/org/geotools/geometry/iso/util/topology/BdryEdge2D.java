@@ -160,27 +160,4 @@ public class BdryEdge2D extends BRepEdge2D {
         result.add(newEdge);
         return result;
     }
-
-    public void merge(BdryEdge2D other) {
-        BRepNode2D n, n0, n1;
-        if (this.p1 == other.p1) {
-            n = this.p1;
-            n0 = this.p2;
-            n1 = other.p2;
-        } else if (this.p1 == other.p2) {
-            n = this.p1;
-            n0 = this.p2;
-            n1 = other.p1;
-        } else if (this.p2 == other.p1) {
-            n = this.p2;
-            n0 = this.p1;
-            n1 = other.p2;
-        } else if (this.p2 == other.p2) {
-            n = this.p2;
-            n0 = this.p1;
-            n1 = other.p1;
-        } else return;
-
-        if (n.edges.size() != 2) return;
-    }
 }

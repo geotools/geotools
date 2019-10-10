@@ -79,10 +79,10 @@ public class FilterVisitorTest extends TestCase {
 
     public void testNullFilterVisitor() {
         Filter filter = ff.isNull(ff.property("name"));
-        assertEquals(new Integer(1), filter.accept(NullFilterVisitor.NULL_VISITOR, 1));
+        assertEquals(Integer.valueOf(1), filter.accept(NullFilterVisitor.NULL_VISITOR, 1));
 
         filter = Filter.INCLUDE;
-        assertEquals(new Integer(1), filter.accept(NullFilterVisitor.NULL_VISITOR, 1));
+        assertEquals(Integer.valueOf(1), filter.accept(NullFilterVisitor.NULL_VISITOR, 1));
 
         FilterVisitor allFids =
                 new NullFilterVisitor() {

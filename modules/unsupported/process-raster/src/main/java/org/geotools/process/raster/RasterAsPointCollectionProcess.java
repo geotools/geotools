@@ -293,7 +293,8 @@ public class RasterAsPointCollectionProcess implements RasterProcess {
          *
          * @param coverageCRS the {@link GridCoverage2D} {@link CoordinateReferenceSystem}
          */
-        private void gridConvergenceAngle(final CoordinateReferenceSystem coverageCRS) {
+        private void gridConvergenceAngle(final CoordinateReferenceSystem coverageCRS)
+                throws IOException {
             // GridCoverage Angle management is required only if the input Coverage has been
             // reprojected
             if (targetCRS != null) {
@@ -317,7 +318,7 @@ public class RasterAsPointCollectionProcess implements RasterProcess {
                         }
 
                     } catch (Exception e) {
-                        new IOException(e);
+                        throw new IOException(e);
                     }
                 }
             }

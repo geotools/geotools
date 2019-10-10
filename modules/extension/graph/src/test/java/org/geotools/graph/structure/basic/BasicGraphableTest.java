@@ -57,7 +57,7 @@ public class BasicGraphableTest extends TestCase {
      * equal to created object.
      */
     public void test_setObject() {
-        Object obj = new Integer(1);
+        Object obj = Integer.valueOf(1);
 
         assertTrue(m_graphable.getObject() == null);
         m_graphable.setObject(obj);

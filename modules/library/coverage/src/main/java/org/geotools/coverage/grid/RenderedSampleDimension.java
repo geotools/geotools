@@ -250,7 +250,6 @@ final class RenderedSampleDimension extends GridSampleDimension {
          * would not fit in the target data type.
          */
         final SampleDimensionType sourceType = TypeMap.getSampleDimensionType(model, 0);
-        final boolean sourceIsFloat = TypeMap.isFloatingPoint(sourceType);
         SampleDimensionType targetType = null;
         if (hints != null) {
             targetType = (SampleDimensionType) hints.get(Hints.SAMPLE_DIMENSION_TYPE);
@@ -269,7 +268,6 @@ final class RenderedSampleDimension extends GridSampleDimension {
          * it could have NaN later if the image uses a writable raster.
          */
         final InternationalString n = SimpleInternationalString.wrap(name);
-        NumberRange sourceRange = TypeMap.getRange(sourceType);
         for (int b = 0; b < numBands; b++) {
             final Color[] c = colors != null ? colors[b] : null;
             categories[0] = new Category(n, c, targetRange, true);

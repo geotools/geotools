@@ -35,6 +35,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -833,23 +834,6 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
     }
 
     @Override
-    public int getNumOverviews() {
-        return getNumOverviews(UNSPECIFIED);
-    }
-
-    @Override
-    public int getNumOverviews(String coverageName) {
-        coverageName = checkUnspecifiedCoverage(coverageName);
-        try {
-            final CoverageSource source = getGridCoverageSource(coverageName);
-            // Make sure that coverageName exists
-            return 0;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
     public double[][] getResolutionLevels() throws IOException {
         return getResolutionLevels(UNSPECIFIED);
     }
@@ -1002,7 +986,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
         } else {
             return false;
         }
-        if (defaultName == coverageName) {
+        if (Objects.equals(defaultName, coverageName)) {
             Iterator<Name> iterator = names.iterator();
             if (iterator.hasNext()) {
                 defaultName = iterator.next().toString();
@@ -1028,12 +1012,6 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
                 file.delete();
             }
         }
-    }
-
-    @Override
-    public boolean removeCoverage(String coverageName)
-            throws IOException, UnsupportedOperationException {
-        return removeCoverage(coverageName, false);
     }
 
     @Override

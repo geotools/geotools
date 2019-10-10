@@ -22,11 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.locationtech.jts.geom.Envelope;
 
-/**
- * DOCUMENT ME!
- *
- * @author Tommaso Nolli
- */
+/** @author Tommaso Nolli */
 public class Node {
     protected int numShapesId;
     private boolean visited = false;
@@ -41,48 +37,27 @@ public class Node {
         this.shapesId = null;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return Returns the bounds.
-     */
+    /** @return Returns the bounds. */
     public Envelope getBounds() {
         return this.bounds;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param bounds The bounds to set.
-     */
+    /** @param bounds The bounds to set. */
     public void setBounds(Envelope bounds) {
         this.bounds = bounds;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return Returns the numSubNodes.
-     */
+    /** @return Returns the numSubNodes. */
     public int getNumSubNodes() {
         return this.subNodes.size();
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return Returns the number of records stored.
-     */
+    /** @return Returns the number of records stored. */
     public int getNumShapeIds() {
         return this.numShapesId;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param node
-     * @throws NullPointerException DOCUMENT ME!
-     */
+    /** @param node */
     public void addSubNode(Node node) {
         if (node == null) {
             throw new NullPointerException("Cannot add null to subnodes");
@@ -111,7 +86,6 @@ public class Node {
      *
      * @param pos The position
      * @return A Node
-     * @throws StoreException DOCUMENT ME!
      */
     public Node getSubNode(int pos) throws StoreException {
         return (Node) this.subNodes.get(pos);
@@ -143,7 +117,6 @@ public class Node {
      *
      * @param pos The position
      * @return The shape id (or recno) at the requested position
-     * @throws ArrayIndexOutOfBoundsException DOCUMENT ME!
      */
     public int getShapeId(int pos) {
         if (pos >= this.numShapesId) {
@@ -181,11 +154,7 @@ public class Node {
         this.shapesId = other.shapesId;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return Returns the shapesId.
-     */
+    /** @return Returns the shapesId. */
     public int[] getShapesId() {
         return this.shapesId;
     }

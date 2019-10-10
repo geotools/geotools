@@ -27,6 +27,7 @@ package org.geotools.gml3;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.PrecisionModel;
 
@@ -150,7 +151,7 @@ public class Circle {
         // testsuite-suite to be certain we have three distinct points passed
         double smallNumber = 0.01;
         if ((Math.abs(a13) < smallNumber && Math.abs(b13) < smallNumber)
-                || (Math.abs(a13) < smallNumber && Math.abs(b13) < smallNumber)) {
+                || (Math.abs(a23) < smallNumber && Math.abs(b23) < smallNumber)) {
             // // points too close so set to default circle
             x = 0;
             y = 0;
@@ -331,6 +332,11 @@ public class Circle {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(center, radius, precisionModel);
     }
 
     public String toString() {

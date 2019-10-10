@@ -19,9 +19,7 @@ package org.geotools.geometry.xml;
 import java.io.File;
 import java.io.InputStream;
 import java.text.ParseException;
-import java.util.Enumeration;
 import java.util.Properties;
-import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 import junit.framework.TestResult;
 import org.geotools.geometry.GeometryBuilder;
@@ -220,14 +218,7 @@ public class GeometryConformanceTestCases extends TestCase {
         TestResult tempResult = new TestResult();
         container.runAllTestCases(tempResult);
 
-        // TODO: grab the error and print
         assertTrue("failures: " + tempResult.failureCount(), tempResult.wasSuccessful());
-        Enumeration enums = tempResult.failures();
-        while (enums.hasMoreElements()) {
-            // System.out.println("what");
-            AssertionFailedError failure = (AssertionFailedError) enums.nextElement();
-            assertTrue("--" + failure.toString(), tempResult.wasSuccessful());
-        }
     }
 
     private static Properties findExclusions(File xmlFile) {

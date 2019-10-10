@@ -63,7 +63,7 @@ public class OGCSchema implements Schema {
         return "null";
     }
 
-    private static Schema[] imports = null;
+    private static volatile Schema[] imports = null;
 
     public Schema[] getImports() {
         if (imports == null) {
@@ -109,7 +109,7 @@ public class OGCSchema implements Schema {
         return null;
     }
     /** TODO comment here */
-    private static ComplexType[] complexTypes = null;
+    private static volatile ComplexType[] complexTypes = null;
 
     public ComplexType[] getComplexTypes() {
         if (complexTypes == null) {
@@ -118,7 +118,7 @@ public class OGCSchema implements Schema {
         return complexTypes;
     }
     /** TODO comment here */
-    private static Element[] elements = null;
+    private static volatile Element[] elements = null;
 
     public static final int GET_CAPABILITIES = 0;
     public static final int GET_MAP = 1;
@@ -126,23 +126,29 @@ public class OGCSchema implements Schema {
 
     public Element[] getElements() {
         if (elements == null) {
-            elements = new Element[3];
-            elements[GET_CAPABILITIES] =
-                    new ogcElement(
-                            "GetCapabilities",
-                            ogcComplexTypes._GetCapabilities.getInstance(),
-                            null,
-                            1,
-                            1);
-            elements[GET_MAP] =
-                    new ogcElement("GetMap", ogcComplexTypes._GetMap.getInstance(), null, 1, 1);
-            elements[GET_FEATURE_INFO] =
-                    new ogcElement(
-                            "ogc:GetFeatureInfo",
-                            ogcComplexTypes._GetFeatureInfo.getInstance(),
-                            null,
-                            1,
-                            1);
+            synchronized (OGCSchema.class) {
+                if (elements == null) {
+                    Element[] array = new Element[3];
+                    array[GET_CAPABILITIES] =
+                            new ogcElement(
+                                    "GetCapabilities",
+                                    ogcComplexTypes._GetCapabilities.getInstance(),
+                                    null,
+                                    1,
+                                    1);
+                    array[GET_MAP] =
+                            new ogcElement(
+                                    "GetMap", ogcComplexTypes._GetMap.getInstance(), null, 1, 1);
+                    array[GET_FEATURE_INFO] =
+                            new ogcElement(
+                                    "ogc:GetFeatureInfo",
+                                    ogcComplexTypes._GetFeatureInfo.getInstance(),
+                                    null,
+                                    1,
+                                    1);
+                    elements = array;
+                }
+            }
         }
         return elements;
     }
@@ -151,7 +157,7 @@ public class OGCSchema implements Schema {
         return null;
     }
     /** TODO comment here */
-    private static SimpleType[] simpleTypes = null;
+    private static volatile SimpleType[] simpleTypes = null;
 
     public SimpleType[] getSimpleTypes() {
         if (simpleTypes == null) {

@@ -50,7 +50,7 @@ public class XMLHandlerHints implements Map<String, Object> {
     public static final String SAX_PARSER_FACTORY = "javax.xml.parsers.SAXParserFactory";
 
     /** The value so that the parser will encode all Geotools filters with no modifications. */
-    public static final Integer VALUE_FILTER_COMPLIANCE_LOW = new Integer(0);
+    public static final Integer VALUE_FILTER_COMPLIANCE_LOW = Integer.valueOf(0);
     /**
      * The value so the parser will be slightly more compliant to the Filter 1.0.0 spec. It will
      * encode:
@@ -90,7 +90,7 @@ public class XMLHandlerHints implements Map<String, Object> {
      *
      * <p>this will return all features and so the filtering must be done on the client.
      */
-    public static final Integer VALUE_FILTER_COMPLIANCE_MEDIUM = new Integer(1);
+    public static final Integer VALUE_FILTER_COMPLIANCE_MEDIUM = Integer.valueOf(1);
 
     /**
      * The value so the parser will be compliant with the Filter 1.0.0 spec.
@@ -119,7 +119,7 @@ public class XMLHandlerHints implements Map<String, Object> {
      * <p>not(fidFilter). this will return all features and so the filtering must be done on the
      * client.
      */
-    public static final Integer VALUE_FILTER_COMPLIANCE_HIGH = new Integer(2);
+    public static final Integer VALUE_FILTER_COMPLIANCE_HIGH = Integer.valueOf(2);
 
     private Map<String, Object> map = new HashMap<String, Object>();
 
@@ -189,8 +189,8 @@ public class XMLHandlerHints implements Map<String, Object> {
      *     Hints#ENTITY_RESOLVER}.
      */
     public static EntityResolver toEntityResolver(Map<String, Object> hints) {
-        if (hints != null && hints.containsKey(Hints.ENTITY_RESOLVER)) {
-            Object resolver = hints.get(Hints.ENTITY_RESOLVER);
+        if (hints != null && hints.containsKey(GeoTools.ENTITY_RESOLVER)) {
+            Object resolver = hints.get(GeoTools.ENTITY_RESOLVER);
             if (resolver == null) { // use null instance rather than check each time
                 return NullEntityResolver.INSTANCE;
             } else if (resolver instanceof EntityResolver) {

@@ -87,6 +87,7 @@ public class FixtureUtilities {
      * @param fixtureId the fixture id
      * @param fixtureFile the missing fixture configuration file
      */
+    @SuppressWarnings("PMD.SystemPrintln")
     public static void printSkipNotice(String fixtureId, File fixtureFile) {
         try {
             System.out.println(

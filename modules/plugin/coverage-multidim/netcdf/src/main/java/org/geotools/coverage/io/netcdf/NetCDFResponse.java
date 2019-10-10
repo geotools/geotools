@@ -93,8 +93,6 @@ class NetCDFResponse extends CoverageResponse {
 
     private static final double EPS = 1E-6;
 
-    private static final double[] DEFAULT_BACKGROUND_VALUES = new double[] {0d};
-
     /** Logger. */
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(NetCDFResponse.class);
@@ -132,9 +130,6 @@ class NetCDFResponse extends CoverageResponse {
      * used for instantiating an Image Reader for a read operation,
      *
      * @param request a {@link RasterLayerRequest} originating this response.
-     * @param COVERAGE_FACTORY a {@code GridCoverageFactory} to produce a {@code GridCoverage} when
-     *     calling the {@link #createResponse()} method.
-     * @param readerSpi the Image Reader Service provider interface.
      */
     public NetCDFResponse(final NetCDFRequest request) {
         this.request = request;
@@ -152,11 +147,6 @@ class NetCDFResponse extends CoverageResponse {
      * This method creates the GridCoverage2D from the underlying file given a specified envelope,
      * and a requested dimension.
      *
-     * @param iUseJAI specify if the underlying read process should leverage on a JAI ImageRead
-     *     operation or a simple direct call to the {@code read} method of a proper {@code
-     *     ImageReader}.
-     * @param overviewPolicy the overview policy which need to be adopted
-     * @return a {@code GridCoverage}
      * @throws java.io.IOException
      */
     private void processRequest() throws IOException {
@@ -210,11 +200,9 @@ class NetCDFResponse extends CoverageResponse {
 
         // when calculating the sample dimensions we need to take in account the bands parameter
         GridSampleDimension[] sampleDimensions =
-                sampleDimensions =
-                        sampleDims != null
-                                ? sampleDims.toArray(new GridSampleDimension[sampleDims.size()])
-                                : new GridSampleDimension[0];
-        ;
+                sampleDims != null
+                        ? sampleDims.toArray(new GridSampleDimension[sampleDims.size()])
+                        : new GridSampleDimension[0];
         int[] bands = readRequest.getBands();
         if (bands != null) {
             int maxBandIndex = Arrays.stream(bands).max().getAsInt();
@@ -275,10 +263,10 @@ class NetCDFResponse extends CoverageResponse {
 
                 // handle default params
                 if (timeRange == null && timeFilterAttribute != null) {
-                    defaultQuery(query, timeFilterAttribute);
+                    Query(query, timeFilterAttribute);
                 }
                 if (elevation == null && elevationFilterAttribute != null) {
-                    defaultQuery(query, elevationFilterAttribute);
+                    Query(query, elevationFilterAttribute);
                 }
                 defaultParamsManagement(query, domainsSubset, dimensionDescriptors);
 
@@ -456,7 +444,7 @@ class NetCDFResponse extends CoverageResponse {
         }
     }
 
-    private void defaultQuery(Query query, String filterAttribute) {
+    private void Query(Query query, String filterAttribute) {
         Object value = findDefaultValue(query, filterAttribute);
         if (value != null) {
             Filter filter = query.getFilter();
@@ -483,7 +471,7 @@ class NetCDFResponse extends CoverageResponse {
                 }
             }
             if (notPresent) {
-                defaultQuery(query, dim.getStartAttribute());
+                Query(query, dim.getStartAttribute());
             }
         }
     }
@@ -623,9 +611,7 @@ class NetCDFResponse extends CoverageResponse {
      * @param index the index to use for the {@link ImageReader}.
      * @param cropBBox the bbox to use for cropping.
      * @param mosaicWorldToGrid the cropping grid to world transform.
-     * @param request the incoming request to satisfy.
      * @param hints {@link Hints} to be used for creating this raster.
-     * @param noData
      * @return a specified a raster as a portion of the granule describe by this {@link
      *     DefaultGranuleDescriptor}.
      * @throws IOException in case an error occurs.
@@ -913,19 +899,6 @@ class NetCDFResponse extends CoverageResponse {
                         e);
             }
             return null;
-
-        } finally {
-            //            try {
-            //                if (request.getReadType() != ReadType.JAI_IMAGEREAD && inStream !=
-            // null) {
-            //                    inStream.close();
-            //                }
-            //            } finally {
-            //                if (request.getReadType() != ReadType.JAI_IMAGEREAD && reader != null)
-            // {
-            //                    reader.dispose();
-            //                }
-            //            }
         }
     }
 

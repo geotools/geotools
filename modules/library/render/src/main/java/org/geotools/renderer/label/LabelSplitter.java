@@ -345,7 +345,6 @@ class LabelSplitter {
                     result.add(new FontRange(text, start, newPosition, font));
                     start = newPosition;
                     lastSupportedChar = start;
-                    ;
                     // restart the scan, a previous font might be able to
                     // work off the next text segment
                     if (i > 0) {

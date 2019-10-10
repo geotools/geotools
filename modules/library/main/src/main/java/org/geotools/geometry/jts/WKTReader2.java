@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *   (C) 2009 - 2016, Open Source Geospatial Foundation (OSGeo)
- *   (C) 2001, Vivid Solutions
+ *    (C) 2009 - 2016, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001, Vivid Solutions
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -191,7 +191,6 @@ public class WKTReader2 extends WKTReader {
             coordinates.add(getPreciseCoordinate());
             nextToken = getNextCloserOrComma();
         }
-        Coordinate[] array = new Coordinate[coordinates.size()];
         return coordinates;
     }
 
@@ -218,8 +217,6 @@ public class WKTReader2 extends WKTReader {
      * Parses the next number in the stream. Numbers with exponents are handled. <tt>NaN</tt> values
      * are handled correctly, and the case of the "NaN" token is not significant.
      *
-     * @param tokenizer tokenizer over a stream of text in Well-known Text format. The next token
-     *     must be a number.
      * @return the next number in the stream
      * @throws ParseException if the next token is not a valid number
      * @throws IOException if an I/O error occurs

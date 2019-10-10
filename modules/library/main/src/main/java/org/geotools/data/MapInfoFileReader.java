@@ -380,7 +380,6 @@ public class MapInfoFileReader {
      * Constructor for a {@link MapInfoFileReader}.
      *
      * @param tabfile holds the location where to read from.
-     * @param bufferSize to buffer when reading.
      * @throws IOException in case something bad happens.
      */
     public MapInfoFileReader(final File tabfile) throws IOException {
@@ -399,7 +398,6 @@ public class MapInfoFileReader {
      * Constructor for a {@link MapInfoFileReader}.
      *
      * @param tabfile {@link URL} where to read from.
-     * @param bufferSize to buffer when reading.
      * @throws IOException in case something bad happens.
      */
     public MapInfoFileReader(final URL tabfile) throws IOException {

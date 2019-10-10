@@ -352,7 +352,7 @@ public class EMFUtils {
     /**
      * Determines if a particular propety has been set on an eobject.
      *
-     * @param eobjects The eobject.
+     * @param eobject The eobject.
      * @param property The property to check.
      * @return <code>true</code> if the property has been set, otherwise <code>false</code>
      */
@@ -402,24 +402,12 @@ public class EMFUtils {
     }
 
     /**
-     * Clones an eobject.
-     *
-     * @param prototype The object to be cloned from.
-     * @param factory The factory used to create the clone.
-     * @return THe cloned object, with all properties the same to the original.
-     * @deprecated use {@link #clone(EObject, EFactory, boolean)}.
-     */
-    public static EObject clone(EObject prototype, EFactory factory) {
-        return clone(prototype, factory, false);
-    }
-
-    /**
      * Clones an eobject, with the option of performing a deep clone in which referenced eobjects
      * are also cloned.
      *
      * @param prototype The object to be cloned from.
      * @param factory The factory used to create the clone.
-     * @param deepFlag indicating wether to perform a deep clone.
+     * @param deep indicating wether to perform a deep clone.
      * @return THe cloned object, with all properties the same to the original.
      */
     public static EObject clone(EObject prototype, EFactory factory, boolean deep) {

@@ -82,9 +82,6 @@ public class Collection_MinFunction extends FunctionExpressionImpl {
      * featureMember content.
      *
      * <p>To refer to all 'X': <code>featureMember/asterisk/X</code>
-     *
-     * @param args DOCUMENT ME!
-     * @throws IllegalArgumentException DOCUMENT ME!
      */
     public void setParameters(List args) {
         // if we see "featureMembers/*/ATTRIBUTE" change to "ATTRIBUTE"
@@ -99,7 +96,7 @@ public class Collection_MinFunction extends FunctionExpressionImpl {
 
     public Object evaluate(Object feature) {
         if (feature == null) {
-            return new Integer(0); // no features were visited in the making of this answer
+            return Integer.valueOf(0); // no features were visited in the making of this answer
         }
         Expression expr = (Expression) getExpression(0);
         SimpleFeatureCollection featureCollection = (SimpleFeatureCollection) feature;

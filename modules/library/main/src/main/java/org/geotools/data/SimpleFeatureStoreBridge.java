@@ -23,7 +23,6 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.NameImpl;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.identity.FeatureId;
@@ -49,16 +48,6 @@ class SimpleFeatureStoreBridge extends SimpleFeatureSourceBridge implements Simp
 
     public Transaction getTransaction() {
         return delegate().getTransaction();
-    }
-
-    public void modifyFeatures(AttributeDescriptor[] type, Object[] value, Filter filter)
-            throws IOException {
-        delegate().modifyFeatures(type, value, filter);
-    }
-
-    public void modifyFeatures(AttributeDescriptor type, Object value, Filter filter)
-            throws IOException {
-        delegate().modifyFeatures(type, value, filter);
     }
 
     public void modifyFeatures(Name[] names, Object[] values, Filter filter) throws IOException {

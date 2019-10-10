@@ -1,7 +1,23 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.arcsde.raster.jai;
 
 import com.sun.media.jai.util.ImageUtil;
-import java.awt.Point;
+import java.awt.*;
 import java.awt.image.ColorModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferByte;
@@ -14,7 +30,7 @@ import java.awt.image.Raster;
 import java.awt.image.SampleModel;
 import java.io.IOException;
 import java.math.BigInteger;
-import java.util.Observable;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.media.jai.JAI;
@@ -49,6 +65,7 @@ public class ArcSDEPlanarImage extends PlanarImage {
      */
     private final TileCache tileCache;
 
+    @SuppressWarnings("deprecation")
     public ArcSDEPlanarImage(
             TileReader tileReader,
             int minX,
@@ -119,8 +136,8 @@ public class ArcSDEPlanarImage extends PlanarImage {
         final JAI jai = JAI.getDefaultInstance();
         TileFactory tileFactory = (TileFactory) jai.getRenderingHint(JAI.KEY_TILE_FACTORY);
         if (tileFactory == null) {
-            if (tileCache instanceof Observable) {
-                super.tileFactory = new RecyclingTileFactory((Observable) tileCache);
+            if (tileCache instanceof java.util.Observable) {
+                super.tileFactory = new RecyclingTileFactory((java.util.Observable) tileCache);
             } else {
                 // not a SunTileCache?
                 super.tileFactory = new javax.media.jai.RecyclingTileFactory();
@@ -143,6 +160,18 @@ public class ArcSDEPlanarImage extends PlanarImage {
     @Override
     public int hashCode() {
         return hashCode;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ArcSDEPlanarImage that = (ArcSDEPlanarImage) o;
+        return hashCode == that.hashCode
+                && Objects.equals(tileReader, that.tileReader)
+                && Objects.equals(tileSampleModel, that.tileSampleModel)
+                && Objects.equals(UID, that.UID)
+                && Objects.equals(tileCache, that.tileCache);
     }
 
     @Override

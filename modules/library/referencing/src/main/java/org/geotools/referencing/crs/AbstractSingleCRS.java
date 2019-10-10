@@ -131,7 +131,7 @@ public class AbstractSingleCRS extends AbstractCRS implements SingleCRS {
     /**
      * Compare this coordinate reference system with the specified object for equality. If {@code
      * compareMetadata} is {@code true}, then all available properties are compared including
-     * {@linkplain #getValidArea valid area} and {@linkplain #getScope scope}.
+     * {@linkplain #getDomainOfValidity()} valid area} and {@linkplain #getScope scope}.
      *
      * @param object The object to compare to {@code this}.
      * @param compareMetadata {@code true} for performing a strict comparaison, or {@code false} for
@@ -158,6 +158,7 @@ public class AbstractSingleCRS extends AbstractCRS implements SingleCRS {
      *     versions of this class.
      */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return super.hashCode() ^ datum.hashCode();
     }

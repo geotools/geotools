@@ -1,12 +1,27 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ *
+ */
+
 package org.geotools.wcs.bindings;
 
 import javax.xml.namespace.QName;
 import org.geotools.gml3.GML;
-import org.geotools.metadata.iso.citation.Citations;
-import org.geotools.referencing.NamedIdentifier;
 import org.geotools.temporal.object.DefaultInstant;
 import org.geotools.temporal.object.DefaultPeriod;
-import org.geotools.temporal.reference.DefaultTemporalReferenceSystem;
 import org.geotools.wcs.WCS;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
@@ -14,7 +29,6 @@ import org.geotools.xsd.Node;
 import org.opengis.temporal.Instant;
 import org.opengis.temporal.Period;
 import org.opengis.temporal.Position;
-import org.opengis.temporal.TemporalReferenceSystem;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -68,10 +82,6 @@ public class TimePeriodTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-
-        String frameName = (String) node.getAttributeValue("frame", "#ISO-8601");
-        NamedIdentifier frameID = new NamedIdentifier(Citations.CRS, frameName);
-        TemporalReferenceSystem frame = new DefaultTemporalReferenceSystem(frameID, null);
 
         Instant begining = new DefaultInstant((Position) node.getChild("beginPosition").getValue());
         Instant ending = new DefaultInstant((Position) node.getChild("endPosition").getValue());

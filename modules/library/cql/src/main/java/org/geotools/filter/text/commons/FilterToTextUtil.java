@@ -37,6 +37,7 @@ import org.opengis.filter.spatial.DWithin;
 import org.opengis.filter.spatial.DistanceBufferOperator;
 import org.opengis.filter.temporal.BinaryTemporalOperator;
 import org.opengis.filter.temporal.During;
+import org.opengis.geometry.BoundingBox;
 
 /**
  * The method of this utility class allows to build the CQL/ECQL predicate associated to a {@link
@@ -190,17 +191,17 @@ public final class FilterToTextUtil {
     public static Object buildBBOX(BBOX filter, Object extraData) {
 
         StringBuilder output = asStringBuilder(extraData);
-
+        BoundingBox bounds = filter.getBounds();
         output.append("BBOX(");
-        output.append(filter.getPropertyName());
+        output.append(((PropertyName) filter.getExpression1()).getPropertyName());
         output.append(", ");
-        output.append(filter.getMinX());
+        output.append(bounds.getMinX());
         output.append(",");
-        output.append(filter.getMinY());
+        output.append(bounds.getMinY());
         output.append(",");
-        output.append(filter.getMaxX());
+        output.append(bounds.getMaxX());
         output.append(",");
-        output.append(filter.getMaxY());
+        output.append(bounds.getMaxY());
         output.append(")");
 
         return output;

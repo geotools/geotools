@@ -38,8 +38,9 @@ class ColorMapEntryResolver extends DuplicatingStyleVisitor {
         Expression simplified = null;
         if (expression instanceof Literal) {
             String value = expression.evaluate(null, String.class);
-            if (value != null && value.startsWith("${")) ;
-            expression = ExpressionExtractor.extractCqlExpressions(value);
+            if (value != null && value.startsWith("${")) {
+                expression = ExpressionExtractor.extractCqlExpressions(value);
+            }
         }
         simplified = (Expression) expression.accept(simplifier, ff);
         return simplified;

@@ -35,11 +35,12 @@ public class GMLGeometryTest extends TestCase {
 
         Configuration configuration = new GMLConfiguration();
 
-        parser = new Parser(configuration, getClass().getResourceAsStream("geometry.xml"));
+        parser = new Parser(configuration);
     }
 
     public void test() throws Exception {
-        GeometryCollection gc = (GeometryCollection) parser.parse();
+        GeometryCollection gc =
+                (GeometryCollection) parser.parse(getClass().getResourceAsStream("geometry.xml"));
 
         assertEquals(gc.getNumGeometries(), 3);
 

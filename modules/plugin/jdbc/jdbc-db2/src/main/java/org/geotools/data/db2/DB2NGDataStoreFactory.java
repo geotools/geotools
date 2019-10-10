@@ -152,6 +152,7 @@ public class DB2NGDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
+    @SuppressWarnings("PMD.CheckResultSet")
     protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map params)
             throws IOException {
         Connection con = null;
@@ -173,44 +174,43 @@ public class DB2NGDataStoreFactory extends JDBCDataStoreFactory {
             di.setProductName(md.getDatabaseProductName());
             di.setProductVersion(md.getDatabaseProductVersion());
 
-            PreparedStatement ps = con.prepareStatement(SelectGeometryColumns);
-            ResultSet rs = ps.executeQuery();
-            ResultSetMetaData rsmd = ps.getMetaData();
-            for (int i = 0; i < rsmd.getColumnCount(); i++) {
-                if ("MIN_X".equals(rsmd.getColumnName(i + 1))) {
-                    di.setSupportingPrecalculatedExtents(true);
-                    break;
+            try (PreparedStatement ps = con.prepareStatement(SelectGeometryColumns);
+                    ResultSet rs = ps.executeQuery()) {
+                ResultSetMetaData rsmd = ps.getMetaData();
+                for (int i = 0; i < rsmd.getColumnCount(); i++) {
+                    if ("MIN_X".equals(rsmd.getColumnName(i + 1))) {
+                        di.setSupportingPrecalculatedExtents(true);
+                        break;
+                    }
                 }
             }
-            rs.close();
-            ps.close();
 
             if (dataStore.getDatabaseSchema() == null) {
-                ps = con.prepareStatement(GetCurrentSchema);
-                rs = ps.executeQuery();
-                rs.next();
-                dataStore.setDatabaseSchema(rs.getString(1));
-                rs.close();
-                ps.close();
+                try (PreparedStatement ps = con.prepareStatement(GetCurrentSchema);
+                        ResultSet rs = ps.executeQuery()) {
+                    rs.next();
+                    dataStore.setDatabaseSchema(rs.getString(1));
+                }
             }
-            ps = con.prepareStatement(GetWKBZTypes);
-            rs = ps.executeQuery();
-            rs.next();
-            byte[] bytes = rs.getBytes(1);
-            ByteOrderDataInStream dis = new ByteOrderDataInStream();
-            dis.setInStream(new ByteArrayInStream(bytes));
-            byte byteOrder = dis.readByte();
-            // default is big endian
-            if (byteOrder == WKBConstants.wkbNDR) dis.setOrder(ByteOrderValues.LITTLE_ENDIAN);
+            try (PreparedStatement ps = con.prepareStatement(GetWKBZTypes);
+                    ResultSet rs = ps.executeQuery()) {
+                rs.next();
+                byte[] bytes = rs.getBytes(1);
+                ByteOrderDataInStream dis = new ByteOrderDataInStream();
+                dis.setInStream(new ByteArrayInStream(bytes));
+                byte byteOrder = dis.readByte();
+                // default is big endian
+                if (byteOrder == WKBConstants.wkbNDR) dis.setOrder(ByteOrderValues.LITTLE_ENDIAN);
 
-            int geometryType = dis.readInt();
-            if (geometryType == 1001) di.setHasOGCWkbZTyps(true);
-            rs.close();
-            ps.close();
+                int geometryType = dis.readInt();
+                if (geometryType == 1001) di.setHasOGCWkbZTyps(true);
+            }
         } catch (SQLException e) {
             throw new IOException(e.getMessage());
+        } finally {
+            dataStore.closeSafe(con);
         }
-        dataStore.closeSafe(con);
+
         return dataStore;
     }
 }

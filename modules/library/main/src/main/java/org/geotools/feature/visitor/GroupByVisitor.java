@@ -39,7 +39,6 @@ public class GroupByVisitor implements FeatureCalc, FeatureAttributeVisitor {
     private final Expression expression;
     private final FeatureCalc visitorProtoType;
     private final List<Expression> groupByAttributes;
-    private final ProgressListener progressListener;
 
     private final InMemoryGroupBy inMemoryGroupBy = new InMemoryGroupBy();
 
@@ -53,7 +52,6 @@ public class GroupByVisitor implements FeatureCalc, FeatureAttributeVisitor {
         this.aggregate = aggregateVisitor;
         this.expression = expression;
         this.groupByAttributes = groupByAttributes;
-        this.progressListener = progressListener;
         visitorProtoType = aggregateVisitor.create(expression);
     }
 
@@ -280,7 +278,8 @@ public class GroupByVisitor implements FeatureCalc, FeatureAttributeVisitor {
 
         @Override
         public String toString() {
-            return null;
+            // the calculation result as a string (or "" if not applicable)
+            return results != null ? results.toString() : " ";
         }
 
         @Override

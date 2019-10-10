@@ -121,15 +121,13 @@ public interface GraphTraversal {
      */
     public GraphWalker getWalker();
 
-    /** Initializes the traversal. */
+    /** Initialises the traversal. */
     public void init();
 
     /** Starts or resumes a traversal over the components of a graph. */
     public void traverse();
 
-    // TODO:DOCUMENT ME!
     public boolean isVisited(Graphable g);
 
-    // TODO:DOCUMENT ME!
     public void setVisited(Graphable g, boolean visited);
 }

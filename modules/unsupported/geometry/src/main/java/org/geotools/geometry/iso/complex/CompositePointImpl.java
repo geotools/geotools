@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Set;
 import org.geotools.geometry.iso.io.GeometryToString;
 import org.geotools.geometry.iso.primitive.PointImpl;
+import org.geotools.util.SuppressFBWarnings;
 import org.opengis.geometry.Boundary;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Envelope;
@@ -61,6 +62,7 @@ public class CompositePointImpl extends CompositeImpl<PointImpl> implements Comp
     /* (non-Javadoc)
      * @see org.geotools.geometry.featgeom.root.GeometryImpl#clone()
      */
+    @SuppressFBWarnings("NP_CLONE_COULD_RETURN_NULL")
     public CompositePointImpl clone() throws CloneNotSupportedException {
         // TODO Auto-generated method stub
         return null;
@@ -134,7 +136,7 @@ public class CompositePointImpl extends CompositeImpl<PointImpl> implements Comp
      */
     public DirectPosition getRepresentativePoint() {
         // Return the point which defines this CompositePoint
-        return ((PointImpl) this.elements.get(0)).getPosition();
+        return ((PointImpl) this.elements.get(0)).getDirectPosition();
     }
 
     /* (non-Javadoc)

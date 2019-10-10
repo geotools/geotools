@@ -20,11 +20,7 @@ import java.util.logging.Logger;
 import org.bridj.BridJ;
 import org.geotools.util.logging.Logging;
 
-/**
- * Helper class allowing to locate the GDAL library and attach to it
- *
-
- */
+/** Helper class allowing to locate the GDAL library and attach to it */
 class GdalInit {
 
     static final Logger LOGGER = Logging.getLogger(GdalInit.class);

@@ -143,7 +143,6 @@ public class IndexedFidReader implements FIDReader, FileReader {
      * @return Returns the record number of the record in the SHX file that the fid identifies. Will
      *     return -1 if the fid was not found.
      * @throws IOException
-     * @throws IllegalArgumentException DOCUMENT ME!
      */
     public long findFid(String fid) throws IOException {
         try {
@@ -293,7 +292,6 @@ public class IndexedFidReader implements FIDReader, FileReader {
      *
      * @return Returns the record number of the feature in the shx or shp that is identified by the
      *     the last fid returned by next().
-     * @throws NoSuchElementException DOCUMENT ME!
      */
     public int currentSHXIndex() {
         if (currentShxIndex == -1) {

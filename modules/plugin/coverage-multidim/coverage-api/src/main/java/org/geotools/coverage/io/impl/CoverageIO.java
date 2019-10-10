@@ -57,7 +57,7 @@ public class CoverageIO {
             org.geotools.util.logging.Logging.getLogger(CoverageIO.class);
 
     /** The service registry for this manager. Will be initialized only when first needed. */
-    private static FactoryRegistry REGISTRY;
+    private static volatile FactoryRegistry REGISTRY;
 
     /** Private constructor, this class cannot be instantiated nor subclassed. */
     private CoverageIO() {

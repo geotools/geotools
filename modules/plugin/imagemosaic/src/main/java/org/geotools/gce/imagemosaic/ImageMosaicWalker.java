@@ -20,7 +20,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -59,8 +58,6 @@ abstract class ImageMosaicWalker implements Runnable {
     static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(ImageMosaicWalker.class);
 
-    private List<GranuleAcceptor> granuleAcceptors;
-
     private DefaultTransaction transaction;
 
     private static Set<String> logExcludes = new HashSet<String>();
@@ -90,18 +87,13 @@ abstract class ImageMosaicWalker implements Runnable {
 
     protected final ImageMosaicEventHandlers eventHandler;
 
-    /**
-     * @param updateFeatures if true update catalog with loaded granules
-     * @param imageMosaicConfigHandler configuration handler being used
-     * @param granuleAcceptors list of acceptors to deterrmine granule inclusion
-     */
+    /** @param configHandler configuration handler being used */
     public ImageMosaicWalker(
             ImageMosaicConfigHandler configHandler, ImageMosaicEventHandlers eventHandler) {
         Utilities.ensureNonNull("config handler", configHandler);
         Utilities.ensureNonNull("event handler", eventHandler);
         this.configHandler = configHandler;
         this.eventHandler = eventHandler;
-        this.granuleAcceptors = configHandler.getGranuleAcceptors();
     }
 
     public boolean getStop() {

@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Set;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
-import javax.swing.Icon;
+import javax.swing.*;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.factory.GeoTools;
 import org.opengis.feature.type.Name;
@@ -167,10 +167,10 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         featureTypeStyle.setName(name);
 
         if (description != null && description.getTitle() != null) {
-            featureTypeStyle.setTitle(description.getTitle().toString());
+            featureTypeStyle.getDescription().setTitle(description.getTitle());
         }
         if (description != null && description.getAbstract() != null) {
-            featureTypeStyle.setAbstract(description.getAbstract().toString());
+            featureTypeStyle.getDescription().setAbstract(description.getAbstract());
         }
         // featureTypeStyle.setFeatureInstanceIDs( defainedFor );
         featureTypeStyle.featureTypeNames().addAll(featureTypeNames);
@@ -496,14 +496,8 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
             return RasterSymbolizerImpl.cast(symbolizer);
         } else if (symbolizer instanceof org.opengis.style.TextSymbolizer) {
             return TextSymbolizerImpl.cast(symbolizer);
-        } else if (symbolizer instanceof org.opengis.style.ExtensionSymbolizer) {
-            // here is where we can hook up experimental symbolizers
-            ExtensionSymbolizer extensionSymbolizer = (ExtensionSymbolizer) symbolizer;
-            String name = extensionSymbolizer.getExtensionName();
-            // use name to look up implementation
-
-            return null;
         }
+        // the day there is any implementation, handle org.opengis.style.ExtensionSymbolizer
         return null; // must be some new extension?
     }
 

@@ -272,11 +272,6 @@ class DoubleDirectPosition implements DirectPosition, Serializable {
         array[index + dimension] = value;
     }
 
-    @Deprecated
-    public DirectPosition getPosition() {
-        return this;
-    }
-
     public DirectPosition getDirectPosition() {
         return this;
     }
@@ -331,7 +326,6 @@ class DoubleDirectPosition implements DirectPosition, Serializable {
 
     public String toString() {
         double coord[] = this.getCoordinate();
-        int D = crs.getCoordinateSystem().getDimension();
         String str = "(" + array[index];
         for (int i = 1; i < coord.length; ++i) {
             str += " " + array[index + i];

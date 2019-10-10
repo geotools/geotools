@@ -25,14 +25,13 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.BiConsumer;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.postgis.filter.FilterFunction_pgNearest;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterCapabilities;
+import org.geotools.filter.LengthFunction;
 import org.geotools.filter.function.DateDifferenceFunction;
 import org.geotools.filter.function.FilterFunction_area;
 import org.geotools.filter.function.FilterFunction_strConcat;
@@ -108,23 +107,6 @@ class FilterToSqlHelper {
 
     protected static final String IO_ERROR = "io problem writing filter";
 
-    /** Conversion factor from common units to meter */
-    private static final Map<String, Double> UNITS_MAP =
-            new HashMap<String, Double>() {
-                {
-                    put("kilometers", 1000.0);
-                    put("kilometer", 1000.0);
-                    put("mm", 0.001);
-                    put("millimeter", 0.001);
-                    put("mi", 1609.344);
-                    put("miles", 1609.344);
-                    put("NM", 1852d);
-                    put("feet", 0.3048);
-                    put("ft", 0.3048);
-                    put("in", 0.0254);
-                }
-            };
-
     private static final Envelope WORLD = new Envelope(-180, 180, -90, 90);
 
     FilterToSQL delegate;
@@ -176,6 +158,7 @@ class FilterToSqlHelper {
             caps.addType(FilterFunction_strEqualsIgnoreCase.class);
             caps.addType(FilterFunction_strIndexOf.class);
             caps.addType(FilterFunction_strLength.class);
+            caps.addType(LengthFunction.class);
             caps.addType(FilterFunction_strToLowerCase.class);
             caps.addType(FilterFunction_strToUpperCase.class);
             caps.addType(FilterFunction_strReplace.class);
@@ -521,7 +504,7 @@ class FilterToSqlHelper {
      * @return
      */
     public String getFunctionName(Function function) {
-        if (function instanceof FilterFunction_strLength) {
+        if (function instanceof FilterFunction_strLength || function instanceof LengthFunction) {
             return "char_length";
         } else if (function instanceof FilterFunction_strToLowerCase) {
             return "lower";

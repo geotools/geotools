@@ -165,7 +165,6 @@ public interface XMatrix extends Matrix {
     /**
      * Set to the matrix addition of <code>this+matrix</code>.
      *
-     * @param scalar The scalar to be added. Not modified.
      * @param matrix The matrix that is to be added. Not modified.
      */
     void add(XMatrix matrix);
@@ -239,14 +238,14 @@ public interface XMatrix extends Matrix {
      * Set to the difference of <code>scalar - matrix2</code>.
      *
      * @param scalar
-     * @param matrix2 matrix, not modified
+     * @param matrix matrix, not modified
      */
     void sub(double scalar, Matrix matrix);
 
     /**
      * In-place matrix subtraction: <code>this - matrix</code>.
      *
-     * @param b m by n matrix. Not modified.
+     * @param matrix m by n matrix. Not modified.
      */
     void sub(Matrix matrix);
 

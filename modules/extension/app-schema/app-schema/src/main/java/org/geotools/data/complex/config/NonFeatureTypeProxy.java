@@ -20,9 +20,10 @@ package org.geotools.data.complex.config;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import org.geotools.data.complex.ComplexFeatureConstants;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.feature.type.ComplexFeatureTypeFactoryImpl;
+import org.geotools.data.complex.feature.type.ComplexTypeProxy;
+import org.geotools.data.complex.util.ComplexFeatureConstants;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.ComplexType;
@@ -110,7 +111,7 @@ public class NonFeatureTypeProxy extends ComplexTypeProxy implements FeatureType
         this.descriptors = schema;
     }
 
-    /** @see org.geotools.data.complex.config.ComplexTypeProxy#getSubject() */
+    /** @see ComplexTypeProxy#getSubject() */
     @Override
     public AttributeType getSubject() {
         return subject;

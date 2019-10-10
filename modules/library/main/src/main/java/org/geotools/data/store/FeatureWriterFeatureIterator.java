@@ -98,4 +98,4 @@ final class FeatureWriterFeatureIterator implements SimpleFeatureIterator {
             writer = null;
         }
     }
-};
+}

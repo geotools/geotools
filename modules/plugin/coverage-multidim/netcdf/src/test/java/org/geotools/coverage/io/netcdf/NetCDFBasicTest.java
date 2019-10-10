@@ -157,7 +157,8 @@ public final class NetCDFBasicTest extends Assert {
         indexDirectory.mkdir();
         File properties = new File(indexDirectory, "test.properties");
         String theStoreName = "testStore";
-        FileUtils.writeStringToFile(properties, NetCDFUtilities.STORE_NAME + "=" + theStoreName);
+        FileUtils.writeStringToFile(
+                properties, NetCDFUtilities.STORE_NAME + "=" + theStoreName, "UTF-8");
 
         DirectoryDataStore dataStore = new DirectoryDataStore(indexDirectory, dialect);
 
@@ -712,6 +713,7 @@ public final class NetCDFBasicTest extends Assert {
         }
     }
 
+    @Test
     public void testReadRegularNetCDF() throws IOException {
         NetCDFImageReaderSpi readerSpi = new NetCDFImageReaderSpi();
         File file = null;

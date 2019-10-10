@@ -117,9 +117,7 @@ public class Triangle2D extends Simplex2D {
 
         Point2D p0_1 = AlgoPoint2D.subtract(p0, pm);
         Point2D p1_1 = AlgoPoint2D.subtract(p1, pm);
-        Point2D p2_1 = AlgoPoint2D.subtract(p2, pm);
         Point2D p0_2 = new Point2D.Double((-0.5 * l), 0);
-        Point2D p1_2 = new Point2D.Double((0.5 * l), 0);
         double angle =
                 Math.acos(
                         ((p0_1.getX() * p0_2.getX())

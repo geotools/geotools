@@ -1,0 +1,115 @@
+{  
+  "typeName": "stations",
+  "userData": {
+    "collection": "stations"
+  },
+  "geometryDescriptor": {
+    "localName": "geometry",
+    "crs": {
+      "type": "name",
+      "properties": {
+        "name": "urn:ogc:def:crs:EPSG:4326"
+      }
+    }
+  },
+  "attributeDescriptors": [
+    {
+      "localName": "geometry",
+      "type": {
+        "binding": "org.locationtech.jts.geom.Geometry"
+      },
+      "userData": {
+        "encoding": "GeoJSON",
+        "mapping": "geometry"
+      }
+    },
+    {
+      "localName": "contact.mail",
+      "minOccurs": 0,
+      "maxOccurs": 1,
+      "type": {
+        "binding": "java.lang.String"
+      },
+      "userData": {
+        "mapping": "contact.mail"
+      }
+    },
+    {
+      "localName": "name",
+      "minOccurs": 0,
+      "maxOccurs": 1,
+      "type": {
+        "binding": "java.lang.String"
+      },
+      "userData": {
+        "mapping": "name"
+      }
+    },
+    {
+      "localName": "measurements.unit",
+      "minOccurs": 0,
+      "maxOccurs": 1,
+      "type": {
+        "binding": "java.lang.String"
+      },
+      "userData": {
+        "mapping": "measurements.unit"
+      }
+    },
+    {
+      "localName": "measurements.values.time",
+      "minOccurs": 0,
+      "maxOccurs": 1,
+      "type": {
+        "binding": "java.lang.Double"
+      },
+      "userData": {
+        "mapping": "measurements.values.time"
+      }
+    },
+    {
+      "localName": "_id",
+      "minOccurs": 0,
+      "maxOccurs": 1,
+      "type": {
+        "binding": "org.bson.types.ObjectId"
+      },
+      "userData": {
+        "mapping": "_id"
+      }
+    },
+    {
+      "localName": "id",
+      "minOccurs": 0,
+      "maxOccurs": 1,
+      "type": {
+        "binding": "java.lang.String"
+      },
+      "userData": {
+        "mapping": "id"
+      }
+    },
+    {
+      "localName": "measurements.name",
+      "minOccurs": 0,
+      "maxOccurs": 1,
+      "type": {
+        "binding": "java.lang.String"
+      },
+      "userData": {
+        "mapping": "measurements.name"
+      }
+    },
+    {
+      "localName": "measurements.values.value",
+      "minOccurs": 0,
+      "maxOccurs": 1,
+      "type": {
+        "binding": "java.lang.Double"
+      },
+      "userData": {
+        "mapping": "measurements.values.value"
+      }
+    }
+  ]
+}

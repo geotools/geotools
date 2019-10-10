@@ -72,7 +72,7 @@ public final class RasterDatasetInfo {
 
     private GridEnvelope originalGridRange;
 
-    private List<GridSampleDimension> gridSampleDimensions;
+    private volatile List<GridSampleDimension> gridSampleDimensions;
 
     private final Map<Integer, ImageTypeSpecifier> renderedImageSpec =
             new HashMap<Integer, ImageTypeSpecifier>();

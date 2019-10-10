@@ -69,7 +69,6 @@ public class GmlFeatureTypeRegistryConfiguration implements FeatureTypeRegistryC
         schemas.add(new SMIL20Schema());
         schemas.add(new SMIL20LANGSchema());
         schemas.add(new GMLSchema());
-        ;
         schemas.add(new org.geotools.gml3.v3_2.GMLSchema());
         schemas.add(new org.geotools.gml3.v3_2.gco.GCOSchema());
         schemas.add(new org.geotools.gml3.v3_2.gmd.GMDSchema());
@@ -268,6 +267,7 @@ public class GmlFeatureTypeRegistryConfiguration implements FeatureTypeRegistryC
                     try {
                         return SUPPORTED_GML_KNOWN_TYPE_TO_CONFIGURATION_MAP
                                 .get(name)
+                                .getDeclaredConstructor()
                                 .newInstance();
                     } catch (Exception e) {
                         throw new RuntimeException(e);

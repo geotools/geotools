@@ -32,7 +32,7 @@ import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.collection.TreeSetFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.FeatureCollections;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.visitor.MaxVisitor.MaxResult;
 import org.geotools.feature.visitor.MedianVisitor.MedianResult;
@@ -73,7 +73,7 @@ public class VisitorCalculationTest extends DataTestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        empty = FeatureCollections.newCollection();
+        empty = new DefaultFeatureCollection();
         fc = DataUtilities.collection(roadFeatures);
         invfc = new TreeSetFeatureCollection(fc).sort(SortBy.REVERSE_ORDER);
         fc2 = DataUtilities.collection(riverFeatures);
@@ -85,7 +85,7 @@ public class VisitorCalculationTest extends DataTestCase {
         SimpleFeature[] boringFeatures = new SimpleFeature[100];
         for (int i = 1; i <= 100; i++) {
             boringFeatures[i - 1] =
-                    SimpleFeatureBuilder.build(boringType, new Object[] {new Integer(i)}, null);
+                    SimpleFeatureBuilder.build(boringType, new Object[] {Integer.valueOf(i)}, null);
         }
 
         ft3 = boringType;
@@ -120,22 +120,22 @@ public class VisitorCalculationTest extends DataTestCase {
         CalcResult minResult3 = minResult1.merge(minResult2);
         assertEquals(1, minResult3.toInt());
         // test for destruction during merge
-        CalcResult minResult4 = new MinResult((Comparable) new Integer(10));
+        CalcResult minResult4 = new MinResult((Comparable) Integer.valueOf(10));
         CalcResult minResult5 = minResult4.merge(minResult1);
         assertEquals(1, minResult5.toInt());
         assertEquals(10, minResult4.toInt());
         // test negative result
-        CalcResult minResult6 = new MinResult((Comparable) new Integer(-5));
+        CalcResult minResult6 = new MinResult((Comparable) Integer.valueOf(-5));
         CalcResult minResult7 = (MinResult) minResult1.merge(minResult6);
         assertEquals(-5, minResult7.toInt());
         assertEquals(-5, minResult6.toInt());
         // test a mock optimization
-        minVisitor.setValue(new Integer(-50));
+        minVisitor.setValue(Integer.valueOf(-50));
         minResult1 = minVisitor.getResult();
         minResult7 = minResult7.merge(minResult1);
         assertEquals(-50, minResult7.toInt());
         // test varying data types
-        minVisitor.setValue(new Double(-100.0));
+        minVisitor.setValue(Double.valueOf(-100.0));
         minResult1 = minVisitor.getResult();
         minResult7 = minResult7.merge(minResult1);
         assertEquals(-100.0, minResult7.toDouble(), 0);
@@ -167,22 +167,22 @@ public class VisitorCalculationTest extends DataTestCase {
         CalcResult maxResult3 = (MaxResult) maxResult1.merge(maxResult2);
         assertEquals((double) 4.5, maxResult3.toDouble(), 0);
         // test for destruction during merge
-        CalcResult maxResult4 = new MaxResult((Comparable) new Double(2));
+        CalcResult maxResult4 = new MaxResult((Comparable) Double.valueOf(2));
         CalcResult maxResult5 = (MaxResult) maxResult4.merge(maxResult1);
         assertEquals(3, maxResult5.toDouble(), 0);
         assertEquals(2, maxResult4.toDouble(), 0);
         // test negative result
-        CalcResult maxResult6 = new MaxResult((Comparable) new Integer(-5));
+        CalcResult maxResult6 = new MaxResult((Comparable) Integer.valueOf(-5));
         CalcResult maxResult7 = (MaxResult) maxResult1.merge(maxResult6);
         assertEquals(3, maxResult7.toDouble(), 0);
         assertEquals(-5, maxResult6.toDouble(), 0);
         // test a mock optimization
-        maxVisitor.setValue(new Double(544));
+        maxVisitor.setValue(Double.valueOf(544));
         maxResult1 = maxVisitor.getResult();
         maxResult7 = maxResult7.merge(maxResult1);
         assertEquals(544, maxResult7.toDouble(), 0);
         // test varying data types
-        maxVisitor.setValue(new Long(6453));
+        maxVisitor.setValue(Long.valueOf(6453));
         maxResult1 = maxVisitor.getResult();
         maxResult7 = maxResult7.merge(maxResult1);
         assertEquals(6453, maxResult7.toDouble(), 0);
@@ -211,15 +211,15 @@ public class VisitorCalculationTest extends DataTestCase {
         assertEquals(2, medianResult3.toDouble(), 0);
         // test for destruction during merge
         List vals = new ArrayList();
-        vals.add(new Double(2.5));
-        vals.add(new Double(3.5));
-        vals.add(new Double(4.5));
+        vals.add(Double.valueOf(2.5));
+        vals.add(Double.valueOf(3.5));
+        vals.add(Double.valueOf(4.5));
         CalcResult medianResult4 = new MedianResult(vals);
         CalcResult medianResult5 = medianResult4.merge(medianResult1);
         assertEquals(2.75, medianResult5.toDouble(), 0);
         assertEquals(3.5, medianResult4.toDouble(), 0);
         // test a mock optimization
-        medianVisitor1.setValue(new Double(544));
+        medianVisitor1.setValue(Double.valueOf(544));
         medianResult1 = medianVisitor1.getResult();
         try {
             medianResult3 = medianResult5.merge(medianResult1);
@@ -253,7 +253,7 @@ public class VisitorCalculationTest extends DataTestCase {
         CalcResult sumResult3 = sumResult1.merge(sumResult2);
         assertEquals((double) 13.5, sumResult3.toDouble(), 0);
         // test a mock optimization
-        sumVisitor2.setValue(new Integer(-42));
+        sumVisitor2.setValue(Integer.valueOf(-42));
         CalcResult sumResult4 = sumVisitor2.getResult();
         CalcResult sumResult5 = sumResult3.merge(sumResult4);
         assertEquals(-28.5, sumResult5.toDouble(), 0);
@@ -348,12 +348,12 @@ public class VisitorCalculationTest extends DataTestCase {
         // test for destruction during merge
         assertEquals((double) 3.75, averageResult2.toDouble(), 0);
         // test mock optimizations
-        averageVisitor2.setValue(5, new Integer(100)); // mergeable optimization
+        averageVisitor2.setValue(5, Integer.valueOf(100)); // mergeable optimization
         averageResult2 = averageVisitor2.getResult();
         assertEquals(20, averageResult2.toInt());
         averageResult3 = averageResult1.merge(averageResult2);
         assertEquals((double) 13.25, averageResult3.toDouble(), 0);
-        averageVisitor2.setValue(new Double(15.4)); // un-mergeable optimization
+        averageVisitor2.setValue(Double.valueOf(15.4)); // un-mergeable optimization
         averageResult2 = averageVisitor2.getResult();
         assertEquals((double) 15.4, averageResult2.toDouble(), 0);
         try {
@@ -363,9 +363,9 @@ public class VisitorCalculationTest extends DataTestCase {
             assertEquals("Optimized average results cannot be merged.", e.getMessage());
         }
         // throw a monkey in the wrench (combine number classes)
-        averageVisitor.setValue(5, new Integer(10));
+        averageVisitor.setValue(5, Integer.valueOf(10));
         averageResult1 = averageVisitor.getResult();
-        averageVisitor2.setValue(5, new Double(33.3));
+        averageVisitor2.setValue(5, Double.valueOf(33.3));
         averageResult2 = averageVisitor2.getResult();
         averageResult3 = averageResult1.merge(averageResult2); // int + double --> double?
         assertEquals((double) 4.33, averageResult3.toDouble(), 0);
@@ -448,8 +448,8 @@ public class VisitorCalculationTest extends DataTestCase {
         assertEquals(3, uniqueResult1.toSet().size());
         // test a merge with duplicate elements
         Set anotherSet = new HashSet();
-        anotherSet.add(new Integer(2));
-        anotherSet.add(new Integer(4));
+        anotherSet.add(Integer.valueOf(2));
+        anotherSet.add(Integer.valueOf(4));
         CalcResult uniqueResult4 = new UniqueResult(anotherSet);
         CalcResult uniqueResult5 = uniqueResult1.merge(uniqueResult4); // 1,2,3 + 2,4
         assertEquals(4, uniqueResult5.toSet().size());
@@ -524,9 +524,8 @@ public class VisitorCalculationTest extends DataTestCase {
         AverageVisitor visit1 = new AverageVisitor(expr);
         fc3.accepts(visit1, null);
         CalcResult result = visit1.getResult();
-        double average = result.toDouble();
 
-        StandardDeviationVisitor visit2 = new StandardDeviationVisitor(expr, average);
+        StandardDeviationVisitor visit2 = new StandardDeviationVisitor(expr);
         fc3.accepts(visit2, null);
         assertEquals(28.86, visit2.getResult().toDouble(), 0.01);
         // then do it single pass
@@ -534,7 +533,7 @@ public class VisitorCalculationTest extends DataTestCase {
         fc3.accepts(visit3, null);
         assertEquals(28.86, visit3.getResult().toDouble(), 0.01);
         // test empty collection
-        StandardDeviationVisitor emptyVisitor = new StandardDeviationVisitor(expr, average);
+        StandardDeviationVisitor emptyVisitor = new StandardDeviationVisitor(expr);
         empty.accepts(emptyVisitor, null);
         assertEquals(CalcResult.NULL_RESULT, emptyVisitor.getResult());
         // test merge
@@ -567,7 +566,7 @@ public class VisitorCalculationTest extends DataTestCase {
         countVisitor.setValue(8);
         CalcResult countResult = countVisitor.getResult();
         MaxVisitor maxVisitor = new MaxVisitor((Expression) null);
-        maxVisitor.setValue(new Double(99));
+        maxVisitor.setValue(Double.valueOf(99));
         CalcResult maxResult = maxVisitor.getResult();
         try {
             CalcResult boomResult = maxResult.merge(countResult);

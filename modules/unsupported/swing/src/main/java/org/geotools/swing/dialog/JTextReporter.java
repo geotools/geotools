@@ -17,7 +17,7 @@
 
 package org.geotools.swing.dialog;
 
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
@@ -37,17 +37,12 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.text.BadLocationException;
 import net.miginfocom.swing.MigLayout;
@@ -308,8 +303,9 @@ public class JTextReporter {
 
         /** Gets the currently displayed text. */
         public String getText() {
-            updateLock.readLock().lock();
             final String[] rtnText = new String[1];
+            Lock readLock = updateLock.readLock();
+            readLock.lock();
             try {
                 final TextDialog dialog = dialogRef.get();
                 if (dialog == null) {
@@ -344,9 +340,9 @@ public class JTextReporter {
                 }
 
             } finally {
-                updateLock.readLock().unlock();
-                return rtnText[0];
+                readLock.unlock();
             }
+            return rtnText[0];
         }
 
         /**
@@ -410,15 +406,19 @@ public class JTextReporter {
 
         /** Called by the associated TextDialog when it is closing */
         private void setDialogClosed() {
-            updateLock.writeLock().lock();
+            Lock writeLock = updateLock.writeLock();
+            writeLock.lock();
             try {
                 dialogRef.clear();
                 active.set(false);
                 fireEvent(StateChange.DIALOG_CLOSED);
 
             } finally {
-                removeAllListeners();
-                updateLock.writeLock().unlock();
+                try {
+                    removeAllListeners();
+                } finally {
+                    writeLock.unlock();
+                }
             }
         }
 
@@ -749,8 +749,6 @@ public class JTextReporter {
          * @param indent indent width as number of spaces
          */
         private void append(final String text, final int indent) {
-            int startLine = textArea.getLineCount();
-
             String appendText;
             if (indent > 0) {
                 char[] c = new char[indent];

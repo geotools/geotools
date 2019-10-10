@@ -64,8 +64,6 @@ public class FillExtrusionMBLayer extends MBLayer {
 
     private JSONObject paint;
 
-    private JSONObject layout;
-
     private static String TYPE = "fill-extrusion";
 
     public enum TranslateAnchor {
@@ -80,7 +78,6 @@ public class FillExtrusionMBLayer extends MBLayer {
         super(json, new MBObjectParser(FillExtrusionMBLayer.class));
 
         paint = paint();
-        layout = layout();
     }
 
     @Override
@@ -238,7 +235,6 @@ public class FillExtrusionMBLayer extends MBLayer {
      */
     public List<FeatureTypeStyle> transformInternal(MBStyle styleContext) {
         List<FeatureTypeStyle> fillExtrusion = new ArrayList<>();
-        PolygonSymbolizer symbolizer;
         MBStyleTransformer transformer = new MBStyleTransformer(parse);
 
         // from fill pattern or fill color
@@ -370,12 +366,6 @@ public class FillExtrusionMBLayer extends MBLayer {
                         Double.POSITIVE_INFINITY,
                         Arrays.asList(roofSymbolizer),
                         filter.filter());
-
-        // Set legend graphic to null.
-        // setLegend(null) to empty list.
-        shadowRule.setLegendGraphic(new Graphic[0]);
-        sidesRule.setLegendGraphic(new Graphic[0]);
-        roofRule.setLegendGraphic(new Graphic[0]);
 
         // Finally we create the FeatureTypeStyles for the extrusion.
         FeatureTypeStyle shadow =

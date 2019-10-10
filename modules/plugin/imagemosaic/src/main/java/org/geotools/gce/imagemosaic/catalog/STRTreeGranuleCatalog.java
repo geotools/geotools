@@ -45,6 +45,7 @@ import org.geotools.gce.imagemosaic.GranuleDescriptor;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.util.SuppressFBWarnings;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
@@ -85,7 +86,6 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
 
         private int granuleIndex = 0;
 
-        /** @param indexLocation */
         public JTSIndexVisitorAdapter(final GranuleCatalogVisitor adaptee) {
             this(adaptee, (Query) null);
         }
@@ -93,10 +93,9 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
         public JTSIndexVisitorAdapter(final GranuleCatalogVisitor adaptee, Query q) {
             this.adaptee = adaptee;
             this.filter = q == null ? Query.ALL.getFilter() : q.getFilter();
-            this.maxGranules = q.getMaxFeatures();
+            this.maxGranules = q == null ? -1 : q.getMaxFeatures();
         }
 
-        /** @param indexLocation */
         public JTSIndexVisitorAdapter(final GranuleCatalogVisitor adaptee, Filter filter) {
             this.adaptee = adaptee;
             this.filter = filter == null ? Query.ALL.getFilter() : filter;
@@ -156,6 +155,7 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
      * @param features
      * @throws IOException
      */
+    @SuppressFBWarnings("UL_UNRELEASED_LOCK")
     private void checkIndex(Lock readLock) throws IOException {
         final Lock writeLock = rwLock.writeLock();
         try {
@@ -172,10 +172,13 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
                 LOGGER.fine("Index does not need to be created...");
 
         } finally {
-            // get read lock again
-            readLock.lock();
-            // leave write lock
-            writeLock.unlock();
+            try {
+                // get read lock again
+                readLock.lock();
+            } finally {
+                // leave write lock
+                writeLock.unlock();
+            }
         }
     }
 

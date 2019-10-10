@@ -107,7 +107,7 @@ public final class RPFTOCTest extends GDALTestCase {
                             oldEnvelope.getUpperCorner().getOrdinate(0),
                             oldEnvelope.getUpperCorner().getOrdinate(1)
                         });
-        cropEnvelope.setCoordinateReferenceSystem(reader.getCrs());
+        cropEnvelope.setCoordinateReferenceSystem(reader.getCoordinateReferenceSystem());
 
         final ParameterValue gg =
                 (ParameterValue)

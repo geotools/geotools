@@ -135,7 +135,7 @@ final class GMLUtils {
             // HACK!!! throw exception.
         }
 
-        // LOGGER.exiting("GMLUtils", "getGeometryType", new Integer(returnValue));
+        // LOGGER.exiting("GMLUtils", "getGeometryType", Integer.valueOf(returnValue));
 
         return returnValue;
     }

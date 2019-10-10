@@ -140,6 +140,7 @@ public class GazetteerNameValidation extends DefaultFeatureValidation {
             serviceDoc = dfactory.newDocumentBuilder().parse(gazetteerInputSource);
         } catch (Exception e) {
             results.error(feature, e.toString());
+            return false;
         }
 
         Element elem = serviceDoc.getDocumentElement();
@@ -149,6 +150,7 @@ public class GazetteerNameValidation extends DefaultFeatureValidation {
 
         if (elem == null) {
             results.error(feature, "Invalid DOM tree returned by gazetteer.");
+            return false;
         }
 
         // this number is the number of instances found.

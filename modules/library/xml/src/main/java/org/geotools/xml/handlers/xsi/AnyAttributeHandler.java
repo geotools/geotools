@@ -38,6 +38,7 @@ public class AnyAttributeHandler extends XSIElementHandler {
     //    private int processContents;
 
     /** @see Object#hashCode() */
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return LOCALNAME.hashCode() * ((namespace == null) ? 1 : namespace.hashCode());
     }

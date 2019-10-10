@@ -64,10 +64,6 @@ public class GridReaderLayer extends RasterLayer {
      * Create a layer to draw the provided grid coverage reader.
      *
      * @param reader a reader with the new layer that will be added.
-     * @param style
-     * @param title
-     * @param params GeneralParameterValue[] that describe how the {@link GridCoverage2DReader}
-     *     shall read the images
      * @throws SchemaException
      * @throws FactoryRegistryException
      * @throws TransformException

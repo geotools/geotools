@@ -30,6 +30,7 @@ import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -64,7 +65,8 @@ public class MBFeatureDataTest extends AbstractMBExpressionTest {
         Coordinate c3 = new Coordinate(d3, d3);
         Coordinate c4 = new Coordinate(d4, d4);
         Coordinate c5 = new Coordinate(d5, d5);
-        return geometryFactory.createMultiPoint(new Coordinate[] {c1, c2, c3, c4, c5});
+        return geometryFactory.createMultiPoint(
+                new CoordinateArraySequence(new Coordinate[] {c1, c2, c3, c4, c5}));
     }
 
     private LineString createLineString(int index) throws Exception {

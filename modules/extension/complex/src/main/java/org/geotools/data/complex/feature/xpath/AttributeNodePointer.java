@@ -24,7 +24,7 @@ import org.apache.commons.jxpath.ri.compiler.NodeTest;
 import org.apache.commons.jxpath.ri.compiler.NodeTypeTest;
 import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
-import org.geotools.data.complex.ComplexFeatureConstants;
+import org.geotools.data.complex.util.ComplexFeatureConstants;
 import org.geotools.feature.type.Types;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.ComplexAttribute;

@@ -17,7 +17,7 @@
  */
 package org.geotools.ysld.encode;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.Deque;
@@ -81,7 +81,6 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
 
     YsldEncodeHandler<T> reset() {
         stack.clear();
-        ;
         stack.push(newMap());
         return this;
     }
@@ -233,12 +232,14 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
 
         StringBuilder builder = new StringBuilder();
         for (Expression subExpr : subExpressions) {
-            if (isNull(subExpr)) {
-                // Do nothing
-            } else if (subExpr instanceof Literal) {
-                builder.append(escapeForEmbededCQL(((Literal) subExpr).getValue().toString()));
-            } else {
-                builder.append("${").append(escapeForEmbededCQL(ECQL.toCQL(subExpr))).append("}");
+            if (!isNull(subExpr)) {
+                if (subExpr instanceof Literal) {
+                    builder.append(escapeForEmbededCQL(((Literal) subExpr).getValue().toString()));
+                } else {
+                    builder.append("${")
+                            .append(escapeForEmbededCQL(ECQL.toCQL(subExpr)))
+                            .append("}");
+                }
             }
         }
 

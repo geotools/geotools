@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2006  Vivid Solutions
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2006  Vivid Solutions
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -526,16 +526,7 @@ public class OverlayOp extends GeometryGraphOperation {
             List<Point> resultPointList,
             List<OrientableCurve> resultLineList,
             List<OrientableSurface> resultPolyList) {
-
-        List geomList = new ArrayList();
-
-        // element geometries of the result are always in the order P,L,A
-        //		geomList.addAll(resultPointList);
-        //		geomList.addAll(resultLineList);
-        //		geomList.addAll(resultPolyList);
-
         // build the most specific geometry possible
-        // FeatGeomFactoryImpl gf = new FeatGeomFactoryImpl(crs);
         return createGeometry(resultPolyList, resultLineList, resultPointList);
     }
 

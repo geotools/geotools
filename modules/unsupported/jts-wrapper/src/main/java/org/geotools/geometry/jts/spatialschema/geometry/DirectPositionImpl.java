@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 /*$************************************************************************************************
  **
  ** $Id$
@@ -20,7 +36,7 @@ import org.opengis.util.Cloneable;
 /**
  * Holds the coordinates for a position within some coordinate reference system. Since {@code
  * DirectPosition}s, as data types, will often be included in larger objects (such as {@linkplain
- * org.opengis.geometry.coordinate. geometries}) that have references to {@link
+ * org.opengis.geometry.coordinate.geometries}) that have references to {@link
  * CoordinateReferenceSystem}, the {@link #getCoordinateReferenceSystem} method may returns {@code
  * null} if this particular {@code DirectPosition} is included in a larger object with such a
  * reference to a {@linkplain CoordinateReferenceSystem coordinate reference system}. In this case,
@@ -174,11 +190,6 @@ public class DirectPositionImpl implements Cloneable, DirectPosition, Position, 
         return ordinates;
     }
 
-    @Deprecated
-    public double[] getCoordinates() {
-        return getCoordinate();
-    }
-
     /**
      * @inheritDoc
      * @see org.opengis.geometry.coordinate.DirectPosition#getOrdinate(int)
@@ -220,15 +231,6 @@ public class DirectPositionImpl implements Cloneable, DirectPosition, Position, 
      * @see org.opengis.geometry.coordinate.Position#getDirectPosition()
      */
     public DirectPosition getDirectPosition() {
-        return this;
-    }
-
-    /**
-     * @inheritDoc
-     * @see org.opengis.geometry.coordinate.Position#getPosition()
-     */
-    @Deprecated
-    public DirectPosition getPosition() {
         return this;
     }
 

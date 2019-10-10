@@ -129,11 +129,10 @@ public class HsqlEpsgDatabase {
      * package.
      */
     private static void generateData(javax.sql.DataSource dataSource) throws SQLException {
-        Connection connection = dataSource.getConnection();
         Logging.getLogger(HsqlEpsgDatabase.class)
                 .config("Creating cached EPSG database."); // TODO: localize
-        final Statement statement = connection.createStatement();
-        try {
+        try (Connection connection = dataSource.getConnection();
+                Statement statement = connection.createStatement()) {
             final BufferedReader in =
                     new BufferedReader(
                             new InputStreamReader(
@@ -180,9 +179,6 @@ public class HsqlEpsgDatabase {
             SQLException e = new SQLException("Can't read the SQL script."); // TODO: localize
             e.initCause(exception); // TODO: inline cause when we will be allowed to target Java 6.
             throw e;
-        } finally {
-            statement.close();
-            connection.close();
         }
     }
 
@@ -255,14 +251,13 @@ public class HsqlEpsgDatabase {
      */
     static boolean dataExists(final Connection connection) throws SQLException {
         final DatabaseMetaData metaData = connection.getMetaData();
-        final ResultSet tables =
+        try (final ResultSet tables =
                 metaData.getTables(
                         null,
                         null,
                         "EPSG" + metaData.getSearchStringEscape() + "_%",
-                        new String[] {"TABLE"});
-        final boolean exists = tables.next();
-        tables.close();
-        return exists;
+                        new String[] {"TABLE"})) {
+            return tables.next();
+        }
     }
 }

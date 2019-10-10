@@ -95,37 +95,10 @@ public class PointImpl extends PrimitiveImpl implements Point {
     /*
      * (non-Javadoc)
      *
-     * @see org.opengis.geometry.primitive.Point#getPosition()
-     */
-    @Deprecated
-    public DirectPositionImpl getPosition() {
-        return this.position;
-    }
-
-    /*
-     * (non-Javadoc)
-     *
      * @see org.opengis.geometry.primitive.Point#getDirectPosition()
      */
     public DirectPositionImpl getDirectPosition() {
         return this.position;
-    }
-
-    /**
-     * Sets the value of position
-     *
-     * @param p
-     */
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.opengis.geometry.primitive.Point#setPosition(org.opengis.geometry.coordinate.DirectPosition)
-     */
-    @Deprecated
-    public void setPosition(DirectPosition p) {
-        this.position = new DirectPositionImpl(p);
-        // this.position =
-        // this.getGeometryFactory().getGeometryFactoryImpl().createDirectPosition(p);
     }
 
     /*
@@ -292,7 +265,7 @@ public class PointImpl extends PrimitiveImpl implements Point {
 
         // If the parameter is not a Point, call the equals method from GM_Object
         if (!(pointSet instanceof PointImpl)) return super.equals(pointSet);
-        return this.getPosition().equals(((PointImpl) pointSet).getPosition());
+        return getDirectPosition().equals(((PointImpl) pointSet).getDirectPosition());
     }
 
     public Complex getClosure() {
@@ -313,7 +286,7 @@ public class PointImpl extends PrimitiveImpl implements Point {
                 new PositionFactoryImpl(newCRS, getPositionFactory().getPrecision());
         PrimitiveFactory newPrimitiveFactory = new PrimitiveFactoryImpl(newCRS, newPositionFactory);
         DirectPosition dp1 = new DirectPositionImpl(newCRS);
-        dp1 = transform.transform(((PointImpl) this).getPosition(), dp1);
+        dp1 = transform.transform(((PointImpl) this).getDirectPosition(), dp1);
         return newPrimitiveFactory.createPoint(dp1);
     }
 }

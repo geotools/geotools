@@ -17,6 +17,7 @@
 package org.geotools.data.mongodb.complex;
 
 import com.mongodb.BasicDBList;
+import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,13 +25,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.data.mongodb.AbstractCollectionMapper;
 import org.geotools.data.mongodb.MongoFeature;
 import org.geotools.data.mongodb.MongoGeometryBuilder;
+import org.geotools.util.logging.Logging;
 import org.opengis.feature.Feature;
 
 /** This class contains utilities methods for dealing with MongoDB complex features. */
 public final class MongoComplexUtilities {
+
+    private static final Logger LOG = Logging.getLogger(MongoComplexUtilities.class);
 
     // if this property is set to TRUE the system will expect nested collection full path to be
     // provided
@@ -332,6 +338,22 @@ public final class MongoComplexUtilities {
         return mappings;
     }
 
+    /**
+     * Compute the mappings for a mongodb cursor(iterator), this can be used to create a feature
+     * mapping. This method will close the cursor.
+     */
+    public static Map<String, Class> findMappings(DBCursor cursor) {
+        Map<String, Class> mappings = new HashMap<>();
+        try {
+            while (cursor.hasNext()) {
+                findMappingsHelper(cursor.next(), "", mappings);
+            }
+        } finally {
+            cursor.close();
+        }
+        return mappings;
+    }
+
     /** Helper method that will recursively walk a mongo db object and compute is mappings. */
     private static void findMappingsHelper(
             Object object, String parentPath, Map<String, Class> mappings) {
@@ -339,6 +361,7 @@ public final class MongoComplexUtilities {
             return;
         }
         if (object instanceof DBObject) {
+            LOG.log(Level.INFO, "Generating mappings from object: {0}", object);
             DBObject dbObject = (DBObject) object;
             for (String key : dbObject.keySet()) {
                 Object value = dbObject.get(key);
@@ -349,12 +372,14 @@ public final class MongoComplexUtilities {
                 if (value instanceof List) {
                     List list = (List) value;
                     if (!list.isEmpty()) {
-                        findMappingsHelper(list.get(0), path, mappings);
+                        for (Object eo : list) {
+                            findMappingsHelper(eo, path, mappings);
+                        }
                     }
                 } else if (value instanceof DBObject) {
                     findMappingsHelper(value, path, mappings);
                 } else {
-                    mappings.put(path, value.getClass());
+                    mappings.putIfAbsent(path, value.getClass());
                 }
             }
         } else {

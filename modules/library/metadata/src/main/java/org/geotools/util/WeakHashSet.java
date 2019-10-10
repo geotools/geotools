@@ -107,16 +107,6 @@ public class WeakHashSet<E> extends AbstractSet<E> implements CheckedCollection<
     /**
      * Constructs a {@code WeakHashSet}.
      *
-     * @deprecated Use {@link WeakHashSet(Class)}.
-     */
-    @SuppressWarnings("unchecked")
-    public WeakHashSet() {
-        this((Class) Object.class);
-    }
-
-    /**
-     * Constructs a {@code WeakHashSet}.
-     *
      * @param type The type of the element to be included in this set.
      * @since 2.5
      */
@@ -330,6 +320,8 @@ public class WeakHashSet<E> extends AbstractSet<E> implements CheckedCollection<
      *
      * </blockquote>
      */
+    @SuppressWarnings("SelfEquals")
+    @SuppressFBWarnings("SA_LOCAL_SELF_COMPARISON")
     final <T extends E> T intern(final T obj, final int operation) {
         assert Thread.holdsLock(this);
         assert WeakCollectionCleaner.DEFAULT.isAlive();

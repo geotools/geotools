@@ -21,7 +21,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Map;
-import oracle.jdbc.OracleConnection;
 import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.Parameter;
 import org.geotools.data.Transaction;
@@ -171,7 +170,8 @@ public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {
 
         Connection cx = dataStore.getConnection(Transaction.AUTO_COMMIT);
         try {
-            OracleConnection oracleConnection = dialect.unwrapConnection(cx);
+            dialect.unwrapConnection(cx);
+            dialect.initVersion(cx);
         } catch (SQLException e) {
             throw new IOException(
                     "Unable to obtain Oracle Connection require for SDO Geometry access)."

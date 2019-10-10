@@ -98,11 +98,11 @@ public class XSNonNegativeIntegerBinding implements SimpleBinding {
         }
 
         if (MAX_INTEGER.compareTo(number) >= 0) {
-            return new Integer(number.intValue());
+            return Integer.valueOf(number.intValue());
         }
 
         if (MAX_LONG.compareTo(number) >= 0) {
-            return new Long(number.longValue());
+            return Long.valueOf(number.longValue());
         }
 
         return number;

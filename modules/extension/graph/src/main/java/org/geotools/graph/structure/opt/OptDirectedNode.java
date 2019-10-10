@@ -77,11 +77,13 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
      *
      * @throws UnsupportedOperationException
      */
+    @Override
     public void add(Edge e) {
         throw new UnsupportedOperationException(getClass().getName() + "#add(Edge)");
     }
 
     /** @see DirectedNode#addIn(DirectedEdge) */
+    @Override
     public void addIn(DirectedEdge e) {
         for (int i = 0; i < m_in.length; i++) {
             if (m_in[i] == null) {
@@ -92,6 +94,7 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
     }
 
     /** @see DirectedNode#addOut(DirectedEdge) */
+    @Override
     public void addOut(DirectedEdge e) {
         for (int i = 0; i < m_out.length; i++) {
             if (m_out[i] == null) {
@@ -106,6 +109,7 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
      *
      * @throws UnsupportedOperationException
      */
+    @Override
     public void remove(Edge e) {
         throw new UnsupportedOperationException(getClass().getName() + "#remove(Edge)");
     }
@@ -115,6 +119,7 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
      *
      * @throws UnsupportedOperationException
      */
+    @Override
     public void removeIn(DirectedEdge e) {
         throw new UnsupportedOperationException(getClass().getName() + "#removeIn(DirectedEdge)");
     }
@@ -124,11 +129,13 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
      *
      * @throws UnsupportedOperationException
      */
+    @Override
     public void removeOut(DirectedEdge e) {
         throw new UnsupportedOperationException(getClass().getName() + "#removeOut(DirectedEdge)");
     }
 
     /** @see Node#getEdge(Node) */
+    @Override
     public Edge getEdge(Node other) {
         Edge e = getInEdge((DirectedNode) other);
         if (e == null) e = getOutEdge((DirectedNode) other);
@@ -136,6 +143,7 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
     }
 
     /** @see DirectedNode#getInEdge(DirectedNode) */
+    @Override
     public Edge getInEdge(DirectedNode other) {
         for (int i = 0; i < m_in.length; i++) {
             if (m_in[i].getInNode().equals(other)) return (m_in[i]);
@@ -144,9 +152,8 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
     }
 
     /** @see DirectedNode#getOutEdge(DirectedNode) */
+    @Override
     public Edge getOutEdge(DirectedNode other) {
-        ArrayList edges = new ArrayList();
-
         for (int i = 0; i < m_out.length; i++) {
             if (m_out[i].getOutNode().equals(other)) return (m_out[i]);
         }
@@ -155,16 +162,18 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
     }
 
     /** @see Node#getEdges(Node) */
-    public List getEdges(Node other) {
-        List l = getInEdges((DirectedNode) other);
+    @Override
+    public List<Edge> getEdges(Node other) {
+        List<Edge> l = getInEdges((DirectedNode) other);
         l.addAll(getOutEdges((DirectedNode) other));
 
         return (l);
     }
 
     /** @see DirectedNode#getInEdges(DirectedNode) */
-    public List getInEdges(DirectedNode other) {
-        ArrayList edges = new ArrayList();
+    @Override
+    public List<Edge> getInEdges(DirectedNode other) {
+        ArrayList<Edge> edges = new ArrayList<>();
 
         for (int i = 0; i < m_in.length; i++) {
             if (m_in[i].getInNode().equals(other)) edges.add(m_in[i]);
@@ -174,8 +183,9 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
     }
 
     /** @see DirectedNode#getOutEdges(DirectedNode) */
-    public List getOutEdges(DirectedNode other) {
-        ArrayList edges = new ArrayList();
+    @Override
+    public List<Edge> getOutEdges(DirectedNode other) {
+        ArrayList<Edge> edges = new ArrayList<>();
 
         for (int i = 0; i < m_out.length; i++) {
             if (m_out[i].getOutNode().equals(other)) edges.add(m_out[i]);
@@ -185,8 +195,9 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
     }
 
     /** @see Node#getEdges() */
-    public List getEdges() {
-        ArrayList edges = new ArrayList();
+    @Override
+    public List<DirectedEdge> getEdges() {
+        ArrayList<DirectedEdge> edges = new ArrayList<>();
         for (int i = 0; i < m_in.length; i++) edges.add(m_in[i]);
         for (int i = 0; i < m_out.length; i++) edges.add(m_out[i]);
 
@@ -203,8 +214,9 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
     }
 
     /** @see DirectedNode#getInEdges() */
-    public List getInEdges() {
-        ArrayList edges = new ArrayList();
+    @Override
+    public List<DirectedEdge> getInEdges() {
+        ArrayList<DirectedEdge> edges = new ArrayList<>();
 
         for (int i = 0; i < m_in.length; i++) {
             edges.add(m_in[i]);
@@ -222,8 +234,9 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
     }
 
     /** @see DirectedNode#getOutEdges() */
-    public List getOutEdges() {
-        ArrayList edges = new ArrayList();
+    @Override
+    public List<DirectedEdge> getOutEdges() {
+        ArrayList<DirectedEdge> edges = new ArrayList<>();
 
         for (int i = 0; i < m_out.length; i++) {
             edges.add(m_out[i]);
@@ -232,6 +245,7 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
     }
 
     /** @see Node#getDegree() */
+    @Override
     public int getDegree() {
         return (m_in.length + m_out.length);
     }
@@ -246,6 +260,7 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
     }
 
     /** @see DirectedNode#getInDegree() */
+    @Override
     public int getInDegree() {
         return (m_in.length);
     }
@@ -260,6 +275,7 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
     }
 
     /** @see DirectedNode#getOutDegree() */
+    @Override
     public int getOutDegree() {
         return (m_out.length);
     }
@@ -269,7 +285,8 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
      *
      * @see org.geotools.graph.structure.Graphable#getRelated()
      */
-    public Iterator getRelated() {
+    @Override
+    public Iterator<Node> getRelated() {
         return (new RelatedIterator(RelatedIterator.BOTH));
     }
 
@@ -278,12 +295,14 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
      *
      * @see org.geotools.graph.structure.DirectedGraphable#getInRelated()
      */
-    public Iterator getInRelated() {
+    @Override
+    public Iterator<Node> getInRelated() {
         return (new RelatedIterator(RelatedIterator.IN));
     }
 
     /** This iterator iterates over the underlying out edge array of the node. */
-    public Iterator getOutRelated() {
+    @Override
+    public Iterator<Node> getOutRelated() {
         return (new RelatedIterator(RelatedIterator.OUT));
     }
 
@@ -310,7 +329,7 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
      * to the object stream as well. Since the edge list is not written out, and the node does not
      * store its degree explicitly, it must be written to the output stream.
      *
-     * @param in Object output stream containing serialized objects.
+     * @param out Object output stream containing serialized objects.
      * @throws IOException
      * @throws ClassNotFoundException
      */
@@ -328,7 +347,7 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
      *
      * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
      */
-    public class RelatedIterator implements Iterator {
+    public class RelatedIterator implements Iterator<Node> {
 
         /** in iteration mode * */
         public static final int IN = 0;
@@ -360,6 +379,7 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
          *
          * @throws UnsupportedOperationException
          */
+        @Override
         public void remove() {
             throw new UnsupportedOperationException(getClass().getName() + "#remove()");
         }
@@ -369,6 +389,7 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
          *
          * @see Iterator#hasNext()
          */
+        @Override
         public boolean hasNext() {
             switch (m_mode) {
                 case IN:
@@ -383,12 +404,9 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
             return (false);
         }
 
-        /**
-         * Returns the next related node.
-         *
-         * @see Iterator#next()
-         */
-        public Object next() {
+        /** Returns the next related node. */
+        @Override
+        public Node next() {
 
             switch (m_mode) {
                 case IN:

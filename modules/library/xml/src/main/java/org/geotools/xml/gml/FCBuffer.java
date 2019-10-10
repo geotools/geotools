@@ -40,15 +40,12 @@ public class FCBuffer extends Thread implements FeatureReader<SimpleFeatureType,
     /** Last feature is in the buffer */
     public static final int FINISH = -1;
 
-    /** DOCUMENT ME! */
     public static final int STOP = -2;
 
-    /** DOCUMENT ME! */
     protected static Logger logger = getLogger();
 
     // positive number is the number of feature to parse before yield
 
-    /** DOCUMENT ME! */
     protected int state = 0;
 
     private SimpleFeature[] features;
@@ -94,29 +91,17 @@ public class FCBuffer extends Thread implements FeatureReader<SimpleFeatureType,
         return l;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return The buffer size
-     */
+    /** @return The buffer size */
     public int getSize() {
         return size;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return The buffer capacity
-     */
+    /** @return The buffer capacity */
     public int getCapacity() {
         return features.length;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return The buffer capacity
-     */
+    /** @return The buffer capacity */
     public int getTimeout() {
         return timeout;
     }
@@ -184,26 +169,14 @@ public class FCBuffer extends Thread implements FeatureReader<SimpleFeatureType,
             throw fc.exception;
         }
 
-        if (fc.getFeatureType() != null
-                && fc.getFeatureType().getGeometryDescriptor() != null
-                && fc.getFeatureType().getGeometryDescriptor().getCoordinateReferenceSystem()
-                        == null) {
-            // load crs
-            //                Feature f = fc.peek();
-            // TODO set crs here.
-        }
+        // TODO set crs here.
         return fc;
     }
 
     protected SimpleFeatureType ft = null;
 
     private volatile Date lastUpdate;
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     * @see org.geotools.data.FeatureReader#getFeatureType()
-     */
+    /** @see org.geotools.data.FeatureReader#getFeatureType() */
     public SimpleFeatureType getFeatureType() {
         if (ft != null) return ft;
         Date d = new Date(Calendar.getInstance().getTimeInMillis() + timeout);
@@ -366,8 +339,6 @@ public class FCBuffer extends Thread implements FeatureReader<SimpleFeatureType,
     }
 
     /**
-     * DOCUMENT ME!
-     *
      * @author $author$
      * @version $Revision: 1.9 $
      */

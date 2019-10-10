@@ -263,8 +263,8 @@ public class AncillaryFileManager implements FileSetManager {
         parentDirectory = new File(ncFile.getParent());
 
         // Look for external folder configuration
+        File baseDir = parentDirectory;
         final String baseFolder = NetCDFUtilities.EXTERNAL_DATA_DIR;
-        File baseDir = null;
         if (baseFolder != null) {
             baseDir = new File(baseFolder);
             // Check it again in case it has been deleted in the meantime:
@@ -284,19 +284,14 @@ public class AncillaryFileManager implements FileSetManager {
         String baseName =
                 cutExtension(extension) ? FilenameUtils.removeExtension(mainName) : mainName;
         String outputLocalFolder = "." + baseName + "_" + hashCode;
-        destinationDir = new File(parentDirectory, outputLocalFolder);
-
-        // append base file folder tree to the optional external data dir
-        if (baseDir != null) {
-            destinationDir = new File(baseDir, outputLocalFolder);
-        }
+        destinationDir = new File(baseDir, outputLocalFolder);
 
         boolean createdDir = false;
         if (!destinationDir.exists()) {
             createdDir = destinationDir.mkdirs();
             // Creation of an origin.txt file with the absolute file path internally written
             File origin = new File(destinationDir, "origin.txt");
-            FileUtils.write(origin, ncFile.getAbsolutePath());
+            FileUtils.write(origin, ncFile.getAbsolutePath(), "UTF-8");
         }
 
         // Init auxiliary file names
@@ -556,7 +551,7 @@ public class AncillaryFileManager implements FileSetManager {
      *
      * @throws JAXBException
      */
-    private void initIndexer() throws JAXBException {
+    protected void initIndexer() throws JAXBException {
         if (indexerFile.exists() && indexerFile.canRead()) {
             Unmarshaller unmarshaller = CONTEXT.createUnmarshaller();
             if (unmarshaller != null) {
@@ -839,7 +834,10 @@ public class AncillaryFileManager implements FileSetManager {
                     try {
                         // create a datastore as instructed
                         final DataStoreFactorySpi spi =
-                                (DataStoreFactorySpi) Class.forName(SPIClass).newInstance();
+                                (DataStoreFactorySpi)
+                                        Class.forName(SPIClass)
+                                                .getDeclaredConstructor()
+                                                .newInstance();
                         Map<String, Serializable> datastoreParams =
                                 Utils.filterDataStoreParams(properties, spi);
 

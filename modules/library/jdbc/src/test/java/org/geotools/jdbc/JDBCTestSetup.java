@@ -16,7 +16,7 @@
  */
 package org.geotools.jdbc;
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -224,6 +224,14 @@ public abstract class JDBCTestSetup {
      * made to the database.
      */
     public boolean shouldRunTests(Connection cx) throws SQLException {
+        return true;
+    }
+
+    /**
+     * Returns true if making the test run without a target schema is safe (normally is, but for
+     * Oracle Enterprise for example, it is not)
+     */
+    public boolean canResetSchema() {
         return true;
     }
 }

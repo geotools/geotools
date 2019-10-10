@@ -17,15 +17,17 @@
 package org.geotools.jdbc;
 
 import java.sql.Connection;
+import java.util.Arrays;
+import java.util.List;
 import java.util.NoSuchElementException;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
 import org.geotools.data.Transaction;
+import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -41,8 +43,10 @@ import org.opengis.filter.And;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.expression.Subtract;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
@@ -51,7 +55,7 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
-    protected ContentFeatureSource featureSource;
+    protected JDBCFeatureStore featureSource;
 
     protected void connect() throws Exception {
         super.connect();
@@ -148,7 +152,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
 
             SimpleFeature feature = (SimpleFeature) iterator.next();
             assertEquals("one", feature.getAttribute(aname("stringProperty")));
-            assertEquals(new Double(1.1), feature.getAttribute(aname("doubleProperty")));
+            assertEquals(Double.valueOf(1.1), feature.getAttribute(aname("doubleProperty")));
         }
     }
 
@@ -180,7 +184,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
 
             SimpleFeature feature = (SimpleFeature) iterator.next();
             assertEquals("one", feature.getAttribute(aname("stringProperty")));
-            assertEquals(new Double(1.1), feature.getAttribute(aname("doubleProperty")));
+            assertEquals(Double.valueOf(1.1), feature.getAttribute(aname("doubleProperty")));
         }
     }
 
@@ -212,7 +216,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
             SimpleFeature feature = (SimpleFeature) iterator.next();
             assertEquals(2, feature.getAttributeCount());
 
-            assertEquals(new Double(1.1), feature.getAttribute(aname("doubleProperty")));
+            assertEquals(Double.valueOf(1.1), feature.getAttribute(aname("doubleProperty")));
             assertNotNull(feature.getAttribute(aname("intProperty")));
         }
     }
@@ -556,6 +560,134 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
             ft1.accepts(Query.ALL, visitor, null);
 
             assertFalse("connection maintained", connection.isClosed());
+        }
+    }
+
+    /**
+     * Integration test checking that a CQL IN filter goes back being a IN in SQL
+     *
+     * @throws Exception
+     */
+    public void testSimpleEncodeIn() throws Exception {
+        FilterFactory ff = dataStore.getFilterFactory();
+        String property = aname("stringProperty");
+        PropertyName p = ff.property(property);
+        Or orFilter =
+                ff.or(
+                        Arrays.asList(
+                                ff.equal(p, ff.literal("zero"), true),
+                                ff.equal(p, ff.literal("one"), true),
+                                ff.equal(p, ff.literal("two"), true)));
+        Filter[] filters = featureSource.getFeatureSource().splitFilter(orFilter);
+        // nothing to be post-filtered
+        assertEquals(filters[1], Filter.INCLUDE);
+        SQLDialect dialect = featureSource.getDataStore().getSQLDialect();
+        if (dialect instanceof BasicSQLDialect) {
+            FilterToSQL filterToSQL = ((BasicSQLDialect) dialect).createFilterToSQL();
+            String sql = filterToSQL.encodeToString(filters[0]);
+            String escapedProperty = filterToSQL.escapeName(property);
+            assertEquals(
+                    "WHERE ("
+                            + escapedProperty
+                            + " IN ('zero', 'one', 'two') AND "
+                            + escapedProperty
+                            + " IS NOT NULL )",
+                    sql);
+        } else if (dialect instanceof PreparedStatementSQLDialect) {
+            PreparedFilterToSQL filterToSQL =
+                    ((PreparedStatementSQLDialect) dialect).createPreparedFilterToSQL();
+            String sql = filterToSQL.encodeToString(filters[0]);
+            String escapedProperty = filterToSQL.escapeName(property);
+            assertEquals(
+                    "WHERE ("
+                            + escapedProperty
+                            + " IN (?, ?, ?) AND "
+                            + escapedProperty
+                            + " IS NOT NULL )",
+                    sql);
+            List<Object> literals = filterToSQL.getLiteralValues();
+            assertEquals(Arrays.asList("zero", "one", "two"), literals);
+        } else {
+            fail("Unexpected dialect type: " + dialect);
+        }
+    }
+
+    /**
+     * Integration test checking that a CQL IN filter goes back being a IN in SQL
+     *
+     * @throws Exception
+     */
+    public void testMixedEncodeIn() throws Exception {
+        FilterFactory ff = dataStore.getFilterFactory();
+        String sp = aname("stringProperty");
+        PropertyName spp = ff.property(sp);
+        String ip = aname("intProperty");
+        PropertyName ipp = ff.property(ip);
+        String dp = aname("doubleProperty");
+        PropertyName dpp = ff.property(dp);
+        Or orFilter =
+                ff.or(
+                        Arrays.asList(
+                                ff.equal(spp, ff.literal("zero"), true),
+                                ff.equal(ipp, ff.literal(1), true),
+                                ff.equal(dpp, ff.literal(0d), true),
+                                ff.equal(spp, ff.literal("two"), true),
+                                ff.equal(ipp, ff.literal(2), true)));
+        Filter[] filters = featureSource.getFeatureSource().splitFilter(orFilter);
+        // nothing to be post-filtered
+        assertEquals(filters[1], Filter.INCLUDE);
+        SQLDialect dialect = featureSource.getDataStore().getSQLDialect();
+        if (dialect instanceof BasicSQLDialect) {
+            FilterToSQL filterToSQL = ((BasicSQLDialect) dialect).createFilterToSQL();
+            String sql = filterToSQL.encodeToString(filters[0]);
+            String spe = filterToSQL.escapeName(sp);
+            String ipe = filterToSQL.escapeName(ip);
+            String dpe = filterToSQL.escapeName(dp);
+            assertEquals(
+                    "WHERE (("
+                            + spe
+                            + " IN ('zero', 'two') AND "
+                            + spe
+                            + " IS NOT NULL ) OR "
+                            + "("
+                            + ipe
+                            + " IN (1, 2) AND "
+                            + ipe
+                            + " IS NOT NULL ) OR "
+                            + "("
+                            + dpe
+                            + " = 0.0 AND "
+                            + dpe
+                            + " IS NOT NULL ))",
+                    sql);
+        } else if (dialect instanceof PreparedStatementSQLDialect) {
+            PreparedFilterToSQL filterToSQL =
+                    ((PreparedStatementSQLDialect) dialect).createPreparedFilterToSQL();
+            String sql = filterToSQL.encodeToString(filters[0]);
+            String spe = filterToSQL.escapeName(sp);
+            String ipe = filterToSQL.escapeName(ip);
+            String dpe = filterToSQL.escapeName(dp);
+            assertEquals(
+                    "WHERE (("
+                            + spe
+                            + " IN (?, ?) AND "
+                            + spe
+                            + " IS NOT NULL ) OR "
+                            + "("
+                            + ipe
+                            + " IN (?, ?) AND "
+                            + ipe
+                            + " IS NOT NULL ) OR "
+                            + "("
+                            + dpe
+                            + " = ? AND "
+                            + dpe
+                            + " IS NOT NULL ))",
+                    sql);
+            List<Object> literals = filterToSQL.getLiteralValues();
+            assertEquals(Arrays.asList("zero", "two", 1, 2, 0d), literals);
+        } else {
+            fail("Unexpected dialect, supports basic or prepared, but was a : " + dialect);
         }
     }
 }

@@ -216,33 +216,38 @@ class DirectoryTypeCache {
         }
 
         // grab all the candidate files
-        for (File file : directory.listFiles()) {
-            // skip over directories, we don't recurse
-            if (file.isDirectory()) {
-                continue;
-            }
-
-            // do we have the same datastore in the current cache? If so keep it, we don't
-            // want to rebuild over and over the same stores
-            FileEntry entry = fileCache.get(file);
-
-            // if missing build a new one
-            if (entry == null) {
-                DataStore store = factory.getDataStore(file);
-                if (store != null) {
-                    entry = new FileEntry(file, store);
+        File[] files = directory.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                // skip over directories, we don't recurse
+                if (file.isDirectory()) {
+                    continue;
                 }
-            }
 
-            // if we managed to build an entry collect its feature types
-            if (entry != null) {
-                for (String typeName : entry.getStore(true).getTypeNames()) {
-                    // don't override existing entries
-                    if (!result.containsKey(typeName)) result.put(typeName, entry);
-                    else {
-                        LOGGER.log(
-                                Level.WARNING,
-                                "Type name " + typeName + " is available from multiple datastores");
+                // do we have the same datastore in the current cache? If so keep it, we don't
+                // want to rebuild over and over the same stores
+                FileEntry entry = fileCache.get(file);
+
+                // if missing build a new one
+                if (entry == null) {
+                    DataStore store = factory.getDataStore(file);
+                    if (store != null) {
+                        entry = new FileEntry(file, store);
+                    }
+                }
+
+                // if we managed to build an entry collect its feature types
+                if (entry != null) {
+                    for (String typeName : entry.getStore(true).getTypeNames()) {
+                        // don't override existing entries
+                        if (!result.containsKey(typeName)) result.put(typeName, entry);
+                        else {
+                            LOGGER.log(
+                                    Level.WARNING,
+                                    "Type name "
+                                            + typeName
+                                            + " is available from multiple datastores");
+                        }
                     }
                 }
             }
@@ -363,9 +368,11 @@ class DirectoryTypeCache {
         }
 
         void dispose() {
-            DataStore store = ref != null ? ref.get() : null;
-            if (store != null) store.dispose();
-            ref.clear();
+            if (ref != null) {
+                DataStore store = ref.get();
+                if (store != null) store.dispose();
+                ref.clear();
+            }
         }
     }
 }

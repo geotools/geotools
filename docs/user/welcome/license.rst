@@ -39,7 +39,7 @@ In addition several modules contain code made available to us under a different 
 * :doc:`gt-main </library/main/index>` (BSD License)
 * :doc:`gt-xsd-core </extension/xsd/core>` (Apache License)
 * :doc:`gt-brewer </extension/brewer/index>` (Apache License)
-* :doc:`gt-referencing3d </library/referencing/3d>` (some code available from nasa for unlimited distribution) 
+* :doc:`gt-referencing3d </library/referencing/3d>` (some code available from NASA for unlimited distribution) 
 
 Document License
 ^^^^^^^^^^^^^^^^^

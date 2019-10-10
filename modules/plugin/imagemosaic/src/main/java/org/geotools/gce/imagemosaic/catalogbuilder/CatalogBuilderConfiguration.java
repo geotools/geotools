@@ -18,6 +18,7 @@ package org.geotools.gce.imagemosaic.catalogbuilder;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.Objects;
 import org.apache.commons.beanutils.BeanUtils;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.gce.imagemosaic.Utils.Prop;
@@ -35,7 +36,7 @@ import org.geotools.util.factory.Hints;
  *
  * @author Simone Giannecchini, GeoSolutions SAS
  */
-public class CatalogBuilderConfiguration {
+public class CatalogBuilderConfiguration implements Cloneable {
 
     private Hints hints;
 
@@ -44,14 +45,6 @@ public class CatalogBuilderConfiguration {
     private String runtimeAttribute;
 
     private Indexer indexer;
-
-    /**
-     * @deprecated parse indexer parameters instead.
-     * @return
-     */
-    public String getEnvelope2D() {
-        return getParameter(Prop.ENVELOPE2D);
-    }
 
     public CatalogBuilderConfiguration() {
         initDefaultsParam();
@@ -79,22 +72,6 @@ public class CatalogBuilderConfiguration {
     /** @param hints the hints to set */
     public void setHints(Hints hints) {
         this.hints = hints;
-    }
-
-    /**
-     * @deprecated parse indexer parameters instead.
-     * @return
-     */
-    public boolean isRecursive() {
-        return Boolean.parseBoolean(getParameter(Prop.RECURSIVE));
-    }
-
-    /**
-     * @deprecated parse indexer parameters instead.
-     * @return
-     */
-    public boolean isCaching() {
-        return Boolean.parseBoolean(getParameter(Prop.CACHING));
     }
 
     /**
@@ -162,54 +139,6 @@ public class CatalogBuilderConfiguration {
         this.runtimeAttribute = runtimeAttribute;
     }
 
-    /**
-     * @deprecated parse indexer parameters instead.
-     * @return
-     */
-    public String getIndexName() {
-        return getParameter(Prop.INDEX_NAME);
-    }
-
-    /**
-     * @deprecated parse indexer parameters instead.
-     * @return
-     */
-    public boolean isFootprintManagement() {
-        return Boolean.parseBoolean(getParameter(Prop.FOOTPRINT_MANAGEMENT));
-    }
-
-    /**
-     * @deprecated parse indexer parameters instead.
-     * @return
-     */
-    public String getLocationAttribute() {
-        return getParameter(Prop.LOCATION_ATTRIBUTE);
-    }
-
-    /**
-     * @deprecated parse indexer parameters instead.
-     * @return
-     */
-    public String getRootMosaicDirectory() {
-        return getParameter(Prop.ROOT_MOSAIC_DIR);
-    }
-
-    /**
-     * @deprecated parse Indexer parameters instead.
-     * @return
-     */
-    public String getWildcard() {
-        return getParameter(Prop.WILDCARD);
-    }
-
-    /**
-     * @deprecated parse Indexer parameters instead.
-     * @return
-     */
-    public boolean isAbsolute() {
-        return Boolean.parseBoolean(getParameter(Prop.ABSOLUTE_PATH));
-    }
-
     @Override
     public CatalogBuilderConfiguration clone() throws CloneNotSupportedException {
         return new CatalogBuilderConfiguration(this);
@@ -237,7 +166,7 @@ public class CatalogBuilderConfiguration {
             String parameterName) {
         String thisValue = thisConfig.getParameter(parameterName);
         String thatValue = thatConfig.getParameter(parameterName);
-        if (!(thisValue == null && thatValue == null) && !thisValue.equals(thatValue)) {
+        if (!(thisValue == null && thatValue == null) && !Objects.equals(thisValue, thatValue)) {
             return false;
         }
         return true;

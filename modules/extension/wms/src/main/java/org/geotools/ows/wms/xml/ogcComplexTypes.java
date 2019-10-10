@@ -404,7 +404,7 @@ public class ogcComplexTypes {
                     }
                 }
 
-                if (value == null || value == "") { // $NON-NLS-1$
+                if (value == null || "".equals(value)) { // $NON-NLS-1$
                     return true;
                 }
             }

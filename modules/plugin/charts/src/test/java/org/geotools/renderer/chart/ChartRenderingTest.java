@@ -5,8 +5,8 @@ import junit.framework.TestCase;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.DefaultMapContext;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.map.FeatureLayer;
+import org.geotools.map.MapContent;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.styling.Style;
 import org.geotools.test.TestData;
@@ -35,10 +35,10 @@ public class ChartRenderingTest extends TestCase {
     public void testPieCharts() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "pieCharts.sld");
 
-        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mc.addLayer(fs, style);
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(fs, style));
 
-        renderer.setContext(mc);
+        renderer.setMapContent(mc);
 
         RendererBaseTest.showRender("Pie charts", renderer, TIME, bounds, 600, 300);
     }

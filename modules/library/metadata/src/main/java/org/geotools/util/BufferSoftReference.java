@@ -54,4 +54,13 @@ class BufferSoftReference extends SoftReference<ByteBuffer> {
             return otherBuffer == buffer;
         }
     }
+
+    @Override
+    public int hashCode() {
+        final ByteBuffer byteBuffer = get();
+        if (byteBuffer != null) {
+            return byteBuffer.hashCode();
+        }
+        return super.hashCode();
+    }
 }

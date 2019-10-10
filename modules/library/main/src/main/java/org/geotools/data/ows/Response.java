@@ -19,7 +19,6 @@ package org.geotools.data.ows;
 import java.io.IOException;
 import java.io.InputStream;
 import org.geotools.ows.ServiceException;
-import org.jdom2.JDOMException;
 
 /**
  * Provides a base class for Responses from an OWS. Checks the incoming content for a
@@ -86,8 +85,6 @@ public abstract class Response {
     protected ServiceException parseException(InputStream inputStream) throws IOException {
         try {
             return ServiceExceptionParser.parse(inputStream);
-        } catch (JDOMException e) {
-            throw (IOException) new IOException().initCause(e);
         } finally {
             inputStream.close();
         }

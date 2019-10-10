@@ -21,6 +21,7 @@ import javax.xml.namespace.QName;
 import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDExternalGraphicBinding;
 import org.geotools.styling.ExternalGraphic;
+import org.geotools.styling.ResourceLocator;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
@@ -65,8 +66,8 @@ import org.geotools.xsd.Node;
  */
 public class ExternalGraphicBinding extends SLDExternalGraphicBinding {
 
-    public ExternalGraphicBinding(StyleFactory styleFactory) {
-        super(styleFactory);
+    public ExternalGraphicBinding(StyleFactory styleFactory, ResourceLocator resourceLocator) {
+        super(styleFactory, resourceLocator);
     }
 
     /** @generated */

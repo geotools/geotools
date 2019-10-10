@@ -46,6 +46,7 @@ public class SequenceHandler extends ElementGroupingHandler {
     private DefaultSequence cache = null;
 
     /** @see java.lang.Object#hashCode() */
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return (LOCALNAME.hashCode() * ((id == null) ? 1 : id.hashCode()))
                 + ((children == null) ? 2 : children.hashCode());
@@ -55,68 +56,66 @@ public class SequenceHandler extends ElementGroupingHandler {
     public XSIElementHandler getHandler(String namespaceURI, String localName) {
         logger.finest("Getting Handler for " + localName + " :: " + namespaceURI);
 
-        if (namespaceURI.equalsIgnoreCase(namespaceURI)) {
-            // child types
-            //
-            // any
-            if (AnyHandler.LOCALNAME.equalsIgnoreCase(localName)) {
-                if (children == null) {
-                    children = new LinkedList();
-                }
-
-                AnyHandler ah = new AnyHandler();
-                children.add(ah);
-
-                return ah;
+        // child types
+        //
+        // any
+        if (AnyHandler.LOCALNAME.equalsIgnoreCase(localName)) {
+            if (children == null) {
+                children = new LinkedList();
             }
 
-            // choice
-            if (ChoiceHandler.LOCALNAME.equalsIgnoreCase(localName)) {
-                if (children == null) {
-                    children = new LinkedList();
-                }
+            AnyHandler ah = new AnyHandler();
+            children.add(ah);
 
-                ChoiceHandler ah = new ChoiceHandler();
-                children.add(ah);
+            return ah;
+        }
 
-                return ah;
+        // choice
+        if (ChoiceHandler.LOCALNAME.equalsIgnoreCase(localName)) {
+            if (children == null) {
+                children = new LinkedList();
             }
 
-            // element
-            if (ElementTypeHandler.LOCALNAME.equalsIgnoreCase(localName)) {
-                if (children == null) {
-                    children = new LinkedList();
-                }
+            ChoiceHandler ah = new ChoiceHandler();
+            children.add(ah);
 
-                ElementTypeHandler ah = new ElementTypeHandler();
-                children.add(ah);
+            return ah;
+        }
 
-                return ah;
+        // element
+        if (ElementTypeHandler.LOCALNAME.equalsIgnoreCase(localName)) {
+            if (children == null) {
+                children = new LinkedList();
             }
 
-            // group
-            if (GroupHandler.LOCALNAME.equalsIgnoreCase(localName)) {
-                if (children == null) {
-                    children = new LinkedList();
-                }
+            ElementTypeHandler ah = new ElementTypeHandler();
+            children.add(ah);
 
-                GroupHandler ah = new GroupHandler();
-                children.add(ah);
+            return ah;
+        }
 
-                return ah;
+        // group
+        if (GroupHandler.LOCALNAME.equalsIgnoreCase(localName)) {
+            if (children == null) {
+                children = new LinkedList();
             }
 
-            // sequence
-            if (LOCALNAME.equalsIgnoreCase(localName)) {
-                if (children == null) {
-                    children = new LinkedList();
-                }
+            GroupHandler ah = new GroupHandler();
+            children.add(ah);
 
-                SequenceHandler ah = new SequenceHandler();
-                children.add(ah);
+            return ah;
+        }
 
-                return ah;
+        // sequence
+        if (LOCALNAME.equalsIgnoreCase(localName)) {
+            if (children == null) {
+                children = new LinkedList();
             }
+
+            SequenceHandler ah = new SequenceHandler();
+            children.add(ah);
+
+            return ah;
         }
 
         return null;

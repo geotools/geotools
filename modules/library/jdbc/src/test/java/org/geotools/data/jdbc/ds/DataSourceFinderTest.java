@@ -36,8 +36,8 @@ public class DataSourceFinderTest extends TestCase {
         map.put(DBCPDataSourceFactory.JDBC_URL.key, "jdbc:h2:mem:test_mem");
         map.put(DBCPDataSourceFactory.USERNAME.key, "admin");
         map.put(DBCPDataSourceFactory.PASSWORD.key, "");
-        map.put(DBCPDataSourceFactory.MAXACTIVE.key, new Integer(10));
-        map.put(DBCPDataSourceFactory.MAXIDLE.key, new Integer(0));
+        map.put(DBCPDataSourceFactory.MAXACTIVE.key, Integer.valueOf(10));
+        map.put(DBCPDataSourceFactory.MAXIDLE.key, Integer.valueOf(0));
 
         DataSource source = DataSourceFinder.getDataSource(map);
         assertNotNull(source);

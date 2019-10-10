@@ -181,6 +181,7 @@ public class DefaultPrimeMeridian extends AbstractIdentifiedObject implements Pr
      *     versions of this class.
      */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         final long code = Double.doubleToLongBits(greenwichLongitude);
         return ((int) (code >>> 32) ^ (int) code) ^ (int) serialVersionUID;

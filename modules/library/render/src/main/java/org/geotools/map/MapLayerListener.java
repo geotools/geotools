@@ -21,11 +21,9 @@ package org.geotools.map;
 import java.util.EventListener;
 
 /**
- * The listener that's notified when some {@linkplain MapLayer layer} property changes.
+ * The listener that's notified when some {@linkplain Layer layer} property changes.
  *
  * @author Andrea Aime
- * @see org.geotools.map.MapLayer
- * @see MapLayerEvent
  */
 public interface MapLayerListener extends EventListener {
     /**

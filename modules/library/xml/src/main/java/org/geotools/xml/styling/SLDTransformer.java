@@ -16,10 +16,11 @@
  */
 package org.geotools.xml.styling;
 
-import java.awt.Color;
+import java.awt.*;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -92,6 +93,7 @@ import org.opengis.filter.expression.PropertyName;
 import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.style.ContrastMethod;
+import org.opengis.style.GraphicalSymbol;
 import org.opengis.style.SemanticType;
 import org.opengis.util.InternationalString;
 import org.xml.sax.Attributes;
@@ -195,12 +197,7 @@ public class SLDTransformer extends TransformerBase {
         return result;
     }
 
-    /**
-     * Currently does nothing.
-     *
-     * @param args DOCUMENT ME!
-     * @throws Exception DOCUMENT ME!
-     */
+    /** Currently does nothing. */
     public static final void main(String[] args) throws Exception {
         java.net.URL url = new java.io.File(args[0]).toURI().toURL();
         SLDParser s = new SLDParser(CommonFactoryFinder.getStyleFactory(null), url);
@@ -672,8 +669,6 @@ public class SLDTransformer extends TransformerBase {
                     end("BlueChannel");
 
                     end("ChannelSelection");
-                } else {
-                    // we have an invalid ChannelSelection ?
                 }
             }
 
@@ -860,17 +855,15 @@ public class SLDTransformer extends TransformerBase {
             if (rule.getDescription() != null && rule.getDescription().getAbstract() != null)
                 element("Abstract", rule.getDescription().getAbstract());
 
-            Graphic[] gr = rule.getLegendGraphic();
-            for (int i = 0; i < gr.length; i++) {
+            Graphic legend = (Graphic) rule.getLegend();
+            if (legend != null) {
                 start("LegendGraphic");
-                gr[i].accept(this);
+                legend.accept(this);
                 end("LegendGraphic");
             }
 
             Filter filter = rule.getFilter();
-            if (filter == null || filter == Filter.INCLUDE) {
-                // no filter
-            } else {
+            if (filter != null && filter != Filter.INCLUDE) {
                 visit(filter);
             }
 
@@ -887,9 +880,8 @@ public class SLDTransformer extends TransformerBase {
                 element("MaxScaleDenominator", rule.getMaxScaleDenominator() + "");
             }
 
-            Symbolizer[] sym = rule.getSymbolizers();
-            for (int i = 0; i < sym.length; i++) {
-                sym[i].accept(this);
+            for (Symbolizer symbolizer : rule.symbolizers()) {
+                symbolizer.accept(this);
             }
 
             end("Rule");
@@ -948,12 +940,12 @@ public class SLDTransformer extends TransformerBase {
         public void visit(Graphic gr) {
             start("Graphic");
 
-            // encodeGeometryProperty(gr.getGeometryPropertyName());
-
-            Symbol[] symbols = gr.getSymbols();
-
-            for (int i = 0; i < symbols.length; i++) {
-                symbols[i].accept(this);
+            for (GraphicalSymbol symbol : gr.graphicalSymbols()) {
+                if (symbol instanceof Symbol) {
+                    ((Symbol) symbol).accept(this);
+                } else {
+                    throw new RuntimeException("Don't know how to visit " + symbol);
+                }
             }
 
             element("Opacity", gr.getOpacity(), 1.0);
@@ -1194,9 +1186,8 @@ public class SLDTransformer extends TransformerBase {
                 }
                 if (style.getDescription() != null && style.getDescription().getAbstract() != null)
                     element("Abstract", style.getDescription().getAbstract());
-                FeatureTypeStyle[] fts = style.getFeatureTypeStyles();
-                for (int i = 0; i < fts.length; i++) {
-                    visit(fts[i]);
+                for (FeatureTypeStyle featureTypeStyle : style.featureTypeStyles()) {
+                    visit(featureTypeStyle);
                 }
                 end("UserStyle");
             }
@@ -1222,20 +1213,16 @@ public class SLDTransformer extends TransformerBase {
                 element("Transformation", fts.getTransformation());
             }
 
-            String[] sti = fts.getSemanticTypeIdentifiers();
+            List<SemanticType> sti = new ArrayList(fts.semanticTypeIdentifiers());
 
-            if (sti.length == 1 && sti[0].equals(SemanticType.ANY.toString())) {
-                // skip, it's the default
-            } else {
-                for (int i = 0; i < sti.length; i++) {
-                    element("SemanticTypeIdentifier", sti[i]);
+            if (sti.size() != 1 || !sti.get(0).equals(SemanticType.ANY)) {
+                for (SemanticType semanticType : sti) {
+                    element("SemanticTypeIdentifier", semanticType.name());
                 }
             }
 
-            Rule[] rules = fts.getRules();
-
-            for (int i = 0; i < rules.length; i++) {
-                rules[i].accept(this);
+            for (Rule rule : fts.rules()) {
+                rule.accept(this);
             }
 
             encodeVendorOptions(fts.getOptions());
@@ -1438,8 +1425,11 @@ public class SLDTransformer extends TransformerBase {
         public void visit(ChannelSelection cs) {
             if (cs == null) return;
             start("ChannelSelection");
-            final SelectedChannelType[] sct = cs.getSelectedChannels();
-            for (int i = 0; i < sct.length && sct != null; i++) visit(sct[i]);
+            SelectedChannelType[] sct = cs.getRGBChannels();
+            if (sct == null && cs.getGrayChannel() != null) {
+                sct = new SelectedChannelType[] {cs.getGrayChannel()};
+            }
+            for (int i = 0; sct != null && i < sct.length; i++) visit(sct[i]);
             end("ChannelSelection");
         }
 

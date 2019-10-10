@@ -95,7 +95,8 @@ public class PropertyAuthorityFactory extends DirectAuthorityFactory
      * needed. View are always up to date even if entries are added or removed in the {@linkplain
      * #definitions} map.
      */
-    private transient Map<Class<? extends IdentifiedObject>, Set<String>> filteredCodes;
+    private transient Map<Class<? extends IdentifiedObject>, Set<String>> filteredCodes =
+            new HashMap<>();
 
     /** A WKT parser. */
     private transient Parser parser;
@@ -214,9 +215,6 @@ public class PropertyAuthorityFactory extends DirectAuthorityFactory
             throws FactoryException {
         if (type == null || type.isAssignableFrom(IdentifiedObject.class)) {
             return codes;
-        }
-        if (filteredCodes == null) {
-            filteredCodes = new HashMap<Class<? extends IdentifiedObject>, Set<String>>();
         }
         synchronized (filteredCodes) {
             Set<String> filtered = filteredCodes.get(type);

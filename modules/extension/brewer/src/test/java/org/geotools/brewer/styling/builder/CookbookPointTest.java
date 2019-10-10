@@ -422,8 +422,8 @@ public class CookbookPointTest extends AbstractStyleTest {
 
     private void checkAttributeBasedRule(Rule rule, Filter filter, int size) {
         assertEquals(filter, rule.getFilter());
-        assertEquals(1, rule.getSymbolizers().length);
-        PointSymbolizer ps = (PointSymbolizer) rule.getSymbolizers()[0];
+        assertEquals(1, rule.symbolizers().size());
+        PointSymbolizer ps = (PointSymbolizer) rule.symbolizers().get(0);
         assertEquals(size, (int) ps.getGraphic().getSize().evaluate(null, Integer.class));
     }
 
@@ -463,8 +463,8 @@ public class CookbookPointTest extends AbstractStyleTest {
         assertEquals(name, rule.getName());
         assertEquals(minDenominator, rule.getMinScaleDenominator(), 0.0);
         assertEquals(maxDenominator, rule.getMaxScaleDenominator(), 0.0);
-        assertEquals(1, rule.getSymbolizers().length);
-        PointSymbolizer ps = (PointSymbolizer) rule.getSymbolizers()[0];
+        assertEquals(1, rule.symbolizers().size());
+        PointSymbolizer ps = (PointSymbolizer) rule.symbolizers().get(0);
         assertEquals(size, (int) ps.getGraphic().getSize().evaluate(null, Integer.class));
     }
 

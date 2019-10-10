@@ -1,6 +1,5 @@
 package org.geotools.process.raster;
 
-import it.geosolutions.jaiext.JAIExt;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
@@ -144,8 +143,6 @@ public class JiffleProcessTest {
 
     @Test
     public void testNdviTransformation() throws Exception {
-        JAIExt.initJAIEXT(true, true);
-
         File file = TestData.file(this, "s2_13bands.tif");
 
         GeoTiffReader reader = new GeoTiffReader(file);

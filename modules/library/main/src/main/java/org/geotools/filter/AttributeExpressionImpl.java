@@ -16,9 +16,9 @@
  */
 package org.geotools.filter;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.filter.expression.PropertyAccessor;
@@ -191,66 +191,69 @@ public class AttributeExpressionImpl extends DefaultExpression implements Proper
      */
     @SuppressWarnings("unchecked")
     public <T> T evaluate(Object obj, Class<T> target) {
-        // NC- new method
-
         PropertyAccessor accessor = getLastPropertyAccessor();
-        AtomicReference<Object> value = new AtomicReference<Object>();
-        AtomicReference<Exception> e = new AtomicReference<Exception>();
 
-        if (accessor == null
-                || !accessor.canHandle(obj, attPath, target)
-                || !tryAccessor(accessor, obj, target, value, e)) {
-            boolean success = false;
+        Object value = false;
+        boolean success = false;
+        if (accessor != null && accessor.canHandle(obj, attPath, target)) {
+            try {
+                value = accessor.get(obj, attPath, target);
+                success = true;
+            } catch (Exception e) {
+                // fine, we'll try another accessor
+            }
+        }
+
+        // made it here, means an accessor needs to be found
+        if (!success) {
             if (namespaceSupport != null && hints == null) {
                 hints = new Hints(PropertyAccessorFactory.NAMESPACE_CONTEXT, namespaceSupport);
             }
             List<PropertyAccessor> accessors =
                     PropertyAccessors.findPropertyAccessors(obj, attPath, target, hints);
-
+            List<Exception> exceptions = null;
             if (accessors != null) {
                 Iterator<PropertyAccessor> it = accessors.iterator();
                 while (!success && it.hasNext()) {
                     accessor = it.next();
-                    success = tryAccessor(accessor, obj, target, value, e);
+                    try {
+                        value = accessor.get(obj, attPath, target);
+                        success = true;
+                    } catch (Exception e) {
+                        // fine, we'll try another accessor
+                        if (exceptions == null) {
+                            exceptions = new ArrayList<>();
+                        }
+                        exceptions.add(e);
+                    }
                 }
             }
 
             if (!success) {
                 if (lenient) return null;
-                else
-                    throw new IllegalArgumentException(
-                            "Could not find working property accessor for attribute ("
-                                    + attPath
-                                    + ") in object ("
-                                    + obj
-                                    + ")",
-                            e.get());
+                else {
+                    IllegalArgumentException exception =
+                            new IllegalArgumentException(
+                                    "Could not find working property accessor for attribute ("
+                                            + attPath
+                                            + ") in object ("
+                                            + obj
+                                            + ")");
+                    if (exceptions != null) {
+                        exceptions.forEach(e -> exception.addSuppressed(exception));
+                    }
+                    throw exception;
+                }
             } else {
                 setLastPropertyAccessor(accessor);
             }
         }
 
         if (target == null) {
-            return (T) value.get();
+            return (T) value;
         }
 
-        return Converters.convert(value.get(), target);
-    }
-
-    // NC - helper method for evaluation - attempt to use property accessor
-    private boolean tryAccessor(
-            PropertyAccessor accessor,
-            Object obj,
-            Class<?> target,
-            AtomicReference<Object> value,
-            AtomicReference<Exception> ex) {
-        try {
-            value.set(accessor.get(obj, attPath, target));
-            return true;
-        } catch (Exception e) {
-            ex.set(e);
-            return false;
-        }
+        return Converters.convert(value, target);
     }
 
     // accessor caching, scanning the registry every time is really very expensive

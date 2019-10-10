@@ -51,7 +51,6 @@ import org.geotools.coverage.grid.io.DecimationPolicy;
 import org.geotools.coverage.grid.io.DefaultDimensionDescriptor;
 import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.coverage.grid.io.GranuleSource;
-import org.geotools.coverage.grid.io.GranuleStore;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.OverviewPolicy;
@@ -694,13 +693,7 @@ public class RasterManager implements Cloneable {
             return domainName;
         }
 
-        /**
-         * Add a domain to the manager
-         *
-         * @param domain the name of the domain
-         * @param propertyName
-         * @param featureType
-         */
+        /** Add a domain to the manager */
         private DimensionDescriptor addDomain(
                 String name,
                 String propertyName,
@@ -973,8 +966,6 @@ public class RasterManager implements Cloneable {
 
     GranuleCatalog granuleCatalog;
 
-    GranuleStore granuleStore;
-
     GranuleSource granuleSource;
 
     String typeName;
@@ -1014,8 +1005,7 @@ public class RasterManager implements Cloneable {
         // granuleCatalog = new HintedGranuleCatalog(parentReader.granuleCatalog, hints);
         granuleCatalog = parentReader.granuleCatalog;
         this.coverageFactory = parentReader.getGridCoverageFactory();
-        this.coverageIdentifier =
-                configuration != null ? configuration.getName() : ImageMosaicReader.UNSPECIFIED;
+        this.coverageIdentifier = configuration.getName();
         pathType = configuration.getCatalogConfigurationBean().getPathType();
 
         extractOverviewPolicy();
@@ -1115,7 +1105,8 @@ public class RasterManager implements Cloneable {
                 update = true;
             }
             if (update
-                    && !configuration.getCatalogConfigurationBean().isAbsolutePath()
+                    && (configuration.getCatalogConfigurationBean().getPathType()
+                            != PathType.ABSOLUTE)
                     && !hints.containsKey(Utils.PARENT_DIR)) {
                 String parentDir = null;
                 if (parentReader.parentDirectory != null) {
@@ -1527,7 +1518,7 @@ public class RasterManager implements Cloneable {
                             reader.removeCoverage(coverageName, false);
                         }
                     } else if (deleteData) {
-                        final boolean removed = FileUtils.deleteQuietly(URLs.urlToFile(rasterPath));
+                        FileUtils.deleteQuietly(URLs.urlToFile(rasterPath));
                     }
                 } finally {
                     if (coverageReader != null) {
@@ -1570,7 +1561,7 @@ public class RasterManager implements Cloneable {
         synchronized (this) {
             if (readOnly) {
                 if (granuleSource == null) {
-                    granuleSource = new GranuleCatalogSource(granuleCatalog, typeName, hints);
+                    granuleSource = new GranuleCatalogSource(this, granuleCatalog, typeName, hints);
                     if (!typeName.equalsIgnoreCase(name)) {
                         // need to rename
                         granuleSource = new RenamingGranuleSource(name, granuleSource);
@@ -1578,10 +1569,8 @@ public class RasterManager implements Cloneable {
                 }
                 return granuleSource;
             } else {
-                if (granuleStore == null) {
-                    granuleStore = new GranuleCatalogStore(this, granuleCatalog, typeName, hints);
-                }
-                return granuleStore;
+                // stateful (holds transaction), do not cache
+                return new GranuleCatalogStore(this, granuleCatalog, typeName, hints);
             }
         }
     }
@@ -1610,9 +1599,6 @@ public class RasterManager implements Cloneable {
             } finally {
                 if (granuleSource != null) {
                     granuleSource = null;
-                }
-                if (granuleStore != null) {
-                    granuleStore = null;
                 }
                 if (granuleCatalog != null) {
                     granuleCatalog = null;
@@ -1926,5 +1912,23 @@ public class RasterManager implements Cloneable {
         }
 
         return crsAttribute;
+    }
+
+    /**
+     * The parent directory that can be used with the {@link PathType} enumeration
+     *
+     * @return
+     */
+    public String getParentLocation() {
+        return URLs.fileToUrl(getParentReader().parentDirectory).toString();
+    }
+
+    /**
+     * The attribute containing the location information for the single granules
+     *
+     * @return
+     */
+    public String getLocationAttribute() {
+        return getParentReader().locationAttributeName;
     }
 }

@@ -61,8 +61,6 @@ public class UniqueFIDValidation extends DefaultIntegrityValidation {
      * UniqueFIDIntegrityValidation constructor.
      *
      * <p>Initializes allinformation needed to perform the validation.
-     *
-     * @return DOCUMENT ME!
      */
 
     /*public UniqueFIDValidation(String name, String description, String[] typeNames, String uniqueID) {
@@ -95,7 +93,6 @@ public class UniqueFIDValidation extends DefaultIntegrityValidation {
      * @param envelope The bounding box of modified features
      * @param results Storage for the error and warning messages
      * @return True if there were no errors. False if there were errors.
-     * @throws Exception DOCUMENT ME!
      * @see org.geotools.validation.IntegrityValidation#validate(java.util.Map,
      *     org.locationtech.jts.geom.Envelope, org.geotools.validation.ValidationResults)
      */

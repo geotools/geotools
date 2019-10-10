@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Classes;
+import org.geotools.util.SuppressFBWarnings;
 import org.geotools.util.XArray;
 
 /**
@@ -51,6 +52,7 @@ import org.geotools.util.XArray;
  * @version $Id$
  * @author Martin Desruisseaux
  */
+@SuppressWarnings("PMD.SystemPrintln")
 public final class Logging {
     /** Compares {@link Logging} or {@link String} objects for alphabetical order. */
     private static final Comparator<Object> COMPARATOR =
@@ -221,7 +223,7 @@ public final class Logging {
      * specified name and {@code create} is {@code true}, then a new instance will be created.
      * Otherwise the nearest parent is returned.
      *
-     * @param root The root logger name.
+     * @param base The root logger name.
      * @param create {@code true} if this method is allowed to create new {@code Logging} instance.
      */
     private static Logging getLogging(final String base, final boolean create) {
@@ -389,9 +391,9 @@ public final class Logging {
      *
      * @see org.geotools.util.factory.GeoTools#init
      */
+    @SuppressFBWarnings("LG_LOST_LOGGER_DUE_TO_WEAK_REFERENCE")
     public void forceMonolineConsoleOutput(final Level level) {
-        final Logger logger =
-                Logger.getLogger(name); // Really Java logging, not the redirected one.
+        Logger logger = Logger.getLogger(name); // Really Java logging, not the redirected one.
         synchronized (EMPTY) {
             final MonolineFormatter f = MonolineFormatter.configureConsoleHandler(logger, level);
             if (f.getSourceFormat() == null) {
@@ -464,31 +466,6 @@ public final class Logging {
             final Throwable error) {
         final String classname = (classe != null) ? classe.getName() : null;
         return unexpectedException(logger, classname, method, error, Level.WARNING);
-    }
-
-    /**
-     * Invoked when an unexpected error occurs. This method logs a message at the {@link
-     * Level#WARNING WARNING} level to the logger for the specified package name. The originating
-     * class name and method name can optionnaly be specified. If any of them is {@code null}, then
-     * it will be inferred from the error stack trace as in {@link #unexpectedException(Logger,
-     * Throwable)}.
-     *
-     * @param paquet The package where the error occurred, or {@code null}. This information is used
-     *     for fetching an appropriate {@link Logger} for logging the error.
-     * @param classe The class where the error occurred, or {@code null}.
-     * @param method The method where the error occurred, or {@code null}.
-     * @param error The error.
-     * @return {@code true} if the error has been logged, or {@code false} if the logger doesn't log
-     *     anything at the {@link Level#WARNING WARNING} level.
-     * @deprecated Use one of the other {@code unexpectedException} methods instead.
-     */
-    public static boolean unexpectedException(
-            final String paquet,
-            final Class<?> classe,
-            final String method,
-            final Throwable error) {
-        final Logger logger = (paquet != null) ? getLogger(paquet) : null;
-        return unexpectedException(logger, classe, method, error);
     }
 
     /**

@@ -101,7 +101,7 @@ public class GridCoverage2DRIA extends GeometricOpImage {
 
     private Rectangle roiBounds;
 
-    private PlanarImage roiImage;
+    private volatile PlanarImage roiImage;
 
     /**
      * Wrap the src coverage in the dst layout. <br>
@@ -396,7 +396,7 @@ public class GridCoverage2DRIA extends GeometricOpImage {
      *
      * </pre>
      *
-     * @param sourceRect the <code>Rectangle</code> in source coordinates.
+     * @param pxRect the <code>Rectangle</code> in source coordinates.
      * @param sourceIndex the index of the source image.
      * @return a <code>Rectangle</code> indicating the destination bounding box, or <code>null
      *     </code> if the bounding box is unknown.
@@ -405,7 +405,7 @@ public class GridCoverage2DRIA extends GeometricOpImage {
      * @throws IllegalArgumentException if <code>sourceRect</code> is <code>null</code>.
      */
     @Override
-    protected Rectangle forwardMapRect(Rectangle pxRect, int i) {
+    protected Rectangle forwardMapRect(Rectangle pxRect, int sourceIndex) {
         // transformation from out target coverage toward the source one.
         // note that source/target names from OpImage are reversed with respect to our
         // definitions
@@ -673,15 +673,14 @@ public class GridCoverage2DRIA extends GeometricOpImage {
 
     private void computeRectByte(
             PlanarImage src, RasterAccessor dst, RandomIter roiIter, boolean roiContainsTile) {
-        int lpad, rpad, tpad, bpad;
-        if (interp != null) {
-            lpad = interp.getLeftPadding();
-            rpad = interp.getRightPadding();
-            tpad = interp.getTopPadding();
-            bpad = interp.getBottomPadding();
-        } else {
-            lpad = rpad = tpad = bpad = 0;
-        }
+        Interpolation interp =
+                this.interp != null
+                        ? this.interp
+                        : Interpolation.getInstance(Interpolation.INTERP_NEAREST);
+        int lpad = interp.getLeftPadding();
+        int rpad = interp.getRightPadding();
+        int tpad = interp.getTopPadding();
+        int bpad = interp.getBottomPadding();
 
         int minX, maxX, minY, maxY;
         RandomIter iter = null;
@@ -837,15 +836,14 @@ public class GridCoverage2DRIA extends GeometricOpImage {
 
     private void computeRectUShort(
             PlanarImage src, RasterAccessor dst, RandomIter roiIter, boolean roiContainsTile) {
-        int lpad, rpad, tpad, bpad;
-        if (interp != null) {
-            lpad = interp.getLeftPadding();
-            rpad = interp.getRightPadding();
-            tpad = interp.getTopPadding();
-            bpad = interp.getBottomPadding();
-        } else {
-            lpad = rpad = tpad = bpad = 0;
-        }
+        Interpolation interp =
+                this.interp != null
+                        ? this.interp
+                        : Interpolation.getInstance(Interpolation.INTERP_NEAREST);
+        int lpad = interp.getLeftPadding();
+        int rpad = interp.getRightPadding();
+        int tpad = interp.getTopPadding();
+        int bpad = interp.getBottomPadding();
 
         int minX, maxX, minY, maxY;
         RandomIter iter = null;
@@ -946,15 +944,14 @@ public class GridCoverage2DRIA extends GeometricOpImage {
 
     private void computeRectShort(
             PlanarImage src, RasterAccessor dst, RandomIter roiIter, boolean roiContainsTile) {
-        int lpad, rpad, tpad, bpad;
-        if (interp != null) {
-            lpad = interp.getLeftPadding();
-            rpad = interp.getRightPadding();
-            tpad = interp.getTopPadding();
-            bpad = interp.getBottomPadding();
-        } else {
-            lpad = rpad = tpad = bpad = 0;
-        }
+        Interpolation interp =
+                this.interp != null
+                        ? this.interp
+                        : Interpolation.getInstance(Interpolation.INTERP_NEAREST);
+        int lpad = interp.getLeftPadding();
+        int rpad = interp.getRightPadding();
+        int tpad = interp.getTopPadding();
+        int bpad = interp.getBottomPadding();
 
         int minX, maxX, minY, maxY;
         RandomIter iter = null;
@@ -1054,15 +1051,14 @@ public class GridCoverage2DRIA extends GeometricOpImage {
 
     private void computeRectInt(
             PlanarImage src, RasterAccessor dst, RandomIter roiIter, boolean roiContainsTile) {
-        int lpad, rpad, tpad, bpad;
-        if (interp != null) {
-            lpad = interp.getLeftPadding();
-            rpad = interp.getRightPadding();
-            tpad = interp.getTopPadding();
-            bpad = interp.getBottomPadding();
-        } else {
-            lpad = rpad = tpad = bpad = 0;
-        }
+        Interpolation interp =
+                this.interp != null
+                        ? this.interp
+                        : Interpolation.getInstance(Interpolation.INTERP_NEAREST);
+        int lpad = interp.getLeftPadding();
+        int rpad = interp.getRightPadding();
+        int tpad = interp.getTopPadding();
+        int bpad = interp.getBottomPadding();
 
         int minX, maxX, minY, maxY;
         RandomIter iter = null;
@@ -1162,15 +1158,14 @@ public class GridCoverage2DRIA extends GeometricOpImage {
 
     private void computeRectFloat(
             PlanarImage src, RasterAccessor dst, RandomIter roiIter, boolean roiContainsTile) {
-        int lpad, rpad, tpad, bpad;
-        if (interp != null) {
-            lpad = interp.getLeftPadding();
-            rpad = interp.getRightPadding();
-            tpad = interp.getTopPadding();
-            bpad = interp.getBottomPadding();
-        } else {
-            lpad = rpad = tpad = bpad = 0;
-        }
+        Interpolation interp =
+                this.interp != null
+                        ? this.interp
+                        : Interpolation.getInstance(Interpolation.INTERP_NEAREST);
+        int lpad = interp.getLeftPadding();
+        int rpad = interp.getRightPadding();
+        int tpad = interp.getTopPadding();
+        int bpad = interp.getBottomPadding();
 
         int minX, maxX, minY, maxY;
         RandomIter iter = null;
@@ -1267,15 +1262,14 @@ public class GridCoverage2DRIA extends GeometricOpImage {
 
     private void computeRectDouble(
             PlanarImage src, RasterAccessor dst, RandomIter roiIter, boolean roiContainsTile) {
-        int lpad, rpad, tpad, bpad;
-        if (interp != null) {
-            lpad = interp.getLeftPadding();
-            rpad = interp.getRightPadding();
-            tpad = interp.getTopPadding();
-            bpad = interp.getBottomPadding();
-        } else {
-            lpad = rpad = tpad = bpad = 0;
-        }
+        Interpolation interp =
+                this.interp != null
+                        ? this.interp
+                        : Interpolation.getInstance(Interpolation.INTERP_NEAREST);
+        int lpad = interp.getLeftPadding();
+        int rpad = interp.getRightPadding();
+        int tpad = interp.getTopPadding();
+        int bpad = interp.getBottomPadding();
 
         int minX, maxX, minY, maxY;
         RandomIter iter = null;
@@ -1451,16 +1445,14 @@ public class GridCoverage2DRIA extends GeometricOpImage {
      * @return
      */
     private PlanarImage getImage() {
-        PlanarImage img = roiImage;
-        if (img == null) {
+        if (roiImage == null) {
             synchronized (this) {
-                img = roiImage;
-                if (img == null) {
-                    roiImage = img = roi.getAsImage();
+                if (roiImage == null) {
+                    roiImage = roi.getAsImage();
                 }
             }
         }
-        return img;
+        return roiImage;
     }
 
     private boolean inROI(int x, int y, RandomIter roiIter, boolean roiContainsTile) {
@@ -1564,7 +1556,7 @@ public class GridCoverage2DRIA extends GeometricOpImage {
 
                 final PlanarImage constantImage =
                         ConstantDescriptor.create(
-                                new Float(w), new Float(h), new Byte[] {(byte) 255}, hints);
+                                Float.valueOf(w), Float.valueOf(h), new Byte[] {(byte) 255}, hints);
 
                 GridCoverage2D input =
                         new GridCoverageFactory(GeoTools.getDefaultHints())

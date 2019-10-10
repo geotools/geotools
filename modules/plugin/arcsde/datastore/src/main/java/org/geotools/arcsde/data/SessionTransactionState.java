@@ -52,13 +52,7 @@ final class SessionTransactionState implements Transaction.State {
     /** The transaction that is holding on to this Transaction.State */
     private Transaction transaction;
 
-    /**
-     * Creates a new ArcTransactionState object.
-     *
-     * @param listenerManager
-     * @param pool connection pool where to grab a connection and hold it while there's a
-     *     transaction open (signaled by any use of {@link #getConnection()}
-     */
+    /** Creates a new ArcTransactionState object. */
     private SessionTransactionState(final ISession session) {
         if (!session.isTransactionActive()) {
             throw new IllegalArgumentException("session shall be in transactional mode");

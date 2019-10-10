@@ -250,6 +250,7 @@ abstract class MarkFeatureIterator implements FeatureIterator<Feature> {
         }
 
         @Override
+        @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
         protected void finalize() throws Throwable {
             if (io != null) {
                 LOGGER.warning(

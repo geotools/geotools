@@ -16,6 +16,7 @@
  */
 package org.geotools.gml3.simple;
 
+import java.net.URI;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
@@ -195,12 +196,9 @@ public class GML3FeatureCollectionEncoderDelegate
 
         public void setSrsNameAttribute(AttributesImpl atts, CoordinateReferenceSystem crs) {
 
-            atts.addAttribute(
-                    null,
-                    "srsName",
-                    "srsName",
-                    null,
-                    GML3EncodingUtils.toURI(crs, srsSyntax).toString());
+            URI srsName = GML3EncodingUtils.toURI(crs, srsSyntax);
+            String crsName = srsName != null ? srsName.toString() : crs.getName().getCode();
+            atts.addAttribute(null, "srsName", "srsName", null, crsName);
         }
 
         @Override

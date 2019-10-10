@@ -24,7 +24,7 @@ Example
 ^^^^^^^
 
 On disk an image pyramid is going to look a bit like the following (you can use any format for
-the tiles from mrsid to tiff)::
+the tiles from MRSid to tiff)::
 
   directory/
   directory/pyramid.properties
@@ -52,7 +52,7 @@ The format of that pyramid.properties file is magic, while we can look at the ja
   #where all the levels reside
   LevelsDirs=0 2 4 8 16 32
   
-  #number of levels availaible
+  #number of levels available
   LevelsNum=6
   
   #envelope for this pyramid

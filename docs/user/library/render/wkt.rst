@@ -1,9 +1,9 @@
 WKT Marks
 ---------
 
-The use of WKT marks (prefiex with "wkt://" in your SLD) allows an easy way to add complex symbols to the rendering process. 
+The use of WKT marks (prefix with ``wkt://`` in your SLD) allows an easy way to add complex symbols to the rendering process. 
 Also there is the option of rendering marks built from WKT geometries; moreover, some Java-generated 
-shapes can be used to draw meteorological symbols... hope the weathermen will find this useful.
+shapes can be used to draw meteorological symbols. We hope the weathermen will find this useful.
 
 
 Examples:
@@ -66,13 +66,13 @@ Property File Configuration
 
 WKT shapes may be pooled in properties files (this file must be packed in the same JAR of this module) and re-used across SLD files, becoming libraries of symbols.
 
-For instance the WKT marks defined in this properties files (wkt.properties)::
+For instance the WKT marks defined in this properties files (``wkt.properties``)::
   
   ls=LINESTRING(0.0 0.25, 0.25 0.25, 0.5 0.75, 0.75 0.25, 1.00 0.25)
   ...
 
 
-To reference the above property file in your SLD, prefixed like this (note the protocol changed to "wktlib://")::
+To reference the above property file in your SLD, prefixed like this (note the protocol changed to ``wktlib://``)::
   
   <WellKnownName>wktlib://wkt.properties#ls</WellKnownName>
 
@@ -81,37 +81,37 @@ The location of the property file is either to be provided as an absolute path, 
 Weather symbols
 ^^^^^^^^^^^^^^^
 
-The weather symbols, which are create using Java code, should be prefixed by the "extshape://" protocol in the SLD,  are, for the time being, limited to the following
+The weather symbols, which are create using Java code, should be prefixed by the ``extshape://`` protocol in the SLD,  are, for the time being, limited to the following
 
-* Triangle::
+* ``Triangle``::
      
      <WellKnownName>extshape://triangle</WellKnownName> 
   
   Produces:
   
   .. image:: /images/triangle.png
-* Emicircle::
+* ``Emicircle``::
     
      <WellKnownName>extshape://emicircle</WellKnownName> 
    
   Produces:
   
   .. image:: /images/emicircle.png
-* Triangle Emicircle::
+* ``Triangle Emicircle``::
      
      <WellKnownName>extshape://triangleemicircle</WellKnownName> 
   
   Produces:
   
   .. image:: /images/triangleemicircle.png
-* North Arrow::
+* ``North Arrow``::
      
      <WellKnownName>extshape://narrow</WellKnownName> 
   
   Produces:
   
   .. image:: /images/narrow.png
-* South Arrow::
+* ``South Arrow``::
      
      <WellKnownName>extshape://sarrow</WellKnownName> 
   
@@ -123,9 +123,9 @@ The weather symbols, which are create using Java code, should be prefixed by the
 A customizable arrow shape is also available, that can generate different arrows based on different values
 of three optional parameters:
 
-  * t: thickness of the arrow base, between 0 and 1, default is 0.2
-  * hr: height over width ratio, a positive number, default is 2
-  * ab: arrow head base ration, between 0 and 1, default is 0.5 
+  * ``t``: thickness of the arrow base, between 0 and 1, default is 0.2
+  * ``hr``: height over width ratio, a positive number, default is 2
+  * ``ab``: arrow head base ration, between 0 and 1, default is 0.5 
 
 The general syntax is::
      
@@ -146,7 +146,7 @@ Finally, changing the arrow base between 0 and 1 generates:
 All of the above pictures have been taken using an anchor point of (0.5,0), that is, anchoring
 the arrow to its base, instead of its center, which would be its natural position. 
 
-More complex symbols like Wind Barbs can be created with the **windbarbs://** prefix. This is an example::
+More complex symbols like Wind Barbs can be created with the ``windbarbs://`` prefix. This is an example::
 
 	 <WellKnownName>windbarbs://default(15)[kts]</WellKnownName>
 		

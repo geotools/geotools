@@ -151,8 +151,6 @@ class ArcSDEQuery {
      *     calling code responsibility to close it when done.
      * @param fullSchema
      * @param query
-     * @param isMultiversioned whether the table is versioned, if so, the default version and
-     *     current state will be used for the SeQuery
      * @return
      * @throws IOException
      */
@@ -662,7 +660,7 @@ class ArcSDEQuery {
                                             queryInfo,
                                             defaultMaxDistinctValues);
                             int count = tableStats.getCount();
-                            return new Integer(count);
+                            return Integer.valueOf(count);
                         } finally {
                             query.close();
                         }

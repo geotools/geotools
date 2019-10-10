@@ -30,10 +30,10 @@ import org.geotools.data.ReTypeFeatureReader;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.data.store.ContentFeatureStore;
-import org.geotools.factory.Hints;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -51,7 +51,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * FeatureSource for the OGR store, based on the {@link ContentFeatureStore} framework
  *
  * @author Andrea Aime - GeoSolutions
-
  */
 @SuppressWarnings("rawtypes")
 class OGRFeatureSource extends ContentFeatureSource {
@@ -82,14 +81,14 @@ class OGRFeatureSource extends ContentFeatureSource {
             return null;
         } else {
             // encodable, we then encode and get the bounds
-            Object dataSource = null;
+            OGRDataSource dataSource = null;
             Object layer = null;
 
             try {
                 // grab the layer
                 String typeName = getEntry().getTypeName();
                 dataSource = getDataStore().openOGRDataSource(false);
-                layer = getDataStore().openOGRLayer(dataSource, typeName);
+                layer = getDataStore().openOGRLayer(dataSource, typeName, true);
 
                 // filter it
                 setLayerFilters(layer, filterTx);
@@ -105,7 +104,7 @@ class OGRFeatureSource extends ContentFeatureSource {
                     ogr.LayerRelease(layer);
                 }
                 if (dataSource != null) {
-                    ogr.DataSourceRelease(dataSource);
+                    dataSource.close();
                 }
             }
         }
@@ -125,11 +124,15 @@ class OGRFeatureSource extends ContentFeatureSource {
                     new GeometryMapper.WKB(new GeometryFactory(), ogr)
                             .parseGTGeometry(spatialFilter);
             ogr.LayerSetSpatialFilter(layer, ogrGeometry);
+        } else {
+            ogr.LayerSetSpatialFilter(layer, null);
         }
 
         String attFilter = filterTx.getAttributeFilter();
         if (attFilter != null) {
             ogr.LayerSetAttributeFilter(layer, attFilter);
+        } else {
+            ogr.LayerSetAttributeFilter(layer, null);
         }
     }
 
@@ -144,14 +147,14 @@ class OGRFeatureSource extends ContentFeatureSource {
             return -1;
         } else {
             // encode and count
-            Object dataSource = null;
+            OGRDataSource dataSource = null;
             Object layer = null;
 
             try {
                 // grab the layer
                 String typeName = getEntry().getTypeName();
                 dataSource = getDataStore().openOGRDataSource(false);
-                layer = getDataStore().openOGRLayer(dataSource, typeName);
+                layer = getDataStore().openOGRLayer(dataSource, typeName, true);
 
                 // filter it
                 setLayerFilters(layer, filterTx);
@@ -162,7 +165,7 @@ class OGRFeatureSource extends ContentFeatureSource {
                     ogr.LayerRelease(layer);
                 }
                 if (dataSource != null) {
-                    ogr.DataSourceRelease(dataSource);
+                    dataSource.close();
                 }
             }
         }
@@ -175,7 +178,7 @@ class OGRFeatureSource extends ContentFeatureSource {
     }
 
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(
-            Object dataSource, Object layer, Query query) throws IOException {
+            OGRDataSource dataSource, Object layer, Query query) throws IOException {
         // check how much we can encode
         OGRFilterTranslator filterTx = new OGRFilterTranslator(getSchema(), query.getFilter());
         if (Filter.EXCLUDE.equals(filterTx.getFilter())) {
@@ -186,16 +189,9 @@ class OGRFeatureSource extends ContentFeatureSource {
         boolean cleanup = false;
         try {
             // grab the data source
-            String typeName = getEntry().getTypeName();
             if (dataSource == null) {
                 dataSource = getDataStore().openOGRDataSource(false);
                 cleanup = true;
-            }
-
-            // extract the post filter
-            Filter postFilter = null;
-            if (!filterTx.isFilterFullySupported()) {
-                postFilter = filterTx.getPostFilter();
             }
 
             // prepare the target schema
@@ -206,13 +202,14 @@ class OGRFeatureSource extends ContentFeatureSource {
             if (properties != null && properties.length > 0) {
                 targetSchema = SimpleFeatureTypeBuilder.retype(sourceSchema, properties);
                 querySchema = targetSchema;
-                // if we have a post filter we have to include in the queried features also the
-                // attribute needed to evaluate the post-filter
-                if (postFilter != null) {
+                // if we have a filter we have to include in the queried features also the
+                // attribute needed to evaluate both the pre-filter and post-filter (the pre-filter
+                // evaluation just does not work when using setIgnoredFields down in this method)
+                if (query.getFilter() != Filter.INCLUDE) {
                     Set<String> queriedAttributes = new HashSet<String>(Arrays.asList(properties));
                     FilterAttributeExtractor extraAttributeExtractor =
                             new FilterAttributeExtractor();
-                    postFilter.accept(extraAttributeExtractor, null);
+                    query.getFilter().accept(extraAttributeExtractor, null);
                     Set<String> extraAttributeSet =
                             new HashSet<String>(extraAttributeExtractor.getAttributeNameSet());
                     extraAttributeSet.removeAll(queriedAttributes);
@@ -221,9 +218,7 @@ class OGRFeatureSource extends ContentFeatureSource {
                                 new String[properties.length + extraAttributeSet.size()];
                         System.arraycopy(properties, 0, queryProperties, 0, properties.length);
                         String[] extraAttributes =
-                                (String[])
-                                        extraAttributeSet.toArray(
-                                                new String[extraAttributeSet.size()]);
+                                extraAttributeSet.toArray(new String[extraAttributeSet.size()]);
                         System.arraycopy(
                                 extraAttributes,
                                 0,
@@ -240,12 +235,12 @@ class OGRFeatureSource extends ContentFeatureSource {
             if (layer == null) {
                 // We only need ExecuteSQL if the user specified sorting
                 if (query.getSortBy() == null || query.getSortBy().length == 0) {
-                    layer = ogr.DataSourceGetLayerByName(dataSource, getSchema().getTypeName());
+                    layer = dataSource.getLayerByName(getSchema().getTypeName(), true);
                     setLayerFilters(layer, filterTx);
-                }
-                // build the layer query and execute it
-                else {
-                    Object driver = ogr.DataSourceGetDriver(dataSource);
+                    setIgnoredFields(layer, querySchema, sourceSchema);
+                } else {
+                    // build the layer query and execute it
+                    Object driver = dataSource.getDriver();
                     String driverName = ogr.DriverGetName(driver);
                     ogr.DriverRelease(driver);
                     boolean isNonOgrSql = doesDriverUseNonOgrSql(driverName);
@@ -261,9 +256,7 @@ class OGRFeatureSource extends ContentFeatureSource {
                             }
                         }
                         if (needsFid) {
-                            layer =
-                                    ogr.DataSourceGetLayerByName(
-                                            dataSource, getSchema().getTypeName());
+                            layer = dataSource.getLayerByName(getSchema().getTypeName(), false);
                             fidColumnName = ogr.LayerGetFIDColumnName(layer);
                             ogr.LayerRelease(layer);
                             if (fidColumnName == null) {
@@ -287,7 +280,7 @@ class OGRFeatureSource extends ContentFeatureSource {
                                 new GeometryMapper.WKB(new GeometryFactory(), ogr)
                                         .parseGTGeometry(spatialFilter);
                     }
-                    layer = ogr.DataSourceExecuteSQL(dataSource, sql, spatialFilterPtr);
+                    layer = dataSource.executeSQL(sql, spatialFilterPtr);
                     if (layer == null) {
                         throw new IOException("Failed to query the source layer with SQL: " + sql);
                     }
@@ -295,7 +288,7 @@ class OGRFeatureSource extends ContentFeatureSource {
             } else {
                 setLayerFilters(layer, filterTx);
                 // would be nice, but it's not really working...
-                // setIgnoredFields(layer, querySchema, sourceSchema);
+                setIgnoredFields(layer, querySchema, sourceSchema);
             }
 
             // see if we have a geometry factory to use
@@ -311,9 +304,10 @@ class OGRFeatureSource extends ContentFeatureSource {
                 reader =
                         new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(
                                 reader, filterTx.getPostFilter());
-                if (targetSchema != querySchema) {
-                    reader = new ReTypeFeatureReader(reader, targetSchema);
-                }
+            }
+
+            if (targetSchema != querySchema) {
+                reader = new ReTypeFeatureReader(reader, targetSchema);
             }
 
             return reader;
@@ -323,7 +317,7 @@ class OGRFeatureSource extends ContentFeatureSource {
                     ogr.LayerRelease(layer);
                 }
                 if (dataSource != null) {
-                    ogr.DataSourceRelease(dataSource);
+                    dataSource.close();
                 }
             }
         }
@@ -349,31 +343,39 @@ class OGRFeatureSource extends ContentFeatureSource {
         return databaseDriverNames.contains(driverName.toUpperCase());
     }
 
+    void clearIgnoredFields(Object layer) {
+        if (ogr.LayerCanIgnoreFields(layer)) {
+            ogr.LayerSetIgnoredFields(layer, null);
+        }
+    }
+
     void setIgnoredFields(
             Object layer, SimpleFeatureType querySchema, SimpleFeatureType sourceSchema)
             throws IOException {
         if (ogr.LayerCanIgnoreFields(layer)) {
-            List<String> ignoredFields = new ArrayList<String>();
-            ignoredFields.add("OGR_STYLE");
-            // if no geometry, skip it
-            if (querySchema.getGeometryDescriptor() == null) {
-                ignoredFields.add("OGR_GEOMETRY");
-            }
-            // process all other attributes
-            for (AttributeDescriptor ad : sourceSchema.getAttributeDescriptors()) {
-                if (!(ad instanceof GeometryDescriptor)) {
-                    String name = ad.getLocalName();
-                    if (querySchema.getDescriptor(name) == null) {
-                        ignoredFields.add(name);
+            if (querySchema.equals(sourceSchema)) {
+                ogr.LayerSetIgnoredFields(layer, null);
+            } else {
+                List<String> ignoredFields = new ArrayList<String>();
+                ignoredFields.add("OGR_STYLE");
+                // if no geometry, skip it
+                if (querySchema.getGeometryDescriptor() == null) {
+                    ignoredFields.add("OGR_GEOMETRY");
+                }
+                // process all other attributes
+                for (AttributeDescriptor ad : sourceSchema.getAttributeDescriptors()) {
+                    if (!(ad instanceof GeometryDescriptor)) {
+                        String name = ad.getLocalName();
+                        if (querySchema.getDescriptor(name) == null) {
+                            ignoredFields.add(name);
+                        }
                     }
                 }
-            }
-            if (ignoredFields.size() > 0) {
-                // the list should be NULL terminated
-                ignoredFields.add(null);
-                String[] ignoredFieldsArr =
-                        (String[]) ignoredFields.toArray(new String[ignoredFields.size()]);
-                ogr.CheckError(ogr.LayerSetIgnoredFields(layer, ignoredFieldsArr));
+                if (ignoredFields.size() > 0) {
+                    String[] ignoredFieldsArr =
+                            (String[]) ignoredFields.toArray(new String[ignoredFields.size()]);
+                    ogr.CheckError(ogr.LayerSetIgnoredFields(layer, ignoredFieldsArr));
+                }
             }
         }
     }
@@ -462,12 +464,12 @@ class OGRFeatureSource extends ContentFeatureSource {
         String typeName = getEntry().getTypeName();
         String namespaceURI = getDataStore().getNamespaceURI();
 
-        Object dataSource = null;
+        OGRDataSource dataSource = null;
         Object layer = null;
         try {
             // grab the layer definition
             dataSource = getDataStore().openOGRDataSource(false);
-            layer = getDataStore().openOGRLayer(dataSource, typeName);
+            layer = getDataStore().openOGRLayer(dataSource, typeName, false);
 
             // map to geotools feature type
             return new FeatureTypeMapper(ogr).getFeatureType(layer, typeName, namespaceURI);
@@ -476,7 +478,7 @@ class OGRFeatureSource extends ContentFeatureSource {
                 ogr.LayerRelease(layer);
             }
             if (dataSource != null) {
-                ogr.DataSourceRelease(dataSource);
+                dataSource.close();
             }
         }
     }

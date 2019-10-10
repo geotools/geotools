@@ -76,7 +76,7 @@ public class MapBoundsEvent extends EventObject {
      * @throws IllegalArgumentException if type is invalid
      */
     public MapBoundsEvent(
-            MapContext source,
+            MapContent source,
             int type,
             ReferencedEnvelope oldAreaOfInterest,
             ReferencedEnvelope newAreaOfInterest) {
@@ -109,8 +109,8 @@ public class MapBoundsEvent extends EventObject {
      *
      * @param source map viewport reporting the change
      * @param type Type of event indicating {@link Type#BOUNDS} or {@link Type#CRS}
-     * @param oldAreaOfInterest the context's previous area of interest
-     * @param newAreaOfInterest the context's new area of interest
+     * @param oldBounds the context's previous area of interest
+     * @param newBounds the context's new area of interest
      * @throws IllegalArgumentException if type is invalid
      */
     public MapBoundsEvent(
@@ -133,8 +133,8 @@ public class MapBoundsEvent extends EventObject {
      * @param source map viewport reporting the change
      * @param type EnumSet flagging one or both of the following {@linkplain #AREA_OF_INTEREST_MASK}
      *     and {@linkplain #COORDINATE_SYSTEM_MASK}
-     * @param oldAreaOfInterest the context's previous area of interest
-     * @param newAreaOfInterest the context's new area of interest
+     * @param oldBounds the context's previous area of interest
+     * @param newBounds the context's new area of interest
      * @throws IllegalArgumentException if type is invalid
      */
     public MapBoundsEvent(

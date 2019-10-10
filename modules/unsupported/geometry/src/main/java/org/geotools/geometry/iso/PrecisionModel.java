@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2006  Vivid Solutions
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2006  Vivid Solutions
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -18,6 +18,7 @@
 package org.geotools.geometry.iso;
 
 import java.io.Serializable;
+import java.util.Objects;
 import org.geotools.geometry.iso.topograph2D.Coordinate;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Geometry;
@@ -230,6 +231,11 @@ public class PrecisionModel implements Serializable, Precision {
         return description;
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(modelType, scale);
+    }
+
     public boolean equals(Object other) {
         if (!(other instanceof PrecisionModel)) {
             return false;
@@ -254,7 +260,7 @@ public class PrecisionModel implements Serializable, Precision {
         if (other == null) return 0;
         int sigDigits = getMaximumSignificantDigits();
         int otherSigDigits = other.getMaximumSignificantDigits();
-        return (new Integer(sigDigits)).compareTo(new Integer(otherSigDigits));
+        return (Integer.valueOf(sigDigits)).compareTo(Integer.valueOf(otherSigDigits));
         // if (sigDigits > otherSigDigits)
         // return 1;
         // else if
@@ -279,7 +285,7 @@ public class PrecisionModel implements Serializable, Precision {
 
         int sigDigits = getMaximumSignificantDigits();
         int otherSigDigits = ((PrecisionModel) precision).getMaximumSignificantDigits();
-        return (new Integer(sigDigits)).compareTo(new Integer(otherSigDigits));
+        return (Integer.valueOf(sigDigits)).compareTo(Integer.valueOf(otherSigDigits));
     }
 
     public void round(DirectPosition position) {

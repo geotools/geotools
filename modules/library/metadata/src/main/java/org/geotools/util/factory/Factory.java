@@ -16,7 +16,7 @@
  */
 package org.geotools.util.factory;
 
-import java.awt.RenderingHints;
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -86,7 +86,7 @@ public interface Factory {
      * this factory to customize its use. This map is <strong>not</strong> guaranteed to contains
      * all the hints supplied by the user; it may be only a subset. Consequently, hints provided
      * here are usually not suitable for creating new factories, unless the implementation make some
-     * additional garantees (e.g. {@link FactoryUsingVolatileDependencies}).
+     * additional garantees.
      *
      * <p>The primary purpose of this method is to determine if an <strong>existing</strong> factory
      * instance can be reused for a set of user-supplied hints. This method is invoked by {@link
@@ -120,5 +120,7 @@ public interface Factory {
      * @return The map of hints, or an {@linkplain java.util.Collections#EMPTY_MAP empty map} if
      *     none.
      */
-    Map<RenderingHints.Key, ?> getImplementationHints();
+    default Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
+        return Collections.EMPTY_MAP;
+    }
 }

@@ -174,10 +174,9 @@ public class ToPointFunction implements Function {
      *
      * @param point The point object
      * @param crs Coordinate System object
-     * @param srsName srs name
      * @param gmlId gml:id value
      */
-    private void setUserData(Point geom, CoordinateReferenceSystem crs, String gmlId) {
+    private void setUserData(Point point, CoordinateReferenceSystem crs, String gmlId) {
         Map<Object, Object> userData = new HashMap<Object, Object>();
         if (gmlId != null) {
             userData.put("gml:id", gmlId);
@@ -185,6 +184,6 @@ public class ToPointFunction implements Function {
         if (crs != null) {
             userData.put(CoordinateReferenceSystem.class, crs);
         }
-        geom.setUserData(userData);
+        point.setUserData(userData);
     }
 }

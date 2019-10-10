@@ -18,6 +18,7 @@ package org.geotools.gce.imagemosaic.catalog;
 
 import java.io.File;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -135,7 +136,11 @@ public class MultiLevelROIProviderMosaicFactory extends MultiLevelROIProviderFac
         FootprintLoader overviewsFootprintLoader = null;
         try {
             if (footprintLoaderSpi != null) {
-                spi = (FootprintLoaderSpi) Class.forName(footprintLoaderSpi).newInstance();
+                spi =
+                        (FootprintLoaderSpi)
+                                Class.forName(footprintLoaderSpi)
+                                        .getDeclaredConstructor()
+                                        .newInstance();
                 footprintLoader = spi.createLoader();
                 overviewsFootprintLoader = footprintLoader;
 
@@ -143,7 +148,9 @@ public class MultiLevelROIProviderMosaicFactory extends MultiLevelROIProviderFac
                     // Use dedicate LoaderSPI for overviews
                     spi =
                             (FootprintLoaderSpi)
-                                    Class.forName(overviewsFootprintLoaderSpi).newInstance();
+                                    Class.forName(overviewsFootprintLoaderSpi)
+                                            .getDeclaredConstructor()
+                                            .newInstance();
                     overviewsFootprintLoader = spi.createLoader();
                 }
             }
@@ -156,7 +163,11 @@ public class MultiLevelROIProviderMosaicFactory extends MultiLevelROIProviderFac
                     overviewsFootprintLoader,
                     overviewsRoiInRasterSpace,
                     hints);
-        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+        } catch (InstantiationException
+                | IllegalAccessException
+                | ClassNotFoundException
+                | NoSuchMethodException
+                | InvocationTargetException e) {
             throw new IllegalArgumentException(
                     "Exception occurred while creating FootprintLoader", e);
         }

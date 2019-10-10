@@ -71,7 +71,7 @@ public class FeatureTypeConstraintImpl implements FeatureTypeConstraint, Cloneab
         }
 
         if (extents != null) {
-            result = (PRIME * result) + extents.hashCode();
+            result = (PRIME * result) + Arrays.hashCode(extents);
         }
         return result;
     }

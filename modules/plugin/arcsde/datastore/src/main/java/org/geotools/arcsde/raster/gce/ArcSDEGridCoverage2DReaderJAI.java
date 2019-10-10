@@ -259,10 +259,7 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
          */
         final TiledRasterReader rasterReader = rasterReaderFactory.create(rasterInfo);
 
-        try {
-            readAllTiledRasters(queries, rasterReader, log);
-        } finally {
-        }
+        readAllTiledRasters(queries, rasterReader, log);
 
         log.log(LoggingHelper.REQ_ENV);
         log.log(LoggingHelper.RES_ENV);
@@ -288,18 +285,6 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
                         coverageName, coverageRaster, resultEnvelope, bands, null, null);
 
         return resultCoverage;
-    }
-
-    private GeneralEnvelope toPixelCenter(double[] resolution, GeneralEnvelope pixelCornerEnv) {
-        double deltaX = resolution[0] / 2;
-        double deltaY = resolution[1] / 2;
-        GeneralEnvelope env = new GeneralEnvelope(pixelCornerEnv.getCoordinateReferenceSystem());
-        env.setEnvelope(
-                pixelCornerEnv.getMinimum(0) + deltaX,
-                pixelCornerEnv.getMinimum(1) + deltaY,
-                pixelCornerEnv.getMaximum(0) - deltaX,
-                pixelCornerEnv.getMaximum(1) - deltaY);
-        return env;
     }
 
     private GridSampleDimension[] getSampleDimensions(final RenderedImage coverageRaster)

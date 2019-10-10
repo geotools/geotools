@@ -40,6 +40,10 @@ public class PositionFactoryImpl implements PositionFactory {
         this.crs = crs;
     }
 
+    public DirectPosition createDirectPosition() {
+        return new DirectPositionImpl(crs, new double[crs.getCoordinateSystem().getDimension()]);
+    }
+
     public DirectPosition createDirectPosition(double[] ordiantes)
             throws MismatchedDimensionException {
         return new DirectPositionImpl(crs, ordiantes);
@@ -100,7 +104,7 @@ public class PositionFactoryImpl implements PositionFactory {
         } else {
             for (int i = start; i < end; i += D) {
                 double[] ordinates = new double[D];
-                for (int o = 0; i < D; i++) {
+                for (int o = 0; o < D; o++) {
                     ordinates[o] = array[i + o];
                 }
                 pointArray.add(new DirectPositionImpl(crs, ordinates));

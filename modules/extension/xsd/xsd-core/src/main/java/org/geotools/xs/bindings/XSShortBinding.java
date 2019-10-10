@@ -87,7 +87,7 @@ public class XSShortBinding implements SimpleBinding {
             text = text.substring(1);
         }
 
-        return new Short(text);
+        return Short.valueOf(text);
     }
 
     /**

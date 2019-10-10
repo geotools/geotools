@@ -35,12 +35,12 @@ public class AddImplTest extends TestCase {
 
     public void testEvaluate() {
         Object result = add.evaluate(null);
-        assertEquals(new Double(3), result);
+        assertEquals(Double.valueOf(3), result);
     }
 
     public void testEvaluateAsInteger() {
         Object result = add.evaluate(null, Integer.class);
-        assertEquals(new Integer(3), result);
+        assertEquals(Integer.valueOf(3), result);
     }
 
     public void testEvaluateAsString() {

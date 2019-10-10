@@ -35,7 +35,7 @@ public class LayerFeatureConstraintsImpl implements LayerFeatureConstraints {
             return true;
         }
 
-        if (obj instanceof FeatureTypeConstraintImpl) {
+        if (obj instanceof LayerFeatureConstraintsImpl) {
             LayerFeatureConstraintsImpl other = (LayerFeatureConstraintsImpl) obj;
             return Arrays.equals(constraints, other.constraints);
         }
@@ -48,7 +48,7 @@ public class LayerFeatureConstraintsImpl implements LayerFeatureConstraints {
         int result = 0;
 
         if (constraints != null) {
-            result = (PRIME * result) + constraints.hashCode();
+            result = (PRIME * result) + Arrays.hashCode(constraints);
         }
 
         return result;

@@ -47,7 +47,7 @@ import org.xml.sax.SAXException;
  * @since 2.4
  */
 public class XMLConfigDigester {
-    /** DOCUMENT ME! */
+
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(XMLConfigDigester.class);
 
@@ -93,14 +93,7 @@ public class XMLConfigDigester {
         return config;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param dataStoreConfigUrl DOCUMENT ME!
-     * @return DOCUMENT ME!
-     * @throws IOException DOCUMENT ME!
-     * @throws NullPointerException DOCUMENT ME!
-     */
+    /** */
     private AppSchemaDataAccessDTO digest(final URL dataStoreConfigUrl) throws IOException {
         if (dataStoreConfigUrl == null) {
             throw new NullPointerException("datastore config url");
@@ -286,6 +279,11 @@ public class XMLConfigDigester {
         digester.addCallMethod(attMap + "/ClientProperty", "putClientProperty", 2);
         digester.addCallParam(attMap + "/ClientProperty/name", 0);
         digester.addCallParam(attMap + "/ClientProperty/value", 1);
+
+        // Anonymous unbounded sequence attributes
+        digester.addCallMethod(attMap + "/anonymousAttribute", "putAnonymousAttribute", 2);
+        digester.addCallParam(attMap + "/anonymousAttribute/name", 0);
+        digester.addCallParam(attMap + "/anonymousAttribute/value", 1);
 
         // Field name in external index layer
         digester.addCallMethod(attMap + "/indexField", "setIndexField", 1);

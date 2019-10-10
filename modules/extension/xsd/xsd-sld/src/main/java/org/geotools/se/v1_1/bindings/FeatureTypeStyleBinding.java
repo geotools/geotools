@@ -93,9 +93,6 @@ public class FeatureTypeStyleBinding extends SLDFeatureTypeStyleBinding {
             fts.getDescription().setAbstract(d.getAbstract());
         }
 
-        // TODO: version
-        if (node.hasChild("version")) {}
-
         return fts;
     }
 }

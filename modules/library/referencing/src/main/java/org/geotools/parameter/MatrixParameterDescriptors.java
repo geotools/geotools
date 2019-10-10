@@ -430,6 +430,7 @@ public class MatrixParameterDescriptors extends DefaultParameterDescriptorGroup 
      *     versions of this class.
      */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return super.hashCode() ^ prefix.hashCode() ^ 37 * separator;
     }

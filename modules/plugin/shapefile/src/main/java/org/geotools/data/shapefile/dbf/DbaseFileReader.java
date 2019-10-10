@@ -130,7 +130,7 @@ public class DbaseFileReader implements FileReader {
     /**
      * Creates a new instance of DBaseFileReader
      *
-     * @param shapefileFiles. The readable channel to use.
+     * @param shapefileFiles The readable channel to use.
      * @throws IOException If an error occurs while initializing.
      */
     public DbaseFileReader(
@@ -619,6 +619,7 @@ public class DbaseFileReader implements FileReader {
         return new String(chars);
     }
 
+    @SuppressWarnings("PMD.SystemPrintln")
     public static void main(final String[] args) throws Exception {
         final DbaseFileReader reader =
                 new DbaseFileReader(

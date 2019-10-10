@@ -60,7 +60,6 @@ public class IndexerUtils {
                 // parse this def as NAME[CONFIG_FILE](PROPERTY;PROPERTY;....;PROPERTY)
                 final int squareLPos = pcDef.indexOf("[");
                 final int squareRPos = pcDef.indexOf("]");
-                final int squareRPosLast = pcDef.lastIndexOf("]");
                 final int roundLPos = pcDef.indexOf("(");
                 final int roundRPos = pcDef.indexOf(")");
                 final int roundRPosLast = pcDef.lastIndexOf(")");
@@ -613,8 +612,7 @@ public class IndexerUtils {
         Coverage coverage = Utils.OBJECT_FACTORY.createIndexerCoveragesCoverage();
         coverageList.add(coverage);
 
-        indexer.setParameters(params);
-        List<Parameter> parameters = params.getParameter();
+        List<Parameter> parameters = indexer.getParameters().getParameter();
 
         // name
         if (props.containsKey(Utils.Prop.NAME)) {

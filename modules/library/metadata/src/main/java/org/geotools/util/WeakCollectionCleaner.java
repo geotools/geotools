@@ -107,7 +107,5 @@ public final class WeakCollectionCleaner extends Thread {
         } catch (InterruptedException e) {
 
         }
-        // last resort tentative to kill the cleaner thread
-        if (this.isAlive()) this.stop();
     }
 }

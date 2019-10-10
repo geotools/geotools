@@ -52,7 +52,7 @@ public final class DataAccessFinder {
             org.geotools.util.logging.Logging.getLogger(DataAccessFinder.class);
 
     /** The service registry for this manager. Will be initialized only when first needed. */
-    private static FactoryRegistry registry;
+    private static volatile FactoryRegistry registry;
 
     // Singleton pattern
     private DataAccessFinder() {}

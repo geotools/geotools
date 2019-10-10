@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.locationtech.jts.geom.*;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 
 /**
  * The GeobufGeometry class encodes and decodes geobuf geometries
@@ -168,7 +169,7 @@ public class GeobufGeometry {
             return geometryFactory.createPolygon(shell, holes);
         } else if (g.getType() == Geobuf.Data.Geometry.Type.MULTIPOINT) {
             Coordinate[] coords = getAllCoordinates(g);
-            return geometryFactory.createMultiPoint(coords);
+            return geometryFactory.createMultiPoint(new CoordinateArraySequence(coords));
         } else if (g.getType() == Geobuf.Data.Geometry.Type.MULTILINESTRING) {
             List<Coordinate[]> listOfCoordinates = getCoordinates(g);
             LineString[] lines = new LineString[listOfCoordinates.size()];
@@ -252,7 +253,7 @@ public class GeobufGeometry {
                 } else if (k == 1) {
                     coord.y = value;
                 } else if (k == 2) {
-                    coord.z = value;
+                    coord.setZ(value);
                 }
                 c++;
             }
@@ -268,7 +269,6 @@ public class GeobufGeometry {
         if (numberOfLengths == 0) {
             listOfCoordinates.add(getAllCoordinates(g));
         } else {
-            int c = 0;
             int start = 0;
             for (int i = 0; i < numberOfLengths; i++) {
                 int len = g.getLengths(i);

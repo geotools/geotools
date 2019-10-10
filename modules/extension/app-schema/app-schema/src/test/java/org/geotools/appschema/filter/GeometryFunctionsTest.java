@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import org.geotools.appschema.filter.expression.ToDirectPositionFunction;
-import org.geotools.data.complex.config.Types;
+import org.geotools.data.complex.feature.type.Types;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeImpl;
@@ -301,10 +301,10 @@ public class GeometryFunctionsTest extends AppSchemaTestSupport {
         assertEquals("EPSG:9902", crs.getName().getCode());
         assertEquals(linestring.getCoordinateN(0).x, 5.0, 0);
         assertEquals(linestring.getCoordinateN(0).y, Coordinate.NULL_ORDINATE, 0);
-        assertEquals(linestring.getCoordinateN(0).z, Coordinate.NULL_ORDINATE, 0);
+        assertEquals(linestring.getCoordinateN(0).getZ(), Coordinate.NULL_ORDINATE, 0);
         assertEquals(linestring.getCoordinateN(1).x, 2.5, 0);
         assertEquals(linestring.getCoordinateN(1).y, Coordinate.NULL_ORDINATE, 0);
-        assertEquals(linestring.getCoordinateN(1).z, Coordinate.NULL_ORDINATE, 0);
+        assertEquals(linestring.getCoordinateN(1).getZ(), Coordinate.NULL_ORDINATE, 0);
     }
 
     @Test
@@ -322,10 +322,10 @@ public class GeometryFunctionsTest extends AppSchemaTestSupport {
         assertEquals(customSRS, crs.getName().getCode());
         assertEquals(linestring.getCoordinateN(0).x, 5.0, 0);
         assertEquals(linestring.getCoordinateN(0).y, Coordinate.NULL_ORDINATE, 0);
-        assertEquals(linestring.getCoordinateN(0).z, Coordinate.NULL_ORDINATE, 0);
+        assertEquals(linestring.getCoordinateN(0).getZ(), Coordinate.NULL_ORDINATE, 0);
         assertEquals(linestring.getCoordinateN(1).x, 2.5, 0);
         assertEquals(linestring.getCoordinateN(1).y, Coordinate.NULL_ORDINATE, 0);
-        assertEquals(linestring.getCoordinateN(1).z, Coordinate.NULL_ORDINATE, 0);
+        assertEquals(linestring.getCoordinateN(1).getZ(), Coordinate.NULL_ORDINATE, 0);
     }
 
     @Test

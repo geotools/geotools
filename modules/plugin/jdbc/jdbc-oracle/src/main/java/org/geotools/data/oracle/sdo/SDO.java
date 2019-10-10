@@ -113,7 +113,8 @@ public final class SDO {
      * @return <code>3</code>
      */
     public static int D(Geometry geom) {
-        CoordinateSequenceFactory f = geom.getFactory().getCoordinateSequenceFactory();
+        CoordinateSequenceFactory f =
+                geom != null ? geom.getFactory().getCoordinateSequenceFactory() : null;
 
         if (f instanceof CoordinateAccessFactory) {
             return ((CoordinateAccessFactory) f).getDimension();
@@ -121,7 +122,7 @@ public final class SDO {
             return 2;
         } else {
             // return 3;
-            return Double.isNaN(geom.getCoordinate().z) ? 2 : 3;
+            return Double.isNaN(geom.getCoordinate().getZ()) ? 2 : 3;
         }
     }
 
@@ -229,7 +230,7 @@ public final class SDO {
             Point point = (Point) geom;
             Coordinate coord = point.getCoordinate();
 
-            return new double[] {coord.x, coord.y, coord.z};
+            return new double[] {coord.x, coord.y, coord.getZ()};
         }
 
         // SDO_POINT_TYPE only used for non LRS Points
@@ -440,20 +441,8 @@ public final class SDO {
         }
     }
 
-    /**
-     * Adds contents of array to the list as Interger objects
-     *
-     * @param list List to append the contents of array to
-     * @param array Array of ints to append
-     */
-    private static void addInts(List list, int[] array) {
-        for (int i = 0; i < array.length; i++) {
-            list.add(new Integer(array[i]));
-        }
-    }
-
     private static void addInt(List list, int i) {
-        list.add(new Integer(i));
+        list.add(Integer.valueOf(i));
     }
 
     /**
@@ -850,31 +839,10 @@ public final class SDO {
     }
 
     private static double[] ordinateArray(Coordinate coord) {
-        return new double[] {coord.x, coord.y, coord.z};
+        return new double[] {coord.x, coord.y, coord.getZ()};
     }
 
     private static double[] ordinateArray(CoordinateAccess access, int index) {
-        final int D = access.getDimension();
-        final int L = access.getNumAttributes();
-        final int LEN = D + L;
-        double[] ords = new double[LEN];
-
-        for (int i = 0; i < LEN; i++) {
-            ords[i] = access.getOrdinate(index, i);
-        }
-
-        return ords;
-    }
-
-    /**
-     * ordinateArray purpose.
-     *
-     * <p>Description ...
-     *
-     * @param access
-     * @param index
-     */
-    private static double[] doubleOrdinateArray(CoordinateAccess access, int index) {
         final int D = access.getDimension();
         final int L = access.getNumAttributes();
         final int LEN = D + L;
@@ -948,7 +916,7 @@ public final class SDO {
      * <p>
      *
      * @param list List to add coordiantes to
-     * @param polygon Polygon to be encoded
+     * @param poly Polygon to be encoded
      */
     private static void addCoordinatesInterpretation3(List list, Polygon poly) {
         Envelope e = poly.getEnvelopeInternal();
@@ -1069,7 +1037,7 @@ public final class SDO {
             } else if (ordinate == 2) {
                 for (int i = 0; i < LENGTH; i++) {
                     c = coords.getCoordinate(i);
-                    array[i] = (c != null) ? c.z : Double.NaN;
+                    array[i] = (c != null) ? c.getZ() : Double.NaN;
                 }
             } else {
                 // default to NaN
@@ -1121,7 +1089,7 @@ public final class SDO {
         } else if (ordinate == 2) {
             for (int i = 0; i < LENGTH; i++) {
                 c = array[i];
-                ords[i] = (c != null) ? c.z : Double.NaN;
+                ords[i] = (c != null) ? c.getZ() : Double.NaN;
             }
         } else {
             // default to NaN
@@ -1155,7 +1123,7 @@ public final class SDO {
         } else if (ordinate == 2) {
             for (int i = 0; i < LENGTH; i++) {
                 c = (Coordinate) list.get(i);
-                ords[i] = (c != null) ? c.z : Double.NaN;
+                ords[i] = (c != null) ? c.getZ() : Double.NaN;
             }
         } else {
             // default to NaN
@@ -1166,66 +1134,6 @@ public final class SDO {
 
         return ords;
     }
-
-    /**
-     * Do not use me, I am broken
-     *
-     * <p>Do not use me, I am broken
-     *
-     * @deprecated Do not use me, I am broken
-     * @param list
-     * @param ordinate
-     */
-    /*
-    //TODO: check if I am correct
-    public static Object[] attributeArray(List list, int ordinate) {
-        if (list == null) {
-            return null;
-        }
-
-        final int LENGTH = list.size();
-        Object[] ords = new Object[LENGTH];
-        Coordinate c;
-        Double d;
-        String s;
-
-        if (ordinate == 0) {
-            for (int i = 0; i < LENGTH; i++) {
-                c = (Coordinate) list.get(i);
-                ords[i] = (c != null) ? new Double(c.x) : new Double(Double.NaN);
-            }
-        } else if (ordinate == 1) {
-            for (int i = 0; i < LENGTH; i++) {
-                c = (Coordinate) list.get(i);
-                ords[i] = (c != null) ? new Double(c.y) : new Double(Double.NaN);
-            }
-        } else if (ordinate == 2) {
-            for (int i = 0; i < LENGTH; i++) {
-                c = (Coordinate) list.get(i);
-                ords[i] = (c != null) ? new Double(c.z) : new Double(Double.NaN);
-            }
-        }
-        else if (ordinate == 3) {       //BUG I am broken, do not use me our own Z
-            for (int i = 0; i < LENGTH; i++) {
-                c = (Coordinate) list.get(i);
-                ords[i] = (c != null) ? new Double(Double.NaN) : new Double(Double.NaN);
-            }
-        }
-        else if (ordinate == 4) {       // our own T (a String)
-            for (int i = 0; i < LENGTH; i++) {
-                c = (Coordinate) list.get(i);
-                ords[i] = (c != null) ? new Double(Double.NaN) : new Double(Double.NaN);
-            }
-        }else {
-            // default to NaN
-            for (int i = 0; i < LENGTH; i++) {
-                ords[i] = list.get(i);
-            }
-        }
-
-        return ords;
-    }
-    */
 
     /**
      * Package up <code>array</code> in correct manner for <code>geom</code>.
@@ -1400,22 +1308,6 @@ public final class SDO {
             return ring;
         }
         return Coordinates.reverse(factory, ring);
-    }
-
-    /**
-     * Reverse the Orientationwise orientation of the ring of Coordinates.
-     *
-     * @param ring Ring of Coordinates
-     * @return coords Copy of <code>ring</code> in reversed order
-     */
-    private static Coordinate[] reverse(Coordinate[] ring) {
-        int length = ring.length;
-        Coordinate[] reverse = new Coordinate[length];
-
-        for (int i = 0; i < length; i++) {
-            reverse[i] = ring[length - i - 1];
-        }
-        return reverse;
     }
 
     // Utility Functions
@@ -1659,32 +1551,17 @@ public final class SDO {
         return array;
     }
 
-    /**
-     * Access D (for dimension) as encoded in GTYPE
-     *
-     * @param GTYPE DOCUMENT ME!
-     * @return DOCUMENT ME!
-     */
+    /** Access D (for dimension) as encoded in GTYPE */
     public static int D(final int GTYPE) {
         return GTYPE / 1000;
     }
 
-    /**
-     * Access L (for LRS) as encoded in GTYPE
-     *
-     * @param GTYPE DOCUMENT ME!
-     * @return DOCUMENT ME!
-     */
+    /** Access L (for LRS) as encoded in GTYPE */
     public static int L(final int GTYPE) {
         return (GTYPE - (D(GTYPE) * 1000)) / 100;
     }
 
-    /**
-     * Access TT (for geometry type) as encoded in GTYPE
-     *
-     * @param GTYPE DOCUMENT ME!
-     * @return DOCUMENT ME!
-     */
+    /** Access TT (for geometry type) as encoded in GTYPE */
     public static int TT(final int GTYPE) {
         return GTYPE - (D(GTYPE) * 1000) - (L(GTYPE) * 100);
     }
@@ -1693,10 +1570,6 @@ public final class SDO {
      * Access STARTING_OFFSET from elemInfo, or -1 if not available.
      *
      * <p>
-     *
-     * @param elemInfo DOCUMENT ME!
-     * @param triplet DOCUMENT ME!
-     * @return DOCUMENT ME!
      */
     private static int STARTING_OFFSET(int[] elemInfo, int triplet) {
         if (((triplet * 3) + 0) >= elemInfo.length) {
@@ -1729,7 +1602,9 @@ public final class SDO {
             String msg =
                     MessageFormat.format(
                             condition,
-                            new Object[] {new Integer(min), new Integer(actual), new Integer(max)});
+                            new Object[] {
+                                Integer.valueOf(min), Integer.valueOf(actual), Integer.valueOf(max)
+                            });
             throw new IllegalArgumentException(msg);
         }
     }
@@ -1762,7 +1637,7 @@ public final class SDO {
                 array.append(",");
             }
         }
-        String msg = MessageFormat.format(condition, new Object[] {new Integer(actual), array});
+        String msg = MessageFormat.format(condition, new Object[] {Integer.valueOf(actual), array});
         throw new IllegalArgumentException(msg);
     }
     /**
@@ -1818,23 +1693,12 @@ public final class SDO {
         return elemInfo[(triplet * 3) + 2];
     }
 
-    /**
-     * Coordinates from <code>(x,y,x2,y2,...)</code> ordinates.
-     *
-     * @param ordinates DOCUMENT ME!
-     * @return DOCUMENT ME!
-     */
+    /** Coordinates from <code>(x,y,x2,y2,...)</code> ordinates. */
     public static Coordinate[] asCoordinates(double[] ordinates) {
         return asCoordinates(ordinates, 2);
     }
 
-    /**
-     * Coordinates from a <code>(x,y,i3..,id,x2,y2...)</code> ordinates.
-     *
-     * @param ordinates DOCUMENT ME!
-     * @param d DOCUMENT ME!
-     * @return DOCUMENT ME!
-     */
+    /** Coordinates from a <code>(x,y,i3..,id,x2,y2...)</code> ordinates. */
     public static Coordinate[] asCoordinates(double[] ordinates, int d) {
         int length = ordinates.length / d;
         Coordinate[] coords = new Coordinate[length];
@@ -1868,7 +1732,6 @@ public final class SDO {
      * @param f CoordinateSequenceFactory used to encode ordiantes for JTS
      * @param GTYPE Encoding of <b>D</b>imension, <b>L</b>RS and <b>TT</b>ype
      * @param ordinates
-     * @throws IllegalArgumentException DOCUMENT ME!
      */
     public static CoordinateSequence coordinates(
             CoordinateSequenceFactory f, final int GTYPE, double[] ordinates) {
@@ -1920,8 +1783,6 @@ public final class SDO {
             return ((LiteCoordinateSequenceFactory) f).create(ordinates);
         }
 
-        final int LENGTH = ordinates.length / LEN;
-
         OrdinateList x = new OrdinateList(ordinates, 0, LEN);
         OrdinateList y = new OrdinateList(ordinates, 1, LEN);
         OrdinateList z = null;
@@ -1947,12 +1808,6 @@ public final class SDO {
      * Construct CoordinateSequence with no LRS measures.
      *
      * <p>To produce two dimension Coordinates pass in <code>null</code> for z
-     *
-     * @param f DOCUMENT ME!
-     * @param x DOCUMENT ME!
-     * @param y DOCUMENT ME!
-     * @param z DOCUMENT ME!
-     * @return DOCUMENT ME!
      */
     public static CoordinateSequence coordiantes(
             CoordinateSequenceFactory f, OrdinateList x, OrdinateList y, OrdinateList z) {
@@ -1980,12 +1835,6 @@ public final class SDO {
      * Construct CoordinateSequence with no LRS measures.
      *
      * <p>To produce two dimension Coordinates pass in <code>null</code> for z
-     *
-     * @param f DOCUMENT ME!
-     * @param x DOCUMENT ME!
-     * @param y DOCUMENT ME!
-     * @param z DOCUMENT ME!
-     * @return DOCUMENT ME!
      */
     public static CoordinateSequence coordiantes(
             CoordinateSequenceFactory f, AttributeList x, AttributeList y, AttributeList z) {
@@ -2046,96 +1895,6 @@ public final class SDO {
         }
 
         return cs;
-    }
-
-    /**
-     * @deprecated bugfix 20121231-BK: Oracle supports only one LRS measure information! use {@link
-     *     SDO#coordiantes(CoordinateSequenceFactory, OrdinateList, OrdinateList, OrdinateList,
-     *     OrdinateList) coordiantes() with just a OrdinateList of measures}! Construct
-     *     SpatialCoordinates, with LRS measure information.
-     *     <p>To produce two dimension Coordinates pass in <code>null</code> for z
-     * @param f DOCUMENT ME!
-     * @param x x-ordinates
-     * @param y y-ordinates
-     * @param z z-ordinates, <code>null</code> for 2D
-     * @param m column major measure information
-     * @return DOCUMENT ME!
-     */
-    @Deprecated
-    public static CoordinateSequence coordiantes(
-            CoordinateSequenceFactory f,
-            OrdinateList x,
-            OrdinateList y,
-            OrdinateList z,
-            OrdinateList[] m) {
-        final int D = (z != null) ? 3 : 2;
-        final int L = (m != null) ? m.length : 0;
-
-        if (f instanceof CoordinateAccess && (L != 0)) {
-            CoordinateAccessFactory factory = (CoordinateAccessFactory) f;
-            double[][] xyz = new double[D][];
-            double[][] measures = new double[L][];
-
-            xyz[0] = x.toDoubleArray();
-            xyz[1] = y.toDoubleArray();
-
-            if (D == 3) {
-                xyz[2] = z.toDoubleArray();
-            }
-
-            for (int i = 0; i < L; i++) {
-                measures[i] = m[i].toDoubleArray();
-            }
-
-            return factory.create(xyz, measures);
-        } else {
-            return coordiantes(f, x, y, z);
-        }
-    }
-
-    /**
-     * @deprecated bugfix 20121231-BK: Oracle supports only one LRS measure information! use {@link
-     *     SDO#coordiantes(CoordinateSequenceFactory, OrdinateList, OrdinateList, OrdinateList,
-     *     OrdinateList) coordiantes() with just a OrdinateList of measures}! Construct
-     *     SpatialCoordinates, with LRS measure information.
-     *     <p>To produce two dimension Coordinates pass in <code>null</code> for z
-     * @param f DOCUMENT ME!
-     * @param x x-ordinates
-     * @param y y-ordinates
-     * @param z z-ordinates, <code>null</code> for 2D
-     * @param m column major measure information
-     * @return DOCUMENT ME!
-     */
-    @Deprecated
-    public static CoordinateSequence coordiantes(
-            CoordinateSequenceFactory f,
-            AttributeList x,
-            AttributeList y,
-            AttributeList z,
-            AttributeList[] m) {
-        final int D = (z != null) ? 3 : 2;
-        final int L = (m != null) ? m.length : 0;
-
-        if (f instanceof CoordinateAccess && (L != 0)) {
-            CoordinateAccessFactory factory = (CoordinateAccessFactory) f;
-            double[][] xyz = new double[D][];
-            Object[] measures = new Object[L];
-
-            xyz[0] = x.toDoubleArray();
-            xyz[1] = y.toDoubleArray();
-
-            if (D == 3) {
-                xyz[2] = z.toDoubleArray();
-            }
-
-            for (int i = 0; i < L; i++) {
-                measures[i] = m[i].toObjectArray();
-            }
-
-            return factory.create(xyz, measures);
-        } else {
-            return coordiantes(f, x, y, z);
-        }
     }
 
     /**
@@ -2210,7 +1969,6 @@ public final class SDO {
      * @param GTYPE Encoding of <b>D</b>imension, <b>L</b>RS and <b>TT</b>ype
      * @param SRID
      * @param elemInfo
-     * @param triplet DOCUMENT ME!
      * @param coords
      * @param N Number of triplets (-1 for unknown/don't care)
      * @return Geometry as encoded, or null w/ log if it cannot be represented via JTS

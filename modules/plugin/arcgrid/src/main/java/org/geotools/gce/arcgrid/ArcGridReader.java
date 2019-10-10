@@ -22,7 +22,6 @@ import it.geosolutions.imageio.plugins.arcgrid.spi.AsciiGridsImageReaderSpi;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.image.ColorModel;
-import java.awt.image.SampleModel;
 import java.awt.image.renderable.ParameterBlock;
 import java.io.File;
 import java.io.FileInputStream;
@@ -489,7 +488,6 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
             //
             // Sample dimension
             //
-            final SampleModel sm = asciiCoverage.getSampleModel();
             final ColorModel cm = asciiCoverage.getColorModel();
             final ColorInterpretation colorInterpretation = TypeMap.getColorInterpretation(cm, 0);
             if (colorInterpretation == null)
@@ -498,7 +496,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
             final GridSampleDimension band =
                     new GridSampleDimension(coverageName, new Category[] {nan}, uom);
             final Map<String, Object> properties = new HashMap<String, Object>();
-            CoverageUtilities.setNoDataProperty(properties, new Double(inNoData));
+            CoverageUtilities.setNoDataProperty(properties, Double.valueOf(inNoData));
 
             //
             // Coverage

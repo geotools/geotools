@@ -757,7 +757,7 @@ public class Wps10Validator extends EObjectValidator {
    * @generated
    * @see #validatePercentCompletedType_Min
    */
-    public static final BigInteger PERCENT_COMPLETED_TYPE__MIN__VALUE = new BigInteger("0");
+    public static final BigInteger PERCENT_COMPLETED_TYPE__MIN__VALUE = BigInteger.valueOf(0);
 
     /**
    * Validates the Min constraint of '<em>Percent Completed Type</em>'.

@@ -83,7 +83,6 @@ public class TileLayer extends DirectLayer {
 
         BufferedImage mosaickedImage = createImage(viewport.getScreenArea());
         Graphics2D g2d = mosaickedImage.createGraphics();
-        long t = System.currentTimeMillis();
         renderTiles(tiles, g2d, viewportExtent, viewport.getWorldToScreen());
 
         this.coverage = gridFactory.create("GridCoverage", mosaickedImage, viewportExtent);

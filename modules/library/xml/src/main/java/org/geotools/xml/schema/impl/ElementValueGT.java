@@ -19,11 +19,7 @@ package org.geotools.xml.schema.impl;
 import org.geotools.xml.schema.Element;
 import org.geotools.xml.schema.ElementValue;
 
-/**
- * DOCUMENT ME!
- *
- * @author dzwiers
- */
+/** @author dzwiers */
 public class ElementValueGT implements ElementValue {
     private Element element;
     private Object value;
@@ -32,12 +28,7 @@ public class ElementValueGT implements ElementValue {
         // do nothing
     }
 
-    /**
-     * Creates a new ElementValueGT object.
-     *
-     * @param element DOCUMENT ME!
-     * @param value DOCUMENT ME!
-     */
+    /** Creates a new ElementValueGT object. */
     public ElementValueGT(Element element, Object value) {
         this.element = element;
         this.value = value;

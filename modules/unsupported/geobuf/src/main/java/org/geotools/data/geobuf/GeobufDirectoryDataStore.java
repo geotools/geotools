@@ -78,9 +78,11 @@ public class GeobufDirectoryDataStore extends ContentDataStore {
                             }
                         });
         List<Name> names = new ArrayList<>();
-        for (File file : files) {
-            String name = file.getName();
-            names.add(new NameImpl(name.substring(0, name.lastIndexOf('.'))));
+        if (files != null) {
+            for (File file : files) {
+                String name = file.getName();
+                names.add(new NameImpl(name.substring(0, name.lastIndexOf('.'))));
+            }
         }
         return names;
     }

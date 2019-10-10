@@ -20,6 +20,7 @@ import static org.junit.Assert.*;
 
 import java.util.HashSet;
 import java.util.Random;
+import java.util.UUID;
 import org.junit.*;
 
 /**
@@ -77,10 +78,10 @@ public final class CanonicalSetTest {
     public void testWeakReferences() throws InterruptedException {
         final Random random = new Random();
         for (int pass = 0; pass < 2; pass++) {
-            final CanonicalSet<Integer> weakSet = CanonicalSet.newInstance(Integer.class);
-            final HashSet<Integer> strongSet = new HashSet<Integer>();
+            final CanonicalSet<UUID> weakSet = CanonicalSet.newInstance(UUID.class);
+            final HashSet<UUID> strongSet = new HashSet<UUID>();
             for (int i = 0; i < 500; i++) {
-                final Integer value = new Integer(random.nextInt(500)); // Really need new instances
+                final UUID value = UUID.randomUUID(); // Really need new instances
                 if (random.nextBoolean()) {
                     /*
                      * Tests addition.

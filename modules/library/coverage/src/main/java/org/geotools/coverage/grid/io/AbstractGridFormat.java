@@ -223,6 +223,22 @@ public abstract class AbstractGridFormat implements Format {
                     FootprintBehavior.valuesAsStrings(),
                     FootprintBehavior.None.name());
 
+    /** Default value of the rescaling behavior, in case it's not specified */
+    private static boolean RESCALE_DEFAULT =
+            Boolean.valueOf(System.getProperty("org.geotools.coverage.io.rescale", "true"));
+
+    /**
+     * This {@code GeneralParameterValue} can be provided to the {@link GridCoverageReader}s through
+     * the {@link GridCoverageReader#read(GeneralParameterValue[])} method in order to specify the
+     * whether eventual value rescaling should be performed, or the original pixel value preserved
+     */
+    public static final DefaultParameterDescriptor<Boolean> RESCALE_PIXELS =
+            new DefaultParameterDescriptor<Boolean>(
+                    "RescalePixels",
+                    Boolean.class,
+                    new Boolean[] {Boolean.TRUE, Boolean.FALSE},
+                    RESCALE_DEFAULT);
+
     /** @see org.opengis.coverage.grid.Format#getName() */
     public String getName() {
         return mInfo.get("name");
@@ -288,7 +304,7 @@ public abstract class AbstractGridFormat implements Format {
     /**
      * Tells me if this {@link Format} can read the provided <code>input</code>.
      *
-     * @param input The input object to test for suitability.
+     * @param source The input object to test for suitability.
      * @return True if this format can read this object, False otherwise.
      */
     public boolean accepts(Object source) {
@@ -298,7 +314,7 @@ public abstract class AbstractGridFormat implements Format {
     /**
      * Tells me if this {@link Format} can read the provided <code>input</code>.
      *
-     * @param input The input object to test for suitability.
+     * @param source The input object to test for suitability.
      * @param hints {@link Hints} to control the accepts internal machinery.
      * @return True if this format can read this object, False otherwise.
      */

@@ -1,7 +1,7 @@
 CRS
 ---
 
-We have provided the **CRS** helper class as your first point of call when working with the referencing module. This class allows you to quickly accomplish the most common referencing tasks.
+We have provided the ``CRS`` helper class as your first point of call when working with the referencing module. This class allows you to quickly accomplish the most common referencing tasks.
 
 References:
 
@@ -9,11 +9,11 @@ References:
 
 *Before you Start*
 
-The most conservative way to deal with the definition of a **CoordinateReferenceSystem** is not
+The most conservative way to deal with the definition of a ``CoordinateReferenceSystem`` is not
 to. Instead make use of an authority that provides complete definitions defined by a simple code.
 
-To hook this up make sure you have one of the **gt-epsg** plugins on your CLASSPATH. The
-**gt-epsg-hsql** plugin is recommended.
+To hook this up make sure you have one of the ``gt-epsg`` plugins on your CLASSPATH. The
+``gt-epsg-hsql`` plugin is recommended.
 
 Defining a CoordinateReferenceSystem
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -24,7 +24,7 @@ This is easily the most common use for the CRS class::
   
   CoordinateReferenceSystem sourceCRS = CRS.decode("EPSG:4326");
 
-The example above assumes you have **gt-epsg-hsql** jar on your CLASSPATH.
+The example above assumes you have ``gt-epsg-hsql`` jar on your CLASSPATH.
 
 Depending on the jars you have on your CLASSPATH a range of authorities are available to define a
 coordinate reference system for you.
@@ -40,9 +40,9 @@ Using the WMS AUTO2 syntax (which requires you pass in your current "position"::
 Well Known Text
 '''''''''''''''
 
-**CoordinateReferenceSystem** can also be defined by a text format ((called "Well Known Text" or WKT). This is a standard provided by the OGC and shows up in inside a shapefile "prj" file, or in a databases such as PostGIS and Oracle.
+``CoordinateReferenceSystem`` can also be defined by a text format ((called "Well Known Text" or WKT). This is a standard provided by the OGC and shows up in inside a shapefile ``prj`` file, or in a databases such as PostGIS and Oracle.
 
-To parse WKT please use the CRS.parseWKT( txt ) method::
+To parse WKT please use the ``CRS.parseWKT(txt)`` method::
   
   String wkt = "GEOGCS[" + "\"WGS 84\"," + "  DATUM[" + "    \"WGS_1984\","
           + "    SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],"
@@ -54,7 +54,7 @@ To parse WKT please use the CRS.parseWKT( txt ) method::
 
   CoordinateReferenceSystem crs = CRS.parseWKT(wkt);
 
-The different organisations each have slightly different ideas on how some of the names work in
+The different organizations each have slightly different ideas on how some of the names work in
 the WKT standard. GeoTools does a good job of listing common aliases in order to read WKT
 generated from a range of tools.
 
@@ -140,9 +140,9 @@ To generate WKT:
   While not 1-1 equal, the datum, projection, projection parameters and units are spelled
   out the same.
 
-.. note:: Formatable
+.. note:: ``Formatable``
   
-  The code above casted the CRS into a Formattable object, that gives the developer more
+  The code above cast the CRS into a ``Formattable`` object, that gives the developer more
   control on how things are converted in WKT, and then asked to generate the WKT using the
   ESRI aliases and 2 indentation when generating the output.
   
@@ -154,7 +154,7 @@ Matching a CoordinateReferenceSystem
 You can actually search based on any metadata, not just name, the way you do it is you construct
 an example of what you are looking for - and than ask for the best match.
 
-This functionality is especially useful when you have produced a CoordinateReferenceSystem by
+This functionality is especially useful when you have produced a ``CoordinateReferenceSystem`` by
 parsing WKT and you would like to find the "official" code for it.::
   
   String wkt =
@@ -182,10 +182,10 @@ Here is a quick sample use of the CRS class::
   
   MathTransform transform = CRS.findMathTransform(sourceCRS, targetCRS, true);
 
-When using a CoordinateReferenceSystem that has been parsed from WKT you will
-often need to "relax" the accuracy by setting the **lenient** parameter to true when searching with findMathTransform.
+When using a ``CoordinateReferenceSystem`` that has been parsed from WKT you will
+often need to "relax" the accuracy by setting the ``lenient`` parameter to true when searching with ``findMathTransform``.
 
-The official CoordinateReferenceSystem definitions provided by the EPSG database have extra metadata (describing how to do Datum shifts for example), beyond what can be provided using WKT.::
+The official ``CoordinateReferenceSystem`` definitions provided by the EPSG database have extra metadata (describing how to do Datum shifts for example), beyond what can be provided using WKT.::
   
   import org.geotools.referencing.CRS;
   
@@ -219,8 +219,8 @@ The official CoordinateReferenceSystem definitions provided by the EPSG database
 Transforming a Geometry
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-A **MathTransform**, as generated above, can be used by bashing away at the interface and feeding
-it **DirectPosition** objects one at a time.
+A ``MathTransform``, as generated above, can be used by bashing away at the interface and feeding
+it ``DirectPosition`` objects one at a time.
 
 Or you could break out the JTS utility class where this work has been done for you::
   
@@ -247,7 +247,7 @@ method to quickly check what is going on.::
      // lat lon 
   }
 
-Not all CoordinateReferenceSystems match a well defined axis order::
+Not all ``CoordinateReferenceSystems`` match a well defined axis order::
   
   CoordinateReferenceSystem crs = CRS.getHorizontalCRS(DefaultEngineeringCRS.GENERIC_2D));
   if( CRS.getAxisOrder(crs) == AxisOrder.INAPPLICABLE){
@@ -257,43 +257,43 @@ Not all CoordinateReferenceSystems match a well defined axis order::
 CoordinateReferenceSystem
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The central user facing class for gt-referencing is **CoordinateReferenceSystem**.
+The central user facing class for ``gt-referencing`` is ``CoordinateReferenceSystem``.
 
 Constants
 '''''''''
 
-Some CoordinateReferenceSystem instances are used so often it is worth making static final constants
+Some ``CoordinateReferenceSystem`` instances are used so often it is worth making static final constants
 for them. GeoTools has done so in order to cover the most common cases encountered when programming.
 
-Static final constant CoordinateReferenceSystem in GeoTools:
+Static final constant ``CoordinateReferenceSystem`` in GeoTools:
 
 A coordinate reference system using the WGS84 datum as an approximation of the shape of the earth:
 
-* DefaultGeographicCRS.WGS84 - this is the most commonly used default
-* DefaultGeographicCRS.WGS84_3D
+* ``DefaultGeographicCRS.WGS84`` - this is the most commonly used default
+* ``DefaultGeographicCRS.WGS84_3D``
 
-A 3D coordinate reference system with the origin at the approximate centre of mass of the earth:
+A 3D coordinate reference system with the origin at the approximate center of mass of the earth:
 
-* DefaultGeocentricCRS.CARTESIAN
-* DefaultGeocentricCRS.SPHERICAL
+* ``DefaultGeocentricCRS.CARTESIAN``
+* ``DefaultGeocentricCRS.SPHERICAL``
 
 A contextually local coordinate reference system (for construction projects or moving objects):
 
-* DefaultEngineeringCRS.CARTESIAN_2D (see the next section for a discussion of this value)
-* DefaultEngineeringCRS.CARTESIAN_3D
-* DefaultEngineeringCRS.GENERIC_2D
-* DefaultEngineeringCRS.GENERIC_3D
+* ``DefaultEngineeringCRS.CARTESIAN_2D`` (see the next section for a discussion of this value)
+* ``DefaultEngineeringCRS.CARTESIAN_3D``
+* ``DefaultEngineeringCRS.GENERIC_2D``
+* ``DefaultEngineeringCRS.GENERIC_3D``
 
 A 1D coordinate reference system used for recording heights or depth relative to the ellipsoidal datum:
 
-* DefaultVirticalCRS.ELLIPSOIDAL_HEIGHT
+* ``DefaultVirticalCRS.ELLIPSOIDAL_HEIGHT``
 
 .. note::
    
    For those into the details; these static final constant CoordinateReferenceSystem cite "GeoTools"
    as the authority responsible for the definition. This is in marked contrast with the
-   **CoordinateReferenceSystem** instances produced by an AuthorityFactory (those instances will
-   credit a specific organisation like "EPSG").
+   ``CoordinateReferenceSystem`` instances produced by an AuthorityFactory (those instances will
+   credit a specific organization like "EPSG").
 
 Examples:
 
@@ -313,23 +313,23 @@ GENERIC_2D
 ''''''''''
 
 One constant deserves special mention as it is used as a "wild card" placeholder for when you
-are unsure of your data. The concept of a "Generic 2D" CoordinateReferenceSystem is formally
+are unsure of your data. The concept of a "Generic 2D" ``CoordinateReferenceSystem`` is formally
 intended for working with things like CAD drawings where the results are measured in meters.
 
-When considered in the context of GIS we treat it as a "wildcard" allowing you to get a visual
+When considered in the context of GIS we treat it as a "wild card" allowing you to get a visual
 of some sort.
 
 Formally this is expressed by the `DefaultEngineeringCRS.GENERIC_2D javadocs <http://docs.geotools.org/latest/javadocs/org/geotools/referencing/crs/DefaultEngineeringCRS.html#GENERIC_2D>`_ as:
-    A two-dimensional wildcard coordinate system with x, y axis in metres. At the difference of
-    CARTESIAN_2D, this coordinate system is treated specially by the default coordinate operation
+    A two-dimensional wild card coordinate system with x, y axis in metres. At the difference of
+    ``CARTESIAN_2D``, this coordinate system is treated specially by the default coordinate operation
     factory with loose transformation rules: if no transformation path were found (for example
     through a derived CRS), then the transformation from this CRS to any CRS with a compatible
     number of dimensions is assumed to be the identity transform. This CRS is useful as a
-    kind of wildcard when no CRS were explicitly specified.
+    kind of wild card when no CRS were explicitly specified.
 
 The concept is available two ways:
   
-* DefaultEngineeringCRS.GENERIC_2D
+* ``DefaultEngineeringCRS.GENERIC_2D``
     
   This option lacks an EPSG identifier hindering interoperability with external systems.
 
@@ -337,14 +337,14 @@ The concept is available two ways:
 
     CoordinateReferenceSystem generic = CRS.decode("EPSG:404000");
   
-  This value the same as DefaultEngineeringCRS.GENERIC_2D (with a epsg identifier and description).
+  This value the same as ``DefaultEngineeringCRS.GENERIC_2D`` (with a EPSG identifier and description).
   Since only this descriptive information is different *equals ignores metadata* will return true.
   
   The same value is also provided as a static constant::
      
      CartesianAuthoryFactory.GENERIC_2D
   
-  This is the preferred way to represent an unknown CoordinateReferenceSystem in GeoTools.
+  This is the preferred way to represent an unknown ``CoordinateReferenceSystem`` in GeoTools.
 
 Google Maps
 '''''''''''
@@ -363,7 +363,7 @@ References:
 * http://johndeck.blogspot.com/2005/09/overlaying-mercator-projected-wms.html
 * http://trac.openlayers.org/wiki/SphericalMercator
 
-Using an EPSG code to look up the CoordinateReferenceSystem::
+Using an EPSG code to look up the ``CoordinateReferenceSystem``::
   
      CoordinateReferenceSystem sphericalMercator = CRS.decode("EPSG:3857");
 

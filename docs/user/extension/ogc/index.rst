@@ -1,7 +1,7 @@
 OGC
 ===
 
-Generated Java objects to match the XML schemas employed by gt-xml.
+Generated Java objects to match the XML schemas employed by ``gt-xml`` 
 
 .. toctree::
    

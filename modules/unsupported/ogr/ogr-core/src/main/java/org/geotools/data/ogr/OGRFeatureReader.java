@@ -31,7 +31,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  */
 class OGRFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
 
-    Object dataSource;
+    OGRDataSource dataSource;
 
     Object layer;
 
@@ -46,7 +46,7 @@ class OGRFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature
     OGR ogr;
 
     public OGRFeatureReader(
-            Object dataSource,
+            OGRDataSource dataSource,
             Object layer,
             SimpleFeatureType targetSchema,
             SimpleFeatureType originalSchema,
@@ -75,12 +75,13 @@ class OGRFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature
             layer = null;
         }
         if (dataSource != null) {
-            ogr.DataSourceRelease(dataSource);
+            dataSource.close();
             dataSource = null;
         }
         schema = null;
     }
 
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         close();
     }

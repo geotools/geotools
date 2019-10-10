@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.styling;
 
 import org.geotools.util.SimpleInternationalString;
@@ -40,7 +56,7 @@ public class DescriptionImpl implements Description {
     }
 
     public void setTitle(String title) {
-        this.title = new SimpleInternationalString(title);
+        this.title = title != null ? new SimpleInternationalString(title) : null;
     }
 
     public InternationalString getAbstract() {
@@ -51,8 +67,8 @@ public class DescriptionImpl implements Description {
         this.description = description;
     }
 
-    public void setAbstract(String title) {
-        this.description = new SimpleInternationalString(title);
+    public void setAbstract(String description) {
+        this.description = description != null ? new SimpleInternationalString(description) : null;
     }
 
     public Object accept(org.opengis.style.StyleVisitor visitor, Object extraData) {

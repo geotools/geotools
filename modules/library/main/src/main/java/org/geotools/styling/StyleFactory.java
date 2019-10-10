@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.measure.Unit;
-import javax.swing.Icon;
+import javax.swing.*;
 import org.geotools.util.factory.Factory;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
@@ -267,9 +267,6 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
 
     public SelectedChannelType createSelectedChannelType(
             String name, ContrastEnhancement enhancement);
-
-    /** @deprecated Use {@link #createSelectedChannelType(String, ContrastEnhancement)} */
-    public SelectedChannelType createSelectedChannelType(String name, Expression gammaValue);
 
     public SelectedChannelType createSelectedChannelType(Expression name, Expression gammaValue);
 

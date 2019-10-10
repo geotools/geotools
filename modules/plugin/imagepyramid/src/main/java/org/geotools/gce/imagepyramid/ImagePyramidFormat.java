@@ -29,11 +29,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.PrjFileReader;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.parameter.ParameterGroup;
+import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverageWriter;
@@ -143,7 +143,7 @@ public final class ImagePyramidFormat extends AbstractGridFormat implements Form
             // Trying to load information
 
             // get the crs if able to
-            final URL prjURL = DataUtilities.changeUrlExt(sourceURL, "prj");
+            final URL prjURL = URLs.changeUrlExt(sourceURL, "prj");
             PrjFileReader crsReader;
             try {
                 crsReader = new PrjFileReader(Channels.newChannel(prjURL.openStream()));

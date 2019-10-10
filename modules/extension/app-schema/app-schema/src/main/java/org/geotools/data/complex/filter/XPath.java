@@ -27,11 +27,12 @@ import java.util.logging.Logger;
 import javax.xml.namespace.QName;
 import org.geotools.appschema.feature.AppSchemaAttributeBuilder;
 import org.geotools.data.complex.AbstractMappingFeatureIterator;
-import org.geotools.data.complex.ComplexFeatureConstants;
 import org.geotools.data.complex.config.NonFeatureTypeProxy;
-import org.geotools.data.complex.config.Types;
 import org.geotools.data.complex.feature.type.ComplexFeatureTypeFactoryImpl;
+import org.geotools.data.complex.feature.type.Types;
 import org.geotools.data.complex.feature.type.UniqueNameFeatureTypeFactoryImpl;
+import org.geotools.data.complex.util.ComplexFeatureConstants;
+import org.geotools.data.complex.util.XPathUtil;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.AttributeImpl;
 import org.geotools.feature.AttributeTypeBuilder;
@@ -59,6 +60,7 @@ import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.feature.type.PropertyType;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.Attributes;
@@ -208,12 +210,12 @@ public class XPath extends XPathUtil {
 
         Iterator stepsIterator = steps.iterator();
 
-        for (; stepsIterator.hasNext(); ) {
+        while (stepsIterator.hasNext()) {
             final XPath.Step currStep = (Step) stepsIterator.next();
             AttributeDescriptor currStepDescriptor = null;
             final boolean isLastStep = !stepsIterator.hasNext();
             final QName stepName = currStep.getName();
-            final Name attributeName = Types.toName(stepName);
+            final Name attributeName = org.geotools.feature.type.Types.toTypeName(stepName);
 
             final AttributeType _parentType = parent.getType();
             if (_parentType.getName().equals(XSSchema.ANYTYPE_TYPE.getName())
@@ -411,6 +413,7 @@ public class XPath extends XPathUtil {
         }
     }
 
+    @SuppressWarnings("PMD.UnusedPrivateMethod")
     private Attribute setLeafAttribute(
             AttributeDescriptor currStepDescriptor,
             Step currStep,
@@ -465,7 +468,8 @@ public class XPath extends XPathUtil {
                 if (currStepValue instanceof Collection) {
                     List<Attribute> values = new ArrayList((Collection) currStepValue);
                     if (!values.isEmpty()) {
-                        if (isEmpty(convertedValue)) {
+                        if ((!(isUnboundedMultivalue(parent)) || !descriptor.isNillable())
+                                && isEmpty(convertedValue)) {
                             // when attribute is empty, it is probably just a parent of a leaf
                             // attribute
                             // it could already exist from another attribute mapping for a different
@@ -762,6 +766,10 @@ public class XPath extends XPathUtil {
             String collectionString = value.toString();
             return collectionString.substring(1, collectionString.length() - 1);
         }
+        if (value instanceof Literal) {
+            final Literal literal = (Literal) value;
+            return literal.evaluate(literal.getValue(), binding);
+        }
         return FF.literal(value).evaluate(value, binding);
     }
 
@@ -838,5 +846,13 @@ public class XPath extends XPathUtil {
     /** @return true if this step represents an id attribute */
     public static boolean isId(Step step) {
         return step.isXmlAttribute() && step.getName().equals(GML.id);
+    }
+
+    private boolean isUnboundedMultivalue(final Attribute parent) {
+        final Object value = parent.getUserData().get("multi_value_type");
+        if (value instanceof String) {
+            return "unbounded-multi-value".equalsIgnoreCase((String) value);
+        }
+        return false;
     }
 }

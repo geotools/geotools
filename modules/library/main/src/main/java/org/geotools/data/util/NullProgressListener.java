@@ -16,8 +16,8 @@
  */
 package org.geotools.data.util;
 
-import org.geotools.util.ProgressListener;
 import org.opengis.util.InternationalString;
+import org.opengis.util.ProgressListener;
 
 /**
  * A default progress listener implementation suitable for subclassing.

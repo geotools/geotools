@@ -24,7 +24,6 @@ import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
-import java.util.logging.Logger;
 import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -53,6 +52,7 @@ import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
+import org.opengis.metadata.extent.GeographicBoundingBox;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
@@ -68,10 +68,6 @@ import org.opengis.referencing.operation.TransformException;
  * RenderedImage}
  */
 public abstract class RenderingTransformationHelper {
-
-    /** The logger for the rendering module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(RenderingTransformationHelper.class);
 
     private static final FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2(null);
 
@@ -181,16 +177,36 @@ public abstract class RenderingTransformationHelper {
                                 renderingEnvelope.getCoordinateReferenceSystem(), coverageCRS)) {
                             renderingEnvelope = renderingEnvelope.transform(coverageCRS, true);
                         }
-                        if (coverage.getEnvelope2D().intersects(renderingEnvelope)) {
-                            // the resulting coverage might be larger than the readGG envelope,
-                            // shall we crop it?
-                            final ParameterValueGroup param =
-                                    PROCESSOR.getOperation("CoverageCrop").getParameters();
-                            param.parameter("Source").setValue(coverage);
-                            param.parameter("Envelope").setValue(renderingEnvelope);
-                            coverage = (GridCoverage2D) PROCESSOR.doOperation(param);
+
+                        // Check if this is a world-spanning projection - if so, we need to consider
+                        // dateline wrapping
+                        GeographicBoundingBox crsLatLonBoundingBox =
+                                CRS.getGeographicBoundingBox(coverageCRS);
+                        if (null == crsLatLonBoundingBox
+                                || crsLatLonBoundingBox.getEastBoundLongitude()
+                                                - crsLatLonBoundingBox.getWestBoundLongitude()
+                                        >= 360) {
+                            // in this case, only crop if the rendering envelope is entirely inside
+                            // the coverage
+                            if (coverage.getEnvelope2D().contains(renderingEnvelope)) {
+                                final ParameterValueGroup param =
+                                        PROCESSOR.getOperation("CoverageCrop").getParameters();
+                                param.parameter("Source").setValue(coverage);
+                                param.parameter("Envelope").setValue(renderingEnvelope);
+                                coverage = (GridCoverage2D) PROCESSOR.doOperation(param);
+                            }
                         } else {
-                            coverage = null;
+                            if (coverage.getEnvelope2D().intersects(renderingEnvelope)) {
+                                // the resulting coverage might be larger than the readGG envelope,
+                                // shall we crop it?
+                                final ParameterValueGroup param =
+                                        PROCESSOR.getOperation("CoverageCrop").getParameters();
+                                param.parameter("Source").setValue(coverage);
+                                param.parameter("Envelope").setValue(renderingEnvelope);
+                                coverage = (GridCoverage2D) PROCESSOR.doOperation(param);
+                            } else {
+                                coverage = null;
+                            }
                         }
 
                         if (coverage != null) {

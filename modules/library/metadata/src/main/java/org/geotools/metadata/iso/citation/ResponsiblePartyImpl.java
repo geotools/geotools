@@ -104,8 +104,7 @@ public class ResponsiblePartyImpl extends MetadataEntity implements ResponsibleP
         try {
             return OGC(role, function, new URI(onlineResource));
         } catch (URISyntaxException badContact) {
-            Logging.unexpectedException(
-                    "org.geotools.metadata.iso", ResponsibleParty.class, "OGC", badContact);
+            Logging.unexpectedException(LOGGER, ResponsibleParty.class, "OGC", badContact);
             return OGC;
         }
     }
@@ -298,7 +297,7 @@ public class ResponsiblePartyImpl extends MetadataEntity implements ResponsibleP
      * Only one of {@code individualName}, {@link #getOrganisationName organisationName} and {@link
      * #getPositionName positionName} should be provided.
      */
-    public synchronized void setIndividualName(final String newValue) {
+    public void setIndividualName(final String newValue) {
         checkWritePermission();
         individualName = newValue;
     }
@@ -317,7 +316,7 @@ public class ResponsiblePartyImpl extends MetadataEntity implements ResponsibleP
      * individualName}, </code>organisationName</code> and {@link #getPositionName positionName}
      * should be provided.
      */
-    public synchronized void setOrganisationName(final InternationalString newValue) {
+    public void setOrganisationName(final InternationalString newValue) {
         checkWritePermission();
         organisationName = newValue;
     }
@@ -336,7 +335,7 @@ public class ResponsiblePartyImpl extends MetadataEntity implements ResponsibleP
      * individualName}, {@link #getOrganisationName organisationName} and {@code positionName}
      * should be provided.
      */
-    public synchronized void setPositionName(final InternationalString newValue) {
+    public void setPositionName(final InternationalString newValue) {
         checkWritePermission();
         positionName = newValue;
     }
@@ -347,7 +346,7 @@ public class ResponsiblePartyImpl extends MetadataEntity implements ResponsibleP
     }
 
     /** Set the address of the responsible party. */
-    public synchronized void setContactInfo(final Contact newValue) {
+    public void setContactInfo(final Contact newValue) {
         checkWritePermission();
         contactInfo = newValue;
     }
@@ -358,7 +357,7 @@ public class ResponsiblePartyImpl extends MetadataEntity implements ResponsibleP
     }
 
     /** Set the function performed by the responsible party. */
-    public synchronized void setRole(final Role newValue) {
+    public void setRole(final Role newValue) {
         checkWritePermission();
         role = newValue;
     }

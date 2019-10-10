@@ -31,7 +31,6 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapContent;
-import org.geotools.map.MapContext;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.RenderListener;
 import org.geotools.util.factory.Hints;
@@ -113,18 +112,8 @@ public class MockRenderer implements GTRenderer {
     }
 
     @Override
-    public void setContext(MapContext context) {
-        throw new UnsupportedOperationException("Should not be called");
-    }
-
-    @Override
     public void setMapContent(MapContent mapContent) {
         this.mapContent = mapContent;
-    }
-
-    @Override
-    public MapContext getContext() {
-        throw new UnsupportedOperationException("Should not be called");
     }
 
     @Override

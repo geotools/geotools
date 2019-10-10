@@ -19,7 +19,6 @@ package org.geotools.data.crs;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import org.geotools.data.DataSourceException;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -82,7 +81,6 @@ public class ReprojectFeatureIterator implements Iterator<SimpleFeature>, Simple
      *
      * <p>Description ...
      *
-     * @throws IllegalStateException DOCUMENT ME!
      * @see org.geotools.data.FeatureReader#getFeatureType()
      */
     public SimpleFeatureType getFeatureType() {
@@ -101,8 +99,6 @@ public class ReprojectFeatureIterator implements Iterator<SimpleFeature>, Simple
      * @throws IOException
      * @throws IllegalAttributeException
      * @throws NoSuchElementException
-     * @throws IllegalStateException DOCUMENT ME!
-     * @throws DataSourceException DOCUMENT ME!
      * @see org.geotools.data.FeatureReader#next()
      */
     public SimpleFeature next() throws NoSuchElementException {
@@ -140,7 +136,6 @@ public class ReprojectFeatureIterator implements Iterator<SimpleFeature>, Simple
      * <p>Description ...
      *
      * @throws IOException
-     * @throws IllegalStateException DOCUMENT ME!
      * @see org.geotools.data.FeatureReader#hasNext()
      */
     public boolean hasNext() {
@@ -157,7 +152,6 @@ public class ReprojectFeatureIterator implements Iterator<SimpleFeature>, Simple
      * <p>Description ...
      *
      * @throws IOException
-     * @throws IllegalStateException DOCUMENT ME!
      * @see org.geotools.data.FeatureReader#close()
      */
     public void close() {

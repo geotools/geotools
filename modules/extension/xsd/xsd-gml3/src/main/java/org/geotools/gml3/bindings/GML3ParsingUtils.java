@@ -70,7 +70,6 @@ public class GML3ParsingUtils {
     /**
      * Turns a xml type definition into a geotools feature type.
      *
-     * @param type The xml schema tupe.
      * @return The corresponding geotools feature type.
      */
     public static SimpleFeatureType featureType(

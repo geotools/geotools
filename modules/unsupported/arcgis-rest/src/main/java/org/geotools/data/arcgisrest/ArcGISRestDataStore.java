@@ -20,32 +20,32 @@ package org.geotools.data.arcgisrest;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
-import org.apache.commons.httpclient.Header;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpMethodBase;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.NameValuePair;
-import org.apache.commons.httpclient.URI;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.io.IOUtils;
+import org.apache.http.*;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.entity.EntityBuilder;
+import org.apache.http.client.methods.*;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.ContentType;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
 import org.geotools.data.Query;
 import org.geotools.data.arcgisrest.schema.catalog.Catalog;
 import org.geotools.data.arcgisrest.schema.catalog.Dataset;
@@ -67,7 +67,7 @@ import org.opengis.feature.type.Name;
 public class ArcGISRestDataStore extends ContentDataStore {
 
     // API version supported
-    public static final double MINIMUM_API_VERSION = 10.41;
+    public static final double MINIMUM_API_VERSION = 10.0;
 
     // Common parameters used in the API
     public static final String GEOMETRYTYPE_PARAM = "geometryType";
@@ -76,6 +76,7 @@ public class ArcGISRestDataStore extends ContentDataStore {
     public static final String FORMAT_PARAM = "f";
     public static final String ATTRIBUTES_PARAM = "outFields";
     public static final String WITHGEOMETRY_PARAM = "returnGeometry";
+    public static final String DATASETTYPE_FEATURELAYER = "Feature Layer";
 
     // Parameter values
     public static final String FORMAT_JSON = "json";
@@ -88,13 +89,24 @@ public class ArcGISRestDataStore extends ContentDataStore {
     protected static final int REQUEST_TIMEOUT = 60;
 
     // Default request parameter values
-    public static Map<String, Object> DEFAULT_PARAMS = new HashMap<String, Object>();
+    public static List<NameValuePair> DEFAULT_PARAMS =
+            new ArrayList<NameValuePair>() {
+                {
+                    add(new BasicNameValuePair(FORMAT_PARAM, FORMAT_JSON));
+                    add(new BasicNameValuePair(WITHGEOMETRY_PARAM, "true"));
+                    add(new BasicNameValuePair(GEOMETRYTYPE_PARAM, "esriGeometryEnvelope"));
+                }
+            };
 
-    static {
-        DEFAULT_PARAMS.put(FORMAT_PARAM, FORMAT_JSON);
-        DEFAULT_PARAMS.put(WITHGEOMETRY_PARAM, "true");
-        DEFAULT_PARAMS.put(GEOMETRYTYPE_PARAM, "esriGeometryEnvelope");
-    }
+    // Default get features request parameter values
+    public static List<NameValuePair> DEFAULT_GETFEATURES_PARAMS =
+            new ArrayList<NameValuePair>() {
+                {
+                    add(new BasicNameValuePair(FORMAT_PARAM, FORMAT_GEOJSON));
+                    add(new BasicNameValuePair(WITHGEOMETRY_PARAM, "true"));
+                    add(new BasicNameValuePair(GEOMETRYTYPE_PARAM, "esriGeometryEnvelope"));
+                }
+            };
 
     // ArcGIS Server parameters
     public static String FEATURESERVER_SERVICE = "FeatureServer";
@@ -128,13 +140,18 @@ public class ArcGISRestDataStore extends ContentDataStore {
             this.namespace = new URL(namespaceIn);
         } catch (MalformedURLException e) {
             LOGGER.log(
-                    Level.SEVERE, "Namespace \"" + namespaceIn + "\" is not properly formatted", e);
+                    Level.SEVERE,
+                    String.format("Namespace '%s' is not properly formatted", namespaceIn),
+                    e);
             throw (e);
         }
         try {
             this.apiUrl = new URL(apiEndpoint);
         } catch (MalformedURLException e) {
-            LOGGER.log(Level.SEVERE, "URL \"" + apiEndpoint + "\" is not properly formatted", e);
+            LOGGER.log(
+                    Level.SEVERE,
+                    String.format("URL '%s' is not properly formatted", apiEndpoint),
+                    e);
             throw (e);
         }
         this.user = user;
@@ -151,7 +168,8 @@ public class ArcGISRestDataStore extends ContentDataStore {
         } catch (IOException e) {
             LOGGER.log(
                     Level.SEVERE,
-                    "Error during retrieval of service '" + apiUrl + "' " + e.getMessage(),
+                    String.format(
+                            "Error during retrieval of service '%s' %s", apiUrl, e.getMessage()),
                     e);
             throw (e);
         }
@@ -167,7 +185,7 @@ public class ArcGISRestDataStore extends ContentDataStore {
             }
 
             // It it is an ArcGIS Server, cycles through the services list to
-            // retrieve the web services URL of the FeautreServers
+            // retrieve the web services URL of the FeatureServers
         } else {
             this.catalog = new Catalog();
 
@@ -201,9 +219,9 @@ public class ArcGISRestDataStore extends ContentDataStore {
                             == false) {
                 UnsupportedImplementationException e =
                         new UnsupportedImplementationException(
-                                "FeatureServer "
-                                        + apiEndpoint
-                                        + " does not support either the minimum API version required, or the GeoJSON format");
+                                String.format(
+                                        "FeatureServer %s does not support either the minimum API version required, or the GeoJSON format",
+                                        apiEndpoint));
                 LOGGER.log(Level.SEVERE, e.getMessage());
                 throw (e);
             }
@@ -215,7 +233,10 @@ public class ArcGISRestDataStore extends ContentDataStore {
                         .forEach(
                                 layer -> {
                                     Dataset ds = new Dataset();
-                                    ds.setWebService(featureServerURLString + "/" + layer.getId());
+                                    ds.setWebService(
+                                            String.format(
+                                                    "%s/%s",
+                                                    featureServerURLString, layer.getId()));
                                     this.catalog.getDataset().add(ds);
                                 });
             } catch (JsonSyntaxException e) {
@@ -278,15 +299,16 @@ public class ArcGISRestDataStore extends ContentDataStore {
 
         final class WsCall implements Callable<WsCallResult> {
             public final Dataset dataset;
+            public final String webserviceUrl;
 
-            public WsCall(Dataset dsIn) {
+            public WsCall(Dataset dsIn, String wsUrl) {
                 this.dataset = dsIn;
+                this.webserviceUrl = wsUrl;
             }
 
             public WsCallResult call() throws Exception {
 
                 Webservice ws = null;
-                InputStream responseWs = null;
                 String responseWSString = null;
 
                 try {
@@ -294,15 +316,14 @@ public class ArcGISRestDataStore extends ContentDataStore {
                             ArcGISRestDataStore.inputStreamToString(
                                     retrieveJSON(
                                             "GET",
-                                            new URL(this.dataset.getWebService().toString()),
+                                            new URL(this.webserviceUrl),
                                             ArcGISRestDataStore.DEFAULT_PARAMS));
                 } catch (IOException e) {
                     LOGGER.log(
                             Level.SEVERE,
-                            "Error during retrieval of dataset '"
-                                    + this.dataset.getWebService()
-                                    + "' "
-                                    + e.getMessage(),
+                            String.format(
+                                    "Error during retrieval of dataset '%s' %s",
+                                    this.webserviceUrl, e.getMessage()),
                             e);
                     return null;
                 }
@@ -317,12 +338,9 @@ public class ArcGISRestDataStore extends ContentDataStore {
                     Error__1 errWS = (new Gson()).fromJson(responseWSString, Error__1.class);
                     LOGGER.log(
                             Level.SEVERE,
-                            "Error during retrieval of dataset "
-                                    + this.dataset.getWebService()
-                                    + " "
-                                    + errWS.getCode()
-                                    + " "
-                                    + errWS.getMessage(),
+                            String.format(
+                                    "Error during retrieval of dataset '%s' %s %s ",
+                                    this.webserviceUrl, errWS.getCode(), errWS.getMessage()),
                             e);
                     return null;
                 }
@@ -337,9 +355,9 @@ public class ArcGISRestDataStore extends ContentDataStore {
                                 == false) {
                     LOGGER.log(
                             Level.SEVERE,
-                            "Dataset "
-                                    + this.dataset.getWebService()
-                                    + " does not support either the API version supported ,or the GeoJSON format");
+                            String.format(
+                                    "Dataset %s does not support either the API version supported ,or the GeoJSON format",
+                                    this.webserviceUrl));
                     return null;
                 }
 
@@ -348,20 +366,20 @@ public class ArcGISRestDataStore extends ContentDataStore {
         }
 
         // Builds a list of calls to be made to retrieve FeatureServer web services
-        // metadata that support the ReST API (if there are not distribution
-        // elements, it
-        // is supposed NOT to support it)
-        try {
-            Collection<WsCall> calls = new ArrayList<WsCall>();
-            datasetList
-                    .stream()
-                    .forEach(
-                            (ds) -> {
-                                if (ds.getWebService().toString().contains(FEATURESERVER_SERVICE)) {
-                                    calls.add(new WsCall(ds));
-                                }
-                            });
+        // metadata that support the ReST API (if there are no distribution
+        // elements, return an error)
+        Collection<WsCall> calls = new ArrayList<WsCall>();
+        datasetList
+                .stream()
+                .forEach(
+                        (ds) -> {
+                            String ws = ArcGISRestDataStore.getWebServiceEndpoint(ds);
+                            if (ws != null) {
+                                calls.add(new WsCall(ds, ws));
+                            }
+                        });
 
+        try {
             List<Future<WsCallResult>> futures =
                     executor.invokeAll(
                             calls,
@@ -370,32 +388,49 @@ public class ArcGISRestDataStore extends ContentDataStore {
 
             for (Future<WsCallResult> future : futures) {
 
-                WsCallResult result = future.get();
+                try {
+                    WsCallResult result = future.get();
 
-                // Checks whether the lasyer supports query and JSON
-                // TODO: I am not quite sure this catches cases in which ESRI JSON is
-                // supporte, but NOT GeoJSON
-                if (result != null
-                        && result.webservice
-                                .getSupportedQueryFormats()
-                                .toLowerCase()
-                                .contains(FORMAT_JSON.toLowerCase())
-                        && result.webservice
-                                .getCapabilities()
-                                .toLowerCase()
-                                .contains(CAPABILITIES_QUERY.toLowerCase())) {
-                    Name dsName =
-                            new NameImpl(namespace.toExternalForm(), result.webservice.getName());
-                    ContentEntry entry = new ContentEntry(this, dsName);
-                    this.datasets.put(dsName, result.dataset);
-                    this.entries.put(dsName, entry);
+                    // Checks whether the layer supports query and JSON
+                    // TODO: I am not quite sure this catches cases in which ESRI JSON is
+                    // supported, but NOT GeoJSON
+                    if (result != null
+                            && result.webservice.getType() != null
+                            && result.webservice
+                                    .getType()
+                                    .equalsIgnoreCase(DATASETTYPE_FEATURELAYER)
+                            && result.webservice
+                                    .getSupportedQueryFormats()
+                                    .toLowerCase()
+                                    .contains(FORMAT_JSON.toLowerCase())
+                            && result.webservice.getCurrentVersion() >= MINIMUM_API_VERSION
+                            && result.webservice.getName().length() > 0
+                            && result.webservice
+                                    .getCapabilities()
+                                    .toLowerCase()
+                                    .contains(CAPABILITIES_QUERY.toLowerCase())) {
+                        Name dsName =
+                                new NameImpl(
+                                        namespace.toExternalForm(), result.webservice.getName());
+                        ContentEntry entry = new ContentEntry(this, dsName);
+                        this.datasets.put(dsName, result.dataset);
+                        this.entries.put(dsName, entry);
+                    }
+                } catch (Exception e) {
+                    LOGGER.log(
+                            Level.SEVERE,
+                            String.format("Dataset call returned %s", e.getMessage()));
                 }
             }
         } catch (Exception e) {
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
+            LOGGER.log(
+                    Level.SEVERE,
+                    String.format(
+                            "Error during webservice calls %s", e.getMessage(), e.getStackTrace()));
+            return new ArrayList<Name>();
         }
 
-        // Shutdowsn the executor thread pool
+        // Shuts down the executor thread pool
         executor.shutdown();
 
         // Returns the list of datastore entries
@@ -425,87 +460,97 @@ public class ArcGISRestDataStore extends ContentDataStore {
     }
 
     /**
-     * Helper method returning a JSON String out of a resource belongining to a ArcGIS ReST API
-     * instance (via a GET). If present, it sends authorixzation.
+     * Helper method returning a JSON String out of a resource belonging to a ArcGIS ReST API
+     * instance (via a GET).If present, it sends authorisation.
      *
+     * @param methType the method (GET or POST) to use
      * @param url The endpoint of the resource
      * @param params Request parameters
      * @return A string representing the JSON, null
      * @throws IOException
-     * @throws InterruptedException
      */
-    public InputStream retrieveJSON(String methType, URL url, Map<String, Object> params)
+    public InputStream retrieveJSON(String methType, URL url, List<NameValuePair> params)
             throws IOException {
 
-        HttpClient client = new HttpClient();
+        CloseableHttpClient client = HttpClients.createDefault();
 
-        // Instanties the method based on the methType parameter
-        HttpMethodBase meth;
+        // Instantiates the method based on the methType parameter
+        HttpRequestBase meth;
         if (methType.equals("GET")) {
-            meth = new GetMethod();
+            meth = new HttpGet();
         } else {
-            meth = new PostMethod();
+            meth = new HttpPost();
         }
 
         // Sets the URI, request parameters and request body (depending on method
         // type)
-        URI uri = new URI(url.toString(), false);
-        NameValuePair[] kvps = new NameValuePair[params.size()];
-        int i = 0;
-        for (Object entry : params.entrySet().toArray()) {
-            kvps[i++] =
-                    new NameValuePair(
-                            ((Map.Entry) entry).getKey().toString(),
-                            ((Map.Entry) entry).getValue().toString());
-        }
+        URI uri;
 
         if (methType.equals("GET")) {
-            meth.setQueryString(kvps);
-            uri.setQuery(meth.getQueryString());
-            this.LOGGER.log(
-                    Level.FINER,
-                    "About to query GET " + url.toString() + "?" + meth.getQueryString());
-        } else {
-            ((PostMethod) (meth)).setContentChunked(true);
-            ((PostMethod) (meth)).setRequestBody(kvps);
-            this.LOGGER.log(
-                    Level.FINER,
-                    "About to query POST " + url.toString() + " with body: " + params.toString());
-        }
+            // Builds the GET request
+            try {
+                uri = new URIBuilder(url.toString()).setParameters(params).build();
+                meth.setURI(uri);
+            } catch (URISyntaxException ex) {
+                throw new IOException(ex.getMessage());
+            }
 
-        meth.setURI(uri);
+            this.LOGGER.log(
+                    Level.FINER, "About to query GET " + url.toString() + "?" + uri.getQuery());
+        } else {
+            // Builds the POST request
+            try {
+                uri = new URIBuilder(url.toString()).build();
+                meth.setURI(uri);
+            } catch (URISyntaxException ex) {
+                throw new IOException(ex.getMessage());
+            }
+
+            HttpEntity body = EntityBuilder.create().chunked().setParameters(params).build();
+            ((HttpPost) (meth)).setEntity(body);
+            meth.setHeader(
+                    HttpHeaders.CONTENT_TYPE,
+                    ContentType.APPLICATION_FORM_URLENCODED.getMimeType());
+            this.LOGGER.log(
+                    Level.FINER,
+                    String.format(
+                            "About to query POST '%s' with parameters: %s",
+                            url.toString(), params.toString()));
+        }
 
         // Adds authorization if login/password is set
         if (this.user != null && this.password != null) {
-            meth.addRequestHeader(
+            meth.addHeader(
                     "Authentication", (new UsernamePasswordCredentials(user, password)).toString());
         }
+
+        CloseableHttpResponse response;
 
         // Re-tries the request if necessary
         while (true) {
 
             // Executes the request (a POST, since the URL may get too long)
-            int status = client.executeMethod(meth);
+            response = client.execute(meth);
 
             // If HTTP error, throws an exception
-            if (status != HttpStatus.SC_OK) {
+            if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
                 throw new IOException(
                         "HTTP Status: "
-                                + status
+                                + response.getStatusLine().getStatusCode()
                                 + " for URL: "
                                 + uri
                                 + " response: "
-                                + meth.getResponseBodyAsString());
+                                + response.toString());
             }
 
             // Retrieve the wait period is returned by the server
             int wait = 0;
-            Header header = meth.getResponseHeader("Retry-After");
+            Header header = meth.getFirstHeader("Retry-After");
             if (header != null) {
                 wait = Integer.valueOf(header.getValue());
             }
 
-            // Exists if no retry is necessary
+            // Exits if no retry is necessary
             if (wait == 0) {
                 break;
             }
@@ -518,16 +563,47 @@ public class ArcGISRestDataStore extends ContentDataStore {
             }
         }
 
-        // Extracts an returns the response
-        return meth.getResponseBodyAsStream();
+        // Extracts and returns the response
+        return response.getEntity().getContent();
+    }
+
+    /**
+     * Helper method to find the web service endpoint in a Dataset (if multiple desitinations apply,
+     * chooses the first)
+     *
+     * @param ds Dataset to find the endpoint of
+     * @return URL of the web service endpoint
+     */
+    public static String getWebServiceEndpoint(Dataset ds) {
+
+        List<String> wsurl = new ArrayList<String>();
+
+        if (ds.getWebService() != null
+                && ds.getWebService().toString().contains(FEATURESERVER_SERVICE)) {
+            wsurl.add(ds.getWebService().toString());
+        } else {
+            if (ds.getDistribution() != null) {
+                ds.getDistribution()
+                        .forEach(
+                                (dist) -> {
+                                    if (dist.getFormat()
+                                                    .toString()
+                                                    .equalsIgnoreCase(FORMAT_ESRIREST)
+                                            && dist.getAccessURL() != null) {
+                                        wsurl.add(dist.getAccessURL().toString());
+                                    }
+                                });
+            }
+        }
+        return wsurl.size() == 0 ? null : wsurl.get(0);
     }
 
     /**
      * Helper method to convert an entire InputStream to a String and close the stream
      *
-     * @param response input stream to convert to a String
+     * @param istream input stream to convert to a String
+     * @return the converted String
      * @throws IOException
-     * @returns the converted String
      */
     public static String inputStreamToString(InputStream istream) throws IOException {
         try {

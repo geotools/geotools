@@ -52,6 +52,7 @@ import org.opengis.util.ProgressListener;
  *
  * @author Tommaso Nolli
  */
+@SuppressWarnings("PMD.SystemPrintln")
 class ShapeFileIndexer implements FileWriter {
     private static final Logger LOGGER = Logging.getLogger(ShapeFileIndexer.class);
 
@@ -59,7 +60,6 @@ class ShapeFileIndexer implements FileWriter {
     private int leafSize = 16;
 
     private String byteOrder;
-    private boolean interactive = false;
     private ShpFiles shpFiles;
 
     public static void main(String[] args) throws IOException {
@@ -70,7 +70,6 @@ class ShapeFileIndexer implements FileWriter {
         long start = System.currentTimeMillis();
 
         ShapeFileIndexer idx = new ShapeFileIndexer();
-        idx.interactive = true;
 
         for (int i = 0; i < args.length; i++) {
             if (args[i].equals("-t")) {
@@ -134,12 +133,10 @@ class ShapeFileIndexer implements FileWriter {
      * indexing; in this case <b>zero</b> is reurned as result of the indexing process.
      *
      * @param verbose enable/disable printing of dots every 500 indexed records
-     * @param listener DOCUMENT ME!
      * @return The number of indexed records (or zero)
      * @throws MalformedURLException
      * @throws IOException
      * @throws TreeException
-     * @throws StoreException DOCUMENT ME!
      * @throws LockTimeoutException
      */
     public int index(boolean verbose, ProgressListener listener)
@@ -391,20 +388,12 @@ class ShapeFileIndexer implements FileWriter {
         max = i;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param shpFiles
-     */
+    /** @param shpFiles */
     public void setShapeFileName(ShpFiles shpFiles) {
         this.shpFiles = shpFiles;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param byteOrder The byteOrder to set.
-     */
+    /** @param byteOrder The byteOrder to set. */
     public void setByteOrder(String byteOrder) {
         this.byteOrder = byteOrder;
     }

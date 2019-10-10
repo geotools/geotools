@@ -25,6 +25,10 @@ public class MixedPreGeneralizedFeatureSourceTest extends AbstractPreGeneralized
         testGetCount(ConfigName);
     }
 
+    public void testPropertySelection() {
+        testPropertySelection(ConfigName);
+    }
+
     public void testGetBounds() {
         testGetBounds(ConfigName);
     }

@@ -187,7 +187,7 @@ public class PullParser {
         public int getIndex(String uri, String localName) {
             for (int i = 0; i < pp.getAttributeCount(); i++) {
                 if (pp.getAttributeNamespace(i).equals(uri)
-                        && pp.getAttributeName(i).equals(localName)) {
+                        && pp.getAttributeLocalName(i).equals(localName)) {
                     return i;
                 }
             }
@@ -196,7 +196,7 @@ public class PullParser {
 
         public int getIndex(String qName) {
             for (int i = 0; i < pp.getAttributeCount(); i++) {
-                if (pp.getAttributeName(i).equals(qName)) {
+                if ((pp.getAttributePrefix(i) + ":" + pp.getAttributeLocalName(i)).equals(qName)) {
                     return i;
                 }
             }
@@ -206,7 +206,7 @@ public class PullParser {
         public String getType(String uri, String localName) {
             for (int i = 0; i < pp.getAttributeCount(); i++) {
                 if (pp.getAttributeNamespace(i).equals(uri)
-                        && pp.getAttributeName(i).equals(localName)) {
+                        && pp.getAttributeLocalName(i).equals(localName)) {
                     return pp.getAttributeType(i);
                 }
             }
@@ -215,7 +215,7 @@ public class PullParser {
 
         public String getType(String qName) {
             for (int i = 0; i < pp.getAttributeCount(); i++) {
-                if (pp.getAttributeName(i).equals(qName)) {
+                if ((pp.getAttributePrefix(i) + ":" + pp.getAttributeName(i)).equals(qName)) {
                     return pp.getAttributeType(i);
                 }
             }

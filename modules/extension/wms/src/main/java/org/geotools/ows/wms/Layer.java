@@ -102,10 +102,6 @@ public class Layer implements Comparable<Layer> {
      */
     private int cascaded;
 
-    private double scaleHintMin = Double.NaN;
-
-    private double scaleHintMax = Double.NaN;
-
     private double scaleDenominatorMin = Double.NaN;
 
     private double scaleDenominatorMax = Double.NaN;
@@ -507,7 +503,7 @@ public class Layer implements Comparable<Layer> {
     }
 
     public void setQueryable(boolean queryable) {
-        this.queryable = new Boolean(queryable);
+        this.queryable = Boolean.valueOf(queryable);
     }
 
     /*
@@ -523,11 +519,7 @@ public class Layer implements Comparable<Layer> {
         return this.getTitle().compareTo(layer.getTitle());
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return Returns the parent.
-     */
+    /** @return Returns the parent. */
     public Layer getParent() {
         return parent;
     }
@@ -535,7 +527,7 @@ public class Layer implements Comparable<Layer> {
     /**
      * Set the parent; child will be added to the parents list of children (if it is not already).
      *
-     * @param parent The parent to set.
+     * @param parentLayer The parent to set.
      */
     public void setParent(Layer parentLayer) {
         this.parent = parentLayer;
@@ -678,7 +670,7 @@ public class Layer implements Comparable<Layer> {
      * <p>Scale denominator is calculated based on the bounding box of the central pixel in a
      * request (ie not a scale based on real world size of the entire layer).
      *
-     * @param Max scale denominator for which it is approprirate to draw this layer
+     * @param scaleDenominatorMax scale denominator for which it is approprirate to draw this layer
      */
     public void setScaleDenominatorMax(double scaleDenominatorMax) {
         this.scaleDenominatorMax = scaleDenominatorMax;
@@ -705,7 +697,7 @@ public class Layer implements Comparable<Layer> {
      * <p>Scale denominator is calculated based on the bounding box of the central pixel in a
      * request (ie not a scale based on real world size of the entire layer).
      *
-     * @param Min scale denominator for which it is appropriate to draw this layer
+     * @param scaleDenominatorMin scale denominator for which it is appropriate to draw this layer
      */
     public void setScaleDenominatorMin(double scaleDenominatorMin) {
         this.scaleDenominatorMin = scaleDenominatorMin;
@@ -724,65 +716,6 @@ public class Layer implements Comparable<Layer> {
      */
     public double getScaleDenominatorMin() {
         return scaleDenominatorMin;
-    }
-
-    /**
-     * Maximum scale for which this layer is considered good.
-     *
-     * <p>We assume this calculation is done in a similar manner to getScaleDenominatorMax(); but a
-     * look at common web services such as JPL show this not to be the case.
-     *
-     * <p>
-     *
-     * @return The second scale hint value (understood to mean the max value)
-     * @deprecated Use getScaleDenomiatorMax() as there is less confusion over meaning
-     */
-    public double getScaleHintMax() {
-        return scaleHintMax;
-    }
-
-    /**
-     * Maximum scale for which this layer is considered good.
-     *
-     * <p>We assume this calculation is done in a similar manner to setScaleDenominatorMax(); but a
-     * look at common web services such as JPL show this not to be the case.
-     *
-     * <p>
-     *
-     * @param The second scale hint value (understood to mean the max value)
-     * @deprecated Use setScaleDenomiatorMax() as there is less confusion over meaning
-     */
-    public void setScaleHintMax(double scaleHintMax) {
-        this.scaleHintMax = scaleHintMax;
-    }
-
-    /**
-     * Minimum scale for which this layer is considered good.
-     *
-     * <p>We assume this calculation is done in a similar manner to getScaleDenominatorMin(); but a
-     * look at common web services such as JPL show this not to be the case.
-     *
-     * <p>
-     *
-     * @return The first scale hint value (understood to mean the min value)
-     * @deprecated Use getScaleDenomiatorMin() as there is less confusion over meaning
-     */
-    public double getScaleHintMin() {
-        return scaleHintMin;
-    }
-
-    /**
-     * Minimum scale for which this layer is considered good.
-     *
-     * <p>We assume this calculation is done in a similar manner to setScaleDenominatorMin(); but a
-     * look at common web services such as JPL show this not to be the case.
-     *
-     * <p>param The first scale hint value (understood to mean the min value)
-     *
-     * @deprecated Use setScaleDenomiatorMin() as there is less confusion over meaning
-     */
-    public void setScaleHintMin(double scaleHintMin) {
-        this.scaleHintMin = scaleHintMin;
     }
 
     /**
@@ -811,8 +744,7 @@ public class Layer implements Comparable<Layer> {
         for (String srsName : identifiers) {
             // Locate an exact bounding box if we can (searches all bounding boxes associated with
             // layer)
-            Map<String, CRSEnvelope> boxes =
-                    Layer.this.getBoundingBoxes(); // extents for layer and parents
+            Map<String, CRSEnvelope> boxes = getBoundingBoxes(); // extents for layer and parents
             tempBBox = (CRSEnvelope) boxes.get(srsName);
             if (tempBBox != null) {
                 break;
@@ -820,13 +752,13 @@ public class Layer implements Comparable<Layer> {
             // Otherwise, locate a LatLon bounding box ... if applicable
             if ("CRS:84".equals(srsName.toUpperCase())
                     || "EPSG:4326".equals(srsName.toUpperCase())) {
-                tempBBox = Layer.this.getLatLonBoundingBox(); // checks parents
+                tempBBox = getLatLonBoundingBox(); // checks parents
                 break;
             }
         }
         // second pass just get a latLonBoundingox (and we will transform it)
         if (tempBBox == null) {
-            tempBBox = Layer.this.getLatLonBoundingBox(); // checks parents
+            tempBBox = getLatLonBoundingBox(); // checks parents
         }
         // TODO Attempt to figure out the valid area of the CRS and use that.
 

@@ -24,7 +24,6 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import javax.xml.namespace.QName;
-import junit.framework.Assert;
 import org.eclipse.xsd.XSDSchema;
 import org.geotools.util.URLs;
 import org.geotools.xml.resolver.SchemaCache;
@@ -34,6 +33,7 @@ import org.geotools.xsd.Configuration;
 import org.geotools.xsd.SchemaIndex;
 import org.geotools.xsd.Schemas;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 

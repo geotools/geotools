@@ -119,6 +119,7 @@ public class DefaultImageDatum extends AbstractDatum implements ImageDatum {
      *     versions of this class.
      */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return super.hashCode() ^ pixelInCell.hashCode();
     }

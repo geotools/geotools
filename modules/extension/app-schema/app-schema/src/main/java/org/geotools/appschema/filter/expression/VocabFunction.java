@@ -1,4 +1,3 @@
-package org.geotools.appschema.filter.expression;
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
@@ -15,6 +14,7 @@ package org.geotools.appschema.filter.expression;
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+package org.geotools.appschema.filter.expression;
 
 import java.io.BufferedInputStream;
 import java.io.File;

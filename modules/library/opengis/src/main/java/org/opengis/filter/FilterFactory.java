@@ -117,10 +117,10 @@ public interface FilterFactory {
      * be {@code null}, making for an unconstrained date range at either of the ends.
      *
      * @param fid feature id, non null;
-     * @param start lower end timestamp of the time range, inclusive, or {@code null} only if {@code
-     *     end != null}
-     * @param start upper end timestamp of the time range, inclusive, or {@code null} only if {@code
-     *     start != null}
+     * @param startTime lower end timestamp of the time range, inclusive, or {@code null} only if
+     *     {@code end != null}
+     * @param endTime upper end timestamp of the time range, inclusive, or {@code null} only if
+     *     {@code start != null}
      */
     ResourceId resourceId(String fid, Date startTime, Date endTime);
 
@@ -301,6 +301,10 @@ public interface FilterFactory {
      * @param srs Indicating the CoordinateReferenceSystem to use for a literal BoundingBox
      */
     BBOX bbox(String propertyName, double minx, double miny, double maxx, double maxy, String srs);
+
+    BBOX bbox(Expression propertyName, Expression bounds);
+
+    BBOX bbox(Expression propertyName, Expression bounds, MatchAction matchAction);
 
     BBOX3D bbox(String propertyName, BoundingBox3D env);
 

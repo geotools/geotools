@@ -836,6 +836,12 @@ public class GeneralMatrix implements XMatrix, Serializable {
     /** Returns a clone of this matrix. */
     @Override
     public GeneralMatrix clone() {
+        try {
+            super.clone();
+        } catch (CloneNotSupportedException e) {
+            // should not happen
+            throw new RuntimeException(e);
+        }
         return new GeneralMatrix(this);
     }
 
@@ -959,9 +965,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
      * @param numCols The new number of columns in the matrix.
      */
     public void setSize(int numRows, int numCols) {
-        if (numRows == mat.numCols && numCols == mat.numCols) {
-            // do nothing
-        } else {
+        if (numRows != mat.numCols || numCols != mat.numCols) {
             // grow or shrink
             DMatrixRMaj ret = new DMatrixRMaj(numRows, numCols);
             CommonOps_DDRM.extract(mat, 0, numRows, 0, numCols, ret, 0, 0);

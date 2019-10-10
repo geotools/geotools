@@ -155,7 +155,7 @@ public class XMLWriter {
         Map m = new HashMap();
 
         if (dto.isFinal()) {
-            m.put("final", new Boolean(true));
+            m.put("final", Boolean.TRUE);
         }
 
         try {

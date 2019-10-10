@@ -47,7 +47,6 @@ import org.geotools.filter.ConstantExpression;
  *         </pre>
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @deprecated Please use org.opengis.style.OverlapBehavior
  */
 public class OverlapBehavior extends ConstantExpression {
     public static final String AVERAGE_RESCTRICTION = "AVERAGE";

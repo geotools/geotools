@@ -1,5 +1,6 @@
 /*
- * GeoTools - The Open Source Java GIS Toolkit http://geotools.org
+ * GeoTools - The Open Source Java GIS Toolkit
+ * http://geotools.org
  *
  * (C) 2017, Open Source Geospatial Foundation (OSGeo)
  *
@@ -98,7 +99,6 @@ public class WMTSCapabilities extends Capabilities {
 
     private WMTSServiceType type;
 
-    /** @param object */
     public WMTSCapabilities(CapabilitiesType capabilities) throws ServiceException {
         caps = capabilities;
         setService(new WMTSService(caps.getServiceIdentification()));
@@ -181,7 +181,10 @@ public class WMTSCapabilities extends Capabilities {
                 if (wmtsLayer.getLatLonBoundingBox() == null) {
                     // We did not find any good bbox
                     LOGGER.warning("No good Bbox found for layer " + l.getName());
-                    throw new ServiceException("No good Bbox found for layer " + l.getName());
+                    // throw new ServiceException("No good Bbox found for layer " + l.getName());
+                    CRSEnvelope latLonBoundingBox = new CRSEnvelope("CRS:84", -180, -90, 180, 90);
+                    wmtsLayer.setLatLonBoundingBox(latLonBoundingBox);
+                    wmtsLayer.setBoundingBoxes(latLonBoundingBox);
                 }
             }
 

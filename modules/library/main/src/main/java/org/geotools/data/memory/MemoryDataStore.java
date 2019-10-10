@@ -35,6 +35,7 @@ import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.FeatureTypes;
+import org.geotools.util.SuppressFBWarnings;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -53,6 +54,9 @@ import org.opengis.feature.type.Name;
  *
  * @author jgarnett
  */
+// This code synchronizes on a ConcurrentHashMap, which does not seem very sensible (the structure
+// is designed for concurrent access...). May want to revisit
+@SuppressFBWarnings("JLM_JSR166_UTILCONCURRENT_MONITORENTER")
 public class MemoryDataStore extends ContentDataStore {
 
     public MemoryDataStore() {
@@ -67,7 +71,8 @@ public class MemoryDataStore extends ContentDataStore {
     /**
      * Construct an MemoryDataStore around an empty collection of the provided SimpleFeatureType
      *
-     * @param schema An empty feature collection of this type will be made available
+     * @param featureType The initial feature type for the memory data store, an empty feature
+     *     collection of this type will be made available
      */
     public MemoryDataStore(SimpleFeatureType featureType) {
         try {

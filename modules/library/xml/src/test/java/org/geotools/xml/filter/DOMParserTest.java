@@ -36,7 +36,9 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.opengis.filter.Filter;
 import org.opengis.filter.Id;
+import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.PropertyIsNotEqualTo;
+import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.Beyond;
@@ -110,16 +112,16 @@ public class DOMParserTest extends FilterTestSupport {
         // Builds the test feature
         Object[] attributes = new Object[11];
         attributes[0] = geomFac.createLineString(coords);
-        attributes[1] = new Boolean(true);
-        attributes[2] = new Character('t');
-        attributes[3] = new Byte("10");
-        attributes[4] = new Short("101");
-        attributes[5] = new Integer(1002);
-        attributes[6] = new Long(10003);
-        attributes[7] = new Float(10000.4);
-        attributes[8] = new Double(100000.5);
+        attributes[1] = Boolean.valueOf(true);
+        attributes[2] = Character.valueOf('t');
+        attributes[3] = Byte.valueOf("10");
+        attributes[4] = Short.valueOf("101");
+        attributes[5] = Integer.valueOf(1002);
+        attributes[6] = Long.valueOf(10003);
+        attributes[7] = Float.valueOf(10000.4f);
+        attributes[8] = Double.valueOf(100000.5);
         attributes[9] = "test string data";
-        attributes[10] = new Double(0.0);
+        attributes[10] = Double.valueOf(0.0);
 
         // Creates the feature itself
         FilterTestSupport.testFeature =
@@ -275,6 +277,16 @@ public class DOMParserTest extends FilterTestSupport {
         PropertyIsNotEqualTo filter = (PropertyIsNotEqualTo) parseDocumentFirst("testNotEqual.xml");
 
         TestCase.assertTrue(filter.isMatchingCase());
+    }
+
+    public void testLikeWithExpression() throws Exception {
+        Filter filter = parseDocument("like-expression.xml");
+        TestCase.assertTrue(filter instanceof PropertyIsLike);
+        PropertyIsLike like = (PropertyIsLike) filter;
+        Function function = (Function) like.getExpression();
+        assertEquals("env", function.getName());
+        assertEquals("key", function.getParameters().get(0).evaluate(null, String.class));
+        assertEquals("value", function.getParameters().get(1).evaluate(null, String.class));
     }
 
     public Filter parseDocument(String uri) throws Exception {

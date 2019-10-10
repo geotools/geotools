@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 import org.geotools.data.Query;
 import org.geotools.data.complex.PartialIndexedMappingFeatureIterator;
 import org.geotools.data.complex.TotalIndexedMappingFeatureIterator;
-import org.geotools.data.complex.config.Types;
+import org.geotools.data.complex.feature.type.Types;
 import org.geotools.data.util.FeatureStreams;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;

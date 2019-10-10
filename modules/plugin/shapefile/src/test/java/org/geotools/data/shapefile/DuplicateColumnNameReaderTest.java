@@ -27,7 +27,7 @@ public class DuplicateColumnNameReaderTest extends TestCaseSupport {
     // based on the current implementation of ShapefileDataStore.
     public final String testColumn = "TestColumn1";
 
-    public final Integer expectedValue = new Integer(20);
+    public final Integer expectedValue = Integer.valueOf(20);
 
     @Test
     public void testAttributeReader() throws IOException {

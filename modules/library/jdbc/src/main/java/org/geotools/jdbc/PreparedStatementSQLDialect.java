@@ -193,7 +193,7 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
      * @param value the value.
      * @param att The full attribute description
      * @param ps The prepared statement.
-     * @param column The column the value maps to.
+     * @param i The column the value maps to.
      * @param cx The database connection.
      * @throws SQLException
      */
@@ -248,7 +248,7 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
      * Converts a given array value into a {@link Array}
      *
      * @param value The non null value to be converted
-     * @param binding The attribute binding (of array type
+     * @param componentType The attribute binding (of array type)
      * @param connection The connection used to create an {@link Array}
      * @return The converted array
      * @throws SQLException
@@ -311,7 +311,7 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
     }
 
     public PreparedFilterToSQL createPreparedFilterToSQL() {
-        PreparedFilterToSQL f2s = new PreparedFilterToSQL();
+        PreparedFilterToSQL f2s = new PreparedFilterToSQL(this);
         f2s.setCapabilities(BASE_DBMS_CAPABILITIES);
         return f2s;
     }

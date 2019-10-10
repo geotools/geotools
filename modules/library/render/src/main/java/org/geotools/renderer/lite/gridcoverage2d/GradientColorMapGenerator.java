@@ -238,8 +238,8 @@ public class GradientColorMapGenerator {
     /**
      * Get an SVG ColorMap generator for the specified file
      *
-     * @param a ";" separated list of colors in the form c1;c2;c3;... where each color can use
-     *     syntaxes as rgb(r0,g0,b0), rgba(r0,g0,b0,alpha_0_to_1), #RRGGBB or 0xRRGGBB
+     * @param colorValues ";" separated list of colors in the form c1;c2;c3;... where each color can
+     *     use syntaxes as rgb(r0,g0,b0), rgba(r0,g0,b0,alpha_0_to_1), #RRGGBB or 0xRRGGBB
      * @return
      * @throws SAXException
      * @throws IOException
@@ -252,10 +252,8 @@ public class GradientColorMapGenerator {
                 || colorValues.startsWith(RGBA_INLINEVALUE_MARKER)
                 || colorValues.startsWith(HEX_INLINEVALUE_MARKER)
                 || colorValues.startsWith(HEX2_INLINEVALUE_MARKER)) {
-            String rampType = "ramp";
             if (colorValues.contains(":")) {
                 final int rampTypeIndex = colorValues.indexOf(":");
-                rampType = colorValues.substring(rampTypeIndex + 1);
                 colorValues = colorValues.substring(0, rampTypeIndex);
             }
             String colors[] = colorValues.split(";");
@@ -322,7 +320,7 @@ public class GradientColorMapGenerator {
      * Create a {@link Color} from a color String which may be an SVG color: rgb(R0,G0,B0),
      * rgba(R0,G0,B0,Alpha) or hex color: #RRGGBB
      *
-     * @param the String color representation
+     * @param color The String color representation
      * @return the {@link Color} instance related to that string definition
      */
     private static Color createColor(String color) {

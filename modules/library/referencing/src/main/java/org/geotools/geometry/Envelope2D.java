@@ -259,18 +259,6 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Envel
     }
 
     /**
-     * Returns the center ordinate along the specified dimension.
-     *
-     * @param dimension The dimension to query.
-     * @return The mid ordinate value along the given dimension.
-     * @deprecated Renamed as {@link #getMedian}.
-     */
-    @Deprecated
-    public final double getCenter(final int dimension) {
-        return getMedian(dimension);
-    }
-
-    /**
      * Returns the median ordinate along the specified dimension. The result should be equals (minus
      * rounding error) to <code>({@linkplain #getMaximum getMaximum}(dimension) -
      * {@linkplain #getMinimum getMinimum}(dimension)) / 2</code>.
@@ -288,19 +276,6 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Envel
             default:
                 throw indexOutOfBounds(dimension);
         }
-    }
-
-    /**
-     * Returns the envelope length along the specified dimension. This length is equals to the
-     * maximum ordinate minus the minimal ordinate.
-     *
-     * @param dimension The dimension to query.
-     * @return The difference along maximal and minimal ordinates in the given dimension.
-     * @deprecated Renamed as {@link #getSpan}.
-     */
-    @Deprecated
-    public final double getLength(final int dimension) {
-        return getSpan(dimension);
     }
 
     /**

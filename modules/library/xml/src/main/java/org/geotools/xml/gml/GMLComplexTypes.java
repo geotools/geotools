@@ -32,12 +32,12 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.geotools.util.SuppressFBWarnings;
 import org.geotools.xml.PrintHandler;
 import org.geotools.xml.XMLHandlerHints;
 import org.geotools.xml.gml.FCBuffer.StopException;
@@ -61,7 +61,6 @@ import org.geotools.xml.xLink.XLinkSchema;
 import org.geotools.xml.xsi.XSISimpleTypes;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.DefaultCoordinateSequenceFactory;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -73,6 +72,8 @@ import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -410,8 +411,8 @@ public class GMLComplexTypes {
         ai.addAttribute("", "X", "", "decimal", "" + coord.x);
         ai.addAttribute("", "Y", "", "decimal", "" + coord.y);
 
-        if (coord.z != Double.NaN) {
-            ai.addAttribute("", "Z", "", "decimal", "" + coord.z);
+        if (!Double.isNaN(coord.getZ())) {
+            ai.addAttribute("", "Z", "", "decimal", "" + coord.getZ());
         }
 
         if (e == null) {
@@ -455,19 +456,19 @@ public class GMLComplexTypes {
 
         Coordinate c = coords[0];
 
-        if (Double.isNaN(c.z)) {
+        if (Double.isNaN(c.getZ())) {
             output.characters(c.x + cs + c.y);
         } else {
-            output.characters(c.x + cs + c.y + cs + c.z);
+            output.characters(c.x + cs + c.y + cs + c.getZ());
         }
 
         for (int i = 1; i < coords.length; i++) {
             c = coords[i];
 
-            if (Double.isNaN(c.z)) {
+            if (Double.isNaN(c.getZ())) {
                 output.characters(ts + c.x + cs + c.y);
             } else {
-                output.characters(ts + c.x + cs + c.y + cs + c.z);
+                output.characters(ts + c.x + cs + c.y + cs + c.getZ());
             }
         }
 
@@ -1874,7 +1875,7 @@ public class GMLComplexTypes {
                 throw new SAXException("Invalid coordinate specified");
             }
 
-            GeometryFactory gf = new GeometryFactory(DefaultCoordinateSequenceFactory.instance());
+            GeometryFactory gf = new GeometryFactory(CoordinateArraySequenceFactory.instance());
 
             if (t instanceof Coordinate) {
                 Coordinate c = (Coordinate) t;
@@ -2032,7 +2033,7 @@ public class GMLComplexTypes {
                 throw new SAXException("Invalid coordinate specified");
             }
 
-            GeometryFactory gf = new GeometryFactory(DefaultCoordinateSequenceFactory.instance());
+            GeometryFactory gf = new GeometryFactory(CoordinateArraySequenceFactory.instance());
 
             if (t instanceof Coordinate) {
                 if (value.length < 2) {
@@ -2055,7 +2056,7 @@ public class GMLComplexTypes {
                 // TODO -- be forgiving
                 if (c.size() == 1) {
                     c =
-                            DefaultCoordinateSequenceFactory.instance()
+                            CoordinateArraySequenceFactory.instance()
                                     .create(
                                             new Coordinate[] {
                                                 c.getCoordinate(0), c.getCoordinate(0)
@@ -2206,7 +2207,7 @@ public class GMLComplexTypes {
                 throw new SAXException("Invalid coordinate specified");
             }
 
-            GeometryFactory gf = new GeometryFactory(DefaultCoordinateSequenceFactory.instance());
+            GeometryFactory gf = new GeometryFactory(CoordinateArraySequenceFactory.instance());
 
             if (t instanceof Coordinate) {
                 if (value.length < 4) {
@@ -2371,7 +2372,7 @@ public class GMLComplexTypes {
                 throw new SAXException("Invalid coordinate specified");
             }
 
-            GeometryFactory gf = new GeometryFactory(DefaultCoordinateSequenceFactory.instance());
+            GeometryFactory gf = new GeometryFactory(CoordinateArraySequenceFactory.instance());
 
             try {
                 if (t instanceof Coordinate) {
@@ -2597,7 +2598,7 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            GeometryFactory gf = new GeometryFactory(DefaultCoordinateSequenceFactory.instance());
+            GeometryFactory gf = new GeometryFactory(CoordinateArraySequenceFactory.instance());
 
             LinearRing outerLR = null;
             LinearRing[] innerLR = new LinearRing[(value.length > 1) ? (value.length - 1) : 0];
@@ -2752,7 +2753,7 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            GeometryFactory gf = new GeometryFactory(DefaultCoordinateSequenceFactory.instance());
+            GeometryFactory gf = new GeometryFactory(CoordinateArraySequenceFactory.instance());
 
             Geometry[] geoms = new Geometry[value.length];
 
@@ -2901,7 +2902,7 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            GeometryFactory gf = new GeometryFactory(DefaultCoordinateSequenceFactory.instance());
+            GeometryFactory gf = new GeometryFactory(CoordinateArraySequenceFactory.instance());
 
             Point[] geoms = new Point[value.length];
 
@@ -3055,7 +3056,7 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            GeometryFactory gf = new GeometryFactory(DefaultCoordinateSequenceFactory.instance());
+            GeometryFactory gf = new GeometryFactory(CoordinateArraySequenceFactory.instance());
 
             LineString[] geoms = new LineString[value.length];
 
@@ -3209,7 +3210,7 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            GeometryFactory gf = new GeometryFactory(DefaultCoordinateSequenceFactory.instance());
+            GeometryFactory gf = new GeometryFactory(CoordinateArraySequenceFactory.instance());
 
             Polygon[] geoms = new Polygon[value.length];
 
@@ -3547,7 +3548,7 @@ public class GMLComplexTypes {
 
                     try {
                         if (!dec.equals(".")) {
-                            dec = dec.replaceAll("\\", "\\");
+                            // dec = dec.replaceAll("\\", "\\");
                             t = points[j].replaceAll(dec, ".");
                         } else {
                             t = points[j];
@@ -3583,7 +3584,7 @@ public class GMLComplexTypes {
                 }
             }
 
-            return DefaultCoordinateSequenceFactory.instance().create(coordinates);
+            return CoordinateArraySequenceFactory.instance().create(coordinates);
         }
 
         /** @see org.geotools.xml.xsi.Type#getInstanceType() */
@@ -4619,6 +4620,7 @@ public class GMLComplexTypes {
         }
 
         /** @see schema.Type#getValue(java.util.List) */
+        @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
         public SimpleFeature getValue(
                 Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException {

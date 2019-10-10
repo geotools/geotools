@@ -22,7 +22,9 @@ import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.logging.Logger;
 import org.geotools.image.palette.ColorMap.ColorEntry;
+import org.geotools.util.logging.Logging;
 
 /**
  * A {@link HashMap} replacement especially designed to map an (eventually packed) color to a non
@@ -34,6 +36,8 @@ import org.geotools.image.palette.ColorMap.ColorEntry;
  * @author Andrea Aime - GeoSolutions
  */
 final class ColorMap implements Iterable<ColorEntry> {
+
+    static final Logger LOGGER = Logging.getLogger(ColorMap.class);
 
     /** The default initial capacity - MUST be a power of two. */
     static final int DEFAULT_INITIAL_CAPACITY = 1024;
@@ -281,7 +285,7 @@ final class ColorMap implements Iterable<ColorEntry> {
                 sum += count;
             }
         }
-        System.out.println(
+        LOGGER.info(
                 "Bins "
                         + table.length
                         + ", empty: "
@@ -290,7 +294,7 @@ final class ColorMap implements Iterable<ColorEntry> {
                         + largest
                         + " avg: "
                         + sum * 1.0 / (table.length - empty));
-        System.out.println(
+        LOGGER.info(
                 "Accesses: "
                         + accessCount
                         + ", scans: "

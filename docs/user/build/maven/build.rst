@@ -34,25 +34,25 @@ Your First Build
 
      C:\java\geotools>mvn install
 
-5. If all is well, Maven should download the required .jar files and build GeoTools modules.
+5. If all is well, Maven should download the required ``.jar`` files and build GeoTools modules.
 6. At the end of this process it will display a list of all the modules which were built and installed correctly.::
 
       [INFO] ------------------------------------------------------------------------
       [INFO] BUILD SUCCESSFUL
       [INFO] ------------------------------------------------------------------------
-      [INFO] Total time: 9 months, 3 weeks, 12 hours, 3 minuets, and 43 seconds
+      [INFO] Total time: 9 months, 3 weeks, 12 hours, 3 minutes, and 43 seconds
       [INFO] Finished at: Sat Feb 12 16:05:08 EST 2011
       [INFO] Final Memory: 41M/87M
       [INFO] ------------------------------------------------------------------------
 
-7. The first build takes a while due to the download time for the .jar files.
+7. The first build takes a while due to the download time for the ``.jar`` files.
 
 If you have any trouble check the common build failures at the bottom of this page.
 
 Build Failure
 ^^^^^^^^^^^^^
 
-It is all well and good to recognise a successful build, but how do you recognise a build that has failed?
+It is all well and good to recognize a successful build, but how do you recognize a build that has failed?
 
 1. If your build fails you will get feedback like this::
 
@@ -80,17 +80,17 @@ Expected Build times
 
 Depending on your hardware and internet connection:
 
-* Building the first time, where maven needs to download everything, may take 20 to 30 minuets.
-* Future builds check for the most recent .jar files from the internet. The checking is based of md5 checksums and does not take long. Building subsequently may take 10 minuets depending on your hardware and internet connection.
-* After everything is downloaded can build "offline" and avoid the checking of mdf5 checksums resulting in a faster build of 5-7 minuets.
-* Finally you can turn off tests (danger!) and build offline to get a build under 2 minuets
+* Building the first time, where maven needs to download everything, may take 20 to 30 minutes.
+* Future builds check for the most recent ``.jar`` files from the internet. The checking is based on an md5 checksum and does not take long. Building subsequently may take 10 minutes depending on your hardware and internet connection.
+* After everything is downloaded can build "offline" and avoid the checking of md5 checksums resulting in a faster build of 5-7 minutes.
+* Finally you can turn off tests (danger!) and build offline to get a build under 2 minutes
 
 Tips to speed up a build:
 
 * Do not do a "clean" build if you do not have to
 * Experiment with the best use of Maven 3 "threading" for your computer
 * Rebuild a single module after you have modified it
-* Update your "settings.xml" file to point to a "mirror" in your country - allowing you to download closer to home
+* Update your ``settings.xml`` file to point to a "mirror" in your country - allowing you to download from closer to home
 * Build offline (when everything is downloaded to your local repository)
 
 Common Build Problems
@@ -100,10 +100,10 @@ The following common problems occur during a::
 
    mvn -U clean install
 
-Unable to find org.geotools.maven:javadoc:jar
-'''''''''''''''''''''''''''''''''''''''''''''
+Unable to find ``org.geotools.maven:javadoc:jar``
+'''''''''''''''''''''''''''''''''''''''''''''''''
 
-We have a little of a chicken-and-the-egg problem here when building a tag for the first time.
+We have a little of a chicken-and-egg problem here when building a tag for the first time.
 
 To fix you need to build the javadoc jar by hand.
 
@@ -111,23 +111,23 @@ To fix you need to build the javadoc jar by hand.
 
       cd build/maven/javadoc
 
-2. Build the javadoc module
+2. Build the javadoc module::
 
       mvn install
 
 3. You can now return to the root of the project and restart your build.
 
-Note that this plugin requires your JAVA_HOME to be set to a JDK as it makes use of the tools.jar (in order to build javadocs).
+Note that this plugin requires your JAVA_HOME to be set to a JDK as it makes use of the ``tools.jar`` (in order to build javadocs).
 
 Unable to Delete Directory on Windows
 '''''''''''''''''''''''''''''''''''''
 
-Build systems like maven (that smash files around for a living) are generally incompatible with Microsoft Indexing Service.
+Build systems like Maven (that smash files around for a living) are generally incompatible with Microsoft Indexing Service.
 From Lim Goh on email
 
 I would also like to point out for future reference that the Windows
-Indexing Service is not 100% compatible with maven, and causes some
-maven builds to break. Developers who use Windows 7 64-bit (or
+Indexing Service is not 100% compatible with Maven, and causes some
+Maven builds to break. Developers who use Windows 7 64-bit (or
 anything close like Vista or 32-bit) may have unsuccessful build due
 to "unable to delete directory". If that happens please try to disable
 Windows Indexing Service for the entire working copy and try

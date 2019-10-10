@@ -57,9 +57,6 @@ public class Oblongs {
      * @param bounds the bounding rectangle
      * @param width oblong width
      * @param height oblong height
-     * @param vertexSpacing maximum distance between adjacent vertices in a grid element; if {@code
-     *     <= 0} or {@code >= min(width, height) / 2.0} it is ignored and the polygons will not be
-     *     densified
      * @param gridBuilder an instance of {@code GridFeatureBuilder}
      * @return a new grid
      * @throws IllegalArgumentException if bounds is null or empty; or if either width or height is

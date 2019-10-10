@@ -56,4 +56,4 @@ class FeatureReaderFeatureIterator implements SimpleFeatureIterator {
             // we tried, n problem
         }
     }
-};
+}

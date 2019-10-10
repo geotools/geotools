@@ -22,11 +22,7 @@ import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.traverse.GraphIterator;
 import org.geotools.graph.traverse.GraphWalker;
 
-/**
- * TODO: DOCUMENT ME!
- *
- * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- */
+/** @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net */
 public class StagedGraphTraversal extends BasicGraphTraversal {
 
     private int m_stage;

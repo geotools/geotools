@@ -41,7 +41,7 @@ import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.RecyclingTileFactory;
 import javax.media.jai.TileCache;
-import org.geotools.arcsde.ArcSDERasterFormatFactory;
+import org.geotools.arcsde.data.ArcSDERasterFormatFactory;
 import org.geotools.arcsde.session.ArcSDEConnectionConfig;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;

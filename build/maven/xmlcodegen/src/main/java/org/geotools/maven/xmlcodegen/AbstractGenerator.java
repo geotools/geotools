@@ -104,7 +104,7 @@ public abstract class AbstractGenerator {
     /**
      * Sets the location to write out generated source files.
      *
-     * @param location A file path.
+     * @param sourceLocation A file path.
      */
     public void setSourceLocation(String sourceLocation) {
         this.sourceLocation = sourceLocation;
@@ -323,7 +323,7 @@ public abstract class AbstractGenerator {
                 + templateName);
 
         try {
-            Object template = c.newInstance();
+            Object template = c.getDeclaredConstructor().newInstance();
 
             Method generate = c.getMethod("generate",
                     new Class[] { Object.class });

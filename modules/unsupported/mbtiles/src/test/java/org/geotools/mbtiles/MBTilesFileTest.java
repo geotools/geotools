@@ -50,6 +50,12 @@ public class MBTilesFileTest {
     }
 
     @Test
+    public void testMBTilesMetadataJPG() {
+        MBTilesMetadata m = new MBTilesMetadata();
+        m.setFormatStr("jpg"); // threw exception before JPG was added to enum
+    }
+
+    @Test
     public void testMBTilesInitTwice() throws IOException {
         MBTilesFile file = new MBTilesFile();
         file.init();

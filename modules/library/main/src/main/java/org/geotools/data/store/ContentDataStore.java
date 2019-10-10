@@ -475,7 +475,7 @@ public abstract class ContentDataStore implements DataStore {
      * </code> will be returned. Note that {@link #ensureEntry(TypeName)} will throw an exception in
      * this case.
      *
-     * @param The name of the entry.
+     * @param name The name of the entry.
      * @return The entry, or <code>null</code> if it does not exist.
      */
     protected final ContentEntry entry(Name name) throws IOException {

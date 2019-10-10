@@ -246,7 +246,7 @@ public class ExponentialTransform1D extends AbstractMathTransform
             final double newScale = scale * Math.pow(base, other.offset);
             final double newPower = lnBase / other.lnBase;
             if (!Double.isNaN(newScale)) {
-                if (newPower == 1) {
+                if (Math.abs(newPower - 1) < 1e-9) {
                     return LinearTransform1D.create(newScale, 0);
                 }
                 // TODO: Needs a transform here with the following equation:

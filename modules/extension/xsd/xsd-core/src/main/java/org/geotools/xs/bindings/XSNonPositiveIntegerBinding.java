@@ -94,11 +94,11 @@ public class XSNonPositiveIntegerBinding implements SimpleBinding {
         }
 
         if (MIN_INTEGER.compareTo(number) <= 0) {
-            return new Integer(number.intValue());
+            return Integer.valueOf(number.intValue());
         }
 
         if (MIN_LONG.compareTo(number) <= 0) {
-            return new Long(number.longValue());
+            return Long.valueOf(number.longValue());
         }
 
         return number;

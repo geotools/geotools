@@ -23,12 +23,13 @@ import org.geotools.graph.traverse.GraphTraversal;
 
 public class DirectedDepthFirstIterator extends DepthFirstIterator {
 
+    @Override
     public void cont(Graphable current, GraphTraversal traversal) {
         // only consider outing going related
         DirectedGraphable dg = (DirectedGraphable) current;
-        for (Iterator itr = dg.getOutRelated(); itr.hasNext(); ) {
+        for (Iterator<? extends Graphable> itr = dg.getOutRelated(); itr.hasNext(); ) {
             DirectedGraphable related = (DirectedGraphable) itr.next();
-            if (!traversal.isVisited(related)) getQueue().enq(related);
+            if (!traversal.isVisited(related)) getQueue().add(related);
         }
     }
 }

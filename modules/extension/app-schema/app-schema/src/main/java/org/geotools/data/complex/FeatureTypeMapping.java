@@ -23,13 +23,14 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import javax.xml.namespace.QName;
 import org.geotools.appschema.util.IndexQueryUtils;
 import org.geotools.data.FeatureSource;
-import org.geotools.data.complex.config.Types;
+import org.geotools.data.complex.feature.type.Types;
 import org.geotools.data.complex.filter.XPath;
-import org.geotools.data.complex.filter.XPathUtil.Step;
-import org.geotools.data.complex.filter.XPathUtil.StepList;
+import org.geotools.data.complex.util.XPathUtil.Step;
+import org.geotools.data.complex.util.XPathUtil.StepList;
 import org.geotools.data.joining.JoiningNestedAttributeMapping;
 import org.geotools.gml3.GML;
 import org.geotools.xlink.XLINK;
@@ -54,6 +55,8 @@ public class FeatureTypeMapping {
      * access instead of a data store as the source data store
      */
     private FeatureSource<? extends FeatureType, ? extends Feature> source;
+
+    private String sourceDatastoreId;
 
     // Index FeatureSource, optional
     private FeatureSource<SimpleFeatureType, SimpleFeature> indexSource;
@@ -220,7 +223,7 @@ public class FeatureTypeMapping {
     /**
      * Finds the attribute mapping for the target expression <code>exactPath</code>.
      *
-     * @param exactPath the xpath expression on the target schema to find the mapping for
+     * @param xpathExpression the xpath expression on the target schema to find the mapping for
      * @return the attribute mapping that match 1:1 with <code>exactPath</code> or <code>null</code>
      */
     public AttributeMapping getAttributeMapping(final String xpathExpression) {
@@ -363,6 +366,7 @@ public class FeatureTypeMapping {
         return expressions;
     }
 
+    @SuppressWarnings("PMD.UnusedPrivateMethod")
     private List<Expression> getClientPropertyExpressions(
             final List attributeMappings, final Name clientPropertyName, StepList parentPath) {
         List<Expression> clientPropertyExpressions =
@@ -488,5 +492,15 @@ public class FeatureTypeMapping {
             return mapp.getIndexField();
         }
         return null;
+    }
+
+    /** Returns the source datastore id from mappings configurations. */
+    public Optional<String> getSourceDatastoreId() {
+        return Optional.ofNullable(sourceDatastoreId);
+    }
+
+    /** Sets the source datastore id from mappings configurations. */
+    public void setSourceDatastoreId(String sourceDatastoreId) {
+        this.sourceDatastoreId = sourceDatastoreId;
     }
 }

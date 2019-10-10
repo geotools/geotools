@@ -21,11 +21,7 @@ import junit.framework.TestCase;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 
-/**
- * DOCUMENT ME!
- *
- * @author Simone Giannecchini
- */
+/** @author Simone Giannecchini */
 public class GT30ServiceTest extends TestCase {
     public GT30ServiceTest() {
         super();
@@ -33,11 +29,7 @@ public class GT30ServiceTest extends TestCase {
         // TODO Auto-generated constructor stub
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param arg0
-     */
+    /** @param arg0 */
     public GT30ServiceTest(String arg0) {
         super(arg0);
 

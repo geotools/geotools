@@ -164,7 +164,7 @@ public class JDataStoreWizard extends JWizard {
         URL url = (URL) connectionParameters.get("url");
         return URLs.urlToFile(url);
     }
-    /** @param format2 */
+
     public void setFormat(DataStoreFactorySpi format) {
         if (this.format == format) {
             return;

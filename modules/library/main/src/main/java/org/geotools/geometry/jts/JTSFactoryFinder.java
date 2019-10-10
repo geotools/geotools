@@ -39,7 +39,7 @@ import org.locationtech.jts.geom.PrecisionModel;
  */
 public class JTSFactoryFinder extends FactoryFinder {
     /** The service registry for this manager. Will be initialized only when first needed. */
-    private static FactoryRegistry registry;
+    private static volatile FactoryRegistry registry;
 
     /** Do not allows any instantiation of this class. */
     private JTSFactoryFinder() {
@@ -53,8 +53,15 @@ public class JTSFactoryFinder extends FactoryFinder {
     private static FactoryRegistry getServiceRegistry() {
         assert Thread.holdsLock(JTSFactoryFinder.class);
         if (registry == null) {
-            registry = new FactoryCreator(Arrays.asList(new Class<?>[] {GeometryFactory.class}));
-            registry.registerFactory(new GeometryFactory(), GeometryFactory.class);
+            synchronized (JTSFactoryFinder.class) {
+                if (registry == null) {
+                    FactoryRegistry temp =
+                            new FactoryCreator(
+                                    Arrays.asList(new Class<?>[] {GeometryFactory.class}));
+                    temp.registerFactory(new GeometryFactory(), GeometryFactory.class);
+                    registry = temp;
+                }
+            }
         }
         return registry;
     }
@@ -190,28 +197,6 @@ public class JTSFactoryFinder extends FactoryFinder {
                                 PrecisionModel.class,
                                 CoordinateSequenceFactory.class
                             }));
-        }
-
-        /**
-         * Creates a new instance of the specified factory using the specified hints.
-         *
-         * @param category The category to instantiate.
-         * @param implementation The factory class to instantiate.
-         * @param hints The implementation hints.
-         * @return The factory.
-         * @throws FactoryRegistryException if the factory creation failed.
-         */
-        protected Object createServiceProvider(
-                final Class category, final Class implementation, final Hints hints)
-                throws FactoryRegistryException {
-            if (GeometryFactory.class.isAssignableFrom(category)
-                    && GeometryFactory.class.equals(implementation)) {
-                return new GeometryFactory(
-                        getPrecisionModel(hints),
-                        getSRID(hints),
-                        getCoordinateSequenceFactory(hints));
-            }
-            return super.createServiceProvider(category, implementation, hints);
         }
 
         /** Extracts the SRID from the hints, or returns {@code 0} if none. */

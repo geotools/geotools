@@ -67,11 +67,9 @@ class EmfAppSchemaParser {
      * property is found. Note: this code is borrowed and adapted from {@link
      * ParserHandler#startDocument()}
      *
-     * @param wfsConfiguration the WFS configuration for the parser to grab {@link Binding}s from.
+     * @param configuration the WFS configuration for the parser to grab {@link Binding}s from.
      * @param featureName the qualified name of the Feature element in the schema, for which the
      *     feature type is to be parsed.
-     * @param schemaLocation the location of the root schema file from where to parse the feature
-     *     type.
      * @param crs the CRS to be assigned to the geometric attributes in the parsed feature type.
      *     This information shall be provided here as the schema itself has no knowledge of the CRS
      *     used.

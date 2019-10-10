@@ -708,11 +708,11 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         }
 
         // TODO: Use InProcessLockingManager to assert read locks?
-        if (!canLock()) {
-            //            LockingManager lockingManager = getDataStore().getLockingManager();
-            //            return ((InProcessLockingManager)lockingManager).checkedReader(reader,
-            // transaction);
-        }
+        // if (!canLock()) {
+        //            LockingManager lockingManager = getDataStore().getLockingManager();
+        //            return ((InProcessLockingManager)lockingManager).checkedReader(reader,
+        // transaction);
+        // }
 
         return reader;
     }

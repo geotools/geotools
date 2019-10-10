@@ -176,7 +176,52 @@ public interface DataAccessFactory extends Factory {
      * @return booean true if and only if this factory can process the resource indicated by the
      *     param set and all the required params are pressent.
      */
-    boolean canProcess(java.util.Map<String, Serializable> params);
+    default boolean canProcess(java.util.Map<String, Serializable> params) {
+        if (params == null) {
+            return false;
+        }
+        Param arrayParameters[] = getParametersInfo();
+        for (int i = 0; i < arrayParameters.length; i++) {
+            Param param = arrayParameters[i];
+            Object value;
+            if (!params.containsKey(param.key)) {
+                if (param.required) {
+                    return false; // missing required key!
+                } else {
+                    continue;
+                }
+            }
+            try {
+                value = param.lookUp(params);
+            } catch (IOException e) {
+                // could not upconvert/parse to expected type!
+                // even if this parameter is not required
+                // we are going to refuse to process
+                // these params
+                return false;
+            }
+            if (value == null) {
+                if (param.required) {
+                    return (false);
+                }
+            } else {
+                if (!param.type.isInstance(value)) {
+                    return false; // value was not of the required type
+                }
+                if (param.metadata != null) {
+                    // check metadata
+                    if (param.metadata.containsKey(Param.OPTIONS)) {
+                        java.util.List<Object> options =
+                                (List<Object>) param.metadata.get(Param.OPTIONS);
+                        if (options != null && !options.contains(value)) {
+                            return false; // invalid option
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
 
     /**
      * Test to see if the implementation is available for use. This method ensures all the
@@ -307,7 +352,7 @@ public interface DataAccessFactory extends Factory {
          * @param description User description of Param (40 chars or less)
          * @param required <code>true</code> is param is required
          * @param sample Sample value as an example for user input
-         * @param extra metadata information, preferably keyed by known identifiers like {@link
+         * @param metadata metadata information, preferably keyed by known identifiers like {@link
          *     Parameter#IS_PASSWORD}
          */
         public Param(
@@ -338,7 +383,7 @@ public interface DataAccessFactory extends Factory {
          * @param description User description of Param (40 chars or less)
          * @param required <code>true</code> is param is required
          * @param sample Sample value as an example for user input
-         * @param extra metadata information, preferably keyed by known identifiers like {@link
+         * @param metadata metadata information, preferably keyed by known identifiers like {@link
          *     Parameter#IS_PASSWORD}
          */
         public Param(
@@ -433,12 +478,7 @@ public interface DataAccessFactory extends Factory {
             return value;
         }
 
-        /**
-         * Convert value to text representation for this Parameter
-         *
-         * @param value DOCUMENT ME!
-         * @return DOCUMENT ME!
-         */
+        /** Convert value to text representation for this Parameter */
         public String text(Object value) {
             return value.toString();
         }
@@ -527,12 +567,21 @@ public interface DataAccessFactory extends Factory {
          *
          * @param text Text representation of type should not be null or empty
          * @return Object converted from text representation
-         * @throws Throwable DOCUMENT ME!
          * @throws IOException If text could not be parsed
-         * @throws DataSourceException DOCUMENT ME!
          */
         public Object parse(String text) throws Throwable {
             Constructor<?> constructor;
+
+            if (type.isEnum()) {
+                if (text == null || text.isEmpty()) {
+                    return null;
+                }
+                for (Object constant : type.getEnumConstants()) {
+                    if (constant.toString().equalsIgnoreCase(text)) {
+                        return constant;
+                    }
+                }
+            }
 
             try {
                 constructor = type.getConstructor(new Class[] {String.class});

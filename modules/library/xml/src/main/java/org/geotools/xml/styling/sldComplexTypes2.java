@@ -21,9 +21,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map;
 import javax.naming.OperationNotSupportedException;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.ChannelSelection;
 import org.geotools.styling.ColorMap;
 import org.geotools.styling.ContrastEnhancement;
+import org.geotools.styling.ContrastEnhancementImpl;
 import org.geotools.styling.FeatureTypeConstraint;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Graphic;
@@ -43,7 +45,6 @@ import org.geotools.styling.RemoteOWS;
 import org.geotools.styling.ShadedRelief;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactoryFinder;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.StyledLayerImpl;
 import org.geotools.styling.Symbolizer;
@@ -80,6 +81,7 @@ import org.geotools.xml.styling.sldComplexTypes._ImageOutline;
 import org.geotools.xml.styling.sldComplexTypes._LATEST_ON_TOP;
 import org.geotools.xml.styling.sldComplexTypes._LabelPlacement;
 import org.geotools.xml.xLink.XLinkSchema;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -125,8 +127,6 @@ public class sldComplexTypes2 {
                             1,
                             Element.UNBOUNDED)
                 };
-
-        private static int FEATURETYPOECONSTRAINT = 0;
 
         private static ElementGrouping child =
                 new SequenceGT(
@@ -380,7 +380,7 @@ public class sldComplexTypes2 {
                     offset = (Expression) value[i].getValue();
             }
 
-            LinePlacement dlp = StyleFactoryFinder.createStyleFactory().createLinePlacement(offset);
+            LinePlacement dlp = CommonFactoryFinder.getStyleFactory().createLinePlacement(offset);
             return dlp;
         }
     }
@@ -461,7 +461,7 @@ public class sldComplexTypes2 {
         public Object getValue(
                 Element element, ElementValue[] value, Attributes attrs1, Map hints) {
             LineSymbolizer symbol =
-                    StyleFactoryFinder.createStyleFactory().getDefaultLineSymbolizer();
+                    CommonFactoryFinder.getStyleFactory().getDefaultLineSymbolizer();
             // symbol.setGraphic(null);
 
             for (int i = 0; i < value.length; i++) {
@@ -579,7 +579,7 @@ public class sldComplexTypes2 {
          */
         public Object getValue(
                 Element element, ElementValue[] value, Attributes attrs1, Map hints) {
-            Mark symbol = StyleFactoryFinder.createStyleFactory().getDefaultMark();
+            Mark symbol = CommonFactoryFinder.getStyleFactory().getDefaultMark();
 
             for (int i = 0; i < value.length; i++) {
                 if ((value[i] == null) || value[i].getElement() == null) {
@@ -917,10 +917,6 @@ public class sldComplexTypes2 {
                             "Parameter", _Parameter.getInstance(), null, 0, Element.UNBOUNDED)
                 };
 
-        // array spots
-        private static int ALGORITHM = 0;
-        private static int PARAMETER = 1;
-
         private static ElementGrouping child =
                 new SequenceGT(
                         null,
@@ -1096,11 +1092,6 @@ public class sldComplexTypes2 {
                     new sldElement("RANDOM", _RANDOM.getInstance(), null, 1, 1)
                 };
 
-        private static int LATESTONTOP = 0;
-        private static int EARLIESTONTOP = 1;
-        private static int AVERAGE = 2;
-        private static int RANDOM = 3;
-
         private static ElementGrouping child = new ChoiceGT(elems);
 
         private _OverlapBehavior() {
@@ -1189,10 +1180,6 @@ public class sldComplexTypes2 {
                         },
                         1,
                         1);
-
-        private static int ANCHOROINT = 0;
-        private static int DISPLACEMENT = 1;
-        private static int ROTATION = 2;
 
         private _PointPlacement() {
             super(null, child, attrs, elems, null, false, false);
@@ -1331,7 +1318,7 @@ public class sldComplexTypes2 {
         public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
                 throws OperationNotSupportedException {
             PointSymbolizer symbol =
-                    StyleFactoryFinder.createStyleFactory().getDefaultPointSymbolizer();
+                    CommonFactoryFinder.getStyleFactory().getDefaultPointSymbolizer();
             // symbol.setGraphic(null);
 
             for (int i = 0; i < value.length; i++) {
@@ -1429,7 +1416,7 @@ public class sldComplexTypes2 {
         public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
                 throws OperationNotSupportedException {
             PolygonSymbolizer symbol =
-                    StyleFactoryFinder.createStyleFactory().getDefaultPolygonSymbolizer();
+                    CommonFactoryFinder.getStyleFactory().getDefaultPolygonSymbolizer();
             // symbol.setGraphic(null);
 
             for (int i = 0; i < value.length; i++) {
@@ -1613,7 +1600,7 @@ public class sldComplexTypes2 {
         public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
                 throws OperationNotSupportedException {
             RasterSymbolizer symbol =
-                    StyleFactoryFinder.createStyleFactory().getDefaultRasterSymbolizer();
+                    CommonFactoryFinder.getStyleFactory().getDefaultRasterSymbolizer();
             // symbol.setGraphic(null);
 
             for (int i = 0; i < value.length; i++) {
@@ -1664,9 +1651,6 @@ public class sldComplexTypes2 {
                     new sldElement("Service", sldSimpleTypes._Service.getInstance(), null, 1, 1),
                     new sldElement("OnlineResource", _OnlineResource.getInstance(), null, 1, 1)
                 };
-
-        private static int SERVICE = 0;
-        private static int ONLINERESOURCE = 1;
 
         private static ElementGrouping child =
                 new SequenceGT(
@@ -1796,16 +1780,6 @@ public class sldComplexTypes2 {
                             "Symbolizer", SymbolizerType.getInstance(), null, 1, Element.UNBOUNDED)
                 };
 
-        private static int NAME = 0;
-        private static int TITLE = 1;
-        private static int ABSTRACT = 2;
-        private static int LEGENDGRAPHIC = 3;
-        private static int FILTER = 4;
-        private static int ELSEFILTER = 5;
-        private static int MINSCALEDENOMINATOR = 6;
-        private static int MAXSCALEDENOMINATOR = 7;
-        private static int SYMBOLIZER = 8;
-
         private static ElementGrouping child =
                 new SequenceGT(
                         new ElementGrouping[] {
@@ -1905,9 +1879,6 @@ public class sldComplexTypes2 {
                             0,
                             1)
                 };
-
-        private static int BRIGHNESSONLY = 0;
-        private static int RELEIFFACTOR = 1;
 
         private static ElementGrouping child =
                 new SequenceGT(
@@ -2019,7 +1990,6 @@ public class sldComplexTypes2 {
 
         private static int GRAPHICFILL = 0;
         private static int GRAPHICSTROKE = 1;
-        private static int CSSPARAMETER = 2;
 
         private static ElementGrouping child =
                 new SequenceGT(
@@ -2080,7 +2050,7 @@ public class sldComplexTypes2 {
          */
         public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
                 throws OperationNotSupportedException {
-            Stroke symbol = StyleFactoryFinder.createStyleFactory().getDefaultStroke();
+            Stroke symbol = CommonFactoryFinder.getStyleFactory().getDefaultStroke();
 
             for (int i = 0; i < value.length; i++) {
                 if ((value[i] == null) || value[i].getElement() == null) {
@@ -2094,10 +2064,9 @@ public class sldComplexTypes2 {
                 if (elems[GRAPHICSTROKE].getName().equals(e.getName()))
                     symbol.setGraphicStroke((Graphic) value[i].getValue());
 
-                if (elems[CSSPARAMETER].getName().equals(e.getName())) {
-                    Expression css = (Expression) value[i].getValue();
-                    // TODO apply the css
-                }
+                //                if (elems[CSSPARAMETER].getName().equals(e.getName())) {
+                //                    // TODO apply the css
+                //                }
             }
 
             return symbol;
@@ -2225,7 +2194,7 @@ public class sldComplexTypes2 {
         public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
                 throws OperationNotSupportedException, SAXException {
             StyledLayerDescriptor sld =
-                    StyleFactoryFinder.createStyleFactory().createStyledLayerDescriptor();
+                    CommonFactoryFinder.getStyleFactory().createStyledLayerDescriptor();
 
             for (int i = 0; i < value.length; i++) {
                 if ((value[i] == null) || value[i].getElement() == null) {
@@ -2336,7 +2305,7 @@ public class sldComplexTypes2 {
          */
         public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
                 throws OperationNotSupportedException {
-            TextSymbolizer symbol = StyleFactoryFinder.createStyleFactory().createTextSymbolizer();
+            TextSymbolizer symbol = CommonFactoryFinder.getStyleFactory().createTextSymbolizer();
             symbol.setFill(null);
 
             ArrayList fonts = new ArrayList();
@@ -2528,12 +2497,6 @@ public class sldComplexTypes2 {
                             1,
                             Element.UNBOUNDED)
                 };
-
-        private static int NAME = 0;
-        private static int TITLE = 1;
-        private static int ABSTRACT = 2;
-        private static int ISDEFAULT = 3;
-        private static int FEATURETYPESTYLE = 4;
 
         private static ElementGrouping child = new SequenceGT(elems);
 
@@ -2816,8 +2779,12 @@ public class sldComplexTypes2 {
                 if (elems[SOURCECHANNELNAME].getName().equals(e.getName()))
                     symbol.setChannelName((String) value[i].getValue());
 
-                if (elems[CONTRASTENHANCEMENT].getName().equals(e.getName()))
-                    symbol.setContrastEnhancement((Expression) value[i].getValue());
+                if (elems[CONTRASTENHANCEMENT].getName().equals(e.getName())) {
+                    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+                    symbol.setContrastEnhancement(
+                            new ContrastEnhancementImpl(
+                                    ff, (Expression) value[i].getValue(), null));
+                }
             }
 
             return symbol;

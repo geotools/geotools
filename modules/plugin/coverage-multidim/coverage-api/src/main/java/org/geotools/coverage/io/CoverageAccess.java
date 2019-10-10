@@ -130,10 +130,10 @@ public interface CoverageAccess {
      *
      * <p>
      *
-     * @param Name Indicate the coverage to access
+     * @param name Indicate the coverage to access
      * @param params Additional parameters as needed to indicate what part of the data set to access
      * @param accessType Requested level of access
-     * @param Hints Implementation specific hints; please review the javadocs for your Driver for
+     * @param hints Implementation specific hints; please review the javadocs for your Driver for
      *     details
      * @param listener used to report progress while obtianing access
      */
@@ -167,9 +167,9 @@ public interface CoverageAccess {
      *
      * <p>This method will only return true if getSupportedAccessTypes() == READ_WRITE.
      *
-     * @param Name The name of the data set to create
+     * @param name The name of the data set to create
      * @param params Indicate the content to be created
-     * @param Hints Implementations specific Hints, please check the javadocs for your driver for
+     * @param hints Implementations specific Hints, please check the javadocs for your driver for
      *     details
      * @return true if a coverage can be created
      */
@@ -184,9 +184,9 @@ public interface CoverageAccess {
      * may throw an {@link UnsupportedOperationException} in case the related Driver won't allow
      * {@link CoverageStore} creation.
      *
-     * @param Name The name of the data set to create
+     * @param name The name of the data set to create
      * @param params Indicate the content to be created
-     * @param Hints Implementations specific Hints, please check the javadocs for your driver for
+     * @param hints Implementations specific Hints, please check the javadocs for your driver for
      *     details
      * @throws IllegalStateException if getSupportedAccessTypes() == READ_ONLY
      */
@@ -207,10 +207,10 @@ public interface CoverageAccess {
      * Test to see if this coverage access is suitable for deleting a {@link CoverageSource}
      * referred by Name, with the specified set of parameters.
      *
-     * @param Name Name of data set to remove from
-     * @param Params Used to indicate what what of the data set to remove; if <code>null</code>
+     * @param name Name of data set to remove from
+     * @param params Used to indicate what what of the data set to remove; if <code>null</code>
      *     indicate the entire data set should be removed
-     * @param Hints Implementation specific Hints; please consult the javadocs for the Driver you
+     * @param hints Implementation specific Hints; please consult the javadocs for the Driver you
      *     are working with.
      */
     public boolean canDelete(Name name, Map<String, Serializable> params, Hints hints)

@@ -571,7 +571,7 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
                 final DefaultCoordinateSystemAxis candidate = axis1[j];
                 if (candidate != null) {
                     if (candidate.equals(direct, false, false)
-                            || (opposite != null && candidate.equals(opposite, false, false))) {
+                            || (opposite != null && opposite.equals(candidate, false, false))) {
                         axis1[j] = null; // Flags as already compared.
                         continue next;
                     }
@@ -634,6 +634,7 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
      *     versions of this class.
      */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         int code = (int) serialVersionUID;
         for (int i = 0; i < axis.length; i++) {

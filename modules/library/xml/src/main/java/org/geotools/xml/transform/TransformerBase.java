@@ -65,7 +65,7 @@ public abstract class TransformerBase {
         TransformerFactory tFactory = TransformerFactory.newInstance();
         if (indentation > -1) {
             try {
-                tFactory.setAttribute("indent-number", new Integer(indentation));
+                tFactory.setAttribute("indent-number", Integer.valueOf(indentation));
             } catch (IllegalArgumentException e) {
                 // throw away (java 1.4 doesn't support this method, but java 1.5 requires it)
             }

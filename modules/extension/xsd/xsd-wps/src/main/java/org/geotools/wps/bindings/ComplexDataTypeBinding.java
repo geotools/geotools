@@ -23,6 +23,7 @@ import java.util.List;
 import javax.xml.namespace.QName;
 import net.opengis.wps10.ComplexDataType;
 import net.opengis.wps10.Wps10Factory;
+import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.wps.WPS;
 import org.geotools.xs.XS;
 import org.geotools.xsd.AbstractComplexBinding;
@@ -102,7 +103,7 @@ public class ComplexDataTypeBinding extends AbstractComplexBinding {
     }
 
     @Override
-    public List getProperties(Object object) throws Exception {
+    public List getProperties(Object object, XSDElementDeclaration element) throws Exception {
         ComplexDataType complex = (ComplexDataType) object;
         if (!complex.getData().isEmpty() && complex.getData().get(0) instanceof EncoderDelegate) {
             EncoderDelegate delegate = (EncoderDelegate) complex.getData().get(0);

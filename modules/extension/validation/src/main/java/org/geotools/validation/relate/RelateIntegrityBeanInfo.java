@@ -28,9 +28,6 @@ import org.geotools.validation.DefaultIntegrityValidationBeanInfo;
  *     Created Apr 27, 2004<br>
  * @version <br>
  *     <b>Puropse:</b><br>
- *     <p>DOCUMENT ME!! <b>Description:</b><br>
- *     <p>DOCUMENT ME!! <b>Usage:</b><br>
- *     <p>DOCUMENT ME!!
  */
 public class RelateIntegrityBeanInfo extends DefaultIntegrityValidationBeanInfo {
 

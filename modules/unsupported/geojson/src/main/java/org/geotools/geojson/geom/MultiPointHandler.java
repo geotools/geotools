@@ -23,6 +23,7 @@ import org.json.simple.parser.ParseException;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 
 public class MultiPointHandler extends GeometryHandlerBase<MultiPoint> {
 
@@ -61,7 +62,7 @@ public class MultiPointHandler extends GeometryHandlerBase<MultiPoint> {
     @Override
     public boolean endObject() throws ParseException, IOException {
         if (coordinates != null) {
-            value = factory.createMultiPoint(coordinates(coordinates));
+            value = factory.createMultiPoint(new CoordinateArraySequence(coordinates(coordinates)));
             coordinates = null;
         }
         return true;

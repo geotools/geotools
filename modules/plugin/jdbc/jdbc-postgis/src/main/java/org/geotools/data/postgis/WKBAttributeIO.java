@@ -39,6 +39,7 @@ public class WKBAttributeIO {
     WKBReader wkbr;
     ByteArrayInStream inStream = new ByteArrayInStream(new byte[0]);
     GeometryFactory gf;
+    boolean base64EncodingEnabled = true;
 
     public WKBAttributeIO() {
         this(new GeometryFactory());
@@ -46,16 +47,28 @@ public class WKBAttributeIO {
 
     public WKBAttributeIO(GeometryFactory gf) {
         wkbr = new WKBReader(gf);
+        this.gf = gf;
     }
 
     public void setGeometryFactory(GeometryFactory gf) {
-        wkbr = new WKBReader(gf);
+        if (gf != this.gf) {
+            this.gf = gf;
+            wkbr = new WKBReader(gf);
+        }
+    }
+
+    public boolean isBase64EncodingEnabled() {
+        return base64EncodingEnabled;
+    }
+
+    public void setBase64EncodingEnabled(boolean base64EncodingEnabled) {
+        this.base64EncodingEnabled = base64EncodingEnabled;
     }
 
     /**
      * This method will convert a Well Known Binary representation to a JTS Geometry object.
      *
-     * @param wkb te wkb encoded byte array
+     * @param wkbBytes the wkb encoded byte array
      * @return a JTS Geometry object that is equivalent to the WTB representation passed in by param
      *     wkb
      * @throws IOException if more than one geometry object was found in the WTB representation, or
@@ -81,7 +94,10 @@ public class WKBAttributeIO {
             byte bytes[] = rs.getBytes(columnName);
             if (bytes == null) // ie. its a null column -> return a null geometry!
             return null;
-            return wkb2Geometry(Base64.decode(bytes));
+            if (base64EncodingEnabled) {
+                bytes = Base64.decode(bytes);
+            }
+            return wkb2Geometry(bytes);
         } catch (SQLException e) {
             throw new DataSourceException("SQL exception occurred while reading the geometry.", e);
         }
@@ -93,7 +109,10 @@ public class WKBAttributeIO {
             byte bytes[] = rs.getBytes(columnIndex);
             if (bytes == null) // ie. its a null column -> return a null geometry!
             return null;
-            return wkb2Geometry(Base64.decode(bytes));
+            if (base64EncodingEnabled) {
+                bytes = Base64.decode(bytes);
+            }
+            return wkb2Geometry(bytes);
         } catch (SQLException e) {
             throw new DataSourceException("SQL exception occurred while reading the geometry.", e);
         }

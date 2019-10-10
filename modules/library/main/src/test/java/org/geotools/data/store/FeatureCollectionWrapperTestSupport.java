@@ -30,6 +30,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class FeatureCollectionWrapperTestSupport extends TestCase {
 
+    protected static final String TEST_VALUE = "test_value";
+    protected static final String TEST_KEY = "test_key";
     protected CoordinateReferenceSystem crs;
     protected DefaultFeatureCollection delegate;
 
@@ -62,7 +64,7 @@ public class FeatureCollectionWrapperTestSupport extends TestCase {
             point.setUserData(crs);
 
             builder.add(point);
-            builder.add(new Integer(i));
+            builder.add(Integer.valueOf(i));
 
             LineString line =
                     gf.createLineString(
@@ -71,13 +73,14 @@ public class FeatureCollectionWrapperTestSupport extends TestCase {
                             });
             line.setUserData(crs);
             builder.add(line);
+            builder.featureUserData(TEST_KEY, TEST_VALUE);
 
             delegate.add(builder.buildFeature(i + ""));
         }
 
         // add a feature with a null geometry
         builder.add(null);
-        builder.add(new Integer(-1));
+        builder.add(Integer.valueOf(-1));
         builder.add(null);
 
         delegate.add(builder.buildFeature((features + 1) + ""));

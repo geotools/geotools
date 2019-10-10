@@ -1,7 +1,7 @@
 GeoTIFF Plugin
 --------------
 
-The gt-geotiff module in the plugin group provides access to the GeoTiff file format.
+The ``gt-geotiff`` module in the plugin group provides access to the GeoTiff file format.
 
 **References**
 

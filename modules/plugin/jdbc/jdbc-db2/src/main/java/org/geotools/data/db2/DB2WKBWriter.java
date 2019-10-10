@@ -44,7 +44,7 @@ public class DB2WKBWriter {
         public void filter(Coordinate coord) {
             if (dimension == 3) // no further testing needed
             return;
-            if (!(Double.isNaN(coord.z))) dimension = 3;
+            if (!(Double.isNaN(coord.getZ()))) dimension = 3;
         }
 
         int getDimension() {
@@ -55,7 +55,7 @@ public class DB2WKBWriter {
     /**
      * returns the coordinate dimension for a geometry
      *
-     * @param Geometry g
+     * @param g the geometry
      * @return if there is one z value != NaN, then 3 else 2
      */
     public static final int guessCoordinateDimension(Geometry g) {

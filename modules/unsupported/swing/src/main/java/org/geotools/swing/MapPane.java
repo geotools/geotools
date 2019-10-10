@@ -77,7 +77,7 @@ public interface MapPane {
     /**
      * Sets the area to display in world units.
      *
-     * @param the new display area
+     * @param envelope the new display area
      * @throws IllegalArgumentException if {@code envelope} is {@code null]
      */
     void setDisplayArea(Envelope envelope);

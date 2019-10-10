@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2006  Vivid Solutions
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2006  Vivid Solutions
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,6 +16,8 @@
  *    Lesser General Public License for more details.
  */
 package org.geotools.geometry.iso.util.algorithm2D;
+
+import static java.lang.Double.isNaN;
 
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
@@ -112,15 +114,8 @@ public class LineLineIntersection2D {
                     throw new IllegalArgumentException(
                             "Error on LineLineIntersection: wrong coincident itscs");
                 }
-            } else if (count == 2) {
             }
-        } else if (n == 2) {
-
         }
-    }
-
-    private boolean isNaN(double d) {
-        return java.lang.Double.isNaN(d);
     }
 
     public boolean isCoincident() {

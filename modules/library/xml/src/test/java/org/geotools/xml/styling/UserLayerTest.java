@@ -28,6 +28,7 @@ import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.DefaultFeatureCollection;
+import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.CRS;
@@ -132,13 +133,13 @@ public class UserLayerTest extends TestCase {
         final Point g1 = jtsFactory.createPoint(new Coordinate(X_1, Y_1));
         fc.add(
                 SimpleFeatureBuilder.build(
-                        schema, new Object[] {new Integer(1), g1, LABEL_1}, ID_1));
+                        schema, new Object[] {Integer.valueOf(1), g1, LABEL_1}, ID_1));
 
         // create 2nd point
         final Point g2 = jtsFactory.createPoint(new Coordinate(X_2, Y_2));
         fc.add(
                 SimpleFeatureBuilder.build(
-                        schema, new Object[] {new Integer(2), g2, LABEL_2}, ID_2));
+                        schema, new Object[] {Integer.valueOf(2), g2, LABEL_2}, ID_2));
 
         final DataStore ds = DataUtilities.dataStore(fc);
 
@@ -158,9 +159,9 @@ public class UserLayerTest extends TestCase {
         final Graphic g = sb.createGraphic(overlay, null, null, OPACITY, Double.NaN, 0.0);
         final PointSymbolizer ps = sb.createPointSymbolizer(g);
         final FeatureTypeStyle fts = sb.createFeatureTypeStyle(ps);
-        fts.setFeatureTypeName(MY_NAMESPACE + ":" + MY_FEATURE);
+        fts.featureTypeNames().add(new NameImpl(MY_NAMESPACE + ":" + MY_FEATURE));
 
-        style.addFeatureTypeStyle(fts);
+        style.featureTypeStyles().add(fts);
         layer.addUserStyle(style);
 
         // create an SLD and populate it with that styled layer ---------------

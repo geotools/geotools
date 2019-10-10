@@ -153,7 +153,7 @@ public class JDBCPGRasterConfigurationBuilder {
 
     private static boolean available;
 
-    private static boolean init = false;
+    private static volatile boolean init = false;
 
     private JDBCPGrasterConfigurationBean configBean;
 
@@ -590,11 +590,12 @@ public class JDBCPGRasterConfigurationBuilder {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Looking for mosaic table already created");
             }
-            final PreparedStatement ps = connection.prepareStatement(selectMetadataTableQuery);
-            ResultSet set = ps.executeQuery();
-            final boolean allTablesArePresent = checkTileTables(set, connection);
-            connection.commit();
-            return allTablesArePresent;
+            try (PreparedStatement ps = connection.prepareStatement(selectMetadataTableQuery);
+                    ResultSet set = ps.executeQuery()) {
+                final boolean allTablesArePresent = checkTileTables(set, connection);
+                connection.commit();
+                return allTablesArePresent;
+            }
         } catch (SQLException e) {
             // The required table may not exists... We need to create it
             if (LOGGER.isLoggable(Level.FINE)) {
@@ -636,21 +637,22 @@ public class JDBCPGRasterConfigurationBuilder {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine("Looking for mosaic table already created");
                 }
-                final PreparedStatement ps = connection.prepareStatement(selectMetadataTableQuery);
-                ResultSet tileSet = ps.executeQuery();
-                if (tileSet.next()) {
-                    // We have found the tileTable referred inside metadata table
-                    // Therefore, proceeding with the next one
-                    if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.fine("tile table " + tileTableName + " has been found");
+                try (PreparedStatement ps = connection.prepareStatement(selectMetadataTableQuery);
+                        ResultSet tileSet = ps.executeQuery()) {
+                    if (tileSet.next()) {
+                        // We have found the tileTable referred inside metadata table
+                        // Therefore, proceeding with the next one
+                        if (LOGGER.isLoggable(Level.FINE)) {
+                            LOGGER.fine("tile table " + tileTableName + " has been found");
+                        }
+                        if (set.isLast()) {
+                            // I'm checking the latest entry. All tables have been found.
+                            // No more checks are needed
+                            proceed = false;
+                            found = true;
+                        }
+                        continue;
                     }
-                    if (set.isLast()) {
-                        // I'm checking the latest entry. All tables have been found.
-                        // No more checks are needed
-                        proceed = false;
-                        found = true;
-                    }
-                    continue;
                 }
             } catch (SQLException sqle) {
                 if (LOGGER.isLoggable(Level.FINE)) {
@@ -867,18 +869,20 @@ public class JDBCPGRasterConfigurationBuilder {
 
         final StringBuilder commands = new StringBuilder();
         final File[] files = dataDir.listFiles();
-        for (File file : files) {
-            if (file.isDirectory()) {
-                // scan folders for tiles to be imported
-                final String importCommand =
-                        updateCommand(
-                                file,
-                                mainCommand,
-                                tablePrefix,
-                                fileExtension,
-                                tileTables,
-                                filesToBeDeleted);
-                commands.append(importCommand).append(LINE_SEPARATOR);
+        if (files != null) {
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    // scan folders for tiles to be imported
+                    final String importCommand =
+                            updateCommand(
+                                    file,
+                                    mainCommand,
+                                    tablePrefix,
+                                    fileExtension,
+                                    tileTables,
+                                    filesToBeDeleted);
+                    commands.append(importCommand).append(LINE_SEPARATOR);
+                }
             }
         }
         String importCommand =
@@ -1001,7 +1005,6 @@ public class JDBCPGRasterConfigurationBuilder {
      * Create the configuration file containing the information to configure the ImageMosaic
      *
      * @param configFile the file where to store the configuration
-     * @param configBean the bean with configuration parameters
      * @return
      * @throws IOException
      */

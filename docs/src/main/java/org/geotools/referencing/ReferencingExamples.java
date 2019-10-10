@@ -1,3 +1,21 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ *
+ */
+
 package org.geotools.referencing;
 
 import java.awt.RenderingHints.Key;
@@ -13,6 +31,7 @@ import org.geotools.referencing.datum.DefaultGeodeticDatum;
 import org.geotools.referencing.factory.ReferencingFactoryContainer;
 import org.geotools.referencing.operation.DefiningConversion;
 import org.geotools.referencing.wkt.Formattable;
+import org.geotools.util.SuppressFBWarnings;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Coordinate;
@@ -46,6 +65,7 @@ import si.uom.SI;
  *
  * @author Jody Garnett
  */
+@SuppressFBWarnings("DLS_DEAD_LOCAL_STORE")
 public class ReferencingExamples {
 
     @SuppressWarnings("unused")

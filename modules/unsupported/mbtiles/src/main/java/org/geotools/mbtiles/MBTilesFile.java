@@ -1,3 +1,21 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ *
+ */
+
 package org.geotools.mbtiles;
 
 import static java.lang.String.format;
@@ -31,10 +49,16 @@ public class MBTilesFile implements AutoCloseable {
 
         ResultSet rs;
 
+        Statement st;
+
+        Connection cx;
+
         Boolean next = null;
 
-        TileIterator(ResultSet rs) {
+        TileIterator(ResultSet rs, Statement st, Connection cx) {
             this.rs = rs;
+            this.st = st;
+            this.cx = cx;
         }
 
         @Override
@@ -70,11 +94,15 @@ public class MBTilesFile implements AutoCloseable {
         @Override
         public void close() throws IOException {
             try {
-                Statement st = rs.getStatement();
-                Connection conn = st.getConnection();
-                rs.close();
-                st.close();
-                conn.close();
+                try {
+                    rs.close();
+                } finally {
+                    try {
+                        st.close();
+                    } finally {
+                        cx.close();
+                    }
+                }
             } catch (SQLException e) {
                 throw new IOException(e);
             }
@@ -408,32 +436,24 @@ public class MBTilesFile implements AutoCloseable {
 
     public MBTilesTile loadTile(MBTilesTile entry) throws IOException {
         try {
-            Connection cx = connPool.getConnection();
-            try {
-                PreparedStatement ps;
-
-                ps =
-                        prepare(
-                                        cx,
-                                        format(
-                                                "SELECT tile_data FROM %s WHERE zoom_level=? AND tile_column=? AND tile_row=?",
-                                                TABLE_TILES))
-                                .set(entry.getZoomLevel())
-                                .set(entry.getTileColumn())
-                                .set(entry.getTileRow())
-                                .log(Level.FINE)
-                                .statement();
-                ResultSet rs = ps.executeQuery();
-
+            try (Connection cx = connPool.getConnection();
+                    PreparedStatement ps =
+                            prepare(
+                                            cx,
+                                            format(
+                                                    "SELECT tile_data FROM %s WHERE zoom_level=? AND tile_column=? AND tile_row=?",
+                                                    TABLE_TILES))
+                                    .set(entry.getZoomLevel())
+                                    .set(entry.getTileColumn())
+                                    .set(entry.getTileRow())
+                                    .log(Level.FINE)
+                                    .statement();
+                    ResultSet rs = ps.executeQuery(); ) {
                 if (rs.next()) {
                     entry.setData(rs.getBytes(1));
                 } else {
                     entry.setData(null);
                 }
-                rs.close();
-                ps.close();
-            } finally {
-                cx.close();
             }
         } catch (SQLException e) {
             throw new IOException(e);
@@ -448,51 +468,45 @@ public class MBTilesFile implements AutoCloseable {
 
     public MBTilesGrid loadGrid(MBTilesGrid entry) throws IOException {
         try {
-            Connection cx = connPool.getConnection();
-            try {
-                PreparedStatement ps;
 
-                ps =
-                        prepare(
-                                        cx,
-                                        format(
-                                                "SELECT grid FROM %s WHERE zoom_level=? AND tile_column=? AND tile_row=?",
-                                                TABLE_GRIDS))
-                                .set(entry.getZoomLevel())
-                                .set(entry.getTileColumn())
-                                .set(entry.getTileRow())
-                                .log(Level.FINE)
-                                .statement();
-                ResultSet rs = ps.executeQuery();
+            try (Connection cx = connPool.getConnection()) {
+                try (PreparedStatement ps =
+                                prepare(
+                                                cx,
+                                                format(
+                                                        "SELECT grid FROM %s WHERE zoom_level=? AND tile_column=? AND tile_row=?",
+                                                        TABLE_GRIDS))
+                                        .set(entry.getZoomLevel())
+                                        .set(entry.getTileColumn())
+                                        .set(entry.getTileRow())
+                                        .log(Level.FINE)
+                                        .statement();
+                        ResultSet rs = ps.executeQuery(); ) {
 
-                if (rs.next()) {
-                    entry.setGrid(rs.getBytes(1));
-                } else {
-                    entry.setGrid(null);
+                    if (rs.next()) {
+                        entry.setGrid(rs.getBytes(1));
+                    } else {
+                        entry.setGrid(null);
+                    }
                 }
-                rs.close();
-                ps.close();
 
-                ps =
-                        prepare(
-                                        cx,
-                                        format(
-                                                "SELECT key_name, key_json FROM %s WHERE zoom_level=? AND tile_column=? AND tile_row=?",
-                                                TABLE_GRID_DATA))
-                                .set(entry.getZoomLevel())
-                                .set(entry.getTileColumn())
-                                .set(entry.getTileRow())
-                                .log(Level.FINE)
-                                .statement();
-                rs = ps.executeQuery();
+                try (PreparedStatement ps =
+                                prepare(
+                                                cx,
+                                                format(
+                                                        "SELECT key_name, key_json FROM %s WHERE zoom_level=? AND tile_column=? AND tile_row=?",
+                                                        TABLE_GRID_DATA))
+                                        .set(entry.getZoomLevel())
+                                        .set(entry.getTileColumn())
+                                        .set(entry.getTileRow())
+                                        .log(Level.FINE)
+                                        .statement();
+                        ResultSet rs = ps.executeQuery(); ) {
 
-                while (rs.next()) {
-                    entry.setGridDataKey(rs.getString(1), rs.getString(2));
+                    while (rs.next()) {
+                        entry.setGridDataKey(rs.getString(1), rs.getString(2));
+                    }
                 }
-                rs.close();
-                ps.close();
-            } finally {
-                cx.close();
             }
         } catch (SQLException e) {
             throw new IOException(e);
@@ -501,225 +515,240 @@ public class MBTilesFile implements AutoCloseable {
         return entry;
     }
 
+    @SuppressWarnings("PMD.CloseResource")
     public TileIterator tiles() throws SQLException {
-        Connection cx = connPool.getConnection();
-        Statement st = cx.createStatement();
-        return new TileIterator(st.executeQuery("SELECT * FROM " + TABLE_TILES + ";"));
+        Connection cx = null;
+        Statement st = null;
+        try {
+            cx = connPool.getConnection();
+            st = cx.createStatement();
+            return new TileIterator(st.executeQuery("SELECT * FROM " + TABLE_TILES + ";"), st, cx);
+        } catch (SQLException e) {
+            close(st);
+            close(cx);
+            throw e;
+        }
     }
 
+    private void close(Statement st) {
+        try {
+            if (st != null) {
+                st.close();
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.WARNING, "Failed to close statement", e);
+        }
+    }
+
+    private void close(Connection cx) {
+        try {
+            if (cx != null) {
+                cx.close();
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.WARNING, "Failed to close connection", e);
+        }
+    }
+
+    @SuppressWarnings("PMD.CloseResource")
     public TileIterator tiles(long zoomLevel) throws SQLException {
-        Connection cx = connPool.getConnection();
-        PreparedStatement ps =
-                prepare(cx, format("SELECT * FROM %s WHERE zoom_level=?", TABLE_TILES))
-                        .set(zoomLevel)
-                        .statement();
-        return new TileIterator(ps.executeQuery());
+        Connection cx = null;
+        PreparedStatement ps = null;
+        try {
+            cx = connPool.getConnection();
+            ps =
+                    prepare(cx, format("SELECT * FROM %s WHERE zoom_level=?", TABLE_TILES))
+                            .set(zoomLevel)
+                            .statement();
+            return new TileIterator(ps.executeQuery(), ps, cx);
+        } catch (Exception e) {
+            close(ps);
+            close(cx);
+            throw e;
+        }
     }
 
+    @SuppressWarnings("PMD.CloseResource")
     public TileIterator tiles(
             long zoomLevel, long leftTile, long bottomTile, long rightTile, long topTile)
             throws SQLException {
-        Connection cx = connPool.getConnection();
-        PreparedStatement ps =
-                prepare(
-                                cx,
-                                format(
-                                        "SELECT * FROM %s WHERE zoom_level=? AND tile_column >= ? AND tile_row >= ? AND tile_column <= ? AND tile_row <= ?",
-                                        TABLE_TILES))
-                        .set(zoomLevel)
-                        .set(leftTile)
-                        .set(bottomTile)
-                        .set(rightTile)
-                        .set(topTile)
-                        .statement();
-        return new TileIterator(ps.executeQuery());
+        Connection cx = null;
+        PreparedStatement ps = null;
+        try {
+            cx = connPool.getConnection();
+            ps =
+                    prepare(
+                                    cx,
+                                    format(
+                                            "SELECT * FROM %s WHERE zoom_level=? AND tile_column >= ? AND tile_row >= ? AND tile_column <= ? AND tile_row <= ?",
+                                            TABLE_TILES))
+                            .set(zoomLevel)
+                            .set(leftTile)
+                            .set(bottomTile)
+                            .set(rightTile)
+                            .set(topTile)
+                            .statement();
+            return new TileIterator(ps.executeQuery(), ps, cx);
+        } catch (Exception e) {
+            close(cx);
+            close(ps);
+
+            throw e;
+        }
     }
 
     public int numberOfTiles() throws SQLException {
         int size;
-        Connection cx = connPool.getConnection();
-        try {
-            Statement st = cx.createStatement();
-            ResultSet rs = st.executeQuery("SELECT COUNT(*) FROM " + TABLE_TILES + ";");
-            rs.next();
+
+        try (Connection cx = connPool.getConnection();
+                Statement st = cx.createStatement();
+                ResultSet rs = st.executeQuery("SELECT COUNT(*) FROM " + TABLE_TILES + ";")) {
+            if (!rs.next()) {
+                throw new SQLException("Tiles count did not return any row");
+            }
             size = rs.getInt(1);
-            rs.close();
-            st.close();
-        } finally {
-            cx.close();
         }
         return size;
     }
 
     public int numberOfTiles(long zoomLevel) throws SQLException {
         int size;
-        Connection cx = connPool.getConnection();
-        try {
-            PreparedStatement ps =
-                    prepare(cx, format("SELECT COUNT(*) FROM %s WHERE zoom_level=?", TABLE_TILES))
-                            .set(zoomLevel)
-                            .statement();
-            ResultSet rs = ps.executeQuery();
-            rs.next();
+        try (Connection cx = connPool.getConnection();
+                PreparedStatement ps =
+                        prepare(
+                                        cx,
+                                        format(
+                                                "SELECT COUNT(*) FROM %s WHERE zoom_level=?",
+                                                TABLE_TILES))
+                                .set(zoomLevel)
+                                .statement();
+                ResultSet rs = ps.executeQuery()) {
+            if (!rs.next()) {
+                throw new SQLException("Zoom level count did not return any row");
+            }
             size = rs.getInt(1);
-            rs.close();
-            ps.close();
-        } finally {
-            cx.close();
         }
         return size;
     }
 
     public long closestZoom(long zoomLevel) throws SQLException {
         long zoom = 0;
-        Connection cx = connPool.getConnection();
-        try {
-            PreparedStatement ps =
-                    prepare(
-                                    cx,
-                                    format(
-                                            "SELECT zoom_level FROM %s ORDER BY abs(zoom_level - ?)",
-                                            TABLE_TILES))
-                            .set(zoomLevel)
-                            .statement();
-            ResultSet rs = ps.executeQuery();
+        try (Connection cx = connPool.getConnection();
+                PreparedStatement ps =
+                        prepare(
+                                        cx,
+                                        format(
+                                                "SELECT zoom_level FROM %s ORDER BY abs(zoom_level - ?)",
+                                                TABLE_TILES))
+                                .set(zoomLevel)
+                                .statement();
+                ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {
                 zoom = rs.getLong(1);
             }
-            rs.close();
-            ps.close();
-        } finally {
-            cx.close();
         }
         return zoom;
     }
 
     public long minZoom() throws SQLException {
         long zoom = 0;
-        Connection cx = connPool.getConnection();
-        try {
-            Statement st = cx.createStatement();
-            ResultSet rs = st.executeQuery("SELECT MIN(zoom_level) FROM " + TABLE_TILES);
+
+        try (Connection cx = connPool.getConnection();
+                Statement st = cx.createStatement();
+                ResultSet rs = st.executeQuery("SELECT MIN(zoom_level) FROM " + TABLE_TILES)) {
             if (rs.next()) {
                 zoom = rs.getLong(1);
             }
-            rs.close();
-            st.close();
-        } finally {
-            cx.close();
         }
         return zoom;
     }
 
     public long maxZoom() throws SQLException {
         long zoom = 0;
-        Connection cx = connPool.getConnection();
-        try {
-            Statement st = cx.createStatement();
-            ResultSet rs = st.executeQuery("SELECT MAX(zoom_level) FROM " + TABLE_TILES);
+        try (Connection cx = connPool.getConnection();
+                Statement st = cx.createStatement();
+                ResultSet rs = st.executeQuery("SELECT MAX(zoom_level) FROM " + TABLE_TILES)) {
             if (rs.next()) {
                 zoom = rs.getLong(1);
             }
-            rs.close();
-            st.close();
-        } finally {
-            cx.close();
         }
         return zoom;
     }
 
     public long minColumn(long zoomLevel) throws SQLException {
         long size = 0;
-        Connection cx = connPool.getConnection();
-        try {
-            PreparedStatement ps =
-                    prepare(
-                                    cx,
-                                    format(
-                                            "SELECT MIN(tile_column) FROM %s WHERE zoom_level=?",
-                                            TABLE_TILES))
-                            .set(zoomLevel)
-                            .statement();
-            ResultSet rs = ps.executeQuery();
+        try (Connection cx = connPool.getConnection();
+                PreparedStatement ps =
+                        prepare(
+                                        cx,
+                                        format(
+                                                "SELECT MIN(tile_column) FROM %s WHERE zoom_level=?",
+                                                TABLE_TILES))
+                                .set(zoomLevel)
+                                .statement();
+                ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {
                 size = rs.getLong(1);
             }
-            rs.close();
-            ps.close();
-        } finally {
-            cx.close();
         }
         return size;
     }
 
     public long maxColumn(long zoomLevel) throws SQLException {
         long size = Long.MAX_VALUE;
-        Connection cx = connPool.getConnection();
-        try {
-            PreparedStatement ps =
-                    prepare(
-                                    cx,
-                                    format(
-                                            "SELECT MAX(tile_column) FROM %s WHERE zoom_level=?",
-                                            TABLE_TILES))
-                            .set(zoomLevel)
-                            .statement();
-            ResultSet rs = ps.executeQuery();
+
+        try (Connection cx = connPool.getConnection();
+                PreparedStatement ps =
+                        prepare(
+                                        cx,
+                                        format(
+                                                "SELECT MAX(tile_column) FROM %s WHERE zoom_level=?",
+                                                TABLE_TILES))
+                                .set(zoomLevel)
+                                .statement();
+                ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {
                 size = rs.getLong(1);
             }
-            rs.close();
-            ps.close();
-        } finally {
-            cx.close();
         }
         return size;
     }
 
     public long minRow(long zoomLevel) throws SQLException {
         long size = 0;
-        Connection cx = connPool.getConnection();
-        try {
-            PreparedStatement ps =
-                    prepare(
-                                    cx,
-                                    format(
-                                            "SELECT MIN(tile_row) FROM %s WHERE zoom_level=?",
-                                            TABLE_TILES))
-                            .set(zoomLevel)
-                            .statement();
-            ResultSet rs = ps.executeQuery();
-            rs.next();
+
+        try (Connection cx = connPool.getConnection();
+                PreparedStatement ps =
+                        prepare(
+                                        cx,
+                                        format(
+                                                "SELECT MIN(tile_row) FROM %s WHERE zoom_level=?",
+                                                TABLE_TILES))
+                                .set(zoomLevel)
+                                .statement();
+                ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {
                 size = rs.getLong(1);
             }
-            rs.close();
-            ps.close();
-        } finally {
-            cx.close();
         }
         return size;
     }
 
     public long maxRow(long zoomLevel) throws SQLException {
         long size = Long.MAX_VALUE;
-        Connection cx = connPool.getConnection();
-        try {
-            PreparedStatement ps =
-                    prepare(
-                                    cx,
-                                    format(
-                                            "SELECT MAX(tile_row) FROM %s WHERE zoom_level=?",
-                                            TABLE_TILES))
-                            .set(zoomLevel)
-                            .statement();
-            ResultSet rs = ps.executeQuery();
-            rs.next();
-            size = rs.getLong(1);
-            rs.close();
-            ps.close();
-        } finally {
-            cx.close();
+        try (Connection cx = connPool.getConnection();
+                PreparedStatement ps =
+                        prepare(
+                                        cx,
+                                        format(
+                                                "SELECT MAX(tile_row) FROM %s WHERE zoom_level=?",
+                                                TABLE_TILES))
+                                .set(zoomLevel)
+                                .statement();
+                ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                size = rs.getLong(1);
+            }
         }
         return size;
     }
@@ -783,25 +812,20 @@ public class MBTilesFile implements AutoCloseable {
     }
 
     protected String loadMetaDataEntry(String name, Connection cx) throws SQLException {
-        PreparedStatement ps;
+        try (PreparedStatement ps =
+                        prepare(cx, format("SELECT VALUE FROM %s WHERE NAME = ?", TABLE_METADATA))
+                                .set(name)
+                                .log(Level.FINE)
+                                .statement();
+                ResultSet rs = ps.executeQuery()) {
 
-        ps =
-                prepare(cx, format("SELECT VALUE FROM %s WHERE NAME = ?", TABLE_METADATA))
-                        .set(name)
-                        .log(Level.FINE)
-                        .statement();
+            String result = null;
+            if (rs.next()) {
+                result = rs.getString(1);
+            }
 
-        ResultSet rs = ps.executeQuery();
-
-        String result = null;
-        if (rs.next()) {
-            result = rs.getString(1);
+            return result;
         }
-
-        rs.close();
-        ps.close();
-
-        return result;
     }
 
     /**

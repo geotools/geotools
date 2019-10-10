@@ -22,8 +22,8 @@ import java.util.List;
 import junit.framework.TestCase;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.DefaultFeatureCollection;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -95,11 +95,7 @@ public class ArrayFeatureReaderTest extends TestCase {
         assertEquals(features[5], featureCollectionReader.next());
     }
 
-    /**
-     * Test method for 'org.geotools.data.ArrayFeatureReader.hasNext()'
-     *
-     * @throws Exception DOCUMENT ME!
-     */
+    /** Test method for 'org.geotools.data.ArrayFeatureReader.hasNext()' */
     public void testHasNext() throws Exception {
         testHasNext(arrayReader);
         testHasNext(collectionReader);
@@ -123,11 +119,7 @@ public class ArrayFeatureReaderTest extends TestCase {
         assertFalse(arrayReader.hasNext());
     }
 
-    /**
-     * Test method for 'org.geotools.data.ArrayFeatureReader.close()'
-     *
-     * @throws Exception DOCUMENT ME!
-     */
+    /** Test method for 'org.geotools.data.ArrayFeatureReader.close()' */
     public void testClose() throws Exception {
         arrayReader.close();
         assertFalse(arrayReader.hasNext());

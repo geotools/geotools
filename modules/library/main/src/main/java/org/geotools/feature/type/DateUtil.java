@@ -1,4 +1,20 @@
 /*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
+/*
   Copyright (c) 2002-2004, Dennis M. Sosnoski.
   All rights reserved.
   Redistribution and use in source and binary forms, with or without modification,
@@ -70,7 +86,7 @@ public abstract class DateUtil {
         0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365
     };
 
-    /** Day number for start of month in non-leap year. */
+    /** Day number for start of month in leap year. */
     private static final int[] MONTHS_LEAP = {
         0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366
     };
@@ -1057,7 +1073,10 @@ public abstract class DateUtil {
                 year--;
             }
 
-            int dcnt = ((year % 4) == 0) ? 366 : 365;
+            boolean isNormalLeapYear = ((year % 4) == 0);
+            boolean is400LeapYear = ((year % 400) == 0);
+            boolean is100NotLeapYear = ((year % 100) == 0);
+            int dcnt = (is400LeapYear || (isNormalLeapYear && (!is100NotLeapYear))) ? 366 : 365;
 
             if (!bce) {
                 year--;

@@ -54,16 +54,15 @@ final class Code {
      * format is {@code AUTO:code,lon0,lat0} where {@code AUTO} is optional.
      *
      * @param text The code in the {@code AUTO:code,lon0,lat0} format.
-     * @param The type of the CRS to be constructed (e.g. {@code GeographicCRS.class}). Used only in
-     *     case of failure for constructing an error message.
+     * @param type The type of the CRS to be constructed (e.g. {@code GeographicCRS.class}). Used
+     *     only in case of failure for constructing an error message.
      * @throws NoSuchAuthorityCodeException if the specified code can't be parsed.
      */
     public Code(final String text, final Class type) throws NoSuchAuthorityCodeException {
         String authority = "AUTO";
-        int code = 0;
-        int unit = 9001;
-        double longitude = Double.NaN;
-        double latitude = Double.NaN;
+        int code;
+        double longitude;
+        double latitude;
 
         // there are two syntaxes for the AUTO factory:
         // AUTO:code,unit,longitude,latitude (from WMS 1.1 spec)
@@ -90,7 +89,6 @@ final class Code {
             } else {
                 // code,unit,lon,lat
                 code = Integer.parseInt(parts[0]);
-                unit = Integer.parseInt(parts[1]);
                 longitude = Double.parseDouble(parts[2]);
                 latitude = Double.parseDouble(parts[3]);
             }

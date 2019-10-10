@@ -18,9 +18,7 @@
  */
 package org.geotools.filter;
 
-import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.locationtech.jts.geom.Geometry;
@@ -41,16 +39,6 @@ public class MathTest extends TestCase {
         super(testName);
     }
 
-    public static void main(java.lang.String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static Test suite() {
-        TestSuite suite = new TestSuite(BetweenTest.class);
-
-        return suite;
-    }
-
     public SimpleFeature[] sampleFeatures() throws Exception {
         SimpleFeatureTypeBuilder ftb = new SimpleFeatureTypeBuilder();
         ftb.add("value", Integer.class);
@@ -64,17 +52,23 @@ public class MathTest extends TestCase {
         f[0] =
                 SimpleFeatureBuilder.build(
                         schema,
-                        new Object[] {new Integer(12), gf.createGeometryCollection(null), "first"},
+                        new Object[] {
+                            Integer.valueOf(12), gf.createGeometryCollection(null), "first"
+                        },
                         null);
         f[1] =
                 SimpleFeatureBuilder.build(
                         schema,
-                        new Object[] {new Integer(3), gf.createGeometryCollection(null), "second"},
+                        new Object[] {
+                            Integer.valueOf(3), gf.createGeometryCollection(null), "second"
+                        },
                         null);
         f[2] =
                 SimpleFeatureBuilder.build(
                         schema,
-                        new Object[] {new Integer(15), gf.createGeometryCollection(null), "third"},
+                        new Object[] {
+                            Integer.valueOf(15), gf.createGeometryCollection(null), "third"
+                        },
                         null);
 
         return f;

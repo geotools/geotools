@@ -17,6 +17,8 @@
  */
 package org.geotools.tile.impl;
 
+import java.util.Objects;
+
 /**
  * ZoomLevel is a class in dire need of documentation.
  *
@@ -76,13 +78,18 @@ public abstract class ZoomLevel {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof ZoomLevel)) {
-            return false;
-        }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ZoomLevel zoomLevel1 = (ZoomLevel) o;
+        return zoomLevel == zoomLevel1.zoomLevel
+                && maxTilePerRowNumber == zoomLevel1.maxTilePerRowNumber
+                && maxTilePerColNumber == zoomLevel1.maxTilePerColNumber
+                && maxTileNumber == zoomLevel1.maxTileNumber;
+    }
 
-        ZoomLevel other = (ZoomLevel) obj;
-
-        return zoomLevel == other.zoomLevel;
+    @Override
+    public int hashCode() {
+        return Objects.hash(zoomLevel, maxTilePerRowNumber, maxTilePerColNumber, maxTileNumber);
     }
 }

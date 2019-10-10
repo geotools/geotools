@@ -56,6 +56,7 @@ public class GroupHandler extends ElementGroupingHandler {
     }
 
     /** @see java.lang.Object#hashCode() */
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return (LOCALNAME.hashCode() * ((name == null) ? 1 : name.hashCode())) + hashCodeOffset;
     }

@@ -16,7 +16,7 @@
  */
 package org.geotools.swing.tool;
 
-import java.awt.Rectangle;
+import java.awt.*;
 import java.lang.ref.WeakReference;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -28,6 +28,7 @@ import org.geotools.geometry.util.XRectangle2D;
 import org.geotools.map.GridReaderLayer;
 import org.geotools.map.Layer;
 import org.geotools.parameter.Parameter;
+import org.geotools.util.SuppressFBWarnings;
 import org.opengis.coverage.PointOutsideCoverageException;
 import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.geometry.DirectPosition;
@@ -111,6 +112,9 @@ public class GridReaderLayerHelper extends InfoToolHelper {
         }
 
         final GridCoverage2DReader reader = sourceRef.get();
+        if (reader == null) {
+            return false;
+        }
         GeneralParameterValue parameter =
                 new Parameter(
                         AbstractGridFormat.READ_GRIDGEOMETRY2D,
@@ -128,8 +132,12 @@ public class GridReaderLayerHelper extends InfoToolHelper {
         }
     }
 
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE") // I just can't figure it out...
     private Rectangle createQueryGridEnvelope(DirectPosition pos) {
         final GridCoverage2DReader reader = sourceRef.get();
+        if (reader == null) {
+            throw new NullPointerException("Source refererence returned a null reader");
+        }
         try {
             MathTransform worldToGridTransform =
                     reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER).inverse();

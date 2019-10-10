@@ -22,7 +22,6 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.factory.CommonFactoryFinder;
@@ -37,7 +36,6 @@ import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
-import org.geotools.util.logging.Logging;
 
 /**
  * Data structure holding a MapContent that has its own compositing base
@@ -45,8 +43,6 @@ import org.geotools.util.logging.Logging;
  * @author Andrea Aime - GeoSolutions
  */
 class CompositingGroup {
-
-    private static final Logger LOGGER = Logging.getLogger(CompositingGroup.class);
 
     private static StyleFactory STYLE_FACTORY = CommonFactoryFinder.getStyleFactory();
 

@@ -125,12 +125,30 @@ public class OracleDialect extends PreparedStatementSQLDialect {
     Map<Class<? extends Connection>, UnWrapper> uwMap =
             new HashMap<Class<? extends Connection>, UnWrapper>();
 
+    private int nameLenghtLimit = 30;
+
     /**
      * A map from JTS Geometry type to Oracle geometry type. See Oracle Spatial documentation, Table
      * 2-1, Valid SDO_GTYPE values.
      */
     public static final Map<Class, String> CLASSES_TO_GEOM =
             Collections.unmodifiableMap(new GeomClasses());
+
+    public void initVersion(Connection cx) {
+        // try to figure out if longer names are supported by the database
+        try {
+            final int databaseMajorVersion = cx.getMetaData().getDatabaseMajorVersion();
+            if (databaseMajorVersion >= 12) {
+                nameLenghtLimit = 128;
+            }
+        } catch (SQLException e) {
+            LOGGER.log(
+                    Level.WARNING,
+                    "Failed to determine database major version, "
+                            + "will assume length cannot be longer than 30 chars",
+                    e);
+        }
+    }
 
     static final class GeomClasses extends HashMap<Class, String> {
         private static final long serialVersionUID = -3359664692996608331L;
@@ -476,14 +494,14 @@ public class OracleDialect extends PreparedStatementSQLDialect {
     public void encodeColumnName(String prefix, String raw, StringBuffer sql) {
         if (prefix != null && !prefix.isEmpty()) {
             prefix = prefix.toUpperCase();
-            if (prefix.length() > 30) {
-                prefix = prefix.substring(0, 30);
+            if (prefix.length() > nameLenghtLimit) {
+                prefix = prefix.substring(0, nameLenghtLimit);
             }
             sql.append(prefix).append(".");
         }
 
         raw = raw.toUpperCase();
-        if (raw.length() > 30) raw = raw.substring(0, 30);
+        if (raw.length() > nameLenghtLimit) raw = raw.substring(0, nameLenghtLimit);
         // need to quote column names with spaces in
         if (raw.contains(" ")) {
             raw = "\"" + raw + "\"";
@@ -494,7 +512,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
     @Override
     public void encodeTableName(String raw, StringBuffer sql) {
         raw = raw.toUpperCase();
-        if (raw.length() > 30) raw = raw.substring(0, 30);
+        if (raw.length() > nameLenghtLimit) raw = raw.substring(0, nameLenghtLimit);
         // need to quote table names with spaces in
         if (raw.contains(" ")) {
             raw = "\"" + raw + "\"";
@@ -624,6 +642,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
     }
 
     /** Obtains the native oracle connection object given a database connecetion. */
+    @SuppressWarnings("PMD.CloseResource")
     OracleConnection unwrapConnection(Connection cx) throws SQLException {
         if (cx == null) {
             return null;
@@ -1260,7 +1279,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
                     // create the spatial index (or we won't be able to run spatial predicates)
                     String type = CLASSES_TO_GEOM.get(geom.getType().getBinding());
                     String idxName = tableName + "_" + geomColumnName + "_IDX";
-                    if (idxName.length() > 30) {
+                    if (idxName.length() > nameLenghtLimit) {
                         idxName =
                                 "IDX_"
                                         + UUID.randomUUID()
@@ -1376,7 +1395,9 @@ public class OracleDialect extends PreparedStatementSQLDialect {
                                     + encodeNextSequenceValue(schemaName, sequenceName)
                                     + " FROM DUAL");
             try {
-                rs.next();
+                if (!rs.next()) {
+                    throw new SQLException("Could not find next sequence value");
+                }
                 return rs.getInt(1);
             } finally {
                 dataStore.closeSafe(rs);
@@ -1459,7 +1480,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
             }
         }
 
-        return geodetic;
+        return geodetic != null ? geodetic : false;
     }
 
     @Override

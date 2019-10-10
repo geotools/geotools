@@ -57,7 +57,6 @@ public class NoToolAction extends MapAction {
     public NoToolAction(MapPane mapPane, boolean showToolName) {
         String toolName = showToolName ? TOOL_NAME : null;
 
-        String iconImagePath = null;
         super.init(mapPane, toolName, TOOL_TIP, ICON_IMAGE);
     }
 

@@ -27,10 +27,10 @@ import org.geotools.data.complex.AppSchemaDataAccessRegistry;
 import org.geotools.data.complex.AttributeMapping;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.NestedAttributeMapping;
-import org.geotools.data.complex.config.Types;
+import org.geotools.data.complex.feature.type.Types;
 import org.geotools.data.complex.filter.XPath;
-import org.geotools.data.complex.filter.XPathUtil.Step;
-import org.geotools.data.complex.filter.XPathUtil.StepList;
+import org.geotools.data.complex.util.XPathUtil.Step;
+import org.geotools.data.complex.util.XPathUtil.StepList;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
@@ -58,7 +58,6 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
      * First constructor
      *
      * @param xpath Attribute XPath
-     * @param expressions List of broken up expressions
      */
     public NestedAttributeExpression(StepList xpath, NestedAttributeMapping nestedMapping) {
         super(xpath.toString());
@@ -318,10 +317,8 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
     /**
      * Find the source expression if the step is a client property.
      *
-     * @param nextRootStep the step
-     * @param fMapping feature type mapping to get namespaces from
      * @param mapping attribute mapping
-     * @param targetXPath the full target xpath
+     * @param lastStep the last step
      * @return
      */
     private Expression getClientPropertyExpression(AttributeMapping mapping, Step lastStep) {

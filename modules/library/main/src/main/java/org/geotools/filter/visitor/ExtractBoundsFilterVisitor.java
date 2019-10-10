@@ -158,9 +158,7 @@ public class ExtractBoundsFilterVisitor extends NullFilterVisitor {
         ReferencedEnvelope bbox = bbox(data);
 
         // consider doing reprojection here into data CRS?
-        Envelope bounds =
-                new Envelope(
-                        filter.getMinX(), filter.getMaxX(), filter.getMinY(), filter.getMaxY());
+        Envelope bounds = new Envelope(ReferencedEnvelope.reference(filter.getBounds()));
         if (bbox != null) {
             bbox.expandToInclude(bounds);
             return bbox;
@@ -171,7 +169,7 @@ public class ExtractBoundsFilterVisitor extends NullFilterVisitor {
     /**
      * Please note we are only visiting literals involved in spatial operations.
      *
-     * @param expression, a literal expression, hopefully a Geometry or Envelope
+     * @param expression a literal expression, hopefully a Geometry or Envelope
      * @param data Incoming BoundingBox (or Envelope or CRS)
      * @return ReferencedEnvelope updated to reflect literal
      */

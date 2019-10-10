@@ -80,73 +80,75 @@ class FilterNameTypeMapping {
     public static Map loadFilterTypeToFilterCapabilitiesMap() {
         Map conversionMap = new HashMap();
         conversionMap.put(
-                new Short(FilterType.BETWEEN), new FilterCapabilities(FilterCapabilities.BETWEEN));
+                Short.valueOf(FilterType.BETWEEN),
+                new FilterCapabilities(FilterCapabilities.BETWEEN));
         conversionMap.put(
-                new Short(FilterType.COMPARE_EQUALS),
+                Short.valueOf(FilterType.COMPARE_EQUALS),
                 new FilterCapabilities(FilterCapabilities.COMPARE_EQUALS));
         conversionMap.put(
-                new Short(FilterType.COMPARE_GREATER_THAN),
+                Short.valueOf(FilterType.COMPARE_GREATER_THAN),
                 new FilterCapabilities(FilterCapabilities.COMPARE_GREATER_THAN));
         conversionMap.put(
-                new Short(FilterType.COMPARE_GREATER_THAN_EQUAL),
+                Short.valueOf(FilterType.COMPARE_GREATER_THAN_EQUAL),
                 new FilterCapabilities(FilterCapabilities.COMPARE_GREATER_THAN_EQUAL));
         conversionMap.put(
-                new Short(FilterType.COMPARE_LESS_THAN),
+                Short.valueOf(FilterType.COMPARE_LESS_THAN),
                 new FilterCapabilities(FilterCapabilities.COMPARE_LESS_THAN));
         conversionMap.put(
-                new Short(FilterType.COMPARE_LESS_THAN_EQUAL),
+                Short.valueOf(FilterType.COMPARE_LESS_THAN_EQUAL),
                 new FilterCapabilities(FilterCapabilities.COMPARE_LESS_THAN_EQUAL));
         conversionMap.put(
-                new Short(FilterType.COMPARE_NOT_EQUALS),
+                Short.valueOf(FilterType.COMPARE_NOT_EQUALS),
                 new FilterCapabilities(FilterCapabilities.COMPARE_NOT_EQUALS));
         conversionMap.put(
-                new Short(FilterType.FID), new FilterCapabilities(FilterCapabilities.FID));
+                Short.valueOf(FilterType.FID), new FilterCapabilities(FilterCapabilities.FID));
         conversionMap.put(
-                new Short(FilterType.GEOMETRY_BBOX),
+                Short.valueOf(FilterType.GEOMETRY_BBOX),
                 new FilterCapabilities(FilterCapabilities.SPATIAL_BBOX));
         conversionMap.put(
-                new Short(FilterType.GEOMETRY_BEYOND),
+                Short.valueOf(FilterType.GEOMETRY_BEYOND),
                 new FilterCapabilities(FilterCapabilities.SPATIAL_BEYOND));
         conversionMap.put(
-                new Short(FilterType.GEOMETRY_CONTAINS),
+                Short.valueOf(FilterType.GEOMETRY_CONTAINS),
                 new FilterCapabilities(FilterCapabilities.SPATIAL_CONTAINS));
         conversionMap.put(
-                new Short(FilterType.GEOMETRY_CROSSES),
+                Short.valueOf(FilterType.GEOMETRY_CROSSES),
                 new FilterCapabilities(FilterCapabilities.SPATIAL_CROSSES));
         conversionMap.put(
-                new Short(FilterType.GEOMETRY_DISJOINT),
+                Short.valueOf(FilterType.GEOMETRY_DISJOINT),
                 new FilterCapabilities(FilterCapabilities.SPATIAL_DISJOINT));
         conversionMap.put(
-                new Short(FilterType.GEOMETRY_DWITHIN),
+                Short.valueOf(FilterType.GEOMETRY_DWITHIN),
                 new FilterCapabilities(FilterCapabilities.SPATIAL_DWITHIN));
         conversionMap.put(
-                new Short(FilterType.GEOMETRY_EQUALS),
+                Short.valueOf(FilterType.GEOMETRY_EQUALS),
                 new FilterCapabilities(FilterCapabilities.SPATIAL_EQUALS));
         conversionMap.put(
-                new Short(FilterType.GEOMETRY_INTERSECTS),
+                Short.valueOf(FilterType.GEOMETRY_INTERSECTS),
                 new FilterCapabilities(FilterCapabilities.SPATIAL_INTERSECT));
         conversionMap.put(
-                new Short(FilterType.GEOMETRY_OVERLAPS),
+                Short.valueOf(FilterType.GEOMETRY_OVERLAPS),
                 new FilterCapabilities(FilterCapabilities.SPATIAL_OVERLAPS));
         conversionMap.put(
-                new Short(FilterType.GEOMETRY_TOUCHES),
+                Short.valueOf(FilterType.GEOMETRY_TOUCHES),
                 new FilterCapabilities(FilterCapabilities.SPATIAL_TOUCHES));
         conversionMap.put(
-                new Short(FilterType.GEOMETRY_WITHIN),
+                Short.valueOf(FilterType.GEOMETRY_WITHIN),
                 new FilterCapabilities(FilterCapabilities.SPATIAL_WITHIN));
         conversionMap.put(
-                new Short(FilterType.LIKE), new FilterCapabilities(FilterCapabilities.LIKE));
+                Short.valueOf(FilterType.LIKE), new FilterCapabilities(FilterCapabilities.LIKE));
         conversionMap.put(
-                new Short(FilterType.LOGIC_AND),
+                Short.valueOf(FilterType.LOGIC_AND),
                 new FilterCapabilities(FilterCapabilities.LOGIC_AND));
         conversionMap.put(
-                new Short(FilterType.LOGIC_NOT),
+                Short.valueOf(FilterType.LOGIC_NOT),
                 new FilterCapabilities(FilterCapabilities.LOGIC_NOT));
         conversionMap.put(
-                new Short(FilterType.LOGIC_OR),
+                Short.valueOf(FilterType.LOGIC_OR),
                 new FilterCapabilities(FilterCapabilities.LOGIC_OR));
         conversionMap.put(
-                new Short(FilterType.NULL), new FilterCapabilities(FilterCapabilities.NULL_CHECK));
+                Short.valueOf(FilterType.NULL),
+                new FilterCapabilities(FilterCapabilities.NULL_CHECK));
         return conversionMap;
     }
 
@@ -276,10 +278,6 @@ class FilterNameTypeMapping {
                 }
 
                 public boolean supports(long type) {
-                    return true;
-                }
-
-                public boolean supports(short type) {
                     return true;
                 }
             };

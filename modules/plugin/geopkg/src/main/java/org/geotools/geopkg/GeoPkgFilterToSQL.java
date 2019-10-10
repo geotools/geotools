@@ -137,6 +137,10 @@ public class GeoPkgFilterToSQL extends PreparedFilterToSQL {
         // get the attribute, it will expand the default geom name if necessary and give access to
         // the user data
         AttributeDescriptor attribute = property.evaluate(featureType, AttributeDescriptor.class);
+        if (attribute == null) {
+            throw new IllegalArgumentException(
+                    "Could not find attribute referenced as " + property);
+        }
         // should be ever called only with a bbox filter
         Geometry reference = geometry.evaluate(null, Geometry.class);
         Envelope envelope = reference.getEnvelopeInternal();
@@ -149,7 +153,6 @@ public class GeoPkgFilterToSQL extends PreparedFilterToSQL {
         // can we use the spatial index?
         try {
             if (primaryKey != null
-                    && attribute != null
                     && Boolean.TRUE.equals(
                             attribute.getUserData().get(GeoPkgDialect.HAS_SPATIAL_INDEX))) {
                 // encode the primary key

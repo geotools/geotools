@@ -141,7 +141,7 @@ public final class MetadataStandard {
      * Returns the metadata interface implemented by the specified implementation. Only one metadata
      * interface can be implemented.
      *
-     * @param metadata The metadata implementation to wraps.
+     * @param implementation The metadata implementation to wraps.
      * @return The single interface, or {@code null} if none where found.
      */
     private Class<?> getType(final Class<?> implementation) {

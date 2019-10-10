@@ -51,7 +51,6 @@ public class PolygonNoGapsValidation extends DefaultFeatureValidation {
      * @param type the FeatureType of the feature
      * @param results storage for the error and warning messages
      * @return True if no features intersect. If they do then the validation failed.
-     * @throws Exception DOCUMENT ME!
      * @see org.geotools.validation.IntegrityValidation#validate(java.util.Map,
      *     org.locationtech.jts.geom.Envelope, org.geotools.validation.ValidationResults)
      */

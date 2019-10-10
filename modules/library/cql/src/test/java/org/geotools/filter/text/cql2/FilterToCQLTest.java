@@ -16,16 +16,19 @@
  */
 package org.geotools.filter.text.cql2;
 
+import java.awt.Color;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.util.factory.Hints;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.Intersects;
@@ -229,6 +232,17 @@ public class FilterToCQLTest {
         filter.accept(toCQL, null).toString();
     }
 
+    @Test
+    public void testColorLiteral() throws Exception {
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
+        PropertyIsEqualTo filter = ff.equal(ff.property("color"), ff.literal(Color.RED), false);
+
+        FilterToCQL toCQL = new FilterToCQL();
+        StringBuilder cql = (StringBuilder) toCQL.visit(filter, null);
+
+        Assert.assertEquals("color = '#FF0000'", cql.toString());
+    }
+
     @Test(expected = UnsupportedOperationException.class)
     public void testBegunByUnsuported() throws Exception {
 
@@ -329,6 +343,13 @@ public class FilterToCQLTest {
         cqlTest("foo = true");
     }
 
+    @Test
+    public void testFunctionOr() throws Exception {
+        // this is a contrived example, but it's a function that's available in this modules
+        ecqlReparseTest("PropertyExists('name') = true OR PropertyExists('name') = false");
+        ecqlReparseTest("PropertyExists('name') IN (true, false)");
+    }
+
     protected void cqlTest(String cql) throws Exception {
         Filter filter = CQL.toFilter(cql);
         Assert.assertNotNull(filter);
@@ -336,5 +357,11 @@ public class FilterToCQLTest {
         FilterToCQL toCQL = new FilterToCQL();
         String output = filter.accept(toCQL, null).toString();
         Assert.assertEquals(cql, output);
+    }
+
+    protected void ecqlReparseTest(String cql) throws Exception {
+        Filter filter = ECQL.toFilter(cql);
+        Assert.assertNotNull(filter);
+        Assert.assertEquals(ECQL.toFilter(ECQL.toCQL(filter)), filter);
     }
 }

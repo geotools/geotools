@@ -199,16 +199,6 @@ public class SunRelativePosition {
     }
 
     /**
-     * Calculate the true anamoly of the sun.
-     *
-     * @param t number of Julian centuries since J2000.
-     * @return Sun's true anamoly in degrees.
-     */
-    private static double sunTrueAnomaly(final double t) {
-        return sunGeometricMeanAnomaly(t) + sunEquationOfCenter(t);
-    }
-
-    /**
      * Calculate the eccentricity of earth's orbit. This is the ratio {@code (a-b)/a} where
      * <var>a</var> is the semi-major axis length and <var>b</var> is the semi-minor axis length.
      * Value is 0 for a circular orbit.
@@ -218,18 +208,6 @@ public class SunRelativePosition {
      */
     private static double eccentricityEarthOrbit(final double t) {
         return 0.016708634 - t * (0.000042037 + 0.0000001267 * t);
-    }
-
-    /**
-     * Calculate the distance to the sun in Astronomical Units (AU).
-     *
-     * @param t number of Julian centuries since J2000.
-     * @return Sun radius vector in AUs.
-     */
-    private static double sunRadiusVector(final double t) {
-        final double v = Math.toRadians(sunTrueAnomaly(t));
-        final double e = eccentricityEarthOrbit(t);
-        return (1.000001018 * (1 - e * e)) / (1 + e * Math.cos(v));
     }
 
     /**
@@ -253,25 +231,6 @@ public class SunRelativePosition {
         final double e0 = meanObliquityOfEcliptic(t);
         final double omega = Math.toRadians(125.04 - 1934.136 * t);
         return e0 + 0.00256 * Math.cos(omega);
-    }
-
-    /**
-     * Calculate the right ascension of the sun. Similar to the angular system used to define
-     * latitude and longitude on Earth's surface, right ascension is roughly analogous to longitude,
-     * and defines an angular offset from the meridian of the vernal equinox.
-     *
-     * <P align="center"><img src="doc-files/CelestialSphere.png">
-     *
-     * @param t number of Julian centuries since J2000.
-     * @return Sun's right ascension in degrees.
-     */
-    private static double sunRightAscension(final double t) {
-        final double e = Math.toRadians(obliquityCorrected(t));
-        final double b = Math.toRadians(sunApparentLongitude(t));
-        final double y = Math.sin(b) * Math.cos(e);
-        final double x = Math.cos(b);
-        final double alpha = Math.atan2(y, x);
-        return Math.toDegrees(alpha);
     }
 
     /**
@@ -427,7 +386,6 @@ public class SunRelativePosition {
         // the end of this method, local variables are always in
         // radians. Output variables ('azimuth' and 'elevation')
         // will still computed in degrees.
-        longitude = Math.toRadians(longitude);
         latitude = Math.toRadians(latitude);
         solarDec = Math.toRadians(solarDec);
 
@@ -619,6 +577,7 @@ public class SunRelativePosition {
      * où <var>date</var> est un argument optionel spécifiant la date et l'heure. Si cet argument
      * est omis, la date et heure actuelles seront utilisées.
      */
+    @SuppressWarnings("PMD.SystemPrintln")
     public static void main(final String[] args) throws ParseException {
         final DateFormat format =
                 DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);

@@ -33,7 +33,7 @@ import org.geotools.data.complex.filter.FeatureChainedAttributeVisitor.FeatureCh
 import org.geotools.data.complex.filter.FeatureChainedAttributeVisitor.FeatureChainedAttributeDescriptor;
 import org.geotools.data.complex.filter.UnmappingFilterVisitor;
 import org.geotools.data.complex.filter.XPath;
-import org.geotools.data.complex.filter.XPathUtil.StepList;
+import org.geotools.data.complex.util.XPathUtil.StepList;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.jdbc.FilterToSQLException;
 import org.geotools.filter.FilterAttributeExtractor;
@@ -41,8 +41,10 @@ import org.geotools.jdbc.*;
 import org.geotools.util.factory.Hints;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsBetween;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.PropertyIsGreaterThan;
@@ -110,6 +112,14 @@ public class NestedFilterToSQL extends FilterToSQL {
 
     FilterToSQL original;
     FilterFactory ff;
+    // A deep tracking variable over binary operators, should maintain on true only for the first
+    // level
+    private boolean rootBinaryOperator = true;
+    // Parent select clause for this nested subquery build, used when the OR->UNION replacement is
+    // enabled
+    private String selectClause;
+    // OR->UNION replacement performance improvement flag.  Enabled if true
+    private boolean replaceOrWithUnion = false;
 
     /**
      * Constructor.
@@ -168,75 +178,33 @@ public class NestedFilterToSQL extends FilterToSQL {
             throw new RuntimeException(e);
         }
         sql.append(" ON ");
-        store.dialect.encodeColumnName(nestedAttribute.getLastLink().getAlias(), sql);
+        store.dialect.encodeColumnName(null, nestedAttribute.getLastLink().getAlias(), sql);
         sql.append(".");
-        store.dialect.encodeColumnName(multipleValue.getSourceColumn(), sql);
+        store.dialect.encodeColumnName(null, multipleValue.getSourceColumn(), sql);
         sql.append(" = ");
         store.dialect.encodeTableName(alias, sql);
         sql.append(".");
-        store.dialect.encodeColumnName(multipleValue.getTargetColumn(), sql);
+        store.dialect.encodeColumnName(null, multipleValue.getTargetColumn(), sql);
         sql.append(" ");
     }
 
     protected Object visitNestedFilter(Filter filter, Object extraData, String xpath) {
         try {
-
             FeatureChainedAttributeVisitor nestedMappingsExtractor =
                     new FeatureChainedAttributeVisitor(rootMapping);
             nestedMappingsExtractor.visit(ff.property(xpath), null);
             List<FeatureChainedAttributeDescriptor> attributes =
                     nestedMappingsExtractor.getFeatureChainedAttributes();
-            // encoding of filters on multiple nested attributes is not (yet) supported
-            if (attributes.size() == 1) {
-                FeatureChainedAttributeDescriptor nestedAttrDescr = attributes.get(0);
-
-                int numMappings = nestedAttrDescr.chainSize();
-                if (numMappings > 0 && nestedAttrDescr.isJoiningEnabled()) {
-                    out.write("EXISTS (");
-
-                    FeatureChainLink lastMappingStep = nestedAttrDescr.getLastLink();
-                    StringBuffer sql = encodeSelectKeyFrom(lastMappingStep);
-                    JDBCDataStore store =
-                            (JDBCDataStore)
-                                    lastMappingStep
-                                            .getFeatureTypeMapping()
-                                            .getSource()
-                                            .getDataStore();
-                    encodeMultipleValueJoin(nestedAttrDescr, store, sql);
-
-                    for (int i = numMappings - 2; i > 0; i--) {
-                        FeatureChainLink mappingStep = nestedAttrDescr.getLink(i);
-                        if (mappingStep.hasNestedFeature()) {
-                            FeatureTypeMapping parentFeature = mappingStep.getFeatureTypeMapping();
-                            store = (JDBCDataStore) parentFeature.getSource().getDataStore();
-                            String parentTableName =
-                                    parentFeature.getSource().getSchema().getName().getLocalPart();
-
-                            sql.append(" INNER JOIN ");
-                            store.encodeTableName(parentTableName, sql, null);
-                            sql.append(" ");
-                            store.dialect.encodeTableName(mappingStep.getAlias(), sql);
-                            sql.append(" ON ");
-                            encodeJoinCondition(nestedAttrDescr, i, sql);
-                        }
-                    }
-
-                    if (nestedAttrDescr.getAttributePath() != null) {
-                        createWhereClause(filter, xpath, nestedAttrDescr, sql);
-
-                        sql.append(" AND ");
-                    } else {
-                        sql.append(" WHERE ");
-                    }
-
-                    // join with root table
-                    encodeJoinCondition(nestedAttrDescr, 0, sql);
-
-                    out.write(sql.toString());
-                    out.write(")");
+            if (attributes.size() >= 1) {
+                if (attributes.size() > 1) out.write("(");
+                boolean first = true;
+                for (FeatureChainedAttributeDescriptor nestedAttrDescr : attributes) {
+                    if (first) first = false;
+                    else out.write(" OR ");
+                    encodeChainedAttribute(filter, xpath, nestedAttrDescr);
                 }
+                if (attributes.size() > 1) out.write(")");
             }
-
             return extraData;
 
         } catch (java.io.IOException ioe) {
@@ -245,6 +213,53 @@ public class NestedFilterToSQL extends FilterToSQL {
             throw new RuntimeException("Problem writing filter: ", e);
         } catch (FilterToSQLException e) {
             throw new RuntimeException("Problem writing filter: ", e);
+        }
+    }
+
+    private void encodeChainedAttribute(
+            Filter filter, String xpath, FeatureChainedAttributeDescriptor nestedAttrDescr)
+            throws IOException, SQLException, FilterToSQLException {
+        int numMappings = nestedAttrDescr.chainSize();
+        if (numMappings > 0 && nestedAttrDescr.isJoiningEnabled()) {
+            out.write("EXISTS (");
+
+            FeatureChainLink lastMappingStep = nestedAttrDescr.getLastLink();
+            StringBuffer sql = encodeSelectKeyFrom(lastMappingStep);
+            JDBCDataStore store =
+                    (JDBCDataStore)
+                            lastMappingStep.getFeatureTypeMapping().getSource().getDataStore();
+            encodeMultipleValueJoin(nestedAttrDescr, store, sql);
+
+            for (int i = numMappings - 2; i > 0; i--) {
+                FeatureChainLink mappingStep = nestedAttrDescr.getLink(i);
+                if (mappingStep.hasNestedFeature()) {
+                    FeatureTypeMapping parentFeature = mappingStep.getFeatureTypeMapping();
+                    store = (JDBCDataStore) parentFeature.getSource().getDataStore();
+                    String parentTableName =
+                            parentFeature.getSource().getSchema().getName().getLocalPart();
+
+                    sql.append(" INNER JOIN ");
+                    store.encodeTableName(parentTableName, sql, null);
+                    sql.append(" ");
+                    store.dialect.encodeTableName(mappingStep.getAlias(), sql);
+                    sql.append(" ON ");
+                    encodeJoinCondition(nestedAttrDescr, i, sql);
+                }
+            }
+
+            if (nestedAttrDescr.getAttributePath() != null) {
+                createWhereClause(filter, xpath, nestedAttrDescr, sql);
+
+                sql.append(" AND ");
+            } else {
+                sql.append(" WHERE ");
+            }
+
+            // join with root table
+            encodeJoinCondition(nestedAttrDescr, 0, sql);
+
+            out.write(sql.toString());
+            out.write(")");
         }
     }
 
@@ -258,7 +273,6 @@ public class NestedFilterToSQL extends FilterToSQL {
         NestedAttributeMapping nestedFeatureAttr = parentStep.getNestedFeatureAttribute();
         FeatureTypeMapping nestedFeature = nestedFeatureAttr.getFeatureTypeMapping(null);
 
-        SimpleFeatureType parentSource = (SimpleFeatureType) parentFeature.getSource().getSchema();
         String parentTableName = parentFeature.getSource().getSchema().getName().getLocalPart();
         String parentTableAlias = parentStep.getAlias();
         WrappedFilterToSql parentToSQL = createFilterToSQL(parentFeature);
@@ -267,7 +281,6 @@ public class NestedFilterToSQL extends FilterToSQL {
         Expression parentExpression = nestedFeatureAttr.getSourceExpression();
         String parentTableColumn = parentToSQL.encodeToString(parentExpression);
 
-        SimpleFeatureType nestedSource = (SimpleFeatureType) parentFeature.getSource().getSchema();
         String nestedTableAlias = nestedStep.getAlias();
         WrappedFilterToSql nestedFilterToSQL = createFilterToSQL(parentFeature);
         // don't escape, as it will be done by the encodeColumn methods
@@ -330,7 +343,6 @@ public class NestedFilterToSQL extends FilterToSQL {
         JDBCDataStore store = (JDBCDataStore) featureMapping.getSource().getDataStore();
         FeatureTypeMapping featureMappingForUnrolling =
                 nestedAttrDescr.getFeatureTypeOwningAttribute();
-        SimpleFeatureType sourceType = (SimpleFeatureType) featureMapping.getSource().getSchema();
 
         NamespaceAwareAttributeRenameVisitor duplicate =
                 new NamespaceAwareAttributeRenameVisitor(nestedProperty, simpleProperty);
@@ -364,7 +376,7 @@ public class NestedFilterToSQL extends FilterToSQL {
             throws SQLException {
         store.encodeTableName(typeName, sql, hints);
         sql.append(".");
-        store.dialect.encodeColumnName(colName, sql);
+        store.dialect.encodeColumnName(null, colName, sql);
     }
 
     private void encodeAliasedColumnName(
@@ -372,7 +384,7 @@ public class NestedFilterToSQL extends FilterToSQL {
             throws SQLException {
         store.dialect.encodeTableName(typeName, sql);
         sql.append(".");
-        store.dialect.encodeColumnName(colName, sql);
+        store.dialect.encodeColumnName(null, colName, sql);
     }
 
     @Override
@@ -463,6 +475,50 @@ public class NestedFilterToSQL extends FilterToSQL {
             return original.visit(filter, extraData);
         }
         return visitNestedFilter(filter, extraData, nestedAttr.getPropertyName());
+    }
+
+    @Override
+    public Object visit(Or filter, Object extraData) {
+        // or filters have a different implementation here, cannot use the "repeated or to in"
+        // translation, it uses unions and the like
+        return visit((BinaryLogicOperator) filter, "OR");
+    }
+
+    /**
+     * If replaceOrWithUnion flag is enabled this method will build main OR condition in the form of
+     * UNION queries like: SELECT id, name FROM table WHERE name = "Alf" OR name = "Rick" -> SELECT
+     * id, name FROM table WHERE name = "Alf" UNION SELECT id, name FROM table WHERE name = "Rick"
+     */
+    @Override
+    protected Object visit(BinaryLogicOperator filter, Object extraData) {
+        String operator = (String) extraData;
+        if (!replaceOrWithUnion
+                || "AND".equalsIgnoreCase(operator)
+                || selectClause == null
+                || !rootBinaryOperator) {
+            rootBinaryOperator = false;
+            return super.visit(filter, extraData);
+        }
+        if ("OR".equalsIgnoreCase(operator)) {
+            rootBinaryOperator = false;
+            // build UNION query instead main OR
+            try {
+                java.util.Iterator list = filter.getChildren().iterator();
+
+                while (list.hasNext()) {
+                    ((Filter) list.next()).accept(this, extraData);
+                    if (list.hasNext()) {
+                        // selectClause will carry the parent SELECT FROM clauses, so we use it to
+                        // build UNION
+                        out.write(" UNION " + selectClause + " ");
+                    }
+                }
+
+            } catch (java.io.IOException ioe) {
+                throw new RuntimeException(IO_ERROR, ioe);
+            }
+        }
+        return extraData;
     }
 
     @Override
@@ -592,6 +648,10 @@ public class NestedFilterToSQL extends FilterToSQL {
         return null;
     }
 
+    public void setSelectClause(String selectClause) {
+        this.selectClause = selectClause;
+    }
+
     private Filter unrollFilter(Filter complexFilter, FeatureTypeMapping mappings) {
         UnmappingFilterVisitorExcludingNestedMappings visitor =
                 new UnmappingFilterVisitorExcludingNestedMappings(mappings);
@@ -623,5 +683,13 @@ public class NestedFilterToSQL extends FilterToSQL {
 
             return matchingMappings;
         }
+    }
+
+    public boolean isReplaceOrWithUnion() {
+        return replaceOrWithUnion;
+    }
+
+    public void setReplaceOrWithUnion(boolean replaceOrWithUnion) {
+        this.replaceOrWithUnion = replaceOrWithUnion;
     }
 }

@@ -33,7 +33,7 @@ for a remote "Web Map Tile Server" and can be used to examine and retrieve publi
       // For example, the capabilities it returned was not valid
     }
 
-  Assuming nothing went wrong, we now have a WebMapTileServer object "wmts"
+  Assuming nothing went wrong, we now have a WebMapTileServer object ``wmts`` 
   that contains the Capabilities document of returned from the server. It
   can also provide further communication with the server.
 
@@ -68,7 +68,7 @@ Service contains metadata information about the server:
 Request
 ^^^^^^^
 
-The WMTS Operations describe the requests entrypoints:
+The WMTS Operations describe the requests entry points:
 
 .. code-block:: java
 
@@ -177,7 +177,7 @@ Making a GetTile request is more interesting than looking at WMSCapabilities.
      Set<Tile> responses = wmts.issueRequest(req);
 
    We are getting a Set of Tiles, which are all the Tiles needed to fill
-   the bbox we requested.
+   the bounding box we requested.
 
 5. In order to get the tile images, we'll have to use the info in the Tiles:
 

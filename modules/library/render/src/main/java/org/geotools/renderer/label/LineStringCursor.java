@@ -308,6 +308,7 @@ public class LineStringCursor {
      * @param endOrdinate
      * @param step
      * @return
+     * @deprecated Does not work correctly, will be removed (tried too many times to fix it)
      */
     public double getMaxAngleChange(double startOrdinate, double endOrdinate, double step) {
         if (startOrdinate > endOrdinate)
@@ -326,15 +327,15 @@ public class LineStringCursor {
                 // but also to cover at least "step" distance (might require more than one segment)
                 double distance = segmentLenghts[delegate.segment] - delegate.offsetDistance;
                 delegate.offsetDistance = 0;
-                while ((distance < step || delegate.segment == prevSegment)
+                while (((distance < step && ordinate + distance < endOrdinate)
+                                || delegate.segment == prevSegment)
                         && delegate.segment < (delegate.segmentLenghts.length - 1)) {
                     delegate.segment++;
                     distance += segmentLenghts[delegate.segment];
                 }
                 ordinate += distance;
 
-                if (ordinate < endOrdinate
-                        && delegate.segment < (delegate.segmentLenghts.length - 1)) {
+                if (delegate.segment < (delegate.segmentLenghts.length - 1)) {
                     double angle = getSegmentAngle(delegate.segment);
                     accumulator.accumulate(angle);
                 }
@@ -342,7 +343,7 @@ public class LineStringCursor {
                 // move to next segment
                 delegate.segment++;
             } while (ordinate < endOrdinate
-                    && (delegate.segment < (delegate.segmentLenghts.length - 1)));
+                    && (delegate.segment < (delegate.segmentLenghts.length)));
         } catch (Exception e) {
             LOGGER.log(Level.INFO, "Error occurred while computing max angle change in label", e);
         }

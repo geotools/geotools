@@ -20,11 +20,7 @@ package org.geotools.gce.gtopo30;
 import com.sun.media.imageio.stream.RawImageInputStream;
 import com.sun.media.imageioimpl.plugins.raw.RawImageReader;
 import com.sun.media.imageioimpl.plugins.raw.RawImageReaderSpi;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.Transparency;
+import java.awt.*;
 import java.awt.color.ColorSpace;
 import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
@@ -70,6 +66,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.factory.ReferencingFactoryContainer;
+import org.geotools.referencing.factory.ReferencingObjectFactory;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.util.NumberRange;
 import org.geotools.util.URLs;
@@ -83,7 +80,9 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.cs.CartesianCS;
 import org.opengis.referencing.datum.PixelInCell;
+import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransformFactory;
+import org.opengis.referencing.operation.OperationMethod;
 import org.opengis.referencing.operation.TransformException;
 import si.uom.SI;
 
@@ -144,7 +143,6 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader
      * @throws MalformedURLException if the URL does not correspond to one of the GTopo30 files
      * @throws IOException
      * @throws DataSourceException if the given url points to an unrecognized file
-     * @throws IllegalArgumentException DOCUMENT ME!
      */
     public GTopo30Reader(final Object source) throws IOException {
         this(source, null);
@@ -158,7 +156,6 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader
      * @throws MalformedURLException if the URL does not correspond to one of the GTopo30 files
      * @throws IOException
      * @throws DataSourceException if the given url points to an unrecognized file
-     * @throws IllegalArgumentException DOCUMENT ME!
      */
     public GTopo30Reader(final Object source, final Hints hints) throws IOException {
         super(source, hints);
@@ -323,26 +320,24 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader
         GeneralEnvelope requestedEnvelope = null;
         Rectangle dim = null;
         OverviewPolicy overviewPolicy = null;
+        // /////////////////////////////////////////////////////////////////////
+        //
+        // Checking params
+        //
+        // /////////////////////////////////////////////////////////////////////
         if (params != null) {
-            // /////////////////////////////////////////////////////////////////////
-            //
-            // Checking params
-            //
-            // /////////////////////////////////////////////////////////////////////
-            if (params != null) {
-                for (int i = 0; i < params.length; i++) {
-                    final ParameterValue<?> param = (ParameterValue<?>) params[i];
-                    final String name = param.getDescriptor().getName().getCode();
-                    if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName().toString())) {
-                        final GridGeometry2D gg = (GridGeometry2D) param.getValue();
-                        requestedEnvelope = new GeneralEnvelope((Envelope) gg.getEnvelope2D());
-                        dim = gg.getGridRange2D().getBounds();
-                        continue;
-                    }
-                    if (name.equals(AbstractGridFormat.OVERVIEW_POLICY.getName().toString())) {
-                        overviewPolicy = (OverviewPolicy) param.getValue();
-                        continue;
-                    }
+            for (int i = 0; i < params.length; i++) {
+                final ParameterValue<?> param = (ParameterValue<?>) params[i];
+                final String name = param.getDescriptor().getName().getCode();
+                if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName().toString())) {
+                    final GridGeometry2D gg = (GridGeometry2D) param.getValue();
+                    requestedEnvelope = new GeneralEnvelope((Envelope) gg.getEnvelope2D());
+                    dim = gg.getGridRange2D().getBounds();
+                    continue;
+                }
+                if (name.equals(AbstractGridFormat.OVERVIEW_POLICY.getName().toString())) {
+                    overviewPolicy = (OverviewPolicy) param.getValue();
+                    continue;
                 }
             }
         }
@@ -539,6 +534,7 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader
      * @throws IOException
      * @throws FactoryException
      */
+    @SuppressWarnings("deprecation")
     private CoordinateReferenceSystem initCRS() {
         BufferedReader reader = null;
         try {
@@ -585,8 +581,16 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader
                             Collections.singletonMap(
                                     "name", "WGS 84 / Antartic Polar Stereographic");
 
-                    return factories.createProjectedCRS(
-                            properties, geoCRS, null, parameters, cartCS);
+                    OperationMethod method = null;
+                    final MathTransform mt =
+                            factories
+                                    .getMathTransformFactory()
+                                    .createBaseToDerived(geoCRS, parameters, cartCS);
+                    if (method == null) {
+                        method = factories.getMathTransformFactory().getLastMethodUsed();
+                    }
+                    return ((ReferencingObjectFactory) factories.getCRSFactory())
+                            .createProjectedCRS(properties, method, geoCRS, mt, cartCS);
                 }
 
                 if (crsDescription.endsWith("GEOGRAPHIC")) {

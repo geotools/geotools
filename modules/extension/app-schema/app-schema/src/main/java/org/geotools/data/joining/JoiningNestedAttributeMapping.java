@@ -35,7 +35,7 @@ import org.geotools.data.complex.DataAccessRegistry;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.MappingFeatureCollection;
 import org.geotools.data.complex.NestedAttributeMapping;
-import org.geotools.data.complex.filter.XPathUtil.StepList;
+import org.geotools.data.complex.util.XPathUtil.StepList;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.filter.FilterAttributeExtractor;

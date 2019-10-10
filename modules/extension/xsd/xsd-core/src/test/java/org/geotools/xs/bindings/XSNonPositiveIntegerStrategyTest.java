@@ -74,7 +74,7 @@ public class XSNonPositiveIntegerStrategyTest extends TestSchema {
     }
 
     public void testNegativeNumber() throws Exception {
-        validateValues("-100000", new Integer("-100000"));
+        validateValues("-100000", Integer.valueOf("-100000"));
     }
 
     protected QName getQName() {

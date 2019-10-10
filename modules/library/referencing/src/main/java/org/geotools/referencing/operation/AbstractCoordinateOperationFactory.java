@@ -485,13 +485,6 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
             throws FactoryException {
         if (step1 == null) return step2;
         if (step2 == null) return step1;
-        if (false) {
-            // Note: we sometime get this assertion failure if the user provided CRS with two
-            //       different ellipsoids but an identical TOWGS84 conversion infos (which is
-            //       usually wrong, but still happen).
-            assert equalsIgnoreMetadata(step1.getTargetCRS(), step2.getSourceCRS())
-                    : "CRS 1 =" + step1.getTargetCRS() + '\n' + "CRS 2 =" + step2.getSourceCRS();
-        }
         if (isIdentity(step1)) return step2;
         if (isIdentity(step2)) return step1;
         final MathTransform mt1 = step1.getMathTransform();
@@ -527,8 +520,8 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
      * ConcatenatedOperation}. If a concatenated operation is created, it will get an automatically
      * generated name.
      *
-     * @param step1 The first step, or {@code null} for the identity operation.
-     * @param step2 The second step, or {@code null} for the identity operation.
+     * @param candidatesStep1 The first step, or {@code null} for the identity operation.
+     * @param candidatesStep2 The second step, or {@code null} for the identity operation.
      * @return A concatenated operation, or {@code null} if all arguments was nul.
      * @throws FactoryException if the operation can't be constructed.
      */

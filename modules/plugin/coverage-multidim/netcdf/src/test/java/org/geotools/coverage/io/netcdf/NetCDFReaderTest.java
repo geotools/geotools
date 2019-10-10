@@ -16,7 +16,6 @@
  */
 package org.geotools.coverage.io.netcdf;
 
-import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.range.NoDataContainer;
 import java.awt.*;
 import java.io.File;
@@ -67,7 +66,6 @@ import org.geotools.test.TestData;
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
 import org.geotools.util.factory.Hints;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -95,13 +93,7 @@ public class NetCDFReaderTest extends Assert {
 
     @Before
     public void setup() {
-        JAIExt.initJAIEXT(true, true);
         System.setProperty("netcdf.coordinates.enablePlugins", "true");
-    }
-
-    @After
-    public void cleanup() {
-        JAIExt.initJAIEXT(false, true);
     }
 
     private static final double DELTA = 1E-6;

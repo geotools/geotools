@@ -87,7 +87,7 @@ public class XSByteBinding implements SimpleBinding {
             text = text.substring(1);
         }
 
-        return new Byte(text);
+        return Byte.valueOf(text);
     }
 
     /**

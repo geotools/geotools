@@ -266,9 +266,7 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
      * @see FilterVisitor#visit(IncludeFilter, Object)
      * @param filter the {@link Filter} to visit
      */
-    public void visit(IncludeFilter filter) {
-        return;
-    }
+    public void visit(IncludeFilter filter) {}
 
     /**
      * @see FilterVisitor#visit(ExcludeFilter, Object)

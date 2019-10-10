@@ -33,7 +33,6 @@ import org.geotools.geometry.util.XRectangle2D;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.LinearTransform;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
-import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.util.Utilities;
 import org.opengis.geometry.BoundingBox;
@@ -43,7 +42,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
-import org.opengis.referencing.operation.NoninvertibleTransformException;
 import org.opengis.referencing.operation.TransformException;
 
 /**
@@ -356,9 +354,6 @@ public class SpatialRequestHelper {
      * Return a crop region from a specified envelope, leveraging on the grid to world
      * transformation.
      *
-     * @param refinedRequestedBBox the crop envelope
-     * @return a {@code Rectangle} representing the crop region.
-     * @throws TransformException in case a problem occurs when going back to raster space.
      * @throws DataSourceException
      */
     private void computeRasterArea() throws DataSourceException {
@@ -506,86 +501,6 @@ public class SpatialRequestHelper {
         LOGGER.log(
                 Level.WARNING, "Unable to compute requested resolution, using highest available");
         computedResolution = coverageProperties.fullResolution;
-    }
-
-    /**
-     * Classic way of computing the requested resolution
-     *
-     * @return
-     */
-    private double[] computeClassicResolution() {
-
-        return new double[] {
-            XAffineTransform.getScaleX0(computedGridToWorld),
-            XAffineTransform.getScaleY0(computedGridToWorld)
-        };
-    }
-
-    /**
-     * Compute the resolutions through a more accurate logic: Compute the resolution in 9 points,
-     * the corners of the requested area and the middle points and take the best one. This will
-     * provide better results for cases where there is a lot more deformation on a subregion
-     * (top/bottom/sides) of the requested bbox with respect to others.
-     *
-     * @return
-     * @throws TransformException
-     * @throws NoninvertibleTransformException
-     */
-    private double[] computeAccurateResolution()
-            throws TransformException, NoninvertibleTransformException {
-
-        // transform back to the original space the brop bbox
-        GeneralEnvelope cropBboxTarget = CRS.transform(computedBBox, requestCRS);
-        // get the requested resolution
-        double requestedResolution[] =
-                new double[] {
-                    XAffineTransform.getScaleX0(requestedGridToWorld),
-                    XAffineTransform.getScaleY0(requestedGridToWorld),
-                };
-        double[] points = new double[36];
-        for (int i = 0; i < 3; i++) {
-            double x;
-            if (i == 0) {
-                x = cropBboxTarget.getMinimum(0);
-            } else if (i == 1) {
-                x = cropBboxTarget.getMedian(0);
-            } else {
-                x = cropBboxTarget.getMaximum(0);
-            }
-            for (int j = 0; j < 3; j++) {
-                double y;
-                if (j == 0) {
-                    y = cropBboxTarget.getMinimum(1);
-                } else if (j == 1) {
-                    y = cropBboxTarget.getMedian(1);
-                } else {
-                    y = cropBboxTarget.getMaximum(1);
-                }
-
-                int k = (i * 3 + j) * 4;
-                points[k] = x - requestedResolution[0] / 2;
-                points[k + 1] = y - requestedResolution[1] / 2;
-                points[k + 2] = x + requestedResolution[0] / 2;
-                points[k + 3] = y + requestedResolution[1] / 2;
-            }
-        }
-        destinationToSourceTransform.transform(points, 0, points, 0, 18);
-
-        double mx = Double.MAX_VALUE;
-        double my = Double.MAX_VALUE;
-
-        for (int i = 0; i < 36; i += 4) {
-            double dx = points[i + 2] - points[i];
-            double dy = points[i + 3] - points[i + 1];
-            if (dx < mx) {
-                mx = dx;
-            }
-            if (dy < my) {
-                my = dy;
-            }
-        }
-
-        return new double[] {mx, my};
     }
 
     private void computeCropBBOX() throws DataSourceException {

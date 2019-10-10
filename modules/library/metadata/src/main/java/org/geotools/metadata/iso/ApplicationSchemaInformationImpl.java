@@ -21,7 +21,6 @@ package org.geotools.metadata.iso;
 
 import java.net.URI;
 import org.opengis.metadata.ApplicationSchemaInformation;
-import org.opengis.metadata.SpatialAttributeSupplement;
 import org.opengis.metadata.citation.Citation;
 
 /**
@@ -58,9 +57,6 @@ public class ApplicationSchemaInformationImpl extends MetadataEntity
     /** Software dependent format used for the application schema software dependent file. */
     private String softwareDevelopmentFileFormat;
 
-    /** Information about the spatial attributes in the application schema for the feature types. */
-    private SpatialAttributeSupplement featureCatalogueSupplement;
-
     /** Construct an initially empty application schema information. */
     public ApplicationSchemaInformationImpl() {}
 
@@ -87,7 +83,7 @@ public class ApplicationSchemaInformationImpl extends MetadataEntity
     }
 
     /** Set the name of the application schema used. */
-    public synchronized void setName(final Citation newValue) {
+    public void setName(final Citation newValue) {
         checkWritePermission();
         name = newValue;
     }
@@ -98,7 +94,7 @@ public class ApplicationSchemaInformationImpl extends MetadataEntity
     }
 
     /** Set the identification of the schema language used. */
-    public synchronized void setSchemaLanguage(final String newValue) {
+    public void setSchemaLanguage(final String newValue) {
         checkWritePermission();
         schemaLanguage = newValue;
     }
@@ -109,7 +105,7 @@ public class ApplicationSchemaInformationImpl extends MetadataEntity
     }
 
     /** Set the formal language used in Application Schema. */
-    public synchronized void setConstraintLanguage(final String newValue) {
+    public void setConstraintLanguage(final String newValue) {
         checkWritePermission();
         constraintLanguage = newValue;
     }
@@ -120,7 +116,7 @@ public class ApplicationSchemaInformationImpl extends MetadataEntity
     }
 
     /** Set the full application schema given as an ASCII file. */
-    public synchronized void setSchemaAscii(final URI newValue) {
+    public void setSchemaAscii(final URI newValue) {
         checkWritePermission();
         schemaAscii = newValue;
     }
@@ -131,7 +127,7 @@ public class ApplicationSchemaInformationImpl extends MetadataEntity
     }
 
     /** Set the full application schema given as a graphics file. */
-    public synchronized void setGraphicsFile(final URI newValue) {
+    public void setGraphicsFile(final URI newValue) {
         checkWritePermission();
         graphicsFile = newValue;
     }
@@ -142,7 +138,7 @@ public class ApplicationSchemaInformationImpl extends MetadataEntity
     }
 
     /** Set the full application schema given as a software development file. */
-    public synchronized void setSoftwareDevelopmentFile(final URI newValue) {
+    public void setSoftwareDevelopmentFile(final URI newValue) {
         checkWritePermission();
         softwareDevelopmentFile = newValue;
     }
@@ -155,30 +151,8 @@ public class ApplicationSchemaInformationImpl extends MetadataEntity
     /**
      * Set the software dependent format used for the application schema software dependent file.
      */
-    public synchronized void setSoftwareDevelopmentFileFormat(final String newValue) {
+    public void setSoftwareDevelopmentFileFormat(final String newValue) {
         checkWritePermission();
         softwareDevelopmentFileFormat = newValue;
-    }
-
-    /**
-     * Information about the spatial attributes in the application schema for the feature types.
-     *
-     * @deprecated removed from ISO 19115
-     */
-    @Deprecated
-    public SpatialAttributeSupplement getFeatureCatalogueSupplement() {
-        return featureCatalogueSupplement;
-    }
-
-    /**
-     * Set information about the spatial attributes in the application schema for the feature types.
-     *
-     * @deprecated removed from ISO 19115
-     */
-    @Deprecated
-    public synchronized void setFeatureCatalogueSupplement(
-            final SpatialAttributeSupplement newValue) {
-        checkWritePermission();
-        featureCatalogueSupplement = newValue;
     }
 }

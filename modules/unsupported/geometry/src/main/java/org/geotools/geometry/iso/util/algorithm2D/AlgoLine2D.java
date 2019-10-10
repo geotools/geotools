@@ -53,7 +53,6 @@ public class AlgoLine2D {
         return result;
     }
 
-    /** @param maxLength */
     public static ArrayList<Line2D> split(Line2D line, double maxSpacing) {
         ArrayList<Line2D> result = new ArrayList<Line2D>();
         int n = (int) Math.ceil(AlgoLine2D.length(line) / maxSpacing);

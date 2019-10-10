@@ -23,8 +23,6 @@ import java.awt.image.RenderedImage;
 import java.util.Map;
 import javax.media.jai.BorderExtender;
 import javax.media.jai.ImageLayout;
-import javax.media.jai.Interpolation;
-import javax.media.jai.InterpolationNearest;
 import javax.media.jai.JAI;
 import javax.media.jai.OperationDescriptor;
 import javax.media.jai.PlanarImage;
@@ -101,12 +99,6 @@ public abstract class BaseScaleOperationJAI extends OperationJAI {
         //
         // Getting the input parameters we might need
         //
-        int indexOfInterpolationParam;
-        try {
-            indexOfInterpolationParam = parameters.parameters.indexOfParam("interpolation");
-        } catch (IllegalArgumentException e) {
-            indexOfInterpolationParam = -1;
-        }
 
         int indexOfBorderExtenderParam;
         try {
@@ -115,12 +107,6 @@ public abstract class BaseScaleOperationJAI extends OperationJAI {
             indexOfBorderExtenderParam = -1;
         }
 
-        final Interpolation interpolation =
-                (Interpolation)
-                        (indexOfInterpolationParam == -1
-                                ? new InterpolationNearest()
-                                : parameters.parameters.getObjectParameter("interpolation"));
-        ;
         final BorderExtender borderExtender =
                 (BorderExtender)
                         (indexOfBorderExtenderParam != -1

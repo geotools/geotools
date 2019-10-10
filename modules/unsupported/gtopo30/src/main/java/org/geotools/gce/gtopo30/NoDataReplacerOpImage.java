@@ -18,8 +18,7 @@ package org.geotools.gce.gtopo30;
 
 // J2SE dependencies
 
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
 import java.awt.image.ComponentSampleModel;
@@ -132,7 +131,7 @@ public final class NoDataReplacerOpImage extends PointOpImage {
             layout.setColorModel(newCm);
             layout.setSampleModel(newSm);
             return layout;
-        } else ; // do nothing for the moment
+        }
 
         return null;
     }
@@ -158,11 +157,9 @@ public final class NoDataReplacerOpImage extends PointOpImage {
             final PlanarImage[] sources, final WritableRaster dest, final Rectangle destRect) {
         final PlanarImage source = sources[0];
         WritableRectIter iterator = RectIterFactory.createWritable(dest, destRect);
-        if (true) {
-            // TODO: Detect if source and destination rasters are the same. If they are
-            //       the same, we should skip this block. Iteration will then be faster.
-            iterator = TransfertRectIter.create(RectIterFactory.create(source, destRect), iterator);
-        }
+        // TODO: Detect if source and destination rasters are the same. If they are
+        //       the same, we should skip this block. Iteration will then be faster.
+        iterator = TransfertRectIter.create(RectIterFactory.create(source, destRect), iterator);
         formatRect(iterator);
     }
 
@@ -228,7 +225,9 @@ public final class NoDataReplacerOpImage extends PointOpImage {
                     new String[] {"oldNoData", "newNoData", "EPS"}, // Argument names
                     new Class[] {Number.class, Short.class, Double.class}, // Argument classes
                     new Object[] {
-                        new Double(Double.NaN), new Short((short) -9999), new Double(10.0E-6)
+                        Double.valueOf(Double.NaN),
+                        Short.valueOf((short) -9999),
+                        Double.valueOf(10.0E-6)
                     }, // Default values for parameters,
                     null // No restriction on valid parameter values.
                     );
@@ -246,16 +245,6 @@ public final class NoDataReplacerOpImage extends PointOpImage {
         protected boolean validateParameters(
                 final String modeName, final ParameterBlock param, final StringBuffer message) {
             if (!super.validateParameters(modeName, param, message)) {
-                return false;
-            }
-            try {
-                //            	param.
-                //	            final RenderedImage source = (RenderedImage) param.getSource(0);
-                //	            final Number  oldNoData= (Number) param.getObjectParameter(0);
-                //	            final Number  newNoData= (Number) param.getObjectParameter(1);
-                //	            final Double  EPS=  (Double) param.getObjectParameter(1);
-            } catch (Exception e) {
-                message.append(e.getMessage());
                 return false;
             }
             return true;

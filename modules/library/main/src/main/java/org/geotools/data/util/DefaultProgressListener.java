@@ -1,13 +1,27 @@
-/** */
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.data.util;
 
 import java.util.LinkedList;
 import java.util.Queue;
-import org.geotools.util.ProgressListener;
 import org.opengis.util.InternationalString;
 
 /**
- * Default Implementation of {@link ProgressListener} that does retain exceptions.
+ * Default Implementation of {@link org.opengis.util.ProgressListener} that does retain exceptions.
  *
  * <p>We do not put particular attention on the management of canceled, started, completed, this is
  * a default implementation.
@@ -15,9 +29,8 @@ import org.opengis.util.InternationalString;
  * @author Simone Giannecchini, GeoSolutions SAS
  * @since 2.8
  */
-@SuppressWarnings("deprecation")
 public class DefaultProgressListener extends NullProgressListener
-        implements ProgressListener, org.opengis.util.ProgressListener {
+        implements org.opengis.util.ProgressListener {
 
     @Override
     public String toString() {

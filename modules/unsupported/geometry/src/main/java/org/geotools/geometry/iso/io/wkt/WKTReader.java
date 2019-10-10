@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2006  Vivid Solutions
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2006  Vivid Solutions
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -32,6 +32,7 @@ import org.geotools.geometry.iso.primitive.RingImpl;
 import org.geotools.geometry.iso.primitive.SurfaceBoundaryImpl;
 import org.geotools.geometry.iso.primitive.SurfaceImpl;
 import org.geotools.geometry.iso.util.AssertionFailedException;
+import org.geotools.util.SuppressFBWarnings;
 import org.opengis.geometry.Geometry;
 import org.opengis.geometry.PositionFactory;
 import org.opengis.geometry.coordinate.LineString;
@@ -125,9 +126,6 @@ public class WKTReader {
     /**
      * Returns the next array of <code>Coordinate</code>s in the stream.
      *
-     * @param tokenizer tokenizer over a stream of text in Well-known Text format. The next element
-     *     returned by the stream should be L_PAREN (the beginning of "(x1 y1, x2 y2, ..., xn yn)")
-     *     or EMPTY.
      * @return the next array of <code>Coordinate</code>s in the stream, or an empty array if EMPTY
      *     is the next element returned by the stream.
      * @throws IOException if an I/O error occurs
@@ -169,8 +167,6 @@ public class WKTReader {
     /**
      * Parses the next number in the stream. Numbers with exponents are handled.
      *
-     * @param tokenizer tokenizer over a stream of text in Well-known Text format. The next token
-     *     must be a number.
      * @return the next number in the stream
      * @throws ParseException if the next token is not a valid number
      * @throws IOException if an I/O error occurs
@@ -194,8 +190,6 @@ public class WKTReader {
     /**
      * Returns the next EMPTY or L_PAREN in the stream as uppercase text.
      *
-     * @param tokenizer tokenizer over a stream of text in Well-known Text format. The next token
-     *     must be EMPTY or L_PAREN.
      * @return the next EMPTY or L_PAREN in the stream as uppercase text.
      * @throws ParseException if the next token is not EMPTY or L_PAREN
      * @throws IOException if an I/O error occurs
@@ -212,8 +206,6 @@ public class WKTReader {
     /**
      * Returns the next R_PAREN or COMMA in the stream.
      *
-     * @param tokenizer tokenizer over a stream of text in Well-known Text format. The next token
-     *     must be R_PAREN or COMMA.
      * @return the next R_PAREN or COMMA in the stream
      * @throws ParseException if the next token is not R_PAREN or COMMA
      * @throws IOException if an I/O error occurs
@@ -230,8 +222,6 @@ public class WKTReader {
     /**
      * Returns the next R_PAREN in the stream.
      *
-     * @param tokenizer tokenizer over a stream of text in Well-known Text format. The next token
-     *     must be R_PAREN.
      * @return the next R_PAREN in the stream
      * @throws ParseException if the next token is not R_PAREN
      * @throws IOException if an I/O error occurs
@@ -248,8 +238,6 @@ public class WKTReader {
     /**
      * Returns the next word in the stream.
      *
-     * @param tokenizer tokenizer over a stream of text in Well-known Text format. The next token
-     *     must be a word.
      * @return the next word in the stream as uppercase text
      * @throws ParseException if the next token is not a word
      * @throws IOException if an I/O error occurs
@@ -313,8 +301,6 @@ public class WKTReader {
     /**
      * Creates a <code>Geometry</code> using the next token in the stream.
      *
-     * @param tokenizer tokenizer over a stream of text in Well-known Text format. The next tokens
-     *     must form a &lt;Geometry Tagged Text&gt;.
      * @return a <code>Geometry</code> specified by the next token in the stream
      * @throws ParseException if the coordinates used to create a <code>Polygon</code> shell and
      *     holes do not form closed linestrings, or if an unexpected token was encountered
@@ -337,8 +323,6 @@ public class WKTReader {
     /**
      * Creates a <code>Point</code> using the next token in the stream.
      *
-     * @param tokenizer tokenizer over a stream of text in Well-known Text format. The next tokens
-     *     must form a &lt;Point Text&gt;.
      * @return a <code>Point</code> specified by the next token in the stream
      * @throws IOException if an I/O error occurs
      * @throws ParseException if an unexpected token was encountered
@@ -360,8 +344,6 @@ public class WKTReader {
     /**
      * Creates a <code>LineString</code> using the next token in the stream.
      *
-     * @param tokenizer tokenizer over a stream of text in Well-known Text format. The next tokens
-     *     must form a &lt;LineString Text&gt;.
      * @return a <code>LineString</code> specified by the next token in the stream
      * @throws IOException if an I/O error occurs
      * @throws ParseException if an unexpected token was encountered
@@ -373,8 +355,6 @@ public class WKTReader {
     /**
      * Creates a <code>LinearRing</code> using the next token in the stream.
      *
-     * @param tokenizer tokenizer over a stream of text in Well-known Text format. The next tokens
-     *     must form a &lt;LineString Text&gt;.
      * @return a <code>LinearRing</code> specified by the next token in the stream
      * @throws IOException if an I/O error occurs
      * @throws ParseException if the coordinates used to create the <code>LinearRing</code> do not
@@ -389,18 +369,18 @@ public class WKTReader {
     /**
      * Creates a <code>Polygon</code> using the next token in the stream.
      *
-     * @param tokenizer tokenizer over a stream of text in Well-known Text format. The next tokens
-     *     must form a &lt;Polygon Text&gt;.
      * @return a <code>Polygon</code> specified by the next token in the stream
      * @throws ParseException if the coordinates used to create the <code>Polygon</code> shell and
      *     holes do not form closed linestrings, or if an unexpected token was encountered.
      * @throws IOException if an I/O error occurs
      */
+    @SuppressFBWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
     private Surface readPolygonText() throws IOException, ParseException {
 
         String nextToken = getNextEmptyOrOpener();
 
         if (nextToken.equals(EMPTY)) {
+            // Suppressing for now, but this is actually guaranteed to NPE
             return new SurfaceImpl(
                     (SurfaceBoundary)
                             null); // this.primitiveFactory.createSurface((SurfaceBoundary) null);

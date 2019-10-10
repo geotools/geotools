@@ -56,7 +56,7 @@ public abstract class FeatureWrapper {
     /**
      * Attempt to wrap the feature in a FeatureWrapper class.
      *
-     * @param feature The feature to wrap.
+     * @param complexAttribute The feature to wrap.
      * @param clazz The class you want the feature to be wrapped as. (This will be the type that is
      *     returned).
      * @return An object of T which is the wrapped feature.
@@ -67,8 +67,8 @@ public abstract class FeatureWrapper {
             // Create a new instance of the class:
             T wrapper;
             try {
-                wrapper = clazz.newInstance();
-            } catch (InstantiationException e) {
+                wrapper = clazz.getDeclaredConstructor().newInstance();
+            } catch (Exception e) {
                 throw new InvalidClassException(
                         String.format("Unable instantiate class of type '%s'.", clazz));
             }

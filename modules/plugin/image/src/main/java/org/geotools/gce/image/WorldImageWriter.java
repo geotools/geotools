@@ -96,7 +96,7 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter
         // we have to separate the handling of a file from the handling of an
         // output stream due to the fact that the latter requires no world file.
         if (this.destination instanceof String) {
-            destination = new File((String) destination);
+            this.destination = new File((String) destination);
         } else if (this.destination instanceof URL) {
             final URL url = ((URL) destination);
             if (url.getProtocol().equalsIgnoreCase("file")) {
@@ -106,7 +106,7 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter
                     path = "//" + auth + path;
                 }
 
-                destination = new File(path);
+                this.destination = new File(path);
             } else {
                 throw new RuntimeException(
                         "WorldImageWriter::write:It is not possible writing to an URL!");
@@ -142,8 +142,6 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter
      *
      * @param coverage the GridCoverage to write.
      * @param parameters no parameters are accepted. Currently ignored.
-     * @throws IllegalArgumentException DOCUMENT ME!
-     * @throws IOException DOCUMENT ME!
      * @see org.opengis.coverage.grid.GridCoverageWriter#write(org.geotools.gc.GridCoverage,
      *     org.opengis.parameter.GeneralParameterValue[])
      */
@@ -288,7 +286,6 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter
      * @param outstream OutputStream
      * @throws IOException
      * @throws IOException
-     * @throws IllegalArgumentException DOCUMENT ME!
      */
     private static void encode(
             final GridCoverage2D sourceCoverage,

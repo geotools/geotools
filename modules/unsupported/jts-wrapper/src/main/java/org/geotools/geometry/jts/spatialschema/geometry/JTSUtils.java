@@ -25,6 +25,7 @@ import org.locationtech.jts.geom.Coordinate;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.Geometry;
+import org.opengis.geometry.PositionFactory;
 import org.opengis.geometry.aggregate.MultiPrimitive;
 import org.opengis.geometry.coordinate.GeometryFactory;
 import org.opengis.geometry.coordinate.LineString;
@@ -166,17 +167,19 @@ public final class JTSUtils {
             if (d >= 2) {
                 result.y = dp.getOrdinate(1);
                 if (d >= 3) {
-                    result.z = dp.getOrdinate(3);
+                    result.setZ(dp.getOrdinate(3));
                 } else {
-                    result.z = Double.NaN;
+                    result.setZ(Double.NaN);
                 }
             } else {
-                result.y = result.z = Double.NaN;
+                result.y = Double.NaN;
+                result.setZ(Double.NaN);
             }
         } else {
             // I can't imagine a DirectPosition with dimension zero, but it
             // can't hurt to have code to handle that case...
-            result.x = result.y = result.z = Double.NaN;
+            result.x = result.y = Double.NaN;
+            result.setZ(Double.NaN);
         }
     }
 
@@ -193,12 +196,12 @@ public final class JTSUtils {
             org.locationtech.jts.geom.Coordinate c, CoordinateReferenceSystem crs) {
 
         Hints hints = new Hints(Hints.CRS, crs);
-        GeometryFactory gf = GeometryFactoryFinder.getGeometryFactory(hints);
+        PositionFactory pf = GeometryFactoryFinder.getPositionFactory(hints);
 
         double[] vertices;
         if (crs == null) vertices = new double[3];
         else vertices = new double[crs.getCoordinateSystem().getDimension()];
-        DirectPosition result = gf.createDirectPosition(vertices);
+        DirectPosition result = pf.createDirectPosition(vertices);
         coordinateToDirectPosition(c, result);
         return result;
     }
@@ -208,16 +211,7 @@ public final class JTSUtils {
             org.locationtech.jts.geom.Coordinate c, DirectPosition result) {
         // Get the CRS so we can figure out the dimension of the result.
         CoordinateReferenceSystem crs = result.getCoordinateReferenceSystem();
-        int d;
-
-        if (crs != null) {
-            d = crs.getCoordinateSystem().getDimension();
-        } else {
-            // If the result DP has no CRS, then we just assume 2 dimensions.
-            // This could result in IndexOutOfBounds exceptions if the DP has
-            // fewer than 2 coordinates.
-            d = 2;
-        }
+        int d = crs.getCoordinateSystem().getDimension();
         final CoordinateSystem cs = crs.getCoordinateSystem();
 
         if (d >= 1) {
@@ -228,7 +222,7 @@ public final class JTSUtils {
                 result.setOrdinate(yIndex, c.y); // 1
                 if (d >= 3) {
                     int zIndex = GeometryUtils.getDirectedAxisIndex(cs, AxisDirection.UP);
-                    result.setOrdinate(zIndex, c.z); // 2
+                    result.setOrdinate(zIndex, c.getZ()); // 2
                     // If d > 3, then the remaining ordinates of the DP are
                     // (so far) left with their original values.  So we init
                     // them to zero here.

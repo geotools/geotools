@@ -1,7 +1,7 @@
 Mapbox Styles Module
 --------------------
 
-The **gt-mbstyle** module is an unsupported module that provides a parser/encoder to convert between Mapbox Styles and GeoTools style objects. These docs are under active development, along with the module itself.
+The ``gt-mbstyle`` module is an unsupported module that provides a parser/encoder to convert between Mapbox Styles and GeoTools style objects. These docs are under active development, along with the module itself.
 
 .. toctree::
    :maxdepth: 1
@@ -43,7 +43,7 @@ MapBox Types
 
   Color
 
-    Colors are written as JSON strings in a variety of permitted formats: HTML-style hex values, rgb, rgba, hsl, and hsla. Predefined HTML colors names, like yellow and blue, are also permitted.
+    Colors are written as JSON strings in a variety of permitted formats: HTML-style hex values, ``rgb``, ``rgba``, ``hsl``, and ``hsla``. Predefined HTML colors names, like ``yellow`` and ``blue``, are also permitted.
 
       ::
 
@@ -57,9 +57,9 @@ MapBox Types
           "line-color": "yellow"
         }
 
-    Especially of note is the support for hsl, which can be easier to reason about than rgb().
+    Especially of note is the support for ``hsl``, which can be easier to reason about than ``rgb()``.
 
-  Enum
+  ``Enum``
 
     One of a fixed list of string values. Use quotes around values.
 
@@ -69,7 +69,7 @@ MapBox Types
         "text-transform": "uppercase"
       }
 
-  String
+  ``String``
 
     A string is basically just text. In Mapbox styles, you're going to put it in quotes. Strings can be anything, though pay attention to the case of text-field - it actually will refer to features, which you refer to by putting them in curly braces, as seen in the example below.
 
@@ -79,7 +79,7 @@ MapBox Types
         "text-field": "{MY_FIELD}"
       }
 
-  Boolean
+  ``Boolean``
 
     Boolean means yes or no, so it accepts the values true or false.
 
@@ -89,7 +89,7 @@ MapBox Types
         "fill-enabled": true
       }
 
-  Number
+  ``Number``
 
     A number value, often an integer or floating point (decimal number). Written without quotes.
 
@@ -99,7 +99,7 @@ MapBox Types
         "text-size": 24
       }
 
-  Array
+  ``Array``
 
     Arrays are comma-separated lists of one or more numbers in a specific order. For example, they're used in line dash arrays, in which the numbers specify intervals of line, break, and line again.
 
@@ -109,8 +109,122 @@ MapBox Types
         "line-dasharray": [2, 4]
       }
 
+Expressions
+^^^^^^^^^^^
+
+The value for any layout property, paint property, or filter may be specified as an expression. An expression defines a formula for computing the value of the property using the operators described below. The set of expression operators provided by Mapbox GL includes:
+
+- Mathematical operators for performing arithmetic and other operations on numeric values
+- Logical operators for manipulating boolean values and making conditional decisions
+- String operators for manipulating strings
+- Data operators, providing access to the properties of source features
+- Camera operators, providing access to the parameters defining the current map view
+
+Expressions are represented as JSON arrays. The first element of an expression array is a string naming the expression operator, e.g. ``"*"`` or ``"case"``. Subsequent elements (if any) are the arguments to the expression. Each argument is either a literal value (a string, number, boolean, or null), or another expression array.
+
+    [expression_name, argument_0, argument_1, ...]
+
+``Data expressions``
+
+A *data expression* is any expression that access feature data -- that is, any expression that uses one of the data operators: ``get``, ``has``, ``id``, ``geometry-type``, ``properties``, or ``feature-state``. Data expressions allow a feature's properties or state to determine its appearance. They can be used to differentiate features within the same layer and to create data visualizations.
+
+::
+
+    {
+        "circle-color": [
+            "rgb",
+            // red is higher when feature.properties.temperature is higher
+            ["get", "temperature"],
+            // green is always zero
+            0,
+            // blue is higher when feature.properties.temperature is lower
+            ["-", 100, ["get", "temperature"]]
+        ]
+    }
+
+This example uses the ``get`` operator to obtain the temperature value of each feature. That value is used to compute arguments to the ``rgb`` operator, defining a color in terms of its red, green, and blue components.
+
+Data expressions are allowed as the value of the ``filter`` property, and as values for most paint and layout properties. However, some paint and layout properties do not yet support data expressions. The level of support is indicated by the "data-driven styling" row of the "SDK Support" table for each property. Data expressions with the ``feature-state`` operator are allowed only on paint properties.
+
+``Camera expressions``
+
+A *camera expression* is any expression that uses the ``zoom operator``. Such expressions allow the appearance of a layer to change with the map's zoom level. Camera expressions can be used to create the appearance of depth and to control data density.
+
+::
+
+    {
+        "circle-radius": [
+            "interpolate", ["linear"], ["zoom"],
+            // zoom is 5 (or less) -> circle radius will be 1px
+            5, 1,
+            // zoom is 10 (or greater) -> circle radius will be 5px
+            10, 5
+        ]
+    }
+
+This example uses the ``interpolate`` operator to define a linear relationship between zoom level and circle size using a set of input-output pairs. In this case, the expression indicates that the circle radius should be 1 pixel when the zoom level is 5 or below, and 5 pixels when the zoom is 10 or above. In between, the radius will be linearly interpolated between 1 and 5 pixels
+
+Camera expressions are allowed anywhere an expression may be used. However, when a camera expression used as the value of a layout or paint property, it must be in one of the following forms::
+
+    [ "interpolate", interpolation, ["zoom"], ... ]
+
+Or::
+
+    [ "step", ["zoom"], ... ]
+
+Or::
+
+    [
+        "let",
+        ... variable bindings...,
+        [ "interpolate", interpolation, ["zoom"], ... ]
+    ]
+
+Or::
+
+    [
+        "let",
+        ... variable bindings...,
+        [ "step", ["zoom"], ... ]
+    ]
+
+That is, in layout or paint properties, ``["zoom"]`` may appear only as the input to an outer ``interpolate`` or ``step`` expression, or such an expression within a ``let`` expression.
+
+There is an important difference between layout and paint properties in the timing of camera expression evaluation. Paint property camera expressions are re-evaluated whenever the zoom level changes, even fractionally. For example, a paint property camera expression will be re-evaluated continuously as the map moves between zoom levels 4.1 and 4.6. On the other hand, a layout property camera expression is evaluated only at integer zoom levels. It will not be re-evaluated as the zoom changes from 4.1 to 4.6 -- only if it goes above 5 or below 4.
+
+``Composition``
+
+A single expression may use a mix of data operators, camera operators, and other operators. Such composite expressions allows a layer's appearance to be determined by a combination of the zoom level and individual feature properties.
+
+::
+
+    {
+        "circle-radius": [
+            "interpolate", ["linear"], ["zoom"],
+            // when zoom is 0, set each feature's circle radius to the value of its "rating" property
+            0, ["get", "rating"],
+            // when zoom is 10, set each feature's circle radius to four times the value of its "rating" property
+            10, ["*", 4, ["get", "rating"]]
+        ]
+    }
+
+An expression that uses both data and camera operators is considered both a data expression and a camera expression, and must adhere to the restrictions described above for both.
+
+``Type system``
+
+The input arguments to expressions, and their result values, use the same set of types as the rest of the style specification: boolean, string, number, color, and arrays of these types. Furthermore, expressions are type safe: each use of an expression has a known result type and required argument types, and the SDKs verify that the result type of an expression is appropriate for the context in which it is used. For example, the result type of an expression in the ``filter`` property must be boolean, and the arguments to the ``+`` operator must be numbers.
+
+When working with feature data, the type of a feature property value is typically not known ahead of time by the SDK. In order to preserve type safety, when evaluating a data expression, the SDK will check that the property value is appropriate for the context. For example, if you use the expression ``["get", "feature-color"]`` for the ``circle-color`` property, the SDK will verify that the ``feature-color`` value of each feature is a string identifying a valid color. If this check fails, an error will be indicated in an SDK-specific way (typically a log message), and the default value for the property will be used instead.
+
+In most cases, this verification will occur automatically wherever it is needed. However, in certain situations, the SDK may be unable to automatically determine the expected result type of a data expression from surrounding context. For example, it is not clear whether the expression ``["<", ["get", "a"], ["get", "b"]]`` is attempting to compare strings or numbers. In situations like this, you can use one of the type assertion expression operators to indicate the expected type of a data expression: ``["<", ["number", ["get", "a"]], ["number", ["get", "b"]]]``. A type assertion checks that the feature data actually matches the expected type of the data expression. If this check fails, it produces an error and causes the whole expression to fall back to the default value for the property being defined. The assertion operators are ``array``, ``boolean``, ``number``, and ``string``.
+
+Expressions perform only one kind of implicit type conversion: a data expression used in a context where a color is expected will convert a string representation of a color to a color value. In all other cases, if you want to convert between types, you must use one of the type conversion expression operators: ``to-boolean``, ``to-number``, ``to-string``, or ``to-color``. For example, if you have a feature property that stores numeric values in string format, and you want to use those values as numbers rather than strings, you can use an expression such as ``["to-number", ["get", "property-name"]]``.
+
 Function
 ^^^^^^^^
+
+.. note:: As of GeoTools 20.0 / MapBox 0.41.0, functions are deprecated. Use expressions instead.
+
 The value for any layout or paint property may be specified as a function. Functions allow you to make the appearance of a map feature change with the current zoom level and/or the feature's properties.
 
   stops
@@ -162,25 +276,25 @@ The value for any layout or paint property may be specified as a function. Funct
 
       If no default is provided, the style property's default is used in these circumstances.
 
-    colorSpace
+    ``colorSpace``
 
       *Optional enum. One of rgb, lab, hcl*
 
-        The color space in which colors interpolated. Interpolating colors in perceptual color spaces like LAB and HCL tend to produce color ramps that look more consistent and produce colors that can be differentiated more easily than those interpolated in RGB space.
+        The color space in which colors interpolated. Interpolating colors in perceptual color spaces like ``LAB`` and ``HCL`` tend to produce color ramps that look more consistent and produce colors that can be differentiated more easily than those interpolated in ``RGB`` space.
 
       *rgb*
 
-        Use the RGB color space to interpolate color values
+        Use the ``RGB`` color space to interpolate color values
 
       *lab*
 
-        Use the LAB color space to interpolate color values.
+        Use the ``LAB`` color space to interpolate color values.
 
       *hcl*
 
-        Use the HCL color space to interpolate color values, interpolating the Hue, Chroma, and Luminance channels individually.
+        Use the ``HCL`` color space to interpolate color values, interpolating the ``Hue``, ``Chroma``, and ``Luminance`` channels individually.
 
-    **Zoom Functions** allow the appearance of a map feature to change with map’s zoom level. Zoom functions can be used to create the illusion of depth and control data density. Each stop is an array with two elements: the first is a zoom level and the second is a function output value.
+    ``Zoom Functions`` allow the appearance of a map feature to change with map’s zoom level. Zoom functions can be used to create the illusion of depth and control data density. Each stop is an array with two elements: the first is a zoom level and the second is a function output value.
 
     ::
 
@@ -193,11 +307,11 @@ The value for any layout or paint property may be specified as a function. Funct
         }
       }
 
-    The rendered values of *color*, *number*, and *array* properties are intepolated between stops. *Enum*, *boolean*, and *string* property values cannot be intepolated, so their rendered values only change at the specified stops.
+    The rendered values of *color*, *number*, and *array* properties are interpolated between stops. *Enum*, *boolean*, and *string* property values cannot be interpolated, so their rendered values only change at the specified stops.
 
     There is an important difference between the way that zoom functions render for layout and paint properties. Paint properties are continuously re-evaluated whenever the zoom level changes, even fractionally. The rendered value of a paint property will change, for example, as the map moves between zoom levels 4.1 and 4.6. Layout properties, on the other hand, are evaluated only once for each integer zoom level. To continue the prior example: the rendering of a layout property will not change between zoom levels 4.1 and 4.6, no matter what stops are specified; but at zoom level 5, the function will be re-evaluated according to the function, and the property's rendered value will change. (You can include fractional zoom levels in a layout property zoom function, and it will affect the generated values; but, still, the rendering will only change at integer zoom levels.)
 
-    **Property functions** allow the appearance of a map feature to change with its properties. Property functions can be used to visually differentate types of features within the same layer or create data visualizations. Each stop is an array with two elements, the first is a property input value and the second is a function output value. Note that support for property functions is not available across all properties and platforms at this time.
+    ``Property functions`` allow the appearance of a map feature to change with its properties. Property functions can be used to visually differentiate types of features within the same layer or create data visualizations. Each stop is an array with two elements, the first is a property input value and the second is a function output value. Note that support for property functions is not available across all properties and platforms at this time.
 
     ::
 
@@ -211,7 +325,7 @@ The value for any layout or paint property may be specified as a function. Funct
         }
       }
 
-    **Zoom-and-property functions** allow the appearance of a map feature to change with both its properties and zoom. Each stop is an array with two elements, the first is an object with a property input value and a zoom, and the second is a function output value. Note that support for property functions is not yet complete.
+    ``Zoom-and-property functions`` allow the appearance of a map feature to change with both its properties and zoom. Each stop is an array with two elements, the first is an object with a property input value and a zoom, and the second is a function output value. Note that support for property functions is not yet complete.
 
     ::
 
@@ -232,13 +346,13 @@ The value for any layout or paint property may be specified as a function. Funct
 
   A filter selects specific features from a layer. A filter is an array of one of the following forms:
 
-    **Existential Filters**
+    ``Existential Filters``
 
       ["has", *key*]   *feature[key]* exists
 
       ["!has", *key*] *feature[key]* does not exist
 
-    **Comparison Filters**
+    ``Comparison Filters``
 
       ["==", *key, value*] equality: *feature[key] = value*
 
@@ -252,13 +366,13 @@ The value for any layout or paint property may be specified as a function. Funct
 
       ["<=", *key, value*] less than or equal: *feature[key] ≤ value*
 
-    **Set Membership Filters**
+    ``Set Membership Filters``
 
       ["in", *key, v0, ..., vn*] set inclusion: *feature[key] ∈ {v0, ..., vn}*
 
       ["!in", *key, v0, ..., vn*] set exclusion: *feature[key] ∉ {v0, ..., vn}*
 
-    **Combining Filters**
+    ``Combining Filters``
 
       ["all", *f0, ..., fn*] logical AND: *f0 ∧ ... ∧ fn*
 

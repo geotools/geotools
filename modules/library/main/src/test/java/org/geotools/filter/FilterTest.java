@@ -106,11 +106,7 @@ public class FilterTest extends TestCase {
     private Calendar calTime;
     private Calendar calDate;
 
-    /**
-     * Constructor with test name.
-     *
-     * @param testName DOCUMENT ME!
-     */
+    /** Constructor with test name. */
     public FilterTest(String testName) {
         super(testName);
 
@@ -119,11 +115,7 @@ public class FilterTest extends TestCase {
         // LOGGER.getLoggerRepository().setThreshold(Level.INFO);
     }
 
-    /**
-     * Main for test runner.
-     *
-     * @param args DOCUMENT ME!
-     */
+    /** Main for test runner. */
     public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
     }
@@ -186,14 +178,14 @@ public class FilterTest extends TestCase {
         Object[] attributes = new Object[17];
         GeometryFactory gf = new GeometryFactory(new PrecisionModel());
         attributes[0] = gf.createLineString(coords);
-        attributes[1] = new Boolean(true);
-        attributes[2] = new Character('t');
-        attributes[3] = new Byte("10");
-        attributes[4] = new Short("101");
-        attributes[5] = new Integer(1002);
-        attributes[6] = new Long(10003);
-        attributes[7] = new Float(10000.4);
-        attributes[8] = new Double(100000.5);
+        attributes[1] = Boolean.valueOf(true);
+        attributes[2] = Character.valueOf('t');
+        attributes[3] = Byte.valueOf("10");
+        attributes[4] = Short.valueOf("101");
+        attributes[5] = Integer.valueOf(1002);
+        attributes[6] = Long.valueOf(10003);
+        attributes[7] = Float.valueOf(10000.4f);
+        attributes[8] = Double.valueOf(100000.5);
         attributes[9] = "test string data";
         attributes[10] = "cow $10";
 
@@ -335,11 +327,6 @@ public class FilterTest extends TestCase {
     /**
      * Helper class for the integer compare operators.
      *
-     * @param testAttribute DOCUMENT ME!
-     * @param filterType DOCUMENT ME!
-     * @param test1 DOCUMENT ME!
-     * @param test2 DOCUMENT ME!
-     * @param test3 DOCUMENT ME!
      * @throws IllegalFilterException If the constructed filter is not valid.
      */
     public void compareNumberRunner(
@@ -349,21 +336,21 @@ public class FilterTest extends TestCase {
             boolean test2,
             boolean test3)
             throws IllegalFilterException {
-        Literal testLiteral = new LiteralExpressionImpl(new Integer(1001));
+        Literal testLiteral = new LiteralExpressionImpl(Integer.valueOf(1001));
         org.opengis.filter.Filter filter = compare(filterType, testAttribute, testLiteral);
 
         // LOGGER.finer( filter.toString());
         // LOGGER.finer( "contains feature: " + filter.contains(testFeature));
         assertEquals(filter.evaluate(testFeature), test1);
 
-        testLiteral = new LiteralExpressionImpl(new Integer(1002));
+        testLiteral = new LiteralExpressionImpl(Integer.valueOf(1002));
         filter = compare(filterType, testAttribute, testLiteral);
 
         // LOGGER.finer( filter.toString());
         // LOGGER.finer( "contains feature: " + filter.contains(testFeature));
         assertEquals(filter.evaluate(testFeature), test2);
 
-        testLiteral = new LiteralExpressionImpl(new Integer(1003));
+        testLiteral = new LiteralExpressionImpl(Integer.valueOf(1003));
         filter = compare(filterType, testAttribute, testLiteral);
 
         // LOGGER.finer( filter.toString());
@@ -407,21 +394,21 @@ public class FilterTest extends TestCase {
             boolean test2,
             boolean test3)
             throws IllegalFilterException {
-        Literal testLiteral = new LiteralExpressionImpl(new Double(1001.0));
+        Literal testLiteral = new LiteralExpressionImpl(Double.valueOf(1001.0));
         org.opengis.filter.Filter filter = compare(filterType, testAttribute, testLiteral);
 
         // LOGGER.finer( filter.toString());
         // LOGGER.finer( "contains feature: " + filter.contains(testFeature));
         assertEquals(filter.evaluate(testFeature), test1);
 
-        testLiteral = new LiteralExpressionImpl(new Double(1002.0));
+        testLiteral = new LiteralExpressionImpl(Double.valueOf(1002.0));
         filter = compare(filterType, testAttribute, testLiteral);
 
         // LOGGER.finer( filter.toString());
         // LOGGER.finer( "contains feature: " + filter.contains(testFeature));
         assertEquals(filter.evaluate(testFeature), test2);
 
-        testLiteral = new LiteralExpressionImpl(new Double(1003.0));
+        testLiteral = new LiteralExpressionImpl(Double.valueOf(1003.0));
         filter = compare(filterType, testAttribute, testLiteral);
 
         // LOGGER.finer( filter.toString());
@@ -432,11 +419,6 @@ public class FilterTest extends TestCase {
     /**
      * Helper class for the integer compare operators.
      *
-     * @param testAttribute DOCUMENT ME!
-     * @param filterType DOCUMENT ME!
-     * @param test1 DOCUMENT ME!
-     * @param test2 DOCUMENT ME!
-     * @param test3 DOCUMENT ME!
      * @throws IllegalFilterException If the constructed filter is not valid.
      */
     public void compareSqlDateRunner(
@@ -506,11 +488,6 @@ public class FilterTest extends TestCase {
     /**
      * Helper class for the integer compare operators.
      *
-     * @param testAttribute DOCUMENT ME!
-     * @param filterType DOCUMENT ME!
-     * @param test1 DOCUMENT ME!
-     * @param test2 DOCUMENT ME!
-     * @param test3 DOCUMENT ME!
      * @throws IllegalFilterException If the constructed filter is not valid.
      */
     public void compareSqlTimeRunner(
@@ -1161,7 +1138,7 @@ public class FilterTest extends TestCase {
         LiteralExpressionImpl literal;
         literal = new LiteralExpressionImpl(1.0D);
         assertEquals(ExpressionType.LITERAL_DOUBLE, Filters.getExpressionType(literal));
-        assertEquals(new Double(1.0D), literal.evaluate((Feature) null));
+        assertEquals(Double.valueOf(1.0D), literal.evaluate((Feature) null));
 
         GeometryFactory gf = new GeometryFactory();
         literal = new LiteralExpressionImpl(gf.createPoint(new Coordinate(0, 0)));
@@ -1171,11 +1148,11 @@ public class FilterTest extends TestCase {
 
         literal = new LiteralExpressionImpl(1);
         assertEquals(ExpressionType.LITERAL_INTEGER, Filters.getExpressionType(literal));
-        assertEquals(new Integer(1), literal.evaluate((Feature) null));
+        assertEquals(Integer.valueOf(1), literal.evaluate((Feature) null));
 
         literal = new LiteralExpressionImpl(1L);
         assertEquals(ExpressionType.LITERAL_LONG, Filters.getExpressionType(literal));
-        assertEquals(new Long(1), literal.evaluate((Feature) null));
+        assertEquals(Long.valueOf(1), literal.evaluate((Feature) null));
 
         literal = new LiteralExpressionImpl("string value");
         assertEquals(ExpressionType.LITERAL_STRING, Filters.getExpressionType(literal));

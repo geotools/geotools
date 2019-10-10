@@ -36,10 +36,8 @@ public class Walk extends ArrayList implements NodeSequence {
 
     private List m_edges;
 
-    // TODO: DOCUMENT ME!
     public Walk() {}
 
-    // TODO: DOCUMENT ME!
     public Walk(Collection nodes) {
         super(nodes);
     }
@@ -78,18 +76,15 @@ public class Walk extends ArrayList implements NodeSequence {
         return (super.add(node));
     }
 
-    // TODO DOCUMENT ME!
     public void add(int index, Object element) {
         super.add(index, element);
         m_edges = null;
     }
 
-    // TODO DOCUMENT ME!
     public boolean add(Object o) {
         return (add((Node) o));
     }
 
-    // TODO DOCUMENT ME!
     public boolean addAll(Collection c) {
         m_edges = null;
         return (super.addAll(c));
@@ -253,7 +248,6 @@ public class Walk extends ArrayList implements NodeSequence {
         });
     }
 
-    // TODO: DOCUMENT ME!!!
     public Path duplicate() {
         return (new Path(this));
     }

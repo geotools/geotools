@@ -132,7 +132,6 @@ public class XMLSAXHandler extends DefaultHandler {
      * parser to resolve relative uri's.
      *
      * @param intendedDocument
-     * @param hints DOCUMENT ME!
      */
     public XMLSAXHandler(URI intendedDocument, Map hints) {
         instanceDocument = intendedDocument;

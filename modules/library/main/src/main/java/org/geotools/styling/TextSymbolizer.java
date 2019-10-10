@@ -334,13 +334,6 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer, Symbol
     List<Font> fonts();
 
     /**
-     * Returns a device independent Font object that is to be used to render the label.
-     *
-     * @deprecated use fonts()
-     */
-    Font[] getFonts();
-
-    /**
      * Initial Font to use when rendering this symbolizer. For alternatives see {@link #fonts()}.
      *
      * @return Initial Font used to render label, or null if unavailable.
@@ -356,13 +349,6 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer, Symbol
     public void setFont(org.opengis.style.Font font);
 
     /**
-     * Sets a list of device independent Font objects to be used to render the label.
-     *
-     * @deprecated use fonts() to directly modify list of fonts in place
-     */
-    void setFonts(Font[] fonts);
-
-    /**
      * A LabelPlacement specifies how a text element should be rendered relative to its geometric
      * point or line.
      */
@@ -373,22 +359,6 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer, Symbol
      * point or line.
      */
     void setLabelPlacement(org.opengis.style.LabelPlacement labelPlacement);
-
-    /**
-     * A LabelPlacement specifies how a text element should be rendered relative to its geometric
-     * point or line.
-     *
-     * @deprecated Please use setLabelPlacement
-     */
-    void setPlacement(LabelPlacement labelPlacement);
-
-    /**
-     * A LabelPlacement specifies how a text element should be rendered relative to its geometric
-     * point or line.
-     *
-     * @deprecated Please use getLabelPlacement()
-     */
-    LabelPlacement getPlacement();
 
     /**
      * A halo fills an extended area outside the glyphs of a rendered text label to make the label
@@ -421,21 +391,6 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer, Symbol
      * evaluates to a number (ie. Integer, Long, Double...) Larger = more likely to be rendered
      */
     Expression getPriority();
-
-    /**
-     * Adds a parameter value to the options map
-     *
-     * @deprecated Please use getOptions().put( key, value )
-     */
-    void addToOptions(String key, String value);
-
-    /**
-     * Find the value of a key in the map (may return null)
-     *
-     * @param key
-     * @deprecated Please use getOptions.get( key )
-     */
-    String getOption(String key);
 
     /**
      * return the map of option

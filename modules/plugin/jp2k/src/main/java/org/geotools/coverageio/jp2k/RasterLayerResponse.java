@@ -332,9 +332,6 @@ class RasterLayerResponse {
      * used for instantiating an Image Reader for a read operation,
      *
      * @param request a {@link RasterLayerRequest} originating this response.
-     * @param coverageFactory a {@code GridCoverageFactory} to produce a {@code GridCoverage} when
-     *     calling the {@link #compute()} method.
-     * @param readerSpi the Image Reader Service provider interface.
      */
     public RasterLayerResponse(
             final RasterLayerRequest request, final RasterManager rasterManager) {
@@ -383,11 +380,6 @@ class RasterLayerResponse {
      * This method creates the GridCoverage2D from the underlying file given a specified envelope,
      * and a requested dimension.
      *
-     * @param iUseJAI specify if the underlying read process should leverage on a JAI ImageRead
-     *     operation or a simple direct call to the {@code read} method of a proper {@code
-     *     ImageReader}.
-     * @param overviewPolicy the overview policy which need to be adopted
-     * @return a {@code GridCoverage}
      * @throws java.io.IOException
      */
     private synchronized void processRequest() throws IOException {
@@ -594,8 +586,6 @@ class RasterLayerResponse {
      *     {@link Hints#VALUE_OVERVIEW_POLICY_SPEED}. It specifies the policy to compute the
      *     overviews level upon request.
      * @param readParams an instance of {@link ImageReadParam} for setting the subsampling factors.
-     * @param requestedEnvelope the {@link GeneralEnvelope} we are requesting.
-     * @param requestedDim the requested dimensions.
      * @return the index of the raster to read in the underlying data source.
      * @throws IOException
      * @throws TransformException

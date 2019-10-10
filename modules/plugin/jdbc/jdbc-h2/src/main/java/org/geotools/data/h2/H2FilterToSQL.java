@@ -19,11 +19,9 @@ package org.geotools.data.h2;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Logger;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.jdbc.SQLDialect;
-import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LinearRing;
@@ -46,7 +44,6 @@ import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
 
 public class H2FilterToSQL extends FilterToSQL {
-    private static final Logger LOGGER = Logging.getLogger(H2FilterToSQL.class);
 
     @Override
     protected FilterCapabilities createFilterCapabilities() {

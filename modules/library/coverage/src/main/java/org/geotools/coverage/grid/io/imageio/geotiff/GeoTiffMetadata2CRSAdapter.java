@@ -1151,7 +1151,6 @@ public final class GeoTiffMetadata2CRSAdapter {
      *
      * @param name
      * @param metadata to use fo building this {@link ParameterValueGroup}.
-     * @param coordTrans a {@link ParameterValueGroup} that can be used to trigger this projection.
      * @return
      * @throws GeoTiffException
      */

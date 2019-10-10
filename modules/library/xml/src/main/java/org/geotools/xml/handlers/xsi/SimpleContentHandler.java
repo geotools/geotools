@@ -34,6 +34,7 @@ public class SimpleContentHandler extends XSIElementHandler {
     private Object child;
 
     /** @see java.lang.Object#hashCode() */
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return LOCALNAME.hashCode() * ((child == null) ? 1 : child.hashCode());
     }
@@ -88,11 +89,7 @@ public class SimpleContentHandler extends XSIElementHandler {
         return LOCALNAME;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return the Child element
-     */
+    /** @return the Child element */
     public Object getChild() {
         return child;
     }

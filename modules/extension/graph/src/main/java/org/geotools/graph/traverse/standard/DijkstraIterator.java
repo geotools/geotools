@@ -19,6 +19,7 @@ package org.geotools.graph.traverse.standard;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.PriorityQueue;
 import org.geotools.graph.structure.DirectedGraphable;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
@@ -27,20 +28,19 @@ import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.structure.Node;
 import org.geotools.graph.traverse.GraphTraversal;
 import org.geotools.graph.traverse.basic.SourceGraphIterator;
-import org.geotools.graph.util.PriorityQueue;
 
 /**
  * Iterates over the nodes of a graph in pattern using <B>Dijkstra's Shortest Path Algorithm</B>. A
  * Dijkstra iteration returns nodes in an order of increasing cost relative to a specified node (the
  * source node of the iteration).<br>
  * <br>
- * In a Dijsktra iteration, a <B>weight</B> is associated with each edge and a <B>cost</B> with each
+ * In a Dijkstra iteration, a <B>weight</B> is associated with each edge and a <B>cost</B> with each
  * node. The iteration operates by maintaining two sets of nodes. The first the set of nodes whose
  * final cost is known, and the second is the set of nodes whose final cost is unknown. Initially,
- * every node except for the source node has a cost of infinity, and resides in the unkown set. The
+ * every node except for the source node has a cost of infinity, and resides in the unknown set. The
  * source node has a cost of zero, and is is a member of the known set.<br>
  * <br>
- * The iteration operatates as follows:<br>
+ * The iteration operates as follows:<br>
  *
  * <PRE>
  *   sn = source node of iteration
@@ -78,6 +78,7 @@ public class DijkstraIterator extends SourceGraphIterator {
     /** compares two internal nodes used by the iteration by comparing costs * */
     private static Comparator<DijkstraNode> comparator =
             new Comparator<DijkstraNode>() {
+                @Override
                 public int compare(DijkstraNode n1, DijkstraNode n2) {
                     return (n1.cost < n2.cost ? -1 : n1.cost > n2.cost ? 1 : 0);
                 }
@@ -90,13 +91,13 @@ public class DijkstraIterator extends SourceGraphIterator {
     protected NodeWeighter nweighter;
 
     /** priority queue to manage active nodes * */
-    protected PriorityQueue queue;
+    protected PriorityQueue<DijkstraNode> queue;
 
-    /** map of graph node to internal dijkstra node * */
+    /** map of graph node to internal Dijkstra node * */
     protected HashMap<Graphable, DijkstraNode> nodemap;
 
     /**
-     * Constructs a new Dijkstra iterator which uses the specided EdgeWeighter.
+     * Constructs a new Dijkstra iterator which uses the specified EdgeWeighter.
      *
      * @param weighter Calculates weights for edges in the graph being iterated over.
      */
@@ -105,7 +106,7 @@ public class DijkstraIterator extends SourceGraphIterator {
     }
 
     /**
-     * Constructs a new Dijkstra iterator which uses the specided EdgeWeighter and NodeWeighter
+     * Constructs a new Dijkstra iterator which uses the specified EdgeWeighter and NodeWeighter
      *
      * @param weighter Calculates weights for edges in the graph being iterated over.
      * @param nweighter Calculates weights for nodes in the graph being iterated over.
@@ -120,18 +121,19 @@ public class DijkstraIterator extends SourceGraphIterator {
      *
      * @see org.geotools.graph.traverse.GraphIterator#init(Graph)
      */
+    @Override
     public void init(Graph graph, GraphTraversal traversal) {
         // initialize data structures
-        nodemap = new HashMap<Graphable, DijkstraNode>();
+        nodemap = new HashMap<>();
 
-        queue = new PriorityQueue(comparator);
-        queue.init(graph.getNodes().size());
+        queue = new PriorityQueue(graph.getNodes().size(), comparator);
 
         // place nodes into priority queue
         graph.visitNodes(
                 new GraphVisitor() {
+                    @Override
                     public int visit(Graphable component) {
-                        // create a dijkstra node with infinite cost
+                        // create a Dijkstra node with infinite cost
                         DijkstraNode dn = new DijkstraNode((Node) component, Double.MAX_VALUE);
 
                         // create the mapping
@@ -141,7 +143,7 @@ public class DijkstraIterator extends SourceGraphIterator {
                         if (component == getSource()) dn.cost = 0d;
 
                         // place into priority queue
-                        queue.insert(dn);
+                        queue.add(dn);
 
                         return 0;
                     }
@@ -152,14 +154,15 @@ public class DijkstraIterator extends SourceGraphIterator {
      * Returns the next node in the priority queue. If the next node coming out of the queue has
      * infinite cost, then the node is not adjacent to any nodes in the set of nodes with known
      * costs. This situation will end the traversal every other node will also have infinite cost.
-     * This usally is the result of a disconnected graph.
+     * This usually is the result of a disconnected graph.
      *
      * @see org.geotools.graph.traverse.GraphIterator#next()
      */
+    @Override
     public Graphable next(GraphTraversal traversal) {
         if (queue.isEmpty()) return (null);
 
-        DijkstraNode next = (DijkstraNode) queue.extract();
+        DijkstraNode next = queue.remove();
 
         // check cost of node, if cost == infinity then return null
         // because no node in the visited set ever updated the node
@@ -176,31 +179,24 @@ public class DijkstraIterator extends SourceGraphIterator {
      *
      * @see org.geotools.graph.traverse.GraphIterator#cont(Graphable)
      */
+    @Override
     public void cont(Graphable current, GraphTraversal traversal) {
-        DijkstraNode currdn = (DijkstraNode) nodemap.get(current);
+        DijkstraNode currdn = nodemap.get(current);
 
-        for (Iterator itr = getRelated(current); itr.hasNext(); ) {
+        for (Iterator<? extends Graphable> itr = getRelated(current); itr.hasNext(); ) {
             Node related = (Node) itr.next();
             if (!traversal.isVisited(related)) {
-                DijkstraNode reldn = (DijkstraNode) nodemap.get(related);
+                DijkstraNode reldn = nodemap.get(related);
 
                 // calculate cost from current node to related node
                 double cost = weighter.getWeight(currdn.node.getEdge(related)) + currdn.cost;
 
-                // calculate the cost of going through the node
-                if (nweighter != null) {
-                    double ncost = 0d;
-                    if (currdn.parent != null) {
-                        Edge e1 = currdn.parent.node.getEdge(currdn.node);
-                        Edge e2 = currdn.node.getEdge(related);
-                        ncost = nweighter.getWeight(currdn.node, e1, e2);
-                    }
-                }
                 // if cost less than current cost of related node, update
                 if (cost < reldn.cost) {
+                    queue.remove(reldn);
                     reldn.cost = cost;
                     reldn.parent = currdn;
-                    queue.update(reldn);
+                    queue.add(reldn);
                 }
             }
         }
@@ -211,6 +207,7 @@ public class DijkstraIterator extends SourceGraphIterator {
      *
      * @see org.geotools.graph.traverse.GraphIterator#killBranch(Graphable)
      */
+    @Override
     public void killBranch(Graphable current, GraphTraversal traversal) {
         // do nothing
     }
@@ -222,7 +219,7 @@ public class DijkstraIterator extends SourceGraphIterator {
      * @return The cost associated with the component.
      */
     public double getCost(Graphable component) {
-        return (((DijkstraNode) nodemap.get(component)).cost);
+        return (nodemap.get(component).cost);
     }
 
     /**
@@ -235,7 +232,7 @@ public class DijkstraIterator extends SourceGraphIterator {
      */
     public Graphable getParent(Graphable component) {
         if (component.equals(getSource())) return (null);
-        DijkstraNode dn = (DijkstraNode) nodemap.get(component);
+        DijkstraNode dn = nodemap.get(component);
 
         if (dn == null || dn.parent == null) return (null);
         return (dn.parent.node);
@@ -247,7 +244,7 @@ public class DijkstraIterator extends SourceGraphIterator {
         return (queue);
     }
 
-    protected Iterator getRelated(Graphable current) {
+    protected Iterator<? extends Graphable> getRelated(Graphable current) {
         if (current instanceof DirectedGraphable) {
             return ((DirectedGraphable) current).getOutRelated();
         } else {
@@ -307,7 +304,7 @@ public class DijkstraIterator extends SourceGraphIterator {
         public DijkstraNode parent;
 
         /**
-         * Constructs a new Dijsktra node.
+         * Constructs a new Dijkstra node.
          *
          * @param node Underling node in graph being iterated over.
          * @param cost Initial cost of node.

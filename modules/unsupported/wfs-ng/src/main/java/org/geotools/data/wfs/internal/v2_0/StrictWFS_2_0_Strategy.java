@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import net.opengis.fes20.AbstractQueryExpressionType;
 import net.opengis.ows11.DCPType;
@@ -177,11 +178,20 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
     public boolean supports(ResultType resultType) {
         switch (resultType) {
             case RESULTS:
-            case HITS:
                 return true;
+            case HITS:
             default:
                 return false;
         }
+    }
+
+    @Override
+    /**
+     * Currently the wfs-ng client is unable to handle max features and filters. Setting canLimit to
+     * false is inefficient but gives correct results.
+     */
+    public boolean canLimit() {
+        return false;
     }
 
     @Override
@@ -213,6 +223,7 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
     }
 
     @Override
+    @SuppressWarnings("CollectionIncompatibleType")
     protected Map<String, String> buildGetFeatureParametersForGET(GetFeatureRequest query) {
         Map<String, String> kvp = null;
         if (query.isStoredQuery()) {
@@ -236,10 +247,9 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
             Map<String, String> viewParams = null;
             if (query.getRequestHints() != null) {
                 viewParams =
-                        (Map<String, String>)
-                                query.getRequestHints().get(Hints.VIRTUAL_TABLE_PARAMETERS);
+                        (Map<String, String>) query.getHints().get(Hints.VIRTUAL_TABLE_PARAMETERS);
 
-                config = (StoredQueryConfiguration) query.getRequestHints().get(CONFIG_KEY);
+                config = (StoredQueryConfiguration) query.getHints().get(CONFIG_KEY);
             }
 
             List<ParameterType> params =
@@ -260,6 +270,20 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
             }
         }
 
+        return kvp;
+    }
+
+    @Override
+    protected Map<String, String> buildDescribeFeatureTypeParametersForGET(
+            Map<String, String> kvp, QName typeName) {
+        String prefixedTypeName = getPrefixedTypeName(typeName);
+
+        kvp.put("TYPENAMES", prefixedTypeName);
+
+        if (!XMLConstants.DEFAULT_NS_PREFIX.equals(typeName.getPrefix())) {
+            String nsUri = typeName.getNamespaceURI();
+            kvp.put("NAMESPACES", "xmlns(" + typeName.getPrefix() + "," + nsUri + ")");
+        }
         return kvp;
     }
 
@@ -287,6 +311,7 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
     }
 
     @Override
+    @SuppressWarnings("CollectionIncompatibleType")
     protected EObject createGetFeatureRequestPost(GetFeatureRequest query) throws IOException {
         final QName typeName = query.getTypeName();
         final FeatureTypeInfoImpl featureTypeInfo =
@@ -328,10 +353,9 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 
             if (query.getRequestHints() != null) {
                 viewParams =
-                        (Map<String, String>)
-                                query.getRequestHints().get(Hints.VIRTUAL_TABLE_PARAMETERS);
+                        (Map<String, String>) query.getHints().get(Hints.VIRTUAL_TABLE_PARAMETERS);
 
-                config = (StoredQueryConfiguration) query.getRequestHints().get(CONFIG_KEY);
+                config = (StoredQueryConfiguration) query.getHints().get(CONFIG_KEY);
             }
 
             List<ParameterType> params =

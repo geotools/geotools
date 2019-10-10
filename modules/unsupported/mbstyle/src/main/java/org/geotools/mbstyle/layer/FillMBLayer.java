@@ -63,8 +63,6 @@ public class FillMBLayer extends MBLayer {
 
     private JSONObject paint;
 
-    private JSONObject layout;
-
     private static String TYPE = "fill";
 
     /** Controls the translation reference point. */
@@ -79,7 +77,6 @@ public class FillMBLayer extends MBLayer {
         super(json, new MBObjectParser(FillMBLayer.class));
 
         paint = paint();
-        layout = layout();
     }
 
     @Override
@@ -329,11 +326,6 @@ public class FillMBLayer extends MBLayer {
                         Double.POSITIVE_INFINITY,
                         Arrays.asList(symbolizer),
                         filter.filter());
-
-        // Set legend graphic to null.
-        // How do other style transformers set a null legend? SLD/SE difference - fix
-        // setLegend(null) to empty list.
-        rule.setLegendGraphic(new Graphic[0]);
 
         return Collections.singletonList(
                 sf.featureTypeStyle(

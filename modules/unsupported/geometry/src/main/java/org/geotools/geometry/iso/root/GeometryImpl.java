@@ -237,17 +237,6 @@ public abstract class GeometryImpl implements Geometry, Serializable {
     }
 
     /**
-     * (non-Javadoc)
-     *
-     * @see
-     *     org.opengis.geometry.coordinate.root.Geometry#getDistance(org.opengis.geometry.coordinate.root.Geometry)
-     * @deprecated use distance()
-     */
-    public final double getDistance(Geometry geometry) {
-        return this.distance(geometry);
-    }
-
-    /**
      * Computes the distance between this and another geometry. We have to implement the logic of
      * dealing with multiprimtive geometries separately.
      *
@@ -341,7 +330,7 @@ public abstract class GeometryImpl implements Geometry, Serializable {
             // distance between the two geometries
             if (point1 != null && point2 != null) {
                 // use directposition.distance()
-                return point1.getPosition().distance(point2.getPosition());
+                return point1.getDirectPosition().distance(point2.getDirectPosition());
             } else if (lines1 != null) {
                 if (point2 != null) {
                     // loop through each linesegment and check for the min distance

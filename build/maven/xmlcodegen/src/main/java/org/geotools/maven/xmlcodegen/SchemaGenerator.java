@@ -75,6 +75,7 @@ import org.opengis.feature.type.Schema;
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  *
  */
+@SuppressWarnings("PMD.SystemPrintln")
 public class SchemaGenerator extends AbstractGenerator {
     /**
      * The xsd schema from which gt types will be
@@ -623,7 +624,7 @@ public class SchemaGenerator extends AbstractGenerator {
                                     }
                                 }
                             }
-                            if ( type.getName() == null ) {
+                            if (type == null || type.getName() == null ) {
                             	//TODO: deal with anonymous attribute types
                             	continue;
                             }

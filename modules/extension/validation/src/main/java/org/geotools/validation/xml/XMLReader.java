@@ -54,7 +54,6 @@ public class XMLReader {
      *
      * @param inputSource A features which contains a copy of a valid PlugIn desciption.
      * @return the resulting dto based on the input provided.
-     * @throws ValidationException DOCUMENT ME!
      */
     public static PlugInDTO readPlugIn(Reader inputSource) throws ValidationException {
         PlugInDTO dto = new PlugInDTO();
@@ -118,7 +117,9 @@ public class XMLReader {
                         // error
                     }
 
-                    m.put(adto.getName(), adto);
+                    if (adto != null) {
+                        m.put(adto.getName(), adto);
+                    }
                 }
             }
         } catch (IOException ioe) {
@@ -138,7 +139,6 @@ public class XMLReader {
      * @param inputSource A features which contains a copy of a valid TestSuite desciption.
      * @param plugIns A name of plugin names to valid plugin DTOs
      * @return the resulting dto based on the input provided.
-     * @throws ValidationException DOCUMENT ME!
      */
     public static TestSuiteDTO readTestSuite(String name, Reader inputSource, Map plugIns)
             throws ValidationException {
@@ -206,9 +206,7 @@ public class XMLReader {
      * <p>Helper method used by readTestDTO and readTestSuiteDTO
      *
      * @param elem The head element of a test
-     * @param plugIns DOCUMENT ME!
      * @return a TestDTO representing elem, null if elem is not corretly defined.
-     * @throws ValidationException DOCUMENT ME!
      */
     private static TestDTO loadTestDTO(Element elem, Map plugIns) throws ValidationException {
         TestDTO dto = new TestDTO();
@@ -257,7 +255,7 @@ public class XMLReader {
                     // error
                 }
 
-                if ((adto == null) || !adto.isFinal()) {
+                if ((adto != null) && !adto.isFinal()) {
                     m.put(adto.getName(), adto);
                 }
             }
@@ -326,7 +324,6 @@ public class XMLReader {
      * <p>Loads all the plugins in the directory
      *
      * @param plugInDir
-     * @throws ValidationException DOCUMENT ME!
      */
     public static Map loadPlugIns(File plugInDir) throws ValidationException {
         Map r = null;
@@ -337,12 +334,14 @@ public class XMLReader {
             File[] fileList = plugInDir.listFiles();
             r = new HashMap();
 
-            for (int i = 0; i < fileList.length; i++) {
-                if (fileList[i].canWrite() && fileList[i].isFile()) {
-                    FileReader fr = new FileReader(fileList[i]);
-                    PlugInDTO dto = XMLReader.readPlugIn(fr);
-                    r.put(dto.getName(), dto);
-                    fr.close();
+            if (fileList != null) {
+                for (int i = 0; i < fileList.length; i++) {
+                    if (fileList[i].canWrite() && fileList[i].isFile()) {
+                        FileReader fr = new FileReader(fileList[i]);
+                        PlugInDTO dto = XMLReader.readPlugIn(fr);
+                        r.put(dto.getName(), dto);
+                        fr.close();
+                    }
                 }
             }
         } catch (IOException e) {
@@ -357,7 +356,6 @@ public class XMLReader {
      *
      * @param validationDir
      * @param plugInDTOs Already loaded list of plug-ins to link.
-     * @throws ValidationException DOCUMENT ME!
      */
     public static Map loadValidations(File validationDir, Map plugInDTOs)
             throws ValidationException {
@@ -372,20 +370,22 @@ public class XMLReader {
         File[] fileList = validationDir.listFiles();
         r = new HashMap();
 
-        for (int i = 0; i < fileList.length; i++) {
-            try {
-                if (fileList[i].canWrite() && fileList[i].isFile()) {
-                    FileReader fr = new FileReader(fileList[i]);
-                    try {
-                        TestSuiteDTO dto =
-                                XMLReader.readTestSuite(fileList[i].getName(), fr, plugInDTOs);
-                        r.put(dto.getName(), dto);
-                    } finally {
-                        fr.close();
+        if (fileList != null) {
+            for (int i = 0; i < fileList.length; i++) {
+                try {
+                    if (fileList[i].canWrite() && fileList[i].isFile()) {
+                        FileReader fr = new FileReader(fileList[i]);
+                        try {
+                            TestSuiteDTO dto =
+                                    XMLReader.readTestSuite(fileList[i].getName(), fr, plugInDTOs);
+                            r.put(dto.getName(), dto);
+                        } finally {
+                            fr.close();
+                        }
                     }
+                } catch (IOException open) {
+                    throw new ValidationException("Could not open " + fileList[i].getName(), open);
                 }
-            } catch (IOException open) {
-                throw new ValidationException("Could not open " + fileList[i].getName(), open);
             }
         }
         return r;

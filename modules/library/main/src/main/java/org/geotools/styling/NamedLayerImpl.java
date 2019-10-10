@@ -21,6 +21,7 @@ package org.geotools.styling;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import org.geotools.util.Utilities;
 
 /**
@@ -80,5 +81,10 @@ public class NamedLayerImpl extends StyledLayerImpl implements NamedLayer {
         }
 
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(styles, featureTypeConstraints);
     }
 }

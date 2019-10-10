@@ -50,7 +50,7 @@ public final class Result {
                 + "BUILT("
                 + built
                 + "); NODE_TYPE("
-                + new Integer(nodeType)
+                + Integer.valueOf(nodeType)
                 + ") ]";
     }
 

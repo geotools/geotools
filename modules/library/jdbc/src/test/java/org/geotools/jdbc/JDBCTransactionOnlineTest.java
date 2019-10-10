@@ -36,7 +36,7 @@ public abstract class JDBCTransactionOnlineTest extends JDBCTestSupport {
                 FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
                         dataStore.getFeatureWriterAppend(tname("ft1"), tx)) {
             SimpleFeature feature = writer.next();
-            feature.setAttribute(aname("intProperty"), new Integer(100));
+            feature.setAttribute(aname("intProperty"), Integer.valueOf(100));
             writer.write();
             writer.close();
             tx.commit();
@@ -51,7 +51,7 @@ public abstract class JDBCTransactionOnlineTest extends JDBCTestSupport {
                 FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
                         dataStore.getFeatureWriterAppend(tname("ft1"), tx)) {
             SimpleFeature feature = writer.next();
-            feature.setAttribute(aname("intProperty"), new Integer(100));
+            feature.setAttribute(aname("intProperty"), Integer.valueOf(100));
             writer.write();
             tx.rollback();
         }
@@ -71,8 +71,8 @@ public abstract class JDBCTransactionOnlineTest extends JDBCTestSupport {
             SimpleFeature f1 = w1.next();
             SimpleFeature f2 = w2.next();
 
-            f1.setAttribute(aname("intProperty"), new Integer(100));
-            f2.setAttribute(aname("intProperty"), new Integer(101));
+            f1.setAttribute(aname("intProperty"), Integer.valueOf(100));
+            f2.setAttribute(aname("intProperty"), Integer.valueOf(101));
 
             w1.write();
             w2.write();
@@ -92,7 +92,7 @@ public abstract class JDBCTransactionOnlineTest extends JDBCTestSupport {
         SimpleFeatureStore st = (SimpleFeatureStore) dataStore.getFeatureSource(tname("ft1"));
 
         SimpleFeatureBuilder b = new SimpleFeatureBuilder(st.getSchema());
-        b.set(aname("intProperty"), new Integer(100));
+        b.set(aname("intProperty"), Integer.valueOf(100));
         SimpleFeature f1 = b.buildFeature(null);
         DefaultFeatureCollection features = new DefaultFeatureCollection(null, null);
         features.add(f1);

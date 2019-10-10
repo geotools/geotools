@@ -147,7 +147,7 @@ public interface SimpleFeatureType extends FeatureType {
      * return (AttributeDescriptor) ((List) getProperties()).get(index);
      * </pre>
      *
-     * @param name The name of the descriptor to return.
+     * @param index The index of the descriptor to return.
      * @return The attribute descriptor at the specified index.
      * @throws IndexOutOfBoundsException When the index is out of bounds.
      */

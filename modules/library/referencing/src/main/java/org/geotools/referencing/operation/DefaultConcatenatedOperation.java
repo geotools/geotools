@@ -84,10 +84,7 @@ public class DefaultConcatenatedOperation extends AbstractCoordinateOperation
      */
     public DefaultConcatenatedOperation(
             final Map<String, ?> properties, final CoordinateOperation[] operations) {
-        this(
-                properties,
-                new ArrayList<SingleOperation>(operations != null ? operations.length : 4),
-                operations);
+        this(properties, new ArrayList<>(operations.length), operations);
     }
 
     /**
@@ -105,11 +102,7 @@ public class DefaultConcatenatedOperation extends AbstractCoordinateOperation
             final CoordinateOperation[] operations,
             final MathTransformFactory factory)
             throws FactoryException {
-        this(
-                properties,
-                new ArrayList<SingleOperation>(operations != null ? operations.length : 4),
-                operations,
-                factory);
+        this(properties, new ArrayList<>(operations.length), operations, factory);
     }
 
     /**
@@ -299,7 +292,7 @@ public class DefaultConcatenatedOperation extends AbstractCoordinateOperation
     /**
      * Compare this concatenated operation with the specified object for equality. If {@code
      * compareMetadata} is {@code true}, then all available properties are compared including
-     * {@linkplain #getValidArea valid area} and {@linkplain #getScope scope}.
+     * {@linkplain #getDomainOfValidity() valid area} and {@linkplain #getScope scope}.
      *
      * @param object The object to compare to {@code this}.
      * @param compareMetadata {@code true} for performing a strict comparaison, or {@code false} for
@@ -320,6 +313,7 @@ public class DefaultConcatenatedOperation extends AbstractCoordinateOperation
 
     /** Returns a hash code value for this concatenated operation. */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return operations.hashCode() ^ (int) serialVersionUID;
     }

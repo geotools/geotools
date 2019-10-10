@@ -16,7 +16,6 @@
  */
 package org.geotools.gml2.simple;
 
-import java.text.FieldPosition;
 import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
 import org.geotools.gml.producer.CoordinateFormatter;
 import org.geotools.gml2.GML;
@@ -40,21 +39,6 @@ public class GMLWriter {
     static final QualifiedName COORDINATES = new QualifiedName(GML.NAMESPACE, "coordinates", "gml");
 
     static final QualifiedName POS_LIST = new QualifiedName(GML.NAMESPACE, "posList", "gml");
-
-    /**
-     * The min value at which the decimal notation is used (below it, the computerized scientific
-     * one is used instead)
-     */
-    private static final double DECIMAL_MIN = Math.pow(10, -3);
-
-    /**
-     * The max value at which the decimal notation is used (above it, the computerized scientific
-     * one is used instead)
-     */
-    private static final double DECIMAL_MAX = Math.pow(10, 7);
-
-    /** Used in coordinate formatting */
-    private static final FieldPosition ZERO = new FieldPosition(0);
 
     private final CoordinateFormatter coordFormatter;
 

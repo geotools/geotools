@@ -302,18 +302,18 @@ public class SLDInlineFeatureParser {
             }
             String childName = child.getLocalName();
             if (childName == null) childName = child.getNodeName();
-            if (childName.equalsIgnoreCase("featureMember")) foundFeature++;
-            else if (childName.equalsIgnoreCase("boundedBy")) {
-                // this is okay -- we'll be nice and ignore it.
+            if (childName.equalsIgnoreCase("featureMember")) {
+                foundFeature++;
             } else if (childName.equalsIgnoreCase("FeatureCollection")) {
                 throw new Exception(
                         "SLD - UserLayer, inline feature parser - found a node of type FeatureCollection.  Expected a featureMember - dont support nested collections.");
 
-            } else
+            } else if (!childName.equalsIgnoreCase("boundedBy")) {
                 throw new Exception(
                         "SLD - UserLayer, inline feature parser - found a node of type '"
                                 + child.getLocalName()
                                 + "' and dont understand it.  Expected a featureMember.");
+            }
         }
 
         return true;
@@ -483,11 +483,11 @@ public class SLDInlineFeatureParser {
      */
     private CoordinateReferenceSystem getSRS(int epsg) throws Exception {
         CoordinateReferenceSystem result =
-                (CoordinateReferenceSystem) SRSLookup.get(new Integer(epsg));
+                (CoordinateReferenceSystem) SRSLookup.get(Integer.valueOf(epsg));
         if (result == null) {
             // make and add to hash
             result = CRS.decode("EPSG:" + epsg);
-            SRSLookup.put(new Integer(epsg), result);
+            SRSLookup.put(Integer.valueOf(epsg), result);
         }
         return result;
     }

@@ -17,13 +17,13 @@
 package org.geotools.filter.expression;
 
 import junit.framework.TestCase;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -46,9 +46,9 @@ public class SimpleFeaturePropertyAccessorTest extends TestCase {
         type = (SimpleFeatureType) typeBuilder.buildFeatureType();
 
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
-        builder.add(new Integer(1));
-        builder.add(new Double(2.0));
-        builder.add(new Double(3.0));
+        builder.add(Integer.valueOf(1));
+        builder.add(Double.valueOf(2.0));
+        builder.add(Double.valueOf(3.0));
 
         feature = (SimpleFeature) builder.buildFeature("fid");
         accessor = SimpleFeaturePropertyAccessorFactory.ATTRIBUTE_ACCESS;
@@ -75,12 +75,12 @@ public class SimpleFeaturePropertyAccessorTest extends TestCase {
     }
 
     public void testGet() {
-        assertEquals(new Integer(1), accessor.get(feature, "foo", null));
-        assertEquals(new Integer(1), accessor.get(feature, "sf:foo", null));
-        assertEquals(new Integer(1), accessor.get(feature, "foo[1]", null));
-        assertEquals(new Integer(1), accessor.get(feature, "sf:foo[1]", null));
-        assertEquals(new Double(2.0), accessor.get(feature, "bar", null));
-        assertEquals(new Double(3.0), accessor.get(feature, COMPLEX_PROPERTY, null));
+        assertEquals(Integer.valueOf(1), accessor.get(feature, "foo", null));
+        assertEquals(Integer.valueOf(1), accessor.get(feature, "sf:foo", null));
+        assertEquals(Integer.valueOf(1), accessor.get(feature, "foo[1]", null));
+        assertEquals(Integer.valueOf(1), accessor.get(feature, "sf:foo[1]", null));
+        assertEquals(Double.valueOf(2.0), accessor.get(feature, "bar", null));
+        assertEquals(Double.valueOf(3.0), accessor.get(feature, COMPLEX_PROPERTY, null));
         assertEquals(
                 "fid", SimpleFeaturePropertyAccessorFactory.FID_ACCESS.get(feature, "@id", null));
         assertEquals(
@@ -98,18 +98,18 @@ public class SimpleFeaturePropertyAccessorTest extends TestCase {
 
     public void testSet() {
         try {
-            accessor.set(feature, "foo", new Integer(2), null);
+            accessor.set(feature, "foo", Integer.valueOf(2), null);
         } catch (IllegalAttributeException e) {
             fail();
         }
-        assertEquals(new Integer(2), accessor.get(feature, "foo", null));
+        assertEquals(Integer.valueOf(2), accessor.get(feature, "foo", null));
 
         try {
-            accessor.set(feature, "bar", new Double(1.0), null);
+            accessor.set(feature, "bar", Double.valueOf(1.0), null);
         } catch (IllegalAttributeException e) {
             fail();
         }
-        assertEquals(new Double(1.0), accessor.get(feature, "bar", null));
+        assertEquals(Double.valueOf(1.0), accessor.get(feature, "bar", null));
         try {
             accessor.set(feature, "@id", "fid2", null);
             fail("Should have thrown exception trying to set fid");

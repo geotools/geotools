@@ -17,9 +17,9 @@
 
 package org.geotools.gce.imagemosaic.granulecollector;
 
+import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;
-import java.awt.Color;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
 import java.awt.image.MultiPixelPackedSampleModel;
@@ -82,6 +82,8 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
     protected boolean doInputTransparency;
 
     protected Color inputTransparentColor;
+
+    // boolean forceFootprints = JAIExt.;
 
     public BaseSubmosaicProducer(RasterLayerResponse rasterLayerResponse, boolean dryRun) {
         this.rasterLayerResponse = rasterLayerResponse;
@@ -319,16 +321,19 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
         // ROI
         //
         // we need to add its roi in order to avoid problems with the mosaics sources overlapping
-        final Rectangle bounds = PlanarImage.wrapRenderedImage(granule).getBounds();
-        Geometry mask =
-                JTS.toGeometry(
-                        new Envelope(
-                                bounds.getMinX(),
-                                bounds.getMaxX(),
-                                bounds.getMinY(),
-                                bounds.getMaxY()));
-        ROI imageROI = new ROIGeometry(mask);
-        if (rasterLayerResponse.getFootprintBehavior().handleFootprints()) {
+        ROI imageROI = null;
+        if (rasterLayerResponse.getFootprintBehavior().handleFootprints()
+                || rasterLayerResponse.isHeterogeneousCRS()
+                || !JAIExt.isJAIExtOperation("Mosaic")) {
+            final Rectangle bounds = PlanarImage.wrapRenderedImage(granule).getBounds();
+            Geometry mask =
+                    JTS.toGeometry(
+                            new Envelope(
+                                    bounds.getMinX(),
+                                    bounds.getMaxX(),
+                                    bounds.getMinY(),
+                                    bounds.getMaxY()));
+            imageROI = new ROIGeometry(mask);
 
             // get the real footprint
             final ROI footprint = result.getFootprint();
@@ -339,6 +344,9 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
                     imageROI = imageROI.intersect(footprint);
                 }
             }
+        }
+
+        if (rasterLayerResponse.getFootprintBehavior().handleFootprints()) {
 
             // ARTIFACTS FILTERING
             if (rasterLayerResponse.getDefaultArtifactsFilterThreshold() != Integer.MIN_VALUE

@@ -175,7 +175,7 @@ public class GeneralizationInfosProviderImpl implements GeneralizationInfosProvi
 
             NamedNodeMap attrMap = distanceInfoNode.getAttributes();
 
-            Double distance = new Double(attrMap.getNamedItem(DISTANCE_ATTR).getTextContent());
+            Double distance = Double.valueOf(attrMap.getNamedItem(DISTANCE_ATTR).getTextContent());
             String featureName = attrMap.getNamedItem(FEATURE_NAME_ATTR).getTextContent();
             String geomPropertyName = null;
             if (attrMap.getNamedItem(GEOM_PROPERTY_NAME_ATTR) != null)

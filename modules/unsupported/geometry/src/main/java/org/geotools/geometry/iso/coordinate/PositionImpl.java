@@ -18,6 +18,7 @@ package org.geotools.geometry.iso.coordinate;
 
 import java.io.Serializable;
 import org.geotools.geometry.iso.primitive.PointImpl;
+import org.geotools.util.SuppressFBWarnings;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.coordinate.Position;
 import org.opengis.geometry.primitive.Point;
@@ -58,19 +59,6 @@ public class PositionImpl implements Position, Serializable {
         if (pointRef == null)
             throw new IllegalArgumentException("PointRef not passed"); // $NON-NLS-1$
         this.position = pointRef;
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.opengis.geometry.coordinate.Position#getPosition()
-     */
-    @Deprecated
-    public DirectPosition getPosition() {
-        // ok
-        return (DirectPosition) this.position;
-        // return (this.position instanceof DirectPositionImpl) ? (DirectPositionImpl) this.position
-        // : ((PointImpl) this.position).getPosition();
     }
 
     /*
@@ -122,7 +110,7 @@ public class PositionImpl implements Position, Serializable {
     }
 
     public String toString() {
-        return "[GM_Position: " + this.getPosition() + "]";
+        return "[GM_Position: " + getDirectPosition() + "]";
     }
 
     @Override
@@ -134,6 +122,8 @@ public class PositionImpl implements Position, Serializable {
     }
 
     @Override
+    @SuppressFBWarnings("EQ_CHECK_FOR_OPERAND_NOT_COMPATIBLE_WITH_THIS")
+    // TODO: don't understand this equals indeed, but module is unsupported...
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null) return false;

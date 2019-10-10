@@ -72,7 +72,10 @@ public class PostgisFilterToSQL extends FilterToSQL {
             geom = geom.getFactory().createLineString(((LinearRing) geom).getCoordinateSequence());
         }
 
-        Object typename = currentGeometry.getUserData().get(JDBCDataStore.JDBC_NATIVE_TYPENAME);
+        Object typename =
+                currentGeometry != null
+                        ? currentGeometry.getUserData().get(JDBCDataStore.JDBC_NATIVE_TYPENAME)
+                        : null;
         if ("geography".equals(typename)) {
             out.write("ST_GeogFromText('");
             out.write(geom.toText());
@@ -84,7 +87,7 @@ public class PostgisFilterToSQL extends FilterToSQL {
                 // if we don't know at all, use the srid of the geometry we're comparing against
                 // (much slower since that has to be extracted record by record as opposed to
                 // being a constant)
-                out.write("', ST_SRID(\"" + currentGeometry.getLocalName() + "\"))");
+                out.write("', ST_SRID(" + escapeName(currentGeometry.getLocalName()) + "))");
             } else {
                 out.write("', " + currentSRID + ")");
             }

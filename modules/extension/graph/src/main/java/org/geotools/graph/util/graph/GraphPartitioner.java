@@ -16,10 +16,11 @@
  */
 package org.geotools.graph.util.graph;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
+import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.structure.Node;
@@ -40,11 +41,11 @@ public class GraphPartitioner implements GraphWalker {
     /** graph to be partitioned into connected components * */
     private Graph m_graph;
 
-    /** paritions of graph * */
-    private ArrayList m_partitions;
+    /** Partitions of graph * */
+    private ArrayList<Serializable> m_partitions;
 
     /** current partition * */
-    private ArrayList m_partition;
+    private ArrayList<Serializable> m_partition;
 
     /** visited counter * */
     private int m_nvisited;
@@ -56,7 +57,7 @@ public class GraphPartitioner implements GraphWalker {
      */
     public GraphPartitioner(Graph graph) {
         m_graph = graph;
-        m_partitions = new ArrayList();
+        m_partitions = new ArrayList<>();
     }
 
     /**
@@ -76,16 +77,19 @@ public class GraphPartitioner implements GraphWalker {
             DepthFirstIterator iterator = new DepthFirstIterator();
             BasicGraphTraversal traversal = new BasicGraphTraversal(m_graph, this, iterator);
 
-            Iterator sources = m_graph.getNodes().iterator();
+            Iterator<?> sources = m_graph.getNodes().iterator();
 
             traversal.init();
-            m_partition = new ArrayList();
+            m_partition = new ArrayList<>();
 
             while (m_nvisited > 0) {
 
                 // find a node that hasn't been visited and set as source of traversal
                 Node source = null;
-                while (sources.hasNext() && (source = (Node) sources.next()).isVisited()) ;
+                while (sources.hasNext()) {
+                    source = (Node) sources.next();
+                    if (!source.isVisited()) break;
+                }
 
                 // if we could not find a source, return false
                 if (source == null || source.isVisited()) return (false);
@@ -95,17 +99,17 @@ public class GraphPartitioner implements GraphWalker {
             }
 
             // create the individual graphs
-            HashSet nodes = null;
-            HashSet edges = null;
-            ArrayList graphs = new ArrayList();
+            HashSet<Node> nodes = null;
+            HashSet<Edge> edges = null;
+            ArrayList<Serializable> graphs = new ArrayList<>();
 
-            for (Iterator itr = m_partitions.iterator(); itr.hasNext(); ) {
-                m_partition = (ArrayList) itr.next();
+            for (Iterator<Serializable> itr = m_partitions.iterator(); itr.hasNext(); ) {
+                m_partition = (ArrayList<Serializable>) itr.next();
                 if (m_partition.size() == 0) continue;
 
-                nodes = new HashSet();
-                edges = new HashSet();
-                for (Iterator nitr = m_partition.iterator(); nitr.hasNext(); ) {
+                nodes = new HashSet<>();
+                edges = new HashSet<>();
+                for (Iterator<Serializable> nitr = m_partition.iterator(); nitr.hasNext(); ) {
                     Node node = (Node) nitr.next();
                     nodes.add(node);
                     edges.addAll(node.getEdges());
@@ -129,7 +133,7 @@ public class GraphPartitioner implements GraphWalker {
      * @return A collection of Graph objects.
      * @see Graph
      */
-    public List getPartitions() {
+    public ArrayList<Serializable> getPartitions() {
         return (m_partitions);
     }
 
@@ -138,10 +142,11 @@ public class GraphPartitioner implements GraphWalker {
      *
      * @see GraphWalker#visit(Graphable, GraphTraversal)
      */
+    @Override
     public int visit(Graphable element, GraphTraversal traversal) {
         // add element to current set
         m_nvisited--;
-        m_partition.add(element);
+        m_partition.add((Serializable) element);
         return (GraphTraversal.CONTINUE);
     }
 
@@ -150,9 +155,10 @@ public class GraphPartitioner implements GraphWalker {
      *
      * @see GraphWalker#finish()
      */
+    @Override
     public void finish() {
         // create a new set
         m_partitions.add(m_partition);
-        m_partition = new ArrayList();
+        m_partition = new ArrayList<>();
     }
 }

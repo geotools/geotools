@@ -61,12 +61,7 @@ public class GrassCoverageReadParam {
         this.requestedWorldRegion = requestedWorldRegion;
     }
 
-    /**
-     * Getter for the {@linkplain GrassCoverageReadParam#requestedWorldRegion active region}
-     *
-     * @param activeRegion the active region. If this is null, the whole raster map region should be
-     *     used.
-     */
+    /** Getter for the {@linkplain GrassCoverageReadParam#requestedWorldRegion active region} */
     public JGrassRegion getRequestedWorldRegion() {
         return requestedWorldRegion;
     }

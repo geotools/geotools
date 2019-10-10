@@ -26,9 +26,7 @@ import it.geosolutions.jaiext.range.NoDataContainer;
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import it.geosolutions.jaiext.vectorbin.VectorBinarizeDescriptor;
 import it.geosolutions.jaiext.vectorbin.VectorBinarizeRIF;
-import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Rectangle2D;
@@ -126,6 +124,13 @@ public class GranuleDescriptor {
 
     /** Hints to use for avoiding to search for the ImageMosaic format */
     public static final Hints EXCLUDE_MOSAIC = new Hints(Utils.EXCLUDE_MOSAIC, true);
+    /**
+     * Minimum portion of a single pixel the code is going to read before giving up on the read,
+     * this is used to avoid reading granules that touch the reading area without actually
+     * contributing anything to the output
+     */
+    public static final double READ_THRESHOLD =
+            Double.parseDouble(System.getProperty("org.geotools.mosaic.read.threshold", "0.001"));
 
     static {
         try {
@@ -353,6 +358,9 @@ public class GranuleDescriptor {
 
     private NoDataContainer noData;
 
+    private Double[] scales;
+    private Double[] offsets;
+
     protected void init(
             final BoundingBox granuleBBOX,
             final URL granuleUrl,
@@ -507,8 +515,8 @@ public class GranuleDescriptor {
                 }
             }
 
-            // handle the nodata if available
-            setupNoData(reader);
+            // handle the nodata and rescaling if available
+            initFromImageMetadata(reader);
         } catch (IllegalStateException e) {
             throw new IllegalArgumentException(e);
 
@@ -537,7 +545,7 @@ public class GranuleDescriptor {
         }
     }
 
-    private void setupNoData(ImageReader reader) throws IOException {
+    private void initFromImageMetadata(ImageReader reader) throws IOException {
         // grabbing the nodata if possible
         int index = 0;
         if (originator != null) {
@@ -549,10 +557,15 @@ public class GranuleDescriptor {
         try {
             IIOMetadata metadata = reader.getImageMetadata(index);
             if (metadata instanceof CoreCommonImageMetadata) {
-                double[] noData = ((CoreCommonImageMetadata) metadata).getNoData();
+                CoreCommonImageMetadata ccm = (CoreCommonImageMetadata) metadata;
+
+                double[] noData = ccm.getNoData();
                 if (noData != null) {
                     this.noData = new NoDataContainer(noData);
                 }
+
+                this.scales = ccm.getScales();
+                this.offsets = ccm.getOffsets();
             }
         } catch (UnsupportedOperationException e) {
             // some imageio-ext plugin throw this because they do not support getting the metadata
@@ -741,7 +754,6 @@ public class GranuleDescriptor {
             final boolean heterogeneousGranules,
             final boolean handleArtifactsFiltering,
             final Hints hints) {
-
         this.maxDecimationFactor = maxDecimationFactor;
         final URL rasterFile = URLs.fileToUrl(new File(granuleLocation));
 
@@ -847,7 +859,6 @@ public class GranuleDescriptor {
      *     a relative or an absolute path.
      * @param locationAttribute the attribute containing the granule location.
      * @param parentLocation the location of the parent of that granule.
-     * @param inclusionGeometry the footprint of that granule (if any). It may be null.
      */
     public GranuleDescriptor(
             SimpleFeature feature,
@@ -881,7 +892,6 @@ public class GranuleDescriptor {
      *     a relative or an absolute path.
      * @param locationAttribute the attribute containing the granule location.
      * @param parentLocation the location of the parent of that granule.
-     * @param inclusionGeometry the footprint of that granule (if any). It may be null.
      * @param heterogeneousGranules if {@code true}, this granule belongs to a set of heterogeneous
      *     granules
      */
@@ -1146,7 +1156,7 @@ public class GranuleDescriptor {
             // it.
             Rectangle2D r2d = CRS.transform(cropWorldToGrid, intersection).toRectangle2D();
             // if we are reading basically nothing, bail out immediately
-            if (r2d.getWidth() < 0.1 || r2d.getHeight() < 0.1) {
+            if (r2d.getWidth() < READ_THRESHOLD || r2d.getHeight() < READ_THRESHOLD) {
                 cleanupInFinally = true;
                 return null;
             }
@@ -1274,6 +1284,19 @@ public class GranuleDescriptor {
                 }
             }
 
+            // apply rescaling
+            if (request.isRescalingEnabled()) {
+                if (noData != null && request.getReadType() == ReadType.JAI_IMAGEREAD) {
+                    // Force nodata settings since JAI ImageRead may lost that
+                    // We have to make sure that noData pixels won't be rescaled
+                    PlanarImage t = PlanarImage.wrapRenderedImage(raster);
+                    t.setProperty(NoDataContainer.GC_NODATA, noData);
+                    raster = t;
+                }
+
+                raster = ImageUtilities.applyRescaling(scales, offsets, raster, hints);
+            }
+
             // use fixed source area
             sourceArea.setRect(readParameters.getSourceRegion());
 
@@ -1296,7 +1319,6 @@ public class GranuleDescriptor {
                         forceVirtualNativeResolution(
                                 raster, request, virtualNativeResolution, selectedlevel, hints);
             }
-
             double decimationScaleX = ((1.0 * sourceArea.width) / raster.getWidth());
             double decimationScaleY = ((1.0 * sourceArea.height) / raster.getHeight());
             final AffineTransform decimationScaleTranform =
@@ -1468,6 +1490,11 @@ public class GranuleDescriptor {
                 }
 
                 ImageWorker iw = new ImageWorker(raster);
+                if (virtualNativeResolution != null
+                        && !Double.isNaN(virtualNativeResolution[0])
+                        && !Double.isNaN(virtualNativeResolution[1])) {
+                    localHints.add(new RenderingHints(ImageWorker.PRESERVE_CHAINED_AFFINES, true));
+                }
                 iw.setRenderingHints(localHints);
                 if (iw.getNoData() == null && this.noData != null) {
                     iw.setNoData(this.noData.getAsRange());
@@ -1576,17 +1603,18 @@ public class GranuleDescriptor {
             final ImageLayout layout = new ImageLayout();
             layout.setTileHeight(tileDimensions.width).setTileWidth(tileDimensions.height);
             localHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout);
-        } else {
-            if (hints != null && hints.containsKey(JAI.KEY_IMAGE_LAYOUT)) {
-                final Object layout = hints.get(JAI.KEY_IMAGE_LAYOUT);
-                if (layout != null && layout instanceof ImageLayout) {
-                    final ImageLayout originalLayout = (ImageLayout) layout;
-                    final ImageLayout localLayout = new ImageLayout();
-                    localLayout.setTileHeight(originalLayout.getTileHeight(null));
-                    localLayout.setTileWidth(originalLayout.getTileWidth(null));
-                    localHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, localLayout);
-                }
+        } else if (hints != null && hints.containsKey(JAI.KEY_IMAGE_LAYOUT)) {
+            final Object layout = hints.get(JAI.KEY_IMAGE_LAYOUT);
+            if (layout != null && layout instanceof ImageLayout) {
+                final ImageLayout originalLayout = (ImageLayout) layout;
+                final ImageLayout localLayout = new ImageLayout();
+                localLayout.setTileHeight(originalLayout.getTileHeight(null));
+                localLayout.setTileWidth(originalLayout.getTileWidth(null));
+                localHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, localLayout);
             }
+        }
+        if (localHints == null) {
+            localHints = new RenderingHints(null);
         }
         updateLocalHints(hints, localHints);
         localHints.add(ImageUtilities.BORDER_EXTENDER_HINTS);

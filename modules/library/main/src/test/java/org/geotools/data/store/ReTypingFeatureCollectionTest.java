@@ -16,14 +16,21 @@
  */
 package org.geotools.data.store;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.createNiceMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 
+import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.visitor.NearestVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;
+import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory2;
 
@@ -31,15 +38,19 @@ public class ReTypingFeatureCollectionTest extends FeatureCollectionWrapperTestS
 
     public void testSchema() throws Exception {
         // see http://jira.codehaus.org/browse/GEOT-1616
-        SimpleFeatureType original = delegate.getSchema();
-        String newName = original.getTypeName() + "xxx";
-        SimpleFeatureTypeBuilder stb = new SimpleFeatureTypeBuilder();
-        stb.init(original);
-        stb.setName(newName);
-        SimpleFeatureType renamed = stb.buildFeatureType();
+        SimpleFeatureType schema = delegate.getSchema();
+        SimpleFeatureType renamed = buildRenamedFeatureType(schema, schema.getTypeName() + "xxx");
 
         ReTypingFeatureCollection rtc = new ReTypingFeatureCollection(delegate, renamed);
         assertEquals(renamed, rtc.getSchema());
+    }
+
+    private SimpleFeatureType buildRenamedFeatureType(SimpleFeatureType schema, String newName) {
+        SimpleFeatureType original = schema;
+        SimpleFeatureTypeBuilder stb = new SimpleFeatureTypeBuilder();
+        stb.init(original);
+        stb.setName(newName);
+        return stb.buildFeatureType();
     }
 
     public void testDelegateAccepts() throws Exception {
@@ -113,5 +124,13 @@ public class ReTypingFeatureCollectionTest extends FeatureCollectionWrapperTestS
         rtc = new ReTypingFeatureCollection(delegate, stb.buildFeatureType());
         rtc.accepts(vis, null);
         verify(delegate);
+    }
+
+    public void testPreserveUserData() throws Exception {
+        SimpleFeatureType schema = delegate.getSchema();
+        SimpleFeatureType renamed = buildRenamedFeatureType(schema, schema.getTypeName() + "xxx");
+        ReTypingFeatureCollection rtc = new ReTypingFeatureCollection(delegate, renamed);
+        SimpleFeature first = DataUtilities.first(rtc);
+        assertEquals(TEST_VALUE, first.getUserData().get(TEST_KEY));
     }
 }

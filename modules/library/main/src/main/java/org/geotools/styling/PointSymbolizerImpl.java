@@ -90,7 +90,6 @@ public class PointSymbolizerImpl extends AbstractSymbolizer implements PointSymb
      * Creates a deep copy clone.
      *
      * @return The deep copy clone.
-     * @throws RuntimeException DOCUMENT ME!
      */
     public Object clone() {
         PointSymbolizerImpl clone;

@@ -38,7 +38,6 @@ import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.util.ScreenMap;
 import org.geotools.feature.GeometryAttributeImpl;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.Types;
@@ -53,6 +52,7 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.FeatureFactory;
 import org.opengis.feature.GeometryAttribute;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -122,6 +122,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
     protected int offset = 0;
 
     protected JDBCReaderCallback callback = JDBCReaderCallback.NULL;
+    private int[] attributeRsIndex;
 
     public JDBCFeatureReader(
             String sql,
@@ -194,7 +195,8 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         this.hints = query != null ? query.getHints() : null;
 
         // grab a geometry factory... check for a special hint
-        geometryFactory = (GeometryFactory) hints.get(Hints.JTS_GEOMETRY_FACTORY);
+        geometryFactory =
+                (hints != null) ? (GeometryFactory) hints.get(Hints.JTS_GEOMETRY_FACTORY) : null;
         if (geometryFactory == null) {
             // look for a coordinate sequence factory
             CoordinateSequenceFactory csFactory =
@@ -210,17 +212,19 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             geometryFactory = dataStore.getGeometryFactory();
         }
 
-        Double linearizationTolerance = (Double) hints.get(Hints.LINEARIZATION_TOLERANCE);
+        Double linearizationTolerance =
+                hints != null ? (Double) hints.get(Hints.LINEARIZATION_TOLERANCE) : null;
         if (linearizationTolerance != null) {
             geometryFactory = new CurvedGeometryFactory(geometryFactory, linearizationTolerance);
         }
 
         // screenmap support
-        this.screenMap = (ScreenMap) hints.get(Hints.SCREENMAP);
+        this.screenMap = hints != null ? (ScreenMap) hints.get(Hints.SCREENMAP) : null;
 
         // create a feature builder using the factory hinted or the one coming
         // from the datastore
-        FeatureFactory ff = (FeatureFactory) hints.get(Hints.FEATURE_FACTORY);
+        FeatureFactory ff =
+                hints != null ? (FeatureFactory) hints.get(Hints.FEATURE_FACTORY) : null;
         if (ff == null) ff = featureSource.getDataStore().getFeatureFactory();
         builder = new SimpleFeatureBuilder(featureType, ff);
 
@@ -230,6 +234,8 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        this.attributeRsIndex = buildAttributeRsIndex();
 
         callback = dataStore.getCallbackFactory().createReaderCallback();
         callback.init(this);
@@ -335,7 +341,6 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
 
         // round up attributes
         final int attributeCount = featureType.getAttributeCount();
-        int[] attributeRsIndex = buildAttributeRsIndex();
         for (int i = 0; i < attributeCount; i++) {
             AttributeDescriptor type = featureType.getDescriptor(i);
 
@@ -505,8 +510,6 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             dataStore.closeSafe(st);
 
             dataStore.releaseConnection(cx, featureSource.getState());
-        } else {
-            // means we are already closed... should we throw an exception?
         }
 
         cleanup();
@@ -532,6 +535,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
     }
 
     @Override
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         if (dataStore != null) {
             LOGGER.warning(
@@ -771,11 +775,6 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             return dirty[index];
         }
 
-        /** @deprecated use {@link #isDirty(String)} instead */
-        public boolean isDirrty(String name) {
-            return isDirty(name);
-        }
-
         public boolean isDirty(String name) {
             return isDirty(index.get(name));
         }
@@ -787,6 +786,8 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         }
 
         public List<Object> getAttributes() {
+            // ensure initialized values GEOT-6264
+            for (int k = 0; k < values.length; k++) getAttribute(k);
             return Arrays.asList(values);
         }
 

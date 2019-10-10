@@ -60,13 +60,6 @@ public class SchemaCache {
     private static final boolean DEFAULT_KEEP_QUERY = true;
 
     /**
-     * Filenames used to recognise a GeoServer data directory if automatic configuration is enabled.
-     */
-    private static final String[] GEOSERVER_DATA_DIRECTORY_FILENAMES = {
-        "global.xml", "wcs.xml", "wfs.xml", "wms.xml"
-    };
-
-    /**
      * Subdirectories used to recognise a GeoServer data directory if automatic configuration is
      * enabled.
      */
@@ -178,8 +171,11 @@ public class SchemaCache {
      */
     static void delete(File file) {
         if (file.isDirectory()) {
-            for (File f : file.listFiles()) {
-                delete(f);
+            File[] files = file.listFiles();
+            if (files != null) {
+                for (File f : files) {
+                    delete(f);
+                }
             }
         }
         file.delete();
@@ -379,6 +375,9 @@ public class SchemaCache {
         File file = URLs.urlToFile(url);
         while (true) {
             if (file == null) {
+                LOGGER.warning(
+                        "Automatic app-schema-cache directory build failed, "
+                                + "Geoserver root folder or app-schema-cache folder not found");
                 return null;
             }
             if (isSuitableDirectoryToContainCache(file)) {
@@ -461,18 +460,16 @@ public class SchemaCache {
         if ((new File(directory, CACHE_DIRECTORY_NAME)).isDirectory()) {
             return true;
         }
-        for (String filename : GEOSERVER_DATA_DIRECTORY_FILENAMES) {
-            File file = new File(directory, filename);
-            if (!file.isFile()) {
-                return false;
-            }
-        }
         for (String subdirectory : GEOSERVER_DATA_DIRECTORY_SUBDIRECTORIES) {
             File dir = new File(directory, subdirectory);
             if (!dir.isDirectory()) {
                 return false;
             }
         }
+        // so there is a workspaces directory, lets check default.xml file
+        File workspacesDir = new File(directory, "workspaces");
+        File defaultXmlFile = new File(workspacesDir, "default.xml");
+        if (!defaultXmlFile.exists()) return false;
         return true;
     }
 }

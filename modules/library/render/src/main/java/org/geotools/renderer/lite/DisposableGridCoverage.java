@@ -60,6 +60,7 @@ class DisposableGridCoverage extends GridCoverage2D {
 
     @Override
     public synchronized boolean dispose(boolean force) {
+        boolean disposed = false;
         try {
             delegate.dispose(force);
             final RenderedImage image = delegate.getRenderedImage();
@@ -67,7 +68,9 @@ class DisposableGridCoverage extends GridCoverage2D {
                 ImageUtilities.disposePlanarImageChain((PlanarImage) image);
             }
         } finally {
-            return super.dispose(force);
+            disposed = super.dispose(force);
         }
+
+        return disposed;
     }
 }

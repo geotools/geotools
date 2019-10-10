@@ -7,6 +7,7 @@ import org.geotools.mbstyle.MapboxTestUtils;
 import org.geotools.mbstyle.parse.MBFunction;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.filter.expression.Expression;
 
@@ -86,7 +87,8 @@ public class ZoomInterpolationTest {
         assertEquals("Interval function", expectedVal, d, .000001);
     }
 
-    // @Test
+    @Test
+    @Ignore
     public void testZoomPropertyInterpolationExponential() throws ParseException {
         // Define an exponential zoom-and-property function
 
@@ -116,7 +118,8 @@ public class ZoomInterpolationTest {
         //    With someNumericProperty in each interval
     }
 
-    //  @Test
+    @Test
+    @Ignore
     public void testZoomPropertyInterpolationInterval() throws ParseException {
         // Define an interval zoom-and-property function
 

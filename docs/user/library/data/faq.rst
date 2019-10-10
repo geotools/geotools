@@ -4,9 +4,10 @@ Data FAQ
 Q: How do I get a FeatureStore?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-FeatureStore is an extension of FeatureSource that is only available if your information can be modified. 
+``FeatureStore`` is an extension of ``FeatureSource`` that is only available if your information can be modified. 
 
-With this in mind you can use an instanceof check, and then cast to a FeatureStore::
+With this in mind you can use an ``instanceof`` check, and then cast to a
+``FeatureStore``::
 
     SimpleFeatureSource source = dataStore.getFeatureSource( typeName );
     if( source instanceof SimpleFeatureStore ){

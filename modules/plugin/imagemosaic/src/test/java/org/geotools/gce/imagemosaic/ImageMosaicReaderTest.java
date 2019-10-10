@@ -19,17 +19,19 @@ package org.geotools.gce.imagemosaic;
 import static org.geotools.gce.imagemosaic.TestUtils.getReader;
 import static org.geotools.gce.imagemosaic.TestUtils.setupTestDirectory;
 import static org.geotools.util.URLs.fileToUrl;
+import static org.hamcrest.CoreMatchers.endsWith;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.arrayWithSize;
+import static org.hamcrest.Matchers.equalToIgnoringCase;
+import static org.hamcrest.Matchers.hasSize;
 
 import it.geosolutions.imageio.pam.PAMDataset;
 import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
 import it.geosolutions.imageio.pam.PAMParser;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
-import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.range.NoDataContainer;
 import java.awt.*;
 import java.awt.color.ColorSpace;
@@ -72,9 +74,16 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.TreeSet;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 import javax.media.jai.Interpolation;
@@ -83,7 +92,6 @@ import javax.swing.*;
 import junit.framework.JUnit4TestAdapter;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.OrFileFilter;
@@ -246,16 +254,6 @@ public class ImageMosaicReaderTest extends Assert {
     private URL oneBitURL;
 
     @Rule public TemporaryFolder tempFolder = new TemporaryFolder();
-
-    @Before
-    public void setup() {
-        JAIExt.initJAIEXT(true, true);
-    }
-
-    @After
-    public void cleanup() {
-        JAIExt.initJAIEXT(false, true);
-    }
 
     /**
      * Testing crop capabilities.
@@ -485,19 +483,12 @@ public class ImageMosaicReaderTest extends Assert {
         final URL timeElevURL = TestData.url(this, "water_temp3");
 
         // place H2 file in the dir
-        FileWriter out = null;
-        try {
-            out =
-                    new FileWriter(
-                            new File(
-                                    TestData.file(this, "."), "/water_temp3/datastore.properties"));
+        try (FileWriter out =
+                new FileWriter(
+                        new File(TestData.file(this, "."), "/water_temp3/datastore.properties"))) {
             out.write("database=imagemosaic\n");
             out.write(H2_SAMPLE_PROPERTIES);
             out.flush();
-        } finally {
-            if (out != null) {
-                IOUtils.closeQuietly(out);
-            }
         }
 
         // now start the test
@@ -643,19 +634,13 @@ public class ImageMosaicReaderTest extends Assert {
         final URL timeElevURL = TestData.url(this, "water_temp5");
 
         // place H2 file in the dir
-        FileWriter out = null;
-        try {
-            out =
-                    new FileWriter(
-                            new File(
-                                    TestData.file(this, "."), "/water_temp5/datastore.properties"));
+
+        try (FileWriter out =
+                new FileWriter(
+                        new File(TestData.file(this, "."), "/water_temp5/datastore.properties"))) {
             out.write("database=imagemosaic\n");
             out.write(H2_SAMPLE_PROPERTIES);
             out.flush();
-        } finally {
-            if (out != null) {
-                IOUtils.closeQuietly(out);
-            }
         }
 
         // now start the test
@@ -667,20 +652,14 @@ public class ImageMosaicReaderTest extends Assert {
         format = null;
 
         // remove the TypeName=MOSAICNAME from MOSAICNAME.properties
-        FileInputStream fin = null;
-        FileWriter fw = null;
-        try {
-            File mosaicFile =
-                    new File(TestData.file(this, "."), "/water_temp5/water_temp5.properties");
-            fin = new FileInputStream(mosaicFile);
-            Properties properties = new Properties();
+        File mosaicFile = new File(TestData.file(this, "."), "/water_temp5/water_temp5.properties");
+        Properties properties = new Properties();
+        try (FileInputStream fin = new FileInputStream(mosaicFile)) {
             properties.load(fin);
+        }
+        try (FileWriter fw = new FileWriter(mosaicFile)) {
             assertNotNull(properties.remove("TypeName"));
-            fw = new FileWriter(mosaicFile);
             properties.store(fw, "");
-        } finally {
-            IOUtils.closeQuietly(fin);
-            IOUtils.closeQuietly(fw);
         }
 
         // we should be able to load the mosaic also without the TypeName=MOSAICNAME
@@ -885,11 +864,9 @@ public class ImageMosaicReaderTest extends Assert {
         TestData.unzipFile(this, "watertemp1/watertemp.zip");
         final URL timeElevURL = TestData.url(this, "watertemp1");
         // place H2 file in the dir
-        FileWriter out = null;
-        try {
-            out =
-                    new FileWriter(
-                            new File(TestData.file(this, "."), "/watertemp1/indexer.properties"));
+        try (FileWriter out =
+                new FileWriter(
+                        new File(TestData.file(this, "."), "/watertemp1/indexer.properties"))) {
             out.write("TimeAttribute=ingestion\n");
             out.write("ElevationAttribute=elevation\n");
             out.write(
@@ -897,10 +874,6 @@ public class ImageMosaicReaderTest extends Assert {
             out.write(
                     "PropertyCollectors=TimestampFileNameExtractorSPI[timeregex](ingestion),DoubleFileNameExtractorSPI[elevationregex](elevation)\n");
             out.flush();
-        } finally {
-            if (out != null) {
-                IOUtils.closeQuietly(out);
-            }
         }
 
         final AbstractGridFormat format = TestUtils.getFormat(timeElevURL);
@@ -1284,19 +1257,12 @@ public class ImageMosaicReaderTest extends Assert {
         File zipFile = new File(workDir, "temperature.zip");
         FileUtils.copyFile(TestData.file(this, "temperature.zip"), zipFile);
         TestData.unzipFile(this, "emptyMosaic/temperature.zip");
-        FileWriter out = null;
-        try {
-            out =
-                    new FileWriter(
-                            new File(
-                                    TestData.file(this, "."), "/emptyMosaic/datastore.properties"));
+        try (FileWriter out =
+                new FileWriter(
+                        new File(TestData.file(this, "."), "/emptyMosaic/datastore.properties"))) {
             out.write("database=imagemosaic\n");
             out.write(H2_SAMPLE_PROPERTIES);
             out.flush();
-        } finally {
-            if (out != null) {
-                IOUtils.closeQuietly(out);
-            }
         }
 
         FileUtils.deleteQuietly(zipFile);
@@ -1405,20 +1371,14 @@ public class ImageMosaicReaderTest extends Assert {
         File zipFile = new File(workDir, "temperature2.zip");
         FileUtils.copyFile(TestData.file(this, "temperature2.zip"), zipFile);
         TestData.unzipFile(this, "emptyMosaicXML/temperature2.zip");
-        FileWriter out = null;
-        try {
-            out =
-                    new FileWriter(
-                            new File(
-                                    TestData.file(this, "."),
-                                    "/emptyMosaicXML/datastore.properties"));
+        try (FileWriter out =
+                new FileWriter(
+                        new File(
+                                TestData.file(this, "."),
+                                "/emptyMosaicXML/datastore.properties"))) {
             out.write("database=imagemosaic\n");
             out.write(H2_SAMPLE_PROPERTIES);
             out.flush();
-        } finally {
-            if (out != null) {
-                IOUtils.closeQuietly(out);
-            }
         }
 
         FileUtils.deleteQuietly(zipFile);
@@ -3320,9 +3280,9 @@ public class ImageMosaicReaderTest extends Assert {
                 (dir) -> {
                     File indexer = new File(dir, "indexer.properties");
                     try {
-                        String indexerContents = FileUtils.readFileToString(indexer);
+                        String indexerContents = FileUtils.readFileToString(indexer, "UTF-8");
                         indexerContents += "AbsolutePath=true\n";
-                        FileUtils.writeStringToFile(indexer, indexerContents);
+                        FileUtils.writeStringToFile(indexer, indexerContents, "UTF-8");
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -3344,9 +3304,9 @@ public class ImageMosaicReaderTest extends Assert {
                 (dir) -> {
                     File indexer = new File(dir, "indexer.properties");
                     try {
-                        String indexerContents = FileUtils.readFileToString(indexer);
+                        String indexerContents = FileUtils.readFileToString(indexer, "UTF-8");
                         indexerContents += "PathType=ABSOLUTE\n";
-                        FileUtils.writeStringToFile(indexer, indexerContents);
+                        FileUtils.writeStringToFile(indexer, indexerContents, "UTF-8");
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -3468,20 +3428,14 @@ public class ImageMosaicReaderTest extends Assert {
         final URL timeElevURL = TestData.url(this, referenceDir);
 
         // place H2 file in the dir
-        FileWriter out = null;
-        try {
-            out =
-                    new FileWriter(
-                            new File(
-                                    TestData.file(this, "."),
-                                    referenceDir + "/datastore.properties"));
+        try (FileWriter out =
+                new FileWriter(
+                        new File(
+                                TestData.file(this, "."),
+                                referenceDir + "/datastore.properties"))) {
             out.write("database=imagemosaicremove\n");
             out.write(H2_SAMPLE_PROPERTIES);
             out.flush();
-        } finally {
-            if (out != null) {
-                IOUtils.closeQuietly(out);
-            }
         }
 
         // now start the test
@@ -3522,20 +3476,14 @@ public class ImageMosaicReaderTest extends Assert {
         final URL timeElevURL = TestData.url(this, referenceDir);
 
         // place H2 file in the dir
-        FileWriter out = null;
-        try {
-            out =
-                    new FileWriter(
-                            new File(
-                                    TestData.file(this, "."),
-                                    referenceDir + "/datastore.properties"));
+        try (FileWriter out =
+                new FileWriter(
+                        new File(
+                                TestData.file(this, "."),
+                                referenceDir + "/datastore.properties"))) {
             out.write("database=imagemosaicremove2\n");
             out.write(H2_SAMPLE_PROPERTIES);
             out.flush();
-        } finally {
-            if (out != null) {
-                IOUtils.closeQuietly(out);
-            }
         }
 
         // now start the test
@@ -3577,20 +3525,14 @@ public class ImageMosaicReaderTest extends Assert {
         final URL timeElevURL = TestData.url(this, referenceDir);
 
         // place H2 file in the dir
-        FileWriter out = null;
-        try {
-            out =
-                    new FileWriter(
-                            new File(
-                                    TestData.file(this, "."),
-                                    referenceDir + "/datastore.properties"));
+        try (FileWriter out =
+                new FileWriter(
+                        new File(
+                                TestData.file(this, "."),
+                                referenceDir + "/datastore.properties"))) {
             out.write("database=imagemosaicremove3\n");
             out.write(H2_SAMPLE_PROPERTIES);
             out.flush();
-        } finally {
-            if (out != null) {
-                IOUtils.closeQuietly(out);
-            }
         }
 
         // now start the test
@@ -3632,22 +3574,15 @@ public class ImageMosaicReaderTest extends Assert {
         final URL timeElevURL = TestData.url(this, referenceDir);
 
         // place H2 file in the dir
-        FileWriter out = null;
-        try {
-            out =
-                    new FileWriter(
-                            new File(
-                                    TestData.file(this, "."),
-                                    referenceDir + "/datastore.properties"));
+        try (FileWriter out =
+                new FileWriter(
+                        new File(
+                                TestData.file(this, "."),
+                                referenceDir + "/datastore.properties"))) {
             out.write("database=imagemosaicremove4\n");
             out.write(H2_SAMPLE_PROPERTIES);
             out.flush();
-        } finally {
-            if (out != null) {
-                IOUtils.closeQuietly(out);
-            }
         }
-
         // now start the test
         final AbstractGridFormat format = TestUtils.getFormat(timeElevURL);
         assertNotNull(format);
@@ -4013,18 +3948,12 @@ public class ImageMosaicReaderTest extends Assert {
         reader.dispose();
 
         // append the parameter to the indexer.properties
-        FileWriter out = null;
-        try {
-            out =
-                    new FileWriter(
-                            new File(TestData.file(this, "."), "/water_temp4/indexer.properties"),
-                            true);
+        try (FileWriter out =
+                new FileWriter(
+                        new File(TestData.file(this, "."), "/water_temp4/indexer.properties"),
+                        true)) {
             out.write("UseExistingSchema=true\n");
             out.flush();
-        } finally {
-            if (out != null) {
-                IOUtils.closeQuietly(out);
-            }
         }
 
         // remove existing properties file and sample_image
@@ -4067,18 +3996,12 @@ public class ImageMosaicReaderTest extends Assert {
         final URL timeElevURL = TestData.url(this, "water_temp5");
 
         // force the name
-        FileWriter out = null;
-        try {
-            out =
-                    new FileWriter(
-                            new File(TestData.file(this, "."), "/water_temp5/indexer.properties"),
-                            true);
+        try (FileWriter out =
+                new FileWriter(
+                        new File(TestData.file(this, "."), "/water_temp5/indexer.properties"),
+                        true)) {
             out.write("Name=test\n");
             out.flush();
-        } finally {
-            if (out != null) {
-                IOUtils.closeQuietly(out);
-            }
         }
 
         // now start the test
@@ -4126,20 +4049,14 @@ public class ImageMosaicReaderTest extends Assert {
         reader.dispose();
 
         // append the parameter to the indexer.properties
-        FileWriter out = null;
-        try {
-            out =
-                    new FileWriter(
-                            new File(
-                                    TestData.file(this, "."),
-                                    folder + File.separatorChar + "indexer.properties"),
-                            true);
+        try (FileWriter out =
+                new FileWriter(
+                        new File(
+                                TestData.file(this, "."),
+                                folder + File.separatorChar + "indexer.properties"),
+                        true)) {
             out.write("UseExistingSchema=true\n");
             out.flush();
-        } finally {
-            if (out != null) {
-                IOUtils.closeQuietly(out);
-            }
         }
 
         // remove existing properties file and sample_image
@@ -4268,18 +4185,12 @@ public class ImageMosaicReaderTest extends Assert {
         final URL timeElevURL = TestData.url(this, "stop-it");
 
         // place H2 file in the dir
-        FileWriter out = null;
-        try {
-            out =
-                    new FileWriter(
-                            new File(TestData.file(this, "."), "/stop-it/datastore.properties"));
+        try (FileWriter out =
+                new FileWriter(
+                        new File(TestData.file(this, "."), "/stop-it/datastore.properties"))) {
             out.write("database=imagemosaic\n");
             out.write(H2_SAMPLE_PROPERTIES);
             out.flush();
-        } finally {
-            if (out != null) {
-                IOUtils.closeQuietly(out);
-            }
         }
 
         // now start the test
@@ -4352,7 +4263,7 @@ public class ImageMosaicReaderTest extends Assert {
         assertTrue(props.exists() && props.canRead() && props.canWrite());
 
         // Getting the written properties
-        String properties = FileUtils.readFileToString(props);
+        String properties = FileUtils.readFileToString(props, "UTF-8");
 
         // Ensure the ExpandToRGB property is set
         assertTrue(properties.contains("ExpandToRGB"));
@@ -4361,7 +4272,7 @@ public class ImageMosaicReaderTest extends Assert {
         properties = properties.replace("ExpandToRGB=false", "ExpandToRGB=true");
 
         // Write it on the file
-        FileUtils.write(props, properties, false);
+        FileUtils.write(props, properties, "UTF-8", false);
 
         // Read the Directory again
         reader = getReader(testURL, format);
@@ -4407,10 +4318,10 @@ public class ImageMosaicReaderTest extends Assert {
         // enable palette expansion
         File props = new File(workDir, "index_palette_bandselect.properties");
         assertTrue(props.exists() && props.canRead() && props.canWrite());
-        String properties = FileUtils.readFileToString(props);
+        String properties = FileUtils.readFileToString(props, "UTF-8");
         assertTrue(properties.contains("ExpandToRGB"));
         properties = properties.replace("ExpandToRGB=false", "ExpandToRGB=true");
-        FileUtils.write(props, properties, false);
+        FileUtils.write(props, properties, "UTF-8", false);
 
         // grab the reader again
         reader = getReader(testURL, format);
@@ -5495,5 +5406,309 @@ public class ImageMosaicReaderTest extends Assert {
         File[] existingFilesPastCleanup = directory.listFiles(fileFilter);
         assertThat(existingFilesPastCleanup, Matchers.emptyArray());
         assertEquals(otherFilesCount, directory.listFiles(notFileFilter).length);
+    }
+
+    @Test
+    @Ignore(
+            "Does not work due to limitations in ContentDataStore transaction handling, not even with rw locking")
+    public void testConcurrentHarvestAndRemoveShapefile() throws Exception {
+        testConcurrentHarvestAndRemove(f -> {}, 20);
+    }
+
+    @Test
+    public void testConcurrentHarvestAndRemoveH2() throws Exception {
+        testConcurrentHarvestAndRemove(
+                f -> {
+                    // place H2 file in the dir
+                    try (FileWriter out = new FileWriter(new File(f, "datastore.properties"))) {
+                        out.write("database=imagemosaic\n");
+                        out.write(H2_SAMPLE_PROPERTIES);
+                        out.flush();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                },
+                10);
+    }
+
+    public void testConcurrentHarvestAndRemove(Consumer<File> mosaicCustomizer, int loops)
+            throws Exception {
+        File source = URLs.urlToFile(rgbURL);
+        File testDataDir = TestData.file(this, ".");
+        File directory1 = new File(testDataDir, "harvest1-concurrent");
+        File directory2 = new File(testDataDir, "harvest2-concurrent");
+        if (directory1.exists()) {
+            FileUtils.deleteDirectory(directory1);
+        }
+        FileUtils.copyDirectory(source, directory1);
+        if (directory2.exists()) {
+            FileUtils.deleteDirectory(directory2);
+        }
+        directory2.mkdirs();
+        // Creation of a File Collection
+        Collection<File> files = new ArrayList<File>();
+
+        // move all files besides month 2 into the second directory and store them into a
+        // Collection
+        for (File file :
+                FileUtils.listFiles(
+                        directory1, new RegexFileFilter("global_mosaic_[^0].*"), null)) {
+            File renamed = new File(directory2, file.getName());
+            assertTrue(file.renameTo(renamed));
+            if (file.getName().endsWith("png")) {
+                files.add(renamed);
+            }
+        }
+        // remove all mosaic related files
+        for (File file : FileUtils.listFiles(directory1, new RegexFileFilter("rgb.*"), null)) {
+            assertTrue(file.delete());
+        }
+
+        // customize mosaic creation
+        mosaicCustomizer.accept(directory1);
+
+        // ok, let's create a mosaic with the two original granules
+        URL harvestSingleURL = fileToUrl(directory1);
+        final AbstractGridFormat format = TestUtils.getFormat(harvestSingleURL);
+        ImageMosaicReader reader = getReader(harvestSingleURL, format);
+        final ExecutorService executor = Executors.newFixedThreadPool(2);
+        try {
+            String[] metadataNames = reader.getMetadataNames();
+            assertNotNull(metadataNames);
+
+            // create a thread for each outstanding file that will remove and then add back
+            // the file, thus creating a concurrent load on the catalog index
+            final String coverageName = reader.getGridCoverageNames()[0];
+
+            List<Future<Integer>> futures = new ArrayList<>();
+            CountDownLatch latch = new CountDownLatch(1);
+            for (File file : files) {
+                Filter filter = FF.like(FF.property("location"), "*" + file.getName() + "*");
+                Callable callable =
+                        (Callable<Integer>)
+                                () -> {
+                                    // make all callables start toghether
+                                    latch.await();
+                                    int removedCount = 0;
+
+                                    // remove if necessary
+                                    GranuleStore store =
+                                            (GranuleStore) reader.getGranules(coverageName, false);
+
+                                    for (int i = 0; i < loops; i++) {
+                                        final Query query = new Query(null, filter);
+                                        if (store.getCount(query) > 0) {
+                                            store.removeGranules(filter);
+                                            removedCount++;
+                                        }
+                                        // and harvest back
+                                        final List<HarvestedSource> harvested =
+                                                reader.harvest(coverageName, file, null);
+                                        assertThat(harvested, hasSize(1));
+                                        assertTrue(
+                                                "Feature not found after successful harvest? Loop is "
+                                                        + i
+                                                        + " and filter "
+                                                        + filter,
+                                                store.getCount(query) > 0);
+                                    }
+                                    return removedCount;
+                                };
+                final Future<Integer> future = executor.submit(callable);
+                futures.add(future);
+            }
+            // let the callables do their job
+            latch.countDown();
+
+            // make sure nothing threw an exception
+            boolean failed = false;
+            for (Future<Integer> future : futures) {
+                try {
+                    final Integer removedCount = future.get();
+                    assertEquals(loops - 1, removedCount.intValue());
+                } catch (Exception e) {
+                    LOGGER.log(Level.SEVERE, "Thread failed execution", e);
+                    failed = true;
+                }
+            }
+            assertFalse("Terminating test due to previus failures", failed);
+
+            // check that all the files are there
+            assertEquals(
+                    files.size() + 1, reader.getGranules(coverageName, true).getCount(Query.ALL));
+        } finally {
+            // close up shop
+            executor.shutdown();
+
+            reader.dispose();
+        }
+    }
+
+    @Test
+    public void testScaleOffsetEnabled() throws Exception {
+        URL scaleOffsetURL = TestData.url(this, "scaleOffset");
+        final AbstractGridFormat format = TestUtils.getFormat(scaleOffsetURL);
+
+        final ImageMosaicReader reader = getReader(scaleOffsetURL, format);
+        try {
+            // test one, read with scale/offset rescaling
+            ParameterValue<Boolean> rescalePixels = AbstractGridFormat.RESCALE_PIXELS.createValue();
+            rescalePixels.setValue(true);
+            GridCoverage2D gc = reader.read(new GeneralParameterValue[] {rescalePixels});
+            RenderedImage imScaled = gc.getRenderedImage();
+            assertEquals(DataBuffer.TYPE_DOUBLE, imScaled.getSampleModel().getDataType());
+            // ... checking pixels in the first image
+            double[] pixelDouble = new double[6];
+            imScaled.getData().getPixel(0, 0, pixelDouble);
+            assertArrayEquals(new double[] {0.116, 0.116, 0.116, 0, 0, 1}, pixelDouble, 0d);
+            // ... checking pixels in the second image
+            imScaled.getData().getPixel(19, 9, pixelDouble);
+            assertArrayEquals(new double[] {0.1957, 0.1957, 0.1957, 0, 0, 1}, pixelDouble, 0d);
+            gc.dispose(true);
+        } finally {
+            reader.dispose();
+        }
+    }
+
+    @Test
+    public void testScaleOffsetDisabled() throws Exception {
+        URL scaleOffsetURL = TestData.url(this, "scaleOffset");
+        final AbstractGridFormat format = TestUtils.getFormat(scaleOffsetURL);
+
+        final ImageMosaicReader reader = getReader(scaleOffsetURL, format);
+        try {
+            // test one, read with scale/offset rescaling
+            ParameterValue<Boolean> rescalePixels = AbstractGridFormat.RESCALE_PIXELS.createValue();
+            rescalePixels.setValue(false);
+            GridCoverage2D gc = reader.read(new GeneralParameterValue[] {rescalePixels});
+            RenderedImage imScaled = gc.getRenderedImage();
+            assertEquals(DataBuffer.TYPE_INT, imScaled.getSampleModel().getDataType());
+            // ... checking pixels in the first image
+            double[] pixelDouble = new double[6];
+            imScaled.getData().getPixel(0, 0, pixelDouble);
+            assertArrayEquals(new double[] {1160, 1160, 1160, 0, 0, 10000}, pixelDouble, 0d);
+            // ... checking pixels in the second image
+            imScaled.getData().getPixel(19, 9, pixelDouble);
+            assertArrayEquals(new double[] {1957, 1957, 1957, 0, 0, 10000}, pixelDouble, 0d);
+            gc.dispose(true);
+        } finally {
+            reader.dispose();
+        }
+    }
+
+    @Test
+    public void testGranuleFileViewSidecars() throws Exception {
+        // copy the data and get the reader
+        File directory = setupTestDirectory(this, this.rgbURL, "rbgFileView");
+        ImageMosaicReader reader = getReader(directory);
+        try {
+            GranuleSource source = reader.getGranules(reader.getGridCoverageNames()[0], true);
+            assertThat(source.getSupportedHints(), hasItem(GranuleSource.FILE_VIEW));
+
+            Query q = new Query();
+            q.setHints(new Hints(GranuleSource.FILE_VIEW, true));
+            SimpleFeatureCollection granules = source.getGranules(q);
+
+            // no location attribute, just the geometry
+            SimpleFeatureType schema = granules.getSchema();
+            assertNull(schema.getDescriptor("location"));
+            assertEquals(Arrays.asList(schema.getGeometryDescriptor()), schema.getDescriptors());
+            // check the count, collect first and last
+            SimpleFeature first = null;
+            SimpleFeature last = null;
+            int count = 0;
+            try (SimpleFeatureIterator it = granules.features()) {
+                while (it.hasNext()) {
+                    count++;
+                    SimpleFeature next = it.next();
+                    if (first == null) first = next;
+                    last = next;
+                }
+            }
+            // all files present
+            assertEquals(24, count);
+
+            FileGroup groupFirst = (FileGroup) first.getUserData().get(GranuleSource.FILES);
+            assertNotNull(groupFirst);
+            assertThat(
+                    groupFirst.getMainFile().getPath().toLowerCase(),
+                    endsWith("global_mosaic_0.png"));
+            System.out.println(groupFirst.getSupportFiles());
+            assertThat(
+                    groupFirst
+                            .getSupportFiles()
+                            .stream()
+                            .map(f -> f.getName())
+                            .collect(Collectors.toList()),
+                    Matchers.containsInAnyOrder(
+                            equalToIgnoringCase("global_mosaic_0.prj"),
+                            equalToIgnoringCase("global_mosaic_0.pgw")));
+
+            FileGroup groupLast = (FileGroup) last.getUserData().get(GranuleSource.FILES);
+            assertNotNull(groupLast);
+            // mind the alphabetic ordering, it's not group_mosaic_22
+            assertThat(
+                    groupLast.getMainFile().getPath().toLowerCase(),
+                    endsWith("global_mosaic_9.png"));
+            assertThat(
+                    groupLast
+                            .getSupportFiles()
+                            .stream()
+                            .map(f -> f.getName())
+                            .collect(Collectors.toList()),
+                    Matchers.containsInAnyOrder(
+                            equalToIgnoringCase("global_mosaic_9.prj"),
+                            equalToIgnoringCase("global_mosaic_9.pgw")));
+        } finally {
+            reader.dispose();
+        }
+    }
+
+    @Test
+    public void testGranuleFileViewPreserveAttributes() throws Exception {
+        // copy the data and get the reader
+        File directory =
+                setupTestDirectory(
+                        this, this.timeAdditionalDomainsURL, "additionalDomainsFileView");
+        ImageMosaicReader reader = getReader(directory);
+        try {
+            GranuleSource source = reader.getGranules(reader.getGridCoverageNames()[0], true);
+            assertThat(source.getSupportedHints(), hasItem(GranuleSource.FILE_VIEW));
+
+            Query q = new Query();
+            q.setHints(new Hints(GranuleSource.FILE_VIEW, true));
+            SimpleFeatureCollection granules = source.getGranules(q);
+
+            // no location attribute, just the geometry
+            SimpleFeatureType schema = granules.getSchema();
+            assertNull(schema.getDescriptor("location"));
+            assertNotNull(schema.getDescriptor("the_geom"));
+            assertNotNull(schema.getDescriptor("time"));
+            assertNotNull(schema.getDescriptor("date"));
+            assertNotNull(schema.getDescriptor("depth"));
+            // check the count, collect first
+            SimpleFeature first = null;
+            int count = 0;
+            try (SimpleFeatureIterator it = granules.features()) {
+                while (it.hasNext()) {
+                    count++;
+                    SimpleFeature next = it.next();
+                    if (first == null) first = next;
+                }
+            }
+            // all files present
+            assertEquals(4, count);
+
+            // check the first feature
+            assertEquals(20, first.getAttribute("depth"));
+            FileGroup groupFirst = (FileGroup) first.getUserData().get(GranuleSource.FILES);
+            assertNotNull(groupFirst);
+            assertThat(
+                    groupFirst.getMainFile().getPath(),
+                    endsWith("NCOM_wattemp_020_20081031T0000000_12.tiff"));
+            assertThat(groupFirst.getSupportFiles(), Matchers.nullValue());
+        } finally {
+            reader.dispose();
+        }
     }
 }

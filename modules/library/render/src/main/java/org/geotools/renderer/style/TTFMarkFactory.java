@@ -28,7 +28,6 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -48,10 +47,6 @@ import org.opengis.filter.expression.Expression;
  * @author Andrea Aime - TOPP
  */
 public class TTFMarkFactory implements MarkFactory {
-
-    /** The logger for the rendering module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(TTFMarkFactory.class);
 
     private static FontRenderContext FONT_RENDER_CONTEXT =
             new FontRenderContext(new AffineTransform(), false, false);
@@ -158,6 +153,7 @@ public class TTFMarkFactory implements MarkFactory {
         return getShape(family, character);
     }
 
+    @SuppressWarnings("PMD.SystemPrintln")
     public static void main(String[] args) {
         BufferedImage image = new BufferedImage(300, 300, BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D g2d = (Graphics2D) image.getGraphics();

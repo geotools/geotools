@@ -53,7 +53,7 @@ public interface FeatureTypeFactory {
      * @param minOccurs The minimum number of occurences of the described attribute.
      * @param maxOccurs The maximum number of occurences of the described attribute.
      * @param isNillable Flag indicating if the described attribute may have a null value.
-     * @param defaulValue The default value of the described attribute.
+     * @param defaultValue The default value of the described attribute.
      */
     AttributeDescriptor createAttributeDescriptor(
             AttributeType type,
@@ -71,7 +71,7 @@ public interface FeatureTypeFactory {
      * @param minOccurs The minimum number of occurences of the described attribute.
      * @param maxOccurs The maximum number of occurences of the described attribute.
      * @param isNillable Flag indicating if the described attribute may have a null value.
-     * @param defaulValue The default value of the described attribute.
+     * @param defaultValue The default value of the described attribute.
      */
     GeometryDescriptor createGeometryDescriptor(
             GeometryType type,

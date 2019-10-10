@@ -161,9 +161,7 @@ public class LabelPainter {
      * @param bounds
      */
     void normalizeBounds(Rectangle2D bounds) {
-        if (bounds == null) {
-            bounds = new Rectangle2D.Float(-1, -1, 2, 2);
-        } else if (bounds.isEmpty()) {
+        if (bounds != null && bounds.isEmpty()) {
             bounds.setRect(bounds.getCenterX() - 1, bounds.getCenterY() - 1, 2, 2);
         }
     }
@@ -185,6 +183,28 @@ public class LabelPainter {
      */
     public double getLineHeight() {
         return lines.get(0).getLineHeight();
+    }
+
+    /**
+     * Returns appropriate line height for the given displacemntY Should give Top line for max
+     * displacementY (1) and Bottom line for min displacemntY (0)
+     *
+     * @param displacementY
+     * @return height of appropriate line for passed label displacementY
+     */
+    public double getLineHeightForAnchorY(double anchorY) {
+        // null checks
+        if (lines == null) return 0;
+        if (lines.isEmpty()) return 0;
+
+        // validation checks
+        anchorY = (anchorY < 0) ? 0 : anchorY;
+        anchorY = (anchorY > 1) ? 1 : anchorY;
+
+        if (anchorY == 0) return lines.get(getLineCount() - 1).getLineHeight();
+        if (anchorY == 1) return lines.get(0).getLineHeight();
+        // return average height
+        return lines.stream().mapToDouble(l -> l.getLineHeight()).average().orElse(0);
     }
 
     /**

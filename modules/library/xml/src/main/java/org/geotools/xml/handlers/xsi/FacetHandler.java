@@ -71,6 +71,7 @@ public abstract class FacetHandler extends XSIElementHandler {
     }
 
     /** @see java.lang.Object#hashCode() */
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return getHandlerType() * ((value == null) ? 1 : value.hashCode());
     }

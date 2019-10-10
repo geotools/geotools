@@ -694,14 +694,12 @@ public class LabelCacheImpl implements LabelCache {
         // ... use at least a 8 pixel step (curved processing is quite expensive), no matter what
         // the label length is
         final double step = painter.getLineHeight() > 8 ? painter.getLineHeight() : 8;
-        int space = labelItem.getSpaceAround();
         // repetition distance, if any
         int labelDistance = labelItem.getRepeat();
         if (labelDistance > 0 && labelItem.isFollowLineEnabled()) {
             labelDistance += textBounds.getWidth();
         }
         // min distance, if any
-        int minDistance = labelItem.getMinGroupDistance();
         LabelIndex groupLabels = new LabelIndex();
         // Max displacement for the current label
         double labelOffset = labelItem.getMaxDisplacement();
@@ -771,7 +769,7 @@ public class LabelCacheImpl implements LabelCache {
                     if (labelItem.followLineEnabled) {
                         // curved label, but we might end up drawing a straight
                         // one as an optimization
-                        maxAngleChange = cursor.getMaxAngleChange(startOrdinate, endOrdinate, step);
+                        maxAngleChange = cursor.getMaxAngleChange(startOrdinate, endOrdinate);
                         setupLineTransform(painter, cursor, centroid, tx, true);
                         curved = maxAngleChange >= MIN_CURVED_DELTA;
                     } else {
@@ -1000,7 +998,7 @@ public class LabelCacheImpl implements LabelCache {
                     if (labelItem.followLineEnabled) {
                         // curved label, but we might end up drawing a straight
                         // one as an optimization
-                        maxAngleChange = cursor.getMaxAngleChange(startOrdinate, endOrdinate, step);
+                        maxAngleChange = cursor.getMaxAngleChange(startOrdinate, endOrdinate);
                         if (maxAngleChange < MIN_CURVED_DELTA) {
                             // if label will be painted as straight, use the
                             // straight bounds
@@ -1213,7 +1211,9 @@ public class LabelCacheImpl implements LabelCache {
                 (textStyle.getAnchorY() * (textBounds.getHeight()))
                         - textStyle.getDisplacementY()
                         - textBounds.getHeight()
-                        + painter.getLineHeight();
+                        + ((painter.lines.size() == 1)
+                                ? painter.getLineHeight()
+                                : painter.getLineHeightForAnchorY(textStyle.getAnchorY()));
         tempTransform.translate(displacementX, displacementY);
     }
 

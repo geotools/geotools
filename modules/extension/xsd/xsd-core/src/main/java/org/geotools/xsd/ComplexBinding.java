@@ -56,7 +56,7 @@ public interface ComplexBinding extends Binding {
      * called, the <param>node</param> parse tree will contain different, ie child nodes for those
      * previous elements parsed.
      *
-     * @param childinstance The child element instance
+     * @param childInstance The child element instance
      * @param node The parse node for the parent element.
      * @param context the context in which the child element will be parsed.
      */
@@ -110,29 +110,6 @@ public interface ComplexBinding extends Binding {
      * @return The value of the property, or <code>null</code>.
      */
     Object getProperty(Object object, QName name) throws Exception;
-
-    /**
-     * Returns a list of properties of the specified object.
-     *
-     * <p>The return list contains a set of {@link QName}, {@link Object} tuples, each as a two
-     * element object array.
-     *
-     * <p>This method should only be implemented in the case where the encoder can not determine
-     * what the properties of the object are from the schema.
-     *
-     * <p>An example would be an object which corresponds to an element in the schema which has a
-     * the type <code>xs:anyType</code>. Since the content of this type can be anything the schema
-     * has no way to determine what the properties are. So in this case this method must specify the
-     * properties manually as a set of name, object tuples.
-     *
-     * <p>In the case of a multi-valued property, this method must return a tuple for each instance
-     * of the property, and not a list, iterator, or array containing all of the instances.
-     *
-     * @param object the object being encoded.
-     * @return A list of the properties for the object.
-     * @deprecated use {@link #getProperties(Object, XSDElementDeclaration)}.
-     */
-    List /*Object[QName,Object]*/ getProperties(Object object) throws Exception;
 
     /**
      * Returns a list of properties of the specified object.

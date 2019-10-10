@@ -57,6 +57,7 @@ import org.geotools.filter.v2_0.bindings.GeometryOperandsType_GeometryOperandBin
 import org.geotools.filter.v2_0.bindings.Id_CapabilitiesTypeBinding;
 import org.geotools.filter.v2_0.bindings.IntersectsBinding;
 import org.geotools.filter.v2_0.bindings.LiteralBinding;
+import org.geotools.filter.v2_0.bindings.MatchActionBinding;
 import org.geotools.filter.v2_0.bindings.MeetsBinding;
 import org.geotools.filter.v2_0.bindings.MetByBinding;
 import org.geotools.filter.v2_0.bindings.NotBinding;
@@ -132,6 +133,10 @@ public class FESConfiguration extends Configuration {
         // container.registerComponentImplementation(FES.AbstractSortingClauseType,AbstractSortingClauseTypeBinding.class);
         //
         // container.registerComponentImplementation(FES.AliasesType,AliasesTypeBinding.class);
+
+        // MatchActionType
+        container.registerComponentImplementation(FES.MatchActionType, MatchActionBinding.class);
+
         container.registerComponentImplementation(FES.ArgumentsType, ArgumentsTypeBinding.class);
         container.registerComponentImplementation(FES.ArgumentType, ArgumentTypeBinding.class);
         container.registerComponentImplementation(

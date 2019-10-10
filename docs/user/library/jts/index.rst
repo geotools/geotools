@@ -14,15 +14,14 @@ an implementation of Geometry which we use throughout our library.
 
 The GeoTools provides some help for working with JTS:
 
-* :doc:`gt-api <../api/index>` offers helper classes (such as *JTS* and *Geometries*) and extends JTS with a *CurvedGeometryFactory* for working with curves.
-* :doc:`gt-main <../main/index>` offers helper classes to translate Geometry into a Java Shape for display
+* :doc:`gt-main <../main/index>` offers helper classes (such as *JTS* and *Geometries*) and extends JTS with a *CurvedGeometryFactory* for working with curves along with helper classes to translate Geometry into a Java Shape for display
 
 **References**
 
-* http://sourceforge.net/projects/jts-topo-suite/
+* https://projects.eclipse.org/projects/locationtech.jts
 * https://locationtech.github.io/jts/
-* http://www.vividsolutions.com/jts/bin/JTS%20Developer%20Guide.pdf
-* http://www.vividsolutions.com/jts/bin/JTS%20Technical%20Specs.pdf
+* `JTS Developer Guide.pdf <https://github.com/locationtech/jts/blob/master/doc/JTS%20Developer%20Guide.pdf>`__
+* `JTS Technical Specs.pdf <https://github.com/locationtech/jts/blob/master/doc/JTS%20Technical%20Specs.pdf>`__
 
 **Maven**::
    

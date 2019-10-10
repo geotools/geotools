@@ -115,8 +115,6 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
      * Default priority for this factory.
      *
      * @since 2.4
-     * @deprecated We will try to replace the priority mechanism by a better one in a future
-     *     Geotools version.
      */
     protected static final int DEFAULT_PRIORITY = ThreadedEpsgFactory.PRIORITY - 10;
 
@@ -402,7 +400,7 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
         Locale.setDefault(arguments.locale);
         final boolean duplicated = arguments.getFlag("-duplicated");
         final boolean instantiate = arguments.getFlag("-test");
-        args = arguments.getRemainingArguments(0);
+        arguments.getRemainingArguments(0);
         final FactoryUsingWKT factory = getFactory(type);
         if (duplicated) {
             factory.reportDuplicatedCodes(arguments.out);

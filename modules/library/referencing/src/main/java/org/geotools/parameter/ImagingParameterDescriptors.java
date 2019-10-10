@@ -127,9 +127,11 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
     public ImagingParameterDescriptors(final RegistryElementDescriptor operation) {
         this(
                 properties(operation),
+                operation.getParameterListDescriptor(RenderedRegistryMode.MODE_NAME),
                 operation,
+                RenderedRegistryMode.MODE_NAME,
                 DEFAULT_SOURCE_TYPE_MAP,
-                RenderedRegistryMode.MODE_NAME);
+                null);
     }
 
     /**
@@ -158,36 +160,6 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
                 RenderedRegistryMode.MODE_NAME,
                 DEFAULT_SOURCE_TYPE_MAP,
                 extension);
-    }
-
-    /**
-     * Constructs a parameter descriptor wrapping the specified JAI operation, including sources.
-     * The properties map is given unchanged to the {@linkplain
-     * AbstractIdentifiedObject#AbstractIdentifiedObject(Map) super-class constructor}.
-     *
-     * @param properties Set of properties. Should contains at least {@code "name"}.
-     * @param operation The JAI's operation descriptor, usually as an instance of {@link
-     *     OperationDescriptor}.
-     * @param sourceTypeMap Mapping from JAI source type to this group source type. Typically a
-     *     singleton with the (<code>{@linkplain RenderedImage}.class</code>, <code>
-     *     {@linkplain GridCoverage}.class</code>) key-value pair.
-     * @param registryMode The JAI's registry mode (usually {@value
-     *     javax.media.jai.registry.RenderedRegistryMode#MODE_NAME}).
-     * @deprecated Replaced by {@link #ImagingParameterDescriptors(Map,
-     *     RegistryElementDescriptor,String,Map,Collection}.
-     */
-    public ImagingParameterDescriptors(
-            final Map<String, ?> properties,
-            final RegistryElementDescriptor operation,
-            final Map<Class<?>, Class<?>> sourceTypeMap,
-            final String registryMode) {
-        this(
-                properties,
-                operation.getParameterListDescriptor(registryMode),
-                operation,
-                registryMode,
-                sourceTypeMap,
-                null);
     }
 
     /**
@@ -260,8 +232,9 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
 
     /**
      * Infers from the specified JAI operation a set of properties that can be given to the
-     * {@linkplain #ImagingParameterDescriptors(Map,RegistryElementDescriptor,Map,String)
-     * constructor}. The returned map includes values (when available) for the following keys:
+     * {@linkplain ##ImagingParameterDescriptors(Map, RegistryElementDescriptor, String, Map,
+     * Collection)} constructor}. The returned map includes values (when available) for the
+     * following keys:
      *
      * <p>
      *
@@ -354,14 +327,12 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
                 final CitationImpl citation = new CitationImpl(authority);
                 final Collection<ResponsibleParty> parties = citation.getCitedResponsibleParties();
                 final ResponsibleParty oldParty;
-                if (true) {
-                    final Iterator<ResponsibleParty> it = parties.iterator();
-                    if (it.hasNext()) {
-                        oldParty = it.next();
-                        it.remove(); // This party will be re-injected with a new URI below.
-                    } else {
-                        oldParty = null;
-                    }
+                final Iterator<ResponsibleParty> it = parties.iterator();
+                if (it.hasNext()) {
+                    oldParty = it.next();
+                    it.remove(); // This party will be re-injected with a new URI below.
+                } else {
+                    oldParty = null;
                 }
                 final ResponsiblePartyImpl party = new ResponsiblePartyImpl(oldParty);
                 party.setRole(Role.RESOURCE_PROVIDER);
@@ -579,6 +550,7 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
      * future versions of this class.
      */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return super.hashCode() ^ descriptor.hashCode();
     }

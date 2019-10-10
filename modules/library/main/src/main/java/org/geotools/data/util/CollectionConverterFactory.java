@@ -148,7 +148,7 @@ public class CollectionConverterFactory implements ConverterFactory {
             return null;
         } else {
             // instantiate directly
-            return (Collection) target.newInstance();
+            return (Collection) target.getDeclaredConstructor().newInstance();
         }
     }
 
@@ -163,7 +163,7 @@ public class CollectionConverterFactory implements ConverterFactory {
             }
 
             // both arrays?
-            if (source.getClass().isArray() && target.isArray()) {
+            if (source.isArray() && target.isArray()) {
                 return ArrayToArray;
             }
 

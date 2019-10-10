@@ -44,7 +44,7 @@ An example data set looks something like::
   
   The property file is REQUIRED and use to provide a bunch of settings:
   
-  Example bluemarble.properties::
+  Example ``bluemarble.properties``::
     
     #
     #Thu Jan 11 14:53:30 CET 2007
@@ -58,22 +58,23 @@ An example data set looks something like::
   Where the following are required:
   
   * Name
-  * ExpandToRGB: true if we need to expand the color model from indexed to rgba
+  * ``ExpandToRGB``: true if we need to expand the color model from indexed to
+    ``rgba``
     
     * If all your images use the same indexed palette you can set this to false
       and get a large performance gain
   
-  * Levels: list of resolutions
+  * ``Levels``: list of resolutions
     
-    * Format: level_0_x_resolution, level_0_y_resolution, level_1_x_resolution,
+    * ``Format``: level_0_x_resolution, level_0_y_resolution, level_1_x_resolution,
       level_1_y_resolution
     * This measure of resolution describes how big each pixel is in real world units
-    * Sample calculation: envelope.getLength(0) / image.getWidth()
+    * Sample calculation: ``envelope.getLength(0) / image.getWidth()``
     * You can define several levels in order to capture overview files if you have them
     
-  * LevelsNum: the number of levels mentioned above
-  * Envelope2D: bounds in the CRS specified in the prj file
+  * ``LevelsNum``: the number of levels mentioned above
+  * ``Envelope2D``: bounds in the CRS specified in the ``.prj`` file
     
-    * Format: "minX,minY maxX,maxY"
+  * ``Format``: ``minX,minY maxX,maxY``
     
-  * NumFiles: should be the same as the number of features in your shapefile
+  * ``NumFiles``: should be the same as the number of features in your shapefile

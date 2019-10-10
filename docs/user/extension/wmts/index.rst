@@ -2,7 +2,7 @@
 WMTS
 ====
 
-The gt-wmts extension builds on top of the :doc:`gt-tile-client <../tile-client/index>` module in order to offer a web map tile service client.
+The ``gt-wmts`` extension builds on top of the :doc:`gt-tile-client <../tile-client/index>` module in order to offer a web map tile service client.
 This allows your application to connect to KVP or REST based web map tile services, review the capabilities and
 issue requests such as "GetTile".
 

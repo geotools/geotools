@@ -20,7 +20,7 @@ import com.sun.media.jai.codec.ByteArraySeekableStream;
 import com.sun.media.jai.codec.ImageCodec;
 import com.sun.media.jai.codec.ImageDecoder;
 import com.sun.media.jai.codec.SeekableStream;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -129,14 +129,13 @@ abstract class JDBCAccessBase implements JDBCAccess {
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
-            try {
-                // con.rollback();
-                con.close();
-            } catch (SQLException e1) {
-            }
-
             LOGGER.severe(e.getMessage());
             throw new IOException(e);
+        } finally {
+            try {
+                if (con != null) con.close();
+            } catch (SQLException e1) {
+            }
         }
 
         if (levelInfos.isEmpty()) {
@@ -183,7 +182,8 @@ abstract class JDBCAccessBase implements JDBCAccess {
                 // check cardinalities
                 if (config.getVerifyCardinality().booleanValue()) {
                     imageLevelInfo.setCountFeature(
-                            new Integer(getRowCount(imageLevelInfo.getSpatialTableName(), con)));
+                            Integer.valueOf(
+                                    getRowCount(imageLevelInfo.getSpatialTableName(), con)));
 
                     if (imageLevelInfo
                             .getSpatialTableName()
@@ -191,7 +191,8 @@ abstract class JDBCAccessBase implements JDBCAccess {
                         imageLevelInfo.setCountTiles(imageLevelInfo.getCountFeature());
                     } else {
                         imageLevelInfo.setCountTiles(
-                                new Integer(getRowCount(imageLevelInfo.getTileTableName(), con)));
+                                Integer.valueOf(
+                                        getRowCount(imageLevelInfo.getTileTableName(), con)));
                     }
 
                     if (imageLevelInfo.getCountFeature().intValue() == 0) {
@@ -221,37 +222,41 @@ abstract class JDBCAccessBase implements JDBCAccess {
                     }
                 }
 
-                imageLevelInfo.setExtentMaxX(new Double(res.getDouble(config.getMaxXAttribute())));
+                imageLevelInfo.setExtentMaxX(
+                        Double.valueOf(res.getDouble(config.getMaxXAttribute())));
 
                 if (res.wasNull()) {
                     imageLevelInfo.setExtentMaxX(null);
                 }
 
-                imageLevelInfo.setExtentMaxY(new Double(res.getDouble(config.getMaxYAttribute())));
+                imageLevelInfo.setExtentMaxY(
+                        Double.valueOf(res.getDouble(config.getMaxYAttribute())));
 
                 if (res.wasNull()) {
                     imageLevelInfo.setExtentMaxY(null);
                 }
 
-                imageLevelInfo.setExtentMinX(new Double(res.getDouble(config.getMinXAttribute())));
+                imageLevelInfo.setExtentMinX(
+                        Double.valueOf(res.getDouble(config.getMinXAttribute())));
 
                 if (res.wasNull()) {
                     imageLevelInfo.setExtentMinX(null);
                 }
 
-                imageLevelInfo.setExtentMinY(new Double(res.getDouble(config.getMinYAttribute())));
+                imageLevelInfo.setExtentMinY(
+                        Double.valueOf(res.getDouble(config.getMinYAttribute())));
 
                 if (res.wasNull()) {
                     imageLevelInfo.setExtentMinY(null);
                 }
 
-                imageLevelInfo.setResX(new Double(res.getDouble(config.getResXAttribute())));
+                imageLevelInfo.setResX(Double.valueOf(res.getDouble(config.getResXAttribute())));
 
                 if (res.wasNull()) {
                     imageLevelInfo.setResX(null);
                 }
 
-                imageLevelInfo.setResY(new Double(res.getDouble(config.getResYAttribute())));
+                imageLevelInfo.setResY(Double.valueOf(res.getDouble(config.getResYAttribute())));
 
                 if (res.wasNull()) {
                     imageLevelInfo.setResY(null);
@@ -324,18 +329,15 @@ abstract class JDBCAccessBase implements JDBCAccess {
             throws SQLException, IOException {
         String statementString = getExtentSelectStatment(li);
         Envelope extent = null;
-        PreparedStatement s = con.prepareStatement(statementString);
-        ResultSet r = s.executeQuery();
-
-        if (r.next()) {
-            extent =
-                    new Envelope(
-                            new Coordinate(r.getDouble(1), r.getDouble(2)),
-                            new Coordinate(r.getDouble(3), r.getDouble(4)));
+        try (PreparedStatement s = con.prepareStatement(statementString);
+                ResultSet r = s.executeQuery()) {
+            if (r.next()) {
+                extent =
+                        new Envelope(
+                                new Coordinate(r.getDouble(1), r.getDouble(2)),
+                                new Coordinate(r.getDouble(3), r.getDouble(4)));
+            }
         }
-
-        r.close();
-        s.close();
 
         return extent;
     }
@@ -380,10 +382,10 @@ abstract class JDBCAccessBase implements JDBCAccess {
                 continue;
             }
 
-            li.setExtentMaxX(new Double(env.getMaxX()));
-            li.setExtentMaxY(new Double(env.getMaxY()));
-            li.setExtentMinX(new Double(env.getMinX()));
-            li.setExtentMinY(new Double(env.getMinY()));
+            li.setExtentMaxX(Double.valueOf(env.getMaxX()));
+            li.setExtentMaxY(Double.valueOf(env.getMaxY()));
+            li.setExtentMinX(Double.valueOf(env.getMinX()));
+            li.setExtentMinY(Double.valueOf(env.getMinY()));
 
             stmt.setDouble(1, li.getExtentMaxX().doubleValue());
             stmt.setDouble(2, li.getExtentMaxY().doubleValue());
@@ -523,50 +525,44 @@ abstract class JDBCAccessBase implements JDBCAccess {
             GridCoverageFactory coverageFactory)
             throws IOException {
         Date start = new Date();
-        Connection con = null;
         List<ImageDecoderThread> threads = new ArrayList<ImageDecoderThread>();
         ExecutorService pool = getExecutorServivicePool();
 
         String statementString = getGridSelectStatement(levelInfo);
 
-        try {
-            con = dataSource.getConnection();
-
-            PreparedStatement s = con.prepareStatement(statementString);
+        try (Connection con = dataSource.getConnection();
+                PreparedStatement s = con.prepareStatement(statementString)) {
             setGridSelectParams(s, requestEnvelope, levelInfo);
 
-            ResultSet r = s.executeQuery();
+            try (ResultSet r = s.executeQuery()) {
 
-            while (r.next()) {
-                byte[] tileBytes = getTileBytes(r);
-                Envelope env = getEnvelopeFromResultSet(r);
-                String location = r.getString(config.getKeyAttributeNameInSpatialTable());
+                while (r.next()) {
+                    byte[] tileBytes = getTileBytes(r);
+                    Envelope env = getEnvelopeFromResultSet(r);
+                    String location = r.getString(config.getKeyAttributeNameInSpatialTable());
 
-                Rectangle2D tmp =
-                        new Rectangle2D.Double(
-                                env.getMinX(), env.getMinY(), env.getWidth(), env.getHeight());
-                GeneralEnvelope tileGeneralEnvelope = new GeneralEnvelope(tmp);
-                tileGeneralEnvelope.setCoordinateReferenceSystem(
-                        requestEnvelope.getCoordinateReferenceSystem());
+                    Rectangle2D tmp =
+                            new Rectangle2D.Double(
+                                    env.getMinX(), env.getMinY(), env.getWidth(), env.getHeight());
+                    GeneralEnvelope tileGeneralEnvelope = new GeneralEnvelope(tmp);
+                    tileGeneralEnvelope.setCoordinateReferenceSystem(
+                            requestEnvelope.getCoordinateReferenceSystem());
 
-                ImageDecoderThread thread =
-                        new ImageDecoderThread(
-                                tileBytes,
-                                location,
-                                tileGeneralEnvelope,
-                                pixelDimension,
-                                requestEnvelope,
-                                levelInfo,
-                                tileQueue,
-                                config);
-                //				thread.start();
-                threads.add(thread);
-                pool.execute(thread);
+                    ImageDecoderThread thread =
+                            new ImageDecoderThread(
+                                    tileBytes,
+                                    location,
+                                    tileGeneralEnvelope,
+                                    pixelDimension,
+                                    requestEnvelope,
+                                    levelInfo,
+                                    tileQueue,
+                                    config);
+                    //				thread.start();
+                    threads.add(thread);
+                    pool.execute(thread);
+                }
             }
-
-            ;
-            r.close();
-            s.close();
 
             // if (con.getAutoCommit() == false) {
             // con.commit();
@@ -574,15 +570,6 @@ abstract class JDBCAccessBase implements JDBCAccess {
 
             con.close();
         } catch (SQLException e) {
-            try {
-                // if (con.getAutoCommit() == false) {
-                // con.rollback();
-                // }
-
-                con.close();
-            } catch (SQLException e1) {
-            }
-
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new IOException(e);
         }
@@ -655,15 +642,15 @@ abstract class JDBCAccessBase implements JDBCAccess {
      * @throws SQLException
      */
     private int getRowCount(String tableName, Connection con) throws SQLException {
-        PreparedStatement s = con.prepareStatement("select count(*) from " + tableName);
-        ResultSet res = s.executeQuery();
-        res.next();
+        try (PreparedStatement s = con.prepareStatement("select count(*) from " + tableName);
+                ResultSet res = s.executeQuery()) {
+            if (!res.next()) {
+                throw new SQLException("Cannot get a count");
+            }
 
-        int count = res.getInt(1);
-        res.close();
-        s.close();
-
-        return count;
+            int count = res.getInt(1);
+            return count;
+        }
     }
 
     /*
@@ -729,55 +716,53 @@ abstract class JDBCAccessBase implements JDBCAccess {
             throws SQLException, IOException {
         double[] result = null;
         String statementString = getRandomTileStatement(li);
-        PreparedStatement s = con.prepareStatement(statementString);
-        ResultSet r = s.executeQuery();
+        try (PreparedStatement s = con.prepareStatement(statementString);
+                ResultSet r = s.executeQuery()) {
+            while (r.next()) {
+                byte[] tileBytes = getTileBytes(r);
 
-        while (r.next()) {
-            byte[] tileBytes = getTileBytes(r);
-
-            if (tileBytes == null) {
-                continue;
-            }
-
-            BufferedImage buffImage = null;
-            li.setCanImageIOReadFromInputStream(true);
-            try {
-                buffImage = ImageIO.read(new ByteArrayInputStream(tileBytes));
-            } catch (IOException e) {
-            }
-
-            if (buffImage == null) {
-                if (LOGGER.isLoggable(Level.WARNING)) {
-                    LOGGER.warning(
-                            "Image IO cannot read from ByteInputStream,use less efficient jai methods");
-                }
-                li.setCanImageIOReadFromInputStream(false);
-                SeekableStream stream = new ByteArraySeekableStream(tileBytes);
-                String decoderName = null;
-
-                for (String dn : ImageCodec.getDecoderNames(stream)) {
-                    decoderName = dn;
-                    break;
+                if (tileBytes == null) {
+                    continue;
                 }
 
-                ImageDecoder decoder = ImageCodec.createImageDecoder(decoderName, stream, null);
-                PlanarImage img = PlanarImage.wrapRenderedImage(decoder.decodeAsRenderedImage());
-                buffImage = img.getAsBufferedImage();
+                BufferedImage buffImage = null;
+                li.setCanImageIOReadFromInputStream(true);
+                try {
+                    buffImage = ImageIO.read(new ByteArrayInputStream(tileBytes));
+                } catch (IOException e) {
+                }
+
+                if (buffImage == null) {
+                    if (LOGGER.isLoggable(Level.WARNING)) {
+                        LOGGER.warning(
+                                "Image IO cannot read from ByteInputStream,use less efficient jai methods");
+                    }
+                    li.setCanImageIOReadFromInputStream(false);
+                    SeekableStream stream = new ByteArraySeekableStream(tileBytes);
+                    String decoderName = null;
+
+                    for (String dn : ImageCodec.getDecoderNames(stream)) {
+                        decoderName = dn;
+                        break;
+                    }
+
+                    ImageDecoder decoder = ImageCodec.createImageDecoder(decoderName, stream, null);
+                    PlanarImage img =
+                            PlanarImage.wrapRenderedImage(decoder.decodeAsRenderedImage());
+                    buffImage = img.getAsBufferedImage();
+                }
+
+                Envelope env = getEnvelopeFromResultSet(r);
+
+                result =
+                        new double[] {
+                            env.getWidth() / buffImage.getWidth(),
+                            env.getHeight() / buffImage.getHeight()
+                        };
+
+                break;
             }
-
-            Envelope env = getEnvelopeFromResultSet(r);
-
-            result =
-                    new double[] {
-                        env.getWidth() / buffImage.getWidth(),
-                        env.getHeight() / buffImage.getHeight()
-                    };
-
-            break;
         }
-
-        r.close();
-        s.close();
 
         return result;
     }

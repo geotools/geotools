@@ -16,6 +16,7 @@
  */
 package org.geotools.graph.util.delaunay;
 
+import java.util.Objects;
 import java.util.logging.Logger;
 import org.geotools.graph.structure.basic.BasicEdge;
 import org.geotools.graph.structure.line.XYNode;
@@ -100,6 +101,11 @@ public class DelaunayEdge extends BasicEdge {
                                 && (this.getNodeB().equals(((DelaunayEdge) o).getNodeB())))
                         || (this.getNodeA().equals(((DelaunayEdge) o).getNodeB())
                                 && (this.getNodeB().equals(((DelaunayEdge) o).getNodeA())))));
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getNodeA(), this.getNodeB());
     }
 
     public String toString() {

@@ -19,7 +19,6 @@ package org.geotools.graph.build.feature;
 import java.util.ArrayList;
 import java.util.List;
 import junit.framework.TestCase;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -28,6 +27,7 @@ import org.geotools.graph.structure.Edge;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -86,7 +86,7 @@ public class FeatureGraphGeneratorTest extends TestCase {
         SimpleFeature[] features = new SimpleFeature[lines.length];
 
         for (int i = 0; i < lines.length; i++) {
-            Integer id = new Integer(i);
+            Integer id = Integer.valueOf(i);
             features[i] =
                     SimpleFeatureBuilder.build(
                             schema, new Object[] {lines[i], id}, "fid" + id.toString());

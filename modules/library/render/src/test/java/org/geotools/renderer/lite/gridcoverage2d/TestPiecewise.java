@@ -41,9 +41,9 @@ import javax.media.jai.JAI;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.ROI;
 import javax.media.jai.RenderedOp;
-import junit.framework.Assert;
 import org.geotools.TestData;
 import org.geotools.image.ImageWorker;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.referencing.operation.TransformException;
@@ -139,6 +139,7 @@ public class TestPiecewise {
      * @throws it.geosolutions.jaiext.piecewise.NoninvertibleTransformException
      */
     @Test
+    @SuppressWarnings("SelfEquals")
     public void constantTransform()
             throws IOException, TransformException,
                     it.geosolutions.jaiext.piecewise.NoninvertibleTransformException,
@@ -646,7 +647,7 @@ public class TestPiecewise {
                         .setROI(new ROI(new ImageWorker(image).binarize(0).getRenderedImage()));
         // final RenderedOp statistics = ExtremaDescriptor.create(image, new ROI(new
         // ImageWorker(image).binarize(0).getRenderedImage()),
-        // new Integer(1), new Integer(1), Boolean.FALSE, new Integer(1),
+        // Integer.valueOf(1), Integer.valueOf(1), Boolean.FALSE, Integer.valueOf(1),
         // null);
         // final double[] minimum=(double[]) statistics.getProperty("minimum");
         // final double[] maximum=(double[]) statistics.getProperty("maximum");
@@ -690,10 +691,10 @@ public class TestPiecewise {
             // //
             // forcing a bad band selection ...
             // //
-            // pbj.setParameter("bandIndex", new Integer(2));
+            // pbj.setParameter("bandIndex", Integer.valueOf(2));
             // final RenderedOp d = JAI.create(
             // GenericPiecewiseOpImage.OPERATION_NAME, pbj);
-            final RenderedOp d = w.piecewise(transform, new Integer(2)).getRenderedOperation();
+            final RenderedOp d = w.piecewise(transform, Integer.valueOf(2)).getRenderedOperation();
             d.getTiles();
             // we should not be here!
         } catch (Exception e) {
@@ -704,10 +705,11 @@ public class TestPiecewise {
         }
         Assert.assertTrue(exceptionThrown);
 
-        // pbj.setParameter("bandIndex", new Integer(0));
+        // pbj.setParameter("bandIndex", Integer.valueOf(0));
         // final RenderedOp finalImage = JAI.create(
         // GenericPiecewiseOpImage.OPERATION_NAME, pbj);
-        final RenderedOp finalImage = w.piecewise(transform, new Integer(0)).getRenderedOperation();
+        final RenderedOp finalImage =
+                w.piecewise(transform, Integer.valueOf(0)).getRenderedOperation();
         if (TestData.isInteractiveTest())
             ImageIOUtilities.visualize(finalImage, "testSWANLOGARITHMIC");
         else finalImage.getTiles();

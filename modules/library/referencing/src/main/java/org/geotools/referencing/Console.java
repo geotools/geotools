@@ -203,11 +203,12 @@ public class Console extends AbstractConsole {
      *
      * @param args the command line arguments
      */
+    @SuppressWarnings("PMD.SystemPrintln")
     public static void main(String[] args) {
         final Arguments arguments = new Arguments(args);
         final String load = arguments.getOptionalString("-load");
         final String file = arguments.getOptionalString("-file");
-        args = arguments.getRemainingArguments(0);
+        arguments.getRemainingArguments(0);
         Locale.setDefault(arguments.locale);
         final LineNumberReader input;
         final Console console;

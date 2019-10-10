@@ -21,6 +21,7 @@ import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -30,6 +31,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.operation.transform.GeocentricTransform;
+import org.locationtech.jts.densify.Densifier;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -66,6 +68,8 @@ import org.opengis.referencing.operation.TransformException;
  */
 public class ProjectionHandler {
 
+    public static final String ADVANCED_PROJECTION_DENSIFY = "advancedProjectionDensify";
+
     protected static final double EPS = 1e-6;
 
     protected static final Logger LOGGER =
@@ -85,13 +89,17 @@ public class ProjectionHandler {
 
     protected double datelineX = Double.NaN;
 
-    protected double radius = Double.NaN;
+    protected double targetHalfCircle = Double.NaN;
 
     protected boolean queryAcrossDateline;
 
     protected SingleCRS geometryCRS;
 
     protected boolean noReprojection;
+
+    protected double densify = 0.0;
+
+    Map projectionParameters;
 
     /**
      * Initializes a projection handler
@@ -157,6 +165,19 @@ public class ProjectionHandler {
             this.validaAreaTester = PreparedGeometryFactory.prepare(validArea);
         }
         checkReprojection();
+    }
+
+    /**
+     * Set one of the supported projection parameters: - advancedProjectionDensify (double) if > 0
+     * enables densification on preprocessing with the given distance between points.
+     *
+     * @param projectionParameters
+     */
+    public void setProjectionParameters(Map projectionParameters) {
+        if (projectionParameters.containsKey(ADVANCED_PROJECTION_DENSIFY)) {
+            densify = (Double) projectionParameters.get(ADVANCED_PROJECTION_DENSIFY);
+        }
+        this.projectionParameters = projectionParameters;
     }
 
     private void checkReprojection() throws FactoryException {
@@ -262,7 +283,7 @@ public class ProjectionHandler {
             if (!Double.isNaN(datelineX)
                     && renderingEnvelope.getMinX() < datelineX
                     && renderingEnvelope.getMaxX() > datelineX
-                    && renderingEnvelope.getWidth() < radius) {
+                    && renderingEnvelope.getWidth() < targetHalfCircle) {
                 double minX = renderingEnvelope.getMinX();
                 double minY = renderingEnvelope.getMinY();
                 double maxX = renderingEnvelope.getMaxX();
@@ -345,6 +366,22 @@ public class ProjectionHandler {
         return envelopes.stream().filter(e -> e != null).collect(Collectors.toList());
     }
 
+    /**
+     * Reprojects the given envelope to the target CRS, taking into account the ProjectionHandler
+     * constraints (valid area bounds, etc.).
+     *
+     * @param envelope envelope to reproject
+     * @param targetCRS target CRS
+     * @return reprojected envelope
+     * @throws TransformException
+     * @throws FactoryException
+     */
+    public ReferencedEnvelope getProjectedEnvelope(
+            ReferencedEnvelope envelope, CoordinateReferenceSystem targetCRS)
+            throws TransformException, FactoryException {
+        return transformEnvelope(envelope, targetCRS);
+    }
+
     protected ReferencedEnvelope transformEnvelope(
             ReferencedEnvelope envelope, CoordinateReferenceSystem targetCRS)
             throws TransformException, FactoryException {
@@ -364,7 +401,10 @@ public class ProjectionHandler {
             ReferencedEnvelope transformed = envelope.transform(targetCRS, true, 10);
             ProjectionHandler handler =
                     ProjectionHandlerFinder.getHandler(
-                            new ReferencedEnvelope(targetCRS), DefaultGeographicCRS.WGS84, true);
+                            new ReferencedEnvelope(targetCRS),
+                            DefaultGeographicCRS.WGS84,
+                            true,
+                            projectionParameters);
             // does the target CRS have a strict notion of what's possible in terms of
             // valid coordinate ranges?
             if (handler == null || handler instanceof WrappingProjectionHandler) {
@@ -514,11 +554,11 @@ public class ProjectionHandler {
      */
     public Geometry preProcess(Geometry geometry) throws TransformException, FactoryException {
         // if there is no valid area, no cutting is required either
-        if (validAreaBounds == null) return geometry;
+        if (validAreaBounds == null) return densify(geometry);
 
         // if not reprojection is going on, we don't need to cut
         if (noReprojection) {
-            return geometry;
+            return densify(geometry);
         }
 
         Geometry mask;
@@ -534,7 +574,7 @@ public class ProjectionHandler {
             // if the geometry is within the valid area for this projection
             // just skip expensive cutting
             if (validAreaBounds.contains((Envelope) geWGS84)) {
-                return geometry;
+                return densify(geometry);
             }
 
             // we need to cut, first thing, we intersect the geometry envelope
@@ -553,7 +593,7 @@ public class ProjectionHandler {
                     ReferencedEnvelope translated = new ReferencedEnvelope(validAreaBounds);
                     translated.translate(-360, 0);
                     if (translated.contains((Envelope) geWGS84)) {
-                        return geometry;
+                        return densify(geometry);
                     }
                     envIntWgs84 = translated.intersection(geWGS84);
                 } else if (validAreaBounds.contains(
@@ -561,7 +601,7 @@ public class ProjectionHandler {
                     ReferencedEnvelope translated = new ReferencedEnvelope(validAreaBounds);
                     translated.translate(360, 0);
                     if (translated.contains((Envelope) geWGS84)) {
-                        return geometry;
+                        return densify(geometry);
                     }
                     envIntWgs84 = translated.intersection(geWGS84);
                 }
@@ -576,7 +616,7 @@ public class ProjectionHandler {
             // if the geometry is within the valid area for this projection
             // just skip expensive cutting
             if (validaAreaTester.contains(JTS.toGeometry(geWGS84))) {
-                return geometry;
+                return densify(geometry);
             }
 
             // we need to cut, first thing, we intersect the geometry envelope
@@ -600,7 +640,26 @@ public class ProjectionHandler {
             mask = JTS.transform(maskWgs84, CRS.findMathTransform(WGS84, geometryCRS));
         }
 
-        return intersect(geometry, mask, geometryCRS);
+        return densify(intersect(geometry, mask, geometryCRS));
+    }
+
+    /**
+     * Densifies the given geometry using the current densification configuration.
+     *
+     * <p>It returns the original geometry if densification is not enabled.
+     *
+     * @param geometry
+     * @return
+     */
+    protected Geometry densify(Geometry geometry) {
+        if (geometry != null && densify > 0.0) {
+            try {
+                geometry = Densifier.densify(geometry, densify);
+            } catch (Throwable t) {
+                LOGGER.warning("Cannot densify geometry");
+            }
+        }
+        return geometry;
     }
 
     protected Geometry intersect(
@@ -805,7 +864,7 @@ public class ProjectionHandler {
     }
 
     protected void setCentralMeridian(double centralMeridian) {
-        // compute the earth radius
+        // compute the earth half circle in target CRS coordinates
         try {
             CoordinateReferenceSystem targetCRS = renderingEnvelope.getCoordinateReferenceSystem();
             MathTransform mt = CRS.findMathTransform(WGS84, targetCRS, true);
@@ -814,17 +873,17 @@ public class ProjectionHandler {
             mt.transform(src, 0, dst, 0, 2);
 
             if (CRS.getAxisOrder(targetCRS) == CRS.AxisOrder.NORTH_EAST) {
-                radius = Math.abs(dst[3] - dst[1]);
+                targetHalfCircle = Math.abs(dst[3] - dst[1]);
             } else {
-                radius = Math.abs(dst[2] - dst[0]);
+                targetHalfCircle = Math.abs(dst[2] - dst[0]);
             }
 
-            if (radius <= 0) {
-                throw new RuntimeException("Computed Earth radius is 0, what is going on?");
+            if (targetHalfCircle <= 0) {
+                throw new RuntimeException("Computed Earth half circle is 0, what is going on?");
             }
         } catch (Exception e) {
             throw new RuntimeException(
-                    "Unexpected error computing the Earth radius " + "in the current projection",
+                    "Unexpected error computing the Earth half circle in the current projection",
                     e);
         }
 

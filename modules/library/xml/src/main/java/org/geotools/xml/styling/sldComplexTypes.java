@@ -30,7 +30,6 @@ import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.Mark;
 import org.geotools.styling.Stroke;
-import org.geotools.styling.StyleFactoryFinder;
 import org.geotools.xml.PrintHandler;
 import org.geotools.xml.schema.Attribute;
 import org.geotools.xml.schema.ComplexType;
@@ -287,9 +286,6 @@ public class sldComplexTypes {
                         1,
                         1);
 
-        private static final int DISPLACEMENTX = 0;
-        private static final int DISPLACEMENTY = 0;
-
         private _Displacement() {
             super(null, child, attrs, elems, null, false, false);
         }
@@ -359,9 +355,6 @@ public class sldComplexTypes {
                             1,
                             1)
                 };
-
-        // array positions
-        private static final int PROPERTYNAME = 0;
 
         private static final ElementGrouping child = new SequenceGT(elems);
 
@@ -477,9 +470,6 @@ public class sldComplexTypes {
                         1,
                         1);
 
-        private static final int ONLINERESOURCE = 0;
-        private static final int FORMAT = 1;
-
         private _ExternalGraphic() {
             super(null, child, attrs, elems, null, false, false);
         }
@@ -551,8 +541,6 @@ public class sldComplexTypes {
         private static final Attribute[] attrs = null;
         private static final Element[] elems =
                 new Element[] {new sldElement("Graphic", null, null, 1, 1)};
-
-        private static final int GRAPHIC = 0;
 
         private static final ElementGrouping child =
                 new SequenceGT(
@@ -651,8 +639,6 @@ public class sldComplexTypes {
                             1,
                             1)
                 };
-
-        private static final int EXPRESSION = 0;
 
         private static final ElementGrouping child =
                 new SequenceGT(
@@ -859,7 +845,7 @@ public class sldComplexTypes {
          */
         public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
                 throws OperationNotSupportedException {
-            Graphic symbol = StyleFactoryFinder.createStyleFactory().getDefaultGraphic();
+            Graphic symbol = CommonFactoryFinder.getStyleFactory().getDefaultGraphic();
 
             for (int i = 0; i < value.length; i++) {
                 if ((value[i] == null) || value[i].getElement() == null) {
@@ -868,10 +854,10 @@ public class sldComplexTypes {
 
                 Element e = value[i].getElement();
                 if (elems[EXTERNALGRAPHIC].getName().equals(e.getName()))
-                    symbol.addExternalGraphic((ExternalGraphic) value[i].getValue());
+                    symbol.graphicalSymbols().add((ExternalGraphic) value[i].getValue());
 
                 if (elems[MARK].getName().equals(e.getName()))
-                    symbol.addMark((Mark) value[i].getValue());
+                    symbol.graphicalSymbols().add((Mark) value[i].getValue());
 
                 if (elems[OPACITY].getName().equals(e.getName()))
                     symbol.setOpacity((Expression) value[i].getValue());
@@ -899,8 +885,6 @@ public class sldComplexTypes {
                 new Element[] {
                     new sldElement("Graphic", sldComplexTypes._Graphic.getInstance(), null, 1, 1)
                 };
-
-        private static final int GRPAHIC = 0;
 
         private static final ElementGrouping child =
                 new SequenceGT(
@@ -1013,7 +997,6 @@ public class sldComplexTypes {
                         1);
 
         private static final int GRAPHICFILL = 0;
-        private static final int CSSPARAMETER = 1;
 
         private _Fill() {
             super(null, child, attrs, elems, null, false, false);
@@ -1070,7 +1053,7 @@ public class sldComplexTypes {
          */
         public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
                 throws OperationNotSupportedException {
-            Stroke symbol = StyleFactoryFinder.createStyleFactory().getDefaultStroke();
+            Stroke symbol = CommonFactoryFinder.getStyleFactory().getDefaultStroke();
 
             for (int i = 0; i < value.length; i++) {
                 if ((value[i] == null) || value[i].getElement() == null) {
@@ -1081,10 +1064,9 @@ public class sldComplexTypes {
                 if (elems[GRAPHICFILL].getName().equals(e.getName()))
                     symbol.setGraphicFill((Graphic) value[i].getValue());
 
-                if (elems[CSSPARAMETER].getName().equals(e.getName())) {
-                    Expression css = (Expression) value[i].getValue();
-                    // TODO apply the css
-                }
+                //                if (elems[CSSPARAMETER].getName().equals(e.getName())) {
+                //                    // TODO apply the css
+                //                }
             }
 
             return symbol;
@@ -1298,9 +1280,6 @@ public class sldComplexTypes {
                             1)
                 };
 
-        private static final int NAME = 0;
-        private static final int VALUE = 1;
-
         private static final ElementGrouping child =
                 new SequenceGT(
                         null,
@@ -1416,10 +1395,6 @@ public class sldComplexTypes {
                             Element.UNBOUNDED)
                 };
 
-        private static final int FEATURETYPENAME = 0;
-        private static final int FILTER = 1;
-        private static final int EXTENT = 2;
-
         private static final ElementGrouping child = new SequenceGT(elems);
 
         private _FeatureTypeConstraint() {
@@ -1498,11 +1473,6 @@ public class sldComplexTypes {
                     new sldElement("BlueChannel", SelectedChannelType.getInstance(), null, 1, 1),
                     new sldElement("GrayChannel", SelectedChannelType.getInstance(), null, 1, 1)
                 };
-
-        private static final int REDCHANNEL = 0;
-        private static final int GREENCHANNEL = 0;
-        private static final int BLUECHANNEL = 0;
-        private static final int GRAYCHANNEL = 0;
 
         private static final ElementGrouping child =
                 new ChoiceGT(
@@ -1616,8 +1586,6 @@ public class sldComplexTypes {
                             0,
                             Element.UNBOUNDED)
                 };
-
-        private static final int CSSPARAMETER = 0;
 
         private static final ElementGrouping child =
                 new SequenceGT(
@@ -1811,13 +1779,6 @@ public class sldComplexTypes {
                     new sldElement("Rule", _Rule.getInstance(), null, 1, Element.UNBOUNDED)
                 };
 
-        private static final int NAME = 0;
-        private static final int TITLE = 1;
-        private static final int ABSTRACT = 2;
-        private static final int FEATURETYPENAME = 3;
-        private static final int SEMANTICTYPEIDENTIFIER = 4;
-        private static final int RULE = 5;
-
         private static final ElementGrouping child = new SequenceGT(elems);
 
         private _FeatureTypeStyle() {
@@ -1894,9 +1855,6 @@ public class sldComplexTypes {
                     new sldElement("AnchorPointX", ParameterValueType.getInstance(), null, 1, 1),
                     new sldElement("AnchorPointY", ParameterValueType.getInstance(), null, 1, 1)
                 };
-
-        private static final int ANCHORPOINTX = 0;
-        private static final int ANCHORPOINTY = 1;
 
         private static final ElementGrouping child =
                 new SequenceGT(
@@ -2069,9 +2027,6 @@ public class sldComplexTypes {
                                     "LinePlacement", _LinePlacement.getInstance(), null, 1, 1)
                         });
 
-        private static final int POINTPLACEMENT = 0;
-        private static final int LINEPLACEMENT = 1;
-
         private _LabelPlacement() {
             super(null, child, attrs, elems, null, false, false);
         }
@@ -2156,9 +2111,6 @@ public class sldComplexTypes {
                         },
                         1,
                         1);
-
-        private static final int RADIUS = 0;
-        private static final int FILL = 0;
 
         private _Halo() {
             super(null, child, attrs, elems, null, false, false);
@@ -2308,9 +2260,6 @@ public class sldComplexTypes {
                             "PolygonSymbolizer", _PolygonSymbolizer.getInstance(), null, 1, 1)
                 };
 
-        private static final int LINESYMBOLIZER = 0;
-        private static final int POLYGONSYBOLIZER = 1;
-
         private static final ElementGrouping child =
                 new ChoiceGT(
                         null,
@@ -2405,8 +2354,6 @@ public class sldComplexTypes {
                             1,
                             1)
                 };
-
-        private static final int COLORMAPENTRY = 0;
 
         private static final ElementGrouping child =
                 new ChoiceGT(

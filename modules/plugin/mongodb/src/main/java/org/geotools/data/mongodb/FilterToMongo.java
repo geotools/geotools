@@ -29,13 +29,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import org.bson.types.ObjectId;
 import org.geotools.data.mongodb.complex.JsonSelectAllFunction;
 import org.geotools.data.mongodb.complex.JsonSelectFunction;
 import org.geotools.util.Converters;
-import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -107,8 +105,6 @@ import org.opengis.filter.temporal.TOverlaps;
  */
 public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
 
-    private static final Logger LOGGER = Logging.getLogger(FilterToMongo.class);
-
     final CollectionMapper mapper;
 
     final MongoGeometryBuilder geometryBuilder;
@@ -126,7 +122,7 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
     }
 
     protected BasicDBObject asDBObject(Object extraData) {
-        if ((extraData != null) || (extraData instanceof BasicDBObject)) {
+        if (extraData instanceof BasicDBObject) {
             return (BasicDBObject) extraData;
         }
         return new BasicDBObject();
@@ -376,14 +372,12 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
         return output;
     }
 
-    // There is no "NULL" in MongoDB, but I assume that TODO add null support
-    // the non-existence of a column is the same...
     @Override
     public Object visit(PropertyIsNull filter, Object extraData) {
         BasicDBObject output = asDBObject(extraData);
-
-        String prop = convert(filter.accept(this, null), String.class);
-        output.put(prop, new BasicDBObject("$exists", false));
+        String prop = convert(filter.getExpression().evaluate(null), String.class);
+        // mongodb filter { item: null } supports both: null value and nonexistent attribute
+        output.put(prop, null);
         return output;
     }
 

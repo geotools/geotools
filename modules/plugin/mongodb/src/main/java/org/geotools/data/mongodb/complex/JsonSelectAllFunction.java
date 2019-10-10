@@ -20,12 +20,18 @@ import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.AttributeExpressionImpl;
+import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
+import org.opengis.filter.expression.ExpressionVisitor;
+import org.opengis.filter.expression.PropertyName;
+import org.xml.sax.helpers.NamespaceSupport;
 
 /** Extracts all the values of a given JSON path. */
-public class JsonSelectAllFunction extends FunctionExpressionImpl {
+public class JsonSelectAllFunction extends FunctionExpressionImpl implements PropertyName {
+
+    private static final NamespaceSupport NAMESPACE_SUPPORT = new NamespaceSupport();
 
     public static FunctionName DEFINITION =
             new FunctionNameImpl("jsonSelectAll", parameter("path", String.class));
@@ -44,5 +50,27 @@ public class JsonSelectAllFunction extends FunctionExpressionImpl {
 
     public String getJsonPath() {
         return (String) this.params.get(0).evaluate(null);
+    }
+
+    @Override
+    public String getPropertyName() {
+        // returns the json path that corresponds to this property
+        return getJsonPath();
+    }
+
+    @Override
+    public NamespaceSupport getNamespaceContext() {
+        // static name space support
+        return NAMESPACE_SUPPORT;
+    }
+
+    @Override
+    public Object accept(ExpressionVisitor visitor, Object extraData) {
+        if (visitor instanceof FilterAttributeExtractor) {
+            // we explicitly handle the attribute extractor filter
+            return visitor.visit((PropertyName) this, extraData);
+        }
+        // proceed with the normal behavior
+        return super.accept(visitor, extraData);
     }
 }

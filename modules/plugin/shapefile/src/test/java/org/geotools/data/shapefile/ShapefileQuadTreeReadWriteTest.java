@@ -25,7 +25,6 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import junit.framework.AssertionFailedError;
 import org.geotools.TestData;
 import org.geotools.data.DataStore;
 import org.geotools.data.Query;
@@ -69,12 +68,6 @@ public class ShapefileQuadTreeReadWriteTest extends TestCaseSupport {
         }
     }
 
-    public void fail(String message, Throwable cause) throws Throwable {
-        Throwable fail = new AssertionFailedError(message);
-        fail.initCause(cause);
-        throw fail;
-    }
-
     @Test
     public void testReadOutside() throws Exception {
         File f = copyShapefiles("shapes/statepop.shp");
@@ -110,7 +103,7 @@ public class ShapefileQuadTreeReadWriteTest extends TestCaseSupport {
             throws IOException {
         Map params = new HashMap();
         params.put(ShapefileDataStoreFactory.URLP.key, url);
-        params.put(ShapefileDataStoreFactory.CREATE_SPATIAL_INDEX.key, new Boolean(true));
+        params.put(ShapefileDataStoreFactory.CREATE_SPATIAL_INDEX.key, Boolean.valueOf(true));
         DataStore createDataStore = fac.createDataStore(params);
         return createDataStore;
     }
@@ -234,7 +227,7 @@ public class ShapefileQuadTreeReadWriteTest extends TestCaseSupport {
 
         Map params = new HashMap();
         params.put(ShapefileDataStoreFactory.URLP.key, file.toURI().toURL());
-        params.put(ShapefileDataStoreFactory.CREATE_SPATIAL_INDEX.key, new Boolean(true));
+        params.put(ShapefileDataStoreFactory.CREATE_SPATIAL_INDEX.key, Boolean.valueOf(true));
         ShapefileDataStore ds = (ShapefileDataStore) fac.createDataStore(params);
 
         FilterFactory2 ff =

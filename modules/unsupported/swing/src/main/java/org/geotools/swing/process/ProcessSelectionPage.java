@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -71,8 +70,6 @@ public class ProcessSelectionPage extends JPage {
 
     /** The currently selected factory responsible for describing a process */
     ProcessFactory selectedFactory;
-
-    private Name selectedName;
 
     static final String defaultDesc = "Select a process to see its description";
 
@@ -187,7 +184,7 @@ public class ProcessSelectionPage extends JPage {
     /**
      * Populates an array of strings with the process factory titles based on the factory set
      *
-     * @param processFactories2 the string array to populate
+     * @param factories the string array to populate
      * @return
      */
     private TreeModel createFactoryTitleArray(Set<ProcessFactory> factories) {
@@ -297,30 +294,7 @@ public class ProcessSelectionPage extends JPage {
         };
     }
 
-    /**
-     * Returns the first instance of a ProcssFactory in the factories set that has a title matching
-     * the given title.
-     *
-     * @param title
-     * @return ProcessFactory instance
-     */
-    private ProcessFactory findProcessFactoryByTitle(String title) {
-        Iterator<ProcessFactory> iterator = processFactories.iterator();
-        while (iterator.hasNext()) {
-            ProcessFactory fac = iterator.next();
-            if (fac.getTitle().toString().equalsIgnoreCase(title)) {
-                return fac;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Update the process description based on the selected process
-     *
-     * @param selection title of selected process
-     * @param name
-     */
+    /** Update the process description based on the selected process */
     private void updateProcessDesc(ProcessFactory factory, Name name) {
         if (name == null || factory == null) {
             return;
@@ -329,7 +303,6 @@ public class ProcessSelectionPage extends JPage {
         InternationalString description = factory.getDescription(name);
         descLabel.setText(defaultDesc);
         selectedFactory = factory;
-        selectedName = name;
         updateNavButtons();
         descLabel.setText("<html><b>" + title + "</b>" + description);
         updateNavButtons();

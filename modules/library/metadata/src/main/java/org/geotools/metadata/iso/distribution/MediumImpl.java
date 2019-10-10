@@ -78,7 +78,7 @@ public class MediumImpl extends MetadataEntity implements Medium {
     }
 
     /** Set the name of the medium on which the resource can be received. */
-    public synchronized void setName(final MediumName newValue) {
+    public void setName(final MediumName newValue) {
         checkWritePermission();
         name = newValue;
     }
@@ -89,7 +89,7 @@ public class MediumImpl extends MetadataEntity implements Medium {
     }
 
     /** Set the units of measure for the recording density. */
-    public synchronized void setDensityUnits(final Unit newValue) {
+    public void setDensityUnits(final Unit newValue) {
         checkWritePermission();
         densityUnits = newValue;
     }
@@ -100,18 +100,18 @@ public class MediumImpl extends MetadataEntity implements Medium {
     }
 
     /** Set the number of items in the media identified. Returns {@code null} if unknown. */
-    public synchronized void setVolumes(final Integer newValue) {
+    public void setVolumes(final Integer newValue) {
         checkWritePermission();
         volumes = newValue;
     }
 
     /** Returns the method used to write to the medium. */
-    public synchronized Collection<MediumFormat> getMediumFormats() {
+    public Collection<MediumFormat> getMediumFormats() {
         return (mediumFormats = nonNullCollection(mediumFormats, MediumFormat.class));
     }
 
     /** Set the method used to write to the medium. */
-    public synchronized void setMediumFormats(final Collection<? extends MediumFormat> newValues) {
+    public void setMediumFormats(final Collection<? extends MediumFormat> newValues) {
         mediumFormats = copyCollection(newValues, mediumFormats, MediumFormat.class);
     }
 
@@ -121,7 +121,7 @@ public class MediumImpl extends MetadataEntity implements Medium {
     }
 
     /** Set a description of other limitations or requirements for using the medium. */
-    public synchronized void setMediumNote(final InternationalString newValue) {
+    public void setMediumNote(final InternationalString newValue) {
         checkWritePermission();
         mediumNote = newValue;
     }
@@ -129,12 +129,12 @@ public class MediumImpl extends MetadataEntity implements Medium {
     /**
      * Returns the density at which the data is recorded. The numbers should be greater than zero.
      */
-    public synchronized Collection<Double> getDensities() {
+    public Collection<Double> getDensities() {
         return (densities = nonNullCollection(densities, Double.class));
     }
 
     /** Set density at which the data is recorded. The numbers should be greater than zero. */
-    public synchronized void setDensities(final Collection<? extends Double> newValues) {
+    public void setDensities(final Collection<? extends Double> newValues) {
         densities = copyCollection(newValues, densities, Double.class);
     }
 

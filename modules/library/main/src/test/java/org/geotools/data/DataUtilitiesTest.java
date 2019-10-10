@@ -16,7 +16,9 @@
  */
 package org.geotools.data;
 
+import static org.hamcrest.Matchers.arrayContaining;
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertThat;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -32,9 +34,9 @@ import java.util.Set;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.FakeTypes;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureTypes;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -47,8 +49,17 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.factory.Hints;
+import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -67,6 +78,7 @@ import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.sort.SortBy;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
@@ -103,6 +115,11 @@ public class DataUtilitiesTest extends DataTestCase {
         FeatureSource<SimpleFeatureType, SimpleFeature> source = DataUtilities.source(collection);
         SimpleFeatureSource simple = DataUtilities.simple(source);
         assertSame(simple, source);
+    }
+
+    public void testSimpleType() throws DataSourceException {
+        SimpleFeatureType simpleFeatureType = DataUtilities.simple(FakeTypes.Mine.MINETYPE_TYPE);
+        assertEquals(null, simpleFeatureType.getGeometryDescriptor());
     }
 
     public void testDataStore() throws IOException {
@@ -336,6 +353,11 @@ public class DataUtilitiesTest extends DataTestCase {
         SimpleFeatureType road3 =
                 DataUtilities.createType("test.road", "id:0,geom:LineString,name:String,uuid:UUID");
         assertEquals(0, DataUtilities.compare(road3, roadType));
+
+        // different attribute bindings
+        SimpleFeatureType road4 =
+                DataUtilities.createType("road", "id:0,geom:LineString,name:String,uuid:String");
+        assertEquals(-1, DataUtilities.compare(road4, roadType));
     }
 
     public void testIsMatch() {}
@@ -499,9 +521,16 @@ public class DataUtilitiesTest extends DataTestCase {
     }
 
     public void testDefaultValue() throws IllegalAttributeException {
-        assertNull(DataUtilities.defaultValue(roadType.getDescriptor("name")));
-        assertNull(DataUtilities.defaultValue(roadType.getDescriptor("id")));
-        assertNull(DataUtilities.defaultValue(roadType.getDescriptor("geom")));
+        assertNull(roadType.getDescriptor("name").getDefaultValue());
+        assertNull(roadType.getDescriptor("id").getDefaultValue());
+        assertNull(roadType.getDescriptor("geom").getDefaultValue());
+
+        GeometryFactory fac = new GeometryFactory();
+        Coordinate coordinate = new Coordinate(0, 0);
+        Point point = fac.createPoint(coordinate);
+
+        Geometry geometry = fac.createGeometry(point);
+        assertEquals(geometry, DataUtilities.defaultValue(Geometry.class));
     }
 
     public void testDefaultValueArray() throws Exception {
@@ -643,18 +672,18 @@ public class DataUtilitiesTest extends DataTestCase {
      * @throws Exception
      */
     public void testMixQueries() throws Exception {
-        DefaultQuery firstQuery;
-        DefaultQuery secondQuery;
+        Query firstQuery;
+        Query secondQuery;
 
         firstQuery =
-                new DefaultQuery(
+                new Query(
                         "typeName",
                         Filter.EXCLUDE,
                         100,
                         new String[] {"att1", "att2", "att3"},
                         "handle");
         secondQuery =
-                new DefaultQuery(
+                new Query(
                         "typeName",
                         Filter.EXCLUDE,
                         20,
@@ -684,9 +713,9 @@ public class DataUtilitiesTest extends DataTestCase {
         filter1 = ffac.equals(ffac.property("att1"), ffac.literal("val1"));
         filter2 = ffac.equals(ffac.property("att2"), ffac.literal("val2"));
 
-        firstQuery = new DefaultQuery("typeName", filter1, 100, null, "handle");
+        firstQuery = new Query("typeName", filter1, 100, (String[]) null, "handle");
         secondQuery =
-                new DefaultQuery(
+                new Query(
                         "typeName", filter2, 20, new String[] {"att1", "att2", "att4"}, "handle2");
 
         mixed = DataUtilities.mixQueries(firstQuery, secondQuery, "newhandle");
@@ -737,8 +766,8 @@ public class DataUtilitiesTest extends DataTestCase {
         Filter filter = ff.and(Filter.INCLUDE, Filter.INCLUDE);
         Query query = new Query(Query.ALL);
         query.setFilter(filter);
-        DataUtilities.simplifyFilter(query);
-        assertEquals(Filter.INCLUDE, query.getFilter());
+        final Query result = DataUtilities.simplifyFilter(query);
+        assertEquals(Filter.INCLUDE, result.getFilter());
     }
 
     public void testSpecNoCRS() throws Exception {
@@ -757,6 +786,37 @@ public class DataUtilitiesTest extends DataTestCase {
         // System.out.println("BEFORE:"+spec);
         // System.out.println(" AFTER:"+spec2);
         assertEquals(spec, spec2);
+    }
+
+    public void testAllGeometryTypes() throws Exception {
+        List<Class<?>> bindings =
+                Arrays.asList(
+                        Geometry.class,
+                        Point.class,
+                        LineString.class,
+                        Polygon.class,
+                        MultiPoint.class,
+                        MultiLineString.class,
+                        MultiPolygon.class,
+                        GeometryCollection.class);
+
+        StringBuilder specBuilder = new StringBuilder();
+        bindings.forEach(
+                b ->
+                        specBuilder
+                                .append(b.getSimpleName())
+                                .append("_type:")
+                                .append(b.getName())
+                                .append(','));
+
+        String spec = specBuilder.toString();
+        SimpleFeatureType ft = DataUtilities.createType("testType", spec);
+        bindings.forEach(
+                b -> {
+                    AttributeDescriptor descriptor = ft.getDescriptor(b.getSimpleName() + "_type");
+                    assertNotNull(descriptor);
+                    assertEquals(b, descriptor.getType().getBinding());
+                });
     }
 
     public void testSpecNotIdentifiable() throws Exception {
@@ -836,7 +896,26 @@ public class DataUtilitiesTest extends DataTestCase {
         assertEquals(3, list2.size());
     }
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(DataUtilitiesTest.class);
+    public void testMixQueriesSort() {
+        // simple merge, no conflict
+        Query q1 = new Query();
+        Query q2 = new Query();
+        q2.setSortBy(new SortBy[] {SortBy.NATURAL_ORDER});
+        assertThat(
+                DataUtilities.mixQueries(q1, q2, null).getSortBy(),
+                arrayContaining(SortBy.NATURAL_ORDER));
+        assertThat(
+                DataUtilities.mixQueries(q2, q1, null).getSortBy(),
+                arrayContaining(SortBy.NATURAL_ORDER));
+
+        // more complex, override (the second wins)
+        Query q3 = new Query();
+        q3.setSortBy(new SortBy[] {SortBy.REVERSE_ORDER});
+        assertThat(
+                DataUtilities.mixQueries(q2, q3, null).getSortBy(),
+                arrayContaining(SortBy.REVERSE_ORDER));
+        assertThat(
+                DataUtilities.mixQueries(q3, q2, null).getSortBy(),
+                arrayContaining(SortBy.NATURAL_ORDER));
     }
 }

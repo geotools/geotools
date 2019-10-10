@@ -48,7 +48,7 @@ public final class DynamicSymbolFactoryFinder {
             org.geotools.util.logging.Logging.getLogger(DynamicSymbolFactoryFinder.class);
 
     /** The service registry for this manager. Will be initialized only when first needed. */
-    private static FactoryRegistry registry;
+    private static volatile FactoryRegistry registry;
 
     // Singleton pattern
     private DynamicSymbolFactoryFinder() {}

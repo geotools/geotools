@@ -21,14 +21,15 @@ import java.io.InputStream;
 import java.util.List;
 import net.opengis.wfs.GetFeatureType;
 import org.geotools.data.ows.HTTPResponse;
-import org.geotools.data.wfs.internal.GetFeatureParser;
 import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.data.wfs.internal.GetFeatureResponse;
+import org.geotools.data.wfs.internal.GetParser;
 import org.geotools.data.wfs.internal.WFSOperationType;
 import org.geotools.data.wfs.internal.WFSRequest;
 import org.geotools.data.wfs.internal.WFSResponse;
 import org.geotools.data.wfs.internal.WFSResponseFactory;
 import org.geotools.ows.ServiceException;
+import org.opengis.feature.simple.SimpleFeature;
 
 /** An abstract WFS response parser factory for GetFeature requests in GML output formats. */
 @SuppressWarnings("nls")
@@ -72,7 +73,7 @@ public abstract class AbstractGetFeatureResponseParserFactory extends AbstractWF
 
     protected WFSResponse createResponseImpl(
             WFSRequest request, HTTPResponse response, InputStream in) throws IOException {
-        GetFeatureParser parser = parser((GetFeatureRequest) request, in);
+        GetParser<SimpleFeature> parser = parser((GetFeatureRequest) request, in);
         try {
             return new GetFeatureResponse(request, response, parser);
         } catch (ServiceException e) {
@@ -93,7 +94,7 @@ public abstract class AbstractGetFeatureResponseParserFactory extends AbstractWF
         return WFSOperationType.GET_FEATURE.equals(operation);
     }
 
-    protected abstract GetFeatureParser parser(GetFeatureRequest request, InputStream in)
+    protected abstract GetParser<SimpleFeature> parser(GetFeatureRequest request, InputStream in)
             throws IOException;
 
     protected abstract List<String> getSupportedVersions();

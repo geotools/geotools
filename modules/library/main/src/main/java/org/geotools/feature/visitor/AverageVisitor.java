@@ -21,6 +21,7 @@ import java.util.List;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.IllegalFilterException;
+import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -113,7 +114,7 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
     }
 
     public void visit(SimpleFeature feature) {
-        visit(feature);
+        visit((Feature) feature);
     }
 
     public void visit(org.opengis.feature.Feature feature) {
@@ -199,11 +200,11 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
         }
 
         public Object getResult() {
-            return new Double(number / count);
+            return Double.valueOf(number / count);
         }
 
         public Object getSum() {
-            return new Double(number);
+            return Double.valueOf(number);
         }
 
         public int getCount() {
@@ -227,11 +228,11 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
         }
 
         public Object getResult() {
-            return new Float((float) number / count);
+            return Float.valueOf((float) number / count);
         }
 
         public Object getSum() {
-            return new Float(number);
+            return Float.valueOf(number);
         }
 
         public int getCount() {
@@ -255,11 +256,11 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
         }
 
         public Object getResult() {
-            return new Double((double) number / count);
+            return Double.valueOf((double) number / count);
         }
 
         public Object getSum() {
-            return new Long(number);
+            return Long.valueOf(number);
         }
 
         public int getCount() {
@@ -283,11 +284,11 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
         }
 
         public Object getResult() {
-            return new Double((double) number / count);
+            return Double.valueOf((double) number / count);
         }
 
         public Object getSum() {
-            return new Integer(number);
+            return Integer.valueOf(number);
         }
 
         public int getCount() {
@@ -397,7 +398,7 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
                 Number newSum = CalcUtil.sum(sums);
                 Number newCount =
                         (Number)
-                                new Integer(
+                                Integer.valueOf(
                                         averageStrategy.getCount()
                                                 + moreResults.averageStrategy.getCount());
                 Number[] params = new Number[] {newSum, newCount};

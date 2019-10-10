@@ -21,6 +21,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import org.json.simple.parser.ParseException;
 
+@SuppressWarnings("PMD.SystemPrintln")
 public class TracingHandler implements InvocationHandler {
 
     int indent = 0;

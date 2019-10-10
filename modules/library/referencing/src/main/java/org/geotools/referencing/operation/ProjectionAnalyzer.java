@@ -76,17 +76,6 @@ final class ProjectionAnalyzer {
     private final Conversion projection;
 
     /**
-     * The affine transform applied on geographic coordinates before the projection. In Geotools
-     * {@link MapProjection} implementation, this is the axis swapping and scaling needed in order
-     * to get standard (<var>longitude</var>,<var>latitude</var>) axis in degrees. Can be {@code
-     * null} if none.
-     *
-     * <p>This is not needed for {@code ProjectionAnalyzer} working, but is stored anyway for
-     * debugging purpose.
-     */
-    private final Matrix geographicScale;
-
-    /**
      * The affine transform applied on projected coordinates after the projection. In Geotools
      * {@link MapProjection} implementation, this is the axis swapping and scaling needed in order
      * to get standard (<var>x</var>,<var>y</var>) axis in metres. Can be {@code null} if none.
@@ -175,7 +164,6 @@ final class ProjectionAnalyzer {
         if (group != null) {
             parameters = group.values();
         }
-        this.geographicScale = geographicScale;
         this.projectedScale = projectedScale;
         this.transform = candidate;
     }

@@ -154,9 +154,7 @@ public class IndexFile implements FileReader {
     private void readRecord(int index) throws IOException {
         check();
         int pos = 100 + index * 8;
-        if (this.useMemoryMappedBuffer) {
-
-        } else {
+        if (!this.useMemoryMappedBuffer) {
             if (pos - this.channelOffset < 0
                     || this.channelOffset + buf.limit() <= pos
                     || this.lastIndex == -1) {
@@ -189,6 +187,7 @@ public class IndexFile implements FileReader {
     }
 
     /** @see java.lang.Object#finalize() */
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         this.close();
         super.finalize();

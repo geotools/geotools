@@ -20,7 +20,7 @@ package org.geotools.data.complex.feature.type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import org.geotools.data.complex.ComplexFeatureConstants;
+import org.geotools.data.complex.util.ComplexFeatureConstants;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.Name;
@@ -50,7 +50,6 @@ public class ComplexFeatureTypeImpl extends UniqueNameFeatureTypeImpl {
      * @param restrictions List of restrictions
      * @param superType Super type
      * @param description Feature description
-     * @param featureLink System attribute used to link between features
      */
     public ComplexFeatureTypeImpl(
             Name name,

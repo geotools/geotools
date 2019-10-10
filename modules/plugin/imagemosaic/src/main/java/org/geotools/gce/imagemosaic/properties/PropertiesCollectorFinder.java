@@ -28,7 +28,7 @@ import org.geotools.util.factory.FactoryRegistry;
 /** @author Simone Giannecchini, GeoSolutions SAS */
 public final class PropertiesCollectorFinder {
     /** The service registry for this manager. Will be initialized only when first needed. */
-    private static FactoryRegistry registry;
+    private static volatile FactoryRegistry registry;
 
     /** Do not allows any instantiation of this class. */
     private PropertiesCollectorFinder() {

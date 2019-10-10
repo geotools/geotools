@@ -16,6 +16,8 @@
  */
 package org.geotools.metadata.math;
 
+import java.util.Objects;
+
 /**
  * A fraction made of a numerator and a denominator. This is not the purpose of this class to
  * provides a full-fledged library for fractional number handling. This class exists mostly for the
@@ -356,6 +358,11 @@ public final class Fraction extends Number implements Comparable<Fraction>, Clon
             return numerator == that.numerator && denominator == that.denominator;
         }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(numerator, denominator);
     }
 
     /**

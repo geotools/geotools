@@ -47,9 +47,9 @@ public class FacetTest extends TestCase {
         List list = (List) o;
         assertEquals(3, list.size());
 
-        assertEquals(new Integer(1), list.get(0));
-        assertEquals(new Integer(2), list.get(1));
-        assertEquals(new Integer(3), list.get(2));
+        assertEquals(Integer.valueOf(1), list.get(0));
+        assertEquals(Integer.valueOf(2), list.get(1));
+        assertEquals(Integer.valueOf(3), list.get(2));
     }
 
     public void testWhitespace() throws Exception {

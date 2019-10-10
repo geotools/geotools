@@ -133,7 +133,11 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
     }
 
     Name getTypeName() {
-        return new NameImpl(namespaceURI, shpFiles.getTypeName());
+        String typeName = "Null";
+        if (shpFiles != null) {
+            typeName = shpFiles.getTypeName();
+        }
+        return new NameImpl(namespaceURI, typeName);
     }
 
     @Override
@@ -348,11 +352,6 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
     /**
      * Attempt to create a DbaseFileHeader for the FeatureType. Note, we cannot set the number of
      * records until the write has completed.
-     *
-     * @param featureType DOCUMENT ME!
-     * @return DOCUMENT ME!
-     * @throws IOException DOCUMENT ME!
-     * @throws DbaseFileException DOCUMENT ME!
      */
     protected static DbaseFileHeader createDbaseHeader(SimpleFeatureType featureType)
             throws IOException, DbaseFileException {
@@ -454,6 +453,7 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
     }
 
     @Override
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         super.finalize();
         if (shpFiles != null && trace != null) {

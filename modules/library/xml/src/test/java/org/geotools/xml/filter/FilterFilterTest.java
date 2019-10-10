@@ -16,6 +16,9 @@
  */
 package org.geotools.xml.filter;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.junit.Assert.*;
+
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -25,28 +28,29 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import junit.framework.AssertionFailedError;
-import junit.framework.TestCase;
 import org.geotools.filter.FilterHandler;
-import org.geotools.filter.FilterType;
-import org.geotools.filter.Filters;
 import org.geotools.filter.LogicFilterImpl;
 import org.geotools.gml.GMLFilterDocument;
 import org.geotools.gml.GMLFilterGeometry;
 import org.geotools.util.logging.Logging;
+import org.junit.Test;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.Filter;
+import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.spatial.BBOX;
+import org.opengis.filter.spatial.Intersects;
 import org.xml.sax.InputSource;
 import org.xml.sax.helpers.ParserAdapter;
 import org.xml.sax.helpers.XMLFilterImpl;
 
-public class FilterFilterTest extends TestCase {
+public class FilterFilterTest {
 
-    public static void testWithoutFunction() throws Exception {
+    @Test
+    public void testWithoutFunction() throws Exception {
         String filter =
                 "<wfs:GetFeature service=\"WFS\" version=\"1.0.0\" "
                         + "outputFormat=\"GML2\" "
@@ -101,16 +105,17 @@ public class FilterFilterTest extends TestCase {
         Filter f1 = (Filter) sub.get(0);
         Filter f2 = (Filter) sub.get(1);
 
-        assertEquals(FilterType.GEOMETRY_INTERSECTS, Filters.getFilterType(f1));
-        assertEquals(FilterType.GEOMETRY_BBOX, Filters.getFilterType(f2));
+        assertThat(f1, instanceOf(Intersects.class));
+        assertThat(f2, instanceOf(BBOX.class));
     }
 
+    @Test
     public void testLikeMatchCase_v1_0() throws Exception {
         testLikeMatchCase_v1_0(true);
         testLikeMatchCase_v1_0(false);
     }
 
-    private void testLikeMatchCase_v1_0(boolean matchCase) throws Exception {
+    void testLikeMatchCase_v1_0(boolean matchCase) throws Exception {
         String filter =
                 "<wfs:GetFeature service=\"WFS\" version=\"1.0.0\" "
                         + "outputFormat=\"GML2\" "
@@ -155,6 +160,7 @@ public class FilterFilterTest extends TestCase {
         assertEquals(matchCase, like.isMatchingCase());
     }
 
+    @Test
     public void testWithFunction() throws Exception {
         String filter =
                 "<wfs:GetFeature service=\"WFS\" version=\"1.0.0\" "
@@ -211,6 +217,7 @@ public class FilterFilterTest extends TestCase {
         assertEquals(contentHandler.filters.size(), 1);
     }
 
+    @Test
     public void testWithFunction2() throws Exception {
         String filter =
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
@@ -282,6 +289,7 @@ public class FilterFilterTest extends TestCase {
      *
      * @throws Exception
      */
+    @Test
     public void testLargeFilter() throws Exception {
         final int filterCount = 100;
         String filter =
@@ -332,7 +340,7 @@ public class FilterFilterTest extends TestCase {
         assertEquals(1, contentHandler.filters.size());
         Filter f = (Filter) contentHandler.filters.get(0);
         assertTrue(f instanceof BinaryLogicOperator);
-        assertEquals(FilterType.LOGIC_OR, Filters.getFilterType(f));
+        assertThat(f, instanceOf(Or.class));
 
         int i = 0;
         for (Iterator<org.opengis.filter.Filter> filters =
@@ -345,13 +353,7 @@ public class FilterFilterTest extends TestCase {
                 attName.append("eventtype-" + repCount + "_");
             }
             String parsedName = ((PropertyName) subFilter.getExpression1()).getPropertyName();
-            try {
-                assertEquals("at index " + i, attName.toString(), parsedName);
-            } catch (AssertionFailedError e) {
-                Logging.getLogger(FilterFilterTest.class)
-                        .warning("expected " + attName + ",\n but was " + parsedName);
-                throw e;
-            }
+            assertEquals("at index " + i, attName.toString(), parsedName);
             assertEquals("literal-" + i, ((Literal) subFilter.getExpression2()).getValue());
         }
         assertEquals(filterCount, i);

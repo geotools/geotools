@@ -98,7 +98,7 @@ final class HttpStaticServer {
                                 resourceName, resourcePath));
             }
             // read the resource from the classpath
-            String resource = IOUtils.toString(input);
+            String resource = IOUtils.toString(input, "UTF-8");
             // substitute host and port place holders
             String relativePath =
                     URLs.urlToFile(URLs.getParentUrl(this.getClass().getResource(resourcePath)))

@@ -17,7 +17,7 @@
 
 package org.geotools.data.complex.filter;
 
-import static org.geotools.data.complex.ComplexFeatureConstants.DEFAULT_GEOMETRY_LOCAL_NAME;
+import static org.geotools.data.complex.util.ComplexFeatureConstants.DEFAULT_GEOMETRY_LOCAL_NAME;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,9 +32,9 @@ import org.geotools.appschema.filter.NestedAttributeExpression;
 import org.geotools.data.complex.AttributeMapping;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.NestedAttributeMapping;
-import org.geotools.data.complex.filter.XPathUtil.Step;
-import org.geotools.data.complex.filter.XPathUtil.StepList;
 import org.geotools.data.complex.spi.CustomImplementationsFinder;
+import org.geotools.data.complex.util.XPathUtil.Step;
+import org.geotools.data.complex.util.XPathUtil.StepList;
 import org.geotools.factory.CommonFactoryFinder;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.Name;
@@ -525,7 +525,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
     }
 
     public Object visit(BBOX filter, Object arg1) {
-        String propertyName = filter.getPropertyName();
+        String propertyName = ((PropertyName) filter.getExpression1()).getPropertyName();
         if (propertyName.length() < 1) {
             // see GetFeatureKvpRequestReader bboxFilter()
             // propertyName is meant to be empty, and it will get it from the feature

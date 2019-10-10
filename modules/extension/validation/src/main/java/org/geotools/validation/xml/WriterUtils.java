@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * WriterUtils purpose.
@@ -33,10 +32,6 @@ import java.util.logging.Logger;
  * @version $Id$
  */
 class WriterUtils {
-    /** Used internally to create log information to detect errors. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(WriterUtils.class);
-
     /** The output writer. */
     protected Writer writer;
 

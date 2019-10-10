@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 /*$************************************************************************************************
  **
  ** $Id$
@@ -9,6 +25,7 @@
  *************************************************************************************************/
 package org.geotools.geometry.jts.spatialschema.geometry;
 
+import java.util.Objects;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Envelope;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -88,28 +105,10 @@ public class EnvelopeImpl implements Envelope {
 
     /**
      * @inheritDoc
-     * @see org.opengis.geometry.coordinate.Envelope#getCenter(int)
-     */
-    @Deprecated
-    public final double getCenter(int dimension) {
-        return 0.5 * (upperCorner.getOrdinate(dimension) + lowerCorner.getOrdinate(dimension));
-    }
-
-    /**
-     * @inheritDoc
      * @see org.opengis.geometry.coordinate.Envelope#getMedian(int)
      */
     public final double getMedian(int dimension) {
         return 0.5 * (upperCorner.getOrdinate(dimension) + lowerCorner.getOrdinate(dimension));
-    }
-
-    /**
-     * @inheritDoc
-     * @see org.opengis.geometry.coordinate.Envelope#getLength(int)
-     */
-    @Deprecated
-    public final double getLength(int dimension) {
-        return upperCorner.getOrdinate(dimension) - lowerCorner.getOrdinate(dimension);
     }
 
     /**
@@ -148,6 +147,11 @@ public class EnvelopeImpl implements Envelope {
             returnable.append(",").append(bbox[i]);
         }
         return returnable.append("]").toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(lowerCorner, upperCorner);
     }
 
     /**

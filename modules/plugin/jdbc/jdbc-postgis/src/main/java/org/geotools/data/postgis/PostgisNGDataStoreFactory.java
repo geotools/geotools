@@ -16,24 +16,29 @@
  */
 package org.geotools.data.postgis;
 
-import static org.geotools.data.postgis.PostgisNGDataStoreFactory.SIMPLIFY;
-
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.sql.DataSource;
 import org.geotools.data.Parameter;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.SQLDialect;
 import org.geotools.util.KVP;
+import org.geotools.util.logging.Logging;
+import org.postgresql.jdbc.SslMode;
 
 public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
+
+    static final Logger LOGGER = Logging.getLogger(PostgisNGDataStoreFactory.class);
 
     /** parameter for database type */
     public static final Param DBTYPE =
@@ -111,7 +116,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
                             + "However this allows to push more of the filter into the database, increasing performance."
                             + "the postgis table.",
                     false,
-                    new Boolean(true),
+                    Boolean.TRUE,
                     new KVP(Param.LEVEL, "advanced"));
 
     /** Enables usage of ST_Simplify when the queries contain geometry simplification hints */
@@ -122,6 +127,33 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
                     "When enabled, operations such as map rendering will pass a hint that will enable the usage of ST_Simplify",
                     false,
                     Boolean.TRUE);
+
+    public static final Param SSL_MODE =
+            new Param(
+                    "SSL mode",
+                    SslMode.class,
+                    "The connectin SSL mode",
+                    false,
+                    SslMode.DISABLE,
+                    new KVP(Param.OPTIONS, Arrays.asList(SslMode.values())));
+
+    @Override
+    protected SQLDialect createSQLDialect(JDBCDataStore dataStore, Map params) {
+        PostGISDialect dialect = new PostGISDialect(dataStore);
+        try {
+            if (Boolean.TRUE.equals(PREPARED_STATEMENTS.lookUp(params))) {
+                return new PostGISPSDialect(dataStore, dialect);
+            }
+        } catch (IOException e) {
+            if (LOGGER.isLoggable(Level.FINE))
+                LOGGER.log(
+                        Level.FINE,
+                        "Failed to lookup prepared statement parameter, continuining with non prepared dialect",
+                        e);
+        }
+
+        return dialect;
+    }
 
     @Override
     protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {
@@ -170,7 +202,13 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
             throws IOException {
 
         // setup loose bbox
-        PostGISDialect dialect = (PostGISDialect) dataStore.getSQLDialect();
+        SQLDialect genericDialect = dataStore.getSQLDialect();
+        PostGISDialect dialect;
+        if (genericDialect instanceof PostGISPSDialect) {
+            dialect = ((PostGISPSDialect) genericDialect).getDelegate();
+        } else {
+            dialect = (PostGISDialect) dataStore.getSQLDialect();
+        }
         Boolean loose = (Boolean) LOOSEBBOX.lookUp(params);
         dialect.setLooseBBOXEnabled(loose == null || Boolean.TRUE.equals(loose));
 
@@ -199,8 +237,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         if (largeGeometriesOptimized != null) {
             encodeBBOXAsEnvelope = largeGeometriesOptimized.toLowerCase().equals("true");
         }
-        dialect.setEncodeBBOXFilterAsEnvelope(
-                encodeBBOXAsEnvelope != null && Boolean.TRUE.equals(encodeBBOXAsEnvelope));
+        dialect.setEncodeBBOXFilterAsEnvelope(Boolean.TRUE.equals(encodeBBOXAsEnvelope));
 
         return dataStore;
     }
@@ -215,6 +252,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         parameters.put(LOOSEBBOX.key, LOOSEBBOX);
         parameters.put(ESTIMATED_EXTENTS.key, ESTIMATED_EXTENTS);
         parameters.put(PORT.key, PORT);
+        parameters.put(SSL_MODE.key, SSL_MODE);
         parameters.put(PREPARED_STATEMENTS.key, PREPARED_STATEMENTS);
         parameters.put(MAX_OPEN_PREPARED_STATEMENTS.key, MAX_OPEN_PREPARED_STATEMENTS);
         parameters.put(ENCODE_FUNCTIONS.key, ENCODE_FUNCTIONS);
@@ -233,12 +271,18 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         String host = (String) HOST.lookUp(params);
         String db = (String) DATABASE.lookUp(params);
         int port = (Integer) PORT.lookUp(params);
-        return "jdbc:postgresql" + "://" + host + ":" + port + "/" + db;
+        String url = "jdbc:postgresql" + "://" + host + ":" + port + "/" + db;
+        SslMode mode = (SslMode) SSL_MODE.lookUp(params);
+        if (mode != null) {
+            url = url + "?sslmode=" + mode + "&binaryTransferEnable=bytea";
+        }
+
+        return url;
     }
 
     protected DataSource createDataSource(Map params, SQLDialect dialect) throws IOException {
         DataSource ds = super.createDataSource(params, dialect);
-        JDBCDataStore closer = new JDBCDataStore();
+        JDBCDataStore store = new JDBCDataStore();
 
         if (Boolean.TRUE.equals(CREATE_DB_IF_MISSING.lookUp(params))) {
             // verify we can connect
@@ -249,7 +293,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
             } catch (SQLException e) {
                 canConnect = false;
             } finally {
-                closer.closeSafe(cx);
+                store.closeSafe(cx);
             }
 
             if (!canConnect) {
@@ -279,8 +323,8 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
                 } catch (SQLException e) {
                     throw new IOException("Failed to create the target database", e);
                 } finally {
-                    closer.closeSafe(st);
-                    closer.closeSafe(cx);
+                    store.closeSafe(st);
+                    store.closeSafe(cx);
                 }
 
                 // if we got here the database has been created, now verify it has the postgis
@@ -295,16 +339,17 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
                     st = cx.createStatement();
                     try {
                         rs = st.executeQuery("select PostGIS_version()");
-                        rs.close();
                     } catch (SQLException e) {
                         // not available eh? create it
                         st.execute("create extension postgis");
+                    } finally {
+                        store.closeSafe(rs);
                     }
                 } catch (SQLException e) {
                     throw new IOException("Failed to create the target database", e);
                 } finally {
-                    closer.closeSafe(st);
-                    closer.closeSafe(cx);
+                    store.closeSafe(st);
+                    store.closeSafe(cx);
                 }
 
                 // and finally re-create the connection pool
@@ -333,7 +378,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
      * @throws IOException
      */
     public void dropDatabase(Map<String, Object> params) throws IOException {
-        JDBCDataStore closer = new JDBCDataStore();
+        JDBCDataStore store = new JDBCDataStore();
         // get the connection params
         String host = (String) HOST.lookUp(params);
         int port = (Integer) PORT.lookUp(params);
@@ -355,8 +400,8 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         } catch (SQLException e) {
             throw new IOException("Failed to drop the target database", e);
         } finally {
-            closer.closeSafe(st);
-            closer.closeSafe(cx);
+            store.closeSafe(st);
+            store.closeSafe(cx);
         }
     }
 }

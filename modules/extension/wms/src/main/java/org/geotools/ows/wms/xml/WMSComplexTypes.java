@@ -2803,8 +2803,8 @@ public class WMSComplexTypes {
                 if (sameName(elems[21], value[i])) {
                     double[] scaleHint = (double[]) value[i].getValue();
 
-                    layer.setScaleHintMin(scaleHint[0]);
-                    layer.setScaleHintMax(scaleHint[1]);
+                    layer.setScaleDenominatorMin(scaleHint[0]);
+                    layer.setScaleDenominatorMax(scaleHint[1]);
                 }
             }
 
@@ -4480,13 +4480,13 @@ public class WMSComplexTypes {
                     legendURLS.add((String) value[i].getValue());
                 }
 
-                if (sameName(elems[4], value[i])) {
-                    // TODO Implement StyleSheet URL
-                }
-
-                if (sameName(elems[5], value[i])) {
-                    // TODO implement StyleURL
-                }
+                //                if (sameName(elems[4], value[i])) {
+                //                    // TODO Implement StyleSheet URL
+                //                }
+                //
+                //                if (sameName(elems[5], value[i])) {
+                //                    // TODO implement StyleURL
+                //                }
             }
             style.setLegendURLs(legendURLS);
             return style;
@@ -6897,7 +6897,7 @@ public class WMSComplexTypes {
 
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
-            return new Double((String) value[0].getValue());
+            return Double.valueOf((String) value[0].getValue());
         }
 
         public String getName() {
@@ -6966,7 +6966,7 @@ public class WMSComplexTypes {
          */
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
-            return new Double((String) value[0].getValue());
+            return Double.valueOf((String) value[0].getValue());
         }
 
         /*

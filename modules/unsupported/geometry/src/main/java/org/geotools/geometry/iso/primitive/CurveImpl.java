@@ -32,7 +32,6 @@ import org.geotools.geometry.iso.io.GeometryToString;
 import org.geotools.geometry.iso.operation.IsSimpleOp;
 import org.geotools.geometry.iso.operation.Merger;
 import org.geotools.geometry.iso.util.DoubleOperation;
-import org.geotools.geometry.iso.util.algorithmND.AlgoPointND;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.Geometry;
@@ -420,36 +419,37 @@ public class CurveImpl extends OrientableCurveImpl implements Curve {
         /* Initialise paramForPoints with set of first Segment */
         ParamForPoint paramForPoints = this.curveSegments.get(0).getParamForPoint(p);
 
-        double minDistanceSquare =
-                AlgoPointND.getDistanceSquare(
-                        p.getCoordinate(), paramForPoints.getPosition().getCoordinate());
+        //        double minDistanceSquare =
+        //                AlgoPointND.getDistanceSquare(
+        //                        p.getCoordinate(), paramForPoints.getPosition().getCoordinate());
         // double minDistanceSquare = ((DirectPositionImpl)
         // p).distanceSquare(paramForPoints.getDirectPosition());
-        double actDistanceSquare = 0.0;
+        // double actDistanceSquare = 0.0;
 
         /* Loop all other segments and check if the distance of them is smaller */
-        for (int i = 1; i < this.curveSegments.size(); i++) {
-            ParamForPoint paramForPoints1 = this.curveSegments.get(i).getParamForPoint(p);
+        // for (int i = 1; i < this.curveSegments.size(); i++) {
+        // ParamForPoint paramForPoints1 = this.curveSegments.get(i).getParamForPoint(p);
 
-            actDistanceSquare =
-                    AlgoPointND.getDistanceSquare(
-                            p.getCoordinate(), paramForPoints1.getPosition().getCoordinate());
-            // actDistanceSquare = ((DirectPositionImpl)
-            // p).distanceSquare(paramForPoints1.getDirectPosition());
+        //            actDistanceSquare =
+        //                    AlgoPointND.getDistanceSquare(
+        //                            p.getCoordinate(),
+        // paramForPoints1.getPosition().getCoordinate());
+        // actDistanceSquare = ((DirectPositionImpl)
+        // p).distanceSquare(paramForPoints1.getDirectPosition());
 
-            if (actDistanceSquare <= minDistanceSquare) {
-                // TODO
-                // /* If other params are closer, clear list of params */
-                // if (actDistanceSquare < minDistanceSquare) {
-                // ((ParamForPoint)paramForPoints).clear();
-                // }
-                // /* Add new minimal distances to list of params */
-                // for (int j = 0; j < obj.length; j++) {
-                // paramForPoints.add((Double) obj[j]);
-                // }
-                // minDistanceSquare = actDistanceSquare;
-            }
-        }
+        // TODO
+        // if (actDistanceSquare <= minDistanceSquare) {
+        // /* If other params are closer, clear list of params */
+        // if (actDistanceSquare < minDistanceSquare) {
+        // ((ParamForPoint)paramForPoints).clear();
+        // }
+        // /* Add new minimal distances to list of params */
+        // for (int j = 0; j < obj.length; j++) {
+        // paramForPoints.add((Double) obj[j]);
+        // }
+        // minDistanceSquare = actDistanceSquare;
+        // }
+        // }
 
         return paramForPoints;
     }
@@ -784,10 +784,8 @@ public class CurveImpl extends OrientableCurveImpl implements Curve {
 
         /* Default-Values */
         if (point1 == null && point2 == null) return this.length();
-        // if (point1 == null)
-        // point1 = new PositionImpl(this.getStartPoint());
-        // if (point2 == null)
-        // point2 = new PositionImpl(this.getEndPoint());
+        if (point1 == null) point1 = new PositionImpl(this.getStartPoint());
+        if (point2 == null) point2 = new PositionImpl(this.getEndPoint());
 
         /* Get all Params for closest points to startposition point1 */
         ParamForPoint startParams = this.getParamForPoint(point1.getDirectPosition());

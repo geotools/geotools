@@ -96,6 +96,12 @@ public class MapViewport {
     private CopyOnWriteArrayList<MapBoundsListener> boundsListeners;
     private boolean matchingAspectRatio;
     private boolean hasCenteringTransforms;
+    /**
+     * Determine if the map retains its scale (false) or its bounds (true) when the MapPane is
+     * resized.
+     */
+    private boolean fixedBoundsOnResize = false;
+
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
     /**
@@ -350,8 +356,11 @@ public class MapViewport {
         } else {
             this.screenArea = new Rectangle(screenArea);
         }
-
-        setTransforms(false);
+        if (fixedBoundsOnResize) {
+            setTransforms(true);
+        } else {
+            setTransforms(false);
+        }
     }
 
     /**
@@ -410,11 +419,7 @@ public class MapViewport {
         }
     }
 
-    /**
-     * Notifies MapBoundsListeners about a change to the bounds or crs.
-     *
-     * @param event The event to be fired
-     */
+    /** Notifies MapBoundsListeners about a change to the bounds or crs. */
     protected void fireMapBoundsListenerMapBoundsChanged(
             Type type, ReferencedEnvelope oldBounds, ReferencedEnvelope newBounds) {
 
@@ -534,6 +539,23 @@ public class MapViewport {
     }
 
     /**
+     * Determine if the map retains its scale (false) or its bounds (true) when the MapPane is
+     * resized.
+     */
+    public boolean isFixedBoundsOnResize() {
+        return fixedBoundsOnResize;
+    }
+    /**
+     * Determine if the map retains its scale (false) or its bounds (true) when the MapPane is
+     * resized.
+     *
+     * @param fixedBoundsOnResize - if true retain bounds on resize otherwise retain scale.
+     */
+    public void setFixedBoundsOnResize(boolean fixedBoundsOnResize) {
+        this.fixedBoundsOnResize = fixedBoundsOnResize;
+    }
+
+    /**
      * Calculates transforms suitable for no aspect ratio matching.
      *
      * @param requestedBounds requested display area in world coordinates
@@ -574,7 +596,7 @@ public class MapViewport {
     }
 
     /**
-     * Helper for setter methods which checkst that this viewport is editable and issues a log
+     * Helper for setter methods which checks that this viewport is editable and issues a log
      * message if not.
      */
     private boolean checkEditable(String methodName) {

@@ -61,7 +61,6 @@ public interface Attribute {
     /** The name of the attribute specified if one was provided in the attribute declaration */
     public String getName();
 
-    /** DOCUMENT ME! */
     public URI getNamespace();
 
     /**

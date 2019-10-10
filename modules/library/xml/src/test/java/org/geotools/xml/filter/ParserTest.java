@@ -21,7 +21,6 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -31,6 +30,7 @@ import org.geotools.test.TestData;
 import org.geotools.xml.ogc.FilterTestSupport;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
+import org.opengis.feature.IllegalAttributeException;
 import org.xml.sax.helpers.ParserAdapter;
 
 /**
@@ -63,11 +63,7 @@ public class ParserTest extends FilterTestSupport {
         }
     }
 
-    /**
-     * Main for test runner.
-     *
-     * @param args DOCUMENT ME!
-     */
+    /** Main for test runner. */
     public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
     }
@@ -102,16 +98,16 @@ public class ParserTest extends FilterTestSupport {
         // Builds the test feature
         Object[] attributes = new Object[11];
         attributes[0] = geomFac.createLineString(coords);
-        attributes[1] = new Boolean(true);
-        attributes[2] = new Character('t');
-        attributes[3] = new Byte("10");
-        attributes[4] = new Short("101");
-        attributes[5] = new Integer(1002);
-        attributes[6] = new Long(10003);
-        attributes[7] = new Float(10000.4);
-        attributes[8] = new Double(100000.5);
+        attributes[1] = Boolean.valueOf(true);
+        attributes[2] = Character.valueOf('t');
+        attributes[3] = Byte.valueOf("10");
+        attributes[4] = Short.valueOf("101");
+        attributes[5] = Integer.valueOf(1002);
+        attributes[6] = Long.valueOf(10003);
+        attributes[7] = Float.valueOf(10000.4f);
+        attributes[8] = Double.valueOf(100000.5);
         attributes[9] = "test string data";
-        attributes[10] = new Double(0.0);
+        attributes[10] = Double.valueOf(0.0);
 
         // Creates the feature itself
         FilterTestSupport.testFeature =

@@ -20,9 +20,11 @@ import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.AttributeExpressionImpl;
+import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
+import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.PropertyName;
 import org.xml.sax.helpers.NamespaceSupport;
 
@@ -57,7 +59,7 @@ public final class JsonSelectFunction extends FunctionExpressionImpl implements 
             }
         }
         if (object == null) {
-            // return an attribute describing this property usign the JSON path
+            // return an attribute describing this property using the JSON path
             return new AttributeExpressionImpl(new NameImpl(path));
         }
         // simple case, just return the value from the object that corresponds to the JSON path
@@ -79,5 +81,15 @@ public final class JsonSelectFunction extends FunctionExpressionImpl implements 
     public NamespaceSupport getNamespaceContext() {
         // static name space support
         return NAMESPACE_SUPPORT;
+    }
+
+    @Override
+    public Object accept(ExpressionVisitor visitor, Object extraData) {
+        if (visitor instanceof FilterAttributeExtractor) {
+            // we explicitly handle the attribute extractor filter
+            return visitor.visit((PropertyName) this, extraData);
+        }
+        // proceed with the normal behavior
+        return super.accept(visitor, extraData);
     }
 }

@@ -1,12 +1,13 @@
 /** */
 package org.geotools.data.util;
 
-import junit.framework.Assert;
+import static org.junit.Assert.*;
+
 import org.geotools.util.SimpleInternationalString;
 import org.junit.Test;
 
 /** @author Simone Giannecchini, GeoSolutions SAS */
-public class TestDefaultProgressListener extends Assert {
+public class TestDefaultProgressListener {
 
     @Test
     public void testA() {

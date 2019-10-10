@@ -19,13 +19,6 @@ package org.geotools.xsd.impl;
 import org.xml.sax.SAXException;
 
 public interface DocumentHandler extends Handler {
-    /**
-     * Returns the element handler for the root element of an instance document.
-     *
-     * @return An element handler, or null.
-     */
-
-    // ElementHandler getDocumentElementHandler();
 
     void startDocument() throws SAXException;
 

@@ -460,7 +460,7 @@ public class TestLinearClassifier extends Assert {
                 // //
                 // forcing a bad band selection ...
                 // //
-                final RenderedOp d = w.classify(list, new Integer(2)).getRenderedOperation();
+                final RenderedOp d = w.classify(list, Integer.valueOf(2)).getRenderedOperation();
                 d.getTiles();
                 // we should not be here!
 
@@ -472,8 +472,9 @@ public class TestLinearClassifier extends Assert {
             }
             assertTrue(exceptionThrown);
 
-            // pbj.setParameter("bandIndex", new Integer(0));
-            final RenderedOp finalImage = w.classify(list, new Integer(0)).getRenderedOperation();
+            // pbj.setParameter("bandIndex", Integer.valueOf(0));
+            final RenderedOp finalImage =
+                    w.classify(list, Integer.valueOf(0)).getRenderedOperation();
             // JAI.create(
             // RasterClassifierOpImage.OPERATION_NAME, pbj);
             if (TestData.isInteractiveTest()) ImageIOUtilities.visualize(finalImage, "testSWAN1");
@@ -552,7 +553,7 @@ public class TestLinearClassifier extends Assert {
                 // //
                 // forcing a bad band selection ...
                 // //
-                final RenderedOp d = w.classify(list, new Integer(2)).getRenderedOperation();
+                final RenderedOp d = w.classify(list, Integer.valueOf(2)).getRenderedOperation();
                 d.getTiles();
                 // we should not be here!
 
@@ -564,7 +565,8 @@ public class TestLinearClassifier extends Assert {
             }
             assertTrue(exceptionThrown);
 
-            final RenderedOp finalImage = w.classify(list, new Integer(0)).getRenderedOperation();
+            final RenderedOp finalImage =
+                    w.classify(list, Integer.valueOf(0)).getRenderedOperation();
             final IndexColorModel icm = (IndexColorModel) finalImage.getColorModel();
             assertEquals(icm.getRed(4), 255);
             assertEquals(icm.getRed(2), 255);

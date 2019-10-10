@@ -49,7 +49,7 @@ public final class DataSourceFinder {
             org.geotools.util.logging.Logging.getLogger(DataSourceFinder.class);
 
     /** The service registry for this manager. Will be initialized only when first needed. */
-    private static FactoryRegistry registry;
+    private static volatile FactoryRegistry registry;
 
     // Singleton pattern
     private DataSourceFinder() {}
@@ -91,8 +91,6 @@ public final class DataSourceFinder {
      * Checks each available datasource implementation in turn and returns the first one which
      * claims to support the resource identified by the params object.
      *
-     * @param params A Map object which contains a defenition of the resource to connect to. for
-     *     file based resources the property 'url' should be set within this Map.
      * @return The first datasource which claims to process the required resource, returns null if
      *     none can be found.
      * @throws IOException If a suitable loader can be found, but it can not be attached to the
@@ -127,8 +125,6 @@ public final class DataSourceFinder {
      * Checks each available {@link UnWrapper} implementation in turn and returns the first one
      * which claims to support the resource identified by the params object.
      *
-     * @param params A Map object which contains a defenition of the resource to connect to. for
-     *     file based resources the property 'url' should be set within this Map.
      * @return The first datasource which claims to process the required resource, returns null if
      *     none can be found.
      * @throws IOException If a suitable loader can be found, but it can not be attached to the

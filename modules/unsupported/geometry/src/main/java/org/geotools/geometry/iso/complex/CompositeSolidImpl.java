@@ -21,6 +21,7 @@ import java.util.Set;
 import org.geotools.geometry.iso.coordinate.DirectPositionImpl;
 import org.geotools.geometry.iso.primitive.CurveImpl;
 import org.geotools.geometry.iso.primitive.SolidImpl;
+import org.geotools.util.SuppressFBWarnings;
 import org.opengis.geometry.Boundary;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Envelope;
@@ -84,6 +85,7 @@ public class CompositeSolidImpl extends CompositeImpl<SolidImpl> {
     }
 
     @Override
+    @SuppressFBWarnings("NP_CLONE_COULD_RETURN_NULL")
     public CompositeSolidImpl clone() throws CloneNotSupportedException {
         // TODO Auto-generated method stub
         return null;

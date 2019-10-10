@@ -40,9 +40,6 @@ public class JDataChoosePage extends JPage {
     /** Factory for which we are collection connection parameters */
     protected DataStoreFactorySpi format;
 
-    /** max line length of parameter description labels (chars) */
-    private static final int MAX_DESCRIPTION_WIDTH = 60;
-
     private JList list;
 
     public JDataChoosePage() {

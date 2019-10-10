@@ -17,19 +17,13 @@
 package org.geotools.xsd.impl;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import javax.xml.namespace.QName;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDElementDeclaration;
-import org.eclipse.xsd.XSDEnumerationFacet;
 import org.eclipse.xsd.XSDFacet;
 import org.eclipse.xsd.XSDFactory;
-import org.eclipse.xsd.XSDLengthFacet;
-import org.eclipse.xsd.XSDMaxLengthFacet;
-import org.eclipse.xsd.XSDMinLengthFacet;
 import org.eclipse.xsd.XSDNamedComponent;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
 import org.eclipse.xsd.XSDTypeDefinition;
@@ -133,7 +127,6 @@ public class ParseExecutor implements Visitor {
                                     || ((XSDComplexTypeDefinition) type).isMixed())) {
                         result = value;
                     } else if ((value != null) && value instanceof String) {
-                        value = ((String) value);
                         if ("".equals(((String) value).trim())) {
                             result = null;
                         } else {
@@ -204,48 +197,51 @@ public class ParseExecutor implements Visitor {
                 // 2. maxLength
                 // 3. minLength
                 // 4. enumeration
-                if (type.getLengthFacet() != null) {
-                    XSDLengthFacet length = type.getLengthFacet();
+                //                if (type.getLengthFacet() != null) {
+                //                    XSDLengthFacet length = type.getLengthFacet();
+                //
+                //                    if (list.length != length.getValue()) {
+                //                        // validation exception
+                //                    }
+                //                }
+                //
+                //                if (type.getMaxLengthFacet() != null) {
+                //                    XSDMaxLengthFacet length = type.getMaxLengthFacet();
+                //
+                //                    if (list.length > length.getValue()) {
+                //                        // validation exception
+                //                    }
+                //                }
+                //
+                //                if (type.getMinLengthFacet() != null) {
+                //                    XSDMinLengthFacet length = type.getMinLengthFacet();
+                //
+                //                    if (list.length < length.getValue()) {
+                //                        // validation exception
+                //                    }
+                //                }
 
-                    if (list.length != length.getValue()) {
-                        // validation exception
-                    }
-                }
-
-                if (type.getMaxLengthFacet() != null) {
-                    XSDMaxLengthFacet length = type.getMaxLengthFacet();
-
-                    if (list.length > length.getValue()) {
-                        // validation exception
-                    }
-                }
-
-                if (type.getMinLengthFacet() != null) {
-                    XSDMinLengthFacet length = type.getMinLengthFacet();
-
-                    if (list.length < length.getValue()) {
-                        // validation exception
-                    }
-                }
-
-                if (!type.getEnumerationFacets().isEmpty()) {
-                    // gather up all teh possible values
-                    Set values = new HashSet();
-
-                    for (Iterator e = type.getEnumerationFacets().iterator(); e.hasNext(); ) {
-                        XSDEnumerationFacet enumeration = (XSDEnumerationFacet) e.next();
-
-                        for (Iterator v = enumeration.getValue().iterator(); v.hasNext(); ) {
-                            values.add(v.next());
-                        }
-                    }
-
-                    for (int i = 0; i < list.length; i++) {
-                        if (!values.contains(list[i])) {
-                            // validation exception
-                        }
-                    }
-                }
+                //                if (!type.getEnumerationFacets().isEmpty()) {
+                //                    // gather up all teh possible values
+                //                    Set values = new HashSet();
+                //
+                //                    for (Iterator e = type.getEnumerationFacets().iterator();
+                // e.hasNext(); ) {
+                //                        XSDEnumerationFacet enumeration = (XSDEnumerationFacet)
+                // e.next();
+                //
+                //                        for (Iterator v = enumeration.getValue().iterator();
+                // v.hasNext(); ) {
+                //                            values.add(v.next());
+                //                        }
+                //                    }
+                //
+                //                    for (int i = 0; i < list.length; i++) {
+                //                        if (!values.contains(list[i])) {
+                //                            // validation exception
+                //                        }
+                //                    }
+                //                }
 
                 // now we must parse the items up
                 final XSDSimpleTypeDefinition itemType = type.getItemTypeDefinition();

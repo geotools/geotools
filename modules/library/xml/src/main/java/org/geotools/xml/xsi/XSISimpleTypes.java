@@ -47,10 +47,10 @@ import org.xml.sax.SAXException;
  * @author dzwiers www.refractions.net
  * @see Schema
  */
+@SuppressWarnings("PMD")
 public class XSISimpleTypes {
     private static Map m;
 
-    /** DOCUMENT ME! */
     public static final URI NAMESPACE = makeURI("http://www.w3.org/2001/XMLSchema");
 
     // convinience method to deal with the URISyntaxException
@@ -79,12 +79,7 @@ public class XSISimpleTypes {
         return r;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param type DOCUMENT ME!
-     * @return SimpleType
-     */
+    /** @return SimpleType */
     public static SimpleType find(Class type) {
         // assuming strings and class values will not conflict
         if (m == null) {
@@ -340,7 +335,7 @@ public class XSISimpleTypes {
             if ((value.length >= 1)
                     && (value[0].getValue() != null)
                     && (!"".equals(value[0].getValue()))) {
-                return new java.lang.Integer((java.lang.String) value[0].getValue());
+                return java.lang.Integer.valueOf((java.lang.String) value[0].getValue());
             }
 
             return null;
@@ -388,7 +383,7 @@ public class XSISimpleTypes {
             if ((value.length == 1)
                     && (value[0].getValue() != null)
                     && (!"".equals(value[0].getValue()))) {
-                return new java.lang.Double((java.lang.String) value[0].getValue());
+                return java.lang.Double.valueOf((java.lang.String) value[0].getValue());
             }
 
             return null;
@@ -426,7 +421,8 @@ public class XSISimpleTypes {
             if ((value.length == 1)
                     && (value[0].getValue() != null)
                     && (!"".equals(value[0].getValue()))) {
-                java.lang.Integer i = new java.lang.Integer((java.lang.String) value[0].getValue());
+                java.lang.Integer i =
+                        java.lang.Integer.valueOf((java.lang.String) value[0].getValue());
 
                 return (i.intValue() < 0) ? i : null;
             }
@@ -473,7 +469,8 @@ public class XSISimpleTypes {
             if ((value.length == 1)
                     && (value[0].getValue() != null)
                     && (!"".equals(value[0].getValue()))) {
-                java.lang.Integer i = new java.lang.Integer((java.lang.String) value[0].getValue());
+                java.lang.Integer i =
+                        java.lang.Integer.valueOf((java.lang.String) value[0].getValue());
 
                 return (i.intValue() >= 0) ? i : null;
             }
@@ -510,7 +507,8 @@ public class XSISimpleTypes {
             if ((value.length == 1)
                     && (value[0].getValue() != null)
                     && (!"".equals(value[0].getValue()))) {
-                java.lang.Integer i = new java.lang.Integer((java.lang.String) value[0].getValue());
+                java.lang.Integer i =
+                        java.lang.Integer.valueOf((java.lang.String) value[0].getValue());
 
                 return (i.intValue() > 0) ? i : null;
             }
@@ -547,7 +545,8 @@ public class XSISimpleTypes {
             if ((value.length == 1)
                     && (value[0].getValue() != null)
                     && (!"".equals(value[0].getValue()))) {
-                java.lang.Integer i = new java.lang.Integer((java.lang.String) value[0].getValue());
+                java.lang.Integer i =
+                        java.lang.Integer.valueOf((java.lang.String) value[0].getValue());
 
                 return (i.intValue() <= 0) ? i : null;
             }
@@ -584,7 +583,7 @@ public class XSISimpleTypes {
             if ((value.length == 1)
                     && (value[0].getValue() != null)
                     && (!"".equals(value[0].getValue()))) {
-                java.lang.Long i = new java.lang.Long((java.lang.String) value[0].getValue());
+                java.lang.Long i = java.lang.Long.valueOf((java.lang.String) value[0].getValue());
 
                 return i;
             }
@@ -621,7 +620,8 @@ public class XSISimpleTypes {
             if ((value.length == 1)
                     && (value[0].getValue() != null)
                     && (!"".equals(value[0].getValue()))) {
-                java.lang.Integer i = new java.lang.Integer((java.lang.String) value[0].getValue());
+                java.lang.Integer i =
+                        java.lang.Integer.valueOf((java.lang.String) value[0].getValue());
 
                 return i;
             }
@@ -658,7 +658,7 @@ public class XSISimpleTypes {
             if ((value.length == 1)
                     && (value[0].getValue() != null)
                     && (!"".equals(value[0].getValue()))) {
-                java.lang.Short i = new java.lang.Short((java.lang.String) value[0].getValue());
+                java.lang.Short i = java.lang.Short.valueOf((java.lang.String) value[0].getValue());
 
                 return i;
             }
@@ -695,7 +695,7 @@ public class XSISimpleTypes {
             if ((value.length == 1)
                     && (value[0].getValue() != null)
                     && (!"".equals(value[0].getValue()))) {
-                java.lang.Byte i = new java.lang.Byte((java.lang.String) value[0].getValue());
+                java.lang.Byte i = java.lang.Byte.valueOf((java.lang.String) value[0].getValue());
 
                 return i;
             }
@@ -732,7 +732,7 @@ public class XSISimpleTypes {
             if ((value.length == 1)
                     && (value[0].getValue() != null)
                     && (!"".equals(value[0].getValue()))) {
-                java.lang.Long i = new java.lang.Long((java.lang.String) value[0].getValue());
+                java.lang.Long i = java.lang.Long.valueOf((java.lang.String) value[0].getValue());
 
                 return i;
             }
@@ -769,7 +769,7 @@ public class XSISimpleTypes {
             if ((value.length == 1)
                     && (value[0].getValue() != null)
                     && (!"".equals(value[0].getValue()))) {
-                java.lang.Short i = new java.lang.Short((java.lang.String) value[0].getValue());
+                java.lang.Short i = java.lang.Short.valueOf((java.lang.String) value[0].getValue());
 
                 return i;
             }
@@ -806,7 +806,8 @@ public class XSISimpleTypes {
             if ((value.length == 1)
                     && (value[0].getValue() != null)
                     && (!"".equals(value[0].getValue()))) {
-                java.lang.Integer i = new java.lang.Integer((java.lang.String) value[0].getValue());
+                java.lang.Integer i =
+                        java.lang.Integer.valueOf((java.lang.String) value[0].getValue());
 
                 return i;
             }
@@ -843,7 +844,7 @@ public class XSISimpleTypes {
             if ((value.length == 1)
                     && (value[0].getValue() != null)
                     && (!"".equals(value[0].getValue()))) {
-                java.lang.Byte i = new java.lang.Byte((java.lang.String) value[0].getValue());
+                java.lang.Byte i = java.lang.Byte.valueOf((java.lang.String) value[0].getValue());
 
                 return i;
             }
@@ -880,7 +881,7 @@ public class XSISimpleTypes {
             if ((value.length == 1)
                     && (value[0].getValue() != null)
                     && (!"".equals(value[0].getValue()))) {
-                java.lang.Float i = new java.lang.Float((java.lang.String) value[0].getValue());
+                java.lang.Float i = java.lang.Float.valueOf((java.lang.String) value[0].getValue());
 
                 return i;
             }
@@ -917,7 +918,8 @@ public class XSISimpleTypes {
             if ((value.length == 1)
                     && (value[0].getValue() != null)
                     && (!"".equals(value[0].getValue()))) {
-                java.lang.Double i = new java.lang.Double((java.lang.String) value[0].getValue());
+                java.lang.Double i =
+                        java.lang.Double.valueOf((java.lang.String) value[0].getValue());
 
                 return i;
             }

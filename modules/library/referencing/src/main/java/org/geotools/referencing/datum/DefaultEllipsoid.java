@@ -462,6 +462,7 @@ public class DefaultEllipsoid extends AbstractIdentifiedObject implements Ellips
      *     versions of this class.
      */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         long longCode = 37 * Double.doubleToLongBits(semiMajorAxis);
         if (ivfDefinitive) {

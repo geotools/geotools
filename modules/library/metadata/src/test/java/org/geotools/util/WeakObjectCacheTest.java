@@ -92,7 +92,7 @@ public final class WeakObjectCacheTest {
 
         // check that the write thread was blocked
         Object[] values = ((WriterThread) thread1).getValue();
-        assertEquals(null, values);
+        assertNull(values);
         assertEquals(value2, cache.peek(key1));
         assertEquals(1, cache.getKeys().size());
 

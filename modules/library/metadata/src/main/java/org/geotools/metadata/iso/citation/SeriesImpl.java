@@ -73,7 +73,7 @@ public class SeriesImpl extends MetadataEntity implements Series {
     }
 
     /** Set the name of the series, or aggregate dataset, of which the dataset is a part. */
-    public synchronized void setName(final InternationalString newValue) {
+    public void setName(final InternationalString newValue) {
         checkWritePermission();
         name = newValue;
     }
@@ -84,7 +84,7 @@ public class SeriesImpl extends MetadataEntity implements Series {
     }
 
     /** Set information identifying the issue of the series. */
-    public synchronized void setIssueIdentification(final String newValue) {
+    public void setIssueIdentification(final String newValue) {
         checkWritePermission();
         issueIdentification = newValue;
     }
@@ -95,7 +95,7 @@ public class SeriesImpl extends MetadataEntity implements Series {
     }
 
     /** Set details on which pages of the publication the article was published. */
-    public synchronized void setPage(final String newValue) {
+    public void setPage(final String newValue) {
         checkWritePermission();
         page = newValue;
     }

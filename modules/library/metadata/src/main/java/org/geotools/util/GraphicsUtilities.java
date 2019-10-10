@@ -37,9 +37,6 @@ import java.util.List;
  * @author Martin Desruisseaux (IRD)
  */
 public final class GraphicsUtilities {
-    /** Number of spaces to leave between each tab. */
-    private static final int TAB_WIDTH = 4;
-
     /** The creation of {@code GraphicsUtilities} class objects is forbidden. */
     private GraphicsUtilities() {}
 

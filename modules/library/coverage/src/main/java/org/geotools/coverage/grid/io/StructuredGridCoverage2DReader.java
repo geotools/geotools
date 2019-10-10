@@ -55,9 +55,6 @@ public interface StructuredGridCoverage2DReader extends GridCoverage2DReader {
     void createCoverage(String coverageName, SimpleFeatureType schema)
             throws IOException, UnsupportedOperationException;
 
-    /** @deprecated use {@link #removeCoverage(String, boolean)} */
-    boolean removeCoverage(String coverageName) throws IOException, UnsupportedOperationException;
-
     /** removes a granule store for the specified coverageName */
     boolean removeCoverage(String coverageName, boolean delete)
             throws IOException, UnsupportedOperationException;
@@ -75,7 +72,7 @@ public interface StructuredGridCoverage2DReader extends GridCoverage2DReader {
      * source is harvested in place (e.g., image mosaic), or might be copied into the reader
      * persistent storage (e.g., database raster handling)
      *
-     * @param defaultCoverage Default target coverage, to be used in case the sources being
+     * @param defaultTargetCoverage Default target coverage, to be used in case the sources being
      *     harvested are not structured ones. The parameter is optional, in case it's missing the
      *     reader will use the first coverage as the default target.
      * @param source The source can be any kind of object, it's up to the reader implementation to

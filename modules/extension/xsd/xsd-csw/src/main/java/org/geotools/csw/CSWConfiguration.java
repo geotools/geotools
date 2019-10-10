@@ -224,6 +224,7 @@ public class CSWConfiguration extends Configuration {
      *
      * @param args
      */
+    @SuppressWarnings("PMD.SystemPrintln")
     public static void main(String[] args) {
         for (Field f : CSW.class.getFields()) {
             if ((f.getModifiers() & (Modifier.STATIC | Modifier.FINAL)) != 0

@@ -19,7 +19,7 @@ package org.geotools.appschema.filter.expression;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.geotools.data.complex.ComplexFeatureConstants;
+import org.geotools.data.complex.util.ComplexFeatureConstants;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.util.factory.Hints;
 import org.opengis.filter.capability.FunctionName;

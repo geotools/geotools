@@ -46,7 +46,7 @@ public interface StyleVisitor {
     /**
      * Called when accept is called on a FetaureTypeStyle
      *
-     * @param fts the feature type styler to visit
+     * @param featureTypeStyle the feature type styler to visit
      */
     Object visit(FeatureTypeStyle featureTypeStyle, Object data);
 
@@ -60,35 +60,35 @@ public interface StyleVisitor {
     /**
      * Called when accept is called on a pointsymbolizer
      *
-     * @param ps the point symbolizer to visit
+     * @param pointSymbolizer the point symbolizer to visit
      */
     Object visit(PointSymbolizer pointSymbolizer, Object data);
 
     /**
      * Called when accept is called on a linesymbolizer
      *
-     * @param line the line symbolizer to visit
+     * @param lineSymbolizer the line symbolizer to visit
      */
     Object visit(LineSymbolizer lineSymbolizer, Object data);
 
     /**
      * Called when accept is called on a polygon symbolizer
      *
-     * @param poly the polygon symbolizer to visit
+     * @param polygonSymbolizer the polygon symbolizer to visit
      */
     Object visit(PolygonSymbolizer polygonSymbolizer, Object data);
 
     /**
      * Called when accept is called on a textsymbolizer
      *
-     * @param text the text symbolizer to visit
+     * @param textSymbolizer the text symbolizer to visit
      */
     Object visit(TextSymbolizer textSymbolizer, Object data);
 
     /**
      * Called when accept is called on a rastersymbolizer
      *
-     * @param raster the raster symbolizer to visit
+     * @param rasterSymbolizer the raster symbolizer to visit
      */
     Object visit(RasterSymbolizer rasterSymbolizer, Object data);
 
@@ -102,14 +102,14 @@ public interface StyleVisitor {
     /**
      * Called when accept is called on a description
      *
-     * @param colorMap the description to visit
+     * @param description the description to visit
      */
     Object visit(Description description, Object data);
 
     /**
      * Called when accept is called on a displacement
      *
-     * @param disp the displacement to visit
+     * @param displacement the displacement to visit
      */
     Object visit(Displacement displacement, Object data);
 
@@ -137,21 +137,21 @@ public interface StyleVisitor {
     /**
      * Called when accept is called on a graphic
      *
-     * @param gr the graphic to visit
+     * @param graphic the graphic to visit
      */
     Object visit(Graphic graphic, Object data);
 
     /**
      * Called when accept is called on a graphic fill
      *
-     * @param gr the graphic fill to visit
+     * @param graphicFill the graphic fill to visit
      */
     Object visit(GraphicFill graphicFill, Object data);
 
     /**
      * Called when accept is called on a graphic stroke
      *
-     * @param gr the graphic stroke to visit
+     * @param graphicStroke the graphic stroke to visit
      */
     Object visit(GraphicStroke graphicStroke, Object data);
 
@@ -165,42 +165,42 @@ public interface StyleVisitor {
     /**
      * Called when accept is called on a external mark
      *
-     * @param exmk the external mark to visit
+     * @param externalMark the external mark to visit
      */
     Object visit(ExternalMark externalMark, Object data);
 
     /**
      * Called when accept is called on a external graphic
      *
-     * @param exgr the external graphic to visit
+     * @param externalGraphic the external graphic to visit
      */
     Object visit(ExternalGraphic externalGraphic, Object data);
 
     /**
      * Called when accept is called on a Point Placement
      *
-     * @param pp the point placement to visit
+     * @param pointPlacement the point placement to visit
      */
     Object visit(PointPlacement pointPlacement, Object data);
 
     /**
      * Called when accept is called on a anchor point
      *
-     * @param ap the anchor point to visit
+     * @param anchorPoint the anchor point to visit
      */
     Object visit(AnchorPoint anchorPoint, Object data);
 
     /**
      * Called when accept is called on a Line Placement
      *
-     * @param lp the line placement to visit
+     * @param linePlacement the line placement to visit
      */
     Object visit(LinePlacement linePlacement, Object data);
 
     /**
      * Called when accept is called on a legend graphic
      *
-     * @param lp the legend graphic to visit
+     * @param graphicLegend the legend graphic to visit
      */
     Object visit(GraphicLegend graphicLegend, Object data);
 
@@ -221,7 +221,7 @@ public interface StyleVisitor {
     /**
      * Called when accept is called on a color replacement
      *
-     * @param colorMap the color replacement to visit
+     * @param colorReplacement the color replacement to visit
      */
     Object visit(ColorReplacement colorReplacement, Object data);
 
@@ -235,27 +235,28 @@ public interface StyleVisitor {
     /**
      * Called when accept is called on a raster {@link ChannelSelection} element
      *
-     * @param cs the {@link ChannelSelection} to visit.
+     * @param channelSelection the {@link ChannelSelection} to visit.
      */
     Object visit(ChannelSelection channelSelection, Object data);
 
     /**
      * Called when accept is called on a raster {@link SelectedChannelType} element
      *
-     * @param cs the {@link SelectedChannelType} to visit.
+     * @param selectChannelType the {@link SelectedChannelType} to visit.
      */
     Object visit(SelectedChannelType selectChannelType, Object data);
 
     /**
      * Called when accept is called on a raster {@link ShadedRelief} element
      *
-     * @param cs the {@link ShadedRelief} to visit.
+     * @param shadedRelief the {@link ShadedRelief} to visit.
      */
     Object visit(ShadedRelief shadedRelief, Object data);
 
     /**
-     * @param normalize
-     * @param data
+     * Called when accept is called on a raster {@link ContrastMethod} element
+     *
+     * @param method the {@link ContrastMethod} to visit
      */
     void visit(ContrastMethod method, Object data);
 }

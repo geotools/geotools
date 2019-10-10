@@ -111,3 +111,6 @@ the coding conventions. Please always build before committing!.
 
 The `google-java-format <https://github.com/google/google-java-format>`_ project also offers plugins for various IDEs,
 if your IDE is not supported, please just build once on the command line before committing.
+
+Also you could use a `modified version <https://github.com/fernandor777/google-java-format/releases/download/1.7-gsgt/google-java-format-eclipse-plugin-1.6.0.jar>`__ 
+with 4 spaces indent by default, putting the jar file on Eclipse dropins folder.

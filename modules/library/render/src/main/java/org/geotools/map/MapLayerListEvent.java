@@ -24,9 +24,6 @@ import java.util.EventObject;
  * @author wolf
  */
 public class MapLayerListEvent extends EventObject {
-    /** Holds value of property layer. */
-    private MapLayer mapLayer;
-
     private Layer layer;
 
     /** Holds value of property fromIndex. */
@@ -38,18 +35,10 @@ public class MapLayerListEvent extends EventObject {
     /** Holds value of property mapLayerEvent. */
     private MapLayerEvent mapLayerEvent;
 
-    /**
-     * Creates a new instance of MapLayerListEvent
-     *
-     * @param source DOCUMENT ME!
-     * @param layer DOCUMENT ME!
-     * @param fromIndex DOCUMENT ME!
-     * @param toIndex DOCUMENT ME!
-     */
-    public MapLayerListEvent(MapContext source, MapLayer layer, int fromIndex, int toIndex) {
+    /** Creates a new instance of MapLayerListEvent */
+    public MapLayerListEvent(MapContent source, Layer layer, int fromIndex, int toIndex) {
         super(source);
-        this.mapLayer = layer;
-        this.layer = layer == null ? null : layer.toLayer();
+        this.layer = layer;
         this.fromIndex = fromIndex;
         this.toIndex = toIndex;
     }
@@ -61,61 +50,20 @@ public class MapLayerListEvent extends EventObject {
      * @param layer Layer being reported against; may be null
      * @param position index modified in layer list
      */
-    public MapLayerListEvent(MapContext source, MapLayer layer, int position) {
+    public MapLayerListEvent(MapContent source, Layer layer, int position) {
         super(source);
-        this.mapLayer = layer;
-        this.layer = layer == null ? null : layer.toLayer();
+        this.layer = layer;
         this.fromIndex = position;
         this.toIndex = position;
-    }
-
-    /**
-     * Creates a new instance of MapLayerListEvent passing on an event from a layer.
-     *
-     * @param source Map issuing the event
-     * @param layer Layer issuing the event
-     * @param position Position in the layer list
-     * @param mapLayerEvent Event provided from the layer
-     */
-    public MapLayerListEvent(
-            MapContext source, MapLayer layer, int position, MapLayerEvent mapLayerEvent) {
-        this(source, layer, position);
-        this.mapLayerEvent = mapLayerEvent;
-    }
-
-    public MapLayerListEvent(MapContent map, Layer element, int index) {
-        super(map);
-        this.layer = element;
-        this.mapLayer = element == null ? null : new DefaultMapLayer(element);
-        this.fromIndex = index;
-        this.toIndex = index;
-    }
-
-    public MapLayerListEvent(MapContent map, Layer element, int fromIndex, int toIndex) {
-        super(map);
-        this.layer = element;
-        this.mapLayer = element == null ? null : new DefaultMapLayer(element);
-        this.fromIndex = fromIndex;
-        this.toIndex = toIndex;
     }
 
     public MapLayerListEvent(
             MapContent map, Layer element, int index, MapLayerEvent mapLayerEvent) {
         super(map);
         this.layer = element;
-        this.mapLayer = element == null ? null : new DefaultMapLayer(element);
         this.fromIndex = index;
         this.toIndex = index;
         this.mapLayerEvent = mapLayerEvent;
-    }
-
-    /**
-     * Returns the layer involved in the change
-     *
-     * @return Value of property layer.
-     */
-    public Layer getElement() {
-        return this.layer;
     }
 
     /**
@@ -123,8 +71,8 @@ public class MapLayerListEvent extends EventObject {
      *
      * @return
      */
-    public MapLayer getLayer() {
-        return mapLayer;
+    public Layer getLayer() {
+        return layer;
     }
 
     /**

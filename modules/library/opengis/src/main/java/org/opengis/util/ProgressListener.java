@@ -58,15 +58,6 @@ public interface ProgressListener {
     InternationalString getTask();
 
     /**
-     * Description for the lengthly operation to be reported, or {@code null} if none.
-     *
-     * @return The task description.
-     * @deprecated Replaced by getTask().toString()
-     */
-    @Deprecated
-    String getDescription();
-
-    /**
      * Sets the description of the current task being performed. This method is usually invoked
      * before any progress begins. However, it is legal to invoke this method at any time during the
      * operation, in which case the description display is updated without any change to the
@@ -77,18 +68,6 @@ public interface ProgressListener {
      *     InternationalString} or a {@link String} at his choice.
      */
     void setTask(InternationalString task);
-
-    /**
-     * Sets the description for the lenghtly operation to be reported. This method is usually
-     * invoked before any progress begins. However, it is legal to invoke this method at any time
-     * during the operation, in which case the description display is updated without any change to
-     * the percentage accomplished.
-     *
-     * @param description The new description, or {@code null} if none.
-     * @deprecated Replaced by setTask
-     */
-    @Deprecated
-    void setDescription(String description);
 
     /** Notifies this listener that the operation begins. */
     void started();

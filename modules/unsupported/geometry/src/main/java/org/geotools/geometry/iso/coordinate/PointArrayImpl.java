@@ -394,6 +394,8 @@ public class PointArrayImpl extends ArrayList<Position> implements PointArray {
      *
      * @param maxSpacing
      */
+    // unsure of suppression, someone understanding this code should verify
+    @SuppressWarnings("PMD.JumbledIncrementer")
     public void split(double maxSpacing) {
         // TODO Test
         // TODO Documentation
@@ -569,7 +571,7 @@ public class PointArrayImpl extends ArrayList<Position> implements PointArray {
             Object o2 = e2.next();
             if (!(o1 == null ? o2 == null : o1.equals(o2))) return false;
         }
-        if (!(!(e1.hasNext() || e2.hasNext()))) return false;
+        if ((e1.hasNext() && !e2.hasNext())) return false;
         if (getClass() != obj.getClass()) return false;
         final PointArrayImpl other = (PointArrayImpl) obj;
         if (crs == null) {

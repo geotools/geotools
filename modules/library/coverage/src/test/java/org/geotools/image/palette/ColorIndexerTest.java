@@ -148,6 +148,7 @@ public class ColorIndexerTest {
         assertEquals(5, icm.getMapSize());
     }
 
+    @Test
     public void testTranslatedImageTileGrid() {
         BufferedImage image_ = new BufferedImage(256, 256, BufferedImage.TYPE_BYTE_GRAY);
         Graphics g = image_.createGraphics();

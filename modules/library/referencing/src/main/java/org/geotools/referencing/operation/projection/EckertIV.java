@@ -53,8 +53,6 @@ public class EckertIV extends MapProjection {
 
     private static final double C_p = 3.57079632679489661922;
 
-    private static final double RC_p = 0.28004957675577868795;
-
     private static final double EPS = 1e-7;
 
     private static final int NITER = 6;
@@ -122,16 +120,6 @@ public class EckertIV extends MapProjection {
         ptDst.setLocation(lam, phi);
 
         return ptDst;
-    }
-
-    /** Compares the specified object with this map projection for equality. */
-    @Override
-    public boolean equals(final Object object) {
-        if (object == this) {
-            // Slight optimization
-            return true;
-        }
-        return super.equals(object);
     }
 
     @Override

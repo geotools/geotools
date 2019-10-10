@@ -23,6 +23,8 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import junit.framework.TestCase;
+import org.apache.commons.lang3.JavaVersion;
+import org.apache.commons.lang3.SystemUtils;
 import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -459,7 +461,12 @@ public class LabelDisplacementModeTest extends TestCase {
 
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/testMultiLineLabelDisplacementY.png";
-        ImageAssert.assertEquals(new File(refPath), image, 1100);
+        // java 11 makes chars quite a bit bolder
+        int tolerance = 1100;
+        if (SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_11)) {
+            tolerance = 2000;
+        }
+        ImageAssert.assertEquals(new File(refPath), image, tolerance);
     }
 
     private BufferedImage renderLabels(SimpleFeatureSource fs, Style style, String title)

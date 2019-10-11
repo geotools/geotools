@@ -814,6 +814,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                 }
                 values = ((Attribute) values).getValue();
             }
+
             instance =
                     setAttributeContent(
                             target,
@@ -824,13 +825,21 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                             false,
                             sourceExpression,
                             source,
-                            clientPropsMappings,
+                            cleanFromAnonymousAttribute(clientPropsMappings),
                             ignoreXlinkHref);
         }
         if (instance != null && attMapping.encodeIfEmpty()) {
             instance.getDescriptor().getUserData().put("encodeIfEmpty", attMapping.encodeIfEmpty());
         }
         return instance;
+    }
+
+    private Map<Name, Expression> cleanFromAnonymousAttribute(Map<Name, Expression> clientProps) {
+        return clientProps
+                .entrySet()
+                .stream()
+                .filter(e -> !(e.getKey() instanceof ComplexNameImpl))
+                .collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue()));
     }
 
     private void generateInnerElementMultiValue(

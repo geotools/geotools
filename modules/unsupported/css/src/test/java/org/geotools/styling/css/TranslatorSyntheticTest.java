@@ -656,6 +656,30 @@ public class TranslatorSyntheticTest extends CssBaseTest {
     }
 
     @Test
+    public void rasterColorMapWithLabels() throws Exception {
+        String css =
+                "* { raster-channels: 'auto'; raster-color-map: color-map-entry(black, 100, 0, label1) "
+                        + "color-map-entry(white, 1000, 2.0, label2) color-map-entry(red, 10000);}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        RasterSymbolizer rs = assertSingleSymbolizer(rule, RasterSymbolizer.class);
+        ColorMap cm = rs.getColorMap();
+        assertEquals(3, cm.getColorMapEntries().length);
+        assertLiteral("#000000", cm.getColorMapEntry(0).getColor());
+        assertLiteral("0", cm.getColorMapEntry(0).getOpacity());
+        assertLiteral("100", cm.getColorMapEntry(0).getQuantity());
+        assertEquals("label1", cm.getColorMapEntry(0).getLabel());
+        assertLiteral("#ffffff", cm.getColorMapEntry(1).getColor());
+        assertLiteral("2.0", cm.getColorMapEntry(1).getOpacity());
+        assertLiteral("1000", cm.getColorMapEntry(1).getQuantity());
+        assertEquals("label2", cm.getColorMapEntry(1).getLabel());
+        assertLiteral("#ff0000", cm.getColorMapEntry(2).getColor());
+        assertLiteral("1.0", cm.getColorMapEntry(2).getOpacity());
+        assertLiteral("10000", cm.getColorMapEntry(2).getQuantity());
+        assertNull(cm.getColorMapEntry(2).getLabel());
+    }
+
+    @Test
     public void multiComment() throws Exception {
         String css =
                 "/* This is an initial comment */\n"

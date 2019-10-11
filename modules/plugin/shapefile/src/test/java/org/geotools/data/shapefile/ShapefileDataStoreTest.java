@@ -918,7 +918,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         for (int i = 0; i < 3; i++) {
             query.setFilter(ff.equal(ff.property("b"), ff.literal(i), true));
             store.modifyFeatures(new String[] {"b", "c"},
-                    new Object[] {new Integer(-1 * i), new Integer(i)}, query.getFilter());
+                    new Integer[] {-1 * i, i}, query.getFilter());
         }
 
         transaction.commit();

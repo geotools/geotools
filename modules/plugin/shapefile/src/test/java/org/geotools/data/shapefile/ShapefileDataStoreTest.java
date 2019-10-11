@@ -885,8 +885,9 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
     @Test
     public void testUpdateMultipleAttributesNoAutocommit() throws Exception {
         // create feature type
-        SimpleFeatureType type = DataUtilities.createType("junk",
-                "the_geom:Point,b:java.lang.Integer,c:java.lang.Integer");
+        SimpleFeatureType type =
+                DataUtilities.createType(
+                        "junk", "the_geom:Point,b:java.lang.Integer,c:java.lang.Integer");
         DefaultFeatureCollection features = new DefaultFeatureCollection();
 
         SimpleFeatureBuilder build = new SimpleFeatureBuilder(type);
@@ -917,8 +918,8 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         Query query = new Query(s.getSchema().getTypeName());
         for (int i = 0; i < 3; i++) {
             query.setFilter(ff.equal(ff.property("b"), ff.literal(i), true));
-            store.modifyFeatures(new String[] {"b", "c"},
-                    new Integer[] {-1 * i, i}, query.getFilter());
+            store.modifyFeatures(
+                    new String[] {"b", "c"}, new Integer[] {-1 * i, i}, query.getFilter());
         }
 
         transaction.commit();
@@ -933,8 +934,10 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
                 numOfDistinctValues.add(f.getAttribute("b"));
             }
             // ensure that each feature has a distinct value for attribute 'b'
-            assertEquals("Wrong number of distinct values for attribute 'b'",
-                    store.getFeatures().size(), numOfDistinctValues.size());
+            assertEquals(
+                    "Wrong number of distinct values for attribute 'b'",
+                    store.getFeatures().size(),
+                    numOfDistinctValues.size());
         } finally {
             reader.close();
         }

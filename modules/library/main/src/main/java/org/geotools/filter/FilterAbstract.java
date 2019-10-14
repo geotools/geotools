@@ -19,6 +19,8 @@ package org.geotools.filter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import org.geotools.feature.NameImpl;
+import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 
 /**
@@ -47,6 +49,32 @@ public abstract class FilterAbstract implements org.opengis.filter.Filter {
     }
 
     /**
+     * Unpacks a value from an attribute container
+     *
+     * @param value
+     * @return
+     */
+    private Object unpack(Object value) {
+
+        if (value instanceof org.opengis.feature.ComplexAttribute) {
+            Property simpleContent =
+                    ((org.opengis.feature.ComplexAttribute) value)
+                            .getProperty(new NameImpl("simpleContent"));
+            if (simpleContent == null) {
+                return null;
+            } else {
+                return simpleContent.getValue();
+            }
+        }
+
+        if (value instanceof org.opengis.feature.Attribute) {
+            return ((org.opengis.feature.Attribute) value).getValue();
+        }
+
+        return value;
+    }
+
+    /**
      * Helper method for subclasses to reduce null checks and automatically unpack values from
      * attributes and collections
      *
@@ -63,12 +91,12 @@ public abstract class FilterAbstract implements org.opengis.filter.Filter {
             // unpack all elements
             List<Object> list = new ArrayList<Object>();
             for (Object member : (Collection<Object>) value) {
-                list.add(Filters.unpack(member));
+                list.add(unpack(member));
             }
             return list;
         }
 
-        return Filters.unpack(value);
+        return unpack(value);
     }
     /**
      * Helper method for subclasses to reduce null checks

@@ -16,6 +16,7 @@
  */
 package org.geotools.filter.expression;
 
+import org.geotools.filter.Filters;
 import org.geotools.filter.MathExpressionImpl;
 import org.geotools.util.Utilities;
 import org.opengis.filter.expression.Expression;
@@ -36,8 +37,8 @@ public class SubtractImpl extends MathExpressionImpl implements Subtract {
     public Object evaluate(Object feature) throws IllegalArgumentException {
         ensureOperandsSet();
 
-        double leftDouble = extractNumber(getExpression1(), feature);
-        double rightDouble = extractNumber(getExpression2(), feature);
+        double leftDouble = Filters.number(getExpression1().evaluate(feature, Number.class));
+        double rightDouble = Filters.number(getExpression2().evaluate(feature, Number.class));
 
         return number(leftDouble - rightDouble);
     }

@@ -17,7 +17,6 @@
 package org.geotools.filter;
 
 import org.opengis.filter.expression.BinaryExpression;
-import org.opengis.filter.expression.Expression;
 
 /**
  * Holds a mathematical relationship between two expressions. Note that the sub expressions must be
@@ -109,11 +108,5 @@ public abstract class MathExpressionImpl extends DefaultExpression implements Bi
     protected Object number(double number) {
         // return Filters.puts( number );  // non strongly typed
         return Double.valueOf(number); // Getools 2.1 style
-    }
-
-    protected double extractNumber(Expression expression, Object feature)
-            throws IllegalArgumentException {
-        Object evaluation = expression.evaluate(feature);
-        return Filters.number(Filters.unpack(evaluation));
     }
 }

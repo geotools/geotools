@@ -1424,7 +1424,7 @@ public class CssTranslator {
                             throw new IllegalArgumentException(
                                     "Invalid color map content, it must be a color-map-entry function"
                                             + entry);
-                        } else if (f.parameters.size() < 2 || f.parameters.size() > 3) {
+                        } else if (f.parameters.size() < 2 || f.parameters.size() > 4) {
                             throw new IllegalArgumentException(
                                     "Invalid color map content, it must be a color-map-entry function "
                                             + "with either 2 parameters (color and value) or 3 parameters "
@@ -1434,8 +1434,11 @@ public class CssTranslator {
                         ColorMapEntryBuilder eb = cmb.entry();
                         eb.color(f.parameters.get(0).toExpression());
                         eb.quantity(f.parameters.get(1).toExpression());
-                        if (f.parameters.size() == 3) {
+                        if (f.parameters.size() > 2) {
                             eb.opacity(f.parameters.get(2).toExpression());
+                        }
+                        if (f.parameters.size() == 4) {
+                            eb.label(f.parameters.get(3).toLiteral());
                         }
                     }
                     String type = getLiteral(values, "raster-color-map-type", i, null);

@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.xml.namespace.QName;
 import org.apache.commons.collections.CollectionUtils;
@@ -45,8 +44,6 @@ import org.opengis.feature.ComplexAttribute;
 import org.opengis.feature.Property;
 import org.picocontainer.MutablePicoContainer;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 /**
  * Uses {@link ComplexBinding#getProperty(Object, QName)} to obtain properties from the objecet
@@ -360,10 +357,13 @@ public class BindingPropertyExtractor implements PropertyExtractor {
 
     private boolean isUnboundedSequence(Object object, XSDElementDeclaration element) {
         // checks for unbounded sequence
-        final Element sequenceElement = getSequenceElement(element);
-        if (sequenceElement == null) return false;
-        final String maxOccursString = sequenceElement.getAttribute("maxOccurs");
-        if (!"unbounded".equals(maxOccursString)) return false;
+        XSDTypeDefinition anonymousTypeDefinition = element.getAnonymousTypeDefinition();
+        if (anonymousTypeDefinition == null
+                || anonymousTypeDefinition.getComplexType() == null
+                || anonymousTypeDefinition.getComplexType().getMaxOccurs()
+                        != XSDParticle.UNBOUNDED) {
+            return false;
+        }
         // checks complex attribute and children
         if (!(object instanceof ComplexAttribute)) return false;
         // check descriptor.name
@@ -384,37 +384,6 @@ public class BindingPropertyExtractor implements PropertyExtractor {
                         .map(x -> (Attribute) x)
                         .collect(Collectors.toCollection(ArrayDeque::new));
         return attrDeque;
-    }
-
-    private Element getSequenceElement(XSDElementDeclaration element) {
-        final NodeList childNodes =
-                Optional.ofNullable(element)
-                        .map(XSDElementDeclaration::getTypeDefinition)
-                        .map(XSDTypeDefinition::getElement)
-                        .map(Element::getChildNodes)
-                        .orElse(null);
-        if (childNodes == null) return null;
-        for (int i = 0; i < childNodes.getLength(); i++) {
-            final Node item = childNodes.item(i);
-            if (item instanceof Element && isSequenceElement((Element) item)) {
-                final Element sequenceElement = (Element) item;
-                return sequenceElement;
-            }
-        }
-        return null;
-    }
-
-    private boolean isSequenceElement(Element element) {
-        String name = getLocalName(element.getNodeName());
-        return "sequence".equals(name);
-    }
-
-    private String getLocalName(String name) {
-        if (name.contains(":")) {
-            String[] split = name.split(Pattern.quote(":"));
-            name = split[split.length - 1];
-        }
-        return name;
     }
 
     /**

@@ -88,6 +88,11 @@ public class ColorMapEntryBuilder extends AbstractStyleBuilder<ColorMapEntry> {
         return quantity(cqlExpression(cqlExpression));
     }
 
+    public ColorMapEntryBuilder label(String label) {
+        this.label = label;
+        return this;
+    }
+
     @Override
     public ColorMapEntryBuilder reset() {
         label = null;

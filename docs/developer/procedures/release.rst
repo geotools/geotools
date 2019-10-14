@@ -98,10 +98,12 @@ When creating the first release candidate of a series, there are some extra step
       
 * Create the new release candidate version in `JIRA <https://osgeo-org.atlassian.net/projects/GEOT>`_ for issues on master; for example, if master is now ``18-SNAPSHOT``, create a Jira version ``18-RC1`` for the first release of the ``18.x`` series
 
+* Create the new ``GeoTools $VER Releases`` (e.g. ``GeoTools 22 Releases``) folder in `SourceForge <https://sourceforge.net/projects/geotools/files/>`__
+
 * Update the jobs on build.geoserver.org:
   
   * disable the maintenance jobs, and remove them from the geotools view
-  * create new jobs, create from the exsisting master jobs, editing the branch and the DIST=stable configuration. Remember to also create the new docs jobs.
+  * create new jobs, create from the existing master jobs, editing the branch and the DIST=stable configuration. Remember to also create the new docs jobs.
   * edit the previous stable branch, changing to DIST=maintenance
 
 * Announce on the developer mailing list that the new stable branch has been created.
@@ -111,12 +113,20 @@ When creating the first release candidate of a series, there are some extra step
   For the new stable branch:
   
   * common.py - update the external links block changing 'latest' to 'stable'
-  * README.md and README.html - update the user guide links changing 'latest' to 'stable'  
+  * README.md - update the user guide links changing 'latest' to 'stable'  
   
+  ::
+      sed -i 's/docs.geotools.org\/latest/docs.geotools.org\/stable/g' README.md docs/common.py
+      sed -i 's/docs.geoserver.org\/latest/docs.geoserver.org\/stable/g' docs/common.py
+
   For the new maintenance branch:
   
   * common.py - update the external links block changing 'stable' to 'maintenance' (the geoserver link will change to 'maintain').
-  * README.md and README.html - update the user guide links changing 'stable' to 'maintenance'  
+  * README.md - update the user guide links changing 'stable' to 'maintenance'  
+  
+  ::
+      sed -i 's/docs.geotools.org\/stable/docs.geotools.org\/maintenance/g' README.md docs/common.py
+      sed -i 's/docs.geoserver.org\/stable/docs.geoserver.org\/maintain/g' docs/common.py
 
 Build the Release
 -----------------
@@ -174,6 +184,8 @@ Download the user guide:
  
 Publish the Release
 -------------------
+
+
 
 Run the `geotools-release-publish <https://build.geoserver.org/view/geotools/job/geotools-release-publish/>`_ in Jenkins. The job takes the following parameters:
 

@@ -16,6 +16,7 @@
  */
 package org.geotools.filter.expression;
 
+import java.util.Collection;
 import org.geotools.filter.Filters;
 import org.geotools.filter.MathExpressionImpl;
 import org.geotools.util.Utilities;
@@ -37,10 +38,16 @@ public class SubtractImpl extends MathExpressionImpl implements Subtract {
     public Object evaluate(Object feature) throws IllegalArgumentException {
         ensureOperandsSet();
 
-        double leftDouble = Filters.number(getExpression1().evaluate(feature, Number.class));
-        double rightDouble = Filters.number(getExpression2().evaluate(feature, Number.class));
+        Object eval1 = getExpression1().evaluate(feature);
+        Object eval2 = getExpression2().evaluate(feature);
+        if (eval1 instanceof Collection || eval2 instanceof Collection) {
+            return handleCollection(eval1, eval2, Operator.SUBTRACT);
+        } else {
+            double leftDouble = Filters.number(getExpression1().evaluate(feature, Number.class));
+            double rightDouble = Filters.number(getExpression2().evaluate(feature, Number.class));
 
-        return number(leftDouble - rightDouble);
+            return number(leftDouble - rightDouble);
+        }
     }
 
     public Object accept(ExpressionVisitor visitor, Object extraData) {

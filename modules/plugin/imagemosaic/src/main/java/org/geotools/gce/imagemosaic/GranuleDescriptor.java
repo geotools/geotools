@@ -1256,13 +1256,13 @@ public class GranuleDescriptor {
             // handles bands selection, if more readers start to support it a decent approach should
             // be used to know if the low level reader already performed the bands selection or if
             // image mosaic is responsible for do it
-            if (request.getBands() != null && !reader.getFormatName().equalsIgnoreCase("netcdf")) {
+            int[] bands = request.getBands();
+            if (bands != null && !reader.getFormatName().equalsIgnoreCase("netcdf")) {
                 // if we are expanding the color model, do so before selecting the bands
                 if (raster.getColorModel() instanceof IndexColorModel && expandToRGB) {
                     raster = new ImageWorker(raster).forceComponentColorModel().getRenderedImage();
                 }
 
-                int[] bands = request.getBands();
                 // delegate the band selection operation on JAI BandSelect operation
                 raster = new ImageWorker(raster).retainBands(bands).getRenderedImage();
                 ColorModel colorModel = raster.getColorModel();
@@ -1294,7 +1294,7 @@ public class GranuleDescriptor {
                     raster = t;
                 }
 
-                raster = ImageUtilities.applyRescaling(scales, offsets, raster, hints);
+                raster = rescale(raster, hints, bands);
             }
 
             // use fixed source area
@@ -1579,6 +1579,24 @@ public class GranuleDescriptor {
                 }
             }
         }
+    }
+
+    private RenderedImage rescale(RenderedImage raster, Hints hints, int[] bands) {
+        Double[] rescalingScales = scales;
+        Double[] rescalingOffsets = offsets;
+
+        // make sure to update scales and offsets if there is a band-selection
+        if (bands != null && (scales != null || offsets != null)) {
+            rescalingScales = new Double[bands.length];
+            rescalingOffsets = new Double[bands.length];
+            int i = 0;
+            for (int bandIndex : bands) {
+                rescalingScales[i] = scales != null ? scales[bandIndex] : null;
+                rescalingOffsets[i++] = offsets != null ? offsets[bandIndex] : null;
+            }
+        }
+        raster = ImageUtilities.applyRescaling(rescalingScales, rescalingOffsets, raster, hints);
+        return raster;
     }
 
     private RenderedImage forceVirtualNativeResolution(

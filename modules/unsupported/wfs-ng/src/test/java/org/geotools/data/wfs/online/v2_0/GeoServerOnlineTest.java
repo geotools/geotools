@@ -17,6 +17,7 @@
 package org.geotools.data.wfs.online.v2_0;
 
 import static org.geotools.data.wfs.WFSTestData.GEOS_STATES_11;
+
 import java.util.Collections;
 import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.data.wfs.online.AbstractWfsDataStoreOnlineTest;
@@ -61,8 +62,8 @@ public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
         return ff.intersects(ff.property("the_geom"), ff.literal(polygon));
     }
 
-        @Override
-        public void testDataStoreHandlesAxisFlipping() {
-            // disabled, not implemented for 2.0.0
-        }
+    @Override
+    public void testDataStoreHandlesAxisFlipping() {
+        // disabled, not implemented for 2.0.0
+    }
 }

@@ -1673,7 +1673,7 @@ public class SLDStyleFactory {
             return fallback;
         }
         Double d = exp.evaluate(f, Double.class);
-        if (d != null) {
+        if (d != null && !Double.isNaN(d)) {
             return d.doubleValue();
         }
         return fallback;

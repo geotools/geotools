@@ -310,6 +310,17 @@ public class SLDStyleFactoryTest extends TestCase {
         assertEquals(16.0, ms.getSize());
     }
 
+    public void testDefaultExpressionSizeMark() throws Exception {
+        PointSymbolizer symb = sf.createPointSymbolizer();
+        Mark myMark = sf.createMark();
+        myMark.setWellKnownName(ff.literal("square"));
+        symb.getGraphic().setSize(ff.multiply(ff.property("expression/nil"), ff.literal(1.0)));
+        symb.getGraphic().graphicalSymbols().add(myMark);
+
+        MarkStyle2D ms = (MarkStyle2D) sld.createPointStyle(feature, symb, range);
+        assertEquals(16.0, ms.getSize());
+    }
+
     public void testDefaultLineSymbolizerWithColor() throws Exception {
         LineSymbolizer symb = sf.createLineSymbolizer();
         symb.setStroke(sf.createStroke(ff.literal("#0000FF"), ff.literal(1.0)));

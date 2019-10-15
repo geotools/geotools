@@ -417,16 +417,18 @@ public class DataUtilitiesTest extends DataTestCase {
                         roadType2.getDescriptor("the_geom"),
                         false));
 
-        // same names different descriptors mismatch in both cases
         SimpleFeatureType roadType3 =
                 DataUtilities.createType(
                         "road", "id:0,the_geom:LineString,geom:String,name:String,uuid:UUID");
+        // same names different descriptors mismatch when strict flg set
         assertEquals(
                 false,
                 DataUtilities.isMatch(
                         roadType.getDescriptor("geom"), roadType3.getDescriptor("geom")));
+
+        // same names different descriptors match when strict flg not set
         assertEquals(
-                false,
+                true,
                 DataUtilities.isMatch(
                         roadType.getDescriptor("geom"), roadType3.getDescriptor("geom"), false));
     }

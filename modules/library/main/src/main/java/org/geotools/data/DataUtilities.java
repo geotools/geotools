@@ -410,9 +410,8 @@ public class DataUtilities {
      * Compare attribute coverage between two feature types (allowing the identification of
      * subTypes).
      *
-     * <p>loose compatibility is assumed based on local name and attribute descriptor class (java
-     * binding may differ) (see {@link #compareInternal(SimpleFeatureType, SimpleFeatureType,
-     * boolean)} for more details.
+     * <p>loose compatibility is assumed based on local name (java binding may differ) (see {@link
+     * #compareInternal(SimpleFeatureType, SimpleFeatureType, boolean)} for more details.
      *
      * <p>Namespace is not considered in this operations. You may still need to reType to get the
      * correct namespace, or reorder.
@@ -441,7 +440,7 @@ public class DataUtilities {
      *
      * <p>Comparison is based on {@link AttributeDescriptor} - the {@link
      * #isMatch(AttributeDescriptor, AttributeDescriptor, boolean)} method is used to quickly
-     * confirm that the local name and java binding (or attribute class) are compatible.
+     * confirm that the local name and java binding (depending on strict flag value) are compatible.
      *
      * <p>Namespace is not considered in this operations. You may still need to reType to get the
      * correct namespace, or reorder.
@@ -522,8 +521,8 @@ public class DataUtilities {
      * @param a descriptor to compare
      * @param b descriptor to compare
      * @param strict if true both descriptor name and class binding is checked otherwise a more
-     *     loose form o compatibility is assumed where equality is determined by descriptor name and
-     *     descriptor class
+     *     loose form o compatibility is assumed where equality is determined by descriptor name
+     *     only
      * @return true if compatibility comparison succeeds
      */
     public static boolean isMatch(AttributeDescriptor a, AttributeDescriptor b, boolean strict) {
@@ -549,7 +548,7 @@ public class DataUtilities {
                 return true;
             }
         } else {
-            if (a.getLocalName().equals(b.getLocalName()) && a.getClass().equals(b.getClass())) {
+            if (a.getLocalName().equals(b.getLocalName())) {
                 return true;
             }
         }

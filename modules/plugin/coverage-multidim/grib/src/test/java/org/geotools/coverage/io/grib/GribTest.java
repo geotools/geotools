@@ -21,14 +21,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import javax.imageio.spi.ImageReaderSpi;
 import org.apache.commons.io.FileUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.io.netcdf.NetCDFDriver;
 import org.geotools.coverage.io.netcdf.NetCDFReader;
@@ -39,6 +39,7 @@ import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
+import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.referencing.operation.projection.RotatedPole;
 import org.geotools.test.TestData;
 import org.junit.Assert;
@@ -303,6 +304,87 @@ public class GribTest extends Assert {
             // Read with the larger BBOX
             GridCoverage2D grid = reader.read(coverageName, values);
             // Check if the result is not null
+            assertNotNull(grid);
+        } finally {
+            // Dispose
+            if (reader != null) {
+                try {
+                    reader.dispose();
+                } catch (Throwable t) {
+                    // Does nothing
+                }
+            }
+        }
+    }
+
+    /**
+     * Test on a Grib image with temporal bands, querying different bands
+     *
+     * @throws DataSourceException
+     * @throws MalformedURLException
+     * @throws IOException
+     */
+    @Test
+    public void testGribImageWithTimeDimension() throws MalformedURLException, IOException {
+        // Selection of the input file
+        final File inputFile = TestData.file(this, "tpcprblty.2019100912.incremental.grib2");
+        // Get format
+        final AbstractGridFormat format =
+                (AbstractGridFormat) GridFormatFinder.findFormat(inputFile.toURI().toURL(), null);
+        assertTrue(format.accepts(inputFile));
+        AbstractGridCoverage2DReader reader = null;
+        assertNotNull(format);
+        try {
+
+            reader = format.getReader(inputFile, null);
+            assertNotNull(reader);
+
+            // Selection of all the Coverage names
+            String[] names = reader.getGridCoverageNames();
+            assertNotNull(names);
+
+            // Name of the first coverage
+            String coverageName = names[0];
+
+            // Parsing metadata values
+            assertEquals(
+                    "true",
+                    reader.getMetadataValue(coverageName, GridCoverage2DReader.HAS_TIME_DOMAIN));
+            assertEquals(
+                    "false",
+                    reader.getMetadataValue(
+                            coverageName, GridCoverage2DReader.HAS_ELEVATION_DOMAIN));
+
+            // Get the envelope
+            final ParameterValue<GridGeometry2D> gg =
+                    AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+            final GeneralEnvelope originalEnvelope = reader.getOriginalEnvelope(coverageName);
+            // gg.setValue(originalEnvelope);
+
+            // Selecting the same gridRange
+            GridEnvelope gridRange = reader.getOriginalGridRange(coverageName);
+
+            final ParameterValue<List> time =
+                    new DefaultParameterDescriptor<>("TIME", List.class, null, null).createValue();
+            // 2019-10-09T18:00:00.000Z
+            time.setValue(new ArrayList<>(Collections.singletonList(new Date(1570644000000L))));
+
+            // HEIGHT_ABOVE_GROUND = "[10.0]"
+            final ParameterValue<List> height =
+                    new DefaultParameterDescriptor<>("HEIGHT_ABOVE_GROUND", List.class, null, null)
+                            .createValue();
+            height.setValue(new ArrayList<>(Collections.singletonList(10.0)));
+
+            GeneralParameterValue[] values = new GeneralParameterValue[] {gg, time, height};
+
+            // Read with 0th date
+            GridCoverage2D grid = reader.read(coverageName, values);
+            assertNotNull(grid);
+
+            // Read with 12th date
+            // 2019-10-12T18:00:00.000Z
+            time.setValue(new ArrayList<>(Collections.singletonList(new Date(1570903200000L))));
+            grid = reader.read(coverageName, values);
             assertNotNull(grid);
         } finally {
             // Dispose

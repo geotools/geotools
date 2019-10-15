@@ -41,12 +41,12 @@ public class SubtractImpl extends MathExpressionImpl implements Subtract {
         Object eval1 = getExpression1().evaluate(feature);
         Object eval2 = getExpression2().evaluate(feature);
         if (eval1 instanceof Collection || eval2 instanceof Collection) {
-            return handleCollection(eval1, eval2, Operator.SUBTRACT);
+            return handleCollection(eval1, eval2);
         } else {
             double leftDouble = Filters.number(getExpression1().evaluate(feature, Number.class));
             double rightDouble = Filters.number(getExpression2().evaluate(feature, Number.class));
 
-            return number(leftDouble - rightDouble);
+            return doArithmeticOperation(leftDouble, rightDouble);
         }
     }
 
@@ -86,5 +86,10 @@ public class SubtractImpl extends MathExpressionImpl implements Subtract {
 
     public String toString() {
         return "(" + getExpression1().toString() + "-" + getExpression2().toString() + ")";
+    }
+
+    @Override
+    protected Object doArithmeticOperation(Double operand1, Double operand2) {
+        return number(operand1 - operand2);
     }
 }

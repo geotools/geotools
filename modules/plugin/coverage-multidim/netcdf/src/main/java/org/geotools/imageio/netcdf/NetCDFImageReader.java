@@ -705,7 +705,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
             // add the ranges the COARDS way: (additional dims), T, Z, Y, X
             int first;
             // (additional), T, Z
-            for (int i = slice2DIndex.getNCount() - 1; i >= 0; i--) {
+            for (int i = 0; i < slice2DIndex.getNCount(); i++) {
                 first = slice2DIndex.getNIndex(i);
                 if (first != -1) {
                     ranges.add(new Range(first, first, 1));

@@ -157,8 +157,6 @@ public class ExpressionTest extends TestCase {
         testFeature = SimpleFeatureBuilder.build(testSchema, attributes, null);
         // support for properties with lists
         testFeature.setAttribute("testList", Arrays.asList(1, 2, 3, 4));
-        testFeature.setAttribute("testList2", Arrays.asList(1, 2));
-
         LOGGER.finer("...feature created");
     }
 
@@ -449,72 +447,26 @@ public class ExpressionTest extends TestCase {
     public void testMathObjectwithLists() throws IllegalFilterException {
         FilterFactory2 ff = new FilterFactoryImpl();
         // Multiply Test
-        // expression 1 is list..expression 2 is literal
+        // list x 2
         MathExpressionImpl mathExpression =
                 new MultiplyImpl(ff.property("testList"), ff.literal(Integer.valueOf(2)));
         List scaledList = (List) mathExpression.evaluate(testFeature);
         // verify multiplication
         assertEquals(Double.valueOf(2), scaledList.get(0));
 
-        mathExpression = new MultiplyImpl(ff.property("testList"), ff.property("testList"));
-        scaledList = (List) mathExpression.evaluate(testFeature);
-        assertEquals(Double.valueOf(1), scaledList.get(0));
-
-        mathExpression = new MultiplyImpl(ff.property("testList2"), ff.property("testList"));
-        scaledList = (List) mathExpression.evaluate(testFeature);
-        assertEquals(Double.valueOf(1), scaledList.get(0));
-        // last is unchanged because one list if two items less
-        assertEquals(Double.valueOf(4), scaledList.get(3));
-
-        // Subtract test
+        // list - 1
         mathExpression = new SubtractImpl(ff.property("testList"), ff.literal(Integer.valueOf(1)));
         List subtractedList = (List) mathExpression.evaluate(testFeature);
         assertEquals(Double.valueOf(0), subtractedList.get(0));
 
-        // all should be zero
-        mathExpression = new SubtractImpl(ff.property("testList"), ff.property("testList"));
-        subtractedList = (List) mathExpression.evaluate(testFeature);
-        assertEquals(Double.valueOf(0), subtractedList.get(0));
-        assertEquals(Double.valueOf(0), subtractedList.get(3));
-
-        // first two should be zero
-        mathExpression = new SubtractImpl(ff.property("testList2"), ff.property("testList"));
-        subtractedList = (List) mathExpression.evaluate(testFeature);
-        assertEquals(Double.valueOf(0), subtractedList.get(0));
-        // last is unchanged because one list if two items less
-        assertEquals(Double.valueOf(4), subtractedList.get(3));
-
-        // Addition test
-        mathExpression = new AddImpl(ff.property("testList"), ff.literal(Integer.valueOf(1)));
+        // list + 1
+        mathExpression = new AddImpl(ff.literal(Integer.valueOf(1)), ff.property("testList"));
         List addedList = (List) mathExpression.evaluate(testFeature);
         assertEquals(Double.valueOf(2), addedList.get(0));
 
-        // all should be zero
-        mathExpression = new AddImpl(ff.property("testList"), ff.property("testList"));
-        addedList = (List) mathExpression.evaluate(testFeature);
-        assertEquals(Double.valueOf(2), addedList.get(0));
-        assertEquals(Double.valueOf(4), addedList.get(1));
-
-        // first two should be zero
-        mathExpression = new AddImpl(ff.property("testList2"), ff.property("testList"));
-        addedList = (List) mathExpression.evaluate(testFeature);
-
-        // Division Test
-        mathExpression = new DivideImpl(ff.property("testList"), ff.literal(Integer.valueOf(2)));
+        // list / 2
+        mathExpression = new DivideImpl(ff.literal(Integer.valueOf(2)), ff.property("testList"));
         List dividedList = (List) mathExpression.evaluate(testFeature);
         assertEquals(Double.valueOf(0.5), dividedList.get(0));
-
-        // all should be zero
-        mathExpression = new DivideImpl(ff.property("testList"), ff.property("testList"));
-        dividedList = (List) mathExpression.evaluate(testFeature);
-        assertEquals(Double.valueOf(1), dividedList.get(1));
-        assertEquals(Double.valueOf(1), dividedList.get(3));
-
-        // first two should be zero
-        mathExpression = new DivideImpl(ff.property("testList2"), ff.property("testList"));
-        dividedList = (List) mathExpression.evaluate(testFeature);
-        assertEquals(Double.valueOf(1), dividedList.get(0));
-        // last is unchanged because one list if two items less
-        assertEquals(Double.valueOf(4), dividedList.get(3));
     }
 }

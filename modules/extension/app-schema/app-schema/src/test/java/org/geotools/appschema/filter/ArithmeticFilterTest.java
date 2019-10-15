@@ -79,7 +79,7 @@ public class ArithmeticFilterTest extends AppSchemaTestSupport {
         // evaluating first feature with Location accuracy value = 200
 
         // 200 x 2 = 400
-        Filter arthimeticMultiplyFilter =
+        Filter arithmeticMultiplyFilter =
                 ff.equals(
                         ff.multiply(
                                 ff.property(
@@ -88,7 +88,7 @@ public class ArithmeticFilterTest extends AppSchemaTestSupport {
                         ff.literal(400));
 
         // 200 / 2 = 100
-        Filter arthimeticDivideFilter =
+        Filter arithmeticDivideFilter =
                 ff.equals(
                         ff.divide(
                                 ff.property(
@@ -97,7 +97,7 @@ public class ArithmeticFilterTest extends AppSchemaTestSupport {
                         ff.literal(100));
 
         // 200 + 100 = 300
-        Filter arthimeticAdditionFilter =
+        Filter arithmeticAdditionFilter =
                 ff.equals(
                         ff.add(
                                 ff.property(
@@ -106,7 +106,7 @@ public class ArithmeticFilterTest extends AppSchemaTestSupport {
                         ff.literal(300));
 
         // 200 - 100 = 100
-        Filter arthimeticSubtractionFilter =
+        Filter arithmeticSubtractionFilter =
                 ff.equals(
                         ff.subtract(
                                 ff.property(
@@ -126,10 +126,10 @@ public class ArithmeticFilterTest extends AppSchemaTestSupport {
             Property val = (Property) positionalAccuracy.evaluate(f);
             System.out.println(val.getValue());
             // try all filters
-            assertTrue(arthimeticMultiplyFilter.evaluate(f));
-            assertTrue(arthimeticDivideFilter.evaluate(f));
-            assertTrue(arthimeticAdditionFilter.evaluate(f));
-            assertTrue(arthimeticSubtractionFilter.evaluate(f));
+            assertTrue(arithmeticMultiplyFilter.evaluate(f));
+            assertTrue(arithmeticDivideFilter.evaluate(f));
+            assertTrue(arithmeticAdditionFilter.evaluate(f));
+            assertTrue(arithmeticSubtractionFilter.evaluate(f));
 
         } finally {
             iterator.close();

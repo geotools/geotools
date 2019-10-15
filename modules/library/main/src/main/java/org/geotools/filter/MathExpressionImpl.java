@@ -16,7 +16,6 @@
  */
 package org.geotools.filter;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,13 +44,6 @@ public abstract class MathExpressionImpl extends DefaultExpression implements Bi
 
     /** No argument constructor. */
     protected MathExpressionImpl() {}
-
-    protected enum Operator {
-        ADD,
-        SUBTRACT,
-        DIVIDE,
-        MULTIPLY;
-    }
 
     protected MathExpressionImpl(
             org.opengis.filter.expression.Expression e1,
@@ -122,109 +114,37 @@ public abstract class MathExpressionImpl extends DefaultExpression implements Bi
         return new Double(number); // Getools 2.1 style
     }
 
-    protected Object getValue(org.opengis.filter.expression.Expression expression, Object feature) {
-        Object evaluation = expression.evaluate(feature);
-        return evaluation;
-    }
-
-    protected Object handleCollection(Object value1, Object value2, Operator operator) {
-        // case 1, both are collections
+    protected Object handleCollection(Object value1, Object value2) {
+        List<Number> numericList;
+        final Number scalar;
         if (value1 instanceof Collection && value2 instanceof Collection) {
-            Collection<Number> result = new ArrayList<Number>();
-            // by default first list is set to bigger
-            // second is set to smaller
-            List<Number> biggerList =
-                    (List)
-                            ((Collection) value1)
-                                    .stream()
-                                    .map(v -> Converters.convert(v, Number.class))
-                                    .collect(Collectors.toList());
-            List<Number> smallerList =
-                    (List)
-                            ((Collection) value2)
-                                    .stream()
-                                    .map(v -> Converters.convert(v, Number.class))
-                                    .collect(Collectors.toList());
-            // swap if second is bigger
-            if (((Collection) value2).size() > ((Collection) value1).size()) {
-                biggerList =
-                        (List)
-                                ((Collection) value2)
-                                        .stream()
-                                        .map(v -> Converters.convert(v, Number.class))
-                                        .collect(Collectors.toList());
-                smallerList =
-                        (List)
-                                ((Collection) value1)
-                                        .stream()
-                                        .map(v -> Converters.convert(v, Number.class))
-                                        .collect(Collectors.toList());
-            }
-
-            // loop over bigger list
-            // multiply with correspdoning position in other list
-            // store in result
-            // store unchanged items that dont have corresponding number in other list
-            for (int i = 0; i < biggerList.size(); i++) {
-                if (i < smallerList.size())
-                    result.add(
-                            doArithmeticOperation(
-                                    biggerList.get(i).doubleValue(),
-                                    smallerList.get(i).doubleValue(),
-                                    operator));
-                else result.add(biggerList.get(i).doubleValue());
-            }
-
-            return result;
-
+            throw new RuntimeException("Both Maths expressions cannot be Collections");
         } else if (value1 instanceof Collection) {
-            // only first is collection
-            List<Number> biggerList =
+            // first is collection, second is scalar
+            numericList =
                     (List)
                             ((Collection) value1)
                                     .stream()
                                     .map(v -> Converters.convert(v, Number.class))
                                     .collect(Collectors.toList());
-            final Number scalar = Filters.number(value2);
-            return biggerList
-                    .stream()
-                    .map(
-                            n ->
-                                    doArithmeticOperation(
-                                            n.doubleValue(), scalar.doubleValue(), operator))
-                    .collect(Collectors.toList());
+            scalar = Filters.number(value2);
+
         } else {
-            // only first is collection
-            List<Number> biggerList =
+            // second is collection, first is scalar
+            numericList =
                     (List)
                             ((Collection) value2)
                                     .stream()
                                     .map(v -> Converters.convert(v, Number.class))
                                     .collect(Collectors.toList());
-            final Number scalar = Filters.number(value1);
-            return biggerList
-                    .stream()
-                    .map(
-                            n ->
-                                    doArithmeticOperation(
-                                            n.doubleValue(), scalar.doubleValue(), operator))
-                    .collect(Collectors.toList());
-        }
-    }
-
-    private Double doArithmeticOperation(Double operand1, Double operand2, Operator operator) {
-
-        switch (operator) {
-            case ADD:
-                return operand1 + operand2;
-            case SUBTRACT:
-                return operand1 - operand2;
-            case MULTIPLY:
-                return operand1 * operand2;
-            case DIVIDE:
-                return operand1 / operand2;
+            scalar = Filters.number(value1);
         }
 
-        throw new RuntimeException(operator + "is unsupported");
+        return numericList
+                .stream()
+                .map(n -> doArithmeticOperation(n.doubleValue(), scalar.doubleValue()))
+                .collect(Collectors.toList());
     }
+
+    protected abstract Object doArithmeticOperation(Double operand1, Double operand2);
 }

@@ -5597,6 +5597,44 @@ public class ImageMosaicReaderTest extends Assert {
     }
 
     @Test
+    public void testScaleOffsetEnabledWithBandSelection() throws Exception {
+        URL scaleOffsetURL = TestData.url(this, "scaleOffset");
+        final AbstractGridFormat format = TestUtils.getFormat(scaleOffsetURL);
+
+        final ImageMosaicReader reader = getReader(scaleOffsetURL, format);
+        try {
+            // test one, read with scale/offset rescaling and band selection
+            ParameterValue<Boolean> rescalePixels = AbstractGridFormat.RESCALE_PIXELS.createValue();
+            rescalePixels.setValue(true);
+            ParameterValue<int[]> bands = AbstractGridFormat.BANDS.createValue();
+            bands.setValue(new int[] {5});
+            GridCoverage2D gc = reader.read(new GeneralParameterValue[] {rescalePixels, bands});
+            RenderedImage imScaled = gc.getRenderedImage();
+            assertEquals(DataBuffer.TYPE_DOUBLE, imScaled.getSampleModel().getDataType());
+
+            // ... checking pixels
+            double[] pixelDouble = new double[1];
+            imScaled.getData().getPixel(0, 0, pixelDouble);
+            assertArrayEquals(new double[] {1}, pixelDouble, 0d);
+            imScaled.getData().getPixel(19, 9, pixelDouble);
+            assertArrayEquals(new double[] {1}, pixelDouble, 0d);
+
+            bands.setValue(new int[] {1, 4});
+            gc = reader.read(new GeneralParameterValue[] {rescalePixels, bands});
+            imScaled = gc.getRenderedImage();
+            // ... checking pixels
+            pixelDouble = new double[2];
+            imScaled.getData().getPixel(0, 0, pixelDouble);
+            assertArrayEquals(new double[] {0.116, 0}, pixelDouble, 0d);
+            imScaled.getData().getPixel(19, 9, pixelDouble);
+            assertArrayEquals(new double[] {0.1957, 0}, pixelDouble, 0d);
+            gc.dispose(true);
+        } finally {
+            reader.dispose();
+        }
+    }
+
+    @Test
     public void testGranuleFileViewSidecars() throws Exception {
         // copy the data and get the reader
         File directory = setupTestDirectory(this, this.rgbURL, "rbgFileView");

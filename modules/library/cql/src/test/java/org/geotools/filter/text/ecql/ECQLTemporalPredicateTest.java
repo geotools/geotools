@@ -17,14 +17,21 @@
 
 package org.geotools.filter.text.ecql;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
+import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.filter.text.commons.CompilerUtil;
 import org.geotools.filter.text.commons.Language;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.cql2.CQLTemporalPredicateTest;
+import org.geotools.temporal.object.DefaultInstant;
+import org.geotools.temporal.object.DefaultPosition;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.temporal.After;
 import org.opengis.filter.temporal.Before;
@@ -133,5 +140,37 @@ public class ECQLTemporalPredicateTest extends CQLTemporalPredicateTest {
 
         final String predicate = "(1+2) BEFORE 2006-11-30T01:30:00Z ";
         CompilerUtil.parseFilter(this.language, predicate);
+    }
+
+    @Test
+    public void filterWithOgcInstantToEcql() throws Exception {
+        final Date date = new Date();
+        FilterFactory ff = new FilterFactoryImpl();
+        Filter filter =
+                ff.after(
+                        ff.property("attName"),
+                        ff.literal(new DefaultInstant(new DefaultPosition(date))));
+
+        String cql = ECQL.toCQL(filter);
+        Assert.assertEquals("attName AFTER " + getEcqlCompliantDate(date), cql);
+    }
+
+    @Test
+    public void beforeFilterWithOgcInstantToEcql() throws Exception {
+        final Date date = new Date();
+        FilterFactory ff = new FilterFactoryImpl();
+        Filter filter =
+                ff.before(
+                        ff.property("attName"),
+                        ff.literal(new DefaultInstant(new DefaultPosition(date))));
+
+        String cql = ECQL.toCQL(filter);
+        Assert.assertEquals("attName BEFORE " + getEcqlCompliantDate(date), cql);
+    }
+
+    private String getEcqlCompliantDate(Date date) {
+        final DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSz");
+        formatter.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
+        return formatter.format(date).replace("GMT", "");
     }
 }

@@ -61,4 +61,4 @@ Using the ``Converters`` utility class this becomes::
 The ``Converters`` are the technology behind our great support for the Filter API Expression::
   
    Expression expr = ff.literal("#FF0000")
-   Color color = expr.evaualte( null, Color.class );
+   Color color = expr.evaluate( null, Color.class );

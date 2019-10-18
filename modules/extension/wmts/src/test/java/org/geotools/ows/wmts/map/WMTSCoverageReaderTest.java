@@ -24,19 +24,15 @@ import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import javax.xml.parsers.ParserConfigurationException;
 import net.opengis.wmts.v_1.CapabilitiesType;
-import org.apache.commons.httpclient.*;
-import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.lang3.NotImplementedException;
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.ServiceException;
 import org.geotools.ows.wmts.MockHttpClient;
-import org.geotools.ows.wmts.MockHttpCommonClient;
 import org.geotools.ows.wmts.WebMapTileServer;
 import org.geotools.ows.wmts.model.WMTSCapabilities;
 import org.geotools.ows.wmts.model.WMTSLayer;
@@ -103,32 +99,29 @@ public class WMTSCoverageReaderTest {
 
         // Mock HTTPClient
         MockHTTPResponse getCapabilitiesResponse = new MockHTTPResponse(KVP_CAPA_RESOURCENAME);
+        MockHTTPResponse getTileResponse = new MockHTTPResponse("test-data/world.png");
+        final Map<String, String> getTileHeadersCalled = new HashMap<>();
         HTTPClient owsHttpClient =
                 new MockHttpClient() {
                     @Override
-                    public HTTPResponse get(URL url) {
-                        return getCapabilitiesResponse;
+                    public HTTPResponse get(URL url, Map<String, String> headers) {
+                        if (url.toString().toLowerCase().contains("request=getcapabilities")) {
+                            return getCapabilitiesResponse;
+                        } else if (url.toString().toLowerCase().contains("request=gettile")) {
+                            getTileHeadersCalled.clear();
+                            getTileHeadersCalled.putAll(headers);
+                            return getTileResponse;
+                        } else {
+                            throw new NotImplementedException(
+                                    "request is not implemented. " + url.toString());
+                        }
                     }
                 };
         owsHttpClient.setUser("username");
         owsHttpClient.setPassword("userpassword");
 
-        // Mock HttpClient (common)
-        MockHttpCommonClient commonHttpClient =
-                new MockHttpCommonClient() {
-                    @Override
-                    protected InputStream getResponseInputStream(HttpMethod method)
-                            throws IOException {
-                        return getResourceStreamForCommonHttpClient("test-data/world.png");
-                    }
-                };
-        WebMapTileServer server =
-                new WebMapTileServer(wmtsUrl, owsHttpClient, null) {
-                    @Override
-                    protected HttpClient getHttpClient() {
-                        return commonHttpClient;
-                    }
-                };
+        WebMapTileServer server = new WebMapTileServer(wmtsUrl, owsHttpClient, null);
+        server.getHeaders().put("header1", "value1");
         assertNotNull(server.getCapabilities());
 
         WMTSLayer layer = server.getCapabilities().getLayer("topp:states");
@@ -140,21 +133,11 @@ public class WMTSCoverageReaderTest {
         BufferedImage bufferedImage = responses.get(0).loadImageTileImage(responses.get(0));
         assertNotNull(bufferedImage);
 
-        GetMethod getTileHttpMethod = (GetMethod) commonHttpClient.getCalledMethods().get(0);
-        assertNotNull(getTileHttpMethod);
-        Header authorizationHeader = getTileHttpMethod.getRequestHeader("Authorization");
-        // Authorization header must be set for WMTS GetTile requests if username and password set.
-        assertNotNull("Missing Authorization header", authorizationHeader);
-    }
-
-    private InputStream getResourceStreamForCommonHttpClient(String resourceName)
-            throws FileNotFoundException {
-        File resourceFile = getResourceFile(resourceName);
-        String headerString =
-                "HTTP/1.1 200 OK\r\n" + "Content-Length: " + resourceFile.length() + "\r\n\r\n";
-        ByteArrayInputStream headerStream = new ByteArrayInputStream(headerString.getBytes());
-        FileInputStream tileImageInputStream = new FileInputStream(resourceFile);
-        return new SequenceInputStream(headerStream, tileImageInputStream);
+        // check headers defined at WebMapTileServer are sent with GetTileRequest
+        assertNotNull(getTileHeadersCalled);
+        assertTrue(
+                "Expected header1 in the GetTile request",
+                getTileHeadersCalled.containsKey("header1"));
     }
 
     public List<Tile> testInitMapRequest(WMTSCoverageReader wcr, ReferencedEnvelope bbox)

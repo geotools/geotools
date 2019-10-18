@@ -20,7 +20,8 @@ package org.geotools.tile;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.commons.httpclient.HttpClient;
+import org.geotools.data.ows.HTTPClient;
+import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -57,7 +58,7 @@ public abstract class TileService {
     private String baseURL;
 
     private String name;
-    private final HttpClient client;
+    private final HTTPClient client;
 
     /**
      * Create a new TileService with a name and a base URL
@@ -68,7 +69,7 @@ public abstract class TileService {
      *     URL is well-formed.
      */
     protected TileService(String name, String baseURL) {
-        this(name, baseURL, new HttpClient());
+        this(name, baseURL, new SimpleHttpClient());
     }
 
     /**
@@ -78,9 +79,9 @@ public abstract class TileService {
      * @param baseURL the base URL. This is a string representing the common part of the URL for all
      *     this service's tiles. Cannot be null. Note that this constructor doesn't ensure that the
      *     URL is well-formed.
-     * @param client HttpClient instance to use for a tile request.
+     * @param client HTTPClient instance to use for a tile request.
      */
-    protected TileService(String name, String baseURL, HttpClient client) {
+    protected TileService(String name, String baseURL, HTTPClient client) {
         setName(name);
         setBaseURL(baseURL);
 
@@ -436,7 +437,7 @@ public abstract class TileService {
         return getName();
     }
 
-    public final HttpClient getHttpClient() {
+    public final HTTPClient getHttpClient() {
         return this.client;
     }
 }

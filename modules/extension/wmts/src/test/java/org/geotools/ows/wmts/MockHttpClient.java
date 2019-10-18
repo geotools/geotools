@@ -3,6 +3,7 @@ package org.geotools.ows.wmts;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Map;
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.HTTPResponse;
 
@@ -30,6 +31,10 @@ public abstract class MockHttpClient implements HTTPClient {
     }
 
     public HTTPResponse get(URL url) throws IOException {
+        return this.get(url, null);
+    }
+
+    public HTTPResponse get(URL url, Map<String, String> headers) throws IOException {
         throw new UnsupportedOperationException(
                 "GET not supported, if needed you have to override and implement");
     }

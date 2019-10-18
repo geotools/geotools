@@ -22,10 +22,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-import org.apache.commons.httpclient.Credentials;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.auth.AuthScope;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.ServiceInfo;
 import org.geotools.data.ows.AbstractOpenWebService;
@@ -156,21 +152,6 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
         return tileRequest.getTiles();
     }
 
-    private void setHttpClientCredentials(HttpClient client) {
-        client.getState().clearCredentials();
-        if (this.getHTTPClient().getUser() != null && this.getHTTPClient().getPassword() != null) {
-            AuthScope authscope = AuthScope.ANY;
-            Credentials credentials =
-                    new UsernamePasswordCredentials(
-                            this.getHTTPClient().getUser(), this.getHTTPClient().getPassword());
-
-            client.getParams().setAuthenticationPreemptive(true);
-            client.getState().setCredentials(authscope, credentials);
-        } else {
-            client.getParams().setAuthenticationPreemptive(false);
-        }
-    }
-
     /** @return */
     public GetTileRequest createGetTileRequest() {
 
@@ -182,20 +163,14 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
             url = serverURL;
         }
 
-        HttpClient client = this.getHttpClient();
-        setHttpClientCredentials(client);
-
         GetTileRequest request =
                 ((WMTSSpecification) specification)
-                        .createGetTileRequest(url, (Properties) null, capabilities, client);
+                        .createGetTileRequest(
+                                url, (Properties) null, capabilities, this.getHTTPClient());
 
         request.getHeaders().putAll(headers);
 
         return request;
-    }
-
-    protected HttpClient getHttpClient() {
-        return new HttpClient();
     }
 
     private URL findURL(OperationType operation) {

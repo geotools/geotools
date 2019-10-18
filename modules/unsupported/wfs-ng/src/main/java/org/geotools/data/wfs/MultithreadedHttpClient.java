@@ -19,6 +19,7 @@ package org.geotools.data.wfs;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Map;
 import java.util.logging.Logger;
 import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.Header;
@@ -146,9 +147,19 @@ public class MultithreadedHttpClient implements HTTPClient {
 
     @Override
     public HTTPResponse get(final URL url) throws IOException {
+        return get(url, null);
+    }
 
+    @Override
+    public HTTPResponse get(URL url, Map<String, String> headers) throws IOException {
         GetMethod getMethod = new GetMethod(url.toExternalForm());
         getMethod.setDoAuthentication(user != null && password != null);
+
+        if (headers != null) {
+            for (Map.Entry<String, String> headerNameValue : headers.entrySet()) {
+                getMethod.setRequestHeader(headerNameValue.getKey(), headerNameValue.getValue());
+            }
+        }
 
         int responseCode = client.executeMethod(getMethod);
         if (200 != responseCode) {

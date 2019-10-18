@@ -19,12 +19,7 @@ package org.geotools.ows.wmts;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
-import org.apache.commons.httpclient.HttpClient;
-import org.geotools.data.ows.AbstractGetCapabilitiesRequest;
-import org.geotools.data.ows.GetCapabilitiesRequest;
-import org.geotools.data.ows.HTTPResponse;
-import org.geotools.data.ows.Response;
-import org.geotools.data.ows.Specification;
+import org.geotools.data.ows.*;
 import org.geotools.ows.ServiceException;
 import org.geotools.ows.wmts.model.WMTSCapabilities;
 import org.geotools.ows.wmts.model.WMTSServiceType;
@@ -61,11 +56,11 @@ public class WMTSSpecification extends Specification {
 
     public GetTileRequest createGetTileRequest(
             URL server, Properties props, WMTSCapabilities caps) {
-        return this.createGetTileRequest(server, props, caps, new HttpClient());
+        return this.createGetTileRequest(server, props, caps, new SimpleHttpClient());
     }
 
     public GetTileRequest createGetTileRequest(
-            URL server, Properties props, WMTSCapabilities caps, HttpClient client) {
+            URL server, Properties props, WMTSCapabilities caps, HTTPClient client) {
         return new GetTileRequest(server, props, caps, client);
     }
 
@@ -78,14 +73,14 @@ public class WMTSSpecification extends Specification {
          */
         public GetTileRequest(
                 URL onlineResource, Properties properties, WMTSCapabilities capabilities) {
-            this(onlineResource, properties, capabilities, new HttpClient());
+            this(onlineResource, properties, capabilities, new SimpleHttpClient());
         }
 
         public GetTileRequest(
                 URL onlineResource,
                 Properties properties,
                 WMTSCapabilities capabilities,
-                HttpClient client) {
+                HTTPClient client) {
             super(onlineResource, properties, client);
             this.type = capabilities.getType();
             this.capabilities = capabilities;

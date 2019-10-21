@@ -22,8 +22,12 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import org.geotools.data.Base64;
+import org.geotools.util.logging.Logging;
 
 /**
  * A simple {@link HTTPClient} that creates a new {@link HttpURLConnection HTTP connection} for each
@@ -32,6 +36,8 @@ import org.geotools.data.Base64;
  * @author groldan
  */
 public class SimpleHttpClient implements HTTPClient {
+
+    private static final Logger LOGGER = Logging.getLogger(SimpleHttpClient.class);
 
     private static final int DEFAULT_TIMEOUT = 30; // 30 seconds
 
@@ -87,10 +93,30 @@ public class SimpleHttpClient implements HTTPClient {
 
     /** @see org.geotools.data.ows.HTTPClient#get(java.net.URL) */
     public HTTPResponse get(final URL url) throws IOException {
+        return this.get(url, null);
+    }
+
+    @Override
+    public HTTPResponse get(URL url, Map<String, String> headers) throws IOException {
+        if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, "URL is " + url);
 
         URLConnection connection = openConnection(url);
         if (connection instanceof HttpURLConnection) {
             ((HttpURLConnection) connection).setRequestMethod("GET");
+        }
+
+        if (headers != null) {
+            for (Map.Entry<String, String> headerNameValue : headers.entrySet()) {
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.log(
+                            Level.FINE,
+                            "Adding header "
+                                    + headerNameValue.getKey()
+                                    + " = "
+                                    + headerNameValue.getValue());
+                }
+                connection.addRequestProperty(headerNameValue.getKey(), headerNameValue.getValue());
+            }
         }
 
         connection.connect();

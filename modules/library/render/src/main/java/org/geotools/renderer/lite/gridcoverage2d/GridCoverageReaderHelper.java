@@ -53,6 +53,7 @@ import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.metadata.spatial.PixelOrientation;
 import org.opengis.parameter.GeneralParameterValue;
+import org.opengis.parameter.ParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -373,7 +374,8 @@ public class GridCoverageReaderHelper {
 
         GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(mapRasterArea), mapExtent);
         GridGeometry2D readingGridGeometry =
-                computeReadingGeometry(gg, readerCRS, polygon, handler);
+                computeReadingGeometry(gg, readerCRS, polygon, handler, readParams);
+
         if (readingGridGeometry == null) {
             return null;
         }
@@ -465,7 +467,8 @@ public class GridCoverageReaderHelper {
             GridGeometry2D gg,
             CoordinateReferenceSystem readerCRS,
             Polygon polygon,
-            ProjectionHandler handler)
+            ProjectionHandler handler,
+            GeneralParameterValue[] readParams)
             throws TransformException, FactoryException, IOException {
         GridGeometry2D readingGridGeometry;
         MathTransform2D crsToGrid2D = gg.getCRSToGrid2D();
@@ -513,7 +516,25 @@ public class GridCoverageReaderHelper {
                             localGridGeometry,
                             readerCRS,
                             resolutionLevels != null ? resolutionLevels[0] : null);
-            calculator.setAccurateResolution(isAccurateResolutionComputationSafe(readEnvelope));
+            final String name = "Accurate resolution computation";
+            boolean accurateResolution = true;
+            if (readParams != null) {
+                for (GeneralParameterValue gParam : readParams) {
+                    if (gParam != null
+                            && name.equalsIgnoreCase(gParam.getDescriptor().getName().toString())) {
+                        if (gParam instanceof ParameterValue<?>) {
+                            final ParameterValue<?> param = (ParameterValue<?>) gParam;
+                            final Object value = param.getValue();
+                            if (value != null) {
+                                accurateResolution = (Boolean) value;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+            calculator.setAccurateResolution(
+                    accurateResolution && isAccurateResolutionComputationSafe(readEnvelope));
             double[] readResolution = calculator.computeRequestedResolution(reducedEnvelope);
             int width =
                     (int)

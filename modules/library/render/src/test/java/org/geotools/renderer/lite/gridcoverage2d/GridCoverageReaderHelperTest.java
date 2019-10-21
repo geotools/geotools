@@ -19,6 +19,7 @@ package org.geotools.renderer.lite.gridcoverage2d;
 import static org.junit.Assert.*;
 
 import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -37,6 +38,7 @@ import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
 import org.geotools.gce.geotiff.GeoTiffReader;
+import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
@@ -57,6 +59,8 @@ import org.opengis.geometry.Envelope;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.datum.PixelInCell;
+import org.opengis.referencing.operation.MathTransform;
 
 public class GridCoverageReaderHelperTest {
 
@@ -112,6 +116,54 @@ public class GridCoverageReaderHelperTest {
         // System.out.println(coverages);
         assertEquals(1, coverages.size());
         assertEquals(envelope, coverages.get(0).getEnvelope2D());
+    }
+
+    @Test
+    public void testGeographicLargeAccurateResolutionFlags() throws Exception {
+        String testLocation = "geographicLarge";
+        URL storeUrl = TestData.url(this, "geotiff/world.tiff");
+        File testData = new File(storeUrl.toURI());
+        File testDirectory = crsMosaicFolder.newFolder(testLocation);
+        FileUtils.copyFileToDirectory(testData, testDirectory);
+        ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, null);
+
+        ReferencedEnvelope mapExtent =
+                new ReferencedEnvelope(-180, 180, -80, 80, DefaultGeographicCRS.WGS84);
+        CoordinateReferenceSystem targetCRS = CRS.decode("EPSG:3857");
+        ReferencedEnvelope requestedEnvelope = mapExtent.transform(targetCRS, true);
+
+        GridCoverageReaderHelper helper =
+                new GridCoverageReaderHelper(
+                        reader,
+                        new Rectangle(90, 40),
+                        requestedEnvelope,
+                        Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+
+        MathTransform originalG2W = imReader.getOriginalGridToWorld(PixelInCell.CELL_CENTER);
+        AffineTransform at = (AffineTransform) originalG2W;
+        final double originalResolution = 0.9d;
+        assertEquals(Math.abs(at.getScaleX()), originalResolution, EPS);
+        assertEquals(Math.abs(at.getScaleY()), originalResolution, EPS);
+
+        ProjectionHandler handler =
+                ProjectionHandlerFinder.getHandler(
+                        mapExtent, reader.getCoordinateReferenceSystem(), true);
+        List<GridCoverage2D> coverages = helper.readCoverages(null, handler);
+        at = (AffineTransform) coverages.get(0).getGridGeometry().getGridToCRS();
+
+        // Accurate resolution has been used
+        assertTrue(Math.abs(at.getScaleX()) <= originalResolution);
+        assertTrue(Math.abs(at.getScaleY()) <= originalResolution);
+
+        ParameterValue<Boolean> accurateResolution =
+                ImageMosaicFormat.ACCURATE_RESOLUTION.createValue();
+        accurateResolution.setValue(false);
+        coverages = helper.readCoverages(new GeneralParameterValue[] {accurateResolution}, handler);
+        at = (AffineTransform) coverages.get(0).getGridGeometry().getGridToCRS();
+
+        // Accurate resolution has not been used.
+        assertTrue(Math.abs(at.getScaleX()) > (originalResolution * 3));
+        assertTrue(Math.abs(at.getScaleY()) > (originalResolution * 3));
     }
 
     @Test

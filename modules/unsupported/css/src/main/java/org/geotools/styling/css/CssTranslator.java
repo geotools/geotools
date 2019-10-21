@@ -1424,7 +1424,7 @@ public class CssTranslator {
                             throw new IllegalArgumentException(
                                     "Invalid color map content, it must be a color-map-entry function "
                                             + "with either 2 parameters (color and value) or 3 parameters "
-                                            + "(color, value and opacity)"
+                                            + "(color, value and opacity) or 4 parameters (color, value, opacity and label) "
                                             + entry);
                         }
                         ColorMapEntryBuilder eb = cmb.entry();

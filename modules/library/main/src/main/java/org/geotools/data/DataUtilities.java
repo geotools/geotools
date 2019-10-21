@@ -377,6 +377,47 @@ public class DataUtilities {
      * Compare attribute coverage between two feature types (allowing the identification of
      * subTypes).
      *
+     * <p>Strict compatibility is assumed meaning that both the local name and java binding are
+     * compatible (see {@link #compareInternal(SimpleFeatureType, SimpleFeatureType, boolean)} for
+     * more details.
+     *
+     * <p>Namespace is not considered in this operations. You may still need to reType to get the
+     * correct namespace, or reorder.
+     *
+     * <p>Please note this method will not result in a stable sort if used in a {@link Comparator}
+     * as -1 is used to indicate incompatiblity (rather than simply "before").
+     *
+     * @param typeA FeatureType being compared
+     * @param typeB FeatureType being compared against
+     */
+    public static int compare(SimpleFeatureType typeA, SimpleFeatureType typeB) {
+        return compareInternal(typeA, typeB, true);
+    }
+
+    /**
+     * Compare attribute coverage between two feature types (allowing the identification of
+     * subTypes).
+     *
+     * <p>loose compatibility is assumed based on local name (java binding may differ) (see {@link
+     * #compareInternal(SimpleFeatureType, SimpleFeatureType, boolean)} for more details.
+     *
+     * <p>Namespace is not considered in this operations. You may still need to reType to get the
+     * correct namespace, or reorder.
+     *
+     * <p>Please note this method will not result in a stable sort if used in a {@link Comparator}
+     * as -1 is used to indicate incompatiblity (rather than simply "before").
+     *
+     * @param typeA FeatureType being compared
+     * @param typeB FeatureType being compared against
+     */
+    public static int compareNames(SimpleFeatureType typeA, SimpleFeatureType typeB) {
+        return compareInternal(typeA, typeB, false);
+    }
+
+    /**
+     * Compare attribute coverage between two feature types (allowing the identification of
+     * subTypes).
+     *
      * <p>The comparison results in a number with the following meaning:
      *
      * <ul>
@@ -386,19 +427,21 @@ public class DataUtilities {
      * </ul>
      *
      * <p>Comparison is based on {@link AttributeDescriptor} - the {@link
-     * #isMatch(AttributeDescriptor, AttributeDescriptor)} method is used to quickly confirm that
-     * the local name and java binding are compatible.
+     * #isMatch(AttributeDescriptor, AttributeDescriptor, boolean)} method is used to quickly
+     * confirm that the local name and java binding (depending on strict flag value) are compatible.
      *
-     * <p>Namespace is not considered in this opperations. You may still need to reType to get the
-     * correct namesapce, or reorder.
+     * <p>Namespace is not considered in this operations. You may still need to reType to get the
+     * correct namespace, or reorder.
      *
      * <p>Please note this method will not result in a stable sort if used in a {@link Comparator}
      * as -1 is used to indicate incompatiblity (rather than simply "before").
      *
-     * @param typeA FeatureType beind compared
+     * @param typeA FeatureType being compared
      * @param typeB FeatureType being compared against
+     * @param strict flag controlling the comparison check
      */
-    public static int compare(SimpleFeatureType typeA, SimpleFeatureType typeB) {
+    protected static int compareInternal(
+            SimpleFeatureType typeA, SimpleFeatureType typeB, boolean strict) {
         if (typeA == typeB) {
             return 0;
         }
@@ -425,9 +468,9 @@ public class DataUtilities {
         for (int i = 0; i < countA; i++) {
             a = typeA.getDescriptor(i);
 
-            if (isMatch(a, typeB.getDescriptor(i))) {
+            if (isMatch(a, typeB.getDescriptor(i), strict)) {
                 match++;
-            } else if (!isMatch(a, typeB.getDescriptor(a.getLocalName()))) {
+            } else if (!isMatch(a, typeB.getDescriptor(a.getLocalName()), strict)) {
                 // cannot find any match for Attribute in typeA
                 return -1;
             }
@@ -446,13 +489,31 @@ public class DataUtilities {
      * Quickly check if two descriptors are at all compatible.
      *
      * <p>This method checks the descriptors name and class binding to see if the values have any
-     * chance of being compatible.
+     * chance of being compatible. Strict compatibility assumed (see also {@link
+     * #isMatch(AttributeDescriptor, AttributeDescriptor, boolean)}.
      *
      * @param a descriptor to compare
      * @param b descriptor to compare
      * @return true to the descriptors name and binding class match
      */
     public static boolean isMatch(AttributeDescriptor a, AttributeDescriptor b) {
+        return isMatch(a, b, true);
+    }
+
+    /**
+     * Quickly check descriptors compatibility.
+     *
+     * <p>This method checks the descriptors name and class binding to see if the values have any
+     * chance of being compatible.
+     *
+     * @param a descriptor to compare
+     * @param b descriptor to compare
+     * @param strict if true both descriptor name and class binding is checked otherwise a more
+     *     loose form o compatibility is assumed where equality is determined by descriptor name
+     *     only
+     * @return true if compatibility comparison succeeds
+     */
+    public static boolean isMatch(AttributeDescriptor a, AttributeDescriptor b, boolean strict) {
         if (a == b) {
             return true;
         }
@@ -469,9 +530,15 @@ public class DataUtilities {
             return true;
         }
 
-        if (a.getLocalName().equals(b.getLocalName())
-                && a.getType().getBinding().equals(b.getType().getBinding())) {
-            return true;
+        if (strict) {
+            if (a.getLocalName().equals(b.getLocalName())
+                    && a.getType().getBinding().equals(b.getType().getBinding())) {
+                return true;
+            }
+        } else {
+            if (a.getLocalName().equals(b.getLocalName())) {
+                return true;
+            }
         }
 
         return false;

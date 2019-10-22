@@ -82,7 +82,7 @@ public class ReadResolutionCalculator {
         // the reader might not know (e.g., wms cascading reader) in this case we
         // pick the classic computation results, it's better than nothing
         if (fullResolution == null) {
-            this.fullResolution = computeClassicResolution();
+            this.fullResolution = computeClassicResolution(requestedBBox);
             isFullResolutionInRequestedCRS = true;
         }
         CoordinateReferenceSystem requestedCRS =
@@ -122,7 +122,7 @@ public class ReadResolutionCalculator {
                     if (accurateResolution) {
                         return computeAccurateResolution(readBounds);
                     } else {
-                        return computeClassicResolution();
+                        return computeClassicResolution(readBounds);
                     }
                 } else {
                     // the crs of the request and the one of the coverage are the
@@ -158,14 +158,14 @@ public class ReadResolutionCalculator {
      *
      * @return
      */
-    private double[] computeClassicResolution() {
+    private double[] computeClassicResolution(ReferencedEnvelope readBounds) {
         final GridToEnvelopeMapper geMapper =
-                new GridToEnvelopeMapper(new GridEnvelope2D(requestedRasterArea), requestedBBox);
+                new GridToEnvelopeMapper(new GridEnvelope2D(requestedRasterArea), readBounds);
         final AffineTransform tempTransform = geMapper.createAffineTransform();
 
-        return new double[] {
-            XAffineTransform.getScaleX0(tempTransform), XAffineTransform.getScaleY0(tempTransform)
-        };
+        final double scaleX = XAffineTransform.getScaleX0(tempTransform);
+        final double scaleY = XAffineTransform.getScaleY0(tempTransform);
+        return new double[] {scaleX, scaleY};
     }
 
     /**

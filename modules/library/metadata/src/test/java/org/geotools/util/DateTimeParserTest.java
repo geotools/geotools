@@ -14,39 +14,37 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.gce.imagemosaic.properties.time;
+package org.geotools.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.TimeZone;
+import java.util.*;
 import org.junit.Assert;
 import org.junit.Test;
 
-/**
- * @author Simone Giannecchini, GeoSolutions SAS
- * @deprecated This test classes test that the Deprecated TimeParser is still working properly. An
- *     updated TimeParserTest has been moved to gt-metadata testing the new DateTimeParser class
- */
-@Deprecated
-public class TimeParserTest extends Assert {
+/** @author Simone Giannecchini, GeoSolutions SAS */
+public class DateTimeParserTest extends Assert {
 
-    private static final TimeParser PARSER = new TimeParser();
+    private static final DateTimeParser PARSER =
+            new DateTimeParser(
+                    -1,
+                    DateTimeParser.FLAG_IS_LENIENT
+                            | DateTimeParser.FLAG_GET_TIME_ON_CURRENT
+                            | DateTimeParser.FLAG_GET_TIME_ON_NOW);
 
     @Test
     public void testParserOnCurrentTime() throws ParseException, InterruptedException {
         long now = System.currentTimeMillis();
         Thread.sleep(1000);
         final String timeInstant = "current";
-        List<Date> time = PARSER.parse(timeInstant);
+        Collection time = PARSER.parse(timeInstant);
         assertEquals(1, time.size());
-        assertTrue(now < time.get(0).getTime());
+        assertTrue(now < getTime(time, 0));
     }
 
     @Test
     public void testParserOnNullTime() throws ParseException {
-        List<Date> time = PARSER.parse(null);
+        Collection time = PARSER.parse(null);
         assertTrue(time.isEmpty());
     }
 
@@ -57,9 +55,9 @@ public class TimeParserTest extends Assert {
         df.setTimeZone(TimeZone.getTimeZone("GMT"));
         // test format yyyy
         String timeInstant = "2011";
-        List<Date> time = PARSER.parse(timeInstant);
+        Collection time = PARSER.parse(timeInstant);
         assertEquals(1, time.size());
-        assertEquals("2011-01-01T00:00:00.000Z", df.format(time.get(0)));
+        assertEquals("2011-01-01T00:00:00.000Z", df.format(getTime(time, 0)));
     }
 
     @Test
@@ -69,9 +67,9 @@ public class TimeParserTest extends Assert {
         df.setTimeZone(TimeZone.getTimeZone("GMT"));
         // test format yyyyMM
         String timeInstant = "201110";
-        List<Date> time = PARSER.parse(timeInstant);
+        Collection time = PARSER.parse(timeInstant);
         assertEquals(1, time.size());
-        assertEquals("2011-10-01T00:00:00.000Z", df.format(time.get(0)));
+        assertEquals("2011-10-01T00:00:00.000Z", df.format(getTime(time, 0)));
     }
 
     @Test
@@ -81,9 +79,9 @@ public class TimeParserTest extends Assert {
         df.setTimeZone(TimeZone.getTimeZone("GMT"));
         // test format yyyy-MM
         String timeInstant = "2011-10";
-        List<Date> time = PARSER.parse(timeInstant);
+        Collection time = PARSER.parse(timeInstant);
         assertEquals(1, time.size());
-        assertEquals("2011-10-01T00:00:00.000Z", df.format(time.get(0)));
+        assertEquals("2011-10-01T00:00:00.000Z", df.format(getTime(time, 0)));
     }
 
     @Test
@@ -93,9 +91,9 @@ public class TimeParserTest extends Assert {
         df.setTimeZone(TimeZone.getTimeZone("GMT"));
         // test format yyyyMMdd
         String timeInstant = "20111010";
-        List<Date> time = PARSER.parse(timeInstant);
+        Collection time = PARSER.parse(timeInstant);
         assertEquals(1, time.size());
-        assertEquals("2011-10-10T00:00:00.000Z", df.format(time.get(0)));
+        assertEquals("2011-10-10T00:00:00.000Z", df.format(getTime(time, 0)));
     }
 
     @Test
@@ -105,9 +103,9 @@ public class TimeParserTest extends Assert {
         df.setTimeZone(TimeZone.getTimeZone("GMT"));
         // test format yyyy-MM-dd
         String timeInstant = "2011-10-10";
-        List<Date> time = PARSER.parse(timeInstant);
+        Collection time = PARSER.parse(timeInstant);
         assertEquals(1, time.size());
-        assertEquals("2011-10-10T00:00:00.000Z", df.format(time.get(0)));
+        assertEquals("2011-10-10T00:00:00.000Z", df.format(getTime(time, 0)));
     }
 
     @Test
@@ -117,9 +115,9 @@ public class TimeParserTest extends Assert {
         df.setTimeZone(TimeZone.getTimeZone("GMT"));
         // test format yyyyMMdd'T'HH
         String timeInstant = "20111010T10";
-        List<Date> time = PARSER.parse(timeInstant);
+        Collection time = PARSER.parse(timeInstant);
         assertEquals(1, time.size());
-        assertEquals("2011-10-10T10:00:00.000Z", df.format(time.get(0)));
+        assertEquals("2011-10-10T10:00:00.000Z", df.format(getTime(time, 0)));
     }
 
     @Test
@@ -129,9 +127,9 @@ public class TimeParserTest extends Assert {
         df.setTimeZone(TimeZone.getTimeZone("GMT"));
         // test format yyyy-MM-dd'T'HH
         String timeInstant = "2011-10-10T10";
-        List<Date> time = PARSER.parse(timeInstant);
+        Collection time = PARSER.parse(timeInstant);
         assertEquals(1, time.size());
-        assertEquals("2011-10-10T10:00:00.000Z", df.format(time.get(0)));
+        assertEquals("2011-10-10T10:00:00.000Z", df.format(getTime(time, 0)));
     }
 
     @Test
@@ -142,9 +140,9 @@ public class TimeParserTest extends Assert {
 
         // test format yyyyMMdd'T'HH'Z'
         String timeInstant = "20111010T10Z";
-        List<Date> time = PARSER.parse(timeInstant);
+        Collection time = PARSER.parse(timeInstant);
         assertEquals(1, time.size());
-        assertEquals("2011-10-10T10:00:00.000Z", df.format(time.get(0)));
+        assertEquals("2011-10-10T10:00:00.000Z", df.format(getTime(time, 0)));
     }
 
     @Test
@@ -155,9 +153,9 @@ public class TimeParserTest extends Assert {
 
         // test format yyyy-MM-dd'T'HH'Z'
         String timeInstant = "2011-10-10T10Z";
-        List<Date> time = PARSER.parse(timeInstant);
+        Collection time = PARSER.parse(timeInstant);
         assertEquals(1, time.size());
-        assertEquals("2011-10-10T10:00:00.000Z", df.format(time.get(0)));
+        assertEquals("2011-10-10T10:00:00.000Z", df.format(getTime(time, 0)));
     }
 
     @Test
@@ -167,9 +165,9 @@ public class TimeParserTest extends Assert {
         df.setTimeZone(TimeZone.getTimeZone("GMT"));
         // test format yyyyMMdd'T'HHmm
         String timeInstant = "20111010T1011";
-        List<Date> time = PARSER.parse(timeInstant);
+        Collection time = PARSER.parse(timeInstant);
         assertEquals(1, time.size());
-        assertEquals("2011-10-10T10:11:00.000Z", df.format(time.get(0)));
+        assertEquals("2011-10-10T10:11:00.000Z", df.format(getTime(time, 0)));
     }
 
     @Test
@@ -179,9 +177,9 @@ public class TimeParserTest extends Assert {
         df.setTimeZone(TimeZone.getTimeZone("GMT"));
         // test format yyyyMMdd'T'HH:mm
         String timeInstant = "20111010T10:11";
-        List<Date> time = PARSER.parse(timeInstant);
+        Collection time = PARSER.parse(timeInstant);
         assertEquals(1, time.size());
-        assertEquals("2011-10-10T10:11:00.000Z", df.format(time.get(0)));
+        assertEquals("2011-10-10T10:11:00.000Z", df.format(getTime(time, 0)));
     }
 
     @Test
@@ -192,9 +190,9 @@ public class TimeParserTest extends Assert {
 
         // test format yyyy-MM-dd'T'HHmm
         String timeInstant = "2011-10-10T1011";
-        List<Date> time = PARSER.parse(timeInstant);
+        Collection time = PARSER.parse(timeInstant);
         assertEquals(1, time.size());
-        assertEquals("2011-10-10T10:11:00.000Z", df.format(time.get(0)));
+        assertEquals("2011-10-10T10:11:00.000Z", df.format(getTime(time, 0)));
     }
 
     @Test
@@ -205,9 +203,9 @@ public class TimeParserTest extends Assert {
 
         // test format yyyy-MM-dd'T'HH:mm
         String timeInstant = "2011-10-10T10:11";
-        List<Date> time = PARSER.parse(timeInstant);
+        Collection time = PARSER.parse(timeInstant);
         assertEquals(1, time.size());
-        assertEquals("2011-10-10T10:11:00.000Z", df.format(time.get(0)));
+        assertEquals("2011-10-10T10:11:00.000Z", df.format(getTime(time, 0)));
     }
 
     @Test
@@ -218,9 +216,9 @@ public class TimeParserTest extends Assert {
 
         // test format yyyyMMdd'T'HHmm'Z'
         String timeInstant = "20111010T1011Z";
-        List<Date> time = PARSER.parse(timeInstant);
+        Collection time = PARSER.parse(timeInstant);
         assertEquals(1, time.size());
-        assertEquals("2011-10-10T10:11:00.000Z", df.format(time.get(0)));
+        assertEquals("2011-10-10T10:11:00.000Z", df.format(getTime(time, 0)));
     }
 
     @Test
@@ -231,9 +229,9 @@ public class TimeParserTest extends Assert {
 
         // test format yyyyMMdd'T'HH:mm'Z'
         String timeInstant = "20111010T10:11Z";
-        List<Date> time = PARSER.parse(timeInstant);
+        Collection time = PARSER.parse(timeInstant);
         assertEquals(1, time.size());
-        assertEquals("2011-10-10T10:11:00.000Z", df.format(time.get(0)));
+        assertEquals("2011-10-10T10:11:00.000Z", df.format(getTime(time, 0)));
     }
 
     @Test
@@ -244,9 +242,9 @@ public class TimeParserTest extends Assert {
 
         // test format yyyy-MM-dd'T'HHmm'Z'
         String timeInstant = "2011-10-10T1011Z";
-        List<Date> time = PARSER.parse(timeInstant);
+        Collection time = PARSER.parse(timeInstant);
         assertEquals(1, time.size());
-        assertEquals("2011-10-10T10:11:00.000Z", df.format(time.get(0)));
+        assertEquals("2011-10-10T10:11:00.000Z", df.format(getTime(time, 0)));
     }
 
     @Test
@@ -257,9 +255,9 @@ public class TimeParserTest extends Assert {
 
         // test format yyyy-MM-dd'T'HH:mm'Z'
         String timeInstant = "2011-10-10T10:11Z";
-        List<Date> time = PARSER.parse(timeInstant);
+        Collection time = PARSER.parse(timeInstant);
         assertEquals(1, time.size());
-        assertEquals("2011-10-10T10:11:00.000Z", df.format(time.get(0)));
+        assertEquals("2011-10-10T10:11:00.000Z", df.format(getTime(time, 0)));
     }
 
     @Test
@@ -270,9 +268,9 @@ public class TimeParserTest extends Assert {
 
         // test format yyyyMMdd'T'HHmmss
         String timeInstant = "20111010T101120";
-        List<Date> time = PARSER.parse(timeInstant);
+        Collection time = PARSER.parse(timeInstant);
         assertEquals(1, time.size());
-        assertEquals("2011-10-10T10:11:20.000Z", df.format(time.get(0)));
+        assertEquals("2011-10-10T10:11:20.000Z", df.format(getTime(time, 0)));
     }
 
     @Test
@@ -283,9 +281,9 @@ public class TimeParserTest extends Assert {
 
         // test format yyyyMMdd'T'HH:mm:ss
         String timeInstant = "20111010T10:11:20";
-        List<Date> time = PARSER.parse(timeInstant);
+        Collection time = PARSER.parse(timeInstant);
         assertEquals(1, time.size());
-        assertEquals("2011-10-10T10:11:20.000Z", df.format(time.get(0)));
+        assertEquals("2011-10-10T10:11:20.000Z", df.format(getTime(time, 0)));
     }
 
     @Test
@@ -296,9 +294,9 @@ public class TimeParserTest extends Assert {
 
         // test format yyyy-MM-dd'T'HHmmss
         String timeInstant = "2011-10-10T101120";
-        List<Date> time = PARSER.parse(timeInstant);
+        Collection time = PARSER.parse(timeInstant);
         assertEquals(1, time.size());
-        assertEquals("2011-10-10T10:11:20.000Z", df.format(time.get(0)));
+        assertEquals("2011-10-10T10:11:20.000Z", df.format(getTime(time, 0)));
     }
 
     @Test
@@ -309,9 +307,9 @@ public class TimeParserTest extends Assert {
 
         // test format yyyy-MM-dd'T'HH:mm:ss
         String timeInstant = "2011-10-10T10:11:20";
-        List<Date> time = PARSER.parse(timeInstant);
+        Collection time = PARSER.parse(timeInstant);
         assertEquals(1, time.size());
-        assertEquals("2011-10-10T10:11:20.000Z", df.format(time.get(0)));
+        assertEquals("2011-10-10T10:11:20.000Z", df.format(getTime(time, 0)));
     }
 
     @Test
@@ -322,9 +320,9 @@ public class TimeParserTest extends Assert {
 
         // test format yyyyMMdd'T'HHmmss'Z'
         String timeInstant = "20111010T101120Z";
-        List<Date> time = PARSER.parse(timeInstant);
+        Collection time = PARSER.parse(timeInstant);
         assertEquals(1, time.size());
-        assertEquals("2011-10-10T10:11:20.000Z", df.format(time.get(0)));
+        assertEquals("2011-10-10T10:11:20.000Z", df.format(getTime(time, 0)));
     }
 
     @Test
@@ -335,9 +333,9 @@ public class TimeParserTest extends Assert {
 
         // test format yyyyMMdd'T'HH:mm:ss'Z'
         String timeInstant = "20111010T10:11:20Z";
-        List<Date> time = PARSER.parse(timeInstant);
+        Collection time = PARSER.parse(timeInstant);
         assertEquals(1, time.size());
-        assertEquals("2011-10-10T10:11:20.000Z", df.format(time.get(0)));
+        assertEquals("2011-10-10T10:11:20.000Z", df.format(getTime(time, 0)));
     }
 
     @Test
@@ -348,9 +346,9 @@ public class TimeParserTest extends Assert {
 
         // test format yyyy-MM-dd'T'HHmmss'Z'
         String timeInstant = "2011-10-10T101120Z";
-        List<Date> time = PARSER.parse(timeInstant);
+        Collection time = PARSER.parse(timeInstant);
         assertEquals(1, time.size());
-        assertEquals("2011-10-10T10:11:20.000Z", df.format(time.get(0)));
+        assertEquals("2011-10-10T10:11:20.000Z", df.format(getTime(time, 0)));
     }
 
     @Test
@@ -361,9 +359,9 @@ public class TimeParserTest extends Assert {
 
         // test format yyyy-MM-dd'T'HH:mm:ss'Z'
         String timeInstant = "2011-10-10T10:11:20Z";
-        List<Date> time = PARSER.parse(timeInstant);
+        Collection time = PARSER.parse(timeInstant);
         assertEquals(1, time.size());
-        assertEquals("2011-10-10T10:11:20.000Z", df.format(time.get(0)));
+        assertEquals("2011-10-10T10:11:20.000Z", df.format(getTime(time, 0)));
     }
 
     @Test
@@ -374,9 +372,9 @@ public class TimeParserTest extends Assert {
 
         // test format yyyyMMdd'T'HHmmssSSS
         String timeInstant = "20111010T101120666";
-        List<Date> time = PARSER.parse(timeInstant);
+        Collection time = PARSER.parse(timeInstant);
         assertEquals(1, time.size());
-        assertEquals("2011-10-10T10:11:20.666Z", df.format(time.get(0)));
+        assertEquals("2011-10-10T10:11:20.666Z", df.format(getTime(time, 0)));
     }
 
     @Test
@@ -387,9 +385,9 @@ public class TimeParserTest extends Assert {
 
         // test format yyyyMMdd'T'HH:mm:ss.SSS
         String timeInstant = "20111010T10:11:20.666";
-        List<Date> time = PARSER.parse(timeInstant);
+        Collection time = PARSER.parse(timeInstant);
         assertEquals(1, time.size());
-        assertEquals("2011-10-10T10:11:20.666Z", df.format(time.get(0)));
+        assertEquals("2011-10-10T10:11:20.666Z", df.format(getTime(time, 0)));
     }
 
     @Test
@@ -400,9 +398,9 @@ public class TimeParserTest extends Assert {
 
         // test format yyyy-MM-dd'T'HHmmssSSS
         String timeInstant = "2011-10-10T101120666";
-        List<Date> time = PARSER.parse(timeInstant);
+        Collection time = PARSER.parse(timeInstant);
         assertEquals(1, time.size());
-        assertEquals("2011-10-10T10:11:20.666Z", df.format(time.get(0)));
+        assertEquals("2011-10-10T10:11:20.666Z", df.format(getTime(time, 0)));
     }
 
     @Test
@@ -413,9 +411,9 @@ public class TimeParserTest extends Assert {
 
         // test format yyyy-MM-dd'T'HH:mm:ss.SSS
         String timeInstant = "2011-10-10T10:11:20.666";
-        List<Date> time = PARSER.parse(timeInstant);
+        Collection time = PARSER.parse(timeInstant);
         assertEquals(1, time.size());
-        assertEquals("2011-10-10T10:11:20.666Z", df.format(time.get(0)));
+        assertEquals("2011-10-10T10:11:20.666Z", df.format(getTime(time, 0)));
     }
 
     @Test
@@ -426,9 +424,9 @@ public class TimeParserTest extends Assert {
 
         // test format yyyyMMdd'T'HHmmssSSS'Z'
         String timeInstant = "20111010T101120666Z";
-        List<Date> time = PARSER.parse(timeInstant);
+        Collection time = PARSER.parse(timeInstant);
         assertEquals(1, time.size());
-        assertEquals("2011-10-10T10:11:20.666Z", df.format(time.get(0)));
+        assertEquals("2011-10-10T10:11:20.666Z", df.format(getTime(time, 0)));
     }
 
     @Test
@@ -439,9 +437,9 @@ public class TimeParserTest extends Assert {
 
         // test format yyyyMMdd'T'HH:mm:ss.SSS'Z'
         String timeInstant = "20111010T10:11:20.666Z";
-        List<Date> time = PARSER.parse(timeInstant);
+        Collection time = PARSER.parse(timeInstant);
         assertEquals(1, time.size());
-        assertEquals("2011-10-10T10:11:20.666Z", df.format(time.get(0)));
+        assertEquals("2011-10-10T10:11:20.666Z", df.format(getTime(time, 0)));
     }
 
     @Test
@@ -452,9 +450,9 @@ public class TimeParserTest extends Assert {
 
         // test format yyyy-MM-dd'T'HHmmssSSS'Z'
         String timeInstant = "2011-10-10T101120666Z";
-        List<Date> time = PARSER.parse(timeInstant);
+        Collection time = PARSER.parse(timeInstant);
         assertEquals(1, time.size());
-        assertEquals("2011-10-10T10:11:20.666Z", df.format(time.get(0)));
+        assertEquals("2011-10-10T10:11:20.666Z", df.format(getTime(time, 0)));
     }
 
     @Test
@@ -465,26 +463,40 @@ public class TimeParserTest extends Assert {
 
         // test format yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
         String timeInstant = "2011-10-10T10:11:20.666Z";
-        List<Date> time = PARSER.parse(timeInstant);
+        Collection time = PARSER.parse(timeInstant);
         assertEquals(1, time.size());
-        assertEquals("2011-10-10T10:11:20.666Z", df.format(time.get(0)));
+        assertEquals("2011-10-10T10:11:20.666Z", df.format(getTime(time, 0)));
     }
 
     @Test
     public void testParserOnTimePeriod() throws ParseException {
         final String timeInterval = "2011-10-10T10:11:12.000Z/2011-10-10T14:11:12.000Z/PT1H";
-        List<Date> time = PARSER.parse(timeInterval);
+        Collection time = PARSER.parse(timeInterval);
         assertEquals(5, time.size());
-        assertEquals(1318241472000l, time.get(0).getTime());
-        assertEquals(1318241472000l + (3600 * 1000 * 4), time.get(time.size() - 1).getTime());
+        assertEquals(1318241472000l, getTime(time, 0));
+        assertEquals(1318241472000l + (3600 * 1000 * 4), getTime(time, time.size() - 1));
     }
 
     @Test
     public void testParserOnDayPeriod() throws ParseException {
         final String timeInterval = "2011-10-10T10:11:12.000Z/2011-10-14T10:11:12.000Z/P2D";
-        List<Date> time = PARSER.parse(timeInterval);
+        Collection time = PARSER.parse(timeInterval);
         assertEquals(3, time.size());
-        assertEquals(1318241472000l, time.get(0).getTime());
-        assertEquals(1318241472000l + (3600 * 1000 * 48), time.get(1).getTime());
+        assertEquals(1318241472000l, getTime(time, 0));
+        assertEquals(1318241472000l + (3600 * 1000 * 48), getTime(time, 1));
+    }
+
+    private static long getTime(Collection time, int i) {
+        Object date = null;
+        if (i <= 0) {
+            date = time.stream().findFirst().get();
+        } else {
+            date = time.stream().skip(i).findFirst().get();
+        }
+
+        if (date != null && date instanceof Date) {
+            return ((Date) date).getTime();
+        }
+        throw new IllegalArgumentException("time isn't a collection of Date");
     }
 }

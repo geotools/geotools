@@ -49,12 +49,12 @@ import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.Layer;
+import org.geotools.map.MapBoundsEvent;
+import org.geotools.map.MapBoundsListener;
 import org.geotools.map.MapContent;
-import org.geotools.map.event.MapBoundsEvent;
-import org.geotools.map.event.MapBoundsListener;
-import org.geotools.map.event.MapLayerEvent;
-import org.geotools.map.event.MapLayerListEvent;
-import org.geotools.map.event.MapLayerListListener;
+import org.geotools.map.MapLayerEvent;
+import org.geotools.map.MapLayerListEvent;
+import org.geotools.map.MapLayerListListener;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.GTRenderer;
@@ -764,7 +764,7 @@ public class SwtMapPane extends Canvas
      * the layer table is being used, adds the new layer to the table.
      */
     public void layerAdded(MapLayerListEvent event) {
-        Layer layer = event.getElement();
+        Layer layer = event.getLayer();
         if (layerTable != null) {
             layerTable.onAddLayer(layer);
         }
@@ -785,7 +785,7 @@ public class SwtMapPane extends Canvas
 
     /** Called when a map layer has been removed */
     public void layerRemoved(MapLayerListEvent event) {
-        Layer layer = event.getElement();
+        Layer layer = event.getLayer();
         if (layerTable != null) {
             layerTable.onRemoveLayer(layer);
         }
@@ -804,7 +804,7 @@ public class SwtMapPane extends Canvas
      */
     public void layerChanged(MapLayerListEvent event) {
         if (layerTable != null) {
-            layerTable.repaint(event.getElement());
+            layerTable.repaint(event.getLayer());
         }
         redrawBaseImage = true;
 

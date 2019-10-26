@@ -70,6 +70,8 @@ public abstract class AbstractGridCoverageWriter implements GridCoverageWriter {
                 } catch (Throwable e) {
 
                 }
+                outStream = null;
+                destination = null;
             }
         }
     }

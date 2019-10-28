@@ -618,7 +618,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
                     (DiffTransactionState) getTransaction().getState(getEntry());
             reader =
                     new DiffFeatureReader<SimpleFeatureType, SimpleFeature>(
-                            reader, state.getDiff());
+                            reader, state.getDiff(), query.getFilter());
         }
 
         // filtering

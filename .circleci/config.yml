@@ -16,9 +16,11 @@ jobs:
             echo "Checking out GeoWebCache"
             mkdir geowebcache
             git clone git@github.com:GeoWebCache/geowebcache.git geowebcache
+            git checkout 1.16.x
             echo "Checking out GeoServer"
             mkdir geoserver
             git clone git@github.com:geoserver/geoserver.git geoserver
+            git checkout 2.16.x
 
       - run:
           name: Generate cache key

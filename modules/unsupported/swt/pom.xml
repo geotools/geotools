@@ -45,6 +45,17 @@
   <!-- =========================================================== -->
     <developers>
         <developer>
+            <name>Ian Mayo</name>
+            <id>IanMayo</id>
+            <email>ian@planetmayo.com</email>
+            <organization>Deep Blue C Ltd</organization>
+            <organizationUrl>http://DeepBlueC.com/</organizationUrl>
+            <timezone>Europe/London</timezone>
+            <roles>
+                <role>Module Maintainer</role>
+            </roles>
+        </developer>
+        <developer>
             <name>Andrea Antonello</name>
             <id>moovida</id>
             <email>andrea.antonello@gmail.com</email>

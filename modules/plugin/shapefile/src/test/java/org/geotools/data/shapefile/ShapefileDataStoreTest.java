@@ -883,6 +883,68 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         sds.dispose();
     }
 
+    @Test
+    public void testUpdateMultipleAttributesNoAutocommit() throws Exception {
+        // create feature type
+        SimpleFeatureType type =
+                DataUtilities.createType(
+                        "junk", "the_geom:Point,b:java.lang.Integer,c:java.lang.Integer");
+        DefaultFeatureCollection features = new DefaultFeatureCollection();
+
+        SimpleFeatureBuilder build = new SimpleFeatureBuilder(type);
+        SimpleFeature feature = null;
+        for (int i = 0; i < 3; i++) {
+            build.add(new GeometryFactory().createPoint(new Coordinate(i, i)));
+            build.add(i);
+            feature = build.buildFeature(null);
+            features.add(feature);
+        }
+
+        // store features
+        File tmpFile = getTempFile();
+        tmpFile.createNewFile();
+        ShapefileDataStore s = new ShapefileDataStore(tmpFile.toURI().toURL());
+        writeFeatures(s, features);
+
+        // read them back
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader = s.getFeatureReader();
+        // System.out.println(DataUtilities.list(features));
+        reader.close();
+
+        Transaction transaction = new DefaultTransaction();
+        SimpleFeatureStore store =
+                (SimpleFeatureStore) s.getFeatureSource(s.getSchema().getTypeName(), transaction);
+
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        Query query = new Query(s.getSchema().getTypeName());
+        for (int i = 0; i < 3; i++) {
+            query.setFilter(ff.equal(ff.property("b"), ff.literal(i), true));
+            store.modifyFeatures(
+                    new String[] {"b", "c"}, new Integer[] {-1 * i, i}, query.getFilter());
+        }
+
+        transaction.commit();
+
+        reader = s.getFeatureReader();
+        Set<Object> numOfDistinctValues = new HashSet<Object>();
+        try {
+            while (reader.hasNext()) {
+                SimpleFeature f = reader.next();
+                // System.out.println(f);
+                assertEquals(f.getAttribute("b"), -1 * (Integer) f.getAttribute("c"));
+                numOfDistinctValues.add(f.getAttribute("b"));
+            }
+            // ensure that each feature has a distinct value for attribute 'b'
+            assertEquals(
+                    "Wrong number of distinct values for attribute 'b'",
+                    store.getFeatures().size(),
+                    numOfDistinctValues.size());
+        } finally {
+            reader.close();
+        }
+        s.dispose();
+    }
+
     /**
      * Create a test file, then continue removing the first entry until there are no features left.
      */

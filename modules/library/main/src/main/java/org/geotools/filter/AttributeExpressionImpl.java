@@ -66,6 +66,9 @@ public class AttributeExpressionImpl extends DefaultExpression implements Proper
      */
     private Hints hints;
 
+    // accessor caching, scanning the registry every time is really very expensive
+    private volatile PropertyAccessor lastAccessor;
+
     /**
      * Constructor with the schema for this attribute.
      *
@@ -191,7 +194,7 @@ public class AttributeExpressionImpl extends DefaultExpression implements Proper
      */
     @SuppressWarnings("unchecked")
     public <T> T evaluate(Object obj, Class<T> target) {
-        PropertyAccessor accessor = getLastPropertyAccessor();
+        PropertyAccessor accessor = lastAccessor;
 
         Object value = false;
         boolean success = false;
@@ -245,7 +248,7 @@ public class AttributeExpressionImpl extends DefaultExpression implements Proper
                     throw exception;
                 }
             } else {
-                setLastPropertyAccessor(accessor);
+                lastAccessor = accessor;
             }
         }
 
@@ -254,17 +257,6 @@ public class AttributeExpressionImpl extends DefaultExpression implements Proper
         }
 
         return Converters.convert(value, target);
-    }
-
-    // accessor caching, scanning the registry every time is really very expensive
-    private PropertyAccessor lastAccessor;
-
-    private synchronized PropertyAccessor getLastPropertyAccessor() {
-        return lastAccessor;
-    }
-
-    private synchronized void setLastPropertyAccessor(PropertyAccessor accessor) {
-        lastAccessor = accessor;
     }
 
     /**

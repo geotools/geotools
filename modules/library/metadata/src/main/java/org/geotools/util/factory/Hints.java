@@ -1169,12 +1169,12 @@ public class Hints extends RenderingHints {
      *     otherwise.
      */
     private static boolean ensureSystemDefaultLoaded() {
-        if (needScan.get()) {
+        // update GLOBAL atomically only if needScan == true
+        if (needScan.compareAndSet(true, false)) {
             Map<RenderingHints.Key, Object> newGlobal =
                     new ConcurrentHashMap<RenderingHints.Key, Object>(GLOBAL);
             boolean modified = GeoTools.scanForSystemHints(newGlobal);
             GLOBAL = newGlobal;
-            needScan.set(false);
             return modified;
         } else {
             return false;

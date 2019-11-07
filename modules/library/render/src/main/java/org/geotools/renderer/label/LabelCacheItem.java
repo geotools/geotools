@@ -95,6 +95,8 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
 
     TextSymbolizer symbolizer;
 
+    int fontShrinkSizeMin;
+
     public double getGoodnessOfFit() {
         return goodnessOfFit;
     }
@@ -179,6 +181,7 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
         this.graphicMargin = other.graphicMargin;
         this.textUnderlined = other.textUnderlined;
         this.symbolizer = other.symbolizer;
+        this.fontShrinkSizeMin = other.fontShrinkSizeMin;
     }
 
     /**
@@ -198,6 +201,10 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
     /** The textstyle that is used to label the shape. */
     public TextStyle2D getTextStyle() {
         return textStyle;
+    }
+
+    void setTextStyle(TextStyle2D textStyle) {
+        this.textStyle = textStyle;
     }
 
     /** @see java.lang.Object#hashCode() */
@@ -431,6 +438,14 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
 
     public void setWordSpacing(double wordSpacing) {
         this.wordSpacing = wordSpacing;
+    }
+
+    public int getFontShrinkSizeMin() {
+        return fontShrinkSizeMin;
+    }
+
+    public void setFontShrinkSizeMin(int fontShrinkSize) {
+        this.fontShrinkSizeMin = fontShrinkSize;
     }
 
     @Override

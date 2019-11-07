@@ -269,12 +269,14 @@ public class TPKReader extends AbstractGridCoverage2DReader {
                 .map(TileImage::new) // it's this conversion to image that we are parallelizing
                 .forEach(
                         tileImage -> {
-                            // calc tile position
-                            int posx = (int) (tileImage.col - originLeft) * DEFAULT_TILE_SIZE;
-                            int posy = (int) (originTop - tileImage.row) * DEFAULT_TILE_SIZE;
+                            if (tileImage.image != null) {
+                                // calc tile position
+                                int posx = (int) (tileImage.col - originLeft) * DEFAULT_TILE_SIZE;
+                                int posy = (int) (originTop - tileImage.row) * DEFAULT_TILE_SIZE;
 
-                            // use drawImage() to stitch the individual tile images together
-                            graphics.drawImage(tileImage.image, posx, posy, null);
+                                // use drawImage() to stitch the individual tile images together
+                                graphics.drawImage(tileImage.image, posx, posy, null);
+                            }
                         });
 
         file.close();
@@ -358,10 +360,12 @@ public class TPKReader extends AbstractGridCoverage2DReader {
         TileImage(TPKTile tile) {
             this.col = tile.col;
             this.row = tile.row;
-            try {
-                image = readImage(tile.tileData, tile.imageFormat);
-            } catch (IOException ex) {
-                throw new RuntimeException("Failed to covert tile data to image");
+            if (tile.tileData != null && tile.tileData.length > 0) {
+                try {
+                    image = readImage(tile.tileData, tile.imageFormat);
+                } catch (Exception ex) {
+                    throw new RuntimeException("Failed to covert tile data to image");
+                }
             }
         }
     }

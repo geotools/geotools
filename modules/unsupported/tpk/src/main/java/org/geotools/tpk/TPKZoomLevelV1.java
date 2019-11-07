@@ -84,7 +84,7 @@ public class TPKZoomLevelV1 implements TPKZoomLevel {
         maxRow = Long.MIN_VALUE;
 
         // maximum value for row and column at this zoom level
-        max_row_column = new Double(Math.pow(2, zoomLevel) - 1).longValue();
+        max_row_column = (long) Math.pow(2, zoomLevel) - 1;
 
         bundles = new ArrayList<>();
         init(bundleNames, indexNames);

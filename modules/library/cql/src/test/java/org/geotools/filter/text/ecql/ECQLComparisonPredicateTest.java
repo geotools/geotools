@@ -22,6 +22,8 @@ import static org.junit.Assert.*;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+import org.geotools.filter.AndImpl;
+import org.geotools.filter.NotImpl;
 import org.geotools.filter.text.commons.CompilerUtil;
 import org.geotools.filter.text.commons.Language;
 import org.geotools.filter.text.cql2.CQLComparisonPredicateTest;
@@ -32,6 +34,10 @@ import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.Filter;
 import org.opengis.filter.PropertyIsBetween;
 import org.opengis.filter.PropertyIsEqualTo;
+import org.opengis.filter.PropertyIsGreaterThan;
+import org.opengis.filter.PropertyIsGreaterThanOrEqualTo;
+import org.opengis.filter.PropertyIsLessThan;
+import org.opengis.filter.PropertyIsLessThanOrEqualTo;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 
@@ -57,6 +63,32 @@ public class ECQLComparisonPredicateTest extends CQLComparisonPredicateTest {
         super(Language.ECQL);
     }
 
+    /**
+     * Equals predicate sample
+     *
+     * @throws Exception
+     */
+    @Test
+    public void deprecatedPredicate() throws Exception {
+
+        ECQL.toFilter("POP_RANK eq 6");
+        ECQL.toFilter("POP_RANK neq 6");
+        ECQL.toFilter("POP_RANK lte 6");
+        ECQL.toFilter("! (POP_RANK = 6)");
+
+        assertTrue(ECQL.toFilter("POP_RANK eq 6") instanceof PropertyIsEqualTo);
+        assertTrue(ECQL.toFilter("POP_RANK == 6") instanceof PropertyIsEqualTo);
+
+        assertTrue(ECQL.toFilter("POP_RANK lte 6") instanceof PropertyIsLessThanOrEqualTo);
+        assertTrue(ECQL.toFilter("POP_RANK gte 6") instanceof PropertyIsGreaterThanOrEqualTo);
+        assertTrue(ECQL.toFilter("POP_RANK lt 6") instanceof PropertyIsLessThan);
+        assertTrue(ECQL.toFilter("POP_RANK gt 6") instanceof PropertyIsGreaterThan);
+
+        assertTrue(ECQL.toFilter("! (POP_RANK == 6)") instanceof NotImpl);
+        assertTrue(ECQL.toFilter("POP_RANK neq 6") instanceof NotImpl);
+
+        assertTrue(ECQL.toFilter("A > 2 && B < 1") instanceof AndImpl);
+    }
     /**
      * Test: Expression on the Left hand of comparison predicate
      *

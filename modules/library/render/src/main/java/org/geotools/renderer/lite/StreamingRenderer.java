@@ -20,8 +20,13 @@ import static java.lang.Math.abs;
 
 import com.conversantmedia.util.concurrent.PushPullBlockingQueue;
 import com.conversantmedia.util.concurrent.SpinPolicy;
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Composite;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.RenderingHints.Key;
+import java.awt.Shape;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
@@ -114,6 +119,7 @@ import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.renderer.style.Style2D;
 import org.geotools.renderer.style.StyleAttributeExtractor;
 import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.MarkAlongLine;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.Rule;
@@ -131,6 +137,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.simplify.DouglasPeuckerSimplifier;
 import org.locationtech.jts.simplify.TopologyPreservingSimplifier;
 import org.opengis.coverage.processing.OperationNotFoundException;
 import org.opengis.feature.Feature;
@@ -2980,6 +2987,14 @@ public class StreamingRenderer implements GTRenderer {
                         } else {
                             OffsetCurveBuilder offseter = new OffsetCurveBuilder(offset);
                             g = offseter.offset(g);
+                        }
+                    } else if (style instanceof LineStyle2D) {
+                        if (((LineStyle2D) style).getStroke() instanceof MarkAlongLine) {
+                            g =
+                                    DouglasPeuckerSimplifier.simplify(
+                                            source,
+                                            ((MarkAlongLine) ((LineStyle2D) style).getStroke())
+                                                    .getSimplificatorFactor());
                         }
                     }
                     if (g == null) {

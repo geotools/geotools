@@ -47,6 +47,7 @@ import org.geotools.renderer.VendorOptionParser;
 import org.geotools.renderer.composite.BlendComposite;
 import org.geotools.renderer.composite.BlendComposite.BlendingMode;
 import org.geotools.renderer.style.RandomFillBuilder.PositionRandomizer;
+import org.geotools.renderer.style.markwkt.WKTMarkFactory;
 import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.Displacement;
 import org.geotools.styling.ExternalGraphic;
@@ -59,6 +60,8 @@ import org.geotools.styling.LabelPlacement;
 import org.geotools.styling.LinePlacement;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Mark;
+import org.geotools.styling.MarkAlongLine;
+import org.geotools.styling.MarkImpl;
 import org.geotools.styling.PointPlacement;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
@@ -440,8 +443,12 @@ public class SLDStyleFactory {
         LineStyle2D style = new LineStyle2D();
         setScaleRange(style, scaleRange);
         style.setStroke(getStroke(symbolizer.getStroke(), feature));
-        style.setGraphicStroke(
-                getGraphicStroke(symbolizer, symbolizer.getStroke(), feature, scaleRange));
+        // if graphic stroke has a wkt marker with MarkAlongLine vendor option set to true
+        // dont use graphic stroke instead configure style to drape wkt along the line
+        if (!setMarkAlongLineStroke(style, symbolizer.getStroke()))
+            style.setGraphicStroke(
+                    getGraphicStroke(symbolizer, symbolizer.getStroke(), feature, scaleRange));
+
         style.setContour(getStrokePaint(symbolizer.getStroke(), feature));
         style.setContourComposite(composite);
 
@@ -1703,5 +1710,31 @@ public class SLDStyleFactory {
 
     private float evalOpacity(Expression e, Object f) {
         return evalToFloat(e, f, 1);
+    }
+
+    private boolean setMarkAlongLineStroke(LineStyle2D style, org.geotools.styling.Stroke stroke) {
+        if (stroke == null) return false;
+        if (stroke.getGraphicStroke() == null) return false;
+        if (stroke.getGraphicStroke().graphicalSymbols().isEmpty()) return false;
+        if (!(stroke.getGraphicStroke().graphicalSymbols().get(0) instanceof Mark)) return false;
+
+        MarkImpl mark = (MarkImpl) stroke.getGraphicStroke().graphicalSymbols().get(0);
+        // check for vendor option
+        if (!mark.isMarkAlongLine()) return false;
+        // does not have WKT
+        if (mark.getWellKnownName() == null) return false;
+        String wkt = mark.getWellKnownName().evaluate(null, String.class);
+        if (wkt.startsWith(WKTMarkFactory.WKT_PREFIX)) {
+            wkt = wkt.substring(WKTMarkFactory.WKT_PREFIX.length());
+        }
+        double size = stroke.getGraphicStroke().getSize().evaluate(null, Double.class);
+        // createing MarkAlongLine stroke by using existing Stroke as delegate
+        // (color,width,dash,cap)
+        // use WKT and Size of Graphic Stroke
+        MarkAlongLine markAlongLine = new MarkAlongLine(style.getStroke(), size, wkt);
+        // over-write existing Stroke
+        style.setStroke(markAlongLine);
+        // indicate that LineStyle2D has bene set with a MarkAlong WKT style
+        return true;
     }
 }

@@ -44,6 +44,8 @@ public class MarkImpl implements Mark, Cloneable {
     private ExternalMarkImpl external;
     private Expression wellKnownName = null;
 
+    private boolean isMarkAlongLine = false;
+
     /** Creates a new instance of DefaultMark */
     public MarkImpl() {
         this(CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()), null);
@@ -281,8 +283,17 @@ public class MarkImpl implements Mark, Cloneable {
             copy.setStroke(mark.getStroke());
             copy.setWellKnownName(mark.getWellKnownName());
             copy.setExternalMark(mark.getExternalMark());
+            copy.setMarkAlongLine(mark.isMarkAlongLine());
             return copy;
         }
         return null;
+    }
+
+    public boolean isMarkAlongLine() {
+        return isMarkAlongLine;
+    }
+
+    public void setMarkAlongLine(boolean isMarkAlongLine) {
+        this.isMarkAlongLine = isMarkAlongLine;
     }
 }

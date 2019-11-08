@@ -97,7 +97,31 @@ public class ECQLParser {
             && RELGEOOP.contains(getToken(1).image.toUpperCase());
   }
   
-  
+  protected void logDeprecatedWarning(String op){
+    boolean deprecated = true;
+    String shouldUse = "";
+    if("!".equals(op)){
+      shouldUse = "not";
+    } else if( ("eq".equals(op)) || ("==".equals(op))){
+      shouldUse= "=";
+    } else if("neq".equals(op)){
+      shouldUse= "<>";
+    } else if("gt".equals(op)){
+      shouldUse= ">";
+    } else if("lt".equals(op)){
+      shouldUse= "<";
+    } else if("gte".equals(op)){
+      shouldUse= ">=";
+    } else if("lte".equals(op)){
+      shouldUse= "<=";
+    } else {
+      deprecated = false;
+    }
+    if(deprecated){
+      LOGGER.warning("\"" + op +"\" is deprecated comparison operator. You should use \"" + shouldUse + "\"");
+    }
+  }
+
   /**
    * True if the current token matches with the allowed characters: "0,1,2,*,T,F". 
    * The length of of intersection pattern is limited to 9 characters. 
@@ -138,15 +162,15 @@ TOKEN:
  */
 TOKEN [IGNORE_CASE]:  /* keywords */
 {
-   < AND: "and"> |
+   < AND: "and" | "&&"> |
    < OR: "or"> |
-   < NOT: "not"> |
-   < EQ:  "="> |
-   < NEQ: "<>" > |
-   < GT:  ">" > |
-   < LT: "<" > |
-   < GTE:">="> |
-   < LTE:"<="> |
+   < NOT: "not" | "!"> |
+   < EQ: "eq" | "==" | "="> |
+   < NEQ: "neq" | "<>" > |
+   < GT: "gt" | ">" > |
+   < LT: "lt" | "<" > |
+   < GTE: "gte" | ">="> |
+   < LTE: "lte" | "<="> |
    < TRUE: "true"> |
    < FALSE: "false"> |
    < UNKNOWN: "unknown"> |
@@ -407,7 +431,7 @@ void Predicate() #void:
             |   LOOKAHEAD(2) ExistencePredicate() 
             |   LOOKAHEAD(2) NullPredicate() 
             |   LOOKAHEAD(2) BetweenPredicate()     
-            |   ComparisonPredicate() 
+            |   {logDeprecatedWarning(getToken(1).image);} ComparisonPredicate()
         )
         
 }

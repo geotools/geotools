@@ -17,6 +17,9 @@
 
 package org.geotools.grid;
 
+import static org.junit.Assert.*;
+
+import java.util.Map;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -29,13 +32,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import java.util.Map;
-
-import static org.junit.Assert.*;
-
-/**
- * Unit tests for the Grids class using Ovals
- */
+/** Unit tests for the Grids class using Ovals */
 public class GridsOvalTest extends TestBase {
 
     private final ReferencedEnvelope bounds = new ReferencedEnvelope(0, 90, 0, 100, null);
@@ -63,8 +60,7 @@ public class GridsOvalTest extends TestBase {
     @Test
     public void createDensifiedGrid() throws Exception {
         final int vertexDensity = 10;
-        SimpleFeatureSource gridSource =
-                Grids.createOvalGrid(bounds, sideLen);
+        SimpleFeatureSource gridSource = Grids.createOvalGrid(bounds, sideLen);
         assertGridSizeAndIds(gridSource);
 
         SimpleFeatureIterator iter = gridSource.getFeatures().features();

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2010, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -33,13 +33,7 @@ import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/**
- * Unit tests for the Ovals class.
- *
- * @author mbedward
- * @since 2.7
- * @version $Id$
- */
+/** Unit tests for the Ovals class. */
 public class OvalsTest extends TestBase {
 
     @Test

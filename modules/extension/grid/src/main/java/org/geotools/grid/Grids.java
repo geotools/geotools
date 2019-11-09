@@ -22,6 +22,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.grid.hexagon.HexagonOrientation;
 import org.geotools.grid.hexagon.Hexagons;
 import org.geotools.grid.oblong.Oblongs;
+import org.geotools.grid.oval.Ovals;
 
 /**
  * A utility class to create polygonal vector grids with basic attributes. For simple grids this is
@@ -284,5 +285,70 @@ public class Grids {
 
         return Hexagons.createGrid(
                 bounds, sideLen, vertexSpacing, HexagonOrientation.FLAT, builder);
+    }
+
+    /**
+     * Creates a vector grid of oval elements. The coordinate reference system is taken from the
+     * input bounds. A {@code null} coordinate reference system is permitted.
+     *
+     * <p>The grid's origin is the minimum X and Y point of the envelope. If the width and/or height
+     * of the bounding envelope is not a simple multiple of the requested side length, there will be
+     * some unfilled space.
+     *
+     * <p>Each oval in the returned grid is represented by a {@code SimpleFeature}. The feature type
+     * has two properties:
+     *
+     * <ul>
+     *   <li>element - type Polygon
+     *   <li>id - type Integer
+     * </ul>
+     *
+     * @param bounds bounds of the grid
+     * @param sideLen the side length of grid elements
+     * @return the vector grid
+     * @throws IllegalArgumentException if bounds is null or empty; or if sideLen is {@code <=} 0
+     */
+    public static SimpleFeatureSource createOvalGrid(ReferencedEnvelope bounds, double sideLen) {
+
+        if (bounds == null) {
+            throw new IllegalArgumentException("bounds should not be null");
+        }
+
+        return Ovals.createGrid(
+                bounds,
+                sideLen,
+                sideLen,
+                new DefaultGridFeatureBuilder(bounds.getCoordinateReferenceSystem()));
+    }
+
+    /**
+     * Creates a vector grid of square elements represented by 'densified' polygons. Each polygon
+     * has additional vertices added to its edges. This is useful if you plan to display the grid in
+     * a projection other than the one that it was created in since the extra vertices will better
+     * approximate curves. The density of vertices is controlled by the value of {@code
+     * vertexSpacing} which specifies the maximum distance between adjacent vertices. Vertices are
+     * added more or less uniformly.
+     *
+     * <p>The coordinate reference system is taken from the {@code GridFeatureBuilder}. A {@code
+     * null} coordinate reference system is permitted but if both the builder and bounding envelope
+     * have non-{@code null} reference systems set they must be the same.
+     *
+     * <p>The grid's origin is the minimum X and Y point of the envelope. If the width and/or height
+     * of the bounding envelope is not a simple multiple of the requested side length, there will be
+     * some unfilled space.
+     *
+     * @param bounds bounds of the grid
+     * @param sideLen the side length of grid elements
+     * @param builder the {@code GridFeatureBuilder} used to control feature creation and the
+     *     setting of feature attribute values
+     * @return the vector grid
+     * @throws IllegalArgumentException if bounds is null or empty; or if sideLen is {@code <=} 0;
+     *     or if builder is null; or if the {@code CoordinateReferenceSystems} set for the bounds
+     *     and the {@code GridFeatureBuilder} are both non-null but different
+     */
+    public static SimpleFeatureSource createOvalGrid(
+            ReferencedEnvelope bounds, double sideLen, GridFeatureBuilder builder) {
+
+        return Ovals.createGrid(bounds, sideLen, sideLen, builder);
     }
 }

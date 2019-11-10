@@ -82,7 +82,7 @@ public class OvalImpl implements Oval {
 
     /** {@inheritDoc} */
     public Geometry toGeometry() {
-        GeometricShapeFactory geometryShapeFactory = new GeometricShapeFactory();
+        GeometricShapeFactory geometryShapeFactory = new GeometricShapeFactory(geomFactory);
         geometryShapeFactory.setEnvelope(this.envelope);
         geometryShapeFactory.setNumPoints(100);
         Geometry geometry = geometryShapeFactory.createEllipse();

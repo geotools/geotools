@@ -70,7 +70,7 @@ public class LiterateFunction extends FunctionExpressionImpl {
         }
         PropertyName indexName = (PropertyName) getExpression(0);
         Integer size = getExpression(1).evaluate(feature, Integer.class);
-        if (size == null || size <= 0) {
+        if (size == null || size < 0) {
             throw new IllegalArgumentException(
                     "literate function requires non-null, positive size");
         }

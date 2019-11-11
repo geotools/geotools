@@ -51,4 +51,21 @@ public class LiterateTest {
         assertTrue(value instanceof List);
         assertEquals(Arrays.asList(4.0, 6.0, 6.0, 4.0), ((List<?>) value));
     }
+
+    @Test
+    public void testEmptyList() {
+        List<Integer> list = Arrays.asList();
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("list1", list);
+
+        Function exp =
+                ff.function(
+                        "literate",
+                        ff.property("index"),
+                        ff.function("size", ff.property("list1")),
+                        ff.function("litem", ff.property("list1"), ff.property("index")));
+        Object value = exp.evaluate(map);
+        assertTrue(value instanceof List);
+        assertEquals(Arrays.asList(), ((List<?>) value));
+    }
 }

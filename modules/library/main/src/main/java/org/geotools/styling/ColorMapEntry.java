@@ -46,7 +46,7 @@ public interface ColorMapEntry {
      */
     void setColor(Expression color);
 
-    /** @return Expression evaualted into a color */
+    /** @return Expression evaluated into a color */
     Expression getColor();
 
     /** @param opacity Expressed as a value between 0 and 1 */

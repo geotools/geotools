@@ -453,7 +453,7 @@ To do this yourself you can evaluate with a specific type of object in mind::
 As an example of conversion here is an expression converting a String to a Color::
    
    Expression expr = ff.literal("#FF0000")
-   Color color = expr.evaualte( null, Color.class );
+   Color color = expr.evaluate( null, Color.class );
 
 Expressions are so useful that you will see them pop up in many parts of GeoTools. They are used
 by styles to select which data for portrayal and so forth.

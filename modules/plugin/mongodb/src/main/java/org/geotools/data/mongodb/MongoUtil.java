@@ -198,8 +198,10 @@ public class MongoUtil {
     }
 
     public static String extractFilesNameFromUrl(String url) throws MalformedURLException {
-        URL urlObject = new URL(url);
-        return urlObject.getPath().replaceAll("/", "");
+        final URL urlObject = new URL(url);
+        String path = urlObject.getPath();
+        int lastSeparatorIndex = path.lastIndexOf("/");
+        return path.substring(lastSeparatorIndex > -1 ? lastSeparatorIndex + 1 : 0, path.length());
     }
 
     public static boolean isZipFile(File file) throws IOException {

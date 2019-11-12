@@ -65,5 +65,7 @@ public class MongoUtilTest {
         assertTrue(MongoUtil.extractFilesNameFromUrl(url3).equalsIgnoreCase("filename.json"));
         String url4 = "https://mock.url.com/filename.json";
         assertTrue(MongoUtil.extractFilesNameFromUrl(url4).equalsIgnoreCase("filename.json"));
+        String url5 = "https://mock.url.com/path1/path2/filename.json";
+        assertTrue(MongoUtil.extractFilesNameFromUrl(url5).equalsIgnoreCase("filename.json"));
     }
 }

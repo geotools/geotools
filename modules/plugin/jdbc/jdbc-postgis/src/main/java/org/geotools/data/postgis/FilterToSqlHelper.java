@@ -34,6 +34,7 @@ import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.LengthFunction;
 import org.geotools.filter.function.DateDifferenceFunction;
 import org.geotools.filter.function.FilterFunction_area;
+import org.geotools.filter.function.FilterFunction_arrayAnyMatch;
 import org.geotools.filter.function.FilterFunction_strConcat;
 import org.geotools.filter.function.FilterFunction_strEndsWith;
 import org.geotools.filter.function.FilterFunction_strEqualsIgnoreCase;
@@ -180,6 +181,9 @@ class FilterToSqlHelper {
 
             // n nearest function
             caps.addType(FilterFunction_pgNearest.class);
+
+            // array functions
+            caps.addType(FilterFunction_arrayAnyMatch.class);
         }
 
         // native filter support
@@ -930,6 +934,20 @@ class FilterToSqlHelper {
         return sb.toString();
     }
 
+    public Object visit(FilterFunction_arrayAnyMatch filter, Object extraData) {
+        Expression array = getParameter(filter, 0, true);
+        Expression candidate = getParameter(filter, 1, true);
+        try {
+            candidate.accept(delegate, extraData);
+            out.write("=any(");
+            array.accept(delegate, extraData);
+            out.write(")");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return extraData;
+    }
+
     public Object visit(
             FilterFunction_pgNearest filter, Object extraData, NearestHelperContext ctx) {
         SQLDialect pgDialect = ctx.getPgDialect();
@@ -1005,6 +1023,25 @@ class FilterToSqlHelper {
 
         public void setEncodeGeometryValue(BiConsumer<Geometry, StringBuffer> encodeGeometryValue) {
             this.encodeGeometryValue = encodeGeometryValue;
+        }
+    }
+
+    /**
+     * Detects and return a FilterFunction_arrayAnyMatch if found, otherwise null
+     *
+     * @param filter filter to evaluate
+     * @return FilterFunction_any if found
+     */
+    public FilterFunction_arrayAnyMatch getArrayAnyMatch(PropertyIsEqualTo filter) {
+        Expression expr1 = filter.getExpression1();
+        Expression expr2 = filter.getExpression2();
+        if (expr2 instanceof FilterFunction_arrayAnyMatch) {
+            return (FilterFunction_arrayAnyMatch) expr2;
+        }
+        if (expr1 instanceof FilterFunction_arrayAnyMatch) {
+            return (FilterFunction_arrayAnyMatch) expr1;
+        } else {
+            return null;
         }
     }
 

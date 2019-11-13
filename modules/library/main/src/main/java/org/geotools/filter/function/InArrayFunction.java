@@ -23,42 +23,28 @@ import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 
-public class FilterFunction_arrayAnyMatch extends FunctionExpressionImpl {
+public class InArrayFunction extends FunctionExpressionImpl {
     public static FunctionName NAME =
             new FunctionNameImpl(
-                    "arrayAnyMatch",
+                    "inArray",
                     parameter(
-                            "arrayAnyMatch",
+                            "inArray",
                             Boolean.class,
-                            "Any",
+                            "InArray",
                             "Returns true if any array value matches candidate."),
-                    parameter("array", Object[].class, "Array", "array of values"),
-                    parameter("candidate", Object.class, "Candidate", "value to match with array"));
+                    parameter("candidate", Object.class, "Candidate", "value to match with array"),
+                    parameter("array", Object[].class, "Array", "array of values"));
 
-    public FilterFunction_arrayAnyMatch() {
+    public InArrayFunction() {
         super(NAME);
     }
 
     public Object evaluate(Object feature) {
-        Object[] array;
-        Object candidate;
-
-        try { // attempt to get array and perform conversion
-            array = (Object[]) getExpression(0).evaluate(feature);
-        } catch (Exception e) // probably a type error
-        {
-            throw new IllegalArgumentException(
-                    "Filter Function problem for function between argument #0 - expected type Object[]");
+        Object candidate = getExpression(0).evaluate(feature);
+        Object[] array = getExpression(1).evaluate(feature, Object[].class);
+        if (candidate == null || array == null) {
+            return Boolean.FALSE;
         }
-
-        try { // attempt to get candidate and perform conversion
-            candidate = (Object) getExpression(1).evaluate(feature);
-        } catch (Exception e) // probably a type error
-        {
-            throw new IllegalArgumentException(
-                    "Filter Function problem for function between argument #1 - expected type Object");
-        }
-
         return Boolean.valueOf(Arrays.asList(array).contains(candidate));
     }
 }

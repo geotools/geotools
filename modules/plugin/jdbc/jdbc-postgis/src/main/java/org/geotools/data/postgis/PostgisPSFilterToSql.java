@@ -19,7 +19,7 @@ package org.geotools.data.postgis;
 import java.io.IOException;
 import org.geotools.data.postgis.filter.FilterFunction_pgNearest;
 import org.geotools.filter.FilterCapabilities;
-import org.geotools.filter.function.FilterFunction_arrayAnyMatch;
+import org.geotools.filter.function.InArrayFunction;
 import org.geotools.jdbc.PreparedFilterToSQL;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.BinaryComparisonOperator;
@@ -170,7 +170,7 @@ public class PostgisPSFilterToSql extends PreparedFilterToSQL {
     public Object visit(PropertyIsEqualTo filter, Object extraData) {
         helper.out = out;
         FilterFunction_pgNearest nearest = helper.getNearestFilter(filter);
-        FilterFunction_arrayAnyMatch any = helper.getArrayAnyMatch(filter);
+        InArrayFunction inArray = helper.getInArray(filter);
         if (nearest != null) {
             return helper.visit(
                     nearest,
@@ -189,8 +189,8 @@ public class PostgisPSFilterToSql extends PreparedFilterToSQL {
                                     throw new RuntimeException(e);
                                 }
                             }));
-        } else if (any != null) {
-            return helper.visit(any, extraData);
+        } else if (inArray != null) {
+            return helper.visit(inArray, extraData);
         } else {
             return super.visit(filter, extraData);
         }

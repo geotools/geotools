@@ -82,7 +82,7 @@ public abstract class SQLFilterTestSupport extends TestCase {
         ftb.add("testDouble", Double.class);
         ftb.add("testString", String.class);
         ftb.add("testZeroDouble", Double.class);
-        ftb.add("testArray", Object[].class);
+        ftb.add("testArray", String[].class);
         ftb.setName("testSchema");
         testSchema = ftb.buildFeatureType();
 

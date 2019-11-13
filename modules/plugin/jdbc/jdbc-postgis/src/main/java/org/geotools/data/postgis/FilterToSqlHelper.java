@@ -34,7 +34,6 @@ import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.LengthFunction;
 import org.geotools.filter.function.DateDifferenceFunction;
 import org.geotools.filter.function.FilterFunction_area;
-import org.geotools.filter.function.FilterFunction_arrayAnyMatch;
 import org.geotools.filter.function.FilterFunction_strConcat;
 import org.geotools.filter.function.FilterFunction_strEndsWith;
 import org.geotools.filter.function.FilterFunction_strEqualsIgnoreCase;
@@ -48,6 +47,7 @@ import org.geotools.filter.function.FilterFunction_strToLowerCase;
 import org.geotools.filter.function.FilterFunction_strToUpperCase;
 import org.geotools.filter.function.FilterFunction_strTrim;
 import org.geotools.filter.function.FilterFunction_strTrim2;
+import org.geotools.filter.function.InArrayFunction;
 import org.geotools.filter.function.math.FilterFunction_abs;
 import org.geotools.filter.function.math.FilterFunction_abs_2;
 import org.geotools.filter.function.math.FilterFunction_abs_3;
@@ -183,7 +183,7 @@ class FilterToSqlHelper {
             caps.addType(FilterFunction_pgNearest.class);
 
             // array functions
-            caps.addType(FilterFunction_arrayAnyMatch.class);
+            caps.addType(InArrayFunction.class);
         }
 
         // native filter support
@@ -934,11 +934,18 @@ class FilterToSqlHelper {
         return sb.toString();
     }
 
-    public Object visit(FilterFunction_arrayAnyMatch filter, Object extraData) {
-        Expression array = getParameter(filter, 0, true);
-        Expression candidate = getParameter(filter, 1, true);
+    public Object visit(InArrayFunction filter, Object extraData) {
+        Expression candidate = getParameter(filter, 0, true);
+        Expression array = getParameter(filter, 1, true);
+        Class<?> arrayType = getBaseType(array);
+        Class<?> candidateType = getBaseType(candidate);
+        String castToArrayType = "";
+        if (arrayType != null && (candidateType == null || !candidateType.equals(arrayType))) {
+            castToArrayType = cast("", arrayType);
+        }
         try {
             candidate.accept(delegate, extraData);
+            out.write(castToArrayType);
             out.write("=any(");
             array.accept(delegate, extraData);
             out.write(")");
@@ -946,6 +953,20 @@ class FilterToSqlHelper {
             throw new RuntimeException(e);
         }
         return extraData;
+    }
+
+    private Class<?> getBaseType(Expression expr) {
+        Class<?> type = delegate.getExpressionType(expr);
+        if (type == null && expr instanceof Literal) {
+            Object value = delegate.evaluateLiteral((Literal) expr, Object.class);
+            if (value != null) {
+                type = value.getClass();
+            }
+        }
+        if (isArray(type)) {
+            type = type.getComponentType();
+        }
+        return type;
     }
 
     public Object visit(
@@ -1027,19 +1048,19 @@ class FilterToSqlHelper {
     }
 
     /**
-     * Detects and return a FilterFunction_arrayAnyMatch if found, otherwise null
+     * Detects and return a InArrayFunction if found, otherwise null
      *
      * @param filter filter to evaluate
      * @return FilterFunction_any if found
      */
-    public FilterFunction_arrayAnyMatch getArrayAnyMatch(PropertyIsEqualTo filter) {
+    public InArrayFunction getInArray(PropertyIsEqualTo filter) {
         Expression expr1 = filter.getExpression1();
         Expression expr2 = filter.getExpression2();
-        if (expr2 instanceof FilterFunction_arrayAnyMatch) {
-            return (FilterFunction_arrayAnyMatch) expr2;
+        if (expr2 instanceof InArrayFunction) {
+            return (InArrayFunction) expr2;
         }
-        if (expr1 instanceof FilterFunction_arrayAnyMatch) {
-            return (FilterFunction_arrayAnyMatch) expr1;
+        if (expr1 instanceof InArrayFunction) {
+            return (InArrayFunction) expr1;
         } else {
             return null;
         }

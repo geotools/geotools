@@ -19,7 +19,7 @@ org.geotools.filter.function.Collection_SumFunction
 org.geotools.filter.function.Collection_UniqueFunction
 org.geotools.filter.function.EnvFunction
 org.geotools.filter.function.StringTemplateFunction
-org.geotools.filter.function.FilterFunction_arrayAnyMatch
+org.geotools.filter.function.InArrayFunction
 org.geotools.filter.function.FilterFunction_contains
 org.geotools.filter.function.FilterFunction_isEmpty
 org.geotools.filter.function.FilterFunction_parseDouble

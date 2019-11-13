@@ -1125,6 +1125,17 @@ public class VariableAdapter extends CoverageSourceDescriptor {
     }
 
     /**
+     * Utility method to retrieve the index of a specific dimension index, for constructing the
+     * range
+     *
+     * @param n the dimension to retrieve the index for (0=Z, 1=T, 2+=Additional)
+     * @return the index
+     */
+    public int getNDimensionIndex(int n) {
+        return nDimensionIndex[n];
+    }
+
+    /**
      * Utility method to retrieve the n-index of a Variable coverageDescriptor stored on {@link
      * NetCDFImageReader} NetCDF Flat Reader {@link HashMap} indexMap.
      *

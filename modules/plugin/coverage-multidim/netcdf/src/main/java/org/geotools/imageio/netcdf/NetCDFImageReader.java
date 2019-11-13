@@ -703,12 +703,22 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
             }
 
             // add the ranges the COARDS way: (additional dims), T, Z, Y, X
-            int first;
-            // (additional), T, Z
+            int first, index;
+
+            // Populate (additional), T, Z in COARDS order by default
             for (int i = 0; i < slice2DIndex.getNCount(); i++) {
                 first = slice2DIndex.getNIndex(i);
                 if (first != -1) {
                     ranges.add(new Range(first, first, 1));
+                }
+            }
+            // use the nDimensionindex to reorder the T, Z, additional ranges as appropriate
+            // nDimensionIndex(i) corresponds to the position of the ith dimension in ranges
+            for (int i = 0; i < slice2DIndex.getNCount(); i++) {
+                first = slice2DIndex.getNIndex(i);
+                index = wrapper.getNDimensionIndex(i);
+                if (first != -1 && index != -1) {
+                    ranges.set(index, new Range(first, first, 1));
                 }
             }
             // Y

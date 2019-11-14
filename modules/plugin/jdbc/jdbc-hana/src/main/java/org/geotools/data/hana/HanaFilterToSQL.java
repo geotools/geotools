@@ -419,7 +419,7 @@ public class HanaFilterToSQL extends PreparedFilterToSQL {
         out.write("ST_GeomFromWKB('");
         out.write(encodeAsHex(wkb));
         if ((currentSRID == null) && (currentGeometry != null)) {
-            out.write(", ");
+            out.write("', ");
             out.write(HanaUtil.encodeIdentifier(currentGeometry.getLocalName()));
             out.write(".ST_SRID())");
         } else {

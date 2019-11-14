@@ -128,6 +128,9 @@ class WFSFeatureSource extends ContentFeatureSource {
         return client.canLimit();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WFSDataStore getDataStore() {
         return (WFSDataStore) super.getDataStore();
@@ -143,8 +146,7 @@ class WFSFeatureSource extends ContentFeatureSource {
     @Override
     protected Query resolvePropertyNames(Query query) {
         // Resolving is not conform with the specification of a wfs propertyname which is a QName
-        // from w3.org, see
-        // qualified names.
+        // from w3.org, see qualified names.
         return query;
     }
 
@@ -152,8 +154,7 @@ class WFSFeatureSource extends ContentFeatureSource {
     @Override
     protected Filter resolvePropertyNames(Filter filter) {
         // Resolving is not conform with the specification of a wfs propertyname which is a QName
-        // from w3.org, see
-        // qualified names.
+        // from w3.org, see qualified names.
         return filter;
     }
 

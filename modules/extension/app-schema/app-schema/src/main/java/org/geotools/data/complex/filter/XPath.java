@@ -17,6 +17,9 @@
 
 package org.geotools.data.complex.filter;
 
+import static org.geotools.data.complex.AbstractMappingFeatureIterator.MULTI_VALUE_TYPE;
+import static org.geotools.data.complex.AbstractMappingFeatureIterator.UNBOUNDED_MULTI_VALUE;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -848,9 +851,9 @@ public class XPath extends XPathUtil {
     }
 
     private boolean isUnboundedMultivalue(final Attribute parent) {
-        final Object value = parent.getUserData().get("multi_value_type");
+        final Object value = parent.getUserData().get(MULTI_VALUE_TYPE);
         if (value instanceof String) {
-            return "unbounded-multi-value".equalsIgnoreCase((String) value);
+            return UNBOUNDED_MULTI_VALUE.equals((String) value);
         }
         return false;
     }

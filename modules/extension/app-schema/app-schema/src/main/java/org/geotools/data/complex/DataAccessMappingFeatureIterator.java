@@ -99,6 +99,7 @@ import org.xml.sax.Attributes;
  * @since 2.4
  */
 public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIterator {
+
     /** Hold on to iterator to allow features to be streamed. */
     private FeatureIterator<? extends Feature> sourceFeatureIterator;
 
@@ -859,7 +860,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                         .stream()
                         .allMatch(e -> e.getKey() instanceof ComplexNameImpl);
         if (!multiValues.isEmpty() && !clientPropsMappings.isEmpty() && allComplexNames) {
-            parentAttribute.getUserData().put("multi_value_type", "unbounded-multi-value");
+            parentAttribute.getUserData().put(MULTI_VALUE_TYPE, UNBOUNDED_MULTI_VALUE);
         }
         // generate every child attributes
         for (MultiValueContainer mv : multiValues) {

@@ -17,7 +17,6 @@
 package org.geotools.filter;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -216,12 +215,12 @@ public class AttributeExpressionImpl extends DefaultExpression implements Proper
                     PropertyAccessors.findPropertyAccessors(obj, attPath, target, hints);
             List<Exception> exceptions = null;
             if (accessors != null) {
-                Iterator<PropertyAccessor> it = accessors.iterator();
-                while (!success && it.hasNext()) {
-                    accessor = it.next();
+                for (int i = 0; i < accessors.size(); i++) {
+                    accessor = accessors.get(i);
                     try {
                         value = accessor.get(obj, attPath, target);
                         success = true;
+                        break;
                     } catch (Exception e) {
                         // fine, we'll try another accessor
                         if (exceptions == null) {

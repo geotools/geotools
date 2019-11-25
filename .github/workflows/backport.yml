@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-18.04
     name: Backport
     steps:
-      - name: Backport
-        uses: tibdex/backport@v1
+      - name: Backporting
+        uses: tibdex/backport@v1.0.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

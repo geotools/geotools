@@ -159,4 +159,14 @@ public interface Property {
      * @return A map of user data.
      */
     Map<Object, Object> getUserData();
+
+    /**
+     * Returns true if the property has a user data map. Can be used to avoid instantiation of Map
+     * object in cases where the main code paths won't have any.
+     *
+     * @return True if there is any user data, false otherwise
+     */
+    default boolean hasUserData() {
+        return !getUserData().isEmpty();
+    }
 }

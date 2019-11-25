@@ -374,6 +374,11 @@ public class SimpleFeatureImpl implements SimpleFeature {
         return userData;
     }
 
+    @Override
+    public boolean hasUserData() {
+        return userData != null && !userData.isEmpty();
+    }
+
     /**
      * returns a unique code for this feature
      *

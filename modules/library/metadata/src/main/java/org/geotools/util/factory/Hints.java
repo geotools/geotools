@@ -16,7 +16,7 @@
  */
 package org.geotools.util.factory;
 
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -680,6 +680,13 @@ public class Hints extends RenderingHints {
      * @since 2.7
      */
     public static final ClassKey VIRTUAL_TABLE_PARAMETERS = new ClassKey("java.util.Map");
+
+    /**
+     * Used along with vector tile geometries, includes the clip mask to be used when rendering the
+     * geometry (geometries in vector tiles can span across tiles, in that case, they have a gutter
+     * that should be removed when rendering them)
+     */
+    public static final ClassKey GEOMETRY_CLIP = new ClassKey("org.locationtech.jts.geom.Geometry");
 
     ////////////////////////////////////////////////////////////////////////
     ////////                                                        ////////

@@ -18,6 +18,9 @@
 
 package org.geotools.mbtiles.mosaic;
 
+import static org.geotools.mbtiles.MBTilesFile.SPHERICAL_MERCATOR;
+import static org.geotools.mbtiles.MBTilesFile.WORLD_ENVELOPE;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -56,22 +59,15 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class MBTilesReader extends AbstractGridCoverage2DReader {
 
-    static final CoordinateReferenceSystem SPHERICAL_MERCATOR;
-
     static final CoordinateReferenceSystem WGS_84;
 
     static {
         try {
-            SPHERICAL_MERCATOR = CRS.decode("EPSG:3857", true);
             WGS_84 = CRS.decode("EPSG:4326", true);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
-
-    protected static final ReferencedEnvelope WORLD_ENVELOPE =
-            new ReferencedEnvelope(
-                    -20037508.34, 20037508.34, -20037508.34, 20037508.34, SPHERICAL_MERCATOR);
 
     protected static final int DEFAULT_TILE_SIZE = 256;
 

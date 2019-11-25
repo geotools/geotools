@@ -24,6 +24,7 @@ import static org.geotools.jdbc.util.SqlUtil.prepare;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -37,9 +38,12 @@ import java.util.logging.Logger;
 import javax.sql.DataSource;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.geotools.data.jdbc.datasource.ManageableDataSource;
-import org.geotools.jdbc.JDBCDataStore;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.util.SqlUtil;
+import org.geotools.referencing.CRS;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Envelope;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class MBTilesFile implements AutoCloseable {
 
@@ -136,17 +140,30 @@ public class MBTilesFile implements AutoCloseable {
 
     protected final String MD_MAXZOOM = "maxzoom";
 
+    protected final String MD_JSON = "json";
+
     /** Logger */
     protected static final Logger LOGGER = Logging.getLogger(MBTilesFile.class);
+
+    public static final CoordinateReferenceSystem SPHERICAL_MERCATOR;
+
+    static {
+        try {
+            SPHERICAL_MERCATOR = CRS.decode("EPSG:3857", true);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static final ReferencedEnvelope WORLD_ENVELOPE =
+            new ReferencedEnvelope(
+                    -20037508.34, 20037508.34, -20037508.34, 20037508.34, SPHERICAL_MERCATOR);
 
     /** database file */
     protected File file;
 
     /** connection pool */
     protected final DataSource connPool;
-
-    /** datastore for vector access, lazily created */
-    protected volatile JDBCDataStore dataStore;
 
     /** Boolean indicating if journal must be disabled or not */
     protected boolean disableJournal;
@@ -190,16 +207,10 @@ public class MBTilesFile implements AutoCloseable {
             throws IOException {
         this.file = file;
         this.disableJournal = disableJournal;
-        Map<String, Object> params = new HashMap<String, Object>();
-        if (user != null) {
-            params.put(MBTilesDataStoreFactory.USER.key, user);
-        }
-        if (passwd != null) {
-            params.put(MBTilesDataStoreFactory.PASSWD.key, passwd);
-        }
-
+        Map<String, Serializable> params = new HashMap<>();
         params.put(MBTilesDataStoreFactory.DATABASE.key, file.getPath());
-        params.put(MBTilesDataStoreFactory.DBTYPE.key, MBTilesDataStoreFactory.DBTYPE.sample);
+        params.put(
+                MBTilesDataStoreFactory.DBTYPE.key, (String) MBTilesDataStoreFactory.DBTYPE.sample);
 
         this.connPool = new MBTilesDataStoreFactory().createDataSource(params);
     }
@@ -212,11 +223,6 @@ public class MBTilesFile implements AutoCloseable {
      */
     public MBTilesFile(DataSource dataSource) {
         this.connPool = dataSource;
-    }
-
-    MBTilesFile(JDBCDataStore dataStore) {
-        this.dataStore = dataStore;
-        this.connPool = dataStore.getDataSource();
     }
 
     /**
@@ -238,6 +244,7 @@ public class MBTilesFile implements AutoCloseable {
                 saveMetaDataEntry(MD_BOUNDS, metaData.getBoundsStr(), cx);
                 saveMetaDataEntry(MD_MINZOOM, String.valueOf(metaData.getMinZoom()), cx);
                 saveMetaDataEntry(MD_MAXZOOM, String.valueOf(metaData.getMaxZoom()), cx);
+                saveMetaDataEntry(MD_JSON, String.valueOf(metaData.getJson()), cx);
             } finally {
                 cx.close();
             }
@@ -421,6 +428,7 @@ public class MBTilesFile implements AutoCloseable {
                 metaData.setBoundsStr(loadMetaDataEntry(MD_BOUNDS, cx));
                 metaData.setMinZoomStr(loadMetaDataEntry(MD_MINZOOM, cx));
                 metaData.setMaxZoomStr(loadMetaDataEntry(MD_MAXZOOM, cx));
+                metaData.setJson(loadMetaDataEntry(MD_JSON, cx));
             } finally {
                 cx.close();
             }
@@ -760,10 +768,6 @@ public class MBTilesFile implements AutoCloseable {
      * connection leakage.
      */
     public void close() {
-        if (dataStore != null) {
-            dataStore.dispose();
-        }
-
         try {
             if (connPool instanceof BasicDataSource) {
                 ((BasicDataSource) connPool).close();
@@ -872,5 +876,111 @@ public class MBTilesFile implements AutoCloseable {
                 prepared.close();
             }
         }
+    }
+
+    /**
+     * Converts the envelope into a tiles rectangle containing it, at the requested zoom level. X
+     * tiles start from west and increase towards east, Y tiles start from north and increase
+     * towards south
+     *
+     * @param envelope
+     * @param zoomLevel
+     * @return
+     * @throws SQLException
+     */
+    protected RectangleLong toTilesRectangle(Envelope envelope, long zoomLevel)
+            throws SQLException {
+        // From the specification:
+        // ---------------------------------------------------------------------------------
+        // The tiles table contains tiles and the values used to locate them. The zoom_level,
+        // tile_column, and tile_row columns MUST encode the location of the tile, following the
+        // Tile Map Service Specification, with the restriction that the global-mercator (aka
+        // Spherical Mercator) profile MUST be used.
+        // ---------------------------------------------------------------------------------
+        // Hence, tile wise the Y axis starts at the bottom and grows north-ward
+
+        long numberOfTiles =
+                tilesForZoom(zoomLevel); // number of tile columns/rows for chosen zoom level
+        double resX = WORLD_ENVELOPE.getSpan(0) / numberOfTiles; // points per tile
+        double resY = WORLD_ENVELOPE.getSpan(1) / numberOfTiles; // points per tile
+        double offsetX = WORLD_ENVELOPE.getMinimum(0);
+        double offsetY = WORLD_ENVELOPE.getMinimum(1);
+
+        long minTileX = Math.round(Math.floor((envelope.getMinX() - offsetX) / resX));
+        long maxTileX = Math.round(Math.floor((envelope.getMaxX() - offsetX) / resX));
+        long minTileY = Math.round(Math.floor((envelope.getMinY() - offsetY) / resY));
+        long maxTileY = Math.round(Math.floor((envelope.getMaxY() - offsetY) / resY));
+
+        return new RectangleLong(minTileX, maxTileX, minTileY, maxTileY);
+    }
+
+    private static long tilesForZoom(long zoomLevel) {
+        return Math.round(Math.pow(2, zoomLevel));
+    }
+
+    /**
+     * Returns the tile bounds for the given zoom level
+     *
+     * @param zoomLevel
+     * @return
+     * @throws SQLException
+     */
+    protected RectangleLong getTileBounds(long zoomLevel) throws SQLException {
+        long minRow = minRow(zoomLevel);
+        long maxRow = maxRow(zoomLevel);
+        long minCol = minColumn(zoomLevel);
+        long maxCol = maxColumn(zoomLevel);
+        return new RectangleLong(minCol, maxCol, minRow, maxRow);
+    }
+
+    /**
+     * Returns the zoom level for the given simplification distance
+     *
+     * @param d
+     * @return
+     */
+    protected long getZoomLevel(double distance) throws SQLException {
+        final long maxZoom = maxZoom();
+        final long numberOfTiles = tilesForZoom(maxZoom);
+        final double span = WORLD_ENVELOPE.getSpan(0) / numberOfTiles;
+        double pxSize = span / 256; // assuming a visualization of 256px per tile
+        for (long z = maxZoom; z > 0; z--, pxSize *= 2) {
+            if (pxSize > distance) {
+                // pick the lowest, vector tiles are made to be overzoomed a bit
+                // and we need a large gutter to avoid rendering artifacts
+                return z;
+            }
+        }
+
+        return 0;
+    }
+
+    /**
+     * Converts the tile locations into a real world one
+     *
+     * @param rect The tile rectangle, in tile space
+     * @param zoom The zoom level
+     * @return
+     */
+    protected ReferencedEnvelope toEnvelope(RectangleLong rect, long zoom) {
+        final long numberOfTiles = tilesForZoom(zoom);
+        final double spanX = WORLD_ENVELOPE.getSpan(0) / numberOfTiles;
+        final double spanY = WORLD_ENVELOPE.getSpan(1) / numberOfTiles;
+        final double minX = rect.getMinX() * spanX + WORLD_ENVELOPE.getMinX();
+        final double maxX = rect.getMaxX() * spanX + WORLD_ENVELOPE.getMinX();
+        final double minY = rect.getMinX() * spanY + WORLD_ENVELOPE.getMinY();
+        final double maxY = rect.getMaxX() * spanY + WORLD_ENVELOPE.getMinY();
+        return new ReferencedEnvelope(minX, maxX, minY, maxY, SPHERICAL_MERCATOR);
+    }
+
+    protected static ReferencedEnvelope toEnvelope(MBTilesTileLocation tile) {
+        final long numberOfTiles = tilesForZoom(tile.getZoomLevel());
+        final double spanX = WORLD_ENVELOPE.getSpan(0) / numberOfTiles;
+        final double spanY = WORLD_ENVELOPE.getSpan(1) / numberOfTiles;
+        final double minX = tile.getTileColumn() * spanX + WORLD_ENVELOPE.getMinX();
+        final double maxX = minX + spanX;
+        final double minY = tile.getTileRow() * spanY + WORLD_ENVELOPE.getMinY();
+        final double maxY = minY + spanY;
+        return new ReferencedEnvelope(minX, maxX, minY, maxY, SPHERICAL_MERCATOR);
     }
 }

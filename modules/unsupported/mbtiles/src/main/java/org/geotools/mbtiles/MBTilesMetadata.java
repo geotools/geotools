@@ -29,6 +29,7 @@ import org.geotools.util.logging.Logging;
 import org.opengis.geometry.Envelope;
 import org.opengis.referencing.FactoryException;
 
+/** The well known contents of the metadata table */
 public class MBTilesMetadata {
 
     private static Logger LOGGER = Logging.getLogger(MBTilesMetadata.class);
@@ -84,6 +85,8 @@ public class MBTilesMetadata {
     protected int minZoom;
 
     protected int maxZoom;
+
+    protected String json;
 
     public String getName() {
         return name;
@@ -250,5 +253,19 @@ public class MBTilesMetadata {
         } else {
             maxZoom = Integer.parseInt(maxZoomStr);
         }
+    }
+
+    /**
+     * The description of vector tiles internal structure is a JSON document added in the "json" key
+     * (by mbtiles specification)
+     *
+     * @return
+     */
+    public String getJson() {
+        return json;
+    }
+
+    public void setJson(String json) {
+        this.json = json;
     }
 }

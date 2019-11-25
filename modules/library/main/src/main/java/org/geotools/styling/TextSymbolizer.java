@@ -285,6 +285,15 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer, Symbol
     public static final double DEFAULT_WORD_SPACING = 0;
 
     /**
+     * Option expressed in value of pixels. This option does not support negative values. Works only
+     * on polygons.
+     */
+    public static final String FONT_SHRINK_SIZE_MIN = "fontShrinkSizeMin";
+
+    /** Default font shrink size */
+    public static final int DEFAULT_FONT_SHRINK_SIZE_MIN = 0;
+
+    /**
      * Option to control displacement of labels. Available values are defined as enum values @see
      * {@link DisplacementMode}
      */

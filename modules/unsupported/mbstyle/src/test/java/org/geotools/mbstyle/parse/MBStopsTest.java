@@ -149,8 +149,7 @@ public class MBStopsTest {
         MBStyle mbStyle = new MBStyle(jsonObject);
         StyledLayerDescriptor transformed = mbStyle.transform();
         List<StyledLayer> styledLayers = transformed.layers();
-        List<FeatureTypeStyle> fts =
-                ((UserLayer) styledLayers.get(0)).getUserStyles()[0].featureTypeStyles();
+        List<FeatureTypeStyle> fts = MapboxTestUtils.getStyle(transformed, 0).featureTypeStyles();
 
         int i = 0;
         for (FeatureTypeStyle layer : fts) {

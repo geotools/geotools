@@ -16,19 +16,25 @@
  */
 package org.geotools.mbstyle;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-import java.io.StringReader;
 import org.apache.commons.io.IOUtils;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.RenderListener;
 import org.geotools.renderer.lite.RendererBaseTest;
+import org.geotools.styling.NamedLayer;
+import org.geotools.styling.Style;
+import org.geotools.styling.StyledLayer;
+import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.styling.UserLayer;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.io.StringReader;
 
 public class MapboxTestUtils {
 
@@ -100,5 +106,24 @@ public class MapboxTestUtils {
         String text = json.replace('\'', '\"');
         Object object = parser.parse(text);
         return (JSONObject) object;
+    }
+
+    /**
+     * Returns the first style associated to the layer at <code>layerIndex</code>. An exception will
+     * be thrown if the layer is neither a {@link UserLayer} nor a {@link NamedLayer}.
+     *
+     * @param sld The full SLD style
+     * @param layerIndex The layer to be considered for style extraction
+     * @return The first associated style
+     */
+    public static Style getStyle(StyledLayerDescriptor sld, int layerIndex) {
+        StyledLayer styledLayer = sld.layers().get(layerIndex);
+        if (styledLayer instanceof UserLayer) {
+            return ((UserLayer) styledLayer).getUserStyles()[0];
+        } else if (styledLayer instanceof NamedLayer) {
+            return ((NamedLayer) styledLayer).getStyles()[0];
+        } else {
+            throw new RuntimeException("Layer is neither a user layer nor a named layer");
+        }
     }
 }

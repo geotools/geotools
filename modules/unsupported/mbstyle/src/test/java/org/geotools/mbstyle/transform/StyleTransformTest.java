@@ -16,16 +16,11 @@
  */
 package org.geotools.mbstyle.transform;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.xml.transform.TransformerException;
 import org.geotools.TestData;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -36,9 +31,30 @@ import org.geotools.filter.function.FilterFunction_isometric;
 import org.geotools.filter.function.FilterFunction_offset;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.MapboxTestUtils;
-import org.geotools.mbstyle.layer.*;
+import org.geotools.mbstyle.layer.BackgroundMBLayer;
+import org.geotools.mbstyle.layer.CircleMBLayer;
+import org.geotools.mbstyle.layer.FillExtrusionMBLayer;
+import org.geotools.mbstyle.layer.FillMBLayer;
+import org.geotools.mbstyle.layer.LineMBLayer;
+import org.geotools.mbstyle.layer.MBLayer;
+import org.geotools.mbstyle.layer.RasterMBLayer;
+import org.geotools.mbstyle.layer.SymbolMBLayer;
 import org.geotools.mbstyle.parse.MBObjectParser;
-import org.geotools.styling.*;
+import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.Graphic;
+import org.geotools.styling.LineSymbolizer;
+import org.geotools.styling.Mark;
+import org.geotools.styling.PointSymbolizer;
+import org.geotools.styling.PolygonSymbolizer;
+import org.geotools.styling.RasterSymbolizer;
+import org.geotools.styling.Rule;
+import org.geotools.styling.SLD;
+import org.geotools.styling.Style;
+import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.styling.Symbolizer;
+import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.TextSymbolizerImpl;
+import org.geotools.styling.UserLayer;
 import org.geotools.xml.styling.SLDTransformer;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -49,6 +65,16 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.GraphicalSymbol;
+
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.xml.transform.TransformerException;
 
 /** Test parsing and transforming a Mapbox fill layer from json. */
 public class StyleTransformTest {

@@ -16,6 +16,13 @@
  */
 package org.geotools.mbstyle;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.io.StringReader;
+import javax.xml.transform.TransformerException;
 import org.apache.commons.io.IOUtils;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.renderer.GTRenderer;
@@ -26,15 +33,10 @@ import org.geotools.styling.Style;
 import org.geotools.styling.StyledLayer;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.UserLayer;
+import org.geotools.xml.styling.SLDTransformer;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-import java.io.StringReader;
 
 public class MapboxTestUtils {
 
@@ -124,6 +126,16 @@ public class MapboxTestUtils {
             return ((NamedLayer) styledLayer).getStyles()[0];
         } else {
             throw new RuntimeException("Layer is neither a user layer nor a named layer");
+        }
+    }
+
+    public static void printStyle(StyledLayerDescriptor sld, OutputStream out) {
+        SLDTransformer transformer = new SLDTransformer();
+        transformer.setIndentation(2);
+        try {
+            transformer.transform(sld, out);
+        } catch (TransformerException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -1781,10 +1781,10 @@ width of the inner gap.
    * - basic functionality
      - >= 0.10.0
      - Not yet supported
-     - Not yet supported
+     - 18.0
    * - data-driven styling
      - >= 0.29.0
-     - Not yet supported
+     - 22.2
      - Not yet supported
 
 line-offset

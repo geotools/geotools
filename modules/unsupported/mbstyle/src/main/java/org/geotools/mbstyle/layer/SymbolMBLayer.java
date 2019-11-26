@@ -18,8 +18,11 @@ package org.geotools.mbstyle.layer;
 
 import com.google.common.collect.ImmutableSet;
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBFormatException;
@@ -27,9 +30,22 @@ import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.sprite.SpriteGraphicFactory;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
 import org.geotools.measure.Units;
-import org.geotools.styling.*;
+import org.geotools.styling.AnchorPoint;
+import org.geotools.styling.Displacement;
+import org.geotools.styling.ExternalGraphic;
+import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
+import org.geotools.styling.Graphic;
+import org.geotools.styling.Halo;
+import org.geotools.styling.LabelPlacement;
+import org.geotools.styling.LinePlacement;
+import org.geotools.styling.Mark;
+import org.geotools.styling.PointPlacement;
+import org.geotools.styling.Rule;
 import org.geotools.styling.Stroke;
+import org.geotools.styling.StyleBuilder;
+import org.geotools.styling.TextSymbolizer2;
 import org.geotools.text.Text;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -996,11 +1012,19 @@ public class SymbolMBLayer extends MBLayer {
      * @return AnchorPoint defined by "text-anchor".
      */
     public AnchorPoint anchorPoint() {
-        TextAnchor anchor = getTextAnchor();
-        if (anchor == null) {
+
+        Expression expression = parse.string(layout, "text-anchor", TextAnchor.CENTER.name());
+        if (expression == null) {
             return null;
         }
-        return sf.anchorPoint(ff.literal(anchor.getX()), ff.literal(anchor.getY()));
+        if (expression instanceof Literal) {
+            TextAnchor anchor = TextAnchor.parse(expression.evaluate(null, String.class));
+            return sf.anchorPoint(ff.literal(anchor.getX()), ff.literal(anchor.getY()));
+        }
+        // it's a generic expression, need to map it to values
+        return sf.anchorPoint(
+                ff.function("mbAnchor", expression, ff.literal("x")),
+                ff.function("mbAnchor", expression, ff.literal("y")));
     }
 
     /**

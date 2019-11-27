@@ -18,6 +18,7 @@ package org.geotools.geometry.jts;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
 import org.locationtech.jts.geom.Envelope;
@@ -585,14 +586,13 @@ public class GeometryClipper {
                 }
             }
 
-            //            Class targetGeometry = Geometry.class;
-            //            if(gc instanceof MultiPoint) {
-            //            	targetGeometry = Point.class;
-            //            } else if(gc instanceof MultiLineString) {
-            //            	targetGeometry = LineString.class;
-            //            } else if(gc instanceof MultiPolygon) {
-            //            	targetGeometry = Polygon.class;
-            //            }
+            if (gc instanceof MultiPoint) {
+                result = filterCollection(Point.class, result);
+            } else if (gc instanceof MultiLineString) {
+                result = filterCollection(LineString.class, result);
+            } else if (gc instanceof MultiPolygon) {
+                result = filterCollection(Polygon.class, result);
+            }
 
             if (result.size() == 0) {
                 return null;
@@ -618,6 +618,17 @@ public class GeometryClipper {
                                 (Geometry[]) result.toArray(new Geometry[result.size()]));
             }
         }
+    }
+
+    /**
+     * Returns a collection with just the elements matching the desired class
+     *
+     * @param clazz
+     * @param collection
+     * @return
+     */
+    private List<Geometry> filterCollection(Class clazz, List<Geometry> collection) {
+        return collection.stream().filter(g -> clazz.isInstance(g)).collect(Collectors.toList());
     }
 
     private void flattenCollection(List<Geometry> result) {

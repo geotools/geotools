@@ -2993,6 +2993,12 @@ public class StreamingRenderer implements GTRenderer {
                     if (symbolizer.hasOption("labelObstacle")) {
                         paintShapeRequest.setLabelObstacle(true);
                     }
+                    Polygon clip = getClip(drawMe);
+                    if (clip != null) {
+                        LiteShape2 clipShape =
+                                drawMe.getShape(null, worldToScreenTransform, clip, true);
+                        paintShapeRequest.setClipShape(clipShape);
+                    }
                     requests.put(paintShapeRequest);
                     paintCommands++;
                 }
@@ -3000,6 +3006,16 @@ public class StreamingRenderer implements GTRenderer {
         }
 
         return paintCommands;
+    }
+
+    private Polygon getClip(RenderableFeature drawMe) {
+        if (drawMe.feature.hasUserData()) {
+            Object clipCandidate = drawMe.feature.getUserData().get(Hints.GEOMETRY_CLIP);
+            if (clipCandidate instanceof Polygon) {
+                return (Polygon) clipCandidate;
+            }
+        }
+        return null;
     }
 
     /**
@@ -3081,6 +3097,9 @@ public class StreamingRenderer implements GTRenderer {
      */
     private org.opengis.referencing.crs.CoordinateReferenceSystem findGeometryCS(
             Feature f, Symbolizer s) {
+        if (s == null) {
+            return null;
+        }
         FeatureType schema = f.getType();
 
         Expression geometry = s.getGeometry();
@@ -3318,7 +3337,14 @@ public class StreamingRenderer implements GTRenderer {
 
             if (g == null || g.isEmpty()) return null;
 
+            return getShape(symbolizer, at, g, clone);
+        }
+
+        public LiteShape2 getShape(
+                Symbolizer symbolizer, AffineTransform at, Geometry g, boolean clone)
+                throws FactoryException {
             try {
+
                 // process screenmap if necessary (only do it once,
                 // the geometry will be transformed simplified in place and the screenmap
                 // really needs to play against the original coordinates, plus, once we start
@@ -3385,7 +3411,7 @@ public class StreamingRenderer implements GTRenderer {
                         // fact we're modifing the geometry coordinates directly, if we don't get
                         // the reprojected and decimated geometry we risk of transforming it twice
                         // when computing the centroid
-                        LiteShape2 first = getTransformedShape(g, sa);
+                        LiteShape2 first = getTransformedShape(g, sa, clone);
                         if (first != null) {
                             if (projectionHandler != null) {
                                 // at the same time, we cannot keep the geometry in screen space
@@ -3396,18 +3422,20 @@ public class StreamingRenderer implements GTRenderer {
                                 // it back to the original
                                 Geometry tx =
                                         JTS.transform(first.getGeometry(), sa.xform.inverse());
-                                return getTransformedShape(RendererUtilities.getCentroid(tx), sa);
+                                return getTransformedShape(
+                                        RendererUtilities.getCentroid(tx), sa, clone);
                             } else {
-                                return getTransformedShape(RendererUtilities.getCentroid(g), null);
+                                return getTransformedShape(
+                                        RendererUtilities.getCentroid(g), null, clone);
                             }
                         } else {
                             return null;
                         }
                     } else {
-                        return getTransformedShape(RendererUtilities.getCentroid(g), sa);
+                        return getTransformedShape(RendererUtilities.getCentroid(g), sa, clone);
                     }
                 } else {
-                    return getTransformedShape(g, sa);
+                    return getTransformedShape(g, sa, clone);
                 }
             } catch (TransformException te) {
                 LOGGER.log(Level.FINE, te.getLocalizedMessage(), te);
@@ -3429,7 +3457,8 @@ public class StreamingRenderer implements GTRenderer {
             return -1;
         }
 
-        private LiteShape2 getTransformedShape(Geometry originalGeom, SymbolizerAssociation sa)
+        private LiteShape2 getTransformedShape(
+                Geometry originalGeom, SymbolizerAssociation sa, boolean clone)
                 throws TransformException, FactoryException {
             int idx = getGeometryIndex(originalGeom);
             if (idx != -1) {
@@ -3555,6 +3584,12 @@ public class StreamingRenderer implements GTRenderer {
 
         boolean labelObstacle = false;
 
+        Shape clipShape;
+
+        public PaintShapeRequest(Shape clipShape) {
+            this.clipShape = clipShape;
+        }
+
         public PaintShapeRequest(
                 Graphics2D graphic, LiteShape2 shape, Style2D style, double scale) {
             this.graphic = graphic;
@@ -3567,6 +3602,10 @@ public class StreamingRenderer implements GTRenderer {
             this.labelObstacle = labelObstacle;
         }
 
+        public void setClipShape(Shape clipShape) {
+            this.clipShape = clipShape;
+        }
+
         @Override
         void execute() {
             if (graphic instanceof DelayedBackbufferGraphic) {
@@ -3574,7 +3613,15 @@ public class StreamingRenderer implements GTRenderer {
             }
 
             try {
+                Shape oldClip = null;
+                if (clipShape != null) {
+                    oldClip = graphic.getClip();
+                    graphic.setClip(clipShape);
+                }
                 painter.paint(graphic, shape, style, scale, labelObstacle);
+                if (clipShape != null) {
+                    graphic.setClip(oldClip);
+                }
             } catch (Throwable t) {
                 fireErrorEvent(t);
             }

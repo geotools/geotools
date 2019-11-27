@@ -453,25 +453,27 @@ public class FactoryRegistry {
             final Hints.Key key,
             final String message,
             final Class<?> type) {
-        final StringBuilder buffer = new StringBuilder(status);
-        buffer.append(Utilities.spaces(Math.max(1, 7 - status.length())))
-                .append('(')
-                .append(Classes.getShortName(category));
-        if (key != null) {
-            buffer.append(", ").append(key);
+        if (LOGGER.isLoggable(DEBUG_LEVEL)) {
+            final StringBuilder buffer = new StringBuilder(status);
+            buffer.append(Utilities.spaces(Math.max(1, 7 - status.length())))
+                    .append('(')
+                    .append(Classes.getShortName(category));
+            if (key != null) {
+                buffer.append(", ").append(key);
+            }
+            buffer.append(')');
+            if (message != null) {
+                buffer.append(": ").append(message);
+            }
+            if (type != null) {
+                buffer.append(' ').append(Classes.getShortName(type)).append('.');
+            }
+            final LogRecord record = new LogRecord(DEBUG_LEVEL, buffer.toString());
+            record.setSourceClassName(FactoryRegistry.class.getName());
+            record.setSourceMethodName("getFactory");
+            record.setLoggerName(LOGGER.getName());
+            LOGGER.log(record);
         }
-        buffer.append(')');
-        if (message != null) {
-            buffer.append(": ").append(message);
-        }
-        if (type != null) {
-            buffer.append(' ').append(Classes.getShortName(type)).append('.');
-        }
-        final LogRecord record = new LogRecord(DEBUG_LEVEL, buffer.toString());
-        record.setSourceClassName(FactoryRegistry.class.getName());
-        record.setSourceMethodName("getFactory");
-        record.setLoggerName(LOGGER.getName());
-        LOGGER.log(record);
     }
 
     /**

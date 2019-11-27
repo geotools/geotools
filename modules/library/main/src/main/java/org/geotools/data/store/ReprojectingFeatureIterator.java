@@ -118,7 +118,7 @@ public class ReprojectingFeatureIterator implements SimpleFeatureIterator {
 
         try {
             SimpleFeature result = SimpleFeatureBuilder.build(schema, attributes, feature.getID());
-            if (feature.getUserData() != null && !feature.getUserData().isEmpty()) {
+            if (feature.hasUserData()) {
                 result.getUserData().putAll(feature.getUserData());
             }
             return result;

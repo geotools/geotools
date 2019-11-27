@@ -29,7 +29,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 
 public class SimpleFeaturePropertyAccessorTest extends TestCase {
 
-    private static final String COMPLEX_PROPERTY = "pro.per.ty-G\\u00e9n\\\\u00e9rique";
+    private static final String COMPLEX_PROPERTY = "pro.per.ty-G\\u00e9n\\\\u00e9rique:abc";
     SimpleFeatureType type;
     SimpleFeature feature;
     PropertyAccessor accessor = SimpleFeaturePropertyAccessorFactory.ATTRIBUTE_ACCESS;

@@ -17,7 +17,6 @@
 package org.geotools.data;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -46,8 +45,8 @@ public final class DataStoreFinder {
     protected static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(DataStoreFinder.class);
 
-    /** The service registry for this manager. Will be initialized only when first needed. */
-    private static volatile FactoryRegistry registry;
+    /** The service registry for this manager. FactoryCreator performs lazy initialization. */
+    private static final FactoryRegistry registry = new FactoryCreator(DataStoreFactorySpi.class);
 
     // Singleton pattern
     private DataStoreFinder() {}
@@ -63,7 +62,7 @@ public final class DataStoreFinder {
      * @throws IOException If a suitable loader can be found, but it can not be attached to the
      *     specified resource without errors.
      */
-    public static synchronized DataStore getDataStore(Map params) throws IOException {
+    public static DataStore getDataStore(Map params) throws IOException {
         Iterator<DataStoreFactorySpi> ps = getAvailableDataStores();
         DataAccess<? extends FeatureType, ? extends Feature> dataStore;
         dataStore = DataAccessFinder.getDataStore(params, ps);
@@ -71,12 +70,12 @@ public final class DataStoreFinder {
     }
 
     /**
-     * Finds all implemtaions of DataStoreFactory which have registered using the services
+     * Finds all implementations of DataStoreFactory which have registered using the services
      * mechanism, regardless weather it has the appropriate libraries on the classpath.
      *
      * @return An iterator over all discovered datastores which have registered factories
      */
-    public static synchronized Iterator<DataStoreFactorySpi> getAllDataStores() {
+    public static Iterator<DataStoreFactorySpi> getAllDataStores() {
         return DataAccessFinder.getAllDataStores(getServiceRegistry(), DataStoreFactorySpi.class);
     }
 
@@ -87,7 +86,7 @@ public final class DataStoreFinder {
      * @return An iterator over all discovered datastores which have registered factories, and whose
      *     available method returns true.
      */
-    public static synchronized Iterator<DataStoreFactorySpi> getAvailableDataStores() {
+    public static Iterator<DataStoreFactorySpi> getAvailableDataStores() {
         Set<DataStoreFactorySpi> availableDS;
         FactoryRegistry serviceRegistry = getServiceRegistry();
         availableDS =
@@ -100,11 +99,6 @@ public final class DataStoreFinder {
      * invoked.
      */
     private static FactoryRegistry getServiceRegistry() {
-        assert Thread.holdsLock(DataStoreFinder.class);
-        if (registry == null) {
-            registry =
-                    new FactoryCreator(Arrays.asList(new Class<?>[] {DataStoreFactorySpi.class}));
-        }
         return registry;
     }
 
@@ -116,17 +110,12 @@ public final class DataStoreFinder {
      * re-scan. Thus this method need only be invoked by sophisticated applications which
      * dynamically make new plug-ins available at runtime.
      */
-    public static synchronized void scanForPlugins() {
-
+    public static void scanForPlugins() {
         getServiceRegistry().scanForPlugins();
     }
 
     /** Resets the factory finder and prepares for a new full scan of the SPI subsystems */
     public static void reset() {
-        FactoryRegistry copy = registry;
-        registry = null;
-        if (copy != null) {
-            copy.deregisterAll();
-        }
+        registry.deregisterAll();
     }
 }

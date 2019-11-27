@@ -20,7 +20,6 @@ import static java.util.stream.Collectors.toSet;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
@@ -51,8 +50,8 @@ public final class DataAccessFinder {
     protected static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(DataAccessFinder.class);
 
-    /** The service registry for this manager. Will be initialized only when first needed. */
-    private static volatile FactoryRegistry registry;
+    /** The service registry for this manager. FactoryCreator performs lazy initialization. */
+    private static final FactoryRegistry registry = new FactoryCreator(DataAccessFactory.class);
 
     // Singleton pattern
     private DataAccessFinder() {}
@@ -69,8 +68,8 @@ public final class DataAccessFinder {
      *     specified resource without errors.
      */
     @SuppressWarnings("unchecked")
-    public static synchronized DataAccess<FeatureType, Feature> getDataStore(
-            Map<String, Serializable> params) throws IOException {
+    public static DataAccess<FeatureType, Feature> getDataStore(Map<String, Serializable> params)
+            throws IOException {
         Iterator<DataAccessFactory> ps = getAvailableDataStores();
         return (DataAccess<FeatureType, Feature>) getDataStore(params, ps);
     }
@@ -143,12 +142,12 @@ public final class DataAccessFinder {
     }
 
     /**
-     * Finds all implemtaions of DataAccessFactory which have registered using the services
+     * Finds all implementations of DataAccessFactory which have registered using the services
      * mechanism, regardless weather it has the appropriate libraries on the classpath.
      *
      * @return An iterator over all discovered datastores which have registered factories
      */
-    public static synchronized Iterator<DataAccessFactory> getAllDataStores() {
+    public static Iterator<DataAccessFactory> getAllDataStores() {
         Set<DataAccessFactory> all = new HashSet<DataAccessFactory>();
         Iterator<DataStoreFactorySpi> allDataStores = DataStoreFinder.getAllDataStores();
         Iterator<DataAccessFactory> allDataAccess =
@@ -165,7 +164,7 @@ public final class DataAccessFinder {
         return all.iterator();
     }
 
-    static synchronized <T extends DataAccessFactory> Iterator<T> getAllDataStores(
+    static <T extends DataAccessFactory> Iterator<T> getAllDataStores(
             FactoryRegistry registry, Class<T> category) {
         return registry.getFactories(category, null, null).iterator();
     }
@@ -177,7 +176,7 @@ public final class DataAccessFinder {
      * @return An iterator over all discovered datastores which have registered factories, and whose
      *     available method returns true.
      */
-    public static synchronized Iterator<DataAccessFactory> getAvailableDataStores() {
+    public static Iterator<DataAccessFactory> getAvailableDataStores() {
 
         FactoryRegistry serviceRegistry = getServiceRegistry();
         Set<DataAccessFactory> availableDS =
@@ -192,7 +191,7 @@ public final class DataAccessFinder {
         return availableDS.iterator();
     }
 
-    static synchronized <T extends DataAccessFactory> Set<T> getAvailableDataStores(
+    static <T extends DataAccessFactory> Set<T> getAvailableDataStores(
             FactoryRegistry registry, Class<T> targetClass) {
         return registry.getFactories(targetClass, null, null)
                 .filter(DataAccessFactory::isAvailable)
@@ -204,10 +203,6 @@ public final class DataAccessFinder {
      * invoked.
      */
     private static FactoryRegistry getServiceRegistry() {
-        assert Thread.holdsLock(DataAccessFinder.class);
-        if (registry == null) {
-            registry = new FactoryCreator(Arrays.asList(new Class<?>[] {DataAccessFactory.class}));
-        }
         return registry;
     }
 
@@ -219,17 +214,13 @@ public final class DataAccessFinder {
      * re-scan. Thus this method need only be invoked by sophisticated applications which
      * dynamically make new plug-ins available at runtime.
      */
-    public static synchronized void scanForPlugins() {
+    public static void scanForPlugins() {
         DataStoreFinder.scanForPlugins();
         getServiceRegistry().scanForPlugins();
     }
 
     /** Resets the factory finder and prepares for a new full scan of the SPI subsystems */
     public static void reset() {
-        FactoryRegistry copy = registry;
-        registry = null;
-        if (copy != null) {
-            copy.deregisterAll();
-        }
+        registry.deregisterAll();
     }
 }

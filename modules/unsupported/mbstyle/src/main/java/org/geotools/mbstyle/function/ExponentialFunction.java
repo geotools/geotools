@@ -87,25 +87,26 @@ public class ExponentialFunction extends FunctionImpl {
     }
 
     @Override
+    public Object evaluate(Object object) {
+        // trying to guess the context from the input values
+        List<Stop> stops = getStops(getParameters());
+        Class target = Color.class;
+        for (Stop stop : stops) {
+            if (stop.value.evaluate(object, Double.class) != null) {
+                target = Double.class;
+            }
+        }
+        return evaluate(object, target);
+    }
+
+    @Override
     public <T> T evaluate(Object object, Class<T> context) {
         List<Expression> parameters = getParameters();
-        List<Stop> stops = new ArrayList<>();
 
         Expression input = parameters.get(0);
         Expression base = parameters.get(1);
 
-        if (parameters.size() % 2 != 0) {
-            throw new IllegalArgumentException(
-                    this.getClass().getSimpleName()
-                            + " requires an even number of stop values, but "
-                            + (parameters.size() - 2)
-                            + " were provided.");
-        }
-
-        for (int i = 2; (i + 1) < parameters.size(); i = i + 2) {
-            Stop stop = new Stop(parameters.get(i), parameters.get(i + 1));
-            stops.add(stop);
-        }
+        List<Stop> stops = getStops(parameters);
 
         Double inputValue = input.evaluate(object, Double.class);
         Double baseValue = base.evaluate(object, Double.class);
@@ -135,6 +136,23 @@ public class ExponentialFunction extends FunctionImpl {
         Object exponential = exponential(object, inputValue, baseValue, lower, upper, context);
 
         return Converters.convert(exponential, context);
+    }
+
+    public List<Stop> getStops(List<Expression> parameters) {
+        List<Stop> stops = new ArrayList<>();
+        if (parameters.size() % 2 != 0) {
+            throw new IllegalArgumentException(
+                    this.getClass().getSimpleName()
+                            + " requires an even number of stop values, but "
+                            + (parameters.size() - 2)
+                            + " were provided.");
+        }
+
+        for (int i = 2; (i + 1) < parameters.size(); i = i + 2) {
+            Stop stop = new Stop(parameters.get(i), parameters.get(i + 1));
+            stops.add(stop);
+        }
+        return stops;
     }
 
     private <T> Object exponential(

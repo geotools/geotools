@@ -116,13 +116,13 @@ class MBTilesFeatureSource extends ContentFeatureSource {
 
     protected RectangleLong getTileBoundsFor(Query query, long z) throws SQLException {
         if (query == null || query.getFilter() == null || query.getFilter() == Filter.INCLUDE) {
-            return mbtiles.getTileBounds(z);
+            return mbtiles.getTileBounds(z, false);
         }
         Envelope envelope =
                 (Envelope)
                         query.getFilter().accept(ExtractBoundsFilterVisitor.BOUNDS_VISITOR, null);
         if (envelope == null || Double.isInfinite(envelope.getWidth())) {
-            return mbtiles.getTileBounds(z);
+            return mbtiles.getTileBounds(z, false);
         }
         return mbtiles.toTilesRectangle(envelope, z);
     }

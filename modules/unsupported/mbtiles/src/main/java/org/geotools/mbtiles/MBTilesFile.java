@@ -914,23 +914,29 @@ public class MBTilesFile implements AutoCloseable {
         return new RectangleLong(minTileX, maxTileX, minTileY, maxTileY);
     }
 
-    private static long tilesForZoom(long zoomLevel) {
+    protected static long tilesForZoom(long zoomLevel) {
         return Math.round(Math.pow(2, zoomLevel));
     }
 
     /**
-     * Returns the tile bounds for the given zoom level
+     * Returns the actual tile bounds for the given zoom level,
      *
      * @param zoomLevel
+     * @param exact
      * @return
      * @throws SQLException
      */
-    protected RectangleLong getTileBounds(long zoomLevel) throws SQLException {
-        long minRow = minRow(zoomLevel);
-        long maxRow = maxRow(zoomLevel);
-        long minCol = minColumn(zoomLevel);
-        long maxCol = maxColumn(zoomLevel);
-        return new RectangleLong(minCol, maxCol, minRow, maxRow);
+    protected RectangleLong getTileBounds(long zoomLevel, boolean exact) throws SQLException {
+        if (exact) {
+            long minRow = minRow(zoomLevel);
+            long maxRow = maxRow(zoomLevel);
+            long minCol = minColumn(zoomLevel);
+            long maxCol = maxColumn(zoomLevel);
+            return new RectangleLong(minCol, maxCol, minRow, maxRow);
+        } else {
+            long tiles = tilesForZoom(zoomLevel);
+            return new RectangleLong(0, tiles, 0, tiles);
+        }
     }
 
     /**

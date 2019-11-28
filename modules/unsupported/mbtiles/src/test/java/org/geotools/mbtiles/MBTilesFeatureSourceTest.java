@@ -118,7 +118,7 @@ public class MBTilesFeatureSourceTest {
     public void queryAllBounds() throws IOException, SQLException {
         MBTilesFeatureSource fs = getMadagascarSource("water");
         RectangleLong bounds = fs.getTileBoundsFor(new Query("water"), 7);
-        assertEquals(new RectangleLong(79, 82, 54, 59), bounds);
+        assertEquals(new RectangleLong(0, 128, 0, 128), bounds);
     }
 
     @Test

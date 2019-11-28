@@ -24,9 +24,14 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.renderer.label.LabelCacheImpl.LabelRenderingMode;
+import org.geotools.renderer.style.MarkStyle2D;
+import org.geotools.renderer.style.Style2D;
 import org.geotools.renderer.style.TextStyle2D;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyleFactoryImpl;
@@ -125,5 +130,33 @@ public class LabelPainterTest {
         assertTrue(
                 painter.lines.get(painter.getLineCount() - 1).getLineHeight()
                         == painter.getLineHeightForAnchorY(1));
+    }
+
+    @Test
+    public void testResizeGraphicWithMark2DGraphicResizeStrech() throws Exception {
+        LabelCacheItem labelItem = new LabelCacheItem("LayerID", style, shape, "Test", symbolizer);
+        labelItem.setGraphicsResize(LabelCacheItem.GraphicResize.STRETCH);
+        Rectangle2D labelBounds = new Rectangle2D.Double(0.0, -0.6875, 0.4, 0.4);
+        MarkStyle2D style2D = new MarkStyle2D();
+        style2D.setShape(new Rectangle2D.Double(-0.5, -0.5, 1.0, 1.0));
+        int[] graphicMargin = new int[4];
+        graphicMargin[0] = 0;
+        graphicMargin[1] = 0;
+        graphicMargin[2] = 0;
+        graphicMargin[3] = 0;
+        labelItem.setGraphicMargin(graphicMargin);
+        LabelPainter painter = new LabelPainter(graphics, LabelRenderingMode.OUTLINE);
+        painter.setLabel(labelItem);
+
+        Field field = painter.getClass().getDeclaredField("labelBounds");
+        field.setAccessible(true);
+        field.set(painter, labelBounds);
+
+        Method method = painter.getClass().getDeclaredMethod("resizeGraphic", Style2D.class);
+        method.setAccessible(true);
+        Object reply = method.invoke(painter, style2D);
+
+        // should not be null
+        assertTrue(reply != null);
     }
 }

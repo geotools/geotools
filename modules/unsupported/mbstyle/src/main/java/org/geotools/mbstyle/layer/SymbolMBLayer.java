@@ -69,6 +69,7 @@ import org.opengis.style.Symbolizer;
  */
 public class SymbolMBLayer extends MBLayer {
 
+    private static final Color DEFAULT_HALO_COLOR = new Color(0, 0, 0, 0);
     private JSONObject layout;
 
     private JSONObject paint;
@@ -1514,7 +1515,7 @@ public class SymbolMBLayer extends MBLayer {
      */
     public Color getTextHaloColor() throws MBFormatException {
         if (!paint.containsKey("text-halo-color")) {
-            return new Color(0, 0, 0, 0);
+            return DEFAULT_HALO_COLOR;
         } else {
             return parse.convertToColor(
                     parse.optional(String.class, paint, "text-halo-color", "#000000"));
@@ -1527,7 +1528,7 @@ public class SymbolMBLayer extends MBLayer {
      * @return The label halo color.
      */
     public Expression textHaloColor() {
-        return parse.color(paint, "text-halo-color", Color.BLACK);
+        return parse.color(paint, "text-halo-color", DEFAULT_HALO_COLOR);
     }
 
     /**
@@ -1701,7 +1702,14 @@ public class SymbolMBLayer extends MBLayer {
             labelPlacement = lineP;
         }
 
-        Halo halo = sf.halo(sf.fill(null, textHaloColor(), null), textHaloWidth());
+        // the default value of the halo color is rgba(0,0,0,0) that is, no halo drawn,
+        // regardless of the value of other halo parameters
+        Expression haloColor = textHaloColor();
+        Halo halo = null;
+        if (!(haloColor instanceof Literal)
+                || (haloColor.evaluate(null, Color.class).getAlpha() > 0)) {
+            halo = sf.halo(sf.fill(null, haloColor, null), textHaloWidth());
+        }
         Fill fill = sf.fill(null, textColor(), textOpacity());
 
         Font font =

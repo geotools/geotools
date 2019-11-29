@@ -850,4 +850,17 @@ public class StyleTransformTest {
                         String.format(xpTemplate, anchorName, zoomLevel, anchorName, "'y'")),
                 ap.getAnchorPointY());
     }
+
+    @Test
+    public void testHaloDefaultColorTest() throws Exception {
+        JSONObject jsonObject = parseTestStyle("labelHaloNoColorTest.json");
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        StyledLayerDescriptor sld = mbStyle.transform();
+        Style style = MapboxTestUtils.getStyle(sld, 0);
+        TextSymbolizer ts =
+                (TextSymbolizer)
+                        style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
+        // no halo, the halo color was not specified and it defaults to "fully transparent"
+        assertNull(ts.getHalo());
+    }
 }

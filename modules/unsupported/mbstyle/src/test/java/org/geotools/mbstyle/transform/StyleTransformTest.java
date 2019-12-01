@@ -54,6 +54,7 @@ import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Graphic;
+import org.geotools.styling.LinePlacement;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Mark;
 import org.geotools.styling.PointPlacement;
@@ -862,5 +863,36 @@ public class StyleTransformTest {
                         style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
         // no halo, the halo color was not specified and it defaults to "fully transparent"
         assertNull(ts.getHalo());
+    }
+
+    @Test
+    public void testTextOffsetEmsLinePlacement() throws Exception {
+        JSONObject jsonObject =
+                parseTestStyle("symbolStyleSimpleIconAndTextLinePlacementTest.json");
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        StyledLayerDescriptor sld = mbStyle.transform();
+        Style style = MapboxTestUtils.getStyle(sld, 0);
+        TextSymbolizer ts =
+                (TextSymbolizer)
+                        style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
+        LinePlacement lp = (LinePlacement) ts.getLabelPlacement();
+        // text-offset: [0, 0.5] as ems, with text-size set to 20, and opposite y direction
+        assertEquals(-10, lp.getPerpendicularOffset().evaluate(null, Double.class), 0d);
+    }
+
+    @Test
+    public void testTextOffsetEmsPointPlacement() throws Exception {
+        JSONObject jsonObject =
+                parseTestStyle("symbolStyleSimpleIconAndTextPointPlacementOffsetTest.json");
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        StyledLayerDescriptor sld = mbStyle.transform();
+        Style style = MapboxTestUtils.getStyle(sld, 0);
+        TextSymbolizer ts =
+                (TextSymbolizer)
+                        style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(1);
+        PointPlacement pp = (PointPlacement) ts.getLabelPlacement();
+        // text-offset: [1, 0.5] as ems, with text-size set to 12, and opposite y direction
+        assertEquals(12, pp.getDisplacement().getDisplacementX().evaluate(null, Double.class), 0d);
+        assertEquals(-6, pp.getDisplacement().getDisplacementY().evaluate(null, Double.class), 0d);
     }
 }

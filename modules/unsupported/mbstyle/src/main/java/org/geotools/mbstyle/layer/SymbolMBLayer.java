@@ -1204,6 +1204,10 @@ public class SymbolMBLayer extends MBLayer {
                 layout, "text-offset", sf.displacement(ff.literal(0), ff.literal(0)));
     }
 
+    private boolean hasTextOffset() {
+        return parse.isPropertyDefined(layout, "text-offset");
+    }
+
     /**
      * (Optional) Defaults to false. Requires text-field.
      *
@@ -1602,6 +1606,10 @@ public class SymbolMBLayer extends MBLayer {
         return new Point(translate[0], translate[1]);
     }
 
+    private boolean hasTextTranslate() {
+        return parse.isPropertyDefined(layout, "text-translate");
+    }
+
     /**
      * Maps {@link #getTextTranslate()} to a {@link Displacement}.
      *
@@ -1672,7 +1680,7 @@ public class SymbolMBLayer extends MBLayer {
         String symbolPlacementVal =
                 transformer.requireLiteral(
                         symbolPlacement(), String.class, "point", "symbol-placement", getId());
-
+        Expression fontSize = textSize();
         if ("point".equalsIgnoreCase(symbolPlacementVal.trim())) {
             // Point Placement (default)
             PointPlacement pointP = sb.createPointPlacement();
@@ -1680,24 +1688,47 @@ public class SymbolMBLayer extends MBLayer {
             // GeoTools AnchorPoint doesn't seem to have an effect on PointPlacement
             pointP.setAnchorPoint(anchorPoint());
 
-            // MapBox text-offset: +y means down
-            Displacement textTranslate = textTranslateDisplacement();
-            textTranslate.setDisplacementY(
-                    ff.multiply(ff.literal(-1), textTranslate.getDisplacementY()));
-            pointP.setDisplacement(textTranslate);
-
+            // MapBox text-translate: +y means down, expressed in px
+            Displacement displacement = null;
+            if (hasTextTranslate()) {
+                Displacement textTranslate = textTranslateDisplacement();
+                textTranslate.setDisplacementY(
+                        ff.multiply(ff.literal(-1), textTranslate.getDisplacementY()));
+                displacement = textTranslate;
+            }
+            // MapBox test-offset: +y mean down and expressed in ems
+            Displacement textOffset = null;
+            if (hasTextOffset()) {
+                textOffset = textOffsetDisplacement();
+                textOffset.setDisplacementX(ff.multiply(fontSize, textOffset.getDisplacementX()));
+                textOffset.setDisplacementY(
+                        ff.multiply(
+                                fontSize,
+                                ff.multiply(ff.literal(-1), textOffset.getDisplacementY())));
+                if (displacement == null) {
+                    displacement = textOffset;
+                } else {
+                    displacement.setDisplacementX(
+                            ff.add(displacement.getDisplacementX(), textOffset.getDisplacementX()));
+                    displacement.setDisplacementY(
+                            ff.add(displacement.getDisplacementY(), textOffset.getDisplacementY()));
+                }
+            }
+            pointP.setDisplacement(displacement);
             pointP.setRotation(textRotate());
 
             labelPlacement = pointP;
         } else {
             // Line Placement
-
             LinePlacement lineP = sb.createLinePlacement(null);
             lineP.setRepeated(true);
 
             // pixels (geotools) vs ems (mapbox) for text-offset
             lineP.setPerpendicularOffset(
-                    ff.multiply(ff.literal(-1), textOffsetDisplacement().getDisplacementY()));
+                    ff.multiply(
+                            fontSize,
+                            ff.multiply(
+                                    ff.literal(-1), textOffsetDisplacement().getDisplacementY())));
 
             labelPlacement = lineP;
         }
@@ -1713,8 +1744,7 @@ public class SymbolMBLayer extends MBLayer {
         Fill fill = sf.fill(null, textColor(), textOpacity());
 
         Font font =
-                sb.createFont(
-                        ff.literal(""), ff.literal("normal"), ff.literal("normal"), textSize());
+                sb.createFont(ff.literal(""), ff.literal("normal"), ff.literal("normal"), fontSize);
 
         if (getTextFont() != null) {
             font.getFamily().clear();
@@ -1848,7 +1878,7 @@ public class SymbolMBLayer extends MBLayer {
                             textMaxWidth(), Double.class, 10.0, "text-max-width", getId());
             double textSize =
                     transformer.requireLiteral(
-                            textSize(),
+                            fontSize,
                             Double.class,
                             16.0,
                             "text-size (when text-max-width is specified)",

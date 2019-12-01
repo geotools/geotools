@@ -19,6 +19,7 @@ package org.geotools.geopkg;
 import static java.lang.String.format;
 import static org.geotools.jdbc.util.SqlUtil.prepare;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
@@ -84,7 +85,7 @@ import org.sqlite.Function;
  * @author Justin Deoliveira, OpenGeo
  * @author Niels Charlier
  */
-public class GeoPackage {
+public class GeoPackage implements Closeable {
 
     static final Logger LOGGER = Logging.getLogger(GeoPackage.class);
 
@@ -771,6 +772,7 @@ public class GeoPackage {
             FeatureEntry entry, boolean append, Filter filter, Transaction tx) throws IOException {
 
         DataStore dataStore = dataStore();
+        @SuppressWarnings("PMD.CloseResource") // wrapped and returned
         FeatureWriter w =
                 append
                         ? dataStore.getFeatureWriterAppend(entry.getTableName(), tx)

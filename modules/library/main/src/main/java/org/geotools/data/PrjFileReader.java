@@ -16,6 +16,7 @@
  */
 package org.geotools.data;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -34,7 +35,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Simone Giannecchini
  * @since 2.3
  */
-public class PrjFileReader {
+public class PrjFileReader implements Closeable {
 
     /* Used to check if we can use memory mapped buffers safely. In case the OS cannot be detected, we act as if it was Windows and
      * do not use memory mapped buffers */
@@ -112,6 +113,7 @@ public class PrjFileReader {
         return r;
     }
 
+    @SuppressWarnings("PMD.CloseResource") // channel kept as field
     private void init() throws IOException {
         // create the ByteBuffer
         // if we have a FileChannel, lets map it

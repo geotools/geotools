@@ -117,10 +117,8 @@ public class MBTilesDataStoreFactory implements DataStoreFactorySpi {
         if (ds == null) {
             ds = createDataSource(params);
         }
-        MBTilesFile mbtiles = new MBTilesFile(ds);
-
         String namespace = (String) NAMESPACE.lookUp(params);
-        return new MBTilesDataStore(namespace, mbtiles);
+        return new MBTilesDataStore(namespace, new MBTilesFile(ds));
     }
 
     /**

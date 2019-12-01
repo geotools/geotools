@@ -68,50 +68,56 @@ public class LineIntersectsLineWithNodeValidation extends LineLineAbstractValida
         SimpleFeatureSource fsLine = (SimpleFeatureSource) layers.get(getLineTypeRef());
 
         SimpleFeatureCollection fcLine = fsLine.getFeatures();
-        SimpleFeatureIterator fLine = fcLine.features();
+        try (SimpleFeatureIterator fLine = fcLine.features()) {
 
-        SimpleFeatureSource fsRLine = (SimpleFeatureSource) layers.get(getRestrictedLineTypeRef());
+            SimpleFeatureSource fsRLine =
+                    (SimpleFeatureSource) layers.get(getRestrictedLineTypeRef());
 
-        ListFeatureCollection fcRLine = new ListFeatureCollection(fsRLine.getFeatures());
+            ListFeatureCollection fcRLine = new ListFeatureCollection(fsRLine.getFeatures());
 
-        while (fLine.hasNext()) {
-            SimpleFeature line = fLine.next();
-            SimpleFeatureIterator fRLine = fcRLine.features();
-            Geometry lineGeom = (Geometry) line.getDefaultGeometry();
-            if (envelope.contains(lineGeom.getEnvelopeInternal())) {
-                // 	check for valid comparison
-                if (LineString.class.isAssignableFrom(lineGeom.getClass())) {
-                    while (fRLine.hasNext()) {
-                        SimpleFeature rLine = fRLine.next();
-                        Geometry rLineGeom = (Geometry) rLine.getDefaultGeometry();
-                        if (envelope.contains(rLineGeom.getEnvelopeInternal())) {
-                            if (LineString.class.isAssignableFrom(rLineGeom.getClass())) {
-                                if (lineGeom.intersects(rLineGeom)) {
-                                    if (!hasPair(
-                                            ((LineString) lineGeom).getCoordinateSequence(),
-                                            ((LineString) rLineGeom).getCoordinateSequence())) {
-                                        results.error(
+            while (fLine.hasNext()) {
+                SimpleFeature line = fLine.next();
+                try (SimpleFeatureIterator fRLine = fcRLine.features()) {
+                    Geometry lineGeom = (Geometry) line.getDefaultGeometry();
+                    if (envelope.contains(lineGeom.getEnvelopeInternal())) {
+                        // 	check for valid comparison
+                        if (LineString.class.isAssignableFrom(lineGeom.getClass())) {
+                            while (fRLine.hasNext()) {
+                                SimpleFeature rLine = fRLine.next();
+                                Geometry rLineGeom = (Geometry) rLine.getDefaultGeometry();
+                                if (envelope.contains(rLineGeom.getEnvelopeInternal())) {
+                                    if (LineString.class.isAssignableFrom(rLineGeom.getClass())) {
+                                        if (lineGeom.intersects(rLineGeom)) {
+                                            if (!hasPair(
+                                                    ((LineString) lineGeom).getCoordinateSequence(),
+                                                    ((LineString) rLineGeom)
+                                                            .getCoordinateSequence())) {
+                                                results.error(
+                                                        rLine,
+                                                        "Line does not intersect line at node covered by the specified Line.");
+                                                r = false;
+                                            }
+                                        } else {
+                                            results.warning(
+                                                    rLine, "Does not intersect the LineString");
+                                        }
+                                        // do next.
+                                    } else {
+                                        fcRLine.remove(rLine);
+                                        results.warning(
                                                 rLine,
-                                                "Line does not intersect line at node covered by the specified Line.");
-                                        r = false;
+                                                "Invalid type: this feature is not a derivative of a LineString");
                                     }
                                 } else {
-                                    results.warning(rLine, "Does not intersect the LineString");
+                                    fcRLine.remove(rLine);
                                 }
-                                // do next.
-                            } else {
-                                fcRLine.remove(rLine);
-                                results.warning(
-                                        rLine,
-                                        "Invalid type: this feature is not a derivative of a LineString");
                             }
                         } else {
-                            fcRLine.remove(rLine);
+                            results.warning(
+                                    line,
+                                    "Invalid type: this feature is not a derivative of a LineString");
                         }
                     }
-                } else {
-                    results.warning(
-                            line, "Invalid type: this feature is not a derivative of a LineString");
                 }
             }
         }

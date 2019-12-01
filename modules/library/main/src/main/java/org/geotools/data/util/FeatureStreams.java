@@ -44,6 +44,7 @@ public final class FeatureStreams {
      */
     public static <T extends Feature, K extends FeatureType> Stream<T> toFeatureStream(
             FeatureCollection<K, T> fc) {
+        @SuppressWarnings("PMD.CloseResource") // wrapped and returned
         StreamFeatureIterator<T> fi = new StreamFeatureIterator<>(fc.features());
         return StreamSupport.stream(Spliterators.spliteratorUnknownSize(fi, 0), false)
                 .onClose(

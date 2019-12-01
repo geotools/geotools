@@ -1142,6 +1142,7 @@ public class DataUtilities {
      */
     public static SimpleFeatureReader reader(
             FeatureCollection<SimpleFeatureType, SimpleFeature> collection) throws IOException {
+        @SuppressWarnings("PMD.CloseResource") // wrapped and returned
         final FeatureIterator<SimpleFeature> it = collection.features();
         return new SimpleFeatureReader() {
             @Override

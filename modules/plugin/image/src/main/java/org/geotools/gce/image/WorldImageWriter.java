@@ -208,9 +208,9 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter
             final String baseFile, final CoordinateReferenceSystem coordinateReferenceSystem)
             throws IOException {
         final File prjFile = new File(new StringBuffer(baseFile).append(".prj").toString());
-        BufferedWriter out = new BufferedWriter(new FileWriter(prjFile));
-        out.write(coordinateReferenceSystem.toWKT());
-        out.close();
+        try (BufferedWriter out = new BufferedWriter(new FileWriter(prjFile))) {
+            out.write(coordinateReferenceSystem.toWKT());
+        }
     }
 
     /**
@@ -268,15 +268,15 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter
         if (!it.hasNext()) throw new DataSourceException("Unable to parse extension " + extension);
         buff.append((String) it.next());
         final File worldFile = new File(buff.toString());
-        final PrintWriter out = new PrintWriter(new FileOutputStream(worldFile));
-        out.println(xPixelSize);
-        out.println(rotation1);
-        out.println(rotation2);
-        out.println(yPixelSize);
-        out.println(xLoc);
-        out.println(yLoc);
-        out.flush();
-        out.close();
+        try (PrintWriter out = new PrintWriter(new FileOutputStream(worldFile))) {
+            out.println(xPixelSize);
+            out.println(rotation1);
+            out.println(rotation2);
+            out.println(yPixelSize);
+            out.println(xLoc);
+            out.println(yLoc);
+            out.flush();
+        }
     }
 
     /**

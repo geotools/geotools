@@ -297,8 +297,8 @@ public final class ArcSDEDataStoreFactory implements DataStoreFactorySpi {
 
     final ArcSDEDataStore createDataStore(ArcSDEDataStoreConfig config) throws IOException {
         // create a new session pool to be used only by this datastore
+        @SuppressWarnings("PMD.CloseResource") // returned as part of the store, managed there
         final ISessionPool connPool = poolFactory.createPool(config.getSessionConfig());
-
         return createDataStore(config, connPool);
     }
 

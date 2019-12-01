@@ -147,6 +147,7 @@ public class MongoFeatureSource extends ContentFeatureSource {
 
         List<Filter> postFilterList = new ArrayList<Filter>();
         List<String> postFilterAttributes = new ArrayList<String>();
+        @SuppressWarnings("PMD.CloseResource") // wrapped and returned
         DBCursor cursor = toCursor(query, postFilterList, postFilterAttributes);
         FeatureReader<SimpleFeatureType, SimpleFeature> r = new MongoFeatureReader(cursor, this);
 
@@ -192,11 +193,12 @@ public class MongoFeatureSource extends ContentFeatureSource {
             // Sorting to get min only need to get one result
             newQuery.setMaxFeatures(1);
 
-            FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(newQuery);
-            if (reader.hasNext()) {
-                // Don't need to visit all features, retrieved the min value lets just tell the
-                // MinVisitor
-                minVisitor.setValue(propertyName.evaluate(reader.next()));
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(newQuery)) {
+                if (reader.hasNext()) {
+                    // Don't need to visit all features, retrieved the min value lets just tell the
+                    // MinVisitor
+                    minVisitor.setValue(propertyName.evaluate(reader.next()));
+                }
             }
         } else if (visitor instanceof MaxVisitor) {
             MaxVisitor maxVisitor = (MaxVisitor) visitor;
@@ -214,11 +216,12 @@ public class MongoFeatureSource extends ContentFeatureSource {
             // Sorting to get max only need to get one result
             newQuery.setMaxFeatures(1);
 
-            FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(newQuery);
-            if (reader.hasNext()) {
-                // Don't need to visit all features, retrieved the min value lets just tell the
-                // MaxVisitor
-                maxVisitor.setValue(propertyName.evaluate(reader.next()));
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(newQuery)) {
+                if (reader.hasNext()) {
+                    // Don't need to visit all features, retrieved the min value lets just tell the
+                    // MaxVisitor
+                    maxVisitor.setValue(propertyName.evaluate(reader.next()));
+                }
             }
         } else {
             return false;

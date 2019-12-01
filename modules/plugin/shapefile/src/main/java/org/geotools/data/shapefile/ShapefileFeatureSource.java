@@ -324,6 +324,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
         // see if we can use indexing to speedup the data access
         Filter filter = q != null ? q.getFilter() : null;
         IndexManager indexManager = getDataStore().indexManager;
+        @SuppressWarnings("PMD.CloseResource") // eventually gets returned and managed in the reader
         CloseableIterator<Data> goodRecs = null;
         if (getDataStore().isFidIndexed()
                 && filter instanceof Id
@@ -369,6 +370,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
         // setup the feature readers
         ShapefileSetManager shpManager = getDataStore().shpManager;
         ShapefileReader shapeReader = shpManager.openShapeReader(geometryFactory, goodRecs != null);
+        @SuppressWarnings("PMD.CloseResource") // managed as a field of the return value
         DbaseFileReader dbfReader = null;
         List<AttributeDescriptor> attributes = readSchema.getAttributeDescriptors();
         if (attributes.size() < 1

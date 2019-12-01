@@ -288,10 +288,8 @@ public class ArgHelper {
         public Object getInstance(String elem) {
             Element value;
 
-            try {
-                StringReader sr = new StringReader(elem);
+            try (StringReader sr = new StringReader(elem)) {
                 value = ReaderUtils.loadConfig(sr);
-                sr.close();
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -435,10 +433,8 @@ public class ArgHelper {
         public Object getInstance(String value) {
             Element elem;
 
-            try {
-                StringReader sr = new StringReader(value);
+            try (StringReader sr = new StringReader(value)) {
                 elem = ReaderUtils.loadConfig(sr);
-                sr.close();
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);

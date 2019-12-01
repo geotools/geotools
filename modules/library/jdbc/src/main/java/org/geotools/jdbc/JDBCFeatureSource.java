@@ -416,16 +416,16 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                 // grab a reader
                 Query preQuery = new Query(query);
                 query.setFilter(preFilter);
-                FeatureReader<SimpleFeatureType, SimpleFeature> preReader = getReader(preQuery);
-                // wrap with post filter
-                FilteringFeatureReader reader = new FilteringFeatureReader(preReader, postFilter);
-                try {
-                    while (reader.hasNext()) {
-                        reader.next();
-                        count++;
+                try (FeatureReader<SimpleFeatureType, SimpleFeature> preReader =
+                        getReader(preQuery)) {
+                    // wrap with post filter
+                    try (FilteringFeatureReader reader =
+                            new FilteringFeatureReader(preReader, postFilter)) {
+                        while (reader.hasNext()) {
+                            reader.next();
+                            count++;
+                        }
                     }
-                } finally {
-                    reader.close();
                 }
 
                 return count;

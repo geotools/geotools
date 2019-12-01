@@ -417,37 +417,36 @@ public class TestData implements Runnable {
             throws FileNotFoundException, IOException {
         final File file = file(caller, name);
         final File parent = file.getParentFile().getAbsoluteFile();
-        final ZipFile zipFile = new ZipFile(file);
-        final Enumeration entries = zipFile.entries();
-        final byte[] buffer = new byte[4096];
-        while (entries.hasMoreElements()) {
-            final ZipEntry entry = (ZipEntry) entries.nextElement();
-            if (entry.isDirectory()) {
-                continue;
+        try (final ZipFile zipFile = new ZipFile(file)) {
+            final Enumeration entries = zipFile.entries();
+            final byte[] buffer = new byte[4096];
+            while (entries.hasMoreElements()) {
+                final ZipEntry entry = (ZipEntry) entries.nextElement();
+                if (entry.isDirectory()) {
+                    continue;
+                }
+                final File path = new File(parent, entry.getName());
+                if (path.exists()) {
+                    continue;
+                }
+                final File directory = path.getParentFile();
+                if (directory != null && !directory.exists()) {
+                    directory.mkdirs();
+                }
+                // Copy the file. Note: no need for a BufferedOutputStream,
+                // since we are already using a buffer of type byte[4096].
+                try (InputStream in = zipFile.getInputStream(entry);
+                        OutputStream out = new FileOutputStream(path)) {
+                    int len;
+                    while ((len = in.read(buffer)) >= 0) {
+                        out.write(buffer, 0, len);
+                    }
+                }
+                // Call 'deleteOnExit' only after after we closed the file,
+                // because this method will save the modification time.
+                deleteOnExit(path, false);
             }
-            final File path = new File(parent, entry.getName());
-            if (path.exists()) {
-                continue;
-            }
-            final File directory = path.getParentFile();
-            if (directory != null && !directory.exists()) {
-                directory.mkdirs();
-            }
-            // Copy the file. Note: no need for a BufferedOutputStream,
-            // since we are already using a buffer of type byte[4096].
-            final InputStream in = zipFile.getInputStream(entry);
-            final OutputStream out = new FileOutputStream(path);
-            int len;
-            while ((len = in.read(buffer)) >= 0) {
-                out.write(buffer, 0, len);
-            }
-            out.close();
-            in.close();
-            // Call 'deleteOnExit' only after after we closed the file,
-            // because this method will save the modification time.
-            deleteOnExit(path, false);
         }
-        zipFile.close();
     }
 
     /**

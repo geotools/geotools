@@ -133,6 +133,7 @@ public enum ReadType {
                 }
 
                 // check input stream
+                @SuppressWarnings("PMD.CloseResource") // delayed read, should not close
                 final ImageInputStream inStream = (ImageInputStream) reader.getInput();
                 // read data
                 inStream.seek(0);

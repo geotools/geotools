@@ -169,21 +169,20 @@ public class CreateIndexer {
 
     @SuppressWarnings("PMD.SystemPrintln")
     private static void writeDatastorePropertyFile(String datastorePath) throws IOException {
-        PrintWriter out;
         System.out.println("Writing the sample datastore.properties: " + datastorePath);
-        out = new PrintWriter(new File(datastorePath));
-        out.write("SPI=org.geotools.data.postgis.PostgisNGDataStoreFactory\n");
-        out.write("host=localhost\n");
-        out.write("port=5432\n");
-        out.write("database=sampledb\n");
-        out.write("user=postgres\n");
-        out.write("passwd=postgres\n");
-        out.write("schema=myschema\n");
-        out.write("Estimated\\ extends=false\n");
-        out.write("Loose\\ bbox=true\n");
-        out.write("driver=org.postgresql.Driver");
-        out.flush();
-        out.close();
+        try (PrintWriter out = new PrintWriter(new File(datastorePath))) {
+            out.write("SPI=org.geotools.data.postgis.PostgisNGDataStoreFactory\n");
+            out.write("host=localhost\n");
+            out.write("port=5432\n");
+            out.write("database=sampledb\n");
+            out.write("user=postgres\n");
+            out.write("passwd=postgres\n");
+            out.write("schema=myschema\n");
+            out.write("Estimated\\ extends=false\n");
+            out.write("Loose\\ bbox=true\n");
+            out.write("driver=org.postgresql.Driver");
+            out.flush();
+        }
     }
 
     @SuppressWarnings("PMD.SystemPrintln")
@@ -209,10 +208,10 @@ public class CreateIndexer {
     private static void writeIndexer(String xml, String indexerFilePath)
             throws FileNotFoundException {
         System.out.println("Writing the indexer.xml: " + indexerFilePath);
-        PrintWriter out = new PrintWriter(indexerFilePath);
-        out.println(xml);
-        out.flush();
-        out.close();
+        try (PrintWriter out = new PrintWriter(indexerFilePath)) {
+            out.println(xml);
+            out.flush();
+        }
     }
 
     private static void formatAuxiliaryXml(File auxiliaryFile, File finalAuxFile)

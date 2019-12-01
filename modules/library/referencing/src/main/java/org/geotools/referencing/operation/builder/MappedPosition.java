@@ -210,6 +210,7 @@ public class MappedPosition implements Serializable {
      *
      * @todo Consider using a {@link java.text.NumberFormat} instance.
      */
+    @SuppressWarnings("PMD.CloseResource")
     public String toString() {
         final TableWriter table = new TableWriter(null, " ");
         table.write(Vocabulary.format(VocabularyKeys.SOURCE_POINT));

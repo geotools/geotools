@@ -56,19 +56,20 @@ public class GranuleCatalogStore extends GranuleCatalogSource implements Granule
     @Override
     public void addGranules(SimpleFeatureCollection granules) {
         checkTransaction();
-        SimpleFeatureIterator features = granules.features();
-        boolean firstSchemaCompatibilityCheck = false;
-        while (features.hasNext()) {
-            SimpleFeature feature = features.next();
-            if (!firstSchemaCompatibilityCheck) {
-                firstSchemaCompatibilityCheck = true;
-                checkSchemaCompatibility(feature);
-            }
-            try {
-                catalog.addGranule(typeName, feature, transaction);
-            } catch (IOException e) {
-                throw new RuntimeException(
-                        "Exception occurred while adding granules to the catalog", e);
+        try (SimpleFeatureIterator features = granules.features()) {
+            boolean firstSchemaCompatibilityCheck = false;
+            while (features.hasNext()) {
+                SimpleFeature feature = features.next();
+                if (!firstSchemaCompatibilityCheck) {
+                    firstSchemaCompatibilityCheck = true;
+                    checkSchemaCompatibility(feature);
+                }
+                try {
+                    catalog.addGranule(typeName, feature, transaction);
+                } catch (IOException e) {
+                    throw new RuntimeException(
+                            "Exception occurred while adding granules to the catalog", e);
+                }
             }
         }
     }

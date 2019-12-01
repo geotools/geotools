@@ -155,6 +155,7 @@ public abstract class ContentFeatureStore extends ContentFeatureSource
                         (DiffTransactionState) getTransaction().getState(getEntry());
                 // reader will take care of filtering
                 // DiffContentWriter takes care of events
+                @SuppressWarnings("PMD.CloseResource") // wrapped and returned
                 FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(query);
                 writer = state.diffWriter(this, reader);
             }

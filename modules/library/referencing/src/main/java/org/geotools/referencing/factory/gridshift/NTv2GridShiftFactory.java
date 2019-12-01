@@ -124,8 +124,6 @@ public class NTv2GridShiftFactory extends ReferencingFactory implements Buffered
      * @return true if file has NTv2 format, false otherwise
      */
     protected boolean isNTv2GridFileValid(URL url) {
-        RandomAccessFile raf = null;
-        InputStream is = null;
         try {
 
             // Loading as RandomAccessFile doesn't load the full grid
@@ -138,15 +136,17 @@ public class NTv2GridShiftFactory extends ReferencingFactory implements Buffered
                     throw new IOException(Errors.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, file));
                 }
 
-                raf = new RandomAccessFile(file, "r");
-
-                // will throw an exception if not a valid file
-                new GridShiftFile().loadGridShiftFile(raf);
+                try (RandomAccessFile raf = new RandomAccessFile(file, "r")) {
+                    // will throw an exception if not a valid file
+                    new GridShiftFile().loadGridShiftFile(raf);
+                }
             } else {
-                InputStream in = new BufferedInputStream(url.openConnection().getInputStream());
+                try (InputStream in =
+                        new BufferedInputStream(url.openConnection().getInputStream())) {
 
-                // will throw an exception if not a valid file
-                new GridShiftFile().loadGridShiftFile(in, false);
+                    // will throw an exception if not a valid file
+                    new GridShiftFile().loadGridShiftFile(in, false);
+                }
             }
 
             return true; // No exception thrown => valid file.
@@ -158,16 +158,6 @@ public class NTv2GridShiftFactory extends ReferencingFactory implements Buffered
         } catch (IOException e) {
             LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
             return false;
-        } finally {
-            try {
-                if (raf != null) raf.close();
-            } catch (IOException e) {
-            }
-
-            try {
-                if (is != null) is.close();
-            } catch (IOException e) {
-            }
         }
     }
 

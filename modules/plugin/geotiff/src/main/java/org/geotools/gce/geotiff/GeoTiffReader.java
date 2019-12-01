@@ -792,6 +792,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
      *
      * @return the metadata
      */
+    @SuppressWarnings("PMD.CloseResource") // conditional, might have to close the stream, or not
     public GeoTiffIIOMetadataDecoder getMetadata() {
         GeoTiffIIOMetadataDecoder metadata = null;
         ImageReader reader = null;
@@ -950,10 +951,9 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             if (prjFile.exists()) {
                 // it exists then we have top read it
                 PrjFileReader projReader = null;
-                FileInputStream instream = null;
-                try {
-                    instream = new FileInputStream(prjFile);
-                    final FileChannel channel = instream.getChannel();
+
+                try (FileInputStream instream = new FileInputStream(prjFile);
+                        FileChannel channel = instream.getChannel()) {
                     projReader = new PrjFileReader(channel);
                     crs = projReader.getCoordinateReferenceSystem();
                 } catch (FileNotFoundException e) {
@@ -972,15 +972,6 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
                     if (projReader != null)
                         try {
                             projReader.close();
-                        } catch (IOException e) {
-                            // warn about the error but proceed, it is not fatal
-                            // we have at least the default crs to use
-                            LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
-                        }
-
-                    if (instream != null)
-                        try {
-                            instream.close();
                         } catch (IOException e) {
                             // warn about the error but proceed, it is not fatal
                             // we have at least the default crs to use

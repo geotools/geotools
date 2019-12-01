@@ -16,6 +16,7 @@
  */
 package org.geotools.arcsde.session;
 
+import java.io.Closeable;
 import java.io.IOException;
 
 /**
@@ -36,7 +37,7 @@ import java.io.IOException;
  *
  * @author Gabriel Roldan
  */
-public interface ISessionPool {
+public interface ISessionPool extends Closeable {
 
     /**
      * returns the number of actual connections held by this connection pool. In other words, the

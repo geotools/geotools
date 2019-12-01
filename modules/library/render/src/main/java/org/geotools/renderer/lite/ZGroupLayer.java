@@ -16,8 +16,7 @@
  */
 package org.geotools.renderer.lite;
 
-import java.awt.Composite;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.geom.NoninvertibleTransformException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -110,6 +109,7 @@ class ZGroupLayer extends Layer {
                 }
 
                 for (Iterator it = painters.iterator(); it.hasNext(); ) {
+                    @SuppressWarnings("PMD.CloseResource") // assured closed in the finally method
                     ZGroupLayerPainter painter = (ZGroupLayerPainter) it.next();
                     painter.paintKey(smallestKey);
                     // if the painter is done, close it
@@ -121,13 +121,15 @@ class ZGroupLayer extends Layer {
             }
         } finally {
             if (painters != null) {
-                for (ZGroupLayerPainter painter : painters) {
+                for (@SuppressWarnings("PMD.CloseResource") // assured closed in the finally method
+                ZGroupLayerPainter painter : painters) {
                     painter.close();
                 }
             }
         }
     }
 
+    @SuppressWarnings("PMD.CloseResource") // painters not managed here
     private SortKey getSmallestKey(
             List<ZGroupLayerPainter> painters, Comparator<SortKey> comparator) {
         SortKey smallest = null;
@@ -184,14 +186,14 @@ class ZGroupLayer extends Layer {
                 // but we'd have to delay opening the MarkFeatureIterator to recognize the
                 // situation
                 int maxFeatures = SortedFeatureReader.getMaxFeaturesInMemory(layer.getQuery());
-                MarkFeatureIterator fi =
-                        MarkFeatureIterator.create(features, maxFeatures, cancellationListener);
-                if (fi.hasNext()) {
-                    ZGroupLayerPainter painter =
-                            new ZGroupLayerPainter(fi, lfts, renderer, layerId);
-                    painters.add(painter);
-                } else {
-                    fi.close();
+                try (MarkFeatureIterator fi =
+                        MarkFeatureIterator.create(features, maxFeatures, cancellationListener)) {
+                    if (fi.hasNext()) {
+                        @SuppressWarnings("PMD.CloseResource") // returned
+                        ZGroupLayerPainter painter =
+                                new ZGroupLayerPainter(fi, lfts, renderer, layerId);
+                        painters.add(painter);
+                    }
                 }
             }
 
@@ -201,7 +203,8 @@ class ZGroupLayer extends Layer {
             closePainters = false;
         } finally {
             if (closePainters) {
-                for (ZGroupLayerPainter painter : painters) {
+                for (@SuppressWarnings("PMD.CloseResource") // actually closing them here
+                ZGroupLayerPainter painter : painters) {
                     try {
                         painter.close();
                     } catch (Exception e) {
@@ -226,7 +229,8 @@ class ZGroupLayer extends Layer {
         Class[] referenceClasses = null;
         SortOrder[] referenceOrders = null;
         LiteFeatureTypeStyle reference = null;
-        for (ZGroupLayerPainter painter : painters) {
+        for (@SuppressWarnings("PMD.CloseResource") // painters not managed here
+        ZGroupLayerPainter painter : painters) {
             for (LiteFeatureTypeStyle style : painter.lfts) {
                 Class[] styleClasses = getSortByAttributeClasses(style);
                 SortOrder[] styleOrders = getSortOrders(style);

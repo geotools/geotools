@@ -119,6 +119,7 @@ public class ArcSdeFeatureStore extends ArcSdeFeatureSource implements SimpleFea
         final ISession session = getSession();
         try {
             final String typeName = typeInfo.getFeatureTypeName();
+            @SuppressWarnings("PMD.CloseResource") // externally managed, not to close here
             final Transaction currTransaction = getTransaction();
             final FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
             writer = dataStore.getFeatureWriter(typeName, filter, currTransaction);
@@ -174,6 +175,7 @@ public class ArcSdeFeatureStore extends ArcSdeFeatureSource implements SimpleFea
 
     /** @see FeatureStore#removeFeatures(Filter) */
     public void removeFeatures(final Filter filter) throws IOException {
+        @SuppressWarnings("PMD.CloseResource") // externally managed
         final Transaction currTransaction = getTransaction();
         final String typeName = typeInfo.getFeatureTypeName();
         // short circuit cut if needed to remove all features
@@ -242,11 +244,12 @@ public class ArcSdeFeatureStore extends ArcSdeFeatureSource implements SimpleFea
             // need to do actual deletes, as SeTable.truncate does not respects
             // transactions and would delete all content
             LOGGER.fine("deleting all table records for " + typeName);
-            final FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
-                    dataStore.getFeatureWriter(typeName, transaction);
-            while (writer.hasNext()) {
-                writer.next();
-                writer.remove();
+            try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                    dataStore.getFeatureWriter(typeName, transaction)) {
+                while (writer.hasNext()) {
+                    writer.next();
+                    writer.remove();
+                }
             }
         } else {
             // we're in auto commit mode, lets truncate the table the fast way

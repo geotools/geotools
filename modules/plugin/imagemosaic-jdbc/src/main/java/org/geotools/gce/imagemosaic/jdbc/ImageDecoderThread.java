@@ -159,17 +159,17 @@ public class ImageDecoderThread extends AbstractThread {
      * @throws IOException
      */
     private BufferedImage readImage2(byte[] imageBytes) throws IOException {
+        try (SeekableStream stream = new ByteArraySeekableStream(imageBytes)) {
+            String decoderName = null;
 
-        SeekableStream stream = new ByteArraySeekableStream(imageBytes);
-        String decoderName = null;
+            for (String dn : ImageCodec.getDecoderNames(stream)) {
+                decoderName = dn;
+                break;
+            }
 
-        for (String dn : ImageCodec.getDecoderNames(stream)) {
-            decoderName = dn;
-            break;
+            ImageDecoder decoder = ImageCodec.createImageDecoder(decoderName, stream, null);
+            PlanarImage img = PlanarImage.wrapRenderedImage(decoder.decodeAsRenderedImage());
+            return img.getAsBufferedImage();
         }
-
-        ImageDecoder decoder = ImageCodec.createImageDecoder(decoderName, stream, null);
-        PlanarImage img = PlanarImage.wrapRenderedImage(decoder.decodeAsRenderedImage());
-        return img.getAsBufferedImage();
     }
 }

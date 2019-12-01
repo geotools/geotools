@@ -65,13 +65,13 @@ public class IndexFile implements FileReader {
      * @param shpFiles The channel to read from.
      * @throws IOException If an error occurs.
      */
+    @SuppressWarnings("PMD.CloseResource") // file channel managed as a resource
     public IndexFile(ShpFiles shpFiles, boolean useMemoryMappedBuffer) throws IOException {
         this.useMemoryMappedBuffer = useMemoryMappedBuffer;
         streamLogger.open();
         ReadableByteChannel byteChannel = shpFiles.getReadChannel(ShpFileType.SHX, this);
         try {
             if (byteChannel instanceof FileChannel) {
-
                 this.channel = (FileChannel) byteChannel;
                 if (useMemoryMappedBuffer) {
                     LOGGER.finest("Memory mapping file...");

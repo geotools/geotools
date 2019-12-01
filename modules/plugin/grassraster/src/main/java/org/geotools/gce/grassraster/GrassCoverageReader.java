@@ -495,14 +495,14 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader
         File rangeFile = jgMapEnvironment.getCELLMISC_RANGE();
         // if the file exists, read the range.
         if (rangeFile.exists()) {
-            InputStream is = new FileInputStream(rangeFile);
-            byte[] numbers = new byte[16];
-            int testread = is.read(numbers);
-            is.close();
-            if (testread == 16) {
-                ByteBuffer rangeBuffer = ByteBuffer.wrap(numbers);
-                min = rangeBuffer.getDouble();
-                max = rangeBuffer.getDouble();
+            try (InputStream is = new FileInputStream(rangeFile)) {
+                byte[] numbers = new byte[16];
+                int testread = is.read(numbers);
+                if (testread == 16) {
+                    ByteBuffer rangeBuffer = ByteBuffer.wrap(numbers);
+                    min = rangeBuffer.getDouble();
+                    max = rangeBuffer.getDouble();
+                }
             }
         }
         range = new double[] {min, max};

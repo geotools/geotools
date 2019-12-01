@@ -153,9 +153,9 @@ public class ThreadedPostgreSQLEpsgFactory extends ThreadedEpsgFactory {
             }
         }
         try {
-            final InputStream in = new FileInputStream(file);
-            p.load(in);
-            in.close();
+            try (InputStream in = new FileInputStream(file)) {
+                p.load(in);
+            }
         } catch (IOException exception) {
             Logging.unexpectedException(LOGGER, DataSource.class, "<init>", exception);
             // Continue. We will try to work with whatever properties are available.

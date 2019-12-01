@@ -16,6 +16,7 @@
  */
 package org.geotools.data.shapefile.shp;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -45,7 +46,7 @@ import org.locationtech.jts.geom.GeometryFactory;
  * @author aaime
  * @author Ian Schneider
  */
-public class ShapefileWriter {
+public class ShapefileWriter implements Closeable {
     FileChannel shpChannel;
     FileChannel shxChannel;
     ByteBuffer shapeBuffer;

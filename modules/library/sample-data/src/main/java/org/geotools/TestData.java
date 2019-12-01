@@ -173,16 +173,15 @@ public final class TestData extends org.geotools.test.TestData {
             if (directory.mkdirs()) {
                 deleteOnExit(directory, false);
             }
-            final InputStream in = openStream(name);
-            final OutputStream out = new FileOutputStream(file);
-            final byte[] buffer = new byte[4096];
-            deleteOnExit(file, false);
-            int count;
-            while ((count = in.read(buffer)) >= 0) {
-                out.write(buffer, 0, count);
+            try (InputStream in = openStream(name);
+                    OutputStream out = new FileOutputStream(file)) {
+                final byte[] buffer = new byte[4096];
+                deleteOnExit(file, false);
+                int count;
+                while ((count = in.read(buffer)) >= 0) {
+                    out.write(buffer, 0, count);
+                }
             }
-            out.close();
-            in.close();
         }
         return file;
     }

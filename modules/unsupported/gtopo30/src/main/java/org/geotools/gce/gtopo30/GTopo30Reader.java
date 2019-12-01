@@ -435,6 +435,7 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader
         // /////////////////////////////////////////////////////////////////////
         // trying to create a channel to the file to read
         final File file = URLs.urlToFile(demURL);
+        @SuppressWarnings("PMD.CloseResource") // used in deferred loading
         final ImageInputStream iis = ImageIO.createImageInputStream(file);
         if (header.getByteOrder().compareToIgnoreCase("M") == 0) {
             iis.setByteOrder(ByteOrder.BIG_ENDIAN);
@@ -449,6 +450,7 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader
                 new ImageTypeSpecifier(layout.getColorModel(null), layout.getSampleModel(null));
 
         // Finally, build the image input stream
+        @SuppressWarnings("PMD.CloseResource") // used in deferred loading
         final RawImageInputStream raw =
                 new RawImageInputStream(
                         iis,

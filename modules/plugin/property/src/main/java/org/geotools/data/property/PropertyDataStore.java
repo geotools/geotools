@@ -82,11 +82,11 @@ public class PropertyDataStore extends ContentDataStore {
             throw new FileNotFoundException(
                     "Unable to create a new property file: file exists " + file);
         }
-        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-        writer.write("_=");
-        writer.write(DataUtilities.encodeType(featureType));
-        writer.flush();
-        writer.close();
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            writer.write("_=");
+            writer.write(DataUtilities.encodeType(featureType));
+            writer.flush();
+        }
     }
     // createSchema end
 

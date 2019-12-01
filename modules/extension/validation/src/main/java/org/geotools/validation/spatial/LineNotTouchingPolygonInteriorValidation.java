@@ -62,47 +62,50 @@ public class LineNotTouchingPolygonInteriorValidation extends LinePolygonAbstrac
         SimpleFeatureSource fsLine = (SimpleFeatureSource) layers.get(getLineTypeRef());
         if (fsLine == null) return true;
         SimpleFeatureCollection fcLine = fsLine.getFeatures();
-        SimpleFeatureIterator fLine = fcLine.features();
+        try (SimpleFeatureIterator fLine = fcLine.features()) {
 
-        SimpleFeatureSource fsPoly =
-                (SimpleFeatureSource) layers.get(getRestrictedPolygonTypeRef());
-        if (fsPoly == null) return true;
-        ListFeatureCollection fcPoly = new ListFeatureCollection(fsPoly.getFeatures());
+            SimpleFeatureSource fsPoly =
+                    (SimpleFeatureSource) layers.get(getRestrictedPolygonTypeRef());
+            if (fsPoly == null) return true;
+            ListFeatureCollection fcPoly = new ListFeatureCollection(fsPoly.getFeatures());
 
-        while (fLine.hasNext()) {
-            SimpleFeature line = fLine.next();
-            SimpleFeatureIterator fPoly = fcPoly.features();
-            Geometry lineGeom = (Geometry) line.getDefaultGeometry();
-            if (envelope.contains(lineGeom.getEnvelopeInternal())) {
-                // 	check for valid comparison
-                if (LineString.class.isAssignableFrom(lineGeom.getClass())) {
-                    while (fPoly.hasNext()) {
-                        SimpleFeature poly = fPoly.next();
-                        Geometry polyGeom = (Geometry) poly.getDefaultGeometry();
-                        if (envelope.contains(polyGeom.getEnvelopeInternal())) {
-                            if (Polygon.class.isAssignableFrom(polyGeom.getClass())) {
-                                Polygon p = (Polygon) polyGeom;
-                                for (int i = 0; i < p.getNumInteriorRing(); i++) {
-                                    if (!p.getInteriorRingN(i).touches(lineGeom)) {
-                                        results.error(
+            while (fLine.hasNext()) {
+                SimpleFeature line = fLine.next();
+                try (SimpleFeatureIterator fPoly = fcPoly.features()) {
+                    Geometry lineGeom = (Geometry) line.getDefaultGeometry();
+                    if (envelope.contains(lineGeom.getEnvelopeInternal())) {
+                        // 	check for valid comparison
+                        if (LineString.class.isAssignableFrom(lineGeom.getClass())) {
+                            while (fPoly.hasNext()) {
+                                SimpleFeature poly = fPoly.next();
+                                Geometry polyGeom = (Geometry) poly.getDefaultGeometry();
+                                if (envelope.contains(polyGeom.getEnvelopeInternal())) {
+                                    if (Polygon.class.isAssignableFrom(polyGeom.getClass())) {
+                                        Polygon p = (Polygon) polyGeom;
+                                        for (int i = 0; i < p.getNumInteriorRing(); i++) {
+                                            if (!p.getInteriorRingN(i).touches(lineGeom)) {
+                                                results.error(
+                                                        poly,
+                                                        "Polygon interior touches the specified Line.");
+                                            }
+                                        }
+                                        // do next.
+                                    } else {
+                                        fcPoly.remove(poly);
+                                        results.warning(
                                                 poly,
-                                                "Polygon interior touches the specified Line.");
+                                                "Invalid type: this feature is not a derivative of a Polygon");
                                     }
+                                } else {
+                                    fcPoly.remove(poly);
                                 }
-                                // do next.
-                            } else {
-                                fcPoly.remove(poly);
-                                results.warning(
-                                        poly,
-                                        "Invalid type: this feature is not a derivative of a Polygon");
                             }
                         } else {
-                            fcPoly.remove(poly);
+                            results.warning(
+                                    line,
+                                    "Invalid type: this feature is not a derivative of a LineString");
                         }
                     }
-                } else {
-                    results.warning(
-                            line, "Invalid type: this feature is not a derivative of a LineString");
                 }
             }
         }

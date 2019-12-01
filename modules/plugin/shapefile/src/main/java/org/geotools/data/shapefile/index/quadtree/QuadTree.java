@@ -16,6 +16,7 @@
  */
 package org.geotools.data.shapefile.index.quadtree;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -37,7 +38,7 @@ import org.locationtech.jts.geom.Envelope;
  *
  * @author Tommaso Nolli
  */
-public class QuadTree {
+public class QuadTree implements Closeable {
 
     private static final double SPLITRATIO = 0.55d;
 

@@ -325,6 +325,7 @@ public class ShapefileReader implements FileReader {
         return r;
     }
 
+    @SuppressWarnings("PMD.CloseResource") // channel managed as field
     private void init(boolean strict, GeometryFactory gf) throws IOException, ShapefileException {
         geometryFactory = gf;
 
@@ -503,6 +504,7 @@ public class ShapefileReader implements FileReader {
         return len;
     }
 
+    @SuppressWarnings("PMD.CloseResource") // file channel managed as a field
     private void positionBufferForOffset(ByteBuffer buffer, int offset) throws IOException {
         if (useMemoryMappedBuffer) {
             buffer.position(offset);

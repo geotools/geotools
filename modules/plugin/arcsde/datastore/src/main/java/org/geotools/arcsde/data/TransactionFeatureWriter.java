@@ -97,6 +97,7 @@ class TransactionFeatureWriter extends ArcSdeFeatureWriter {
 
     @Override
     protected void doFireFeaturesAdded(String typeName, ReferencedEnvelope bounds, Filter filter) {
+        @SuppressWarnings("PMD.CloseResource") // externally managed
         Transaction transaction = state.getTransaction();
 
         FeatureEvent event = new FeatureEvent(this, FeatureEvent.Type.ADDED, bounds, filter);
@@ -106,6 +107,7 @@ class TransactionFeatureWriter extends ArcSdeFeatureWriter {
     @Override
     protected void doFireFeaturesChanged(
             String typeName, ReferencedEnvelope bounds, Filter filter) {
+        @SuppressWarnings("PMD.CloseResource") // externally managed
         Transaction transaction = state.getTransaction();
 
         FeatureEvent event = new FeatureEvent(this, FeatureEvent.Type.CHANGED, bounds, filter);
@@ -115,6 +117,7 @@ class TransactionFeatureWriter extends ArcSdeFeatureWriter {
     @Override
     protected void doFireFeaturesRemoved(
             String typeName, ReferencedEnvelope bounds, Filter filter) {
+        @SuppressWarnings("PMD.CloseResource") // externally managed
         Transaction transaction = state.getTransaction();
 
         FeatureEvent event = new FeatureEvent(this, FeatureEvent.Type.REMOVED, bounds, filter);

@@ -28,6 +28,7 @@ import org.geotools.xml.XMLHandlerHints;
 public class FCFlowHandler implements FlowHandler {
     public boolean shouldStop(Map hints) {
         if ((hints != null) && (hints.get(XMLHandlerHints.STREAM_HINT) != null)) {
+            @SuppressWarnings("PMD.CloseResource") // not managed here
             FCBuffer buffer = (FCBuffer) hints.get(XMLHandlerHints.STREAM_HINT);
 
             if (buffer.getInternalState() == FCBuffer.STOP) {

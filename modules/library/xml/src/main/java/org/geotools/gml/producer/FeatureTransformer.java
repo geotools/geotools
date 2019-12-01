@@ -583,6 +583,7 @@ public class FeatureTransformer extends TransformerBase {
                     endFeatureCollection();
                 } else if (o instanceof FeatureReader) {
                     // THIS IS A HACK FOR QUICK USE
+                    @SuppressWarnings("PMD.CloseResource") // the caller must close
                     FeatureReader<SimpleFeatureType, SimpleFeature> r =
                             (FeatureReader<SimpleFeatureType, SimpleFeature>) o;
 

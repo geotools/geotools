@@ -12,13 +12,14 @@ package org.opengis.filter.spatial;
 // Annotations
 
 import org.opengis.annotation.XmlElement;
+import org.opengis.annotation.XmlParameter;
 
 /**
  * Abstract superclass for spatial operators that check that one shape satisfies some relation to a
  * buffer around another shape. This could be used to find, for example, all the geometries that
  * come within 10 meters of a river.
  *
- * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
+ * @version <A HREF="https://cite.opengeospatial.org/teamengine/about/wfs/1.0.0/site/OGCTestData/wfs/1.0.0/specs/filter/1.0.0/02-059.html">Implementation specification 1.0</A>
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0
  */
@@ -36,5 +37,6 @@ public interface DistanceBufferOperator extends BinarySpatialOperator {
      * object. An implementation may throw an exception if these units differ from the units of the
      * coordinate system of its geometry or the feature's geometry.
      */
+    @XmlParameter("units")
     String getDistanceUnits();
 }

@@ -580,7 +580,10 @@ public class Encoder {
                 .stream()
                 .allMatch(
                         property ->
-                                property.getType().getName().equals(complex.getType().getName()))) {
+                                property == null
+                                        || property.getType()
+                                                .getName()
+                                                .equals(complex.getType().getName()))) {
             // different types which means we are not in the case of nested complex features
             return false;
         }

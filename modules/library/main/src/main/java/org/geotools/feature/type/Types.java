@@ -54,6 +54,12 @@ import org.xml.sax.helpers.NamespaceSupport;
 public class Types {
 
     /**
+     * Key for AppSchema declared namespaces on FeatureType user data Map. Value is a {@code
+     * Map<String, String>}
+     */
+    public static final String DECLARED_NAMESPACES_MAP = "declaredNamespacesMap";
+
+    /**
      * Ensures an attribute value is withing the restrictions of the AttributeDescriptor and
      * AttributeType.
      *

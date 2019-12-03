@@ -19,7 +19,9 @@ import org.opengis.annotation.XmlParameter;
  * buffer around another shape. This could be used to find, for example, all the geometries that
  * come within 10 meters of a river.
  *
- * @version <A HREF="https://cite.opengeospatial.org/teamengine/about/wfs/1.0.0/site/OGCTestData/wfs/1.0.0/specs/filter/1.0.0/02-059.html">Implementation specification 1.0</A>
+ * @version <A
+ *     HREF="https://cite.opengeospatial.org/teamengine/about/wfs/1.0.0/site/OGCTestData/wfs/1.0.0/specs/filter/1.0.0/02-059.html">Implementation
+ *     specification 1.0</A>
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0
  */

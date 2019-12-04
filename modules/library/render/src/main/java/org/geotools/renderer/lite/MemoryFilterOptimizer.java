@@ -318,6 +318,11 @@ class MemoryFilterOptimizer extends DuplicatingFilterVisitor {
         public Object accept(ExpressionVisitor visitor, Object extraData) {
             return delegate.accept(visitor, extraData);
         }
+
+        @Override
+        public String toString() {
+            return delegate.toString();
+        }
     }
 
     /**

@@ -18,12 +18,7 @@ package org.geotools.renderer.label;
 
 import static org.geotools.styling.TextSymbolizer.*;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
@@ -376,7 +371,16 @@ public class LabelCacheImpl implements LabelCache {
         double maxAngleDelta =
                 voParser.getDoubleOption(symbolizer, MAX_ANGLE_DELTA_KEY, DEFAULT_MAX_ANGLE_DELTA);
         item.setMaxAngleDelta(Math.toRadians(maxAngleDelta));
-        item.setAutoWrap(voParser.getIntOption(symbolizer, AUTO_WRAP_KEY, DEFAULT_AUTO_WRAP));
+        // follow line and write don't work toghether, disable it while we wait for a fix
+        if (!item.isFollowLineEnabled()) {
+            item.setAutoWrap(voParser.getIntOption(symbolizer, AUTO_WRAP_KEY, DEFAULT_AUTO_WRAP));
+        } else {
+            // at fine level cause it would show up for every label with this setup
+            LOGGER.log(
+                    Level.FINE,
+                    "Disabling auto-wrap, it's not supported along with followLine yet");
+            item.setAutoWrap(0);
+        }
         item.setForceLeftToRightEnabled(
                 voParser.getBooleanOption(
                         symbolizer, FORCE_LEFT_TO_RIGHT_KEY, DEFAULT_FORCE_LEFT_TO_RIGHT));

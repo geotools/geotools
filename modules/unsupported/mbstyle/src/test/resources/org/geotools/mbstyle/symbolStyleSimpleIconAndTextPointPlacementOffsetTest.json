@@ -32,38 +32,28 @@
             "source": "testsource",
             "source-layer": "testsource-layer",
             "layout": {
-                "icon-offset": [
-                    0,
-                    0
-                ],
+                "icon-offset": [0,0],
                 "icon-image": "goldfish",
                 "icon-rotate": 0,
-                "visibility": "visible",
                 "icon-size": 1,
-                "symbol-placement": "line",
-                "symbol-spacing": 50.0,
-                "text-size": 20,
+                "visibility": "visible",
+                "symbol-placement": "point",
+                "symbol-spacing": 5.0,
+                "text-size": 12,
                 "text-transform": "lowercase",
-                "text-justify": "TOP",
-                "text-offset": [
-                    0,
-                    0.5
-                ],
-                "text-anchor": "CENTER",
+                "text-justify": "center",
+                "text-offset": [1,0.5],
+                "text-anchor": "bottom-right",
                 "text-pitch-alignment": "viewport",
                 "text-field": "{text}",
                 "text-letter-spacing": 0.05,
                 "text-max-width": 5,
-                "text-font": ["Bitstream Vera Sans", "Other Test Font"],
-                "text-allow-overlap": true,      
-                
+                "text-font": ["Bitstream Vera Sans", "Arial Unicode MS Regular"],
+                "text-allow-overlap": true,
             },
             "paint": {
                 "icon-opacity": 0.5,
-                "icon-translate": [
-                    0,
-                    0
-                ],
+                "icon-translate": [0,0],
                 "text-translate": [0, 0],
                 "text-color": "#000000",
             }

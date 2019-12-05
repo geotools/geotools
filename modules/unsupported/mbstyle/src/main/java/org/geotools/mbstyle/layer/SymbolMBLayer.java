@@ -18,8 +18,11 @@ package org.geotools.mbstyle.layer;
 
 import com.google.common.collect.ImmutableSet;
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBFormatException;
@@ -27,9 +30,22 @@ import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.sprite.SpriteGraphicFactory;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
 import org.geotools.measure.Units;
-import org.geotools.styling.*;
+import org.geotools.styling.AnchorPoint;
+import org.geotools.styling.Displacement;
+import org.geotools.styling.ExternalGraphic;
+import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
+import org.geotools.styling.Graphic;
+import org.geotools.styling.Halo;
+import org.geotools.styling.LabelPlacement;
+import org.geotools.styling.LinePlacement;
+import org.geotools.styling.Mark;
+import org.geotools.styling.PointPlacement;
+import org.geotools.styling.Rule;
 import org.geotools.styling.Stroke;
+import org.geotools.styling.StyleBuilder;
+import org.geotools.styling.TextSymbolizer2;
 import org.geotools.text.Text;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -53,6 +69,7 @@ import org.opengis.style.Symbolizer;
  */
 public class SymbolMBLayer extends MBLayer {
 
+    private static final Color DEFAULT_HALO_COLOR = new Color(0, 0, 0, 0);
     private JSONObject layout;
 
     private JSONObject paint;
@@ -996,11 +1013,19 @@ public class SymbolMBLayer extends MBLayer {
      * @return AnchorPoint defined by "text-anchor".
      */
     public AnchorPoint anchorPoint() {
-        TextAnchor anchor = getTextAnchor();
-        if (anchor == null) {
+
+        Expression expression = parse.string(layout, "text-anchor", TextAnchor.CENTER.name());
+        if (expression == null) {
             return null;
         }
-        return sf.anchorPoint(ff.literal(anchor.getX()), ff.literal(anchor.getY()));
+        if (expression instanceof Literal) {
+            TextAnchor anchor = TextAnchor.parse(expression.evaluate(null, String.class));
+            return sf.anchorPoint(ff.literal(anchor.getX()), ff.literal(anchor.getY()));
+        }
+        // it's a generic expression, need to map it to values
+        return sf.anchorPoint(
+                ff.function("mbAnchor", expression, ff.literal("x")),
+                ff.function("mbAnchor", expression, ff.literal("y")));
     }
 
     /**
@@ -1177,6 +1202,10 @@ public class SymbolMBLayer extends MBLayer {
     public Displacement textOffsetDisplacement() {
         return parse.displacement(
                 layout, "text-offset", sf.displacement(ff.literal(0), ff.literal(0)));
+    }
+
+    private boolean hasTextOffset() {
+        return parse.isPropertyDefined(layout, "text-offset");
     }
 
     /**
@@ -1490,7 +1519,7 @@ public class SymbolMBLayer extends MBLayer {
      */
     public Color getTextHaloColor() throws MBFormatException {
         if (!paint.containsKey("text-halo-color")) {
-            return new Color(0, 0, 0, 0);
+            return DEFAULT_HALO_COLOR;
         } else {
             return parse.convertToColor(
                     parse.optional(String.class, paint, "text-halo-color", "#000000"));
@@ -1503,7 +1532,7 @@ public class SymbolMBLayer extends MBLayer {
      * @return The label halo color.
      */
     public Expression textHaloColor() {
-        return parse.color(paint, "text-halo-color", Color.BLACK);
+        return parse.color(paint, "text-halo-color", DEFAULT_HALO_COLOR);
     }
 
     /**
@@ -1577,6 +1606,10 @@ public class SymbolMBLayer extends MBLayer {
         return new Point(translate[0], translate[1]);
     }
 
+    private boolean hasTextTranslate() {
+        return parse.isPropertyDefined(layout, "text-translate");
+    }
+
     /**
      * Maps {@link #getTextTranslate()} to a {@link Displacement}.
      *
@@ -1647,7 +1680,7 @@ public class SymbolMBLayer extends MBLayer {
         String symbolPlacementVal =
                 transformer.requireLiteral(
                         symbolPlacement(), String.class, "point", "symbol-placement", getId());
-
+        Expression fontSize = textSize();
         if ("point".equalsIgnoreCase(symbolPlacementVal.trim())) {
             // Point Placement (default)
             PointPlacement pointP = sb.createPointPlacement();
@@ -1655,34 +1688,63 @@ public class SymbolMBLayer extends MBLayer {
             // GeoTools AnchorPoint doesn't seem to have an effect on PointPlacement
             pointP.setAnchorPoint(anchorPoint());
 
-            // MapBox text-offset: +y means down
-            Displacement textTranslate = textTranslateDisplacement();
-            textTranslate.setDisplacementY(
-                    ff.multiply(ff.literal(-1), textTranslate.getDisplacementY()));
-            pointP.setDisplacement(textTranslate);
-
+            // MapBox text-translate: +y means down, expressed in px
+            Displacement displacement = null;
+            if (hasTextTranslate()) {
+                Displacement textTranslate = textTranslateDisplacement();
+                textTranslate.setDisplacementY(
+                        ff.multiply(ff.literal(-1), textTranslate.getDisplacementY()));
+                displacement = textTranslate;
+            }
+            // MapBox test-offset: +y mean down and expressed in ems
+            Displacement textOffset = null;
+            if (hasTextOffset()) {
+                textOffset = textOffsetDisplacement();
+                textOffset.setDisplacementX(ff.multiply(fontSize, textOffset.getDisplacementX()));
+                textOffset.setDisplacementY(
+                        ff.multiply(
+                                fontSize,
+                                ff.multiply(ff.literal(-1), textOffset.getDisplacementY())));
+                if (displacement == null) {
+                    displacement = textOffset;
+                } else {
+                    displacement.setDisplacementX(
+                            ff.add(displacement.getDisplacementX(), textOffset.getDisplacementX()));
+                    displacement.setDisplacementY(
+                            ff.add(displacement.getDisplacementY(), textOffset.getDisplacementY()));
+                }
+            }
+            pointP.setDisplacement(displacement);
             pointP.setRotation(textRotate());
 
             labelPlacement = pointP;
         } else {
             // Line Placement
-
             LinePlacement lineP = sb.createLinePlacement(null);
             lineP.setRepeated(true);
 
             // pixels (geotools) vs ems (mapbox) for text-offset
             lineP.setPerpendicularOffset(
-                    ff.multiply(ff.literal(-1), textOffsetDisplacement().getDisplacementY()));
+                    ff.multiply(
+                            fontSize,
+                            ff.multiply(
+                                    ff.literal(-1), textOffsetDisplacement().getDisplacementY())));
 
             labelPlacement = lineP;
         }
 
-        Halo halo = sf.halo(sf.fill(null, textHaloColor(), null), textHaloWidth());
+        // the default value of the halo color is rgba(0,0,0,0) that is, no halo drawn,
+        // regardless of the value of other halo parameters
+        Expression haloColor = textHaloColor();
+        Halo halo = null;
+        if (!(haloColor instanceof Literal)
+                || (haloColor.evaluate(null, Color.class).getAlpha() > 0)) {
+            halo = sf.halo(sf.fill(null, haloColor, null), textHaloWidth());
+        }
         Fill fill = sf.fill(null, textColor(), textOpacity());
 
         Font font =
-                sb.createFont(
-                        ff.literal(""), ff.literal("normal"), ff.literal("normal"), textSize());
+                sb.createFont(ff.literal(""), ff.literal("normal"), ff.literal("normal"), fontSize);
 
         if (getTextFont() != null) {
             font.getFamily().clear();
@@ -1816,7 +1878,7 @@ public class SymbolMBLayer extends MBLayer {
                             textMaxWidth(), Double.class, 10.0, "text-max-width", getId());
             double textSize =
                     transformer.requireLiteral(
-                            textSize(),
+                            fontSize,
                             Double.class,
                             16.0,
                             "text-size (when text-max-width is specified)",

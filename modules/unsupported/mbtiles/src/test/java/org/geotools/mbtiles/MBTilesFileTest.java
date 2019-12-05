@@ -206,11 +206,16 @@ public class MBTilesFileTest {
         MBTilesFile mbTilesFile =
                 new MBTilesFile(
                         new File("./src/test/resources/org/geotools/mbtiles/madagascar.mbtiles"));
-        RectangleLong bounds = mbTilesFile.getTileBounds(7);
+        RectangleLong bounds = mbTilesFile.getTileBounds(7, true);
         assertEquals(79, bounds.getMinX());
         assertEquals(82, bounds.getMaxX());
         assertEquals(54, bounds.getMinY());
         assertEquals(59, bounds.getMaxY());
+        RectangleLong boundsFull = mbTilesFile.getTileBounds(7, false);
+        assertEquals(0, boundsFull.getMinX());
+        assertEquals(128, boundsFull.getMaxX());
+        assertEquals(0, boundsFull.getMinY());
+        assertEquals(128, boundsFull.getMaxY());
     }
 
     @Test

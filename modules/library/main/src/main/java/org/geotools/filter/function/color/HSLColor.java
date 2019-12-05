@@ -24,7 +24,7 @@ import java.awt.Color;
  *
  * @author Andrea Aime - GeoSolutions
  */
-class HSLColor {
+public class HSLColor {
 
     double hue;
 

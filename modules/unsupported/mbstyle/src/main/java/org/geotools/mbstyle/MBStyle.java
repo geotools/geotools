@@ -362,23 +362,22 @@ public class MBStyle {
                     layerMaxZoom == Integer.MAX_VALUE
                             ? null
                             : MBObjectStops.zoomLevelToScaleDenominator(
-                                    (long) Math.min(25, layerMaxZoom));
+                                    Math.min(25d, layerMaxZoom));
             Double layerMaxScaleDenominator =
                     layerMinZoom == Integer.MIN_VALUE
                             ? null
                             : MBObjectStops.zoomLevelToScaleDenominator(
-                                    (long) Math.max(-25, layerMinZoom));
+                                    Math.max(-25d, layerMinZoom));
 
             if (layer.visibility()) {
                 // check for property and zoom functions, if true we will have a layer for each one
-                // that
-                // becomes a feature type style.
+                // that becomes a feature type style.
                 if (mbObjectStops.ls.zoomStops || mbObjectStops.ls.zoomPropertyStops) {
-                    List<Long> stopLevels = mbObjectStops.stops;
+                    List<Double> stopLevels = mbObjectStops.stops;
                     int i = 0;
                     for (MBLayer l : mbObjectStops.layersForStop) {
-                        long s = stopLevels.get(i);
-                        long[] rangeForStopLevel =
+                        double s = stopLevels.get(i);
+                        double[] rangeForStopLevel =
                                 mbObjectStops.getRangeForStop(s, mbObjectStops.ranges);
                         Double maxScaleDenominator =
                                 MBObjectStops.zoomLevelToScaleDenominator(rangeForStopLevel[0]);

@@ -60,6 +60,7 @@ public class MBFunctionFactory implements FunctionFactory {
         functionList.add(ToStringFunction.NAME);
         functionList.add(ToNumberFunction.NAME);
         functionList.add(ToColorFunction.NAME);
+        functionList.add(MapBoxAnchorFunction.NAME);
         return Collections.unmodifiableList(functionList);
     }
 
@@ -218,6 +219,12 @@ public class MBFunctionFactory implements FunctionFactory {
         }
         if (ToColorFunction.NAME.getFunctionName().equals(name)) {
             ToColorFunction f = new ToColorFunction();
+            f.setParameters(args);
+            f.setFallbackValue(fallback);
+            return f;
+        }
+        if (MapBoxAnchorFunction.NAME.getFunctionName().equals(name)) {
+            MapBoxAnchorFunction f = new MapBoxAnchorFunction();
             f.setParameters(args);
             f.setFallbackValue(fallback);
             return f;

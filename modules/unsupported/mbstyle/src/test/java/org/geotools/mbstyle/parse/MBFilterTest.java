@@ -18,6 +18,7 @@ package org.geotools.mbstyle.parse;
 
 import static org.junit.Assert.*;
 
+import java.util.Collections;
 import java.util.Set;
 import org.geotools.filter.text.ecql.ECQL;
 import org.json.simple.JSONArray;
@@ -240,5 +241,20 @@ public class MBFilterTest {
         mbfilter = new MBFilter(json);
         filter = mbfilter.filter();
         assertEquals("NOT (a = 1) AND NOT (b = 2)", ECQL.toCQL(filter));
+    }
+
+    @Test
+    public void nestedAllSemanticIdentifiers() throws ParseException {
+        JSONArray json =
+                array(
+                        "[\n"
+                                + "        'all',\n"
+                                + "        ['==', '$type', 'LineString'],\n"
+                                + "        ['all', ['==', 'brunnel', 'tunnel'], ['==', 'class', 'path']]\n"
+                                + "      ]");
+        MBFilter mbfilter = new MBFilter(json);
+        // used to go in infinite recursion
+        Set<SemanticType> identifiers = mbfilter.semanticTypeIdentifiers();
+        assertEquals(Collections.singleton(SemanticType.LINE), identifiers);
     }
 }

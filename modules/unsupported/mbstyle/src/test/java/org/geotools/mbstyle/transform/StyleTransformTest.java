@@ -16,7 +16,10 @@
  */
 package org.geotools.mbstyle.transform;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.*;
 import java.io.File;
@@ -34,11 +37,37 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.CategorizeFunction;
 import org.geotools.filter.function.FilterFunction_isometric;
 import org.geotools.filter.function.FilterFunction_offset;
+import org.geotools.filter.text.cql2.CQL;
+import org.geotools.filter.text.cql2.CQLException;
+import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.MapboxTestUtils;
-import org.geotools.mbstyle.layer.*;
+import org.geotools.mbstyle.layer.BackgroundMBLayer;
+import org.geotools.mbstyle.layer.CircleMBLayer;
+import org.geotools.mbstyle.layer.FillExtrusionMBLayer;
+import org.geotools.mbstyle.layer.FillMBLayer;
+import org.geotools.mbstyle.layer.LineMBLayer;
+import org.geotools.mbstyle.layer.MBLayer;
+import org.geotools.mbstyle.layer.RasterMBLayer;
+import org.geotools.mbstyle.layer.SymbolMBLayer;
 import org.geotools.mbstyle.parse.MBObjectParser;
-import org.geotools.styling.*;
+import org.geotools.styling.AnchorPoint;
+import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.Graphic;
+import org.geotools.styling.LinePlacement;
+import org.geotools.styling.LineSymbolizer;
+import org.geotools.styling.Mark;
+import org.geotools.styling.PointPlacement;
+import org.geotools.styling.PointSymbolizer;
+import org.geotools.styling.PolygonSymbolizer;
+import org.geotools.styling.RasterSymbolizer;
+import org.geotools.styling.Rule;
+import org.geotools.styling.SLD;
+import org.geotools.styling.Style;
+import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.styling.Symbolizer;
+import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.TextSymbolizerImpl;
 import org.geotools.xml.styling.SLDTransformer;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -276,6 +305,67 @@ public class StyleTransformTest {
                 Integer.valueOf(10), lsym.getStroke().getWidth().evaluate(null, Integer.class));
         assertEquals(
                 Integer.valueOf(-5), lsym.getPerpendicularOffset().evaluate(null, Integer.class));
+    }
+
+    @Test
+    public void testLineGapStopWidth()
+            throws IOException, ParseException, TransformerException, CQLException {
+        JSONObject jsonObject = parseTestStyle("lineStyleGapStopsTest.json");
+
+        // Find the LineMBLayer and assert it contains the correct FeatureTypeStyle.
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        List<MBLayer> layers = mbStyle.layers("test-source");
+        assertEquals(1, layers.size());
+        assertTrue(layers.get(0) instanceof LineMBLayer);
+        LineMBLayer mbLine = (LineMBLayer) layers.get(0);
+
+        StyledLayerDescriptor sld = mbStyle.transform();
+        List<FeatureTypeStyle> fts = MapboxTestUtils.getStyle(sld, 0).featureTypeStyles();
+        assertEquals(fts.size(), 2);
+
+        // first fts
+        assertEquals(1, fts.get(0).rules().size());
+        Rule r0 = fts.get(0).rules().get(0);
+        assertEquals(2, r0.symbolizers().size());
+        LineSymbolizer s_0_0 = (LineSymbolizer) r0.symbolizers().get(0);
+        assertEquals(
+                Integer.valueOf(10), s_0_0.getStroke().getWidth().evaluate(null, Integer.class));
+        Expression exected_po_0_0 =
+                CQL.toExpression(
+                        "8 - (Interpolate(zoomLevel(env('wms_scale_denominator'), 'EPSG:3857'), 12, 0, "
+                                + "'numeric') + 10) / 2");
+        assertEquals(exected_po_0_0, s_0_0.getPerpendicularOffset());
+
+        LineSymbolizer s_0_1 = (LineSymbolizer) r0.symbolizers().get(1);
+        assertEquals(
+                Integer.valueOf(10), s_0_1.getStroke().getWidth().evaluate(null, Integer.class));
+        Expression exected_po_0_1 =
+                CQL.toExpression(
+                        "8 + (Interpolate(zoomLevel(env('wms_scale_denominator'), 'EPSG:3857'), 12, 0, "
+                                + "'numeric') + 10) / 2");
+        assertEquals(exected_po_0_1, s_0_1.getPerpendicularOffset());
+
+        // second fts
+        assertEquals(1, fts.get(1).rules().size());
+        Rule r1 = fts.get(1).rules().get(0);
+        assertEquals(2, r1.symbolizers().size());
+        LineSymbolizer s_1_0 = (LineSymbolizer) r1.symbolizers().get(0);
+        assertEquals(
+                Integer.valueOf(10), s_1_0.getStroke().getWidth().evaluate(null, Integer.class));
+        Expression exected_po_1_0 =
+                CQL.toExpression(
+                        "8 - (Interpolate(zoomLevel(env('wms_scale_denominator'), 'EPSG:3857'), 20, 6, "
+                                + "'numeric') + 10) / 2");
+        assertEquals(exected_po_1_0, s_1_0.getPerpendicularOffset());
+
+        LineSymbolizer s_1_1 = (LineSymbolizer) r1.symbolizers().get(1);
+        assertEquals(
+                Integer.valueOf(10), s_1_1.getStroke().getWidth().evaluate(null, Integer.class));
+        Expression exected_po_1_1 =
+                CQL.toExpression(
+                        "8 + (Interpolate(zoomLevel(env('wms_scale_denominator'), 'EPSG:3857'), 20, 6, "
+                                + "'numeric') + 10) / 2");
+        assertEquals(exected_po_1_1, s_1_1.getPerpendicularOffset());
     }
 
     @Test
@@ -726,5 +816,83 @@ public class StyleTransformTest {
         //        String xml = styleTransform.transform(sld);
         //        System.out.print(xml);
 
+    }
+
+    @Test
+    public void testTextAnchorStops() throws Exception {
+        JSONObject jsonObject = parseTestStyle("symbolTextAnchorStopsTest.json");
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        StyledLayerDescriptor sld = mbStyle.transform();
+        Style style = MapboxTestUtils.getStyle(sld, 0);
+
+        assertEquals(2, style.featureTypeStyles().size());
+
+        String xpTemplate =
+                "mbAnchor(Categorize(zoomLevel(env('wms_scale_denominator'), 'EPSG:3857'), "
+                        + "%s, %d, %s, 'succeeding'), %s)";
+
+        checkAnchorPointExpressions(style, xpTemplate, 0, "'left'", 0);
+        checkAnchorPointExpressions(style, xpTemplate, 1, "'center'", 8);
+    }
+
+    public void checkAnchorPointExpressions(
+            Style style, String xpTemplate, int ftINex, String anchorName, int zoomLevel)
+            throws CQLException {
+        FeatureTypeStyle ft = style.featureTypeStyles().get(ftINex);
+        TextSymbolizer ts = (TextSymbolizer) ft.rules().get(0).symbolizers().get(0);
+        PointPlacement pp = (PointPlacement) ts.getLabelPlacement();
+        AnchorPoint ap = pp.getAnchorPoint();
+        assertEquals(
+                ECQL.toExpression(
+                        String.format(xpTemplate, anchorName, zoomLevel, anchorName, "'x'")),
+                ap.getAnchorPointX());
+        assertEquals(
+                ECQL.toExpression(
+                        String.format(xpTemplate, anchorName, zoomLevel, anchorName, "'y'")),
+                ap.getAnchorPointY());
+    }
+
+    @Test
+    public void testHaloDefaultColorTest() throws Exception {
+        JSONObject jsonObject = parseTestStyle("labelHaloNoColorTest.json");
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        StyledLayerDescriptor sld = mbStyle.transform();
+        Style style = MapboxTestUtils.getStyle(sld, 0);
+        TextSymbolizer ts =
+                (TextSymbolizer)
+                        style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
+        // no halo, the halo color was not specified and it defaults to "fully transparent"
+        assertNull(ts.getHalo());
+    }
+
+    @Test
+    public void testTextOffsetEmsLinePlacement() throws Exception {
+        JSONObject jsonObject =
+                parseTestStyle("symbolStyleSimpleIconAndTextLinePlacementTest.json");
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        StyledLayerDescriptor sld = mbStyle.transform();
+        Style style = MapboxTestUtils.getStyle(sld, 0);
+        TextSymbolizer ts =
+                (TextSymbolizer)
+                        style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
+        LinePlacement lp = (LinePlacement) ts.getLabelPlacement();
+        // text-offset: [0, 0.5] as ems, with text-size set to 20, and opposite y direction
+        assertEquals(-10, lp.getPerpendicularOffset().evaluate(null, Double.class), 0d);
+    }
+
+    @Test
+    public void testTextOffsetEmsPointPlacement() throws Exception {
+        JSONObject jsonObject =
+                parseTestStyle("symbolStyleSimpleIconAndTextPointPlacementOffsetTest.json");
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        StyledLayerDescriptor sld = mbStyle.transform();
+        Style style = MapboxTestUtils.getStyle(sld, 0);
+        TextSymbolizer ts =
+                (TextSymbolizer)
+                        style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(1);
+        PointPlacement pp = (PointPlacement) ts.getLabelPlacement();
+        // text-offset: [1, 0.5] as ems, with text-size set to 12, and opposite y direction
+        assertEquals(12, pp.getDisplacement().getDisplacementX().evaluate(null, Double.class), 0d);
+        assertEquals(-6, pp.getDisplacement().getDisplacementY().evaluate(null, Double.class), 0d);
     }
 }

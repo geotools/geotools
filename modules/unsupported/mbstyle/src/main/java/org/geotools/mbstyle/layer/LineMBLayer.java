@@ -511,6 +511,11 @@ public class LineMBLayer extends MBLayer {
         return parse.isPropertyDefined(paint, "line-pattern");
     }
 
+    /** @return True if the layer has a line-gap-width explicitly provided. */
+    public boolean hasLineGapWidth() {
+        return parse.isPropertyDefined(paint, "line-gap-width");
+    }
+
     /**
      * Transform {@link LineMBLayer} to GeoTools FeatureTypeStyle.
      *
@@ -554,15 +559,15 @@ public class LineMBLayer extends MBLayer {
             stroke.setGraphicFill(fill);
         }
 
-        if (getLineGapWidth().intValue() > 0) {
-            Double topOffset =
-                    getLineOffset().doubleValue()
-                            + (getLineGapWidth().doubleValue() / 2d)
-                            + getLineWidth().doubleValue() / 2d;
-            Double bottomOffset =
-                    getLineOffset().doubleValue()
-                            - (getLineGapWidth().doubleValue() / 2d)
-                            - getLineWidth().doubleValue() / 2d;
+        if (hasLineGapWidth()) {
+            Expression topOffset =
+                    ff.add(
+                            lineOffset(),
+                            ff.divide(ff.add(lineGapWidth(), lineWidth()), ff.literal(2)));
+            Expression bottomOffset =
+                    ff.subtract(
+                            lineOffset(),
+                            ff.divide(ff.add(lineGapWidth(), lineWidth()), ff.literal(2)));
 
             ls =
                     sf.lineSymbolizer(
@@ -571,7 +576,7 @@ public class LineMBLayer extends MBLayer {
                             sf.description(Text.text("line"), null),
                             Units.PIXEL,
                             stroke,
-                            ff.literal(topOffset));
+                            topOffset);
             LineSymbolizer bottomLine =
                     sf.lineSymbolizer(
                             getId(),
@@ -579,7 +584,7 @@ public class LineMBLayer extends MBLayer {
                             sf.description(Text.text("line"), null),
                             Units.PIXEL,
                             stroke,
-                            ff.literal(bottomOffset));
+                            bottomOffset);
             symbolizers.add(bottomLine);
         }
         symbolizers.add(ls);

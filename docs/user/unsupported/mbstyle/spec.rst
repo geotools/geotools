@@ -1781,10 +1781,10 @@ width of the inner gap.
    * - basic functionality
      - >= 0.10.0
      - Not yet supported
-     - Not yet supported
+     - 18.0
    * - data-driven styling
      - >= 0.29.0
-     - Not yet supported
+     - 22.2
      - Not yet supported
 
 line-offset
@@ -2670,11 +2670,11 @@ bottom-right
      - OpenLayers
    * - basic functionality
      - >= 0.10.0
-     - Not yet supported
+     - 23.0
      - >= 2.4.0
    * - data-driven styling
-     - Not yet supported
-     - Not yet supported
+     - >= 0.35.0
+     - >= 22.2
      - >= 2.4.0
 
 
@@ -2827,7 +2827,7 @@ lowercase
 text-offset
 """""""""""
 
-*Optional* :ref:`types-array`. *Units in* pixels. *Defaults to* 0,0. *Requires* icon-image.
+*Optional* :ref:`types-array`. *Units in* ems. *Defaults to* 0,0. *Requires* icon-image.
 
 Offset distance of text from its anchor. Positive values indicate right
 and down, while negative values indicate left and up.
@@ -2843,11 +2843,11 @@ and down, while negative values indicate left and up.
      - OpenLayers
    * - basic functionality
      - >= 0.10.0
-     - Not yet supported
+     - 22.2
      - >= 2.4.0
    * - data-driven styling
      - >= 0.35.0
-     - Not yet supported
+     - 22.2
      - >= 2.4.0
 
 text-allow-overlap

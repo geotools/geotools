@@ -208,8 +208,8 @@ public class MBFilter {
 
         if ("all".equals(operator)) {
             Set<SemanticType> semanticTypes = new HashSet<>();
-            for (int i = 1; i < json.size(); i++) {
-                JSONArray alternative = (JSONArray) json.get(i);
+            for (int i = 1; i < array.size(); i++) {
+                JSONArray alternative = (JSONArray) array.get(i);
                 Set<SemanticType> types = semanticTypeIdentifiers(alternative);
                 if (types.isEmpty()) {
                     continue;
@@ -226,15 +226,15 @@ public class MBFilter {
             return semanticTypes;
         } else if ("any".equals(operator)) {
             Set<SemanticType> semanticTypes = new HashSet<>();
-            for (int i = 1; i < json.size(); i++) {
-                Set<SemanticType> types = semanticTypeIdentifiers((JSONArray) json.get(i));
+            for (int i = 1; i < array.size(); i++) {
+                Set<SemanticType> types = semanticTypeIdentifiers((JSONArray) array.get(i));
                 semanticTypes.addAll(types);
             }
             return semanticTypes;
         } else if ("none".equals(operator)) {
             Set<SemanticType> semanticTypes = new HashSet<>(Arrays.asList(SemanticType.values()));
-            for (int i = 1; i < json.size(); i++) {
-                Set<SemanticType> types = semanticTypeIdentifiers((JSONArray) json.get(i));
+            for (int i = 1; i < array.size(); i++) {
+                Set<SemanticType> types = semanticTypeIdentifiers((JSONArray) array.get(i));
                 semanticTypes.removeAll(types);
             }
             return semanticTypes;

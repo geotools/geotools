@@ -23,7 +23,7 @@
             "type": "vector"
         }
     },
-    "sprite": "file:src/test/resources/org/geotools/mbstyle/sprite/test-data/sprite",
+    "sprite": "mapbox://sprites/testUser/ciz5qbyd3007j2spd3flvk2uh",
     "glyphs": "mapbox://fonts/testUser/{fontstack}/{range}.pbf",
     "layers": [
         {
@@ -32,40 +32,41 @@
             "source": "testsource",
             "source-layer": "testsource-layer",
             "layout": {
-                "icon-offset": [
-                    0,
-                    0
-                ],
-                "icon-image": "goldfish",
-                "icon-rotate": 0,
-                "visibility": "visible",
-                "icon-size": 1,
-                "symbol-placement": "line",
-                "symbol-spacing": 50.0,
-                "text-size": 20,
+                "text-line-height": 1,
+                "text-size": 17,
                 "text-transform": "lowercase",
-                "text-justify": "TOP",
+                "text-justify": "left",
+                "visibility": "visible",
                 "text-offset": [
-                    0,
-                    0.5
+                    00,
+                    00
                 ],
-                "text-anchor": "CENTER",
+                "text-anchor": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            0,
+                            "left"
+                        ],
+                        [
+                            8,
+                            "center"
+                        ]
+                    ]
+                },
                 "text-pitch-alignment": "viewport",
                 "text-field": "{text}",
                 "text-letter-spacing": 0.05,
                 "text-max-width": 5,
-                "text-font": ["Bitstream Vera Sans", "Other Test Font"],
-                "text-allow-overlap": true,      
-                
+                "text-font": ["Bitstream Vera Sans", "Other Test Font"]
             },
             "paint": {
-                "icon-opacity": 0.5,
-                "icon-translate": [
-                    0,
-                    0
-                ],
-                "text-translate": [0, 0],
-                "text-color": "#000000",
+                "text-color": "#334d77",
+                "text-opacity": 1,
+                "text-translate": [
+                      0,
+                      0
+                ]
             }
         }
     ],

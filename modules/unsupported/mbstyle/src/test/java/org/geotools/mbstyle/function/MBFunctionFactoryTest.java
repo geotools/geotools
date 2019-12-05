@@ -130,6 +130,21 @@ public class MBFunctionFactoryTest {
     }
 
     /**
+     * A function must implement evaluate(Object) without a target, Exponential did not
+     *
+     * @throws Exception
+     */
+    @Test
+    public void exponentialFunctionContext() throws Exception {
+        Function expColor =
+                (Function) ECQL.toExpression("Exponential( 0, 1.0, 0,'#000000', 10,'#ffffff')");
+        assertEquals(Color.BLACK, expColor.evaluate(null));
+
+        Function expNumeric = (Function) ECQL.toExpression("Exponential( 0, 1.0, 0,0, 10,100)");
+        assertEquals(0d, (Double) expNumeric.evaluate(null), 0d);
+    }
+
+    /**
      * Tests for the {@link DefaultIfNullFunction} to verify that it falls back to the provided
      * value when the input value is null in various contexts.
      */

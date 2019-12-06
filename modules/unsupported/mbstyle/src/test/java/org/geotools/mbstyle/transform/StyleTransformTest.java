@@ -634,6 +634,7 @@ public class StyleTransformTest {
         TextSymbolizer2 ts = (TextSymbolizer2) symbolizers.get(0);
         assertEquals("true", ts.getOptions().get("partials"));
         assertEquals("INDEPENDENT", ts.getOptions().get(TextSymbolizer.GRAPHIC_PLACEMENT_KEY));
+        assertEquals("false", ts.getOptions().get(PointSymbolizer.FALLBACK_ON_DEFAULT_MARK));
         assertNotNull(ts.getGraphic());
     }
 

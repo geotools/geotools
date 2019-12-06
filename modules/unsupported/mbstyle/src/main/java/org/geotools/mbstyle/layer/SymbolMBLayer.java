@@ -46,6 +46,7 @@ import org.geotools.styling.LabelPlacement;
 import org.geotools.styling.LinePlacement;
 import org.geotools.styling.Mark;
 import org.geotools.styling.PointPlacement;
+import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.Rule;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.StyleBuilder;
@@ -1925,6 +1926,8 @@ public class SymbolMBLayer extends MBLayer {
             if ("point".equalsIgnoreCase(symbolPlacementVal.trim())) {
                 symbolizer.getOptions().put(GRAPHIC_PLACEMENT_KEY, INDEPENDENT.name());
             }
+            // the mapbox-gl library does not paint the graphic if the icon cannot be found
+            symbolizer.getOptions().put(PointSymbolizer.FALLBACK_ON_DEFAULT_MARK, "false");
             symbolizer.setGraphic(graphic);
         }
 

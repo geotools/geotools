@@ -16,6 +16,10 @@
  */
 package org.geotools.mbstyle.layer;
 
+import static org.geotools.styling.TextSymbolizer.CONFLICT_RESOLUTION_KEY;
+import static org.geotools.styling.TextSymbolizer.GRAPHIC_PLACEMENT_KEY;
+import static org.geotools.styling.TextSymbolizer.GraphicPlacement.INDEPENDENT;
+
 import com.google.common.collect.ImmutableSet;
 import java.awt.*;
 import java.util.ArrayList;
@@ -1013,8 +1017,15 @@ public class SymbolMBLayer extends MBLayer {
      * @return AnchorPoint defined by "text-anchor".
      */
     public AnchorPoint anchorPoint() {
+        return anchorPointByProperty("text-anchor");
+    }
 
-        Expression expression = parse.string(layout, "text-anchor", TextAnchor.CENTER.name());
+    public AnchorPoint iconAnchorPoint() {
+        return anchorPointByProperty("icon-anchor");
+    }
+
+    public AnchorPoint anchorPointByProperty(String propertyName) {
+        Expression expression = parse.string(layout, propertyName, TextAnchor.CENTER.name());
         if (expression == null) {
             return null;
         }
@@ -1151,6 +1162,15 @@ public class SymbolMBLayer extends MBLayer {
         } else {
             return TextTransform.NONE;
         }
+    }
+
+    /**
+     * Returns true if the a text-transform property explicitly provided
+     *
+     * @return
+     */
+    public boolean hasTextTransform() {
+        return parse.isPropertyDefined(layout, "text-transform");
     }
 
     /**
@@ -1767,7 +1787,9 @@ public class SymbolMBLayer extends MBLayer {
                 textExpression = transformer.cqlExpressionFromTokens(text);
             }
         }
-        textExpression = ff.function("StringTransform", textExpression, textTransform());
+        if (hasTextTransform()) {
+            textExpression = ff.function("StringTransform", textExpression, textTransform());
+        }
 
         TextSymbolizer2 symbolizer =
                 (TextSymbolizer2)
@@ -1811,7 +1833,9 @@ public class SymbolMBLayer extends MBLayer {
 
         symbolizer
                 .getOptions()
-                .put("conflictResolution", String.valueOf(!(textAllowOverlap || iconAllowOverlap)));
+                .put(
+                        CONFLICT_RESOLUTION_KEY,
+                        String.valueOf(!(textAllowOverlap || iconAllowOverlap)));
 
         String textFitVal =
                 transformer
@@ -1888,16 +1912,6 @@ public class SymbolMBLayer extends MBLayer {
 
         // If the layer has an icon image, add it to our symbolizer
         if (hasIconImage()) {
-            // icon-ignore-placement requires an icon-image so we handle this property here.
-            // By default - or icon-ignore-placement: false, MapBox prevents symbols from being
-            // visible if they collide
-            // with other icons.  GeoServer only implements this behavior if the vendorOption
-            // labelObstacle is set
-            // to true.
-            if (!getIconIgnorePlacement()) {
-                symbolizer.getOptions().put("labelObstacle", "true");
-            }
-
             // Check to see that hasTextField() is true check to see if IconPadding is greater to
             // put to spaceAround
             if (!hasTextField()
@@ -1905,29 +1919,13 @@ public class SymbolMBLayer extends MBLayer {
                             && !"point".equalsIgnoreCase(symbolPlacementVal.trim())) {
                 symbolizer.getOptions().put("spaceAround", String.valueOf(getIconPadding()));
             }
-            // If we have an icon with a Point placement create a PointSymoblizer for the icon.
-            // This enables adjusting the text placement without moving the icon.
+            // If we have an icon with a Point placement force graphic placement independ
+            // of the label final position (each one gets its own anchor and displacement)
+            Graphic graphic = getGraphic(transformer, styleContext);
             if ("point".equalsIgnoreCase(symbolPlacementVal.trim())) {
-                org.geotools.styling.PointSymbolizer pointSymbolizer =
-                        sf.pointSymbolizer(
-                                getId(),
-                                ff.property((String) null),
-                                sf.description(Text.text("text"), null),
-                                Units.PIXEL,
-                                getGraphic(transformer, styleContext));
-                symbolizers.add(pointSymbolizer);
-            } else {
-
-                symbolizer.setGraphic(getGraphic(transformer, styleContext));
+                symbolizer.getOptions().put(GRAPHIC_PLACEMENT_KEY, INDEPENDENT.name());
             }
-        }
-
-        // Check that a labelObstacle vendor option hasn't already been placed on the symbolizer and
-        // that
-        // textIgnorePlacement is either null or false, if so add it.  If textIgnorePlacement is
-        // true, accept default behavior.
-        if (symbolizer.getOptions().get("labelObstacle") == null && !getTextIgnorePlacement()) {
-            symbolizer.getOptions().put("labelObstacle", "true");
+            symbolizer.setGraphic(graphic);
         }
 
         symbolizers.add(symbolizer);
@@ -1990,14 +1988,13 @@ public class SymbolMBLayer extends MBLayer {
                 styleContext.getSprite() == null
                         ? ""
                         : styleContext.getSprite().trim().toLowerCase();
+        Expression iconSize = iconSize();
         if (MARK_SHEET_ALIASES.contains(spriteSheetLocation)) {
             Fill f = sf.fill(null, iconColor(), null);
             Stroke s = sf.stroke(iconColor(), null, null, null, null, null, null);
             gs = sf.mark(iconExpression, f, s);
         } else {
-            gs =
-                    transformer.createExternalGraphicForSprite(
-                            iconExpression, iconSize(), styleContext);
+            gs = transformer.createExternalGraphicForSprite(iconExpression, iconSize, styleContext);
         }
 
         if (gs instanceof Mark) {
@@ -2005,16 +2002,25 @@ public class SymbolMBLayer extends MBLayer {
             // GraphicalSymbol is a mark.
             // If it is an ExternalGraphic from a sprite sheet, the absolute size of the icon is
             // unknown at this point.
-            graphicSize = ff.multiply(ff.literal(MARK_ICON_DEFAULT_SIZE), iconSize());
+            graphicSize = ff.multiply(ff.literal(MARK_ICON_DEFAULT_SIZE), iconSize);
         }
 
         Graphic g =
                 sf.graphic(Arrays.asList(gs), iconOpacity(), graphicSize, iconRotate(), null, null);
+        // From the specification:
+        // Offset distance of icon from its anchor. Positive values indicate right and down, while
+        // negative values indicate left and up. Each component is multiplied by the value of
+        // icon-size to obtain the final offset in pixels
         Displacement d = iconOffsetDisplacement();
-        d.setDisplacementY(d.getDisplacementY());
+        d.setDisplacementY(
+                ff.multiply(iconSize, ff.multiply(ff.literal(-1), d.getDisplacementY())));
+        d.setDisplacementX(ff.multiply(iconSize, d.getDisplacementX()));
         g.setDisplacement(d);
+        g.setAnchorPoint(iconAnchorPoint());
 
         return g;
+
+        // ADD A VENDOR OPTION FOR THE POINT INDEPENDENT LOCATION!!
     }
 
     /**

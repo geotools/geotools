@@ -16,6 +16,7 @@
  */
 package org.geotools.mbstyle.function;
 
+import java.awt.*;
 import org.geotools.data.Parameter;
 import org.geotools.data.util.ColorConverterFactory;
 import org.geotools.filter.FunctionImpl;
@@ -23,8 +24,6 @@ import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.text.Text;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
-
-import java.awt.*;
 
 /**
  * Generate a Color using {@link ColorConverterFactory}, the input is expected to be a String.

@@ -16,6 +16,7 @@
  */
 package org.geotools.mbstyle.transform;
 
+import static org.geotools.styling.TextSymbolizer.CONFLICT_RESOLUTION_KEY;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -67,6 +68,7 @@ import org.geotools.styling.Style;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.TextSymbolizer2;
 import org.geotools.styling.TextSymbolizerImpl;
 import org.geotools.xml.styling.SLDTransformer;
 import org.json.simple.JSONArray;
@@ -619,6 +621,22 @@ public class StyleTransformTest {
         assertEquals("Other Test Font", tsym.fonts().get(0).getFamily().get(1).toString());
     }
 
+    @Test
+    public void testSymbolTextAndIcon() throws IOException, ParseException {
+        JSONObject jsonObject = parseTestStyle("symbolTextAndIconTest.json");
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        List<MBLayer> layers = mbStyle.layers("test-source");
+        List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
+        Rule r = fts.get(0).rules().get(0);
+        // only one symbolizer
+        List<Symbolizer> symbolizers = r.symbolizers();
+        assertEquals(1, symbolizers.size());
+        TextSymbolizer2 ts = (TextSymbolizer2) symbolizers.get(0);
+        assertEquals("true", ts.getOptions().get("partials"));
+        assertEquals("INDEPENDENT", ts.getOptions().get(TextSymbolizer.GRAPHIC_PLACEMENT_KEY));
+        assertNotNull(ts.getGraphic());
+    }
+
     /**
      * MapBox symbol-avoid-edges defaults to false, If true, the symbols will not cross tile edges
      * to avoid mutual collisions. This concept is represented by using the Partials option in
@@ -649,7 +667,7 @@ public class StyleTransformTest {
         List<MBLayer> layers = mbStyle.layers("test-source");
         List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
         Rule r = fts.get(0).rules().get(0);
-        Symbolizer symbolizer = r.symbolizers().get(1);
+        Symbolizer symbolizer = r.symbolizers().get(0);
         assertEquals("true", ((TextSymbolizerImpl) symbolizer).getOptions().get("partials"));
     }
 
@@ -666,7 +684,7 @@ public class StyleTransformTest {
         List<MBLayer> layers = mbStyle.layers("test-source");
         List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
         Rule r = fts.get(0).rules().get(0);
-        Symbolizer symbolizer = r.symbolizers().get(1);
+        Symbolizer symbolizer = r.symbolizers().get(0);
         assertEquals("true", ((TextSymbolizerImpl) symbolizer).getOptions().get("partials"));
     }
 
@@ -683,7 +701,7 @@ public class StyleTransformTest {
         List<MBLayer> layers = mbStyle.layers("test-source");
         List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
         Rule r = fts.get(0).rules().get(0);
-        Symbolizer symbolizer = r.symbolizers().get(1);
+        Symbolizer symbolizer = r.symbolizers().get(0);
         assertNull("true", ((TextSymbolizerImpl) symbolizer).getOptions().get("partials"));
     }
 
@@ -700,8 +718,9 @@ public class StyleTransformTest {
         List<MBLayer> layers = mbStyle.layers("test-source");
         List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
         Rule r = fts.get(0).rules().get(0);
-        Symbolizer symbolizer = r.symbolizers().get(1);
-        assertEquals("true", symbolizer.getOptions().get("labelObstacle"));
+        Symbolizer symbolizer = r.symbolizers().get(0);
+        // no way to have only partial conflict resolution atm
+        assertEquals("true", symbolizer.getOptions().get(CONFLICT_RESOLUTION_KEY));
     }
 
     @Test
@@ -717,8 +736,9 @@ public class StyleTransformTest {
         List<MBLayer> layers = mbStyle.layers("test-source");
         List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
         Rule r = fts.get(0).rules().get(0);
-        Symbolizer symbolizer = r.symbolizers().get(1);
-        assertEquals("true", ((TextSymbolizerImpl) symbolizer).getOptions().get("labelObstacle"));
+        Symbolizer symbolizer = r.symbolizers().get(0);
+        // no way to have only partial conflict resolution right now
+        assertEquals("true", symbolizer.getOptions().get(CONFLICT_RESOLUTION_KEY));
     }
 
     @Test
@@ -734,8 +754,8 @@ public class StyleTransformTest {
         List<MBLayer> layers = mbStyle.layers("test-source");
         List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
         Rule r = fts.get(0).rules().get(0);
-        Symbolizer symbolizer = r.symbolizers().get(0);
-        assertEquals("true", symbolizer.getOptions().get("labelObstacle"));
+        TextSymbolizer2 symbolizer = (TextSymbolizer2) r.symbolizers().get(0);
+        assertEquals("true", symbolizer.getOptions().get(CONFLICT_RESOLUTION_KEY));
     }
 
     @Test
@@ -797,8 +817,8 @@ public class StyleTransformTest {
         assertEquals(1, fts.get(0).rules().size());
         Rule r = fts.get(0).rules().get(0);
 
-        assertEquals(2, r.symbolizers().size());
-        Symbolizer symbolizer = r.symbolizers().get(1);
+        assertEquals(1, r.symbolizers().size());
+        Symbolizer symbolizer = r.symbolizers().get(0);
         assertTrue(symbolizer instanceof TextSymbolizer);
         TextSymbolizer tsym = (TextSymbolizer) symbolizer;
 
@@ -889,7 +909,7 @@ public class StyleTransformTest {
         Style style = MapboxTestUtils.getStyle(sld, 0);
         TextSymbolizer ts =
                 (TextSymbolizer)
-                        style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(1);
+                        style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
         PointPlacement pp = (PointPlacement) ts.getLabelPlacement();
         // text-offset: [1, 0.5] as ems, with text-size set to 12, and opposite y direction
         assertEquals(12, pp.getDisplacement().getDisplacementX().evaluate(null, Double.class), 0d);

@@ -110,7 +110,7 @@ public class SymbolMBLayerTest {
                         .rules()
                         .get(0)
                         .symbolizers()
-                        .get(1)
+                        .get(0)
                         .getOptions()
                         .get("autoWrap"));
     }
@@ -132,7 +132,7 @@ public class SymbolMBLayerTest {
         assertEquals(10, testLayer.getTextRotate().intValue());
         // Test values from FeatureTypeStyle transform
         Rule r = featureTypeTestValues.get(0).rules().get(0);
-        TextSymbolizer2 symbolizer = (TextSymbolizer2) r.symbolizers().get(1);
+        TextSymbolizer2 symbolizer = (TextSymbolizer2) r.symbolizers().get(0);
         PointPlacement pp = (PointPlacement) symbolizer.getLabelPlacement();
         assertEquals("10", pp.getRotation().toString());
     }
@@ -187,7 +187,7 @@ public class SymbolMBLayerTest {
                         .rules()
                         .get(0)
                         .symbolizers()
-                        .get(1)
+                        .get(0)
                         .getOptions()
                         .get("spaceAround"));
     }
@@ -204,7 +204,7 @@ public class SymbolMBLayerTest {
                         .rules()
                         .get(0)
                         .symbolizers()
-                        .get(1)
+                        .get(0)
                         .getOptions()
                         .get("spaceAround"));
         assertEquals(30.0, testLineLayer.getIconPadding());

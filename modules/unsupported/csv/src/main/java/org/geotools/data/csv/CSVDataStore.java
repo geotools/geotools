@@ -84,7 +84,7 @@ public class CSVDataStore extends ContentDataStore implements FileDataStore {
 
     @Override
     public SimpleFeatureSource getFeatureSource() throws IOException {
-        return new CSVFeatureSource(this);
+        return super.getFeatureSource(getTypeName());
     }
 
     @Override

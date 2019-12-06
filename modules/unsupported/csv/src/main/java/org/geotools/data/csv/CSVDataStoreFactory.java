@@ -25,6 +25,8 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.data.DataStore;
 import org.geotools.data.FileDataStore;
@@ -37,10 +39,11 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.util.KVP;
 import org.geotools.util.URLs;
+import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.GeometryFactory;
 
 public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
-
+    Logger logger = Logging.getLogger("org.geotools.data.csv");
     /** GUESS_STRATEGY */
     public static final String GUESS_STRATEGY = "guess";
 
@@ -169,7 +172,14 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
         if (file == null) {
             throw new IllegalArgumentException("Cannot create store from null file");
         } else if (!file.exists()) {
-            throw new IllegalArgumentException("Cannot create store with file that does not exist");
+            /* try to make the file if it doesn't exist */
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                logger.log(Level.FINE, "problem creating file", e);
+                logger.info("unable to create CSV file " + file + "\n" + e.getLocalizedMessage());
+                throw e;
+            }
         }
         Map<String, Serializable> noParams = Collections.emptyMap();
         return createDataStoreFromFile(file, namespace, noParams);

@@ -12,6 +12,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -88,7 +89,7 @@ public class CSVWriteTest {
         Files.copy(resource.openStream(), statesfile.toPath(), StandardCopyOption.REPLACE_EXISTING);
     }
 
-    private String checkFileContents(File modified) throws IOException {
+    private String getFileContents(File modified) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Files.copy(modified.toPath(), baos);
         String contents = new String(baos.toByteArray(), StandardCharsets.UTF_8);
@@ -254,7 +255,7 @@ public class CSVWriteTest {
                     (SimpleFeatureStore) store.getFeatureSource("locations");
             assertEquals("featureStore should be empty", 0, featureStore.getFeatures().size());
             // Make sure the file is empty
-            assertEquals("file should have no content", "", checkFileContents(statesfile));
+            assertEquals("file should have no content", "", getFileContents(statesfile));
             t.commit();
         } catch (Throwable eek) {
             t.rollback();
@@ -318,7 +319,7 @@ public class CSVWriteTest {
         assertEquals(
                 "Ensure the file has only the one feature we created",
                 contents.trim(),
-                checkFileContents(statesfile).trim());
+                getFileContents(statesfile).trim());
         assertTrue("Temp files being left behind", cleanedup());
     }
 
@@ -418,7 +419,7 @@ public class CSVWriteTest {
             writer.close();
         }
         assertTrue("Temp files being left behind", cleanedup());
-        String contents = checkFileContents(file2);
+        String contents = getFileContents(file2);
         BufferedReader lineReader = new BufferedReader(new CharArrayReader(contents.toCharArray()));
         String line = lineReader.readLine(); // header
         assertFalse("Geom is included", line.toLowerCase().contains("the_geom"));
@@ -483,7 +484,7 @@ public class CSVWriteTest {
             writer.close();
         }
         assertTrue("Temp files being left behind", cleanedup());
-        String contents = checkFileContents(file2);
+        String contents = getFileContents(file2);
         BufferedReader lineReader = new BufferedReader(new CharArrayReader(contents.toCharArray()));
         String line = lineReader.readLine(); // header
 
@@ -493,6 +494,37 @@ public class CSVWriteTest {
         // LatLonStrategy can switch the coordinate order
         assertEquals("46.066667,11.116667,Trento,140,2002", line);
         file2.delete();
+    }
+
+    @Test
+    public void testWriteToNewFile() throws IOException {
+        File f = File.createTempFile("does-not-exist", ".csv");
+        URL states = TestData.url("shapes/statepop.shp");
+        FileDataStore store = FileDataStoreFinder.getDataStore(states);
+        assertNotNull("couldn't create input store", store);
+        CSVDataStoreFactory csvDataStoreFactory = new CSVDataStoreFactory();
+
+        CSVDataStore datastore = (CSVDataStore) csvDataStoreFactory.createDataStoreFromFile(f);
+
+        SimpleFeatureType featureType = store.getSchema();
+
+        datastore.createSchema(featureType);
+        SimpleFeatureSource source = datastore.getFeatureSource();
+        if (source instanceof SimpleFeatureStore) {
+            SimpleFeatureStore outStore = (SimpleFeatureStore) source;
+            outStore.addFeatures(store.getFeatureSource().getFeatures());
+        } else {
+            fail("Can't write to new CSVDatastore");
+        }
+
+        datastore.dispose();
+        datastore = (CSVDataStore) csvDataStoreFactory.createDataStoreFromFile(f);
+        source = datastore.getFeatureSource();
+        SimpleFeatureCollection features = source.getFeatures();
+        assertEquals(
+                "wrong number of records",
+                store.getFeatureSource().getFeatures().size(),
+                features.size());
     }
 
     @Test
@@ -535,7 +567,7 @@ public class CSVWriteTest {
             writer.close();
         }
         assertTrue("Temp files being left behind", cleanedup());
-        String contents = checkFileContents(file2);
+        String contents = getFileContents(file2);
         BufferedReader lineReader = new BufferedReader(new CharArrayReader(contents.toCharArray()));
         String line = lineReader.readLine(); // header
         assertTrue("Geom is not included", line.toLowerCase().contains("the_geom_wkt"));

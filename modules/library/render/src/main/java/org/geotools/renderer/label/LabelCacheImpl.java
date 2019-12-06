@@ -407,6 +407,10 @@ public class LabelCacheImpl implements LabelCache {
         item.setFontShrinkSizeMin(
                 voParser.getIntOption(
                         symbolizer, FONT_SHRINK_SIZE_MIN, DEFAULT_FONT_SHRINK_SIZE_MIN));
+        item.setGraphicPlacement(
+                (GraphicPlacement)
+                        voParser.getEnumOption(
+                                symbolizer, GRAPHIC_PLACEMENT_KEY, GraphicPlacement.LABEL));
         return item;
     }
 
@@ -1458,7 +1462,7 @@ public class LabelCacheImpl implements LabelCache {
                         && glyphs.labelsWithinDistance(transformed, labelItem.getSpaceAround()))) {
             return false;
         } else {
-            painter.paintStraightLabel(tempTransform);
+            painter.paintStraightLabel(tempTransform, point.getCoordinate());
             if (DEBUG_CACHE_BOUNDS) {
                 painter.graphics.setStroke(new BasicStroke());
                 painter.graphics.setColor(Color.RED);

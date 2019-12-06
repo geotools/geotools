@@ -420,6 +420,7 @@ Examples:
 Point symbolizers support ``VendorOptions``:
 
 * ``labelObstacle(true/false)``\ : No labels should overlap this feature, used to ensure point graphics are clearly visible and not obscured by text.
+* ``fallbackOnDefaultMark(true/false)``\ : If the graphics used in the symbolizer cannot be found, fallback on a default gray square (``true``, default value) or skip the symbolizer without painting anything (``false``).
 
 LineSymbolizer
 ''''''''''''''

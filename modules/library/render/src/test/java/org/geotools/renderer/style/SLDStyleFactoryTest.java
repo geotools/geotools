@@ -17,6 +17,7 @@
 package org.geotools.renderer.style;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertThat;
 
 import java.awt.Color;
 import java.awt.Rectangle;
@@ -61,6 +62,7 @@ import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.util.NumberRange;
+import org.hamcrest.CoreMatchers;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -282,6 +284,30 @@ public class SLDStyleFactoryTest extends TestCase {
         BufferedImage img = gs.getImage();
         assertEquals(20, img.getHeight());
         assertEquals(20, img.getWidth());
+    }
+
+    public void testNonExistingExternalGraphic() throws Exception {
+        URL url = StreamingRenderer.class.getResource("test-data/");
+        PointSymbolizer symb = sf.createPointSymbolizer();
+        ExternalGraphic eg = sf.createExternalGraphic(url + "iAmNotThere.png", "image/png");
+        symb.getGraphic().graphicalSymbols().add(eg);
+
+        // test normal fallback behavior, graphics not found implies using a default mark
+        Style2D style2D = sld.createPointStyle(feature, symb, range);
+        assertThat(style2D, CoreMatchers.instanceOf(MarkStyle2D.class));
+        MarkStyle2D mark = (MarkStyle2D) style2D;
+        assertEquals(Color.GRAY, mark.getFill());
+    }
+
+    public void testNonExistingExternalGraphicNoFallback() throws Exception {
+        URL url = StreamingRenderer.class.getResource("test-data/");
+        PointSymbolizer symb = sf.createPointSymbolizer();
+        ExternalGraphic eg = sf.createExternalGraphic(url + "iAmNotThere.png", "image/png");
+        symb.getGraphic().graphicalSymbols().add(eg);
+        symb.getOptions().put(PointSymbolizer.FALLBACK_ON_DEFAULT_MARK, "false");
+
+        // fallback has been disabled
+        assertNull(sld.createPointStyle(feature, symb, range));
     }
 
     public void testResizeGraphicFill() throws Exception {

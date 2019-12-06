@@ -65,6 +65,14 @@ package org.geotools.styling;
  * @version $Id$
  */
 public interface PointSymbolizer extends org.opengis.style.PointSymbolizer, Symbolizer {
+
+    /**
+     * Boolean vendor option, defaults to true. If true, in case no specified mark or graphics can
+     * be used, the default square mark will be used instead. If false, the symbol will not be
+     * painted.
+     */
+    public static String FALLBACK_ON_DEFAULT_MARK = "fallbackOnDefaultMark";
+
     /**
      * Provides the graphical-symbolization parameter to use for the point geometry.
      *

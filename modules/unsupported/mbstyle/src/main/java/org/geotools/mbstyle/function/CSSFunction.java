@@ -16,15 +16,15 @@
  */
 package org.geotools.mbstyle.function;
 
-import java.awt.Color;
 import org.geotools.data.Parameter;
 import org.geotools.data.util.ColorConverterFactory;
 import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.text.Text;
-import org.geotools.util.Converters;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
+
+import java.awt.*;
 
 /**
  * Generate a Color using {@link ColorConverterFactory}, the input is expected to be a String.
@@ -60,19 +60,16 @@ public class CSSFunction extends FunctionImpl {
     }
 
     @Override
-    public <T> T evaluate(Object object, Class<T> context) {
+    public Object evaluate(Object object) {
         Expression input = getParameters().get(0);
         String string = input.evaluate(object, String.class);
         if (string == null) {
             return null;
         }
-        Color color;
         try {
-            color = ColorConverterFactory.CONVERT_CSS_TO_COLOR.convert(string, Color.class);
+            return ColorConverterFactory.CONVERT_CSS_TO_COLOR.convert(string, Color.class);
         } catch (Exception e) {
             return null;
         }
-
-        return Converters.convert(color, context);
     }
 }

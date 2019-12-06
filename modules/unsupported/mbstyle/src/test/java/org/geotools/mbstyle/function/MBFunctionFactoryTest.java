@@ -20,7 +20,6 @@ package org.geotools.mbstyle.function;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.awt.Color;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.text.ecql.ECQL;
@@ -29,6 +28,8 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Function;
+
+import java.awt.*;
 
 /** Test the {@link ExponentialFunction}, {@link ZoomLevelFunction} and {@link CSSFunction}. */
 public class MBFunctionFactoryTest {
@@ -48,6 +49,12 @@ public class MBFunctionFactoryTest {
         expr = (Function) ECQL.toExpression("css('rgb(255,0,0)')");
         assertEquals("rgb", Color.red, expr.evaluate(null, Color.class));
         assertEquals("rgb", "#FF0000", expr.evaluate(null, String.class));
+    }
+
+    @Test
+    public void colorFunctionNoContext() throws Exception {
+        Function expr = (Function) ECQL.toExpression("css('#ff0000')");
+        assertEquals("hex", Color.red, expr.evaluate(null));
     }
 
     @Test
@@ -193,6 +200,16 @@ public class MBFunctionFactoryTest {
         assertEquals("DefautValue", f.evaluate(feature, String.class));
     }
 
+    /** Same as above, but without providing a target context class. Used to throw an exception */
+    @Test
+    public void defaultIfNullNoContextTest() throws Exception {
+        Function f = (Function) ECQL.toExpression("DefaultIfNull('#FF0000', '#000000')");
+        assertEquals("#FF0000", f.evaluate(null));
+
+        f = ff.function("DefaultIfNull", ff.literal(null), ff.literal("#000000"));
+        assertEquals("#000000", f.evaluate(null));
+    }
+
     /** Tests for {@link ZoomLevelFunction}, converting scale 3857 denominators to zoom levels. */
     @Test
     public void zoomFunctionTest() throws Exception {
@@ -260,5 +277,11 @@ public class MBFunctionFactoryTest {
 
         f = ff.function("StringTransform", ff.literal(null), ff.literal(null));
         assertTrue(null == f.evaluate(null, String.class));
+    }
+
+    @Test
+    public void stringTransformFunctionTestNoContext() throws Exception {
+        Function f = (Function) ECQL.toExpression("StringTransform('SoMeString', 'uppercase')");
+        assertEquals("SOMESTRING", f.evaluate(null));
     }
 }

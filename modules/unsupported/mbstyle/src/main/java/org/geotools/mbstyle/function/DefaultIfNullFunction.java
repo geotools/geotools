@@ -16,14 +16,15 @@
  */
 package org.geotools.mbstyle.function;
 
-import java.util.List;
-import java.util.logging.Logger;
 import org.geotools.data.Parameter;
 import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.text.Text;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
+
+import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Function that takes an input value, and a default value. If the input value is null (or
@@ -58,16 +59,25 @@ public class DefaultIfNullFunction extends FunctionImpl {
     }
 
     @Override
+    public Object evaluate(Object object) {
+        return evaluate(object, null);
+    }
+
+    @Override
     public <T> T evaluate(Object object, Class<T> context) {
         List<Expression> parameters = getParameters();
 
         Expression input = parameters.get(0);
         Expression fallback = parameters.get(1);
 
-        T fallbackEvaluated = fallback.evaluate(object, context);
+        T fallbackEvaluated =
+                context == null
+                        ? (T) fallback.evaluate(object)
+                        : fallback.evaluate(object, context);
         T inputEvaluated;
         try {
-            inputEvaluated = input.evaluate(object, context);
+            inputEvaluated =
+                    context == null ? (T) input.evaluate(object) : input.evaluate(object, context);
         } catch (Exception e) {
             inputEvaluated = null;
             LOGGER.warning(

@@ -239,10 +239,10 @@ public class MBFunctionFactoryTest {
                                         + ", 'EPSG:3857')");
         assertEquals(0.5, fhalf.evaluate(null, Number.class).doubleValue(), tol);
 
-        double scaleDenomForZoom22 = 133.295598972;
-        Function f22 =
-                (Function) ECQL.toExpression("zoomLevel(" + scaleDenomForZoom22 + ", 'EPSG:3857')");
-        assertEquals(22.0, f22.evaluate(null, Number.class).doubleValue(), tol);
+        double scaleDenomForZoom21 = 133.295598972;
+        Function f21 =
+                (Function) ECQL.toExpression("zoomLevel(" + scaleDenomForZoom21 + ", 'EPSG:3857')");
+        assertEquals(21.0, f21.evaluate(null, Number.class).doubleValue(), tol);
     }
 
     @Test

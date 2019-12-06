@@ -37,6 +37,19 @@ Internally the extension provides greater access to the parsed style:
     //Which can be used to Generate a List of FeatureTypeStyles:
     List<FeatureTypeStyle> fts = layer.transform( style );
 
+
+Zoom level tuning
+^^^^^^^^^^^^^^^^^
+
+The mapping between zoom levels and scale denominators is performed assuming, by default, a 512 pixels
+root tile at zoom level zero. This matches the usage of vector tiles client side.
+If a different value is to be used, it's possible to set a system variable to change the default.
+E.g., the following would match "x4" tiles:
+
+.. code-block:: java
+
+    System.setSystemProperty("MBSTYLE_ROOT_TILE_PIXELS", "1024") 
+
 MapBox Types
 ^^^^^^^^^^^^
   copied from the `MapBox Style Specification <https://www.mapbox.com/mapbox-gl-js/style-spec/>`_

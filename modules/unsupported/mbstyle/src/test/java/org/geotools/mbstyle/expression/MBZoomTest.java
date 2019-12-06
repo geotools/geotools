@@ -23,6 +23,6 @@ public class MBZoomTest extends AbstractMBExpressionTest {
         EnvFunction.setGlobalValue("wms_scale_denominator", "2132.729584");
         final JSONObject j = getObjectByLayerId("zoomExpression", "paint");
         Object o = getExpressionEvaluation(j, "circle-radius");
-        assertEquals(ff.literal(Math.round(17.999)), ff.literal(Math.round((double) o)));
+        assertEquals(ff.literal(Math.round(16.999)), ff.literal(Math.round((double) o)));
     }
 }

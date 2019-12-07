@@ -17,7 +17,7 @@
  */
 package org.geotools.data.csv;
 
-import com.csvreader.CsvReader;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -29,6 +29,8 @@ import org.apache.commons.io.FilenameUtils;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
 
 public class CSVFileState {
 
@@ -102,15 +104,15 @@ public class CSVFileState {
     }
 
     // docs start openCSVReader
-    public CsvReader openCSVReader() throws IOException {
+    public CSVReader openCSVReader() throws IOException, CsvValidationException {
         Reader reader;
         if (file != null) {
             reader = new BufferedReader(new FileReader(file));
         } else {
             reader = new StringReader(dataInput);
         }
-        CsvReader csvReader = new CsvReader(reader);
-        if (!csvReader.readHeaders()) {
+        CSVReader csvReader = new CSVReader(reader);
+        if ((headers=csvReader.readNext())!=null) {
             throw new IOException("Error reading csv headers");
         }
         return csvReader;
@@ -130,15 +132,21 @@ public class CSVFileState {
     }
 
     private String[] readCSVHeaders() {
-        CsvReader csvReader = null;
+        CSVReader csvReader = null;
         try {
             csvReader = openCSVReader();
-            return csvReader.getHeaders();
+            return csvReader.readNext();
         } catch (IOException e) {
             throw new RuntimeException("Failure reading csv headers", e);
+        } catch (CsvValidationException e) {
+          throw new RuntimeException("Failure reading csv headers", e);
         } finally {
             if (csvReader != null) {
-                csvReader.close();
+                try {
+                  csvReader.close();
+                } catch (IOException e) {
+                  //who cares!
+                }
             }
         }
     }

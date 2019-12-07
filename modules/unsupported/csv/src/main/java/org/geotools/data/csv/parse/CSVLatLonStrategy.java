@@ -17,8 +17,7 @@
  */
 package org.geotools.data.csv.parse;
 
-import com.csvreader.CsvReader;
-import com.csvreader.CsvWriter;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,6 +40,9 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.cs.AxisDirection;
+import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
+import com.opencsv.exceptions.CsvValidationException;
 
 // docs start CSVLatLonStrategy
 public class CSVLatLonStrategy extends CSVStrategy {
@@ -74,16 +76,20 @@ public class CSVLatLonStrategy extends CSVStrategy {
     protected SimpleFeatureType buildFeatureType() {
         String[] headers;
         Map<String, Class<?>> typesFromData;
-        CsvReader csvReader = null;
+        CSVReader csvReader = null;
         try {
             csvReader = csvFileState.openCSVReader();
-            headers = csvReader.getHeaders();
+            headers = csvReader.readNext();
             typesFromData = findMostSpecificTypesFromData(csvReader, headers);
-        } catch (IOException e) {
+        } catch (IOException | CsvValidationException e) {
             throw new RuntimeException(e);
         } finally {
             if (csvReader != null) {
-                csvReader.close();
+                try {
+                  csvReader.close();
+                } catch (IOException e) {
+                  // who cares!
+                }
             }
         }
         SimpleFeatureTypeBuilder builder = createBuilder(csvFileState, headers, typesFromData);
@@ -163,9 +169,9 @@ public class CSVLatLonStrategy extends CSVStrategy {
             header.add(descriptor.getLocalName());
         }
         // Write out header, producing an empty file of the correct type
-        CsvWriter writer = new CsvWriter(new FileWriter(this.csvFileState.getFile()), ',');
+        CSVWriter writer = new CSVWriter(new FileWriter(this.csvFileState.getFile()), ',', '"', '\\', "\n");
         try {
-            writer.writeRecord(header.toArray(new String[header.size()]));
+            writer.writeNext(header.toArray(new String[header.size()]));
         } finally {
             writer.close();
         }

@@ -17,12 +17,14 @@
  */
 package org.geotools.data.csv.parse;
 
-import com.csvreader.CsvReader;
+
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import org.geotools.data.csv.CSVFileState;
 import org.opengis.feature.simple.SimpleFeature;
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
 
 public class CSVIterator implements Iterator<SimpleFeature> {
 
@@ -30,13 +32,17 @@ public class CSVIterator implements Iterator<SimpleFeature> {
 
     private SimpleFeature next;
 
-    private final CsvReader csvReader;
+    private final CSVReader csvReader;
 
     private final CSVStrategy csvStrategy;
 
     public CSVIterator(CSVFileState csvFileState, CSVStrategy csvStrategy) throws IOException {
         this.csvStrategy = csvStrategy;
-        csvReader = csvFileState.openCSVReader();
+        try {
+          csvReader = csvFileState.openCSVReader();
+        } catch (CsvValidationException e) {
+          throw new IOException(e);
+        }
         idx = 1;
         next = null;
     }
@@ -63,9 +69,14 @@ public class CSVIterator implements Iterator<SimpleFeature> {
 
     // docs start readFeature
     private SimpleFeature readFeature() throws IOException {
-        if (csvReader.readRecord()) {
-            String[] csvRecord = csvReader.getValues();
-            return buildFeature(csvRecord);
+      String [] record;
+        try {
+          if ((record=csvReader.readNext())!=null) {
+              
+              return buildFeature(record);
+          }
+        } catch (CsvValidationException e) {
+          throw new IOException(e);
         }
         return null;
     }
@@ -96,6 +107,10 @@ public class CSVIterator implements Iterator<SimpleFeature> {
     }
 
     public void close() {
-        csvReader.close();
+        try {
+          csvReader.close();
+        } catch (IOException e) {
+          // Who cares?
+        }
     }
 }

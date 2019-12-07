@@ -17,7 +17,7 @@
  */
 package org.geotools.data.csv.parse;
 
-import com.csvreader.CsvWriter;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,6 +37,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
+import com.opencsv.CSVWriter;
 
 public class CSVSpecifiedWKTStrategy extends CSVStrategy {
 
@@ -81,9 +82,9 @@ public class CSVSpecifiedWKTStrategy extends CSVStrategy {
             }
         }
         // Write out header, producing an empty file of the correct type
-        CsvWriter writer = new CsvWriter(new FileWriter(this.csvFileState.getFile()), ',');
+        CSVWriter writer = new CSVWriter(new FileWriter(this.csvFileState.getFile()), ',', '"','\\',"\n");
         try {
-            writer.writeRecord(header.toArray(new String[header.size()]));
+            writer.writeNext(header.toArray(new String[header.size()]));
         } finally {
             writer.close();
         }

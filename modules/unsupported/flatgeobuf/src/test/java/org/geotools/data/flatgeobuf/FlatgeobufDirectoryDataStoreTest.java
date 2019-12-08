@@ -74,7 +74,7 @@ public class FlatgeobufDirectoryDataStoreTest {
 
         // Get a DataStore
         Map<String, Serializable> params = new HashMap<>();
-        params.put("file", directory);
+        params.put("flatgeobuf-file", directory);
         DataStore store = DataStoreFinder.getDataStore(params);
 
         // Get layers
@@ -127,7 +127,7 @@ public class FlatgeobufDirectoryDataStoreTest {
         File file1 = Files.createFile(Paths.get(dir.getAbsolutePath(), "points.fgb")).toFile();
         File file2 = Files.createFile(Paths.get(dir.getAbsolutePath(), "lines.fgb")).toFile();
         Map<String, Serializable> params = new HashMap<>();
-        params.put("file", dir);
+        params.put("flatgeobuf-file", dir);
         DataStore store = DataStoreFinder.getDataStore(params);
         // File 1
         assertTrue(file1.exists());

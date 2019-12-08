@@ -57,7 +57,7 @@ public class FlatgeobufDataStoreTest {
                                 .getClassLoader()
                                 .getResource("org/geotools/data/flatgeobuf/points.fgb"));
         Map<String, Serializable> params = new HashMap<>();
-        params.put("file", file);
+        params.put("flatgeobuf-file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
         assertEquals(1, store.getTypeNames().length);
         assertEquals("points", store.getTypeNames()[0]);
@@ -97,7 +97,7 @@ public class FlatgeobufDataStoreTest {
     public void writePoints() throws Exception {
         File file = temporaryFolder.newFile("points.fgb");
         Map<String, Serializable> params = new HashMap<>();
-        params.put("file", file);
+        params.put("flatgeobuf-file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
 
         // Write
@@ -165,7 +165,7 @@ public class FlatgeobufDataStoreTest {
                                 .getClassLoader()
                                 .getResource("org/geotools/data/flatgeobuf/lines.fgb"));
         Map<String, Serializable> params = new HashMap<>();
-        params.put("file", file);
+        params.put("flatgeobuf-file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
         assertEquals(1, store.getTypeNames().length);
         assertEquals("lines", store.getTypeNames()[0]);
@@ -204,7 +204,7 @@ public class FlatgeobufDataStoreTest {
     public void writeLineStrings() throws Exception {
         File file = temporaryFolder.newFile("lines.fgb");
         Map<String, Serializable> params = new HashMap<>();
-        params.put("file", file);
+        params.put("flatgeobuf-file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
 
         // Write
@@ -277,7 +277,7 @@ public class FlatgeobufDataStoreTest {
                                 .getClassLoader()
                                 .getResource("org/geotools/data/flatgeobuf/polygons.fgb"));
         Map<String, Serializable> params = new HashMap<>();
-        params.put("file", file);
+        params.put("flatgeobuf-file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
         assertEquals(1, store.getTypeNames().length);
         assertEquals("polygons", store.getTypeNames()[0]);
@@ -334,7 +334,7 @@ public class FlatgeobufDataStoreTest {
     public void writePolygons() throws Exception {
         File file = temporaryFolder.newFile("polygons.fgb");
         Map<String, Serializable> params = new HashMap<>();
-        params.put("file", file);
+        params.put("flatgeobuf-file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
 
         // Write
@@ -447,7 +447,7 @@ public class FlatgeobufDataStoreTest {
                                 .getClassLoader()
                                 .getResource("org/geotools/data/flatgeobuf/multipoints.fgb"));
         Map<String, Serializable> params = new HashMap<>();
-        params.put("file", file);
+        params.put("flatgeobuf-file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
         assertEquals(1, store.getTypeNames().length);
         assertEquals("multipoints", store.getTypeNames()[0]);
@@ -487,7 +487,7 @@ public class FlatgeobufDataStoreTest {
     public void writeMultiPoints() throws Exception {
         File file = temporaryFolder.newFile("multipoints.fgb");
         Map<String, Serializable> params = new HashMap<>();
-        params.put("file", file);
+        params.put("flatgeobuf-file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
 
         // Write
@@ -553,7 +553,7 @@ public class FlatgeobufDataStoreTest {
                                 .getClassLoader()
                                 .getResource("org/geotools/data/flatgeobuf/multilinestrings.fgb"));
         Map<String, Serializable> params = new HashMap<>();
-        params.put("file", file);
+        params.put("flatgeobuf-file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
         assertEquals(1, store.getTypeNames().length);
         assertEquals("multilinestrings", store.getTypeNames()[0]);
@@ -594,7 +594,7 @@ public class FlatgeobufDataStoreTest {
     public void writeMultiLineStrings() throws Exception {
         File file = temporaryFolder.newFile("multilinestrings.fgb");
         Map<String, Serializable> params = new HashMap<>();
-        params.put("file", file);
+        params.put("flatgeobuf-file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
 
         // Write
@@ -665,7 +665,7 @@ public class FlatgeobufDataStoreTest {
                                 .getClassLoader()
                                 .getResource("org/geotools/data/flatgeobuf/multipolygons.fgb"));
         Map<String, Serializable> params = new HashMap<>();
-        params.put("file", file);
+        params.put("flatgeobuf-file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
         assertEquals(1, store.getTypeNames().length);
         assertEquals("multipolygons", store.getTypeNames()[0]);
@@ -721,7 +721,7 @@ public class FlatgeobufDataStoreTest {
     public void writeMultiPolygons() throws Exception {
         File file = temporaryFolder.newFile("multipolygons.fgb");
         Map<String, Serializable> params = new HashMap<>();
-        params.put("file", file);
+        params.put("flatgeobuf-file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
 
         // Write
@@ -825,7 +825,7 @@ public class FlatgeobufDataStoreTest {
     public void removeSchema() throws Exception {
         File file = temporaryFolder.newFile("points.fgb");
         Map<String, Serializable> params = new HashMap<>();
-        params.put("file", file);
+        params.put("flatgeobuf-file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
         assertTrue(file.exists());
         store.removeSchema(new NameImpl("points"));
@@ -836,7 +836,7 @@ public class FlatgeobufDataStoreTest {
     public void removeSchemaWhenFileDoesNotExist() throws Exception {
         File file = temporaryFolder.newFile("points.fgb");
         Map<String, Serializable> params = new HashMap<>();
-        params.put("file", file);
+        params.put("flatgeobuf-file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
         file.delete();
         store.removeSchema(new NameImpl("points"));

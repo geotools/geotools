@@ -33,7 +33,7 @@ public class FlatgeobufDataStoreFactory implements DataStoreFactorySpi {
 
     public static final Param FILE_PARAM =
             new Param(
-                    "file",
+                    "flatgeobuf-file",
                     File.class,
                     "The Flatgeobuf file or directory",
                     true,

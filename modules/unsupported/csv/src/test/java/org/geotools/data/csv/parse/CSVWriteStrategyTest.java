@@ -83,7 +83,7 @@ public class CSVWriteStrategyTest {
         } else {
             trento = gf.createPoint(new Coordinate(11.116667, 46.066667));
         }
-        System.out.println(trento);
+
         SimpleFeature feature =
                 SimpleFeatureBuilder.build(
                         featureType, new Object[] {trento, "Trento", 140, 2002}, "TEST-fid1");

@@ -17,11 +17,12 @@
  */
 package org.geotools.data.csv.parse;
 
-
+import com.opencsv.CSVWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import org.geotools.data.csv.CSVFileState;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -31,7 +32,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
-import com.opencsv.CSVWriter;
 
 public class CSVAttributesOnlyStrategy extends CSVStrategy {
 
@@ -55,9 +55,10 @@ public class CSVAttributesOnlyStrategy extends CSVStrategy {
         }
 
         // Write out header, producing an empty file of the correct type
-        CSVWriter writer = new CSVWriter(new FileWriter(this.csvFileState.getFile()), ',', '"', '\\', "\n");
+        CSVWriter writer =
+                new CSVWriter(new FileWriter(this.csvFileState.getFile()), ',', '"', '\\', "\n");
         try {
-            writer.writeNext(header.toArray(new String[header.size()]));
+            writer.writeNext(header.toArray(new String[header.size()]), false);
         } finally {
             writer.close();
         }
@@ -83,8 +84,13 @@ public class CSVAttributesOnlyStrategy extends CSVStrategy {
     public SimpleFeature decode(String recordId, String[] csvRecord) {
         SimpleFeatureType featureType = getFeatureType();
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder(featureType);
-        String[] headers;
-        headers = csvFileState.getCSVHeaders();
+        String[] headers = csvFileState.getCSVHeaders();
+        if (LOGGER.getLevel() == Level.FINE) {
+            LOGGER.fine("Got headers in decode: ");
+            for (String h : headers) {
+                LOGGER.fine("'" + h + "'");
+            }
+        }
         for (int i = 0; i < headers.length; i++) {
             String header = headers[i];
             if (i < csvRecord.length) {

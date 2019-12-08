@@ -17,13 +17,16 @@
  */
 package org.geotools.data.csv.parse;
 
-
+import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
+import com.opencsv.exceptions.CsvValidationException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import org.geotools.data.csv.CSVFileState;
 import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -40,9 +43,6 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.cs.AxisDirection;
-import com.opencsv.CSVReader;
-import com.opencsv.CSVWriter;
-import com.opencsv.exceptions.CsvValidationException;
 
 // docs start CSVLatLonStrategy
 public class CSVLatLonStrategy extends CSVStrategy {
@@ -79,16 +79,22 @@ public class CSVLatLonStrategy extends CSVStrategy {
         CSVReader csvReader = null;
         try {
             csvReader = csvFileState.openCSVReader();
-            headers = csvReader.readNext();
+            headers = csvFileState.getCSVHeaders();
+            if (LOGGER.getLevel() == Level.FINE) {
+                LOGGER.fine("Got headers: ");
+                for (String h : headers) {
+                    LOGGER.fine("'" + h + "'");
+                }
+            }
             typesFromData = findMostSpecificTypesFromData(csvReader, headers);
         } catch (IOException | CsvValidationException e) {
             throw new RuntimeException(e);
         } finally {
             if (csvReader != null) {
                 try {
-                  csvReader.close();
+                    csvReader.close();
                 } catch (IOException e) {
-                  // who cares!
+                    // who cares!
                 }
             }
         }
@@ -168,10 +174,18 @@ public class CSVLatLonStrategy extends CSVStrategy {
             if (descriptor instanceof GeometryDescriptor) continue;
             header.add(descriptor.getLocalName());
         }
+
+        if (LOGGER.getLevel() == Level.FINE) {
+            LOGGER.fine("Got headers in createSchema: ");
+            for (String h : header) {
+                LOGGER.fine("'" + h + "'");
+            }
+        }
         // Write out header, producing an empty file of the correct type
-        CSVWriter writer = new CSVWriter(new FileWriter(this.csvFileState.getFile()), ',', '"', '\\', "\n");
+        CSVWriter writer =
+                new CSVWriter(new FileWriter(this.csvFileState.getFile()), ',', '"', '\\', "\n");
         try {
-            writer.writeNext(header.toArray(new String[header.size()]));
+            writer.writeNext(header.toArray(new String[header.size()]), false);
         } finally {
             writer.close();
         }
@@ -187,10 +201,17 @@ public class CSVLatLonStrategy extends CSVStrategy {
         GeometryFactory geometryFactory = new GeometryFactory();
         Double lat = null, lng = null;
         String[] headers = csvFileState.getCSVHeaders();
+        if (LOGGER.getLevel() == Level.FINE) {
+            LOGGER.fine("Got headers in decode: ");
+            for (String h : headers) {
+                LOGGER.fine("'" + h + "'");
+            }
+        }
         for (int i = 0; i < headers.length; i++) {
             String header = headers[i];
             if (i < csvRecord.length) {
                 String value = csvRecord[i].trim();
+                LOGGER.fine("Processing " + header + " with value of " + value);
                 if (geometryDescriptor != null && header.equals(latField)) {
                     lat = Double.valueOf(value);
                 } else if (geometryDescriptor != null && header.equals(lngField)) {
@@ -199,6 +220,7 @@ public class CSVLatLonStrategy extends CSVStrategy {
                     builder.set(header, value);
                 }
             } else {
+                LOGGER.warning("record had fewer values than header");
                 builder.set(header, null);
             }
         }
@@ -225,7 +247,7 @@ public class CSVLatLonStrategy extends CSVStrategy {
     // docs start encode
     @Override
     public String[] encode(SimpleFeature feature) {
-        List<String> csvRecord = new ArrayList<String>();
+        List<String> csvRecord = new ArrayList<>();
         String[] headers = csvFileState.getCSVHeaders();
         int latIndex = 0;
         int lngIndex = 0;

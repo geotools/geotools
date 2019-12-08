@@ -36,7 +36,8 @@ public class CSVLatLonStrategyTest {
 
     @Test
     public void testBuildFeatureType() {
-        String input = CSVTestStrategySupport.buildInputString("lat,lon,quux,morx\n");
+        String input =
+                CSVTestStrategySupport.buildInputString("lat,lon,quux,morx\n1.0,2.3,dkdkd,dkskd");
         CSVFileState fileState = new CSVFileState(input, "foo");
         CSVLatLonStrategy strategy = new CSVLatLonStrategy(fileState);
         SimpleFeatureType featureType = strategy.getFeatureType();
@@ -372,7 +373,7 @@ public class CSVLatLonStrategyTest {
 
     @Test
     public void testSpecifiedBuildFeatureType() {
-        String input = CSVTestStrategySupport.buildInputString("quux,morx\n");
+        String input = CSVTestStrategySupport.buildInputString("quux,morx\n1,2");
         CSVFileState fileState = new CSVFileState(input, "foo");
         CSVStrategy strategy = new CSVLatLonStrategy(fileState, "quux", "morx");
         SimpleFeatureType featureType = strategy.getFeatureType();

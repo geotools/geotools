@@ -17,7 +17,8 @@
  */
 package org.geotools.data.csv;
 
-
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -29,8 +30,6 @@ import org.apache.commons.io.FilenameUtils;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvValidationException;
 
 public class CSVFileState {
 
@@ -112,8 +111,14 @@ public class CSVFileState {
             reader = new StringReader(dataInput);
         }
         CSVReader csvReader = new CSVReader(reader);
-        if ((headers=csvReader.readNext())!=null) {
+        String[] tnames;
+        if ((tnames = csvReader.readNext()) == null) {
             throw new IOException("Error reading csv headers");
+        } else {
+            headers = new String[tnames.length];
+            for (int i = 0; i < tnames.length; ++i) {
+                headers[i] = tnames[i].trim();
+            }
         }
         return csvReader;
     }
@@ -124,7 +129,11 @@ public class CSVFileState {
         if (headers == null) {
             synchronized (this) {
                 if (headers == null) {
-                    headers = readCSVHeaders();
+                    String[] names = readCSVHeaders();
+                    headers = new String[names.length];
+                    for (int i = 0; i < names.length; ++i) {
+                        headers[i] = names[i].trim();
+                    }
                 }
             }
         }
@@ -139,13 +148,13 @@ public class CSVFileState {
         } catch (IOException e) {
             throw new RuntimeException("Failure reading csv headers", e);
         } catch (CsvValidationException e) {
-          throw new RuntimeException("Failure reading csv headers", e);
+            throw new RuntimeException("Failure reading csv headers", e);
         } finally {
             if (csvReader != null) {
                 try {
-                  csvReader.close();
+                    csvReader.close();
                 } catch (IOException e) {
-                  //who cares!
+                    // who cares!
                 }
             }
         }

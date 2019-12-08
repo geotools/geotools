@@ -17,21 +17,23 @@
  */
 package org.geotools.data.csv.parse;
 
-
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 import org.geotools.data.csv.CSVFileState;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvValidationException;
 
 // docs start CSVStrategy
 public abstract class CSVStrategy {
+    /** logger */
+    static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(CSVStrategy.class);
 
     protected final CSVFileState csvFileState;
 
@@ -76,16 +78,16 @@ public abstract class CSVStrategy {
         String[] headers = null;
         try {
             csvReader = csvFileState.openCSVReader();
-            headers = csvReader.readNext();
+            headers = csvFileState.getCSVHeaders();
             typesFromData = findMostSpecificTypesFromData(csvReader, headers);
         } catch (IOException | CsvValidationException e) {
             throw new RuntimeException("Failure reading csv file", e);
         } finally {
             if (csvReader != null) {
                 try {
-                  csvReader.close();
+                    csvReader.close();
                 } catch (IOException e) {
-                  // who cares!
+                    // who cares!
                 }
             }
         }
@@ -121,42 +123,43 @@ public abstract class CSVStrategy {
         String[] record;
         // Read through the whole file in case the type changes in later rows
         try {
-          while ((record = csvReader.readNext())!=null) {
-               
-              List<String> values = Arrays.asList(record);
-              if (record.length >= headers.length) {
-                  values = values.subList(0, headers.length);
-              }
-              int i = 0;
-              for (String value : values) {
-                  String header = headers[i];
-                  Class<?> type = result.get(header);
-                  // For each value in the row, ensure we can still parse it as the
-                  // defined type for this column; if not, make it more general
-                  if (type == Integer.class) {
-                      try {
-                          Integer.parseInt(value);
-                      } catch (NumberFormatException e) {
-                          try {
-                              Double.parseDouble(value);
-                              type = Double.class;
-                          } catch (NumberFormatException ex) {
-                              type = String.class;
-                          }
-                      }
-                  } else if (type == Double.class) {
-                      try {
-                          Double.parseDouble(value);
-                      } catch (NumberFormatException e) {
-                          type = String.class;
-                      }
-                  }
-                  result.put(header, type);
-                  i++;
-              }
-          }
+            while ((record = csvReader.readNext()) != null) {
+
+                List<String> values = Arrays.asList(record);
+                if (record.length >= headers.length) {
+                    values = values.subList(0, headers.length);
+                }
+                int i = 0;
+                for (String value : values) {
+                    value = value.trim();
+                    String header = headers[i];
+                    Class<?> type = result.get(header);
+                    // For each value in the row, ensure we can still parse it as the
+                    // defined type for this column; if not, make it more general
+                    if (type == Integer.class) {
+                        try {
+                            Integer.parseInt(value);
+                        } catch (NumberFormatException e) {
+                            try {
+                                Double.parseDouble(value);
+                                type = Double.class;
+                            } catch (NumberFormatException ex) {
+                                type = String.class;
+                            }
+                        }
+                    } else if (type == Double.class) {
+                        try {
+                            Double.parseDouble(value);
+                        } catch (NumberFormatException e) {
+                            type = String.class;
+                        }
+                    }
+                    result.put(header, type);
+                    i++;
+                }
+            }
         } catch (CsvValidationException e) {
-          throw new IOException(e);
+            throw new IOException(e);
         }
         return result;
     }

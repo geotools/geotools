@@ -17,7 +17,8 @@
  */
 package org.geotools.data.csv;
 
-import com.csvreader.CsvReader;
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -102,16 +103,22 @@ public class CSVFileState {
     }
 
     // docs start openCSVReader
-    public CsvReader openCSVReader() throws IOException {
+    public CSVReader openCSVReader() throws IOException, CsvValidationException {
         Reader reader;
         if (file != null) {
             reader = new BufferedReader(new FileReader(file));
         } else {
             reader = new StringReader(dataInput);
         }
-        CsvReader csvReader = new CsvReader(reader);
-        if (!csvReader.readHeaders()) {
+        CSVReader csvReader = new CSVReader(reader);
+        String[] tnames;
+        if ((tnames = csvReader.readNext()) == null) {
             throw new IOException("Error reading csv headers");
+        } else {
+            headers = new String[tnames.length];
+            for (int i = 0; i < tnames.length; ++i) {
+                headers[i] = tnames[i].trim();
+            }
         }
         return csvReader;
     }
@@ -122,7 +129,11 @@ public class CSVFileState {
         if (headers == null) {
             synchronized (this) {
                 if (headers == null) {
-                    headers = readCSVHeaders();
+                    String[] names = readCSVHeaders();
+                    for (int i = 0; i < names.length; ++i) {
+                        names[i] = names[i].trim();
+                    }
+                    headers = names;
                 }
             }
         }
@@ -130,15 +141,21 @@ public class CSVFileState {
     }
 
     private String[] readCSVHeaders() {
-        CsvReader csvReader = null;
+        CSVReader csvReader = null;
         try {
             csvReader = openCSVReader();
-            return csvReader.getHeaders();
+            return csvReader.readNext();
         } catch (IOException e) {
+            throw new RuntimeException("Failure reading csv headers", e);
+        } catch (CsvValidationException e) {
             throw new RuntimeException("Failure reading csv headers", e);
         } finally {
             if (csvReader != null) {
-                csvReader.close();
+                try {
+                    csvReader.close();
+                } catch (IOException e) {
+                    // who cares!
+                }
             }
         }
     }

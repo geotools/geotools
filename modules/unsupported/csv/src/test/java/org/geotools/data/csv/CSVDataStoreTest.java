@@ -168,7 +168,9 @@ public class CSVDataStoreTest {
         SimpleFeatureIterator iter = matches.features();
         while (iter.hasNext()) {
             SimpleFeature f = iter.next();
-            assertTrue(limitCities.contains(f.getAttribute("CITY")));
+            String city = (String) f.getAttribute("CITY");
+
+            assertTrue("Didn't find " + city, limitCities.contains(city));
             count++;
         }
         iter.close();

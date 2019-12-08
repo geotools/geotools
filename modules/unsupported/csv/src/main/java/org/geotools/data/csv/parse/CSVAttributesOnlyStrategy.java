@@ -17,11 +17,12 @@
  */
 package org.geotools.data.csv.parse;
 
-import com.csvreader.CsvWriter;
+import com.opencsv.CSVWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import org.geotools.data.csv.CSVFileState;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -54,9 +55,15 @@ public class CSVAttributesOnlyStrategy extends CSVStrategy {
         }
 
         // Write out header, producing an empty file of the correct type
-        CsvWriter writer = new CsvWriter(new FileWriter(this.csvFileState.getFile()), ',');
+        CSVWriter writer =
+                new CSVWriter(
+                        new FileWriter(this.csvFileState.getFile()),
+                        ',',
+                        '"',
+                        '\\',
+                        System.lineSeparator());
         try {
-            writer.writeRecord(header.toArray(new String[header.size()]));
+            writer.writeNext(header.toArray(new String[header.size()]), false);
         } finally {
             writer.close();
         }
@@ -82,8 +89,13 @@ public class CSVAttributesOnlyStrategy extends CSVStrategy {
     public SimpleFeature decode(String recordId, String[] csvRecord) {
         SimpleFeatureType featureType = getFeatureType();
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder(featureType);
-        String[] headers;
-        headers = csvFileState.getCSVHeaders();
+        String[] headers = csvFileState.getCSVHeaders();
+        if (LOGGER.getLevel() == Level.FINE) {
+            LOGGER.fine("Got headers in decode: ");
+            for (String h : headers) {
+                LOGGER.fine("'" + h + "'");
+            }
+        }
         for (int i = 0; i < headers.length; i++) {
             String header = headers[i];
             if (i < csvRecord.length) {

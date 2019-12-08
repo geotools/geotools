@@ -17,7 +17,7 @@
  */
 package org.geotools.data.csv.parse;
 
-import com.csvreader.CsvWriter;
+import com.opencsv.CSVWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -81,9 +81,15 @@ public class CSVSpecifiedWKTStrategy extends CSVStrategy {
             }
         }
         // Write out header, producing an empty file of the correct type
-        CsvWriter writer = new CsvWriter(new FileWriter(this.csvFileState.getFile()), ',');
+        CSVWriter writer =
+                new CSVWriter(
+                        new FileWriter(this.csvFileState.getFile()),
+                        ',',
+                        '"',
+                        '\\',
+                        System.lineSeparator());
         try {
-            writer.writeRecord(header.toArray(new String[header.size()]));
+            writer.writeNext(header.toArray(new String[header.size()]), false);
         } finally {
             writer.close();
         }

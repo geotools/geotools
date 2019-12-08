@@ -9,7 +9,7 @@
  */
 package org.geotools.data.csv;
 
-import com.csvreader.CsvWriter;
+import com.opencsv.CSVWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -43,7 +43,7 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
     private CSVIterator iterator;
 
     /** CsvWriter used for temp file output */
-    private CsvWriter csvWriter;
+    private CSVWriter csvWriter;
 
     /** Flag indicating we have reached the end of the file */
     private boolean appending = false;
@@ -70,8 +70,9 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
         this.featureType = csvStrategy.getFeatureType();
         this.iterator = csvStrategy.iterator();
         this.csvStrategy = csvStrategy;
-        this.csvWriter = new CsvWriter(new FileWriter(this.temp), ',');
-        this.csvWriter.writeRecord(this.csvFileState.getCSVHeaders());
+        this.csvWriter =
+                new CSVWriter(new FileWriter(this.temp), ',', '\'', '/', System.lineSeparator());
+        this.csvWriter.writeNext(this.csvFileState.getCSVHeaders(), false);
     }
     // docs end CSVFeatureWriter
 
@@ -140,7 +141,7 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
         if (this.currentFeature == null) {
             return; // current feature has been deleted
         }
-        this.csvWriter.writeRecord(this.csvStrategy.encode(this.currentFeature));
+        this.csvWriter.writeNext(this.csvStrategy.encode(this.currentFeature), false);
         nextRow++;
         this.currentFeature = null; // indicate that it has been written
     }

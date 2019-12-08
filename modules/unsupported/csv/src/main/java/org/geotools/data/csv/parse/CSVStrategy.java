@@ -17,12 +17,14 @@
  */
 package org.geotools.data.csv.parse;
 
-import com.csvreader.CsvReader;
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 import org.geotools.data.csv.CSVFileState;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.opengis.feature.simple.SimpleFeature;
@@ -30,6 +32,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
 
 // docs start CSVStrategy
 public abstract class CSVStrategy {
+    /** logger */
+    static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(CSVStrategy.class);
 
     protected final CSVFileState csvFileState;
 
@@ -66,21 +70,25 @@ public abstract class CSVStrategy {
     // docs start createBuilder
     /**
      * Originally in a strategy support class - giving a chance to override them to improve
-     * efficiency and utilize the different strategies
+     * efficiency and utilise the different strategies
      */
     public static SimpleFeatureTypeBuilder createBuilder(CSVFileState csvFileState) {
-        CsvReader csvReader = null;
+        CSVReader csvReader = null;
         Map<String, Class<?>> typesFromData = null;
         String[] headers = null;
         try {
             csvReader = csvFileState.openCSVReader();
-            headers = csvReader.getHeaders();
+            headers = csvFileState.getCSVHeaders();
             typesFromData = findMostSpecificTypesFromData(csvReader, headers);
-        } catch (IOException e) {
+        } catch (IOException | CsvValidationException e) {
             throw new RuntimeException("Failure reading csv file", e);
         } finally {
             if (csvReader != null) {
-                csvReader.close();
+                try {
+                    csvReader.close();
+                } catch (IOException e) {
+                    // who cares!
+                }
             }
         }
         return createBuilder(csvFileState, headers, typesFromData);
@@ -106,46 +114,52 @@ public abstract class CSVStrategy {
      * implementations will expand this functionality by overriding the buildFeatureType() method.
      */
     protected static Map<String, Class<?>> findMostSpecificTypesFromData(
-            CsvReader csvReader, String[] headers) throws IOException {
+            CSVReader csvReader, String[] headers) throws IOException {
         Map<String, Class<?>> result = new HashMap<String, Class<?>>();
         // start off assuming Integers for everything
         for (String header : headers) {
             result.put(header, Integer.class);
         }
+        String[] record;
         // Read through the whole file in case the type changes in later rows
-        while (csvReader.readRecord()) {
-            String[] record = csvReader.getValues();
-            List<String> values = Arrays.asList(record);
-            if (record.length >= headers.length) {
-                values = values.subList(0, headers.length);
-            }
-            int i = 0;
-            for (String value : values) {
-                String header = headers[i];
-                Class<?> type = result.get(header);
-                // For each value in the row, ensure we can still parse it as the
-                // defined type for this column; if not, make it more general
-                if (type == Integer.class) {
-                    try {
-                        Integer.parseInt(value);
-                    } catch (NumberFormatException e) {
+        try {
+            while ((record = csvReader.readNext()) != null) {
+
+                List<String> values = Arrays.asList(record);
+                if (record.length >= headers.length) {
+                    values = values.subList(0, headers.length);
+                }
+                int i = 0;
+                for (String value : values) {
+                    value = value.trim();
+                    String header = headers[i];
+                    Class<?> type = result.get(header);
+                    // For each value in the row, ensure we can still parse it as the
+                    // defined type for this column; if not, make it more general
+                    if (type == Integer.class) {
+                        try {
+                            Integer.parseInt(value);
+                        } catch (NumberFormatException e) {
+                            try {
+                                Double.parseDouble(value);
+                                type = Double.class;
+                            } catch (NumberFormatException ex) {
+                                type = String.class;
+                            }
+                        }
+                    } else if (type == Double.class) {
                         try {
                             Double.parseDouble(value);
-                            type = Double.class;
-                        } catch (NumberFormatException ex) {
+                        } catch (NumberFormatException e) {
                             type = String.class;
                         }
                     }
-                } else if (type == Double.class) {
-                    try {
-                        Double.parseDouble(value);
-                    } catch (NumberFormatException e) {
-                        type = String.class;
-                    }
+                    result.put(header, type);
+                    i++;
                 }
-                result.put(header, type);
-                i++;
             }
+        } catch (CsvValidationException e) {
+            throw new IOException(e);
         }
         return result;
     }

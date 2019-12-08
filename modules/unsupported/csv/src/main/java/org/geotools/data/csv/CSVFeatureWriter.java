@@ -70,7 +70,8 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
         this.featureType = csvStrategy.getFeatureType();
         this.iterator = csvStrategy.iterator();
         this.csvStrategy = csvStrategy;
-        this.csvWriter = new CSVWriter(new FileWriter(this.temp), ',', '\'', '/', System.lineSeparator());
+        this.csvWriter =
+                new CSVWriter(new FileWriter(this.temp), ',', '\'', '/', System.lineSeparator());
         this.csvWriter.writeNext(this.csvFileState.getCSVHeaders(), false);
     }
     // docs end CSVFeatureWriter

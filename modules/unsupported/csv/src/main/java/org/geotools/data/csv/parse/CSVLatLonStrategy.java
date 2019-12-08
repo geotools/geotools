@@ -183,7 +183,12 @@ public class CSVLatLonStrategy extends CSVStrategy {
         }
         // Write out header, producing an empty file of the correct type
         CSVWriter writer =
-                new CSVWriter(new FileWriter(this.csvFileState.getFile()), ',', '"', '\\',System.lineSeparator());
+                new CSVWriter(
+                        new FileWriter(this.csvFileState.getFile()),
+                        ',',
+                        '"',
+                        '\\',
+                        System.lineSeparator());
         try {
             writer.writeNext(header.toArray(new String[header.size()]), false);
         } finally {

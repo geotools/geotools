@@ -130,10 +130,10 @@ public class CSVFileState {
             synchronized (this) {
                 if (headers == null) {
                     String[] names = readCSVHeaders();
-                    headers = new String[names.length];
                     for (int i = 0; i < names.length; ++i) {
-                        headers[i] = names[i].trim();
+                        names[i] = names[i].trim();
                     }
+                    headers = names;
                 }
             }
         }

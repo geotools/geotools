@@ -100,7 +100,7 @@ class VectorLayerMetadata {
      */
     protected Class toBinding(String typeName) {
         if ("Number".equals(typeName)) {
-            return Double.class;
+            return Number.class;
         } else if ("Boolean".equals(typeName)) {
             return Boolean.class;
         } else {

@@ -102,7 +102,7 @@ public class MBTilesDataStoreTest {
 
         // check number (there is no distinction of subtypes, everything is "Number"
         AttributeDescriptor fd = schema.getDescriptor("float_value");
-        assertThat(fd.getType().getBinding(), equalTo(Double.class));
+        assertThat(fd.getType().getBinding(), equalTo(Number.class));
 
         AttributeDescriptor sd = schema.getDescriptor("string_value");
         assertThat(sd.getType().getBinding(), equalTo(String.class));
@@ -121,10 +121,12 @@ public class MBTilesDataStoreTest {
             SimpleFeature feature = reader.next();
             assertThat(feature.getAttribute("bool_false"), equalTo(false));
             assertThat(feature.getAttribute("bool_true"), equalTo(true));
-            assertThat((Double) feature.getAttribute("float_value"), closeTo(1.25, 0.01));
-            assertThat((Double) feature.getAttribute("int64_value"), closeTo(123456789012345d, 1));
-            assertThat((Double) feature.getAttribute("neg_int_value"), closeTo(-1, 0));
-            assertThat((Double) feature.getAttribute("pos_int_value"), closeTo(1, 1.23456789));
+            assertThat(
+                    ((Number) feature.getAttribute("float_value")).doubleValue(),
+                    closeTo(1.25, 0.01));
+            assertThat(feature.getAttribute("int64_value"), equalTo(123456789012345L));
+            assertThat(feature.getAttribute("neg_int_value"), equalTo(-1L));
+            assertThat(feature.getAttribute("pos_int_value"), equalTo(1L));
             assertThat(feature.getAttribute("string_value"), equalTo("str"));
             Point expected =
                     (Point) new WKTReader().read("POINT (215246.671651058 6281289.23636264)");

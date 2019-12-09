@@ -71,8 +71,13 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
         this.iterator = csvStrategy.iterator();
         this.csvStrategy = csvStrategy;
         this.csvWriter =
-                new CSVWriter(new FileWriter(this.temp), ',', '\'', '/', System.lineSeparator());
-        this.csvWriter.writeNext(this.csvFileState.getCSVHeaders(), false);
+            new CSVWriter(
+                new FileWriter(this.temp),
+                csvStrategy.getSeparator(),
+                csvStrategy.getQuotechar(),
+                csvStrategy.getEscapechar(),
+                csvStrategy.getLineSeparator());
+        this.csvWriter.writeNext(this.csvFileState.getCSVHeaders(), csvStrategy.isQuoteAllFields());
     }
     // docs end CSVFeatureWriter
 
@@ -141,7 +146,7 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
         if (this.currentFeature == null) {
             return; // current feature has been deleted
         }
-        this.csvWriter.writeNext(this.csvStrategy.encode(this.currentFeature), false);
+        this.csvWriter.writeNext(this.csvStrategy.encode(this.currentFeature), csvStrategy.isQuoteAllFields());
         nextRow++;
         this.currentFeature = null; // indicate that it has been written
     }
@@ -151,7 +156,7 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
     @Override
     public void close() throws IOException {
         if (csvWriter == null) {
-            throw new IOException("Writer alread closed");
+            throw new IOException("Writer already closed");
         }
         if (this.currentFeature != null) {
             this.write(); // the previous one was not written, so do it now.

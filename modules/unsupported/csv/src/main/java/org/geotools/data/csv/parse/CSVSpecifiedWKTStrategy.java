@@ -82,14 +82,14 @@ public class CSVSpecifiedWKTStrategy extends CSVStrategy {
         }
         // Write out header, producing an empty file of the correct type
         CSVWriter writer =
-                new CSVWriter(
-                        new FileWriter(this.csvFileState.getFile()),
-                        ',',
-                        '"',
-                        '\\',
-                        System.lineSeparator());
+            new CSVWriter(
+                new FileWriter(this.csvFileState.getFile()),
+                getSeparator(),
+                getQuotechar(),
+                getEscapechar(),
+                getLineSeparator());
         try {
-            writer.writeNext(header.toArray(new String[header.size()]), false);
+            writer.writeNext(header.toArray(new String[header.size()]), isQuoteAllFields());
         } finally {
             writer.close();
         }

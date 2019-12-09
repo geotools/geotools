@@ -80,12 +80,7 @@ public class CSVLatLonStrategy extends CSVStrategy {
         try {
             csvReader = csvFileState.openCSVReader();
             headers = csvFileState.getCSVHeaders();
-            if (LOGGER.getLevel() == Level.FINE) {
-                LOGGER.fine("Got headers: ");
-                for (String h : headers) {
-                    LOGGER.fine("'" + h + "'");
-                }
-            }
+
             typesFromData = findMostSpecificTypesFromData(csvReader, headers);
         } catch (IOException | CsvValidationException e) {
             throw new RuntimeException(e);
@@ -175,22 +170,16 @@ public class CSVLatLonStrategy extends CSVStrategy {
             header.add(descriptor.getLocalName());
         }
 
-        if (LOGGER.getLevel() == Level.FINE) {
-            LOGGER.fine("Got headers in createSchema: ");
-            for (String h : header) {
-                LOGGER.fine("'" + h + "'");
-            }
-        }
         // Write out header, producing an empty file of the correct type
         CSVWriter writer =
-                new CSVWriter(
-                        new FileWriter(this.csvFileState.getFile()),
-                        ',',
-                        '"',
-                        '\\',
-                        System.lineSeparator());
+            new CSVWriter(
+                new FileWriter(this.csvFileState.getFile()),
+                getSeparator(),
+                getQuotechar(),
+                getEscapechar(),
+                getLineSeparator());
         try {
-            writer.writeNext(header.toArray(new String[header.size()]), false);
+            writer.writeNext(header.toArray(new String[header.size()]), isQuoteAllFields());
         } finally {
             writer.close();
         }
@@ -216,6 +205,7 @@ public class CSVLatLonStrategy extends CSVStrategy {
          *    Note: This is indistinguishable from a one attribute record that is empty
          */
 
+        
         for (int i = 0; i < headers.length; i++) {
             String header = headers[i];
             if (i < csvRecord.length) {

@@ -37,6 +37,7 @@ public abstract class CSVStrategy {
 
     protected final CSVFileState csvFileState;
 
+    
     public CSVStrategy(CSVFileState csvFileState) {
         this.csvFileState = csvFileState;
     }
@@ -164,4 +165,74 @@ public abstract class CSVStrategy {
         return result;
     }
     // docs end findMostSpecificTypesFromData
+
+    /**
+     * @return the separator
+     */
+    public char getSeparator() {
+      return csvFileState.getSeparator();
+    }
+
+    /**
+     * @param separator the separator to set
+     */
+    public void setSeparator(char separator) {
+      csvFileState.setSeparator(separator);
+    }
+
+    /**
+     * @return the quotechar
+     */
+    public char getQuotechar() {
+      return csvFileState.getQuotechar();
+    }
+
+    /**
+     * @param quotechar the quotechar to set
+     */
+    public void setQuotechar(char quotechar) {
+      this.csvFileState.setQuotechar(quotechar);
+    }
+
+    /**
+     * @return the escapechar
+     */
+    public char getEscapechar() {
+      return csvFileState.getEscapechar();
+    }
+
+    /**
+     * @param escapechar the escapechar to set
+     */
+    public void setEscapechar(char escapechar) {
+      csvFileState.setEscapechar(escapechar);
+    }
+
+    /**
+     * @return the lineSeparator
+     */
+    public String getLineSeparator() {
+      return csvFileState.getLineSeparator();
+    }
+
+    /**
+     * @param lineSeparator the lineSeparator to set
+     */
+    public void setLineSeparator(String lineSeparator) {
+      csvFileState.setLineSeparator(lineSeparator);
+    }
+
+    /**
+     * @return the quoteAllFields
+     */
+    public boolean isQuoteAllFields() {
+      return csvFileState.isQuoteAllFields();
+    }
+
+    /**
+     * @param quoteAllFields the quoteAllFields to set
+     */
+    public void setQuoteAllFields(boolean quoteAllFields) {
+      csvFileState.setQuoteAllFields(quoteAllFields);
+    }
 }

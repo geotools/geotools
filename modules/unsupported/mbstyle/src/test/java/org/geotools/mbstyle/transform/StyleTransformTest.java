@@ -323,9 +323,9 @@ public class StyleTransformTest {
 
         StyledLayerDescriptor sld = mbStyle.transform();
         List<FeatureTypeStyle> fts = MapboxTestUtils.getStyle(sld, 0).featureTypeStyles();
-        assertEquals(fts.size(), 2);
+        assertEquals(fts.size(), 1);
 
-        // first fts
+        // first and only fts
         assertEquals(1, fts.get(0).rules().size());
         Rule r0 = fts.get(0).rules().get(0);
         assertEquals(2, r0.symbolizers().size());
@@ -334,7 +334,7 @@ public class StyleTransformTest {
                 Integer.valueOf(10), s_0_0.getStroke().getWidth().evaluate(null, Integer.class));
         Expression exected_po_0_0 =
                 CQL.toExpression(
-                        "8 - (Interpolate(zoomLevel(env('wms_scale_denominator'), 'EPSG:3857'), 12, 0, "
+                        "8 - (Interpolate(zoomLevel(env('wms_scale_denominator'), 'EPSG:3857'), 12, 0, 20, 6, "
                                 + "'numeric') + 10) / 2");
         assertEquals(exected_po_0_0, s_0_0.getPerpendicularOffset());
 
@@ -343,31 +343,9 @@ public class StyleTransformTest {
                 Integer.valueOf(10), s_0_1.getStroke().getWidth().evaluate(null, Integer.class));
         Expression exected_po_0_1 =
                 CQL.toExpression(
-                        "8 + (Interpolate(zoomLevel(env('wms_scale_denominator'), 'EPSG:3857'), 12, 0, "
+                        "8 + (Interpolate(zoomLevel(env('wms_scale_denominator'), 'EPSG:3857'), 12, 0, 20, 6, "
                                 + "'numeric') + 10) / 2");
         assertEquals(exected_po_0_1, s_0_1.getPerpendicularOffset());
-
-        // second fts
-        assertEquals(1, fts.get(1).rules().size());
-        Rule r1 = fts.get(1).rules().get(0);
-        assertEquals(2, r1.symbolizers().size());
-        LineSymbolizer s_1_0 = (LineSymbolizer) r1.symbolizers().get(0);
-        assertEquals(
-                Integer.valueOf(10), s_1_0.getStroke().getWidth().evaluate(null, Integer.class));
-        Expression exected_po_1_0 =
-                CQL.toExpression(
-                        "8 - (Interpolate(zoomLevel(env('wms_scale_denominator'), 'EPSG:3857'), 20, 6, "
-                                + "'numeric') + 10) / 2");
-        assertEquals(exected_po_1_0, s_1_0.getPerpendicularOffset());
-
-        LineSymbolizer s_1_1 = (LineSymbolizer) r1.symbolizers().get(1);
-        assertEquals(
-                Integer.valueOf(10), s_1_1.getStroke().getWidth().evaluate(null, Integer.class));
-        Expression exected_po_1_1 =
-                CQL.toExpression(
-                        "8 + (Interpolate(zoomLevel(env('wms_scale_denominator'), 'EPSG:3857'), 20, 6, "
-                                + "'numeric') + 10) / 2");
-        assertEquals(exected_po_1_1, s_1_1.getPerpendicularOffset());
     }
 
     @Test
@@ -846,30 +824,19 @@ public class StyleTransformTest {
         StyledLayerDescriptor sld = mbStyle.transform();
         Style style = MapboxTestUtils.getStyle(sld, 0);
 
-        assertEquals(2, style.featureTypeStyles().size());
+        assertEquals(1, style.featureTypeStyles().size());
 
-        String xpTemplate =
-                "mbAnchor(Categorize(zoomLevel(env('wms_scale_denominator'), 'EPSG:3857'), "
-                        + "%s, %d, %s, 'succeeding'), %s)";
-
-        checkAnchorPointExpressions(style, xpTemplate, 0, "'left'", 0);
-        checkAnchorPointExpressions(style, xpTemplate, 1, "'center'", 8);
-    }
-
-    public void checkAnchorPointExpressions(
-            Style style, String xpTemplate, int ftINex, String anchorName, int zoomLevel)
-            throws CQLException {
-        FeatureTypeStyle ft = style.featureTypeStyles().get(ftINex);
+        FeatureTypeStyle ft = style.featureTypeStyles().get(0);
         TextSymbolizer ts = (TextSymbolizer) ft.rules().get(0).symbolizers().get(0);
         PointPlacement pp = (PointPlacement) ts.getLabelPlacement();
         AnchorPoint ap = pp.getAnchorPoint();
         assertEquals(
                 ECQL.toExpression(
-                        String.format(xpTemplate, anchorName, zoomLevel, anchorName, "'x'")),
+                        "mbAnchor(Categorize(zoomLevel(env('wms_scale_denominator'), 'EPSG:3857'), 'left', 0, 'left', 8, 'center', 'succeeding'), 'x')"),
                 ap.getAnchorPointX());
         assertEquals(
                 ECQL.toExpression(
-                        String.format(xpTemplate, anchorName, zoomLevel, anchorName, "'y'")),
+                        "mbAnchor(Categorize(zoomLevel(env('wms_scale_denominator'), 'EPSG:3857'), 'left', 0, 'left', 8, 'center', 'succeeding'), 'y')"),
                 ap.getAnchorPointY());
     }
 

@@ -16,6 +16,8 @@
  */
 package org.geotools.jdbc;
 
+import static org.junit.Assume.assumeTrue;
+
 import java.sql.Connection;
 import java.util.Arrays;
 import java.util.List;
@@ -46,6 +48,7 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.expression.Subtract;
 import org.opengis.filter.sort.SortBy;
@@ -689,5 +692,21 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         } else {
             fail("Unexpected dialect, supports basic or prepared, but was a : " + dialect);
         }
+    }
+
+    /**
+     * Online tests for String functions along with Like operator
+     *
+     * @throws Exception
+     */
+    public void testStringFunction() throws Exception {
+
+        FilterFactory ff = dataStore.getFilterFactory();
+        Function function = ff.function("strToLowerCase", ff.property("stringProperty"));
+
+        // should hit the row where stringProperty starts with z (e.g zero)
+        PropertyIsLike likeWithStringFunction = ff.like(function, "z%", "%", "-", "\\", true);
+        assumeTrue(dataStore.getFilterCapabilities().fullySupports(likeWithStringFunction));
+        assertEquals(1, featureSource.getCount(new Query(null, likeWithStringFunction)));
     }
 }

@@ -30,13 +30,13 @@
                       </CssParameter>
                       <CssParameter name="stroke-width">2</CssParameter>
                       <CssParameter name="stroke-linecap">round</CssParameter>
-                    </Stroke>										
-					<VendorOption name="markAlongLine">true</VendorOption>					
+                    </Stroke>															
                   </Mark>				  
                   <Size>20</Size>  				  				  
                 </Graphic>                
               </GraphicStroke>			  
             </Stroke>			
+			<VendorOption name="markAlongLine">true</VendorOption>					
           </LineSymbolizer>
         </Rule>
       </FeatureTypeStyle>

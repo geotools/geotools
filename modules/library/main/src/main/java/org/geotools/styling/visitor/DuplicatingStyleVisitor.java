@@ -854,7 +854,6 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         copy.setStroke(copy(mark.getStroke()));
         copy.setWellKnownName(copy(mark.getWellKnownName()));
         copy.setExternalMark(copy(mark.getExternalMark()));
-        copy.setMarkAlongLine(mark.isMarkAlongLine());
 
         if (STRICT && !copy.equals(mark)) {
             throw new IllegalStateException("Was unable to duplicate provided Mark:" + mark);

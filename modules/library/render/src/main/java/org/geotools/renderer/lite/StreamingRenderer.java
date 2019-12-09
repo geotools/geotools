@@ -115,11 +115,11 @@ import org.geotools.renderer.label.LabelCacheImpl.LabelRenderingMode;
 import org.geotools.renderer.lite.gridcoverage2d.GridCoverageReaderHelper;
 import org.geotools.renderer.lite.gridcoverage2d.GridCoverageRenderer;
 import org.geotools.renderer.style.LineStyle2D;
+import org.geotools.renderer.style.MarkAlongLine;
 import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.renderer.style.Style2D;
 import org.geotools.renderer.style.StyleAttributeExtractor;
 import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.MarkAlongLine;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.Rule;
@@ -2990,11 +2990,15 @@ public class StreamingRenderer implements GTRenderer {
                         }
                     } else if (style instanceof LineStyle2D) {
                         if (((LineStyle2D) style).getStroke() instanceof MarkAlongLine) {
-                            g =
-                                    DouglasPeuckerSimplifier.simplify(
-                                            source,
-                                            ((MarkAlongLine) ((LineStyle2D) style).getStroke())
-                                                    .getSimplificatorFactor());
+                            // TODO decide whether to simplify or not
+                            if (((MarkAlongLine) ((LineStyle2D) style).getStroke())
+                                    .doSimplification(source)) {
+                                g =
+                                        DouglasPeuckerSimplifier.simplify(
+                                                source,
+                                                ((MarkAlongLine) ((LineStyle2D) style).getStroke())
+                                                        .getSimplificatorFactor());
+                            }
                         }
                     }
                     if (g == null) {

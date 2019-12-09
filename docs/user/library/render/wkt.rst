@@ -165,11 +165,47 @@ will break the continuity. If the goal is to have the wkt shape repeated and con
 irrespective of angles between line segments then it is possible to convert the WKT shape
 into a stroke instead of image. 
 
-To enable this make the following vendor option child of <Mark> ::
+To enable this make the following vendor option child of <LineSymbolizer> ::
   
   <VendorOption name="markAlongLine">true</VendorOption>					
   ...
 
+(Optional) `markAlongLineScaleLimit` is used define the scale limit.
+
+ Valid values are between 0 and 1
+ 
+ 0 = Always Scale
+ 
+ 1 = Never Scale
+ 
+ Default value = 0.9
+ 
+ This value is used by Stroke to adjust the Shape width to its respective line segment.
+ 
+ 0.9 means that Shape cannot shrink beyond this scale limit to fit on the underlying line segment ::
+ 
+  
+  <VendorOption name="markAlongLineScaleLimit">0.9</VendorOption>
+  ...
+  
+(Optional) `markAlongLineSimplifyTolerance` is used to decide if linear geometry needs to be simplified.
+
+ Valid values are between 0 and 1
+ 
+ 0 = Never simplify
+ 
+ 1 = Always simplify
+ 
+ Default value = 0.4
+ 
+ This value represents the percentage as ratio of line segments smaller than height of WKT Shape
+ 
+ 0.4 means that if more than 40% segments of linear geometry are smaller than  height of WKT Shape,
+ then to cleanly fit WKT Shape over the linear geometry, the linear geometry will need to be simplified ::
+ 
+  
+  <VendorOption name="markAlongLineSimplifyTolerance">0.4</VendorOption>
+  ...
 
 Examples:
 
@@ -185,13 +221,15 @@ Examples:
                       <CssParameter name="stroke">0xFF0000</CssParameter>
                       <CssParameter name="stroke-width">2</CssParameter>
                       <CssParameter name="stroke-linecap">round</CssParameter>
-                    </Stroke>										
-					<VendorOption name="markAlongLine">true</VendorOption>					
+                    </Stroke>															
                   </Mark>				  
                   <Size>20</Size>  				  				  
                 </Graphic>                
               </GraphicStroke>			  
             </Stroke>			
+            <VendorOption name="markAlongLine">true</VendorOption>							
+            <VendorOption name="markAlongLineScaleLimit">0.9</VendorOption> <!--Optional-->
+            <VendorOption name="markAlongLineSimplifyTolerance">0.4</VendorOption> <!--Optional-->
           </LineSymbolizer>
   
 And it produces:  
@@ -199,3 +237,4 @@ And it produces:
   .. image:: /images/mark_along_line.png
   
 Note : The blue line under the red square wave is a basic stroke shown here as a reference to actual line geometry
+

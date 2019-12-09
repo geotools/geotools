@@ -176,8 +176,6 @@ public class SLDParser {
 
     private static final String PerpendicularOffsetString = "PerpendicularOffset";
 
-    private static final String markAlongLineVendorOptionString = "markAlongLine";
-
     private static final Pattern WHITESPACES = Pattern.compile("\\s+", Pattern.MULTILINE);
 
     private static final Pattern LEADING_WHITESPACES = Pattern.compile("^\\s+");
@@ -1813,7 +1811,6 @@ public class SLDParser {
 
         NodeList children = root.getChildNodes();
         final int length = children.getLength();
-        Map<String, String> vendorOptions = new HashMap<String, String>();
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
 
@@ -1847,15 +1844,8 @@ public class SLDParser {
                     }
                 }
                 mark.setWellKnownName(wellKnownName);
-            } else if (childName.equalsIgnoreCase(VendorOptionString)) {
-                parseVendorOption(vendorOptions, child);
             }
         }
-        // marking of WKT along line only works with WKT
-        if (mark.getWellKnownName() != null)
-            mark.setMarkAlongLine(
-                    Boolean.parseBoolean(
-                            vendorOptions.getOrDefault(markAlongLineVendorOptionString, "false")));
 
         return mark;
     }

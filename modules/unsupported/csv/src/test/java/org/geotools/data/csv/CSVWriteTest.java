@@ -69,9 +69,6 @@ public class CSVWriteTest {
 
     @Before
     public void createTemporaryLocations() throws IOException {
-        // Setting the system-wide default at startup time
-        System.setProperty("org.geotools.referencing.forceXY", "true");
-
         tmp = File.createTempFile("example", "");
         boolean exists = tmp.exists();
         if (exists) {
@@ -568,8 +565,10 @@ public class CSVWriteTest {
         }
         assertTrue("Temp files being left behind", cleanedup());
         String contents = getFileContents(file2);
+        
         BufferedReader lineReader = new BufferedReader(new CharArrayReader(contents.toCharArray()));
         String line = lineReader.readLine(); // header
+        assertNotNull(line);
         assertTrue("Geom is not included", line.toLowerCase().contains("the_geom_wkt"));
         line = lineReader.readLine();
         assertTrue("Geom is not included", line.toLowerCase().contains("multipolygon"));

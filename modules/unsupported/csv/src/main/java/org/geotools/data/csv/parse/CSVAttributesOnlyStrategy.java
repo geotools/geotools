@@ -55,15 +55,16 @@ public class CSVAttributesOnlyStrategy extends CSVStrategy {
         }
 
         // Write out header, producing an empty file of the correct type
+
         CSVWriter writer =
                 new CSVWriter(
                         new FileWriter(this.csvFileState.getFile()),
-                        ',',
-                        '"',
-                        '\\',
-                        System.lineSeparator());
+                        getSeparator(),
+                        getQuotechar(),
+                        getEscapechar(),
+                        getLineSeparator());
         try {
-            writer.writeNext(header.toArray(new String[header.size()]), false);
+            writer.writeNext(header.toArray(new String[header.size()]), isQuoteAllFields());
         } finally {
             writer.close();
         }
@@ -90,12 +91,7 @@ public class CSVAttributesOnlyStrategy extends CSVStrategy {
         SimpleFeatureType featureType = getFeatureType();
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder(featureType);
         String[] headers = csvFileState.getCSVHeaders();
-        if (LOGGER.getLevel() == Level.FINE) {
-            LOGGER.fine("Got headers in decode: ");
-            for (String h : headers) {
-                LOGGER.fine("'" + h + "'");
-            }
-        }
+
         for (int i = 0; i < headers.length; i++) {
             String header = headers[i];
             if (i < csvRecord.length) {

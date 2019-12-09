@@ -142,7 +142,7 @@ public class CSVWriteOptionsTest {
      BufferedReader lineReader = new BufferedReader(new CharArrayReader(contents.toCharArray()));
      String line = lineReader.readLine(); // header
     assertNotNull(line);
-    System.out.println(line );
+    
     assertTrue("Geom is not included", line.toLowerCase().contains("\"the_geom_wkt\""));
     line = lineReader.readLine();
      
@@ -164,12 +164,33 @@ public class CSVWriteOptionsTest {
      BufferedReader lineReader = new BufferedReader(new CharArrayReader(contents.toCharArray()));
      String line = lineReader.readLine(); // header
     assertNotNull(line);
-    System.out.println(line ); 
-    assertTrue("Geom is not included", line.toLowerCase().contains("'the_geom_wkt'"));
+    
+    assertTrue("Geom is not included", line.toLowerCase().contains("the_geom_wkt"));
     line = lineReader.readLine();
      
     assertTrue("Multipolygon is not quoted", line.toLowerCase().contains("'multipolygon"));
     assertTrue("Missing quotes", line.contains("'0.0'"));
+    file2.delete();
+  }
+  @Test
+  public void testWithtabs() throws IOException {
+    File file2 = File.createTempFile("CSVTest", ".csv");
+    Map<String, Serializable> params2 = new HashMap<String, Serializable>();
+    params2.put("file", file2);
+    
+    params2.put(CSVDataStoreFactory.STRATEGYP.key, CSVDataStoreFactory.WKT_STRATEGY);
+    params2.put(CSVDataStoreFactory.WKTP.key, "the_geom_wkt");
+    params2.put(CSVDataStoreFactory.SEPERATORCHAR.key, '\t');
+    String contents = createOutputFile(file2, params2);
+     BufferedReader lineReader = new BufferedReader(new CharArrayReader(contents.toCharArray()));
+     String line = lineReader.readLine(); // header
+    assertNotNull(line);
+    System.out.println(line ); 
+    assertTrue("Geom is not included", line.toLowerCase().contains("the_geom_wkt"));
+    line = lineReader.readLine();
+    System.out.println(line ); 
+    assertTrue("Wrong seperator", line.contains("\t"));
+    assertTrue("Missing quotes", line.toLowerCase().startsWith("multipolygon"));
     file2.delete();
   }
   private String createOutputFile(File file2, Map<String, Serializable> params2)

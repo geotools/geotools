@@ -3098,7 +3098,11 @@ public class StreamingRenderer implements GTRenderer {
     private org.opengis.referencing.crs.CoordinateReferenceSystem findGeometryCS(
             Feature f, Symbolizer s) {
         if (s == null) {
-            return null;
+            if (f != null) {
+                return f.getType().getCoordinateReferenceSystem();
+            } else {
+                return null;
+            }
         }
         FeatureType schema = f.getType();
 

@@ -101,7 +101,8 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
         new Param("quoteAll", Boolean.class, "Should all fields be quoted (true) or just ones that need it (false)", false,Boolean.FALSE, new KVP(Param.LEVEL, "advanced"));
     public static final Param QUOTECHAR = 
         new Param("quoteChar", Character.class, "Character to be used to quote attributes", false, '"', new KVP(Param.LEVEL, "advanced"));
-
+    public static final Param SEPERATORCHAR = 
+        new Param ("seperator", Character.class, "Character to be used to seperate records", false, ',', new KVP(Param.LEVEL, "advanced"));
     public static final Param[] parametersInfo =
             new Param[] {FILE_PARAM, NAMESPACEP, STRATEGYP, LATFIELDP, LnGFIELDP, WKTP};
 
@@ -243,6 +244,10 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
         Character quoteChar = (Character) QUOTECHAR.lookUp(params);
         if (quoteChar != null ) {
           csvStrategy.setQuotechar(quoteChar.charValue());
+        }
+        Character sepChar = (Character) SEPERATORCHAR.lookUp(params);
+        if (sepChar != null ) {
+          csvStrategy.setSeparator(sepChar);
         }
         CSVDataStore store = new CSVDataStore(csvFileState, csvStrategy);
         if (namespace != null) {

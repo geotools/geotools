@@ -16,8 +16,6 @@
  */
 package org.geotools.jdbc;
 
-import static org.junit.Assume.assumeTrue;
-
 import java.sql.Connection;
 import java.util.Arrays;
 import java.util.List;
@@ -31,6 +29,7 @@ import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.function.FilterFunction_strToLowerCase;
 import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -700,13 +699,17 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
      * @throws Exception
      */
     public void testStringFunction() throws Exception {
+        // ignore if the String function is not supported
+        if (!dataStore.getFilterCapabilities().supports(FilterFunction_strToLowerCase.class)) {
+            LOGGER.info("Ignoring testStringFunction test");
+            return;
+        }
 
         FilterFactory ff = dataStore.getFilterFactory();
         Function function = ff.function("strToLowerCase", ff.property("stringProperty"));
 
         // should hit the row where stringProperty starts with z (e.g zero)
         PropertyIsLike likeWithStringFunction = ff.like(function, "z%", "%", "-", "\\", true);
-        assumeTrue(dataStore.getFilterCapabilities().fullySupports(likeWithStringFunction));
         assertEquals(1, featureSource.getCount(new Query(null, likeWithStringFunction)));
     }
 }

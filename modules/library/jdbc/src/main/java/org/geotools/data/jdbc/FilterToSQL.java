@@ -524,7 +524,6 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         // JD: hack for date values, we append some additional padding to handle
         // the matching of time/timezone/etc...
         Class attributeType = getExpressionType(att);
-        // AttributeDescriptor ad = (AttributeDescriptor) att.evaluate(featureType);
         if (Date.class.isAssignableFrom(attributeType)) {
             literal += multi;
         }

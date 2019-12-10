@@ -33,6 +33,7 @@ import org.opengis.feature.IllegalAttributeException;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.PropertyIsEqualTo;
+import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.spatial.BBOX3D;
 import org.opengis.filter.spatial.Intersects;
 import org.opengis.geometry.MismatchedDimensionException;
@@ -199,5 +200,22 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
         filterToSql.encode(expr);
         String sql = writer.toString().toLowerCase();
         assertEquals("where 5::text=any(testarray)", sql);
+    }
+
+    @Test
+    public void testFunctionLike() throws Exception {
+        filterToSql.setFeatureType(testSchema);
+        PropertyIsLike like =
+                ff.like(
+                        ff.function("strToLowerCase", ff.property("testString")),
+                        "a_literal",
+                        "%",
+                        "-",
+                        "\\",
+                        true);
+
+        filterToSql.encode(like);
+        String sql = writer.toString().toLowerCase().trim();
+        assertEquals("where lower(teststring) like 'a_literal'", sql);
     }
 }

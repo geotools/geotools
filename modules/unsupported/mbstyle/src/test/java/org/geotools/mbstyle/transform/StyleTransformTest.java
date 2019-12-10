@@ -269,7 +269,7 @@ public class StyleTransformTest {
         assertEquals(
                 Integer.valueOf(4), lsym.getPerpendicularOffset().evaluate(null, Integer.class));
 
-        List<Integer> expectedDashes = Arrays.asList(50, 50);
+        List<Integer> expectedDashes = Arrays.asList(50, 50); // 5 times 10, the line width
         assertEquals(expectedDashes.size(), lsym.getStroke().dashArray().size());
         for (int i = 0; i < expectedDashes.size(); i++) {
             Integer n = (Integer) lsym.getStroke().dashArray().get(i).evaluate(null, Integer.class);

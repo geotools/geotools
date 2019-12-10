@@ -81,9 +81,8 @@ public class FlatgeobufFeatureSource extends ContentFeatureSource {
                             getState().getFeatureType().getTypeName(),
                             getState().getFeatureType().getGeometryDescriptor().getLocalName(),
                             in);
-            SimpleFeature feature;
             count = 0;
-            while ((feature = reader.getNextFeature()) != null) {
+            while (reader.getNextFeature() != null) {
                 count++;
             }
         }

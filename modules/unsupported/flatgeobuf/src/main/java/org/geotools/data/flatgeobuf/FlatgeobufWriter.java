@@ -56,9 +56,7 @@ public class FlatgeobufWriter {
 
             for (int i = 0; i < types.size(); i++) {
                 AttributeDescriptor ad = types.get(i);
-                if (ad instanceof GeometryDescriptor) {
-                    // multiple geometries per feature is not supported
-                } else {
+                if (!(ad instanceof GeometryDescriptor)) {
                     String key = ad.getLocalName();
                     Class<?> binding = ad.getType().getBinding();
                     ColumnMeta column = new ColumnMeta();
@@ -75,12 +73,8 @@ public class FlatgeobufWriter {
                 }
             }
 
-            // CoordinateReferenceSystem crs =
-            // featureType.getGeometryDescriptor().getCoordinateReferenceSystem();
             byte geometryType =
                     toGeometryType(featureType.getGeometryDescriptor().getType().getBinding());
-            // byte dimensions = (byte) (crs == null ? 2 :
-            // crs.getCoordinateSystem().getDimension());
 
             this.headerMeta = new HeaderMeta();
             headerMeta.featuresCount = 0;

@@ -25,7 +25,6 @@ import org.geotools.data.DataStore;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentState;
-import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -35,20 +34,14 @@ public class FlatgeobufFeatureReader implements FeatureReader<SimpleFeatureType,
 
     private SimpleFeature nextFeature;
 
-    private int featureIndex = 0;
-
     private File file;
 
     private InputStream inputStream;
-
-    private SimpleFeatureBuilder featureBuilder;
 
     private FlatgeobufReader flatgeobufReader;
 
     public FlatgeobufFeatureReader(ContentState state, Query query) throws IOException {
         this.state = state;
-        this.featureBuilder = new SimpleFeatureBuilder(state.getFeatureType());
-        File file;
         DataStore dataStore = state.getEntry().getDataStore();
         if (dataStore instanceof FlatgeobufDirectoryDataStore) {
             this.file =
@@ -87,7 +80,6 @@ public class FlatgeobufFeatureReader implements FeatureReader<SimpleFeatureType,
             nextFeature = null;
         } else {
             feature = getFlatgeobufReader().getNextFeature();
-            featureIndex++;
         }
         return feature;
     }
@@ -98,7 +90,6 @@ public class FlatgeobufFeatureReader implements FeatureReader<SimpleFeatureType,
             return true;
         } else {
             nextFeature = getFlatgeobufReader().getNextFeature();
-            featureIndex++;
             return nextFeature != null;
         }
     }

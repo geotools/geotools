@@ -68,7 +68,7 @@ public class MBObjectStops {
             if (layer.getLayout() != null) {
                 ls = getStops(layer.getLayout(), ls);
             }
-            if (ls.zoomStops || ls.zoomPropertyStops) {
+            if (ls.zoomPropertyStops) {
                 stops = getStopLevels(layer);
                 layersForStop = getLayerStyleForStops(layer, stops);
                 ranges = getStopLevelRanges(stops);

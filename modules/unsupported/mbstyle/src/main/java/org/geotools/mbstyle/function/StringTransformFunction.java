@@ -66,6 +66,11 @@ public class StringTransformFunction extends FunctionImpl {
     }
 
     @Override
+    public Object evaluate(Object object) {
+        return evaluate(object, null);
+    }
+
+    @Override
     public <T> T evaluate(Object object, Class<T> context) {
         List<Expression> parameters = getParameters();
 
@@ -85,6 +90,6 @@ public class StringTransformFunction extends FunctionImpl {
             output = input;
         }
 
-        return output.evaluate(object, context);
+        return context == null ? (T) output.evaluate(object) : output.evaluate(object, context);
     }
 }

@@ -16,16 +16,7 @@
  */
 package org.geotools.renderer.style;
 
-import java.awt.AlphaComposite;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Composite;
-import java.awt.Graphics2D;
-import java.awt.Paint;
-import java.awt.RenderingHints;
-import java.awt.Shape;
-import java.awt.Stroke;
-import java.awt.TexturePaint;
+import java.awt.*;
 import java.awt.font.TextAttribute;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
@@ -40,8 +31,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
+import javax.swing.*;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.renderer.VendorOptionParser;
 import org.geotools.renderer.composite.BlendComposite;
@@ -288,10 +278,8 @@ public class SLDStyleFactory {
         } else {
             style = createStyleInternal(drawMe, symbolizer, scaleRange);
 
-            // for some legitimate cases some styles cannot be turned into a
-            // valid Style2D
-            // e.g., point symbolizer that contains no graphic that can be used
-            // due to network issues
+            // for some legitimate cases some styles cannot be turned into a valid Style2D e.g.,
+            // point symbolizer that contains no graphic that can be used due to network issues
             if (style == null) {
                 return null;
             }
@@ -607,11 +595,16 @@ public class SLDStyleFactory {
         }
 
         if (retval == null) {
+            // vendor option to turn off fallback
+            if (!voParser.getBooleanOption(
+                    symbolizer, PointSymbolizer.FALLBACK_ON_DEFAULT_MARK, true)) {
+                return null;
+            }
+
             // from SLD spec:
             // The default if neither an ExternalGraphic nor a Mark is specified is to use the
             // default mark of a "square" with a 50%-gray fill and a black outline, with a size of 6
-            // pixels,
-            // unless an explicit Size is specified
+            // pixels, unless an explicit Size is specified
             StyleFactory sf = CommonFactoryFinder.getStyleFactory();
             Mark defaultMark =
                     sf.mark(

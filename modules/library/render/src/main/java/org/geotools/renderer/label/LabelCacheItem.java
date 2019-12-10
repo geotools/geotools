@@ -103,6 +103,8 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
 
     boolean partialsEnabled = false;
 
+    TextSymbolizer.GraphicPlacement graphicPlacement;
+
     /**
      * A value between 0 and 1 representing the portion of the label that overlaps with the geometry
      * (atm used only for polygons)
@@ -446,6 +448,14 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
 
     public void setFontShrinkSizeMin(int fontShrinkSize) {
         this.fontShrinkSizeMin = fontShrinkSize;
+    }
+
+    public TextSymbolizer.GraphicPlacement getGraphicPlacement() {
+        return graphicPlacement == null ? TextSymbolizer.GraphicPlacement.LABEL : graphicPlacement;
+    }
+
+    public void setGraphicPlacement(TextSymbolizer.GraphicPlacement graphicPlacement) {
+        this.graphicPlacement = graphicPlacement;
     }
 
     @Override

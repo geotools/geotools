@@ -251,7 +251,7 @@ public class MBFunctionTest {
                 DataUtilities.createType("SAMPLE", "id:\"\",temperature:0.0,location=4326");
         SimpleFeature feature = DataUtilities.createFeature(SAMPLE, "measure1=A|50.0|POINT(0,0)");
 
-        EnvFunction.setGlobalValue("wms_scale_denominator", "2132.729584");
+        EnvFunction.setGlobalValue("wms_scale_denominator", "1066.364792");
 
         JSONObject json =
                 MapboxTestUtils.object(
@@ -268,7 +268,7 @@ public class MBFunctionTest {
 
         Expression zoomLevel = fn.getParameters().get(0);
         Number n = zoomLevel.evaluate(null, Number.class);
-        // This should be zoom level 18
+        // This should be zoom level 17
         assertEquals(18.0, n.doubleValue(), .000001);
 
         Literal stop1 = (Literal) fn.getParameters().get(1);
@@ -309,7 +309,7 @@ public class MBFunctionTest {
                 DataUtilities.createType("SAMPLE", "id:\"\",temperature:0.0,location=4326");
         SimpleFeature feature = DataUtilities.createFeature(SAMPLE, "measure1=A|50.0|POINT(0,0)");
 
-        EnvFunction.setGlobalValue("wms_scale_denominator", "69885282.993862");
+        EnvFunction.setGlobalValue("wms_scale_denominator", "34942641.4969\n");
 
         JSONObject json =
                 MapboxTestUtils.object(
@@ -328,23 +328,23 @@ public class MBFunctionTest {
         assertEquals(3.0, n.doubleValue(), .000001);
 
         Color result = fn.evaluate(feature, Color.class);
-        assertEquals(new Color(127, 0, 128), result);
+        assertEquals(new Color(128, 0, 127), result);
 
-        EnvFunction.setGlobalValue("wms_scale_denominator", "8735660.374233");
+        EnvFunction.setGlobalValue("wms_scale_denominator", "4367830.18712");
         n = zoomLevel.evaluate(null, Number.class);
         // This should be zoom level 6
         assertEquals(6.0, n.doubleValue(), .000001);
         result = fn.evaluate(feature, Color.class);
         assertEquals(new Color(255, 0, 0), result);
 
-        EnvFunction.setGlobalValue("wms_scale_denominator", "1091957.546779");
+        EnvFunction.setGlobalValue("wms_scale_denominator", "545978.773389");
         n = zoomLevel.evaluate(null, Number.class);
         // This should be zoom level 9
         assertEquals(9.0, n.doubleValue(), .000001);
         result = fn.evaluate(feature, Color.class);
         assertEquals(new Color(127, 128, 0), result);
 
-        EnvFunction.setGlobalValue("wms_scale_denominator", "136494.693347");
+        EnvFunction.setGlobalValue("wms_scale_denominator", "68247.3466735");
         n = zoomLevel.evaluate(null, Number.class);
         // This should be zoom level 12
         assertEquals(12.0, n.doubleValue(), .000001);
@@ -375,7 +375,7 @@ public class MBFunctionTest {
                         .evaluate(null, Number.class)
                         .doubleValue(),
                 .00001);
-        verifyEnvironmentZoomLevel(9);
+        verifyEnvironmentZoomLevel(8);
 
         // Create a Mapbox Function
         String jsonStr =
@@ -429,12 +429,12 @@ public class MBFunctionTest {
         SimpleFeature feature = DataUtilities.createFeature(SAMPLE, "measure1=A|50.0|POINT(0,0)");
 
         // Set scale denominator to the equivalent of zoomLevel 9
-        String scaleDenomForZoom9 = "1091957.546779";
+        String scaleDenomForZoom9 = "545978.773389";
         EnvFunction.setGlobalValue("wms_scale_denominator", scaleDenomForZoom9);
 
         // Verify environment has expected scale denominator (and zoom level)
         assertEquals(
-                1091957.546779,
+                545978.773389,
                 ff.function("env", ff.literal("wms_scale_denominator"))
                         .evaluate(null, Number.class)
                         .doubleValue(),
@@ -490,12 +490,12 @@ public class MBFunctionTest {
         SimpleFeature feature = DataUtilities.createFeature(SAMPLE, "measure1=A|50.0|POINT(0,0)");
 
         // Set scale denominator to the equivalent of zoomLevel 9
-        String scaleDenomForZoom9 = "1091957.546779";
+        String scaleDenomForZoom9 = "545978.7733895";
         EnvFunction.setGlobalValue("wms_scale_denominator", scaleDenomForZoom9);
 
         // Verify environment has expected scale denominator (and zoom level)
         assertEquals(
-                1091957.546779,
+                545978.7733895,
                 ff.function("env", ff.literal("wms_scale_denominator"))
                         .evaluate(null, Number.class)
                         .doubleValue(),
@@ -712,12 +712,12 @@ public class MBFunctionTest {
         SimpleFeature feature = DataUtilities.createFeature(SAMPLE, "measure1=A|50.0|POINT(0,0)");
 
         // Set scale denominator to the equivalent of zoomLevel 9
-        String scaleDenomForZoom9 = "1091957.546779";
+        String scaleDenomForZoom9 = "545978.773389";
         EnvFunction.setGlobalValue("wms_scale_denominator", scaleDenomForZoom9);
 
         // Verify environment has expected scale denominator (and zoom level)
         assertEquals(
-                1091957.546779,
+                545978.773389,
                 ff.function("env", ff.literal("wms_scale_denominator"))
                         .evaluate(null, Number.class)
                         .doubleValue(),

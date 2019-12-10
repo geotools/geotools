@@ -70,10 +70,11 @@ public class MBTilesFeatureSourceTest {
                 DataUtilities.first(store.getFeatureSource("datatypes").getFeatures(Query.ALL));
         assertThat(feature.getAttribute("bool_false"), equalTo(false));
         assertThat(feature.getAttribute("bool_true"), equalTo(true));
-        assertThat((Double) feature.getAttribute("float_value"), closeTo(1.25, 0.01));
-        assertThat((Double) feature.getAttribute("int64_value"), closeTo(123456789012345d, 1));
-        assertThat((Double) feature.getAttribute("neg_int_value"), closeTo(-1, 0));
-        assertThat((Double) feature.getAttribute("pos_int_value"), closeTo(1, 1.23456789));
+        assertThat(
+                ((Float) feature.getAttribute("float_value")).doubleValue(), closeTo(1.25, 0.01));
+        assertThat(feature.getAttribute("int64_value"), equalTo(123456789012345L));
+        assertThat(feature.getAttribute("neg_int_value"), equalTo(-1L));
+        assertThat(feature.getAttribute("pos_int_value"), equalTo(1L));
         assertThat(feature.getAttribute("string_value"), equalTo("str"));
         Point expected = (Point) new WKTReader().read("POINT (215246.671651058 6281289.23636264)");
         Point actual = (Point) feature.getDefaultGeometry();
@@ -197,7 +198,7 @@ public class MBTilesFeatureSourceTest {
         checkFirstFeature("water", "class", "ocean");
         checkFirstFeature("water", "class", "lake");
         checkFirstFeature("landcover", "class", "ice");
-        checkFirstFeature("boundary", "admin_level", 2d);
+        checkFirstFeature("boundary", "admin_level", 2L);
         checkFirstFeature("place", "name", "Madagascar");
     }
 

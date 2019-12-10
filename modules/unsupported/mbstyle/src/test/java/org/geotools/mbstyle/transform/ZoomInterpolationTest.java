@@ -25,7 +25,7 @@ public class ZoomInterpolationTest {
 
         // Set the zoom level to be between stops
         // Set scale denominator to the equivalent of zoomLevel ~ 4.25
-        String scaleDenom = "29383141.974265";
+        String scaleDenom = "14691570.9871";
         EnvFunction.setGlobalValue("wms_scale_denominator", scaleDenom);
 
         // Assert output is interpolated

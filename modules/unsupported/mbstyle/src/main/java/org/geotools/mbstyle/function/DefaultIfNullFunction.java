@@ -58,16 +58,25 @@ public class DefaultIfNullFunction extends FunctionImpl {
     }
 
     @Override
+    public Object evaluate(Object object) {
+        return evaluate(object, null);
+    }
+
+    @Override
     public <T> T evaluate(Object object, Class<T> context) {
         List<Expression> parameters = getParameters();
 
         Expression input = parameters.get(0);
         Expression fallback = parameters.get(1);
 
-        T fallbackEvaluated = fallback.evaluate(object, context);
+        T fallbackEvaluated =
+                context == null
+                        ? (T) fallback.evaluate(object)
+                        : fallback.evaluate(object, context);
         T inputEvaluated;
         try {
-            inputEvaluated = input.evaluate(object, context);
+            inputEvaluated =
+                    context == null ? (T) input.evaluate(object) : input.evaluate(object, context);
         } catch (Exception e) {
             inputEvaluated = null;
             LOGGER.warning(

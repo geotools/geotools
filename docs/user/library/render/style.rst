@@ -420,6 +420,7 @@ Examples:
 Point symbolizers support ``VendorOptions``:
 
 * ``labelObstacle(true/false)``\ : No labels should overlap this feature, used to ensure point graphics are clearly visible and not obscured by text.
+* ``fallbackOnDefaultMark(true/false)``\ : If the graphics used in the symbolizer cannot be found, fallback on a default gray square (``true``, default value) or skip the symbolizer without painting anything (``false``).
 
 LineSymbolizer
 ''''''''''''''
@@ -557,7 +558,9 @@ Considerable vendor options are provided for working with ``TextSymbolizers``:
 * ``displacementMode``\ : Comma separated list of label displacement directions for point/polygon labels (used along with ``maxDisplacement``). The indicated directions will be tried in turn.
                     Valid values are cardinal directions abbreviations, in particular, N, W, E, S, NW, NE, SW, SE.
 
-* ``fontShrinkSizeMin(0)``\ : lower font size limit that could be used when rendering the label. When set (to a positive value) the rendering process will be applied iteratively by decreasing the initial font size by 1 unit until an acceptable placement location is found or the specified value is reached. Should be set to a value greater than 0 and lower than the symbolizer's font size otherwise it is ignored.  
+* ``fontShrinkSizeMin(0)``\ : lower font size limit that could be used when rendering the label. When set (to a positive value) the rendering process will be applied iteratively by decreasing the initial font size by 1 unit until an acceptable placement location is found or the specified value is reached. Should be set to a value greater than 0 and lower than the symbolizer's font size otherwise it is ignored.
+
+* ``graphicPlacement(label)``: placement of the graphic found in the text symbolizer, compared to the associated label. If using ``label`` (default value) the graphic is centered with the label. If using ``independet`` the graphic is placed relative to label point instead, and the graphic anchor/offset are used to position it, while the label retains its own anchor/offset related to the label point.   
 
 Raster Symbolizer
 '''''''''''''''''

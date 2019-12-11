@@ -16,9 +16,9 @@
  */
 package org.geotools.mbstyle.layer;
 
-import static org.geotools.styling.TextSymbolizer.CONFLICT_RESOLUTION_KEY;
-import static org.geotools.styling.TextSymbolizer.GRAPHIC_PLACEMENT_KEY;
-import static org.geotools.styling.TextSymbolizer.GraphicPlacement.INDEPENDENT;
+import static org.geotools.renderer.label.LabelCacheItem.GraphicResize.*;
+import static org.geotools.styling.TextSymbolizer.*;
+import static org.geotools.styling.TextSymbolizer.GraphicPlacement.*;
 
 import com.google.common.collect.ImmutableSet;
 import java.awt.*;
@@ -50,6 +50,7 @@ import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.Rule;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.StyleBuilder;
+import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
 import org.geotools.text.Text;
 import org.json.simple.JSONArray;
@@ -1808,15 +1809,17 @@ public class SymbolMBLayer extends MBLayer {
         Number symbolSpacing =
                 transformer.requireLiteral(
                         symbolSpacing(), Number.class, 250, "symbol-spacing", getId());
-        symbolizer.getOptions().put("repeat", String.valueOf(symbolSpacing));
+        symbolizer.getOptions().put(LABEL_REPEAT_KEY, String.valueOf(symbolSpacing));
 
         // text max angle - only for line placement
         // throw MBFormatException if point placement
         if (labelPlacement instanceof LinePlacement) {
             // followLine will be true if line placement, it is an implied default of MBstyles.
-            symbolizer.getOptions().put("forceLeftToRight", String.valueOf(textKeepUpright()));
-            symbolizer.getOptions().put("followLine", "true");
-            symbolizer.getOptions().put("maxAngleDelta", String.valueOf(getTextMaxAngle()));
+            symbolizer.getOptions().put(FORCE_LEFT_TO_RIGHT_KEY, String.valueOf(textKeepUpright()));
+            symbolizer.getOptions().put(FOLLOW_LINE_KEY, "true");
+            symbolizer.getOptions().put(MAX_ANGLE_DELTA_KEY, String.valueOf(getTextMaxAngle()));
+            symbolizer.getOptions().put(GROUP_KEY, "true");
+            symbolizer.getOptions().put(LABEL_ALL_GROUP_KEY, "true");
         } else if (hasTextMaxAngle()) {
             throw new MBFormatException(
                     "Property text-max-angle requires symbol-placement = line but symbol-placement = "
@@ -1844,12 +1847,12 @@ public class SymbolMBLayer extends MBLayer {
                                 iconTextFit(), String.class, "none", "icon-text-fit", getId())
                         .trim();
         if ("height".equalsIgnoreCase(textFitVal) || "width".equalsIgnoreCase(textFitVal)) {
-            symbolizer.getOptions().put("graphic-resize", "stretch");
+            symbolizer.getOptions().put(GRAPHIC_RESIZE_KEY, STRETCH.name());
         } else if ("both".equalsIgnoreCase(textFitVal)) {
-            symbolizer.getOptions().put("graphic-resize", "proportional");
+            symbolizer.getOptions().put(GRAPHIC_RESIZE_KEY, PROPORTIONAL.name());
         } else {
             // Default
-            symbolizer.getOptions().put("graphic-resize", "none");
+            symbolizer.getOptions().put(GRAPHIC_RESIZE_KEY, NONE.name());
         }
 
         // MapBox symbol-avoid-edges defaults to false, If true, the symbols will not cross tile
@@ -1871,16 +1874,16 @@ public class SymbolMBLayer extends MBLayer {
         // symbol-avoid-edges is missing or
         // set to false, then we do need to add the partials option set to true.
         if (!getSymbolAvoidEdges()) {
-            symbolizer.getOptions().put("partials", "true");
+            symbolizer.getOptions().put(PARTIALS_KEY, "true");
         }
 
         // Mapbox allows you to sapecify an array of values, one for each side
         if (getIconTextFitPadding() != null && !getIconTextFitPadding().isEmpty()) {
             symbolizer
                     .getOptions()
-                    .put("graphic-margin", String.valueOf(getIconTextFitPadding().get(0)));
+                    .put(GRAPHIC_MARGIN_KEY, String.valueOf(getIconTextFitPadding().get(0)));
         } else {
-            symbolizer.getOptions().put("graphic-margin", "0");
+            symbolizer.getOptions().put(GRAPHIC_MARGIN_KEY, "0");
         }
 
         // text-padding default value is 2 in mapbox, will override Geoserver defaults
@@ -1908,7 +1911,7 @@ public class SymbolMBLayer extends MBLayer {
                             16.0,
                             "text-size (when text-max-width is specified)",
                             getId());
-            symbolizer.getOptions().put("autoWrap", String.valueOf(textMaxWidth * textSize));
+            symbolizer.getOptions().put(AUTO_WRAP_KEY, String.valueOf(textMaxWidth * textSize));
         }
 
         // If the layer has an icon image, add it to our symbolizer
@@ -1918,7 +1921,9 @@ public class SymbolMBLayer extends MBLayer {
             if (!hasTextField()
                     || ((getIconPadding().doubleValue()) > (getTextPadding().doubleValue()))
                             && !"point".equalsIgnoreCase(symbolPlacementVal.trim())) {
-                symbolizer.getOptions().put("spaceAround", String.valueOf(getIconPadding()));
+                symbolizer
+                        .getOptions()
+                        .put(TextSymbolizer.SPACE_AROUND_KEY, String.valueOf(getIconPadding()));
             }
             // If we have an icon with a Point placement force graphic placement independ
             // of the label final position (each one gets its own anchor and displacement)

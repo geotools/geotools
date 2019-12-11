@@ -17,9 +17,12 @@
 package org.geotools.mbstyle.transform;
 
 import static org.geotools.styling.TextSymbolizer.CONFLICT_RESOLUTION_KEY;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.hasEntry;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.*;
@@ -866,6 +869,15 @@ public class StyleTransformTest {
         LinePlacement lp = (LinePlacement) ts.getLabelPlacement();
         // text-offset: [0, 0.5] as ems, with text-size set to 20, and opposite y direction
         assertEquals(-10, lp.getPerpendicularOffset().evaluate(null, Double.class), 0d);
+        // check also the other vendor options
+        assertThat(
+                ts.getOptions(),
+                allOf(
+                        hasEntry("followLine", "true"),
+                        hasEntry("maxAngleDelta", "45.0"),
+                        hasEntry("group", "true"),
+                        hasEntry("labelAllGroup", "true"),
+                        hasEntry("forceLeftToRight", "true")));
     }
 
     @Test

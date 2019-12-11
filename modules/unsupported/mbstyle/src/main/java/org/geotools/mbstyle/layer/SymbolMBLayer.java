@@ -82,6 +82,8 @@ public class SymbolMBLayer extends MBLayer {
 
     private static String TYPE = "symbol";
 
+    private Integer labelPriority;
+
     public enum SymbolPlacement {
         /** The label is placed at the point where the geometry is located. */
         POINT,
@@ -1936,6 +1938,12 @@ public class SymbolMBLayer extends MBLayer {
             symbolizer.setGraphic(graphic);
         }
 
+        // make sure rendering paints the labels in the same layer based order that
+        // Mapbox GL would use
+        if (labelPriority != null) {
+            symbolizer.setPriority(ff.literal(labelPriority));
+        }
+
         symbolizers.add(symbolizer);
         MBFilter filter = getFilter();
 
@@ -2039,5 +2047,13 @@ public class SymbolMBLayer extends MBLayer {
     @Override
     public String getType() {
         return TYPE;
+    }
+
+    public Integer getLabelPriority() {
+        return labelPriority;
+    }
+
+    public void setLabelPriority(Integer labelPriority) {
+        this.labelPriority = labelPriority;
     }
 }

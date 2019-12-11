@@ -895,4 +895,25 @@ public class StyleTransformTest {
         assertEquals(12, pp.getDisplacement().getDisplacementX().evaluate(null, Double.class), 0d);
         assertEquals(-6, pp.getDisplacement().getDisplacementY().evaluate(null, Double.class), 0d);
     }
+
+    @Test
+    public void testSymbolPriorityTest() throws Exception {
+        JSONObject jsonObject = parseTestStyle("symbolPriorityTest.json");
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        StyledLayerDescriptor sld = mbStyle.transform();
+        Style style = MapboxTestUtils.getStyle(sld, 0);
+        List<FeatureTypeStyle> featureTypeStyles = style.featureTypeStyles();
+        TextSymbolizer ts0 = getFirstSymbolizer(featureTypeStyles.get(0));
+        assertEquals(1000, (int) ts0.getPriority().evaluate(null, Integer.class));
+        TextSymbolizer ts1 = getFirstSymbolizer(featureTypeStyles.get(1));
+        assertEquals(2000, (int) ts1.getPriority().evaluate(null, Integer.class));
+        TextSymbolizer ts2 = getFirstSymbolizer(featureTypeStyles.get(2));
+        assertEquals(3000, (int) ts2.getPriority().evaluate(null, Integer.class));
+        TextSymbolizer ts3 = getFirstSymbolizer(featureTypeStyles.get(3));
+        assertEquals(4000, (int) ts3.getPriority().evaluate(null, Integer.class));
+    }
+
+    private <T extends Symbolizer> T getFirstSymbolizer(FeatureTypeStyle fts) {
+        return (T) fts.rules().get(0).symbolizers().get(0);
+    }
 }

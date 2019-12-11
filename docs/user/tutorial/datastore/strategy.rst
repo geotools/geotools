@@ -254,7 +254,7 @@ The ``CSVAttributesOnlyStrategy`` is the simplest implementation. It directly re
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/parse/CSVAttributesOnlyStrategy.java
       :language: java
-      :start-after: // docs start
+      :start-after: import org.opengis.feature.type.GeometryDescriptor;
 
 ``CSVLatLonStrategy``
 ^^^^^^^^^^^^^^^^^^^^^

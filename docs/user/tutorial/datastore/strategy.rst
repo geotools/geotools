@@ -141,7 +141,7 @@ The ``CSVFeatureWriter`` handles the writing functionality for our ``CSVFeatureS
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFeatureWriter.java
       :language: java
-      :start-after: import com.csvreader.CsvWriter;
+      :start-after: import org.opengis.feature.simple.SimpleFeatureType;
       :end-before: public CSVFeatureWriter(CSVFileState csvFileState, CSVStrategy csvStrategy)
 
 The feature type we grab for writing is dependent on our strategy; therefore, we must feed ``CSVFeatureWriter`` our ``CSVStrategy`` and grab the feature type from it. We'll also get our iterator, which reads the file, from our ``CSVStrategy``. Finally, we'll set up a ``CSVWriter`` to write to a new file, temp, with the same headers from our current file.
@@ -178,7 +178,7 @@ The ``CSVIterator`` is a helper class primarily for ``CSVFeatureReader``. Much o
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/parse/CSVIterator.java
       :language: java
-      :start-after: import com.csvreader.CsvReader;
+      :start-after: import org.opengis.feature.simple.SimpleFeature;
       :end-before: private SimpleFeature buildFeature(String[] csvRecord) {
 
 Because we're now using strategy objects to implement functionality, the ``readFeature()`` method no longer makes any assumptions about the nature of the data. It is delegated to the strategy to make such a decision. The resulting method is shorter, just passing what it reads off to builders to implement based on the strategy.
@@ -195,8 +195,8 @@ The ``CSVFileState`` is a new class to assist with File manipulation in our ``CS
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFileState.java
       :language: java
-      :start-after: import com.csvreader.CsvReader;
-      :end-before: public CsvReader openCSVReader() throws IOException {
+      :start-after: // docs start CSVFileState
+      :end-before: // docs start openCSVReader
 
 The class opens the file for reading, ensures it is the correct CSV format, and gives back a ``CSVReader`` to read the file through a stream.
 
@@ -254,7 +254,7 @@ The ``CSVAttributesOnlyStrategy`` is the simplest implementation. It directly re
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/parse/CSVAttributesOnlyStrategy.java
       :language: java
-      :start-after: import com.csvreader.CsvWriter;
+      :start-after: // docs start
 
 ``CSVLatLonStrategy``
 ^^^^^^^^^^^^^^^^^^^^^

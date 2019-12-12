@@ -102,6 +102,15 @@ public class AzimuthalEquidistantTest {
 
     }
 
+    @Test
+    public void testAutoCode() throws Exception {
+        CoordinateReferenceSystem azeq = CRS.decode("AUTO:97003,9001,-71.43,42.56", true);
+        MathTransform transform = CRS.findMathTransform(azeq, DefaultGeographicCRS.WGS84);
+        Point2D point = doTransform(transform.inverse(), new Point2D.Double(20, 60));
+        assertEquals(3740188.0147449127, point.getX(), 0.0001);
+        assertEquals(4831302.159548063, point.getY(), 0.0001);
+    }
+
     private static Point2D doTransform(MathTransform transform, Point2D point) {
         double[] output = new double[2];
         double[] input = {point.getX(), point.getY()};

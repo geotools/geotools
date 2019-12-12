@@ -38,13 +38,6 @@ public final class MongoComplexUtilities {
 
     private static final Logger LOG = Logging.getLogger(MongoComplexUtilities.class);
 
-    // if this property is set to TRUE the system will expect nested collection full path to be
-    // provided
-    private static final boolean USE_LEGACY_PATHS =
-            Boolean.parseBoolean(
-                    System.getProperty(
-                            "org.geotools.data.mongodb.complex.useLegacyPaths", "false"));
-
     // key used to store the parent JSON path in a feature user data map
     public static final String MONGO_PARENT_PATH = "MONGO_PARENT_PATH";
 
@@ -59,11 +52,6 @@ public final class MongoComplexUtilities {
     /** Store the parent path in a feature user data map. */
     public static void setParentPath(Feature feature, String parentPath) {
         feature.getUserData().put(MONGO_PARENT_PATH, parentPath);
-    }
-
-    /** If TRUE no recursive paths will be used, this onyl exists for backwards compatibility. */
-    public static boolean useLegacyPaths() {
-        return USE_LEGACY_PATHS;
     }
 
     /**

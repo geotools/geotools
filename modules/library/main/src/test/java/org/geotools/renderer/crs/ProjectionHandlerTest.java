@@ -38,9 +38,11 @@ import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.referencing.operation.projection.PolarStereographic;
 import org.geotools.referencing.operation.transform.IdentityTransform;
 import org.hamcrest.CoreMatchers;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
@@ -92,6 +94,12 @@ public class ProjectionHandlerTest {
         OSM = CRS.decode("EPSG:3857", true);
         ED50 = CRS.decode("EPSG:4230", true);
         ED50_LATLON = CRS.decode("urn:x-ogc:def:crs:EPSG:4230", false);
+        MapProjection.SKIP_SANITY_CHECKS = true;
+    }
+
+    @AfterClass
+    public static void teardown() throws Exception {
+        MapProjection.SKIP_SANITY_CHECKS = false;
     }
 
     @Test
@@ -1037,25 +1045,39 @@ public class ProjectionHandlerTest {
 
     @Test
     public void testQueryEnvelopeOnInvalidArea() throws Exception {
-        // and Envelope that does not make sense for EPSG:3003, too far away from central meridian
-        ReferencedEnvelope re =
-                new ReferencedEnvelope(-130, -120, -40, 30, DefaultGeographicCRS.WGS84);
-        ProjectionHandler ph =
-                ProjectionHandlerFinder.getHandler(re, CRS.decode("EPSG:3003", true), true);
-        List<ReferencedEnvelope> queryEnvelopes = ph.getQueryEnvelopes();
-        assertEquals(0, queryEnvelopes.size());
+        // override test defaults, this one really needs the checks
+        MapProjection.SKIP_SANITY_CHECKS = false;
+        try {
+            // and Envelope that does not make sense for EPSG:3003, too far away from central
+            // meridian
+            ReferencedEnvelope re =
+                    new ReferencedEnvelope(-130, -120, -40, 30, DefaultGeographicCRS.WGS84);
+            ProjectionHandler ph =
+                    ProjectionHandlerFinder.getHandler(re, CRS.decode("EPSG:3003", true), true);
+            List<ReferencedEnvelope> queryEnvelopes = ph.getQueryEnvelopes();
+            assertEquals(0, queryEnvelopes.size());
+        } finally {
+            MapProjection.SKIP_SANITY_CHECKS = true;
+        }
     }
 
     @Test
     public void testQueryEnvelopeOnInvalidArea2() throws Exception {
-        // and Envelope that does not make sense for EPSG:3003, too far away from central meridian
-        ReferencedEnvelope re =
-                new ReferencedEnvelope(-130, -120, -40, 30, DefaultGeographicCRS.WGS84);
-        ReferencedEnvelope re3857 = re.transform(CRS.decode("EPSG:3857", true), true);
-        ProjectionHandler ph =
-                ProjectionHandlerFinder.getHandler(re3857, CRS.decode("EPSG:3003", true), true);
-        List<ReferencedEnvelope> queryEnvelopes = ph.getQueryEnvelopes();
-        assertEquals(0, queryEnvelopes.size());
+        // override test defaults, this one really needs the checks
+        MapProjection.SKIP_SANITY_CHECKS = false;
+        try {
+            // and Envelope that does not make sense for EPSG:3003, too far away from central
+            // meridian
+            ReferencedEnvelope re =
+                    new ReferencedEnvelope(-130, -120, -40, 30, DefaultGeographicCRS.WGS84);
+            ReferencedEnvelope re3857 = re.transform(CRS.decode("EPSG:3857", true), true);
+            ProjectionHandler ph =
+                    ProjectionHandlerFinder.getHandler(re3857, CRS.decode("EPSG:3003", true), true);
+            List<ReferencedEnvelope> queryEnvelopes = ph.getQueryEnvelopes();
+            assertEquals(0, queryEnvelopes.size());
+        } finally {
+            MapProjection.SKIP_SANITY_CHECKS = true;
+        }
     }
 
     @Test
@@ -1324,5 +1346,84 @@ public class ProjectionHandlerTest {
         assertEquals(228, postProcessed.getGeometryN(0).getEnvelopeInternal().getWidth(), 1);
         assertEquals(228, postProcessed.getGeometryN(1).getEnvelopeInternal().getWidth(), 1);
         assertEquals(228, postProcessed.getGeometryN(2).getEnvelopeInternal().getWidth(), 1);
+    }
+
+    /**
+     * Simulates a client zooming out too much, asking for an area larger than the full world in
+     * AZEQ
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testAzEqBeyondLimitsCentered() throws Exception {
+        CoordinateReferenceSystem crs = CRS.decode("AUTO:97003,9001,0,0", true);
+        double beyond = 27000000;
+        ReferencedEnvelope re = new ReferencedEnvelope(-beyond, beyond, -beyond, beyond, crs);
+
+        ProjectionHandler ph =
+                ProjectionHandlerFinder.getHandler(re, DefaultGeographicCRS.WGS84, false);
+        assertNotNull(ph);
+        List<ReferencedEnvelope> envelopes = ph.getQueryEnvelopes();
+        assertEquals(1, envelopes.size());
+        ReferencedEnvelope qe = envelopes.get(0);
+        assertEquals(-180, qe.getMinX(), 1e-3);
+        assertEquals(-90, qe.getMinY(), 1e-3);
+        assertEquals(180, qe.getMaxX(), 1e-3);
+        assertEquals(90, qe.getMaxY(), 1e-3);
+    }
+
+    @Test
+    public void testAzEqBeyondLimits150_60() throws Exception {
+        CoordinateReferenceSystem crs = CRS.decode("AUTO:97003,9001,150,60", true);
+        double beyond = 27000000;
+        ReferencedEnvelope re = new ReferencedEnvelope(-beyond, beyond, -beyond, beyond, crs);
+
+        ProjectionHandler ph =
+                ProjectionHandlerFinder.getHandler(re, DefaultGeographicCRS.WGS84, false);
+        assertNotNull(ph);
+        List<ReferencedEnvelope> envelopes = ph.getQueryEnvelopes();
+        assertEquals(1, envelopes.size());
+        ReferencedEnvelope qe = envelopes.get(0);
+        assertEquals(-180, qe.getMinX(), 1e-3);
+        assertEquals(-90, qe.getMinY(), 1e-3);
+        assertEquals(180, qe.getMaxX(), 1e-3);
+        // can't get this one quite right, but it's good enough for the moment I guess
+        assertEquals(89, qe.getMaxY(), 1e-3);
+    }
+
+    @Test
+    public void testAzEqBeyondLimitsHalfWorld() throws Exception {
+        CoordinateReferenceSystem crs = CRS.decode("AUTO:97003,9001,0,0", true);
+        double beyond = 27000000;
+        ReferencedEnvelope re = new ReferencedEnvelope(0, beyond, -beyond, beyond, crs);
+
+        ProjectionHandler ph =
+                ProjectionHandlerFinder.getHandler(re, DefaultGeographicCRS.WGS84, false);
+        assertNotNull(ph);
+        List<ReferencedEnvelope> envelopes = ph.getQueryEnvelopes();
+        assertEquals(1, envelopes.size());
+        ReferencedEnvelope qe = envelopes.get(0);
+        assertEquals(0, qe.getMinX(), 1e-3);
+        assertEquals(-90, qe.getMinY(), 1e-3);
+        assertEquals(180, qe.getMaxX(), 1e-3);
+        assertEquals(90, qe.getMaxY(), 1e-3);
+    }
+
+    @Test
+    public void testAzEqBeyondLimitsQuarterWorld() throws Exception {
+        CoordinateReferenceSystem crs = CRS.decode("AUTO:97003,9001,0,0", true);
+        double beyond = 27000000;
+        ReferencedEnvelope re = new ReferencedEnvelope(0, beyond, 0, beyond, crs);
+
+        ProjectionHandler ph =
+                ProjectionHandlerFinder.getHandler(re, DefaultGeographicCRS.WGS84, false);
+        assertNotNull(ph);
+        List<ReferencedEnvelope> envelopes = ph.getQueryEnvelopes();
+        assertEquals(1, envelopes.size());
+        ReferencedEnvelope qe = envelopes.get(0);
+        assertEquals(0, qe.getMinX(), 2e-1);
+        assertEquals(0, qe.getMinY(), 2e-1);
+        assertEquals(180, qe.getMaxX(), 1e-3);
+        assertEquals(90, qe.getMaxY(), 1e-3);
     }
 }

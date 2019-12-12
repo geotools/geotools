@@ -20,12 +20,13 @@ package org.geotools.referencing.operation.projection;
 import static org.junit.Assert.assertEquals;
 
 import java.awt.geom.Point2D;
-
+import java.util.Arrays;
 import org.apache.commons.lang3.SerializationUtils;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Assert;
 import org.junit.Test;
+import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
@@ -99,7 +100,6 @@ public class AzimuthalEquidistantTest {
         Point2D point2 = doTransform(trans2.inverse(), new Point2D.Double(20, 60));
         assertEquals(3740188.0147449127, point2.getX(), 0.0001);
         assertEquals(4831302.159548063, point2.getY(), 0.0001);
-
     }
 
     @Test
@@ -120,5 +120,18 @@ public class AzimuthalEquidistantTest {
             throw new RuntimeException(e);
         }
         return new Point2D.Double(output[0], output[1]);
+    }
+
+    @Test
+    public void testReprojectAlongDateline() throws FactoryException, TransformException {
+        CoordinateReferenceSystem crs = CRS.decode("AUTO:97003,9001,170,-16", true);
+        MathTransform mt = CRS.findMathTransform(DefaultGeographicCRS.WGS84, crs);
+        double[] src = new double[] {179.8, -11};
+        double[] dst = new double[2];
+        for (int i = 0; i < 40; i++) {
+            mt.transform(src, 0, dst, 0, 1);
+            System.out.println(Arrays.toString(src) + " --> " + Arrays.toString(dst));
+            src[0] += 0.1;
+        }
     }
 }

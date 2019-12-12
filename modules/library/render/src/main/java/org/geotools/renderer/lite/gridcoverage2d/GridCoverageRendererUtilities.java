@@ -16,8 +16,7 @@
  */
 package org.geotools.renderer.lite.gridcoverage2d;
 
-import java.awt.Color;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.util.List;
 import javax.media.jai.Interpolation;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -269,11 +268,19 @@ final class GridCoverageRendererUtilities {
                 return null;
             }
 
-            MathTransform2D mt = coverages.get(0).getGridGeometry().getCRSToGrid2D();
-            Rectangle rasterSpaceEnvelope;
-            rasterSpaceEnvelope = CRS.transform(mt, targetEnvelope).toRectangle2D().getBounds();
+            // Use the first one as a reference so that it will not be resampled, the others will
+            // likely be
+            GridCoverage2D firstCoverage = coverages.get(0);
+            GridGeometry2D referenceGG = firstCoverage.getGridGeometry();
+            MathTransform2D mt = referenceGG.getCRSToGrid2D();
+            Rectangle rasterSpaceEnvelope =
+                    CRS.transform(mt, targetEnvelope).toRectangle2D().getBounds();
             GridEnvelope2D gridRange = new GridEnvelope2D(rasterSpaceEnvelope);
-            GridGeometry2D gridGeometry = new GridGeometry2D(gridRange, targetEnvelope);
+            GridGeometry2D gridGeometry =
+                    new GridGeometry2D(
+                            gridRange,
+                            referenceGG.getGridToCRS(),
+                            firstCoverage.getCoordinateReferenceSystem2D());
 
             // mosaic
             final ParameterValueGroup param =

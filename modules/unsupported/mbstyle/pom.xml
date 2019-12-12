@@ -106,7 +106,14 @@
       <artifactId>gt-property</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
-    </dependency>    
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-main</artifactId>
+      <scope>test</scope>
+      <classifier>tests</classifier>
+      <version>${project.version}</version>
+    </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-render</artifactId>

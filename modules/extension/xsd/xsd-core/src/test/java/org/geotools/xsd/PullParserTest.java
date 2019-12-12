@@ -25,4 +25,17 @@ public class PullParserTest extends TestCase {
 
         assertNull(parser.parse());
     }
+
+    // Validate that entity references are stripped when parsing xml
+    public void testParseEntity() throws Exception {
+        PullParser parser =
+                new PullParser(
+                        new MLConfiguration(),
+                        ML.class.getResourceAsStream("mails-external-entities.xml"),
+                        new QName(ML.NAMESPACE, "mail"));
+
+        Mail m = (Mail) parser.parse();
+        assertNotNull(m);
+        assertEquals("", m.getBody());
+    }
 }

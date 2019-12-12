@@ -1,5 +1,5 @@
 sudo: false
-dist: trusty
+dist: disco
 cache:
   directories:
     - "$HOME/.m2"

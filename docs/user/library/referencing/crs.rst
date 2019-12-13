@@ -36,6 +36,16 @@ Using the "OGC URN" syntax::
 Using the WMS AUTO2 syntax (which requires you pass in your current "position"::
   
   CoordinateReferenceSystem sourceCRS = CRS.decode("AUTO2:42001,"+lat+","+lon);
+  
+Supported AUTO codes are:
+
+* 42001, Universal Transverse Mercator
+* 42002, Transverse Mercator
+* 42003, Orthographic
+* 42004, Equidistant Cylindrical
+* 97001, Gnonomic (GeoTools extension)
+* 97002, Stereographic (GeoTools extension)
+* 97003, Azimuthal Equidistant (GeoTools extension)
 
 Well Known Text
 '''''''''''''''

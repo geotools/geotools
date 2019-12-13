@@ -1505,6 +1505,7 @@ public abstract class MapProjection extends AbstractMathTransform
                 createDescriptor(
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.OGC, "longitude_of_center"),
+                            new NamedIdentifier(Citations.OGC, "longitude_of_origin"),
                             new NamedIdentifier(Citations.EPSG, "Longitude of natural origin"),
                             new NamedIdentifier(Citations.EPSG, "Spherical longitude of origin"),
                             new NamedIdentifier(Citations.ESRI, "Central_Meridian"),
@@ -1523,6 +1524,7 @@ public abstract class MapProjection extends AbstractMathTransform
                 createDescriptor(
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.OGC, "latitude_of_center"),
+                            new NamedIdentifier(Citations.OGC, "latitude_of_origin"),
                             new NamedIdentifier(Citations.EPSG, "Latitude of natural origin"),
                             new NamedIdentifier(Citations.EPSG, "Spherical latitude of origin"),
                             new NamedIdentifier(Citations.ESRI, "Latitude_Of_Origin"),

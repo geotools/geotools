@@ -209,9 +209,9 @@ public class CSVLatLonStrategy extends CSVStrategy {
         int bad = 0;
         for (int i = 0; i < headers.length; i++) {
             String header = headers[i];
-            if (i < csvRecord.length ) {
+            if (i < csvRecord.length) {
                 String value = csvRecord[i].trim();
-                
+
                 LOGGER.fine("Processing " + header + " with value of " + value);
                 if (geometryDescriptor != null && header.equals(latField)) {
                     lat = Double.valueOf(value);
@@ -222,7 +222,7 @@ public class CSVLatLonStrategy extends CSVStrategy {
                 }
             } else {
                 LOGGER.warning("record had fewer values than header");
-               return null;
+                return null;
             }
         }
         if (geometryDescriptor != null && lat != null && lng != null) {
@@ -242,7 +242,7 @@ public class CSVLatLonStrategy extends CSVStrategy {
             builder.set(geometryDescriptor.getLocalName(), point);
         }
 
-          return builder.buildFeature(csvFileState.getTypeName() + "-" + recordId);
+        return builder.buildFeature(csvFileState.getTypeName() + "-" + recordId);
     }
     // docs end decode
 

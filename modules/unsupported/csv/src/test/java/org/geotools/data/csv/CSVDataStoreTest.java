@@ -77,52 +77,53 @@ public class CSVDataStoreTest {
         }
         return result;
     }
-    
+
     @Test
     public void testFeatureSource() throws IOException {
-      SimpleFeatureSource source = csvDataStore.getFeatureSource();
-      assertNotNull(source);
-      SimpleFeatureCollection features = source.getFeatures();
-      assertNotNull(features);
-      assertEquals(9, features.size());
+        SimpleFeatureSource source = csvDataStore.getFeatureSource();
+        assertNotNull(source);
+        SimpleFeatureCollection features = source.getFeatures();
+        assertNotNull(features);
+        assertEquals(9, features.size());
     }
 
     @Test
     public void testBlankLines() throws IOException {
-      URL resource = TestData.getResource(CSVDataStoreTest.class, "locations.csv");
-      File tmp = File.createTempFile("example", "");
-      boolean exists = tmp.exists();
-      if (exists) {
-          // System.err.println("Removing tempfile " + tmp);
-          tmp.delete();
-      }
-      boolean created = tmp.mkdirs();
-      if (!created) {
-          // System.err.println("Could not create " + tmp);
-          System.exit(1);
-      }
-      File blankLinefile = new File(tmp, "locations.csv");
-      Files.copy(resource.openStream(), blankLinefile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-      FileWriter writer = new FileWriter(blankLinefile,true);
-      writer.append("\n");
-      writer.close();
-      CSVFileState csvFileState = new CSVFileState(blankLinefile);
-      CSVLatLonStrategy csvStrategy = new CSVLatLonStrategy(csvFileState);
-      CSVDataStore dataStore = new CSVDataStore(csvFileState, csvStrategy);
-      SimpleFeatureSource source = dataStore.getFeatureSource();
-      assertNotNull(source);
-      SimpleFeatureCollection features = source.getFeatures();
-      assertNotNull(features);
-      assertEquals(9, features.size());
+        URL resource = TestData.getResource(CSVDataStoreTest.class, "locations.csv");
+        File tmp = File.createTempFile("example", "");
+        boolean exists = tmp.exists();
+        if (exists) {
+            // System.err.println("Removing tempfile " + tmp);
+            tmp.delete();
+        }
+        boolean created = tmp.mkdirs();
+        if (!created) {
+            // System.err.println("Could not create " + tmp);
+            System.exit(1);
+        }
+        File blankLinefile = new File(tmp, "locations.csv");
+        Files.copy(
+                resource.openStream(), blankLinefile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        FileWriter writer = new FileWriter(blankLinefile, true);
+        writer.append("\n");
+        writer.close();
+        CSVFileState csvFileState = new CSVFileState(blankLinefile);
+        CSVLatLonStrategy csvStrategy = new CSVLatLonStrategy(csvFileState);
+        CSVDataStore dataStore = new CSVDataStore(csvFileState, csvStrategy);
+        SimpleFeatureSource source = dataStore.getFeatureSource();
+        assertNotNull(source);
+        SimpleFeatureCollection features = source.getFeatures();
+        assertNotNull(features);
+        assertEquals(9, features.size());
     }
-    
+
     @Test
     public void testReadFeatures() throws IOException {
         FeatureReader<SimpleFeatureType, SimpleFeature> reader = csvDataStore.getFeatureReader();
         List<Coordinate> geometries = new ArrayList<Coordinate>();
         List<String> cities = new ArrayList<String>();
         List<String> numbers = new ArrayList<String>();
-        
+
         while (reader.hasNext()) {
             SimpleFeature feature = reader.next();
             Point geometry = (Point) feature.getDefaultGeometry();

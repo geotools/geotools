@@ -524,7 +524,7 @@ Considerable vendor options are provided for working with TextSymbolizers:
   
 * forceLeftToRight(true): When true forces labels to a readable orientation, when false they make follow the line orientation even if that means the label will look upside down (useful when using TTF symbol fonts to add direction markers along a line)
 
-* goodnessOfFit(90): Sets the percentage of the label that must sit inside the geometry to allow drawing the label. Works only on polygons.
+* goodnessOfFit(0.5) : Sets the ratio of the label that must sit inside the geometry to allow drawing the label. Works only on polygons. Provided values should span from 0 .. 1
 
 * graphic-margin (10) Pixels between the stretched graphic and the text, applies when graphic stretching is in use
   

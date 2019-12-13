@@ -206,16 +206,12 @@ public class CSVLatLonStrategy extends CSVStrategy {
         GeometryFactory geometryFactory = new GeometryFactory();
         Double lat = null, lng = null;
         String[] headers = csvFileState.getCSVHeaders();
-        if (LOGGER.getLevel() == Level.FINE) {
-            LOGGER.fine("Got headers in decode: ");
-            for (String h : headers) {
-                LOGGER.fine("'" + h + "'");
-            }
-        }
+        int bad = 0;
         for (int i = 0; i < headers.length; i++) {
             String header = headers[i];
-            if (i < csvRecord.length) {
+            if (i < csvRecord.length ) {
                 String value = csvRecord[i].trim();
+                
                 LOGGER.fine("Processing " + header + " with value of " + value);
                 if (geometryDescriptor != null && header.equals(latField)) {
                     lat = Double.valueOf(value);
@@ -226,7 +222,7 @@ public class CSVLatLonStrategy extends CSVStrategy {
                 }
             } else {
                 LOGGER.warning("record had fewer values than header");
-                builder.set(header, null);
+               return null;
             }
         }
         if (geometryDescriptor != null && lat != null && lng != null) {
@@ -245,7 +241,8 @@ public class CSVLatLonStrategy extends CSVStrategy {
             Point point = geometryFactory.createPoint(coordinate);
             builder.set(geometryDescriptor.getLocalName(), point);
         }
-        return builder.buildFeature(csvFileState.getTypeName() + "-" + recordId);
+
+          return builder.buildFeature(csvFileState.getTypeName() + "-" + recordId);
     }
     // docs end decode
 

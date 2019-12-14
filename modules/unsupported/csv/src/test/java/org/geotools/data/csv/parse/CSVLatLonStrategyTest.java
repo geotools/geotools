@@ -238,7 +238,13 @@ public class CSVLatLonStrategyTest {
         SimpleFeatureType featureType = strategy.getFeatureType();
         assertEquals("Invalid attribute count", 3, featureType.getAttributeCount());
         CSVIterator iterator = strategy.iterator();
-        assertFalse(iterator.hasNext());
+        SimpleFeature feature = iterator.next();
+        Point point = (Point) feature.getAttribute("location");
+        Coordinate coordinate = point.getCoordinate();
+        assertEquals("Invalid longitude coordinate", 42.29, coordinate.x, 0.1);
+        assertEquals("Invalid latitude coordinate", -72.3829, coordinate.y, 0.1);
+        assertEquals("Invalid attribute value", "quux", feature.getAttribute("foo"));
+        assertNull("Expected null", feature.getAttribute("bar"));
     }
 
     @Test

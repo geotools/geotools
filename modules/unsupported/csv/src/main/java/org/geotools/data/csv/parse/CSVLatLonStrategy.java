@@ -206,7 +206,16 @@ public class CSVLatLonStrategy extends CSVStrategy {
         GeometryFactory geometryFactory = new GeometryFactory();
         Double lat = null, lng = null;
         String[] headers = csvFileState.getCSVHeaders();
-        int bad = 0;
+
+        /*
+         * There are 4 possible outcomes here:
+         * 1. All the fields are present and can be converted
+         * 2. A field is blank and should be encoded as NULL
+         * 3. The last field is blank and should be encoded as NULL (csvRecord.length < headers.length
+         * 4. The entire line is blank and a NULL feature should be returned (CSVRecord.length == 1 && csvRecord[0].isEmpty)
+         *    Note: This is indistinguishable from a one attribute record that is empty
+         */
+
         for (int i = 0; i < headers.length; i++) {
             String header = headers[i];
             if (i < csvRecord.length) {
@@ -217,12 +226,17 @@ public class CSVLatLonStrategy extends CSVStrategy {
                     lat = Double.valueOf(value);
                 } else if (geometryDescriptor != null && header.equals(lngField)) {
                     lng = Double.valueOf(value);
-                } else {
+                } else if (!value.isEmpty()) {
                     builder.set(header, value);
+                } else {
+                    builder.set(header, null); /* or ""? */
                 }
             } else {
+                if (csvRecord.length == 1 && csvRecord[0].isEmpty()) {
+                    return null;
+                }
                 LOGGER.warning("record had fewer values than header");
-                return null;
+                builder.set(header, null); /* or ""? */
             }
         }
         if (geometryDescriptor != null && lat != null && lng != null) {

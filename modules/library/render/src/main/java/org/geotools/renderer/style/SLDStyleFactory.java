@@ -953,13 +953,20 @@ public class SLDStyleFactory {
         // now set up the stroke
         BasicStroke stroke2d;
 
-        if ((dashes != null) && (dashes.length > 0)) {
+        if ((dashes != null) && (dashes.length > 0) && !allZeroes(dashes)) {
             stroke2d = new BasicStroke(width, capCode, joinCode, MITER_LIMIT, dashes, dashOffset);
         } else {
             stroke2d = new BasicStroke(width, capCode, joinCode, MITER_LIMIT);
         }
 
         return stroke2d;
+    }
+
+    private boolean allZeroes(float[] dashes) {
+        for (float dash : dashes) {
+            if (dash != 0) return false;
+        }
+        return true;
     }
 
     public static float[] evaluateDashArray(org.geotools.styling.Stroke stroke, Object feature)

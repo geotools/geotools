@@ -41,7 +41,7 @@
                 "line-pattern": "pattern",
                 "line-opacity": 0.9,
                 "line-translate-anchor": "viewport",
-                "line-dasharray": [50, 50],
+                "line-dasharray": [2, 2],
                 "line-offset": 30,
                 "line-translate": [
                     3,

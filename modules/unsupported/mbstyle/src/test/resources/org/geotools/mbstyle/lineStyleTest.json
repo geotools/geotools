@@ -40,7 +40,7 @@
                 "line-color": "#0099ff",
                 "line-opacity": 0.5
                 "line-translate-anchor": "viewport",
-                "line-dasharray": [50, 50],
+                "line-dasharray": [5, 5],
                 "line-offset": 4,
                 "line-translate": [
                     3,

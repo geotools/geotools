@@ -17,9 +17,12 @@
 package org.geotools.mbstyle.transform;
 
 import static org.geotools.styling.TextSymbolizer.CONFLICT_RESOLUTION_KEY;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.hasEntry;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.*;
@@ -269,7 +272,7 @@ public class StyleTransformTest {
         assertEquals(
                 Integer.valueOf(4), lsym.getPerpendicularOffset().evaluate(null, Integer.class));
 
-        List<Integer> expectedDashes = Arrays.asList(50, 50);
+        List<Integer> expectedDashes = Arrays.asList(50, 50); // 5 times 10, the line width
         assertEquals(expectedDashes.size(), lsym.getStroke().dashArray().size());
         for (int i = 0; i < expectedDashes.size(); i++) {
             Integer n = (Integer) lsym.getStroke().dashArray().get(i).evaluate(null, Integer.class);
@@ -866,6 +869,15 @@ public class StyleTransformTest {
         LinePlacement lp = (LinePlacement) ts.getLabelPlacement();
         // text-offset: [0, 0.5] as ems, with text-size set to 20, and opposite y direction
         assertEquals(-10, lp.getPerpendicularOffset().evaluate(null, Double.class), 0d);
+        // check also the other vendor options
+        assertThat(
+                ts.getOptions(),
+                allOf(
+                        hasEntry("followLine", "true"),
+                        hasEntry("maxAngleDelta", "45.0"),
+                        hasEntry("group", "true"),
+                        hasEntry("labelAllGroup", "true"),
+                        hasEntry("forceLeftToRight", "true")));
     }
 
     @Test
@@ -882,5 +894,26 @@ public class StyleTransformTest {
         // text-offset: [1, 0.5] as ems, with text-size set to 12, and opposite y direction
         assertEquals(12, pp.getDisplacement().getDisplacementX().evaluate(null, Double.class), 0d);
         assertEquals(-6, pp.getDisplacement().getDisplacementY().evaluate(null, Double.class), 0d);
+    }
+
+    @Test
+    public void testSymbolPriorityTest() throws Exception {
+        JSONObject jsonObject = parseTestStyle("symbolPriorityTest.json");
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        StyledLayerDescriptor sld = mbStyle.transform();
+        Style style = MapboxTestUtils.getStyle(sld, 0);
+        List<FeatureTypeStyle> featureTypeStyles = style.featureTypeStyles();
+        TextSymbolizer ts0 = getFirstSymbolizer(featureTypeStyles.get(0));
+        assertEquals(1000, (int) ts0.getPriority().evaluate(null, Integer.class));
+        TextSymbolizer ts1 = getFirstSymbolizer(featureTypeStyles.get(1));
+        assertEquals(2000, (int) ts1.getPriority().evaluate(null, Integer.class));
+        TextSymbolizer ts2 = getFirstSymbolizer(featureTypeStyles.get(2));
+        assertEquals(3000, (int) ts2.getPriority().evaluate(null, Integer.class));
+        TextSymbolizer ts3 = getFirstSymbolizer(featureTypeStyles.get(3));
+        assertEquals(4000, (int) ts3.getPriority().evaluate(null, Integer.class));
+    }
+
+    private <T extends Symbolizer> T getFirstSymbolizer(FeatureTypeStyle fts) {
+        return (T) fts.rules().get(0).symbolizers().get(0);
     }
 }

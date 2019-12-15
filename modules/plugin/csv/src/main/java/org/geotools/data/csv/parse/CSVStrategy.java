@@ -37,6 +37,7 @@ public abstract class CSVStrategy {
 
     protected final CSVFileState csvFileState;
 
+    
     public CSVStrategy(CSVFileState csvFileState) {
         this.csvFileState = csvFileState;
     }
@@ -165,6 +166,7 @@ public abstract class CSVStrategy {
     }
     // docs end findMostSpecificTypesFromData
 
+
     /** @return the separator */
     public char getSeparator() {
         return csvFileState.getSeparator();
@@ -213,5 +215,6 @@ public abstract class CSVStrategy {
     /** @param quoteAllFields the quoteAllFields to set */
     public void setQuoteAllFields(boolean quoteAllFields) {
         csvFileState.setQuoteAllFields(quoteAllFields);
+
     }
 }

@@ -70,8 +70,14 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
         this.featureType = csvStrategy.getFeatureType();
         this.iterator = csvStrategy.iterator();
         this.csvStrategy = csvStrategy;
-        this.csvWriter = new CsvWriter(new FileWriter(this.temp), ',');
-        this.csvWriter.writeRecord(this.csvFileState.getCSVHeaders());
+        this.csvWriter =
+            new CSVWriter(
+                new FileWriter(this.temp),
+                csvStrategy.getSeparator(),
+                csvStrategy.getQuotechar(),
+                csvStrategy.getEscapechar(),
+                csvStrategy.getLineSeparator());
+        this.csvWriter.writeNext(this.csvFileState.getCSVHeaders(), csvStrategy.isQuoteAllFields());
     }
     // docs end CSVFeatureWriter
 
@@ -140,7 +146,11 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
         if (this.currentFeature == null) {
             return; // current feature has been deleted
         }
+<<<<<<< HEAD:docs/src/main/java/org/geotools/tutorial/csv3/CSVFeatureWriter.java
         this.csvWriter.writeRecord(this.csvStrategy.encode(this.currentFeature));
+=======
+        this.csvWriter.writeNext(this.csvStrategy.encode(this.currentFeature), csvStrategy.isQuoteAllFields());
+>>>>>>> 54389385a6045537f1034957e612ca41bc366aa6:modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFeatureWriter.java
         nextRow++;
         this.currentFeature = null; // indicate that it has been written
     }
@@ -150,7 +160,7 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
     @Override
     public void close() throws IOException {
         if (csvWriter == null) {
-            throw new IOException("Writer alread closed");
+            throw new IOException("Writer already closed");
         }
         if (this.currentFeature != null) {
             this.write(); // the previous one was not written, so do it now.

@@ -28,8 +28,8 @@ import org.opengis.feature.type.Name;
 /**
  * Read-write access to CSV File.
  *
- * @author Jody Garnett (Boundless)
- * @author Ian Turton (Envitia)
+ * @author Jody Garnett (GeoCat)
+ * @author Ian Turton (Astun)
  */
 public class CSVFeatureStore extends ContentFeatureStore {
     private CSVStrategy csvStrategy;

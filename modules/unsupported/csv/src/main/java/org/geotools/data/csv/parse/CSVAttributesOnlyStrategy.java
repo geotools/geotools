@@ -102,7 +102,7 @@ public class CSVAttributesOnlyStrategy extends CSVStrategy {
                 String value = csvRecord[i].trim();
                 builder.set(header, value);
             } else {
-                // geotools converters take care of converting for us
+
                 builder.set(header, null);
             }
         }

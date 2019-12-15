@@ -195,7 +195,7 @@ public class CSVLatLonStrategy extends CSVStrategy {
         GeometryFactory geometryFactory = new GeometryFactory();
         Double lat = null, lng = null;
         String[] headers = csvFileState.getCSVHeaders();
-<<<<<<< HEAD:modules/plugin/csv/src/main/java/org/geotools/data/csv/parse/CSVLatLonStrategy.java
+
 
         /*
          * There are 4 possible outcomes here:
@@ -206,9 +206,6 @@ public class CSVLatLonStrategy extends CSVStrategy {
          *    Note: This is indistinguishable from a one attribute record that is empty
          */
 
-=======
-        
->>>>>>> 54389385a6045537f1034957e612ca41bc366aa6:modules/unsupported/csv/src/main/java/org/geotools/data/csv/parse/CSVLatLonStrategy.java
         for (int i = 0; i < headers.length; i++) {
             String header = headers[i];
             if (i < csvRecord.length) {

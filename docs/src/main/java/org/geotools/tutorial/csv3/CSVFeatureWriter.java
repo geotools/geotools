@@ -9,7 +9,7 @@
  */
 package org.geotools.tutorial.csv3;
 
-import com.csvreader.CsvWriter;
+import com.opencsv.CSVWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -43,7 +43,7 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
     private CSVIterator iterator;
 
     /** CsvWriter used for temp file output */
-    private CsvWriter csvWriter;
+    private CSVWriter csvWriter;
 
     /** Flag indicating we have reached the end of the file */
     private boolean appending = false;
@@ -70,14 +70,8 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
         this.featureType = csvStrategy.getFeatureType();
         this.iterator = csvStrategy.iterator();
         this.csvStrategy = csvStrategy;
-        this.csvWriter =
-            new CSVWriter(
-                new FileWriter(this.temp),
-                csvStrategy.getSeparator(),
-                csvStrategy.getQuotechar(),
-                csvStrategy.getEscapechar(),
-                csvStrategy.getLineSeparator());
-        this.csvWriter.writeNext(this.csvFileState.getCSVHeaders(), csvStrategy.isQuoteAllFields());
+        this.csvWriter = new CSVWriter(new FileWriter(this.temp));
+        this.csvWriter.writeNext(this.csvFileState.getCSVHeaders(), false);
     }
     // docs end CSVFeatureWriter
 
@@ -146,11 +140,8 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
         if (this.currentFeature == null) {
             return; // current feature has been deleted
         }
-<<<<<<< HEAD:docs/src/main/java/org/geotools/tutorial/csv3/CSVFeatureWriter.java
-        this.csvWriter.writeRecord(this.csvStrategy.encode(this.currentFeature));
-=======
-        this.csvWriter.writeNext(this.csvStrategy.encode(this.currentFeature), csvStrategy.isQuoteAllFields());
->>>>>>> 54389385a6045537f1034957e612ca41bc366aa6:modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFeatureWriter.java
+
+        this.csvWriter.writeNext(this.csvStrategy.encode(this.currentFeature), false);
         nextRow++;
         this.currentFeature = null; // indicate that it has been written
     }

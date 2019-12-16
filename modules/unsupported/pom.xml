@@ -140,6 +140,17 @@
 			</modules>
 		</profile>
 		<profile>
+			<id>flatgeobuf</id>
+			<activation>
+				<property>
+					<name>all</name>
+				</property>
+			</activation>
+			<modules>
+				<module>flatgeobuf</module>
+			</modules>
+		</profile>
+		<profile>
 			<id>css</id>
 			<activation>
 				<property>

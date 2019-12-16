@@ -171,7 +171,6 @@ public class CSVLatLonStrategy extends CSVStrategy {
 
         // Write out header, producing an empty file of the correct type
         CSVWriter writer =
-
                 new CSVWriter(
                         new FileWriter(this.csvFileState.getFile()),
                         getSeparator(),
@@ -195,7 +194,6 @@ public class CSVLatLonStrategy extends CSVStrategy {
         GeometryFactory geometryFactory = new GeometryFactory();
         Double lat = null, lng = null;
         String[] headers = csvFileState.getCSVHeaders();
-
 
         /*
          * There are 4 possible outcomes here:

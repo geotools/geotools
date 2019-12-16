@@ -82,7 +82,6 @@ public class CSVSpecifiedWKTStrategy extends CSVStrategy {
         }
         // Write out header, producing an empty file of the correct type
         CSVWriter writer =
-
                 new CSVWriter(
                         new FileWriter(this.csvFileState.getFile()),
                         getSeparator(),

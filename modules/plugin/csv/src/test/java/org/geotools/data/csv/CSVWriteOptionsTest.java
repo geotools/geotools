@@ -296,10 +296,10 @@ public class CSVWriteOptionsTest {
         assertNotNull(line);
 
         assertTrue("Header is not escaped", line.toLowerCase().contains("'int\\'val'"));
-        System.out.println(line);
+
         line = lineReader.readLine();
         assertNotNull(line);
-        System.out.println(line);
+
         assertTrue("Value is not escaped", line.contains("'f\\'oo'"));
 
         file2.delete();
@@ -327,11 +327,11 @@ public class CSVWriteOptionsTest {
         BufferedReader lineReader = new BufferedReader(new CharArrayReader(contents.toCharArray()));
         String line = lineReader.readLine(); // header
         assertNotNull(line);
-        System.out.println(line);
+
         assertTrue("Header is not escaped", line.toLowerCase().contains("'int!'val'"));
         line = lineReader.readLine();
         assertNotNull(line);
-        System.out.println(line);
+
         assertTrue("Value is not escaped", line.contains("'f!'oo'"));
 
         file2.delete();

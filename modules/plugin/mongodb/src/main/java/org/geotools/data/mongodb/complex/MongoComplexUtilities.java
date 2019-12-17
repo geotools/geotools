@@ -192,9 +192,24 @@ public final class MongoComplexUtilities {
         private boolean hasNext() {
             // we have a next element if we still have paths parts or we are currently
             // walking a collection and there is a index defined for this collection
+            // if empty list is detected, make current object null and return false
+            if (isAnEmptyList(currentObject)) {
+                currentObject = null;
+                return false;
+            }
             return currentJsonPathPartIndex < jsonPathParts.length
                     || (currentObject instanceof BasicDBList
                             && collectionsIndexes.get(currentJsonPath) != null);
+        }
+
+        private boolean isAnEmptyList(Object object) {
+            if (object instanceof BasicDBList) {
+                BasicDBList list = (BasicDBList) currentObject;
+                if (list.isEmpty()) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private void next() {

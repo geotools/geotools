@@ -155,3 +155,84 @@ Where *15* indicates the wind intensity and *[kts]* indicates its unit of measur
 And it produces:
 
   .. image:: /images/barbs.png
+  
+WKT Marks as Strokes
+--------------------
+
+The WKT marks are normally converted into images and then repeated along the line geometry,
+in case of continue shapes (e.g a Wave like Shape), the bends across different line segments
+will break the continuity. If the goal is to have the wkt shape repeated and connected
+irrespective of angles between line segments then it is possible to convert the WKT shape
+into a stroke instead of image. 
+
+To enable this make the following vendor option child of <LineSymbolizer> ::
+  
+  <VendorOption name="markAlongLine">true</VendorOption>					
+  ...
+
+(Optional) `markAlongLineScaleLimit` is used define the scale limit. Marks can be stretched a bit to have an exact number of them fit a straight segment in the line being symbolized. This value is a percentage.
+
+ Valid values are between 0 and 1
+ 
+ 0 = Always Scale
+ 
+ 1 = Never Scale
+ 
+ Default value = 0.9
+ 
+ This value is used by Stroke to adjust the Shape width to its respective line segment.
+ 
+ 0.9 means that Shape cannot shrink beyond this scale limit to fit on the underlying line segment ::
+ 
+  
+  <VendorOption name="markAlongLineScaleLimit">0.9</VendorOption>
+  ...
+  
+(Optional) `markAlongLineSimplify` is used to calculate simplification factor by scaling WKT shape height.
+
+ Valid values are between 0 and 1
+ 
+ 0 = Never simplify
+ 
+ 1 = Use complete height of WKT Shape
+ 
+ Default value = 0.5
+ 
+ This value represents a multiplier that will be multiplied with Wkt shape height and used as pixel distance to simplify line geometry
+ 
+ 0.5 means that use half the height of Wkt shape. ::
+ 
+  
+  <VendorOption name="markAlongLineSimplify">0.5</VendorOption>
+  ...
+
+Examples:
+
+* A red square wave following the line geometry as its stroke ::
+
+          <LineSymbolizer>
+            <Stroke>
+              <GraphicStroke>
+                <Graphic>
+                  <Mark>                    					
+					<WellKnownName>wkt://LINESTRING (0 0, 0 -0.5, 0.5 -0.5, 0.5 0.5, 1 0.5, 1 0)</WellKnownName>
+                    <Stroke>
+                      <CssParameter name="stroke">0xFF0000</CssParameter>
+                      <CssParameter name="stroke-width">2</CssParameter>
+                      <CssParameter name="stroke-linecap">round</CssParameter>
+                    </Stroke>															
+                  </Mark>				  
+                  <Size>20</Size>  				  				  
+                </Graphic>                
+              </GraphicStroke>			  
+            </Stroke>			
+            <VendorOption name="markAlongLine">true</VendorOption>							
+            <VendorOption name="markAlongLineScaleLimit">0.9</VendorOption> <!--Optional-->
+            <VendorOption name="markAlongLineSimplify">0.4</VendorOption> <!--Optional-->
+          </LineSymbolizer>
+  
+And it produces:  
+  
+  .. image:: /images/mark_along_line.png
+  
+Note : The blue line under the red square wave is a basic stroke shown here as a reference to actual line geometry

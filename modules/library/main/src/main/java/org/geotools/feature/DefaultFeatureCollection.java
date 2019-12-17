@@ -182,7 +182,7 @@ public class DefaultFeatureCollection
         }
         SimpleFeatureType childType = (SimpleFeatureType) getSchema();
         if (!feature.getFeatureType().equals(childType)) {
-            LOGGER.warning("Feature Collection contains a heterogeneous" + " mix of features");
+            LOGGER.fine("Feature Collection contains a heterogeneous mix of features");
         }
         // Check inheritance with FeatureType here?
         contents.put(ID, feature);

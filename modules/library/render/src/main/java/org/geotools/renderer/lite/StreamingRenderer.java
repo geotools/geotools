@@ -20,8 +20,13 @@ import static java.lang.Math.abs;
 
 import com.conversantmedia.util.concurrent.PushPullBlockingQueue;
 import com.conversantmedia.util.concurrent.SpinPolicy;
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Composite;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.RenderingHints.Key;
+import java.awt.Shape;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
@@ -110,6 +115,7 @@ import org.geotools.renderer.label.LabelCacheImpl.LabelRenderingMode;
 import org.geotools.renderer.lite.gridcoverage2d.GridCoverageReaderHelper;
 import org.geotools.renderer.lite.gridcoverage2d.GridCoverageRenderer;
 import org.geotools.renderer.style.LineStyle2D;
+import org.geotools.renderer.style.MarkAlongLine;
 import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.renderer.style.Style2D;
 import org.geotools.renderer.style.StyleAttributeExtractor;
@@ -2980,6 +2986,18 @@ public class StreamingRenderer implements GTRenderer {
                         } else {
                             OffsetCurveBuilder offseter = new OffsetCurveBuilder(offset);
                             g = offseter.offset(g);
+                        }
+                    } else if (style instanceof LineStyle2D) {
+                        if (((LineStyle2D) style).getStroke() instanceof MarkAlongLine) {
+                            double simplificationFactor =
+                                    ((MarkAlongLine) ((LineStyle2D) style).getStroke())
+                                            .getSimplificatorFactor();
+                            if (simplificationFactor != 0) {
+                                Decimator d =
+                                        new Decimator(simplificationFactor, simplificationFactor);
+                                g = source;
+                                d.decimate(g);
+                            }
                         }
                     }
                     if (g == null) {

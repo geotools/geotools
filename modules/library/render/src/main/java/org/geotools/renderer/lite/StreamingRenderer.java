@@ -137,7 +137,6 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.simplify.DouglasPeuckerSimplifier;
 import org.locationtech.jts.simplify.TopologyPreservingSimplifier;
 import org.opengis.coverage.processing.OperationNotFoundException;
 import org.opengis.feature.Feature;
@@ -2990,14 +2989,14 @@ public class StreamingRenderer implements GTRenderer {
                         }
                     } else if (style instanceof LineStyle2D) {
                         if (((LineStyle2D) style).getStroke() instanceof MarkAlongLine) {
-                            // TODO decide whether to simplify or not
-                            if (((MarkAlongLine) ((LineStyle2D) style).getStroke())
-                                    .doSimplification(source)) {
-                                g =
-                                        DouglasPeuckerSimplifier.simplify(
-                                                source,
-                                                ((MarkAlongLine) ((LineStyle2D) style).getStroke())
-                                                        .getSimplificatorFactor());
+                            double simplificationFactor =
+                                    ((MarkAlongLine) ((LineStyle2D) style).getStroke())
+                                            .getSimplificatorFactor();
+                            if (simplificationFactor != 0) {
+                                Decimator d =
+                                        new Decimator(simplificationFactor, simplificationFactor);
+                                g = source;
+                                d.decimate(g);
                             }
                         }
                     }

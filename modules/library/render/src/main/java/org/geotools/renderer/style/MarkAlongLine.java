@@ -29,14 +29,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.geometry.jts.Decimator;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.LiteShape;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.geometry.jts.WKTReader2;
+import org.locationtech.jts.algorithm.Angle;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineSegment;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
@@ -51,13 +51,14 @@ public class MarkAlongLine implements Stroke {
 
     public static final String VENDOR_OPTION_NAME = "markAlongLine";
     public static final String VENDOR_OPTION_SCALE_LIMIT = "markAlongLineScaleLimit";
-    public static final String VENDOR_OPTION_SIMPLICATION_TOLERANCE =
-            "markAlongLineSimplifyTolerance";
+    public static final String VENDOR_OPTION_SIMPLICATION_FACTOR = "markAlongLineSimplify";
 
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(MarkAlongLine.class.getName());
 
-    private Decimator decimator;
+    // if two connecting line segments angle is beyond 180 (+/-) tolarance
+    // consider it a proper turn
+    private static final int LINEAR_ANGLE_TOLERANCE = 35;
 
     Stroke delegate;
 
@@ -66,20 +67,18 @@ public class MarkAlongLine implements Stroke {
     // 1 - never scale
     private float scaleImit = 0.9f;
 
-    // ratio between 0 to 1, describing how many line segments are below
-    // the simplifaction factor
-    // incase they are less than 0.4 (e.g 40%), dont simplify
-    // since this when map is zoomed in to much and simplification
-    // slows down rendering adding un-neccessary segments
-    // 0 - never simplify
-    // 1 - always simplify
-    private float simplicationTolerance = 0.4f;
+    // multiplier to calculate simplification distance
+    // should be between 0 and 1
+    // 0 = dont simplify
+    // 1 = use complete height as simplification distance
+    private float simplicationFactor = 0.5f;
 
-    private static final WKTReader2 reader = new WKTReader2();
     MarkAlongLiteShape wktShape;
     AffineTransform at;
     // default size
     double size = 20;
+
+    static GeometryFactory gf = new GeometryFactory();
 
     public MarkAlongLine(Stroke delegate) {
         this.delegate = delegate;
@@ -92,11 +91,6 @@ public class MarkAlongLine implements Stroke {
         AffineTransformation at = new AffineTransformation();
         at.setToScale(this.size, this.size);
         this.wktShape = new MarkAlongLiteShape(at.transform(wkt), null, false);
-
-        decimator =
-                new Decimator(
-                        this.wktShape.getBounds().getWidth(),
-                        this.wktShape.getBounds().getHeight());
     }
 
     /** @return the scaleImit */
@@ -121,33 +115,32 @@ public class MarkAlongLine implements Stroke {
     }
 
     /** @return the simplicationTolerance */
-    public float getSimplicationTolerance() {
-        return simplicationTolerance;
+    public float getSimplicationFactor() {
+        return simplicationFactor;
     }
 
     /**
-     * ratio between 0 to 1, describing how many line segments are below the simplification factor
-     * in case they are less than 0.4 (e.g 40%), don not simplify since this happens when map is
-     * zoomed in simplification becomes unnecessary slows down rendering by adding unnecessary
-     * segments
+     * Multiplier between 0 to 1, used to calculate the distance in pixel to be used for
+     * simplification of source linear geometry *
      *
-     * <p>0 - never simplify 1 - always simplify
+     * <p>0 - never simplify 1 - use complete height as simplification distance default - 0.5 (half
+     * the height)
      *
-     * @param simplicationTolerance the simplicationTolerance to set
+     * @param simplicationFactor to scale WKT shape height and use it for simplification
      */
-    public void setSimplicationTolerance(float simplicationTolerance) {
-        if (simplicationTolerance < 0
-                || simplicationTolerance > 1
-                || Float.isInfinite(simplicationTolerance)
-                || Float.isNaN(simplicationTolerance)) {
+    public void setSimplicationFactor(float simplicationFactor) {
+        if (simplicationFactor < 0
+                || simplicationFactor > 1
+                || Float.isInfinite(simplicationFactor)
+                || Float.isNaN(simplicationFactor)) {
             LOGGER.severe(
-                    "Invalid Simplification tolerance "
-                            + simplicationTolerance
+                    "Invalid Simplification Factor "
+                            + simplicationFactor
                             + ", should be between 0 and 1");
         }
-        this.simplicationTolerance = simplicationTolerance;
+        this.simplicationFactor = simplicationFactor;
         if (LOGGER.isLoggable(Level.FINE))
-            LOGGER.fine("Simplication tolerance set to " + this.simplicationTolerance);
+            LOGGER.fine("Simplication factor set to " + this.simplicationFactor);
     }
 
     @Override
@@ -169,7 +162,10 @@ public class MarkAlongLine implements Stroke {
         boolean segmentsTouch = false;
         int segments = 0;
         int type = 0;
-
+        float projFactor = 0;
+        float turnAngle;
+        boolean insideTurn = false;
+        boolean isLinear = false;
         // in case of multipolygon
         // draw each polygon as a separate shape
         // because we want to able to close the final path
@@ -198,7 +194,7 @@ public class MarkAlongLine implements Stroke {
                                         new Coordinate(coords[0], coords[1]));
                         if (previousLineSegment != null)
                             if (LOGGER.isLoggable(Level.FINER))
-                                LOGGER.info(
+                                LOGGER.finer(
                                         "Segments "
                                                 + previousLineSegment.toString()
                                                 + " --> "
@@ -207,49 +203,65 @@ public class MarkAlongLine implements Stroke {
                         // do they touch
                         if (previousLineSegment == null) segmentsTouch = false;
                         else segmentsTouch = segmentsTouch(nextLineSegment, previousLineSegment);
-
-                        // ;
                         // checking for sloppy connections
                         // where previous shape and new shape might overlap
-                        // this will not occur on first time
+                        // this will not occur on first segment
                         // or if the segments dont touch
-                        if (previousDrapeMe != null && segmentsTouch) //
-                        if (previousDrapeMe.getLeftOver() != null && previousDrapeMe.isClipped()) {
+                        if (previousDrapeMe != null && segmentsTouch) {
+                            if (previousDrapeMe.getLeftOver() != null
+                                    && previousDrapeMe.isClipped()) {
                                 connectPrevious = true;
                                 // project last coods to on to next segment to see if there is bad
                                 // overlap
-                                // bad overlap = angle with connecting segment will result
-                                // in a sloppy connection between clipped shape and the rest of its
-                                // part
-                                double projFactor =
-                                        nextLineSegment.projectionFactor(
-                                                lastShapeEndedAtCoordinate);
+                                // bad overlap = tight turn angles (well below 90) and part of
+                                // next shape overlapping previous shape
+                                // but we have not drawn the next shape yet so only way to check is
+                                // to check projection factor of last drawn vertex on next segment
+                                // if its below 1,means the point lies around the next segment
+                                // also check the the angle between connecting segments
+                                // and if the point ended up inside the turn
+                                projFactor =
+                                        (float)
+                                                nextLineSegment.projectionFactor(
+                                                        lastShapeEndedAtCoordinate);
                                 Coordinate pointOnLine =
                                         nextLineSegment.project(lastShapeEndedAtCoordinate);
-
+                                turnAngle =
+                                        angleBetweenSegments(previousLineSegment, nextLineSegment);
+                                insideTurn =
+                                        isInsideTurn(
+                                                previousLineSegment,
+                                                nextLineSegment,
+                                                lastShapeEndedAtCoordinate);
+                                isLinear = (Math.abs(turnAngle - 180) < LINEAR_ANGLE_TOLERANCE);
                                 if (LOGGER.isLoggable(Level.FINER)) {
                                     LOGGER.finer(
                                             "projection factor "
                                                     + projFactor
                                                     + " winding rule:"
                                                     + i.getWindingRule());
+                                    LOGGER.finer("segments turning to " + turnAngle);
+                                    LOGGER.finer("is inside the turn " + insideTurn);
+                                    LOGGER.finer("is linear " + isLinear);
                                 }
 
-                                if (projFactor < 1) {
+                                if ((projFactor < 1) || (insideTurn && !isLinear)) {
 
-                                    if (LOGGER.isLoggable(Level.FINER))
+                                    if (LOGGER.isLoggable(Level.FINER)) {
                                         LOGGER.finer("shapes will overlap");
-                                    // update left over of previous
-                                    // draw line on to next segment to avoid sloppy connections
-                                    newshape.lineTo(pointOnLine.x, pointOnLine.y);
-                                    LOGGER.finer(
-                                            "Draw line "
-                                                    + new LineSegment(
-                                                                    new Coordinate(
-                                                                            prevcoords[0],
-                                                                            prevcoords[1]),
-                                                                    pointOnLine)
-                                                            .toString());
+                                        // update left over of previous
+                                        // draw line on to next segment to avoid sloppy connections
+                                        newshape.lineTo(pointOnLine.x, pointOnLine.y);
+                                        LOGGER.finer(
+                                                "Draw line "
+                                                        + new LineSegment(
+                                                                        new Coordinate(
+                                                                                prevcoords[0],
+                                                                                prevcoords[1]),
+                                                                        pointOnLine)
+                                                                .toString());
+                                    }
+
                                     // update prev coordinates
                                     prevcoords[0] = (float) pointOnLine.x;
                                     prevcoords[1] = (float) pointOnLine.y;
@@ -261,6 +273,7 @@ public class MarkAlongLine implements Stroke {
                                     // previousDrapeMe=null;
                                 }
                             }
+                        }
                         // get shape for drapping over passed segment
                         // the shape might include left over part for previous segment
                         drapeMe =
@@ -291,16 +304,12 @@ public class MarkAlongLine implements Stroke {
                         // finally draw
                         previousDrapeMe =
                                 drape(
-                                        newshape, // reference of shape
-                                        drapeMe, // shape to drape
-                                        nextLineSegment.p0, // point to start drapping from (tx,ty)
-                                        nextLineSegment
-                                                .angle(), // rotation the segment being drapped upon
-                                        lastShapeEndedAtCoordinate, // where previous shape finished
-                                        connectPrevious // flag to signal if this shape is to
-                                        // continue
-                                        // previous incomplete shape
-                                        );
+                                        newshape,
+                                        drapeMe,
+                                        nextLineSegment.p0,
+                                        nextLineSegment.angle(),
+                                        lastShapeEndedAtCoordinate,
+                                        connectPrevious);
 
                         // remember where the shape left off after being affine transformed
                         lastShapeEndedAtCoordinate =
@@ -327,10 +336,13 @@ public class MarkAlongLine implements Stroke {
 
             if (innerShape.getGeometry() instanceof Polygon) {
                 // close the ring when finished drawing polygons
-                if (innerShape.getGeometry().getCoordinates().length > 2)
+                if (innerShape.getGeometry().getCoordinates().length > 2) {
+
+                    newshape.moveTo(lastShapeEndedAtCoordinate.x, lastShapeEndedAtCoordinate.y);
                     newshape.lineTo(
                             innerShape.getGeometry().getCoordinates()[0].x,
                             innerShape.getGeometry().getCoordinates()[0].y);
+                }
             }
         }
 
@@ -371,6 +383,28 @@ public class MarkAlongLine implements Stroke {
         if (seg1.p0.equals2D(seg2.p0) || seg1.p0.equals2D(seg2.p1)) return true;
         if (seg1.p1.equals2D(seg2.p0) || seg1.p1.equals2D(seg2.p1)) return true;
         return false;
+    }
+
+    // this method assumes that both segment have one common corrdinate
+    private float angleBetweenSegments(LineSegment seg1, LineSegment seg2) {
+        //        Coordinate tail = seg1.intersection(seg2);
+        Coordinate tail = (seg1.p0.equals2D(seg2.p0)) ? seg1.p0 : seg1.p1;
+        Coordinate tip1 = (seg1.p0.equals2D(tail)) ? seg1.p1 : seg1.p0;
+        Coordinate tip2 = (seg2.p0.equals2D(tail)) ? seg2.p1 : seg2.p0;
+
+        float angle = (float) Math.toDegrees(Angle.angleBetween(tip1, tail, tip2));
+
+        return (Float.isFinite(angle)) ? angle : 0f;
+    }
+
+    private boolean isInsideTurn(LineSegment seg1, LineSegment seg2, Coordinate pt) {
+        //        Coordinate tail = seg1.intersection(seg2);
+        Coordinate tail = (seg1.p0.equals2D(seg2.p0)) ? seg1.p0 : seg1.p1;
+        Coordinate tip1 = (seg1.p0.equals2D(tail)) ? seg1.p1 : seg1.p0;
+        Coordinate tip2 = (seg2.p0.equals2D(tail)) ? seg2.p1 : seg2.p0;
+
+        return gf.createPolygon(gf.createLinearRing(new Coordinate[] {tail, tip1, tip2, tail}))
+                .intersects(gf.createPoint(pt));
     }
 
     private MarkAlongLiteShape getClone(AffineTransform at) {
@@ -462,6 +496,16 @@ public class MarkAlongLine implements Stroke {
         return markAlongLiteShape;
     }
 
+    /**
+     * @param newshape reference of shape painter
+     * @param wktShape shape to drape
+     * @param drapeFromCoordinate point to start/continue drawing from (tx,ty)
+     * @param rotationRadians rotation the segment being drapped upon
+     * @param previousShapeEndCoordinate where previous shape finished drawing
+     * @param joinWithLastSegment flag to signal if this shape is to continue previous incomplete
+     *     shape
+     * @return wktShape passed param with populated hints
+     */
     private MarkAlongLiteShape drape(
             GeneralPath newshape,
             MarkAlongLiteShape wktShape,
@@ -514,44 +558,40 @@ public class MarkAlongLine implements Stroke {
         return wktShape;
     }
 
-    public Decimator getDecimator() {
-        return decimator;
-    }
-
     public double getSimplificatorFactor() {
-        return this.wktShape.getBounds2D().getHeight();
+        return this.wktShape.getBounds2D().getHeight() * simplicationFactor;
     }
 
-    public boolean doSimplification(Geometry g) {
-        double simpleicationFactor = getSimplificatorFactor();
-        float segmentsBelowFactor = 0;
-        Coordinate prevCord = null;
-        LineSegment lineSegment;
-        for (int i = 0; i < g.getCoordinates().length; i++) {
-            // compare segment length with simplicationFactor
-            if (i % 2 != 0) {
-                lineSegment = new LineSegment(prevCord, g.getCoordinates()[i]);
-                if (lineSegment.getLength() < simpleicationFactor) segmentsBelowFactor++;
-            }
-            prevCord = g.getCoordinates()[i];
-        }
-
-        // ratio between 0 to 1, describing how many line segments are below
-        // the simplifaction factor
-        // incase they are less than 0.4 (e.g 40%), dont simplify
-        // since this when map is zoomed in to much and simplification
-        // slows down rendering adding un-neccessary segments
-        float percentage = segmentsBelowFactor / (g.getCoordinates().length / 2);
-        if (LOGGER.isLoggable(Level.FINER))
-            LOGGER.finer(
-                    percentage
-                            + "for are simplication factor "
-                            + simplicationTolerance
-                            + " simplification done : "
-                            + (percentage > simplicationTolerance));
-
-        return percentage > simplicationTolerance;
-    }
+    //    public boolean doSimplification(Geometry g) {
+    //        double simpleicationFactor = getSimplificatorFactor();
+    //        float segmentsBelowFactor = 0;
+    //        Coordinate prevCord = null;
+    //        LineSegment lineSegment;
+    //        for (int i = 0; i < g.getCoordinates().length; i++) {
+    //            // compare segment length with simplicationFactor
+    //            if (i % 2 != 0) {
+    //                lineSegment = new LineSegment(prevCord, g.getCoordinates()[i]);
+    //                if (lineSegment.getLength() < simpleicationFactor) segmentsBelowFactor++;
+    //            }
+    //            prevCord = g.getCoordinates()[i];
+    //        }
+    //
+    //        // ratio between 0 to 1, describing how many line segments are below
+    //        // the simplifaction factor
+    //        // incase they are less than 0.4 (e.g 40%), dont simplify
+    //        // since this when map is zoomed in to much and simplification
+    //        // slows down rendering adding un-neccessary segments
+    //        float percentage = segmentsBelowFactor / (g.getCoordinates().length / 2);
+    //        if (LOGGER.isLoggable(Level.FINER))
+    //            LOGGER.finer(
+    //                    percentage
+    //                            + "for are simplication factor "
+    //                            + simplicationTolerance
+    //                            + " simplification done : "
+    //                            + (percentage > simplicationTolerance));
+    //
+    //        return percentage > simplicationTolerance;
+    //    }
 
     class MarkAlongLiteShape extends LiteShape {
 

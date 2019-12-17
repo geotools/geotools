@@ -170,7 +170,7 @@ To enable this make the following vendor option child of <LineSymbolizer> ::
   <VendorOption name="markAlongLine">true</VendorOption>					
   ...
 
-(Optional) `markAlongLineScaleLimit` is used define the scale limit.
+(Optional) `markAlongLineScaleLimit` is used define the scale limit. Marks can be stretched a bit to have an exact number of them fit a straight segment in the line being symbolized. This value is a percentage.
 
  Valid values are between 0 and 1
  
@@ -188,23 +188,22 @@ To enable this make the following vendor option child of <LineSymbolizer> ::
   <VendorOption name="markAlongLineScaleLimit">0.9</VendorOption>
   ...
   
-(Optional) `markAlongLineSimplifyTolerance` is used to decide if linear geometry needs to be simplified.
+(Optional) `markAlongLineSimplify` is used to calculate simplification factor by scaling WKT shape height.
 
  Valid values are between 0 and 1
  
  0 = Never simplify
  
- 1 = Always simplify
+ 1 = Use complete height of WKT Shape
  
- Default value = 0.4
+ Default value = 0.5
  
- This value represents the percentage as ratio of line segments smaller than height of WKT Shape
+ This value represents a multiplier that will be multiplied with Wkt shape height and used as pixel distance to simplify line geometry
  
- 0.4 means that if more than 40% segments of linear geometry are smaller than  height of WKT Shape,
- then to cleanly fit WKT Shape over the linear geometry, the linear geometry will need to be simplified ::
+ 0.5 means that use half the height of Wkt shape. ::
  
   
-  <VendorOption name="markAlongLineSimplifyTolerance">0.4</VendorOption>
+  <VendorOption name="markAlongLineSimplify">0.5</VendorOption>
   ...
 
 Examples:
@@ -229,7 +228,7 @@ Examples:
             </Stroke>			
             <VendorOption name="markAlongLine">true</VendorOption>							
             <VendorOption name="markAlongLineScaleLimit">0.9</VendorOption> <!--Optional-->
-            <VendorOption name="markAlongLineSimplifyTolerance">0.4</VendorOption> <!--Optional-->
+            <VendorOption name="markAlongLineSimplify">0.4</VendorOption> <!--Optional-->
           </LineSymbolizer>
   
 And it produces:  

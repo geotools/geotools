@@ -1733,7 +1733,6 @@ public class SLDStyleFactory {
             try {
                 shape = factory.getShape(null, mark.getWellKnownName(), feature);
                 if (shape != null) break;
-                ;
             } catch (Exception e) {
                 LOGGER.log(
                         Level.FINE,
@@ -1755,12 +1754,12 @@ public class SLDStyleFactory {
                     Float.parseFloat(
                             symbolizer.getOptions().get(MarkAlongLine.VENDOR_OPTION_SCALE_LIMIT)));
 
-        if (symbolizer.getOptions().containsKey(MarkAlongLine.VENDOR_OPTION_SIMPLICATION_TOLERANCE))
-            markAlongLine.setSimplicationTolerance(
+        if (symbolizer.getOptions().containsKey(MarkAlongLine.VENDOR_OPTION_SIMPLICATION_FACTOR))
+            markAlongLine.setSimplicationFactor(
                     Float.parseFloat(
                             symbolizer
                                     .getOptions()
-                                    .get(MarkAlongLine.VENDOR_OPTION_SIMPLICATION_TOLERANCE)));
+                                    .get(MarkAlongLine.VENDOR_OPTION_SIMPLICATION_FACTOR)));
 
         // over-write existing Stroke
         style.setStroke(markAlongLine);

@@ -24,7 +24,6 @@ import static org.junit.Assert.assertTrue;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import javax.imageio.ImageIO;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -92,7 +91,7 @@ public class MarkAlongLineTest {
         BufferedImage image =
                 RendererBaseTest.showRender("WKT drapped along line", renderer, TIME, env);
 
-        //ImageIO.write(image, "png", new File("D:\\markAlongLine_sqaure_all_angles.png"));
+        // ImageIO.write(image, "png", new File("D:\\markAlongLine_sqaure_all_angles.png"));
 
         File squareLineAllAngles =
                 new File(TestData.getResource(this, "markAlongLine_sqaure_all_angles.png").toURI());
@@ -120,7 +119,7 @@ public class MarkAlongLineTest {
         BufferedImage image =
                 RendererBaseTest.showRender("WKT drapped along line", renderer, TIME, env);
 
-        //ImageIO.write(image, "png", new File("D:\\markAlongLine_sqaure_curve.png"));
+        // ImageIO.write(image, "png", new File("D:\\markAlongLine_sqaure_curve.png"));
 
         File squareLineAllAngles =
                 new File(TestData.getResource(this, "markAlongLine_sqaure_curve.png").toURI());
@@ -149,7 +148,7 @@ public class MarkAlongLineTest {
         BufferedImage image =
                 RendererBaseTest.showRender("WKT drapped along line", renderer, TIME, env);
 
-        //ImageIO.write(image, "png", new File("D:\\markAlongLine_sqaure_right_angle.png"));
+        // ImageIO.write(image, "png", new File("D:\\markAlongLine_sqaure_right_angle.png"));
 
         File squareLineAllAngles =
                 new File(
@@ -178,7 +177,7 @@ public class MarkAlongLineTest {
         BufferedImage image =
                 RendererBaseTest.showRender("WKT drapped along line", renderer, TIME, env);
 
-        //ImageIO.write(image, "png", new File("D:\\markAlongLine_sqaure_turn_back.png"));
+        // ImageIO.write(image, "png", new File("D:\\markAlongLine_sqaure_turn_back.png"));
 
         File squareLineAllAngles =
                 new File(TestData.getResource(this, "markAlongLine_sqaure_turn_back.png").toURI());
@@ -207,10 +206,10 @@ public class MarkAlongLineTest {
                 RendererBaseTest.showRender(
                         "WKT drapped along polygon boundary", renderer, TIME, env);
 
-        //ImageIO.write(image, "png", new File("D:\\markAlongLine_polygon.png"));
+        // ImageIO.write(image, "png", new File("D:\\markAlongLine_polygon.png"));
 
         File squareLineAllAngles =
                 new File(TestData.getResource(this, "markAlongLine_polygon.png").toURI());
-        ImageAssert.assertEquals(squareLineAllAngles, image, 100);
+        ImageAssert.assertEquals(squareLineAllAngles, image, 110);
     }
 }

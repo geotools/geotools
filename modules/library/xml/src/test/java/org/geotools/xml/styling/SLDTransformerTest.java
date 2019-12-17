@@ -2222,7 +2222,7 @@ public class SLDTransformerTest {
                         + "            </Stroke>"
                         + "            <VendorOption name=\"markAlongLine\">true</VendorOption>"
                         + "            <VendorOption name=\"markAlongLineScaleLimit\">0.9</VendorOption>"
-                        + "            <VendorOption name=\"markAlongLineSimplifyTolerance\">0.4</VendorOption>"
+                        + "            <VendorOption name=\"markAlongLineSimplify\">0.4</VendorOption>"
                         + "          </LineSymbolizer>"
                         + "        </Rule>"
                         + "      </FeatureTypeStyle>"
@@ -2254,8 +2254,7 @@ public class SLDTransformerTest {
         assertXpathExists(
                 "//sld:LineSymbolizer/sld:VendorOption[@name='markAlongLineScaleLimit']", doc);
         assertXpathExists(
-                "//sld:LineSymbolizer/sld:VendorOption[@name='markAlongLineSimplifyTolerance']",
-                doc);
+                "//sld:LineSymbolizer/sld:VendorOption[@name='markAlongLineSimplify']", doc);
     }
 
     private StyledLayerDescriptor buildSLDAroundSymbolizer(

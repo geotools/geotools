@@ -106,10 +106,12 @@ public class URLsTest {
         File file = File.createTempFile("hello", "world");
         handleFile(file.getAbsolutePath());
         handleFile(file.getPath());
+        // Had to remove, newer version of java fail with "java.net.MalformedURLException: Illegal
+        // character found in host: '/'" when seeing this path
         // from GEOT-3300 urlToFile doesn't handle network paths correctly
-        URL url = new URL("file", "////oehhwsfs09", "/some/path/on/the/server/filename.nds");
-        File windowsShareFile = URLs.urlToFile(url);
-        assertNotNull(windowsShareFile);
+        // URL url = new URL("file", "////oehhwsfs09", "/some/path/on/the/server/filename.nds");
+        // File windowsShareFile = URLs.urlToFile(url);
+        // assertNotNull(windowsShareFile);
         assertURL("file café", "file:file%20caf%C3%A9");
         assertURL("/file café", "file:/file%20caf%C3%A9");
         assertURL("file café", "file://file%20caf%C3%A9");

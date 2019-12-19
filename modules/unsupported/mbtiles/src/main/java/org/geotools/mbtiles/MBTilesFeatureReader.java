@@ -18,6 +18,7 @@ package org.geotools.mbtiles;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -34,13 +35,18 @@ class MBTilesFeatureReader implements SimpleFeatureReader {
     private final MBTilesFile.TileIterator tiles;
     private final SimpleFeatureType schema;
     private final MBtilesCache cache;
+    private final Set<MBTilesTileLocation> skipLocations;
     private SimpleFeatureIterator currentIterator;
 
     public MBTilesFeatureReader(
-            MBTilesFile.TileIterator tiles, SimpleFeatureType schema, MBtilesCache cache) {
+            MBTilesFile.TileIterator tiles,
+            SimpleFeatureType schema,
+            MBtilesCache cache,
+            Set<MBTilesTileLocation> skipLocations) {
         this.tiles = tiles;
         this.schema = schema;
         this.cache = cache;
+        this.skipLocations = skipLocations;
     }
 
     @Override
@@ -73,9 +79,12 @@ class MBTilesFeatureReader implements SimpleFeatureReader {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.log(Level.FINE, "Moving to tile: " + nextTile);
             }
+            if (skipLocations.contains(nextTile)) {
+                continue;
+            }
             SimpleFeatureCollection features = cache.getFeatures(nextTile, schema.getTypeName());
-            // was the layer not found in the tile? Can happen, some layers show up only at certain
-            // zoom levels
+            // Was the layer not found in the tile?
+            // Can happen, some layers show up only at certain zoom levels
             if (features == null) {
                 continue;
             }

@@ -213,9 +213,9 @@ public class MBTilesFileTest {
         assertEquals(59, bounds.getMaxY());
         RectangleLong boundsFull = mbTilesFile.getTileBounds(7, false);
         assertEquals(0, boundsFull.getMinX());
-        assertEquals(128, boundsFull.getMaxX());
+        assertEquals(127, boundsFull.getMaxX());
         assertEquals(0, boundsFull.getMinY());
-        assertEquals(128, boundsFull.getMaxY());
+        assertEquals(127, boundsFull.getMaxY());
     }
 
     @Test

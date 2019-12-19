@@ -582,8 +582,23 @@ public class MBTilesFile implements AutoCloseable {
             throws SQLException {
         Connection cx = null;
         PreparedStatement ps = null;
+
         try {
             cx = connPool.getConnection();
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine(
+                        "Reading tiles at zoom level "
+                                + zoomLevel
+                                + ", col range "
+                                + leftTile
+                                + "/"
+                                + rightTile
+                                + ", row range "
+                                + bottomTile
+                                + "/"
+                                + topTile);
+            }
+
             ps =
                     prepare(
                                     cx,
@@ -935,7 +950,7 @@ public class MBTilesFile implements AutoCloseable {
             return new RectangleLong(minCol, maxCol, minRow, maxRow);
         } else {
             long tiles = tilesForZoom(zoomLevel);
-            return new RectangleLong(0, tiles, 0, tiles);
+            return new RectangleLong(0, tiles - 1, 0, tiles - 1);
         }
     }
 

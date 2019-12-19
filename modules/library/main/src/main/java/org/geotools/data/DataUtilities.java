@@ -1140,9 +1140,31 @@ public class DataUtilities {
      * @return FeatureRedaer over the provided contents
      * @throws IOException IOException if there is any problem reading the content.
      */
-    public static FeatureReader<SimpleFeatureType, SimpleFeature> reader(
+    public static SimpleFeatureReader reader(
             FeatureCollection<SimpleFeatureType, SimpleFeature> collection) throws IOException {
-        return reader(collection.toArray(new SimpleFeature[collection.size()]));
+        final FeatureIterator<SimpleFeature> it = collection.features();
+        return new SimpleFeatureReader() {
+            @Override
+            public SimpleFeatureType getFeatureType() {
+                return collection.getSchema();
+            }
+
+            @Override
+            public SimpleFeature next()
+                    throws IOException, IllegalArgumentException, NoSuchElementException {
+                return it.next();
+            }
+
+            @Override
+            public boolean hasNext() throws IOException {
+                return it.hasNext();
+            }
+
+            @Override
+            public void close() throws IOException {
+                it.close();
+            }
+        };
     }
 
     /**

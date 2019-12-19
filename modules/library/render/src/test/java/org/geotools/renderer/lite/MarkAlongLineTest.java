@@ -95,7 +95,7 @@ public class MarkAlongLineTest {
 
         File squareLineAllAngles =
                 new File(TestData.getResource(this, "markAlongLine_sqaure_all_angles.png").toURI());
-        ImageAssert.assertEquals(squareLineAllAngles, image, 100);
+        ImageAssert.assertEquals(squareLineAllAngles, image, 200);
     }
 
     @Test
@@ -123,7 +123,7 @@ public class MarkAlongLineTest {
 
         File squareLineAllAngles =
                 new File(TestData.getResource(this, "markAlongLine_sqaure_curve.png").toURI());
-        ImageAssert.assertEquals(squareLineAllAngles, image, 120);
+        ImageAssert.assertEquals(squareLineAllAngles, image, 200);
     }
 
     @Test
@@ -153,7 +153,7 @@ public class MarkAlongLineTest {
         File squareLineAllAngles =
                 new File(
                         TestData.getResource(this, "markAlongLine_sqaure_right_angle.png").toURI());
-        ImageAssert.assertEquals(squareLineAllAngles, image, 100);
+        ImageAssert.assertEquals(squareLineAllAngles, image, 200);
     }
 
     @Test
@@ -181,7 +181,7 @@ public class MarkAlongLineTest {
 
         File squareLineAllAngles =
                 new File(TestData.getResource(this, "markAlongLine_sqaure_turn_back.png").toURI());
-        ImageAssert.assertEquals(squareLineAllAngles, image, 100);
+        ImageAssert.assertEquals(squareLineAllAngles, image, 200);
     }
 
     @Test
@@ -210,6 +210,6 @@ public class MarkAlongLineTest {
 
         File squareLineAllAngles =
                 new File(TestData.getResource(this, "markAlongLine_polygon.png").toURI());
-        ImageAssert.assertEquals(squareLineAllAngles, image, 110);
+        ImageAssert.assertEquals(squareLineAllAngles, image, 200);
     }
 }

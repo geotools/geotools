@@ -66,7 +66,6 @@ public class CSVIterator implements Iterator<SimpleFeature> {
         return next != null;
     }
 
-    
     private SimpleFeature readFeature() throws IOException {
         String[] record;
         try {
@@ -79,7 +78,6 @@ public class CSVIterator implements Iterator<SimpleFeature> {
         }
         return null;
     }
-    
 
     @Override
     public SimpleFeature next() {

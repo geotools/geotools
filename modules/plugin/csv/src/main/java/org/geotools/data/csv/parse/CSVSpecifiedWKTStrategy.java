@@ -47,7 +47,6 @@ public class CSVSpecifiedWKTStrategy extends CSVStrategy {
         this.wktField = wktField;
     }
 
-    
     @Override
     protected SimpleFeatureType buildFeatureType() {
         SimpleFeatureTypeBuilder featureBuilder = createBuilder(csvFileState);
@@ -64,7 +63,6 @@ public class CSVSpecifiedWKTStrategy extends CSVStrategy {
         }
         return featureBuilder.buildFeatureType();
     }
-    
 
     @Override
     public void createSchema(SimpleFeatureType featureType) throws IOException {
@@ -93,7 +91,6 @@ public class CSVSpecifiedWKTStrategy extends CSVStrategy {
             writer.close();
         }
     }
-    
 
     @Override
     public String[] encode(SimpleFeature feature) {
@@ -114,7 +111,6 @@ public class CSVSpecifiedWKTStrategy extends CSVStrategy {
         }
         return csvRecord.toArray(new String[csvRecord.size() - 1]);
     }
-    
 
     @Override
     public SimpleFeature decode(String recordId, String[] csvRecord) {
@@ -149,5 +145,4 @@ public class CSVSpecifiedWKTStrategy extends CSVStrategy {
         }
         return builder.buildFeature(csvFileState.getTypeName() + "-" + recordId);
     }
-   
 }

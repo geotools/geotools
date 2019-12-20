@@ -23,6 +23,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -33,6 +34,7 @@ import no.ecc.vectortile.VectorTileDecoder;
 import org.apache.commons.io.IOUtils;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.store.EmptyFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -144,6 +146,40 @@ class MBtilesCache {
         try (GZIPInputStream stream = new GZIPInputStream(new ByteArrayInputStream(raw))) {
             return IOUtils.toByteArray(stream);
         }
+    }
+
+    /**
+     * Collects and returns all feature collections in tiles already available in cache
+     *
+     * @param z The zoom level
+     * @param tb The rectangle of tiles to be retrieved from cache
+     * @param layerName The layer name for which the features should be read
+     * @return A map between the tile location and the corresponding feature collection
+     */
+    public Map<MBTilesTileLocation, SimpleFeatureCollection> getCachedFeatures(
+            long z, RectangleLong tb, String layerName) {
+        // using linked hash map to get consistent enumeration/rendering of tiles
+        Map<MBTilesTileLocation, SimpleFeatureCollection> result = new LinkedHashMap<>();
+        tb.forEach(
+                (x, y) -> {
+                    MBTilesTileLocation loc = new MBTilesTileLocation(z, x, y);
+                    Map<String, CollectionProvider> tileContents = cache.get(loc);
+                    if (tileContents != null) {
+                        SimpleFeatureCollection features = null;
+                        if (tileContents.containsKey(layerName)) {
+                            features = tileContents.get(layerName).getGeoToolsFeatures();
+                        } else if (schemas.get(layerName) != null) {
+                            // mark that the features were just not present, as opposed to not read
+                            // otherwise this might trigger an uneeded extra read
+                            features = new EmptyFeatureCollection(schemas.get(layerName));
+                        }
+
+                        if (features != null) {
+                            result.put(loc, features);
+                        }
+                    }
+                });
+        return result;
     }
 
     /**

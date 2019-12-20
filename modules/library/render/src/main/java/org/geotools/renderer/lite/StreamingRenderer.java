@@ -100,6 +100,7 @@ import org.geotools.map.MapContent;
 import org.geotools.map.StyleLayer;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.referencing.operation.LinearTransform;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
@@ -1263,14 +1264,18 @@ public class StreamingRenderer implements GTRenderer {
                 Set<RenderingHints.Key> fsHints = source.getSupportedHints();
 
                 SingleCRS crs2D = crs == null ? null : CRS.getHorizontalCRS(crs);
-                MathTransform mt = buildFullTransform(crs2D, mapCRS, worldToScreenTransform);
+                MathTransform sourceToScreen =
+                        buildFullTransform(crs2D, mapCRS, worldToScreenTransform);
                 double[] spans =
-                        Decimator.computeGeneralizationDistances(
-                                mt.inverse(), screenSize, generalizationDistance);
-                double distance = spans[0] < spans[1] ? spans[0] : spans[1];
+                        getGeneralizationSpans(
+                                envelope,
+                                sourceToScreen,
+                                worldToScreenTransform,
+                                featCrs,
+                                screenSize);
                 for (LiteFeatureTypeStyle fts : styleList) {
                     if (fts.screenMap != null) {
-                        fts.screenMap.setTransform(mt);
+                        fts.screenMap.setTransform(sourceToScreen);
                         fts.screenMap.setSpans(spans[0], spans[1]);
                         if (fsHints.contains(Hints.SCREENMAP)) {
                             // replace the renderer screenmap with the hint, and avoid doing
@@ -1281,6 +1286,7 @@ public class StreamingRenderer implements GTRenderer {
                     }
                 }
 
+                double distance = spans[0] < spans[1] ? spans[0] : spans[1];
                 if (hasRenderingTransformation) {
                     // the RT might need valid geometries, we can at most apply a topology
                     // preserving generalization
@@ -1319,6 +1325,64 @@ public class StreamingRenderer implements GTRenderer {
         query.setFilter(simplifiedFilter);
 
         return query;
+    }
+
+    private double[] getGeneralizationSpans(
+            ReferencedEnvelope envelope,
+            MathTransform sourceToScreen,
+            AffineTransform worldToScreenTransform,
+            CoordinateReferenceSystem featureCRS,
+            Rectangle screen)
+            throws TransformException {
+        // can we cut on the valid area? No? well, let's hope for the best
+        try {
+            ProjectionHandler ph =
+                    ProjectionHandlerFinder.getHandler(
+                            new ReferencedEnvelope(featureCRS),
+                            envelope.getCoordinateReferenceSystem(),
+                            false);
+            if (isAdvancedProjectionHandlingEnabled() && ph != null) {
+
+                Polygon renderPolygon = JTS.toGeometry(envelope);
+                // make it cut to valid area
+                Geometry preProcessed = ph.preProcess(renderPolygon);
+                if (preProcessed != null && !preProcessed.isEmpty()) {
+                    LinearTransform w2s = ProjectiveTransform.create(worldToScreenTransform);
+                    Geometry screenGeometry = JTS.transform(preProcessed, w2s);
+                    Envelope screenEnvelope = screenGeometry.getEnvelopeInternal();
+                    int minX, minY, maxX, maxY;
+                    if (screenEnvelope.getWidth() > 1) {
+                        // ensure expansion does not bring it outside of the valid area
+                        minX = (int) Math.ceil(screenEnvelope.getMinX());
+                        maxX = (int) Math.floor(screenEnvelope.getMaxX());
+                    } else {
+                        double midPoint = (screenEnvelope.getMinX() + screenEnvelope.getMaxX()) / 2;
+                        minX = maxX = (int) Math.round(midPoint);
+                    }
+                    if (screenEnvelope.getHeight() > 1) {
+                        // ensure expansion does not bring it outside of the valid area
+                        minY = (int) Math.ceil(screenEnvelope.getMinY());
+                        maxY = (int) Math.floor(screenEnvelope.getMaxY());
+                    } else {
+                        double midPoint = (screenEnvelope.getMinY() + screenEnvelope.getMaxY()) / 2;
+                        minY = maxY = (int) Math.round(midPoint);
+                    }
+
+                    screen = new Rectangle(minX, minY, maxX - minX, maxY - minY);
+                }
+            }
+
+        } catch (FactoryException e) {
+            if (LOGGER.isLoggable(Level.FINE))
+                LOGGER.log(
+                        Level.INFO,
+                        "Failed to compute the generalization spans with projection handlers, falling back to full area evaluation",
+                        e);
+        }
+
+        // fallback, use the entire rendering area
+        return Decimator.computeGeneralizationDistances(
+                sourceToScreen.inverse(), screen, generalizationDistance);
     }
 
     private ReferencedEnvelope transformEnvelope(

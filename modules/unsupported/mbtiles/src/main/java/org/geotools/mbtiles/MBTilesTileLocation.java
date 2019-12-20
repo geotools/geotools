@@ -24,9 +24,9 @@ import java.util.Objects;
  */
 class MBTilesTileLocation {
     // the ordinates
-    protected final long zoomLevel;
-    protected final long tileColumn;
-    protected final long tileRow;
+    protected long zoomLevel;
+    protected long tileColumn;
+    protected long tileRow;
 
     public MBTilesTileLocation(long zoomLevel, long tileColumn, long tileRow) {
         this.zoomLevel = zoomLevel;
@@ -44,6 +44,18 @@ class MBTilesTileLocation {
 
     public long getTileRow() {
         return tileRow;
+    }
+
+    public void setZoomLevel(long zoomLevel) {
+        this.zoomLevel = zoomLevel;
+    }
+
+    public void setTileColumn(long tileColumn) {
+        this.tileColumn = tileColumn;
+    }
+
+    public void setTileRow(long tileRow) {
+        this.tileRow = tileRow;
     }
 
     @Override

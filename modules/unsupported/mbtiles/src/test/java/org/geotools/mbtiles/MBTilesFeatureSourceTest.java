@@ -16,7 +16,9 @@
  */
 package org.geotools.mbtiles;
 
+import static org.geotools.mbtiles.MBTilesFile.SPHERICAL_MERCATOR;
 import static org.hamcrest.Matchers.closeTo;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -28,15 +30,22 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.commons.io.IOUtils;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
+import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
@@ -47,10 +56,12 @@ import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BBOX;
 
 public class MBTilesFeatureSourceTest {
     static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    private static final PropertyName DEFAULT_GEOM = FF.property("");
 
     DataStore store;
 
@@ -84,15 +95,7 @@ public class MBTilesFeatureSourceTest {
     @Test
     public void readSinglePolygon() throws IOException, ParseException {
         MBTilesFeatureSource fs = getMadagascarSource("water");
-        BBOX bbox =
-                FF.bbox(
-                        FF.property(""),
-                        new ReferencedEnvelope(
-                                5635550,
-                                5948635,
-                                -1565430,
-                                -1252345,
-                                MBTilesFile.SPHERICAL_MERCATOR));
+        BBOX bbox = getMercatorBoxFilter(5635550, 5948635, -1565430, -1252345);
         ContentFeatureCollection fc = fs.getFeatures(new Query("water", bbox));
         assertEquals(1, fc.size());
         SimpleFeature feature = DataUtilities.first(fc);
@@ -118,54 +121,41 @@ public class MBTilesFeatureSourceTest {
     @Test
     public void queryAllBounds() throws IOException, SQLException {
         MBTilesFeatureSource fs = getMadagascarSource("water");
-        RectangleLong bounds = fs.getTileBoundsFor(new Query("water"), 7);
-        assertEquals(new RectangleLong(0, 128, 0, 128), bounds);
+        List<RectangleLong> bounds = fs.getTileBoundsFor(new Query("water"), 7);
+        assertThat(bounds, contains(new RectangleLong(0, 127, 0, 127)));
     }
 
     @Test
     public void queryWorldBounds() throws IOException, SQLException {
         MBTilesFeatureSource fs = getMadagascarSource("water");
-        BBOX bbox = FF.bbox(FF.property(""), MBTilesFile.WORLD_ENVELOPE);
-        RectangleLong bounds = fs.getTileBoundsFor(new Query("water", bbox), 7);
-        assertEquals(new RectangleLong(0, 128, 0, 128), bounds);
+        BBOX bbox = FF.bbox(DEFAULT_GEOM, MBTilesFile.WORLD_ENVELOPE);
+        List<RectangleLong> bounds = fs.getTileBoundsFor(new Query("water", bbox), 7);
+        assertThat(bounds, contains(new RectangleLong(0, 127, 0, 127)));
     }
 
     @Test
     public void querySingleTile() throws IOException, SQLException {
         MBTilesFeatureSource fs = getMadagascarSource("water");
-        BBOX bbox =
-                FF.bbox(
-                        FF.property(""),
-                        new ReferencedEnvelope(
-                                5635550,
-                                5948635,
-                                -1565430,
-                                -1252345,
-                                MBTilesFile.SPHERICAL_MERCATOR));
-        RectangleLong bounds = fs.getTileBoundsFor(new Query("water", bbox), 7);
-        assertEquals(new RectangleLong(82, 82, 59, 59), bounds);
+        BBOX bbox = getMercatorBoxFilter(5635550, 5948635, -1565430, -1252345);
+        List<RectangleLong> bounds = fs.getTileBoundsFor(new Query("water", bbox), 7);
+        assertThat(bounds, contains(new RectangleLong(82, 82, 59, 59)));
     }
 
     @Test
     public void queryTwoTiles() throws IOException, SQLException {
         MBTilesFeatureSource fs = getMadagascarSource("water");
-        BBOX bbox =
-                FF.bbox(
-                        FF.property(""),
-                        new ReferencedEnvelope(
-                                5635550,
-                                5948637,
-                                -1565430,
-                                -1252344,
-                                MBTilesFile.SPHERICAL_MERCATOR));
-        RectangleLong bounds = fs.getTileBoundsFor(new Query("water", bbox), 7);
-        assertEquals(new RectangleLong(82, 83, 59, 60), bounds);
+        BBOX bbox = getMercatorBoxFilter(5635550, 5948637, -1565430, -1252344);
+        List<RectangleLong> bounds = fs.getTileBoundsFor(new Query("water", bbox), 7);
+        assertThat(bounds, contains(new RectangleLong(82, 83, 59, 60)));
     }
 
     private MBTilesFeatureSource getMadagascarSource(String typeName) throws IOException {
-        File file =
-                URLs.urlToFile(MBTilesFileVectorTileTest.class.getResource("madagascar.mbtiles"));
-        this.store = new MBTilesDataStore(new MBTilesFile(file));
+        if (this.store == null) {
+            File file =
+                    URLs.urlToFile(
+                            MBTilesFileVectorTileTest.class.getResource("madagascar.mbtiles"));
+            this.store = new MBTilesDataStore(new MBTilesFile(file));
+        }
         return (MBTilesFeatureSource) store.getFeatureSource(typeName);
     }
 
@@ -224,5 +214,116 @@ public class MBTilesFeatureSourceTest {
         MBTilesFeatureSource fs = getMadagascarSource(layerName);
         ContentFeatureCollection fc = fs.getFeatures(new Query(layerName));
         assertNull(DataUtilities.first(fc));
+    }
+
+    @Test
+    public void testReadCache() throws Exception {
+        Set<MBTilesRange> rangesRead = new HashSet<>();
+        this.store = getMadagascarRangeReadRecorder(rangesRead);
+        SimpleFeatureSource water = store.getFeatureSource("water");
+
+        // read from a single tile, should kick a disk read
+        BBOX bbox = getMercatorBoxFilter(5700000, 5900000, -1500000, -1300000);
+        SimpleFeatureCollection fc = water.getFeatures(new Query("water", bbox));
+        assertEquals(1, countByVisit(fc));
+        assertThat(rangesRead, Matchers.contains(new MBTilesRange(7, 82, 82, 59, 59)));
+
+        // read it again, this time no disk reads should be performed, it's all in the tile cache
+        rangesRead.clear();
+        assertEquals(1, countByVisit(fc));
+        assertThat(rangesRead, Matchers.empty());
+
+        // perform new read, making area larger towards east, should read one more tile, but not the
+        // previous one
+        rangesRead.clear();
+        bbox = getMercatorBoxFilter(5500000, 5900000, -1500000, -1300000);
+        fc = water.getFeatures(new Query("water", bbox));
+        assertEquals(2, countByVisit(fc));
+        assertThat(rangesRead, Matchers.contains(new MBTilesRange(7, 81, 81, 59, 59)));
+
+        // same as above but different layer, again the cache should kick in
+        rangesRead.clear();
+        fc = store.getFeatureSource("landcover").getFeatures(new Query("landcover", bbox));
+        assertEquals(2, countByVisit(fc));
+        assertThat(rangesRead, Matchers.empty());
+    }
+
+    @Test
+    public void testReadSeparateBounds() throws Exception {
+        Set<MBTilesRange> rangesRead = new HashSet<>();
+        this.store = getMadagascarRangeReadRecorder(rangesRead);
+        SimpleFeatureSource water = store.getFeatureSource("water");
+
+        // read from two well separate bounding boxes
+        BBOX bbox1 = getMercatorBoxFilter(5700000, 5900000, -1500000, -1300000);
+        BBOX bbox2 = getMercatorBoxFilter(5700000, 5900000, -2500000, -2100000);
+        SimpleFeatureCollection fc = water.getFeatures(new Query("water", FF.or(bbox1, bbox2)));
+        assertEquals(3, countByVisit(fc));
+        assertThat(
+                rangesRead,
+                Matchers.contains(
+                        new MBTilesRange(7, 82, 82, 59, 59), new MBTilesRange(7, 82, 82, 56, 57)));
+    }
+
+    @Test
+    public void testReadSeparateBoundsSmallGap() throws Exception {
+        Set<MBTilesRange> rangesRead = new HashSet<>();
+        this.store = getMadagascarRangeReadRecorder(rangesRead);
+        SimpleFeatureSource water = store.getFeatureSource("water");
+
+        // read from two bounding boxes with a small gap, resulting in a single tile range to read
+        BBOX bbox1 = getMercatorBoxFilter(5700000, 5900000, -1500000, -1300000);
+        BBOX bbox2 = getMercatorBoxFilter(5700000, 5900000, -1700000, -1550000);
+        SimpleFeatureCollection fc = water.getFeatures(new Query("water", FF.or(bbox1, bbox2)));
+        assertEquals(2, countByVisit(fc));
+        assertThat(rangesRead, Matchers.contains(new MBTilesRange(7, 82, 82, 58, 59)));
+    }
+
+    @Test
+    public void testReadOutsideWorld() throws Exception {
+        Set<MBTilesRange> rangesRead = new HashSet<>();
+        this.store = getMadagascarRangeReadRecorder(rangesRead);
+        SimpleFeatureSource water = store.getFeatureSource("water");
+
+        // try to read from an invalid coordinate set (past dateline, no APH here)
+        BBOX bbox = getMercatorBoxFilter(25000000, 26000000, -1500000, -1300000);
+        SimpleFeatureCollection fc = water.getFeatures(new Query("water", bbox));
+        assertEquals(0, countByVisit(fc));
+        // should not have read anything, outside valid tile range
+        assertThat(rangesRead, Matchers.empty());
+    }
+
+    private BBOX getMercatorBoxFilter(double minX, double maxX, double minY, double maxY) {
+        return FF.bbox(
+                DEFAULT_GEOM, new ReferencedEnvelope(minX, maxX, minY, maxY, SPHERICAL_MERCATOR));
+    }
+
+    private MBTilesDataStore getMadagascarRangeReadRecorder(Set<MBTilesRange> rangesRead)
+            throws IOException {
+        File file =
+                URLs.urlToFile(MBTilesFileVectorTileTest.class.getResource("madagascar.mbtiles"));
+        MBTilesFile mbtiles =
+                new MBTilesFile(file) {
+                    @Override
+                    public TileIterator tiles(
+                            long zoomLevel,
+                            long leftTile,
+                            long bottomTile,
+                            long rightTile,
+                            long topTile)
+                            throws SQLException {
+                        rangesRead.add(
+                                new MBTilesRange(
+                                        zoomLevel, leftTile, rightTile, bottomTile, topTile));
+                        return super.tiles(zoomLevel, leftTile, bottomTile, rightTile, topTile);
+                    }
+                };
+        return new MBTilesDataStore(mbtiles);
+    }
+
+    private int countByVisit(SimpleFeatureCollection fc) throws IOException {
+        AtomicInteger count = new AtomicInteger();
+        fc.accepts(f -> count.incrementAndGet(), null);
+        return count.get();
     }
 }

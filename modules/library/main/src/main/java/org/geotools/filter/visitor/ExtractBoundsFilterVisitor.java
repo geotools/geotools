@@ -146,7 +146,7 @@ public class ExtractBoundsFilterVisitor extends NullFilterVisitor {
         return infinity();
     }
 
-    Envelope infinity() {
+    protected Envelope infinity() {
         return new Envelope(
                 Double.NEGATIVE_INFINITY,
                 Double.POSITIVE_INFINITY,

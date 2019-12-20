@@ -147,16 +147,19 @@ public final class Decimator {
             throws TransformException {
         try {
             // init the spans with the upper left corner
-            double[] spans = getGeneralizationSpans(paintArea.x, paintArea.y, screenToWorld);
+            double[] spans =
+                    getGeneralizationSpans(
+                            paintArea.x + paintArea.width / 2,
+                            paintArea.y + paintArea.height / 2,
+                            screenToWorld);
             // search over a simple 3x3 grid for higher spans so that we perform a basic sampling of
-            // the whole area
-            // and we pick the shortest generalization distances
+            // the whole area and we pick the shortest generalization distances
             for (int i = 0; i < 2; i++) {
                 for (int j = 0; j < 2; j++) {
                     double[] ns =
                             getGeneralizationSpans(
                                     paintArea.x + paintArea.width * i / 2.0,
-                                    paintArea.y + paintArea.height / 2.0,
+                                    paintArea.y + paintArea.height * j / 2.0,
                                     screenToWorld);
                     if (isFinite(ns[0]) && (ns[0] < spans[0] || !isFinite(spans[0]))) {
                         spans[0] = ns[0];

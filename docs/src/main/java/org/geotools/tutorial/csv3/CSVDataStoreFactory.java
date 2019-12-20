@@ -245,7 +245,7 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
         } else {
             csvStrategy = new CSVAttributesOnlyStrategy(csvFileState);
         }
-        Boolean quotes = (Boolean) QUOTEALL.lookUp(params);
+       
 
         CSVDataStore store = new CSVDataStore(csvFileState, csvStrategy);
         if (namespace != null) {

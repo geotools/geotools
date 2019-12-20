@@ -30,7 +30,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-// docs start CSVStrategy
+
 public abstract class CSVStrategy {
     /** logger */
     static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(CSVStrategy.class);
@@ -44,7 +44,7 @@ public abstract class CSVStrategy {
     public CSVIterator iterator() throws IOException {
         return new CSVIterator(csvFileState, this);
     }
-    // docs end CSVStrategy
+  
 
     protected abstract SimpleFeatureType buildFeatureType();
 
@@ -67,7 +67,6 @@ public abstract class CSVStrategy {
         return featureType;
     }
 
-    // docs start createBuilder
     /**
      * Originally in a strategy support class - giving a chance to override them to improve
      * efficiency and utilise the different strategies
@@ -163,7 +162,7 @@ public abstract class CSVStrategy {
         }
         return result;
     }
-    // docs end findMostSpecificTypesFromData
+   
 
     /** @return the separator */
     public char getSeparator() {

@@ -18,7 +18,6 @@ Research and Development:
 
    arcgis-rest
    css
-   csv
    geojson
    geometry/index
    jts-wrapper
@@ -36,7 +35,6 @@ Unsupported rendering plugins:
 
 Unsupported DataStore implementations:
 
-* :doc:`/library/data/csv` (Active) support for the comma-separated values (CSV) file format used for tutorial
 * :doc:`/library/data/dxf` (Inactive) Support for DXF format files
 * :doc:`/library/data/georest` (Unknown) Support for a REST service using GeoJSON
 * :doc:`/library/data/mongodb` (Unknown) Support for using mongodb (https://www.mongodb.com/, https://en.wikipedia.org/wiki/MongoDB) as a feature store.

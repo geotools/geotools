@@ -66,6 +66,7 @@
     <module>coverage-multidim</module>
     <module>geopkg</module>
     <module>mongodb</module>
+    <module>csv</module>
   </modules>
 
 </project>

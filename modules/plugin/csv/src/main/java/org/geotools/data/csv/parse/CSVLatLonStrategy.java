@@ -134,13 +134,11 @@ public class CSVLatLonStrategy extends CSVStrategy {
                 || "long".equalsIgnoreCase(s)
                 || "longitude".equalsIgnoreCase(s);
     }
-    
 
     protected static boolean isNumeric(Class<?> clazz) {
         return clazz != null && (clazz == Double.class || clazz == Integer.class);
     }
 
-   
     @Override
     public void createSchema(SimpleFeatureType featureType) throws IOException {
         this.featureType = featureType;
@@ -182,7 +180,7 @@ public class CSVLatLonStrategy extends CSVStrategy {
             writer.close();
         }
     }
-    
+
     @Override
     public SimpleFeature decode(String recordId, String[] csvRecord) {
         SimpleFeatureType featureType = getFeatureType();
@@ -243,7 +241,7 @@ public class CSVLatLonStrategy extends CSVStrategy {
 
         return builder.buildFeature(csvFileState.getTypeName() + "-" + recordId);
     }
-   
+
     @Override
     public String[] encode(SimpleFeature feature) {
         List<String> csvRecord = new ArrayList<>();
@@ -279,5 +277,4 @@ public class CSVLatLonStrategy extends CSVStrategy {
         }
         return csvRecord.toArray(new String[csvRecord.size() - 1]);
     }
-    
 }

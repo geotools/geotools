@@ -245,7 +245,6 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
         } else {
             csvStrategy = new CSVAttributesOnlyStrategy(csvFileState);
         }
-       
 
         CSVDataStore store = new CSVDataStore(csvFileState, csvStrategy);
         if (namespace != null) {

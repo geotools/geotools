@@ -32,7 +32,7 @@ To publish a collection:
   used to manually define a schema for an existing collection.
 
 Functionality
--------------
+^^^^^^^^^^^^^
 
 The ``MongoDataStore`` supports the use of MongoDB as a data store with the 
 following connection parameters:
@@ -65,16 +65,16 @@ following connection parameters:
   are stored as MongoDB documents or files adhering to the JSON schema format with 
   the schema "Type Name" (``typeName``) as the key.
 
-* max_objs_schema: specifies the maximun integer number of JSON objects on the collection
+* ``max_objs_schema``: specifies the maximum integer number of JSON objects on the collection
   to be used in the schema generation process.  
   The default value is 1.  This parameter  is not required.
   
-* objs_id_schema: specifies a collection of comma separated Object IDs to be used 
+* ``objs_id_schema``: specifies a collection of comma separated Object IDs to be used 
   in the schema generation process.  It can be used along 
   with ``max_objs_schema`` parameter.  Default is empty.  This parameter is not required.
 
 JSON Schema
------------
+^^^^^^^^^^^
 
 Keep in mind:
 
@@ -164,7 +164,7 @@ MongoDB URI schema stores:
   under the root-level ``userData`` object.
 
 Implementation Notes
---------------------
+^^^^^^^^^^^^^^^^^^^^
 
 * Bounding box calculation makes use of a full table scan.
 
@@ -190,7 +190,7 @@ Implementation Notes
   geometries spanning a hemisphere (and will use the smaller geometry).
 
 Usage Notes
---------------------
+^^^^^^^^^^^
 
 * Attribute names containing characters other than letters and numbers may cause 
   issues if used in CQL filters and therefore should be enclosed in double quotes 

@@ -61,6 +61,7 @@ import org.locationtech.jts.geom.LineString;
  *
  * @generated
  */
+@SuppressWarnings("ComparableType")
 public class CurveTypeBinding extends AbstractComplexBinding implements Comparable {
     protected GeometryFactory gf;
 

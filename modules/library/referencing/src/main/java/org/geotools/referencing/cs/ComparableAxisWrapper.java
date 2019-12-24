@@ -29,7 +29,7 @@ import org.opengis.referencing.cs.CoordinateSystemAxis;
  * @version $Id$
  * @author Martin Desruisseaux
  */
-final class ComparableAxisWrapper implements Comparable {
+final class ComparableAxisWrapper implements Comparable<ComparableAxisWrapper> {
     /** The wrapped axis. */
     private final CoordinateSystemAxis axis;
 
@@ -51,7 +51,7 @@ final class ComparableAxisWrapper implements Comparable {
     /**
      * Compares with the specified object. See class javadoc for a description of the sorting order.
      */
-    public int compareTo(final Object other) {
+    public int compareTo(final ComparableAxisWrapper other) {
         final ComparableAxisWrapper that = (ComparableAxisWrapper) other;
         final AxisDirection d1 = this.axis.getDirection();
         final AxisDirection d2 = that.axis.getDirection();

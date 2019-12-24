@@ -69,6 +69,7 @@ import org.opengis.util.ScopedName;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
+@SuppressWarnings("ComparableType") // comparable of different type than implementation
 public class NamedIdentifier
         implements ReferenceIdentifier, GenericName, Comparable<GenericName>, Serializable {
     /** Serial number for interoperability with different versions. */

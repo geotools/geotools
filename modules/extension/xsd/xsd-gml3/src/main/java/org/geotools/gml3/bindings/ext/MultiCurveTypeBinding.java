@@ -24,6 +24,7 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 
+@SuppressWarnings("ComparableType")
 public class MultiCurveTypeBinding extends org.geotools.gml3.bindings.MultiCurveTypeBinding
         implements Comparable {
 

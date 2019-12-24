@@ -122,7 +122,7 @@
     <batik.version>1.10</batik.version>
     <logging-profile>quiet-logging</logging-profile>
     <errorProneFlags></errorProneFlags>
-    <errorProne.version>2.3.3</errorProne.version>
+    <errorProne.version>2.3.4</errorProne.version>
     <javac.version>9+181-r4173-1</javac.version>
     <pmd.skip>false</pmd.skip>
     <spotbugs.skip>false</spotbugs.skip>
@@ -368,7 +368,7 @@
                 <path>
                   <groupId>com.google.errorprone</groupId>
                   <artifactId>error_prone_core</artifactId>
-                  <version>2.3.2</version>
+		  <version>${errorProne.version}</version>
                 </path>
               </annotationProcessorPaths>
             </configuration>

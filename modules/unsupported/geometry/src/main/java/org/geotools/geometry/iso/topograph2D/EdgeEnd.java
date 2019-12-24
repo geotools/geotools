@@ -27,7 +27,7 @@ import org.geotools.geometry.iso.util.algorithm2D.CGAlgorithms;
  * ordering "a has a greater angle with the x-axis than b". This ordering is used to sort EdgeEnds
  * around a node.
  */
-public class EdgeEnd implements Comparable {
+public class EdgeEnd implements Comparable<EdgeEnd> {
     protected Edge edge; // the parent edge of this edge end
 
     protected Label label;
@@ -102,8 +102,7 @@ public class EdgeEnd implements Comparable {
         return node;
     }
 
-    public int compareTo(Object obj) {
-        EdgeEnd e = (EdgeEnd) obj;
+    public int compareTo(EdgeEnd e) {
         return compareDirection(e);
     }
 

@@ -34,7 +34,7 @@ import java.util.Comparator;
  *
  * @version 1.7.2
  */
-public class Coordinate implements Comparable, Cloneable, Serializable {
+public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializable {
     private static final long serialVersionUID = 6683108902428366910L;
 
     /** The x-coordinate. */
@@ -160,14 +160,12 @@ public class Coordinate implements Comparable, Cloneable, Serializable {
      * Note: This method assumes that ordinate values are valid numbers. NaN values are not handled
      * correctly.
      *
-     * @param o the <code>Coordinate</code> with which this <code>Coordinate</code> is being
+     * @param other the <code>Coordinate</code> with which this <code>Coordinate</code> is being
      *     compared
      * @return -1, zero, or 1 as this <code>Coordinate</code> is less than, equal to, or greater
      *     than the specified <code>Coordinate</code>
      */
-    public int compareTo(Object o) {
-        Coordinate other = (Coordinate) o;
-
+    public int compareTo(Coordinate other) {
         if (x < other.x) return -1;
         if (x > other.x) return 1;
         if (y < other.y) return -1;

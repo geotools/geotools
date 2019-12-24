@@ -728,13 +728,14 @@ public class JDBCPGRasterConfigurationBuilder {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("updating mosaic table");
             }
-            final PreparedStatement ps = connection.prepareStatement(insertTileQuery);
+            try (PreparedStatement ps = connection.prepareStatement(insertTileQuery)) {
 
-            // Inserting tile tables
-            for (String tileTable : tileTables) {
-                ps.setString(1, coverageName);
-                ps.setString(2, tileTable);
-                ps.execute();
+                // Inserting tile tables
+                for (String tileTable : tileTables) {
+                    ps.setString(1, coverageName);
+                    ps.setString(2, tileTable);
+                    ps.execute();
+                }
             }
 
             // commit

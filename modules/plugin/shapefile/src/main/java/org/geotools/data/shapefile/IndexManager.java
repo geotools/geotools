@@ -334,13 +334,14 @@ class IndexManager {
             }
 
             if (canCache) {
-                QuadTree quadTree = openQuadTree();
-                if (quadTree != null) {
-                    LOGGER.warning(
-                            "Experimental: loading in memory the quadtree for "
-                                    + shpFiles.get(SHP));
-                    cachedTree = new CachedQuadTree(quadTree);
-                    quadTree.close();
+                try (QuadTree quadTree = openQuadTree()) {
+                    if (quadTree != null) {
+                        LOGGER.warning(
+                                "Experimental: loading in memory the quadtree for "
+                                        + shpFiles.get(SHP));
+                        cachedTree = new CachedQuadTree(quadTree);
+                        quadTree.close();
+                    }
                 }
             }
         }
@@ -352,6 +353,7 @@ class IndexManager {
             }
         } else {
             try {
+                @SuppressWarnings("PMD.CloseResource") // managed as part of the return
                 QuadTree quadTree = openQuadTree();
                 if ((quadTree != null) && !bbox.contains(quadTree.getRoot().getBounds())) {
                     tmp = quadTree.search(bbox);

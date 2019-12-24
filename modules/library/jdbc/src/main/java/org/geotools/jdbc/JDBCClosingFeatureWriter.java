@@ -51,6 +51,7 @@ public class JDBCClosingFeatureWriter implements FeatureWriter<SimpleFeatureType
         writer.write();
     }
 
+    @SuppressWarnings("PMD.CloseResource") // we are actually closing
     public void close() throws IOException {
         FeatureWriter w = writer;
         while (w instanceof DelegatingFeatureWriter) {
@@ -71,6 +72,8 @@ public class JDBCClosingFeatureWriter implements FeatureWriter<SimpleFeatureType
             } finally {
                 fs.getDataStore().releaseConnection(cx, fs.getState());
             }
+        } else if (w != null) {
+            writer.close();
         }
     }
 }

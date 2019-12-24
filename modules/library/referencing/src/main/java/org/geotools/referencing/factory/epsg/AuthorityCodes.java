@@ -419,7 +419,7 @@ public final class AuthorityCodes extends AbstractSet<String> implements Seriali
 
         /** Closes the underlying result set. */
         @Override
-        @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
+        @SuppressWarnings({"deprecation", "PMD.CloseResource"}) // finalize is deprecated in Java 9
         protected void finalize() throws SQLException {
             next = null;
             if (results != null) {

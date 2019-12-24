@@ -85,6 +85,7 @@ public class Arguments {
      * @param args Command line arguments. Arguments {@code "-encoding"} and {@code "-locale"} will
      *     be automatically parsed.
      */
+    @SuppressWarnings("PMD.CloseResource") // we don't close System.out
     public Arguments(final String[] args) {
         this.arguments = args.clone();
         this.locale = getLocale(getOptionalString("-locale"));

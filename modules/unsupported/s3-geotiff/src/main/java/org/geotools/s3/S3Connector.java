@@ -167,8 +167,9 @@ public class S3Connector {
                 String property = System.getProperty(S3_GEOTIFF_CONFIG_PATH);
                 if (property != null) {
                     prop = new Properties();
-                    InputStream resourceAsStream = new FileInputStream(property);
-                    prop.load(resourceAsStream);
+                    try (InputStream resourceAsStream = new FileInputStream(property)) {
+                        prop.load(resourceAsStream);
+                    }
                 } else {
                     throw new IOException(
                             "Properties are missing! "

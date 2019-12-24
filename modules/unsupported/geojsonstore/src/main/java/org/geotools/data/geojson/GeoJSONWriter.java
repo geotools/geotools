@@ -17,6 +17,7 @@
 package org.geotools.data.geojson;
 
 import java.io.BufferedOutputStream;
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.OutputStream;
 import org.geotools.feature.DefaultFeatureCollection;
@@ -29,7 +30,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @author ian
  */
-public class GeoJSONWriter {
+public class GeoJSONWriter implements Closeable {
     private FeatureJSON writer = new FeatureJSON();
     private OutputStream out;
     private DefaultFeatureCollection collection = null;

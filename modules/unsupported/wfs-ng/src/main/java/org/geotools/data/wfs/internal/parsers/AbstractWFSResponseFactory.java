@@ -75,6 +75,7 @@ public abstract class AbstractWFSResponseFactory implements WFSResponseFactory {
         } else {
             buffSize = 512;
         }
+        @SuppressWarnings("PMD.CloseResource") // closed in delegates it would seem... but unsure
         PushbackInputStream pushbackIn =
                 new PushbackInputStream(response.getResponseStream(), buffSize);
         byte[] buff = new byte[buffSize];

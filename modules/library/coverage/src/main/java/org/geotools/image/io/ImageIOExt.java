@@ -17,7 +17,7 @@
 package org.geotools.image.io;
 
 import com.sun.media.imageioimpl.common.PackageUtil;
-import java.awt.Color;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ComponentColorModel;
 import java.awt.image.RenderedImage;
@@ -329,65 +329,67 @@ public class ImageIOExt {
         }
 
         // build an image input stream
-        ImageInputStream stream;
-        if (input instanceof ImageInputStream) {
-            stream = (ImageInputStream) input;
-        } else {
-            stream = ImageIO.createImageInputStream(input);
+        try (ImageInputStream stream = getImageInputStream(input)) {
+            // get the readers
+            Iterator iter = ImageIO.getImageReaders(stream);
+            if (!iter.hasNext()) {
+                return null;
+            }
+
+            ImageReader reader = (ImageReader) iter.next();
+            // work around PNG with transparent RGB color if needed
+            // we can remove it once we run on JDK 11, see
+            // https://bugs.openjdk.java.net/browse/JDK-6788458
+            boolean isJdkPNGReader =
+                    "com.sun.imageio.plugins.png.PNGImageReader"
+                            .equals(reader.getClass().getName());
+            // if it's the JDK PNG reader, we cannot skip the metadata, the tRNS section will be in
+            // there
+            reader.setInput(stream, true, !isJdkPNGReader);
+
+            BufferedImage bi;
+            try {
+                ImageReadParam param = reader.getDefaultReadParam();
+                bi = reader.read(0, param);
+            } finally {
+                reader.dispose();
+            }
+
+            // apply transparency in post-processing if needs be
+            if (isJdkPNGReader
+                    && bi.getColorModel() instanceof ComponentColorModel
+                    && !bi.getColorModel().hasAlpha()
+                    && bi.getColorModel().getNumComponents() == 3) {
+                IIOMetadata imageMetadata = reader.getImageMetadata(0);
+                Node tree = imageMetadata.getAsTree(imageMetadata.getNativeMetadataFormatName());
+                Node trns_rgb = getNodeFromPath(tree, Arrays.asList("tRNS", "tRNS_RGB"));
+                if (trns_rgb != null) {
+                    NamedNodeMap attributes = trns_rgb.getAttributes();
+                    Integer red = getIntegerAttribute(attributes, "red");
+                    Integer green = getIntegerAttribute(attributes, "green");
+                    Integer blue = getIntegerAttribute(attributes, "blue");
+
+                    if (red != null && green != null && blue != null) {
+                        Color color = new Color(red, green, blue);
+                        ImageWorker iw = new ImageWorker(bi);
+                        iw.makeColorTransparent(color);
+                        return iw.getRenderedImage();
+                    }
+                }
+            }
+            return bi;
         }
+    }
+
+    private static ImageInputStream getImageInputStream(Object input) throws IOException {
+        if (input instanceof ImageInputStream) {
+            return (ImageInputStream) input;
+        }
+        ImageInputStream stream = ImageIO.createImageInputStream(input);
         if (stream == null) {
             throw new IOException("Can't create an ImageInputStream!");
         }
-
-        // get the readers
-        Iterator iter = ImageIO.getImageReaders(stream);
-        if (!iter.hasNext()) {
-            return null;
-        }
-
-        ImageReader reader = (ImageReader) iter.next();
-        // work around PNG with transparent RGB color if needed
-        // we can remove it once we run on JDK 11, see
-        // https://bugs.openjdk.java.net/browse/JDK-6788458
-        boolean isJdkPNGReader =
-                "com.sun.imageio.plugins.png.PNGImageReader".equals(reader.getClass().getName());
-        // if it's the JDK PNG reader, we cannot skip the metadata, the tRNS section will be in
-        // there
-        reader.setInput(stream, true, !isJdkPNGReader);
-
-        BufferedImage bi;
-        try {
-            ImageReadParam param = reader.getDefaultReadParam();
-            bi = reader.read(0, param);
-        } finally {
-            reader.dispose();
-            stream.close();
-        }
-
-        // apply transparency in post-processing if needs be
-        if (isJdkPNGReader
-                && bi.getColorModel() instanceof ComponentColorModel
-                && !bi.getColorModel().hasAlpha()
-                && bi.getColorModel().getNumComponents() == 3) {
-            IIOMetadata imageMetadata = reader.getImageMetadata(0);
-            Node tree = imageMetadata.getAsTree(imageMetadata.getNativeMetadataFormatName());
-            Node trns_rgb = getNodeFromPath(tree, Arrays.asList("tRNS", "tRNS_RGB"));
-            if (trns_rgb != null) {
-                NamedNodeMap attributes = trns_rgb.getAttributes();
-                Integer red = getIntegerAttribute(attributes, "red");
-                Integer green = getIntegerAttribute(attributes, "green");
-                Integer blue = getIntegerAttribute(attributes, "blue");
-
-                if (red != null && green != null && blue != null) {
-                    Color color = new Color(red, green, blue);
-                    ImageWorker iw = new ImageWorker(bi);
-                    iw.makeColorTransparent(color);
-                    return iw.getRenderedImage();
-                }
-            }
-        }
-
-        return bi;
+        return stream;
     }
 
     /**

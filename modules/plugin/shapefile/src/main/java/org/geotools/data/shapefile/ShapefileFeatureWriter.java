@@ -120,6 +120,7 @@ class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
 
     private long maxDbfSize = DEFAULT_MAX_DBF_SIZE;
 
+    @SuppressWarnings("PMD.CloseResource") // closeables are managed as fields
     public ShapefileFeatureWriter(
             ShpFiles shpFiles,
             ShapefileFeatureReader featureReader,

@@ -353,7 +353,6 @@ public class ArcSDEDataStore implements DataStore {
 
         final FeatureTypeInfo typeInfo = typeInfoCache.getFeatureTypeInfo(typeName, session);
         final SimpleFeatureType completeSchema = typeInfo.getFeatureType();
-        final ArcSDEQuery sdeQuery;
 
         final Filter queryFilter = query.getFilter();
 
@@ -361,6 +360,8 @@ public class ArcSDEDataStore implements DataStore {
             return new EmptyFeatureReader<SimpleFeatureType, SimpleFeature>(targetSchema);
         }
 
+        @SuppressWarnings("PMD.CloseResource") // wrapped and returned
+        final ArcSDEQuery sdeQuery;
         if (typeInfo.isInProcessView()) {
             SeQueryInfo definitionQuery = typeInfo.getSdeDefinitionQuery();
             PlainSelect viewSelectStatement = typeInfo.getDefinitionQuery();
@@ -384,9 +385,7 @@ public class ArcSDEDataStore implements DataStore {
         final Filter unsupportedFilter = sdeQuery.getFilters().getUnsupportedFilter();
 
         try {
-            final ArcSDEFeatureReader sdeReader;
-            sdeReader = new ArcSDEFeatureReader(attReader);
-            reader = sdeReader;
+            reader = new ArcSDEFeatureReader(attReader);
         } catch (SchemaException e) {
             throw new RuntimeException(
                     "Schema missmatch, should never happen!: " + e.getMessage(), e);
@@ -543,6 +542,7 @@ public class ArcSDEDataStore implements DataStore {
             }
             final SimpleFeatureType featureType = typeInfo.getFeatureType();
 
+            @SuppressWarnings("PMD.CloseResource") // wrapped and returned
             final FeatureReader<SimpleFeatureType, SimpleFeature> reader;
             if (Filter.EXCLUDE.equals(filter)) {
                 reader = new EmptyFeatureReader<SimpleFeatureType, SimpleFeature>(featureType);

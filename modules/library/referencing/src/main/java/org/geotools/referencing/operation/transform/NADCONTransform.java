@@ -422,6 +422,7 @@ public class NADCONTransform extends AbstractMathTransform
      *
      * @param args a single argument for the defualt location of grid shift files
      */
+    @SuppressWarnings("PMD.CloseResource")
     public static void main(String[] args) {
         final Arguments arguments = new Arguments(args);
         final PrintWriter out = arguments.out;

@@ -171,6 +171,7 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
      *     resource.
      */
     @Override
+    @SuppressWarnings("PMD.CloseResource") // might need to close, or not, conditional
     public boolean accepts(Object o, Hints hints) {
 
         if (o == null) {

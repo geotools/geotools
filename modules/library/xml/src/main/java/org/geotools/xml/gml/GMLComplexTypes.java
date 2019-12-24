@@ -4210,6 +4210,7 @@ public class GMLComplexTypes {
                 return getCollection(attrs, value);
             }
 
+            @SuppressWarnings("PMD.CloseResource") // not managed here
             FCBuffer fcb = (FCBuffer) hints.get(XMLHandlerHints.STREAM_HINT);
             fcb.state = FCBuffer.FINISH;
 
@@ -4328,48 +4329,54 @@ public class GMLComplexTypes {
                 throw new IOException("Bounding box required for the FeatureCollection");
             }
 
-            SimpleFeatureIterator i = fc.features();
             Element e = null;
+            try (SimpleFeatureIterator i = fc.features()) {
 
-            while (i.hasNext()) {
-                SimpleFeature f = i.next();
-                output.startElement(GMLSchema.NAMESPACE, "featureMember", null);
+                while (i.hasNext()) {
+                    SimpleFeature f = i.next();
+                    output.startElement(GMLSchema.NAMESPACE, "featureMember", null);
 
-                if (e == null) { // first time
-                    e = output.findElement(f.getFeatureType().getTypeName());
-                    // should go to an abstract FT eventually
-                    ComplexType t =
-                            e.getType() instanceof ComplexType ? (ComplexType) e.getType() : null;
-                    while (t != null && t != AbstractFeatureType.getInstance())
-                        t =
-                                t.getParent() instanceof ComplexType
-                                        ? (ComplexType) t.getParent()
-                                        : null;
-                    if (t != AbstractFeatureType.getInstance()) {
-                        // not the right element ... try by type
-                        e = output.findElement(value);
+                    if (e == null) { // first time
+                        e = output.findElement(f.getFeatureType().getTypeName());
                         // should go to an abstract FT eventually
-                        t = e.getType() instanceof ComplexType ? (ComplexType) e.getType() : null;
+                        ComplexType t =
+                                e.getType() instanceof ComplexType
+                                        ? (ComplexType) e.getType()
+                                        : null;
                         while (t != null && t != AbstractFeatureType.getInstance())
                             t =
                                     t.getParent() instanceof ComplexType
                                             ? (ComplexType) t.getParent()
                                             : null;
                         if (t != AbstractFeatureType.getInstance()) {
-                            throw new OperationNotSupportedException(
-                                    "Could not find a correct Element for FeatureType "
-                                            + f.getFeatureType().getTypeName());
+                            // not the right element ... try by type
+                            e = output.findElement(value);
+                            // should go to an abstract FT eventually
+                            t =
+                                    e.getType() instanceof ComplexType
+                                            ? (ComplexType) e.getType()
+                                            : null;
+                            while (t != null && t != AbstractFeatureType.getInstance())
+                                t =
+                                        t.getParent() instanceof ComplexType
+                                                ? (ComplexType) t.getParent()
+                                                : null;
+                            if (t != AbstractFeatureType.getInstance()) {
+                                throw new OperationNotSupportedException(
+                                        "Could not find a correct Element for FeatureType "
+                                                + f.getFeatureType().getTypeName());
+                            }
                         }
                     }
-                }
 
-                if (e == null) {
-                    throw new NullPointerException(
-                            "Feature Definition not found in Schema " + element.getNamespace());
-                }
+                    if (e == null) {
+                        throw new NullPointerException(
+                                "Feature Definition not found in Schema " + element.getNamespace());
+                    }
 
-                AbstractFeatureType.getInstance().encode(e, f, output, hints);
-                output.endElement(GMLSchema.NAMESPACE, "featureMember");
+                    AbstractFeatureType.getInstance().encode(e, f, output, hints);
+                    output.endElement(GMLSchema.NAMESPACE, "featureMember");
+                }
             }
 
             if (element == null) {

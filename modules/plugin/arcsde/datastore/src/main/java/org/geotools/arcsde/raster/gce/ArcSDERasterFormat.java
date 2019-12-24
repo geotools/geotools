@@ -144,6 +144,7 @@ public final class ArcSDERasterFormat extends AbstractGridFormat implements Form
                         final ArcSDEConnectionConfig connectionConfig =
                                 getConnectionConfig(coverageUrl);
 
+                        @SuppressWarnings("PMD.CloseResource") // returned as part of the reader
                         final ISessionPool sessionPool = setupConnectionPool(connectionConfig);
 
                         final RasterDatasetInfo rasterInfo =

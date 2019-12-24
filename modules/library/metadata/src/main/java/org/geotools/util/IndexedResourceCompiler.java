@@ -16,10 +16,24 @@
  */
 package org.geotools.util;
 
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * Resource compiler. This class is run from the command line at compile time only. {@code
@@ -165,11 +179,11 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
 
     /** Load the specified property file. */
     private static Properties loadPropertyFile(final File file) throws IOException {
-        final InputStream input = new FileInputStream(file);
-        final Properties properties = new Properties();
-        properties.load(input);
-        input.close();
-        return properties;
+        try (InputStream input = new FileInputStream(file)) {
+            final Properties properties = new Properties();
+            properties.load(input);
+            return properties;
+        }
     }
 
     /**
@@ -260,14 +274,14 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
      */
     private void writeUTFFile(final File file) throws IOException {
         final int count = allocatedIDs.isEmpty() ? 0 : Collections.max(allocatedIDs.keySet()) + 1;
-        final DataOutputStream out =
-                new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
-        out.writeInt(count);
-        for (int i = 0; i < count; i++) {
-            final String value = (String) resources.get(allocatedIDs.get(i));
-            out.writeUTF((value != null) ? value : "");
+        try (DataOutputStream out =
+                new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
+            out.writeInt(count);
+            for (int i = 0; i < count; i++) {
+                final String value = (String) resources.get(allocatedIDs.get(i));
+                out.writeUTF((value != null) ? value : "");
+            }
         }
-        out.close();
     }
 
     /**
@@ -394,83 +408,83 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
             warning(file, null, "Parent directory not found.", null);
             return;
         }
-        final BufferedWriter out =
-                new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
-        out.write(
-                "/*\n"
-                        + " *    GeoTools - The Open Source Java GIS Toolkit\n"
-                        + " *    http://geotools.org\n"
-                        + " *    \n"
-                        + " *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)\n"
-                        + " *    \n"
-                        + " *    This library is free software; you can redistribute it and/or\n"
-                        + " *    modify it under the terms of the GNU Lesser General Public\n"
-                        + " *    License as published by the Free Software Foundation;\n"
-                        + " *    version 2.1 of the License.\n"
-                        + " *    \n"
-                        + " *    This library is distributed in the hope that it will be useful,\n"
-                        + " *    but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-                        + " *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU\n"
-                        + " *    Lesser General Public License for more details.\n"
-                        + " *    \n"
-                        + " *    THIS IS AN AUTOMATICALLY GENERATED FILE. DO NOT EDIT!\n"
-                        + " *    Generated with: org.geotools.resources.IndexedResourceCompiler\n"
-                        + " */\n");
-        out.write("package ");
-        out.write(packageName);
-        out.write(";\n\n\n");
-        out.write(
-                "/**\n"
-                        + " * Resource keys. This class is used when compiling sources, but\n"
-                        + " * no dependencies to {@code ResourceKeys} should appear in any\n"
-                        + " * resulting class files.  Since Java compiler inlines final integer\n"
-                        + " * values, using long identifiers will not bloat constant pools of\n"
-                        + " * classes compiled against the interface, provided that no class\n"
-                        + " * implements this interface.\n"
-                        + " *\n"
-                        + " * @see org.geotools.resources.IndexedResourceBundle\n"
-                        + " * @see org.geotools.resources.IndexedResourceCompiler\n"
-                        + " */\n");
-        out.write("public final class ");
-        out.write(classname);
-        out.write(" {\n");
-        out.write("    private ");
-        out.write(classname);
-        out.write("() {\n");
-        out.write("    }\n");
-        final Map.Entry[] entries =
-                allocatedIDs.entrySet().toArray(new Map.Entry[allocatedIDs.size()]);
-        Arrays.sort(entries, this);
-        for (int i = 0; i < entries.length; i++) {
-            out.write('\n');
-            final String key = (String) entries[i].getValue();
-            final String ID = entries[i].getKey().toString();
-            String message = (String) resources.get(key);
-            if (message != null) {
-                out.write("    /**\n");
-                while (((message = message.trim()).length()) != 0) {
-                    out.write("     * ");
-                    int stop = message.length();
-                    if (stop > COMMENT_LENGTH) {
-                        stop = COMMENT_LENGTH;
-                        while (stop > 20 && !Character.isWhitespace(message.charAt(stop))) {
-                            stop--;
+        try (BufferedWriter out =
+                new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"))) {
+            out.write(
+                    "/*\n"
+                            + " *    GeoTools - The Open Source Java GIS Toolkit\n"
+                            + " *    http://geotools.org\n"
+                            + " *    \n"
+                            + " *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)\n"
+                            + " *    \n"
+                            + " *    This library is free software; you can redistribute it and/or\n"
+                            + " *    modify it under the terms of the GNU Lesser General Public\n"
+                            + " *    License as published by the Free Software Foundation;\n"
+                            + " *    version 2.1 of the License.\n"
+                            + " *    \n"
+                            + " *    This library is distributed in the hope that it will be useful,\n"
+                            + " *    but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+                            + " *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU\n"
+                            + " *    Lesser General Public License for more details.\n"
+                            + " *    \n"
+                            + " *    THIS IS AN AUTOMATICALLY GENERATED FILE. DO NOT EDIT!\n"
+                            + " *    Generated with: org.geotools.resources.IndexedResourceCompiler\n"
+                            + " */\n");
+            out.write("package ");
+            out.write(packageName);
+            out.write(";\n\n\n");
+            out.write(
+                    "/**\n"
+                            + " * Resource keys. This class is used when compiling sources, but\n"
+                            + " * no dependencies to {@code ResourceKeys} should appear in any\n"
+                            + " * resulting class files.  Since Java compiler inlines final integer\n"
+                            + " * values, using long identifiers will not bloat constant pools of\n"
+                            + " * classes compiled against the interface, provided that no class\n"
+                            + " * implements this interface.\n"
+                            + " *\n"
+                            + " * @see org.geotools.resources.IndexedResourceBundle\n"
+                            + " * @see org.geotools.resources.IndexedResourceCompiler\n"
+                            + " */\n");
+            out.write("public final class ");
+            out.write(classname);
+            out.write(" {\n");
+            out.write("    private ");
+            out.write(classname);
+            out.write("() {\n");
+            out.write("    }\n");
+            final Map.Entry[] entries =
+                    allocatedIDs.entrySet().toArray(new Map.Entry[allocatedIDs.size()]);
+            Arrays.sort(entries, this);
+            for (int i = 0; i < entries.length; i++) {
+                out.write('\n');
+                final String key = (String) entries[i].getValue();
+                final String ID = entries[i].getKey().toString();
+                String message = (String) resources.get(key);
+                if (message != null) {
+                    out.write("    /**\n");
+                    while (((message = message.trim()).length()) != 0) {
+                        out.write("     * ");
+                        int stop = message.length();
+                        if (stop > COMMENT_LENGTH) {
+                            stop = COMMENT_LENGTH;
+                            while (stop > 20 && !Character.isWhitespace(message.charAt(stop))) {
+                                stop--;
+                            }
                         }
+                        out.write(message.substring(0, stop).trim());
+                        out.write('\n');
+                        message = message.substring(stop);
                     }
-                    out.write(message.substring(0, stop).trim());
-                    out.write('\n');
-                    message = message.substring(stop);
+                    out.write("     */\n");
                 }
-                out.write("     */\n");
+                out.write("    public static final int ");
+                out.write(key);
+                out.write(" = ");
+                out.write(ID);
+                out.write(";\n");
             }
-            out.write("    public static final int ");
-            out.write(key);
-            out.write(" = ");
-            out.write(ID);
-            out.write(";\n");
+            out.write("}\n");
         }
-        out.write("}\n");
-        out.close();
     }
 
     /**
@@ -564,6 +578,7 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
      * @param resourcesToProcess The resource bundle base classes (e.g. <code>
      *     {@linkplain org.geotools.metadata.i18n.Vocabulary}.class}</code>).
      */
+    @SuppressWarnings("PMD.CloseResource")
     public static void main(
             String[] args,
             final File sourceDirectory,

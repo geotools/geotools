@@ -291,17 +291,13 @@ public class ColorBrewer {
         String paletteSet = type.getName().toLowerCase(Locale.US);
         URL url = getClass().getResource("resources/" + paletteSet + ".xml");
 
-        InputStream stream;
-
-        try {
-            stream = url.openStream();
+        try (InputStream stream = url.openStream()) {
+            load(stream, type);
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "couldn't open input stream to load palette", e);
 
             return;
         }
-
-        load(stream, type);
     }
 
     /**

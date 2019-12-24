@@ -190,14 +190,23 @@ public class SimpleHttpClient implements HTTPClient {
 
         private InputStream responseStream;
 
+        @SuppressWarnings("PMD.CloseResource") // stream kept as field
         public SimpleHTTPResponse(final URLConnection connection) throws IOException {
             this.connection = connection;
-            InputStream inputStream = connection.getInputStream();
+            InputStream inputStream = null;
+            try {
+                inputStream = connection.getInputStream();
+                final String contentEncoding = connection.getContentEncoding();
 
-            final String contentEncoding = connection.getContentEncoding();
-
-            if (contentEncoding != null && connection.getContentEncoding().indexOf("gzip") != -1) {
-                inputStream = new GZIPInputStream(inputStream);
+                if (contentEncoding != null
+                        && connection.getContentEncoding().indexOf("gzip") != -1) {
+                    inputStream = new GZIPInputStream(inputStream);
+                }
+            } catch (Exception e) {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+                throw e;
             }
             responseStream = inputStream;
         }

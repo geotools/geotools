@@ -16,7 +16,7 @@
  */
 package org.geotools.ows.wms.map;
 
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.io.BufferedReader;
@@ -112,12 +112,10 @@ public class WMSLayer extends GridReaderLayer {
      * @throws IOException
      */
     public String getFeatureInfoAsText(DirectPosition2D pos, int featureCount) throws IOException {
-        BufferedReader br = null;
-        try {
-            GetMapRequest mapRequest = getReader().mapRequest;
-            InputStream is =
-                    getReader().getFeatureInfo(pos, "text/plain", featureCount, mapRequest);
-            br = new BufferedReader(new InputStreamReader(is));
+        GetMapRequest mapRequest = getReader().mapRequest;
+        try (InputStream is =
+                        getReader().getFeatureInfo(pos, "text/plain", featureCount, mapRequest);
+                BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
             String line;
             StringBuilder sb = new StringBuilder();
             while ((line = br.readLine()) != null) {
@@ -128,8 +126,6 @@ public class WMSLayer extends GridReaderLayer {
             throw e;
         } catch (Throwable t) {
             throw (IOException) new IOException("Failed to grab feature info").initCause(t);
-        } finally {
-            if (br != null) br.close();
         }
     }
 

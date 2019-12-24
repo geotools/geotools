@@ -114,6 +114,7 @@ public class ArcSDEConnectionFactory implements ObjectFactory {
             ArcSDEConnectionConfig config = createConfig(ref);
             LOGGER.info("ArcSDEConnectionFactory: config is " + config);
 
+            @SuppressWarnings("PMD.CloseResource") // return value
             ISessionPool sharedPool = getSharedPool(config);
             LOGGER.info("ArcSDEConnectionFactory: shared pool is " + sharedPool);
 

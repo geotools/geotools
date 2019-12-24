@@ -57,6 +57,7 @@ public final class SharedSessionPool implements ISessionPool {
         this.instanceNumber = instanceCounter.incrementAndGet();
     }
 
+    @SuppressWarnings("PMD.CloseResource") // pool wrapped and returned
     public static ISessionPool getInstance(
             final ArcSDEConnectionConfig config, final ISessionPoolFactory factory)
             throws IOException {

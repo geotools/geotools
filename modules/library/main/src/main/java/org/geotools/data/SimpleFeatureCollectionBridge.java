@@ -57,6 +57,7 @@ class SimpleFeatureCollectionBridge implements SimpleFeatureCollection {
         this.collection = featureCollection;
     }
 
+    @SuppressWarnings("PMD.CloseResource") // closed in the wrapper
     public SimpleFeatureIterator features() {
         final FeatureIterator<SimpleFeature> features = collection.features();
         return new SimpleFeatureIterator() {

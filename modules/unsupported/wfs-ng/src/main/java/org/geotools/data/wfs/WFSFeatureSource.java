@@ -285,6 +285,7 @@ class WFSFeatureSource extends ContentFeatureSource {
 
         reader = applyReprojectionDecorator(reader, localQuery, request);
 
+        @SuppressWarnings("PMD.CloseResource") // not managed here
         Transaction transaction = getTransaction();
         if (!Transaction.AUTO_COMMIT.equals(transaction)) {
             ContentEntry entry = getEntry();

@@ -181,12 +181,14 @@ public class MongoInferredMapper extends AbstractCollectionMapper {
 
     private Map<String, Class> generateMappedFields(DBCollection collection) {
         final Map<String, Class> resultMap = new HashMap<>();
+        @SuppressWarnings("PMD.CloseResource") // closed in findMappings
         final DBCursor idsCursor = obtainCursorByIds(collection);
         Map<String, Class> idsMappings =
                 idsCursor != null
                         ? MongoComplexUtilities.findMappings(idsCursor)
                         : Collections.emptyMap();
         int max = schemainitParams.getMaxObjects() - idsMappings.size();
+        @SuppressWarnings("PMD.CloseResource") // closed in findMappings
         final DBCursor maxObjectsCursor = obtainCursorByMaxObjects(collection, max);
         if (maxObjectsCursor != null)
             resultMap.putAll(MongoComplexUtilities.findMappings(maxObjectsCursor));

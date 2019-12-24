@@ -108,6 +108,7 @@ public class CSVFileState {
     }
 
     // docs start openCSVReader
+    @SuppressWarnings("PMD.CloseResource") // wrapped and returned
     public CSVReader openCSVReader() throws IOException, CsvValidationException {
         Reader reader = null;
 
@@ -129,6 +130,7 @@ public class CSVFileState {
 
         String[] tnames;
         if ((tnames = csvReader.readNext()) == null) {
+            reader.close();
             throw new IOException("Error reading csv headers");
         } else {
             if (headers == null) {

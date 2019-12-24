@@ -96,6 +96,7 @@ public class ArcSDEJNDIDataStoreFactory implements DataStoreFactorySpi {
 
         final Object lookup = lookupJndiResource(jndiName);
 
+        @SuppressWarnings("PMD.CloseResource") // returned as part of the store, managed there
         final ISessionPool sessionPool = getSessionPool(jndiName, lookup);
 
         final String nsUri = (String) NAMESPACE_PARAM.lookUp(params);

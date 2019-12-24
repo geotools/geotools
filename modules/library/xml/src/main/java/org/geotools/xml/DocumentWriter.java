@@ -140,14 +140,14 @@ public class DocumentWriter {
                     new File(
                             f.getParentFile(),
                             f.getName().substring(0, f.getName().indexOf(".")) + ".xsd");
-            FileWriter wf = new FileWriter(f2);
-            writeSchema(schema, wf, hints2);
-            wf.close();
+            try (FileWriter wf = new FileWriter(f2)) {
+                writeSchema(schema, wf, hints2);
+            }
         }
 
-        FileWriter wf = new FileWriter(f);
-        writeDocument(value, schema, wf, hints);
-        wf.close();
+        try (FileWriter wf = new FileWriter(f)) {
+            writeDocument(value, schema, wf, hints);
+        }
     }
 
     /**
@@ -172,6 +172,7 @@ public class DocumentWriter {
     public static void writeDocument(Object value, Schema schema, Writer w, Map hints)
             throws OperationNotSupportedException, IOException {
         if ((hints != null) && hints.containsKey(WRITE_SCHEMA)) {
+            @SuppressWarnings("PMD.CloseResource")
             Writer w2 = (Writer) hints.get(WRITE_SCHEMA);
             writeSchema(schema, w2, hints);
         }
@@ -210,9 +211,9 @@ public class DocumentWriter {
             throw new IOException("Cannot write to " + f);
         }
 
-        FileWriter wf = new FileWriter(f);
-        writeFragment(value, schema, wf, hints);
-        wf.close();
+        try (FileWriter wf = new FileWriter(f)) {
+            writeFragment(value, schema, wf, hints);
+        }
     }
 
     /**

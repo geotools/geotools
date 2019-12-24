@@ -29,7 +29,7 @@ import org.opengis.filter.sort.SortBy;
  *
  * @author Andrea Aime - GeoSolutions
  */
-class ZGroupLayerPainter {
+class ZGroupLayerPainter implements AutoCloseable {
 
     Feature currentFeature;
 

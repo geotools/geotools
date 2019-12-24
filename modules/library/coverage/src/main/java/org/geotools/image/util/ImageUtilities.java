@@ -824,6 +824,7 @@ public final class ImageUtilities {
             RenderedOp op = (RenderedOp) pi;
             for (Object param : op.getParameterBlock().getParameters()) {
                 if (param instanceof ImageInputStream) {
+                    @SuppressWarnings("PMD.CloseResource") // we are actually closing it...
                     ImageInputStream iis = (ImageInputStream) param;
                     try {
                         iis.close();
@@ -1243,7 +1244,9 @@ public final class ImageUtilities {
                     }
 
                     if ((imageReader != null) && (imageReader instanceof ImageReader)) {
+                        @SuppressWarnings("PMD.CloseResource") // we are actually closing it
                         final ImageReader reader = (ImageReader) imageReader;
+                        @SuppressWarnings("PMD.CloseResource") // we are actually closing it
                         final ImageInputStream stream = (ImageInputStream) reader.getInput();
                         try {
                             stream.close();

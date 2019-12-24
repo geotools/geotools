@@ -177,6 +177,7 @@ import tec.uom.se.unit.MetricPrefix;
  * @author Matthias Basler
  * @author Andrea Aime
  */
+@SuppressWarnings("PMD.CloseResource") // class implements its own PreparedStatement pool
 public abstract class DirectEpsgFactory extends DirectAuthorityFactory
         implements CRSAuthorityFactory,
                 CSAuthorityFactory,
@@ -582,6 +583,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      * @throws FactoryException if the database's metadata can't be fetched.
      */
     @Override
+    @SuppressWarnings("PMD.CloseResource")
     public synchronized String getBackingStoreDescription() throws FactoryException {
         final Citation authority = getAuthority();
         final TableWriter table = new TableWriter(null, " ");

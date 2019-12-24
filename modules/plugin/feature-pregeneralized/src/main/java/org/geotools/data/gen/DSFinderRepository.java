@@ -86,12 +86,12 @@ public class DSFinderRepository implements Repository {
         Map<String, Serializable> result = new HashMap<String, Serializable>();
 
         Properties properties = new Properties();
-        InputStream in = url.openStream();
-        properties.load(in);
-        for (Object key : properties.keySet()) {
-            result.put((String) key, (Serializable) properties.get(key));
+        try (InputStream in = url.openStream()) {
+            properties.load(in);
+            for (Object key : properties.keySet()) {
+                result.put((String) key, (Serializable) properties.get(key));
+            }
         }
-        in.close();
         return result;
     }
 

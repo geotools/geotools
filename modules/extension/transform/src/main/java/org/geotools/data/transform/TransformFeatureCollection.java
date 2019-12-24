@@ -86,7 +86,10 @@ class TransformFeatureCollection extends AbstractFeatureCollection {
     }
 
     @Override
+    @SuppressWarnings("PMD.CloseResource") // convoluted logic, but "fi" is closed or returned
     protected Iterator<SimpleFeature> openIterator() {
+        SimpleFeatureIterator fi = null;
+        Iterator<SimpleFeature> result = null;
         try {
             // build the query against the original store
             Query txQuery = transformer.transformQuery(query);
@@ -100,7 +103,7 @@ class TransformFeatureCollection extends AbstractFeatureCollection {
             }
 
             // grab the original features
-            SimpleFeatureIterator fi = transformer.getSource().getFeatures(txQuery).features();
+            fi = transformer.getSource().getFeatures(txQuery).features();
             SimpleFeatureIterator transformed =
                     new TransformFeatureIteratorWrapper(fi, transformer);
 
@@ -122,10 +125,17 @@ class TransformFeatureCollection extends AbstractFeatureCollection {
                 transformed = new MaxFeaturesIterator(transformed, query.getMaxFeatures());
             }
 
-            return new SimpleFeatureIteratorIterator(transformed);
+            result = new SimpleFeatureIteratorIterator(transformed);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } finally {
+            // if result is null, an exception has occurred, close the wrapped iterator
+            if (result == null) {
+                fi.close();
+            }
         }
+
+        return result;
     }
 
     @Override

@@ -52,6 +52,7 @@ public class SortedFeatureIterator implements SimpleFeatureIterator {
      *     use the system default
      * @throws IOException
      */
+    @SuppressWarnings("PMD.CloseResource") // kept as field
     public SortedFeatureIterator(
             SimpleFeatureIterator iterator,
             SimpleFeatureType schema,

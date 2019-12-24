@@ -126,7 +126,7 @@
     <javac.version>9+181-r4173-1</javac.version>
     <pmd.skip>false</pmd.skip>
     <spotbugs.skip>false</spotbugs.skip>
-    <pmd.version>6.11.0</pmd.version>
+    <pmd.version>6.20.0</pmd.version>
     <checkstyle.skip>false</checkstyle.skip>
     <qa>false</qa>
     <jackson2.version>2.10.1</jackson2.version>
@@ -255,7 +255,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-pmd-plugin</artifactId>
-            <version>3.11.0</version>
+            <version>3.12.0</version>
             <dependencies>
               <dependency>
                 <groupId>net.sourceforge.pmd</groupId>

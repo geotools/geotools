@@ -18,6 +18,7 @@ package org.geotools.gce.grassraster.core;
 
 import java.awt.image.RenderedImage;
 import java.io.BufferedReader;
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -49,7 +50,7 @@ import org.opengis.util.ProgressListener;
  * @see GrassBinaryImageReadParam
  * @see GrassBinaryImageMetadata
  */
-public class GrassBinaryRasterWriteHandler {
+public class GrassBinaryRasterWriteHandler implements Closeable {
 
     /** {@linkplain ImageOutputStream} used to write the data to file. */
     private ImageOutputStream imageOS = null;
@@ -269,16 +270,16 @@ public class GrassBinaryRasterWriteHandler {
     private void createUtilityFiles(JGrassRegion dataRegion) throws IOException {
         // create the right files in the right places
         // cats/<name>
-        OutputStreamWriter catsWriter =
-                new OutputStreamWriter(new FileOutputStream(writerGrassEnv.getCATS()));
-        catsWriter.write("# xyz categories\n#\n#\n 0.00 0.00 0.00 0.00"); // $NON-NLS-1$
-        catsWriter.close();
+        try (OutputStreamWriter catsWriter =
+                new OutputStreamWriter(new FileOutputStream(writerGrassEnv.getCATS()))) {
+            catsWriter.write("# xyz categories\n#\n#\n 0.00 0.00 0.00 0.00"); // $NON-NLS-1$
+        }
 
         // cell/<name>
-        OutputStreamWriter cellWriter =
-                new OutputStreamWriter(new FileOutputStream(writerGrassEnv.getCELL()));
-        cellWriter.write(""); // $NON-NLS-1$
-        cellWriter.close();
+        try (OutputStreamWriter cellWriter =
+                new OutputStreamWriter(new FileOutputStream(writerGrassEnv.getCELL()))) {
+            cellWriter.write(""); // $NON-NLS-1$
+        }
 
         // cell_misc/<name>/<files>
         // the directory <name> in cell_misc has already been created in
@@ -286,30 +287,29 @@ public class GrassBinaryRasterWriteHandler {
         // extended)
 
         // f_format
-        OutputStreamWriter cell_miscFormatWriter =
-                new OutputStreamWriter(new FileOutputStream(writerGrassEnv.getCELLMISC_FORMAT()));
-        if (outputToDiskType * 4 == 8) {
-            cell_miscFormatWriter.write(
-                    "type: double\nbyte_order: xdr\nlzw_compression_bits: -1"); // $NON-NLS-1$
-        } else {
-            cell_miscFormatWriter.write(
-                    "type: float\nbyte_order: xdr\nlzw_compression_bits: -1"); // $NON-NLS-1$
+        try (OutputStreamWriter cell_miscFormatWriter =
+                new OutputStreamWriter(new FileOutputStream(writerGrassEnv.getCELLMISC_FORMAT()))) {
+            if (outputToDiskType * 4 == 8) {
+                cell_miscFormatWriter.write(
+                        "type: double\nbyte_order: xdr\nlzw_compression_bits: -1"); // $NON-NLS-1$
+            } else {
+                cell_miscFormatWriter.write(
+                        "type: float\nbyte_order: xdr\nlzw_compression_bits: -1"); // $NON-NLS-1$
+            }
         }
 
-        cell_miscFormatWriter.close();
-
         // f_quant
-        OutputStreamWriter cell_miscQantWriter =
-                new OutputStreamWriter(new FileOutputStream(writerGrassEnv.getCELLMISC_QUANT()));
-        cell_miscQantWriter.write("round"); // $NON-NLS-1$
-        cell_miscQantWriter.close();
+        try (OutputStreamWriter cell_miscQantWriter =
+                new OutputStreamWriter(new FileOutputStream(writerGrassEnv.getCELLMISC_QUANT()))) {
+            cell_miscQantWriter.write("round"); // $NON-NLS-1$
+        }
 
         // f_range
-        OutputStream cell_miscRangeStream =
-                new FileOutputStream(writerGrassEnv.getCELLMISC_RANGE());
-        cell_miscRangeStream.write(double2bytearray(range[0]));
-        cell_miscRangeStream.write(double2bytearray(range[1]));
-        cell_miscRangeStream.close();
+        try (OutputStream cell_miscRangeStream =
+                new FileOutputStream(writerGrassEnv.getCELLMISC_RANGE())) {
+            cell_miscRangeStream.write(double2bytearray(range[0]));
+            cell_miscRangeStream.write(double2bytearray(range[1]));
+        }
 
         /*
          * need to reread the wind file to get the proj and zone (GRASS will not work if the cellhd
@@ -332,16 +332,16 @@ public class GrassBinaryRasterWriteHandler {
                 1);
 
         // hist/<name>
-        OutputStreamWriter windFile =
-                new OutputStreamWriter(new FileOutputStream(writerGrassEnv.getHIST()));
-        Date date = new Date();
-        windFile.write(date + "\n"); // $NON-NLS-1$
-        windFile.write(writerGrassEnv.getCELL().getName() + "\n"); // $NON-NLS-1$
-        windFile.write(writerGrassEnv.getMAPSET().getAbsolutePath() + "\n"); // $NON-NLS-1$
-        windFile.write(System.getProperty("user.name") + "\n"); // $NON-NLS-1$ //$NON-NLS-2$
-        windFile.write("DCELL\n"); // $NON-NLS-1$
-        windFile.write("\n\nCreated by imageio-ext enabled JGrass\n"); // $NON-NLS-1$
-        windFile.close();
+        try (OutputStreamWriter windFile =
+                new OutputStreamWriter(new FileOutputStream(writerGrassEnv.getHIST()))) {
+            Date date = new Date();
+            windFile.write(date + "\n"); // $NON-NLS-1$
+            windFile.write(writerGrassEnv.getCELL().getName() + "\n"); // $NON-NLS-1$
+            windFile.write(writerGrassEnv.getMAPSET().getAbsolutePath() + "\n"); // $NON-NLS-1$
+            windFile.write(System.getProperty("user.name") + "\n"); // $NON-NLS-1$ //$NON-NLS-2$
+            windFile.write("DCELL\n"); // $NON-NLS-1$
+            windFile.write("\n\nCreated by imageio-ext enabled JGrass\n"); // $NON-NLS-1$
+        }
         // now all the files have been created
     }
 
@@ -390,10 +390,10 @@ public class GrassBinaryRasterWriteHandler {
                 .append("e-w resol:   " + chewres + "\n")
                 .append("format:   " + chformat + "\n")
                 .append("compressed:   " + chcompressed);
-        OutputStreamWriter windFile =
-                new OutputStreamWriter(new FileOutputStream(writerGrassEnv.getCELLHD()));
-        windFile.write(data.toString());
-        windFile.close();
+        try (OutputStreamWriter windFile =
+                new OutputStreamWriter(new FileOutputStream(writerGrassEnv.getCELLHD()))) {
+            windFile.write(data.toString());
+        }
     }
 
     /**

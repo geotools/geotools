@@ -104,25 +104,26 @@ public class AutoClustUtils {
     }
 
     public static DelaunayNode[] featureCollectionToNodeArray(SimpleFeatureCollection fc) {
-        SimpleFeatureIterator iter = fc.features();
+        int index = 0;
         int size = fc.size();
         DelaunayNode[] nodes = new DelaunayNode[size];
-        int index = 0;
-        while (iter.hasNext()) {
-            SimpleFeature next = iter.next();
-            Geometry geom = (Geometry) next.getDefaultGeometry();
-            Point centroid;
-            if (geom instanceof Point) {
-                centroid = (Point) geom;
-            } else {
-                centroid = geom.getCentroid();
-            }
-            DelaunayNode node = new DelaunayNode();
-            node.setCoordinate(centroid.getCoordinate());
-            node.setFeature(next);
-            if (!(arrayContains(node, nodes, index))) {
-                nodes[index] = node;
-                index++;
+        try (SimpleFeatureIterator iter = fc.features()) {
+            while (iter.hasNext()) {
+                SimpleFeature next = iter.next();
+                Geometry geom = (Geometry) next.getDefaultGeometry();
+                Point centroid;
+                if (geom instanceof Point) {
+                    centroid = (Point) geom;
+                } else {
+                    centroid = geom.getCentroid();
+                }
+                DelaunayNode node = new DelaunayNode();
+                node.setCoordinate(centroid.getCoordinate());
+                node.setFeature(next);
+                if (!(arrayContains(node, nodes, index))) {
+                    nodes[index] = node;
+                    index++;
+                }
             }
         }
 

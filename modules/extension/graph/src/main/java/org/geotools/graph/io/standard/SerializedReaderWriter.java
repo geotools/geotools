@@ -55,49 +55,50 @@ public class SerializedReaderWriter extends AbstractReaderWriter implements File
         GraphBuilder builder = (GraphBuilder) getProperty(BUILDER);
 
         // create file input stream
-        ObjectInputStream objin =
+        try (ObjectInputStream objin =
                 new ObjectInputStream(
                         new BufferedInputStream(
-                                new FileInputStream((String) getProperty(FILENAME))));
+                                new FileInputStream((String) getProperty(FILENAME))))) {
 
-        // read header
-        objin.readInt(); // nnodes, not used
-        int nedges = objin.readInt();
+            // read header
+            objin.readInt(); // nnodes, not used
+            int nedges = objin.readInt();
 
-        // rebuild edge collection, upon reading an edge, at the edge to the
-        // adjacency list of each of its nodes
-        int count = 0;
-        while (count++ < nedges) {
-            Edge e = (Edge) objin.readObject();
-            e.getNodeA().setVisited(false);
-            e.getNodeB().setVisited(false);
-            builder.addEdge(e);
-        }
-
-        // rebuild node collection
-        for (Iterator itr = builder.getGraph().getEdges().iterator(); itr.hasNext(); ) {
-            Edge e = (Edge) itr.next();
-
-            if (!e.getNodeA().isVisited()) {
-                e.getNodeA().setVisited(true);
-                builder.addNode(e.getNodeA());
+            // rebuild edge collection, upon reading an edge, at the edge to the
+            // adjacency list of each of its nodes
+            int count = 0;
+            while (count++ < nedges) {
+                Edge e = (Edge) objin.readObject();
+                e.getNodeA().setVisited(false);
+                e.getNodeB().setVisited(false);
+                builder.addEdge(e);
             }
 
-            if (!e.getNodeB().isVisited()) {
-                e.getNodeB().setVisited(true);
-                builder.addNode(e.getNodeB());
-            }
-        }
+            // rebuild node collection
+            for (Iterator itr = builder.getGraph().getEdges().iterator(); itr.hasNext(); ) {
+                Edge e = (Edge) itr.next();
 
-        // check if object stream is empty, if not, there are nodes of degree 0
-        // in the graph
-        try {
-            Node n;
+                if (!e.getNodeA().isVisited()) {
+                    e.getNodeA().setVisited(true);
+                    builder.addNode(e.getNodeA());
+                }
 
-            while ((n = (Node) objin.readObject()) != null) {
-                builder.addNode(n);
+                if (!e.getNodeB().isVisited()) {
+                    e.getNodeB().setVisited(true);
+                    builder.addNode(e.getNodeB());
+                }
             }
-        } catch (EOFException ignore) {
+
+            // check if object stream is empty, if not, there are nodes of degree 0
+            // in the graph
+            try {
+                Node n;
+
+                while ((n = (Node) objin.readObject()) != null) {
+                    builder.addNode(n);
+                }
+            } catch (EOFException ignore) {
+            }
         }
 
         return (builder.getGraph());
@@ -112,30 +113,30 @@ public class SerializedReaderWriter extends AbstractReaderWriter implements File
      */
     public void write(Graph graph) throws Exception {
         // create file output stream
-        ObjectOutputStream objout =
+        try (ObjectOutputStream objout =
                 new ObjectOutputStream(
                         new BufferedOutputStream(
-                                new FileOutputStream((String) getProperty(FILENAME))));
+                                new FileOutputStream((String) getProperty(FILENAME))))) {
 
-        // create header
-        // 1. number of nodes
-        // 2. number of edges
-        objout.writeInt(graph.getNodes().size());
-        objout.writeInt(graph.getEdges().size());
+            // create header
+            // 1. number of nodes
+            // 2. number of edges
+            objout.writeInt(graph.getNodes().size());
+            objout.writeInt(graph.getEdges().size());
 
-        // write out edges (note: nodes do not write out adjacent edges)
-        for (Iterator itr = graph.getEdges().iterator(); itr.hasNext(); ) {
-            Edge e = (Edge) itr.next();
-            objout.writeObject(e);
+            // write out edges (note: nodes do not write out adjacent edges)
+            for (Iterator itr = graph.getEdges().iterator(); itr.hasNext(); ) {
+                Edge e = (Edge) itr.next();
+                objout.writeObject(e);
+            }
+
+            // write out any nodes that have no adjacent edges
+            for (Iterator itr = graph.getNodesOfDegree(0).iterator(); itr.hasNext(); ) {
+                Node n = (Node) itr.next();
+                objout.writeObject(n);
+            }
+
+            objout.flush();
         }
-
-        // write out any nodes that have no adjacent edges
-        for (Iterator itr = graph.getNodesOfDegree(0).iterator(); itr.hasNext(); ) {
-            Node n = (Node) itr.next();
-            objout.writeObject(n);
-        }
-
-        objout.flush();
-        objout.close();
     }
 }

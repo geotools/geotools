@@ -219,6 +219,7 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
 
     protected void closeIterator(Iterator<SimpleFeature> close) throws IOException {
         if (close instanceof FeatureReaderIterator) {
+            @SuppressWarnings("PMD.CloseResource")
             FeatureReaderIterator<SimpleFeature> iterator =
                     (FeatureReaderIterator<SimpleFeature>) close;
             iterator.close(); // only needs package visability
@@ -377,27 +378,22 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
         if (collection instanceof FeatureCollection) {
             return addAll((FeatureCollection<?, ?>) collection);
         }
-        try {
-            FeatureWriter writer = writer();
+        try (FeatureWriter writer = writer()) {
             if (writer == null) {
                 return false;
             }
-            try {
-                // skip to end
-                while (writer.hasNext()) {
-                    writer.next();
-                }
-                for (Object obj : collection) {
-                    if (obj instanceof SimpleFeature) {
-                        SimpleFeature copy = (SimpleFeature) obj;
-                        SimpleFeature feature = (SimpleFeature) writer.next();
+            // skip to end
+            while (writer.hasNext()) {
+                writer.next();
+            }
+            for (Object obj : collection) {
+                if (obj instanceof SimpleFeature) {
+                    SimpleFeature copy = (SimpleFeature) obj;
+                    SimpleFeature feature = (SimpleFeature) writer.next();
 
-                        feature.setAttributes(copy.getAttributes());
-                        writer.write();
-                    }
+                    feature.setAttributes(copy.getAttributes());
+                    writer.write();
                 }
-            } finally {
-                if (writer != null) writer.close();
             }
             return true;
         } catch (IOException ignore) {

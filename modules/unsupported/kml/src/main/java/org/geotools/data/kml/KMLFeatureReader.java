@@ -26,7 +26,6 @@ import org.geotools.data.FeatureReader;
 import org.geotools.kml.KML;
 import org.geotools.kml.KMLConfiguration;
 import org.geotools.util.logging.Logging;
-import org.geotools.xml.StreamingParser;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -34,7 +33,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * Read a KML file directly.
  *
  * @author Niels Charlier, Scitus Development
-
  */
 public class KMLFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
     private static final Logger LOGGER = Logging.getLogger(KMLFeatureReader.class);
@@ -42,13 +40,15 @@ public class KMLFeatureReader implements FeatureReader<SimpleFeatureType, Simple
     SimpleFeatureType type = null;
     SimpleFeature f = null;
     // PullParser parser;
-    StreamingParser parser;
+    org.geotools.xsd.StreamingParser parser;
     FileInputStream fis;
 
     public KMLFeatureReader(String namespace, File file, QName name) throws IOException {
         fis = new FileInputStream(file);
         try {
-            parser = new StreamingParser(new KMLConfiguration(), fis, KML.Placemark);
+            parser =
+                    new org.geotools.xsd.StreamingParser(
+                            new KMLConfiguration(), fis, KML.Placemark);
         } catch (Exception e) {
             throw new IOException("Error processing KML file", e);
         }
@@ -56,6 +56,7 @@ public class KMLFeatureReader implements FeatureReader<SimpleFeatureType, Simple
         if (f != null) type = f.getType();
     }
 
+    @Override
     public SimpleFeatureType getFeatureType() {
         return type;
     }
@@ -67,6 +68,7 @@ public class KMLFeatureReader implements FeatureReader<SimpleFeatureType, Simple
      * @throws IOException
      * @throws NoSuchElementException Check hasNext() to avoid reading off the end of the file
      */
+    @Override
     public SimpleFeature next() throws IOException, NoSuchElementException {
         if (!hasNext()) {
             throw new NoSuchElementException();
@@ -84,12 +86,8 @@ public class KMLFeatureReader implements FeatureReader<SimpleFeatureType, Simple
         }
     }
 
-    /**
-
-     *
-
-
-     */
+    /** */
+    @Override
     public boolean hasNext() throws IOException {
         return f != null;
     }
@@ -100,6 +98,7 @@ public class KMLFeatureReader implements FeatureReader<SimpleFeatureType, Simple
      *
      * @throws IOException
      */
+    @Override
     public void close() throws IOException {
         fis.close();
     }

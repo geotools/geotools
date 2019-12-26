@@ -16,7 +16,6 @@
  */
 package org.geotools.data.kml;
 
-import org.locationtech.jts.geom.GeometryFactory;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -33,13 +32,13 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.type.Name;
 
 /**
  * KMLDataStore implementation
  *
  * @author Niels Charlier, Scitus Development
-
  */
 public class KMLDataStore extends ContentDataStore {
     protected File file;

@@ -12,7 +12,6 @@ package org.opengis.filter.spatial;
 // Annotations
 
 import org.opengis.annotation.XmlElement;
-import org.opengis.annotation.XmlParameter;
 
 /**
  * Abstract superclass for spatial operators that check that one shape satisfies some relation to a
@@ -39,6 +38,5 @@ public interface DistanceBufferOperator extends BinarySpatialOperator {
      * object. An implementation may throw an exception if these units differ from the units of the
      * coordinate system of its geometry or the feature's geometry.
      */
-    @XmlParameter("units")
     String getDistanceUnits();
 }

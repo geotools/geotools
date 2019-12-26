@@ -240,6 +240,8 @@ public final class OGC extends XSD {
     /** @generated */
     public static final QName Within = new QName("http://www.opengis.net/ogc", "Within");
 
+    public static final QName Distance = new QName(OGC.NAMESPACE, "Distance");
+
     /** private constructor. */
     private OGC() {}
 

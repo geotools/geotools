@@ -31,6 +31,7 @@ import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class BinarySpatialOpTypeBindingTest extends FilterTestSupport {
     public void testDistanceBufferType() {
@@ -68,8 +69,10 @@ public class BinarySpatialOpTypeBindingTest extends FilterTestSupport {
                         .item(0)
                         .getFirstChild()
                         .getNodeValue());
-        // assertEquals( "m",((Element)dom.getElementsByTagNameNS(OGC.NAMESPACE,
-        // "Distance").item(0)).getAttribute("units"));
+        assertEquals(
+                "m",
+                ((Element) dom.getElementsByTagNameNS(OGC.NAMESPACE, "Distance").item(0))
+                        .getAttribute("units"));
     }
 
     public void testDWithinType() {

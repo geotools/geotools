@@ -115,7 +115,7 @@ public class MBTilesDataStoreFactory implements DataStoreFactorySpi {
         // check if the DATASOURCE parameter was supplied, it takes precendence
         DataSource ds = (DataSource) DATASOURCE.lookUp(params);
         if (ds == null) {
-            ds = createDataSource(params);
+            ds = createDataSource(params, true);
         }
         String namespace = (String) NAMESPACE.lookUp(params);
         return new MBTilesDataStore(namespace, new MBTilesFile(ds));
@@ -127,10 +127,15 @@ public class MBTilesDataStoreFactory implements DataStoreFactorySpi {
      *
      * @param params
      */
-    protected DataSource createDataSource(Map<String, Serializable> params) throws IOException {
+    protected DataSource createDataSource(Map<String, Serializable> params, boolean readOnly)
+            throws IOException {
         SQLiteConfig config = new SQLiteConfig();
         config.setSharedCache(true);
         config.enableLoadExtension(true);
+        if (readOnly) {
+            config.setReadOnly(true);
+            config.setPragma(SQLiteConfig.Pragma.SYNCHRONOUS, "OFF");
+        }
 
         // use native "pool", which is actually not pooling anything (that's fast and
         // has less scalability overhead than DBCP)

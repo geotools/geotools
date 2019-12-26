@@ -212,7 +212,7 @@ public class MBTilesFile implements AutoCloseable {
         params.put(
                 MBTilesDataStoreFactory.DBTYPE.key, (String) MBTilesDataStoreFactory.DBTYPE.sample);
 
-        this.connPool = new MBTilesDataStoreFactory().createDataSource(params);
+        this.connPool = new MBTilesDataStoreFactory().createDataSource(params, false);
     }
 
     /**

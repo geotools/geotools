@@ -90,14 +90,9 @@ public class OGCDistanceTypeBinding extends AbstractComplexBinding {
     }
 
     public Element encode(Object object, Document document, Element value) throws Exception {
-        if (object instanceof Double) {
-            Double distance = (Double) object;
-            value.appendChild(document.createTextNode(Double.toString(distance)));
-        } else if (object instanceof DistanceUnits) {
-            DistanceUnits distance = (DistanceUnits) object;
-            value.appendChild(document.createTextNode(Double.toString(distance.getDistance())));
-            value.setAttribute("units", distance.getUnits());
-        }
+        DistanceUnits distance = (DistanceUnits) object;
+        value.appendChild(document.createTextNode(Double.toString(distance.getDistance())));
+        value.setAttribute("units", distance.getUnits());
 
         return value;
     }

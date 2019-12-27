@@ -56,6 +56,7 @@ import org.locationtech.jts.geom.LineString;
  *          </code>
  * </pre>
  */
+@SuppressWarnings("ComparableType")
 public class CurvePropertyTypeBinding extends org.geotools.gml3.bindings.CurvePropertyTypeBinding
         implements Comparable {
 

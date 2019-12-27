@@ -25,7 +25,7 @@ import java.io.PrintStream;
  * <p>The intersection may either be a single point, or a line segment (in which case this point is
  * the start of the line segment) The intersection point must be precise.
  */
-public class EdgeIntersection implements Comparable {
+public class EdgeIntersection implements Comparable<EdgeIntersection> {
 
     public Coordinate coord; // the point of intersection
 
@@ -41,8 +41,7 @@ public class EdgeIntersection implements Comparable {
         this.dist = dist;
     }
 
-    public int compareTo(Object obj) {
-        EdgeIntersection other = (EdgeIntersection) obj;
+    public int compareTo(EdgeIntersection other) {
         return compare(other.segmentIndex, other.dist);
     }
 

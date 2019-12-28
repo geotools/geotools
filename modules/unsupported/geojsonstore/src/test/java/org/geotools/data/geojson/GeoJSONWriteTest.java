@@ -61,335 +61,378 @@ import org.opengis.filter.FilterFactory;
 /**
  * Informal test used to document expected functionality for workshop.
  *
- * <p>
- * This test has a setup method used to copy locations.csv to a temporary file.
+ * <p>This test has a setup method used to copy locations.csv to a temporary file.
  */
 public class GeoJSONWriteTest {
-	File tmp;
+    File tmp;
 
-	File file;
+    File file;
 
-	URL url;
-	GeoJSONDataStoreFactory fac = new GeoJSONDataStoreFactory();
+    URL url;
+    GeoJSONDataStoreFactory fac = new GeoJSONDataStoreFactory();
 
-	@Before
-	public void createTemporaryLocations() throws IOException {
-		// Setting the system-wide default at startup time
+    @Before
+    public void createTemporaryLocations() throws IOException {
+        // Setting the system-wide default at startup time
 
-		tmp = File.createTempFile("example", "");
-		boolean exists = tmp.exists();
-		if (exists) {
-			// System.err.println("Removing tempfile " + tmp);
-			if (!tmp.delete()) {
-				throw new IOException("could not delete: " + tmp);
-			}
-		}
-		boolean created = tmp.mkdirs();
-		if (!created) {
-			// System.err.println("Could not create " + tmp);
-			return;
-		}
-		file = new File(tmp, "locations.json");
+        tmp = File.createTempFile("example", "");
+        boolean exists = tmp.exists();
+        if (exists) {
+            // System.err.println("Removing tempfile " + tmp);
+            if (!tmp.delete()) {
+                throw new IOException("could not delete: " + tmp);
+            }
+        }
+        boolean created = tmp.mkdirs();
+        if (!created) {
+            // System.err.println("Could not create " + tmp);
+            return;
+        }
+        file = new File(tmp, "locations.json");
 
-		URL resource = TestData.getResource(GeoJSONWriteTest.class, "locations.json");
-		url = resource;
-		if (url == null)
-			throw new RuntimeException("Input datafile not found");
-		// System.out.println("copying " + resource.toExternalForm() + " to " + file);
-		Files.copy(resource.openStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-		url = URLs.fileToUrl(file);
-	}
+        URL resource = TestData.getResource(GeoJSONWriteTest.class, "locations.json");
+        url = resource;
+        if (url == null) throw new RuntimeException("Input datafile not found");
+        // System.out.println("copying " + resource.toExternalForm() + " to " + file);
+        Files.copy(resource.openStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        url = URLs.fileToUrl(file);
+    }
 
-	private String checkFileContents(File modified) throws IOException {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		Files.copy(modified.toPath(), baos);
-		String contents = new String(baos.toByteArray(), StandardCharsets.UTF_8);
-		return contents;
-	}
+    private String checkFileContents(File modified) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        Files.copy(modified.toPath(), baos);
+        String contents = new String(baos.toByteArray(), StandardCharsets.UTF_8);
+        return contents;
+    }
 
-	@After
-	public void removeTemporaryLocations() throws IOException {
-		File list[] = tmp.listFiles();
-		if (list == null) {
-			throw new IOException("no directory " + tmp);
-		}
-		for (int i = 0; i < list.length; i++) {
-			if (list[i].exists()) {
-				if (!list[i].delete()) {
-					throw new IOException("could not delete: " + list[i]);
-				}
-			}
-		}
-		if (!tmp.delete()) {
-			throw new IOException("could not delete: " + tmp);
-		}
-	}
+    @After
+    public void removeTemporaryLocations() throws IOException {
+        File list[] = tmp.listFiles();
+        if (list == null) {
+            throw new IOException("no directory " + tmp);
+        }
+        for (int i = 0; i < list.length; i++) {
+            if (list[i].exists()) {
+                if (!list[i].delete()) {
+                    throw new IOException("could not delete: " + list[i]);
+                }
+            }
+        }
+        if (!tmp.delete()) {
+            throw new IOException("could not delete: " + tmp);
+        }
+    }
 
-	@Test
-	public void featureStoreExample() throws Exception {
-		Map<String, Serializable> params = new HashMap<String, Serializable>();
-		params.put("url", url);
-		DataStore store = fac.createDataStore(params);
+    @Test
+    public void featureStoreExample() throws Exception {
+        Map<String, Serializable> params = new HashMap<>();
+        params.put(GeoJSONDataStoreFactory.URL_PARAM.key, url);
+        DataStore store = fac.createDataStore(params);
 
-		SimpleFeatureSource featureSource = store.getFeatureSource("locations");
+        SimpleFeatureSource featureSource = store.getFeatureSource("locations");
 
-		assertTrue("Modification not supported", (featureSource instanceof SimpleFeatureStore));
-		store.dispose();
-	}
+        assertTrue("Modification not supported", (featureSource instanceof SimpleFeatureStore));
+        store.dispose();
+    }
 
-	@Test
-	public void transactionExample() throws Exception {
-		Map<String, Serializable> params = new HashMap<String, Serializable>();
-		params.put("url", url);
-		DataStore store = fac.createDataStore(params);
+    @Test
+    public void transactionExample() throws Exception {
+        Map<String, Serializable> params = new HashMap<>();
+        params.put(GeoJSONDataStoreFactory.URL_PARAM.key, url);
+        DataStore store = fac.createDataStore(params);
 
-		Transaction t1 = new DefaultTransaction("transaction 1");
-		Transaction t2 = new DefaultTransaction("transactoin 2");
+        Transaction t1 = new DefaultTransaction("transaction 1");
+        Transaction t2 = new DefaultTransaction("transactoin 2");
 
-		SimpleFeatureType type = store.getSchema("locations");
-		SimpleFeatureStore auto = (SimpleFeatureStore) store.getFeatureSource("locations");
-		SimpleFeatureStore featureStore1 = (SimpleFeatureStore) store.getFeatureSource("locations");
-		SimpleFeatureStore featureStore2 = (SimpleFeatureStore) store.getFeatureSource("locations");
+        SimpleFeatureType type = store.getSchema("locations");
+        SimpleFeatureStore auto = (SimpleFeatureStore) store.getFeatureSource("locations");
+        SimpleFeatureStore featureStore1 = (SimpleFeatureStore) store.getFeatureSource("locations");
+        SimpleFeatureStore featureStore2 = (SimpleFeatureStore) store.getFeatureSource("locations");
 
-		featureStore1.setTransaction(t1);
-		featureStore2.setTransaction(t2);
+        featureStore1.setTransaction(t1);
+        featureStore2.setTransaction(t2);
+        assertNotNull(featureStore1);
+        assertNotNull(featureStore1.getFeatures());
 
-		// Before we edit everything should be the same
-		assertEquals("featureStore1 before", 9, featureStore1.getFeatures().size());
-		assertEquals("featureStore2 before", 9, featureStore2.getFeatures().size());
+        assertNotNull(featureStore2);
+        assertNotNull(featureStore2.getFeatures());
+        // Before we edit everything should be the same
+        assertEquals("featureStore1 before", 9, featureStore1.getFeatures().size());
+        assertEquals("featureStore2 before", 9, featureStore2.getFeatures().size());
 
-		// select feature to remove
-		FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+        // select feature to remove
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
-		Filter filter1 = ff.equal(ff.property("CITY"), ff.literal("Trento"), false);
+        Filter filter1 = ff.equal(ff.property("CITY"), ff.literal("Trento"), false);
 
-		featureStore1.removeFeatures(filter1); // removes "Trento" from fs1
+        featureStore1.removeFeatures(filter1); // removes "Trento" from fs1
 
-		// Tests after removal only featureStore1 is affected
-		assertEquals("auto after featureStore1 removes fid1", 9, auto.getFeatures().size());
-		assertEquals("featureStore1 after featureStore1 removes fid1", 8, featureStore1.getFeatures().size());
-		assertEquals("featureStore2 after featureStore1 removes fid1", 9, featureStore2.getFeatures().size());
+        // Tests after removal only featureStore1 is affected
+        assertEquals("auto after featureStore1 removes fid1", 9, auto.getFeatures().size());
+        assertEquals(
+                "featureStore1 after featureStore1 removes fid1",
+                8,
+                featureStore1.getFeatures().size());
+        assertEquals(
+                "featureStore2 after featureStore1 removes fid1",
+                9,
+                featureStore2.getFeatures().size());
 
-		// new feature to add!
-		// 45.52, -122.681944, Portland, 800, 2014
-		GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
-		Point point = geometryFactory.createPoint(new Coordinate(-122.681944, 45.52));
-		SimpleFeature feature = SimpleFeatureBuilder.build(type,
-				new Object[] { point, 45.52, -122.681944, "Portland", 800, 2014 }, "feature-10");
+        // new feature to add!
+        // 45.52, -122.681944, Portland, 800, 2014
+        GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
+        Point point = geometryFactory.createPoint(new Coordinate(-122.681944, 45.52));
 
-		SimpleFeatureCollection collection = DataUtilities.collection(feature);
+        SimpleFeature feature =
+                SimpleFeatureBuilder.build(
+                        type,
+                        new Object[] {point, 45.52, -122.681944, "Portland", 800, 2014},
+                        "feature-10");
 
-		featureStore2.addFeatures(collection);
+        SimpleFeatureCollection collection = DataUtilities.collection(feature);
 
-		// Tests after adding the feature
-		assertEquals("auto after featureStore1 removes Trento and featureStore2 adds Portland", 9,
-				auto.getFeatures().size());
-		assertEquals("featureStore1 after featureStore1 removes fid1 and featureStore2 adds fid5", 8,
-				featureStore1.getFeatures().size());
-		assertEquals("featureStore2 after featureStore1 removes fid1 and featureStore2 adds fid5", 10,
-				featureStore2.getFeatures().size());
+        featureStore2.addFeatures(collection);
 
-		// commit transaction one
-		t1.commit();
-		// Tests after first commit
+        // Tests after adding the feature
+        assertEquals(
+                "auto after featureStore1 removes Trento and featureStore2 adds Portland",
+                9,
+                auto.getFeatures().size());
+        assertEquals(
+                "featureStore1 after featureStore1 removes fid1 and featureStore2 adds fid5",
+                8,
+                featureStore1.getFeatures().size());
+        assertEquals(
+                "featureStore2 after featureStore1 removes fid1 and featureStore2 adds fid5",
+                10,
+                featureStore2.getFeatures().size());
 
-		assertEquals("auto after featureStore1 commits removal of fid1 (featureStore2 has added fid5)", 8,
-				auto.getFeatures().size());
+        // commit transaction one
+        t1.commit();
+        // Tests after first commit
+        int size = auto.getFeatures().size();
+        assertEquals(
+                "auto after featureStore1 commits removal of fid1 (featureStore2 has added fid5)",
+                8,
+                size);
 
-		assertEquals("featureStore1 after commiting removal of fid1 (featureStore2 has added fid5)", 8,
-				featureStore1.getFeatures().size());
-		assertEquals("featureStore2 after featureStore1 commits removal of fid1 (featureStore2 has added fid5)", 9,
-				featureStore2.getFeatures().size());
+        assertEquals(
+                "featureStore1 after commiting removal of fid1 (featureStore2 has added fid5)",
+                8,
+                featureStore1.getFeatures().size());
+        assertEquals(
+                "featureStore2 after featureStore1 commits removal of fid1 (featureStore2 has added fid5)",
+                9,
+                featureStore2.getFeatures().size());
 
-		// commit transaction two
-		t2.commit();
+        // commit transaction two
+        t2.commit();
 
-		// Tests after 2nd commit
+        // Tests after 2nd commit
 
-		assertEquals("auto after featureStore2 commits addition of fid5 (fid1 previously removed)", 9,
-				auto.getFeatures().size());
+        assertEquals(
+                "auto after featureStore2 commits addition of fid5 (fid1 previously removed)",
+                9,
+                auto.getFeatures().size());
 
-		assertEquals("featureStore1 after featureStore2 commits addition of fid5 (fid1 previously removed)", 9,
-				featureStore1.getFeatures().size());
-		assertEquals("featureStore2 after commiting addition of fid5 (fid1 previously removed)", 9,
-				featureStore2.getFeatures().size());
+        assertEquals(
+                "featureStore1 after featureStore2 commits addition of fid5 (fid1 previously removed)",
+                9,
+                featureStore1.getFeatures().size());
+        assertEquals(
+                "featureStore2 after commiting addition of fid5 (fid1 previously removed)",
+                9,
+                featureStore2.getFeatures().size());
 
-		t1.close();
-		t2.close();
-		store.dispose(); // clear out any listeners
-	}
+        t1.close();
+        t2.close();
+        store.dispose(); // clear out any listeners
+    }
 
-	@Test
-	public void removeAllExample() throws Exception {
-		Map<String, Serializable> params = new HashMap<String, Serializable>();
-		params.put("url", url);
-		DataStore store = fac.createDataStore(params);
+    @Test
+    public void removeAllExample() throws Exception {
+        Map<String, Serializable> params = new HashMap<>();
+        params.put(GeoJSONDataStoreFactory.URL_PARAM.key, url);
+        DataStore store = fac.createDataStore(params);
 
-		Transaction t = new DefaultTransaction("locations");
-		try {
-			FeatureWriter<SimpleFeatureType, SimpleFeature> writer = store.getFeatureWriter("locations", Filter.INCLUDE,
-					t);
+        Transaction t = new DefaultTransaction("locations");
+        try {
+            FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                    store.getFeatureWriter("locations", Filter.INCLUDE, t);
 
-			try {
-				while (writer.hasNext()) {
-					writer.next();
-					writer.remove(); // marking contents for removal
-				}
-			} finally {
-				writer.close();
-			}
+            try {
+                while (writer.hasNext()) {
+                    writer.next();
+                    writer.remove(); // marking contents for removal
+                }
+            } finally {
+                writer.close();
+            }
 
-			// Test the contents have been removed
-			SimpleFeatureStore featureStore = (SimpleFeatureStore) store.getFeatureSource("locations");
-			assertEquals("featureStore should be empty", 0, featureStore.getFeatures().size());
-			// Make sure the file is empty
-			assertEquals("file should have no content", "", checkFileContents(file));
-			t.commit();
-		} catch (Throwable eek) {
-			t.rollback();
-		} finally {
-			t.close();
-			store.dispose();
-		}
-	}
+            // Test the contents have been removed
+            SimpleFeatureStore featureStore =
+                    (SimpleFeatureStore) store.getFeatureSource("locations");
+            assertEquals("featureStore should be empty", 0, featureStore.getFeatures().size());
+            // Make sure the file is empty
+            assertEquals("file should have no content", "", checkFileContents(file));
+            t.commit();
+        } catch (Throwable eek) {
+            t.rollback();
+        } finally {
+            t.close();
+            store.dispose();
+        }
+    }
 
-	@Test
-	public void replaceAll() throws Exception {
-		Map<String, Serializable> params = new HashMap<String, Serializable>();
-		params.put("url", url);
-		// System.out.println("fetching store from " + url);
-		DataStore store = fac.createDataStore(params);
+    @Test
+    public void replaceAll() throws Exception {
+        Map<String, Serializable> params = new HashMap<>();
+        params.put(GeoJSONDataStoreFactory.URL_PARAM.key, url);
+        // System.out.println("fetching store from " + url);
+        DataStore store = fac.createDataStore(params);
 
-		final SimpleFeatureType type = store.getSchema("locations");
-		assertNotNull(type);
-		final FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
-		SimpleFeature f;
-		DefaultFeatureCollection collection = new DefaultFeatureCollection();
+        final SimpleFeatureType type = store.getSchema("locations");
+        assertNotNull(type);
+        final FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
+        SimpleFeature f;
+        DefaultFeatureCollection collection = new DefaultFeatureCollection();
 
-		// 45.52, -122.681944, Portland, 800, 2014
-		GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();
-		Point portland = gf.createPoint(new Coordinate(45.52, -122.681944));
+        // 45.52, -122.681944, Portland, 800, 2014
+        GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();
+        Point portland = gf.createPoint(new Coordinate(45.52, -122.681944));
 
-		f = SimpleFeatureBuilder.build(type, new Object[] { portland, 45.52, -122.681944, "Portland", 800, 2014 },
-				"locations.1");
+        f =
+                SimpleFeatureBuilder.build(
+                        type,
+                        new Object[] {portland, 45.52, -122.681944, "Portland", 800, 2014},
+                        "locations.1");
 
-		collection.add(f);
+        collection.add(f);
 
-		writer = store.getFeatureWriter("locations", Transaction.AUTO_COMMIT);
-		try {
-			// remove all features
-			while (writer.hasNext()) {
-				writer.next();
-				writer.remove();
-			}
-			// copy new features in
-			SimpleFeatureIterator iterator = collection.features();
-			while (iterator.hasNext()) {
-				SimpleFeature feature = iterator.next();
-				SimpleFeature newFeature = writer.next(); // new blank feature
-				newFeature.setAttributes(feature.getAttributes());
-				writer.write();
-			}
-		} finally {
-			writer.close();
-			store.dispose();
-		}
+        writer = store.getFeatureWriter("locations", Transaction.AUTO_COMMIT);
+        try {
+            // remove all features
+            while (writer.hasNext()) {
+                writer.next();
+                writer.remove();
+            }
+            // copy new features in
+            SimpleFeatureIterator iterator = collection.features();
+            while (iterator.hasNext()) {
+                SimpleFeature feature = iterator.next();
+                SimpleFeature newFeature = writer.next(); // new blank feature
+                newFeature.setAttributes(feature.getAttributes());
+                writer.write();
+            }
+        } finally {
+            writer.close();
+            store.dispose();
+        }
 
-		// Test everything was replaced by the one feature we added
-		SimpleFeatureStore featureStore = (SimpleFeatureStore) store.getFeatureSource("locations");
-		assertEquals("featureStore should only have the one feature we created", 1, featureStore.getFeatures().size());
-		String contents = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"properties\""
-				+ ":{\"LAT\":45.52,\"LON\":-122.681944,\"CITY\":\"Portland\",\"NUMBER\":800,\"YEAR\":2014},"
-				+ "\"geometry\":{\"type\":\"Point\",\"coordinates\":[45.52,-122.681944]},\"id\":\"locations.0\"}]}";
-		assertEquals("Ensure the file has only the one feature we created", contents.trim(),
-				checkFileContents(file).trim());
-	}
+        // Test everything was replaced by the one feature we added
+        SimpleFeatureStore featureStore = (SimpleFeatureStore) store.getFeatureSource("locations");
+        assertEquals(
+                "featureStore should only have the one feature we created",
+                1,
+                featureStore.getFeatures().size());
+        String contents =
+                "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"properties\""
+                        + ":{\"LAT\":45.52,\"LON\":-122.681944,\"CITY\":\"Portland\",\"NUMBER\":800,\"YEAR\":2014},"
+                        + "\"geometry\":{\"type\":\"Point\",\"coordinates\":[45.52,-122.681944]},\"id\":\"locations.0\"}]}";
+        assertEquals(
+                "Ensure the file has only the one feature we created",
+                contents.trim(),
+                checkFileContents(file).trim());
+    }
 
-	@Test
-	public void copyContent() throws Exception {
-		File directory = tmp;
-		Map<String, Serializable> params = new HashMap<String, Serializable>();
-		params.put("url", url);
-		DataStore store = fac.createDataStore(params);
-		SimpleFeatureType featureType = store.getSchema("locations");
+    @Test
+    public void copyContent() throws Exception {
+        File directory = tmp;
+        Map<String, Serializable> params = new HashMap<>();
+        params.put(GeoJSONDataStoreFactory.URL_PARAM.key, url);
+        DataStore store = fac.createDataStore(params);
+        SimpleFeatureType featureType = store.getSchema("locations");
 
-		File file2 = new File(directory, "duplicate.json");
-		// System.out.println("copying to "+file2 );
-		Map<String, Serializable> params2 = new HashMap<String, Serializable>();
-		params2.put("url", URLs.fileToUrl(file2));
+        File file2 = new File(directory, "duplicate.geojson");
 
-		GeoJSONDataStoreFactory factory = new GeoJSONDataStoreFactory();
-		DataStore duplicate = factory.createNewDataStore(params2);
-		duplicate.createSchema(featureType);
+        // System.out.println("copying to " + file2);
+        Map<String, Serializable> params2 = new HashMap<>();
+        params2.put(GeoJSONDataStoreFactory.FILE_PARAM.key, file2);
 
-		FeatureReader<SimpleFeatureType, SimpleFeature> reader;
-		FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
-		SimpleFeature feature, newFeature;
+        GeoJSONDataStoreFactory factory = new GeoJSONDataStoreFactory();
+        DataStore duplicate = factory.createNewDataStore(params2);
+        duplicate.createSchema(featureType);
 
-		Query query = new Query(featureType.getTypeName(), Filter.INCLUDE);
-		reader = store.getFeatureReader(query, Transaction.AUTO_COMMIT);
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader;
+        FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
+        SimpleFeature feature, newFeature;
 
-		writer = duplicate.getFeatureWriterAppend("duplicate", Transaction.AUTO_COMMIT);
-		try {
-			while (reader.hasNext()) {
-				feature = reader.next();
-				newFeature = writer.next();
+        Query query = new Query(featureType.getTypeName(), Filter.INCLUDE);
+        reader = store.getFeatureReader(query, Transaction.AUTO_COMMIT);
+        assertNotNull(duplicate);
+        writer = duplicate.getFeatureWriterAppend("duplicate", Transaction.AUTO_COMMIT);
+        try {
+            while (reader.hasNext()) {
+                feature = reader.next();
+                newFeature = writer.next();
 
-				newFeature.setAttributes(feature.getAttributes());
-				writer.write();
-			}
-		} finally {
-			reader.close();
-			writer.close();
-		}
+                newFeature.setAttributes(feature.getAttributes());
+                writer.write();
+            }
+        } finally {
+            reader.close();
+            writer.close();
+        }
 
-		// test the new store is the same as the original
-		SimpleFeatureStore featureStore = (SimpleFeatureStore) store.getFeatureSource("locations");
-		assertEquals(9, featureStore.getFeatures().size());
+        // test the new store is the same as the original
+        SimpleFeatureStore featureStore = (SimpleFeatureStore) store.getFeatureSource("locations");
+        assertEquals(9, featureStore.getFeatures().size());
 
-		SimpleFeatureStore featureStored = (SimpleFeatureStore) duplicate.getFeatureSource("duplicate");
-		assertEquals(9, featureStored.getFeatures().size());
+        SimpleFeatureStore featureStored =
+                (SimpleFeatureStore) duplicate.getFeatureSource("duplicate");
+        assertEquals(9, featureStored.getFeatures().size());
 
-		SimpleFeatureIterator original = featureStore.getFeatures().features();
-		SimpleFeatureIterator dups = featureStored.getFeatures().features();
+        SimpleFeatureIterator original = featureStore.getFeatures().features();
+        SimpleFeatureIterator dups = featureStored.getFeatures().features();
 
-		try {
-			while (original.hasNext() && dups.hasNext()) {
-				SimpleFeature o = original.next();
-				SimpleFeature d = dups.next();
+        try {
+            while (original.hasNext() && dups.hasNext()) {
+                SimpleFeature o = original.next();
+                SimpleFeature d = dups.next();
 
-				for (int i = 0; i < o.getAttributeCount(); i++) {
-					assertTrue("" + o.getAttribute(i) + " doesn't equal " + d.getAttribute(i),
-							DataUtilities.attributesEqual(o.getAttribute(i), d.getAttribute(i)));
-				}
-			}
+                for (int i = 0; i < o.getAttributeCount(); i++) {
+                    assertTrue(
+                            "" + o.getAttribute(i) + " doesn't equal " + d.getAttribute(i),
+                            DataUtilities.attributesEqual(o.getAttribute(i), d.getAttribute(i)));
+                }
+            }
 
-		} finally {
-			original.close();
-			dups.close();
-			store.dispose();
-		}
-	}
+        } finally {
+            original.close();
+            dups.close();
+            store.dispose();
+        }
+    }
 
-	public static void assertEqualsIgnoreWhitespace(String message, String expected, String actual) {
-		expected = removeWhitespace(expected);
-		actual = removeWhitespace(actual);
-		assertEquals(message, expected, actual);
-	}
+    public static void assertEqualsIgnoreWhitespace(
+            String message, String expected, String actual) {
+        expected = removeWhitespace(expected);
+        actual = removeWhitespace(actual);
+        assertEquals(message, expected, actual);
+    }
 
-	private static String removeWhitespace(String actual) {
-		if (actual == null)
-			return "";
-		StringBuffer crush = new StringBuffer(actual);
-		int ch = 0;
-		while (ch < crush.length()) {
-			char chracter = crush.charAt(ch);
-			if (Character.isWhitespace(chracter)) {
-				crush.deleteCharAt(ch);
-				continue;
-			}
-			ch++;
-		}
-		return crush.toString();
-	}
+    private static String removeWhitespace(String actual) {
+        if (actual == null) return "";
+        StringBuffer crush = new StringBuffer(actual);
+        int ch = 0;
+        while (ch < crush.length()) {
+            char chracter = crush.charAt(ch);
+            if (Character.isWhitespace(chracter)) {
+                crush.deleteCharAt(ch);
+                continue;
+            }
+            ch++;
+        }
+        return crush.toString();
+    }
 }

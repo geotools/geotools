@@ -16,7 +16,8 @@
  */
 package org.geotools.data.geojson;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.net.URL;
@@ -45,31 +46,34 @@ public class GeoJSONReaderTest {
     @Test
     public void testGetFeatures() throws IOException, ParseException {
         URL url = TestData.url(GeoJSONDataStore.class, "locations.json");
-        GeoJSONFileState state = new GeoJSONFileState(url);
-        GeoJSONReader reader = new GeoJSONReader(state);
+
+        GeoJSONReader reader = new GeoJSONReader(url);
         FeatureCollection features = reader.getFeatures();
+        assertNotNull(features);
         assertEquals("wrong number of features read", 9, features.size());
     }
 
     @Test
     public void testGetChangingSchema() throws IOException, ParseException {
         URL url = TestData.url(GeoJSONDataStore.class, "locations-changable.json");
-        GeoJSONFileState state = new GeoJSONFileState(url);
-        GeoJSONReader reader = new GeoJSONReader(state);
-        FeatureCollection features = reader.getFeatures();
-        assertEquals("wrong number of features read", 9, features.size());
 
-        HashMap<String, Object> expected = new HashMap<>();
+        try (GeoJSONReader reader = new GeoJSONReader(url)) {
+            FeatureCollection features = reader.getFeatures();
+            assertNotNull(features);
+            assertEquals("wrong number of features read", 9, features.size());
 
-        expected.put("LAT", 46.066667);
-        expected.put("LON", 11.116667);
-        expected.put("CITY", "Trento");
-        expected.put("NUMBER", null);
-        expected.put("YEAR", null);
-        expected.put("the_geom", gf.createPoint(new Coordinate(11.117, 46.067)));
-        Feature first = DataUtilities.first(features);
-        for (Property prop : first.getProperties()) {
-            assertEquals(expected.get(prop.getName().getLocalPart()), prop.getValue());
+            HashMap<String, Object> expected = new HashMap<>();
+
+            expected.put("LAT", 46.066667);
+            expected.put("LON", 11.116667);
+            expected.put("CITY", "Trento");
+            expected.put("NUMBER", null);
+            expected.put("YEAR", null);
+            expected.put("the_geom", gf.createPoint(new Coordinate(11.117, 46.067)));
+            Feature first = DataUtilities.first(features);
+            for (Property prop : first.getProperties()) {
+                assertEquals(expected.get(prop.getName().getLocalPart()), prop.getValue());
+            }
         }
     }
 }

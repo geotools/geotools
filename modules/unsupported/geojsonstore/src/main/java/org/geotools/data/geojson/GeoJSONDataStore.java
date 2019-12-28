@@ -1,140 +1,143 @@
 package org.geotools.data.geojson;
-/*
- *    GeoTools - The Open Source Java GIS Toolkit
- *    http://geotools.org
- *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
- *
- *    This library is free software; you can redistribute it and/or
- *    modify it under the terms of the GNU Lesser General Public
- *    License as published by the Free Software Foundation;
- *    version 2.1 of the License.
- *
- *    This library is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *    Lesser General Public License for more details.
- */
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Collections;
 import java.util.List;
-import org.apache.commons.io.FilenameUtils;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.FileDataStore;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
-import org.geotools.data.store.ContentState;
 import org.geotools.feature.NameImpl;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.util.URLs;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-public class GeoJSONDataStore extends org.geotools.data.store.ContentDataStore
-        implements FileDataStore {
+public class GeoJSONDataStore extends ContentDataStore implements FileDataStore {
 
-    SimpleFeatureType schema;
+    private SimpleFeatureType schema;
+    private URL url;
+    private CoordinateReferenceSystem crs = DefaultGeographicCRS.WGS84;
+    private NameImpl typeName;
 
-    protected Name typeName;
-
-    private GeoJSONFileState state;
-
-    public GeoJSONDataStore(GeoJSONFileState state) throws IOException {
-        this.state = state;
+    public GeoJSONDataStore(URL url) {
+        this.setUrl(url);
     }
 
-    @Override
-    protected List<Name> createTypeNames() throws IOException {
-
-        String name = FilenameUtils.getBaseName(state.getUrl().toExternalForm());
-        // could hard code features in here?
-        typeName = new NameImpl(name);
-
-        return Collections.singletonList(typeName);
+    public GeoJSONDataStore(File f) {
+        this.setUrl(URLs.fileToUrl(f));
     }
 
     GeoJSONReader read() throws IOException {
-        GeoJSONReader reader = null;
-
-        reader = new GeoJSONReader(state);
+        GeoJSONReader reader;
+        reader = new GeoJSONReader(getUrl());
 
         return reader;
     }
 
     @Override
     protected ContentFeatureSource createFeatureSource(ContentEntry entry) throws IOException {
-        // We can only really write to local files
-        String scheme = state.getUrl().getProtocol();
-        String host = state.getUrl().getHost();
-        if ("file".equalsIgnoreCase(scheme) && (host == null || host.isEmpty())) {
-            GeoJSONFeatureStore geoJSONFeatureStore = new GeoJSONFeatureStore(entry, Query.ALL);
-            return geoJSONFeatureStore;
-        } else {
-            GeoJSONFeatureSource geoJSONFeatureSource = new GeoJSONFeatureSource(entry, Query.ALL);
-            return geoJSONFeatureSource;
+        if ("file".equalsIgnoreCase(getUrl().getProtocol())) {
+            File f = URLs.urlToFile(getUrl());
+            if (f.canWrite()) {
+                return new GeoJSONFeatureStore(entry, Query.ALL);
+            }
         }
+        return new GeoJSONFeatureSource(entry, Query.ALL);
+    }
+
+    @Override
+    protected List<Name> createTypeNames() throws IOException {
+        String name = new File(getUrl().getFile()).getName();
+        name = name.substring(0, name.lastIndexOf('.'));
+
+        typeName = new NameImpl(name);
+        return Collections.singletonList(typeName);
     }
 
     @Override
     public void createSchema(SimpleFeatureType featureType) throws IOException {
-        this.schema = featureType;
+        schema = featureType;
     }
 
     @Override
     public SimpleFeatureType getSchema() throws IOException {
-
-        return this.schema;
+        return schema;
     }
 
     @Override
     public void updateSchema(SimpleFeatureType featureType) throws IOException {
-        this.schema = featureType;
+        schema = featureType;
+    }
+
+    /** @return the crs */
+    public CoordinateReferenceSystem getCrs() {
+        return crs;
+    }
+
+    /** @param crs the crs to set */
+    public void setCrs(CoordinateReferenceSystem crs) {
+        this.crs = crs;
+    }
+
+    public URL getUrl() {
+        return url;
+    }
+
+    public void setUrl(URL url) {
+        this.url = url;
     }
 
     @Override
     public SimpleFeatureSource getFeatureSource() throws IOException {
-
-        return new GeoJSONFeatureSource(new ContentEntry(this, typeName), Query.ALL);
+        if (typeName == null) {
+            createTypeNames();
+        }
+        return super.getFeatureSource(typeName);
     }
 
     @Override
     public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader() throws IOException {
 
-        return new GeoJSONFeatureReader(
-                new ContentState(new ContentEntry(this, typeName)), Query.ALL);
+        return new GeoJSONFeatureSource(this).getReader();
     }
 
     @Override
     public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
             Filter filter, Transaction transaction) throws IOException {
-
-        return super.getFeatureWriter(getTypeName(), filter, transaction);
-    }
-
-    /** @return */
-    private String getTypeName() {
-        return typeName.getLocalPart();
+        // TODO Auto-generated method stub
+        return null;
     }
 
     @Override
     public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(Transaction transaction)
             throws IOException {
-        return super.getFeatureWriter(getTypeName(), transaction);
+        // TODO Auto-generated method stub
+        return null;
     }
 
     @Override
     public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(
             Transaction transaction) throws IOException {
-        return super.getFeatureWriterAppend(getTypeName(), transaction);
+        // TODO Auto-generated method stub
+        return null;
     }
 
-    /** @return the state */
-    public GeoJSONFileState getState() {
-        return state;
+    public Name getTypeName() {
+        if (namespaceURI != null) {
+            return new NameImpl(namespaceURI, typeName.getLocalPart());
+        } else {
+            return typeName;
+        }
     }
 }

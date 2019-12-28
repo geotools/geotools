@@ -18,6 +18,7 @@ package org.geotools.data.geojson;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.net.URL;
@@ -29,6 +30,7 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -40,8 +42,8 @@ public class GeoJSONDataStoreTest {
         URL url = TestData.url(GeoJSONDataStore.class, "ne_110m_admin_1_states_provinces.geojson");
         // URL url = new
         // URL("http://geojson.xyz/naturalearth-3.3.0/ne_110m_admin_1_states_provinces.geojson");
-        GeoJSONFileState state = new GeoJSONFileState(url);
-        ds = new GeoJSONDataStore(state);
+
+        ds = new GeoJSONDataStore(url);
     }
 
     @Test
@@ -60,6 +62,7 @@ public class GeoJSONDataStoreTest {
                         71.35776357694175,
                         DefaultGeographicCRS.WGS84);
         ReferencedEnvelope obs = source.getBounds();
+        assertNotNull(obs);
         assertEquals(expected.getMinX(), obs.getMinX(), 0.00001);
         assertEquals(expected.getMinY(), obs.getMinY(), 0.00001);
         assertEquals(expected.getMaxX(), obs.getMaxX(), 0.00001);
@@ -86,16 +89,15 @@ public class GeoJSONDataStoreTest {
         URL url = TestData.url(GeoJSONDataStore.class, "featureCollection.json");
         // URL url = new
         // URL("http://geojson.xyz/naturalearth-3.3.0/ne_110m_admin_1_states_provinces.geojson");
-        GeoJSONFileState state = new GeoJSONFileState(url);
-        GeoJSONDataStore fds = new GeoJSONDataStore(state);
+
+        GeoJSONDataStore fds = new GeoJSONDataStore(url);
         String type = fds.getNames().get(0).getLocalPart();
         Query query = new Query(type);
         FeatureReader<SimpleFeatureType, SimpleFeature> reader = fds.getFeatureReader(query, null);
         SimpleFeatureType schema = reader.getFeatureType();
-        // System.out.println(schema);
-        assertEquals(
-                "org.locationtech.jts.geom.Geometry",
-                schema.getGeometryDescriptor().getType().getBinding().getCanonicalName());
+        assertTrue(
+                Geometry.class.isAssignableFrom(
+                        schema.getGeometryDescriptor().getType().getBinding()));
         assertNotNull(schema);
         int count = 0;
         while (reader.hasNext()) {
@@ -109,8 +111,8 @@ public class GeoJSONDataStoreTest {
     @Test
     public void testLocations() throws IOException {
         URL url = TestData.url(GeoJSONDataStore.class, "locations.json");
-        GeoJSONFileState state = new GeoJSONFileState(url);
-        GeoJSONDataStore fds = new GeoJSONDataStore(state);
+
+        GeoJSONDataStore fds = new GeoJSONDataStore(url);
         String type = fds.getNames().get(0).getLocalPart();
         // System.out.println(type);
         Query query = new Query(type);
@@ -118,9 +120,9 @@ public class GeoJSONDataStoreTest {
         FeatureReader<SimpleFeatureType, SimpleFeature> reader = fds.getFeatureReader(query, null);
         SimpleFeatureType schema = reader.getFeatureType();
         // System.out.println(schema);
-        assertEquals(
-                "org.locationtech.jts.geom.Geometry",
-                schema.getGeometryDescriptor().getType().getBinding().getName());
+        assertTrue(
+                Geometry.class.isAssignableFrom(
+                        schema.getGeometryDescriptor().getType().getBinding()));
         assertNotNull(schema);
         int count = 0;
         while (reader.hasNext()) {

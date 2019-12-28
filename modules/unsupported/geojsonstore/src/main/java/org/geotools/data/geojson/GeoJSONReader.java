@@ -1,5 +1,3 @@
-package org.geotools.data.geojson;
-
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
@@ -16,6 +14,7 @@ package org.geotools.data.geojson;
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+package org.geotools.data.geojson;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
@@ -56,7 +55,7 @@ import org.opengis.feature.type.FeatureType;
  *
  * @author ian
  */
-public class GeoJSONReader {
+public class GeoJSONReader implements AutoCloseable {
     /** GEOMETRY_NAME */
     public static final String GEOMETRY_NAME = "the_geom";
 
@@ -78,46 +77,43 @@ public class GeoJSONReader {
 
     private boolean schemaChanged = false;
 
-    private GeoJSONFileState state;
+    private URL url;
 
-    public GeoJSONReader(GeoJSONFileState state) throws IOException {
-        this.state = state;
+    public GeoJSONReader(URL url) throws IOException {
+        this.url = url;
         factory = new JsonFactory();
-        parser = factory.createParser(state.getUrl());
-        baseName = FilenameUtils.getBaseName(state.getUrl().getPath());
+        parser = factory.createParser(url);
+        baseName = FilenameUtils.getBaseName(url.getPath());
     }
 
     public boolean isConnected() {
-        URL url;
-        InputStream inputStream;
-        try {
-            inputStream = state.getUrl().openStream();
+
+        try (InputStream inputStream = url.openStream()) {
+            InputStream inputStream2;
             if (inputStream == null) {
-                url = new URL(state.getUrl().toExternalForm());
-                inputStream = url.openStream();
-            }
-        } catch (IOException e) {
-            // whoops
-            return false;
-        }
-        try {
-            if (inputStream.available() == 0) {
-                url = new URL(state.getUrl().toExternalForm());
-                inputStream = url.openStream();
+                url = new URL(url.toExternalForm());
+                inputStream2 = url.openStream();
+            } else {
+                inputStream2 = inputStream;
             }
 
-            LOGGER.finest("inputstream is " + inputStream);
-            return (inputStream != null) && (inputStream.available() > 0);
+            if (inputStream2.available() == 0) {
+                url = new URL(url.toExternalForm());
+                inputStream2 = url.openStream();
+            }
+
+            LOGGER.finest("inputstream is " + inputStream2);
+            return (inputStream2 != null) && (inputStream2.available() > 0);
+
         } catch (IOException e) {
-            // something went wrong
-            LOGGER.throwing(this.getClass().getName(), "isConnected", e);
+            e.printStackTrace();
             return false;
         }
     }
 
     public FeatureCollection getFeatures() throws IOException {
         if (!isConnected()) {
-            throw new IOException("not connected to " + state.getUrl().toExternalForm());
+            throw new IOException("not connected to " + url.toExternalForm());
         }
         ObjectMapper mapper = new ObjectMapper();
         List<SimpleFeature> features = new ArrayList<>();
@@ -260,6 +256,7 @@ public class GeoJSONReader {
 
     public FeatureIterator<SimpleFeature> getIterator() throws IOException {
         if (!isConnected()) {
+            LOGGER.info("trying to read an unconnected data stream");
             return new DefaultFeatureCollection(null, null).features();
         }
         return new GeoJsonIterator(parser);
@@ -267,7 +264,7 @@ public class GeoJSONReader {
 
     public FeatureType getSchema() throws IOException {
         if (!isConnected()) {
-            throw new IOException("not connected to " + state.getUrl().toExternalForm());
+            throw new IOException("not connected to " + url.toExternalForm());
         }
         return schema;
     }
@@ -287,7 +284,12 @@ public class GeoJSONReader {
         this.schemaChanged = schemaChanged;
     }
 
-    private class GeoJsonIterator implements FeatureIterator<SimpleFeature> {
+    @Override
+    public void close() {
+        parser = null;
+    }
+
+    private class GeoJsonIterator implements FeatureIterator<SimpleFeature>, AutoCloseable {
         /** @throws IOException */
         ObjectMapper mapper = new ObjectMapper();
 
@@ -297,7 +299,7 @@ public class GeoJSONReader {
 
         public GeoJsonIterator(JsonParser parser) throws IOException {
             if (!isConnected()) {
-                throw new IOException("not connected to " + state.getUrl().toExternalForm());
+                throw new IOException("not connected to " + url.toExternalForm());
             }
             this.parser = parser;
             builder = null;

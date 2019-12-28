@@ -44,8 +44,8 @@ public class GeoJSONDataStoreFactoryTest {
     @Before
     public void setUp() throws Exception {
         url = TestData.url(GeoJSONDataStore.class, "ne_110m_admin_1_states_provinces.geojson");
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
-        params.put(GeoJSONDataStoreFactory.URLP.key, url);
+        Map<String, Serializable> params = new HashMap<>();
+        params.put(GeoJSONDataStoreFactory.URL_PARAM.key, url);
         store = fac.createDataStore(params);
         assertNotNull("didn't create store", store);
     }
@@ -53,7 +53,7 @@ public class GeoJSONDataStoreFactoryTest {
     @Test
     public void testExtensions() throws IOException {
         URL t1 = new URL("http://example.com/ian.json");
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("url", t1);
 
         DataStore store1 = fac.createDataStore(params);

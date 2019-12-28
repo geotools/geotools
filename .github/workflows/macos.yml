@@ -1,4 +1,4 @@
-name: Java CI
+name: Mac OS CI
 
 on: [pull_request]
 

@@ -687,13 +687,13 @@ public class ShpFiles {
      * @return an output stream
      * @throws IOException if a problem occurred opening the stream.
      */
+    @SuppressWarnings("PMD.CloseResource") // resource is returned
     public OutputStream getOutputStream(ShpFileType type, final FileWriter requestor)
             throws IOException {
         final URL url = acquireWrite(type, requestor);
-
+        OutputStream out = null;
         try {
 
-            OutputStream out;
             if (isLocal()) {
                 File file = URLs.urlToFile(url);
                 out = new FileOutputStream(file);
@@ -724,6 +724,9 @@ public class ShpFiles {
             return output;
         } catch (Throwable e) {
             unlockWrite(url, requestor);
+            if (out != null) {
+                out.close();
+            }
             if (e instanceof IOException) {
                 throw (IOException) e;
             } else if (e instanceof RuntimeException) {
@@ -746,18 +749,17 @@ public class ShpFiles {
      * @param type the type of file to open the channel to.
      * @param requestor the object requesting the channel
      */
+    @SuppressWarnings("PMD.CloseResource") // cannot close RAF/IS locally, the channel refers to it
     public ReadableByteChannel getReadChannel(ShpFileType type, FileReader requestor)
             throws IOException {
         URL url = acquireRead(type, requestor);
         ReadableByteChannel channel = null;
         try {
             if (isLocal()) {
-
                 File file = URLs.urlToFile(url);
 
                 RandomAccessFile raf = new RandomAccessFile(file, "r");
                 channel = new FileChannelDecorator(raf.getChannel(), this, url, requestor);
-
             } else {
                 InputStream in = url.openConnection().getInputStream();
                 channel =
@@ -792,6 +794,7 @@ public class ShpFiles {
      * @return a WritableByteChannel for the provided file type
      * @throws IOException if there is an error opening the stream
      */
+    @SuppressWarnings("PMD.CloseResource") // closeable resource are returned
     public WritableByteChannel getWriteChannel(ShpFileType type, FileWriter requestor)
             throws IOException {
 

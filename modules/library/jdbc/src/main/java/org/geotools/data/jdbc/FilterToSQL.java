@@ -939,6 +939,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         visitInFunction(in, false, negated, null);
     }
 
+    @SuppressWarnings("PMD.CloseResource") // no need to close, it's a field
     protected void writeBinaryExpression(Expression e, Class context) throws IOException {
         Writer tmp = out;
         try {
@@ -947,7 +948,6 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             e.accept(this, null);
             out.write(")");
             tmp.write(cast(out.toString(), context));
-
         } finally {
             out = tmp;
         }

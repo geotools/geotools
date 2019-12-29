@@ -136,9 +136,8 @@ public class ViewRegisteringFactoryHelper {
 
     public static PlainSelect parseSqlQuery(String selectStatement) throws IOException {
         CCJSqlParserManager pm = new CCJSqlParserManager();
-        Reader reader = new StringReader(selectStatement);
         Statement statement;
-        try {
+        try (Reader reader = new StringReader(selectStatement)) {
             statement = pm.parse(reader);
         } catch (Exception e) {
             throw new DataSourceException(

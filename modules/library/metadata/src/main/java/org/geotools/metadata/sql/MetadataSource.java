@@ -70,7 +70,7 @@ import org.opengis.util.InternationalString;
  * @author Olivier Kartotaroeno (Institut de Recherche pour le Développement)
  * @author Martin Desruisseaux (IRD)
  */
-public class MetadataSource {
+public class MetadataSource implements AutoCloseable {
     /** The package for metadata <strong>interfaces</strong> (not the implementation). */
     final String metadataPackage = "org.opengis.metadata.";
 
@@ -117,14 +117,16 @@ public class MetadataSource {
     public MetadataSource(final Connection connection) {
         this.connection = connection;
         try {
-            InputStream in = MetaData.class.getResourceAsStream("GeoAPI_to_ISO.properties");
-            geoApiToIso.load(in);
-            in.close();
-            in = MetaData.class.getResourceAsStream("CollectionTypes.properties");
-            // TODO: remove the (!= null) check after the next geoapi update.
-            if (in != null) {
-                collectionTypes.load(in);
-                in.close();
+            try (InputStream in = MetaData.class.getResourceAsStream("GeoAPI_to_ISO.properties")) {
+
+                geoApiToIso.load(in);
+            }
+            try (InputStream in =
+                    MetaData.class.getResourceAsStream("CollectionTypes.properties")) {
+                // TODO: remove the (!= null) check after the next geoapi update.
+                if (in != null) {
+                    collectionTypes.load(in);
+                }
             }
         } catch (IOException exception) {
             /*
@@ -171,6 +173,7 @@ public class MetadataSource {
     final synchronized Object getValue(
             final Class<?> type, final Method method, final String identifier) throws SQLException {
         final String className = getClassName(type);
+        @SuppressWarnings("PMD.CloseResource") // managed in a field
         MetadataResult result = statements.get(type);
         if (result == null) {
             result = new MetadataResult(connection, query, getTableName(className));
@@ -284,6 +287,7 @@ public class MetadataSource {
          * Converts the numerical value into the code list name.
          */
         if (isNumerical) {
+            @SuppressWarnings("PMD.CloseResource") // managed in a field
             MetadataResult result = statements.get(type);
             if (result == null) {
                 result = new MetadataResult(connection, codeQuery, getTableName(className));

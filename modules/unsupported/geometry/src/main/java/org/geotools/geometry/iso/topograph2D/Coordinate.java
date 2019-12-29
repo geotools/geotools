@@ -33,7 +33,7 @@ import org.geotools.geometry.iso.util.Assert;
  * coordinates will have a z-ordinate of <code>NaN</code>. The standard comparison functions will
  * ignore the z-ordinate.
  */
-public class Coordinate implements Comparable, Cloneable, Serializable {
+public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializable {
 
     /** The x-coordinate. */
     public double x;
@@ -159,14 +159,12 @@ public class Coordinate implements Comparable, Cloneable, Serializable {
      * Note: This method assumes that ordinate values are valid numbers. NaN values are not handled
      * correctly.
      *
-     * @param o the <code>Coordinate</code> with which this <code>Coordinate</code> is being
+     * @param other the <code>Coordinate</code> with which this <code>Coordinate</code> is being
      *     compared
      * @return -1, zero, or 1 as this <code>Coordinate</code> is less than, equal to, or greater
      *     than the specified <code>Coordinate</code>
      */
-    public int compareTo(Object o) {
-        Coordinate other = (Coordinate) o;
-
+    public int compareTo(Coordinate other) {
         if (x < other.x) return -1;
         if (x > other.x) return 1;
         if (y < other.y) return -1;

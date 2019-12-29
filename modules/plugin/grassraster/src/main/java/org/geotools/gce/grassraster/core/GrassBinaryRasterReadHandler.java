@@ -21,6 +21,7 @@ import java.awt.image.DataBuffer;
 import java.awt.image.SampleModel;
 import java.awt.image.WritableRaster;
 import java.io.BufferedReader;
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -68,7 +69,7 @@ import org.opengis.util.ProgressListener;
  * @see GrassBinaryImageReadParam
  * @see GrassBinaryImageMetadata
  */
-public class GrassBinaryRasterReadHandler {
+public class GrassBinaryRasterReadHandler implements Closeable {
 
     /** The flag that defines whether to abort or not. */
     private boolean abortRequired = false;
@@ -385,7 +386,7 @@ public class GrassBinaryRasterReadHandler {
      *
      * <p><b>INFO:</b> this is a reader method.
      */
-    @SuppressWarnings("nls")
+    @SuppressWarnings({"nls", "PMD.CloseResource"})
     public void parseHeaderAndAccessoryFiles() throws IOException {
         try {
             LinkedHashMap<String, String> readerFileHeaderMap = new LinkedHashMap<String, String>();

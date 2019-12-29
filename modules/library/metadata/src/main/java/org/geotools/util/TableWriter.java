@@ -761,6 +761,7 @@ public class TableWriter extends FilterWriter {
      * @param out Flot vers où écrire les données.
      * @throws IOException si une erreur est survenue lors de l'écriture dans {@code out}.
      */
+    @SuppressWarnings("PMD.CloseResource")
     private void flushTo(final Writer out) throws IOException {
         final String columnSeparator = this.separator;
         final String lineSeparator = System.getProperty("line.separator", "\n");

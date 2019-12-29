@@ -496,16 +496,16 @@ public class JGrassUtilities {
         if (!colrFile.getParentFile().exists()) {
             colrFile.getParentFile().mkdir();
         }
-        BufferedWriter bw = new BufferedWriter(new FileWriter(colrFile));
-        if (rules.size() == 0) {
-            throw new IllegalArgumentException("The list of colorrules can't be empty.");
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(colrFile))) {
+            if (rules.size() == 0) {
+                throw new IllegalArgumentException("The list of colorrules can't be empty.");
+            }
+            String header = "% " + minMax[0] + "   " + minMax[1] + "   " + alpha;
+            bw.write(header + "\n");
+            for (String r : rules) {
+                bw.write(r + "\n");
+            }
         }
-        String header = "% " + minMax[0] + "   " + minMax[1] + "   " + alpha;
-        bw.write(header + "\n");
-        for (String r : rules) {
-            bw.write(r + "\n");
-        }
-        bw.close();
     }
 
     /**

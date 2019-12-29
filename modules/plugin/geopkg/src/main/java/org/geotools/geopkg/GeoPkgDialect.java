@@ -311,6 +311,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             }
         }
 
+        @SuppressWarnings("PMD.CloseResource") // using the pool of the store, no need to close
         GeoPackage geopkg = geopkg();
         try {
             geopkg.addGeoPackageContentsEntry(fe);
@@ -346,6 +347,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             fe.setDescription(featureType.getTypeName());
             fe.setTableName(featureType.getTypeName());
         }
+        @SuppressWarnings("PMD.CloseResource") // using the pool of the store, no need to close
         GeoPackage geopkg = geopkg();
         try {
             geopkg.deleteGeoPackageContentsEntry(fe);

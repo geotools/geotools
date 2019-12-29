@@ -30,6 +30,7 @@ import com.esri.sde.sdk.client.SeQuery;
 import com.esri.sde.sdk.client.SeQueryInfo;
 import com.esri.sde.sdk.client.SeSqlConstruct;
 import com.esri.sde.sdk.client.SeTable;
+import java.io.Closeable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -76,7 +77,7 @@ import org.opengis.filter.sort.SortOrder;
  * @author Gabriel Roldan, Axios Engineering
  */
 @SuppressWarnings("deprecation")
-class ArcSDEQuery {
+class ArcSDEQuery implements Closeable {
     /** Shared package's logger */
     private static final Logger LOGGER = Logging.getLogger(ArcSDEQuery.class);
 

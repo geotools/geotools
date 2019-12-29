@@ -473,12 +473,13 @@ public class XPathUtil {
                     int end = step.indexOf(']');
                     stepName = step.substring(0, start);
                     String s = step.substring(start + 1, end);
-                    Scanner scanner = new Scanner(s);
-                    if (scanner.hasNextInt()) {
-                        index = scanner.nextInt();
-                        isIndexed = true;
-                    } else {
-                        predicate = s;
+                    try (Scanner scanner = new Scanner(s)) {
+                        if (scanner.hasNextInt()) {
+                            index = scanner.nextInt();
+                            isIndexed = true;
+                        } else {
+                            predicate = s;
+                        }
                     }
                 }
                 if (step.charAt(0) == '@') {

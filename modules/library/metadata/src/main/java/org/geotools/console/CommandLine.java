@@ -284,6 +284,7 @@ public class CommandLine {
     }
 
     /** Prints the specified options to the standard output stream. */
+    @SuppressWarnings("PMD.CloseResource")
     private void print(final Map<String, String> options) {
         final TableWriter table = new TableWriter(out, "  ");
         for (final Map.Entry<String, String> entry : options.entrySet()) {

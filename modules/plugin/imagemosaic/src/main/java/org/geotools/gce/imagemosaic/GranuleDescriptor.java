@@ -1030,6 +1030,8 @@ public class GranuleDescriptor {
             return null;
         }
 
+        // eventually gets closed in finally block, if possible (not deferred loading)
+        @SuppressWarnings("PMD.CloseResource")
         ImageInputStream inStream = null;
         ImageReader reader = null;
         boolean cleanupInFinally = request.getReadType() != ReadType.JAI_IMAGEREAD;
@@ -1728,15 +1730,14 @@ public class GranuleDescriptor {
 
         // load level
         // create the base grid to world transformation
-        ImageInputStream inStream = null;
         ImageReader reader = null;
-        try {
+        try (ImageInputStream inStream =
+                cachedStreamSPI.createInputStreamInstance(
+                        granuleUrl, ImageIO.getUseCache(), ImageIO.getCacheDirectory())) {
 
             // get a stream
             assert cachedStreamSPI != null : "no cachedStreamSPI available!";
-            inStream =
-                    cachedStreamSPI.createInputStreamInstance(
-                            granuleUrl, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
+
             if (inStream == null)
                 throw new IllegalArgumentException(
                         "Unable to create an inputstream for the granuleurl:"
@@ -1760,25 +1761,13 @@ public class GranuleDescriptor {
         } catch (IllegalStateException e) {
 
             // clean up
-            try {
-                if (inStream != null) inStream.close();
-            } catch (Throwable ee) {
-
-            } finally {
-                if (reader != null) reader.dispose();
-            }
+            if (reader != null) reader.dispose();
 
             throw new IllegalArgumentException(e);
 
         } catch (IOException e) {
-
             // clean up
-            try {
-                if (inStream != null) inStream.close();
-            } catch (Throwable ee) {
-            } finally {
-                if (reader != null) reader.dispose();
-            }
+            if (reader != null) reader.dispose();
 
             throw new IllegalArgumentException(e);
         }

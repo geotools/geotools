@@ -185,10 +185,7 @@ class WFSFeatureStore extends ContentFeatureStore {
             localState = (WFSLocalTransactionState) state;
         }
 
-        final FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(query);
-        final WFSFeatureWriter writer = new WFSFeatureWriter(this, localState, reader, autoCommit);
-
-        return writer;
+        return new WFSFeatureWriter(this, localState, getReader(query), autoCommit);
     }
 
     @Override
@@ -224,52 +221,40 @@ class WFSFeatureStore extends ContentFeatureStore {
                 affectedBounds = before;
             }
         }
+        @SuppressWarnings("PMD.CloseResource") // not managed here
         final Transaction transaction = getTransaction();
 
-        FeatureReader<SimpleFeatureType, SimpleFeature> oldFeatures = getReader(filter);
-        try {
-            if (!oldFeatures.hasNext()) {
-                // don't bother
-                oldFeatures.close();
-                return;
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> oldFeatures = getReader(filter)) {
+            if (Transaction.AUTO_COMMIT.equals(transaction)) {
+                // we're in auto commit. Do a batch update and commit right away
+                WFSLocalTransactionState localState = getState().getLocalTransactionState();
+                WFSRemoteTransactionState committingState =
+                        new WFSRemoteTransactionState(getDataStore());
+                committingState.watch(localState.getState());
+
+                WFSDiff diff = localState.getDiff();
+
+                ReferencedEnvelope bounds;
+                bounds = diff.batchModify(properties, values, filter, oldFeatures, contentState);
+                affectedBounds.expandToInclude(bounds);
+                committingState.commit();
+
+            } else {
+                // we're in a transaction, record to local state and wait for commit to be called
+                WFSLocalTransactionState localState;
+                localState = (WFSLocalTransactionState) transaction.getState(getEntry());
+                WFSDiff diff = localState.getDiff();
+
+                ReferencedEnvelope bounds;
+                bounds = diff.batchModify(properties, values, filter, oldFeatures, contentState);
+                affectedBounds.expandToInclude(bounds);
             }
-        } catch (IOException e) {
-            oldFeatures.close();
-            throw e;
-        } catch (RuntimeException e) {
-            oldFeatures.close();
-            throw e;
-        }
 
-        if (Transaction.AUTO_COMMIT.equals(transaction)) {
-            // we're in auto commit. Do a batch update and commit right away
-            WFSLocalTransactionState localState = getState().getLocalTransactionState();
-            WFSRemoteTransactionState committingState =
-                    new WFSRemoteTransactionState(getDataStore());
-            committingState.watch(localState.getState());
-
-            WFSDiff diff = localState.getDiff();
-
-            ReferencedEnvelope bounds;
-            bounds = diff.batchModify(properties, values, filter, oldFeatures, contentState);
-            affectedBounds.expandToInclude(bounds);
-            committingState.commit();
-
-        } else {
-            // we're in a transaction, record to local state and wait for commit to be called
-            WFSLocalTransactionState localState;
-            localState = (WFSLocalTransactionState) transaction.getState(getEntry());
-            WFSDiff diff = localState.getDiff();
-
-            ReferencedEnvelope bounds;
-            bounds = diff.batchModify(properties, values, filter, oldFeatures, contentState);
-            affectedBounds.expandToInclude(bounds);
-        }
-
-        if (contentState.hasListener()) {
-            // issue notificaiton
-            FeatureEvent event = new FeatureEvent(this, Type.CHANGED, affectedBounds, filter);
-            contentState.fireFeatureEvent(event);
+            if (contentState.hasListener()) {
+                // issue notificaiton
+                FeatureEvent event = new FeatureEvent(this, Type.CHANGED, affectedBounds, filter);
+                contentState.fireFeatureEvent(event);
+            }
         }
     }
 }

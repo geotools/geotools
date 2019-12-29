@@ -18,7 +18,6 @@ package org.geotools.validation.attributes;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -103,8 +102,6 @@ public class GazetteerNameValidation extends DefaultFeatureValidation {
             return false;
         }
 
-        InputStream gazetteerInputStream = null;
-
         try {
             HttpURLConnection gazetteerConnection =
                     (HttpURLConnection) gazetteerURL.openConnection();
@@ -114,49 +111,48 @@ public class GazetteerNameValidation extends DefaultFeatureValidation {
                         feature, "An error occured creating the connection to the Gazetteer.");
             }
 
-            gazetteerInputStream = gazetteerConnection.getInputStream();
+            try (BufferedReader reader =
+                    new BufferedReader(
+                            new InputStreamReader(gazetteerConnection.getInputStream()))) {
+                InputSource gazetteerInputSource = new InputSource(reader);
+                DocumentBuilderFactory dfactory = DocumentBuilderFactory.newInstance();
+                dfactory.setNamespaceAware(true);
+
+                // TODO turn on validation
+                dfactory.setValidating(false);
+                dfactory.setIgnoringComments(true);
+                dfactory.setCoalescing(true);
+                dfactory.setIgnoringElementContentWhitespace(true);
+
+                Document serviceDoc = null;
+
+                try {
+                    serviceDoc = dfactory.newDocumentBuilder().parse(gazetteerInputSource);
+                } catch (Exception e) {
+                    results.error(feature, e.toString());
+                    return false;
+                }
+
+                Element elem = serviceDoc.getDocumentElement();
+
+                // elem == SimpleFeatureCollection at this point
+                elem = getChildElement(elem, "queryInfo");
+
+                if (elem == null) {
+                    results.error(feature, "Invalid DOM tree returned by gazetteer.");
+                    return false;
+                }
+
+                // this number is the number of instances found.
+                int number = Integer.parseInt(getChildText(elem, "numberOfResults"));
+
+                return number > 0;
+            }
         } catch (IOException e) {
             results.error(feature, e.toString());
 
             return false;
         }
-
-        InputStreamReader gazetteerInputStreamReader = new InputStreamReader(gazetteerInputStream);
-        BufferedReader gazetteerBufferedReader = new BufferedReader(gazetteerInputStreamReader);
-
-        InputSource gazetteerInputSource = new InputSource(gazetteerBufferedReader);
-        DocumentBuilderFactory dfactory = DocumentBuilderFactory.newInstance();
-        dfactory.setNamespaceAware(true);
-
-        // TODO turn on validation
-        dfactory.setValidating(false);
-        dfactory.setIgnoringComments(true);
-        dfactory.setCoalescing(true);
-        dfactory.setIgnoringElementContentWhitespace(true);
-
-        Document serviceDoc = null;
-
-        try {
-            serviceDoc = dfactory.newDocumentBuilder().parse(gazetteerInputSource);
-        } catch (Exception e) {
-            results.error(feature, e.toString());
-            return false;
-        }
-
-        Element elem = serviceDoc.getDocumentElement();
-
-        // elem == SimpleFeatureCollection at this point
-        elem = getChildElement(elem, "queryInfo");
-
-        if (elem == null) {
-            results.error(feature, "Invalid DOM tree returned by gazetteer.");
-            return false;
-        }
-
-        // this number is the number of instances found.
-        int number = Integer.parseInt(getChildText(elem, "numberOfResults"));
-
-        return number > 0;
     }
 
     /**

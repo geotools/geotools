@@ -245,34 +245,37 @@ public class GeoJSONUtil {
 
     public static <T> T parse(IContentHandler<T> handler, Object input, boolean trace)
             throws IOException {
-        Reader reader = toReader(input);
-        if (trace) {
-            handler =
-                    (IContentHandler<T>)
-                            Proxy.newProxyInstance(
-                                    handler.getClass().getClassLoader(),
-                                    new Class[] {IContentHandler.class},
-                                    new TracingHandler(handler));
-        }
+        try (Reader reader = toReader(input)) {
+            if (trace) {
+                handler =
+                        (IContentHandler<T>)
+                                Proxy.newProxyInstance(
+                                        handler.getClass().getClassLoader(),
+                                        new Class[] {IContentHandler.class},
+                                        new TracingHandler(handler));
+            }
 
-        JSONParser parser = new JSONParser();
-        try {
-            parser.parse(reader, handler);
-            return handler.getValue();
-        } catch (ParseException e) {
-            throw (IOException) new IOException().initCause(e);
+            JSONParser parser = new JSONParser();
+            try {
+                parser.parse(reader, handler);
+                return handler.getValue();
+            } catch (ParseException e) {
+                throw (IOException) new IOException().initCause(e);
+            }
         }
     }
 
     public static void encode(String json, Object output) throws IOException {
-        Writer w = toWriter(output);
-        w.write(json);
-        w.flush();
+        try (Writer w = toWriter(output)) {
+            w.write(json);
+            w.flush();
+        }
     }
 
     public static void encode(Map<String, Object> obj, Object output) throws IOException {
-        Writer w = toWriter(output);
-        JSONObject.writeJSONString(obj, w);
-        w.flush();
+        try (Writer w = toWriter(output)) {
+            JSONObject.writeJSONString(obj, w);
+            w.flush();
+        }
     }
 }

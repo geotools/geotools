@@ -697,12 +697,12 @@ public class Import extends AbstractCmd {
                         + ","
                         + config.getSpatialTableNameAtribute()
                         + ") VALUES (?,?,?)";
-        PreparedStatement ps = con.prepareStatement(statmentString);
-        ps.setString(1, config.getCoverageName());
-        ps.setString(2, tileTableName);
-        ps.setString(3, spatialTableName);
-        ps.execute();
-        ps.close();
+        try (PreparedStatement ps = con.prepareStatement(statmentString)) {
+            ps.setString(1, config.getCoverageName());
+            ps.setString(2, tileTableName);
+            ps.setString(3, spatialTableName);
+            ps.execute();
+        }
     }
 
     private void deleteExistingMasterRecord() throws Exception {
@@ -751,16 +751,13 @@ public class Import extends AbstractCmd {
     }
 
     private byte[] getImageBytes(URL url) throws IOException {
-        try {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            InputStream in = url.openStream();
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream();
+                InputStream in = url.openStream()) {
+
             int len;
             byte[] buff = new byte[4096];
 
             while ((len = in.read(buff)) > 0) out.write(buff, 0, len);
-
-            out.close();
-            in.close();
 
             return out.toByteArray();
         } catch (IOException ex) {
@@ -828,18 +825,18 @@ public class Import extends AbstractCmd {
     }
 
     private BufferedImage readImage2(byte[] imageBytes) throws IOException {
+        try (SeekableStream stream = new ByteArraySeekableStream(imageBytes)) {
+            String decoderName = null;
 
-        SeekableStream stream = new ByteArraySeekableStream(imageBytes);
-        String decoderName = null;
+            for (String dn : ImageCodec.getDecoderNames(stream)) {
+                decoderName = dn;
+                break;
+            }
 
-        for (String dn : ImageCodec.getDecoderNames(stream)) {
-            decoderName = dn;
-            break;
+            ImageDecoder decoder = ImageCodec.createImageDecoder(decoderName, stream, null);
+            PlanarImage img = PlanarImage.wrapRenderedImage(decoder.decodeAsRenderedImage());
+            return img.getAsBufferedImage();
         }
-
-        ImageDecoder decoder = ImageCodec.createImageDecoder(decoderName, stream, null);
-        PlanarImage img = PlanarImage.wrapRenderedImage(decoder.decodeAsRenderedImage());
-        return img.getAsBufferedImage();
     }
 
     void fillSpatialTable() throws Exception {
@@ -1045,33 +1042,33 @@ public class Import extends AbstractCmd {
         if (f == null || f.exists() == false)
             throw new IOException("Cannot find world file for " + imageFile.getAbsolutePath());
 
-        BufferedReader in = new BufferedReader(new FileReader(f));
-        Double resx = Double.valueOf(in.readLine());
-        in.readLine(); // skip rotate x
-        in.readLine(); // skip rotaty y
-        Double resy = Double.valueOf(in.readLine());
-        Double ulx = Double.valueOf(in.readLine());
-        Double uly = Double.valueOf(in.readLine());
+        try (BufferedReader in = new BufferedReader(new FileReader(f))) {
+            Double resx = Double.valueOf(in.readLine());
+            in.readLine(); // skip rotate x
+            in.readLine(); // skip rotaty y
+            Double resy = Double.valueOf(in.readLine());
+            Double ulx = Double.valueOf(in.readLine());
+            Double uly = Double.valueOf(in.readLine());
 
-        in.close();
+            double minx = ulx;
+            double maxx = ulx + width * resx;
+            if (resy > 0) resy *= -1;
 
-        double minx = ulx;
-        double maxx = ulx + width * resx;
-        if (resy > 0) resy *= -1;
-
-        double miny = uly + height * resy;
-        double maxy = uly;
-        GeometryFactory factory = new GeometryFactory();
-        Coordinate[] coords =
-                new Coordinate[] {
-                    new Coordinate(minx, miny),
-                    new Coordinate(minx, maxy),
-                    new Coordinate(maxx, maxy),
-                    new Coordinate(maxx, miny),
-                    new Coordinate(minx, miny)
-                };
-        Polygon poly = factory.createPolygon(factory.createLinearRing(coords), new LinearRing[0]);
-        return factory.createMultiPolygon(new Polygon[] {poly});
+            double miny = uly + height * resy;
+            double maxy = uly;
+            GeometryFactory factory = new GeometryFactory();
+            Coordinate[] coords =
+                    new Coordinate[] {
+                        new Coordinate(minx, miny),
+                        new Coordinate(minx, maxy),
+                        new Coordinate(maxx, maxy),
+                        new Coordinate(maxx, miny),
+                        new Coordinate(minx, miny)
+                    };
+            Polygon poly =
+                    factory.createPolygon(factory.createLinearRing(coords), new LinearRing[0]);
+            return factory.createMultiPolygon(new Polygon[] {poly});
+        }
     }
 
     private void logError(Exception e, String msg) {

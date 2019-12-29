@@ -956,6 +956,7 @@ public class Utilities {
      * @return the read {@code PlanarImage}
      * @throws IOException
      */
+    @SuppressWarnings("PMD.CloseResource") // stream managed in the returned delayed read op
     public static PlanarImage readImage(
             final ImageReaderSpi spi,
             final Object input,

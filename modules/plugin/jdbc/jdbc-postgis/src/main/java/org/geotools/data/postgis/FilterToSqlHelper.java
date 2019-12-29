@@ -847,6 +847,7 @@ class FilterToSqlHelper {
         }
     }
 
+    @SuppressWarnings("PMD.CloseResource") // tmp it a copy of out, that's managed elsewhere
     protected void writeBinaryExpression(Expression e, Object context) throws IOException {
         Writer tmp = out;
         try {

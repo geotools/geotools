@@ -67,48 +67,54 @@ public class LineEndPointCoveredByLineValidation extends LineLineAbstractValidat
         SimpleFeatureSource fsLine = (SimpleFeatureSource) layers.get(getLineTypeRef());
 
         SimpleFeatureCollection fcLine = fsLine.getFeatures();
-        SimpleFeatureIterator fLine = fcLine.features();
+        try (SimpleFeatureIterator fLine = fcLine.features()) {
 
-        SimpleFeatureSource fsRLine = (SimpleFeatureSource) layers.get(getRestrictedLineTypeRef());
+            SimpleFeatureSource fsRLine =
+                    (SimpleFeatureSource) layers.get(getRestrictedLineTypeRef());
 
-        ListFeatureCollection fcRLine = new ListFeatureCollection(fsRLine.getFeatures());
+            ListFeatureCollection fcRLine = new ListFeatureCollection(fsRLine.getFeatures());
 
-        while (fLine.hasNext()) {
-            SimpleFeature line = fLine.next();
-            SimpleFeatureIterator fRLine = fcRLine.features();
-            Geometry lineGeom = (Geometry) line.getDefaultGeometry();
-            if (envelope.contains(lineGeom.getEnvelopeInternal())) {
-                // 	check for valid comparison
-                if (LineString.class.isAssignableFrom(lineGeom.getClass())) {
-                    while (fRLine.hasNext()) {
-                        SimpleFeature rLine = fRLine.next();
-                        Geometry rLineGeom = (Geometry) rLine.getDefaultGeometry();
-                        if (envelope.contains(rLineGeom.getEnvelopeInternal())) {
-                            if (LineString.class.isAssignableFrom(rLineGeom.getClass())) {
-                                Point p1 = ((LineString) rLineGeom).getEndPoint();
-                                // Point p2 = ((LineString)rLineGeom).getStartPoint(); //include
-                                // this?
-                                if (!lineGeom.contains(p1)) {
-                                    // if(!(lineGeom.contains(p1) || lineGeom.contains(p2))){
-                                    results.error(
-                                            rLine,
-                                            "Line End Point not covered by the specified Line.");
-                                    r = false;
+            while (fLine.hasNext()) {
+                SimpleFeature line = fLine.next();
+                try (SimpleFeatureIterator fRLine = fcRLine.features()) {
+                    Geometry lineGeom = (Geometry) line.getDefaultGeometry();
+                    if (envelope.contains(lineGeom.getEnvelopeInternal())) {
+                        // 	check for valid comparison
+                        if (LineString.class.isAssignableFrom(lineGeom.getClass())) {
+                            while (fRLine.hasNext()) {
+                                SimpleFeature rLine = fRLine.next();
+                                Geometry rLineGeom = (Geometry) rLine.getDefaultGeometry();
+                                if (envelope.contains(rLineGeom.getEnvelopeInternal())) {
+                                    if (LineString.class.isAssignableFrom(rLineGeom.getClass())) {
+                                        Point p1 = ((LineString) rLineGeom).getEndPoint();
+                                        // Point p2 = ((LineString)rLineGeom).getStartPoint();
+                                        // //include
+                                        // this?
+                                        if (!lineGeom.contains(p1)) {
+                                            // if(!(lineGeom.contains(p1) ||
+                                            // lineGeom.contains(p2))){
+                                            results.error(
+                                                    rLine,
+                                                    "Line End Point not covered by the specified Line.");
+                                            r = false;
+                                        }
+                                        // do next.
+                                    } else {
+                                        fcRLine.remove(rLine);
+                                        results.warning(
+                                                rLine,
+                                                "Invalid type: this feature is not a derivative of a LineString");
+                                    }
+                                } else {
+                                    fcRLine.remove(rLine);
                                 }
-                                // do next.
-                            } else {
-                                fcRLine.remove(rLine);
-                                results.warning(
-                                        rLine,
-                                        "Invalid type: this feature is not a derivative of a LineString");
                             }
                         } else {
-                            fcRLine.remove(rLine);
+                            results.warning(
+                                    line,
+                                    "Invalid type: this feature is not a derivative of a LineString");
                         }
                     }
-                } else {
-                    results.warning(
-                            line, "Invalid type: this feature is not a derivative of a LineString");
                 }
             }
         }

@@ -212,7 +212,7 @@ public class MBTilesFile implements AutoCloseable {
         params.put(
                 MBTilesDataStoreFactory.DBTYPE.key, (String) MBTilesDataStoreFactory.DBTYPE.sample);
 
-        this.connPool = new MBTilesDataStoreFactory().createDataSource(params);
+        this.connPool = new MBTilesDataStoreFactory().createDataSource(params, false);
     }
 
     /**
@@ -288,10 +288,8 @@ public class MBTilesFile implements AutoCloseable {
                     disableJournal(cx);
                 }
 
-                PreparedStatement ps;
-
                 if (entry.getData() != null) {
-                    ps =
+                    try (PreparedStatement ps =
                             prepare(
                                             cx,
                                             format(
@@ -302,9 +300,11 @@ public class MBTilesFile implements AutoCloseable {
                                     .set(entry.getTileRow())
                                     .set(entry.getData())
                                     .log(Level.FINE)
-                                    .statement();
+                                    .statement()) {
+                        ps.execute();
+                    }
                 } else {
-                    ps =
+                    try (PreparedStatement ps =
                             prepare(
                                             cx,
                                             format(
@@ -314,10 +314,10 @@ public class MBTilesFile implements AutoCloseable {
                                     .set(entry.getTileColumn())
                                     .set(entry.getTileRow())
                                     .log(Level.FINE)
-                                    .statement();
+                                    .statement()) {
+                        ps.execute();
+                    }
                 }
-                ps.execute();
-                ps.close();
 
                 saveMinMaxZoomMetadata(
                         (int) Math.min(entry.getZoomLevel(), this.minZoom()),
@@ -337,74 +337,71 @@ public class MBTilesFile implements AutoCloseable {
      * @throws IOException
      */
     public void saveGrid(MBTilesGrid entry) throws IOException {
-        try {
-            Connection cx = connPool.getConnection();
-            try {
-                PreparedStatement ps;
-
-                if (entry.getGrid() != null) {
-                    ps =
-                            prepare(
-                                            cx,
-                                            format(
-                                                    "INSERT OR REPLACE INTO %s VALUES (?,?,?,?)",
-                                                    TABLE_GRIDS))
-                                    .set(entry.getZoomLevel())
-                                    .set(entry.getTileColumn())
-                                    .set(entry.getTileRow())
-                                    .set(entry.getGrid())
-                                    .log(Level.FINE)
-                                    .statement();
-                } else {
-                    ps =
-                            prepare(
-                                            cx,
-                                            format(
-                                                    "DELETE FROM %s WHERE zoom_level=? AND tile_column=? AND tile_row=?",
-                                                    TABLE_GRIDS))
-                                    .set(entry.getZoomLevel())
-                                    .set(entry.getTileColumn())
-                                    .set(entry.getTileRow())
-                                    .log(Level.FINE)
-                                    .statement();
-                }
-                ps.execute();
-                ps.close();
-
-                for (Map.Entry<String, String> gridDataEntry : entry.getGridData().entrySet()) {
-                    if (gridDataEntry.getValue() != null) {
-                        ps =
-                                prepare(
-                                                cx,
-                                                format(
-                                                        "INSERT OR REPLACE INTO %s VALUES (?,?,?,?,?)",
-                                                        TABLE_GRID_DATA))
-                                        .set(entry.getZoomLevel())
-                                        .set(entry.getTileColumn())
-                                        .set(entry.getTileRow())
-                                        .set(gridDataEntry.getKey())
-                                        .set(gridDataEntry.getValue())
-                                        .log(Level.FINE)
-                                        .statement();
-                    } else {
-                        ps =
-                                prepare(
-                                                cx,
-                                                format(
-                                                        "DELETE FROM %s WHERE zoom_level=? AND tile_column=? AND tile_row=? AND key_name=?",
-                                                        TABLE_GRID_DATA))
-                                        .set(entry.getZoomLevel())
-                                        .set(entry.getTileColumn())
-                                        .set(entry.getTileRow())
-                                        .set(gridDataEntry.getKey())
-                                        .log(Level.FINE)
-                                        .statement();
-                    }
+        try (Connection cx = connPool.getConnection()) {
+            if (entry.getGrid() != null) {
+                try (PreparedStatement ps =
+                        prepare(
+                                        cx,
+                                        format(
+                                                "INSERT OR REPLACE INTO %s VALUES (?,?,?,?)",
+                                                TABLE_GRIDS))
+                                .set(entry.getZoomLevel())
+                                .set(entry.getTileColumn())
+                                .set(entry.getTileRow())
+                                .set(entry.getGrid())
+                                .log(Level.FINE)
+                                .statement()) {
                     ps.execute();
-                    ps.close();
                 }
-            } finally {
-                cx.close();
+            } else {
+                try (PreparedStatement ps =
+                        prepare(
+                                        cx,
+                                        format(
+                                                "DELETE FROM %s WHERE zoom_level=? AND tile_column=? AND tile_row=?",
+                                                TABLE_GRIDS))
+                                .set(entry.getZoomLevel())
+                                .set(entry.getTileColumn())
+                                .set(entry.getTileRow())
+                                .log(Level.FINE)
+                                .statement()) {
+                    ps.execute();
+                }
+            }
+
+            for (Map.Entry<String, String> gridDataEntry : entry.getGridData().entrySet()) {
+                if (gridDataEntry.getValue() != null) {
+                    try (PreparedStatement ps =
+                            prepare(
+                                            cx,
+                                            format(
+                                                    "INSERT OR REPLACE INTO %s VALUES (?,?,?,?,?)",
+                                                    TABLE_GRID_DATA))
+                                    .set(entry.getZoomLevel())
+                                    .set(entry.getTileColumn())
+                                    .set(entry.getTileRow())
+                                    .set(gridDataEntry.getKey())
+                                    .set(gridDataEntry.getValue())
+                                    .log(Level.FINE)
+                                    .statement()) {
+                        ps.execute();
+                    }
+                } else {
+                    try (PreparedStatement ps =
+                            prepare(
+                                            cx,
+                                            format(
+                                                    "DELETE FROM %s WHERE zoom_level=? AND tile_column=? AND tile_row=? AND key_name=?",
+                                                    TABLE_GRID_DATA))
+                                    .set(entry.getZoomLevel())
+                                    .set(entry.getTileColumn())
+                                    .set(entry.getTileRow())
+                                    .set(gridDataEntry.getKey())
+                                    .log(Level.FINE)
+                                    .statement()) {
+                        ps.execute();
+                    }
+                }
             }
         } catch (SQLException e) {
             throw new IOException(e);
@@ -805,29 +802,28 @@ public class MBTilesFile implements AutoCloseable {
     }
 
     protected void saveMetaDataEntry(String name, String value, Connection cx) throws SQLException {
-        PreparedStatement ps;
-
         if (disableJournal) {
             disableJournal(cx);
         }
 
         if (value != null) {
-            ps =
+            try (PreparedStatement ps =
                     prepare(cx, format("INSERT OR REPLACE INTO %s VALUES (?,?)", TABLE_METADATA))
                             .set(name)
                             .set(value)
                             .log(Level.FINE)
-                            .statement();
+                            .statement()) {
+                ps.execute();
+            }
         } else {
-            ps =
+            try (PreparedStatement ps =
                     prepare(cx, format("DELETE FROM %s WHERE NAME = ?", TABLE_METADATA))
                             .set(name)
                             .log(Level.FINE)
-                            .statement();
+                            .statement()) {
+                ps.execute();
+            }
         }
-
-        ps.execute();
-        ps.close();
     }
 
     protected String loadMetaDataEntry(String name, Connection cx) throws SQLException {

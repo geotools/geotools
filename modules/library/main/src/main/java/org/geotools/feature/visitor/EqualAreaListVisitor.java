@@ -34,7 +34,7 @@ import org.opengis.filter.expression.Expression;
 public class EqualAreaListVisitor implements FeatureCalc {
 
     /** Combination of value and its area */
-    private static class ValueArea implements Comparable {
+    private static class ValueArea implements Comparable<ValueArea> {
         Comparable value;
         double area;
 
@@ -44,8 +44,7 @@ public class EqualAreaListVisitor implements FeatureCalc {
         }
 
         @Override
-        public int compareTo(Object o) {
-            ValueArea other = (ValueArea) o;
+        public int compareTo(ValueArea other) {
             return value.compareTo(other.value);
         }
 

@@ -111,16 +111,16 @@ public class MongoNestedMapping extends NestedAttributeMapping {
         // get all the mapped nested features based on the link values
         FeatureCollection<FeatureType, Feature> fCollection = fSource.getFeatures(Query.ALL);
         if (fCollection instanceof MappingFeatureCollection) {
-            FeatureIterator<Feature> iterator = fCollection.features();
-            while (iterator.hasNext()) {
-                Feature nestedFeature = iterator.next();
-                String parentPath =
-                        MongoComplexUtilities.resolvePath(
-                                (Feature) feature, linkCollection.getCollectionPath());
-                MongoComplexUtilities.setParentPath(nestedFeature, parentPath);
-                matchingFeatures.add(nestedFeature);
+            try (FeatureIterator<Feature> iterator = fCollection.features()) {
+                while (iterator.hasNext()) {
+                    Feature nestedFeature = iterator.next();
+                    String parentPath =
+                            MongoComplexUtilities.resolvePath(
+                                    (Feature) feature, linkCollection.getCollectionPath());
+                    MongoComplexUtilities.setParentPath(nestedFeature, parentPath);
+                    matchingFeatures.add(nestedFeature);
+                }
             }
-            iterator.close();
         }
         return matchingFeatures;
     }

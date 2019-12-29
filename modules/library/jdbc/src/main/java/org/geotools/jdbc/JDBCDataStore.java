@@ -2058,6 +2058,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             try {
                 if (dialect instanceof PreparedStatementSQLDialect) {
                     st = deleteSQLPS(featureType, filter, cx);
+                    @SuppressWarnings("PMD.CloseResource") // actually being closed later
                     PreparedStatement ps = (PreparedStatement) st;
 
                     ((PreparedStatementSQLDialect) dialect).onDelete(ps, cx, featureType);
@@ -2418,6 +2419,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                 if (getSQLDialect() instanceof PreparedStatementSQLDialect) {
                     st = selectSQLPS(featureType, query, cx);
 
+                    @SuppressWarnings("PMD.CloseResource") // actually being closed later
                     PreparedStatement ps = (PreparedStatement) st;
                     ((PreparedStatementSQLDialect) getSQLDialect()).onSelect(ps, cx, featureType);
                     rs = ps.executeQuery();
@@ -4809,6 +4811,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         super.dispose();
         if (dataSource != null && dataSource instanceof ManageableDataSource) {
             try {
+                @SuppressWarnings("PMD.CloseResource") // actually closing it here
                 ManageableDataSource mds = (ManageableDataSource) dataSource;
                 mds.close();
             } catch (SQLException e) {

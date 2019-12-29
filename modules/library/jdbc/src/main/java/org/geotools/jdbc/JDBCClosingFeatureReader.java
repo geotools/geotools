@@ -50,8 +50,8 @@ public class JDBCClosingFeatureReader
         return (SimpleFeature) reader.next();
     }
 
+    @SuppressWarnings("PMD.CloseResource") // we are actually closing
     public void close() throws IOException {
-
         FeatureReader r = reader;
         while (r instanceof DelegatingFeatureReader) {
             if (r instanceof JDBCFeatureReader) {

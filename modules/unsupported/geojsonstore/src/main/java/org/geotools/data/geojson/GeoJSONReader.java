@@ -103,7 +103,7 @@ public class GeoJSONReader implements AutoCloseable {
             }
 
             LOGGER.finest("inputstream is " + inputStream2);
-            return (inputStream2 != null) && (inputStream2.available() > 0);
+            return inputStream2 != null && inputStream2.available() > 0;
 
         } catch (IOException e) {
             e.printStackTrace();

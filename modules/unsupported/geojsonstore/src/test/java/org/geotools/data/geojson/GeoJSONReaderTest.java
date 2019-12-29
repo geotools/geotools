@@ -47,10 +47,11 @@ public class GeoJSONReaderTest {
     public void testGetFeatures() throws IOException, ParseException {
         URL url = TestData.url(GeoJSONDataStore.class, "locations.json");
 
-        GeoJSONReader reader = new GeoJSONReader(url);
-        FeatureCollection features = reader.getFeatures();
-        assertNotNull(features);
-        assertEquals("wrong number of features read", 9, features.size());
+        try (GeoJSONReader reader = new GeoJSONReader(url)) {
+            FeatureCollection features = reader.getFeatures();
+            assertNotNull(features);
+            assertEquals("wrong number of features read", 9, features.size());
+        }
     }
 
     @Test

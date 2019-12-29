@@ -144,111 +144,111 @@ public class GeoJSONWriteTest {
         params.put(GeoJSONDataStoreFactory.URL_PARAM.key, url);
         DataStore store = fac.createDataStore(params);
 
-        Transaction t1 = new DefaultTransaction("transaction 1");
-        Transaction t2 = new DefaultTransaction("transactoin 2");
+        try (Transaction t1 = new DefaultTransaction("transaction 1");
+                Transaction t2 = new DefaultTransaction("transactoin 2")) {
 
-        SimpleFeatureType type = store.getSchema("locations");
-        SimpleFeatureStore auto = (SimpleFeatureStore) store.getFeatureSource("locations");
-        SimpleFeatureStore featureStore1 = (SimpleFeatureStore) store.getFeatureSource("locations");
-        SimpleFeatureStore featureStore2 = (SimpleFeatureStore) store.getFeatureSource("locations");
+            SimpleFeatureType type = store.getSchema("locations");
+            SimpleFeatureStore auto = (SimpleFeatureStore) store.getFeatureSource("locations");
+            SimpleFeatureStore featureStore1 =
+                    (SimpleFeatureStore) store.getFeatureSource("locations");
+            SimpleFeatureStore featureStore2 =
+                    (SimpleFeatureStore) store.getFeatureSource("locations");
 
-        featureStore1.setTransaction(t1);
-        featureStore2.setTransaction(t2);
-        assertNotNull(featureStore1);
-        assertNotNull(featureStore1.getFeatures());
+            featureStore1.setTransaction(t1);
+            featureStore2.setTransaction(t2);
+            assertNotNull(featureStore1);
+            assertNotNull(featureStore1.getFeatures());
 
-        assertNotNull(featureStore2);
-        assertNotNull(featureStore2.getFeatures());
-        // Before we edit everything should be the same
-        assertEquals("featureStore1 before", 9, featureStore1.getFeatures().size());
-        assertEquals("featureStore2 before", 9, featureStore2.getFeatures().size());
+            assertNotNull(featureStore2);
+            assertNotNull(featureStore2.getFeatures());
+            // Before we edit everything should be the same
+            assertEquals("featureStore1 before", 9, featureStore1.getFeatures().size());
+            assertEquals("featureStore2 before", 9, featureStore2.getFeatures().size());
 
-        // select feature to remove
-        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+            // select feature to remove
+            FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
-        Filter filter1 = ff.equal(ff.property("CITY"), ff.literal("Trento"), false);
+            Filter filter1 = ff.equal(ff.property("CITY"), ff.literal("Trento"), false);
 
-        featureStore1.removeFeatures(filter1); // removes "Trento" from fs1
+            featureStore1.removeFeatures(filter1); // removes "Trento" from fs1
 
-        // Tests after removal only featureStore1 is affected
-        assertEquals("auto after featureStore1 removes fid1", 9, auto.getFeatures().size());
-        assertEquals(
-                "featureStore1 after featureStore1 removes fid1",
-                8,
-                featureStore1.getFeatures().size());
-        assertEquals(
-                "featureStore2 after featureStore1 removes fid1",
-                9,
-                featureStore2.getFeatures().size());
+            // Tests after removal only featureStore1 is affected
+            assertEquals("auto after featureStore1 removes fid1", 9, auto.getFeatures().size());
+            assertEquals(
+                    "featureStore1 after featureStore1 removes fid1",
+                    8,
+                    featureStore1.getFeatures().size());
+            assertEquals(
+                    "featureStore2 after featureStore1 removes fid1",
+                    9,
+                    featureStore2.getFeatures().size());
 
-        // new feature to add!
-        // 45.52, -122.681944, Portland, 800, 2014
-        GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
-        Point point = geometryFactory.createPoint(new Coordinate(-122.681944, 45.52));
+            // new feature to add!
+            // 45.52, -122.681944, Portland, 800, 2014
+            GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
+            Point point = geometryFactory.createPoint(new Coordinate(-122.681944, 45.52));
 
-        SimpleFeature feature =
-                SimpleFeatureBuilder.build(
-                        type,
-                        new Object[] {point, 45.52, -122.681944, "Portland", 800, 2014},
-                        "feature-10");
+            SimpleFeature feature =
+                    SimpleFeatureBuilder.build(
+                            type,
+                            new Object[] {point, 45.52, -122.681944, "Portland", 800, 2014},
+                            "feature-10");
 
-        SimpleFeatureCollection collection = DataUtilities.collection(feature);
+            SimpleFeatureCollection collection = DataUtilities.collection(feature);
 
-        featureStore2.addFeatures(collection);
+            featureStore2.addFeatures(collection);
 
-        // Tests after adding the feature
-        assertEquals(
-                "auto after featureStore1 removes Trento and featureStore2 adds Portland",
-                9,
-                auto.getFeatures().size());
-        assertEquals(
-                "featureStore1 after featureStore1 removes fid1 and featureStore2 adds fid5",
-                8,
-                featureStore1.getFeatures().size());
-        assertEquals(
-                "featureStore2 after featureStore1 removes fid1 and featureStore2 adds fid5",
-                10,
-                featureStore2.getFeatures().size());
+            // Tests after adding the feature
+            assertEquals(
+                    "auto after featureStore1 removes Trento and featureStore2 adds Portland",
+                    9,
+                    auto.getFeatures().size());
+            assertEquals(
+                    "featureStore1 after featureStore1 removes fid1 and featureStore2 adds fid5",
+                    8,
+                    featureStore1.getFeatures().size());
+            assertEquals(
+                    "featureStore2 after featureStore1 removes fid1 and featureStore2 adds fid5",
+                    10,
+                    featureStore2.getFeatures().size());
 
-        // commit transaction one
-        t1.commit();
-        // Tests after first commit
-        int size = auto.getFeatures().size();
-        assertEquals(
-                "auto after featureStore1 commits removal of fid1 (featureStore2 has added fid5)",
-                8,
-                size);
+            // commit transaction one
+            t1.commit();
+            // Tests after first commit
+            int size = auto.getFeatures().size();
+            assertEquals(
+                    "auto after featureStore1 commits removal of fid1 (featureStore2 has added fid5)",
+                    8,
+                    size);
 
-        assertEquals(
-                "featureStore1 after commiting removal of fid1 (featureStore2 has added fid5)",
-                8,
-                featureStore1.getFeatures().size());
-        assertEquals(
-                "featureStore2 after featureStore1 commits removal of fid1 (featureStore2 has added fid5)",
-                9,
-                featureStore2.getFeatures().size());
+            assertEquals(
+                    "featureStore1 after commiting removal of fid1 (featureStore2 has added fid5)",
+                    8,
+                    featureStore1.getFeatures().size());
+            assertEquals(
+                    "featureStore2 after featureStore1 commits removal of fid1 (featureStore2 has added fid5)",
+                    9,
+                    featureStore2.getFeatures().size());
 
-        // commit transaction two
-        t2.commit();
+            // commit transaction two
+            t2.commit();
 
-        // Tests after 2nd commit
+            // Tests after 2nd commit
 
-        assertEquals(
-                "auto after featureStore2 commits addition of fid5 (fid1 previously removed)",
-                9,
-                auto.getFeatures().size());
+            assertEquals(
+                    "auto after featureStore2 commits addition of fid5 (fid1 previously removed)",
+                    9,
+                    auto.getFeatures().size());
 
-        assertEquals(
-                "featureStore1 after featureStore2 commits addition of fid5 (fid1 previously removed)",
-                9,
-                featureStore1.getFeatures().size());
-        assertEquals(
-                "featureStore2 after commiting addition of fid5 (fid1 previously removed)",
-                9,
-                featureStore2.getFeatures().size());
-
-        t1.close();
-        t2.close();
+            assertEquals(
+                    "featureStore1 after featureStore2 commits addition of fid5 (fid1 previously removed)",
+                    9,
+                    featureStore1.getFeatures().size());
+            assertEquals(
+                    "featureStore2 after commiting addition of fid5 (fid1 previously removed)",
+                    9,
+                    featureStore2.getFeatures().size());
+        }
         store.dispose(); // clear out any listeners
     }
 
@@ -296,7 +296,7 @@ public class GeoJSONWriteTest {
 
         final SimpleFeatureType type = store.getSchema("locations");
         assertNotNull(type);
-        final FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
+
         SimpleFeature f;
         DefaultFeatureCollection collection = new DefaultFeatureCollection();
 
@@ -312,23 +312,25 @@ public class GeoJSONWriteTest {
 
         collection.add(f);
 
-        writer = store.getFeatureWriter("locations", Transaction.AUTO_COMMIT);
-        try {
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                store.getFeatureWriter("locations", Transaction.AUTO_COMMIT)) {
+
             // remove all features
             while (writer.hasNext()) {
                 writer.next();
                 writer.remove();
             }
             // copy new features in
-            SimpleFeatureIterator iterator = collection.features();
-            while (iterator.hasNext()) {
-                SimpleFeature feature = iterator.next();
-                SimpleFeature newFeature = writer.next(); // new blank feature
-                newFeature.setAttributes(feature.getAttributes());
-                writer.write();
+            try (SimpleFeatureIterator iterator = collection.features()) {
+                while (iterator.hasNext()) {
+                    SimpleFeature feature = iterator.next();
+                    SimpleFeature newFeature = writer.next(); // new blank feature
+                    newFeature.setAttributes(feature.getAttributes());
+                    writer.write();
+                }
             }
         } finally {
-            writer.close();
+
             store.dispose();
         }
 
@@ -366,15 +368,14 @@ public class GeoJSONWriteTest {
         DataStore duplicate = factory.createNewDataStore(params2);
         duplicate.createSchema(featureType);
 
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader;
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
         SimpleFeature feature, newFeature;
 
         Query query = new Query(featureType.getTypeName(), Filter.INCLUDE);
-        reader = store.getFeatureReader(query, Transaction.AUTO_COMMIT);
         assertNotNull(duplicate);
-        writer = duplicate.getFeatureWriterAppend("duplicate", Transaction.AUTO_COMMIT);
-        try {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                        store.getFeatureReader(query, Transaction.AUTO_COMMIT);
+                FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                        duplicate.getFeatureWriterAppend("duplicate", Transaction.AUTO_COMMIT)) {
             while (reader.hasNext()) {
                 feature = reader.next();
                 newFeature = writer.next();
@@ -382,9 +383,6 @@ public class GeoJSONWriteTest {
                 newFeature.setAttributes(feature.getAttributes());
                 writer.write();
             }
-        } finally {
-            reader.close();
-            writer.close();
         }
 
         // test the new store is the same as the original

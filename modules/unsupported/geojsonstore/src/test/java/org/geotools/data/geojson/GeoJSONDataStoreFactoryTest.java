@@ -96,8 +96,9 @@ public class GeoJSONDataStoreFactoryTest {
     @Test
     public void testGetFeatureReader() throws IOException {
         String names[] = store.getTypeNames();
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                store.getFeatureReader(new Query(names[0], Filter.INCLUDE), null);
-        assertNotNull("failed to get FeatureReader", reader);
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                store.getFeatureReader(new Query(names[0], Filter.INCLUDE), null)) {
+            assertNotNull("failed to get FeatureReader", reader);
+        }
     }
 }

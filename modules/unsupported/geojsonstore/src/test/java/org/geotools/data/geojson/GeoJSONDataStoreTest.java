@@ -40,8 +40,6 @@ public class GeoJSONDataStoreTest {
     @Before
     public void setup() throws IOException {
         URL url = TestData.url(GeoJSONDataStore.class, "ne_110m_admin_1_states_provinces.geojson");
-        // URL url = new
-        // URL("http://geojson.xyz/naturalearth-3.3.0/ne_110m_admin_1_states_provinces.geojson");
 
         ds = new GeoJSONDataStore(url);
     }
@@ -74,39 +72,37 @@ public class GeoJSONDataStoreTest {
     public void testReader() throws IOException {
         String type = ds.getNames().get(0).getLocalPart();
         Query query = new Query(type);
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = ds.getFeatureReader(query, null);
-        SimpleFeatureType schema = reader.getFeatureType();
-        assertNotNull(schema);
-        System.out.println(schema);
-        /*
-         * while (reader.hasNext()) {
-         * // System.out.println(reader.next().getAttribute("name")); }
-         */
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                ds.getFeatureReader(query, null)) {
+            SimpleFeatureType schema = reader.getFeatureType();
+            assertNotNull(schema);
+        }
     }
 
     @Test
     public void testFeatures() throws IOException {
         URL url = TestData.url(GeoJSONDataStore.class, "featureCollection.json");
-        // URL url = new
-        // URL("http://geojson.xyz/naturalearth-3.3.0/ne_110m_admin_1_states_provinces.geojson");
 
         GeoJSONDataStore fds = new GeoJSONDataStore(url);
         String type = fds.getNames().get(0).getLocalPart();
         Query query = new Query(type);
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = fds.getFeatureReader(query, null);
-        SimpleFeatureType schema = reader.getFeatureType();
-        assertTrue(
-                Geometry.class.isAssignableFrom(
-                        schema.getGeometryDescriptor().getType().getBinding()));
-        assertNotNull(schema);
-        int count = 0;
-        while (reader.hasNext()) {
-            SimpleFeature next = reader.next();
-            // System.out.println(next.getAttribute("name"));
-            count++;
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                fds.getFeatureReader(query, null)) {
+            SimpleFeatureType schema = reader.getFeatureType();
+            assertTrue(
+                    Geometry.class.isAssignableFrom(
+                            schema.getGeometryDescriptor().getType().getBinding()));
+            assertNotNull(schema);
+            int count = 0;
+            while (reader.hasNext()) {
+                reader.next();
+                count++;
+            }
+
+            assertEquals(7, count);
         }
-        assertEquals(7, count);
     }
+
     // An ogr written file
     @Test
     public void testLocations() throws IOException {
@@ -114,23 +110,22 @@ public class GeoJSONDataStoreTest {
 
         GeoJSONDataStore fds = new GeoJSONDataStore(url);
         String type = fds.getNames().get(0).getLocalPart();
-        // System.out.println(type);
         Query query = new Query(type);
-        // System.out.println(query);
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = fds.getFeatureReader(query, null);
-        SimpleFeatureType schema = reader.getFeatureType();
-        // System.out.println(schema);
-        assertTrue(
-                Geometry.class.isAssignableFrom(
-                        schema.getGeometryDescriptor().getType().getBinding()));
-        assertNotNull(schema);
-        int count = 0;
-        while (reader.hasNext()) {
 
-            SimpleFeature next = reader.next();
-            // System.out.println(next.getAttribute("name"));
-            count++;
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                fds.getFeatureReader(query, null)) {
+            SimpleFeatureType schema = reader.getFeatureType();
+            // System.out.println(schema);
+            assertTrue(
+                    Geometry.class.isAssignableFrom(
+                            schema.getGeometryDescriptor().getType().getBinding()));
+            assertNotNull(schema);
+            int count = 0;
+            while (reader.hasNext()) {
+                reader.next();
+                count++;
+            }
+            assertEquals(9, count);
         }
-        assertEquals(9, count);
     }
 }

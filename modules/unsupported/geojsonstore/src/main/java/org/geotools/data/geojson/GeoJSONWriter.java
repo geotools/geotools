@@ -16,26 +16,26 @@
  */
 package org.geotools.data.geojson;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
 import java.io.BufferedOutputStream;
-import java.io.Closeable;
 import java.io.IOException;
 import java.io.OutputStream;
+
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.GeometryType;
 import org.opengis.feature.type.PropertyType;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+
 /**
  * Wrapper to handle writing GeoJSON FeatureCollections
  *
  * @author ian
  */
-
 public class GeoJSONWriter implements AutoCloseable {
-    private FeatureJSON writer = new FeatureJSON();
+
     private OutputStream out;
 
     org.locationtech.jts.io.geojson.GeoJsonWriter jWriter =

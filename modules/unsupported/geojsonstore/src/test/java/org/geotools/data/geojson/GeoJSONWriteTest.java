@@ -88,12 +88,14 @@ public class GeoJSONWriteTest {
             // System.err.println("Could not create " + tmp);
             return;
         }
+
         file = new File(tmp, "locations.json");
 
         URL resource = TestData.getResource(GeoJSONWriteTest.class, "locations.json");
         url = resource;
         if (url == null) throw new RuntimeException("Input datafile not found");
-        // System.out.println("copying " + resource.toExternalForm() + " to " + file);
+        // System.out.println("copying " + resource.toExternalForm() + " to " +
+        // file);
         Files.copy(resource.openStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
         url = URLs.fileToUrl(file);
     }
@@ -107,6 +109,7 @@ public class GeoJSONWriteTest {
 
     @After
     public void removeTemporaryLocations() throws IOException {
+
         File list[] = tmp.listFiles();
         if (list == null) {
             throw new IOException("no directory " + tmp);

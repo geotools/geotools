@@ -48,6 +48,7 @@ public class GeoJSONFeatureWriter
         File directory = file.getParentFile();
         this.temp =
                 File.createTempFile(typeName + System.currentTimeMillis(), "geojson", directory);
+
         this.writer = new GeoJSONWriter(new FileOutputStream(this.temp));
         this.delegate = new GeoJSONFeatureReader(state, query);
     }
@@ -125,6 +126,7 @@ public class GeoJSONFeatureWriter
             next();
             write();
         }
+        writer.close();
         if (delegate != null) {
             this.delegate.close();
             this.delegate = null;

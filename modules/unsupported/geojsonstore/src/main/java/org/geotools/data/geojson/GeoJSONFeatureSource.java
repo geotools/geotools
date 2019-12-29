@@ -70,7 +70,6 @@ public class GeoJSONFeatureSource extends ContentFeatureSource {
                     while (itr.hasNext()) {
                         SimpleFeature f = itr.next();
                         count += 1;
-                        System.out.println(transaction + ": (" + count + ") " + f);
                     }
                     return count;
                 }

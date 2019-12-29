@@ -57,7 +57,7 @@ public class GeoJSONWriter implements AutoCloseable {
     }
 
     public void write(SimpleFeature currentFeature) throws IOException {
-
+        // System.out.println("JSONWriter writing " + currentFeature.getID());
         generator.writeStartObject();
         generator.writeStringField("type", "Feature");
         generator.writeFieldName("properties");
@@ -96,6 +96,9 @@ public class GeoJSONWriter implements AutoCloseable {
             generator.writeNull();
         }
         generator.writeEndObject();
+        generator.flush();
+        // TODO: remove for speed later
+        out.flush();
     }
 
     @Override

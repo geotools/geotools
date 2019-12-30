@@ -74,8 +74,12 @@ public class GeoJSONFeatureReader implements FeatureReader<SimpleFeatureType, Si
 
     @Override
     public void close() throws IOException {
-        if (iterator != null) {
-            iterator.close();
+        try {
+            if (iterator != null) {
+                iterator.close();
+            }
+        } finally {
+            reader.close();
         }
     }
 }

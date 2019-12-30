@@ -132,23 +132,28 @@ public class GeoJSONFeatureWriter
 
     @Override
     public void close() throws IOException {
-        if (writer == null) {
-            throw new IOException("FeatureWriter already closed");
-        }
-        if (this.currentFeature != null) {
-            this.write();
-        }
-        while (hasNext()) {
-            next();
-            write();
-        }
-        writer.close();
-        if (delegate != null) {
-            this.delegate.close();
-            this.delegate = null;
-        }
-        File file = URLs.urlToFile(((GeoJSONDataStore) state.getEntry().getDataStore()).getUrl());
+        try {
+            if (writer == null) {
+                throw new IOException("FeatureWriter already closed");
+            }
+            if (this.currentFeature != null) {
+                this.write();
+            }
+            while (hasNext()) {
+                next();
+                write();
+            }
+            writer.close();
+            if (delegate != null) {
+                this.delegate.close();
+                this.delegate = null;
+            }
+            File file =
+                    URLs.urlToFile(((GeoJSONDataStore) state.getEntry().getDataStore()).getUrl());
 
-        Files.copy(temp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(temp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        } finally {
+            temp.delete();
+        }
     }
 }

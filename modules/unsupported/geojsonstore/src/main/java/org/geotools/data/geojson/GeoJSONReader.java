@@ -89,24 +89,15 @@ public class GeoJSONReader implements AutoCloseable {
     public boolean isConnected() {
 
         try (InputStream inputStream = url.openStream()) {
-            InputStream inputStream2;
-            if (inputStream == null) {
-                url = new URL(url.toExternalForm());
-                inputStream2 = url.openStream();
-            } else {
-                inputStream2 = inputStream;
+            if (inputStream != null && inputStream.available() > 0) {
+                return true;
             }
-
-            if (inputStream2.available() == 0) {
-                url = new URL(url.toExternalForm());
-                inputStream2 = url.openStream();
+            url = new URL(url.toExternalForm());
+            try (InputStream inputStream2 = url.openStream()) {
+                return inputStream2 != null && inputStream2.available() > 0;
             }
-
-            LOGGER.finest("inputstream is " + inputStream2);
-            return inputStream2 != null && inputStream2.available() > 0;
-
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.FINE, "Failure trying to determine if connected", e);
             return false;
         }
     }
@@ -285,7 +276,8 @@ public class GeoJSONReader implements AutoCloseable {
     }
 
     @Override
-    public void close() {
+    public void close() throws IOException {
+        parser.close();
         parser = null;
     }
 

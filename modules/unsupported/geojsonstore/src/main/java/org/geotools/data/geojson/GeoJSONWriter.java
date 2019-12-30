@@ -50,7 +50,7 @@ public class GeoJSONWriter implements AutoCloseable {
             this.out = new BufferedOutputStream(outputStream);
         }
         JsonFactory factory = new JsonFactory();
-        generator = factory.createGenerator(outputStream);
+        generator = factory.createGenerator(out);
         generator.writeStartObject();
         generator.writeStringField("type", "FeatureCollection");
         generator.writeFieldName("features");
@@ -104,10 +104,13 @@ public class GeoJSONWriter implements AutoCloseable {
 
     @Override
     public void close() throws IOException {
-        generator.writeEndArray();
-        generator.writeEndObject();
+        try {
+            generator.writeEndArray();
+            generator.writeEndObject();
 
-        generator.close();
-        out.close();
+            generator.close();
+        } finally {
+            out.close();
+        }
     }
 }

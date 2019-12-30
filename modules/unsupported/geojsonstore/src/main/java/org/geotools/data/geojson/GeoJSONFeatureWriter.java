@@ -91,7 +91,7 @@ public class GeoJSONFeatureWriter
             throw new IOException("FeatureWriter has been closed");
         }
         if (this.currentFeature != null) {
-            LOGGER.info("writing " + currentFeature.getID());
+            LOGGER.fine("writing " + currentFeature.getID());
             this.write();
         }
         try {
@@ -101,7 +101,7 @@ public class GeoJSONFeatureWriter
                     return this.currentFeature;
                 } else {
                     this.appending = true;
-                    LOGGER.info("Now appending");
+                    LOGGER.fine("Now appending");
                 }
             }
             SimpleFeatureType featureType = state.getFeatureType();

@@ -16,6 +16,9 @@
  */
 package org.geotools.data.geojson;
 
+import com.bedatadriven.jackson.datatype.jts.JtsModule;
+import com.bedatadriven.jackson.datatype.jts.parsers.GenericGeometryParser;
+import com.bedatadriven.jackson.datatype.jts.parsers.GeometryParser;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
@@ -44,7 +47,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.io.ParseException;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -67,8 +70,6 @@ public class GeoJSONReader implements AutoCloseable {
 
     private SimpleFeatureType schema;
 
-    static org.locationtech.jts.io.geojson.GeoJsonReader jReader =
-            new org.locationtech.jts.io.geojson.GeoJsonReader();
     SimpleFeatureTypeBuilder typeBuilder = null;
 
     private SimpleFeatureBuilder builder;
@@ -76,7 +77,7 @@ public class GeoJSONReader implements AutoCloseable {
     private String baseName = "features";
 
     private boolean schemaChanged = false;
-
+    private GeometryFactory gFac = new GeometryFactory();
     private URL url;
 
     public GeoJSONReader(URL url) throws IOException {
@@ -107,6 +108,7 @@ public class GeoJSONReader implements AutoCloseable {
             throw new IOException("not connected to " + url.toExternalForm());
         }
         ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JtsModule());
         List<SimpleFeature> features = new ArrayList<>();
         builder = null;
         while (!parser.isClosed()) {
@@ -192,17 +194,11 @@ public class GeoJSONReader implements AutoCloseable {
                 }
             }
             JsonNode geom = node.get("geometry");
-            Geometry g = null;
-            try {
-                String gString = geom.toString();
-                if (!geom.isNull() && !gString.isEmpty()) {
-                    g = jReader.read(gString);
-                }
-                builder.set(GEOMETRY_NAME, g);
-            } catch (ParseException e) {
-                LOGGER.log(Level.FINER, e.getMessage(), e);
-                throw new IOException(e);
-            }
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.registerModule(new JtsModule());
+            GeometryParser<Geometry> gParser = new GenericGeometryParser(gFac);
+            Geometry g = gParser.geometryFromJson(geom);
+            builder.set(GEOMETRY_NAME, g);
 
             String newId = baseName + "." + nextID++;
             feature = builder.buildFeature(newId);
@@ -247,7 +243,7 @@ public class GeoJSONReader implements AutoCloseable {
 
     public FeatureIterator<SimpleFeature> getIterator() throws IOException {
         if (!isConnected()) {
-            LOGGER.info("trying to read an unconnected data stream");
+            LOGGER.fine("trying to read an unconnected data stream");
             return new DefaultFeatureCollection(null, null).features();
         }
         return new GeoJsonIterator(parser);

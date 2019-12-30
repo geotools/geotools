@@ -16,8 +16,10 @@
  */
 package org.geotools.data.geojson;
 
+import com.bedatadriven.jackson.datatype.jts.JtsModule;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -36,14 +38,14 @@ public class GeoJSONWriter implements AutoCloseable {
 
     private OutputStream out;
 
-    org.locationtech.jts.io.geojson.GeoJsonWriter jWriter =
-            new org.locationtech.jts.io.geojson.GeoJsonWriter();
-
     JsonGenerator generator;
 
-    public GeoJSONWriter(OutputStream outputStream) throws IOException {
+    private ObjectMapper mapper;
 
-        jWriter.setEncodeCRS(false);
+    public GeoJSONWriter(OutputStream outputStream) throws IOException {
+        mapper = new ObjectMapper();
+        mapper.registerModule(new JtsModule());
+
         if (outputStream instanceof BufferedOutputStream) {
             this.out = outputStream;
         } else {
@@ -89,7 +91,7 @@ public class GeoJSONWriter implements AutoCloseable {
         generator.writeFieldName("geometry");
         Geometry defaultGeometry = (Geometry) currentFeature.getDefaultGeometry();
         if (defaultGeometry != null) {
-            String gString = jWriter.write(defaultGeometry);
+            String gString = mapper.writeValueAsString(defaultGeometry);
 
             generator.writeRawValue(gString);
             generator.writeStringField("id", currentFeature.getID());

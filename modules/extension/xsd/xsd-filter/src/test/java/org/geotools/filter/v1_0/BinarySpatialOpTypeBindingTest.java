@@ -71,7 +71,10 @@ public class BinarySpatialOpTypeBindingTest extends FilterTestSupport {
                         .getNodeValue());
         assertEquals(
                 "m",
-                ((Element) dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Distance.getLocalPart()).item(0))
+                ((Element)
+                                dom.getElementsByTagNameNS(
+                                                OGC.NAMESPACE, OGC.Distance.getLocalPart())
+                                        .item(0))
                         .getAttribute("units"));
     }
 

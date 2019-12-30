@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,115 +17,138 @@
 package org.geotools.data.geojson;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
-import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.filter.Filter;
 
 public class GeoJSONFeatureSource extends ContentFeatureSource {
-    private static final Logger LOGGER = Logging.getLogger(GeoJSONFeatureSource.class);
-
-    private FeatureCollection<?, ?> collection = null;
+    /** Should we read just the first feature to extract the Schema */
+    boolean quick = true;
 
     public GeoJSONFeatureSource(ContentEntry entry, Query query) {
         super(entry, query);
-        if (schema == null) {
-            // first see if our datastore knows what the schema is
-            schema = getDataStore().schema;
-        }
-        if (schema == null) {
-            try {
-                // failing that we'll attempt to construct it from the features
-                schema = buildFeatureType();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            }
-        }
+        transaction = getState().getTransaction();
     }
 
+    public GeoJSONFeatureSource(GeoJSONDataStore datastore) {
+        this(datastore, Query.ALL);
+    }
+
+    public GeoJSONFeatureSource(GeoJSONDataStore datastore, Query query) {
+        this(new ContentEntry(datastore, datastore.getTypeName()), query);
+    }
+
+    public GeoJSONFeatureSource(ContentEntry entry) {
+        this(entry, Query.ALL);
+    }
+
+    @Override
     public GeoJSONDataStore getDataStore() {
         return (GeoJSONDataStore) super.getDataStore();
     }
 
     @Override
     protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
+        ReferencedEnvelope env = new ReferencedEnvelope(getDataStore().getCrs());
 
-        collection = fetchFeatures();
-        FeatureCollection<?, ?> sub = collection.subCollection(query.getFilter());
-        ReferencedEnvelope bounds = sub.getBounds();
-        if (bounds.getCoordinateReferenceSystem() == null) {
-            bounds = new ReferencedEnvelope(bounds, DefaultGeographicCRS.WGS84);
+        if (query.getFilter() == Filter.INCLUDE) {
+
+            try (GeoJSONReader reader = getDataStore().read()) {
+                try (FeatureIterator<SimpleFeature> itr = reader.getIterator()) {
+                    while (itr.hasNext()) {
+                        SimpleFeature f = itr.next();
+                        env.expandToInclude(
+                                ((Geometry) f.getDefaultGeometry()).getEnvelopeInternal());
+                    }
+                }
+            }
         }
-        return bounds;
-    }
-
-    /**
-     * @param query
-     * @return
-     * @throws IOException
-     */
-    private FeatureCollection<?, ?> fetchFeatures() throws IOException {
-        // Ideally we would cache the features here but then things go badly when using transactions
-        LOGGER.fine("fetching reader from datastore");
-        GeoJSONReader reader = getDataStore().read();
-        collection = reader.getFeatures();
-        LOGGER.fine("Got " + collection.size() + " features");
-
-        return collection;
+        return env;
     }
 
     @Override
     protected int getCountInternal(Query query) throws IOException {
-        collection = fetchFeatures();
-        FeatureCollection<?, ?> sub = collection.subCollection(query.getFilter());
-        return sub.size();
+        if (query.getFilter() == Filter.INCLUDE) {
+
+            try (GeoJSONReader reader = getDataStore().read()) {
+                int count = 0;
+                try (FeatureIterator<SimpleFeature> itr = reader.getIterator()) {
+                    while (itr.hasNext()) {
+                        itr.next();
+                        count += 1;
+                    }
+                    return count;
+                }
+            }
+        }
+        return -1; // feature by feature scan required to count records
     }
 
     @Override
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {
-
         return new GeoJSONFeatureReader(getState(), query);
     }
 
     @Override
     protected SimpleFeatureType buildFeatureType() throws IOException {
-        if (schema == null) {
-            FeatureCollection<?, ?> collection = fetchFeatures();
-            SimpleFeatureType sch = (SimpleFeatureType) collection.getSchema();
-            SimpleFeatureTypeBuilder sb = new SimpleFeatureTypeBuilder();
-            sb.setName(getState().getEntry().getTypeName());
-            for (AttributeDescriptor att : sch.getAttributeDescriptors()) {
-                sb.add(att);
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.setName(entry.getName());
+
+        // read headers
+
+        try (GeoJSONReader reader = getDataStore().read()) {
+            try (FeatureIterator<SimpleFeature> itr = reader.getIterator()) {
+                boolean empty = true;
+                while (itr.hasNext()) {
+                    empty = false;
+                    itr.next();
+                    schema = (SimpleFeatureType) reader.getSchema();
+                    if (quick) {
+                        break;
+                    }
+                }
+                /*
+                 * In the event we are dealing with an empty file the schema may have
+                 * been set in the datastore.
+                 */
+                if (empty) {
+                    schema = getDataStore().getSchema();
+                    return schema;
+                }
             }
-            if (sch.getCoordinateReferenceSystem() != null) {
-                sb.setCRS(sch.getCoordinateReferenceSystem());
-            } else {
-                sb.setCRS(DefaultGeographicCRS.WGS84);
-            }
-            sb.setDescription(sch.getDescription());
-            schema = sb.buildFeatureType();
+            // we are going to hard code a point location
+            // columns like lat and lon will be gathered into a
+            // Point called Location
+            builder.setCRS(DefaultGeographicCRS.WGS84); // <- Coordinate reference
+            // system
+
+            return schema;
         }
-        return schema;
     }
 
-    /**
-     * Make handleVisitor package visible allowing CSVFeatureStore to delegate to this
-     * implementation.
-     */
     @Override
     protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
         return super.handleVisitor(query, visitor);
+    }
+
+    /** @return the quick */
+    public boolean isQuick() {
+        return quick;
+    }
+
+    /** @param quick the quick to set */
+    public void setQuick(boolean quick) {
+        this.quick = quick;
     }
 }

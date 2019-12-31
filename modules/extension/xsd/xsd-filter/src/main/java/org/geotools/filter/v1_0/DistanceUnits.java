@@ -20,8 +20,8 @@ import java.util.Objects;
 import java.util.StringJoiner;
 
 /**
- * A simple container class for containing both a distance and a units (some string
- * value, but should be <code>m</code> or <code>mi</code> or similar.
+ * A simple container class for containing both a distance and a units (some string value, but
+ * should be <code>m</code> or <code>mi</code> or similar.
  */
 public final class DistanceUnits {
     private final double distance;

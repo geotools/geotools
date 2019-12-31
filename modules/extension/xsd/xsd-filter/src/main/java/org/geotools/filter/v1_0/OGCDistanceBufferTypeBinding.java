@@ -17,11 +17,13 @@
 package org.geotools.filter.v1_0;
 
 import javax.xml.namespace.QName;
+import org.geotools.measure.Units;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
 import org.opengis.filter.spatial.DistanceBufferOperator;
 import org.picocontainer.MutablePicoContainer;
+import tec.uom.se.quantity.Quantities;
 
 /**
  * Binding object for the type http://www.opengis.net/ogc:DistanceBufferType.
@@ -83,8 +85,9 @@ public class OGCDistanceBufferTypeBinding extends AbstractComplexBinding {
             return property;
         }
 
-        if ("Distance".equals(name.getLocalPart())) {
-            return DistanceUnits.of(operator.getDistance(), operator.getDistanceUnits());
+        if (OGC.Distance.getLocalPart().equals(name.getLocalPart())) {
+            return Quantities.getQuantity(
+                    operator.getDistance(), Units.parseUnit(operator.getDistanceUnits()));
         }
 
         return null;

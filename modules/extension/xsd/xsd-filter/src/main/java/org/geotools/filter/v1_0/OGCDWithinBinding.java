@@ -16,6 +16,8 @@
  */
 package org.geotools.filter.v1_0;
 
+import javax.measure.Quantity;
+import javax.measure.quantity.Length;
 import javax.xml.namespace.QName;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
@@ -77,8 +79,12 @@ public class OGCDWithinBinding extends AbstractComplexBinding {
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Expression[] operands = OGCUtils.spatial(node, filterFactory, geometryFactory);
-        DistanceUnits distance = ((DistanceUnits) node.getChildValue(DistanceUnits.class));
+        // noinspection unchecked
+        Quantity<Length> distance = ((Quantity<Length>) node.getChildValue(Quantity.class));
         return filterFactory.dwithin(
-                operands[0], operands[1], distance.getDistance(), distance.getUnits());
+                operands[0],
+                operands[1],
+                distance.getValue().doubleValue(),
+                distance.getUnit().getSymbol());
     }
 }

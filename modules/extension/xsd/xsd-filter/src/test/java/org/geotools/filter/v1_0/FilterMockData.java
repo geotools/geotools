@@ -272,8 +272,8 @@ public class FilterMockData {
         return f.beyond(f.property("the_geom"), f.literal(geometry()), 1.0d, "m");
     }
 
-    static DWithin dwithin() {
-        return f.dwithin(f.property("the_geom"), f.literal(geometry()), 1.0d, "m");
+    static DWithin dwithin(Double distance, String units) {
+        return f.dwithin(f.property("the_geom"), f.literal(geometry()), distance, units);
     }
 
     static Element beyond(Document document, Node parent) {

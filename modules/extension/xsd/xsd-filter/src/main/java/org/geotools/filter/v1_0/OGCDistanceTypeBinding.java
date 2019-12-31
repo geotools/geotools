@@ -16,13 +16,20 @@
  */
 package org.geotools.filter.v1_0;
 
+import javax.measure.IncommensurableException;
+import javax.measure.Quantity;
+import javax.measure.Unit;
+import javax.measure.quantity.Length;
 import javax.xml.namespace.QName;
+import org.geotools.measure.Units;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
 import org.picocontainer.MutablePicoContainer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import si.uom.SI;
+import tec.uom.se.quantity.Quantities;
 
 /**
  * Binding object for the type http://www.opengis.net/ogc:DistanceType.
@@ -65,7 +72,7 @@ public class OGCDistanceTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Class getType() {
-        return DistanceUnits.class;
+        return Quantity.class;
     }
 
     /**
@@ -86,13 +93,32 @@ public class OGCDistanceTypeBinding extends AbstractComplexBinding {
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         String units = node.getAttributeValue("units").toString();
-        return DistanceUnits.of(Double.parseDouble((String) value), units);
+        Unit<?> unitType = Units.parseUnit(units);
+        if (!unitType.isCompatible(SI.METRE)) {
+            throw new IncommensurableException(
+                    "Could not parse type: " + unitType + " into SI Metres");
+        }
+        return Quantities.getQuantity(Double.parseDouble((String) value), unitType);
     }
 
+    /**
+     * Encodes an object representing a {@link Quantity} into a DistanceType element type. Will
+     * convert the type into SI Metres to ensure maximal compatibility with the OGC spec
+     * implementations.
+     *
+     * @throws IncommensurableException If the supplied object does not represent a valid Length
+     *     unit type (such as m, mi, etc.)
+     */
     public Element encode(Object object, Document document, Element value) throws Exception {
-        DistanceUnits distance = (DistanceUnits) object;
-        value.appendChild(document.createTextNode(Double.toString(distance.getDistance())));
-        value.setAttribute("units", distance.getUnits());
+        // noinspection unchecked
+        Quantity<Length> distance = (Quantity<Length>) object;
+        if (!distance.getUnit().isCompatible(SI.METRE)) {
+            throw new IncommensurableException(
+                    "Could not parse type: " + distance.getUnit() + " into SI Metres");
+        }
+        Quantity<Length> distanceInM = distance.to(SI.METRE);
+        value.appendChild(document.createTextNode(distanceInM.getValue().toString()));
+        value.setAttribute("units", SI.METRE.getSymbol());
 
         return value;
     }

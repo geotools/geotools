@@ -85,6 +85,6 @@ public class OGCDWithinBinding extends AbstractComplexBinding {
                 operands[0],
                 operands[1],
                 distance.getValue().doubleValue(),
-                distance.getUnit().getSymbol());
+                distance.getUnit().toString());
     }
 }

@@ -102,9 +102,7 @@ public class OGCDistanceTypeBinding extends AbstractComplexBinding {
     }
 
     /**
-     * Encodes an object representing a {@link Quantity} into a DistanceType element type. Will
-     * convert the type into SI Metres to ensure maximal compatibility with the OGC spec
-     * implementations.
+     * Encodes an object representing a {@link Quantity} into a DistanceType element type.
      *
      * @throws IncommensurableException If the supplied object does not represent a valid Length
      *     unit type (such as m, mi, etc.)
@@ -116,9 +114,8 @@ public class OGCDistanceTypeBinding extends AbstractComplexBinding {
             throw new IncommensurableException(
                     "Could not parse type: " + distance.getUnit() + " into SI Metres");
         }
-        Quantity<Length> distanceInM = distance.to(SI.METRE);
-        value.appendChild(document.createTextNode(distanceInM.getValue().toString()));
-        value.setAttribute("units", SI.METRE.getSymbol());
+        value.appendChild(document.createTextNode(distance.getValue().toString()));
+        value.setAttribute("units", distance.getUnit().toString());
 
         return value;
     }

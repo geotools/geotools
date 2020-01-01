@@ -16,6 +16,8 @@
  */
 package org.geotools.filter.v1_0;
 
+import javax.measure.Quantity;
+import javax.measure.quantity.Length;
 import javax.xml.namespace.QName;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
@@ -76,11 +78,13 @@ public class OGCBeyondBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-
         Expression[] operands = OGCUtils.spatial(node, filterFactory, geometryFactory);
-        double distance = ((Double) node.getChildValue(Double.class)).doubleValue();
-        Object units = node.getChild("Distance").getAttributeValue("units");
+        // noinspection unchecked
+        Quantity<Length> distance = ((Quantity<Length>) node.getChildValue(Quantity.class));
         return filterFactory.beyond(
-                operands[0], operands[1], distance, units == null ? null : units.toString());
+                operands[0],
+                operands[1],
+                distance.getValue().doubleValue(),
+                distance.getUnit().toString());
     }
 }

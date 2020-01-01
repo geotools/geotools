@@ -16,6 +16,7 @@
  */
 package org.geotools.filter.v1_0;
 
+import javax.measure.IncommensurableException;
 import org.geotools.gml3.GML;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.spatial.Beyond;
@@ -31,6 +32,8 @@ import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import si.uom.SI;
 
 public class BinarySpatialOpTypeBindingTest extends FilterTestSupport {
     public void testDistanceBufferType() {
@@ -64,12 +67,17 @@ public class BinarySpatialOpTypeBindingTest extends FilterTestSupport {
         assertEquals(1, dom.getElementsByTagNameNS(OGC.NAMESPACE, "Distance").getLength());
         assertEquals(
                 "1.0",
-                dom.getElementsByTagNameNS(OGC.NAMESPACE, "Distance")
+                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Distance.getLocalPart())
                         .item(0)
                         .getFirstChild()
                         .getNodeValue());
-        // assertEquals( "m",((Element)dom.getElementsByTagNameNS(OGC.NAMESPACE,
-        // "Distance").item(0)).getAttribute("units"));
+        assertEquals(
+                "m",
+                ((Element)
+                                dom.getElementsByTagNameNS(
+                                                OGC.NAMESPACE, OGC.Distance.getLocalPart())
+                                        .item(0))
+                        .getAttribute("units"));
     }
 
     public void testDWithinType() {
@@ -103,6 +111,43 @@ public class BinarySpatialOpTypeBindingTest extends FilterTestSupport {
                         .item(0)
                         .getFirstChild()
                         .getNodeValue());
+        assertEquals(
+                "m",
+                ((Element)
+                                dom.getElementsByTagNameNS(
+                                                OGC.NAMESPACE, OGC.Distance.getLocalPart())
+                                        .item(0))
+                        .getAttribute("units"));
+    }
+
+    public void testDWithinUnitsInCustomFormat() throws Exception {
+        Document dom = encode(FilterMockData.dwithin(1.0, "mi"), OGC.DWithin);
+
+        assertEquals(1, dom.getElementsByTagNameNS(OGC.NAMESPACE, "Distance").getLength());
+        assertEquals(
+                "1.0",
+                dom.getElementsByTagNameNS(OGC.NAMESPACE, "Distance")
+                        .item(0)
+                        .getFirstChild()
+                        .getNodeValue());
+        assertEquals(
+                "mi",
+                ((Element)
+                                dom.getElementsByTagNameNS(
+                                                OGC.NAMESPACE, OGC.Distance.getLocalPart())
+                                        .item(0))
+                        .getAttribute("units"));
+    }
+
+    public void testDWithinUnitsFailsForUnsupportedTypes() throws Exception {
+        try {
+            encode(FilterMockData.dwithin(1.0, SI.AMPERE.getSymbol()), OGC.DWithin);
+            fail("Should have thrown an exception here");
+        } catch (RuntimeException e) {
+            assertTrue(
+                    "Cause was: " + e.getCause(), e.getCause() instanceof IncommensurableException);
+            assertTrue(e.getCause().getMessage().contains("A into SI Metres"));
+        }
     }
 
     public void testBinarySpatialOpType() {

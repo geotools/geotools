@@ -29,6 +29,7 @@ import org.geotools.data.DataStore;
 import org.geotools.data.FileDataStore;
 import org.geotools.data.FileDataStoreFactorySpi;
 import org.geotools.util.KVP;
+import org.geotools.util.URLs;
 
 public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
 
@@ -74,6 +75,9 @@ public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
         File file = (File) FILE_PARAM.lookUp(params);
         if (url == null && file == null) {
             throw new IOException("No file or url parameter provided");
+        }
+        if (url != null && "file".equalsIgnoreCase(url.getProtocol())) {
+            file = URLs.urlToFile(url);
         }
         if (file != null) {
             if (!file.exists()) {

@@ -65,6 +65,11 @@ public class GeoJSONDataStore extends ContentDataStore implements FileDataStore 
     protected ContentFeatureSource createFeatureSource(ContentEntry entry) throws IOException {
         if ("file".equalsIgnoreCase(getUrl().getProtocol())) {
             File f = URLs.urlToFile(getUrl());
+            if (!f.exists()) {
+                if (!f.createNewFile()) {
+                    return new GeoJSONFeatureSource(entry, Query.ALL);
+                }
+            }
             if (f.canWrite()) {
                 return new GeoJSONFeatureStore(entry, Query.ALL);
             }

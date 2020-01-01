@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.List;
+
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.FileDataStore;
@@ -65,6 +66,11 @@ public class GeoJSONDataStore extends ContentDataStore implements FileDataStore 
     protected ContentFeatureSource createFeatureSource(ContentEntry entry) throws IOException {
         if ("file".equalsIgnoreCase(getUrl().getProtocol())) {
             File f = URLs.urlToFile(getUrl());
+      if (!f.exists()) {
+        if (!f.createNewFile()) {
+          return new GeoJSONFeatureSource(entry, Query.ALL);
+        }
+      }
             if (f.canWrite()) {
                 return new GeoJSONFeatureStore(entry, Query.ALL);
             }

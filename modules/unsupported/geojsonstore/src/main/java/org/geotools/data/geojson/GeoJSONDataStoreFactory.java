@@ -16,8 +16,6 @@
  */
 package org.geotools.data.geojson;
 
-import com.bedatadriven.jackson.datatype.jts.JtsModule;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.awt.RenderingHints.Key;
 import java.io.File;
 import java.io.IOException;
@@ -25,10 +23,15 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
+
 import org.geotools.data.DataStore;
 import org.geotools.data.FileDataStore;
 import org.geotools.data.FileDataStoreFactorySpi;
 import org.geotools.util.KVP;
+import org.geotools.util.URLs;
+
+import com.bedatadriven.jackson.datatype.jts.JtsModule;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
 
@@ -74,6 +77,9 @@ public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
         File file = (File) FILE_PARAM.lookUp(params);
         if (url == null && file == null) {
             throw new IOException("No file or url parameter provided");
+        }
+    if ("file".equalsIgnoreCase(url.getProtocol())) {
+          file = URLs.urlToFile(url);
         }
         if (file != null) {
             if (!file.exists()) {

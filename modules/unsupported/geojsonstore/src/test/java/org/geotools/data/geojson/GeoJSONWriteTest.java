@@ -134,7 +134,7 @@ public class GeoJSONWriteTest {
 
         SimpleFeatureSource featureSource = store.getFeatureSource("locations");
 
-        assertTrue("Modification not supported", (featureSource instanceof SimpleFeatureStore));
+        assertTrue("Modification not supported", featureSource instanceof SimpleFeatureStore);
         store.dispose();
     }
 

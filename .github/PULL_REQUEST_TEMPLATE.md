@@ -11,7 +11,7 @@ For all pull requests:
 - [ ] Make sure the first PR targets the master branch, eventual backports will be managed later. This can be ignored if the PR is fixing an issue that only happens in a specific branch, but not in newer ones.
 - [ ] The changes are not breaking the build in downstream projects using SNAPSHOT dependencies, GeoWebCache and GeoServer.
 
-The following are required only for core and extension modules (they are welcomed, but not required, for community modules):
+The following are required only for core and extension modules (they are welcomed, but not required, for unsupported modules):
 - [ ] There is a ticket in Jira describing the issue/improvement/feature (a notable exemptions is, changes not visible to end users)
 - [ ] PR for bug fixes and small new features are presented as a single commit
 - [ ] Commit message must be in the form "[GEOT-XYZW] Title of the Jira ticket"

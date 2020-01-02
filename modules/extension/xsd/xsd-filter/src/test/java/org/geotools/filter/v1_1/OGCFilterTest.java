@@ -135,46 +135,6 @@ public class OGCFilterTest extends TestCase {
         assertEquals("km", unit);
     }
 
-    public void testDWithinParseMiles() throws Exception {
-        String xml =
-                "<Filter>"
-                        + "<DWithin>"
-                        + "<PropertyName>the_geom</PropertyName>"
-                        + "<Point>"
-                        + "<coordinates>-74.817265,40.5296504</coordinates>"
-                        + "</Point>"
-                        + "<Distance units=\"mi\">200</Distance>"
-                        + "</DWithin>"
-                        + "</Filter>";
-
-        OGCConfiguration configuration = new OGCConfiguration();
-
-        Parser parser = new Parser(configuration);
-        DWithin filter = (DWithin) parser.parse(new ByteArrayInputStream(xml.getBytes()));
-        assertNotNull(filter);
-
-        // Asserting the Property Name
-        assertNotNull(filter.getExpression1());
-        PropertyName propName = (PropertyName) filter.getExpression1();
-        String name = propName.getPropertyName();
-        assertEquals("the_geom", name);
-
-        // Asserting the Geometry
-        assertNotNull(filter.getExpression2());
-        Literal geom = (Literal) filter.getExpression2();
-        assertEquals("POINT (-74.817265 40.5296504)", geom.toString());
-
-        // Asserting the Distance
-        assertTrue(filter.getDistance() > 0);
-        Double dist = filter.getDistance();
-        assertEquals(200.0, dist);
-
-        // Asserting the Distance Units
-        assertNotNull(filter.getDistanceUnits());
-        String unit = filter.getDistanceUnits();
-        assertEquals("mi", unit);
-    }
-
     public void testBBOXValidateWithoutPropertyName() throws Exception {
         String xml =
                 "<ogc:Filter xmlns:ogc='http://www.opengis.net/ogc'>"

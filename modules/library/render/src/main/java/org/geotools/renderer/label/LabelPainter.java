@@ -278,8 +278,8 @@ public class LabelPainter {
                 double height = area.getHeight() * factor;
                 shieldBounds =
                         new Rectangle2D.Double(
-                                width / 2 + bounds.getMinX() - bounds.getWidth() / 2,
-                                height / 2 + bounds.getMinY() - bounds.getHeight() / 2,
+                                -width / 2 + bounds.getMinX() + bounds.getWidth() / 2,
+                                -height / 2 + bounds.getMinY() + bounds.getHeight() / 2,
                                 width,
                                 height);
                 shieldBounds = applyMargins(margin, shieldBounds);
@@ -287,8 +287,8 @@ public class LabelPainter {
                 // use the shield natural bounds
                 shieldBounds =
                         new Rectangle2D.Double(
-                                -area.getWidth() / 2 + bounds.getMinX() - bounds.getWidth() / 2,
-                                -area.getHeight() / 2 + bounds.getMinY() - bounds.getHeight() / 2,
+                                -area.getWidth() / 2 + bounds.getMinX() + bounds.getWidth() / 2,
+                                -area.getHeight() / 2 + bounds.getMinY() + bounds.getHeight() / 2,
                                 area.getWidth(),
                                 area.getHeight());
             }

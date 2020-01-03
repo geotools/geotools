@@ -462,7 +462,7 @@ public class LabelDisplacementModeTest extends TestCase {
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/testMultiLineLabelDisplacementY.png";
         // java 11 makes chars quite a bit bolder
-        int tolerance = 1100;
+        int tolerance = 1300;
         if (SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_11)
                 || SystemUtils.IS_OS_MAC_OSX
                 || SystemUtils.IS_OS_WINDOWS) {

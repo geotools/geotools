@@ -124,6 +124,7 @@ public class LabelPainter {
         // we can layout the items and compute the total bounds
         double boundsY = 0;
         double labelY = 0;
+        LineInfo previous = null;
         for (LineInfo info : lines) {
             Rectangle2D currBounds = info.getBounds();
 
@@ -138,7 +139,9 @@ public class LabelPainter {
                             - currBounds.getMinX();
             info.setMinX(minX);
 
-            double lineOffset = info.getLineOffset();
+            double descentLeading =
+                    previous == null ? info.getDescentLeading() : previous.getDescentLeading();
+            double lineOffset = currBounds.getHeight() + descentLeading;
             if (labelBounds == null) {
                 labelBounds = currBounds;
                 boundsY = currBounds.getMinY() + lineOffset;
@@ -151,6 +154,7 @@ public class LabelPainter {
                 labelBounds = labelBounds.createUnion(translated);
             }
             info.setY(labelY);
+            previous = info;
         }
         normalizeBounds(labelBounds);
     }

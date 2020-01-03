@@ -163,10 +163,8 @@ class LineInfo {
     float getLineOffset() {
         float offset = Float.NEGATIVE_INFINITY;
         for (LineComponent component : components) {
-            float co =
-                    component.getLayout().getAscent()
-                            + component.getLayout().getDescent()
-                            + component.getLayout().getLeading();
+            TextLayout layout = component.getLayout();
+            float co = layout.getAscent() + layout.getDescent() + layout.getLeading();
             if (co > offset) {
                 offset = co;
             }
@@ -175,12 +173,23 @@ class LineInfo {
         return offset;
     }
 
+    double getDescentLeading() {
+        float descent = Float.NEGATIVE_INFINITY;
+        for (LineComponent component : components) {
+            TextLayout layout = component.getLayout();
+            float de = layout.getDescent() + layout.getLeading();
+            if (de > descent) {
+                descent = de;
+            }
+        }
+
+        return descent;
+    }
+
     double getLineHeight() {
         double height = Float.NEGATIVE_INFINITY;
         for (LineComponent component : components) {
-            double ch =
-                    component.getGlyphVector().getVisualBounds().getHeight()
-                            - component.getLayout().getDescent();
+            double ch = component.getGlyphVector().getVisualBounds().getHeight();
             if (ch > height) {
                 height = ch;
             }

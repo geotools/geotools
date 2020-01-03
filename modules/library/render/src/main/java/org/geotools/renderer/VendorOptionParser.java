@@ -18,6 +18,7 @@ package org.geotools.renderer;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.regex.Pattern;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer.DisplacementMode;
 
@@ -28,6 +29,8 @@ import org.geotools.styling.TextSymbolizer.DisplacementMode;
  * @author Andrea Aime - GeoSolutions
  */
 public class VendorOptionParser {
+
+    static final Pattern SPACES = Pattern.compile("\\s+");
 
     /**
      * Extracts a enumeration from the vendor options map, returns it if found, returns the default
@@ -138,7 +141,7 @@ public class VendorOptionParser {
         if (value == null) {
             return null;
         } else {
-            String[] values = value.trim().split("\\s+");
+            String[] values = SPACES.split(value.trim());
             if (values.length == 0) {
                 return null;
             } else if (values.length > 4) {

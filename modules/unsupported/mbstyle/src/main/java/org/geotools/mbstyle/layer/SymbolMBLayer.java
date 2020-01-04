@@ -41,6 +41,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import org.geotools.mbstyle.MBStyle;
+import org.geotools.mbstyle.function.FontAlternativesFunction;
+import org.geotools.mbstyle.function.FontAttributesExtractor;
+import org.geotools.mbstyle.function.MapBoxFontBaseNameFunction;
+import org.geotools.mbstyle.function.MapBoxFontStyleFunction;
+import org.geotools.mbstyle.function.MapBoxFontWeightFunction;
 import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
@@ -1780,17 +1785,35 @@ public class SymbolMBLayer extends MBLayer {
         }
         Fill fill = sf.fill(null, textColor(), textOpacity());
 
-        Font font =
-                sb.createFont(ff.literal(""), ff.literal("normal"), ff.literal("normal"), fontSize);
-
-        if (getTextFont() != null) {
-            font.getFamily().clear();
-            for (String textFont : getTextFont()) {
-                font.getFamily().add(ff.literal(textFont));
+        // leverage GeoTools ability to have several distinct fonts, inherited from SLD 1.0
+        List<Font> fonts = new ArrayList<>();
+        List<String> staticFonts = getTextFont();
+        if (staticFonts != null) {
+            for (String textFont : staticFonts) {
+                FontAttributesExtractor fae = new FontAttributesExtractor(textFont);
+                Font font =
+                        sb.createFont(
+                                ff.function(
+                                        FontAlternativesFunction.NAME.getName(),
+                                        ff.literal(fae.getBaseName())),
+                                ff.literal(fae.isItalic() ? "italic" : "normal"),
+                                ff.literal(fae.isBold() ? "bold" : "normal"),
+                                fontSize);
+                fonts.add(font);
             }
         } else if (textFont() != null) {
-            font.getFamily().clear();
-            font.getFamily().add(textFont());
+            Expression dynamicFont = textFont();
+            Font font =
+                    sb.createFont(
+                            ff.function(
+                                    FontAlternativesFunction.NAME.getName(),
+                                    ff.function(
+                                            MapBoxFontBaseNameFunction.NAME.getName(),
+                                            dynamicFont)),
+                            ff.function(MapBoxFontStyleFunction.NAME.getName(), dynamicFont),
+                            ff.function(MapBoxFontWeightFunction.NAME.getName(), dynamicFont),
+                            fontSize);
+            fonts.add(font);
         }
 
         // If the textField is a literal string (not a function), then
@@ -1816,10 +1839,12 @@ public class SymbolMBLayer extends MBLayer {
                                 sf.description(Text.text("text"), null),
                                 Units.PIXEL,
                                 textExpression,
-                                font,
+                                null,
                                 labelPlacement,
                                 halo,
                                 fill);
+        symbolizer.fonts().clear();
+        symbolizer.fonts().addAll(fonts);
 
         Number symbolSpacing =
                 transformer.requireLiteral(

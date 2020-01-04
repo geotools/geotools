@@ -46,6 +46,8 @@ import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.MapboxTestUtils;
+import org.geotools.mbstyle.function.FontAlternativesFunction;
+import org.geotools.mbstyle.function.MapBoxFontBaseNameFunction;
 import org.geotools.mbstyle.layer.BackgroundMBLayer;
 import org.geotools.mbstyle.layer.CircleMBLayer;
 import org.geotools.mbstyle.layer.FillExtrusionMBLayer;
@@ -595,11 +597,16 @@ public class StyleTransformTest {
         assertTrue(symbolizer instanceof TextSymbolizer);
         TextSymbolizer tsym = (TextSymbolizer) symbolizer;
 
-        assertEquals(1, tsym.fonts().size());
-        assertEquals(2, tsym.fonts().get(0).getFamily().size());
+        assertEquals(2, tsym.fonts().size());
+        List<Expression> family0 = tsym.fonts().get(0).getFamily();
+        assertEquals(1, family0.size());
+        List<Expression> family1 = tsym.fonts().get(1).getFamily();
+        assertEquals(1, family1.size());
 
-        assertEquals("Bitstream Vera Sans", tsym.fonts().get(0).getFamily().get(0).toString());
-        assertEquals("Other Test Font", tsym.fonts().get(0).getFamily().get(1).toString());
+        assertEquals(
+                ff.function("fontAlternatives", ff.literal("Bitstream Vera Sans")), family0.get(0));
+        assertEquals(
+                ff.function("fontAlternatives", ff.literal("Other Test Font")), family1.get(0));
     }
 
     @Test
@@ -790,9 +797,14 @@ public class StyleTransformTest {
         assertEquals(1, tsym.fonts().size());
         assertEquals(1, tsym.fonts().get(0).getFamily().size());
 
+        FontAlternativesFunction family =
+                (FontAlternativesFunction) tsym.fonts().get(0).getFamily().get(0);
+        MapBoxFontBaseNameFunction familyBaseName =
+                (MapBoxFontBaseNameFunction) (family.getParameters()).get(0);
         assertEquals(
                 "Apple-Chancery",
-                (((CategorizeFunction) tsym.fonts().get(0).getFamily().get(0)).getParameters())
+                ((CategorizeFunction) familyBaseName.getParameters().get(0))
+                        .getParameters()
                         .get(1)
                         .toString());
 

@@ -17,23 +17,36 @@
  */
 package org.geotools.mbstyle.function;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItems;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.*;
+import java.util.List;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.text.ecql.ECQL;
+import org.geotools.renderer.lite.StreamingRendererTest;
+import org.geotools.renderer.style.FontCache;
+import org.junit.After;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Function;
+import org.opengis.filter.expression.Literal;
 
 /** Test the {@link ExponentialFunction}, {@link ZoomLevelFunction} and {@link CSSFunction}. */
 public class MBFunctionFactoryTest {
 
     public static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+
+    @After
+    public void cleanup() {
+        FontCache.getDefaultInstance().resetCache();
+    }
 
     @Test
     public void colorFunction() throws Exception {
@@ -282,5 +295,39 @@ public class MBFunctionFactoryTest {
     public void stringTransformFunctionTestNoContext() throws Exception {
         Function f = (Function) ECQL.toExpression("StringTransform('SoMeString', 'uppercase')");
         assertEquals("SOMESTRING", f.evaluate(null));
+    }
+
+    @Test
+    public void testFontFunctions() throws Exception {
+        FontCache fc = FontCache.getDefaultInstance();
+        fc.registerFont(loadFont("DroidSansArmenian.ttf"));
+        fc.registerFont(loadFont("DroidSansFallback.ttf"));
+        fc.registerFont(loadFont("DroidNaskh-Regular.ttf"));
+
+        // check alternatives
+        Function alternatives = ff.function("fontAlternatives", ff.literal("Droid"));
+        assertThat(
+                (List<String>) alternatives.evaluate(null, List.class),
+                hasItems("Droid Arabic Naskh", "Droid Sans Armenian", "Droid Sans Fallback"));
+
+        Literal regularFont = ff.literal("Droid Sans Regular");
+        Literal boldItalic = ff.literal("Droid Sans Italic Bold");
+
+        // style
+        assertThat(ff.function("mbFontStyle", regularFont).evaluate(null), equalTo("normal"));
+        assertThat(ff.function("mbFontStyle", boldItalic).evaluate(null), equalTo("italic"));
+
+        // weight
+        assertThat(ff.function("mbFontWeight", regularFont).evaluate(null), equalTo("normal"));
+        assertThat(ff.function("mbFontWeight", boldItalic).evaluate(null), equalTo("bold"));
+    }
+
+    private Font loadFont(String fontName) {
+        String url =
+                StreamingRendererTest.class
+                        .getResource("/org/geotools/renderer/lite/test-data/" + fontName)
+                        .toExternalForm();
+        System.out.println(url);
+        return FontCache.loadFromUrl(url);
     }
 }

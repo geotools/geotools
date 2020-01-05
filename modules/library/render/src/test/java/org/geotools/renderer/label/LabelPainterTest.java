@@ -181,9 +181,9 @@ public class LabelPainterTest {
         painter.setLabel(labelItem);
 
         Rectangle2D lgpBounds = painter.getFullLabelBounds();
-        assertEquals(-5, lgpBounds.getMinX(), tolerance);
-        assertEquals(-12.5, lgpBounds.getMinY(), tolerance);
-        assertEquals(32, lgpBounds.getWidth(), tolerance);
-        assertEquals(18, lgpBounds.getHeight(), tolerance);
+        assertEquals(0, lgpBounds.getMinX(), tolerance);
+        assertEquals(-15, lgpBounds.getMinY(), tolerance);
+        assertEquals(22, lgpBounds.getWidth(), tolerance);
+        assertEquals(22, lgpBounds.getHeight(), tolerance);
     }
 }

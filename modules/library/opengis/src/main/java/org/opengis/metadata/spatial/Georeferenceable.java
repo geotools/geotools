@@ -44,10 +44,9 @@ public interface Georeferenceable extends GridSpatialRepresentation {
      * @return Whether or not orientation parameters are available.
      */
     @UML(
-        identifier = "orientationParameterAvailability",
-        obligation = MANDATORY,
-        specification = ISO_19115
-    )
+            identifier = "orientationParameterAvailability",
+            obligation = MANDATORY,
+            specification = ISO_19115)
     boolean isOrientationParameterAvailable();
 
     /**
@@ -56,10 +55,9 @@ public interface Georeferenceable extends GridSpatialRepresentation {
      * @return Description of parameters used to describe sensor orientation, or {@code null}.
      */
     @UML(
-        identifier = "orientationParameterDescription",
-        obligation = OPTIONAL,
-        specification = ISO_19115
-    )
+            identifier = "orientationParameterDescription",
+            obligation = OPTIONAL,
+            specification = ISO_19115)
     InternationalString getOrientationParameterDescription();
 
     /**

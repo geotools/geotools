@@ -383,8 +383,7 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
             } else {
                 final List<GranuleDescriptor> unfilteredGranules = index.query(requestedBBox);
                 List<GranuleDescriptor> granules =
-                        unfilteredGranules
-                                .stream()
+                        unfilteredGranules.stream()
                                 .filter(gd -> filter.evaluate(gd.getOriginator()))
                                 .collect(Collectors.toList());
 

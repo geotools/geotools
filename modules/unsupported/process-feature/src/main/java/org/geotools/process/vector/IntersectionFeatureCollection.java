@@ -65,10 +65,9 @@ import org.opengis.referencing.operation.TransformException;
  * @author Luca Paolino - GeoSolutions
  */
 @DescribeProcess(
-    title = "Intersection of Feature Collections",
-    description =
-            "Spatial intersection of two feature collections, including combining attributes from both."
-)
+        title = "Intersection of Feature Collections",
+        description =
+                "Spatial intersection of two feature collections, including combining attributes from both.")
 public class IntersectionFeatureCollection implements VectorProcess {
     private static final Logger logger =
             Logger.getLogger("org.geotools.process.feature.gs.IntersectionFeatureCollection");
@@ -85,50 +84,43 @@ public class IntersectionFeatureCollection implements VectorProcess {
     @DescribeResult(description = "Output feature collection")
     public SimpleFeatureCollection execute(
             @DescribeParameter(
-                        name = "first feature collection",
-                        description = "First feature collection"
-                    )
+                            name = "first feature collection",
+                            description = "First feature collection")
                     SimpleFeatureCollection firstFeatures,
             @DescribeParameter(
-                        name = "second feature collection",
-                        description = "Second feature collection"
-                    )
+                            name = "second feature collection",
+                            description = "Second feature collection")
                     SimpleFeatureCollection secondFeatures,
             @DescribeParameter(
-                        name = "first attributes to retain",
-                        collectionType = String.class,
-                        min = 0,
-                        description = "First feature collection attribute to include"
-                    )
+                            name = "first attributes to retain",
+                            collectionType = String.class,
+                            min = 0,
+                            description = "First feature collection attribute to include")
                     List<String> firstAttributes,
             @DescribeParameter(
-                        name = "second attributes to retain",
-                        collectionType = String.class,
-                        min = 0,
-                        description = "Second feature collection attribute to include"
-                    )
+                            name = "second attributes to retain",
+                            collectionType = String.class,
+                            min = 0,
+                            description = "Second feature collection attribute to include")
                     List<String> sndAttributes,
             @DescribeParameter(
-                        name = "intersectionMode",
-                        min = 0,
-                        description =
-                                "Specifies geometry computed for intersecting features.  INTERSECTION (default) computes the spatial intersection of the inputs. FIRST copies geometry A.  SECOND copies geometry B.",
-                        defaultValue = "INTERSECTION"
-                    )
+                            name = "intersectionMode",
+                            min = 0,
+                            description =
+                                    "Specifies geometry computed for intersecting features.  INTERSECTION (default) computes the spatial intersection of the inputs. FIRST copies geometry A.  SECOND copies geometry B.",
+                            defaultValue = "INTERSECTION")
                     IntersectionMode intersectionMode,
             @DescribeParameter(
-                        name = "percentagesEnabled",
-                        min = 0,
-                        description =
-                                "Indicates whether to output feature area percentages (attributes percentageA and percentageB)"
-                    )
+                            name = "percentagesEnabled",
+                            min = 0,
+                            description =
+                                    "Indicates whether to output feature area percentages (attributes percentageA and percentageB)")
                     Boolean percentagesEnabled,
             @DescribeParameter(
-                        name = "areasEnabled",
-                        min = 0,
-                        description =
-                                "Indicates whether to output feature areas (attributes areaA and areaB)"
-                    )
+                            name = "areasEnabled",
+                            min = 0,
+                            description =
+                                    "Indicates whether to output feature areas (attributes areaA and areaB)")
                     Boolean areasEnabled) {
         // assign defaults
         logger.fine("INTERSECTION FEATURE COLLECTION WPS STARTED");

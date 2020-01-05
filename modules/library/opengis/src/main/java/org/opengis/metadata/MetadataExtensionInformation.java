@@ -41,9 +41,8 @@ public interface MetadataExtensionInformation {
      * @return New metadata element not found in ISO 19115.
      */
     @UML(
-        identifier = "extendedElementInformation",
-        obligation = OPTIONAL,
-        specification = ISO_19115
-    )
+            identifier = "extendedElementInformation",
+            obligation = OPTIONAL,
+            specification = ISO_19115)
     Collection<? extends ExtendedElementInformation> getExtendedElementInformation();
 }

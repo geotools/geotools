@@ -124,10 +124,9 @@ public class InterpolationMethod extends CodeList<InterpolationMethod> {
      * the coefficients of the function.
      */
     @UML(
-        identifier = "Quadratic interpolation",
-        obligation = CONDITIONAL,
-        specification = ISO_19123
-    )
+            identifier = "Quadratic interpolation",
+            obligation = CONDITIONAL,
+            specification = ISO_19123)
     public static final InterpolationMethod QUADRATIC = new InterpolationMethod("QUADRATIC");
 
     /**
@@ -163,10 +162,9 @@ public class InterpolationMethod extends CodeList<InterpolationMethod> {
      * function of position within the grid cell.
      */
     @UML(
-        identifier = "Biquadratic interpolation",
-        obligation = CONDITIONAL,
-        specification = ISO_19123
-    )
+            identifier = "Biquadratic interpolation",
+            obligation = CONDITIONAL,
+            specification = ISO_19123)
     public static final InterpolationMethod BIQUADRATIC = new InterpolationMethod("BIQUADRATIC");
 
     /**
@@ -178,18 +176,16 @@ public class InterpolationMethod extends CodeList<InterpolationMethod> {
 
     /** Lost area interpolation. */
     @UML(
-        identifier = "Lost area interpolation",
-        obligation = CONDITIONAL,
-        specification = ISO_19123
-    )
+            identifier = "Lost area interpolation",
+            obligation = CONDITIONAL,
+            specification = ISO_19123)
     public static final InterpolationMethod LOST_AREA = new InterpolationMethod("LOST_AREA");
 
     /** Barycentric interpolation. */
     @UML(
-        identifier = "Barycentric interpolation",
-        obligation = CONDITIONAL,
-        specification = ISO_19123
-    )
+            identifier = "Barycentric interpolation",
+            obligation = CONDITIONAL,
+            specification = ISO_19123)
     public static final InterpolationMethod BARYCENTRIC = new InterpolationMethod("BARYCENTRIC");
 
     /**

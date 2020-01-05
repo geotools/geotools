@@ -428,8 +428,7 @@ public class CssParser extends BaseParser<Object> {
                     @Override
                     public boolean run(Context context) {
                         List<Value> values =
-                                popAll(Value.class)
-                                        .stream()
+                                popAll(Value.class).stream()
                                         .map(o -> (Value) o)
                                         .collect(Collectors.toList());
                         Literal id = (Literal) values.get(0);

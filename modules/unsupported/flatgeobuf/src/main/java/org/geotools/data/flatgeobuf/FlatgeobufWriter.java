@@ -106,9 +106,7 @@ public class FlatgeobufWriter {
         FlatBufferBuilder builder = new FlatBufferBuilder(1024);
 
         int[] columnsArray =
-                headerMeta
-                        .columns
-                        .stream()
+                headerMeta.columns.stream()
                         .mapToInt(
                                 c -> {
                                     int nameOffset = builder.createString(c.name);

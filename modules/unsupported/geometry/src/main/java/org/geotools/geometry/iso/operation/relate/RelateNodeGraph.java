@@ -18,7 +18,6 @@
 package org.geotools.geometry.iso.operation.relate;
 
 /** @version 1.7.2 */
-
 import java.util.Iterator;
 import java.util.List;
 import org.geotools.geometry.iso.topograph2D.Edge;

@@ -317,8 +317,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         //                fts.getName());
 
         List<Rule> rulesCopy =
-                fts.rules()
-                        .stream()
+                fts.rules().stream()
                         .filter(r -> r != null)
                         .map(
                                 r -> {

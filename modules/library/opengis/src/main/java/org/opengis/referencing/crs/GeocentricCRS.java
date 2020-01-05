@@ -41,9 +41,8 @@ public interface GeocentricCRS extends GeodeticCRS {
      * {@linkplain SphericalCS spherical}.
      */
     @UML(
-        identifier = "usesCartesianCS, usesSphericalCS",
-        obligation = MANDATORY,
-        specification = ISO_19111
-    )
+            identifier = "usesCartesianCS, usesSphericalCS",
+            obligation = MANDATORY,
+            specification = ISO_19111)
     CoordinateSystem getCoordinateSystem();
 }

@@ -41,9 +41,8 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(
-    name = "schemasType",
-    propOrder = {"schema"}
-)
+        name = "schemasType",
+        propOrder = {"schema"})
 public class SchemasType {
 
     protected List<SchemaType> schema;

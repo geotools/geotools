@@ -57,9 +57,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(
-    name = "",
-    propOrder = {"versionNumber", "lastModified", "institution", "contact", "entry", "alias"}
-)
+        name = "",
+        propOrder = {"versionNumber", "lastModified", "institution", "contact", "entry", "alias"})
 @XmlRootElement(name = "standard_name_table")
 public class StandardNameTable {
 

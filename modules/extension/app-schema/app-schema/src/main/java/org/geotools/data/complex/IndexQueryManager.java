@@ -146,8 +146,7 @@ public class IndexQueryManager {
 
         private List<Filter> duplicateFilters(List<Filter> filterList) {
             Filters filtersUtil = new Filters();
-            return filterList
-                    .stream()
+            return filterList.stream()
                     .map(f -> filtersUtil.duplicate(f))
                     .collect(Collectors.toList());
         }

@@ -42,9 +42,8 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(
-    name = "attributesType",
-    propOrder = {"attribute"}
-)
+        name = "attributesType",
+        propOrder = {"attribute"})
 public class AttributesType {
 
     @XmlElement(required = true)

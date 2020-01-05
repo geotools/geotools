@@ -132,8 +132,7 @@ class PurgingGranuleStore extends GranuleStoreDecorator {
     private Filter buildLocationsFilter(RasterManager manager, Set<String> locations) {
         PropertyName locationProperty = getLocationProperty(manager);
         List<Filter> filters =
-                locations
-                        .stream()
+                locations.stream()
                         .map(l -> FF.equal(locationProperty, FF.literal(l), false))
                         .collect(Collectors.toList());
         return Filters.or(FF, filters);
@@ -176,8 +175,7 @@ class PurgingGranuleStore extends GranuleStoreDecorator {
     private Map<String, Integer> calcToCountMap(CalcResult result) {
         // the result is a map going from list of grouping attributes to value
         Map<List<String>, Integer> map = result.toMap();
-        return map.entrySet()
-                .stream()
+        return map.entrySet().stream()
                 .collect(Collectors.toMap(x -> x.getKey().get(0), x -> x.getValue()));
     }
 

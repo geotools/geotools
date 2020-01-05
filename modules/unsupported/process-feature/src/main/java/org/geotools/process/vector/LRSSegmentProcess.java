@@ -39,9 +39,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 
 @DescribeProcess(
-    title = "Extract Segment in LRS",
-    description = "Extracts segment between a given start and end measure from LRS features"
-)
+        title = "Extract Segment in LRS",
+        description = "Extracts segment between a given start and end measure from LRS features")
 public class LRSSegmentProcess implements VectorProcess {
     private static final Logger LOGGER = Logging.getLogger(LRSSegmentProcess.class);
 
@@ -58,24 +57,20 @@ public class LRSSegmentProcess implements VectorProcess {
             @DescribeParameter(name = "features", description = "Input feature collection")
                     FeatureCollection featureCollection,
             @DescribeParameter(
-                        name = "from_measure_attb",
-                        description = "Attribute providing start measure of feature"
-                    )
+                            name = "from_measure_attb",
+                            description = "Attribute providing start measure of feature")
                     String fromMeasureAttb,
             @DescribeParameter(
-                        name = "to_measure_attb",
-                        description = "Attribute providing end measure of feature"
-                    )
+                            name = "to_measure_attb",
+                            description = "Attribute providing end measure of feature")
                     String toMeasureAttb,
             @DescribeParameter(
-                        name = "from_measure",
-                        description = "Measure for start of segment to extract"
-                    )
+                            name = "from_measure",
+                            description = "Measure for start of segment to extract")
                     Double fromMeasure,
             @DescribeParameter(
-                        name = "to_measure",
-                        description = "Measure for end of segment to extract"
-                    )
+                            name = "to_measure",
+                            description = "Measure for end of segment to extract")
                     Double toMeasure)
             throws ProcessException {
         DefaultFeatureCollection results = new DefaultFeatureCollection();

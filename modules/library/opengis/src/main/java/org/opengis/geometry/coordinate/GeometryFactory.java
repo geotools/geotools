@@ -67,10 +67,9 @@ public interface GeometryFactory {
      *     expected dimension.
      */
     @UML(
-        identifier = "GM_LineSegment(GM_Position[2])",
-        obligation = MANDATORY,
-        specification = ISO_19107
-    )
+            identifier = "GM_LineSegment(GM_Position[2])",
+            obligation = MANDATORY,
+            specification = ISO_19107)
     LineSegment createLineSegment(Position startPoint, Position endPoint)
             throws MismatchedReferenceSystemException, MismatchedDimensionException;
 
@@ -83,10 +82,9 @@ public interface GeometryFactory {
      *     expected dimension.
      */
     @UML(
-        identifier = "GM_LineString(GM_Position[2..n])",
-        obligation = MANDATORY,
-        specification = ISO_19107
-    )
+            identifier = "GM_LineString(GM_Position[2..n])",
+            obligation = MANDATORY,
+            specification = ISO_19107)
     LineString createLineString(List<Position> points)
             throws MismatchedReferenceSystemException, MismatchedDimensionException;
 
@@ -115,10 +113,9 @@ public interface GeometryFactory {
      *     expected dimension.
      */
     @UML(
-        identifier = "GM_GeodesicString(GM_Position[2..n])",
-        obligation = MANDATORY,
-        specification = ISO_19107
-    )
+            identifier = "GM_GeodesicString(GM_Position[2..n])",
+            obligation = MANDATORY,
+            specification = ISO_19107)
     GeodesicString createGeodesicString(List<Position> points)
             throws MismatchedReferenceSystemException, MismatchedDimensionException;
 
@@ -199,10 +196,9 @@ public interface GeometryFactory {
      *     expected dimension.
      */
     @UML(
-        identifier = "GM_Arc(GM_Position[2],Real,Vector)",
-        obligation = MANDATORY,
-        specification = ISO_19107
-    )
+            identifier = "GM_Arc(GM_Position[2],Real,Vector)",
+            obligation = MANDATORY,
+            specification = ISO_19107)
     Arc createArc(Position startPoint, Position endPoint, double bulge, double[] normal)
             throws MismatchedReferenceSystemException, MismatchedDimensionException;
 
@@ -217,10 +213,9 @@ public interface GeometryFactory {
      *     expected dimension.
      */
     @UML(
-        identifier = "GM_ArcString(GM_Position[3, 5, 7...])",
-        obligation = MANDATORY,
-        specification = ISO_19107
-    )
+            identifier = "GM_ArcString(GM_Position[3, 5, 7...])",
+            obligation = MANDATORY,
+            specification = ISO_19107)
     ArcString createArcString(List<Position> points)
             throws MismatchedReferenceSystemException, MismatchedDimensionException;
 
@@ -245,10 +240,9 @@ public interface GeometryFactory {
      *     expected dimension.
      */
     @UML(
-        identifier = "GM_ArcByBulge(GM_Position[2],Real,Vector)",
-        obligation = MANDATORY,
-        specification = ISO_19107
-    )
+            identifier = "GM_ArcByBulge(GM_Position[2],Real,Vector)",
+            obligation = MANDATORY,
+            specification = ISO_19107)
     ArcByBulge createArcByBulge(
             Position startPoint, Position endPoint, double bulge, double[] normal)
             throws MismatchedReferenceSystemException, MismatchedDimensionException;
@@ -278,10 +272,9 @@ public interface GeometryFactory {
      *     expected dimension.
      */
     @UML(
-        identifier = "GM_ArcStringByBulge(GM_Position[2..n],Real[1..n],Vector[1..n])",
-        obligation = MANDATORY,
-        specification = ISO_19107
-    )
+            identifier = "GM_ArcStringByBulge(GM_Position[2..n],Real[1..n],Vector[1..n])",
+            obligation = MANDATORY,
+            specification = ISO_19107)
     ArcStringByBulge createArcStringByBulge(
             List<Position> points, double[] bulges, List<double[]> normals)
             throws MismatchedReferenceSystemException, MismatchedDimensionException;
@@ -308,10 +301,9 @@ public interface GeometryFactory {
      *     expected dimension.
      */
     @UML(
-        identifier = "GM_BSplineCurve(Integer,GM_PointArray,Sequence<GM_Knot>,GM_KnotType)",
-        obligation = MANDATORY,
-        specification = ISO_19107
-    )
+            identifier = "GM_BSplineCurve(Integer,GM_PointArray,Sequence<GM_Knot>,GM_KnotType)",
+            obligation = MANDATORY,
+            specification = ISO_19107)
     BSplineCurve createBSplineCurve(
             int degree, PointArray points, List<Knot> knots, KnotType knotSpec)
             throws MismatchedReferenceSystemException, MismatchedDimensionException;
@@ -334,11 +326,10 @@ public interface GeometryFactory {
      *     expected dimension.
      */
     @UML(
-        identifier =
-                "GM_BSplineSurface(Sequence<GM_PointArray>,Integer,Sequence<GM_Knot>,GM_KnotType)",
-        obligation = MANDATORY,
-        specification = ISO_19107
-    )
+            identifier =
+                    "GM_BSplineSurface(Sequence<GM_PointArray>,Integer,Sequence<GM_Knot>,GM_KnotType)",
+            obligation = MANDATORY,
+            specification = ISO_19107)
     BSplineSurface createBSplineSurface(
             List<PointArray> points, int[] degree, List<Knot>[] knots, KnotType knotSpec)
             throws MismatchedReferenceSystemException, MismatchedDimensionException;
@@ -357,10 +348,9 @@ public interface GeometryFactory {
      *     expected dimension.
      */
     @UML(
-        identifier = "GM_Polygon(GM_SurfaceBondary)",
-        obligation = MANDATORY,
-        specification = ISO_19107
-    )
+            identifier = "GM_Polygon(GM_SurfaceBondary)",
+            obligation = MANDATORY,
+            specification = ISO_19107)
     Polygon createPolygon(SurfaceBoundary boundary)
             throws MismatchedReferenceSystemException, MismatchedDimensionException;
 
@@ -382,10 +372,9 @@ public interface GeometryFactory {
      *     expected dimension.
      */
     @UML(
-        identifier = "GM_Polygon(GM_SurfaceBondary,GM_Surface)",
-        obligation = MANDATORY,
-        specification = ISO_19107
-    )
+            identifier = "GM_Polygon(GM_SurfaceBondary,GM_Surface)",
+            obligation = MANDATORY,
+            specification = ISO_19107)
     Polygon createPolygon(SurfaceBoundary boundary, Surface spanSurface)
             throws MismatchedReferenceSystemException, MismatchedDimensionException;
 
@@ -404,10 +393,9 @@ public interface GeometryFactory {
      *     expected dimension.
      */
     @UML(
-        identifier = "GM_Tin(Set<GM_Position>,Set<GM_LineString>,Set<GM_LineString>,Number)",
-        obligation = MANDATORY,
-        specification = ISO_19107
-    )
+            identifier = "GM_Tin(Set<GM_Position>,Set<GM_LineString>,Set<GM_LineString>,Number)",
+            obligation = MANDATORY,
+            specification = ISO_19107)
     Tin createTin(
             Set<Position> post,
             Set<LineString> stopLines,
@@ -425,10 +413,9 @@ public interface GeometryFactory {
      *     expected dimension.
      */
     @UML(
-        identifier = "GM_PolyhedralSurace(GM_Polygon)",
-        obligation = MANDATORY,
-        specification = ISO_19107
-    )
+            identifier = "GM_PolyhedralSurace(GM_Polygon)",
+            obligation = MANDATORY,
+            specification = ISO_19107)
     PolyhedralSurface createPolyhedralSurface(List<Polygon> tiles)
             throws MismatchedReferenceSystemException, MismatchedDimensionException;
 

@@ -143,8 +143,7 @@ public interface CSAuthorityFactory extends AuthorityFactory {
      * @throws FactoryException if the object creation failed for some other reason.
      */
     @UML(
-        identifier = "CS_CoordinateSystemAuthorityFactory.createLinearUnit, createAngularUnit",
-        specification = OGC_01009
-    )
+            identifier = "CS_CoordinateSystemAuthorityFactory.createLinearUnit, createAngularUnit",
+            specification = OGC_01009)
     Unit<?> createUnit(String code) throws NoSuchAuthorityCodeException, FactoryException;
 }

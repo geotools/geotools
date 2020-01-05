@@ -82,10 +82,9 @@ public final class MediumName extends CodeList<MediumName> {
 
     /** &frac14; inch magnetic tape. */
     @UML(
-        identifier = "1quarterInchCartridgeTape",
-        obligation = CONDITIONAL,
-        specification = ISO_19115
-    )
+            identifier = "1quarterInchCartridgeTape",
+            obligation = CONDITIONAL,
+            specification = ISO_19115)
     public static final MediumName CARTRIDGE_TAPE_1_QUARTER_INCH =
             new MediumName("CARTRIDGE_TAPE_1_QUARTER_INCH");
 

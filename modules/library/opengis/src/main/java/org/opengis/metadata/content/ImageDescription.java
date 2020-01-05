@@ -33,10 +33,9 @@ public interface ImageDescription extends CoverageDescription {
      * @return A value between -90&deg; and +90&deg;, or {@code null} if unspecified.
      */
     @UML(
-        identifier = "illuminationElevationAngle",
-        obligation = OPTIONAL,
-        specification = ISO_19115
-    )
+            identifier = "illuminationElevationAngle",
+            obligation = OPTIONAL,
+            specification = ISO_19115)
     Double getIlluminationElevationAngle();
 
     /**
@@ -90,10 +89,9 @@ public interface ImageDescription extends CoverageDescription {
      *     null} if unknown.
      */
     @UML(
-        identifier = "compressionGenerationQuantity",
-        obligation = OPTIONAL,
-        specification = ISO_19115
-    )
+            identifier = "compressionGenerationQuantity",
+            obligation = OPTIONAL,
+            specification = ISO_19115)
     Integer getCompressionGenerationQuantity();
 
     /**
@@ -114,10 +112,9 @@ public interface ImageDescription extends CoverageDescription {
      *     if unknown.
      */
     @UML(
-        identifier = "radiometricCalibrationDataAvailability",
-        obligation = OPTIONAL,
-        specification = ISO_19115
-    )
+            identifier = "radiometricCalibrationDataAvailability",
+            obligation = OPTIONAL,
+            specification = ISO_19115)
     Boolean isRadiometricCalibrationDataAvailable();
 
     /**
@@ -128,10 +125,9 @@ public interface ImageDescription extends CoverageDescription {
      *     null} if unknown.
      */
     @UML(
-        identifier = "cameraCalibrationInformationAvailability",
-        obligation = OPTIONAL,
-        specification = ISO_19115
-    )
+            identifier = "cameraCalibrationInformationAvailability",
+            obligation = OPTIONAL,
+            specification = ISO_19115)
     Boolean isCameraCalibrationInformationAvailable();
 
     /**
@@ -141,10 +137,9 @@ public interface ImageDescription extends CoverageDescription {
      *     unknown.
      */
     @UML(
-        identifier = "filmDistortionInformationAvailability",
-        obligation = OPTIONAL,
-        specification = ISO_19115
-    )
+            identifier = "filmDistortionInformationAvailability",
+            obligation = OPTIONAL,
+            specification = ISO_19115)
     Boolean isFilmDistortionInformationAvailable();
 
     /**
@@ -154,9 +149,8 @@ public interface ImageDescription extends CoverageDescription {
      *     if unknown.
      */
     @UML(
-        identifier = "lensDistortionInformationAvailability",
-        obligation = OPTIONAL,
-        specification = ISO_19115
-    )
+            identifier = "lensDistortionInformationAvailability",
+            obligation = OPTIONAL,
+            specification = ISO_19115)
     Boolean isLensDistortionInformationAvailable();
 }

@@ -234,8 +234,7 @@ public class H2Migrator {
         featureSource.getFeatures(q).accepts(uniqueLocations, null);
         Set<String> locations = uniqueLocations.getUnique();
         // map via pathtype and return
-        return locations
-                .stream()
+        return locations.stream()
                 .map(l -> pathType.resolvePath(configuration.getMosaicDirectory().getPath(), l))
                 .map(url -> URLs.urlToFile(url).getAbsolutePath())
                 .collect(Collectors.toList());
@@ -300,8 +299,7 @@ public class H2Migrator {
         granules.accepts(uniqueLocations, null);
         Set<String> locations = uniqueLocations.getUnique();
         // map via pathtype and return
-        return locations
-                .stream()
+        return locations.stream()
                 .map(l -> pathType.resolvePath(mosaicDirectoryPath, l))
                 .map(url -> URLs.urlToFile(url).getAbsolutePath())
                 .collect(Collectors.toList());

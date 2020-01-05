@@ -73,10 +73,9 @@ public final class VerticalDatumType extends CodeList<VerticalDatumType> {
      * @issue http://jira.codehaus.org/browse/GEO-133
      */
     @UML(
-        identifier = "CS_DatumType.CS_VD_Ellipsoidal",
-        obligation = CONDITIONAL,
-        specification = OGC_01009
-    )
+            identifier = "CS_DatumType.CS_VD_Ellipsoidal",
+            obligation = CONDITIONAL,
+            specification = OGC_01009)
     public static final VerticalDatumType ELLIPSOIDAL = new VerticalDatumType("ELLIPSOIDAL");
 
     /**
@@ -102,10 +101,9 @@ public final class VerticalDatumType extends CodeList<VerticalDatumType> {
 
     /** A vertical datum for orthometric heights that are measured along the plumb line. */
     @UML(
-        identifier = "CS_DatumType.CS_VD_Orthometric",
-        obligation = CONDITIONAL,
-        specification = OGC_01009
-    )
+            identifier = "CS_DatumType.CS_VD_Orthometric",
+            obligation = CONDITIONAL,
+            specification = OGC_01009)
     public static final VerticalDatumType ORTHOMETRIC = new VerticalDatumType("ORTHOMETRIC");
 
     /**

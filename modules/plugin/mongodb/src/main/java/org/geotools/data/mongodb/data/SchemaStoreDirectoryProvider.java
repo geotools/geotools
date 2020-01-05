@@ -51,8 +51,7 @@ public final class SchemaStoreDirectoryProvider {
     }
 
     public static SchemaStoreDirectory getHighestPriority() {
-        return directoriies
-                .stream()
+        return directoriies.stream()
                 .sorted(
                         new Comparator<SchemaStoreDirectory>() {
                             @Override
@@ -65,8 +64,7 @@ public final class SchemaStoreDirectoryProvider {
     }
 
     public static SchemaStoreDirectory getLowestPriority() {
-        return directoriies
-                .stream()
+        return directoriies.stream()
                 .sorted(
                         new Comparator<SchemaStoreDirectory>() {
 

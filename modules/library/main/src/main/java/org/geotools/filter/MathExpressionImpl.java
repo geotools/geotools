@@ -125,8 +125,8 @@ public abstract class MathExpressionImpl extends DefaultExpression implements Bi
                     (List)
                             ((Collection) value1)
                                     .stream()
-                                    .map(v -> Converters.convert(v, Number.class))
-                                    .collect(Collectors.toList());
+                                            .map(v -> Converters.convert(v, Number.class))
+                                            .collect(Collectors.toList());
             scalar = Filters.number(value2);
 
         } else {
@@ -135,13 +135,12 @@ public abstract class MathExpressionImpl extends DefaultExpression implements Bi
                     (List)
                             ((Collection) value2)
                                     .stream()
-                                    .map(v -> Converters.convert(v, Number.class))
-                                    .collect(Collectors.toList());
+                                            .map(v -> Converters.convert(v, Number.class))
+                                            .collect(Collectors.toList());
             scalar = Filters.number(value1);
         }
 
-        return numericList
-                .stream()
+        return numericList.stream()
                 .map(n -> doArithmeticOperation(n.doubleValue(), scalar.doubleValue()))
                 .collect(Collectors.toList());
     }

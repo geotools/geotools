@@ -33,26 +33,23 @@ public final class Obligation extends CodeList<Obligation> {
 
     /** Element is always required. */
     @UML(
-        identifier = "mandatory",
-        obligation = org.opengis.annotation.Obligation.CONDITIONAL,
-        specification = ISO_19115
-    )
+            identifier = "mandatory",
+            obligation = org.opengis.annotation.Obligation.CONDITIONAL,
+            specification = ISO_19115)
     public static final Obligation MANDATORY = new Obligation("MANDATORY");
 
     /** Element is not required. */
     @UML(
-        identifier = "optional",
-        obligation = org.opengis.annotation.Obligation.CONDITIONAL,
-        specification = ISO_19115
-    )
+            identifier = "optional",
+            obligation = org.opengis.annotation.Obligation.CONDITIONAL,
+            specification = ISO_19115)
     public static final Obligation OPTIONAL = new Obligation("OPTIONAL");
 
     /** Element is required when a specific condition is met. */
     @UML(
-        identifier = "conditional",
-        obligation = org.opengis.annotation.Obligation.CONDITIONAL,
-        specification = ISO_19115
-    )
+            identifier = "conditional",
+            obligation = org.opengis.annotation.Obligation.CONDITIONAL,
+            specification = ISO_19115)
     public static final Obligation CONDITIONAL = new Obligation("CONDITIONAL");
 
     /**

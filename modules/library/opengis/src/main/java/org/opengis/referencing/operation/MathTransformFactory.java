@@ -192,10 +192,9 @@ public interface MathTransformFactory extends Factory {
      * @see #getAvailableMethods
      */
     @UML(
-        identifier = "createParameterizedTransform",
-        obligation = MANDATORY,
-        specification = OGC_01009
-    )
+            identifier = "createParameterizedTransform",
+            obligation = MANDATORY,
+            specification = OGC_01009)
     MathTransform createParameterizedTransform(ParameterValueGroup parameters)
             throws NoSuchIdentifierException, FactoryException;
 
@@ -228,10 +227,9 @@ public interface MathTransformFactory extends Factory {
      * @throws FactoryException if the object creation failed.
      */
     @UML(
-        identifier = "createConcatenatedTransform",
-        obligation = MANDATORY,
-        specification = OGC_01009
-    )
+            identifier = "createConcatenatedTransform",
+            obligation = MANDATORY,
+            specification = OGC_01009)
     MathTransform createConcatenatedTransform(MathTransform transform1, MathTransform transform2)
             throws FactoryException;
 
@@ -255,10 +253,9 @@ public interface MathTransformFactory extends Factory {
      * @throws FactoryException if the object creation failed.
      */
     @UML(
-        identifier = "createPassThroughTransform",
-        obligation = MANDATORY,
-        specification = OGC_01009
-    )
+            identifier = "createPassThroughTransform",
+            obligation = MANDATORY,
+            specification = OGC_01009)
     MathTransform createPassThroughTransform(
             int firstAffectedOrdinate, MathTransform subTransform, int numTrailingOrdinates)
             throws FactoryException;

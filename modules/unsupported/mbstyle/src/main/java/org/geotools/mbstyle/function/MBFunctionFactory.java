@@ -64,6 +64,10 @@ public class MBFunctionFactory implements FunctionFactory {
         functionList.add(ToColorFunction.NAME);
         functionList.add(MapBoxAnchorFunction.NAME);
         functionList.add(FontAlternativesFunction.NAME);
+        functionList.add(MapBoxFontBaseNameFunction.NAME);
+        functionList.add(MapBoxFontStyleFunction.NAME);
+        functionList.add(MapBoxFontWeightFunction.NAME);
+        functionList.add(MapBoxAlphaFunction.NAME);
         return Collections.unmodifiableList(functionList);
     }
 
@@ -135,6 +139,10 @@ public class MBFunctionFactory implements FunctionFactory {
             f = new MapBoxFontStyleFunction();
         } else if (MapBoxFontWeightFunction.NAME.getFunctionName().equals(name)) {
             f = new MapBoxFontWeightFunction();
+        } else if (MapBoxAlphaFunction.NAME.getFunctionName().equals(name)) {
+            f = new MapBoxAlphaFunction();
+        } else if (MapBoxRGBAFunction.NAME.getFunctionName().equals(name)) {
+            f = new MapBoxRGBAFunction();
         }
 
         if (f instanceof FunctionImpl) {

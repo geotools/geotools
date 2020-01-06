@@ -16,12 +16,6 @@
  */
 package org.geotools.mbstyle.parse;
 
-import java.awt.Color;
-import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.geotools.data.util.ColorConverterFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.mbstyle.expression.MBExpression;
@@ -37,6 +31,13 @@ import org.json.simple.parser.ParseException;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
+
+import java.awt.*;
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Helper class used to perform JSON traversal of {@link JSONObject} and perform Expression and
@@ -1235,14 +1236,24 @@ public class MBObjectParser {
      *
      * This method uses {@link Hints#COLOR_DEFINITION} "CSS" to support the use of web colors names.
      *
-     * @param color name of color (CSS or "web" colors)
+     * @param colorSpec name of color (CSS or "web" colors)
      * @return appropriate java color, or null if not available.
      */
-    public Literal color(String color) {
-        if (color == null) {
+    public Expression color(String colorSpec) {
+        if (colorSpec == null) {
             return null;
         }
-        return ff.literal(convertToColor(color));
+        Color color = convertToColor(colorSpec);
+        if (color.getAlpha() != 255) {
+            return ff.function(
+                    "mbRGBA",
+                    ff.literal(color.getRed()),
+                    ff.literal(color.getGreen()),
+                    ff.literal(color.getBlue()),
+                    ff.literal(color.getAlpha() / 255d));
+        } else {
+            return ff.literal(color);
+        }
     }
 
     /**

@@ -302,7 +302,7 @@ public class LabelPainter {
     }
 
     Rectangle2D applyMargins(int[] margin, Rectangle2D bounds) {
-        if (bounds != null && margin != null) {
+        if (bounds != null) {
             double xmin = bounds.getMinX() - margin[3];
             double ymin = bounds.getMinY() - margin[0];
             double width = bounds.getWidth() + margin[1] + margin[3];

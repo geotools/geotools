@@ -2366,4 +2366,50 @@ public class GridCoverageRendererTest {
         assertEquals(transparentPixel, sampleB);
         coverage.dispose(true);
     }
+
+    @Test
+    public void testContrastEnhancementWithNodataDataset() throws Exception {
+        URL coverageFile =
+                org.geotools.test.TestData.url(GridCoverageRendererTest.class, "nodataNbands.tiff");
+        GeoTiffReader reader = new GeoTiffReader(coverageFile);
+        GridCoverage2D coverage = reader.read(null);
+        NoDataContainer noDataProperty = CoverageUtilities.getNoDataProperty(coverage);
+        assertNotNull(noDataProperty);
+        double noData = noDataProperty.getAsSingleValue();
+
+        // At that specific location (x=7,y=2) sample should be nodata
+        final int noDataPixelCoordinateX = 7;
+        final int noDataPixelCoordinateY = 2;
+        RenderedImage image = coverage.getRenderedImage();
+        Raster raster = image.getData();
+        double sample = raster.getSampleDouble(noDataPixelCoordinateX, noDataPixelCoordinateY, 0);
+        assertEquals(noData, sample, 1E-6);
+
+        ReferencedEnvelope mapExtent = ReferencedEnvelope.reference(coverage.getEnvelope2D());
+        Rectangle screenSize =
+                new Rectangle(
+                        image.getMinX(), image.getMinY(), image.getWidth(), image.getHeight());
+        AffineTransform w2s = RendererUtilities.worldToScreenTransform(mapExtent, screenSize);
+        GridCoverageRenderer renderer =
+                new GridCoverageRenderer(
+                        coverage.getCoordinateReferenceSystem(), mapExtent, screenSize, w2s);
+
+        Style style = RendererBaseTest.loadStyle(this, "n_bands.sld");
+        RasterSymbolizer rasterSymbolizer =
+                (RasterSymbolizer)
+                        style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
+        image =
+                renderer.renderImage(
+                        coverage,
+                        rasterSymbolizer,
+                        Interpolation.getInstance(Interpolation.INTERP_NEAREST),
+                        Color.RED,
+                        256,
+                        256);
+
+        raster = image.getData();
+        int sampleB = raster.getSample(noDataPixelCoordinateX, noDataPixelCoordinateY, 0);
+        assertEquals(0, sampleB);
+        coverage.dispose(true);
+    }
 }

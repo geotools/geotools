@@ -1617,25 +1617,17 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
 
     @Test
     public void testRescaleNoData() {
-        // Getting input gray scale image
-        ImageWorker w = new ImageWorker(gray);
-        // Removing optional Alpha band
-        w.retainFirstBand();
-        // Formatting to int (avoid to convert values greater to 127 into negative values during
-        // rescaling)
-        w.format(DataBuffer.TYPE_INT);
+        ImageWorker w = new ImageWorker(imageWithNodata2);
         // Setting NoData
-        Range noData = RangeFactory.create(0, 0);
+        Range noData = RangeFactory.create(-10000, -10000);
         w.setNoData(noData);
-        // Setting background to 10
-        w.setBackground(new double[] {10d});
-        // Rescaling data
-        w.rescale(new double[] {2}, new double[] {2});
+        w.setBackground(new double[] {0});
+        w.rescale(new double[] {0.002}, new double[] {2});
 
-        // Getting Minimum value, It cannot be equal or lower than the offset value (2)
+        // Getting Minimum value, It cannot be equal or lower than the offset value
         double minimum = w.getMinimums()[0];
         assertTrue(minimum > 2);
-        assertNoData(w.getRenderedImage(), noData);
+        assertNoData(w.getRenderedImage(), RangeFactory.create((byte) 0, (byte) 0));
     }
 
     @Test

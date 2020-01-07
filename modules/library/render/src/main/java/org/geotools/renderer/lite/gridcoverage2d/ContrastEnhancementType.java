@@ -21,6 +21,8 @@ import it.geosolutions.jaiext.lookup.LookupTableFactory;
 import it.geosolutions.jaiext.piecewise.DefaultPiecewiseTransform1D;
 import it.geosolutions.jaiext.piecewise.DefaultPiecewiseTransform1DElement;
 import it.geosolutions.jaiext.piecewise.PiecewiseTransform1D;
+import it.geosolutions.jaiext.range.NoDataContainer;
+import it.geosolutions.jaiext.range.Range;
 import it.geosolutions.jaiext.range.RangeFactory;
 import it.geosolutions.jaiext.utilities.ImageLayout2;
 import java.awt.RenderingHints;
@@ -334,10 +336,12 @@ public enum ContrastEnhancementType {
                 return inputWorker.getRenderedImage();
             }
 
+            NoDataContainer destinationNoData = getDestinationNoData(inputWorker);
+            double offsetAdjustment = destinationNoData == null ? 0 : 1;
             // compute the scale factors
             final double delta = extrema[1][0] - extrema[0][0];
-            final double scale = (maximum - minimum) / delta;
-            final double offset = minimum - scale * extrema[0][0];
+            final double scale = (maximum - minimum - offsetAdjustment) / delta;
+            final double offset = minimum - scale * extrema[0][0] + offsetAdjustment;
 
             //
             // do the actual rescale
@@ -362,6 +366,11 @@ public enum ContrastEnhancementType {
             RenderingHints localHints = hints.clone();
             localHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
 
+            if (destinationNoData != null) {
+                // rescale op will fill pixel nodata value with background value
+                // let's use the destination nodata as new background.
+                inputWorker.setBackground(new double[] {destinationNoData.getAsSingleValue()});
+            }
             // rescale
             inputWorker.setRenderingHints(localHints);
             inputWorker.rescale(new double[] {scale}, new double[] {offset});
@@ -408,10 +417,12 @@ public enum ContrastEnhancementType {
                 return inputWorker.getRenderedImage();
             }
 
+            NoDataContainer destinationNoData = getDestinationNoData(inputWorker);
+            double offsetAdjustment = destinationNoData == null ? 0 : 1;
             // compute the scale factors
             final double delta = maxData - minData;
-            final double scale = (maximum - minimum) / delta;
-            final double offset = minimum - scale * minData;
+            final double scale = (maximum - minimum - offsetAdjustment) / delta;
+            final double offset = minimum - scale * minData + offsetAdjustment;
 
             //
             // do the actual rescale
@@ -433,7 +444,11 @@ public enum ContrastEnhancementType {
                             inputWorker.getRenderedImage().getHeight()));
             RenderingHints localHints = hints.clone();
             localHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
-
+            if (destinationNoData != null) {
+                // rescale op will fill pixel nodata value with background value
+                // let's use the destination nodata as new background.
+                inputWorker.setBackground(new double[] {destinationNoData.getAsSingleValue()});
+            }
             // rescale
             inputWorker.setRenderingHints(localHints);
             inputWorker.rescale(new double[] {scale}, new double[] {offset});
@@ -568,6 +583,15 @@ public enum ContrastEnhancementType {
             return generateClampingPiecewise(minimum, maximum, 0, 0);
         }
     };
+
+    private static NoDataContainer getDestinationNoData(ImageWorker inputWorker) {
+        Range nodata = inputWorker.extractNoDataProperty(inputWorker.getRenderedImage());
+        NoDataContainer imposedNoData = null;
+        if (nodata != null && !nodata.contains(0)) {
+            imposedNoData = new NoDataContainer(0);
+        }
+        return imposedNoData;
+    }
 
     /**
      * Return a Piecewise transform doing clamping outside the central range

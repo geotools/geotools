@@ -54,11 +54,11 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.media.jai.Interpolation;
+import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.coverage.grid.InvalidGridGeometryException;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.DataUtilities;
@@ -107,7 +107,6 @@ import org.geotools.renderer.crs.ProjectionHandlerFinder;
 import org.geotools.renderer.crs.WrappingProjectionHandler;
 import org.geotools.renderer.label.LabelCacheImpl;
 import org.geotools.renderer.label.LabelCacheImpl.LabelRenderingMode;
-import org.geotools.renderer.lite.gridcoverage2d.GridCoverageReaderHelper;
 import org.geotools.renderer.lite.gridcoverage2d.GridCoverageRenderer;
 import org.geotools.renderer.style.LineStyle2D;
 import org.geotools.renderer.style.SLDStyleFactory;
@@ -2246,31 +2245,7 @@ public class StreamingRenderer implements GTRenderer {
             // the one attached to the layer and then one coming from SLD.
             // The first source attributes, the latter talks tx output attributes
             // so they have to be applied before and after the transformation respectively
-            RenderingTransformationHelper helper =
-                    new RenderingTransformationHelper() {
-
-                        @Override
-                        protected GridCoverage2D readCoverage(
-                                GridCoverage2DReader reader,
-                                Object readParams,
-                                GridGeometry2D readGG)
-                                throws IOException {
-                            Interpolation interpolation = getRenderingInterpolation(layer);
-                            GridCoverageReaderHelper helper;
-                            try {
-                                helper =
-                                        new GridCoverageReaderHelper(
-                                                reader,
-                                                readGG.getGridRange2D(),
-                                                ReferencedEnvelope.reference(
-                                                        readGG.getEnvelope2D()),
-                                                interpolation);
-                                return helper.readCoverage((GeneralParameterValue[]) readParams);
-                            } catch (InvalidGridGeometryException | FactoryException e) {
-                                throw new IOException("Failure reading the coverage", e);
-                            }
-                        }
-                    };
+            RenderingTransformationHelper helper = new GCRRenderingTransformationHelper(layer);
 
             Object result =
                     helper.applyRenderingTransformation(
@@ -2621,6 +2596,28 @@ public class StreamingRenderer implements GTRenderer {
                 boolean cloningRequired = isCloningRequired(lfts);
                 RenderableFeature rf = createRenderableFeature(layerId, cloningRequired);
                 rf.layer = liteFeatureTypeStyle.layer;
+
+                ProjectionHandler handler = liteFeatureTypeStyle.projectionHandler;
+                // Check if a reprojection has been made, in that case, let's update the projection
+                // Handler
+                CoordinateReferenceSystem featureCrs =
+                        features.getSchema().getCoordinateReferenceSystem();
+                if (liteFeatureTypeStyle.projectionHandler != null
+                        && featureCrs != null
+                        && !CRS.equalsIgnoreMetadata(
+                                liteFeatureTypeStyle.projectionHandler.getSourceCRS(),
+                                featureCrs)) {
+                    try {
+                        handler =
+                                ProjectionHandlerFinder.getHandler(
+                                        mapExtent,
+                                        features.getSchema().getCoordinateReferenceSystem(),
+                                        isMapWrappingEnabled());
+                    } catch (FactoryException e) {
+                        fireErrorEvent(e);
+                    }
+                }
+
                 rf.setScreenMap(liteFeatureTypeStyle.screenMap);
                 // loop exit condition tested inside try catch
                 // make sure we test hasNext() outside of the try/cath that follows, as that
@@ -2629,7 +2626,7 @@ public class StreamingRenderer implements GTRenderer {
                 // an infinite loop
                 while (featureIterator.hasNext() && !renderingStopRequested) {
                     rf.setFeature(featureIterator.next());
-                    processFeature(rf, liteFeatureTypeStyle);
+                    processFeature(rf, liteFeatureTypeStyle, handler);
                 }
             }
 
@@ -2682,7 +2679,8 @@ public class StreamingRenderer implements GTRenderer {
                 rf.setFeature(iterator.next());
                 // draw the feature on the main graphics and on the eventual extra image buffers
                 for (LiteFeatureTypeStyle liteFeatureTypeStyle : lfts) {
-                    processFeature(rf, liteFeatureTypeStyle);
+                    processFeature(
+                            rf, liteFeatureTypeStyle, liteFeatureTypeStyle.projectionHandler);
                 }
             }
             // submit the merge request
@@ -2772,11 +2770,12 @@ public class StreamingRenderer implements GTRenderer {
      * @param fts
      * @param layerId
      */
-    void processFeature(RenderableFeature rf, LiteFeatureTypeStyle fts) {
+    void processFeature(
+            RenderableFeature rf, LiteFeatureTypeStyle fts, ProjectionHandler projectionHandler) {
         try {
             // init the renderable feature for this fts
             rf.inMemoryGeneralization = fts.inMemoryGeneralization;
-            rf.projectionHandler = fts.projectionHandler;
+            rf.projectionHandler = projectionHandler;
             rf.setScreenMap(fts.screenMap);
             rf.layer = fts.layer;
             rf.metaBuffer = fts.metaBuffer;
@@ -4128,6 +4127,59 @@ public class StreamingRenderer implements GTRenderer {
         @Override
         public int drainTo(Collection<? super RenderingRequest> c, int maxElements) {
             return delegate.drainTo(c, maxElements);
+        }
+    }
+
+    private class GCRRenderingTransformationHelper extends RenderingTransformationHelper {
+
+        private final Layer layer;
+
+        public GCRRenderingTransformationHelper(Layer layer) {
+            this.layer = layer;
+        }
+
+        @Override
+        protected GridCoverage2D readCoverage(
+                GridCoverage2DReader reader, Object readParams, GridGeometry2D readGG)
+                throws IOException {
+            Interpolation interpolation = getRenderingInterpolation(layer);
+            RenderingHints interpolationHints =
+                    new RenderingHints(JAI.KEY_INTERPOLATION, interpolation);
+            final GridCoverageRenderer gcr;
+
+            try {
+                Rectangle mapRasterArea = readGG.getGridRange2D();
+                final AffineTransform worldToScreen =
+                        RendererUtilities.worldToScreenTransform(mapExtent, mapRasterArea);
+                gcr =
+                        new GridCoverageRenderer(
+                                mapExtent.getCoordinateReferenceSystem(),
+                                mapExtent,
+                                mapRasterArea,
+                                worldToScreen,
+                                interpolationHints);
+                gcr.setAdvancedProjectionHandlingEnabled(isAdvancedProjectionHandlingEnabled());
+                gcr.setWrapEnabled(isMapWrappingEnabled());
+                RenderedImage ri =
+                        gcr.renderImage(
+                                reader,
+                                (GeneralParameterValue[]) readParams,
+                                null,
+                                interpolation,
+                                null,
+                                256,
+                                256);
+                if (ri != null) {
+                    PlanarImage pi = PlanarImage.wrapRenderedImage(ri);
+                    GridCoverage2D gc2d =
+                            (GridCoverage2D)
+                                    pi.getProperty(GridCoverageRenderer.PARENT_COVERAGE_PROPERTY);
+                    return gc2d;
+                }
+                return null;
+            } catch (TransformException | NoninvertibleTransformException | FactoryException e) {
+                throw new IOException("Failure rendering the coverage", e);
+            }
         }
     }
 }

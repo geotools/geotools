@@ -76,7 +76,8 @@ class ZGroupLayerPainter {
         for (int i = 0; i < lfts.size(); i++) {
             while (!complete && reference.equals(currentKey)) {
                 renderable.setFeature(currentFeature);
-                renderer.processFeature(renderable, lfts.get(i));
+                LiteFeatureTypeStyle lftsi = lfts.get(i);
+                renderer.processFeature(renderable, lftsi, lftsi.projectionHandler);
                 if (renderer.renderingStopRequested) {
                     return;
                 }

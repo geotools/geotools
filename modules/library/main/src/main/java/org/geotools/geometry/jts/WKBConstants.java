@@ -35,7 +35,7 @@
  *     (250)385-6040
  *     www.vividsolutions.com
  */
-package org.geotools.data.postgis;
+package org.geotools.geometry.jts;
 
 /** Constant values used by the WKB format */
 interface WKBConstants {

@@ -414,26 +414,4 @@ public class GeoJSONWriteTest {
             store.dispose();
         }
     }
-
-    public static void assertEqualsIgnoreWhitespace(
-            String message, String expected, String actual) {
-        expected = removeWhitespace(expected);
-        actual = removeWhitespace(actual);
-        assertEquals(message, expected, actual);
-    }
-
-    private static String removeWhitespace(String actual) {
-        if (actual == null) return "";
-        StringBuffer crush = new StringBuffer(actual);
-        int ch = 0;
-        while (ch < crush.length()) {
-            char chracter = crush.charAt(ch);
-            if (Character.isWhitespace(chracter)) {
-                crush.deleteCharAt(ch);
-                continue;
-            }
-            ch++;
-        }
-        return crush.toString();
-    }
 }

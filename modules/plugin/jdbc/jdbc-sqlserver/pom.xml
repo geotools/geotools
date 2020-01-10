@@ -68,37 +68,16 @@
 			<artifactId>jtds</artifactId>
 			<version>${jtdsDriverVersion}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.microsoft.sqlserver</groupId>
+			<artifactId>mssql-jdbc</artifactId>
+			<version>${sqlServerDriverVersion}</version>
+		</dependency>
 	</dependencies>
-	<profiles>
-	<!-- If you have access to the MS SQL Server driver you can    -->
-	<!-- rebuild this geotools plugin with that driver to use that -->
-	<!-- driver instead of the jtds driver:                        -->
-	<!--   Download the sqljdbc41.jar driver from Microsoft and    -->
-	<!--   install into maven:
-	        mvn install:install-file -Dfile=sqljdbc41.jar \
-	            -DgroupId=com.microsoft.sqlserver -DartifactId=sqljdbc41 \
-	            -Dversion=4.1 -Dpackaging=jar -DgeneratePom=true
-	                                                               -->
-	<!-- You can then supply -Dsqlserver=true on the command line  -->
-	<profile>
-			<id>sqlServerDriver</id>
-			<activation>
-				<property>
-					<name>sqlserver</name>
-				</property>
-			</activation>
-			<dependencies>
-				<dependency>
-					<groupId>com.microsoft.sqlserver</groupId>
-					<artifactId>sqljdbc41</artifactId>
-					<version>${sqlServerDriverVersion}</version>
-				</dependency>
-			</dependencies>
-		</profile>
-	</profiles>
 
 	<properties>
-		<sqlServerDriverVersion>4.1</sqlServerDriverVersion>
+		<!-- Dont use 7.4.1.jre8 as it's affected by https://github.com/microsoft/mssql-jdbc/issues/1195 -->
+		<sqlServerDriverVersion>8.1.1.jre8-preview</sqlServerDriverVersion>
 		<jtdsDriverVersion>1.3.1</jtdsDriverVersion>
 	</properties>
 </project>

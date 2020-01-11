@@ -137,98 +137,99 @@ public class CSVWriteTest {
         params.put("file", statesfile);
         DataStore store = DataStoreFinder.getDataStore(params);
 
-    try (Transaction t1 = new DefaultTransaction("transaction 1");
-        Transaction t2 = new DefaultTransaction("transactoin 2");) {
+        try (Transaction t1 = new DefaultTransaction("transaction 1");
+                Transaction t2 = new DefaultTransaction("transactoin 2"); ) {
 
-        SimpleFeatureType type = store.getSchema("locations");
-        SimpleFeatureStore auto = (SimpleFeatureStore) store.getFeatureSource("locations");
-        SimpleFeatureStore featureStore1 = (SimpleFeatureStore) store.getFeatureSource("locations");
-        SimpleFeatureStore featureStore2 = (SimpleFeatureStore) store.getFeatureSource("locations");
+            SimpleFeatureType type = store.getSchema("locations");
+            SimpleFeatureStore auto = (SimpleFeatureStore) store.getFeatureSource("locations");
+            SimpleFeatureStore featureStore1 =
+                    (SimpleFeatureStore) store.getFeatureSource("locations");
+            SimpleFeatureStore featureStore2 =
+                    (SimpleFeatureStore) store.getFeatureSource("locations");
 
-        featureStore1.setTransaction(t1);
-        featureStore2.setTransaction(t2);
+            featureStore1.setTransaction(t1);
+            featureStore2.setTransaction(t2);
 
-        // Before we edit everything should be the same
-        assertEquals("featureStore1 before", 9, featureStore1.getFeatures().size());
-        assertEquals("featureStore2 before", 9, featureStore2.getFeatures().size());
+            // Before we edit everything should be the same
+            assertEquals("featureStore1 before", 9, featureStore1.getFeatures().size());
+            assertEquals("featureStore2 before", 9, featureStore2.getFeatures().size());
 
-        // select feature to remove
-        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-        Filter filter1 = ff.id(Collections.singleton(ff.featureId("locations-fid1")));
-        featureStore1.removeFeatures(filter1); // road1 removes fid1 on t1
+            // select feature to remove
+            FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+            Filter filter1 = ff.id(Collections.singleton(ff.featureId("locations-fid1")));
+            featureStore1.removeFeatures(filter1); // road1 removes fid1 on t1
 
-        // Tests after removal
-        assertEquals("auto after featureStore1 removes fid1", 9, auto.getFeatures().size());
-        assertEquals(
-                "featureStore1 after featureStore1 removes fid1",
-                8,
-                featureStore1.getFeatures().size());
-        assertEquals(
-                "featureStore2 after featureStore1 removes fid1",
-                9,
-                featureStore2.getFeatures().size());
+            // Tests after removal
+            assertEquals("auto after featureStore1 removes fid1", 9, auto.getFeatures().size());
+            assertEquals(
+                    "featureStore1 after featureStore1 removes fid1",
+                    8,
+                    featureStore1.getFeatures().size());
+            assertEquals(
+                    "featureStore2 after featureStore1 removes fid1",
+                    9,
+                    featureStore2.getFeatures().size());
 
-        // new feature to add!
-        // 45.52, -122.681944, Portland, 800, 2014
-        SimpleFeature feature =
-                SimpleFeatureBuilder.build(
-                        type,
-                        new Object[] {45.52, -122.681944, "Portland", 800, 2014},
-                        "locations-fid10");
-        SimpleFeatureCollection collection = DataUtilities.collection(feature);
+            // new feature to add!
+            // 45.52, -122.681944, Portland, 800, 2014
+            SimpleFeature feature =
+                    SimpleFeatureBuilder.build(
+                            type,
+                            new Object[] {45.52, -122.681944, "Portland", 800, 2014},
+                            "locations-fid10");
+            SimpleFeatureCollection collection = DataUtilities.collection(feature);
 
-        featureStore2.addFeatures(collection);
-        // Tests after adding the feature
-        assertEquals(
-                "auto after featureStore1 removes fid1 and featureStore2 adds fid5",
-                9,
-                auto.getFeatures().size());
-        assertEquals(
-                "featureStore1 after featureStore1 removes fid1 and featureStore2 adds fid5",
-                8,
-                featureStore1.getFeatures().size());
-        assertEquals(
-                "featureStore2 after featureStore1 removes fid1 and featureStore2 adds fid5",
-                10,
-                featureStore2.getFeatures().size());
+            featureStore2.addFeatures(collection);
+            // Tests after adding the feature
+            assertEquals(
+                    "auto after featureStore1 removes fid1 and featureStore2 adds fid5",
+                    9,
+                    auto.getFeatures().size());
+            assertEquals(
+                    "featureStore1 after featureStore1 removes fid1 and featureStore2 adds fid5",
+                    8,
+                    featureStore1.getFeatures().size());
+            assertEquals(
+                    "featureStore2 after featureStore1 removes fid1 and featureStore2 adds fid5",
+                    10,
+                    featureStore2.getFeatures().size());
 
-        // commit transaction one
-        t1.commit();
+            // commit transaction one
+            t1.commit();
 
-        // Tests after first commit
-        assertEquals(
-                "auto after featureStore1 commits removal of fid1 (featureStore2 has added fid5)",
-                8,
-                auto.getFeatures().size());
-        assertEquals(
-                "featureStore1 after commiting removal of fid1 (featureStore2 has added fid5)",
-                8,
-                featureStore1.getFeatures().size());
-        assertEquals(
-                "featureStore2 after featureStore1 commits removal of fid1 (featureStore2 has added fid5)",
-                9,
-                featureStore2.getFeatures().size());
+            // Tests after first commit
+            assertEquals(
+                    "auto after featureStore1 commits removal of fid1 (featureStore2 has added fid5)",
+                    8,
+                    auto.getFeatures().size());
+            assertEquals(
+                    "featureStore1 after commiting removal of fid1 (featureStore2 has added fid5)",
+                    8,
+                    featureStore1.getFeatures().size());
+            assertEquals(
+                    "featureStore2 after featureStore1 commits removal of fid1 (featureStore2 has added fid5)",
+                    9,
+                    featureStore2.getFeatures().size());
 
-        // commit transaction two
-        t2.commit();
+            // commit transaction two
+            t2.commit();
 
-        // Tests after 2nd commit
-        assertEquals(
-                "auto after featureStore2 commits addition of fid5 (fid1 previously removed)",
-                9,
-                auto.getFeatures().size());
-        assertEquals(
-                "featureStore1 after featureStore2 commits addition of fid5 (fid1 previously removed)",
-                9,
-                featureStore1.getFeatures().size());
-        assertEquals(
-                "featureStore2 after commiting addition of fid5 (fid1 previously removed)",
-                9,
-                featureStore2.getFeatures().size());
-        t1.close();
-        t2.close();
-        store.dispose(); // clear out any listeners
-    }
+            // Tests after 2nd commit
+            assertEquals(
+                    "auto after featureStore2 commits addition of fid5 (fid1 previously removed)",
+                    9,
+                    auto.getFeatures().size());
+            assertEquals(
+                    "featureStore1 after featureStore2 commits addition of fid5 (fid1 previously removed)",
+                    9,
+                    featureStore1.getFeatures().size());
+            assertEquals(
+                    "featureStore2 after commiting addition of fid5 (fid1 previously removed)",
+                    9,
+                    featureStore2.getFeatures().size());
+
+            store.dispose(); // clear out any listeners
+        }
         assertTrue("Temp files being left behind", cleanedup());
     }
 

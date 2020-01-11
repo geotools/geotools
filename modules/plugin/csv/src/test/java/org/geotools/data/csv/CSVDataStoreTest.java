@@ -19,7 +19,6 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.csv.parse.CSVLatLonStrategy;
@@ -83,17 +82,18 @@ public class CSVDataStoreTest {
 
     @Test
     public void testFeatureReader() throws IOException {
-    try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = csvDataStore.getFeatureReader();) {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                csvDataStore.getFeatureReader(); ) {
 
-        assertNotNull(reader);
-        int count = 0;
-        while (reader.hasNext()) {
-            SimpleFeature f = reader.next();
-            assertNotNull(f);
-            count++;
+            assertNotNull(reader);
+            int count = 0;
+            while (reader.hasNext()) {
+                SimpleFeature f = reader.next();
+                assertNotNull(f);
+                count++;
+            }
+            assertEquals(9, count);
         }
-        assertEquals(9, count);
-    }
     }
 
     @Test

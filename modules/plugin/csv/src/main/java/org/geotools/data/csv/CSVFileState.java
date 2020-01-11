@@ -17,11 +17,6 @@
  */
 package org.geotools.data.csv;
 
-import com.opencsv.CSVParser;
-import com.opencsv.CSVParserBuilder;
-import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
-import com.opencsv.exceptions.CsvValidationException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -29,12 +24,19 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.net.URI;
+
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-// docs start CSVFileState
+import com.opencsv.CSVParser;
+import com.opencsv.CSVParserBuilder;
+import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
+import com.opencsv.exceptions.CsvValidationException;
+
+
 /** Details from comma separated value file. */
 public class CSVFileState {
     private char separator = ',';
@@ -107,7 +109,7 @@ public class CSVFileState {
         }
     }
 
-    // docs start openCSVReader
+
     @SuppressWarnings("PMD.CloseResource") // wrapped and returned
     public CSVReader openCSVReader() throws IOException, CsvValidationException {
         Reader reader = null;
@@ -124,7 +126,6 @@ public class CSVFileState {
                         .withEscapeChar(escapechar)
                         .withQuoteChar(quotechar)
                         .withIgnoreLeadingWhiteSpace(true)
-                        .withIgnoreQuotations(true)
                         .build();
         final CSVReader csvReader = new CSVReaderBuilder(reader).withCSVParser(parser).build();
 
@@ -144,9 +145,8 @@ public class CSVFileState {
         }
         return csvReader;
     }
-    // docs end openCSVReader
 
-    // docs start getCSVHeaders
+
     public String[] getCSVHeaders() {
         if (headers == null) {
             throw new RuntimeException("Attempting to access unopened CSV Reader");
@@ -204,5 +204,4 @@ public class CSVFileState {
         this.quoteAllFields = quoteAllFields;
     }
 
-    // docs end readCSVHeaders
 }

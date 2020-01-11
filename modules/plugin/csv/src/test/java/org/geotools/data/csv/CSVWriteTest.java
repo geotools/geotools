@@ -27,6 +27,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.geotools.TestData;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
@@ -120,7 +121,7 @@ public class CSVWriteTest {
 
     @Test
     public void featureStoreExample() throws Exception {
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("file", statesfile);
         DataStore store = DataStoreFinder.getDataStore(params);
 
@@ -132,12 +133,12 @@ public class CSVWriteTest {
 
     @Test
     public void transactionExample() throws Exception {
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("file", statesfile);
         DataStore store = DataStoreFinder.getDataStore(params);
 
-        Transaction t1 = new DefaultTransaction("transaction 1");
-        Transaction t2 = new DefaultTransaction("transactoin 2");
+    try (Transaction t1 = new DefaultTransaction("transaction 1");
+        Transaction t2 = new DefaultTransaction("transactoin 2");) {
 
         SimpleFeatureType type = store.getSchema("locations");
         SimpleFeatureStore auto = (SimpleFeatureStore) store.getFeatureSource("locations");
@@ -227,12 +228,13 @@ public class CSVWriteTest {
         t1.close();
         t2.close();
         store.dispose(); // clear out any listeners
+    }
         assertTrue("Temp files being left behind", cleanedup());
     }
 
     @Test
     public void removeAllExample() throws Exception {
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("file", statesfile);
         DataStore store = DataStoreFinder.getDataStore(params);
 
@@ -268,7 +270,7 @@ public class CSVWriteTest {
 
     @Test
     public void replaceAll() throws Exception {
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("file", statesfile);
         params.put(CSVDataStoreFactory.STRATEGYP.key, CSVDataStoreFactory.SPECIFC_STRATEGY);
         params.put(CSVDataStoreFactory.LATFIELDP.key, "LAT");
@@ -325,13 +327,13 @@ public class CSVWriteTest {
     @Test
     public void appendContent() throws Exception {
         File directory = tmp;
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("file", statesfile);
         DataStore store = DataStoreFinder.getDataStore(params);
         SimpleFeatureType featureType = store.getSchema("locations");
 
         File file2 = new File(directory, "duplicate.rst");
-        Map<String, Serializable> params2 = new HashMap<String, Serializable>();
+        Map<String, Serializable> params2 = new HashMap<>();
         params2.put("file", file2);
 
         CSVDataStoreFactory factory = new CSVDataStoreFactory();
@@ -385,7 +387,7 @@ public class CSVWriteTest {
         assertNotNull("couldn't create store", store);
         File file2 = File.createTempFile("CSVTest", ".csv");
         file2.deleteOnExit();
-        Map<String, Serializable> params2 = new HashMap<String, Serializable>();
+        Map<String, Serializable> params2 = new HashMap<>();
         params2.put("file", file2);
         params2.put(
                 CSVDataStoreFactory.STRATEGYP.key, CSVDataStoreFactory.ATTRIBUTES_ONLY_STRATEGY);
@@ -433,7 +435,7 @@ public class CSVWriteTest {
 
     @Test
     public void testSpecificStrategyWrites() throws IOException {
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("file", statesfile);
         params.put(CSVDataStoreFactory.STRATEGYP.key, CSVDataStoreFactory.SPECIFC_STRATEGY);
         params.put(CSVDataStoreFactory.LATFIELDP.key, "LAT");
@@ -454,7 +456,7 @@ public class CSVWriteTest {
         collection.add(f);
 
         File file2 = File.createTempFile("CSVTest", ".csv");
-        Map<String, Serializable> params2 = new HashMap<String, Serializable>();
+        Map<String, Serializable> params2 = new HashMap<>();
         params2.put("file", file2);
         params2.put(CSVDataStoreFactory.STRATEGYP.key, CSVDataStoreFactory.SPECIFC_STRATEGY);
         params2.put(CSVDataStoreFactory.LATFIELDP.key, "LAT");
@@ -539,7 +541,7 @@ public class CSVWriteTest {
         FileDataStore store = FileDataStoreFinder.getDataStore(states);
         assertNotNull("couldn't create store", store);
         File file2 = File.createTempFile("CSVTest", ".csv");
-        Map<String, Serializable> params2 = new HashMap<String, Serializable>();
+        Map<String, Serializable> params2 = new HashMap<>();
         params2.put("file", file2);
         params2.put(CSVDataStoreFactory.STRATEGYP.key, CSVDataStoreFactory.WKT_STRATEGY);
         params2.put(CSVDataStoreFactory.WKTP.key, "the_geom_wkt");

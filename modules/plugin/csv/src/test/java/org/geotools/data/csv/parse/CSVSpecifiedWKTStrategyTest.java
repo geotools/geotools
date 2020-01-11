@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
+
 import org.geotools.data.csv.CSVFeatureReader;
 import org.geotools.data.csv.CSVFileState;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -50,7 +51,7 @@ public class CSVSpecifiedWKTStrategyTest {
         CSVTestStrategySupport.verifyType(featureType.getDescriptor("fleem"), String.class);
         CSVTestStrategySupport.verifyType(featureType.getDescriptor("zoo"), Geometry.class);
         CSVTestStrategySupport.verifyType(featureType.getDescriptor("morx"), String.class);
-        CSVFeatureReader reader = new CSVFeatureReader(strategy);
+    try (CSVFeatureReader reader = new CSVFeatureReader(strategy)) {
         assertNotNull(reader);
         SimpleFeature feature = reader.next();
         assertEquals("Invalid feature property", "foo", feature.getAttribute("fleem"));
@@ -60,6 +61,7 @@ public class CSVSpecifiedWKTStrategyTest {
         Coordinate coordinate = point.getCoordinate();
         assertEquals("Invalid x coordinate", coordinate.x, 3.14, 0.1);
         assertEquals("Invalid y coordinate", coordinate.y, 1.59, 0.1);
+    }
     }
 
     @Test
@@ -71,10 +73,11 @@ public class CSVSpecifiedWKTStrategyTest {
         assertEquals("Invalid attribute count", 2, featureType.getAttributeCount());
         CSVTestStrategySupport.verifyType(featureType.getDescriptor("fleem"), Geometry.class);
         CSVTestStrategySupport.verifyType(featureType.getDescriptor("morx"), String.class);
-        CSVIterator iterator = strategy.iterator();
+    try (CSVIterator iterator = strategy.iterator()) {
         SimpleFeature feature = iterator.next();
         assertEquals("Invalid feature property", "bar", feature.getAttribute("morx"));
         assertNull("Unexpected geometry", feature.getAttribute("fleem"));
+    }
     }
 
     @Test

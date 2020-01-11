@@ -27,7 +27,6 @@ import java.nio.file.StandardCopyOption;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.geotools.TestData;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;

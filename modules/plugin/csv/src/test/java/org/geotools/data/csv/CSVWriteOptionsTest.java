@@ -119,7 +119,7 @@ public class CSVWriteOptionsTest {
     public void testWithOutQuotes() throws IOException {
 
         File file2 = File.createTempFile("CSVTest", ".csv");
-        Map<String, Serializable> params2 = new HashMap<String, Serializable>();
+        Map<String, Serializable> params2 = new HashMap<>();
         params2.put("file", file2);
 
         params2.put(CSVDataStoreFactory.STRATEGYP.key, CSVDataStoreFactory.WKT_STRATEGY);
@@ -141,29 +141,31 @@ public class CSVWriteOptionsTest {
     @Test
     public void testWithQuotes() throws IOException {
         File file2 = File.createTempFile("CSVTest", ".csv");
-        Map<String, Serializable> params2 = new HashMap<String, Serializable>();
+        Map<String, Serializable> params2 = new HashMap<>();
         params2.put("file", file2);
 
         params2.put(CSVDataStoreFactory.STRATEGYP.key, CSVDataStoreFactory.WKT_STRATEGY);
         params2.put(CSVDataStoreFactory.WKTP.key, "the_geom_wkt");
         params2.put(CSVDataStoreFactory.QUOTEALL.key, true);
         String contents = createOutputFile(file2, params2);
-        BufferedReader lineReader = new BufferedReader(new CharArrayReader(contents.toCharArray()));
-        String line = lineReader.readLine(); // header
-        assertNotNull(line);
+        try (BufferedReader lineReader =
+                new BufferedReader(new CharArrayReader(contents.toCharArray()))) {
+            String line = lineReader.readLine(); // header
+            assertNotNull(line);
 
-        assertTrue("Geom is not included", line.toLowerCase().contains("\"the_geom_wkt\""));
-        line = lineReader.readLine();
-        assertNotNull(line);
-        assertTrue("Multipolygon is not quoted", line.toLowerCase().contains("\"multipolygon"));
-        assertTrue("Missing quotes", line.contains("\"0.0\""));
-        file2.delete();
+            assertTrue("Geom is not included", line.toLowerCase().contains("\"the_geom_wkt\""));
+            line = lineReader.readLine();
+            assertNotNull(line);
+            assertTrue("Multipolygon is not quoted", line.toLowerCase().contains("\"multipolygon"));
+            assertTrue("Missing quotes", line.contains("\"0.0\""));
+            file2.delete();
+        }
     }
 
     @Test
     public void testWithSingleQuotes() throws IOException {
         File file2 = File.createTempFile("CSVTest", ".csv");
-        Map<String, Serializable> params2 = new HashMap<String, Serializable>();
+        Map<String, Serializable> params2 = new HashMap<>();
         params2.put("file", file2);
 
         params2.put(CSVDataStoreFactory.STRATEGYP.key, CSVDataStoreFactory.WKT_STRATEGY);
@@ -171,144 +173,160 @@ public class CSVWriteOptionsTest {
         params2.put(CSVDataStoreFactory.QUOTEALL.key, true);
         params2.put(CSVDataStoreFactory.QUOTECHAR.key, '\'');
         String contents = createOutputFile(file2, params2);
-        BufferedReader lineReader = new BufferedReader(new CharArrayReader(contents.toCharArray()));
-        String line = lineReader.readLine(); // header
-        assertNotNull(line);
+        try (BufferedReader lineReader =
+                new BufferedReader(new CharArrayReader(contents.toCharArray()))) {
+            String line = lineReader.readLine(); // header
+            assertNotNull(line);
 
-        assertTrue("Geom is not included", line.toLowerCase().contains("the_geom_wkt"));
-        line = lineReader.readLine();
-        assertNotNull(line);
-        assertTrue("Multipolygon is not quoted", line.toLowerCase().contains("'multipolygon"));
-        assertTrue("Missing quotes", line.contains("'0.0'"));
-        file2.delete();
+            assertTrue("Geom is not included", line.toLowerCase().contains("the_geom_wkt"));
+            line = lineReader.readLine();
+            assertNotNull(line);
+            assertTrue("Multipolygon is not quoted", line.toLowerCase().contains("'multipolygon"));
+            assertTrue("Missing quotes", line.contains("'0.0'"));
+            file2.delete();
+        }
     }
 
     @Test
     public void testWithtabs() throws IOException {
         File file2 = File.createTempFile("CSVTest", ".csv");
-        Map<String, Serializable> params2 = new HashMap<String, Serializable>();
+        Map<String, Serializable> params2 = new HashMap<>();
         params2.put("file", file2);
 
         params2.put(CSVDataStoreFactory.STRATEGYP.key, CSVDataStoreFactory.WKT_STRATEGY);
         params2.put(CSVDataStoreFactory.WKTP.key, "the_geom_wkt");
         params2.put(CSVDataStoreFactory.SEPERATORCHAR.key, '\t');
         String contents = createOutputFile(file2, params2);
-        BufferedReader lineReader = new BufferedReader(new CharArrayReader(contents.toCharArray()));
-        String line = lineReader.readLine(); // header
-        assertNotNull(line);
+        try (BufferedReader lineReader =
+                new BufferedReader(new CharArrayReader(contents.toCharArray()))) {
+            String line = lineReader.readLine(); // header
+            assertNotNull(line);
 
-        assertTrue("Geom is not included", line.toLowerCase().contains("the_geom_wkt"));
-        line = lineReader.readLine();
-        assertNotNull(line);
-        assertTrue("Wrong seperator", line.contains("\t"));
-        assertTrue("Should not need quotes", line.toLowerCase().startsWith("multipolygon"));
-        file2.delete();
+            assertTrue("Geom is not included", line.toLowerCase().contains("the_geom_wkt"));
+            line = lineReader.readLine();
+            assertNotNull(line);
+            assertTrue("Wrong seperator", line.contains("\t"));
+            assertTrue("Should not need quotes", line.toLowerCase().startsWith("multipolygon"));
+            file2.delete();
+        }
     }
 
     @Test
     public void testLineSeperator() throws IOException {
         File file2 = File.createTempFile("CSVTest", ".csv");
-        Map<String, Serializable> params2 = new HashMap<String, Serializable>();
+        Map<String, Serializable> params2 = new HashMap<>();
         params2.put("file", file2);
 
         params2.put(CSVDataStoreFactory.STRATEGYP.key, CSVDataStoreFactory.WKT_STRATEGY);
         params2.put(CSVDataStoreFactory.WKTP.key, "the_geom_wkt");
         params2.put(CSVDataStoreFactory.LINESEPSTRING.key, "EOL;\n");
         String contents = createOutputFile(file2, params2);
-        BufferedReader lineReader = new BufferedReader(new CharArrayReader(contents.toCharArray()));
-        String line = lineReader.readLine(); // header
-        assertNotNull(line);
+        try (BufferedReader lineReader =
+                new BufferedReader(new CharArrayReader(contents.toCharArray()))) {
+            String line = lineReader.readLine(); // header
+            assertNotNull(line);
 
-        assertTrue("Geom is not included", line.toLowerCase().contains("the_geom_wkt"));
-        line = lineReader.readLine();
-        assertNotNull(line);
-        assertTrue("Wrong Line seperator", line.contains("EOL;"));
+            assertTrue("Geom is not included", line.toLowerCase().contains("the_geom_wkt"));
+            line = lineReader.readLine();
+            assertNotNull(line);
+            assertTrue("Wrong Line seperator", line.contains("EOL;"));
 
-        file2.delete();
+            file2.delete();
+        }
     }
 
     @Test
     public void testReadEscapeChars() throws IOException {
         String input =
                 CSVTestStrategySupport.buildInputString(
-                        "doubleval,int'val,lat,stringval,lon", "3.8,7,73.28,f'oo,-14.39",
-                        "9.12,-38,0,bar,29", "-37,0,49,baz,0");
+                        "doubleval,\"int'val\",lat,stringval,lon",
+                        "3.8,7,73.28,\"f'oo\",-14.39",
+                        "9.12,-38,0,bar,29",
+                        "-37,0,49,baz,0");
         CSVFileState fileState = new CSVFileState(input, "typename");
-        fileState.setQuotechar('\'');
+
         CSVLatLonStrategy strategy = new CSVLatLonStrategy(fileState);
-        CSVIterator iterator = strategy.iterator();
+        try (CSVIterator iterator = strategy.iterator()) {
 
-        SimpleFeatureType featureType = strategy.getFeatureType();
-        assertEquals("invalid attribute count", 4, featureType.getAttributeCount());
+            SimpleFeatureType featureType = strategy.getFeatureType();
+            assertEquals("invalid attribute count", 4, featureType.getAttributeCount());
 
-        GeometryDescriptor geometryDescriptor = featureType.getGeometryDescriptor();
-        String localName = geometryDescriptor.getLocalName();
-        assertEquals("Invalid geometry name", "location", localName);
-        // iterate through values and verify
-        Object[][] expValues =
-                new Object[][] {
-                    new Object[] {3.8, 7, "f'oo", 73.28, -14.39},
-                    new Object[] {9.12, -38, "bar", 0, 29},
-                    new Object[] {-37.0, 0, "baz", 49, 0}
-                };
-        Object[] expTypes = new Object[] {Double.class, Integer.class, String.class};
-        List<SimpleFeature> features = new ArrayList<SimpleFeature>(3);
-        while (iterator.hasNext()) {
-            features.add(iterator.next());
-        }
-        assertEquals("Invalid number of features", 3, features.size());
-
-        String[] attrNames = new String[] {"doubleval", "int'val", "stringval"};
-        int i = 0;
-        for (SimpleFeature feature : features) {
-            Object[] expVals = expValues[i];
-            for (int j = 0; j < 3; j++) {
-                String attr = attrNames[j];
-                Object value = feature.getAttribute(attr);
-                Class<?> type = value.getClass();
-                assertEquals("Invalid attribute type", expTypes[j], type);
-                assertEquals("Invalid value", expVals[j], value);
+            GeometryDescriptor geometryDescriptor = featureType.getGeometryDescriptor();
+            String localName = geometryDescriptor.getLocalName();
+            assertEquals("Invalid geometry name", "location", localName);
+            // iterate through values and verify
+            Object[][] expValues =
+                    new Object[][] {
+                        new Object[] {3.8, 7, "f'oo", 73.28, -14.39},
+                        new Object[] {9.12, -38, "bar", 0, 29},
+                        new Object[] {-37.0, 0, "baz", 49, 0}
+                    };
+            Object[] expTypes = new Object[] {Double.class, Integer.class, String.class};
+            List<SimpleFeature> features = new ArrayList<>(3);
+            while (iterator.hasNext()) {
+                features.add(iterator.next());
             }
-            i++;
+
+            assertEquals("Invalid number of features", 3, features.size());
+
+            String[] attrNames = new String[] {"doubleval", "int'val", "stringval"};
+            int i = 0;
+            for (SimpleFeature feature : features) {
+                Object[] expVals = expValues[i];
+                for (int j = 0; j < 3; j++) {
+                    String attr = attrNames[j];
+                    Object value = feature.getAttribute(attr);
+                    Class<?> type = value.getClass();
+                    assertEquals("Invalid attribute type", expTypes[j], type);
+                    assertEquals("Invalid value", expVals[j], value);
+                }
+                i++;
+            }
         }
     }
 
     @Test
     public void testWriteEscapeChars() throws IOException {
         File file2 = File.createTempFile("CSVTest", ".csv");
-        Map<String, Serializable> params2 = new HashMap<String, Serializable>();
+        Map<String, Serializable> params2 = new HashMap<>();
         params2.put("file", file2);
 
         params2.put(CSVDataStoreFactory.STRATEGYP.key, CSVDataStoreFactory.WKT_STRATEGY);
         params2.put(CSVDataStoreFactory.WKTP.key, "the_geom_wkt");
         params2.put(CSVDataStoreFactory.QUOTECHAR.key, '\'');
+        params2.put(CSVDataStoreFactory.ESCAPECHAR.key, '#');
         String input =
                 CSVTestStrategySupport.buildInputString(
-                        "doubleval,int'val,lat,stringval,lon", "3.8,7,73.28,f'oo,-14.39",
-                        "9.12,-38,0,bar,29", "-37,0,49,baz,0");
+                        "doubleval,\"int'val\",lat,stringval,lon",
+                        "3.8,7,73.28,\"f'oo\",-14.39",
+                        "9.12,-38,0,bar,29",
+                        "-37,0,49,baz,0");
         CSVFileState fileState = new CSVFileState(input, "typename");
-        fileState.setQuotechar('\'');
+        fileState.setQuotechar('"');
+        fileState.setEscapechar('#');
         CSVLatLonStrategy strategy = new CSVLatLonStrategy(fileState);
         CSVDataStore escapeStore = new CSVDataStore(fileState, strategy);
         String contents = createOutputFile(file2, params2, escapeStore);
-        BufferedReader lineReader = new BufferedReader(new CharArrayReader(contents.toCharArray()));
-        String line = lineReader.readLine(); // header
-        assertNotNull(line);
+        try (BufferedReader lineReader =
+                new BufferedReader(new CharArrayReader(contents.toCharArray()))) {
+            String line = lineReader.readLine(); // header
+            assertNotNull(line);
 
-        assertTrue("Header is not escaped", line.toLowerCase().contains("'int\\'val'"));
+            assertTrue("Header is not escaped", line.toLowerCase().contains("int#'val"));
 
-        line = lineReader.readLine();
-        assertNotNull(line);
+            line = lineReader.readLine();
+            assertNotNull(line);
 
-        assertTrue("Value is not escaped", line.contains("'f\\'oo'"));
+            assertTrue("Value is not escaped", line.contains("'f#'oo'"));
 
-        file2.delete();
+            file2.delete();
+        }
     }
 
     @Test
     public void testWriteEscapeChars2() throws IOException {
         File file2 = File.createTempFile("CSVTest", ".csv");
-        Map<String, Serializable> params2 = new HashMap<String, Serializable>();
+        Map<String, Serializable> params2 = new HashMap<>();
         params2.put("file", file2);
 
         params2.put(CSVDataStoreFactory.STRATEGYP.key, CSVDataStoreFactory.WKT_STRATEGY);
@@ -317,24 +335,28 @@ public class CSVWriteOptionsTest {
         params2.put(CSVDataStoreFactory.ESCAPECHAR.key, '!');
         String input =
                 CSVTestStrategySupport.buildInputString(
-                        "doubleval,int'val,lat,stringval,lon", "3.8,7,73.28,f'oo,-14.39",
-                        "9.12,-38,0,bar,29", "-37,0,49,baz,0");
+                        "doubleval,\"int'val\",lat,stringval,lon",
+                        "3.8,7,73.28,\"f'oo\",-14.39",
+                        "9.12,-38,0,bar,29",
+                        "-37,0,49,baz,0");
         CSVFileState fileState = new CSVFileState(input, "typename");
-        fileState.setQuotechar('\'');
+
         CSVLatLonStrategy strategy = new CSVLatLonStrategy(fileState);
         CSVDataStore escapeStore = new CSVDataStore(fileState, strategy);
         String contents = createOutputFile(file2, params2, escapeStore);
-        BufferedReader lineReader = new BufferedReader(new CharArrayReader(contents.toCharArray()));
-        String line = lineReader.readLine(); // header
-        assertNotNull(line);
+        try (BufferedReader lineReader =
+                new BufferedReader(new CharArrayReader(contents.toCharArray()))) {
+            String line = lineReader.readLine(); // header
+            assertNotNull(line);
 
-        assertTrue("Header is not escaped", line.toLowerCase().contains("'int!'val'"));
-        line = lineReader.readLine();
-        assertNotNull(line);
+            assertTrue("Header is not escaped", line.toLowerCase().contains("'int!'val'"));
+            line = lineReader.readLine();
+            assertNotNull(line);
 
-        assertTrue("Value is not escaped", line.contains("'f!'oo'"));
+            assertTrue("Value is not escaped", line.contains("'f!'oo'"));
 
-        file2.delete();
+            file2.delete();
+        }
     }
 
     private String createOutputFile(File file2, Map<String, Serializable> params2)
@@ -359,7 +381,7 @@ public class CSVWriteOptionsTest {
         }
 
         datastore.dispose();
-        datastore = (CSVDataStore) factory.createNewDataStore(params2);
+        datastore = factory.createNewDataStore(params2);
         source = datastore.getFeatureSource(typeName);
         SimpleFeatureCollection features = source.getFeatures();
         assertEquals(

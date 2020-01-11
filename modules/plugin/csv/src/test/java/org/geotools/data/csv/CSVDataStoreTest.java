@@ -60,7 +60,7 @@ public class CSVDataStoreTest {
     }
 
     private List<Coordinate> makeExpectedCoordinates(double... points) {
-        List<Coordinate> result = new ArrayList<Coordinate>(points.length);
+        List<Coordinate> result = new ArrayList<>(points.length);
         double x = -1;
         for (double d : points) {
             if (x == -1) {
@@ -82,16 +82,18 @@ public class CSVDataStoreTest {
 
     @Test
     public void testFeatureReader() throws IOException {
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = csvDataStore.getFeatureReader();
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                csvDataStore.getFeatureReader(); ) {
 
-        assertNotNull(reader);
-        int count = 0;
-        while (reader.hasNext()) {
-            SimpleFeature f = reader.next();
-            assertNotNull(f);
-            count++;
+            assertNotNull(reader);
+            int count = 0;
+            while (reader.hasNext()) {
+                SimpleFeature f = reader.next();
+                assertNotNull(f);
+                count++;
+            }
+            assertEquals(9, count);
         }
-        assertEquals(9, count);
     }
 
     @Test
@@ -139,9 +141,9 @@ public class CSVDataStoreTest {
     public void testReadFeatures() throws IOException {
         try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                 csvDataStore.getFeatureReader()) {
-            List<Coordinate> geometries = new ArrayList<Coordinate>();
-            List<String> cities = new ArrayList<String>();
-            List<String> numbers = new ArrayList<String>();
+            List<Coordinate> geometries = new ArrayList<>();
+            List<String> cities = new ArrayList<>();
+            List<String> numbers = new ArrayList<>();
 
             while (reader.hasNext()) {
                 SimpleFeature feature = reader.next();

@@ -22,9 +22,12 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import org.geotools.data.DataTestCase;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.renderer.lite.MemoryFilterOptimizer.IndexPropertyName;
 import org.mockito.Mockito;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.And;
 import org.opengis.filter.Filter;
 import org.opengis.filter.PropertyIsEqualTo;
@@ -119,5 +122,26 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
                 new MemoryFilterOptimizer(roadType, Collections.singleton(property));
         PropertyName memoized = (PropertyName) property.accept(optimizer, null);
         assertNull(memoized.evaluate(roadFeatures[0]));
+    }
+
+    public void testEqualFeatureTypes() throws Exception {
+        String name = "name";
+        PropertyName property = ff.property(name);
+        SimpleFeatureType subtype1 = SimpleFeatureTypeBuilder.retype(roadType, new String[] {name});
+        SimpleFeatureType subtype2 = SimpleFeatureTypeBuilder.retype(roadType, new String[] {name});
+
+        Filter nameR1 = ff.equal(ff.property(name), ff.literal("r1"), false);
+        MemoryFilterOptimizer optimizer =
+                new MemoryFilterOptimizer(subtype1, Collections.singleton(name));
+        PropertyName memoized = (PropertyName) property.accept(optimizer, null);
+
+        // retype the feature with the second subtype
+        SimpleFeature retyped = SimpleFeatureBuilder.retype(roadFeatures[0], subtype2);
+
+        // evalute and spy the results, it should still use index based access
+        SimpleFeature spy = Mockito.spy(retyped);
+        assertSame(retyped.getAttribute(name), memoized.evaluate(spy));
+        Mockito.verify(spy, Mockito.times(0)).getAttribute(name);
+        Mockito.verify(spy, Mockito.times(1)).getAttribute(0);
     }
 }

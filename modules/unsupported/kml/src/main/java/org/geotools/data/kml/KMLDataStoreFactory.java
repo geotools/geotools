@@ -114,13 +114,7 @@ public class KMLDataStoreFactory implements DataStoreFactorySpi {
                 return true;
             }
         }
-        try {
-            fileLookup(params);
-            return true;
-        } catch (Exception erp) {
-            // can't process, just return false
-            return false;
-        }
+        return false;
     }
 
     /** No implementation hints are provided at this time. */

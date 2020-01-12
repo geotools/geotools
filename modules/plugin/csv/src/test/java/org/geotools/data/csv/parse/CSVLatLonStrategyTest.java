@@ -48,7 +48,7 @@ public class CSVLatLonStrategyTest {
 
         List<AttributeDescriptor> attrs = featureType.getAttributeDescriptors();
         assertEquals("Invalid number of attributes", 3, attrs.size());
-        List<String> attrNames = new ArrayList<String>(2);
+        List<String> attrNames = new ArrayList<>(2);
         for (AttributeDescriptor attr : attrs) {
             if (!(attr instanceof GeometryDescriptor)) {
                 attrNames.add(attr.getName().getLocalPart());
@@ -71,32 +71,36 @@ public class CSVLatLonStrategyTest {
         CSVFileState fileState = new CSVFileState(input, "bar");
         CSVLatLonStrategy strategy = new CSVLatLonStrategy(fileState);
 
-        CSVIterator iterator = strategy.iterator();
+        try (CSVIterator iterator = strategy.iterator()) {
 
-        assertTrue("next value not read", iterator.hasNext());
-        SimpleFeature feature = iterator.next();
-        Point geometry = (Point) feature.getDefaultGeometry();
-        Coordinate coordinate = geometry.getCoordinate();
-        assertEquals("Invalid point", 3, coordinate.y, 0.1);
-        assertEquals("Invalid point", 4, coordinate.x, 0.1);
-        assertEquals("Invalid feature property", "car", feature.getAttribute("fleem").toString());
-        assertEquals("Invalid feature property", "cdr", feature.getAttribute("zoo").toString());
+            assertTrue("next value not read", iterator.hasNext());
+            SimpleFeature feature = iterator.next();
+            Point geometry = (Point) feature.getDefaultGeometry();
+            Coordinate coordinate = geometry.getCoordinate();
+            assertEquals("Invalid point", 3, coordinate.y, 0.1);
+            assertEquals("Invalid point", 4, coordinate.x, 0.1);
+            assertEquals(
+                    "Invalid feature property", "car", feature.getAttribute("fleem").toString());
+            assertEquals("Invalid feature property", "cdr", feature.getAttribute("zoo").toString());
 
-        assertTrue("next value not read", iterator.hasNext());
-        feature = iterator.next();
-        geometry = (Point) feature.getDefaultGeometry();
-        coordinate = geometry.getCoordinate();
-        assertEquals("Invalid point", 8, coordinate.y, 0.1);
-        assertEquals("Invalid point", 9, coordinate.x, 0.1);
-        assertEquals("Invalid feature property", "blub", feature.getAttribute("fleem").toString());
-        assertEquals("Invalid feature property", "frob", feature.getAttribute("zoo").toString());
-        assertFalse("extra next value", iterator.hasNext());
+            assertTrue("next value not read", iterator.hasNext());
+            feature = iterator.next();
+            geometry = (Point) feature.getDefaultGeometry();
+            coordinate = geometry.getCoordinate();
+            assertEquals("Invalid point", 8, coordinate.y, 0.1);
+            assertEquals("Invalid point", 9, coordinate.x, 0.1);
+            assertEquals(
+                    "Invalid feature property", "blub", feature.getAttribute("fleem").toString());
+            assertEquals(
+                    "Invalid feature property", "frob", feature.getAttribute("zoo").toString());
+            assertFalse("extra next value", iterator.hasNext());
 
-        try {
-            iterator.next();
-            fail("NoSuchElementException should have been thrown");
-        } catch (NoSuchElementException e) {
-            assertTrue(true);
+            try {
+                iterator.next();
+                fail("NoSuchElementException should have been thrown");
+            } catch (NoSuchElementException e) {
+                assertTrue(true);
+            }
         }
     }
 
@@ -121,72 +125,76 @@ public class CSVLatLonStrategyTest {
         CSVFileState fileState = new CSVFileState(input, "bar");
         CSVLatLonStrategy strategy = new CSVLatLonStrategy(fileState);
 
-        CSVIterator iterator = strategy.iterator();
+        try (CSVIterator iterator = strategy.iterator()) {
 
-        assertTrue("next value not read", iterator.hasNext());
-        SimpleFeature feature = iterator.next();
-        Point geometry = (Point) feature.getDefaultGeometry();
-        Coordinate coordinate = geometry.getCoordinate();
+            assertTrue("next value not read", iterator.hasNext());
+            SimpleFeature feature = iterator.next();
+            Point geometry = (Point) feature.getDefaultGeometry();
+            Coordinate coordinate = geometry.getCoordinate();
 
-        assertTrue("Swapped axis", -90 <= coordinate.y && coordinate.y <= 90);
+            assertTrue("Swapped axis", -90 <= coordinate.y && coordinate.y <= 90);
+        }
     }
 
     @Test
     public void testBuildFeatureDifferentTypes() throws IOException {
         String input =
                 CSVTestStrategySupport.buildInputString(
-                        "doubleval,intval,lat,stringval,lon", "3.8,7,73.28,foo,-14.39",
-                        "9.12,-38,0,bar,29", "-37,0,49,baz,0");
+                        "doubleval,intval,lat,stringval,lon",
+                        "3.8,7,73.28,foo,-14.39",
+                        "9.12,-38,0,bar,29",
+                        "-37,0,49,baz,0");
         CSVFileState fileState = new CSVFileState(input, "typename");
         CSVLatLonStrategy strategy = new CSVLatLonStrategy(fileState);
-        CSVIterator iterator = strategy.iterator();
+        try (CSVIterator iterator = strategy.iterator()) {
 
-        SimpleFeatureType featureType = strategy.getFeatureType();
-        assertEquals("invalid attribute count", 4, featureType.getAttributeCount());
+            SimpleFeatureType featureType = strategy.getFeatureType();
+            assertEquals("invalid attribute count", 4, featureType.getAttributeCount());
 
-        GeometryDescriptor geometryDescriptor = featureType.getGeometryDescriptor();
-        String localName = geometryDescriptor.getLocalName();
-        assertEquals("Invalid geometry name", "location", localName);
+            GeometryDescriptor geometryDescriptor = featureType.getGeometryDescriptor();
+            String localName = geometryDescriptor.getLocalName();
+            assertEquals("Invalid geometry name", "location", localName);
 
-        assertEquals(
-                "Invalid attribute type",
-                "java.lang.Double",
-                getBindingName(featureType, "doubleval"));
-        assertEquals(
-                "Invalid attribute type",
-                "java.lang.Integer",
-                getBindingName(featureType, "intval"));
-        assertEquals(
-                "Invalid attribute type",
-                "java.lang.String",
-                getBindingName(featureType, "stringval"));
+            assertEquals(
+                    "Invalid attribute type",
+                    "java.lang.Double",
+                    getBindingName(featureType, "doubleval"));
+            assertEquals(
+                    "Invalid attribute type",
+                    "java.lang.Integer",
+                    getBindingName(featureType, "intval"));
+            assertEquals(
+                    "Invalid attribute type",
+                    "java.lang.String",
+                    getBindingName(featureType, "stringval"));
 
-        // iterate through values and verify
-        Object[][] expValues =
-                new Object[][] {
-                    new Object[] {3.8, 7, "foo", 73.28, -14.39},
-                    new Object[] {9.12, -38, "bar", 0, 29},
-                    new Object[] {-37.0, 0, "baz", 49, 0}
-                };
-        Object[] expTypes = new Object[] {Double.class, Integer.class, String.class};
-        List<SimpleFeature> features = new ArrayList<SimpleFeature>(3);
-        while (iterator.hasNext()) {
-            features.add(iterator.next());
-        }
-        assertEquals("Invalid number of features", 3, features.size());
-
-        String[] attrNames = new String[] {"doubleval", "intval", "stringval"};
-        int i = 0;
-        for (SimpleFeature feature : features) {
-            Object[] expVals = expValues[i];
-            for (int j = 0; j < 3; j++) {
-                String attr = attrNames[j];
-                Object value = feature.getAttribute(attr);
-                Class<?> type = value.getClass();
-                assertEquals("Invalid attribute type", expTypes[j], type);
-                assertEquals("Invalid value", expVals[j], value);
+            // iterate through values and verify
+            Object[][] expValues =
+                    new Object[][] {
+                        new Object[] {3.8, 7, "foo", 73.28, -14.39},
+                        new Object[] {9.12, -38, "bar", 0, 29},
+                        new Object[] {-37.0, 0, "baz", 49, 0}
+                    };
+            Object[] expTypes = new Object[] {Double.class, Integer.class, String.class};
+            List<SimpleFeature> features = new ArrayList<>(3);
+            while (iterator.hasNext()) {
+                features.add(iterator.next());
             }
-            i++;
+            assertEquals("Invalid number of features", 3, features.size());
+
+            String[] attrNames = new String[] {"doubleval", "intval", "stringval"};
+            int i = 0;
+            for (SimpleFeature feature : features) {
+                Object[] expVals = expValues[i];
+                for (int j = 0; j < 3; j++) {
+                    String attr = attrNames[j];
+                    Object value = feature.getAttribute(attr);
+                    Class<?> type = value.getClass();
+                    assertEquals("Invalid attribute type", expTypes[j], type);
+                    assertEquals("Invalid value", expVals[j], value);
+                }
+                i++;
+            }
         }
     }
 
@@ -204,11 +212,12 @@ public class CSVLatLonStrategyTest {
         assertEquals(
                 "Invalid attribute type", "java.lang.String", getBindingName(featureType, "b"));
 
-        CSVIterator iterator = strategy.iterator();
-        SimpleFeature feature = iterator.next();
-        assertEquals("Invalid feature attribute count", 2, feature.getAttributeCount());
-        assertEquals("Invalid attribute", "foo", feature.getAttribute("a"));
-        assertEquals("Invalid attribute", "bar", feature.getAttribute("b"));
+        try (CSVIterator iterator = strategy.iterator()) {
+            SimpleFeature feature = iterator.next();
+            assertEquals("Invalid feature attribute count", 2, feature.getAttributeCount());
+            assertEquals("Invalid attribute", "foo", feature.getAttribute("a"));
+            assertEquals("Invalid attribute", "bar", feature.getAttribute("b"));
+        }
     }
 
     @Test
@@ -223,10 +232,11 @@ public class CSVLatLonStrategyTest {
                 "Invalid attribute type", "java.lang.String", getBindingName(featureType, "lat"));
         assertEquals(
                 "Invalid attribute type", "java.lang.String", getBindingName(featureType, "quux"));
-        CSVIterator iterator = strategy.iterator();
-        SimpleFeature feature = iterator.next();
-        assertEquals("Invalid lat value", "foo", feature.getAttribute("lat"));
-        assertEquals("Invalid lat value", "morx", feature.getAttribute("quux"));
+        try (CSVIterator iterator = strategy.iterator()) {
+            SimpleFeature feature = iterator.next();
+            assertEquals("Invalid lat value", "foo", feature.getAttribute("lat"));
+            assertEquals("Invalid lat value", "morx", feature.getAttribute("quux"));
+        }
     }
 
     @Test
@@ -237,14 +247,15 @@ public class CSVLatLonStrategyTest {
         CSVLatLonStrategy strategy = new CSVLatLonStrategy(fileState);
         SimpleFeatureType featureType = strategy.getFeatureType();
         assertEquals("Invalid attribute count", 3, featureType.getAttributeCount());
-        CSVIterator iterator = strategy.iterator();
-        SimpleFeature feature = iterator.next();
-        Point point = (Point) feature.getAttribute("location");
-        Coordinate coordinate = point.getCoordinate();
-        assertEquals("Invalid longitude coordinate", 42.29, coordinate.x, 0.1);
-        assertEquals("Invalid latitude coordinate", -72.3829, coordinate.y, 0.1);
-        assertEquals("Invalid attribute value", "quux", feature.getAttribute("foo"));
-        assertNull("Expected null", feature.getAttribute("bar"));
+        try (CSVIterator iterator = strategy.iterator()) {
+            SimpleFeature feature = iterator.next();
+            Point point = (Point) feature.getAttribute("location");
+            Coordinate coordinate = point.getCoordinate();
+            assertEquals("Invalid longitude coordinate", 42.29, coordinate.x, 0.1);
+            assertEquals("Invalid latitude coordinate", -72.3829, coordinate.y, 0.1);
+            assertEquals("Invalid attribute value", "quux", feature.getAttribute("foo"));
+            assertNull("Expected null", feature.getAttribute("bar"));
+        }
     }
 
     @Test
@@ -255,11 +266,12 @@ public class CSVLatLonStrategyTest {
         CSVLatLonStrategy strategy = new CSVLatLonStrategy(fileState);
         SimpleFeatureType featureType = strategy.getFeatureType();
         assertEquals("Invalid attribute count", 2, featureType.getAttributeCount());
-        CSVIterator iterator = strategy.iterator();
-        SimpleFeature feature = iterator.next();
-        assertEquals("Invalid attribute count", 2, feature.getAttributeCount());
-        assertNotNull("No location", feature.getAttribute("location"));
-        assertEquals("Invalid attribute value", "quux", feature.getAttribute("foo"));
+        try (CSVIterator iterator = strategy.iterator()) {
+            SimpleFeature feature = iterator.next();
+            assertEquals("Invalid attribute count", 2, feature.getAttributeCount());
+            assertNotNull("No location", feature.getAttribute("location"));
+            assertEquals("Invalid attribute value", "quux", feature.getAttribute("foo"));
+        }
     }
 
     @Test
@@ -278,20 +290,21 @@ public class CSVLatLonStrategyTest {
         assertEquals(
                 "Invalid attribute type", "java.lang.Double", getBindingName(featureType, "foo"));
         assertNull("Unexpected geometry", featureType.getGeometryDescriptor());
-        CSVIterator iterator = strategy.iterator();
-        String[] expLats = new String[] {"-72.3829", "12", "foo"};
-        Double[] expLons = new Double[] {42.29, -13.21, 2.5};
-        Double[] expFoos = new Double[] {38.0, 9.0, 7.8};
-        int i = 0;
-        while (iterator.hasNext()) {
-            SimpleFeature feature = iterator.next();
-            assertEquals("Invalid attribute count", 3, feature.getAttributeCount());
-            assertEquals("Invalid lat value", expLats[i], feature.getAttribute("lat"));
-            assertEquals(
-                    "Invalid lat value", expLons[i], (Double) feature.getAttribute("lon"), 0.1);
-            assertEquals(
-                    "Invalid foo value", expFoos[i], (Double) feature.getAttribute("foo"), 0.1);
-            i++;
+        try (CSVIterator iterator = strategy.iterator()) {
+            String[] expLats = new String[] {"-72.3829", "12", "foo"};
+            Double[] expLons = new Double[] {42.29, -13.21, 2.5};
+            Double[] expFoos = new Double[] {38.0, 9.0, 7.8};
+            int i = 0;
+            while (iterator.hasNext()) {
+                SimpleFeature feature = iterator.next();
+                assertEquals("Invalid attribute count", 3, feature.getAttributeCount());
+                assertEquals("Invalid lat value", expLats[i], feature.getAttribute("lat"));
+                assertEquals(
+                        "Invalid lat value", expLons[i], (Double) feature.getAttribute("lon"), 0.1);
+                assertEquals(
+                        "Invalid foo value", expFoos[i], (Double) feature.getAttribute("foo"), 0.1);
+                i++;
+            }
         }
     }
 
@@ -317,13 +330,14 @@ public class CSVLatLonStrategyTest {
         SimpleFeatureType featureType = strategy.getFeatureType();
         assertNotNull("No geometry found", featureType.getGeometryDescriptor());
         assertEquals("Invalid attribute count", 2, featureType.getAttributeCount());
-        CSVIterator iterator = strategy.iterator();
-        SimpleFeature feature = iterator.next();
-        Point geometry = (Point) feature.getDefaultGeometry();
-        Coordinate coordinate = geometry.getCoordinate();
-        assertEquals("Invalid lon", -42.389, coordinate.x, 0.1);
-        assertEquals("Invalid lat", 73.239, coordinate.y, 0.1);
-        assertEquals("Invalid attribute value", "morx", feature.getAttribute("fleem"));
+        try (CSVIterator iterator = strategy.iterator()) {
+            SimpleFeature feature = iterator.next();
+            Point geometry = (Point) feature.getDefaultGeometry();
+            Coordinate coordinate = geometry.getCoordinate();
+            assertEquals("Invalid lon", -42.389, coordinate.x, 0.1);
+            assertEquals("Invalid lat", 73.239, coordinate.y, 0.1);
+            assertEquals("Invalid attribute value", "morx", feature.getAttribute("fleem"));
+        }
     }
 
     @Test
@@ -335,13 +349,14 @@ public class CSVLatLonStrategyTest {
         SimpleFeatureType featureType = strategy.getFeatureType();
         assertNotNull("No geometry found", featureType.getGeometryDescriptor());
         assertEquals("Invalid attribute count", 2, featureType.getAttributeCount());
-        CSVIterator iterator = strategy.iterator();
-        SimpleFeature feature = iterator.next();
-        Point geometry = (Point) feature.getDefaultGeometry();
-        Coordinate coordinate = geometry.getCoordinate();
-        assertEquals("Invalid lon", -42.389, coordinate.x, 0.1);
-        assertEquals("Invalid lat", 73.239, coordinate.y, 0.1);
-        assertEquals("Invalid attribute value", "morx", feature.getAttribute("fleem"));
+        try (CSVIterator iterator = strategy.iterator()) {
+            SimpleFeature feature = iterator.next();
+            Point geometry = (Point) feature.getDefaultGeometry();
+            Coordinate coordinate = geometry.getCoordinate();
+            assertEquals("Invalid lon", -42.389, coordinate.x, 0.1);
+            assertEquals("Invalid lat", 73.239, coordinate.y, 0.1);
+            assertEquals("Invalid attribute value", "morx", feature.getAttribute("fleem"));
+        }
     }
 
     @Test
@@ -354,13 +369,14 @@ public class CSVLatLonStrategyTest {
         SimpleFeatureType featureType = strategy.getFeatureType();
         assertNotNull("No geometry found", featureType.getGeometryDescriptor());
         assertEquals("Invalid attribute count", 2, featureType.getAttributeCount());
-        CSVIterator iterator = strategy.iterator();
-        SimpleFeature feature = iterator.next();
-        Point geometry = (Point) feature.getDefaultGeometry();
-        Coordinate coordinate = geometry.getCoordinate();
-        assertEquals("Invalid lon", -42.389, coordinate.x, 0.1);
-        assertEquals("Invalid lat", 73.239, coordinate.y, 0.1);
-        assertEquals("Invalid attribute value", "morx", feature.getAttribute("fleem"));
+        try (CSVIterator iterator = strategy.iterator()) {
+            SimpleFeature feature = iterator.next();
+            Point geometry = (Point) feature.getDefaultGeometry();
+            Coordinate coordinate = geometry.getCoordinate();
+            assertEquals("Invalid lon", -42.389, coordinate.x, 0.1);
+            assertEquals("Invalid lat", 73.239, coordinate.y, 0.1);
+            assertEquals("Invalid attribute value", "morx", feature.getAttribute("fleem"));
+        }
     }
 
     private String getBindingName(SimpleFeatureType featureType, String col) {
@@ -400,28 +416,29 @@ public class CSVLatLonStrategyTest {
         CSVTestStrategySupport.verifyType(attrs.get(0), Point.class);
         CSVTestStrategySupport.verifyType(attrs.get(1), String.class);
 
-        CSVIterator iterator = strategy.iterator();
+        try (CSVIterator iterator = strategy.iterator()) {
 
-        assertTrue("next value not read", iterator.hasNext());
-        SimpleFeature feature = iterator.next();
-        assertNull("Unexpected property", feature.getAttribute("fleem"));
-        assertNull("Unexpected property", feature.getAttribute("zoo"));
-        assertEquals("Invalid feature property", "car", feature.getAttribute("morx"));
-        assertNotNull("Missing geometry", feature.getDefaultGeometry());
+            assertTrue("next value not read", iterator.hasNext());
+            SimpleFeature feature = iterator.next();
+            assertNull("Unexpected property", feature.getAttribute("fleem"));
+            assertNull("Unexpected property", feature.getAttribute("zoo"));
+            assertEquals("Invalid feature property", "car", feature.getAttribute("morx"));
+            assertNotNull("Missing geometry", feature.getDefaultGeometry());
 
-        assertTrue("next value not read", iterator.hasNext());
-        feature = iterator.next();
-        assertNull("Unexpected property", feature.getAttribute("fleem"));
-        assertNull("Unexpected property", feature.getAttribute("zoo"));
-        assertEquals("Invalid feature property", "cdr", feature.getAttribute("morx"));
-        assertNotNull("Missing geometry", feature.getDefaultGeometry());
-        assertFalse("extra next value", iterator.hasNext());
+            assertTrue("next value not read", iterator.hasNext());
+            feature = iterator.next();
+            assertNull("Unexpected property", feature.getAttribute("fleem"));
+            assertNull("Unexpected property", feature.getAttribute("zoo"));
+            assertEquals("Invalid feature property", "cdr", feature.getAttribute("morx"));
+            assertNotNull("Missing geometry", feature.getDefaultGeometry());
+            assertFalse("extra next value", iterator.hasNext());
 
-        try {
-            iterator.next();
-            fail("NoSuchElementException should have been thrown");
-        } catch (NoSuchElementException e) {
-            assertTrue(true);
+            try {
+                iterator.next();
+                fail("NoSuchElementException should have been thrown");
+            } catch (NoSuchElementException e) {
+                assertTrue(true);
+            }
         }
     }
 
@@ -432,10 +449,11 @@ public class CSVLatLonStrategyTest {
         CSVStrategy strategy = new CSVLatLonStrategy(fileState, "non", "existing");
         SimpleFeatureType featureType = strategy.getFeatureType();
         assertEquals("Invalid attribute count", 1, featureType.getAttributeCount());
-        CSVIterator iterator = strategy.iterator();
-        assertTrue("next value not read", iterator.hasNext());
-        SimpleFeature feature = iterator.next();
-        assertNull("Unexpected geometry", feature.getDefaultGeometry());
+        try (CSVIterator iterator = strategy.iterator()) {
+            assertTrue("next value not read", iterator.hasNext());
+            SimpleFeature feature = iterator.next();
+            assertNull("Unexpected geometry", feature.getDefaultGeometry());
+        }
     }
 
     @Test
@@ -445,10 +463,11 @@ public class CSVLatLonStrategyTest {
         CSVStrategy strategy = new CSVLatLonStrategy(fileState, "foo", "bar");
         SimpleFeatureType featureType = strategy.getFeatureType();
         assertEquals("Invalid attribute count", 2, featureType.getAttributeCount());
-        CSVIterator iterator = strategy.iterator();
-        assertTrue("next value not read", iterator.hasNext());
-        SimpleFeature feature = iterator.next();
-        assertNull("Unexpected geometry", feature.getDefaultGeometry());
+        try (CSVIterator iterator = strategy.iterator()) {
+            assertTrue("next value not read", iterator.hasNext());
+            SimpleFeature feature = iterator.next();
+            assertNull("Unexpected geometry", feature.getDefaultGeometry());
+        }
     }
 
     @Test

@@ -1450,6 +1450,7 @@ public class ImageWorker {
                 (background != null && background.length > 0)
                         ? background[0]
                         : ((nodata != null && !nodata.contains(0)) ? 0d : Double.NaN);
+
         // If setting noData to zero, make sure the rescale doesn't map good values to zero.
         double offsetAdjustment = Math.abs(destNodata - 0) < 1E-6 ? 1 : 0;
 
@@ -5232,17 +5233,25 @@ public class ImageWorker {
         pb.set(offset, 1); // The per-band offsets to be added.
         pb.set(roi, 2); // ROI
         pb.set(nodata, 3); // NoData range
+
+        double destNodata = Double.NaN;
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
-                pb.set(background[0], 5); // destination No Data value
+                destNodata = background[0];
             } else if (nodata != null) {
                 // preserve nodata to avoid the destination nodata fall
                 // in the range of valid values
-                pb.set(nodata.getMin(), 5);
+                destNodata = nodata.getMin().doubleValue();
             }
         }
 
+        if (!Double.isNaN(destNodata)) {
+            pb.set(destNodata, 5);
+        }
         image = JAI.create("Rescale", pb, getRenderingHints());
+        if (!Double.isNaN(destNodata)) {
+            setNoData(RangeFactory.create((byte) destNodata, (byte) destNodata));
+        }
         return this;
     }
 

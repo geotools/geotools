@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
@@ -6,15 +7,9 @@
 		<groupId>org.geotools</groupId>
 		<version>23-SNAPSHOT</version>
 	</parent>
-	<groupId>org.geotools</groupId>
 	<artifactId>gt-geojsondatastore</artifactId>
 	<name>GeoJSON Datastore</name>
 	<dependencies>
-		<dependency>
-			<groupId>org.geotools</groupId>
-			<artifactId>gt-geojson</artifactId>
-			<version>${project.version}</version>
-		</dependency>
 		<dependency>
 			<groupId>org.geotools</groupId>
 			<artifactId>gt-main</artifactId>
@@ -28,13 +23,31 @@
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>2.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geotools</groupId>
 			<artifactId>gt-sample-data</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.graphhopper.external</groupId>
+			<artifactId>jackson-datatype-jts</artifactId>
+			<version>1.0-2.7</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-shapefile</artifactId>
+			<scope>test</scope>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 </project>

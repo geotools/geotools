@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -27,11 +27,9 @@ import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureStore;
 import org.geotools.data.store.ContentState;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
-import org.opengis.util.ProgressListener;
 
 public class GeoJSONFeatureStore extends ContentFeatureStore {
 
@@ -39,30 +37,19 @@ public class GeoJSONFeatureStore extends ContentFeatureStore {
         super(entry, query);
     }
 
-    @Override
-    protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(
-            Query query, int flags) throws IOException {
-        return new GeoJSONFeatureWriter(getState(), query);
-    }
-
     GeoJSONFeatureSource delegate =
             new GeoJSONFeatureSource(entry, query) {
                 @Override
                 public void setTransaction(Transaction transaction) {
                     super.setTransaction(transaction);
-                    GeoJSONFeatureStore.this.setTransaction(transaction); // Keep these two
-                    // implementations
-                    // on the same
-                    // transaction
+                    GeoJSONFeatureStore.this.setTransaction(transaction);
                 }
             };
 
     @Override
-    public void setTransaction(Transaction transaction) {
-        super.setTransaction(transaction);
-        if (delegate.getTransaction() != transaction) {
-            delegate.setTransaction(transaction);
-        }
+    protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(
+            Query query, int flags) throws IOException {
+        return new GeoJSONFeatureWriter(entry, query);
     }
 
     @Override
@@ -72,6 +59,7 @@ public class GeoJSONFeatureStore extends ContentFeatureStore {
 
     @Override
     protected int getCountInternal(Query query) throws IOException {
+
         return delegate.getCountInternal(query);
     }
 
@@ -82,44 +70,76 @@ public class GeoJSONFeatureStore extends ContentFeatureStore {
     }
 
     @Override
-    protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
-        return delegate.handleVisitor(query, visitor);
-    }
-
-    @Override
     protected SimpleFeatureType buildFeatureType() throws IOException {
         return delegate.buildFeatureType();
     }
 
+    /**
+     * @return
+     * @see org.geotools.data.geojson.GeoJSONFeatureSource#getDataStore()
+     */
+    @Override
     public GeoJSONDataStore getDataStore() {
         return delegate.getDataStore();
     }
 
+    /**
+     * @return
+     * @see org.geotools.data.store.ContentFeatureSource#getEntry()
+     */
+    @Override
     public ContentEntry getEntry() {
         return delegate.getEntry();
     }
 
+    /**
+     * @return
+     * @see org.geotools.data.store.ContentFeatureSource#getTransaction()
+     */
+    @Override
     public Transaction getTransaction() {
         return delegate.getTransaction();
     }
 
+    @Override
+    public void setTransaction(Transaction transaction) {
+        super.setTransaction(transaction);
+        if (delegate.getTransaction() != transaction) {
+            delegate.setTransaction(transaction);
+        }
+    }
+    /**
+     * @return
+     * @see org.geotools.data.store.ContentFeatureSource#getState()
+     */
+    @Override
     public ContentState getState() {
         return delegate.getState();
     }
 
+    /**
+     * @return
+     * @see org.geotools.data.store.ContentFeatureSource#getInfo()
+     */
+    @Override
     public ResourceInfo getInfo() {
         return delegate.getInfo();
     }
 
+    /**
+     * @return
+     * @see org.geotools.data.store.ContentFeatureSource#getName()
+     */
+    @Override
     public Name getName() {
         return delegate.getName();
     }
 
-    public void accepts(Query query, FeatureVisitor visitor, ProgressListener progress)
-            throws IOException {
-        delegate.accepts(query, visitor, progress);
-    }
-
+    /**
+     * @return
+     * @see org.geotools.data.store.ContentFeatureSource#getQueryCapabilities()
+     */
+    @Override
     public QueryCapabilities getQueryCapabilities() {
         return delegate.getQueryCapabilities();
     }

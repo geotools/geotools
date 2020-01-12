@@ -463,7 +463,7 @@ public class LabelDisplacementModeTest extends TestCase {
                 "./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/testMultiLineLabelDisplacementY.png";
         // java 11 makes chars quite a bit bolder
         int tolerance = 1100;
-        if (SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_11)) {
+        if (SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_11) || SystemUtils.IS_OS_MAC_OSX) {
             tolerance = 2000;
         }
         ImageAssert.assertEquals(new File(refPath), image, tolerance);

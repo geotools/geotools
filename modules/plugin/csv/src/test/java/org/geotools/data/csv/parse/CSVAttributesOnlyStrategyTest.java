@@ -38,7 +38,7 @@ public class CSVAttributesOnlyStrategyTest {
 
         List<AttributeDescriptor> attrs = featureType.getAttributeDescriptors();
         assertEquals("Invalid number of attributes", 2, attrs.size());
-        List<String> attrNames = new ArrayList<String>(2);
+        List<String> attrNames = new ArrayList<>(2);
         for (AttributeDescriptor attr : attrs) {
             if (!(attr instanceof GeometryDescriptor)) {
                 attrNames.add(attr.getName().getLocalPart());
@@ -63,34 +63,35 @@ public class CSVAttributesOnlyStrategyTest {
         CSVTestStrategySupport.verifyType(attrs.get(1), Double.class);
         CSVTestStrategySupport.verifyType(attrs.get(2), String.class);
 
-        CSVIterator iterator = strategy.iterator();
+        try (CSVIterator iterator = strategy.iterator()) {
 
-        assertTrue("next value not read", iterator.hasNext());
-        SimpleFeature feature = iterator.next();
-        assertEquals("Invalid feature property", 3, feature.getAttribute("fleem"));
-        assertEquals(
-                "Invalid feature property",
-                4.0,
-                Double.parseDouble(feature.getAttribute("zoo").toString()),
-                0.1);
-        assertEquals("Invalid feature property", "car", feature.getAttribute("morx"));
+            assertTrue("next value not read", iterator.hasNext());
+            SimpleFeature feature = iterator.next();
+            assertEquals("Invalid feature property", 3, feature.getAttribute("fleem"));
+            assertEquals(
+                    "Invalid feature property",
+                    4.0,
+                    Double.parseDouble(feature.getAttribute("zoo").toString()),
+                    0.1);
+            assertEquals("Invalid feature property", "car", feature.getAttribute("morx"));
 
-        assertTrue("next value not read", iterator.hasNext());
-        feature = iterator.next();
-        assertEquals("Invalid feature property", 8, feature.getAttribute("fleem"));
-        assertEquals(
-                "Invalid feature property",
-                9.9,
-                Double.parseDouble(feature.getAttribute("zoo").toString()),
-                0.1);
-        assertEquals("Invalid feature property", "cdr", feature.getAttribute("morx"));
-        assertFalse("extra next value", iterator.hasNext());
+            assertTrue("next value not read", iterator.hasNext());
+            feature = iterator.next();
+            assertEquals("Invalid feature property", 8, feature.getAttribute("fleem"));
+            assertEquals(
+                    "Invalid feature property",
+                    9.9,
+                    Double.parseDouble(feature.getAttribute("zoo").toString()),
+                    0.1);
+            assertEquals("Invalid feature property", "cdr", feature.getAttribute("morx"));
+            assertFalse("extra next value", iterator.hasNext());
 
-        try {
-            iterator.next();
-            fail("NoSuchElementException should have been thrown");
-        } catch (NoSuchElementException e) {
-            assertTrue(true);
+            try {
+                iterator.next();
+                fail("NoSuchElementException should have been thrown");
+            } catch (NoSuchElementException e) {
+                assertTrue(true);
+            }
         }
     }
 
@@ -99,10 +100,11 @@ public class CSVAttributesOnlyStrategyTest {
         String input = CSVTestStrategySupport.buildInputString("blub", "fubar");
         CSVFileState fileState = new CSVFileState(input, "zul");
         CSVStrategy strategy = new CSVAttributesOnlyStrategy(fileState);
-        CSVIterator iterator = strategy.iterator();
-        assertTrue("next value not read", iterator.hasNext());
-        SimpleFeature feature = iterator.next();
-        Object defaultGeometry = feature.getDefaultGeometry();
-        assertNull("Unexpected geometry", defaultGeometry);
+        try (CSVIterator iterator = strategy.iterator()) {
+            assertTrue("next value not read", iterator.hasNext());
+            SimpleFeature feature = iterator.next();
+            Object defaultGeometry = feature.getDefaultGeometry();
+            assertNull("Unexpected geometry", defaultGeometry);
+        }
     }
 }

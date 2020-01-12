@@ -34,7 +34,6 @@ import org.geotools.referencing.CRS;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-// docs start CSVFileState
 /** Details from comma separated value file. */
 public class CSVFileState {
     private char separator = ',';
@@ -107,7 +106,6 @@ public class CSVFileState {
         }
     }
 
-    // docs start openCSVReader
     @SuppressWarnings("PMD.CloseResource") // wrapped and returned
     public CSVReader openCSVReader() throws IOException, CsvValidationException {
         Reader reader = null;
@@ -124,7 +122,6 @@ public class CSVFileState {
                         .withEscapeChar(escapechar)
                         .withQuoteChar(quotechar)
                         .withIgnoreLeadingWhiteSpace(true)
-                        .withIgnoreQuotations(true)
                         .build();
         final CSVReader csvReader = new CSVReaderBuilder(reader).withCSVParser(parser).build();
 
@@ -144,9 +141,7 @@ public class CSVFileState {
         }
         return csvReader;
     }
-    // docs end openCSVReader
 
-    // docs start getCSVHeaders
     public String[] getCSVHeaders() {
         if (headers == null) {
             throw new RuntimeException("Attempting to access unopened CSV Reader");
@@ -203,6 +198,4 @@ public class CSVFileState {
     public void setQuoteAllFields(boolean quoteAllFields) {
         this.quoteAllFields = quoteAllFields;
     }
-
-    // docs end readCSVHeaders
 }

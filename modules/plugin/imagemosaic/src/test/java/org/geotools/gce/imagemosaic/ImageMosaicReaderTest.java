@@ -188,8 +188,6 @@ public class ImageMosaicReaderTest extends Assert {
 
     private static final String OS_NAME = System.getProperty("os.name");
 
-    private static final boolean IS_MAC = OS_NAME != null && OS_NAME.toUpperCase().contains("MAC");
-
     private static final FilterFactory2 FF = FeatureUtilities.DEFAULT_FILTER_FACTORY;
 
     private static final double DELTA = 1E-4;
@@ -4942,7 +4940,7 @@ public class ImageMosaicReaderTest extends Assert {
         }
         assertEquals(3, fileGroups.size());
         assertEquals(3, mainFiles.size());
-        assertEquals(IS_MAC ? 12 : 6, supportFiles.size());
+        assertEquals(6, supportFiles.size());
         File dir = URLs.urlToFile(indexURL);
         String[] mainFilesPaths = dir.list(FileFilterUtils.suffixFileFilter(".gif"));
         String[] supportFilesPaths =
@@ -4986,7 +4984,7 @@ public class ImageMosaicReaderTest extends Assert {
         }
         assertEquals(2, fileGroups.size());
         assertEquals(2, mainFiles.size());
-        assertEquals(IS_MAC ? 4 : 2, supportFiles.size());
+        assertEquals(2, supportFiles.size());
         File dir = URLs.urlToFile(overviewURL);
         String[] mainFilesPaths = dir.list(FileFilterUtils.suffixFileFilter(".tif"));
         String[] supportFilesPaths =

@@ -18,7 +18,6 @@
 package org.geotools.data.csv;
 
 import java.io.IOException;
-
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentEntry;
@@ -92,5 +91,4 @@ public class CSVFeatureSource extends ContentFeatureSource {
     protected SimpleFeatureType buildFeatureType() throws IOException {
         return getDataStore().getSchema();
     }
-
 }

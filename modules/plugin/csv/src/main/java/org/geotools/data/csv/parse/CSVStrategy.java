@@ -17,20 +17,18 @@
  */
 package org.geotools.data.csv.parse;
 
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-
 import org.geotools.data.csv.CSVFileState;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvValidationException;
 
 public abstract class CSVStrategy {
     /** logger */
@@ -56,7 +54,7 @@ public abstract class CSVStrategy {
 
     protected volatile SimpleFeatureType featureType = null;
 
-  private boolean writePrj = false;
+    private boolean writePrj = false;
 
     public SimpleFeatureType getFeatureType() {
         if (featureType == null) {
@@ -215,11 +213,11 @@ public abstract class CSVStrategy {
         csvFileState.setQuoteAllFields(quoteAllFields);
     }
 
-  public void setWritePrj(boolean booleanValue) {
-    this.writePrj = booleanValue;
-  }
+    public void setWritePrj(boolean booleanValue) {
+        this.writePrj = booleanValue;
+    }
 
-  public boolean isWritePrj() {
-    return writePrj;
-  }
+    public boolean isWritePrj() {
+        return writePrj;
+    }
 }

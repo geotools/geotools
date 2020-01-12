@@ -27,7 +27,6 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.data.DataStore;
 import org.geotools.data.FileDataStore;
@@ -138,9 +137,14 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
                     false,
                     '\\',
                     new KVP(Param.LEVEL, "advanced"));
-  public static final Param WRITEPRJ = new Param("writeprj", Boolean.class,
-      "Should the CSVDatastore create a .prj file", false, false,
-      new KVP(Param.LEVEL, "advanced"));
+    public static final Param WRITEPRJ =
+            new Param(
+                    "writeprj",
+                    Boolean.class,
+                    "Should the CSVDatastore create a .prj file",
+                    false,
+                    false,
+                    new KVP(Param.LEVEL, "advanced"));
     public static final Param[] parametersInfo =
             new Param[] {
                 FILE_PARAM,
@@ -149,7 +153,7 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
                 LATFIELDP,
                 LnGFIELDP,
                 WKTP,
-          WRITEPRJ,
+                WRITEPRJ,
                 QUOTEALL,
                 QUOTECHAR,
                 SEPERATORCHAR,
@@ -282,10 +286,10 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
             csvStrategy = new CSVAttributesOnlyStrategy(csvFileState);
         }
 
-    Boolean writeprj = (Boolean) WRITEPRJ.lookUp(params);
-    if (writeprj != null) {
-      csvStrategy.setWritePrj(writeprj.booleanValue());
-    }
+        Boolean writeprj = (Boolean) WRITEPRJ.lookUp(params);
+        if (writeprj != null) {
+            csvStrategy.setWritePrj(writeprj.booleanValue());
+        }
         Boolean quotes = (Boolean) QUOTEALL.lookUp(params);
         if (quotes != null && quotes.booleanValue()) {
             csvStrategy.setQuoteAllFields(quotes.booleanValue());

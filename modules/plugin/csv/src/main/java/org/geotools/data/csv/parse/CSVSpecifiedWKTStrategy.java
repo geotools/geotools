@@ -17,11 +17,11 @@
  */
 package org.geotools.data.csv.parse;
 
+import com.opencsv.CSVWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.geotools.data.csv.CSVFileState;
 import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -36,8 +36,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
-
-import com.opencsv.CSVWriter;
 
 public class CSVSpecifiedWKTStrategy extends CSVStrategy {
 
@@ -56,7 +54,7 @@ public class CSVSpecifiedWKTStrategy extends CSVStrategy {
         if (descriptor != null) {
             AttributeTypeBuilder attributeBuilder = new AttributeTypeBuilder();
             attributeBuilder.init(descriptor);
-      attributeBuilder.setCRS(csvFileState.getCrs());
+            attributeBuilder.setCRS(csvFileState.getCrs());
             attributeBuilder.binding(Geometry.class);
 
             AttributeDescriptor modified = attributeBuilder.buildDescriptor(wktField);

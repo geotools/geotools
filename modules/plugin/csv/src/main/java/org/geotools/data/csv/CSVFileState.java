@@ -17,11 +17,6 @@
  */
 package org.geotools.data.csv;
 
-import com.opencsv.CSVParser;
-import com.opencsv.CSVParserBuilder;
-import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
-import com.opencsv.exceptions.CsvValidationException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -29,12 +24,19 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.net.URI;
+
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-// docs start CSVFileState
+import com.opencsv.CSVParser;
+import com.opencsv.CSVParserBuilder;
+import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
+import com.opencsv.exceptions.CsvValidationException;
+
+
 /** Details from comma separated value file. */
 public class CSVFileState {
     private char separator = ',';
@@ -51,7 +53,7 @@ public class CSVFileState {
 
     private final String typeName;
 
-    private final CoordinateReferenceSystem crs;
+  private CoordinateReferenceSystem crs;
 
     private final URI namespace;
 
@@ -60,13 +62,32 @@ public class CSVFileState {
     private volatile String[] headers = null;
 
     public CSVFileState(File file) {
-        this(file, null, null, null);
+    this(file, null, null);
     }
 
     public CSVFileState(File file, URI namespace) {
-        this(file, namespace, null, null);
+    this(file, namespace, null);
     }
 
+  public CSVFileState(File file, URI namespace, String typeName) {
+    this(file, namespace, typeName, null);
+    File parent = file.getParentFile();
+    String prjName = FilenameUtils.getBaseName(file.getName()) + ".prj";
+    File prjFile = new File(parent, prjName);
+    if (prjFile.exists()) {
+      try (BufferedReader reader = new BufferedReader(new FileReader(prjFile))) {
+        String line;
+        StringBuffer prj = new StringBuffer();
+        while ((line = reader.readLine()) != null) {
+          prj.append(line);
+        }
+        this.crs = CRS.parseWKT(prj.toString());
+      } catch (IOException | FactoryException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+    }
+  }
     public CSVFileState(File file, URI namespace, String typeName, CoordinateReferenceSystem crs) {
         this.file = file;
         this.typeName = typeName;
@@ -74,8 +95,12 @@ public class CSVFileState {
         this.namespace = namespace;
         this.dataInput = null;
     }
-
-    public CSVFileState(String dataInput, String typeName) {
+/**
+ * Internal constructor for testing purposes?
+ * @param dataInput
+ * @param typeName
+ */
+  public CSVFileState(String dataInput, String typeName) {
         this.dataInput = dataInput;
         this.typeName = typeName;
         this.crs = null;

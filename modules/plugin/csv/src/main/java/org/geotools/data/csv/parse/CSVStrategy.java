@@ -17,18 +17,20 @@
  */
 package org.geotools.data.csv.parse;
 
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvValidationException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+
 import org.geotools.data.csv.CSVFileState;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
 
 public abstract class CSVStrategy {
     /** logger */
@@ -53,6 +55,8 @@ public abstract class CSVStrategy {
     public abstract String[] encode(SimpleFeature feature);
 
     protected volatile SimpleFeatureType featureType = null;
+
+  private boolean writePrj = false;
 
     public SimpleFeatureType getFeatureType() {
         if (featureType == null) {
@@ -112,7 +116,7 @@ public abstract class CSVStrategy {
      */
     protected static Map<String, Class<?>> findMostSpecificTypesFromData(
             CSVReader csvReader, String[] headers) throws IOException {
-        Map<String, Class<?>> result = new HashMap<String, Class<?>>();
+        Map<String, Class<?>> result = new HashMap<>();
         // start off assuming Integers for everything
         for (String header : headers) {
             result.put(header, Integer.class);
@@ -210,4 +214,12 @@ public abstract class CSVStrategy {
     public void setQuoteAllFields(boolean quoteAllFields) {
         csvFileState.setQuoteAllFields(quoteAllFields);
     }
+
+  public void setWritePrj(boolean booleanValue) {
+    this.writePrj = booleanValue;
+  }
+
+  public boolean isWritePrj() {
+    return writePrj;
+  }
 }

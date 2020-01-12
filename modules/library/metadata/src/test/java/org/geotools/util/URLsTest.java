@@ -18,7 +18,6 @@
 package org.geotools.util;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeTrue;
 
@@ -87,10 +86,6 @@ public class URLsTest {
             assertURL("one", "file://one");
             assertURL("./one", "file://./one");
             handleFile("\\\\host\\share\\file");
-            // from GEOT-3300 urlToFile doesn't handle network paths correctly
-            URL url = new URL("file", "////oehhwsfs09", "/some/path/on/the/server/filename.nds");
-            File windowsShareFile = URLs.urlToFile(url);
-            assertNotNull(windowsShareFile);
         } else {
             handleFile("/one");
             handleFile("one");
@@ -116,11 +111,13 @@ public class URLsTest {
     @Test
     public void testUrlToFileWindowsShareFile() throws Exception {
         // newer version of java fail with "java.net.MalformedURLException: Illegal
-        // character found in host: '/'" when seeing this kind of paths if not on Windows.Run this
-        // test only on Windows then.
+        // character found in host: '/'" when seeing this kind of paths on recent versions of JDK 8
+        // while the "normal" way to identify a UNC, that is, "\\host", works
         assumeTrue("Ignoring test on non Windows OS, see GEOT-3300", SystemUtils.IS_OS_WINDOWS);
-        URL url = new URL("file", "////oehhwsfs09", "/some/path/on/the/server/filename.nds");
+        URL url = new URL("file", "\\\\oehhwsfs09", "/some/path/on/the/server/filename.nds");
         File windowsShareFile = URLs.urlToFile(url);
-        assertNotNull(windowsShareFile);
+        assertEquals(
+                "\\\\oehhwsfs09\\some\\path\\on\\the\\server\\filename.nds",
+                windowsShareFile.toString());
     }
 }

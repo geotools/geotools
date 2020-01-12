@@ -137,6 +137,7 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
                     false,
                     '\\',
                     new KVP(Param.LEVEL, "advanced"));
+
     public static final Param WRITEPRJ =
             new Param(
                     "writeprj",

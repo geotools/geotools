@@ -181,6 +181,7 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
         File file = this.csvFileState.getFile();
 
         Files.copy(temp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
         if (csvStrategy.isWritePrj()) {
             File prjFile =
                     new File(file.getParent(), FilenameUtils.getBaseName(file.getName()) + ".prj");

@@ -66,7 +66,7 @@ public class MBStyleTransformer {
      * Graphic referencing the full URL of the image for consumption by the {@link
      * SpriteGraphicFactory}. (The format of the image will be {@link SpriteGraphicFactory#FORMAT}).
      *
-     * @see {@link SpriteGraphicFactory} for more information.
+     * @see org.geotools.mbstyle.sprite.SpriteGraphicFactory
      * @param iconName The name of the icon inside the spritesheet.
      * @param iconSize The size (scale multiplier) to apply to the icon. (Nullable).
      * @param styleContext The style context in which to resolve the icon name to the full sprite
@@ -113,7 +113,7 @@ public class MBStyleTransformer {
      * Graphic referencing the full URL of the image for consumption by the {@link
      * SpriteGraphicFactory}. (The format of the image will be {@link SpriteGraphicFactory#FORMAT}).
      *
-     * @see {@link SpriteGraphicFactory} for more information.
+     * @see SpriteGraphicFactory
      * @param iconName The name of the icon inside the spritesheet.
      * @param styleContext The style context in which to resolve the icon name to the full sprite
      *     URL (for consumption by the {@link SpriteGraphicFactory}).

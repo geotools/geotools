@@ -26,7 +26,7 @@ import org.json.simple.JSONObject;
  * Wrapper around a {@link JSONObject} holding a tiled Mapbox source. Tiled sources (vector and
  * raster) must specify their details in terms of the TileJSON specification.
  *
- * @see {@link MBSource}
+ * @see MBSource
  * @see <a
  *     href="https://www.mapbox.com/mapbox-gl-js/style-spec/#sources">https://www.mapbox.com/mapbox-gl-js/style-spec/#sources</a>
  */

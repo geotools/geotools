@@ -40,8 +40,8 @@ public class MBTypes extends MBExpression {
      * Asserts that the input is an array (optionally with a specific item type and length). If,
      * when the input expression is evaluated, it is not of the asserted type, then this assertion
      * will cause the whole expression to be aborted. Example: ["array", value]: array ["array",
-     * type: "string" | "number" | "boolean", value]: array<type> ["array", type: "string" |
-     * "number" | "boolean", N: number (literal), value ]: array<type, N>
+     * type: "string" | "number" | "boolean", value]: array&lt;type&gt; ["array", type: "string" |
+     * "number" | "boolean", N: number (literal), value ]: array&lt;type, N&gt;
      *
      * @return
      */

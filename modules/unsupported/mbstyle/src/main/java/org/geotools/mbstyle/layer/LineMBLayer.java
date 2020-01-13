@@ -156,7 +156,7 @@ public class LineMBLayer extends MBLayer {
      *
      * <p>Since piecewise constant functions is supported a {@link RecodeFunction} may be generated.
      *
-     * @return Expression for {@link Stroke#getLineJoin()()} use.
+     * @return Expression for {@link Stroke#getLineJoin()} use.
      */
     public Expression lineJoin() {
         return parse.enumToExpression(layout, "line-join", LineJoin.class, LineJoin.MITER);

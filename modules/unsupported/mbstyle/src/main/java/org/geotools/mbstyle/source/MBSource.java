@@ -93,6 +93,10 @@ public abstract class MBSource {
                 "Mapbox source \"type\" is required and must be one of: vector, raster, geojson, image, video, or canvas.");
     }
 
-    /** Must be one of "vector", "raster", "geojson", "image", "video", "canvas" */
+    /**
+     * Type of source.
+     *
+     * @return One of "vector", "raster", "geojson", "image", "video", "canvas".
+     */
     public abstract String getType();
 }

@@ -329,7 +329,7 @@ public class MBStyle {
     /**
      * Data source specifications.
      *
-     * @see {@link MBSource} and its subclasses.
+     * @see MBSource
      * @return Map of data source name -> {@link MBSource} instances.
      */
     public Map<String, MBSource> getSources() {

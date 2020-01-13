@@ -790,7 +790,7 @@ public class SymbolMBLayer extends MBLayer {
      * Converts {@link #getTextRotationAlignment()} to a GeoTools expression.
      *
      * @return A GeoTools expression that evaluates to "map", "viewport", or "auto".
-     * @see {@link #getTextRotationAlignment()}}.
+     * @see #getTextRotationAlignment()
      */
     public Expression textRotationAlignment() {
         return parse.enumToExpression(
@@ -976,7 +976,7 @@ public class SymbolMBLayer extends MBLayer {
      * Converts {@link #getTextJustify()} to a GeoTools expression. Returns an expression that
      * evaluates to one of "left", "right", or "center".
      *
-     * @see {@link #getTextJustify()}
+     * @see #getTextJustify()
      */
     public Expression textJustify() {
         return parse.enumToExpression(
@@ -1027,7 +1027,7 @@ public class SymbolMBLayer extends MBLayer {
      * evaluates to one of "center", "left", or "right", "top", "bottom", "top_left", "top_right",
      * "bottom_left", "bottom_right".
      *
-     * @see {@link #getTextAnchor()}
+     * @see #getTextAnchor()
      */
     public Expression textAnchor() {
         return parse.enumToExpression(layout, "text-anchor", TextAnchor.class, TextAnchor.CENTER);
@@ -1199,7 +1199,7 @@ public class SymbolMBLayer extends MBLayer {
      * Converts {@link #getTextTransform()} to a GeoTools expression. Returns an expression that
      * evaluates to one of "uppercase", "lowercase", "none".
      *
-     * @see {@link #getTextTransform()}
+     * @see #getTextTransform()
      */
     public Expression textTransform() {
         return parse.enumToExpression(
@@ -1356,7 +1356,7 @@ public class SymbolMBLayer extends MBLayer {
      *
      * <p>The color of the icon. This can only be used with sdf icons.
      *
-     * @link Color of the icon.
+     * <p>return Color of the icon.
      */
     public Color getIconColor() {
         return parse.optional(Color.class, paint, "icon-color", Color.BLACK);
@@ -1365,7 +1365,7 @@ public class SymbolMBLayer extends MBLayer {
     /**
      * Access icon-color as literal or function expression, defaults to black.
      *
-     * @link Color of the icon.
+     * @return Color of the icon as an Expression
      */
     public Expression iconColor() {
         return parse.color(paint, "icon-color", Color.BLACK);
@@ -1501,7 +1501,7 @@ public class SymbolMBLayer extends MBLayer {
      * Converts {@link #getIconTranslateAnchor()} to a GeoTools expression. Returns an expression
      * that evaluates to one of "map", "viewport".
      *
-     * @see {@link #getIconTranslateAnchor()}
+     * @see #getIconTranslateAnchor()
      */
     public Expression iconTranslateAnchor() {
         return parse.enumToExpression(
@@ -1691,7 +1691,7 @@ public class SymbolMBLayer extends MBLayer {
      * Converts {@link #getTextTranslateAnchor()} to a GeoTools expression. Returns an expression
      * that evaluates to one of "map", "viewport".
      *
-     * @see {@link #getTextTranslateAnchor()}
+     * @see #getTextTranslateAnchor()
      */
     public Expression textTranslateAnchor() {
         return parse.enumToExpression(

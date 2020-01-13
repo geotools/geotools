@@ -56,7 +56,7 @@ import org.opengis.filter.expression.Expression;
  *
  * <p>Note that this factory expects the {@link MBStyleTransformer} to produce {@link
  * ExternalGraphic} instances with slightly modified URLs using one of the following forms: <code>
- * {baseUrl}#{iconName}</code> <code>{baseUrl}#icon={iconName}&size={sizeMultiplier}</code>
+ * {baseUrl}#{iconName}</code> <code>{baseUrl}#icon={iconName}&amp;size={sizeMultiplier}</code>
  *
  * <p>Only the baseUrl is used to retrieve the sprite sheet (at {baseUrl}.png) and sprite index (at
  * {baseUrl}.json). The iconName (required) is then used by this factory to select the correct icon

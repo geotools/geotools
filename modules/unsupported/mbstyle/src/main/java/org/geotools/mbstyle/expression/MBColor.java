@@ -71,7 +71,7 @@ public class MBColor extends MBExpression {
 
     /**
      * Returns a four-element array containing the input color's red, green, blue, and alpha
-     * components, in that order. Example: ["to-rgba", color]: array<number, 4>
+     * components, in that order. Example: ["to-rgba", color]: array&lt;number, 4&gt;
      *
      * @return
      */

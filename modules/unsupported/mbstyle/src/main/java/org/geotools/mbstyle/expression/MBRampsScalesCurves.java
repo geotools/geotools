@@ -31,10 +31,10 @@ public class MBRampsScalesCurves extends MBExpression {
      * Produces continuous, smooth results by interpolating between pairs of input and output values
      * ("stops"). The input may be any numeric expression (e.g., ["get", "population"]). Stop inputs
      * must be numeric literals in strictly ascending order. The output type must be number,
-     * array<number>, or color. Example: ["interpolate", interpolation: ["linear"] | ["exponential",
-     * base] | ["cubic-bezier", x1, y1, x2, y2 ], input: number, stop_input_1: number,
-     * stop_output_1: OutputType, stop_input_n: number, stop_output_n: OutputType, ... ]: OutputType
-     * (number, array<number>, or Color)"
+     * array&lt;number&gt;, or color. Example: ["interpolate", interpolation: ["linear"] |
+     * ["exponential", base] | ["cubic-bezier", x1, y1, x2, y2 ], input: number, stop_input_1:
+     * number, stop_output_1: OutputType, stop_input_n: number, stop_output_n: OutputType, ... ]:
+     * OutputType (number, array&lt;number&gt;, or Color)"
      *
      * @return
      */

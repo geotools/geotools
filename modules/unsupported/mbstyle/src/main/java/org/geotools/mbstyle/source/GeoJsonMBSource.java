@@ -23,7 +23,7 @@ import org.json.simple.JSONObject;
  * Wrapper around a {@link JSONObject} holding a Mapbox GeoJSON source. Data must be provided via a
  * "data" property, whose value can be a URL or inline GeoJSON.
  *
- * @see {@link MBSource}
+ * @see MBSource
  * @see <a
  *     href="https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-geojson">https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-geojson</a>
  */
@@ -37,7 +37,11 @@ public class GeoJsonMBSource extends MBSource {
         super(json, parser);
     }
 
-    /** (Optional) A URL to a GeoJSON file, or inline GeoJSON. */
+    /**
+     * (Optional) A URL to a GeoJSON file, or inline GeoJSON.
+     *
+     * @return GeoJSON to draw, either inline or a URL.
+     */
     public Object getData() {
         return json.get("data");
     }

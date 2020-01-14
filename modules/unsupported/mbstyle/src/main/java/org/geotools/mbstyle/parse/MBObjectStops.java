@@ -58,7 +58,7 @@ public class MBObjectStops {
      * of MBLayers (one for each stop) and setting ranges that are used to set min/max scale
      * denominators for each MBLayer.
      *
-     * @param layer
+     * @param layer Layer being processed for stops
      */
     public MBObjectStops(MBLayer layer) {
         try {
@@ -82,8 +82,8 @@ public class MBObjectStops {
     /**
      * Gets the current stop of the layer. This would be the bottom of the range i.e 0 for {0, 20}
      *
-     * @param layer
-     * @return
+     * @param layer Layer being processed
+     * @return Current zoom-level stop
      */
     public double getCurrentStop(MBLayer layer) {
         double stop = getStop(layer);
@@ -94,8 +94,8 @@ public class MBObjectStops {
     /**
      * Finds all the stops within the layer and returns a sorted distinct list
      *
-     * @param mbLayer
-     * @return
+     * @param mbLayer Layer bring processed
+     * @return Sorted distinct list of zoom level stops
      */
     List<Double> getStopLevels(MBLayer mbLayer) {
         Set<Double> distinctValues = new HashSet<>();
@@ -305,9 +305,9 @@ public class MBObjectStops {
     /**
      * Reduces the JSON to just the required values for the given range.
      *
-     * @param jsonObject
-     * @param range
-     * @return
+     * @param jsonObject JSON definition
+     * @param range Range
+     * @return Modified JSON definition
      */
     JSONObject reduceJsonForRange(JSONObject jsonObject, double[] range) {
         Set<?> keySet = jsonObject.keySet();
@@ -378,9 +378,9 @@ public class MBObjectStops {
     /**
      * Iterates over the JSONObject finding the stops and adding them to the list.
      *
-     * @param jsonObject
-     * @param layerZoomLevels
-     * @return
+     * @param jsonObject JSON definition
+     * @param layerZoomLevels List to be used for zoom level stops
+     * @return layerZoomLevels list with additional stops added
      */
     List<Double> findStopLevels(JSONObject jsonObject, List<Double> layerZoomLevels) {
         Set<?> keySet = jsonObject.keySet();

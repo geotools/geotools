@@ -171,8 +171,8 @@ public class MBFunction {
      * <p>Examples (For a function with no explicitly declared type):
      *
      * <pre>
-     * getTypeWithDefault(String.class); // -> "interval" function type
-     * getTypeWithDefault(Number.class); // -> "exponential" function type
+     * getTypeWithDefault(String.class); // "interval" function type
+     * getTypeWithDefault(Number.class); // "exponential" function type
      * </pre>
      *
      * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/#types-function">The "type"
@@ -252,8 +252,6 @@ public class MBFunction {
      *  }
      * </pre>
      * </ul>
-     *
-     * </ui>
      */
     public static enum FunctionCategory {
         /**
@@ -352,10 +350,6 @@ public class MBFunction {
      * <p>The value for any layout or paint property may be specified as a function. Functions allow
      * you to make the appearance of a map feature change with the current zoom level and/or the
      * feature's properties.
-     *
-     * <p>Function types:
-     *
-     * <p><em>
      *
      * @param json Definition of Function
      * @return Function as defined by json
@@ -526,6 +520,8 @@ public class MBFunction {
      *   <li>{@link FunctionType#INTERVAL}: selects stop less than numeric input, and returns stop
      *       value as a number
      * </ul>
+     *
+     * @retun Expression providing font string (used for `text-font`)
      */
     public Expression font() {
         Expression input = input();
@@ -679,6 +675,7 @@ public class MBFunction {
      *
      * If type is unspecified interval is used as a default.
      *
+     * @param clazz Type of data expected
      * @return {@link Function} (or identity {@link Expression} for the provided json)
      */
     @SuppressWarnings("unchecked")

@@ -102,7 +102,7 @@ public class FillMBLayer extends MBLayer {
      * <p>Defaults to 1.
      *
      * @return The opacity of the layer.
-     * @throws MBFormatException
+     * @throws MBFormatException JSON provided inconsistent with specification
      */
     public Number getFillOpacity() throws MBFormatException {
         return parse.optional(Double.class, paint, "fill-opacity", 1.0);
@@ -112,7 +112,7 @@ public class FillMBLayer extends MBLayer {
      * Access fill-opacity, defaults to 1.
      *
      * @return The opacity of the layer.
-     * @throws MBFormatException
+     * @throws MBFormatException JSON provided inconsistent with specification
      */
     public Expression fillOpacity() throws MBFormatException {
         return parse.percentage(paint, "fill-opacity", 1);

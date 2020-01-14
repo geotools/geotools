@@ -41,10 +41,10 @@ import org.json.simple.JSONObject;
  * This is based on the following request for a single file::
  *
  * <pre>http://localhost:8080/geoserver/gwc/service/wmts?
- *   REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0&
- *   LAYER=dfs:ne_110m_coastline&STYLE=&TILEMATRIX=EPSG:4326:2&TILEMATRIXSET=EPSG:4326&
+ *   REQUEST=GetTile&amp;SERVICE=WMTS&amp;VERSION=1.0.0&amp;
+ *   LAYER=dfs:ne_110m_coastline&amp;STYLE=&amp;TILEMATRIX=EPSG:4326:2&amp;TILEMATRIXSET=EPSG:4326&amp;
  *   FORMAT=application/x-protobuf;type=mapbox-vector
- *   &TILECOL=3&TILEROW=1</pre>
+ *   &amp;TILECOL=3&amp;TILEROW=1</pre>
  *
  * @see <a
  *     href="https://www.mapbox.com/mapbox-gl-js/style-spec/#sources">https://www.mapbox.com/mapbox-gl-js/style-spec/#sources</a>

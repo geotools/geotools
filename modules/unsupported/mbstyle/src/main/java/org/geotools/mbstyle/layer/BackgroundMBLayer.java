@@ -123,7 +123,7 @@ public class BackgroundMBLayer extends MBLayer {
      *
      * <p>Optional number. Defaults to 1.
      *
-     * @retur The opacity at which the background will be drawn.
+     * @return The opacity at which the background will be drawn.
      */
     public Expression backgroundOpacity() {
         return parse.percentage(paint, "background-opacity", 1.0);
@@ -131,11 +131,6 @@ public class BackgroundMBLayer extends MBLayer {
 
     /**
      * Transform {@link BackgroundMBLayer} to GeoTools FeatureTypeStyle.
-     *
-     * <p>Notes:
-     *
-     * <ul>
-     * </ul>
      *
      * @param styleContext The MBStyle to which this layer belongs, used as a context for things
      *     like resolving sprite and glyph names to full urls.

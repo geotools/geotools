@@ -418,7 +418,7 @@ public class MBFunctionTest {
 
     /**
      * Tests that a MapBox exponential zoom function (outputting a color) correctly interpolates
-     * color values for zoom levels between stops, when the exponential base is < 1.
+     * color values for zoom levels between stops, when the exponential base is &lt; 1.
      *
      * @throws Exception
      */
@@ -702,7 +702,7 @@ public class MBFunctionTest {
 
     /**
      * Tests that a MapBox exponential zoom function (outputting a numeric value) correctly
-     * interpolates values for zoom levels between stops. Tests exponential base == 1 and <> 1.
+     * interpolates values for zoom levels between stops. Tests exponential base == 1 and  != 1.
      *
      * @throws Exception
      */
@@ -787,7 +787,7 @@ public class MBFunctionTest {
 
     /**
      * Tests that a MapBox exponential property function (outputting a numeric value) correctly
-     * interpolates values for zoom levels between stops. Tests exponential base == 1 and <> 1.
+     * interpolates values for zoom levels between stops. Tests exponential base == 1 and != 1.
      *
      * @throws Exception
      */

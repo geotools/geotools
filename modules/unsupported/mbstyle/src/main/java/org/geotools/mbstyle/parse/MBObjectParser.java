@@ -350,7 +350,8 @@ public class MBObjectParser {
     /**
      * Quickly access required json tag (as a String).
      *
-     * @param tag
+     * @param json The object in which to look up the String
+     * @param tag Tag to lookup
      * @return required string
      * @throws MBFormatException if required tag not available.
      */
@@ -370,11 +371,11 @@ public class MBObjectParser {
     }
 
     /**
-     * Quickly access required json tag.
+     * Quickly access optional json tag.
      *
-     * @param json
-     * @param tag
-     * @param fallback
+     * @param json The object in which to look up the String
+     * @param tag Tag to lookup
+     * @param fallback default string
      * @return required string, or fallback if unavailable
      */
     public String get(JSONObject json, String tag, String fallback) {
@@ -505,6 +506,7 @@ public class MBObjectParser {
      * Retrieve an object of the provided type in the JSONArray at this index, throwing an {@link
      * MBFormatException} if no object of that type is found at that index of the array.
      *
+     * @param <T>? Class to return
      * @param type The type of the object to retrieve.
      * @param json The JSONArray in which to retrieve the object.
      * @param index The index in the JSONArray at which to retrieve the object.
@@ -526,6 +528,7 @@ public class MBObjectParser {
      * Retrieve an object of the provided type in the JSONObject at this tag, throwing an {@link
      * MBFormatException} if no object of that type is found at that tag in the object.
      *
+     * @param <T> Class to return
      * @param type The type of the object to retrieve.
      * @param json The JSONObject in which to retrieve the object.
      * @param tag The index in the JSONObject at which to retrieve the object.
@@ -554,6 +557,7 @@ public class MBObjectParser {
     /**
      * Optional lookup, will return fallback if not available.
      *
+     * @param <T> Class to return
      * @param type Type to lookup
      * @param json The JSONObject in which to lookup the value
      * @param tag The tag at which to lookupthe value in the JSONObject
@@ -603,9 +607,11 @@ public class MBObjectParser {
     /**
      * Convert a String value to an enum value, ignoring case, with the provided fallback.
      *
+     * @param <T> Enumeration type to return
      * @param json The json object to parse the value from
      * @param tag The key used to retrieve the value from the json.
      * @param enumeration The enum to convert the value to.
+     * @param fallback default value if json is null
      * @return The enum value from the string, or the fallback value.
      * @throws MBFormatException if the value is not a String, or it is not a valid value for the
      *     enumeration.

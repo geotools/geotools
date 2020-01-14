@@ -51,6 +51,7 @@ public abstract class MediaMBSource extends MBSource {
      *   [-80.425, 37.936]
      * ]
      * </code>
+     * @return Array of [longitude, latitude] pairs for the image corners listed in clockwise order
      */
     public List<Point2D.Double> getCoordinates() {
         JSONArray arr = parser.getJSONArray(json, "coordinates");

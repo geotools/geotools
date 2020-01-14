@@ -49,7 +49,7 @@ import org.opengis.style.SemanticType;
  * Existential Filters
  * </p>
  * <ul>
- * <li><code>["has", key]<code> - feature[key] exists</li>
+ * <li><code>["has", key]</code> - feature[key] exists</li>
  * <li><code>["!has", key]</code> - feature[key] does not exist</li>
  * </ul>
  * <p>
@@ -58,10 +58,10 @@ import org.opengis.style.SemanticType;
  * <ul>
  * <li>["==", key, value] equality: feature[key] = value</li>
  * <li>["!=", key, value] inequality: feature[key] ≠ value</li>
- * <li>[">", key, value] greater than: feature[key] > value</li>
- * <li>[">=", key, value] greater than or equal: feature[key] ≥ value</li>
- * <li>["<", key, value] less than: feature[key] < value</li>
- * <li>["<=", key, value] less than or equal: feature[key] ≤ value</li>
+ * <li>["&gt;", key, value] greater than: feature[key] &gt; value</li>
+ * <li>["&gt;=", key, value] greater than or equal: feature[key] ≥ value</li>
+ * <li>["&lt;", key, value] less than: feature[key] &lt; value</li>
+ * <li>["&lt;=", key, value] less than or equal: feature[key] ≤ value</li>
  * </ul>
  * <p>
  * Set Memmbership Filters:</p>
@@ -122,7 +122,7 @@ public class MBFilter {
      * Translate "$type": the feature type we need This key may be used with the "==", "!=", "in",
      * and "!in" operators. Possible values are "Point", "LineString", and "Polygon".
      *
-     * @return
+     * @return Set of GeoTools SemanticType (Point, LineString, Polygon).
      */
     public Set<SemanticType> semanticTypeIdentifiers() {
         if (json == null || json.isEmpty()) {

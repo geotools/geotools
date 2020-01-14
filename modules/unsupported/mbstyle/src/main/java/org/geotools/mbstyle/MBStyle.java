@@ -101,7 +101,7 @@ public class MBStyle {
      *
      * @param json Required to be a JSONObject
      * @return MBStyle wrapping the provided json
-     * @throws MBFormatException
+     * @throws MBFormatException JSON content inconsistent with specification
      */
     public static MBStyle create(Object json) throws MBFormatException {
         if (json instanceof JSONObject) {
@@ -116,7 +116,7 @@ public class MBStyle {
     /**
      * Access the layer with the provided id.
      *
-     * @param id
+     * @param id Id of layer to access
      * @return layer with the provided id, or null if not found.
      */
     public MBLayer layer(String id) {
@@ -187,7 +187,7 @@ public class MBStyle {
     /**
      * Access layers matching provided source.
      *
-     * @param source
+     * @param source Data source
      * @return list of layers matching provided source
      */
     public List<MBLayer> layers(String source) throws MBFormatException {
@@ -330,7 +330,7 @@ public class MBStyle {
      * Data source specifications.
      *
      * @see MBSource
-     * @return Map of data source name -> {@link MBSource} instances.
+     * @return Map of data source name to {@link MBSource} instances.
      */
     public Map<String, MBSource> getSources() {
         Map<String, MBSource> sourceMap = new HashMap<>();

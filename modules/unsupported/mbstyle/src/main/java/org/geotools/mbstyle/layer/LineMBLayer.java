@@ -202,6 +202,8 @@ public class LineMBLayer extends MBLayer {
      * <p>(Optional) Used to automatically convert round joins to bevel joins for sharp angles.
      *
      * <p>Defaults to 1.05. Requires line-join = round.
+     *
+     * @return Expression providing threshold at which round joins are converted to bevel joins.
      */
     public Expression lineRoundLimit() {
         return parse.number(layout, "line-round-limit", 1.05);
@@ -319,6 +321,8 @@ public class LineMBLayer extends MBLayer {
     /**
      * Wraps {@link #getLineTranslateAnchor()} in a GeoTools expression. Returns an expression that
      * evaluates to "map" or "viewport".
+     *
+     * @return Expression providing translation reference point.
      */
     public Expression lineTranslateAnchor() {
         return parse.enumToExpression(
@@ -492,7 +496,7 @@ public class LineMBLayer extends MBLayer {
      *
      * <p>Units in line widths. Disabled by line-pattern.
      *
-     * <p>The name of the sprite to use for the line pattern.
+     * @return The name of the sprite to use for the line pattern.
      */
     public String getLinePattern() {
         return parse.optional(String.class, paint, "line-pattern", null);
@@ -506,7 +510,7 @@ public class LineMBLayer extends MBLayer {
      *
      * <p>Units in line widths. Disabled by line-pattern.
      *
-     * <p>The name of the sprite to use for the line pattern.
+     * @return Expression providing name of the sprite to use for the line pattern.
      */
     public Expression linePattern() {
         return parse.string(paint, "line-pattern", null);
@@ -524,11 +528,6 @@ public class LineMBLayer extends MBLayer {
 
     /**
      * Transform {@link LineMBLayer} to GeoTools FeatureTypeStyle.
-     *
-     * <p>Notes:
-     *
-     * <ul>
-     * </ul>
      *
      * @param styleContext The MBStyle to which this layer belongs, used as a context for things
      *     like resolving sprite and glyph names to full urls.

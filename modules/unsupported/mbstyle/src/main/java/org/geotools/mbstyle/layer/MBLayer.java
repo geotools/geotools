@@ -91,6 +91,9 @@ public abstract class MBLayer {
     /**
      * Factory method creating the appropriate MBStyle based on the "type" indicated in the layer
      * JSON.
+     *
+     * @param layer JSON Layer definition
+     * @return Generated MBLayer subclass
      */
     public static MBLayer create(JSONObject layer) {
         if (layer.containsKey("type") && layer.get("type") instanceof String) {
@@ -326,6 +329,7 @@ public abstract class MBLayer {
     /**
      * Transforms a given {@link MBLayer} to a GeoTools {@link FeatureTypeStyle}.
      *
+     * @param styleContext The MBStyle to which this layer belongs, used to resolving sprite and glyph names to full urls.
      * @param minScaleDenominator Used to determine zoom level restrictions for generated rules
      * @param maxScaleDenominator Used to determine zoom level restrictions for generated rules
      * @return A feature type style from the provided layer, or null if the visibility of that layer

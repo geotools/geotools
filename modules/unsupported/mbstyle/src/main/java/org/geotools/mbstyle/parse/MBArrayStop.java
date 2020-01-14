@@ -61,7 +61,7 @@ public class MBArrayStop {
      * <p>For example, for the following {@link MBArrayStop}: <code>[1,   [0,10]]</code> the output
      * of stop.getStopKey() is 1.
      *
-     * @return
+     * @return stop key
      */
     public Object getStopKey() {
         return json.get(0);

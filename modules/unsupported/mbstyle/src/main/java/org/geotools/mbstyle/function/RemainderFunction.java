@@ -34,7 +34,7 @@ import org.opengis.filter.capability.FunctionName;
  *
  * <p>
  *
- * <table border="1" cellpadding="3">
+ * <table border="1" cellpadding="3" summary="RemainderFunction examples">
  *   <tr>
  *     <th align="center">Expression</th>
  *     <th align="center">Output</th>

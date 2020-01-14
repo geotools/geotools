@@ -36,9 +36,7 @@ import org.opengis.filter.expression.Expression;
  *
  * <p>Examples:
  *
- * <p>
- *
- * <table border="1" cellpadding="3">
+ * <table border="1" cellpadding="3" summary="CoalesceFunction examples">
  *   <tr>
  *     <th align="center">Expression</th>
  *     <th align="center">Output</th>

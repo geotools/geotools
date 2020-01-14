@@ -42,7 +42,7 @@ public abstract class TileMBSource extends MBSource {
 
     /**
      * (Optional) A URL to a TileJSON resource. Supported protocols are http:, https:, and
-     * mapbox://<mapid>.
+     * mapbox://&lt;mapid&gt;.
      *
      * @return A String for the URL.
      */

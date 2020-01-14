@@ -30,11 +30,11 @@ If you are having problems with logging output levels be sure to read the loggin
 Test Coverage
 ^^^^^^^^^^^^^
 
-You can use maven to measure test coverage::
+Maven jacoco report is configured and available using::
 
-   mvn -o clean cobertura:cobertura
+   mvn test site
 
-The resulting report is located in :file:`target/site/cobertura/index.html``.
+The resulting report is located in :file:`target/site/jacoco/index.html``.
 
 Online Testing
 ^^^^^^^^^^^^^^

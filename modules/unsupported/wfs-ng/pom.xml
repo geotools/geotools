@@ -220,6 +220,7 @@
             <!-- The following tests are skipped because they do not extend OnlineTestCase -->
             <exclude>**/*OnlineTest.java</exclude>
           </excludes>
+          <argLine>-Dfile.encoding=UTF-8</argLine>
         </configuration>
       </plugin>
     </plugins>

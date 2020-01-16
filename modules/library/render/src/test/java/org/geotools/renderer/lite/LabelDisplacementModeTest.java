@@ -373,7 +373,7 @@ public class LabelDisplacementModeTest extends TestCase {
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth_conflict_disabled_multi.png"));
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth_conflict_disabled_multi.png";
-        ImageAssert.assertEquals(new File(refPath), image, 900);
+        ImageAssert.assertEquals(new File(refPath), image, 1300);
     }
 
     // https://osgeo-org.atlassian.net/browse/GEOS-8975

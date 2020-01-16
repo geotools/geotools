@@ -25,21 +25,13 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 import org.geotools.data.DataSourceException;
-import org.geotools.data.DataStore;
-import org.geotools.data.DataStoreFinder;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.store.ContentFeatureSource;
-import org.geotools.feature.NameImpl;
-import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.referencing.CRS;
 import org.geotools.util.URLs;
-import org.hamcrest.Matchers;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -135,25 +127,5 @@ public class MBTilesDataStoreTest {
         } finally {
             reader.close();
         }
-    }
-
-    @Test
-    public void testFactory() throws IOException {
-        String namespaceURI = "http://geotools.org/mbtiles";
-        File file =
-                URLs.urlToFile(MBTilesFileVectorTileTest.class.getResource("datatypes.mbtiles"));
-        Map<String, Serializable> params = new HashMap<>();
-        params.put(MBTilesDataStoreFactory.DBTYPE.key, "mbtiles");
-        params.put(MBTilesDataStoreFactory.DATABASE.key, file);
-        params.put(JDBCDataStoreFactory.NAMESPACE.key, namespaceURI);
-        DataStore store = DataStoreFinder.getDataStore(params);
-        assertNotNull(store);
-        assertThat(store, Matchers.instanceOf(MBTilesDataStore.class));
-        assertThat(store.getTypeNames(), arrayContaining("datatypes"));
-        SimpleFeatureType schema = store.getSchema("datatypes");
-        NameImpl qualifiedName = new NameImpl(namespaceURI, "datatypes");
-        assertThat(schema.getName(), equalTo(qualifiedName));
-        SimpleFeatureType schemaFromQualified = store.getSchema(qualifiedName);
-        assertThat(schema, equalTo(schemaFromQualified));
     }
 }

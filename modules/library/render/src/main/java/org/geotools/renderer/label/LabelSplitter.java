@@ -16,8 +16,7 @@
  */
 package org.geotools.renderer.label;
 
-import java.awt.Font;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.font.LineBreakMeasurer;
@@ -51,6 +50,8 @@ class LabelSplitter {
     /** Splits a string on spaces between words, keeping the spaces attached to the */
     private static final Pattern WORD_SPLITTER = Pattern.compile("(?<=\\s)(?=\\S)");
 
+    private static final Pattern NEWLINE_SPLITTER = Pattern.compile("\\n");
+
     public List<LineInfo> layout(LabelCacheItem labelItem, Graphics2D graphics) {
         String text = labelItem.getLabel();
         Font[] fonts = labelItem.getTextStyle().getFonts();
@@ -71,7 +72,7 @@ class LabelSplitter {
         }
 
         // first split along the newlines
-        String[] splitted = text.split("\\n");
+        String[] splitted = NEWLINE_SPLITTER.split(text);
 
         List<LineInfo> lines = new ArrayList<LineInfo>();
         if (labelItem.getAutoWrap() <= 0) {
@@ -150,10 +151,12 @@ class LabelSplitter {
                     int lastLineRange = lineRanges.size() - 1;
                     int currentLineRange = 0;
                     for (FontRange range : lineRanges) {
-                        String extracted =
-                                lineText.substring(
-                                        Math.max(prevPosition, range.startChar),
-                                        Math.min(newPosition, range.endChar));
+                        int start = Math.max(prevPosition, range.startChar);
+                        int end = Math.min(newPosition, range.endChar);
+                        String extracted = lineText.substring(start, end);
+                        if (extracted.isEmpty()) {
+                            continue;
+                        }
                         if (currentLineRange == 0 && currentLineRange == lastLineRange) {
                             // single string, remote trailing and leading
                             extracted = extracted.trim();
@@ -165,6 +168,10 @@ class LabelSplitter {
                             extracted = extracted.replaceAll("\\s+$", "");
                         }
                         currentLineRange++;
+                        AttributedCharacterIterator subIter =
+                                attributed.getIterator(null, start, end);
+                        graphics.setFont(range.font);
+                        layout = new TextLayout(subIter, graphics.getFontRenderContext());
                         List<LineComponent> components =
                                 buildLineComponents(
                                         extracted, range.font, labelItem, graphics, layout);

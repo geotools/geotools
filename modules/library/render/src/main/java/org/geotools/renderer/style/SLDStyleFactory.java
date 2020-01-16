@@ -814,12 +814,14 @@ public class SLDStyleFactory {
         if (fonts != null) {
             for (Font curr : fonts) {
                 for (Expression family : curr.getFamily()) {
-                    String requestedFont = evalToString(family, feature, null);
-                    java.awt.Font javaFont = FontCache.getDefaultInstance().getFont(requestedFont);
-
-                    if (javaFont != null) {
-                        java.awt.Font font = styleFont(feature, curr, javaFont, symbolizer);
-                        result.add(font);
+                    List<String> fontNames = evalToList(family, feature, null);
+                    if (fontNames != null) {
+                        for (String fontName : fontNames) {
+                            collectFont(feature, symbolizer, result, curr, fontName);
+                        }
+                    } else {
+                        String requestedFont = evalToString(family, feature, null);
+                        collectFont(feature, symbolizer, result, curr, requestedFont);
                     }
                 }
             }
@@ -836,6 +838,20 @@ public class SLDStyleFactory {
         }
 
         return result.toArray(new java.awt.Font[result.size()]);
+    }
+
+    private void collectFont(
+            Object feature,
+            TextSymbolizer symbolizer,
+            List<java.awt.Font> result,
+            Font curr,
+            String requestedFont) {
+        java.awt.Font javaFont = FontCache.getDefaultInstance().getFont(requestedFont);
+
+        if (javaFont != null) {
+            java.awt.Font font = styleFont(feature, curr, javaFont, symbolizer);
+            result.add(font);
+        }
     }
 
     private java.awt.Font applyKerning(java.awt.Font font) {
@@ -1650,6 +1666,17 @@ public class SLDStyleFactory {
 
             return (int) (bits ^ (bits >>> 32));
         }
+    }
+
+    private <T> List<T> evalToList(Expression exp, Object f, List<T> fallback) {
+        if (exp == null) {
+            return fallback;
+        }
+        List l = exp.evaluate(f, List.class);
+        if (l != null) {
+            return l;
+        }
+        return fallback;
     }
 
     private String evalToString(Expression exp, Object f, String fallback) {

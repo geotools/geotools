@@ -16,9 +16,22 @@
  */
 package org.geotools.mbstyle.layer;
 
-import static org.geotools.renderer.label.LabelCacheItem.GraphicResize.*;
-import static org.geotools.styling.TextSymbolizer.*;
-import static org.geotools.styling.TextSymbolizer.GraphicPlacement.*;
+import static org.geotools.renderer.label.LabelCacheItem.GraphicResize.NONE;
+import static org.geotools.renderer.label.LabelCacheItem.GraphicResize.PROPORTIONAL;
+import static org.geotools.renderer.label.LabelCacheItem.GraphicResize.STRETCH;
+import static org.geotools.styling.TextSymbolizer.AUTO_WRAP_KEY;
+import static org.geotools.styling.TextSymbolizer.CONFLICT_RESOLUTION_KEY;
+import static org.geotools.styling.TextSymbolizer.FOLLOW_LINE_KEY;
+import static org.geotools.styling.TextSymbolizer.FORCE_LEFT_TO_RIGHT_KEY;
+import static org.geotools.styling.TextSymbolizer.GRAPHIC_MARGIN_KEY;
+import static org.geotools.styling.TextSymbolizer.GRAPHIC_PLACEMENT_KEY;
+import static org.geotools.styling.TextSymbolizer.GRAPHIC_RESIZE_KEY;
+import static org.geotools.styling.TextSymbolizer.GROUP_KEY;
+import static org.geotools.styling.TextSymbolizer.GraphicPlacement.INDEPENDENT;
+import static org.geotools.styling.TextSymbolizer.LABEL_ALL_GROUP_KEY;
+import static org.geotools.styling.TextSymbolizer.LABEL_REPEAT_KEY;
+import static org.geotools.styling.TextSymbolizer.MAX_ANGLE_DELTA_KEY;
+import static org.geotools.styling.TextSymbolizer.PARTIALS_KEY;
 
 import com.google.common.collect.ImmutableSet;
 import java.awt.*;
@@ -28,6 +41,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import org.geotools.mbstyle.MBStyle;
+import org.geotools.mbstyle.function.FontAlternativesFunction;
+import org.geotools.mbstyle.function.FontAttributesExtractor;
+import org.geotools.mbstyle.function.MapBoxFontBaseNameFunction;
+import org.geotools.mbstyle.function.MapBoxFontStyleFunction;
+import org.geotools.mbstyle.function.MapBoxFontWeightFunction;
 import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
@@ -1767,17 +1785,35 @@ public class SymbolMBLayer extends MBLayer {
         }
         Fill fill = sf.fill(null, textColor(), textOpacity());
 
-        Font font =
-                sb.createFont(ff.literal(""), ff.literal("normal"), ff.literal("normal"), fontSize);
-
-        if (getTextFont() != null) {
-            font.getFamily().clear();
-            for (String textFont : getTextFont()) {
-                font.getFamily().add(ff.literal(textFont));
+        // leverage GeoTools ability to have several distinct fonts, inherited from SLD 1.0
+        List<Font> fonts = new ArrayList<>();
+        List<String> staticFonts = getTextFont();
+        if (staticFonts != null) {
+            for (String textFont : staticFonts) {
+                FontAttributesExtractor fae = new FontAttributesExtractor(textFont);
+                Font font =
+                        sb.createFont(
+                                ff.function(
+                                        FontAlternativesFunction.NAME.getName(),
+                                        ff.literal(fae.getBaseName())),
+                                ff.literal(fae.isItalic() ? "italic" : "normal"),
+                                ff.literal(fae.isBold() ? "bold" : "normal"),
+                                fontSize);
+                fonts.add(font);
             }
         } else if (textFont() != null) {
-            font.getFamily().clear();
-            font.getFamily().add(textFont());
+            Expression dynamicFont = textFont();
+            Font font =
+                    sb.createFont(
+                            ff.function(
+                                    FontAlternativesFunction.NAME.getName(),
+                                    ff.function(
+                                            MapBoxFontBaseNameFunction.NAME.getName(),
+                                            dynamicFont)),
+                            ff.function(MapBoxFontStyleFunction.NAME.getName(), dynamicFont),
+                            ff.function(MapBoxFontWeightFunction.NAME.getName(), dynamicFont),
+                            fontSize);
+            fonts.add(font);
         }
 
         // If the textField is a literal string (not a function), then
@@ -1803,10 +1839,12 @@ public class SymbolMBLayer extends MBLayer {
                                 sf.description(Text.text("text"), null),
                                 Units.PIXEL,
                                 textExpression,
-                                font,
+                                null,
                                 labelPlacement,
                                 halo,
                                 fill);
+        symbolizer.fonts().clear();
+        symbolizer.fonts().addAll(fonts);
 
         Number symbolSpacing =
                 transformer.requireLiteral(
@@ -1857,27 +1895,13 @@ public class SymbolMBLayer extends MBLayer {
             symbolizer.getOptions().put(GRAPHIC_RESIZE_KEY, NONE.name());
         }
 
-        // MapBox symbol-avoid-edges defaults to false, If true, the symbols will not cross tile
-        // edges to avoid
-        // mutual collisions.  This concept is represented by using the Partials option in GeoTools.
-        //  The partials
-        // options instructs the renderer to render labels that cross the map extent, which are
-        // normally not painted
-        // since there is no guarantee that a map put on the side of the current one (tiled
-        // rendering) will contain
-        // the other half of the label. By enabling “partials” the style editor takes responsibility
-        // for the other
-        // half being there (maybe because the label points have been placed by hand and are assured
-        // not to conflict
-        // with each other, at all zoom levels).
-        //
-        // Based upon the above if symbol-avoid-edges is true we do not need
-        // to add the partials option as the renderer will do this by default. But if
-        // symbol-avoid-edges is missing or
-        // set to false, then we do need to add the partials option set to true.
-        if (!getSymbolAvoidEdges()) {
-            symbolizer.getOptions().put(PARTIALS_KEY, "true");
-        }
+        // Kept commented out as a reminder not to bring this back. It breaks rendering
+        // on server side, as the labels are actually cut at tile borders, unlike client side
+        // where they can just continue over, and one can hope they won't overlap
+        //        if (!getSymbolAvoidEdges()) {
+        //            symbolizer.getOptions().put(PARTIALS_KEY, "true");
+        //        }
+        symbolizer.getOptions().put(PARTIALS_KEY, "false");
 
         // Mapbox allows you to sapecify an array of values, one for each side
         if (getIconTextFitPadding() != null && !getIconTextFitPadding().isEmpty()) {

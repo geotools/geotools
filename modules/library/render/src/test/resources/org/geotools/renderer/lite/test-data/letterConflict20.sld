@@ -23,6 +23,7 @@
             <LabelPlacement>
               <LinePlacement/>
             </LabelPlacement>
+            <VendorOption name="maxAngleDelta">45</VendorOption>
           </TextSymbolizer>
         </Rule>
 

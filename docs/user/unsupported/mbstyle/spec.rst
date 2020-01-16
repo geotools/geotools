@@ -1970,6 +1970,8 @@ collisions. Recommended in layers that don't have enough padding in the
 vector tile to prevent collisions, or if it is a point symbol layer
 placed after a line symbol layer.
 
+**In GeoTools the option is ignored and effectively always "on" when translating to SLD, to support server side rendering** 
+
 .. list-table::
    :widths: 19, 27, 27, 27
    :header-rows: 1

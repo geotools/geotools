@@ -141,7 +141,7 @@ public class PartialsTest extends TestCase {
         renderer.setMapContent(mc);
 
         final BufferedImage image = RendererBaseTest.renderImage(renderer, bounds, null);
-        RendererBaseTest.assertPixel(image, 282, 152, Color.BLACK);
+        RendererBaseTest.assertPixel(image, 282, 150, Color.BLACK);
 
         // Write to file
         // ImageIO.write(image, "png", new File("C:/Temp/testPartialPointLabelTrue.png"));
@@ -251,7 +251,7 @@ public class PartialsTest extends TestCase {
         renderer.setMapContent(mc);
 
         final BufferedImage image = RendererBaseTest.renderImage(renderer, bounds, null);
-        RendererBaseTest.assertPixel(image, 282, 152, Color.BLACK);
+        RendererBaseTest.assertPixel(image, 282, 150, Color.BLACK);
 
         // Write to file
         // ImageIO.write(image, "png", new File("C:/Temp/testPartialAreaLabelTrue.png"));

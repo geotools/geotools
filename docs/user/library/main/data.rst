@@ -377,8 +377,8 @@ We have a number of methods to list required attributes for a ``Filter`` or ``Ex
 
 * ``DataUtilities.atttributeNames( Filter )``
 * ``DataUtilities.atttributeNames( Filter, FeatureType )``
-* ``DataUtilities.attributenNames( Expression )``
-* ``DataUtilities.attributenNames( Expression, FeatureType )``
+* ``DataUtilities.attributeNames( Expression )``
+* ``DataUtilities.attributeNames( Expression, FeatureType )``
   
   The optional ``FeatureType`` is used as a reference point and can resolve any ambiguities
   between the simple XPath expressions, and the names used in the ``FeatureType``.

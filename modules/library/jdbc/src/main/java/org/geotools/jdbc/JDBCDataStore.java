@@ -1770,7 +1770,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                     insertNonPS(notUseExistings, featureType, cx, key, false);
                 }
             } catch (SQLException e) {
-                String msg = "Error inserting features";
+                String msg = "Error inserting features: " + e.getMessage();
                 throw (IOException) new IOException(msg).initCause(e);
             }
         }

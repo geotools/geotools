@@ -375,8 +375,8 @@ perform the task you have in mind.
 
 We have a number of methods to list required attributes for a ``Filter`` or ``Expression``:
 
-* ``DataUtilities.atttributeNames( Filter )``
-* ``DataUtilities.atttributeNames( Filter, FeatureType )``
+* ``DataUtilities.attributeNames( Filter )``
+* ``DataUtilities.attributeNames( Filter, FeatureType )``
 * ``DataUtilities.attributeNames( Expression )``
 * ``DataUtilities.attributeNames( Expression, FeatureType )``
   

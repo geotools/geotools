@@ -32,6 +32,7 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.spatial.BBOX3D;
 import org.opengis.filter.spatial.Intersects;
@@ -169,5 +170,38 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
         filterToSql.encode(like);
         String sql = writer.toString().toLowerCase().trim();
         assertEquals("where lower(teststring) like 'a_literal'", sql);
+    }
+
+    @Test
+    public void testEncodeArrayAnyMatchCapabilities() throws Exception {
+        filterToSql.setFeatureType(testSchema);
+        PropertyIsEqualTo expr =
+                ff.equals(
+                        ff.function("arrayAnyMatch", ff.property("testArray"), ff.literal(5)),
+                        ff.literal(true));
+
+        FilterCapabilities caps = filterToSql.getCapabilities();
+        PostPreProcessFilterSplittingVisitor splitter =
+                new PostPreProcessFilterSplittingVisitor(caps, testSchema, null);
+        expr.accept(splitter, null);
+
+        Filter[] split = new Filter[2];
+        split[0] = splitter.getFilterPre();
+        split[1] = splitter.getFilterPost();
+
+        assertEquals(expr, split[0]);
+        assertEquals(Filter.INCLUDE, split[1]);
+    }
+
+    @Test
+    public void testEncodeArrayAnyMatch() throws Exception {
+        PropertyIsEqualTo expr =
+                ff.equals(
+                        ff.function("arrayAnyMatch", ff.property("testArray"), ff.literal(5)),
+                        ff.literal(true));
+
+        filterToSql.encode(expr);
+        String sql = writer.toString().toLowerCase();
+        assertEquals("where 5=any(testarray)", sql);
     }
 }

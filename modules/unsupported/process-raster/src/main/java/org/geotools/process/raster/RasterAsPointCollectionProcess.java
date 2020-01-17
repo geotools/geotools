@@ -228,7 +228,7 @@ public class RasterAsPointCollectionProcess implements RasterProcess {
         }
 
         /**
-         * @param gc2d2
+         * @param gc2d
          * @param emisphere
          * @param targetCRS
          */

@@ -38,6 +38,8 @@ import org.geotools.data.Query;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.sqlserver.reader.SqlServerBinaryReader;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.geometry.jts.WKBReader;
+import org.geotools.geometry.jts.WKTWriter2;
 import org.geotools.jdbc.BasicSQLDialect;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.referencing.CRS;
@@ -53,7 +55,6 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.ParseException;
-import org.locationtech.jts.io.WKBReader;
 import org.locationtech.jts.io.WKTReader;
 import org.locationtech.jts.io.WKTWriter;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -591,7 +592,7 @@ public class SQLServerDialect extends BasicSQLDialect {
 
         GeometryDimensionFinder finder = new GeometryDimensionFinder();
         value.apply(finder);
-        WKTWriter writer = new WKTWriter(finder.hasZ() ? 3 : 2);
+        WKTWriter writer = new WKTWriter2(finder.hasZ() ? 3 : 2);
         String wkt = writer.write(value);
         sql.append("geometry::STGeomFromText('").append(wkt).append("',").append(srid).append(")");
     }

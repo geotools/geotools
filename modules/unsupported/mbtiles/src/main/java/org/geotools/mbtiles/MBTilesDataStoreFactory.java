@@ -31,12 +31,15 @@ import java.util.Map;
 import javax.sql.DataSource;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.Parameter;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.sqlite.SQLiteConfig;
 import org.sqlite.javax.SQLiteConnectionPoolDataSource;
 
 public class MBTilesDataStoreFactory implements DataStoreFactorySpi {
+
+    private static final String MBTILES_DBTYPE = "mbtiles";
 
     /** parameter for database type */
     public static final Param DBTYPE =
@@ -45,7 +48,7 @@ public class MBTilesDataStoreFactory implements DataStoreFactorySpi {
                     String.class,
                     "Type",
                     true,
-                    "mbtiles",
+                    MBTILES_DBTYPE,
                     Collections.singletonMap(Parameter.LEVEL, "program"));
 
     /** optional user parameter */
@@ -151,5 +154,26 @@ public class MBTilesDataStoreFactory implements DataStoreFactorySpi {
             db = new File(db.getPath().substring(5));
         }
         return "jdbc:sqlite:" + db;
+    }
+
+    public boolean canProcess(Map params) {
+        if (!DataUtilities.canProcess(params, getParametersInfo())) {
+            return false;
+        }
+        return checkDBType(params);
+    }
+
+    protected final boolean checkDBType(Map params) {
+        try {
+            String type = (String) DBTYPE.lookUp(params);
+
+            if (MBTILES_DBTYPE.equals(type)) {
+                return true;
+            }
+
+            return false;
+        } catch (IOException e) {
+            return false;
+        }
     }
 }

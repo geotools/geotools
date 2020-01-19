@@ -29,6 +29,13 @@ jobs:
         echo "Checking out GeoServer"
         mkdir geoserver
         git clone https://github.com/geoserver/geoserver.git geoserver
+    - name: Maven repository caching
+      uses: actions/cache@v1
+      with:
+        path: ~/.m2/repository
+        key: integration-${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          integration-${{ runner.os }}-maven-
     - name: Build GeoTools (no tests, prepare fresh artifacts)
       # No -T2 on purpose, this build step has shown a tendency to go OOM with it
       run: |
@@ -48,4 +55,6 @@ jobs:
         mvn -B -f geoserver/src/pom.xml install -nsu -Prelease -Dfmt.skip=true -DskipTests
         mvn -B -f geoserver/src/community/pom.xml install -nsu -DcommunityRelease -Dfmt.skip=true -DskipTests
         mvn -B -f geoserver/src/pom.xml test -T2 -nsu -Dtest.maxHeapSize=512m -Djvm.opts="$TEST_OPTS" -Prelease -Dfmt.skip=true
-        
+    - name: Remove SNAPSHOT jars from repository
+      run: |
+        find .m2/repository -name "*SNAPSHOT*" -type d | xargs rm -rf {} 

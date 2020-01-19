@@ -1,4 +1,4 @@
-name: Downstream integration build
+name: Downstream integration build (GeoWebCache and GeoServer)
 
 on:
   # trigger on PR, but only on master branch, the checkouts of the downstream projects are also targeting master (default branch)

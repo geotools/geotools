@@ -481,7 +481,7 @@ public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
     }
 
     /**
-     * Adds some user data to the next attributed added to the feature.
+     * Adds some user data to the next attribute added to the feature.
      *
      * <p>This value is reset when the next attribute is added.
      *
@@ -492,6 +492,12 @@ public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
         return setUserData(next, key, value);
     }
 
+    /**
+     * Set user data for a specific attribute.
+     * @param index The index of the attribute.
+     * @param key The key of the user data.
+     * @param value The value of the user data.
+     */
     @SuppressWarnings("unchecked")
     public SimpleFeatureBuilder setUserData(int index, Object key, Object value) {
         if (userData == null) {

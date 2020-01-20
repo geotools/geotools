@@ -304,7 +304,7 @@ public abstract class ContentFeatureStore extends ContentFeatureSource
         }
 
         // Need to save a link to the original feature in order to be able to set the ID once it
-        // is actuall saved (see JDBCInsertFeatureWriter)
+        // is actually saved (see JDBCInsertFeatureWriter)
         toWrite.getUserData().put(ORIGINAL_FEATURE_KEY, feature);
 
         // perform the write

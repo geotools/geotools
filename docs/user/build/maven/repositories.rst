@@ -6,10 +6,11 @@ in the root pom.xml file.
 
 You can browse them online at:
 
-* http://central.maven.org/maven2 - maven central
-* http://maven.geo-solutions.it/ - geosolutions repository used for imageio-ext, jai-ext, ...
-* http://download.osgeo.org/webdav/geotools/ - osgeo repository used for geotools dependencies
-* https://repo.boundlessgeo.com/release - boundless repo for releases
+  * https://repo1.maven.org/maven2 - maven central
+  * http://maven.geo-solutions.it/ - GeoSolutions repository used for ``imageio-ext``, ``jai-ext``, ... 
+  * http://download.osgeo.org/webdav/geotools/ - OSGeo repository used for
+    GeoTools dependencies 
+  * https://repo.boundlessgeo.com/release - Boundless repository for releases
 
 GeoTools itself is deployed to the following repositories:
 

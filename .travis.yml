@@ -12,7 +12,7 @@ env:
   global:
     - MAVEN_OPTS=-Xmx756m
 script:
-  - mvn -B -fae -Dall clean install -T2 --builder smart $ARGS
+  - mvn -B -fae -Dall clean install -T2 $ARGS
 notifications:
   email: false
   on_failure: never

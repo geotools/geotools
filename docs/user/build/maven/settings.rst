@@ -29,33 +29,9 @@ Examples of use:
      
      <offline>true</offline>
 
-* select testing profiles (so you can test against a local database, or geoserver install)
-* Set up a mirror for better performance:
-  
-  Using ibiblio as your mirror of the central maven repository:
-
-.. code-block:: xml
-   
-   settings.xml
-   <settings>
-     <mirrors>
-       <mirror>
-         <id>ibiblio.org</id>
-         <name>ibiblio Mirror of http://repo1.maven.org/maven2/</name>
-         <url>http://mirrors.ibiblio.org/pub/mirrors/maven2</url>
-         <mirrorOf>central</mirrorOf>
-       </mirror>
-     </Mirrors>
-   </Settings>
-  
-  There are often mirrors closer to your physical location::
-   
-    <mirror>
-      <id>planetmirror</id>
-      <name>Australian Mirror of http://repo1.maven.org/maven2/</name>
-      <url>http://public.planetmirror.com/maven2/</url>
-      <mirrorOf>central</mirrorOf>
-    </mirror>
+* select testing profiles (so you can test against a local database, or
+  GeoServer install)
+* set up a mirror for better performance
   
 Local Repository
 ^^^^^^^^^^^^^^^^

@@ -6,7 +6,7 @@ in the root ``pom.xml`` file.
 
 You can browse them online at:
 
-  * http://central.maven.org/maven2 - maven central
+  * https://repo1.maven.org/maven2 - maven central
   * http://maven.geo-solutions.it/ - GeoSolutions repository used for ``imageio-ext``, ``jai-ext``, ... 
   * http://download.osgeo.org/webdav/geotools/ - OSGeo repository used for
     GeoTools dependencies 

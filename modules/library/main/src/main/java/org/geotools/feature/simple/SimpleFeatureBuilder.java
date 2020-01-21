@@ -494,6 +494,7 @@ public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
 
     /**
      * Set user data for a specific attribute.
+     *
      * @param index The index of the attribute.
      * @param key The key of the user data.
      * @param value The value of the user data.

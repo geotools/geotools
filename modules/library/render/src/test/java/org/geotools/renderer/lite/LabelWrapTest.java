@@ -87,7 +87,7 @@ public class LabelWrapTest extends TestCase {
         BufferedImage image = renderLabels(fs, style, "Label wrap disabled");
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/textWrapDisabled.png";
-        ImageAssert.assertEquals(new File(refPath), image, 3000);
+        ImageAssert.assertEquals(new File(refPath), image, 3200);
     }
 
     public void testAutoWrap() throws Exception {

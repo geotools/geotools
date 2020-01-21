@@ -123,7 +123,7 @@
       </build>
     </profile>
     <profile>
-      <id>arcsde</id>
+      <id>arcsde-jars</id>
       <dependencies>
         <dependency>
           <groupId>com.esri</groupId>

@@ -1,7 +1,9 @@
 ArcSDE Plugin
 -------------
 
-The ArcSDE plugin allows the GeoTools developer to work with the `ArcSDE <http://en.wikipedia.org/wiki/ArcSDE>`_ middle ware. The ArcSDE plugin has been with us since GeoTools 2.0 and is much loved.
+Unsupported plugin allowing to work with the `ArcSDE <http://en.wikipedia.org/wiki/ArcSDE>`_ middle ware.
+The ArcSDE plugin has been with us since GeoTools 2.0 and is much loved, yet it has become unsupported
+due to lack of activity over the last years.
 
 Supported Features:
 

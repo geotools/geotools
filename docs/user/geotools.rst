@@ -62,7 +62,6 @@ Supported Formats
 
 * raster formats and data access
   
-  + ``arcsde``  
   + ``arcgrid``  
   + ``geotiff``  
   + ``grassraster``  
@@ -87,7 +86,6 @@ Supported Formats
   
 
   + ``app-schema``  
-  + ``arcsde``  
   + ``csv``  
   + ``dxf``  
   + ``geojson``  

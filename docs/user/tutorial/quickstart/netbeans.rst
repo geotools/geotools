@@ -399,8 +399,6 @@ To start with we will obtain GeoTools from the website:
 
    For now remove the following plugins from the Library Manager:
 
-   * ``gt-arcsde``
-   * ``gt-arcsde-common``
    * ``gt-db2``
    * ``gt-jdbc-db2``
    * ``gt-oracle-spatial``

@@ -414,17 +414,22 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
         kvp.put("SERVICE", "WFS");
         kvp.put("VERSION", getServiceVersion().toString());
         kvp.put("REQUEST", "DescribeFeatureType");
+        // ommit output format by now, server should just return xml shcema
+        // kvp.put("OUTPUTFORMAT", outputFormat);
+
+        return buildDescribeFeatureTypeParametersForGET(kvp, typeName);
+    }
+
+    protected Map<String, String> buildDescribeFeatureTypeParametersForGET(
+            Map<String, String> kvp, QName typeName) {
         String prefixedTypeName = getPrefixedTypeName(typeName);
+
         kvp.put("TYPENAME", prefixedTypeName);
 
         if (!XMLConstants.DEFAULT_NS_PREFIX.equals(typeName.getPrefix())) {
             String nsUri = typeName.getNamespaceURI();
             kvp.put("NAMESPACE", "xmlns(" + typeName.getPrefix() + "=" + nsUri + ")");
         }
-
-        // ommit output format by now, server should just return xml shcema
-        // kvp.put("OUTPUTFORMAT", outputFormat);
-
         return kvp;
     }
 

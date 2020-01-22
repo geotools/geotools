@@ -19,6 +19,8 @@ package org.geotools.xml.resolver;
 
 import java.io.File;
 import java.net.URI;
+import org.geotools.data.ows.MockURLChecker;
+import org.geotools.data.ows.URLCheckerFactory;
 import org.geotools.test.OnlineTestSupport;
 import org.geotools.util.URLs;
 import org.junit.After;
@@ -169,6 +171,21 @@ public class SchemaCacheOnlineTest extends OnlineTestSupport {
                             .getCanonicalFile()
                             .toURI()
                             .toString());
+        }
+    }
+
+    @Test
+    public void testSecuredHttpClient() throws Exception {
+        MockURLChecker urlChecker = new MockURLChecker();
+        urlChecker.setEnabled(true);
+        URLCheckerFactory.addURLChecker(urlChecker);
+
+        try {
+            SchemaCache.download(new URI(SCHEMA_LOCATION), 65536);
+        } catch (Exception e) {
+            Assert.assertTrue(e.getCause().getMessage().contains("Evaluation Failure:"));
+        } finally {
+            URLCheckerFactory.removeURLChecker(urlChecker);
         }
     }
 }

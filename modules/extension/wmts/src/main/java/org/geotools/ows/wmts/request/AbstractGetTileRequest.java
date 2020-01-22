@@ -31,6 +31,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.lang3.StringUtils;
+import org.geotools.data.ows.ControlledHttpClientFactory;
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Response;
@@ -113,7 +114,7 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
      * @param properties pre-set properties to be used. Can be null.
      */
     public AbstractGetTileRequest(URL onlineResource, Properties properties) {
-        this(onlineResource, properties, new SimpleHttpClient());
+        this(onlineResource, properties, ControlledHttpClientFactory.wrap(new SimpleHttpClient()));
     }
 
     public AbstractGetTileRequest(URL onlineResource, Properties properties, HTTPClient client) {

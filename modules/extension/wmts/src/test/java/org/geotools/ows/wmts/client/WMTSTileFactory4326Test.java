@@ -26,6 +26,8 @@ import java.io.FileReader;
 import java.net.URISyntaxException;
 import java.net.URL;
 import net.opengis.wmts.v_1.CapabilitiesType;
+import org.geotools.data.ows.MockURLChecker;
+import org.geotools.data.ows.URLCheckerFactory;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.wmts.model.TileMatrixSet;
 import org.geotools.ows.wmts.model.WMTSCapabilities;
@@ -282,6 +284,31 @@ public class WMTSTileFactory4326Test {
         } catch (URISyntaxException ex) {
             fail(ex.getMessage());
             return null;
+        }
+    }
+
+    @Test
+    public void testSecuredHttpClient() throws Exception {
+
+        // mock URL checker is not configured for demo.geo-solutions.it
+        // should throw exception
+        MockURLChecker urlChecker = new MockURLChecker();
+        urlChecker.setEnabled(true);
+        URLCheckerFactory.addURLChecker(urlChecker);
+
+        WMTSTileService[] services = new WMTSTileService[1];
+        services[0] = createKVPService();
+        TestPoint tp = new TestPoint(10, 40, 0, 1, 0, 1, 10);
+
+        WMTSZoomLevel zoomLevel = ((WMTSTileService) services[0]).getZoomLevel(tp.zoomlevel);
+        try {
+            Tile mtile = factory.findTileAtCoordinate(tp.lon, tp.lat, zoomLevel, services[0]);
+            services[0].getHttpClient().get(mtile.getUrl());
+            fail();
+        } catch (Exception e) {
+            Assert.assertTrue(e.getMessage().contains("Evaluation Failure:"));
+        } finally {
+            URLCheckerFactory.removeURLChecker(urlChecker);
         }
     }
 

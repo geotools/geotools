@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
+import org.geotools.data.ows.ControlledHttpClient;
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.data.wfs.internal.Versions;
@@ -205,5 +206,15 @@ public class WFSDataStoreFactoryTest {
         params.put(WFSDataStoreFactory.USE_HTTP_CONNECTION_POOLING.key, true);
         params.put(WFSDataStoreFactory.URL.key, new URL("file://some/file"));
         assertTrue(new WFSDataStoreFactory().getHttpClient(params) instanceof SimpleHttpClient);
+    }
+
+    @Test
+    public void testSecuredHttpClient() throws IOException {
+        params.put(WFSDataStoreFactory.USE_HTTP_CONNECTION_POOLING.key, true);
+        params.put(WFSDataStoreFactory.SECURED_HTTP_CLIENT.key, true);
+        params.put(
+                WFSDataStoreFactory.URL.key,
+                new URL("http://someserver.example.org/wfs?request=GetCapabilities"));
+        assertTrue(new WFSDataStoreFactory().getHttpClient(params) instanceof ControlledHttpClient);
     }
 }

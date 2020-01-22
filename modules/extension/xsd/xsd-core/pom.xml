@@ -142,6 +142,13 @@
       <artifactId>easymockclassextension</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-main</artifactId>
+      <version>${project.version}</version>
+      <classifier>tests</classifier>
+      <scope>test</scope>
+    </dependency>    
   </dependencies>
   <build>
     <plugins>

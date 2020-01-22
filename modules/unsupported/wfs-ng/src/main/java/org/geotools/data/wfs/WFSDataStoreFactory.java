@@ -26,6 +26,7 @@ import java.util.Map;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataStoreFinder;
+import org.geotools.data.ows.ControlledHttpClientFactory;
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.data.wfs.impl.WFSDataAccessFactory;
@@ -133,9 +134,13 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
     public HTTPClient getHttpClient(final Map<String, Serializable> params) throws IOException {
         final URL capabilitiesURL = (URL) URL.lookUp(params);
         final WFSConfig config = WFSConfig.fromParams(params);
-        return config.isUseHttpConnectionPooling() && isHttp(capabilitiesURL)
-                ? new MultithreadedHttpClient(config)
-                : new SimpleHttpClient();
+        HTTPClient httpClient =
+                config.isUseHttpConnectionPooling() && isHttp(capabilitiesURL)
+                        ? new MultithreadedHttpClient(config)
+                        : new SimpleHttpClient();
+        return (config.isSecuredHttpClient())
+                ? ControlledHttpClientFactory.wrap(httpClient)
+                : httpClient;
     }
 
     private static boolean isHttp(java.net.URL capabilitiesURL) {

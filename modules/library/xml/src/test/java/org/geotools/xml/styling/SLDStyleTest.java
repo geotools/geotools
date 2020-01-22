@@ -34,6 +34,8 @@ import javax.swing.Icon;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.geotools.data.ows.MockURLChecker;
+import org.geotools.data.ows.URLCheckerFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.filter.function.FilterFunction_buffer;
@@ -1049,6 +1051,22 @@ public class SLDStyleTest extends TestCase {
         assertNull(graphic.getLocation());
         assertEquals(1, graphic.getInlineContent().getIconWidth());
         assertEquals(1, graphic.getInlineContent().getIconHeight());
+    }
+
+    public void testSLDParserSecuredRead() throws Exception {
+        java.net.URL surl = TestData.getResource(this, "example-sld.xml");
+        MockURLChecker urlChecker = new MockURLChecker();
+        urlChecker.setEnabled(true);
+        URLCheckerFactory.addURLChecker(urlChecker);
+
+        try {
+            SLDParser stylereader = new SLDParser(sf, surl);
+            fail();
+        } catch (Exception e) {
+            assertTrue(e.getMessage().contains("Evaluation Failure:"));
+        } finally {
+            URLCheckerFactory.removeURLChecker(urlChecker);
+        }
     }
 
     public void testParseBackgroundSolid() throws Exception {

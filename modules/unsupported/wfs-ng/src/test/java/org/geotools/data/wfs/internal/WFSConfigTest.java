@@ -33,4 +33,16 @@ public class WFSConfigTest {
 
         assertEquals(10, config.getMaxConnectionPoolSize());
     }
+
+    @Test
+    public void testSecuredHTTPClient() throws Exception {
+        Map<String, String> params = new HashMap<>();
+        WFSConfig config = WFSConfig.fromParams(params);
+
+        assertEquals(false, config.isSecuredHttpClient());
+
+        params.put(WFSDataAccessFactory.SECURED_HTTP_CLIENT.getName(), "true");
+        config = WFSConfig.fromParams(params);
+        assertEquals(true, config.isSecuredHttpClient());
+    }
 }

@@ -24,6 +24,9 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.net.UnknownHostException;
 import junit.framework.TestCase;
+import org.geotools.data.ows.MockURLChecker;
+import org.geotools.data.ows.URLCheckerFactory;
+import org.junit.Assert;
 
 /** @author "Mauro Bartolomeoli - mauro.bartolomeoli@geo-solutions.it" */
 public class SchemaFactoryResolveTest extends TestCase {
@@ -93,6 +96,23 @@ public class SchemaFactoryResolveTest extends TestCase {
                 return;
             }
             throw e;
+        }
+    }
+
+    public void testAccessRestriction() throws Exception {
+        // mock URL checker is not configured for www.w3.org
+        // should throw exception
+        MockURLChecker urlChecker = new MockURLChecker();
+        urlChecker.setEnabled(true);
+        URLCheckerFactory.addURLChecker(urlChecker);
+        try {
+            assertNull(
+                    SchemaFactory.getInstance(
+                            URI.create("http://www.w3.org/XML/1998/namespace/remote")));
+        } catch (Exception e) {
+            Assert.assertTrue(e.getMessage().contains("Evaluation Failure:"));
+        } finally {
+            URLCheckerFactory.removeURLChecker(urlChecker);
         }
     }
 

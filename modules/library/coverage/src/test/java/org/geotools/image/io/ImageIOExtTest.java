@@ -19,6 +19,9 @@ package org.geotools.image.io;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
@@ -27,11 +30,15 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileCacheImageOutputStream;
 import javax.imageio.stream.ImageOutputStream;
 import javax.imageio.stream.MemoryCacheImageOutputStream;
 import javax.media.jai.operator.ConstantDescriptor;
+import org.geotools.data.ows.MockFileURIChecker;
+import org.geotools.data.ows.URLChecker;
+import org.geotools.data.ows.URLCheckerFactory;
 import org.geotools.image.ImageWorker;
 import org.junit.After;
 import org.junit.Before;
@@ -121,6 +128,24 @@ public class ImageIOExtTest {
             assertEquals(255, pixel[1]);
             assertEquals(52, pixel[2]);
             assertEquals(0, pixel[3]);
+        }
+    }
+
+    @Test
+    public void testSecureRead() throws Exception {
+        // test asserts that ImageIOExt.read can be secrued
+        // through URLChecker SPI
+        URLChecker mockUrlChecker = new MockFileURIChecker();
+        URLCheckerFactory.addURLChecker(mockUrlChecker);
+        URL imageFileUrl = ImageWorker.class.getResource("test-data/rgb_trns.png");
+        try {
+            ImageIOExt.read(imageFileUrl);
+            fail();
+        } catch (Exception e) {
+            // should be a security evaluation fail exception
+            assertTrue(e.getMessage().contains("did not pass security evaluation"));
+        } finally {
+            URLCheckerFactory.removeURLChecker(mockUrlChecker);
         }
     }
 }

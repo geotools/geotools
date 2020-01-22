@@ -24,6 +24,8 @@ import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URI;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -40,6 +42,7 @@ import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.ImageOutputStream;
 import javax.imageio.stream.MemoryCacheImageOutputStream;
 import javax.media.jai.PlanarImage;
+import org.geotools.data.ows.URLCheckerFactory;
 import org.geotools.image.ImageWorker;
 import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
@@ -101,6 +104,7 @@ public class ImageIOExt {
      * Returns a {@link ImageOutputStream} suitable for writing on the specified <code>input</code>
      */
     public static ImageInputStream createImageInputStream(Object input) throws IOException {
+        applySecurityChecks(input);
         return ImageIO.createImageInputStream(input);
     }
 
@@ -312,7 +316,7 @@ public class ImageIOExt {
         if (input == null) {
             throw new IllegalArgumentException("input == null!");
         }
-
+        applySecurityChecks(input);
         // build an image input stream
         try (ImageInputStream stream = getImageInputStream(input)) {
             // get the readers
@@ -420,5 +424,11 @@ public class ImageIOExt {
 
         // not found
         return null;
+    }
+
+    private static void applySecurityChecks(Object input) throws IOException {
+        if (input instanceof URL) URLCheckerFactory.evaluate((URL) input);
+        else if (input instanceof URI) URLCheckerFactory.evaluate((URI) input);
+        else if (input instanceof String) URLCheckerFactory.evaluate((String) input);
     }
 }

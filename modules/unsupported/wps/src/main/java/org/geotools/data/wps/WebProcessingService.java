@@ -37,6 +37,7 @@ import net.opengis.wps10.WPSCapabilitiesType;
 import org.eclipse.emf.ecore.EObject;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.ServiceInfo;
+import org.geotools.data.ows.ControlledHttpClientFactory;
 import org.geotools.data.ows.GetCapabilitiesRequest;
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.HTTPResponse;
@@ -143,8 +144,13 @@ public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Objec
             throws IOException, ServiceException {
         super(
                 getOperationURL("getcapabilities", capabilities, true),
-                new SimpleHttpClient(),
+                ControlledHttpClientFactory.wrap(new SimpleHttpClient()),
                 capabilities);
+    }
+
+    public WebProcessingService(WPSCapabilitiesType capabilities, HTTPClient httpClient)
+            throws IOException, ServiceException {
+        super(getOperationURL("getcapabilities", capabilities, true), httpClient, capabilities);
     }
 
     /**

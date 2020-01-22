@@ -16,6 +16,10 @@
  */
 package org.geotools.tile.impl.osm;
 
+import static org.junit.Assert.fail;
+
+import org.geotools.data.ows.MockURLChecker;
+import org.geotools.data.ows.URLCheckerFactory;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.tile.Tile;
@@ -102,6 +106,33 @@ public class OSMTileFactoryTest extends TileFactoryTest {
         Assert.assertEquals(env.getMinY(), expectedEnv.getMinY(), 0.000001);
         Assert.assertEquals(env.getMaxX(), expectedEnv.getMaxX(), 0.000001);
         Assert.assertEquals(env.getMaxY(), expectedEnv.getMaxY(), 0.000001);
+    }
+
+    @Test
+    public void testSecuredHttpClient() {
+
+        // mock URL checker is not configured for tile.openstreetmap.org
+        // should throw exception
+        MockURLChecker urlChecker = new MockURLChecker();
+        urlChecker.setEnabled(true);
+        URLCheckerFactory.addURLChecker(urlChecker);
+
+        try {
+            Tile tile =
+                    factory.findTileAtCoordinate(
+                            51, 7, new WebMercatorZoomLevel(5), createService());
+
+            TileService service = createService();
+            OSMTile expectedTile = new OSMTile(20, 15, new WebMercatorZoomLevel(5), service);
+            // should throw exepction
+            service.getHttpClient().get(expectedTile.getUrl());
+
+            fail();
+        } catch (Exception e) {
+            Assert.assertTrue(e.getMessage().contains("Evaluation Failure:"));
+        } finally {
+            URLCheckerFactory.removeURLChecker(urlChecker);
+        }
     }
 
     private TileService createService() {

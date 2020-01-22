@@ -13,8 +13,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Collections;
+import java.util.logging.Level;
 import org.eclipse.emf.common.util.URI;
+import org.geotools.data.ows.MockURLChecker;
+import org.geotools.data.ows.URLCheckerFactory;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -42,7 +46,10 @@ public class HTTPURIHandlerTest {
 
                     @Override
                     protected HttpURLConnection getConnection(URI uri) throws IOException {
-                        // TODO Auto-generated method stub
+                        String s = uri.toString();
+                        LOGGER.log(Level.INFO, s);
+                        URL url = new URL(s);
+                        URLCheckerFactory.evaluate(url);
                         return conn;
                     }
                 };
@@ -162,5 +169,24 @@ public class HTTPURIHandlerTest {
                         handler.createInputStream(uri, Collections.EMPTY_MAP);
                     }
                 });
+    }
+
+    @Test
+    public void testSecuredHttpClient() throws Exception {
+
+        // mock URL checker is not configured for example.com
+        // should throw exception
+        MockURLChecker urlChecker = new MockURLChecker();
+        urlChecker.setEnabled(true);
+        URLCheckerFactory.addURLChecker(urlChecker);
+
+        URI uri = URI.createURI("http://example.com");
+        try {
+            handler.createInputStream(uri, Collections.EMPTY_MAP);
+        } catch (Exception e) {
+            Assert.assertTrue(e.getMessage().contains("Evaluation Failure:"));
+        } finally {
+            URLCheckerFactory.removeURLChecker(urlChecker);
+        }
     }
 }

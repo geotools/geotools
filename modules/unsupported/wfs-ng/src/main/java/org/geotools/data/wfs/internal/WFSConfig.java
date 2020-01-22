@@ -35,6 +35,7 @@ import static org.geotools.data.wfs.WFSDataStoreFactory.USERNAME;
 import static org.geotools.data.wfs.WFSDataStoreFactory.USE_HTTP_CONNECTION_POOLING;
 import static org.geotools.data.wfs.WFSDataStoreFactory.WFS_STRATEGY;
 import static org.geotools.data.wfs.impl.WFSDataAccessFactory.MAX_CONNECTION_POOL_SIZE;
+import static org.geotools.data.wfs.impl.WFSDataAccessFactory.SECURED_HTTP_CLIENT;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -90,6 +91,8 @@ public class WFSConfig {
 
     protected EntityResolver entityResolver;
 
+    protected boolean securedHttpClient;
+
     public static enum PreferredHttpMethod {
         AUTO,
         HTTP_GET,
@@ -115,6 +118,7 @@ public class WFSConfig {
         entityResolver = (EntityResolver) ENTITY_RESOLVER.getDefaultValue();
         useHttpConnectionPooling = (Boolean) USE_HTTP_CONNECTION_POOLING.getDefaultValue();
         maxConnectionPoolSize = (Integer) MAX_CONNECTION_POOL_SIZE.getDefaultValue();
+        securedHttpClient = (Boolean) SECURED_HTTP_CLIENT.getDefaultValue();
     }
 
     public static WFSConfig fromParams(Map<?, ?> params) throws IOException {
@@ -160,6 +164,7 @@ public class WFSConfig {
         config.entityResolver = ENTITY_RESOLVER.lookUp(params);
         config.useHttpConnectionPooling = USE_HTTP_CONNECTION_POOLING.lookUp(params);
         config.maxConnectionPoolSize = MAX_CONNECTION_POOL_SIZE.lookUp(params);
+        config.securedHttpClient = SECURED_HTTP_CLIENT.lookUp(params);
         return config;
     }
 
@@ -304,5 +309,9 @@ public class WFSConfig {
                             + localTypeName;
         }
         return localTypeName;
+    }
+
+    public boolean isSecuredHttpClient() {
+        return securedHttpClient;
     }
 }

@@ -16,6 +16,8 @@
  */
 package org.geotools.data.wps;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -35,6 +37,7 @@ import net.opengis.wps10.ResponseDocumentType;
 import net.opengis.wps10.ResponseFormType;
 import net.opengis.wps10.WPSCapabilitiesType;
 import org.eclipse.emf.common.util.EList;
+import org.geotools.data.ows.ControlledHttpClient;
 import org.geotools.data.wps.request.DescribeProcessRequest;
 import org.geotools.data.wps.request.ExecuteProcessRequest;
 import org.geotools.data.wps.response.DescribeProcessResponse;
@@ -119,6 +122,8 @@ public class WPSFactoryOnlineTest extends OnlineTestCase {
         }*/
 
         wps = new WebProcessingService(url /*capabilities*/);
+
+        assertTrue(wps.httpClient instanceof ControlledHttpClient);
     }
 
     /** run multiple buffer tests with various geometry types */

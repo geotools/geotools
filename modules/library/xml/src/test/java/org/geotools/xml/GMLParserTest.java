@@ -19,21 +19,31 @@ package org.geotools.xml;
 import java.io.File;
 import java.net.URI;
 import java.util.HashMap;
+import java.util.logging.Handler;
 import java.util.logging.Level;
+import java.util.logging.LogRecord;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import junit.framework.TestCase;
 import org.geotools.TestData;
+import org.geotools.data.ows.MockFileURIChecker;
+import org.geotools.data.ows.URLCheckerFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.xml.gml.GMLFeatureCollection;
 import org.geotools.xml.gml.GMLSchema;
 import org.geotools.xml.schema.Schema;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.xml.sax.SAXException;
 
 /** @author dzwiers www.refractions.net */
 public class GMLParserTest extends TestCase {
+
+    @Rule public ExpectedException exceptionRule = ExpectedException.none();
+
     public void testSchema() {
         Schema s = SchemaFactory.getInstance(GMLSchema.NAMESPACE);
         assertNotNull(s);
@@ -353,6 +363,49 @@ public class GMLParserTest extends TestCase {
             fail("Didn't catch an exception :(");
         } catch (Exception e) {
             // fine, they were expected
+        }
+    }
+
+    @Test
+    public void testSecured() throws Exception {
+
+        // mock URL checker is not configured for tile.openstreetmap.org
+        // should throw exception
+        MockFileURIChecker urlChecker = new MockFileURIChecker();
+        urlChecker.setEnabled(true);
+        URLCheckerFactory.addURLChecker(urlChecker);
+
+        // since the shema loader handles the error
+        // we will assert the security by listening to log
+        Handler exceptionListner =
+                new Handler() {
+
+                    public boolean errorThrown = false;
+
+                    @Override
+                    public void publish(LogRecord record) {
+                        errorThrown |=
+                                record.getMessage().contains("did not pass securityevaluation");
+                    }
+
+                    @Override
+                    public void flush() {}
+
+                    @Override
+                    public void close() throws SecurityException {
+                        URLCheckerFactory.removeURLChecker(urlChecker);
+                        if (!errorThrown) fail();
+                    }
+                };
+
+        XSISAXHandler.logger.addHandler(exceptionListner);
+
+        try {
+            Schema s = SchemaFactory.getInstance(GMLSchema.NAMESPACE);
+
+        } finally {
+            XSISAXHandler.logger.removeHandler(exceptionListner);
+            URLCheckerFactory.removeURLChecker(urlChecker);
         }
     }
 }

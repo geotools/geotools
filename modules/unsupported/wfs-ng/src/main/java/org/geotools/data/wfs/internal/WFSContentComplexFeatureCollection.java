@@ -18,9 +18,11 @@ package org.geotools.data.wfs.internal;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.namespace.QName;
+import org.geotools.data.ows.URLCheckerFactory;
 import org.geotools.data.wfs.internal.parsers.XmlComplexFeatureParser;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
@@ -72,7 +74,9 @@ public class WFSContentComplexFeatureCollection
 
         try {
             @SuppressWarnings("PMD.CloseResource") // wrapped and returned
-            InputStream stream = request.getFinalURL().openStream();
+            URL finalUrl = request.getFinalURL();
+            URLCheckerFactory.evaluate(finalUrl);
+            InputStream stream = finalUrl.openStream();
             XmlComplexFeatureParser parser =
                     new XmlComplexFeatureParser(stream, schema, name, filter);
             return new ComplexFeatureIteratorImpl(parser);

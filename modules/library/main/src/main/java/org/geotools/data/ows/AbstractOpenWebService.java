@@ -70,7 +70,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
      * @throws ServiceException if the server responds with an error
      */
     public AbstractOpenWebService(final URL serverURL) throws IOException, ServiceException {
-        this(serverURL, new SimpleHttpClient(), null);
+        this(serverURL, ControlledHttpClientFactory.wrap(new SimpleHttpClient()), null);
     }
 
     public AbstractOpenWebService(

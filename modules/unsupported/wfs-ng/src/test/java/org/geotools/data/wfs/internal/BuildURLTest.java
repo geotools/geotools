@@ -51,4 +51,12 @@ public class BuildURLTest {
 
         return ret;
     }
+
+    @Test
+    public void testParamUrlEncodingAndDecoding() {
+        String decoded = "ænd,øst,nøj";
+        String encoded = "%C3%A6nd%2C%C3%B8st%2Cn%C3%B8j";
+        assertEquals(encoded, URIs.urlEncode(decoded));
+        assertEquals(decoded, URIs.urlDecode(encoded));
+    }
 }

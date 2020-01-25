@@ -17,13 +17,14 @@ jobs:
       uses: actions/cache@v1
       with:
         path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        key: gt-${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
           ${{ runner.os }}-maven-
     - name: Build with Maven
-      run: mvn -B clean install -Dall -T1C --file pom.xml
+      run: |
+        mvn -B clean install -Dall -T2 --file pom.xml
     - name: Remove SNAPSHOT jars from repository
       run: |
-        del /s /q *SNAPSHOT*
-        rmdir /s /q *SNAPSHOT*
+        cmd --% /c del /s /q *SNAPSHOT*
+        cmd --% /c rmdir /s /q *SNAPSHOT*
 

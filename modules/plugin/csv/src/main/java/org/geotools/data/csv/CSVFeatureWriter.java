@@ -189,7 +189,7 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
                 prjFile.delete();
             }
             try (FileWriter writer = new FileWriter(prjFile)) {
-                writer.write(((Formattable) csvFileState.getCrs()).toWKT(Citations.EPSG, 0));
+                writer.write(((Formattable) csvFileState.getCrs()).toWKT(Citations.EPSG, 2));
             }
         }
         temp.delete();

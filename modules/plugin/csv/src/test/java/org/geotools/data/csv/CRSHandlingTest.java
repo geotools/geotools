@@ -4,8 +4,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -19,18 +21,20 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.referencing.CRS;
 import org.geotools.test.TestData;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-public class TestCRSHandling {
+public class CRSHandlingTest {
 
     private static File tmp;
     private static File statesfile;
-    private static DataStore stateStore;
+    private static DataStore referenceStore;
 
     /**
      * Check that CRS are handled correctly
@@ -39,6 +43,19 @@ public class TestCRSHandling {
      */
     @Before
     public void setUp() throws Exception {}
+
+    @AfterClass
+    public static void cleanUp() {
+        if (tmp.exists()) {
+            File[] allContents = tmp.listFiles();
+            if (allContents != null) {
+                for (File file : allContents) {
+                    file.delete();
+                }
+            }
+            tmp.delete();
+        }
+    }
 
     @BeforeClass
     public static void createTemporaryLocations() throws IOException {
@@ -51,13 +68,19 @@ public class TestCRSHandling {
         if (!created) {
             System.exit(1);
         }
-        statesfile = new File(tmp, "locations.csv");
+        statesfile = new File(tmp, "coastal2.csv");
+        File statesfilep = new File(tmp, "coastal2.prj");
 
-        URL resource = TestData.getResource(CSVWriteTest.class, "locations.csv");
+        URL resource = TestData.getResource(CSVWriteTest.class, "coastal2.csv");
+        URL resourcep = TestData.getResource(CSVWriteTest.class, "coastal2.prj");
         Files.copy(resource.openStream(), statesfile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(
+                resourcep.openStream(), statesfilep.toPath(), StandardCopyOption.REPLACE_EXISTING);
         Map<String, Object> params = new HashMap<>();
         params.put(CSVDataStoreFactory.FILE_PARAM.key, statesfile.toString());
-        stateStore = DataStoreFinder.getDataStore(params);
+        params.put(CSVDataStoreFactory.STRATEGYP.key, CSVDataStoreFactory.WKT_STRATEGY);
+        params.put(CSVDataStoreFactory.WKTP.key, "WKT");
+        referenceStore = DataStoreFinder.getDataStore(params);
     }
 
     @Test
@@ -81,7 +104,7 @@ public class TestCRSHandling {
     }
 
     @Test
-    public void testWritePrj() throws IOException {
+    public void testWritePrj() throws IOException, FactoryException {
         File f = new File(tmp, "testcrs.csv");
         Map<String, Object> params = new HashMap<>();
         params.put(CSVDataStoreFactory.FILE_PARAM.key, f.toString());
@@ -89,17 +112,32 @@ public class TestCRSHandling {
         params.put(CSVDataStoreFactory.WKTP.key, "WKT");
         params.put(CSVDataStoreFactory.WRITEPRJ.key, "true");
         DataStore store = DataStoreFinder.getDataStore(params);
-        store.createSchema(stateStore.getSchema(stateStore.getTypeNames()[0]));
+        String typeName = referenceStore.getTypeNames()[0];
+        SimpleFeatureType schema = referenceStore.getSchema(typeName);
+        store.createSchema(schema);
         SimpleFeatureSource source = store.getFeatureSource(store.getTypeNames()[0]);
         if (!(source instanceof SimpleFeatureStore)) {
             fail("can't create output file");
         }
         SimpleFeatureStore outstore = (SimpleFeatureStore) source;
-        outstore.addFeatures(
-                stateStore.getFeatureSource(stateStore.getTypeNames()[0]).getFeatures());
+        outstore.addFeatures(referenceStore.getFeatureSource(typeName).getFeatures());
         store.dispose();
         String prjName = FilenameUtils.getBaseName(f.getName()) + ".prj";
         File prj = new File(f.getParent(), prjName);
         assertTrue(prj.exists());
+
+        CoordinateReferenceSystem expected = schema.getCoordinateReferenceSystem();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(prj))) {
+            String line = "";
+            StringBuffer buffer = new StringBuffer();
+            while ((line = reader.readLine()) != null) {
+                buffer.append(line);
+            }
+            String string = buffer.toString();
+
+            CoordinateReferenceSystem crs = CRS.parseWKT(string);
+            assertTrue(CRS.equalsIgnoreMetadata(expected, crs));
+        }
     }
 }

@@ -78,7 +78,7 @@ public class CSVFileState {
                 while ((line = reader.readLine()) != null) {
                     prj.append(line);
                 }
-                this.crs = CRS.parseWKT(prj.toString());
+                setCrs(CRS.parseWKT(prj.toString()));
             } catch (IOException | FactoryException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -89,7 +89,7 @@ public class CSVFileState {
     public CSVFileState(File file, URI namespace, String typeName, CoordinateReferenceSystem crs) {
         this.file = file;
         this.typeName = typeName;
-        this.crs = crs;
+        setCrs(crs);
         this.namespace = namespace;
         this.dataInput = null;
     }
@@ -102,7 +102,7 @@ public class CSVFileState {
     public CSVFileState(String dataInput, String typeName) {
         this.dataInput = dataInput;
         this.typeName = typeName;
-        this.crs = null;
+        setCrs(null);
         this.namespace = null;
         this.file = null;
     }
@@ -129,6 +129,10 @@ public class CSVFileState {
         } catch (FactoryException e) {
             return null;
         }
+    }
+
+    public void setCrs(CoordinateReferenceSystem crs) {
+        this.crs = crs;
     }
 
     @SuppressWarnings("PMD.CloseResource") // wrapped and returned

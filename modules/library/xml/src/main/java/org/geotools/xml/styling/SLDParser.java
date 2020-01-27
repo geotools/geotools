@@ -847,6 +847,8 @@ public class SLDParser {
                 }
             } else if (childName.equalsIgnoreCase("FeatureTypeStyle")) {
                 style.featureTypeStyles().add(parseFeatureTypeStyle(child));
+            } else if (childName.equalsIgnoreCase("Background")) {
+                style.setBackground(parseFill(child));
             }
         }
 

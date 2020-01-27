@@ -16,7 +16,7 @@
  */
 package org.geotools.mbstyle;
 
-import java.awt.Point;
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,7 +37,9 @@ import org.geotools.mbstyle.source.MBSource;
 import org.geotools.referencing.CRS;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.NamedLayer;
+import org.geotools.styling.Rule;
 import org.geotools.styling.Style;
+import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.UserLayer;
@@ -46,6 +48,7 @@ import org.json.simple.JSONObject;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.PrecisionModel;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -360,6 +363,7 @@ public class MBStyle {
         // TODO: Just track last NamedLayer
         NamedLayer currentNamedLayer = null;
         String currentName = null;
+        BackgroundMBLayer background = null;
         for (MBLayer layer : layers) {
             List<FeatureTypeStyle> featureTypeStyles = new ArrayList<>();
             MBObjectStops mbObjectStops = new MBObjectStops(layer);
@@ -399,6 +403,8 @@ public class MBStyle {
                                 l.transform(this, minScaleDenominator, maxScaleDenominator));
                         i++;
                     }
+                } else if ((layer instanceof BackgroundMBLayer)) {
+                    background = (BackgroundMBLayer) layer;
                 } else {
                     featureTypeStyles.addAll(
                             layer.transform(
@@ -407,53 +413,7 @@ public class MBStyle {
             }
 
             if (!featureTypeStyles.isEmpty()) {
-
-                if (layer instanceof BackgroundMBLayer) {
-                    // clear current layer data
-                    currentNamedLayer = null;
-                    currentName = null;
-
-                    // Background does not use a source; construct a user later with a world extent
-                    // inline feature
-                    // so that we still have a valid SLD.
-                    UserLayer userLayer = sf.createUserLayer();
-                    Style style = sf.createStyle();
-                    style.featureTypeStyles().addAll(featureTypeStyles);
-
-                    final SimpleFeatureTypeBuilder ftb = new SimpleFeatureTypeBuilder();
-                    final PrecisionModel pm = new PrecisionModel(PrecisionModel.FLOATING);
-                    final GeometryFactory jtsFactory = new GeometryFactory(pm, 4326);
-
-                    // must include a geometry so that the layer is rendered
-                    try {
-                        CoordinateReferenceSystem crs = CRS.decode("EPSG:4326");
-
-                        ftb.add("geometry", org.locationtech.jts.geom.Polygon.class, crs);
-                        ftb.setCRS(crs);
-                        ftb.setDefaultGeometry("geometry");
-                        ftb.setName("background");
-                        SimpleFeatureType featureType = ftb.buildFeatureType();
-
-                        final DefaultFeatureCollection fc = new DefaultFeatureCollection();
-                        fc.add(
-                                SimpleFeatureBuilder.build(
-                                        featureType,
-                                        new Object[] {
-                                            jtsFactory.toGeometry(
-                                                    new ReferencedEnvelope(CRS.getEnvelope(crs)))
-                                        },
-                                        "background"));
-
-                        userLayer.setInlineFeatureType(featureType);
-                        userLayer.setInlineFeatureDatastore(DataUtilities.dataStore(fc));
-                        userLayer.setName("background");
-
-                        userLayer.userStyles().add(style);
-                        sld.layers().add(userLayer);
-                    } catch (FactoryException e) {
-                        throw new MBFormatException("Error constructing background layer", e);
-                    }
-                } else {
+                if (!(layer instanceof BackgroundMBLayer)) {
                     String sourceLayer = layer.getSourceLayer();
                     if (sourceLayer == null) {
                         // If source-layer is not set, assume the source just has one layer which
@@ -480,11 +440,75 @@ public class MBStyle {
             }
         }
 
-        if (sld.layers().isEmpty()) {
+        if (background != null) {
+            // attach to the first layer if possible
+            FilterFactory2 ff = parse.getFilterFactory();
+            if (sld.getStyledLayers().length > 0) {
+                NamedLayer layer = (NamedLayer) sld.getStyledLayers()[0];
+                Style firstStyle = layer.getStyles()[0];
+                firstStyle.setBackground(background.getFill(this));
+            } else {
+                // odd situation, the only spec is a background layer? build a fake SLD layer then
+                addLoneBackgroundLayer(sf, sld, background, ff);
+            }
+        } else if (sld.layers().isEmpty()) {
             throw new MBFormatException("No visibile layers");
         }
 
         sld.setName(getName());
         return sld;
+    }
+
+    private void addLoneBackgroundLayer(
+            StyleFactory sf,
+            StyledLayerDescriptor sld,
+            BackgroundMBLayer background,
+            FilterFactory2 ff) {
+        // Background does not use a source; construct a user later with a world extent
+        // inline feature so that we still have a valid SLD.
+        UserLayer userLayer = sf.createUserLayer();
+        Style style = sf.createStyle();
+
+        final SimpleFeatureTypeBuilder ftb = new SimpleFeatureTypeBuilder();
+        final PrecisionModel pm = new PrecisionModel(PrecisionModel.FLOATING);
+        final GeometryFactory jtsFactory = new GeometryFactory(pm, 4326);
+
+        // must include a geometry so that the layer is rendered
+        try {
+            CoordinateReferenceSystem crs = CRS.decode("EPSG:4326");
+
+            ftb.add("geometry", org.locationtech.jts.geom.Polygon.class, crs);
+            ftb.setCRS(crs);
+            ftb.setDefaultGeometry("geometry");
+            ftb.setName("background");
+            SimpleFeatureType featureType = ftb.buildFeatureType();
+
+            final DefaultFeatureCollection fc = new DefaultFeatureCollection();
+            fc.add(
+                    SimpleFeatureBuilder.build(
+                            featureType,
+                            new Object[] {
+                                jtsFactory.toGeometry(new ReferencedEnvelope(CRS.getEnvelope(crs)))
+                            },
+                            "background"));
+
+            userLayer.setInlineFeatureType(featureType);
+            userLayer.setInlineFeatureDatastore(DataUtilities.dataStore(fc));
+            userLayer.setName("background");
+
+            // fake style and filter, won't ever be ued
+            StyleBuilder sb = new StyleBuilder();
+            Rule rule = sb.createRule(sb.createPolygonSymbolizer());
+            rule.setFilter(ff.equal(ff.literal(0), ff.literal(1)));
+            FeatureTypeStyle featureTypeStyle = sb.createFeatureTypeStyle("background", rule);
+            style.featureTypeStyles().add(featureTypeStyle);
+            // the actual background color
+            style.setBackground(background.getFill(this));
+
+            userLayer.userStyles().add(style);
+            sld.layers().add(userLayer);
+        } catch (FactoryException e) {
+            throw new MBFormatException("Error constructing background layer", e);
+        }
     }
 }

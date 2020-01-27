@@ -262,6 +262,7 @@
 				<xsd:element ref="se:Name" minOccurs="0"/>
 				<xsd:element ref="se:Description" minOccurs="0"/>
 				<xsd:element ref="sld:IsDefault" minOccurs="0"/>
+				<xsd:element ref="sld:Background" minOccurs="0"/>
 				<xsd:choice maxOccurs="unbounded">
 					<xsd:element ref="se:FeatureTypeStyle"/>
 					<xsd:element ref="se:CoverageStyle"/>
@@ -271,4 +272,12 @@
 		</xsd:complexType>
 	</xsd:element>
 	<xsd:element name="IsDefault" type="xsd:boolean"/>
+	<xsd:element name="Background" type="se:FillType">
+		<xsd:annotation>
+			<xsd:documentation>
+				A "Background" specifies the pattern for filling the map background.
+				The allowed SvgParameters are: "fill" (color) and "fill-opacity".
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
 </xsd:schema>

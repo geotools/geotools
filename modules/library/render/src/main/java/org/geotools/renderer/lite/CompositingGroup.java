@@ -166,6 +166,8 @@ class CompositingGroup {
         }
 
         addToStyles(styles, featureTypeStyles);
+        // move the background definition to the first element in the compositing stack
+        styles.get(0).setBackground(style.getBackground());
 
         return styles;
     }

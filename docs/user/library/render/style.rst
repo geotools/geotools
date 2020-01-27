@@ -208,12 +208,30 @@ XML:
      :start-after: // markTestSLD start
      :end-before: // markTestSLD end
 
+As an extension GeoTools supports defining a Style ``Background`` object that will be used
+to fill the canvas before the style rendering directives are applied to features and coverages.
+
+Here is how to setup a style with background: 
+
+  .. literalinclude:: /../src/main/java/org/geotools/render/StyleExamples.java
+     :language: java
+     :start-after: // styleBackground start
+     :end-before: // styleBackground end
+
+and a similar setup :download:`as a SLD </../../modules/library/xml/src/test/resources/org/geotools/xml/styling/test-data/backgroundSolid.sld>`:
+
+  .. literalinclude:: /../../modules/library/xml/src/test/resources/org/geotools/xml/styling/test-data/backgroundSolid.sld
+
+
 Symbology Encoding
 ^^^^^^^^^^^^^^^^^^
 
 The feature type style data model captures the symbology encoding information describing how a feature should be drawn on the screen and will represent the bulk of our examples.
 
 .. image:: /images/se.PNG
+
+
+
 
 FeatureTypeStyle
 ''''''''''''''''

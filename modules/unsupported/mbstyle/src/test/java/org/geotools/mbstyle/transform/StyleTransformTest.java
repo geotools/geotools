@@ -59,6 +59,7 @@ import org.geotools.mbstyle.layer.SymbolMBLayer;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.Fill;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.LinePlacement;
 import org.geotools.styling.LineSymbolizer;
@@ -511,23 +512,10 @@ public class StyleTransformTest {
         List<MBLayer> layers = mbStyle.layers("test-source");
         assertEquals(1, layers.size());
         assertTrue(layers.get(0) instanceof BackgroundMBLayer);
-        List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
+        Fill fill = ((BackgroundMBLayer) layers.get(0)).getFill(mbStyle);
 
-        assertEquals(1, fts.get(0).rules().size());
-        Rule r = fts.get(0).rules().get(0);
-
-        assertEquals(1, r.symbolizers().size());
-        Symbolizer symbolizer = r.symbolizers().get(0);
-        assertTrue(symbolizer instanceof PolygonSymbolizer);
-        PolygonSymbolizer psym = (PolygonSymbolizer) symbolizer;
-
-        assertEquals(Color.GREEN, psym.getFill().getColor().evaluate(null, Color.class));
-        assertEquals(
-                Double.valueOf(.45),
-                psym.getFill().getOpacity().evaluate(null, Double.class),
-                .0001);
-
-        assertNull(psym.getStroke());
+        assertEquals(Color.GREEN, fill.getColor().evaluate(null, Color.class));
+        assertEquals(Double.valueOf(.45), fill.getOpacity().evaluate(null, Double.class), .0001);
     }
 
     @Test
@@ -539,20 +527,10 @@ public class StyleTransformTest {
         List<MBLayer> layers = mbStyle.layers("test-source");
         assertEquals(1, layers.size());
         assertTrue(layers.get(0) instanceof BackgroundMBLayer);
-        List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
+        Fill fill = ((BackgroundMBLayer) layers.get(0)).getFill(mbStyle);
 
-        assertEquals(1, fts.get(0).rules().size());
-        Rule r = fts.get(0).rules().get(0);
-
-        assertEquals(1, r.symbolizers().size());
-        Symbolizer symbolizer = r.symbolizers().get(0);
-        assertTrue(symbolizer instanceof PolygonSymbolizer);
-        PolygonSymbolizer psym = (PolygonSymbolizer) symbolizer;
-
-        assertEquals(Color.BLACK, psym.getFill().getColor().evaluate(null, Color.class));
-        assertEquals(Integer.valueOf(1), psym.getFill().getOpacity().evaluate(null, Integer.class));
-
-        assertNull(psym.getStroke());
+        assertEquals(Color.BLACK, fill.getColor().evaluate(null, Color.class));
+        assertEquals(Integer.valueOf(1), fill.getOpacity().evaluate(null, Integer.class));
     }
 
     @Test
@@ -562,22 +540,10 @@ public class StyleTransformTest {
         List<MBLayer> layers = mbStyle.layers("test-source");
         assertEquals(1, layers.size());
         assertTrue(layers.get(0) instanceof BackgroundMBLayer);
-        List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
-
-        assertEquals(1, fts.get(0).rules().size());
-        Rule r = fts.get(0).rules().get(0);
-
-        assertEquals(1, r.symbolizers().size());
-        Symbolizer symbolizer = r.symbolizers().get(0);
-        assertTrue(symbolizer instanceof PolygonSymbolizer);
-        PolygonSymbolizer psym = (PolygonSymbolizer) symbolizer;
-
-        assertEquals(Color.BLUE, psym.getFill().getColor().evaluate(null, Color.class));
-        assertEquals(1, psym.getFill().getGraphicFill().graphicalSymbols().size());
-        assertEquals(
-                Double.valueOf(0.75), psym.getFill().getOpacity().evaluate(null, Double.class));
-
-        assertNull(psym.getStroke());
+        Fill fill = ((BackgroundMBLayer) layers.get(0)).getFill(mbStyle);
+        assertEquals(Color.BLUE, fill.getColor().evaluate(null, Color.class));
+        assertEquals(1, fill.getGraphicFill().graphicalSymbols().size());
+        assertEquals(Double.valueOf(0.75), fill.getOpacity().evaluate(null, Double.class));
     }
 
     @Test

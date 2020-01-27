@@ -20,13 +20,8 @@ import static java.lang.Math.abs;
 
 import com.conversantmedia.util.concurrent.PushPullBlockingQueue;
 import com.conversantmedia.util.concurrent.SpinPolicy;
-import java.awt.AlphaComposite;
-import java.awt.Composite;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.RenderingHints.Key;
-import java.awt.Shape;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
@@ -124,6 +119,7 @@ import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.Rule;
 import org.geotools.styling.RuleImpl;
+import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
@@ -879,6 +875,12 @@ public class StreamingRenderer implements GTRenderer {
                         return;
                     }
 
+                    // handle the background color specification, if any
+                    Style style = layer.getStyle();
+                    if (style != null && style.getBackground() != null) {
+                        fillBackground(graphics, paintArea, style);
+                    }
+
                     labelCache.startLayer(layerId);
                     if (layer instanceof DirectLayer) {
                         RenderingRequest request =
@@ -978,6 +980,20 @@ public class StreamingRenderer implements GTRenderer {
                             .append(error)
                             .toString());
         }
+    }
+
+    protected void fillBackground(Graphics2D graphics, Rectangle paintArea, Style style) {
+        // get the paint, could be a repeated image too (TexturePaint)
+        Paint background = styleFactory.getPaint(style.getBackground(), null, null);
+        graphics.setPaint(background);
+        // the opacity we need only if the paint is solid, otherwise the graphic fill
+        // machinery has already given us the right composite for it
+        if (background instanceof Color) {
+            Composite composite = styleFactory.getComposite(style.getBackground(), null);
+            graphics.setComposite(composite);
+        }
+        // and fill it
+        graphics.fill(paintArea);
     }
 
     /**

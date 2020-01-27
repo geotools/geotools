@@ -1640,7 +1640,7 @@
     <!--   versions that are known to work.  This list is in       -->
     <!--   alphabetical order for easier comparison with latest    -->
     <!--   plugins at                                              -->
-    <!--   http://repo1.maven.org/maven2                           -->
+    <!--   https://repo1.maven.org/maven2                           -->
     <!-- ========================================================= -->
     <pluginManagement>
       <plugins>
@@ -2301,7 +2301,7 @@
     <repository>
       <id>central.maven.org</id>
       <name>Central Maven repository</name>
-      <url>http://central.maven.org/maven2</url>
+      <url>https://repo1.maven.org/maven2</url>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>

@@ -837,6 +837,7 @@ public class StreamingRenderer implements GTRenderer {
                             graphics, paintArea, zGroupedMapContent);
 
             int layerCounter = 0;
+
             for (CompositingGroup compositingGroup : compositingGroups) {
                 MapContent currentMapContent = compositingGroup.mapContent;
                 Graphics2D compositingGraphic = compositingGroup.graphics;
@@ -847,6 +848,7 @@ public class StreamingRenderer implements GTRenderer {
                 // styles
                 //
                 // ////////////////////////////////////////////////////////////////////
+
                 labelCache.start();
                 if (labelCache instanceof LabelCacheImpl) {
                     ((LabelCacheImpl) labelCache)
@@ -855,6 +857,11 @@ public class StreamingRenderer implements GTRenderer {
                 }
 
                 for (Layer layer : currentMapContent.layers()) {
+                    try {
+                        renderListeners.forEach(l -> l.layerStart(layer));
+                    } catch (Exception e) {
+                        fireErrorEvent(e);
+                    }
                     layerCounter++;
                     String layerId = String.valueOf(layerCounter);
                     if (!layer.isVisible()) {
@@ -894,6 +901,11 @@ public class StreamingRenderer implements GTRenderer {
                     }
 
                     labelCache.endLayer(layerId, graphics, screenSize);
+                    try {
+                        requests.put(new RenderTimeStatisticsRequest(renderListeners, layer));
+                    } catch (InterruptedException ex) {
+                        fireErrorEvent(ex);
+                    }
                 }
 
                 // have we been painting on a back buffer? If so, merge on the main graphic
@@ -937,7 +949,9 @@ public class StreamingRenderer implements GTRenderer {
         }
 
         if (!renderingStopRequested) {
+            renderListeners.forEach(l -> l.labellingStart());
             labelCache.end(graphics, paintArea);
+            renderListeners.forEach(l -> l.labellingEnd());
         } else {
             labelCache.clear();
         }
@@ -3856,6 +3870,23 @@ public class StreamingRenderer implements GTRenderer {
                 LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
                 fireErrorEvent(e);
             }
+        }
+    }
+
+    public class RenderTimeStatisticsRequest extends RenderingRequest {
+
+        private List<RenderListener> listeners;
+
+        private Layer currentLayer;
+
+        public RenderTimeStatisticsRequest(List<RenderListener> listeners, Layer currentLayer) {
+            this.listeners = listeners;
+            this.currentLayer = currentLayer;
+        }
+
+        @Override
+        void execute() {
+            listeners.forEach(l -> l.layerEnd(currentLayer));
         }
     }
 

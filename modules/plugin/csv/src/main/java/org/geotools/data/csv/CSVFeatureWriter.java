@@ -16,12 +16,15 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.NoSuchElementException;
+import org.apache.commons.io.FilenameUtils;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.csv.parse.CSVIterator;
 import org.geotools.data.csv.parse.CSVStrategy;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.metadata.iso.citation.Citations;
+import org.geotools.referencing.wkt.Formattable;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -30,6 +33,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @author Jody Garnett (Boundless)
  * @author Lee Breisacher
+ * @author Ian Turton (Astun)
  */
 public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
     private SimpleFeatureType featureType;
@@ -54,7 +58,6 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
     /** Current feature available for modification. May be null if feature removed */
     private SimpleFeature currentFeature;
 
-    // docs start CSVFeatureWriter
     public CSVFeatureWriter(CSVFileState csvFileState, CSVStrategy csvStrategy) throws IOException {
         this(csvFileState, csvStrategy, Query.ALL);
     }
@@ -79,7 +82,6 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
                         csvStrategy.getLineSeparator());
         this.csvWriter.writeNext(this.csvFileState.getCSVHeaders(), csvStrategy.isQuoteAllFields());
     }
-    // docs end CSVFeatureWriter
 
     // featureType start
     @Override
@@ -136,12 +138,14 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
      * Mark our {@link #currentFeature} feature as null, it will be skipped when written effectively
      * removing it.
      */
+    @Override
     public void remove() throws IOException {
         this.currentFeature = null; // just mark it done which means it will not get written out.
     }
     // remove end
 
     // write start
+    @Override
     public void write() throws IOException {
         if (this.currentFeature == null) {
             return; // current feature has been deleted
@@ -177,6 +181,17 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
         File file = this.csvFileState.getFile();
 
         Files.copy(temp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+        if (csvStrategy.isWritePrj()) {
+            File prjFile =
+                    new File(file.getParent(), FilenameUtils.getBaseName(file.getName()) + ".prj");
+            if (prjFile.exists()) {
+                prjFile.delete();
+            }
+            try (FileWriter writer = new FileWriter(prjFile)) {
+                writer.write(((Formattable) csvFileState.getCrs()).toWKT(Citations.EPSG, 2));
+            }
+        }
         temp.delete();
     }
 }

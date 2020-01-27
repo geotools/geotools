@@ -26,7 +26,6 @@ import org.geotools.data.csv.CSVFileState;
 import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.Converters;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.ParseException;
@@ -55,7 +54,7 @@ public class CSVSpecifiedWKTStrategy extends CSVStrategy {
         if (descriptor != null) {
             AttributeTypeBuilder attributeBuilder = new AttributeTypeBuilder();
             attributeBuilder.init(descriptor);
-            attributeBuilder.setCRS(DefaultGeographicCRS.WGS84);
+            attributeBuilder.setCRS(csvFileState.getCrs());
             attributeBuilder.binding(Geometry.class);
 
             AttributeDescriptor modified = attributeBuilder.buildDescriptor(wktField);
@@ -68,7 +67,7 @@ public class CSVSpecifiedWKTStrategy extends CSVStrategy {
     public void createSchema(SimpleFeatureType featureType) throws IOException {
         this.featureType = featureType;
 
-        List<String> header = new ArrayList<String>();
+        List<String> header = new ArrayList<>();
 
         for (AttributeDescriptor descriptor : featureType.getAttributeDescriptors()) {
             if (descriptor instanceof GeometryDescriptor) {
@@ -94,7 +93,7 @@ public class CSVSpecifiedWKTStrategy extends CSVStrategy {
 
     @Override
     public String[] encode(SimpleFeature feature) {
-        List<String> csvRecord = new ArrayList<String>();
+        List<String> csvRecord = new ArrayList<>();
         for (Property property : feature.getProperties()) {
             String name = property.getName().getLocalPart();
             Object value = property.getValue();

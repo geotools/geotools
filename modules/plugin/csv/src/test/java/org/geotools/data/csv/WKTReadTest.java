@@ -20,7 +20,7 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.opengis.feature.simple.SimpleFeature;
 
-public class TestWKTRead {
+public class WKTReadTest {
 
     @Before
     public void setUp() throws Exception {}

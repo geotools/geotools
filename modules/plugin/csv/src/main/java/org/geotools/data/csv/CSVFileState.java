@@ -50,7 +50,7 @@ public class CSVFileState {
 
     private final String typeName;
 
-    private final CoordinateReferenceSystem crs;
+    private CoordinateReferenceSystem crs;
 
     private final URI namespace;
 
@@ -59,25 +59,50 @@ public class CSVFileState {
     private volatile String[] headers = null;
 
     public CSVFileState(File file) {
-        this(file, null, null, null);
+        this(file, null, null);
     }
 
     public CSVFileState(File file, URI namespace) {
-        this(file, namespace, null, null);
+        this(file, namespace, null);
+    }
+
+    public CSVFileState(File file, URI namespace, String typeName) {
+        this(file, namespace, typeName, null);
+        File parent = file.getParentFile();
+        String prjName = FilenameUtils.getBaseName(file.getName()) + ".prj";
+        File prjFile = new File(parent, prjName);
+        if (prjFile.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(prjFile))) {
+                String line;
+                StringBuffer prj = new StringBuffer();
+                while ((line = reader.readLine()) != null) {
+                    prj.append(line);
+                }
+                setCrs(CRS.parseWKT(prj.toString()));
+            } catch (IOException | FactoryException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
     }
 
     public CSVFileState(File file, URI namespace, String typeName, CoordinateReferenceSystem crs) {
         this.file = file;
         this.typeName = typeName;
-        this.crs = crs;
+        setCrs(crs);
         this.namespace = namespace;
         this.dataInput = null;
     }
-
+    /**
+     * Internal constructor for testing purposes?
+     *
+     * @param dataInput
+     * @param typeName
+     */
     public CSVFileState(String dataInput, String typeName) {
         this.dataInput = dataInput;
         this.typeName = typeName;
-        this.crs = null;
+        setCrs(null);
         this.namespace = null;
         this.file = null;
     }
@@ -104,6 +129,10 @@ public class CSVFileState {
         } catch (FactoryException e) {
             return null;
         }
+    }
+
+    public void setCrs(CoordinateReferenceSystem crs) {
+        this.crs = crs;
     }
 
     @SuppressWarnings("PMD.CloseResource") // wrapped and returned

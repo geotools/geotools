@@ -45,11 +45,12 @@ public class CSVFeatureSource extends ContentFeatureSource {
         super(entry, query);
     }
 
+    @Override
     public CSVDataStore getDataStore() {
         return (CSVDataStore) super.getDataStore();
     }
 
-    // docs start getBoundsInternal
+    @Override
     protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
         ReferencedEnvelope bounds =
                 new ReferencedEnvelope(getSchema().getCoordinateReferenceSystem());
@@ -64,9 +65,8 @@ public class CSVFeatureSource extends ContentFeatureSource {
         }
         return bounds;
     }
-    // docs end getBoundsInternal
 
-    // docs start getCountInternal
+    @Override
     protected int getCountInternal(Query query) throws IOException {
         FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = getReaderInternal(query);
         int n = 0;
@@ -79,19 +79,16 @@ public class CSVFeatureSource extends ContentFeatureSource {
         }
         return n;
     }
-    // docs end getCountInternal
 
-    // docs start getReaderInternal
+    @Override
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {
         CSVDataStore dataStore = getDataStore();
         return new CSVFeatureReader(dataStore.getCSVStrategy(), query);
     }
-    // docs end getReaderInternal
 
-    // docs start buildFeatureType
+    @Override
     protected SimpleFeatureType buildFeatureType() throws IOException {
         return getDataStore().getSchema();
     }
-    // docs end buildFeatureType
 }

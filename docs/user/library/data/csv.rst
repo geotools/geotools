@@ -40,6 +40,8 @@ The following connection parameters are available:
 | ``wktField``             | The field containing the WKT value in             |
 |                          | ``WKT`` strategy.                                 |
 +--------------------------+---------------------------------------------------+
+| ``writeprj``             | write out a ``.prj`` file with the CRS (Optional) |
++--------------------------+---------------------------------------------------+
 | ``quoteAll``             | Should all fields be quoted when writing, default |
 |                          | is `false` (Optional).                            |
 +--------------------------+---------------------------------------------------+

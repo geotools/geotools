@@ -54,6 +54,8 @@ public abstract class CSVStrategy {
 
     protected volatile SimpleFeatureType featureType = null;
 
+    private boolean writePrj = false;
+
     public SimpleFeatureType getFeatureType() {
         if (featureType == null) {
             synchronized (this) {
@@ -112,7 +114,7 @@ public abstract class CSVStrategy {
      */
     protected static Map<String, Class<?>> findMostSpecificTypesFromData(
             CSVReader csvReader, String[] headers) throws IOException {
-        Map<String, Class<?>> result = new HashMap<String, Class<?>>();
+        Map<String, Class<?>> result = new HashMap<>();
         // start off assuming Integers for everything
         for (String header : headers) {
             result.put(header, Integer.class);
@@ -209,5 +211,13 @@ public abstract class CSVStrategy {
     /** @param quoteAllFields the quoteAllFields to set */
     public void setQuoteAllFields(boolean quoteAllFields) {
         csvFileState.setQuoteAllFields(quoteAllFields);
+    }
+
+    public void setWritePrj(boolean booleanValue) {
+        this.writePrj = booleanValue;
+    }
+
+    public boolean isWritePrj() {
+        return writePrj;
     }
 }

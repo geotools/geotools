@@ -17,27 +17,19 @@
  */
 package org.geotools.mbstyle.layer;
 
-import java.awt.Color;
-import java.util.ArrayList;
+import java.awt.*;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import org.geotools.mbstyle.MBStyle;
-import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
-import org.geotools.measure.Units;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.text.Text;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.GraphicFill;
 import org.opengis.style.SemanticType;
-import org.opengis.style.Symbolizer;
 
 /**
  * The background color or pattern of the map.
@@ -150,63 +142,25 @@ public class BackgroundMBLayer extends MBLayer {
      * @return FeatureTypeStyle
      */
     public List<FeatureTypeStyle> transformInternal(MBStyle styleContext) {
-        PolygonSymbolizer symbolizer;
-        MBStyleTransformer transformer = new MBStyleTransformer(parse);
+        throw new UnsupportedOperationException(
+                "This layer is not meant to be transformed, but converted in a Style background fill");
+    }
 
-        Fill fill;
+    public Fill getFill(MBStyle styleContext) {
+        return getFill(
+                styleContext, new MBStyleTransformer(new MBObjectParser(BackgroundMBLayer.class)));
+    }
+
+    private Fill getFill(MBStyle styleContext, MBStyleTransformer transformer) {
         if (hasBackgroundPattern()) {
-
             ExternalGraphic eg =
                     transformer.createExternalGraphicForSprite(backgroundPattern(), styleContext);
             GraphicFill gf =
                     sf.graphicFill(Arrays.asList(eg), backgroundOpacity(), null, null, null, null);
-            fill = sf.fill(gf, backgroundColor(), backgroundOpacity());
+            return sf.fill(gf, backgroundColor(), backgroundOpacity());
         } else {
-            fill = sf.fill(null, backgroundColor(), backgroundOpacity());
+            return sf.fill(null, backgroundColor(), backgroundOpacity());
         }
-
-        symbolizer =
-                sf.polygonSymbolizer(
-                        getId(),
-                        ff.property((String) null),
-                        sf.description(Text.text("fill"), null),
-                        Units.PIXEL,
-                        null, // stroke
-                        fill,
-                        null,
-                        ff.literal(0));
-        List<Symbolizer> symbolizers = new ArrayList<Symbolizer>();
-
-        List<Expression> parameters = new ArrayList<>();
-        parameters.add(ff.literal("wms_bbox"));
-        symbolizer.setGeometry(
-                ff.function("env", parameters.toArray(new Expression[parameters.size()])));
-        symbolizers.add(symbolizer);
-
-        // List of opengis rules here (needed for constructor)
-        MBFilter filter = getFilter();
-        List<org.opengis.style.Rule> rules = new ArrayList<>();
-        Rule rule =
-                sf.rule(
-                        getId(),
-                        null,
-                        null,
-                        0.0,
-                        Double.POSITIVE_INFINITY,
-                        symbolizers,
-                        filter.filter());
-
-        rules.add(rule);
-        return Collections.singletonList(
-                sf.featureTypeStyle(
-                        getId(),
-                        sf.description(
-                                Text.text("MBStyle " + getId()),
-                                Text.text("Generated for " + getSourceLayer())),
-                        null, // (unused)
-                        Collections.emptySet(),
-                        filter.semanticTypeIdentifiers(),
-                        rules));
     }
 
     /**

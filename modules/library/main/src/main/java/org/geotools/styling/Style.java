@@ -95,4 +95,14 @@ public interface Style extends org.opengis.style.Style {
      * @param visitor
      */
     void accept(org.geotools.styling.StyleVisitor visitor);
+
+    /** The background Fill , if any, <code>null</code> otherwise */
+    public default Fill getBackground() {
+        return null;
+    }
+
+    /** Sets the background color. Might throw an {@link UnsupportedOperationException}. */
+    public default void setBackground(Fill background) {
+        throw new UnsupportedOperationException();
+    }
 }

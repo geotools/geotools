@@ -1186,6 +1186,20 @@ public class SLDTransformer extends TransformerBase {
                 }
                 if (style.getDescription() != null && style.getDescription().getAbstract() != null)
                     element("Abstract", style.getDescription().getAbstract());
+                Fill background = style.getBackground();
+                if (background != null) {
+                    start("Background");
+
+                    if (background.getGraphicFill() != null) {
+                        start("GraphicFill");
+                        background.getGraphicFill().accept(this);
+                        end("GraphicFill");
+                    }
+
+                    encodeCssParam("fill", background.getColor(), "#808080");
+                    encodeCssParam("fill-opacity", background.getOpacity(), 1.0);
+                    end("Background");
+                }
                 for (FeatureTypeStyle featureTypeStyle : style.featureTypeStyles()) {
                     visit(featureTypeStyle);
                 }

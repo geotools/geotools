@@ -1030,7 +1030,7 @@ public class SLDStyleFactory {
         return composite;
     }
 
-    protected Paint getPaint(Fill fill, Object feature, Symbolizer symbolizer) {
+    public Paint getPaint(Fill fill, Object feature, Symbolizer symbolizer) {
         if (fill == null) {
             return null;
         }
@@ -1054,7 +1054,7 @@ public class SLDStyleFactory {
      * @param fill
      * @param feature
      */
-    protected Composite getComposite(Fill fill, Object feature) {
+    public Composite getComposite(Fill fill, Object feature) {
         if (fill == null) {
             return null;
         }

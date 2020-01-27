@@ -150,7 +150,7 @@ public class MBStopsTest {
         StyledLayerDescriptor transformed = mbStyle.transform();
         List<StyledLayer> styledLayers = transformed.layers();
         List<FeatureTypeStyle> fts =
-                ((UserLayer) styledLayers.get(0)).getUserStyles()[0].featureTypeStyles();
+                ((NamedLayer) styledLayers.get(0)).getStyles()[0].featureTypeStyles();
 
         int i = 0;
         for (FeatureTypeStyle layer : fts) {

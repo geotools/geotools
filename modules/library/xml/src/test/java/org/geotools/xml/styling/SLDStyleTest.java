@@ -48,6 +48,7 @@ import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.LineSymbolizer;
+import org.geotools.styling.Mark;
 import org.geotools.styling.NamedLayer;
 import org.geotools.styling.NamedStyle;
 import org.geotools.styling.PointSymbolizer;
@@ -634,11 +635,7 @@ public class SLDStyleTest extends TestCase {
     public void testParseGeometryFilters() throws IOException {
         final String TYPE_NAME = "testType";
         final String GEOMETRY_ATTR = "Polygons";
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
-        java.net.URL surl = TestData.getResource(this, "spatialFilter.xml");
-        SLDParser stylereader = new SLDParser(factory, surl);
-
-        Style[] styles = stylereader.readXML();
+        Style[] styles = getStyles("spatialFilter.xml");
 
         final int expectedStyleCount = 1;
         assertEquals(expectedStyleCount, styles.length);
@@ -681,11 +678,7 @@ public class SLDStyleTest extends TestCase {
      * @throws IOException boom
      */
     public void testParseFidFilter() throws IOException {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
-        java.net.URL surl = TestData.getResource(this, "fidFilter.xml");
-        SLDParser stylereader = new SLDParser(factory, surl);
-
-        Style[] styles = stylereader.readXML();
+        Style[] styles = getStyles("fidFilter.xml");
 
         final int expectedStyleCount = 1;
         assertEquals(expectedStyleCount, styles.length);
@@ -715,12 +708,7 @@ public class SLDStyleTest extends TestCase {
     }
 
     public void testParseKmlExtensions() throws IOException {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
-        java.net.URL surl = TestData.getResource(this, "kmlSymbolizer.sld");
-        SLDParser stylereader = new SLDParser(factory, surl);
-
-        // basic checks
-        Style[] styles = stylereader.readXML();
+        Style[] styles = getStyles("kmlSymbolizer.sld");
         assertEquals(1, styles.length);
         assertEquals(1, styles[0].featureTypeStyles().size());
         assertEquals(1, styles[0].featureTypeStyles().get(0).rules().size());
@@ -745,12 +733,7 @@ public class SLDStyleTest extends TestCase {
     }
 
     public void testParseAnchorDisplacement() throws IOException {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
-        java.net.URL surl = TestData.getResource(this, "markDisplacementTest.sld");
-        SLDParser stylereader = new SLDParser(factory, surl);
-
-        // basic checks
-        Style[] styles = stylereader.readXML();
+        Style[] styles = getStyles("markDisplacementTest.sld");
         PointSymbolizer ps =
                 (PointSymbolizer)
                         styles[0].featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
@@ -778,11 +761,7 @@ public class SLDStyleTest extends TestCase {
      * @throws IOException
      */
     public void testParseRasterSymbolizer() throws IOException {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
-        java.net.URL surl = TestData.getResource(this, "rasterSymbolizer.sld");
-        SLDParser stylereader = new SLDParser(factory, surl);
-
-        Style[] styles = stylereader.readXML();
+        Style[] styles = getStyles("rasterSymbolizer.sld");
         assertEquals(1, styles.length);
         assertEquals(1, styles[0].featureTypeStyles().size());
         assertEquals(1, styles[0].featureTypeStyles().get(0).rules().size());
@@ -840,11 +819,7 @@ public class SLDStyleTest extends TestCase {
      * @throws IOException
      */
     public void testParseRasterSymbolizerWithExpressionGammaValue() throws IOException {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
-        java.net.URL surl = TestData.getResource(this, "rasterSymbolizerGammaValue.sld");
-        SLDParser stylereader = new SLDParser(factory, surl);
-
-        Style[] styles = stylereader.readXML();
+        Style[] styles = getStyles("rasterSymbolizerGammaValue.sld");
         assertEquals(1, styles.length);
         assertEquals(1, styles[0].featureTypeStyles().size());
         assertEquals(1, styles[0].featureTypeStyles().get(0).rules().size());
@@ -902,11 +877,7 @@ public class SLDStyleTest extends TestCase {
      * @throws IOException
      */
     public void testParseRasterChannelExpression() throws IOException {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
-        java.net.URL surl = TestData.getResource(this, "raster-channel-expression.xml");
-        SLDParser stylereader = new SLDParser(factory, surl);
-
-        Style[] styles = stylereader.readXML();
+        Style[] styles = getStyles("raster-channel-expression.xml");
         assertEquals(1, styles.length);
         assertEquals(1, styles[0].featureTypeStyles().size());
         assertEquals(1, styles[0].featureTypeStyles().get(0).rules().size());
@@ -944,11 +915,7 @@ public class SLDStyleTest extends TestCase {
      * @throws IOException
      */
     public void testParseRasterSymbolizerColorMap() throws IOException {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
-        java.net.URL surl = TestData.getResource(this, "rasterSymbolizerColorMap.sld");
-        SLDParser stylereader = new SLDParser(factory, surl);
-
-        Style[] styles = stylereader.readXML();
+        Style[] styles = getStyles("rasterSymbolizerColorMap.sld");
         assertEquals(1, styles.length);
         assertEquals(1, styles[0].featureTypeStyles().size());
         assertEquals(1, styles[0].featureTypeStyles().get(0).rules().size());
@@ -992,11 +959,7 @@ public class SLDStyleTest extends TestCase {
     }
 
     public void testParseGeometryExpressions() throws Exception {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
-        java.net.URL surl = TestData.getResource(this, "geometryTransformation.sld");
-        SLDParser stylereader = new SLDParser(factory, surl);
-
-        Style[] styles = stylereader.readXML();
+        Style[] styles = getStyles("geometryTransformation.sld");
         assertEquals(1, styles.length);
         assertEquals(1, styles[0].featureTypeStyles().size());
         assertEquals(1, styles[0].featureTypeStyles().get(0).rules().size());
@@ -1014,11 +977,7 @@ public class SLDStyleTest extends TestCase {
     }
 
     public void testParsePlainGeometryExpression() throws Exception {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
-        java.net.URL surl = TestData.getResource(this, "geometryPlain.sld");
-        SLDParser stylereader = new SLDParser(factory, surl);
-
-        Style[] styles = stylereader.readXML();
+        Style[] styles = getStyles("geometryPlain.sld");
         assertEquals(1, styles.length);
         assertEquals(1, styles[0].featureTypeStyles().size());
         assertEquals(1, styles[0].featureTypeStyles().get(0).rules().size());
@@ -1036,12 +995,7 @@ public class SLDStyleTest extends TestCase {
     }
 
     public void testDataTransformation() throws Exception {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
-        java.net.URL surl = TestData.getResource(this, "transformation.xml");
-        SLDParser stylereader = new SLDParser(factory, surl);
-
-        // basic checks
-        Style[] styles = stylereader.readXML();
+        Style[] styles = getStyles("transformation.xml");
         assertEquals(1, styles.length);
         assertEquals(1, styles[0].featureTypeStyles().size());
         final FeatureTypeStyle fts = styles[0].featureTypeStyles().get(0);
@@ -1052,12 +1006,7 @@ public class SLDStyleTest extends TestCase {
     }
 
     public void testRuleEvaluationMode() throws Exception {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
-        java.net.URL surl = TestData.getResource(this, "ruleEvaluationMode.xml");
-        SLDParser stylereader = new SLDParser(factory, surl);
-
-        // basic checks
-        Style[] styles = stylereader.readXML();
+        Style[] styles = getStyles("ruleEvaluationMode.xml");
         assertEquals(1, styles.length);
         assertEquals(1, styles[0].featureTypeStyles().size());
         final FeatureTypeStyle fts = styles[0].featureTypeStyles().get(0);
@@ -1070,12 +1019,7 @@ public class SLDStyleTest extends TestCase {
     }
 
     public void testGreenBandSelection() throws Exception {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
-        java.net.URL surl = TestData.getResource(this, "greenChannelSelection.sld");
-        SLDParser stylereader = new SLDParser(factory, surl);
-
-        // basic checks
-        Style[] styles = stylereader.readXML();
+        Style[] styles = getStyles("greenChannelSelection.sld");
         assertEquals(1, styles.length);
         assertEquals(1, styles[0].featureTypeStyles().size());
         final FeatureTypeStyle fts = styles[0].featureTypeStyles().get(0);
@@ -1089,12 +1033,7 @@ public class SLDStyleTest extends TestCase {
     }
 
     public void testMultipleFonts() throws Exception {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
-        java.net.URL surl = TestData.getResource(this, "multifont.sld");
-        SLDParser stylereader = new SLDParser(factory, surl);
-
-        // basic checks
-        Style[] styles = stylereader.readXML();
+        Style[] styles = getStyles("multifont.sld");
         assertEquals(1, styles.length);
         List<FeatureTypeStyle> featureTypeStyles = styles[0].featureTypeStyles();
         assertEquals(1, featureTypeStyles.size());
@@ -1135,6 +1074,37 @@ public class SLDStyleTest extends TestCase {
         assertNull(graphic.getLocation());
         assertEquals(1, graphic.getInlineContent().getIconWidth());
         assertEquals(1, graphic.getInlineContent().getIconHeight());
+    }
+
+    public void testParseBackgroundSolid() throws Exception {
+        Style[] styles = getStyles("backgroundSolid.sld");
+        assertEquals(1, styles.length);
+        Fill background = styles[0].getBackground();
+        assertNotNull(background);
+        assertEquals(Color.RED, background.getColor().evaluate(null, Color.class));
+        assertEquals(1, background.getOpacity().evaluate(null, Double.class), 0d);
+    }
+
+    public void testParseBackgroundGraphicFill() throws Exception {
+        Style[] styles = getStyles("backgroundGraphicFill.sld");
+        assertEquals(1, styles.length);
+        Fill background = styles[0].getBackground();
+        assertNotNull(background);
+        Graphic graphic = background.getGraphicFill();
+        assertNotNull(graphic);
+        GraphicalSymbol firstSymbol = graphic.graphicalSymbols().get(0);
+        assertTrue(firstSymbol instanceof Mark);
+        assertEquals(
+                "square", ((Mark) firstSymbol).getWellKnownName().evaluate(null, String.class));
+    }
+
+    public Style[] getStyles(String s) throws IOException {
+        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        URL surl = TestData.getResource(this, s);
+        SLDParser stylereader = new SLDParser(factory, surl);
+
+        // basic checks
+        return stylereader.readXML();
     }
 
     private BufferedImage getReferenceImage(String resourceName) throws IOException {

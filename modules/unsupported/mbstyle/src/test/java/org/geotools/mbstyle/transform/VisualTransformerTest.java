@@ -120,6 +120,7 @@ public class VisualTransformerTest {
         // UNCOMMENT THE BELOW LINE TO DISPLAY VISUAL TESTS
         // System.setProperty("org.geotools.test.interactive", "true");
     }
+
     /** Test generation of a GeoTools style from an MBBackgroundLayer */
     @Test
     public void mbBackgroundLayerVisualTest() throws Exception {

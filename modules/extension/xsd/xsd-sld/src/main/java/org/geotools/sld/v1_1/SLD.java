@@ -179,6 +179,8 @@ public final class SLD extends XSD {
             new QName("http://www.opengis.net/sld", "UseSLDLibrary");
     /** @generated */
     public static final QName Value = new QName("http://www.opengis.net/sld", "Value");
+    /** @generated */
+    public static final QName Background = new QName("http://www.opengis.net/sld", "Background");
 
     /* Attributes */
 

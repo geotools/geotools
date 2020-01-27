@@ -119,6 +119,7 @@ public class SLDConfiguration extends Configuration {
         container.registerComponentImplementation(
                 SLD.FEATURETYPESTYLE, SLDFeatureTypeStyleBinding.class);
         container.registerComponentImplementation(SLD.FILL, SLDFillBinding.class);
+        container.registerComponentImplementation(SLD.BACKGROUND, SLDFillBinding.class);
         container.registerComponentImplementation(SLD.FONT, SLDFontBinding.class);
 
         container.registerComponentImplementation(SLD.GEOMETRY, SLDGeometryBinding.class);

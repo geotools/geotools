@@ -263,6 +263,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         copy.setName(style.getName());
         copy.getDescription().setTitle(style.getDescription().getTitle());
         copy.featureTypeStyles().addAll(ftsCopy);
+        copy.setBackground(copy(style.getBackground()));
 
         if (STRICT && !copy.equals(style)) {
             throw new IllegalStateException("Was unable to duplicate provided Style:" + style);

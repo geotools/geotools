@@ -103,6 +103,16 @@ public class FillTest {
     }
 
     @Test
+    public void testSolidFillBackgroundSolid() throws Exception {
+        runSingleLayerTest("fillSolidBackgroundSolid.sld");
+    }
+
+    @Test
+    public void testSolidFillBackgroundMark() throws Exception {
+        runSingleLayerTest("fillSolidBackgroundMark.sld");
+    }
+
+    @Test
     public void testCrossFill() throws Exception {
         runSingleLayerTest("fillCross.sld", 250);
     }

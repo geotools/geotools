@@ -54,6 +54,7 @@ import org.geotools.styling.Displacement;
 import org.geotools.styling.ExponentialContrastMethodStrategy;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.GraphicImpl;
@@ -2269,5 +2270,55 @@ public class SLDTransformerTest {
         layer.addStyle(s);
         sld.addStyledLayer(layer);
         return sld;
+    }
+
+    @Test
+    public void testEncodeBackgroundSolid()
+            throws IOException, SAXException, TransformerException, XpathException {
+        StyleBuilder sb = new StyleBuilder();
+        Style style = sb.createStyle(sb.createLineSymbolizer());
+        style.setBackground(sb.createFill(Color.RED));
+
+        SLDTransformer st = new SLDTransformer();
+        st.setExportDefaultValues(true);
+        st.setIndentation(2);
+        String styleXML = st.transform(style);
+
+        Document doc = buildTestDocument(styleXML);
+        assertXpathEvaluatesTo(
+                "#FF0000", "//sld:UserStyle/sld:Background/sld:CssParameter[@name='fill']", doc);
+        assertXpathEvaluatesTo(
+                "1.0",
+                "//sld:UserStyle/sld:Background/sld:CssParameter[@name='fill-opacity']",
+                doc);
+    }
+
+    @Test
+    public void testEncodeBackgroundGraphicFill()
+            throws IOException, SAXException, TransformerException, XpathException {
+        StyleBuilder sb = new StyleBuilder();
+        Style style = sb.createStyle(sb.createLineSymbolizer());
+        Fill fill = sb.createFill();
+        fill.setColor(null);
+        fill.setOpacity(null);
+        fill.setGraphicFill(sb.createGraphic(null, sb.createMark("square"), null));
+        style.setBackground(fill);
+
+        SLDTransformer st = new SLDTransformer();
+        st.setExportDefaultValues(true);
+        st.setIndentation(2);
+        String styleXML = st.transform(style);
+
+        Document doc = buildTestDocument(styleXML);
+        assertXpathEvaluatesTo(
+                "square",
+                "//sld:UserStyle/sld:Background/sld:GraphicFill/sld:Graphic/sld:Mark/sld:WellKnownName",
+                doc);
+        assertXpathExists(
+                "//sld:UserStyle/sld:Background/sld:GraphicFill/sld:Graphic/sld:Mark/sld:Fill",
+                doc);
+        assertXpathExists(
+                "//sld:UserStyle/sld:Background/sld:GraphicFill/sld:Graphic/sld:Mark/sld:Stroke",
+                doc);
     }
 }

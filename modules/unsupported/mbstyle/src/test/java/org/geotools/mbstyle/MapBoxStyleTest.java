@@ -23,7 +23,6 @@ import java.io.Reader;
 import java.util.List;
 import org.geotools.styling.NamedLayer;
 import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.styling.UserLayer;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
 
@@ -52,15 +51,14 @@ public class MapBoxStyleTest {
         Reader reader = MapboxTestUtils.readerTestStyle("groupStyleTest.json");
         StyledLayerDescriptor sld = MapBoxStyle.parse(reader);
 
-        assertEquals(4, sld.getStyledLayers().length);
-        assertEquals("background", sld.getStyledLayers()[0].getName());
-        assertTrue(sld.getStyledLayers()[0] instanceof UserLayer);
+        // background is incorporated in the first style
+        assertEquals(3, sld.getStyledLayers().length);
 
-        assertEquals("Lakes", sld.getStyledLayers()[1].getName());
+        assertEquals("Lakes", sld.getStyledLayers()[0].getName());
         assertTrue(sld.getStyledLayers()[1] instanceof NamedLayer);
 
-        assertEquals("BasicPolygons", sld.getStyledLayers()[2].getName());
-        assertEquals("NamedPlaces", sld.getStyledLayers()[3].getName());
+        assertEquals("BasicPolygons", sld.getStyledLayers()[1].getName());
+        assertEquals("NamedPlaces", sld.getStyledLayers()[2].getName());
     }
 
     @Test

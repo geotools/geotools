@@ -39,7 +39,7 @@ public class FilterFunction_toWKT extends FunctionExpressionImpl {
         Geometry arg0;
 
         try { // attempt to get value and perform conversion
-            arg0 = (Geometry) getExpression(0).evaluate(feature);
+            arg0 = getExpression(0).evaluate(feature, Geometry.class);
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(

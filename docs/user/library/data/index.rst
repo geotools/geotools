@@ -52,7 +52,6 @@ DataStore plugins:
 .. toctree::
    :maxdepth: 1
    
-   arcsde
    shape
    ogr
    pregeneralized
@@ -66,6 +65,7 @@ Unsupported plugins:
 .. toctree::
    :maxdepth: 1
    
+   arcsde
    dxf
    georest
    kml

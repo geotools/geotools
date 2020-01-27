@@ -573,8 +573,6 @@ time.
 
    For now remove the follow plugins from your Library Manager definition:
 
-   * ``gt-arcsde``
-   * ``gt-arcsde-common``
    * ``gt-jdbc-db2``
    * ``gt-jdbc-oracle``
 

@@ -44,7 +44,6 @@
   <!-- =========================================================== --> 
   <modules>
     <module>arcgrid</module>
-    <module>arcsde</module>
     <module>charts</module>
     <module>epsg-extension</module>
     <module>epsg-hsql</module>

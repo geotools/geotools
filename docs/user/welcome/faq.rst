@@ -54,7 +54,6 @@ GeoTools supports additional formats through the use of plug-ins. You can contro
 by your application by only including the plug-ins you require.
 
 * ``arcgrid`` 
-* ``arcsde`` 
 * ``db2`` 
 * raster formats
   

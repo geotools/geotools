@@ -17,11 +17,15 @@
 package org.geotools.data.sdmx;
 
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.when;
 
 import it.bancaditalia.oss.sdmx.client.RestSdmxClient;
+import it.bancaditalia.oss.sdmx.parser.v21.CompactDataParser;
+import it.bancaditalia.oss.sdmx.util.RestQueryBuilder;
 import java.io.ByteArrayInputStream;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.util.logging.Logger;
 import org.apache.commons.httpclient.HttpStatus;
@@ -38,7 +42,13 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({RestSdmxClient.class, HttpURLConnection.class, URL.class})
+@PrepareForTest({
+    CompactDataParser.class,
+    RestSdmxClient.class,
+    RestQueryBuilder.class,
+    HttpURLConnection.class,
+    URL.class
+})
 public class SDMXFeatureReaderTest {
 
     private static final Logger LOGGER = Logging.getLogger("org.geotools.data.arcgisrest");
@@ -59,7 +69,8 @@ public class SDMXFeatureReaderTest {
         this.clientMock = PowerMockito.mock(HttpURLConnection.class);
 
         PowerMockito.whenNew(URL.class).withAnyArguments().thenReturn(this.urlMock);
-        PowerMockito.when(this.urlMock.openConnection()).thenReturn(this.clientMock);
+        PowerMockito.when(this.urlMock.toURI()).thenReturn(new URI(Helper.URL));
+        PowerMockito.when(this.urlMock.openConnection(anyObject())).thenReturn(this.clientMock);
         when(clientMock.getResponseCode())
                 .thenReturn(HttpStatus.SC_OK)
                 .thenReturn(HttpStatus.SC_OK)
@@ -115,7 +126,8 @@ public class SDMXFeatureReaderTest {
         this.clientMock = PowerMockito.mock(HttpURLConnection.class);
 
         PowerMockito.whenNew(URL.class).withAnyArguments().thenReturn(this.urlMock);
-        PowerMockito.when(this.urlMock.openConnection()).thenReturn(this.clientMock);
+        PowerMockito.when(this.urlMock.toURI()).thenReturn(new URI(Helper.URL));
+        PowerMockito.when(this.urlMock.openConnection(anyObject())).thenReturn(this.clientMock);
         when(clientMock.getResponseCode())
                 .thenReturn(HttpStatus.SC_OK)
                 .thenReturn(HttpStatus.SC_OK)
@@ -149,7 +161,8 @@ public class SDMXFeatureReaderTest {
         this.clientMock = PowerMockito.mock(HttpURLConnection.class);
 
         PowerMockito.whenNew(URL.class).withAnyArguments().thenReturn(this.urlMock);
-        PowerMockito.when(this.urlMock.openConnection()).thenReturn(this.clientMock);
+        PowerMockito.when(this.urlMock.toURI()).thenReturn(new URI(Helper.URL));
+        PowerMockito.when(this.urlMock.openConnection(anyObject())).thenReturn(this.clientMock);
         when(clientMock.getResponseCode())
                 .thenReturn(HttpStatus.SC_OK)
                 .thenReturn(HttpStatus.SC_OK)
@@ -222,7 +235,8 @@ public class SDMXFeatureReaderTest {
         this.clientMock = PowerMockito.mock(HttpURLConnection.class);
 
         PowerMockito.whenNew(URL.class).withAnyArguments().thenReturn(this.urlMock);
-        PowerMockito.when(this.urlMock.openConnection()).thenReturn(this.clientMock);
+        PowerMockito.when(this.urlMock.toURI()).thenReturn(new URI(Helper.URL));
+        PowerMockito.when(this.urlMock.openConnection(anyObject())).thenReturn(this.clientMock);
         when(clientMock.getResponseCode())
                 .thenReturn(HttpStatus.SC_OK)
                 .thenReturn(HttpStatus.SC_OK)
@@ -286,7 +300,8 @@ public class SDMXFeatureReaderTest {
         this.clientMock = PowerMockito.mock(HttpURLConnection.class);
 
         PowerMockito.whenNew(URL.class).withAnyArguments().thenReturn(this.urlMock);
-        PowerMockito.when(this.urlMock.openConnection()).thenReturn(this.clientMock);
+        PowerMockito.when(this.urlMock.toURI()).thenReturn(new URI(Helper.URL));
+        PowerMockito.when(this.urlMock.openConnection(anyObject())).thenReturn(this.clientMock);
         when(clientMock.getResponseCode())
                 .thenReturn(HttpStatus.SC_OK)
                 .thenReturn(HttpStatus.SC_OK)
@@ -360,7 +375,8 @@ public class SDMXFeatureReaderTest {
         this.clientMock = PowerMockito.mock(HttpURLConnection.class);
 
         PowerMockito.whenNew(URL.class).withAnyArguments().thenReturn(this.urlMock);
-        PowerMockito.when(this.urlMock.openConnection()).thenReturn(this.clientMock);
+        PowerMockito.when(this.urlMock.toURI()).thenReturn(new URI(Helper.URL));
+        PowerMockito.when(this.urlMock.openConnection(anyObject())).thenReturn(this.clientMock);
         when(clientMock.getResponseCode())
                 .thenReturn(HttpStatus.SC_OK)
                 .thenReturn(HttpStatus.SC_OK)
@@ -422,7 +438,8 @@ public class SDMXFeatureReaderTest {
         this.clientMock = PowerMockito.mock(HttpURLConnection.class);
 
         PowerMockito.whenNew(URL.class).withAnyArguments().thenReturn(this.urlMock);
-        PowerMockito.when(this.urlMock.openConnection()).thenReturn(this.clientMock);
+        PowerMockito.when(this.urlMock.toURI()).thenReturn(new URI(Helper.URL));
+        PowerMockito.when(this.urlMock.openConnection(anyObject())).thenReturn(this.clientMock);
         when(clientMock.getResponseCode())
                 .thenReturn(HttpStatus.SC_OK)
                 .thenReturn(HttpStatus.SC_OK)

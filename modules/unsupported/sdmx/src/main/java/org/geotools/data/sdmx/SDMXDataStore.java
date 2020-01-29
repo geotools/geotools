@@ -123,7 +123,6 @@ public class SDMXDataStore extends ContentDataStore {
      * Return the complete type name from the dataflow one
      *
      * @param dfName Name of the dataflow
-     * @param dimName Name of the dimension
      * @return
      */
     public static String composeDataflowTypeName(String dfName) {

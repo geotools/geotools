@@ -15,13 +15,13 @@ public class Helper {
     //  public static String URL =
     // "http://stat.data.abs.gov.au/restsdmx/sdmx.ashx/GetDataStructure/ABS_SEIFA_LGA";
     public static String PROVIDER = "ABS";
-    public static String URL =
-            "http://stat.data.abs.gov.au/restsdmx/sdmx.ashx/GetDataStructure/ALL/ABS";
+    public static String URL = "http://stat.data.abs.gov.au/restsdmx/sdmx.ashx";
     public static String NAMESPACE = "http://aurin.org.au";
     public static String USER = "testuser";
     public static String PASSWORD = "testpassword";
 
     public static String T04 = "ABS_CENSUS2011_T04__SDMX";
+    public static String T04_LGA = "ABS_CENSUS2011_T04__SDMX";
     public static String T04_DIMENSIONS = "ABS_CENSUS2011_T04__SDMX__DIMENSIONS";
     public static String SEIFA_LGA = "ABS_SEIFA_LGA__SDMX";
     public static String SEIFA_LGA_DIMENSIONS = "ABS_SEIFA_LGA__SDMX__DIMENSIONS";

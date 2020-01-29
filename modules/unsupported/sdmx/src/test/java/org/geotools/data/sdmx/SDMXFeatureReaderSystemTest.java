@@ -45,8 +45,8 @@ public class SDMXFeatureReaderSystemTest {
     public void readFeaturesMeasure() throws Exception {
 
         this.dataStore = (SDMXDataStore) Helper.createDefaultSDMXTestDataStore();
-        this.fType = this.dataStore.getFeatureSource(Helper.T04).getSchema();
-        this.dfSource = (SDMXDataflowFeatureSource) this.dataStore.getFeatureSource(Helper.T04);
+        this.fType = this.dataStore.getFeatureSource(Helper.T04_LGA).getSchema();
+        this.dfSource = (SDMXDataflowFeatureSource) this.dataStore.getFeatureSource(Helper.T04_LGA);
 
         this.dfSource.buildFeatureType();
         Query query = new Query();

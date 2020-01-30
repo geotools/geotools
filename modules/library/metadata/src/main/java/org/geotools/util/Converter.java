@@ -26,7 +26,7 @@ public interface Converter {
     /**
      * Converts an object to an object of another type.
      *
-     * <p>If the converstion supplied is not supported this method can either throw an exception or
+     * <p>If the conversion supplied is not supported, this method can either throw an exception or
      * return <code>null</code>.
      *
      * @param source The original object, never <code>null</code>

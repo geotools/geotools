@@ -355,22 +355,25 @@ public class FeatureJSON {
      */
     public FeatureCollection readFeatureCollection(Object input) throws IOException {
         DefaultFeatureCollection features = new DefaultFeatureCollection(null, null);
-        FeatureCollectionIterator it = (FeatureCollectionIterator) streamFeatureCollection(input);
-        while (it.hasNext()) {
-            features.add(it.next());
-        }
-
-        // check for the case of a crs specified post features in the json
-        if (features.getSchema() != null
-                && features.getSchema().getCoordinateReferenceSystem() == null
-                && it.getHandler().getCRS() != null) {
-            try {
-                return new ForceCoordinateSystemFeatureResults(features, it.getHandler().getCRS());
-            } catch (SchemaException e) {
-                throw (IOException) new IOException().initCause(e);
+        try (FeatureCollectionIterator it =
+                (FeatureCollectionIterator) streamFeatureCollection(input)) {
+            while (it.hasNext()) {
+                features.add(it.next());
             }
+
+            // check for the case of a crs specified post features in the json
+            if (features.getSchema() != null
+                    && features.getSchema().getCoordinateReferenceSystem() == null
+                    && it.getHandler().getCRS() != null) {
+                try {
+                    return new ForceCoordinateSystemFeatureResults(
+                            features, it.getHandler().getCRS());
+                } catch (SchemaException e) {
+                    throw (IOException) new IOException().initCause(e);
+                }
+            }
+            return features;
         }
-        return features;
     }
 
     /**

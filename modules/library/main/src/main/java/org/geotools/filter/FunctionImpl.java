@@ -101,7 +101,8 @@ public class FunctionImpl extends ExpressionAbstract implements Function {
         if (fallbackValue != null) {
             return fallbackValue.evaluate(object);
         }
-        throw new UnsupportedOperationException("Function " + name + " not implemented");
+        throw new UnsupportedOperationException(
+                "Function " + name + "(" + this.getClass() + ") not implemented");
     }
 
     /** Sets the function parameters. */

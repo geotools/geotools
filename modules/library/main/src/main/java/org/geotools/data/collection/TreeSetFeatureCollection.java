@@ -498,6 +498,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
         // nop
     }
 
+    @SuppressWarnings("PMD.CloseResource") // closed in the wrapper
     public FeatureReader<SimpleFeatureType, SimpleFeature> reader() throws IOException {
         final SimpleFeatureIterator iterator = features();
         return new FeatureReader<SimpleFeatureType, SimpleFeature>() {

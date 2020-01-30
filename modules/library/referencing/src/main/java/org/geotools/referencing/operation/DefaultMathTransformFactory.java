@@ -653,9 +653,9 @@ public class DefaultMathTransformFactory extends ReferencingFactory
         if (arguments.getFlag("-projections")) type = Projection.class;
         if (arguments.getFlag("-conversions")) type = Conversion.class;
         args = arguments.getRemainingArguments(1);
-        try {
+        try (ParameterWriter writer = new ParameterWriter(arguments.out)) {
             final DefaultMathTransformFactory factory = new DefaultMathTransformFactory();
-            final ParameterWriter writer = new ParameterWriter(arguments.out);
+
             writer.setLocale(arguments.locale);
             Set<OperationMethod> methods = Collections.emptySet();
             if (printAll || args.length == 0) {
@@ -684,6 +684,7 @@ public class DefaultMathTransformFactory extends ReferencingFactory
                 arguments.out.write(lineSeparator);
                 writer.format(method);
             }
+            arguments.out.flush();
         } catch (NoSuchIdentifierException exception) {
             arguments.err.println(exception.getLocalizedMessage());
             return;
@@ -691,7 +692,6 @@ public class DefaultMathTransformFactory extends ReferencingFactory
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", exception);
             return;
         }
-        arguments.out.flush();
     }
 
     /**

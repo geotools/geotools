@@ -24,6 +24,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Properties;
+import java.util.Set;
 import java.util.TreeSet;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.Query;
@@ -43,8 +45,10 @@ import org.opengis.filter.FilterFactory;
 
 /** @author ian */
 public class GeoServerWFSOnlineTest extends OnlineTestSupport {
-
-    TreeSet<String> expected = new TreeSet<>();
+    /** Results expected for Version 1.x */
+    TreeSet<String> expected1 = new TreeSet<>();
+    /** Results expected for Version 2.x */
+    TreeSet<String> expected2 = new TreeSet<>();
 
     @Before
     public void setup() {
@@ -58,9 +62,23 @@ public class GeoServerWFSOnlineTest extends OnlineTestSupport {
             "states.18",
             "states.19",
             "states.21",
-            "states.22",
+            "states.22"
         };
-        expected.addAll(Arrays.asList(expectedA));
+        expected1.addAll(Arrays.asList(expectedA));
+
+        String[] expectedB = {
+            "states.1",
+            "states.13",
+            "states.14",
+            "states.17",
+            "states.18",
+            "states.19",
+            "states.21",
+            "states.22",
+            "states.23",
+            "states.24",
+        };
+        expected2.addAll(Arrays.asList(expectedB));
     }
 
     @Test
@@ -85,29 +103,41 @@ public class GeoServerWFSOnlineTest extends OnlineTestSupport {
 
     @Test
     public void testGeoServerWFSFilter_V2_get() throws IOException, NoSuchElementException {
-        geoServerTest("2.0.0", true);
+        geoServerTest("2.0.0", true, expected2);
     }
 
     @Test
     public void testGeoServerWFSFilter_V2_post() throws IOException, NoSuchElementException {
-        geoServerTest("2.0.0", false);
+        geoServerTest("2.0.0", false, expected2);
+    }
+
+    private void geoServerTest(String version, boolean get) throws IOException {
+        geoServerTest(version, get, expected1);
     }
     /**
      * @param expected
      * @param version
      * @throws IOException
      */
-    private void geoServerTest(String version, boolean get) throws IOException {
+    private void geoServerTest(String version, boolean get, Set<String> expected)
+            throws IOException {
+        Properties fixture = getFixture();
 
         String getCapabilities =
-                "http://localhost:8080/geoserver/wfs?request=GetCapabilities&service=WFS&version="
+                fixture.getProperty(
+                                WFSDataStoreFactory.URL.key, "http://localhost:8080/geoserver/wfs?")
+                        + "REQUEST=GetCapabilities&SERVICE=WFS&VERSION="
                         + version;
+
         Map<String, Object> connectionParameters = new HashMap<String, Object>();
         connectionParameters.put(WFSDataStoreFactory.URL.key, getCapabilities);
-        connectionParameters.put(WFSDataStoreFactory.LENIENT.key, Boolean.TRUE);
-        // connectionParameters.put(WFSDataStoreFactory.WFS_STRATEGY.key, "arcgis");
-        connectionParameters.put(WFSDataStoreFactory.TIMEOUT.key, 30);
-        //
+        connectionParameters.put(
+                WFSDataStoreFactory.LENIENT.key,
+                Boolean.valueOf(fixture.getProperty(WFSDataStoreFactory.LENIENT.key, "true")));
+        connectionParameters.put(
+                WFSDataStoreFactory.TIMEOUT.key,
+                Integer.valueOf(fixture.getProperty(WFSDataStoreFactory.TIMEOUT.key, "30")));
+
         if (get) {
             connectionParameters.put(WFSDataStoreFactory.PROTOCOL.key, Boolean.FALSE);
         }
@@ -135,8 +165,9 @@ public class GeoServerWFSOnlineTest extends OnlineTestSupport {
         try (SimpleFeatureIterator iterator = features.features()) {
             while (iterator.hasNext() && count < 10) {
                 SimpleFeature feature = iterator.next();
-
-                assertTrue(expected.contains(feature.getID()));
+                assertTrue(
+                        "unexpected feature " + feature.getID(),
+                        expected.contains(feature.getID()));
                 count++;
             }
         }
@@ -157,5 +188,16 @@ public class GeoServerWFSOnlineTest extends OnlineTestSupport {
     @Override
     protected String getFixtureId() {
         return "geoserver-wfs";
+    }
+
+    /** Create placeholder fixture, the use of localhost is hardcoded anyways */
+    @Override
+    protected Properties createExampleFixture() {
+        Properties template = new Properties();
+        template.put(WFSDataStoreFactory.URL.key, "http://localhost:8080/geoserver/wfs?");
+        template.put(WFSDataStoreFactory.LENIENT.key, "true");
+        template.put(WFSDataStoreFactory.TIMEOUT.key, "5");
+
+        return template;
     }
 }

@@ -47,6 +47,7 @@ import org.geotools.filter.function.FilterFunction_strToLowerCase;
 import org.geotools.filter.function.FilterFunction_strToUpperCase;
 import org.geotools.filter.function.FilterFunction_strTrim;
 import org.geotools.filter.function.FilterFunction_strTrim2;
+import org.geotools.filter.function.InArrayFunction;
 import org.geotools.filter.function.math.FilterFunction_abs;
 import org.geotools.filter.function.math.FilterFunction_abs_2;
 import org.geotools.filter.function.math.FilterFunction_abs_3;
@@ -180,6 +181,9 @@ class FilterToSqlHelper {
 
             // n nearest function
             caps.addType(FilterFunction_pgNearest.class);
+
+            // array functions
+            caps.addType(InArrayFunction.class);
         }
 
         // native filter support
@@ -843,6 +847,7 @@ class FilterToSqlHelper {
         }
     }
 
+    @SuppressWarnings("PMD.CloseResource") // tmp it a copy of out, that's managed elsewhere
     protected void writeBinaryExpression(Expression e, Object context) throws IOException {
         Writer tmp = out;
         try {
@@ -930,6 +935,41 @@ class FilterToSqlHelper {
         return sb.toString();
     }
 
+    public Object visit(InArrayFunction filter, Object extraData) {
+        Expression candidate = getParameter(filter, 0, true);
+        Expression array = getParameter(filter, 1, true);
+        Class<?> arrayType = getBaseType(array);
+        Class<?> candidateType = getBaseType(candidate);
+        String castToArrayType = "";
+        if (arrayType != null && (candidateType == null || !candidateType.equals(arrayType))) {
+            castToArrayType = cast("", arrayType);
+        }
+        try {
+            candidate.accept(delegate, extraData);
+            out.write(castToArrayType);
+            out.write("=any(");
+            array.accept(delegate, extraData);
+            out.write(")");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return extraData;
+    }
+
+    private Class<?> getBaseType(Expression expr) {
+        Class<?> type = delegate.getExpressionType(expr);
+        if (type == null && expr instanceof Literal) {
+            Object value = delegate.evaluateLiteral((Literal) expr, Object.class);
+            if (value != null) {
+                type = value.getClass();
+            }
+        }
+        if (isArray(type)) {
+            type = type.getComponentType();
+        }
+        return type;
+    }
+
     public Object visit(
             FilterFunction_pgNearest filter, Object extraData, NearestHelperContext ctx) {
         SQLDialect pgDialect = ctx.getPgDialect();
@@ -1005,6 +1045,25 @@ class FilterToSqlHelper {
 
         public void setEncodeGeometryValue(BiConsumer<Geometry, StringBuffer> encodeGeometryValue) {
             this.encodeGeometryValue = encodeGeometryValue;
+        }
+    }
+
+    /**
+     * Detects and return a InArrayFunction if found, otherwise null
+     *
+     * @param filter filter to evaluate
+     * @return FilterFunction_any if found
+     */
+    public InArrayFunction getInArray(PropertyIsEqualTo filter) {
+        Expression expr1 = filter.getExpression1();
+        Expression expr2 = filter.getExpression2();
+        if (expr2 instanceof InArrayFunction) {
+            return (InArrayFunction) expr2;
+        }
+        if (expr1 instanceof InArrayFunction) {
+            return (InArrayFunction) expr1;
+        } else {
+            return null;
         }
     }
 

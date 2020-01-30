@@ -16,30 +16,36 @@
  */
 package org.geotools.coverage.io.netcdf;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.TimeZone;
+import java.time.Instant;
+import java.util.*;
 import org.apache.commons.io.FileUtils;
+import org.codehaus.plexus.archiver.tar.TarGZipUnArchiver;
+import org.codehaus.plexus.logging.console.ConsoleLoggerManager;
 import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.coverage.grid.GridGeometry2D;
+import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.Query;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.imageio.netcdf.NetCDFImageReader;
 import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
+import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.test.TestData;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterValue;
@@ -655,5 +661,99 @@ public class NetCDFMultiDimTest {
         File tempFile = tempFolder.newFile("twodimtime_diffsize.ncml");
         FileUtils.writeStringToFile(tempFile, content, "UTF-8");
         test2DTime_DiffSize(tempFile);
+    }
+
+    @Test
+    public void testDimensionOrder() throws IOException, ParseException {
+        NetCDFFormat format = new NetCDFFormat();
+
+        File file;
+        try {
+            file = TestData.file(this, "flexpart.nc");
+        } catch (FileNotFoundException e) {
+            TarGZipUnArchiver archiver = new TarGZipUnArchiver();
+            File archiveFile = TestData.file(this, "sampledata.tar.gz");
+            archiver.setSourceFile(archiveFile);
+            archiver.setDestDirectory(new File(archiveFile.getParent()));
+            ConsoleLoggerManager manager = new ConsoleLoggerManager();
+            manager.initialize();
+            archiver.enableLogging(manager.getLoggerForComponent("test"));
+            archiver.extract();
+            file = TestData.file(this, "flexpart.nc");
+        }
+        NetCDFReader reader = null;
+        try {
+            reader = (NetCDFReader) format.getReader(file);
+            assertNotNull(reader);
+
+            // Name - TRACER
+            String[] names = reader.getGridCoverageNames();
+            assertNotNull(names);
+
+            // Name of the first coverage
+            String coverageName = names[0];
+
+            // Parsing metadata values
+            assertEquals(
+                    "true",
+                    reader.getMetadataValue(coverageName, GridCoverage2DReader.HAS_TIME_DOMAIN));
+            assertEquals(
+                    "true",
+                    reader.getMetadataValue(
+                            coverageName, GridCoverage2DReader.HAS_ELEVATION_DOMAIN));
+
+            // Get the envelope
+            final ParameterValue<GridGeometry2D> gg =
+                    AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+            final GeneralEnvelope originalEnvelope = reader.getOriginalEnvelope(coverageName);
+
+            // Selecting the same gridRange
+            GridEnvelope gridRange = reader.getOriginalGridRange(coverageName);
+
+            final ParameterValue<List> time =
+                    new DefaultParameterDescriptor<>("TIME", List.class, null, null).createValue();
+
+            final ParameterValue<List> elevation =
+                    new DefaultParameterDescriptor<>("ELEVATION", List.class, null, null)
+                            .createValue();
+
+            GeneralParameterValue[] values = new GeneralParameterValue[] {gg, time, elevation};
+
+            // Read with 1st date / 1st elevation
+            time.setValue(
+                    new ArrayList<>(
+                            Collections.singletonList(
+                                    Date.from(Instant.parse("2016-02-23T03:00:00.000Z")))));
+            elevation.setValue(new ArrayList<>(Collections.singletonList(0.0)));
+            GridCoverage2D grid = reader.read(coverageName, values);
+            assertNotNull(grid);
+
+            // Read with last date / 2nd elevation
+            time.setValue(
+                    new ArrayList<>(
+                            Collections.singletonList(
+                                    Date.from(Instant.parse("2016-02-26T00:00:00.000Z")))));
+            elevation.setValue(new ArrayList<>(Collections.singletonList(200.0)));
+            grid = reader.read(coverageName, values);
+            assertNotNull(grid);
+
+            // Read with last date / last elevation
+            time.setValue(
+                    new ArrayList<>(
+                            Collections.singletonList(
+                                    Date.from(Instant.parse("2016-02-26T00:00:00.000Z")))));
+            elevation.setValue(new ArrayList<>(Collections.singletonList(1800.0)));
+            grid = reader.read(coverageName, values);
+            assertNotNull(grid);
+        } finally {
+            // Dispose
+            if (reader != null) {
+                try {
+                    reader.dispose();
+                } catch (Throwable t) {
+                    // Does nothing
+                }
+            }
+        }
     }
 }

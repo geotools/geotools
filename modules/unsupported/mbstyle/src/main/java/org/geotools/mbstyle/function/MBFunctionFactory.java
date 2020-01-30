@@ -20,7 +20,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.geotools.feature.NameImpl;
+import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.FunctionFactory;
+import org.geotools.filter.FunctionImpl;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
@@ -60,6 +62,8 @@ public class MBFunctionFactory implements FunctionFactory {
         functionList.add(ToStringFunction.NAME);
         functionList.add(ToNumberFunction.NAME);
         functionList.add(ToColorFunction.NAME);
+        functionList.add(MapBoxAnchorFunction.NAME);
+        functionList.add(FontAlternativesFunction.NAME);
         return Collections.unmodifiableList(functionList);
     }
 
@@ -70,158 +74,81 @@ public class MBFunctionFactory implements FunctionFactory {
 
     @Override
     public Function function(Name name, List<Expression> args, Literal fallback) {
+        Function f = null;
         if (ZoomLevelFunction.NAME.getFunctionName().equals(name)) {
-            ZoomLevelFunction f = new ZoomLevelFunction();
-            f.setParameters(args);
-            f.setFallbackValue(fallback);
-            return f;
+            f = new ZoomLevelFunction();
+        } else if (ExponentialFunction.NAME.getFunctionName().equals(name)) {
+            f = new ExponentialFunction();
+        } else if (CSSFunction.NAME.getFunctionName().equals(name)) {
+            f = new CSSFunction();
+        } else if (DefaultIfNullFunction.NAME.getFunctionName().equals(name)) {
+            f = new DefaultIfNullFunction();
+        } else if (StringTransformFunction.NAME.getFunctionName().equals(name)) {
+            f = new StringTransformFunction();
+        } else if (ToRgb.NAME.getFunctionName().equals(name)) {
+            f = new ToRgb();
+        } else if (MapBoxEqualToFunction.NAME.getFunctionName().equals(name)) {
+            f = new MapBoxEqualToFunction();
+        } else if (MapBoxNotEqualToFunction.NAME.getFunctionName().equals(name)) {
+            f = new MapBoxNotEqualToFunction();
+        } else if (AllFunction.NAME.getFunctionName().equals(name)) {
+            f = new AllFunction();
+        } else if (AnyFunction.NAME.getFunctionName().equals(name)) {
+            f = new AnyFunction();
+        } else if (CaseFunction.NAME.getFunctionName().equals(name)) {
+            f = new CaseFunction();
+        } else if (CoalesceFunction.NAME.getFunctionName().equals(name)) {
+            f = new CoalesceFunction();
+        } else if (MatchFunction.NAME.getFunctionName().equals(name)) {
+            f = new MatchFunction();
+        } else if (ListSizeFunction.NAME.getFunctionName().equals(name)) {
+            f = new ListSizeFunction();
+        } else if (MapBoxLengthFunction.NAME.getFunctionName().equals(name)) {
+            f = new MapBoxLengthFunction();
+        } else if (AtFunction.NAME.getFunctionName().equals(name)) {
+            f = new AtFunction();
+        } else if (GetFunction.NAME.getFunctionName().equals(name)) {
+            f = new GetFunction();
+        } else if (HasFunction.NAME.getFunctionName().equals(name)) {
+            f = new HasFunction();
+        } else if (RemainderFunction.NAME.getFunctionName().equals(name)) {
+            f = new RemainderFunction();
+        } else if (MapBoxTypeOfFunction.NAME.getFunctionName().equals(name)) {
+            f = new MapBoxTypeOfFunction();
+        } else if (MapBoxTypeFunction.NAME.getFunctionName().equals(name)) {
+            f = new MapBoxTypeFunction();
+        } else if (ToBoolFunction.NAME.getFunctionName().equals(name)) {
+            f = new ToBoolFunction();
+        } else if (ToStringFunction.NAME.getFunctionName().equals(name)) {
+            f = new ToStringFunction();
+        } else if (ToNumberFunction.NAME.getFunctionName().equals(name)) {
+            f = new ToNumberFunction();
+        } else if (ToColorFunction.NAME.getFunctionName().equals(name)) {
+            f = new ToColorFunction();
+        } else if (MapBoxAnchorFunction.NAME.getFunctionName().equals(name)) {
+            f = new MapBoxAnchorFunction();
+        } else if (FontAlternativesFunction.NAME.getFunctionName().equals(name)) {
+            f = new FontAlternativesFunction();
+        } else if (MapBoxFontBaseNameFunction.NAME.getFunctionName().equals(name)) {
+            f = new MapBoxFontBaseNameFunction();
+        } else if (MapBoxFontStyleFunction.NAME.getFunctionName().equals(name)) {
+            f = new MapBoxFontStyleFunction();
+        } else if (MapBoxFontWeightFunction.NAME.getFunctionName().equals(name)) {
+            f = new MapBoxFontWeightFunction();
         }
-        if (ExponentialFunction.NAME.getFunctionName().equals(name)) {
-            ExponentialFunction f = new ExponentialFunction();
-            f.setParameters(args);
-            f.setFallbackValue(fallback);
 
+        if (f instanceof FunctionImpl) {
+            FunctionImpl fi = (FunctionImpl) f;
+            fi.setParameters(args);
+            fi.setFallbackValue(fallback);
+            return f;
+        } else if (f instanceof FunctionExpressionImpl) {
+            FunctionExpressionImpl fei = (FunctionExpressionImpl) f;
+            fei.setParameters(args);
+            fei.setFallbackValue(fallback);
             return f;
         }
-        if (CSSFunction.NAME.getFunctionName().equals(name)) {
-            CSSFunction f = new CSSFunction();
-            f.setParameters(args);
-            f.setFallbackValue(fallback);
 
-            return f;
-        }
-        if (DefaultIfNullFunction.NAME.getFunctionName().equals(name)) {
-            DefaultIfNullFunction f = new DefaultIfNullFunction();
-            f.setParameters(args);
-            f.setFallbackValue(fallback);
-            return f;
-        }
-        if (StringTransformFunction.NAME.getFunctionName().equals(name)) {
-            StringTransformFunction f = new StringTransformFunction();
-            f.setParameters(args);
-            f.setFallbackValue(fallback);
-            return f;
-        }
-        if (ToRgb.NAME.getFunctionName().equals(name)) {
-            ToRgb f = new ToRgb();
-            f.setParameters(args);
-            f.setFallbackValue(fallback);
-            return f;
-        }
-        if (MapBoxEqualToFunction.NAME.getFunctionName().equals(name)) {
-            MapBoxEqualToFunction f = new MapBoxEqualToFunction();
-            f.setParameters(args);
-            f.setFallbackValue(fallback);
-            return f;
-        }
-        if (MapBoxNotEqualToFunction.NAME.getFunctionName().equals(name)) {
-            MapBoxNotEqualToFunction f = new MapBoxNotEqualToFunction();
-            f.setParameters(args);
-            f.setFallbackValue(fallback);
-            return f;
-        }
-        if (AllFunction.NAME.getFunctionName().equals(name)) {
-            AllFunction f = new AllFunction();
-            f.setParameters(args);
-            f.setFallbackValue(fallback);
-            return f;
-        }
-        if (AnyFunction.NAME.getFunctionName().equals(name)) {
-            AnyFunction f = new AnyFunction();
-            f.setParameters(args);
-            f.setFallbackValue(fallback);
-            return f;
-        }
-        if (CaseFunction.NAME.getFunctionName().equals(name)) {
-            CaseFunction f = new CaseFunction();
-            f.setParameters(args);
-            f.setFallbackValue(fallback);
-            return f;
-        }
-        if (CoalesceFunction.NAME.getFunctionName().equals(name)) {
-            CoalesceFunction f = new CoalesceFunction();
-            f.setParameters(args);
-            f.setFallbackValue(fallback);
-            return f;
-        }
-        if (MatchFunction.NAME.getFunctionName().equals(name)) {
-            MatchFunction f = new MatchFunction();
-            f.setParameters(args);
-            f.setFallbackValue(fallback);
-            return f;
-        }
-        if (ListSizeFunction.NAME.getFunctionName().equals(name)) {
-            ListSizeFunction f = new ListSizeFunction();
-            f.setParameters(args);
-            f.setFallbackValue(fallback);
-            return f;
-        }
-        if (MapBoxLengthFunction.NAME.getFunctionName().equals(name)) {
-            MapBoxLengthFunction f = new MapBoxLengthFunction();
-            f.setParameters(args);
-            f.setFallbackValue(fallback);
-            return f;
-        }
-        if (AtFunction.NAME.getFunctionName().equals(name)) {
-            AtFunction f = new AtFunction();
-            f.setParameters(args);
-            f.setFallbackValue(fallback);
-            return f;
-        }
-        if (GetFunction.NAME.getFunctionName().equals(name)) {
-            GetFunction f = new GetFunction();
-            f.setParameters(args);
-            f.setFallbackValue(fallback);
-            return f;
-        }
-        if (HasFunction.NAME.getFunctionName().equals(name)) {
-            HasFunction f = new HasFunction();
-            f.setParameters(args);
-            f.setFallbackValue(fallback);
-            return f;
-        }
-        if (RemainderFunction.NAME.getFunctionName().equals(name)) {
-            RemainderFunction f = new RemainderFunction();
-            f.setParameters(args);
-            f.setFallbackValue(fallback);
-            return f;
-        }
-        if (MapBoxTypeOfFunction.NAME.getFunctionName().equals(name)) {
-            MapBoxTypeOfFunction f = new MapBoxTypeOfFunction();
-            f.setParameters(args);
-            f.setFallbackValue(fallback);
-            return f;
-        }
-        if (MapBoxTypeFunction.NAME.getFunctionName().equals(name)) {
-            MapBoxTypeFunction f = new MapBoxTypeFunction();
-            f.setParameters(args);
-            f.setFallbackValue(fallback);
-            return f;
-        }
-        if (ToBoolFunction.NAME.getFunctionName().equals(name)) {
-            ToBoolFunction f = new ToBoolFunction();
-            f.setParameters(args);
-            f.setFallbackValue(fallback);
-            return f;
-        }
-        if (ToStringFunction.NAME.getFunctionName().equals(name)) {
-            ToStringFunction f = new ToStringFunction();
-            f.setParameters(args);
-            f.setFallbackValue(fallback);
-            return f;
-        }
-        if (ToNumberFunction.NAME.getFunctionName().equals(name)) {
-            ToNumberFunction f = new ToNumberFunction();
-            f.setParameters(args);
-            f.setFallbackValue(fallback);
-            return f;
-        }
-        if (ToColorFunction.NAME.getFunctionName().equals(name)) {
-            ToColorFunction f = new ToColorFunction();
-            f.setParameters(args);
-            f.setFallbackValue(fallback);
-            return f;
-        }
         return null;
     }
 }

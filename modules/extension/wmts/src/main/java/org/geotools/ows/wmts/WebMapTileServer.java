@@ -164,9 +164,9 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
         }
 
         GetTileRequest request =
-                (GetTileRequest)
-                        ((WMTSSpecification) specification)
-                                .createGetTileRequest(url, (Properties) null, capabilities);
+                ((WMTSSpecification) specification)
+                        .createGetTileRequest(
+                                url, (Properties) null, capabilities, this.getHTTPClient());
 
         request.getHeaders().putAll(headers);
 

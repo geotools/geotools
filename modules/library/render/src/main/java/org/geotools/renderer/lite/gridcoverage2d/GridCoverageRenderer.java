@@ -20,11 +20,7 @@ import it.geosolutions.jaiext.range.Range;
 import it.geosolutions.jaiext.scale.Scale2OpImage;
 import it.geosolutions.jaiext.utilities.ImageLayout2;
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.image.BufferedImage;
@@ -44,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
 import javax.media.jai.BorderExtender;
 import javax.media.jai.ImageLayout;
@@ -688,9 +685,13 @@ public final class GridCoverageRenderer {
         int numBands = im.getSampleModel().getNumBands();
         GridSampleDimension[] sd = new GridSampleDimension[numBands];
         for (int i = 0; i < numBands; i++) {
+            // Preserve the sample dimensions names when no symbolizer get used
+            // Styles using GridCoverage's named properties may not find them if renamed
             sd[i] =
                     new GridSampleDimension(
-                            TypeMap.getColorInterpretation(im.getColorModel(), i).name());
+                            symbolizer == null
+                                    ? input.getSampleDimension(i).getDescription()
+                                    : TypeMap.getColorInterpretation(im.getColorModel(), i).name());
         }
 
         Map properties = input.getProperties();
@@ -880,6 +881,7 @@ public final class GridCoverageRenderer {
             }
             coverages = rh.readCoverages(readParams, handler, gridCoverageFactory);
         }
+        logCoverages("read", coverages);
 
         // check if we have to reproject
         boolean reprojectionNeeded = false;
@@ -945,6 +947,7 @@ public final class GridCoverageRenderer {
             }
             coverages = cropped;
         }
+        logCoverages("cropped", coverages);
 
         // reproject if needed
         List<GridCoverage2D> reprojectedCoverages = new ArrayList<GridCoverage2D>();
@@ -962,6 +965,7 @@ public final class GridCoverageRenderer {
                 reprojectedCoverages.add(coverage);
             }
         }
+        logCoverages("reprojected", reprojectedCoverages);
 
         // displace them if needed via a projection handler
         List<GridCoverage2D> displacedCoverages = new ArrayList<GridCoverage2D>();
@@ -1012,15 +1016,20 @@ public final class GridCoverageRenderer {
                 it.remove();
             }
         }
+        logCoverages("displaced", displacedCoverages);
 
         // symbolize each bit (done here to make sure we can perform the warp/affine reduction)
         List<GridCoverage2D> symbolizedCoverages = new ArrayList<>();
         for (GridCoverage2D displaced : displacedCoverages) {
-            GridCoverage2D symbolized = symbolize(displaced, finalSymbolizer, bgValues);
+            GridCoverage2D symbolized =
+                    finalSymbolizer != null
+                            ? symbolize(displaced, finalSymbolizer, bgValues)
+                            : displaced;
             if (symbolized != null) {
                 symbolizedCoverages.add(symbolized);
             }
         }
+        logCoverages("symbolized", symbolizedCoverages);
 
         // Parameters used for taking into account an optional removal of the alpha band
         // and an optional reindexing after color expansion
@@ -1071,6 +1080,19 @@ public final class GridCoverageRenderer {
         return getImageFromParentCoverage(cropped);
     }
 
+    private void logCoverages(String name, List<GridCoverage2D> coverages) {
+        if (LOGGER.isLoggable(Level.FINE)) {
+            String message =
+                    "GridCoverageRenderer coverages: " + name + "\n" + coverages == null
+                            ? "none"
+                            : coverages
+                                    .stream()
+                                    .map(c -> c.toString())
+                                    .collect(Collectors.joining(","));
+            LOGGER.log(Level.FINE, message);
+        }
+    }
+
     /**
      * Forces adding ROI to the coverage in case it's missing. It will use the renderer image
      * footprint.
@@ -1100,7 +1122,7 @@ public final class GridCoverageRenderer {
                     coverage.getName(),
                     pi,
                     coverage.getGridGeometry(),
-                    null,
+                    coverage.getSampleDimensions(),
                     new GridCoverage2D[] {coverage},
                     properties);
         } else {
@@ -1197,7 +1219,6 @@ public final class GridCoverageRenderer {
      * the coordinate system given by {@link #getCoordinateSystem}.
      *
      * @param graphics the {@link Graphics2D} context in which to paint.
-     * @param metaBufferedEnvelope
      * @throws Exception
      * @throws UnsupportedOperationException if the transformation from grid to coordinate system in
      *     the GridCoverage is not an AffineTransform

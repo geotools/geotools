@@ -88,6 +88,7 @@ import org.locationtech.jts.geom.LineString;
  *
  * @generated
  */
+@SuppressWarnings("ComparableType")
 public class ArcStringTypeBinding extends AbstractComplexBinding implements Comparable {
 
     GeometryFactory gFactory;

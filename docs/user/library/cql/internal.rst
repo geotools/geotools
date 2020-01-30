@@ -5,7 +5,7 @@ This package is dedicated to support the OGC Common Query Language, version 2.0.
 
 CQL Interface
 ^^^^^^^^^^^^^
-This diagram presents the package interface. In parser's protocol methods performs the parsing of CQL and builds the the filter.
+This diagram presents the package interface. In parser's protocol methods performs the parsing of CQL and builds the filter.
 
 
 .. image:: /images/cql.PNG
@@ -13,7 +13,7 @@ This diagram presents the package interface. In parser's protocol methods perfor
 CQL Implementation
 ^^^^^^^^^^^^^^^^^^
 
-The figure shows the principal class in the parser and build process. CQLParser does a top down analysis of the input string and makes the parsing tree. Each time CQLParser builds a node, it  makes a call to CQLCompiler, that implements the semantic actions related and builds the product or subproduct required to make the Filter at the end of the parsing process
+The figure shows the principal class in the parser and build process. CQLParser does a top down analysis of the input string and makes the parsing tree. Each time CQLParser builds a node, it  makes a call to CQLCompiler, that implements the semantic actions related and builds the product or sub product required to make the Filter at the end of the parsing process
 
 
 .. image:: /images/cqlParser.PNG
@@ -165,7 +165,7 @@ Expression::
   
   <boolean literal> ::= "TRUE" | "FALSE" | "UNKNOWN"
   
-Georoutine and Relational Geooperations::
+Geo-Routine and Relational Geo-Operations::
   
   <routine invocation> ::=
       <geoop name><georoutine argument list>
@@ -383,7 +383,7 @@ Character String Literal::
 
 Identifier
 
-The following section is intended to give context for identifier and namespaces. It assumes that the default namespace is specified in the query request and does not allow any overrides of the namepace::
+The following section is intended to give context for identifier and namespaces. It assumes that the default namespace is specified in the query request and does not allow any overrides of the namespace::
   
   <regular identifier> ::= <identifier body>
   <identifier body> ::=

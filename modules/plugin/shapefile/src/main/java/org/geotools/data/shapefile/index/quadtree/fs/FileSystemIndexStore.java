@@ -177,6 +177,7 @@ public class FileSystemIndexStore implements IndexStore {
      *
      * @see org.geotools.index.quadtree.IndexStore#load()
      */
+    @SuppressWarnings("PMD.CloseResource") // channel is managed in the returned value
     public QuadTree load(IndexFile indexfile, boolean useMemoryMapping) throws StoreException {
         QuadTree tree = null;
 

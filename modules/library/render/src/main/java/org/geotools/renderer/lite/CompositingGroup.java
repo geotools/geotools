@@ -77,6 +77,7 @@ class CompositingGroup {
                         clone.setVisible(layer.isVisible());
                         clone.setSelected(layer.isSelected());
                         clone.getUserData().putAll(layer.getUserData());
+                        clone.setTitle(layer.getTitle());
                         layers.add(clone);
                     }
                 }

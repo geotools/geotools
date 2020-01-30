@@ -22,20 +22,14 @@ import java.util.HashMap;
 import java.util.Map;
 import junit.framework.TestCase;
 import org.geotools.geometry.GeneralDirectPosition;
-import org.geotools.geometry.jts.JTS;
-import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.Polygon;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
@@ -176,39 +170,33 @@ public class CRSTest extends TestCase {
         // ReferencedEnvelope[-0.24291497975705742 : 0.24291497975711265, -0.5056179775280899 :
         // -0.0]
         CoordinateReferenceSystem EPSG4326 = CRS.decode("EPSG:4326");
-        ReferencedEnvelope pixelBounds =
-                new ReferencedEnvelope(
-                        -0.24291497975705742,
-                        0.24291497975711265,
-                        -0.5056179775280899,
-                        0.0,
-                        EPSG4326);
+        double[] pixelBounds =
+                new double[] {-0.24291497975705742, 0.24291497975711265, -0.5056179775280899, 0.0};
         CoordinateReferenceSystem WGS84 = DefaultGeographicCRS.WGS84;
-
-        ReferencedEnvelope latLong = pixelBounds.transform(WGS84, true);
-        assertNotNull(latLong);
+        MathTransform mt = CRS.findMathTransform(EPSG4326, WGS84, true);
+        double[] result = new double[4];
+        mt.transform(pixelBounds, 0, result, 0, 2);
+        assertArrayEquals(result, pixelBounds, 0);
     }
 
     public void testReprojection() throws Exception {
         // origional bc alberts
-        Polygon poly1 =
-                poly(
-                        new double[] {
-                            1187128, 395268, 1187128, 396027,
-                            1188245, 396027, 1188245, 395268,
-                            1187128, 395268
-                        });
+        double[] poly1 =
+                new double[] {
+                    1187128, 395268, 1187128, 396027,
+                    1188245, 396027, 1188245, 395268,
+                    1187128, 395268
+                };
 
         // transformed
-        Polygon poly3 =
-                poly(
-                        new double[] {
-                            -123.47009555832284, 48.543261561072285,
-                            -123.46972894676578, 48.55009592117936,
-                            -123.45463828850829, 48.54973520267304,
-                            -123.4550070827961, 48.54290089070186,
-                            -123.47009555832284, 48.543261561072285
-                        });
+        double[] poly3 =
+                new double[] {
+                    -123.47009555832284, 48.543261561072285,
+                    -123.46972894676578, 48.55009592117936,
+                    -123.45463828850829, 48.54973520267304,
+                    -123.4550070827961, 48.54290089070186,
+                    -123.47009555832284, 48.543261561072285
+                };
 
         CoordinateReferenceSystem WGS84 =
                 (CoordinateReferenceSystem) CRS.decode("EPSG:4326"); // latlong
@@ -216,73 +204,41 @@ public class CRSTest extends TestCase {
 
         MathTransform transform = CRS.findMathTransform(BC_ALBERS, WGS84);
 
-        Polygon polyAfter = (Polygon) JTS.transform(poly1, transform);
-        // System.out.println(polyAfter);
+        double[] polyAfter = new double[10];
+        transform.transform(poly1, 0, polyAfter, 0, 5);
 
-        assertEnvelopeEquals(poly3, polyAfter, 0.00000000000001);
-
-        Envelope before = poly1.getEnvelopeInternal();
-        Envelope expected = poly3.getEnvelopeInternal();
-
-        Envelope after = JTS.transform(before, transform);
-        assertEquals(expected, after);
+        assertArrayEquals(poly3, polyAfter, 0.00000000000001);
     }
 
     public void testReprojectionDefault() throws Exception {
         // origional bc alberts
-        Polygon poly1 =
-                poly(
-                        new double[] {
-                            1187128, 395268, 1187128, 396027,
-                            1188245, 396027, 1188245, 395268,
-                            1187128, 395268
-                        });
+        double[] poly1 =
+                new double[] {
+                    1187128, 395268, 1187128, 396027,
+                    1188245, 396027, 1188245, 395268,
+                    1187128, 395268
+                };
 
         // transformed
-        Polygon poly3 =
-                poly(
-                        new double[] {
-                            -123.47009555832284, 48.543261561072285,
-                            -123.46972894676578, 48.55009592117936,
-                            -123.45463828850829, 48.54973520267304,
-                            -123.4550070827961, 48.54290089070186,
-                            -123.47009555832284, 48.543261561072285
-                        });
+        double[] poly3 =
+                new double[] {
+                    -123.47009555832284, 48.543261561072285,
+                    -123.46972894676578, 48.55009592117936,
+                    -123.45463828850829, 48.54973520267304,
+                    -123.4550070827961, 48.54290089070186,
+                    -123.47009555832284, 48.543261561072285
+                };
 
         CoordinateReferenceSystem WGS84 = DefaultGeographicCRS.WGS84;
         CoordinateReferenceSystem BC_ALBERS = (CoordinateReferenceSystem) CRS.decode("EPSG:42102");
 
         MathTransform transform = CRS.findMathTransform(BC_ALBERS, WGS84);
-
-        Polygon polyAfter = (Polygon) JTS.transform(poly1, transform);
-        // System.out.println(polyAfter);
-
-        assertEnvelopeEquals(poly3, polyAfter, 0.00000000000001);
-
-        Envelope before = poly1.getEnvelopeInternal();
-        Envelope expected = poly3.getEnvelopeInternal();
-
-        Envelope after = JTS.transform(before, transform);
-        assertEquals(expected, after);
+        double[] polyAfter = new double[poly1.length];
+        transform.transform(poly1, 0, polyAfter, 0, 5);
+        assertArrayEquals(poly3, polyAfter, 0.00000000000001);
     }
 
     public static GeometryFactory factory = new GeometryFactory();
-
-    public static Polygon poly(double coords[]) {
-        return factory.createPolygon(ring(coords), null);
-    }
-
-    public static LinearRing ring(double coords[]) {
-        return factory.createLinearRing(coords(coords));
-    }
-
-    public static CoordinateSequence coords(double coords[]) {
-        Coordinate array[] = new Coordinate[coords.length / 2];
-        for (int i = 0; i < array.length; i++) {
-            array[i] = new Coordinate(coords[i * 2], coords[i * 2 + 1]);
-        }
-        return factory.getCoordinateSequenceFactory().create(array);
-    }
 
     protected void assertEnvelopeEquals(Geometry a, Geometry b, double tolerance) {
         Envelope aEnv = a.getEnvelopeInternal();

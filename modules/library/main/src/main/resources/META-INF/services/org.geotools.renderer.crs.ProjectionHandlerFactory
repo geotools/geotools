@@ -5,3 +5,4 @@ org.geotools.renderer.crs.PolarStereographicHandlerFactory
 org.geotools.renderer.crs.LambertAzimuthalEqualAreaHandlerFactory
 org.geotools.renderer.crs.ConicHandlerFactory
 org.geotools.renderer.crs.WorldVanDerGrintenIHandlerFactory
+org.geotools.renderer.crs.AzimulthalEquidistantProjectionHandlerFactory

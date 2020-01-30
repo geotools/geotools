@@ -2188,6 +2188,75 @@ public class SLDTransformerTest {
         assertXpathNotExists("//sld:WellKnownName", doc);
     }
 
+    @Test
+    public void testWKTMarkAlongLine() throws Exception {
+
+        String xml =
+                "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>"
+                        + "<StyledLayerDescriptor version=\"1.0.0\""
+                        + "                       xsi:schemaLocation=\"http://www.opengis.net/sld http://schemas.opengis.net/sld/1.0.0/StyledLayerDescriptor.xsd\""
+                        + "                       xmlns=\"http://www.opengis.net/sld\" xmlns:ogc=\"http://www.opengis.net/ogc\""
+                        + "                       xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">"
+                        + "  <NamedLayer>"
+                        + "    <Name>hel-zigzag</Name>"
+                        + "    <UserStyle>"
+                        + "      <Title>A sin wave line</Title>"
+                        + "      <FeatureTypeStyle>"
+                        + "        <Rule>"
+                        + "          <Name>Sine Wave</Name>"
+                        + "          <LineSymbolizer>"
+                        + "            <Stroke>"
+                        + "              <GraphicStroke>"
+                        + "                <Graphic>"
+                        + "                  <Mark>"
+                        + "                    <WellKnownName>wkt://COMPOUNDCURVE(CIRCULARSTRING(0 0, 0.25 0.25, 0.5 0), CIRCULARSTRING(0.5 0, 0.75 -0.25, 1 0))</WellKnownName>"
+                        + "                    <Stroke>"
+                        + "                      <CssParameter name=\"stroke\">0x0000AA</CssParameter>"
+                        + "                      <CssParameter name=\"stroke-width\">3</CssParameter>"
+                        + "                      <CssParameter name=\"stroke-linecap\">round</CssParameter>"
+                        + "                    </Stroke>"
+                        + "                  </Mark>"
+                        + "                  <Size>20</Size>"
+                        + "                </Graphic>"
+                        + "              </GraphicStroke>"
+                        + "            </Stroke>"
+                        + "            <VendorOption name=\"markAlongLine\">true</VendorOption>"
+                        + "            <VendorOption name=\"markAlongLineScaleLimit\">0.9</VendorOption>"
+                        + "            <VendorOption name=\"markAlongLineSimplify\">0.4</VendorOption>"
+                        + "          </LineSymbolizer>"
+                        + "        </Rule>"
+                        + "      </FeatureTypeStyle>"
+                        + "    </UserStyle>"
+                        + "  </NamedLayer>"
+                        + "</StyledLayerDescriptor>";
+
+        StringReader reader = new StringReader(xml);
+        SLDParser sldParser = new SLDParser(sf, reader);
+
+        Style[] styles = sldParser.readXML();
+
+        Style style = styles[0];
+
+        Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+
+        List<? extends Symbolizer> symbolizers = rule.symbolizers();
+
+        LineSymbolizer lineSymbolizer = (LineSymbolizer) symbolizers.get(0);
+        assertNotNull(lineSymbolizer);
+
+        SLDTransformer st = new SLDTransformer();
+        st.setExportDefaultValues(true);
+        st.setIndentation(2);
+        String lineSymbolizerXML = st.transform(rule);
+
+        Document doc = buildTestDocument(lineSymbolizerXML);
+        assertXpathExists("//sld:LineSymbolizer/sld:VendorOption[@name='markAlongLine']", doc);
+        assertXpathExists(
+                "//sld:LineSymbolizer/sld:VendorOption[@name='markAlongLineScaleLimit']", doc);
+        assertXpathExists(
+                "//sld:LineSymbolizer/sld:VendorOption[@name='markAlongLineSimplify']", doc);
+    }
+
     private StyledLayerDescriptor buildSLDAroundSymbolizer(
             org.geotools.styling.Symbolizer symbolizer) {
         StyleBuilder sb = new StyleBuilder();

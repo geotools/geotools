@@ -167,14 +167,12 @@ public final class JP2KFormat extends AbstractGridFormat implements Format {
     /** @see org.geotools.data.coverage.grid.AbstractGridFormat#accepts(java.lang.Object input) */
     @Override
     public boolean accepts(Object input, Hints hints) {
-        try {
-
-            // Directories aren't accepted
-            if (input != null && input instanceof File) {
-                final File directory = (File) input;
-                if (!directory.exists() || directory.isDirectory()) return false;
-            }
-            final ImageInputStream stream = ImageIO.createImageInputStream(input);
+        // Directories aren't accepted
+        if (input != null && input instanceof File) {
+            final File directory = (File) input;
+            if (!directory.exists() || directory.isDirectory()) return false;
+        }
+        try (ImageInputStream stream = ImageIO.createImageInputStream(input)) {
             if (spi == null) {
                 ImageReader reader = Utils.getReader(stream);
                 if (reader != null) spi = reader.getOriginatingProvider();

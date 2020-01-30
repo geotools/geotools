@@ -523,8 +523,8 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
 
         // JD: hack for date values, we append some additional padding to handle
         // the matching of time/timezone/etc...
-        AttributeDescriptor ad = (AttributeDescriptor) att.evaluate(featureType);
-        if (ad != null && Date.class.isAssignableFrom(ad.getType().getBinding())) {
+        Class attributeType = getExpressionType(att);
+        if (Date.class.isAssignableFrom(attributeType)) {
             literal += multi;
         }
 
@@ -939,6 +939,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         visitInFunction(in, false, negated, null);
     }
 
+    @SuppressWarnings("PMD.CloseResource") // no need to close, it's a field
     protected void writeBinaryExpression(Expression e, Class context) throws IOException {
         Writer tmp = out;
         try {
@@ -947,7 +948,6 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             e.accept(this, null);
             out.write(")");
             tmp.write(cast(out.toString(), context));
-
         } finally {
             out = tmp;
         }
@@ -1859,6 +1859,8 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      *
      * <p>Typically this is the double-quote character, ", but may not be for all databases.
      *
+     * <p>If a name contains the escape string itself, the escape string is duplicated.
+     *
      * <p>For example, consider the following query:
      *
      * <p>SELECT Geom FROM Spear.ArchSites May be interpreted by the database as: SELECT GEOM FROM
@@ -1872,12 +1874,27 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     }
 
     /**
-     * Surrounds a name with the SQL escape character.
+     * Surrounds a name with the SQL escape string.
+     *
+     * <p>If the name contains the SQL escape string, the SQL escape string is duplicated.
      *
      * @param name
      */
     public String escapeName(String name) {
-        return sqlNameEscape + name + sqlNameEscape;
+        if (sqlNameEscape.isEmpty()) return name;
+        StringBuilder sb = new StringBuilder();
+        sb.append(sqlNameEscape);
+        int offset = 0;
+        int escapeOffset;
+        while ((escapeOffset = name.indexOf(sqlNameEscape, offset)) != -1) {
+            sb.append(name.substring(offset, escapeOffset));
+            sb.append(sqlNameEscape);
+            sb.append(sqlNameEscape);
+            offset = escapeOffset + sqlNameEscape.length();
+        }
+        sb.append(name.substring(offset));
+        sb.append(sqlNameEscape);
+        return sb.toString();
     }
 
     /**

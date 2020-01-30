@@ -11,14 +11,14 @@ application (or publish out via a "web processing service" such as GeoServer or 
 When used with a Process Engine these individual processes can be chained together to make for
 interesting and useful scripts.
 
-This process data structure is a lot more capable than the Functions we added to the geotools filter
+This process data structure is a lot more capable than the Functions we added to the GeoTools filter
 system and is able to work on large quantities of data as needed. The general idea is similar in that you get to write some simple java code and package it up
 for the GeoTools library to use. 
 
 We have a number of options:
 
-* Annotations
-* DataStructure
+* ``Annotations``
+* ``DataStructure``
 
 Reference:
 
@@ -30,7 +30,7 @@ Process Annotations
 This is the fastest way to create a process; and is great (as long as your process produces a
 single result).
 
-1. Add a dependency on **gt-process** to your project::
+1. Add a dependency on ``gt-process`` to your project::
 
     <dependency>
       <groupId>org.geotools</groupId>
@@ -38,7 +38,7 @@ single result).
       <version>${geotools.version}</version>
     </dependency>
 
-2. To start with we need to create a class that extends StaticMethodsProcessFactory:
+2. To start with we need to create a class that extends ``StaticMethodsProcessFactory``:
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/process/ProcessTutorial.java
       :language: java
@@ -57,11 +57,11 @@ single result).
         return new OctagonalEnvelope(geom).toGeometry(geom.getFactory());
     }
     
-5. And then we can fill in the annotations to desribe our process, result and parameters.
+5. And then we can fill in the annotations to describe our process, result and parameters.
    
-   * @DescribeProcess
-   * @DescribeParameter
-   * @DescribeResult
+   * ``@DescribeProcess``
+   * ``@DescribeParameter``
+   * ``@DescribeResult``
    
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/process/ProcessTutorial.java
       :language: java
@@ -72,18 +72,18 @@ single result).
    
    Create the file:
    
-   * META-INF/services/org.geotools.process.ProcessFactory
+   * ``META-INF/services/org.geotools.process.ProcessFactory``
 
 7. Fill in the following contents (one implementation class per line)::
    
       org.geotools.tutorial.process.ProcessTutorial
 
-8. That is it octagnalEnvelope is now published.
+8. That is it ``octagnalEnvelope`` is now published.
 
 Things to Try
 ^^^^^^^^^^^^^
 
-* Try calling your process using the *Processors* utility class
+* Try calling your process using the ``Processors`` utility class
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/process/ProcessExample.java
       :language: java
@@ -94,8 +94,8 @@ Things to Try
   
   .. image:: images/octagonal_envelope.png
 
-* The Processors class can also list a Map<String,Parameter> allowing you to show a wizard
-  for data entry (just like when connecting to a DataStore).
+* The ``Processors`` class can also list a ``Map<String,Parameter>`` allowing you to show a wizard
+  for data entry (just like when connecting to a ``DataStore``).
   
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/process/ProcessExample.java
       :language: java

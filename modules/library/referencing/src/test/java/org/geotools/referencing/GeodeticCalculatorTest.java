@@ -38,6 +38,7 @@ import org.geotools.referencing.cs.DefaultEllipsoidalCS;
 import org.geotools.referencing.datum.DefaultEllipsoid;
 import org.geotools.referencing.datum.DefaultGeodeticDatum;
 import org.geotools.test.TestData;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.FactoryException;
@@ -255,6 +256,7 @@ public final class GeodeticCalculatorTest {
     }
 
     @Test
+    @Ignore // cannot make this time assumptions on containerized builds...
     public void testGEOT6077() {
         long start = System.currentTimeMillis();
         GeodeticCalculator calculator = new GeodeticCalculator();

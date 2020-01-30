@@ -6,7 +6,7 @@ from common import *
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
 extensions = ['sphinx.ext.extlinks']
 
-extlinks = { 
+extlinks = {
     'geoserver': ('http://docs.geoserver.org/latest/en/user/%s','')
 }
 
@@ -20,3 +20,5 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 html_title='GeoTools %s User Guide' % release
+
+spelling_show_suggestions=False

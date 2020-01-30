@@ -1,12 +1,12 @@
 Ingres Plugin
 -------------
 
-Unsupported plugin currently under construction; ask on the geotools user list if you
+Unsupported plugin currently under construction; ask on the GeoTools user list if you
 would like to help out.
 
 **Maven**
 
-Note that the groupId is **org.geotools.jdbc** for this and other JDBC plugin modules.
+Note that the ``groupId`` is ``org.geotools.jdbc`` for this and other JDBC plugin modules.
 
 ::
 

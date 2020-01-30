@@ -18,17 +18,28 @@
 
 package org.geotools.mbtiles;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Map;
-import org.apache.commons.dbcp.BasicDataSource;
-import org.geotools.data.Parameter;
-import org.geotools.jdbc.JDBCDataStore;
-import org.geotools.jdbc.JDBCDataStoreFactory;
-import org.geotools.jdbc.SQLDialect;
-import org.sqlite.SQLiteConfig;
+import static org.geotools.jdbc.JDBCDataStoreFactory.DATASOURCE;
+import static org.geotools.jdbc.JDBCDataStoreFactory.NAMESPACE;
+import static org.geotools.jdbc.JDBCDataStoreFactory.PASSWD;
 
-public class MBTilesDataStoreFactory extends JDBCDataStoreFactory {
+import java.io.File;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import javax.sql.DataSource;
+import org.geotools.data.DataStore;
+import org.geotools.data.DataStoreFactorySpi;
+import org.geotools.data.DataUtilities;
+import org.geotools.data.Parameter;
+import org.geotools.jdbc.JDBCDataStoreFactory;
+import org.sqlite.SQLiteConfig;
+import org.sqlite.javax.SQLiteConnectionPoolDataSource;
+
+public class MBTilesDataStoreFactory implements DataStoreFactorySpi {
+
+    private static final String MBTILES_DBTYPE = "mbtiles";
 
     /** parameter for database type */
     public static final Param DBTYPE =
@@ -37,7 +48,7 @@ public class MBTilesDataStoreFactory extends JDBCDataStoreFactory {
                     String.class,
                     "Type",
                     true,
-                    "mbtiles",
+                    MBTILES_DBTYPE,
                     Collections.singletonMap(Parameter.LEVEL, "program"));
 
     /** optional user parameter */
@@ -49,91 +60,120 @@ public class MBTilesDataStoreFactory extends JDBCDataStoreFactory {
                     false,
                     JDBCDataStoreFactory.USER.sample);
 
+    public static final Param DATABASE =
+            new Param(
+                    "database",
+                    File.class,
+                    "Database",
+                    true,
+                    null,
+                    Collections.singletonMap(Param.EXT, "mbtiles"));
+
     @Override
-    protected String getDatabaseID() {
-        return "mbtiles";
+    public String getDisplayName() {
+        return "MBTiles with vector tiles";
     }
 
     @Override
     public String getDescription() {
-        return "MbTiles";
+        return getDisplayName();
     }
 
     @Override
-    protected String getDriverClassName() {
-        return "org.sqlite.JDBC";
+    public Param[] getParametersInfo() {
+        LinkedHashMap map = new LinkedHashMap();
+        setupParameters(map);
+
+        return (Param[]) map.values().toArray(new Param[map.size()]);
     }
 
-    @Override
-    protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {
-        return new MBTilesDialect(dataStore);
-    }
-
-    @Override
-    protected String getValidationQuery() {
-        return "SELECT 1";
-    }
-
-    @Override
-    protected String getJDBCUrl(Map params) throws IOException {
-        String db = (String) DATABASE.lookUp(params);
-        return "jdbc:sqlite:" + db;
-    }
-
-    @Override
     protected void setupParameters(Map parameters) {
-        super.setupParameters(parameters);
-
-        // remove unneccessary parameters
-        parameters.remove(HOST.key);
-        parameters.remove(PORT.key);
-        parameters.remove(SCHEMA.key);
-
-        // remove user and password temporarily in order to make username optional
-        parameters.remove(JDBCDataStoreFactory.USER.key);
-        parameters.put(USER.key, USER);
-
-        // add user
-        // add additional parameters
         parameters.put(DBTYPE.key, DBTYPE);
+        parameters.put(DATABASE.key, DATABASE);
+        parameters.put(NAMESPACE.key, NAMESPACE);
+        parameters.put(USER.key, USER);
+        parameters.put(PASSWD.key, PASSWD);
     }
 
     @Override
-    public BasicDataSource createDataSource(Map params) throws IOException {
-        // create a datasource
-        BasicDataSource dataSource = new BasicDataSource();
+    public boolean isAvailable() {
+        try {
+            // check if the sqlite-jdbc driver is in the classpath
+            Class.forName("org.sqlite.JDBC");
 
-        // driver
-        dataSource.setDriverClassName(getDriverClassName());
-
-        // url
-        dataSource.setUrl(getJDBCUrl(params));
-
-        // dataSource.setMaxActive(1);
-        // dataSource.setMinIdle(1);
-
-        // dataSource.setTestOnBorrow(true);
-        // dataSource.setValidationQuery(getValidationQuery());
-        addConnectionProperties(dataSource);
-
-        return dataSource;
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
     }
 
     @Override
-    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map params)
+    public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException {
+        return null;
+    }
+
+    @Override
+    public DataStore createDataStore(Map<String, Serializable> params) throws IOException {
+        // datasource
+        // check if the DATASOURCE parameter was supplied, it takes precendence
+        DataSource ds = (DataSource) DATASOURCE.lookUp(params);
+        if (ds == null) {
+            ds = createDataSource(params, true);
+        }
+        String namespace = (String) NAMESPACE.lookUp(params);
+        return new MBTilesDataStore(namespace, new MBTilesFile(ds));
+    }
+
+    /**
+     * Same as the GeoPackage data store, if you modify this, probably want to check if
+     * modifications make sense there too
+     *
+     * @param params
+     */
+    protected DataSource createDataSource(Map<String, Serializable> params, boolean readOnly)
             throws IOException {
-        dataStore.setDatabaseSchema(null);
-        return dataStore;
-    }
-
-    static void addConnectionProperties(BasicDataSource dataSource) {
         SQLiteConfig config = new SQLiteConfig();
         config.setSharedCache(true);
         config.enableLoadExtension(true);
-        // config.enableSpatiaLite(true);
+        if (readOnly) {
+            config.setReadOnly(true);
+            config.setPragma(SQLiteConfig.Pragma.SYNCHRONOUS, "OFF");
+        }
 
-        for (Map.Entry e : config.toProperties().entrySet()) {
-            dataSource.addConnectionProperty((String) e.getKey(), (String) e.getValue());
+        // use native "pool", which is actually not pooling anything (that's fast and
+        // has less scalability overhead than DBCP)
+        SQLiteConnectionPoolDataSource ds = new SQLiteConnectionPoolDataSource(config);
+        ds.setUrl(getJDBCUrl(params));
+
+        return ds;
+    }
+
+    private String getJDBCUrl(Map params) throws IOException {
+        File db = (File) DATABASE.lookUp(params);
+        if (db.getPath().startsWith("file:")) {
+            db = new File(db.getPath().substring(5));
+        }
+        return "jdbc:sqlite:" + db;
+    }
+
+    public boolean canProcess(Map params) {
+        if (!DataUtilities.canProcess(params, getParametersInfo())) {
+            return false;
+        }
+        return checkDBType(params);
+    }
+
+    protected final boolean checkDBType(Map params) {
+        try {
+            String type = (String) DBTYPE.lookUp(params);
+
+            if (MBTILES_DBTYPE.equals(type)) {
+                return true;
+            }
+
+            return false;
+        } catch (IOException e) {
+            return false;
         }
     }
 }

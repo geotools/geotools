@@ -16,15 +16,21 @@
  */
 package org.geotools.data.ows;
 
+import static javax.xml.stream.XMLInputFactory.IS_COALESCING;
+import static javax.xml.stream.XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES;
+import static javax.xml.stream.XMLInputFactory.SUPPORT_DTD;
+import static javax.xml.stream.XMLStreamConstants.END_DOCUMENT;
+import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
+
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 import org.geotools.ows.ServiceException;
-import org.jdom2.Document;
-import org.jdom2.Element;
-import org.jdom2.JDOMException;
-import org.jdom2.input.SAXBuilder;
 
 /**
  * Utility class that will parse ServiceExceptions out of an inputStream.
@@ -39,51 +45,61 @@ public class ServiceExceptionParser {
      *
      * <p>ServiceExceptions beyond the first can be accessed using ServiceException.next();
      *
-     * @param inputStream
-     * @throws JDOMException
+     * @param inputStream stream to parse the exception report from, not closed by this method
      * @throws IOException
      */
-    public static ServiceException parse(InputStream inputStream)
-            throws JDOMException, IOException {
-        SAXBuilder builder = new SAXBuilder();
-        builder.setExpandEntities(false);
-        Document document = builder.build(inputStream);
+    public static ServiceException parse(InputStream inputStream) throws IOException {
+        List<ServiceException> exceptions = new ArrayList<>();
+        try {
+            XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+            // disable resolving of external DTD entities (coalescing needs to be false)
+            inputFactory.setProperty(IS_COALESCING, false);
+            inputFactory.setProperty(IS_REPLACING_ENTITY_REFERENCES, false);
+            // disallow DTDs entirely
+            inputFactory.setProperty(SUPPORT_DTD, false);
 
-        Element root = document.getRootElement();
-        List<Element> serviceExceptions = root.getChildren("ServiceException");
-
+            XMLStreamReader reader = inputFactory.createXMLStreamReader(inputStream, "UTF-8");
+            int tag;
+            while ((tag = reader.next()) != END_DOCUMENT) {
+                if (tag == START_ELEMENT && reader.getLocalName().equals("ServiceException")) {
+                    String code = parseServiceExceptionCode(reader);
+                    String errorMessage = parseServiceExceptionMessage(reader);
+                    exceptions.add(new ServiceException(errorMessage, code));
+                }
+            }
+        } catch (XMLStreamException e) {
+            throw new IOException(e);
+        }
         /*
          * ServiceExceptions with codes get bumped to the top of the list.
          */
-        List<ServiceException> parsedExceptions =
-                serviceExceptions
-                        .stream()
-                        .map(ServiceExceptionParser::parseSE)
-                        .sorted(ServiceExceptionParser::compare)
-                        .collect(Collectors.toList());
+        Collections.sort(exceptions, ServiceExceptionParser::compare);
         /*
          * Now chain them.
          */
-        ServiceException firstException = null;
-        ServiceException recentException = null;
-        for (ServiceException exception : parsedExceptions) {
-            if (firstException == null) {
-                firstException = exception;
-                recentException = exception;
-            } else {
-                recentException.setNext(exception);
-                recentException = exception;
-            }
+        for (int i = 0; i < exceptions.size() - 1; i++) {
+            exceptions.get(i).setNext(exceptions.get(i + 1));
         }
-
-        return firstException;
+        return exceptions.isEmpty() ? null : exceptions.get(0);
     }
 
-    private static ServiceException parseSE(Element element) {
-        String errorMessage = element.getText();
-        String code = element.getAttributeValue("code");
+    private static String parseServiceExceptionMessage(XMLStreamReader reader)
+            throws XMLStreamException {
+        reader.require(START_ELEMENT, null, "ServiceException");
+        return reader.getElementText();
+    }
 
-        return new ServiceException(errorMessage, code);
+    private static String parseServiceExceptionCode(XMLStreamReader reader)
+            throws XMLStreamException {
+        reader.require(START_ELEMENT, null, "ServiceException");
+        String value = null;
+        for (int i = 0; i < reader.getAttributeCount(); i++) {
+            if ("code".equals(reader.getAttributeLocalName(i))) {
+                value = reader.getAttributeValue(i);
+                break;
+            }
+        }
+        return value;
     }
 
     private static int sortValue(ServiceException exception) {

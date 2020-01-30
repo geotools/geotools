@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>org.geotools</groupId>
 		<artifactId>modules</artifactId>
-		<version>22-SNAPSHOT</version>
+		<version>23-SNAPSHOT</version>
 	</parent>
 
 
@@ -140,6 +140,17 @@
 			</modules>
 		</profile>
 		<profile>
+			<id>flatgeobuf</id>
+			<activation>
+				<property>
+					<name>all</name>
+				</property>
+			</activation>
+			<modules>
+				<module>flatgeobuf</module>
+			</modules>
+		</profile>
+		<profile>
 			<id>css</id>
 			<activation>
 				<property>
@@ -199,7 +210,6 @@
 				</property>
 			</activation>
 			<modules>
-				<module>csv</module>
 				<module>jdbc-ng</module>
 				<module>solr</module>
 				<module>css</module>
@@ -214,6 +224,17 @@
 			<id>arcgis-rest</id>
 			<modules>
 				<module>arcgis-rest</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>arcsde</id>
+			<activation>
+				<property>
+					<name>all</name>
+				</property>
+			</activation>
+			<modules>
+				<module>arcsde</module>
 			</modules>
 		</profile>
 

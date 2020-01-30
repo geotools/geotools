@@ -480,6 +480,7 @@ public class DefaultFeatureCollection
     //    }
 
     public FeatureReader<SimpleFeatureType, SimpleFeature> reader() throws IOException {
+        @SuppressWarnings("PMD.CloseResource") // wrapped and returned
         final SimpleFeatureIterator iterator = features();
         return new FeatureReader<SimpleFeatureType, SimpleFeature>() {
             public SimpleFeatureType getFeatureType() {

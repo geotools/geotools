@@ -19,14 +19,16 @@ package org.geotools.renderer.label;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
+import java.io.IOException;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.renderer.label.LabelCacheImpl.LabelRenderingMode;
+import org.geotools.renderer.lite.RendererBaseTest;
+import org.geotools.renderer.style.MarkStyle2D;
 import org.geotools.renderer.style.TextStyle2D;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyleFactoryImpl;
@@ -49,7 +51,8 @@ public class LabelPainterTest {
     LiteShape2 shape;
 
     @Before
-    public void setUp() throws TransformException, FactoryException {
+    public void setUp()
+            throws TransformException, FactoryException, IOException, FontFormatException {
         graphics = Mockito.mock(Graphics2D.class);
         Mockito.when(graphics.getFontRenderContext())
                 .thenReturn(
@@ -66,6 +69,8 @@ public class LabelPainterTest {
                         null,
                         false);
         symbolizer = styleFactory.createTextSymbolizer();
+
+        RendererBaseTest.setupVeraFonts();
     }
 
     @Test
@@ -125,5 +130,60 @@ public class LabelPainterTest {
         assertTrue(
                 painter.lines.get(painter.getLineCount() - 1).getLineHeight()
                         == painter.getLineHeightForAnchorY(1));
+    }
+
+    @Test
+    public void testFullLabelBoundsNativeSize() throws Exception {
+        TextStyle2D style = new TextStyle2D();
+        style.setFont(new Font("Bitstream Vera Sans", Font.PLAIN, 10));
+
+        LabelPainter painter = new LabelPainter(graphics, LabelRenderingMode.STRING);
+        LabelCacheItem labelItem = new LabelCacheItem("LAYERID", style, shape, "line1", symbolizer);
+        painter.setLabel(labelItem);
+
+        double tolerance = 2; // account for JDK/OS specific differences despite the same font
+
+        // check bounds with no graphic
+        Rectangle2D lBounds = painter.getFullLabelBounds();
+        assertEquals(0, lBounds.getMinX(), tolerance);
+        assertEquals(-7.5, lBounds.getMinY(), tolerance);
+        assertEquals(22, lBounds.getWidth(), tolerance);
+        assertEquals(8, lBounds.getHeight(), tolerance);
+
+        // set a graphic
+        MarkStyle2D mark = new MarkStyle2D();
+        mark.setShape(new Rectangle2D.Double(-.5, -.5, 1., 1.));
+        mark.setSize(20);
+        style.setGraphic(mark);
+        painter.setLabel(labelItem);
+
+        // check bounds with graphic (expands height)
+        Rectangle2D lgBounds = painter.getFullLabelBounds();
+        assertEquals(0, lgBounds.getMinX(), tolerance);
+        assertEquals(-13.5, lgBounds.getMinY(), tolerance);
+        assertEquals(22, lgBounds.getWidth(), tolerance);
+        assertEquals(20, lgBounds.getHeight(), tolerance);
+
+        // stretch graphics with margin
+        labelItem.setGraphicsResize(LabelCacheItem.GraphicResize.STRETCH);
+        labelItem.setGraphicMargin(new int[] {5, 5, 5, 5});
+        painter.setLabel(labelItem);
+
+        Rectangle2D lgsBounds = painter.getFullLabelBounds();
+        assertEquals(-5, lgsBounds.getMinX(), tolerance);
+        assertEquals(-12.5, lgsBounds.getMinY(), tolerance);
+        assertEquals(32, lgsBounds.getWidth(), tolerance);
+        assertEquals(18, lgsBounds.getHeight(), tolerance);
+
+        // same as above but grow proportionally instead
+        labelItem.setGraphicsResize(LabelCacheItem.GraphicResize.PROPORTIONAL);
+        labelItem.setGraphicMargin(null);
+        painter.setLabel(labelItem);
+
+        Rectangle2D lgpBounds = painter.getFullLabelBounds();
+        assertEquals(0, lgpBounds.getMinX(), tolerance);
+        assertEquals(-14, lgpBounds.getMinY(), tolerance);
+        assertEquals(22, lgpBounds.getWidth(), tolerance);
+        assertEquals(22, lgpBounds.getHeight(), tolerance);
     }
 }

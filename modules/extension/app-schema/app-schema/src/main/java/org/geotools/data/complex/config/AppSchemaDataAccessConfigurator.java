@@ -20,11 +20,15 @@ package org.geotools.data.complex.config;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -40,6 +44,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.geotools.appschema.filter.FilterFactoryImplReportInvalidProperty;
@@ -173,12 +178,49 @@ public class AppSchemaDataAccessConfigurator {
         this.config = config;
         this.dataStoreMap = dataStoreMap;
         namespaces = new NamespaceSupport();
+        declareNamespaces(config);
+    }
+
+    private void declareNamespaces(AppSchemaDataAccessDTO config) {
         Map nsMap = config.getNamespaces();
         for (Iterator it = nsMap.entrySet().iterator(); it.hasNext(); ) {
             Map.Entry entry = (Entry) it.next();
             String prefix = (String) entry.getKey();
             String namespace = (String) entry.getValue();
             namespaces.declarePrefix(prefix, namespace);
+        }
+        // check included namespaces
+        final Set<String> evaluatedURLs = new HashSet<String>();
+        config.getIncludes()
+                .forEach(
+                        filename ->
+                                processNamespaces(
+                                        config.getBaseSchemasUrl(), filename, evaluatedURLs));
+    }
+
+    private void processNamespaces(String baseURL, String filename, Set<String> evaluatedURLs) {
+        try {
+            XMLConfigDigester configReader = new XMLConfigDigester();
+            URI baseUri = new URL(baseURL).toURI();
+            URL url = baseUri.resolve(filename).toURL();
+            if (evaluatedURLs.contains(url.toExternalForm())) return;
+            else evaluatedURLs.add(url.toExternalForm());
+            AppSchemaDataAccessDTO config = configReader.parse(url);
+            for (Iterator it = config.getNamespaces().entrySet().iterator(); it.hasNext(); ) {
+                Map.Entry entry = (Entry) it.next();
+                String prefix = (String) entry.getKey();
+                String namespace = (String) entry.getValue();
+                if (namespaces.getURI(prefix) == null) namespaces.declarePrefix(prefix, namespace);
+            }
+            if (!CollectionUtils.isEmpty(config.getIncludes())) {
+                for (String fname : config.getIncludes()) {
+                    processNamespaces(config.getBaseSchemasUrl(), fname, evaluatedURLs);
+                }
+            }
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -303,6 +345,11 @@ public class AppSchemaDataAccessConfigurator {
 
                 // set original schema locations for encoding
                 target.getType().getUserData().put("schemaURI", schemaURIs);
+
+                // set mappings namespaces
+                target.getType()
+                        .getUserData()
+                        .put(Types.DECLARED_NAMESPACES_MAP, getNamespacesMap());
 
                 boolean isDatabaseBackend =
                         featureSource instanceof JDBCFeatureSource
@@ -707,21 +754,35 @@ public class AppSchemaDataAccessConfigurator {
      */
     private Map getClientProperties(org.geotools.data.complex.config.AttributeMapping dto)
             throws DataSourceException {
+        final Map clientProperties = new HashMap();
 
-        if (dto.getClientProperties().size() == 0) {
-            return Collections.EMPTY_MAP;
+        if (dto.getClientProperties().size() > 0) {
+            for (Iterator it = dto.getClientProperties().entrySet().iterator(); it.hasNext(); ) {
+                Map.Entry entry = (Map.Entry) it.next();
+                String name = (String) entry.getKey();
+                Name qName = Types.degloseName(name, namespaces);
+                String cqlExpression = (String) entry.getValue();
+                final Expression expression = parseOgcCqlExpression(cqlExpression);
+                clientProperties.put(qName, expression);
+            }
         }
 
-        Map clientProperties = new HashMap();
-        for (Iterator it = dto.getClientProperties().entrySet().iterator(); it.hasNext(); ) {
-            Map.Entry entry = (Map.Entry) it.next();
-            String name = (String) entry.getKey();
-            Name qName = Types.degloseName(name, namespaces);
-            String cqlExpression = (String) entry.getValue();
-            final Expression expression = parseOgcCqlExpression(cqlExpression);
-            clientProperties.put(qName, expression);
-        }
+        // add anonymous attributes
+        addAnonymousAttributes(dto, clientProperties);
+
         return clientProperties;
+    }
+
+    private void addAnonymousAttributes(
+            org.geotools.data.complex.config.AttributeMapping dto, final Map clientProperties)
+            throws DataSourceException {
+        for (Map.Entry<String, String> entry : dto.getAnonymousAttributes().entrySet()) {
+            Name qname = Types.degloseName(entry.getKey(), namespaces);
+            ComplexNameImpl complexName =
+                    new ComplexNameImpl(qname.getNamespaceURI(), qname.getLocalPart(), true);
+            Expression expression = parseOgcCqlExpression(entry.getValue());
+            clientProperties.put(complexName, expression);
+        }
     }
 
     private FeatureSource<FeatureType, Feature> getFeatureSource(
@@ -1103,5 +1164,45 @@ public class AppSchemaDataAccessConfigurator {
             ((XmlFeatureSource) fSource).setNamespaces(namespaces);
         }
         return fSource;
+    }
+
+    private Map<String, String> getNamespacesMap() {
+        final Map<String, String> namespacesMap = new HashMap<>();
+        final Enumeration prefixes = namespaces.getPrefixes();
+        while (prefixes.hasMoreElements()) {
+            final String prefix = (String) prefixes.nextElement();
+            final String uri = namespaces.getURI(prefix);
+            namespacesMap.put(prefix, uri);
+        }
+        return namespacesMap;
+    }
+
+    /**
+     * Name implementation capable of store more information about the attribute/element
+     * represented.
+     */
+    public static class ComplexNameImpl extends NameImpl {
+
+        private boolean isNestedElement;
+
+        public ComplexNameImpl(String namespace, String local, boolean isNestedElement) {
+            super(namespace, local);
+            this.isNestedElement = isNestedElement;
+        }
+
+        @Override
+        public String getLocalPart() {
+            return super.getLocalPart();
+        }
+
+        @Override
+        public String getNamespaceURI() {
+            return super.getNamespaceURI();
+        }
+
+        /** Returns true if represented Name is a nested element instead an attribute. */
+        public boolean isNestedElement() {
+            return isNestedElement;
+        }
     }
 }

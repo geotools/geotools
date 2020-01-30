@@ -17,7 +17,6 @@
 package org.geotools.filter;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -65,6 +64,9 @@ public class AttributeExpressionImpl extends DefaultExpression implements Proper
      * evaluation.
      */
     private Hints hints;
+
+    // accessor caching, scanning the registry every time is really very expensive
+    private volatile PropertyAccessor lastAccessor;
 
     /**
      * Constructor with the schema for this attribute.
@@ -191,7 +193,7 @@ public class AttributeExpressionImpl extends DefaultExpression implements Proper
      */
     @SuppressWarnings("unchecked")
     public <T> T evaluate(Object obj, Class<T> target) {
-        PropertyAccessor accessor = getLastPropertyAccessor();
+        PropertyAccessor accessor = lastAccessor;
 
         Object value = false;
         boolean success = false;
@@ -213,12 +215,12 @@ public class AttributeExpressionImpl extends DefaultExpression implements Proper
                     PropertyAccessors.findPropertyAccessors(obj, attPath, target, hints);
             List<Exception> exceptions = null;
             if (accessors != null) {
-                Iterator<PropertyAccessor> it = accessors.iterator();
-                while (!success && it.hasNext()) {
-                    accessor = it.next();
+                for (int i = 0; i < accessors.size(); i++) {
+                    accessor = accessors.get(i);
                     try {
                         value = accessor.get(obj, attPath, target);
                         success = true;
+                        break;
                     } catch (Exception e) {
                         // fine, we'll try another accessor
                         if (exceptions == null) {
@@ -245,7 +247,7 @@ public class AttributeExpressionImpl extends DefaultExpression implements Proper
                     throw exception;
                 }
             } else {
-                setLastPropertyAccessor(accessor);
+                lastAccessor = accessor;
             }
         }
 
@@ -254,17 +256,6 @@ public class AttributeExpressionImpl extends DefaultExpression implements Proper
         }
 
         return Converters.convert(value, target);
-    }
-
-    // accessor caching, scanning the registry every time is really very expensive
-    private PropertyAccessor lastAccessor;
-
-    private synchronized PropertyAccessor getLastPropertyAccessor() {
-        return lastAccessor;
-    }
-
-    private synchronized void setLastPropertyAccessor(PropertyAccessor accessor) {
-        lastAccessor = accessor;
     }
 
     /**

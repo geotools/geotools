@@ -19,6 +19,7 @@ package org.geotools.data.wfs;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Map;
 import java.util.logging.Logger;
 import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.Header;
@@ -38,6 +39,7 @@ import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
 import org.geotools.data.ows.AbstractOpenWebService;
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.HTTPResponse;
+import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -65,14 +67,14 @@ public class MultithreadedHttpClient implements HTTPClient {
 
     private boolean tryGzip;
 
-    public MultithreadedHttpClient() {
+    public MultithreadedHttpClient(WFSConfig config) {
         connectionManager = new MultiThreadedHttpConnectionManager();
 
         HttpConnectionManagerParams params = new HttpConnectionManagerParams();
-        params.setSoTimeout(30000);
-        params.setConnectionTimeout(30000);
-        params.setMaxTotalConnections(6);
-        params.setDefaultMaxConnectionsPerHost(6);
+        params.setSoTimeout(config.getTimeoutMillis());
+        params.setConnectionTimeout(config.getTimeoutMillis());
+        params.setMaxTotalConnections(config.getMaxConnectionPoolSize());
+        params.setDefaultMaxConnectionsPerHost(config.getMaxConnectionPoolSize());
 
         connectionManager.setParams(params);
 
@@ -145,9 +147,19 @@ public class MultithreadedHttpClient implements HTTPClient {
 
     @Override
     public HTTPResponse get(final URL url) throws IOException {
+        return get(url, null);
+    }
 
+    @Override
+    public HTTPResponse get(URL url, Map<String, String> headers) throws IOException {
         GetMethod getMethod = new GetMethod(url.toExternalForm());
         getMethod.setDoAuthentication(user != null && password != null);
+
+        if (headers != null) {
+            for (Map.Entry<String, String> headerNameValue : headers.entrySet()) {
+                getMethod.setRequestHeader(headerNameValue.getKey(), headerNameValue.getValue());
+            }
+        }
 
         int responseCode = client.executeMethod(getMethod);
         if (200 != responseCode) {

@@ -233,7 +233,6 @@ public class OGRDataStore extends ContentDataStore {
         OGRDataSource dataSource = null;
         Object layer = null;
         SimpleFeatureType schema = data.getSchema();
-        SimpleFeatureIterator features;
         try {
             // either open datasource, or try creating one
             dataSource = dataSourcePool.openOrCreateDataSource(options);
@@ -301,33 +300,34 @@ public class OGRDataStore extends ContentDataStore {
             // iterate and write out without going throught the ContentDataStore api, which
             // assumes it's possible to let go of it later
             GeometryMapper geomMapper = new GeometryMapper.WKB(new GeometryFactory(), ogr);
-            features = data.features();
-            while (features.hasNext()) {
-                SimpleFeature feature = features.next();
+            try (SimpleFeatureIterator features = data.features()) {
+                while (features.hasNext()) {
+                    SimpleFeature feature = features.next();
 
-                // create the equivalent ogr feature
-                Object ogrFeature = ogr.LayerNewFeature(layerDefinition);
-                for (int i = 0; i < schema.getAttributeCount(); i++) {
-                    Object value = feature.getAttribute(i);
-                    if (value instanceof Geometry) {
-                        // using setGeoemtryDirectly the feature becomes the owner of the generated
-                        // OGR geometry and we don't have to .delete() it (it's faster, too)
-                        Object geometry = geomMapper.parseGTGeometry((Geometry) value);
-                        ogr.FeatureSetGeometryDirectly(ogrFeature, geometry);
-                    } else {
-                        // remap index
-                        int ogrIndex = indexMap.get(i);
-                        FeatureMapper.setFieldValue(
-                                layerDefinition, ogrFeature, ogrIndex, value, ogr);
+                    // create the equivalent ogr feature
+                    Object ogrFeature = ogr.LayerNewFeature(layerDefinition);
+                    for (int i = 0; i < schema.getAttributeCount(); i++) {
+                        Object value = feature.getAttribute(i);
+                        if (value instanceof Geometry) {
+                            // using setGeoemtryDirectly the feature becomes the owner of the
+                            // generated
+                            // OGR geometry and we don't have to .delete() it (it's faster, too)
+                            Object geometry = geomMapper.parseGTGeometry((Geometry) value);
+                            ogr.FeatureSetGeometryDirectly(ogrFeature, geometry);
+                        } else {
+                            // remap index
+                            int ogrIndex = indexMap.get(i);
+                            FeatureMapper.setFieldValue(
+                                    layerDefinition, ogrFeature, ogrIndex, value, ogr);
+                        }
                     }
+
+                    // write it out
+                    ogr.CheckError(ogr.LayerCreateFeature(layer, ogrFeature));
+
+                    ogr.FeatureDestroy(ogrFeature);
                 }
-
-                // write it out
-                ogr.CheckError(ogr.LayerCreateFeature(layer, ogrFeature));
-
-                ogr.FeatureDestroy(ogrFeature);
             }
-
             ogr.LayerSyncToDisk(layer);
         } finally {
             if (layer != null) {

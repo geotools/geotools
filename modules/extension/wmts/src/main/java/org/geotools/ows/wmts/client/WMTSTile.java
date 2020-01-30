@@ -26,10 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.commons.collections.MapUtils;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.methods.GetMethod;
+import org.geotools.data.ows.HTTPClient;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.ows.wmts.model.WMTSServiceType;
 import org.geotools.tile.Tile;
@@ -232,28 +229,7 @@ class WMTSTile extends Tile {
     }
 
     private InputStream setupInputStream(URL url, Map<String, String> headers) throws IOException {
-        HttpClient client = new HttpClient();
-        String uri = url.toExternalForm();
-
-        if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, "URL is " + uri);
-
-        HttpMethod get = new GetMethod(uri);
-        if (MapUtils.isNotEmpty(headers)) {
-            for (String headerName : headers.keySet()) {
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.log(
-                            Level.FINE,
-                            "Adding header " + headerName + " = " + headers.get(headerName));
-                }
-                get.addRequestHeader(headerName, headers.get(headerName));
-            }
-        }
-
-        int code = client.executeMethod(get);
-        if (code != 200) {
-            throw new IOException("Connection returned code " + code);
-        }
-
-        return get.getResponseBodyAsStream();
+        HTTPClient client = this.service.getHttpClient();
+        return client.get(url, headers).getResponseStream();
     }
 }

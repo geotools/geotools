@@ -221,6 +221,7 @@ public class ProjectionHandler {
             ReferencedEnvelope re = renderingEnvelope;
             List<ReferencedEnvelope> envelopes = new ArrayList<ReferencedEnvelope>();
             addTransformedEnvelope(re, envelopes);
+
             if (CRS.getAxisOrder(renderingCRS) == CRS.AxisOrder.NORTH_EAST) {
                 if (re.getMinY() >= -180.0 && re.getMaxY() <= 180) {
                     return envelopes;
@@ -228,26 +229,7 @@ public class ProjectionHandler {
                 // We need to split reprojected envelope and normalize it. To be lenient with
                 // situations in which the data is just broken (people saying 4326 just because they
                 // have no idea at all) we don't actually split, but add elements
-                if (re.getMinY() < -180) {
-                    ReferencedEnvelope envelope =
-                            new ReferencedEnvelope(
-                                    re.getMinX(),
-                                    re.getMaxX(),
-                                    re.getMinY() + 360,
-                                    Math.min(re.getMaxY() + 360, 180),
-                                    re.getCoordinateReferenceSystem());
-                    addTransformedEnvelope(envelope, envelopes);
-                }
-                if (re.getMaxY() > 180) {
-                    ReferencedEnvelope envelope =
-                            new ReferencedEnvelope(
-                                    re.getMinX(),
-                                    re.getMaxX(),
-                                    Math.max(re.getMinY() - 360, -180),
-                                    re.getMaxY() - 360,
-                                    re.getCoordinateReferenceSystem());
-                    addTransformedEnvelope(envelope, envelopes);
-                }
+                adjustEnvelope(re, envelopes, true);
             } else {
                 if (re.getMinX() >= -180.0 && re.getMaxX() <= 180) {
                     return Collections.singletonList(
@@ -256,26 +238,7 @@ public class ProjectionHandler {
                 // We need to split reprojected envelope and normalize it. To be lenient with
                 // situations in which the data is just broken (people saying 4326 just because they
                 // have no idea at all) we don't actually split, but add elements
-                if (re.getMinX() < -180) {
-                    ReferencedEnvelope envelope =
-                            new ReferencedEnvelope(
-                                    re.getMinX() + 360,
-                                    Math.min(re.getMaxX() + 360, 180),
-                                    re.getMinY(),
-                                    re.getMaxY(),
-                                    re.getCoordinateReferenceSystem());
-                    addTransformedEnvelope(envelope, envelopes);
-                }
-                if (re.getMaxX() > 180) {
-                    ReferencedEnvelope envelope =
-                            new ReferencedEnvelope(
-                                    Math.max(re.getMinX() - 360, -180),
-                                    re.getMaxX() - 360,
-                                    re.getMinY(),
-                                    re.getMaxY(),
-                                    re.getCoordinateReferenceSystem());
-                    addTransformedEnvelope(envelope, envelopes);
-                }
+                adjustEnvelope(re, envelopes, true);
             }
             mergeEnvelopes(envelopes);
             return envelopes;
@@ -343,27 +306,141 @@ public class ProjectionHandler {
         // have no idea at all) we don't actually split, but add elements
         List<ReferencedEnvelope> envelopes = new ArrayList<ReferencedEnvelope>();
         envelopes.add(re);
-        if (re.getMinX() < -180) {
-            envelopes.add(
-                    new ReferencedEnvelope(
-                            re.getMinX() + 360,
-                            Math.min(re.getMaxX() + 360, 180),
-                            re.getMinY(),
-                            re.getMaxY(),
-                            re.getCoordinateReferenceSystem()));
-        }
-        if (re.getMaxX() > 180) {
-            envelopes.add(
-                    new ReferencedEnvelope(
-                            Math.max(re.getMinX() - 360, -180),
-                            re.getMaxX() - 360,
-                            re.getMinY(),
-                            re.getMaxY(),
-                            re.getCoordinateReferenceSystem()));
-        }
+        adjustEnvelope(re, envelopes, false);
         mergeEnvelopes(envelopes);
         reprojectEnvelopes(sourceCRS, envelopes);
         return envelopes.stream().filter(e -> e != null).collect(Collectors.toList());
+    }
+
+    /**
+     * Adjust the envelope by taking into account dateline wrapping as well as multiple spans of the
+     * whole world extent. When transform flag is true, the envelopes will be transformed before
+     * being returned
+     */
+    private void adjustEnvelope(
+            ReferencedEnvelope re, List<ReferencedEnvelope> envelopes, boolean transform)
+            throws TransformException, FactoryException {
+        CoordinateReferenceSystem crs = re.getCoordinateReferenceSystem();
+        boolean isLatLon = CRS.getAxisOrder(crs) == CRS.AxisOrder.NORTH_EAST;
+        double minX = isLatLon ? re.getMinY() : re.getMinX();
+        double maxX = isLatLon ? re.getMaxY() : re.getMaxX();
+        double minY = isLatLon ? re.getMinX() : re.getMinY();
+        double maxY = isLatLon ? re.getMaxX() : re.getMaxY();
+        double extent = maxX - minX;
+        List<ReferencedEnvelope> envelopesToBeAdded = new ArrayList<>();
+        if (extent > 360) {
+            // at least one whole world use case -> requested data covers the full world:
+            // let's set a -180,180 bbox.
+            // the wrapping projectionHandler and the gridCoverageReaders
+            // will do proper clones / intersections afterwards
+            minX = -180;
+            maxX = 180;
+            // Create a whole world envelope taking into account latLon/lonLat
+            ReferencedEnvelope envelope =
+                    new ReferencedEnvelope(
+                            isLatLon ? minY : minX,
+                            isLatLon ? maxY : maxX,
+                            isLatLon ? minX : minY,
+                            isLatLon ? maxX : maxY,
+                            crs);
+            envelopesToBeAdded.add(envelope);
+        } else {
+            // Note that the extent won't be > 360 at this point
+            // let's do some adjustments to "shift" the request around -180, 180 interval:
+            // we basically add or subtract 360° N times
+            // 1) let's count how many halfCircles (a 180° span) we are away from the zero
+            // Using half circles allow to understand if there is a dateline cross
+
+            // 2) add/subtract 360° N times to move forward/backward the request, also
+            // keeping into account whether we are crossing the dateline or not,
+            // by using (halfCircles % 2).
+            // An odd number of halfCircles means dateline crossing.
+            // An even number of halfCircles means no dateline crossing.
+            // i.e. minX = 371 -> halfCircles = 2 -> no dateline crossing (371° = 11°)
+            // i.e. minX = 908 -> halfCircles = 5 -> dateline crossing (908° = 188°)
+
+            // 3) add/subtract the original extent to get the other value of the interval
+            // in order to move the whole window (Note that the extent won't be > 360°
+            // since we are inside the "else")
+
+            int halfCircles = 0;
+            if (minX < -180) {
+                halfCircles = (int) ((Math.abs(minX) / 180));
+                minX += (360 * ((halfCircles / 2) + (halfCircles % 2)));
+                maxX = minX + extent;
+            } else if (minX > 180) {
+                halfCircles = (int) (minX / 180);
+                minX -= (360 * ((halfCircles / 2) + (halfCircles % 2)));
+                maxX = minX + extent;
+            } else if (maxX < -180) {
+                halfCircles = (int) (Math.abs(maxX) / 180);
+                maxX += (360 * ((halfCircles / 2) + (halfCircles % 2)));
+                minX = maxX - extent;
+            } else if (maxX > 180) {
+                halfCircles = (int) (Math.abs(maxX) / 180);
+                maxX -= (360 * ((halfCircles / 2) + (halfCircles % 2)));
+                minX = maxX - extent;
+            }
+
+            if ((int) (minX / 180) < (int) (maxX / 180)) {
+                // Dateline crossing check.
+                // Examples of [min, max] and how this IF will work
+                // a case like [-91, 91] will be 0 < 0 -> False: no Dateline cross
+                // a case like [-1, 181] will be 0 < 1 -> True: Dateline cross.
+                // a case like [-181, 1] will be -1 < 0 -> True: Dateline cross.
+
+                // Need to use 2 separate envelopes when crossing the dateline.
+                // Let's prepare 8 coordinates, 4 for each side of the dateline
+                // (left and right), keeping also into account latLon vs lonLat
+                double coord1L, coord2L, coord3L, coord4L;
+                double coord1R, coord2R, coord3R, coord4R;
+                if (minX < -180) {
+                    coord1L = isLatLon ? minY : -180;
+                    coord2L = isLatLon ? maxY : Math.min(maxX, 180);
+                    coord3L = isLatLon ? -180 : minY;
+                    coord4L = isLatLon ? Math.min(maxX, 180) : maxY;
+
+                    coord1R = isLatLon ? minY : minX + 360;
+                    coord2R = isLatLon ? maxY : 180;
+                    coord3R = isLatLon ? minX + 360 : minY;
+                    coord4R = isLatLon ? 180 : maxY;
+                } else {
+                    // maxX will be greater than 180 since we crossed the dateline
+                    // so we need to put it back of a -360 factor
+                    coord1L = isLatLon ? minY : -180;
+                    coord2L = isLatLon ? maxY : maxX - 360;
+                    coord3L = isLatLon ? -180 : minY;
+                    coord4L = isLatLon ? maxX - 360 : maxY;
+
+                    coord1R = isLatLon ? minY : minX;
+                    coord2R = isLatLon ? maxY : 180;
+                    coord3R = isLatLon ? minX : minY;
+                    coord4R = isLatLon ? 180 : maxY;
+                }
+
+                envelopesToBeAdded.add(
+                        new ReferencedEnvelope(coord1L, coord2L, coord3L, coord4L, crs));
+                envelopesToBeAdded.add(
+                        new ReferencedEnvelope(coord1R, coord2R, coord3R, coord4R, crs));
+
+            } else {
+                // No dateline has been crossed. One envelope would be enough
+                envelopesToBeAdded.add(
+                        new ReferencedEnvelope(
+                                isLatLon ? minY : minX,
+                                isLatLon ? maxY : maxX,
+                                isLatLon ? minX : minY,
+                                isLatLon ? maxX : maxY,
+                                crs));
+            }
+        }
+        for (ReferencedEnvelope env : envelopesToBeAdded) {
+            if (transform) {
+                addTransformedEnvelope(env, envelopes);
+            } else {
+                envelopes.add(env);
+            }
+        }
     }
 
     /**

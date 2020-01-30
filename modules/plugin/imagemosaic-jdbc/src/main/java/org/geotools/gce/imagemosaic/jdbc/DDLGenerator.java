@@ -188,30 +188,29 @@ class DDLGenerator extends AbstractCmd {
         writeDropMeta();
 
         String fn = targetDir + "add_" + config.getCoverageName() + ".sql";
-        PrintWriter w = new PrintWriter(fn);
-        w.println();
-        writeFillMeta(w);
-        w.println();
-        writeCreateTables(w);
-        w.println();
-        writeRegister(w);
-        w.println();
-        writeCreateIndexes(w);
-
-        w.close();
+        try (PrintWriter w = new PrintWriter(fn)) {
+            w.println();
+            writeFillMeta(w);
+            w.println();
+            writeCreateTables(w);
+            w.println();
+            writeRegister(w);
+            w.println();
+            writeCreateIndexes(w);
+        }
         if (logger.isLoggable(Level.INFO)) logger.info(fn + " generated");
 
-        fn = targetDir + "remove_" + config.getCoverageName() + ".sql";
-        w = new PrintWriter(fn);
-        w.println();
-        writeDropIndexes(w);
-        w.println();
-        writeUnRegister(w);
-        w.println();
-        writeDropTables(w);
-        w.println();
-        writeDeleteMeta(w);
-        w.close();
+        try (PrintWriter w =
+                new PrintWriter(targetDir + "remove_" + config.getCoverageName() + ".sql")) {
+            w.println();
+            writeDropIndexes(w);
+            w.println();
+            writeUnRegister(w);
+            w.println();
+            writeDropTables(w);
+            w.println();
+            writeDeleteMeta(w);
+        }
         if (logger.isLoggable(Level.INFO)) logger.info(fn + " generated");
     }
 
@@ -260,15 +259,14 @@ class DDLGenerator extends AbstractCmd {
     }
 
     void writeCreateMeta() throws Exception {
-        PrintWriter w = new PrintWriter(targetDir + FN_CREATEMETA);
-        w.print(dbDialect.getCreateMasterStatement());
-        w.println(statementDelim);
-        w.close();
+        try (PrintWriter w = new PrintWriter(targetDir + FN_CREATEMETA)) {
+            w.print(dbDialect.getCreateMasterStatement());
+            w.println(statementDelim);
+        }
         if (logger.isLoggable(Level.INFO)) logger.info(FN_CREATEMETA + " generated");
     }
 
     void writeCreateTables(PrintWriter w) throws Exception {
-
         for (int i = 0; i <= pyramids; i++) {
             if (tileTNPrefix == null) {
                 w.print(
@@ -293,10 +291,10 @@ class DDLGenerator extends AbstractCmd {
     }
 
     void writeDropMeta() throws IOException {
-        PrintWriter w = new PrintWriter(targetDir + FN_DROPMETA);
-        w.print(dbDialect.getDropTableStatement(config.getMasterTable()));
-        w.println(statementDelim);
-        w.close();
+        try (PrintWriter w = new PrintWriter(targetDir + FN_DROPMETA)) {
+            w.print(dbDialect.getDropTableStatement(config.getMasterTable()));
+            w.println(statementDelim);
+        }
         if (logger.isLoggable(Level.INFO)) logger.info(FN_DROPMETA + " generated");
     }
 

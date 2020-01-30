@@ -286,10 +286,15 @@ public class FilterMockData {
 
     static Element distanceBufferOperator(Document document, Node parent, QName name) {
         Element doperator = binarySpatialOperator(document, parent, name);
-        Element distance = element(document, doperator, new QName(OGC.NAMESPACE, "Distance"));
+        distance(document, doperator);
+        return doperator;
+    }
+
+    static Element distance(Document document, Node parent) {
+        Element distance = element(document, parent, OGC.Distance);
         distance.appendChild(document.createTextNode("1.0"));
         distance.setAttribute("units", "m");
-        return doperator;
+        return distance;
     }
 
     static Element contains(Document document, Node parent) {

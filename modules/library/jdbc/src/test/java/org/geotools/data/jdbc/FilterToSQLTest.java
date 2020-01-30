@@ -412,4 +412,14 @@ public class FilterToSQLTest extends TestCase {
         FilterToSQL encoder = new FilterToSQL(output);
         assertEquals("WHERE (P1 IN (1, 2) OR P2 > 3 OR P2 < 4)", encoder.encodeToString(filter));
     }
+
+    public void testEscapeName() {
+        encoder.setSqlNameEscape("\"");
+        assertEquals("\"abc\"", encoder.escapeName("abc"));
+        assertEquals("\"\"\"abc\"", encoder.escapeName("\"abc"));
+        assertEquals("\"a\"\"bc\"", encoder.escapeName("a\"bc"));
+        assertEquals("\"abc\"\"\"", encoder.escapeName("abc\""));
+        encoder.setSqlNameEscape("");
+        assertEquals("abc", encoder.escapeName("abc"));
+    }
 }

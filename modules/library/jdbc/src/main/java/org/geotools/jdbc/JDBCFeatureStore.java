@@ -344,6 +344,7 @@ public final class JDBCFeatureStore extends ContentFeatureStore {
         } else {
             // let's grab the connection
             Connection cx = null;
+            @SuppressWarnings("PMD.CloseResource") // transaction closing managed elsewhere
             Transaction tx = getState().getTransaction();
             try {
                 cx = getDataStore().getConnection(tx);
@@ -405,6 +406,7 @@ public final class JDBCFeatureStore extends ContentFeatureStore {
             super.removeFeatures(filter);
         } else {
             // let's grab the connection
+            @SuppressWarnings("PMD.CloseResource") // transaction closing managed elsewhere
             Transaction tx = getState().getTransaction();
             Connection cx = null;
 

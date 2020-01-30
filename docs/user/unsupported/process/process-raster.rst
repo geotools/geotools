@@ -1,7 +1,7 @@
 Process Raster Plugin
 ----------------------
 
-The gt-process-raster plugin a provides a number of ready to use raster processign chains - and
+The ``gt-process-raster`` plugin a provides a number of ready to use raster processing chains - and
 provide a great example of how to work with rasters.
 
 **Maven**::

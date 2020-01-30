@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>modules</artifactId>
-    <version>22-SNAPSHOT</version>
+    <version>23-SNAPSHOT</version>
   </parent>
 
   <!-- =========================================================== -->
@@ -44,7 +44,6 @@
   <!-- =========================================================== --> 
   <modules>
     <module>arcgrid</module>
-    <module>arcsde</module>
     <module>charts</module>
     <module>epsg-extension</module>
     <module>epsg-hsql</module>
@@ -66,6 +65,7 @@
     <module>coverage-multidim</module>
     <module>geopkg</module>
     <module>mongodb</module>
+    <module>csv</module>
   </modules>
 
 </project>

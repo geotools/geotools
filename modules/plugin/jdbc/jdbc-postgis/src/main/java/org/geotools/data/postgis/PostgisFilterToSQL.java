@@ -21,6 +21,7 @@ import java.util.Date;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.postgis.filter.FilterFunction_pgNearest;
 import org.geotools.filter.FilterCapabilities;
+import org.geotools.filter.function.InArrayFunction;
 import org.geotools.jdbc.JDBCDataStore;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LinearRing;
@@ -87,7 +88,7 @@ public class PostgisFilterToSQL extends FilterToSQL {
                 // if we don't know at all, use the srid of the geometry we're comparing against
                 // (much slower since that has to be extracted record by record as opposed to
                 // being a constant)
-                out.write("', ST_SRID(\"" + currentGeometry.getLocalName() + "\"))");
+                out.write("', ST_SRID(" + escapeName(currentGeometry.getLocalName()) + "))");
             } else {
                 out.write("', " + currentSRID + ")");
             }
@@ -222,6 +223,7 @@ public class PostgisFilterToSQL extends FilterToSQL {
     public Object visit(PropertyIsEqualTo filter, Object extraData) {
         helper.out = out;
         FilterFunction_pgNearest nearest = helper.getNearestFilter(filter);
+        InArrayFunction inArray = helper.getInArray(filter);
         if (nearest != null) {
             return helper.visit(
                     nearest,
@@ -239,6 +241,8 @@ public class PostgisFilterToSQL extends FilterToSQL {
                                     throw new RuntimeException(e);
                                 }
                             }));
+        } else if (inArray != null) {
+            return helper.visit(inArray, extraData);
         } else {
             return super.visit(filter, extraData);
         }

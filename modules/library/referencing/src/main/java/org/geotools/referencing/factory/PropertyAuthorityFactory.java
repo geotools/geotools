@@ -29,6 +29,7 @@ import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
+import org.geotools.referencing.wkt.Parser;
 import org.geotools.referencing.wkt.Symbols;
 import org.geotools.util.DerivedSet;
 import org.geotools.util.NameFactory;
@@ -156,9 +157,9 @@ public class PropertyAuthorityFactory extends DirectAuthorityFactory
         this.authorities = authorities.clone();
         authority = authorities[0];
         ensureNonNull("authority", authority);
-        final InputStream in = definitions.openStream();
-        this.definitions.load(in);
-        in.close();
+        try (InputStream in = definitions.openStream()) {
+            this.definitions.load(in);
+        }
         /*
          * If the WKT do not contains any AXIS[...] element, then every CRS will be created with
          * the default (longitude,latitude) axis order. In such case this factory is insensitive

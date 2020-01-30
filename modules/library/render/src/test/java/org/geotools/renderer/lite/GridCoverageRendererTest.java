@@ -25,13 +25,18 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import it.geosolutions.jaiext.range.NoDataContainer;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.ComponentColorModel;
+import java.awt.image.DataBuffer;
+import java.awt.image.IndexColorModel;
+import java.awt.image.Raster;
+import java.awt.image.RenderedImage;
+import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -1808,6 +1813,13 @@ public class GridCoverageRendererTest {
                 renderer.renderImage(
                         offDatelineReader, null, symbolizer, interpolation, null, 256, 256);
         assertNotNull(image);
+        // goes out as indexed, switch to RGB as the image comparison needs it
+        // (nodata = 0 in the source, the black in the original image becomes transparent)
+        image =
+                new ImageWorker(image)
+                        .forceComponentColorModel()
+                        .forceColorSpaceRGB()
+                        .getRenderedImage();
         File reference =
                 new File(
                         "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/offDateline.png");
@@ -2365,5 +2377,140 @@ public class GridCoverageRendererTest {
         int sampleB = raster.getSample(noDataPixelCoordinateX, noDataPixelCoordinateY, 0);
         assertEquals(transparentPixel, sampleB);
         coverage.dispose(true);
+    }
+
+    @Test
+    public void testContrastEnhancementWithNodataDataset() throws Exception {
+        URL coverageFile =
+                org.geotools.test.TestData.url(GridCoverageRendererTest.class, "nodataNbands.tiff");
+        GeoTiffReader reader = new GeoTiffReader(coverageFile);
+        GridCoverage2D coverage = reader.read(null);
+        NoDataContainer noDataProperty = CoverageUtilities.getNoDataProperty(coverage);
+        assertNotNull(noDataProperty);
+        double noData = noDataProperty.getAsSingleValue();
+
+        // At that specific location (x=7,y=2) sample should be nodata
+        final int noDataPixelCoordinateX = 7;
+        final int noDataPixelCoordinateY = 2;
+        RenderedImage image = coverage.getRenderedImage();
+        Raster raster = image.getData();
+        double sample = raster.getSampleDouble(noDataPixelCoordinateX, noDataPixelCoordinateY, 0);
+        assertEquals(noData, sample, 1E-6);
+
+        ReferencedEnvelope mapExtent = ReferencedEnvelope.reference(coverage.getEnvelope2D());
+        Rectangle screenSize =
+                new Rectangle(
+                        image.getMinX(), image.getMinY(), image.getWidth(), image.getHeight());
+        AffineTransform w2s = RendererUtilities.worldToScreenTransform(mapExtent, screenSize);
+        GridCoverageRenderer renderer =
+                new GridCoverageRenderer(
+                        coverage.getCoordinateReferenceSystem(), mapExtent, screenSize, w2s);
+
+        Style style = RendererBaseTest.loadStyle(this, "n_bands.sld");
+        RasterSymbolizer rasterSymbolizer =
+                (RasterSymbolizer)
+                        style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
+        image =
+                renderer.renderImage(
+                        coverage,
+                        rasterSymbolizer,
+                        Interpolation.getInstance(Interpolation.INTERP_NEAREST),
+                        Color.RED,
+                        256,
+                        256);
+
+        raster = image.getData();
+        int sampleB = raster.getSample(noDataPixelCoordinateX, noDataPixelCoordinateY, 0);
+        assertEquals(0, sampleB);
+        coverage.dispose(true);
+    }
+
+    @Test
+    public void testRenderRadarOnAzeq() throws Exception {
+        File file =
+                URLs.urlToFile(
+                        GridCoverageRendererTest.class.getResource(
+                                "gridcoverage2d/test-data/pacific_radar.tif"));
+        GeoTiffReader reader = new GeoTiffReader(file);
+        System.out.println(reader.getCoordinateReferenceSystem());
+        ReferencedEnvelope readerEnvelope =
+                ReferencedEnvelope.reference(reader.getOriginalEnvelope());
+        CoordinateReferenceSystem crs = CRS.decode("AUTO:97003,9001,170,-16", true);
+        ReferencedEnvelope azeqEnvelope = readerEnvelope.transform(crs, true);
+
+        testImage(reader, azeqEnvelope, "pacificRadar.png");
+    }
+
+    @Test
+    public void testRenderRadarOnAzeqZoomedIn() throws Exception {
+        File file =
+                URLs.urlToFile(
+                        GridCoverageRendererTest.class.getResource(
+                                "gridcoverage2d/test-data/pacific_radar.tif"));
+        GeoTiffReader reader = new GeoTiffReader(file);
+        CoordinateReferenceSystem crs = CRS.decode("AUTO:97003,9001,170,-16", true);
+        ReferencedEnvelope azeqEnvelope =
+                new ReferencedEnvelope(
+                        898340.67097417, 1127313.3142259, -8529.3690118708, 220443.2742399, crs);
+
+        testImage(reader, azeqEnvelope, "pacificRadarZoomedIn.png");
+    }
+
+    @Test
+    public void testRenderRadarOnCentralAzeq() throws Exception {
+        File file =
+                URLs.urlToFile(
+                        GridCoverageRendererTest.class.getResource(
+                                "gridcoverage2d/test-data/pacific_radar.tif"));
+        GeoTiffReader reader = new GeoTiffReader(file);
+        ReferencedEnvelope readerEnvelope =
+                ReferencedEnvelope.reference(reader.getOriginalEnvelope());
+        CoordinateReferenceSystem crs = CRS.decode("AUTO:97003,9001,0,0", true);
+        ReferencedEnvelope azeqEnvelope =
+                new ReferencedEnvelope(-10698974, 10065735, -18709397, -1.4979931, crs);
+
+        testImage(reader, azeqEnvelope, "pacificRadarCentralAzeq.png");
+    }
+
+    private void testImage(GeoTiffReader reader, ReferencedEnvelope vaiEnvelope, String fileName)
+            throws TransformException, NoninvertibleTransformException, FactoryException,
+                    IOException {
+        ReferencedEnvelope mapExtent = vaiEnvelope;
+        Rectangle screenSize =
+                new Rectangle(400, (int) (mapExtent.getHeight() / mapExtent.getWidth() * 400));
+        AffineTransform w2s = RendererUtilities.worldToScreenTransform(mapExtent, screenSize);
+        GridCoverageRenderer renderer =
+                new GridCoverageRenderer(
+                        mapExtent.getCoordinateReferenceSystem(), mapExtent, screenSize, w2s);
+
+        RasterSymbolizer rasterSymbolizer = buildRadardStyle();
+
+        RenderedImage image =
+                renderer.renderImage(
+                        reader,
+                        null,
+                        rasterSymbolizer,
+                        Interpolation.getInstance(Interpolation.INTERP_NEAREST),
+                        Color.BLACK,
+                        256,
+                        256);
+        assertNotNull(image);
+        // RenderedImageBrowser.showChain(image, true, true, "foo", true);
+        File reference =
+                new File(
+                        "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/" + fileName);
+        ImageAssert.assertEquals(reference, image, 20);
+    }
+
+    private RasterSymbolizer buildRadardStyle() {
+        StyleBuilder sb = new StyleBuilder();
+        ColorMap cm =
+                sb.createColorMap(
+                        new String[] {"a", "b"},
+                        new double[] {-20, 50},
+                        new Color[] {Color.RED, Color.GREEN},
+                        ColorMap.TYPE_RAMP);
+        RasterSymbolizer rasterSymbolizer = sb.createRasterSymbolizer(cm, 1d);
+        return rasterSymbolizer;
     }
 }

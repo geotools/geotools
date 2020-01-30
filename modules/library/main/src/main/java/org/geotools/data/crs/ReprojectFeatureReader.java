@@ -174,7 +174,9 @@ public class ReprojectFeatureReader
         // building the new reprojected feature
         SimpleFeature reprojected = SimpleFeatureBuilder.build(schema, attributes, next.getID());
         // copying the user data if any
-        reprojected.getUserData().putAll(next.getUserData());
+        if (next.hasUserData()) {
+            reprojected.getUserData().putAll(next.getUserData());
+        }
         return reprojected;
     }
 

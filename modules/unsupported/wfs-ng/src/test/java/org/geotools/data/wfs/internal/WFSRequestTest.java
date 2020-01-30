@@ -24,8 +24,10 @@ import org.geotools.data.wfs.internal.WFSConfig.PreferredHttpMethod;
 import org.geotools.ows.ServiceException;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
+/** @author Matthias Schulze - Landesamt für Digitalisierung, Breitband und Vermessung */
 public class WFSRequestTest {
 
     @Before
@@ -45,6 +47,21 @@ public class WFSRequestTest {
         String query = url.getQuery();
         if (query != null && query.contains("=")) {
             Assert.fail("POST-Request should not contain Query String in URL");
+        }
+    }
+
+    /** Test method for {@link org.geotools.data.wfs.internal.WFSRequest#getFinalURL()}. */
+    @Test
+    @Ignore
+    public void testGetFinalURLGet() throws IOException, ServiceException {
+        WFSConfig config = new WFSConfig();
+        config.preferredMethod = PreferredHttpMethod.HTTP_GET;
+        WFSClient client = newClient("GeoServer_2.2.x/1.0.0/GetCapabilities.xml", config);
+        WFSRequest request = client.createDescribeFeatureTypeRequest();
+        URL url = request.getFinalURL();
+        String query = url.getQuery();
+        if (query == null || !query.contains("=")) {
+            Assert.fail("GET-Request should contain Query String in URL");
         }
     }
 

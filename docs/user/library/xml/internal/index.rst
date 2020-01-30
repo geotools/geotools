@@ -19,18 +19,18 @@ Generated objects matching the XML schema:
 * :doc:`net.opengis.wps </extension/ogc/wps>` : web processing service schema
 * :doc:`net.opengis.wcs </extension/ogc/wcs>` : web coverage service schema
 * :doc:`net.opengis.wfsv </extension/ogc/wfsv>` : web feature service schema
-* :doc:`org.w3.xlink </extension/ogc/xlink>` : xlink schema
+* :doc:`org.w3.xlink </extension/ogc/xlink>` : XLink schema
 
 Schema and bindings plugins:
 
 * :doc:`gt-xsd-core </extension/xsd/core>` : Basic types defined by XML schema
 * :doc:`gt-xsd-fes </extension/xsd/fes>` : filter 2.0
-* :doc:`gt-xsd-filter </extension/xsd/filter>` : filter 1.0 (used by ogc cat and wfs)
+* :doc:`gt-xsd-filter </extension/xsd/filter>` : filter 1.0 (used by OGC CAT and WFS)
 * :doc:`gt-xsd-kml </extension/xsd/kml>` : keyhole markup language
 * :doc:`gt-xsd-wfs </extension/xsd/wfs>` : web feature service
 * :doc:`gt-xsd-wps </extension/xsd/wps>` : web processing service
 * :doc:`gt-xsd-gml3 </extension/xsd/gml3>` : geographic markup language 3
-* :doc:`gt-xsd-gml2 </extension/xsd/gml2>` : geographinc markup language 2
+* :doc:`gt-xsd-gml2 </extension/xsd/gml2>` : geographic markup language 2
 * :doc:`gt-xsd-ows </extension/xsd/ows>` : open web services
 * :doc:`gt-xsd-wcs </extension/xsd/wcs>` : web coverage service
 * :doc:`gt-xsd-wms </extension/xsd/wms>` : web map service
@@ -40,7 +40,7 @@ Schema and bindings plugins:
 
 Frequently asked questions for binding developers.
 
-* Q: NullPointerException in createURIWithCache when parsing?
+* Q: ``NullPointerException`` in ``createURIWithCache`` when parsing?
   
   When I try to parse a document, i get the following error::
     
@@ -54,11 +54,11 @@ Frequently asked questions for binding developers.
        ...
   
   What this means is that somewhere in your instance document, or in a schema it references,
-  a relative uri cannot be resolved to an absolute location.
+  a relative URI cannot be resolved to an absolute location.
   
   Possible solutions:
   
-  * Ensure that the getSchemaLocationResolver method has been implemented for the Configuration
+  * Ensure that the ``getSchemaLocationResolver`` method has been implemented for the ``Configuration``
     class of your schema. The Code Generator can be used to create a schema location resolver
     specific to your schema.
   * Ensure the Configuration class for your schema declares all the necessary dependencies.

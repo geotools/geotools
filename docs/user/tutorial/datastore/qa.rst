@@ -6,13 +6,13 @@
 Quality Assurance
 -----------------
 
-Since this tutorial has been written the result has been broken out into a distinct **gt-csv** plugin (with some feedback from the GeoServer community).
+Since this tutorial has been written the result has been broken out into a distinct ``gt-csv`` plugin (with some feedback from the GeoServer community).
 
 To get an idea of what kind of "extra work" is required for an unsupported plugin:
 
 #. Ask on the email list - a Project Steering Committee member can often reply with a +1 and go about getting you commit access on GitHub. The project is fairly relaxed with a safe "unsupported" area for new experiments.
-#. Set up a pom.xml and hook the module in to the build
-#. Use a profile in unsupported/pom.xml to include your module in the build
+#. Set up a ``pom.xml`` and hook the module in to the build
+#. Use a profile in ``unsupported/pom.xml`` to include your module in the build
 
 To get the module supported (and included in each GeoTools release):
 
@@ -26,9 +26,9 @@ For more information see the `developers guide <http://docs.geotools.org/latest/
 Directory Support
 ^^^^^^^^^^^^^^^^^
 
-Earlier copies of this tutorial would read an entire directory of files at a time. This functionality has been factored out into a support class and is used by implementations such as ShapefileDataStore.
+Earlier copies of this tutorial would read an entire directory of files at a time. This functionality has been factored out into a support class and is used by implementations such as ``ShapefileDataStore``.
 
-The same steps can be taken to CSVDataStore - although it is a real trade off between the code being clear vs less typing.
+The same steps can be taken to ``CSVDataStore`` - although it is a real trade off between the code being clear vs less typing.
 
 Info
 ^^^^

@@ -17,9 +17,16 @@
  */
 package org.geotools.process.raster;
 
+import static org.junit.Assert.assertFalse;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import javax.media.jai.Interpolation;
 import javax.media.jai.InterpolationBicubic;
 import javax.media.jai.InterpolationBilinear;
@@ -29,15 +36,28 @@ import javax.media.jai.iterator.RandomIterFactory;
 import org.geotools.TestData;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.processing.CoverageProcessor;
+import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.gce.geotiff.GeoTiffFormat;
+import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.geometry.jts.JTS;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.map.MapContent;
+import org.geotools.map.RasterLayer;
 import org.geotools.process.ProcessException;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.renderer.lite.RendererUtilities;
+import org.geotools.renderer.lite.StreamingRenderer;
+import org.geotools.styling.Style;
+import org.geotools.styling.StyleFactory;
 import org.geotools.util.factory.GeoTools;
+import org.geotools.xml.styling.SLDParser;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -46,6 +66,8 @@ import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.metadata.spatial.PixelOrientation;
+import org.opengis.parameter.GeneralParameterValue;
+import org.opengis.parameter.ParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -53,6 +75,35 @@ import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.TransformException;
 
 public class RasterAsPointCollectionProcessTest {
+
+    static class GridCoverageReaderLayer extends RasterLayer {
+
+        GridCoverage2DReader reader;
+        GeneralParameterValue[] params;
+
+        public GridCoverageReaderLayer(
+                GridCoverage2DReader reader, Style style, GeneralParameterValue[] params) {
+            super(style);
+            this.params = params;
+            this.reader = reader;
+        }
+
+        @Override
+        public SimpleFeatureCollection toFeatureCollection() {
+            SimpleFeatureCollection collection;
+            try {
+                collection = FeatureUtilities.wrapGridCoverageReader(reader, params);
+                return collection;
+            } catch (Exception e) {
+                return null;
+            }
+        }
+
+        @Override
+        public ReferencedEnvelope getBounds() {
+            return new ReferencedEnvelope(reader.getOriginalEnvelope());
+        }
+    }
 
     private static final String NORTH = "N";
 
@@ -307,5 +358,66 @@ public class RasterAsPointCollectionProcessTest {
                 it.close();
             }
         }
+    }
+
+    @Test
+    public void testRasterToTransformVectorWrapping() throws Exception {
+        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        java.net.URL surl = TestData.getResource(this, "arrows.sld");
+        SLDParser stylereader = new SLDParser(factory, surl);
+        Style style = stylereader.readXML()[0];
+
+        GeoTiffReader reader = new GeoTiffReader(TestData.file(this, "current.tif"));
+
+        MapContent mc = new MapContent();
+        ParameterValue<String> suggestedTileSize = GeoTiffFormat.SUGGESTED_TILE_SIZE.createValue();
+        suggestedTileSize.setValue("512,512");
+
+        mc.addLayer(
+                new GridCoverageReaderLayer(
+                        reader, style, new GeneralParameterValue[] {suggestedTileSize}));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        Map<Object, Object> rendererParams = new HashMap<>();
+        rendererParams.put(StreamingRenderer.ADVANCED_PROJECTION_HANDLING_KEY, true);
+        rendererParams.put(StreamingRenderer.CONTINUOUS_MAP_WRAPPING, true);
+        renderer.setRendererHints(rendererParams);
+        renderer.setMapContent(mc);
+
+        // Request a region a couple of times away from the classic 180° dateline, spanning the
+        // world several times
+        ReferencedEnvelope reWgs84 =
+                new ReferencedEnvelope(800, 1880, -35, 35, CRS.decode("EPSG:4326", true));
+        ReferencedEnvelope re = reWgs84.transform(CRS.decode("EPSG:3857"), true);
+
+        final int w = 1080;
+        final int h = 70;
+        final BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        Graphics g = image.getGraphics();
+        g.setColor(Color.white);
+        g.fillRect(0, 0, w, h);
+        Rectangle paintArea = new Rectangle(0, 0, w, h);
+
+        renderer.paint(
+                (Graphics2D) g,
+                paintArea,
+                re,
+                RendererUtilities.worldToScreenTransform(re, paintArea));
+        final int reducedWidth = 360;
+        final int reducedHeight = h;
+        final int minX = w - reducedWidth;
+
+        Raster raster = image.getData(new Rectangle(minX, 0, reducedWidth, reducedHeight));
+
+        int whiteSamples = 0;
+        for (int i = 0; i < reducedWidth; i++) {
+            for (int j = 0; j < reducedHeight; j++) {
+                whiteSamples += raster.getSample(minX + i, j, 0) == 255 ? 1 : 0;
+            }
+        }
+        // Check that we aren't getting a whole white image on a big part of the rightern
+        // side of the image. this was happening before the fix on wrapping on rendering
+        // transformation since it was only rendering a smaller area (NO wrapping at all)
+        assertFalse(whiteSamples == reducedHeight * reducedWidth);
     }
 }

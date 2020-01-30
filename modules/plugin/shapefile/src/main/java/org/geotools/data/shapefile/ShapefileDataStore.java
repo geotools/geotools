@@ -288,29 +288,19 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
         StorageFile dbfStoragefile = shpFiles.getStorageFile(DBF);
         StorageFile prjStoragefile = shpFiles.getStorageFile(PRJ);
 
-        FileChannel shpChannel = shpStoragefile.getWriteChannel();
-        FileChannel shxChannel = shxStoragefile.getWriteChannel();
-
-        ShapefileWriter writer = new ShapefileWriter(shpChannel, shxChannel);
-        try {
+        try (FileChannel shpChannel = shpStoragefile.getWriteChannel();
+                FileChannel shxChannel = shxStoragefile.getWriteChannel();
+                ShapefileWriter writer = new ShapefileWriter(shpChannel, shxChannel)) {
             // by spec, if the file is empty, the shape envelope should be ignored
             writer.writeHeaders(new Envelope(), shapeType, 0, 100);
-        } finally {
-            writer.close();
-            assert !shpChannel.isOpen();
-            assert !shxChannel.isOpen();
         }
 
         DbaseFileHeader dbfheader = createDbaseHeader(featureType);
 
         dbfheader.setNumRecords(0);
 
-        WritableByteChannel dbfChannel = dbfStoragefile.getWriteChannel();
-
-        try {
+        try (WritableByteChannel dbfChannel = dbfStoragefile.getWriteChannel()) {
             dbfheader.writeHeader(dbfChannel);
-        } finally {
-            dbfChannel.close();
         }
 
         if (crs != null) {

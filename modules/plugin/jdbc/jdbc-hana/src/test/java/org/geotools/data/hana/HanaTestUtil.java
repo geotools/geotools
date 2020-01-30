@@ -62,9 +62,7 @@ public class HanaTestUtil {
             } else {
                 sb.append('.');
             }
-            sb.append('"');
-            sb.append(ids[i]);
-            sb.append('"');
+            sb.append(HanaUtil.encodeIdentifier(ids[i]));
         }
         return sb;
     }

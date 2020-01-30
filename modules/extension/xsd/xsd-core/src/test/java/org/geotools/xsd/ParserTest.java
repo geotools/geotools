@@ -28,10 +28,12 @@ import org.geotools.ml.MLConfiguration;
 import org.geotools.ml.Mail;
 import org.geotools.ml.bindings.MLSchemaLocationResolver;
 import org.geotools.xsd.impl.Handler;
+import org.junit.Test;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 import org.xml.sax.ext.EntityResolver2;
 
 public class ParserTest extends TestCase {
@@ -342,5 +344,91 @@ public class ParserTest extends TestCase {
                 MLSchemaLocationResolver.class.getResourceAsStream("mails-external-entities.xml"));
         parser.validate(
                 MLSchemaLocationResolver.class.getResourceAsStream("mails-external-entities.xml"));
+    }
+
+    /** Tests returned exception caused by entity expansion limit configuration on Parser. */
+    @Test
+    public void testEntityExpansionLimitException() throws Exception {
+        final StringBuffer sb = new StringBuffer();
+        XSD xsd =
+                new XSD() {
+                    @Override
+                    public String getSchemaLocation() {
+                        return ParserTest.class.getResource("mixed.xsd").getFile();
+                    }
+
+                    @Override
+                    public String getNamespaceURI() {
+                        return "http://geotools.org/test";
+                    }
+                };
+        Configuration cfg =
+                new Configuration(xsd) {
+                    @Override
+                    protected void registerBindings(Map bindings) {
+                        bindings.put(
+                                new QName("http://geotools.org/test", "MixedType"),
+                                new MixedTypeBinding(sb));
+                    }
+
+                    @Override
+                    protected void configureParser(Parser parser) {
+                        parser.setHandleMixedContent(true);
+                    }
+                };
+
+        Parser p = new Parser(cfg);
+        p.setEntityExpansionLimit(1);
+        SAXParseException expected = null;
+        try {
+            p.parse(getClass().getResourceAsStream("entityExpansionLimit.xml"));
+        } catch (SAXParseException ex) {
+            expected = ex;
+        }
+        assertNotNull(expected);
+        // check for the entity expansion limit error code in exception message
+        assertTrue(expected.getMessage().contains("JAXP00010001"));
+    }
+
+    /** Tests entity expansion limit configuration on Parser. */
+    @Test
+    public void testEntityExpansionLimitAllowed() throws Exception {
+        final StringBuffer sb = new StringBuffer();
+        XSD xsd =
+                new XSD() {
+                    @Override
+                    public String getSchemaLocation() {
+                        return ParserTest.class.getResource("mixed.xsd").getFile();
+                    }
+
+                    @Override
+                    public String getNamespaceURI() {
+                        return "http://geotools.org/test";
+                    }
+                };
+        Configuration cfg =
+                new Configuration(xsd) {
+                    @Override
+                    protected void registerBindings(Map bindings) {
+                        bindings.put(
+                                new QName("http://geotools.org/test", "MixedType"),
+                                new MixedTypeBinding(sb));
+                    }
+
+                    @Override
+                    protected void configureParser(Parser parser) {
+                        parser.setHandleMixedContent(true);
+                    }
+                };
+
+        Parser p = new Parser(cfg);
+        p.setEntityExpansionLimit(100);
+        SAXParseException unexpected = null;
+        try {
+            p.parse(getClass().getResourceAsStream("entityExpansionLimit.xml"));
+        } catch (SAXParseException ex) {
+            unexpected = ex;
+        }
+        assertNull(unexpected);
     }
 }

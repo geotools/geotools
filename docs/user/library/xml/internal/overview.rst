@@ -4,7 +4,7 @@ Overview
 Parsing Overview
 ''''''''''''''''
 
-Parsing the process of transforming xml elements and attributes in an instance document into java objects.
+Parsing the process of transforming XML elements and attributes in an instance document into java objects.
 
 .. image:: /images/xml/parserOverview.png
 
@@ -20,7 +20,7 @@ During parsing an XML schema is used to assist in the transformation. The parser
        xsi:schemaLocation="http://www.geotools.org/po po.xsd">
        ...
    
-   The key attribute is **xsi:schemaLocation** which contains a **namespace-schema location** mapping. In the above example the mappings tells us that the schema for the namespace "http://www.geotools.org/po" can be found in a file named "po.xsd". The parser uses this mapping to locate the schema for the document. This is known as Schema Resolution. Once the schema has been "resolved", it parsed and processing proceeds to the next phase.
+   The key attribute is ``xsi:schemaLocation`` which contains a ``namespace-schema location`` mapping. In the above example the mappings tells us that the schema for the namespace "http://www.geotools.org/po" can be found in a file named ``po.xsd``. The parser uses this mapping to locate the schema for the document. This is known as Schema Resolution. Once the schema has been "resolved", it parsed and processing proceeds to the next phase.
    
    
 2. Element and Attribute Binding
@@ -35,11 +35,11 @@ During parsing an XML schema is used to assist in the transformation. The parser
    * A binding for the type of the element or attribute
    * A binding for each base type
    
-   As an example, consider processing the "purchaseOrder" element shown above. The following bindings would be derived:
+   As an example, consider processing the ``purchaseOrder`` element shown above. The following bindings would be derived:
    
-   * The "purchaseOrder" global element declaration
-   * The "PurchaseOrderType" type definition ( the declared type of the "purchaseOrder" element )
-   * The "anyType" type definition ( the base type of all complex type definitions )
+   * The ``purchaseOrder`` global element declaration
+   * The ``PurchaseOrderType`` type definition ( the declared type of the ``purchaseOrder`` element )
+   * The ``anyType`` type definition ( the base type of all complex type definitions )
    
    Once a set of bindings has been located, they are executed in a defined order, and the element or attribute is transformed into an object. Binding derivation and execution is explained in greater detail here.
 
@@ -51,15 +51,15 @@ During parsing an XML schema is used to assist in the transformation. The parser
      
      .. image:: /images/xml/parserExecution0.png
    
-   * Leading edge of the "purhaseOrder" element is reached. On the leading edge of an element, all of its attributes are parsed. In this case the "orderDate" attribute is parsed into a java.util.Date object, and placed on the stack.
+   * Leading edge of the ``purchaseOrder`` element is reached. On the leading edge of an element, all of its attributes are parsed. In this case the ``orderDate`` attribute is parsed into a ``java.util.Date`` object, and placed on the stack.
      
      .. image:: /images/xml/parserExecution1.png
    
-   * Leading edge of the "shipTo" element is reached, and attributes parsed.
+   * Leading edge of the ``shipTo`` element is reached, and attributes parsed.
      
      .. image:: /images/xml/parserExecution2.png
    
-   * Leading and trailing edges of the "street" element are reached. For elements themselves, transformation occurs on the trailing edge. In this case, the street element is transformed to a java.lang.String, and placed on the stack.
+   * Leading and trailing edges of the ``street`` element are reached. For elements themselves, transformation occurs on the trailing edge. In this case, the street element is transformed to a ``java.lang.String,`` and placed on the stack.
      
      .. image:: /images/xml/parserExecution3.png
    
@@ -71,30 +71,30 @@ During parsing an XML schema is used to assist in the transformation. The parser
      
      .. image:: /images/xml/parserExecution5.png
    
-   * Trailing edge of the "shipTo" element. At this state, all the child elements have been processed and exist on the stack. In processing the shipTo element all the values which correspond to child elements and attributes are popped off the stack and used to compose the resulting object for the shipTo element, an instance of Address. The transformed object is then placed on the stack.
+   * Trailing edge of the ``shipTo`` element. At this state, all the child elements have been processed and exist on the stack. In processing the ``shipTo`` element all the values which correspond to child elements and attributes are popped off the stack and used to compose the resulting object for the ``shipTo`` element, an instance of ``Address``. The transformed object is then placed on the stack.
      
      .. image:: /images/xml/parserExecution6.png 
    
-   * Trailing edge of the "purchaseOrder" element, similar to State 6, the objects created for child elements and attributes are used to compose the resulting purchaseOrder object, an instance of PurchaseOrder.
+   * Trailing edge of the ``purchaseOrder`` element, similar to State 6, the objects created for child elements and attributes are used to compose the resulting ``purchaseOrder`` object, an instance of ``PurchaseOrder``.
      
      .. image:: /images/xml/parserExecution7.png
    
-   * Instance document has been processed. The stack contains the single object which corresponds to the root element of the document, in this case "purchaseOrder".
+   * Instance document has been processed. The stack contains the single object which corresponds to the root element of the document, in this case ``purchaseOrder``.
 
      .. image:: /images/xml/parserExecution8.png
 
 Encoding Overview
 '''''''''''''''''
 
-Encoding is the process of serializing a hierarchy of objects as xml.
+Encoding is the process of serializing a hierarchy of objects as XML.
 
      .. image:: /images/xml/encoderOverview.png
 
-During encoding an xml schema is used to determine how various objects should be encoded as elemements / attributes, and to navigate through the hierarchy of objects.
+During encoding an XML schema is used to determine how various objects should be encoded as elements / attributes, and to navigate through the hierarchy of objects.
 
 1. Element and Attribute Binding
    
-   As objects are encoded the xml schema is used to locate bindings to perform the encoding process. During encoding bindings serve two roles:
+   As objects are encoded the XML schema is used to locate bindings to perform the encoding process. During encoding bindings serve two roles:
   
    * Serialization of objects as elements and attributes
    * Navigation among objects by determining which objects correspond to child elements and attributes of a particular element
@@ -105,39 +105,39 @@ During encoding an xml schema is used to determine how various objects should be
    
    As an object tree is encoded individual objects are serialized as elements and attributes. The following diagram pictorially represents how the encoding process works.
    
-   * The first step is to encode the root element of the document, the "PurchaseOrder element , which corresponds to the top object in the tree
+   * The first step is to encode the root element of the document, the ``PurchaseOrder`` element , which corresponds to the top object in the tree
      
      .. image:: /images/xml/encoderExecution1.png
      
-   * Next the the elements type, "PurchaseOrderType", is used to move the process forward and infer the next object to encode. The type yields the attribute "orderDate".
+   * Next the the elements type, ``PurchaseOrderType``, is used to move the process forward and infer the next object to encode. The type yields the attribute ``orderDate``.
      
      .. image:: /images/xml/encoderExecution2.png
      
-   * Continuing through the contents of "PurchaseOrderType" is the "shipTo" element.
+   * Continuing through the contents of ``PurchaseOrderType`` is the ``shipTo`` element.
      
      .. image:: /images/xml/encoderExecution3.png
      
-   * Since the "shipTo" element is complex, the encoding process recurses into its type, "USAddress", and continues on. The type yields the "country" attribute.
+   * Since the ``shipTo`` element is complex, the encoding process recurses into its type, ``USAddress``, and continues on. The type yields the ``country`` attribute.
      
      .. image:: /images/xml/encoderExecution4.png
      
-   * Continuing through the contents of "USAddress" is the "street" element.
+   * Continuing through the contents of ``USAddress`` is the ``street`` element.
      
      .. image:: /images/xml/encoderExecution5.png
    
-   * And the "state" element
+   * And the ``state`` element
      
      .. image:: /images/xml/encoderExecution6.png
      
-   * And the "zip" element.
+   * And the ``zip`` element.
      
      .. image:: /images/xml/encoderExecution7.png
      
-   * All the contents of the "USAddress" type have been completed, the "shipTo" element is closed and recursion pops back to the surrounding type
+   * All the contents of the ``USAddress`` type have been completed, the ``shipTo`` element is closed and recursion pops back to the surrounding type
      
      .. image:: /images/xml/encoderExecution8.png
      
-   * All the contents of the "PurchaseOrderType" have been completed, the "purchaseOrder" element is closed. Being the root element of the document there is no containing type and the encoding process is stopped.
+   * All the contents of the ``PurchaseOrderType`` have been completed, the ``purchaseOrder`` element is closed. Being the root element of the document there is no containing type and the encoding process is stopped.
      
      .. image:: /images/xml/encoderExecution9.png
 

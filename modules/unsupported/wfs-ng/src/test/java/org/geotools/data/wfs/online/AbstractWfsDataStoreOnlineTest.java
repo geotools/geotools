@@ -15,7 +15,6 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-
 package org.geotools.data.wfs.online;
 
 import static org.junit.Assert.assertEquals;
@@ -67,6 +66,7 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+/** Online tests only run if {@link #SERVER_URL} can be reached. */
 public abstract class AbstractWfsDataStoreOnlineTest {
 
     private static final Logger LOGGER = Logging.getLogger(AbstractWfsDataStoreOnlineTest.class);
@@ -75,6 +75,7 @@ public abstract class AbstractWfsDataStoreOnlineTest {
 
     private final String SERVER_URL;
 
+    /** Check for availability only once: true, false, or null for unknown. */
     protected static Boolean serviceAvailable = null;
 
     /** The DataStore under test, static so we create it only once */
@@ -432,17 +433,24 @@ public abstract class AbstractWfsDataStoreOnlineTest {
         final SimpleFeatureType ft = wfs.getSchema(testType.FEATURETYPENAME);
         SimpleFeatureSource featureSource = wfs.getFeatureSource(testType.FEATURETYPENAME);
         final ReferencedEnvelope bounds = featureSource.getBounds();
-
         String srsName = CRS.toSRS(bounds.getCoordinateReferenceSystem());
 
         final BBOX bbox =
-                ff.bbox(
-                        "the_geom",
-                        bounds.getMinX(),
-                        bounds.getMinY(),
-                        bounds.getMaxX(),
-                        bounds.getMaxY(),
-                        srsName);
+                AxisOrder.EAST_NORTH == CRS.getAxisOrder(bounds.getCoordinateReferenceSystem())
+                        ? ff.bbox(
+                                "the_geom",
+                                bounds.getMinX(),
+                                bounds.getMinY(),
+                                bounds.getMaxX(),
+                                bounds.getMaxY(),
+                                srsName)
+                        : ff.bbox(
+                                "the_geom",
+                                bounds.getMinY(),
+                                bounds.getMinX(),
+                                bounds.getMaxY(),
+                                bounds.getMaxX(),
+                                srsName);
 
         /** This one does not implement the deprecated geotools filter interfaces */
         final BBOX strictBBox =
@@ -482,14 +490,19 @@ public abstract class AbstractWfsDataStoreOnlineTest {
         final Query query = new Query(ft.getTypeName());
         query.setPropertyNames(new String[] {"the_geom"});
         query.setFilter(strictBBox);
+        query.setHandle("testDataStoreSupportsPlainBBOXInterface");
 
         FeatureReader<SimpleFeatureType, SimpleFeature> reader;
 
         reader = wfs.getFeatureReader(query, Transaction.AUTO_COMMIT);
         assertNotNull(reader);
+        assertTrue(reader.hasNext());
+        reader.close();
 
         reader = wfs.getFeatureReader(query, Transaction.AUTO_COMMIT);
         assertNotNull(reader);
+        assertTrue(reader.hasNext());
+        reader.close();
     }
 
     @Test

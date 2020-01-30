@@ -1,7 +1,7 @@
 Axis
 ----
 
-A quick page to help take apart the CoordinateReferenceSystem object and figure out what the raw data is measuring.
+A quick page to help take apart the ``CoordinateReferenceSystem`` object and figure out what the raw data is measuring.
 
 This is most often phrased as the question "What axis is X?" on our mailing list.
 
@@ -16,18 +16,19 @@ World to Screen
 
 We want to set up the following:
 
-* Create a "screen" CoordinateReferenceSystem using DISPLAY_X and DISPLAY_Y as axis
-* Construct a MathTransform transforming from your Data's CoordinateReferenceSystem to the "screen"
+* Create a "screen" ``CoordinateReferenceSystem`` using ``DISPLAY_X`` and ``DISPLAY_Y`` as axis
+* Construct a ``MathTransform`` transforming from your data's ``CoordinateReferenceSystem`` to the "screen"
 
 It is often easier to treat the problem in two steps:
 
 1. Make a "viewport" model recording the location on the world you are displaying,
    
-   For your first cut capture this "viewport" using DefaultGeographicCRS.WGS84::
+   For your first cut capture this "viewport" using
+   ``DefaultGeographicCRS.WGS84``::
    
      MathTransform data2world = CRS.findMathTransform( crs, DefaultGeographicCRS.WGS84 );
    
-2. Construct a MathTransform from your "viewport" CRS to the "screen" CRS.::
+2. Construct a ``MathTransform`` from your "viewport" CRS to the "screen" CRS.::
    
      AffineTransform2D world2screen = new AffineTransform2D(); // start with identity transform
      world2screen.translate( viewport.minLong, viewport.maxLat ); // relocate to the viewport
@@ -37,7 +38,7 @@ It is often easier to treat the problem in two steps:
    In the OGC Geographic Objects specification, the "viewport" CRS is named objective
    CRS and the "screen" CRS is named display CRS).
 
-3. Combine the two MathTransforms::
+3. Combine the two ``MathTransforms``::
      
      MathTransform transform = defaultMathTransformFactory.createConcatenatedTransform( data2world, world2screen );
 
@@ -45,7 +46,7 @@ It is often easier to treat the problem in two steps:
    
       Geometry screenGeometry = geometry.transform( screenCRS, transform );
 
-5. Draw with confidence knowing that you are using DISPLAY_X and DISPLAY_Y::
+5. Draw with confidence knowing that you are using ``DISPLAY_X`` and ``DISPLAY_Y``::
      
      final int X = 0;
      final int Y = 1;
@@ -56,13 +57,13 @@ It is often easier to treat the problem in two steps:
      }
 
 6. As long as you do this correctly everything will work out, you will know what "X" is
-   (because you defined it) and you will have forced your data into DISPLAY_X and
-   DISPLAY_Y.
+   (because you defined it) and you will have forced your data into ``DISPLAY_X`` and
+   ``DISPLAY_Y``.
 
 Screen to World
 '''''''''''''''
 
-The above instructions seem to cause some confusion; it may be easier to take the inverse of your world2screen transform
+The above instructions seem to cause some confusion; it may be easier to take the inverse of your ``world2screen`` transform
 (usually you have one around since you were using it for drawing).::
   
   AffineTransform world2screen =
@@ -75,12 +76,12 @@ The above instructions seem to cause some confusion; it may be easier to take th
 Avoid Assumptions
 ^^^^^^^^^^^^^^^^^
 
-This is a problem when you run into code that would like to assume that each DirectPosition contains data in (x,y) order
+This is a problem when you run into code that would like to assume that each ``DirectPosition`` contains data in (x,y) order
 (i.e. matching the screen).
 
 There exist many methods that are almost helpful:
 
-* getHorizontalCRS return the GeographicCRS or ProjectedCRS part, or a DerivedCRS based on the above, that applies to
+* ``getHorizontalCRS`` return the ``GeographicCRS`` or ``ProjectedCRS`` part, or a ``DerivedCRS`` based on the above, that applies to
   the Earth's surface (i.e. real geophysical meaning - not the first two axis).
 
 * You would still need to account for axis direction and polar coordinates on your own time.
@@ -99,7 +100,7 @@ This code can be improved in several ways:
 * "x" is assumed to be ordinate(0), "y" is assumed to be ordinate(1)
 
 * A complicated transform is being performed by hand, "y" is inverted to match screen orientation, a transform is
-  specified using dx and dy offsets and the entire result is scaled
+  specified using ``dx`` and ``dy`` offsets and the entire result is scaled
 
 This code will fail when presented with:
 
@@ -107,7 +108,7 @@ This code will fail when presented with:
 * data in which the direction of the axis is not what was expected
 * data that was collected in polar coordinates
 
-Please note that some GeoTools classes, such as CRSUtilities.getCRS2D, often make use of this assumption; blindly
+Please note that some GeoTools classes, such as ``CRSUtilities.getCRS2D``, often make use of this assumption; blindly
 returning the first 2 dimensions no matter what they are.
 
 Quick Fix
@@ -139,10 +140,10 @@ You will also need to provided a set of global hints::
      ...application code...
   }
 
-GeoTools will now do its best to create CoordinateReferenceSystem objects that agree with your assumptions:
+GeoTools will now do its best to create ``CoordinateReferenceSystem`` objects that agree with your assumptions:
 
 * data is in (x,y) order
-* data is collected in the expected direction (ie. EAST and WEST are the same)
+* data is collected in the expected direction (i.e. EAST and WEST are the same)
 
 Lookup Axis
 ^^^^^^^^^^^
@@ -191,6 +192,6 @@ This code will fail when presented with:
 * data in which the direction of the axis is not what was expected
 * data that was collected in polar coordinates
 
-Please note that you will still miss out on a lot of data, we have only looked for AxisDirection that match our
+Please note that you will still miss out on a lot of data, we have only looked for ``AxisDirection`` that match our
 assumptions (i.e. that the data is across an increasing - such as EAST). We are missing out on other data that is
 obviously across but is decreasing - such as WEST.

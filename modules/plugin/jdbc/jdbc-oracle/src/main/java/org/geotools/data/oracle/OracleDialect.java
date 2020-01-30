@@ -594,6 +594,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         return readGeometry(rs.getObject(column), factory, cx);
     }
 
+    @SuppressWarnings("PMD.CloseResource") // the connection is managed by the caller
     Geometry readGeometry(Object struct, GeometryFactory factory, Connection cx)
             throws IOException, SQLException {
         if (struct == null) {
@@ -609,6 +610,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
     }
 
     @Override
+    @SuppressWarnings("PMD.CloseResource") // the connection and ps are managed by the caller
     public void setGeometryValue(
             Geometry g, int dimension, int srid, Class binding, PreparedStatement ps, int column)
             throws SQLException {

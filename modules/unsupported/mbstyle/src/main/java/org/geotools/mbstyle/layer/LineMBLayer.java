@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.geotools.filter.function.RecodeFunction;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.parse.MBFilter;
@@ -29,12 +30,17 @@ import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
 import org.geotools.measure.Units;
-import org.geotools.styling.*;
+import org.geotools.styling.Displacement;
+import org.geotools.styling.ExternalGraphic;
+import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.LineSymbolizer;
+import org.geotools.styling.Rule;
 import org.geotools.styling.Stroke;
 import org.geotools.text.Text;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
 import org.opengis.style.GraphicFill;
 import org.opengis.style.SemanticType;
 import org.opengis.style.Symbolizer;
@@ -511,6 +517,11 @@ public class LineMBLayer extends MBLayer {
         return parse.isPropertyDefined(paint, "line-pattern");
     }
 
+    /** @return True if the layer has a line-gap-width explicitly provided. */
+    public boolean hasLineGapWidth() {
+        return parse.isPropertyDefined(paint, "line-gap-width");
+    }
+
     /**
      * Transform {@link LineMBLayer} to GeoTools FeatureTypeStyle.
      *
@@ -536,7 +547,7 @@ public class LineMBLayer extends MBLayer {
                         null,
                         null); // last "offset" is really "dash offset"
 
-        stroke.setDashArray(lineDasharray());
+        stroke.setDashArray(scaleByWidth(lineDasharray(), lineWidth()));
         LineSymbolizer ls =
                 sf.lineSymbolizer(
                         getId(),
@@ -554,15 +565,15 @@ public class LineMBLayer extends MBLayer {
             stroke.setGraphicFill(fill);
         }
 
-        if (getLineGapWidth().intValue() > 0) {
-            Double topOffset =
-                    getLineOffset().doubleValue()
-                            + (getLineGapWidth().doubleValue() / 2d)
-                            + getLineWidth().doubleValue() / 2d;
-            Double bottomOffset =
-                    getLineOffset().doubleValue()
-                            - (getLineGapWidth().doubleValue() / 2d)
-                            - getLineWidth().doubleValue() / 2d;
+        if (hasLineGapWidth()) {
+            Expression topOffset =
+                    ff.add(
+                            lineOffset(),
+                            ff.divide(ff.add(lineGapWidth(), lineWidth()), ff.literal(2)));
+            Expression bottomOffset =
+                    ff.subtract(
+                            lineOffset(),
+                            ff.divide(ff.add(lineGapWidth(), lineWidth()), ff.literal(2)));
 
             ls =
                     sf.lineSymbolizer(
@@ -571,7 +582,7 @@ public class LineMBLayer extends MBLayer {
                             sf.description(Text.text("line"), null),
                             Units.PIXEL,
                             stroke,
-                            ff.literal(topOffset));
+                            topOffset);
             LineSymbolizer bottomLine =
                     sf.lineSymbolizer(
                             getId(),
@@ -579,7 +590,7 @@ public class LineMBLayer extends MBLayer {
                             sf.description(Text.text("line"), null),
                             Units.PIXEL,
                             stroke,
-                            ff.literal(bottomOffset));
+                            bottomOffset);
             symbolizers.add(bottomLine);
         }
         symbolizers.add(ls);
@@ -608,6 +619,23 @@ public class LineMBLayer extends MBLayer {
                         Collections.emptySet(),
                         filter.semanticTypeIdentifiers(),
                         rules));
+    }
+
+    private List<Expression> scaleByWidth(List<Expression> dasharray, Expression lineWidth) {
+        if (dasharray == null) {
+            return null;
+        }
+
+        // no need for scaling if the width happens to be exactly 1
+        if (lineWidth instanceof Literal
+                && Double.valueOf(1).equals(lineWidth.evaluate(null, Double.class))) {
+            return dasharray;
+        }
+
+        return dasharray
+                .stream()
+                .map(dash -> ff.multiply(dash, lineWidth))
+                .collect(Collectors.toList());
     }
 
     /**

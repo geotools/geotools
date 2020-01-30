@@ -16,16 +16,7 @@
  */
 package org.geotools.renderer.style;
 
-import java.awt.AlphaComposite;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Composite;
-import java.awt.Graphics2D;
-import java.awt.Paint;
-import java.awt.RenderingHints;
-import java.awt.Shape;
-import java.awt.Stroke;
-import java.awt.TexturePaint;
+import java.awt.*;
 import java.awt.font.TextAttribute;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
@@ -40,9 +31,9 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
+import javax.swing.*;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.renderer.VendorOptionParser;
 import org.geotools.renderer.composite.BlendComposite;
 import org.geotools.renderer.composite.BlendComposite.BlendingMode;
@@ -59,6 +50,7 @@ import org.geotools.styling.LabelPlacement;
 import org.geotools.styling.LinePlacement;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Mark;
+import org.geotools.styling.MarkImpl;
 import org.geotools.styling.PointPlacement;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
@@ -288,10 +280,8 @@ public class SLDStyleFactory {
         } else {
             style = createStyleInternal(drawMe, symbolizer, scaleRange);
 
-            // for some legitimate cases some styles cannot be turned into a
-            // valid Style2D
-            // e.g., point symbolizer that contains no graphic that can be used
-            // due to network issues
+            // for some legitimate cases some styles cannot be turned into a valid Style2D e.g.,
+            // point symbolizer that contains no graphic that can be used due to network issues
             if (style == null) {
                 return null;
             }
@@ -440,8 +430,12 @@ public class SLDStyleFactory {
         LineStyle2D style = new LineStyle2D();
         setScaleRange(style, scaleRange);
         style.setStroke(getStroke(symbolizer.getStroke(), feature));
-        style.setGraphicStroke(
-                getGraphicStroke(symbolizer, symbolizer.getStroke(), feature, scaleRange));
+        // if graphic stroke has a wkt marker with MarkAlongLine vendor option set to true
+        // dont use graphic stroke instead configure style to drape wkt along the line
+        if (!setMarkAlongLineStroke(style, symbolizer, (Feature) feature))
+            style.setGraphicStroke(
+                    getGraphicStroke(symbolizer, symbolizer.getStroke(), feature, scaleRange));
+
         style.setContour(getStrokePaint(symbolizer.getStroke(), feature));
         style.setContourComposite(composite);
 
@@ -607,11 +601,16 @@ public class SLDStyleFactory {
         }
 
         if (retval == null) {
+            // vendor option to turn off fallback
+            if (!voParser.getBooleanOption(
+                    symbolizer, PointSymbolizer.FALLBACK_ON_DEFAULT_MARK, true)) {
+                return null;
+            }
+
             // from SLD spec:
             // The default if neither an ExternalGraphic nor a Mark is specified is to use the
             // default mark of a "square" with a 50%-gray fill and a black outline, with a size of 6
-            // pixels,
-            // unless an explicit Size is specified
+            // pixels, unless an explicit Size is specified
             StyleFactory sf = CommonFactoryFinder.getStyleFactory();
             Mark defaultMark =
                     sf.mark(
@@ -815,12 +814,14 @@ public class SLDStyleFactory {
         if (fonts != null) {
             for (Font curr : fonts) {
                 for (Expression family : curr.getFamily()) {
-                    String requestedFont = evalToString(family, feature, null);
-                    java.awt.Font javaFont = FontCache.getDefaultInstance().getFont(requestedFont);
-
-                    if (javaFont != null) {
-                        java.awt.Font font = styleFont(feature, curr, javaFont, symbolizer);
-                        result.add(font);
+                    List<String> fontNames = evalToList(family, feature, null);
+                    if (fontNames != null) {
+                        for (String fontName : fontNames) {
+                            collectFont(feature, symbolizer, result, curr, fontName);
+                        }
+                    } else {
+                        String requestedFont = evalToString(family, feature, null);
+                        collectFont(feature, symbolizer, result, curr, requestedFont);
                     }
                 }
             }
@@ -837,6 +838,20 @@ public class SLDStyleFactory {
         }
 
         return result.toArray(new java.awt.Font[result.size()]);
+    }
+
+    private void collectFont(
+            Object feature,
+            TextSymbolizer symbolizer,
+            List<java.awt.Font> result,
+            Font curr,
+            String requestedFont) {
+        java.awt.Font javaFont = FontCache.getDefaultInstance().getFont(requestedFont);
+
+        if (javaFont != null) {
+            java.awt.Font font = styleFont(feature, curr, javaFont, symbolizer);
+            result.add(font);
+        }
     }
 
     private java.awt.Font applyKerning(java.awt.Font font) {
@@ -960,13 +975,20 @@ public class SLDStyleFactory {
         // now set up the stroke
         BasicStroke stroke2d;
 
-        if ((dashes != null) && (dashes.length > 0)) {
+        if ((dashes != null) && (dashes.length > 0) && !allZeroes(dashes)) {
             stroke2d = new BasicStroke(width, capCode, joinCode, MITER_LIMIT, dashes, dashOffset);
         } else {
             stroke2d = new BasicStroke(width, capCode, joinCode, MITER_LIMIT);
         }
 
         return stroke2d;
+    }
+
+    private boolean allZeroes(float[] dashes) {
+        for (float dash : dashes) {
+            if (dash != 0) return false;
+        }
+        return true;
     }
 
     public static float[] evaluateDashArray(org.geotools.styling.Stroke stroke, Object feature)
@@ -1646,6 +1668,17 @@ public class SLDStyleFactory {
         }
     }
 
+    private <T> List<T> evalToList(Expression exp, Object f, List<T> fallback) {
+        if (exp == null) {
+            return fallback;
+        }
+        List l = exp.evaluate(f, List.class);
+        if (l != null) {
+            return l;
+        }
+        return fallback;
+    }
+
     private String evalToString(Expression exp, Object f, String fallback) {
         if (exp == null) {
             return fallback;
@@ -1673,7 +1706,7 @@ public class SLDStyleFactory {
             return fallback;
         }
         Double d = exp.evaluate(f, Double.class);
-        if (d != null) {
+        if (d != null && !Double.isNaN(d)) {
             return d.doubleValue();
         }
         return fallback;
@@ -1703,5 +1736,61 @@ public class SLDStyleFactory {
 
     private float evalOpacity(Expression e, Object f) {
         return evalToFloat(e, f, 1);
+    }
+
+    private boolean setMarkAlongLineStroke(
+            LineStyle2D style, LineSymbolizer symbolizer, Feature feature) {
+        // check for vendor option
+        if (!Boolean.parseBoolean(
+                symbolizer.getOptions().getOrDefault(MarkAlongLine.VENDOR_OPTION_NAME, "false")))
+            return false;
+        org.geotools.styling.Stroke stroke = symbolizer.getStroke();
+        if (stroke == null) return false;
+        if (stroke.getGraphicStroke() == null) return false;
+        if (stroke.getGraphicStroke().graphicalSymbols().isEmpty()) return false;
+        if (!(stroke.getGraphicStroke().graphicalSymbols().get(0) instanceof Mark)) return false;
+
+        MarkImpl mark = (MarkImpl) stroke.getGraphicStroke().graphicalSymbols().get(0);
+        // does not have WKT
+        if (mark.getWellKnownName() == null) return false;
+        Iterator<MarkFactory> it = DynamicSymbolFactoryFinder.getMarkFactories();
+        Shape shape = null;
+        while (it.hasNext()) {
+            MarkFactory factory = it.next();
+            try {
+                shape = factory.getShape(null, mark.getWellKnownName(), feature);
+                if (shape != null) break;
+            } catch (Exception e) {
+                LOGGER.log(
+                        Level.FINE,
+                        "Exception while scanning for " + "the appropriate mark factory",
+                        e);
+            }
+        }
+
+        double size = stroke.getGraphicStroke().getSize().evaluate(null, Double.class);
+        // createing MarkAlongLine stroke by using existing Stroke as delegate
+        // (color,width,dash,cap)
+        // use WKT and Size of Graphic Stroke
+
+        MarkAlongLine markAlongLine =
+                new MarkAlongLine(style.getStroke(), size, JTS.toGeometry(shape));
+        // look for scale limit and simplification factors
+        if (symbolizer.getOptions().containsKey(MarkAlongLine.VENDOR_OPTION_SCALE_LIMIT))
+            markAlongLine.setScaleImit(
+                    Float.parseFloat(
+                            symbolizer.getOptions().get(MarkAlongLine.VENDOR_OPTION_SCALE_LIMIT)));
+
+        if (symbolizer.getOptions().containsKey(MarkAlongLine.VENDOR_OPTION_SIMPLICATION_FACTOR))
+            markAlongLine.setSimplicationFactor(
+                    Float.parseFloat(
+                            symbolizer
+                                    .getOptions()
+                                    .get(MarkAlongLine.VENDOR_OPTION_SIMPLICATION_FACTOR)));
+
+        // over-write existing Stroke
+        style.setStroke(markAlongLine);
+        // indicate that LineStyle2D has been set with a MarkAlong WKT style
+        return true;
     }
 }

@@ -46,6 +46,7 @@ import org.opengis.temporal.Instant;
  *   <li>{@link XMLGregorianCalendar} to {@link Date}
  *   <li>{@link Date} to {@link XMLGregorianCalendar}
  *   <li>{@link String} to {@link TimeZone}
+ *   <li>{@link Instant} to {@link Date}
  * </ul>
  *
  * <p>Supported unsafe (lossy) conversions:

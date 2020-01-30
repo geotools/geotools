@@ -244,7 +244,7 @@ of for rebasing include:
 
    It is **critically important** that rebasing never occur on a shared or primary
    branch. The rule of thumb with rebasing is that you must **never** rewrite commits
-   that are not strictly local, ie commits that have been pushed up to an online
+   that are not strictly local, i.e. commits that have been pushed up to an online
    repository.
  
 Other Tips

@@ -18,11 +18,7 @@ package org.geotools.renderer.label;
 
 import static org.geotools.styling.TextSymbolizer.*;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
@@ -375,7 +371,16 @@ public class LabelCacheImpl implements LabelCache {
         double maxAngleDelta =
                 voParser.getDoubleOption(symbolizer, MAX_ANGLE_DELTA_KEY, DEFAULT_MAX_ANGLE_DELTA);
         item.setMaxAngleDelta(Math.toRadians(maxAngleDelta));
-        item.setAutoWrap(voParser.getIntOption(symbolizer, AUTO_WRAP_KEY, DEFAULT_AUTO_WRAP));
+        // follow line and write don't work toghether, disable it while we wait for a fix
+        if (!item.isFollowLineEnabled()) {
+            item.setAutoWrap(voParser.getIntOption(symbolizer, AUTO_WRAP_KEY, DEFAULT_AUTO_WRAP));
+        } else {
+            // at fine level cause it would show up for every label with this setup
+            LOGGER.log(
+                    Level.FINE,
+                    "Disabling auto-wrap, it's not supported along with followLine yet");
+            item.setAutoWrap(0);
+        }
         item.setForceLeftToRightEnabled(
                 voParser.getBooleanOption(
                         symbolizer, FORCE_LEFT_TO_RIGHT_KEY, DEFAULT_FORCE_LEFT_TO_RIGHT));
@@ -403,6 +408,13 @@ public class LabelCacheImpl implements LabelCache {
         item.setDisplacementAngles(
                 voParser.getDisplacementAngles(symbolizer, DISPLACEMENT_MODE_KEY));
 
+        item.setFontShrinkSizeMin(
+                voParser.getIntOption(
+                        symbolizer, FONT_SHRINK_SIZE_MIN, DEFAULT_FONT_SHRINK_SIZE_MIN));
+        item.setGraphicPlacement(
+                (GraphicPlacement)
+                        voParser.getEnumOption(
+                                symbolizer, GRAPHIC_PLACEMENT_KEY, GraphicPlacement.LABEL));
         return item;
     }
 
@@ -1454,7 +1466,7 @@ public class LabelCacheImpl implements LabelCache {
                         && glyphs.labelsWithinDistance(transformed, labelItem.getSpaceAround()))) {
             return false;
         } else {
-            painter.paintStraightLabel(tempTransform);
+            painter.paintStraightLabel(tempTransform, point.getCoordinate());
             if (DEBUG_CACHE_BOUNDS) {
                 painter.graphics.setStroke(new BasicStroke());
                 painter.graphics.setColor(Color.RED);
@@ -1556,14 +1568,49 @@ public class LabelCacheImpl implements LabelCache {
             textStyle.setAnchorX(0.5);
             textStyle.setAnchorY(0.5);
         }
-        AffineTransform tx = new AffineTransform(tempTransform);
-        if (paintPolygonLabelInternal(
-                painter, tx, displayArea, glyphs, labelItem, pg, centroid, textStyle)) return true;
+
+        AffineTransform tx = null;
+        boolean allowShrinking =
+                labelItem.getFontShrinkSizeMin() > DEFAULT_FONT_SHRINK_SIZE_MIN
+                        && labelItem.getFontShrinkSizeMin() < textStyle.getFont().getSize();
+        int shrinkSize =
+                allowShrinking ? labelItem.getFontShrinkSizeMin() : textStyle.getFont().getSize();
+        int textSize = textStyle.getFont().getSize();
+        // if shrinking is allowed then try to paint polygon label. If no success reduce font size
+        // by 1 unit and retry until fontShrinkSize is reached.
+        while (textSize >= shrinkSize) {
+            tx = new AffineTransform(tempTransform);
+            LabelCacheItem labelItem2 = painter.getLabel();
+            TextStyle2DExt textStyle2 = new TextStyle2DExt(labelItem2);
+            if (labelItem2.getMaxDisplacement() > 0) {
+                textStyle2.setDisplacementX(0);
+                textStyle2.setDisplacementY(0);
+                textStyle2.setAnchorX(0.5);
+                textStyle2.setAnchorY(0.5);
+            }
+            labelItem2.setTextStyle(textStyle2);
+            painter.setLabel(labelItem2);
+            if (paintPolygonLabelInternal(
+                    painter, tx, displayArea, glyphs, labelItem2, pg, centroid, textStyle2)) {
+                return true;
+            }
+            textSize -= 1;
+            if (allowShrinking) {
+                Font font =
+                        new Font(
+                                textStyle2.getFont().getName(),
+                                textStyle2.getFont().getStyle(),
+                                textSize);
+                textStyle2.setFont(font);
+            }
+        }
 
         int[] displacementAngles = labelItem.getDisplacementAngles();
         if (displacementAngles == null) {
             displacementAngles = DEFAULT_DISPLACEMENT_ANGLES;
         }
+
+        painter.setLabel(labelItem);
 
         // ... use at least a 2 pixel step, no matter what the label length is
         final double step = painter.getAscent() > 2 ? painter.getAscent() : 2;

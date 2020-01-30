@@ -133,6 +133,21 @@ public class GeometryClipperTest {
     }
 
     @Test
+    public void testTouchPoly() throws Exception {
+        MultiPolygon mp =
+                (MultiPolygon)
+                        wkt.read(
+                                "MULTIPOLYGON("
+                                        + "((10 10, 10 11, 11 11, 11 10, 10 10)), "
+                                        + // touching corner
+                                        "((10 0, 10 1, 11 1, 11 0, 10 0)), "
+                                        + // share side
+                                        "((0 0, 0 1, 1 1, 1 0, 0 0)))"); // fully inside
+        Geometry clipped = clipper.clip(mp, false);
+        assertTrue(clipped.equalsExact(wkt.read("POLYGON((0 0, 0 1, 1 1, 1 0, 0 0)))")));
+    }
+
+    @Test
     public void testInsideOut() throws Exception {
         LineString ls = (LineString) wkt.read("LINESTRING(-2 8, 12 8, 12 2, -2 2)");
         MultiLineString clipped = (MultiLineString) clipper.clip(ls, false);

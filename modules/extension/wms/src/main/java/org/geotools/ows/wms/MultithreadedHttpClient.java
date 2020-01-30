@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
@@ -198,12 +199,23 @@ public class MultithreadedHttpClient implements HTTPClient {
 
     @Override
     public HTTPResponse get(final URL url) throws IOException {
+        return this.get(url, null);
+    }
 
+    @Override
+    public HTTPResponse get(URL url, Map<String, String> headers) throws IOException {
         GetMethod getMethod = new GetMethod(url.toExternalForm());
         getMethod.setDoAuthentication(user != null && password != null);
         if (tryGzip) {
             getMethod.setRequestHeader("Accept-Encoding", "gzip");
         }
+
+        if (headers != null) {
+            for (Map.Entry<String, String> headerNameValue : headers.entrySet()) {
+                getMethod.setRequestHeader(headerNameValue.getKey(), headerNameValue.getValue());
+            }
+        }
+
         int responseCode = executeMethod(getMethod);
         if (200 != responseCode) {
             getMethod.releaseConnection();

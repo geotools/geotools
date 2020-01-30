@@ -21,6 +21,7 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -29,9 +30,12 @@ import java.net.URLDecoder;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Logger;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
+import javax.swing.*;
+import org.geotools.data.ows.HTTPClient;
+import org.geotools.data.ows.HTTPResponse;
+import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
@@ -279,9 +283,13 @@ public class SpriteGraphicFactory implements ExternalGraphicFactory, GraphicCach
         SpriteIndex spriteIndex = indexCache.get(baseUrl);
         if (spriteIndex == null) {
             String indexUrlStr = baseUrl.toExternalForm() + ".json";
+            URL url = new URL(indexUrlStr);
+            HTTPClient client = getHttpClient();
+            HTTPResponse response = client.get(url);
+            String charset = Optional.ofNullable(response.getResponseCharset()).orElse("UTF-8");
             try (BufferedReader reader =
-                    new BufferedReader(new InputStreamReader(new URL(indexUrlStr).openStream()))) {
-
+                    new BufferedReader(
+                            new InputStreamReader(response.getResponseStream(), charset))) {
                 Object parsed = jsonParser.parse(reader);
                 if (parsed instanceof JSONObject) {
                     spriteIndex = new SpriteIndex(indexUrlStr, (JSONObject) parsed);
@@ -299,7 +307,12 @@ public class SpriteGraphicFactory implements ExternalGraphicFactory, GraphicCach
                         "Exception parsing sprite index file from: " + indexUrlStr, e);
             }
         }
+
         return spriteIndex;
+    }
+
+    protected HTTPClient getHttpClient() {
+        return new SimpleHttpClient();
     }
 
     /**
@@ -312,9 +325,10 @@ public class SpriteGraphicFactory implements ExternalGraphicFactory, GraphicCach
     private BufferedImage getSpriteSheet(URL baseUrl) {
         BufferedImage image = imageCache.get(baseUrl);
         if (image == null) {
-            try {
-                URL spriteSheetUrl = new URL(baseUrl.toExternalForm() + ".png");
-                image = ImageIOExt.readBufferedImage(spriteSheetUrl);
+            HTTPClient client = getHttpClient();
+            try (InputStream is =
+                    client.get(new URL(baseUrl.toExternalForm() + ".png")).getResponseStream()) {
+                image = ImageIOExt.readBufferedImage(is);
             } catch (Exception e) {
                 LOGGER.warning(
                         "Unable to retrieve sprite sheet from location: "

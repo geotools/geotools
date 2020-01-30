@@ -70,6 +70,7 @@ public class EventContentFeatureWriter implements FeatureWriter<SimpleFeatureTyp
         this.writer = writer;
         this.state = store.getState();
 
+        @SuppressWarnings("PMD.CloseResource") // not to be closed, not generated
         Transaction t = state.getTransaction();
         if (t != Transaction.AUTO_COMMIT) {
             // auto commit does not issue batch events
@@ -154,6 +155,7 @@ public class EventContentFeatureWriter implements FeatureWriter<SimpleFeatureTyp
      * @see org.geotools.data.FeatureWriter#close()
      */
     public void close() throws IOException {
+        @SuppressWarnings("PMD.CloseResource") // not to be closed here
         Transaction t = state.getTransaction();
         if (t != Transaction.AUTO_COMMIT) {
             t.removeState(this);

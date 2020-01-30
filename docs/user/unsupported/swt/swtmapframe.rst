@@ -1,14 +1,14 @@
 SWTMapFrame
 -----------
 
-The following is a tutorial that explains how to use the gt-swt module in standalone mode and inside
-an rcp environment. The tutorial assumes the user is already confident with geotools
-development/build and already an basic RCP developer.
+The following is a tutorial that explains how to use the ``gt-swt`` module in standalone mode and inside
+an RCP environment. The tutorial assumes the user is already confident with
+GeoTools development/build and already an basic RCP developer.
 
 Example
 ^^^^^^^
 
-Using the standalone gt-swt module is fairly easy.
+Using the standalone ``gt-swt`` module is fairly easy.
 
 1. It is best explained with a code snippet::
   
@@ -34,8 +34,8 @@ Using the standalone gt-swt module is fairly easy.
    
    .. image:: /images/gtswt_standalone_01.png
 
-2. It is possible to tweak some of the window settings, like statusbar, layers panel and
-   toolbars/menus. For this use we have to move beyond our call to SwtMapFrame.showMap(context)
+2. It is possible to tweak some of the window settings, like ``statusbar``, ``layers panel`` and
+   ``toolbars/menus``. For this use we have to move beyond our call to ``SwtMapFrame.showMap(context)``
    
    The result is equally easy. Again a code snippet is the best way.
    

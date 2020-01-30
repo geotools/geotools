@@ -29,7 +29,7 @@ Versions and revisions
 
 When performing a release we don't require a "code freeze" in which no developers can commit to the repository. Instead we release from a revision that is known to pass all tests, including unit/integration tests as well as CITE tests on the GeoServer side. These instructions are valid in case you are making a release in combination with GeoServer, if you are making a stand alone release it's up to you to choose the proper GIT revision number for the GeoTools released to be picked from.
 
-To obtain the GeoServer and Geotools revisions that have passed the `CITE test <https://build.geoserver.org/view/testing-cite/>`_, navigate to the latest Jenkins run of the CITE test  and view it's console output and select to view its full log. For example:
+To obtain the GeoServer and GeoTools revisions that have passed the `CITE test <https://build.geoserver.org/view/testing-cite/>`_, navigate to the latest Jenkins run of the CITE test  and view it's console output and select to view its full log. For example:
 
     https://build.geoserver.org/job/2.11-cite-wms-1.1/286/consoleText
 
@@ -77,10 +77,10 @@ When creating the first release candidate of a series, there are some extra step
 
 * Enable `GitHub branch protection <https://github.com/geotools/geotools/settings/branches>`_ for the new stable branch: tick "Protect this branch" (only) and press "Save changes".
 
-* Checkout the master branch and update the version in all pom.xml files and a few miscellaneous files; for example, if changing master from ``17-SNAPSHOT`` to ``18-SNAPSHOT``::
+* Checkout the master branch and update the version in all ``pom.xml`` files and a few miscellaneous files; for example, if changing master from ``17-SNAPSHOT`` to ``18-SNAPSHOT``::
 
     git checkout master
-    find . -name pom.xml -exec sed -i 's/17-SNAPSHOT/18-SNAPSHOT/g' {} \;
+    find . -name ``pom.xml`` -exec sed -i 's/17-SNAPSHOT/18-SNAPSHOT/g' {} \;
     sed -i 's/17-SNAPSHOT/18-SNAPSHOT/g' \
         build/rename.xml \
         docs/build.xml \
@@ -98,10 +98,12 @@ When creating the first release candidate of a series, there are some extra step
       
 * Create the new release candidate version in `JIRA <https://osgeo-org.atlassian.net/projects/GEOT>`_ for issues on master; for example, if master is now ``18-SNAPSHOT``, create a Jira version ``18-RC1`` for the first release of the ``18.x`` series
 
+* Create the new ``GeoTools $VER Releases`` (e.g. ``GeoTools 22 Releases``) folder in `SourceForge <https://sourceforge.net/projects/geotools/files/>`__
+
 * Update the jobs on build.geoserver.org:
   
   * disable the maintenance jobs, and remove them from the geotools view
-  * create new jobs, create from the exsisting master jobs, editing the branch and the DIST=stable configuration. Remember to also create the new docs jobs.
+  * create new jobs, create from the existing master jobs, editing the branch and the DIST=stable configuration. Remember to also create the new docs jobs.
   * edit the previous stable branch, changing to DIST=maintenance
 
 * Announce on the developer mailing list that the new stable branch has been created.
@@ -111,12 +113,20 @@ When creating the first release candidate of a series, there are some extra step
   For the new stable branch:
   
   * common.py - update the external links block changing 'latest' to 'stable'
-  * README.md and README.html - update the user guide links changing 'latest' to 'stable'  
+  * README.md - update the user guide links changing 'latest' to 'stable'  
   
+  ::
+      sed -i 's/docs.geotools.org\/latest/docs.geotools.org\/stable/g' README.md docs/common.py
+      sed -i 's/docs.geoserver.org\/latest/docs.geoserver.org\/stable/g' docs/common.py
+
   For the new maintenance branch:
   
   * common.py - update the external links block changing 'stable' to 'maintenance' (the geoserver link will change to 'maintain').
-  * README.md and README.html - update the user guide links changing 'stable' to 'maintenance'  
+  * README.md - update the user guide links changing 'stable' to 'maintenance'  
+  
+  ::
+      sed -i 's/docs.geotools.org\/stable/docs.geotools.org\/maintenance/g' README.md docs/common.py
+      sed -i 's/docs.geoserver.org\/stable/docs.geoserver.org\/maintain/g' docs/common.py
 
 Build the Release
 -----------------
@@ -129,7 +139,7 @@ Run the `geotools-release <https://build.geoserver.org/view/geotools/job/geotool
      
 **REV**
 
-  The Git revision number to release from. eg, "24ae10fe662c....". If left blank the latest revision (ie HEAD) on the ``BRANCH`` being released is used.
+  The Git revision number to release from. eg, "24ae10fe662c....". If left blank the latest revision (i.e. HEAD) on the ``BRANCH`` being released is used.
   
 **VERSION**
    
@@ -152,17 +162,19 @@ uploaded to the following location::
 Test the Artifacts
 ------------------
 
+
 Download and try out some of the artifacts from the above location and do a 
 quick smoke test that there are no issues. Engage other developers to help 
 test on the developer list.
 
-In particular, you can download the source artifacts and build them locally on an empty Maven repository to make sure any random user out there can do the same.
+Check the artifacts by:
+*  Unpacking the sources
+*  Checking the README.html links go to the correct stable or maintenance user guide
 
-A simple way to do so is:
-
-*  Unpack the sources
-*  Check the README.html links go to the correct stable or maintenance user guide
-*  Temporarily move the ``$HOME/.m2/repository`` to a different location, so that Maven will be forced to build from an empty repo. If you don't want to fiddle with your main repo just use ``mvn -Dmaven.repo.local=/tmp/m2 install -Dall -T1C`` where it points to any empty directory.
+The Jenkins job will perform a build of the source artifacts on an empty Maven
+repository to make sure any random user out there can do the same. If you want
+you can still manually test the artifacts by:
+*  Temporarily moving the ``$HOME/.m2/repository`` to a different location, so that Maven will be forced to build from an empty repo. If you don't want to fiddle with your main repo just use ``mvn -Dmaven.repo.local=/tmp/m2 install -Dall -T1C`` where it points to any empty directory.
 *  Do a full build using ``mvn install -Dall -T1C``
 *  On a successfull build, delete ``$HOME/.m2/repository`` and restore the old maven repository backed up at the beginning
 
@@ -172,6 +184,8 @@ Download the user guide:
  
 Publish the Release
 -------------------
+
+
 
 Run the `geotools-release-publish <https://build.geoserver.org/view/geotools/job/geotools-release-publish/>`_ in Jenkins. The job takes the following parameters:
 

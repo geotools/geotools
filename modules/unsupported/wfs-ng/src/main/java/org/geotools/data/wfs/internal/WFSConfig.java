@@ -34,6 +34,7 @@ import static org.geotools.data.wfs.WFSDataStoreFactory.TRY_GZIP;
 import static org.geotools.data.wfs.WFSDataStoreFactory.USERNAME;
 import static org.geotools.data.wfs.WFSDataStoreFactory.USE_HTTP_CONNECTION_POOLING;
 import static org.geotools.data.wfs.WFSDataStoreFactory.WFS_STRATEGY;
+import static org.geotools.data.wfs.impl.WFSDataAccessFactory.MAX_CONNECTION_POOL_SIZE;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -85,6 +86,8 @@ public class WFSConfig {
 
     protected boolean useHttpConnectionPooling;
 
+    protected int maxConnectionPoolSize;
+
     protected EntityResolver entityResolver;
 
     public static enum PreferredHttpMethod {
@@ -111,6 +114,7 @@ public class WFSConfig {
         gmlCompatibleTypenames = (Boolean) GML_COMPATIBLE_TYPENAMES.getDefaultValue();
         entityResolver = (EntityResolver) ENTITY_RESOLVER.getDefaultValue();
         useHttpConnectionPooling = (Boolean) USE_HTTP_CONNECTION_POOLING.getDefaultValue();
+        maxConnectionPoolSize = (Integer) MAX_CONNECTION_POOL_SIZE.getDefaultValue();
     }
 
     public static WFSConfig fromParams(Map<?, ?> params) throws IOException {
@@ -155,6 +159,7 @@ public class WFSConfig {
                         : GML_COMPATIBLE_TYPENAMES.lookUp(params);
         config.entityResolver = ENTITY_RESOLVER.lookUp(params);
         config.useHttpConnectionPooling = USE_HTTP_CONNECTION_POOLING.lookUp(params);
+        config.maxConnectionPoolSize = MAX_CONNECTION_POOL_SIZE.lookUp(params);
         return config;
     }
 
@@ -255,6 +260,14 @@ public class WFSConfig {
     /** @return if http connection pooling should be used */
     public boolean isUseHttpConnectionPooling() {
         return useHttpConnectionPooling;
+    }
+
+    /**
+     * @return the size of the connection pool, if {@link #isUseHttpConnectionPooling()} is <code>
+     *     true</code>
+     */
+    public int getMaxConnectionPoolSize() {
+        return maxConnectionPoolSize;
     }
 
     /**

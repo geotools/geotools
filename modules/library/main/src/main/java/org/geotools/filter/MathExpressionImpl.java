@@ -16,6 +16,10 @@
  */
 package org.geotools.filter;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+import org.geotools.util.Converters;
 import org.opengis.filter.expression.BinaryExpression;
 
 /**
@@ -109,4 +113,38 @@ public abstract class MathExpressionImpl extends DefaultExpression implements Bi
         // return Filters.puts( number );  // non strongly typed
         return Double.valueOf(number); // Getools 2.1 style
     }
+
+    protected Object handleCollection(Object value1, Object value2) {
+        List<Number> numericList;
+        final Number scalar;
+        if (value1 instanceof Collection && value2 instanceof Collection) {
+            throw new RuntimeException("Both Maths expressions cannot be Collections");
+        } else if (value1 instanceof Collection) {
+            // first is collection, second is scalar
+            numericList =
+                    (List)
+                            ((Collection) value1)
+                                    .stream()
+                                    .map(v -> Converters.convert(v, Number.class))
+                                    .collect(Collectors.toList());
+            scalar = Filters.number(value2);
+
+        } else {
+            // second is collection, first is scalar
+            numericList =
+                    (List)
+                            ((Collection) value2)
+                                    .stream()
+                                    .map(v -> Converters.convert(v, Number.class))
+                                    .collect(Collectors.toList());
+            scalar = Filters.number(value1);
+        }
+
+        return numericList
+                .stream()
+                .map(n -> doArithmeticOperation(n.doubleValue(), scalar.doubleValue()))
+                .collect(Collectors.toList());
+    }
+
+    protected abstract Object doArithmeticOperation(Double operand1, Double operand2);
 }

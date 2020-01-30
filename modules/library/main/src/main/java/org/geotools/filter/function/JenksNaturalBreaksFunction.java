@@ -72,20 +72,21 @@ public class JenksNaturalBreaksFunction extends ClassificationFunction {
      * @return a RangedClassifier
      */
     private Object calculate(SimpleFeatureCollection featureCollection) {
-        SimpleFeatureIterator features = featureCollection.features();
         ArrayList<Double> data = new ArrayList<Double>();
-        try {
-            while (features.hasNext()) {
-                SimpleFeature feature = features.next();
-                final Object result = getParameters().get(0).evaluate(feature);
-                logger.finest("importing " + result);
-                if (result != null) {
-                    final Double e = Double.valueOf(result.toString());
-                    if (!e.isInfinite() && !e.isNaN()) data.add(e);
+        try (SimpleFeatureIterator features = featureCollection.features()) {
+            try {
+                while (features.hasNext()) {
+                    SimpleFeature feature = features.next();
+                    final Object result = getParameters().get(0).evaluate(feature);
+                    logger.finest("importing " + result);
+                    if (result != null) {
+                        final Double e = Double.valueOf(result.toString());
+                        if (!e.isInfinite() && !e.isNaN()) data.add(e);
+                    }
                 }
+            } catch (NumberFormatException e) {
+                return null; // if it isn't a number what should we do?
             }
-        } catch (NumberFormatException e) {
-            return null; // if it isn't a number what should we do?
         }
         Collections.sort(data);
 
@@ -200,7 +201,6 @@ public class JenksNaturalBreaksFunction extends ClassificationFunction {
         /*
          * for(int k1=0;k1<k;k1++) { // System.out.println(k1+" "+localMin[k1]+" - "+localMax[k1]); }
          */
-        features.close();
         return new RangedClassifier(localMin, localMax);
     }
 }

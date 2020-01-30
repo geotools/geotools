@@ -285,6 +285,15 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer, Symbol
     public static final double DEFAULT_WORD_SPACING = 0;
 
     /**
+     * Option expressed in value of pixels. This option does not support negative values. Works only
+     * on polygons.
+     */
+    public static final String FONT_SHRINK_SIZE_MIN = "fontShrinkSizeMin";
+
+    /** Default font shrink size */
+    public static final int DEFAULT_FONT_SHRINK_SIZE_MIN = 0;
+
+    /**
      * Option to control displacement of labels. Available values are defined as enum values @see
      * {@link DisplacementMode}
      */
@@ -310,6 +319,24 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer, Symbol
         public int getAngle() {
             return angle;
         }
+    }
+
+    /** Placement of the graphic element, see GraphicPlacement enumeration for possible value */
+    public static final String GRAPHIC_PLACEMENT_KEY = "graphicPlacement";
+
+    /** GraphicPlacemnts controls the position of the Graphic associated with the label */
+    public static enum GraphicPlacement {
+        /**
+         * Centered with the label, thus moving with it considering its offsets and anchors relative
+         * to the label point. If not specified, this is the default behavior.
+         */
+        LABEL,
+        /**
+         * Places the graphic independent of the label own offset and anchor, but applying the
+         * Graphic offset and anchor instead, on top of the chosen label point. This allows to
+         * create graphics that are at an offset compared to the label
+         */
+        INDEPENDENT
     }
 
     /**

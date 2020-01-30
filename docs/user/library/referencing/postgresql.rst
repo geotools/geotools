@@ -1,13 +1,13 @@
 EPSG PostgreSQL Plugin
 ----------------------
 
-GeoTools Coordinate Transformation Services can use the EPSG Geodesy Parameters database (http://www.epsg.org) to provide CoordinateReferenceSystem definitions for authority codes.
+GeoTools Coordinate Transformation Services can use the EPSG Geodesy Parameters database (http://www.epsg.org) to provide ``CoordinateReferenceSystem`` definitions for authority codes.
 
-Note: GeoTools 2.5.1 does not support Postgresql version 8.3 with this class/jar. You must be using Postgresql 8.2 or less: Postgresql 8.3 will not work.
+Note: GeoTools 2.5.1 does not support PostgreSQL version 8.3 with this class/jar. You must be using PostgreSQL 8.2 or less: PostgreSQL 8.3 will not work.
 
-The following document describes how to set the version 6.5 database up on Linux. The original version of this document was written by Richard Didier and is attached at the end. The modified SQL scripts are also attached as EPSG_v65.mdb-sql.zip.
+The following document describes how to set the version 6.5 database up on Linux. The original version of this document was written by Richard Didier and is attached at the end. The modified SQL scripts are also attached as ``EPSG_v65.mdb-sql.zip``.
 
-To use the gt-epsg-postgres:
+To use the ``gt-epsg-postgres``:
 
 1. Place the jar on your CLASSPATH
 2. Supply global hints or system property
@@ -21,19 +21,19 @@ These instructions assume the following:
 
 * OS Linux (installed, working)
 * Standard Mandrake installation of PostgreSQL.
-* PostGIS installed in contrib pgsql (/usr/lib/pgsql).
+* PostGIS installed in ``/usr/lib/pgsql/contrib``.
 * SQL scripts provided by the EPSG:
   
-  1. EPSG_v65.mdb_DDL.sql (table definitions);
-  2. EPSG_v65.mdb_DML.sql (data).
+  1. ``EPSG_v65.mdb_DDL.sql`` (table definitions);
+  2. ``EPSG_v65.mdb_DML.sql`` (data).
 
-* Modified SQL scripts - attached as EPSG_v65.mdb-sql.zip
+* Modified SQL scripts - attached as ``EPSG_v65.mdb-sql.zip``
 * Privileges needed:
   
   1. System administrator (SA);
-  2. PostgreSQL administrator: usually launches the postgreSQL server (it
+  2. PostgreSQL administrator: usually launches the PostgreSQL server (it
      is normally not able to log onto the system);
-  3. a Unix user (epsg_reader), to administrate the epsg database (US).
+  3. a Unix user (``epsg_reader``), to administrate the EPSG database (US).
 
 These instructions use the following files:
 
@@ -43,80 +43,81 @@ The EPSG SQL DDL and DML scripts have lots of Windows carriage returns, as well 
 
 EPSG_v65.mdb_DDL.sql:
 
-* #302, lacks a comma between the parameter_code and coord_op_method_code
+* #302, lacks a comma between the ``parameter_code`` and ``coord_op_method_code``
 * you should add a BEGIN; and a COMMIT; to the DDL (beginning and end)
-* the (ALTER TABLE) constraints were moved to EPSG_v65.mdb_DDL2.sql
+* the (ALTER TABLE) constraints were moved to ``EPSG_v65.mdb_DDL2.sql``
 
 EPSG_v65.mdb_DML.sql:
 
 * you should add a BEGIN; and a COMMIT; to the DML (beginning and end)
 * the order of the tables does not conform with the integrity constraints, a better order is:
   
-  * epsg_namingsystem
-  * epsg_alias
-  * epsg_area
-  * epsg_change
-  * epsg_deprecation
-  * epsg_coordinateaxisname
-  * epsg_coordinatesystem
-  * epsg_unitofmeasure
-  * epsg_coordinateaxis
-  * epsg_ellipsoid
-  * epsg_primemeridian
-  * epsg_datum
-  * epsg_coordinatereferencesystem
-  * epsg_coordoperationmethod
-  * epsg_coordoperation
-  * epsg_coordoperationpath
-  * epsg_coordoperationparam
-  * epsg_coordoperationparamusage
-  * epsg_coordoperationparamvalue
-  * epsg_versionhistory
+  * ``epsg_namingsystem``
+  * ``epsg_alias``
+  * ``epsg_area``
+  * ``epsg_change``
+  * ``epsg_deprecation``
+  * ``epsg_coordinateaxisname``
+  * ``epsg_coordinatesystem``
+  * ``epsg_unitofmeasure``
+  * ``epsg_coordinateaxis``
+  * ``epsg_ellipsoid``
+  * ``epsg_primemeridian``
+  * ``epsg_datum``
+  * ``epsg_coordinatereferencesystem``
+  * ``epsg_coordoperationmethod``
+  * ``epsg_coordoperation``
+  * ``epsg_coordoperationpath``
+  * ``epsg_coordoperationparam``
+  * ``epsg_coordoperationparamusage``
+  * ``epsg_coordoperationparamvalue``
+  * ``epsg_versionhistory``
 
 Notes about Richard's SQL scripts
 
-* Because of the problems with the integrity constraints, modified SQL DDL and DML files were created (attached as EPSG_v65.mdb-sql.zip).
+* Because of the problems with the integrity constraints, modified SQL DDL and DML files were created (attached as ``EPSG_v65.mdb-sql.zip``).
 * These allow the integrity constraints to be added to the tables after the records are inserted.
 * These new files are:
   
   * EPSG_v65.mdb_DDL.sql - table definitions
   * EPSG_v65.mdb_DDL2.sql - integrity constraints (ALTER TABLE)
-  * EPSG_v65.mdb_DDL3.sql - drop table statements to DELETE all the epsg tables in the database
+  * EPSG_v65.mdb_DDL3.sql - drop table statements to DELETE all the ``epsg`` tables in the database
   * EPSG_v65.mdb_DML.sql - database records to insert
 
 Here are the instructions:
 
 1. Open access to the new database (SA):
    
-   Geotools CTS will need to access the database through a JDBC driver.
+   GeoTools CTS will need to access the database through a JDBC driver.
    Modify the access configuration file
-   var/lib/pgsql/data/hb_pga.conf/ (SA) add::
+   ``var/lib/pgsql/data/hb_pga.conf/`` (SA) add::
      
      ...
      host	epsg    127.0.0.1    255.255.255.255 password    web
      host	epsg    192.168.0.0  255.255.255.0   password    web
    
    
-   This indicates that the database 'epsg' is accessible locally or via the machine
+   This indicates that the database ``epsg`` is accessible locally or via the machine
    with the IP address 192.168.0.0, requires a password, and is restricted to users
-   whose name exists in the file /var/lib/pgsql/data/web::
+   whose name exists in the file ``/var/lib/pgsql/data/web``::
    
      ...
      epsg_reader
    
-   (SA) now restart the postgreSQL server::
+   (SA) now restart the PostgreSQL server::
      
      $ service postgresql restart
      Arrêt de postgresql                                             [  OK  ]
      Démarrage de postgresql                                         [  OK  ]
 
-2. Create the administrator of the new epsg database (SA):
+2. Create the administrator of the new ``epsg`` database (SA):
    
-   Create the administrative user of the new epsg database. This can be done by the
-   system administrator (SA) if the postgres user has no right to log onto linux
-   system (his login shell does not belong to /etc/shells like /bin/false).
+   Create the administrative user of the new ``epsg`` database. This can be done by the
+   system administrator (SA) if the ``postgres`` user has no right to log onto Linux
+   system (his login shell does not belong to ``/etc/shells`` like
+   ``/bin/false``).
    
-   The createuser can be carried out as the postgres user directly, if this user has
+   The ``createuser`` can be carried out as the ``postgres`` user directly, if this user has
    permission to log onto the system.::
      
      $ su - postgres -c "createuser --createdb --adduser --pwprompt --echo epsg_reader"
@@ -127,7 +128,7 @@ Here are the instructions:
 
 3. Create the database (US)
    
-   The following steps describe how to create the epsg database and turn this into a
+   The following steps describe how to create the ``epsg`` database and turn this into a
    PostGIS spatial database.
    
    Note:
@@ -137,9 +138,9 @@ Here are the instructions:
      it graphically!
    
    * Installing PostGIS (and some of the following steps) are not necessary to use the
-     EPSG database with Geotools.
+     EPSG database with GeoTools.
    
-   The user (administrator) begins by creating a new postgreSQL database::
+   The user (administrator) begins by creating a new PostgreSQL database::
      
      $ createdb -U epsg_reader -h localhost -E LATIN9 -e epsg "EPSG sous postgreSQL"
      Password:
@@ -149,7 +150,7 @@ Here are the instructions:
      COMMENT ON DATABASE "epsg" IS 'EPSG sous postgreSQL'
      COMMENT
    
-   Then the database administrator creates the PL/pgSQL language for PostGIS in
+   Then the database administrator creates the ``PL/pgSQL`` language for PostGIS in
    the database::
      
      $ createlang -U epsg_reader -h localhost plpgsql epsg
@@ -171,7 +172,7 @@ Here are the instructions:
      ...
      COMMIT
    
-   Lastly, grant the epsg_reader user permission to read the PostGIS tables::
+   Lastly, grant the ``epsg_reader`` user permission to read the PostGIS tables::
      
      $ psql -U epsg_reader -h localhost -c "grant select on geometry_columns, spatial_ref_sys to epsg_reader;" epsg
      Password:
@@ -182,7 +183,8 @@ Here are the instructions:
    Note:
    
    * If errors occur, the following SQL command must be issued to 
-     clean the posgreSQL database before restarting the creation/import process::
+     clean the PostgreSQL database before restarting the creation/import process::
+
        
        $ psql -U epsg_reader -h localhost -f /path/2/EPSG_v65.mdb_DDL3.sql epsg
    
@@ -203,7 +205,7 @@ Here are the instructions:
      $ psql -U epsg_reader -h localhost -f /path/2/EPSG_v65.mdb_DDL2.sql epsg
      ...
    
-   Finally, vacuume analyze the new database::
+   Finally, vacuum analyze the new database::
      
      $ vacuumdb -U epsg_reader -h localhost -z epsg
      ...
@@ -252,14 +254,14 @@ Here are the instructions:
 
 6. Provides connection parameters
    
-   Create a EPSG-DataSource.properties file in the user home directory with the following content:
+   Create a EPSG-DataSource.properties file in the user home directory with the following content::
    
-   * serverName   = myserver.foo.com
-   * databaseName = mydatabase
-   * user         = ...
-   * password     = ...
+    serverName   = myserver.foo.com
+    databaseName = mydatabase
+    user         = ...
+    password     = ...
    
-   If the Geotools libraries are installed, a better test will be::
+   If the GeoTools libraries are installed, a better test will be::
      
      $ java -cp gt-epsg-postgresql-2.5.1.jar org.geotools.referencing.CRS EPSG:4326 EPSG:2154 EPSG:7412
      

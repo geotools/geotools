@@ -1,7 +1,7 @@
 XSD-KML
 -------
 
-KML schema and bindings for gt-xml allowing the handling of FeatureCollection
+KML schema and bindings for ``gt-xml`` allowing the handling of FeatureCollection
 and Feature content.
 
 References:

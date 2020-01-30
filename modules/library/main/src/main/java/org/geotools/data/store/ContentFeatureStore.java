@@ -155,6 +155,7 @@ public abstract class ContentFeatureStore extends ContentFeatureSource
                         (DiffTransactionState) getTransaction().getState(getEntry());
                 // reader will take care of filtering
                 // DiffContentWriter takes care of events
+                @SuppressWarnings("PMD.CloseResource") // wrapped and returned
                 FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(query);
                 writer = state.diffWriter(this, reader);
             }
@@ -303,7 +304,7 @@ public abstract class ContentFeatureStore extends ContentFeatureSource
         }
 
         // Need to save a link to the original feature in order to be able to set the ID once it
-        // is actuall saved (see JDBCInsertFeatureWriter)
+        // is actually saved (see JDBCInsertFeatureWriter)
         toWrite.getUserData().put(ORIGINAL_FEATURE_KEY, feature);
 
         // perform the write

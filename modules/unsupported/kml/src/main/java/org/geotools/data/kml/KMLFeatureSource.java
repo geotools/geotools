@@ -28,10 +28,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-/**
- * @author Niels Charlier, Scitus Development
-
- */
+/** @author Niels Charlier, Scitus Development */
 public class KMLFeatureSource extends ContentFeatureSource {
 
     public KMLFeatureSource(ContentEntry entry, Query query) {

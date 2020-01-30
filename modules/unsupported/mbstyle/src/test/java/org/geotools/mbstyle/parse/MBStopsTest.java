@@ -44,17 +44,17 @@ public class MBStopsTest {
         }
         for (MBLayer layer : layers) {
             MBObjectStops mbObjectStops = new MBObjectStops(layer);
-            if (mbObjectStops.ls.hasStops) {
+            if (mbObjectStops.ls.hasStops()) {
                 // System.out.println(layer.getId() + " Contains property and zoom functions");
                 assertTrue(
                         layer.getId() + " Contains property and zoom functions",
-                        mbObjectStops.ls.hasStops);
+                        mbObjectStops.ls.hasStops());
             } else {
                 // System.out.println(layer.getId() + " does not contain property and zoom
                 // functions");
                 assertFalse(
                         layer.getId() + " does not contain property and zoom functions",
-                        mbObjectStops.ls.hasStops);
+                        mbObjectStops.ls.hasStops());
             }
         }
     }
@@ -69,7 +69,7 @@ public class MBStopsTest {
         }
         for (MBLayer layer : layers) {
             MBObjectStops mbObjectStops = new MBObjectStops(layer);
-            if (mbObjectStops.ls.hasStops) {
+            if ("function4".equals(layer.getId())) {
                 /*
                 * Here we are testing this function, when reduced to zoom level 0.
                 *
@@ -95,8 +95,71 @@ public class MBStopsTest {
                 *
                 *
                 */
-                assertEquals("function4", layer.getId());
+                assertTrue(mbObjectStops.ls.hasStops());
                 assertEquals(2, mbObjectStops.stops.size());
+                assertEquals(0, mbObjectStops.stops.get(0), 0.1);
+                assertEquals(20, mbObjectStops.stops.get(1), 0.1);
+                assertEquals(2, mbObjectStops.layersForStop.size());
+                int i = 0;
+                for (MBLayer l : mbObjectStops.layersForStop) {
+                    if (i == 0) {
+                        JSONObject circleRadius = (JSONObject) l.getPaint().get("circle-radius");
+                        JSONArray stopsArray = (JSONArray) circleRadius.get("stops");
+                        assertEquals("rating", circleRadius.get("property"));
+                        assertEquals(2, stopsArray.size());
+                        Object stop0Obj = stopsArray.get(0);
+                        assertTrue(stop0Obj instanceof JSONArray);
+                        JSONArray stop0 = (JSONArray) stop0Obj;
+                        // For zoom level 0, Expect: [0, 0]
+                        assertEquals(0L, stop0.get(0));
+                        assertEquals(0L, stop0.get(1));
+
+                        Object stop1Obj = stopsArray.get(1);
+                        assertTrue(stop1Obj instanceof JSONArray);
+                        // For zoom level 0,  Expect: [5, 5]
+                        JSONArray stop1 = (JSONArray) stop1Obj;
+                        assertEquals(5L, stop1.get(0));
+                        assertEquals(5L, stop1.get(1));
+                    } else if (i == 1) {
+                        JSONObject circleRadius = (JSONObject) l.getPaint().get("circle-radius");
+                        JSONArray stopsArray = (JSONArray) circleRadius.get("stops");
+                        assertEquals("rating", circleRadius.get("property"));
+                        assertEquals(2, stopsArray.size());
+                        Object stop0Obj = stopsArray.get(0);
+                        assertTrue(stop0Obj instanceof JSONArray);
+                        JSONArray stop0 = (JSONArray) stop0Obj;
+                        // For zoom level 0, Expect: [0, 0]
+                        assertEquals(0L, stop0.get(0));
+                        assertEquals(0L, stop0.get(1));
+
+                        Object stop1Obj = stopsArray.get(1);
+                        assertTrue(stop1Obj instanceof JSONArray);
+                        // For zoom level 20,  Expect: [5, 20]
+                        JSONArray stop1 = (JSONArray) stop1Obj;
+                        assertEquals(5L, stop1.get(0));
+                        assertEquals(20L, stop1.get(1));
+                    }
+                    i++;
+                }
+            }
+        }
+    }
+
+    @Test
+    public void testReducePropertyAndZoomFloatStopsFunctions() throws IOException, ParseException {
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("functionParseFloatStopsTest.json");
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        List<MBLayer> layers = mbStyle.layers();
+        if (layers.isEmpty()) {
+            throw new MBFormatException("layers empty");
+        }
+        for (MBLayer layer : layers) {
+            MBObjectStops mbObjectStops = new MBObjectStops(layer);
+            if ("function4".equals(layer.getId())) {
+                assertTrue(mbObjectStops.ls.hasStops());
+                assertEquals(2, mbObjectStops.stops.size());
+                assertEquals(1.5, mbObjectStops.stops.get(0), 0.1);
+                assertEquals(20.5, mbObjectStops.stops.get(1), 0.1);
                 assertEquals(2, mbObjectStops.layersForStop.size());
                 int i = 0;
                 for (MBLayer l : mbObjectStops.layersForStop) {
@@ -149,19 +212,17 @@ public class MBStopsTest {
         MBStyle mbStyle = new MBStyle(jsonObject);
         StyledLayerDescriptor transformed = mbStyle.transform();
         List<StyledLayer> styledLayers = transformed.layers();
-        List<FeatureTypeStyle> fts =
-                ((UserLayer) styledLayers.get(0)).getUserStyles()[0].featureTypeStyles();
+        List<FeatureTypeStyle> fts = MapboxTestUtils.getStyle(transformed, 0).featureTypeStyles();
 
         int i = 0;
         for (FeatureTypeStyle layer : fts) {
             // layer named function4 has the property zoom functions and there should be 2 feature
-            // type styles
-            // for this layer.
+            // type styles for this layer.
             if (layer.getName().equalsIgnoreCase("function4")) {
                 if (i == 0) {
                     // max scale denominator should be set for zoom level 20
-                    Double minScaleDenom = MBObjectStops.zoomLevelToScaleDenominator(20L);
-                    Double maxScaleDenom = MBObjectStops.zoomLevelToScaleDenominator(0L);
+                    Double minScaleDenom = MBObjectStops.zoomLevelToScaleDenominator(20);
+                    Double maxScaleDenom = MBObjectStops.zoomLevelToScaleDenominator(0);
                     assertEquals(0, i);
                     assertEquals(
                             minScaleDenom, (Double) layer.rules().get(0).getMinScaleDenominator());
@@ -169,7 +230,41 @@ public class MBStopsTest {
                             maxScaleDenom, (Double) layer.rules().get(0).getMaxScaleDenominator());
                 } else if (i == 1) {
                     assertEquals(1, i);
-                    Double maxScaleDenom = MBObjectStops.zoomLevelToScaleDenominator(20L);
+                    Double maxScaleDenom = MBObjectStops.zoomLevelToScaleDenominator(20);
+                    assertEquals(
+                            maxScaleDenom, (Double) layer.rules().get(0).getMaxScaleDenominator());
+                }
+                i++;
+            }
+        }
+    }
+
+    @Test
+    public void testPropertyAndZoomScaleDenominatorsFloatStops()
+            throws IOException, ParseException {
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("functionParseFloatStopsTest.json");
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        StyledLayerDescriptor transformed = mbStyle.transform();
+        List<StyledLayer> styledLayers = transformed.layers();
+        List<FeatureTypeStyle> fts = MapboxTestUtils.getStyle(transformed, 0).featureTypeStyles();
+
+        int i = 0;
+        for (FeatureTypeStyle layer : fts) {
+            // layer named function4 has the property zoom functions and there should be 2 feature
+            // type styles for this layer.
+            if (layer.getName().equalsIgnoreCase("function4")) {
+                if (i == 0) {
+                    // max scale denominator should be set for zoom level 20
+                    Double minScaleDenom = MBObjectStops.zoomLevelToScaleDenominator(20.5);
+                    Double maxScaleDenom = MBObjectStops.zoomLevelToScaleDenominator(1.5);
+                    assertEquals(0, i);
+                    assertEquals(
+                            minScaleDenom, (Double) layer.rules().get(0).getMinScaleDenominator());
+                    assertEquals(
+                            maxScaleDenom, (Double) layer.rules().get(0).getMaxScaleDenominator());
+                } else if (i == 1) {
+                    assertEquals(1, i);
+                    Double maxScaleDenom = MBObjectStops.zoomLevelToScaleDenominator(20.6);
                     assertEquals(
                             maxScaleDenom, (Double) layer.rules().get(0).getMaxScaleDenominator());
                 }

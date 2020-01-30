@@ -16,6 +16,8 @@
  */
 package org.geotools.renderer.label;
 
+import static org.geotools.styling.TextSymbolizer.GraphicPlacement.INDEPENDENT;
+
 import java.awt.*;
 import java.awt.font.GlyphVector;
 import java.awt.font.LineMetrics;
@@ -122,6 +124,7 @@ public class LabelPainter {
         // we can layout the items and compute the total bounds
         double boundsY = 0;
         double labelY = 0;
+        LineInfo previous = null;
         for (LineInfo info : lines) {
             Rectangle2D currBounds = info.getBounds();
 
@@ -136,7 +139,9 @@ public class LabelPainter {
                             - currBounds.getMinX();
             info.setMinX(minX);
 
-            double lineOffset = info.getLineOffset();
+            double descentLeading =
+                    previous == null ? info.getDescentLeading() : previous.getDescentLeading();
+            double lineOffset = currBounds.getHeight() + descentLeading;
             if (labelBounds == null) {
                 labelBounds = currBounds;
                 boundsY = currBounds.getMinY() + lineOffset;
@@ -149,6 +154,7 @@ public class LabelPainter {
                 labelBounds = labelBounds.createUnion(translated);
             }
             info.setY(labelY);
+            previous = info;
         }
         normalizeBounds(labelBounds);
     }
@@ -276,8 +282,8 @@ public class LabelPainter {
                 double height = area.getHeight() * factor;
                 shieldBounds =
                         new Rectangle2D.Double(
-                                width / 2 + bounds.getMinX() - bounds.getWidth() / 2,
-                                height / 2 + bounds.getMinY() - bounds.getHeight() / 2,
+                                -width / 2 + bounds.getMinX() + bounds.getWidth() / 2,
+                                -height / 2 + bounds.getMinY() + bounds.getHeight() / 2,
                                 width,
                                 height);
                 shieldBounds = applyMargins(margin, shieldBounds);
@@ -285,8 +291,8 @@ public class LabelPainter {
                 // use the shield natural bounds
                 shieldBounds =
                         new Rectangle2D.Double(
-                                -area.getWidth() / 2 + bounds.getMinX() - bounds.getWidth() / 2,
-                                -area.getHeight() / 2 + bounds.getMinY() - bounds.getHeight() / 2,
+                                -area.getWidth() / 2 + bounds.getMinX() + bounds.getWidth() / 2,
+                                -area.getHeight() / 2 + bounds.getMinY() + bounds.getHeight() / 2,
                                 area.getWidth(),
                                 area.getHeight());
             }
@@ -300,7 +306,7 @@ public class LabelPainter {
     }
 
     Rectangle2D applyMargins(int[] margin, Rectangle2D bounds) {
-        if (bounds != null) {
+        if (bounds != null && margin != null) {
             double xmin = bounds.getMinX() - margin[3];
             double ymin = bounds.getMinY() - margin[0];
             double width = bounds.getWidth() + margin[1] + margin[3];
@@ -328,48 +334,69 @@ public class LabelPainter {
      * @throws Exception
      */
     public void paintStraightLabel(AffineTransform transform) throws Exception {
+        paintStraightLabel(transform, null);
+    }
+
+    /**
+     * Paints the label as a non curved one. The positioning and rotation are provided by the
+     * transformation
+     *
+     * @param transform
+     * @throws Exception
+     */
+    public void paintStraightLabel(AffineTransform transform, Coordinate labelPoint)
+            throws Exception {
         AffineTransform oldTransform = graphics.getTransform();
         try {
-            AffineTransform newTransform = new AffineTransform(oldTransform);
-            newTransform.concatenate(transform);
-            graphics.setTransform(newTransform);
 
             // draw the label shield first, underneath the halo
             Style2D graphic = labelItem.getTextStyle().getGraphic();
             if (graphic != null) {
-                // take into account the graphic margins, if any
-                double offsetY = 0;
-                double offsetX = 0;
-                final int[] margin = labelItem.getGraphicMargin();
-                if (margin != null) {
-                    offsetX = margin[1] - margin[3];
-                    offsetY = margin[2] - margin[0];
+
+                Coordinate center;
+                if (labelPoint != null && labelItem.getGraphicPlacement() == INDEPENDENT) {
+                    center = labelPoint;
+                    LiteShape2 tempShape =
+                            new LiteShape2(gf.createPoint(center), null, null, false, false);
+
+                    // resize graphic and transform it based on the position of the last line
+                    graphic = resizeGraphic(graphic);
+                    shapePainter.paint(graphics, tempShape, graphic, graphic.getMaxScale());
+                } else {
+
+                    // take into account the graphic margins, if any
+                    double offsetY = 0;
+                    double offsetX = 0;
+                    final int[] margin = labelItem.getGraphicMargin();
+                    if (margin != null) {
+                        offsetX = margin[1] - margin[3];
+                        offsetY = margin[2] - margin[0];
+                    }
+                    LineInfo lastLine = lines.get(lines.size() - 1);
+
+                    center =
+                            new Coordinate(
+                                    labelBounds.getMinX() + labelBounds.getWidth() / 2.0 + offsetX,
+                                    labelBounds.getMinY()
+                                            + lastLine.getBounds().getHeight()
+                                            - 1.0 * labelBounds.getHeight() / 2.0
+                                            + offsetY);
+                    LiteShape2 tempShape =
+                            new LiteShape2(gf.createPoint(center), null, null, false, false);
+
+                    // resize graphic and transform it based on the position of the last line
+                    graphic = resizeGraphic(graphic);
+                    AffineTransform graphicTx = new AffineTransform(transform);
+
+                    graphicTx.translate(lastLine.getComponents().get(0).getX(), lastLine.getY());
+                    graphics.setTransform(graphicTx);
+                    shapePainter.paint(graphics, tempShape, graphic, graphic.getMaxScale());
                 }
-                LineInfo lastLine = lines.get(lines.size() - 1);
-                LiteShape2 tempShape =
-                        new LiteShape2(
-                                gf.createPoint(
-                                        new Coordinate(
-                                                labelBounds.getMinX()
-                                                        + labelBounds.getWidth() / 2.0
-                                                        + offsetX,
-                                                labelBounds.getMinY()
-                                                        + lastLine.getBounds().getHeight()
-                                                        - 1.0 * labelBounds.getHeight() / 2.0
-                                                        + offsetY)),
-                                null,
-                                null,
-                                false,
-                                false);
-
-                // resize graphic and transform it based on the position of the last line
-                graphic = resizeGraphic(graphic);
-                AffineTransform graphicTx = new AffineTransform(transform);
-
-                graphicTx.translate(lastLine.getComponents().get(0).getX(), lastLine.getY());
-                graphics.setTransform(graphicTx);
-                shapePainter.paint(graphics, tempShape, graphic, graphic.getMaxScale());
             }
+
+            AffineTransform newTransform = new AffineTransform(oldTransform);
+            newTransform.concatenate(transform);
+            graphics.setTransform(newTransform);
 
             // 0 is unfortunately an acceptable value if people only want to draw shields
             // (to leverage conflict resolution, priority when placing symbols)

@@ -312,6 +312,7 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
      * @return a new PeadableByteChannel from the input url
      * @throws IOException if there is a problem creating the channel
      */
+    @SuppressWarnings("PMD.CloseResource") // returns a Channel, cannot close its input stream
     private ReadableByteChannel getReadChannel(URL url) throws IOException {
         ReadableByteChannel channel = null;
 
@@ -355,103 +356,102 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
         // //////////////////////
         // setup
         // //////////////////////
-        InputStreamReader latIsr = new InputStreamReader(latGridUrl.openStream());
-        BufferedReader latBr = new BufferedReader(latIsr);
+        try (BufferedReader latBr =
+                        new BufferedReader(new InputStreamReader(latGridUrl.openStream()));
+                BufferedReader longBr =
+                        new BufferedReader(new InputStreamReader(longGridUrl.openStream()))) {
+            // //////////////////////
+            // read header info
+            // //////////////////////
+            latBr.readLine(); // skip header description
+            latLine = latBr.readLine();
+            if (latLine == null) {
+                throw new IOException("Invalid lat grid file, does not contain a grid");
+            }
+            latSt = new StringTokenizer(latLine, " ");
 
-        InputStreamReader longIsr = new InputStreamReader(longGridUrl.openStream());
-        BufferedReader longBr = new BufferedReader(longIsr);
+            if (latSt.countTokens() != 8) {
+                throw new FactoryException(
+                        Errors.format(
+                                ErrorKeys.HEADER_UNEXPECTED_LENGTH_$1,
+                                String.valueOf(latSt.countTokens())));
+            }
 
-        // //////////////////////
-        // read header info
-        // //////////////////////
-        latBr.readLine(); // skip header description
-        latLine = latBr.readLine();
-        if (latLine == null) {
-            throw new IOException("Invalid lat grid file, does not contain a grid");
-        }
-        latSt = new StringTokenizer(latLine, " ");
+            int nc = Integer.parseInt(latSt.nextToken());
+            int nr = Integer.parseInt(latSt.nextToken());
+            int nz = Integer.parseInt(latSt.nextToken());
 
-        if (latSt.countTokens() != 8) {
-            throw new FactoryException(
-                    Errors.format(
-                            ErrorKeys.HEADER_UNEXPECTED_LENGTH_$1,
-                            String.valueOf(latSt.countTokens())));
-        }
+            float xmin = Float.parseFloat(latSt.nextToken());
+            float dx = Float.parseFloat(latSt.nextToken());
+            float ymin = Float.parseFloat(latSt.nextToken());
+            float dy = Float.parseFloat(latSt.nextToken());
 
-        int nc = Integer.parseInt(latSt.nextToken());
-        int nr = Integer.parseInt(latSt.nextToken());
-        int nz = Integer.parseInt(latSt.nextToken());
+            float angle = Float.parseFloat(latSt.nextToken());
+            float xmax = xmin + ((nc - 1) * dx);
+            float ymax = ymin + ((nr - 1) * dy);
 
-        float xmin = Float.parseFloat(latSt.nextToken());
-        float dx = Float.parseFloat(latSt.nextToken());
-        float ymin = Float.parseFloat(latSt.nextToken());
-        float dy = Float.parseFloat(latSt.nextToken());
+            // now read long shift grid
+            longBr.readLine(); // skip header description
+            longLine = longBr.readLine();
+            if (longLine == null) {
+                throw new IOException("Invalid lon grid file, does not contain a grid");
+            }
+            longSt = new StringTokenizer(longLine, " ");
 
-        float angle = Float.parseFloat(latSt.nextToken());
-        float xmax = xmin + ((nc - 1) * dx);
-        float ymax = ymin + ((nr - 1) * dy);
+            if (longSt.countTokens() != 8) {
+                throw new FactoryException(
+                        Errors.format(
+                                ErrorKeys.HEADER_UNEXPECTED_LENGTH_$1,
+                                String.valueOf(longSt.countTokens())));
+            }
 
-        // now read long shift grid
-        longBr.readLine(); // skip header description
-        longLine = longBr.readLine();
-        if (longLine == null) {
-            throw new IOException("Invalid lon grid file, does not contain a grid");
-        }
-        longSt = new StringTokenizer(longLine, " ");
+            // check that latitude grid header is the same as for latitude grid
+            if ((nc != Integer.parseInt(longSt.nextToken()))
+                    || (nr != Integer.parseInt(longSt.nextToken()))
+                    || (nz != Integer.parseInt(longSt.nextToken()))
+                    || (xmin != Float.parseFloat(longSt.nextToken()))
+                    || (dx != Float.parseFloat(longSt.nextToken()))
+                    || (ymin != Float.parseFloat(longSt.nextToken()))
+                    || (dy != Float.parseFloat(longSt.nextToken()))
+                    || (angle != Float.parseFloat(longSt.nextToken()))) {
+                throw new FactoryException(Errors.format(ErrorKeys.GRID_LOCATIONS_UNEQUAL));
+            }
 
-        if (longSt.countTokens() != 8) {
-            throw new FactoryException(
-                    Errors.format(
-                            ErrorKeys.HEADER_UNEXPECTED_LENGTH_$1,
-                            String.valueOf(longSt.countTokens())));
-        }
+            // //////////////////////
+            // read grid shift data into LocalizationGrid
+            // //////////////////////
+            NADConGridShift gridShift = new NADConGridShift(xmin, ymin, xmax, ymax, dx, dy, nc, nr);
 
-        // check that latitude grid header is the same as for latitude grid
-        if ((nc != Integer.parseInt(longSt.nextToken()))
-                || (nr != Integer.parseInt(longSt.nextToken()))
-                || (nz != Integer.parseInt(longSt.nextToken()))
-                || (xmin != Float.parseFloat(longSt.nextToken()))
-                || (dx != Float.parseFloat(longSt.nextToken()))
-                || (ymin != Float.parseFloat(longSt.nextToken()))
-                || (dy != Float.parseFloat(longSt.nextToken()))
-                || (angle != Float.parseFloat(longSt.nextToken()))) {
-            throw new FactoryException(Errors.format(ErrorKeys.GRID_LOCATIONS_UNEQUAL));
-        }
+            int i = 0;
+            int j = 0;
+            for (i = 0; i < nr; i++) {
+                for (j = 0; j < nc; ) {
+                    latLine = latBr.readLine();
+                    if (latLine == null) {
+                        throw new IOException("Was expecting one more line in the lat file");
+                    }
+                    latSt = new StringTokenizer(latLine, " ");
+                    longLine = longBr.readLine();
+                    if (longLine == null) {
+                        throw new IOException("Was expecting one more line in the lat file");
+                    }
+                    longSt = new StringTokenizer(longLine, " ");
 
-        // //////////////////////
-        // read grid shift data into LocalizationGrid
-        // //////////////////////
-        NADConGridShift gridShift = new NADConGridShift(xmin, ymin, xmax, ymax, dx, dy, nc, nr);
-
-        int i = 0;
-        int j = 0;
-        for (i = 0; i < nr; i++) {
-            for (j = 0; j < nc; ) {
-                latLine = latBr.readLine();
-                if (latLine == null) {
-                    throw new IOException("Was expecting one more line in the lat file");
-                }
-                latSt = new StringTokenizer(latLine, " ");
-                longLine = longBr.readLine();
-                if (longLine == null) {
-                    throw new IOException("Was expecting one more line in the lat file");
-                }
-                longSt = new StringTokenizer(longLine, " ");
-
-                while (latSt.hasMoreTokens() && longSt.hasMoreTokens()) {
-                    gridShift.setLocalizationPoint(
-                            j,
-                            i,
-                            (double) Float.parseFloat(longSt.nextToken()),
-                            (double) Float.parseFloat(latSt.nextToken()));
-                    ++j;
+                    while (latSt.hasMoreTokens() && longSt.hasMoreTokens()) {
+                        gridShift.setLocalizationPoint(
+                                j,
+                                i,
+                                (double) Float.parseFloat(longSt.nextToken()),
+                                (double) Float.parseFloat(latSt.nextToken()));
+                        ++j;
+                    }
                 }
             }
+
+            assert i == nr : i;
+            assert j == nc : j;
+
+            return gridShift;
         }
-
-        assert i == nr : i;
-        assert j == nc : j;
-
-        return gridShift;
     }
 }

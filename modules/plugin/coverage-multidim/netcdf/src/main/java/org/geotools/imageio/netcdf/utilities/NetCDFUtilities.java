@@ -768,6 +768,7 @@ public class NetCDFUtilities {
     }
 
     public static NetcdfDataset acquireFeatureCollection(String path) throws IOException {
+        @SuppressWarnings("PMD.CloseResource") // won't risk closing System.err
         Formatter formatter = new Formatter(System.err);
         FeatureCollectionConfigBuilder builder = new FeatureCollectionConfigBuilder(formatter);
         FeatureCollectionConfig config =
@@ -876,6 +877,7 @@ public class NetCDFUtilities {
                 guessedFile = ImageIOUtilities.urlToFile(tempURL);
             }
         } else if (input instanceof URIImageInputStream) {
+            @SuppressWarnings("PMD.CloseResource") // not managed here
             final URIImageInputStream uriInStream = (URIImageInputStream) input;
             String uri = uriInStream.getUri().toString();
             guessedFile = new File(uri);

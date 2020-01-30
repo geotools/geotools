@@ -16,19 +16,23 @@
  */
 package org.geotools.ows.wmts.map;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.*;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.Set;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 import javax.xml.parsers.ParserConfigurationException;
 import net.opengis.wmts.v_1.CapabilitiesType;
+import org.apache.commons.lang3.NotImplementedException;
+import org.geotools.data.ows.HTTPClient;
+import org.geotools.data.ows.HTTPResponse;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.ServiceException;
+import org.geotools.ows.wmts.MockHttpClient;
 import org.geotools.ows.wmts.WebMapTileServer;
 import org.geotools.ows.wmts.model.WMTSCapabilities;
 import org.geotools.ows.wmts.model.WMTSLayer;
@@ -63,14 +67,80 @@ public class WMTSCoverageReaderTest {
     @Test
     public void testKVPInitMapRequest() throws Exception {
         WebMapTileServer server = createServer(KVP_CAPA_RESOURCENAME);
-        WMTSLayer layer = (WMTSLayer) server.getCapabilities().getLayer("topp:states");
+        WMTSLayer layer = server.getCapabilities().getLayer("topp:states");
         WMTSCoverageReader wcr = new WMTSCoverageReader(server, layer);
         ReferencedEnvelope bbox =
                 new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326"));
         testInitMapRequest(wcr, bbox);
     }
 
-    public void testInitMapRequest(WMTSCoverageReader wcr, ReferencedEnvelope bbox)
+    @Test
+    public void testKVPInitMapRequestJpegOnly() throws Exception {
+        WebMapTileServer server = createServer(KVP_CAPA_RESOURCENAME);
+        WMTSLayer layer = server.getCapabilities().getLayer("topp:states_jpeg");
+        WMTSCoverageReader wcr = new WMTSCoverageReader(server, layer);
+        ReferencedEnvelope bbox =
+                new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326"));
+        List<Tile> responses = testInitMapRequest(wcr, bbox);
+        assertFalse(responses.isEmpty());
+        URL url = responses.get(0).getUrl();
+        assertThat(
+                "Expect format=image/jpeg in the request url",
+                url.toString(),
+                containsString("format=image%2Fjpeg"));
+    }
+
+    @Test
+    public void testWMTSServerWithCustomHttpClient() throws Exception {
+        // Test basic authentication properties are set for requests.
+        // GetCapabilities request is dependent on HTTPClient class.
+        // GetTile request is dependent on HttpClient class from common http library.
+        final URL wmtsUrl = new URL("http://fake.local/wmts");
+
+        // Mock HTTPClient
+        MockHTTPResponse getCapabilitiesResponse = new MockHTTPResponse(KVP_CAPA_RESOURCENAME);
+        MockHTTPResponse getTileResponse = new MockHTTPResponse("test-data/world.png");
+        final Map<String, String> getTileHeadersCalled = new HashMap<>();
+        HTTPClient owsHttpClient =
+                new MockHttpClient() {
+                    @Override
+                    public HTTPResponse get(URL url, Map<String, String> headers) {
+                        if (url.toString().toLowerCase().contains("request=getcapabilities")) {
+                            return getCapabilitiesResponse;
+                        } else if (url.toString().toLowerCase().contains("request=gettile")) {
+                            getTileHeadersCalled.clear();
+                            getTileHeadersCalled.putAll(headers);
+                            return getTileResponse;
+                        } else {
+                            throw new NotImplementedException(
+                                    "request is not implemented. " + url.toString());
+                        }
+                    }
+                };
+        owsHttpClient.setUser("username");
+        owsHttpClient.setPassword("userpassword");
+
+        WebMapTileServer server = new WebMapTileServer(wmtsUrl, owsHttpClient, null);
+        server.getHeaders().put("header1", "value1");
+        assertNotNull(server.getCapabilities());
+
+        WMTSLayer layer = server.getCapabilities().getLayer("topp:states");
+        WMTSCoverageReader wcr = new WMTSCoverageReader(server, layer);
+        ReferencedEnvelope bbox =
+                new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326"));
+        List<Tile> responses = testInitMapRequest(wcr, bbox);
+        assertFalse(responses.isEmpty());
+        BufferedImage bufferedImage = responses.get(0).loadImageTileImage(responses.get(0));
+        assertNotNull(bufferedImage);
+
+        // check headers defined at WebMapTileServer are sent with GetTileRequest
+        assertNotNull(getTileHeadersCalled);
+        assertTrue(
+                "Expected header1 in the GetTile request",
+                getTileHeadersCalled.containsKey("header1"));
+    }
+
+    public List<Tile> testInitMapRequest(WMTSCoverageReader wcr, ReferencedEnvelope bbox)
             throws Exception {
 
         int width = 400;
@@ -85,11 +155,12 @@ public class WMTSCoverageReaderTest {
             // System.out.println(t.getTileIdentifier() + " " + t.getExtent());*/
             assertNotNull(t);
         }
+        return new ArrayList<>(responses);
     }
 
     private WebMapTileServer createServer(String resourceName) throws Exception {
 
-        File capaFile = getRESTgetcapaFile(resourceName);
+        File capaFile = getResourceFile(resourceName);
         WMTSCapabilities capa = createCapabilities(capaFile);
         return new WebMapTileServer(capa);
     }
@@ -111,17 +182,55 @@ public class WMTSCoverageReaderTest {
         return new WMTSCapabilities((CapabilitiesType) object);
     }
 
-    private File getRESTgetcapaFile(String resourceName) {
+    private File getResourceFile(String resourceName) {
         try {
-            URL capaResource = getClass().getClassLoader().getResource(resourceName);
-            assertNotNull("Can't find getCapa resource " + resourceName, capaResource);
-            File capaFile = new File(capaResource.toURI());
-            assertTrue("Can't find getCapa file", capaFile.exists());
+            URL resourceURL = getClass().getClassLoader().getResource(resourceName);
+            assertNotNull("Can't find resource " + resourceName, resourceURL);
+            File resourceFile = new File(resourceURL.toURI());
+            assertTrue("Can't find resource file " + resourceURL, resourceFile.exists());
 
-            return capaFile;
+            return resourceFile;
         } catch (URISyntaxException ex) {
             fail(ex.getMessage());
             return null;
+        }
+    }
+
+    private class MockHTTPResponse implements HTTPResponse {
+        private InputStream stream;
+
+        public MockHTTPResponse(String resourceName) throws FileNotFoundException {
+            File resourceFile = WMTSCoverageReaderTest.this.getResourceFile(resourceName);
+
+            this.stream = new FileInputStream(resourceFile);
+        }
+
+        @Override
+        public void dispose() {
+            try {
+                this.stream.close();
+            } catch (IOException e) {
+            }
+        }
+
+        @Override
+        public String getContentType() {
+            return "application/xml; UTF-8";
+        }
+
+        @Override
+        public String getResponseHeader(String headerName) {
+            return null;
+        }
+
+        @Override
+        public InputStream getResponseStream() throws IOException {
+            return this.stream;
+        }
+
+        @Override
+        public String getResponseCharset() {
+            return StandardCharsets.UTF_8.toString();
         }
     }
 }

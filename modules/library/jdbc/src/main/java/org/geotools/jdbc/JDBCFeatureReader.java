@@ -779,6 +779,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             return isDirty(index.get(name));
         }
 
+        /** Just releasing references, not an actual "Closeable" close */
         public void close() {
             rs = null;
             cx = null;

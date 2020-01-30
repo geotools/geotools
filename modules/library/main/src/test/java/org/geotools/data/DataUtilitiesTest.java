@@ -16,7 +16,9 @@
  */
 package org.geotools.data;
 
+import static org.hamcrest.Matchers.arrayContaining;
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertThat;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -76,6 +78,7 @@ import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.sort.SortBy;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
@@ -350,9 +353,88 @@ public class DataUtilitiesTest extends DataTestCase {
         SimpleFeatureType road3 =
                 DataUtilities.createType("test.road", "id:0,geom:LineString,name:String,uuid:UUID");
         assertEquals(0, DataUtilities.compare(road3, roadType));
+
+        // different attribute bindings
+        SimpleFeatureType road4 =
+                DataUtilities.createType("road", "id:0,geom:LineString,name:String,uuid:String");
+        assertEquals(-1, DataUtilities.compare(road4, roadType));
     }
 
-    public void testIsMatch() {}
+    public void testCompareNames() throws SchemaException {
+        assertEquals(0, DataUtilities.compareNames(null, null));
+        assertEquals(-1, DataUtilities.compareNames(roadType, null));
+        assertEquals(-1, DataUtilities.compareNames(null, roadType));
+        assertEquals(-1, DataUtilities.compareNames(riverType, roadType));
+        assertEquals(-1, DataUtilities.compareNames(roadType, riverType));
+        assertEquals(0, DataUtilities.compareNames(roadType, roadType));
+        assertEquals(1, DataUtilities.compareNames(subRoadType, roadType));
+
+        // different order
+        SimpleFeatureType road2 =
+                DataUtilities.createType("namespace.road", "geom:LineString,name:String,id:0");
+        assertEquals(1, DataUtilities.compareNames(road2, roadType));
+
+        // different namespace
+        SimpleFeatureType road3 =
+                DataUtilities.createType("test.road", "id:0,geom:LineString,name:String,uuid:UUID");
+        assertEquals(0, DataUtilities.compareNames(road3, roadType));
+
+        // same name, different attribute bindings
+        SimpleFeatureType road4 =
+                DataUtilities.createType("road", "id:0,geom:LineString,name:String,uuid:String");
+        assertEquals(0, DataUtilities.compareNames(road4, roadType));
+
+        // different order & attribute bindings
+        SimpleFeatureType road5 =
+                DataUtilities.createType("road", "id:0,uuid:String,geom:LineString,name:String");
+        assertEquals(1, DataUtilities.compareNames(road5, roadType));
+    }
+
+    public void testIsMatch() throws SchemaException {
+        SimpleFeatureType roadType1 =
+                DataUtilities.createType("road", "id:0,geom:LineString,name:String,uuid:String");
+
+        // different binding mismatch when strict flg set
+        assertEquals(
+                false,
+                DataUtilities.isMatch(
+                        roadType.getDescriptor("uuid"), roadType1.getDescriptor("uuid")));
+
+        // different binding match when strict flg not set
+        assertEquals(
+                true,
+                DataUtilities.isMatch(
+                        roadType.getDescriptor("uuid"), roadType1.getDescriptor("uuid"), false));
+
+        // different names mismatch in both cases
+        SimpleFeatureType roadType2 =
+                DataUtilities.createType("road", "id:0,the_geom:LineString,name:String,uuid:UUID");
+        assertEquals(
+                false,
+                DataUtilities.isMatch(
+                        roadType.getDescriptor("geom"), roadType2.getDescriptor("the_geom")));
+        assertEquals(
+                false,
+                DataUtilities.isMatch(
+                        roadType.getDescriptor("geom"),
+                        roadType2.getDescriptor("the_geom"),
+                        false));
+
+        SimpleFeatureType roadType3 =
+                DataUtilities.createType(
+                        "road", "id:0,the_geom:LineString,geom:String,name:String,uuid:UUID");
+        // same names different descriptors mismatch when strict flg set
+        assertEquals(
+                false,
+                DataUtilities.isMatch(
+                        roadType.getDescriptor("geom"), roadType3.getDescriptor("geom")));
+
+        // same names different descriptors match when strict flg not set
+        assertEquals(
+                true,
+                DataUtilities.isMatch(
+                        roadType.getDescriptor("geom"), roadType3.getDescriptor("geom"), false));
+    }
 
     public void testReType() throws Exception {
         SimpleFeature rd1 = roadFeatures[0];
@@ -888,7 +970,26 @@ public class DataUtilitiesTest extends DataTestCase {
         assertEquals(3, list2.size());
     }
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(DataUtilitiesTest.class);
+    public void testMixQueriesSort() {
+        // simple merge, no conflict
+        Query q1 = new Query();
+        Query q2 = new Query();
+        q2.setSortBy(new SortBy[] {SortBy.NATURAL_ORDER});
+        assertThat(
+                DataUtilities.mixQueries(q1, q2, null).getSortBy(),
+                arrayContaining(SortBy.NATURAL_ORDER));
+        assertThat(
+                DataUtilities.mixQueries(q2, q1, null).getSortBy(),
+                arrayContaining(SortBy.NATURAL_ORDER));
+
+        // more complex, override (the second wins)
+        Query q3 = new Query();
+        q3.setSortBy(new SortBy[] {SortBy.REVERSE_ORDER});
+        assertThat(
+                DataUtilities.mixQueries(q2, q3, null).getSortBy(),
+                arrayContaining(SortBy.REVERSE_ORDER));
+        assertThat(
+                DataUtilities.mixQueries(q3, q2, null).getSortBy(),
+                arrayContaining(SortBy.NATURAL_ORDER));
     }
 }

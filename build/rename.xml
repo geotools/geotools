@@ -8,7 +8,7 @@
     ant -f rename.xml -Drelease=21.2 -Dseries=stable -Ddate='Monday January 17th, 2019`
   -->
   <tstamp/>
-  <property name="release" value="21-SNAPSHOT"/>
+  <property name="release" value="23-SNAPSHOT"/>
   <property name="date" value="${TODAY}"/>
   <property name="series" value="latest"/>
   
@@ -27,8 +27,7 @@
       <include name="**/pom.xml"/>
       <include name="**/GeoTools.java"/>
       <include name="**/common.py"/>
-      <replacefilter token="22-SNAPSHOT" value="@VERSION@"/>
-      <replacefilter token="22-SNAPSHOT" value="${release}"/>
+      <replacefilter token="23-SNAPSHOT" value="${release}"/>
     </replace>
   </target>
   

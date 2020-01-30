@@ -411,88 +411,90 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
     void calculateExtentsFromDB(String coverageName, Connection con)
             throws SQLException, IOException {
 
-        PreparedStatement stmt = con.prepareStatement(getConfig().getSqlUpdateMosaicStatement());
+        try (PreparedStatement stmt =
+                con.prepareStatement(getConfig().getSqlUpdateMosaicStatement())) {
+            List<ImageLevelInfo> toBeRemoved = new ArrayList<ImageLevelInfo>();
 
-        List<ImageLevelInfo> toBeRemoved = new ArrayList<ImageLevelInfo>();
-
-        for (ImageLevelInfo li : getLevelInfos()) {
-            if (li.getCoverageName().equals(coverageName) == false) {
-                continue;
-            }
-
-            if (li.calculateExtentsNeeded() == false) {
-                continue;
-            }
-
-            Date start = new Date();
-            if (LOGGER.isLoggable(Level.INFO)) LOGGER.info("Calculate extent for " + li.toString());
-
-            final String rasterAttr = getConfig().getBlobAttributeNameInTileTable();
-            String envSelect =
-                    "with envelopes as ( select st_envelope("
-                            + rasterAttr
-                            + " ) as env from "
-                            + li.getTileTableName()
-                            + " ) select st_asbinary(st_extent(env)) from envelopes";
-
-            Envelope envelope = null;
-            try (PreparedStatement s = con.prepareStatement(envSelect);
-                    ResultSet r = s.executeQuery()) {
-                WKBReader reader = new WKBReader();
-
-                if (r.next()) {
-                    byte[] bytes = r.getBytes(1);
-                    Geometry g;
-
-                    try {
-                        g = reader.read(bytes);
-                    } catch (ParseException e) {
-                        LOGGER.log(Level.SEVERE, e.getMessage(), e);
-                        throw new IOException(e);
-                    }
-
-                    envelope = g.getEnvelopeInternal();
+            for (ImageLevelInfo li : getLevelInfos()) {
+                if (li.getCoverageName().equals(coverageName) == false) {
+                    continue;
                 }
+
+                if (li.calculateExtentsNeeded() == false) {
+                    continue;
+                }
+
+                Date start = new Date();
+                if (LOGGER.isLoggable(Level.INFO))
+                    LOGGER.info("Calculate extent for " + li.toString());
+
+                final String rasterAttr = getConfig().getBlobAttributeNameInTileTable();
+                String envSelect =
+                        "with envelopes as ( select st_envelope("
+                                + rasterAttr
+                                + " ) as env from "
+                                + li.getTileTableName()
+                                + " ) select st_asbinary(st_extent(env)) from envelopes";
+
+                Envelope envelope = null;
+                try (PreparedStatement s = con.prepareStatement(envSelect);
+                        ResultSet r = s.executeQuery()) {
+                    WKBReader reader = new WKBReader();
+
+                    if (r.next()) {
+                        byte[] bytes = r.getBytes(1);
+                        Geometry g;
+
+                        try {
+                            g = reader.read(bytes);
+                        } catch (ParseException e) {
+                            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                            throw new IOException(e);
+                        }
+
+                        envelope = g.getEnvelopeInternal();
+                    }
+                }
+
+                if (envelope == null) {
+                    if (LOGGER.isLoggable(Level.WARNING))
+                        LOGGER.log(Level.WARNING, "No extent, removing this level");
+                    toBeRemoved.add(li);
+
+                    continue;
+                }
+
+                li.setExtentMaxX(Double.valueOf(envelope.getMaxX()));
+                li.setExtentMaxY(Double.valueOf(envelope.getMaxY()));
+                li.setExtentMinX(Double.valueOf(envelope.getMinX()));
+                li.setExtentMinY(Double.valueOf(envelope.getMinY()));
+
+                stmt.setDouble(1, li.getExtentMaxX().doubleValue());
+                stmt.setDouble(2, li.getExtentMaxY().doubleValue());
+                stmt.setDouble(3, li.getExtentMinX().doubleValue());
+                stmt.setDouble(4, li.getExtentMinY().doubleValue());
+                stmt.setString(5, li.getCoverageName());
+                stmt.setString(6, li.getTileTableName());
+                /*
+                TODO nat - changes for GEOT-4525
+                 */
+                if (li.getSpatialTableName() != null) {
+                    stmt.setString(7, li.getSpatialTableName());
+                }
+                stmt.execute();
+
+                long msecs = (new Date()).getTime() - start.getTime();
+
+                if (LOGGER.isLoggable(Level.INFO))
+                    LOGGER.info(
+                            "Calculate extent for "
+                                    + li.toString()
+                                    + " finished in "
+                                    + msecs
+                                    + " ms ");
             }
 
-            if (envelope == null) {
-                if (LOGGER.isLoggable(Level.WARNING))
-                    LOGGER.log(Level.WARNING, "No extent, removing this level");
-                toBeRemoved.add(li);
-
-                continue;
-            }
-
-            li.setExtentMaxX(Double.valueOf(envelope.getMaxX()));
-            li.setExtentMaxY(Double.valueOf(envelope.getMaxY()));
-            li.setExtentMinX(Double.valueOf(envelope.getMinX()));
-            li.setExtentMinY(Double.valueOf(envelope.getMinY()));
-
-            stmt.setDouble(1, li.getExtentMaxX().doubleValue());
-            stmt.setDouble(2, li.getExtentMaxY().doubleValue());
-            stmt.setDouble(3, li.getExtentMinX().doubleValue());
-            stmt.setDouble(4, li.getExtentMinY().doubleValue());
-            stmt.setString(5, li.getCoverageName());
-            stmt.setString(6, li.getTileTableName());
-            /*
-            TODO nat - changes for GEOT-4525
-             */
-            if (li.getSpatialTableName() != null) {
-                stmt.setString(7, li.getSpatialTableName());
-            }
-            stmt.execute();
-
-            long msecs = (new Date()).getTime() - start.getTime();
-
-            if (LOGGER.isLoggable(Level.INFO))
-                LOGGER.info(
-                        "Calculate extent for " + li.toString() + " finished in " + msecs + " ms ");
-        }
-
-        getLevelInfos().removeAll(toBeRemoved);
-
-        if (stmt != null) {
-            stmt.close();
+            getLevelInfos().removeAll(toBeRemoved);
         }
     }
 
@@ -510,88 +512,85 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
      */
     void calculateResolutionsFromDB(String coverageName, Connection con)
             throws SQLException, IOException {
-        PreparedStatement stmt = null;
 
         // isOutDBMap = new HashMap<ImageLevelInfo, Boolean>();
-        stmt = con.prepareStatement(getConfig().getSqlUpdateResStatement());
+        try (PreparedStatement stmt =
+                con.prepareStatement(getConfig().getSqlUpdateResStatement())) {
 
-        List<ImageLevelInfo> toBeRemoved = new ArrayList<ImageLevelInfo>();
+            List<ImageLevelInfo> toBeRemoved = new ArrayList<ImageLevelInfo>();
 
-        for (ImageLevelInfo li : getLevelInfos()) {
-            if (li.getCoverageName().equals(coverageName) == false) {
-                continue;
-            }
-
-            if (li.calculateResolutionNeeded() == false) {
-                continue;
-            }
-            Date start = new Date();
-            if (LOGGER.isLoggable(Level.INFO))
-                LOGGER.info("Calculate resolutions for " + li.toString());
-
-            String select =
-                    "select "
-                            + "st_scalex("
-                            + getConfig().getBlobAttributeNameInTileTable()
-                            + "),"
-                            + "st_scaley("
-                            + getConfig().getBlobAttributeNameInTileTable()
-                            + "),"
-                            + "st_srid("
-                            + getConfig().getBlobAttributeNameInTileTable()
-                            + ") "
-                            + " from "
-                            + li.getTileTableName()
-                            + " LIMIT 1";
-
-            double resolutions[] = null;
-            try (PreparedStatement ps = con.prepareStatement(select);
-                    ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    resolutions = new double[] {rs.getDouble(1), rs.getDouble(2)};
-                    li.setSrsId(rs.getInt(3));
+            for (ImageLevelInfo li : getLevelInfos()) {
+                if (li.getCoverageName().equals(coverageName) == false) {
+                    continue;
                 }
+
+                if (li.calculateResolutionNeeded() == false) {
+                    continue;
+                }
+                Date start = new Date();
+                if (LOGGER.isLoggable(Level.INFO))
+                    LOGGER.info("Calculate resolutions for " + li.toString());
+
+                String select =
+                        "select "
+                                + "st_scalex("
+                                + getConfig().getBlobAttributeNameInTileTable()
+                                + "),"
+                                + "st_scaley("
+                                + getConfig().getBlobAttributeNameInTileTable()
+                                + "),"
+                                + "st_srid("
+                                + getConfig().getBlobAttributeNameInTileTable()
+                                + ") "
+                                + " from "
+                                + li.getTileTableName()
+                                + " LIMIT 1";
+
+                double resolutions[] = null;
+                try (PreparedStatement ps = con.prepareStatement(select);
+                        ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        resolutions = new double[] {rs.getDouble(1), rs.getDouble(2)};
+                        li.setSrsId(rs.getInt(3));
+                    }
+                }
+
+                if (resolutions == null) {
+                    if (LOGGER.isLoggable(Level.WARNING))
+                        LOGGER.log(Level.WARNING, "No image found, removing " + li.toString());
+                    toBeRemoved.add(li);
+                    continue;
+                }
+
+                if (resolutions[0] < 0) resolutions[0] *= -1;
+                if (resolutions[1] < 0) resolutions[1] *= -1;
+                li.setResX(resolutions[0]);
+                li.setResY(resolutions[1]);
+                if (LOGGER.isLoggable(Level.INFO))
+                    LOGGER.info("ResX: " + li.getResX() + " ResY: " + li.getResY());
+
+                /*
+                moved code from here into method 'populateStatementsMap' below
+                which is called at initialisation. Otherwise this code was skipped in line #496
+                */
+                stmt.setDouble(1, li.getResX().doubleValue());
+                stmt.setDouble(2, li.getResY().doubleValue());
+                stmt.setString(3, li.getCoverageName());
+                stmt.setString(4, li.getTileTableName());
+                stmt.execute();
+
+                long msecs = (new Date()).getTime() - start.getTime();
+
+                if (LOGGER.isLoggable(Level.INFO))
+                    LOGGER.info(
+                            "Calculate resolutions for "
+                                    + li.toString()
+                                    + " finished in "
+                                    + msecs
+                                    + " ms ");
             }
 
-            if (resolutions == null) {
-                if (LOGGER.isLoggable(Level.WARNING))
-                    LOGGER.log(Level.WARNING, "No image found, removing " + li.toString());
-                toBeRemoved.add(li);
-                continue;
-            }
-
-            if (resolutions[0] < 0) resolutions[0] *= -1;
-            if (resolutions[1] < 0) resolutions[1] *= -1;
-            li.setResX(resolutions[0]);
-            li.setResY(resolutions[1]);
-            if (LOGGER.isLoggable(Level.INFO))
-                LOGGER.info("ResX: " + li.getResX() + " ResY: " + li.getResY());
-
-            /*
-            moved code from here into method 'populateStatementsMap' below
-            which is called at initialisation. Otherwise this code was skipped in line #496
-            */
-            stmt.setDouble(1, li.getResX().doubleValue());
-            stmt.setDouble(2, li.getResY().doubleValue());
-            stmt.setString(3, li.getCoverageName());
-            stmt.setString(4, li.getTileTableName());
-            stmt.execute();
-
-            long msecs = (new Date()).getTime() - start.getTime();
-
-            if (LOGGER.isLoggable(Level.INFO))
-                LOGGER.info(
-                        "Calculate resolutions for "
-                                + li.toString()
-                                + " finished in "
-                                + msecs
-                                + " ms ");
-        }
-
-        getLevelInfos().removeAll(toBeRemoved);
-
-        if (stmt != null) {
-            stmt.close();
+            getLevelInfos().removeAll(toBeRemoved);
         }
     }
 

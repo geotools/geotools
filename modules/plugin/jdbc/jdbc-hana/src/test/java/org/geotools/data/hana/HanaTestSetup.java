@@ -17,80 +17,16 @@
 package org.geotools.data.hana;
 
 import java.sql.Connection;
-import java.util.HashMap;
-import java.util.Properties;
 import org.geotools.data.hana.metadata.Srs;
-import org.geotools.jdbc.JDBCDataStoreFactory;
-import org.geotools.jdbc.JDBCTestSetup;
 
 /** @author Stefan Uhrig, SAP SE */
-public class HanaTestSetup extends JDBCTestSetup {
+public class HanaTestSetup extends HanaTestSetupBase {
 
     private static final String TABLE1 = "ft1";
 
     private static final String TABLE2 = "ft2";
 
     private static final String TABLE3 = "ft3";
-
-    private static final String DRIVER_CLASS_NAME = "com.sap.db.jdbc.Driver";
-
-    @Override
-    protected JDBCDataStoreFactory createDataStoreFactory() {
-        return new HanaDataStoreFactory();
-    }
-
-    @Override
-    protected Properties createExampleFixture() {
-        Properties fixture = new Properties();
-        fixture.put("host", "localhost");
-        fixture.put("port", "30015");
-        fixture.put("user", "myuser");
-        fixture.put("password", "mypassword");
-        fixture.put("use ssl", "false");
-        return fixture;
-    }
-
-    @Override
-    public void setFixture(Properties fixture) {
-        fixture.setProperty("driver", DRIVER_CLASS_NAME);
-        String host = fixture.getProperty("host");
-        String sport = fixture.getProperty("port");
-        String sinstance = fixture.getProperty("instance");
-        String database = fixture.getProperty("database");
-        String useSsl = fixture.getProperty("use ssl");
-
-        HashMap<String, String> options = new HashMap<String, String>();
-        if ("true".equals(useSsl)) {
-            options.put("encrypt", "true");
-        }
-
-        int port = 0;
-        if ((sport != null) && !sport.isEmpty()) {
-            port = Integer.parseInt(sport);
-        }
-        if (port != 0) {
-            fixture.setProperty(
-                    "url", HanaConnectionParameters.forPort(host, port, options).buildUrl());
-            super.setFixture(fixture);
-            return;
-        }
-
-        int instance = Integer.parseInt(sinstance);
-        if ((database == null) || database.isEmpty()) {
-            fixture.setProperty(
-                    "url",
-                    HanaConnectionParameters.forSingleContainer(host, instance, options)
-                            .buildUrl());
-            super.setFixture(fixture);
-            return;
-        }
-
-        fixture.setProperty(
-                "url",
-                HanaConnectionParameters.forMultiContainer(host, instance, database, options)
-                        .buildUrl());
-        super.setFixture(fixture);
-    }
 
     @Override
     protected void setUpData() throws Exception {

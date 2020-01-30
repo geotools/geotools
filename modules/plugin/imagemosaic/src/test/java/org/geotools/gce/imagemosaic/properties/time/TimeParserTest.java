@@ -24,7 +24,12 @@ import java.util.TimeZone;
 import org.junit.Assert;
 import org.junit.Test;
 
-/** @author Simone Giannecchini, GeoSolutions SAS */
+/**
+ * @author Simone Giannecchini, GeoSolutions SAS
+ * @deprecated This test classes test that the Deprecated TimeParser is still working properly. An
+ *     updated TimeParserTest has been moved to gt-metadata testing the new DateTimeParser class
+ */
+@Deprecated
 public class TimeParserTest extends Assert {
 
     private static final TimeParser PARSER = new TimeParser();
@@ -32,7 +37,7 @@ public class TimeParserTest extends Assert {
     @Test
     public void testParserOnCurrentTime() throws ParseException, InterruptedException {
         long now = System.currentTimeMillis();
-        Thread.sleep(20);
+        Thread.sleep(1000);
         final String timeInstant = "current";
         List<Date> time = PARSER.parse(timeInstant);
         assertEquals(1, time.size());

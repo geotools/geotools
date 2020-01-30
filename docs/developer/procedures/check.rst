@@ -25,7 +25,7 @@ Here is how a plugin (aka hooks into the geotools library) may earn a star:
 
 * Passes IP check, basically has correct headers
 * Releasable - has no non blocking bugs in jira
-* Used in anger - Used by GeoServer or uDig or Geomajas (ie some kind of large real world datasets)
+* Used in anger - Used by GeoServer or uDig or Geomajas (i.e. some kind of large real world datasets)
 * Optimised - has been tuned to meet hard performance requirements (example shapefile)
 * Supported - user docs, module maintainer watches user list, answers email etc.. (example referencing)
 

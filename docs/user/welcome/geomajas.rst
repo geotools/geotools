@@ -8,10 +8,10 @@ Welcome Geomajas Developers
    .. image:: /images/logo/geomajas_logo.gif
    
    Geomajas is an enterprise-ready open source GIS framework for the web. Built using GeoTools
-   Spring, and Google Web Toolkit for a fast efficeint all-Java solution!
+   Spring, and Google Web Toolkit for a fast efficient all-Java solution!
 
 Geomajas is a Java based client-server GIS framework for the web, that leverages the GeoTools
-library on the backend. Although Geomajas has it's own Object model, many functionalities rely
+library on the back end. Although Geomajas has it's own Object model, many functionalities rely
 quite heavily on the GeoTools library. 
 
 Geomajas is very Spring oriented which results in a lot of Spring services that use GeoTools under
@@ -45,12 +45,12 @@ entity relationships by exploiting the POJO capabilities of Hibernate.
 FilterService
 -------------
 
-For filtering, Geomajas uses the gt-opengis Filter object model and the GeoTools ECQL standard. In
+For filtering, Geomajas uses the ``gt-opengis`` Filter object model and the GeoTools ECQL standard. In
 order to create Filter objects for a specific Geomajas layer, there is the **FilterService**
 interface. By default a Spring bean for that service will always be available on the classpath,
-so it can always be autowired.
+so it can always be auto wired.
 
-The **FilterService** provides convenience methods for quickly creating OpenGis Filter objects
+The **FilterService** provides convenience methods for quickly creating OpenGIS Filter objects
 which can then be used in Geomajas (or GeoTools) layers.
 
 Example use::

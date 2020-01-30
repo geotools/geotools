@@ -591,10 +591,9 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader
             final File prjFile = new File(base.toString());
             if (prjFile.exists()) {
                 // it exists then we have top read it
-                PrjFileReader projReader = null;
-                try {
-                    final FileChannel channel = new FileInputStream(prjFile).getChannel();
-                    projReader = new PrjFileReader(channel);
+
+                try (FileChannel channel = new FileInputStream(prjFile).getChannel();
+                        PrjFileReader projReader = new PrjFileReader(channel)) {
                     crs = projReader.getCoordinateReferenceSystem();
                 } catch (FileNotFoundException e) {
                     // warn about the error but proceed, it is not fatal
@@ -608,15 +607,6 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader
                     // warn about the error but proceed, it is not fatal
                     // we have at least the default crs to use
                     LOGGER.log(Level.INFO, e.getLocalizedMessage(), e);
-                } finally {
-                    if (projReader != null)
-                        try {
-                            projReader.close();
-                        } catch (IOException e) {
-                            // warn about the error but proceed, it is not fatal
-                            // we have at least the default crs to use
-                            LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-                        }
                 }
             }
         }
@@ -700,55 +690,54 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader
         double yMin = 0.0;
 
         // getting a buffered reader
-        final BufferedReader in = new BufferedReader(new FileReader(file2Parse));
+        try (BufferedReader in = new BufferedReader(new FileReader(file2Parse))) {
 
-        // parsing the lines
-        String str = null;
-        int index = 0;
-        double value = 0;
+            // parsing the lines
+            String str = null;
+            int index = 0;
+            double value = 0;
 
-        while ((str = in.readLine()) != null) {
-            switch (index) {
-                case 1:
-                    value =
-                            Double.parseDouble(
-                                    str.substring("Origin Longitude = ".intern().length()));
-                    xMin = value;
+            while ((str = in.readLine()) != null) {
+                switch (index) {
+                    case 1:
+                        value =
+                                Double.parseDouble(
+                                        str.substring("Origin Longitude = ".intern().length()));
+                        xMin = value;
 
-                    break;
+                        break;
 
-                case 2:
-                    value =
-                            Double.parseDouble(
-                                    str.substring("Origin Latitude = ".intern().length()));
-                    yMin = value;
+                    case 2:
+                        value =
+                                Double.parseDouble(
+                                        str.substring("Origin Latitude = ".intern().length()));
+                        yMin = value;
 
-                    break;
+                        break;
 
-                case 3:
-                    value =
-                            Double.parseDouble(
-                                    str.substring("Corner Longitude = ".intern().length()));
-                    xMax = value;
+                    case 3:
+                        value =
+                                Double.parseDouble(
+                                        str.substring("Corner Longitude = ".intern().length()));
+                        xMax = value;
 
-                    break;
+                        break;
 
-                case 4:
-                    value =
-                            Double.parseDouble(
-                                    str.substring("Corner Latitude = ".intern().length()));
-                    yMax = value;
+                    case 4:
+                        value =
+                                Double.parseDouble(
+                                        str.substring("Corner Latitude = ".intern().length()));
+                        yMax = value;
 
-                    break;
+                        break;
 
-                default:
-                    break;
+                    default:
+                        break;
+                }
+
+                index++;
             }
-
-            index++;
         }
-
-        in.close();
 
         // building up envelope of this coverage
         originalEnvelope =

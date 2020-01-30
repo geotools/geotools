@@ -24,6 +24,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import org.geotools.data.Base64;
 import org.geotools.data.DataSourceException;
+import org.geotools.geometry.jts.WKBReader;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.io.ByteArrayInStream;

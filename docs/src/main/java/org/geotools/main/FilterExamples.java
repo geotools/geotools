@@ -149,6 +149,7 @@ public class FilterExamples {
     }
 
     // grabSelectedNames end
+
     /**
      * What features on in this bounding Box?
      *
@@ -439,10 +440,10 @@ public class FilterExamples {
 
         for (FunctionFactory factory : functionFactories) {
             String factoryName = factory.getClass().getSimpleName();
-            System.out.println(factoryName);
+            System.out.println(codeBlock + factoryName + codeBlock);
             System.out.println(
-                    "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
-                            .substring(0, factoryName.length()));
+                    "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+                            .substring(0, factoryName.length() + 4));
             System.out.println();
 
             List<FunctionName> functionNames = factory.getFunctionNames();
@@ -466,7 +467,9 @@ public class FilterExamples {
                 Parameter<?> result = functionName.getReturn();
 
                 StringBuilder fn = new StringBuilder();
+                fn.append(codeBlock);
                 fn.append(functionName.getName());
+
                 fn.append("(");
                 int i = 0;
                 for (Parameter<?> argument : functionName.getArguments()) {
@@ -476,7 +479,8 @@ public class FilterExamples {
                     fn.append(argument.getName());
                 }
                 fn.append(")");
-                fn.append(": " + result.getName());
+                fn.append(codeBlock);
+                fn.append(": returns " + codeBlock + result.getName() + codeBlock);
 
                 System.out.println(fn.toString());
                 for (int h = 0; h < fn.length(); h++) {
@@ -489,35 +493,48 @@ public class FilterExamples {
                     System.out.println("* " + argument(argument));
                     System.out.println();
                 }
-                System.out.println("* " + argument(result));
+                System.out.println("* " + argument(result, true));
                 System.out.println();
             }
         }
     }
 
+    static final String codeBlock = "``";
+
     public static String argument(Parameter<?> argument) {
+        return argument(argument, false);
+    }
+
+    public static String argument(Parameter<?> argument, boolean result) {
+
         StringBuilder arg = new StringBuilder();
+        arg.append(codeBlock);
         arg.append(argument.getName());
+        arg.append(codeBlock);
         Class<?> type = argument.getType();
 
         if (type == null || (type == Object.class && argument.isRequired())) {
             // nothing more is known
         } else {
+            arg.append(" (" + codeBlock);
+            arg.append(type.getSimpleName());
+            arg.append(codeBlock + ")");
             int min = argument.getMinOccurs();
             int max = argument.getMaxOccurs();
-
-            arg.append(": ");
-            arg.append(type.getSimpleName());
-
-            arg.append(" ");
-            arg.append(min);
-            arg.append(":");
-            arg.append(max == Integer.MAX_VALUE ? "unbounded" : max);
-
-            if (argument.isRequired()) {
-                arg.append(" required");
-            } else if (argument.getMinOccurs() == 0 && argument.getMaxOccurs() == 1) {
-                arg.append(" optional");
+            if (min > 1 && max > 1) {
+                arg.append(": ");
+                arg.append(" min=");
+                arg.append(min);
+                arg.append(" max=");
+                arg.append(max == Integer.MAX_VALUE ? "unbounded" : max);
+            } else {
+                if (!result) {
+                    if (argument.isRequired()) {
+                        arg.append(" required");
+                    } else if (argument.getMinOccurs() == 0 && argument.getMaxOccurs() == 1) {
+                        arg.append(" optional");
+                    }
+                }
             }
         }
         return arg.toString();

@@ -27,7 +27,7 @@ References:
       <version>${geotools.version}</version>
     </dependency>
 
-Note that the groupId is **org.geotools.jdbc** for this and other JDBC plugin modules.
+Note that the ``groupId`` is ``org.geotools.jdbc`` for this and other JDBC plugin modules.
 
 Connection Parameters
 ^^^^^^^^^^^^^^^^^^^^^
@@ -35,9 +35,9 @@ Connection Parameters
 ============== ============================================
 Parameter      Description
 ============== ============================================
-"dbtype"       Must be the string "spatialite"
-"database"     The database to connect to
-"user"         User name (optional)
+``dbtype``       Must be the string ``spatialite``
+``database``     The database to connect to
+``user``         User name (optional)
 ============== ============================================
 
 Access

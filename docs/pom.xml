@@ -13,7 +13,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>geotools</artifactId>
-    <version>22-SNAPSHOT</version>
+    <version>23-SNAPSHOT</version>
   </parent>
 
 
@@ -217,6 +217,11 @@
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
         <scope>provided</scope>
+    </dependency>
+    <dependency>
+        <groupId>com.opencsv</groupId>
+        <artifactId>opencsv</artifactId>
+        <version>5.0</version>
     </dependency>
   </dependencies>
 

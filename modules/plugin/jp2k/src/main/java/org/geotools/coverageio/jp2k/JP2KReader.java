@@ -674,48 +674,50 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
             throw new DataSourceException("Unable to find a file for the provided source");
         parentPath = inputFile.getParent();
         ImageReader reader = null;
-        final ImageInputStream stream = ImageIO.createImageInputStream(inputFile);
-        if (cachedSPI == null) {
-            reader = Utils.getReader(stream);
-            if (reader != null) cachedSPI = reader.getOriginatingProvider();
-        }
-
-        if (reader == null)
-            throw new DataSourceException("No reader found for that source " + sourceURL);
-        reader.setInput(stream);
-
-        // //
-        //
-        // ImageLayout
-        //
-        // //
-        setLayout(reader);
-
-        coverageName = inputFile.getName();
-
-        final int dotIndex = coverageName.lastIndexOf(".");
-        coverageName = (dotIndex == -1) ? coverageName : coverageName.substring(0, dotIndex);
-
-        // //
-        //
-        // get the crs if able to
-        //
-        // //
-        final Object tempCRS = this.hints.get(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM);
-        if (tempCRS != null) {
-            this.crs = (CoordinateReferenceSystem) tempCRS;
-            LOGGER.log(Level.WARNING, "Using forced coordinate reference system " + crs.toWKT());
-        } else {
-
-            setCoverageProperties(reader);
-
-            if (crs == null) {
-                throw new DataSourceException(
-                        "Unable to find a CRS for this coverage, using a default one");
+        try (ImageInputStream stream = ImageIO.createImageInputStream(inputFile)) {
+            if (cachedSPI == null) {
+                reader = Utils.getReader(stream);
+                if (reader != null) cachedSPI = reader.getOriginatingProvider();
             }
+
+            if (reader == null)
+                throw new DataSourceException("No reader found for that source " + sourceURL);
+            reader.setInput(stream);
+
+            // //
+            //
+            // ImageLayout
+            //
+            // //
+            setLayout(reader);
+
+            coverageName = inputFile.getName();
+
+            final int dotIndex = coverageName.lastIndexOf(".");
+            coverageName = (dotIndex == -1) ? coverageName : coverageName.substring(0, dotIndex);
+
+            // //
+            //
+            // get the crs if able to
+            //
+            // //
+            final Object tempCRS = this.hints.get(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM);
+            if (tempCRS != null) {
+                this.crs = (CoordinateReferenceSystem) tempCRS;
+                LOGGER.log(
+                        Level.WARNING, "Using forced coordinate reference system " + crs.toWKT());
+            } else {
+
+                setCoverageProperties(reader);
+
+                if (crs == null) {
+                    throw new DataSourceException(
+                            "Unable to find a CRS for this coverage, using a default one");
+                }
+            }
+            setResolutionInfo(reader);
+            reader.dispose();
         }
-        setResolutionInfo(reader);
-        reader.dispose();
 
         // creating the raster manager
         rasterManager = new RasterManager(this);
@@ -810,12 +812,9 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
         final File prjFile = new File(prjPath);
         if (prjFile.exists()) {
             // it exists then we have top read it
-            PrjFileReader projReader = null;
-            FileInputStream instream = null;
-            try {
-                instream = new FileInputStream(prjFile);
-                final FileChannel channel = instream.getChannel();
-                projReader = new PrjFileReader(channel);
+            try (FileInputStream instream = new FileInputStream(prjFile);
+                    FileChannel channel = instream.getChannel();
+                    PrjFileReader projReader = new PrjFileReader(channel)) {
                 crs = projReader.getCoordinateReferenceSystem();
                 // using a default CRS
             } catch (FileNotFoundException e) {
@@ -829,24 +828,6 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
             } catch (FactoryException e) {
                 if (LOGGER.isLoggable(Level.WARNING)) {
                     LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
-                }
-            } finally {
-                if (projReader != null) {
-                    try {
-                        projReader.close();
-                    } catch (IOException e) {
-                        if (LOGGER.isLoggable(Level.WARNING)) {
-                            LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
-                        }
-                    }
-                    if (instream != null)
-                        try {
-                            instream.close();
-                        } catch (IOException ioe) {
-                            // warn about the error but proceed, it is not fatal
-                            // we have at least the default crs to use
-                            LOGGER.log(FINE, ioe.getLocalizedMessage(), ioe);
-                        }
                 }
             }
         }

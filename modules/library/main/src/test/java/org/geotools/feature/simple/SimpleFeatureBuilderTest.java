@@ -177,13 +177,7 @@ public class SimpleFeatureBuilderTest extends TestCase {
     }
 
     public void testUserData() throws Exception {
-        GeometryFactory gf = new GeometryFactory();
-        builder.add(gf.createPoint(new Coordinate(0, 0)));
-        builder.add(Integer.valueOf(1));
-        builder.add(Float.valueOf(2.0f));
-        builder.featureUserData("foo", "bar");
-
-        SimpleFeature feature = builder.buildFeature("fid");
+        SimpleFeature feature = buildUserDataFeature();
         assertNotNull(feature);
         assertEquals("bar", feature.getUserData().get("foo"));
 
@@ -191,6 +185,29 @@ public class SimpleFeatureBuilderTest extends TestCase {
         builder.init(feature);
         feature = builder.buildFeature("fid");
         assertNotNull(feature);
+        assertEquals("bar", feature.getUserData().get("foo"));
+    }
+
+    private SimpleFeature buildUserDataFeature() {
+        GeometryFactory gf = new GeometryFactory();
+        builder.add(gf.createPoint(new Coordinate(0, 0)));
+        builder.add(Integer.valueOf(1));
+        builder.add(Float.valueOf(2.0f));
+        builder.featureUserData("foo", "bar");
+
+        return builder.buildFeature("fid");
+    }
+
+    public void testCopyUserData() throws Exception {
+        SimpleFeature template = buildUserDataFeature();
+        builder = new SimpleFeatureBuilder(template.getFeatureType());
+        GeometryFactory gf = new GeometryFactory();
+        builder.add(gf.createPoint(new Coordinate(1, 1)));
+        builder.add(Integer.valueOf(2));
+        builder.add(Float.valueOf(4.0f));
+        builder.featureUserData(template);
+        SimpleFeature feature = builder.buildFeature("myfid");
+
         assertEquals("bar", feature.getUserData().get("foo"));
     }
 }

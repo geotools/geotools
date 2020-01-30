@@ -3,10 +3,10 @@
 Image Mosaic JDBC
 -----------------
 
-This **gt-imagemosaic-jdbc** plugin is intended to handle large images stored as tiles in a JDBC
+This ``gt-imagemosaic-jdbc`` plugin is intended to handle large images stored as tiles in a JDBC
 database. Tiles created by pyramids are also stored in the database. The utility uses the indexing
-of databases to speed up access to the requested tiles, the plugin for itself has a multithreaded
-architecture to make use of dual/quad core CPUs and multiprocessor systems.
+of databases to speed up access to the requested tiles, the plugin for itself has a multi-threaded
+architecture to make use of dual/quad core CPUs and multi-processor systems.
 
 .. sidebar:: Details
    
@@ -26,14 +26,15 @@ This plugin should give you the possibility to handle large images with their py
 
 Credits:
 
-* This module was funded by Google as part of the GSOC 08 program.
+* This module was funded by Google as part of the Google Summer of Code 
+  2008 program.
 
 Tested Database Systems
 
 * DB2 (with or without Spatial Extender)
 * Oracle (with or without Location Based Services, Oracle Spatial not needed)
 * MySql
-* Postgres (with or without Postgis)
+* PostgreSQL (with or without Postgis)
 * H2
 
 Example Use
@@ -83,7 +84,7 @@ Mapping of table and attribute names
 
 Since there a lot of naming conventions in different enterprises, it is not ideal to force the use of predefined table and attribute names. In our example, the names of the spatial and tile tables is selectable, the name of the meta table and all the attribute names were assumed. The mapping of these names is part of the XML configuration. The corresponding XML fragment shows the mapping of the assumed names.
 
-A sample XML fragment file **mapping.xml.inc**::
+A sample XML fragment file ``mapping.xml.inc``::
   
   <!-- possible values: universal,postgis,db2,mysql,oracle -->
   <spatialExtension name="universal"/>
@@ -115,21 +116,22 @@ A sample XML fragment file **mapping.xml.inc**::
 
 The structure of this XML Fragment is kept very simple, use it as a pattern.
 
-The name attribute of the <spatialExtension> has to be one of the following values
+The name attribute of the ``<spatialExtension>`` has to be one of the following values
 
-* universal (a vendor neutral JDBC approach which should work with any JDBC database with BLOB support)
-* db2 (use spatial extender)
-* mysql (use the spatial features of mysql)
-* postgis (use the spatial features of postgis)
+* ``universal`` (a vendor neutral JDBC approach which should work with any JDBC database with BLOB support)
+* ``db2`` (use spatial extender)
+* ``mysql`` (use the spatial features of MySQL)
+* ``postgis`` (use the spatial features of Postgis)
 * oracle (use location based services included in every oracle edition, no oracle spatial needed !!!)
 
-If your spatial extension is universal you need to specify <tileMinXAttribute>,<tileMinYAttribute>,<tileMaxXAttribute>,<tileMaxYAttribute>, but you can omit <geomAttributeName>.
+If your spatial extension is universal you need to specify ``<tileMinXAttribute>``,
+``<tileMinYAttribute>``, ``<tileMaxXAttribute>``, ``<tileMaxYAttribute>``, but you can omit ``<geomAttributeName>``.
 
-In all other cases, you need the <geomAttributeName> Element and can omit <tileMinXAttribute>,<tileMinYAttribute>,<tileMaxXAttribute>,<tileMaxYAttribute>. 
+In all other cases, you need the ``<geomAttributeName>`` Element and can omit ``<tileMinXAttribute>``, ``<tileMinYAttribute>``, ``<tileMaxXAttribute>``, ``<tileMaxYAttribute>``. 
 
 Be careful with the case sensitivity of different DBMS products. Look here http://www.alberton.info/dbms_identifiers_and_case_sensitivity.html and here http://en.wikibooks.org/wiki/SQL_dialects_reference/Data_structure_definition/Delimited_identifiers.
 
-In the above example, we have  <maxXAttribute name="MaxX"/> which will result in an attribute name of MAXX for DB2 and Oracle, but maxx for postgres. A good strategy would be to use identifiers (table and attribute Names ) consisting of uppercase /lowercase letters, depending on your DBMS.
+In the above example, we have  ``<maxXAttribute name="MaxX"/>`` which will result in an attribute name of ``MAXX`` for DB2 and Oracle, but ``maxx`` for PostgreSQL. A good strategy would be to use identifiers (table and attribute Names ) consisting of upper case /lower case letters, depending on your DBMS.
 
 This approach assures that there are no predefined table and attribute names, allowing seamless integration into existing naming conventions. 
 
@@ -145,9 +147,13 @@ Each Map with its pyramids is configured by an XML File. The Configuration can b
 JDBC Connect configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Dependent on the deployment environment, there are different possibilities for connection to the database. Using this plugin in a client java application will require a JDBC Driver Connect, operation within a J2EE Container should prefer a JNDI Datasource connect (your admin will be happy) .
+Dependent on the deployment environment, there are different possibilities
+for connection to the database. Using this plugin in a client Java
+application will require a JDBC Driver Connect, operation within a J2EE
+Container should prefer a JNDI data source connect (your admin will be
+happy) .
 
-A sample XML fragment file for a JDBC Driver Connection to the H2 database **connect.xml.inc**::
+A sample XML fragment file for a JDBC Driver Connection to the H2 database ``connect.xml.inc``::
   
   <connect>
         <dstype value="DBCP"/>
@@ -159,7 +165,7 @@ A sample XML fragment file for a JDBC Driver Connection to the H2 database **con
         <maxIdle value="0"/>
   </connect>
 
-XML Fragment for connection to a JNDI Datasource **connect.xml.inc**::
+XML Fragment for connection to a JNDI data source ``connect.xml.inc``::
   
   <connect>
         <dstype value="JNDI"/>
@@ -169,9 +175,10 @@ XML Fragment for connection to a JNDI Datasource **connect.xml.inc**::
 Map Configuration
 ^^^^^^^^^^^^^^^^^
 
-Now we can put the things together and create the config file for a map.
+Now we can put the things together and create the configuration
+file for a map.
 
-Example file map.xml::
+Example file ``map.xml``::
   
   <?xml version="1.0" encoding="UTF-8" standalone="no"?>
   <!DOCTYPE ImageMosaicJDBCConfig [
@@ -183,7 +190,7 @@ Example file map.xml::
   <config version="1.0">
      <coverageName name="oek"/>
      <coordsys name="EPSG:31287"/>
-     <!-- interpolation 1 = nearest neighbour, 2 = bipolar, 3 = bicubic -->
+     <!-- interpolation 1 = nearest neighbor, 2 = bipolar, 3 = bicubic -->
      <scaleop interpolation="1"/>
      <axisOrder ignore="false"/>
      <verify cardinality="false"/>
@@ -191,28 +198,36 @@ Example file map.xml::
      &connect;
   </config>
 
-The DOCTYPE includes two XML entity references to the connect.xml.inc and mapping.xml.inc. The XML parser includes these fragments at parsing time.
+The ``DOCTYPE`` includes two XML entity references to the ``connect.xml.inc`` 
+and ``mapping.xml.inc``. The XML parser includes these fragments at parsing time.
 
 Elements:
 
-config
+``config``
   The root element. The version attribute is reserved for future versions of this plugin. Must be "1.0."
 
-coverageName
+``coverageName``
   The name of your map. This name is used for searching the meta data in the meta table.
 
-coordsys
-  The name of a coordinate reference system, will be referenced by CRS.decode() of the geotools library.
+``coordsys``
+  The name of a coordinate reference system, will be referenced by ``CRS.decode()``
+  of the GeoTools
+  library.
 
-scaleop
-  The interpolation method to use (1 = nearest neighbour, 2 = bipolar, 3 = bicubic)
+``scaleop``
+  The interpolation method to use (1 = ``nearest neighbor``, 2 = ``bipolar``, 3 = ``bicubic``)
 
-axisOrder
+``axisOrder``
    The module compares the CRS from the read request to the CRS stored in the configuration. If the axis order differ, an x axis switch is performed.
    Some clients are doing this before calling the module and the plugin switches again resulting in the original envelope. A value of "true" suppresses this switch.
     
-verify
-  if you have image data and georeferencing information in different tables and the the attribute cardinality is true , the plugin will check the number of records in each table. If the numbers are not equal, the image/pyramid will be removed and you see a warning in the log. This check is intended for testing environments, set the value to false in production environments to avoid bad performance.
+``verify``
+  if you have image data and georeferencing information in different
+  tables and the attribute cardinality is true , the plugin will
+  check the number of records in each table. If the numbers are not
+  equal, the image/pyramid will be removed and you see a warning in the
+  log. This check is intended for testing environments, set the value
+  to false in production environments to avoid bad performance.
 
 **Configuration Summary**
 

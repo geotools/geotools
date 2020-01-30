@@ -9,7 +9,7 @@ values - at least references to where such parameters can be found. This databas
 GeoTools and GeoTiff and its related projects.
 
 Since some members of the EPSG also worked on the OGC CTS specifications, the OGC CTS API closely
-maches the EPSG database schema.
+matches the EPSG database schema.
 
 This database has a high value for the GIS community for the following reasons:
 
@@ -21,7 +21,7 @@ This database has a high value for the GIS community for the following reasons:
   is v6.5. EPSG puts a lot of effort into ensuring downward compatibility. For example, one code will
   never change its meaning or parameters. If errors are found, the code gets deprecated and the object
   gets assigned a new code if necessary. However, there are still major structural changes ongoing -
-  together with a increase in the number of objects catalogued and some objects being deprecated.
+  together with a increase in the number of objects cataloged and some objects being deprecated.
   EPSG, therefore, is far from being considered "final" or "nearly final". Still, this database can be
   considered unavoidable when working with and exchanging geographic information.
 
@@ -32,7 +32,7 @@ structural comparison of coordinate system concepts.
 
 You can download the database (in MS Access 97 and SQL scripts) from http://www.epsg.org.
 For Windows installation HowTo's see their documentation and for Linux see our documentation for the
-**gt-epsh-postgres** plugin.
+``gt-epsh-postgres`` plugin.
 
 EPSG also maintains some "Guidance notes" on coordinate references systems, map design naming and
 similar topics.
@@ -41,32 +41,32 @@ GeoTools
 ^^^^^^^^
 
 GeoTools follows OpenGIS specifications. This applies particularly to the
-org.geotools.referencing package and 
+``org.geotools.referencing`` package and 
 our coordinate transformation services. Since these specifications are very flexible, so are the
 GeoTools implementations.
 
 For example GeoTools can handle:
 
-* geographic coordinate systems that use {lat; lon} as well as {lon; lat};
-* geographic CoordainteSystems whose axes increase to the west and south; and
-* CoordainteSystems of every possible unit of measure: degree, radians, grad, meter, inch, feet, and
+* Geographic coordinate systems that use ``(lat, lon)`` as well as ``(lon, lat)``;
+* Geographic coordinate systems whose axes increase to the west and south; and
+* Coordinate systems of every possible unit of measure: degree, radians, grad, meter, inch, feet, and
   all other more uncommon units used in certain countries.
 
-However this means that it cannot be assumed by the user that a geographic CRS is always {lat; lon}
+However this means that it cannot be assumed by the user that a geographic CRS is always ``(lat, lon)``
 with degrees and axes increasing to north and east although this is mostly the case in North America
 and Europe. It it always necessary to verify  and respect the coordinate system properties, that
 the specific coordinate system object provides!
 
 There exists a WGS84 constant which defines the commonly used geographic CRS. It is defined as being
-{lon; lat}, using degrees, having axes increasing to north and east and using the WGS84 geodetic
-datum - which itself is defined as a constant in GeoTools. Since many Bursa-Wolf paremeters define
+``(lon, lat)``, using degrees, having axes increasing to north and east and using the WGS84 geodetic
+datum - which itself is defined as a constant in GeoTools. Since many Bursa-Wolf parameters define
 a transformation between a geographic CRS and WGS84, a transformation between two geographic CRS
 would (only using Bursa-Wolf transformations), for example, work as follows: User selected input
 geographic CRS -> WGS84 (constant) -> user selected output geographic CRS.
 
 * GeoTools version 2.0 followed the OpenGIS specification 01-009 (Coordinate Transformation Services
   (CT)).
-* Geotools 2.1 and latter use the more recent coordinate system concepts described in the OpenGIS
+* GeoTools 2.1 and latter use the more recent coordinate system concepts described in the OpenGIS
   abstract specification 03-073r1 (Spatial Referencing by Coordinates).
 
 Although the EPSG database already contains the new structures described therein, the database v6.x
@@ -84,10 +84,10 @@ parts as, for example, geodetic datums and ellipsoids.
 In order to gain a better understanding, it is recommended that you have the EPSG database
 installed. Choose a database viewer and have a look at the database.
 
-Note: Just in case you don't have a good viewer at hand, OpenOffice does a good job of viewing the
-database. You will have to register the database under Extras->Data sources as an ODBC database.
-Then, in any document, press F4 to open the database window. Now you can easily browse the
-database's tables.
+.. note:: Just in case you don't have a good viewer at hand, OpenOffice does a good job of viewing the
+  database. You will have to register the database under Extras->Data sources as an ODBC database.
+  Then, in any document, press F4 to open the database window. Now you can easily browse the
+  database's tables.
 
 You should see a structure like the one in the following screenshot:
 
@@ -96,7 +96,7 @@ You should see a structure like the one in the following screenshot:
 You will soon see that the database (v6.x) has a hierarchical structure that is equal to the new
 OpenGIS abstract specification Spatial Referencing by Coordinates. The "old" OpenGIS specification
 Coordinate Transformation Services (CT) had a slightly different structure - as had the "old" EPSG
-datbases v5.x. The following paragraphs give a simplified overview of these hierarchies.
+databases v5.x. The following paragraphs give a simplified overview of these hierarchies.
 
 EPSG6.x
 '''''''

@@ -1,2932 +1,2939 @@
-DefaultFunctionFactory
-^^^^^^^^^^^^^^^^^^^^^^
+``DefaultFunctionFactory``
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Contains 202 functions.
+Contains 203 functions.
 
-Area(geometry): area
-''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* area: Double 1:1 required
-
-Categorize(LookupValue, Value, Threshold 1, Value 1, Threshold 2, Value 2, succeeding or preceding): return
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* LookupValue
-
-* Value
-
-* Threshold 1
-
-* Value 1
-
-* Threshold 2
-
-* Value 2
-
-* succeeding or preceding
-
-* return
-
-Collection_Average(expression): average
-'''''''''''''''''''''''''''''''''''''''
-
-* expression: Number 1:1 required
-
-* average: Number 1:1 required
-
-Collection_Bounds(geometry): bounds
-'''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* bounds
-
-Collection_Count(features): count
-'''''''''''''''''''''''''''''''''
-
-* features
-
-* count: Number 1:1 required
-
-Collection_Max(expression): max
-'''''''''''''''''''''''''''''''
-
-* expression: Comparable 1:1 required
-
-* max: Comparable 1:1 required
-
-Collection_Median(expression): median
-'''''''''''''''''''''''''''''''''''''
-
-* expression: Comparable 1:1 required
-
-* median: Comparable 1:1 required
-
-Collection_Min(expression): min
-'''''''''''''''''''''''''''''''
-
-* expression: Comparable 1:1 required
-
-* min: Comparable 1:1 required
-
-Collection_Nearest(value): expression
-'''''''''''''''''''''''''''''''''''''
-
-* value: Comparable 1:1 required
-
-* expression: Expression 1:1 required
-
-Collection_Sum(expression): sum
-'''''''''''''''''''''''''''''''
-
-* expression: Number 1:1 required
-
-* sum: Number 1:1 required
-
-Collection_Unique(expression): unique
-'''''''''''''''''''''''''''''''''''''
-
-* expression
-
-* unique
-
-Concatenate(text): result
-'''''''''''''''''''''''''
-
-* text: String 2:-1 required
-
-* result: String 1:1 required
-
-EqualArea(value, classes, areaFunction): EqualArea
-''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* value: Double 1:1 required
-
-* classes: Integer 1:1 required
-
-* areaFunction: Double 0:1 optional
-
-* EqualArea: RangedClassifier 1:1 required
-
-EqualInterval(value, classes): EqualInterval
-''''''''''''''''''''''''''''''''''''''''''''
-
-* value: Double 1:1 required
-
-* classes: Integer 1:1 required
-
-* EqualInterval: RangedClassifier 1:1 required
-
-IEEEremainder(dividend, divisor): remainder
-'''''''''''''''''''''''''''''''''''''''''''
-
-* dividend: Number 1:1 required
-
-* divisor: Number 1:1 required
-
-* remainder: Double 1:1 required
-
-Interpolate(data value pairs, mode, method): lookup
-'''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* data value pairs
-
-* mode: String 1:1 required
-
-* method: String 0:1 optional
-
-* lookup
-
-Jenks(value, classes): Jenks
-''''''''''''''''''''''''''''
-
-* value: Double 1:1 required
-
-* classes: Integer 1:1 required
-
-* Jenks: RangedClassifier 1:1 required
-
-PropertyExists(propertyName): exists
+``Area(geometry)``: returns ``area``
 ''''''''''''''''''''''''''''''''''''
 
-* propertyName
+* ``geometry`` (``Geometry``) required
 
-* exists: Boolean 1:1 required
+* ``area`` (``Double``)
 
-Quantile(value, classes): Quantile
-''''''''''''''''''''''''''''''''''
+``Categorize(LookupValue, Value, Threshold 1, Value 1, Threshold 2, Value 2, succeeding or preceding)``: returns ``return``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-* value: Double 1:1 required
+* ``LookupValue``
 
-* classes: Integer 1:1 required
+* ``Value``
 
-* Quantile: RangedClassifier 1:1 required
+* ``Threshold 1``
 
-Recode(LookupValue, Data 1, Value 1, Data 2, Value 2): return
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+* ``Value 1``
 
-* LookupValue
+* ``Threshold 2``
 
-* Data 1
+* ``Value 2``
 
-* Value 1
+* ``succeeding or preceding``
 
-* Data 2
+* ``return``
 
-* Value 2
-
-* return
-
-StandardDeviation(value, classes): StandardDeviation
-''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* value: Double 1:1 required
-
-* classes: Integer 1:1 required
-
-* StandardDeviation: RangedClassifier 1:1 required
-
-UniqueInterval(value, classes): UniqueInterval
-''''''''''''''''''''''''''''''''''''''''''''''
-
-* value: Double 1:1 required
-
-* classes: Integer 1:1 required
-
-* UniqueInterval: RangedClassifier 1:1 required
-
-abs(int): abs
-'''''''''''''
-
-* int: Integer 1:1 required
-
-* abs: Integer 1:1 required
-
-abs_2(number): long
-'''''''''''''''''''
-
-* number: Long 1:1 required
-
-* long: Long 1:1 required
-
-abs_3(number): float
-''''''''''''''''''''
-
-* number: Float 1:1 required
-
-* float: Float 1:1 required
-
-abs_4(number): double
-'''''''''''''''''''''
-
-* number: Double 1:1 required
-
-* double: Double 1:1 required
-
-acos(value): arc cosine
-'''''''''''''''''''''''
-
-* value: Double 1:1 required
-
-* arc cosine: Double 1:1 required
-
-area2(geometry): area
-'''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* area: Double 1:1 required
-
-asin(value): arc sine
-'''''''''''''''''''''
-
-* value: Double 1:1 required
-
-* arc sine: Double 1:1 required
-
-atan(value): arc tan
-''''''''''''''''''''
-
-* value: Double 1:1 required
-
-* arc tan: Double 1:1 required
-
-atan2(x, y): arc tan
-''''''''''''''''''''
-
-* x: Double 1:1 required
-
-* y: Double 1:1 required
-
-* arc tan: Double 1:1 required
-
-attributeCount(count): return
-'''''''''''''''''''''''''''''
-
-* count
-
-* return
-
-between(value, min, max): between
-'''''''''''''''''''''''''''''''''
-
-* value
-
-* min
-
-* max
-
-* between: Boolean 1:1 required
-
-boundary(geometry): boundary
-''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* boundary: Geometry 1:1 required
-
-boundaryDimension(geometry): dimension
-''''''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* dimension: Integer 1:1 required
-
-boundedBy(): result
-'''''''''''''''''''
-
-* result: Geometry 1:1 required
-
-buffer(geometry, distance): buffer
-''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* distance: Number 1:1 required
-
-* buffer: Geometry 1:1 required
-
-bufferWithSegments(geometry, distance, numberOfSegments): buffer
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* distance: Number 1:1 required
-
-* numberOfSegments: Number 1:1 required
-
-* buffer: Geometry 1:1 required
-
-ceil(number): ceiling
-'''''''''''''''''''''
-
-* number: Number 1:1 required
-
-* ceiling: Double 1:1 required
-
-centroid(geometry): centroid
-''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* centroid: Point 1:1 required
-
-classify(expression, classifer): value
-''''''''''''''''''''''''''''''''''''''
-
-* expression
-
-* classifer: Classifier 1:1 required
-
-* value
-
-contains(geometry1, geometry2): contains
-''''''''''''''''''''''''''''''''''''''''
-
-* geometry1: Geometry 1:1 required
-
-* geometry2: Geometry 1:1 required
-
-* contains: Boolean 1:1 required
-
-contrast(reference, color1, color2, threshold): result
-''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* reference: Color 1:1 required
-
-* color1: Color 0:1 optional
-
-* color2: Color 0:1 optional
-
-* threshold: Double 0:1 optional
-
-* result: Color 1:1 required
-
-convert(value, class): converted
-''''''''''''''''''''''''''''''''
-
-* value
-
-* class: Class 1:1 required
-
-* converted
-
-convexHull(geometry): hull
-''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* hull: Geometry 1:1 required
-
-cos(radians): cosine
-''''''''''''''''''''
-
-* radians: Double 1:1 required
-
-* cosine: Double 1:1 required
-
-crosses(geometry1, geometry2): crosses
-''''''''''''''''''''''''''''''''''''''
-
-* geometry1: Geometry 1:1 required
-
-* geometry2: Geometry 1:1 required
-
-* crosses: Boolean 1:1 required
-
-darken(color, amount, method): result
-'''''''''''''''''''''''''''''''''''''
-
-* color: Color 1:1 required
-
-* amount: Float 1:1 required
-
-* method: Method 0:1 optional
-
-* result: Color 1:1 required
-
-dateDifference(a, b): result
-''''''''''''''''''''''''''''
-
-* a: Date 1:1 required
-
-* b: Date 1:1 required
-
-* result: Long 1:1 required
-
-dateFormat(format, date): formatted
-'''''''''''''''''''''''''''''''''''
-
-* format: String 1:1 required
-
-* date: Date 1:1 required
-
-* formatted: String 1:1 required
-
-dateParse(format, dateString): date
-'''''''''''''''''''''''''''''''''''
-
-* format: String 1:1 required
-
-* dateString: String 1:1 required
-
-* date: Date 1:1 required
-
-desaturate(color, amount, method): result
-'''''''''''''''''''''''''''''''''''''''''
-
-* color: Color 1:1 required
-
-* amount: Float 1:1 required
-
-* method: Method 0:1 optional
-
-* result: Color 1:1 required
-
-difference(geometry1, geometry2): difference
-''''''''''''''''''''''''''''''''''''''''''''
-
-* geometry1: Geometry 1:1 required
-
-* geometry2: Geometry 1:1 required
-
-* difference: Geometry 1:1 required
-
-dimension(geometry): dimension
-''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* dimension: Integer 1:1 required
-
-disjoint(geometry1, geometry2): disjoint
-''''''''''''''''''''''''''''''''''''''''
-
-* geometry1: Geometry 1:1 required
-
-* geometry2: Geometry 1:1 required
-
-* disjoint: Boolean 1:1 required
-
-disjoint3D(geometry1, geometry2): disjoint3D
-''''''''''''''''''''''''''''''''''''''''''''
-
-* geometry1: Geometry 1:1 required
-
-* geometry2: Geometry 1:1 required
-
-* disjoint3D: Double 1:1 required
-
-distance(geometry1, geometry2): distance
-''''''''''''''''''''''''''''''''''''''''
-
-* geometry1: Geometry 1:1 required
-
-* geometry2: Geometry 1:1 required
-
-* distance: Double 1:1 required
-
-distance3D(geometry1, geometry2): distance3D
-''''''''''''''''''''''''''''''''''''''''''''
-
-* geometry1: Geometry 1:1 required
-
-* geometry2: Geometry 1:1 required
-
-* distance3D: Double 1:1 required
-
-double2bool(double): double2bool
-''''''''''''''''''''''''''''''''
-
-* double: Double 1:1 required
-
-* double2bool: Boolean 1:1 required
-
-endAngle(linestring): endAngle
-''''''''''''''''''''''''''''''
-
-* linestring: LineString 1:1 required
-
-* endAngle: Double 1:1 required
-
-endPoint(linestring): endPoint
-''''''''''''''''''''''''''''''
-
-* linestring: LineString 1:1 required
-
-* endPoint: Point 1:1 required
-
-env(variable): value
-''''''''''''''''''''
-
-* variable: String 1:1 required
-
-* value
-
-envelope(geometry): envelope
-''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* envelope: Geometry 1:1 required
-
-equalTo(a, b): equalTo
-''''''''''''''''''''''
-
-* a
-
-* b
-
-* equalTo: Boolean 1:1 required
-
-equalsExact(geometry1, geometry2): equalsExact
-''''''''''''''''''''''''''''''''''''''''''''''
-
-* geometry1: Geometry 1:1 required
-
-* geometry2: Geometry 1:1 required
-
-* equalsExact: Boolean 1:1 required
-
-equalsExactTolerance(geometry1, geometry2, tolarance): equalsExactTolerance
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* geometry1: Geometry 1:1 required
-
-* geometry2: Geometry 1:1 required
-
-* tolarance: Double 1:1 required
-
-* equalsExactTolerance: Boolean 1:1 required
-
-exp(number): exponent
-'''''''''''''''''''''
-
-* number: Number 1:1 required
-
-* exponent: Double 1:1 required
-
-exteriorRing(geometry): exteriorRing
-''''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* exteriorRing: LinearRing 1:1 required
-
-floor(double): floor
-''''''''''''''''''''
-
-* double: Double 1:1 required
-
-* floor: Double 1:1 required
-
-geomFromWKT(geometry): geomFromWKT
-''''''''''''''''''''''''''''''''''
-
-* geometry: String 1:1 required
-
-* geomFromWKT: Geometry 1:1 required
-
-geomLength(geometry): geomLength
-''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* geomLength: Double 1:1 required
-
-geometry(): geometry
-''''''''''''''''''''
-
-* geometry: Boolean 1:1 required
-
-geometryType(geometry): geometryType
-''''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* geometryType: String 1:1 required
-
-getGeometryN(geometry, index): getGeometryN
-'''''''''''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* index: Integer 1:1 required
-
-* getGeometryN: Geometry 1:1 required
-
-getX(geometry): getX
-''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* getX: Double 1:1 required
-
-getY(geometry): getY
-''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* getY: Double 1:1 required
-
-getz(geometry): getz
-''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* getz: Double 1:1 required
-
-grayscale(color): result
-''''''''''''''''''''''''
-
-* color: Color 1:1 required
-
-* result: Color 1:1 required
-
-greaterEqualThan(x, y): greaterEqualThan
-''''''''''''''''''''''''''''''''''''''''
-
-* x
-
-* y
-
-* greaterEqualThan: Boolean 1:1 required
-
-greaterThan(x, y): greaterThan
-''''''''''''''''''''''''''''''
-
-* x
-
-* y
-
-* greaterThan: Boolean 1:1 required
-
-hsl(hue, saturation, lightness): result
-'''''''''''''''''''''''''''''''''''''''
-
-* hue: Double 1:1 required
-
-* saturation: Double 1:1 required
-
-* lightness: Double 1:1 required
-
-* result: Color 1:1 required
-
-id(): id
-''''''''
-
-* id: String 1:1 required
-
-if_then_else(condition, then, else): if_then_else
-'''''''''''''''''''''''''''''''''''''''''''''''''
-
-* condition: Boolean 1:1 required
-
-* then
-
-* else
-
-* if_then_else
-
-in(candidate, v): result
-''''''''''''''''''''''''
-
-* candidate
-
-* v
-
-* result: Boolean 1:1 required
-
-in10(value, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10): in10
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* value
-
-* in1
-
-* in2
-
-* in3
-
-* in4
-
-* in5
-
-* in6
-
-* in7
-
-* in8
-
-* in9
-
-* in10
-
-* in10: Boolean 1:1 required
-
-in2(value, in1, in2): in2
-'''''''''''''''''''''''''
-
-* value
-
-* in1
-
-* in2
-
-* in2: Boolean 1:1 required
-
-in3(value, in1, in2, in3): in3
-''''''''''''''''''''''''''''''
-
-* value
-
-* in1
-
-* in2
-
-* in3
-
-* in3: Boolean 1:1 required
-
-in4(value, in1, in2, in3, in4): in4
-'''''''''''''''''''''''''''''''''''
-
-* value
-
-* in1
-
-* in2
-
-* in3
-
-* in4
-
-* in4: Boolean 1:1 required
-
-in5(value, in1, in2, in3, in4, in5): in5
-''''''''''''''''''''''''''''''''''''''''
-
-* value
-
-* in1
-
-* in2
-
-* in3
-
-* in4
-
-* in5
-
-* in5: Boolean 1:1 required
-
-in6(value, in1, in2, in3, in4, in5, in6): in6
-'''''''''''''''''''''''''''''''''''''''''''''
-
-* value
-
-* in1
-
-* in2
-
-* in3
-
-* in4
-
-* in5
-
-* in6
-
-* in6: Boolean 1:1 required
-
-in7(value, in1, in2, in3, in4, in5, in6, in7): in7
-''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* value
-
-* in1
-
-* in2
-
-* in3
-
-* in4
-
-* in5
-
-* in6
-
-* in7
-
-* in7: Boolean 1:1 required
-
-in8(value, in1, in2, in3, in4, in5, in6, in7, in8): in8
+``Collection_Average(expression)``: returns ``average``
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-* value
+* ``expression`` (``Number``) required
 
-* in1
+* ``average`` (``Number``)
 
-* in2
-
-* in3
-
-* in4
-
-* in5
-
-* in6
-
-* in7
-
-* in8
-
-* in8: Boolean 1:1 required
-
-in9(value, in1, in2, in3, in4, in5, in6, in7, in8, in9): in9
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* value
-
-* in1
-
-* in2
-
-* in3
-
-* in4
-
-* in5
-
-* in6
-
-* in7
-
-* in8
-
-* in9
-
-* in9: Boolean 1:1 required
-
-int2bbool(int): int2bbool
-'''''''''''''''''''''''''
-
-* int: Integer 1:1 required
-
-* int2bbool: Boolean 1:1 required
-
-int2ddouble(int): int2ddouble
-'''''''''''''''''''''''''''''
-
-* int: Integer 1:1 required
-
-* int2ddouble: Double 1:1 required
-
-interiorPoint(geometry): interiorPoint
-''''''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* interiorPoint: Point 1:1 required
-
-interiorRingN(geometry, n): interiorRingN
-'''''''''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* n: Integer 1:1 required
-
-* interiorRingN: LinearRing 1:1 required
-
-intersection(geometry1, geometry2): intersection
-''''''''''''''''''''''''''''''''''''''''''''''''
-
-* geometry1: Geometry 1:1 required
-
-* geometry2: Geometry 1:1 required
-
-* intersection: Geometry 1:1 required
-
-intersects(geometry1, geometry2): intersects
-''''''''''''''''''''''''''''''''''''''''''''
-
-* geometry1: Geometry 1:1 required
-
-* geometry2: Geometry 1:1 required
-
-* intersects: Boolean 1:1 required
-
-intersects3D(geometry1, geometry2): intersects3D
-''''''''''''''''''''''''''''''''''''''''''''''''
-
-* geometry1: Geometry 1:1 required
-
-* geometry2: Geometry 1:1 required
-
-* intersects3D: Double 1:1 required
-
-isClosed(geometry): isClosed
-''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* isClosed: Boolean 1:1 required
-
-isCoverage(): isCoverage
-''''''''''''''''''''''''
-
-* isCoverage: Boolean 1:1 required
-
-isEmpty(geometry): isEmpty
-''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* isEmpty: Boolean 1:1 required
-
-isLike(string, regex): isLike
-'''''''''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* regex: String 1:1 required
-
-* isLike: Boolean 1:1 required
-
-isNull(object): isNull
-''''''''''''''''''''''
-
-* object
-
-* isNull: Boolean 1:1 required
-
-isRing(geometry): isRing
-''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* isRing: Boolean 1:1 required
-
-isSimple(geometry): isSimple
-''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* isSimple: Boolean 1:1 required
-
-isValid(geometry): isValid
-''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* isValid: Boolean 1:1 required
-
-isWithinDistance(geometry1, geometry2, distance): isWithinDistance
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* geometry1: Geometry 1:1 required
-
-* geometry2: Geometry 1:1 required
-
-* distance: Double 1:1 required
-
-* isWithinDistance: Boolean 1:1 required
-
-isWithinDistance3D(geometry1, geometry2, distance): isWithinDistance3D
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* geometry1: Geometry 1:1 required
-
-* geometry2: Geometry 1:1 required
-
-* distance: Double 1:1 required
-
-* isWithinDistance3D: Double 1:1 required
-
-isometric(geometry, extrusion): isometric
-'''''''''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* extrusion: Double 1:1 required
-
-* isometric: Geometry 1:1 required
-
-lapply(source, expression): result
-''''''''''''''''''''''''''''''''''
-
-* source: List 1:1 required
-
-* expression
-
-* result: List 1:1 required
-
-length(string): length
-''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* length: Integer 1:1 required
-
-lessEqualThan(a, b): lessEqualThan
-''''''''''''''''''''''''''''''''''
-
-* a: Number 1:1 required
-
-* b: Number 1:1 required
-
-* lessEqualThan: Boolean 1:1 required
-
-lessThan(a, b): lessThan
-''''''''''''''''''''''''
-
-* a: Number 1:1 required
-
-* b: Number 1:1 required
-
-* lessThan: Boolean 1:1 required
-
-lighten(color, amount, method): result
-''''''''''''''''''''''''''''''''''''''
-
-* color: Color 1:1 required
-
-* amount: Float 1:1 required
-
-* method: Method 0:1 optional
-
-* result: Color 1:1 required
-
-list(item): list
-''''''''''''''''
-
-* item
-
-* list: List 1:1 required
-
-listMultiply(factor, list): listMultiply
-''''''''''''''''''''''''''''''''''''''''
-
-* factor: Number 1:1 required
-
-* list: String 1:1 required
-
-* listMultiply: String 1:1 required
-
-litem(source, index): result
-''''''''''''''''''''''''''''
-
-* source: List 1:1 required
-
-* index: Integer 1:1 required
-
-* result
-
-literate(index, times, expression): result
-''''''''''''''''''''''''''''''''''''''''''
-
-* index
-
-* times: Integer 1:1 required
-
-* expression
-
-* result: List 1:1 required
-
-log(value): logarithm
-'''''''''''''''''''''
-
-* value: Number 1:1 required
-
-* logarithm: Double 1:1 required
-
-max(double, double): maxium
-'''''''''''''''''''''''''''
-
-* double: Number 1:1 required
-
-* double: Number 1:1 required
-
-* maxium: Double 1:1 required
-
-max_2(long, long): maximum
-''''''''''''''''''''''''''
-
-* long: Number 1:1 required
-
-* long: Number 1:1 required
-
-* maximum: Long 1:1 required
-
-max_3(float, float): maximum
-''''''''''''''''''''''''''''
-
-* float: Number 1:1 required
-
-* float: Number 1:1 required
-
-* maximum: Float 1:1 required
-
-max_4(int, int): maximum
-''''''''''''''''''''''''
-
-* int: Number 1:1 required
-
-* int: Number 1:1 required
-
-* maximum: Integer 1:1 required
-
-min(double, double): minium
-'''''''''''''''''''''''''''
-
-* double: Double 1:1 required
-
-* double: Double 1:1 required
-
-* minium: Double 1:1 required
-
-min_2(long, long): minium
-'''''''''''''''''''''''''
-
-* long: Number 1:1 required
-
-* long: Number 1:1 required
-
-* minium: Long 1:1 required
-
-min_3(float, float): minium
-'''''''''''''''''''''''''''
-
-* float: Number 1:1 required
-
-* float: Number 1:1 required
-
-* minium: Float 1:1 required
-
-min_4(int, int): minium
-'''''''''''''''''''''''
-
-* int: Number 1:1 required
-
-* int: Number 1:1 required
-
-* minium: Integer 1:1 required
-
-mincircle(geometry): mincircle
-''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* mincircle: Geometry 1:1 required
-
-minimumdiameter(geometry): minimumdiameter
-''''''''''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* minimumdiameter: Geometry 1:1 required
-
-minrectangle(geometry): minrectangle
-''''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* minrectangle: Geometry 1:1 required
-
-mix(color1, color2, weight): result
-'''''''''''''''''''''''''''''''''''
-
-* color1: Color 1:1 required
-
-* color2: Color 1:1 required
-
-* weight: Double 1:1 required
-
-* result: Color 1:1 required
-
-modulo(dividend, divisor): modulo
-'''''''''''''''''''''''''''''''''
-
-* dividend: Integer 1:1 required
-
-* divisor: Integer 1:1 required
-
-* modulo: Integer 1:1 required
-
-not(logicValue): not
-''''''''''''''''''''
-
-* logicValue: Boolean 1:1 required
-
-* not: Boolean 1:1 required
-
-notEqualTo(a, b): notEqualTo
-''''''''''''''''''''''''''''
-
-* a
-
-* b
-
-* notEqualTo: Boolean 1:1 required
-
-numGeometries(geometry): numGeometries
-''''''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* numGeometries: Integer 1:1 required
-
-numInteriorRing(geometry): numInteriorRing
-''''''''''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* numInteriorRing: Integer 1:1 required
-
-numPoints(geometry): numPoints
-''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* numPoints: Integer 1:1 required
-
-numberFormat(format, number, language): numberFormat
-''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* format: String 1:1 required
-
-* number: Number 1:1 required
-
-* language: String 0:1 optional
-
-* numberFormat: String 1:1 required
-
-numberFormat2(format, number, minus, decimal, separator): numberFormat2
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* format: String 1:1 required
-
-* number: Number 1:1 required
-
-* minus: String 1:1 required
-
-* decimal: String 1:1 required
-
-* separator: String 1:1 required
-
-* numberFormat2: String 1:1 required
-
-octagonalenvelope(geometry): octagonalenvelope
-''''''''''''''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* octagonalenvelope: Geometry 1:1 required
-
-offset(geometry, offsetX, offsetY): offset
-''''''''''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* offsetX: Double 1:1 required
-
-* offsetY: Double 1:1 required
-
-* offset: Geometry 1:1 required
-
-overlaps(geometry1, geometry2): overlaps
-''''''''''''''''''''''''''''''''''''''''
-
-* geometry1: Geometry 1:1 required
-
-* geometry2: Geometry 1:1 required
-
-* overlaps: Geometry 1:1 required
-
-parseBoolean(string): parseBoolean
-''''''''''''''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* parseBoolean: Boolean 1:1 required
-
-parseDouble(string): parseDouble
-''''''''''''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* parseDouble: Double 1:1 required
-
-parseInt(string): parseInt
-''''''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* parseInt: Integer 1:1 required
-
-parseLong(string): parseLong
-''''''''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* parseLong: Long 1:1 required
-
-pgNearest(geometry, num_features): pgNearest
-''''''''''''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* num_features: Integer 1:1 required
-
-* pgNearest: Boolean 1:1 required
-
-pi(): pi
-''''''''
-
-* pi: Double 1:1 required
-
-pointN(geometry, index): pointN
-'''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* index: Integer 1:1 required
-
-* pointN: Geometry 1:1 required
-
-pow(base, exponent): power
-''''''''''''''''''''''''''
-
-* base: Number 1:1 required
-
-* exponent: Number 1:1 required
-
-* power: Double 1:1 required
-
-property(propertyName): propertyValue
-'''''''''''''''''''''''''''''''''''''
-
-* propertyName: String 1:1 required
-
-* propertyValue
-
-random(): random
-''''''''''''''''
-
-* random: Double 1:1 required
-
-relate(geometry1, geometry2): relate
-''''''''''''''''''''''''''''''''''''
-
-* geometry1: Geometry 1:1 required
-
-* geometry2: Geometry 1:1 required
-
-* relate: String 1:1 required
-
-relatePattern(geometry, geometry, pattern): related
+``Collection_Bounds(geometry)``: returns ``bounds``
 '''''''''''''''''''''''''''''''''''''''''''''''''''
 
-* geometry: Geometry 1:1 required
+* ``geometry`` (``Geometry``) required
 
-* geometry: Geometry 1:1 required
+* ``bounds``
 
-* pattern: String 1:1 required
-
-* related: Boolean 1:1 required
-
-rescaleToPixels(value, defaultUnit, scaleFactor, rescalingMode): rescaleToPixels
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* value: String 1:1 required
-
-* defaultUnit: Unit 1:1 required
-
-* scaleFactor: Double 1:1 required
-
-* rescalingMode: RescalingMode 0:1 optional
-
-* rescaleToPixels: String 1:1 required
-
-rint(double): rounded
-'''''''''''''''''''''
-
-* double: Number 1:1 required
-
-* rounded: Double 1:1 required
-
-round(number): float
-''''''''''''''''''''
-
-* number: Number 1:1 required
-
-* float: Float 1:1 required
-
-roundDouble(number): rounded
-''''''''''''''''''''''''''''
-
-* number: Number 1:1 required
-
-* rounded: Double 1:1 required
-
-round_2(number): long
-'''''''''''''''''''''
-
-* number: Number 1:1 required
-
-* long: Long 1:1 required
-
-saturate(color, amount, method): result
-'''''''''''''''''''''''''''''''''''''''
-
-* color: Color 1:1 required
-
-* amount: Float 1:1 required
-
-* method: Method 0:1 optional
-
-* result: Color 1:1 required
-
-setCRS(geometry, CRS): setCRS
-'''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* CRS: String 1:1 required
-
-* setCRS: Geometry 1:1 required
-
-shade(color, weight): result
-''''''''''''''''''''''''''''
-
-* color: Color 1:1 required
-
-* weight: Double 1:1 required
-
-* result: Color 1:1 required
-
-sin(radians): sine
-''''''''''''''''''
-
-* radians: Number 1:1 required
-
-* sine: Double 1:1 required
-
-size(source): result
-''''''''''''''''''''
-
-* source: Collection 1:1 required
-
-* result: Integer 1:1 required
-
-spin(color, amount): result
-'''''''''''''''''''''''''''
-
-* color: Color 1:1 required
-
-* amount: Double 1:1 required
-
-* result: Color 1:1 required
-
-sqrt(number): root
-''''''''''''''''''
-
-* number: Number 1:1 required
-
-* root: Double 1:1 required
-
-startAngle(linestring): degrees
-'''''''''''''''''''''''''''''''
-
-* linestring: LineString 1:1 required
-
-* degrees: Double 1:1 required
-
-startPoint(linestring): point
-'''''''''''''''''''''''''''''
-
-* linestring: LineString 1:1 required
-
-* point: Point 1:1 required
-
-strAbbreviate(string, lower, upper, appendTo): string
-'''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* lower: Integer 1:1 required
-
-* upper: Integer 1:1 required
-
-* appendTo: String 1:1 required
-
-* string: String 1:1 required
-
-strCapitalize(string): string
-'''''''''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* string: String 1:1 required
-
-strConcat(string1, string2): strConcat
-''''''''''''''''''''''''''''''''''''''
-
-* string1: String 1:1 required
-
-* string2: String 1:1 required
-
-* strConcat: String 1:1 required
-
-strDefaultIfBlank(string, default): string
-''''''''''''''''''''''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* default: String 1:1 required
-
-* string: String 1:1 required
-
-strEndsWith(String, postfix): endsWith
-''''''''''''''''''''''''''''''''''''''
-
-* String: String 1:1 required
-
-* postfix: String 1:1 required
-
-* endsWith: Boolean 1:1 required
-
-strEqualsIgnoreCase(string, lookup): equals
-'''''''''''''''''''''''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* lookup: String 1:1 required
-
-* equals: Boolean 1:1 required
-
-strIndexOf(String, lookup): index
-'''''''''''''''''''''''''''''''''
-
-* String: String 1:1 required
-
-* lookup: String 1:1 required
-
-* index: Integer 1:1 required
-
-strLastIndexOf(String, lookup): index
-'''''''''''''''''''''''''''''''''''''
-
-* String: String 1:1 required
-
-* lookup: String 1:1 required
-
-* index: Integer 1:1 required
-
-strLength(string): length
-'''''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* length: Integer 1:1 required
-
-strMatches(string, regex): match
-''''''''''''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* regex: String 1:1 required
-
-* match: Boolean 1:1 required
-
-strPosition(string, lookup, method): string
-'''''''''''''''''''''''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* lookup: String 1:1 required
-
-* method: String 1:1 required
-
-* string: String 1:1 required
-
-strReplace(string, search, replace, all): string
-''''''''''''''''''''''''''''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* search: String 1:1 required
-
-* replace: String 1:1 required
-
-* all: Boolean 1:1 required
-
-* string: String 1:1 required
-
-strStartsWith(string, prefix): starts with
-''''''''''''''''''''''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* prefix: String 1:1 required
-
-* starts with: Boolean 1:1 required
-
-strStripAccents(string): string
-'''''''''''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* string: String 1:1 required
-
-strSubstring(string, beginIndex, endIndex): substring
-'''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* beginIndex: Integer 1:1 required
-
-* endIndex: Integer 1:1 required
-
-* substring: String 1:1 required
-
-strSubstringStart(string, beginIndex): substring
-''''''''''''''''''''''''''''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* beginIndex: Integer 1:1 required
-
-* substring: String 1:1 required
-
-strToLowerCase(string): lowercase
-'''''''''''''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* lowercase: String 1:1 required
-
-strToUpperCase(string): uppercase
-'''''''''''''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* uppercase: String 1:1 required
-
-strTrim(string): trim
-'''''''''''''''''''''
-
-* string: String 1:1 required
-
-* trim: String 1:1 required
-
-strTrim2(string, method, character): trim
-'''''''''''''''''''''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* method: String 1:1 required
-
-* character: String 1:1 required
-
-* trim: String 1:1 required
-
-strURLEncode(encodeable, formUrlEncode): strURLEncode
-'''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* encodeable: String 1:1 required
-
-* formUrlEncode: Boolean 0:1 optional
-
-* strURLEncode: String 1:1 required
-
-stringTemplate(input, pattern, template, defaultValue): return
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* input
-
-* pattern
-
-* template
-
-* defaultValue
-
-* return
-
-symDifference(geometry, geometry): symetric difference
-''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* geometry: Geometry 1:1 required
-
-* symetric difference: Geometry 1:1 required
-
-tan(radians): tan
-'''''''''''''''''
-
-* radians: Number 1:1 required
-
-* tan: Double 1:1 required
-
-tint(color, weight): result
-'''''''''''''''''''''''''''
-
-* color: Color 1:1 required
-
-* weight: Double 1:1 required
-
-* result: Color 1:1 required
-
-toDegrees(radians): degrees
-'''''''''''''''''''''''''''
-
-* radians: Number 1:1 required
-
-* degrees: Double 1:1 required
-
-toRadians(degree): radians
-''''''''''''''''''''''''''
-
-* degree: Number 1:1 required
-
-* radians: Double 1:1 required
-
-toWKT(geometry): wkt
-''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* wkt: String 1:1 required
-
-touches(geometry, geometry): touches
-''''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* geometry: Geometry 1:1 required
-
-* touches: Boolean 1:1 required
-
-union(geometry, geometry): union
-''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* geometry: Geometry 1:1 required
-
-* union: Geometry 1:1 required
-
-vertices(geometry): vertices
-''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* vertices: MultiPoint 1:1 required
-
-within(geometry, geometry): within
-''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* geometry: Geometry 1:1 required
-
-* within: Boolean 1:1 required
-
-ProcessFunctionFactory
-^^^^^^^^^^^^^^^^^^^^^^
-
-May 03, 2019 12:32:04 PM org.geotools.image.ImageWorker <clinit>
-INFO: Warp/affine reduction enabled: true
-Contains 102 functions.
-
-AddCoverages(coverageA, coverageB): result
-''''''''''''''''''''''''''''''''''''''''''
-
-* coverageA: GridCoverage2D 1:1 required
-
-* coverageB: GridCoverage2D 1:1 required
-
-* result: GridCoverage2D 1:1 required
-
-Affine(coverage, scalex, scaley, shearx, sheary, translatex, translatey, nodata, interpolation): result
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* coverage: GridCoverage2D 1:1 required
-
-* scalex: Double 0:1 optional
-
-* scaley: Double 0:1 optional
-
-* shearx: Double 0:1 optional
-
-* sheary: Double 0:1 optional
-
-* translatex: Double 0:1 optional
-
-* translatey: Double 0:1 optional
-
-* nodata: double 0:unbounded
-
-* interpolation: Interpolation 0:1 optional
-
-* result: GridCoverage2D 1:1 required
-
-Aggregate(features, aggregationAttribute, function, singlePass, groupByAttributes): result
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* features: SimpleFeatureCollection 1:1 required
-
-* aggregationAttribute: String 0:1 optional
-
-* function: AggregationFunction 0:unbounded
-
-* singlePass: Boolean 1:1 required
-
-* groupByAttributes: String 0:unbounded
-
-* result: Results 1:1 required
-
-AreaGrid(envelope, width, height): result
-'''''''''''''''''''''''''''''''''''''''''
-
-* envelope: ReferencedEnvelope 1:1 required
-
-* width: Integer 1:1 required
-
-* height: Integer 1:1 required
-
-* result: GridCoverage2D 1:1 required
-
-BandMerge(coverages, roi, transformChoice, index): result
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* coverages: GridCoverage2D 1:unbounded required
-
-* roi: Geometry 0:1 optional
-
-* transformChoice: String 0:1 optional
-
-* index: Integer 0:1 optional
-
-* result: GridCoverage2D 1:1 required
-
-BandSelect(coverage, SampleDimensions, VisibleSampleDimension): result
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* coverage: GridCoverage2D 1:1 required
-
-* SampleDimensions: int 1:unbounded required
-
-* VisibleSampleDimension: Integer 0:1 optional
-
-* result: GridCoverage2D 1:1 required
-
-BarnesSurface(data, valueAttr, dataLimit, scale, convergence, passes, minObservations, maxObservationDistance, noDataValue, pixelsPerCell, queryBuffer, outputBBOX, outputWidth, outputHeight): result
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* data: SimpleFeatureCollection 1:1 required
-
-* valueAttr: String 1:1 required
-
-* dataLimit: Integer 0:1 optional
-
-* scale: Double 1:1 required
-
-* convergence: Double 0:1 optional
-
-* passes: Integer 0:1 optional
-
-* minObservations: Integer 0:1 optional
-
-* maxObservationDistance: Double 0:1 optional
-
-* noDataValue: Double 0:1 optional
-
-* pixelsPerCell: Integer 0:1 optional
-
-* queryBuffer: Double 0:1 optional
-
-* outputBBOX: ReferencedEnvelope 1:1 required
-
-* outputWidth: Integer 1:1 required
-
-* outputHeight: Integer 1:1 required
-
-* result: GridCoverage2D 1:1 required
-
-Bounds(features): bounds
-''''''''''''''''''''''''
-
-* features: FeatureCollection 1:1 required
-
-* bounds: ReferencedEnvelope 1:1 required
-
-BufferFeatureCollection(features, distance, attributeName): result
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* features: SimpleFeatureCollection 1:1 required
-
-* distance: Double 1:1 required
-
-* attributeName: String 0:1 optional
-
-* result: SimpleFeatureCollection 1:1 required
-
-Centroid(features): result
-''''''''''''''''''''''''''
-
-* features: SimpleFeatureCollection 1:1 required
-
-* result: SimpleFeatureCollection 1:1 required
-
-ClassifyByRange(features, classifyOnAttribute, thresholds, outputValues, classifier, classes, include, outputAttribute, outputType): result
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* features: SimpleFeatureCollection 1:1 required
-
-* classifyOnAttribute: String 1:1 required
-
-* thresholds: String 0:unbounded
-
-* outputValues: String 0:unbounded
-
-* classifier: String 0:1 optional
-
-* classes: Integer 0:1 optional
-
-* include: Boolean 0:1 optional
-
-* outputAttribute: String 0:1 optional
-
-* outputType: String 0:1 optional
-
-* result: SimpleFeatureCollection 1:1 required
-
-Clip(features, clip, preserveZ): result
-'''''''''''''''''''''''''''''''''''''''
-
-* features: SimpleFeatureCollection 1:1 required
-
-* clip: Geometry 1:1 required
-
-* preserveZ: Boolean 0:1 optional
-
-* result: SimpleFeatureCollection 1:1 required
-
-CollectGeometries(features): result
-'''''''''''''''''''''''''''''''''''
-
-* features: FeatureCollection 1:1 required
-
-* result: GeometryCollection 1:1 required
-
-Contour(data, band, levels, interval, simplify, smooth, roi): result
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* data: GridCoverage2D 1:1 required
-
-* band: Integer 0:1 optional
-
-* levels: double 0:unbounded
-
-* interval: Double 0:1 optional
-
-* simplify: Boolean 0:1 optional
-
-* smooth: Boolean 0:1 optional
-
-* roi: Geometry 0:1 optional
-
-* result: SimpleFeatureCollection 1:1 required
-
-ConvolveCoverage(data, kernel, kernelRadius, kernelWidth, kernelHeight): result
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* data: GridCoverage2D 1:1 required
-
-* kernel: KernelJAI 0:1 optional
-
-* kernelRadius: Integer 0:1 optional
-
-* kernelWidth: Integer 0:1 optional
-
-* kernelHeight: Integer 0:1 optional
-
-* result: GridCoverage2D 1:1 required
-
-Count(features): result
-'''''''''''''''''''''''
-
-* features: SimpleFeatureCollection 1:1 required
-
-* result: Number 1:1 required
-
-CoverageClassStats(coverage, stats, band, classes, method, noData): results
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* coverage: GridCoverage2D 1:1 required
-
-* stats: Statistic 0:unbounded
-
-* band: Integer 0:1 optional
-
-* classes: Integer 0:1 optional
-
-* method: ClassificationMethod 0:1 optional
-
-* noData: Double 0:1 optional
-
-* results: Results 1:1 required
-
-CropCoverage(coverage, cropShape): result
-'''''''''''''''''''''''''''''''''''''''''
-
-* coverage: GridCoverage2D 1:1 required
-
-* cropShape: Geometry 1:1 required
-
-* result: GridCoverage2D 1:1 required
-
-Feature(geometry, crs, typeName): result
-''''''''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* crs: CoordinateReferenceSystem 1:1 required
-
-* typeName: String 1:1 required
-
-* result: SimpleFeatureCollection 1:1 required
-
-FeatureClassStats(features, attribute, stats, classes, method, noData): results
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* features: FeatureCollection 1:1 required
-
-* attribute: String 1:1 required
-
-* stats: Statistic 0:unbounded
-
-* classes: Integer 0:1 optional
-
-* method: ClassificationMethod 0:1 optional
-
-* noData: Double 0:1 optional
-
-* results: Results 1:1 required
-
-Grid(bounds, width, height, vertexSpacing, mode): result
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* bounds: ReferencedEnvelope 1:1 required
-
-* width: Double 1:1 required
-
-* height: Double 0:1 optional
-
-* vertexSpacing: Double 0:1 optional
-
-* mode: GridMode 1:1 required
-
-* result: SimpleFeatureCollection 1:1 required
-
-Heatmap(data, radiusPixels, weightAttr, pixelsPerCell, outputBBOX, outputWidth, outputHeight): result
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* data: SimpleFeatureCollection 1:1 required
-
-* radiusPixels: Integer 1:1 required
-
-* weightAttr: String 0:1 optional
-
-* pixelsPerCell: Integer 0:1 optional
-
-* outputBBOX: ReferencedEnvelope 1:1 required
-
-* outputWidth: Integer 1:1 required
-
-* outputHeight: Integer 1:1 required
-
-* result: GridCoverage2D 1:1 required
-
-InclusionFeatureCollection(first, second): result
+``Collection_Count(features)``: returns ``count``
 '''''''''''''''''''''''''''''''''''''''''''''''''
 
-* first: SimpleFeatureCollection 1:1 required
+* ``features``
 
-* second: SimpleFeatureCollection 1:1 required
+* ``count`` (``Number``)
 
-* result: SimpleFeatureCollection 1:1 required
-
-IntersectionFeatureCollection(first feature collection, second feature collection, first attributes to retain, second attributes to retain, intersectionMode, percentagesEnabled, areasEnabled): result
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* first feature collection: SimpleFeatureCollection 1:1 required
-
-* second feature collection: SimpleFeatureCollection 1:1 required
-
-* first attributes to retain: String 0:unbounded
-
-* second attributes to retain: String 0:unbounded
-
-* intersectionMode: IntersectionMode 0:1 optional
-
-* percentagesEnabled: Boolean 0:1 optional
-
-* areasEnabled: Boolean 0:1 optional
-
-* result: SimpleFeatureCollection 1:1 required
-
-Jiffle(coverage, script, destName, sourceName, outputType): result
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* coverage: GridCoverage2D 0:unbounded
-
-* script: String 1:1 required
-
-* destName: String 0:1 optional
-
-* sourceName: String 0:unbounded
-
-* outputType: DataType 0:1 optional
-
-* result: GridCoverage2D 1:1 required
-
-LRSGeocode(features, from_measure_attb, to_measure_attb, measure): result
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* features: FeatureCollection 1:1 required
-
-* from_measure_attb: String 1:1 required
-
-* to_measure_attb: String 1:1 required
-
-* measure: Double 1:1 required
-
-* result: FeatureCollection 1:1 required
-
-LRSMeasure(features, from_measure_attb, to_measure_attb, point, crs): result
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* features: FeatureCollection 1:1 required
-
-* from_measure_attb: String 1:1 required
-
-* to_measure_attb: String 1:1 required
-
-* point: Point 1:1 required
-
-* crs: CoordinateReferenceSystem 0:1 optional
-
-* result: FeatureCollection 1:1 required
-
-LRSSegment(features, from_measure_attb, to_measure_attb, from_measure, to_measure): result
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* features: FeatureCollection 1:1 required
-
-* from_measure_attb: String 1:1 required
-
-* to_measure_attb: String 1:1 required
-
-* from_measure: Double 1:1 required
-
-* to_measure: Double 1:1 required
-
-* result: FeatureCollection 1:1 required
-
-MultiplyCoverages(coverageA, coverageB): result
+``Collection_Max(expression)``: returns ``max``
 '''''''''''''''''''''''''''''''''''''''''''''''
 
-* coverageA: GridCoverage2D 1:1 required
+* ``expression`` (``Comparable``) required
 
-* coverageB: GridCoverage2D 1:1 required
+* ``max`` (``Comparable``)
 
-* result: GridCoverage2D 1:1 required
+``Collection_Median(expression)``: returns ``median``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-Nearest(features, point, crs): result
-'''''''''''''''''''''''''''''''''''''
+* ``expression`` (``Comparable``) required
 
-* features: FeatureCollection 1:1 required
+* ``median`` (``Comparable``)
 
-* point: Point 1:1 required
+``Collection_Min(expression)``: returns ``min``
+'''''''''''''''''''''''''''''''''''''''''''''''
 
-* crs: CoordinateReferenceSystem 0:1 optional
+* ``expression`` (``Comparable``) required
 
-* result: FeatureCollection 1:1 required
+* ``min`` (``Comparable``)
 
-NormalizeCoverage(data): result
-'''''''''''''''''''''''''''''''
+``Collection_Nearest(value)``: returns ``expression``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-* data: GridCoverage2D 1:1 required
+* ``value`` (``Comparable``) required
 
-* result: GridCoverage2D 1:1 required
+* ``expression`` (``Expression``)
 
-PointBuffers(center, crs, distances, quadrantSegments): buffers
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+``Collection_Sum(expression)``: returns ``sum``
+'''''''''''''''''''''''''''''''''''''''''''''''
 
-* center: Point 1:1 required
+* ``expression`` (``Number``) required
 
-* crs: CoordinateReferenceSystem 0:1 optional
+* ``sum`` (``Number``)
 
-* distances: double 0:unbounded
+``Collection_Unique(expression)``: returns ``unique``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-* quadrantSegments: Integer 0:1 optional
+* ``expression``
 
-* buffers: SimpleFeatureCollection 1:1 required
+* ``unique``
 
-PointStacker(data, cellSize, weightClusterPosition, normalize, preserveLocation, outputBBOX, outputWidth, outputHeight): result
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+``Concatenate(text)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''
 
-* data: SimpleFeatureCollection 1:1 required
+* ``text`` (``String``) required
 
-* cellSize: Integer 1:1 required
+* ``result`` (``String``)
 
-* weightClusterPosition: Boolean 1:1 required
+``EqualArea(value, classes, areaFunction)``: returns ``EqualArea``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-* normalize: Boolean 1:1 required
+* ``value`` (``Double``) required
 
-* preserveLocation: PreserveLocation 0:1 optional
+* ``classes`` (``Integer``) required
 
-* outputBBOX: ReferencedEnvelope 1:1 required
+* ``areaFunction`` (``Double``) optional
 
-* outputWidth: Integer 1:1 required
+* ``EqualArea`` (``RangedClassifier``)
 
-* outputHeight: Integer 1:1 required
+``EqualInterval(value, classes)``: returns ``EqualInterval``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-* result: SimpleFeatureCollection 1:1 required
+* ``value`` (``Double``) required
 
-PolyLabeller(polygon, precision): result
-''''''''''''''''''''''''''''''''''''''''
+* ``classes`` (``Integer``) required
 
-* polygon: Geometry 1:1 required
+* ``EqualInterval`` (``RangedClassifier``)
 
-* precision: Double 1:1 required
+``IEEEremainder(dividend, divisor)``: returns ``remainder``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-* result: Geometry 1:1 required
+* ``dividend`` (``Number``) required
 
-PolygonExtraction(data, band, insideEdges, roi, nodata, ranges): result
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+* ``divisor`` (``Number``) required
 
-* data: GridCoverage2D 1:1 required
+* ``remainder`` (``Double``)
 
-* band: Integer 0:1 optional
+``Interpolate(data value pairs, mode, method)``: returns ``lookup``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-* insideEdges: Boolean 0:1 optional
+* ``data value pairs``
 
-* roi: Geometry 0:1 optional
+* ``mode`` (``String``) required
 
-* nodata: Number 0:unbounded
+* ``method`` (``String``) optional
 
-* ranges: Range 0:unbounded
+* ``lookup``
 
-* result: SimpleFeatureCollection 1:1 required
+``Jenks(value, classes)``: returns ``Jenks``
+''''''''''''''''''''''''''''''''''''''''''''
 
-Query(features, attribute, filter): result
-''''''''''''''''''''''''''''''''''''''''''
+* ``value`` (``Double``) required
 
-* features: SimpleFeatureCollection 1:1 required
+* ``classes`` (``Integer``) required
 
-* attribute: String 0:unbounded
+* ``Jenks`` (``RangedClassifier``)
 
-* filter: Filter 0:1 optional
+``PropertyExists(propertyName)``: returns ``exists``
+''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-* result: SimpleFeatureCollection 1:1 required
+* ``propertyName``
 
-RangeLookup(coverage, band, ranges, outputPixelValues, noData): reclassified
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+* ``exists`` (``Boolean``)
 
-* coverage: GridCoverage2D 1:1 required
-
-* band: Integer 0:1 optional
-
-* ranges: Range 0:unbounded
-
-* outputPixelValues: int 0:unbounded
-
-* noData: Double 0:1 optional
-
-* reclassified: GridCoverage2D 1:1 required
-
-RasterAsPointCollection(data, targetCRS, scale, interpolation, emisphere): result
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* data: GridCoverage2D 1:1 required
-
-* targetCRS: CoordinateReferenceSystem 0:1 optional
-
-* scale: Float 0:1 optional
-
-* interpolation: Interpolation 0:1 optional
-
-* emisphere: Boolean 0:1 optional
-
-* result: SimpleFeatureCollection 1:1 required
-
-RasterZonalStatistics(data, band, zones, classification): statistics
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* data: GridCoverage2D 1:1 required
-
-* band: Integer 0:1 optional
-
-* zones: SimpleFeatureCollection 1:1 required
-
-* classification: GridCoverage2D 0:1 optional
-
-* statistics: SimpleFeatureCollection 1:1 required
-
-RasterZonalStatistics2(source, bands, zones, classifier, nodata, mask, useROIAccessor, roi, statistics, minbounds, maxbounds, numbins, rangeData, localStats): zonal statistics
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* source: GridCoverage2D 1:1 required
-
-* bands: int 0:unbounded
-
-* zones: Object 0:unbounded
-
-* classifier: GridCoverage2D 0:1 optional
-
-* nodata: Range 1:1 required
-
-* mask: Geometry 1:1 required
-
-* useROIAccessor: Boolean 1:1 required
-
-* roi: Polygon 1:1 required
-
-* statistics: StatsType 0:unbounded
-
-* minbounds: double 0:unbounded
-
-* maxbounds: double 0:unbounded
-
-* numbins: int 0:unbounded
-
-* rangeData: Object 0:unbounded
-
-* localStats: Boolean 1:1 required
-
-* zonal statistics: List 1:1 required
-
-RectangularClip(features, clip, preserveZ): result
+``Quantile(value, classes)``: returns ``Quantile``
 ''''''''''''''''''''''''''''''''''''''''''''''''''
 
-* features: SimpleFeatureCollection 1:1 required
+* ``value`` (``Double``) required
 
-* clip: ReferencedEnvelope 1:1 required
+* ``classes`` (``Integer``) required
 
-* preserveZ: Boolean 0:1 optional
+* ``Quantile`` (``RangedClassifier``)
 
-* result: SimpleFeatureCollection 1:1 required
+``Recode(LookupValue, Data 1, Value 1, Data 2, Value 2)``: returns ``return``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-Reproject(features, forcedCRS, targetCRS): result
-'''''''''''''''''''''''''''''''''''''''''''''''''
+* ``LookupValue``
 
-* features: SimpleFeatureCollection 1:1 required
+* ``Data 1``
 
-* forcedCRS: CoordinateReferenceSystem 0:1 optional
+* ``Value 1``
 
-* targetCRS: CoordinateReferenceSystem 0:1 optional
+* ``Data 2``
 
-* result: SimpleFeatureCollection 1:1 required
+* ``Value 2``
 
-ScaleCoverage(coverage, xScale, yScale, xTranslate, yTranslate, interpolation): result
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+* ``return``
 
-* coverage: GridCoverage2D 1:1 required
+``StandardDeviation(value, classes)``: returns ``StandardDeviation``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-* xScale: Double 1:1 required
+* ``value`` (``Double``) required
 
-* yScale: Double 1:1 required
+* ``classes`` (``Integer``) required
 
-* xTranslate: Double 1:1 required
+* ``StandardDeviation`` (``RangedClassifier``)
 
-* yTranslate: Double 1:1 required
+``UniqueInterval(value, classes)``: returns ``UniqueInterval``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-* interpolation: Interpolation 0:1 optional
+* ``value`` (``Double``) required
 
-* result: GridCoverage2D 1:1 required
+* ``classes`` (``Integer``) required
 
-Simplify(features, distance, preserveTopology): result
-''''''''''''''''''''''''''''''''''''''''''''''''''''''
+* ``UniqueInterval`` (``RangedClassifier``)
 
-* features: SimpleFeatureCollection 1:1 required
-
-* distance: Double 1:1 required
-
-* preserveTopology: Boolean 1:1 required
-
-* result: SimpleFeatureCollection 1:1 required
-
-Snap(features, point, crs): result
-''''''''''''''''''''''''''''''''''
-
-* features: FeatureCollection 1:1 required
-
-* point: Point 1:1 required
-
-* crs: CoordinateReferenceSystem 0:1 optional
-
-* result: FeatureCollection 1:1 required
-
-StyleCoverage(coverage, style): result
-''''''''''''''''''''''''''''''''''''''
-
-* coverage: GridCoverage2D 1:1 required
-
-* style: Style 1:1 required
-
-* result: GridCoverage2D 1:1 required
-
-Transform(features, transform): result
-''''''''''''''''''''''''''''''''''''''
-
-* features: SimpleFeatureCollection 1:1 required
-
-* transform: String 1:1 required
-
-* result: SimpleFeatureCollection 1:1 required
-
-TransparencyFill(data): result
-''''''''''''''''''''''''''''''
-
-* data: GridCoverage2D 1:1 required
-
-* result: GridCoverage2D 1:1 required
-
-UnionFeatureCollection(first, second): result
-'''''''''''''''''''''''''''''''''''''''''''''
-
-* first: SimpleFeatureCollection 1:1 required
-
-* second: SimpleFeatureCollection 1:1 required
-
-* result: SimpleFeatureCollection 1:1 required
-
-Unique(features, attribute): result
-'''''''''''''''''''''''''''''''''''
-
-* features: SimpleFeatureCollection 1:1 required
-
-* attribute: String 1:1 required
-
-* result: SimpleFeatureCollection 1:1 required
-
-VectorToRaster(features, rasterWidth, rasterHeight, title, attribute, bounds): result
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* features: SimpleFeatureCollection 1:1 required
-
-* rasterWidth: Integer 1:1 required
-
-* rasterHeight: Integer 1:1 required
-
-* title: String 0:1 optional
-
-* attribute: String 1:1 required
-
-* bounds: Envelope 0:1 optional
-
-* result: GridCoverage2D 1:1 required
-
-VectorZonalStatistics(data, dataAttribute, zones): statistics
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* data: SimpleFeatureCollection 1:1 required
-
-* dataAttribute: String 1:1 required
-
-* zones: SimpleFeatureCollection 1:1 required
-
-* statistics: SimpleFeatureCollection 1:1 required
-
-area(geom): result
-''''''''''''''''''
-
-* geom: Geometry 1:1 required
-
-* result: double 1:1 required
-
-boundary(geom): result
-''''''''''''''''''''''
-
-* geom: Geometry 1:1 required
-
-* result: Geometry 1:1 required
-
-buffer(geom, distance, quadrantSegments, capStyle): result
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* geom: Geometry 1:1 required
-
-* distance: Double 1:1 required
-
-* quadrantSegments: Integer 0:1 optional
-
-* capStyle: BufferCapStyle 0:1 optional
-
-* result: Geometry 1:1 required
-
-centroid(geom): result
-''''''''''''''''''''''
-
-* geom: Geometry 1:1 required
-
-* result: Geometry 1:1 required
-
-contains(a, b): result
-''''''''''''''''''''''
-
-* a: Geometry 1:1 required
-
-* b: Geometry 1:1 required
-
-* result: boolean 1:1 required
-
-convexHull(geom): result
-''''''''''''''''''''''''
-
-* geom: Geometry 1:1 required
-
-* result: Geometry 1:1 required
-
-crosses(a, b): result
-'''''''''''''''''''''
-
-* a: Geometry 1:1 required
-
-* b: Geometry 1:1 required
-
-* result: boolean 1:1 required
-
-densify(geom, distance): result
-'''''''''''''''''''''''''''''''
-
-* geom: Geometry 1:1 required
-
-* distance: Double 1:1 required
-
-* result: Geometry 1:1 required
-
-difference(a, b): result
-''''''''''''''''''''''''
-
-* a: Geometry 1:1 required
-
-* b: Geometry 1:1 required
-
-* result: Geometry 1:1 required
-
-dimension(geom): result
-'''''''''''''''''''''''
-
-* geom: Geometry 1:1 required
-
-* result: int 1:1 required
-
-disjoint(a, b): result
-''''''''''''''''''''''
-
-* a: Geometry 1:1 required
-
-* b: Geometry 1:1 required
-
-* result: boolean 1:1 required
-
-distance(a, b): result
-''''''''''''''''''''''
-
-* a: Geometry 1:1 required
-
-* b: Geometry 1:1 required
-
-* result: double 1:1 required
-
-endPoint(geom): result
-''''''''''''''''''''''
-
-* geom: LineString 1:1 required
-
-* result: Point 1:1 required
-
-envelope(geom): result
-''''''''''''''''''''''
-
-* geom: Geometry 1:1 required
-
-* result: Geometry 1:1 required
-
-equalsExact(a, b): result
-'''''''''''''''''''''''''
-
-* a: Geometry 1:1 required
-
-* b: Geometry 1:1 required
-
-* result: boolean 1:1 required
-
-equalsExactTolerance(a, b, tolerance): result
-'''''''''''''''''''''''''''''''''''''''''''''
-
-* a: Geometry 1:1 required
-
-* b: Geometry 1:1 required
-
-* tolerance: Double 1:1 required
-
-* result: boolean 1:1 required
-
-exteriorRing(geom): result
-''''''''''''''''''''''''''
-
-* geom: Polygon 1:1 required
-
-* result: Geometry 1:1 required
-
-geometryType(geom): result
-''''''''''''''''''''''''''
-
-* geom: Geometry 1:1 required
-
-* result: String 1:1 required
-
-getGeometryN(geom, index): result
-'''''''''''''''''''''''''''''''''
-
-* geom: GeometryCollection 1:1 required
-
-* index: Integer 1:1 required
-
-* result: Geometry 1:1 required
-
-getX(geom): result
-''''''''''''''''''
-
-* geom: Point 1:1 required
-
-* result: double 1:1 required
-
-getY(geom): result
-''''''''''''''''''
-
-* geom: Point 1:1 required
-
-* result: double 1:1 required
-
-interiorPoint(geom): result
-'''''''''''''''''''''''''''
-
-* geom: Geometry 1:1 required
-
-* result: Geometry 1:1 required
-
-interiorRingN(geom, index): result
-''''''''''''''''''''''''''''''''''
-
-* geom: Polygon 1:1 required
-
-* index: Integer 1:1 required
-
-* result: Geometry 1:1 required
-
-intersection(a, b): result
-''''''''''''''''''''''''''
-
-* a: Geometry 1:1 required
-
-* b: Geometry 1:1 required
-
-* result: Geometry 1:1 required
-
-intersects(a, b): result
-''''''''''''''''''''''''
-
-* a: Geometry 1:1 required
-
-* b: Geometry 1:1 required
-
-* result: boolean 1:1 required
-
-isClosed(geom): result
-''''''''''''''''''''''
-
-* geom: LineString 1:1 required
-
-* result: boolean 1:1 required
-
-isEmpty(geom): result
-'''''''''''''''''''''
-
-* geom: Geometry 1:1 required
-
-* result: boolean 1:1 required
-
-isRing(geom): result
-''''''''''''''''''''
-
-* geom: LineString 1:1 required
-
-* result: boolean 1:1 required
-
-isSimple(geom): result
-''''''''''''''''''''''
-
-* geom: Geometry 1:1 required
-
-* result: boolean 1:1 required
-
-isValid(geom): result
-'''''''''''''''''''''
-
-* geom: Geometry 1:1 required
-
-* result: boolean 1:1 required
-
-isWithinDistance(a, b, distance): result
-''''''''''''''''''''''''''''''''''''''''
-
-* a: Geometry 1:1 required
-
-* b: Geometry 1:1 required
-
-* distance: Double 1:1 required
-
-* result: boolean 1:1 required
-
-length(geom): result
-''''''''''''''''''''
-
-* geom: Geometry 1:1 required
-
-* result: double 1:1 required
-
-numGeometries(geom): result
-'''''''''''''''''''''''''''
-
-* geom: Geometry 1:1 required
-
-* result: int 1:1 required
-
-numInteriorRing(geom): result
+``abs(int)``: returns ``abs``
 '''''''''''''''''''''''''''''
 
-* geom: Polygon 1:1 required
+* ``int`` (``Integer``) required
 
-* result: int 1:1 required
+* ``abs`` (``Integer``)
 
-numPoints(geom): result
-'''''''''''''''''''''''
-
-* geom: Geometry 1:1 required
-
-* result: int 1:1 required
-
-octagonalEnvelope(geom): result
-'''''''''''''''''''''''''''''''
-
-* geom: Geometry 1:1 required
-
-* result: Geometry 1:1 required
-
-overlaps(a, b): result
-''''''''''''''''''''''
-
-* a: Geometry 1:1 required
-
-* b: Geometry 1:1 required
-
-* result: boolean 1:1 required
-
-parameter(argumentName, values): parameterMap
-'''''''''''''''''''''''''''''''''''''''''''''
-
-* argumentName: String 1:1 required
-
-* values: Object 0:unbounded
-
-* parameterMap: Map 1:1 required
-
-pointN(geom, index): result
-'''''''''''''''''''''''''''
-
-* geom: LineString 1:1 required
-
-* index: Integer 1:1 required
-
-* result: Point 1:1 required
-
-polygonize(geom): result
-''''''''''''''''''''''''
-
-* geom: Geometry 1:1 required
-
-* result: Geometry 1:1 required
-
-relate(a, b): result
-''''''''''''''''''''
-
-* a: Geometry 1:1 required
-
-* b: Geometry 1:1 required
-
-* result: String 1:1 required
-
-relatePattern(a, b, Relate pattern): result
-'''''''''''''''''''''''''''''''''''''''''''
-
-* a: Geometry 1:1 required
-
-* b: Geometry 1:1 required
-
-* Relate pattern: String 1:1 required
-
-* result: boolean 1:1 required
-
-reproject(geometry, sourceCRS, targetCRS): result
-'''''''''''''''''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* sourceCRS: CoordinateReferenceSystem 0:1 optional
-
-* targetCRS: CoordinateReferenceSystem 0:1 optional
-
-* result: Geometry 1:1 required
-
-simplify(geom, distance): result
-''''''''''''''''''''''''''''''''
-
-* geom: Geometry 1:1 required
-
-* distance: Double 1:1 required
-
-* result: Geometry 1:1 required
-
-splitPolygon(polygon, line): result
+``abs_2(number)``: returns ``long``
 '''''''''''''''''''''''''''''''''''
 
-* polygon: Geometry 1:1 required
+* ``number`` (``Long``) required
 
-* line: LineString 1:1 required
+* ``long`` (``Long``)
 
-* result: Geometry 1:1 required
+``abs_3(number)``: returns ``float``
+''''''''''''''''''''''''''''''''''''
 
-startPoint(geom): result
+* ``number`` (``Float``) required
+
+* ``float`` (``Float``)
+
+``abs_4(number)``: returns ``double``
+'''''''''''''''''''''''''''''''''''''
+
+* ``number`` (``Double``) required
+
+* ``double`` (``Double``)
+
+``acos(value)``: returns ``arc cosine``
+'''''''''''''''''''''''''''''''''''''''
+
+* ``value`` (``Double``) required
+
+* ``arc cosine`` (``Double``)
+
+``area2(geometry)``: returns ``area``
+'''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``area`` (``Double``)
+
+``asin(value)``: returns ``arc sine``
+'''''''''''''''''''''''''''''''''''''
+
+* ``value`` (``Double``) required
+
+* ``arc sine`` (``Double``)
+
+``atan(value)``: returns ``arc tan``
+''''''''''''''''''''''''''''''''''''
+
+* ``value`` (``Double``) required
+
+* ``arc tan`` (``Double``)
+
+``atan2(x, y)``: returns ``arc tan``
+''''''''''''''''''''''''''''''''''''
+
+* ``x`` (``Double``) required
+
+* ``y`` (``Double``) required
+
+* ``arc tan`` (``Double``)
+
+``attributeCount(count)``: returns ``return``
+'''''''''''''''''''''''''''''''''''''''''''''
+
+* ``count``
+
+* ``return``
+
+``between(value, min, max)``: returns ``between``
+'''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``value``
+
+* ``min``
+
+* ``max``
+
+* ``between`` (``Boolean``)
+
+``boundary(geometry)``: returns ``boundary``
+''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``boundary`` (``Geometry``)
+
+``boundaryDimension(geometry)``: returns ``dimension``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``dimension`` (``Integer``)
+
+``boundedBy()``: returns ``result``
+'''''''''''''''''''''''''''''''''''
+
+* ``result`` (``Geometry``)
+
+``buffer(geometry, distance)``: returns ``buffer``
+''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``distance`` (``Number``) required
+
+* ``buffer`` (``Geometry``)
+
+``bufferWithSegments(geometry, distance, numberOfSegments)``: returns ``buffer``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``distance`` (``Number``) required
+
+* ``numberOfSegments`` (``Number``) required
+
+* ``buffer`` (``Geometry``)
+
+``ceil(number)``: returns ``ceiling``
+'''''''''''''''''''''''''''''''''''''
+
+* ``number`` (``Number``) required
+
+* ``ceiling`` (``Double``)
+
+``centroid(geometry)``: returns ``centroid``
+''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``centroid`` (``Point``)
+
+``classify(expression, classifer)``: returns ``value``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``expression``
+
+* ``classifer`` (``Classifier``) required
+
+* ``value``
+
+``contains(geometry1, geometry2)``: returns ``contains``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry1`` (``Geometry``) required
+
+* ``geometry2`` (``Geometry``) required
+
+* ``contains`` (``Boolean``)
+
+``contrast(reference, color1, color2, threshold)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``reference`` (``Color``) required
+
+* ``color1`` (``Color``) optional
+
+* ``color2`` (``Color``) optional
+
+* ``threshold`` (``Double``) optional
+
+* ``result`` (``Color``)
+
+``convert(value, class)``: returns ``converted``
+''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``value``
+
+* ``class`` (``Class``) required
+
+* ``converted``
+
+``convexHull(geometry)``: returns ``hull``
+''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``hull`` (``Geometry``)
+
+``cos(radians)``: returns ``cosine``
+''''''''''''''''''''''''''''''''''''
+
+* ``radians`` (``Double``) required
+
+* ``cosine`` (``Double``)
+
+``crosses(geometry1, geometry2)``: returns ``crosses``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry1`` (``Geometry``) required
+
+* ``geometry2`` (``Geometry``) required
+
+* ``crosses`` (``Boolean``)
+
+``darken(color, amount, method)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``color`` (``Color``) required
+
+* ``amount`` (``Float``) required
+
+* ``method`` (``Method``) optional
+
+* ``result`` (``Color``)
+
+``dateDifference(a, b)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''''
+
+* ``a`` (``Date``) required
+
+* ``b`` (``Date``) required
+
+* ``result`` (``Long``)
+
+``dateFormat(format, date)``: returns ``formatted``
+'''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``format`` (``String``) required
+
+* ``date`` (``Date``) required
+
+* ``formatted`` (``String``)
+
+``dateParse(format, dateString)``: returns ``date``
+'''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``format`` (``String``) required
+
+* ``dateString`` (``String``) required
+
+* ``date`` (``Date``)
+
+``desaturate(color, amount, method)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``color`` (``Color``) required
+
+* ``amount`` (``Float``) required
+
+* ``method`` (``Method``) optional
+
+* ``result`` (``Color``)
+
+``difference(geometry1, geometry2)``: returns ``difference``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry1`` (``Geometry``) required
+
+* ``geometry2`` (``Geometry``) required
+
+* ``difference`` (``Geometry``)
+
+``dimension(geometry)``: returns ``dimension``
+''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``dimension`` (``Integer``)
+
+``disjoint(geometry1, geometry2)``: returns ``disjoint``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry1`` (``Geometry``) required
+
+* ``geometry2`` (``Geometry``) required
+
+* ``disjoint`` (``Boolean``)
+
+``disjoint3D(geometry1, geometry2)``: returns ``disjoint3D``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry1`` (``Geometry``) required
+
+* ``geometry2`` (``Geometry``) required
+
+* ``disjoint3D`` (``Double``)
+
+``distance(geometry1, geometry2)``: returns ``distance``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry1`` (``Geometry``) required
+
+* ``geometry2`` (``Geometry``) required
+
+* ``distance`` (``Double``)
+
+``distance3D(geometry1, geometry2)``: returns ``distance3D``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry1`` (``Geometry``) required
+
+* ``geometry2`` (``Geometry``) required
+
+* ``distance3D`` (``Double``)
+
+``double2bool(double)``: returns ``double2bool``
+''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``double`` (``Double``) required
+
+* ``double2bool`` (``Boolean``)
+
+``endAngle(linestring)``: returns ``endAngle``
+''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``linestring`` (``LineString``) required
+
+* ``endAngle`` (``Double``)
+
+``endPoint(linestring)``: returns ``endPoint``
+''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``linestring`` (``LineString``) required
+
+* ``endPoint`` (``Point``)
+
+``env(variable)``: returns ``value``
+''''''''''''''''''''''''''''''''''''
+
+* ``variable`` (``String``) required
+
+* ``value``
+
+``envelope(geometry)``: returns ``envelope``
+''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``envelope`` (``Geometry``)
+
+``equalTo(a, b)``: returns ``equalTo``
+''''''''''''''''''''''''''''''''''''''
+
+* ``a``
+
+* ``b``
+
+* ``equalTo`` (``Boolean``)
+
+``equalsExact(geometry1, geometry2)``: returns ``equalsExact``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry1`` (``Geometry``) required
+
+* ``geometry2`` (``Geometry``) required
+
+* ``equalsExact`` (``Boolean``)
+
+``equalsExactTolerance(geometry1, geometry2, tolarance)``: returns ``equalsExactTolerance``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry1`` (``Geometry``) required
+
+* ``geometry2`` (``Geometry``) required
+
+* ``tolarance`` (``Double``) required
+
+* ``equalsExactTolerance`` (``Boolean``)
+
+``exp(number)``: returns ``exponent``
+'''''''''''''''''''''''''''''''''''''
+
+* ``number`` (``Number``) required
+
+* ``exponent`` (``Double``)
+
+``exteriorRing(geometry)``: returns ``exteriorRing``
+''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``exteriorRing`` (``LinearRing``)
+
+``floor(double)``: returns ``floor``
+''''''''''''''''''''''''''''''''''''
+
+* ``double`` (``Double``) required
+
+* ``floor`` (``Double``)
+
+``geomFromWKT(geometry)``: returns ``geomFromWKT``
+''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``String``) required
+
+* ``geomFromWKT`` (``Geometry``)
+
+``geomLength(geometry)``: returns ``geomLength``
+''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``geomLength`` (``Double``)
+
+``geometry()``: returns ``geometry``
+''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Boolean``)
+
+``geometryType(geometry)``: returns ``geometryType``
+''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``geometryType`` (``String``)
+
+``getGeometryN(geometry, index)``: returns ``getGeometryN``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``index`` (``Integer``) required
+
+* ``getGeometryN`` (``Geometry``)
+
+``getX(geometry)``: returns ``getX``
+''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``getX`` (``Double``)
+
+``getY(geometry)``: returns ``getY``
+''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``getY`` (``Double``)
+
+``getz(geometry)``: returns ``getz``
+''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``getz`` (``Double``)
+
+``grayscale(color)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''
+
+* ``color`` (``Color``) required
+
+* ``result`` (``Color``)
+
+``greaterEqualThan(x, y)``: returns ``greaterEqualThan``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``x``
+
+* ``y``
+
+* ``greaterEqualThan`` (``Boolean``)
+
+``greaterThan(x, y)``: returns ``greaterThan``
+''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``x``
+
+* ``y``
+
+* ``greaterThan`` (``Boolean``)
+
+``hsl(hue, saturation, lightness)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``hue`` (``Double``) required
+
+* ``saturation`` (``Double``) required
+
+* ``lightness`` (``Double``) required
+
+* ``result`` (``Color``)
+
+``id()``: returns ``id``
 ''''''''''''''''''''''''
 
-* geom: LineString 1:1 required
+* ``id`` (``String``)
 
-* result: Point 1:1 required
+``if_then_else(condition, then, else)``: returns ``if_then_else``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-symDifference(a, b): result
-'''''''''''''''''''''''''''
+* ``condition`` (``Boolean``) required
 
-* a: Geometry 1:1 required
+* ``then``
 
-* b: Geometry 1:1 required
+* ``else``
 
-* result: Geometry 1:1 required
+* ``if_then_else``
 
-touches(a, b): result
-'''''''''''''''''''''
+``in(candidate, v)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''
 
-* a: Geometry 1:1 required
+* ``candidate``
 
-* b: Geometry 1:1 required
+* ``v``
 
-* result: boolean 1:1 required
+* ``result`` (``Boolean``)
 
-union(geom): result
-'''''''''''''''''''
+``in10(value, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10)``: returns ``in10``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-* geom: Geometry 2:unbounded required
+* ``value``
 
-* result: Geometry 1:1 required
+* ``in1``
 
-within(a, b): result
-''''''''''''''''''''
+* ``in2``
 
-* a: Geometry 1:1 required
+* ``in3``
 
-* b: Geometry 1:1 required
+* ``in4``
 
-* result: boolean 1:1 required
+* ``in5``
 
-PolygonLabelFunctionFactory
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+* ``in6``
+
+* ``in7``
+
+* ``in8``
+
+* ``in9``
+
+* ``in10``
+
+* ``in10`` (``Boolean``)
+
+``in2(value, in1, in2)``: returns ``in2``
+'''''''''''''''''''''''''''''''''''''''''
+
+* ``value``
+
+* ``in1``
+
+* ``in2``
+
+* ``in2`` (``Boolean``)
+
+``in3(value, in1, in2, in3)``: returns ``in3``
+''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``value``
+
+* ``in1``
+
+* ``in2``
+
+* ``in3``
+
+* ``in3`` (``Boolean``)
+
+``in4(value, in1, in2, in3, in4)``: returns ``in4``
+'''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``value``
+
+* ``in1``
+
+* ``in2``
+
+* ``in3``
+
+* ``in4``
+
+* ``in4`` (``Boolean``)
+
+``in5(value, in1, in2, in3, in4, in5)``: returns ``in5``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``value``
+
+* ``in1``
+
+* ``in2``
+
+* ``in3``
+
+* ``in4``
+
+* ``in5``
+
+* ``in5`` (``Boolean``)
+
+``in6(value, in1, in2, in3, in4, in5, in6)``: returns ``in6``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``value``
+
+* ``in1``
+
+* ``in2``
+
+* ``in3``
+
+* ``in4``
+
+* ``in5``
+
+* ``in6``
+
+* ``in6`` (``Boolean``)
+
+``in7(value, in1, in2, in3, in4, in5, in6, in7)``: returns ``in7``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``value``
+
+* ``in1``
+
+* ``in2``
+
+* ``in3``
+
+* ``in4``
+
+* ``in5``
+
+* ``in6``
+
+* ``in7``
+
+* ``in7`` (``Boolean``)
+
+``in8(value, in1, in2, in3, in4, in5, in6, in7, in8)``: returns ``in8``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``value``
+
+* ``in1``
+
+* ``in2``
+
+* ``in3``
+
+* ``in4``
+
+* ``in5``
+
+* ``in6``
+
+* ``in7``
+
+* ``in8``
+
+* ``in8`` (``Boolean``)
+
+``in9(value, in1, in2, in3, in4, in5, in6, in7, in8, in9)``: returns ``in9``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``value``
+
+* ``in1``
+
+* ``in2``
+
+* ``in3``
+
+* ``in4``
+
+* ``in5``
+
+* ``in6``
+
+* ``in7``
+
+* ``in8``
+
+* ``in9``
+
+* ``in9`` (``Boolean``)
+
+``int2bbool(int)``: returns ``int2bbool``
+'''''''''''''''''''''''''''''''''''''''''
+
+* ``int`` (``Integer``) required
+
+* ``int2bbool`` (``Boolean``)
+
+``int2ddouble(int)``: returns ``int2ddouble``
+'''''''''''''''''''''''''''''''''''''''''''''
+
+* ``int`` (``Integer``) required
+
+* ``int2ddouble`` (``Double``)
+
+``interiorPoint(geometry)``: returns ``interiorPoint``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``interiorPoint`` (``Point``)
+
+``interiorRingN(geometry, n)``: returns ``interiorRingN``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``n`` (``Integer``) required
+
+* ``interiorRingN`` (``LinearRing``)
+
+``intersection(geometry1, geometry2)``: returns ``intersection``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry1`` (``Geometry``) required
+
+* ``geometry2`` (``Geometry``) required
+
+* ``intersection`` (``Geometry``)
+
+``intersects(geometry1, geometry2)``: returns ``intersects``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry1`` (``Geometry``) required
+
+* ``geometry2`` (``Geometry``) required
+
+* ``intersects`` (``Boolean``)
+
+``intersects3D(geometry1, geometry2)``: returns ``intersects3D``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry1`` (``Geometry``) required
+
+* ``geometry2`` (``Geometry``) required
+
+* ``intersects3D`` (``Double``)
+
+``isClosed(geometry)``: returns ``isClosed``
+''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``isClosed`` (``Boolean``)
+
+``isCoverage()``: returns ``isCoverage``
+''''''''''''''''''''''''''''''''''''''''
+
+* ``isCoverage`` (``Boolean``)
+
+``isEmpty(geometry)``: returns ``isEmpty``
+''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``isEmpty`` (``Boolean``)
+
+``isLike(string, regex)``: returns ``isLike``
+'''''''''''''''''''''''''''''''''''''''''''''
+
+* ``string`` (``String``) required
+
+* ``regex`` (``String``) required
+
+* ``isLike`` (``Boolean``)
+
+``isNull(object)``: returns ``isNull``
+''''''''''''''''''''''''''''''''''''''
+
+* ``object``
+
+* ``isNull`` (``Boolean``)
+
+``isRing(geometry)``: returns ``isRing``
+''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``isRing`` (``Boolean``)
+
+``isSimple(geometry)``: returns ``isSimple``
+''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``isSimple`` (``Boolean``)
+
+``isValid(geometry)``: returns ``isValid``
+''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``isValid`` (``Boolean``)
+
+``isWithinDistance(geometry1, geometry2, distance)``: returns ``isWithinDistance``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry1`` (``Geometry``) required
+
+* ``geometry2`` (``Geometry``) required
+
+* ``distance`` (``Double``) required
+
+* ``isWithinDistance`` (``Boolean``)
+
+``isWithinDistance3D(geometry1, geometry2, distance)``: returns ``isWithinDistance3D``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry1`` (``Geometry``) required
+
+* ``geometry2`` (``Geometry``) required
+
+* ``distance`` (``Double``) required
+
+* ``isWithinDistance3D`` (``Double``)
+
+``isometric(geometry, extrusion)``: returns ``isometric``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``extrusion`` (``Double``) required
+
+* ``isometric`` (``Geometry``)
+
+``jsonPointer(json, pointer)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``json`` (``String``) required
+
+* ``pointer`` (``String``) required
+
+* ``result``
+
+``lapply(source, expression)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``source`` (``List``) required
+
+* ``expression``
+
+* ``result`` (``List``)
+
+``length(string)``: returns ``length``
+''''''''''''''''''''''''''''''''''''''
+
+* ``string`` (``String``) required
+
+* ``length`` (``Integer``)
+
+``lessEqualThan(a, b)``: returns ``lessEqualThan``
+''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``a`` (``Number``) required
+
+* ``b`` (``Number``) required
+
+* ``lessEqualThan`` (``Boolean``)
+
+``lessThan(a, b)``: returns ``lessThan``
+''''''''''''''''''''''''''''''''''''''''
+
+* ``a`` (``Number``) required
+
+* ``b`` (``Number``) required
+
+* ``lessThan`` (``Boolean``)
+
+``lighten(color, amount, method)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``color`` (``Color``) required
+
+* ``amount`` (``Float``) required
+
+* ``method`` (``Method``) optional
+
+* ``result`` (``Color``)
+
+``list(item)``: returns ``list``
+''''''''''''''''''''''''''''''''
+
+* ``item``
+
+* ``list`` (``List``)
+
+``listMultiply(factor, list)``: returns ``listMultiply``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``factor`` (``Number``) required
+
+* ``list`` (``String``) required
+
+* ``listMultiply`` (``String``)
+
+``litem(source, index)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''''
+
+* ``source`` (``List``) required
+
+* ``index`` (``Integer``) required
+
+* ``result``
+
+``literate(index, times, expression)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``index``
+
+* ``times`` (``Integer``) required
+
+* ``expression``
+
+* ``result`` (``List``)
+
+``log(value)``: returns ``logarithm``
+'''''''''''''''''''''''''''''''''''''
+
+* ``value`` (``Number``) required
+
+* ``logarithm`` (``Double``)
+
+``max(double, double)``: returns ``maxium``
+'''''''''''''''''''''''''''''''''''''''''''
+
+* ``double`` (``Number``) required
+
+* ``double`` (``Number``) required
+
+* ``maxium`` (``Double``)
+
+``max_2(long, long)``: returns ``maximum``
+''''''''''''''''''''''''''''''''''''''''''
+
+* ``long`` (``Number``) required
+
+* ``long`` (``Number``) required
+
+* ``maximum`` (``Long``)
+
+``max_3(float, float)``: returns ``maximum``
+''''''''''''''''''''''''''''''''''''''''''''
+
+* ``float`` (``Number``) required
+
+* ``float`` (``Number``) required
+
+* ``maximum`` (``Float``)
+
+``max_4(int, int)``: returns ``maximum``
+''''''''''''''''''''''''''''''''''''''''
+
+* ``int`` (``Number``) required
+
+* ``int`` (``Number``) required
+
+* ``maximum`` (``Integer``)
+
+``min(double, double)``: returns ``minium``
+'''''''''''''''''''''''''''''''''''''''''''
+
+* ``double`` (``Double``) required
+
+* ``double`` (``Double``) required
+
+* ``minium`` (``Double``)
+
+``min_2(long, long)``: returns ``minium``
+'''''''''''''''''''''''''''''''''''''''''
+
+* ``long`` (``Number``) required
+
+* ``long`` (``Number``) required
+
+* ``minium`` (``Long``)
+
+``min_3(float, float)``: returns ``minium``
+'''''''''''''''''''''''''''''''''''''''''''
+
+* ``float`` (``Number``) required
+
+* ``float`` (``Number``) required
+
+* ``minium`` (``Float``)
+
+``min_4(int, int)``: returns ``minium``
+'''''''''''''''''''''''''''''''''''''''
+
+* ``int`` (``Number``) required
+
+* ``int`` (``Number``) required
+
+* ``minium`` (``Integer``)
+
+``mincircle(geometry)``: returns ``mincircle``
+''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``mincircle`` (``Geometry``)
+
+``minimumdiameter(geometry)``: returns ``minimumdiameter``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``minimumdiameter`` (``Geometry``)
+
+``minrectangle(geometry)``: returns ``minrectangle``
+''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``minrectangle`` (``Geometry``)
+
+``mix(color1, color2, weight)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``color1`` (``Color``) required
+
+* ``color2`` (``Color``) required
+
+* ``weight`` (``Double``) required
+
+* ``result`` (``Color``)
+
+``modulo(dividend, divisor)``: returns ``modulo``
+'''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``dividend`` (``Integer``) required
+
+* ``divisor`` (``Integer``) required
+
+* ``modulo`` (``Integer``)
+
+``not(logicValue)``: returns ``not``
+''''''''''''''''''''''''''''''''''''
+
+* ``logicValue`` (``Boolean``) required
+
+* ``not`` (``Boolean``)
+
+``notEqualTo(a, b)``: returns ``notEqualTo``
+''''''''''''''''''''''''''''''''''''''''''''
+
+* ``a``
+
+* ``b``
+
+* ``notEqualTo`` (``Boolean``)
+
+``numGeometries(geometry)``: returns ``numGeometries``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``numGeometries`` (``Integer``)
+
+``numInteriorRing(geometry)``: returns ``numInteriorRing``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``numInteriorRing`` (``Integer``)
+
+``numPoints(geometry)``: returns ``numPoints``
+''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``numPoints`` (``Integer``)
+
+``numberFormat(format, number, language)``: returns ``numberFormat``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``format`` (``String``) required
+
+* ``number`` (``Number``) required
+
+* ``language`` (``String``) optional
+
+* ``numberFormat`` (``String``)
+
+``numberFormat2(format, number, minus, decimal, separator)``: returns ``numberFormat2``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``format`` (``String``) required
+
+* ``number`` (``Number``) required
+
+* ``minus`` (``String``) required
+
+* ``decimal`` (``String``) required
+
+* ``separator`` (``String``) required
+
+* ``numberFormat2`` (``String``)
+
+``octagonalenvelope(geometry)``: returns ``octagonalenvelope``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``octagonalenvelope`` (``Geometry``)
+
+``offset(geometry, offsetX, offsetY)``: returns ``offset``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``offsetX`` (``Double``) required
+
+* ``offsetY`` (``Double``) required
+
+* ``offset`` (``Geometry``)
+
+``overlaps(geometry1, geometry2)``: returns ``overlaps``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry1`` (``Geometry``) required
+
+* ``geometry2`` (``Geometry``) required
+
+* ``overlaps`` (``Geometry``)
+
+``parseBoolean(string)``: returns ``parseBoolean``
+''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``string`` (``String``) required
+
+* ``parseBoolean`` (``Boolean``)
+
+``parseDouble(string)``: returns ``parseDouble``
+''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``string`` (``String``) required
+
+* ``parseDouble`` (``Double``)
+
+``parseInt(string)``: returns ``parseInt``
+''''''''''''''''''''''''''''''''''''''''''
+
+* ``string`` (``String``) required
+
+* ``parseInt`` (``Integer``)
+
+``parseLong(string)``: returns ``parseLong``
+''''''''''''''''''''''''''''''''''''''''''''
+
+* ``string`` (``String``) required
+
+* ``parseLong`` (``Long``)
+
+``pgNearest(geometry, num_features)``: returns ``pgNearest``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``num_features`` (``Integer``) required
+
+* ``pgNearest`` (``Boolean``)
+
+``pi()``: returns ``pi``
+''''''''''''''''''''''''
+
+* ``pi`` (``Double``)
+
+``pointN(geometry, index)``: returns ``pointN``
+'''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``index`` (``Integer``) required
+
+* ``pointN`` (``Geometry``)
+
+``pow(base, exponent)``: returns ``power``
+''''''''''''''''''''''''''''''''''''''''''
+
+* ``base`` (``Number``) required
+
+* ``exponent`` (``Number``) required
+
+* ``power`` (``Double``)
+
+``property(propertyName)``: returns ``propertyValue``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``propertyName`` (``String``) required
+
+* ``propertyValue``
+
+``random()``: returns ``random``
+''''''''''''''''''''''''''''''''
+
+* ``random`` (``Double``)
+
+``relate(geometry1, geometry2)``: returns ``relate``
+''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry1`` (``Geometry``) required
+
+* ``geometry2`` (``Geometry``) required
+
+* ``relate`` (``String``)
+
+``relatePattern(geometry, geometry, pattern)``: returns ``related``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``geometry`` (``Geometry``) required
+
+* ``pattern`` (``String``) required
+
+* ``related`` (``Boolean``)
+
+``rescaleToPixels(value, defaultUnit, scaleFactor, rescalingMode)``: returns ``rescaleToPixels``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``value`` (``String``) required
+
+* ``defaultUnit`` (``Unit``) required
+
+* ``scaleFactor`` (``Double``) required
+
+* ``rescalingMode`` (``RescalingMode``) optional
+
+* ``rescaleToPixels`` (``String``)
+
+``rint(double)``: returns ``rounded``
+'''''''''''''''''''''''''''''''''''''
+
+* ``double`` (``Number``) required
+
+* ``rounded`` (``Double``)
+
+``round(number)``: returns ``float``
+''''''''''''''''''''''''''''''''''''
+
+* ``number`` (``Number``) required
+
+* ``float`` (``Float``)
+
+``roundDouble(number)``: returns ``rounded``
+''''''''''''''''''''''''''''''''''''''''''''
+
+* ``number`` (``Number``) required
+
+* ``rounded`` (``Double``)
+
+``round_2(number)``: returns ``long``
+'''''''''''''''''''''''''''''''''''''
+
+* ``number`` (``Number``) required
+
+* ``long`` (``Long``)
+
+``saturate(color, amount, method)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``color`` (``Color``) required
+
+* ``amount`` (``Float``) required
+
+* ``method`` (``Method``) optional
+
+* ``result`` (``Color``)
+
+``setCRS(geometry, CRS)``: returns ``setCRS``
+'''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``CRS`` (``String``) required
+
+* ``setCRS`` (``Geometry``)
+
+``shade(color, weight)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''''
+
+* ``color`` (``Color``) required
+
+* ``weight`` (``Double``) required
+
+* ``result`` (``Color``)
+
+``sin(radians)``: returns ``sine``
+''''''''''''''''''''''''''''''''''
+
+* ``radians`` (``Number``) required
+
+* ``sine`` (``Double``)
+
+``size(source)``: returns ``result``
+''''''''''''''''''''''''''''''''''''
+
+* ``source`` (``Collection``) required
+
+* ``result`` (``Integer``)
+
+``spin(color, amount)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''
+
+* ``color`` (``Color``) required
+
+* ``amount`` (``Double``) required
+
+* ``result`` (``Color``)
+
+``sqrt(number)``: returns ``root``
+''''''''''''''''''''''''''''''''''
+
+* ``number`` (``Number``) required
+
+* ``root`` (``Double``)
+
+``startAngle(linestring)``: returns ``degrees``
+'''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``linestring`` (``LineString``) required
+
+* ``degrees`` (``Double``)
+
+``startPoint(linestring)``: returns ``point``
+'''''''''''''''''''''''''''''''''''''''''''''
+
+* ``linestring`` (``LineString``) required
+
+* ``point`` (``Point``)
+
+``strAbbreviate(string, lower, upper, appendTo)``: returns ``string``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``string`` (``String``) required
+
+* ``lower`` (``Integer``) required
+
+* ``upper`` (``Integer``) required
+
+* ``appendTo`` (``String``) required
+
+* ``string`` (``String``)
+
+``strCapitalize(string)``: returns ``string``
+'''''''''''''''''''''''''''''''''''''''''''''
+
+* ``string`` (``String``) required
+
+* ``string`` (``String``)
+
+``strConcat(string1, string2)``: returns ``strConcat``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``string1`` (``String``) required
+
+* ``string2`` (``String``) required
+
+* ``strConcat`` (``String``)
+
+``strDefaultIfBlank(string, default)``: returns ``string``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``string`` (``String``) required
+
+* ``default`` (``String``) required
+
+* ``string`` (``String``)
+
+``strEndsWith(String, postfix)``: returns ``endsWith``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``String`` (``String``) required
+
+* ``postfix`` (``String``) required
+
+* ``endsWith`` (``Boolean``)
+
+``strEqualsIgnoreCase(string, lookup)``: returns ``equals``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``string`` (``String``) required
+
+* ``lookup`` (``String``) required
+
+* ``equals`` (``Boolean``)
+
+``strIndexOf(String, lookup)``: returns ``index``
+'''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``String`` (``String``) required
+
+* ``lookup`` (``String``) required
+
+* ``index`` (``Integer``)
+
+``strLastIndexOf(String, lookup)``: returns ``index``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``String`` (``String``) required
+
+* ``lookup`` (``String``) required
+
+* ``index`` (``Integer``)
+
+``strLength(string)``: returns ``length``
+'''''''''''''''''''''''''''''''''''''''''
+
+* ``string`` (``String``) required
+
+* ``length`` (``Integer``)
+
+``strMatches(string, regex)``: returns ``match``
+''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``string`` (``String``) required
+
+* ``regex`` (``String``) required
+
+* ``match`` (``Boolean``)
+
+``strPosition(string, lookup, method)``: returns ``string``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``string`` (``String``) required
+
+* ``lookup`` (``String``) required
+
+* ``method`` (``String``) required
+
+* ``string`` (``String``)
+
+``strReplace(string, search, replace, all)``: returns ``string``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``string`` (``String``) required
+
+* ``search`` (``String``) required
+
+* ``replace`` (``String``) required
+
+* ``all`` (``Boolean``) required
+
+* ``string`` (``String``)
+
+``strStartsWith(string, prefix)``: returns ``starts with``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``string`` (``String``) required
+
+* ``prefix`` (``String``) required
+
+* ``starts with`` (``Boolean``)
+
+``strStripAccents(string)``: returns ``string``
+'''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``string`` (``String``) required
+
+* ``string`` (``String``)
+
+``strSubstring(string, beginIndex, endIndex)``: returns ``substring``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``string`` (``String``) required
+
+* ``beginIndex`` (``Integer``) required
+
+* ``endIndex`` (``Integer``) required
+
+* ``substring`` (``String``)
+
+``strSubstringStart(string, beginIndex)``: returns ``substring``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``string`` (``String``) required
+
+* ``beginIndex`` (``Integer``) required
+
+* ``substring`` (``String``)
+
+``strToLowerCase(string)``: returns ``lowercase``
+'''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``string`` (``String``) required
+
+* ``lowercase`` (``String``)
+
+``strToUpperCase(string)``: returns ``uppercase``
+'''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``string`` (``String``) required
+
+* ``uppercase`` (``String``)
+
+``strTrim(string)``: returns ``trim``
+'''''''''''''''''''''''''''''''''''''
+
+* ``string`` (``String``) required
+
+* ``trim`` (``String``)
+
+``strTrim2(string, method, character)``: returns ``trim``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``string`` (``String``) required
+
+* ``method`` (``String``) required
+
+* ``character`` (``String``) required
+
+* ``trim`` (``String``)
+
+``strURLEncode(encodeable, formUrlEncode)``: returns ``strURLEncode``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``encodeable`` (``String``) required
+
+* ``formUrlEncode`` (``Boolean``) optional
+
+* ``strURLEncode`` (``String``)
+
+``stringTemplate(input, pattern, template, defaultValue)``: returns ``return``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``input``
+
+* ``pattern``
+
+* ``template``
+
+* ``defaultValue``
+
+* ``return``
+
+``symDifference(geometry, geometry)``: returns ``symetric difference``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``geometry`` (``Geometry``) required
+
+* ``symetric difference`` (``Geometry``)
+
+``tan(radians)``: returns ``tan``
+'''''''''''''''''''''''''''''''''
+
+* ``radians`` (``Number``) required
+
+* ``tan`` (``Double``)
+
+``tint(color, weight)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''
+
+* ``color`` (``Color``) required
+
+* ``weight`` (``Double``) required
+
+* ``result`` (``Color``)
+
+``toDegrees(radians)``: returns ``degrees``
+'''''''''''''''''''''''''''''''''''''''''''
+
+* ``radians`` (``Number``) required
+
+* ``degrees`` (``Double``)
+
+``toRadians(degree)``: returns ``radians``
+''''''''''''''''''''''''''''''''''''''''''
+
+* ``degree`` (``Number``) required
+
+* ``radians`` (``Double``)
+
+``toWKT(geometry)``: returns ``wkt``
+''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``wkt`` (``String``)
+
+``touches(geometry, geometry)``: returns ``touches``
+''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``geometry`` (``Geometry``) required
+
+* ``touches`` (``Boolean``)
+
+``union(geometry, geometry)``: returns ``union``
+''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``geometry`` (``Geometry``) required
+
+* ``union`` (``Geometry``)
+
+``vertices(geometry)``: returns ``vertices``
+''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``vertices`` (``MultiPoint``)
+
+``within(geometry, geometry)``: returns ``within``
+''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``geometry`` (``Geometry``) required
+
+* ``within`` (``Boolean``)
+
+``ProcessFunctionFactory``
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Contains 102 functions.
+
+``AddCoverages(coverageA, coverageB)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``coverageA`` (``GridCoverage2D``) required
+
+* ``coverageB`` (``GridCoverage2D``) required
+
+* ``result`` (``GridCoverage2D``)
+
+``Affine(coverage, scalex, scaley, shearx, sheary, translatex, translatey, nodata, interpolation)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``coverage`` (``GridCoverage2D``) required
+
+* ``scalex`` (``Double``) optional
+
+* ``scaley`` (``Double``) optional
+
+* ``shearx`` (``Double``) optional
+
+* ``sheary`` (``Double``) optional
+
+* ``translatex`` (``Double``) optional
+
+* ``translatey`` (``Double``) optional
+
+* ``nodata`` (``double``)
+
+* ``interpolation`` (``Interpolation``) optional
+
+* ``result`` (``GridCoverage2D``)
+
+``Aggregate(features, aggregationAttribute, function, singlePass, groupByAttributes)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``features`` (``SimpleFeatureCollection``) required
+
+* ``aggregationAttribute`` (``String``) optional
+
+* ``function`` (``AggregationFunction``)
+
+* ``singlePass`` (``Boolean``) required
+
+* ``groupByAttributes`` (``String``)
+
+* ``result`` (``Results``)
+
+``AreaGrid(envelope, width, height)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``envelope`` (``ReferencedEnvelope``) required
+
+* ``width`` (``Integer``) required
+
+* ``height`` (``Integer``) required
+
+* ``result`` (``GridCoverage2D``)
+
+``BandMerge(coverages, roi, transformChoice, index)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``coverages`` (``GridCoverage2D``) required
+
+* ``roi`` (``Geometry``) optional
+
+* ``transformChoice`` (``String``) optional
+
+* ``index`` (``Integer``) optional
+
+* ``result`` (``GridCoverage2D``)
+
+``BandSelect(coverage, SampleDimensions, VisibleSampleDimension)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``coverage`` (``GridCoverage2D``) required
+
+* ``SampleDimensions`` (``int``) required
+
+* ``VisibleSampleDimension`` (``Integer``) optional
+
+* ``result`` (``GridCoverage2D``)
+
+``BarnesSurface(data, valueAttr, dataLimit, scale, convergence, passes, minObservations, maxObservationDistance, noDataValue, pixelsPerCell, queryBuffer, outputBBOX, outputWidth, outputHeight)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``data`` (``SimpleFeatureCollection``) required
+
+* ``valueAttr`` (``String``) required
+
+* ``dataLimit`` (``Integer``) optional
+
+* ``scale`` (``Double``) required
+
+* ``convergence`` (``Double``) optional
+
+* ``passes`` (``Integer``) optional
+
+* ``minObservations`` (``Integer``) optional
+
+* ``maxObservationDistance`` (``Double``) optional
+
+* ``noDataValue`` (``Double``) optional
+
+* ``pixelsPerCell`` (``Integer``) optional
+
+* ``queryBuffer`` (``Double``) optional
+
+* ``outputBBOX`` (``ReferencedEnvelope``) required
+
+* ``outputWidth`` (``Integer``) required
+
+* ``outputHeight`` (``Integer``) required
+
+* ``result`` (``GridCoverage2D``)
+
+``Bounds(features)``: returns ``bounds``
+''''''''''''''''''''''''''''''''''''''''
+
+* ``features`` (``FeatureCollection``) required
+
+* ``bounds`` (``ReferencedEnvelope``)
+
+``BufferFeatureCollection(features, distance, attributeName)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``features`` (``SimpleFeatureCollection``) required
+
+* ``distance`` (``Double``) required
+
+* ``attributeName`` (``String``) optional
+
+* ``result`` (``SimpleFeatureCollection``)
+
+``Centroid(features)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''
+
+* ``features`` (``SimpleFeatureCollection``) required
+
+* ``result`` (``SimpleFeatureCollection``)
+
+``ClassifyByRange(features, classifyOnAttribute, thresholds, outputValues, classifier, classes, include, outputAttribute, outputType)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``features`` (``SimpleFeatureCollection``) required
+
+* ``classifyOnAttribute`` (``String``) required
+
+* ``thresholds`` (``String``)
+
+* ``outputValues`` (``String``)
+
+* ``classifier`` (``String``) optional
+
+* ``classes`` (``Integer``) optional
+
+* ``include`` (``Boolean``) optional
+
+* ``outputAttribute`` (``String``) optional
+
+* ``outputType`` (``String``) optional
+
+* ``result`` (``SimpleFeatureCollection``)
+
+``Clip(features, clip, preserveZ)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``features`` (``SimpleFeatureCollection``) required
+
+* ``clip`` (``Geometry``) required
+
+* ``preserveZ`` (``Boolean``) optional
+
+* ``result`` (``SimpleFeatureCollection``)
+
+``CollectGeometries(features)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``features`` (``FeatureCollection``) required
+
+* ``result`` (``GeometryCollection``)
+
+``Contour(data, band, levels, interval, simplify, smooth, roi)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``data`` (``GridCoverage2D``) required
+
+* ``band`` (``Integer``) optional
+
+* ``levels`` (``double``)
+
+* ``interval`` (``Double``) optional
+
+* ``simplify`` (``Boolean``) optional
+
+* ``smooth`` (``Boolean``) optional
+
+* ``roi`` (``Geometry``) optional
+
+* ``result`` (``SimpleFeatureCollection``)
+
+``ConvolveCoverage(data, kernel, kernelRadius, kernelWidth, kernelHeight)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``data`` (``GridCoverage2D``) required
+
+* ``kernel`` (``KernelJAI``) optional
+
+* ``kernelRadius`` (``Integer``) optional
+
+* ``kernelWidth`` (``Integer``) optional
+
+* ``kernelHeight`` (``Integer``) optional
+
+* ``result`` (``GridCoverage2D``)
+
+``Count(features)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''
+
+* ``features`` (``SimpleFeatureCollection``) required
+
+* ``result`` (``Number``)
+
+``CoverageClassStats(coverage, stats, band, classes, method, noData)``: returns ``results``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``coverage`` (``GridCoverage2D``) required
+
+* ``stats`` (``Statistic``)
+
+* ``band`` (``Integer``) optional
+
+* ``classes`` (``Integer``) optional
+
+* ``method`` (``ClassificationMethod``) optional
+
+* ``noData`` (``Double``) optional
+
+* ``results`` (``Results``)
+
+``CropCoverage(coverage, cropShape)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``coverage`` (``GridCoverage2D``) required
+
+* ``cropShape`` (``Geometry``) required
+
+* ``result`` (``GridCoverage2D``)
+
+``Feature(geometry, crs, typeName)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``crs`` (``CoordinateReferenceSystem``) required
+
+* ``typeName`` (``String``) required
+
+* ``result`` (``SimpleFeatureCollection``)
+
+``FeatureClassStats(features, attribute, stats, classes, method, noData)``: returns ``results``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``features`` (``FeatureCollection``) required
+
+* ``attribute`` (``String``) required
+
+* ``stats`` (``Statistic``)
+
+* ``classes`` (``Integer``) optional
+
+* ``method`` (``ClassificationMethod``) optional
+
+* ``noData`` (``Double``) optional
+
+* ``results`` (``Results``)
+
+``Grid(bounds, width, height, vertexSpacing, mode)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``bounds`` (``ReferencedEnvelope``) required
+
+* ``width`` (``Double``) required
+
+* ``height`` (``Double``) optional
+
+* ``vertexSpacing`` (``Double``) optional
+
+* ``mode`` (``GridMode``) required
+
+* ``result`` (``SimpleFeatureCollection``)
+
+``Heatmap(data, radiusPixels, weightAttr, pixelsPerCell, outputBBOX, outputWidth, outputHeight)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``data`` (``SimpleFeatureCollection``) required
+
+* ``radiusPixels`` (``Integer``) required
+
+* ``weightAttr`` (``String``) optional
+
+* ``pixelsPerCell`` (``Integer``) optional
+
+* ``outputBBOX`` (``ReferencedEnvelope``) required
+
+* ``outputWidth`` (``Integer``) required
+
+* ``outputHeight`` (``Integer``) required
+
+* ``result`` (``GridCoverage2D``)
+
+``InclusionFeatureCollection(first, second)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``first`` (``SimpleFeatureCollection``) required
+
+* ``second`` (``SimpleFeatureCollection``) required
+
+* ``result`` (``SimpleFeatureCollection``)
+
+``IntersectionFeatureCollection(first feature collection, second feature collection, first attributes to retain, second attributes to retain, intersectionMode, percentagesEnabled, areasEnabled)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``first feature collection`` (``SimpleFeatureCollection``) required
+
+* ``second feature collection`` (``SimpleFeatureCollection``) required
+
+* ``first attributes to retain`` (``String``)
+
+* ``second attributes to retain`` (``String``)
+
+* ``intersectionMode`` (``IntersectionMode``) optional
+
+* ``percentagesEnabled`` (``Boolean``) optional
+
+* ``areasEnabled`` (``Boolean``) optional
+
+* ``result`` (``SimpleFeatureCollection``)
+
+``Jiffle(coverage, script, destName, sourceName, outputType)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``coverage`` (``GridCoverage2D``)
+
+* ``script`` (``String``) required
+
+* ``destName`` (``String``) optional
+
+* ``sourceName`` (``String``)
+
+* ``outputType`` (``DataType``) optional
+
+* ``result`` (``GridCoverage2D``)
+
+``LRSGeocode(features, from_measure_attb, to_measure_attb, measure)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``features`` (``FeatureCollection``) required
+
+* ``from_measure_attb`` (``String``) required
+
+* ``to_measure_attb`` (``String``) required
+
+* ``measure`` (``Double``) required
+
+* ``result`` (``FeatureCollection``)
+
+``LRSMeasure(features, from_measure_attb, to_measure_attb, point, crs)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``features`` (``FeatureCollection``) required
+
+* ``from_measure_attb`` (``String``) required
+
+* ``to_measure_attb`` (``String``) required
+
+* ``point`` (``Point``) required
+
+* ``crs`` (``CoordinateReferenceSystem``) optional
+
+* ``result`` (``FeatureCollection``)
+
+``LRSSegment(features, from_measure_attb, to_measure_attb, from_measure, to_measure)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``features`` (``FeatureCollection``) required
+
+* ``from_measure_attb`` (``String``) required
+
+* ``to_measure_attb`` (``String``) required
+
+* ``from_measure`` (``Double``) required
+
+* ``to_measure`` (``Double``) required
+
+* ``result`` (``FeatureCollection``)
+
+``MultiplyCoverages(coverageA, coverageB)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``coverageA`` (``GridCoverage2D``) required
+
+* ``coverageB`` (``GridCoverage2D``) required
+
+* ``result`` (``GridCoverage2D``)
+
+``Nearest(features, point, crs)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``features`` (``FeatureCollection``) required
+
+* ``point`` (``Point``) required
+
+* ``crs`` (``CoordinateReferenceSystem``) optional
+
+* ``result`` (``FeatureCollection``)
+
+``NormalizeCoverage(data)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``data`` (``GridCoverage2D``) required
+
+* ``result`` (``GridCoverage2D``)
+
+``PointBuffers(center, crs, distances, quadrantSegments)``: returns ``buffers``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``center`` (``Point``) required
+
+* ``crs`` (``CoordinateReferenceSystem``) optional
+
+* ``distances`` (``double``)
+
+* ``quadrantSegments`` (``Integer``) optional
+
+* ``buffers`` (``SimpleFeatureCollection``)
+
+``PointStacker(data, cellSize, weightClusterPosition, normalize, preserveLocation, outputBBOX, outputWidth, outputHeight)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``data`` (``SimpleFeatureCollection``) required
+
+* ``cellSize`` (``Integer``) required
+
+* ``weightClusterPosition`` (``Boolean``) required
+
+* ``normalize`` (``Boolean``) required
+
+* ``preserveLocation`` (``PreserveLocation``) optional
+
+* ``outputBBOX`` (``ReferencedEnvelope``) required
+
+* ``outputWidth`` (``Integer``) required
+
+* ``outputHeight`` (``Integer``) required
+
+* ``result`` (``SimpleFeatureCollection``)
+
+``PolyLabeller(polygon, precision)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``polygon`` (``Geometry``) required
+
+* ``precision`` (``Double``) required
+
+* ``result`` (``Geometry``)
+
+``PolygonExtraction(data, band, insideEdges, roi, nodata, ranges)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``data`` (``GridCoverage2D``) required
+
+* ``band`` (``Integer``) optional
+
+* ``insideEdges`` (``Boolean``) optional
+
+* ``roi`` (``Geometry``) optional
+
+* ``nodata`` (``Number``)
+
+* ``ranges`` (``Range``)
+
+* ``result`` (``SimpleFeatureCollection``)
+
+``Query(features, attribute, filter)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``features`` (``SimpleFeatureCollection``) required
+
+* ``attribute`` (``String``)
+
+* ``filter`` (``Filter``) optional
+
+* ``result`` (``SimpleFeatureCollection``)
+
+``RangeLookup(coverage, band, ranges, outputPixelValues, noData)``: returns ``reclassified``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``coverage`` (``GridCoverage2D``) required
+
+* ``band`` (``Integer``) optional
+
+* ``ranges`` (``Range``)
+
+* ``outputPixelValues`` (``int``)
+
+* ``noData`` (``Double``) optional
+
+* ``reclassified`` (``GridCoverage2D``)
+
+``RasterAsPointCollection(data, targetCRS, scale, interpolation, emisphere)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``data`` (``GridCoverage2D``) required
+
+* ``targetCRS`` (``CoordinateReferenceSystem``) optional
+
+* ``scale`` (``Float``) optional
+
+* ``interpolation`` (``Interpolation``) optional
+
+* ``emisphere`` (``Boolean``) optional
+
+* ``result`` (``SimpleFeatureCollection``)
+
+``RasterZonalStatistics(data, band, zones, classification)``: returns ``statistics``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``data`` (``GridCoverage2D``) required
+
+* ``band`` (``Integer``) optional
+
+* ``zones`` (``SimpleFeatureCollection``) required
+
+* ``classification`` (``GridCoverage2D``) optional
+
+* ``statistics`` (``SimpleFeatureCollection``)
+
+``RasterZonalStatistics2(source, bands, zones, classifier, nodata, mask, useROIAccessor, roi, statistics, minbounds, maxbounds, numbins, rangeData, localStats)``: returns ``zonal statistics``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``source`` (``GridCoverage2D``) required
+
+* ``bands`` (``int``)
+
+* ``zones`` (``Object``)
+
+* ``classifier`` (``GridCoverage2D``) optional
+
+* ``nodata`` (``Range``) required
+
+* ``mask`` (``Geometry``) required
+
+* ``useROIAccessor`` (``Boolean``) required
+
+* ``roi`` (``Polygon``) required
+
+* ``statistics`` (``StatsType``)
+
+* ``minbounds`` (``double``)
+
+* ``maxbounds`` (``double``)
+
+* ``numbins`` (``int``)
+
+* ``rangeData`` (``Object``)
+
+* ``localStats`` (``Boolean``) required
+
+* ``zonal statistics`` (``List``)
+
+``RectangularClip(features, clip, preserveZ)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``features`` (``SimpleFeatureCollection``) required
+
+* ``clip`` (``ReferencedEnvelope``) required
+
+* ``preserveZ`` (``Boolean``) optional
+
+* ``result`` (``SimpleFeatureCollection``)
+
+``Reproject(features, forcedCRS, targetCRS)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``features`` (``SimpleFeatureCollection``) required
+
+* ``forcedCRS`` (``CoordinateReferenceSystem``) optional
+
+* ``targetCRS`` (``CoordinateReferenceSystem``) optional
+
+* ``result`` (``SimpleFeatureCollection``)
+
+``ScaleCoverage(coverage, xScale, yScale, xTranslate, yTranslate, interpolation)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``coverage`` (``GridCoverage2D``) required
+
+* ``xScale`` (``Double``) required
+
+* ``yScale`` (``Double``) required
+
+* ``xTranslate`` (``Double``) required
+
+* ``yTranslate`` (``Double``) required
+
+* ``interpolation`` (``Interpolation``) optional
+
+* ``result`` (``GridCoverage2D``)
+
+``Simplify(features, distance, preserveTopology)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``features`` (``SimpleFeatureCollection``) required
+
+* ``distance`` (``Double``) required
+
+* ``preserveTopology`` (``Boolean``) required
+
+* ``result`` (``SimpleFeatureCollection``)
+
+``Snap(features, point, crs)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``features`` (``FeatureCollection``) required
+
+* ``point`` (``Point``) required
+
+* ``crs`` (``CoordinateReferenceSystem``) optional
+
+* ``result`` (``FeatureCollection``)
+
+``StyleCoverage(coverage, style)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``coverage`` (``GridCoverage2D``) required
+
+* ``style`` (``Style``) required
+
+* ``result`` (``GridCoverage2D``)
+
+``Transform(features, transform)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``features`` (``SimpleFeatureCollection``) required
+
+* ``transform`` (``String``) required
+
+* ``result`` (``SimpleFeatureCollection``)
+
+``TransparencyFill(data)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``data`` (``GridCoverage2D``) required
+
+* ``result`` (``GridCoverage2D``)
+
+``UnionFeatureCollection(first, second)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``first`` (``SimpleFeatureCollection``) required
+
+* ``second`` (``SimpleFeatureCollection``) required
+
+* ``result`` (``SimpleFeatureCollection``)
+
+``Unique(features, attribute)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``features`` (``SimpleFeatureCollection``) required
+
+* ``attribute`` (``String``) required
+
+* ``result`` (``SimpleFeatureCollection``)
+
+``VectorToRaster(features, rasterWidth, rasterHeight, title, attribute, bounds)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``features`` (``SimpleFeatureCollection``) required
+
+* ``rasterWidth`` (``Integer``) required
+
+* ``rasterHeight`` (``Integer``) required
+
+* ``title`` (``String``) optional
+
+* ``attribute`` (``String``) required
+
+* ``bounds`` (``Envelope``) optional
+
+* ``result`` (``GridCoverage2D``)
+
+``VectorZonalStatistics(data, dataAttribute, zones)``: returns ``statistics``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``data`` (``SimpleFeatureCollection``) required
+
+* ``dataAttribute`` (``String``) required
+
+* ``zones`` (``SimpleFeatureCollection``) required
+
+* ``statistics`` (``SimpleFeatureCollection``)
+
+``area(geom)``: returns ``result``
+''''''''''''''''''''''''''''''''''
+
+* ``geom`` (``Geometry``) required
+
+* ``result`` (``double``)
+
+``boundary(geom)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''
+
+* ``geom`` (``Geometry``) required
+
+* ``result`` (``Geometry``)
+
+``buffer(geom, distance, quadrantSegments, capStyle)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geom`` (``Geometry``) required
+
+* ``distance`` (``Double``) required
+
+* ``quadrantSegments`` (``Integer``) optional
+
+* ``capStyle`` (``BufferCapStyle``) optional
+
+* ``result`` (``Geometry``)
+
+``centroid(geom)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''
+
+* ``geom`` (``Geometry``) required
+
+* ``result`` (``Geometry``)
+
+``contains(a, b)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''
+
+* ``a`` (``Geometry``) required
+
+* ``b`` (``Geometry``) required
+
+* ``result`` (``boolean``)
+
+``convexHull(geom)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''
+
+* ``geom`` (``Geometry``) required
+
+* ``result`` (``Geometry``)
+
+``crosses(a, b)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''
+
+* ``a`` (``Geometry``) required
+
+* ``b`` (``Geometry``) required
+
+* ``result`` (``boolean``)
+
+``densify(geom, distance)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geom`` (``Geometry``) required
+
+* ``distance`` (``Double``) required
+
+* ``result`` (``Geometry``)
+
+``difference(a, b)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''
+
+* ``a`` (``Geometry``) required
+
+* ``b`` (``Geometry``) required
+
+* ``result`` (``Geometry``)
+
+``dimension(geom)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''
+
+* ``geom`` (``Geometry``) required
+
+* ``result`` (``int``)
+
+``disjoint(a, b)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''
+
+* ``a`` (``Geometry``) required
+
+* ``b`` (``Geometry``) required
+
+* ``result`` (``boolean``)
+
+``distance(a, b)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''
+
+* ``a`` (``Geometry``) required
+
+* ``b`` (``Geometry``) required
+
+* ``result`` (``double``)
+
+``endPoint(geom)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''
+
+* ``geom`` (``LineString``) required
+
+* ``result`` (``Point``)
+
+``envelope(geom)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''
+
+* ``geom`` (``Geometry``) required
+
+* ``result`` (``Geometry``)
+
+``equalsExact(a, b)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''
+
+* ``a`` (``Geometry``) required
+
+* ``b`` (``Geometry``) required
+
+* ``result`` (``boolean``)
+
+``equalsExactTolerance(a, b, tolerance)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``a`` (``Geometry``) required
+
+* ``b`` (``Geometry``) required
+
+* ``tolerance`` (``Double``) required
+
+* ``result`` (``boolean``)
+
+``exteriorRing(geom)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''
+
+* ``geom`` (``Polygon``) required
+
+* ``result`` (``Geometry``)
+
+``geometryType(geom)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''
+
+* ``geom`` (``Geometry``) required
+
+* ``result`` (``String``)
+
+``getGeometryN(geom, index)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geom`` (``GeometryCollection``) required
+
+* ``index`` (``Integer``) required
+
+* ``result`` (``Geometry``)
+
+``getX(geom)``: returns ``result``
+''''''''''''''''''''''''''''''''''
+
+* ``geom`` (``Point``) required
+
+* ``result`` (``double``)
+
+``getY(geom)``: returns ``result``
+''''''''''''''''''''''''''''''''''
+
+* ``geom`` (``Point``) required
+
+* ``result`` (``double``)
+
+``interiorPoint(geom)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''
+
+* ``geom`` (``Geometry``) required
+
+* ``result`` (``Geometry``)
+
+``interiorRingN(geom, index)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geom`` (``Polygon``) required
+
+* ``index`` (``Integer``) required
+
+* ``result`` (``Geometry``)
+
+``intersection(a, b)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''
+
+* ``a`` (``Geometry``) required
+
+* ``b`` (``Geometry``) required
+
+* ``result`` (``Geometry``)
+
+``intersects(a, b)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''
+
+* ``a`` (``Geometry``) required
+
+* ``b`` (``Geometry``) required
+
+* ``result`` (``boolean``)
+
+``isClosed(geom)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''
+
+* ``geom`` (``LineString``) required
+
+* ``result`` (``boolean``)
+
+``isEmpty(geom)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''
+
+* ``geom`` (``Geometry``) required
+
+* ``result`` (``boolean``)
+
+``isRing(geom)``: returns ``result``
+''''''''''''''''''''''''''''''''''''
+
+* ``geom`` (``LineString``) required
+
+* ``result`` (``boolean``)
+
+``isSimple(geom)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''
+
+* ``geom`` (``Geometry``) required
+
+* ``result`` (``boolean``)
+
+``isValid(geom)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''
+
+* ``geom`` (``Geometry``) required
+
+* ``result`` (``boolean``)
+
+``isWithinDistance(a, b, distance)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``a`` (``Geometry``) required
+
+* ``b`` (``Geometry``) required
+
+* ``distance`` (``Double``) required
+
+* ``result`` (``boolean``)
+
+``length(geom)``: returns ``result``
+''''''''''''''''''''''''''''''''''''
+
+* ``geom`` (``Geometry``) required
+
+* ``result`` (``double``)
+
+``numGeometries(geom)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''
+
+* ``geom`` (``Geometry``) required
+
+* ``result`` (``int``)
+
+``numInteriorRing(geom)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geom`` (``Polygon``) required
+
+* ``result`` (``int``)
+
+``numPoints(geom)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''
+
+* ``geom`` (``Geometry``) required
+
+* ``result`` (``int``)
+
+``octagonalEnvelope(geom)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geom`` (``Geometry``) required
+
+* ``result`` (``Geometry``)
+
+``overlaps(a, b)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''
+
+* ``a`` (``Geometry``) required
+
+* ``b`` (``Geometry``) required
+
+* ``result`` (``boolean``)
+
+``parameter(argumentName, values)``: returns ``parameterMap``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``argumentName`` (``String``) required
+
+* ``values`` (``Object``)
+
+* ``parameterMap`` (``Map``)
+
+``pointN(geom, index)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''
+
+* ``geom`` (``LineString``) required
+
+* ``index`` (``Integer``) required
+
+* ``result`` (``Point``)
+
+``polygonize(geom)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''
+
+* ``geom`` (``Geometry``) required
+
+* ``result`` (``Geometry``)
+
+``relate(a, b)``: returns ``result``
+''''''''''''''''''''''''''''''''''''
+
+* ``a`` (``Geometry``) required
+
+* ``b`` (``Geometry``) required
+
+* ``result`` (``String``)
+
+``relatePattern(a, b, Relate pattern)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``a`` (``Geometry``) required
+
+* ``b`` (``Geometry``) required
+
+* ``Relate pattern`` (``String``) required
+
+* ``result`` (``boolean``)
+
+``reproject(geometry, sourceCRS, targetCRS)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geometry`` (``Geometry``) required
+
+* ``sourceCRS`` (``CoordinateReferenceSystem``) optional
+
+* ``targetCRS`` (``CoordinateReferenceSystem``) optional
+
+* ``result`` (``Geometry``)
+
+``simplify(geom, distance)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geom`` (``Geometry``) required
+
+* ``distance`` (``Double``) required
+
+* ``result`` (``Geometry``)
+
+``splitPolygon(polygon, line)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``polygon`` (``Geometry``) required
+
+* ``line`` (``LineString``) required
+
+* ``result`` (``Geometry``)
+
+``startPoint(geom)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''
+
+* ``geom`` (``LineString``) required
+
+* ``result`` (``Point``)
+
+``symDifference(a, b)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''
+
+* ``a`` (``Geometry``) required
+
+* ``b`` (``Geometry``) required
+
+* ``result`` (``Geometry``)
+
+``touches(a, b)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''
+
+* ``a`` (``Geometry``) required
+
+* ``b`` (``Geometry``) required
+
+* ``result`` (``boolean``)
+
+``union(geom)``: returns ``result``
+'''''''''''''''''''''''''''''''''''
+
+* ``geom`` (``Geometry``):  min=2 max=unbounded
+
+* ``result`` (``Geometry``)
+
+``within(a, b)``: returns ``result``
+''''''''''''''''''''''''''''''''''''
+
+* ``a`` (``Geometry``) required
+
+* ``b`` (``Geometry``) required
+
+* ``result`` (``boolean``)
+
+``PolygonLabelFunctionFactory``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Contains 1 functions.
 
-labelPoint(polygon, tolerance): labelPoint
-''''''''''''''''''''''''''''''''''''''''''
+``labelPoint(polygon, tolerance)``: returns ``labelPoint``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-* polygon: Geometry 1:1 required
+* ``polygon`` (``Geometry``) required
 
-* tolerance: double 1:1 required
+* ``tolerance`` (``double``) required
 
-* labelPoint: Point 1:1 required
+* ``labelPoint`` (``Point``)
 

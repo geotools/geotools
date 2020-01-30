@@ -59,6 +59,7 @@ public class ArcGISRestDataStoreTest {
     public static String TYPENAME3 = "Airports_3";
     public static String TYPENAME4 = "Principal Bicycle Network";
     public static String TYPENAME5 = "OS_WalkableCatchment_400m_SP";
+    public static String TYPENAME6 = "LGAProfiles2014Beta_2";
 
     private ArcGISRestDataStore dataStore;
 
@@ -140,6 +141,91 @@ public class ArcGISRestDataStoreTest {
         } catch (IOException e) {
             assertTrue(e.getMessage().contains("400 Cannot perform query"));
         }
+    }
+
+    @Test
+    public void testVictoadsOpenData() throws Exception {
+
+        PowerMockito.mockStatic(HttpClients.class);
+        PowerMockito.when(HttpClients.createDefault()).thenReturn(clientMock);
+        PowerMockito.whenNew(HttpGet.class)
+                .withNoArguments()
+                .thenReturn(getMock)
+                .thenReturn(getMock);
+        when(clientMock.execute(getMock)).thenReturn(responseMock).thenReturn(responseMock);
+        when(responseMock.getStatusLine())
+                .thenReturn(responseMockStatusLine)
+                .thenReturn(responseMockStatusLine);
+        when(responseMockStatusLine.getStatusCode())
+                .thenReturn(HttpStatus.SC_OK)
+                .thenReturn(HttpStatus.SC_OK);
+        when(responseMock.getEntity())
+                .thenReturn(responseMockEntity)
+                .thenReturn(responseMockEntity);
+        when(responseMockEntity.getContent())
+                .thenReturn(
+                        ArcGISRestDataStoreFactoryTest.readJSONAsStream("test-data/catalog.json"))
+                .thenReturn(
+                        ArcGISRestDataStoreFactoryTest.readJSONAsStream("test-data/error.json"));
+
+        PowerMockito.mockStatic(HttpClients.class);
+        PowerMockito.when(HttpClients.createDefault()).thenReturn(clientMock);
+        PowerMockito.whenNew(HttpGet.class)
+                .withNoArguments()
+                .thenReturn(getMock)
+                .thenReturn(getMock)
+                .thenReturn(getMock)
+                .thenReturn(getMock)
+                .thenReturn(getMock)
+                .thenReturn(getMock)
+                .thenReturn(getMock);
+        when(responseMockStatusLine.getStatusCode())
+                .thenReturn(HttpStatus.SC_OK)
+                .thenReturn(HttpStatus.SC_BAD_REQUEST)
+                .thenReturn(HttpStatus.SC_OK)
+                .thenReturn(HttpStatus.SC_OK)
+                .thenReturn(HttpStatus.SC_OK)
+                .thenReturn(HttpStatus.SC_OK)
+                .thenReturn(HttpStatus.SC_OK);
+        when(responseMockEntity.getContent())
+                .thenReturn(
+                        ArcGISRestDataStoreFactoryTest.readJSONAsStream(
+                                "test-data/wsServiceInDistribution.json"))
+                .thenReturn(ArcGISRestDataStoreFactoryTest.readJSONAsStream("test-data/error.json"))
+                .thenReturn(
+                        ArcGISRestDataStoreFactoryTest.readJSONAsStream(
+                                "test-data/lgaDataset.json"))
+                .thenReturn(
+                        ArcGISRestDataStoreFactoryTest.readJSONAsStream(
+                                "test-data/lgaDataset2.json"))
+                .thenReturn(
+                        ArcGISRestDataStoreFactoryTest.readJSONAsStream(
+                                "test-data/lgaDataset.json"))
+                .thenReturn(
+                        ArcGISRestDataStoreFactoryTest.readJSONAsStream(
+                                "test-data/lgaDataset2.json"));
+
+        this.dataStore =
+                (ArcGISRestDataStore)
+                        ArcGISRestDataStoreFactoryTest.createDefaultOpenDataTestDataStore();
+        List<Name> names = this.dataStore.createTypeNames();
+
+        assertEquals(2, names.size());
+        assertEquals(TYPENAME1, names.get(0).getLocalPart());
+        assertEquals(ArcGISRestDataStoreFactoryTest.NAMESPACE, names.get(0).getNamespaceURI());
+
+        FeatureSource<SimpleFeatureType, SimpleFeature> src =
+                this.dataStore.createFeatureSource(
+                        this.dataStore.getEntry(
+                                new NameImpl(ArcGISRestDataStoreFactoryTest.NAMESPACE, TYPENAME1)));
+        src.getSchema();
+        assertTrue(src instanceof ArcGISRestFeatureSource);
+        src =
+                this.dataStore.createFeatureSource(
+                        this.dataStore.getEntry(
+                                new NameImpl(ArcGISRestDataStoreFactoryTest.NAMESPACE, TYPENAME6)));
+        src.getSchema();
+        assertTrue(src instanceof ArcGISRestFeatureSource);
     }
 
     @Test(expected = UnsupportedImplementationException.class)

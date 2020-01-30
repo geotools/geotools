@@ -47,8 +47,8 @@ The naming convention for these tests is to name them as "OnlineTest".
 
 Examples:
 
-* PostgisDataStoreAPIOnlineTest.java
-* WMS1_0_0_OnlineTest.java
+  * PostgisDataStoreAPIOnlineTest.java
+  * WMS1_0_0_OnlineTest.java
 
 1. To execute online tests during a build, the online profiles is used::
    
@@ -61,8 +61,8 @@ Examples:
    * ``~/.geotools/db2.properties.example``
    * ``~/.geotools/wps.properties.example``
 
-4. Rename one of the files to not end with "example" (i.e. rename to postgis.properties)
-5. edit the file to fill in the connection parameters for the server you are testing against, and save.
+4. Rename one of the files to not end with "example" (i.e. rename to ``postgis.properties``)
+5. Edit the file to fill in the connection parameters for the server you are testing against, and save.
 6. You can now run the online test against your server
    
    * Note many of the database tests are good and create a table, perform a test, and then remove the table when finished.

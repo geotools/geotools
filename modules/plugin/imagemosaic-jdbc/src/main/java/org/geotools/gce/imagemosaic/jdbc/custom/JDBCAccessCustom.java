@@ -19,12 +19,8 @@ package org.geotools.gce.imagemosaic.jdbc.custom;
 
 import java.awt.Rectangle;
 import java.io.IOException;
-import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -123,71 +119,71 @@ public abstract class JDBCAccessCustom implements JDBCAccess {
             throw new RuntimeException(e);
         }
     }
+    //
+    //    /**
+    //     * closePreparedStatement
+    //     *
+    //     * @param stmt PreparedStatement Object passed to be closed
+    //     */
+    //    protected void closePreparedStmt(PreparedStatement stmt) {
+    //        try {
+    //
+    //            if (stmt != null) {
+    //                stmt.close();
+    //            }
+    //        } catch (SQLException e) {
+    //            throw new RuntimeException(e);
+    //        }
+    //    }
 
-    /**
-     * closePreparedStatement
-     *
-     * @param stmt PreparedStatement Object passed to be closed
-     */
-    protected void closePreparedStmt(PreparedStatement stmt) {
-        try {
-
-            if (stmt != null) {
-                stmt.close();
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * closeCallableStatement
-     *
-     * @param stmt CallableStatement Object passed to be closed
-     */
-    protected void closeCallableStmt(CallableStatement stmt) {
-        try {
-
-            if (stmt != null) {
-                stmt.close();
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * closeStmt
-     *
-     * @param stmt Statement Object passed to be closed
-     */
-    protected void closeStmt(Statement stmt) {
-
-        try {
-
-            if (stmt != null) {
-                stmt.close();
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * closeResultSet
-     *
-     * @param rs ResultSet Object passed to be closed
-     */
-    protected void closeResultSet(ResultSet rs) {
-        try {
-
-            if (rs != null) {
-                rs.close();
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    //    /**
+    //     * closeCallableStatement
+    //     *
+    //     * @param stmt CallableStatement Object passed to be closed
+    //     */
+    //    protected void closeCallableStmt(CallableStatement stmt) {
+    //        try {
+    //
+    //            if (stmt != null) {
+    //                stmt.close();
+    //            }
+    //        } catch (SQLException e) {
+    //            throw new RuntimeException(e);
+    //        }
+    //    }
+    //
+    //    /**
+    //     * closeStmt
+    //     *
+    //     * @param stmt Statement Object passed to be closed
+    //     */
+    //    protected void closeStmt(Statement stmt) {
+    //
+    //        try {
+    //
+    //            if (stmt != null) {
+    //                stmt.close();
+    //            }
+    //        } catch (SQLException e) {
+    //            throw new RuntimeException(e);
+    //        }
+    //    }
+    //
+    //    /**
+    //     * closeResultSet
+    //     *
+    //     * @param rs ResultSet Object passed to be closed
+    //     */
+    //    protected void closeResultSet(ResultSet rs) {
+    //        try {
+    //
+    //            if (rs != null) {
+    //                rs.close();
+    //            }
+    //        } catch (SQLException e) {
+    //            throw new RuntimeException(e);
+    //        }
+    //    }
 
     /**
      * getCRS

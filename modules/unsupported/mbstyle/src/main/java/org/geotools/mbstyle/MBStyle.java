@@ -29,6 +29,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.mbstyle.layer.BackgroundMBLayer;
 import org.geotools.mbstyle.layer.MBLayer;
+import org.geotools.mbstyle.layer.SymbolMBLayer;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.parse.MBObjectStops;
@@ -70,6 +71,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  */
 public class MBStyle {
 
+    private static final int DEFAULT_LABEL_PRIORITY = 1000;
     /**
      * JSON document being wrapped by this class.
      *
@@ -134,8 +136,10 @@ public class MBStyle {
     public List<MBLayer> layers() {
         JSONArray layers = parse.getJSONArray(json, "layers");
         List<MBLayer> layersList = new ArrayList<>();
+        int labelPriority = 0;
         for (Object obj : layers) {
             if (obj instanceof JSONObject) {
+                MBLayer mbLayer = null;
                 if (((JSONObject) obj).containsKey("ref")) {
                     String refLayer = ((JSONObject) obj).get("ref").toString();
                     JSONObject refObject = new JSONObject();
@@ -159,13 +163,17 @@ public class MBStyle {
                             ((JSONObject) obj).put("paint", refObject.get("paint"));
                         }
 
-                        MBLayer layer = MBLayer.create((JSONObject) obj);
-                        layersList.add(layer);
+                        mbLayer = MBLayer.create((JSONObject) obj);
                     }
                 } else {
-                    MBLayer layer = MBLayer.create((JSONObject) obj);
-                    layersList.add(layer);
+                    mbLayer = MBLayer.create((JSONObject) obj);
                 }
+                // adjust label priority so that the labels of the last layer are painted first
+                if (mbLayer instanceof SymbolMBLayer) {
+                    ((SymbolMBLayer) mbLayer)
+                            .setLabelPriority(labelPriority += DEFAULT_LABEL_PRIORITY);
+                }
+                layersList.add(mbLayer);
             } else {
                 throw new MBFormatException("Unexpected layer definition " + obj);
             }
@@ -362,23 +370,22 @@ public class MBStyle {
                     layerMaxZoom == Integer.MAX_VALUE
                             ? null
                             : MBObjectStops.zoomLevelToScaleDenominator(
-                                    (long) Math.min(25, layerMaxZoom));
+                                    Math.min(25d, layerMaxZoom));
             Double layerMaxScaleDenominator =
                     layerMinZoom == Integer.MIN_VALUE
                             ? null
                             : MBObjectStops.zoomLevelToScaleDenominator(
-                                    (long) Math.max(-25, layerMinZoom));
+                                    Math.max(-25d, layerMinZoom));
 
             if (layer.visibility()) {
                 // check for property and zoom functions, if true we will have a layer for each one
-                // that
-                // becomes a feature type style.
-                if (mbObjectStops.ls.zoomStops || mbObjectStops.ls.zoomPropertyStops) {
-                    List<Long> stopLevels = mbObjectStops.stops;
+                // that becomes a feature type style.
+                if (mbObjectStops.ls.zoomPropertyStops) {
+                    List<Double> stopLevels = mbObjectStops.stops;
                     int i = 0;
                     for (MBLayer l : mbObjectStops.layersForStop) {
-                        long s = stopLevels.get(i);
-                        long[] rangeForStopLevel =
+                        double s = stopLevels.get(i);
+                        double[] rangeForStopLevel =
                                 mbObjectStops.getRangeForStop(s, mbObjectStops.ranges);
                         Double maxScaleDenominator =
                                 MBObjectStops.zoomLevelToScaleDenominator(rangeForStopLevel[0]);

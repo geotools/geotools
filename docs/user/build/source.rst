@@ -4,7 +4,7 @@ Source Code
 The GeoTools source code is organized into the following structure:
 
 ======================== =========================================================================
-``build/``               java projects that help with our build process
+``build/``               Java projects that help with our build process
 ``docs/``                documentation and website source in rich structured text
 ``modules/library/``     the core library allowing your application to be spatial
 ``modules/extensions/``  extensions built on top of the library that do useful things
@@ -52,11 +52,12 @@ Please just check out the code and have fun. If you are interested in getting co
      
      C:\java>
 
-#. Checkout geotools using git (a new directory "geotools" will be created)::
+#. Checkout GeoTools using git (a new directory :file:`geotools` will be created)::
      
      C:\java> git clone git://github.com/geotools/geotools.git
 
-#. This will create a geotools directory that contains the source code for this project
+#. This will create a file:`geotools` directory that contains the source code
+for this project
 
 Notes:
 
@@ -74,4 +75,7 @@ Notes:
   
     http://www.sbf5.com/~cduan/technical/git/
 
-* Although links to various IDE interfaces will be made available, no GUI will substitute for an understanding of the underlying git versioning model, and how the system is actually doing work.
+* Although links to various IDE interfaces will be made available, no GUI will 
+  substitute for an understanding of the underlying git versioning model, and how
+  the system is actually doing work.
+

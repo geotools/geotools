@@ -16,7 +16,14 @@
  */
 package org.geotools.mbstyle.transform;
 
-import static org.junit.Assert.*;
+import static org.geotools.styling.TextSymbolizer.CONFLICT_RESOLUTION_KEY;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.hasEntry;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.*;
 import java.io.File;
@@ -34,11 +41,40 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.CategorizeFunction;
 import org.geotools.filter.function.FilterFunction_isometric;
 import org.geotools.filter.function.FilterFunction_offset;
+import org.geotools.filter.text.cql2.CQL;
+import org.geotools.filter.text.cql2.CQLException;
+import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.MapboxTestUtils;
-import org.geotools.mbstyle.layer.*;
+import org.geotools.mbstyle.function.FontAlternativesFunction;
+import org.geotools.mbstyle.function.MapBoxFontBaseNameFunction;
+import org.geotools.mbstyle.layer.BackgroundMBLayer;
+import org.geotools.mbstyle.layer.CircleMBLayer;
+import org.geotools.mbstyle.layer.FillExtrusionMBLayer;
+import org.geotools.mbstyle.layer.FillMBLayer;
+import org.geotools.mbstyle.layer.LineMBLayer;
+import org.geotools.mbstyle.layer.MBLayer;
+import org.geotools.mbstyle.layer.RasterMBLayer;
+import org.geotools.mbstyle.layer.SymbolMBLayer;
 import org.geotools.mbstyle.parse.MBObjectParser;
-import org.geotools.styling.*;
+import org.geotools.styling.AnchorPoint;
+import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.Graphic;
+import org.geotools.styling.LinePlacement;
+import org.geotools.styling.LineSymbolizer;
+import org.geotools.styling.Mark;
+import org.geotools.styling.PointPlacement;
+import org.geotools.styling.PointSymbolizer;
+import org.geotools.styling.PolygonSymbolizer;
+import org.geotools.styling.RasterSymbolizer;
+import org.geotools.styling.Rule;
+import org.geotools.styling.SLD;
+import org.geotools.styling.Style;
+import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.styling.Symbolizer;
+import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.TextSymbolizer2;
+import org.geotools.styling.TextSymbolizerImpl;
 import org.geotools.xml.styling.SLDTransformer;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -238,7 +274,7 @@ public class StyleTransformTest {
         assertEquals(
                 Integer.valueOf(4), lsym.getPerpendicularOffset().evaluate(null, Integer.class));
 
-        List<Integer> expectedDashes = Arrays.asList(50, 50);
+        List<Integer> expectedDashes = Arrays.asList(50, 50); // 5 times 10, the line width
         assertEquals(expectedDashes.size(), lsym.getStroke().dashArray().size());
         for (int i = 0; i < expectedDashes.size(); i++) {
             Integer n = (Integer) lsym.getStroke().dashArray().get(i).evaluate(null, Integer.class);
@@ -276,6 +312,45 @@ public class StyleTransformTest {
                 Integer.valueOf(10), lsym.getStroke().getWidth().evaluate(null, Integer.class));
         assertEquals(
                 Integer.valueOf(-5), lsym.getPerpendicularOffset().evaluate(null, Integer.class));
+    }
+
+    @Test
+    public void testLineGapStopWidth()
+            throws IOException, ParseException, TransformerException, CQLException {
+        JSONObject jsonObject = parseTestStyle("lineStyleGapStopsTest.json");
+
+        // Find the LineMBLayer and assert it contains the correct FeatureTypeStyle.
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        List<MBLayer> layers = mbStyle.layers("test-source");
+        assertEquals(1, layers.size());
+        assertTrue(layers.get(0) instanceof LineMBLayer);
+        LineMBLayer mbLine = (LineMBLayer) layers.get(0);
+
+        StyledLayerDescriptor sld = mbStyle.transform();
+        List<FeatureTypeStyle> fts = MapboxTestUtils.getStyle(sld, 0).featureTypeStyles();
+        assertEquals(fts.size(), 1);
+
+        // first and only fts
+        assertEquals(1, fts.get(0).rules().size());
+        Rule r0 = fts.get(0).rules().get(0);
+        assertEquals(2, r0.symbolizers().size());
+        LineSymbolizer s_0_0 = (LineSymbolizer) r0.symbolizers().get(0);
+        assertEquals(
+                Integer.valueOf(10), s_0_0.getStroke().getWidth().evaluate(null, Integer.class));
+        Expression exected_po_0_0 =
+                CQL.toExpression(
+                        "8 - (Interpolate(zoomLevel(env('wms_scale_denominator'), 'EPSG:3857'), 12, 0, 20, 6, "
+                                + "'numeric') + 10) / 2");
+        assertEquals(exected_po_0_0, s_0_0.getPerpendicularOffset());
+
+        LineSymbolizer s_0_1 = (LineSymbolizer) r0.symbolizers().get(1);
+        assertEquals(
+                Integer.valueOf(10), s_0_1.getStroke().getWidth().evaluate(null, Integer.class));
+        Expression exected_po_0_1 =
+                CQL.toExpression(
+                        "8 + (Interpolate(zoomLevel(env('wms_scale_denominator'), 'EPSG:3857'), 12, 0, 20, 6, "
+                                + "'numeric') + 10) / 2");
+        assertEquals(exected_po_0_1, s_0_1.getPerpendicularOffset());
     }
 
     @Test
@@ -522,30 +597,35 @@ public class StyleTransformTest {
         assertTrue(symbolizer instanceof TextSymbolizer);
         TextSymbolizer tsym = (TextSymbolizer) symbolizer;
 
-        assertEquals(1, tsym.fonts().size());
-        assertEquals(2, tsym.fonts().get(0).getFamily().size());
+        assertEquals(2, tsym.fonts().size());
+        List<Expression> family0 = tsym.fonts().get(0).getFamily();
+        assertEquals(1, family0.size());
+        List<Expression> family1 = tsym.fonts().get(1).getFamily();
+        assertEquals(1, family1.size());
 
-        assertEquals("Bitstream Vera Sans", tsym.fonts().get(0).getFamily().get(0).toString());
-        assertEquals("Other Test Font", tsym.fonts().get(0).getFamily().get(1).toString());
+        assertEquals(
+                ff.function("fontAlternatives", ff.literal("Bitstream Vera Sans")), family0.get(0));
+        assertEquals(
+                ff.function("fontAlternatives", ff.literal("Other Test Font")), family1.get(0));
     }
 
-    /**
-     * MapBox symbol-avoid-edges defaults to false, If true, the symbols will not cross tile edges
-     * to avoid mutual collisions. This concept is represented by using the Partials option in
-     * GeoTools. The partials options instructs the renderer to render labels that cross the map
-     * extent, which are normally not painted since there is no guarantee that a map put on the side
-     * of the current one (tiled rendering) will contain the other half of the label. By enabling
-     * “partials” the style editor takes responsibility for the other half being there (maybe
-     * because the label points have been placed by hand and are assured not to conflict with each
-     * other, at all zoom levels).
-     *
-     * <p>Based upon the above if symbol-avoid-edges is true we do not need to add the partials
-     * option as the renderer will do this by default. But if symbol-avoid-edges is missing or set
-     * to false, then we do need to add the partials option set to true.
-     *
-     * @throws IOException
-     * @throws ParseException
-     */
+    @Test
+    public void testSymbolTextAndIcon() throws IOException, ParseException {
+        JSONObject jsonObject = parseTestStyle("symbolTextAndIconTest.json");
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        List<MBLayer> layers = mbStyle.layers("test-source");
+        List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
+        Rule r = fts.get(0).rules().get(0);
+        // only one symbolizer
+        List<Symbolizer> symbolizers = r.symbolizers();
+        assertEquals(1, symbolizers.size());
+        TextSymbolizer2 ts = (TextSymbolizer2) symbolizers.get(0);
+        assertEquals("false", ts.getOptions().get("partials"));
+        assertEquals("INDEPENDENT", ts.getOptions().get(TextSymbolizer.GRAPHIC_PLACEMENT_KEY));
+        assertEquals("false", ts.getOptions().get(PointSymbolizer.FALLBACK_ON_DEFAULT_MARK));
+        assertNotNull(ts.getGraphic());
+    }
+
     @Test
     public void testSymbolAvoidEdgesNotSupplied() throws IOException, ParseException {
         JSONObject jsonObject = parseTestStyle("symbolTextAndIconTest.json");
@@ -559,8 +639,8 @@ public class StyleTransformTest {
         List<MBLayer> layers = mbStyle.layers("test-source");
         List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
         Rule r = fts.get(0).rules().get(0);
-        Symbolizer symbolizer = r.symbolizers().get(1);
-        assertEquals("true", ((TextSymbolizerImpl) symbolizer).getOptions().get("partials"));
+        Symbolizer symbolizer = r.symbolizers().get(0);
+        assertEquals("false", ((TextSymbolizerImpl) symbolizer).getOptions().get("partials"));
     }
 
     @Test
@@ -576,8 +656,8 @@ public class StyleTransformTest {
         List<MBLayer> layers = mbStyle.layers("test-source");
         List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
         Rule r = fts.get(0).rules().get(0);
-        Symbolizer symbolizer = r.symbolizers().get(1);
-        assertEquals("true", ((TextSymbolizerImpl) symbolizer).getOptions().get("partials"));
+        Symbolizer symbolizer = r.symbolizers().get(0);
+        assertEquals("false", ((TextSymbolizerImpl) symbolizer).getOptions().get("partials"));
     }
 
     @Test
@@ -593,8 +673,8 @@ public class StyleTransformTest {
         List<MBLayer> layers = mbStyle.layers("test-source");
         List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
         Rule r = fts.get(0).rules().get(0);
-        Symbolizer symbolizer = r.symbolizers().get(1);
-        assertNull("true", ((TextSymbolizerImpl) symbolizer).getOptions().get("partials"));
+        Symbolizer symbolizer = r.symbolizers().get(0);
+        assertEquals("false", ((TextSymbolizerImpl) symbolizer).getOptions().get("partials"));
     }
 
     @Test
@@ -610,8 +690,9 @@ public class StyleTransformTest {
         List<MBLayer> layers = mbStyle.layers("test-source");
         List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
         Rule r = fts.get(0).rules().get(0);
-        Symbolizer symbolizer = r.symbolizers().get(1);
-        assertEquals("true", symbolizer.getOptions().get("labelObstacle"));
+        Symbolizer symbolizer = r.symbolizers().get(0);
+        // no way to have only partial conflict resolution atm
+        assertEquals("true", symbolizer.getOptions().get(CONFLICT_RESOLUTION_KEY));
     }
 
     @Test
@@ -627,8 +708,9 @@ public class StyleTransformTest {
         List<MBLayer> layers = mbStyle.layers("test-source");
         List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
         Rule r = fts.get(0).rules().get(0);
-        Symbolizer symbolizer = r.symbolizers().get(1);
-        assertEquals("true", ((TextSymbolizerImpl) symbolizer).getOptions().get("labelObstacle"));
+        Symbolizer symbolizer = r.symbolizers().get(0);
+        // no way to have only partial conflict resolution right now
+        assertEquals("true", symbolizer.getOptions().get(CONFLICT_RESOLUTION_KEY));
     }
 
     @Test
@@ -644,8 +726,8 @@ public class StyleTransformTest {
         List<MBLayer> layers = mbStyle.layers("test-source");
         List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
         Rule r = fts.get(0).rules().get(0);
-        Symbolizer symbolizer = r.symbolizers().get(0);
-        assertEquals("true", symbolizer.getOptions().get("labelObstacle"));
+        TextSymbolizer2 symbolizer = (TextSymbolizer2) r.symbolizers().get(0);
+        assertEquals("true", symbolizer.getOptions().get(CONFLICT_RESOLUTION_KEY));
     }
 
     @Test
@@ -707,17 +789,22 @@ public class StyleTransformTest {
         assertEquals(1, fts.get(0).rules().size());
         Rule r = fts.get(0).rules().get(0);
 
-        assertEquals(2, r.symbolizers().size());
-        Symbolizer symbolizer = r.symbolizers().get(1);
+        assertEquals(1, r.symbolizers().size());
+        Symbolizer symbolizer = r.symbolizers().get(0);
         assertTrue(symbolizer instanceof TextSymbolizer);
         TextSymbolizer tsym = (TextSymbolizer) symbolizer;
 
         assertEquals(1, tsym.fonts().size());
         assertEquals(1, tsym.fonts().get(0).getFamily().size());
 
+        FontAlternativesFunction family =
+                (FontAlternativesFunction) tsym.fonts().get(0).getFamily().get(0);
+        MapBoxFontBaseNameFunction familyBaseName =
+                (MapBoxFontBaseNameFunction) (family.getParameters()).get(0);
         assertEquals(
                 "Apple-Chancery",
-                (((CategorizeFunction) tsym.fonts().get(0).getFamily().get(0)).getParameters())
+                ((CategorizeFunction) familyBaseName.getParameters().get(0))
+                        .getParameters()
                         .get(1)
                         .toString());
 
@@ -726,5 +813,102 @@ public class StyleTransformTest {
         //        String xml = styleTransform.transform(sld);
         //        System.out.print(xml);
 
+    }
+
+    @Test
+    public void testTextAnchorStops() throws Exception {
+        JSONObject jsonObject = parseTestStyle("symbolTextAnchorStopsTest.json");
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        StyledLayerDescriptor sld = mbStyle.transform();
+        Style style = MapboxTestUtils.getStyle(sld, 0);
+
+        assertEquals(1, style.featureTypeStyles().size());
+
+        FeatureTypeStyle ft = style.featureTypeStyles().get(0);
+        TextSymbolizer ts = (TextSymbolizer) ft.rules().get(0).symbolizers().get(0);
+        PointPlacement pp = (PointPlacement) ts.getLabelPlacement();
+        AnchorPoint ap = pp.getAnchorPoint();
+        assertEquals(
+                ECQL.toExpression(
+                        "mbAnchor(Categorize(zoomLevel(env('wms_scale_denominator'), 'EPSG:3857'), 'left', 0, 'left', 8, 'center', 'succeeding'), 'x')"),
+                ap.getAnchorPointX());
+        assertEquals(
+                ECQL.toExpression(
+                        "mbAnchor(Categorize(zoomLevel(env('wms_scale_denominator'), 'EPSG:3857'), 'left', 0, 'left', 8, 'center', 'succeeding'), 'y')"),
+                ap.getAnchorPointY());
+    }
+
+    @Test
+    public void testHaloDefaultColorTest() throws Exception {
+        JSONObject jsonObject = parseTestStyle("labelHaloNoColorTest.json");
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        StyledLayerDescriptor sld = mbStyle.transform();
+        Style style = MapboxTestUtils.getStyle(sld, 0);
+        TextSymbolizer ts =
+                (TextSymbolizer)
+                        style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
+        // no halo, the halo color was not specified and it defaults to "fully transparent"
+        assertNull(ts.getHalo());
+    }
+
+    @Test
+    public void testTextOffsetEmsLinePlacement() throws Exception {
+        JSONObject jsonObject =
+                parseTestStyle("symbolStyleSimpleIconAndTextLinePlacementTest.json");
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        StyledLayerDescriptor sld = mbStyle.transform();
+        Style style = MapboxTestUtils.getStyle(sld, 0);
+        TextSymbolizer ts =
+                (TextSymbolizer)
+                        style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
+        LinePlacement lp = (LinePlacement) ts.getLabelPlacement();
+        // text-offset: [0, 0.5] as ems, with text-size set to 20, and opposite y direction
+        assertEquals(-10, lp.getPerpendicularOffset().evaluate(null, Double.class), 0d);
+        // check also the other vendor options
+        assertThat(
+                ts.getOptions(),
+                allOf(
+                        hasEntry("followLine", "true"),
+                        hasEntry("maxAngleDelta", "45.0"),
+                        hasEntry("group", "true"),
+                        hasEntry("labelAllGroup", "true"),
+                        hasEntry("forceLeftToRight", "true")));
+    }
+
+    @Test
+    public void testTextOffsetEmsPointPlacement() throws Exception {
+        JSONObject jsonObject =
+                parseTestStyle("symbolStyleSimpleIconAndTextPointPlacementOffsetTest.json");
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        StyledLayerDescriptor sld = mbStyle.transform();
+        Style style = MapboxTestUtils.getStyle(sld, 0);
+        TextSymbolizer ts =
+                (TextSymbolizer)
+                        style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
+        PointPlacement pp = (PointPlacement) ts.getLabelPlacement();
+        // text-offset: [1, 0.5] as ems, with text-size set to 12, and opposite y direction
+        assertEquals(12, pp.getDisplacement().getDisplacementX().evaluate(null, Double.class), 0d);
+        assertEquals(-6, pp.getDisplacement().getDisplacementY().evaluate(null, Double.class), 0d);
+    }
+
+    @Test
+    public void testSymbolPriorityTest() throws Exception {
+        JSONObject jsonObject = parseTestStyle("symbolPriorityTest.json");
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        StyledLayerDescriptor sld = mbStyle.transform();
+        Style style = MapboxTestUtils.getStyle(sld, 0);
+        List<FeatureTypeStyle> featureTypeStyles = style.featureTypeStyles();
+        TextSymbolizer ts0 = getFirstSymbolizer(featureTypeStyles.get(0));
+        assertEquals(1000, (int) ts0.getPriority().evaluate(null, Integer.class));
+        TextSymbolizer ts1 = getFirstSymbolizer(featureTypeStyles.get(1));
+        assertEquals(2000, (int) ts1.getPriority().evaluate(null, Integer.class));
+        TextSymbolizer ts2 = getFirstSymbolizer(featureTypeStyles.get(2));
+        assertEquals(3000, (int) ts2.getPriority().evaluate(null, Integer.class));
+        TextSymbolizer ts3 = getFirstSymbolizer(featureTypeStyles.get(3));
+        assertEquals(4000, (int) ts3.getPriority().evaluate(null, Integer.class));
+    }
+
+    private <T extends Symbolizer> T getFirstSymbolizer(FeatureTypeStyle fts) {
+        return (T) fts.rules().get(0).symbolizers().get(0);
     }
 }

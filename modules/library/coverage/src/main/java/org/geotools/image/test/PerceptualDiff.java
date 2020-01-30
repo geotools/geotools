@@ -116,15 +116,17 @@ class PerceptualDiff {
         StringBuilder sb = new StringBuilder();
         builder.redirectErrorStream(true);
         Process p = builder.start();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-        String line = null;
-        while ((line = reader.readLine()) != null) {
-            if (sb != null) {
-                sb.append("\n");
-                sb.append(line);
+        try (BufferedReader reader =
+                new BufferedReader(new InputStreamReader(p.getInputStream()))) {
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                if (sb != null) {
+                    sb.append("\n");
+                    sb.append(line);
+                }
             }
+            p.waitFor();
         }
-        p.waitFor();
 
         return sb.toString();
     }

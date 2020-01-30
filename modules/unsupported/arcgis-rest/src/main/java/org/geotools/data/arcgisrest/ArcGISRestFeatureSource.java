@@ -120,12 +120,14 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
                                 ArcGISRestDataStore.inputStreamToString(
                                         this.dataStore.retrieveJSON(
                                                 "GET",
-                                                new URL(ds.getWebService().toString()),
+                                                new URL(
+                                                        ArcGISRestDataStore.getWebServiceEndpoint(
+                                                                ds)),
                                                 ArcGISRestDataStore.DEFAULT_PARAMS)),
                                 Webservice.class);
 
         if (ws == null) {
-            throw new IOException("Type name " + entry.getName() + " not found");
+            throw new IOException(String.format("Type name %s not found", entry.getName()));
         }
 
         // Sets the information about the resource
@@ -136,7 +138,7 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
             // Re-packages the exception to be compatible with method signature
             throw new IOException(e.getMessage(), e.fillInStackTrace());
         }
-        // Extracts the CRS either using WKID or WKT
+        // Exxgtracts the CRS either using WKID or WKT
         try {
             if (ws.getExtent().getSpatialReference().getLatestWkid() != null) {
                 this.resInfo.setCRS(
@@ -194,7 +196,7 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
                             if (clazz == null) {
                                 this.getDataStore()
                                         .getLogger()
-                                        .severe("Type " + fld.getType() + " not found");
+                                        .severe(String.format("Type %s not found", fld.getType()));
                             }
                             builder.add(fld.getName(), clazz);
                         });
@@ -204,13 +206,13 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
         if (clazz == null) {
             this.getDataStore()
                     .getLogger()
-                    .severe("Geometry type " + ws.getGeometryType() + " not found");
+                    .severe(String.format("Geometry type %s not found", ws.getGeometryType()));
         }
 
         builder.add(ArcGISRestDataStore.GEOMETRY_ATTR, clazz);
 
         this.schema = builder.buildFeatureType();
-        this.schema.getUserData().put("serviceUrl", ds.getWebService());
+        this.schema.getUserData().put("serviceUrl", ArcGISRestDataStore.getWebServiceEndpoint(ds));
 
         return this.schema;
     }
@@ -266,7 +268,7 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
                                                     params)),
                                     Count.class);
         } catch (JsonSyntaxException e) {
-            throw new IOException("Error " + e.getMessage());
+            throw new IOException(String.format("Error %s", e.getMessage()));
         }
 
         return cnt == null ? -1 : cnt.getCount();

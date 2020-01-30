@@ -17,6 +17,7 @@
 
 package org.geotools.data.complex;
 
+import static org.geotools.data.util.FeatureStreams.toFeatureStream;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -25,10 +26,14 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.FeatureSource;
@@ -46,6 +51,8 @@ import org.geotools.xsd.SchemaIndex;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.feature.Feature;
+import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.ComplexType;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
@@ -232,6 +239,45 @@ public class GeoSciMLTest extends AppSchemaTestSupport {
         FeatureCollection<FeatureType, Feature> features = source.getFeatures(query);
         assertNotNull(features);
         assertEquals(2, size(features));
+    }
+
+    /**
+     * Checks that declared namespaces are included on FeatureType's userData Map for the complex
+     * features collection.
+     */
+    @Test
+    public void testComplexFeatureNamespaces() throws Exception {
+        final Name typeName = Types.typeName(GSMLNS, "MappedFeature");
+        FeatureSource<FeatureType, Feature> source = mappingDataStore.getFeatureSource(typeName);
+        Query query = new Query();
+        query.setNamespace(new URI(typeName.getNamespaceURI()));
+        query.setTypeName(typeName.getLocalPart());
+        FeatureCollection<FeatureType, Feature> features = source.getFeatures(query);
+        assertNotNull(features);
+        try (final Stream<Feature> featureStream = toFeatureStream(features)) {
+            Optional<Feature> first = featureStream.findFirst();
+            Optional<Map<String, String>> mapOpt =
+                    first.map(Feature::getDescriptor)
+                            .map(AttributeDescriptor::getType)
+                            .map(AttributeType::getUserData)
+                            .map(m -> m.get(Types.DECLARED_NAMESPACES_MAP))
+                            .filter(v -> v instanceof Map)
+                            .map(x -> (Map<String, String>) x);
+            assertTrue(mapOpt.isPresent());
+            final Map<String, String> namespacesMap = mapOpt.get();
+            assertEquals(3, namespacesMap.keySet().size());
+            assertTrue(
+                    getExpectedNamespaces()
+                            .stream()
+                            .allMatch(ns -> namespacesMap.containsValue(ns)));
+        }
+    }
+
+    private List<String> getExpectedNamespaces() {
+        return Arrays.asList(
+                "http://www.w3.org/XML/1998/namespace",
+                "http://www.opengis.net/gml",
+                "http://www.cgi-iugs.org/xml/GeoSciML/2");
     }
 
     private int size(FeatureCollection<FeatureType, Feature> features) {

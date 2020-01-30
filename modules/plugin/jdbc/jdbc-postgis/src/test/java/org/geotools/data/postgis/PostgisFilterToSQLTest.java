@@ -32,6 +32,8 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.PropertyIsEqualTo;
+import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.spatial.BBOX3D;
 import org.opengis.filter.spatial.Intersects;
 import org.opengis.geometry.MismatchedDimensionException;
@@ -59,6 +61,7 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
         ff = CommonFactoryFinder.getFilterFactory2();
         dialect = new PostGISDialect(null);
         filterToSql = new PostgisFilterToSQL(dialect);
+        filterToSql.setFunctionEncodingEnabled(true);
         writer = new StringWriter();
         filterToSql.setWriter(writer);
 
@@ -150,5 +153,69 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
 
         assertEquals(bbox3d, split[0]);
         assertEquals(Filter.INCLUDE, split[1]);
+    }
+
+    @Test
+    public void testEncodeInArrayCapabilities() throws Exception {
+        filterToSql.setFeatureType(testSchema);
+        PropertyIsEqualTo expr =
+                ff.equals(
+                        ff.function("inArray", ff.literal(5), ff.property("testArray")),
+                        ff.literal(true));
+
+        FilterCapabilities caps = filterToSql.getCapabilities();
+        PostPreProcessFilterSplittingVisitor splitter =
+                new PostPreProcessFilterSplittingVisitor(caps, testSchema, null);
+        expr.accept(splitter, null);
+
+        Filter[] split = new Filter[2];
+        split[0] = splitter.getFilterPre();
+        split[1] = splitter.getFilterPost();
+
+        assertEquals(expr, split[0]);
+        assertEquals(Filter.INCLUDE, split[1]);
+    }
+
+    @Test
+    public void testEncodeInArray() throws Exception {
+        filterToSql.setFeatureType(testSchema);
+        PropertyIsEqualTo expr =
+                ff.equals(
+                        ff.function("inArray", ff.literal("5"), ff.property("testArray")),
+                        ff.literal(true));
+
+        filterToSql.encode(expr);
+        String sql = writer.toString().toLowerCase();
+        assertEquals("where 5=any(testarray)", sql);
+    }
+
+    @Test
+    public void testEncodeInArrayWithCast() throws Exception {
+        filterToSql.setFeatureType(testSchema);
+        PropertyIsEqualTo expr =
+                ff.equals(
+                        ff.function("inArray", ff.literal(5), ff.property("testArray")),
+                        ff.literal(true));
+
+        filterToSql.encode(expr);
+        String sql = writer.toString().toLowerCase();
+        assertEquals("where 5::text=any(testarray)", sql);
+    }
+
+    @Test
+    public void testFunctionLike() throws Exception {
+        filterToSql.setFeatureType(testSchema);
+        PropertyIsLike like =
+                ff.like(
+                        ff.function("strToLowerCase", ff.property("testString")),
+                        "a_literal",
+                        "%",
+                        "-",
+                        "\\",
+                        true);
+
+        filterToSql.encode(like);
+        String sql = writer.toString().toLowerCase().trim();
+        assertEquals("where lower(teststring) like 'a_literal'", sql);
     }
 }

@@ -212,28 +212,40 @@ public class SimpleFeaturePropertyAccessorFactory implements PropertyAccessorFac
 
     static class SimpleFeaturePropertyAccessor implements PropertyAccessor {
         public boolean canHandle(Object object, String xpath, Class target) {
-            xpath = stripPrefixIndex(xpath);
+            String stripped = stripPrefixIndex(xpath);
 
             if (object instanceof SimpleFeature) {
-                return ((SimpleFeature) object).getType().indexOf(xpath) >= 0;
+                SimpleFeatureType type = ((SimpleFeature) object).getType();
+                return type.indexOf(xpath) >= 0 || type.indexOf(stripped) >= 0;
             }
 
             if (object instanceof SimpleFeatureType) {
-                return ((SimpleFeatureType) object).indexOf(xpath) >= 0;
+                SimpleFeatureType type = (SimpleFeatureType) object;
+                return type.indexOf(xpath) >= 0 || type.indexOf(stripped) >= 0;
             }
 
             return false;
         }
 
         public Object get(Object object, String xpath, Class target) {
-            xpath = stripPrefixIndex(xpath);
-
             if (object instanceof SimpleFeature) {
-                return ((SimpleFeature) object).getAttribute(xpath);
+                SimpleFeatureType type = ((SimpleFeature) object).getType();
+                if (type.indexOf(xpath) >= 0) {
+                    return ((SimpleFeature) object).getAttribute(xpath);
+                } else {
+                    String stripped = stripPrefixIndex(xpath);
+                    return ((SimpleFeature) object).getAttribute(stripped);
+                }
             }
 
             if (object instanceof SimpleFeatureType) {
-                return ((SimpleFeatureType) object).getDescriptor(xpath);
+                SimpleFeatureType type = (SimpleFeatureType) object;
+                if (type.indexOf(xpath) >= 0) {
+                    return type.getDescriptor(xpath);
+                } else {
+                    String stripped = stripPrefixIndex(xpath);
+                    return type.getDescriptor(stripped);
+                }
             }
 
             return null;

@@ -166,24 +166,24 @@ Adding features can be done in the following manner.:
 
 Hints:
 
-* If addFeatures is really slow you probably forgot to use a Transaction!
+* If ``addFeatures`` is really slow you probably forgot to use a ``Transaction``!
 
-* Got FeatureCollection?
+* Got ``FeatureCollection``?
   
-  The addFeatures method really wants a feature collection, if you have something other than a FeatureCollection there are
-  a couple of DataUtilityMethods around to help.
+  The ``addFeatures`` method really wants a feature collection, if you have something other than a ``FeatureCollection`` there are
+  a couple of ``DataUtilityMethods`` around to help::
   
-  * store.addFeatures( DataUtilities.collection( feature ) );
-  * store.addFeatures( DataUtilities.collection( array ) );
-  * store.addFeatures( DataUtilities.collection( list ) );
-  * store.addFeatures( DataUtilities.collection( set ) );
+   store.addFeatures( DataUtilities.collection( feature ) );
+   store.addFeatures( DataUtilities.collection( array ) );
+   store.addFeatures( DataUtilities.collection( list ) );
+   store.addFeatures( DataUtilities.collection( set ) );
   
   And by a couple I mean they are all named *collection* it is just they are willing to adapt from a range of input.
 
-* Handling of FeatureID
+* Handling of ``FeatureID``
   
   Each feature has an identifier that is intended to be unique in agreement with the WFS specification.
-  For most implementations the FeatureID is assigned when the feature is added
+  For most implementations the ``FeatureID`` is assigned when the feature is added
   (and even more interestingly when it is committed!):
   
   .. literalinclude:: /../src/main/java/org/geotools/data/SimpleFeatureStoreExamples.java
@@ -191,15 +191,15 @@ Hints:
      :start-after: // addFeatureIdExample start
      :end-before: // addFeatureIdExample end
   
-  FeatureID are assigned during the commit process. While we make an attempt to determine an
+  ``FeatureID`` are assigned during the commit process. While we make an attempt to determine an
   appropriate ID prior to commit we ask that you wait until commit() is finished before
   writing down the identifiers of the added content.
   
-  The FeatureID instances returned by addFeatures are updated to reflect the final value
+  The ``FeatureID`` instances returned by ``addFeatures`` are updated to reflect the final value
   provided during commit. If you need to perform this step yourself you can listen for a
   BatchFeatureEvent as shown below.
   
-* FeatureEvents are sent out when adding:
+* ``FeatureEvents`` are sent out when adding:
   
   .. literalinclude:: /../src/main/java/org/geotools/data/SimpleFeatureStoreExamples.java
      :language: java
@@ -208,12 +208,12 @@ Hints:
   
   The BatchFeatureEvent sent out during commit contains the final set of identifiers
   
-* Handling of FeatureID Yourself
+* Handling of ``FeatureID`` Yourself
   
-  Recently a few DataStore implementations (JDBCNG and Property) added support for a "Hint" allowing
-  you to define your own FeatureID::
+  Recently a few ``DataStore`` implementations (JDBCNG and Property) added support for a "Hint" allowing
+  you to define your own ``FeatureID``::
     
-    if( featureStore.getQueryCapabilities().isUseExisingFIDSupported() ){
+    if( featureStore.getQueryCapabilities().isUseExizingFIDSupported() ){
         // featureStore allows us to create our own featureIDs
         SimpleFeatureBuilder b = new SimpleFeatureBuilder(featureStore.getSchema());
         DefaultFeatureCollection collection = new DefaultFeatureCollection(null,featureStore.getSchema());
@@ -249,7 +249,7 @@ This does of course leave an obvious question:
 
 * Q What was just removed?
   
-  If you would like to report to the user what features were removed you will need to select the FeatureIds out before
+  If you would like to report to the user what features were removed you will need to select the ``FeatureIds`` out before
   they are deleted.
    
    .. literalinclude:: /../src/main/java/org/geotools/data/SimpleFeatureStoreExamples.java
@@ -278,12 +278,12 @@ You can also perform batch changes to the all the data matching a specific filte
       transaction.rollback();
    }
 
-The above code example finds the feature with ID "fred" and changes his "age" to 24.
+The above code example finds the feature with ID ``fred`` and changes his ``age`` to 24.
 
 SimpleFeatureLocking
 ^^^^^^^^^^^^^^^^^^^^
 
-FeatureLocking follows the same model as web feature service locking; a time based lock is requested. The lock is valid
+``FeatureLocking`` follows the same model as web feature service locking; a time based lock is requested. The lock is valid
 until released, or until the duration expires.
 
 
@@ -299,9 +299,10 @@ Acquiring a lock is straight forward::
         
         System.out.println("Features lock with authorisation: "+lock.getAuthorization() );
 
-To unlock the features again we need to use the authorisation provided by lock.getAuthorization() above.
-Usually these authorisations are stored as part of your application (as part of a session),
-and used to configure the GeoTools Transaction before use of SimpleFeatureStore.::
+To unlock the features again we need to use the authorization provided by ``lock.getAuthorization()`` above.
+Usually these authorizations are stored as part of your application (as part of a session),
+and used to configure the GeoTools Transaction before use of
+``SimpleFeatureStore``.::
 
         Transaction t = new DefaultTransaction();
         

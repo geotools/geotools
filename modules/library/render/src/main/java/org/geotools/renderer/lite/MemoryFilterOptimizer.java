@@ -22,9 +22,11 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiFunction;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
+import org.geotools.util.Converters;
 import org.opengis.annotation.Extension;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.And;
 import org.opengis.filter.Filter;
@@ -250,7 +252,8 @@ class MemoryFilterOptimizer extends DuplicatingFilterVisitor {
     /** Executes a straigth index access instead of a lookup by name when possible */
     static class IndexPropertyName implements PropertyName {
 
-        private final SimpleFeatureType schema;
+        private final AttributeDescriptor descriptor;
+        private SimpleFeatureType schema;
         PropertyName delegate;
         int index;
 
@@ -258,6 +261,7 @@ class MemoryFilterOptimizer extends DuplicatingFilterVisitor {
             this.delegate = delegate;
             this.schema = schema;
             this.index = schema.indexOf(delegate.getPropertyName());
+            this.descriptor = schema.getDescriptor(index);
         }
 
         @Override
@@ -271,52 +275,56 @@ class MemoryFilterOptimizer extends DuplicatingFilterVisitor {
         }
 
         @Override
-        @Extension
         public Object evaluate(Object object) {
-            if (object instanceof SimpleFeature
-                    && ((SimpleFeature) object).getFeatureType() == schema) {
-                SimpleFeature sf = (SimpleFeature) object;
-                try {
-                    return sf.getAttribute(index);
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    throw new RuntimeException(
-                            "Could not locate attribute at index "
-                                    + index
-                                    + " on feature "
-                                    + object,
-                            e);
-                }
-            }
-            return delegate.evaluate(object);
+            return this.evaluate(object, null);
         }
 
         @Override
-        @Extension
         public <T> T evaluate(Object object, Class<T> context) {
-            if (object instanceof SimpleFeature
-                    && ((SimpleFeature) object).getFeatureType() == schema) {
+            if (object instanceof SimpleFeature) {
                 SimpleFeature sf = (SimpleFeature) object;
-                try {
-                    Object value = sf.getAttribute(index);
-                    if (context == null || context.isInstance(value)) {
-                        return (T) value;
+                SimpleFeatureType other = sf.getFeatureType();
+                if (other == schema || other.getDescriptor(index).equals(descriptor)) {
+                    // ContentFeatureSource/ContentFeatureCollection return a SimpleFeatureType
+                    // instance that is equal, but not same, to the one associated to the features
+                    // they return. For this optimization to work we need a fast check, so instance
+                    // equality, so we'll switch the object reference if the two schemas are equal,
+                    // but not same. In fact, within the limits of a PropertyName implementation,
+                    // we can do this if the two return the same property at the same index,
+                    // which makes for a even faster comparison when the reference equality fails.
+                    if (other != schema) {
+                        this.schema = other;
                     }
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    throw new RuntimeException(
-                            "Could not locate attribute at index "
-                                    + index
-                                    + " on feature "
-                                    + object,
-                            e);
+
+                    try {
+                        Object value = sf.getAttribute(index);
+                        if (context == null || context.isInstance(value)) {
+                            return (T) value;
+                        } else {
+                            return Converters.convert(value, context);
+                        }
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        throw new RuntimeException(
+                                "Could not locate attribute at index "
+                                        + index
+                                        + " on feature "
+                                        + object,
+                                e);
+                    }
                 }
             }
+
             return delegate.evaluate(object, context);
         }
 
         @Override
-        @Extension
         public Object accept(ExpressionVisitor visitor, Object extraData) {
             return delegate.accept(visitor, extraData);
+        }
+
+        @Override
+        public String toString() {
+            return delegate.toString();
         }
     }
 

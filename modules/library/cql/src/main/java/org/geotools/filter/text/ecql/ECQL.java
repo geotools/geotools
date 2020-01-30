@@ -60,11 +60,11 @@ import org.opengis.filter.expression.Expression;
  *
  *       Filter filter = ECQL.toFilter(<b>"IN ('river.1', 'river.2')"</b>);
  *
- *       Filter filter = ECQL.toFilter(<b>"LENGHT IN (4100001,4100002, 4100003 )"</b>);
+ *       Filter filter = ECQL.toFilter(<b>"LENGTH IN (4100001,4100002, 4100003 )"</b>);
  *
- *       List &lt;Filter&gt; list = ECQL.toFilterList(<b>"LENGHT = 100; NAME like '%omer%'"</b>);
+ *       List &lt;Filter&gt; list = ECQL.toFilterList(<b>"LENGTH = 100; NAME like '%omer%'"</b>);
  *
- *       Expression expression = ECQL.toExpression(<b>"LENGHT + 100"</b>);
+ *       Expression expression = ECQL.toExpression(<b>"LENGTH + 100"</b>);
  *
  * </code>
  * </pre>
@@ -246,7 +246,7 @@ public class ECQL {
      *
      * @param args
      */
-    @SuppressWarnings("PMD.SystemPrintln")
+    @SuppressWarnings({"PMD.SystemPrintln", "PMD.CloseResource"})
     public static final void main(String[] args) {
         System.out.println("ECQL Filters Tester");
         System.out.println("Seperate with \";\" or \"quit\" to finish)");

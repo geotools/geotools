@@ -22,40 +22,42 @@ Connection Parameters
 
 The following connection parameters are available:
 
-+-------------------------+----------------------------------------------------+
-| Param                   | Description                                        |
-+=========================+====================================================+
-| "url"                   | A URL of the file ending in "shp"                  |
-+-------------------------+----------------------------------------------------+
-| "namespace"             | Optional: URI to use for the FeatureType           |
-+-------------------------+----------------------------------------------------+
-| "create spatial index"  | Optional: Use Boolean.TRUE to create an index      |
-+-------------------------+----------------------------------------------------+
-| "charset"               | Optional: Charset used to decode strings in the    |
-|                         | DBF file                                           |
-+-------------------------+----------------------------------------------------+
-| "timezone"              | Optional: Timezone used to parse dates in the      |
-|                         | DBF file                                           |
-+-------------------------+----------------------------------------------------+
-| "memory mapped buffer"  | Optional: memory map the files (not recommended    |
-|                         | for large files under windows, defaults to false)  |
-+------------------------------------------------------------------------------+
-| "cache memory maps"     | Optional: when memory mapping, cache and reuse     |
-|                         | memory maps (defaults to true)                     |
-+------------------------------------------------------------------------------+
-| "create spatial index"  | Optional: if false, won't try to create a spatial  |
-|                         | index if missing (defaults to true)                |
-+------------------------------------------------------------------------------+
-| "enable spatial index"  | Optional: if false, the spatial index won't be used|
-|                         | even if available (and won't be created if missing |
-+-------------------------+----------------------------------------------------+
++--------------------------+---------------------------------------------------+
+| Parameter                | Description                                       |
++==========================+===================================================+
+| ``url``                  | A URL of the file ending in ``shp``               |
++--------------------------+---------------------------------------------------+
+| ``namespace``            | Optional: URI to use for the ``FeatureType``      |
++--------------------------+---------------------------------------------------+
+| ``create spatial index`` | Optional: Use ``Boolean.TRUE`` to create an index |
++--------------------------+---------------------------------------------------+
+| ``charset``              | Optional: ``Charset`` used to decode strings in   |
+|                          | the DBF file                                      |
++--------------------------+---------------------------------------------------+
+| ``timezone``             | Optional: Timezone used to parse dates in the     |
+|                          | DBF file                                          |
++--------------------------+---------------------------------------------------+
+| ``memory mapped buffer`` | Optional: memory map the files (not recommended   |
+|                          | for large files under windows, defaults to false) |
++--------------------------+---------------------------------------------------+
+| ``cache memory maps``    | Optional: when memory mapping, cache and reuse    |
+|                          | memory maps (defaults to true)                    |
++--------------------------+---------------------------------------------------+
+| ``create spatial index`` | Optional: if false, won't try to create a spatial |
+|                          | index if missing (defaults to true)               |
++--------------------------+---------------------------------------------------+
+| ``enable spatial index`` | Optional: if false, the spatial index won't be    |
+|                          | used even if available (and won't be created if   |
+|                          | missing.                                          |
++--------------------------+---------------------------------------------------+
 
 
 
 This information is also in the `javadocs <http://docs.geotools.org/latest/javadocs/org/geotools/data/shapefile/ShapefileDataStoreFactory.html>`_ .
 
-Internally gt-shape provides a two implementations at this time; one for simple access and another that supports the use of an index. The factory will
-be able to sort out which one is appropriate when using DataStoreFinder or FileDataStoreFinder.
+Internally ``gt-shape`` provides a two implementations at this time; one for simple access and another that supports the use of an index. The factory will
+be able to sort out which one is appropriate when using ``DataStoreFinder`` or
+``FileDataStoreFinder``.
 
 Shapefile
 ^^^^^^^^^
@@ -64,28 +66,28 @@ A Shapefile is a common file format which contains numerous features of the same
 
 The classic three files:
 
-* filename.shp: shapes
-* filename.shx: shapes to attributes index
-* filename.dbf: attributes
+* ``filename.shp``: shapes
+* ``filename.shx``: shapes to attributes index
+* ``filename.dbf``: attributes
 
 Basic metadata:
-* filename.prj: projection
+* ``filename.prj``: projection
 
 Open source extensions:
 
-* filename.qix: quadtree spatial index
-* filename.fix: feature id index
-* filename.sld: style-layer-descriptor style xml object
+* ``filename.qix``: quadtree spatial index
+* ``filename.fix``: feature id index
+* ``filename.sld``: Styled Layer Descriptor style XML object
 
 ESRI extensions:
 
-* filename.sbn: attribute index
-* filename.sbx: spatial index
-* filename.lyr: arcmap-only style object
-* filename.avl: arcview style object
-* filename.shp.xml: fgdc metadata
+* ``filename.sbn``: attribute index
+* ``filename.sbx``: spatial index
+* ``filename.lyr``: ArcMap-only style object
+* ``filename.avl``: ArcView style object
+* ``filename.shp.xml``: FGDC metadata
 
-This style of file format (from the dawn of time) is referred to as "sidecar" files, at a minimum filename.shp and its sidecar file filename.dbf are needed. 
+This style of file format (from the dawn of time) is referred to as "sidecar" files, at a minimum file ``filename.shp`` and its sidecar file ``filename.dbf`` are needed. 
 
 Access
 ''''''
@@ -108,15 +110,15 @@ Here is a quick example:
    :start-after: // start create
    :end-before: // end create
 
-The featureType created above was just done quickly, in your application you may wish to use a DefaultFeatureTypeBuilder.
+The ``featureType`` created above was just done quickly, in your application you may wish to use a ``DefaultFeatureTypeBuilder``.
 
 Supports:
 
 * attribute names must be 15 characters or you will get a warning:
-* a single geometry column named "the_geom" (stored in the SHP file)
-  * LineString, MultiLineString - Files occasionally contain invalid lines with one point
-  * Polygon, MultiPolygon 
-  * Point, MultiPoint*
+* a single geometry column named ``the_geom`` (stored in the ``SHP`` file)
+  * ``LineString``, ``MultiLineString`` 
+  * ``Polygon``, ``MultiPolygon`` 
+  * ``Point``, ``MultiPoint``
 
 * "simple" attributes (stored in the DBF file)
   
@@ -124,17 +126,17 @@ Supports:
   * Integer
   * Double 
   * Boolean
-  * Date - TimeStamp interpretation that is just the date
+  * Date - ``TimeStamp`` interpretation that is just the date
 
 Limitations:
 
-* only work with MultiLineStrings, MultiPolygon or MultiPoint. GIS data often travels
+* only work with ``MultiLineStrings``, ``MultiPolygon`` or ``MultiPoint``. GIS data often travels
   in herds - so being restricted to the plural form is not a great limitation.
-* only work with fixed length strings (you will find the FeatureType
+* only work with fixed length strings (you will find the ``FeatureType``
   has a restriction to help you check this, and warnings will be produced if
   your content ends up trimmed).
-* Only supports a single GeometryAttribute
-* Shapefile does not support plain Geometry (i.e. mixed LineString, Point and Polygon all in the same file).
+* Only supports a single ``GeometryAttribute``
+* Shapefile does not support plain Geometry (i.e. mixed ``LineString``, Point and Polygon all in the same file).
 * The shapefile maximum size is limited to 2GB (its sidecar DBF file often to 2GB, some system being able
   to read 4GB or more)
 * Dates do not support the storage of time by default. If you must store time
@@ -174,12 +176,12 @@ You can "force" the projection using the following code::
   CoordinateReferenceSystem crs = CRS.decode("EPSG:4326");
   shape.forceSchemaCRS( crs );
 
-This is only a problem if you did not specify the CoordinateReferenceSystem as part of your FeatureType's GeometryAttribute, or if a prj file has not been provided.
+This is only a problem if you did not specify the ``CoordinateReferenceSystem`` as part of your ``FeatureType``'s ``GeometryAttribute``, or if a ``prj`` file has not been provided.
 
 Character Sets
 ''''''''''''''
 
-If you are working with Arabic, Chinese or Korean character sets you will need to make use of the "charset" connection parameter when setting up your shapefile. The codes used here are the same as documented/defined for the Java Charset class. Indeed you can provide a Charset or if you provide a String it will be converted to a Charset.
+If you are working with Arabic, Chinese or Korean character sets you will need to make use of the ``charset`` connection parameter when setting up your shapefile. The codes used here are the same as documented/defined for the Java ``Charset`` class. Indeed you can provide a ``Charset`` or if you provide a String it will be converted to a ``Charset``.
 
 Thanks to the University of Seoul for providing and testing this functionality.
 
@@ -192,14 +194,14 @@ The store will build dates using the default timezone. If you need to work again
 Reading PRJ
 ^^^^^^^^^^^
 
-You can use the CRS utility class to read the PRJ file if required. The contents of the file are in "well known text"::
+You can use the CRS utility class to read the ``PRJ`` file if required. The contents of the file are in "well known text"::
   
   CoordinateReferenceSystem crs = CRS.parseWKT(wkt);
 
 Reading DBF
 ^^^^^^^^^^^
 
-A shapefile is actually comprised of a core "shp" file and a number of "sidecar" files. One of the sidecar files is a "dbf" file used to record attributes. This is the original DBF file format provided by one of the original grandfather databases "DBase".
+A shapefile is actually comprised of a core ``shp`` file and a number of "sidecar" files. One of the sidecar files is a ``dbf`` file used to record attributes. This is the original DBF file format provided by one of the original grandfather databases "DBase III".
 
 .. literalinclude:: /../src/main/java/org/geotools/data/ShapefileExample.java
    :language: java

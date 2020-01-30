@@ -255,20 +255,18 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
         // //
         if (input instanceof URL) {
             final URL tempURL = ((URL) input);
-            input = tempURL.openConnection().getInputStream();
-            GZIPInputStream gzInStream = null;
             try {
-                gzInStream = new GZIPInputStream((InputStream) input);
-                gzipped = false;
+                input = tempURL.openConnection().getInputStream();
+                inStream = ImageIO.createImageInputStream(new GZIPInputStream((InputStream) input));
+                gzipped = true;
             } catch (Exception e) {
+                // close the stream used to check if the input was zipped
+                ((InputStream) input).close();
+                // use as non gzipped
                 gzipped = false;
+                inStream =
+                        ImageIO.createImageInputStream(tempURL.openConnection().getInputStream());
             }
-            input = tempURL.openConnection().getInputStream();
-            inStream =
-                    gzipped
-                            ? ImageIO.createImageInputStream(gzInStream)
-                            : ImageIO.createImageInputStream(
-                                    tempURL.openConnection().getInputStream());
         } else
         // //
         //
@@ -628,10 +626,8 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
             final File prjFile = new File(prjFileName.toString());
             if (prjFile.exists()) {
                 // it exists then we have top read it
-                PrjFileReader projReader = null;
-                try {
-                    FileChannel channel = new FileInputStream(prjFile).getChannel();
-                    projReader = new PrjFileReader(channel);
+                try (FileChannel channel = new FileInputStream(prjFile).getChannel();
+                        PrjFileReader projReader = new PrjFileReader(channel)) {
                     crs = projReader.getCoordinateReferenceSystem();
                 } catch (FileNotFoundException e) {
                     // warn about the error but proceed, it is not fatal
@@ -645,15 +641,6 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
                     // warn about the error but proceed, it is not fatal
                     // we have at least the default crs to use
                     LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-                } finally {
-                    if (projReader != null)
-                        try {
-                            projReader.close();
-                        } catch (IOException e) {
-                            // warn about the error but proceed, it is not fatal
-                            // we have at least the default crs to use
-                            LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-                        }
                 }
             }
         }

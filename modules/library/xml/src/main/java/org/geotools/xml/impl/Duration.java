@@ -35,7 +35,7 @@ package org.geotools.xml.impl;
 import java.io.Serializable;
 
 /** Implementation of xs:duration. */
-public class Duration implements Serializable, Comparable {
+public class Duration implements Serializable, Comparable<Duration> {
     private static final long serialVersionUID = 3257001055736117303L;
     private final boolean isNegative;
     private final int years, months, days, hours, minutes, seconds;
@@ -336,10 +336,6 @@ public class Duration implements Serializable, Comparable {
             return false;
         }
         return compareTo((Duration) o) == 0;
-    }
-
-    public int compareTo(Object o) {
-        return compareTo((Duration) o);
     }
 
     /** Actual implementation of {@link #compareTo(Object)}. */

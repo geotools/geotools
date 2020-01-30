@@ -19,11 +19,13 @@ package org.geotools.gce.imagemosaic;
 import static org.geotools.gce.imagemosaic.TestUtils.getReader;
 import static org.geotools.gce.imagemosaic.TestUtils.setupTestDirectory;
 import static org.geotools.util.URLs.fileToUrl;
+import static org.hamcrest.CoreMatchers.endsWith;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.arrayWithSize;
+import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.hamcrest.Matchers.hasSize;
 
 import it.geosolutions.imageio.pam.PAMDataset;
@@ -81,6 +83,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 import javax.media.jai.Interpolation;
@@ -184,8 +187,6 @@ import org.opengis.referencing.operation.TransformException;
 public class ImageMosaicReaderTest extends Assert {
 
     private static final String OS_NAME = System.getProperty("os.name");
-
-    private static final boolean IS_MAC = OS_NAME != null && OS_NAME.toUpperCase().contains("MAC");
 
     private static final FilterFactory2 FF = FeatureUtilities.DEFAULT_FILTER_FACTORY;
 
@@ -4939,7 +4940,7 @@ public class ImageMosaicReaderTest extends Assert {
         }
         assertEquals(3, fileGroups.size());
         assertEquals(3, mainFiles.size());
-        assertEquals(IS_MAC ? 12 : 6, supportFiles.size());
+        assertEquals(6, supportFiles.size());
         File dir = URLs.urlToFile(indexURL);
         String[] mainFilesPaths = dir.list(FileFilterUtils.suffixFileFilter(".gif"));
         String[] supportFilesPaths =
@@ -4983,7 +4984,7 @@ public class ImageMosaicReaderTest extends Assert {
         }
         assertEquals(2, fileGroups.size());
         assertEquals(2, mainFiles.size());
-        assertEquals(IS_MAC ? 4 : 2, supportFiles.size());
+        assertEquals(2, supportFiles.size());
         File dir = URLs.urlToFile(overviewURL);
         String[] mainFilesPaths = dir.list(FileFilterUtils.suffixFileFilter(".tif"));
         String[] supportFilesPaths =
@@ -5588,6 +5589,160 @@ public class ImageMosaicReaderTest extends Assert {
             imScaled.getData().getPixel(19, 9, pixelDouble);
             assertArrayEquals(new double[] {1957, 1957, 1957, 0, 0, 10000}, pixelDouble, 0d);
             gc.dispose(true);
+        } finally {
+            reader.dispose();
+        }
+    }
+
+    @Test
+    public void testScaleOffsetEnabledWithBandSelection() throws Exception {
+        URL scaleOffsetURL = TestData.url(this, "scaleOffset");
+        final AbstractGridFormat format = TestUtils.getFormat(scaleOffsetURL);
+
+        final ImageMosaicReader reader = getReader(scaleOffsetURL, format);
+        try {
+            // test one, read with scale/offset rescaling and band selection
+            ParameterValue<Boolean> rescalePixels = AbstractGridFormat.RESCALE_PIXELS.createValue();
+            rescalePixels.setValue(true);
+            ParameterValue<int[]> bands = AbstractGridFormat.BANDS.createValue();
+            bands.setValue(new int[] {5});
+            GridCoverage2D gc = reader.read(new GeneralParameterValue[] {rescalePixels, bands});
+            RenderedImage imScaled = gc.getRenderedImage();
+            assertEquals(DataBuffer.TYPE_DOUBLE, imScaled.getSampleModel().getDataType());
+
+            // ... checking pixels
+            double[] pixelDouble = new double[1];
+            imScaled.getData().getPixel(0, 0, pixelDouble);
+            assertArrayEquals(new double[] {1}, pixelDouble, 0d);
+            imScaled.getData().getPixel(19, 9, pixelDouble);
+            assertArrayEquals(new double[] {1}, pixelDouble, 0d);
+
+            bands.setValue(new int[] {1, 4});
+            gc = reader.read(new GeneralParameterValue[] {rescalePixels, bands});
+            imScaled = gc.getRenderedImage();
+            // ... checking pixels
+            pixelDouble = new double[2];
+            imScaled.getData().getPixel(0, 0, pixelDouble);
+            assertArrayEquals(new double[] {0.116, 0}, pixelDouble, 0d);
+            imScaled.getData().getPixel(19, 9, pixelDouble);
+            assertArrayEquals(new double[] {0.1957, 0}, pixelDouble, 0d);
+            gc.dispose(true);
+        } finally {
+            reader.dispose();
+        }
+    }
+
+    @Test
+    public void testGranuleFileViewSidecars() throws Exception {
+        // copy the data and get the reader
+        File directory = setupTestDirectory(this, this.rgbURL, "rbgFileView");
+        ImageMosaicReader reader = getReader(directory);
+        try {
+            GranuleSource source = reader.getGranules(reader.getGridCoverageNames()[0], true);
+            assertThat(source.getSupportedHints(), hasItem(GranuleSource.FILE_VIEW));
+
+            Query q = new Query();
+            q.setHints(new Hints(GranuleSource.FILE_VIEW, true));
+            SimpleFeatureCollection granules = source.getGranules(q);
+
+            // no location attribute, just the geometry
+            SimpleFeatureType schema = granules.getSchema();
+            assertNull(schema.getDescriptor("location"));
+            assertEquals(Arrays.asList(schema.getGeometryDescriptor()), schema.getDescriptors());
+            // check the count, collect first and last
+            SimpleFeature first = null;
+            SimpleFeature last = null;
+            int count = 0;
+            try (SimpleFeatureIterator it = granules.features()) {
+                while (it.hasNext()) {
+                    count++;
+                    SimpleFeature next = it.next();
+                    if (first == null) first = next;
+                    last = next;
+                }
+            }
+            // all files present
+            assertEquals(24, count);
+
+            FileGroup groupFirst = (FileGroup) first.getUserData().get(GranuleSource.FILES);
+            assertNotNull(groupFirst);
+            assertThat(
+                    groupFirst.getMainFile().getPath().toLowerCase(),
+                    endsWith("global_mosaic_0.png"));
+            System.out.println(groupFirst.getSupportFiles());
+            assertThat(
+                    groupFirst
+                            .getSupportFiles()
+                            .stream()
+                            .map(f -> f.getName())
+                            .collect(Collectors.toList()),
+                    Matchers.containsInAnyOrder(
+                            equalToIgnoringCase("global_mosaic_0.prj"),
+                            equalToIgnoringCase("global_mosaic_0.pgw")));
+
+            FileGroup groupLast = (FileGroup) last.getUserData().get(GranuleSource.FILES);
+            assertNotNull(groupLast);
+            // mind the alphabetic ordering, it's not group_mosaic_22
+            assertThat(
+                    groupLast.getMainFile().getPath().toLowerCase(),
+                    endsWith("global_mosaic_9.png"));
+            assertThat(
+                    groupLast
+                            .getSupportFiles()
+                            .stream()
+                            .map(f -> f.getName())
+                            .collect(Collectors.toList()),
+                    Matchers.containsInAnyOrder(
+                            equalToIgnoringCase("global_mosaic_9.prj"),
+                            equalToIgnoringCase("global_mosaic_9.pgw")));
+        } finally {
+            reader.dispose();
+        }
+    }
+
+    @Test
+    public void testGranuleFileViewPreserveAttributes() throws Exception {
+        // copy the data and get the reader
+        File directory =
+                setupTestDirectory(
+                        this, this.timeAdditionalDomainsURL, "additionalDomainsFileView");
+        ImageMosaicReader reader = getReader(directory);
+        try {
+            GranuleSource source = reader.getGranules(reader.getGridCoverageNames()[0], true);
+            assertThat(source.getSupportedHints(), hasItem(GranuleSource.FILE_VIEW));
+
+            Query q = new Query();
+            q.setHints(new Hints(GranuleSource.FILE_VIEW, true));
+            SimpleFeatureCollection granules = source.getGranules(q);
+
+            // no location attribute, just the geometry
+            SimpleFeatureType schema = granules.getSchema();
+            assertNull(schema.getDescriptor("location"));
+            assertNotNull(schema.getDescriptor("the_geom"));
+            assertNotNull(schema.getDescriptor("time"));
+            assertNotNull(schema.getDescriptor("date"));
+            assertNotNull(schema.getDescriptor("depth"));
+            // check the count, collect first
+            SimpleFeature first = null;
+            int count = 0;
+            try (SimpleFeatureIterator it = granules.features()) {
+                while (it.hasNext()) {
+                    count++;
+                    SimpleFeature next = it.next();
+                    if (first == null) first = next;
+                }
+            }
+            // all files present
+            assertEquals(4, count);
+
+            // check the first feature
+            assertEquals(20, first.getAttribute("depth"));
+            FileGroup groupFirst = (FileGroup) first.getUserData().get(GranuleSource.FILES);
+            assertNotNull(groupFirst);
+            assertThat(
+                    groupFirst.getMainFile().getPath(),
+                    endsWith("NCOM_wattemp_020_20081031T0000000_12.tiff"));
+            assertThat(groupFirst.getSupportFiles(), Matchers.nullValue());
         } finally {
             reader.dispose();
         }

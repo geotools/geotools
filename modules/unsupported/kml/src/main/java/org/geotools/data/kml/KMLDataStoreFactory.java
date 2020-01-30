@@ -27,7 +27,6 @@ import org.geotools.data.DataStoreFactorySpi;
  * DataStore factory that creates {@linkplain org.geotools.data.kml.KMLDataStore}s
  *
  * @author NielsCharlier, Scitus Development
-
  */
 public class KMLDataStoreFactory implements DataStoreFactorySpi {
 
@@ -36,6 +35,7 @@ public class KMLDataStoreFactory implements DataStoreFactorySpi {
     public static final Param NAMESPACE =
             new Param("namespace", String.class, "namespace of datastore", false);
 
+    @Override
     public DataStore createDataStore(Map params) throws IOException {
         File file = fileLookup(params);
         String namespaceURI = (String) NAMESPACE.lookUp(params);
@@ -46,6 +46,7 @@ public class KMLDataStoreFactory implements DataStoreFactorySpi {
         }
     }
 
+    @Override
     public DataStore createNewDataStore(Map params) throws IOException {
         File file = (File) FILE.lookUp(params);
 
@@ -57,10 +58,12 @@ public class KMLDataStoreFactory implements DataStoreFactorySpi {
         return new KMLDataStore(file, namespaceURI);
     }
 
+    @Override
     public String getDisplayName() {
         return "KML Feature Store";
     }
 
+    @Override
     public String getDescription() {
         return "Allows access to KML files containing Feature information (ignores styles)";
     }
@@ -69,6 +72,7 @@ public class KMLDataStoreFactory implements DataStoreFactorySpi {
      * @see #DIRECTORY
      * @see KMLDataStoreFactory#NAMESPACE
      */
+    @Override
     public Param[] getParametersInfo() {
         return new Param[] {FILE, NAMESPACE};
     }
@@ -81,6 +85,7 @@ public class KMLDataStoreFactory implements DataStoreFactorySpi {
      * @return <tt>true</tt> if and only if this factory is available to create DataStores.
      * @task <code>true</code> property datastore is always available
      */
+    @Override
     public boolean isAvailable() {
         return true;
     }
@@ -91,17 +96,29 @@ public class KMLDataStoreFactory implements DataStoreFactorySpi {
      * @param params Connection parameters
      * @return true for connection parameters indicating a directory or property file
      */
+    @Override
     public boolean canProcess(Map params) {
+        File file;
         try {
-            fileLookup(params);
-            return true;
-        } catch (Exception erp) {
-            // can't process, just return false
+            file = (File) FILE.lookUp(params);
+        } catch (IOException e) {
             return false;
         }
+        if (file != null) {
+            String name = file.getName();
+            int index = name.lastIndexOf('.');
+            if (index == -1) {
+                return false;
+            }
+            if (name.substring(index + 1).equalsIgnoreCase("kml")) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /** No implementation hints are provided at this time. */
+    @Override
     public Map getImplementationHints() {
         return java.util.Collections.EMPTY_MAP;
     }

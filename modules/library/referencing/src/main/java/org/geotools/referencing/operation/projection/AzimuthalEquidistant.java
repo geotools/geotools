@@ -29,6 +29,8 @@ import static java.lang.Math.toDegrees;
 import static java.lang.Math.toRadians;
 
 import java.awt.geom.Point2D;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.List;
 import net.sf.geographiclib.Geodesic;
 import net.sf.geographiclib.GeodesicData;
@@ -289,13 +291,27 @@ public class AzimuthalEquidistant {
          * Geodesic calculator used for this projection. Not used and set to null for polar
          * projections.
          */
-        protected final Geodesic geodesic;
+        protected transient Geodesic geodesic;
 
         /**
          * Meridian distance from the equator to the pole. Not used and set to NaN for non-polar
          * projections.
          */
         protected final double Mp;
+
+        /**
+         * Manual override of object deserialization in order to assign transient "geodesic" field.
+         */
+        private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+            in.defaultReadObject();
+            if (mode == Mode.OBLIQUE) {
+                this.geodesic = buildGeodesic();
+            }
+        }
+
+        private Geodesic buildGeodesic() {
+            return new Geodesic(semiMajor, (semiMajor - semiMinor) / semiMajor);
+        }
 
         /**
          * Constructor.
@@ -317,7 +333,7 @@ public class AzimuthalEquidistant {
                 case EQUATORIAL:
                 case OBLIQUE:
                     Mp = Double.NaN;
-                    geodesic = new Geodesic(semiMajor, (semiMajor - semiMinor) / semiMajor);
+                    geodesic = buildGeodesic();
                     break;
                 default:
                     throw new RuntimeException(
@@ -433,6 +449,7 @@ public class AzimuthalEquidistant {
                             // see: http://geotiff.maptools.org/proj_list/azimuthal_equidistant.html
                             new NamedIdentifier(Citations.OGC, "Azimuthal_Equidistant"),
                             new NamedIdentifier(Citations.GEOTIFF, "CT_AzimuthalEquidistant"),
+                            new NamedIdentifier(Citations.GEOTOOLS, "Azimuthal Equidistant"),
                             // there is no EPSG code for this projection
                             // @formatter:on
                         },
@@ -444,6 +461,7 @@ public class AzimuthalEquidistant {
                             LATITUDE_OF_CENTRE,
                             FALSE_EASTING,
                             FALSE_NORTHING,
+                            SCALE_FACTOR
                             // @formatter:on
                         });
 

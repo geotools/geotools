@@ -95,11 +95,15 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
 
     TextSymbolizer symbolizer;
 
+    int fontShrinkSizeMin;
+
     public double getGoodnessOfFit() {
         return goodnessOfFit;
     }
 
     boolean partialsEnabled = false;
+
+    TextSymbolizer.GraphicPlacement graphicPlacement;
 
     /**
      * A value between 0 and 1 representing the portion of the label that overlaps with the geometry
@@ -179,6 +183,7 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
         this.graphicMargin = other.graphicMargin;
         this.textUnderlined = other.textUnderlined;
         this.symbolizer = other.symbolizer;
+        this.fontShrinkSizeMin = other.fontShrinkSizeMin;
     }
 
     /**
@@ -198,6 +203,10 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
     /** The textstyle that is used to label the shape. */
     public TextStyle2D getTextStyle() {
         return textStyle;
+    }
+
+    void setTextStyle(TextStyle2D textStyle) {
+        this.textStyle = textStyle;
     }
 
     /** @see java.lang.Object#hashCode() */
@@ -431,6 +440,22 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
 
     public void setWordSpacing(double wordSpacing) {
         this.wordSpacing = wordSpacing;
+    }
+
+    public int getFontShrinkSizeMin() {
+        return fontShrinkSizeMin;
+    }
+
+    public void setFontShrinkSizeMin(int fontShrinkSize) {
+        this.fontShrinkSizeMin = fontShrinkSize;
+    }
+
+    public TextSymbolizer.GraphicPlacement getGraphicPlacement() {
+        return graphicPlacement == null ? TextSymbolizer.GraphicPlacement.LABEL : graphicPlacement;
+    }
+
+    public void setGraphicPlacement(TextSymbolizer.GraphicPlacement graphicPlacement) {
+        this.graphicPlacement = graphicPlacement;
     }
 
     @Override

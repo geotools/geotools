@@ -41,7 +41,7 @@ import java.util.List;
  * @author jgarnett
  * @since 1.0.0
  */
-public abstract class Whitespace implements Comparable {
+public abstract class Whitespace implements Comparable<Whitespace> {
     /**
      * No normalization is done, the value is not changed
      *
@@ -149,12 +149,8 @@ public abstract class Whitespace implements Comparable {
                 && (((Whitespace) other).ordinal == ordinal);
     }
 
-    public int compareTo(Object other) {
-        if ((other == null) || !(other instanceof Whitespace)) {
-            return -1;
-        }
-
-        int ord = ((Whitespace) other).ordinal;
+    public int compareTo(Whitespace other) {
+        int ord = other.ordinal;
 
         if (ordinal == ord) {
             return 0;

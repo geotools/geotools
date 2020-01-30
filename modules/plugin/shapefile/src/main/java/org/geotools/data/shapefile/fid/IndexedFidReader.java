@@ -222,6 +222,7 @@ public class IndexedFidReader implements FIDReader, FileReader {
         }
     }
 
+    @SuppressWarnings("PMD.CloseResource") // FileChannel managed as a field
     public void goTo(long recno) throws IOException {
         assert recno < count;
         if (readChannel instanceof FileChannel) {
@@ -252,6 +253,7 @@ public class IndexedFidReader implements FIDReader, FileReader {
         }
     }
 
+    @SuppressWarnings("PMD.CloseResource") // FileChannel managed as a field
     public boolean hasNext() throws IOException {
         if (done) {
             return false;

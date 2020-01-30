@@ -1373,6 +1373,9 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
     @Override
     public List<DimensionDescriptor> getDimensionDescriptors(String coverageName)
             throws IOException {
+        if (coverageName == null) {
+            coverageName = defaultName;
+        }
         RasterManager manager = getRasterManager(coverageName);
         return manager.getDimensionDescriptors();
     }

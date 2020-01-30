@@ -337,10 +337,10 @@ public class XMLReader {
             if (fileList != null) {
                 for (int i = 0; i < fileList.length; i++) {
                     if (fileList[i].canWrite() && fileList[i].isFile()) {
-                        FileReader fr = new FileReader(fileList[i]);
-                        PlugInDTO dto = XMLReader.readPlugIn(fr);
-                        r.put(dto.getName(), dto);
-                        fr.close();
+                        try (FileReader fr = new FileReader(fileList[i])) {
+                            PlugInDTO dto = XMLReader.readPlugIn(fr);
+                            r.put(dto.getName(), dto);
+                        }
                     }
                 }
             }

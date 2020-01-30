@@ -17,9 +17,10 @@
 package org.geotools.renderer.label;
 
 import java.awt.geom.Rectangle2D;
-import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.index.ItemVisitor;
 import org.locationtech.jts.index.quadtree.Quadtree;
 
 /**
@@ -47,15 +48,20 @@ public class LabelIndex {
 
         Envelope e = toEnvelope(bounds);
         e.expandBy(distance);
-        List<InterferenceItem> results = index.query(e);
-        if (results.size() == 0) return false;
-        for (Iterator<InterferenceItem> it = results.iterator(); it.hasNext(); ) {
-            InterferenceItem item = it.next();
-            if (item.env.intersects(e)) {
-                return true;
-            }
-        }
-        return false;
+        AtomicBoolean intersectionFound = new AtomicBoolean(false);
+        index.query(
+                e,
+                new ItemVisitor() {
+                    @Override
+                    public void visitItem(Object o) {
+                        if (intersectionFound.get()) return;
+                        InterferenceItem item = (InterferenceItem) o;
+                        if (item.env.intersects(e)) {
+                            intersectionFound.set(true);
+                        }
+                    }
+                });
+        return intersectionFound.get();
     }
 
     /**

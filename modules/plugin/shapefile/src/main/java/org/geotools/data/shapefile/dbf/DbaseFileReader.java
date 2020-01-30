@@ -21,6 +21,7 @@ package org.geotools.data.shapefile.dbf;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
+import java.io.Closeable;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -64,7 +65,8 @@ import org.geotools.util.NIOUtilities;
  *
  * @author Ian Schneider, Andrea Aaime
  */
-public class DbaseFileReader implements FileReader {
+@SuppressWarnings("PMD.CloseResource") // closeables managed as fields
+public class DbaseFileReader implements FileReader, Closeable {
 
     public final class Row {
 
@@ -621,15 +623,15 @@ public class DbaseFileReader implements FileReader {
 
     @SuppressWarnings("PMD.SystemPrintln")
     public static void main(final String[] args) throws Exception {
-        final DbaseFileReader reader =
+        try (final DbaseFileReader reader =
                 new DbaseFileReader(
-                        new ShpFiles(args[0]), false, Charset.forName("ISO-8859-1"), null);
-        System.out.println(reader.getHeader());
-        int r = 0;
-        while (reader.hasNext()) {
-            System.out.println(++r + "," + java.util.Arrays.asList(reader.readEntry()));
+                        new ShpFiles(args[0]), false, Charset.forName("ISO-8859-1"), null)) {
+            System.out.println(reader.getHeader());
+            int r = 0;
+            while (reader.hasNext()) {
+                System.out.println(++r + "," + java.util.Arrays.asList(reader.readEntry()));
+            }
         }
-        reader.close();
     }
 
     public String id() {

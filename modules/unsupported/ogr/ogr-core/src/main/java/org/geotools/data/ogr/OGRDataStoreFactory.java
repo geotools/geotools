@@ -165,8 +165,13 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
         String ogrDriver = (String) OGR_DRIVER_NAME.lookUp(params);
         URI namespace = (URI) NAMESPACEP.lookUp(params);
         OGR ogr = createOGR();
-        OGRDataSourcePool dataSourcePool = new OGRDataSourcePool(ogr, ogrName, ogrDriver, params);
-        ds = new OGRDataStore(ogrName, ogrDriver, namespace, ogr, dataSourcePool);
+        ds =
+                new OGRDataStore(
+                        ogrName,
+                        ogrDriver,
+                        namespace,
+                        ogr,
+                        new OGRDataSourcePool(ogr, ogrName, ogrDriver, params));
 
         return ds;
     }

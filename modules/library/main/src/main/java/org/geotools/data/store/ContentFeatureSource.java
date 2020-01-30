@@ -16,7 +16,7 @@
  */
 package org.geotools.data.store;
 
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.net.URI;
@@ -446,7 +446,10 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         return bounds;
     }
 
-    /** Calculates the bounds of a specified query. Subclasses must implement this method. */
+    /**
+     * Calculates the bounds of a specified query. Subclasses must implement this method. If the
+     * computation is not fast, subclasses can return <code>null</code>.
+     */
     protected abstract ReferencedEnvelope getBoundsInternal(Query query) throws IOException;
 
     /**
@@ -535,7 +538,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
 
     /**
      * Calculates the number of features of a specified query. Subclasses must implement this
-     * method.
+     * method. If the computation is not fast, it's possible to return -1.
      */
     protected abstract int getCountInternal(Query query) throws IOException;
 
@@ -618,7 +621,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
                     (DiffTransactionState) getTransaction().getState(getEntry());
             reader =
                     new DiffFeatureReader<SimpleFeatureType, SimpleFeature>(
-                            reader, state.getDiff());
+                            reader, state.getDiff(), query.getFilter());
         }
 
         // filtering

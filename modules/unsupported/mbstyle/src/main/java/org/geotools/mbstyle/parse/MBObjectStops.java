@@ -18,7 +18,12 @@ package org.geotools.mbstyle.parse;
 
 import static org.geotools.mbstyle.function.ZoomLevelFunction.EPSG_3857_O_SCALE;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.mbstyle.layer.MBLayer;
@@ -38,13 +43,14 @@ import org.json.simple.parser.ParseException;
 public class MBObjectStops {
 
     static final Logger LOGGER = Logging.getLogger(MBObjectStops.class);
+    private static final double ZOOM_EPS = 0.01; // 1% of a zoom level
 
     JSONParser parser = new JSONParser();
     public LayerStops ls = new LayerStops();
-    List<Long> layerZoomLevels;
-    public List<Long> stops = new ArrayList<>();
+    List<Double> layerZoomLevels;
+    public List<Double> stops = new ArrayList<>();
     public List<MBLayer> layersForStop = new ArrayList<>();
-    public List<long[]> ranges = new ArrayList<>();
+    public List<double[]> ranges = new ArrayList<>();
 
     /**
      * Data structure for pre-processing a MBLayer determining whether the layer contains zoom and
@@ -62,7 +68,7 @@ public class MBObjectStops {
             if (layer.getLayout() != null) {
                 ls = getStops(layer.getLayout(), ls);
             }
-            if (ls.zoomStops || ls.zoomPropertyStops) {
+            if (ls.zoomPropertyStops) {
                 stops = getStopLevels(layer);
                 layersForStop = getLayerStyleForStops(layer, stops);
                 ranges = getStopLevelRanges(stops);
@@ -79,8 +85,8 @@ public class MBObjectStops {
      * @param layer
      * @return
      */
-    public long getCurrentStop(MBLayer layer) {
-        long stop = getStop(layer);
+    public double getCurrentStop(MBLayer layer) {
+        double stop = getStop(layer);
 
         return stop;
     }
@@ -91,9 +97,9 @@ public class MBObjectStops {
      * @param mbLayer
      * @return
      */
-    List<Long> getStopLevels(MBLayer mbLayer) {
-        Set<Long> distinctValues = new HashSet<>();
-        List<Long> zoomLevels = new ArrayList<>();
+    List<Double> getStopLevels(MBLayer mbLayer) {
+        Set<Double> distinctValues = new HashSet<>();
+        List<Double> zoomLevels = new ArrayList<>();
 
         layerZoomLevels = new ArrayList<>();
         if (mbLayer.getPaint() != null) {
@@ -118,16 +124,16 @@ public class MBObjectStops {
      * @return
      * @throws ParseException
      */
-    List<MBLayer> getLayerStyleForStops(MBLayer layer, List<Long> layerStops)
+    List<MBLayer> getLayerStyleForStops(MBLayer layer, List<Double> layerStops)
             throws ParseException {
         List<MBLayer> layers = new ArrayList<>();
 
         for (int i = 0; i < layerStops.size(); i++) {
             JSONObject obj = (JSONObject) parser.parse(layer.getJson().toJSONString());
             MBLayer workingLayer = MBLayer.create(obj);
-            Long maxZoom = layerStops.get(layerStops.size() - 1);
-            Long current = layerStops.get(i);
-            long[] range = {0, 0};
+            Double maxZoom = layerStops.get(layerStops.size() - 1);
+            Double current = layerStops.get(i);
+            double[] range = {0, 0};
             if (current < maxZoom) {
                 range[0] = current;
                 range[1] = layerStops.get(i + 1);
@@ -147,12 +153,12 @@ public class MBObjectStops {
      * @param stops
      * @return
      */
-    List<long[]> getStopLevelRanges(List<Long> stops) {
-        List<long[]> ranges = new ArrayList<>();
+    List<double[]> getStopLevelRanges(List<Double> stops) {
+        List<double[]> ranges = new ArrayList<>();
         for (int i = 0; i < stops.size(); i++) {
-            Long maxZoom = stops.get(stops.size() - 1);
-            Long current = stops.get(i);
-            long[] range = {0, 0};
+            Double maxZoom = stops.get(stops.size() - 1);
+            Double current = stops.get(i);
+            double[] range = {0, 0};
             if (current < maxZoom) {
                 range[0] = current;
                 range[1] = stops.get(i + 1);
@@ -176,8 +182,8 @@ public class MBObjectStops {
      * @param ranges
      * @return
      */
-    public long[] getRangeForStop(Long stop, List<long[]> ranges) {
-        long[] rangeForStopLevel = {0, 0};
+    public double[] getRangeForStop(Double stop, List<double[]> ranges) {
+        double[] rangeForStopLevel = {0, 0};
         for (int i = 0; i < ranges.size(); i++) {
             if (ranges.get(i)[0] == stop) {
                 rangeForStopLevel = ranges.get(i);
@@ -195,11 +201,11 @@ public class MBObjectStops {
      * @param zoomLevel The zoom level
      * @return The equivalent scale denominator (at the equator)
      */
-    public static Double zoomLevelToScaleDenominator(Long zoomLevel) {
+    public static Double zoomLevelToScaleDenominator(double zoomLevel) {
         return EPSG_3857_O_SCALE / Math.pow(2, zoomLevel);
     }
 
-    public long getStop(MBLayer layer) {
+    public double getStop(MBLayer layer) {
         return stop(layer);
     }
 
@@ -239,8 +245,8 @@ public class MBObjectStops {
      * @param layer
      * @return
      */
-    long stop(MBLayer layer) {
-        long s = 0;
+    double stop(MBLayer layer) {
+        double s = 0;
         if (layer.getPaint() != null) {
             s = findStop(layer.getPaint(), s);
         }
@@ -257,7 +263,7 @@ public class MBObjectStops {
      * @param range
      * @return
      */
-    MBLayer createLayerStopStyle(MBLayer layer, long[] range) {
+    MBLayer createLayerStopStyle(MBLayer layer, double[] range) {
         if (layer.getPaint() != null) {
             reduceJsonForRange(layer.getPaint(), range);
         }
@@ -275,7 +281,7 @@ public class MBObjectStops {
      * @param layerStop
      * @return
      */
-    long findStop(JSONObject jsonObject, long layerStop) {
+    double findStop(JSONObject jsonObject, double layerStop) {
         Set<?> keySet = jsonObject.keySet();
         Iterator<?> keys = keySet.iterator();
         while (keys.hasNext()) {
@@ -286,8 +292,8 @@ public class MBObjectStops {
                     JSONArray stops = (JSONArray) child.get("stops");
                     for (int i = 0; i < stops.size(); i++) {
                         JSONArray stop = (JSONArray) stops.get(i);
-                        if (stop.get(0) instanceof Long) {
-                            layerStop = (Long) stop.get(0);
+                        if (stop.get(0) instanceof Number) {
+                            layerStop = ((Number) stop.get(0)).doubleValue();
                         }
                     }
                 }
@@ -303,7 +309,7 @@ public class MBObjectStops {
      * @param range
      * @return
      */
-    JSONObject reduceJsonForRange(JSONObject jsonObject, long[] range) {
+    JSONObject reduceJsonForRange(JSONObject jsonObject, double[] range) {
         Set<?> keySet = jsonObject.keySet();
         Iterator<?> keys = keySet.iterator();
         List<String> keyToRemove = new ArrayList<>();
@@ -318,15 +324,17 @@ public class MBObjectStops {
                     for (int i = 0; i < stops.size(); i++) {
                         JSONArray stop = (JSONArray) stops.get(i);
                         if (stop.get(0) instanceof JSONObject) {
-                            if (((Long) ((JSONObject) stop.get(0)).get("zoom")).longValue()
-                                    == range[0]) {
+                            double zoomValue =
+                                    ((Number) ((JSONObject) stop.get(0)).get("zoom")).doubleValue();
+                            if (zoomEquals(zoomValue, range[0])) {
                                 objectsToEdit.add((JSONArray) stops.get(i));
                             } else {
                                 objectsToRemove.add(stops.get(i));
                             }
                         }
-                        if (stop.get(0) instanceof Long) {
-                            if (((Long) stop.get(0)).longValue() == range[0]) {
+                        if (stop.get(0) instanceof Number) {
+                            double zoomValue = ((Number) stop.get(0)).doubleValue();
+                            if (zoomEquals(zoomValue, range[0])) {
                                 objectsToEdit.add((JSONArray) stops.get(i));
                             } else {
                                 objectsToRemove.add(stops.get(i));
@@ -344,8 +352,8 @@ public class MBObjectStops {
                             stops.remove(o);
                             stops.add(stopsArray);
                         }
-                        if (o.get(0) instanceof Long) {
-                            stopsArray.add(0, o.get(0));
+                        if (o.get(0) instanceof Number) {
+                            stopsArray.add(0, ((Number) o.get(0)).doubleValue());
                             stopsArray.add(1, o.get(1));
                             stops.remove(o);
                             stops.add(stopsArray);
@@ -363,6 +371,10 @@ public class MBObjectStops {
         return jsonObject;
     }
 
+    private boolean zoomEquals(double d1, double d2) {
+        return Math.abs(d1 - d2) < ZOOM_EPS;
+    }
+
     /**
      * Iterates over the JSONObject finding the stops and adding them to the list.
      *
@@ -370,7 +382,7 @@ public class MBObjectStops {
      * @param layerZoomLevels
      * @return
      */
-    List<Long> findStopLevels(JSONObject jsonObject, List<Long> layerZoomLevels) {
+    List<Double> findStopLevels(JSONObject jsonObject, List<Double> layerZoomLevels) {
         Set<?> keySet = jsonObject.keySet();
         Iterator<?> keys = keySet.iterator();
         while (keys.hasNext()) {
@@ -381,10 +393,12 @@ public class MBObjectStops {
                     JSONArray stops = (JSONArray) child.get("stops");
                     for (int i = 0; i < stops.size(); i++) {
                         JSONArray stop = (JSONArray) stops.get(i);
-                        if (stop.get(0) instanceof Long) {
-                            layerZoomLevels.add(((Long) stop.get(0)));
+                        if (stop.get(0) instanceof Number) {
+                            layerZoomLevels.add(((Number) stop.get(0)).doubleValue());
                         } else if (stop.get(0) instanceof JSONObject) {
-                            layerZoomLevels.add((Long) ((JSONObject) stop.get(0)).get("zoom"));
+                            layerZoomLevels.add(
+                                    ((Number) ((JSONObject) stop.get(0)).get("zoom"))
+                                            .doubleValue());
                         } else {
                             throw new MBFormatException(
                                     "The \"property\" field missing for stops or invalid zoom.");
@@ -400,7 +414,6 @@ public class MBObjectStops {
         public boolean propertyStops = false;
         public boolean zoomStops = false;
         public boolean zoomPropertyStops = false;
-        public boolean hasStops = false;
 
         public boolean isPropertyStops() {
             return propertyStops;
@@ -424,6 +437,10 @@ public class MBObjectStops {
 
         public void setZoomPropertyStops(boolean zoomPropertyStops) {
             this.zoomPropertyStops = zoomPropertyStops;
+        }
+
+        public boolean hasStops() {
+            return zoomPropertyStops || propertyStops || zoomStops;
         }
     }
 }

@@ -1,4 +1,4 @@
-Mongodb Plugin
+MongoDB Plugin
 --------------
 
 MongoDB is a popular documentation database. This plugin provides read-write
@@ -14,8 +14,9 @@ access to appropriately indexed collections.
 
 To publish a collection:
 
-* A compliant collection must have one or more spatial indexes of type 2dsphere. 
-  Any collection without an indexed field of type 2dsphere will be ignored.
+* A compliant collection must have one or more spatial indexes of type
+  ``2dsphere``. 
+  Any collection without an indexed field of type ``2dsphere`` will be ignored.
 
 * When examining compliant collections, the schema store will be queried for an 
   existing schema by using the collection name as the schema name. If a schema 
@@ -27,16 +28,16 @@ To publish a collection:
   longitude/latitude. Therefore, the geometry attribute descriptor in a schema 
   must specify EPSG:4326 as CRS (always true for inferred schemas).
 
-* A new collection can be created using createSchema method. This should not be 
+* A new collection can be created using ``createSchema`` method. This should not be 
   used to manually define a schema for an existing collection.
 
 Functionality
--------------
+^^^^^^^^^^^^^
 
-The MongoDataStore supports the use of MongoDB as a data store with the 
+The ``MongoDataStore`` supports the use of MongoDB as a data store with the 
 following connection parameters:
 
-* data_store: specifies the MongoDB instance and database to connect to.
+* ``data_store``: specifies the MongoDB instance and database to connect to.
 
   This field requires a MongoDB client URI as specified by the MongoDB Manual. A 
   typical URI will be of the form: :kbd:`mongodb://example.com:27017/database` .
@@ -47,37 +48,42 @@ following connection parameters:
   credentials can be supplied with the MongoDB client URI, in the form:
   :kbd:`mongodb://username:password@example.com:27017/database` .
 
-* schema_store: Designates the storage for inferred and manually defined 
+* ``schema_store``: Designates the storage for inferred and manually defined 
   schemas.
 
-  This field can accept either a mongodb or file URI. The directory will be 
-  created if it does not exist, in which case write permissions will be necessary.
+  This field can accept either a MongoDB , file URI or Http(s) URL (Pointing to single
+  JSON file or a Zip files containing JSON files at root or inside a directory).
+  The directory will be created if it does not exist,in which case write permissions
+  will be necessary. If schema_store is pointing to a Http(s) URL, the files be downloaded
+  inside the working directory. If URL is pointing to a Zip file, it will be downloaded 
+  inside working directory and the extracted directory will be used as Schema Store directory.
+  Downloaded Zip file can have schema JSON files at root or inside a directory.
 
   The database and collection names are optional. If missing, the database name 
-  will default to geotools and the collection name to schemas. The database and 
+  will default to ``geotools`` and the collection name to ``schemas``. The database and 
   collection must be writable using the credentials provided with the URI. Schemas 
   are stored as MongoDB documents or files adhering to the JSON schema format with 
-  the schema "Type Name" (typeName) as the key.
+  the schema "Type Name" (``typeName``) as the key.
 
-* max_objs_schema: specifies the maximun integer number of JSON objects on the collection
+* ``max_objs_schema``: specifies the maximum integer number of JSON objects on the collection
   to be used in the schema generation process.  
   The default value is 1.  This parameter  is not required.
   
-* objs_id_schema: specifies a collection of comma separated Object IDs to be used 
+* ``objs_id_schema``: specifies a collection of comma separated Object IDs to be used 
   in the schema generation process.  It can be used along 
   with ``max_objs_schema`` parameter.  Default is empty.  This parameter is not required.
 
 JSON Schema
------------
+^^^^^^^^^^^
 
 Keep in mind:
 
-* The valid GeoJSON geometry encodings are Point, LineString, 
-  Polygon, MultiPoint, MultiLineString, MultiPolygon. GeoJSON multigeometry 
-  variants are only supported for MongDB version 2.5 and newer.
+* The valid GeoJSON geometry encodings are ``Point``, ``LineString``, 
+  ``Polygon``, ``MultiPoint``, ``MultiLineString``, ``MultiPolygon``. GeoJSON multigeometry 
+  variants are only supported for MongoDB version 2.5 and newer.
 
-* The following Java equivalents of BSON types are valid: String, Double, Long, 
-  Integer, Boolean, Date.
+* The following Java equivalents of BSON types are valid: ``String``, ``Double``, ``Long``, 
+  ``Integer``, ``Boolean``, ``Date``.
 
 For the following GeoJSON feature::
 
@@ -137,10 +143,10 @@ is described using the following schema::
 
 File URI schema stores:
 
-* For the directory-based schema store, edit the JSON document with the typeName 
+* For the directory-based schema store, edit the JSON document with the ``typeName`` 
   requiring modification.
 
-  Schemas are written using createSchema() without indenting, but you can indent the 
+  Schemas are written using ``createSchema()`` without indenting, but you can indent the 
   resulting file for readability if desired.
 
 MongoDB URI schema stores:
@@ -150,40 +156,41 @@ MongoDB URI schema stores:
   JSON schema format.
 
   The JSON files contained in the file schema store are in a format that can be 
-  inserted into a MongoDB schema store (as long as the typeName in the file is 
+  inserted into a MongoDB schema store (as long as the ``typeName`` in the file is 
   unique to the document collection ).
 
   Multiple schemas, or views, can be created for a single MongoDB document 
-  collection by creating a new, unique, typeName and specifying the collection 
-  under the root-level userData object.
+  collection by creating a new, unique, ``typeName`` and specifying the collection 
+  under the root-level ``userData`` object.
 
 Implementation Notes
---------------------
+^^^^^^^^^^^^^^^^^^^^
 
 * Bounding box calculation makes use of a full table scan.
 
 * Multigeometry support requires MongoDB versions 2.5 and newer
 
 * Self-intersecting polygons is a common data problem preventing 
-  MongoDBDataStore from functioning. Please note that self-intersection
+  ``MongoDBDataStore`` from functioning. Please note that self-intersection
   may arise due to the transformation to WGS84 coordinates (which is a necessary 
   preliminary step for importing data into MongoDB), even
-  if they did not exist in the original dataset.
+  if they did not exist in the original data set.
 
-* All 2dsphere indexes and spatial operations assume the WGS84 datum. All 
+* All ``2dsphere`` indexes and spatial operations assume the WGS84 datum. All 
   indexed GeoJSON data stored in a MongoDB document collection is assumed to be 
   referenced with the WGS84 coordinate reference system.
 
-* MongoDB versions tested through 2.4.9 do not support more than one operation 
-  on a spatial index nested in an $or operation (so splitting a query into two 
-  across the dateline will not work).
 
-* Within, Intersects and BBOX filters are implemented with $geoWithin and 
-  $geoIntersects operations. These operations are limited when effected by 
+* Native ``$or`` operator execution is automatically enabled when MongoDB detected version >= 2.6.0; 
+  if you run a lower version, native $or operator execution is automatically disabled.
+
+* ``Within``, ``Intersects`` and ``BBOX`` filters are implemented with
+  ``$geoWithin`` and 
+  ``$geoIntersects`` operations. These operations are limited when effected by 
   geometries spanning a hemisphere (and will use the smaller geometry).
 
 Usage Notes
---------------------
+^^^^^^^^^^^
 
 * Attribute names containing characters other than letters and numbers may cause 
   issues if used in CQL filters and therefore should be enclosed in double quotes 

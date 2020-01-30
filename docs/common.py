@@ -65,7 +65,7 @@ copyright = u'{} Open Source Geospatial Foundation'.format(year)
 # built documents.
 #
 # The full version, including alpha/beta/rc tags.
-release = '22-SNAPSHOT'
+release = '23-SNAPSHOT'
 
 # The short X.Y version.
 version = release
@@ -112,6 +112,11 @@ pygments_style = 'sphinx'
 # A list of ignored prefixes for module index sorting.
 #modindex_common_prefix = []
 
+# Spelling options
+
+spelling_lang='en_US'
+spelling_show_suggestions=True
+spelling_word_list_filename='./spelling/local.dict'
 
 # -- Options for HTML output ---------------------------------------------------
 

@@ -16,6 +16,9 @@
  */
 package org.geotools.filter;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.logging.Logger;
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -120,6 +123,8 @@ public class ExpressionTest extends TestCase {
         ftb.add("testDouble", Double.class);
         ftb.add("testString", String.class);
         ftb.add("testZeroDouble", Double.class);
+        ftb.add("testList", Collection.class);
+        ftb.add("testList2", Collection.class);
         ftb.setName("testSchema");
         testSchema = ftb.buildFeatureType();
 
@@ -146,6 +151,8 @@ public class ExpressionTest extends TestCase {
         // Creates the feature itself
         // FlatFeatureFactory factory = new FlatFeatureFactory(testSchema);
         testFeature = SimpleFeatureBuilder.build(testSchema, attributes, null);
+        // support for properties with lists
+        testFeature.setAttribute("testList", Arrays.asList(1, 2, 3, 4));
         LOGGER.finer("...feature created");
     }
 
@@ -432,5 +439,31 @@ public class ExpressionTest extends TestCase {
         mathTest.setExpression2(testAttribute2);
 
         assertEquals(Double.valueOf(2), mathTest.evaluate(testObject));
+    }
+
+    public void testMathObjectwithLists() throws IllegalFilterException {
+        FilterFactory2 ff = new FilterFactoryImpl();
+        // Multiply Test
+        // list x 2
+        MathExpressionImpl mathExpression =
+                new MultiplyImpl(ff.property("testList"), ff.literal(Integer.valueOf(2)));
+        List scaledList = (List) mathExpression.evaluate(testFeature);
+        // verify multiplication
+        assertEquals(Double.valueOf(2), scaledList.get(0));
+
+        // list - 1
+        mathExpression = new SubtractImpl(ff.property("testList"), ff.literal(Integer.valueOf(1)));
+        List subtractedList = (List) mathExpression.evaluate(testFeature);
+        assertEquals(Double.valueOf(0), subtractedList.get(0));
+
+        // list + 1
+        mathExpression = new AddImpl(ff.literal(Integer.valueOf(1)), ff.property("testList"));
+        List addedList = (List) mathExpression.evaluate(testFeature);
+        assertEquals(Double.valueOf(2), addedList.get(0));
+
+        // list / 2
+        mathExpression = new DivideImpl(ff.literal(Integer.valueOf(2)), ff.property("testList"));
+        List dividedList = (List) mathExpression.evaluate(testFeature);
+        assertEquals(Double.valueOf(0.5), dividedList.get(0));
     }
 }

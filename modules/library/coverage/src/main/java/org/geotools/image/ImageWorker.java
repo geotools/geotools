@@ -1450,6 +1450,7 @@ public class ImageWorker {
                 (background != null && background.length > 0)
                         ? background[0]
                         : ((nodata != null && !nodata.contains(0)) ? 0d : Double.NaN);
+
         // If setting noData to zero, make sure the rescale doesn't map good values to zero.
         double offsetAdjustment = Math.abs(destNodata - 0) < 1E-6 ? 1 : 0;
 
@@ -2257,6 +2258,9 @@ public class ImageWorker {
             if (background != null && background.length > 0) {
                 // Elaborating the final NoData value
                 pb.set(background[0], 1);
+            } else if (nodata != null) {
+                // default background value may screw up things, let's preserve nodata
+                pb.set(((Number) nodata.getMin()).doubleValue(), 1);
             }
         }
         pb.set(roi, 3);
@@ -2304,8 +2308,10 @@ public class ImageWorker {
         pb.set(new Range[] {nodata, nodata2}, 0);
         if (isNoDataNeeded() || nodata2 != null) {
             if (background != null && background.length > 0) {
-                double dest = background[0];
-                pb.set(dest, 1);
+                pb.set(background[0], 1);
+            } else if (nodata != null) {
+                // default background value may screw up things, let's preserve nodata
+                pb.set(((Number) nodata.getMin()).doubleValue(), 1);
             }
         }
         pb.set(roi, 3);
@@ -2355,8 +2361,10 @@ public class ImageWorker {
         pb.set(newRange, 0);
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
-                double dest = background[0];
-                pb.set(dest, 1);
+                pb.set(background[0], 1);
+            } else if (nodata != null) {
+                // default background value may screw up things, let's preserve nodata
+                pb.set(((Number) nodata.getMin()).doubleValue(), 1);
             }
         }
         pb.set(transformationList, 3);
@@ -3786,50 +3794,47 @@ public class ImageWorker {
         LOGGER.fine("Setting write parameters for this writer");
 
         ImageWriteParam iwp = null;
-        final ImageOutputStream memOutStream =
-                ImageIOExt.createImageOutputStream(image, destination);
-        if (memOutStream == null) {
-            throw new IIOException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "stream"));
-        }
-        if (CLIB_PNG_IMAGE_WRITER_SPI != null
-                && originatingProvider.getClass().equals(CLIB_PNG_IMAGE_WRITER_SPI.getClass())) {
-            // Compressing with native.
-            LOGGER.fine("Writer is native");
-            iwp = writer.getDefaultWriteParam();
-            // Define compression mode
-            iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-            // best compression
-            iwp.setCompressionType(compression);
-            // we can control quality here
-            iwp.setCompressionQuality(compressionRate);
-            // destination image type
-            iwp.setDestinationType(
-                    new ImageTypeSpecifier(image.getColorModel(), image.getSampleModel()));
-        } else {
-            // Compressing with pure Java.
-            LOGGER.fine("Writer is NOT native");
-
-            // Instantiating PNGImageWriteParam
-            iwp = new PNGImageWriteParam();
-            // Define compression mode
-            iwp.setCompressionMode(ImageWriteParam.MODE_DEFAULT);
-        }
-        LOGGER.fine("About to write png image");
-        try {
-            writer.setOutput(memOutStream);
-            writer.write(null, new IIOImage(image, null, null), iwp);
-        } finally {
-            try {
-                writer.dispose();
-            } catch (Throwable e) {
-                if (LOGGER.isLoggable(Level.FINEST))
-                    LOGGER.log(Level.FINEST, e.getLocalizedMessage(), e);
+        try (ImageOutputStream memOutStream =
+                ImageIOExt.createImageOutputStream(image, destination)) {
+            if (memOutStream == null) {
+                throw new IIOException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "stream"));
             }
+            if (CLIB_PNG_IMAGE_WRITER_SPI != null
+                    && originatingProvider
+                            .getClass()
+                            .equals(CLIB_PNG_IMAGE_WRITER_SPI.getClass())) {
+                // Compressing with native.
+                LOGGER.fine("Writer is native");
+                iwp = writer.getDefaultWriteParam();
+                // Define compression mode
+                iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+                // best compression
+                iwp.setCompressionType(compression);
+                // we can control quality here
+                iwp.setCompressionQuality(compressionRate);
+                // destination image type
+                iwp.setDestinationType(
+                        new ImageTypeSpecifier(image.getColorModel(), image.getSampleModel()));
+            } else {
+                // Compressing with pure Java.
+                LOGGER.fine("Writer is NOT native");
+
+                // Instantiating PNGImageWriteParam
+                iwp = new PNGImageWriteParam();
+                // Define compression mode
+                iwp.setCompressionMode(ImageWriteParam.MODE_DEFAULT);
+            }
+            LOGGER.fine("About to write png image");
             try {
-                memOutStream.close();
-            } catch (Throwable e) {
-                if (LOGGER.isLoggable(Level.FINEST))
-                    LOGGER.log(Level.FINEST, e.getLocalizedMessage(), e);
+                writer.setOutput(memOutStream);
+                writer.write(null, new IIOImage(image, null, null), iwp);
+            } finally {
+                try {
+                    writer.dispose();
+                } catch (Throwable e) {
+                    if (LOGGER.isLoggable(Level.FINEST))
+                        LOGGER.log(Level.FINEST, e.getLocalizedMessage(), e);
+                }
             }
         }
     }
@@ -3861,31 +3866,17 @@ public class ImageWorker {
         if (IMAGEIO_GIF_IMAGE_WRITER_SPI == null) {
             throw new IIOException(Errors.format(ErrorKeys.NO_IMAGE_WRITER));
         }
-        final ImageOutputStream stream = ImageIOExt.createImageOutputStream(image, destination);
-        if (stream == null)
-            throw new IIOException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "stream"));
-        final ImageWriter writer = IMAGEIO_GIF_IMAGE_WRITER_SPI.createWriterInstance();
-        final ImageWriteParam param = writer.getDefaultWriteParam();
-        param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-        param.setCompressionType(compression);
-        param.setCompressionQuality(compressionRate);
+        try (ImageOutputStream stream = ImageIOExt.createImageOutputStream(image, destination)) {
+            if (stream == null)
+                throw new IIOException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "stream"));
+            final ImageWriter writer = IMAGEIO_GIF_IMAGE_WRITER_SPI.createWriterInstance();
+            final ImageWriteParam param = writer.getDefaultWriteParam();
+            param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+            param.setCompressionType(compression);
+            param.setCompressionQuality(compressionRate);
 
-        try {
             writer.setOutput(stream);
             writer.write(null, new IIOImage(image, null, null), param);
-        } finally {
-            try {
-                stream.close();
-            } catch (Throwable e) {
-                if (LOGGER.isLoggable(Level.FINEST))
-                    LOGGER.log(Level.FINEST, e.getLocalizedMessage(), e);
-            }
-            try {
-                writer.dispose();
-            } catch (Throwable e) {
-                if (LOGGER.isLoggable(Level.FINEST))
-                    LOGGER.log(Level.FINEST, e.getLocalizedMessage(), e);
-            }
         }
         return this;
     }
@@ -3958,62 +3949,58 @@ public class ImageWorker {
 
         // Compression is available on both lib
         final ImageWriteParam iwp = writer.getDefaultWriteParam();
-        final ImageOutputStream outStream = ImageIOExt.createImageOutputStream(image, destination);
-        if (outStream == null) {
-            throw new IIOException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "stream"));
-        }
 
-        iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-        iwp.setCompressionType(compression); // Lossy compression.
-        iwp.setCompressionQuality(compressionRate); // We can control quality here.
-        if (iwp instanceof JPEGImageWriteParam) {
-            final JPEGImageWriteParam param = (JPEGImageWriteParam) iwp;
-            param.setOptimizeHuffmanTables(true);
-            try {
-                param.setProgressiveMode(JPEGImageWriteParam.MODE_DEFAULT);
-            } catch (UnsupportedOperationException e) {
-                throw new IOException(e);
+        try (ImageOutputStream outStream = ImageIOExt.createImageOutputStream(image, destination)) {
+            if (outStream == null) {
+                throw new IIOException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "stream"));
             }
-        }
 
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("Writing out...");
-        }
-
-        try {
-
-            writer.setOutput(outStream);
-            // the JDK writer has problems with images that do not start at minx==miny==0
-            // while the clib writer has issues with tiled images
-            if ((!nativeAcc && (image.getMinX() != 0 || image.getMinY() != 0))
-                    || (nativeAcc && (image.getNumXTiles() > 1 || image.getNumYTiles() > 1))) {
-                final BufferedImage finalImage =
-                        new BufferedImage(
-                                image.getColorModel(),
-                                ((WritableRaster) image.getData())
-                                        .createWritableTranslatedChild(0, 0),
-                                image.getColorModel().isAlphaPremultiplied(),
-                                null);
-
-                writer.write(null, new IIOImage(finalImage, null, null), iwp);
-            } else {
-                writer.write(null, new IIOImage(image, null, null), iwp);
+            iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+            iwp.setCompressionType(compression); // Lossy compression.
+            iwp.setCompressionQuality(compressionRate); // We can control quality here.
+            if (iwp instanceof JPEGImageWriteParam) {
+                final JPEGImageWriteParam param = (JPEGImageWriteParam) iwp;
+                param.setOptimizeHuffmanTables(true);
+                try {
+                    param.setProgressiveMode(JPEGImageWriteParam.MODE_DEFAULT);
+                } catch (UnsupportedOperationException e) {
+                    throw new IOException(e);
+                }
             }
-        } finally {
-            try {
-                writer.dispose();
-            } catch (Throwable e) {
-                if (LOGGER.isLoggable(Level.FINEST))
-                    LOGGER.log(Level.FINEST, e.getLocalizedMessage(), e);
-            }
-            try {
-                outStream.close();
-            } catch (Throwable e) {
-                if (LOGGER.isLoggable(Level.FINEST))
-                    LOGGER.log(Level.FINEST, e.getLocalizedMessage(), e);
-            }
+
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("Writing out... Done!");
+                LOGGER.fine("Writing out...");
+            }
+
+            try {
+
+                writer.setOutput(outStream);
+                // the JDK writer has problems with images that do not start at minx==miny==0
+                // while the clib writer has issues with tiled images
+                if ((!nativeAcc && (image.getMinX() != 0 || image.getMinY() != 0))
+                        || (nativeAcc && (image.getNumXTiles() > 1 || image.getNumYTiles() > 1))) {
+                    final BufferedImage finalImage =
+                            new BufferedImage(
+                                    image.getColorModel(),
+                                    ((WritableRaster) image.getData())
+                                            .createWritableTranslatedChild(0, 0),
+                                    image.getColorModel().isAlphaPremultiplied(),
+                                    null);
+
+                    writer.write(null, new IIOImage(finalImage, null, null), iwp);
+                } else {
+                    writer.write(null, new IIOImage(image, null, null), iwp);
+                }
+            } finally {
+                try {
+                    writer.dispose();
+                } catch (Throwable e) {
+                    if (LOGGER.isLoggable(Level.FINEST))
+                        LOGGER.log(Level.FINEST, e.getLocalizedMessage(), e);
+                }
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine("Writing out... Done!");
+                }
             }
         }
     }
@@ -4066,43 +4053,38 @@ public class ImageWorker {
         }
 
         final ImageWriteParam iwp = writer.getDefaultWriteParam();
-        final ImageOutputStream outStream = ImageIOExt.createImageOutputStream(image, destination);
-        if (outStream == null) {
-            throw new IIOException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "stream"));
-        }
-
-        if (compression != null) {
-            iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-            iwp.setCompressionType(compression);
-            iwp.setCompressionQuality(compressionRate); // We can control quality here.
-        } else {
-            iwp.setCompressionMode(ImageWriteParam.MODE_DEFAULT);
-        }
-        if (tileSizeX > 0 && tileSizeY > 0) {
-            iwp.setTilingMode(ImageWriteParam.MODE_EXPLICIT);
-            iwp.setTiling(tileSizeX, tileSizeY, 0, 0);
-        }
-
-        if (LOGGER.isLoggable(Level.FINER)) {
-            LOGGER.finer("Writing out...");
-        }
-
-        try {
-
-            writer.setOutput(outStream);
-            writer.write(null, new IIOImage(image, null, null), iwp);
-        } finally {
-            try {
-                writer.dispose();
-            } catch (Throwable e) {
-                if (LOGGER.isLoggable(Level.FINEST))
-                    LOGGER.log(Level.FINEST, e.getLocalizedMessage(), e);
+        try (ImageOutputStream outStream = ImageIOExt.createImageOutputStream(image, destination)) {
+            if (outStream == null) {
+                throw new IIOException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "stream"));
             }
+
+            if (compression != null) {
+                iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+                iwp.setCompressionType(compression);
+                iwp.setCompressionQuality(compressionRate); // We can control quality here.
+            } else {
+                iwp.setCompressionMode(ImageWriteParam.MODE_DEFAULT);
+            }
+            if (tileSizeX > 0 && tileSizeY > 0) {
+                iwp.setTilingMode(ImageWriteParam.MODE_EXPLICIT);
+                iwp.setTiling(tileSizeX, tileSizeY, 0, 0);
+            }
+
+            if (LOGGER.isLoggable(Level.FINER)) {
+                LOGGER.finer("Writing out...");
+            }
+
             try {
-                outStream.close();
-            } catch (Throwable e) {
-                if (LOGGER.isLoggable(Level.FINEST))
-                    LOGGER.log(Level.FINEST, e.getLocalizedMessage(), e);
+
+                writer.setOutput(outStream);
+                writer.write(null, new IIOImage(image, null, null), iwp);
+            } finally {
+                try {
+                    writer.dispose();
+                } catch (Throwable e) {
+                    if (LOGGER.isLoggable(Level.FINEST))
+                        LOGGER.log(Level.FINEST, e.getLocalizedMessage(), e);
+                }
             }
         }
     }
@@ -4165,12 +4147,11 @@ public class ImageWorker {
             // check if we can do a warp-affine reduction
             final ParameterBlock sourceParamBlock = op.getParameterBlock();
 
-            RenderingHints hints = getRenderingHints();
             boolean preserveChainedAffines = false;
-            if (hints != null && hints.containsKey(PRESERVE_CHAINED_AFFINES)) {
-                preserveChainedAffines = (boolean) hints.get(PRESERVE_CHAINED_AFFINES);
+            Object preserveHints = getRenderingHint(PRESERVE_CHAINED_AFFINES);
+            if (preserveHints != null && preserveHints instanceof Boolean) {
+                preserveChainedAffines = (Boolean) preserveHints;
             }
-
             if (WARP_REDUCTION_ENABLED
                     && "Warp".equals(opName)
                     && mtProperty instanceof MathTransform2D
@@ -4197,6 +4178,13 @@ public class ImageWorker {
                     }
                     if (tolerance == null) {
                         tolerance = 0.333;
+                    }
+
+                    // in case of oversampling, reduce the tolerance by the oversampling factor
+                    // as the oversampling magnifies errors that would not be otherwise visible
+                    if (tx.getScaleX() > 1 || tx.getScaleY() > 1) {
+                        double factor = Math.max(tx.getScaleX(), tx.getScaleY());
+                        tolerance = tolerance / factor;
                     }
 
                     // setup a warp builder that is not gong to use too much memory
@@ -4235,12 +4223,16 @@ public class ImageWorker {
                     }
                     Warp warp = wb.buildWarp(chained, mappingBB);
 
-                    // do the switch only if we get a warp that is as fast as the original one
+                    // do the switch only if we get a warp that is as fast as the original one,
+                    // of if we are upsampling, in which case the merge is required to preserve
+                    // good image quality (warp on NN produces pixels that are aligned to the axis
+                    // and then scaled, while the pixels should appear rotated instead)
                     Warp sourceWarp = (Warp) sourceParamBlock.getObjectParameter(0);
                     if (warp instanceof WarpGrid
                             || warp instanceof WarpAffine
-                            || !(sourceWarp instanceof WarpGrid
-                                    || sourceWarp instanceof WarpAffine)) {
+                            || !(sourceWarp instanceof WarpGrid || sourceWarp instanceof WarpAffine)
+                            || tx.getScaleX() > 1
+                            || tx.getScaleY() > 1) {
                         // and then the JAI Operation
                         PlanarImage sourceImage = op.getSourceImage(0);
                         final ParameterBlock paramBlk = new ParameterBlock().addSource(sourceImage);
@@ -5241,17 +5233,25 @@ public class ImageWorker {
         pb.set(offset, 1); // The per-band offsets to be added.
         pb.set(roi, 2); // ROI
         pb.set(nodata, 3); // NoData range
+
+        double destNodata = Double.NaN;
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
-                pb.set(background[0], 5); // destination No Data value
+                destNodata = background[0];
             } else if (nodata != null) {
                 // preserve nodata to avoid the destination nodata fall
                 // in the range of valid values
-                pb.set(nodata.getMin(), 5);
+                destNodata = nodata.getMin().doubleValue();
             }
         }
 
+        if (!Double.isNaN(destNodata)) {
+            pb.set(destNodata, 5);
+        }
         image = JAI.create("Rescale", pb, getRenderingHints());
+        if (!Double.isNaN(destNodata)) {
+            setNoData(RangeFactory.create((byte) destNodata, (byte) destNodata));
+        }
         return this;
     }
 
@@ -5569,23 +5569,26 @@ public class ImageWorker {
                  * Now try to set the output directly (if possible), or as an ImageOutputStream if the encoder doesn't accept directly the specified
                  * output. Note that some formats like HDF may not support ImageOutputStream.
                  */
-                final ImageOutputStream stream;
-                if (acceptInputType(outputTypes, output.getClass())) {
-                    writer.setOutput(output);
-                    stream = null;
-                } else if (acceptInputType(outputTypes, ImageOutputStream.class)) {
-                    stream = ImageIOExt.createImageOutputStream(image, output);
-                    writer.setOutput(stream);
-                } else {
-                    continue;
-                }
-                /*
-                 * Now saves the image.
-                 */
-                writer.write(image);
-                writer.dispose();
-                if (stream != null) {
-                    stream.close();
+                ImageOutputStream stream = null;
+                try {
+                    if (acceptInputType(outputTypes, output.getClass())) {
+                        writer.setOutput(output);
+                        stream = null;
+                    } else if (acceptInputType(outputTypes, ImageOutputStream.class)) {
+                        stream = ImageIOExt.createImageOutputStream(image, output);
+                        writer.setOutput(stream);
+                    } else {
+                        continue;
+                    }
+                    /*
+                     * Now saves the image.
+                     */
+                    writer.write(image);
+                    writer.dispose();
+                } finally {
+                    if (stream != null) {
+                        stream.close();
+                    }
                 }
                 return this;
             }

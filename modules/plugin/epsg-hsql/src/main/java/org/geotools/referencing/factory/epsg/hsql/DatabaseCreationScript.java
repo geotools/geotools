@@ -111,35 +111,35 @@ public class DatabaseCreationScript {
          * file (among others, the version and make it read only)
          *
          */
-        final InputStream propertyIn = new FileInputStream(propertyFile);
-        final Properties properties = new Properties();
-        properties.load(propertyIn);
-        propertyIn.close();
-        properties.put("epsg.version", ThreadedHsqlEpsgFactory.VERSION.toString());
-        properties.put("readonly", "true");
-        final OutputStream out = new FileOutputStream(propertyFile);
-        properties.store(out, "EPSG database on HSQL");
-        out.close();
+        try (InputStream propertyIn = new FileInputStream(propertyFile);
+                OutputStream out = new FileOutputStream(propertyFile); ) {
+            final Properties properties = new Properties();
+            properties.load(propertyIn);
+            properties.put("epsg.version", ThreadedHsqlEpsgFactory.VERSION.toString());
+            properties.put("readonly", "true");
+
+            properties.store(out, "EPSG database on HSQL");
+        }
 
         /*
          * Zip the database
          */
         System.out.println("Creating the zipped database");
         byte[] buf = new byte[1024];
-        ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFile));
-        File[] files = new File[] {databaseFile, propertyFile, scriptFile};
-        for (File file : files) {
-            FileInputStream in = new FileInputStream(file);
+        try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFile))) {
+            File[] files = new File[] {databaseFile, propertyFile, scriptFile};
+            for (File file : files) {
+                try (FileInputStream in = new FileInputStream(file)) {
 
-            zos.putNextEntry(new ZipEntry(file.getName()));
-            int len;
-            while ((len = in.read(buf)) > 0) {
-                zos.write(buf, 0, len);
+                    zos.putNextEntry(new ZipEntry(file.getName()));
+                    int len;
+                    while ((len = in.read(buf)) > 0) {
+                        zos.write(buf, 0, len);
+                    }
+                    zos.closeEntry();
+                }
             }
-            zos.closeEntry();
-            in.close();
         }
-        zos.close();
 
         /** Cleanup, delete the database files */
         System.out.println("Cleaning up the unzipped database files");

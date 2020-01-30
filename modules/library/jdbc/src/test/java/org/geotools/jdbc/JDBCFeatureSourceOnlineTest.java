@@ -29,6 +29,7 @@ import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.function.FilterFunction_strToLowerCase;
 import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -46,6 +47,7 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.expression.Subtract;
 import org.opengis.filter.sort.SortBy;
@@ -689,5 +691,25 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         } else {
             fail("Unexpected dialect, supports basic or prepared, but was a : " + dialect);
         }
+    }
+
+    /**
+     * Online tests for String functions along with Like operator
+     *
+     * @throws Exception
+     */
+    public void testStringFunction() throws Exception {
+        // ignore if the String function is not supported
+        if (!dataStore.getFilterCapabilities().supports(FilterFunction_strToLowerCase.class)) {
+            LOGGER.info("Ignoring testStringFunction test");
+            return;
+        }
+
+        FilterFactory ff = dataStore.getFilterFactory();
+        Function function = ff.function("strToLowerCase", ff.property("stringProperty"));
+
+        // should hit the row where stringProperty starts with z (e.g zero)
+        PropertyIsLike likeWithStringFunction = ff.like(function, "z%", "%", "-", "\\", true);
+        assertEquals(1, featureSource.getCount(new Query(null, likeWithStringFunction)));
     }
 }

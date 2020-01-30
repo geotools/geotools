@@ -76,14 +76,14 @@ public class OrphanNodeValidation extends DefaultIntegrityValidation {
         SimpleFeatureSource fs = (SimpleFeatureSource) layers.get(typeName);
         SimpleFeatureCollection fr = fs.getFeatures();
         SimpleFeatureCollection fc = fr;
-        SimpleFeatureIterator f = fc.features();
+        try (SimpleFeatureIterator f = fc.features()) {
+            while (f.hasNext()) {
+                SimpleFeature ft = f.next();
 
-        while (f.hasNext()) {
-            SimpleFeature ft = f.next();
-
-            if (envelope.contains(ft.getBounds())) {
-                // lgb.add(ft);
-                lgb.add(ft.getDefaultGeometry());
+                if (envelope.contains(ft.getBounds())) {
+                    // lgb.add(ft);
+                    lgb.add(ft.getDefaultGeometry());
+                }
             }
         }
 

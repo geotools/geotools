@@ -1044,14 +1044,7 @@ public class SimpleFeatureTypeBuilder {
         return b.buildFeatureType();
     }
 
-    /**
-     * Configure expected
-     *
-     * @param origional
-     * @param query
-     * @return
-     */
-    public static SimpleFeatureType retype(SimpleFeatureType origional, Query query) {
+    public static SimpleFeatureType retype(SimpleFeatureType original, Query query) {
         CoordinateReferenceSystem crs = null;
         if (query.getCoordinateSystem() != null) {
             crs = query.getCoordinateSystem();
@@ -1059,17 +1052,17 @@ public class SimpleFeatureTypeBuilder {
         if (query.getCoordinateSystemReproject() != null) {
             crs = query.getCoordinateSystemReproject();
         }
-        return retype(origional, query.getPropertyNames(), crs);
+        return retype(original, query.getPropertyNames(), crs);
     }
 
     private static SimpleFeatureType retype(
-            SimpleFeatureType origional, String[] propertyNames, CoordinateReferenceSystem crs) {
+            SimpleFeatureType original, String[] propertyNames, CoordinateReferenceSystem crs) {
         // TODO Auto-generated method stub
         return null;
     }
 
     /**
-     * Copys a feature type.
+     * Copies a feature type.
      *
      * <p>This method does a deep copy in that all individual attributes are copied as well.
      */

@@ -47,7 +47,7 @@
                 "text-justify": "TOP",
                 "text-offset": [
                     0,
-                    10
+                    0.5
                 ],
                 "text-anchor": "CENTER",
                 "text-pitch-alignment": "viewport",

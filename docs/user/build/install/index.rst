@@ -52,7 +52,7 @@ The following optional downloads provide increased functionality or performance:
 
 * Oracle (Optional):
     
-  * Obtain an ojdbc jar from Oracle or your Oracle installation
+  * Obtain a jdbc jar from Oracle or your Oracle installation
 
 * DB2 (Optional)
 

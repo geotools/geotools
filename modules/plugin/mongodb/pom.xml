@@ -14,7 +14,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>plugin</artifactId>
-    <version>22-SNAPSHOT</version>
+    <version>23-SNAPSHOT</version>
   </parent>
 
   <groupId>org.geotools</groupId>
@@ -38,6 +38,26 @@
       <id>stefano.costa</id>
       <name>Dott. Stefano Costa</name>
       <email>stefano.costa@geo-solutions.it</email>
+      <organization>GeoSolutions S.A.S.</organization>
+      <organizationUrl>http://www.geo-solutions.it</organizationUrl>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>nunooliveira</id>
+      <name>Nuno Oliveira</name>
+      <email>nuno.oliveira@geo-solutions.it</email>
+      <organization>GeoSolutions S.A.S.</organization>
+      <organizationUrl>http://www.geo-solutions.it</organizationUrl>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>fernandomino</id>
+      <name>Fernando Mino</name>
+      <email>fernando.mino@geo-solutions.it</email>
       <organization>GeoSolutions S.A.S.</organization>
       <organizationUrl>http://www.geo-solutions.it</organizationUrl>
       <roles>

@@ -1,5 +1,5 @@
-net.opengis.wfsv
-----------------
+``net.opengis.wfsv`` 
+--------------------
 
 Additional generated objects for "versioned" extension to web feature service.
 

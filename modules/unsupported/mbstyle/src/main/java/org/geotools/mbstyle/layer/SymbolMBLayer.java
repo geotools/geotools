@@ -16,20 +16,60 @@
  */
 package org.geotools.mbstyle.layer;
 
+import static org.geotools.renderer.label.LabelCacheItem.GraphicResize.NONE;
+import static org.geotools.renderer.label.LabelCacheItem.GraphicResize.PROPORTIONAL;
+import static org.geotools.renderer.label.LabelCacheItem.GraphicResize.STRETCH;
+import static org.geotools.styling.TextSymbolizer.AUTO_WRAP_KEY;
+import static org.geotools.styling.TextSymbolizer.CONFLICT_RESOLUTION_KEY;
+import static org.geotools.styling.TextSymbolizer.FOLLOW_LINE_KEY;
+import static org.geotools.styling.TextSymbolizer.FORCE_LEFT_TO_RIGHT_KEY;
+import static org.geotools.styling.TextSymbolizer.GRAPHIC_MARGIN_KEY;
+import static org.geotools.styling.TextSymbolizer.GRAPHIC_PLACEMENT_KEY;
+import static org.geotools.styling.TextSymbolizer.GRAPHIC_RESIZE_KEY;
+import static org.geotools.styling.TextSymbolizer.GROUP_KEY;
+import static org.geotools.styling.TextSymbolizer.GraphicPlacement.INDEPENDENT;
+import static org.geotools.styling.TextSymbolizer.LABEL_ALL_GROUP_KEY;
+import static org.geotools.styling.TextSymbolizer.LABEL_REPEAT_KEY;
+import static org.geotools.styling.TextSymbolizer.MAX_ANGLE_DELTA_KEY;
+import static org.geotools.styling.TextSymbolizer.PARTIALS_KEY;
+
 import com.google.common.collect.ImmutableSet;
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import org.geotools.mbstyle.MBStyle;
+import org.geotools.mbstyle.function.FontAlternativesFunction;
+import org.geotools.mbstyle.function.FontAttributesExtractor;
+import org.geotools.mbstyle.function.MapBoxFontBaseNameFunction;
+import org.geotools.mbstyle.function.MapBoxFontStyleFunction;
+import org.geotools.mbstyle.function.MapBoxFontWeightFunction;
 import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.sprite.SpriteGraphicFactory;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
 import org.geotools.measure.Units;
-import org.geotools.styling.*;
+import org.geotools.styling.AnchorPoint;
+import org.geotools.styling.Displacement;
+import org.geotools.styling.ExternalGraphic;
+import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
+import org.geotools.styling.Graphic;
+import org.geotools.styling.Halo;
+import org.geotools.styling.LabelPlacement;
+import org.geotools.styling.LinePlacement;
+import org.geotools.styling.Mark;
+import org.geotools.styling.PointPlacement;
+import org.geotools.styling.PointSymbolizer;
+import org.geotools.styling.Rule;
 import org.geotools.styling.Stroke;
+import org.geotools.styling.StyleBuilder;
+import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.TextSymbolizer2;
 import org.geotools.text.Text;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -53,11 +93,14 @@ import org.opengis.style.Symbolizer;
  */
 public class SymbolMBLayer extends MBLayer {
 
+    private static final Color DEFAULT_HALO_COLOR = new Color(0, 0, 0, 0);
     private JSONObject layout;
 
     private JSONObject paint;
 
     private static String TYPE = "symbol";
+
+    private Integer labelPriority;
 
     public enum SymbolPlacement {
         /** The label is placed at the point where the geometry is located. */
@@ -996,11 +1039,26 @@ public class SymbolMBLayer extends MBLayer {
      * @return AnchorPoint defined by "text-anchor".
      */
     public AnchorPoint anchorPoint() {
-        TextAnchor anchor = getTextAnchor();
-        if (anchor == null) {
+        return anchorPointByProperty("text-anchor");
+    }
+
+    public AnchorPoint iconAnchorPoint() {
+        return anchorPointByProperty("icon-anchor");
+    }
+
+    public AnchorPoint anchorPointByProperty(String propertyName) {
+        Expression expression = parse.string(layout, propertyName, TextAnchor.CENTER.name());
+        if (expression == null) {
             return null;
         }
-        return sf.anchorPoint(ff.literal(anchor.getX()), ff.literal(anchor.getY()));
+        if (expression instanceof Literal) {
+            TextAnchor anchor = TextAnchor.parse(expression.evaluate(null, String.class));
+            return sf.anchorPoint(ff.literal(anchor.getX()), ff.literal(anchor.getY()));
+        }
+        // it's a generic expression, need to map it to values
+        return sf.anchorPoint(
+                ff.function("mbAnchor", expression, ff.literal("x")),
+                ff.function("mbAnchor", expression, ff.literal("y")));
     }
 
     /**
@@ -1129,6 +1187,15 @@ public class SymbolMBLayer extends MBLayer {
     }
 
     /**
+     * Returns true if the a text-transform property explicitly provided
+     *
+     * @return
+     */
+    public boolean hasTextTransform() {
+        return parse.isPropertyDefined(layout, "text-transform");
+    }
+
+    /**
      * Converts {@link #getTextTransform()} to a GeoTools expression. Returns an expression that
      * evaluates to one of "uppercase", "lowercase", "none".
      *
@@ -1177,6 +1244,10 @@ public class SymbolMBLayer extends MBLayer {
     public Displacement textOffsetDisplacement() {
         return parse.displacement(
                 layout, "text-offset", sf.displacement(ff.literal(0), ff.literal(0)));
+    }
+
+    private boolean hasTextOffset() {
+        return parse.isPropertyDefined(layout, "text-offset");
     }
 
     /**
@@ -1490,7 +1561,7 @@ public class SymbolMBLayer extends MBLayer {
      */
     public Color getTextHaloColor() throws MBFormatException {
         if (!paint.containsKey("text-halo-color")) {
-            return new Color(0, 0, 0, 0);
+            return DEFAULT_HALO_COLOR;
         } else {
             return parse.convertToColor(
                     parse.optional(String.class, paint, "text-halo-color", "#000000"));
@@ -1503,7 +1574,7 @@ public class SymbolMBLayer extends MBLayer {
      * @return The label halo color.
      */
     public Expression textHaloColor() {
-        return parse.color(paint, "text-halo-color", Color.BLACK);
+        return parse.color(paint, "text-halo-color", DEFAULT_HALO_COLOR);
     }
 
     /**
@@ -1577,6 +1648,10 @@ public class SymbolMBLayer extends MBLayer {
         return new Point(translate[0], translate[1]);
     }
 
+    private boolean hasTextTranslate() {
+        return parse.isPropertyDefined(layout, "text-translate");
+    }
+
     /**
      * Maps {@link #getTextTranslate()} to a {@link Displacement}.
      *
@@ -1647,7 +1722,7 @@ public class SymbolMBLayer extends MBLayer {
         String symbolPlacementVal =
                 transformer.requireLiteral(
                         symbolPlacement(), String.class, "point", "symbol-placement", getId());
-
+        Expression fontSize = textSize();
         if ("point".equalsIgnoreCase(symbolPlacementVal.trim())) {
             // Point Placement (default)
             PointPlacement pointP = sb.createPointPlacement();
@@ -1655,43 +1730,90 @@ public class SymbolMBLayer extends MBLayer {
             // GeoTools AnchorPoint doesn't seem to have an effect on PointPlacement
             pointP.setAnchorPoint(anchorPoint());
 
-            // MapBox text-offset: +y means down
-            Displacement textTranslate = textTranslateDisplacement();
-            textTranslate.setDisplacementY(
-                    ff.multiply(ff.literal(-1), textTranslate.getDisplacementY()));
-            pointP.setDisplacement(textTranslate);
-
+            // MapBox text-translate: +y means down, expressed in px
+            Displacement displacement = null;
+            if (hasTextTranslate()) {
+                Displacement textTranslate = textTranslateDisplacement();
+                textTranslate.setDisplacementY(
+                        ff.multiply(ff.literal(-1), textTranslate.getDisplacementY()));
+                displacement = textTranslate;
+            }
+            // MapBox test-offset: +y mean down and expressed in ems
+            Displacement textOffset = null;
+            if (hasTextOffset()) {
+                textOffset = textOffsetDisplacement();
+                textOffset.setDisplacementX(ff.multiply(fontSize, textOffset.getDisplacementX()));
+                textOffset.setDisplacementY(
+                        ff.multiply(
+                                fontSize,
+                                ff.multiply(ff.literal(-1), textOffset.getDisplacementY())));
+                if (displacement == null) {
+                    displacement = textOffset;
+                } else {
+                    displacement.setDisplacementX(
+                            ff.add(displacement.getDisplacementX(), textOffset.getDisplacementX()));
+                    displacement.setDisplacementY(
+                            ff.add(displacement.getDisplacementY(), textOffset.getDisplacementY()));
+                }
+            }
+            pointP.setDisplacement(displacement);
             pointP.setRotation(textRotate());
 
             labelPlacement = pointP;
         } else {
             // Line Placement
-
             LinePlacement lineP = sb.createLinePlacement(null);
             lineP.setRepeated(true);
 
             // pixels (geotools) vs ems (mapbox) for text-offset
             lineP.setPerpendicularOffset(
-                    ff.multiply(ff.literal(-1), textOffsetDisplacement().getDisplacementY()));
+                    ff.multiply(
+                            fontSize,
+                            ff.multiply(
+                                    ff.literal(-1), textOffsetDisplacement().getDisplacementY())));
 
             labelPlacement = lineP;
         }
 
-        Halo halo = sf.halo(sf.fill(null, textHaloColor(), null), textHaloWidth());
+        // the default value of the halo color is rgba(0,0,0,0) that is, no halo drawn,
+        // regardless of the value of other halo parameters
+        Expression haloColor = textHaloColor();
+        Halo halo = null;
+        if (!(haloColor instanceof Literal)
+                || (haloColor.evaluate(null, Color.class).getAlpha() > 0)) {
+            halo = sf.halo(sf.fill(null, haloColor, null), textHaloWidth());
+        }
         Fill fill = sf.fill(null, textColor(), textOpacity());
 
-        Font font =
-                sb.createFont(
-                        ff.literal(""), ff.literal("normal"), ff.literal("normal"), textSize());
-
-        if (getTextFont() != null) {
-            font.getFamily().clear();
-            for (String textFont : getTextFont()) {
-                font.getFamily().add(ff.literal(textFont));
+        // leverage GeoTools ability to have several distinct fonts, inherited from SLD 1.0
+        List<Font> fonts = new ArrayList<>();
+        List<String> staticFonts = getTextFont();
+        if (staticFonts != null) {
+            for (String textFont : staticFonts) {
+                FontAttributesExtractor fae = new FontAttributesExtractor(textFont);
+                Font font =
+                        sb.createFont(
+                                ff.function(
+                                        FontAlternativesFunction.NAME.getName(),
+                                        ff.literal(fae.getBaseName())),
+                                ff.literal(fae.isItalic() ? "italic" : "normal"),
+                                ff.literal(fae.isBold() ? "bold" : "normal"),
+                                fontSize);
+                fonts.add(font);
             }
         } else if (textFont() != null) {
-            font.getFamily().clear();
-            font.getFamily().add(textFont());
+            Expression dynamicFont = textFont();
+            Font font =
+                    sb.createFont(
+                            ff.function(
+                                    FontAlternativesFunction.NAME.getName(),
+                                    ff.function(
+                                            MapBoxFontBaseNameFunction.NAME.getName(),
+                                            dynamicFont)),
+                            ff.function(MapBoxFontStyleFunction.NAME.getName(), dynamicFont),
+                            ff.function(MapBoxFontWeightFunction.NAME.getName(), dynamicFont),
+                            fontSize);
+            fonts.add(font);
         }
 
         // If the textField is a literal string (not a function), then
@@ -1705,7 +1827,9 @@ public class SymbolMBLayer extends MBLayer {
                 textExpression = transformer.cqlExpressionFromTokens(text);
             }
         }
-        textExpression = ff.function("StringTransform", textExpression, textTransform());
+        if (hasTextTransform()) {
+            textExpression = ff.function("StringTransform", textExpression, textTransform());
+        }
 
         TextSymbolizer2 symbolizer =
                 (TextSymbolizer2)
@@ -1715,23 +1839,27 @@ public class SymbolMBLayer extends MBLayer {
                                 sf.description(Text.text("text"), null),
                                 Units.PIXEL,
                                 textExpression,
-                                font,
+                                null,
                                 labelPlacement,
                                 halo,
                                 fill);
+        symbolizer.fonts().clear();
+        symbolizer.fonts().addAll(fonts);
 
         Number symbolSpacing =
                 transformer.requireLiteral(
                         symbolSpacing(), Number.class, 250, "symbol-spacing", getId());
-        symbolizer.getOptions().put("repeat", String.valueOf(symbolSpacing));
+        symbolizer.getOptions().put(LABEL_REPEAT_KEY, String.valueOf(symbolSpacing));
 
         // text max angle - only for line placement
         // throw MBFormatException if point placement
         if (labelPlacement instanceof LinePlacement) {
             // followLine will be true if line placement, it is an implied default of MBstyles.
-            symbolizer.getOptions().put("forceLeftToRight", String.valueOf(textKeepUpright()));
-            symbolizer.getOptions().put("followLine", "true");
-            symbolizer.getOptions().put("maxAngleDelta", String.valueOf(getTextMaxAngle()));
+            symbolizer.getOptions().put(FORCE_LEFT_TO_RIGHT_KEY, String.valueOf(textKeepUpright()));
+            symbolizer.getOptions().put(FOLLOW_LINE_KEY, "true");
+            symbolizer.getOptions().put(MAX_ANGLE_DELTA_KEY, String.valueOf(getTextMaxAngle()));
+            symbolizer.getOptions().put(GROUP_KEY, "true");
+            symbolizer.getOptions().put(LABEL_ALL_GROUP_KEY, "true");
         } else if (hasTextMaxAngle()) {
             throw new MBFormatException(
                     "Property text-max-angle requires symbol-placement = line but symbol-placement = "
@@ -1749,7 +1877,9 @@ public class SymbolMBLayer extends MBLayer {
 
         symbolizer
                 .getOptions()
-                .put("conflictResolution", String.valueOf(!(textAllowOverlap || iconAllowOverlap)));
+                .put(
+                        CONFLICT_RESOLUTION_KEY,
+                        String.valueOf(!(textAllowOverlap || iconAllowOverlap)));
 
         String textFitVal =
                 transformer
@@ -1757,43 +1887,29 @@ public class SymbolMBLayer extends MBLayer {
                                 iconTextFit(), String.class, "none", "icon-text-fit", getId())
                         .trim();
         if ("height".equalsIgnoreCase(textFitVal) || "width".equalsIgnoreCase(textFitVal)) {
-            symbolizer.getOptions().put("graphic-resize", "stretch");
+            symbolizer.getOptions().put(GRAPHIC_RESIZE_KEY, STRETCH.name());
         } else if ("both".equalsIgnoreCase(textFitVal)) {
-            symbolizer.getOptions().put("graphic-resize", "proportional");
+            symbolizer.getOptions().put(GRAPHIC_RESIZE_KEY, PROPORTIONAL.name());
         } else {
             // Default
-            symbolizer.getOptions().put("graphic-resize", "none");
+            symbolizer.getOptions().put(GRAPHIC_RESIZE_KEY, NONE.name());
         }
 
-        // MapBox symbol-avoid-edges defaults to false, If true, the symbols will not cross tile
-        // edges to avoid
-        // mutual collisions.  This concept is represented by using the Partials option in GeoTools.
-        //  The partials
-        // options instructs the renderer to render labels that cross the map extent, which are
-        // normally not painted
-        // since there is no guarantee that a map put on the side of the current one (tiled
-        // rendering) will contain
-        // the other half of the label. By enabling “partials” the style editor takes responsibility
-        // for the other
-        // half being there (maybe because the label points have been placed by hand and are assured
-        // not to conflict
-        // with each other, at all zoom levels).
-        //
-        // Based upon the above if symbol-avoid-edges is true we do not need
-        // to add the partials option as the renderer will do this by default. But if
-        // symbol-avoid-edges is missing or
-        // set to false, then we do need to add the partials option set to true.
-        if (!getSymbolAvoidEdges()) {
-            symbolizer.getOptions().put("partials", "true");
-        }
+        // Kept commented out as a reminder not to bring this back. It breaks rendering
+        // on server side, as the labels are actually cut at tile borders, unlike client side
+        // where they can just continue over, and one can hope they won't overlap
+        //        if (!getSymbolAvoidEdges()) {
+        //            symbolizer.getOptions().put(PARTIALS_KEY, "true");
+        //        }
+        symbolizer.getOptions().put(PARTIALS_KEY, "false");
 
         // Mapbox allows you to sapecify an array of values, one for each side
         if (getIconTextFitPadding() != null && !getIconTextFitPadding().isEmpty()) {
             symbolizer
                     .getOptions()
-                    .put("graphic-margin", String.valueOf(getIconTextFitPadding().get(0)));
+                    .put(GRAPHIC_MARGIN_KEY, String.valueOf(getIconTextFitPadding().get(0)));
         } else {
-            symbolizer.getOptions().put("graphic-margin", "0");
+            symbolizer.getOptions().put(GRAPHIC_MARGIN_KEY, "0");
         }
 
         // text-padding default value is 2 in mapbox, will override Geoserver defaults
@@ -1816,56 +1932,40 @@ public class SymbolMBLayer extends MBLayer {
                             textMaxWidth(), Double.class, 10.0, "text-max-width", getId());
             double textSize =
                     transformer.requireLiteral(
-                            textSize(),
+                            fontSize,
                             Double.class,
                             16.0,
                             "text-size (when text-max-width is specified)",
                             getId());
-            symbolizer.getOptions().put("autoWrap", String.valueOf(textMaxWidth * textSize));
+            symbolizer.getOptions().put(AUTO_WRAP_KEY, String.valueOf(textMaxWidth * textSize));
         }
 
         // If the layer has an icon image, add it to our symbolizer
         if (hasIconImage()) {
-            // icon-ignore-placement requires an icon-image so we handle this property here.
-            // By default - or icon-ignore-placement: false, MapBox prevents symbols from being
-            // visible if they collide
-            // with other icons.  GeoServer only implements this behavior if the vendorOption
-            // labelObstacle is set
-            // to true.
-            if (!getIconIgnorePlacement()) {
-                symbolizer.getOptions().put("labelObstacle", "true");
-            }
-
             // Check to see that hasTextField() is true check to see if IconPadding is greater to
             // put to spaceAround
             if (!hasTextField()
                     || ((getIconPadding().doubleValue()) > (getTextPadding().doubleValue()))
                             && !"point".equalsIgnoreCase(symbolPlacementVal.trim())) {
-                symbolizer.getOptions().put("spaceAround", String.valueOf(getIconPadding()));
+                symbolizer
+                        .getOptions()
+                        .put(TextSymbolizer.SPACE_AROUND_KEY, String.valueOf(getIconPadding()));
             }
-            // If we have an icon with a Point placement create a PointSymoblizer for the icon.
-            // This enables adjusting the text placement without moving the icon.
+            // If we have an icon with a Point placement force graphic placement independ
+            // of the label final position (each one gets its own anchor and displacement)
+            Graphic graphic = getGraphic(transformer, styleContext);
             if ("point".equalsIgnoreCase(symbolPlacementVal.trim())) {
-                org.geotools.styling.PointSymbolizer pointSymbolizer =
-                        sf.pointSymbolizer(
-                                getId(),
-                                ff.property((String) null),
-                                sf.description(Text.text("text"), null),
-                                Units.PIXEL,
-                                getGraphic(transformer, styleContext));
-                symbolizers.add(pointSymbolizer);
-            } else {
-
-                symbolizer.setGraphic(getGraphic(transformer, styleContext));
+                symbolizer.getOptions().put(GRAPHIC_PLACEMENT_KEY, INDEPENDENT.name());
             }
+            // the mapbox-gl library does not paint the graphic if the icon cannot be found
+            symbolizer.getOptions().put(PointSymbolizer.FALLBACK_ON_DEFAULT_MARK, "false");
+            symbolizer.setGraphic(graphic);
         }
 
-        // Check that a labelObstacle vendor option hasn't already been placed on the symbolizer and
-        // that
-        // textIgnorePlacement is either null or false, if so add it.  If textIgnorePlacement is
-        // true, accept default behavior.
-        if (symbolizer.getOptions().get("labelObstacle") == null && !getTextIgnorePlacement()) {
-            symbolizer.getOptions().put("labelObstacle", "true");
+        // make sure rendering paints the labels in the same layer based order that
+        // Mapbox GL would use
+        if (labelPriority != null) {
+            symbolizer.setPriority(ff.literal(labelPriority));
         }
 
         symbolizers.add(symbolizer);
@@ -1928,14 +2028,13 @@ public class SymbolMBLayer extends MBLayer {
                 styleContext.getSprite() == null
                         ? ""
                         : styleContext.getSprite().trim().toLowerCase();
+        Expression iconSize = iconSize();
         if (MARK_SHEET_ALIASES.contains(spriteSheetLocation)) {
             Fill f = sf.fill(null, iconColor(), null);
             Stroke s = sf.stroke(iconColor(), null, null, null, null, null, null);
             gs = sf.mark(iconExpression, f, s);
         } else {
-            gs =
-                    transformer.createExternalGraphicForSprite(
-                            iconExpression, iconSize(), styleContext);
+            gs = transformer.createExternalGraphicForSprite(iconExpression, iconSize, styleContext);
         }
 
         if (gs instanceof Mark) {
@@ -1943,16 +2042,25 @@ public class SymbolMBLayer extends MBLayer {
             // GraphicalSymbol is a mark.
             // If it is an ExternalGraphic from a sprite sheet, the absolute size of the icon is
             // unknown at this point.
-            graphicSize = ff.multiply(ff.literal(MARK_ICON_DEFAULT_SIZE), iconSize());
+            graphicSize = ff.multiply(ff.literal(MARK_ICON_DEFAULT_SIZE), iconSize);
         }
 
         Graphic g =
                 sf.graphic(Arrays.asList(gs), iconOpacity(), graphicSize, iconRotate(), null, null);
+        // From the specification:
+        // Offset distance of icon from its anchor. Positive values indicate right and down, while
+        // negative values indicate left and up. Each component is multiplied by the value of
+        // icon-size to obtain the final offset in pixels
         Displacement d = iconOffsetDisplacement();
-        d.setDisplacementY(d.getDisplacementY());
+        d.setDisplacementY(
+                ff.multiply(iconSize, ff.multiply(ff.literal(-1), d.getDisplacementY())));
+        d.setDisplacementX(ff.multiply(iconSize, d.getDisplacementX()));
         g.setDisplacement(d);
+        g.setAnchorPoint(iconAnchorPoint());
 
         return g;
+
+        // ADD A VENDOR OPTION FOR THE POINT INDEPENDENT LOCATION!!
     }
 
     /**
@@ -1963,5 +2071,13 @@ public class SymbolMBLayer extends MBLayer {
     @Override
     public String getType() {
         return TYPE;
+    }
+
+    public Integer getLabelPriority() {
+        return labelPriority;
+    }
+
+    public void setLabelPriority(Integer labelPriority) {
+        this.labelPriority = labelPriority;
     }
 }

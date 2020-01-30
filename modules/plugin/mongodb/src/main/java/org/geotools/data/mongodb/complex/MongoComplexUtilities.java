@@ -38,13 +38,6 @@ public final class MongoComplexUtilities {
 
     private static final Logger LOG = Logging.getLogger(MongoComplexUtilities.class);
 
-    // if this property is set to TRUE the system will expect nested collection full path to be
-    // provided
-    private static final boolean USE_LEGACY_PATHS =
-            Boolean.parseBoolean(
-                    System.getProperty(
-                            "org.geotools.data.mongodb.complex.useLegacyPaths", "false"));
-
     // key used to store the parent JSON path in a feature user data map
     public static final String MONGO_PARENT_PATH = "MONGO_PARENT_PATH";
 
@@ -59,11 +52,6 @@ public final class MongoComplexUtilities {
     /** Store the parent path in a feature user data map. */
     public static void setParentPath(Feature feature, String parentPath) {
         feature.getUserData().put(MONGO_PARENT_PATH, parentPath);
-    }
-
-    /** If TRUE no recursive paths will be used, this onyl exists for backwards compatibility. */
-    public static boolean useLegacyPaths() {
-        return USE_LEGACY_PATHS;
     }
 
     /**
@@ -192,9 +180,24 @@ public final class MongoComplexUtilities {
         private boolean hasNext() {
             // we have a next element if we still have paths parts or we are currently
             // walking a collection and there is a index defined for this collection
+            // if empty list is detected, make current object null and return false
+            if (isAnEmptyList(currentObject)) {
+                currentObject = null;
+                return false;
+            }
             return currentJsonPathPartIndex < jsonPathParts.length
                     || (currentObject instanceof BasicDBList
                             && collectionsIndexes.get(currentJsonPath) != null);
+        }
+
+        private boolean isAnEmptyList(Object object) {
+            if (object instanceof BasicDBList) {
+                BasicDBList list = (BasicDBList) currentObject;
+                if (list.isEmpty()) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private void next() {

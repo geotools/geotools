@@ -676,14 +676,14 @@ public class JGrassMapEnvironment {
         // if the file exists, read the range.
         if (rangeFile.exists()) {
             dataRange = new double[2];
-            InputStream is = new FileInputStream(rangeFile);
-            byte[] numbers = new byte[16];
-            int testread = is.read(numbers);
-            is.close();
-            if (testread == 16) {
-                ByteBuffer rangeBuffer = ByteBuffer.wrap(numbers);
-                dataRange[0] = rangeBuffer.getDouble();
-                dataRange[1] = rangeBuffer.getDouble();
+            try (InputStream is = new FileInputStream(rangeFile)) {
+                byte[] numbers = new byte[16];
+                int testread = is.read(numbers);
+                if (testread == 16) {
+                    ByteBuffer rangeBuffer = ByteBuffer.wrap(numbers);
+                    dataRange[0] = rangeBuffer.getDouble();
+                    dataRange[1] = rangeBuffer.getDouble();
+                }
             }
         }
         if (dataRange == null
@@ -711,10 +711,10 @@ public class JGrassMapEnvironment {
         double[] dataRange = coverageReader.getRange();
 
         // write the range to disk
-        OutputStream cell_miscRangeStream = new FileOutputStream(getCELLMISC_RANGE());
-        cell_miscRangeStream.write(double2bytearray(dataRange[0]));
-        cell_miscRangeStream.write(double2bytearray(dataRange[1]));
-        cell_miscRangeStream.close();
+        try (OutputStream cell_miscRangeStream = new FileOutputStream(getCELLMISC_RANGE())) {
+            cell_miscRangeStream.write(double2bytearray(dataRange[0]));
+            cell_miscRangeStream.write(double2bytearray(dataRange[1]));
+        }
         return dataRange;
     }
 

@@ -17,11 +17,9 @@
 package org.geotools.renderer.style;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertThat;
 
-import java.awt.Color;
-import java.awt.Rectangle;
-import java.awt.Shape;
-import java.awt.TexturePaint;
+import java.awt.*;
 import java.awt.font.TextAttribute;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
@@ -30,6 +28,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,11 +55,13 @@ import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Mark;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
+import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.util.NumberRange;
+import org.hamcrest.CoreMatchers;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -71,6 +72,7 @@ import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.expression.Expression;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 import org.opengis.referencing.FactoryException;
@@ -284,6 +286,30 @@ public class SLDStyleFactoryTest extends TestCase {
         assertEquals(20, img.getWidth());
     }
 
+    public void testNonExistingExternalGraphic() throws Exception {
+        URL url = StreamingRenderer.class.getResource("test-data/");
+        PointSymbolizer symb = sf.createPointSymbolizer();
+        ExternalGraphic eg = sf.createExternalGraphic(url + "iAmNotThere.png", "image/png");
+        symb.getGraphic().graphicalSymbols().add(eg);
+
+        // test normal fallback behavior, graphics not found implies using a default mark
+        Style2D style2D = sld.createPointStyle(feature, symb, range);
+        assertThat(style2D, CoreMatchers.instanceOf(MarkStyle2D.class));
+        MarkStyle2D mark = (MarkStyle2D) style2D;
+        assertEquals(Color.GRAY, mark.getFill());
+    }
+
+    public void testNonExistingExternalGraphicNoFallback() throws Exception {
+        URL url = StreamingRenderer.class.getResource("test-data/");
+        PointSymbolizer symb = sf.createPointSymbolizer();
+        ExternalGraphic eg = sf.createExternalGraphic(url + "iAmNotThere.png", "image/png");
+        symb.getGraphic().graphicalSymbols().add(eg);
+        symb.getOptions().put(PointSymbolizer.FALLBACK_ON_DEFAULT_MARK, "false");
+
+        // fallback has been disabled
+        assertNull(sld.createPointStyle(feature, symb, range));
+    }
+
     public void testResizeGraphicFill() throws Exception {
         URL url = StreamingRenderer.class.getResource("test-data/");
         PolygonSymbolizer symb = sf.createPolygonSymbolizer();
@@ -304,6 +330,17 @@ public class SLDStyleFactoryTest extends TestCase {
         PointSymbolizer symb = sf.createPointSymbolizer();
         Mark myMark = sf.createMark();
         myMark.setWellKnownName(ff.literal("square"));
+        symb.getGraphic().graphicalSymbols().add(myMark);
+
+        MarkStyle2D ms = (MarkStyle2D) sld.createPointStyle(feature, symb, range);
+        assertEquals(16.0, ms.getSize());
+    }
+
+    public void testDefaultExpressionSizeMark() throws Exception {
+        PointSymbolizer symb = sf.createPointSymbolizer();
+        Mark myMark = sf.createMark();
+        myMark.setWellKnownName(ff.literal("square"));
+        symb.getGraphic().setSize(ff.multiply(ff.property("expression/nil"), ff.literal(1.0)));
         symb.getGraphic().graphicalSymbols().add(myMark);
 
         MarkStyle2D ms = (MarkStyle2D) sld.createPointStyle(feature, symb, range);
@@ -550,5 +587,19 @@ public class SLDStyleFactoryTest extends TestCase {
                 paintArea,
                 layer.getBounds(),
                 RendererUtilities.worldToScreenTransform(layer.getBounds(), paintArea));
+    }
+
+    public void testDashArrayZero() throws Exception {
+        LineSymbolizer ls = sf.createLineSymbolizer();
+        Stroke stroke = sf.createStroke(ff.literal("red"), ff.literal(1));
+        Expression nonObviousZero = ff.subtract(ff.literal(10), ff.literal(10));
+        stroke.setDashArray(Arrays.asList(nonObviousZero, nonObviousZero, nonObviousZero));
+        ls.setStroke(stroke);
+
+        // no exception, the dash array gets ignored
+        LineStyle2D ls2d = (LineStyle2D) sld.createLineStyle(feature, ls, range);
+        assertThat(ls2d.getStroke(), CoreMatchers.instanceOf(BasicStroke.class));
+        BasicStroke bs = (BasicStroke) ls2d.getStroke();
+        assertNull(bs.getDashArray());
     }
 }

@@ -250,7 +250,7 @@ public class StyleParseTests {
         assertEquals(new Color(0x0099ff), l.getLineColor());
         assertEquals(0.5, l.getLineOpacity());
         assertEquals(LineMBLayer.LineTranslateAnchor.VIEWPORT, l.getLineTranslateAnchor());
-        Assert.assertThat(l.getLineDasharray(), IsIterableContainingInOrder.contains(50.0, 50.0));
+        Assert.assertThat(l.getLineDasharray(), IsIterableContainingInOrder.contains(5.0, 5.0));
         // line-offset can be either an integer or double.
         assertEquals(4, l.getLineOffset().intValue());
         assertEquals(4.0, l.getLineOffset().doubleValue(), .00001);

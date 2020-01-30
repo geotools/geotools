@@ -16,15 +16,22 @@
  */
 package org.geotools.mbstyle;
 
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 import java.io.IOException;
 import java.util.List;
 import org.geotools.filter.function.CategorizeFunction;
+import org.geotools.mbstyle.function.FontAlternativesFunction;
+import org.geotools.mbstyle.function.MapBoxFontBaseNameFunction;
+import org.geotools.mbstyle.function.MapBoxFontStyleFunction;
+import org.geotools.mbstyle.function.MapBoxFontWeightFunction;
 import org.geotools.mbstyle.layer.MBLayer;
 import org.geotools.mbstyle.layer.SymbolMBLayer;
 import org.geotools.mbstyle.layer.SymbolMBLayer.TextAnchor;
 import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.Font;
 import org.geotools.styling.PointPlacement;
 import org.geotools.styling.Rule;
 import org.geotools.styling.TextSymbolizer;
@@ -34,6 +41,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.Before;
 import org.junit.Test;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Function;
+import org.opengis.filter.expression.Literal;
 
 public class SymbolMBLayerTest {
     SymbolMBLayer testLayerDefault;
@@ -110,7 +120,7 @@ public class SymbolMBLayerTest {
                         .rules()
                         .get(0)
                         .symbolizers()
-                        .get(1)
+                        .get(0)
                         .getOptions()
                         .get("autoWrap"));
     }
@@ -132,7 +142,7 @@ public class SymbolMBLayerTest {
         assertEquals(10, testLayer.getTextRotate().intValue());
         // Test values from FeatureTypeStyle transform
         Rule r = featureTypeTestValues.get(0).rules().get(0);
-        TextSymbolizer2 symbolizer = (TextSymbolizer2) r.symbolizers().get(1);
+        TextSymbolizer2 symbolizer = (TextSymbolizer2) r.symbolizers().get(0);
         PointPlacement pp = (PointPlacement) symbolizer.getLabelPlacement();
         assertEquals("10", pp.getRotation().toString());
     }
@@ -187,7 +197,7 @@ public class SymbolMBLayerTest {
                         .rules()
                         .get(0)
                         .symbolizers()
-                        .get(1)
+                        .get(0)
                         .getOptions()
                         .get("spaceAround"));
     }
@@ -204,7 +214,7 @@ public class SymbolMBLayerTest {
                         .rules()
                         .get(0)
                         .symbolizers()
-                        .get(1)
+                        .get(0)
                         .getOptions()
                         .get("spaceAround"));
         assertEquals(30.0, testLineLayer.getIconPadding());
@@ -222,54 +232,63 @@ public class SymbolMBLayerTest {
 
     @Test
     public void testTextFont() {
+        // check the json
         MBLayer fontLayer = (SymbolMBLayer) fontStyle.layer("text-font");
-        List<FeatureTypeStyle> featureTypeFont = fontLayer.transformInternal(fontStyle);
         assertEquals(
                 true, ((JSONObject) fontLayer.getLayout().get("text-font")).containsKey("stops"));
+        JSONArray stops =
+                (JSONArray) ((JSONObject) fontLayer.getLayout().get("text-font")).get("stops");
+        assertEquals("Apple-Chancery", ((JSONArray) ((JSONArray) stops.get(0)).get(1)).get(0));
+
+        // check the SLD
+        List<FeatureTypeStyle> featureTypeFont = fontLayer.transformInternal(fontStyle);
+        TextSymbolizer text =
+                (TextSymbolizer) featureTypeFont.get(0).rules().get(0).symbolizers().get(0);
+        Font font = text.fonts().get(0);
+        Expression family = font.getFamily().get(0);
+        assertThat(family, instanceOf(FontAlternativesFunction.class));
+        FontAlternativesFunction fontAlternatives = (FontAlternativesFunction) family;
+        assertThat(firstParameter(fontAlternatives), instanceOf(MapBoxFontBaseNameFunction.class));
+        MapBoxFontBaseNameFunction baseNameFunction = firstParameter(fontAlternatives);
         assertEquals(
                 "Apple-Chancery",
-                ((JSONArray)
-                                ((JSONArray)
-                                                ((JSONArray)
-                                                                ((JSONObject)
-                                                                                fontLayer
-                                                                                        .getLayout()
-                                                                                        .get(
-                                                                                                "text-font"))
-                                                                        .get("stops"))
-                                                        .get(0))
-                                        .get(1))
-                        .get(0));
-        assertEquals(
-                "Apple-Chancery",
-                ((CategorizeFunction)
-                                ((TextSymbolizer)
-                                                featureTypeFont
-                                                        .get(0)
-                                                        .rules()
-                                                        .get(0)
-                                                        .symbolizers()
-                                                        .get(0))
-                                        .fonts()
-                                        .get(0)
-                                        .getFamily()
-                                        .get(0))
+                ((CategorizeFunction) firstParameter(baseNameFunction))
                         .getParameters()
                         .get(1)
                         .toString());
-        // System.out.println(
-        //                ((TextSymbolizer)
-        // featureTypeDefaults.get(0).rules().get(0).getSymbolizers()[0])
-        //                        .fonts()
-        //                        .get(0)
-        //                        .getFamily());
+        // weight
+        Expression weight = font.getWeight();
+        assertThat(weight, instanceOf(MapBoxFontWeightFunction.class));
+        MapBoxFontWeightFunction fontWeight = (MapBoxFontWeightFunction) weight;
         assertEquals(
-                "Open Sans Regular",
-                ((TextSymbolizer) featureTypeDefaults.get(0).rules().get(0).symbolizers().get(0))
-                        .fonts()
-                        .get(0)
-                        .getFamily()
-                        .get(0)
+                "Apple-Chancery",
+                ((CategorizeFunction) firstParameter(fontWeight))
+                        .getParameters()
+                        .get(1)
                         .toString());
+        // style
+        Expression style = font.getStyle();
+        assertThat(style, instanceOf(MapBoxFontStyleFunction.class));
+        MapBoxFontStyleFunction fontStyle = (MapBoxFontStyleFunction) style;
+        assertEquals(
+                "Apple-Chancery",
+                ((CategorizeFunction) firstParameter(fontStyle)).getParameters().get(1).toString());
+    }
+
+    @Test
+    public void testTextFeatureTypeDefaults() {
+        Rule rule = featureTypeDefaults.get(0).rules().get(0);
+        TextSymbolizer textSymbolizer = (TextSymbolizer) rule.symbolizers().get(0);
+        Font font = textSymbolizer.fonts().get(0);
+
+        Expression family = font.getFamily().get(0);
+        assertThat(family, instanceOf(FontAlternativesFunction.class));
+        FontAlternativesFunction fontAlternatives = (FontAlternativesFunction) family;
+        assertThat(firstParameter(fontAlternatives), instanceOf(Literal.class));
+        assertEquals("Open Sans", firstParameter(fontAlternatives).toString());
+    }
+
+    public <T> T firstParameter(Function function) {
+        return (T) function.getParameters().get(0);
     }
 }

@@ -18,6 +18,7 @@ package org.geotools.referencing.factory.epsg;
 
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.net.URI;
@@ -171,6 +172,7 @@ import tec.uom.se.unit.MetricPrefix;
  * @author Matthias Basler
  * @author Andrea Aime
  */
+@SuppressWarnings("PMD.CloseResource") // class implements its own PreparedStatement pooling
 public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory {
     /// Datum shift operation methods
     /** First Bursa-Wolf method. */
@@ -385,39 +387,42 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
     @Override
     public synchronized String getBackingStoreDescription() throws FactoryException {
         final Citation authority = getAuthority();
-        final TableWriter table = new TableWriter(null, " ");
-        final Vocabulary resources = Vocabulary.getResources(null);
-        CharSequence cs;
-        if ((cs = authority.getEdition()) != null) {
-            table.write(resources.getString(VocabularyKeys.VERSION_OF_$1, "EPSG"));
-            table.write(':');
-            table.nextColumn();
-            table.write(cs.toString());
-            table.nextLine();
-        }
-        try {
-            String s;
-            final DatabaseMetaData metadata = getConnection().getMetaData();
-            if ((s = metadata.getDatabaseProductName()) != null) {
-                table.write(resources.getLabel(VocabularyKeys.DATABASE_ENGINE));
+        try (TableWriter table = new TableWriter(null, " ")) {
+            final Vocabulary resources = Vocabulary.getResources(null);
+            CharSequence cs;
+            if ((cs = authority.getEdition()) != null) {
+                table.write(resources.getString(VocabularyKeys.VERSION_OF_$1, "EPSG"));
+                table.write(':');
                 table.nextColumn();
-                table.write(s);
-                if ((s = metadata.getDatabaseProductVersion()) != null) {
-                    table.write(' ');
-                    table.write(resources.getString(VocabularyKeys.VERSION_$1, s));
+                table.write(cs.toString());
+                table.nextLine();
+            }
+            try {
+                String s;
+                final DatabaseMetaData metadata = getConnection().getMetaData();
+                if ((s = metadata.getDatabaseProductName()) != null) {
+                    table.write(resources.getLabel(VocabularyKeys.DATABASE_ENGINE));
+                    table.nextColumn();
+                    table.write(s);
+                    if ((s = metadata.getDatabaseProductVersion()) != null) {
+                        table.write(' ');
+                        table.write(resources.getString(VocabularyKeys.VERSION_$1, s));
+                    }
+                    table.nextLine();
                 }
-                table.nextLine();
+                if ((s = metadata.getURL()) != null) {
+                    table.write(resources.getLabel(VocabularyKeys.DATABASE_URL));
+                    table.nextColumn();
+                    table.write(s);
+                    table.nextLine();
+                }
+            } catch (SQLException exception) {
+                throw new FactoryException(exception);
             }
-            if ((s = metadata.getURL()) != null) {
-                table.write(resources.getLabel(VocabularyKeys.DATABASE_URL));
-                table.nextColumn();
-                table.write(s);
-                table.nextLine();
-            }
-        } catch (SQLException exception) {
-            throw new FactoryException(exception);
+            return table.toString();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        return table.toString();
     }
 
     /**

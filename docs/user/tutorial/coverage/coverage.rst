@@ -24,7 +24,7 @@ directly on coverage objects.
 Image Tiling Application
 ========================
 
-The ImageLab tutorial covered loading and rendering coverages; this tutorial will demonstrate
+The ``ImageLab`` tutorial covered loading and rendering coverages; this tutorial will demonstrate
 performing basic operations -- such as crop and scale -- directly on a coverage using the
 **CoverageProcessor** and friends, as well as use the **Arguments** tool to make command line
 processing a little simpler. We will be creating a simple utility application to "tile" a coverage
@@ -33,7 +33,7 @@ processing a little simpler. We will be creating a simple utility application to
 Pre-requisites
 --------------
 
-Many of these may already be in our pom.xml from earlier examples, but at a minimum ensure that
+Many of these may already be in our ``pom.xml`` from earlier examples, but at a minimum ensure that
 the following dependencies are available
 
 .. literalinclude:: artifacts/pom.xml
@@ -104,7 +104,7 @@ Cropping
 --------
 Now that we have the tile envelope width and height we'll iterate over our tile counts and crop
 based on our target envelope. In this example we will manually create our parameters and use the
-coverage processor to perform the "CoverageCrop" operation. We'll encounter slightly simpler ways
+coverage processor to perform the ``CoverageCrop`` operation. We'll encounter slightly simpler ways
 to perform coverage operations in the next step.
 
 .. literalinclude:: /../src/main/java/org/geotools/tutorial/coverage/ImageTiler.java
@@ -114,7 +114,7 @@ to perform coverage operations in the next step.
 
 Scaling
 -------
-We can use the "Scale" operation to optionally scale our tiles. In this example we'll use the
+We can use the ``Scale`` operation to optionally scale our tiles. In this example we'll use the
 Operations class to make our lives a little easier. This class wraps operations and provides a
 slightly more type safe interface to them. Here we will scale our X and Y dimensions by the same
 factor in order to preserve the aspect ratio of our original coverage.
@@ -126,7 +126,7 @@ factor in order to preserve the aspect ratio of our original coverage.
 
 Running the application
 =======================
-Before we can run the application we'll need sample data. The `Natural Earth 50m`_. data will do nicely. 
+Before we can run the application we'll need sample data. The `Natural Earth 50m`_ data will do nicely. 
 
 .. _Natural Earth 50m: http://www.naturalearthdata.com/downloads/50m-raster-data/50m-natural-earth-2/
 
@@ -134,12 +134,12 @@ Running with an IDE
 -------------------
 If you've been following along in an IDE then the built in run functionality is the easiest way to
 run our application. For example, in Eclipse we can select Run -> Run Configurations from the menu
-and create a new Java Application config with the following configuration.
+and create a new ``Java Application Config`` with the following configuration.
 
 .. figure:: artifacts/runconf.png
 
-Under the *Arguments* tab we'll point our application at the downloaded raster data, give it a tile
-count of 16x8, output it to a temp director and scale the tiles by two.
+Under the ``Arguments`` tab we'll point our application at the downloaded raster data, give it a tile
+count of ``16x8``, output it to a temp director and scale the tiles by two.
 
 `-f /Users/devon/Downloads/NE2_50M_SR_W/NE2_50M_SR_W.tif -htc 16 -vtc 8 -o /Users/devon/tmp/tiles -scale 2.0`
 
@@ -160,7 +160,7 @@ Running With Maven
 ------------------
 If you're not using an IDE then the easiest way to run our application is to use the Maven exec task
 to run our application for us, as detailed in the `Maven Quickstart`_. We simply need to add the Maven Shade
-plugin to our pom.xml
+plugin to our ``pom.xml``
 
 
   ``mvn exec:java -Dexec.mainClass=org.geotools.tutorial.ImageTiler -Dexec.args="-f /Users/devon/Downloads/NE2_50M_SR_W/NE2_50M_SR_W.tif -htc 16 -vtc 8 -o /Users/devon/tmp/tiles -scale 2.0"``
@@ -171,7 +171,7 @@ Things to Try
 =============
 
 * See the `Coverage Processor`_ documentation for more information about the operations available
-  on coverages. One of the operations available in the CoverageProcessor is Resample (see the `Operations`_ class), which we can use to
+  on coverages. One of the operations available in the ``CoverageProcessor`` is ``Resample`` (see the `Operations`_ class), which we can use to
   reproject our coverage very easily. Try reprojecting the coverage into EPSG:3587 (Google's Web Mercator projection).
 * We can verify that our tiles look OK by loading them into the GeoServer `ImageMosaic`_ store. Alternatively
   we could programmatically create an `ImageMosaicReader`_ pointed at our directory files and read from it.

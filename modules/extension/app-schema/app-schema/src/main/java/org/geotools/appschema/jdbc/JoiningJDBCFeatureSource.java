@@ -1330,11 +1330,12 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             b.setName(new NameImpl(null, mv.getTargetTable()));
             b.add("id", Object.class);
             b.add("value", Object.class);
-            query.setPropertyNames(mv.getProperties());
+            JoiningQuery jdbcQuery = new JoiningQuery(query);
+            jdbcQuery.setPropertyNames(mv.getProperties());
             SimpleFeatureType featrueType =
                     SimpleFeatureTypeBuilder.retype(
-                            store.getSchema(mv.getTargetTable()), query.getPropertyNames());
-            reader = new JDBCFeatureReader(finalSql.toString(), cx, this, featrueType, query);
+                            store.getSchema(mv.getTargetTable()), jdbcQuery.getPropertyNames());
+            reader = new JDBCFeatureReader(finalSql.toString(), cx, this, featrueType, jdbcQuery);
         } catch (Exception e) {
             // close the connection
             store.closeSafe(cx);

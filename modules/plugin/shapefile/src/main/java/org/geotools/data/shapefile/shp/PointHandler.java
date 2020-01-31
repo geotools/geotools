@@ -17,9 +17,10 @@
 package org.geotools.data.shapefile.shp;
 
 import java.nio.ByteBuffer;
-import org.geotools.geometry.jts.JTS;
 import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.CoordinateXY;
+import org.locationtech.jts.geom.CoordinateXYM;
+import org.locationtech.jts.geom.CoordinateXYZM;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 
@@ -78,22 +79,28 @@ public class PointHandler implements ShapeHandler {
             return createNull();
         }
 
-        int dimension = shapeType == ShapeType.POINTZ && !flatGeometry ? 3 : 2;
-        CoordinateSequence cs =
-                JTS.createCS(geometryFactory.getCoordinateSequenceFactory(), 1, dimension);
+        Coordinate c;
+        if (shapeType == ShapeType.POINTZ) {
 
-        cs.setOrdinate(0, 0, buffer.getDouble());
-        cs.setOrdinate(0, 1, buffer.getDouble());
+            c = new CoordinateXYZM();
+        } else if (shapeType == ShapeType.POINTM) {
+            c = new CoordinateXYM();
+        } else {
+            c = new CoordinateXY();
+        }
+        c.setX(buffer.getDouble());
+        c.setY(buffer.getDouble());
 
         if (shapeType == ShapeType.POINTM) {
-            buffer.getDouble();
+            c.setM(buffer.getDouble());
         }
 
-        if (dimension > 2) {
-            cs.setOrdinate(0, 2, buffer.getDouble());
+        if (shapeType == ShapeType.POINTZ) {
+            c.setZ(buffer.getDouble());
+            c.setM(buffer.getDouble());
         }
 
-        return geometryFactory.createPoint(cs);
+        return geometryFactory.createPoint(c);
     }
 
     private Object createNull() {

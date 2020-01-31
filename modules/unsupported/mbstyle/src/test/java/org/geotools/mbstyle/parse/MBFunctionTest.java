@@ -441,9 +441,10 @@ public class MBFunctionTest {
                 .00001);
         verifyEnvironmentZoomLevel(9);
 
-        // Create a Mapbox Function
+        // Create a Mapbox Function (used to have a base of 0.1, but that puts it so close
+        // to the lime color that it becomes lime due to integer rounding)
         String jsonStr =
-                "{'type':'exponential', 'base': 0.1, 'stops':[[0,'blue'],[6,'red'],[12, 'lime']]}";
+                "{'type':'exponential', 'base': 0.5, 'stops':[[0,'blue'],[6,'red'],[12, 'lime']]}";
         JSONObject json = MapboxTestUtils.object(jsonStr);
         MBFunction function = new MBFunction(json);
 
@@ -452,7 +453,7 @@ public class MBFunctionTest {
                 "Is a zoom function",
                 EnumSet.of(MBFunction.FunctionCategory.ZOOM).equals(function.category()));
         assertEquals(MBFunction.FunctionType.EXPONENTIAL, function.getType());
-        assertEquals(0.1, function.getBase().doubleValue(), .00001);
+        assertEquals(0.5, function.getBase().doubleValue(), .00001);
 
         Function fn = (Function) function.color();
         Color result = fn.evaluate(feature, Color.class);

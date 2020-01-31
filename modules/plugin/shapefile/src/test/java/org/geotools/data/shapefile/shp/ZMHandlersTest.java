@@ -24,11 +24,13 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.test.TestData;
 import org.junit.Test;
+import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.MultiPolygon;
 import org.opengis.feature.simple.SimpleFeature;
 
 /** @author ian */
-public class PointHandlerTest {
+public class ZMHandlersTest {
 
     /**
      * Test method for {@link org.geotools.data.shapefile.shp.PointHandler#read(java.nio.ByteBuffer,
@@ -38,7 +40,7 @@ public class PointHandlerTest {
      * @throws ShapefileException
      */
     @Test
-    public void testReadMZ() throws ShapefileException, IOException {
+    public void testReadMZPoints() throws ShapefileException, IOException {
         URL url = TestData.url(ShapefileDataStore.class, "mzvalues/zmpoints.shp");
         ShapefileDataStore store = new ShapefileDataStore(url);
         SimpleFeature feature = DataUtilities.first(store.getFeatureSource().getFeatures());
@@ -50,7 +52,7 @@ public class PointHandlerTest {
     }
 
     @Test
-    public void testReadM() throws ShapefileException, IOException {
+    public void testReadMPoints() throws ShapefileException, IOException {
         URL url = TestData.url(ShapefileDataStore.class, "mzvalues/mpoints.shp");
         ShapefileDataStore store = new ShapefileDataStore(url);
         SimpleFeature feature = DataUtilities.first(store.getFeatureSource().getFeatures());
@@ -62,7 +64,7 @@ public class PointHandlerTest {
     }
 
     @Test
-    public void testReadZ() throws ShapefileException, IOException {
+    public void testReadZPoints() throws ShapefileException, IOException {
         URL url = TestData.url(ShapefileDataStore.class, "mzvalues/zpoints.shp");
         ShapefileDataStore store = new ShapefileDataStore(url);
         SimpleFeature feature = DataUtilities.first(store.getFeatureSource().getFeatures());
@@ -72,10 +74,44 @@ public class PointHandlerTest {
         assertEquals("wrong y", 5, geom.getCoordinate().getY(), 0.00001);
         assertEquals("wrong z", 1, geom.getCoordinate().getZ(), 0.00001);
     }
-    /**
-     * Test method for {@link
-     * org.geotools.data.shapefile.shp.PointHandler#write(java.nio.ByteBuffer, java.lang.Object)}.
-     */
+
     @Test
-    public void testWrite() {}
+    public void testReadMZPolygon() throws ShapefileException, IOException {
+        URL url = TestData.url(ShapefileDataStore.class, "mzvalues/mzpolygons.shp");
+        ShapefileDataStore store = new ShapefileDataStore(url);
+        SimpleFeature feature = DataUtilities.first(store.getFeatureSource().getFeatures());
+        MultiPolygon geom = (MultiPolygon) feature.getDefaultGeometry();
+        Coordinate coordinate = geom.getCoordinates()[0];
+
+        assertEquals("wrong x", 96.944404, coordinate.getX(), 0.001);
+        assertEquals("wrong y", 653.67509, coordinate.getY(), 0.001);
+        assertEquals("wrong z", 20, coordinate.getZ(), 0.00001);
+        assertEquals("wrong m", 10, coordinate.getM(), 0.00001);
+    }
+
+    @Test
+    public void testReadMPolygon() throws ShapefileException, IOException {
+        URL url = TestData.url(ShapefileDataStore.class, "mzvalues/mpolygons.shp");
+        ShapefileDataStore store = new ShapefileDataStore(url);
+        SimpleFeature feature = DataUtilities.first(store.getFeatureSource().getFeatures());
+        MultiPolygon geom = (MultiPolygon) feature.getDefaultGeometry();
+        Coordinate coordinate = geom.getCoordinates()[0];
+
+        assertEquals("wrong x", 96.944404, coordinate.getX(), 0.001);
+        assertEquals("wrong y", 653.67509, coordinate.getY(), 0.001);
+        assertEquals("wrong m", 10, coordinate.getM(), 0.00001);
+    }
+
+    @Test
+    public void testReadZPolygon() throws ShapefileException, IOException {
+        URL url = TestData.url(ShapefileDataStore.class, "mzvalues/zpolygons.shp");
+        ShapefileDataStore store = new ShapefileDataStore(url);
+        SimpleFeature feature = DataUtilities.first(store.getFeatureSource().getFeatures());
+        MultiPolygon geom = (MultiPolygon) feature.getDefaultGeometry();
+        Coordinate coordinate = geom.getCoordinates()[0];
+
+        assertEquals("wrong x", 96.944404, coordinate.getX(), 0.001);
+        assertEquals("wrong y", 653.67509, coordinate.getY(), 0.001);
+        assertEquals("wrong z", 20, coordinate.getZ(), 0.00001);
+    }
 }

@@ -27,6 +27,7 @@ import java.awt.*;
 import java.util.List;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.renderer.lite.StreamingRendererTest;
 import org.geotools.renderer.style.FontCache;
@@ -70,7 +71,33 @@ public class MBFunctionFactoryTest {
     }
 
     @Test
-    public void expontentialFunctionNumeric() throws Exception {
+    public void exponentialFunctionNumericMapbox() throws CQLException {
+        // replicates Mapbox tests at
+        // https://github.com/mapbox/mapbox-gl-js/blob/master/test/integration/expression-tests/interpolate/exponential/test.json
+
+        Function expr = (Function) ECQL.toExpression("Exponential(\".\", 2, 1, 2, 3, 6)");
+        double eps = 0.01d;
+        assertEquals(2, expr.evaluate(0, Double.class), eps);
+        assertEquals(2, expr.evaluate(1, Double.class), eps);
+        assertEquals(3.33, expr.evaluate(2, Double.class), eps);
+        assertEquals(6, expr.evaluate(3, Double.class), eps);
+        assertEquals(6, expr.evaluate(4, Double.class), eps);
+    }
+
+    @Test
+    public void exponentialFunctionSingleStopMapbox() throws CQLException {
+        // replicates Mapbox tests at
+        // https://github.com/mapbox/mapbox-gl-js/blob/master/test/integration/expression-tests/interpolate/exponential-single-stop/test.json
+
+        Function expr = (Function) ECQL.toExpression("Exponential(\".\", 2, 1, 2)");
+        double eps = 0.01d;
+        assertEquals(2, expr.evaluate(0, Double.class), eps);
+        assertEquals(2, expr.evaluate(1, Double.class), eps);
+        assertEquals(2, expr.evaluate(2, Double.class), eps);
+    }
+
+    @Test
+    public void exponentialFunctionNumeric() throws Exception {
         //
         // base 1.0 works as a simple interpolate
         //

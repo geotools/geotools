@@ -46,6 +46,7 @@ Before requesting data, dimension members have to be found out, hence every SDMX
 feature type that contains the list of dimensions and dimension members.
 
 For example, the data cube (dataflow, in SDMX jargon) ABORIGINAL_POP_PROJ_REMOTE__SDMX has a "twin" ABORIGINAL_POP_PROJ_REMOTE__SDMX__DIMENSIONS that holds dimensions and members.
+Both the "__SDMX" and "__SDMX__DIMENSIONS" feature types have to be added.
 
 The list of dimensions can be gotten with the following query (change hostname as needed): 
 curl -XGET "http://geoserverarcgis/geoserver/wfs?request=GetFeature&service=wfs&version=1.1.0&typeName=aurin:ABORIGINAL_POP_PROJ_REMOTE__SDMX__DIMENSIONS&cql_filter=CODE=%27all%27"

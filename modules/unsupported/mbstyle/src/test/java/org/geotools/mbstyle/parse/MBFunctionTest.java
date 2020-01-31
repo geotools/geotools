@@ -702,7 +702,7 @@ public class MBFunctionTest {
 
     /**
      * Tests that a MapBox exponential zoom function (outputting a numeric value) correctly
-     * interpolates values for zoom levels between stops. Tests exponential base == 1 and  != 1.
+     * interpolates values for zoom levels between stops. Tests exponential base == 1 and != 1.
      *
      * @throws Exception
      */

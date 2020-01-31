@@ -987,7 +987,6 @@ public class SymbolMBLayer extends MBLayer {
      * evaluates to one of "left", "right", or "center".
      *
      * @see #getTextJustify()
-     *
      * @return Expression of text justification
      */
     public Expression textJustify() {

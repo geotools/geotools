@@ -329,7 +329,8 @@ public abstract class MBLayer {
     /**
      * Transforms a given {@link MBLayer} to a GeoTools {@link FeatureTypeStyle}.
      *
-     * @param styleContext The MBStyle to which this layer belongs, used to resolving sprite and glyph names to full urls.
+     * @param styleContext The MBStyle to which this layer belongs, used to resolving sprite and
+     *     glyph names to full urls.
      * @param minScaleDenominator Used to determine zoom level restrictions for generated rules
      * @param maxScaleDenominator Used to determine zoom level restrictions for generated rules
      * @return A feature type style from the provided layer, or null if the visibility of that layer

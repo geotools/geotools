@@ -32,55 +32,58 @@ import org.opengis.style.SemanticType;
 
 /**
  * MBFilter json wrapper, allowing conversion to a GeoTools Filter.
- * <p>
- * This wrapper class is used by {@link MBObjectParser} to generate rule filters when transforming
- * MBStyle.
- * </p>
- * <p>
- * This wrapper and {@link MBFunction} are a matched set handling dynamic data.
- * </p>
+ *
+ * <p>This wrapper class is used by {@link MBObjectParser} to generate rule filters when
+ * transforming MBStyle.
+ *
+ * <p>This wrapper and {@link MBFunction} are a matched set handling dynamic data.
  *
  * <h2>About MapBox Filter</h2>
- * <p>
- * A filter selects specific features from a layer. A filter is an array of one of the following
+ *
+ * <p>A filter selects specific features from a layer. A filter is an array of one of the following
  * forms:
- * </p>
- * <p>
- * Existential Filters
- * </p>
+ *
+ * <p>Existential Filters
+ *
  * <ul>
- * <li><code>["has", key]</code> - feature[key] exists</li>
- * <li><code>["!has", key]</code> - feature[key] does not exist</li>
+ *   <li><code>["has", key]</code> - feature[key] exists
+ *   <li><code>["!has", key]</code> - feature[key] does not exist
  * </ul>
- * <p>
- * Comparison Filters:
- * </p>
+ *
+ * <p>Comparison Filters:
+ *
  * <ul>
- * <li>["==", key, value] equality: feature[key] = value</li>
- * <li>["!=", key, value] inequality: feature[key] ≠ value</li>
- * <li>["&gt;", key, value] greater than: feature[key] &gt; value</li>
- * <li>["&gt;=", key, value] greater than or equal: feature[key] ≥ value</li>
- * <li>["&lt;", key, value] less than: feature[key] &lt; value</li>
- * <li>["&lt;=", key, value] less than or equal: feature[key] ≤ value</li>
+ *   <li>["==", key, value] equality: feature[key] = value
+ *   <li>["!=", key, value] inequality: feature[key] ≠ value
+ *   <li>["&gt;", key, value] greater than: feature[key] &gt; value
+ *   <li>["&gt;=", key, value] greater than or equal: feature[key] ≥ value
+ *   <li>["&lt;", key, value] less than: feature[key] &lt; value
+ *   <li>["&lt;=", key, value] less than or equal: feature[key] ≤ value
  * </ul>
- * <p>
- * Set Memmbership Filters:</p>
+ *
+ * <p>Set Memmbership Filters:
+ *
  * <ul>
- * <li>["in", key, v0, ..., vn] set inclusion: feature[key] ∈ {v0, ..., vn}</li>
- * <li>["!in", key, v0, ..., vn] set exclusion: feature[key] ∉ {v0, ..., vn}</li>
+ *   <li>["in", key, v0, ..., vn] set inclusion: feature[key] ∈ {v0, ..., vn}
+ *   <li>["!in", key, v0, ..., vn] set exclusion: feature[key] ∉ {v0, ..., vn}
  * </ul>
- * <p>
- * Combining Filters:</p>
+ *
+ * <p>Combining Filters:
+ *
  * <ul>
- * <li>["all", f0, ..., fn] logical AND: f0 ∧ ... ∧ fn</li>
- * <li>["any", f0, ..., fn] logical OR: f0 ∨ ... ∨ fn</li>
- * <li>["none", f0, ..., fn] logical NOR: ¬f0 ∧ ... ∧ ¬fn</li>
+ *   <li>["all", f0, ..., fn] logical AND: f0 ∧ ... ∧ fn
+ *   <li>["any", f0, ..., fn] logical OR: f0 ∨ ... ∨ fn
+ *   <li>["none", f0, ..., fn] logical NOR: ¬f0 ∧ ... ∧ ¬fn
  * </ul>
- * <p>
- * A key must be a string that identifies a feature property, or one of the following special keys:</p>
+ *
+ * <p>A key must be a string that identifies a feature property, or one of the following special
+ * keys:
+ *
  * <ul>
- * <li>"$type": the feature type. This key may be used with the "==",  "!=", "in", and "!in" operators. Possible values are  "Point", "LineString", and "Polygon".</li>
- * <li>"$id": the feature identifier. This key may be used with the "==",  "!=", "has", "!has", "in", and "!in" operators.</li>
+ *   <li>"$type": the feature type. This key may be used with the "==", "!=", "in", and "!in"
+ *       operators. Possible values are "Point", "LineString", and "Polygon".
+ *   <li>"$id": the feature identifier. This key may be used with the "==", "!=", "has", "!has",
+ *       "in", and "!in" operators.
  * </ul>
  *
  * @see Filter

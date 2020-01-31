@@ -186,7 +186,9 @@ public class FunctionParseTest {
                                 contains(10.0, "#00FF00"),
                                 contains(30.0, "#FF8800"))));
     }
-    /** Verify that an interval function for number can be parsed.
+    /**
+     * Verify that an interval function for number can be parsed.
+     *
      * @throws ParseException for malformed json
      * @throws IOException problem reading json
      */

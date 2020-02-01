@@ -2362,6 +2362,14 @@
   <!-- =========================================================== -->
   <pluginRepositories>
     <pluginRepository>
+      <id>central.maven.org</id>
+      <name>Central Maven repository</name>
+      <url>https://repo1.maven.org/maven2</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </pluginRepository>
+    <pluginRepository>
       <id>osgeo</id>
       <name>Open Source Geospatial Foundation Maven 2 Repository</name>
       <url>http://download.osgeo.org/webdav/geotools/</url>

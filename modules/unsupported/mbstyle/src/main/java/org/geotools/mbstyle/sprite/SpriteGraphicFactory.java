@@ -171,7 +171,7 @@ public class SpriteGraphicFactory implements ExternalGraphicFactory, GraphicCach
      * MBFormatException} if missing. The "size" parameter is optional and defaults to "1".
      *
      * @param url
-     * @return
+     * @return Sprite parameters map providing name, icons, size values.
      */
     protected static Map<String, String> parseFragmentParams(URL url) {
         String urlStr = url.toExternalForm();

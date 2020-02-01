@@ -33,10 +33,10 @@ public class MBHeatmap extends MBExpression {
      * of how many data points are crowded around a particular pixel. Can only be used in the
      * heatmap-color property. Example: ["heatmap-density"]: number
      *
-     * @return
+     * @return heat map density expression
      */
     public Expression heatmapDensity() {
-        return null;
+        return null; // throw new UnsupportedOperationException( ... )
     }
 
     @Override

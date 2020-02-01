@@ -506,7 +506,7 @@ public class MBObjectParser {
      * Retrieve an object of the provided type in the JSONArray at this index, throwing an {@link
      * MBFormatException} if no object of that type is found at that index of the array.
      *
-     * @param <T>? Class to return
+     * @param <T> Class to return
      * @param type The type of the object to retrieve.
      * @param json The JSONArray in which to retrieve the object.
      * @param index The index in the JSONArray at which to retrieve the object.

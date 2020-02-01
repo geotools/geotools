@@ -34,7 +34,7 @@ public class MBColor extends MBExpression {
      * 255, and an alpha component of 1. If any component is out of range, the expression is an
      * error. Example: ["rgb", number, number, number]: color
      *
-     * @return
+     * @return Color expression
      */
     public Expression colorRGB() {
         if (json.size() == 4) {
@@ -62,7 +62,7 @@ public class MBColor extends MBExpression {
      * and an alpha component which must range between 0 and 1. If any component is out of range,
      * the expression is an error. Example: ["rgba", number, number, number, number]: color
      *
-     * @return
+     * @return Color expression
      */
     // Currently unsupported
     public Expression colorRGBA() {
@@ -73,7 +73,7 @@ public class MBColor extends MBExpression {
      * Returns a four-element array containing the input color's red, green, blue, and alpha
      * components, in that order. Example: ["to-rgba", color]: array&lt;number, 4&gt;
      *
-     * @return
+     * @return color expression
      */
     // Currently unsupported
     public Expression colorToRGBA() {

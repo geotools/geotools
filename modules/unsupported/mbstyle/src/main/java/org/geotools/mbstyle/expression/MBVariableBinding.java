@@ -29,19 +29,19 @@ public class MBVariableBinding extends MBExpression {
     /**
      * Returns a string describing the type of the given value. Example: ["typeof", value]: string
      *
-     * @return
+     * @return type of provided value expression (not implemented)
      */
     public Expression variableBindingLet() {
-        return null;
+        return null; // new UnsupportedOperationException( ... )
     }
 
     /**
      * Returns a string describing the type of the given value. Example: ["typeof", value]: string
      *
-     * @return
+     * @return type of provided value expresion (not implemented)
      */
     public Expression variableBindingVar() {
-        return null;
+        return null; // new UnsupportedOperationException( ... )
     }
 
     @Override

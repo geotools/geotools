@@ -521,7 +521,7 @@ public class MBFunction {
      *       value as a number
      * </ul>
      *
-     * @retun Expression providing font string (used for `text-font`)
+     * @return Expression providing font string (used for `text-font`)
      */
     public Expression font() {
         Expression input = input();

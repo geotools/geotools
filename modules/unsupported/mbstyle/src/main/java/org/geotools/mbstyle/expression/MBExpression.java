@@ -179,7 +179,7 @@ public abstract class MBExpression extends FunctionImpl {
      * transform Mapbox tokens into CQL expressions.
      *
      * @param ex
-     * @return
+     * @return cq; text expression
      */
     public Expression transformLiteral(Expression ex) {
         String text = ex.evaluate(null, String.class);

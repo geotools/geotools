@@ -36,10 +36,10 @@ public class MBRampsScalesCurves extends MBExpression {
      * number, stop_output_1: OutputType, stop_input_n: number, stop_output_n: OutputType, ... ]:
      * OutputType (number, array&lt;number&gt;, or Color)"
      *
-     * @return
+     * @return interpolate expression (not implemented)
      */
     public Expression rscInterpolate() {
-        return null;
+        return null; // new UnsupportedOperationException( ...  )
     }
 
     /**
@@ -49,10 +49,10 @@ public class MBRampsScalesCurves extends MBExpression {
      * Returns the output value of the stop just less than the input, or the first input if the
      * input is less than the first stop.
      *
-     * @return
+     * @return expression from stop values (unimplemented)
      */
     public Expression rscStep() {
-        return null;
+        return null; // new UnsupportedOperationException( ... )
     }
 
     @Override

@@ -31,7 +31,7 @@ public class MBMath extends MBExpression {
      * single input, returns the result of subtracting it from 0. Example: ["-", number, number]:
      * number ["-", number]: number
      *
-     * @return
+     * @return subtract expression
      */
     public Expression mathSubtract() {
         Expression e1 = parse.string(json, 1);
@@ -42,7 +42,7 @@ public class MBMath extends MBExpression {
     /**
      * Returns the product of the inputs. Example: ["*", number, number, ...]: number
      *
-     * @return
+     * @return multiply expression
      */
     public Expression mathMultiply() {
         Expression first = parse.string(json, 1);
@@ -59,7 +59,7 @@ public class MBMath extends MBExpression {
      * Returns the result of floating point division of the first input by the second. Example:
      * ["/", number, number]: number
      *
-     * @return
+     * @return divide expression
      */
     public Expression mathDivide() {
         Expression e1 = parse.string(json, 1);
@@ -71,7 +71,7 @@ public class MBMath extends MBExpression {
      * Returns the remainder after integer division of the first input by the second. Example: ["%",
      * number, number]: number
      *
-     * @return
+     * @return remainder expression
      */
     public Expression mathRemainder() {
         Expression e1 = parse.string(json, 1);
@@ -83,7 +83,7 @@ public class MBMath extends MBExpression {
      * Returns the result of raising the first input to the power specified by the second. Example:
      * ["^", number, number]: number
      *
-     * @return
+     * @return exponent expression
      */
     public Expression mathExponent() {
         Expression e1 = parse.string(json, 1);
@@ -94,7 +94,7 @@ public class MBMath extends MBExpression {
     /**
      * Returns the sum of the inputs. Example: ["+", number, number...]: number
      *
-     * @return
+     * @return add expression
      */
     public Expression mathAdd() {
         Expression first = parse.string(json, 1);
@@ -110,7 +110,7 @@ public class MBMath extends MBExpression {
     /**
      * Returns the arccosine of the input. Example: ["acos", number]: number
      *
-     * @return
+     * @return acos expression
      */
     public Expression mathAcos() {
         Expression e1 = parse.string(json, 1);
@@ -120,7 +120,7 @@ public class MBMath extends MBExpression {
     /**
      * Returns the arcsine of the input. Example: ["asin", number]: number
      *
-     * @return
+     * @return asin expression
      */
     public Expression mathAsin() {
         Expression e1 = parse.string(json, 1);
@@ -130,7 +130,7 @@ public class MBMath extends MBExpression {
     /**
      * Returns the arctangent of the input. Example: ["atan", number]: number
      *
-     * @return
+     * @return atan expression
      */
     public Expression mathAtan() {
         Expression e1 = parse.string(json, 1);
@@ -140,7 +140,7 @@ public class MBMath extends MBExpression {
     /**
      * Returns the cosine of the input. Example: ["cos", number]: number
      *
-     * @return
+     * @return cos expression
      */
     public Expression mathCos() {
         Expression e1 = parse.string(json, 1);
@@ -150,7 +150,7 @@ public class MBMath extends MBExpression {
     /**
      * Returns the mathematical constant e. Example: ["e"]: number
      *
-     * @return
+     * @return constant e literal
      */
     public Expression mathE() {
         return ff.literal(Math.E);
@@ -159,7 +159,7 @@ public class MBMath extends MBExpression {
     /**
      * Returns the natural logarithm of the input. Example: ["ln", number]: number
      *
-     * @return
+     * @return log expression
      */
     public Expression mathLn() {
         Expression e1 = parse.string(json, 1);
@@ -169,7 +169,7 @@ public class MBMath extends MBExpression {
     /**
      * Returns mathematical constant ln(2). Example: ["ln2"]: number
      *
-     * @return
+     * @return min(2) as a literal
      */
     public Expression mathLn2() {
         return ff.literal(Math.log(2));
@@ -178,7 +178,7 @@ public class MBMath extends MBExpression {
     /**
      * Returns the base-ten logarithm of the input. Example: ["log10", number]: number
      *
-     * @return
+     * @return log10 expression
      */
     public Expression mathLog10() {
         Expression e1 = parse.string(json, 1);
@@ -188,7 +188,7 @@ public class MBMath extends MBExpression {
     /**
      * Returns the base-two logarithm of the input. Example: ["log2", number]: number
      *
-     * @return
+     * @return base to log expression
      */
     public Expression mathLog2() {
         Expression e1 = parse.string(json, 1);
@@ -198,7 +198,7 @@ public class MBMath extends MBExpression {
     /**
      * Returns the maximum value of the inputs. Example: ["max", number, number, ...]: number
      *
-     * @return
+     * @return max expression
      */
     public Expression mathMax() {
         Expression first = parse.string(json, 1);
@@ -214,7 +214,7 @@ public class MBMath extends MBExpression {
     /**
      * Returns the minimum value of the inputs. Example: ["min", number, number, ...]: number
      *
-     * @return
+     * @return min expression
      */
     public Expression mathMin() {
         Expression first = parse.string(json, 1);
@@ -230,7 +230,7 @@ public class MBMath extends MBExpression {
     /**
      * Returns the mathematical constant pi. Example: ["pi"]: number
      *
-     * @return
+     * @return pi literal
      */
     public Expression mathPi() {
         return ff.function("pi");
@@ -239,7 +239,7 @@ public class MBMath extends MBExpression {
     /**
      * Returns the sine of the input. Example: ["sin", number]: number
      *
-     * @return
+     * @return sin expression
      */
     public Expression mathSin() {
         Expression e1 = parse.string(json, 1);
@@ -249,7 +249,7 @@ public class MBMath extends MBExpression {
     /**
      * Returns the square root of the input. Example: ["sqrt", number]: number
      *
-     * @return
+     * @return sqrt expression
      */
     public Expression mathSqrt() {
         Expression e1 = parse.string(json, 1);
@@ -259,7 +259,7 @@ public class MBMath extends MBExpression {
     /**
      * Returns the tangent of the input. Example: ["tan", number]: number
      *
-     * @return
+     * @return tan expression
      */
     public Expression mathTan() {
         Expression e1 = parse.string(json, 1);

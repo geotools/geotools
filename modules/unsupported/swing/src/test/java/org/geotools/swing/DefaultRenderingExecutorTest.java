@@ -123,7 +123,7 @@ public class DefaultRenderingExecutorTest extends RenderingExecutorTestBase {
         listener.setExpected(WaitingRenderingExecutorListener.Type.STARTED);
         listener.setExpected(WaitingRenderingExecutorListener.Type.COMPLETED);
         executor.submit(mapContent, renderer, graphics, listener);
-        int timeoutMillis = 1000;
+        int timeoutMillis = 5000;
         listener.await(WaitingRenderingExecutorListener.Type.STARTED, timeoutMillis);
         listener.await(WaitingRenderingExecutorListener.Type.COMPLETED, timeoutMillis);
         assertTrue(listener.eventReceived(WaitingRenderingExecutorListener.Type.STARTED));

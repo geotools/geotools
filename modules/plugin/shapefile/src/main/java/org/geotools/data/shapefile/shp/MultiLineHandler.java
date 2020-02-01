@@ -151,19 +151,36 @@ public class MultiLineHandler implements ShapeHandler {
                 clonePoint = false;
             }
 
-            CoordinateSequence cs =
-                    JTS.createCS(
-                            geometryFactory.getCoordinateSequenceFactory(), length, dimensions);
+            CoordinateSequence cs;
+            if (shapeType == ShapeType.ARCM) {
+                cs =
+                        JTS.createCS(
+                                geometryFactory.getCoordinateSequenceFactory(),
+                                length,
+                                dimensions + 1,
+                                1);
+            } else if (shapeType == ShapeType.ARCZ) {
+                cs =
+                        JTS.createCS(
+                                geometryFactory.getCoordinateSequenceFactory(),
+                                length,
+                                dimensions + 1,
+                                1);
+            } else {
+                cs =
+                        JTS.createCS(
+                                geometryFactory.getCoordinateSequenceFactory(), length, dimensions);
+            }
             double[] xy = new double[xyLength * 2];
             doubleBuffer.get(xy);
             for (int i = 0; i < xyLength; i++) {
-                cs.setOrdinate(i, 0, xy[i * 2]);
-                cs.setOrdinate(i, 1, xy[i * 2 + 1]);
+                cs.setOrdinate(i, CoordinateSequence.X, xy[i * 2]);
+                cs.setOrdinate(i, CoordinateSequence.Y, xy[i * 2 + 1]);
             }
 
             if (clonePoint) {
-                cs.setOrdinate(1, 0, cs.getOrdinate(0, 0));
-                cs.setOrdinate(1, 1, cs.getOrdinate(0, 1));
+                cs.setOrdinate(1, CoordinateSequence.X, cs.getOrdinate(0, CoordinateSequence.X));
+                cs.setOrdinate(1, CoordinateSequence.Y, cs.getOrdinate(0, CoordinateSequence.Y));
             }
 
             lines[part] = cs;
@@ -171,7 +188,7 @@ public class MultiLineHandler implements ShapeHandler {
 
         // if we have another coordinate, read and add to the coordinate
         // sequences
-        if (dimensions == 3) {
+        if (shapeType == ShapeType.ARCZ) {
             // z min, max
             // buffer.position(buffer.position() + 2 * 8);
             doubleBuffer.position(doubleBuffer.position() + 2);
@@ -195,7 +212,35 @@ public class MultiLineHandler implements ShapeHandler {
                 double[] z = new double[length];
                 doubleBuffer.get(z);
                 for (int i = 0; i < length; i++) {
-                    lines[part].setOrdinate(i, 2, z[i]);
+                    lines[part].setOrdinate(i, CoordinateSequence.Z, z[i]);
+                }
+            }
+        }
+        if (shapeType == ShapeType.ARCZ || shapeType == ShapeType.ARCM) {
+            // M min, max
+            // buffer.position(buffer.position() + 2 * 8);
+            doubleBuffer.position(doubleBuffer.position() + 2);
+            for (int part = 0; part < numParts; part++) {
+                start = partOffsets[part];
+
+                if (part == (numParts - 1)) {
+                    finish = numPoints;
+                } else {
+                    finish = partOffsets[part + 1];
+                }
+
+                length = finish - start;
+                if (length == 1) {
+                    length = 2;
+                    clonePoint = true;
+                } else {
+                    clonePoint = false;
+                }
+
+                double[] m = new double[length];
+                doubleBuffer.get(m);
+                for (int i = 0; i < length; i++) {
+                    lines[part].setOrdinate(i, CoordinateSequence.M, m[i]);
                 }
             }
         }

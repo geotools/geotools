@@ -26,6 +26,7 @@ import org.geotools.test.TestData;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.opengis.feature.simple.SimpleFeature;
 
@@ -73,6 +74,46 @@ public class ZMHandlersTest {
         assertEquals("wrong x", 10, geom.getCoordinate().getX(), 0.00001);
         assertEquals("wrong y", 5, geom.getCoordinate().getY(), 0.00001);
         assertEquals("wrong z", 1, geom.getCoordinate().getZ(), 0.00001);
+    }
+
+    @Test
+    public void testReadMZLine() throws ShapefileException, IOException {
+        URL url = TestData.url(ShapefileDataStore.class, "mzvalues/mzlines.shp");
+        ShapefileDataStore store = new ShapefileDataStore(url);
+        SimpleFeature feature = DataUtilities.first(store.getFeatureSource().getFeatures());
+        MultiLineString geom = (MultiLineString) feature.getDefaultGeometry();
+        Coordinate coordinate = geom.getCoordinates()[0];
+
+        assertEquals("wrong x", 589.4648, coordinate.getX(), 0.001);
+        assertEquals("wrong y", 909.9963, coordinate.getY(), 0.001);
+        assertEquals("wrong z", 20, coordinate.getZ(), 0.00001);
+        assertEquals("wrong m", 10, coordinate.getM(), 0.00001);
+    }
+
+    @Test
+    public void testReadMLine() throws ShapefileException, IOException {
+        URL url = TestData.url(ShapefileDataStore.class, "mzvalues/mlines.shp");
+        ShapefileDataStore store = new ShapefileDataStore(url);
+        SimpleFeature feature = DataUtilities.first(store.getFeatureSource().getFeatures());
+        MultiLineString geom = (MultiLineString) feature.getDefaultGeometry();
+        Coordinate coordinate = geom.getCoordinates()[0];
+
+        assertEquals("wrong x", 589.4648, coordinate.getX(), 0.001);
+        assertEquals("wrong y", 909.9963, coordinate.getY(), 0.001);
+        assertEquals("wrong m", 10, coordinate.getM(), 0.00001);
+    }
+
+    @Test
+    public void testReadZLine() throws ShapefileException, IOException {
+        URL url = TestData.url(ShapefileDataStore.class, "mzvalues/zlines.shp");
+        ShapefileDataStore store = new ShapefileDataStore(url);
+        SimpleFeature feature = DataUtilities.first(store.getFeatureSource().getFeatures());
+        MultiLineString geom = (MultiLineString) feature.getDefaultGeometry();
+        Coordinate coordinate = geom.getCoordinates()[0];
+
+        assertEquals("wrong x", 589.4648, coordinate.getX(), 0.001);
+        assertEquals("wrong y", 909.9963, coordinate.getY(), 0.001);
+        assertEquals("wrong z", 20, coordinate.getZ(), 0.00001);
     }
 
     @Test

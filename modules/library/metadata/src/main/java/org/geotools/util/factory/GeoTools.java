@@ -133,8 +133,7 @@ public final class GeoTools {
      * The bindings between {@linkplain System#getProperties system properties} and a hint key. This
      * field must be declared before any call to the {@link #bind} method.
      */
-    private static final Map<String, RenderingHints.Key> BINDINGS =
-            new HashMap<String, RenderingHints.Key>();
+    private static final Map<String, RenderingHints.Key> BINDINGS = new HashMap<>();
 
     /**
      * The {@linkplain System#getProperty(String) system property} key for the default value to be
@@ -303,16 +302,11 @@ public final class GeoTools {
      *     property.
      */
     private static void bind(final String property, final RenderingHints.Key key) {
-        synchronized (BINDINGS) {
-            final RenderingHints.Key old = BINDINGS.put(property, key);
-            if (old == null) {
-                return;
-            }
-            // Roll back
-            BINDINGS.put(property, old);
+        final RenderingHints.Key old = BINDINGS.putIfAbsent(property, key);
+        if (old != null) {
+            throw new IllegalArgumentException(
+                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "property", property));
         }
-        throw new IllegalArgumentException(
-                Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "property", property));
     }
 
     /**
@@ -746,51 +740,49 @@ public final class GeoTools {
      */
     static boolean scanForSystemHints(final Map<RenderingHints.Key, Object> hints) {
         boolean changed = false;
-        synchronized (BINDINGS) {
-            for (final Map.Entry<String, RenderingHints.Key> entry : BINDINGS.entrySet()) {
-                final String propertyKey = entry.getKey();
-                final String property;
-                try {
-                    property = System.getProperty(propertyKey);
-                } catch (SecurityException e) {
-                    unexpectedException(e);
+
+        for (final Map.Entry<String, RenderingHints.Key> entry : BINDINGS.entrySet()) {
+            final String propertyKey = entry.getKey();
+            final String property;
+            try {
+                property = System.getProperty(propertyKey);
+                if (property == null) {
                     continue;
                 }
-                if (property != null) {
-                    /*
-                     * Converts the system property value from String to Object (java.lang.Boolean
-                     * or java.lang.Number). We perform this conversion only if the key is exactly
-                     * of kind Hints.Key,  not a subclass like ClassKey, in order to avoid useless
-                     * class loading on  'getValueClass()'  method invocation (ClassKey don't make
-                     * sense for Boolean and Number, which are the only types that we convert here).
-                     */
-                    Object value = property;
-                    final RenderingHints.Key hintKey = entry.getValue();
-                    if (hintKey.getClass().equals(Hints.Key.class)) {
-                        final Class<?> type = ((Hints.Key) hintKey).getValueClass();
-                        if (type.equals(Boolean.class)) {
-                            value = Boolean.valueOf(property);
-                        } else if (Number.class.isAssignableFrom(type))
-                            try {
-                                value = Classes.valueOf(type, property);
-                            } catch (NumberFormatException e) {
-                                unexpectedException(e);
-                                continue;
-                            }
-                    }
-                    final Object old;
+            } catch (SecurityException e) {
+                unexpectedException(e);
+                continue;
+            }
+            /*
+             * Converts the system property value from String to Object (java.lang.Boolean
+             * or java.lang.Number). We perform this conversion only if the key is exactly
+             * of kind Hints.Key,  not a subclass like ClassKey, in order to avoid useless
+             * class loading on  'getValueClass()'  method invocation (ClassKey don't make
+             * sense for Boolean and Number, which are the only types that we convert here).
+             */
+            Object value = property;
+            final RenderingHints.Key hintKey = entry.getValue();
+            if (hintKey.getClass().equals(Hints.Key.class)) {
+                final Class<?> type = ((Hints.Key) hintKey).getValueClass();
+                if (type.equals(Boolean.class)) {
+                    value = Boolean.valueOf(property);
+                } else if (Number.class.isAssignableFrom(type))
                     try {
-                        old = hints.put(hintKey, value);
-                    } catch (IllegalArgumentException e) {
-                        // The property value is illegal for this hint.
+                        value = Classes.valueOf(type, property);
+                    } catch (NumberFormatException e) {
                         unexpectedException(e);
                         continue;
                     }
-                    if (!changed && !Utilities.equals(old, value)) {
-                        changed = true;
-                    }
-                }
             }
+            final Object old;
+            try {
+                old = hints.put(hintKey, value);
+            } catch (IllegalArgumentException e) {
+                // The property value is illegal for this hint.
+                unexpectedException(e);
+                continue;
+            }
+            changed = changed || !Utilities.equals(old, value);
         }
         return changed;
     }

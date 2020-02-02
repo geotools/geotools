@@ -27,6 +27,7 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.opengis.feature.simple.SimpleFeature;
 
@@ -74,6 +75,46 @@ public class ZMHandlersTest {
         assertEquals("wrong x", 10, geom.getCoordinate().getX(), 0.00001);
         assertEquals("wrong y", 5, geom.getCoordinate().getY(), 0.00001);
         assertEquals("wrong z", 1, geom.getCoordinate().getZ(), 0.00001);
+    }
+
+    @Test
+    public void testReadMZMultiPoints() throws ShapefileException, IOException {
+        URL url = TestData.url(ShapefileDataStore.class, "mzvalues/zmmultipoints.shp");
+        ShapefileDataStore store = new ShapefileDataStore(url);
+        SimpleFeature feature = DataUtilities.first(store.getFeatureSource().getFeatures());
+        MultiPoint geom = (MultiPoint) feature.getDefaultGeometry();
+        Coordinate coordinate = geom.getCoordinates()[0];
+
+        assertEquals("wrong x", 1208.5983, coordinate.getX(), 0.001);
+        assertEquals("wrong y", 924.8555, coordinate.getY(), 0.001);
+        assertEquals("wrong z", 20, coordinate.getZ(), 0.00001);
+        assertEquals("wrong m", 10, coordinate.getM(), 0.00001);
+    }
+
+    @Test
+    public void testReadZMultiPoints() throws ShapefileException, IOException {
+        URL url = TestData.url(ShapefileDataStore.class, "mzvalues/zmmultipoints.shp");
+        ShapefileDataStore store = new ShapefileDataStore(url);
+        SimpleFeature feature = DataUtilities.first(store.getFeatureSource().getFeatures());
+        MultiPoint geom = (MultiPoint) feature.getDefaultGeometry();
+        Coordinate coordinate = geom.getCoordinates()[0];
+
+        assertEquals("wrong x", 1208.5983, coordinate.getX(), 0.001);
+        assertEquals("wrong y", 924.8555, coordinate.getY(), 0.001);
+        assertEquals("wrong z", 20, coordinate.getZ(), 0.00001);
+    }
+
+    @Test
+    public void testReadMMultiPoints() throws ShapefileException, IOException {
+        URL url = TestData.url(ShapefileDataStore.class, "mzvalues/zmmultipoints.shp");
+        ShapefileDataStore store = new ShapefileDataStore(url);
+        SimpleFeature feature = DataUtilities.first(store.getFeatureSource().getFeatures());
+        MultiPoint geom = (MultiPoint) feature.getDefaultGeometry();
+        Coordinate coordinate = geom.getCoordinates()[0];
+
+        assertEquals("wrong x", 1208.5983, coordinate.getX(), 0.001);
+        assertEquals("wrong y", 924.8555, coordinate.getY(), 0.001);
+        assertEquals("wrong m", 10, coordinate.getM(), 0.00001);
     }
 
     @Test

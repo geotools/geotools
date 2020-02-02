@@ -79,7 +79,7 @@ Open source extensions:
 * ``filename.fix``: feature id index
 * ``filename.sld``: Styled Layer Descriptor style XML object
 
-ESRI extensions:
+ESRI proprietary extensions (ignored by GeoTools):
 
 * ``filename.sbn``: attribute index
 * ``filename.sbx``: spatial index
@@ -119,6 +119,8 @@ Supports:
   * ``LineString``, ``MultiLineString`` 
   * ``Polygon``, ``MultiPolygon`` 
   * ``Point``, ``MultiPoint``
+  
+  Geometries can also contain a measure (M) value or  Z & M values.
 
 * "simple" attributes (stored in the DBF file)
   
@@ -136,7 +138,7 @@ Limitations:
   has a restriction to help you check this, and warnings will be produced if
   your content ends up trimmed).
 * Only supports a single ``GeometryAttribute``
-* Shapefile does not support plain Geometry (i.e. mixed ``LineString``, Point and Polygon all in the same file).
+* Shapefile does not support plain Geometry (i.e. mixed ``LineString``, ``Point`` and ``Polygon`` all in the same file).
 * The shapefile maximum size is limited to 2GB (its sidecar DBF file often to 2GB, some system being able
   to read 4GB or more)
 * Dates do not support the storage of time by default. If you must store time
@@ -169,7 +171,7 @@ Example usage:
 Force Projection
 ''''''''''''''''
 
-If you run the above code, and then load the result in a GIS application like ArcView it will complain that the projection is unknown.
+If you run the above code, and then load the result in a GIS application like ArcMap it will complain that the projection is unknown.
 
 You can "force" the projection using the following code::
   

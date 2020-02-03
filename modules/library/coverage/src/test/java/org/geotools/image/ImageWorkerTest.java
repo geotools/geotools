@@ -147,7 +147,8 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
             smallWorld,
             gray,
             grayAlpha,
-            imageWithNodata;
+            imageWithNodata,
+            imageWithNodata2;
 
     /** {@code true} if the image should be visualized. */
     private static final boolean SHOW = TestData.isInteractiveTest();
@@ -384,6 +385,12 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         if (imageWithNodata == null) {
             final InputStream input = org.geotools.test.TestData.openStream(this, "nodataD.tiff");
             imageWithNodata = ImageIO.read(input);
+            input.close();
+        }
+
+        if (imageWithNodata2 == null) {
+            final InputStream input = org.geotools.test.TestData.openStream(this, "nodata.tiff");
+            imageWithNodata2 = ImageIO.read(input);
             input.close();
         }
     }
@@ -1717,6 +1724,31 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         RenderedImage image = iw.bandMerge(4).getRenderedImage();
         assertEquals(4, image.getTile(0, 0).getSampleModel().getNumBands());
         assertNoData(image, null);
+    }
+
+    @Test
+    public void testBandMergeWithNodata() throws FileNotFoundException, IOException {
+        double noDataValue = -10000d;
+        Range nodata = RangeFactory.create(noDataValue, noDataValue);
+        double[] background = new double[] {noDataValue};
+
+        RenderedImage twoBands = null;
+        PlanarImage pi = PlanarImage.wrapRenderedImage(imageWithNodata2);
+        pi.setProperty("GC_NODATA", new NoDataContainer(nodata));
+
+        ImageWorker worker = new ImageWorker(pi).setNoData(nodata).setBackground(background);
+
+        twoBands = worker.addBand(worker.getRenderedImage(), false).getRenderedImage();
+        RenderedImage oneBand = new ImageWorker(twoBands).retainBands(1).getRenderedImage();
+        RenderedImage threeBands =
+                new ImageWorker(twoBands).addBand(oneBand, false).getRenderedImage();
+
+        // Check that the noData holes are still noData after bandMerge
+        double[] threeSamples = new double[3];
+        threeBands.getData().getPixel(18, 18, threeSamples);
+        for (double sample : threeSamples) {
+            assertEquals(noDataValue, sample, 1E-6);
+        }
     }
 
     static void assertNoData(ImageWorker worker, Range nodata) {

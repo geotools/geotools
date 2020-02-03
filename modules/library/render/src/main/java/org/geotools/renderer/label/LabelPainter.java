@@ -361,7 +361,9 @@ public class LabelPainter {
 
                     // resize graphic and transform it based on the position of the last line
                     graphic = resizeGraphic(graphic);
-                    shapePainter.paint(graphics, tempShape, graphic, graphic.getMaxScale());
+                    if (graphic != null) {
+                        shapePainter.paint(graphics, tempShape, graphic, graphic.getMaxScale());
+                    }
                 } else {
 
                     // take into account the graphic margins, if any
@@ -386,11 +388,14 @@ public class LabelPainter {
 
                     // resize graphic and transform it based on the position of the last line
                     graphic = resizeGraphic(graphic);
-                    AffineTransform graphicTx = new AffineTransform(transform);
+                    if (graphic != null) {
+                        AffineTransform graphicTx = new AffineTransform(transform);
 
-                    graphicTx.translate(lastLine.getComponents().get(0).getX(), lastLine.getY());
-                    graphics.setTransform(graphicTx);
-                    shapePainter.paint(graphics, tempShape, graphic, graphic.getMaxScale());
+                        graphicTx.translate(
+                                lastLine.getComponents().get(0).getX(), lastLine.getY());
+                        graphics.setTransform(graphicTx);
+                        shapePainter.paint(graphics, tempShape, graphic, graphic.getMaxScale());
+                    }
                 }
             }
 
@@ -432,7 +437,7 @@ public class LabelPainter {
      * @param graphic
      * @return
      */
-    private Style2D resizeGraphic(Style2D graphic) {
+    Style2D resizeGraphic(Style2D graphic) {
         final GraphicResize mode = labelItem.graphicsResize;
 
         // if no resize, nothing to do
@@ -448,13 +453,13 @@ public class LabelPainter {
             width += margin[1] + margin[3];
             height += margin[0] + margin[2];
         }
-        width = Math.round(width);
-        height = Math.round(height);
 
         // just in case someone specified negative margins for some reason
         if (width <= 0 || height <= 0) {
             return null;
         }
+        width = Math.max(Math.round(width), 1);
+        height = Math.max(Math.round(height), 1);
 
         if (graphic instanceof MarkStyle2D) {
             MarkStyle2D mark = (MarkStyle2D) graphic;

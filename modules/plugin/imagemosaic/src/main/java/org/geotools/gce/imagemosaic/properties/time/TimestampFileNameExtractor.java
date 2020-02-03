@@ -20,6 +20,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -27,6 +28,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 import org.geotools.gce.imagemosaic.properties.RegExPropertiesCollector;
+import org.geotools.util.DateRange;
+import org.geotools.util.DateTimeParser;
+import org.geotools.util.DateTimeParser.FormatAndPrecision;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 
@@ -34,21 +38,36 @@ import org.opengis.feature.simple.SimpleFeature;
 class TimestampFileNameExtractor extends RegExPropertiesCollector {
     private static final Logger LOGGER = Logging.getLogger(TimestampFileNameExtractor.class);
 
-    private static final TimeParser parser = new TimeParser();
+    private static final int DEFAULT_TIME_PARSER_FLAGS =
+            DateTimeParser.FLAG_GET_TIME_ON_CURRENT
+                    | DateTimeParser.FLAG_GET_TIME_ON_NOW
+                    | DateTimeParser.FLAG_GET_TIME_ON_PRESENT
+                    | DateTimeParser.FLAG_IS_LENIENT;
+
+    private static final DateTimeParser PARSER =
+            new DateTimeParser(
+                    -1, DEFAULT_TIME_PARSER_FLAGS | DateTimeParser.FLAG_SINGLE_DATE_AS_DATERANGE);
 
     private DateFormat customFormat;
+
+    private String format;
+
+    private boolean useHighTime = false;
 
     public TimestampFileNameExtractor(
             PropertiesCollectorSPI spi,
             List<String> propertyNames,
             String regex,
             String format,
-            boolean fullPath) {
+            boolean fullPath,
+            boolean useHighTime) {
         super(spi, propertyNames, regex, fullPath);
         if (format != null) {
+            this.format = format;
             customFormat = new SimpleDateFormat(format);
             customFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
         }
+        this.useHighTime = useHighTime;
     }
 
     @Override
@@ -58,13 +77,30 @@ class TimestampFileNameExtractor extends RegExPropertiesCollector {
         final List<Date> dates = new ArrayList<Date>();
         for (String match : getMatches()) {
             // try to convert to date
+
             try {
                 if (customFormat != null) {
                     Date parsed = customFormat.parse(match);
+                    if (useHighTime) {
+                        // Special case to make t and z upper case for ISO8601 matching.
+                        format = format.replace("t", "T").replace("z", "Z");
+                        parsed =
+                                FormatAndPrecision.expandFromCustomFormat(parsed, format)
+                                        .getMaxValue();
+                    }
                     dates.add(parsed);
                 } else {
-                    List<Date> parsed = parser.parse(match);
-                    dates.addAll(parsed);
+                    Collection parsed = PARSER.parse(match);
+                    parsed.stream()
+                            .forEach(
+                                    d -> {
+                                        DateRange range = (DateRange) d;
+                                        Date date =
+                                                useHighTime
+                                                        ? range.getMaxValue()
+                                                        : range.getMinValue();
+                                        dates.add(date);
+                                    });
                 }
             } catch (ParseException e) {
                 if (LOGGER.isLoggable(Level.FINE))
@@ -82,6 +118,7 @@ class TimestampFileNameExtractor extends RegExPropertiesCollector {
         int index = 0;
         for (String propertyName : getPropertyNames()) {
             // set the property
+
             feature.setAttribute(propertyName, dates.get(index++));
 
             // do we have more dates?

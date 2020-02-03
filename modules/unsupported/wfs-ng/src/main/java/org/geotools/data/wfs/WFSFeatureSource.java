@@ -128,9 +128,7 @@ class WFSFeatureSource extends ContentFeatureSource {
         return client.canLimit();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public WFSDataStore getDataStore() {
         return (WFSDataStore) super.getDataStore();

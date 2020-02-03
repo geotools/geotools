@@ -682,12 +682,19 @@ public class FeatureTypeRegistry {
     }
 
     /** Caches the basic types */
-    private static Map<Name, AttributeType> FOUNDATION_TYPES = new HashMap<Name, AttributeType>();
+    private static Map<Class<? extends FeatureTypeRegistryConfiguration>, Map<Name, AttributeType>>
+            FOUNDATION_TYPES =
+                    new HashMap<
+                            Class<? extends FeatureTypeRegistryConfiguration>,
+                            Map<Name, AttributeType>>();
 
     private void createFoundationTypes() {
-        synchronized (FOUNDATION_TYPES) {
-            if (!FOUNDATION_TYPES.isEmpty()) {
-                typeRegistry.putAll(FOUNDATION_TYPES);
+        Map<Name, AttributeType> foundationTypes =
+                FOUNDATION_TYPES.computeIfAbsent(
+                        helper.getClass(), o -> new HashMap<Name, AttributeType>());
+        synchronized (foundationTypes) {
+            if (!foundationTypes.isEmpty()) {
+                typeRegistry.putAll(foundationTypes);
                 return;
             }
 
@@ -701,7 +708,7 @@ public class FeatureTypeRegistry {
                 addSchemas(Schemas.findSchemas(config));
             }
 
-            FOUNDATION_TYPES.putAll(typeRegistry);
+            foundationTypes.putAll(typeRegistry);
         }
     }
 

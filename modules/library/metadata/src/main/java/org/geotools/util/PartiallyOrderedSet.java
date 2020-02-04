@@ -25,6 +25,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Set of elements having a partial order, established by setting before/after relationship calling
@@ -35,7 +36,7 @@ import java.util.Set;
 public class PartiallyOrderedSet<E> extends AbstractSet<E> {
 
     private final boolean throwOnCycle;
-    private final Map<E, DirectedGraphNode> elementsToNodes = new LinkedHashMap<>();
+    private final Map<E, DirectedGraphNode> elementsToNodes = new ConcurrentHashMap<>();
 
     public PartiallyOrderedSet(boolean throwOnCycle) {
         this.throwOnCycle = throwOnCycle;
@@ -47,12 +48,8 @@ public class PartiallyOrderedSet<E> extends AbstractSet<E> {
 
     @Override
     public boolean add(E e) {
-        if (elementsToNodes.containsKey(e)) {
-            return false;
-        } else {
-            elementsToNodes.put(e, new DirectedGraphNode(e));
-            return true;
-        }
+        DirectedGraphNode prev = elementsToNodes.putIfAbsent(e, new DirectedGraphNode(e));
+        return prev == null;
     }
 
     @Override
@@ -60,10 +57,9 @@ public class PartiallyOrderedSet<E> extends AbstractSet<E> {
         DirectedGraphNode node = elementsToNodes.remove(o);
         if (node == null) {
             return false;
-        } else {
-            clearNode(node);
-            return true;
         }
+        clearNode(node);
+        return true;
     }
 
     private void clearNode(DirectedGraphNode node) {

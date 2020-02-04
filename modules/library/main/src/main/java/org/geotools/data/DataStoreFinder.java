@@ -19,7 +19,6 @@ package org.geotools.data;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Logger;
 import org.geotools.util.factory.FactoryCreator;
 import org.geotools.util.factory.FactoryRegistry;
@@ -87,11 +86,8 @@ public final class DataStoreFinder {
      *     available method returns true.
      */
     public static Iterator<DataStoreFactorySpi> getAvailableDataStores() {
-        Set<DataStoreFactorySpi> availableDS;
         FactoryRegistry serviceRegistry = getServiceRegistry();
-        availableDS =
-                DataAccessFinder.getAvailableDataStores(serviceRegistry, DataStoreFactorySpi.class);
-        return availableDS.iterator();
+        return DataAccessFinder.getAvailableDataStores(serviceRegistry, DataStoreFactorySpi.class);
     }
 
     /**

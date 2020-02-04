@@ -16,14 +16,11 @@
  */
 package org.geotools.data;
 
-import static java.util.stream.Collectors.toSet;
-
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
+import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.util.factory.FactoryCreator;
@@ -148,20 +145,25 @@ public final class DataAccessFinder {
      * @return An iterator over all discovered datastores which have registered factories
      */
     public static Iterator<DataAccessFactory> getAllDataStores() {
-        Set<DataAccessFactory> all = new HashSet<DataAccessFactory>();
-        Iterator<DataStoreFactorySpi> allDataStores = DataStoreFinder.getAllDataStores();
-        Iterator<DataAccessFactory> allDataAccess =
+        final Iterator<DataAccessFactory> allDataAccess =
                 getAllDataStores(getServiceRegistry(), DataAccessFactory.class);
-        while (allDataStores.hasNext()) {
-            DataStoreFactorySpi next = allDataStores.next();
-            all.add(next);
-        }
+        final Iterator<DataStoreFactorySpi> allDataStores = DataStoreFinder.getAllDataStores();
+        return new Iterator<DataAccessFactory>() {
 
-        while (allDataAccess.hasNext()) {
-            all.add(allDataAccess.next());
-        }
+            public @Override boolean hasNext() {
+                return allDataAccess.hasNext() || allDataStores.hasNext();
+            }
 
-        return all.iterator();
+            public @Override DataAccessFactory next() {
+                if (allDataAccess.hasNext()) {
+                    return allDataAccess.next();
+                }
+                if (allDataStores.hasNext()) {
+                    return allDataStores.next();
+                }
+                throw new NoSuchElementException();
+            }
+        };
     }
 
     static <T extends DataAccessFactory> Iterator<T> getAllDataStores(
@@ -179,23 +181,35 @@ public final class DataAccessFinder {
     public static Iterator<DataAccessFactory> getAvailableDataStores() {
 
         FactoryRegistry serviceRegistry = getServiceRegistry();
-        Set<DataAccessFactory> availableDS =
+        final Iterator<DataAccessFactory> availableDataAccess =
                 getAvailableDataStores(serviceRegistry, DataAccessFactory.class);
 
-        Iterator<DataStoreFactorySpi> availableDataStores =
+        final Iterator<DataStoreFactorySpi> availableDataStores =
                 DataStoreFinder.getAvailableDataStores();
-        while (availableDataStores.hasNext()) {
-            availableDS.add(availableDataStores.next());
-        }
 
-        return availableDS.iterator();
+        return new Iterator<DataAccessFactory>() {
+
+            public @Override boolean hasNext() {
+                return availableDataAccess.hasNext() || availableDataStores.hasNext();
+            }
+
+            public @Override DataAccessFactory next() {
+                if (availableDataAccess.hasNext()) {
+                    return availableDataAccess.next();
+                }
+                if (availableDataStores.hasNext()) {
+                    return availableDataStores.next();
+                }
+                throw new NoSuchElementException();
+            }
+        };
     }
 
-    static <T extends DataAccessFactory> Set<T> getAvailableDataStores(
+    static <T extends DataAccessFactory> Iterator<T> getAvailableDataStores(
             FactoryRegistry registry, Class<T> targetClass) {
         return registry.getFactories(targetClass, null, null)
                 .filter(DataAccessFactory::isAvailable)
-                .collect(toSet());
+                .iterator();
     }
 
     /**

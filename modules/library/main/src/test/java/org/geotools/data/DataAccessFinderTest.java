@@ -87,7 +87,6 @@ public class DataAccessFinderTest extends TestCase {
         assertSame(MOCK_DATAACCESS, dataStore);
     }
 
-    @SuppressWarnings("unchecked")
     public void testGetAllDataStores() {
         Iterator<DataStoreFactorySpi> availableDataStores;
         availableDataStores = DataStoreFinder.getAllDataStores();
@@ -112,7 +111,6 @@ public class DataAccessFinderTest extends TestCase {
     }
 
     /** Does DataAccessFinder.getAllDataStores() return both the DataStores and DataAccess? */
-    @SuppressWarnings("unchecked")
     public void testGetAllDataAccess() {
         Iterator<DataAccessFactory> availableDataStores;
         availableDataStores = DataAccessFinder.getAllDataStores();
@@ -132,7 +130,7 @@ public class DataAccessFinderTest extends TestCase {
         assertNotNull(dsf2);
         assertNotNull(dsf3);
 
-        Set<Class> classes = new HashSet<Class>();
+        Set<Class<?>> classes = new HashSet<>();
         classes.add(dsf1.getClass());
         classes.add(dsf2.getClass());
         classes.add(dsf3.getClass());
@@ -142,7 +140,6 @@ public class DataAccessFinderTest extends TestCase {
         assertTrue(classes.contains(MockUnavailableDataStoreFactory.class));
     }
 
-    @SuppressWarnings("unchecked")
     public void testGetAvailableDataStores() {
         Iterator<DataStoreFactorySpi> availableDataStores;
         availableDataStores = DataStoreFinder.getAvailableDataStores();
@@ -161,7 +158,6 @@ public class DataAccessFinderTest extends TestCase {
      * Does DataAccessFinder.getAvailableDataStores() return both the available DataStore and
      * DataAccess factories?
      */
-    @SuppressWarnings("unchecked")
     public void testGetAvailableDataAccess() {
         Iterator<DataAccessFactory> availableDataAccess;
         availableDataAccess = DataAccessFinder.getAvailableDataStores();
@@ -169,7 +165,7 @@ public class DataAccessFinderTest extends TestCase {
         assertNotNull(availableDataAccess);
         assertTrue(availableDataAccess.hasNext());
 
-        Set<Class> classes = new HashSet<Class>();
+        Set<Class<?>> classes = new HashSet<>();
         DataAccessFactory daf;
 
         daf = availableDataAccess.next();
@@ -253,7 +249,7 @@ public class DataAccessFinderTest extends TestCase {
             return MOCK_DATASTORE;
         }
 
-        public DataStore createNewDataStore(Map params) throws IOException {
+        public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException {
             return null;
         }
 

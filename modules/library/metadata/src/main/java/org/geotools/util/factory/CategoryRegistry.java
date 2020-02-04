@@ -22,10 +22,10 @@ import static org.geotools.util.Utilities.ensureArgumentNonNull;
 import static org.geotools.util.Utilities.stream;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 import org.geotools.util.PartiallyOrderedSet;
@@ -250,7 +250,7 @@ class CategoryRegistry {
 
         private final Class<?> category;
 
-        private final Map<Class<?>, T> instancesByType = new HashMap<>();
+        private final Map<Class<?>, T> instancesByType = new ConcurrentHashMap<>();
 
         private final PartiallyOrderedSet<T> orderedInstances = new PartiallyOrderedSet<>(false);
 

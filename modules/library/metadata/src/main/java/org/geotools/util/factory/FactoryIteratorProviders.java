@@ -16,10 +16,10 @@
  */
 package org.geotools.util.factory;
 
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import org.geotools.util.XArray;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * The list of registered {@linkplain FactoryIteratorProvider factory iterator providers}.
@@ -36,13 +36,14 @@ final class FactoryIteratorProviders {
     private static final FactoryIteratorProviders GLOBAL = new FactoryIteratorProviders();
 
     /** Incremented every time a modification is performed. */
-    private int modifications = 0;
+    private final AtomicInteger modifications = new AtomicInteger();
 
     /**
      * Alternative scanning methods used by {@link FactoryRegistry#scanForPlugins(Collection,Class)}
      * in addition of the default lookup mechanism. Will be created only when first needed.
      */
-    private Set<FactoryIteratorProvider> iteratorProviders;
+    private final Set<FactoryIteratorProvider> iteratorProviders =
+            Collections.synchronizedSet(new LinkedHashSet<>());
 
     /** Creates an initially empty set of factories. */
     FactoryIteratorProviders() {}
@@ -57,50 +58,34 @@ final class FactoryIteratorProviders {
      *     last time this method was invoked, or {@code null} if none.
      */
     final FactoryIteratorProvider[] synchronizeIteratorProviders() {
-        FactoryIteratorProvider[] newProviders = null;
-        int count = 0;
+        if (modifications.get() == GLOBAL.modifications.get()) {
+            return null;
+        }
         synchronized (GLOBAL) {
-            if (modifications == GLOBAL.modifications) {
-                return null;
-            }
-            modifications = GLOBAL.modifications;
-            if (GLOBAL.iteratorProviders == null) {
-                /*
-                 * Should never happen. If GLOBAL.iteratorProviders was null, then every
-                 * 'modifications' count should be 0 and this method should have returned 'null'.
-                 */
-                throw new AssertionError(modifications);
-            }
+            modifications.set(GLOBAL.modifications.get());
             /*
              * If 'removeFactoryIteratorProvider(...)' has been invoked since the last time
              * this method was run, then synchronize 'iteratorProviders' accordingly. Current
              * implementation do not unregister the factories that were created by those iterators.
              */
-            if (iteratorProviders != null) {
+            if (!iteratorProviders.isEmpty()) {
                 iteratorProviders.retainAll(GLOBAL.iteratorProviders);
-            } else if (!GLOBAL.iteratorProviders.isEmpty()) {
-                iteratorProviders = new LinkedHashSet<FactoryIteratorProvider>();
             }
+
             /*
              * If 'addFactoryIteratorProvider(...)' has been invoked since the last time
              * this method was run, then synchronize 'iteratorProviders' accordingly. We
              * keep trace of new providers in order to allow 'FactoryRegistry' to use them
              * for a immediate scanning.
              */
-            int remaining = GLOBAL.iteratorProviders.size();
-            for (final Iterator it = GLOBAL.iteratorProviders.iterator(); it.hasNext(); ) {
-                final FactoryIteratorProvider candidate = (FactoryIteratorProvider) it.next();
-                if (iteratorProviders.add(candidate)) {
-                    if (newProviders == null) {
-                        newProviders = new FactoryIteratorProvider[remaining];
-                    }
-                    newProviders[count++] = candidate;
-                }
-                remaining--;
-            }
+            FactoryIteratorProvider[] newProviders =
+                    GLOBAL.iteratorProviders
+                            .stream()
+                            .filter(this.iteratorProviders::add)
+                            .toArray(FactoryIteratorProvider[]::new);
+
+            return newProviders.length == 0 ? null : newProviders;
         }
-        // Note: newProviders may be null.
-        return XArray.resize(newProviders, count);
     }
 
     /**
@@ -112,13 +97,18 @@ final class FactoryIteratorProviders {
      * href="http://www.springframework.org/">Spring framework</a>.
      */
     public static void addFactoryIteratorProvider(FactoryIteratorProvider provider) {
-        synchronized (GLOBAL) {
-            if (GLOBAL.iteratorProviders == null) {
-                GLOBAL.iteratorProviders = new LinkedHashSet<FactoryIteratorProvider>();
-            }
-            if (GLOBAL.iteratorProviders.add(provider)) {
-                GLOBAL.modifications++;
-            }
+        GLOBAL.add(provider);
+    }
+
+    private void add(FactoryIteratorProvider provider) {
+        if (iteratorProviders.add(provider)) {
+            modifications.incrementAndGet();
+        }
+    }
+
+    private void remove(FactoryIteratorProvider provider) {
+        if (iteratorProviders.remove(provider)) {
+            modifications.incrementAndGet();
         }
     }
 
@@ -128,13 +118,7 @@ final class FactoryIteratorProviders {
      * FactoryRegistry#deregisterFactory deregistered} by this method.
      */
     public static void removeFactoryIteratorProvider(FactoryIteratorProvider provider) {
-        synchronized (GLOBAL) {
-            if (GLOBAL.iteratorProviders != null) {
-                if (GLOBAL.iteratorProviders.remove(provider)) {
-                    GLOBAL.modifications++;
-                }
-            }
-        }
+        GLOBAL.remove(provider);
     }
 
     /**
@@ -142,12 +126,7 @@ final class FactoryIteratorProviders {
      * array will be used outside the synchronized block.
      */
     static FactoryIteratorProvider[] getIteratorProviders() {
-        synchronized (GLOBAL) {
-            if (GLOBAL.iteratorProviders == null) {
-                return new FactoryIteratorProvider[0];
-            }
-            return GLOBAL.iteratorProviders.toArray(
-                    new FactoryIteratorProvider[GLOBAL.iteratorProviders.size()]);
-        }
+        return GLOBAL.iteratorProviders.toArray(
+                new FactoryIteratorProvider[GLOBAL.iteratorProviders.size()]);
     }
 }

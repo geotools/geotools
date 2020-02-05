@@ -122,4 +122,44 @@ public class WMSLayerTest {
         // verify backward compatability
         assertTrue(l2.getReader().format.equalsIgnoreCase("image/png"));
     }
+
+    /**
+     * Test method for {@link WMSLayer#WMSLayer(WebMapServer, Layer)}. Test the sceanrio where
+     * remote WMS server only supports one format which is not any of the PNG variants
+     */
+    @Test
+    public void testPreferedFormatWMSLayerJPEGOnly() throws Exception {
+        MockHttpClient client =
+                new MockHttpClient() {
+
+                    public HTTPResponse get(URL url) throws IOException {
+                        if (url.getQuery().contains("GetCapabilities")) {
+                            Map<String, String> params = parseParams(url.getQuery());
+                            URL caps = null;
+                            if ("1.3.0".equals(params.get("VERSION"))) {
+                                caps =
+                                        WMSCoverageReaderTest.class.getResource(
+                                                "caps130_jpeg_only.xml");
+                            }
+                            return new MockHttpResponse(caps, "text/xml");
+                        } else {
+                            throw new IllegalArgumentException(
+                                    "Don't know how to handle a get request over "
+                                            + url.toExternalForm());
+                        }
+                    }
+                };
+        // setup the reader
+        WebMapServer jpegOnlyWMSserver =
+                new WebMapServer(new URL("http://jpeg.geoserver.org/geoserver/wms"), client);
+        Layer[] wmsLayers = WMSUtils.getNamedLayers(jpegOnlyWMSserver.getCapabilities());
+
+        WMSLayer l = new WMSLayer(jpegOnlyWMSserver, wmsLayers[0], "", "image/png");
+        // verify reader is using correct
+        assertTrue(l.getReader().format.equalsIgnoreCase("image/jpeg"));
+
+        WMSLayer l2 = new WMSLayer(jpegOnlyWMSserver, wmsLayers[0], "", "image/unknown");
+        // verify backward compatability
+        assertTrue(l2.getReader().format.equalsIgnoreCase("image/jpeg"));
+    }
 }

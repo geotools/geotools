@@ -135,7 +135,6 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
 
     public String getDefaultFormat(List<String> formats) {
 
-        // if preferred format is not supported default to first available
         for (String format : formats) {
             if ("image/png".equals(format)
                     || "image/png24".equals(format)
@@ -145,7 +144,9 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
                 return format;
             }
         }
-        return null;
+        // if preferred format is not supported default to first available on remote
+        // if cap doc did not pass any formats, assume PNG
+        return (!formats.isEmpty()) ? formats.get(0) : "image/png";
     }
 
     void addLayer(Layer layer) {

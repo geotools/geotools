@@ -23,13 +23,12 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.xml.namespace.QName;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.map.MultiValueMap;
+import org.apache.commons.collections4.MultiValuedMap;
+import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDFactory;
 import org.eclipse.xsd.XSDParticle;
@@ -98,7 +97,7 @@ public class BindingPropertyExtractor implements PropertyExtractor {
                 }
             }
 
-            // second, get the properties which cannot be infereed from the schema
+            // second, get the properties which cannot be inferred from the schema
             GetPropertiesExecutor executor = new GetPropertiesExecutor(object, element);
 
             BindingVisitorDispatch.walk(
@@ -106,7 +105,7 @@ public class BindingPropertyExtractor implements PropertyExtractor {
 
             if (!executor.getProperties().isEmpty()) {
                 // group into a map of name, list
-                MultiValueMap map = new MultiValueMap();
+                MultiValuedMap map = new ArrayListValuedHashMap();
 
                 for (Iterator p = executor.getProperties().iterator(); p.hasNext(); ) {
                     Object[] property = (Object[]) p.next();
@@ -116,18 +115,18 @@ public class BindingPropertyExtractor implements PropertyExtractor {
                 // turn each map entry into a particle
                 HashMap particles = new HashMap();
 
-                for (Iterator e = map.entrySet().iterator(); e.hasNext(); ) {
-                    Map.Entry entry = (Map.Entry) e.next();
+                for (Iterator e = map.keySet().iterator(); e.hasNext(); ) {
+                    Object key = e.next();
 
                     // key could be a name or a particle
-                    if (entry.getKey() instanceof XSDParticle) {
-                        XSDParticle particle = (XSDParticle) entry.getKey();
+                    if (key instanceof XSDParticle) {
+                        XSDParticle particle = (XSDParticle) key;
                         particles.put(Schemas.getParticleName(particle), particle);
                         continue;
                     }
 
-                    QName name = (QName) entry.getKey();
-                    Collection values = (Collection) entry.getValue();
+                    QName name = (QName) key;
+                    Collection values = map.get(key);
 
                     // check for comment
                     if (Encoder.COMMENT.equals(name)) {
@@ -135,9 +134,9 @@ public class BindingPropertyExtractor implements PropertyExtractor {
                         Element comment =
                                 encoder.getDocument().createElement(Encoder.COMMENT.getLocalPart());
 
-                        for (Iterator v = values.iterator(); v.hasNext(); ) {
+                        for (Object value : values) {
                             comment.appendChild(
-                                    encoder.getDocument().createTextNode(v.next().toString()));
+                                    encoder.getDocument().createTextNode(value.toString()));
                         }
 
                         XSDParticle particle = XSDFactory.eINSTANCE.createXSDParticle();
@@ -320,7 +319,7 @@ public class BindingPropertyExtractor implements PropertyExtractor {
         }
         // iterate every tuple and generate the properties
         for (final List<Attribute> tuple : attributeTuples) {
-            if (!CollectionUtils.isEmpty(tuple)) {
+            if (tuple != null && !tuple.isEmpty()) {
                 for (XSDParticle particle : children) {
                     XSDElementDeclaration childAux = (XSDElementDeclaration) particle.getContent();
                     if (childAux.isElementDeclarationReference())

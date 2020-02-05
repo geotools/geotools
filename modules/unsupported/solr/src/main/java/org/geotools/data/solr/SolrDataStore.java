@@ -20,8 +20,7 @@ package org.geotools.data.solr;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +30,6 @@ import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import org.apache.commons.beanutils.BeanComparator;
-import org.apache.commons.collections.comparators.ComparatorChain;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrQuery.ORDER;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
@@ -201,10 +199,9 @@ public class SolrDataStore extends ContentDataStore {
                     }
                 }
                 // Reorder fields: empty after
-                List<BeanComparator> sortFields =
-                        Arrays.asList(new BeanComparator("empty"), new BeanComparator("name"));
-                ComparatorChain multiSort = new ComparatorChain(sortFields);
-                Collections.sort(solrAttributes, multiSort);
+                Comparator sortFields =
+                        new BeanComparator("empty").thenComparing(new BeanComparator("name"));
+                solrAttributes.sort(sortFields);
             } catch (Exception ex) {
                 LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
             }
@@ -281,8 +278,8 @@ public class SolrDataStore extends ContentDataStore {
     }
 
     /**
-     * Gets the primary key attribute a type in this datastore.</br> If the key is not currently
-     * available a call to {@link #getSolrAttributes} is needed.
+     * Gets the primary key attribute a type in this datastore.<br>
+     * If the key is not currently available a call to {@link #getSolrAttributes} is needed.
      *
      * @param layerName the type to use to query the SOLR field {@link SolrDataStore#field}
      */

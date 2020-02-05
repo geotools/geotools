@@ -44,7 +44,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.geotools.appschema.filter.FilterFactoryImplReportInvalidProperty;
@@ -208,7 +207,7 @@ public class AppSchemaDataAccessConfigurator {
                 String namespace = (String) entry.getValue();
                 if (namespaces.getURI(prefix) == null) namespaces.declarePrefix(prefix, namespace);
             }
-            if (!CollectionUtils.isEmpty(config.getIncludes())) {
+            if (config.getIncludes() != null && !config.getIncludes().isEmpty()) {
                 for (String fname : config.getIncludes()) {
                     processNamespaces(config.getBaseSchemasUrl(), fname, evaluatedURLs);
                 }

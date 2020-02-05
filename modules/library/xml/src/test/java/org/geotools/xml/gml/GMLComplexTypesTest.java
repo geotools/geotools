@@ -24,9 +24,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.Map;
 import javax.naming.OperationNotSupportedException;
-import org.apache.commons.collections.map.HashedMap;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.GeometryBuilder;
@@ -122,7 +122,7 @@ public class GMLComplexTypesTest {
                 .thenReturn(GMLComplexTypes.MultiPolygonPropertyType.getInstance());
         when(element_name.getType()).thenReturn(XSISimpleTypes.String.getInstance());
 
-        Map<?, ?> hints = new HashedMap();
+        Map<?, ?> hints = new HashMap();
         PrintHandler printHandler = mock(PrintHandler.class);
 
         // when: encode is called to serialize empty feature

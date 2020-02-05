@@ -102,7 +102,9 @@ public class HanaWKBWriter {
     }
 
     private static int computeSize(MultiPoint multiPoint, int dimension) {
-        return HEADER_SIZE + COUNT_SIZE + multiPoint.getNumPoints() * dimension * COORD_SIZE;
+        return HEADER_SIZE
+                + COUNT_SIZE
+                + multiPoint.getNumPoints() * (HEADER_SIZE + dimension * COORD_SIZE);
     }
 
     private static int computeSize(MultiLineString multiLineString, int dimension) {

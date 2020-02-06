@@ -172,6 +172,9 @@ public class CssTranslator {
     /** The transformation */
     static final String TRANSFORM = "transform";
 
+    /** The style background */
+    static final String BACKGROUND = "background";
+
     @SuppressWarnings("serial")
     static final Map<String, String> POLYGON_VENDOR_OPTIONS =
             new HashMap<String, String>() {
@@ -361,6 +364,7 @@ public class CssTranslator {
             LOGGER.fine("Split the rules into " + zIndexRules + "  sets after z-index separation");
         }
         int translatedRuleCount = 0;
+        boolean backgroundFound = false;
         for (Map.Entry<Integer, List<CssRule>> zEntry : zIndexRules.entrySet()) {
             final Integer zIndex = zEntry.getKey();
             List<CssRule> rules = zEntry.getValue();
@@ -563,6 +567,10 @@ public class CssTranslator {
                                 transform = values.get(0).toExpression();
                             }
                         }
+
+                        if (!backgroundFound) {
+                            backgroundFound = buildBackground(styleBuilder, derived);
+                        }
                     }
 
                     if (composite != null) {
@@ -637,6 +645,7 @@ public class CssTranslator {
             List<CssRule> rules = zEntry.getValue();
             Map<String, List<CssRule>> typenameRules = organizeByTypeName(rules);
             // build the SLD
+            boolean backgroundFound = false;
             for (Map.Entry<String, List<CssRule>> entry : typenameRules.entrySet()) {
                 String featureTypeName = entry.getKey();
                 List<CssRule> localRules = entry.getValue();
@@ -709,6 +718,11 @@ public class CssTranslator {
                                 sortByGroup = values.get(0).toLiteral();
                             }
                         }
+
+                        // check if we have a background, use the first found
+                        if (!backgroundFound) {
+                            backgroundFound = buildBackground(styleBuilder, derived);
+                        }
                     }
                 }
                 if (composite != null) {
@@ -727,6 +741,16 @@ public class CssTranslator {
         }
 
         return translatedRuleCount;
+    }
+
+    private boolean buildBackground(StyleBuilder styleBuilder, CssRule rule) {
+        List<Value> values = rule.getPropertyValues(PseudoClass.ROOT, BACKGROUND).get(BACKGROUND);
+        if (values != null && !values.isEmpty()) {
+            FillBuilder fb = styleBuilder.background();
+            buildFill(rule, fb, rule.getPropertyValues(PseudoClass.ROOT), 0, BACKGROUND);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -1118,7 +1142,7 @@ public class CssTranslator {
                 pb.geometry(fillGeometry);
             }
             FillBuilder fb = pb.fill();
-            buildFill(cssRule, fb, values, i);
+            buildFill(cssRule, fb, values, i, "fill");
             if (includeStrokeInPolygonSymbolizer) {
                 StrokeBuilder sb = pb.stroke();
                 buildStroke(cssRule, sb, values, i);
@@ -1607,12 +1631,17 @@ public class CssTranslator {
      * @param fb
      * @param values
      * @param i
+     * @param fillPropertyName
      */
     private void buildFill(
-            CssRule cssRule, final FillBuilder fb, Map<String, List<Value>> values, int i) {
-        for (Value fillValue : getMultiValue(values, "fill", i)) {
+            CssRule cssRule,
+            final FillBuilder fb,
+            Map<String, List<Value>> values,
+            int i,
+            final String fillPropertyName) {
+        for (Value fillValue : getMultiValue(values, fillPropertyName, i)) {
             if (Function.isGraphicsFunction(fillValue)) {
-                new SubgraphicBuilder("fill", fillValue, values, cssRule, i) {
+                new SubgraphicBuilder(fillPropertyName, fillValue, values, cssRule, i) {
 
                     @Override
                     protected GraphicBuilder getGraphicBuilder() {
@@ -1623,7 +1652,7 @@ public class CssTranslator {
                 fb.color(getExpression(fillValue));
             }
         }
-        Expression opacity = getExpression(values, "fill-opacity", i);
+        Expression opacity = getExpression(values, fillPropertyName + "-opacity", i);
         if (opacity != null) {
             fb.opacity(opacity);
         }
@@ -1833,7 +1862,7 @@ public class CssTranslator {
             // unless specified and empty, a mark always has a fill and a stroke
             if (values.containsKey("fill") && values.get("fill") != null) {
                 FillBuilder fb = mark.fill();
-                buildFill(cssRule, fb, values, idx);
+                buildFill(cssRule, fb, values, idx, "fill");
             } else if (!values.containsKey("fill")) {
                 mark.fill();
             }

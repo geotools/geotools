@@ -441,6 +441,17 @@ public class StyleBuilderTest {
         assertEquals(literal, stroke.dashArray().get(1));
     }
 
+    @Test
+    public void testBackgroundFill() {
+        StyleBuilder sb = new StyleBuilder();
+        sb.background().color(Color.RED);
+        Style style = sb.build();
+
+        Fill background = style.getBackground();
+        assertNotNull(background);
+        assertEquals(Color.RED, background.getColor().evaluate(null, Color.class));
+    }
+
     /*
      * public void test(){ FeatureTypeFactory factory =
      * CommonFactoryFinder.getFeatureTypeFactory(null);

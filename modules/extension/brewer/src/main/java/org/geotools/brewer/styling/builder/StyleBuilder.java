@@ -34,6 +34,8 @@ public class StyleBuilder extends AbstractStyleBuilder<Style> {
 
     boolean isDefault;
 
+    FillBuilder background;
+
     public StyleBuilder() {
         super(null);
         reset();
@@ -67,6 +69,13 @@ public class StyleBuilder extends AbstractStyleBuilder<Style> {
         return ftsBuilder;
     }
 
+    public FillBuilder background() {
+        this.unset = false;
+        this.background = new FillBuilder();
+
+        return background;
+    }
+
     public Style build() {
         if (unset) {
             return null;
@@ -87,6 +96,9 @@ public class StyleBuilder extends AbstractStyleBuilder<Style> {
             }
             s.setDefault(isDefault);
         }
+        if (background != null) {
+            s.setBackground(background.build());
+        }
 
         reset();
         return s;
@@ -102,6 +114,7 @@ public class StyleBuilder extends AbstractStyleBuilder<Style> {
         styleAbstract = null;
         title = null;
         isDefault = false;
+        background = null;
         unset = false;
         return this;
     }
@@ -124,6 +137,7 @@ public class StyleBuilder extends AbstractStyleBuilder<Style> {
                         .map(Object::toString)
                         .orElse(null);
         isDefault = style.isDefault();
+        background = new FillBuilder().reset(style.getBackground());
         unset = false;
         return this;
     }

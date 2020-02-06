@@ -1740,4 +1740,27 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         assertEquals(0.5, g.getAnchorPoint().getAnchorPointX().evaluate(null, Double.class), 0d);
         assertEquals(1, g.getAnchorPoint().getAnchorPointY().evaluate(null, Double.class), 0d);
     }
+
+    @Test
+    public void testBackgroundColor() throws CQLException {
+        String css = "* { background: yellow; background-opacity: 0.5; stroke: red }";
+        Style style = translate(css);
+        Fill background = ((org.geotools.styling.Style) style).getBackground();
+        assertNotNull(background);
+        assertEquals(Color.YELLOW, background.getColor().evaluate(null, Color.class));
+        assertEquals(0.5, background.getOpacity().evaluate(null, Double.class), 0d);
+    }
+
+    @Test
+    public void testBackgroundGraphic() throws CQLException {
+        String css = "* {background: symbol('circle'); :background {fill: yellow}; stroke: red}";
+        Style style = translate(css);
+        Fill background = ((org.geotools.styling.Style) style).getBackground();
+        assertNotNull(background);
+        Graphic graphicFill = background.getGraphicFill();
+        assertNotNull(graphicFill);
+        Mark mark = (Mark) graphicFill.graphicalSymbols().get(0);
+        assertEquals("circle", mark.getWellKnownName().evaluate(null, String.class));
+        assertEquals(Color.yellow, mark.getFill().getColor().evaluate(null, Color.class));
+    }
 }

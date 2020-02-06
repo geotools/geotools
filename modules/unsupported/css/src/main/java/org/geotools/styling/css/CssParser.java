@@ -266,7 +266,8 @@ public class CssParser extends BaseParser<Object> {
     }
 
     Rule ClassName() {
-        return Sequence(FirstOf("mark", "stroke", "fill", "symbol", "shield"), push(match()));
+        return Sequence(
+                FirstOf("mark", "stroke", "fill", "symbol", "shield", "background"), push(match()));
     }
 
     @SuppressSubnodes

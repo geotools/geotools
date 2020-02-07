@@ -1749,4 +1749,18 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         assertEquals("circle", mark.getWellKnownName().evaluate(null, String.class));
         assertEquals(Color.yellow, mark.getFill().getColor().evaluate(null, Color.class));
     }
+
+    @Test
+    public void labelShieldIndependent() throws Exception {
+        String css =
+                "* { label: 'test'; shield: symbol(square); shield-placement: independent; shield-anchor: 0.5 1} :shield {fill:black}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        TextSymbolizer2 ts = assertSingleSymbolizer(rule, TextSymbolizer2.class);
+        assertLiteral("test", ts.getLabel());
+        assertEquals("independent", ts.getOptions().get(TextSymbolizer.GRAPHIC_PLACEMENT_KEY));
+        Graphic g = ts.getGraphic();
+        assertEquals(0.5, g.getAnchorPoint().getAnchorPointX().evaluate(null, Double.class), 0d);
+        assertEquals(1, g.getAnchorPoint().getAnchorPointY().evaluate(null, Double.class), 0d);
+    }
 }

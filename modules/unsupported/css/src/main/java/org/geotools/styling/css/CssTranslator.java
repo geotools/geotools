@@ -217,6 +217,7 @@ public class CssTranslator {
                     put("label-polygon-align", TextSymbolizer.POLYGONALIGN_KEY);
                     put("shield-resize", "graphic-resize");
                     put("shield-margin", "graphic-margin");
+                    put("shield-placement", TextSymbolizer.GRAPHIC_PLACEMENT_KEY);
                 }
             };
 

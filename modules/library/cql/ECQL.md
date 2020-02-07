@@ -37,8 +37,8 @@ is used to describe the grammar.
 
 ```
     <sequence of search conditions> ::=
-                <search condition>
-                   |<sequence of search conditions> <semicolon> <search condition>
+        <search condition>
+        | <sequence of search conditions> <semicolon> <search condition>
 
     <search condition> ::= <boolean value expression>
 ```
@@ -62,7 +62,7 @@ is used to describe the grammar.
 ```
     <boolean primary> ::=
         <predicate>
-        | <left parent> <search condition> <right parent>
+        | <left paren> <search condition> <right paren>
         | <left bracket> <search condition> <right bracket>
 
     <predicate> ::=

@@ -1325,4 +1325,104 @@ public class ProjectionHandlerTest {
         assertEquals(228, postProcessed.getGeometryN(1).getEnvelopeInternal().getWidth(), 1);
         assertEquals(228, postProcessed.getGeometryN(2).getEnvelopeInternal().getWidth(), 1);
     }
+
+    @Test
+    public void testQueryEnvelopeAcrossDateLine() throws Exception {
+        final double minX = 140;
+        final double maxX = 200;
+        // [140, 200] can be split into
+        // [140, 180] AND [180, 200] which is the same as
+        // [140, 180] AND [-180, -160]
+
+        ReferencedEnvelope re = new ReferencedEnvelope(minX, maxX, -40, 30, WGS84);
+        ProjectionHandler ph = ProjectionHandlerFinder.getHandler(re, WGS84, true);
+        List<ReferencedEnvelope> queryEnvelopes = ph.getQueryEnvelopes();
+        assertEquals(2, queryEnvelopes.size());
+        ReferencedEnvelope qe = queryEnvelopes.get(1);
+
+        final double wrappedMinX = minX % 360;
+        final double wrappedMaxX = maxX % 360;
+        assertEquals(-180, qe.getMinX(), 1e-3);
+        assertEquals(wrappedMaxX - 360, qe.getMaxX(), 1e-3);
+
+        qe = queryEnvelopes.get(0);
+        assertEquals(wrappedMinX, qe.getMinX(), 1e-3);
+        assertEquals(180, qe.getMaxX(), 1e-3);
+    }
+
+    @Test
+    public void testQueryEnvelopeFarAway() throws Exception {
+        final double minX = 2170;
+        final double maxX = 2220;
+        // [2170, 2220] is the same as [10, 60]
+
+        ReferencedEnvelope re = new ReferencedEnvelope(minX, maxX, -40, 30, WGS84);
+        ProjectionHandler ph = ProjectionHandlerFinder.getHandler(re, WGS84, true);
+        List<ReferencedEnvelope> queryEnvelopes = ph.getQueryEnvelopes();
+        ReferencedEnvelope qe = queryEnvelopes.get(queryEnvelopes.size() - 1);
+
+        final double wrappedMinX = minX % 360;
+        final double wrappedMaxX = maxX % 360;
+        assertEquals(wrappedMinX, qe.getMinX(), 1e-3);
+        assertEquals(wrappedMaxX, qe.getMaxX(), 1e-3);
+    }
+
+    @Test
+    public void testQueryEnvelopeAcrossDateLineFarAway() throws Exception {
+        final double positiveMinX = 2170;
+        final double positiveMaxX = 2380;
+        // [2170, 2380] is the same as [10, 220] which can be split
+        // into [10, 180] AND [180, 220] which is the same as
+        // [10 , 180] AND [-180, -140]
+
+        final double negativeMinX = -2380;
+        final double negativeMaxX = -2170;
+        final double[] negatives = new double[] {negativeMinX, negativeMaxX};
+        final double[] positives = new double[] {positiveMinX, positiveMaxX};
+        final double[][] sets = new double[][] {negatives, positives};
+
+        boolean negative = true;
+        for (double[] set : sets) {
+            final double minX = set[0];
+            final double maxX = set[1];
+
+            ReferencedEnvelope re = new ReferencedEnvelope(minX, maxX, -40, 30, WGS84);
+            ProjectionHandler ph = ProjectionHandlerFinder.getHandler(re, WGS84, true);
+            List<ReferencedEnvelope> queryEnvelopes = ph.getQueryEnvelopes();
+            assertEquals(3, queryEnvelopes.size());
+            ReferencedEnvelope qe = queryEnvelopes.get(1);
+
+            final double wrappedMinX = minX % 360;
+            final double wrappedMaxX = maxX % 360;
+            assertEquals(-180, qe.getMinX(), 1e-3);
+            assertEquals(wrappedMaxX - (negative ? 0 : 360), qe.getMaxX(), 1e-3);
+
+            qe = queryEnvelopes.get(2);
+            assertEquals(wrappedMinX + (negative ? 360 : 0), qe.getMinX(), 1e-3);
+            assertEquals(180, qe.getMaxX(), 1e-3);
+            negative = false;
+        }
+    }
+
+    @Test
+    public void testQueryEnvelopeOnExtentGreaterThanWholeWorld() throws Exception {
+        ReferencedEnvelope re = new ReferencedEnvelope(350, 1000, -40, 30, WGS84);
+        ProjectionHandler ph = ProjectionHandlerFinder.getHandler(re, OSM, true);
+        List<ReferencedEnvelope> queryEnvelopes = ph.getQueryEnvelopes();
+        ReferencedEnvelope qe = queryEnvelopes.get(queryEnvelopes.size() - 1);
+
+        // We should get back the whole 3857 domain of validity
+        // since we add at least a full whole world span
+        MathTransform transform = CRS.findMathTransform(WGS84, OSM);
+        Coordinate minX = JTS.transform(new Coordinate(-180, -85), null, transform);
+        Coordinate maxX = JTS.transform(new Coordinate(180, -85), null, transform);
+        assertEquals(minX.x, qe.getMinX(), 1e-3);
+        assertEquals(maxX.x, qe.getMaxX(), 1e-3);
+
+        ph = ProjectionHandlerFinder.getHandler(re, WGS84, true);
+        queryEnvelopes = ph.getQueryEnvelopes();
+        qe = queryEnvelopes.get(queryEnvelopes.size() - 1);
+        assertEquals(-180, qe.getMinX(), 1e-3);
+        assertEquals(180, qe.getMaxX(), 1e-3);
+    }
 }

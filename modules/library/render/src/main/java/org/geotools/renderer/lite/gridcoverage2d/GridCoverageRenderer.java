@@ -688,9 +688,13 @@ public final class GridCoverageRenderer {
         int numBands = im.getSampleModel().getNumBands();
         GridSampleDimension[] sd = new GridSampleDimension[numBands];
         for (int i = 0; i < numBands; i++) {
+            // Preserve the sample dimensions names when no symbolizer get used
+            // Styles using GridCoverage's named properties may not find them if renamed
             sd[i] =
                     new GridSampleDimension(
-                            TypeMap.getColorInterpretation(im.getColorModel(), i).name());
+                            symbolizer == null
+                                    ? input.getSampleDimension(i).getDescription()
+                                    : TypeMap.getColorInterpretation(im.getColorModel(), i).name());
         }
 
         Map properties = input.getProperties();
@@ -1016,7 +1020,10 @@ public final class GridCoverageRenderer {
         // symbolize each bit (done here to make sure we can perform the warp/affine reduction)
         List<GridCoverage2D> symbolizedCoverages = new ArrayList<>();
         for (GridCoverage2D displaced : displacedCoverages) {
-            GridCoverage2D symbolized = symbolize(displaced, finalSymbolizer, bgValues);
+            GridCoverage2D symbolized =
+                    finalSymbolizer != null
+                            ? symbolize(displaced, finalSymbolizer, bgValues)
+                            : displaced;
             if (symbolized != null) {
                 symbolizedCoverages.add(symbolized);
             }
@@ -1100,7 +1107,7 @@ public final class GridCoverageRenderer {
                     coverage.getName(),
                     pi,
                     coverage.getGridGeometry(),
-                    null,
+                    coverage.getSampleDimensions(),
                     new GridCoverage2D[] {coverage},
                     properties);
         } else {
@@ -1197,7 +1204,6 @@ public final class GridCoverageRenderer {
      * the coordinate system given by {@link #getCoordinateSystem}.
      *
      * @param graphics the {@link Graphics2D} context in which to paint.
-     * @param metaBufferedEnvelope
      * @throws Exception
      * @throws UnsupportedOperationException if the transformation from grid to coordinate system in
      *     the GridCoverage is not an AffineTransform

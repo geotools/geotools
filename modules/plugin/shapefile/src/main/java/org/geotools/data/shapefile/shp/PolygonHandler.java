@@ -158,36 +158,81 @@ public class PolygonHandler implements ShapeHandler {
 
             length = finish - start;
             int close = 0; // '1' if the ring must be closed, '0' otherwise
-            if ((coords.getOrdinate(start, 0) != coords.getOrdinate(finish - 1, 0))
-                    || (coords.getOrdinate(start, 1) != coords.getOrdinate(finish - 1, 1))) {
+            if ((coords.getOrdinate(start, CoordinateSequence.X)
+                            != coords.getOrdinate(finish - 1, CoordinateSequence.X))
+                    || (coords.getOrdinate(start, CoordinateSequence.Y)
+                            != coords.getOrdinate(finish - 1, CoordinateSequence.Y))) {
                 close = 1;
             }
-            if (dimensions == 3) {
-                if (coords.getOrdinate(start, 2) != coords.getOrdinate(finish - 1, 2)) {
+            if (dimensions == 3 && !coords.hasM()) {
+                if (coords.getOrdinate(start, CoordinateSequence.Z)
+                        != coords.getOrdinate(finish - 1, CoordinateSequence.Z)) {
                     close = 1;
                 }
             }
 
-            CoordinateSequence csRing =
-                    JTS.createCS(
-                            geometryFactory.getCoordinateSequenceFactory(),
-                            length + close,
-                            dimensions);
+            CoordinateSequence csRing;
+            if (coords.hasZ()) {
+                csRing =
+                        JTS.createCS(
+                                geometryFactory.getCoordinateSequenceFactory(),
+                                length + close,
+                                4,
+                                1);
+            } else if (coords.hasM()) {
+                csRing =
+                        JTS.createCS(
+                                geometryFactory.getCoordinateSequenceFactory(),
+                                length + close,
+                                3,
+                                1);
+            } else {
+                csRing =
+                        JTS.createCS(
+                                geometryFactory.getCoordinateSequenceFactory(), length + close, 2);
+            }
+
             // double area = 0;
             // int sx = offset;
             for (int i = 0; i < length; i++) {
-                csRing.setOrdinate(i, 0, coords.getOrdinate(offset, 0));
-                csRing.setOrdinate(i, 1, coords.getOrdinate(offset, 1));
-                if (dimensions == 3) {
-                    csRing.setOrdinate(i, 2, coords.getOrdinate(offset, 2));
+                csRing.setOrdinate(
+                        i, CoordinateSequence.X, coords.getOrdinate(offset, CoordinateSequence.X));
+                csRing.setOrdinate(
+                        i, CoordinateSequence.Y, coords.getOrdinate(offset, CoordinateSequence.Y));
+                if (coords.hasZ()) {
+                    csRing.setOrdinate(
+                            i,
+                            CoordinateSequence.Z,
+                            coords.getOrdinate(offset, CoordinateSequence.Z));
+                }
+                if (coords.hasM()) {
+                    csRing.setOrdinate(
+                            i,
+                            CoordinateSequence.M,
+                            coords.getOrdinate(offset, CoordinateSequence.M));
                 }
                 offset++;
             }
             if (close == 1) {
-                csRing.setOrdinate(length, 0, coords.getOrdinate(start, 0));
-                csRing.setOrdinate(length, 1, coords.getOrdinate(start, 1));
-                if (dimensions == 3) {
-                    csRing.setOrdinate(length, 2, coords.getOrdinate(start, 2));
+                csRing.setOrdinate(
+                        length,
+                        CoordinateSequence.X,
+                        coords.getOrdinate(start, CoordinateSequence.X));
+                csRing.setOrdinate(
+                        length,
+                        CoordinateSequence.Y,
+                        coords.getOrdinate(start, CoordinateSequence.Y));
+                if (coords.hasZ()) {
+                    csRing.setOrdinate(
+                            length,
+                            CoordinateSequence.Z,
+                            coords.getOrdinate(start, CoordinateSequence.Z));
+                }
+                if (coords.hasM()) {
+                    csRing.setOrdinate(
+                            length,
+                            CoordinateSequence.M,
+                            coords.getOrdinate(start, CoordinateSequence.M));
                 }
             }
             // REVISIT: polygons with only 1 or 2 points are not polygons -
@@ -231,24 +276,38 @@ public class PolygonHandler implements ShapeHandler {
      */
     private CoordinateSequence readCoordinates(
             final ByteBuffer buffer, final int numPoints, final int dimensions) {
-        CoordinateSequence cs =
-                JTS.createCS(geometryFactory.getCoordinateSequenceFactory(), numPoints, dimensions);
-
+        CoordinateSequence cs;
+        if (shapeType == ShapeType.POLYGONM) {
+            cs = JTS.createCS(geometryFactory.getCoordinateSequenceFactory(), numPoints, 3, 1);
+        } else if (shapeType == ShapeType.POLYGONZ) {
+            cs = JTS.createCS(geometryFactory.getCoordinateSequenceFactory(), numPoints, 4, 1);
+        } else {
+            cs =
+                    JTS.createCS(
+                            geometryFactory.getCoordinateSequenceFactory(), numPoints, dimensions);
+        }
         DoubleBuffer dbuffer = buffer.asDoubleBuffer();
         double[] ordinates = new double[numPoints * 2];
         dbuffer.get(ordinates);
         for (int t = 0; t < numPoints; t++) {
-            cs.setOrdinate(t, 0, ordinates[t * 2]);
-            cs.setOrdinate(t, 1, ordinates[t * 2 + 1]);
+            cs.setOrdinate(t, CoordinateSequence.X, ordinates[t * 2]);
+            cs.setOrdinate(t, CoordinateSequence.Y, ordinates[t * 2 + 1]);
         }
 
-        if (dimensions > 2) {
-            // z
+        if (shapeType == ShapeType.POLYGONZ) { // Handle Z
             dbuffer.position(dbuffer.position() + 2);
             dbuffer.get(ordinates, 0, numPoints);
 
             for (int t = 0; t < numPoints; t++) {
-                cs.setOrdinate(t, 2, ordinates[t]);
+                cs.setOrdinate(t, CoordinateSequence.Z, ordinates[t]);
+            }
+        }
+        if (shapeType == ShapeType.POLYGONM || shapeType == ShapeType.POLYGONZ) { // Handle M
+            dbuffer.position(dbuffer.position() + 2);
+            dbuffer.get(ordinates, 0, numPoints);
+
+            for (int t = 0; t < numPoints; t++) {
+                cs.setOrdinate(t, CoordinateSequence.M, ordinates[t]);
             }
         }
 

@@ -51,8 +51,8 @@ public class PolygonHandlerTest extends TestCaseSupport {
         java.awt.Dimension ps = new java.awt.Dimension(500, 500);
         PrecisionModel precision = new PrecisionModel();
 
-        ArrayList shells = new ArrayList();
-        ArrayList holes = new ArrayList();
+        ArrayList<Geometry> shells = new ArrayList<Geometry>();
+        ArrayList<Geometry> holes = new ArrayList<Geometry>();
 
         int x = 10;
         int y = 10;
@@ -79,8 +79,8 @@ public class PolygonHandlerTest extends TestCaseSupport {
         }
 
         PolygonHandler ph = new PolygonHandler(new GeometryFactory());
-        ArrayList assigned = ph.assignHolesToShells(shells, holes);
-        assertEquals(((ArrayList) assigned.get(0)).size(), holes.size());
+        ArrayList<?> assigned = ph.assignHolesToShells(shells, holes);
+        assertEquals(((ArrayList<?>) assigned.get(0)).size(), holes.size());
     }
 
     public static Geometry rectangle(PrecisionModel pm, int SRID) {

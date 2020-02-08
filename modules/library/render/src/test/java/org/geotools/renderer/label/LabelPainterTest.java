@@ -17,6 +17,8 @@
 package org.geotools.renderer.label;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.*;
@@ -29,6 +31,7 @@ import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.renderer.label.LabelCacheImpl.LabelRenderingMode;
 import org.geotools.renderer.lite.RendererBaseTest;
 import org.geotools.renderer.style.MarkStyle2D;
+import org.geotools.renderer.style.Style2D;
 import org.geotools.renderer.style.TextStyle2D;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyleFactoryImpl;
@@ -60,6 +63,7 @@ public class LabelPainterTest {
                                 new AffineTransform(),
                                 RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT,
                                 RenderingHints.VALUE_FRACTIONALMETRICS_DEFAULT));
+        Mockito.when(graphics.getTransform()).thenReturn(new AffineTransform());
         style = new TextStyle2D();
         style.setFont(new Font("Serif", Font.PLAIN, 10));
         shape =
@@ -185,5 +189,52 @@ public class LabelPainterTest {
         assertEquals(-14, lgpBounds.getMinY(), tolerance);
         assertEquals(22, lgpBounds.getWidth(), tolerance);
         assertEquals(22, lgpBounds.getHeight(), tolerance);
+    }
+
+    @Test
+    public void testResizeGraphicWithMark2DGraphicResizeStrech() throws Exception {
+        LabelCacheItem labelItem = new LabelCacheItem("LayerID", style, shape, "Test", symbolizer);
+        labelItem.setGraphicsResize(LabelCacheItem.GraphicResize.STRETCH);
+        Rectangle2D labelBounds = new Rectangle2D.Double(0.0, -0.6875, 0.4, 0.4);
+        MarkStyle2D style2D = new MarkStyle2D();
+        style2D.setShape(new Rectangle2D.Double(-0.5, -0.5, 1.0, 1.0));
+        int[] graphicMargin = new int[4];
+        graphicMargin[0] = 0;
+        graphicMargin[1] = 0;
+        graphicMargin[2] = 0;
+        graphicMargin[3] = 0;
+        labelItem.setGraphicMargin(graphicMargin);
+        LabelPainter painter = new LabelPainter(graphics, LabelRenderingMode.OUTLINE);
+        painter.setLabel(labelItem);
+
+        // with these bounds the code should return a small but non null style
+        painter.labelBounds = labelBounds;
+        Style2D reply = painter.resizeGraphic(style2D);
+        assertNotNull(reply);
+    }
+
+    @Test
+    public void testResizeGraphicWithMark2DGraphicResizeStrechNegativeMargin() throws Exception {
+        LabelCacheItem labelItem = new LabelCacheItem("LayerID", style, shape, "Test", symbolizer);
+        labelItem.setGraphicsResize(LabelCacheItem.GraphicResize.STRETCH);
+        Rectangle2D labelBounds = new Rectangle2D.Double(0.0, -0.6875, 0.4, 0.4);
+        MarkStyle2D style2D = new MarkStyle2D();
+        style2D.setShape(new Rectangle2D.Double(-0.5, -0.5, 1.0, 1.0));
+        int[] graphicMargin = new int[4];
+        graphicMargin[0] = -1;
+        graphicMargin[1] = -1;
+        graphicMargin[2] = -1;
+        graphicMargin[3] = -1;
+        labelItem.setGraphicMargin(graphicMargin);
+        LabelPainter painter = new LabelPainter(graphics, LabelRenderingMode.OUTLINE);
+        painter.setLabel(labelItem);
+
+        // negative bounds due to margin, should still return null
+        painter.labelBounds = labelBounds;
+        Style2D reply = painter.resizeGraphic(style2D);
+        assertNull(reply);
+
+        // despite that, the label painting should not NPE, but just skip painting the graphic
+        painter.paintStraightLabel(new AffineTransform());
     }
 }

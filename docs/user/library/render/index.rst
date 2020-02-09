@@ -53,11 +53,7 @@ Graphic plugins:
    chart
    svg
 
-Unsupported:
+See also:
 
-.. toctree::
-   :maxdepth: 1
-   
-   shapefile
-
-* :doc:`/unsupported/css`
+* :doc:`/extension/mbstyle/index` (Extension)
+* :doc:`/unsupported/css` (Unsupported)

@@ -1577,6 +1577,13 @@
         <artifactId>jt-shadedrelief</artifactId>
         <version>${jaiext.version}</version>
       </dependency>
+      
+      <!-- Third-party -->
+      <dependency>
+        <groupId>com.googlecode.json-simple</groupId>
+        <artifactId>json-simple</artifactId>
+        <version>1.1</version>
+      </dependency>
       <dependency>
         <groupId>org.xerial</groupId>
         <artifactId>sqlite-jdbc</artifactId>

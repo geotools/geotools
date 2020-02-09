@@ -11,13 +11,14 @@ Extensions build additional functionality on top of the core services of the Geo
    complex
    graph/index
    grid
+   mbstyle/index
    ogc/index
-   wms/index
    tile-client/index
+   transform/transform
+   wms/index
    wmts/index
    validation
    xsd/index
-   transform/transform
    ysld
 
 Extensions build on top of the core concepts provided by the GeoTools library. This allows the project to take on more general topics than just being a simple geospatial library.

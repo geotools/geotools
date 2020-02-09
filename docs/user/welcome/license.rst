@@ -60,20 +60,25 @@ The original wiki documentation was distributed under the free documentation lic
    Invariant Sections, with the Front-Cover Texts being no Front-Cover Texts, and with
    the Back-Cover Texts being no Back-Cover Texts.
 
+The MBStyle extension documentation includes the :download:`BSD </extension/mbstyle/spec/LICENSE.md>` `Mapbox GL JS <https://github.com/mapbox/mapbox-gl-js>`__ specification adapted with examples reflecting GeoTools implementation:
+
+.. literalinclude:: /extension/mbstyle/spec/LICENSE.md
+   :language: text
+   
+      
 The source code examples cited in this documentation is made available to the public domain. This
 covers the source code in:
 
-* demo
-* doc
+* :file:`doc`
 
-These examples are explicitly provided under a public domain license in order to allow you to cut and paste
+These :file:`doc` examples are explicitly provided under a public domain license in order to allow you to cut and paste
 into your own application.::
 
-	GeoTools - The Open Source Java GIS Toolkit
-	http://geotools.org
+    GeoTools - The Open Source Java GIS Toolkit
+    http://geotools.org
 
-	(C) 2006-2013, Open Source Geospatial Foundation (OSGeo)
+    (C) 2006-2013, Open Source Geospatial Foundation (OSGeo)
 
-	This file is hereby placed into the Public Domain. This means anyone is
-	free to do whatever they wish with this file. Use it well and enjoy!
+    This file is hereby placed into the Public Domain. This means anyone is
+    free to do whatever they wish with this file. Use it well and enjoy!
 

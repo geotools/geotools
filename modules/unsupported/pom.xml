@@ -180,17 +180,6 @@
           </modules>
         </profile>
         <profile>
-            <id>mbstyle</id>
-            <activation>
-                <property>
-                    <name>all</name>
-                </property>
-            </activation>
-            <modules>
-                <module>mbstyle</module>
-            </modules>
-        </profile>        
-        <profile>
             <id>s3-geotiff</id>
             <modules>
                 <module>s3-geotiff</module>

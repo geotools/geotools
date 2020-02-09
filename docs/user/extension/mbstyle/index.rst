@@ -4,13 +4,13 @@ Mapbox Styles Module
 The ``gt-mbstyle`` module is an unsupported module that provides a parser/encoder to convert between Mapbox Styles and GeoTools style objects. These docs are under active development, along with the module itself.
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
-   spec
+   spec/index
 
 References:
 
-* https://www.mapbox.com/mapbox-gl-style-spec
+* `MapBox Style Specification <https://www.mapbox.com/mapbox-gl-js/style-spec/>`__
 
 Code Example
 ^^^^^^^^^^^^
@@ -34,7 +34,7 @@ Internally the extension provides greater access to the parsed style:
     // pull back selected layers for a provided source
     List<MBLayer> layers = mbstyle.layers( "sf:roads" );
 
-    //Which can be used to Generate a List of FeatureTypeStyles:
+    // Which can be used to Generate a List of FeatureTypeStyles:
     List<FeatureTypeStyle> fts = layer.transform( style );
 
 
@@ -43,18 +43,19 @@ Zoom level tuning
 
 The mapping between zoom levels and scale denominators is performed assuming, by default, a 512 pixels
 root tile at zoom level zero. This matches the usage of vector tiles client side.
-If a different value is to be used, it's possible to set a system variable to change the default.
+If a different value is to be used, it's possible to set a system property to change the default.
 E.g., the following would match "x4" tiles:
 
 .. code-block:: java
 
-    System.setSystemProperty("MBSTYLE_ROOT_TILE_PIXELS", "1024") 
+   System.setSystemProperty("MBSTYLE_ROOT_TILE_PIXELS", "1024") 
 
 MapBox Types
 ^^^^^^^^^^^^
-  copied from the `MapBox Style Specification <https://www.mapbox.com/mapbox-gl-js/style-spec/>`_
 
-  Color
+Quoting `MapBox Style Specification <https://www.mapbox.com/mapbox-gl-js/style-spec/>`__ :
+
+  ``Color``
 
     Colors are written as JSON strings in a variety of permitted formats: HTML-style hex values, ``rgb``, ``rgba``, ``hsl``, and ``hsla``. Predefined HTML colors names, like ``yellow`` and ``blue``, are also permitted.
 

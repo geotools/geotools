@@ -460,8 +460,6 @@ coordinates
 
 *Required* :ref:`types-array`.
 
-
-
 Corners of canvas specified in longitude, latitude pairs.
 
 animate
@@ -490,3 +488,5 @@ HTML ID of the canvas from which to read pixels.
      - >= 0.32.0
      - Not yet supported
      - Not yet supported
+     
+.. include:: footer.txt

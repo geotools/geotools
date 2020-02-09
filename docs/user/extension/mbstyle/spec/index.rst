@@ -17,6 +17,12 @@ Feature support is provided for the `Mapbox GL JS <https://www.mapbox.com/mapbox
    root
    light
    sources
-   spec
+   sprite
+   glyphs
+   transition
+   layers
+   types
+   expressions
+   other
 
 .. include:: footer.txt

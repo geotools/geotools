@@ -3,12 +3,12 @@ Project Object Model (POM) Files
 
 Complete documentation for the project XML file for Maven can be found at the Maven site, and in particular in the project descriptor part of the reference section.
 
-We only show the things specific to a GeoTools **module pom.xml** file here.
+We only show the things specific to a GeoTools module :file:`pom.xml` file here.
 
 Extending a Parent Module
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The <parent> section allows one ``pom.xml`` file to inherit items from another. Modules should extend the ``pom.xml`` within the module, plugin, extension or demo directory they belong to:
+The <parent> section allows one ``pom.xml`` file to inherit items from another. Modules should extend the :file:`pom.xml` within the module, plugin, extension or demo directory they belong to:
 
 .. code-block:: xml
    
@@ -31,7 +31,7 @@ Examples:
 * gt-main
 * gt-referencing.
 
-This policy allows our “gt-main.jar” to avoid conflict with a application “main” jar created that makes use of GeoTools.
+This policy allows our :file:`gt-main.jar` to avoid conflict with an application :file:`main.jar` created that makes use of GeoTools.
 
 The `groupId` is initially based reverse domain name `org.geotools` (following Java package name rules). GeoTools is a multi-module build with each submodule appending to the parent's groupId.
 
@@ -44,7 +44,7 @@ Examples:
 Dependencies
 ^^^^^^^^^^^^
 
-Dependencies are specified within the ``pom.xml`` file, but care should be taken to handle this in a consistent manner.
+Dependencies are specified within the :file:`pom.xml` file, but care is required to handle this in a consistent manner.
 
 New dependencies on another GeoTools module, should use:
 
@@ -52,7 +52,7 @@ New dependencies on another GeoTools module, should use:
 * ``artifactId`` - identify the jar within that project
 * ``version`` - ``${project.version}`` to match the current build
 
-Sample ``pom.xml`` dependency entry:
+Sample :file:`pom.xml` dependency entry:
 
 .. code-block:: xml
    
@@ -62,7 +62,7 @@ Sample ``pom.xml`` dependency entry:
       <version>${project.version}</version>
    </Dependency>
 
-New dependencies on a third-party jar need to be handled in two parts.
+Dependencies on a third-party jar are defined in two parts.
 
 First the dependency is supplied in the ``pom.xml`` file:
 

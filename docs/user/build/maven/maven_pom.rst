@@ -78,7 +78,7 @@ First the dependency is supplied in the ``pom.xml`` file:
       ...
    </dependencies>
 
-Second the dependency version is supplied in the “root” ``pom.xml`` file in the dependency management section:
+Second the dependency version is supplied in the “root” :file:`pom.xml` file in the dependency management section:
 
 .. code-block:: xml
 

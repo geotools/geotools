@@ -12,7 +12,7 @@ Using Maven
    snapshots
    javadocs
    eclipse
-   pom
+   maven_pom
    settings
    repositories
 

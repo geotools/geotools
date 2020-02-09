@@ -5,7 +5,8 @@ Extensions
 Extensions build additional functionality on top of the core services of the GeoTools library.
 
 .. toctree::
-
+   :maxdepth: 2
+   
    app-schema
    brewer/index
    complex

@@ -128,9 +128,32 @@ class WFSFeatureSource extends ContentFeatureSource {
         return client.canLimit();
     }
 
+    /** {@inheritDoc} */
     @Override
     public WFSDataStore getDataStore() {
         return (WFSDataStore) super.getDataStore();
+    }
+
+    /**
+     * This method changes the query object so that all propertyName references are resolved to
+     * simple attribute names against the schema of the feature source.
+     *
+     * <p>For example, this method ensures that propertyName's such as "gml:name" are rewritten as
+     * simply "name".
+     */
+    @Override
+    protected Query resolvePropertyNames(Query query) {
+        // Resolving is not conform with the specification of a wfs propertyname which is a QName
+        // from w3.org, see qualified names.
+        return query;
+    }
+
+    /** Transform provided filter; resolving property names */
+    @Override
+    protected Filter resolvePropertyNames(Filter filter) {
+        // Resolving is not conform with the specification of a wfs propertyname which is a QName
+        // from w3.org, see qualified names.
+        return filter;
     }
 
     /**

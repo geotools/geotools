@@ -56,7 +56,19 @@ import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Encoder;
 import org.opengis.filter.Filter;
 import org.opengis.filter.Id;
+import org.opengis.filter.PropertyIsBetween;
+import org.opengis.filter.PropertyIsEqualTo;
+import org.opengis.filter.PropertyIsGreaterThan;
+import org.opengis.filter.PropertyIsGreaterThanOrEqualTo;
+import org.opengis.filter.PropertyIsLessThan;
+import org.opengis.filter.PropertyIsLessThanOrEqualTo;
+import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.PropertyIsNil;
+import org.opengis.filter.PropertyIsNotEqualTo;
+import org.opengis.filter.PropertyIsNull;
+import org.opengis.filter.capability.ComparisonOperators;
 import org.opengis.filter.capability.FilterCapabilities;
+import org.opengis.filter.capability.ScalarCapabilities;
 import org.opengis.filter.capability.SpatialCapabilities;
 import org.opengis.filter.capability.SpatialOperators;
 import org.opengis.filter.identity.FeatureId;
@@ -609,6 +621,14 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
                     }
                 }
             }
+            /*
+             * General Fix for WFS 2.0 naming the scalar operations like the WFS 1.x operations, otherwise
+             * CapabilitiesFilterSplitter thinks filter is not supported at splitFilters
+             */
+            if (Versions.v2_0_0.equals(getServiceVersion())) {
+                ScalarCapabilities spatialCaps = filterCapabilities.getScalarCapabilities();
+                addNamesFilterOGC(spatialCaps, filterCaps);
+            }
         }
         filter = simplify(filter);
 
@@ -640,6 +660,67 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
             post = splitter.getFilterPost();
         }
         return new Filter[] {server, post};
+    }
+
+    /**
+     * General Fix for WFS 2.0 naming the scalar operations like the WFS 1.x operations, otherwise
+     * CapabilitiesFilterSplitter thinks filter is not supported at splitFilters.
+     *
+     * @param spatialCaps Original capabilities.
+     * @param resFilterCaps Capabilities to add the names to.
+     */
+    private void addNamesFilterOGC(ScalarCapabilities spatialCaps, Capabilities resFilterCaps) {
+        if (spatialCaps != null) {
+            ComparisonOperators spatialOps = spatialCaps.getComparisonOperators();
+            if (spatialOps != null) {
+                addNameFilterOGC(
+                        spatialOps,
+                        "PropertyIsGreaterThan",
+                        PropertyIsGreaterThan.NAME,
+                        resFilterCaps);
+                addNameFilterOGC(
+                        spatialOps,
+                        "PropertyIsNotEqualTo",
+                        PropertyIsNotEqualTo.NAME,
+                        resFilterCaps);
+                addNameFilterOGC(
+                        spatialOps,
+                        "PropertyIsLessThanOrEqualTo",
+                        PropertyIsLessThanOrEqualTo.NAME,
+                        resFilterCaps);
+                addNameFilterOGC(
+                        spatialOps,
+                        "PropertyIsGreaterThanOrEqualTo",
+                        PropertyIsGreaterThanOrEqualTo.NAME,
+                        resFilterCaps);
+                addNameFilterOGC(spatialOps, "PropertyIsLike", PropertyIsLike.NAME, resFilterCaps);
+                addNameFilterOGC(spatialOps, "PropertyIsNil", PropertyIsNil.NAME, resFilterCaps);
+                addNameFilterOGC(
+                        spatialOps, "PropertyIsEqualTo", PropertyIsEqualTo.NAME, resFilterCaps);
+                addNameFilterOGC(spatialOps, "PropertyIsNull", PropertyIsNull.NAME, resFilterCaps);
+                addNameFilterOGC(
+                        spatialOps, "PropertyIsBetween", PropertyIsBetween.NAME, resFilterCaps);
+                addNameFilterOGC(
+                        spatialOps, "PropertyIsLessThan", PropertyIsLessThan.NAME, resFilterCaps);
+            }
+        }
+    }
+
+    private void addNameFilterOGC(
+            ComparisonOperators spatialOps,
+            String nameFES,
+            String nameOGC,
+            Capabilities resFilterCaps) {
+        if (null != spatialOps.getOperator(nameFES)) {
+            trace(
+                    "WFS 2.0 capabilities states the scalar operator " + nameFES + ". ",
+                    "Assuming it is "
+                            + nameOGC
+                            + " and adding "
+                            + nameOGC
+                            + " as a supported filter type");
+            resFilterCaps.addName(nameOGC);
+        }
     }
 
     protected Filter simplify(Filter filter) {

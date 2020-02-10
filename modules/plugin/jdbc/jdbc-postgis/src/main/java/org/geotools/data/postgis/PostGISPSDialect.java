@@ -311,4 +311,9 @@ public class PostGISPSDialect extends PreparedStatementSQLDialect {
     public void initializeConnection(Connection cx) throws SQLException {
         delegate.initializeConnection(cx);
     }
+
+    @Override
+    public boolean canSimplifyPoints() {
+        return delegate.canSimplifyPoints();
+    }
 }

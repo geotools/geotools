@@ -53,6 +53,7 @@
     <module>epsg-postgresql</module>
     <module>epsg-wkt</module>
     <module>feature-pregeneralized</module>
+    <module>geopkg</module>
     <module>geotiff</module>
     <module>grassraster</module>
     <module>image</module>

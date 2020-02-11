@@ -45,7 +45,7 @@
     <repository>
       <id>nativelibs4java-repo</id>
       <name>NativeLibs4Java Maven Repository</name>
-      <url>http://nativelibs4java.sourceforge.net/maven</url>
+      <url>https://nativelibs4java.sourceforge.net/maven</url>
     </repository>
   </repositories>
 

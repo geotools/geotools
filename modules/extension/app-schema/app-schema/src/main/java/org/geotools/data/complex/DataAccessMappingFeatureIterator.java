@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -1011,7 +1012,10 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         // get the multiple values for the current jdbc multiple values attribute
         Object sourceColumnValue =
                 sourceFeature.getProperty(jdbcMultipleValue.getSourceColumn()).getValue();
-        return candidates.get(sourceColumnValue);
+
+        List<MultiValueContainer> list = candidates.get(sourceColumnValue);
+        // make sure we never return null, instead return an empty list
+        return list != null ? list : Collections.emptyList();
     }
 
     /**

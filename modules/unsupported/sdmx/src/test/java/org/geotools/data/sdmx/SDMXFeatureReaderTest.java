@@ -117,6 +117,22 @@ public class SDMXFeatureReaderTest {
                                 + "AGE='TOT' and "
                                 + "STATE='1'");
         assertEquals("1+2+3.TOT.TOT.1...", this.dfSource.buildConstraints(new Query("", filter)));
+
+        filter = ECQL.toFilter("MEASURE='3' and " + "MSTP='TOT' and " + "TIME in ('2001', '2002')");
+        assertEquals("2001", this.dfSource.getTimeInterval(new Query("", filter)).get(0));
+        assertEquals("2002", this.dfSource.getTimeInterval(new Query("", filter)).get(1));
+        filter =
+                ECQL.toFilter(
+                        "MEASURE='3' and "
+                                + "MSTP='TOT' and "
+                                + "TIME in ('2003', '2001', '2002')");
+        assertEquals("2001", this.dfSource.getTimeInterval(new Query("", filter)).get(0));
+        assertEquals("2003", this.dfSource.getTimeInterval(new Query("", filter)).get(1));
+        filter = ECQL.toFilter("MEASURE='3' and " + "MSTP='TOT' and " + "TIME in ('2003')");
+        assertEquals("2003", this.dfSource.getTimeInterval(new Query("", filter)).get(0));
+        assertEquals("2003", this.dfSource.getTimeInterval(new Query("", filter)).get(1));
+        filter = ECQL.toFilter("MEASURE='3' and " + "MSTP='TOT'");
+        assertEquals(0, this.dfSource.getTimeInterval(new Query("", filter)).size());
     }
 
     @Test
@@ -428,7 +444,7 @@ public class SDMXFeatureReaderTest {
             nObs++;
         }
 
-        assertEquals(7, nObs);
+        assertEquals(8, nObs);
     }
 
     @Test

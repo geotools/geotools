@@ -71,8 +71,9 @@ MEASURE= '1' and MSTP='TOT' and STATE='1' and REGIONTYPE='STE' and
 REGION in ('1','2','3','4') and FREQUENCY='A'
 
 
-WFS Exmaples
------------- 
+WFS Examples
+------------
+
 (Change hostname as needed)
 
 All measures bound request:
@@ -81,4 +82,15 @@ curl -XGET "http://geoserverarcgis/wfs?cql_filter=AGE+in+%28%27A15%27%2C%27A10%2
 All ages request:
 curl -XGET "http://geoserverarcgis/geoserver/wfs?cql_filter=MEASURE+in+%28%27POP_PROJ%27%29+and+FREQUENCY+in+%28%27A%27%29+and+SERIES+in+%28%272%27%29+and+SEX_ABS+in+%28%272%27%29+and+REGION+in+%28%272%27%29&service=wfs&request=GetFeature&typeName=aurin%3AABORIGINAL_POP_PROJ_REMOTE__SDMX&version=1.1.0"
 
-        
+
+Unit tests
+------------
+
+mvn test
+
+
+System tests
+------------
+
+mvn integration-test -Psystemtest
+

@@ -5,12 +5,6 @@ The GeoTools project is a member of the Open Source Geospatial Foundation; the f
 
 As an open source project GeoTools is made available to you using an open source (LGPL) license as described below.
 
-A few select files have additional license:
-
-* Code contributed by government members is often contributed as public domain
-* To facilitate adopting of the GeoTools library the example code used in the
-  user guide is also public domain
-
 Source License
 ^^^^^^^^^^^^^^
 
@@ -20,7 +14,7 @@ The source code of the GeoTools library is distributed under the LGPL license::
 
    GeoTools - The Open Source Java GIS Toolkit
    http://geotools.org
-   (C) 2002-2011, Open Source Geospatial Foundation (OSGeo)
+   (C) 2002-2020, Open Source Geospatial Foundation (OSGeo)
 
    This library is free software; you can redistribute it and/or modify it under
    the terms of the GNU Lesser General Public License as published by the Free
@@ -41,39 +35,43 @@ In addition several modules contain code made available to us under a different 
 * :doc:`gt-brewer </extension/brewer/index>` (Apache License)
 * :doc:`gt-referencing3d </library/referencing/3d>` (some code available from NASA for unlimited distribution) 
 
-Document License
-^^^^^^^^^^^^^^^^^
+Contributions to the GeoTools codebase use a `contributor license agreement <https://www.osgeo.org/about/licenses/>`__ to assign copyright to the `Open Source Geospatial Foundation <https://www.osgeo.org>`__. Some government members are required to place code contributions into the public domain, these contributions are then added to the library by an individual.
 
-This generated documentation is distributed using creative commons with attribution.
+Document License
+^^^^^^^^^^^^^^^^
+
+This generated documentation is distributed using creative commons with attribution license.
 
 For details see http://creativecommons.org/licenses/by/3.0/
 
 .. image:: /images/ccAttribution.*
 
-The original wiki documentation was distributed under the free documentation license::
+In addition some content is baed on material provided to us under a different license:
 
-   Copyright (c) 2004-2011 Open Geospatial Foundation
+* The MBStyle extension documentation includes the MapBox Style Specification, using a :download:`BSD </extension/mbstyle/spec/LICENSE.md>` license.
 
-   Permission is granted to copy, distribute and/or modify this document under the
-   terms of the GNU Free Documentation License, Version 1.1 or any later version
-   published by the Free Software Foundation; with the Invariant Sections being with no
-   Invariant Sections, with the Front-Cover Texts being no Front-Cover Texts, and with
-   the Back-Cover Texts being no Back-Cover Texts.
+* This user guide started out life as a wiki, with contents distributed using the free documentation license:
+  
+  ::
+  
+      Copyright (c) 2004-2011 Open Geospatial Foundation
 
-The source code examples cited in this documentation is made available to the public domain. This
-covers the source code in:
+      Permission is granted to copy, distribute and/or modify this document under the
+      terms of the GNU Free Documentation License, Version 1.1 or any later version
+      published by the Free Software Foundation; with the Invariant Sections being with no
+      Invariant Sections, with the Front-Cover Texts being no Front-Cover Texts, and with
+      the Back-Cover Texts being no Back-Cover Texts.
 
-* demo
-* doc
+The source code examples included in this documentation are provided to the public domain.
 
-These examples are explicitly provided under a public domain license in order to allow you to cut and paste
-into your own application.::
+These examples (located in project's :file:`doc` folder) are explicitly placed into the public domain
+to enable you to cut and paste into your own application.::
+   
+    GeoTools - The Open Source Java GIS Toolkit
+    http://geotools.org
 
-	GeoTools - The Open Source Java GIS Toolkit
-	http://geotools.org
+    (C) 2006-2020, Open Source Geospatial Foundation (OSGeo)
 
-	(C) 2006-2013, Open Source Geospatial Foundation (OSGeo)
-
-	This file is hereby placed into the Public Domain. This means anyone is
-	free to do whatever they wish with this file. Use it well and enjoy!
+    This file is hereby placed into the Public Domain. This means anyone is
+    free to do whatever they wish with this file. Use it well and enjoy!
 

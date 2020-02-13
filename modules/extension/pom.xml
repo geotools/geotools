@@ -28,7 +28,7 @@
   <packaging>pom</packaging>
   <name>Geotools extensions</name>
   <description>
-    Extensions to Geotools.
+    GeoTools extensions provide additional capabilities built using the core library.
   </description>
 
   <licenses>
@@ -49,12 +49,13 @@
     <module>complex</module>
     <module>graph</module>
     <module>grid</module>
+    <module>mbstyle</module>
+    <module>tile-client</module>
+    <module>transform</module>
     <module>validation</module>
     <module>wms</module>
-    <module>tile-client</module>
     <module>wmts</module>
     <module>xsd</module>
-    <module>transform</module>
     <module>ysld</module>
   </modules>
 </project>

@@ -58,11 +58,7 @@ import org.opengis.style.ContrastMethod;
  * @author iant
  */
 public interface ContrastEnhancement extends org.opengis.style.ContrastEnhancement {
-    /**
-     * Used to set the contrast enhancement method used.
-     *
-     * @param method
-     */
+    /** Used to set the contrast enhancement method used. */
     public void setMethod(ContrastMethod method);
 
     /**
@@ -101,20 +97,13 @@ public interface ContrastEnhancement extends org.opengis.style.ContrastEnhanceme
      */
     public void addOption(String key, Expression value);
 
-    /**
-     * Traversal of the style data structure.
-     *
-     * @param visitor
-     */
+    /** Traversal of the style data structure. */
     public void accept(StyleVisitor visitor);
 
     /** @param options a Map of VendorOptions */
     public void setOptions(Map<String, Expression> options);
 
-    /**
-     * @param string
-     * @return An expression for the matching VendorOption
-     */
+    /** @return An expression for the matching VendorOption */
     public Expression getOption(String string);
 
     /**

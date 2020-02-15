@@ -22,8 +22,6 @@ public class AlgoLineND {
     // Commented out because methods are neither tested nor used
 
     //	/**
-    //	 * @param p0
-    //	 * @param p1
     //	 * @return the square of the length
     //	 */
     //	public static double getLengthSquare(double[] p0, double[] p1) {
@@ -31,8 +29,6 @@ public class AlgoLineND {
     //	}
 
     //	/**
-    //	 * @param p0
-    //	 * @param p1
     //	 * @return the square of the length
     //	 */
     //	public static double getLength(double[] p0, double[] p1) {
@@ -41,9 +37,6 @@ public class AlgoLineND {
 
     //	/**
     //	 *
-    //	 * @param p0
-    //	 * @param p1
-    //	 * @param p
     //	 * @return distance
     //	 */
     //	public static double getDistance(double[] p0, double[] p1, double[] p) {
@@ -51,10 +44,6 @@ public class AlgoLineND {
     //	}
     //
     //	/**
-    //	 * @param p0
-    //	 * @param p1
-    //	 * @param p
-    //	 * @return
     //	 */
     //	public static double[] getClosestPoint(double[] p0, double[] p1, double[] p) {
     //		// TODO

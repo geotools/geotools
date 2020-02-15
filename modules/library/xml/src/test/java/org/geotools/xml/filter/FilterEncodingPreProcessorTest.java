@@ -299,8 +299,6 @@ public class FilterEncodingPreProcessorTest extends TestCase {
      * <p>and{ nullFilter nullFilter }
      *
      * <p>and the fids should be included.
-     *
-     * @throws Exception
      */
     public void testMixedAndOr() throws Exception {
         FilterFactory2 factory = CommonFactoryFinder.getFilterFactory2(null);

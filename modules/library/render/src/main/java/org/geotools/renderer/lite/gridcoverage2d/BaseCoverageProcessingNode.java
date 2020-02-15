@@ -171,8 +171,6 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      * Default constructor that gives users the possibility
      *
      * @param maxSources maximum number of sources allowed for this node.
-     * @param description
-     * @param name
      */
     public BaseCoverageProcessingNode(
             int maxSources, InternationalString name, InternationalString description) {
@@ -185,8 +183,6 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      * @param maxSources maximum number of sources allowed for this node.
      * @param hints instance of {@link Hints} class to control creation of internal factories. It
      *     can be <code>null</code>.
-     * @param description
-     * @param name
      */
     public BaseCoverageProcessingNode(
             int maxSources,
@@ -397,10 +393,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#getSinks()
      */
-    /**
-     * @return
-     * @uml.property name="sinks"
-     */
+    /** @uml.property name="sinks" */
     public List<CoverageProcessingNode> getSinks() {
         return Collections.unmodifiableList(sinks);
     }
@@ -419,10 +412,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#getSources()
      */
-    /**
-     * @return
-     * @uml.property name="sources"
-     */
+    /** @uml.property name="sources" */
     public List<CoverageProcessingNode> getSources() {
         return Collections.unmodifiableList(sources);
     }
@@ -521,10 +511,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#getDescription()
      */
-    /**
-     * @return
-     * @uml.property name="description"
-     */
+    /** @uml.property name="description" */
     public InternationalString getDescription() {
         return description;
     }
@@ -534,10 +521,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#getName()
      */
-    /**
-     * @return
-     * @uml.property name="name"
-     */
+    /** @uml.property name="name" */
     public InternationalString getName() {
         return name;
     }

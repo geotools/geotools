@@ -38,9 +38,6 @@ public class DefaultTemporalReferenceSystem implements TemporalReferenceSystem {
     /**
      * Creates a new instance of TemporalReferenceSystem by passing a ReferenceIdentifier name and a
      * domain of validity.
-     *
-     * @param name
-     * @param domainOfValidity
      */
     public DefaultTemporalReferenceSystem(ReferenceIdentifier name, Extent domainOfValidity) {
         this.name = name;

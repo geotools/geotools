@@ -392,7 +392,6 @@ public class BindingPropertyExtractor implements PropertyExtractor {
      *
      * @param properties feature properties obtained
      * @param children list of XSDParticle in the order as they appear in the schema
-     * @return
      */
     private boolean propertiesSortable(List properties, List children) {
         /*

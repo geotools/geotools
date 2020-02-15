@@ -46,11 +46,7 @@ public class SLDSelectedChannelTypeBindingTest extends SLDTestSupport {
         assertNotNull(channelType.getContrastEnhancement());
     }
 
-    /**
-     * Test Expression evaluation on SourceChannelName
-     *
-     * @throws Exception
-     */
+    /** Test Expression evaluation on SourceChannelName */
     @Test
     public void testChannelNameExpression() throws Exception {
         final String b1 = "B1";

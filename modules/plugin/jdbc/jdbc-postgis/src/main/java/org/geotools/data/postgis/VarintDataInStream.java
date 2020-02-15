@@ -40,11 +40,7 @@ public class VarintDataInStream {
         this.stream = stream;
     }
 
-    /**
-     * Sets a new InStream to delegate reads to
-     *
-     * @param stream
-     */
+    /** Sets a new InStream to delegate reads to */
     public void setInStream(InStream stream) {
         this.stream = stream;
     }

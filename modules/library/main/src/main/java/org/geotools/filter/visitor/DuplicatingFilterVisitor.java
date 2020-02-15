@@ -112,13 +112,7 @@ public class DuplicatingFilterVisitor implements FilterVisitor, ExpressionVisito
         return filter;
     }
 
-    /**
-     * Null safe expression cloning
-     *
-     * @param expression
-     * @param extraData
-     * @return
-     */
+    /** Null safe expression cloning */
     protected Expression visit(Expression expression, Object extraData) {
         if (expression == null) return null;
         return (Expression) expression.accept(this, extraData);

@@ -66,8 +66,6 @@ public class DefaultTemporalPosition implements TemporalPosition {
     /**
      * Returns the TM_ReferenceSystem associated with this TM_TemporalPosition, if not specified, it
      * is assumed to be an association to the Gregorian calendar and UTC.
-     *
-     * @return
      */
     public TemporalReferenceSystem getFrame() {
         if (frame == null) {

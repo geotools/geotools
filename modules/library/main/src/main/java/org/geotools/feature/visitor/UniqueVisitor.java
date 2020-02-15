@@ -219,11 +219,7 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
         return startIndex > 0 || maxFeatures < Integer.MAX_VALUE;
     }
 
-    /**
-     * True if the unique visitor must be order preserving
-     *
-     * @return
-     */
+    /** True if the unique visitor must be order preserving */
     public boolean isPreserveOrder() {
         return preserveOrder;
     }

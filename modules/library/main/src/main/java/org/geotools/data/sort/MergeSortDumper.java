@@ -77,12 +77,7 @@ class MergeSortDumper {
         return getDelegateReader(reader, query.getSortBy(), maxFeatures);
     }
 
-    /**
-     * Gets the max amount amount of features to keep in memory from the query and system hints
-     *
-     * @param query
-     * @return
-     */
+    /** Gets the max amount amount of features to keep in memory from the query and system hints */
     static int getMaxFeatures(Query query) {
         Hints hints = null;
         if (query != null) {
@@ -180,13 +175,7 @@ class MergeSortDumper {
         }
     }
 
-    /**
-     * Writes the feature attributes to a binary file
-     *
-     * @param features
-     * @return
-     * @throws IOException
-     */
+    /** Writes the feature attributes to a binary file */
     static FeatureBlockReader storeToFile(SimpleFeatureIO io, List<SimpleFeature> features)
             throws IOException {
         long start = io.getOffset();

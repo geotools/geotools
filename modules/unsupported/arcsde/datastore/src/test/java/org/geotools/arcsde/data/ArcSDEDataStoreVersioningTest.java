@@ -132,8 +132,6 @@ public class ArcSDEDataStoreVersioningTest {
     /**
      * Why... oh why this test fails if executed twice, but succeeds if the transactional version
      * ran before? no time to look further into it right now, but beware
-     *
-     * @throws IOException
      */
     @Test
     @Ignore

@@ -125,11 +125,7 @@ public class FunctionFactoryTest {
         assertNotNull(f);
     }
 
-    /**
-     * GEOT-3841
-     *
-     * @throws Exception
-     */
+    /** GEOT-3841 */
     @Test
     public void testThreadedFunctionLookup() throws Exception {
         final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);

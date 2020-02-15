@@ -275,13 +275,7 @@ public class LiteralDemultiplyingFilterVisitor extends DuplicatingFilterVisitor 
         return filter;
     }
 
-    /**
-     * Demultiplies first and second expression
-     *
-     * @param filter
-     * @param replacer
-     * @return
-     */
+    /** Demultiplies first and second expression */
     protected <T extends MultiValuedFilter> Filter demultiply(
             T filter, FilterReplacer<T> replacer) {
 

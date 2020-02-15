@@ -53,13 +53,7 @@ class OGRDirectFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
 
     private OGR ogr;
 
-    /**
-     * Creates a new direct OGR feature writer
-     *
-     * @param reader
-     * @param featureType
-     * @param layer
-     */
+    /** Creates a new direct OGR feature writer */
     public OGRDirectFeatureWriter(
             OGRDataSource dataSource,
             Object layer,

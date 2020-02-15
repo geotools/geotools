@@ -542,11 +542,7 @@ public class SEExampleTest extends SETestSupport {
                 1.0, sym.getContrastEnhancement().getGammaValue().evaluate(null, Double.class));
     }
 
-    /**
-     * Test the Expression parser for SelectChannel
-     *
-     * @throws Exception
-     */
+    /** Test the Expression parser for SelectChannel */
     @Test
     public void testParseRasterChannelExpression() throws Exception {
         RasterSymbolizer sym = (RasterSymbolizer) parse("example-raster-channel-expression.xml");

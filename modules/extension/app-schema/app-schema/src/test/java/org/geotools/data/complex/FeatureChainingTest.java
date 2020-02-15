@@ -171,11 +171,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
         // System.out.println("Set up time: " + sw.getTimeString());
     }
 
-    /**
-     * Test that chaining works
-     *
-     * @throws Exception
-     */
+    /** Test that chaining works */
     @Test
     public void testFeatureChaining() throws Exception {
         FeatureIterator<Feature> mfIterator = mfFeatures.features();
@@ -282,8 +278,6 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
      * testFeatureChaining() tests one to many relationship, but the many side was on the chaining
      * side ie. geologic unit side (with many composition parts). This is to test that configuring
      * many on the the chained works. We're using composition part -> lithology here.
-     *
-     * @throws Exception
      */
     @Test
     public void testManyOnChainedSide() throws Exception {
@@ -338,8 +332,6 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
      * Test nesting multiple multi valued properties. Both exposure color and outcrop character are
      * multi valued. By making sure that both are nested inside geological unit feature, it's
      * verified that nesting multiple multi valued properties is possible.
-     *
-     * @throws Exception
      */
     @Test
     public void testMultipleMultiValuedProperties() throws Exception {
@@ -401,11 +393,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
         guIterator.close();
     }
 
-    /**
-     * Test mapping multi-valued simple properties still works.
-     *
-     * @throws Exception
-     */
+    /** Test mapping multi-valued simple properties still works. */
     @Test
     public void testMultiValuedSimpleProperties() throws Exception {
         FeatureIterator<Feature> iterator = ccFeatures.features();
@@ -424,11 +412,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
         iterator.close();
     }
 
-    /**
-     * Test filtering attributes on nested features.
-     *
-     * @throws Exception
-     */
+    /** Test filtering attributes on nested features. */
     @Test
     public void testFilters() throws Exception {
         // make sure filter query can be made on MappedFeature based on GU properties
@@ -548,8 +532,6 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
      * Test nesting features of a complex type with simple content. Previously didn't get encoded.
      * Also making sure that a feature type can have multiple FEATURE_LINK to be referred by
      * different types.
-     *
-     * @throws Exception
      */
     @Test
     public void testComplexTypeWithSimpleContent() throws Exception {
@@ -653,8 +635,6 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
     /**
      * Test chaining multi-valued by reference (xlink:href). It should result with multiple
      * attributes with no nested attributes, but only client property with xlink:href.
-     *
-     * @throws Exception
      */
     @Test
     public void testMultiValuedPropertiesByRef() throws Exception {
@@ -712,8 +692,6 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
      *
      * <p>Note: the above holds true in the context of a single {@link AppSchemaDataAccess}
      * instance, not across data stores.
-     *
-     * @throws IOException
      */
     @Test
     public void testSourceDataStoreConsolidation() throws IOException {
@@ -752,12 +730,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
         assertNotEquals(guSourceFs.getDataStore(), mfSourceFs.getDataStore());
     }
 
-    /**
-     * Load all the data accesses.
-     *
-     * @return
-     * @throws Exception
-     */
+    /** Load all the data accesses. */
     private static void loadDataAccesses() throws Exception {
         /** Load mapped feature data access */
         Map dsParams = new HashMap();

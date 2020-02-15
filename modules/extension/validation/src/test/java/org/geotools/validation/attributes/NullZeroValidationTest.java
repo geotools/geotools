@@ -52,11 +52,7 @@ public class NullZeroValidationTest extends TestCase {
     private RoadValidationResults results;
     private SimpleFeatureType type;
     NullZeroValidation test;
-    /**
-     * Constructor for NullZeroValidationTest.
-     *
-     * @param arg0
-     */
+    /** Constructor for NullZeroValidationTest. */
     public NullZeroValidationTest(String arg0) {
         super(arg0);
     }

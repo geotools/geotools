@@ -34,7 +34,6 @@ import org.geotools.coverage.io.netcdf.NetCDFDriver;
 import org.geotools.coverage.io.netcdf.NetCDFReader;
 import org.geotools.coverage.io.netcdf.crs.NetCDFCoordinateReferenceSystemType;
 import org.geotools.coverage.io.netcdf.crs.NetCDFProjection;
-import org.geotools.data.DataSourceException;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
@@ -125,12 +124,7 @@ public class GribTest extends Assert {
         assertEquals(299.15550239234693, attribute.getNumericValue().doubleValue(), DELTA);
     }
 
-    /**
-     * Test if the Grib format is accepted by the NetCDF reader
-     *
-     * @throws IOException
-     * @throws FileNotFoundException
-     */
+    /** Test if the Grib format is accepted by the NetCDF reader */
     @Test
     public void testGribFormat() throws FileNotFoundException, IOException {
         // Selection of the input file
@@ -149,12 +143,7 @@ public class GribTest extends Assert {
         Assert.assertFalse(format.accepts(fileTif));
     }
 
-    /**
-     * Test if the Grib extension is supported by the NetCDF reader
-     *
-     * @throws IOException
-     * @throws FileNotFoundException
-     */
+    /** Test if the Grib extension is supported by the NetCDF reader */
     @Test
     public void testGribExtension() {
         // Creation of a NetCDFDriver
@@ -183,13 +172,7 @@ public class GribTest extends Assert {
         Assert.assertTrue(MIMETypes.containsAll(gribMIMETypes));
     }
 
-    /**
-     * Test on a Grib image.
-     *
-     * @throws DataSourceException
-     * @throws MalformedURLException
-     * @throws IOException
-     */
+    /** Test on a Grib image. */
     @Test
     public void testGribImage() throws MalformedURLException, IOException {
         // Selection of the input file
@@ -202,13 +185,6 @@ public class GribTest extends Assert {
      * Private method for checking if the selected point are nodata or not. This ensures that the
      * images are flipped vertically only if needed. If the image is not correctly flipped then,
      * validpoint and nodatapoint should be inverted.
-     *
-     * @param inputFile
-     * @param validPoint
-     * @param nodataPoint
-     * @throws MalformedURLException
-     * @throws DataSourceException
-     * @throws IOException
      */
     private void testGribFile(final File inputFile, Point2D validPoint, Point2D nodataPoint)
             throws MalformedURLException, IOException {
@@ -253,13 +229,7 @@ public class GribTest extends Assert {
         }
     }
 
-    /**
-     * Test on a Grib image asking for a larger bounding box.
-     *
-     * @throws DataSourceException
-     * @throws MalformedURLException
-     * @throws IOException
-     */
+    /** Test on a Grib image asking for a larger bounding box. */
     @Test
     public void testGribImageWithLargeBBOX() throws MalformedURLException, IOException {
         // Selection of the input file
@@ -317,13 +287,7 @@ public class GribTest extends Assert {
         }
     }
 
-    /**
-     * Test on a Grib image with temporal bands, querying different bands
-     *
-     * @throws DataSourceException
-     * @throws MalformedURLException
-     * @throws IOException
-     */
+    /** Test on a Grib image with temporal bands, querying different bands */
     @Test
     public void testGribImageWithTimeDimension() throws MalformedURLException, IOException {
         // Selection of the input file

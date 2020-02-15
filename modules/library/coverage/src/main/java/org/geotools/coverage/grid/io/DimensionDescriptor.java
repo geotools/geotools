@@ -31,38 +31,18 @@ public interface DimensionDescriptor {
     public static final String RESOLUTION_X = "resolution_x";
     public static final String RESOLUTION_Y = "resolution_y";
 
-    /**
-     * The dimension name
-     *
-     * @return
-     */
+    /** The dimension name */
     String getName();
 
-    /**
-     * The dimension unit symbol
-     *
-     * @return
-     */
+    /** The dimension unit symbol */
     String getUnitSymbol();
 
-    /**
-     * The dimension units
-     *
-     * @return
-     */
+    /** The dimension units */
     String getUnits();
 
-    /**
-     * The start attribute
-     *
-     * @return
-     */
+    /** The start attribute */
     String getStartAttribute();
 
-    /**
-     * The end attribute (In case of dimensions with ranges)
-     *
-     * @return
-     */
+    /** The end attribute (In case of dimensions with ranges) */
     String getEndAttribute();
 }

@@ -22,7 +22,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -96,11 +95,7 @@ public class VocabFunctionsTest extends AppSchemaTestSupport {
         dataAccess.dispose();
     }
 
-    /**
-     * Test RecodeFunction
-     *
-     * @throws IOException
-     */
+    /** Test RecodeFunction */
     @Test
     public void testRecodeFunction() throws IOException {
         final Map<String, String> VALUE_MAP =
@@ -171,11 +166,7 @@ public class VocabFunctionsTest extends AppSchemaTestSupport {
         }
     }
 
-    /**
-     * Test the VocabFunction making use of a sample mapping provided by Alastair.
-     *
-     * @throws URISyntaxException
-     */
+    /** Test the VocabFunction making use of a sample mapping provided by Alastair. */
     @Test
     public void testVocabFunction() {
         URL file = getClass().getResource("/test-data/minoc_lithology_mapping.properties");

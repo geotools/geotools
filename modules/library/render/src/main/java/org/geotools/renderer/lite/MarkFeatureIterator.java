@@ -45,11 +45,6 @@ abstract class MarkFeatureIterator implements FeatureIterator<Feature> {
      * Builds a new {@link MarkFeatureIterator} making sure no too many features are kept in memory.
      * The listener won't receive any notification, but will be used to check if the data loading
      * should be stopped using {@link ProgressListener#isCanceled()}
-     *
-     * @param fc
-     * @param maxFeaturesInMemory
-     * @return
-     * @throws IOException
      */
     public static MarkFeatureIterator create(
             FeatureCollection fc, int maxFeaturesInMemory, ProgressListener listener)
@@ -84,11 +79,7 @@ abstract class MarkFeatureIterator implements FeatureIterator<Feature> {
         }
     }
 
-    /**
-     * Marks the current position of the feature iterator
-     *
-     * @throws IOException
-     */
+    /** Marks the current position of the feature iterator */
     public abstract void mark() throws IOException;
 
     public abstract void reset() throws IOException;

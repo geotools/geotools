@@ -272,8 +272,6 @@ public class FeatureTransformer extends TransformerBase {
      *
      * <p>Defaults to true (for backwards compatibility), disable explicitly if you don't want
      * feature collection bounds to be generated.
-     *
-     * @param collectionBounding
      */
     public void setCollectionBounding(boolean collectionBounding) {
         this.collectionBounding = collectionBounding;
@@ -419,9 +417,6 @@ public class FeatureTransformer extends TransformerBase {
         /**
          * Method to be subclassed to return a custom geometry translator, mostly for gml3 geometry
          * support.
-         *
-         * @param handler
-         * @return
          */
         protected GeometryTranslator createGeometryTranslator(ContentHandler handler) {
             return new GeometryTransformer.GeometryTranslator(handler);
@@ -435,12 +430,7 @@ public class FeatureTransformer extends TransformerBase {
             return new GeometryTransformer.GeometryTranslator(
                     handler, numDecimals, padWithZeros, forceDecimalEncoding);
         }
-        /**
-         * @param handler
-         * @param numDecimals
-         * @param useDummyZ
-         * @return
-         */
+        /** */
         protected GeometryTranslator createGeometryTranslator(
                 ContentHandler handler,
                 int numDecimals,
@@ -457,9 +447,6 @@ public class FeatureTransformer extends TransformerBase {
          * <p>This method can be used by code explicitly wishing to output 2D ordinates.
          *
          * @since 2.4.1
-         * @param handler
-         * @param numDecimals
-         * @param dimension
          * @return GeometryTranslator that will delegate a CoordinateWriter configured with the
          *     above parameters
          */
@@ -713,7 +700,6 @@ public class FeatureTransformer extends TransformerBase {
          * writes the <code>gml:boundedBy</code> element to output based on <code>fc.getBounds()
          * </code>
          *
-         * @param bounds
          * @throws RuntimeException if it is thorwn while writing the element or coordinates
          */
         public void writeBounds(BoundingBox bounds) {

@@ -80,7 +80,6 @@ public class PicoSurfaceTest extends TestCase {
     /**
      * Creates a pico container that knows about all the geom factories
      *
-     * @param crs
      * @return container
      */
     protected PicoContainer container(CoordinateReferenceSystem crs) {
@@ -125,11 +124,7 @@ public class PicoSurfaceTest extends TestCase {
         return triangleList;
     }
 
-    /**
-     * Create a surface on basis of SurfacePatches (Triangles)
-     *
-     * @param aGeomFactory
-     */
+    /** Create a surface on basis of SurfacePatches (Triangles) */
     private void _testSurface1(
             GeometryFactoryImpl aGeomFactory, PrimitiveFactoryImpl tPrimFactory) {
 

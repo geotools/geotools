@@ -52,8 +52,6 @@ public class WFSExtensions {
      *
      * @param request the WFS request that originated the given response
      * @param response the handle to the WFS response contents
-     * @return
-     * @throws IOException
      */
     // public static Object process(WFSResponse response) throws IOException {
     //
@@ -66,12 +64,7 @@ public class WFSExtensions {
     // return result;
     // }
 
-    /**
-     * @param originatingRequest
-     * @param contentType
-     * @return
-     * @throws FactoryNotFoundException
-     */
+    /** */
     public static WFSResponseFactory findResponseFactory(
             final WFSRequest originatingRequest, final String contentType) {
 

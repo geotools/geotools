@@ -400,14 +400,7 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
         return finalEnvelope;
     }
 
-    /**
-     * For each raster: crop->scale->translate->add to mosaic
-     *
-     * @param queries
-     * @param mosaicGeometry
-     * @return
-     * @throws IOException
-     */
+    /** For each raster: crop->scale->translate->add to mosaic */
     private RenderedImage createMosaic(
             final List<RasterQueryInfo> queries,
             final GridEnvelope mosaicGeometry,
@@ -568,11 +561,6 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
     /**
      * Crops the image representing a full tile set to the required dimension and returns it, but
      * keeps minx and miny being zero.
-     *
-     * @param fullTilesRaster
-     * @param tiledImageGridRange
-     * @param cropTo
-     * @return
      */
     private void cropToRequiredDimension(final ImageWorker worker, final GridEnvelope cropTo) {
         GridEnvelope2D crop =

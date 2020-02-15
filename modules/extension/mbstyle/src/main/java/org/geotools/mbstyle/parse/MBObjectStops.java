@@ -119,10 +119,7 @@ public class MBObjectStops {
      * This method creates a copy of the incoming layer to be used for creating the unique layer for
      * each stop.
      *
-     * @param layer
-     * @param layerStops
      * @return Split layer based on zoom-level stops
-     * @throws ParseException
      */
     List<MBLayer> getLayerStyleForStops(MBLayer layer, List<Double> layerStops)
             throws ParseException {
@@ -150,7 +147,6 @@ public class MBObjectStops {
     /**
      * Accepts the list of stops for a layer and builds a list of ranges for each stop.
      *
-     * @param stops
      * @return List of ranges based on zoom-level stops
      */
     List<double[]> getStopLevelRanges(List<Double> stops) {
@@ -242,7 +238,6 @@ public class MBObjectStops {
     /**
      * Accepts a distinct MBLayer and finds the stop for this layer.
      *
-     * @param layer
      * @return zoom-level stop for this layer
      */
     double stop(MBLayer layer) {
@@ -259,8 +254,6 @@ public class MBObjectStops {
     /**
      * This method reduces the Layer to just what is needed for the given range.
      *
-     * @param layer
-     * @param range
      * @return subset of layer for the provided range
      */
     MBLayer createLayerStopStyle(MBLayer layer, double[] range) {
@@ -277,8 +270,6 @@ public class MBObjectStops {
     /**
      * Iterates over the JSONObject looking for the stops for the given stop.
      *
-     * @param jsonObject
-     * @param layerStop
      * @return stop
      */
     double findStop(JSONObject jsonObject, double layerStop) {

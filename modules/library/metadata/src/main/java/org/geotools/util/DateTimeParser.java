@@ -448,12 +448,7 @@ public class DateTimeParser {
         }
     }
 
-    /**
-     * Tries to avoid insertion of multiple time values.
-     *
-     * @param result
-     * @param newRange
-     */
+    /** Tries to avoid insertion of multiple time values. */
     private static void addPeriod(Collection result, DateRange newRange) {
         for (Iterator it = result.iterator(); it.hasNext(); ) {
             final Object element = it.next();

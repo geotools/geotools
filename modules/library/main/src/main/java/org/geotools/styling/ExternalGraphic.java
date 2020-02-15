@@ -76,9 +76,6 @@ public interface ExternalGraphic extends org.opengis.style.ExternalGraphic, Symb
     /**
      * Returns the un-parsed URI for the mark (useful if the uri is using transformations or
      * relative locations)
-     *
-     * @param uri
-     * @return
      */
     public String getURI();
 
@@ -126,8 +123,6 @@ public interface ExternalGraphic extends org.opengis.style.ExternalGraphic, Symb
      *   <li>wedge width: 25
      *   <li>wedge color: #9999FF"
      * </ul>
-     *
-     * @param properties
      */
     public void setCustomProperties(Map<String, Object> properties);
 

@@ -125,7 +125,6 @@ public class MBObjectParser {
      *
      * <p>Paint is optional, returning an empty JSONObject (to prevent the need for null checks).
      *
-     * @param layer
      * @return paint definition, optional so may be an empty JSONObject
      * @throws MBFormatException If paint is provided as an invalid type (such as boolean).
      */
@@ -151,7 +150,6 @@ public class MBObjectParser {
      *
      * <p>Layout is optional, returning an empty JSONObject (to prevent the need for null checks).
      *
-     * @param layer
      * @return layout definition, optional so may be an empty JSONObject
      * @throws MBFormatException If layout is provided as an invalid type (such as boolean).
      */
@@ -227,8 +225,6 @@ public class MBObjectParser {
      * <p>Confirms json contains the provided tag as a JSONArray, correctly throwing {@link
      * MBFormatException} if not available.
      *
-     * @param json
-     * @param tag
      * @return JSONObject
      * @throws MBFormatException If JSONObject not available for the provided tag
      */
@@ -297,7 +293,6 @@ public class MBObjectParser {
     /**
      * Access a literal value (string, numeric, or boolean).
      *
-     * @param tag
      * @return required string, numeric or boolean
      * @throws MBFormatException if required tag not available.
      */
@@ -328,7 +323,6 @@ public class MBObjectParser {
     /**
      * Quickly access required json index (as a String).
      *
-     * @param index
      * @return required string
      * @throws MBFormatException if required index not available.
      */
@@ -750,9 +744,7 @@ public class MBObjectParser {
     /**
      * Casts the provided obj to a JSONObject (safely reporting format exception
      *
-     * @param obj
      * @return JSONObject
-     * @throws MBFormatException
      */
     public JSONObject jsonObject(Object obj) throws MBFormatException {
         if (obj instanceof JSONObject) {
@@ -771,7 +763,6 @@ public class MBObjectParser {
      * @param obj The object to cast
      * @param message The message for the exception of the object is not a JSONObject
      * @return The object, cast to JSONObject
-     * @throws MBFormatException
      */
     public JSONObject jsonObect(Object obj, String message) throws MBFormatException {
         if (obj instanceof JSONObject) {
@@ -786,7 +777,6 @@ public class MBObjectParser {
      *
      * @param obj The object to cast
      * @return The object, cast to JSONArray
-     * @throws MBFormatException
      */
     public JSONArray jsonArray(Object obj) throws MBFormatException {
         if (obj instanceof JSONArray) {
@@ -805,7 +795,6 @@ public class MBObjectParser {
      * @param obj The object to cast
      * @param message The message for the exception of the object is not a JSONArray
      * @return The object, cast to JSONArray
-     * @throws MBFormatException
      */
     public JSONArray jsonArray(Object obj, String message) throws MBFormatException {
         if (obj instanceof JSONArray) {
@@ -891,7 +880,6 @@ public class MBObjectParser {
      *
      * @param json json representation
      * @return Expression based on provided json, or null if not provided
-     * @throws MBFormatException
      */
     public Expression percentage(JSONObject json, String tag) throws MBFormatException {
         return percentage(json, tag, null);
@@ -903,7 +891,6 @@ public class MBObjectParser {
      * @param json json representation
      * @param fallback default value if json is null
      * @return Expression based on provided json, or literal if json was null.
-     * @throws MBFormatException
      */
     public Expression percentage(JSONObject json, String tag, Number fallback)
             throws MBFormatException {
@@ -1040,7 +1027,6 @@ public class MBObjectParser {
      * @param json The JSONArray in which to look up a value
      * @param index The index in the JSONArray
      * @return Numeric Expression based on provided json, or null.
-     * @throws MBFormatException
      */
     public Expression number(JSONArray json, int index) throws MBFormatException {
         return number(json, index, null);
@@ -1054,7 +1040,6 @@ public class MBObjectParser {
      * @param index The index in the JSONArray at which to look up the value
      * @param fallback default value if json is null
      * @return Expression based on provided json, or literal if json was null.
-     * @throws MBFormatException
      */
     public Expression number(JSONArray json, int index, Number fallback) throws MBFormatException {
         if (json == null) {
@@ -1070,7 +1055,6 @@ public class MBObjectParser {
      * @param json The JSONObject in which to look up the value
      * @param tag The tag in the JSONObject at which to look up the value
      * @return Expression based on provided json, or null
-     * @throws MBFormatException
      */
     public Expression number(JSONObject json, String tag) throws MBFormatException {
         return number(json, tag, null);
@@ -1084,7 +1068,6 @@ public class MBObjectParser {
      * @param tag The tag in the JSONObject at which to look up the value
      * @param fallback default value if the JSONObject is null
      * @return Expression based on provided json, or literal if json was null.
-     * @throws MBFormatException
      */
     public Expression number(JSONObject json, String tag, Number fallback)
             throws MBFormatException {
@@ -1144,7 +1127,6 @@ public class MBObjectParser {
      * @param json The JSONArray in which to look up the value
      * @param index The index in the JSONArray at which to look up the value
      * @return Expression based on provided json, or literal if json was null.
-     * @throws MBFormatException
      */
     public Expression string(JSONArray json, int index) {
         Object obj = json.get(index);
@@ -1184,7 +1166,6 @@ public class MBObjectParser {
      * @param json json representation
      * @param fallback default value if json is null
      * @return Expression based on provided json, or literal if json was null.
-     * @throws MBFormatException
      */
     public Expression string(JSONObject json, String tag, String fallback)
             throws MBFormatException {
@@ -1200,7 +1181,6 @@ public class MBObjectParser {
      * @param json json representation
      * @param fallback default value (string representation of color) if json is null
      * @return Expression based on provided json, or literal if json was null.
-     * @throws MBFormatException
      */
     public Expression color(JSONObject json, String tag, Color fallback) throws MBFormatException {
         if (json.get(tag) == null) {
@@ -1254,9 +1234,6 @@ public class MBObjectParser {
     /**
      * Parse obj into a color expression (literal or function).
      *
-     * @param context
-     * @param obj
-     * @param fallback
      * @return color expression (literal or function)
      */
     private Expression color(String context, Object obj, Color fallback) {
@@ -1351,7 +1328,6 @@ public class MBObjectParser {
      * @param json json representation
      * @param fallback default value if json is null
      * @return Expression based on provided json, or literal if json was null.
-     * @throws MBFormatException
      */
     public Expression bool(JSONObject json, String tag, boolean fallback) throws MBFormatException {
         if (json.get(tag) == null) {

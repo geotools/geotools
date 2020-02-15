@@ -59,8 +59,6 @@ public abstract class TileFactory {
      * the right of the passed tile.
      *
      * @param tile the reference tile
-     * @param service
-     * @return
      */
     public abstract Tile findRightNeighbour(Tile tile, TileService service);
 
@@ -69,8 +67,6 @@ public abstract class TileFactory {
      * the the passed tile.
      *
      * @param tile the reference tile
-     * @param service
-     * @return
      */
     public abstract Tile findLowerNeighbour(Tile tile, TileService service);
 

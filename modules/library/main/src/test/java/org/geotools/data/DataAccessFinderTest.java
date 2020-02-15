@@ -66,11 +66,7 @@ public class DataAccessFinderTest extends TestCase {
         assertSame(MOCK_DATASTORE, dataStore);
     }
 
-    /**
-     * Can both DataStores and plain DataAccess be aquired through {@link DataAccessFinder}?
-     *
-     * @throws IOException
-     */
+    /** Can both DataStores and plain DataAccess be aquired through {@link DataAccessFinder}? */
     public void testGetDataAccess() throws IOException {
         DataAccess<FeatureType, Feature> dataStore;
 

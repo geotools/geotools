@@ -217,12 +217,7 @@ public final class ResampleTest extends GridProcessingTestBase {
         assertEquals("Warp", showProjected(coverage, getProjectedCRS(coverage), null, null));
     }
 
-    /**
-     * Tests the "Resample" operation with a stereographic coordinate system.
-     *
-     * @throws FactoryException
-     * @throws NoSuchAuthorityCodeException
-     */
+    /** Tests the "Resample" operation with a stereographic coordinate system. */
     @Test
     public void testReproject() throws NoSuchAuthorityCodeException, FactoryException {
 
@@ -260,12 +255,7 @@ public final class ResampleTest extends GridProcessingTestBase {
         }
     }
 
-    /**
-     * Tests the "Resample" operation with a stereographic coordinate system on a paletted image
-     *
-     * @throws FactoryException
-     * @throws NoSuchAuthorityCodeException
-     */
+    /** Tests the "Resample" operation with a stereographic coordinate system on a paletted image */
     @Test
     public void testReprojectPalette() throws NoSuchAuthorityCodeException, FactoryException {
 

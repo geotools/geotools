@@ -446,12 +446,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
         return SimpleFeatureTypeBuilder.retype(getSchema(), new ArrayList<String>(attributes));
     }
 
-    /**
-     * Builds the most appropriate geometry factory depending on the available query hints
-     *
-     * @param query
-     * @return
-     */
+    /** Builds the most appropriate geometry factory depending on the available query hints */
     protected GeometryFactory getGeometryFactory(Query query) {
         // if no hints, use the default geometry factory
         if (query == null || query.getHints() == null) {

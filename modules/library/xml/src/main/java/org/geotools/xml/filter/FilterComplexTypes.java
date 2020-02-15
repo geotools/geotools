@@ -393,7 +393,6 @@ public class FilterComplexTypes {
         }
 
         /**
-         * @throws SAXException
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
@@ -1227,7 +1226,6 @@ public class FilterComplexTypes {
         }
 
         /**
-         * @throws SAXException
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
@@ -1356,7 +1354,6 @@ public class FilterComplexTypes {
         }
 
         /**
-         * @throws SAXException
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
@@ -1884,10 +1881,6 @@ public class FilterComplexTypes {
          *
          * @see org.geotools.xml.schema.SimpleType#toAttribute(org.geotools.xml.schema.Attribute,
          *     java.lang.Object, java.util.Map)
-         * @param attribute
-         * @param value
-         * @param hints
-         * @throws OperationNotSupportedException
          */
         public AttributeValue toAttribute(Attribute attribute, Object value, Map hints)
                 throws OperationNotSupportedException {
@@ -1899,9 +1892,6 @@ public class FilterComplexTypes {
          * @see
          *     org.geotools.xml.schema.SimpleType#canCreateAttributes(org.geotools.xml.schema.Attribute,
          *     java.lang.Object, java.util.Map)
-         * @param attribute
-         * @param value
-         * @param hints
          */
         public boolean canCreateAttributes(Attribute attribute, Object value, Map hints) {
             return false;
@@ -1943,12 +1933,6 @@ public class FilterComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
-         * @param element
-         * @param value
-         * @param attrs
-         * @param hints
-         * @throws SAXException
-         * @throws OperationNotSupportedException
          */
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws OperationNotSupportedException {
@@ -1983,9 +1967,6 @@ public class FilterComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
-         * @param element
-         * @param value
-         * @param hints
          */
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
@@ -1995,12 +1976,6 @@ public class FilterComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
-         * @param element
-         * @param value
-         * @param output
-         * @param hints
-         * @throws IOException
-         * @throws OperationNotSupportedException
          */
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws OperationNotSupportedException {
@@ -2010,7 +1985,6 @@ public class FilterComplexTypes {
          * TODO summary sentence for findChildElement ...
          *
          * @see org.geotools.xml.schema.Type#findChildElement(java.lang.String)
-         * @param name
          */
         public Element findChildElement(String name) {
             return null;

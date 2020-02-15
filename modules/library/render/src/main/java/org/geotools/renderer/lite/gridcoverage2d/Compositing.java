@@ -66,13 +66,7 @@ class Compositing {
         this.composite = DEFAULT_COMPOSITE;
     }
 
-    /**
-     * Compose this {@link Compositing} element with the source GridCoverage.
-     *
-     * @param source
-     * @param factory
-     * @return
-     */
+    /** Compose this {@link Compositing} element with the source GridCoverage. */
     public GridCoverage2D composeGridCoverage(GridCoverage2D source, GridCoverageFactory factory) {
         if (compositingImage != null) {
             // Make sure to transform the compositingImage to RGB
@@ -133,12 +127,7 @@ class Compositing {
         return source;
     }
 
-    /**
-     * BlendCompositing requires the images to be composed are RGB
-     *
-     * @param finalImage
-     * @return
-     */
+    /** BlendCompositing requires the images to be composed are RGB */
     public static RenderedImage forceToRGB(RenderedImage finalImage, boolean asByte) {
         if (finalImage != null) {
             SampleModel sm = finalImage.getSampleModel();

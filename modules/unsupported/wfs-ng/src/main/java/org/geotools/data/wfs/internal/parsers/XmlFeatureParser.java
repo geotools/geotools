@@ -143,12 +143,6 @@ public abstract class XmlFeatureParser<FT extends FeatureType, F extends Feature
     /**
      * Parses the value of the current attribute, parser cursor shall be on a feature attribute
      * START_TAG event.
-     *
-     * @return
-     * @throws IOException
-     * @throws XmlPullParserException
-     * @throws FactoryException
-     * @throws NoSuchAuthorityCodeException
      */
     @SuppressWarnings("unchecked")
     protected Object parseAttributeValue(AttributeDescriptor attribute)
@@ -177,12 +171,6 @@ public abstract class XmlFeatureParser<FT extends FeatureType, F extends Feature
      *
      * <p>Postcondition: parser gets positioned at the end tag of the element it started parsing the
      * geometry at
-     *
-     * @return
-     * @throws FactoryException
-     * @throws NoSuchAuthorityCodeException
-     * @throws IOException
-     * @throws XmlPullParserException
      */
     protected Geometry parseGeom()
             throws NoSuchAuthorityCodeException, FactoryException, XmlPullParserException,
@@ -226,15 +214,6 @@ public abstract class XmlFeatureParser<FT extends FeatureType, F extends Feature
      *
      * <p>Postcondition: parser positioned at the {@link GML#MultiPoint MultiPoint} end tag of the
      * starting tag
-     *
-     * @throws IOException
-     * @throws XmlPullParserException
-     * @throws IOException
-     * @throws XmlPullParserException
-     * @throws FactoryException
-     * @throws NoSuchAuthorityCodeException
-     * @throws FactoryException
-     * @throws NoSuchAuthorityCodeException
      */
     private Geometry parseMultiPoint(int dimension, CoordinateReferenceSystem crs)
             throws XmlPullParserException, IOException, NoSuchAuthorityCodeException,
@@ -286,11 +265,6 @@ public abstract class XmlFeatureParser<FT extends FeatureType, F extends Feature
      *
      * <p>Postcondition: parser positioned at the {@link GML#MultiLineString MultiLineString} end
      * tag of the starting tag
-     *
-     * @throws IOException
-     * @throws XmlPullParserException
-     * @throws FactoryException
-     * @throws NoSuchAuthorityCodeException
      */
     private MultiLineString parseMultiLineString(int dimension, CoordinateReferenceSystem crs)
             throws XmlPullParserException, IOException, NoSuchAuthorityCodeException,
@@ -413,14 +387,6 @@ public abstract class XmlFeatureParser<FT extends FeatureType, F extends Feature
      *
      * <p>Postcondition: parser positioned at the {@link GML#Polygon Polygon} end tag of the
      * starting tag
-     *
-     * @param dimension
-     * @param crs
-     * @return
-     * @throws XmlPullParserException
-     * @throws IOException
-     * @throws NoSuchAuthorityCodeException
-     * @throws FactoryException
      */
     private Polygon parsePolygon(int dimension, CoordinateReferenceSystem crs)
             throws XmlPullParserException, IOException, NoSuchAuthorityCodeException,

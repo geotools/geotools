@@ -61,11 +61,7 @@ public abstract class MathExpressionImpl extends DefaultExpression implements Bi
         return leftValue;
     }
 
-    /**
-     * Gets the left or first expression.
-     *
-     * @throws IllegalFilterException
-     */
+    /** Gets the left or first expression. */
     public void setExpression1(org.opengis.filter.expression.Expression expression) {
         if (isGeometryExpression(Filters.getExpressionType(expression))) {
             throw new IllegalFilterException(
@@ -83,11 +79,7 @@ public abstract class MathExpressionImpl extends DefaultExpression implements Bi
         return rightValue;
     }
 
-    /**
-     * Gets the second expression.
-     *
-     * @throws IllegalFilterException
-     */
+    /** Gets the second expression. */
     public void setExpression2(org.opengis.filter.expression.Expression expression) {
         // Check to see if this is a valid math expression before adding.
         if (isGeometryExpression(Filters.getExpressionType(expression))) {

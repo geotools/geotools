@@ -45,7 +45,6 @@ public abstract class GML32TestSupport extends XMLTestSupport {
     /**
      * Return the gml:id of a Node (must be an Element).
      *
-     * @param node
      * @return the gml:id
      */
     protected String getID(Node node) {

@@ -229,10 +229,6 @@ public class InProcessViewSupportTestData {
      *  -----------------------------------------------
      * &lt;/code&gt;
      * </pre>
-     *
-     * @param session
-     * @throws SeException
-     * @throws Exception
      */
     private static void insertMasterData(final ISession session, final SeLayer layer)
             throws IOException {
@@ -298,10 +294,6 @@ public class InProcessViewSupportTestData {
      * </pre>
      *
      * Note last row has the same name than child6, for testing group by.
-     *
-     * @param session
-     * @param table
-     * @throws IOException
      */
     private static void insertChildData(final ISession session, final SeTable table)
             throws IOException {

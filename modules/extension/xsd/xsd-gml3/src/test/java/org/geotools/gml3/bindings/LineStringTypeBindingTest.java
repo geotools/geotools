@@ -67,8 +67,6 @@ public class LineStringTypeBindingTest extends GML3TestSupport {
     /**
      * Tests encoding using a CoordinateArraySequence (which requires special logic to get the
      * dimension correct)
-     *
-     * @throws Exception
      */
     public void testEncodeLineString() throws Exception {
         LineString line = GML3MockData.lineString();
@@ -96,8 +94,6 @@ public class LineStringTypeBindingTest extends GML3TestSupport {
 
     /**
      * Test a long LineString to catch problems that only show up with large numbers of ordinates
-     *
-     * @throws Exception
      */
     public void testEncode2DLong() throws Exception {
         LineString line = GML3MockData.lineStringLite2D(10);

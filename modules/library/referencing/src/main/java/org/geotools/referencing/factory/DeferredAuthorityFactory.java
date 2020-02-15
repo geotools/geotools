@@ -198,11 +198,7 @@ public abstract class DeferredAuthorityFactory extends BufferedAuthorityFactory
         }
     }
 
-    /**
-     * Disposes of the backing store
-     *
-     * @throws FactoryException
-     */
+    /** Disposes of the backing store */
     protected synchronized void disposeBackingStore() {
         try {
             if (backingStore != null) {

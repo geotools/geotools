@@ -73,11 +73,7 @@ public class GradientColorMapGenerator {
         this.entries = entries;
     }
 
-    /**
-     * Sets the color to be used before the min value. By default it's transparent
-     *
-     * @param color
-     */
+    /** Sets the color to be used before the min value. By default it's transparent */
     public void setBeforeColor(Color color) {
         this.beforeColor = color;
     }
@@ -85,18 +81,12 @@ public class GradientColorMapGenerator {
     /**
      * Sets the color to be used before the min value, as a string, it accepts the same syntax as
      * {@link GradientColorMapGenerator#getColorMapGenerator(String)}
-     *
-     * @param color
      */
     public void setBeforeColor(String color) {
         this.beforeColor = getColorWithOpacity(color);
     }
 
-    /**
-     * Sets the color to be used after the max value. By default it's transparent
-     *
-     * @param color
-     */
+    /** Sets the color to be used after the max value. By default it's transparent */
     public void setAfterColor(Color color) {
         this.afterColor = color;
     }
@@ -104,8 +94,6 @@ public class GradientColorMapGenerator {
     /**
      * Sets the color to be used after the max value, as a string, it accepts the same syntax as
      * {@link GradientColorMapGenerator#getColorMapGenerator(String)}
-     *
-     * @param color
      */
     public void setAfterColor(String color) {
         this.afterColor = getColorWithOpacity(color);
@@ -114,10 +102,6 @@ public class GradientColorMapGenerator {
     /**
      * Generate a {@link ColorMap} object, by updating the ColorMapEntries quantities on top of the
      * min and max values reported here.
-     *
-     * @param min
-     * @param max
-     * @return
      */
     public ColorMap generateColorMap(double min, double max) {
         final int numEntries = entries.length;
@@ -209,15 +193,7 @@ public class GradientColorMapGenerator {
         }
     }
 
-    /**
-     * Get an SVG ColorMap generator for the specified file
-     *
-     * @param file
-     * @return
-     * @throws SAXException
-     * @throws IOException
-     * @throws ParserConfigurationException
-     */
+    /** Get an SVG ColorMap generator for the specified file */
     public static GradientColorMapGenerator getColorMapGenerator(final File file)
             throws SAXException, IOException, ParserConfigurationException {
         GradientColorMapGenerator generator = null;
@@ -240,10 +216,6 @@ public class GradientColorMapGenerator {
      *
      * @param colorValues ";" separated list of colors in the form c1;c2;c3;... where each color can
      *     use syntaxes as rgb(r0,g0,b0), rgba(r0,g0,b0,alpha_0_to_1), #RRGGBB or 0xRRGGBB
-     * @return
-     * @throws SAXException
-     * @throws IOException
-     * @throws ParserConfigurationException
      */
     public static GradientColorMapGenerator getColorMapGenerator(String colorValues)
             throws IOException, ParserConfigurationException {
@@ -273,15 +245,7 @@ public class GradientColorMapGenerator {
         }
     }
 
-    /**
-     * Parse an SVG xmlFile
-     *
-     * @param xmlFile
-     * @return
-     * @throws SAXException
-     * @throws IOException
-     * @throws ParserConfigurationException
-     */
+    /** Parse an SVG xmlFile */
     private static GradientColorMapGenerator parseSVG(final File xmlFile)
             throws SAXException, IOException, ParserConfigurationException {
         Utilities.ensureNonNull("xmlFile", xmlFile);
@@ -370,7 +334,6 @@ public class GradientColorMapGenerator {
     /**
      * Convert an hex color representation to a {@link Color}
      *
-     * @param colorStr
      * @return the {@link Color} instance related to that color HEX string
      */
     public static Color hex2Rgb(String colorStr) {
@@ -387,12 +350,7 @@ public class GradientColorMapGenerator {
         }
     }
 
-    /**
-     * Return an HEX representation of a Color
-     *
-     * @param color
-     * @return
-     */
+    /** Return an HEX representation of a Color */
     private static String toHexColor(final Color color) {
         Utilities.ensureNonNull("color", color);
         try {

@@ -1351,8 +1351,6 @@ public class ProjectionHandlerTest {
     /**
      * Simulates a client zooming out too much, asking for an area larger than the full world in
      * AZEQ
-     *
-     * @throws Exception
      */
     @Test
     public void testAzEqBeyondLimitsCentered() throws Exception {

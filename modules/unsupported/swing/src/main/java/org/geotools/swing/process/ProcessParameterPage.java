@@ -178,7 +178,6 @@ public class ProcessParameterPage extends JPage {
     /**
      * Create a new widget and label for the given parameter
      *
-     * @param parameter
      * @param resize whether to resize the wizard after adding or not
      */
     private ParamField createNewField(Parameter<?> parameter, boolean resize) {

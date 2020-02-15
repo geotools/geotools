@@ -373,9 +373,6 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
     /**
      * Drops the database specified in the connection params. The database must not be in use, and
      * the user must have the necessary privileges
-     *
-     * @param params
-     * @throws IOException
      */
     public void dropDatabase(Map<String, Object> params) throws IOException {
         JDBCDataStore store = new JDBCDataStore();

@@ -31,10 +31,7 @@ import org.opengis.filter.expression.Function;
  */
 final class RelatePatternBuilder extends FunctionBuilder {
 
-    /**
-     * @param resultStack
-     * @param filterFactory
-     */
+    /** */
     public RelatePatternBuilder(BuildResultStack resultStack, FilterFactory filterFactory) {
         super(resultStack, filterFactory);
     }
@@ -49,10 +46,7 @@ final class RelatePatternBuilder extends FunctionBuilder {
         return relate;
     }
 
-    /**
-     * @return
-     * @throws CQLException
-     */
+    /** */
     private Expression[] buildParameters() throws CQLException {
 
         Expression[] args = new Expression[3];

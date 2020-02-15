@@ -161,8 +161,6 @@ public class AStarIteratorTest extends TestCase {
      * Expected: 1. #nodes_visited <= #nodes 2. The parent of each node should be the same as the
      * parent of the tree. 3. G = depth. H = infinity if the target is not in any subtree of this
      * node or depth difference between target node and current node otherwise.
-     *
-     * @throws WrongPathException
      */
     public void test_3() {
         int k = 4;

@@ -37,7 +37,6 @@ public interface ExpressionVisitor {
      * <p>This is particularly useful when doing data transformations, as an example when using a
      * StyleSymbolizer Expression.NIL can be used to represent the default stroke color.
      *
-     * @param extraData
      * @return implementation specific
      */
     Object visit(NilExpression expression, Object extraData);

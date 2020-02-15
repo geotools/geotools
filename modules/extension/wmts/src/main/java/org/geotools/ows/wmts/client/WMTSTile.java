@@ -81,10 +81,7 @@ class WMTSTile extends Tile {
         this(new WMTSTileIdentifier(x, y, zoomLevel, service.getName()), service);
     }
 
-    /**
-     * @param tileIdentifier
-     * @param service
-     */
+    /** */
     public WMTSTile(WMTSTileIdentifier tileIdentifier, TileService service) {
         super(
                 tileIdentifier,

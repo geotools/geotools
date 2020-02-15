@@ -87,7 +87,6 @@ public class TestDTO {
     /**
      * Implementation of equals.
      *
-     * @param obj
      * @return true when they have the same data.
      * @see java.lang.Object#equals(java.lang.Object)
      */

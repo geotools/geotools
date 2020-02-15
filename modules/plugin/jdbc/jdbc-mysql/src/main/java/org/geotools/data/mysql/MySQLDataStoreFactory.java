@@ -132,12 +132,7 @@ public class MySQLDataStoreFactory extends JDBCDataStoreFactory {
         return dataStore;
     }
 
-    /**
-     * check if the version of MySQL is at least 5.6 (or above).
-     *
-     * @param dataStore
-     * @return
-     */
+    /** check if the version of MySQL is at least 5.6 (or above). */
     protected static boolean isMySqlVersion56(JDBCDataStore dataStore) {
         boolean isMySQLVersion56OrAbove = false;
         Connection con = null;

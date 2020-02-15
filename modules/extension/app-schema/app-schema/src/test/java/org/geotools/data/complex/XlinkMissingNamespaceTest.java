@@ -40,8 +40,6 @@ public class XlinkMissingNamespaceTest extends AppSchemaTestSupport {
      *
      * <p>This test shows correct behaviour by throwing an exception reporting the undeclared
      * namespace.
-     *
-     * @throws IllegalArgumentException
      */
     @Test
     public void testGetClientProperties() throws IOException {

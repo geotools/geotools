@@ -82,32 +82,15 @@ public abstract class XSIElementHandler implements Serializable {
      * parsed. As a result, information such as annotations are ignored. When used, they method may
      * be called multiple times for one element. This means the implementor should keep this in mind
      * when overriding this method.
-     *
-     * @param text
-     * @throws SAXException
-     * @throws SAXNotSupportedException
      */
     public void characters(String text) throws SAXException {
         throw new SAXNotSupportedException("Should overide this method.");
     }
 
-    /**
-     * handles SAX end Element events. this is an opportunity to complete some post-processing
-     *
-     * @param namespaceURI
-     * @param localName
-     * @throws SAXException
-     */
+    /** handles SAX end Element events. this is an opportunity to complete some post-processing */
     public abstract void endElement(String namespaceURI, String localName) throws SAXException;
 
-    /**
-     * handles SAX start Element events. This is an opportunity to complete some pre-processing.
-     *
-     * @param namespaceURI
-     * @param localName
-     * @param attr
-     * @throws SAXException
-     */
+    /** handles SAX start Element events. This is an opportunity to complete some pre-processing. */
     public abstract void startElement(String namespaceURI, String localName, Attributes attr)
             throws SAXException;
 
@@ -116,10 +99,7 @@ public abstract class XSIElementHandler implements Serializable {
      * expected to exist within this method, along with data logging for post-processing. This
      * method will directly affect the stack being used to complete the parse.
      *
-     * @param namespaceURI
-     * @param localName
      * @return XSIElementHandler, or null
-     * @throws SAXException
      */
     public abstract XSIElementHandler getHandler(String namespaceURI, String localName)
             throws SAXException;
@@ -154,11 +134,7 @@ public abstract class XSIElementHandler implements Serializable {
     /** @see java.lang.Object#hashCode() */
     public abstract int hashCode();
 
-    /**
-     * Sets the logging level for all XSIElementHandlers
-     *
-     * @param l
-     */
+    /** Sets the logging level for all XSIElementHandlers */
     public static void setLogLevel(Level l) {
         level = l;
         logger.setLevel(l);

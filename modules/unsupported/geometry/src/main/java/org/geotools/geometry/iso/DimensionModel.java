@@ -79,11 +79,7 @@ public class DimensionModel {
 
     private int dimensionModelType = 0;
 
-    /**
-     * Creates a Dimension Model according to the desired dimensional type: 2D, 2.5D or 3D
-     *
-     * @param dimensionType
-     */
+    /** Creates a Dimension Model according to the desired dimensional type: 2D, 2.5D or 3D */
     public DimensionModel(int dimensionType) {
         this.dimensionModelType = dimensionType;
     }

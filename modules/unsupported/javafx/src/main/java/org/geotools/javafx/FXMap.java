@@ -362,7 +362,6 @@ public class FXMap extends Parent {
     /**
      * Scales the map to zoom in/out without reloading the map
      *
-     * @param zoomDelta
      */
     private void scaleMap(double zoomDelta) {
         Point2D.Double lower;
@@ -448,7 +447,6 @@ public class FXMap extends Parent {
     /**
      * Zooms in/out. TODO: center zoom on mouse position
      *
-     * @param zoomDelta
      * @param x Mouse position x
      * @param y Mouse position y
      */

@@ -52,12 +52,7 @@ public class MemoryEntry extends ContentEntry {
      */
     private final Map<String, SimpleFeature> memory;
 
-    /**
-     * Entry to store content of the provided SimpleFeatureType.
-     *
-     * @param store
-     * @param schema
-     */
+    /** Entry to store content of the provided SimpleFeatureType. */
     MemoryEntry(MemoryDataStore store, SimpleFeatureType schema) {
         super(store, schema.getName());
         this.schema = schema;
@@ -85,8 +80,6 @@ public class MemoryEntry extends ContentEntry {
      * Safely add feature to {@link #memory}.
      *
      * <p>Feature is required to be non-null, and of the expected {@link #schema}.
-     *
-     * @param feature
      */
     void addFeature(SimpleFeature feature) {
         if (feature == null) {

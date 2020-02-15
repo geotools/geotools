@@ -46,23 +46,12 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
     SimpleFeature live; // live value supplied by FeatureReader
     SimpleFeature current; // duplicate provided to user
 
-    /**
-     * DiffFeatureWriter construction.
-     *
-     * @param reader
-     * @param diff
-     */
+    /** DiffFeatureWriter construction. */
     public DiffFeatureWriter(FeatureReader<SimpleFeatureType, SimpleFeature> reader, Diff diff) {
         this(reader, diff, Filter.INCLUDE);
     }
 
-    /**
-     * DiffFeatureWriter construction.
-     *
-     * @param reader
-     * @param diff
-     * @param filter
-     */
+    /** DiffFeatureWriter construction. */
     public DiffFeatureWriter(
             FeatureReader<SimpleFeatureType, SimpleFeature> reader, Diff diff, Filter filter) {
         this.reader = new DiffFeatureReader<SimpleFeatureType, SimpleFeature>(reader, diff, filter);
@@ -136,7 +125,6 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
     /**
      * Writes out the current feature.
      *
-     * @throws IOException
      * @see org.geotools.data.FeatureWriter#write()
      */
     public void write() throws IOException {
@@ -241,7 +229,6 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
      *
      * @param eventType One of FeatureType.FEATURES_ADDED, FeatureType.CHANGED,
      *     FeatureType.FEATURES_REMOVED
-     * @param bounds
      */
     protected abstract void fireNotification(int eventType, ReferencedEnvelope bounds);
 }

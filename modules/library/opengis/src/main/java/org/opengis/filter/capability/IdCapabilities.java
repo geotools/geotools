@@ -49,10 +49,6 @@ public interface IdCapabilities {
     /** Indicates if the capabilities support EID. */
     boolean hasEID();
 
-    /**
-     * Indicates if the capabilities support FID.
-     *
-     * @return
-     */
+    /** Indicates if the capabilities support FID. */
     boolean hasFID();
 }

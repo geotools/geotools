@@ -141,9 +141,6 @@ public class Definition {
      * Computes the output attribute descriptor for this {@link Definition} given a sample feature
      * of the original feature type. The code will first attempt a static analysis on the original
      * feature type, if that fails it will try to evaluate the expression on the sample feature.
-     *
-     * @param originalFeature
-     * @return
      */
     public AttributeDescriptor getAttributeDescriptor(SimpleFeature originalFeature) {
         // try the static analysis
@@ -178,9 +175,6 @@ public class Definition {
      * Computes the output attribute descriptor for this {@link Definition} given only the original
      * feature type. The code will attempt a static analysis on the original feature type, if that
      * fails it will return null
-     *
-     * @param originalFeature
-     * @return
      */
     public AttributeDescriptor getAttributeDescriptor(SimpleFeatureType originalSchema) {
         AttributeTypeBuilder ab = new AttributeTypeBuilder();

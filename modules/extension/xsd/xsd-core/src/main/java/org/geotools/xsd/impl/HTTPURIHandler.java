@@ -91,11 +91,7 @@ public class HTTPURIHandler extends URIHandlerImpl {
         return (HttpURLConnection) url.openConnection();
     }
 
-    /**
-     * The current connection timeout
-     *
-     * @return
-     */
+    /** The current connection timeout */
     public int getConnectionTimeout() {
         return connectionTimeout;
     }
@@ -103,27 +99,17 @@ public class HTTPURIHandler extends URIHandlerImpl {
     /**
      * Sets the connection timeout, in milliseconds. See {@link
      * HttpURLConnection#setConnectTimeout(int)}
-     *
-     * @param connectionTimeout
      */
     public void setConnectionTimeout(int connectionTimeout) {
         this.connectionTimeout = connectionTimeout;
     }
 
-    /**
-     * The current read timeout
-     *
-     * @return
-     */
+    /** The current read timeout */
     public int getReadTimeout() {
         return readTimeout;
     }
 
-    /**
-     * Sets the read timeout, in milliseconds. See {@link HttpURLConnection#setReadTimeout(int)}
-     *
-     * @param connectionTimeout
-     */
+    /** Sets the read timeout, in milliseconds. See {@link HttpURLConnection#setReadTimeout(int)} */
     public void setReadTimeout(int readTimeout) {
         this.readTimeout = readTimeout;
     }

@@ -69,9 +69,7 @@ public class SchemaResolver {
     /**
      * Constructor.
      *
-     * @param catalog
      * @param classpath whether schemas can be located on the classpath
-     * @param cache
      */
     public SchemaResolver(SchemaCatalog catalog, boolean classpath, SchemaCache cache) {
         this.catalog = catalog;
@@ -79,12 +77,7 @@ public class SchemaResolver {
         this.cache = cache;
     }
 
-    /**
-     * Constructor.
-     *
-     * @param catalog
-     * @param cache
-     */
+    /** Constructor. */
     public SchemaResolver(SchemaCatalog catalog, SchemaCache cache) {
         this(catalog, true, cache);
     }
@@ -94,20 +87,12 @@ public class SchemaResolver {
         this(null, null);
     }
 
-    /**
-     * Convenience constructor for a resolver with no cache.
-     *
-     * @param catalog
-     */
+    /** Convenience constructor for a resolver with no cache. */
     public SchemaResolver(SchemaCatalog catalog) {
         this(catalog, null);
     }
 
-    /**
-     * Convenience constructor for a resolver with no catalog.
-     *
-     * @param cache
-     */
+    /** Convenience constructor for a resolver with no catalog. */
     public SchemaResolver(SchemaCache cache) {
         this(null, cache);
     }
@@ -309,7 +294,6 @@ public class SchemaResolver {
      * allows (for example) schema documents in jar files to be loaded from the classpath using
      * their canonical HTTP URLs.
      *
-     * @param location
      * @return the URL or null if not found
      */
     public static URL getClasspathResourceUrl(String location) {
@@ -326,7 +310,6 @@ public class SchemaResolver {
      * HTTP Resource Path. This allows (for example) schema documents in jar files to be loaded from
      * the classpath using their canonical HTTP URLs.
      *
-     * @param location
      * @return the string representation of a classpath URL, or null if not found
      */
     public static String resolveClasspathLocation(String location) {

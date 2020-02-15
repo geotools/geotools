@@ -35,12 +35,7 @@ public class SweepLineEvent implements Comparable<SweepLineEvent> {
 
     private Object obj;
 
-    /**
-     * @param edgeSet
-     * @param x
-     * @param insertEvent
-     * @param obj
-     */
+    /** */
     public SweepLineEvent(Object edgeSet, double x, SweepLineEvent insertEvent, Object obj) {
         this.edgeSet = edgeSet;
         xValue = x;

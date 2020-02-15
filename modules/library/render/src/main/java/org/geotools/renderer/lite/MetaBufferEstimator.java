@@ -114,18 +114,12 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
         buffer = 0;
     }
 
-    /**
-     * @return
-     * @uml.property name="buffer"
-     */
+    /** @uml.property name="buffer" */
     public int getBuffer() {
         return buffer;
     }
 
-    /**
-     * @return
-     * @uml.property name="estimateAccurate"
-     */
+    /** @uml.property name="estimateAccurate" */
     public boolean isEstimateAccurate() {
         return estimateAccurate;
     }

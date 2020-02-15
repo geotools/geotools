@@ -81,7 +81,6 @@ public class GeologicUnitTest extends AppSchemaTestSupport {
      * Load schema
      *
      * @param location schema location path that can be found through getClass().getResource()
-     * @return
      */
     private SchemaIndex loadSchema(final String location) throws IOException {
         final URL catalogLocation = getClass().getResource(schemaBase + "mappedPolygons.oasis.xml");
@@ -92,8 +91,6 @@ public class GeologicUnitTest extends AppSchemaTestSupport {
     /**
      * Tests if the schema-to-FM parsing code developed for complex data store configuration loading
      * can parse the GeoSciML types
-     *
-     * @throws Exception
      */
     @Test
     public void testParseSchema() throws Exception {
@@ -118,11 +115,7 @@ public class GeologicUnitTest extends AppSchemaTestSupport {
         }
     }
 
-    /**
-     * Test that mappings are loaded OK.
-     *
-     * @throws Exception
-     */
+    /** Test that mappings are loaded OK. */
     @Test
     public void testLoadMappingsConfig() throws Exception {
         XMLConfigDigester reader = new XMLConfigDigester();
@@ -139,8 +132,6 @@ public class GeologicUnitTest extends AppSchemaTestSupport {
     /**
      * Tests that a {@link FeatureSource} can be obtained for all names returned by {@link
      * AppSchemaDataAccess#getNames()}.
-     *
-     * @throws Exception
      */
     @Test
     public void testGetNamesAndFeatureSources() throws Exception {
@@ -162,11 +153,7 @@ public class GeologicUnitTest extends AppSchemaTestSupport {
         }
     }
 
-    /**
-     * Test that geologic unit features are returned correctly.
-     *
-     * @throws Exception
-     */
+    /** Test that geologic unit features are returned correctly. */
     @Test
     public void testGetFeatures() throws Exception {
         /*

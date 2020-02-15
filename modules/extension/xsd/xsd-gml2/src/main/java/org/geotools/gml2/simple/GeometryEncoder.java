@@ -55,7 +55,6 @@ public abstract class GeometryEncoder<T extends Geometry> extends ObjectEncoder<
      * @param handler The handler used to write XML
      * @param gmlId If not null, some implementation will use to as the gml:id (and to build ids for
      *     the nested features)
-     * @throws Exception
      */
     public void encode(T geometry, AttributesImpl atts, GMLWriter handler, String gmlId)
             throws Exception {
@@ -97,7 +96,6 @@ public abstract class GeometryEncoder<T extends Geometry> extends ObjectEncoder<
      * @param geometry The Geometry to be encoded
      * @param atts Its attributes
      * @param handler The handler used to write XML
-     * @throws Exception
      */
     public void encode(T geometry, AttributesImpl atts, GMLWriter handler) throws Exception {
         encode(geometry, atts, handler, null);

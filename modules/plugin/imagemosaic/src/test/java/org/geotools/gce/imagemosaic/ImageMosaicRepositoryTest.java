@@ -259,11 +259,7 @@ public class ImageMosaicRepositoryTest {
         ds.dispose();
     }
 
-    /**
-     * Test for GEOS-8311 load a mosaic when it doesn't have a projection set.
-     *
-     * @throws Exception
-     */
+    /** Test for GEOS-8311 load a mosaic when it doesn't have a projection set. */
     @Test
     public void createFromEmptyStoreWithNoProjection() throws Exception {
         // setup mosaic
@@ -289,11 +285,7 @@ public class ImageMosaicRepositoryTest {
         reader.dispose();
     }
 
-    /**
-     * Test for GEOS-8311 load a mosaic when it doesn't have a projection set.
-     *
-     * @throws Exception
-     */
+    /** Test for GEOS-8311 load a mosaic when it doesn't have a projection set. */
     @Test
     public void createFromEmptyStoreWithNoProjectionGeoTif() throws Exception {
         // setup mosaic
@@ -316,11 +308,7 @@ public class ImageMosaicRepositoryTest {
         reader.dispose();
     }
 
-    /**
-     * Removes the sample image and
-     *
-     * @param directory
-     */
+    /** Removes the sample image and */
     private void removeSupportFiles(File directory) {
         new File(directory, Utils.SAMPLE_IMAGE_NAME).delete();
         new File(directory, directory.getName() + ".properties").delete();
@@ -416,9 +404,6 @@ public class ImageMosaicRepositoryTest {
     /**
      * Builds a complex feature type by decorating a simple one with some extras, code borrowed by
      * GeoServer OpenSearch for EO
-     *
-     * @param base
-     * @return
      */
     FeatureType buildComplexTypeFromSimple(SimpleFeatureType base) {
         TypeBuilder typeBuilder = new TypeBuilder(CommonFactoryFinder.getFeatureTypeFactory(null));

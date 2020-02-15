@@ -48,11 +48,7 @@ public final class AIGTest extends GDALTestCase {
     //     private final static String fileName = "abc3x1/hdr.adf";
     private static final String fileName = "hdr.adf";
 
-    /**
-     * Creates a new instance of {@code IDRISIReader}
-     *
-     * @param name
-     */
+    /** Creates a new instance of {@code IDRISIReader} */
     public AIGTest() {
         super("Aig", new AIGFormatFactory());
     }

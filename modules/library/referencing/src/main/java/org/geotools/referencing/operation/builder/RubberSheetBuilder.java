@@ -59,10 +59,6 @@ public class RubberSheetBuilder extends MathTransformBuilder {
      * @param vectors A List of {@linkplain
      *     org.geotools.referencing.operation.builder.MappedPosition MappedPosition}
      * @param vertices A List with four points defining the quadrilateral in the region of interest.
-     * @throws MismatchedSizeException
-     * @throws MismatchedDimensionException
-     * @throws MismatchedReferenceSystemException
-     * @throws TriangulationException
      */
     public RubberSheetBuilder(List<MappedPosition> vectors, List<DirectPosition> vertices)
             throws IllegalArgumentException, MismatchedDimensionException,

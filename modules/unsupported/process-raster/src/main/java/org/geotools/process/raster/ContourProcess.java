@@ -103,7 +103,6 @@ public class ContourProcess implements RasterProcess {
      *     which contours will be generated
      * @return the contours a feature collection where each feature contains a contour as a
      *     {@linkplain LineString} and the contour value as a {@code Double}
-     * @throws ProcessException
      */
     public static SimpleFeatureCollection process(
             GridCoverage2D gc2d,

@@ -40,8 +40,6 @@ public abstract class AbstractQuantityClassificationFunction extends Classificat
      * Returns the list visitor for the specific implementation of "quantity" (e.g., count, area,
      * ...). The visitor must return a "bins" structure matching {code}List<Comparable>[]{code},
      * where each array entry is a bin, and values inside the bin are sorted from lowest to highest
-     *
-     * @return
      */
     protected abstract FeatureCalc getListVisitor();
 

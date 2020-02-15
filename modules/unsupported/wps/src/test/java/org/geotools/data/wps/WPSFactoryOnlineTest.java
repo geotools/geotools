@@ -121,13 +121,7 @@ public class WPSFactoryOnlineTest extends OnlineTestCase {
         wps = new WebProcessingService(url /*capabilities*/);
     }
 
-    /**
-     * run multiple buffer tests with various geometry types
-     *
-     * @throws ParseException
-     * @throws IOException
-     * @throws ServiceException
-     */
+    /** run multiple buffer tests with various geometry types */
     @Test
     public void testExecuteProcessBufferLocal()
             throws ParseException, ServiceException, IOException, ProcessException {
@@ -244,13 +238,7 @@ public class WPSFactoryOnlineTest extends OnlineTestCase {
 
     }
 
-    /**
-     * Do some more local process tests, such as union
-     *
-     * @throws ServiceException
-     * @throws IOException
-     * @throws ParseException
-     */
+    /** Do some more local process tests, such as union */
     @Test
     public void testExecuteLocalUnion()
             throws ServiceException, IOException, ParseException, ProcessException {
@@ -327,13 +315,7 @@ public class WPSFactoryOnlineTest extends OnlineTestCase {
 
     }
 
-    /**
-     * Do some more local union test that should return an exception
-     *
-     * @throws ServiceException
-     * @throws IOException
-     * @throws ParseException
-     */
+    /** Do some more local union test that should return an exception */
     @Test
     public void testBADExecuteLocalUnion()
             throws ServiceException, IOException, ParseException, ProcessException {
@@ -390,13 +372,7 @@ public class WPSFactoryOnlineTest extends OnlineTestCase {
         assertNull(results);
     }
 
-    /**
-     * Do some more local process tests, such as double addition
-     *
-     * @throws ServiceException
-     * @throws IOException
-     * @throws ParseException
-     */
+    /** Do some more local process tests, such as double addition */
     @Test
     public void testExecuteLocalAdd()
             throws ServiceException, IOException, ParseException, ProcessException {

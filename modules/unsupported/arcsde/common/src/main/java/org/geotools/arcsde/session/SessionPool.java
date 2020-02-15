@@ -251,9 +251,6 @@ class SessionPool implements ISessionPool {
      * Return the session Object to the ConnectionPool. Method must be synchronized, in order to
      * prevent SessionPool from opening more connections than in max.Connection defined under heavy
      * load
-     *
-     * @param session
-     * @throws Exception
      */
     public synchronized void returnObject(Session session) throws Exception {
 
@@ -342,11 +339,7 @@ class SessionPool implements ISessionPool {
 
         private ArcSDEConnectionConfig config;
 
-        /**
-         * Creates a new SeConnectionFactory object.
-         *
-         * @param config
-         */
+        /** Creates a new SeConnectionFactory object. */
         public SeConnectionFactory(ArcSDEConnectionConfig config) {
             super();
             this.config = config;

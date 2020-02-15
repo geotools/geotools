@@ -41,9 +41,6 @@ public class LineSegmentImpl extends LineStringImpl implements LineSegment {
      * joining them. Constructors are class scoped.
      *
      * <p>LineSegment::LineSegment(point[2] : Position) : LineSegment
-     *
-     * @param pointArray
-     * @param startPar
      */
     public LineSegmentImpl(PointArrayImpl pointArray, double startPar) {
         super(pointArray, startPar);
@@ -72,8 +69,6 @@ public class LineSegmentImpl extends LineStringImpl implements LineSegment {
      * <p>The constructor of a LineSegment takes two positions and creates the appropriate line
      * segment joining them. Constructors are class scoped. LineSegment::LineSegment(point[2] :
      * Position) : LineSegment
-     *
-     * @param other
      */
     public LineSegmentImpl(LineSegmentImpl other) {
         super(other);
@@ -82,11 +77,6 @@ public class LineSegmentImpl extends LineStringImpl implements LineSegment {
     /**
      * This functionality taken from CoordinateFactory where I am not quite clear as to the purpose
      * (Jody).
-     *
-     * @param crs
-     * @param to
-     * @param from
-     * @param startParam
      */
     public LineSegmentImpl(
             CoordinateReferenceSystem crs, double[] from, double[] to, double startParam) {
@@ -207,7 +197,6 @@ public class LineSegmentImpl extends LineStringImpl implements LineSegment {
     // }
 
     // /**
-    // * @param ls
     // * @return boolean
     // */
     // public boolean isParallel(LineSegmentImpl ls){
@@ -219,10 +208,6 @@ public class LineSegmentImpl extends LineStringImpl implements LineSegment {
     // }
 
     // /**
-    // * @param p0
-    // * @param p1
-    // * @param q0
-    // * @param q1
     // * @return boolean
     // */
     // public static boolean isParallel(DirectPositionImpl p0,
@@ -399,7 +384,6 @@ public class LineSegmentImpl extends LineStringImpl implements LineSegment {
     // /**
     // * Checks weather the LineSegment intersects with another LineSegment
     // *
-    // * @param other
     // * LineSegment
     // * @return TRUE, if both the LineSegments have points in common
     // (Intersection);

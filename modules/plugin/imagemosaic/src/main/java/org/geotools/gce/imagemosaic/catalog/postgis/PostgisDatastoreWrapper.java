@@ -50,10 +50,6 @@ public class PostgisDatastoreWrapper extends DataStoreWrapper {
     /**
      * Return a specific {@link FeatureTypeMapper} by parsing mapping properties contained within
      * the specified {@link Properties} object
-     *
-     * @param featureType
-     * @return
-     * @throws Exception
      */
     protected FeatureTypeMapper getFeatureTypeMapper(final Properties props) throws Exception {
         FeatureTypeMapper mapper = super.getFeatureTypeMapper(props);

@@ -78,11 +78,6 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
      * <p>NOTE: we dont handle "'" as a 'special' character because it would be too confusing to
      * have a special char as another special char. Using this will throw an error
      * (IllegalArgumentException).
-     *
-     * @param escape
-     * @param multi
-     * @param single
-     * @param pattern
      */
     public static String convertToSQL92(
             char escape, char multi, char single, boolean matchCase, String pattern)
@@ -112,11 +107,7 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
         return result.toString();
     }
 
-    /**
-     * see convertToSQL92
-     *
-     * @throws IllegalArgumentException
-     */
+    /** see convertToSQL92 */
     public String getSQL92LikePattern() throws IllegalArgumentException {
         if (escape.length() != 1) {
             throw new IllegalArgumentException(

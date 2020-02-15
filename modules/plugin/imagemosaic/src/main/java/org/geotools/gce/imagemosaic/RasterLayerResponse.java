@@ -300,7 +300,6 @@ public class RasterLayerResponse {
          * <p>A dry run means: no tasks are executed.
          *
          * @param dryRun <code>true</code> for a dry run, <code>false</code> otherwise.
-         * @param collectors
          */
         private MosaicProducer(final boolean dryRun, List<SubmosaicProducer> collectors) {
             this.granuleCollectors = collectors;
@@ -401,9 +400,6 @@ public class RasterLayerResponse {
          *   <li>step 1 is for merging flat on each value for the dimension
          *   <li>step 2 is for merging stack on the resulting mosaics
          * </ol>
-         *
-         * @return
-         * @throws IOException
          */
         private MosaicOutput produce() throws IOException {
             // checks
@@ -532,7 +528,6 @@ public class RasterLayerResponse {
      *
      * @param request a {@link RasterLayerRequest} originating this response.
      * @param rasterManager raster manager being used
-     * @param collectorsFactory
      */
     public RasterLayerResponse(
             final RasterLayerRequest request,
@@ -564,7 +559,6 @@ public class RasterLayerResponse {
      *
      * @return the {@link GridCoverage} produced as computation of this response using the {@link
      *     #createResponse()} method.
-     * @throws IOException
      * @uml.property name="gridCoverage"
      */
     public GridCoverage2D createResponse() throws IOException {
@@ -636,7 +630,6 @@ public class RasterLayerResponse {
      * provided values for alpha and input ROI.
      *
      * @return the mosaic output for the request
-     * @throws DataSourceException
      */
     private MosaicOutput prepareResponse() throws DataSourceException {
 
@@ -1339,11 +1332,7 @@ public class RasterLayerResponse {
         this.granulesPaths = granulesPaths;
     }
 
-    /**
-     * See {@link GridCoverage2DReader#SOURCE_URL_PROPERTY}.
-     *
-     * @param sourceUrl
-     */
+    /** See {@link GridCoverage2DReader#SOURCE_URL_PROPERTY}. */
     public void setSourceUrl(URL sourceUrl) {
         this.sourceUrl = sourceUrl;
     }
@@ -1380,13 +1369,7 @@ public class RasterLayerResponse {
         return heterogeneousCRS;
     }
 
-    /**
-     * Builds an alternate view of request/response/manager based on a template descriptor
-     *
-     * @param templateDescriptor
-     * @return
-     * @throws Exception
-     */
+    /** Builds an alternate view of request/response/manager based on a template descriptor */
     public RasterLayerResponse reprojectTo(GranuleDescriptor templateDescriptor) throws Exception {
         // optimization in case the granule CRS and the mosaic CRS correspond
         CoordinateReferenceSystem granuleCRS =

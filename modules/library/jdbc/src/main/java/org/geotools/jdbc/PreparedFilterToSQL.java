@@ -55,8 +55,6 @@ public class PreparedFilterToSQL extends FilterToSQL {
 
     /**
      * Contructor taking a reference to the SQL dialect, will use it to encode geometry placeholders
-     *
-     * @param dialect
      */
     public PreparedFilterToSQL(PreparedStatementSQLDialect dialect) {
         this.dialect = dialect;
@@ -65,8 +63,6 @@ public class PreparedFilterToSQL extends FilterToSQL {
     /**
      * If true (default) a sql statement with literal placemarks is created, otherwise a normal
      * statement is created
-     *
-     * @return
      */
     public boolean isPrepareEnabled() {
         return prepareEnabled;
@@ -134,8 +130,6 @@ public class PreparedFilterToSQL extends FilterToSQL {
      * When returning true, the {@link Literal} visit will turn {@link Envelope} objects (typically
      * coming from {@link org.opengis.filter.spatial.BBOX} filters) into {@link Polygon}. Defaults
      * to true, subclasses can override.
-     *
-     * @return
      */
     protected boolean convertEnvelopeToPolygon() {
         return true;
@@ -215,8 +209,6 @@ public class PreparedFilterToSQL extends FilterToSQL {
     /**
      * Returns the list of native SRID for each literal that happens to be a geometry, or null
      * otherwise
-     *
-     * @return
      */
     public List<Integer> getSRIDs() {
         return SRIDs;
@@ -225,8 +217,6 @@ public class PreparedFilterToSQL extends FilterToSQL {
     /**
      * Returns the list of dimensions for each literal tha happens to be a geometry, or null
      * otherwise
-     *
-     * @return
      */
     public List<Integer> getDimensions() {
         return dimensions;
@@ -235,8 +225,6 @@ public class PreparedFilterToSQL extends FilterToSQL {
     /**
      * Returns the attribute descriptors compared to a given literal (if any, not always available,
      * normally only needed if arrays are involved)
-     *
-     * @return
      */
     public List<AttributeDescriptor> getDescriptors() {
         return descriptors;

@@ -62,18 +62,12 @@ public class GeometryCollector {
     /**
      * Returns the maximum number of coordinates this collector is allowed to keep in the resulting
      * geometry
-     *
-     * @return
      */
     public long getMaxCoordinates() {
         return maxCoordinates;
     }
 
-    /**
-     * Sets the maximum number of coordinates to be collected. By default is -1, no limit
-     *
-     * @param maxCoordinates
-     */
+    /** Sets the maximum number of coordinates to be collected. By default is -1, no limit */
     public void setMaxCoordinates(long maxCoordinates) {
         this.maxCoordinates = maxCoordinates;
     }
@@ -81,8 +75,6 @@ public class GeometryCollector {
     /**
      * Returns the geometry factory used to deep clone the geometries while collecting them (if null
      * no cloning will happen)
-     *
-     * @return
      */
     public GeometryFactory getFactory() {
         return factory;
@@ -92,18 +84,12 @@ public class GeometryCollector {
      * Sets the geometry factory used to deep clone the geometries while collecting them. May be set
      * to null to avoid deep cloning. By default a geometry factory based on {@link
      * PackedCoordinateSequenceFactory} is used to minimize the memory usage
-     *
-     * @param factory
      */
     public void setFactory(GeometryFactory factory) {
         this.factory = factory;
     }
 
-    /**
-     * Returns a geometry collection containing all of the geometries collected in the process
-     *
-     * @return
-     */
+    /** Returns a geometry collection containing all of the geometries collected in the process */
     public GeometryCollection collect() {
         GeometryCollection gc = collectInternal();
         // preserve the srid and crs, if any
@@ -201,12 +187,7 @@ public class GeometryCollector {
         }
     }
 
-    /**
-     * Adds a geometry to the collector
-     *
-     * @param g
-     * @param result
-     */
+    /** Adds a geometry to the collector */
     public void add(Geometry g) {
         if (g == null) {
             return;

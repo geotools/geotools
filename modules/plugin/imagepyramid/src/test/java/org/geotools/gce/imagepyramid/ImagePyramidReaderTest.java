@@ -74,11 +74,7 @@ public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
 
     // private final static String TEST_JAR_FILE = "pyramid.jar";
 
-    /**
-     * Tests automatic building of all the mosaic and pyramid files
-     *
-     * @throws IOException
-     */
+    /** Tests automatic building of all the mosaic and pyramid files */
     @Test
     public void testAutomaticBuild() throws IOException {
         final URL testFile = TestData.getResource(this, "goodpyramid/" + TEST_FILE);
@@ -107,8 +103,6 @@ public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
     /**
      * Tests automatic building of all the mosaic and pyramid files from a gdal_retile like
      * directory structure
-     *
-     * @throws IOException
      */
     @Test
     public void testAutomaticBuildGdalRetile() throws IOException {
@@ -119,8 +113,6 @@ public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
     /**
      * Tests automatic building of all the mosaic and pyramid files from a gdal_retile like
      * directory structure
-     *
-     * @throws IOException
      */
     @Test
     public void testWindowsPath() throws IOException {
@@ -128,11 +120,7 @@ public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
         buildPyramid(testFile, "good pyramid");
     }
 
-    /**
-     * @param testFile
-     * @throws IOException
-     * @throws FileNotFoundException
-     */
+    /** */
     private void buildPyramid(final URL testFile, String targetName)
             throws IOException, FileNotFoundException {
         File sourceDir = URLs.urlToFile(testFile).getParentFile();
@@ -167,10 +155,6 @@ public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
     /**
      * Copies the mosaic from the source dir to the target dir and removes all metadata files from
      * it
-     *
-     * @param sourceDir
-     * @param targetDir
-     * @throws IOException
      */
     void prepareEmptyMosaic(File sourceDir, File targetDir) throws IOException {
         FileUtils.copyDirectory(sourceDir, targetDir);
@@ -382,10 +366,6 @@ public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
     /**
      * This is related to http://jira.codehaus.org/browse/GEOS-4081 and happens only if the
      * requested envelope is overlapping with the pyramid envelope for way less than a pixel
-     *
-     * @throws IOException
-     * @throws MismatchedDimensionException
-     * @throws NoSuchAuthorityCodeException
      */
     @Test
     public void testRequestOutsideBounds()
@@ -422,10 +402,6 @@ public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
      * resolution decreasing as a power of 2.
      *
      * <p>Size of the original mosaic is 250,250.
-     *
-     * @throws IOException
-     * @throws MismatchedDimensionException
-     * @throws NoSuchAuthorityCodeException
      */
     @Test
     public void testCropHighestLevel()
@@ -483,10 +459,6 @@ public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
      * resolution decreasing as a power of 2.
      *
      * <p>Size of the original mosaic is 250,250.
-     *
-     * @throws IOException
-     * @throws MismatchedDimensionException
-     * @throws NoSuchAuthorityCodeException
      */
     @Test
     public void testCropLevel1()
@@ -544,10 +516,6 @@ public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
      * resolution decreasing as a power of 2.
      *
      * <p>Size of the original mosaic is 250,250.
-     *
-     * @throws IOException
-     * @throws MismatchedDimensionException
-     * @throws NoSuchAuthorityCodeException
      */
     @Test
     public void testCropLevel2()
@@ -606,10 +574,6 @@ public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
      * resolution decreasing as a power of 2.
      *
      * <p>Size of the original mosaic is 250,250.
-     *
-     * @throws IOException
-     * @throws MismatchedDimensionException
-     * @throws NoSuchAuthorityCodeException
      */
     @Test
     public void testCropLevel3()
@@ -663,11 +627,7 @@ public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
 
     // private final static String TEST_JAR_FILE = "pyramid.jar";
 
-    /**
-     * Tests that we recognize gdal_retile structure
-     *
-     * @throws IOException
-     */
+    /** Tests that we recognize gdal_retile structure */
     @Test
     public void badPyramid1() throws IOException {
         final URL sourceDir = TestData.getResource(this, "badpyramid1");
@@ -680,11 +640,7 @@ public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
         assertNull(reader);
     }
 
-    /**
-     * Tests that we recognize gdal_retile structure
-     *
-     * @throws IOException
-     */
+    /** Tests that we recognize gdal_retile structure */
     @Test
     public void badPyramid2() throws IOException {
         final URL sourceDir = TestData.getResource(this, "badpyramid2");

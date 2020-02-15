@@ -484,16 +484,6 @@ public class BlendComposite implements Composite {
         /**
          * Performs the color blending on the given pixels, assuming the source colors are
          * pre-multiplied
-         *
-         * @param sr
-         * @param sg
-         * @param sb
-         * @param sa
-         * @param dr
-         * @param dg
-         * @param db
-         * @param da
-         * @param result
          */
         public abstract void perform(
                 int sr, int sg, int sb, int sa, int dr, int dg, int db, int da, int[] result);
@@ -779,10 +769,6 @@ public class BlendComposite implements Composite {
     /**
      * Returns a BlendComposite with the given mode and opacity. If opacity is 1.0 one of the public
      * constant BlendComposite fields will be returned, incurring in no instantiation cost
-     *
-     * @param mode
-     * @param opacity
-     * @return
      */
     public static Composite getInstance(BlendingMode mode, float opacity) {
         // use common constants when opacity is 1.0 (like AlphaComposite.getInstance() does)

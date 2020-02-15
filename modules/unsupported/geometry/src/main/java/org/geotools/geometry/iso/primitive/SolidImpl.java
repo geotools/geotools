@@ -41,8 +41,6 @@ public class SolidImpl extends PrimitiveImpl implements Solid {
      * Since this standard is limited to 3-dimensional coordinate reference systems, any solid is
      * definable by its boundary. The default constructor for a Solid is from a properly structured
      * set of Shells organized as a SolidBoundary. Solid::Solid(boundary : SolidBoundary) : Solid
-     *
-     * @param boundary
      */
     public SolidImpl(SolidBoundary boundary) {
         super(boundary.getCoordinateReferenceSystem(), null, null, null);

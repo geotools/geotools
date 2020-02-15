@@ -276,21 +276,12 @@ public class CssTranslator {
         return maxCombinations;
     }
 
-    /**
-     * Maximum number of rule combinations before bailing out of the power set generation
-     *
-     * @param maxCombinations
-     */
+    /** Maximum number of rule combinations before bailing out of the power set generation */
     public void setMaxCombinations(int maxCombinations) {
         this.maxCombinations = maxCombinations;
     }
 
-    /**
-     * Translates a CSS stylesheet into an equivalent GeoTools {@link Style} object
-     *
-     * @param stylesheet
-     * @return
-     */
+    /** Translates a CSS stylesheet into an equivalent GeoTools {@link Style} object */
     public Style translate(Stylesheet stylesheet) {
         // get the directives influencing translation
         int maxCombinations = getMaxCombinations(stylesheet);
@@ -754,12 +745,7 @@ public class CssTranslator {
         return false;
     }
 
-    /**
-     * Flat modes assumes the master rules applies to whatever was not caught by the child rules
-     *
-     * @param cssRule
-     * @return
-     */
+    /** Flat modes assumes the master rules applies to whatever was not caught by the child rules */
     private List<CssRule> removeNested(
             CssRule cssRule, FeatureType featureType, UnboundSimplifyingFilterVisitor simplifier) {
         List<CssRule> nested = cssRule.getNestedRules();
@@ -833,9 +819,6 @@ public class CssTranslator {
      * SLD rules can have two or more selectors in OR using different scale ranges, however the SLD
      * model does not allow for that. Flatten them into N different rules, with the same properties,
      * but different selectors
-     *
-     * @param rules
-     * @return
      */
     private List<CssRule> flattenScaleRanges(List<CssRule> rules) {
         List<CssRule> result = new ArrayList<>();
@@ -887,12 +870,7 @@ public class CssTranslator {
         return guesser.getFeatureType();
     }
 
-    /**
-     * Splits the rules into different sets by feature type name
-     *
-     * @param rules
-     * @return
-     */
+    /** Splits the rules into different sets by feature type name */
     private Map<String, List<CssRule>> organizeByTypeName(List<CssRule> rules) {
         TypeNameExtractor extractor = new TypeNameExtractor();
         for (CssRule rule : rules) {
@@ -945,12 +923,7 @@ public class CssTranslator {
         return result;
     }
 
-    /**
-     * Organizes them rules by ascending z-index
-     *
-     * @param rules
-     * @return
-     */
+    /** Organizes them rules by ascending z-index */
     private Map<Integer, List<CssRule>> organizeByZIndex(
             List<CssRule> rules, CssRule.ZIndexMode zIndexMode) {
         TreeSet<Integer> indexes = getZIndexesForRules(rules);
@@ -1000,10 +973,6 @@ public class CssTranslator {
     /**
      * Turns an SLD compatible {@link CssRule} into a {@link Rule}, appending it to the {@link
      * FeatureTypeStyleBuilder}
-     *
-     * @param cssRule
-     * @param fts
-     * @param targetFeatureType
      */
     void buildSldRule(
             CssRule cssRule,
@@ -1107,10 +1076,6 @@ public class CssTranslator {
 
     /**
      * Builds a polygon symbolizer into the current rule, if a <code>fill</code> property is found
-     *
-     * @param cssRule
-     * @param ruleBuilder
-     * @param includeStrokeInPolygonSymbolizer
      */
     private void addPolygonSymbolizer(
             CssRule cssRule, RuleBuilder ruleBuilder, boolean includeStrokeInPolygonSymbolizer) {
@@ -1152,12 +1117,7 @@ public class CssTranslator {
         }
     }
 
-    /**
-     * Builds a point symbolizer into the current rule, if a <code>mark</code> property is found
-     *
-     * @param cssRule
-     * @param ruleBuilder
-     */
+    /** Builds a point symbolizer into the current rule, if a <code>mark</code> property is found */
     private void addPointSymbolizer(CssRule cssRule, RuleBuilder ruleBuilder) {
         Map<String, List<Value>> values = cssRule.getPropertyValues(PseudoClass.ROOT, "mark");
         if (values == null || values.isEmpty()) {
@@ -1184,12 +1144,7 @@ public class CssTranslator {
         }
     }
 
-    /**
-     * Builds a text symbolizer into the current rule, if a <code>label</code> property is found
-     *
-     * @param cssRule
-     * @param ruleBuilder
-     */
+    /** Builds a text symbolizer into the current rule, if a <code>label</code> property is found */
     private void addTextSymbolizer(CssRule cssRule, RuleBuilder ruleBuilder) {
         Map<String, List<Value>> values =
                 cssRule.getPropertyValues(PseudoClass.ROOT, "label", "font", "shield", "halo");
@@ -1347,9 +1302,6 @@ public class CssTranslator {
     /**
      * Builds a raster symbolizer into the current rule, if a <code>raster-channels</code> property
      * is found
-     *
-     * @param cssRule
-     * @param ruleBuilder
      */
     private void addRasterSymbolizer(CssRule cssRule, RuleBuilder ruleBuilder) {
         Map<String, List<Value>> values =
@@ -1485,15 +1437,7 @@ public class CssTranslator {
         }
     }
 
-    /**
-     * Applies contrast enhancement for the i-th band
-     *
-     * @param ceb
-     * @param constrastEnhancements
-     * @param constrastParameters
-     * @param gammas
-     * @param i
-     */
+    /** Applies contrast enhancement for the i-th band */
     private void applyContrastEnhancement(
             ContrastEnhancementBuilder ceb,
             String[] constrastEnhancements,
@@ -1625,15 +1569,7 @@ public class CssTranslator {
         protected abstract GraphicBuilder getGraphicBuilder();
     }
 
-    /**
-     * Builds the fill using a FillBuilder
-     *
-     * @param cssRule
-     * @param fb
-     * @param values
-     * @param i
-     * @param fillPropertyName
-     */
+    /** Builds the fill using a FillBuilder */
     private void buildFill(
             CssRule cssRule,
             final FillBuilder fb,
@@ -1662,8 +1598,6 @@ public class CssTranslator {
     /**
      * Adds a line symbolizer, assuming the <code>stroke<code> property is found
      *
-     * @param cssRule
-     * @param ruleBuilder
      */
     private void addLineSymbolizer(CssRule cssRule, RuleBuilder ruleBuilder) {
         Map<String, List<Value>> values = cssRule.getPropertyValues(PseudoClass.ROOT, "stroke");
@@ -1693,12 +1627,7 @@ public class CssTranslator {
         }
     }
 
-    /**
-     * Returns true if the expression is a constant value zero
-     *
-     * @param expression
-     * @return
-     */
+    /** Returns true if the expression is a constant value zero */
     private boolean isZero(Expression expression) {
         if (!(expression instanceof org.opengis.filter.expression.Literal)) {
             return false;
@@ -1708,14 +1637,7 @@ public class CssTranslator {
         return l.evaluate(null, Double.class) == 0;
     }
 
-    /**
-     * Builds a stroke using the stroke buidler for the i-th set of property values
-     *
-     * @param cssRule
-     * @param strokeBuilder
-     * @param values
-     * @param i
-     */
+    /** Builds a stroke using the stroke buidler for the i-th set of property values */
     private void buildStroke(
             CssRule cssRule,
             final StrokeBuilder strokeBuilder,
@@ -1788,9 +1710,6 @@ public class CssTranslator {
     /**
      * Returns true if the value is a {@link Literal}, or a {@link MultiValue} made of {@link
      * Literal}
-     *
-     * @param value
-     * @return
      */
     private boolean isLiterals(Value value) {
         if (value instanceof Literal) {
@@ -1808,14 +1727,7 @@ public class CssTranslator {
         }
     }
 
-    /**
-     * Adds the vendor options available
-     *
-     * @param sb
-     * @param vendorOptions
-     * @param values
-     * @param idx
-     */
+    /** Adds the vendor options available */
     private void addVendorOptions(
             SymbolizerBuilder<?> sb,
             Map<String, String> vendorOptions,
@@ -1836,15 +1748,7 @@ public class CssTranslator {
         }
     }
 
-    /**
-     * Builds a mark into the graphic builder from the idx-th set of property alues
-     *
-     * @param markName
-     * @param cssRule
-     * @param indexedPseudoClass
-     * @param idx
-     * @param gb
-     */
+    /** Builds a mark into the graphic builder from the idx-th set of property alues */
     private void buildMark(
             Value markName,
             CssRule cssRule,
@@ -1888,11 +1792,6 @@ public class CssTranslator {
     /**
      * Returns the set of values for the idx-th pseudo-class taking into account both generic and
      * non indexed pseudo class names
-     *
-     * @param cssRule
-     * @param pseudoClassName
-     * @param idx
-     * @return
      */
     private Map<String, List<Value>> getValuesForIndexedPseudoClass(
             CssRule cssRule, String pseudoClassName, int idx) {
@@ -1909,14 +1808,7 @@ public class CssTranslator {
         return combined;
     }
 
-    /**
-     * Builds an expression out of the i-th value
-     *
-     * @param valueMap
-     * @param name
-     * @param i
-     * @return
-     */
+    /** Builds an expression out of the i-th value */
     private Expression getExpression(Map<String, List<Value>> valueMap, String name, int i) {
         Value v = getValue(valueMap, name, i);
         return getExpression(v);
@@ -1925,9 +1817,6 @@ public class CssTranslator {
     /**
      * Builds/grabs an expression from the specified value, if a multi value is passed the first
      * value will be used
-     *
-     * @param v
-     * @return
      */
     private Expression getExpression(Value v) {
         if (v == null) {
@@ -1944,12 +1833,6 @@ public class CssTranslator {
     /**
      * Returns an expression for the i-th value of the specified property, taking into account units
      * of measure
-     *
-     * @param valueMap
-     * @param name
-     * @param i
-     * @param defaultUnit
-     * @return
      */
     private Expression getMeasureExpression(
             Map<String, List<Value>> valueMap, String name, int i, String defaultUnit) {
@@ -1973,14 +1856,7 @@ public class CssTranslator {
         }
     }
 
-    /**
-     * Returns the i-th value of the specified property
-     *
-     * @param valueMap
-     * @param name
-     * @param i
-     * @return
-     */
+    /** Returns the i-th value of the specified property */
     private Value getValue(Map<String, List<Value>> valueMap, String name, int i) {
         List<Value> values = valueMap.get(name);
         if (values == null || values.isEmpty()) {
@@ -2035,15 +1911,7 @@ public class CssTranslator {
         }
     }
 
-    /**
-     * Returns the i-th value of the specified property, as a literal
-     *
-     * @param valueMap
-     * @param name
-     * @param i
-     * @param defaultValue
-     * @return
-     */
+    /** Returns the i-th value of the specified property, as a literal */
     private String getLiteral(
             Map<String, List<Value>> valueMap, String name, int i, String defaultValue) {
         Value v = getValue(valueMap, name, i);
@@ -2054,14 +1922,7 @@ public class CssTranslator {
         }
     }
 
-    /**
-     * Returns the i-th value of the specified property, as a array of floats
-     *
-     * @param valueMap
-     * @param name
-     * @param i
-     * @return
-     */
+    /** Returns the i-th value of the specified property, as a array of floats */
     private float[] getFloatArray(Map<String, List<Value>> valueMap, String name, int i) {
         double[] doubles = getDoubleArray(valueMap, name, i);
         if (doubles == null) {
@@ -2075,14 +1936,7 @@ public class CssTranslator {
         }
     }
 
-    /**
-     * Returns the i-th value of the specified property, as a array of doubles
-     *
-     * @param valueMap
-     * @param name
-     * @param i
-     * @return
-     */
+    /** Returns the i-th value of the specified property, as a array of doubles */
     private double[] getDoubleArray(Map<String, List<Value>> valueMap, String name, int i) {
         Value v = getValue(valueMap, name, i);
         if (v == null) {
@@ -2111,14 +1965,7 @@ public class CssTranslator {
         }
     }
 
-    /**
-     * Returns the i-th value of the specified property, as a array of strings
-     *
-     * @param valueMap
-     * @param name
-     * @param i
-     * @return
-     */
+    /** Returns the i-th value of the specified property, as a array of strings */
     private String[] getStringArray(Map<String, List<Value>> valueMap, String name, int i) {
         Value v = getValue(valueMap, name, i);
         if (v == null) {
@@ -2140,14 +1987,7 @@ public class CssTranslator {
         }
     }
 
-    /**
-     * Returns the i-th value of the specified property, as a array of expressions
-     *
-     * @param valueMap
-     * @param name
-     * @param i
-     * @return
-     */
+    /** Returns the i-th value of the specified property, as a array of expressions */
     private Expression[] getExpressionArray(Map<String, List<Value>> valueMap, String name, int i) {
         Value v = getValue(valueMap, name, i);
         if (v == null) {
@@ -2172,9 +2012,6 @@ public class CssTranslator {
     /**
      * Returns the max number of property values in the provided property set (for repeated
      * symbolizers)
-     *
-     * @param valueMap
-     * @return
      */
     private int getMaxRepeatCount(Map<String, List<Value>> valueMap) {
         int max = 1;

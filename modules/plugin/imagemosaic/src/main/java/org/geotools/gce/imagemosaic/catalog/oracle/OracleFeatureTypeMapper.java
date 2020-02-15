@@ -98,12 +98,7 @@ public class OracleFeatureTypeMapper implements FeatureTypeMapper {
         return simpleFeatureSource;
     }
 
-    /**
-     * Create a new {@link OracleFeatureTypeMapper} on top of the original featureType provided
-     *
-     * @param featureType
-     * @throws CQLException
-     */
+    /** Create a new {@link OracleFeatureTypeMapper} on top of the original featureType provided */
     public OracleFeatureTypeMapper(SimpleFeatureType featureType) throws CQLException {
         wrappedFeatureType = featureType;
         originalName = featureType.getName();

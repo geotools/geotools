@@ -39,8 +39,6 @@ public class IntersectUtils {
      * <p>This method relies completely on {@link Geometry#intersects(Geometry)} but also tries to
      * unroll <TT>GeometryCollection</TT>s.
      *
-     * @param g1
-     * @param g2
      * @return true if the two geometries intersect.
      */
     public static boolean intersects(Geometry g1, Geometry g2) {
@@ -86,8 +84,6 @@ public class IntersectUtils {
      * This method relies completely on {@link Geometry#intersection(Geometry)} but also tries to
      * unroll <TT>GeometryCollection</TT>s.
      *
-     * @param g1
-     * @param g2
      * @return true if the two geometries intersect.
      */
     public static Geometry intersection(Geometry g1, Geometry g2) {
@@ -171,8 +167,6 @@ public class IntersectUtils {
      *
      * @throws IllegalArgumentException when encountering illegal Geometries; message is the
      *     Geometry class name.
-     * @param geometry
-     * @return
      */
     public static Geometry unrollGeometries(Geometry geometry) throws IllegalArgumentException {
 

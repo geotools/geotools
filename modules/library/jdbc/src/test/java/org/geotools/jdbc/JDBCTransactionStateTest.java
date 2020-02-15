@@ -84,9 +84,6 @@ public class JDBCTransactionStateTest {
     /**
      * Tests if connection gets closed on internally managed connections and creation of log
      * statements.
-     *
-     * @throws IOException
-     * @throws SQLException
      */
     @Test
     public void testSetTransactionNullWithInternalConnection() throws IOException, SQLException {

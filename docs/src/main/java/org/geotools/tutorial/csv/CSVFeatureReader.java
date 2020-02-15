@@ -87,7 +87,6 @@ public class CSVFeatureReader implements FeatureReader<SimpleFeatureType, Simple
      * Check if additional content is available.
      *
      * @return <code>true</code> if additional content is available
-     * @throws IOException
      */
     public boolean hasNext() throws IOException {
         if (next != null) {
@@ -134,11 +133,7 @@ public class CSVFeatureReader implements FeatureReader<SimpleFeatureType, Simple
     // parse end
 
     // close start
-    /**
-     * Close the FeatureReader when not in use.
-     *
-     * @throws IOException
-     */
+    /** Close the FeatureReader when not in use. */
     public void close() throws IOException {
         if (reader != null) {
             reader.close();

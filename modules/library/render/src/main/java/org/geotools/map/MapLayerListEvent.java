@@ -66,11 +66,7 @@ public class MapLayerListEvent extends EventObject {
         this.mapLayerEvent = mapLayerEvent;
     }
 
-    /**
-     * Return the layer involved in the change.
-     *
-     * @return
-     */
+    /** Return the layer involved in the change. */
     public Layer getLayer() {
         return layer;
     }

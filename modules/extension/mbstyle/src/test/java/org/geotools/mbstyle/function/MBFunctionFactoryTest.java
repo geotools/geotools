@@ -175,11 +175,7 @@ public class MBFunctionFactoryTest {
         assertEquals(Color.WHITE, expr.evaluate(null, Color.class));
     }
 
-    /**
-     * A function must implement evaluate(Object) without a target, Exponential did not
-     *
-     * @throws Exception
-     */
+    /** A function must implement evaluate(Object) without a target, Exponential did not */
     @Test
     public void exponentialFunctionContext() throws Exception {
         Function expColor =

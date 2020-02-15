@@ -206,11 +206,7 @@ public class ArcSDEAdapter {
         return colDef;
     }
 
-    /**
-     * @param attClass
-     * @return an SdeTypeDef instance with default values for the given class
-     * @throws IllegalArgumentException
-     */
+    /** @return an SdeTypeDef instance with default values for the given class */
     private static SdeTypeDef getSdeType(Class<?> attClass) throws IllegalArgumentException {
         SdeTypeDef sdeType = java2SDETypes.get(attClass);
 
@@ -302,7 +298,6 @@ public class ArcSDEAdapter {
      * <p>This check should be temporary; currently writing CLOB types is producing a segmentation
      * fault (gasp!) in ArcSDE 9.3. We imagine the java encoding is not quite what ArcSDE expected.
      *
-     * @param seColumns
      * @return true if any of the columns are read-only
      */
     private static boolean hasReadOnlyColumn(SeColumnDefinition[] seColumns) {
@@ -517,7 +512,6 @@ public class ArcSDEAdapter {
      * <p>To obtain the JTS Geometry class binding for an sde column of type {@link
      * SeColumnDefinition#TYPE_SHAPE} use {@link #getGeometryTypeFromLayerMask(int)}.
      *
-     * @param sdeType
      * @return the java binding for the given sde data type or {@code null} if its not supported
      */
     public static Class<?> getJavaBinding(final Integer sdeType) {
@@ -607,10 +601,6 @@ public class ArcSDEAdapter {
      * </pre>
      *
      * (Note that the type SE_SIMPLE_LINE_TYPE_MASK is not used)
-     *
-     * @param seShapeType
-     * @return
-     * @throws IllegalArgumentException
      */
     public static Class<? extends Geometry> getGeometryTypeFromLayerMask(int seShapeType) {
         Class<? extends Geometry> clazz;
@@ -891,23 +881,16 @@ public class ArcSDEAdapter {
      * </tr>
      * </p>
      *
-     * @param featureType
      *            the feature type containing the name, attributes and coordinate reference system
      *            of the new ArcSDE layer.
-     * @param hints
      *            A map containing extra ArcSDE-specific hints about how to create the underlying
      *            ArcS DE SeLayer and SeTable objects from this FeatureType.
-     * @param session
      *            connection to use in order to create the layer and table on the server. The
      *            connection shall be managed by this method caller.
-     * @throws IOException
      *             see <code>throws DataSourceException</code> bellow
-     * @throws IllegalArgumentException
      *             if the passed feature type does not contains at least one geometric attribute, or
      *             if the type name contains '.' (dots).
-     * @throws NullPointerException
      *             if <code>featureType</code> is <code>null</code>
-     * @throws DataSourceException
      *             if there is <b>not an available (free) connection </b> to the ArcSDE instance(in
      *             that case maybe you need to increase the maximun number of connections for the
      *             connection pool), or an SeException exception is catched while creating the
@@ -1078,14 +1061,6 @@ public class ArcSDEAdapter {
     /**
      * Creates a new table in the server. Warning warning, this method shall only be called from
      * inside a {@link Command}
-     *
-     * @param connection
-     * @param qualifiedName
-     * @param hackColName
-     * @param configKeyword
-     * @return
-     * @throws IOException
-     * @throws SeException
      */
     private static SeTable createSeTable(
             final SeConnection connection,
@@ -1175,9 +1150,6 @@ public class ArcSDEAdapter {
      * large coordinates such as UTM (values greater than 500,000.00)
      *
      * <p>This method is driven by the equally named method in TestData.java
-     *
-     * @return
-     * @throws SeException
      */
     private static SeCoordinateReference getGenericCoordRef() throws SeException {
         // create a sde CRS with a huge value range and 5 digits of presission

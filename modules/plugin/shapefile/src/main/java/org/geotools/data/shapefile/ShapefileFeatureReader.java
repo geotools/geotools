@@ -156,12 +156,7 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
         }
     }
 
-    /**
-     * Returns true if the lower level readers, shp and dbf, have one more record to read
-     *
-     * @return
-     * @throws IOException
-     */
+    /** Returns true if the lower level readers, shp and dbf, have one more record to read */
     boolean filesHaveMore() throws IOException {
         if (dbf == null) {
             return shp.hasNext();
@@ -210,9 +205,6 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
     /**
      * Reads the geometry, it will return {@link #SKIP} if the records is to be skipped because of
      * the screenmap or because it does not match the target bbox
-     *
-     * @param record
-     * @return
      */
     protected Geometry getGeometry(Record record) {
         // read the geometry, so that we can decide if this row is to be skipped or not
@@ -337,29 +329,17 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
         }
     }
 
-    /**
-     * Sets the target bbox, will be used to skip over features we do not need
-     *
-     * @param targetBBox
-     */
+    /** Sets the target bbox, will be used to skip over features we do not need */
     public void setTargetBBox(Envelope targetBBox) {
         this.targetBBox = targetBBox;
     }
 
-    /**
-     * Sets the simplification distance, the reader will subsample pixels on the go
-     *
-     * @param simplificationDistance
-     */
+    /** Sets the simplification distance, the reader will subsample pixels on the go */
     public void setSimplificationDistance(double simplificationDistance) {
         this.simplificationDistance = simplificationDistance;
     }
 
-    /**
-     * Sets the screen map, will be used to skip over features that are too small
-     *
-     * @param screenMap
-     */
+    /** Sets the screen map, will be used to skip over features that are too small */
     public void setScreenMap(ScreenMap screenMap) {
         this.screenMap = screenMap;
     }

@@ -148,12 +148,7 @@ public class AttributeGroupHandler extends XSIElementHandler {
         return name;
     }
 
-    /**
-     * Reduces the memory imprint returning a smaller object
-     *
-     * @param parent
-     * @throws SAXException
-     */
+    /** Reduces the memory imprint returning a smaller object */
     protected AttributeGroup compress(SchemaHandler parent) throws SAXException {
         if (cache != null) {
             return cache;

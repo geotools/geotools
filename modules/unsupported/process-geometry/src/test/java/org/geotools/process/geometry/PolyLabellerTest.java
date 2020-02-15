@@ -136,11 +136,7 @@ public class PolyLabellerTest extends TestCase {
      * PolyLabeller.getPolylabel(p, 1); double delta = 0.0001; assertEquals(expected.x, c.x, delta); assertEquals(expected.y, c.y, delta); }
      */
 
-    /**
-     * @param file
-     * @throws IOException
-     * @throws FileNotFoundException
-     */
+    /** */
     private Polygon fetchPoly(File file) throws IOException, FileNotFoundException {
         GeometryJSON gjson = new GeometryJSON();
 

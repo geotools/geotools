@@ -44,9 +44,6 @@ public class IndexerUtils {
     /**
      * Build {@link Collectors} element by parsing the specified propertyCollectors, and put them on
      * the specified indexer object.
-     *
-     * @param indexer
-     * @param propertyCollectors
      */
     public static void setPropertyCollectors(Indexer indexer, String propertyCollectors) {
         final Collectors collectors = Utils.OBJECT_FACTORY.createIndexerCollectors();
@@ -159,13 +156,7 @@ public class IndexerUtils {
         return null;
     }
 
-    /**
-     * Utility method which does special checks on specific parameters
-     *
-     * @param parameterName
-     * @param parameterValue
-     * @return
-     */
+    /** Utility method which does special checks on specific parameters */
     public static String refineParameterValue(String parameterName, String parameterValue) {
         if (parameterName.equalsIgnoreCase(Utils.Prop.ROOT_MOSAIC_DIR)) {
             // Special management for Root mosaic dir
@@ -179,9 +170,6 @@ public class IndexerUtils {
     /**
      * Set the attributes of the specified domain, getting values from the value String In case the
      * value contains a ";" separator, add a different attribute for each element.
-     *
-     * @param domain
-     * @param values
      */
     public static void setAttributes(DomainType domain, String values) {
         if (values.contains(";")) {
@@ -194,12 +182,7 @@ public class IndexerUtils {
         }
     }
 
-    /**
-     * Add a single attribute to that domain with the specified value
-     *
-     * @param domain
-     * @param attributeValue
-     */
+    /** Add a single attribute to that domain with the specified value */
     private static void addAttribute(DomainType domain, String attributeValue) {
         AttributeType attribute = Utils.OBJECT_FACTORY.createAttributeType();
         attribute.setAttribute(attributeValue);
@@ -207,13 +190,7 @@ public class IndexerUtils {
         listAttributes.add(attribute);
     }
 
-    /**
-     * Set the parameter having the specified name with the specified value
-     *
-     * @param parameters
-     * @param parameterName
-     * @param parameterValue
-     */
+    /** Set the parameter having the specified name with the specified value */
     public static void setParam(
             List<Parameter> parameters, String parameterName, String parameterValue) {
         Parameter param = null;
@@ -234,10 +211,6 @@ public class IndexerUtils {
     /**
      * Get the value of a property name from a properties object and set that value to a parameter
      * with the same name
-     *
-     * @param parameters
-     * @param props
-     * @param propName
      */
     public static void setParam(List<Parameter> parameters, Properties props, String propName) {
         setParam(parameters, propName, props.getProperty(propName));
@@ -246,10 +219,6 @@ public class IndexerUtils {
     /**
      * Return the parameter value (as a boolean) of the specified parameter name from the provider
      * indexer
-     *
-     * @param parameterName
-     * @param indexer
-     * @return
      */
     public static boolean getParameterAsBoolean(String parameterName, Indexer indexer) {
         String value = getParameter(parameterName, indexer);
@@ -262,10 +231,6 @@ public class IndexerUtils {
     /**
      * Return the parameter value (as a boolean) of the specified parameter name from the provider
      * indexer
-     *
-     * @param parameterName
-     * @param indexer
-     * @return
      */
     public static <T extends Enum> T getParameterAsEnum(
             String parameterName, Class<T> enumClass, Indexer indexer) {
@@ -279,10 +244,6 @@ public class IndexerUtils {
     /**
      * Return the parameter string value of the specified parameter name from the provided
      * parameters element
-     *
-     * @param params
-     * @param parameterName
-     * @return
      */
     public static String getParam(ParametersType params, String parameterName) {
         List<Parameter> parameters = null;
@@ -299,10 +260,6 @@ public class IndexerUtils {
 
     /**
      * Return the parameter string value of the specified parameter name from the provided indexer
-     *
-     * @param parameterName
-     * @param indexer
-     * @return
      */
     public static String getParameter(String parameterName, Indexer indexer) {
         final ParametersType params = indexer.getParameters();
@@ -312,10 +269,6 @@ public class IndexerUtils {
     /**
      * Return the parameter string value of the specified parameter name from the indexer defined in
      * the specified file (if exists).
-     *
-     * @param parameterName
-     * @param indexerFile
-     * @return
      */
     public static String getParameter(String parameterName, File indexerFile) {
         if (indexerFile != null && indexerFile.exists()) {
@@ -334,12 +287,7 @@ public class IndexerUtils {
         return null;
     }
 
-    /**
-     * Parse additional domains
-     *
-     * @param attributes
-     * @param domainList
-     */
+    /** Parse additional domains */
     public static void parseAdditionalDomains(String attributes, List<DomainType> domainList) {
         final String[] domainsAttributes = attributes.split(",");
         for (String domainAttributes : domainsAttributes) {
@@ -364,10 +312,6 @@ public class IndexerUtils {
     /**
      * Get the attributes from the specified domain. The boolean specifies whether we need to add a
      * domain prefix before returning the attributes.
-     *
-     * @param domain
-     * @param domainPrefix
-     * @return
      */
     private static String getAttributesAsString(
             final DomainType domain, final boolean domainPrefix) {
@@ -412,9 +356,6 @@ public class IndexerUtils {
      * Look for the specified coverageName inside the provided Indexer and return the attributes of
      * the specified domain.
      *
-     * @param coverageName
-     * @param domainName
-     * @param indexer
      * @return TODO: Code is going complex. We should use a visitor
      */
     public static String getAttribute(
@@ -574,12 +515,7 @@ public class IndexerUtils {
         return indexer;
     }
 
-    /**
-     * Setup default params to the indexer.
-     *
-     * @param params
-     * @param indexer
-     */
+    /** Setup default params to the indexer. */
     private static void copyDefaultParams(ParametersType params, Indexer indexer) {
         if (params != null) {
             List<Parameter> defaultParamList = params.getParameter();

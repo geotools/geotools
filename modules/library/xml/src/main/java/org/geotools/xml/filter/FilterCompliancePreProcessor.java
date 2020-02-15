@@ -518,9 +518,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
     }
     /**
      * @param filterType LOGIC_NOT, LOGIC_AND or LOGIC_OR
-     * @param startOfFilterStack
      * @return Data Stack data representing the genrated filter
-     * @throws IllegalFilterException
      */
     private Data buildFilter(short filterType, int startOfFilterStack)
             throws IllegalFilterException {

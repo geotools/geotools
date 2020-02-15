@@ -128,8 +128,6 @@ public class BasicNode extends BasicGraphable implements Node {
      * written out when the node is serialized so it must be recreated upon deserialization.
      *
      * @param in Object input stream containing serialized object.
-     * @throws IOException
-     * @throws ClassNotFoundException
      */
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
 

@@ -16,7 +16,6 @@
  */
 package org.geotools.xml.schema.impl;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.Map;
 import javax.naming.OperationNotSupportedException;
@@ -63,21 +62,7 @@ public class ComplexTypeGT implements ComplexType {
     private ElementGrouping child = null;
     private boolean _abstract, mixed, derived;
 
-    /**
-     * Construct <code>ComplexTypeGT</code>.
-     *
-     * @param id
-     * @param name
-     * @param namespace
-     * @param child
-     * @param attrs
-     * @param elems
-     * @param mixed
-     * @param parent
-     * @param _abstract
-     * @param derived
-     * @param anyAttributeNS
-     */
+    /** Construct <code>ComplexTypeGT</code>. */
     public ComplexTypeGT(
             String id,
             String name,
@@ -207,8 +192,6 @@ public class ComplexTypeGT implements ComplexType {
      *
      * @see org.geotools.xml.schema.ComplexType#cache(org.geotools.xml.schema.Element,
      *     java.util.Map)
-     * @param element
-     * @param hints
      */
     public boolean cache(Element element, Map hints) {
         return true;
@@ -219,13 +202,6 @@ public class ComplexTypeGT implements ComplexType {
      *
      * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
      *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
-     * @param element
-     * @param value
-     * @param attrs1
-     * @param hints
-     * @throws SAXException
-     * @throws OperationNotSupportedException
-     * @throws SAXException
      */
     public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
             throws OperationNotSupportedException, SAXException {
@@ -264,9 +240,6 @@ public class ComplexTypeGT implements ComplexType {
      *
      * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
      *     java.lang.Object, java.util.Map)
-     * @param element
-     * @param value
-     * @param hints
      */
     public boolean canEncode(Element element, Object value, Map hints) {
         return false;
@@ -277,12 +250,6 @@ public class ComplexTypeGT implements ComplexType {
      *
      * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element, java.lang.Object,
      *     org.geotools.xml.PrintHandler, java.util.Map)
-     * @param element
-     * @param value
-     * @param output
-     * @param hints
-     * @throws IOException
-     * @throws OperationNotSupportedException
      */
     public void encode(Element element, Object value, PrintHandler output, Map hints)
             throws OperationNotSupportedException {
@@ -293,7 +260,6 @@ public class ComplexTypeGT implements ComplexType {
      * TODO summary sentence for findChildElement ...
      *
      * @see org.geotools.xml.schema.Type#findChildElement(java.lang.String)
-     * @param name1
      */
     public Element findChildElement(String name1) {
         return getChild() != null ? getChild().findChildElement(name1) : null;

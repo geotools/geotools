@@ -333,8 +333,6 @@ public final class ArcSDERasterFormat extends AbstractGridFormat implements Form
     /**
      * Checks the input provided to this {@link ArcSDERasterGridCoverage2DReader} and sets all the
      * other objects and flags accordingly.
-     *
-     * @throws IOException
      */
     private ISessionPool setupConnectionPool(ArcSDEConnectionConfig sdeConfig) throws IOException {
 
@@ -484,8 +482,6 @@ public final class ArcSDERasterFormat extends AbstractGridFormat implements Form
     /**
      * Used by test code to indicate wether to fail when a raster lacks statistics, since we can't
      * create statistics with the ArcSDE Java API
-     *
-     * @param statisticsMandatory
      */
     void setStatisticsMandatory(final boolean statisticsMandatory) {
         this.statisticsMandatory = statisticsMandatory;

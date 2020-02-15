@@ -244,8 +244,6 @@ public class TemporalConverterFactory implements ConverterFactory {
      * un-necessary parts when building java.sql time related classes
      *
      * @param time the number of milliseconds since January 1, 1970, 00:00:00 <b>GMT</b>
-     * @param target
-     * @return
      */
     Date timeMillisToDate(long time, Class target) {
         return timeMillisToDate(time, target, TimeZone.getDefault());

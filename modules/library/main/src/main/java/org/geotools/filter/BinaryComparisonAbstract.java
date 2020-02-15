@@ -86,8 +86,6 @@ public abstract class BinaryComparisonAbstract extends AbstractFilter implements
      * same type.
      *
      * <p>If the values can not be aligned, the original values are returned.
-     *
-     * @return
      */
     protected Object[] eval(Object object) {
         Object v1 = eval(getExpression1(), object);
@@ -101,8 +99,6 @@ public abstract class BinaryComparisonAbstract extends AbstractFilter implements
      * same type.
      *
      * <p>If the values can not be aligned, the original values are returned.
-     *
-     * @return
      */
     protected Object[] eval(Object v1, Object v2) {
         if (v1 != null && v2 != null) {

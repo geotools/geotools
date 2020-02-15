@@ -50,11 +50,7 @@ class SelectItemQualifier implements net.sf.jsqlparser.statement.select.SelectIt
 
     private Map tableAliases;
 
-    /**
-     * Creates a new SelectItemQualifier object.
-     *
-     * @param session
-     */
+    /** Creates a new SelectItemQualifier object. */
     private SelectItemQualifier(ISession session, Map tableAliases) {
         this.session = session;
         this.tableAliases = tableAliases;

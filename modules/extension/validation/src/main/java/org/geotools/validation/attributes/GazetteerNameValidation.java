@@ -80,9 +80,6 @@ public class GazetteerNameValidation extends DefaultFeatureValidation {
     /**
      * Implementation of validate.
      *
-     * @param feature
-     * @param type
-     * @param results
      * @see org.geotools.validation.FeatureValidation#validate(org.geotools.feature.Feature,
      *     org.geotools.feature.FeatureType, org.geotools.validation.ValidationResults)
      */

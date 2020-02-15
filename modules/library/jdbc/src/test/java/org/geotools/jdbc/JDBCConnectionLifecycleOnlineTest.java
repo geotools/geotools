@@ -40,11 +40,7 @@ public abstract class JDBCConnectionLifecycleOnlineTest extends JDBCTestSupport 
         featureStore = (JDBCFeatureStore) dataStore.getFeatureSource(tname("ft1"));
     }
 
-    /**
-     * Check null encoding is working properly
-     *
-     * @throws IOException
-     */
+    /** Check null encoding is working properly */
     public void testListenerCalled() throws IOException {
         dataStore.getConnectionLifecycleListeners().add(mockListener);
 

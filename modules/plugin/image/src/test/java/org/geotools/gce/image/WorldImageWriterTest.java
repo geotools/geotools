@@ -58,14 +58,6 @@ public class WorldImageWriterTest extends WorldImageBaseTestCase {
     /**
      * This method simply read all the respecting a predefined pattern inside the testData directory
      * and then it tries to read, write and re-read them back. All the possible errors are caught.
-     *
-     * @throws MalformedURLException
-     * @throws IOException
-     * @throws IllegalArgumentException
-     * @throws FactoryException
-     * @throws TransformException
-     * @throws ParseException
-     * @throws ParseException
      */
     public void testWrite()
             throws MalformedURLException, IOException, IllegalArgumentException, FactoryException,
@@ -102,11 +94,6 @@ public class WorldImageWriterTest extends WorldImageBaseTestCase {
      * order to display it.
      *
      * @param source Object The object on disk representing the coverage to test.
-     * @throws IOException
-     * @throws IllegalArgumentException
-     * @throws FactoryException
-     * @throws TransformException
-     * @throws ParseException
      */
     private File write(Object source, String format)
             throws IOException, IllegalArgumentException, FactoryException, TransformException,
@@ -159,8 +146,6 @@ public class WorldImageWriterTest extends WorldImageBaseTestCase {
     /**
      * TestRunner for testing inside a java application. It gives us the ability to keep windows
      * open to inspect what happened.
-     *
-     * @param args
      */
     public static void main(String[] args) {
         TestRunner.run(WorldImageWriterTest.class);

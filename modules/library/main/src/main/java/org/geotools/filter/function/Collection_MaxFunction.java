@@ -67,8 +67,6 @@ public class Collection_MaxFunction extends FunctionExpressionImpl {
      * @param collection collection to calculate the maximum
      * @param expression Single Expression argument
      * @return An object containing the maximum value of the attributes
-     * @throws IllegalFilterException
-     * @throws IOException
      */
     static CalcResult calculateMax(SimpleFeatureCollection collection, Expression expression)
             throws IllegalFilterException, IOException {

@@ -248,12 +248,7 @@ public class StyleConverter extends JFrame {
         }
     }
 
-    /**
-     * Update displayed text and format.
-     *
-     * @param document
-     * @param format
-     */
+    /** Update displayed text and format. */
     public void display(String document, String format) {
         if (document == null) {
             text.setText("<!-- copy or import style document here -->");

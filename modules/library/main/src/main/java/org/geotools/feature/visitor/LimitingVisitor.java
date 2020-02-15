@@ -34,17 +34,9 @@ public interface LimitingVisitor extends FeatureVisitor {
      */
     boolean hasLimits();
 
-    /**
-     * Returns startIndex (first element to return)
-     *
-     * @return
-     */
+    /** Returns startIndex (first element to return) */
     int getStartIndex();
 
-    /**
-     * Returns maxFeatures (max # of elements to return)
-     *
-     * @return
-     */
+    /** Returns maxFeatures (max # of elements to return) */
     int getMaxFeatures();
 }

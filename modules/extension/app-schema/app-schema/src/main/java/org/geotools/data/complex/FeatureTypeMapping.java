@@ -167,9 +167,6 @@ public class FeatureTypeMapping {
      * Finds the attribute mappings for the given target location path. If the exactPath is not
      * indexed, it will get all the matching mappings ignoring index. If it is indexed, it will get
      * the one with matching index only.
-     *
-     * @param targetPath
-     * @return
      */
     public List<AttributeMapping> getAttributeMappingsIgnoreIndex(final StepList targetPath) {
         AttributeMapping attMapping;
@@ -186,7 +183,6 @@ public class FeatureTypeMapping {
     /**
      * Finds the attribute mappings for the given source expression.
      *
-     * @param sourceExpression
      * @return list of matching attribute mappings
      */
     public List<AttributeMapping> getAttributeMappingsByExpression(
@@ -243,12 +239,7 @@ public class FeatureTypeMapping {
         return namespaces;
     }
 
-    /**
-     * Has to be called after {@link #setTargetType(FeatureType)}
-     *
-     * @param elementName
-     * @param featureTypeName
-     */
+    /** Has to be called after {@link #setTargetType(FeatureType)} */
     public void setTargetFeature(AttributeDescriptor feature) {
         this.target = feature;
     }
@@ -301,9 +292,6 @@ public class FeatureTypeMapping {
      * same property applies, regardless of the mapping. For example, if there are mappings for
      * <code>gml:name[1]</code>, <code>gml:name[2]</code> and <code>gml:name[3]</code>, but
      * propertyName is just <code>gml:name</code>, all three mappings apply.
-     *
-     * @param propertyName
-     * @return
      */
     public List<Expression> findMappingsFor(
             final StepList propertyName, boolean includeNestedMappings) {
@@ -402,11 +390,7 @@ public class FeatureTypeMapping {
         return clientPropertyExpressions;
     }
 
-    /**
-     * Extracts the source Expressions from a list of {@link AttributeMapping}s
-     *
-     * @param attributeMappings
-     */
+    /** Extracts the source Expressions from a list of {@link AttributeMapping}s */
     private List getExpressions(List attributeMappings, boolean includeNestedMappings) {
         List expressions = new ArrayList(attributeMappings.size());
         AttributeMapping mapping;
@@ -483,7 +467,6 @@ public class FeatureTypeMapping {
     /**
      * Returns index attribute name linked to unrolled propertyName or null if is absent
      *
-     * @param propertyName
      * @return Index attribute name
      */
     public String getIndexAttributeName(String xpath) {

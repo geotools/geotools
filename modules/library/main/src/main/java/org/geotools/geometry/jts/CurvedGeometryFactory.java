@@ -137,33 +137,17 @@ public class CurvedGeometryFactory extends GeometryFactory {
         }
     }
 
-    /**
-     * Explicitly creates a {@link CurvePolygon}
-     *
-     * @param shell
-     * @param holes
-     * @return
-     */
+    /** Explicitly creates a {@link CurvePolygon} */
     public Polygon createCurvePolygon(LinearRing shell, LinearRing[] holes) {
         return new CurvePolygon(shell, holes, this, tolerance);
     }
 
-    /**
-     * Explicitly creates a {@link MultiSurface}
-     *
-     * @param polygons
-     * @return
-     */
+    /** Explicitly creates a {@link MultiSurface} */
     public MultiPolygon createMultiSurface(List<Polygon> polygons) {
         return new MultiSurface(polygons, this, tolerance);
     }
 
-    /**
-     * Explicitly creates a {@link MultiCurve}
-     *
-     * @param components
-     * @return
-     */
+    /** Explicitly creates a {@link MultiCurve} */
     public MultiCurve createMultiCurve(List<LineString> components) {
         return new MultiCurve(components, this, tolerance);
     }
@@ -193,11 +177,7 @@ public class CurvedGeometryFactory extends GeometryFactory {
         return true;
     }
 
-    /**
-     * Returns the linearization tolerance used to create the curved geometries
-     *
-     * @return
-     */
+    /** Returns the linearization tolerance used to create the curved geometries */
     public double getTolerance() {
         return tolerance;
     }
@@ -320,12 +300,7 @@ public class CurvedGeometryFactory extends GeometryFactory {
         return delegate.getCoordinateSequenceFactory();
     }
 
-    /**
-     * Returns true if the geometry is a curved geometry, or contains curved geometries
-     *
-     * @param g
-     * @return
-     */
+    /** Returns true if the geometry is a curved geometry, or contains curved geometries */
     public boolean hasCurves(Geometry g) {
         if (g instanceof CurvedGeometry) {
             return true;

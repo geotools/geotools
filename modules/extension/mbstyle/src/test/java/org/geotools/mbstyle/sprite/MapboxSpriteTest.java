@@ -163,8 +163,6 @@ public class MapboxSpriteTest {
     /**
      * Test that {@link SpriteGraphicFactory} correctly parses both the sprite base URL and the icon
      * name from External Graphic URLs.
-     *
-     * @throws MalformedURLException
      */
     @Test
     public void testSpriteUrlFunctions() throws MalformedURLException {
@@ -182,12 +180,7 @@ public class MapboxSpriteTest {
         assertEquals("someIconName", SpriteGraphicFactory.parseIconName(url2x));
     }
 
-    /**
-     * Test that {@link SpriteGraphicFactory} correctly fetches and parses a sprite index file.
-     *
-     * @throws IOException
-     * @throws MalformedURLException
-     */
+    /** Test that {@link SpriteGraphicFactory} correctly fetches and parses a sprite index file. */
     @Test
     public void testParseSpriteIndexFile() throws MalformedURLException, IOException {
         SpriteIndex spriteIndex = mgf.getSpriteIndex(new URL(spriteBaseUrl));

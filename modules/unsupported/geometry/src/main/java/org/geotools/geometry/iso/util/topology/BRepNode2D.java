@@ -26,10 +26,7 @@ import java.util.LinkedList;
  */
 public class BRepNode2D extends Point2D.Double {
 
-    /**
-     * @param x
-     * @param y
-     */
+    /** */
     public BRepNode2D(double x, double y) {
         super(x, y);
         edges = null;

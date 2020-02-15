@@ -41,13 +41,7 @@ public class BingTile extends Tile {
 
     private TileService service;
 
-    /**
-     * Creates a new BingTile.
-     *
-     * @param extent
-     * @param tileName
-     * @param service
-     */
+    /** Creates a new BingTile. */
     public BingTile(int x, int y, ZoomLevel zoomLevel, TileService service) {
         this(new BingTileIdentifier(x, y, zoomLevel, service.getName()), service);
     }

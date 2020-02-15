@@ -102,12 +102,7 @@ public class FontCache {
         return javaFont;
     }
 
-    /**
-     * Tries to load the specified font name as a URL. Does not cache the result.
-     *
-     * @param fontUrl
-     * @return
-     */
+    /** Tries to load the specified font name as a URL. Does not cache the result. */
     public static java.awt.Font loadFromUrl(String fontUrl) {
         // may be its a file or url
         InputStream is = null;
@@ -190,8 +185,6 @@ public class FontCache {
     /**
      * Adds the specified font in the font cache. Useful if you want to load fonts that are not
      * installed in the Operating System and cannot provide a full path to fonts either.
-     *
-     * @param f
      */
     public void registerFont(Font f) {
         loadedFonts.put(f.getName(), f);
@@ -213,11 +206,7 @@ public class FontCache {
         }
     }
 
-    /**
-     * Lazily loads up the system fonts cache
-     *
-     * @return
-     */
+    /** Lazily loads up the system fonts cache */
     private Set<String> getSystemFonts() {
         // make sure we load the known font families once.
         if (systemFonts.size() == 0) {
@@ -248,8 +237,6 @@ public class FontCache {
     /**
      * Returns the set of font families and font faces available in the system and those manually
      * loaded into the cache
-     *
-     * @return
      */
     public Set<String> getAvailableFonts() {
         Set<String> availableFonts = new HashSet<String>();
@@ -267,7 +254,6 @@ public class FontCache {
      * on. The code will not return style alterations like "Noto Sans Bold" or "Noto Sans Bold
      * Italic" thought (strips all font names containing "bold" and "italic", case insesitive).
      *
-     * @param name
      * @return A list of font names with the same base name
      */
     public List<String> getAlternatives(String name) {

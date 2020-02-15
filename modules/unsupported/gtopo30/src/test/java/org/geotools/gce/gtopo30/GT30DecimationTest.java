@@ -36,11 +36,7 @@ import org.opengis.parameter.ParameterValueGroup;
  * @author Simone Giannecchini
  */
 public class GT30DecimationTest extends GT30TestBase {
-    /**
-     * Constructor for GT30ReaderTest.
-     *
-     * @param arg0
-     */
+    /** Constructor for GT30ReaderTest. */
     public GT30DecimationTest(String arg0) {
         super(arg0);
     }
@@ -49,8 +45,6 @@ public class GT30DecimationTest extends GT30TestBase {
      * Testing reader and writer for gtopo. This test first of all read an existing gtopo tessel
      * into a coverage object, therefore it writes it back onto the disk. Once the coverage is
      * written back\ it loads it again building a new coverage which is finally visualized.
-     *
-     * @throws Exception
      */
     public void test() throws Exception {
 

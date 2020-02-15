@@ -109,11 +109,7 @@ class JDBCAccessPostGis extends JDBCAccessBase {
         }
     }
 
-    /**
-     * Initialize needed sql statement strings
-     *
-     * @param config
-     */
+    /** Initialize needed sql statement strings */
     private void initStatementStrings(Config config) {
         final String geomAttr = config.getGeomAttributeNameInSpatialTable();
         extentSelect = "select " + functionPrefix + "extent(" + geomAttr + ") from {0}";

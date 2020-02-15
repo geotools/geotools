@@ -280,10 +280,7 @@ public final class RasterDatasetInfo {
         return rasterToModel;
     }
 
-    /**
-     * @param pixelAnchor
-     * @return the originalEnvelope
-     */
+    /** @return the originalEnvelope */
     public GeneralEnvelope getOriginalEnvelope(final PixelInCell pixelAnchor) {
         GeneralEnvelope env = null;
         if (1 == getNumRasters()) {

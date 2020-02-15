@@ -85,7 +85,6 @@ public class AnnotatedBeanProcessFactory extends AnnotationDrivenProcessFactory 
      * <p>This is isolated as a static method to allow for unit test; it is called by the
      * constructor.
      *
-     * @param beanClasses
      * @return class map from process name to implementing class.
      */
     static Map<String, Class<?>> classMap(Class<?>... beanClasses) {

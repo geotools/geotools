@@ -47,9 +47,6 @@ public class EdgeEndBuilder {
     /**
      * Creates stub edges for all the intersections in this Edge (if any) and inserts them into the
      * graph.
-     *
-     * @param edge
-     * @param l
      */
     public void computeEdgeEnds(Edge edge, List l) {
         EdgeIntersectionList eiList = edge.getEdgeIntersectionList();
@@ -83,11 +80,6 @@ public class EdgeEndBuilder {
      * provided in case it is the endpoint for the stub edge. Otherwise, the previous point from the
      * parent edge will be the endpoint. <br>
      * eiCurr will always be an EdgeIntersection, but eiPrev may be null.
-     *
-     * @param edge
-     * @param l
-     * @param eiCurr
-     * @param eiPrev
      */
     private void createEdgeEndForPrev(
             Edge edge, List l, EdgeIntersection eiCurr, EdgeIntersection eiPrev) {
@@ -116,11 +108,6 @@ public class EdgeEndBuilder {
      * provided in case it is the endpoint for the stub edge. Otherwise, the next point from the
      * parent edge will be the endpoint. <br>
      * eiCurr will always be an EdgeIntersection, but eiNext may be null.
-     *
-     * @param edge
-     * @param l
-     * @param eiCurr
-     * @param eiNext
      */
     private void createEdgeEndForNext(
             Edge edge, List l, EdgeIntersection eiCurr, EdgeIntersection eiNext) {

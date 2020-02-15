@@ -40,11 +40,7 @@ public class RunStoredTest extends TestCase {
                 }
             };
 
-    /**
-     * Load and run all test files.
-     *
-     * @throws IOException
-     */
+    /** Load and run all test files. */
     public void testGeometriesFromXML() throws IOException {
         GeometryTestParser parser = new GeometryTestParser();
         File dir = new File(TEST_DIRECTORY);

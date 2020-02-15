@@ -77,11 +77,7 @@ public class StrokeBuilder extends AbstractStyleBuilder<Stroke> {
         return reset((org.opengis.style.Stroke) original);
     }
 
-    /**
-     * Reset builder to provided original stroke.
-     *
-     * @param stroke
-     */
+    /** Reset builder to provided original stroke. */
     public StrokeBuilder reset(org.opengis.style.Stroke stroke) {
         if (stroke == null) {
             return unset();

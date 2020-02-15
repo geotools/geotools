@@ -82,11 +82,7 @@ public class PropertyDataStoreTest extends TestCase {
     private PropertyDataStore store;
     static FilterFactory2 ff = (FilterFactory2) CommonFactoryFinder.getFilterFactory(null);
 
-    /**
-     * Constructor for SimpleDataStoreTest.
-     *
-     * @param arg0
-     */
+    /** Constructor for SimpleDataStoreTest. */
     public PropertyDataStoreTest(String arg0) {
         super(arg0);
     }
@@ -493,8 +489,6 @@ public class PropertyDataStoreTest extends TestCase {
     /**
      * In response to <a href="https://jira.codehaus.org/browse/GEOT-1409">GEOT-1409 Property
      * datastore ruins the property file if a string attribute has newlines</a>.
-     *
-     * @throws Exception
      */
     public void testMultiLine() throws Exception {
         SimpleFeatureSource road = store.getFeatureSource("multiline");
@@ -558,8 +552,6 @@ public class PropertyDataStoreTest extends TestCase {
      * PropertyDataStore doesn't support empty trailing spaces</a>.
      *
      * <p>Table with no geoemtry, containing null and empty strings at end of line
-     *
-     * @throws Exception
      */
     public void testTable() throws Exception {
         SimpleFeatureSource table = store.getFeatureSource("table");

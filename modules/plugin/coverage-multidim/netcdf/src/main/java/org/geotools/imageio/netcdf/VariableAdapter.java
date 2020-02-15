@@ -70,7 +70,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.Name;
 import org.opengis.geometry.BoundingBox;
-import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.metadata.spatial.PixelOrientation;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.TemporalCRS;
@@ -356,14 +355,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
 
         final CoordinateVariable<?> adaptee;
 
-        /**
-         * @param domainExtent
-         * @param globalDomainExtent
-         * @param name
-         * @param type
-         * @param adaptee TODO missing support for Range TODO missing support for String domains
-         * @throws IOException
-         */
+        /** @param adaptee TODO missing support for Range TODO missing support for String domains */
         UnidataAdditionalDomain(CoordinateVariable<?> adaptee) throws IOException {
             this.adaptee = adaptee;
             name = adaptee.getName();
@@ -455,11 +447,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
      */
     private static final int FIRST_ATTRIBUTE_INDEX = 2;
 
-    /**
-     * Extracts the compound {@link CoordinateReferenceSystem} from the unidata variable.
-     *
-     * @throws Exception
-     */
+    /** Extracts the compound {@link CoordinateReferenceSystem} from the unidata variable. */
     private void init() throws Exception {
 
         // initialize the various domains
@@ -507,9 +495,6 @@ public class VariableAdapter extends CoverageSourceDescriptor {
      * to get attributes from the name of the dimensions of the variable. In case the indexer.xml
      * contains an explicit schema with different attributes for time and elevation we need to remap
      * them and updates the dimensions mapping as well as the DimensionsDescriptors
-     *
-     * @param dimensionDescriptors
-     * @throws IOException
      */
     private void updateDimensions(List<DimensionDescriptor> dimensionDescriptors)
             throws IOException {
@@ -562,10 +547,6 @@ public class VariableAdapter extends CoverageSourceDescriptor {
     /**
      * Update the dimensionDescriptor attributes mapping by checking the actual attribute names from
      * the schema
-     *
-     * @param indexSchema
-     * @param descriptors
-     * @throws IOException
      */
     public void updateMapping(SimpleFeatureType indexSchema, List<DimensionDescriptor> descriptors)
             throws IOException {
@@ -618,13 +599,6 @@ public class VariableAdapter extends CoverageSourceDescriptor {
     /**
      * Remap an attribute for a specified dimension. Get it from the schemaType and update both the
      * related dimension Descriptor as well as the dimensions mapping.
-     *
-     * @param indexSchema
-     * @param currentDimName
-     * @param indexAttribute
-     * @param descriptors
-     * @param mapper
-     * @return
      */
     private boolean remapAttribute(
             final SimpleFeatureType indexSchema,
@@ -662,14 +636,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         return false;
     }
 
-    /**
-     * @param dimensions
-     * @return
-     * @throws IllegalArgumentException
-     * @throws RuntimeException
-     * @throws IOException
-     * @throws IllegalStateException
-     */
+    /** */
     private void initCRS(List<DimensionDescriptor> dimensions)
             throws IllegalArgumentException, RuntimeException, IOException, IllegalStateException {
         // from UnidataVariableAdapter
@@ -746,11 +713,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         coordinateReferenceSystem = bbox.getCoordinateReferenceSystem();
     }
 
-    /**
-     * @param cv
-     * @param dimensions
-     * @throws IOException
-     */
+    /** */
     private void initVerticalDomain(CoordinateVariable<?> cv, List<DimensionDescriptor> dimensions)
             throws IOException {
         this.setHasVerticalDomain(true);
@@ -766,11 +729,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
                         null));
     }
 
-    /**
-     * @param cv
-     * @param dimensions
-     * @throws IOException
-     */
+    /** */
     private void initTemporalDomain(CoordinateVariable<?> cv, List<DimensionDescriptor> dimensions)
             throws IOException {
         if (!cv.getType().equals(Date.class)) {
@@ -795,11 +754,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
                         null));
     }
 
-    /**
-     * @param cv
-     * @param dimensions
-     * @throws IOException
-     */
+    /** */
     private void initAdditionalDomain(
             CoordinateVariable<?> cv, List<DimensionDescriptor> dimensions) throws IOException {
         UnidataAdditionalDomain domain;
@@ -838,11 +793,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         this.setHasAdditionalDomains(true);
     }
 
-    /**
-     * @param coordinateReferenceSystem
-     * @throws MismatchedDimensionException
-     * @throws IOException
-     */
+    /** */
     private void initSpatialDomain() throws Exception {
         // SPATIAL DOMAIN
         final UnidataSpatialDomain spatialDomain = new UnidataSpatialDomain();
@@ -958,7 +909,6 @@ public class VariableAdapter extends CoverageSourceDescriptor {
      * Extracts the {@link GridGeometry2D grid geometry} from the unidata variable.
      *
      * @return the {@link GridGeometry2D}.
-     * @throws IOException
      */
     protected GridGeometry2D getGridGeometry() throws IOException {
         int[] low = new int[2];

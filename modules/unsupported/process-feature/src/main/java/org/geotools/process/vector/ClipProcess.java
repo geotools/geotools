@@ -639,9 +639,6 @@ public class ClipProcess implements VectorProcess {
             /**
              * TODO: should we use a spatial index? Would be warranted only if the input has a very
              * large amount of sub-lines
-             *
-             * @param ls
-             * @return
              */
             private LineString getOriginator(LineString ls) {
                 LineString original = null;

@@ -48,11 +48,7 @@ import org.opengis.filter.expression.PropertyName;
 public class CQLExtensionTest {
     private static final String DELIMITER = ";";
 
-    /**
-     * An INCLUDE token is parsed as {@link Filter#INCLUDE}
-     *
-     * @throws Exception
-     */
+    /** An INCLUDE token is parsed as {@link Filter#INCLUDE} */
     @Test
     public void testIncludeFilter() throws Exception {
         Filter filter = CQL.toFilter("INCLUDE");
@@ -68,11 +64,7 @@ public class CQLExtensionTest {
         Assert.assertTrue(Filter.INCLUDE.equals(filter));
     }
 
-    /**
-     * An EXCLUDE token is parsed as {@link Filter#EXCLUDE}
-     *
-     * @throws Exception
-     */
+    /** An EXCLUDE token is parsed as {@link Filter#EXCLUDE} */
     @Test
     public void testExcludeFilter() throws Exception {
         Filter filter = CQL.toFilter("EXCLUDE");
@@ -101,8 +93,6 @@ public class CQLExtensionTest {
      * </pre>
      *
      * <p>
-     *
-     * @throws Exception
      */
     @Test
     public void testSequenceOfSearchConditionsWithOneFilter() throws Exception {
@@ -132,8 +122,6 @@ public class CQLExtensionTest {
      * </pre>
      *
      * <p>Sample: attr1 > 5;attr2 between 1 and 7;attr3
-     *
-     * @throws Exception
      */
     @Test
     public void testSequenceOfSearchConditionsWithManyFilters() throws Exception {
@@ -170,11 +158,7 @@ public class CQLExtensionTest {
         Assert.assertEquals(valueWithDelimiter, ((Literal) equals.getExpression2()).getValue());
     }
 
-    /**
-     * An empty filter int the constraints list shall be parsed as {@link Filter#INCLUDE}
-     *
-     * @throws Exception
-     */
+    /** An empty filter int the constraints list shall be parsed as {@link Filter#INCLUDE} */
     @Test
     public void testParseFilterListWithEmptyFilter() throws Exception {
         String valueWithDelimiter = "text" + DELIMITER + "with" + DELIMITER + "delimiter";
@@ -217,11 +201,7 @@ public class CQLExtensionTest {
         Assert.assertTrue(filters.get(1) instanceof IncludeFilter);
         Assert.assertTrue(filters.get(2) instanceof PropertyIsEqualTo);
     }
-    /**
-     * Tests null factory as parameter.
-     *
-     * @throws Exception
-     */
+    /** Tests null factory as parameter. */
     @Test
     public void testNullFilterFactory() throws Exception {
 
@@ -234,8 +214,6 @@ public class CQLExtensionTest {
      * Test Function Expression
      *
      * <p>Note: this solves the bug GEOT-1167
-     *
-     * @throws Exception
      */
     @Test
     public void testFuncitionExpression() throws Exception {
@@ -304,8 +282,6 @@ public class CQLExtensionTest {
      *   |   &lt;function&gt;           [*]
      *   |   &lt;binary expression&gt;  [*]
      * </pre>
-     *
-     * @throws Exception
      */
     @Test
     public void testFunctionComposition() throws Exception {
@@ -350,11 +326,7 @@ public class CQLExtensionTest {
         Assert.assertEquals(".", ((Literal) arg2).getValue());
     }
 
-    /**
-     * complex case Created to analyze http://jira.codehaus.org/browse/GEOT-1655
-     *
-     * @throws Exception
-     */
+    /** complex case Created to analyze http://jira.codehaus.org/browse/GEOT-1655 */
     @Test
     public void testFunctionCompositionComplexCase() throws Exception {
 

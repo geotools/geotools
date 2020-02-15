@@ -118,10 +118,6 @@ public interface PolygonSymbolizer extends org.opengis.style.PolygonSymbolizer, 
      */
     public Displacement getDisplacement();
 
-    /**
-     * Provide x / y offset in pixels used to crate shadows.
-     *
-     * @param displacement
-     */
+    /** Provide x / y offset in pixels used to crate shadows. */
     public void setDisplacement(org.opengis.style.Displacement displacement);
 }

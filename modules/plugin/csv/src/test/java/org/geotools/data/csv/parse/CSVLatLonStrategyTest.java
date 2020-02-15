@@ -117,10 +117,7 @@ public class CSVLatLonStrategyTest {
         checkAxisOrder(input);
     }
 
-    /**
-     * @param input
-     * @throws IOException
-     */
+    /** */
     private void checkAxisOrder(String input) throws IOException {
         CSVFileState fileState = new CSVFileState(input, "bar");
         CSVLatLonStrategy strategy = new CSVLatLonStrategy(fileState);

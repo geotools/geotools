@@ -39,8 +39,6 @@ public class StyleExamples {
     /**
      * This example is limited to just the gt-opengis style interfaces which are immutable once
      * created.
-     *
-     * @throws Exception
      */
     private void styleFactoryExample() throws Exception {
         // styleFactoryExample start

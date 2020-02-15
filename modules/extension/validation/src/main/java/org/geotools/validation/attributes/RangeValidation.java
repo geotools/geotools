@@ -71,9 +71,6 @@ public class RangeValidation extends DefaultFeatureValidation {
      *
      * <p>Description ...
      *
-     * @param feature
-     * @param type
-     * @param results
      * @see org.geotools.validation.FeatureValidation#validate(org.geotools.feature.Feature,
      *     org.geotools.feature.FeatureType, org.geotools.validation.ValidationResults)
      */
@@ -146,8 +143,6 @@ public class RangeValidation extends DefaultFeatureValidation {
      * setMax purpose.
      *
      * <p>Description ...
-     *
-     * @param i
      */
     public void setMax(int i) {
         max = i;
@@ -157,8 +152,6 @@ public class RangeValidation extends DefaultFeatureValidation {
      * setMin purpose.
      *
      * <p>Description ...
-     *
-     * @param i
      */
     public void setMin(int i) {
         min = i;
@@ -183,11 +176,7 @@ public class RangeValidation extends DefaultFeatureValidation {
         return attribute;
     }
 
-    /**
-     * XPATH expression used to locate attribute
-     *
-     * @param xpath
-     */
+    /** XPATH expression used to locate attribute */
     public void setAttribute(String xpath) {
         attribute = xpath;
     }

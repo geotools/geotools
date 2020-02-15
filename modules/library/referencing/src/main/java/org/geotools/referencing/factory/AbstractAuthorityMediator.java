@@ -194,11 +194,7 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
         hints.put(Hints.COORDINATE_OPERATION_AUTHORITY_FACTORY, this);
     }
 
-    /**
-     * True if this mediator is currently connected to one or more workers.
-     *
-     * @return
-     */
+    /** True if this mediator is currently connected to one or more workers. */
     public boolean isConnected() {
         return (workers.getNumActive() + workers.getNumIdle()) > 0;
     }

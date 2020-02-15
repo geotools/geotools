@@ -258,12 +258,7 @@ public class ElementHandlerImpl extends HandlerImpl implements ElementHandler {
         parent.getContext().removeChildContainer(getContext());
     }
 
-    /**
-     * Checks if a certain attribute is nil
-     *
-     * @param element
-     * @return
-     */
+    /** Checks if a certain attribute is nil */
     private boolean isNil(ElementImpl element) {
         for (AttributeInstance att : element.getAttributes()) {
             if ("nil".equals(att.getName())

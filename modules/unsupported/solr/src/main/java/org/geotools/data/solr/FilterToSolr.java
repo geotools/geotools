@@ -120,9 +120,7 @@ public class FilterToSolr implements FilterVisitor {
     /**
      * A single call method to encode filter to SOLR query
      *
-     * @param filter
      * @return a string representing the filter encoded to SOLR.
-     * @throws Exception
      */
     public String encodeToString(Filter filter) throws Exception {
         StringWriter out = new StringWriter();

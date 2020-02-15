@@ -435,13 +435,7 @@ public class Drawer {
         return new java.awt.Point((int) p.getX(), (int) p.getY());
     }
 
-    /**
-     * TODO summary sentence for worldToScreenTransform ...
-     *
-     * @param bounds
-     * @param rectangle
-     * @return
-     */
+    /** TODO summary sentence for worldToScreenTransform ... */
     public static AffineTransform worldToScreenTransform(Envelope mapExtent, Rectangle screenSize) {
         double scaleX = screenSize.getWidth() / mapExtent.getWidth();
         double scaleY = screenSize.getHeight() / mapExtent.getHeight();
@@ -469,7 +463,6 @@ public class Drawer {
      * </ul>
      *
      * @param name namespace.name
-     * @param spec
      * @return Generated SimpleFeatureType
      */
     public SimpleFeatureType schema(String name, String spec) {
@@ -544,7 +537,6 @@ public class Drawer {
     /**
      * Simple feature with one attribute called "point".
      *
-     * @param point
      * @return SimpleFeature with a default geometry and no attribtues
      */
     public SimpleFeature feature(Point point) {
@@ -560,7 +552,6 @@ public class Drawer {
     /**
      * Simple Feature with a default geometry and no attribtues.
      *
-     * @param line
      * @return Feature with a default geometry and no attribtues
      */
     public SimpleFeature feature(LineString line) {
@@ -577,7 +568,6 @@ public class Drawer {
     /**
      * Simple Feature with a default geometry and no attribtues.
      *
-     * @param polygon
      * @return Feature with a default geometry and no attribtues
      */
     public SimpleFeature feature(Polygon polygon) {
@@ -594,7 +584,6 @@ public class Drawer {
     /**
      * Simple Feature with a default geometry and no attribtues.
      *
-     * @param multipoint
      * @return Feature with a default geometry and no attribtues
      */
     public SimpleFeature feature(MultiPoint multipoint) {
@@ -611,7 +600,6 @@ public class Drawer {
     /**
      * Simple Feature with a default geometry and no attribtues.
      *
-     * @param multilinestring
      * @return Feature with a default geometry and no attribtues
      */
     public SimpleFeature feature(MultiLineString multilinestring) {
@@ -629,7 +617,6 @@ public class Drawer {
     /**
      * Simple Feature with a default geometry and no attribtues.
      *
-     * @param multipolygon
      * @return Feature with a default geometry and no attribtues
      */
     public SimpleFeature feature(MultiPolygon multipolygon) {
@@ -648,8 +635,6 @@ public class Drawer {
     /**
      * Generate Point from two dimensional ordinates
      *
-     * @param x
-     * @param y
      * @return Point
      */
     public Point point(int x, int y) {
@@ -658,7 +643,6 @@ public class Drawer {
     /**
      * Generate LineStrings from two dimensional ordinates
      *
-     * @param xy
      * @return LineStirng
      */
     public LineString line(int[] xy) {
@@ -674,7 +658,6 @@ public class Drawer {
     /**
      * Generate a MultiLineString from two dimensional ordinates
      *
-     * @param xy
      * @return MultiLineStirng
      */
     public MultiLineString lines(int[][] xy) {

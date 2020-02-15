@@ -87,12 +87,7 @@ public abstract class GranuleCatalog {
 
     public abstract String[] getTypeNames();
 
-    /**
-     * Merges the wrapper hints with the query ones, making sure not to overwrite the query ones
-     *
-     * @param q
-     * @return
-     */
+    /** Merges the wrapper hints with the query ones, making sure not to overwrite the query ones */
     protected Query mergeHints(Query q) {
         if (this.hints == null || this.hints.isEmpty()) {
             return q;
@@ -120,9 +115,6 @@ public abstract class GranuleCatalog {
      * Returns the footprint for the given granule. Mind, when applying insets we might have the
      * case of the geometry being empty (negative buffer eroded it fully), in that case the granule
      * must not be loaded
-     *
-     * @param sf
-     * @return
      */
     protected MultiLevelROI getGranuleFootprint(SimpleFeature sf) {
         if (multiScaleROIProvider != null) {
@@ -136,13 +128,7 @@ public abstract class GranuleCatalog {
         return null;
     }
 
-    /**
-     * Returns the list of footprint files for the given granule
-     *
-     * @param sf
-     * @return
-     * @throws IOException
-     */
+    /** Returns the list of footprint files for the given granule */
     public List<File> getFootprintFiles(SimpleFeature sf) throws IOException {
         if (multiScaleROIProvider != null) {
             return multiScaleROIProvider.getFootprintFiles(sf);

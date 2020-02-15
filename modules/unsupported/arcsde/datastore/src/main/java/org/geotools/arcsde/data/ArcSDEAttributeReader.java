@@ -99,7 +99,6 @@ final class ArcSDEAttributeReader implements AttributeReader {
      * @param geometryFactory the JTS GeometryFactory to use when creating Feature geometries
      * @param session the session the <code>query</code> is being ran over. This attribute reader
      *     will close it only if it does not have a transaction in progress.
-     * @throws IOException
      */
     @SuppressWarnings("unchecked")
     public ArcSDEAttributeReader(
@@ -191,11 +190,7 @@ final class ArcSDEAttributeReader implements AttributeReader {
         return hasNext;
     }
 
-    /**
-     * Retrieves the next row, or throws a DataSourceException if not more rows are available.
-     *
-     * @throws IOException
-     */
+    /** Retrieves the next row, or throws a DataSourceException if not more rows are available. */
     public void next() throws IOException {
         if (this.currentRow == null) {
             throw new DataSourceException("There are no more rows");
@@ -205,8 +200,6 @@ final class ArcSDEAttributeReader implements AttributeReader {
     }
 
     /**
-     * @param index
-     * @return
      * @throws IOException never, since the feature retrieve was done in <code>hasNext()</code>
      * @throws ArrayIndexOutOfBoundsException if <code>index</code> is outside the bounds of the
      *     schema attribute's count

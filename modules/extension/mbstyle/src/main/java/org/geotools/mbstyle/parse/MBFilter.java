@@ -267,7 +267,6 @@ public class MBFilter {
     /**
      * Translate from json "Point", "LineString", and "Polygon".
      *
-     * @param jsonText
      * @return translate from jsonText
      */
     private SemanticType translateSemanticType(String jsonText) {

@@ -33,10 +33,6 @@ public class SortedFeatureIterator implements SimpleFeatureIterator {
     /**
      * Checks if the schema and the sortBy are suitable for merge/sort. All attributes need to be
      * {@link Serializable}, all sorting attributes need to be {@link Comparable}
-     *
-     * @param schema
-     * @param sortBy
-     * @return
      */
     public static final boolean canSort(SimpleFeatureType schema, SortBy[] sortBy) {
         return MergeSortDumper.canSort(schema, sortBy);
@@ -50,7 +46,6 @@ public class SortedFeatureIterator implements SimpleFeatureIterator {
      * @param sortBy The sorting directives
      * @param maxFeatures The maximum number of features to keep in memory, or a negative number to
      *     use the system default
-     * @throws IOException
      */
     @SuppressWarnings("PMD.CloseResource") // kept as field
     public SortedFeatureIterator(

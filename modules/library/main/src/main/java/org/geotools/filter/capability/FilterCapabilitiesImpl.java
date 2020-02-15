@@ -130,8 +130,6 @@ public class FilterCapabilitiesImpl implements FilterCapabilities {
      *   <li>FilterCapabilities.VERSION_100
      *   <li>FilterCapabilities.VERSION_110
      * </ul>
-     *
-     * @param version
      */
     public void setVersion(String version) {
         this.version = version;

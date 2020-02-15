@@ -600,7 +600,6 @@ public enum ContrastEnhancementType {
      * @param maximum maximum valid value of the central range
      * @param minValue minValue to be returned from values outside (below) the central range
      * @param maxValue maxValue to be returned from values outside (above) the central range
-     * @return
      */
     private static PiecewiseTransform1D<DefaultPiecewiseTransform1DElement>
             generateClampingPiecewise(
@@ -644,12 +643,6 @@ public enum ContrastEnhancementType {
     /**
      * Create a LookupTable for passthrough mapping except for values outside [min,max] range which
      * should be mapped to newMin, newMax respectively.
-     *
-     * @param min
-     * @param max
-     * @param newMin
-     * @param newMax
-     * @return
      */
     private static byte[] createClampingLookupTableByte(
             double min, double max, byte newMin, byte newMax) {
@@ -660,12 +653,7 @@ public enum ContrastEnhancementType {
         return lut;
     }
 
-    /**
-     * Return the max Value for the specified dataType
-     *
-     * @param dataType
-     * @return
-     */
+    /** Return the max Value for the specified dataType */
     private static double getMaxValue(int dataType) {
         switch (dataType) {
             case DataBuffer.TYPE_BYTE:
@@ -684,13 +672,7 @@ public enum ContrastEnhancementType {
         return Double.NaN;
     }
 
-    /**
-     * Simple utility method to check Double values equality.
-     *
-     * @param a
-     * @param b
-     * @return
-     */
+    /** Simple utility method to check Double values equality. */
     public static boolean areEqual(double a, double b) {
         if (!Double.isNaN(a) && !Double.isNaN(b)) {
             return Math.abs(a - b) < DELTA;
@@ -698,12 +680,7 @@ public enum ContrastEnhancementType {
         return false;
     }
 
-    /**
-     * Generate a Linear Byte LookupTable to map from [min,max] to [0, 255]
-     *
-     * @param params
-     * @return
-     */
+    /** Generate a Linear Byte LookupTable to map from [min,max] to [0, 255] */
     static LookupTable generateLinearByteLookupTable(Map<String, Object> params) {
         Utilities.ensureNonNull("params", params);
         double min = (double) params.get(KEY_MIN);
@@ -723,11 +700,6 @@ public enum ContrastEnhancementType {
     /**
      * Main processing methods to be implemented by specific contrast enhancement algorithm to
      * return an enhanced image.
-     *
-     * @param inputWorker
-     * @param hints
-     * @param processParams
-     * @return
      */
     abstract RenderedImage process(
             ImageWorker inputWorker, Hints hints, Map<String, Expression> parameters);
@@ -736,7 +708,6 @@ public enum ContrastEnhancementType {
      * Create a byte LookupTable, specific for optimized byte cases.
      *
      * @param params Parameters (when required) to be used by the specific implementation.
-     * @return
      */
     LookupTable createByteLookupTable(Map<String, Object> params) {
         throw new UnsupportedOperationException();
@@ -750,7 +721,6 @@ public enum ContrastEnhancementType {
      * @param params Parameters (when required) to be used by specific implementation. Different
      *     algorithm may requires different parameters. As an instance, some implementations
      *     requires min and max values whilst some other may require an Histogram.
-     * @return
      */
     PiecewiseTransform1D<DefaultPiecewiseTransform1DElement> generatePiecewise(
             Map<String, Object> params) {
@@ -801,14 +771,7 @@ public enum ContrastEnhancementType {
         return LookupTableFactory.create(lut, DataBuffer.TYPE_BYTE);
     }
 
-    /**
-     * Generate piecewise transformation for gamma correction
-     *
-     * @param minimum
-     * @param maximum
-     * @param gammaValue
-     * @return
-     */
+    /** Generate piecewise transformation for gamma correction */
     public static PiecewiseTransform1D<DefaultPiecewiseTransform1DElement>
             generateGammaCorrectedPiecewise(
                     final double minimum, final double maximum, final double gammaValue) {
@@ -841,13 +804,7 @@ public enum ContrastEnhancementType {
                 new DefaultPiecewiseTransform1DElement[] {mainElement}, 0);
     }
 
-    /**
-     * Utility method setting up a Parameters Map containing minimum and maximum values.
-     *
-     * @param minData
-     * @param maxData
-     * @return
-     */
+    /** Utility method setting up a Parameters Map containing minimum and maximum values. */
     private static Map<String, Object> setMinMaxParams(double minData, double maxData) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put(KEY_MIN, minData);
@@ -855,11 +812,7 @@ public enum ContrastEnhancementType {
         return params;
     }
 
-    /**
-     * Check the parameters map isn't null and contains valid entries
-     *
-     * @param parameters
-     */
+    /** Check the parameters map isn't null and contains valid entries */
     private static void checkParameters(
             Map<String, Expression> parameters, String parameter1, String parameter2) {
         if (parameters == null) {
@@ -876,9 +829,6 @@ public enum ContrastEnhancementType {
     /**
      * Return a proper {@link ContrastEnhancementType} instance depending on the provided {@link
      * AbstractContrastMethodStrategy}.
-     *
-     * @param method
-     * @return
      */
     public static ContrastEnhancementType getType(AbstractContrastMethodStrategy method) {
         if (method instanceof NormalizeContrastMethodStrategy) {
@@ -906,12 +856,7 @@ public enum ContrastEnhancementType {
         }
     }
 
-    /**
-     * Parse the algorithm expression
-     *
-     * @param algorithm
-     * @return
-     */
+    /** Parse the algorithm expression */
     private static String parseAlgorithm(Expression algorithm) {
         if (algorithm != null) {
             return algorithm.evaluate(null, String.class);

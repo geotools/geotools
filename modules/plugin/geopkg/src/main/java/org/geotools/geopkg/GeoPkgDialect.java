@@ -167,12 +167,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         }
     }
 
-    /**
-     * @param bytes
-     * @param factory
-     * @return
-     * @throws IOException
-     */
+    /** */
     private Geometry geometry(
             Class geometryType, byte[] bytes, GeometryFactory factory, Hints hints)
             throws IOException {
@@ -568,10 +563,6 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
 
     /**
      * Checks if the filter uses a single spatial attribute, and such spatial attribute is indexed
-     *
-     * @param filter
-     * @param schema
-     * @return
      */
     private GeometryDescriptor simpleSpatialSearch(Filter filter, SimpleFeatureType schema) {
         FilterAttributeExtractor attributeExtractor = new FilterAttributeExtractor();

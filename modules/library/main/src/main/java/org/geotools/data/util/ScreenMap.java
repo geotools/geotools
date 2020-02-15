@@ -79,11 +79,7 @@ public class ScreenMap {
         this.mt = mt;
     }
 
-    /**
-     * Returns the bitfield, azyly instantiating it as needed
-     *
-     * @return
-     */
+    /** Returns the bitfield, azyly instantiating it as needed */
     private BitFieldMatrix getBitField() {
         if (this.bitfield == null) {
             this.bitfield = new BitFieldMatrix();
@@ -159,14 +155,6 @@ public class ScreenMap {
     /**
      * Returns geometry suitable for rendering the pixel that has just been occupied. The geometry
      * is designed to actually fill the pixel
-     *
-     * @param minx
-     * @param miny
-     * @param maxx
-     * @param maxy
-     * @param geometryFactory
-     * @param geometryType
-     * @return
      */
     public Geometry getSimplifiedShape(Geometry geometry) {
         Envelope envelope = geometry.getEnvelopeInternal();
@@ -182,14 +170,6 @@ public class ScreenMap {
     /**
      * Returns geometry suitable for rendering the pixel that has just been occupied. The geometry
      * is designed to actually fill the pixel
-     *
-     * @param minx
-     * @param miny
-     * @param maxx
-     * @param maxy
-     * @param geometryFactory
-     * @param geometryType
-     * @return
      */
     public Geometry getSimplifiedShape(
             double minx,

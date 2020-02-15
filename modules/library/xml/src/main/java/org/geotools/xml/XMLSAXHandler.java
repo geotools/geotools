@@ -130,8 +130,6 @@ public class XMLSAXHandler extends DefaultHandler {
      * This contructor is intended to create an XMLSAXHandler to be used when parsing an XML
      * instance document. The instance document's uri is also be provided, as this will allow the
      * parser to resolve relative uri's.
-     *
-     * @param intendedDocument
      */
     public XMLSAXHandler(URI intendedDocument, Map hints) {
         instanceDocument = intendedDocument;
@@ -187,10 +185,6 @@ public class XMLSAXHandler extends DefaultHandler {
     /**
      * Implementation of characters.
      *
-     * @param ch
-     * @param start
-     * @param length
-     * @throws SAXException
      * @see org.xml.sax.ContentHandler#characters(char[], int, int)
      */
     public void characters(char[] ch, int start, int length) throws SAXException {
@@ -233,10 +227,6 @@ public class XMLSAXHandler extends DefaultHandler {
     /**
      * Implementation of endElement.
      *
-     * @param namespaceURI
-     * @param localName
-     * @param qName
-     * @throws SAXException
      * @see org.xml.sax.ContentHandler#endElement(java.lang.String, java.lang.String,
      *     java.lang.String)
      */
@@ -302,11 +292,6 @@ public class XMLSAXHandler extends DefaultHandler {
     /**
      * Implementation of startElement.
      *
-     * @param namespaceURI
-     * @param localName
-     * @param qName
-     * @param atts
-     * @throws SAXException
      * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String,
      *     java.lang.String, org.xml.sax.Attributes)
      */
@@ -435,11 +420,7 @@ public class XMLSAXHandler extends DefaultHandler {
         }
     }
 
-    /**
-     * Used to set the logger level for all XMLSAXHandlers
-     *
-     * @param l
-     */
+    /** Used to set the logger level for all XMLSAXHandlers */
     public static void setLogLevel(Level l) {
         level = l;
         logger.setLevel(l);
@@ -452,7 +433,6 @@ public class XMLSAXHandler extends DefaultHandler {
      * <p>Completes the post-processing phase, and returns the value from the parse ...
      *
      * @return Object parsed
-     * @throws SAXException
      * @see DocumentHandler#getValue()
      */
     public Object getDocument() throws SAXException {
@@ -462,7 +442,6 @@ public class XMLSAXHandler extends DefaultHandler {
     /**
      * Implementation of error.
      *
-     * @param exception
      * @see org.xml.sax.ErrorHandler#error(org.xml.sax.SAXParseException)
      */
     public void error(SAXParseException exception) {
@@ -473,8 +452,6 @@ public class XMLSAXHandler extends DefaultHandler {
     /**
      * Implementation of fatalError.
      *
-     * @param exception
-     * @throws SAXException
      * @see org.xml.sax.ErrorHandler#fatalError(org.xml.sax.SAXParseException)
      */
     public void fatalError(SAXParseException exception) throws SAXException {
@@ -488,7 +465,6 @@ public class XMLSAXHandler extends DefaultHandler {
     /**
      * Implementation of warning.
      *
-     * @param exception
      * @see org.xml.sax.ErrorHandler#warning(org.xml.sax.SAXParseException)
      */
     public void warning(SAXParseException exception) {

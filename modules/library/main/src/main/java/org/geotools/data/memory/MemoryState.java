@@ -24,11 +24,7 @@ import org.geotools.data.store.ContentState;
  * @author Jody Garnett (Boundless)
  */
 public class MemoryState extends ContentState {
-    /**
-     * State for MemoryDataStore providing FeatureType and stored features.
-     *
-     * @param entry
-     */
+    /** State for MemoryDataStore providing FeatureType and stored features. */
     public MemoryState(MemoryEntry entry) {
         super(entry);
     }

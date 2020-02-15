@@ -32,10 +32,7 @@ import org.locationtech.jts.geom.Point;
  */
 final class MultiPointBuilder extends GeometryBuilder {
 
-    /**
-     * @param statement
-     * @param resultStack
-     */
+    /** */
     public MultiPointBuilder(String statement, BuildResultStack resultStack) {
         super(statement, resultStack);
     }

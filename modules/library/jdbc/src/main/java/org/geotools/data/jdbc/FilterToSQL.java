@@ -298,9 +298,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * <p>StringWriter out = new StringWriter(); new FilterToSQL(out).encode(filter);
      * out.getBuffer().toString();
      *
-     * @param filter
      * @return a string representing the filter encoded to SQL.
-     * @throws FilterToSQLException
      */
     public String encodeToString(Filter filter) throws FilterToSQLException {
         StringWriter out = new StringWriter();
@@ -328,9 +326,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * <p>StringWriter out = new StringWriter(); new FilterToSQL(out).encode(filter);
      * out.getBuffer().toString();
      *
-     * @param filter
      * @return a string representing the filter encoded to SQL.
-     * @throws FilterToSQLException
      */
     public String encodeToString(Expression expression) throws FilterToSQLException {
         StringWriter out = new StringWriter();
@@ -343,18 +339,12 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * Sets the featuretype the encoder is encoding sql for.
      *
      * <p>This is used for context for attribute expressions when encoding to sql.
-     *
-     * @param featureType
      */
     public void setFeatureType(SimpleFeatureType featureType) {
         this.featureType = featureType;
     }
 
-    /**
-     * Returns the feature type set in this encoder, if any
-     *
-     * @return
-     */
+    /** Returns the feature type set in this encoder, if any */
     public SimpleFeatureType getFeatureType() {
         return this.featureType;
     }
@@ -881,13 +871,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         }
     }
 
-    /**
-     * Writes out an expression, wrapping it in parenthesis if it's a binary one
-     *
-     * @param exp
-     * @param context
-     * @throws IOException
-     */
+    /** Writes out an expression, wrapping it in parenthesis if it's a binary one */
     protected void writeBinaryExpressionMember(Expression exp, Class context) throws IOException {
         if (context != null && isBinaryExpression(exp)) {
             writeBinaryExpression(exp, context);
@@ -903,7 +887,6 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * in geotools are free to use a string where a number is needed due to the on the fly
      * conversion, here we are concerned only with types that are a reliable reference).
      *
-     * @param expression
      * @return The expression return type, or null if cannot be computed
      */
     public Class getExpressionType(Expression expression) {
@@ -1423,10 +1406,6 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     /**
      * Gives the opportunity to subclasses to force the property to the desired type. By default it
      * simply writes out the property as-is (the property must be already escaped).
-     *
-     * @param encodedProperty
-     * @param target
-     * @throws IOException
      */
     protected String cast(String encodedProperty, Class target) throws IOException {
         return encodedProperty;
@@ -1526,9 +1505,6 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * Writes out a non null, non geometry literal. The base class properly handles null, numeric
      * and booleans (true|false), and turns everything else into a string. Subclasses are expected
      * to override this shall they need a different treatment (e.g. for dates)
-     *
-     * @param literal
-     * @throws IOException
      */
     protected void writeLiteral(Object literal) throws IOException {
         if (literal == null) {
@@ -1575,8 +1551,6 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     /**
      * Subclasses must implement this method in order to encode geometry filters according to the
      * specific database implementation
-     *
-     * @param expression
      */
     protected void visitLiteralGeometry(Literal expression) throws IOException {
         throw new RuntimeException(
@@ -1693,12 +1667,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         return extraData;
     }
 
-    /**
-     * Encodes a "in" function (as recognized by {@link InFunction#isInFunction(Expression)}
-     *
-     * @param function
-     * @param extraData
-     */
+    /** Encodes a "in" function (as recognized by {@link InFunction#isInFunction(Expression)} */
     protected void visitInFunction(
             Function function, boolean encodeAsExpression, boolean negate, Object extraData) {
         try {
@@ -1752,8 +1721,6 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     /**
      * Returns the n-th parameter of a function, throwing an exception if the parameter is not there
      * and has been marked as mandatory
-     *
-     * @return
      */
     protected Expression getParameter(Function function, int idx, boolean mandatory) {
         final List<Expression> params = function.getParameters();
@@ -1772,12 +1739,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         return params.get(idx);
     }
 
-    /**
-     * Maps the function to the native database function name
-     *
-     * @param function
-     * @return
-     */
+    /** Maps the function to the native database function name */
     protected String getFunctionName(Function function) {
         return function.getName();
     }
@@ -1877,8 +1839,6 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * Surrounds a name with the SQL escape string.
      *
      * <p>If the name contains the SQL escape string, the SQL escape string is duplicated.
-     *
-     * @param name
      */
     public String escapeName(String name) {
         if (sqlNameEscape.isEmpty()) return name;
@@ -1932,8 +1892,6 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     /**
      * Converts the distance of the operator in meters, or returns the current value if there is no
      * units distance
-     *
-     * @param operator
      */
     protected double getDistanceInMeters(DistanceBufferOperator operator) {
         double distance = operator.getDistance();
@@ -1951,8 +1909,6 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * Rough evaluation of distance in the units of the current SRID, assuming that the SRID maps to
      * a known EPSG code. Will use a rather imprecise transformation for distances over degrees, but
      * better than nothing.
-     *
-     * @param operator
      */
     protected double getDistanceInNativeUnits(DistanceBufferOperator operator) {
         if (currentSRID == null) {
@@ -1992,12 +1948,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         }
     }
 
-    /**
-     * Returns the center of the reference geometry of the distance buffer operator, in case
-     *
-     * @param operator
-     * @return
-     */
+    /** Returns the center of the reference geometry of the distance buffer operator, in case */
     protected Coordinate getReferenceGeometryCentroid(DistanceBufferOperator operator) {
         Geometry geom = operator.getExpression1().evaluate(null, Geometry.class);
         if (geom == null) {

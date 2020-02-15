@@ -67,7 +67,6 @@ class PerceptualDiff {
      * @param image2 A png/tiff file
      * @param threshold The number of pixels to be visually different in order to consider the test
      *     a failure, if negative the PerceptualDiff default value will be used
-     * @return
      */
     public static Difference compareImages(File image1, File image2, int threshold) {
         if (!AVAILABLE) {
@@ -102,14 +101,7 @@ class PerceptualDiff {
         }
     }
 
-    /**
-     * Runs the specified command and returns the output as a string
-     *
-     * @param cmd
-     * @return
-     * @throws IOException
-     * @throws InterruptedException
-     */
+    /** Runs the specified command and returns the output as a string */
     static String run(List<String> cmd) throws IOException, InterruptedException {
         // run the process and grab the output for error reporting purposes
         ProcessBuilder builder = new ProcessBuilder(cmd);

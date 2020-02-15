@@ -57,9 +57,6 @@ public class SessionPoolTest {
     /**
      * loads {@code test-data/testparams.properties} to get connection parameters and sets up a
      * ArcSDEConnectionConfig with them for tests to set up SessionPool's as required
-     *
-     * @throws Exception
-     * @throws IllegalStateException
      */
     @Before
     public void setUp() throws Exception {
@@ -96,11 +93,7 @@ public class SessionPoolTest {
         }
     }
 
-    /**
-     * closes the connection pool if it's still open
-     *
-     * @throws Exception
-     */
+    /** closes the connection pool if it's still open */
     @After
     public void tearDown() throws Exception {
         connectionConfig = null;
@@ -118,7 +111,6 @@ public class SessionPoolTest {
      *
      * @param connParams a set of connection parameters from where the new SessionPool will connect
      *     to the SDE database and create connections
-     * @return
      * @throws IllegalArgumentException if the set of connection parameters are not propperly set
      * @throws NullPointerException if <code>connParams</code> is null
      * @throws IOException if the pool can't create the connections with the passed arguments (i.e.
@@ -143,8 +135,6 @@ public class SessionPoolTest {
     /**
      * tests that a connection to a live ArcSDE database can be established with the parameters
      * defined int testparams.properties, and a SessionPool can be properly setted up
-     *
-     * @throws IOException
      */
     @Test
     public void testConnect() throws IOException {
@@ -175,12 +165,7 @@ public class SessionPoolTest {
         }
     }
 
-    /**
-     * Checks that after creation the pool has the specified initial number of connections.
-     *
-     * @throws IOException
-     * @throws UnavailableConnectionException
-     */
+    /** Checks that after creation the pool has the specified initial number of connections. */
     @Test
     @Ignore // min connections may no longer be respected and that'd be ok
     public void testInitialCount() throws IOException, UnavailableConnectionException {
@@ -208,9 +193,6 @@ public class SessionPoolTest {
     /**
      * Tests that the pool creation fails if a wrong set of parameters is passed (i.e.
      * maxConnections is lower than minConnections)
-     *
-     * @throws IOException
-     * @throws UnavailableConnectionException
      */
     @Test
     public void testChecksLimits() throws IOException, UnavailableConnectionException {
@@ -240,8 +222,6 @@ public class SessionPoolTest {
     /**
      * tests that no more than pool.maxConnections connections can be created, and once one
      * connection is freed, it is ready to be used again.
-     *
-     * @throws Exception
      */
     @Test
     public void testMaxConnections() throws Exception {
@@ -283,11 +263,7 @@ public class SessionPoolTest {
         assertEquals(expected, session);
     }
 
-    /**
-     * a null database name should not be an impediment to create the pool
-     *
-     * @throws IOException
-     */
+    /** a null database name should not be an impediment to create the pool */
     @Test
     public void testCreateWithNullDBName() throws IOException {
         Map<String, Serializable> params =
@@ -296,11 +272,7 @@ public class SessionPoolTest {
         createPool(params);
     }
 
-    /**
-     * an empty database name should not be an impediment to create the pool
-     *
-     * @throws IOException
-     */
+    /** an empty database name should not be an impediment to create the pool */
     @Test
     public void testCreateWithEmptyDBName() throws IOException {
         Map<String, Serializable> params =

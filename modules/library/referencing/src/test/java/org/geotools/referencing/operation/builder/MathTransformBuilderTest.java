@@ -187,11 +187,7 @@ public final class MathTransformBuilderTest {
             fail(e.getMessage());
         }
     }
-    /**
-     * Test for MismatchedSizeException.
-     *
-     * @throws TransformException
-     */
+    /** Test for MismatchedSizeException. */
     @Test(expected = IllegalArgumentException.class)
     public void testMismatchedSizeException() throws TransformException {
         // The exception should be thrown when the number of points is less than necessary
@@ -199,11 +195,7 @@ public final class MathTransformBuilderTest {
         new AffineTransformBuilder(pts);
     }
 
-    /**
-     * Test for MissingInfoException.
-     *
-     * @throws FactoryException
-     */
+    /** Test for MissingInfoException. */
     @Test(expected = MissingInfoException.class)
     public void testMissingInfoException() throws FactoryException {
         // The exception should be thrown when the number of points is less than necessary

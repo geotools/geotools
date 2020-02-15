@@ -36,9 +36,7 @@ public class MBFilterTest {
     /**
      * Parse JSONArray ' rather than " for faster test case writing.
      *
-     * @param json
      * @return parsed JSONArray
-     * @throws ParseException
      */
     private JSONArray array(String json) throws ParseException {
         JSONParser parser = new JSONParser();

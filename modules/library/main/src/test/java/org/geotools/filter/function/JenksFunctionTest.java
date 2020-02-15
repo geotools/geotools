@@ -113,8 +113,6 @@ public class JenksFunctionTest extends FunctionTestSupport {
      *
      * <p>Creates a feature collection with five features 1-5. Then uses the quantile function to
      * put these features in 5 bins. Each bin should have a single feature.
-     *
-     * @throws Exception
      */
     public void testSingleBin() throws Exception {
 

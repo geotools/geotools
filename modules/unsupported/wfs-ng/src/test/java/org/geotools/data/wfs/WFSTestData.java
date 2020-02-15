@@ -173,9 +173,6 @@ public class WFSTestData {
      *
      * @param capabilitiesFileName the relative path under {@code test-data} for the file containing
      *     the WFS_Capabilities document.
-     * @throws IOException
-     * @throws FileNotFoundException
-     * @throws ServiceException
      */
     public static TestWFSClient createTestProtocol(String capabilitiesFileName)
             throws ServiceException, FileNotFoundException, IOException {
@@ -187,10 +184,6 @@ public class WFSTestData {
      * capabilities object from the test xml file pointed out by {@code capabilitiesURL}
      *
      * <p>Tests methods call this one to set up a protocolHandler to test
-     *
-     * @param capabilitiesURL
-     * @throws IOException
-     * @throws ServiceException
      */
     public static TestWFSClient createTestProtocol(URL capabilitiesURL)
             throws ServiceException, IOException {
@@ -205,9 +198,6 @@ public class WFSTestData {
      *
      * @param capabilitiesFileName the relative path under {@code test-data} for the file containing
      *     the WFS_Capabilities document.
-     * @throws IOException
-     * @throws FileNotFoundException
-     * @throws ServiceException
      */
     public static TestWFSClient createTestProtocol(String capabilitiesFileName, HTTPClient http)
             throws ServiceException, FileNotFoundException, IOException {
@@ -219,10 +209,6 @@ public class WFSTestData {
      * capabilities object from the test xml file pointed out by {@code capabilitiesURL}
      *
      * <p>Tests methods call this one to set up a protocolHandler to test
-     *
-     * @param capabilitiesURL
-     * @throws IOException
-     * @throws ServiceException
      */
     public static TestWFSClient createTestProtocol(URL capabilitiesURL, HTTPClient http)
             throws ServiceException, IOException {
@@ -335,8 +321,6 @@ public class WFSTestData {
          * Allows to set an overriding url for the {@link #getDescribeFeatureTypeURLGet(String)}
          * operation, for test purposes so it is not actually needed to download the schema from the
          * internet but from a resource file
-         *
-         * @param url
          */
         public void setDescribeFeatureTypeURLOverride(URL url) {
             this.describeFeatureTypeUrlOverride = url;

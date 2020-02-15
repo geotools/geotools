@@ -249,11 +249,6 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
      * null otherwise
      *
      * @param <T>
-     * @param param
-     * @param params
-     * @param target
-     * @return
-     * @throws IOException
      */
     <T> T lookup(Param param, Map<String, Serializable> params, Class<T> target)
             throws IOException {

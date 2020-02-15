@@ -67,10 +67,6 @@ public interface CoverageSource {
          * bounding boxes in case the area covered by the mentioned coverage is poorly approximated
          * by a single coverage, like it could happen for a mosaic which has some holes.
          *
-         * @param overall
-         * @param listener
-         * @return
-         * @throws IOException
          * @see {@link BoundingBox}
          */
         public abstract Set<? extends BoundingBox> getSpatialElements(
@@ -82,11 +78,6 @@ public interface CoverageSource {
          * Transformation between the 2D raster space and the 2D model space. In case the underlying
          * coverage is unrectified this transformation maybe a georeferencing transformation of
          * simply the identity in case we do not have means to georeference the mentioned coverage.
-         *
-         * @param brief
-         * @param listener
-         * @return
-         * @throws IOException
          */
         public abstract MathTransform2D getGridToWorldTransform(final ProgressListener listener)
                 throws IOException;
@@ -98,10 +89,6 @@ public interface CoverageSource {
          * covered by the mentioned coverage is poorly approximated by a single {@link Rectangle},
          * like it could happen for a mosaic which has some holes.
          *
-         * @param overall
-         * @param listener
-         * @return
-         * @throws IOException
          * @todo should we consider {@link GridEnvelope}?? or RasterLayout which also contains
          *     tiling information??? This has also an impact on the {@link
          *     #getOptimalDataBlockSizes()} method, which may become useless
@@ -118,10 +105,8 @@ public interface CoverageSource {
          * the listed {@link DateRange} objects can be obtained from the overall {@link CRS} for the
          * underlying coverage.
          *
-         * @param listener
          * @return a {@link Set} of {@link DateRange}s elements.
          * @todo allow transfinite sets!
-         * @throws IOException
          */
         public abstract SortedSet<? extends DateRange> getTemporalElements(
                 final boolean overall, final ProgressListener listener) throws IOException;
@@ -140,10 +125,6 @@ public interface CoverageSource {
          * upper coordinate while lower and upper coordinates may be different to define vertical
          * intervals.
          *
-         * @param overall
-         * @param listener
-         * @return
-         * @throws IOException
          * @todo consider {@link TransfiniteSet} as an alternative to {@link SortedSet}
          * @todo allow using an interval as well as a direct position
          * @todo allow transfinite sets!
@@ -160,10 +141,8 @@ public interface CoverageSource {
          * Describes the additional domain for the underlying {@link RasterDataset} by returning a
          * {@link Set} of elements for it.
          *
-         * @param listener
          * @return a {@link Set} of {@link DateRange}s elements.
          * @todo allow transfinite sets!
-         * @throws IOException
          */
         public abstract Set<Object> getElements(
                 final boolean overall, final ProgressListener listener) throws IOException;
@@ -205,10 +184,6 @@ public interface CoverageSource {
     // * approximated by a single {@link Rectangle}, like it could happen for a
     // * mosaic which has some holes.
     // *
-    // * @param overall
-    // * @param listener
-    // * @return
-    // * @throws IOException
     // *
     // * @todo should we consider {@link GridEnvelope}?? or {@link ImageLayout} which also contains
     // tiling information???
@@ -231,9 +206,6 @@ public interface CoverageSource {
      * DefaultCoverageRequest}.
      *
      * @param request the input {@link DefaultCoverageRequest}.
-     * @param listener
-     * @return
-     * @throws IOException
      */
     public CoverageResponse read(final CoverageReadRequest request, final ProgressListener listener)
             throws IOException;
@@ -242,7 +214,6 @@ public interface CoverageSource {
      * Retrieves a {@link RangeType} instance which can be used to describe the codomain for the
      * underlying coverage.
      *
-     * @param listener
      * @return a {@link RangeType} instance which can be used to describe the codomain for the
      *     underlying coverage.
      * @throws IOException in case something bad occurs
@@ -296,16 +267,12 @@ public interface CoverageSource {
     // /**
     // * @todo TBD, I am not even sure this should leave at the general interface level!
     // *
-    // * @return
-    // * @throws IOException
     // */
     // public Object getGCPManager(final ProgressListener listener)throws IOException;
     //
     // /**
     // * @todo TBD, I am not even sure this should leave at the general interface level!
     // *
-    // * @return
-    // * @throws IOException
     // */
     // public Object getStatisticsManager(final ProgressListener listener)throws IOException;
     //
@@ -314,8 +281,6 @@ public interface CoverageSource {
     // /**
     // * @todo TBD, I am not even sure this should leave at the general interface level!
     // *
-    // * @return
-    // * @throws IOException
     // */
     // public Object getOverviewsManager(final ProgressListener listener)throws IOException;
 

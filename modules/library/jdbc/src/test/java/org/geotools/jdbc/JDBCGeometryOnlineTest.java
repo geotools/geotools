@@ -68,20 +68,12 @@ public abstract class JDBCGeometryOnlineTest extends JDBCTestSupport {
         assertEquals(MultiPolygon.class, checkGeometryType(MultiPolygon.class));
     }
 
-    /**
-     * Sometimes the source cannot anticipate the geometry type, can we cope with this?
-     *
-     * @throws Exception
-     */
+    /** Sometimes the source cannot anticipate the geometry type, can we cope with this? */
     public void testGeometry() throws Exception {
         assertEquals(Geometry.class, checkGeometryType(Geometry.class));
     }
 
-    /**
-     * Same goes for heterogeneous collections
-     *
-     * @throws Exception
-     */
+    /** Same goes for heterogeneous collections */
     public void testGeometryCollection() throws Exception {
         assertEquals(GeometryCollection.class, checkGeometryType(GeometryCollection.class));
     }

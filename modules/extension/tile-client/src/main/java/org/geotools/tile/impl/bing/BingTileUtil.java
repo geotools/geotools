@@ -50,7 +50,6 @@ public final class BingTileUtil {
      * @param latitude Latitude of the point, in degrees.
      * @param zoomLevel The zoom level or "Level of detail", from 1 (lowest detail) to 23 (highest
      *     detail).
-     * @return
      */
     public static int[] lonLatToPixelXY(double longitude, double latitude, int zoomLevel) {
         double _latitude =
@@ -86,7 +85,6 @@ public final class BingTileUtil {
      * @param pixelY Y coordinates of the point, in pixels.
      * @param zoomLevel zoom level or "Level of detail", from 1 (lowest detail) to 23 (highest
      *     detail)
-     * @return
      */
     public static double[] pixelXYToLonLat(int pixelX, int pixelY, int zoomLevel) {
         double mapSize = mapSize(zoomLevel);
@@ -116,7 +114,6 @@ public final class BingTileUtil {
      *
      * @param pixelX Pixel X coordinate.
      * @param pixelY Pixel Y coordinate.
-     * @return
      */
     public static int[] pixelXYToTileXY(int pixelX, int pixelY) {
         int tileX = pixelX / BingTile.DEFAULT_TILE_SIZE;
@@ -185,7 +182,6 @@ public final class BingTileUtil {
      *
      * @param lon The longitude
      * @param lat The latitude
-     * @param zoomLevel
      * @return A string denoting the quadkey of the tile.
      */
     public static ReferencedEnvelope getTileBoundingBox(double lon, double lat, int zoomLevel) {

@@ -36,11 +36,7 @@ public class CRSHandlingTest {
     private static File statesfile;
     private static DataStore referenceStore;
 
-    /**
-     * Check that CRS are handled correctly
-     *
-     * @throws Exception
-     */
+    /** Check that CRS are handled correctly */
     @Before
     public void setUp() throws Exception {}
 

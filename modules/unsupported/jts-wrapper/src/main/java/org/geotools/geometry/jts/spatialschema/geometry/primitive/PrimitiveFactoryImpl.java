@@ -72,11 +72,7 @@ public class PrimitiveFactoryImpl implements PrimitiveFactory {
         this(null);
     }
 
-    /**
-     * DOCUMENT ME
-     *
-     * @param crs
-     */
+    /** DOCUMENT ME */
     public PrimitiveFactoryImpl(final CoordinateReferenceSystem crs) {
         this.crs = crs;
         geomFact = new GeometryFactoryImpl(crs);
@@ -102,9 +98,6 @@ public class PrimitiveFactoryImpl implements PrimitiveFactory {
     /**
      * Create a direct position at the specified location specified by coordinates. If the parameter
      * is null, the position is left uninitialized.
-     *
-     * @param coordinates
-     * @return
      */
     public DirectPosition createDirectPosition(final double[] coordinates) {
         if (coordinates != null) {
@@ -185,7 +178,6 @@ public class PrimitiveFactoryImpl implements PrimitiveFactory {
      * this specification is limited to 3-dimensional coordinate reference systems, any solid is
      * definable by its boundary.
      *
-     * @param boundary
      * @return a {@code Solid} based on the given {@code boundary}
      */
     public Solid createSolid(final SolidBoundary boundary) {

@@ -50,7 +50,6 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
      *
      * @param attributeTypeIndex integer representing the AttributeDescriptor
      * @param type FeatureType
-     * @throws IllegalFilterException
      */
     public AverageVisitor(int attributeTypeIndex, SimpleFeatureType type)
             throws IllegalFilterException {
@@ -65,7 +64,6 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
      *
      * @param attrName string respresenting the AttributeDescriptor
      * @param type FeatureType
-     * @throws IllegalFilterException
      */
     public AverageVisitor(String attrName, SimpleFeatureType type) throws IllegalFilterException {
         FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
@@ -74,12 +72,7 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
         createStrategy(attributeType.getType().getBinding());
     }
 
-    /**
-     * Constructor class for the AverageVisitor using an expression
-     *
-     * @param expr
-     * @throws IllegalFilterException
-     */
+    /** Constructor class for the AverageVisitor using an expression */
     public AverageVisitor(Expression expr) throws IllegalFilterException {
         this.expr = expr;
     }

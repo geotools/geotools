@@ -456,7 +456,6 @@ public final class GeoTools {
      *   <li>
      *   <li>To assist
      *
-     * @param type
      * @return Version (or null if unavailable)
      */
     public static Version getVersion(Class<?> type) {
@@ -499,7 +498,6 @@ public final class GeoTools {
     /**
      * Class location.
      *
-     * @param type
      * @return class location
      */
     static URL classLocation(Class<?> type) {
@@ -509,7 +507,6 @@ public final class GeoTools {
     /**
      * Determine jar version from static analysis of classLocation path.
      *
-     * @param classLocation
      * @return jar version, or null if unknown
      */
     static String jarVersion(String classLocation) {
@@ -543,7 +540,6 @@ public final class GeoTools {
     /**
      * Generate URL of MANIFEST.MF file for provided class location.
      *
-     * @param classLocation
      * @return MANIFEST.MF location, or null if unknown
      */
     static URL manifestLocation(String classLocation) {
@@ -576,7 +572,6 @@ public final class GeoTools {
      *
      * <p>This can be used to quickly verify packaging information.
      *
-     * @param type
      * @return MANIFEST.MF contents, please note contents may be empty when running from IDE
      */
     public static Manifest getManifest(Class<?> type) {
@@ -833,12 +828,7 @@ public final class GeoTools {
     public static Hints getDefaultHints() {
         return Hints.getDefaults(false);
     }
-    /**
-     * Used to combine provided hints with global GeoTools defaults.
-     *
-     * @param hints
-     * @return
-     */
+    /** Used to combine provided hints with global GeoTools defaults. */
     public static Hints addDefaultHints(final Hints hints) {
         final Hints completed = getDefaultHints();
         if (hints != null) {
@@ -954,7 +944,6 @@ public final class GeoTools {
     /**
      * Clears the initial context (closes it if not null)
      *
-     * @throws NamingException
      * @since 15.0
      */
     public static synchronized void clearInitialContext() throws NamingException {

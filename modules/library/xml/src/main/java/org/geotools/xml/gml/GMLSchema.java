@@ -662,13 +662,6 @@ public class GMLSchema implements Schema {
          * Configures the Element for this particular GML instance. The following params match
          * schema definition attributes found in an element declaration. Those missing have been
          * hard coded for the gml Schema.
-         *
-         * @param name
-         * @param type
-         * @param min
-         * @param max
-         * @param abstracT
-         * @param substitutionGroup
          */
         public GMLElement(
                 String name,
@@ -685,13 +678,7 @@ public class GMLSchema implements Schema {
             this.substitutionGroup = substitutionGroup;
         }
 
-        /**
-         * Creates a clone using the new min/max occurences.
-         *
-         * @param element
-         * @param min
-         * @param max
-         */
+        /** Creates a clone using the new min/max occurences. */
         public GMLElement(GMLElement element, int min, int max) {
             this.abstracT = element.isAbstract();
             this.max = max;
@@ -877,38 +864,20 @@ public class GMLSchema implements Schema {
             // no op constructor
         }
 
-        /**
-         * Creates a GML attribute based on the name and type provided.
-         *
-         * @param name
-         * @param simpleType
-         */
+        /** Creates a GML attribute based on the name and type provided. */
         public GMLAttribute(String name, SimpleType simpleType) {
             this.name = name;
             this.simpleType = simpleType;
         }
 
-        /**
-         * Creates a GML attribute based on the name, use and type provided.
-         *
-         * @param name
-         * @param simpleType
-         * @param use
-         */
+        /** Creates a GML attribute based on the name, use and type provided. */
         public GMLAttribute(String name, SimpleType simpleType, int use) {
             this.name = name;
             this.simpleType = simpleType;
             this.use = use;
         }
 
-        /**
-         * Creates a GML attribute based on the name, use, default and type provided.
-         *
-         * @param name
-         * @param simpleType
-         * @param use
-         * @param def
-         */
+        /** Creates a GML attribute based on the name, use, default and type provided. */
         public GMLAttribute(String name, SimpleType simpleType, int use, String def) {
             this.name = name;
             this.simpleType = simpleType;

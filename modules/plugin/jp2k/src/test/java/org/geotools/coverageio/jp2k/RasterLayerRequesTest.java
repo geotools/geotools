@@ -39,11 +39,7 @@ public final class RasterLayerRequesTest extends BaseJP2K {
 
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(RasterLayerRequesTest.class);
-    /**
-     * Creates a new instance of GranuleTest
-     *
-     * @param name
-     */
+    /** Creates a new instance of GranuleTest */
     public RasterLayerRequesTest() {}
 
     @Test

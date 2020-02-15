@@ -32,9 +32,7 @@ public interface ImageLoader {
     /**
      * Loads an image for the given tile.
      *
-     * @param tile
      * @return an image
-     * @throws IOException
      */
     BufferedImage loadImageTileImage(Tile tile) throws IOException;
 }

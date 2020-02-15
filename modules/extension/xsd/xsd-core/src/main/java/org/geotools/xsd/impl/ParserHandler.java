@@ -898,11 +898,7 @@ public class ParserHandler extends DefaultHandler2 {
         setCDATAEnding(true);
     }
 
-    /**
-     * Notify the parser that the current CDATA block is ending.
-     *
-     * @param b
-     */
+    /** Notify the parser that the current CDATA block is ending. */
     private void setCDATAEnding(boolean b) {
         // TODO Auto-generated method stub
         CDATAEnding = b;
@@ -913,20 +909,12 @@ public class ParserHandler extends DefaultHandler2 {
         return CDATAEnding;
     }
 
-    /**
-     * Inform the parser that it is inside a CDATA block.
-     *
-     * @param b
-     */
+    /** Inform the parser that it is inside a CDATA block. */
     public void setCDATA(boolean b) {
         this.inCDATA = b;
     }
 
-    /**
-     * Check if the current text is inside a CDATA block.
-     *
-     * @return
-     */
+    /** Check if the current text is inside a CDATA block. */
     public boolean isCDATA() {
         return inCDATA;
     }

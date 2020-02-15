@@ -310,10 +310,6 @@ public class LocalGeoServerOnlineTest extends TestCase {
      * Check GetMap request functionality in the provided CRS.
      *
      * <p>Attempt is made to request the entire image.
-     *
-     * @param wms
-     * @param layer
-     * @param crs
      */
     private void checkGetMap(WebMapServer wms, Layer layer, CoordinateReferenceSystem crs)
             throws Exception {
@@ -378,10 +374,6 @@ public class LocalGeoServerOnlineTest extends TestCase {
      * Check GetMap request functionality in the provided CRS.
      *
      * <p>Attempt is made to request the entire image.
-     *
-     * @param wms
-     * @param layer
-     * @param crs
      */
     private void checkGetFeatureInfo(WebMapServer wms, Layer layer, CoordinateReferenceSystem crs)
             throws Exception {

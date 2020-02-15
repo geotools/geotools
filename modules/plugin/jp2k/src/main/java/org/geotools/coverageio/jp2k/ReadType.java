@@ -318,10 +318,6 @@ enum ReadType {
     /**
      * Load the raster data from the underlying source with the specified read type.
      *
-     * @param readParameters
-     * @param imageIndex
-     * @param rasterFile
-     * @param readDimension
      * @param tileDimension a {@link Dimension} object that can be used to suggest specific tile
      *     dimension for the raster to load. It can be <code>null</code>.
      * @return a {@link RenderedImage} instance that matches the provided request parameters as

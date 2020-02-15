@@ -546,7 +546,6 @@ public class JGrassMapEnvironment {
      * @param range the range to use for the default colortable, in the case of missing color file.
      *     Can be null.
      * @return a {@link List} of color rules in string format.
-     * @throws IOException
      */
     public List<String> getColorRules(double[] range) throws IOException {
         if (range == null) {
@@ -567,7 +566,6 @@ public class JGrassMapEnvironment {
      * </ul>
      *
      * @return the list of categories in text format.
-     * @throws IOException
      */
     public List<String> getCategories() throws IOException {
         List<String> categoriesList = new ArrayList<String>();
@@ -619,7 +617,6 @@ public class JGrassMapEnvironment {
      * Read the {@link JGrassRegion} from the active region file.
      *
      * @return the active grass region.
-     * @throws IOException
      */
     public JGrassRegion getActiveRegion() throws IOException {
         JGrassRegion jGrassRegion = new JGrassRegion(getWIND().getAbsolutePath());
@@ -630,7 +627,6 @@ public class JGrassMapEnvironment {
      * Reads the data range from a color table file, if existing.
      *
      * @return the data range or null if no range could be read.
-     * @throws IOException
      */
     public double[] getRangeFromColorTable() throws IOException {
         double[] dataRange = new double[2];
@@ -665,7 +661,6 @@ public class JGrassMapEnvironment {
      * Reads the data range from the GRASS range file.
      *
      * @return the data range or null if the content is infinite or NaN.
-     * @throws IOException
      */
     public double[] getRangeFromRangeFile() throws IOException {
         double[] dataRange = null;
@@ -699,7 +694,6 @@ public class JGrassMapEnvironment {
      * Reads the data range by reading the map.
      *
      * @return the data range.
-     * @throws IOException
      */
     public double[] getRangeFromMapScan() throws IOException {
         /*
@@ -746,7 +740,6 @@ public class JGrassMapEnvironment {
      * Read the {@link CoordinateReferenceSystem crs} from the location.
      *
      * @return the crs of the location containing the map.
-     * @throws Exception
      */
     public CoordinateReferenceSystem getCoordinateReferenceSystem() throws Exception {
         File projWtkFile = getPROJ_WKT();
@@ -778,7 +771,6 @@ public class JGrassMapEnvironment {
      * Read the file region of the map.
      *
      * @return the {@link JGrassRegion} of the file.
-     * @throws IOException
      */
     public JGrassRegion getFileRegion() throws IOException {
         // checkReader();

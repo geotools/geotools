@@ -136,12 +136,7 @@ class CompositingGroup {
         }
     }
 
-    /**
-     * Returns true if alpha compositing is used anywhere in the style
-     *
-     * @param currentFeature
-     * @return
-     */
+    /** Returns true if alpha compositing is used anywhere in the style */
     private static boolean hasAlphaCompositing(List<Layer> layers) {
         AlphaCompositeVisitor visitor = new AlphaCompositeVisitor();
         for (Layer layer : layers) {

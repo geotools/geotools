@@ -83,7 +83,6 @@ public class XmlComplexFeatureParser extends XmlFeatureParser<FeatureType, Featu
      * @param getFeatureResponseStream the input stream of the WFS response.
      * @param targetType The feature type of the WFS response.
      * @param featureDescriptorName The name of the feature descriptor.
-     * @throws IOException
      */
     public XmlComplexFeatureParser(
             InputStream getFeatureResponseStream,
@@ -101,7 +100,6 @@ public class XmlComplexFeatureParser extends XmlFeatureParser<FeatureType, Featu
      * @param targetType The feature type of the WFS response.
      * @param featureDescriptorName The name of the feature descriptor.
      * @param filter Filter to apply to the features.
-     * @throws IOException
      */
     public XmlComplexFeatureParser(
             InputStream getFeatureResponseStream,
@@ -223,12 +221,7 @@ public class XmlComplexFeatureParser extends XmlFeatureParser<FeatureType, Featu
         }
     }
 
-    /**
-     * Get base (non-collection) type of simple content.
-     *
-     * @param type
-     * @return
-     */
+    /** Get base (non-collection) type of simple content. */
     static AttributeType getSimpleContentType(AttributeType type) {
         Class<?> binding = type.getBinding();
         if (binding == Collection.class) {
@@ -248,8 +241,6 @@ public class XmlComplexFeatureParser extends XmlFeatureParser<FeatureType, Featu
      * @return A ReturnAttribute object which groups a (Name) name, (String) id, and (Object) value
      *     that represent an attribute that belongs in the complexType specified. Returns null once
      *     there are no more elements in the complex type you're trying to parse.
-     * @throws XmlPullParserException
-     * @throws IOException
      */
     @SuppressWarnings("PMD.EmptyWhileStmt")
     private ReturnAttribute parseNextAttribute(ComplexType complexType)

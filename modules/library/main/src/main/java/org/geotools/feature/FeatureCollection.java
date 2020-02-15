@@ -187,7 +187,6 @@ public interface FeatureCollection<T extends FeatureType, F extends Feature> {
      * </ul>
      *
      * @see FeatureList
-     * @param filter
      * @return SimpleFeatureCollection identified as subset.
      */
     public FeatureCollection<T, F> subCollection(Filter filter);

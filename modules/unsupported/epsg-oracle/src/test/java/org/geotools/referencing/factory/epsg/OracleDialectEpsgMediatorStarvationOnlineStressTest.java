@@ -193,7 +193,6 @@ public class OracleDialectEpsgMediatorStarvationOnlineStressTest extends OracleO
      * Returns a selection of CRS codes for UTM and NAD zones.
      *
      * @return array of EPSG codes
-     * @throws FactoryException
      */
     public static String[] getCodes() {
         return new String[] {

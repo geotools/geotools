@@ -16,7 +16,6 @@
  */
 package org.geotools.geometry.iso.coordinate;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.AbstractList;
 import java.util.Arrays;
@@ -237,9 +236,6 @@ class DoubleDirectPosition implements DirectPosition, Serializable {
     }
     /**
      * Override to "disconnect" this DoubleDirectPosition from being a simple view on a wider array.
-     *
-     * @param oos
-     * @throws IOException
      */
     /*
     private void writeObject(java.io.ObjectOutputStream out) throws IOException {

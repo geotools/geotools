@@ -260,7 +260,6 @@ public abstract class XMLTestSupport extends TestCase {
      * @param element The name of the element to encode.
      * @param type The type of the element
      * @return The object encoded.
-     * @throws Exception
      */
     protected Document encode(Object object, QName element, QName type) throws Exception {
         Configuration configuration = createConfiguration();
@@ -300,7 +299,6 @@ public abstract class XMLTestSupport extends TestCase {
      * @param object The object to encode.
      * @param element The name of the element to encode.
      * @return The object encoded.
-     * @throws Exception
      */
     protected Document encode(Object object, QName element) throws Exception {
         return encode(object, element, null);

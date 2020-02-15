@@ -46,9 +46,6 @@ class ZGroupLayerFactory {
     /**
      * Filters a MapContent and returns a new one where adjacent {@link FeatureTypeStyle} using the
      * same {@link FeatureTypeStyle#SORT_BY_GROUP} key are turned into {@link ZGroupLayer}
-     *
-     * @param mapContent
-     * @return
      */
     public static MapContent filter(MapContent mapContent) {
         // Quick check, do we have any z-group to care for? For the common
@@ -165,10 +162,6 @@ class ZGroupLayerFactory {
     /**
      * Makes sure the properties needed for in-memory sorting are available by adding them into the
      * query
-     *
-     * @param nativeQuery
-     * @param sortBy
-     * @return
      */
     private static Query ensureSortProperties(Query nativeQuery, SortBy[] sortBy) {
         LinkedHashSet<PropertyName> sortProperties = new LinkedHashSet<>();

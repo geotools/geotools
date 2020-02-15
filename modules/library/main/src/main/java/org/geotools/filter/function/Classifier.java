@@ -55,7 +55,6 @@ public abstract class Classifier {
     /**
      * Returns the slot this value belongs in.
      *
-     * @param value
      * @return index, starting from zero
      */
     public abstract int classify(Object value);

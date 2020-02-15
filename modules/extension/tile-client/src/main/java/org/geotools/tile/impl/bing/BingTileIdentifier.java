@@ -30,14 +30,7 @@ import org.geotools.tile.impl.ZoomLevel;
  */
 public class BingTileIdentifier extends TileIdentifier {
 
-    /**
-     * Creates a new BingTileIdentifier.
-     *
-     * @param zoomLevel
-     * @param x
-     * @param y
-     * @param serviceName
-     */
+    /** Creates a new BingTileIdentifier. */
     public BingTileIdentifier(int x, int y, ZoomLevel zoomLevel, String serviceName) {
         super(x, y, zoomLevel, serviceName);
     }

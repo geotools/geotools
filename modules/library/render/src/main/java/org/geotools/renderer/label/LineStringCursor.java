@@ -60,11 +60,7 @@ public class LineStringCursor {
     /** A cache for the orientation of each segment (we use it a lot) */
     double[] segmentAngles;
 
-    /**
-     * Builds a new cursor
-     *
-     * @param ls
-     */
+    /** Builds a new cursor */
     public LineStringCursor(LineString ls) {
         this.lineString = ls;
         coords = ls.getCoordinateSequence();
@@ -101,11 +97,7 @@ public class LineStringCursor {
         Arrays.fill(segmentAngles, Double.NaN);
     }
 
-    /**
-     * Copy constructor
-     *
-     * @param cursor
-     */
+    /** Copy constructor */
     public LineStringCursor(LineStringCursor cursor) {
         this.lineString = cursor.lineString;
         this.coords = cursor.coords;
@@ -116,20 +108,12 @@ public class LineStringCursor {
         this.segmentAngles = cursor.segmentAngles;
     }
 
-    /**
-     * Returns the line string length
-     *
-     * @return
-     */
+    /** Returns the line string length */
     public double getLineStringLength() {
         return segmentStartOrdinate[coords.size() - 2] + segmentLenghts[coords.size() - 2];
     }
 
-    /**
-     * Moves the current position to the
-     *
-     * @param ordinate
-     */
+    /** Moves the current position to the */
     public void moveTo(double ordinate) {
         double position = 0;
 
@@ -159,7 +143,6 @@ public class LineStringCursor {
     /**
      * Moves of the specified distance from the current position.
      *
-     * @param offset
      * @return true if it was possible to move to the desired offset, false if the movement stopped
      *     because the start or end of the LineString was reached
      */
@@ -230,11 +213,7 @@ public class LineStringCursor {
         return segmentStartOrdinate[segment] + offsetDistance;
     }
 
-    /**
-     * Returns the current segment direction as an angle expressed in radians
-     *
-     * @return
-     */
+    /** Returns the current segment direction as an angle expressed in radians */
     public double getCurrentAngle() {
         return getSegmentAngle(segment);
     }
@@ -248,11 +227,7 @@ public class LineStringCursor {
         return segmentAngles[segmentIdx];
     }
 
-    /**
-     * Returns the current segment direction as an angle expressed in radians
-     *
-     * @return
-     */
+    /** Returns the current segment direction as an angle expressed in radians */
     public double getLabelOrientation() {
         double dx = (coords.getX(segment + 1) - coords.getX(segment));
         double dy = (coords.getY(segment + 1) - coords.getY(segment));
@@ -270,10 +245,6 @@ public class LineStringCursor {
     /**
      * Returns the maximum angle change (in radians) between two subsequent segments between the
      * specified curvilinear coordinates.
-     *
-     * @param startOrdinate
-     * @param endOrdinate
-     * @return
      */
     public double getMaxAngleChange(double startOrdinate, double endOrdinate) {
         if (startOrdinate > endOrdinate)
@@ -304,10 +275,6 @@ public class LineStringCursor {
      * differences at such step. This helps when a line has many little segments and chars would end
      * up showing several segments apart (so the full angle change needs to be considered)
      *
-     * @param startOrdinate
-     * @param endOrdinate
-     * @param step
-     * @return
      * @deprecated Does not work correctly, will be removed (tried too many times to fix it)
      */
     public double getMaxAngleChange(double startOrdinate, double endOrdinate, double step) {
@@ -386,10 +353,6 @@ public class LineStringCursor {
     /**
      * Returns the maximum distance between the curve and a straight line connecting the start and
      * end ordinates.
-     *
-     * @param startOrdinate
-     * @param endOrdinate
-     * @return
      */
     public double getMaxDistanceFromStraightLine(double startOrdinate, double endOrdinate) {
         if (startOrdinate > endOrdinate)
@@ -429,31 +392,17 @@ public class LineStringCursor {
         return maxDistance;
     }
 
-    /**
-     * Returns a line string cursor based on the opposite walking direction.
-     *
-     * @return
-     */
+    /** Returns a line string cursor based on the opposite walking direction. */
     public LineStringCursor reverse() {
         return new LineStringCursor((LineString) lineString.reverse());
     }
 
-    /**
-     * The linestrings wrapped by this cursor
-     *
-     * @return
-     */
+    /** The linestrings wrapped by this cursor */
     public LineString getLineString() {
         return lineString;
     }
 
-    /**
-     * Returns the linestring that starts and ends at the specified curvilinear coordinates.
-     *
-     * @param startOrdinate
-     * @param endOrdinate
-     * @return
-     */
+    /** Returns the linestring that starts and ends at the specified curvilinear coordinates. */
     public LineString getSubLineString(double startOrdinate, double endOrdinate) {
         LineStringCursor clone = new LineStringCursor(this);
         clone.moveTo(startOrdinate);

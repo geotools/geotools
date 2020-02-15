@@ -107,13 +107,6 @@ public interface Driver extends OptionalFactory, Factory {
     /**
      * Simone: Return <code>null</code> in case the delete succeds. TODO think about a neater
      * approach
-     *
-     * @param opreation
-     * @param params
-     * @param hints
-     * @param listener
-     * @return
-     * @throws IOException
      */
     public CoverageAccess access(
             DriverCapabilities opreation,

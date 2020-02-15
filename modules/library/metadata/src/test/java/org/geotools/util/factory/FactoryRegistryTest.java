@@ -315,12 +315,7 @@ public final class FactoryRegistryTest {
         assertTrue(classes.contains("org.geotools.util.factory.DummyInterfaceImpl"));
     }
 
-    /**
-     * Tests for GEOT-2817
-     *
-     * @throws MalformedURLException
-     * @throws ClassNotFoundException
-     */
+    /** Tests for GEOT-2817 */
     @Test
     public void testLookupWithSameFactoryInTwoClassLoaders()
             throws MalformedURLException, ClassNotFoundException {

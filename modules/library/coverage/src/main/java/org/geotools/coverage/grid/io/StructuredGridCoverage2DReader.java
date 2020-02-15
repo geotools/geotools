@@ -38,17 +38,11 @@ public interface StructuredGridCoverage2DReader extends GridCoverage2DReader {
      * @param coverageName the name of the specified coverage
      * @param readOnly a boolean indicating whether we may want modify the GranuleSource
      * @return the requested {@link GranuleSource}
-     * @throws IOException
-     * @throws UnsupportedOperationException
      */
     GranuleSource getGranules(String coverageName, boolean readOnly)
             throws IOException, UnsupportedOperationException;
 
-    /**
-     * Return whether this reader can modify the granule source
-     *
-     * @return
-     */
+    /** Return whether this reader can modify the granule source */
     boolean isReadOnly();
 
     /** Creates a granule store for a new coverage with the given feature type */
@@ -78,8 +72,6 @@ public interface StructuredGridCoverage2DReader extends GridCoverage2DReader {
      * @param source The source can be any kind of object, it's up to the reader implementation to
      *     understand and use it. Commons source types could be a single file, or a folder.
      * @param hints Used to provide implementation specific hints on how to harvest the sources
-     * @throws IOException
-     * @throws UnsupportedOperationException
      */
     List<HarvestedSource> harvest(String defaultTargetCoverage, Object source, Hints hints)
             throws IOException, UnsupportedOperationException;

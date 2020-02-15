@@ -53,13 +53,7 @@ public class GribUtilities {
         }
     }
 
-    /**
-     * Method for checking if the input file is an existing writable directory.
-     *
-     * @param file
-     * @param property
-     * @return
-     */
+    /** Method for checking if the input file is an existing writable directory. */
     public static boolean isValid(File file) {
         String dir = file.getAbsolutePath();
         if (!file.exists()) {

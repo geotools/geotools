@@ -57,11 +57,7 @@ public final class EsriHdrTest extends GDALTestCase {
     /** file name of a valid EHdr sample data to be used for tests. */
     private static final String fileName = "elggll.bil";
 
-    /**
-     * Creates a new instance of {@code EsriHdrTest}
-     *
-     * @param name
-     */
+    /** Creates a new instance of {@code EsriHdrTest} */
     public EsriHdrTest() {
         super("EHdr", new EsriHdrFormatFactory());
     }

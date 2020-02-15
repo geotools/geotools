@@ -147,9 +147,6 @@ public class ReprojectFeatureReader
      *
      * <p>Description ...
      *
-     * @throws IOException
-     * @throws IllegalAttributeException
-     * @throws NoSuchElementException
      * @see org.geotools.data.FeatureReader#next()
      */
     public SimpleFeature next()
@@ -185,7 +182,6 @@ public class ReprojectFeatureReader
      *
      * <p>Description ...
      *
-     * @throws IOException
      * @see org.geotools.data.FeatureReader#hasNext()
      */
     public boolean hasNext() throws IOException {
@@ -201,7 +197,6 @@ public class ReprojectFeatureReader
      *
      * <p>Description ...
      *
-     * @throws IOException
      * @see org.geotools.data.FeatureReader#close()
      */
     public void close() throws IOException {

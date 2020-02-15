@@ -170,7 +170,6 @@ public class CQL {
     /**
      * Generates the ecql predicates associated to the {@link List} of {@link Filter}s object.
      *
-     * @param filterList
      * @return ecql predicates separated by ";"
      */
     public static String toCQL(List<Filter> filterList) {
@@ -191,7 +190,6 @@ public class CQL {
     /**
      * Generates the cql predicate associated to the {@link Filter} object.
      *
-     * @param filter
      * @return cql predicate
      */
     public static String toCQL(Filter filter) {
@@ -204,7 +202,6 @@ public class CQL {
     /**
      * Generates the expression text associated to the {@link Expression} object.
      *
-     * @param expression
      * @return expression as text
      */
     public static String toCQL(Expression expression) {
@@ -234,11 +231,7 @@ public class CQL {
 
         return filters;
     }
-    /**
-     * Command line expression tester used to try out filters and expressions.
-     *
-     * @param args
-     */
+    /** Command line expression tester used to try out filters and expressions. */
     @SuppressWarnings({"PMD.SystemPrintln", "PMD.CloseResource"})
     public static final void main(String[] args) {
         System.out.println("CQL Filter Tester");

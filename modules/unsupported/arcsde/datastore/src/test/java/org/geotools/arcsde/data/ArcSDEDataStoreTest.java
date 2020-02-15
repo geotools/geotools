@@ -169,9 +169,6 @@ public class ArcSDEDataStoreTest {
      * defined by the parameters "point_table", "line_table" and "polygon_table", wether ot not
      * they're defined as single table names or as full qualified sde table names (i.e.
      * SDE.SDE.TEST_POINT)
-     *
-     * @throws IOException
-     * @throws SeException
      */
     @Test
     public void testGetTypeNames() throws IOException, SeException {
@@ -212,11 +209,6 @@ public class ArcSDEDataStoreTest {
      * first creates the (non spatially enabled) "table" with all the non spatial attributes and
      * finally creates the "layer", adding the spatial attribute to the previously created table.
      * So, this test ensures the datastore correctly works arround this limitation.
-     *
-     * @throws IOException
-     * @throws SchemaException
-     * @throws SeException
-     * @throws UnavailableConnectionException
      */
     @Test
     public void testCreateSchema()

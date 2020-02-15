@@ -81,10 +81,7 @@ public abstract class AbstractGetFeatureResponseParserFactory extends AbstractWF
         }
     }
 
-    /**
-     * @param head The first couple of characters from the response, typically the first 512
-     * @return
-     */
+    /** @param head The first couple of characters from the response, typically the first 512 */
     protected boolean isValidResponseHead(String head) {
         return head.indexOf("FeatureCollection") > 0;
     }

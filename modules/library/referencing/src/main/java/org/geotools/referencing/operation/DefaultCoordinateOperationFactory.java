@@ -1759,8 +1759,6 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
      * org.opengis.referencing.operation.CoordinateOperationAuthorityFactory}. If no coordinate
      * operation was found in the database, then this method returns {@code null}.
      *
-     * @param sourceCRS
-     * @param targetCRS
      * @param limit The maximum number of operations to be returned. Use -1 to return all the
      *     available operations. Use 1 to return just one operations. Currently, the behavior for
      *     other values of {@code limit} is undefined.

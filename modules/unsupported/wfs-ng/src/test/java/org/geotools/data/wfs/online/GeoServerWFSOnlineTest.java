@@ -114,11 +114,7 @@ public class GeoServerWFSOnlineTest extends OnlineTestSupport {
     private void geoServerTest(String version, boolean get) throws IOException {
         geoServerTest(version, get, expected1);
     }
-    /**
-     * @param expected
-     * @param version
-     * @throws IOException
-     */
+    /** */
     private void geoServerTest(String version, boolean get, Set<String> expected)
             throws IOException {
         Properties fixture = getFixture();

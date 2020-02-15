@@ -121,22 +121,13 @@ public class DirectPositionImpl implements Cloneable, DirectPosition, Position, 
         crs = point.getCoordinateReferenceSystem();
     }
 
-    /**
-     * Creates a new {@code DirectPositionImpl}.
-     *
-     * @param crs
-     */
+    /** Creates a new {@code DirectPositionImpl}. */
     public DirectPositionImpl(final CoordinateReferenceSystem crs) {
         setCRS(crs);
         this.ordinates = new double[crs.getCoordinateSystem().getDimension()];
     }
 
-    /**
-     * Creates a new {@code DirectPositionImpl}.
-     *
-     * @param crs
-     * @param ordinates
-     */
+    /** Creates a new {@code DirectPositionImpl}. */
     public DirectPositionImpl(final CoordinateReferenceSystem crs, final double[] ordinates) {
         setCRS(crs);
         this.ordinates = new double[crs.getCoordinateSystem().getDimension()];
@@ -161,11 +152,7 @@ public class DirectPositionImpl implements Cloneable, DirectPosition, Position, 
     //  implement the DirectPosition interface
     // *************************************************************************
 
-    /**
-     * DOCUMENT ME.
-     *
-     * @param crs
-     */
+    /** DOCUMENT ME. */
     private void setCRS(final CoordinateReferenceSystem crs) {
         if (crs == null) {
             throw new IllegalArgumentException("DirectPosition cannot have a null CRS");

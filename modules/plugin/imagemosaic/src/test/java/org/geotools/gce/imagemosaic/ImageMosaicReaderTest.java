@@ -48,7 +48,6 @@ import java.awt.image.SampleModel;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -164,7 +163,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.geometry.Envelope;
-import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterDescriptor;
@@ -253,13 +251,7 @@ public class ImageMosaicReaderTest extends Assert {
 
     @Rule public TemporaryFolder tempFolder = new TemporaryFolder();
 
-    /**
-     * Testing crop capabilities.
-     *
-     * @throws MismatchedDimensionException
-     * @throws IOException
-     * @throws FactoryException
-     */
+    /** Testing crop capabilities. */
     @Test
     public void crop() throws Exception {
         imageMosaicCropTest(rgbURL, "crop-rgbURL", false);
@@ -278,13 +270,7 @@ public class ImageMosaicReaderTest extends Assert {
                 index_unique_paletteAlphaURL, "crop-index_unique_paletteAlphaURL", true);
     }
 
-    /**
-     * Tests the {@link ImageMosaicReader} with default parameters for the various input params.
-     *
-     * @throws IOException
-     * @throws MismatchedDimensionException
-     * @throws FactoryException
-     */
+    /** Tests the {@link ImageMosaicReader} with default parameters for the various input params. */
     @Test
     //        @Ignore
     public void alpha() throws Exception {
@@ -381,13 +367,7 @@ public class ImageMosaicReaderTest extends Assert {
         ;
     }
 
-    /**
-     * Tests the {@link ImageMosaicReader} with default parameters for the various input params.
-     *
-     * @throws IOException
-     * @throws MismatchedDimensionException
-     * @throws FactoryException
-     */
+    /** Tests the {@link ImageMosaicReader} with default parameters for the various input params. */
     @Test
     //	@Ignore
     public void overviews() throws Exception {
@@ -436,11 +416,7 @@ public class ImageMosaicReaderTest extends Assert {
         reader.dispose();
     }
 
-    /**
-     * @throws IOException
-     * @throws MismatchedDimensionException
-     * @throws FactoryException
-     */
+    /** */
     @Test
     // @Ignore
     public void readingResolutions() throws Exception {
@@ -614,8 +590,6 @@ public class ImageMosaicReaderTest extends Assert {
     /**
      * This test is used to check backward compatibility with old imagemosaics wich does not include
      * the TypeName=MOSAICNAME into the generated MOSAICNAME.properties file
-     *
-     * @throws Exception
      */
     @Test
     // @Ignore
@@ -676,8 +650,6 @@ public class ImageMosaicReaderTest extends Assert {
     /**
      * This test is used to check backward compatibility with old imagemosaics wich does not include
      * the TypeName=MOSAICNAME into the generated MOSAICNAME.properties file
-     *
-     * @throws Exception
      */
     @Test
     public void testMixedTables() throws Exception {
@@ -1119,11 +1091,7 @@ public class ImageMosaicReaderTest extends Assert {
         reader.dispose();
     }
 
-    /**
-     * Simple test method accessing time and 2 custom dimensions for the sample dataset
-     *
-     * @throws Exception
-     */
+    /** Simple test method accessing time and 2 custom dimensions for the sample dataset */
     @Test
     @SuppressWarnings("rawtypes")
     public void timeAdditionalDimRanges() throws Exception {
@@ -1238,11 +1206,7 @@ public class ImageMosaicReaderTest extends Assert {
         }
     }
 
-    /**
-     * Simple test method to test emptyMosaic creation support followed by harvesting. dataset
-     *
-     * @throws Exception
-     */
+    /** Simple test method to test emptyMosaic creation support followed by harvesting. dataset */
     @Test
     // @Ignore
     public void testEmpytMosaic() throws Exception {
@@ -1329,11 +1293,7 @@ public class ImageMosaicReaderTest extends Assert {
         }
     }
 
-    /**
-     * Simple test method to test emptyMosaic creation support followed by harvesting
-     *
-     * @throws Exception
-     */
+    /** Simple test method to test emptyMosaic creation support followed by harvesting */
     @Test
     public void testImageMosaicConfigFilePath() throws Exception {
         CatalogBuilderConfiguration builderConfig = new CatalogBuilderConfiguration();
@@ -1353,11 +1313,7 @@ public class ImageMosaicReaderTest extends Assert {
         assertEquals(auxFile.getAbsolutePath(), auxiliaryFilePath);
     }
 
-    /**
-     * Simple test method to test emptyMosaic creation support followed by harvesting
-     *
-     * @throws Exception
-     */
+    /** Simple test method to test emptyMosaic creation support followed by harvesting */
     @Test
     public void testEmpytMosaicXML() throws Exception {
 
@@ -1452,11 +1408,7 @@ public class ImageMosaicReaderTest extends Assert {
         }
     }
 
-    /**
-     * Simple test method accessing time and 2 custom dimensions for the sample dataset
-     *
-     * @throws Exception
-     */
+    /** Simple test method accessing time and 2 custom dimensions for the sample dataset */
     @Test
     @SuppressWarnings("rawtypes")
     public void granuleSourceTest() throws Exception {
@@ -1581,11 +1533,7 @@ public class ImageMosaicReaderTest extends Assert {
         reader.dispose();
     }
 
-    /**
-     * Simple test method testing dimensions Descriptor for the sample dataset
-     *
-     * @throws Exception
-     */
+    /** Simple test method testing dimensions Descriptor for the sample dataset */
     @Test
     public void testDimensionsDescriptor() throws Exception {
         final AbstractGridFormat format = TestUtils.getFormat(timeAdditionalDomainsRangeURL);
@@ -1632,11 +1580,7 @@ public class ImageMosaicReaderTest extends Assert {
         timeAdditionalDimRanges();
     }
 
-    /**
-     * Tests that selection by range works properly
-     *
-     * @throws Exception
-     */
+    /** Tests that selection by range works properly */
     @Test
     public void timeTimeRangeSelection() throws Exception {
         final AbstractGridFormat format = TestUtils.getFormat(timeAdditionalDomainsRangeURL);
@@ -1761,11 +1705,7 @@ public class ImageMosaicReaderTest extends Assert {
         return formatD.parse(timeStamp);
     }
 
-    /**
-     * Simple test method accessing time and 2 custom dimensions for the sample dataset
-     *
-     * @throws Exception
-     */
+    /** Simple test method accessing time and 2 custom dimensions for the sample dataset */
     @Test
     // @Ignore
     @SuppressWarnings("rawtypes")
@@ -1845,8 +1785,6 @@ public class ImageMosaicReaderTest extends Assert {
      * <p>world_a.tif => Pixel Size = (0.833333333333333,-0.833333333333333); 4 overviews
      * world_b1.tif => Pixel Size = (1.406250000000000,-1.406250000000000); 2 overviews world_b2.tif
      * => Pixel Size = (0.666666666666667,-0.666666666666667); 0 overviews
-     *
-     * @throws Exception
      */
     @Test
     // @Ignore
@@ -1909,11 +1847,7 @@ public class ImageMosaicReaderTest extends Assert {
         reader.dispose();
     }
 
-    /**
-     * Tests the {@link ImageMosaicReader} with default parameters for the various input params.
-     *
-     * @throws Exception
-     */
+    /** Tests the {@link ImageMosaicReader} with default parameters for the various input params. */
     @Test
     //  //@Ignore
     public void defaultParameterValue() throws Exception {
@@ -1929,11 +1863,7 @@ public class ImageMosaicReaderTest extends Assert {
                 indexAlphaURL, null, null, baseTestName + indexAlphaURL.getFile(), false);
     }
 
-    /**
-     * Testing one bit mosaics (black/white)
-     *
-     * @throws Exception
-     */
+    /** Testing one bit mosaics (black/white) */
     @Test
     public void oneBit() throws Exception {
 
@@ -2044,13 +1974,7 @@ public class ImageMosaicReaderTest extends Assert {
         }
     }
 
-    /**
-     * Tests the {@link ImageMosaicReader}
-     *
-     * @param title
-     * @param threshold
-     * @throws Exception
-     */
+    /** Tests the {@link ImageMosaicReader} */
     private GridCoverage2D imageMosaicSimpleParamsTest(
             final URL testURL,
             final Color inputTransparent,
@@ -2100,7 +2024,6 @@ public class ImageMosaicReaderTest extends Assert {
      * @param title to use when showing image.
      * @param acceptContainment true if the result is expected to be contained in the crop area,
      *     possibly because the mosaic is sparse
-     * @throws Exception
      */
     private void imageMosaicCropTest(URL testURL, String title, boolean acceptContainment)
             throws Exception {
@@ -2431,12 +2354,7 @@ public class ImageMosaicReaderTest extends Assert {
         rgbaExtraURLTiff = TestData.url(this, "tiff_rgba_extra/");
     }
 
-    /**
-     * Cleaning up the generated files (shape and properties so that we recreate them.
-     *
-     * @throws FileNotFoundException
-     * @throws Exception
-     */
+    /** Cleaning up the generated files (shape and properties so that we recreate them. */
     private void cleanUp() throws Exception {
         if (INTERACTIVE) return;
         File dir = TestData.file(this, "overview/");
@@ -2488,11 +2406,7 @@ public class ImageMosaicReaderTest extends Assert {
         cleanUp();
     }
 
-    /**
-     * Simple test method accessing time and 2 custom dimensions for the sample dataset
-     *
-     * @throws Exception
-     */
+    /** Simple test method accessing time and 2 custom dimensions for the sample dataset */
     @Test
     // @Ignore
     @SuppressWarnings("rawtypes")
@@ -2565,11 +2479,7 @@ public class ImageMosaicReaderTest extends Assert {
         reader.dispose();
     }
 
-    /**
-     * Simple test method accessing time and 2 custom dimensions for the sample dataset
-     *
-     * @throws Exception
-     */
+    /** Simple test method accessing time and 2 custom dimensions for the sample dataset */
     @Test
     // @Ignore
     @SuppressWarnings("rawtypes")
@@ -4233,7 +4143,6 @@ public class ImageMosaicReaderTest extends Assert {
      * Tests {@link ImageMosaicReader} asking to crop the lower left quarter of the input coverage.
      *
      * @param title to use when showing image.
-     * @throws Exception
      */
     @Test
     public void testExpandToRGB() throws Exception {
@@ -4340,8 +4249,6 @@ public class ImageMosaicReaderTest extends Assert {
     /**
      * Tests {@link ImageMosaicReader} when the native CRS differs from the requested CRS only
      * because of metadata. Test case uses 3857 data bt request with 900913
-     *
-     * @throws Exception
      */
     @Test
     public void testSameCRS() throws Exception {

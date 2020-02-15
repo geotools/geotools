@@ -231,8 +231,6 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
      * Allows subclasses to generate a list of attributes for the property being encoded. The
      * default implementation just returns null
      *
-     * @param name
-     * @param featureType
      * @param attribute The attribute being encoded
      * @param value The attribute value
      * @return A Attributes, or null if no attributes are desired
@@ -360,14 +358,7 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
             featureQualifiedName = getFeatureQualifiedName(featureName);
         }
 
-        /**
-         * Builds the list of {@link AttributeContext} for each attribute to be encoded
-         *
-         * @param properties
-         * @param schema
-         * @param bindingLoader
-         * @return
-         */
+        /** Builds the list of {@link AttributeContext} for each attribute to be encoded */
         private List<AttributeContext> setupAttributeContexts(
                 List properties, SimpleFeatureType schema, BindingLoader bindingLoader) {
             ArrayList<AttributeContext> attributes =

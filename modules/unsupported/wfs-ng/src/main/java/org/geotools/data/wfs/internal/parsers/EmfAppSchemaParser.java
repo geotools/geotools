@@ -104,8 +104,6 @@ public class EmfAppSchemaParser {
      * @param crs the CRS to be assigned to the geometric attributes in the parsed feature type.
      *     This information shall be provided here as the schema itself has no knowledge of the CRS
      *     used.
-     * @return
-     * @throws IOException
      */
     public static SimpleFeatureType parseSimpleFeatureType(
             final Configuration wfsConfiguration,
@@ -123,10 +121,6 @@ public class EmfAppSchemaParser {
     /**
      * Go through FeatureType description and convert to a SimpleFeatureType. Also ignores
      * AbstractFeatureType contributions such as name etc...
-     *
-     * @param realType
-     * @return
-     * @throws DataSourceException
      */
     public static SimpleFeatureType toSimpleFeatureType(final FeatureType realType)
             throws DataSourceException {
@@ -205,8 +199,6 @@ public class EmfAppSchemaParser {
      * @param crs the CRS to be assigned to the geometric attributes in the parsed feature type.
      *     This information shall be provided here as the schema itself has no knowledge of the CRS
      *     used.
-     * @return
-     * @throws IOException
      */
     public static SimpleFeatureType parse(
             final Configuration wfsConfiguration,
@@ -281,13 +273,7 @@ public class EmfAppSchemaParser {
         }
     }
 
-    /**
-     * TODO: add connectionfactory parameter to handle authentication, gzip, etc
-     *
-     * @param featureTypeName
-     * @param schemaLocation
-     * @return
-     */
+    /** TODO: add connectionfactory parameter to handle authentication, gzip, etc */
     private static XSDElementDeclaration parseFeatureType(
             final QName featureTypeName, final URL schemaLocation) throws DataSourceException {
         ApplicationSchemaConfiguration configuration;

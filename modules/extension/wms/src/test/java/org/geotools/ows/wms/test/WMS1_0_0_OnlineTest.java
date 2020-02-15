@@ -231,12 +231,7 @@ public class WMS1_0_0_OnlineTest extends ServerTestCase {
         */
     }
 
-    /**
-     * @param featureURL
-     * @throws IOException
-     * @throws URISyntaxException
-     * @throws SAXException
-     */
+    /** */
     protected WebMapServer getCustomWMS(URL featureURL)
             throws SAXException, URISyntaxException, IOException {
         return new CustomWMS(featureURL);
@@ -271,13 +266,7 @@ public class WMS1_0_0_OnlineTest extends ServerTestCase {
     // forces use of 1.0.0 spec
     private class CustomWMS extends WebMapServer {
 
-        /**
-         * @param serverURL
-         * @param wait
-         * @throws SAXException
-         * @throws URISyntaxException
-         * @throws IOException
-         */
+        /** */
         public CustomWMS(URL serverURL) throws SAXException, URISyntaxException, IOException {
             super(serverURL);
             // TODO Auto-generated constructor stub

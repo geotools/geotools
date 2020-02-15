@@ -63,8 +63,6 @@ public abstract class ProcessingCollection<T extends FeatureType, F extends Feat
     /**
      * Builds once and for all the target feature type. The results are available by calling
      * getSchema()
-     *
-     * @return
      */
     protected abstract T buildTargetFeatureType();
 

@@ -296,22 +296,14 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
         assertNotNull(crs);
     }
 
-    /**
-     * Check that a code with a axis direction with a reference to W works
-     *
-     * @throws FactoryException
-     */
+    /** Check that a code with a axis direction with a reference to W works */
     public void testWestDirection() throws FactoryException {
         // see GEOT-2901
         CoordinateReferenceSystem crs = CRS.decode("EPSG:3573");
         assertNotNull(crs);
     }
 
-    /**
-     * Check we support Plate Carré projection
-     *
-     * @throws FactoryException
-     */
+    /** Check we support Plate Carré projection */
     public void testPlateCarre() throws Exception {
         CoordinateReferenceSystem crs = CRS.decode("EPSG:32662");
         assertNotNull(crs);
@@ -399,11 +391,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
         }
     }
 
-    /**
-     * Tests similarity transform on the example provided in the EPSG projection guide, page 140
-     *
-     * @throws Exception
-     */
+    /** Tests similarity transform on the example provided in the EPSG projection guide, page 140 */
     public void testSimilarityTransform() throws Exception {
         // ED50 / UTM zone 31N
         CoordinateReferenceSystem tombak = CRS.decode("EPSG:23031", true);

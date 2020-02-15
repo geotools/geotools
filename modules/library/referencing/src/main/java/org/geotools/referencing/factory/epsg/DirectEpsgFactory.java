@@ -3580,11 +3580,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
         return true;
     }
 
-    /**
-     * Returns the current validation query
-     *
-     * @return
-     */
+    /** Returns the current validation query */
     public String getValidationQuery() {
         return validationQuery;
     }
@@ -3592,8 +3588,6 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
     /**
      * Sets the query it's run before using connection and prepared statements in order to check the
      * connection is still valid. The query should hit the database, but be as fast as possible.
-     *
-     * @param validationQuery
      */
     public void setValidationQuery(String validationQuery) {
         this.validationQuery = validationQuery;

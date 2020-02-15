@@ -123,11 +123,7 @@ public abstract class ClassificationFunction extends DefaultExpression
         return Collections.emptyMap();
     }
 
-    /**
-     * Determines the number of decimal places to truncate the interval at.
-     *
-     * @param slotWidth
-     */
+    /** Determines the number of decimal places to truncate the interval at. */
     protected int decimalPlaces(double slotWidth) {
         if (slotWidth == 0) {
             return 5;
@@ -191,10 +187,6 @@ public abstract class ClassificationFunction extends DefaultExpression
      * the smallest one). This should usually be used to adjust the bounds to include a value.
      * Example: 0.31-->0.44 where 0.44 is the maximum value and end of the range. We could just make
      * the , round(0.31, 1)=0.3; round(0.44 max value = 0.49
-     *
-     * @param value
-     * @param decimalPlaces
-     * @param up
      */
     protected double fixRound(double value, int decimalPlaces, boolean up) {
         double divisor = Math.pow(10, decimalPlaces);

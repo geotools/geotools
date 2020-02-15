@@ -312,10 +312,7 @@ class NetCDFResponse extends CoverageResponse {
         setStatus(Status.SUCCESS);
     }
 
-    /**
-     * @param query
-     * @param domainsSubset
-     */
+    /** */
     private void additionalParamsManagement(
             Query query,
             Map<String, Set<?>> domainsSubset,
@@ -355,14 +352,6 @@ class NetCDFResponse extends CoverageResponse {
     /**
      * Create the query to retrive the imageIndex related to the specified time (if any) and the
      * specified elevation (if any)
-     *
-     * @param time
-     * @param elevation
-     * @param query
-     * @param requestFilter
-     * @param elevationFilterAttribute
-     * @param timeFilterAttribute
-     * @return
      */
     private void createTimeElevationQuery(
             DateRange time,
@@ -575,11 +564,6 @@ class NetCDFResponse extends CoverageResponse {
 
     /**
      * This method is responsible for creating a coverage from the supplied {@link RenderedImage}.
-     *
-     * @param image
-     * @param sampleDimensions
-     * @return
-     * @throws IOException
      */
     private GridCoverage2D prepareCoverage(
             RenderedImage image, GridSampleDimension[] sampleDimensions, double[] noData)
@@ -909,10 +893,6 @@ class NetCDFResponse extends CoverageResponse {
      *
      * <p>Anyhow this method should not be called directly but subclasses should make use of the
      * setReadParams method instead in order to transparently look for overviews.
-     *
-     * @param levelIndex
-     * @param readParameters
-     * @param requestedRes
      */
     private void performDecimation(ImageReadParam readParameters) {
 

@@ -53,11 +53,7 @@ public class RangeFeatureValidationTest extends TestCase {
     private SimpleFeatureType type;
     private SimpleFeature feature;
     RangeValidation test;
-    /**
-     * Constructor for RangeFeatureValidationTest.
-     *
-     * @param arg0
-     */
+    /** Constructor for RangeFeatureValidationTest. */
     public RangeFeatureValidationTest(String arg0) {
         super(arg0);
     }

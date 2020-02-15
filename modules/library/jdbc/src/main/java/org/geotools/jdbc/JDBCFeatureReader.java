@@ -483,8 +483,6 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
      * Builds an array containing the position in the result set for each attribute. It takes into
      * account that rs positions start by one, about the exposed primary keys, and the fact that
      * exposed pk can be only partially selected in the output
-     *
-     * @return
      */
     private int[] buildAttributeRsIndex() {
         LinkedHashSet<String> pkColumns = dataStore.getColumnNames(pkey);

@@ -232,15 +232,9 @@ public final class JTS {
      * <p>This method transforms each ordinate into WGS84, manually converts this to WGS84_3D with
      * the addition of a Double.NaN, and then transforms to the final 3D position.
      *
-     * @param sourceEnvelope
-     * @param targetEnvelope
-     * @param transform
-     * @param npoints
      * @return ReferencedEnvelope3D in targetCRS describing the sourceEnvelope bounds
-     * @throws TransformException
      * @throws FactoryException If operationis unavailable from source CRS to WGS84, to from
      *     WGS84_3D to targetCRS
-     * @throws OperationNotFoundException
      */
     // JTS.transformUp(this, targetCRS, numPointsForTransformation );
     public static ReferencedEnvelope3D transformTo3D(
@@ -300,12 +294,7 @@ public final class JTS {
      * <p>This method transforms each ordinate into WGS84, manually converts this to WGS84_3D with
      * the addition of a Double.NaN, and then transforms to the final 2D position.
      *
-     * @param sourceEnvelope
-     * @param targetEnvelope
-     * @param transform
-     * @param npoints
      * @return ReferencedEnvelope matching provided 2D TargetCRS
-     * @throws TransformException
      */
     public static ReferencedEnvelope transformTo2D(
             final ReferencedEnvelope sourceEnvelope,
@@ -384,7 +373,6 @@ public final class JTS {
      * @param transformToWGS84 From source CRS to To WGS84
      * @param transformFromWGS84_3D From WGS84_3D to target CRS
      * @return Position in target CRS as calculated by transform2
-     * @throws TransformException
      */
     private static DirectPosition transformTo3D(
             GeneralDirectPosition srcPosition,
@@ -410,7 +398,6 @@ public final class JTS {
      * @param transformToWGS84_3D From source CRS to To WGS84_3D
      * @param transformFromWGS84 From WGS84 to target CRS
      * @return Position in target CRS as calculated by transform2
-     * @throws TransformException
      */
     private static DirectPosition transformTo2D(
             GeneralDirectPosition srcPosition,
@@ -647,8 +634,6 @@ public final class JTS {
     /**
      * Creates a DirectPosition from the provided point.
      *
-     * @param point
-     * @param crs
      * @return DirectPosition
      */
     public static DirectPosition toDirectPosition(
@@ -881,7 +866,6 @@ public final class JTS {
     /**
      * Create a Point from a ISO Geometry DirectPosition.
      *
-     * @param position
      * @return Point
      */
     public static Point toGeometry(DirectPosition position) {
@@ -891,7 +875,6 @@ public final class JTS {
     /**
      * Create a Point from a ISO Geometry DirectPosition.
      *
-     * @param position
      * @param factory Optional GeometryFactory
      * @return Point
      */
@@ -1139,7 +1122,6 @@ public final class JTS {
      *
      * @param geom the geometry to check
      * @param crs the crs that defines the are of validity (must not be null)
-     * @throws PointOutsideEnvelopeException
      * @since 2.4
      */
     public static void checkCoordinatesRange(Geometry geom, CoordinateReferenceSystem crs)
@@ -1388,8 +1370,6 @@ public final class JTS {
      * Replacement for geometry.getEnvelopeInternal() that returns ReferencedEnvelope or
      * ReferencedEnvelope3D as appropriate for the provided CRS.
      *
-     * @param geometry
-     * @param crs
      * @return ReferencedEnvelope (or ReferencedEnvelope3D) as appropriate
      */
     public static ReferencedEnvelope bounds(Geometry geometry, CoordinateReferenceSystem crs) {
@@ -1577,9 +1557,6 @@ public final class JTS {
     /**
      * Given a potentially invalid polygon it rebuilds it as a list of valid polygons, eventually
      * removing the holes
-     *
-     * @param polygon
-     * @return
      */
     public static List<Polygon> makeValid(Polygon polygon, boolean removeHoles) {
         // add all segments into the polygonizer
@@ -1655,8 +1632,6 @@ public final class JTS {
     /**
      * Converts a AWT polygon into a JTS one (unlike {@link toGeometry} which always returns lines
      * instead)
-     *
-     * @return
      */
     public static Polygon toPolygon(java.awt.Polygon polygon) {
         return toPolygonInternal(polygon);
@@ -1665,8 +1640,6 @@ public final class JTS {
     /**
      * Converts a AWT rectangle into a JTS one (unlike {@link toGeometry} which always returns lines
      * instead)
-     *
-     * @return
      */
     public static Polygon toPolygon(java.awt.Rectangle rectangle) {
         return toPolygonInternal(rectangle);
@@ -1675,8 +1648,6 @@ public final class JTS {
     /**
      * Converts a AWT rectangle into a JTS one (unlike {@link toGeometry} which always returns lines
      * instead)
-     *
-     * @return
      */
     public static Polygon toPolygon(Rectangle2D rectangle) {
         return toPolygonInternal(rectangle);

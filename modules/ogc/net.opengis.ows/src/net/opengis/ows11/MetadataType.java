@@ -93,7 +93,6 @@ public interface MetadataType extends EObject {
     
     /**
      * @model
-     * @return
      */
     String getTitle();
 

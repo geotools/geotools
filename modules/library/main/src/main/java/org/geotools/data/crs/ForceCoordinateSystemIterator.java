@@ -59,24 +59,13 @@ public class ForceCoordinateSystemIterator
     protected FeatureIterator<SimpleFeature> reader;
     protected SimpleFeatureBuilder builder;
 
-    /**
-     * Shortcut constructor that can be used if the new schema has already been computed
-     *
-     * @param reader
-     * @param schema
-     */
+    /** Shortcut constructor that can be used if the new schema has already been computed */
     ForceCoordinateSystemIterator(FeatureIterator<SimpleFeature> reader, SimpleFeatureType schema) {
         this.reader = reader;
         this.builder = new SimpleFeatureBuilder(schema);
     }
 
-    /**
-     * Builds a new ForceCoordinateSystemFeatureReader
-     *
-     * @param reader
-     * @param cs
-     * @throws SchemaException
-     */
+    /** Builds a new ForceCoordinateSystemFeatureReader */
     public ForceCoordinateSystemIterator(
             FeatureIterator<SimpleFeature> reader,
             SimpleFeatureType type,

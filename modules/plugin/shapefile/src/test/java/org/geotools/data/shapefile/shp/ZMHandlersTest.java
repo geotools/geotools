@@ -37,9 +37,6 @@ public class ZMHandlersTest {
     /**
      * Test method for {@link org.geotools.data.shapefile.shp.PointHandler#read(java.nio.ByteBuffer,
      * org.geotools.data.shapefile.shp.ShapeType, boolean)}.
-     *
-     * @throws IOException
-     * @throws ShapefileException
      */
     @Test
     public void testReadMZPoints() throws ShapefileException, IOException {

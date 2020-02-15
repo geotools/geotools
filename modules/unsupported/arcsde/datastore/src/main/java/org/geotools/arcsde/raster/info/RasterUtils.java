@@ -76,14 +76,6 @@ public class RasterUtils {
      * Returns the grid range specifying the matching tiles for a given pyramid level and grid
      * extent specifying the overlapping area to request in the level's pixel space.
      *
-     * @param pixelRange
-     * @param tilesHigh
-     * @param tilesWide
-     * @param tileSize
-     * @param numTilesHigh
-     * @param numTilesWide
-     * @param pixelRange
-     * @param level
      * @return a grid range holding the coordinates in tile space that fully covers the requested
      *     pixel range for the given pyramid level, or a negative area range
      */
@@ -152,9 +144,6 @@ public class RasterUtils {
 
     /**
      * Creates an IndexColorModel out of a DataBuffer obtained from an ArcSDE's raster color map.
-     *
-     * @param colorMapData
-     * @return
      */
     public static IndexColorModel sdeColorMapToJavaColorModel(
             final DataBuffer colorMapData, final int bitsPerSample) {
@@ -432,11 +421,6 @@ public class RasterUtils {
      * Given a collection of {@link RasterQueryInfo} instances holding information about how a
      * request fits for each individual raster composing a catalog, figure out where their resulting
      * images fit into the overall mosaic that's gonna be the result of the request.
-     *
-     * @param rasterInfo
-     * @param resultEnvelope
-     * @param results
-     * @return
      */
     public static GridEnvelope setMosaicLocations(
             final RasterDatasetInfo rasterInfo, final List<RasterQueryInfo> results) {
@@ -502,12 +486,6 @@ public class RasterUtils {
     /**
      * Find out the raster ids and their pyramid levels in the raster dataset for the rasters whose
      * envelope overlaps the requested one
-     *
-     * @param rasterInfo
-     * @param requestedEnvelope
-     * @param requestedDim
-     * @param overviewPolicy
-     * @return
      */
     public static List<RasterQueryInfo> findMatchingRasters(
             final RasterDatasetInfo rasterInfo,
@@ -715,7 +693,6 @@ public class RasterUtils {
      * For a color-mapped raster, the no-data value is set to the {@link
      * IndexColorModel#getTransparentPixel() transparent pixel}
      *
-     * @param colorMap
      * @return the index in the colorMap that's the transparent pixel as is to be used as no-data
      *     value
      */
@@ -737,7 +714,6 @@ public class RasterUtils {
      * @param statsMax the maximum sample value for the band as reported by the band's statistics,
      *     or {@code NaN}
      * @param nativeCellType the band's native cell type
-     * @return
      */
     public static Number determineNoDataValue(
             final int numBands,

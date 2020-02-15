@@ -90,29 +90,17 @@ public abstract class TileIdentifier {
         return this.zoomLevel.getZoomLevel();
     }
 
-    /**
-     * Gets the column value of a tile.
-     *
-     * @return
-     */
+    /** Gets the column value of a tile. */
     public int getX() {
         return x;
     }
 
-    /**
-     * Gets the row value of a tile.
-     *
-     * @return
-     */
+    /** Gets the row value of a tile. */
     public int getY() {
         return y;
     }
 
-    /**
-     * Gets the row value of a tile.
-     *
-     * @return
-     */
+    /** Gets the row value of a tile. */
     public ZoomLevel getZoomLevel() {
         return this.zoomLevel;
     }
@@ -129,8 +117,6 @@ public abstract class TileIdentifier {
      * arithmeticMod(-1, 8) = 7
      * </pre>
      *
-     * @param a
-     * @param b
      * @return the positive remainder
      */
     public static final int arithmeticMod(int a, int b) {
@@ -167,8 +153,6 @@ public abstract class TileIdentifier {
      * <p>When building an id, you should use the service name as a prefix (e.g. for OpenStreetMap:
      * "Mapnik", "CycleMap"; Bing Maps: "Road", "Hybrid"; etc) and suffix the id with a
      * file-friendly string (e.g. OpenStreetMap: "Mapnik_X_Y_Z").
-     *
-     * @return
      */
     public abstract String getId();
 

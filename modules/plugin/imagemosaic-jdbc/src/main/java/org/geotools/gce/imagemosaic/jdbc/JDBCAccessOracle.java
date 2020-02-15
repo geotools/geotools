@@ -56,11 +56,7 @@ class JDBCAccessOracle extends JDBCAccessBase {
         initStatementStrings(config);
     }
 
-    /**
-     * Initialize needed sql statement strings
-     *
-     * @param config
-     */
+    /** Initialize needed sql statement strings */
     private void initStatementStrings(Config config) {
         String geomAttr = config.getGeomAttributeNameInSpatialTable();
 

@@ -137,11 +137,7 @@ public class InterpolationPropertiesTest extends AppSchemaTestSupport {
         checkSystemProperties(props);
     }
 
-    /**
-     * Check that the system properties are as expected.
-     *
-     * @param properties
-     */
+    /** Check that the system properties are as expected. */
     private void checkSystemProperties(InterpolationProperties properties) {
         // check that synthetic system property is loaded
         assertNotNull(properties.getProperty(TEST_SYSTEM_PROPERTY));

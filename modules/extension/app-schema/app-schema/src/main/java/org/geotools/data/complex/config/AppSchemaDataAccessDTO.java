@@ -101,11 +101,7 @@ public class AppSchemaDataAccessDTO implements Serializable {
         return new HashMap(namespaces);
     }
 
-    /**
-     * Set the path of other related types that are mapped separately
-     *
-     * @param includes
-     */
+    /** Set the path of other related types that are mapped separately */
     public void setIncludedTypes(ArrayList<String> includes) {
         if (includes != null) {
             this.includes = new CheckedArrayList(String.class);
@@ -113,11 +109,7 @@ public class AppSchemaDataAccessDTO implements Serializable {
         }
     }
 
-    /**
-     * Return the list of paths of related types that are mapped separately
-     *
-     * @return
-     */
+    /** Return the list of paths of related types that are mapped separately */
     public List<String> getIncludes() {
         return includes;
     }

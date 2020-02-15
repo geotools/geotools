@@ -161,11 +161,7 @@ public class MapBoundsEvent extends EventObject {
         return field;
     }
 
-    /**
-     * Set of event types raised for this event.
-     *
-     * @return
-     */
+    /** Set of event types raised for this event. */
     public EnumSet<Type> getEventType() {
         return type;
     }

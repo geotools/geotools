@@ -261,8 +261,6 @@ public class FilterFilter extends XMLFilterImpl implements GMLHandlerJTS {
      * String)}, to ensure the message passed to the expression factory contains the whole string
      * accumulated by the potentially many calls to {@link #characters(char[], int, int)} done by
      * the parser.
-     *
-     * @throws SAXException
      */
     private void processCharacters() throws SAXException {
         if (insideFilter) {

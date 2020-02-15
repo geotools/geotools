@@ -233,11 +233,6 @@ public final class CommonFactoryFinder extends FactoryFinder {
      *   <li>First and un-synchronized lookup in the hints, should the user have provided the
      *       preferred factroy
      *   <li>A standard SPI registry scan, which has to be fully synchronized
-     *
-     * @param category
-     * @param hints
-     * @param key
-     * @return
      */
     private static <T> T lookup(Class<T> category, Hints hints, Hints.Key key) {
         // nulls?

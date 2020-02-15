@@ -226,19 +226,11 @@ public class SLDTransformer extends TransformerBase {
 
         private boolean exportDefaultValues = false;
 
-        /**
-         * Translates into the default of prefix "sld" for "http://www.opengis.net/sld".
-         *
-         * @param handler
-         */
+        /** Translates into the default of prefix "sld" for "http://www.opengis.net/sld". */
         public SLDTranslator(ContentHandler handler) {
             this(handler, "sld", "http://www.opengis.net/sld");
         }
-        /**
-         * Translates
-         *
-         * @param handler
-         */
+        /** Translates */
         public SLDTranslator(ContentHandler handler, String prefix, String uri) {
             super(handler, prefix, uri);
             filterTranslator = new FilterTransformer.FilterTranslator(handler);
@@ -285,22 +277,12 @@ public class SLDTransformer extends TransformerBase {
             return exportDefaultValues;
         }
 
-        /**
-         * Utility method used to quickly package up the provided expression.
-         *
-         * @param element
-         * @param expr
-         */
+        /** Utility method used to quickly package up the provided expression. */
         void element(String element, Expression expr) {
             element(element, expr, null);
         }
 
-        /**
-         * Utility method used to quickly package up the provided InternationalString.
-         *
-         * @param element
-         * @param expr
-         */
+        /** Utility method used to quickly package up the provided InternationalString. */
         void element(String element, InternationalString intString) {
             if (intString instanceof GrowableInternationalString) {
                 GrowableInternationalString growable = (GrowableInternationalString) intString;
@@ -323,12 +305,7 @@ public class SLDTransformer extends TransformerBase {
             }
         }
 
-        /**
-         * Utility method used to quickly package up the provided expression.
-         *
-         * @param element
-         * @param expr
-         */
+        /** Utility method used to quickly package up the provided expression. */
         void element(String element, Expression expr, Object defaultValue) {
             element(element, expr, defaultValue, null);
         }
@@ -577,9 +554,6 @@ public class SLDTransformer extends TransformerBase {
         /**
          * Returns true if the list of fonts has the same settings for everything besides the font
          * family, and can thus be represented as a single Font element
-         *
-         * @param fonts
-         * @return
          */
         private boolean areFontsUniform(List<Font> fonts) {
             if (fonts.size() == 1) {

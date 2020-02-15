@@ -38,12 +38,7 @@ public class StaticMethodsProcessFactory<T> extends AnnotationDrivenProcessFacto
         this.targetClass = targetClass;
     }
 
-    /**
-     * Finds the DescribeProcess description for the specified name
-     *
-     * @param name
-     * @return
-     */
+    /** Finds the DescribeProcess description for the specified name */
     protected DescribeProcess getProcessDescription(Name name) {
         Method method = method(name.getLocalPart());
         if (method == null) {

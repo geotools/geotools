@@ -37,12 +37,7 @@ public class GeoJSONReaderTest {
 
     private final GeometryFactory gf = new GeometryFactory();
 
-    /**
-     * Test method for {@link org.geotools.data.geojson.GeoJSONReader#getFeatures()}.
-     *
-     * @throws IOException
-     * @throws ParseException
-     */
+    /** Test method for {@link org.geotools.data.geojson.GeoJSONReader#getFeatures()}. */
     @Test
     public void testGetFeatures() throws IOException, ParseException {
         URL url = TestData.url(GeoJSONDataStore.class, "locations.json");

@@ -177,7 +177,6 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
      * Creates a new instance of GeoTiffReader
      *
      * @param input the GeoTiff file
-     * @throws DataSourceException
      */
     public GeoTiffReader(Object input) throws DataSourceException {
         this(input, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE));
@@ -188,7 +187,6 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
      *
      * @param input the GeoTiff file
      * @param uHints user-supplied hints TODO currently are unused
-     * @throws DataSourceException
      */
     public GeoTiffReader(Object input, Hints uHints) throws DataSourceException {
         super(input, uHints);
@@ -277,12 +275,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
         }
     }
 
-    /**
-     * Collect georeferencing information about this geotiff.
-     *
-     * @param hints
-     * @throws DataSourceException
-     */
+    /** Collect georeferencing information about this geotiff. */
     private void getHRInfo(Hints hints) throws DataSourceException {
         ImageReader reader = null;
         ImageReader ovrReader = null;
@@ -861,7 +854,6 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
      *     space.
      * @param roi Optional ROI used as Mask
      * @return a {@link GridCoverage}
-     * @throws IOException
      */
     protected final GridCoverage2D createCoverage(
             PlanarImage image, MathTransform raster2Model, ROI roi) throws IOException {

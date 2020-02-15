@@ -107,7 +107,6 @@ public class ProjectionHandler {
      * @param sourceCRS The source CRS
      * @param validAreaBounds The valid area (used to cut geometries that go beyond it)
      * @param renderingEnvelope The target rendering area and target CRS
-     * @throws FactoryException
      */
     public ProjectionHandler(
             CoordinateReferenceSystem sourceCRS,
@@ -138,7 +137,6 @@ public class ProjectionHandler {
      * @param sourceCRS The source CRS
      * @param validArea The valid area (used to cut geometries that go beyond it)
      * @param renderingEnvelope The target rendering area and target CRS
-     * @throws FactoryException
      */
     public ProjectionHandler(
             CoordinateReferenceSystem sourceCRS,
@@ -170,8 +168,6 @@ public class ProjectionHandler {
     /**
      * Set one of the supported projection parameters: - advancedProjectionDensify (double) if > 0
      * enables densification on preprocessing with the given distance between points.
-     *
-     * @param projectionParameters
      */
     public void setProjectionParameters(Map projectionParameters) {
         if (projectionParameters.containsKey(ADVANCED_PROJECTION_DENSIFY)) {
@@ -450,8 +446,6 @@ public class ProjectionHandler {
      * @param envelope envelope to reproject
      * @param targetCRS target CRS
      * @return reprojected envelope
-     * @throws TransformException
-     * @throws FactoryException
      */
     public ReferencedEnvelope getProjectedEnvelope(
             ReferencedEnvelope envelope, CoordinateReferenceSystem targetCRS)
@@ -724,9 +718,6 @@ public class ProjectionHandler {
      * Densifies the given geometry using the current densification configuration.
      *
      * <p>It returns the original geometry if densification is not enabled.
-     *
-     * @param geometry
-     * @return
      */
     protected Geometry densify(Geometry geometry) {
         if (geometry != null && densify > 0.0) {
@@ -852,12 +843,7 @@ public class ProjectionHandler {
         }
     }
 
-    /**
-     * Can modify/wrap the transform to handle specific projection issues
-     *
-     * @return
-     * @throws FactoryException
-     */
+    /** Can modify/wrap the transform to handle specific projection issues */
     public MathTransform getRenderingTransform(MathTransform mt) throws FactoryException {
         List<MathTransform> elements = new ArrayList<MathTransform>();
         accumulateTransforms(mt, elements);
@@ -933,8 +919,6 @@ public class ProjectionHandler {
     /**
      * Returns the area where the transformation from source to target is valid, expressed in the
      * source coordinate reference system, or null if there is no limit
-     *
-     * @return
      */
     public ReferencedEnvelope getValidAreaBounds() {
         return validAreaBounds;
@@ -986,9 +970,6 @@ public class ProjectionHandler {
     /**
      * Private method for adding to the input List only the {@link Geometry} objects of the input
      * {@link GeometryCollection} which belongs to the defined geometryType
-     *
-     * @param geoms
-     * @param geometryType
      */
     protected void addGeometries(
             List<Geometry> geoms, GeometryCollection collection, String geometryType) {

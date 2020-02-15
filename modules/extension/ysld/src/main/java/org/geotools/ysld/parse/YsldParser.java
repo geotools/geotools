@@ -77,8 +77,6 @@ public class YsldParser extends YamlParser {
     /**
      * Parse the yaml provided to this instance into a {@link StyledLayerDescriptor} and return the
      * result.
-     *
-     * @throws IOException
      */
     public StyledLayerDescriptor parse() throws IOException {
 

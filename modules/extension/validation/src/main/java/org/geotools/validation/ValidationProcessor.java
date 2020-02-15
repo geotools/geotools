@@ -125,8 +125,6 @@ public class ValidationProcessor {
      *
      * <p>Description: Add the validation test to the map for every featureType that it validates.
      * If the FeatureTypes array is ALL, then the validation is added to the ANYTYPENAME entry.
-     *
-     * @param validation
      */
     private void addToFVLookup(FeatureValidation validation) {
         String[] featureTypeList = validation.getTypeRefs();
@@ -161,8 +159,6 @@ public class ValidationProcessor {
      *
      * <p>Add the validation test to the map for every featureType that it validates. If the
      * FeatureTypes array is ALL, then the validation is added to the ANYTYPENAME entry.
-     *
-     * @param validation
      */
     private void addToIVLookup(IntegrityValidation validation) {
         String[] integrityTypeList = validation.getTypeRefs();
@@ -195,8 +191,6 @@ public class ValidationProcessor {
      * addValidation
      *
      * <p>Add a FeatureValidation to the list of Feature tests
-     *
-     * @param validation
      */
     public void addValidation(FeatureValidation validation) {
         addToFVLookup((FeatureValidation) validation);
@@ -206,8 +200,6 @@ public class ValidationProcessor {
      * addValidation
      *
      * <p>Add an IntegrityValidation to the list of Integrity tests
-     *
-     * @param validation
      */
     public void addValidation(IntegrityValidation validation) {
         addToIVLookup((IntegrityValidation) validation);
@@ -462,10 +454,6 @@ public class ValidationProcessor {
      *
      * <p>This method is useful for testing, it is not forgiving and will error out if things go
      * bad.
-     *
-     * @param plugInDTOs
-     * @param testSuiteDTOs
-     * @throws Exception
      */
     public void load(Map plugInDTOs, Map testSuiteDTOs) throws Exception {
         // step 1 make a list required plug-ins

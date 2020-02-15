@@ -56,16 +56,7 @@ public abstract class AbstractLazyAttributeTypeImpl implements AttributeType {
 
     private AttributeType superType;
 
-    /**
-     * Constructor arguments have the same meaning as in {@link AttributeTypeImpl}.
-     *
-     * @param name
-     * @param binding
-     * @param identified
-     * @param isAbstract
-     * @param restrictions
-     * @param description
-     */
+    /** Constructor arguments have the same meaning as in {@link AttributeTypeImpl}. */
     public AbstractLazyAttributeTypeImpl(
             Name name,
             Class<?> binding,

@@ -48,11 +48,7 @@ import org.opengis.coverage.grid.GridCoverageReader;
 @SuppressWarnings("deprecation")
 public final class ArcGridVisualizationTest extends ArcGridTestCaseAdapter {
 
-    /**
-     * Creates a new instance of ArcGridReadWriteTest
-     *
-     * @param name
-     */
+    /** Creates a new instance of ArcGridReadWriteTest */
     public ArcGridVisualizationTest(String name) {
         super(name);
     }
@@ -77,8 +73,6 @@ public final class ArcGridVisualizationTest extends ArcGridTestCaseAdapter {
      * This test tries to read GZipped ascii grids first by supplying the {@link ArcGridReader} with
      * a {@link File} that points to a gzipped coverage, second by opening up a {@link
      * GZIPInputStream} and asking {@link ImageIO} to wrap it with an {@link ImageInputStream}.
-     *
-     * @throws IOException
      */
     public void testReadFileGZip() throws IOException {
         final Hints hints =

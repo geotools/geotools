@@ -411,8 +411,6 @@ public class MapInfoFileReader {
      * Parse Tab File
      *
      * @param bufferedreader the buffered reader
-     * @throws IOException
-     * @throws DataSourceException
      */
     private void parseTabFile(final BufferedReader bufferedreader)
             throws IOException, DataSourceException {

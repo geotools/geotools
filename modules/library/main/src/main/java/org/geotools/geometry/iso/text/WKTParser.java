@@ -116,8 +116,6 @@ public class WKTParser {
      * Provide a GeometryFactory for the parser.
      *
      * <p>Should be called prior to use.
-     *
-     * @param factory
      */
     public void setFactory(GeometryFactory factory) {
         this.geometryFactory = factory;
@@ -127,8 +125,6 @@ public class WKTParser {
      * Provide a PrimitiveFactory for the parser.
      *
      * <p>Should be called prior to use.
-     *
-     * @param factory
      */
     public void setFactory(PrimitiveFactory factory) {
         this.primitiveFactory = factory;
@@ -137,8 +133,6 @@ public class WKTParser {
      * Provide a PositionFactory for the parser.
      *
      * <p>Should be called prior to use.
-     *
-     * @param factory
      */
     public void setFactory(PositionFactory factory) {
         this.positionFactory = factory;
@@ -232,10 +226,7 @@ public class WKTParser {
     /**
      * Returns a list of DirectPosition objects which it read from the StreamTokenizer
      *
-     * @param tokenizer
      * @return a <code>List\<DirectPosition\></code>
-     * @throws IOException
-     * @throws ParseException
      */
     private List getCoordinates(StreamTokenizer tokenizer) throws IOException, ParseException {
         String nextToken = getNextEmptyOrOpener(tokenizer);
@@ -254,10 +245,7 @@ public class WKTParser {
     /**
      * Parse a single coordinate from a <code>StreamTokenizer</code>
      *
-     * @param tokenizer
      * @return a single DirectPosition
-     * @throws IOException
-     * @throws ParseException
      */
     private DirectPosition getPreciseCoordinate(StreamTokenizer tokenizer)
             throws IOException, ParseException {
@@ -400,7 +388,6 @@ public class WKTParser {
      * Throws a formatted ParseException for the current token.
      *
      * @param expected a description of what was expected
-     * @throws ParseException
      */
     private void parseError(String expected, StreamTokenizer tokenizer) throws ParseException {
         String tokenStr = tokenString(tokenizer);
@@ -583,7 +570,6 @@ public class WKTParser {
      *
      * @param tokenizer tokenizer on top of a stream of text in Well-known Text format.
      * @return a <code>MultiPrimitive</code> specified by the next tokens in the stream
-     * @throws ParseException
      * @throws IOException if an I/O error occurs
      */
     private MultiPrimitive readGeometryCollectionText(StreamTokenizer tokenizer)
@@ -612,7 +598,6 @@ public class WKTParser {
      *
      * @param tokenizer tokenizer on top of a stream of text in Well-known Text format.
      * @return a <code>MultiPrimitive</code> specified by the next tokens in the stream
-     * @throws ParseException
      * @throws IOException if an I/O error occurs
      */
     private MultiPrimitive readMultiLineStringText(StreamTokenizer tokenizer)

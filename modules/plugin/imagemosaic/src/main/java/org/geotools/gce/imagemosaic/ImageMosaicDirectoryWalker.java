@@ -311,9 +311,6 @@ public class ImageMosaicDirectoryWalker extends ImageMosaicWalker {
      *
      * <p>Sets a filter that can reduce the file the mosaic walker will take into consideration (in
      * a more flexible way than the wildcards)
-     *
-     * @param filter
-     * @throws IllegalArgumentException
      */
     public ImageMosaicDirectoryWalker(
             ImageMosaicConfigHandler configHandler,
@@ -324,10 +321,7 @@ public class ImageMosaicDirectoryWalker extends ImageMosaicWalker {
         this.fileFilter = filter;
     }
 
-    /**
-     * @param catalogHandler
-     * @param eventHandler
-     */
+    /** */
     public ImageMosaicDirectoryWalker(
             ImageMosaicConfigHandler catalogHandler, ImageMosaicEventHandlers eventHandler) {
         this(catalogHandler, eventHandler, null);

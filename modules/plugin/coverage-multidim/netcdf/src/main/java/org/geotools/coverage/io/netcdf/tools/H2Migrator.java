@@ -176,8 +176,6 @@ public class H2Migrator {
     /**
      * Returns the coverage names provided by the user, or tries to guess them by looking at
      * property files in the mosaic directory
-     *
-     * @return
      */
     private String[] getCoverageNames() {
         String[] names = configuration.getCoverageNames();

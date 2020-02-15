@@ -166,7 +166,6 @@ public class ECQL {
      * @param ecqlSequencePredicate a ECQL predicate sequence
      * @param filterFactory the factory used to make the filters
      * @return a List of {@link Filter}, one for each input ECQL statement
-     * @throws CQLException
      */
     public static List<Filter> toFilterList(
             final String ecqlSequencePredicate, FilterFactory filterFactory) throws CQLException {
@@ -182,7 +181,6 @@ public class ECQL {
     /**
      * Generates the ecql predicates associated to the {@link List} of {@link Filter}s object.
      *
-     * @param filterList
      * @return ecql predicates separated by ";"
      */
     public static String toCQL(List<Filter> filterList) {
@@ -203,7 +201,6 @@ public class ECQL {
     /**
      * Generates the ecql predicate associated to the {@link Filter} object.
      *
-     * @param filter
      * @return ecql predicate
      */
     public static String toCQL(Filter filter) {
@@ -214,11 +211,7 @@ public class ECQL {
         return output.toString();
     }
 
-    /**
-     * Convenience method checking if EWKT encoding should be enabled in ECQL, or not
-     *
-     * @return
-     */
+    /** Convenience method checking if EWKT encoding should be enabled in ECQL, or not */
     public static boolean isEwktEncodingEnabled() {
         Object value = Hints.getSystemDefault(Hints.ENCODE_EWKT);
         if (value == null) {
@@ -230,7 +223,6 @@ public class ECQL {
     /**
      * Generates the expression text associated to the {@link Expression} object.
      *
-     * @param filter
      * @return expression as text
      */
     public static String toCQL(Expression expression) {
@@ -241,11 +233,7 @@ public class ECQL {
         return output.toString();
     }
 
-    /**
-     * Command line expression tester used to try out filters and expressions.
-     *
-     * @param args
-     */
+    /** Command line expression tester used to try out filters and expressions. */
     @SuppressWarnings({"PMD.SystemPrintln", "PMD.CloseResource"})
     public static final void main(String[] args) {
         System.out.println("ECQL Filters Tester");

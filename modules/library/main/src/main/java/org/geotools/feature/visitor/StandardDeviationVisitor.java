@@ -66,12 +66,7 @@ public class StandardDeviationVisitor implements FeatureCalc, FeatureAttributeVi
     double mean = 0;
     double m2 = 0;
 
-    /**
-     * Constructs a standard deviation visitor based on the specified expression
-     *
-     * @param expr
-     * @param average
-     */
+    /** Constructs a standard deviation visitor based on the specified expression */
     public StandardDeviationVisitor(Expression expr) {
         this.expr = expr;
     }

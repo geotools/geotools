@@ -108,8 +108,6 @@ final class TestUtils extends Assert {
      * @param reader to use for creating a {@link GridCoverage2D}.
      * @param value that control the actions to take for creating a {@link GridCoverage2D}.
      * @param title to print out as the head of the frame in case we visualize it.
-     * @return
-     * @throws IOException
      */
     static GridCoverage2D checkCoverage(
             final ImageMosaicReader reader, GeneralParameterValue[] values, String title)
@@ -149,8 +147,6 @@ final class TestUtils extends Assert {
      *
      * @param testURL points to a shapefile that is the index of a certain mosaic.
      * @return a suitable {@link AbstractGridFormat}.
-     * @throws FactoryException
-     * @throws NoSuchAuthorityCodeException
      */
     static AbstractGridFormat getFormat(URL testURL)
             throws NoSuchAuthorityCodeException, FactoryException {
@@ -165,8 +161,6 @@ final class TestUtils extends Assert {
      * @param testURL points to a shapefile that is the index of a certain mosaic.
      * @param hints hints to be used while looking for a format.
      * @return a suitable {@link AbstractGridFormat}.
-     * @throws FactoryException
-     * @throws NoSuchAuthorityCodeException
      */
     static AbstractGridFormat getFormat(URL testURL, Hints hints)
             throws NoSuchAuthorityCodeException, FactoryException {
@@ -185,8 +179,6 @@ final class TestUtils extends Assert {
      *     for.
      * @param format to use for instantiating such a reader.
      * @return a suitable {@link ImageMosaicReader}.
-     * @throws FactoryException
-     * @throws NoSuchAuthorityCodeException
      */
     static ImageMosaicReader getReader(URL testURL, final AbstractGridFormat format)
             throws NoSuchAuthorityCodeException, FactoryException {

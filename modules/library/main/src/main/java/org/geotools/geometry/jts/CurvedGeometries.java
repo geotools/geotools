@@ -32,12 +32,7 @@ import org.locationtech.jts.geom.LineString;
  */
 public class CurvedGeometries {
 
-    /**
-     * Returns true if the geometry is curved, or contains elements that are curved
-     *
-     * @param geometry
-     * @return
-     */
+    /** Returns true if the geometry is curved, or contains elements that are curved */
     public static boolean isCurved(Geometry geometry) {
         if (geometry instanceof CurvedGeometry<?>) {
             return true;
@@ -58,12 +53,7 @@ public class CurvedGeometries {
         return curveFound.get();
     }
 
-    /**
-     * Checks if the specified geometry is a circle
-     *
-     * @param geom
-     * @return
-     */
+    /** Checks if the specified geometry is a circle */
     public static boolean isCircle(Geometry geom) {
         if (geom.isEmpty()) {
             return false;
@@ -131,13 +121,7 @@ public class CurvedGeometries {
         }
     }
 
-    /**
-     * Builds a circular arc out of the specified coordinate sequence
-     *
-     * @param cs
-     * @param startCoordinate
-     * @return
-     */
+    /** Builds a circular arc out of the specified coordinate sequence */
     public static CircularArc getArc(CoordinateSequence cs, int startCoordinate) {
         if (cs.size() < (startCoordinate + 3)) {
             throw new IllegalArgumentException(
@@ -159,11 +143,7 @@ public class CurvedGeometries {
                 cs.getOrdinate(2, 1));
     }
 
-    /**
-     * Returns the circle containing this arc
-     *
-     * @return
-     */
+    /** Returns the circle containing this arc */
     public static CircularRing toCircle(
             CircularArc arc, GeometryFactory geometryFactory, double tolerance) {
         double radius = arc.getRadius();
@@ -188,9 +168,6 @@ public class CurvedGeometries {
      * Extracts a {@link CurvedGeometryFactory} from the provided geometry, either by just returning
      * the one that is held by the geometry, if consistent with its tolerance, or by creating a new
      * one
-     *
-     * @param curved
-     * @return
      */
     public static CurvedGeometryFactory getFactory(CurvedGeometry<?> curved) {
         GeometryFactory factory = ((Geometry) curved).getFactory();

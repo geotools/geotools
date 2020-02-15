@@ -48,7 +48,6 @@ public interface OGR {
      * Checks the ogr error status code and throws java exceptions accordingly.
      *
      * @param code The ogr error code.
-     * @throws IOException
      */
     void CheckError(int code) throws IOException;
 

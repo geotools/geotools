@@ -18,7 +18,6 @@ package org.geotools.data;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.ParseException;
@@ -84,9 +83,6 @@ public class DefaultRepository implements Repository {
      * nameA=param=value,param2=value2,...
      * nameB=param=value,param2=value2,...
      * </code></pre>
-     *
-     * @throws IOException
-     * @throws FileNotFoundException
      */
     public void load(File propertiesFile) throws Exception {
         Properties properties = new Properties();
@@ -104,11 +100,7 @@ public class DefaultRepository implements Repository {
         }
     }
 
-    /**
-     * Check if a lock exists in any of the DataStores.
-     *
-     * @param lockID
-     */
+    /** Check if a lock exists in any of the DataStores. */
     public boolean lockExists(String lockID) {
         if (lockID == null) {
             return false;
@@ -210,8 +202,6 @@ public class DefaultRepository implements Repository {
      * <p>Description ...
      *
      * @see org.geotools.data.Catalog#registerDataStore(org.geotools.data.DataStore)
-     * @param dataStore
-     * @throws IOException
      */
     public void register(String name, DataAccess<?, ?> dataStore) throws IOException {
         register(new NameImpl(name), dataStore);

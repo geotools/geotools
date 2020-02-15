@@ -63,12 +63,7 @@ import org.geotools.util.NIOUtilities;
  */
 public class IndexedDbaseFileReader extends DbaseFileReader {
 
-    /**
-     * Like calling DbaseFileReader(ReadableByteChannel, true);
-     *
-     * @param channel
-     * @throws IOException
-     */
+    /** Like calling DbaseFileReader(ReadableByteChannel, true); */
     public IndexedDbaseFileReader(ShpFiles shpFiles) throws IOException {
         this(shpFiles, false);
     }

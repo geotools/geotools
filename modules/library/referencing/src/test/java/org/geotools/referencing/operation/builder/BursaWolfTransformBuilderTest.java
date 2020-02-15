@@ -83,8 +83,6 @@ public final class BursaWolfTransformBuilderTest {
      * The test that generates random transformation parameters and source points. The destination
      * points are calculated using generated parameters. Then the parameters are computed by the
      * builder and compared against original.
-     *
-     * @throws TransformException
      */
     @Test
     public void test2BursaWolfParamCalculater() throws FactoryException, TransformException {

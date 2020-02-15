@@ -236,8 +236,6 @@ public abstract class AbstractWfsDataStoreOnlineTest {
     /**
      * Performs a FeatureSource.getCount(Query) with the constructor provided fid filter if the
      * filter is not null.
-     *
-     * @throws IOException
      */
     @Test
     public void testFeatureSourceGetCountFilter() throws IOException {

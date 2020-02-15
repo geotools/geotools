@@ -140,8 +140,6 @@ public class FeatureTypeTest extends DataTestCase {
      * that the expected ancestors are returned at each level in reverse order.
      *
      * <p>UML type hierarchy of test types: Feature <|-- A <|-- B <|-- C
-     *
-     * @throws Exception
      */
     @SuppressWarnings("serial")
     public void testAncestors() throws Exception {

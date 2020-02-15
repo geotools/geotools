@@ -105,7 +105,6 @@ public interface DataStoreFactorySpi extends DataAccessFactory {
     //     *        data store
     //     * @return MetadataEntity with descriptive information (including
     //     *         internationlization support).
-    //     * @throws IOException
     //     */
     //    DataSourceMetadataEnity createMetadata( Map params ) throws IOException;
     DataStore createNewDataStore(Map<String, java.io.Serializable> params) throws IOException;

@@ -60,11 +60,7 @@ public class ShapefileWriter implements Closeable {
     private StreamLogging shxLogger = new StreamLogging("SHX Channel in ShapefileWriter");
     private GeometryFactory gf = new GeometryFactory();
 
-    /**
-     * Creates a new instance of ShapeFileWriter
-     *
-     * @throws IOException
-     */
+    /** Creates a new instance of ShapeFileWriter */
     public ShapefileWriter(FileChannel shpChannel, FileChannel shxChannel) throws IOException {
         this.shpChannel = shpChannel;
         this.shxChannel = shxChannel;

@@ -81,11 +81,7 @@ public class StyledLayerDescriptorBuilder extends AbstractSLDBuilder<StyledLayer
         return this;
     }
 
-    /**
-     * Reset builder to provided original stroke.
-     *
-     * @param stroke
-     */
+    /** Reset builder to provided original stroke. */
     public StyledLayerDescriptorBuilder reset(StyledLayerDescriptor other) {
         if (other == null) {
             return unset();

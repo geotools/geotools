@@ -113,7 +113,6 @@ public class ArcSDEDataStore implements DataStore {
      * Creates a new ArcSDE DataStore working over the given connection pool
      *
      * @param connPool pool of {@link Session} this datastore works upon.
-     * @throws IOException
      */
     public ArcSDEDataStore(final ISessionPool connPool) throws IOException {
         this(connPool, null, null, false);
@@ -129,7 +128,6 @@ public class ArcSDEDataStore implements DataStore {
      *     {@link SeVersion#SE_QUALIFIED_DEFAULT_VERSION_NAME DEFAULT} version
      * @param allowNonSpatialTables whether ArcSDE registered, non-spatial tables are to be
      *     published
-     * @throws IOException
      */
     public ArcSDEDataStore(
             final ISessionPool connPool,
@@ -154,7 +152,6 @@ public class ArcSDEDataStore implements DataStore {
      * <p>The connection is held open until while the transaction is underway. A a Transaction.State
      * is registered for this SessionPool in order to hold the session.
      *
-     * @param transaction
      * @return the session associated with the transaction
      */
     public ISession getSession(Transaction transaction) throws IOException {
@@ -339,8 +336,6 @@ public class ArcSDEDataStore implements DataStore {
      *
      * @param query the Query containing the request criteria
      * @param session the session to use to retrieve content.
-     * @return
-     * @throws IOException
      */
     private FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(
             final Query query,
@@ -501,12 +496,7 @@ public class ArcSDEDataStore implements DataStore {
         return getFeatureWriter(typeName, Filter.INCLUDE, transaction);
     }
 
-    /**
-     * @param typeName
-     * @param transaction
-     * @return
-     * @throws IOException
-     */
+    /** */
     ArcSdeVersionHandler getVersionHandler(final String typeName, final Transaction transaction)
             throws IOException {
         ArcSdeVersionHandler versionHandler = ArcSdeVersionHandler.NONVERSIONED_HANDLER;
@@ -696,11 +686,6 @@ public class ArcSDEDataStore implements DataStore {
      *       ArcSDE, respectively. Refer to the ArcSDE documentation for an explanation of the
      *       meanings of those terms.
      * </ul>
-     *
-     * @param featureType
-     * @param hints
-     * @throws IOException
-     * @throws IllegalArgumentException
      */
     public void createSchema(final SimpleFeatureType featureType, final Map<String, String> hints)
             throws IOException, IllegalArgumentException {
@@ -729,10 +714,6 @@ public class ArcSDEDataStore implements DataStore {
      *   <li>Top (as in SELECT TOP 10 * FROM...)
      *   <li>Where
      * </ul>
-     *
-     * @param typeName
-     * @param select
-     * @throws IOException
      */
     void registerView(final String typeName, final PlainSelect select) throws IOException {
         if (typeName == null) throw new NullPointerException("typeName");
@@ -788,7 +769,6 @@ public class ArcSDEDataStore implements DataStore {
      *   <li>
      * </ul>
      *
-     * @param select
      * @throws UnsupportedOperationException if any of the unsupported constructs are found on
      *     <code>select</code>
      */
@@ -806,12 +786,7 @@ public class ArcSDEDataStore implements DataStore {
         }
     }
 
-    /**
-     * If construct is not null or an empty list, adds it to the list of errors.
-     *
-     * @param errors
-     * @param construct
-     */
+    /** If construct is not null or an empty list, adds it to the list of errors. */
     @SuppressWarnings("unchecked")
     private void verifyUnsupportedSqlConstruct(List<Object> errors, Object construct) {
         if (construct instanceof List) {

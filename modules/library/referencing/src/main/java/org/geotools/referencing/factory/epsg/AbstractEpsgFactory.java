@@ -2922,11 +2922,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
         super.dispose();
     }
 
-    /**
-     * Connect to the database in anticipation of of use.
-     *
-     * @throws FactoryException
-     */
+    /** Connect to the database in anticipation of of use. */
     public void connect() throws FactoryException {
         try {
             getConnection();
@@ -2938,8 +2934,6 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      * Disconnect from the database, and remain idle. We will still keep our internal data
      * structures, we are not going to hold onto a database connection unless we are going to be
      * used.
-     *
-     * @throws FactoryException
      */
     public void disconnect() throws FactoryException {
         if (connection != null) {

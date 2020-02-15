@@ -1220,9 +1220,6 @@ public class Hints extends RenderingHints {
     /**
      * Turns the rendering hints provided into a map with {@link RenderingHints.Key} keys, ignoring
      * every other entry that might have keys of different nature
-     *
-     * @param hints
-     * @return
      */
     private static Map<java.awt.RenderingHints.Key, Object> toMap(RenderingHints hints) {
         Map<RenderingHints.Key, Object> result = new HashMap<RenderingHints.Key, Object>();
@@ -1859,11 +1856,7 @@ public class Hints extends RenderingHints {
         private static Map<String, ConfigurationMetadataKey> map =
                 new HashMap<String, Hints.ConfigurationMetadataKey>();
 
-        /**
-         * The constructor is private to avoid multiple instances sharing the same key.
-         *
-         * @param key
-         */
+        /** The constructor is private to avoid multiple instances sharing the same key. */
         private ConfigurationMetadataKey(String key) {
             super(key);
         }

@@ -164,11 +164,7 @@ public class JDBCPGRasterConfigurationBuilder {
         checkRaster2Pgsql();
     }
 
-    /**
-     * Check whether the raster2pgsql script is available
-     *
-     * @return
-     */
+    /** Check whether the raster2pgsql script is available */
     public static boolean isRaster2PgsqlAvailable() {
         checkRaster2Pgsql();
         return available;
@@ -384,9 +380,6 @@ public class JDBCPGRasterConfigurationBuilder {
      * Extract configuration parameters from the provided string. See {@link
      * JDBCPGRasterConfigurationBuilder#createConfiguration(String, Hints)} for the syntax of this
      * string
-     *
-     * @param pgrasterUrl
-     * @return
      */
     private static JDBCPGrasterConfigurationBean parseConfig(final String pgrasterUrl) {
         if (pgrasterUrl != null && pgrasterUrl.startsWith("pgraster:/")) {
@@ -489,12 +482,6 @@ public class JDBCPGRasterConfigurationBuilder {
      * Main mosaic configuration method: given a folder containing several tiles, this static helper
      * method does this: i - import raster tiles into the database ii - create metadata table and
      * put new tables on it iii - prepare configuration file from template
-     *
-     * @param configDir
-     * @param configBean
-     * @return
-     * @throws IOException
-     * @throws SQLException
      */
     private URL buildConfiguration() {
         // Step 1: Validate configuration
@@ -580,7 +567,6 @@ public class JDBCPGRasterConfigurationBuilder {
      * need to do the raster tiles import.
      *
      * @param connection the connection to be used to check for the database presence
-     * @return
      */
     private boolean isMosaicAlreadyInDB(final Connection connection) {
 
@@ -618,9 +604,6 @@ public class JDBCPGRasterConfigurationBuilder {
      * (if any) exists too. In that case, no need to do the raster import step.
      *
      * @param set the {@link ResultSet} coming from the previous selection made on tileTable column.
-     * @param connection
-     * @return
-     * @throws SQLException
      */
     private boolean checkTileTables(ResultSet set, Connection connection) throws SQLException {
         boolean proceed = true;
@@ -674,11 +657,7 @@ public class JDBCPGRasterConfigurationBuilder {
         return found;
     }
 
-    /**
-     * Check that all the configuration parameters are available
-     *
-     * @param configBean
-     */
+    /** Check that all the configuration parameters are available */
     private void validateConfiguration() {
         Utilities.ensureNonNull("configBean", configBean);
 
@@ -701,11 +680,9 @@ public class JDBCPGRasterConfigurationBuilder {
     /**
      * Create the metadata table which will contain the tile tables references.
      *
-     * @param connection
      * @param tileTables the tile Table names
      * @param tableName the name of the master table where tile tables will be added
      * @param coverageName the name of the coverage to which tile tables are related
-     * @throws SQLException
      */
     private void createMetadataTable(
             final Connection connection,
@@ -762,11 +739,7 @@ public class JDBCPGRasterConfigurationBuilder {
     /**
      * Populate the DB with rasters produced in advance by the user with gdal_retile
      *
-     * @param connection
      * @param filesToBeDeleted a List which will contains files to be deleted
-     * @return
-     * @throws SQLException
-     * @throws IOException
      */
     private void importTilesIntoDB(final Connection connection, final List<File> filesToBeDeleted)
             throws SQLException, IOException {
@@ -847,7 +820,6 @@ public class JDBCPGRasterConfigurationBuilder {
      * @param fileExtension the file extension of the raster files to be imported (as an instance,
      *     *.png or *.tif)
      * @param tileTables a List where table names will be added.
-     * @param importOptions
      * @param filesToBeDeleted a List of files which need to be deleted at the end of the import
      * @return the script content as a String
      */
@@ -901,11 +873,7 @@ public class JDBCPGRasterConfigurationBuilder {
     /**
      * Execute all the raster2pgsql import commands in one step
      *
-     * @param dataDir
      * @param script the script content
-     * @param password
-     * @param filesToBeDeleted
-     * @throws IOException
      */
     private void executeScript(
             final File dataDir,
@@ -941,9 +909,7 @@ public class JDBCPGRasterConfigurationBuilder {
      * @param mainCommand the original command with $PARAM to be replaced
      * @param tablePrefix the prefix of the table
      * @param fileExtension the file type do be inserted
-     * @param tileTables
      * @param filesToBeDeleted a List of files to be deleted at the end of import step
-     * @return
      */
     private static String updateCommand(
             File file,
@@ -969,16 +935,7 @@ public class JDBCPGRasterConfigurationBuilder {
         return command;
     }
 
-    /**
-     * Prepare the main raster2pgsql command by updating parameters
-     *
-     * @param importOptions
-     * @param fileExtension
-     * @param database
-     * @param pguser
-     * @param schema
-     * @return
-     */
+    /** Prepare the main raster2pgsql command by updating parameters */
     private static String prepareMainCommand(
             String importOptions,
             String fileExtension,
@@ -1006,8 +963,6 @@ public class JDBCPGRasterConfigurationBuilder {
      * Create the configuration file containing the information to configure the ImageMosaic
      *
      * @param configFile the file where to store the configuration
-     * @return
-     * @throws IOException
      */
     private void createConfigFile(final File configFile) throws IOException {
         final String config = updateValues(configBean);
@@ -1018,7 +973,6 @@ public class JDBCPGRasterConfigurationBuilder {
      * Replace all the Jolly Strings from the Template with actual values.
      *
      * @param configBean the Configuration bean containing custom values to replace the jolly.
-     * @return
      */
     private String updateValues(JDBCPGrasterConfigurationBean configBean) {
         Properties datastoreProperties = configBean.getDatastoreProperties();
@@ -1045,8 +999,6 @@ public class JDBCPGRasterConfigurationBuilder {
      *
      * @param configFile the output file where to store the config
      * @param config the configuration XML String to be stored
-     * @return
-     * @throws IOException
      */
     private void storeConfig(final File configFile, final String config) throws IOException {
         writeToFile(configFile, config);
@@ -1057,7 +1009,6 @@ public class JDBCPGRasterConfigurationBuilder {
      *
      * @param file the file where to store the content
      * @param content the string to be written
-     * @throws IOException
      */
     private static void writeToFile(final File file, final String content) throws IOException {
         OutputStream outputStream = null;

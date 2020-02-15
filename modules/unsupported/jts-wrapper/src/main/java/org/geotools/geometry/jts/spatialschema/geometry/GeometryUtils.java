@@ -97,13 +97,7 @@ public final class GeometryUtils {
     }
 
     // PENDING(jdc): need to respect a given Unit for the return array.
-    /**
-     * Converts an {@code Envelope} to a "minx, miny, maxx, maxy" array.
-     *
-     * @param envelope
-     * @param unit
-     * @return
-     */
+    /** Converts an {@code Envelope} to a "minx, miny, maxx, maxy" array. */
     public static double[] getBBox(final Envelope envelope, final Unit unit) {
         final double[] returnable = new double[4];
 
@@ -149,17 +143,7 @@ public final class GeometryUtils {
         return geometryFactory.createEnvelope(lowerCorner, upperCorner);
     }
 
-    /**
-     * DOCUMENT ME.
-     *
-     * @param crs
-     * @param minx
-     * @param miny
-     * @param maxx
-     * @param maxy
-     * @param unit
-     * @return
-     */
+    /** DOCUMENT ME. */
     public static Envelope createEnvelope(
             final CoordinateReferenceSystem crs,
             final double minx,
@@ -224,17 +208,7 @@ public final class GeometryUtils {
         return geometryFactory.createEnvelope(lowerCorner, upperCorner);
     }
 
-    /**
-     * DOCUMENT ME.
-     *
-     * @param envelope
-     * @param crs
-     * @param minx
-     * @param miny
-     * @param maxx
-     * @param maxy
-     * @return
-     */
+    /** DOCUMENT ME. */
     public static boolean within(
             final Envelope envelope,
             final CoordinateReferenceSystem crs,
@@ -269,13 +243,7 @@ public final class GeometryUtils {
 
     }*/
 
-    /**
-     * DOCUMENT ME.
-     *
-     * @param envelope1
-     * @param envelope2
-     * @return
-     */
+    /** DOCUMENT ME. */
     public static boolean equals(final Envelope envelope1, final Envelope envelope2) {
         // getLog().debug("PENDING(jdc): implement the method instead of returning false...");
         if (envelope1 == null || envelope2 == null) {
@@ -294,8 +262,6 @@ public final class GeometryUtils {
      * requires that the defining corners of the two Envelopes must all have the same CRS, otherwise
      * an Exception is thrown.
      *
-     * @param envelope1
-     * @param envelope2
      * @return True if the Envelopes overlap
      */
     public static boolean intersects(final Envelope envelope1, final Envelope envelope2) {
@@ -923,7 +889,6 @@ public final class GeometryUtils {
      *
      * @param cs the {@code CoordinateSystem} to check
      * @param direction the {@code AxisDirection} to check for
-     * @return
      */
     public static CoordinateSystemAxis getDirectedAxis(
             final CoordinateSystem cs, final AxisDirection direction) {

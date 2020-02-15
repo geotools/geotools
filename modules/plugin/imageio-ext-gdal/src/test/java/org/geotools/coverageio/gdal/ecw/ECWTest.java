@@ -62,11 +62,7 @@ public final class ECWTest extends GDALTestCase {
     /** file name of a valid ECW sample data to be used for tests. */
     private static final String fileName = "sample.ecw";
 
-    /**
-     * Creates a new instance of {@code ECWTest}
-     *
-     * @param name
-     */
+    /** Creates a new instance of {@code ECWTest} */
     public ECWTest() {
         super("ECW", new ECWFormatFactory());
     }

@@ -169,10 +169,6 @@ public class GmlFeatureTypeRegistryConfiguration implements FeatureTypeRegistryC
 
     /**
      * Returns true if the <code>typeDefinition</code> is based on provided <code>superNS</code>.
-     *
-     * @param typeDefinition
-     * @param superNS
-     * @return
      */
     private static boolean isBasedOn(XSDTypeDefinition typeDefinition, final String superNS) {
 
@@ -197,10 +193,6 @@ public class GmlFeatureTypeRegistryConfiguration implements FeatureTypeRegistryC
 
     /**
      * Returns whether <code>typeDefinition</code> has an ancestor named <code>baseTypeName</code>.
-     *
-     * @param typeDefinition
-     * @param baseTypeName
-     * @return
      */
     private static boolean isDerivedFrom(
             final XSDTypeDefinition typeDefinition, final QName baseTypeName) {
@@ -210,10 +202,6 @@ public class GmlFeatureTypeRegistryConfiguration implements FeatureTypeRegistryC
     /**
      * Returns <code>true</code> if <code>typeDefinition</code> is derived from a type named <code>
      * superTypeName</code>
-     *
-     * @param typeDefinition
-     * @param superTypeName
-     * @return
      */
     private static boolean isDerivedFrom(
             XSDTypeDefinition typeDefinition, final Name superTypeName) {

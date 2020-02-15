@@ -27,10 +27,7 @@ import java.util.Properties;
 public abstract class AbstractPutStylesRequest extends AbstractWMSRequest
         implements PutStylesRequest {
 
-    /**
-     * @param onlineResource
-     * @param properties
-     */
+    /** */
     public AbstractPutStylesRequest(URL onlineResource, Properties properties) {
         super(onlineResource, properties);
     }

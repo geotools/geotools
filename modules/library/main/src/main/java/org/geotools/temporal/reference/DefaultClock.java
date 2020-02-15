@@ -65,9 +65,6 @@ public class DefaultClock extends DefaultTemporalReferenceSystem implements Cloc
     /**
      * Takes a 24-hour local or UTC time and return the equivalent time of day expressed in terms of
      * the specified clock.
-     *
-     * @param uTime
-     * @return
      */
     public ClockTime clkTrans(ClockTime uTime) {
         throw new UnsupportedOperationException("Not supported yet.");
@@ -76,9 +73,6 @@ public class DefaultClock extends DefaultTemporalReferenceSystem implements Cloc
     /**
      * Takes a time of day expressed in terms of the specified clock and return the equivalent time
      * of day in 24-hour local or UTC time.
-     *
-     * @param clkTime
-     * @return
      */
     public ClockTime utcTrans(ClockTime clkTime) {
         throw new UnsupportedOperationException("Not supported yet.");

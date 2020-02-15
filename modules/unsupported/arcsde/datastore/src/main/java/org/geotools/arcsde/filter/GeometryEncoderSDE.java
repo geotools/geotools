@@ -148,8 +148,6 @@ public class GeometryEncoderSDE extends DefaultFilterVisitor implements FilterVi
     }
 
     /**
-     * @param filter
-     * @param sdeMethod
      * @param truth de default truth value for <code>sdeMethod</code>
      * @param extraData if an instanceof java.lang.Boolean, <code>truth</code> is and'ed with its
      *     boolean value. May have been set by {@link #visit(Not, Object)} to revert the logical

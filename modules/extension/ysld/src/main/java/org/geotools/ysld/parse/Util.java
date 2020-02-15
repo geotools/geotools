@@ -80,7 +80,6 @@ public class Util {
      * passed {@link Expression} represents an empty value, a {@link Literal} expression with value
      * null is returned.
      *
-     * @param expr
      * @param factory Function factory
      * @return Simplified expression
      */
@@ -101,7 +100,6 @@ public class Util {
      * of those functions. This is applied recursively, so nested Expressions are also handled.
      * Null-valued or empty {@link Literal} Expressions are removed.
      *
-     * @param expr
      * @return List of expressions, containing no concatenate functions
      */
     public static List<Expression> splitConcatenates(Expression expr) {
@@ -294,7 +292,6 @@ public class Util {
      * Removes up to one set of ${ } expression brackets from a YSLD string. Escape sequences for
      * the characters $}\ within the brackets are unescaped.
      *
-     * @param s
      * @return s with brackets and escape sequences removed.
      */
     public static String removeExpressionBrackets(String s) {

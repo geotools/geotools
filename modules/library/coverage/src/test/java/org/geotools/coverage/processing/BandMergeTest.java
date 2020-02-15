@@ -38,11 +38,7 @@ import org.opengis.referencing.operation.TransformException;
 /** Tests the BandMerge operation. */
 public final class BandMergeTest extends GridProcessingTestBase {
 
-    /**
-     * Tests the "BandMerge" operation
-     *
-     * @throws IOException
-     */
+    /** Tests the "BandMerge" operation */
     @Test
     public void testBandMerge() throws TransformException, IOException {
         final CoverageProcessor processor = CoverageProcessor.getInstance();

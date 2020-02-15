@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.logging.Logger;
 import org.geotools.arcsde.session.Command;
 import org.geotools.arcsde.session.ISession;
-import org.geotools.data.DataSourceException;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureStore;
 import org.geotools.data.FeatureWriter;
@@ -232,10 +231,6 @@ public class ArcSdeFeatureStore extends ArcSdeFeatureSource implements SimpleFea
      * an SeTable with the provided <code>connection</code>. This means if the connection has a
      * transaction in progress, the truncation takes effect upon commit, otherwise it takes effect
      * immediately.
-     *
-     * @param typeName
-     * @param session
-     * @throws DataSourceException
      */
     private void truncate(final String typeName, final ISession session) throws IOException {
         final boolean transactionInProgress = session.isTransactionActive();

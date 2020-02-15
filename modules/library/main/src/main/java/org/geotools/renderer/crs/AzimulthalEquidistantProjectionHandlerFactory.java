@@ -205,8 +205,6 @@ public class AzimulthalEquidistantProjectionHandlerFactory implements Projection
 
         /**
          * Returns true if the rendering envelope is fully within the AZEQ projected max extension
-         *
-         * @return
          */
         public boolean checkRenderingWithinRadius(Point2D.Double center, double radius) {
             boolean renderingWithinRadius = true;

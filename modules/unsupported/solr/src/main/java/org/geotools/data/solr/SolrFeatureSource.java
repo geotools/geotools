@@ -235,10 +235,8 @@ public class SolrFeatureSource extends ContentFeatureSource {
     /**
      * Returns a List with distinct-unique values
      *
-     * @param query
      * @param visitor with unique field setting
      * @return List with distinct unique values
-     * @throws IOException
      */
     protected List<String> getUniqueScalarList(Query query, UniqueVisitor visitor)
             throws IOException {
@@ -508,13 +506,7 @@ public class SolrFeatureSource extends ContentFeatureSource {
         return true;
     }
 
-    /**
-     * Process UniqueVisitor with group on solr query
-     *
-     * @param query
-     * @param visitor
-     * @throws IOException
-     */
+    /** Process UniqueVisitor with group on solr query */
     private void handleUniqueVisitor(Query query, UniqueVisitor visitor) throws IOException {
         visitor.setValue(getUniqueScalarList(query, visitor));
     }

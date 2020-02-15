@@ -96,8 +96,6 @@ public final class GeoKeyEntry implements Comparable<GeoKeyEntry> {
      *
      * @param keyID the id of this {@link GeoKeyEntry}.
      * @param tagLoc the location of this tag.
-     * @param count
-     * @param offset
      */
     public GeoKeyEntry(int keyID, int tagLoc, int count, int offset) {
         setKeyID(keyID);

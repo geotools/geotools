@@ -66,19 +66,13 @@ public abstract class MockHttpClient implements HTTPClient {
         this.readTimeout = readTimeout;
     }
 
-    /**
-     * @param tryGZIP
-     * @see org.geotools.data.ows.HTTPClient#setTryGzip(boolean)
-     */
+    /** @see org.geotools.data.ows.HTTPClient#setTryGzip(boolean) */
     @Override
     public void setTryGzip(boolean tryGZIP) {
         this.tryGzip = tryGZIP;
     }
 
-    /**
-     * @return
-     * @see org.geotools.data.ows.HTTPClient#isTryGzip()
-     */
+    /** @see org.geotools.data.ows.HTTPClient#isTryGzip() */
     @Override
     public boolean isTryGzip() {
         return tryGzip;

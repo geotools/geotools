@@ -122,12 +122,9 @@ public abstract class AbstractWFSResponseFactory implements WFSResponseFactory {
     /**
      * Has to be implemented to turn the request and response into a proper {@link WFSResponse}.
      *
-     * @param request
-     * @param response
      * @param in The stream to read the response from. It is safe not to close this stream
      *     explicitly but to dispose the response instead.
      * @return The actual response
-     * @throws IOException
      */
     protected abstract WFSResponse createResponseImpl(
             WFSRequest request, HTTPResponse response, InputStream in) throws IOException;
@@ -139,8 +136,6 @@ public abstract class AbstractWFSResponseFactory implements WFSResponseFactory {
     protected abstract boolean isValidResponseHead(String head);
 
     /**
-     * @param originatingRequest
-     * @param inputStream
      * @return An {@link WFSException}
      * @throws IOException in case the parsing of the exception report failed
      */

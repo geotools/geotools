@@ -328,12 +328,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
         return accepts(source, null);
     }
 
-    /**
-     * Checks that the provided {@link ImageMosaicDescriptor} is well formed.
-     *
-     * @param source
-     * @return
-     */
+    /** Checks that the provided {@link ImageMosaicDescriptor} is well formed. */
     private static boolean checkDescriptor(final ImageMosaicDescriptor source) {
         // TODO: improve checks
         final GranuleCatalog catalog = source.getCatalog();

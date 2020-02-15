@@ -553,8 +553,6 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      *     (the name of what looks like the "main" category). This is the value to be returned by
      *     {@link #getDescription}.
      * @param list The list of categories, or {@code null}.
-     * @param offset
-     * @param scale
      */
     private GridSampleDimension(
             final CharSequence description, final CategoryList list, double scale, double offset) {

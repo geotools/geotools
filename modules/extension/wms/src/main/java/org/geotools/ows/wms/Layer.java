@@ -174,11 +174,7 @@ public class Layer implements Comparable<Layer> {
         this(null);
     }
 
-    /**
-     * Create a layer with an optional title
-     *
-     * @param title
-     */
+    /** Create a layer with an optional title */
     public Layer(String title) {
         this.title = title;
     }
@@ -347,7 +343,6 @@ public class Layer implements Comparable<Layer> {
     /**
      * Look up an extent by name; search includes all parent extent definitions.
      *
-     * @param name
      * @return Extent or null if not found
      */
     public Extent getExtent(String name) {
@@ -726,7 +721,6 @@ public class Layer implements Comparable<Layer> {
      * may not be valid for sparse data sets that indicate data location using multiple envelopes
      * for a provided CRS.
      *
-     * @param crs
      * @return GeneralEnvelope matching the provided crs; or null if unavailable.
      */
     public GeneralEnvelope getEnvelope(CoordinateReferenceSystem crs) {
@@ -787,10 +781,7 @@ public class Layer implements Comparable<Layer> {
         return null;
     }
 
-    /**
-     * @param crs
-     * @return
-     */
+    /** */
     protected Collection<String> extractCRSNames(CoordinateReferenceSystem crs) {
         Collection<String> identifiers = new ArrayList<String>();
         for (ReferenceIdentifier identifier : crs.getIdentifiers()) {

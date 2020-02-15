@@ -198,11 +198,7 @@ public abstract class AbstractMapPane extends JPanel
         doSetRenderingExecutor(executor);
     }
 
-    /**
-     * Draws layers into one or more images which will then be displayed by the map pane.
-     *
-     * @param recreate
-     */
+    /** Draws layers into one or more images which will then be displayed by the map pane. */
     protected abstract void drawLayers(boolean recreate);
 
     /**

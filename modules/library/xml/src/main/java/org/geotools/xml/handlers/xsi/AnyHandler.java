@@ -146,12 +146,7 @@ public class AnyHandler extends ElementGroupingHandler {
         return LOCALNAME;
     }
 
-    /**
-     * maps strings -> int constants for the 'process' attribute
-     *
-     * @param process
-     * @throws SAXException
-     */
+    /** maps strings -> int constants for the 'process' attribute */
     public static int findProcess(String process) throws SAXException {
         if ((process == null) || "".equalsIgnoreCase(process)) {
             return STRICT;
@@ -175,8 +170,6 @@ public class AnyHandler extends ElementGroupingHandler {
     /**
      * reverses the findProcess method, converting from integers to String for the process
      * attribute.
-     *
-     * @param process
      */
     public static String writeProcess(int process) {
         switch (process) {

@@ -55,7 +55,6 @@ public final class ArcSDEUtils {
     /**
      * Gets the coordinate system that will be associated to the {@link GridCoverage}.
      *
-     * @param rasterAttributes
      * @return if {@code seCoordRef.getcoordSys()} is {@code null} returns {@link
      *     DefaultEngineeringCRS#CARTESIAN_2D}, otherwise an equivalent CRS from the EPSG database
      *     if found, or a CRS built from the seCoordRef WKT otherwise.

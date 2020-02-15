@@ -26,10 +26,7 @@ import it.bancaditalia.oss.sdmx.exceptions.SdmxException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentDataStore;
@@ -58,6 +55,8 @@ public class SDMXDataStore extends ContentDataStore {
     public static String SEPARATOR_DIM = "=";
     public static String GEOMETRY_ATTR = "the_geom";
     public static String SEPARATOR_FEATURETYPE = "__";
+    public static String COMMA_REPLACEMENT = "____";
+    public static String DOT_REPLACEMENT = "_____";
     public static String DIMENSIONS_SUFFIX = "DIMENSIONS";
     public static String FEATURETYPE_SUFFIX = "SDMX";
     public static String DIMENSIONS_EXPR = "CODE";
@@ -80,12 +79,7 @@ public class SDMXDataStore extends ContentDataStore {
             new HashMap<String, DataFlowStructure>();
 
     public SDMXDataStore(
-            String name,
-            String namespaceIn,
-            String provider,
-            String apiEndpoint,
-            String user,
-            String password)
+            String name, String namespaceIn, String provider, String user, String password)
             throws MalformedURLException, IOException, SdmxException {
 
         super();
@@ -95,12 +89,6 @@ public class SDMXDataStore extends ContentDataStore {
         } catch (MalformedURLException e) {
             LOGGER.log(
                     Level.SEVERE, "Namespace \"" + namespaceIn + "\" is not properly formatted", e);
-            throw (e);
-        }
-        try {
-            this.apiUrl = new URL(apiEndpoint);
-        } catch (MalformedURLException e) {
-            LOGGER.log(Level.SEVERE, "URL \"" + apiEndpoint + "\" is not properly formatted", e);
             throw (e);
         }
         this.user = user;
@@ -126,7 +114,9 @@ public class SDMXDataStore extends ContentDataStore {
      * @return
      */
     public static String composeDataflowTypeName(String dfName) {
-        return dfName + SDMXDataStore.SEPARATOR_FEATURETYPE + FEATURETYPE_SUFFIX;
+        return dfName.replaceAll(",", COMMA_REPLACEMENT).replaceAll("\\.", DOT_REPLACEMENT)
+                + SDMXDataStore.SEPARATOR_FEATURETYPE
+                + FEATURETYPE_SUFFIX;
     }
 
     /**
@@ -136,9 +126,7 @@ public class SDMXDataStore extends ContentDataStore {
      * @return
      */
     public static String composeDimensionTypeName(String dfName) {
-        return dfName
-                + SDMXDataStore.SEPARATOR_FEATURETYPE
-                + SDMXDataStore.FEATURETYPE_SUFFIX
+        return composeDataflowTypeName(dfName)
                 + SDMXDataStore.SEPARATOR_FEATURETYPE
                 + SDMXDataStore.DIMENSIONS_SUFFIX;
     }
@@ -186,7 +174,10 @@ public class SDMXDataStore extends ContentDataStore {
             return "";
         }
 
-        String[] parts = typeName.split(SDMXDataStore.SEPARATOR_FEATURETYPE);
+        String[] parts =
+                typeName.replaceAll(DOT_REPLACEMENT, ".")
+                        .replaceAll(COMMA_REPLACEMENT, ",")
+                        .split(SDMXDataStore.SEPARATOR_FEATURETYPE);
 
         return parts.length == 0 ? "" : parts[0];
     }
@@ -208,6 +199,7 @@ public class SDMXDataStore extends ContentDataStore {
         }
 
         this.dataflowStructures.clear();
+
         dataflows.forEach(
                 (s, d) -> {
                     DataFlowStructure dfs = new DataFlowStructure();
@@ -219,15 +211,17 @@ public class SDMXDataStore extends ContentDataStore {
                     }
 
                     // Adds the dataflow typename
-                    Name name =
-                            new NameImpl(
-                                    namespace.toExternalForm(),
-                                    SDMXDataStore.composeDataflowTypeName(s));
+                    String ftypeName = SDMXDataStore.composeDataflowTypeName(s);
+                    Name name = new NameImpl(namespace.toExternalForm(), ftypeName);
                     ContentEntry entry = new ContentEntry(this, name);
                     this.entries.put(name, entry);
 
                     // Adds the dimension typename
                     String dimName = SDMXDataStore.composeDimensionTypeName(s);
+                    LOGGER.log(
+                            Level.INFO,
+                            String.format("Added SDMX feature types: %s, %s", ftypeName, dimName));
+
                     ContentEntry dimEntry =
                             new ContentEntry(
                                     this, new NameImpl(namespace.toExternalForm(), dimName));

@@ -54,13 +54,6 @@ public class SDMXDataStoreFactory implements DataStoreFactorySpi {
             new Param("SDMX source name", String.class, "Source", true);
     public static final Param PROVIDER_PARAM =
             new Param("Well-known provider name", String.class, "ProviderName", true, "ABS");
-    public static final Param URL_PARAM =
-            new Param(
-                    "Endpoint of the SDMX ReST API",
-                    String.class,
-                    "Endpoint",
-                    true,
-                    "http://stat.data.abs.gov.au/restsdmx/sdmx.ashx");
     public static final Param USER_PARAM =
             new Param("Username of the endpoint", String.class, "Username", false, null);
     public static final Param PASSWORD_PARAM =
@@ -75,7 +68,6 @@ public class SDMXDataStoreFactory implements DataStoreFactorySpi {
     static {
         paramMetadata.add(NAMESPACE_PARAM);
         paramMetadata.add(PROVIDER_PARAM);
-        paramMetadata.add(URL_PARAM);
         paramMetadata.add(USER_PARAM);
         paramMetadata.add(PASSWORD_PARAM);
     }
@@ -93,7 +85,6 @@ public class SDMXDataStoreFactory implements DataStoreFactorySpi {
                     (String) params.get(NAME_PARAM.key),
                     (String) params.get(NAMESPACE_PARAM.key),
                     (String) params.get(PROVIDER_PARAM.key),
-                    (String) params.get(URL_PARAM.key),
                     (String) params.get(USER_PARAM.key),
                     (String) params.get(PASSWORD_PARAM.key));
         } catch (SdmxException e) {
@@ -122,7 +113,6 @@ public class SDMXDataStoreFactory implements DataStoreFactorySpi {
 
         try {
             new URL((String) params.get(SDMXDataStoreFactory.NAMESPACE_PARAM.key));
-            new URL((String) params.get(SDMXDataStoreFactory.URL_PARAM.key));
         } catch (MalformedURLException e) {
             return false;
         }

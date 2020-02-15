@@ -24,6 +24,7 @@ import it.bancaditalia.oss.sdmx.client.RestSdmxClient;
 import it.bancaditalia.oss.sdmx.parser.v21.CompactDataParser;
 import it.bancaditalia.oss.sdmx.util.RestQueryBuilder;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
@@ -82,7 +83,7 @@ public class SDMXFeatureReaderTest {
                 .thenReturn(Helper.readXMLAsStream("test-data/abs-seifa-lga.xml"))
                 .thenReturn(Helper.readXMLAsStream("test-data/query-t04.xml"));
 
-        this.dataStore = (SDMXDataStore) Helper.createDefaultSDMXTestDataStore();
+        this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore();
         this.fType = this.dataStore.getFeatureSource(Helper.T04).getSchema();
         this.dfSource = (SDMXDataflowFeatureSource) this.dataStore.getFeatureSource(Helper.T04);
 
@@ -159,7 +160,7 @@ public class SDMXFeatureReaderTest {
                 .thenReturn(Helper.readXMLAsStream("test-data/abs-seifa-lga.xml"))
                 .thenReturn(new ByteArrayInputStream("".getBytes()));
 
-        this.dataStore = (SDMXDataStore) Helper.createDefaultSDMXTestDataStore();
+        this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore();
         this.fType = this.dataStore.getFeatureSource(Helper.T04).getSchema();
         this.dfSource = (SDMXDataflowFeatureSource) this.dataStore.getFeatureSource(Helper.T04);
 
@@ -190,7 +191,7 @@ public class SDMXFeatureReaderTest {
                 .thenReturn(Helper.readXMLAsStream("test-data/abs-seifa-lga.xml"))
                 .thenReturn(Helper.readXMLAsStream("test-data/query-t04-1.xml"));
 
-        this.dataStore = (SDMXDataStore) Helper.createDefaultSDMXTestDataStore();
+        this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore();
         this.fType = this.dataStore.getFeatureSource(Helper.T04).getSchema();
         this.dfSource = (SDMXDataflowFeatureSource) this.dataStore.getFeatureSource(Helper.T04);
 
@@ -264,7 +265,7 @@ public class SDMXFeatureReaderTest {
                 .thenReturn(Helper.readXMLAsStream("test-data/abs-seifa-lga.xml"))
                 .thenReturn(Helper.readXMLAsStream("test-data/query-t04-2.xml"));
 
-        this.dataStore = (SDMXDataStore) Helper.createDefaultSDMXTestDataStore();
+        this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore();
         this.fType = this.dataStore.getFeatureSource(Helper.T04).getSchema();
         this.dfSource = (SDMXDataflowFeatureSource) this.dataStore.getFeatureSource(Helper.T04);
 
@@ -329,7 +330,7 @@ public class SDMXFeatureReaderTest {
                 .thenReturn(Helper.readXMLAsStream("test-data/abs-seifa-lga.xml"))
                 .thenReturn(Helper.readXMLAsStream("test-data/query-t04-321.xml"));
 
-        this.dataStore = (SDMXDataStore) Helper.createDefaultSDMXTestDataStore();
+        this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore();
         this.fType = this.dataStore.getFeatureSource(Helper.T04).getSchema();
         this.dfSource = (SDMXDataflowFeatureSource) this.dataStore.getFeatureSource(Helper.T04);
 
@@ -403,7 +404,7 @@ public class SDMXFeatureReaderTest {
                 .thenReturn(Helper.readXMLAsStream("test-data/abs-census2011-t04-abs.xml"))
                 .thenReturn(Helper.readXMLAsStream("test-data/abs-seifa-lga.xml"));
 
-        this.dataStore = (SDMXDataStore) Helper.createDefaultSDMXTestDataStore();
+        this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore();
         this.fType = this.dataStore.getFeatureSource(Helper.T04_DIMENSIONS).getSchema();
         this.dimSource =
                 (SDMXDimensionFeatureSource) this.dataStore.getFeatureSource(Helper.T04_DIMENSIONS);
@@ -444,7 +445,7 @@ public class SDMXFeatureReaderTest {
             nObs++;
         }
 
-        assertEquals(8, nObs);
+        assertEquals(7, nObs);
     }
 
     @Test
@@ -466,7 +467,7 @@ public class SDMXFeatureReaderTest {
                 .thenReturn(Helper.readXMLAsStream("test-data/abs-census2011-t04-abs.xml"))
                 .thenReturn(Helper.readXMLAsStream("test-data/abs-seifa-lga.xml"));
 
-        this.dataStore = (SDMXDataStore) Helper.createDefaultSDMXTestDataStore();
+        this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore();
         this.fType = this.dataStore.getFeatureSource(Helper.T04_DIMENSIONS).getSchema();
         this.dimSource =
                 (SDMXDimensionFeatureSource) this.dataStore.getFeatureSource(Helper.T04_DIMENSIONS);
@@ -507,5 +508,35 @@ public class SDMXFeatureReaderTest {
         }
 
         assertEquals(17, nObs);
+    }
+
+    @Test(expected = IOException.class)
+    public void readFeaturesNotExistingDimension() throws Exception {
+
+        this.urlMock = PowerMockito.mock(URL.class);
+        this.clientMock = PowerMockito.mock(HttpURLConnection.class);
+
+        PowerMockito.whenNew(URL.class).withAnyArguments().thenReturn(this.urlMock);
+        PowerMockito.when(this.urlMock.toURI()).thenReturn(new URI(Helper.URL));
+        PowerMockito.when(this.urlMock.openConnection(anyObject())).thenReturn(this.clientMock);
+        when(clientMock.getResponseCode())
+                .thenReturn(HttpStatus.SC_OK)
+                .thenReturn(HttpStatus.SC_OK)
+                .thenReturn(HttpStatus.SC_OK)
+                .thenReturn(HttpStatus.SC_OK);
+        when(clientMock.getInputStream())
+                .thenReturn(Helper.readXMLAsStream("test-data/abs.xml"))
+                .thenReturn(Helper.readXMLAsStream("test-data/abs-census2011-t04-abs.xml"))
+                .thenReturn(Helper.readXMLAsStream("test-data/abs-seifa-lga.xml"));
+
+        this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore();
+        this.fType = this.dataStore.getFeatureSource(Helper.T04_DIMENSIONS).getSchema();
+        this.dimSource =
+                (SDMXDimensionFeatureSource) this.dataStore.getFeatureSource(Helper.T04_DIMENSIONS);
+
+        this.dimSource.buildFeatureType();
+        Query query = new Query();
+        query.setFilter(ECQL.toFilter("CODE = 'XXX'"));
+        this.reader = (SDMXFeatureReader) this.dimSource.getReader(query);
     }
 }

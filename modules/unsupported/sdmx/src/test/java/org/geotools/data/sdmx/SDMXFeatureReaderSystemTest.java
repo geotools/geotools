@@ -18,8 +18,6 @@ package org.geotools.data.sdmx;
 
 import static org.junit.Assert.*;
 
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.logging.Logger;
 import org.geotools.data.Query;
 import org.geotools.filter.text.ecql.ECQL;
@@ -33,8 +31,6 @@ public class SDMXFeatureReaderSystemTest {
     private static final Logger LOGGER = Logging.getLogger("org.geotools.data.arcgisrest");
 
     private SDMXDataStore dataStore;
-    private URL urlMock;
-    private HttpURLConnection clientMock;
 
     SDMXFeatureReader reader;
     SDMXDataflowFeatureSource dfSource;
@@ -42,14 +38,27 @@ public class SDMXFeatureReaderSystemTest {
     SimpleFeatureType fType;
 
     @Test
-    public void readFeaturesMeasure() throws Exception {
+    public void readFeaturesMeasureOldEndpoint() throws Exception {
 
-        this.dataStore = (SDMXDataStore) Helper.createDefaultSDMXTestDataStore();
+        this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore();
+        Query query = new Query();
+
+        this.fType = this.dataStore.getFeatureSource(Helper.ERP_LGA_DIMENSIONS).getSchema();
+        this.dimSource =
+                (SDMXDimensionFeatureSource)
+                        this.dataStore.getFeatureSource(Helper.ERP_LGA_DIMENSIONS);
+        this.dimSource.buildFeatureType();
+        query.setFilter(ECQL.toFilter("CODE='AGE'"));
+        this.reader = (SDMXFeatureReader) this.dimSource.getReader(query);
+        assertTrue(this.reader.hasNext());
+
+        query.setFilter(ECQL.toFilter("CODE='LGA_2016'"));
+        this.reader = (SDMXFeatureReader) this.dimSource.getReader(query);
+        assertTrue(this.reader.hasNext());
+
         this.fType = this.dataStore.getFeatureSource(Helper.T04_LGA).getSchema();
         this.dfSource = (SDMXDataflowFeatureSource) this.dataStore.getFeatureSource(Helper.T04_LGA);
-
         this.dfSource.buildFeatureType();
-        Query query = new Query();
         query.setFilter(
                 ECQL.toFilter(
                         "MEASURE = 1 and MSTP='TOT' and "
@@ -96,5 +105,61 @@ public class SDMXFeatureReaderSystemTest {
         }
 
         assertEquals(3, nObs);
+    }
+
+    @Test
+    public void readFeaturesMeasureNewEndpoint() throws Exception {
+
+        this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore2();
+        Query query = new Query();
+
+        this.fType = this.dataStore.getFeatureSource(Helper.T04SA_DIMENSIONS).getSchema();
+        this.dimSource =
+                (SDMXDimensionFeatureSource)
+                        this.dataStore.getFeatureSource(Helper.T04SA_DIMENSIONS);
+        this.dimSource.buildFeatureType();
+        query.setFilter(ECQL.toFilter("CODE='AGE'"));
+        this.reader = (SDMXFeatureReader) this.dimSource.getReader(query);
+        assertTrue(this.reader.hasNext());
+
+        query.setFilter(ECQL.toFilter("CODE='SEX_ABS'"));
+        this.reader = (SDMXFeatureReader) this.dimSource.getReader(query);
+        assertTrue(this.reader.hasNext());
+
+        this.fType = this.dataStore.getFeatureSource(Helper.KN_NIS).getSchema();
+        this.dfSource = (SDMXDataflowFeatureSource) this.dataStore.getFeatureSource(Helper.T04SA);
+        this.dfSource.buildFeatureType();
+        query.setFilter(ECQL.toFilter("AGE='TT' and SEX_ABS='1'"));
+        this.reader = (SDMXFeatureReader) this.dfSource.getReader(query);
+
+        assertTrue(this.reader.hasNext());
+        SimpleFeature feat;
+        int nObs = 0;
+        while (this.reader.hasNext()) {
+            feat = this.reader.next();
+            assertNotNull(feat);
+            if (nObs == 0) {
+                assertNotNull(feat.getID());
+                assertNull(feat.getDefaultGeometry());
+                assertEquals("2016", feat.getAttribute(1));
+            }
+            String s =
+                    feat.getID()
+                            + "|"
+                            + feat.getType().getGeometryDescriptor().getLocalName()
+                            + ":"
+                            + feat.getDefaultGeometry();
+            for (int i = 1; i < feat.getAttributeCount(); i++) {
+                s +=
+                        "|"
+                                + feat.getType().getDescriptor(i).getLocalName()
+                                + ":"
+                                + feat.getAttribute(i);
+            }
+            System.out.println(s);
+            nObs++;
+        }
+
+        assertEquals(15151, nObs);
     }
 }

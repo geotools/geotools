@@ -62,11 +62,25 @@ public class SDMXDataStoreTest {
     public void testTypeNameComposition() throws Exception {
 
         assertEquals("population__SDMX", SDMXDataStore.composeDataflowTypeName("population"));
-
         assertEquals(
                 "population__SDMX__DIMENSIONS",
                 SDMXDataStore.composeDimensionTypeName("population"));
+        assertEquals(
+                "population____1_____2__SDMX__DIMENSIONS",
+                SDMXDataStore.composeDimensionTypeName("population,1.2"));
+        assertEquals(
+                "population____1_____2__SDMX__DIMENSIONS",
+                SDMXDataStore.composeDimensionTypeName("population,1.2"));
+        assertEquals(
+                "population____1_____2____3_____4__SDMX",
+                SDMXDataStore.composeDataflowTypeName("population,1.2,3.4"));
+        assertEquals(
+                "population____1_____2____3_____4__SDMX",
+                SDMXDataStore.composeDataflowTypeName("population,1.2,3.4"));
+    }
 
+    @Test
+    public void testDataflowIdentification() throws Exception {
         assertEquals(false, SDMXDataStore.isDataflowName("population"));
         assertEquals(false, SDMXDataStore.isDataflowName("population_SDMX"));
         assertEquals(true, SDMXDataStore.isDataflowName("population__SDMX"));
@@ -76,7 +90,10 @@ public class SDMXDataStoreTest {
         assertEquals(false, SDMXDataStore.isDimensionName("population_SDMX__DIMENSIONS"));
         assertEquals(false, SDMXDataStore.isDimensionName(""));
         assertEquals(true, SDMXDataStore.isDimensionName("population__SDMX__DIMENSIONS"));
+    }
 
+    @Test
+    public void testDataflowNameExtraction() throws Exception {
         assertEquals(
                 "population", SDMXDataStore.extractDataflowName("population__SDMX__DIMENSIONS"));
         assertEquals("population", SDMXDataStore.extractDataflowName("population__SDMX"));
@@ -85,6 +102,11 @@ public class SDMXDataStoreTest {
         assertEquals("", SDMXDataStore.extractDataflowName("_SDMX"));
         assertEquals("", SDMXDataStore.extractDataflowName("population__SDMX_X"));
         assertEquals("", SDMXDataStore.extractDataflowName(""));
+        assertEquals(
+                "population,1.2", SDMXDataStore.extractDataflowName("population____1_____2__SDMX"));
+        assertEquals(
+                "population,1.2,3.4",
+                SDMXDataStore.extractDataflowName("population____1_____2____3_____4__SDMX"));
     }
 
     @Test
@@ -105,7 +127,7 @@ public class SDMXDataStoreTest {
                 .thenReturn(Helper.readXMLAsStream("test-data/abs-census2011-t04-abs.xml"))
                 .thenReturn(Helper.readXMLAsStream("test-data/abs-seifa-lga.xml"));
 
-        this.dataStore = (SDMXDataStore) Helper.createDefaultSDMXTestDataStore();
+        this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore();
         List<Name> names = this.dataStore.createTypeNames();
 
         assertEquals(4, names.size());
@@ -139,7 +161,7 @@ public class SDMXDataStoreTest {
                 .thenReturn(Helper.readXMLAsStream("test-data/abs-census2011-t04-abs.xml"))
                 .thenReturn(Helper.readXMLAsStream("test-data/abs-seifa-lga.xml"));
 
-        this.dataStore = (SDMXDataStore) Helper.createDefaultSDMXTestDataStore();
+        this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore();
         assertEquals(4, this.dataStore.createTypeNames().size());
 
         assertNotNull(this.dataStore.getFeatureSource(Helper.T04).getSchema());

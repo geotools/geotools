@@ -156,12 +156,14 @@ public class SDMXDataflowFeatureReader extends SDMXFeatureReader {
         ts.getDimensions()
                 .forEach(
                         (dimIn) -> {
-                            DimensionValue dimValue = new DimensionValue(dimIn);
+                            if (dimIn != null) {
+                                DimensionValue dimValue = new DimensionValue(dimIn);
 
-                            if (dimValue.isMeasure()) {
-                                builder.set(SDMXDataStore.MEASURE_KEY, this.obsIter.next());
-                            } else {
-                                builder.set(dimValue.name, dimValue.value);
+                                if (dimValue.isMeasure()) {
+                                    builder.set(SDMXDataStore.MEASURE_KEY, this.obsIter.next());
+                                } else {
+                                    builder.set(dimValue.name, dimValue.value);
+                                }
                             }
                         });
 

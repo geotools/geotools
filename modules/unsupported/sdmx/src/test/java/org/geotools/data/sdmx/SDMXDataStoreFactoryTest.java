@@ -20,10 +20,8 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.util.logging.Logging;
 import org.junit.After;
@@ -62,14 +60,6 @@ public class SDMXDataStoreFactoryTest {
 
         // Namespace set
         params.put(SDMXDataStoreFactory.NAMESPACE_PARAM.key, Helper.NAMESPACE);
-        assertFalse(dsf.canProcess(params));
-
-        // URL set wrongly
-        params.put(SDMXDataStoreFactory.URL_PARAM.key, "ftp://example.com");
-        assertTrue(dsf.canProcess(params));
-
-        // URL set correctly
-        params.put(SDMXDataStoreFactory.URL_PARAM.key, Helper.URL);
         assertTrue(dsf.canProcess(params));
 
         // Username set
@@ -81,22 +71,13 @@ public class SDMXDataStoreFactoryTest {
         assertTrue(dsf.canProcess(params));
     }
 
-    @Test(expected = MalformedURLException.class)
-    public void testCreateDataStoreMalformedNamespace() throws IOException {
-        LOGGER.setLevel(Level.OFF);
-        Helper.createDataStore("aaa", "bbb", "ccc", "ddd");
-        LOGGER.setLevel(Level.FINEST);
-    }
-
-    @Test(expected = MalformedURLException.class)
-    public void testCreateDataStoreMalformedURL() throws IOException {
-        LOGGER.setLevel(Level.OFF);
-        Helper.createDataStore(Helper.NAMESPACE, "bbb", "ccc", "ddd");
-        LOGGER.setLevel(Level.FINEST);
-    }
-
     public void testCreateDataStore() throws IOException {
-        Helper.createDataStore(Helper.NAMESPACE, Helper.URL, "ccc", "ddd");
+        Helper.createSDMXTestDataStore();
+        assertTrue(true);
+    }
+
+    public void testCreateDataStore2() throws IOException {
+        Helper.createSDMXTestDataStore2();
         assertTrue(true);
     }
 }

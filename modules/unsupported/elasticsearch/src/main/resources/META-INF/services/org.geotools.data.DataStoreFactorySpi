@@ -1,1 +1,1 @@
-mil.nga.giat.data.elasticsearch.ElasticDataStoreFactory
+org.geotools.data.elasticsearch.ElasticDataStoreFactory

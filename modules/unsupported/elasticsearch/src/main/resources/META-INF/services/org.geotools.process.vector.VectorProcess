@@ -1,1 +1,1 @@
-mil.nga.giat.process.elasticsearch.GeoHashGridProcess
+org.geotools.process.elasticsearch.GeoHashGridProcess

@@ -14,19 +14,48 @@
  */
 package org.geotools.ows.wmts.model;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import net.opengis.ows11.LanguageStringType;
 import net.opengis.ows11.ServiceIdentificationType;
+import net.opengis.ows11.ServiceProviderType;
 import net.opengis.ows11.impl.KeywordsTypeImpl;
 import net.opengis.ows11.impl.LanguageStringTypeImpl;
 import org.geotools.data.ows.Service;
+import org.geotools.metadata.iso.citation.ResponsiblePartyImpl;
+import org.geotools.util.SimpleInternationalString;
 
 /**
  * @author ian
  * @author Matthias Schulze (LDBV at ldbv dot bayern dot de)
  */
 public class WMTSService extends Service {
+
+    public WMTSService(ServiceIdentificationType serviceType, ServiceProviderType serviceProvider) {
+
+        this(serviceType);
+
+        ResponsiblePartyImpl contactInfo =
+                new ResponsiblePartyImpl(serviceProvider.getServiceContact());
+
+        if (serviceProvider.getProviderName() != null) {
+            contactInfo.setOrganisationName(
+                    new SimpleInternationalString(serviceProvider.getProviderName()));
+        }
+
+        setContactInformation(contactInfo);
+
+        if (serviceProvider.getProviderSite() != null) {
+            try {
+                URL providerSite = new URL(serviceProvider.getProviderSite().getHref());
+                setOnlineResource(providerSite);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public WMTSService(ServiceIdentificationType serviceType) {
 

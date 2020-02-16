@@ -21,6 +21,7 @@ package org.geotools.metadata.iso.citation;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import net.opengis.ows11.ResponsiblePartySubsetType;
 import org.geotools.metadata.iso.MetadataEntity;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.logging.Logging;
@@ -278,9 +279,23 @@ public class ResponsiblePartyImpl extends MetadataEntity implements ResponsibleP
         super(source);
     }
 
-    /** Constructs a responsability party with the given role. */
+    /** Constructs a responsible party with the given role. */
     public ResponsiblePartyImpl(final Role role) {
         setRole(role);
+    }
+
+    public ResponsiblePartyImpl(ResponsiblePartySubsetType rpSubset) {
+
+        if (rpSubset.getContactInfo() != null) {
+            setContactInfo(new ContactImpl(rpSubset.getContactInfo()));
+        }
+
+        if (rpSubset.getIndividualName() != null) {
+            setIndividualName(rpSubset.getIndividualName().toString());
+        }
+        if (rpSubset.getPositionName() != null) {
+            setPositionName(new SimpleInternationalString(rpSubset.getPositionName()));
+        }
     }
 
     /**

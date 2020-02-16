@@ -211,7 +211,7 @@ public class WMTSTileService extends TileService {
                                 + ex.getMessage());
 
                 // maybe the req area is too wide for the data; let's try an
-                // inverse trasformation
+                // inverse transformation
                 try {
                     ReferencedEnvelope covExtentInReqCrs = envelope.transform(reqCrs, true);
                     requestedExtent = requestedExtent.intersection(covExtentInReqCrs);

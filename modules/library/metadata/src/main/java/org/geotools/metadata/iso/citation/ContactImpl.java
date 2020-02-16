@@ -19,7 +19,9 @@
  */
 package org.geotools.metadata.iso.citation;
 
+import net.opengis.ows11.ContactType;
 import org.geotools.metadata.iso.MetadataEntity;
+import org.geotools.util.SimpleInternationalString;
 import org.opengis.metadata.citation.Address;
 import org.opengis.metadata.citation.Contact;
 import org.opengis.metadata.citation.OnLineResource;
@@ -196,6 +198,33 @@ public class ContactImpl extends MetadataEntity implements Contact {
     /** Constructs a contact initialized to the specified online resource. */
     public ContactImpl(final OnLineResource resource) {
         setOnLineResource(resource);
+    }
+
+    public ContactImpl(ContactType contactInfo) {
+
+        if (contactInfo != null) {
+
+            if (contactInfo.getAddress() != null) {
+                setAddress(new AddressImpl(contactInfo.getAddress()));
+            }
+
+            if (contactInfo.getContactInstructions() != null) {
+                setContactInstructions(
+                        new SimpleInternationalString(contactInfo.getContactInstructions()));
+            }
+
+            if (contactInfo.getHoursOfService() != null) {
+                setHoursOfService(new SimpleInternationalString(contactInfo.getHoursOfService()));
+            }
+
+            if (contactInfo.getOnlineResource() != null) {
+                setOnLineResource(new OnLineResourceImpl(contactInfo.getOnlineResource()));
+            }
+
+            if (contactInfo.getPhone() != null) {
+                setPhone(new TelephoneImpl(contactInfo.getPhone()));
+            }
+        }
     }
 
     /**

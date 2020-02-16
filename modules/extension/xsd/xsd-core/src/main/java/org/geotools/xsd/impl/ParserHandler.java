@@ -287,7 +287,7 @@ public class ParserHandler extends DefaultHandler2 {
     }
 
     public void startDocument() throws SAXException {
-        // perform teh configuration
+        // perform the configuration
         configure(config);
 
         // create the document handler + root context

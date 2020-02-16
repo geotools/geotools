@@ -72,9 +72,7 @@ public class WebMapTileServerTest {
         // <ows:UpperCorner>11.47757 48.230651</ows:UpperCorner>
         // </ows:WGS84BoundingBox>
 
-        assertNotNull(wmts.getEnvelope(layer, CRS.decode("urn:ogc:def:crs:OGC:1.3:CRS84")));
-        assertNotNull(wmts.getEnvelope(layer, CRS.decode("CRS:84")));
-        assertNotNull(wmts.getEnvelope(layer, CRS.decode("EPSG:2056")));
+        assertNotNull(wmts.getEnvelope(layer, CRS.decode("urn:ogc:def:crs:EPSG:2056")));
 
         assertNull(wmts.getEnvelope(layer, CRS.decode("EPSG:4326")));
 

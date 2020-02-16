@@ -101,7 +101,7 @@ public class WMTSCapabilities extends Capabilities {
 
     public WMTSCapabilities(CapabilitiesType capabilities) throws ServiceException {
         caps = capabilities;
-        setService(new WMTSService(caps.getServiceIdentification()));
+        setService(new WMTSService(caps.getServiceIdentification(), caps.getServiceProvider()));
         setVersion(caps.getServiceIdentification().getServiceTypeVersion().toString());
         ContentsType contents = caps.getContents();
 
@@ -519,7 +519,7 @@ public class WMTSCapabilities extends Capabilities {
     }
 
     /**
-     * @param string
+     * @param name
      * @return
      */
     public WMTSLayer getLayer(String name) {

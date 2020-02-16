@@ -135,6 +135,12 @@
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
     </dependency>
+      <dependency>
+          <groupId>org.geotools.ogc</groupId>
+          <artifactId>net.opengis.ows</artifactId>
+          <version>${project.version}</version>
+          <scope>compile</scope>
+      </dependency>
   </dependencies>
 
   <build>

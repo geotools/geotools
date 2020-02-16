@@ -34,7 +34,7 @@ import org.picocontainer.defaults.DecoratingComponentAdapter;
 import org.picocontainer.defaults.InstanceComponentAdapter;
 
 /**
- * A {@link Map} dectorator which implements the {@link MutablePicoContainer} interface.
+ * A {@link Map} decorator which implements the {@link MutablePicoContainer} interface.
  *
  * <p>This class is used internally to help transitition from pico container to a map based system
  * for registering bindings.

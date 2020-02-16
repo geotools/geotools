@@ -21,6 +21,7 @@ package org.geotools.metadata.iso.citation;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import net.opengis.ows11.OnlineResourceType;
 import org.geotools.metadata.iso.MetadataEntity;
 import org.opengis.metadata.citation.OnLineFunction;
 import org.opengis.metadata.citation.OnLineResource;
@@ -209,6 +210,11 @@ public class OnLineResourceImpl extends MetadataEntity implements OnLineResource
     /** Creates an on line resource initialized to the given URI. */
     public OnLineResourceImpl(final URI linkage) {
         setLinkage(linkage);
+    }
+
+    public OnLineResourceImpl(OnlineResourceType onlineResource) {
+
+        this(onlineResource.getHref());
     }
 
     /**

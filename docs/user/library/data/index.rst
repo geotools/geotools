@@ -70,4 +70,5 @@ Unsupported plugins:
    georest
    kml
    solr
+   elasticsearch
    wfs-ng

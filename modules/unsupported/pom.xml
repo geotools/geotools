@@ -129,6 +129,17 @@
 			</modules>
 		</profile>
 		<profile>
+			<id>elasticsearch</id>
+			<activation>
+				<property>
+					<name>all</name>
+				</property>
+			</activation>
+			<modules>
+				<module>elasticsearch</module>
+			</modules>
+		</profile>
+		<profile>
 			<id>geobuf</id>
 			<activation>
 				<property>
@@ -201,6 +212,7 @@
 			<modules>
 				<module>jdbc-ng</module>
 				<module>solr</module>
+				<module>elasticsearch</module>
 				<module>css</module>
 				<module>geojsonstore</module>
         		<module>s3-geotiff</module>

@@ -1,5 +1,13 @@
 """
 Script creates status_s index for testing.
+
+GeoTools - The Open Source Java GIS Toolkit
+http://geotools.org
+
+(C) 2020, Open Source Geospatial Foundation (OSGeo)
+
+This file is hereby placed into the Public Domain. This means anyone is
+free to do whatever they wish with this file. Use it well and enjoy!
 """
 import argparse
 import json

@@ -70,7 +70,6 @@ public class SDMXDataStore extends ContentDataStore {
             new HashMap<Name, ContentFeatureSource>();
 
     protected URL namespace;
-    protected URL apiUrl;
     protected String user;
     protected String password;
     protected GenericSDMXClient sdmxClient;
@@ -78,9 +77,8 @@ public class SDMXDataStore extends ContentDataStore {
     protected Map<String, DataFlowStructure> dataflowStructures =
             new HashMap<String, DataFlowStructure>();
 
-    public SDMXDataStore(
-            String name, String namespaceIn, String provider, String user, String password)
-            throws MalformedURLException, IOException, SdmxException {
+    public SDMXDataStore(String namespaceIn, String provider, String user, String password)
+            throws MalformedURLException, SdmxException {
 
         super();
 
@@ -212,7 +210,7 @@ public class SDMXDataStore extends ContentDataStore {
 
                     // Adds the dataflow typename
                     String ftypeName = SDMXDataStore.composeDataflowTypeName(s);
-                    Name name = new NameImpl(namespace.toExternalForm(), ftypeName);
+                    Name name = new NameImpl(this.namespace.toExternalForm(), ftypeName);
                     ContentEntry entry = new ContentEntry(this, name);
                     this.entries.put(name, entry);
 
@@ -224,8 +222,9 @@ public class SDMXDataStore extends ContentDataStore {
 
                     ContentEntry dimEntry =
                             new ContentEntry(
-                                    this, new NameImpl(namespace.toExternalForm(), dimName));
-                    this.entries.put(new NameImpl(namespace.toExternalForm(), dimName), dimEntry);
+                                    this, new NameImpl(this.namespace.toExternalForm(), dimName));
+                    this.entries.put(
+                            new NameImpl(this.namespace.toExternalForm(), dimName), dimEntry);
                 });
 
         return new ArrayList<Name>(this.entries.keySet());

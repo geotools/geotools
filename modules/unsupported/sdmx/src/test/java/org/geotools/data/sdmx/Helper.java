@@ -57,7 +57,6 @@ public class Helper {
     public static DataStore createSDMXTestDataStore() throws IOException {
 
         Map<String, Serializable> params = new HashMap<String, Serializable>();
-        params.put(SDMXDataStoreFactory.NAME_PARAM.key, "ABS");
         params.put(SDMXDataStoreFactory.NAMESPACE_PARAM.key, NAMESPACE);
         params.put(SDMXDataStoreFactory.PROVIDER_PARAM.key, PROVIDER_OLD);
         params.put(SDMXDataStoreFactory.USER_PARAM.key, USER);
@@ -69,7 +68,6 @@ public class Helper {
     public static DataStore createSDMXTestDataStore2() throws IOException {
 
         Map<String, Serializable> params = new HashMap<String, Serializable>();
-        params.put(SDMXDataStoreFactory.NAME_PARAM.key, "ABS");
         params.put(SDMXDataStoreFactory.NAMESPACE_PARAM.key, NAMESPACE);
         params.put(SDMXDataStoreFactory.PROVIDER_PARAM.key, PROVIDER_NEW);
         params.put(SDMXDataStoreFactory.USER_PARAM.key, USER);

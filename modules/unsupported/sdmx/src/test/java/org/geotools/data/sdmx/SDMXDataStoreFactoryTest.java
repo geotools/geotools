@@ -60,6 +60,10 @@ public class SDMXDataStoreFactoryTest {
 
         // Namespace set
         params.put(SDMXDataStoreFactory.NAMESPACE_PARAM.key, Helper.NAMESPACE);
+        assertFalse(dsf.canProcess(params));
+
+        // Provider set
+        params.put(SDMXDataStoreFactory.PROVIDER_PARAM.key, Helper.PROVIDER_NEW);
         assertTrue(dsf.canProcess(params));
 
         // Username set

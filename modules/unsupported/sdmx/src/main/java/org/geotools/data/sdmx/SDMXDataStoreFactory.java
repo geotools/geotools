@@ -50,22 +50,20 @@ public class SDMXDataStoreFactory implements DataStoreFactorySpi {
     private static List<Param> paramMetadata = new ArrayList<Param>(10);
 
     public static final Param NAMESPACE_PARAM = new Param("namespace", String.class, "", true);
-    public static final Param NAME_PARAM =
-            new Param("SDMX source name", String.class, "Source", true);
     public static final Param PROVIDER_PARAM =
             new Param(
-                    "Well-known provider name (either 'ABS' or 'ABS2')",
-                    String.class,
                     "ProviderName",
+                    String.class,
+                    "Well-known provider name (either 'ABS' or 'ABS2')",
                     true,
-                    "ABS");
+                    "ABS2");
     public static final Param USER_PARAM =
-            new Param("Username of the endpoint", String.class, "Username", false, null);
+            new Param("Username", String.class, "Username", false, null);
     public static final Param PASSWORD_PARAM =
             new Param(
-                    "Password associated with the username",
-                    String.class,
                     "Password",
+                    String.class,
+                    "Password associated with the username",
                     false,
                     null,
                     Collections.singletonMap(Parameter.IS_PASSWORD, Boolean.TRUE));
@@ -87,7 +85,6 @@ public class SDMXDataStoreFactory implements DataStoreFactorySpi {
     public DataStore createDataStore(Map<String, Serializable> params) throws IOException {
         try {
             return new SDMXDataStore(
-                    (String) params.get(NAME_PARAM.key),
                     (String) params.get(NAMESPACE_PARAM.key),
                     (String) params.get(PROVIDER_PARAM.key),
                     (String) params.get(USER_PARAM.key),
@@ -119,6 +116,11 @@ public class SDMXDataStoreFactory implements DataStoreFactorySpi {
         try {
             new URL((String) params.get(SDMXDataStoreFactory.NAMESPACE_PARAM.key));
         } catch (MalformedURLException e) {
+            return false;
+        }
+
+        if (params.get(SDMXDataStoreFactory.PROVIDER_PARAM.key) == null
+                || ((String) params.get(SDMXDataStoreFactory.PROVIDER_PARAM.key)).length() < 1) {
             return false;
         }
 

@@ -60,7 +60,6 @@ public class SDMXDimensionFeatureReader extends SDMXFeatureReader {
                             (dim) -> {
                                 dimNames2.add(dim.getId());
                             });
-            logger.log(Level.SEVERE, String.format(">>>>>>>>>>> %s", dimNames2));
 
             // If the list of dimensions has to be returned, returns only those
             if (SDMXDataStore.DIMENSIONS_EXPR_ALL.equals(expression.toUpperCase())) {

@@ -153,19 +153,17 @@ public class SDMXDataflowFeatureReader extends SDMXFeatureReader {
         builder.set(SDMXDataStore.GEOMETRY_ATTR, null);
         builder.set(SDMXDataStore.TIME_KEY, this.timeIter.next());
 
-        ts.getDimensions()
+        this.ts
+                .getDimensions()
                 .forEach(
                         (dimIn) -> {
                             if (dimIn != null) {
                                 DimensionValue dimValue = new DimensionValue(dimIn);
-
-                                if (dimValue.isMeasure()) {
-                                    builder.set(SDMXDataStore.MEASURE_KEY, this.obsIter.next());
-                                } else {
-                                    builder.set(dimValue.name, dimValue.value);
-                                }
+                                builder.set(dimValue.name, dimValue.value);
                             }
                         });
+
+        builder.set(SDMXDataStore.MEASURE_KEY, this.obsIter.next());
 
         return builder.buildFeature(
                 (new FeatureIdImpl(String.valueOf(this.ts.hashCode()))).toString());

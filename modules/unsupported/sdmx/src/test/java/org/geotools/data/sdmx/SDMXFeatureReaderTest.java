@@ -288,7 +288,7 @@ public class SDMXFeatureReaderTest {
             feat = this.reader.next();
             assertNotNull(feat);
             if (nObs == 0) {
-                assertEquals(2583729.0, feat.getAttribute(2));
+                assertEquals("2001", feat.getAttribute(1));
             }
             String s =
                     feat.getID()

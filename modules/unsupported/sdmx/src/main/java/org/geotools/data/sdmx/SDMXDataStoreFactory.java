@@ -45,7 +45,7 @@ public class SDMXDataStoreFactory implements DataStoreFactorySpi {
     protected static final Logger LOGGER = Logging.getLogger(SDMXDataStoreFactory.class.getName());
 
     public static final String FACTORY_NAME = "SDMX";
-    public static final String FACTORY_DESCRIPTION = "SDMX 2.1 ReST API";
+    public static final String FACTORY_DESCRIPTION = "SDMX 2.0/2.1 ReST API";
 
     private static List<Param> paramMetadata = new ArrayList<Param>(10);
 
@@ -53,7 +53,12 @@ public class SDMXDataStoreFactory implements DataStoreFactorySpi {
     public static final Param NAME_PARAM =
             new Param("SDMX source name", String.class, "Source", true);
     public static final Param PROVIDER_PARAM =
-            new Param("Well-known provider name", String.class, "ProviderName", true, "ABS");
+            new Param(
+                    "Well-known provider name (either 'ABS' or 'ABS2')",
+                    String.class,
+                    "ProviderName",
+                    true,
+                    "ABS");
     public static final Param USER_PARAM =
             new Param("Username of the endpoint", String.class, "Username", false, null);
     public static final Param PASSWORD_PARAM =

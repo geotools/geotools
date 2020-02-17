@@ -108,6 +108,10 @@ public class SDMXDataflowFeatureSource extends SDMXFeatureSource {
                             }
                         });
 
+        if (builder.get(SDMXDataStore.MEASURE_KEY) == null) {
+            builder.add(SDMXDataStore.MEASURE_KEY, Double.class);
+        }
+
         this.schema = builder.buildFeatureType();
         return this.schema;
     }

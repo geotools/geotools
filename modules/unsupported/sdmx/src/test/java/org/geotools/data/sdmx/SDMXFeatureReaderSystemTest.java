@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 import org.geotools.data.Query;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.util.logging.Logging;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -38,7 +39,8 @@ public class SDMXFeatureReaderSystemTest {
     SimpleFeatureType fType;
 
     @Test
-    public void readFeaturesMeasureOldEndpoint() throws Exception {
+    @Ignore
+    public void readFeaturesMeasureSDMX20Endpoint() throws Exception {
 
         this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore();
         Query query = new Query();
@@ -75,18 +77,7 @@ public class SDMXFeatureReaderSystemTest {
         while (this.reader.hasNext()) {
             feat = this.reader.next();
             assertNotNull(feat);
-            if (nObs == 0) {
-                assertNotNull(feat.getID());
-                assertNull(feat.getDefaultGeometry());
-                assertEquals("2001", feat.getAttribute(1));
-                assertEquals(2468518.0, feat.getAttribute(2));
-                assertEquals("TOT", feat.getAttribute(3));
-                assertEquals("TOT", feat.getAttribute(4));
-                assertEquals("1", feat.getAttribute(5));
-                assertEquals("STE", feat.getAttribute(6));
-                assertEquals("1", feat.getAttribute(7));
-                assertEquals("A", feat.getAttribute(8));
-            }
+
             String s =
                     feat.getID()
                             + "|"
@@ -101,6 +92,22 @@ public class SDMXFeatureReaderSystemTest {
                                 + feat.getAttribute(i);
             }
             System.out.println(s);
+
+            // Check only the first result row
+            if (nObs == 0) {
+                assertNotNull(feat.getID());
+                assertNull(feat.getDefaultGeometry());
+                assertNull(feat.getAttribute(1));
+                assertEquals("2001", feat.getAttribute(2));
+                assertEquals(2468518.0, feat.getAttribute(3));
+                assertEquals("TOT", feat.getAttribute(4));
+                assertEquals("TOT", feat.getAttribute(5));
+                assertEquals("1", feat.getAttribute(6));
+                assertEquals("STE", feat.getAttribute(7));
+                assertEquals("1", feat.getAttribute(8));
+                assertEquals("A", feat.getAttribute(9));
+            }
+
             nObs++;
         }
 
@@ -108,7 +115,7 @@ public class SDMXFeatureReaderSystemTest {
     }
 
     @Test
-    public void readFeaturesMeasureNewEndpoint() throws Exception {
+    public void readFeaturesMeasureSDMX21Endpoint() throws Exception {
 
         this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore2();
         Query query = new Query();
@@ -129,7 +136,9 @@ public class SDMXFeatureReaderSystemTest {
         this.fType = this.dataStore.getFeatureSource(Helper.KN_NIS).getSchema();
         this.dfSource = (SDMXDataflowFeatureSource) this.dataStore.getFeatureSource(Helper.T04SA);
         this.dfSource.buildFeatureType();
-        query.setFilter(ECQL.toFilter("AGE='TT' and SEX_ABS='1'"));
+        query.setFilter(
+                ECQL.toFilter(
+                        "AGE='TT' and SEX_ABS='1' and REGIONTYPE in ('SA2') and TIME in ('2016') and INGP_2016 in ('1') and ASGS_2016 in ('311051328')"));
         this.reader = (SDMXFeatureReader) this.dfSource.getReader(query);
 
         assertTrue(this.reader.hasNext());
@@ -138,11 +147,6 @@ public class SDMXFeatureReaderSystemTest {
         while (this.reader.hasNext()) {
             feat = this.reader.next();
             assertNotNull(feat);
-            if (nObs == 0) {
-                assertNotNull(feat.getID());
-                assertNull(feat.getDefaultGeometry());
-                assertEquals("2016", feat.getAttribute(1));
-            }
             String s =
                     feat.getID()
                             + "|"
@@ -157,9 +161,18 @@ public class SDMXFeatureReaderSystemTest {
                                 + feat.getAttribute(i);
             }
             System.out.println(s);
+
+            // Check only the first result row
+            if (nObs == 0) {
+                assertNotNull(feat.getID());
+                assertNull(feat.getDefaultGeometry());
+                assertEquals("2016", feat.getAttribute(1));
+                assertEquals(3099.0, feat.getAttribute(2));
+            }
+
             nObs++;
         }
 
-        assertEquals(15151, nObs);
+        assertEquals(1, nObs);
     }
 }

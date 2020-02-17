@@ -141,6 +141,12 @@
           <version>${project.version}</version>
           <scope>compile</scope>
       </dependency>
+      <dependency>
+          <groupId>org.geotools.ogc</groupId>
+          <artifactId>net.opengis.ows</artifactId>
+          <version>23-SNAPSHOT</version>
+          <scope>compile</scope>
+      </dependency>
   </dependencies>
 
   <build>

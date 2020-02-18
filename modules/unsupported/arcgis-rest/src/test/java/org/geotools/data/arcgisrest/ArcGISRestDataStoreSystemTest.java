@@ -54,7 +54,44 @@ public class ArcGISRestDataStoreSystemTest {
                                 "http://open-darwin.opendata.arcgis.com/data.json");
         List<Name> names = dataStore.createTypeNames();
 
-        assertEquals(38, names.size());
+        assertEquals(32, names.size());
+        names.forEach(
+                (n) -> {
+                    System.out.println(n.getURI());
+                });
+
+        String[] namesArray = ((DataStore) dataStore).getTypeNames();
+        for (int i = 0; i < namesArray.length; i++) {
+            System.out.println(String.format("%d of %d %s", i, namesArray.length, namesArray[i]));
+            FeatureSource<SimpleFeatureType, SimpleFeature> src =
+                    dataStore.createFeatureSource(
+                            dataStore.getEntry(
+                                    new NameImpl(
+                                            ArcGISRestDataStoreFactoryTest.NAMESPACE,
+                                            namesArray[i])));
+            assertNotNull(src.getSchema());
+            assertNotNull(src.getSchema().getTypeName());
+            assertNotNull(src.getBounds());
+            assertNotNull(src.getFeatures());
+            System.out.println(
+                    String.format(
+                            "      %d %s %s",
+                            src.getFeatures().size(),
+                            src.getSchema().getTypeName(),
+                            src.getBounds()));
+        }
+    }
+
+    @Test
+    public void testVPA() throws Exception {
+
+        ArcGISRestDataStore dataStore =
+                (ArcGISRestDataStore)
+                        ArcGISRestDataStoreSystemTest.createDefaultOpenDataTestDataStore(
+                                "https://data-planvic.opendata.arcgis.com/data.json");
+        List<Name> names = dataStore.createTypeNames();
+
+        assertEquals(4, names.size());
         names.forEach(
                 (n) -> {
                     System.out.println(n.getURI());

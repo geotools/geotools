@@ -20,21 +20,18 @@ package org.geotools.data.arcgisrest;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.nio.charset.Charset;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethodBase;
@@ -42,8 +39,10 @@ import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.URI;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
+import org.apache.commons.httpclient.cookie.CookiePolicy;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.geotools.data.Query;
 import org.geotools.data.arcgisrest.schema.catalog.Catalog;
 import org.geotools.data.arcgisrest.schema.catalog.Dataset;
@@ -56,7 +55,6 @@ import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.NameImpl;
 import org.geotools.util.UnsupportedImplementationException;
 import org.opengis.feature.type.Name;
-import sun.misc.IOUtils;
 
 /**
  * Main class of the data store
@@ -454,7 +452,6 @@ public class ArcGISRestDataStore extends ContentDataStore {
      * @param params Request parameters
      * @return A string representing the JSON, null
      * @throws IOException
-     * @throws InterruptedException
      */
     public InputStream retrieveJSON(String methType, URL url, Map<String, Object> params)
             throws IOException {
@@ -468,6 +465,9 @@ public class ArcGISRestDataStore extends ContentDataStore {
         } else {
             meth = new PostMethod();
         }
+        HttpMethodParams methParams = new HttpMethodParams();
+        methParams.setCookiePolicy(CookiePolicy.BROWSER_COMPATIBILITY);
+        meth.setParams(methParams);
 
         // Sets the URI, request parameters and request body (depending on method
         // type)
@@ -494,7 +494,7 @@ public class ArcGISRestDataStore extends ContentDataStore {
             this.LOGGER.log(
                     Level.FINER,
                     String.format(
-                            "About to query POST '%s' with body: ",
+                            "About to query POST '%s' with body: %s",
                             url.toString(), params.toString()));
         }
 
@@ -580,8 +580,9 @@ public class ArcGISRestDataStore extends ContentDataStore {
      * @returns the converted String
      */
     public static String InputStreamToString(InputStream istream) throws IOException {
-        String s = new String(IOUtils.readFully(istream, -1, true));
-        istream.close();
-        return s;
+        try (BufferedReader br =
+                new BufferedReader(new InputStreamReader(istream, Charset.defaultCharset()))) {
+            return br.lines().collect(Collectors.joining(System.lineSeparator()));
+        }
     }
 }

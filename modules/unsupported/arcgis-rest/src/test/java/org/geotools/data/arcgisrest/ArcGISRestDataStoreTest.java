@@ -120,7 +120,7 @@ public class ArcGISRestDataStoreTest {
                             ArcGISRestDataStoreFactoryTest.createDefaultOpenDataTestDataStore();
             List<Name> names = this.dataStore.createTypeNames();
         } catch (IOException e) {
-            assertTrue(e.getMessage().contains("400 Cannot perform query"));
+            assertTrue(e.getMessage().contains("Cannot perform query"));
         }
     }
 

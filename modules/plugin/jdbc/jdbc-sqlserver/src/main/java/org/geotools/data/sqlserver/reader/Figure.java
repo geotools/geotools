@@ -18,11 +18,22 @@
 
 package org.geotools.data.sqlserver.reader;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /** @author Anders Bakkevold, Bouvet */
 public class Figure {
 
+    enum SequenceType {
+        STRAIGHT,
+        CURVED
+    };
+
+    /** Determines the role of this figure within the GEOMETRY structure. */
     private int attribute;
+
     private int pointOffset;
+    private List<SequenceType> sequenceTypes = new ArrayList<>();
 
     public Figure(int attribute, int pointOffset) {
         this.attribute = attribute;
@@ -35,5 +46,13 @@ public class Figure {
 
     public int getPointOffset() {
         return pointOffset;
+    }
+
+    public List<SequenceType> getSequenceTypes() {
+        return sequenceTypes;
+    }
+
+    public void setSequenceTypes(List<SequenceType> sequenceTypes) {
+        this.sequenceTypes = sequenceTypes;
     }
 }

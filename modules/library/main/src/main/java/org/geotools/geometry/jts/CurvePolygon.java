@@ -119,4 +119,8 @@ public class CurvePolygon extends Polygon implements CurvedGeometry<Polygon> {
     public CurvePolygon copyInternal() {
         return new CurvePolygon(shell, holes, factory, tolerance);
     }
+
+    public String toString() {
+        return toCurvedText();
+    }
 }

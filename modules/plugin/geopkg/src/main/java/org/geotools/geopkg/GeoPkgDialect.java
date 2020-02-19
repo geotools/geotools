@@ -34,6 +34,8 @@ import java.sql.Types;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
+
+import org.geotools.feature.visitor.CountVisitor;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
 import org.geotools.geometry.jts.Geometries;
@@ -50,6 +52,7 @@ import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
+import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
@@ -80,6 +83,18 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     public GeoPkgDialect(JDBCDataStore dataStore) {
         super(dataStore);
         geomWriterConfig = new GeoPkgGeomWriter.Configuration();
+    }
+
+    // The JDBC aggregate functions doesn't support the geopkg DateTime types.
+    //  This is because they are stored as strings in the database instead of real Date types
+    //   and the JDBC aggregate driver does NOT provide the needed conversions.
+    //
+    // since this doesn't work, we don't support it.
+    @Override
+    public void registerAggregateFunctions(
+            Map<Class<? extends FeatureVisitor>, String> aggregates) {
+        // this aggregate isn't type aware so doesn't cause issues
+        aggregates.put(CountVisitor.class, "count");
     }
 
     @Override
@@ -200,6 +215,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         mappings.put("DATE", java.sql.Date.class);
         mappings.put("TIMESTAMP", java.sql.Timestamp.class);
         mappings.put("TIME", java.sql.Time.class);
+        mappings.put("DATETIME", java.sql.Timestamp.class);
     }
 
     @Override

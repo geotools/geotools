@@ -35,16 +35,11 @@
  *     (250)385-6040
  *     www.vividsolutions.com
  */
-package org.geotools.data.postgis;
+package org.geotools.geometry.jts;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import org.geotools.geometry.jts.CircularArc;
-import org.geotools.geometry.jts.CompoundCurve;
-import org.geotools.geometry.jts.CompoundRing;
-import org.geotools.geometry.jts.CurvedGeometryFactory;
-import org.geotools.geometry.jts.JTS;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
@@ -72,9 +67,9 @@ import org.locationtech.jts.io.WKBWriter;
  * use of an {@link InStream}, which allows easy use with arbitrary byte stream sources.
  *
  * <p>This class reads the format describe in {@link WKBWriter}. It also partially handles the
- * <b>Extended WKB</b> format used by PostGIS, by parsing and storing SRID values and supporting .
- * The reader repairs structurally-invalid input (specifically, LineStrings and LinearRings which
- * contain too few points have vertices added, and non-closed rings are closed).
+ * <b>Extended WKB</b> format used by PostGIS and SQLServer, by parsing and storing SRID values and
+ * supporting . The reader repairs structurally-invalid input (specifically, LineStrings and
+ * LinearRings which contain too few points have vertices added, and non-closed rings are closed).
  *
  * <p>This class is designed to support reuse of a single instance to read multiple geometries. This
  * class is not thread-safe; each thread should create its own instance.

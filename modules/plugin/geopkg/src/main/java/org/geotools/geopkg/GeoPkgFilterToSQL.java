@@ -67,12 +67,12 @@ public class GeoPkgFilterToSQL extends PreparedFilterToSQL {
                 return "datetime("
                         + super_result
                         + ",'localtime')"; // localtime -- everything must be consistent -- see
-                                           // literal visitor
+                // literal visitor
             } else if (java.sql.Date.class.isAssignableFrom(binding)) {
                 return "date("
                         + super_result
                         + ",'localtime')"; // localtime -- everything must be consistent -- see
-                                           // literal visitor
+                // literal visitor
             }
         }
         return super_result;

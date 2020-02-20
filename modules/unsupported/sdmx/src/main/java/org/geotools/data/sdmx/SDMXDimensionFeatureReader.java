@@ -89,12 +89,28 @@ public class SDMXDimensionFeatureReader extends SDMXFeatureReader {
                                     expression.toUpperCase(), String.join(", ", dimNames))));
                 }
 
-                this.dimIter =
-                        dfStructureIn
-                                .getDimension(expression.toUpperCase())
-                                .getCodeList()
-                                .entrySet()
-                                .iterator();
+                // FIXME: https://github.com/amattioc/SDMX/issues/181
+                if (dfStructureIn.getDimension(expression.toUpperCase()).getCodeList() == null) {
+                    this.dimIter =
+                            new Iterator<Entry<String, String>>() {
+                                @Override
+                                public boolean hasNext() {
+                                    return false;
+                                }
+
+                                @Override
+                                public Entry<String, String> next() {
+                                    return null;
+                                }
+                            };
+                } else {
+                    this.dimIter =
+                            dfStructureIn
+                                    .getDimension(expression.toUpperCase())
+                                    .getCodeList()
+                                    .entrySet()
+                                    .iterator();
+                }
             }
         } catch (Exception e) {
             logger.log(Level.SEVERE, e.getMessage(), e);

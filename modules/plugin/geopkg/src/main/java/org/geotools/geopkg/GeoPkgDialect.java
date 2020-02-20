@@ -34,7 +34,6 @@ import java.sql.Types;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
-
 import org.geotools.feature.visitor.CountVisitor;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;

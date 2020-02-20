@@ -44,7 +44,6 @@ public class GeoPkgFilterToSQL extends PreparedFilterToSQL {
         this.dialect = dialect;
     }
 
-
     // cf.  visit(Literal expression,...)
     // When doing temporal queries (like "time BETWEEN t1 AND t2")
     //
@@ -59,23 +58,29 @@ public class GeoPkgFilterToSQL extends PreparedFilterToSQL {
         String super_result = super.escapeName(name);
         AttributeDescriptor desc = featureType.getDescriptor(name);
         // desc might be null in the case of joins et al
-        if ( (desc != null) && (desc.getType().getBinding() != null) ) {
+        if ((desc != null) && (desc.getType().getBinding() != null)) {
             Class<?> binding = desc.getType().getBinding();
             // localtime -- everything must be consistent -- see literal visitor
             if (Time.class.isAssignableFrom(binding)) {
-               return "time("+super_result+",'localtime')";
-           } else if (Timestamp.class.isAssignableFrom(binding)) {
-               return "datetime("+super_result+",'localtime')"; // localtime -- everything must be consistent -- see literal visitor
-           } else if (java.sql.Date.class.isAssignableFrom(binding)) {
-                return "date(" + super_result + ",'localtime')"; // localtime -- everything must be consistent -- see literal visitor
+                return "time(" + super_result + ",'localtime')";
+            } else if (Timestamp.class.isAssignableFrom(binding)) {
+                return "datetime("
+                        + super_result
+                        + ",'localtime')"; // localtime -- everything must be consistent -- see
+                                           // literal visitor
+            } else if (java.sql.Date.class.isAssignableFrom(binding)) {
+                return "date("
+                        + super_result
+                        + ",'localtime')"; // localtime -- everything must be consistent -- see
+                                           // literal visitor
             }
         }
         return super_result;
     }
-        /**
-         * Override done to ensure we don't complain if there is a BBOX filter, even if we claim not to
-         * support it
-         */
+    /**
+     * Override done to ensure we don't complain if there is a BBOX filter, even if we claim not to
+     * support it
+     */
     public void encode(Filter filter) throws FilterToSQLException {
         if (out == null) throw new FilterToSQLException("Can't encode to a null writer.");
         // hack, we lied about being able to support BBOX, because the implementation is

@@ -37,6 +37,11 @@ public class WMTSService extends Service {
 
         this(serviceType);
 
+        // According to the spec, the serviceProvider section may not exist so guard against it
+        if (serviceProvider == null) {
+            return;
+        }
+
         ResponsiblePartyImpl contactInfo =
                 new ResponsiblePartyImpl(serviceProvider.getServiceContact());
 
@@ -58,6 +63,15 @@ public class WMTSService extends Service {
     }
 
     public WMTSService(ServiceIdentificationType serviceType) {
+
+        // Initialise the important items for the service
+        setName("");
+        setTitle("");
+
+        // According to the spec, the ServiceIdentifier section may not exist so guard against it
+        if (serviceType == null) {
+            return;
+        }
 
         String title =
                 serviceType.getTitle().isEmpty()

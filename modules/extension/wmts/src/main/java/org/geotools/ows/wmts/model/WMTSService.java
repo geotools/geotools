@@ -64,6 +64,15 @@ public class WMTSService extends Service {
 
     public WMTSService(ServiceIdentificationType serviceType) {
 
+        // Initialise the important items for the service
+        setName("");
+        setTitle("");
+
+        // According to the spec, the ServiceIdentifier section may not exist so guard against it
+        if (serviceType == null) {
+            return;
+        }
+
         String title =
                 serviceType.getTitle().isEmpty()
                         ? "N/A"

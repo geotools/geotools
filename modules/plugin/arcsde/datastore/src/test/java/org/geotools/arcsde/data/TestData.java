@@ -65,7 +65,6 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.impl.CoordinateArraySequence;
-import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
 import org.locationtech.jts.operation.valid.IsValidOp;
 import org.locationtech.jts.operation.valid.TopologyValidationError;
@@ -225,10 +224,7 @@ public class TestData {
         return tempTableName;
     }
 
-    /**
-     * @return Returns the temp_table.
-     * @throws SeException
-     */
+    /** @return Returns the temp_table. */
     public String getTempTableName(ISession session) throws IOException {
         String dbName = session.getDatabaseName();
         String user = session.getUser();
@@ -275,7 +271,6 @@ public class TestData {
      * Gracefully deletes the temp table hiding any exception (no problem if it does not exist)
      *
      * @param connPool to get the connection to use in deleting {@link #getTempTableName()}
-     * @throws UnavailableConnectionException
      */
     public void deleteTempTable(ISessionPool connPool)
             throws IOException, UnavailableConnectionException {
@@ -417,8 +412,6 @@ public class TestData {
      * Truncates the temp layer and populates it with fresh data. This method cannot be called if
      * {@link #createTempTable(boolean)} has not been called first, no matter if the table already
      * exists, it needs instance state initialized by createTempTable
-     *
-     * @throws Exception
      */
     public void insertTestData() throws Exception {
         truncateTempTable();
@@ -654,8 +647,6 @@ public class TestData {
      *         <li><code>POINT EMPTY</code>
      *         <li><code>null</code>
      *       </ul>
-     *
-     * @throws ParseException
      */
     private void insertData(
             final SeLayer layer, final ISession session, final SeColumnDefinition[] colDefs)
@@ -786,7 +777,6 @@ public class TestData {
      * @param jtsGeomType class of JTS geometry to create
      * @param numFeatures number of features to create.
      * @throws IOException if the schema for te test table cannot be fetched from the database.
-     * @throws SeException
      */
     public SimpleFeatureCollection createTestFeatures(
             Class<? extends Geometry> jtsGeomType, int numFeatures)
@@ -1130,14 +1120,7 @@ public class TestData {
         session.issue(cmd);
     }
 
-    /**
-     * Creates an ArcSDE version named {@code versionName} if it doesn't already exist
-     *
-     * @param session
-     * @param versionName
-     * @param parentVersion
-     * @throws IOException
-     */
+    /** Creates an ArcSDE version named {@code versionName} if it doesn't already exist */
     public void createVersion(
             final ISession session, final String versionName, final String parentVersionName)
             throws IOException {

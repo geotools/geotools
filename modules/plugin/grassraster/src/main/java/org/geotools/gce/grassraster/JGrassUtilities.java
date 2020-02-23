@@ -129,14 +129,7 @@ public class JGrassUtilities {
         return true;
     }
 
-    /**
-     * create a buffered image from a set of color triplets
-     *
-     * @param data
-     * @param width
-     * @param height
-     * @return
-     */
+    /** create a buffered image from a set of color triplets */
     public static BufferedImage ByteBufferImage(byte[] data, int width, int height) {
         int[] bandoffsets = {0, 1, 2, 3};
         DataBufferByte dbb = new DataBufferByte(data, data.length);
@@ -169,7 +162,6 @@ public class JGrassUtilities {
     /**
      * return the rectangle of the cell of the active region, that surrounds the given coordinates
      *
-     * @param activeRegion
      * @param x the given easting coordinate
      * @param y given northing coordinate
      * @return the rectangle localizing the cell inside which the x and y stay
@@ -218,11 +210,9 @@ public class JGrassUtilities {
     // * a certain supplied map in that point (a kind of d.what.rast)
     // *
     // * @param mapName - the map of which we want to know the value ("@mapset")
-    // * @param copt
     // * @param rasterFormat - the raster format from where to read from
     // * @param coordinates - the point in which we want to know the value
     // (x=easting, y=northing)
-    // * @return
     // */
     // public static String getWhatValueFromMap( String mapName, Point2D
     // coordinates ) {
@@ -341,7 +331,6 @@ public class JGrassUtilities {
      * JGrassUtilities#rowColToCenterCoordinates(JGrassRegion, int, int)}
      *
      * @param active the active region
-     * @param coord
      * @return and int array containing row and col
      */
     public static int[] coordinateToNearestRowCol(JGrassRegion active, Coordinate coord) {
@@ -382,8 +371,6 @@ public class JGrassUtilities {
     // /**
     // * Given the mapsetpath and the mapname, the map is removed with all its accessor files
     // *
-    // * @param mapsetPath
-    // * @param mapName
     // */
     // public static boolean removeGrassRasterMap( String mapsetPath, String mapName ) {
     //
@@ -513,7 +500,6 @@ public class JGrassUtilities {
      *
      * @param rows the rows of the complete image the tiles are calculated for.
      * @param cols the cols of the complete image the tiles are calculated for.
-     * @return
      */
     public static int[] getTilesBasedOnFreeMemory(int rows, int cols) {
         long freeMemory = Runtime.getRuntime().freeMemory();
@@ -568,10 +554,6 @@ public class JGrassUtilities {
      *
      * @param name the name of the coverage.
      * @param dataMatrix the matrix containing the data.
-     * @param n
-     * @param s
-     * @param w
-     * @param e
      * @param crs the {@link CoordinateReferenceSystem}.
      * @param matrixIsRowCol a flag to tell if the matrix has rowCol or colRow order.
      * @return the {@link GridCoverage2D coverage}.

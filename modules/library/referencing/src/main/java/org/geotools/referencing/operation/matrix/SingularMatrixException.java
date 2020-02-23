@@ -34,12 +34,7 @@ public class SingularMatrixException extends RuntimeException {
         super(message);
     }
 
-    /**
-     * Construct using provided message and cause
-     *
-     * @param message
-     * @param cause
-     */
+    /** Construct using provided message and cause */
     public SingularMatrixException(String message, Throwable cause) {
         super(message, cause);
     }

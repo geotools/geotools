@@ -221,8 +221,6 @@ public class RasterLayerRequest {
      * Build a new {@code CoverageRequest} given a set of input parameters.
      *
      * @param params The {@code GeneralParameterValue}s to initialize this request
-     * @param baseGridCoverage2DReader
-     * @throws IOException
      */
     public RasterLayerRequest(
             final GeneralParameterValue[] params, final RasterManager rasterManager)

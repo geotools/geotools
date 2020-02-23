@@ -106,7 +106,6 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
      * @param binding the geometry type
      * @param ps the prepared statement
      * @param column the column index where the geometry is to be set
-     * @throws SQLException
      */
     public abstract void setGeometryValue(
             Geometry g, int dimension, int srid, Class binding, PreparedStatement ps, int column)
@@ -123,7 +122,6 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
      * @param ps The prepared statement.
      * @param column The column the value maps to.
      * @param cx The database connection.
-     * @throws SQLException
      */
     public void setValue(
             Object value, Class binding, PreparedStatement ps, int column, Connection cx)
@@ -195,7 +193,6 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
      * @param ps The prepared statement.
      * @param i The column the value maps to.
      * @param cx The database connection.
-     * @throws SQLException
      */
     public void setArrayValue(
             Object value, AttributeDescriptor att, PreparedStatement ps, int i, Connection cx)
@@ -220,9 +217,6 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
      * are ambiguities. Subclasses can implement their own logic and eventually use information
      * contained in the attribute's {@link AttributeDescriptor#getUserData()}, stored at attribute
      * creation time.
-     *
-     * @param att
-     * @return
      */
     protected String getArrayComponentTypeName(AttributeDescriptor att) throws SQLException {
         Map<String, Class<?>> mappings = dataStore.getSqlTypeNameToClassMappings();
@@ -251,7 +245,6 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
      * @param componentType The attribute binding (of array type)
      * @param connection The connection used to create an {@link Array}
      * @return The converted array
-     * @throws SQLException
      */
     protected Array convertToArray(
             Object value, String componentTypeName, Class componentType, Connection connection)
@@ -327,7 +320,6 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
      * @param select The select statement being executed
      * @param cx The database connection
      * @param featureType The feature type the select is executing against.
-     * @throws SQLException
      */
     public void onSelect(PreparedStatement select, Connection cx, SimpleFeatureType featureType)
             throws SQLException {}
@@ -342,7 +334,6 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
      * @param delete The delete statement being executed
      * @param cx The database connection
      * @param featureType The feature type the delete is executing against.
-     * @throws SQLException
      */
     public void onDelete(PreparedStatement delete, Connection cx, SimpleFeatureType featureType)
             throws SQLException {}
@@ -357,7 +348,6 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
      * @param insert The delete statement being executed
      * @param cx The database connection
      * @param featureType The feature type the insert is executing against.
-     * @throws SQLException
      */
     public void onInsert(PreparedStatement insert, Connection cx, SimpleFeatureType featureType)
             throws SQLException {}
@@ -372,7 +362,6 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
      * @param update The delete statement being executed
      * @param cx The database connection
      * @param featureType The feature type the update is executing against.
-     * @throws SQLException
      */
     public void onUpdate(PreparedStatement update, Connection cx, SimpleFeatureType featureType)
             throws SQLException {}

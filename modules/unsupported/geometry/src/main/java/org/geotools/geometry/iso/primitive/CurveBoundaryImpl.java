@@ -41,13 +41,7 @@ public class CurveBoundaryImpl extends PrimitiveBoundaryImpl implements CurveBou
 
     private Point endPoint = null;
 
-    /**
-     * Constructor
-     *
-     * @param crs
-     * @param start
-     * @param end
-     */
+    /** Constructor */
     public CurveBoundaryImpl(CoordinateReferenceSystem crs, Point start, Point end) {
         super(crs);
         if (start.equals(end))

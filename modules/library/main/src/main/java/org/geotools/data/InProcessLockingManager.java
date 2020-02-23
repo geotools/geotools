@@ -114,8 +114,6 @@ public class InProcessLockingManager implements LockingManager {
      *
      * <p>This method will not return expired locks.
      *
-     * @param typeName
-     * @param featureID
      * @return Lock if exists, or null
      */
     protected Lock getLock(String typeName, String featureID) {
@@ -149,8 +147,6 @@ public class InProcessLockingManager implements LockingManager {
     /**
      * Creates the right sort of In-Process Lock.
      *
-     * @param transaction
-     * @param featureLock
      * @return In-Process Lock
      * @throws FeatureLockException When a Transaction lock is requested against
      *     Transaction.AUTO_COMMIT
@@ -317,10 +313,6 @@ public class InProcessLockingManager implements LockingManager {
     /**
      * Release indicated featureID, must have correct authroization.
      *
-     * @param typeName
-     * @param featureID
-     * @param transaction
-     * @param featureLock
      * @throws IOException If lock could not be released
      */
     public synchronized void unLockFeatureID(
@@ -447,7 +439,6 @@ public class InProcessLockingManager implements LockingManager {
      *
      * <p>Remeber lock may have expired.
      *
-     * @param authID
      * @return true if lock exists for authID
      * @see org.geotools.data.LockingManager#lockExists(java.lang.String)
      */
@@ -477,8 +468,6 @@ public class InProcessLockingManager implements LockingManager {
     /**
      * Used by test cases
      *
-     * @param typeName
-     * @param featureID
      * @return Return if feature is currently locked
      */
     public boolean isLocked(String typeName, String featureID) {

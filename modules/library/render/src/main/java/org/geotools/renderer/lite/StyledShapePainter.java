@@ -53,8 +53,6 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
 import org.opengis.filter.expression.Literal;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.operation.TransformException;
 import org.opengis.style.ExternalGraphic;
 import org.opengis.style.GraphicLegend;
 import org.opengis.style.GraphicalSymbol;
@@ -116,8 +114,6 @@ public class StyledShapePainter {
      * @param shape The polygon to draw.
      * @param style The style to apply, or <code>null</code> if none.
      * @param scale The scale denominator for the current zoom level
-     * @throws FactoryException
-     * @throws TransformException
      */
     public void paint(
             final Graphics2D graphics,
@@ -302,10 +298,6 @@ public class StyledShapePainter {
      * Checks if the fill can simply be omitted because it's not going to be visible anyways. It
      * takes a style that has a solid outline and a width or height that's less than the stroke
      * width
-     *
-     * @param style
-     * @param shape
-     * @return
      */
     private boolean optimizeOutFill(PolygonStyle2D style, LiteShape2 shape) {
         // if we have a graphic stroke the outline might not be solid, so, not covering
@@ -503,12 +495,7 @@ public class StyledShapePainter {
         return new DashedShape(shape, bs.getDashArray(), bs.getDashPhase());
     }
 
-    /**
-     * Extracts a ath iterator from the shape
-     *
-     * @param shape
-     * @return
-     */
+    /** Extracts a ath iterator from the shape */
     private PathIterator getPathIterator(final LiteShape2 shape) {
         return shape.getPathIterator(IDENTITY_TRANSFORM);
     }
@@ -826,9 +813,6 @@ public class StyledShapePainter {
     /**
      * Filling multipolygons might result in holes where two polygons overlap. In this method we
      * work around that by drawing each polygon as a separate shape
-     *
-     * @param g
-     * @param shape
      */
     void fillLiteShape(Graphics2D g, LiteShape2 shape) {
         if (shape.getGeometry() instanceof MultiPolygon
@@ -856,8 +840,6 @@ public class StyledShapePainter {
      * @param shape Shape whose fill is to be painted.
      * @param graphicFill a Style2D that specified the graphic fill.
      * @param scale the scale of the current render.
-     * @throws TransformException
-     * @throws FactoryException
      */
     protected void paintGraphicFill(
             Graphics2D graphics, Shape shape, Style2D graphicFill, double scale) {

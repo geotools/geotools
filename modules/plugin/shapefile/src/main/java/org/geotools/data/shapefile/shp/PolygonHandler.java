@@ -225,10 +225,7 @@ public class PolygonHandler implements ShapeHandler {
         }
     }
 
-    /**
-     * @param buffer
-     * @param numPoints
-     */
+    /** */
     private CoordinateSequence readCoordinates(
             final ByteBuffer buffer, final int numPoints, final int dimensions) {
         CoordinateSequence cs =
@@ -255,11 +252,7 @@ public class PolygonHandler implements ShapeHandler {
         return cs;
     }
 
-    /**
-     * @param shells
-     * @param holes
-     * @param holesForShells
-     */
+    /** */
     private Geometry buildGeometries(
             final List shells, final List holes, final List holesForShells) {
         Polygon[] polygons;
@@ -295,12 +288,7 @@ public class PolygonHandler implements ShapeHandler {
         return g;
     }
 
-    /**
-     * <b>Package private for testing</b>
-     *
-     * @param shells
-     * @param holes
-     */
+    /** <b>Package private for testing</b> */
     ArrayList assignHolesToShells(final ArrayList shells, final ArrayList holes) {
         ArrayList holesForShells = new ArrayList(shells.size());
         for (int i = 0; i < shells.size(); i++) {

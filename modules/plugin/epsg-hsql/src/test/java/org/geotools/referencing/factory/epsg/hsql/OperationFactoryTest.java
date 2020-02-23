@@ -339,11 +339,6 @@ public class OperationFactoryTest extends TestCase {
      *   <li>the source CRS of the operation matches the expected source
      *   <li>the target CRS of the operation matches the expected target
      *   <li>Tests the math transform using TransformTestBase.assertInterfaced
-     *
-     * @param sourceCRS
-     * @param targetCRS
-     * @param operations
-     * @param expectedTransformationText
      */
     public void assertOperations(
             CoordinateReferenceSystem sourceCRS,
@@ -360,9 +355,6 @@ public class OperationFactoryTest extends TestCase {
     /**
      * Asserts that at least one of the operations contains the <code>expectedText</code> in the
      * output of toString() method
-     *
-     * @param operations
-     * @param expectedText
      */
     public void assertOperationContained(Set<CoordinateOperation> operations, String expectedText) {
         boolean textFound = false;
@@ -383,8 +375,6 @@ public class OperationFactoryTest extends TestCase {
      * @param target The code of the target CRS to test
      * @return The set of found operations in direct order
      * @see #assertOperations(CoordinateReferenceSystem, CoordinateReferenceSystem, Set)
-     * @throws NoSuchAuthorityCodeException
-     * @throws FactoryException
      */
     public Set<CoordinateOperation> findOperations(String source, String target)
             throws NoSuchAuthorityCodeException, FactoryException {
@@ -410,10 +400,6 @@ public class OperationFactoryTest extends TestCase {
     /**
      * Ensures the provided source and target CRS match the source and target CRS of the operation.
      * Ensures the operation math transform passes TransformTestBase.assertInterfaced assertion.
-     *
-     * @param operation
-     * @param sourceCRS
-     * @param targetCRS
      */
     public static void assertOperation(
             CoordinateOperation operation,

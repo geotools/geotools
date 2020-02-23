@@ -38,11 +38,7 @@ public class PeriodNode {
     private Literal begin = null;
     private Literal end = null;
 
-    /**
-     * @see create
-     * @param begin
-     * @param end
-     */
+    /** @see create */
     private PeriodNode(final Literal begin, final Literal end) {
         if (!(begin.getValue() instanceof Date)) {
             throw new InvalidParameterException("begin parameter must be Literal with Date");

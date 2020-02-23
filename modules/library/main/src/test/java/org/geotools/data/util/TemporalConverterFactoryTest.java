@@ -40,8 +40,6 @@ public class TemporalConverterFactoryTest extends TestCase {
      * When converting from Calendar to Date from ArcSDE we run into a problem where the Dates are
      * out by a very small number. Basically we need to look at the Calendar and see if it
      * represents an *entire* day.
-     *
-     * @throws Exception
      */
     public void testStitchInTime() throws Exception {
         Converter converter = factory.createConverter(Calendar.class, Date.class, null);
@@ -138,11 +136,7 @@ public class TemporalConverterFactoryTest extends TestCase {
         assertEquals(new Timestamp(calendar.getTime().getTime()), timeStamp);
     }
 
-    /**
-     * Make sure that milliseconds do not get lost after conversion
-     *
-     * @throws Exception
-     */
+    /** Make sure that milliseconds do not get lost after conversion */
     public void testCalendarToTimestampWithMilliseconds() throws Exception {
         Calendar calendar = Calendar.getInstance();
         long offset = 123;

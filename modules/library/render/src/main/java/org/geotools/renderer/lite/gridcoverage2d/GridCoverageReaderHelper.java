@@ -161,10 +161,6 @@ public class GridCoverageReaderHelper {
     /**
      * Returns true if the reader is a reprojecting one, that is, one that can handle the coverage
      * reprojection on its own
-     *
-     * @param reader
-     * @return
-     * @throws IOException
      */
     public static boolean isReprojectingReader(GridCoverage2DReader reader) throws IOException {
         return "true".equals(reader.getMetadataValue(GridCoverage2DReader.REPROJECTING_READER));
@@ -174,10 +170,6 @@ public class GridCoverageReaderHelper {
      * Returns true if the reader is advertising a single CRS, cannot fully perform a reproject to
      * any target CRS, but internally is working with several CRSs and could use some extra padding
      * on the requests
-     *
-     * @param reader
-     * @return
-     * @throws IOException
      */
     boolean isMultiCRSReader(GridCoverage2DReader reader) throws IOException {
         return "true".equals(reader.getMetadataValue(GridCoverage2DReader.MULTICRS_READER));
@@ -316,13 +308,7 @@ public class GridCoverageReaderHelper {
         return coverages;
     }
 
-    /**
-     * Checks if any coverage in the list already fully contains the area of the test coverage
-     *
-     * @param coverages
-     * @param test
-     * @return
-     */
+    /** Checks if any coverage in the list already fully contains the area of the test coverage */
     private boolean coveragesContainArea(List<GridCoverage2D> coverages, GridCoverage2D test) {
         for (GridCoverage2D coverage : coverages) {
             if (coverage.getEnvelope2D().contains((BoundingBox) test.getEnvelope2D())) {
@@ -611,9 +597,6 @@ public class GridCoverageReaderHelper {
      * Reads a single coverage given the specified read parameters and the grid geometry
      *
      * @param readParams (might be null)
-     * @param gg
-     * @return
-     * @throws IOException
      */
     GridCoverage2D readSingleCoverage(GeneralParameterValue[] readParams, GridGeometry2D gg)
             throws IOException {

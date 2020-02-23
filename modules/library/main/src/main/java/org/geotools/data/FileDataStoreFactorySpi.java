@@ -54,7 +54,6 @@ public interface FileDataStoreFactorySpi extends DataStoreFactorySpi {
      *
      * @param url The data location for the
      * @return Returns an AbstractFileDataStore created from the data source provided.
-     * @throws IOException
      * @see AbstractFileDataStore
      */
     public FileDataStore createDataStore(URL url) throws IOException;
@@ -65,7 +64,6 @@ public interface FileDataStoreFactorySpi extends DataStoreFactorySpi {
      * @param url The location of the datum to parse into features
      * @return Returns the typename of the datum specified (on occasion this may involve starting
      *     the parse as well to get the FeatureType -- may not be instantanious).
-     * @throws IOException
      */
     public String getTypeName(URL url) throws IOException;
 }

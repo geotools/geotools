@@ -21,7 +21,6 @@ public class CalcUtil {
     /**
      * Sums an array of numbers together while using the correct class type.
      *
-     * @param numbers
      * @return the sum contained in the most appropriate number class
      */
     static Number sum(Number[] numbers) {
@@ -112,11 +111,7 @@ public class CalcUtil {
         }
     }
 
-    /**
-     * Calculates the average, and returns it in the correct class.
-     *
-     * @param numbers
-     */
+    /** Calculates the average, and returns it in the correct class. */
     static Number average(Number[] numbers) {
         Number sum = sum(numbers);
 
@@ -126,7 +121,6 @@ public class CalcUtil {
     /**
      * Determines the most appropriate class to use for a multiclass calculation.
      *
-     * @param objects
      * @return the most
      */
     static Class bestClass(Object[] objects) {
@@ -166,12 +160,7 @@ public class CalcUtil {
         }
     }
 
-    /**
-     * Casts an object to the specified type
-     *
-     * @param var
-     * @param type
-     */
+    /** Casts an object to the specified type */
     static Object convert(Object var, Class type) {
         if (var instanceof Number) { // use number conversion
 
@@ -234,8 +223,6 @@ public class CalcUtil {
     /**
      * Given an array of objects, traverses the array and determines the most suitable data type to
      * perform the calculation in. An empty object of the correct class is returned;
-     *
-     * @param objects
      */
     static Object getObject(Object[] objects) {
         Class bestClass = bestClass(objects);
@@ -255,12 +242,7 @@ public class CalcUtil {
         }
     }
 
-    /**
-     * Similar to java.lang.Comparable.compareTo, but can handle 2 different data types.
-     *
-     * @param val1
-     * @param val2
-     */
+    /** Similar to java.lang.Comparable.compareTo, but can handle 2 different data types. */
     static int compare(Comparable val1, Comparable val2) {
         if (val1.getClass() == val2.getClass()) {
             // both the same type, no conversion is necessary.

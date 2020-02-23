@@ -70,11 +70,7 @@ public class XPathTest extends AppSchemaTestSupport {
         assertFalse(Types.isSimpleContentType(GMLSchema.ABSTRACTFEATURECOLLECTIONTYPE_TYPE));
     }
 
-    /**
-     * Test that complex elements that can hold text content are correctly detected.
-     *
-     * @throws Exception
-     */
+    /** Test that complex elements that can hold text content are correctly detected. */
     @Test
     public void testCanHaveTextContent() throws Exception {
         SchemaIndex schemaIndex =

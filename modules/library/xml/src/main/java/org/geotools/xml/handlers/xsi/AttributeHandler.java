@@ -166,11 +166,7 @@ public class AttributeHandler extends XSIElementHandler {
         return LOCALNAME;
     }
 
-    /**
-     * Convert the 'use' attribute to an int mask
-     *
-     * @param use
-     */
+    /** Convert the 'use' attribute to an int mask */
     public static int findUse(String use) {
         if ("optional".equalsIgnoreCase(use)) {
             return OPTIONAL;
@@ -187,11 +183,7 @@ public class AttributeHandler extends XSIElementHandler {
         return -1;
     }
 
-    /**
-     * converts an int mask representing use to the string representation
-     *
-     * @param use
-     */
+    /** converts an int mask representing use to the string representation */
     public static String writeUse(int use) {
         switch (use) {
             case OPTIONAL:
@@ -213,12 +205,7 @@ public class AttributeHandler extends XSIElementHandler {
         return name;
     }
 
-    /**
-     * creates a smaller simpler version
-     *
-     * @param parent
-     * @throws SAXException
-     */
+    /** creates a smaller simpler version */
     protected Attribute compress(SchemaHandler parent) throws SAXException {
         if (cache != null) {
             return cache;

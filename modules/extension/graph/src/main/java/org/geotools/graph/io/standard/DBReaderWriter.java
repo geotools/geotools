@@ -124,7 +124,6 @@ public abstract class DBReaderWriter extends AbstractReaderWriter {
      * Opens a connection to the database, based on set properties.
      *
      * @return Connection to the database.
-     * @throws Exception
      */
     protected Connection getConnection() throws Exception {
         // read database + driver properties

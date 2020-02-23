@@ -942,7 +942,6 @@ public final class CRS {
      *
      * @param source The source {@link CoordinateReferenceSystem}
      * @param target the target {@link CoordinateReferenceSystem}
-     * @return
      */
     public static boolean isTransformationRequired(
             CoordinateReferenceSystem source, CoordinateReferenceSystem target)
@@ -1049,7 +1048,6 @@ public final class CRS {
      * <p>Some older web services are unable to deal with the full ogc:uri syntax, set simple to
      * true for force a very simple representation that is just based on the code portion.
      *
-     * @param crs
      * @param codeOnly Set to true to force generation of a simple srsName using only the code
      *     portion
      * @return srsName

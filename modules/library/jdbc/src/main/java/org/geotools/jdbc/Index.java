@@ -56,11 +56,7 @@ public class Index {
         this.unique = unique;
     }
 
-    /**
-     * True if the index is a unique one, false otherwise
-     *
-     * @return
-     */
+    /** True if the index is a unique one, false otherwise */
     public boolean isUnique() {
         return unique;
     }
@@ -75,20 +71,12 @@ public class Index {
         return typeName;
     }
 
-    /**
-     * The index name
-     *
-     * @return
-     */
+    /** The index name */
     public String getIndexName() {
         return indexName;
     }
 
-    /**
-     * Retrieves the hints for this index.
-     *
-     * @return
-     */
+    /** Retrieves the hints for this index. */
     public Hints getHints() {
         return hints;
     }

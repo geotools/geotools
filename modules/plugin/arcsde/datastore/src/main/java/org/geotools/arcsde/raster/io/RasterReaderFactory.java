@@ -36,10 +36,6 @@ public class RasterReaderFactory {
      * Creates a {@link TiledRasterReader} that's able to read one or more raster for the given
      * {@link RasterDatasetInfo}, depending on if {@code rasterInfo} represents a single raster or a
      * raster catalog.
-     *
-     * @param rasterInfo
-     * @return
-     * @throws IOException
      */
     public TiledRasterReader create(final RasterDatasetInfo rasterInfo) throws IOException {
         TiledRasterReader rasterReader = new DefaultTiledRasterReader(sessionPool, rasterInfo);

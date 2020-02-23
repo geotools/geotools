@@ -726,7 +726,6 @@ public class Query {
      * Set the version of features to retrieve where this is supported by the data source being
      * queried.
      *
-     * @param version
      * @see #getVersion() getVersion() for explanation
      * @since 2.4
      */

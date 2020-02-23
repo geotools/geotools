@@ -93,11 +93,7 @@ class DDLGenerator extends AbstractCmd {
         else this.targetDir = targetDir + File.separator;
     }
 
-    /**
-     * Entry point, called from Toolbox class
-     *
-     * @param args
-     */
+    /** Entry point, called from Toolbox class */
     public static void start(String[] args) {
         Config config = null;
         String spatialTNPrefix = null;

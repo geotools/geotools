@@ -56,11 +56,7 @@ public class CQLExpressionTest {
         Assert.assertEquals("attName", ((PropertyName) expression).getPropertyName());
     }
 
-    /**
-     * Bad identifier
-     *
-     * @throws CQLException
-     */
+    /** Bad identifier */
     @Test(expected = CQLException.class)
     public void badPropertyName() throws CQLException {
 

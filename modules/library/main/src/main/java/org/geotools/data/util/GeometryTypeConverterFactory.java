@@ -144,10 +144,6 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
                  * type.
                  *
                  * @param <T>
-                 * @param gc
-                 * @param target
-                 * @return
-                 * @throws Exception
                  */
                 public <T> List<T> convertAll(GeometryCollection gc, Class<T> target)
                         throws Exception {
@@ -320,10 +316,6 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
                 /**
                  * Add dummy coordinates to the given array to reach numpoints points. If the array
                  * is already made of numpoints or more coordinates, it will be returned untouched.
-                 *
-                 * @param input
-                 * @param numpoints
-                 * @return
                  */
                 private Coordinate[] growCoordinatesNum(Coordinate[] input, int numpoints) {
                     if (input.length < numpoints) {
@@ -336,9 +328,6 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
                 }
                 /**
                  * Gets a set of coordinates valid to create a linestring: - at least 2 coordinates
-                 *
-                 * @param coordinates
-                 * @return
                  */
                 private Coordinate[] getLineStringCoordinates(Coordinate[] coordinates) {
                     // at least 2 points
@@ -349,9 +338,6 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
                 /**
                  * Gets a set of coordinates valid to create a polygon: - at least 4 coordinates -
                  * closed path
-                 *
-                 * @param coordinates
-                 * @return
                  */
                 private Coordinate[] getPolygonCoordinates(Coordinate[] coordinates) {
                     // at least 4 points

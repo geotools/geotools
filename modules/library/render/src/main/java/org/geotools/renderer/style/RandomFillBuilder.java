@@ -87,15 +87,7 @@ class RandomFillBuilder {
         this.factory = factory;
     }
 
-    /**
-     * Builds a image with a random distribution of the graphic/mark
-     *
-     * @param symbolizer
-     * @param graphicSize
-     * @param gs
-     * @param mark
-     * @return
-     */
+    /** Builds a image with a random distribution of the graphic/mark */
     BufferedImage buildRandomTilableImage(
             Symbolizer symbolizer,
             Graphic gr,

@@ -207,8 +207,6 @@ public class MBTilesFile implements AutoCloseable {
     /**
      * Create an MBTilesFile from an SQL DataSource connected to an MBTiles file. Behaviour is
      * undefined if the DataSource is any other form of database.
-     *
-     * @param dataSource
      */
     public MBTilesFile(DataSource dataSource) {
         this.connPool = dataSource;
@@ -219,12 +217,7 @@ public class MBTilesFile implements AutoCloseable {
         this.connPool = dataStore.getDataSource();
     }
 
-    /**
-     * Store MetaData in file
-     *
-     * @param metaData
-     * @throws IOException
-     */
+    /** Store MetaData in file */
     public void saveMetaData(MBTilesMetadata metaData) throws IOException {
         try {
             Connection cx = connPool.getConnection();
@@ -251,7 +244,6 @@ public class MBTilesFile implements AutoCloseable {
      *
      * @param min The minimum zoom level
      * @param max The maximum zoom level
-     * @throws IOException
      */
     public void saveMinMaxZoomMetadata(int min, int max) throws IOException {
         try {
@@ -267,11 +259,7 @@ public class MBTilesFile implements AutoCloseable {
         }
     }
 
-    /**
-     * Store a tile
-     *
-     * @throws IOException
-     */
+    /** Store a tile */
     public void saveTile(MBTilesTile entry) throws IOException {
         try {
             Connection cx = connPool.getConnection();
@@ -324,11 +312,7 @@ public class MBTilesFile implements AutoCloseable {
         }
     }
 
-    /**
-     * Store a grid
-     *
-     * @throws IOException
-     */
+    /** Store a grid */
     public void saveGrid(MBTilesGrid entry) throws IOException {
         try {
             Connection cx = connPool.getConnection();

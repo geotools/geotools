@@ -74,7 +74,6 @@ class DirectoryTypeCache {
      * Builds a new cache.
      *
      * @param directory a non null File pointing to an existing directory
-     * @throws IOException
      */
     DirectoryTypeCache(File directory, FileStoreFactory factory) throws IOException {
         // some basic checks
@@ -101,9 +100,7 @@ class DirectoryTypeCache {
     /**
      * Returns the data store containing a specific feature type, or null if not found
      *
-     * @param typeName
      * @param forceUpdate If true, it will force the update
-     * @return
      */
     DataStore getDataStore(String typeName, boolean forceUpdate) throws IOException {
         lock.readLock().lock();
@@ -121,11 +118,7 @@ class DirectoryTypeCache {
         }
     }
 
-    /**
-     * Returns all the type names known
-     *
-     * @return
-     */
+    /** Returns all the type names known */
     Set<String> getTypeNames() throws IOException {
         lock.readLock().lock();
 
@@ -202,8 +195,6 @@ class DirectoryTypeCache {
      * All of this should be done trying to avoid re-creating all of the datastores already loaded.
      * We assume a properly written datastore will be able to detect changes in its own feature type
      * list and feature type schemas on its own.
-     *
-     * @throws IOException
      */
     void refreshCacheContents() throws IOException {
         // prepare the replacement ft cache

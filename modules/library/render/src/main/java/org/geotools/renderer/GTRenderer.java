@@ -83,11 +83,7 @@ public interface GTRenderer {
      */
     public RenderingHints getJava2DHints();
 
-    /**
-     * Hints used to configure rendering process.
-     *
-     * @param hints
-     */
+    /** Hints used to configure rendering process. */
     public void setRendererHints(Map<Object, Object> hints);
 
     /**

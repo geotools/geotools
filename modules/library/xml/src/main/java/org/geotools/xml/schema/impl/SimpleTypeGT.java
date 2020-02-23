@@ -112,8 +112,6 @@ public class SimpleTypeGT implements SimpleType {
     /**
      * This method ignores the attributes from the xml node
      *
-     * @throws SAXException
-     * @throws OperationNotSupportedException
      * @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes)
      */
     public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
@@ -401,7 +399,6 @@ public class SimpleTypeGT implements SimpleType {
     }
 
     /**
-     * @throws OperationNotSupportedException
      * @see org.geotools.xml.schema.SimpleType#toAttribute(org.geotools.xml.schema.Attribute,
      *     java.lang.Object, java.util.Map)
      */

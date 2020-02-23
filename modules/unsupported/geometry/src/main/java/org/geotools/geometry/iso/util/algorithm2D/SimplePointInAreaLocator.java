@@ -40,10 +40,6 @@ public class SimplePointInAreaLocator {
      * locate is the main location function. It handles both single-element and multi-element
      * Geometries. The algorithm for multi-element Geometries is more complex, since it has to take
      * into account the boundaryDetermination rule
-     *
-     * @param p
-     * @param geom
-     * @return
      */
     public static int locate(Coordinate p, GeometryImpl geom) {
         // TODO auskommentiert; checken!

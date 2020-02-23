@@ -65,13 +65,7 @@ public interface SimpleType extends Type {
     /** The Schema ID for this simpleType definition. */
     public String getId();
 
-    /**
-     * returns the value as a string
-     *
-     * @param attribute
-     * @param value
-     * @param hints
-     */
+    /** returns the value as a string */
     public AttributeValue toAttribute(Attribute attribute, Object value, Map hints)
             throws OperationNotSupportedException;
 

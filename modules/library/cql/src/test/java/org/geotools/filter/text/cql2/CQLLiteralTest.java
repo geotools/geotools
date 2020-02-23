@@ -160,11 +160,7 @@ public class CQLLiteralTest {
         Assert.assertTrue(geom.getValue() instanceof org.locationtech.jts.geom.Polygon);
     }
 
-    /**
-     * Test error at geometry literal
-     *
-     * @throws CQLException
-     */
+    /** Test error at geometry literal */
     @Test(expected = CQLException.class)
     public void geometryLiteralsError() throws CQLException {
 
@@ -259,11 +255,7 @@ public class CQLLiteralTest {
         testCharacterString("среды");
     }
 
-    /**
-     * Japan charset
-     *
-     * @throws Exception
-     */
+    /** Japan charset */
     @Test
     public void japanCharacterStringLiteral() throws Exception {
 
@@ -326,8 +318,6 @@ public class CQLLiteralTest {
 
     /**
      * Tests that the ambiguous syntax between Integer and relate pattern is solved by the parser.
-     *
-     * @throws Exception
      */
     @Test
     public void clashLongLiteralandDE9IM() throws Exception {
@@ -362,8 +352,6 @@ public class CQLLiteralTest {
     /**
      * Test the pattern that represent the intersection matrix that is required by the Relate
      * predicate.
-     *
-     * @throws CQLException
      */
     @Test
     public void relatePatterns() throws CQLException {
@@ -451,12 +439,7 @@ public class CQLLiteralTest {
         Assert.assertEquals(expectedDateTime, actualDateTime.toString());
     }
 
-    /**
-     * Asserts that the geometries are equals
-     *
-     * @param strGeomExpected
-     * @param actualGeometry
-     */
+    /** Asserts that the geometries are equals */
     protected void assertEqualsReferencedGeometries(
             final String strGeomExpected, final Geometry actualGeometry, final int expectedSrid)
             throws Exception {
@@ -465,12 +448,7 @@ public class CQLLiteralTest {
         assertEqualsGeometries(strGeomExpected, actualGeometry);
     }
 
-    /**
-     * Asserts that the geometries are equals
-     *
-     * @param strGeomExpected
-     * @param actualGeometry
-     */
+    /** Asserts that the geometries are equals */
     protected void assertEqualsGeometries(
             final String strGeomExpected, final Geometry actualGeometry) throws Exception {
 

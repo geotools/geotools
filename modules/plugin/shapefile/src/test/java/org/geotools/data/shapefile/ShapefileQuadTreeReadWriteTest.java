@@ -214,11 +214,7 @@ public class ShapefileQuadTreeReadWriteTest extends TestCaseSupport {
         }
     }
 
-    /**
-     * Test optimized getBounds(). Testing when filter is a bbox filter and a fidfilter
-     *
-     * @throws Exception
-     */
+    /** Test optimized getBounds(). Testing when filter is a bbox filter and a fidfilter */
     @Test
     public void testGetBoundsQuery() throws Exception {
         File file = copyShapefiles("shapes/streams.shp");

@@ -1063,11 +1063,7 @@ public class ImageMosaicFootprintsTest {
         disposeCoverage(coverage);
     }
 
-    /**
-     * Dispose the provided coverage for good.
-     *
-     * @param coverage
-     */
+    /** Dispose the provided coverage for good. */
     private void disposeCoverage(GridCoverage2D coverage) {
         if (coverage == null) {
             return;

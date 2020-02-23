@@ -227,11 +227,7 @@ public class RasterAsPointCollectionProcess implements RasterProcess {
             this(gc2d, false, gc2d.getCoordinateReferenceSystem2D());
         }
 
-        /**
-         * @param gc2d
-         * @param emisphere
-         * @param targetCRS
-         */
+        /** */
         public RasterAsPointFeatureCollection(
                 GridCoverage2D gc2d, boolean emisphere, CoordinateReferenceSystem targetCRS)
                 throws IOException {
@@ -328,7 +324,6 @@ public class RasterAsPointCollectionProcess implements RasterProcess {
          * Prepare the variables used by the iterator for checking the North Hemisphere.
          *
          * @param coverageCRS CRS of the input coverage
-         * @throws IOException
          */
         private void emisphereManagement(CoordinateReferenceSystem coverageCRS) throws IOException {
             // The Hemisphere is evaluated only if the associated flag is set to true
@@ -379,7 +374,6 @@ public class RasterAsPointCollectionProcess implements RasterProcess {
          * @param featureType Input {@link FeatureType} associated to the Coverage
          * @param emisphere Boolean indicating if the emisphere must be set
          * @param targetCRS CRS used if the gridConvergence Angle must be calculated
-         * @return
          */
         private static SimpleFeatureType modify(
                 SimpleFeatureType featureType,
@@ -588,7 +582,6 @@ public class RasterAsPointCollectionProcess implements RasterProcess {
          * This method adds the Hemisphere attribute to the Point feature if requested.
          *
          * @param point Input Point to handle.
-         * @throws NoSuchElementException
          */
         private void emisphereAttributeManagement(final Point point) throws IOException {
             // If the Hemisphere flag is set to false no calculation is performed

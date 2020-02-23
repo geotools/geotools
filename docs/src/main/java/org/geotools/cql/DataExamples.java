@@ -53,7 +53,6 @@ final class DataExamples extends ECQLExamples {
      * Creates a feature that represent New York city
      *
      * @return a Feature
-     * @throws Exception
      */
     public static SimpleFeature getInstanceOfCity() throws Exception {
 

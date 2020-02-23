@@ -67,7 +67,6 @@ public class ArcGISRestFeatureReader implements FeatureReader<SimpleFeatureType,
     }
 
     /**
-     * @throws IOException
      * @see FeatureReader#next()
      */
     @Override

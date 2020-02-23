@@ -104,11 +104,7 @@ public final class CrsTest {
         assertFalse(crsTransform.isIdentity());
     }
 
-    /**
-     * Checks X is equated to Easting and Y to Northing
-     *
-     * @throws Exception
-     */
+    /** Checks X is equated to Easting and Y to Northing */
     @Test
     public void testAxisAliases() throws Exception {
         String wkt1 =

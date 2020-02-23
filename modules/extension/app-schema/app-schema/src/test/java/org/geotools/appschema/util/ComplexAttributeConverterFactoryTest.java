@@ -101,11 +101,7 @@ public class ComplexAttributeConverterFactoryTest extends TestCase {
         assertNotSame("rini", nameString);
     }
 
-    /**
-     * Test converting String to FeatureId successful. This is required by feature chaining.
-     *
-     * @throws Exception
-     */
+    /** Test converting String to FeatureId successful. This is required by feature chaining. */
     public void testFeatureId() throws Exception {
         FeatureId id = Converters.convert("blah", FeatureId.class);
         assertNotNull(id);

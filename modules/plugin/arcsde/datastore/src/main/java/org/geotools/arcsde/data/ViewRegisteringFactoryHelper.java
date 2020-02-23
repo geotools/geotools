@@ -79,10 +79,6 @@ public class ViewRegisteringFactoryHelper {
     /**
      * Registers the sql views provided in <code>params</code> on the SqlDataStore <code>dataStore
      * </code>
-     *
-     * @param dataStore
-     * @param params
-     * @throws IOException
      */
     public static void registerSqlViews(ArcSDEDataStore dataStore, Map<String, Serializable> params)
             throws IOException {
@@ -102,9 +98,6 @@ public class ViewRegisteringFactoryHelper {
     /**
      * Looks up the set of "sqlView.N.typeName" and "sqlView.N.sqlQuery" keys in <code>params</code>
      * and returns a cleaned up map of typeName/query.
-     *
-     * @param params
-     * @return
      */
     public static Map<String, Serializable> cleanUpViewDefinitions(
             Map<String, Serializable> params) {

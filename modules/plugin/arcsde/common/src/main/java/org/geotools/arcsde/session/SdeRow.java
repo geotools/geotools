@@ -184,7 +184,6 @@ public class SdeRow {
     }
 
     /**
-     * @param columnIndex
      * @return one of {@link SeRow#SE_IS_ALREADY_FETCHED}, {@link SeRow#SE_IS_NOT_NULL_VALUE},
      *     {@link SeRow#SE_IS_NULL_VALUE}, {@link SeRow#SE_IS_REPEATED_FEATURE}
      */

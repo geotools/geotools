@@ -39,11 +39,7 @@ public class SchemaCatalog {
 
     private final Catalog catalog;
 
-    /**
-     * Use {@link #build(URL)} to construct an instance.
-     *
-     * @param catalog
-     */
+    /** Use {@link #build(URL)} to construct an instance. */
     private SchemaCatalog(Catalog catalog) {
         this.catalog = catalog;
     }
@@ -124,7 +120,6 @@ public class SchemaCatalog {
      * Build an catalog using the given OASIS Catalog file URL.
      *
      * @param catalogLocation local file URL to an OASIS cCtalog
-     * @return
      */
     public static SchemaCatalog build(URL catalogLocation) {
         return new SchemaCatalog(buildPrivateCatalog(catalogLocation));

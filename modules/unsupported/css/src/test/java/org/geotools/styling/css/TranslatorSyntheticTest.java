@@ -595,22 +595,14 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         assertEquals("band3", channels[2].getChannelName().evaluate(null, String.class));
     }
 
-    /**
-     * Tests expression support in channel selection
-     *
-     * @throws Exception
-     */
+    /** Tests expression support in channel selection */
     @Test
     public void rasterChannelSelectionRGBExpression() throws Exception {
         String css = "* { raster-channels: [env('B1','1')] '2' '3'; }";
         rasterChannelSelectionExpression(css);
     }
 
-    /**
-     * Tests expression support in channel selection, abbreviated syntax
-     *
-     * @throws Exception
-     */
+    /** Tests expression support in channel selection, abbreviated syntax */
     @Test
     public void rasterChannelSelectionRGBExpressionAbbr() throws Exception {
         String css = "* { raster-channels: @B1(1) '2' '3';}";

@@ -70,7 +70,6 @@ public class CircleMBLayer extends MBLayer {
      * (Optional) Circle radius in pixels. Defaults to 5.
      *
      * @return The circle radius
-     * @throws MBFormatException
      */
     public Number getCircleRadius() throws MBFormatException {
         return parse.optional(Double.class, paint, "circle-radius", 5.0);
@@ -80,7 +79,6 @@ public class CircleMBLayer extends MBLayer {
      * Access circle-radius as literal or function expression, defaults to 5
      *
      * @return The circle radius as literal or function expression
-     * @throws MBFormatException
      */
     public Expression circleRadius() throws MBFormatException {
         return parse.percentage(paint, "circle-radius", 5);
@@ -90,7 +88,6 @@ public class CircleMBLayer extends MBLayer {
      * (Optional) The fill color of the circle. Defaults to #000000.
      *
      * @return The fill color of the circle
-     * @throws MBFormatException
      */
     public Color getCircleColor() throws MBFormatException {
         return parse.optional(Color.class, paint, "circle-color", Color.BLACK);
@@ -100,7 +97,6 @@ public class CircleMBLayer extends MBLayer {
      * Access circle-color as literal or function expression, defaults to black.
      *
      * @return The circle color as literal or function expression
-     * @throws MBFormatException
      */
     public Expression circleColor() throws MBFormatException {
         return parse.color(paint, "circle-color", Color.BLACK);
@@ -111,7 +107,6 @@ public class CircleMBLayer extends MBLayer {
      * full opacity. Defaults to 0.
      *
      * @return The amount to blur the circle.
-     * @throws MBFormatException
      */
     public Number getCircleBlur() throws MBFormatException {
         return parse.optional(Double.class, paint, "circle-blur", 0.0);
@@ -121,7 +116,6 @@ public class CircleMBLayer extends MBLayer {
      * Access circle-blur as literal or function expression, defaults to 0
      *
      * @return The amount to blur the circle, as literal or function expression
-     * @throws MBFormatException
      */
     public Expression circleBlur() throws MBFormatException {
         return parse.percentage(paint, "circle-blur", 0);
@@ -131,7 +125,6 @@ public class CircleMBLayer extends MBLayer {
      * (Optional) The opacity at which the circle will be drawn. Defaults to 1.
      *
      * @return The opacity at which the circle will be drawn.
-     * @throws MBFormatException
      */
     public Number getCircleOpacity() throws MBFormatException {
         return parse.optional(Double.class, paint, "circle-opacity", 1.0);
@@ -141,7 +134,6 @@ public class CircleMBLayer extends MBLayer {
      * Access circle-opacity, defaults to 1.
      *
      * @return The opacity at which the circle will be drawn as literal or function expression.
-     * @throws MBFormatException
      */
     public Expression circleOpacity() throws MBFormatException {
         return parse.percentage(paint, "circle-opacity", 1);
@@ -152,7 +144,6 @@ public class CircleMBLayer extends MBLayer {
      * respectively. Units in pixels. Defaults to 0, 0.
      *
      * @return x and y offset in pixels.
-     * @throws MBFormatException
      */
     public int[] getCircleTranslate() throws MBFormatException {
         return parse.array(paint, "circle-translate", new int[] {0, 0});
@@ -162,7 +153,6 @@ public class CircleMBLayer extends MBLayer {
      * Access circle-translate
      *
      * @return x and y offset in pixels as Point
-     * @throws MBFormatException
      */
     public Point circleTranslate() throws MBFormatException {
         int[] circleTranslate = getCircleTranslate();
@@ -179,8 +169,6 @@ public class CircleMBLayer extends MBLayer {
      * filter-translate: { property: "building-height", "stops": [[0,[0,0]],[5,[1,2]]] }
      * filter-translate: [ 0, { property: "building-height", "TYPE":"exponential","stops": [[0,0],[30, 5]] }
      * </pre>
-     *
-     * @return
      */
     public Displacement circleTranslateDisplacement() {
         return parse.displacement(
@@ -253,7 +241,6 @@ public class CircleMBLayer extends MBLayer {
      * <p>Units in pixels. Defaults to 0.
      *
      * @return The circle stroke width.
-     * @throws MBFormatException
      */
     public Number getCircleStrokeWidth() throws MBFormatException {
         return parse.optional(Double.class, paint, "circle-stroke-width", 0.0);
@@ -263,7 +250,6 @@ public class CircleMBLayer extends MBLayer {
      * Access circle-stroke-width, defaults to 0.
      *
      * @return The circle stroke width.
-     * @throws MBFormatException
      */
     public Expression circleStrokeWidth() throws MBFormatException {
         return parse.percentage(paint, "circle-stroke-width", 0);
@@ -275,7 +261,6 @@ public class CircleMBLayer extends MBLayer {
      * <p>Defaults to #000000.
      *
      * @return The color of the circle stroke.
-     * @throws MBFormatException
      */
     public Color getCircleStrokeColor() throws MBFormatException {
         return parse.optional(Color.class, paint, "circle-stroke-color", Color.BLACK);
@@ -285,7 +270,6 @@ public class CircleMBLayer extends MBLayer {
      * Access circle-stroke-color as literal or function expression, defaults to black.
      *
      * @return The color of the circle stroke.
-     * @throws MBFormatException
      */
     public Expression circleStrokeColor() throws MBFormatException {
         return parse.color(paint, "circle-stroke-color", Color.BLACK);
@@ -297,7 +281,6 @@ public class CircleMBLayer extends MBLayer {
      * <p>Defaults to 1.
      *
      * @return Number representing the stroke opacity.
-     * @throws MBFormatException
      */
     public Number getCircleStrokeOpacity() throws MBFormatException {
         return parse.optional(Double.class, paint, "circle-stroke-opacity", 1.0);
@@ -307,7 +290,6 @@ public class CircleMBLayer extends MBLayer {
      * Access circle-stroke-opacity, defaults to 1.
      *
      * @return Number representing the stroke opacity.
-     * @throws MBFormatException
      */
     public Expression circleStrokeOpacity() throws MBFormatException {
         return parse.percentage(paint, "circle-stroke-opacity", 1);

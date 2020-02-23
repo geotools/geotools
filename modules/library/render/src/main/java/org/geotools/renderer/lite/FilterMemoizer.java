@@ -65,9 +65,7 @@ class FilterMemoizer {
      * volatile functions and there is a suitable wrapper implementation, returns the original
      * filter otherwise.
      *
-     * @param delegate
      * @param <T>
-     * @return
      */
     public static <T extends Filter> T memoize(T delegate) {
         // can it be memoized?

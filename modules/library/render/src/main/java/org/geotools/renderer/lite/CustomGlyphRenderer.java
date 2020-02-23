@@ -82,14 +82,7 @@ public class CustomGlyphRenderer implements GlyphRenderer {
         list = gpl;
     }
 
-    /**
-     * djb -- addd "height" which is ignored as per API change
-     *
-     * @param graphic
-     * @param eg
-     * @param feature
-     * @param height
-     */
+    /** djb -- addd "height" which is ignored as per API change */
     public BufferedImage render(Graphic graphic, ExternalGraphic eg, Object feature, int height) {
         Map props = eg.getCustomProperties();
         Set propNames = props.keySet();

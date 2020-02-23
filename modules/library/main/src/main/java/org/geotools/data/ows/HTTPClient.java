@@ -49,7 +49,6 @@ public interface HTTPClient {
      * @param postContentType the MIME type of the contents sent as the request POST body, can be
      *     {@code null}
      * @return the {@link HTTPResponse} encapsulating the response to the HTTP POST request
-     * @throws IOException
      */
     HTTPResponse post(URL url, InputStream postContent, String postContentType) throws IOException;
 
@@ -67,7 +66,6 @@ public interface HTTPClient {
      *
      * @param url the URL to retrieve
      * @return an {@link HTTPResponse} encapsulating the response to the HTTP GET request
-     * @throws IOException
      */
     HTTPResponse get(URL url) throws IOException;
 

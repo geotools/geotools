@@ -99,7 +99,6 @@ public class MBStyle {
      *
      * @param json Required to be a JSONObject
      * @return MBStyle wrapping the provided json
-     * @throws MBFormatException
      */
     public static MBStyle create(Object json) throws MBFormatException {
         if (json instanceof JSONObject) {
@@ -114,7 +113,6 @@ public class MBStyle {
     /**
      * Access the layer with the provided id.
      *
-     * @param id
      * @return layer with the provided id, or null if not found.
      */
     public MBLayer layer(String id) {
@@ -179,7 +177,6 @@ public class MBStyle {
     /**
      * Access layers matching provided source.
      *
-     * @param source
      * @return list of layers matching provided source
      */
     public List<MBLayer> layers(String source) throws MBFormatException {

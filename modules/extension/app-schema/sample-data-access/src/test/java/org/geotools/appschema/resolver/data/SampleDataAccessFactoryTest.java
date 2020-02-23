@@ -36,8 +36,6 @@ public class SampleDataAccessFactoryTest extends TestCase {
      * Test that {@link org.geotools.data.DataAccessFinder} can find {@link
      * org.geotools.appschema.resolver.data.SampleDataAccessFactory} and use it to create a {@link
      * org.geotools.appschema.resolver.data.SampleDataAccess}.
-     *
-     * @throws Exception
      */
     public static void testFindSamplesDataAccessFactory() throws Exception {
         DataAccess<FeatureType, Feature> dataAccess =

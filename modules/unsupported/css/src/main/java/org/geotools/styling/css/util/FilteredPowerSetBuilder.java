@@ -38,22 +38,12 @@ public abstract class FilteredPowerSetBuilder<T, R> {
      */
     private List<List<Signature>> rejects = new ArrayList();
 
-    /**
-     * Initializes the power set builds with the initial domain values
-     *
-     * @param domain
-     */
+    /** Initializes the power set builds with the initial domain values */
     public FilteredPowerSetBuilder(List<T> domain) {
         this.domain = domain;
     }
 
-    /**
-     * See if a certain signature matches an already rejected signature
-     *
-     * @param s
-     * @param k
-     * @return
-     */
+    /** See if a certain signature matches an already rejected signature */
     protected boolean rejected(Signature s, int k) {
         // see if rejected already
         int cardinality = s.cardinality();
@@ -77,11 +67,7 @@ public abstract class FilteredPowerSetBuilder<T, R> {
         return false;
     }
 
-    /**
-     * Builds the power set
-     *
-     * @return
-     */
+    /** Builds the power set */
     public List<R> buildPowerSet() {
         List<R> result = new ArrayList<>();
         Signature s = Signature.newSignature(domain.size());
@@ -90,12 +76,7 @@ public abstract class FilteredPowerSetBuilder<T, R> {
         return result;
     }
 
-    /**
-     * Allows subclasses to filter the results after they have been built
-     *
-     * @param result
-     * @return
-     */
+    /** Allows subclasses to filter the results after they have been built */
     protected List<R> postFilterResult(List<R> result) {
         return result;
     }
@@ -103,11 +84,6 @@ public abstract class FilteredPowerSetBuilder<T, R> {
     /**
      * Recursively builds all possible signatures in the domain (will stop immediately if a
      * signature is not accepted, or builds on top of a already rejected signature)
-     *
-     * @param s
-     * @param k
-     * @param n
-     * @param result
      */
     void fill(Signature s, int k, int n, List<R> result) {
         List<T> objects = listFromSignature(s);
@@ -167,27 +143,16 @@ public abstract class FilteredPowerSetBuilder<T, R> {
      * combination that does not generate anything useful, but whose set of object could still
      * generate a valid combination when grown with more objects (thus, not a candidate for
      * returning false in {@link #accept(List)})
-     *
-     * @param objects
-     * @return
      */
     protected abstract List<R> buildResult(List<T> objects);
 
     /**
      * Checks if a certain list of objects should be accepted, or not. If rejected, a signature will
      * be built from this set, and any superset of these objects will also be rejected
-     *
-     * @param set
-     * @return
      */
     protected abstract boolean accept(List<T> set);
 
-    /**
-     * Returns the list of values associated to this signature
-     *
-     * @param signature
-     * @return
-     */
+    /** Returns the list of values associated to this signature */
     private List<T> listFromSignature(Signature signature) {
         List<T> test = new ArrayList<>();
         signature.foreach(i -> test.add(domain.get(i)));

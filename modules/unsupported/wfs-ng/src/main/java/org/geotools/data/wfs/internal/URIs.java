@@ -97,11 +97,7 @@ public class URIs {
         return url + (contextPath.isEmpty() ? "" : "/" + contextPath);
     }
 
-    /**
-     * URL encodes the value towards the ISO-8859-1 charset
-     *
-     * @param value
-     */
+    /** URL encodes the value towards the ISO-8859-1 charset */
     public static String urlEncode(String value) {
         try {
             // TODO: URLEncoder also encodes ( and ) which are considered safe chars,

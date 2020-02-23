@@ -63,7 +63,6 @@ class ReaderUtils {
      *
      * @param configFile The file to parse int a DOM tree.
      * @return the resulting DOM tree
-     * @throws ParserConfigurationException
      */
     public static Element loadConfig(Reader configFile)
             throws IOException, ParserConfigurationException, SAXException {

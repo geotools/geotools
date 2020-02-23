@@ -53,7 +53,6 @@ import org.geotools.arcsde.session.ISession;
 import org.geotools.arcsde.session.ISessionPool;
 import org.geotools.arcsde.session.SdeRow;
 import org.geotools.arcsde.session.UnavailableConnectionException;
-import org.geotools.data.DataSourceException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -225,8 +224,6 @@ public class ArcSDEJavaApiTest {
      * @param spatFilters spatial filters, may be null
      * @param the state identifier to query over a versioned table, may be {@code null}
      * @return the sde calculated counts for the given filter
-     * @throws IOException
-     * @throws Exception
      */
     private static int getTempTableCount(
             final ISession session,
@@ -1115,8 +1112,6 @@ public class ArcSDEJavaApiTest {
     /**
      * Does a query over a non autocommit transaction return the added/modified features and hides
      * the deleted ones?
-     *
-     * @throws DataSourceException
      */
     @Test
     public void testTransactionStateRead() throws Exception {
@@ -1220,8 +1215,6 @@ public class ArcSDEJavaApiTest {
     /**
      * Creates a versioned table with two versions, the default one and another one, makes edits
      * over the default one, checks states are consistent in both
-     *
-     * @throws Exception
      */
     @Test
     public void testEditVersionedTable_DefaultVersion() throws Exception {

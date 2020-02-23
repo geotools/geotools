@@ -30,8 +30,6 @@ public class MBMath extends MBExpression {
      * For two inputs, returns the result of subtracting the second input from the first. For a
      * single input, returns the result of subtracting it from 0. Example: ["-", number, number]:
      * number ["-", number]: number
-     *
-     * @return
      */
     public Expression mathSubtract() {
         Expression e1 = parse.string(json, 1);
@@ -39,11 +37,7 @@ public class MBMath extends MBExpression {
         return ff.subtract(e1, e2);
     }
 
-    /**
-     * Returns the product of the inputs. Example: ["*", number, number, ...]: number
-     *
-     * @return
-     */
+    /** Returns the product of the inputs. Example: ["*", number, number, ...]: number */
     public Expression mathMultiply() {
         Expression first = parse.string(json, 1);
         // Identiy function for multiplication, in case we only have 1 expression to multiply
@@ -58,8 +52,6 @@ public class MBMath extends MBExpression {
     /**
      * Returns the result of floating point division of the first input by the second. Example:
      * ["/", number, number]: number
-     *
-     * @return
      */
     public Expression mathDivide() {
         Expression e1 = parse.string(json, 1);
@@ -70,8 +62,6 @@ public class MBMath extends MBExpression {
     /**
      * Returns the remainder after integer division of the first input by the second. Example: ["%",
      * number, number]: number
-     *
-     * @return
      */
     public Expression mathRemainder() {
         Expression e1 = parse.string(json, 1);
@@ -82,8 +72,6 @@ public class MBMath extends MBExpression {
     /**
      * Returns the result of raising the first input to the power specified by the second. Example:
      * ["^", number, number]: number
-     *
-     * @return
      */
     public Expression mathExponent() {
         Expression e1 = parse.string(json, 1);
@@ -91,11 +79,7 @@ public class MBMath extends MBExpression {
         return ff.function("pow", e1, e2);
     }
 
-    /**
-     * Returns the sum of the inputs. Example: ["+", number, number...]: number
-     *
-     * @return
-     */
+    /** Returns the sum of the inputs. Example: ["+", number, number...]: number */
     public Expression mathAdd() {
         Expression first = parse.string(json, 1);
         // Identiy function for addition, in case we only have 1 expression to add
@@ -107,99 +91,59 @@ public class MBMath extends MBExpression {
         return sumFunction;
     }
 
-    /**
-     * Returns the arccosine of the input. Example: ["acos", number]: number
-     *
-     * @return
-     */
+    /** Returns the arccosine of the input. Example: ["acos", number]: number */
     public Expression mathAcos() {
         Expression e1 = parse.string(json, 1);
         return ff.function("acos", e1);
     }
 
-    /**
-     * Returns the arcsine of the input. Example: ["asin", number]: number
-     *
-     * @return
-     */
+    /** Returns the arcsine of the input. Example: ["asin", number]: number */
     public Expression mathAsin() {
         Expression e1 = parse.string(json, 1);
         return ff.function("asin", e1);
     }
 
-    /**
-     * Returns the arctangent of the input. Example: ["atan", number]: number
-     *
-     * @return
-     */
+    /** Returns the arctangent of the input. Example: ["atan", number]: number */
     public Expression mathAtan() {
         Expression e1 = parse.string(json, 1);
         return ff.function("atan", e1);
     }
 
-    /**
-     * Returns the cosine of the input. Example: ["cos", number]: number
-     *
-     * @return
-     */
+    /** Returns the cosine of the input. Example: ["cos", number]: number */
     public Expression mathCos() {
         Expression e1 = parse.string(json, 1);
         return ff.function("cos", e1);
     }
 
-    /**
-     * Returns the mathematical constant e. Example: ["e"]: number
-     *
-     * @return
-     */
+    /** Returns the mathematical constant e. Example: ["e"]: number */
     public Expression mathE() {
         return ff.literal(Math.E);
     }
 
-    /**
-     * Returns the natural logarithm of the input. Example: ["ln", number]: number
-     *
-     * @return
-     */
+    /** Returns the natural logarithm of the input. Example: ["ln", number]: number */
     public Expression mathLn() {
         Expression e1 = parse.string(json, 1);
         return ff.function("log", e1);
     }
 
-    /**
-     * Returns mathematical constant ln(2). Example: ["ln2"]: number
-     *
-     * @return
-     */
+    /** Returns mathematical constant ln(2). Example: ["ln2"]: number */
     public Expression mathLn2() {
         return ff.literal(Math.log(2));
     }
 
-    /**
-     * Returns the base-ten logarithm of the input. Example: ["log10", number]: number
-     *
-     * @return
-     */
+    /** Returns the base-ten logarithm of the input. Example: ["log10", number]: number */
     public Expression mathLog10() {
         Expression e1 = parse.string(json, 1);
         return ff.divide(ff.function("log", e1), ff.function("log", ff.literal(10)));
     }
 
-    /**
-     * Returns the base-two logarithm of the input. Example: ["log2", number]: number
-     *
-     * @return
-     */
+    /** Returns the base-two logarithm of the input. Example: ["log2", number]: number */
     public Expression mathLog2() {
         Expression e1 = parse.string(json, 1);
         return ff.divide(ff.function("log", e1), ff.function("log", ff.literal(2)));
     }
 
-    /**
-     * Returns the maximum value of the inputs. Example: ["max", number, number, ...]: number
-     *
-     * @return
-     */
+    /** Returns the maximum value of the inputs. Example: ["max", number, number, ...]: number */
     public Expression mathMax() {
         Expression first = parse.string(json, 1);
         // Identiy function for max, in case we only have 1 expression to add
@@ -211,11 +155,7 @@ public class MBMath extends MBExpression {
         return maxFunction;
     }
 
-    /**
-     * Returns the minimum value of the inputs. Example: ["min", number, number, ...]: number
-     *
-     * @return
-     */
+    /** Returns the minimum value of the inputs. Example: ["min", number, number, ...]: number */
     public Expression mathMin() {
         Expression first = parse.string(json, 1);
         // Identiy function for min, in case we only have 1 expression to add
@@ -227,40 +167,24 @@ public class MBMath extends MBExpression {
         return minFunction;
     }
 
-    /**
-     * Returns the mathematical constant pi. Example: ["pi"]: number
-     *
-     * @return
-     */
+    /** Returns the mathematical constant pi. Example: ["pi"]: number */
     public Expression mathPi() {
         return ff.function("pi");
     }
 
-    /**
-     * Returns the sine of the input. Example: ["sin", number]: number
-     *
-     * @return
-     */
+    /** Returns the sine of the input. Example: ["sin", number]: number */
     public Expression mathSin() {
         Expression e1 = parse.string(json, 1);
         return ff.function("sin", e1);
     }
 
-    /**
-     * Returns the square root of the input. Example: ["sqrt", number]: number
-     *
-     * @return
-     */
+    /** Returns the square root of the input. Example: ["sqrt", number]: number */
     public Expression mathSqrt() {
         Expression e1 = parse.string(json, 1);
         return ff.function("sqrt", e1);
     }
 
-    /**
-     * Returns the tangent of the input. Example: ["tan", number]: number
-     *
-     * @return
-     */
+    /** Returns the tangent of the input. Example: ["tan", number]: number */
     public Expression mathTan() {
         Expression e1 = parse.string(json, 1);
         return ff.function("tan", e1);

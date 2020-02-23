@@ -375,11 +375,6 @@ public class SLDStyleFactory {
     /**
      * Sets a polygon style fill, which includes regular color fill, fill composite, and possibly a
      * Style2D fill.
-     *
-     * @param feature
-     * @param style
-     * @param symbolizer
-     * @param scaleRange
      */
     void setPolygonStyleFill(
             Object feature, PolygonStyle2D style, PolygonSymbolizer symbolizer, Range scaleRange) {
@@ -469,11 +464,6 @@ public class SLDStyleFactory {
      *   <li>MarkStyle2D
      *   <li>GraphicStyle2D - used to render a glymph
      * </ul>
-     *
-     * @param feature
-     * @param symbolizer
-     * @param scaleRange
-     * @return
      */
     Style2D createPointStyle(Object feature, PointSymbolizer symbolizer, Range scaleRange) {
         return createPointStyle(feature, symbolizer, symbolizer.getGraphic(), scaleRange, false);
@@ -488,11 +478,6 @@ public class SLDStyleFactory {
      *   <li>MarkStyle2D
      *   <li>GraphicStyle2D - used to render a glymph
      * </ul>
-     *
-     * @param feature
-     * @param symbolizer
-     * @param scaleRange
-     * @return
      */
     Style2D createPointStyle(
             Object feature,
@@ -668,9 +653,6 @@ public class SLDStyleFactory {
      * Turns a floating point style into a integer size useful to specify the size of a
      * BufferedImage. Will return 1 between 0 and 1 (0 excluded), will otherwise round the size to
      * integer.
-     *
-     * @param size
-     * @return
      */
     int toImageSize(double size) {
         if (size == -1) {
@@ -805,7 +787,6 @@ public class SLDStyleFactory {
      * @param feature The feature whose font is to be found
      * @param fonts An array of fonts dependent of the feature, the first that is found on the
      *     current machine is returned
-     * @param vendorOptions
      * @return The first of the specified fonts found on this machine (Serif 10 if none found)
      */
     private java.awt.Font[] getFonts(Object feature, List<Font> fonts, TextSymbolizer symbolizer) {
@@ -1048,12 +1029,7 @@ public class SLDStyleFactory {
         return fillPaint;
     }
 
-    /**
-     * Computes the Composite equivalent to the opacity in the SLD Fill
-     *
-     * @param fill
-     * @param feature
-     */
+    /** Computes the Composite equivalent to the opacity in the SLD Fill */
     public Composite getComposite(Fill fill, Object feature) {
         if (fill == null) {
             return null;
@@ -1233,9 +1209,6 @@ public class SLDStyleFactory {
     /**
      * Tries to parse the provided external graphic into a BufferedImage.
      *
-     * @param eg
-     * @param feature
-     * @param size
      * @return the image, or null if the external graphics could not be interpreted
      */
     private GraphicStyle2D getGraphicStyle(
@@ -1244,13 +1217,7 @@ public class SLDStyleFactory {
         return getGraphicStyle(icon, border);
     }
 
-    /**
-     * Converts an icon into a {@link GraphicStyle2D}
-     *
-     * @param icon
-     * @param border
-     * @return
-     */
+    /** Converts an icon into a {@link GraphicStyle2D} */
     private GraphicStyle2D getGraphicStyle(Icon icon, int border) {
         if (icon == null) {
             return null;
@@ -1284,9 +1251,6 @@ public class SLDStyleFactory {
     /**
      * Tries to parse the provided external graphic into an Icon
      *
-     * @param eg
-     * @param feature
-     * @param size
      * @return the image, or null if the external graphics could not be interpreted
      */
     private Icon getIcon(ExternalGraphic eg, Object feature, double size) {
@@ -1345,10 +1309,6 @@ public class SLDStyleFactory {
     /**
      * Given a mark and a feature, returns the Shape provided by the first {@link MarkFactory} that
      * was able to handle the Mark
-     *
-     * @param mark
-     * @param feature
-     * @return
      */
     private Shape getShape(Mark mark, Object feature) {
         if (mark == null) return null;
@@ -1463,9 +1423,6 @@ public class SLDStyleFactory {
     /**
      * Looks up the composite from the vendor options, or returns null if no composite operation has
      * been specified in the options
-     *
-     * @param options
-     * @return
      */
     public static Composite getComposite(Map<String, String> options) {
         return getComposite(options, 1f);
@@ -1474,9 +1431,6 @@ public class SLDStyleFactory {
     /**
      * Looks up the composite from the vendor options, or returns null if no composite operation has
      * been specified in the options
-     *
-     * @param options
-     * @return
      */
     public static Composite getComposite(Map<String, String> options, float defaultOpacity) {
         // get the spec, if no spec, no composite
@@ -1533,12 +1487,7 @@ public class SLDStyleFactory {
         return BlendComposite.getInstance(blend, opacity);
     }
 
-    /**
-     * Returns the sorting directions found in the feature type style
-     *
-     * @param options
-     * @return
-     */
+    /** Returns the sorting directions found in the feature type style */
     public static SortBy[] getSortBy(Map<String, String> options) {
         // get the spec, if no spec, no sorting
         String sortBySpec = options.get(FeatureTypeStyle.SORT_BY);

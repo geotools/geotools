@@ -35,10 +35,7 @@ import org.locationtech.jts.geom.Polygon;
  */
 class PolygonBuilder extends GeometryBuilder {
 
-    /**
-     * @param statement
-     * @param resultStack
-     */
+    /** */
     public PolygonBuilder(String statement, BuildResultStack resultStack) {
         super(statement, resultStack);
     }

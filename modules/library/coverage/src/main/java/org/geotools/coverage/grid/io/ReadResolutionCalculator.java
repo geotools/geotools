@@ -153,11 +153,7 @@ public class ReadResolutionCalculator {
         return fullResolution;
     }
 
-    /**
-     * Classic way of computing the requested resolution
-     *
-     * @return
-     */
+    /** Classic way of computing the requested resolution */
     private double[] computeClassicResolution(ReferencedEnvelope readBounds) {
         final GridToEnvelopeMapper geMapper =
                 new GridToEnvelopeMapper(new GridEnvelope2D(requestedRasterArea), readBounds);
@@ -173,11 +169,6 @@ public class ReadResolutionCalculator {
      * the corners of the requested area and the middle points and take the better one. This will
      * provide better results for cases where there is a lot more deformation on a subregion
      * (top/bottom/sides) of the requested bbox with respect to others.
-     *
-     * @return
-     * @throws TransformException
-     * @throws NoninvertibleTransformException
-     * @throws FactoryException
      */
     private double[] computeAccurateResolution(ReferencedEnvelope readBBox)
             throws TransformException, NoninvertibleTransformException, FactoryException {
@@ -278,8 +269,6 @@ public class ReadResolutionCalculator {
      * known maximum resolution. This affects raster readers that can do internal resampling
      * operations like a heterogeneous CRS mosaic, in which there is a resampling step to go from
      * native CRS to the declared one.
-     *
-     * @param maxOversamplingFactor
      */
     public void setMaxOversamplingFactor(int maxOversamplingFactor) {
         this.maxOversamplingFactor = maxOversamplingFactor;

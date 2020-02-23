@@ -796,7 +796,6 @@ public class TypeBuilder {
     /**
      * Used as a the target for attributeDescriptor or associatioDescriptor().
      *
-     * @param type
      * @return TypeBuilder (for chaining).
      */
     public TypeBuilder property(PropertyType type) {
@@ -919,7 +918,6 @@ public class TypeBuilder {
     /**
      * Used to lookup AttributeType for provided binding.
      *
-     * @param binding
      * @return AttributeType
      * @throws IllegalArgumentExcception if class is not bound to a prototype
      */
@@ -936,9 +934,6 @@ public class TypeBuilder {
      *
      * <p>You can use this method to map the AttributeType used when addAttribute( String name,
      * Class binding ) is called.
-     *
-     * @param binding
-     * @param type
      */
     public void addBinding(Class binding, AttributeType type) {
         bindings().put(binding, type);
@@ -947,8 +942,6 @@ public class TypeBuilder {
     /**
      * Load the indicated schema to map Java class to your Type System. (please us a profile to
      * prevent binding conflicts).
-     *
-     * @param schema
      */
     public void load(Schema schema) {
         for (Iterator itr = schema.values().iterator(); itr.hasNext(); ) {
@@ -996,7 +989,6 @@ public class TypeBuilder {
     /**
      * Add a descriptor with a provided name, with the binding
      *
-     * @param namespaceURI
      * @param name Name of descriptor (combined with uri for a Name)
      * @param binding Used to look up a bound AttributeType
      * @return this builder for additional chaining
@@ -1291,7 +1283,6 @@ public class TypeBuilder {
      *   <li>Well Known Text
      * </ul>
      *
-     * @param srs
      * @return TypeBuilder ready for chaining
      * @throws IllegalArgumentException When SRS not understood
      */
@@ -1350,9 +1341,6 @@ public class TypeBuilder {
      * Creates a association descriptor and adds to collection members.
      *
      * <p>Calls clear to reset cardinality after use.
-     *
-     * @param name
-     * @param type
      */
     public void addMemberType(String name, AssociationType memberType) {
         addMemberType(getNamespaceURI(), name, memberType);
@@ -1362,9 +1350,6 @@ public class TypeBuilder {
      * Creates a association descriptor and adds to collection members.
      *
      * <p>Calls clear to reset cardinality after use.
-     *
-     * @param name
-     * @param type
      */
     public void addMemberType(String namespaceURI, String name, AssociationType memberType) {
         addMemberType(createName(namespaceURI, name), memberType);
@@ -1374,9 +1359,6 @@ public class TypeBuilder {
      * Creates a association descriptor and adds to collection members.
      *
      * <p>Calls clear to reset cardinality after use.
-     *
-     * @param name
-     * @param type
      */
     public void addMemberType(Name name, AssociationType /* <FeatureType> */ memberType) {
         member(name, memberType);
@@ -1387,8 +1369,6 @@ public class TypeBuilder {
      *
      * <p>Calls clear to reset cardinality after use.
      *
-     * @param name
-     * @param type
      * @return TypeBuilder for operation chaining
      */
     public TypeBuilder member(String name, AssociationType type) {
@@ -1400,8 +1380,6 @@ public class TypeBuilder {
      *
      * <p>Calls clear to reset cardinality after use.
      *
-     * @param name
-     * @param type
      * @return TypeBuilder for operation chaining
      */
     public TypeBuilder member(Name name, AssociationType type) {

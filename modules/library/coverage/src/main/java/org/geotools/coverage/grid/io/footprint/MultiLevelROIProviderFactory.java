@@ -52,8 +52,6 @@ public class MultiLevelROIProviderFactory {
      * Builds a footprint provider from file location
      *
      * @param referenceFile the reference file.
-     * @return
-     * @throws Exception
      * @see {@link #createFootprintProvider(File, Geometry)}
      */
     public static MultiLevelROIProvider createFootprintProvider(File referenceFile) {
@@ -67,8 +65,6 @@ public class MultiLevelROIProviderFactory {
      *     the footprint itself. - the data file for which we are looking for a footprint.
      * @param granuleBounds The optional granuleBounds geometry. if not null, it will be used as
      *     data's reference geometry.
-     * @return
-     * @throws Exception
      */
     public static MultiLevelROIProvider createFootprintProvider(
             final File referenceFile, Geometry granuleBounds) {
@@ -106,7 +102,6 @@ public class MultiLevelROIProviderFactory {
      * @param properties an optional {@link Properties} instance containing footprints
      *     configuration.
      * @param imposedGranuleBounds an optional default granuleBounds geometry
-     * @return
      */
     protected static MultiLevelROIProvider createProvider(
             FootprintGeometryProvider provider,

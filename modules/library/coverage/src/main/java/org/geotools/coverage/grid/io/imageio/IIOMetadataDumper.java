@@ -60,8 +60,6 @@ public final class IIOMetadataDumper {
      * Constructor for a {@link IIOMetadataDumper} accepting an {@link IIOMetadataNode}. It has no
      * way to choose the format of the metadata to parse since this choice has been already done
      * previously.
-     *
-     * @param rootNode
      */
     public IIOMetadataDumper(IIOMetadataNode rootNode) {
         this.root = rootNode;
@@ -70,25 +68,14 @@ public final class IIOMetadataDumper {
         this.metadata = buff.toString();
     }
 
-    /**
-     * Adds indentation to the tree while we build it
-     *
-     * @param buff
-     * @param level
-     */
+    /** Adds indentation to the tree while we build it */
     private void indent(StringBuffer buff, int level) {
         for (int i = 0; i < level; i++) {
             buff.append("  ");
         }
     }
 
-    /**
-     * Builds a graphical representation of a certain XML tree.
-     *
-     * @param buff
-     * @param node
-     * @param level
-     */
+    /** Builds a graphical representation of a certain XML tree. */
     private void parseMetadata(StringBuffer buff, Node node, int level) {
         indent(buff, level); // emit open tag
         buff.append("<").append(node.getNodeName());

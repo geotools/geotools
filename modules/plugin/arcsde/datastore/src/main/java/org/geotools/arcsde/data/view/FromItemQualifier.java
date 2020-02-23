@@ -42,12 +42,7 @@ class FromItemQualifier implements FromItemVisitor {
 
     private FromItem qualifiedFromItem;
 
-    /**
-     * Creates a new FromItemQualifier object.
-     *
-     * @param session
-     * @throws IllegalStateException
-     */
+    /** Creates a new FromItemQualifier object. */
     private FromItemQualifier(ISession session) throws IllegalStateException {
         this.session = session;
     }

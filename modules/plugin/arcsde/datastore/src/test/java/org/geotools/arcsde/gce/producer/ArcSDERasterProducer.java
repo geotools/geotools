@@ -49,8 +49,6 @@ public abstract class ArcSDERasterProducer implements SeRasterProducer {
     /**
      * This method should check that the supplied image is compatible with this class's
      * startProduction() implementation
-     *
-     * @param sourceImage
      */
     public abstract void setSourceImage(BufferedImage sourceImage);
 

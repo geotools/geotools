@@ -314,9 +314,6 @@ public class AncillaryFileManager implements FileSetManager {
      * Use different approaches to look for the specified file since it can be provided externally
      * (as from the imageMosaic sharing the same indexer between multiple NetCDF files), it can be
      * contained into a .DIR folder or it can be contained into a HASHNAME folder.
-     *
-     * @param auxFilePath
-     * @param baseName
      */
     private File lookupFile(String filePath, String baseName, AuxiliaryFileType type) {
         // CASE 1: file externally provided
@@ -340,14 +337,7 @@ public class AncillaryFileManager implements FileSetManager {
         return CUT_EXTENSIONS.contains(extension);
     }
 
-    /**
-     * Check whether the file have been updated.
-     *
-     * @param ncFile
-     * @param slicesIndexFile
-     * @param destinationDir
-     * @throws IOException
-     */
+    /** Check whether the file have been updated. */
     private static void checkReset(
             final File mainFile, final File slicesIndexFile, final File destinationDir)
             throws IOException {
@@ -376,9 +366,7 @@ public class AncillaryFileManager implements FileSetManager {
     /**
      * Write indexer to disk
      *
-     * @throws IOException
-     * @throws JAXBException
-     *     <p>TODO: Need to check for thread safety
+     * <p>TODO: Need to check for thread safety
      */
     public void writeToDisk() throws IOException, JAXBException {
         // Write collected information
@@ -388,13 +376,7 @@ public class AncillaryFileManager implements FileSetManager {
         }
     }
 
-    /**
-     * Write to disk the variable summary, a simple text file containing variable names.
-     *
-     * @param indexerFile
-     * @param coveragesMapping
-     * @throws JAXBException
-     */
+    /** Write to disk the variable summary, a simple text file containing variable names. */
     private void storeIndexer(final File indexerFile, final Map<String, Coverage> coveragesMapping)
             throws JAXBException {
         if (coveragesMapping == null || coveragesMapping.isEmpty()) {
@@ -430,12 +412,7 @@ public class AncillaryFileManager implements FileSetManager {
         marshaller.marshal(indexer, indexerFile);
     }
 
-    /**
-     * Return a {@link Name} representation of the coverage name
-     *
-     * @param varName
-     * @return
-     */
+    /** Return a {@link Name} representation of the coverage name */
     public Name getCoverageName(String varName) {
         final Collection<Coverage> coverages = coveragesMapping.values();
         for (Coverage cov : coverages) {
@@ -463,13 +440,7 @@ public class AncillaryFileManager implements FileSetManager {
         }
     }
 
-    /**
-     * Return a {@link Slice2DIndex} related to the provided imageIndex
-     *
-     * @param imageIndex
-     * @return
-     * @throws IOException
-     */
+    /** Return a {@link Slice2DIndex} related to the provided imageIndex */
     public Slice2DIndex getSlice2DIndex(final int imageIndex) throws IOException {
         Slice2DIndex variableIndex;
         if (slicesIndexManager != null) {
@@ -532,11 +503,7 @@ public class AncillaryFileManager implements FileSetManager {
         slicesIndexList.clear();
     }
 
-    /**
-     * Get the list of Names for the underlying coverage list
-     *
-     * @return
-     */
+    /** Get the list of Names for the underlying coverage list */
     public List<Name> getCoveragesNames() {
         final List<Name> names = new ArrayList<Name>();
         Collection<Coverage> coverages = coveragesMapping.values();
@@ -546,11 +513,7 @@ public class AncillaryFileManager implements FileSetManager {
         return names;
     }
 
-    /**
-     * Retrieve basic indexer properties by scanning the indexer XML instance.
-     *
-     * @throws JAXBException
-     */
+    /** Retrieve basic indexer properties by scanning the indexer XML instance. */
     protected void initIndexer() throws JAXBException {
         if (indexerFile.exists() && indexerFile.canRead()) {
             Unmarshaller unmarshaller = CONTEXT.createUnmarshaller();
@@ -639,7 +602,6 @@ public class AncillaryFileManager implements FileSetManager {
      * @param origName name of the underlying variable
      * @param schemaAttributes schema definition attributes
      * @param schemaName schema name
-     * @return
      */
     private Coverage createCoverate(
             String coverageName, String origName, String schemaAttributes, String schemaName) {
@@ -658,7 +620,6 @@ public class AncillaryFileManager implements FileSetManager {
      *
      * @param nameCollector The name of the propertiesCollector which will be used to setup the
      *     coverage name
-     * @return
      */
     private String getCoverageNameFromCollector(final String nameCollector) {
         String coverageName = null;
@@ -726,12 +687,7 @@ public class AncillaryFileManager implements FileSetManager {
         return coveragesMapping.get(coverageName).getSchema().getName();
     }
 
-    /**
-     * Add the default schema to this coverage
-     *
-     * @param coverage
-     * @return
-     */
+    /** Add the default schema to this coverage */
     public String setSchema(Coverage coverage, final String schemaName, final String schemaDef) {
         Utilities.ensureNonNull("coverage", coverage);
         Utilities.ensureNonNull("schemaName", schemaName);
@@ -750,10 +706,7 @@ public class AncillaryFileManager implements FileSetManager {
         return null;
     }
 
-    /**
-     * @param varName
-     * @return
-     */
+    /** */
     public boolean acceptsVariable(String varName) {
         Utilities.ensureNonNull("varName", varName);
         if (indexer == null || indexer.getCoverages() == null) {
@@ -816,9 +769,6 @@ public class AncillaryFileManager implements FileSetManager {
     /**
      * Create the {@link DataStoreConfiguration} using the external datastoreIndexFile if provided,
      * or the H2 based default.
-     *
-     * @return
-     * @throws IOException
      */
     public DataStoreConfiguration getDatastoreConfiguration() throws IOException {
         DataStoreConfiguration datastoreConfiguration = null;
@@ -871,9 +821,6 @@ public class AncillaryFileManager implements FileSetManager {
     /**
      * Check whether the dataStore needs to be wrapped (as an instance, to allow long typeNames and
      * attributes).
-     *
-     * @param datastoreConfiguration
-     * @throws IOException
      */
     private void checkStoreWrapping(DataStoreConfiguration datastoreConfiguration)
             throws IOException {

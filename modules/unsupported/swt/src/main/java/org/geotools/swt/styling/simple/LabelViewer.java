@@ -147,7 +147,6 @@ public class LabelViewer {
     /**
      * Accepts a listener that will be notified when content changes.
      *
-     * @param listener1
      */
     public void addListener(SelectionListener listener1) {
         this.listener = listener1;
@@ -156,7 +155,6 @@ public class LabelViewer {
     /**
      * Remove listener.
      *
-     * @param listener1
      */
     public void removeListener(SelectionListener listener1) {
         if (this.listener == listener1) this.listener = null;
@@ -169,7 +167,6 @@ public class LabelViewer {
     /**
      * Constructs a TextSymbolizer from the inputs
      *
-     * @param build
      * @return TextSymbolizer defined by this model
      */
     public TextSymbolizer get(StyleBuilder build) {
@@ -261,9 +258,6 @@ public class LabelViewer {
     /**
      * Start editing the provided symbolizer.
      *
-     * @param schema
-     * @param sym
-     * @param mode
      */
     public void set(SimpleFeatureType schema, TextSymbolizer sym, Mode mode) {
         listen(false);

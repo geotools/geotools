@@ -47,7 +47,6 @@ abstract class GeometryBuilder {
      * New instance of geometry builder
      *
      * @param statement the statement that is parsing
-     * @param resultStack
      */
     public GeometryBuilder(final String statement, final BuildResultStack resultStack) {
         assert statement != null;
@@ -73,11 +72,7 @@ abstract class GeometryBuilder {
         throw new UnsupportedOperationException("should be implemented by subclass");
     }
 
-    /**
-     * @param idNode Node's identifier specified in the grammar
-     * @return
-     * @throws CQLException
-     */
+    /** @param idNode Node's identifier specified in the grammar */
     public Geometry build(final int idNode) throws CQLException {
         throw new UnsupportedOperationException("should be implemented by subclass");
     }
@@ -96,9 +91,7 @@ abstract class GeometryBuilder {
     /**
      * Makes an stack with the geometries indeed by the typeGeom
      *
-     * @param geomNode
      * @return an Stack with the required geometries
-     * @throws CQLException
      */
     protected Stack<Coordinate> popCoordinatesOf(int geomNode) throws CQLException {
         Stack<Coordinate> stack = new Stack<Coordinate>();
@@ -123,7 +116,6 @@ abstract class GeometryBuilder {
      *
      * @param geometryNode geometry required
      * @return a list of indeed geometries
-     * @throws CQLException
      */
     protected List<Geometry> popGeometry(final int geometryNode)
             throws org.geotools.filter.text.cql2.CQLException {
@@ -150,7 +142,6 @@ abstract class GeometryBuilder {
      *
      * @param geometryNode geometry required
      * @return a list of indeed geometries
-     * @throws CQLException
      */
     protected List<Geometry> popGeometryLiteral(final int geometryNode) throws CQLException {
 

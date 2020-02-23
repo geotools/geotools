@@ -70,11 +70,7 @@ public class GeoJSONFeatureSource extends ContentFeatureSource {
         return bounds;
     }
 
-    /**
-     * @param query
-     * @return
-     * @throws IOException
-     */
+    /** */
     private FeatureCollection<?, ?> fetchFeatures() throws IOException {
         // Ideally we would cache the features here but then things go badly when using transactions
         LOGGER.fine("fetching reader from datastore");

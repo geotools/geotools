@@ -42,11 +42,7 @@ public class PolyhedralSurfaceImpl extends GeometryImpl implements PolyhedralSur
 
     protected List<PolygonImpl> patches;
 
-    /**
-     * Creates a new {@code PolyhedralSurfaceImpl}.
-     *
-     * @param crs
-     */
+    /** Creates a new {@code PolyhedralSurfaceImpl}. */
     public PolyhedralSurfaceImpl(CoordinateReferenceSystem crs) {
         super(crs);
         patches = new ArrayList();
@@ -105,10 +101,7 @@ public class PolyhedralSurfaceImpl extends GeometryImpl implements PolyhedralSur
         return null;
     }
 
-    /**
-     * @return
-     * @see com.polexis.lite.spatialschema.geometry.GeometryImpl#computeJTSPeer()
-     */
+    /** @see com.polexis.lite.spatialschema.geometry.GeometryImpl#computeJTSPeer() */
     protected org.locationtech.jts.geom.Geometry computeJTSPeer() {
         if (patches.size() > 1) {
             // throw new UnsupportedOperationException("This implementation does not support

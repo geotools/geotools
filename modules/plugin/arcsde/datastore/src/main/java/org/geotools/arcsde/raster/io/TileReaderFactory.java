@@ -22,17 +22,7 @@ import org.opengis.coverage.grid.GridEnvelope;
 
 public class TileReaderFactory {
 
-    /**
-     * @param preparedQuery
-     * @param row
-     * @param nativeType
-     * @param targetType
-     * @param noDataValues
-     * @param numberOfBands
-     * @param tileRange
-     * @param tileSize
-     * @return
-     */
+    /** */
     public static TileReader getInstance(
             final ISessionPool sessionPool,
             final RasterDatasetInfo rasterInfo,

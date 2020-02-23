@@ -181,11 +181,7 @@ class WFSFeatureSource extends ContentFeatureSource {
         return resultCount;
     }
 
-    /**
-     * Invert axis order in the given query filter, if needed.
-     *
-     * @param query
-     */
+    /** Invert axis order in the given query filter, if needed. */
     private void invertAxisInFilterIfNeeded(Query query, SimpleFeatureType featureType) {
         CoordinateReferenceSystem crs = query.getCoordinateSystem();
         if (crs == null) {
@@ -393,10 +389,6 @@ class WFSFeatureSource extends ContentFeatureSource {
      * Returns the feature type that shall result of issueing the given request, adapting the
      * original feature type for the request's type name in terms of the query CRS and requested
      * attributes.
-     *
-     * @param query
-     * @return
-     * @throws IOException
      */
     SimpleFeatureType getQueryType(final Query query, SimpleFeatureType featureType)
             throws IOException {

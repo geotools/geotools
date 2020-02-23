@@ -246,10 +246,6 @@ public class BandMerge extends OperationJAI {
         /**
          * Returns a List of AffineTransformations objects to use for backward mapping the
          * destination image pixels into each source image
-         *
-         * @param list
-         * @param index
-         * @return
          */
         public List<AffineTransform> getTransformationList(List<GridGeometry2D> list, int index) {
             // Creation of a List of Transformations
@@ -277,20 +273,12 @@ public class BandMerge extends OperationJAI {
         /**
          * Returns the Grid To World transformation from the following GridGeometry list. The result
          * depends on the implementation
-         *
-         * @param list
-         * @param index
-         * @return
          */
         public abstract AffineTransform getGridToCRS2D(List<GridGeometry2D> list, int index);
 
         /**
          * Returns the World To Grid transformation from the following GridGeometry list. The result
          * depends on the implementation
-         *
-         * @param list
-         * @param index
-         * @return
          */
         public abstract AffineTransform getCRStoGrid2D(List<GridGeometry2D> list, int index);
 
@@ -304,13 +292,7 @@ public class BandMerge extends OperationJAI {
             return FIRST;
         }
 
-        /**
-         * Static method for taking the AffineTransform from the List
-         *
-         * @param list
-         * @param index
-         * @return
-         */
+        /** Static method for taking the AffineTransform from the List */
         private static AffineTransform getAffineTransform(GridGeometry2D gg2D, boolean grid2crs) {
 
             MathTransform2D tr = null;
@@ -407,9 +389,6 @@ public class BandMerge extends OperationJAI {
     /**
      * Method for searching the index of the coverage associated to the Main g2w transformation If
      * nothing is found the first coverage is taken(index = 0)
-     *
-     * @param parameters
-     * @return
      */
     private int getIndex(ParameterValueGroup parameters) {
         // Get the index parameter from the parameter group
@@ -424,12 +403,6 @@ public class BandMerge extends OperationJAI {
     /**
      * Extraction of the sources from the parameter called SOURCES. The sources are stored inside a
      * List.
-     *
-     * @param parameters
-     * @param sources
-     * @return
-     * @throws ParameterNotFoundException
-     * @throws InvalidParameterValueException
      */
     protected void extractSources(
             final ParameterValueGroup parameters, final Collection<GridCoverage2D> sources)
@@ -561,13 +534,7 @@ public class BandMerge extends OperationJAI {
                         properties); // Properties
     }
 
-    /**
-     * This method is used for setting the final image layout.
-     *
-     * @param parameters
-     * @param layout
-     * @param bbox
-     */
+    /** This method is used for setting the final image layout. */
     private void updateLayout(
             final BandMergeParams parameters, ImageLayout layout, Envelope2D bbox) {
         // Creation of a GridGeoemtry with the selected BBOX and the defined World2Grid
@@ -638,15 +605,6 @@ public class BandMerge extends OperationJAI {
     /**
      * This method prepares the {@link ParameterBlockJAI} to pass to JAI in order to execute the
      * {@link BandMerge} operation.
-     *
-     * @param parameters
-     * @param sources
-     * @param tr
-     * @param crsToGRID
-     * @return
-     * @throws MismatchedDimensionException
-     * @throws ParameterNotFoundException
-     * @throws TransformException
      */
     private ParameterBlockJAI prepareParameters(
             final ParameterValueGroup parameters,
@@ -733,13 +691,7 @@ public class BandMerge extends OperationJAI {
         return block;
     }
 
-    /**
-     * Method for creating the nodata range associated to each coverage
-     *
-     * @param cov
-     * @param dataType
-     * @return
-     */
+    /** Method for creating the nodata range associated to each coverage */
     private Range createNoDataRange(GridCoverage2D cov, int dataType) {
         // Extract NoData property from gridCoverage
         NoDataContainer container = CoverageUtilities.getNoDataProperty(cov);

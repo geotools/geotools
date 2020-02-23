@@ -60,38 +60,22 @@ public class IconStyle2D extends Style2D implements PointStyle2D {
         return rotation;
     }
 
-    /**
-     * The icon composite
-     *
-     * @return
-     */
+    /** The icon composite */
     public Composite getComposite() {
         return composite;
     }
 
-    /**
-     * The icon x displacement
-     *
-     * @return
-     */
+    /** The icon x displacement */
     public float getDisplacementX() {
         return displacementX;
     }
 
-    /**
-     * The icon y displacement
-     *
-     * @return
-     */
+    /** The icon y displacement */
     public float getDisplacementY() {
         return displacementY;
     }
 
-    /**
-     * Returns the icon backing this style
-     *
-     * @return
-     */
+    /** Returns the icon backing this style */
     public Icon getIcon() {
         return icon;
     }

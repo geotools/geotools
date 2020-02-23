@@ -42,8 +42,6 @@ public class MBTypes extends MBExpression {
      * will cause the whole expression to be aborted. Example: ["array", value]: array ["array",
      * type: "string" | "number" | "boolean", value]: array<type> ["array", type: "string" |
      * "number" | "boolean", N: number (literal), value ]: array<type, N>
-     *
-     * @return
      */
     public Expression typesArray() {
         return ff.function("mbType", exprList());
@@ -54,8 +52,6 @@ public class MBTypes extends MBExpression {
      * evaluated in order until a boolean is obtained. If none of the inputs are booleans, the
      * expression is an error. Example: ["boolean", value]: boolean ["boolean", value, fallback:
      * value, fallback: value, ...]: boolean
-     *
-     * @return
      */
     public Expression typesBoolean() {
         return ff.function("mbType", exprList());
@@ -64,8 +60,6 @@ public class MBTypes extends MBExpression {
     /**
      * Provides a literal array or object value. Example: ["literal", [...] (JSON array literal)]:
      * array<T, N> ["literal", {...} (JSON object literal)]: Object
-     *
-     * @return
      */
     private Expression typesLiteral() {
         if (json.size() == 2) {
@@ -89,8 +83,6 @@ public class MBTypes extends MBExpression {
      * evaluated in order until a number is obtained. If none of the inputs are numbers, the
      * expression is an error. Example: ["number", value]: number ["number", value, fallback: value,
      * fallback: value, ...]: number
-     *
-     * @return
      */
     public Expression typesNumber() {
         return ff.function("mbType", exprList());
@@ -101,8 +93,6 @@ public class MBTypes extends MBExpression {
      * evaluated in order until an object is obtained. If none of the inputs are objects, the
      * expression is an error. Example: ["object", value]: object ["object", value, fallback: value,
      * fallback: value, ...]: object
-     *
-     * @return
      */
     public Expression typesObject() {
         return ff.function("mbType", exprList());
@@ -113,8 +103,6 @@ public class MBTypes extends MBExpression {
      * evaluated in order until a string is obtained. If none of the inputs are strings, the
      * expression is an error. Example: ["string", value]: string ["string", value, fallback: value,
      * fallback: value, ...]: string
-     *
-     * @return
      */
     public Expression typesString() {
         return ff.function("mbType", exprList());
@@ -123,8 +111,6 @@ public class MBTypes extends MBExpression {
     /**
      * Converts the input value to a boolean. The result is false when then input is an empty
      * string, 0, false, null, or NaN; otherwise it is true. Example: ["to-boolean", value]: boolean
-     *
-     * @return
      */
     public Expression typesToBoolean() {
         return ff.function("toBool", parse.string(json, 1));
@@ -135,8 +121,6 @@ public class MBTypes extends MBExpression {
      * in order until the first successful conversion is obtained. If none of the inputs can be
      * converted, the expression is an error. Example: ["to-color", value, fallback: value,
      * fallback: value, ...]: color
-     *
-     * @return
      */
     public Expression typesToColor() {
         return ff.function("toColor", exprList());
@@ -150,8 +134,6 @@ public class MBTypes extends MBExpression {
      * the first successful conversion is obtained. If none of the inputs can be converted, the
      * expression is an error. Example: ["to-number", value, fallback: value, fallback: value, ...]:
      * number
-     *
-     * @return
      */
     public Expression typesToNumber() {
         return ff.function("toNumber", exprList());
@@ -166,8 +148,6 @@ public class MBTypes extends MBExpression {
      * 1. Otherwise, the input is converted to a string in the format specified by the
      * JSON.stringify function of the ECMAScript Language Specification. Example: ["to-string",
      * value]: string
-     *
-     * @return
      */
     public Expression typesToString() {
         return ff.function("toString", parse.string(json, 1));
@@ -175,8 +155,6 @@ public class MBTypes extends MBExpression {
 
     /**
      * Returns a string describing the type of the given value. Example: ["typeof", value]: string
-     *
-     * @return
      */
     public Expression typesTypeOf() {
         Expression value = parse.string(json, 1);

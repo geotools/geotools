@@ -56,11 +56,7 @@ public class RingImplUnsafe extends CompositeCurveImpl implements Ring {
 
     private SurfaceBoundaryImpl surfaceBoundary;
 
-    /**
-     * Creates a Ring
-     *
-     * @param generator
-     */
+    /** Creates a Ring */
     public RingImplUnsafe(List<OrientableCurve> generator) {
         super(generator);
     }

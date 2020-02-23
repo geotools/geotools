@@ -38,11 +38,7 @@ public class ColumnReferenceQualifier implements ColumnReferenceVisitor {
 
     private Map<String, Object> tableAliases;
 
-    /**
-     * Creates a new ColumnReferenceQualifier object.
-     *
-     * @param session
-     */
+    /** Creates a new ColumnReferenceQualifier object. */
     private ColumnReferenceQualifier(ISession session, Map<String, Object> tableAliases) {
         this.session = session;
         this.tableAliases = tableAliases;

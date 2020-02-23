@@ -154,10 +154,7 @@ public class AlgoLine2D {
                 (AlgoPoint2D.subtract(point, line.getP1())),
                 AlgoPoint2D.subtract((line.getP2()), line.getP1()));
     }
-    /**
-     * @param dp
-     * @return
-     */
+    /** */
     public static boolean rightSide(Line2D line, Point2D p) {
         /**
          * A return value of 1 relativeCCW indicates that the line segment must turn in the
@@ -192,8 +189,6 @@ public class AlgoLine2D {
      * Returns: 0 if it is not the same segment, i.e !equal AND !inverted 1 if it is equal, i.e.
      * pa0.equals(pb0) && pa1.equals(pb1) 2 if it is inverted, i.e. pa0.equals(pb1) &&
      * pa1.equals(pb0)
-     *
-     * @return
      */
     public static int sameSegment(Line2D lineA, Line2D lineB) {
         return sameSegment(lineA.getP1(), lineA.getP2(), lineB.getP1(), lineB.getP2());
@@ -203,8 +198,6 @@ public class AlgoLine2D {
      * Returns: 0 if it is not the same segment, i.e !equal AND !inverted 1 if it is equal, i.e.
      * pa0.equals(pb0) && pa1.equals(pb1) 2 if it is inverted, i.e. pa0.equals(pb1) &&
      * pa1.equals(pb0)
-     *
-     * @return
      */
     public static int sameSegment(Line2D line, Point2D pb0, Point2D pb1) {
         return sameSegment(line.getP1(), line.getP2(), pb0, pb1);
@@ -214,12 +207,6 @@ public class AlgoLine2D {
      * Returns: 0 if it is not the same segment, i.e !equal AND !inverted 1 if it is equal, i.e.
      * pa0.equals(pb0) && pa1.equals(pb1) 2 if it is inverted, i.e. pa0.equals(pb1) &&
      * pa1.equals(pb0)
-     *
-     * @param pa0
-     * @param pa1
-     * @param pb0
-     * @param pb1
-     * @return
      */
     public static int sameSegment(Point2D pa0, Point2D pa1, Point2D pb0, Point2D pb1) {
         return (pa0.equals(pb0) && pa1.equals(pb1))

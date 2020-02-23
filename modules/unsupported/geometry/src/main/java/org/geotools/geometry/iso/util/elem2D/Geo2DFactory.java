@@ -35,13 +35,7 @@ public class Geo2DFactory {
         public TN(Object o) {
             nodeObject = (Node2D) o;
         }
-        /**
-         * returns the side of the left and of the right triangles
-         *
-         * @param n0
-         * @param n1
-         * @return
-         */
+        /** returns the side of the left and of the right triangles */
         public static int[] getTriangles(Node2D n0, Node2D n1) {
             TN tn0 = (TN) n0.object;
             int side[] = new int[2];
@@ -181,11 +175,7 @@ public class Geo2DFactory {
         return new Object[] {newEdge, newNode};
     }
 
-    /**
-     * removes the edge, maintains the nodes
-     *
-     * @param edge
-     */
+    /** removes the edge, maintains the nodes */
     public static void removeEdge(Edge2D edge) {
         Node2D n1 = edge.getNode1();
         Node2D n2 = edge.getNode2();
@@ -193,10 +183,7 @@ public class Geo2DFactory {
         n2.unlinkEdge(edge);
     }
 
-    /**
-     * @param p1
-     * @param p2
-     */
+    /** */
     public static void setEdgeNodes(Edge2D e, Node2D n1, Node2D n2) {
         assert (e.getLeftSimplex() == null && e.getRightSimplex() == null);
         assert getEdge(n1, n2) == null;
@@ -331,9 +318,6 @@ public class Geo2DFactory {
     /**
      * the nodes will be merged. The edges from the second node (n1) will be connected from n1 and
      * connected to n0
-     *
-     * @param n0
-     * @param n1
      */
     public static void mergeNodes(Node2D n0, Node2D n1) {
         Edge2D edges[] = n1.getEdges();
@@ -344,23 +328,12 @@ public class Geo2DFactory {
         }
     }
 
-    /**
-     * @param post
-     * @return
-     */
+    /** */
     public static Node2D createNode(Point2D p) {
         return new Node2D(p);
     }
 
-    /**
-     * @param x
-     * @param y
-     * @param x2
-     * @param y2
-     * @param x3
-     * @param y3
-     * @return
-     */
+    /** */
     public static Triangle2D createTriangleAndNodes(
             double x0, double y0, double x1, double y1, double x2, double y2) {
         Node2D n0 = new Node2D(x0, y0);

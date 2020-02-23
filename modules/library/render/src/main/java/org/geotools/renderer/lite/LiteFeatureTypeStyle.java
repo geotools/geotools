@@ -89,11 +89,6 @@ final class LiteFeatureTypeStyle {
     /**
      * use this for only the 1st FTS. We don't actually create an image for it -- we just use the
      * graphics. WATCH OUT FOR THIS. NOTE: image=null in this case
-     *
-     * @param graphics
-     * @param ruleList
-     * @param elseRuleList
-     * @param transformation
      */
     public LiteFeatureTypeStyle(
             Layer layer,

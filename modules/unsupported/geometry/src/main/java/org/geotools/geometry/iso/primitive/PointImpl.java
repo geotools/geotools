@@ -71,9 +71,6 @@ public class PointImpl extends PrimitiveImpl implements Point {
     /**
      * The constructor PointImpl creates a Point at a given position, backed by the DirectPosition
      * PointImpl::PointImpl(position : DirectPositionImpl) : PointImpl
-     *
-     * @param crs
-     * @param dp
      */
     public PointImpl(CoordinateReferenceSystem crs, final DirectPositionImpl dp) {
         super(crs, null, null, null);
@@ -131,7 +128,6 @@ public class PointImpl extends PrimitiveImpl implements Point {
      *
      * <p>NOTE The type "Vector" is a common data type defined in ISO TS 19103.
      *
-     * @param toPoint
      * @return Bearing
      */
     /*

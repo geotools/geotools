@@ -64,7 +64,6 @@ public class KMLFeatureReader implements FeatureReader<SimpleFeatureType, Simple
      * Grab the next feature from the property file.
      *
      * @return feature
-     * @throws IOException
      * @throws NoSuchElementException Check hasNext() to avoid reading off the end of the file
      */
     public SimpleFeature next() throws IOException, NoSuchElementException {
@@ -98,7 +97,6 @@ public class KMLFeatureReader implements FeatureReader<SimpleFeatureType, Simple
      * Be sure to call close when you are finished with this reader; as it must close the file it
      * has open.
      *
-     * @throws IOException
      */
     public void close() throws IOException {
         fis.close();

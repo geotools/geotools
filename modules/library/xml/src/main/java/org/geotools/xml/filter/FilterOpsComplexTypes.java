@@ -112,12 +112,6 @@ public class FilterOpsComplexTypes {
      *   <li>LOGIC_TYPE: includes BinaryLogicOperator and Not
      *   <li>COMPARE_TYPE: includes BinaryComparisonOperator and PropertyIsBetween
      *       <p>
-     *
-     * @param filter
-     * @param output
-     * @param hints
-     * @throws OperationNotSupportedException
-     * @throws IOException
      */
     protected static void encodeFilter(
             org.opengis.filter.Filter filter, PrintHandler output, Map hints)
@@ -538,7 +532,6 @@ public class FilterOpsComplexTypes {
         }
 
         /**
-         * @throws SAXException
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
@@ -1136,7 +1129,6 @@ public class FilterOpsComplexTypes {
         }
 
         /**
-         * @throws OperationNotSupportedException
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
@@ -1288,7 +1280,6 @@ public class FilterOpsComplexTypes {
         }
 
         /**
-         * @throws SAXException
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
@@ -1803,7 +1794,6 @@ public class FilterOpsComplexTypes {
         }
 
         /**
-         * @throws SAXException
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
@@ -2000,7 +1990,6 @@ public class FilterOpsComplexTypes {
         }
 
         /**
-         * @throws SAXException
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
@@ -2145,7 +2134,6 @@ public class FilterOpsComplexTypes {
         }
 
         /**
-         * @throws SAXException
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
@@ -2550,7 +2538,6 @@ public class FilterOpsComplexTypes {
         }
 
         /**
-         * @throws SAXException
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */

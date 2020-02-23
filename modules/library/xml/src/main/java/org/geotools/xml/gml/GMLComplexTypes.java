@@ -522,12 +522,7 @@ public class GMLComplexTypes {
         private Element elem;
         private Object value;
 
-        /**
-         * The input method for the data to store.
-         *
-         * @param elem
-         * @param value
-         */
+        /** The input method for the data to store. */
         public DefaultElementValue(Element elem, Object value) {
             this.elem = elem;
             this.value = value;
@@ -577,11 +572,7 @@ public class GMLComplexTypes {
             // Should not be called
         }
 
-        /**
-         * Initializes this instance with a set of elements to choose from.
-         *
-         * @param elems
-         */
+        /** Initializes this instance with a set of elements to choose from. */
         public DefaultChoice(Element[] elems) {
             elements = elems;
         }
@@ -657,11 +648,7 @@ public class GMLComplexTypes {
             // Should not be called
         }
 
-        /**
-         * Initializes the Sequence with a list of elements within the Sequence
-         *
-         * @param elems
-         */
+        /** Initializes the Sequence with a list of elements within the Sequence */
         public DefaultSequence(Element[] elems) {
             elements = elems;
         }
@@ -1848,11 +1835,7 @@ public class GMLComplexTypes {
             return "PointType";
         }
 
-        /**
-         * @throws SAXException
-         * @throws OperationNotSupportedException
-         * @see schema.Type#getValue(java.util.List)
-         */
+        /** @see schema.Type#getValue(java.util.List) */
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws OperationNotSupportedException, SAXException {
             if (value.length > 1) {
@@ -2010,11 +1993,7 @@ public class GMLComplexTypes {
             return "LineStringType";
         }
 
-        /**
-         * @throws SAXException
-         * @throws OperationNotSupportedException
-         * @see schema.Type#getValue(java.util.List)
-         */
+        /** @see schema.Type#getValue(java.util.List) */
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws OperationNotSupportedException, SAXException {
             Element e = value[0].getElement();
@@ -2184,11 +2163,7 @@ public class GMLComplexTypes {
             return "LinearRingType";
         }
 
-        /**
-         * @throws SAXException
-         * @throws OperationNotSupportedException
-         * @see schema.Type#getValue(java.util.List)
-         */
+        /** @see schema.Type#getValue(java.util.List) */
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws OperationNotSupportedException, SAXException {
             Element e = value[0].getElement();
@@ -2349,11 +2324,7 @@ public class GMLComplexTypes {
             return "BoxType";
         }
 
-        /**
-         * @throws SAXException
-         * @throws OperationNotSupportedException
-         * @see schema.Type#getValue(java.util.List)
-         */
+        /** @see schema.Type#getValue(java.util.List) */
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws OperationNotSupportedException, SAXException {
             Element e = value[0].getElement();
@@ -2582,11 +2553,7 @@ public class GMLComplexTypes {
             return "PolygonType";
         }
 
-        /**
-         * @throws SAXException
-         * @throws OperationNotSupportedException
-         * @see schema.Type#getValue(java.util.List)
-         */
+        /** @see schema.Type#getValue(java.util.List) */
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws OperationNotSupportedException, SAXException {
             Element e = value[0].getElement();
@@ -2887,10 +2854,7 @@ public class GMLComplexTypes {
             return "MultiPointType";
         }
 
-        /**
-         * @throws OperationNotSupportedException
-         * @see schema.Type#getValue(java.util.List)
-         */
+        /** @see schema.Type#getValue(java.util.List) */
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             Element e = value[0].getElement();
@@ -3041,10 +3005,7 @@ public class GMLComplexTypes {
             return "MultiLineStringType";
         }
 
-        /**
-         * @throws OperationNotSupportedException
-         * @see schema.Type#getValue(java.util.List)
-         */
+        /** @see schema.Type#getValue(java.util.List) */
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             Element e = value[0].getElement();
@@ -3195,10 +3156,7 @@ public class GMLComplexTypes {
             return "MultiPolygonType";
         }
 
-        /**
-         * @throws OperationNotSupportedException
-         * @see schema.Type#getValue(java.util.List)
-         */
+        /** @see schema.Type#getValue(java.util.List) */
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             Element e = value[0].getElement();

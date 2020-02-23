@@ -66,11 +66,7 @@ class GridGeometryReducer {
 
     ReferencedEnvelope validArea;
 
-    /**
-     * Builds a reduce with a given valid area
-     *
-     * @param validArea
-     */
+    /** Builds a reduce with a given valid area */
     public GridGeometryReducer(ReferencedEnvelope validArea) {
         super();
         this.validArea = validArea;
@@ -79,9 +75,6 @@ class GridGeometryReducer {
     /**
      * Reduces the given grid geometry by at most one pixel on each side, in an attempt to make it
      * fit the
-     *
-     * @param gg
-     * @return
      */
     public GridGeometry2D reduce(GridGeometry2D gg) {
         if (gg.getEnvelope().getMaximum(1) > validArea.getMaximum(1)) {
@@ -171,9 +164,6 @@ class GridGeometryReducer {
     /**
      * Builds a cut envelope for the Crop operation. Since the crop internals will add back the
      * pixels we just removed due to numerical issues, we keep the envelope a bit on the safe side
-     *
-     * @param reduced
-     * @return
      */
     public GeneralEnvelope getCutEnvelope(GridGeometry2D reduced) {
         GeneralEnvelope result;

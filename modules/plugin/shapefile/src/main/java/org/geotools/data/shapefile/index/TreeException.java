@@ -32,10 +32,7 @@ public class TreeException extends IOException {
         super(message);
     }
 
-    /**
-     * @param message
-     * @param cause
-     */
+    /** */
     public TreeException(String message, Throwable cause) {
         super(message);
         initCause(cause);

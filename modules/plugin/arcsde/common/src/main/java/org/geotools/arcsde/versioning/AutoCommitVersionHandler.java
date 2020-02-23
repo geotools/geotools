@@ -138,7 +138,6 @@ public class AutoCommitVersionHandler implements ArcSdeVersionHandler {
      * This method should not be called, but {@link #editOperationFailed(SeStreamOp)} instead, as
      * this is a handler for auto commit mode
      *
-     * @throws UnsupportedOperationException
      * @see {@link ArcSdeVersionHandler#rollbackEditState()}
      */
     public void commitEditState() throws IOException {
@@ -150,7 +149,6 @@ public class AutoCommitVersionHandler implements ArcSdeVersionHandler {
      * This method should not be called, but {@link #editOperationWritten(SeStreamOp)} instead, as
      * this is a handler for auto commit mode
      *
-     * @throws UnsupportedOperationException
      * @see {@link ArcSdeVersionHandler#rollbackEditState()}
      */
     public void rollbackEditState() throws IOException {

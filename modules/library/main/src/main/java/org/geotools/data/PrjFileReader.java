@@ -65,7 +65,6 @@ public class PrjFileReader {
      * Load the index file from the given channel.
      *
      * @param channel The channel to read from.
-     * @param hints
      * @throws IOException If an error occurs.
      */
     public PrjFileReader(ReadableByteChannel channel, final Hints hints)
@@ -143,8 +142,6 @@ public class PrjFileReader {
     /**
      * The reader will close itself right after reading the CRS from the prj file, so no actual need
      * to call it explicitly anymore.
-     *
-     * @throws IOException
      */
     public void close() throws IOException {
         if (buffer != null) {

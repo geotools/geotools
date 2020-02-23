@@ -120,7 +120,6 @@ public class QueryInfoParser {
     }
 
     /**
-     * @param selectItems
      * @return <code>null</code> if <code>selectItems</code> is null or contains only an {@link
      *     net.sf.jsqlparser.statement.select.AllColumns}
      */

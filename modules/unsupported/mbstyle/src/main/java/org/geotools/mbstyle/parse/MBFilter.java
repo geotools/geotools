@@ -121,8 +121,6 @@ public class MBFilter {
     /**
      * Translate "$type": the feature type we need This key may be used with the "==", "!=", "in",
      * and "!in" operators. Possible values are "Point", "LineString", and "Polygon".
-     *
-     * @return
      */
     public Set<SemanticType> semanticTypeIdentifiers() {
         if (json == null || json.isEmpty()) {
@@ -264,7 +262,6 @@ public class MBFilter {
     /**
      * Translate from json "Point", "LineString", and "Polygon".
      *
-     * @param jsonText
      * @return translate from jsonText
      */
     private SemanticType translateSemanticType(String jsonText) {

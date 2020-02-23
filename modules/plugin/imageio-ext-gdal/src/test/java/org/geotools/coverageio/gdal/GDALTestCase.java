@@ -107,10 +107,7 @@ public class GDALTestCase {
         return available;
     }
 
-    /**
-     * @param reader
-     * @throws IOException
-     */
+    /** */
     protected void checkReader(BaseGDALGridCoverage2DReader reader) throws IOException {
         Assert.assertNotNull(reader);
 

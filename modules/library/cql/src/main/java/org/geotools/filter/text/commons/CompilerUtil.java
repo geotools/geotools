@@ -48,7 +48,6 @@ public final class CompilerUtil {
      * @param predicate a valid search predicate for the language
      * @param filterFactory a filter factory used to make the expression
      * @return an {@link Filter}
-     * @throws CQLException
      */
     public static final Filter parseFilter(
             final Language language, final String predicate, FilterFactory filterFactory)
@@ -70,7 +69,6 @@ public final class CompilerUtil {
      * @param language the dialect of language
      * @param predicate a valid search predicate for the language
      * @return a {@link Filter}
-     * @throws CQLException
      */
     public static final Filter parseFilter(final Language language, final String predicate)
             throws CQLException {
@@ -90,7 +88,6 @@ public final class CompilerUtil {
      * @param predicate a valid expression for the language
      * @param filterFactory a filter factory used to make the expression
      * @return an {@link Expression}
-     * @throws CQLException
      */
     public static final Expression parseExpression(
             final Language language, final String predicate, FilterFactory filterFactory)
@@ -112,7 +109,6 @@ public final class CompilerUtil {
      * @param language the dialect of language
      * @param predicate a valid expression for the language
      * @return an {@link Expression}
-     * @throws CQLException
      */
     public static final Expression parseExpression(final Language language, final String predicate)
             throws CQLException {
@@ -129,7 +125,6 @@ public final class CompilerUtil {
      * @param predicate a valid expression for the language
      * @param filterFactory a filter factory used to make the each filter
      * @return a {@link List} of filters
-     * @throws CQLException
      */
     public static List<Filter> parseFilterList(
             final Language language, String predicate, FilterFactory filterFactory)
@@ -151,7 +146,6 @@ public final class CompilerUtil {
      * @param language the dialect of language
      * @param predicate a valid expression for the language
      * @return a {@link List} of filters
-     * @throws CQLException
      */
     public static List<Filter> parseFilterList(final Language language, String predicate)
             throws CQLException {
@@ -164,11 +158,9 @@ public final class CompilerUtil {
     /**
      * Parses the expression present on source and make an expression object.
      *
-     * @param source
      * @param compilerFactory a compiler used to parse the source
      * @param filterFactory a filter factory used to make the filter
      * @return an {@link Expression}
-     * @throws CQLException
      */
     public static Expression parseExpression(
             final String source,
@@ -190,7 +182,6 @@ public final class CompilerUtil {
      * @param compilerFactory a compiler used to parse the source
      * @param filterFactory a filter factory used to make the filter
      * @return a {@link Filter}
-     * @throws CQLException
      */
     public static Filter parseFilter(
             final String source,
@@ -212,7 +203,6 @@ public final class CompilerUtil {
      * @param compilerFactory a compiler used to parse the source
      * @param filterFactory a filter factory used to make the filter
      * @return {@link List} of {@link Filter}
-     * @throws CQLException
      */
     public static List<Filter> parseFilterList(
             final String predicateSequence,

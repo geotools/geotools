@@ -262,10 +262,6 @@ public class GML2EncodingUtils {
     /**
      * Returns the geometry dimension, either as forced in the configuration, or the geometry
      * natural one
-     *
-     * @param geometry
-     * @param config
-     * @return
      */
     public static Integer getGeometryDimension(Geometry geometry, Configuration config) {
         if (GMLEncodingUtils.isEmpty(geometry)) {

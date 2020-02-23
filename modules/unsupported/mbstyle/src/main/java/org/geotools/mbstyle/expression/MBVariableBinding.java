@@ -28,8 +28,6 @@ public class MBVariableBinding extends MBExpression {
 
     /**
      * Returns a string describing the type of the given value. Example: ["typeof", value]: string
-     *
-     * @return
      */
     public Expression variableBindingLet() {
         return null;
@@ -37,8 +35,6 @@ public class MBVariableBinding extends MBExpression {
 
     /**
      * Returns a string describing the type of the given value. Example: ["typeof", value]: string
-     *
-     * @return
      */
     public Expression variableBindingVar() {
         return null;

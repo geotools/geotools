@@ -37,7 +37,6 @@ public abstract class ParamField {
     /**
      * Holds on to the parameter so implementations can consult the type and metadata information.
      *
-     * @param parameter
      */
     ParamField(Composite parent, Parameter<?> parameter) {
         this.parent = parent;
@@ -77,8 +76,6 @@ public abstract class ParamField {
     /**
      * Factory method creating the appropriate ParamField for the supplied Param.
      *
-     * @param param
-     * @return
      */
     public static ParamField create(Composite parent, Parameter<?> parameter) {
         if (Double.class.isAssignableFrom(parameter.type)) {

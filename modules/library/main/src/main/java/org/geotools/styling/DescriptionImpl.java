@@ -38,11 +38,7 @@ public class DescriptionImpl implements Description {
         this.description = description;
     }
 
-    /**
-     * Copy constructor.
-     *
-     * @param description
-     */
+    /** Copy constructor. */
     public DescriptionImpl(org.opengis.style.Description description) {
         this(description.getTitle(), description.getAbstract());
     }
@@ -106,7 +102,6 @@ public class DescriptionImpl implements Description {
     /**
      * Check the provided description return it as a DescriptionImpl
      *
-     * @param description
      * @return DescriptionImpl from the provided description
      */
     static DescriptionImpl cast(org.opengis.style.Description description) {

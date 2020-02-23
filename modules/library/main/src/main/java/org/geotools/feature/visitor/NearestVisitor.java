@@ -49,7 +49,6 @@ public class NearestVisitor implements FeatureCalc, FeatureAttributeVisitor {
     /**
      * Creates a NearestVisitor instance for the given attribute and a value to match.
      *
-     * @param expression
      * @param valueToMatch The target value to match
      */
     public NearestVisitor(Expression expression, Object valueToMatch) {
@@ -134,12 +133,7 @@ public class NearestVisitor implements FeatureCalc, FeatureAttributeVisitor {
         }
     }
 
-    /**
-     * Returns the match after {@link #visit}.
-     *
-     * @return
-     * @throws IllegalStateException
-     */
+    /** Returns the match after {@link #visit}. */
     public Object getNearestMatch() throws IllegalStateException {
         if (nearest == null) {
             if (accumulator != null) {

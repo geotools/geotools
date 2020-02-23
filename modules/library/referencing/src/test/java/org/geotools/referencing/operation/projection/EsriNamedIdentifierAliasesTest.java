@@ -34,11 +34,6 @@ public class EsriNamedIdentifierAliasesTest {
     /**
      * Constructs a CRS by parsing the provided WKT, then checks to format the CRS back to WKT using
      * ESRI and EPSG citations, to ensure the right projection names are used.
-     *
-     * @param sourceWkt
-     * @param esriProj
-     * @param epsgProj
-     * @throws Exception
      */
     protected void checkCitation(String sourceWkt, String esriProj, String epsgProj)
             throws Exception {

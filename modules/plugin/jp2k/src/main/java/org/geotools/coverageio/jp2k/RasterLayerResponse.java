@@ -360,7 +360,6 @@ class RasterLayerResponse {
      *
      * @return the {@link GridCoverage} produced as computation of this response using the {@link
      *     #compute()} method.
-     * @throws IOException
      * @uml.property name="gridCoverage"
      */
     public GridCoverage2D createResponse() throws IOException {
@@ -587,8 +586,6 @@ class RasterLayerResponse {
      *     overviews level upon request.
      * @param readParams an instance of {@link ImageReadParam} for setting the subsampling factors.
      * @return the index of the raster to read in the underlying data source.
-     * @throws IOException
-     * @throws TransformException
      */
     private int setReadParams(
             final OverviewPolicy overviewPolicy,

@@ -44,11 +44,7 @@ public class DateConversionTimezoneTest extends TestCase {
 
     private TimeZone systemTimeZone;
 
-    /**
-     * Tests date encoding having {@link Hints#LOCAL_DATE_TIME_HANDLING} activated
-     *
-     * @throws Exception
-     */
+    /** Tests date encoding having {@link Hints#LOCAL_DATE_TIME_HANDLING} activated */
     @Test
     public void testLocalEncode() throws Exception {
         Hints.putSystemDefault(Hints.LOCAL_DATE_TIME_HANDLING, true);
@@ -85,11 +81,7 @@ public class DateConversionTimezoneTest extends TestCase {
         assertDateTimeEquals("2015-09-02T23:00:00-05:00", 2015, 9, 2, 23, "EST");
     }
 
-    /**
-     * Tests date encoding having {@link Hints#LOCAL_DATE_TIME_HANDLING} deactivated
-     *
-     * @throws Exception
-     */
+    /** Tests date encoding having {@link Hints#LOCAL_DATE_TIME_HANDLING} deactivated */
     @Test
     public void testTimezoneAwareEncode() throws Exception {
         // UTC: zone offset == 0 -> no shifting

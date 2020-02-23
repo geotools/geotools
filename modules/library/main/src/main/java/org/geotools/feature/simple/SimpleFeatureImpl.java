@@ -72,13 +72,7 @@ public class SimpleFeatureImpl implements SimpleFeature {
     /** Whether this feature is self validating or not */
     protected boolean validating;
 
-    /**
-     * Builds a new feature based on the provided values and feature type
-     *
-     * @param values
-     * @param featureType
-     * @param id
-     */
+    /** Builds a new feature based on the provided values and feature type */
     public SimpleFeatureImpl(List<Object> values, SimpleFeatureType featureType, FeatureId id) {
         this(values.toArray(), featureType, id, false, index(featureType));
     }
@@ -88,11 +82,6 @@ public class SimpleFeatureImpl implements SimpleFeature {
      *
      * <p>The object takes ownership of the provided value array, do not modify after calling the
      * constructor
-     *
-     * @param values
-     * @param featureType
-     * @param id
-     * @param validating
      */
     public SimpleFeatureImpl(
             Object[] values, SimpleFeatureType featureType, FeatureId id, boolean validating) {
@@ -105,10 +94,6 @@ public class SimpleFeatureImpl implements SimpleFeature {
      * <p>The object takes ownership of the provided value array, do not modify after calling the
      * constructor
      *
-     * @param values
-     * @param featureType
-     * @param id
-     * @param validating
      * @param index - attribute name to value index mapping
      */
     public SimpleFeatureImpl(
@@ -139,7 +124,6 @@ public class SimpleFeatureImpl implements SimpleFeature {
      *       required index
      * </ul>
      *
-     * @param featureType
      * @return mapping between attribute name to attribute index
      */
     @SuppressWarnings("unchecked")

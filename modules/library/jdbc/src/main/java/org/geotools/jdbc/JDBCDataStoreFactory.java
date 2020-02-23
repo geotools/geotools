@@ -263,7 +263,6 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
      *   <li>Required Parameters are present
      * </ul>
      *
-     * @param params
      * @return true if params is in agreement with getParametersInfo and checkDBType
      */
     public boolean canProcess(Map params) {
@@ -581,7 +580,6 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
      *
      * @param params Map of connection parameter.
      * @return DataSource for SQL use
-     * @throws IOException
      */
     public BasicDataSource createDataSource(Map params) throws IOException {
         // create a datasource
@@ -656,18 +654,12 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
     /**
      * Override this to return a good validation query (a very quick one, such as one that asks the
      * database what time is it) or return null if the factory does not support validation.
-     *
-     * @return
      */
     protected abstract String getValidationQuery();
 
     /**
      * Builds up the JDBC url in a jdbc:<database>://<host>:<port>/<dbname> Override if you need a
      * different setup
-     *
-     * @param params
-     * @return
-     * @throws IOException
      */
     protected String getJDBCUrl(Map params) throws IOException {
         // jdbc url

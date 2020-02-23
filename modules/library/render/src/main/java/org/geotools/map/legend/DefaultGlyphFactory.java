@@ -38,7 +38,6 @@ public class DefaultGlyphFactory implements GlyphFactory {
      *   <li>layer style, defaults will be used if not recognized
      * </ul>
      *
-     * @param layer
      * @return Icon For the provided layer
      */
     public Icon icon(Layer layer) {

@@ -32,7 +32,6 @@ public interface InterpolationType extends EObject {
      * Interpolation method on a per axis basis
      * 
      * @model
-     * @return
      */
     public InterpolationAxesType getInterpolationAxes();
 

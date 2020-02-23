@@ -81,9 +81,7 @@ public class DataAccessRegistry implements Repository {
     /**
      * Get a feature source for built features with supplied feature type name.
      *
-     * @param featureTypeName
      * @return feature source
-     * @throws IOException
      */
     public synchronized FeatureSource<FeatureType, Feature> featureSource(Name name)
             throws IOException {
@@ -277,8 +275,6 @@ public class DataAccessRegistry implements Repository {
      * doesn't, then it will match the targetElementName.
      *
      * @param name Feature type name
-     * @return
-     * @throws IOException
      */
     public synchronized boolean hasAccessName(Name name) throws IOException {
         for (DataAccess<FeatureType, Feature> dataAccess : registry) {
@@ -295,8 +291,6 @@ public class DataAccessRegistry implements Repository {
      * it doesn't, then it will match the targetElementName.
      *
      * @param name Feature type name
-     * @return
-     * @throws IOException
      */
     public synchronized boolean hasAppSchemaAccessName(Name name) throws IOException {
         for (DataAccess<FeatureType, Feature> dataAccess : registry) {
@@ -313,9 +307,7 @@ public class DataAccessRegistry implements Repository {
      * Get a feature type mapping from a registered app-schema data access. Please note that this is
      * only possible for app-schema data access instances.
      *
-     * @param featureTypeName
      * @return feature type mapping
-     * @throws IOException
      */
     public synchronized FeatureTypeMapping mappingByName(Name name) throws IOException {
         for (DataAccess<FeatureType, Feature> dataAccess : registry) {
@@ -346,10 +338,6 @@ public class DataAccessRegistry implements Repository {
     /**
      * Return true if a type name is mapped in one of the registered app-schema data accesses as
      * targetElementName, regardless whether or not mappingName exists.
-     *
-     * @param featureTypeName
-     * @return
-     * @throws IOException
      */
     public synchronized boolean hasAppSchemaTargetElement(Name name) throws IOException {
         for (DataAccess<FeatureType, Feature> dataAccess : registry) {
@@ -386,9 +374,7 @@ public class DataAccessRegistry implements Repository {
     /**
      * Get a feature source for built features with supplied feature type name.
      *
-     * @param featureTypeName
      * @return feature source
-     * @throws IOException
      */
     public static FeatureSource<FeatureType, Feature> getFeatureSource(Name featureTypeName)
             throws IOException {
@@ -436,8 +422,6 @@ public class DataAccessRegistry implements Repository {
      * doesn't, then it will match the targetElementName.
      *
      * @param featureTypeName Feature type name
-     * @return
-     * @throws IOException
      */
     public static boolean hasName(Name featureTypeName) throws IOException {
         return getInstance().hasAccessName(featureTypeName);
@@ -451,7 +435,6 @@ public class DataAccessRegistry implements Repository {
      * Throws data source exception if mapping is not found.
      *
      * @param featureTypeName Name of feature type
-     * @throws IOException
      */
     protected void throwDataSourceException(Name featureTypeName) throws IOException {
         List<Name> typeNames = new ArrayList<Name>();

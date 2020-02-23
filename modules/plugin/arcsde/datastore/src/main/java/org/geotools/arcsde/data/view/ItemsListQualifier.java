@@ -42,11 +42,7 @@ class ItemsListQualifier implements ItemsListVisitor {
 
     private Map<String, Object> tableAliases;
 
-    /**
-     * Creates a new ItemsListQualifier object.
-     *
-     * @param session
-     */
+    /** Creates a new ItemsListQualifier object. */
     public ItemsListQualifier(ISession session, Map<String, Object> tableAliases) {
         this.session = session;
         this.tableAliases = tableAliases;

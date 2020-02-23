@@ -82,8 +82,6 @@ public class MapContentConcurrencyTest {
      * In this test we create multiple tasks: half of which add a layer to the layer list and the
      * rest which remove the layer. Then the tasks are shuffled, submitted to the executor, and all
      * started at the same time (or at least given permission to run at the same time).
-     *
-     * @throws Exception
      */
     @Test
     public void addAndRemoveOnSeparateThreads() throws Exception {

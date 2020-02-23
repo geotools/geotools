@@ -145,10 +145,7 @@ public class TileMatrix {
         return sb.toString();
     }
 
-    /**
-     * @param lon
-     * @param lat
-     */
+    /** */
     public void setTopLeft(double lon, double lat) {
         boolean isLongitudeFirstAxisOrderForced =
                 Boolean.getBoolean(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER)

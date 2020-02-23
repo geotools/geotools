@@ -52,11 +52,7 @@ public final class JDBCState extends ContentState {
         return primaryKey;
     }
 
-    /**
-     * Sets the cached primary key.
-     *
-     * @param primaryKey
-     */
+    /** Sets the cached primary key. */
     public void setPrimaryKey(PrimaryKey primaryKey) {
         this.primaryKey = primaryKey;
     }

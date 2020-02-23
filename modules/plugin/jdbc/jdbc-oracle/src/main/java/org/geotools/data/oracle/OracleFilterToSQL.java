@@ -441,11 +441,7 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
         return e;
     }
 
-    /**
-     * Returns true if the current geometry has the geodetic marker raised
-     *
-     * @return
-     */
+    /** Returns true if the current geometry has the geodetic marker raised */
     boolean isCurrentGeometryGeodetic() {
         if (currentGeometry != null) {
             Boolean geodetic = (Boolean) currentGeometry.getUserData().get(OracleDialect.GEODETIC);
@@ -496,14 +492,7 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
         out.write(", 'mask=anyinteract querytype=WINDOW') = 'TRUE' ");
     }
 
-    /**
-     * Encodes an SDO relate
-     *
-     * @param filter
-     * @param property
-     * @param geometry
-     * @param extraData
-     */
+    /** Encodes an SDO relate */
     protected void doSDORelate(
             Filter filter, Expression e1, Expression e2, boolean swapped, Object extraData)
             throws IOException {

@@ -129,8 +129,6 @@ public final class CRS2GeoTiffMetadataAdapter {
      *
      * <p>For the moment we can only encode geographic and projected coordinate reference systems,
      * we cannot encode the other types like vertical coordinate reference systems.
-     *
-     * @throws GeoTiffException
      */
     public GeoTiffIIOMetadataEncoder parseCoordinateReferenceSystem() throws GeoTiffException {
         final GeoTiffIIOMetadataEncoder metadata = new GeoTiffIIOMetadataEncoder();
@@ -201,7 +199,6 @@ public final class CRS2GeoTiffMetadataAdapter {
      * </blockquote>
      *
      * @param projectedCRS The parent element.
-     * @param metadata
      * @throws ParseException if the "GEOGCS" element can't be parsed.
      */
     private void parseProjCRS(final ProjectedCRS projectedCRS, GeoTiffIIOMetadataEncoder metadata) {
@@ -233,7 +230,6 @@ public final class CRS2GeoTiffMetadataAdapter {
      * Parsing ProjectionGeoKey 3074 for a <code>ProjectedCRS</code>.
      *
      * @param projectedCRS The <code>ProjectedCRS</code> to parse.
-     * @param metadata
      */
     private void parseProjection(
             final ProjectedCRS projectedCRS, final GeoTiffIIOMetadataEncoder metadata) {
@@ -276,8 +272,6 @@ public final class CRS2GeoTiffMetadataAdapter {
      * Parses a linear unit for a <code>ProjectedCRS</code>.
      *
      * @todo complete the list of linear unit of measures and clean the exception
-     * @param projectedCRS
-     * @param metadata
      */
     private void parseLinearUnit(
             final ProjectedCRS projectedCRS, GeoTiffIIOMetadataEncoder metadata) {
@@ -322,14 +316,7 @@ public final class CRS2GeoTiffMetadataAdapter {
         }
     }
 
-    /**
-     * Parses a along with coordinate transformation and its parameters.
-     *
-     * @param name
-     * @param metadata
-     * @param conversion
-     * @throws GeoTiffException
-     */
+    /** Parses a along with coordinate transformation and its parameters. */
     private void parseCoordinateProjectionTransform(
             final MapProjection projTransf, final String name, GeoTiffIIOMetadataEncoder metadata) {
 
@@ -834,7 +821,6 @@ public final class CRS2GeoTiffMetadataAdapter {
      * </blockquote>
      *
      * @param geographicCRS The parent element.
-     * @param metadata
      */
     private void parseGeoGCS(
             DefaultGeographicCRS geographicCRS, GeoTiffIIOMetadataEncoder metadata) {
@@ -885,7 +871,6 @@ public final class CRS2GeoTiffMetadataAdapter {
      * </blockquote>
      *
      * @param datum The parent element.
-     * @param metadata
      */
     private void parseDatum(final DefaultGeodeticDatum datum, GeoTiffIIOMetadataEncoder metadata) {
 
@@ -917,8 +902,6 @@ public final class CRS2GeoTiffMetadataAdapter {
      * </code>
      *
      * </blockquote>
-     *
-     * @param metadata
      */
     private void parseSpheroid(
             final DefaultEllipsoid ellipsoid, GeoTiffIIOMetadataEncoder metadata) {
@@ -954,8 +937,6 @@ public final class CRS2GeoTiffMetadataAdapter {
      * </code>
      *
      * </blockquote>
-     *
-     * @param metadata
      */
     private void parsePrimem(final DefaultPrimeMeridian pm, GeoTiffIIOMetadataEncoder metadata) {
         // looking for an EPSG code
@@ -988,7 +969,6 @@ public final class CRS2GeoTiffMetadataAdapter {
      * </blockquote>
      *
      * @param unit The contextual unit. Usually {@link SI#METRE} or {@link SI#RADIAN}.
-     * @param metadata
      */
     private void parseUnit(Unit<?> unit, int model, GeoTiffIIOMetadataEncoder metadata) {
 

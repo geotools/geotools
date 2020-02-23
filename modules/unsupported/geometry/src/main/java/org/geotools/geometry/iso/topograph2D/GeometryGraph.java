@@ -173,11 +173,7 @@ public class GeometryGraph extends PlanarGraph {
         }
     }
 
-    /**
-     * Add a {@link GeometryImpl} to this {@link GeometryGraph}
-     *
-     * @param g
-     */
+    /** Add a {@link GeometryImpl} to this {@link GeometryGraph} */
     private void add(GeometryImpl g) {
 
         // TODO auskommentiert; checken!
@@ -255,8 +251,6 @@ public class GeometryGraph extends PlanarGraph {
     /**
      * Adds a MultiPrimitive to the graph by adding all contained Primitives to the graph
      * individually
-     *
-     * @param aMultiPrimitive
      */
     private void addMultiPrimitive(MultiPrimitiveImpl aMultiPrimitive) {
         // Add all Primitives within the MultiPrimitive
@@ -269,11 +263,7 @@ public class GeometryGraph extends PlanarGraph {
         this.insertPoint(argIndex, coord, Location.INTERIOR);
     }
 
-    /**
-     * Adds a ring in clockwise orientation
-     *
-     * @param aRing
-     */
+    /** Adds a ring in clockwise orientation */
     private void addRing(Ring aRing) {
         this.addRing(aRing, Location.EXTERIOR, Location.INTERIOR);
     }
@@ -320,31 +310,19 @@ public class GeometryGraph extends PlanarGraph {
         insertPoint(argIndex, coord[0], Location.BOUNDARY);
     }
 
-    /**
-     * Adds a Surface to the Geometry graph
-     *
-     * @param aSurface
-     */
+    /** Adds a Surface to the Geometry graph */
     private void addSurface(SurfaceImpl aSurface) {
         this.addSurfaceBoundary(aSurface.getBoundary());
     }
 
-    /**
-     * Adds a CurveBoundary, e.g. the start and end point by which it is defined
-     *
-     * @param aCurveBoundary
-     */
+    /** Adds a CurveBoundary, e.g. the start and end point by which it is defined */
     private void addCurveBoundary(CurveBoundaryImpl aCurveBoundary) {
         // Add start and end point which define the CurveBoundary
         this.addPoint(aCurveBoundary.getStartPoint());
         this.addPoint(aCurveBoundary.getEndPoint());
     }
 
-    /**
-     * Adds a SurfaceBoundary to the Geometry graph
-     *
-     * @param aSurfaceBoundary
-     */
+    /** Adds a SurfaceBoundary to the Geometry graph */
     private void addSurfaceBoundary(SurfaceBoundaryImpl aSurfaceBoundary) {
         // Add exterior Ring of the Surface Boundary
         this.addRing(aSurfaceBoundary.getExterior(), Location.EXTERIOR, Location.INTERIOR);
@@ -357,11 +335,7 @@ public class GeometryGraph extends PlanarGraph {
         }
     }
 
-    /**
-     * Add a Curve to the graph
-     *
-     * @param aCurve
-     */
+    /** Add a Curve to the graph */
     private void addCurve(CurveImpl aCurve) {
 
         List<DirectPosition> directPositions = aCurve.asDirectPositions();
@@ -389,11 +363,7 @@ public class GeometryGraph extends PlanarGraph {
         insertBoundaryPoint(argIndex, coord[coord.length - 1]);
     }
 
-    /**
-     * Adds the Point of a CompositePoint to the Graph. Handling as usual Point.
-     *
-     * @param aCompositePoint
-     */
+    /** Adds the Point of a CompositePoint to the Graph. Handling as usual Point. */
     private void addCompositePoint(CompositePointImpl aCompositePoint) {
         List<Primitive> elements = (List<Primitive>) aCompositePoint.getElements();
         if (elements.size() != 1)
@@ -402,11 +372,7 @@ public class GeometryGraph extends PlanarGraph {
         this.addPoint((PointImpl) elements.get(0));
     }
 
-    /**
-     * Adds a CompositeCurve to the graph by adding each Curve separately
-     *
-     * @param aCompositeCurve
-     */
+    /** Adds a CompositeCurve to the graph by adding each Curve separately */
     private void addCompositeCurve(CompositeCurveImpl aCompositeCurve) {
         Iterator<? extends Primitive> elements = aCompositeCurve.getElements().iterator();
         while (elements.hasNext()) {
@@ -414,11 +380,7 @@ public class GeometryGraph extends PlanarGraph {
         }
     }
 
-    /**
-     * Adds a CompositeSurface to the graph by adding each Surface separately
-     *
-     * @param aCompositeSurface
-     */
+    /** Adds a CompositeSurface to the graph by adding each Surface separately */
     private void addCompositeSurface(CompositeSurfaceImpl aCompositeSurface) {
         Iterator<? extends Primitive> elements = aCompositeSurface.getElements().iterator();
         while (elements.hasNext()) {
@@ -482,12 +444,7 @@ public class GeometryGraph extends PlanarGraph {
         return si;
     }
 
-    /**
-     * @param g
-     * @param li
-     * @param includeProper
-     * @return
-     */
+    /** */
     public SegmentIntersector computeEdgeIntersections(
             GeometryGraph g, LineIntersector li, boolean includeProper) {
         SegmentIntersector si = new SegmentIntersector(li, includeProper, true);

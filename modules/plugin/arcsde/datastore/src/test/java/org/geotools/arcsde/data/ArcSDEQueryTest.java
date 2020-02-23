@@ -152,9 +152,6 @@ public class ArcSDEQueryTest {
     /**
      * Filters are separated into backend supported and unsupported filters. Once split they should
      * be simplified to avoid silly filters like {@code 1 = 1 AND 1 = 1}
-     *
-     * @throws IOException
-     * @throws CQLException
      */
     @Test
     public void testSimplifiesFilters() throws IOException, CQLException {
@@ -291,11 +288,7 @@ public class ArcSDEQueryTest {
         Assert.assertEquals(expected, id);
     }
 
-    /**
-     * Query specifies no request properties, then all properties should be fetch
-     *
-     * @throws Exception
-     */
+    /** Query specifies no request properties, then all properties should be fetch */
     @Test
     public void testGetSchemaDefaultQuery() throws Exception {
         String[] requestProperties = {};
@@ -312,8 +305,6 @@ public class ArcSDEQueryTest {
      * The query is fully supported, the requested properties does not contain a property that is
      * needed for the filter evaluation, then the resulting schema should not contain the non
      * requested property neither
-     *
-     * @throws Exception
      */
     @Test
     public void testGetSchemaSupportedFilterPropertySingleRequestProperty() throws Exception {
@@ -333,8 +324,6 @@ public class ArcSDEQueryTest {
      * Query filter references a property name inside an unsupported filter/expression, then the
      * referenced property should be part of the resulting schema even if the query didn't requested
      * it, so that the filter/expression can be evaluated at runtime.
-     *
-     * @throws Exception
      */
     @Test
     public void testGetSchemaUnsupportedFilterProperty() throws Exception {

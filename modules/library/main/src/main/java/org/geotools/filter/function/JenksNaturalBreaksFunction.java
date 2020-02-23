@@ -68,7 +68,6 @@ public class JenksNaturalBreaksFunction extends ClassificationFunction {
      * This is based on James' GeoTools1 code which seems to be based on
      * http://lib.stat.cmu.edu/cmlib/src/cluster/fish.f
      *
-     * @param feature
      * @return a RangedClassifier
      */
     private Object calculate(SimpleFeatureCollection featureCollection) {

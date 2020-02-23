@@ -34,11 +34,7 @@ public class ImageGraphicFactoryTest extends TestCase {
         ff = CommonFactoryFinder.getFilterFactory(null);
     }
 
-    /**
-     * Check that at least the well known png and jpeg formats are supported
-     *
-     * @throws Exception
-     */
+    /** Check that at least the well known png and jpeg formats are supported */
     public void testFormats() throws Exception {
         assertTrue(image.getSupportedMimeTypes().contains("image/png"));
         assertTrue(image.getSupportedMimeTypes().contains("image/jpeg"));

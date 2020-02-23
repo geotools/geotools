@@ -67,25 +67,12 @@ public class WFSDataAccessFactory implements DataAccessFactory {
     public static class WFSFactoryParam<T> extends Param {
         private T defaultValue;
 
-        /**
-         * Creates a required parameter
-         *
-         * @param key
-         * @param type
-         * @param description
-         */
+        /** Creates a required parameter */
         public WFSFactoryParam(String key, Class<T> type, String title, String description) {
             this(key, type, title, description, null);
         }
 
-        /**
-         * Creates an optional parameter with the supplied default value
-         *
-         * @param key
-         * @param type
-         * @param description
-         * @param required
-         */
+        /** Creates an optional parameter with the supplied default value */
         public WFSFactoryParam(
                 String key, Class<T> type, String title, String description, T defaultValue) {
             super(
@@ -101,14 +88,7 @@ public class WFSDataAccessFactory implements DataAccessFactory {
             this.defaultValue = defaultValue;
         }
 
-        /**
-         * Creates an optional parameter with the supplied default value
-         *
-         * @param key
-         * @param type
-         * @param description
-         * @param required
-         */
+        /** Creates an optional parameter with the supplied default value */
         public WFSFactoryParam(
                 String key,
                 Class<T> type,

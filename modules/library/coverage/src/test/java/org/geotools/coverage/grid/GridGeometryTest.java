@@ -91,13 +91,7 @@ public final class GridGeometryTest extends GridCoverageTestBase {
         assertEquals(0.5, tr.getTranslateY(), 0);
     }
 
-    /**
-     * Tests the construction from an envelope.
-     *
-     * @throws TransformException
-     * @throws NoninvertibleTransformException
-     * @throws InvalidGridGeometryException
-     */
+    /** Tests the construction from an envelope. */
     @Test
     public void testEnvelope()
             throws InvalidGridGeometryException, NoninvertibleTransformException,

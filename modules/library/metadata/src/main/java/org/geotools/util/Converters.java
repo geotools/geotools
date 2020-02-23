@@ -63,8 +63,6 @@ public final class Converters {
     //    /**
     //     * Used to combine provided hints with global GeoTools defaults.
     //     *
-    //     * @param hints
-    //     * @return
     //     */
     //    private static Hints addDefaultHints(final Hints hints) {
     //        return GeoTools.addDefaultHints(hints);

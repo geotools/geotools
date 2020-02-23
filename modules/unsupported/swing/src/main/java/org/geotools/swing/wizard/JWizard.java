@@ -236,8 +236,6 @@ public class JWizard extends JDialog {
      * Called to display a page.
      *
      * <p>
-     *
-     * @param id
      */
     public void setCurrentPanel(String id) {
         if (id == null) {
@@ -286,8 +284,6 @@ public class JWizard extends JDialog {
      * Registers the page with this JWizard. The page is stored by its identifier (so other pages
      * can look it up). The page.setJWizard() method is also called so the page can refer to its
      * containing wizard at runtime.
-     *
-     * @param page
      */
     public void registerWizardPanel(JPage page) {
         page.setJWizard(this);
@@ -377,8 +373,6 @@ public class JWizard extends JDialog {
         }
         /**
          * Set listen to false to update a field without the controller passing on a notification.
-         *
-         * @param listen
          */
         public void setListen(boolean listen) {
             this.listen = listen;

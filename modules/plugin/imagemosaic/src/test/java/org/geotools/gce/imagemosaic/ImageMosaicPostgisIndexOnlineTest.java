@@ -136,11 +136,7 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
 
     private final String noGeomLast = "zNotGeom";
 
-    /**
-     * Complex test for Postgis indexing on db.
-     *
-     * @throws Exception
-     */
+    /** Complex test for Postgis indexing on db. */
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Test
     public void testPostgisIndexing() throws Exception {
@@ -232,11 +228,7 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
         reader.dispose();
     }
 
-    /**
-     * Complex test for Postgis indexing on db.
-     *
-     * @throws Exception
-     */
+    /** Complex test for Postgis indexing on db. */
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Test
     public void testPostgisIndexingNoEpsgCode() throws Exception {
@@ -308,11 +300,7 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
         }
     }
 
-    /**
-     * Complex test for Postgis indexing on db.
-     *
-     * @throws Exception
-     */
+    /** Complex test for Postgis indexing on db. */
     @Test
     public void testSortingAndLimiting() throws Exception {
         final File workDir = new File(TestData.file(this, "."), tempFolderName2);
@@ -482,11 +470,7 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
         }
     }
 
-    /**
-     * Complex test for Postgis store wrapping.
-     *
-     * @throws Exception
-     */
+    /** Complex test for Postgis store wrapping. */
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Test
     public void testPostgisWrapping() throws Exception {

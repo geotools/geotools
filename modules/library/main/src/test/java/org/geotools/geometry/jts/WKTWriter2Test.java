@@ -24,11 +24,7 @@ import org.locationtech.jts.io.ParseException;
 
 public class WKTWriter2Test {
 
-    /**
-     * Draw a circle between the start and end point; or each group of three their after.
-     *
-     * @throws Exception
-     */
+    /** Draw a circle between the start and end point; or each group of three their after. */
     @Test
     public void circularString() throws Exception {
         testRoundTrip(

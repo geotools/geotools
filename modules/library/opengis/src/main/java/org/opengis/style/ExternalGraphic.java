@@ -41,8 +41,6 @@ public interface ExternalGraphic extends GraphicalSymbol {
     /**
      * Returns the InlineContent that comprise the image. This overrides the {@link
      * #getOnlineResource OnlineResource} property, if it is set.
-     *
-     * @return
      */
     @XmlElement("InlineContent")
     Icon getInlineContent();

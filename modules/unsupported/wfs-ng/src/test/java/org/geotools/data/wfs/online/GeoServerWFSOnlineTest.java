@@ -92,11 +92,7 @@ public class GeoServerWFSOnlineTest extends OnlineTestSupport {
     public void testGeoServerWFSFilter_V2_post() throws IOException, NoSuchElementException {
         geoServerTest("2.0.0", false);
     }
-    /**
-     * @param expected
-     * @param version
-     * @throws IOException
-     */
+    /** */
     private void geoServerTest(String version, boolean get) throws IOException {
 
         String getCapabilities =

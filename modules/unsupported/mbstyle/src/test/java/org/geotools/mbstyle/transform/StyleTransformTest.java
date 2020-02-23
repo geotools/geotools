@@ -520,9 +520,6 @@ public class StyleTransformTest {
      * <p>Based upon the above if symbol-avoid-edges is true we do not need to add the partials
      * option as the renderer will do this by default. But if symbol-avoid-edges is missing or set
      * to false, then we do need to add the partials option set to true.
-     *
-     * @throws IOException
-     * @throws ParseException
      */
     @Test
     public void testSymbolAvoidEdgesNotSupplied() throws IOException, ParseException {

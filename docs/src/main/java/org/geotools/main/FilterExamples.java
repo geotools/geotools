@@ -36,7 +36,6 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.filter.FunctionFactory;
 import org.geotools.filter.text.cql2.CQL;
-import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -83,7 +82,6 @@ public class FilterExamples {
      *
      * @param selection Set of FeatureIDs identifying requested content
      * @return Selected Features
-     * @throws IOException
      */
     // grabSelectedIds start
     SimpleFeatureCollection grabSelectedIds(Set<String> selection) throws IOException {
@@ -103,10 +101,6 @@ public class FilterExamples {
      * How to find a Feature by Name?
      *
      * <p>CQL is very good for one off queries like this:
-     *
-     * @param name
-     * @return
-     * @throws CQLException
      */
     // grabSelectedName start
     SimpleFeatureCollection grabSelectedName(String name) throws Exception {
@@ -154,13 +148,6 @@ public class FilterExamples {
      * What features on in this bounding Box?
      *
      * <p>You can make a bounding box query as shown below:
-     *
-     * @param x1
-     * @param y1
-     * @param x2
-     * @param y2
-     * @return
-     * @throws Exception
      */
     // grabFeaturesInBoundingBox start
     SimpleFeatureCollection grabFeaturesInBoundingBox(double x1, double y1, double x2, double y2)

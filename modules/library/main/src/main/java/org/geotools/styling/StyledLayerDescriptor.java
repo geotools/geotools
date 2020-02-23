@@ -109,10 +109,6 @@ public interface StyledLayerDescriptor {
      */
     public void setAbstract(java.lang.String abstractStr);
 
-    /**
-     * Used to navigate a Style/SLD.
-     *
-     * @param visitor
-     */
+    /** Used to navigate a Style/SLD. */
     void accept(StyleVisitor visitor);
 }

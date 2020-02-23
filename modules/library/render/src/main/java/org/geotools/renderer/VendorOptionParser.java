@@ -32,11 +32,6 @@ public class VendorOptionParser {
     /**
      * Extracts a enumeration from the vendor options map, returns it if found, returns the default
      * value if not
-     *
-     * @param symbolizer
-     * @param optionName
-     * @param defaultValue
-     * @return
      */
     public <T extends Enum<T>> Enum<T> getEnumOption(
             Symbolizer symbolizer, String optionName, Enum<T> defaultValue) {
@@ -51,13 +46,7 @@ public class VendorOptionParser {
         }
     }
 
-    /**
-     * Null safe options retrival
-     *
-     * @param symbolizer
-     * @param optionName
-     * @return
-     */
+    /** Null safe options retrival */
     private String getOption(Symbolizer symbolizer, String optionName) {
         if (symbolizer == null) {
             return null;
@@ -73,11 +62,6 @@ public class VendorOptionParser {
     /**
      * Extracts a integer from the vendor options map, returns it if found, returns the default
      * value if not
-     *
-     * @param symbolizer
-     * @param optionName
-     * @param defaultValue
-     * @return
      */
     public int getIntOption(Symbolizer symbolizer, String optionName, int defaultValue) {
         String value = getOption(symbolizer, optionName);
@@ -92,11 +76,6 @@ public class VendorOptionParser {
     /**
      * Extracts a double from the vendor options map, returns it if found, returns the default value
      * if not
-     *
-     * @param symbolizer
-     * @param optionName
-     * @param defaultValue
-     * @return
      */
     public double getDoubleOption(Symbolizer symbolizer, String optionName, double defaultValue) {
         String value = getOption(symbolizer, optionName);
@@ -111,8 +90,6 @@ public class VendorOptionParser {
     /**
      * Extracts a boolean from the vendor options map, returns it if found, returns the default
      * value if not
-     *
-     * @param symbolizer
      */
     public boolean getBooleanOption(
             Symbolizer symbolizer, String optionName, boolean defaultValue) {
@@ -129,9 +106,6 @@ public class VendorOptionParser {
      * Returns a CSS margin from the options map. The result always has 4 components, in
      * top,right,bottom,left order. The syntax can follow the CSS shorthand,
      * http://www.w3schools.com/css/css_margin.asp
-     *
-     * @param symbolizer
-     * @return
      */
     public int[] getGraphicMargin(Symbolizer symbolizer, String optionName) {
         String value = getOption(symbolizer, optionName);
@@ -171,9 +145,7 @@ public class VendorOptionParser {
      * Returns an array of int in the range [0, 360) which corresponds to the possible displacement
      * angles.
      *
-     * @param symbolizer
      * @param optionName expected a String with DisplacementMode enum values comma separated
-     * @return
      */
     public int[] getDisplacementAngles(Symbolizer symbolizer, String optionName) {
         String value = getOption(symbolizer, optionName);

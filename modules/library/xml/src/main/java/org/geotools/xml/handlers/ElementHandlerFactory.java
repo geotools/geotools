@@ -144,9 +144,6 @@ public class ElementHandlerFactory {
      * Creates an element handler for the element specified by name and namespace. Will return null
      * if a suitable handler is not found.
      *
-     * @param namespaceURI
-     * @param localName
-     * @throws SAXException
      * @see ElementHandlerFactory#createElementHandler(Element)
      */
     public XMLElementHandler createElementHandler(URI namespaceURI, String localName)
@@ -194,7 +191,6 @@ public class ElementHandlerFactory {
      * Creates an element handler based on the element provided.
      *
      * @param eth Element
-     * @throws SAXException
      */
     public XMLElementHandler createElementHandler(Element eth) throws SAXException {
         Type type = eth.getType();

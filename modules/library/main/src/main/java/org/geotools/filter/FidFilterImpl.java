@@ -96,11 +96,7 @@ public class FidFilterImpl extends AbstractFilter implements Id {
         return fids();
     }
 
-    /**
-     * Helper method to pull out strings from featureId set.
-     *
-     * @return
-     */
+    /** Helper method to pull out strings from featureId set. */
     private Set<String> fids() {
         return new HashSet<String>(ids);
     }

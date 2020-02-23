@@ -242,8 +242,6 @@ public class MBFunctionTest {
     /**
      * Tests that a MapBox zoom function (outputting a color) correctly creates a GeoTools
      * interpolation function.
-     *
-     * @throws Exception
      */
     @Test
     public void zoomColorStopsTest() throws Exception {
@@ -300,8 +298,6 @@ public class MBFunctionTest {
     /**
      * Tests that a MapBox linear zoom function (outputting a color) correctly interpolates color
      * values for zoom levels between stops.
-     *
-     * @throws Exception
      */
     @Test
     public void zoomColorStopsInterpolationTest() throws Exception {
@@ -355,8 +351,6 @@ public class MBFunctionTest {
     /**
      * Tests that a MapBox exponential zoom function (outputting a color) correctly interpolates
      * color values for zoom levels between stops, when the exponential base is > 1.
-     *
-     * @throws Exception
      */
     @Test
     public void zoomColorStopsExponentialInterpolationTest() throws Exception {
@@ -419,8 +413,6 @@ public class MBFunctionTest {
     /**
      * Tests that a MapBox exponential zoom function (outputting a color) correctly interpolates
      * color values for zoom levels between stops, when the exponential base is < 1.
-     *
-     * @throws Exception
      */
     @Test
     public void zoomColorStopsExponentialInterpolationTestBaseLessThan1() throws Exception {
@@ -480,8 +472,6 @@ public class MBFunctionTest {
     /**
      * Tests that a MapBox exponential zoom function (outputting a color) correctly interpolates
      * color values for zoom levels between stops, when the exponential base is == 1 (linear).
-     *
-     * @throws Exception
      */
     @Test
     public void zoomColorStopsLinearInterpolationTest() throws Exception {
@@ -702,8 +692,6 @@ public class MBFunctionTest {
     /**
      * Tests that a MapBox exponential zoom function (outputting a numeric value) correctly
      * interpolates values for zoom levels between stops. Tests exponential base == 1 and <> 1.
-     *
-     * @throws Exception
      */
     @Test
     public void zoomStopsNumericInterpolationTest() throws Exception {
@@ -787,8 +775,6 @@ public class MBFunctionTest {
     /**
      * Tests that a MapBox exponential property function (outputting a numeric value) correctly
      * interpolates values for zoom levels between stops. Tests exponential base == 1 and <> 1.
-     *
-     * @throws Exception
      */
     @Test
     public void propertyStopsNumericInterpolationTest() throws Exception {
@@ -1349,11 +1335,7 @@ public class MBFunctionTest {
         assertEquals(-2, yFn.numeric().evaluate(featuredefault, Integer.class).intValue());
     }
 
-    /**
-     * Test that nothing breaks when an array function has output arrays of size one.
-     *
-     * @throws Exception
-     */
+    /** Test that nothing breaks when an array function has output arrays of size one. */
     @Test
     public void testArrayFunctionSize1() throws Exception {
         JSONObject json =

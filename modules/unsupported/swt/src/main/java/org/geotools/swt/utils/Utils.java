@@ -317,7 +317,6 @@ public class Utils {
      * uses bands 1, 2, and 3 for the red, green and blue channels. It then sets up a raster
      * symbolizer and returns this wrapped in a Style.
      *
-     * @param reader
      * @return a new Style object containing a raster symbolizer set up for RGB image
      */
     public static Style createRGBStyle(GridCoverage2DReader reader) {

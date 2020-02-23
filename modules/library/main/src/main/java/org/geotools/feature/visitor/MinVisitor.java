@@ -127,8 +127,6 @@ public class MinVisitor implements FeatureCalc, FeatureAttributeVisitor {
      * will tell the visitor the answer rather than visiting all features.
      *
      * <p>For 'min', the value stored is of type 'Comparable'.
-     *
-     * @param result
      */
     public void setValue(Object result) {
         visited = true;

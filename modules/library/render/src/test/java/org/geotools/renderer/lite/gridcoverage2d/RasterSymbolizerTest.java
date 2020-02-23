@@ -96,9 +96,6 @@ public class RasterSymbolizerTest extends org.junit.Assert {
      * Creates a simple 500x500 {@link RenderedImage} for testing purposes.
      *
      * <p>Values are randomly set to the provided noDataValue.
-     *
-     * @param noDataValue
-     * @return
      */
     public static RenderedImage getSynthetic(final double noDataValue) {
         final int width = 500;
@@ -2113,8 +2110,6 @@ public class RasterSymbolizerTest extends org.junit.Assert {
      * Found out that we were creating a classification transform that was incorrect since the gaps
      * index was set to the max index + 1 in the colormap, which resulted in {@link
      * IndexOutOfBoundsException}.
-     *
-     * @throws IOException
      */
     @Test
     public void testGapsColor() throws IOException {

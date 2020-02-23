@@ -124,11 +124,7 @@ public class Diff {
         mutex = this;
     }
 
-    /**
-     * Diff copy.
-     *
-     * @param other
-     */
+    /** Diff copy. */
     public Diff(Diff other) {
         // copy data
         modifiedFeatures = new ConcurrentHashMap<String, SimpleFeature>(other.modifiedFeatures);
@@ -168,7 +164,6 @@ public class Diff {
     /**
      * Record a modification to the indicated fid
      *
-     * @param fid
      * @param f replacement feature; null to indicate remove
      */
     public void modify(String fid, SimpleFeature f) {

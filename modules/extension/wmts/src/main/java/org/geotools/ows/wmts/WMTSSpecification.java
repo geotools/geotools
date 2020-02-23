@@ -65,11 +65,7 @@ public class WMTSSpecification extends Specification {
 
     public static class GetTileRequest extends AbstractGetTileRequest {
 
-        /**
-         * @param onlineResource
-         * @param properties
-         * @param type
-         */
+        /** */
         public GetTileRequest(
                 URL onlineResource, Properties properties, WMTSCapabilities capabilities) {
             super(onlineResource, properties);
@@ -131,10 +127,7 @@ public class WMTSSpecification extends Specification {
         }
     }
 
-    /**
-     * @param key
-     * @return
-     */
+    /** */
     public static String processKey(String key) {
 
         return key.trim().toUpperCase();

@@ -52,7 +52,6 @@ public interface DataStore extends DataAccess<SimpleFeatureType, SimpleFeature> 
      * <p>This functionality is similar to an "drop table" statement in SQL. Implementation is
      * optional; it may not be supported by all servers or files.
      *
-     * @param typeName
      * @throws IOException if the operation failed
      * @throws UnsupportedOperation if functionality is not available
      */

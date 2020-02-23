@@ -32,10 +32,7 @@ import org.locationtech.jts.geom.MultiLineString;
  */
 final class MultiLineStringBuilder extends GeometryBuilder {
 
-    /**
-     * @param statement
-     * @param resultStack
-     */
+    /** */
     public MultiLineStringBuilder(String statement, BuildResultStack resultStack) {
         super(statement, resultStack);
     }

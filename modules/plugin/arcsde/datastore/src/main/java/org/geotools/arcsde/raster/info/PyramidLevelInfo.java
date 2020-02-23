@@ -89,11 +89,7 @@ final class PyramidLevelInfo {
         return new GeneralEnvelope(spatialExtent);
     }
 
-    /**
-     * The rectangle covering the actual raster data inside the tiled space
-     *
-     * @return
-     */
+    /** The rectangle covering the actual raster data inside the tiled space */
     public GridEnvelope getGridEnvelope() {
         return new GridEnvelope2D(this.gridEnvelope);
     }

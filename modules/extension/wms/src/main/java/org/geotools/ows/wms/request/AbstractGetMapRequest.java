@@ -278,9 +278,6 @@ public abstract class AbstractGetMapRequest extends AbstractWMSRequest implement
      * minimum and maximum Y values. If the WMS server has declared that a Layer has fixed width and
      * height, then the Client shall specify exactly those WIDTH and HEIGHT values in the GetMap
      * request and the Server may issue a Service Exception otherwise."
-     *
-     * @param width
-     * @param height
      */
     public void setDimensions(String width, String height) {
         properties.setProperty(HEIGHT, height);
@@ -332,8 +329,6 @@ public abstract class AbstractGetMapRequest extends AbstractWMSRequest implement
      *   <li>"application/vnd.ogc.se_inimage"
      *   <li>"application/vnd.ogc.se_blank"
      * </ul>
-     *
-     * @param exceptions
      */
     public void setExceptions(String exceptions) {
         properties.setProperty(EXCEPTIONS, exceptions);

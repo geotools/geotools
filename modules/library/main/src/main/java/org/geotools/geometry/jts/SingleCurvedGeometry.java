@@ -26,33 +26,15 @@ import org.locationtech.jts.geom.LineString;
  */
 public interface SingleCurvedGeometry<T extends LineString> extends CurvedGeometry<T> {
 
-    /**
-     * Returns the linearized coordinates at the given tolerance
-     *
-     * @param tolerance
-     * @return
-     */
+    /** Returns the linearized coordinates at the given tolerance */
     public CoordinateSequence getLinearizedCoordinateSequence(final double tolerance);
 
-    /**
-     * Returns the control points for this string/ring.
-     *
-     * @return
-     */
+    /** Returns the control points for this string/ring. */
     double[] getControlPoints();
 
-    /**
-     * Number of arc circles
-     *
-     * @return
-     */
+    /** Number of arc circles */
     public int getNumArcs();
 
-    /**
-     * Returns the n-th circular arc making up the geometry
-     *
-     * @param arcIndex
-     * @return
-     */
+    /** Returns the n-th circular arc making up the geometry */
     public CircularArc getArcN(int arcIndex);
 }

@@ -177,12 +177,7 @@ public class MultithreadedHttpClient implements HTTPClient {
         return new HttpMethodResponse(postMethod);
     }
 
-    /**
-     * @param method
-     * @return the http status code of the execution
-     * @throws IOException
-     * @throws HttpException
-     */
+    /** @return the http status code of the execution */
     private int executeMethod(HttpMethod method) throws IOException, HttpException {
         String host = method.getURI().getHost();
         if (host != null && nonProxyHosts.contains(host.toLowerCase())) {
@@ -330,10 +325,7 @@ public class MultithreadedHttpClient implements HTTPClient {
             return responseBodyAsStream;
         }
 
-        /**
-         * @return
-         * @see org.geotools.data.ows.HTTPResponse#getResponseCharset()
-         */
+        /** @see org.geotools.data.ows.HTTPResponse#getResponseCharset() */
         @Override
         public String getResponseCharset() {
             String responseCharSet = null;
@@ -344,19 +336,13 @@ public class MultithreadedHttpClient implements HTTPClient {
         }
     }
 
-    /**
-     * @param tryGZIP
-     * @see org.geotools.data.ows.HTTPClient#setTryGzip(boolean)
-     */
+    /** @see org.geotools.data.ows.HTTPClient#setTryGzip(boolean) */
     @Override
     public void setTryGzip(boolean tryGZIP) {
         this.tryGzip = tryGZIP;
     }
 
-    /**
-     * @return
-     * @see org.geotools.data.ows.HTTPClient#isTryGzip()
-     */
+    /** @see org.geotools.data.ows.HTTPClient#isTryGzip() */
     @Override
     public boolean isTryGzip() {
         return tryGzip;

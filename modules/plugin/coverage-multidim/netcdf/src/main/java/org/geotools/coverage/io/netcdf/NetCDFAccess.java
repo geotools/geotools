@@ -67,16 +67,7 @@ public class NetCDFAccess extends DefaultFileCoverageAccess
 
     GeoSpatialImageReader reader = null;
 
-    /**
-     * Constructor
-     *
-     * @param driver
-     * @param source
-     * @param additionalParameters
-     * @param hints
-     * @param listener
-     * @throws IOException
-     */
+    /** Constructor */
     @SuppressWarnings("serial")
     NetCDFAccess(
             Driver driver,
@@ -147,8 +138,6 @@ public class NetCDFAccess extends DefaultFileCoverageAccess
 
     /**
      * Scan the provided hints (if any) and look for auxiliary entries to be set into the reader.
-     *
-     * @param hints
      */
     private void setAuxiliaryEntries(Hints hints) {
         String prefix = "";

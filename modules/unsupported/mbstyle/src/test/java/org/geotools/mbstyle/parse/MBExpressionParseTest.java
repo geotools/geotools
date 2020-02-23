@@ -265,7 +265,6 @@ public class MBExpressionParseTest {
      * Traverse a nested map using the array of strings, and cast the result to the provided class,
      * or return {@link Optional#empty()}.
      *
-     * @param map
      * @param clazz expected type
      * @param path used to access map
      * @return result at the provided path, or {@link Optional#empty()}.

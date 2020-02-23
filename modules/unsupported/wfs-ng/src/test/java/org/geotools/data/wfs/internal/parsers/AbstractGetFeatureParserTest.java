@@ -105,8 +105,6 @@ public abstract class AbstractGetFeatureParserTest {
         /**
          * A featuretype which might be a subset of the actual FeatureType whose attributes will be
          * used to assert the features.
-         *
-         * @param featureType
          */
         public FeatureAssertor(SimpleFeatureType featureType) {
             this.featureType = featureType;
@@ -180,8 +178,6 @@ public abstract class AbstractGetFeatureParserTest {
      * @param assertor a FeatureVisitor to assert the contents or structure of the features
      * @param expectedFeatureCount the number of features there should be on the feature collection,
      *     an assertion is made at the end of the method.
-     * @param schemaName
-     * @throws Exception
      */
     private void testParseGetFeatures(
             final QName featureName,
@@ -215,13 +211,8 @@ public abstract class AbstractGetFeatureParserTest {
      * implementation settled up for the given featureName and dataFile containing the test
      * GetFeature request response.
      *
-     * @param featureName
-     * @param schemaLocation
-     * @param featureType
      * @param getFeaturesRequest the URL representing the GetFeature request. Opening its input
      *     stream shall suffice to get the GetFeature response.
-     * @return
-     * @throws IOException
      */
     protected abstract GetParser<SimpleFeature> getParser(
             QName featureName,
@@ -235,8 +226,6 @@ public abstract class AbstractGetFeatureParserTest {
      * Verifies correctness on parsing a normal geoserver WFS 1.1.0 GetFeature response.
      *
      * <p>Test method for {@link PullParserFeatureReader#parse()}.
-     *
-     * @throws Exception
      */
     @Test
     public void testParseGeoServer_ArchSites_Point() throws Exception {
@@ -268,8 +257,6 @@ public abstract class AbstractGetFeatureParserTest {
      * Verifies correctness on parsing a normal geoserver WFS 1.1.0 GetFeature response.
      *
      * <p>Test method for {@link PullParserFeatureReader#parse()}.
-     *
-     * @throws Exception
      */
     @Test
     public void testParseGeoServer_ArchSites_Point_NorthEastAxis() throws Exception {
@@ -307,8 +294,6 @@ public abstract class AbstractGetFeatureParserTest {
      * usual topp:states feature type (multipolygon).
      *
      * <p>Test method for {@link PullParserFeatureReader#parse()}.
-     *
-     * @throws Exception
      */
     @Test
     public void testParseGeoServer_States_polygon_with_hole() throws Exception {
@@ -498,11 +483,7 @@ public abstract class AbstractGetFeatureParserTest {
         testParseGetFeatures(featureName, featureType, parser, assertor, expectedCount);
     }
 
-    /**
-     * Verifies correctness on parsing a sample CubeWerx WFS 1.1.0 GetFeature response.
-     *
-     * @throws Exception
-     */
+    /** Verifies correctness on parsing a sample CubeWerx WFS 1.1.0 GetFeature response. */
     @Test
     public void testParseCubeWerx_GovernmentalUnitCE() throws Exception {
         QName featureName = CUBEWERX_GOVUNITCE.TYPENAME;

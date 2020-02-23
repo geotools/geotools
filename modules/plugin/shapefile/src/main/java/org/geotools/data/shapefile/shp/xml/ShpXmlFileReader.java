@@ -38,10 +38,6 @@ public class ShpXmlFileReader implements FileReader {
      * Parse metadataFile (currently for bounding box information).
      *
      * <p>
-     *
-     * @param shapefileFiles
-     * @throws JDOMException
-     * @throws IOException
      */
     public ShpXmlFileReader(ShpFiles shapefileFiles) throws JDOMException, IOException {
         SAXBuilder builder =

@@ -69,20 +69,7 @@ public class ReprojectFeatureResults extends AbstractFeatureCollection {
     FeatureCollection<SimpleFeatureType, SimpleFeature> results;
     MathTransform transform;
 
-    /**
-     * Creates a new reprojecting feature results
-     *
-     * @param results
-     * @param destinationCS
-     * @throws IOException
-     * @throws SchemaException
-     * @throws TransformException
-     * @throws FactoryException
-     * @throws NoSuchElementException
-     * @throws OperationNotFoundException
-     * @throws CannotCreateTransformException
-     * @throws IllegalArgumentException
-     */
+    /** Creates a new reprojecting feature results */
     public ReprojectFeatureResults(
             FeatureCollection<SimpleFeatureType, SimpleFeature> results,
             CoordinateReferenceSystem destinationCS)

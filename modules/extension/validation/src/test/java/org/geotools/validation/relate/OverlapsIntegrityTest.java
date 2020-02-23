@@ -35,11 +35,7 @@ import org.opengis.filter.Filter;
  */
 public class OverlapsIntegrityTest extends SpatialTestCase {
 
-    /**
-     * Constructor for OverlapsIntegrityTest.
-     *
-     * @param arg0
-     */
+    /** Constructor for OverlapsIntegrityTest. */
     public OverlapsIntegrityTest(String arg0) {
         super(arg0);
     }

@@ -162,7 +162,6 @@ public class WPSUtils {
     /**
      * Create a map of <String name, Parameter> inputs for a process based on its describeProcess.
      *
-     * @param processDesc
      * @param map add the inputs to the given map (create it if null)
      * @return map of name,Parameter representing the input params for this process
      */
@@ -243,7 +242,6 @@ public class WPSUtils {
     /**
      * Create a map of <String name, Parameter> outputs for a process based on its describeProcess.
      *
-     * @param processDesc
      * @param map add the outputs to the given map (create it if null)
      * @return map of name,Parameter representing the output results for this process
      */
@@ -329,12 +327,7 @@ public class WPSUtils {
         return map;
     }
 
-    /**
-     * Returns whether the abstract or its value of the given DescriptionType is null
-     *
-     * @param description
-     * @return
-     */
+    /** Returns whether the abstract or its value of the given DescriptionType is null */
     public static boolean isAbstractNull(DescriptionType description) {
         if (description.getAbstract() == null) {
             return true;

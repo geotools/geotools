@@ -196,8 +196,6 @@ public class ReferencedEnvelopeTest {
     /**
      * Tests that the conversion of different bound types to ReferencedEnvelope does not lose the
      * emptiness property
-     *
-     * @throws Exception
      */
     @Test
     public void testEmptyEnvelopeConversion() throws Exception {

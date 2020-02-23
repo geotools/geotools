@@ -81,12 +81,7 @@ public class ComplexFeatureConstants {
     /** Constant to indicate the last row from denormalised rows. */
     public static final String LAST_INDEX = "LAST";
 
-    /**
-     * Unpacks a value from an attribute container
-     *
-     * @param value
-     * @return
-     */
+    /** Unpacks a value from an attribute container */
     public static Object unpack(Object value) {
 
         if (value instanceof org.opengis.feature.ComplexAttribute) {

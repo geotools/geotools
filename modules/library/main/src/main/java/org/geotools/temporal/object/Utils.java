@@ -60,9 +60,6 @@ public class Utils {
     /**
      * Returns a Date object from an ISO-8601 representation string. (String defined with pattern
      * yyyy-MM-dd'T'HH:mm:ss.SSSZ or yyyy-MM-dd).
-     *
-     * @param dateString
-     * @return
      */
     public static Date getDateFromString(String dateString) throws ParseException {
         final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
@@ -124,12 +121,7 @@ public class Utils {
         return TimeZone.getDefault().getID();
     }
 
-    /**
-     * Return a Date (long time) from a String description
-     *
-     * @param periodDuration
-     * @return
-     */
+    /** Return a Date (long time) from a String description */
     public static long getTimeInMillis(String periodDuration) {
 
         long time = 0;
@@ -236,12 +228,7 @@ public class Utils {
         return response;
     }
 
-    /**
-     * Convert a CalendarDate object to java.util.Date.
-     *
-     * @param calDate
-     * @return
-     */
+    /** Convert a CalendarDate object to java.util.Date. */
     public static Date calendarDateToDate(final CalendarDate calDate) {
         if (calDate == null) {
             return null;
@@ -271,12 +258,7 @@ public class Utils {
         return null;
     }
 
-    /**
-     * Convert a DateAndTime object to Date.
-     *
-     * @param dateAndTime
-     * @return
-     */
+    /** Convert a DateAndTime object to Date. */
     public static Date dateAndTimeToDate(final DateAndTime dateAndTime) {
         if (dateAndTime == null) {
             return null;
@@ -323,11 +305,7 @@ public class Utils {
         return null;
     }
 
-    /**
-     * Convert a TemporalCoordinate object to Date.
-     *
-     * @param temporalCoord
-     */
+    /** Convert a TemporalCoordinate object to Date. */
     public static Date temporalCoordToDate(final TemporalCoordinate temporalCoord) {
         if (temporalCoord == null) {
             return null;

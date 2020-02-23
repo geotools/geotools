@@ -79,11 +79,7 @@ public abstract class SurfacePatchImpl implements SurfacePatch, Serializable {
     /** Boundary of the Surface Patch */
     private SurfaceBoundaryImpl boundary = null;
 
-    /**
-     * Constructs the Surface patch and stores the boundary
-     *
-     * @param boundary
-     */
+    /** Constructs the Surface patch and stores the boundary */
     protected SurfacePatchImpl(SurfaceBoundaryImpl boundary) {
         // Throw Exception if Boundary is NULL:
         // Since the boundary is the only information source which contains

@@ -529,12 +529,7 @@ public class GMLEncodingUtils {
         return null;
     }
 
-    /**
-     * Convert a {@link QName} to a {@link Name}.
-     *
-     * @param name
-     * @return
-     */
+    /** Convert a {@link QName} to a {@link Name}. */
     private static Name toTypeName(QName name) {
         if (XMLConstants.NULL_NS_URI.equals(name.getNamespaceURI())) {
             return new NameImpl(name.getLocalPart());
@@ -646,12 +641,7 @@ public class GMLEncodingUtils {
         }
     }
 
-    /**
-     * Checks if a feature is a joined one
-     *
-     * @param obj
-     * @return
-     */
+    /** Checks if a feature is a joined one */
     public static boolean isJoinedFeature(Object obj) {
         if (!(obj instanceof SimpleFeature)) {
             return false;
@@ -667,12 +657,7 @@ public class GMLEncodingUtils {
         return false;
     }
 
-    /**
-     * Splits a joined feature into its components
-     *
-     * @param obj
-     * @return
-     */
+    /** Splits a joined feature into its components */
     public static SimpleFeature[] splitJoinedFeature(Object obj) {
         SimpleFeature feature = (SimpleFeature) obj;
         List features = new ArrayList();

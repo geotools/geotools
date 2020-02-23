@@ -118,10 +118,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
      * Encoding a geometry column with respect to hints Supported Hints are provided by {@link
      * SQLDialect#addSupportedHints(Set)}
      *
-     * @param gatt
-     * @param sql
      * @param hints , may be null
-     * @throws SQLException
      */
     protected void encodeGeometryColumn(
             GeometryDescriptor gatt, String typeName, StringBuffer sql, Hints hints)
@@ -141,16 +138,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                         .replaceAll(originalColumnName.toString(), replaceColumnName.toString()));
     }
 
-    /**
-     * Create order by field for specific table name
-     *
-     * @param typeName
-     * @param alias
-     * @param sort
-     * @param orderByFields
-     * @throws IOException
-     * @throws SQLException
-     */
+    /** Create order by field for specific table name */
     protected void sort(
             String typeName,
             String alias,
@@ -250,11 +238,6 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
     /**
      * Creates ORDER BY for joining query, based on all the sortby's that are specified per joining
      * table
-     *
-     * @param query
-     * @param sql
-     * @throws IOException
-     * @throws SQLException
      */
     protected void sort(
             JoiningQuery query, StringBuffer sql, String[] aliases, Set<String> pkColumnNames)
@@ -320,15 +303,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         }
     }
 
-    /**
-     * Encode column name with table name included.
-     *
-     * @param colName
-     * @param typeName
-     * @param sql
-     * @param hints
-     * @throws SQLException
-     */
+    /** Encode column name with table name included. */
     public void encodeColumnName(String colName, String typeName, StringBuffer sql, Hints hints)
             throws SQLException {
 
@@ -337,15 +312,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         getDataStore().dialect.encodeColumnName(null, colName, sql);
     }
 
-    /**
-     * Encode column name with table name included, but do not include schema name (for aliases)
-     *
-     * @param colName
-     * @param typeName
-     * @param sql
-     * @param hints
-     * @throws SQLException
-     */
+    /** Encode column name with table name included, but do not include schema name (for aliases) */
     public void encodeColumnName2(String colName, String typeName, StringBuffer sql, Hints hints)
             throws SQLException {
 
@@ -354,12 +321,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         getDataStore().dialect.encodeColumnName(null, colName, sql);
     }
 
-    /**
-     * Craete the filter to sql converter
-     *
-     * @param ft
-     * @return
-     */
+    /** Craete the filter to sql converter */
     protected FilterToSQL createFilterToSQL(SimpleFeatureType ft) {
         if (getDataStore().getSQLDialect() instanceof PreparedStatementSQLDialect) {
             return getDataStore().createPreparedFilterToSQL(ft);
@@ -389,9 +351,6 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
      *     than the native one)
      * @param query the query to be run. The type name and property will be ignored, as they are
      *     supposed to have been already embedded into the provided feature type
-     * @throws SQLException
-     * @throws IOException
-     * @throws FilterToSQLException
      */
     public String selectSQL(
             SimpleFeatureType featureType,
@@ -970,18 +929,6 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
     /**
      * Apply paging. It's pretty straight forward except when the view is denormalised, because we
      * don't know how many rows would represent 1 feature.
-     *
-     * @param query
-     * @param sql
-     * @param pkColumnNames
-     * @param typeName
-     * @param tableNames
-     * @param filterToSQL
-     * @param filter
-     * @return
-     * @throws SQLException
-     * @throws FilterToSQLException
-     * @throws IOException
      */
     private boolean applyPaging(
             JoiningQuery query,
@@ -1082,7 +1029,6 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
      * @param query the query to be run. The type name and property will be ignored, as they are
      *     supposed to have been already embedded into the provided feature type
      * @param cx The database connection to be used to create the prepared statement
-     * @throws FilterToSQLException
      */
     protected PreparedStatement selectSQLPS(
             SimpleFeatureType featureType, JoiningQuery query, Connection cx)

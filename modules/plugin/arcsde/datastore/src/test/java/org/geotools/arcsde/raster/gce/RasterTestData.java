@@ -192,8 +192,6 @@ public class RasterTestData {
     /**
      * Loads the 1bit raster test data into the table given in {@link
      * RasterTestData#get1bitRasterTableName()}
-     *
-     * @throws Exception
      */
     public String load1bitRaster() throws Exception {
         ISession session = getConnectionPool().getSession();
@@ -220,8 +218,6 @@ public class RasterTestData {
     /**
      * Loads the 1bit raster test data into the table given in {@link
      * RasterTestData#get1bitRasterTableName()}
-     *
-     * @throws Exception
      */
     public String loadRGBRaster() throws Exception {
         final String tableName = getRasterTableName(TYPE_8BIT_U, 3);
@@ -564,7 +560,6 @@ public class RasterTestData {
     /**
      * Creates a 4 band raster, with 8 bit unsigned pixel type and no colormap, and pyramid
      *
-     * @throws Exception
      * @see {@link #loadTestRaster(String, int, int, IndexColorModel, boolean, boolean, int)
      *
      */
@@ -647,7 +642,6 @@ public class RasterTestData {
      *     SeRaster#SE_PIXEL_TYPE_*} constants)
      * @param colorModel the color model to apply to the raster, may be {@code null}. A non null
      *     value adds as precondition that {@code numberOfBands == 1}
-     * @throws Exception
      */
     public void loadTestRaster(
             final String tableName,
@@ -697,9 +691,6 @@ public class RasterTestData {
      *                 |__________|
      *    0,0       256,0          512,0
      * </pre>
-     *
-     * @return
-     * @throws Exception
      */
     public String loadRasterCatalog() throws Exception {
         final int numberOfBands = 3;
@@ -844,7 +835,6 @@ public class RasterTestData {
      *     interpolation method to use in building the pyramid tiles. Shall be one of {@link
      *     SeRaster#SE_INTERPOLATION_BICUBIC}, {@link SeRaster#SE_INTERPOLATION_BILINEAR}, {@link
      *     SeRaster#SE_INTERPOLATION_NEAREST}. Otherwise {@link SeRaster#SE_INTERPOLATION_NONE}
-     * @throws Exception
      */
     public void loadTestRaster(
             final String tableName,
@@ -1107,14 +1097,7 @@ public class RasterTestData {
                 });
     }
 
-    /**
-     * convenience method to test if two images are identical in their RGB pixel values
-     *
-     * @param image
-     * @param fileName
-     * @return
-     * @throws IOException
-     */
+    /** convenience method to test if two images are identical in their RGB pixel values */
     public static boolean imageEquals(RenderedImage image, String fileName) throws IOException {
         InputStream in = org.geotools.test.TestData.url(null, fileName).openStream();
         BufferedImage expected = ImageIO.read(in);
@@ -1126,13 +1109,7 @@ public class RasterTestData {
         return imageEquals(image1, image2, true);
     }
 
-    /**
-     * convenience method to test if two images are identical in their RGB pixel values
-     *
-     * @param image1
-     * @param image2
-     * @return
-     */
+    /** convenience method to test if two images are identical in their RGB pixel values */
     public static boolean imageEquals(
             RenderedImage image1, RenderedImage image2, boolean ignoreAlpha) {
 
@@ -1297,11 +1274,8 @@ public class RasterTestData {
          * Returns the programatically generated test data for a band of {@code bandWidth x
          * bandHeight} for the band {@code bandN} of {@code numBand} total bands.
          *
-         * @param bandWidth
-         * @param bandHeight
          * @param bandN zero-based index of the band to generate the sample data for
          * @param numBands total number of bands the sample data is being generated for
-         * @return
          */
         public abstract byte[] getImgBandData(
                 final int bandWidth, final int bandHeight, final int bandN, final int numBands);

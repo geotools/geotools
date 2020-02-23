@@ -556,12 +556,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
         }
     }
 
-    /**
-     * Returns true if the provided images are uniform color and sample model wise
-     *
-     * @param sources
-     * @return
-     */
+    /** Returns true if the provided images are uniform color and sample model wise */
     private static boolean uniformImages(List<RenderedImage> sources) {
         final int numSources = sources.size();
 

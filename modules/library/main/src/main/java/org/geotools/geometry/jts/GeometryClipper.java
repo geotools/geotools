@@ -90,8 +90,6 @@ public class GeometryClipper {
      *
      * See {@link #clip(Geometry, boolean) clip}
      *
-     * @param g
-     * @param ensureValid
      * @param scale Scale used to snap geometry to precision model, 0 to disable
      * @return a clipped geometry, which may be empty, or null
      */
@@ -142,7 +140,6 @@ public class GeometryClipper {
      * @param g The geometry to be clipped
      * @param ensureValid If false there is no guarantee the polygons returned will be valid
      *     according to JTS rules (but should still be good enough to be used for pure rendering)
-     * @return
      */
     public Geometry clip(Geometry g, boolean ensureValid) {
         // basic pre-flight checks
@@ -179,17 +176,7 @@ public class GeometryClipper {
         }
     }
 
-    /**
-     * Cohen-Sutherland outcode, see http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland
-     *
-     * @param x
-     * @param y
-     * @param xmin
-     * @param ymin
-     * @param xmax
-     * @param ymax
-     * @return
-     */
+    /** Cohen-Sutherland outcode, see http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland */
     private int computeOutCode(
             double x, double y, double xmin, double ymin, double xmax, double ymax) {
         int code = 0;
@@ -200,12 +187,7 @@ public class GeometryClipper {
         return code;
     }
 
-    /**
-     * Cohen sutherland based segment clipping
-     *
-     * @param segment
-     * @return
-     */
+    /** Cohen sutherland based segment clipping */
     private double[] clipSegment(double[] segment) {
         // dump to local variables to avoid the array access check overhead
         double x0 = segment[0];
@@ -282,11 +264,7 @@ public class GeometryClipper {
         throw new RuntimeException("Algorithm did not converge");
     }
 
-    /**
-     * Checks if the specified segment it outside the clipping bounds
-     *
-     * @return
-     */
+    /** Checks if the specified segment it outside the clipping bounds */
     private boolean outside(double x0, double y0, double x1, double y1) {
         int outcode0 = computeOutCode(x0, y0, xmin, ymin, xmax, ymax);
         int outcode1 = computeOutCode(x1, y1, xmin, ymin, xmax, ymax);
@@ -294,13 +272,7 @@ public class GeometryClipper {
         return ((outcode0 & outcode1) > 0);
     }
 
-    /**
-     * Checks if the point is inside the clipping bounds
-     *
-     * @param x
-     * @param y
-     * @return
-     */
+    /** Checks if the point is inside the clipping bounds */
     private boolean contained(final double x, final double y) {
         return x > xmin && x < xmax && y > ymin && y < ymax;
     }
@@ -308,9 +280,6 @@ public class GeometryClipper {
     /**
      * Clips a polygon using the Liang-Barsky helper routine. Does not generate, in general, valid
      * polygons (but still does generate polygons good enough for rendering)
-     *
-     * @param polygon
-     * @return
      */
     private Geometry clipPolygon(Polygon polygon) {
         final GeometryFactory gf = polygon.getFactory();
@@ -340,7 +309,6 @@ public class GeometryClipper {
      * clipping area borders (with no inside). Do a quick check that does not involve an expensive
      * isValid() call
      *
-     * @param ring
      * @return The ring, or null if the ring was not valid
      */
     private LinearRing cleanupRings(LinearRing ring) {
@@ -544,13 +512,7 @@ public class GeometryClipper {
                         out.toCoordinateSequence(ring.getFactory().getCoordinateSequenceFactory()));
     }
 
-    /**
-     * Builds a linear ring representing the clipping area
-     *
-     * @param gf
-     * @param csf
-     * @return
-     */
+    /** Builds a linear ring representing the clipping area */
     LinearRing buildBoundsString(final GeometryFactory gf, final CoordinateSequenceFactory csf) {
         CoordinateSequence cs = JTS.createCS(csf, 5, 2);
         cs.setOrdinate(0, 0, xmin);
@@ -566,13 +528,7 @@ public class GeometryClipper {
         return gf.createLinearRing(cs);
     }
 
-    /**
-     * Recursively clips a collection
-     *
-     * @param gc
-     * @param ensureValid
-     * @return
-     */
+    /** Recursively clips a collection */
     private Geometry clipCollection(GeometryCollection gc, boolean ensureValid) {
         if (gc.getNumGeometries() == 1) {
             return clip(gc.getGeometryN(0), ensureValid);
@@ -635,14 +591,7 @@ public class GeometryClipper {
         }
     }
 
-    /**
-     * Clips a linestring using the Cohen-Sutherlan segment clipping helper method
-     *
-     * @param line
-     * @param closed
-     * @param shell
-     * @return
-     */
+    /** Clips a linestring using the Cohen-Sutherlan segment clipping helper method */
     Geometry clipLineString(LineString line) {
         // the result
         List<LineString> clipped = new ArrayList<LineString>();

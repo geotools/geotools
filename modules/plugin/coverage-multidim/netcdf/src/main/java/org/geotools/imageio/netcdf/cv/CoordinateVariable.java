@@ -296,10 +296,7 @@ public abstract class CoordinateVariable<T> {
 
     private AxisHelper<T> axisHelper;
 
-    /**
-     * @param binding
-     * @param coordinateAxis
-     */
+    /** */
     public CoordinateVariable(Class<T> binding, CoordinateAxis coordinateAxis) {
         Utilities.ensureNonNull("coordinateAxis", coordinateAxis);
         Utilities.ensureNonNull("binding", binding);

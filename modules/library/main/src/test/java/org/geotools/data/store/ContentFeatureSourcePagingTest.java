@@ -35,11 +35,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
 
     DataStore store = new MockContentDataStore();
 
-    /**
-     * Test that the default query returns all features unsorted.
-     *
-     * @throws IOException
-     */
+    /** Test that the default query returns all features unsorted. */
     @Test
     public void defaultFeatures() throws IOException {
         Query query = new Query();
@@ -51,11 +47,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
         Assert.assertEquals("mock.2", features[2].getID());
     }
 
-    /**
-     * Test natural sorting.
-     *
-     * @throws IOException
-     */
+    /** Test natural sorting. */
     @Test
     public void naturalSortedFeatures() throws IOException {
         Query query = new Query();
@@ -68,11 +60,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
         Assert.assertEquals("mock.3", features[2].getID());
     }
 
-    /**
-     * Test reverse sorting.
-     *
-     * @throws IOException
-     */
+    /** Test reverse sorting. */
     @Test
     public void reverseSortedFeatures() throws IOException {
         Query query = new Query();
@@ -85,11 +73,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
         Assert.assertEquals("mock.1", features[2].getID());
     }
 
-    /**
-     * Test the first page of one feature per page.
-     *
-     * @throws IOException
-     */
+    /** Test the first page of one feature per page. */
     @Test
     public void oneFeatureFirstPage() throws IOException {
         Query query = new Query();
@@ -101,11 +85,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
         Assert.assertEquals("mock.1", features[0].getID());
     }
 
-    /**
-     * Test the second page of one feature per page.
-     *
-     * @throws IOException
-     */
+    /** Test the second page of one feature per page. */
     @Test
     public void oneFeatureSecondPage() throws IOException {
         Query query = new Query();
@@ -117,11 +97,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
         Assert.assertEquals("mock.2", features[0].getID());
     }
 
-    /**
-     * Test the third page of one feature per page.
-     *
-     * @throws IOException
-     */
+    /** Test the third page of one feature per page. */
     @Test
     public void oneFeatureThirdPage() throws IOException {
         Query query = new Query();
@@ -133,11 +109,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
         Assert.assertEquals("mock.3", features[0].getID());
     }
 
-    /**
-     * Test the first page of one feature per page with natural sorting.
-     *
-     * @throws IOException
-     */
+    /** Test the first page of one feature per page with natural sorting. */
     @Test
     public void naturalSortedOneFeatureFirstPage() throws IOException {
         Query query = new Query();
@@ -150,11 +122,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
         Assert.assertEquals("mock.1", features[0].getID());
     }
 
-    /**
-     * Test the second page of one feature per page with natural sorting.
-     *
-     * @throws IOException
-     */
+    /** Test the second page of one feature per page with natural sorting. */
     @Test
     public void naturalSortedOneFeatureSecondPage() throws IOException {
         Query query = new Query();
@@ -167,11 +135,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
         Assert.assertEquals("mock.2", features[0].getID());
     }
 
-    /**
-     * Test the third page of one feature per page with natural sorting.
-     *
-     * @throws IOException
-     */
+    /** Test the third page of one feature per page with natural sorting. */
     @Test
     public void naturalSortedOneFeatureThirdPage() throws IOException {
         Query query = new Query();
@@ -184,11 +148,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
         Assert.assertEquals("mock.3", features[0].getID());
     }
 
-    /**
-     * Test the first page of one feature per page with reverse sorting.
-     *
-     * @throws IOException
-     */
+    /** Test the first page of one feature per page with reverse sorting. */
     @Test
     public void reverseSortedOneFeatureFirstPage() throws IOException {
         Query query = new Query();
@@ -201,11 +161,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
         Assert.assertEquals("mock.3", features[0].getID());
     }
 
-    /**
-     * Test the second page of one feature per page with reverse sorting.
-     *
-     * @throws IOException
-     */
+    /** Test the second page of one feature per page with reverse sorting. */
     @Test
     public void reverseSortedOneFeatureSecondPage() throws IOException {
         Query query = new Query();
@@ -218,11 +174,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
         Assert.assertEquals("mock.2", features[0].getID());
     }
 
-    /**
-     * Test the third page of one feature per page with reverse sorting.
-     *
-     * @throws IOException
-     */
+    /** Test the third page of one feature per page with reverse sorting. */
     @Test
     public void reverseSortedOneFeatureThirdPage() throws IOException {
         Query query = new Query();
@@ -235,11 +187,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
         Assert.assertEquals("mock.1", features[0].getID());
     }
 
-    /**
-     * Test the first page of two features per page.
-     *
-     * @throws IOException
-     */
+    /** Test the first page of two features per page. */
     @Test
     public void twoFeaturesFirstPage() throws IOException {
         Query query = new Query();
@@ -252,11 +200,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
         Assert.assertEquals("mock.2", features[1].getID());
     }
 
-    /**
-     * Test the page of two features per page that should contain the last two features.
-     *
-     * @throws IOException
-     */
+    /** Test the page of two features per page that should contain the last two features. */
     @Test
     public void twoFeaturesLastPage() throws IOException {
         Query query = new Query();
@@ -272,8 +216,6 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
     /**
      * Test a page of two features that only contains one because startindex is too close to the
      * end.
-     *
-     * @throws IOException
      */
     @Test
     public void twoFeaturesReturnOne() throws IOException {
@@ -286,11 +228,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
         Assert.assertEquals("mock.3", features[0].getID());
     }
 
-    /**
-     * Test a single page with three features.
-     *
-     * @throws IOException
-     */
+    /** Test a single page with three features. */
     @Test
     public void threeFeatures() throws IOException {
         Query query = new Query();

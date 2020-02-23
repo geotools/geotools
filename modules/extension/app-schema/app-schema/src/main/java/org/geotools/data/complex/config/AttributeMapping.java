@@ -191,8 +191,6 @@ public class AttributeMapping implements Serializable {
     /**
      * Set the input XPath expression where we are getting the features from a data access instead
      * of a data store.
-     *
-     * @param inputAttributePath
      */
     public void setInputAttributePath(String inputAttributePath) {
         this.inputAttributePath = inputAttributePath;
@@ -247,11 +245,7 @@ public class AttributeMapping implements Serializable {
         return linkElement;
     }
 
-    /**
-     * Sets the name of the linked element type of which this attribute is nesting/targeting.
-     *
-     * @param linkElement
-     */
+    /** Sets the name of the linked element type of which this attribute is nesting/targeting. */
     public void setLinkElement(String linkElement) {
         this.linkElement = linkElement;
     }
@@ -268,8 +262,6 @@ public class AttributeMapping implements Serializable {
 
     /**
      * Sets the XPath expression addressing the target attribute in the linked target feature type
-     *
-     * @param linkField
      */
     public void setLinkField(String linkField) {
         this.linkField = linkField;
@@ -383,7 +375,6 @@ public class AttributeMapping implements Serializable {
      * Helper method to allow config digester passing a string.
      *
      * @see #setList(boolean)
-     * @param isList
      */
     public void setList(String list) {
         boolean isList = Boolean.valueOf(list).booleanValue();
@@ -404,7 +395,6 @@ public class AttributeMapping implements Serializable {
      * Helper method to allow config digester passing a string.
      *
      * @see #setMultiple(boolean)
-     * @param isMultiple
      */
     public void setMultiple(String isMultiple) {
         boolean multiple = Boolean.valueOf(isMultiple).booleanValue();

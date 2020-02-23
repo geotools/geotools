@@ -37,8 +37,6 @@ public class FeatureTypeGuesser {
     /**
      * Parses a rule selector structure and takes it into account when building the final feature
      * type
-     *
-     * @param rule
      */
     public void addRule(CssRule rule) {
         // apply duck typing on the selector

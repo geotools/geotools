@@ -72,7 +72,6 @@ public abstract class DefaultTemporalPrimitive extends DefaultTemporalObject
      * (1983).
      *
      * @param other TemporalPrimitive
-     * @return
      */
     public RelativePosition relativePosition(TemporalPrimitive other) {
         if (this instanceof Instant && other instanceof Instant) {

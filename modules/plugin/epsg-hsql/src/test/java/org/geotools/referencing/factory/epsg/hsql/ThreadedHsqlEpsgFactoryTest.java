@@ -274,11 +274,7 @@ public class ThreadedHsqlEpsgFactoryTest {
         assertTrue(wgs84Found);
     }
 
-    /**
-     * GEOT-3644, make sure we can decode what we generated
-     *
-     * @throws Exception
-     */
+    /** GEOT-3644, make sure we can decode what we generated */
     @Test
     public void testEncodeAndParse() throws Exception {
         // a crs with out of standard axis orientation "South along 45 deg East"
@@ -291,11 +287,7 @@ public class ThreadedHsqlEpsgFactoryTest {
         assertTrue(CRS.equalsIgnoreMetadata(crs, parsed));
     }
 
-    /**
-     * GEOT-3482
-     *
-     * @throws Exception
-     */
+    /** GEOT-3482 */
     @Test
     public void testPPMUnit() throws Exception {
         // Create WGS 72 CRS where we know that the EPSG defines a unique

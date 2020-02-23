@@ -25,24 +25,14 @@ package org.geotools.coverage.grid.io;
  */
 public interface HarvestedSource {
 
-    /**
-     * The object that has been processed
-     *
-     * @return
-     */
+    /** The object that has been processed */
     Object getSource();
 
     /**
      * If true, the file has been ingested and generated new granules in the reader, false otherwise
-     *
-     * @return
      */
     boolean success();
 
-    /**
-     * In case the file was not ingested, provides a reason why it was skipped
-     *
-     * @return
-     */
+    /** In case the file was not ingested, provides a reason why it was skipped */
     String getMessage();
 }

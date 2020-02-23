@@ -102,12 +102,7 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
     /** Last request CRS (used for reprojected GetFeatureInfo) */
     CoordinateReferenceSystem requestCRS;
 
-    /**
-     * Builds a new WMS coverage reader
-     *
-     * @param wms
-     * @param layer
-     */
+    /** Builds a new WMS coverage reader */
     public WMSCoverageReader(WebMapServer wms, Layer layer) {
         this(wms, layer, "");
     }
@@ -212,13 +207,7 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
         updateBounds();
     }
 
-    /**
-     * Issues GetFeatureInfo against a point using the params of the last GetMap request
-     *
-     * @param pos
-     * @return
-     * @throws IOException
-     */
+    /** Issues GetFeatureInfo against a point using the params of the last GetMap request */
     public InputStream getFeatureInfo(
             DirectPosition2D pos, String infoFormat, int featureCount, GetMapRequest getmap)
             throws IOException {
@@ -333,12 +322,6 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
     /**
      * Sets up a max request with the provided parameters, making sure it is compatible with the
      * layers own native SRS list
-     *
-     * @param bbox
-     * @param width
-     * @param height
-     * @return
-     * @throws IOException
      */
     ReferencedEnvelope initMapRequest(
             ReferencedEnvelope bbox, int width, int height, Color backgroundColor)
@@ -425,11 +408,7 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
         return null;
     }
 
-    /**
-     * Returns the layer bounds
-     *
-     * @return
-     */
+    /** Returns the layer bounds */
     public void updateBounds() {
         ReferencedEnvelope result = reference(layers.get(0).getLayer().getEnvelope(crs));
         for (int i = 1; i < layers.size(); i++) {
@@ -441,12 +420,7 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
         this.originalEnvelope = new GeneralEnvelope(result);
     }
 
-    /**
-     * Converts a {@link Envelope} into a {@link ReferencedEnvelope}
-     *
-     * @param envelope
-     * @return
-     */
+    /** Converts a {@link Envelope} into a {@link ReferencedEnvelope} */
     ReferencedEnvelope reference(Envelope envelope) {
         ReferencedEnvelope env = new ReferencedEnvelope(envelope.getCoordinateReferenceSystem());
         env.expandToInclude(envelope.getMinimum(0), envelope.getMinimum(1));
@@ -454,12 +428,7 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
         return env;
     }
 
-    /**
-     * Converts a {@link GeneralEnvelope} into a {@link ReferencedEnvelope}
-     *
-     * @param ge
-     * @return
-     */
+    /** Converts a {@link GeneralEnvelope} into a {@link ReferencedEnvelope} */
     ReferencedEnvelope reference(GeneralEnvelope ge) {
         return new ReferencedEnvelope(
                 ge.getMinimum(0),
@@ -518,10 +487,7 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
 
         private String style = "";
 
-        /**
-         * @param layer
-         * @param style
-         */
+        /** */
         public LayerStyle(Layer layer, String style) {
             this.layer = layer;
             this.style = style;

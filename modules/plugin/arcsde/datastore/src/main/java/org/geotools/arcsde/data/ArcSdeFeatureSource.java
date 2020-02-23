@@ -162,12 +162,8 @@ public class ArcSdeFeatureSource implements SimpleFeatureSource {
     }
 
     /**
-     * @param namedQuery
-     * @param session
      * @return The bounding box of the query or null if unknown and too expensive for the method to
      *     calculate or any errors occur.
-     * @throws DataSourceException
-     * @throws IOException
      */
     protected ReferencedEnvelope getBounds(final Query namedQuery, final ISession session)
             throws DataSourceException, IOException {
@@ -229,8 +225,6 @@ public class ArcSdeFeatureSource implements SimpleFeatureSource {
      * <p>This is convenient way to get a connection for {@link #getBounds()} and {@link
      * #getCount(Query)}. {@link ArcSdeFeatureStore} overrides to get the connection from the
      * transaction instead of the pool.
-     *
-     * @return
      */
     protected final ISession getSession() throws IOException {
         return dataStore.getSession(transaction);

@@ -72,7 +72,6 @@ public class GeoJSONUtil {
      *
      * @param input The input object.
      * @return A reader.
-     * @throws IOException
      */
     public static Reader toReader(Object input) throws IOException {
         if (input instanceof BufferedReader) {
@@ -114,7 +113,6 @@ public class GeoJSONUtil {
      *
      * @param output The output object.
      * @return A writer.
-     * @throws IOException
      */
     public static Writer toWriter(Object output) throws IOException {
         if (output instanceof BufferedWriter) {

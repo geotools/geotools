@@ -57,13 +57,7 @@ public class EventContentFeatureWriter implements FeatureWriter<SimpleFeatureTyp
 
     FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
 
-    /**
-     * EventContentFeatureWriter construction.
-     *
-     * @param reader
-     * @param diff
-     * @param filter
-     */
+    /** EventContentFeatureWriter construction. */
     public EventContentFeatureWriter(
             ContentFeatureStore store, FeatureWriter<SimpleFeatureType, SimpleFeature> writer) {
         this.store = store;
@@ -111,7 +105,6 @@ public class EventContentFeatureWriter implements FeatureWriter<SimpleFeatureTyp
     /**
      * Writes out the current feature.
      *
-     * @throws IOException
      * @see org.geotools.data.FeatureWriter#write()
      */
     public void write() throws IOException {

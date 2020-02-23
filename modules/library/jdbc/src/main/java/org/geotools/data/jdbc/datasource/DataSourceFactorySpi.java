@@ -71,13 +71,7 @@ public interface DataSourceFactorySpi extends Factory {
      */
     DataSource createDataSource(Map params) throws IOException;
 
-    /**
-     * Same as {@link #createDataSource(Map)}, but forces the creation of a new DataSource
-     *
-     * @param params
-     * @return
-     * @throws IOException
-     */
+    /** Same as {@link #createDataSource(Map)}, but forces the creation of a new DataSource */
     DataSource createNewDataSource(Map params) throws IOException;
 
     /**

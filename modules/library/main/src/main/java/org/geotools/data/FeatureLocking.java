@@ -110,7 +110,6 @@ public interface FeatureLocking<T extends FeatureType, F extends Feature>
      * method if this functionality is required.
      *
      * @return Number of Features locked by this opperation
-     * @throws IOException
      */
     int lockFeatures() throws IOException;
 
@@ -125,8 +124,6 @@ public interface FeatureLocking<T extends FeatureType, F extends Feature>
      *    ds.unLockFeatures();
      * }
      * </code></pre>
-     *
-     * @throws IOException
      */
     void unLockFeatures() throws IOException;
 
@@ -134,9 +131,6 @@ public interface FeatureLocking<T extends FeatureType, F extends Feature>
      * Unlock Features denoted by provided filter.
      *
      * <p>Authorization must be provided prior before calling this method.
-     *
-     * @param filter
-     * @throws IOException
      */
     void unLockFeatures(Filter filter) throws IOException;
 
@@ -146,7 +140,6 @@ public interface FeatureLocking<T extends FeatureType, F extends Feature>
      * <p>Authorization must be provided prior before calling this method.
      *
      * @param query Specifies fatures to unlock
-     * @throws IOException
      */
     void unLockFeatures(Query query) throws IOException;
 

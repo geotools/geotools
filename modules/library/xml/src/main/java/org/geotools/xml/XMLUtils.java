@@ -29,9 +29,6 @@ public class XMLUtils {
     /**
      * Checks the string for XML invalid chars, and in case any is found, create a copy with the
      * invalid ones removed.
-     *
-     * @param input
-     * @return
      */
     public static String removeXMLInvalidChars(String in) {
         // sanity check
@@ -83,12 +80,7 @@ public class XMLUtils {
         return new QName(name);
     }
 
-    /**
-     * Returns true if the character provided is valid according to XML 1.0
-     *
-     * @param c
-     * @return
-     */
+    /** Returns true if the character provided is valid according to XML 1.0 */
     private static boolean isXMLValidChar(char c) {
         return (c == 0x9)
                 || (c == 0xA)

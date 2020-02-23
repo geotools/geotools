@@ -35,8 +35,6 @@ public class MBRampsScalesCurves extends MBExpression {
      * base] | ["cubic-bezier", x1, y1, x2, y2 ], input: number, stop_input_1: number,
      * stop_output_1: OutputType, stop_input_n: number, stop_output_n: OutputType, ... ]: OutputType
      * (number, array<number>, or Color)"
-     *
-     * @return
      */
     public Expression rscInterpolate() {
         return null;
@@ -48,8 +46,6 @@ public class MBRampsScalesCurves extends MBExpression {
      * ["get", "population"]). Stop inputs must be numeric literals in strictly ascending order.
      * Returns the output value of the stop just less than the input, or the first input if the
      * input is less than the first stop.
-     *
-     * @return
      */
     public Expression rscStep() {
         return null;

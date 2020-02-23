@@ -65,10 +65,7 @@ public class GeometryTestParser {
         wktFactory = new WKTParser(geomFact, primFact, posFact, null);
     }
 
-    /**
-     * @param inputSource
-     * @return
-     */
+    /** */
     public GeometryTestContainer parseTestDefinition(InputSource inputSource) {
         Document doc = null;
         try {
@@ -94,13 +91,7 @@ public class GeometryTestParser {
         return test;
     }
 
-    /**
-     * Processes the root "run" node
-     *
-     * @param node
-     * @return
-     * @throws ParseException
-     */
+    /** Processes the root "run" node */
     public GeometryTestContainer processRootNode(Node node) throws ParseException {
         if (!node.getNodeName().equalsIgnoreCase("run")) {
             throw new ParseException("Expected run tag, found " + node.getNodeName(), 0);
@@ -130,9 +121,6 @@ public class GeometryTestParser {
      *
      * <p>From looking at various JTS test cases and seeing how their testbuilder program works, I
      * think its safe to assume that there will always be just one or two objects, named a and b.
-     *
-     * @param testCaseNode
-     * @return
      */
     private GeometryTestCase readTestCase(Node testCaseNode) throws ParseException {
         Node child = testCaseNode.getFirstChild();
@@ -167,7 +155,6 @@ public class GeometryTestParser {
      * arg2, and arg3. The value of the text subnode is the value of the expected result
      *
      * @param testNode a test node from the xml file
-     * @return
      */
     private GeometryTestOperation loadTestOperation(Node testNode) {
 

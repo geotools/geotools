@@ -228,12 +228,7 @@ public class ImageComparator {
         mismatchPercent = mismatchCount * 1d / (width * image2.getHeight());
     }
 
-    /**
-     * Forces the image to start in the origin and have a rgb/rbga/gray/gray+alpha structure
-     *
-     * @param image1
-     * @return
-     */
+    /** Forces the image to start in the origin and have a rgb/rbga/gray/gray+alpha structure */
     private RenderedImage normalizeImage(RenderedImage image1) {
         image1 =
                 new ImageWorker(image1)

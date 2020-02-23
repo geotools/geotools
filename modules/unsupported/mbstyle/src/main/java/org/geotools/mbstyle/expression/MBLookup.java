@@ -27,11 +27,7 @@ public class MBLookup extends MBExpression {
         super(json);
     }
 
-    /**
-     * Retrieves an item from an array. Example: ["at", number, array]: ItemType
-     *
-     * @return
-     */
+    /** Retrieves an item from an array. Example: ["at", number, array]: ItemType */
     public Expression lookupAt() {
         // requires an instance of a "literal" array expression ie. non-expression array
         if (json.size() == 3 && parse.string(json, 2) != null) {
@@ -50,8 +46,6 @@ public class MBLookup extends MBExpression {
      * ["get", string]: value ["get", string, object]: value
      *
      * <p>As a note, the mbstyle requires json objects for lookup, and evaluates the object as such.
-     *
-     * @return
      */
     public Expression lookupGet() {
         if (json.size() == 2 || json.size() == 3) {
@@ -74,8 +68,6 @@ public class MBLookup extends MBExpression {
      * string, object]: boolean
      *
      * <p>As a note, the mbstyle requires json objects for lookup, and evaluates the object as such.
-     *
-     * @return
      */
     public Expression lookupHas() {
         if (json.size() == 2 || json.size() == 3) {
@@ -96,8 +88,6 @@ public class MBLookup extends MBExpression {
     /**
      * Gets the length of an array or string. Example: ["length", string]: number ["length", array]:
      * number
-     *
-     * @return
      */
     public Expression lookupLength() {
         Expression e = parse.string(json, 1);

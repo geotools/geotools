@@ -32,10 +32,7 @@ import org.locationtech.jts.geom.LineString;
  */
 final class LineStringBuilder extends GeometryBuilder {
 
-    /**
-     * @param statement
-     * @param resultStack
-     */
+    /** */
     public LineStringBuilder(String statement, BuildResultStack resultStack) {
         super(statement, resultStack);
     }

@@ -98,11 +98,7 @@ public class StyleBuilder {
         this.ff = (FilterFactory2) filterFactory;
     }
 
-    /**
-     * Documented setter injection, StyleBuilder uses a StyleFactory for creation.
-     *
-     * @param factory
-     */
+    /** Documented setter injection, StyleBuilder uses a StyleFactory for creation. */
     public void setStyleFactory(StyleFactory factory) {
         sf = factory;
     }
@@ -115,11 +111,7 @@ public class StyleBuilder {
         return sf;
     }
 
-    /**
-     * Documented setter injection, StyleBuilder uses a StyleFactory for creation.
-     *
-     * @param factory
-     */
+    /** Documented setter injection, StyleBuilder uses a StyleFactory for creation. */
     public void setFilterFactory(FilterFactory factory) {
         ff = (FilterFactory2) factory;
     }
@@ -1734,12 +1726,7 @@ public class StyleBuilder {
         double[] breaks;
         double[] collection;
 
-        /**
-         * Creates a new instance of EqualClasses
-         *
-         * @param numberClasses
-         * @param fc
-         */
+        /** Creates a new instance of EqualClasses */
         public EqualClasses(int numberClasses, double[] fc) {
 
             breaks = new double[numberClasses - 1];

@@ -49,8 +49,6 @@ public class MBDecision extends MBExpression {
     /**
      * Logical negation. Returns true if the input is false, and false if the input is true.
      * Example: ["!", boolean]: boolean
-     *
-     * @return
      */
     private Expression decisionNot() {
         // validate the arg list
@@ -67,8 +65,6 @@ public class MBDecision extends MBExpression {
      * Returns true if the input values are not equal, false otherwise. The inputs must be numbers,
      * strings, or booleans, and both of the same type. Examples:["!=", number, number]: boolean
      * ["!=", string, string]: boolean ["!=", boolean, boolean]: boolean ["!=", null, null]: boolean
-     *
-     * @return
      */
     private Expression decisionNotEqual() {
         // validate the arg list
@@ -85,8 +81,6 @@ public class MBDecision extends MBExpression {
      * Returns true if the first input is strictly less than the second, false otherwise. The inputs
      * must be numbers or strings, and both of the same type. Examples: ["<", number, number]:
      * boolean ["<", string, string]: boolean
-     *
-     * @return
      */
     private Expression decisionLessThan() {
         // validate the arg list
@@ -102,8 +96,6 @@ public class MBDecision extends MBExpression {
      * Returns true if the first input is less than or equal to the second, false otherwise. The
      * inputs must be numbers or strings, and both of the same type. Examples: ["<=", number,
      * number]: boolean ["<=", string, string]: boolean
-     *
-     * @return
      */
     private Expression decisionLessEqualThan() {
         // validate the arg list
@@ -119,8 +111,6 @@ public class MBDecision extends MBExpression {
      * Returns true if the input values are equal, false otherwise. The inputs must be numbers,
      * strings, or booleans, and both of the same type. Examples: ["==", number, number]: boolean
      * ["==", string, string]: boolean ["==", boolean, boolean]: boolean ["==", null, null]: boolean
-     *
-     * @return
      */
     private Expression decisionEqualTo() {
         // validate the arg list
@@ -137,8 +127,6 @@ public class MBDecision extends MBExpression {
      * Returns true if the first input is strictly greater than the second, false otherwise. The
      * inputs must be numbers or strings, and both of the same type. Example: [">", number, number]:
      * boolean [">", string, string]: boolean
-     *
-     * @return
      */
     private Expression decisionGreaterThan() {
         // validate the arg list
@@ -154,8 +142,6 @@ public class MBDecision extends MBExpression {
      * Returns true if the first input is greater than or equal to the second, false otherwise. The
      * inputs must be numbers or strings, and both of the same type. Example: [">=", number,
      * number]: boolean [">=", string, string]: boolean
-     *
-     * @return
      */
     private Expression decisionGreaterEqualThan() {
         // validate the arg list
@@ -172,8 +158,6 @@ public class MBDecision extends MBExpression {
      * and evaluation is short-circuiting: once an input expression evaluates to false, the result
      * is false and no further input expressions are evaluated. Example: [""all"", boolean,
      * boolean]: boolean [""all"", boolean, boolean, ...]: boolean
-     *
-     * @return
      */
     private Expression decisionAll() {
         // validate the arg list
@@ -193,8 +177,6 @@ public class MBDecision extends MBExpression {
      * order, and evaluation is short-circuiting: once an input expression evaluates to true, the
      * result is true and no further input expressions are evaluated. Example: [""any"", boolean,
      * boolean]: boolean [""any"", boolean, boolean, ...]: boolean
-     *
-     * @return
      */
     private Expression decisionAny() {
         // validate the arg list
@@ -213,8 +195,6 @@ public class MBDecision extends MBExpression {
      * Selects the first output whose corresponding test condition evaluates to true. Example:
      * [""case"", condition: boolean, output: OutputType, ...condition: boolean, output: OutputType,
      * ...default: OutputType]: OutputType
-     *
-     * @return
      */
     private Expression decisionCase() {
         // validate the arg list
@@ -232,8 +212,6 @@ public class MBDecision extends MBExpression {
     /**
      * Evaluates each expression in turn until the first non-null value is obtained, and returns
      * that value. Example: ["coalesce", OutputType, OutputType, ...]: OutputType
-     *
-     * @return
      */
     private Expression decisionCoalesce() {
         // validate the arg list
@@ -255,8 +233,6 @@ public class MBDecision extends MBExpression {
      * Example: ["match", input: InputType (number or string), label_1: InputType | [InputType,
      * InputType, ...], output_1: OutputType, label_n: InputType | [InputType, InputType, ...],
      * output_n: OutputType, ..., default: OutputType]: OutputType
-     *
-     * @return
      */
     private Expression decisionMatch() {
         // validate the arg list

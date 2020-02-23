@@ -56,8 +56,6 @@ public abstract class JDBCTypeNamesTestSetup extends JDBCDelegatingTestSetup {
     /**
      * Returns expected type names as created in {@link #createTypes()}. At least <code>ftntable
      * </code> and <code>ftnview</code>.
-     *
-     * @return
      */
     protected List<String> getExpectedTypeNames() {
         List<String> expectedTypeNames = new LinkedList<String>();

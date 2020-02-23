@@ -271,9 +271,6 @@ class LabelSplitter {
 
     /**
      * Fix for GEOT-4789: a label line cannot be empty, to avoid exceptions in layout and measuring.
-     *
-     * @param line
-     * @return
      */
     private String checkForEmptyLine(String line) {
         if (line == null || line.equals("")) {
@@ -282,13 +279,7 @@ class LabelSplitter {
         return line;
     }
 
-    /**
-     * Turns a string into the corresponding {@link GlyphVector}
-     *
-     * @param label
-     * @param item
-     * @return
-     */
+    /** Turns a string into the corresponding {@link GlyphVector} */
     GlyphVector layoutSentence(String label, LabelCacheItem item, Graphics2D graphics, Font font) {
         final char[] chars = label.toCharArray();
         final int length = label.length();

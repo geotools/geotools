@@ -68,11 +68,6 @@ public class Validator {
      * <p>Feature validation will iterate over a feature features and test all features that have a
      * validation test specific to them in the validation processor passed in. Author: bowens<br>
      * Created on: Jun 25, 2004<br>
-     *
-     * @param dsid
-     * @param features
-     * @throws IOException
-     * @throws Exception
      */
     public void featureValidation(
             String dsid, SimpleFeatureCollection features, ValidationResults results)
@@ -100,9 +95,6 @@ public class Validator {
      * Created on: Jun 26, 2004<br>
      *
      * @param featureStores Map of required FeatureStores by typeRef (dataStoreId:typeName)
-     * @param bBox
-     * @throws IOException
-     * @throws Exception
      */
     public void integrityValidation(
             Map<Name, FeatureSource<?, ?>> featureStores,

@@ -35,11 +35,7 @@ import org.opengis.feature.type.GeometryDescriptor;
  */
 public class BufferFeatureCollectionProcess extends FeatureToFeatureProcess {
 
-    /**
-     * Constructor
-     *
-     * @param factory
-     */
+    /** Constructor */
     public BufferFeatureCollectionProcess(BufferFeatureCollectionFactory factory) {
         super(factory);
     }

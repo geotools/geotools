@@ -50,18 +50,12 @@ public abstract class CompositeImpl<T> extends ComplexImpl implements Composite 
      *
      * <p>Composite::generator[1..n] : Primitive Is realised by the ArrayList of elements in the
      * super Class Complex The Generator elements will be passed through the super constructor
-     *
-     * @param generatorElements
      */
     public CompositeImpl(List<? extends Primitive> generatorElements) {
         super(generatorElements);
     }
 
-    /**
-     * Constructs a Composite by calling the super constructor Elements have to be added after
-     *
-     * @param crs
-     */
+    /** Constructs a Composite by calling the super constructor Elements have to be added after */
     public CompositeImpl(CoordinateReferenceSystem crs) {
         super(crs);
     }

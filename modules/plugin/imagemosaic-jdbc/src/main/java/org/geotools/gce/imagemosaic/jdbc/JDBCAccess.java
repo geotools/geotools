@@ -39,7 +39,6 @@ public interface JDBCAccess {
      * @param info the corresponding ImageLevelInfo object
      * @param tileQueue a queue where to put the thread results
      * @param coverageFactory GridCoverageFactory
-     * @throws IOException
      */
     public abstract void startTileDecoders(
             Rectangle pixelDimension,
@@ -58,11 +57,6 @@ public interface JDBCAccess {
     /** @return the number of existing pyramids */
     public int getNumOverviews();
 
-    /**
-     * initialze the the JDBCAccess object, has to be called exactly once
-     *
-     * @throws SQLException
-     * @throws IOException
-     */
+    /** initialze the the JDBCAccess object, has to be called exactly once */
     public void initialize() throws SQLException, IOException;
 }

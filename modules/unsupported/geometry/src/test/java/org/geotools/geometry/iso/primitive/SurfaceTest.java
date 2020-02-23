@@ -146,11 +146,7 @@ public class SurfaceTest extends TestCase {
         return triangleList;
     }
 
-    /**
-     * Create a surface on basis of SurfacePatches (Triangles)
-     *
-     * @param aGeomFactory
-     */
+    /** Create a surface on basis of SurfacePatches (Triangles) */
     public void testSurface1() {
         PrimitiveFactoryImpl tPrimFactory = (PrimitiveFactoryImpl) builder.getPrimitiveFactory();
 

@@ -141,20 +141,12 @@ public abstract class CurveSegmentImpl implements CurveSegment, Serializable {
         return this.interpolation;
     }
 
-    /**
-     * Sets the type of interpolation
-     *
-     * @param interpolation
-     */
+    /** Sets the type of interpolation */
     protected void setInterpolation(CurveInterpolation interpolation) {
         this.interpolation = interpolation;
     }
 
-    /**
-     * Sets the Curve the Curve Segment belongs to
-     *
-     * @param curve
-     */
+    /** Sets the Curve the Curve Segment belongs to */
     public void setCurve(CurveImpl curve) {
         if (curve == null) throw new IllegalArgumentException("Curve not passed"); // $NON-NLS-1$
         this.curve = curve;
@@ -185,8 +177,6 @@ public abstract class CurveSegmentImpl implements CurveSegment, Serializable {
      * constructive parameter interval, which will roughly correspond to the point on the curve
      * where it passes closest that the corresponding controlPoint. These points, the values of the
      * curve at the maxima of the weight functions, will be the sample points for the curve segment.
-     *
-     * @return
      */
     // public abstract PointArray samplePoint();
     /**
@@ -201,8 +191,6 @@ public abstract class CurveSegmentImpl implements CurveSegment, Serializable {
      * the points used will be transients (constructed to support the return value), except for the
      * startPoint and endPoint of the aggregated Curve. These two positions, in the case where the
      * Curve is involved in a Complex, will be represented as Points in the same Complex.
-     *
-     * @return
      */
     // public abstract CurveBoundary getBoundary();
     /**
@@ -259,11 +247,7 @@ public abstract class CurveSegmentImpl implements CurveSegment, Serializable {
         return this.endParam;
     }
 
-    /**
-     * Set the parameter for the endPoint
-     *
-     * @param Value
-     */
+    /** Set the parameter for the endPoint */
     public void setEndParam(double Value) {
         this.endParam = Value;
     }

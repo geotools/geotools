@@ -115,8 +115,6 @@ public class LiteShape implements Shape, Cloneable {
     /**
      * Sets the geometry contained in this lite shape. Convenient to reuse this object instead of
      * creating it again and again during rendering
-     *
-     * @param g
      */
     public void setGeometry(Geometry g) {
         this.geometry = g.copy();

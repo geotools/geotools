@@ -73,7 +73,6 @@ public interface ISession {
     /**
      * Performs a session sanity check to avoid stale connections to be returned from the pool.
      *
-     * @throws IOException
      * @see {@link SeConnection#testServer(long)}
      */
     public void testServer() throws IOException;
@@ -101,7 +100,6 @@ public interface ISession {
      *
      * <p>If this method succeeds, {@link #isTransactionActive()} will return true afterwards
      *
-     * @throws IOException
      * @see {@link #issueStartTransaction(Session)}
      */
     public abstract void startTransaction() throws IOException;
@@ -110,8 +108,6 @@ public interface ISession {
      * Commits the current transaction.
      *
      * <p>This method shall only be called from inside a command
-     *
-     * @throws IOException
      */
     public abstract void commitTransaction() throws IOException;
 
@@ -119,8 +115,6 @@ public interface ISession {
      * Returns whether a transaction is in progress over this connection
      *
      * <p>As for any other public method, this one can't be called if {@link #isDisposed()} is true.
-     *
-     * @return
      */
     public abstract boolean isTransactionActive();
 
@@ -129,8 +123,6 @@ public interface ISession {
      *
      * <p>When this method returns it is guaranteed that {@link #isTransactionActive()} will return
      * false, regardless of the success of the rollback operation.
-     *
-     * @throws IOException
      */
     public abstract void rollbackTransaction() throws IOException;
 
@@ -149,9 +141,6 @@ public interface ISession {
     /**
      * Returns the live list of layers, not the cached ones, so it may pick up the differences in
      * the database.
-     *
-     * @return
-     * @throws IOException
      */
     public abstract List<SeLayer> getLayers() throws IOException;
 
@@ -169,9 +158,6 @@ public interface ISession {
      * Creates an SeTable named
      * <code>qualifiedName<code>; the layer does not need to exist on the server.
      *
-     * @param qualifiedName
-     * @return
-     * @throws IOException
      */
     public abstract SeTable createSeTable(final String qualifiedName) throws IOException;
 
@@ -193,10 +179,6 @@ public interface ISession {
      * former prefetches the row values and this can be freely used outside a {@link Command}.
      * Otherwise the SeRow should only be used inside a command as accessing its values implies
      * using the connection.
-     *
-     * @param query
-     * @return
-     * @throws IOException
      */
     public abstract SdeRow fetch(final SeQuery query) throws IOException;
 

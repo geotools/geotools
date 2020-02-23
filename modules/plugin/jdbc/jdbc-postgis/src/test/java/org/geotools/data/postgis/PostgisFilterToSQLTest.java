@@ -71,8 +71,6 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
     /**
      * Test for GEOS-5167. Checks that geometries are wrapped with ST_Envelope when used with
      * overlapping operator, when the encodeBBOXFilterAsEnvelope is true.
-     *
-     * @throws FilterToSQLException
      */
     @Test
     public void testEncodeBBOXFilterAsEnvelopeEnabled() throws FilterToSQLException {
@@ -99,8 +97,6 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
     /**
      * Test for GEOS-5167. Checks that geometries are NOT wrapped with ST_Envelope when used with
      * overlapping operator, when the encodeBBOXFilterAsEnvelope is false.
-     *
-     * @throws FilterToSQLException
      */
     @Test
     public void testEncodeBBOXFilterAsEnvelopeDisabled() throws FilterToSQLException {

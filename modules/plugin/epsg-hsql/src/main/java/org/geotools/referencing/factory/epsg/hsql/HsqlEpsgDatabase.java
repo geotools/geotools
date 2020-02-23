@@ -69,9 +69,6 @@ public class HsqlEpsgDatabase {
      *
      * <p>This method pays attention to the system property "EPSG-HSQL.directory" and makes use of
      * the default database name "EPSG".
-     *
-     * @return
-     * @throws SQLException
      */
     public static javax.sql.DataSource createDataSource() throws SQLException {
         return createDataSource(getDirectory());
@@ -199,8 +196,6 @@ public class HsqlEpsgDatabase {
      * {@linkplain System#getProperty(String) system property} is defined and contains the name of a
      * directory with a valid {@linkplain File#getParent parent}, then the {@value #DATABASE_NAME}
      * database will be saved in that directory. Otherwise, a temporary directory will be used.
-     *
-     * @throws SQLException
      */
     static File getDirectory() throws SQLException {
         try {

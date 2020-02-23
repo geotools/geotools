@@ -79,7 +79,6 @@ public abstract class TestSchema extends TestCase {
     /**
      * Limited to a search of simple types, no QName required.
      *
-     * @param name
      * @return XSDSimpleTypeDefinition
      */
     public XSDSimpleTypeDefinition xsdSimple(String name) {
@@ -162,7 +161,6 @@ public abstract class TestSchema extends TestCase {
      *
      * @param given the value to pass to the parse method
      * @param expected used to compare against the result of the parse method
-     * @throws Exception
      */
     public void validateValues(String given, Object expected) throws Exception {
         Object result = strategy.parse(element(given, qname), given);

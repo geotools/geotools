@@ -53,8 +53,6 @@ public class PlugInDTO {
      * PlugInDTO constructor.
      *
      * <p>Creates a copy of the DTO passed in in this object.
-     *
-     * @param pi
      */
     public PlugInDTO(PlugInDTO pi) {
         name = pi.getName();
@@ -87,7 +85,6 @@ public class PlugInDTO {
     /**
      * Implementation of equals.
      *
-     * @param obj
      * @return true when the two objects are equal.
      * @see java.lang.Object#equals(java.lang.Object)
      */

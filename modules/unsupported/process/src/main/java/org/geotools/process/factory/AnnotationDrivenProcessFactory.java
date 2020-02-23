@@ -377,13 +377,7 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
         }
     }
 
-    /**
-     * Uses the provided path to look up a constant of the specified type. If the path
-     *
-     * @param strDefault
-     * @param type
-     * @return
-     */
+    /** Uses the provided path to look up a constant of the specified type. If the path */
     private Object lookupConstant(String path, Class<?> process, Class<?> type) {
         int hashIdx = path.indexOf("#");
         if (hashIdx == -1) {
@@ -481,7 +475,6 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
      * Looks up a method in an object by simple name (restricted to public methods).
      *
      * @param targetObject object, usually a java bean, on which to perform reflection
-     * @param methodName
      * @return Method found
      */
     Method lookupMethod(Object targetObject, String methodName) {

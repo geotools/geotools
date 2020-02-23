@@ -158,10 +158,7 @@ public class GrassBinaryRasterReadHandler {
      * @param castDoubleToFloating a flag that gives the possibility to force the reading of a map
      *     as a floating point map. This is necessary right now because of a imageio bug:
      *     https://jai-imageio-core.dev.java.net /issues/show_bug.cgi?id=180
-     * @param monitor
      * @return the read {@link WritableRaster raster}
-     * @throws IOException
-     * @throws DataFormatException
      */
     public WritableRaster readRaster(
             ImageReadParam param,
@@ -183,8 +180,6 @@ public class GrassBinaryRasterReadHandler {
      *
      * @param param the read parameters.
      * @return the read raster
-     * @throws IOException
-     * @throws DataFormatException
      */
     public WritableRaster readRaster(ImageReadParam param) throws IOException, DataFormatException {
 
@@ -656,8 +651,6 @@ public class GrassBinaryRasterReadHandler {
      * Extract the row addresses from the header information of the file.
      *
      * <p><b>INFO:</b> this is a reader method.
-     *
-     * @throws IOException
      */
     private void parseHeader() throws IOException {
 
@@ -707,8 +700,6 @@ public class GrassBinaryRasterReadHandler {
      * @param rowDataCache the byte array to store the unpacked row data
      * @param activeReadRegion the region defining the portion of raster to be read
      * @return boolean TRUE for success, FALSE for failure.
-     * @throws IOException
-     * @throws DataFormatException
      */
     private boolean readRasterRow(
             int currentfilerow, byte[] rowDataCache, JGrassRegion activeReadRegion)
@@ -846,8 +837,6 @@ public class GrassBinaryRasterReadHandler {
      *
      * @param currentrow the index of the row to read.
      * @param rowdata the buffer to hold the read row.
-     * @throws IOException
-     * @throws DataFormatException
      */
     private void getMapRow(int currentrow, ByteBuffer rowdata)
             throws IOException, DataFormatException {
@@ -881,8 +870,6 @@ public class GrassBinaryRasterReadHandler {
      *
      * @param rowdata the buffer to hold the read row.
      * @param currentrow the index of the row to read.
-     * @throws DataFormatException
-     * @throws IOException
      */
     private void readCompressedFPRowByNumber(ByteBuffer rowdata, int currentrow)
             throws DataFormatException, IOException {
@@ -919,8 +906,6 @@ public class GrassBinaryRasterReadHandler {
      *
      * @param rowdata the buffer to hold the read row.
      * @param currentrow the index of the row to read.
-     * @throws IOException
-     * @throws DataFormatException
      */
     private void readUncompressedFPRowByNumber(ByteBuffer rowdata, int currentrow)
             throws IOException, DataFormatException {
@@ -936,7 +921,6 @@ public class GrassBinaryRasterReadHandler {
      *
      * @param rowdata the buffer to hold the read row.
      * @param currentrow the index of the row to read.
-     * @throws IOException
      */
     private void readCompressedIntegerRowByNumber(ByteBuffer rowdata, int currentrow)
             throws IOException, DataFormatException {
@@ -1033,8 +1017,6 @@ public class GrassBinaryRasterReadHandler {
      *
      * @param rowdata the buffer to hold the read row.
      * @param currentrow the index of the row to read.
-     * @throws IOException
-     * @throws DataFormatException
      */
     private void readUncompressedIntegerRowByNumber(ByteBuffer rowdata, int currentrow)
             throws IOException, DataFormatException {
@@ -1139,7 +1121,6 @@ public class GrassBinaryRasterReadHandler {
      * <p><b>INFO:</b> this is a reader method.
      *
      * @return the list of single colorrules.
-     * @throws IOException
      */
     public List<String> getColorRules(double[] range) throws IOException {
         JGrassColorTable colorTable = new JGrassColorTable(readerGrassEnv, range);
@@ -1152,7 +1133,6 @@ public class GrassBinaryRasterReadHandler {
      * <p><b>INFO:</b> this is a reader method.
      *
      * @return the attribute table as read in the categories file
-     * @throws IOException
      */
     public List<String> getCategories() throws IOException {
 

@@ -31,7 +31,6 @@ public interface FootprintLoader {
     /**
      * Tries to load the sidecar geometry given the granule path without extension.
      *
-     * @param pathNoExtension
      * @return The footprint, or null if the file was not found
      * @throws Exception In case the file was found, but there were issues loading the geometry
      */

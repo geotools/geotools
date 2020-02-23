@@ -67,8 +67,6 @@ public abstract class JDBCCurvesTest extends JDBCTestSupport {
     /**
      * All write tests follow the same pattern: grab the feature we want, delete everything, insert
      * back, and run its read test again
-     *
-     * @throws Exception
      */
     @Test
     public void testWriteSingleArc() throws Exception {

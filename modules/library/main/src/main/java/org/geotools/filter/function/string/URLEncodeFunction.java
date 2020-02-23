@@ -56,9 +56,7 @@ public class URLEncodeFunction extends FunctionExpressionImpl {
     /**
      * URL encode the string.
      *
-     * @param feature
      * @return The URL encoded string
-     * @throws IllegalArgumentException
      */
     @Override
     public Object evaluate(Object feature) {

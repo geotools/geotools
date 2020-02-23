@@ -45,11 +45,7 @@ class Polygon implements Cloneable {
         this.vertices = coordinates;
     }
 
-    /**
-     * Sets the vertices of this polygon.
-     *
-     * @param coordinates
-     */
+    /** Sets the vertices of this polygon. */
     public void setCoordinates(DirectPosition[] coordinates) {
         this.vertices = coordinates;
     }

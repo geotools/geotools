@@ -91,7 +91,6 @@ public class FillExtrusionMBLayer extends MBLayer {
      * per-feature, basis, and data-driven styling is not available.
      *
      * @return The opacity of the fill extrusion layer.
-     * @throws MBFormatException
      */
     public Number getFillExtrusionOpacity() throws MBFormatException {
         return parse.optional(Double.class, paint, "fill-extrusion-opacity", 1.0);
@@ -101,7 +100,6 @@ public class FillExtrusionMBLayer extends MBLayer {
      * Access fill-extrusion-opacity as literal or function expression
      *
      * @return The opacity of the fill extrusion layer.
-     * @throws MBFormatException
      */
     public Expression fillExtrusionOpacity() throws MBFormatException {
         return parse.percentage(paint, "fill-extrusion-opacity", 1.0);
@@ -199,7 +197,6 @@ public class FillExtrusionMBLayer extends MBLayer {
      * Access fill-extrusion-height as literal or function expression
      *
      * @return The height with which to extrude this layer.
-     * @throws MBFormatException
      */
     public Expression fillExtrusionHeight() throws MBFormatException {
         return parse.percentage(paint, "fill-extrusion-height", 0.0);
@@ -221,7 +218,6 @@ public class FillExtrusionMBLayer extends MBLayer {
      * Access fill-extrusion-base as literal or function expression
      *
      * @return The height with which to extrude the base of this layer
-     * @throws MBFormatException
      */
     public Expression fillExtrusionBase() throws MBFormatException {
         return parse.percentage(paint, "fill-extrusion-base", 0.0);

@@ -48,8 +48,6 @@ public class CompositeSolidImpl extends CompositeImpl<SolidImpl> {
      *
      * <p>The Solids generators will be passed through the super constructor and saved in the
      * element ArrayList of the according Complex
-     *
-     * @param generator
      */
     public CompositeSolidImpl(List<CurveImpl> generator) {
         super(generator);

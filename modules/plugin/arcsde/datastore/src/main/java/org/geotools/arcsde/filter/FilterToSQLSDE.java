@@ -86,8 +86,6 @@ public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
     /**
      * @param layerQName full qualified name of the ArcSDE layer
      * @param layerFidColName name of the column that holds fids
-     * @param ft
-     * @param definitionQuery
      */
     public FilterToSQLSDE(
             String layerQName,
@@ -137,9 +135,6 @@ public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
     /**
      * Returns the full qualifed name of sql expression that is registered as the source of the
      * attribute named <code>alias</code>.
-     *
-     * @param alias
-     * @return
      */
     public String getColumnDefinition(final String alias) {
         final String encodedColumnDefinition;

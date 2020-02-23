@@ -504,7 +504,6 @@ class Session implements ISession {
         private final int sessionId;
 
         /**
-         * @param config
          * @param sessionId the session id the connection is to be created for. For exception
          *     reporting purposes only
          */

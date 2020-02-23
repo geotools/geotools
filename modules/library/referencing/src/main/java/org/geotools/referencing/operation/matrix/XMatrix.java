@@ -40,36 +40,16 @@ public interface XMatrix extends Matrix {
     /** Returns the element at the specified index. */
     double getElement(int row, int column);
 
-    /**
-     * Extract row to provided array
-     *
-     * @param row
-     * @param array
-     */
+    /** Extract row to provided array */
     void getRow(int row, double[] array);
 
-    /**
-     * Sets the value of the row using an array of values.
-     *
-     * @param row
-     * @param values
-     */
+    /** Sets the value of the row using an array of values. */
     void setRow(int row, double... values);
 
-    /**
-     * Extract col to provided array.
-     *
-     * @param col
-     * @param array
-     */
+    /** Extract col to provided array. */
     public void getColumn(int col, double[] array);
 
-    /**
-     * Sets the value of the column using an array of values.
-     *
-     * @param column
-     * @param values
-     */
+    /** Sets the value of the column using an array of values. */
     @Extension
     public void setColumn(int column, double... values);
 
@@ -192,18 +172,11 @@ public interface XMatrix extends Matrix {
      */
     void multiply(Matrix matrix);
 
-    /**
-     * Sets this matrix to the result of multiplying itself with the provided scalar.
-     *
-     * @param scalar
-     */
+    /** Sets this matrix to the result of multiplying itself with the provided scalar. */
     void mul(double scalar);
 
     /**
      * Sets the value of this matrix to the result of multiplying the provided scalar and matrix.
-     *
-     * @param scalar
-     * @param matrix
      */
     void mul(double scalar, Matrix matrix);
 
@@ -219,25 +192,15 @@ public interface XMatrix extends Matrix {
      */
     void mul(Matrix matrix);
 
-    /**
-     * Sets the value of this matrix to the result of multiplying matrix1 and matrix2.
-     *
-     * @param matrix1
-     * @param matrix2
-     */
+    /** Sets the value of this matrix to the result of multiplying matrix1 and matrix2. */
     void mul(Matrix matrix1, Matrix matrix2);
 
-    /**
-     * In-place matrix subtraction: <code>this - scalar</code>.
-     *
-     * @param scalar
-     */
+    /** In-place matrix subtraction: <code>this - scalar</code>. */
     void sub(double scalar);
 
     /**
      * Set to the difference of <code>scalar - matrix2</code>.
      *
-     * @param scalar
      * @param matrix matrix, not modified
      */
     void sub(double scalar, Matrix matrix);

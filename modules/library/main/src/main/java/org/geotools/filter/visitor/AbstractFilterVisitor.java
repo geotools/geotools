@@ -96,8 +96,6 @@ public class AbstractFilterVisitor implements FilterVisitor {
      * Constructs the filter visitor with an expression visitor.
      *
      * <p>Using this constructor allows expressions of a filter to be visited as well.
-     *
-     * @param expressionVisitor
      */
     public AbstractFilterVisitor(ExpressionVisitor expressionVisitor) {
         this.expressionVisitor = expressionVisitor;

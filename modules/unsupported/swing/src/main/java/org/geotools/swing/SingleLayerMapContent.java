@@ -45,31 +45,19 @@ public class SingleLayerMapContent extends MapContent {
         super.addLayer(layer);
     }
 
-    /**
-     * Throws an {@code UnsupportedOperationException} if called.
-     *
-     * @return
-     */
+    /** Throws an {@code UnsupportedOperationException} if called. */
     @Override
     public boolean addLayer(Layer layer) {
         throw new UnsupportedOperationException("Should not be called");
     }
 
-    /**
-     * Throws an {@code UnsupportedOperationException} if called.
-     *
-     * @return
-     */
+    /** Throws an {@code UnsupportedOperationException} if called. */
     @Override
     public void moveLayer(int sourcePosition, int destPosition) {
         throw new UnsupportedOperationException("Should not be called");
     }
 
-    /**
-     * Throws an {@code UnsupportedOperationException} if called.
-     *
-     * @return
-     */
+    /** Throws an {@code UnsupportedOperationException} if called. */
     @Override
     public boolean removeLayer(Layer layer) {
         throw new UnsupportedOperationException("Should not be called");

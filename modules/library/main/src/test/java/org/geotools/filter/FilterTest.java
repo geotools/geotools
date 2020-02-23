@@ -457,14 +457,7 @@ public class FilterTest extends TestCase {
         assertEquals(filter.evaluate(testFeature), test3);
     }
 
-    /**
-     * Builds a filter that compares a and b: <code>a compare b</code>
-     *
-     * @param filterType
-     * @param a
-     * @param b
-     * @return
-     */
+    /** Builds a filter that compares a and b: <code>a compare b</code> */
     org.opengis.filter.Filter compare(
             Class filterType,
             org.opengis.filter.expression.Expression a,

@@ -91,20 +91,11 @@ public enum Band {
     public static final List<Band> RGB =
             Collections.unmodifiableList(Arrays.asList(RED, GREEN, BLUE));
 
-    /**
-     * Get the {@link SelectedChannelType} in sel that is represented by this band.
-     *
-     * @param sel
-     */
+    /** Get the {@link SelectedChannelType} in sel that is represented by this band. */
     public abstract org.opengis.style.SelectedChannelType getFrom(
             org.opengis.style.ChannelSelection sel);
 
-    /**
-     * Set the {@link SelectedChannelType} in sel that is represented by this band to chan.
-     *
-     * @param sel
-     * @param chan
-     */
+    /** Set the {@link SelectedChannelType} in sel that is represented by this band to chan. */
     public abstract void setTo(
             org.geotools.styling.ChannelSelection sel,
             org.geotools.styling.SelectedChannelType chan);

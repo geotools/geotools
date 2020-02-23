@@ -1097,13 +1097,6 @@ public class OperationJAI extends Operation2D {
      * the current operation. Internally the method will search for ROI and NoData parameters set
      * for the operation and will report them as coverage properties
      *
-     * @param properties
-     * @param parameters
-     * @param sourceCoverage
-     * @param operationName
-     * @param roiIndex
-     * @param noDataIndex
-     * @param backgroundIndex
      * @return A {@link Map} containing all the coverage properties and also {@link ROI} and NoData
      *     if present
      */
@@ -1149,12 +1142,6 @@ public class OperationJAI extends Operation2D {
      * coverage property, it will be intersected with an eventual ROI object defined as a parameter
      * inside the ParameterBlock. If no NoData Range is defined in the parameters but is defined as
      * coverage property, it will be set in the input ParameterBlock
-     *
-     * @param parameters
-     * @param sourceCoverage
-     * @param operationName
-     * @param roiIndex
-     * @param noDataIndex
      */
     protected static void handleROINoDataInternal(
             ParameterBlockJAI parameters,
@@ -1193,12 +1180,6 @@ public class OperationJAI extends Operation2D {
     /**
      * Extraction of the sources from the parameter called SOURCES. The sources are stored inside a
      * List.
-     *
-     * @param parameters
-     * @param sources
-     * @return
-     * @throws ParameterNotFoundException
-     * @throws InvalidParameterValueException
      */
     protected void extractSources(
             final ParameterValueGroup parameters,

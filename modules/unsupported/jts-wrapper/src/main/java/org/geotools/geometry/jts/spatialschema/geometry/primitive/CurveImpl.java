@@ -65,11 +65,7 @@ public class CurveImpl extends GeometryImpl implements Curve {
         this(null);
     }
 
-    /**
-     * Creates a new {@code CurveImpl}.
-     *
-     * @param crs
-     */
+    /** Creates a new {@code CurveImpl}. */
     public CurveImpl(final CoordinateReferenceSystem crs) {
         super(crs);
         curveSegments = new NotifyingArrayList(this);

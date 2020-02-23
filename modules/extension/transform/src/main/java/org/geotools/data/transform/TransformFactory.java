@@ -40,10 +40,6 @@ public class TransformFactory {
      * Creates a transformed SimpleFeatureSource/SimpleFeatureStore from the original source, giving
      * it a certain name and a set of computed properties
      *
-     * @param source
-     * @param name
-     * @param definitions
-     * @throws IOException
      * @returns A transformed SimpleFeatureStore in case at least one of the definitions was
      *     invertible, a transformed SimpleFeatureSource otherwise
      */
@@ -60,10 +56,6 @@ public class TransformFactory {
      * Creates a transformed SimpleFeatureSource/SimpleFeatureStore from the original source, giving
      * it a certain name and a set of computed properties
      *
-     * @param source
-     * @param name
-     * @param definitions
-     * @throws IOException
      * @returns A transformed SimpleFeatureStore in case at least one of the definitions was
      *     invertible, a transformed SimpleFeatureSource otherwise
      */

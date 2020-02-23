@@ -60,11 +60,7 @@ public class SubFeatureList extends SubFeatureCollection implements RandomFeatur
         this(list, Filter.INCLUDE, sort);
     }
 
-    /**
-     * Create a simple SubFeatureList with the provided filter.
-     *
-     * @param filter
-     */
+    /** Create a simple SubFeatureList with the provided filter. */
     public SubFeatureList(SimpleFeatureCollection list, Filter filter, SortBy subSort) {
         super(list, filter);
 

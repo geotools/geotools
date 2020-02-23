@@ -37,7 +37,6 @@ public interface GranuleSource {
      *
      * @param q the {@link Query} to select granules
      * @return the resulting granules.
-     * @throws IOException
      */
     public SimpleFeatureCollection getGranules(Query q) throws IOException;
 
@@ -47,7 +46,6 @@ public interface GranuleSource {
      *
      * @param q the {@link Query} to select granules
      * @return the number of granules
-     * @throws IOException
      */
     public int getCount(Query q) throws IOException;
 
@@ -56,23 +54,15 @@ public interface GranuleSource {
      *
      * @param q the {@link Query} to select granules
      * @return The bounding envelope of the requested data
-     * @throws IOException
      */
     public ReferencedEnvelope getBounds(Query q) throws IOException;
 
     /**
      * Retrieves the schema (feature type) that will apply to granules retrieved from this {@code
      * GranuleSource}.
-     *
-     * @return
-     * @throws IOException
      */
     public SimpleFeatureType getSchema() throws IOException;
 
-    /**
-     * This will free/release any resource (cached granules, ...).
-     *
-     * @throws IOException
-     */
+    /** This will free/release any resource (cached granules, ...). */
     public void dispose() throws IOException;
 }

@@ -164,11 +164,7 @@ public class SchemaCache {
         return download;
     }
 
-    /**
-     * Recursively delete a directory or file.
-     *
-     * @param file
-     */
+    /** Recursively delete a directory or file. */
     static void delete(File file) {
         if (file.isDirectory()) {
             File[] files = file.listFiles();
@@ -181,12 +177,7 @@ public class SchemaCache {
         file.delete();
     }
 
-    /**
-     * Store the bytes in the given file, creating any necessary intervening directories.
-     *
-     * @param file
-     * @param bytes
-     */
+    /** Store the bytes in the given file, creating any necessary intervening directories. */
     static void store(File file, byte[] bytes) {
 
         OutputStream output = null;

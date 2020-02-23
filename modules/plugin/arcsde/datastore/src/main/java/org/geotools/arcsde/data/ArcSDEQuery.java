@@ -121,10 +121,8 @@ class ArcSDEQuery {
      *
      * @param session the session attached to the life cycle of this query
      * @param schema the schema with all the attributes as expected.
-     * @param filterSet
      * @param versioningHandler used to transparently set up SeQuery streams pointing to the propper
      *     version edit state when appropriate
-     * @throws DataSourceException
      * @see prepareQuery
      */
     private ArcSDEQuery(
@@ -149,10 +147,6 @@ class ArcSDEQuery {
      *
      * @param session the session the query works over. As its managed by the calling code its the
      *     calling code responsibility to close it when done.
-     * @param fullSchema
-     * @param query
-     * @return
-     * @throws IOException
      */
     public static ArcSDEQuery createQuery(
             final ISession session,
@@ -272,11 +266,9 @@ class ArcSDEQuery {
      * @param queryProperties the query containing the list of property names required by the output
      *     schema and the {@link Filter query predicate} from which to fetch required properties to
      *     be used at runtime filter evaluation.
-     * @param unsupportedFilter
      * @param fullSchema a feature type representing an ArcSDE layer full schema.
      * @return a FeatureType derived from <code>fullSchema</code> which contains the property names
      *     required by the <code>query</code> and the ones referenced in the query filter.
-     * @throws DataSourceException
      */
     public static SimpleFeatureType getQuerySchema(
             final String[] queryProperties,
@@ -346,12 +338,7 @@ class ArcSDEQuery {
         return this.fidReader;
     }
 
-    /**
-     * Returns the stream used to fetch rows, creating it if it was not yet created.
-     *
-     * @throws SeException
-     * @throws IOException
-     */
+    /** Returns the stream used to fetch rows, creating it if it was not yet created. */
     private SeQuery getSeQuery() throws IOException {
         if (this.query == null) {
             try {
@@ -376,7 +363,6 @@ class ArcSDEQuery {
      * @param propertyNames names of attributes to build the query for, respecting order
      * @throws SeException if the ArcSDE Java API throws it while creating the SeQuery or setting it
      *     the spatial constraints.
-     * @throws IOException
      */
     private SeQuery createSeQueryForFetch(String[] propertyNames) throws SeException, IOException {
         if (LOGGER.isLoggable(Level.FINEST)) {
@@ -802,12 +788,7 @@ class ArcSDEQuery {
         return envelope;
     }
 
-    /**
-     * Silently closes this query.
-     *
-     * @param query
-     * @throws IOException
-     */
+    /** Silently closes this query. */
     private static void close(final SeQuery query, final ISession session) throws IOException {
         if (query == null) {
             return;
@@ -825,19 +806,13 @@ class ArcSDEQuery {
      * <p>The {@link Session connection} used by the query is not closed by this operation as it was
      * provided by the calling code and thus it is its responsibility to handle the connection life
      * cycle.
-     *
-     * @throws IOException
      */
     public void close() throws IOException {
         close(this.query, session);
         this.query = null;
     }
 
-    /**
-     * Tells the server to execute a stream operation.
-     *
-     * @throws IOException
-     */
+    /** Tells the server to execute a stream operation. */
     public void execute() throws IOException {
         final SeQuery seQuery = getSeQuery();
         session.issue(
@@ -909,7 +884,6 @@ class ArcSDEQuery {
      * search
      *
      * @param filters a set of spatial constraints to filter upon
-     * @throws IOException
      */
     public void setSpatialConstraints(SeFilter[] filters) throws IOException {
         try {
@@ -966,13 +940,7 @@ class ArcSDEQuery {
 
         private final ISession conn;
 
-        /**
-         * Creates a new FilterSet object.
-         *
-         * @param sdeLayer
-         * @param sourceFilter
-         * @param session
-         */
+        /** Creates a new FilterSet object. */
         public FilterSet(
                 SeTable table,
                 SeLayer sdeLayer,
@@ -1004,8 +972,6 @@ class ArcSDEQuery {
          * filters, one for the supported SQL based filter, another for the supported Geometry based
          * filter, and the last one for the unsupported filter. All of them can be retrieved from
          * its corresponding getter.
-         *
-         * @param conn
          */
         private void createGeotoolsFilters() {
             FilterToSQLSDE sqlEncoder = getSqlEncoder();
@@ -1061,8 +1027,6 @@ class ArcSDEQuery {
          * object to specify which properties to fetch.
          *
          * @param unqualifiedPropertyNames non null, possibly empty, list of property names to fetch
-         * @return
-         * @throws IOException
          */
         public SeQueryInfo getQueryInfo(final String[] unqualifiedPropertyNames)
                 throws IOException {
@@ -1161,7 +1125,6 @@ class ArcSDEQuery {
          * passed to the constructor.
          *
          * @return an array with the spatial filters to be applied to the SeQuery, or null if none.
-         * @throws DataSourceException
          */
         public SeFilter[] getSpatialFilters() throws DataSourceException {
             if (this.sdeSpatialFilters == null) {

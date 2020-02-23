@@ -70,8 +70,6 @@ public class CompoundRing extends LinearRing
     /**
      * Returns the components of this compound curve, which will be a list of straight LineString
      * objects and CircularString/CircularRing
-     *
-     * @return
      */
     public List<LineString> getComponents() {
         return delegate.components;

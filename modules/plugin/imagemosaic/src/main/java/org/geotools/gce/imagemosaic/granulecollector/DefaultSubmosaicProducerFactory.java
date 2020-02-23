@@ -133,8 +133,6 @@ public class DefaultSubmosaicProducerFactory implements SubmosaicProducerFactory
     /**
      * Check whether the specified custom domains contain multiple selection. That case isn't
      * supported so we will throw an exception
-     *
-     * @param entries
      */
     private void checkMultipleSelection(Set<Map.Entry<String, List>> entries) {
         int multipleDimensionsSelections = 0;

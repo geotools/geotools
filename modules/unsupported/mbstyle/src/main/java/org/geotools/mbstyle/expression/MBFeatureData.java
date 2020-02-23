@@ -34,18 +34,12 @@ public class MBFeatureData extends MBExpression {
     /**
      * Gets the feature's geometry type: Point, MultiPoint, LineString, MultiLineString, Polygon,
      * MultiPolygon.Example: ["geometry-type"]: string
-     *
-     * @return
      */
     public Expression featureGeometryType() {
         return ff.function("geometryType", ff.function("geometry", ff.literal(true)));
     }
 
-    /**
-     * Gets the feature's id, if it has one. Example: ["id"]: value
-     *
-     * @return
-     */
+    /** Gets the feature's id, if it has one. Example: ["id"]: value */
     public Expression featureId() {
         return ff.function("id");
     }
@@ -53,8 +47,6 @@ public class MBFeatureData extends MBExpression {
     /**
      * Gets the feature properties object. Note that in some cases, it may be more efficient to use
      * ["get", "property_name"] directly. Example: ["properties"]: object
-     *
-     * @return
      */
     public Expression featureProperties() {
         // not supported

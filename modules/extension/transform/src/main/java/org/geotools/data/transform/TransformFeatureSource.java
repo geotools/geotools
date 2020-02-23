@@ -73,11 +73,6 @@ public class TransformFeatureSource implements SimpleFeatureSource {
     /**
      * Creates a transformed feature source from the original source, giving it a certain name and a
      * set of computed properties
-     *
-     * @param source
-     * @param name
-     * @param definitions
-     * @throws IOException
      */
     public TransformFeatureSource(
             SimpleFeatureSource source, Name name, List<Definition> definitions)
@@ -228,13 +223,7 @@ public class TransformFeatureSource implements SimpleFeatureSource {
         return source.getBounds(txQuery);
     }
 
-    /**
-     * Returns the set of names actually selected by the query
-     *
-     * @param attributeNames
-     * @param query
-     * @return
-     */
+    /** Returns the set of names actually selected by the query */
     private List<String> getSelectedAttributes(List<String> attributeNames, Query query) {
         if (query.getPropertyNames() == null) {
             return attributeNames;

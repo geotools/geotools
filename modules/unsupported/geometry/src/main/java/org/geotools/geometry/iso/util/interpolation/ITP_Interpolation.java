@@ -44,10 +44,7 @@ public class ITP_Interpolation {
             this.y = y;
             this.z = z;
         }
-        /**
-         * @param p
-         * @return
-         */
+        /** */
         public double distance(Point3d p) {
             return Math.sqrt(x * x + y * y + z * z);
         }

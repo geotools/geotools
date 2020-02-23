@@ -181,7 +181,6 @@ class RasterLayerRequest {
      * Build a new {@code CoverageRequest} given a set of input parameters.
      *
      * @param params The {@code GeneralParameterValue}s to initialize this request
-     * @param baseGridCoverage2DReader
      */
     public RasterLayerRequest(GeneralParameterValue[] params, BaseGridCoverage2DReader reader) {
 
@@ -462,8 +461,6 @@ class RasterLayerRequest {
      * <p>It sets the passed {@link ImageReadParam} in terms of decimation on reading using the
      * provided requestedEnvelope and requestedDim to evaluate the needed resolution.
      *
-     * @throws IOException
-     * @throws TransformException
      * @todo this versions is deeply GDAL based.
      */
     protected void setReadParameters() throws IOException, TransformException {
@@ -606,12 +603,7 @@ class RasterLayerRequest {
         requestedResolution = coverageFullResolution.clone();
     }
 
-    /**
-     * Initialize the 2D properties (CRS and Envelope) of this coverage
-     *
-     * @throws FactoryException
-     * @throws TransformException
-     */
+    /** Initialize the 2D properties (CRS and Envelope) of this coverage */
     private void prepareCoverageSpatialElements() throws FactoryException, TransformException {
         // basic initialization
         coverageGeographicBBox =
@@ -706,12 +698,7 @@ class RasterLayerRequest {
                 coverageGridToWorld2D, PixelInCell.CELL_CENTER, pixInCell);
     }
 
-    /**
-     * Returns the intersection between the base envelope and the requested envelope.
-     *
-     * @throws TransformException
-     * @throws FactoryException
-     */
+    /** Returns the intersection between the base envelope and the requested envelope. */
     private void adjustRequestedBBox() throws TransformException, FactoryException {
 
         final CoordinateReferenceSystem requestedBBoxCRS2D =
@@ -829,82 +816,52 @@ class RasterLayerRequest {
         }
     }
 
-    /**
-     * @return
-     * @uml.property name="hints"
-     */
+    /** @uml.property name="hints" */
     public Hints getHints() {
         return hints;
     }
 
-    /**
-     * @return
-     * @uml.property name="useMultithreading"
-     */
+    /** @uml.property name="useMultithreading" */
     public boolean useMultithreading() {
         return useMultithreading;
     }
 
-    /**
-     * @return
-     * @uml.property name="imageReadParam"
-     */
+    /** @uml.property name="imageReadParam" */
     public ImageReadParam getImageReadParam() {
         return imageReadParam;
     }
 
-    /**
-     * @return
-     * @uml.property name="useJAI"
-     */
+    /** @uml.property name="useJAI" */
     public boolean useJAI() {
         return useJAI;
     }
 
-    /**
-     * @return
-     * @uml.property name="emptyRequest"
-     */
+    /** @uml.property name="emptyRequest" */
     public synchronized boolean isEmptyRequest() {
         return emptyRequest;
     }
 
-    /**
-     * @return
-     * @uml.property name="input"
-     */
+    /** @uml.property name="input" */
     public File getInput() {
         return input;
     }
 
-    /**
-     * @return
-     * @uml.property name="coverageGridToWorld2D"
-     */
+    /** @uml.property name="coverageGridToWorld2D" */
     public MathTransform getRaster2Model() {
         return coverageGridToWorld2D;
     }
 
-    /**
-     * @return
-     * @uml.property name="coverageEnvelope"
-     */
+    /** @uml.property name="coverageEnvelope" */
     public GeneralEnvelope getCoverageEnvelope() {
         return coverageEnvelope;
     }
 
-    /**
-     * @return
-     * @uml.property name="coverageCRS"
-     */
+    /** @uml.property name="coverageCRS" */
     public CoordinateReferenceSystem getCoverageCRS() {
         return coverageCRS;
     }
 
-    /**
-     * @return
-     * @uml.property name="coverageName"
-     */
+    /** @uml.property name="coverageName" */
     public String getCoverageName() {
         return coverageName;
     }

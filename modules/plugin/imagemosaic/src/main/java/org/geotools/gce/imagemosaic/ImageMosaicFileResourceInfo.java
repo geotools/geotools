@@ -99,12 +99,7 @@ public class ImageMosaicFileResourceInfo extends DefaultResourceInfo implements 
             this.supportingExtensions = supportingExtensions;
         }
 
-        /**
-         * Return supportFiles (if found) for the specified file
-         *
-         * @param filePath
-         * @return
-         */
+        /** Return supportFiles (if found) for the specified file */
         public List<File> getSupportFiles(String filePath) {
             List<File> supportFiles = null;
             String parent = FilenameUtils.getFullPath(filePath);
@@ -230,10 +225,8 @@ public class ImageMosaicFileResourceInfo extends DefaultResourceInfo implements 
          *
          * <p>The method also look for supportFiles.
          *
-         * @param file
          * @paran aggregate whether aggregation queries should be invoked to extract domains
          * @param firstFeature sample feature to be used when no aggregation is needed
-         * @return
          */
         private FileGroup buildFileGroup(File file, boolean aggregate, SimpleFeature firstFeature) {
             // Looking for supportFiles for the current file
@@ -250,14 +243,7 @@ public class ImageMosaicFileResourceInfo extends DefaultResourceInfo implements 
             return new FileGroup(file, supportFiles, metadataMap);
         }
 
-        /**
-         * Collects features domain to be exposed as metadata
-         *
-         * @param filePath
-         * @param aggregate
-         * @param firstFeature
-         * @return
-         */
+        /** Collects features domain to be exposed as metadata */
         private Map<String, Object> computeGroupMetadata(
                 String filePath, boolean aggregate, SimpleFeature firstFeature) {
             Map<String, Object> metadataMap = null;

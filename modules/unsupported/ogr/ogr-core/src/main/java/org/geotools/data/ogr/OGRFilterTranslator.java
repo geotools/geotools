@@ -109,8 +109,6 @@ class OGRFilterTranslator {
 
     /**
      * Returns true if this filter can be fully encoded without requiring further post processing
-     *
-     * @return
      */
     public boolean isFilterFullySupported() {
         if (filter == Filter.INCLUDE || filter == Filter.EXCLUDE) {
@@ -126,11 +124,7 @@ class OGRFilterTranslator {
         return postFilter == Filter.INCLUDE || postFilter instanceof BBOX;
     }
 
-    /**
-     * Returns the post filter that could not be encoded
-     *
-     * @return
-     */
+    /** Returns the post filter that could not be encoded */
     public Filter getPostFilter() {
         // see if the query has a single bbox filter (that's how much we're sure to be able to
         // encode)
@@ -160,10 +154,6 @@ class OGRFilterTranslator {
     /**
      * Parses the Geotools filter and tries to extract an intersecting geometry that can be used as
      * the OGR spatial filter
-     *
-     * @param schema
-     * @param filter
-     * @return
      */
     public Geometry getSpatialFilter() {
         // TODO: switch to the non deprecated splitter (that no one seems to be using)
@@ -193,10 +183,6 @@ class OGRFilterTranslator {
     /**
      * Parses the GeoTools filter and tries to extract an SQL expression that can be used as the OGR
      * attribute filter
-     *
-     * @param schema
-     * @param filter
-     * @return
      */
     public String getAttributeFilter() {
         // TODO: switch to the non deprecated splitter (that no one seems to be using)

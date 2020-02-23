@@ -42,8 +42,6 @@ public class BarnesSurfaceProcessTest {
     /**
      * A test of a simple surface, validating that the process can be invoked and return a
      * reasonable result in a simple situation.
-     *
-     * @throws Exception
      */
     @Test
     public void testSimpleSurface() {

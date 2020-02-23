@@ -47,8 +47,6 @@ public interface CoverageStore extends CoverageSource {
      * getUpdateParameterInfo method; and should be limited to the abilities laid out by the
      * getCapabilities method.
      *
-     * @param writeRequest
-     * @param progress
      * @return response capturing the success/failure and side effects of performing the update.
      */
     public CoverageResponse update(CoverageUpdateRequest writeRequest, ProgressListener progress);

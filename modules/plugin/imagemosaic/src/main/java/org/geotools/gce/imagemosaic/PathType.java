@@ -130,8 +130,6 @@ public enum PathType {
      * <p>the location can never be null, while the parent location could be null, as an instance
      * when the path is relative.
      *
-     * @param parentLocation
-     * @param location
      * @return a {@link File} instance that points to a location which could be relative or absolute
      *     depending on the flavor of the enum where this method is applied. This method might
      *     return <code>null</code> in case something bad happens.

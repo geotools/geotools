@@ -34,33 +34,19 @@ public @interface DescribeParameter {
     // annotations cannot default to
     static final String DEFAULT_NULL = "THIS IS THE NULL VALUE FOR THE DEFAULT ATTRIBUTE";
 
-    /**
-     * The parameter name
-     *
-     * @return
-     */
+    /** The parameter name */
     String name();
 
-    /**
-     * The parameter description
-     *
-     * @return
-     */
+    /** The parameter description */
     String description() default "[undescribed]";
 
-    /**
-     * The type of object contained in the parameter in case it's a collection
-     *
-     * @return
-     */
+    /** The type of object contained in the parameter in case it's a collection */
     Class collectionType() default Object.class;
 
     /**
      * Minimum number of occurrences for the parameter. A value of 0 means the parameter is
      * optional, a value greater than one makes sense only if the parameter is a collection, in
      * which case the number of items of the collections will be compared against the minimum value.
-     *
-     * @return
      */
     int min() default -1;
 
@@ -68,8 +54,6 @@ public @interface DescribeParameter {
      * Maximum number of occurrences for the parameter. The value must be greater or equal to {@link
      * #min()}, a value greater than one makes sense only if the parameter is a collection, in which
      * case the number of items of the collections will be compared against the maximum value.
-     *
-     * @return
      */
     int max() default -1;
 
@@ -89,23 +73,13 @@ public @interface DescribeParameter {
      * away the value of the default itself would be used as the default value).
      *
      * <p>If none of the above heuristics works an exception will be thrown.
-     *
-     * @return
      */
     String defaultValue() default DEFAULT_NULL;
 
-    /**
-     * The minimum possible value acceptable for this parameter, in case it is a numeric value
-     *
-     * @return
-     */
+    /** The minimum possible value acceptable for this parameter, in case it is a numeric value */
     double minValue() default Double.NEGATIVE_INFINITY;
 
-    /**
-     * The maximum possible value acceptable for this parameter, in case it is a numeric value
-     *
-     * @return
-     */
+    /** The maximum possible value acceptable for this parameter, in case it is a numeric value */
     double maxValue() default Double.POSITIVE_INFINITY;
 
     /**

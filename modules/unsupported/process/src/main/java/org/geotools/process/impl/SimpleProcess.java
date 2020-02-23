@@ -60,11 +60,7 @@ public abstract class SimpleProcess extends AbstractProcess {
         }
     }
 
-    /**
-     * Implement your own process here.
-     *
-     * @throws Exception
-     */
+    /** Implement your own process here. */
     public abstract void process() throws Exception;
 
     protected Object get(String key) {

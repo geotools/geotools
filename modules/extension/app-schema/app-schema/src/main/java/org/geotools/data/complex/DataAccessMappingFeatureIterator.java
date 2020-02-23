@@ -195,12 +195,10 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     }
 
     /**
-     * @param store
      * @param mapping place holder for the target type, the surrogate FeatureSource and the mappings
      *     between them.
      * @param query the query over the target feature type, that is to be unpacked to its equivalent
      *     over the surrogate feature type.
-     * @throws IOException
      */
     public DataAccessMappingFeatureIterator(
             AppSchemaDataAccess store,
@@ -574,10 +572,6 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     /**
      * Sets the values of grouping attributes.
      *
-     * @param target
-     * @param source
-     * @param attMapping
-     * @param values
      * @return Feature. Target feature sets with simple attributes
      */
     protected Attribute setAttributeValue(
@@ -1056,7 +1050,6 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
      * @param source The source simple feature
      * @param xpath The xpath of polymorphic type
      * @param clientPropsMappings Client properties
-     * @throws IOException
      */
     private Attribute setPolymorphicValues(
             Name mappingName,
@@ -1124,9 +1117,6 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
      * @param value Nested features
      * @param xpath Attribute xPath where the client properties are to be set
      * @param targetNodeType Target node type
-     * @param attMapping
-     * @param list
-     * @throws IOException
      */
     protected void setXlinkReference(
             Attribute target,
@@ -1213,10 +1203,6 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     /**
      * Only used when joining is not used and pre-filter exists because the sources will match the
      * prefilter but there might be denormalised rows with same id that don't.
-     *
-     * @param fId
-     * @param features
-     * @throws IOException
      */
     private List<Feature> setNextFilteredFeature(String fId) throws IOException {
         FeatureCollection<? extends FeatureType, ? extends Feature> matchingFeatures;
@@ -1532,7 +1518,6 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
      *
      * @param id The feature id
      * @return list of source features
-     * @throws IOException
      */
     protected List<Feature> getSources(String id) throws IOException {
         if (isFiltered) {
@@ -1712,7 +1697,6 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
      *
      * @param clientPropsMappings the client properties mappings
      * @param isNested true if we're dealing with chained/nested features
-     * @return
      */
     protected boolean isByReference(Map<Name, Expression> clientPropsMappings, boolean isNested) {
         // only care for chained features
@@ -1723,13 +1707,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                 : false;
     }
 
-    /**
-     * Returns the declared CRS given the native CRS and the request WFS version
-     *
-     * @param nativeCRS
-     * @param wfsVersion
-     * @return
-     */
+    /** Returns the declared CRS given the native CRS and the request WFS version */
     private CoordinateReferenceSystem getDeclaredCrs(
             CoordinateReferenceSystem nativeCRS, String wfsVersion) {
         try {

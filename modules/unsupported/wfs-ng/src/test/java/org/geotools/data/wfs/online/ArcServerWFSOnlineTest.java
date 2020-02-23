@@ -92,11 +92,7 @@ public class ArcServerWFSOnlineTest extends OnlineTestSupport {
     public void testArcMapWFSFilter_V2_post() throws IOException, NoSuchElementException {
         arcMapTest("2.0.0", false);
     }
-    /**
-     * @param expected
-     * @param version
-     * @throws IOException
-     */
+    /** */
     private void arcMapTest(String version, boolean get) throws IOException {
 
         String getCapabilities =

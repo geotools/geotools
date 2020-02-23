@@ -84,9 +84,6 @@ public class Matrix3 implements XMatrix, Serializable {
     }
     /**
      * Cast (or convert) Matrix to internal DMatrixRMaj representation required for CommonOps_DDF3.
-     *
-     * @param matrix
-     * @return
      */
     private DMatrix3x3 internal(Matrix matrix) {
         if (matrix instanceof Matrix3) {
@@ -232,8 +229,6 @@ public class Matrix3 implements XMatrix, Serializable {
     /**
      * Returns the value at the row, column position in the matrix.
      *
-     * @param row
-     * @param column
      * @return Matrix value at the given row and column.
      */
     @Override
@@ -276,13 +271,7 @@ public class Matrix3 implements XMatrix, Serializable {
         }
     }
 
-    /**
-     * Sets the value of the row, column position in the matrix.
-     *
-     * @param row
-     * @param column
-     * @param value
-     */
+    /** Sets the value of the row, column position in the matrix. */
     @Override
     public void setElement(int row, int column, double value) {
         mat.set(row, column, value);
@@ -404,12 +393,7 @@ public class Matrix3 implements XMatrix, Serializable {
         return GeneralMatrix.toString(this);
     }
 
-    /**
-     * Extract col to provided array.
-     *
-     * @param col
-     * @param array
-     */
+    /** Extract col to provided array. */
     public void getColumn(int col, double[] array) {
         for (int j = 0; j < array.length; j++) {
             array[j] = mat.get(j, col);
@@ -428,12 +412,7 @@ public class Matrix3 implements XMatrix, Serializable {
         mat = ret;
     }
 
-    /**
-     * Extract row to provided array
-     *
-     * @param row
-     * @param array
-     */
+    /** Extract row to provided array */
     public void getRow(int row, double[] array) {
         for (int i = 0; i < array.length; i++) {
             array[i] = mat.get(row, i);
@@ -443,11 +422,7 @@ public class Matrix3 implements XMatrix, Serializable {
     //
     // In-place operations
     //
-    /**
-     * In-place multiply with provided matrix.
-     *
-     * @param matrix
-     */
+    /** In-place multiply with provided matrix. */
     public final void mul(Matrix matrix) {
         DMatrix3x3 b = internal(matrix);
         DMatrix3x3 ret = new DMatrix3x3();
@@ -455,12 +430,7 @@ public class Matrix3 implements XMatrix, Serializable {
         mat = ret;
     }
 
-    /**
-     * In-place update from matrix1 * matrix2.
-     *
-     * @param matrix1
-     * @param matrix2
-     */
+    /** In-place update from matrix1 * matrix2. */
     public void mul(Matrix matrix1, Matrix matrix2) {
         DMatrix3x3 a = internal(matrix1);
         DMatrix3x3 b = internal(matrix2);
@@ -524,11 +494,7 @@ public class Matrix3 implements XMatrix, Serializable {
         mat.a32 = a.a33 - b.a33;
     }
 
-    /**
-     * Update in place to the provided matrix (row-order).
-     *
-     * @param matrix
-     */
+    /** Update in place to the provided matrix (row-order). */
     public void set(double[] matrix) {
         mat.a11 = matrix[0];
         mat.a12 = matrix[1];

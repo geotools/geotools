@@ -76,11 +76,7 @@ class NetCDFRequest extends CoverageReadRequest {
 
     String name = null;
 
-    /**
-     * Build a new {@code CoverageRequest} given a set of input parameters.
-     *
-     * @throws IOException
-     */
+    /** Build a new {@code CoverageRequest} given a set of input parameters. */
     public NetCDFRequest(NetCDFSource source, CoverageReadRequest request) throws IOException {
         this.source = source;
         this.originalRequest = request;
@@ -106,9 +102,6 @@ class NetCDFRequest extends CoverageReadRequest {
 
     /**
      * Initialize coverage input properties by collecting them from a {@link CoverageSourceWrapper}
-     *
-     * @param wrapper
-     * @throws IOException
      */
     private void initInputCoverageProperties() throws IOException {
         VariableAdapter.UnidataSpatialDomain spatialDomain =

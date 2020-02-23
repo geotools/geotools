@@ -108,11 +108,7 @@ public class Parser {
         return handler;
     }
 
-    /**
-     * Allows the caller to customize the Pico context used for parsing
-     *
-     * @param contextCustomizer
-     */
+    /** Allows the caller to customize the Pico context used for parsing */
     public void setContextCustomizer(ContextCustomizer contextCustomizer) {
         handler.setContextCustomizer(contextCustomizer);
     }
@@ -124,9 +120,6 @@ public class Parser {
      * of the document. This method should only be called once for a single instance document.
      *
      * @return The object representation of the root element of the document.
-     * @throws IOException
-     * @throws SAXException
-     * @throws ParserConfigurationException
      */
     public Object parse(InputStream input)
             throws IOException, SAXException, ParserConfigurationException {
@@ -140,9 +133,6 @@ public class Parser {
      * of the document. This method should only be called once for a single instance document.
      *
      * @return The object representation of the root element of the document.
-     * @throws IOException
-     * @throws SAXException
-     * @throws ParserConfigurationException
      */
     public Object parse(Reader reader)
             throws IOException, SAXException, ParserConfigurationException {
@@ -159,10 +149,6 @@ public class Parser {
      *
      * @return @return The object representation of the root element of the document.
      *
-     * @throws IOException
-     * @throws SAXException
-     * @throws ParserConfigurationException
-     * @throws TransformerException
      *
      * @since 2.6
      */
@@ -190,9 +176,6 @@ public class Parser {
      * of the document. This method should only be called once for a single instance document.
      *
      * @return The object representation of the root element of the document.
-     * @throws IOException
-     * @throws SAXException
-     * @throws ParserConfigurationException
      */
     public Object parse(InputSource source)
             throws IOException, SAXException, ParserConfigurationException {
@@ -307,11 +290,7 @@ public class Parser {
         return handler.isForceParserDelegate();
     }
 
-    /**
-     * Set EntityResolver
-     *
-     * @param entityResolver
-     */
+    /** Set EntityResolver */
     public void setEntityResolver(EntityResolver entityResolver) {
         handler.setEntityResolver(entityResolver);
     }
@@ -366,10 +345,6 @@ public class Parser {
      *
      * <p>This method does not do any of the work done by {@link #parse(InputSource)}, it only
      * validates.
-     *
-     * @throws IOException
-     * @throws SAXException
-     * @throws ParserConfigurationException
      */
     public void validate(InputStream in)
             throws IOException, SAXException, ParserConfigurationException {
@@ -385,10 +360,6 @@ public class Parser {
      *
      * <p>This method does not do any of the work done by {@link #parse(InputSource)}, it only
      * validates.
-     *
-     * @throws IOException
-     * @throws SAXException
-     * @throws ParserConfigurationException
      */
     public void validate(Reader reader)
             throws IOException, SAXException, ParserConfigurationException {
@@ -404,10 +375,6 @@ public class Parser {
      *
      * <p>This method does not do any of the work done by {@link #parse(InputSource)}, it only
      * validates.
-     *
-     * @throws IOException
-     * @throws SAXException
-     * @throws ParserConfigurationException
      */
     public void validate(InputSource source)
             throws IOException, SAXException, ParserConfigurationException {

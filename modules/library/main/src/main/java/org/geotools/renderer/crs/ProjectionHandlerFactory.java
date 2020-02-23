@@ -35,8 +35,6 @@ public interface ProjectionHandlerFactory {
      * @param wrap enables map wrapping, if it's possible and makes sense for this projection
      * @param wrapLimit Max number of wraps performed when wrapping coordinates (to limit memory
      *     usage)
-     * @return
-     * @throws FactoryException
      */
     ProjectionHandler getHandler(
             ReferencedEnvelope renderingEnvelope,

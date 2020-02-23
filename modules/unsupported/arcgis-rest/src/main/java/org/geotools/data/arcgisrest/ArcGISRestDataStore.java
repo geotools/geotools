@@ -443,7 +443,6 @@ public class ArcGISRestDataStore extends ContentDataStore {
      * @param url The endpoint of the resource
      * @param params Request parameters
      * @return A string representing the JSON, null
-     * @throws IOException
      */
     public InputStream retrieveJSON(String methType, URL url, List<NameValuePair> params)
             throws IOException {
@@ -549,7 +548,6 @@ public class ArcGISRestDataStore extends ContentDataStore {
      *
      * @param istream input stream to convert to a String
      * @return the converted String
-     * @throws IOException
      */
     public static String inputStreamToString(InputStream istream) throws IOException {
         try {

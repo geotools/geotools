@@ -322,8 +322,6 @@ public class XMLReader {
      * loadPlugIns purpose.
      *
      * <p>Loads all the plugins in the directory
-     *
-     * @param plugInDir
      */
     public static Map loadPlugIns(File plugInDir) throws ValidationException {
         Map r = null;
@@ -354,7 +352,6 @@ public class XMLReader {
     /**
      * Loads all the test suites in the validations directory
      *
-     * @param validationDir
      * @param plugInDTOs Already loaded list of plug-ins to link.
      */
     public static Map loadValidations(File validationDir, Map plugInDTOs)

@@ -38,8 +38,6 @@ public interface ICompiler {
     /**
      * Compiles the source string to produce a {@link Filter}. The filter result must be retrieved
      * with {@link #getFilter()}.
-     *
-     * @throws CQLException
      */
     public void compileFilter() throws CQLException;
 
@@ -48,15 +46,12 @@ public interface ICompiler {
      *
      * @see #compileFilter()
      * @return Filter
-     * @throws CQLException
      */
     public Filter getFilter() throws CQLException;
 
     /**
      * Compiles the source string to produce an {@link Expression}. The resultant expression must be
      * retrieved with {@link #getExpression()}.
-     *
-     * @throws CQLException
      */
     public void compileExpression() throws CQLException;
     /**
@@ -64,15 +59,12 @@ public interface ICompiler {
      *
      * @see #compileExpression()
      * @return Expression
-     * @throws CQLException
      */
     public Expression getExpression() throws CQLException;
 
     /**
      * Compiles the source string to produce a {@link List} of {@link Filter}. The result must be
      * retrieved with {@link #getFilterList()()}.
-     *
-     * @throws CQLException
      */
     public void compileFilterList() throws CQLException;
 
@@ -81,14 +73,12 @@ public interface ICompiler {
      *
      * @see #compileFilterList()
      * @return List<Filter>
-     * @throws CQLException
      */
     public List<Filter> getFilterList() throws CQLException;
 
     /**
      * Return the token presents in the position specified.
      *
-     * @param position
      * @return IToken
      */
     public IToken getTokenInPosition(int position);

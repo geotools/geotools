@@ -84,11 +84,7 @@ public class SQLServerDialect extends BasicSQLDialect {
 
     static final Pattern POSITIVE_NUMBER = Pattern.compile("[1-9][0-9]*");
 
-    /**
-     * The direct geometry metadata table
-     *
-     * @param dataStore
-     */
+    /** The direct geometry metadata table */
     private String geometryMetadataTable;
 
     private Boolean useOffsetLimit = false;
@@ -773,56 +769,32 @@ public class SQLServerDialect extends BasicSQLDialect {
         }
     }
 
-    /**
-     * The geometry metadata table in use, if any
-     *
-     * @return
-     */
+    /** The geometry metadata table in use, if any */
     public String getGeometryMetadataTable() {
         return geometryMetadataTable;
     }
 
-    /**
-     * Sets the geometry metadata table
-     *
-     * @param geometryMetadataTable
-     */
+    /** Sets the geometry metadata table */
     public void setGeometryMetadataTable(String geometryMetadataTable) {
         this.geometryMetadataTable = geometryMetadataTable;
     }
 
-    /**
-     * Sets whether to use offset limit or not
-     *
-     * @param useOffsetLimit
-     */
+    /** Sets whether to use offset limit or not */
     public void setUseOffSetLimit(Boolean useOffsetLimit) {
         this.useOffsetLimit = useOffsetLimit;
     }
 
-    /**
-     * Sets whether to use native SQL Server binary serialization or WKB serialization
-     *
-     * @param useNativeSerialization
-     */
+    /** Sets whether to use native SQL Server binary serialization or WKB serialization */
     public void setUseNativeSerialization(Boolean useNativeSerialization) {
         this.useNativeSerialization = useNativeSerialization;
     }
 
-    /**
-     * Sets whether to force the usage of spatial indexes by including a WITH INDEX hint
-     *
-     * @param useNativeSerialization
-     */
+    /** Sets whether to force the usage of spatial indexes by including a WITH INDEX hint */
     public void setForceSpatialIndexes(boolean forceSpatialIndexes) {
         this.forceSpatialIndexes = forceSpatialIndexes;
     }
 
-    /**
-     * Sets a comma separated list of table hints that will be added to every select query
-     *
-     * @param tableHints
-     */
+    /** Sets a comma separated list of table hints that will be added to every select query */
     public void setTableHints(String tableHints) {
         if (tableHints == null) {
             this.tableHints = null;
@@ -836,15 +808,7 @@ public class SQLServerDialect extends BasicSQLDialect {
         }
     }
 
-    /**
-     * Drop the index. Subclasses can override to handle extra syntax or db specific situations
-     *
-     * @param cx
-     * @param schema
-     * @param databaseSchema
-     * @param indexName
-     * @throws SQLException
-     */
+    /** Drop the index. Subclasses can override to handle extra syntax or db specific situations */
     @Override
     public void dropIndex(
             Connection cx, SimpleFeatureType schema, String databaseSchema, String indexName)

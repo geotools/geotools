@@ -52,11 +52,7 @@ public class Data {
         return ret;
     }
 
-    /**
-     * @param val
-     * @return - this Data object
-     * @throws TreeException
-     */
+    /** @return - this Data object */
     public Data addValue(Object val) throws TreeException {
         if (this.values.size() == def.getFieldsCount()) {
             throw new TreeException("Max number of values reached!");

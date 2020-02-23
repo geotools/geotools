@@ -39,8 +39,6 @@ public class MBString extends MBExpression {
     /**
      * Returns a string consisting of the concatenation of the inputs. Example: ["concat", string,
      * string, ...]: string
-     *
-     * @return
      */
     public Expression stringConcat() throws MBFormatException {
         List<Expression> list = new ArrayList<>();
@@ -63,8 +61,6 @@ public class MBString extends MBExpression {
      * Returns the input string converted to lowercase. Follows the Unicode Default Case Conversion
      * algorithm and the locale-insensitive case mappings in the Unicode Character Database.
      * Example: ["downcase", string]: string
-     *
-     * @return
      */
     public Expression stringDowncase() {
         if (parse.string(json, 1) != null) {
@@ -82,8 +78,6 @@ public class MBString extends MBExpression {
      * Returns the input string converted to uppercase. Follows the Unicode Default Case Conversion
      * algorithm and the locale-insensitive case mappings in the Unicode Character Database.
      * ["upcase", string]: string
-     *
-     * @return
      */
     public Expression stringUpcase() {
         if (parse.string(json, 1) != null) {
@@ -97,11 +91,7 @@ public class MBString extends MBExpression {
         throw new MBFormatException("Unable to upcase the value from " + parse.get(json, 1));
     }
 
-    /**
-     * Will return a function base on the mbexpression string name;
-     *
-     * @return
-     */
+    /** Will return a function base on the mbexpression string name; */
     @Override
     public Expression getExpression() {
         switch (name) {

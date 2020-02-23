@@ -53,19 +53,7 @@ public class ElementGT implements Element {
     private String name = null, id = null;
     private int min = 1, max = 1;
 
-    /**
-     * Construct <code>ElementGT</code>.
-     *
-     * @param id
-     * @param name
-     * @param namespace
-     * @param type
-     * @param min
-     * @param max
-     * @param nillable
-     * @param substitutionGroup
-     * @param _abstract
-     */
+    /** Construct <code>ElementGT</code>. */
     public ElementGT(
             String id,
             String name,
@@ -226,7 +214,6 @@ public class ElementGT implements Element {
      * TODO summary sentence for findChildElement ...
      *
      * @see org.geotools.xml.schema.ElementGrouping#findChildElement(java.lang.String)
-     * @param name1
      */
     public Element findChildElement(String name1) {
         return (getName() != null && getName().equals(name1)) ? this : null;

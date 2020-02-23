@@ -504,12 +504,7 @@ public class NetCDFUtilities {
         return true;
     }
 
-    /**
-     * Get Z Dimension Lenght for standard CF variables
-     *
-     * @param var
-     * @return
-     */
+    /** Get Z Dimension Lenght for standard CF variables */
     public static int getZDimensionLength(Variable var) {
         final int rank = var.getRank();
         if (rank > 2) {
@@ -791,11 +786,9 @@ public class NetCDFUtilities {
     /**
      * Returns a {@code NetcdfDataset} given an input object
      *
-     * @param input
      *                the input object (usually a {@code File}, a
      *                {@code String} or a {@code FileImageInputStreamExt).
      * @return {@code NetcdfDataset} in case of success.
-     * @throws IOException
      *                 if some error occur while opening the dataset.
      * @throws {@link IllegalArgumentException}
      *                 in case the specified input is a directory
@@ -861,7 +854,6 @@ public class NetCDFUtilities {
      *
      * @param input the input to check.
      * @return the file or <code>null</code> if it is not file based.
-     * @throws IOException
      */
     public static File getFile(Object input) throws IOException {
         File guessedFile = null;
@@ -1028,11 +1020,7 @@ public class NetCDFUtilities {
         return ct;
     }
 
-    /**
-     * @param schemaDef
-     * @param crs
-     * @return
-     */
+    /** */
     public static SimpleFeatureType createFeatureType(
             String schemaName, String schemaDef, CoordinateReferenceSystem crs) {
         SimpleFeatureType indexSchema = null;
@@ -1159,12 +1147,7 @@ public class NetCDFUtilities {
         return null;
     }
 
-    /**
-     * Return the propery NetCDF dataType for the input datatype class
-     *
-     * @param classDataType
-     * @return
-     */
+    /** Return the propery NetCDF dataType for the input datatype class */
     public static DataType getNetCDFDataType(String classDataType) {
         if (isATime(classDataType)) {
             return DataType.DOUBLE;
@@ -1205,9 +1188,6 @@ public class NetCDFUtilities {
     /**
      * Return true in case that dataType refers to something which need to be handled as a Time
      * (TimeStamp, Date)
-     *
-     * @param classDataType
-     * @return
      */
     public static final boolean isATime(String classDataType) {
         return (classDataType.endsWith("Timestamp") || classDataType.endsWith("Date"));
@@ -1218,7 +1198,6 @@ public class NetCDFUtilities {
      *
      * @param dimensions the dimensions
      * @param varDataType the DataType of the required array
-     * @return
      */
     public static Array getArray(int[] dimensions, DataType varDataType) {
         if (dimensions == null) throw new IllegalArgumentException("Illegal dimensions");

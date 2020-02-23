@@ -458,9 +458,6 @@ public abstract class SQLDialect {
      *   <li>The provided attribute (<tt>att</tt>) contains some additional restrictions that can be
      *       encoded in the type, ex: field length
      * </ul>
-     *
-     * @param sqlTypeName
-     * @param sql
      */
     public void encodeColumnType(String sqlTypeName, StringBuffer sql) {
         sql.append(sqlTypeName);
@@ -581,9 +578,6 @@ public abstract class SQLDialect {
      *
      * <p>Most overrides will try out to decode the official EPSG code first, and fall back on the
      * custom database definition otherwise
-     *
-     * @param srid
-     * @return
      */
     public CoordinateReferenceSystem createCRS(int srid, Connection cx) throws SQLException {
         try {
@@ -608,7 +602,6 @@ public abstract class SQLDialect {
      * @param schema The database schema, if any, or null
      * @param featureType The feature type containing the geometry columns whose bounds need to
      *     computed. Mind, it may be retyped and thus contain less geometry columns than the table
-     * @param cx
      * @return a list of referenced envelopes (some of which may be null or empty)
      */
     public List<ReferencedEnvelope> getOptimizedBounds(
@@ -622,8 +615,6 @@ public abstract class SQLDialect {
      *
      * <p>This method must also be sure to properly encode the name of the column with the {@link
      * #encodeColumnName(String, StringBuffer)} function.
-     *
-     * @param tableName
      */
     public abstract void encodeGeometryEnvelope(
             String tableName, String geometryColumn, StringBuffer sql);
@@ -1042,8 +1033,6 @@ public abstract class SQLDialect {
     /**
      * Returns true if this dialect can encode both {@linkplain Query#getStartIndex()} and
      * {@linkplain Query#getMaxFeatures()} into native SQL.
-     *
-     * @return
      */
     public boolean isLimitOffsetSupported() {
         return false;
@@ -1051,9 +1040,6 @@ public abstract class SQLDialect {
 
     /**
      * Returns true if this dialect supports sorting together with the given aggregation function.
-     *
-     * @param function
-     * @return
      */
     public boolean isAggregatedSortSupported(String function) {
         return false;
@@ -1067,10 +1053,6 @@ public abstract class SQLDialect {
     /**
      * Alters the query provided so that limit and offset are natively dealt with. This might mean
      * simply appending some extra directive to the query, or wrapping it into a bigger one.
-     *
-     * @param sql
-     * @param limit
-     * @param offset
      */
     public void applyLimitOffset(StringBuffer sql, int limit, int offset) {
         throw new UnsupportedOperationException(
@@ -1083,8 +1065,6 @@ public abstract class SQLDialect {
      * <p>possible hints (but not limited to)
      *
      * <p>{@link Hints#GEOMETRY_GENERALIZATION} {@link Hints#GEOMETRY_SIMPLIFICATION}
-     *
-     * @param hints
      */
     protected void addSupportedHints(Set<Hints.Key> hints) {}
 
@@ -1131,10 +1111,6 @@ public abstract class SQLDialect {
      * Performs the class "create [unique] indexName on tableName(att1, att2, ..., attN)" call.
      *
      * <p>Subclasses can override to handle special indexes (like spatial ones) and/or the hints
-     *
-     * @param schema
-     * @param index
-     * @throws SQLException
      */
     public void createIndex(
             Connection cx, SimpleFeatureType schema, String databaseSchema, Index index)
@@ -1176,15 +1152,7 @@ public abstract class SQLDialect {
         }
     }
 
-    /**
-     * Drop the index. Subclasses can override to handle extra syntax or db specific situations
-     *
-     * @param cx
-     * @param schema
-     * @param databaseSchema
-     * @param indexName
-     * @throws SQLException
-     */
+    /** Drop the index. Subclasses can override to handle extra syntax or db specific situations */
     public void dropIndex(
             Connection cx, SimpleFeatureType schema, String databaseSchema, String indexName)
             throws SQLException {
@@ -1213,12 +1181,6 @@ public abstract class SQLDialect {
     /**
      * Returns the list of indexes for a certain table. Subclasses can override to add support for
      * db specific hints
-     *
-     * @param cx
-     * @param databaseSchema
-     * @param typeName
-     * @return
-     * @throws SQLException
      */
     public List<Index> getIndexes(Connection cx, String databaseSchema, String typeName)
             throws SQLException {
@@ -1253,10 +1215,6 @@ public abstract class SQLDialect {
     /**
      * Used to apply search hints on the fully generated SQL (complete of select, from, where, sort,
      * limit/offset)
-     *
-     * @param sql
-     * @param featureType
-     * @param query
      */
     public void handleSelectHints(StringBuffer sql, SimpleFeatureType featureType, Query query) {
         // nothing to do
@@ -1271,9 +1229,6 @@ public abstract class SQLDialect {
      * Splits the filter into two parts, an encodable one, and a non encodable one. The default
      * implementation uses the filter capabilities to split the filter, subclasses can implement
      * their own logic if need be.
-     *
-     * @param original
-     * @return
      */
     public Filter[] splitFilter(Filter filter, SimpleFeatureType schema) {
         PostPreProcessFilterSplittingVisitor splitter =

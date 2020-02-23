@@ -247,7 +247,6 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
      * @param nestedMapping Attribute mapping for nested features
      * @param fMapping The root feature type mapping
      * @return list of nested features
-     * @throws IOException
      */
     private List<Feature> getNestedFeatures(
             Feature root, NestedAttributeMapping nestedMapping, FeatureTypeMapping fMapping)
@@ -285,9 +284,6 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
     /**
      * Extract the value that might be wrapped in an attribute. If the value is a collection, gets
      * the first value.
-     *
-     * @param value
-     * @return
      */
     @SuppressWarnings("rawtypes")
     private Object extractAttributeValue(Object value) {
@@ -319,7 +315,6 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
      *
      * @param mapping attribute mapping
      * @param lastStep the last step
-     * @return
      */
     private Expression getClientPropertyExpression(AttributeMapping mapping, Step lastStep) {
         Expression exp = null;

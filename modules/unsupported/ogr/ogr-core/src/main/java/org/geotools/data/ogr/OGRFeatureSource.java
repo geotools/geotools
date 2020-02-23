@@ -110,13 +110,7 @@ class OGRFeatureSource extends ContentFeatureSource {
         }
     }
 
-    /**
-     * Sets the spatial filter and attribute filter on the specified layer
-     *
-     * @param layer
-     * @param filterTx
-     * @throws IOException
-     */
+    /** Sets the spatial filter and attribute filter on the specified layer */
     private void setLayerFilters(Object layer, OGRFilterTranslator filterTx) throws IOException {
         Geometry spatialFilter = filterTx.getSpatialFilter();
         if (spatialFilter != null) {

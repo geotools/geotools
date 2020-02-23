@@ -32,8 +32,6 @@ public class MBHeatmap extends MBExpression {
      * Gets the kernel density estimation of a pixel in a heatmap layer, which is a relative measure
      * of how many data points are crowded around a particular pixel. Can only be used in the
      * heatmap-color property. Example: ["heatmap-density"]: number
-     *
-     * @return
      */
     public Expression heatmapDensity() {
         return null;

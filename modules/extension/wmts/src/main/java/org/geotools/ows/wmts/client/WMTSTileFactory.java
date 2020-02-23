@@ -190,10 +190,7 @@ public class WMTSTileFactory extends TileFactory {
         return id == null ? null : new WMTSTile(id, service);
     }
 
-    /**
-     * @param tileIdentifier
-     * @return
-     */
+    /** */
     public static ReferencedEnvelope getExtentFromTileName(
             WMTSTileIdentifier tileIdentifier, TileService service) {
         WMTSZoomLevel zl = new WMTSZoomLevel(tileIdentifier.getZ(), (WMTSTileService) service);
@@ -233,11 +230,7 @@ public class WMTSTileFactory extends TileFactory {
         return ret;
     }
 
-    /**
-     * @param tileMatrix
-     * @param unit
-     * @return
-     */
+    /** */
     private static double getPixelSpan(TileMatrix tileMatrix) {
         CoordinateSystem coordinateSystem = tileMatrix.getCrs().getCoordinateSystem();
         Unit unit = coordinateSystem.getAxis(0).getUnit();

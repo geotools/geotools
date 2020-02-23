@@ -76,21 +76,12 @@ public class PointImpl extends GeometryImpl implements Point {
         this(null, DefaultGeographicCRS.WGS84);
     }
 
-    /**
-     * Creates a new {@code PointImpl}.
-     *
-     * @param position
-     */
+    /** Creates a new {@code PointImpl}. */
     public PointImpl(final DirectPosition position) {
         this(position, position.getCoordinateReferenceSystem());
     }
 
-    /**
-     * Creates a new {@code PointImpl}.
-     *
-     * @param position
-     * @param crs
-     */
+    /** Creates a new {@code PointImpl}. */
     public PointImpl(final DirectPosition position, final CoordinateReferenceSystem crs) {
         super(crs);
         this.position = (position == null) ? new DirectPositionImpl(crs) : position;

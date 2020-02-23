@@ -126,7 +126,6 @@ public class XPathUtil {
          * Compares this StepList with another for equivalence regardless of the indexes of each
          * Step.
          *
-         * @param propertyName
          * @return <code>true</code> if this step list has the same location paths than <code>
          *     propertyName</code> ignoring the indexes in each step. <code>false</code> otherwise.
          */
@@ -197,12 +196,7 @@ public class XPathUtil {
 
         private boolean isIndexed;
 
-        /**
-         * Creates a "property" xpath step (i.e. isXmlAttribute() == false).
-         *
-         * @param name
-         * @param index
-         */
+        /** Creates a "property" xpath step (i.e. isXmlAttribute() == false). */
         public Step(final QName name, final int index) {
             this(name, index, false, false);
         }
@@ -261,12 +255,7 @@ public class XPathUtil {
             this.predicate = predicate;
         }
 
-        /**
-         * Compares this Step with another for equivalence ignoring the steps indexes.
-         *
-         * @param hisStep
-         * @return
-         */
+        /** Compares this Step with another for equivalence ignoring the steps indexes. */
         public boolean equalsIgnoreIndex(Step other) {
             if (other == null) {
                 return false;
@@ -340,8 +329,6 @@ public class XPathUtil {
          *
          * <p>I.e. it was created from the last step of an expression like <code>foo/bar@attribute
          * </code>.
-         *
-         * @return
          */
         public boolean isXmlAttribute() {
             return isXmlAttribute;
@@ -412,8 +399,6 @@ public class XPathUtil {
      * @param root non null descriptor of the root attribute, generally the Feature descriptor. Used
      *     to ignore the first step in xpathExpression if the expression's first step is named as
      *     rootName.
-     * @param xpathExpression
-     * @return
      * @throws IllegalArgumentException if <code>xpathExpression</code> has no steps or it isn't a
      *     valid XPath expression against <code>type</code>.
      */

@@ -52,12 +52,7 @@ public class DirectPositionImpl implements DirectPosition, Cloneable, Serializab
         }
     }
 
-    /**
-     * Creates a direct Position by using coordinates of another direct Position
-     *
-     * @param crs
-     * @param coord
-     */
+    /** Creates a direct Position by using coordinates of another direct Position */
     public DirectPositionImpl(CoordinateReferenceSystem crs, double[] coord) {
         this.crs = crs;
         assert (coord.length == crs.getCoordinateSystem().getDimension());
@@ -67,11 +62,7 @@ public class DirectPositionImpl implements DirectPosition, Cloneable, Serializab
     public DirectPositionImpl(Position position) {
         this(position.getDirectPosition());
     }
-    /**
-     * Creates a direct Position by using coordinates of another direct Position
-     *
-     * @param position
-     */
+    /** Creates a direct Position by using coordinates of another direct Position */
     public DirectPositionImpl(final DirectPosition position) {
         this.crs = position.getCoordinateReferenceSystem();
         // Comment by Sanjay
@@ -90,25 +81,14 @@ public class DirectPositionImpl implements DirectPosition, Cloneable, Serializab
         this.coordinate = position.getCoordinate(); // .clone()
     }
 
-    /**
-     * @param crs
-     * @param x
-     * @param y
-     * @param z
-     */
+    /** */
     public DirectPositionImpl(CoordinateReferenceSystem crs, double x, double y, double z) {
         this.crs = crs;
         assert (3 == crs.getCoordinateSystem().getDimension());
         this.coordinate = new double[] {x, y, z};
     }
 
-    /**
-     * @param crs
-     * @param x
-     * @param y
-     * @param z
-     * @param m
-     */
+    /** */
     public DirectPositionImpl(
             CoordinateReferenceSystem crs, double x, double y, double z, double m) {
         this.crs = crs;
@@ -228,29 +208,17 @@ public class DirectPositionImpl implements DirectPosition, Cloneable, Serializab
         return (this.getDimension() > 2) ? this.coordinate[2] : Double.NaN;
     }
 
-    /**
-     * Sets the x value of the coordinate represented by this DirectPosition
-     *
-     * @param x
-     */
+    /** Sets the x value of the coordinate represented by this DirectPosition */
     public void setX(double x) {
         this.coordinate[0] = x;
     }
 
-    /**
-     * Sets the y value of the coordinate represented by this DirectPosition
-     *
-     * @param y
-     */
+    /** Sets the y value of the coordinate represented by this DirectPosition */
     public void setY(double y) {
         this.coordinate[1] = y;
     }
 
-    /**
-     * Sets the z value of the coordinate represented by this DirectPosition
-     *
-     * @param z
-     */
+    /** Sets the z value of the coordinate represented by this DirectPosition */
     public void setZ(double z) {
         if (this.getDimension() > 2) this.coordinate[2] = z;
     }
@@ -345,7 +313,6 @@ public class DirectPositionImpl implements DirectPosition, Cloneable, Serializab
     //	/**
     //	 * Adds a DirectPosition to the position
     //	 *
-    //	 * @param p
     //	 *            DirectPosition to add
     //	 * @return new Position
     //	 */
@@ -424,7 +391,6 @@ public class DirectPositionImpl implements DirectPosition, Cloneable, Serializab
     //	/**
     //	 * Subtracts a direct position from the position
     //	 *
-    //	 * @param p
     //	 * @return new Position
     //	 */
     //	public DirectPositionImpl subtract(DirectPositionImpl p) {
@@ -438,7 +404,6 @@ public class DirectPositionImpl implements DirectPosition, Cloneable, Serializab
     //	 TODO 1) benoetigen wir die methode. wenn ja:
     //        2) algorithmus als robuste version implementieren oder sind interne rundungsfehler ok?
     //	/**
-    //	 * @param factor
     //	 * @return DirectPositionImpl
     //	 */
     //	public DirectPositionImpl scale(double factor) {
@@ -464,9 +429,6 @@ public class DirectPositionImpl implements DirectPosition, Cloneable, Serializab
     //
     //	/**
     //	 *
-    //	 * @param p0
-    //	 * @param p1
-    //	 * @param r
     //	 * @return DirectPositionImpl
     //	 */
     //	public static DirectPositionImpl evaluate(DirectPositionImpl p0,
@@ -482,9 +444,6 @@ public class DirectPositionImpl implements DirectPosition, Cloneable, Serializab
     //	 eher zu lineSegment. ich habe die vorhandene methode dort (in LineSegment) deswegen
     // entsprechend angepasst.
     //	/**
-    //	 * @param p0
-    //	 * @param p1
-    //	 * @param eval
     //	 * @return DirectPositionImpl
     //	 */
     //	public static DirectPositionImpl evaluate(DirectPositionImpl p0,
@@ -599,7 +558,6 @@ public class DirectPositionImpl implements DirectPosition, Cloneable, Serializab
     //
     // /**
     // * Builds the scalar product
-    // * @param p
     // * @return Scalar product
     // */
     // public double scalar(DirectPositionImpl p) {

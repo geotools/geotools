@@ -104,7 +104,6 @@ public class GeoJSONParser implements SimpleFeatureIterator {
      * @param iStream the stream to read features from
      * @param featureTypeIn the feature type the features conform to
      * @param loggerIn the logger to use
-     * @throws UnsupportedEncodingException
      */
     public GeoJSONParser(InputStream iStream, SimpleFeatureType featureTypeIn, Logger loggerIn)
             throws UnsupportedEncodingException {
@@ -173,7 +172,6 @@ public class GeoJSONParser implements SimpleFeatureIterator {
      * an exception
      *
      * @return A simple feature collection iterator
-     * @throws IOException
      */
     public void parseFeatureCollection() throws IOException {
 
@@ -627,7 +625,6 @@ public class GeoJSONParser implements SimpleFeatureIterator {
      * Parses an ArcGIS ReST API error message
      *
      * @return the exception reflecting the error
-     * @throws IOException
      */
     public IOException parseError() throws IOException {
 

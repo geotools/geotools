@@ -36,20 +36,12 @@ public class GeneralizationInfos {
         infoMap = new HashMap<String, GeneralizationInfo>();
     }
 
-    /**
-     * add a GeneralizationInfo object
-     *
-     * @param info
-     */
+    /** add a GeneralizationInfo object */
     public void addGeneralizationInfo(GeneralizationInfo info) {
         infoMap.put(info.getBaseFeatureName(), info);
     }
 
-    /**
-     * remove a GeneralizationInfo object
-     *
-     * @param info
-     */
+    /** remove a GeneralizationInfo object */
     public void removeGeneralizationInfo(GeneralizationInfo info) {
         infoMap.remove(info.getBaseFeatureName());
     }
@@ -58,7 +50,6 @@ public class GeneralizationInfos {
      * get GeneralizationInfo for baseFeatureName
      *
      * @see GeneralizationInfo for info about baseFeatureName
-     * @param baseFeatureName
      * @return GeneralizationInfo or null
      */
     public GeneralizationInfo getGeneralizationInfoForBaseFeatureName(String baseFeatureName) {
@@ -69,7 +60,6 @@ public class GeneralizationInfos {
      * get GeneralizationInfo for featureName
      *
      * @see GeneralizationInfo for info about featureName
-     * @param featureName
      * @return GeneralizationInfo or null
      */
     public GeneralizationInfo getGeneralizationInfoForFeatureName(String featureName) {

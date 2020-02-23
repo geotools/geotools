@@ -164,7 +164,6 @@ public class ArcSDEJNDIDataStoreFactory implements DataStoreFactorySpi {
     /**
      * Looks up and returns the JNDI resource addressed by {@code jndiName}
      *
-     * @param jndiName
      * @return the resource mapped at {@code jndiName}, which shall be either a {@code
      *     java.util.Map<String, String>}, an {@link ArcSDEConnectionConfig} or a {@link
      *     ISessionPool}.

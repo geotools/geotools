@@ -295,8 +295,6 @@ public class GeometryBuilder {
     /**
      * Create a point with the provided ordinates.
      *
-     * @param ord1
-     * @param ord2
      * @return createPoint( new double[]{ ord1, ord2})
      */
     public Point createPoint(double ord1, double ord2) {
@@ -305,9 +303,6 @@ public class GeometryBuilder {
     /**
      * Create a point with the provided ordinates.
      *
-     * @param ord1
-     * @param ord2
-     * @param ord3
      * @return createPoint( new double[]{ ord1, ord2, ord3 })
      */
     public Point createPoint(double ord1, double ord2, double ord3) {
@@ -316,9 +311,7 @@ public class GeometryBuilder {
     /**
      * Create a point with the provided ordinates
      *
-     * @param ordinates
      * @return getPrimitiveFactory().createPoint(coordinates)
-     * @throws MismatchedDimensionException
      */
     public Point createPoint(double[] ordinates) throws MismatchedDimensionException {
         if (ordinates == null)

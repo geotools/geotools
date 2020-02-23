@@ -56,12 +56,7 @@ public final class FilterToTextUtil {
         // utility class
     }
 
-    /**
-     * Process the possibly user supplied extraData parameter into a StringBuilder.
-     *
-     * @param extraData
-     * @return
-     */
+    /** Process the possibly user supplied extraData parameter into a StringBuilder. */
     public static StringBuilder asStringBuilder(Object extraData) {
         if (extraData instanceof StringBuilder) {
             return (StringBuilder) extraData;
@@ -138,8 +133,6 @@ public final class FilterToTextUtil {
      * Builds a comparison predicate inserting the operato1 or operator2 taking into account the
      * PropertyName position in the comparison filter.
      *
-     * @param filter
-     * @param extraData
      * @param operator an operator
      * @return SringBuffer
      */

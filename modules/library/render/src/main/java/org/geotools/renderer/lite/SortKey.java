@@ -107,11 +107,7 @@ class SortKey {
         }
     }
 
-    /**
-     * Copies from another SortKey
-     *
-     * @param reference
-     */
+    /** Copies from another SortKey */
     public void copy(SortKey reference) {
         for (int i = 0; i < components.length; i++) {
             components[i] = reference.components[i];
@@ -128,12 +124,7 @@ class SortKey {
         return "SortKey [components=" + Arrays.toString(components) + "]";
     }
 
-    /**
-     * Builds a SortKey Comparator from a SortBy array
-     *
-     * @param sortBy
-     * @return
-     */
+    /** Builds a SortKey Comparator from a SortBy array */
     static Comparator buildComparator(SortBy[] sortBy) {
         // sanity check
         if (sortBy == SortBy.UNSORTED || sortBy == null) {

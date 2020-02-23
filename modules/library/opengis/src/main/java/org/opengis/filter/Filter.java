@@ -63,7 +63,6 @@ public interface Filter {
      * This ability is used to allow Queries against both Features and and non spatial data (such as Record) and
      * to express constraints on permissable data values.
      * </p>
-     * @param object
      * @return <code>true</true> if the test(s) are passed for the provided object
      */
     boolean evaluate(Object object);

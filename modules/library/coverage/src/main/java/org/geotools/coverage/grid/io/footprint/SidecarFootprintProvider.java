@@ -141,13 +141,7 @@ public class SidecarFootprintProvider implements FootprintGeometryProvider {
         return path;
     }
 
-    /**
-     * Return the footprint (if any) for a file referred by its path
-     *
-     * @param path
-     * @return
-     * @throws IOException
-     */
+    /** Return the footprint (if any) for a file referred by its path */
     public Geometry getFootprint(String path) throws IOException {
         String noExtension = getNoExtensionPath(path);
 

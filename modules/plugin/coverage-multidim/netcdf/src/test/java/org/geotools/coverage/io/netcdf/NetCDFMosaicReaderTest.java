@@ -1496,8 +1496,6 @@ public class NetCDFMosaicReaderTest extends Assert {
     /**
      * Test that expected data values can be read from an ImageMosaic of multi-coverage NetCDF
      * files.
-     *
-     * @throws Exception
      */
     @Test
     public void testMultiCoverage() throws Exception {
@@ -1524,14 +1522,6 @@ public class NetCDFMosaicReaderTest extends Assert {
     /**
      * Check that reading a single data value from an ImageMosaic of multi-coverage NetCDF files
      * yields the expected value.
-     *
-     * @param reader
-     * @param coverageName
-     * @param longitude
-     * @param latitude
-     * @param timestamp
-     * @param expected
-     * @throws Exception
      */
     private void checkMultiCoverage(
             ImageMosaicReader reader,

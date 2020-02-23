@@ -38,9 +38,6 @@ public final class FeatureStreams {
     /**
      * Converts FeatureCollection to Stream of Features Use with try-with-resources clause for auto
      * closing
-     *
-     * @param fc
-     * @return
      */
     public static <T extends Feature, K extends FeatureType> Stream<T> toFeatureStream(
             FeatureCollection<K, T> fc) {

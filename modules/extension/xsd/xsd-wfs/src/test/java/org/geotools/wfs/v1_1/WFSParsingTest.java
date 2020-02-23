@@ -103,11 +103,7 @@ public class WFSParsingTest {
         assertFeatureTypeListOperations(caps);
     }
 
-    /**
-     * TODO: fix me
-     *
-     * @throws Exception
-     */
+    /** TODO: fix me */
     @Test
     @Ignore
     public void testParseGetCapabilitiesDeegree() throws Exception {

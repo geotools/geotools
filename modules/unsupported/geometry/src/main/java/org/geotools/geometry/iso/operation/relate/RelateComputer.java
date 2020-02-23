@@ -220,8 +220,6 @@ public class RelateComputer {
      * same as the edge label if they do not already have a label. This allows nodes created by
      * either self-intersections or mutual intersections to be labelled. Endpoint nodes will already
      * be labelled from when they were inserted.
-     *
-     * @param argIndex
      */
     private void computeIntersectionNodes(int argIndex) {
         for (Iterator i = this.arg[argIndex].getEdgeIterator(); i.hasNext(); ) {
@@ -277,11 +275,7 @@ public class RelateComputer {
         }
     }
 
-    /**
-     * Update the IM with the sum of the IMs for each component
-     *
-     * @param IntersectionMatrix
-     */
+    /** Update the IM with the sum of the IMs for each component */
     private void updateIM(IntersectionMatrix im) {
 
         for (Iterator ei = isolatedEdges.iterator(); ei.hasNext(); ) {
@@ -301,9 +295,6 @@ public class RelateComputer {
      * Processes isolated edges by computing their labelling and adding them to the isolated edges
      * list. Isolated edges are guaranteed not to touch the boundary of the target (since if they
      * did, they would have caused an intersection to be computed and hence would not be isolated)
-     *
-     * @param thisIndex
-     * @param targetIndex
      */
     private void labelIsolatedEdges(int thisIndex, int targetIndex) {
         for (Iterator ei = arg[thisIndex].getEdgeIterator(); ei.hasNext(); ) {

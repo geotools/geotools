@@ -48,7 +48,6 @@ public class ThreadedOracleEpsgAuthorityOnlineTest extends OracleOnlineTestCase 
      * It is a little hard to test this thing, the DefaultAuthorityFactory holds a field "buffered"
      * that is an AbstractAuthorityFactory which in turn is an FactoryUsing
      *
-     * @throws Exception
      */
     public void testCRSCreation() throws Exception {
         ThreadedOracleEpsgFactory oracle = new ThreadedOracleEpsgFactory();

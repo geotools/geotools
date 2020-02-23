@@ -207,7 +207,6 @@ public class IndexFile implements FileReader {
      *
      * @param index The index, from 0 to getRecordCount - 1
      * @return The offset in 16-bit words.
-     * @throws IOException
      */
     public int getOffset(int index) throws IOException {
         int ret = -1;
@@ -230,7 +229,6 @@ public class IndexFile implements FileReader {
      *
      * @param index The index, from 0 to getRecordCount - 1
      * @return The offset in bytes.
-     * @throws IOException
      */
     public int getOffsetInBytes(int index) throws IOException {
         return this.getOffset(index) * 2;
@@ -241,7 +239,6 @@ public class IndexFile implements FileReader {
      *
      * @param index The index, from 0 to getRecordCount - 1
      * @return The lengh in bytes of the record.
-     * @throws IOException
      */
     public int getContentLength(int index) throws IOException {
         int ret = -1;

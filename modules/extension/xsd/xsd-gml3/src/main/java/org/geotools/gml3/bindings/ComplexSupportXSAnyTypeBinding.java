@@ -93,12 +93,7 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
         return null;
     }
 
-    /**
-     * Convert a {@link QName} to a {@link Name}.
-     *
-     * @param name
-     * @return
-     */
+    /** Convert a {@link QName} to a {@link Name}. */
     private static Name toTypeName(QName name) {
         if (XMLConstants.NULL_NS_URI.equals(name.getNamespaceURI())) {
             return new NameImpl(name.getLocalPart());
@@ -410,9 +405,6 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
     /**
      * We need to skip placeholder objects (new Object()) used in many places to represent objects
      * that should not be encoded.
-     *
-     * @param object
-     * @return
      */
     private boolean isPlaceholderObject(Object object) {
         return object != null && object.getClass().isAssignableFrom(Object.class);

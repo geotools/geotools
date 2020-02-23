@@ -241,10 +241,6 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
     /**
      * Two filters are dual if the are the negation of each other (range based logic is handled
      * separately)
-     *
-     * @param f1
-     * @param f2
-     * @return
      */
     private boolean dualFilters(Filter f1, Filter f2) {
         if (f1 instanceof Not) {
@@ -449,11 +445,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
         return super.visit(filter, extraData);
     }
 
-    /**
-     * Returns true if the target feature type is a simple feature one
-     *
-     * @return
-     */
+    /** Returns true if the target feature type is a simple feature one */
     protected boolean isSimpleFeature() {
         return featureType instanceof SimpleFeatureType;
     }
@@ -484,30 +476,17 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
     /**
      * Checks if a function is volatile in this context. By default it checks if the function
      * implements the {@link VolatileFunction} interface, subclasses can override
-     *
-     * @param function
-     * @return
      */
     protected boolean isVolatileFunction(org.opengis.filter.expression.Function function) {
         return function instanceof VolatileFunction;
     }
 
-    /**
-     * Tries to simplify the filter if it's not already a simple one.
-     *
-     * @param filter
-     * @return
-     */
+    /** Tries to simplify the filter if it's not already a simple one. */
     public static Filter simplify(Filter filter) {
         return simplify(filter, null);
     }
 
-    /**
-     * Tries to simplify the filter if it's not already a simple one
-     *
-     * @param filter
-     * @return
-     */
+    /** Tries to simplify the filter if it's not already a simple one */
     public static Filter simplify(Filter filter, FeatureType featureType) {
         // if already as simple as possible, or cannot be simplified anyways
         if (filter == Filter.INCLUDE || filter == Filter.EXCLUDE || filter == null) {
@@ -628,8 +607,6 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
      * Enables/disable range simplification. Range simplification can figure out that the logic
      * combination of multiple ranges against the same property can be turned into a single range, a
      * INCLUDE, or a EXCLUDE, but it requires the range boundaries to be of the same type as the
-     *
-     * @param rangeSimplicationEnabled
      */
     public void setRangeSimplicationEnabled(boolean rangeSimplicationEnabled) {
         this.rangeSimplicationEnabled = rangeSimplicationEnabled;

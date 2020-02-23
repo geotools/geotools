@@ -38,14 +38,7 @@ public class MultiLevelROIGeometryProvider implements MultiLevelROIProvider {
      */
     private final Geometry defaultGranuleBounds;
 
-    /**
-     * Geometry provider constructor based on a fixed granuleBounds
-     *
-     * @param geometryProvider
-     * @param inset
-     * @param insetPolicy
-     * @param defaultGranuleBounds
-     */
+    /** Geometry provider constructor based on a fixed granuleBounds */
     public MultiLevelROIGeometryProvider(
             FootprintGeometryProvider geometryProvider,
             double inset,
@@ -57,13 +50,7 @@ public class MultiLevelROIGeometryProvider implements MultiLevelROIProvider {
         this.defaultGranuleBounds = defaultGranuleBounds;
     }
 
-    /**
-     * Geometry provider constructor based on per feature granuleBounds
-     *
-     * @param geometryProvider
-     * @param inset
-     * @param insetPolicy
-     */
+    /** Geometry provider constructor based on per feature granuleBounds */
     public MultiLevelROIGeometryProvider(
             FootprintGeometryProvider geometryProvider,
             double inset,

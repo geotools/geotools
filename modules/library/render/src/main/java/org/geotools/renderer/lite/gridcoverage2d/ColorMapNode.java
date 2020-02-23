@@ -201,11 +201,7 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter
         } else this.type = TYPE_NONE;
     }
 
-    /**
-     * @param candidateSD
-     * @return
-     * @throws IllegalStateException
-     */
+    /** */
     private static double[] preparaNoDataValues(final GridSampleDimension candidateSD)
             throws IllegalStateException {
         double[] candidateNoDataValues = candidateSD.getNoDataValues();

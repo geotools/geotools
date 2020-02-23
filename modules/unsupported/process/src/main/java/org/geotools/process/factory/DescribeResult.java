@@ -32,33 +32,19 @@ import org.opengis.parameter.Parameter;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface DescribeResult {
-    /**
-     * The name of the result, defaults to "result"
-     *
-     * @return
-     */
+    /** The name of the result, defaults to "result" */
     String name() default "result";
 
     /**
      * The type of the result, needed only when there are multiple ones (since it cannot be desumed
      * from the process Map return type
-     *
-     * @return
      */
     Class<?> type() default Object.class;
 
-    /**
-     * The result description
-     *
-     * @return
-     */
+    /** The result description */
     String description() default "[undescribed]";
 
-    /**
-     * If true, this is the primary result of the process
-     *
-     * @return
-     */
+    /** If true, this is the primary result of the process */
     boolean primary() default false;
 
     /**

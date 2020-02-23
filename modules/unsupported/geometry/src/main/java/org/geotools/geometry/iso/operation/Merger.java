@@ -54,7 +54,6 @@ public class Merger {
      * Merges a list of continuous curves into a new single curve. In order two neighboured curves
      * are merged, their end and startpoint must be equal.
      *
-     * @param curves
      * @return null or tosses IllegalArgumentException
      */
     public CurveImpl merge(List<CurveImpl> curves) {
@@ -72,7 +71,6 @@ public class Merger {
      * Merges a set of curves into a new single curve. This method trys all combinations of curve´s
      * start and end points.
      *
-     * @param curves
      * @return null
      */
     public CurveImpl merge(Set<CurveImpl> curves) {
@@ -84,8 +82,6 @@ public class Merger {
      * be modified. There will be no more references to positions or lists of the input curves, all
      * values are copied.
      *
-     * @param curve1
-     * @param curve2
      * @return new curve
      */
     public CurveImpl merge(CurveImpl curve1, CurveImpl curve2) {
@@ -110,9 +106,6 @@ public class Merger {
     /**
      * Merges a list of continuous curves into a new single curve. In order two neighboured curves
      * are merged, their end and startpoint must be equal.
-     *
-     * @param curves
-     * @return
      */
     private CurveImpl mergeContinuousCurves(List<CurveImpl> curves) {
 

@@ -106,12 +106,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         assertTrue(areCRSEqual(getWGS84(), bounds.getCoordinateReferenceSystem()));
     }
 
-    /**
-     * Allows subclasses to use a axis order specific version of it
-     *
-     * @return
-     * @throws FactoryException
-     */
+    /** Allows subclasses to use a axis order specific version of it */
     protected CoordinateReferenceSystem getWGS84() throws FactoryException {
         return CRS.decode("EPSG:4326");
     }
@@ -380,11 +375,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         }
     }
 
-    /**
-     * Makes sure the datastore works when the renderer uses the typical rendering hints
-     *
-     * @throws Exception
-     */
+    /** Makes sure the datastore works when the renderer uses the typical rendering hints */
     public void testRendererBehaviour() throws Exception {
         Query query = new Query(featureSource.getSchema().getTypeName());
         query.setHints(
@@ -566,11 +557,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         }
     }
 
-    /**
-     * Integration test checking that a CQL IN filter goes back being a IN in SQL
-     *
-     * @throws Exception
-     */
+    /** Integration test checking that a CQL IN filter goes back being a IN in SQL */
     public void testSimpleEncodeIn() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
         String property = aname("stringProperty");
@@ -615,11 +602,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         }
     }
 
-    /**
-     * Integration test checking that a CQL IN filter goes back being a IN in SQL
-     *
-     * @throws Exception
-     */
+    /** Integration test checking that a CQL IN filter goes back being a IN in SQL */
     public void testMixedEncodeIn() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
         String sp = aname("stringProperty");
@@ -694,11 +677,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         }
     }
 
-    /**
-     * Online tests for String functions along with Like operator
-     *
-     * @throws Exception
-     */
+    /** Online tests for String functions along with Like operator */
     public void testStringFunction() throws Exception {
 
         FilterFactory ff = dataStore.getFilterFactory();

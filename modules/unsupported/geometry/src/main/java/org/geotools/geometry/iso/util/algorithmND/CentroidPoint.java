@@ -39,11 +39,7 @@ public class CentroidPoint {
     private int ptCount = 0;
     DirectPositionImpl centSum = null;
 
-    /**
-     * Creates a new Centroid operation
-     *
-     * @param crs
-     */
+    /** Creates a new Centroid operation */
     public CentroidPoint(CoordinateReferenceSystem crs) {
         this.centSum =
                 new DirectPositionImpl(

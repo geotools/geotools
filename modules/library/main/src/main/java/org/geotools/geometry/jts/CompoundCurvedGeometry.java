@@ -26,11 +26,6 @@ import org.locationtech.jts.geom.LineString;
  */
 public interface CompoundCurvedGeometry<T extends LineString> extends CurvedGeometry<T> {
 
-    /**
-     * Returns the linearized coordinates at the given tolerance.
-     *
-     * @param tolerance
-     * @return
-     */
+    /** Returns the linearized coordinates at the given tolerance. */
     public List<LineString> getComponents();
 }

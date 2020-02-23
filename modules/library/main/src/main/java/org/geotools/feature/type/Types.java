@@ -63,7 +63,6 @@ public class Types {
      * Ensures an attribute value is withing the restrictions of the AttributeDescriptor and
      * AttributeType.
      *
-     * @param attribute
      * @return true if the attribute value is valid
      */
     public static boolean isValid(Attribute attribute) {
@@ -92,7 +91,6 @@ public class Types {
      * @param type AttributeType (often attribute.getType() )
      * @param attribute Attribute being tested
      * @param attributeContent Content of the attribute (often attribute.getValue() )
-     * @throws IllegalAttributeException
      */
     public static void validate(AttributeType type, Attribute attribute, Object attributeContent)
             throws IllegalAttributeException {
@@ -105,7 +103,6 @@ public class Types {
      * @param attribute Attribute being tested
      * @param attributeContent Content of the attribute (often attribute.getValue() )
      * @param isSuper True if super type is being checked
-     * @throws IllegalAttributeException
      */
     protected static void validate(
             AttributeType type, Attribute attribute, Object attributeContent, boolean isSuper)
@@ -347,10 +344,6 @@ public class Types {
      * List<Object> values = feature.getAttributes();
      * newFeature.setAttributes( values );
      * </code></pre>
-     *
-     * @param expected
-     * @param actual
-     * @return
      */
     public static void assertOrderAssignable(SimpleFeatureType expected, SimpleFeatureType actual) {
         // check feature type name
@@ -538,7 +531,6 @@ public class Types {
      * belongs the prefix to in {@link AppSchemaDataAccessDTO#getNamespaces()}.
      *
      * @param prefixedName , namespaces
-     * @return
      * @throws IllegalArgumentException if <code>prefixedName</code> has no declared namespace in
      *     app-schema config file.
      */
@@ -610,7 +602,6 @@ public class Types {
      *
      * @param name the name to translate in prefixed form
      * @param ns namespace context, relates namespaces to prefixes
-     * @return
      */
     public static String toPrefixedName(Name name, NamespaceSupport ns) {
         StringBuilder sb = new StringBuilder();

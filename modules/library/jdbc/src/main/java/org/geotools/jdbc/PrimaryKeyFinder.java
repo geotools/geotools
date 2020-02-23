@@ -31,11 +31,6 @@ public abstract class PrimaryKeyFinder {
     /**
      * Returns the {@link PrimaryKey}, or {@code null} if a specific type could not be determined
      * (the datastore will fall back on {@link NullPrimaryKey} in that case. It is advised to return
-     *
-     * @param schema
-     * @param table
-     * @param cx
-     * @return
      */
     public abstract PrimaryKey getPrimaryKey(
             JDBCDataStore store, String schema, String table, Connection cx) throws SQLException;

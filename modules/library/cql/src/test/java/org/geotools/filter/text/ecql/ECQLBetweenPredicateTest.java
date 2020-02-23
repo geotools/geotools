@@ -19,7 +19,6 @@ package org.geotools.filter.text.ecql;
 
 import org.geotools.filter.text.commons.Language;
 import org.geotools.filter.text.cql2.CQLBetweenPredicateTest;
-import org.geotools.filter.text.cql2.CQLException;
 import org.junit.Test;
 import org.opengis.filter.Filter;
 
@@ -42,11 +41,7 @@ public class ECQLBetweenPredicateTest extends CQLBetweenPredicateTest {
         super(Language.ECQL);
     }
 
-    /**
-     * sample: 2 BETWEEN 1 AND 3
-     *
-     * @throws CQLException
-     */
+    /** sample: 2 BETWEEN 1 AND 3 */
     @Test
     public void literalBetweenLiterals() throws Exception {
 
@@ -56,11 +51,7 @@ public class ECQLBetweenPredicateTest extends CQLBetweenPredicateTest {
         testBetweenPredicate(txtPredicate, expected);
     }
 
-    /**
-     * sample: 2 BETWEEN (2-1) AND (2+1)
-     *
-     * @throws CQLException
-     */
+    /** sample: 2 BETWEEN (2-1) AND (2+1) */
     @Test
     public void literalBetweenExpressions() throws Exception {
 
@@ -70,11 +61,7 @@ public class ECQLBetweenPredicateTest extends CQLBetweenPredicateTest {
         testBetweenPredicate(txtPredicate, expected);
     }
 
-    /**
-     * sample: area( the_geom ) BETWEEN 10000 AND 30000
-     *
-     * @throws Exception
-     */
+    /** sample: area( the_geom ) BETWEEN 10000 AND 30000 */
     @Test
     public void functionBetweenLiterals() throws Exception {
 
@@ -84,11 +71,7 @@ public class ECQLBetweenPredicateTest extends CQLBetweenPredicateTest {
         testBetweenPredicate(txtPredicate, expected);
     }
 
-    /**
-     * sample: area( the_geom ) BETWEEN abs(10000) AND abs(30000)
-     *
-     * @throws Exception
-     */
+    /** sample: area( the_geom ) BETWEEN abs(10000) AND abs(30000) */
     @Test
     public void functionBetweenFunctions() throws Exception {
 

@@ -123,12 +123,7 @@ public class CSVDataStoreTest {
         assertEquals("Unexpected numbers", expectedNumbers, numbers);
     }
 
-    /**
-     * Test query with a start index
-     *
-     * @throws IOException
-     * @throws FileNotFoundException
-     */
+    /** Test query with a start index */
     @Test
     public void testOffset() throws FileNotFoundException, IOException {
         Query query = new Query(Query.ALL);
@@ -151,12 +146,7 @@ public class CSVDataStoreTest {
         assertEquals(6, rows.getCount(query));
     }
 
-    /**
-     * Test query with maxFeatures
-     *
-     * @throws IOException
-     * @throws FileNotFoundException
-     */
+    /** Test query with maxFeatures */
     @Test
     public void testLimit() throws FileNotFoundException, IOException {
         Query query = new Query(Query.ALL);
@@ -177,12 +167,7 @@ public class CSVDataStoreTest {
         assertEquals(3, rows.getCount(query));
     }
 
-    /**
-     * Test query with maxFeatures and startIndex
-     *
-     * @throws IOException
-     * @throws FileNotFoundException
-     */
+    /** Test query with maxFeatures and startIndex */
     @Test
     public void testLimitOffset() throws FileNotFoundException, IOException {
         Query query = new Query(Query.ALL);

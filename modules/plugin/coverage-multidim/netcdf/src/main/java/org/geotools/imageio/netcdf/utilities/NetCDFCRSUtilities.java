@@ -197,12 +197,7 @@ public class NetCDFCRSUtilities {
         return new String[] {units, direction};
     }
 
-    /**
-     * Get the {@link AxisDirection} object related to the specified direction
-     *
-     * @param direction
-     * @return
-     */
+    /** Get the {@link AxisDirection} object related to the specified direction */
     static AxisDirection getDirection(final String direction) {
         return AxisDirection.valueOf(direction);
     }
@@ -461,7 +456,6 @@ public class NetCDFCRSUtilities {
      * @param direction the {@linkplain AxisDirection direction} of the axis.
      * @param unitName the unit of measure string.
      * @return a proper {@link CoordinateSystemAxis} instance or {@code null} if unable to build it.
-     * @throws FactoryException
      */
     static CoordinateSystemAxis getAxis(
             final String axisName, final AxisDirection direction, final String unitName)

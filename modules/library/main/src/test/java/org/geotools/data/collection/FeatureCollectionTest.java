@@ -85,8 +85,6 @@ public abstract class FeatureCollectionTest extends TestCase {
      * }
      * </pre>
      *
-     * @param schema
-     * @param list
      * @return a new feature collection
      */
     protected abstract SimpleFeatureCollection newCollection(

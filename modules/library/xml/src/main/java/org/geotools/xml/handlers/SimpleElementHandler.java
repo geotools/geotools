@@ -87,11 +87,7 @@ public class SimpleElementHandler extends XMLElementHandler {
         }
     }
 
-    /**
-     * @throws SAXException
-     * @throws OperationNotSupportedException
-     * @see org.geotools.xml.XMLElementHandler#endElement(java.lang.String, java.lang.String)
-     */
+    /** @see org.geotools.xml.XMLElementHandler#endElement(java.lang.String, java.lang.String) */
     public void endElement(URI namespaceURI, String localName, Map hints)
             throws OperationNotSupportedException, SAXException {
         text = (text == null) ? null : text.trim();

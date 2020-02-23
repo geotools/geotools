@@ -59,11 +59,7 @@ public class Coordinate implements Comparable, Cloneable, Serializable {
         this.z = z;
     }
 
-    /**
-     * SJ
-     *
-     * @param coords
-     */
+    /** SJ */
     public Coordinate(double[] coords) {
         if (coords.length < 2 || coords.length > 3) {
             throw new IllegalArgumentException();
@@ -299,11 +295,7 @@ public class Coordinate implements Comparable, Cloneable, Serializable {
         }
     }
 
-    /**
-     * SJ
-     *
-     * @return
-     */
+    /** SJ */
     public double[] getCoordinates() {
         double[] rCoord;
         if (Double.isNaN(this.z)) {

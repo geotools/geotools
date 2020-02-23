@@ -50,7 +50,6 @@ public class BasicDirectedNode extends BasicGraphable implements DirectedNode {
      * Unsupported operation. Directed nodes classify edges as <B>in</B> and <B>out</B>. addIn(Edge)
      * and addOut(Edge) should be used instead of this method.
      *
-     * @throws UnsupportedOperationException
      * @see DirectedNode#addIn(DirectedEdge)
      * @see DirectedNode#addOut(DirectedEdge)
      */
@@ -281,8 +280,6 @@ public class BasicDirectedNode extends BasicGraphable implements DirectedNode {
      * upon deserialization.
      *
      * @param in Object input stream containing serialized object.
-     * @throws IOException
-     * @throws ClassNotFoundException
      */
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
 

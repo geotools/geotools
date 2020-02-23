@@ -167,13 +167,7 @@ public class DirectoryDataStore implements DataStore {
         updateSchema(typeName.getLocalPart(), featureType);
     }
 
-    /**
-     * Returns the native store for a specified type name
-     *
-     * @param typeName
-     * @return
-     * @throws IOException
-     */
+    /** Returns the native store for a specified type name */
     public DataStore getDataStore(String typeName) throws IOException {
         // grab the store for a specific feature type, making sure it's actually there
         DataStore store = cache.getDataStore(typeName, true);

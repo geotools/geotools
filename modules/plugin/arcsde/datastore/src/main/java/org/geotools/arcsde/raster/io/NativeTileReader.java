@@ -243,8 +243,6 @@ final class NativeTileReader implements TileReader {
      * Creates and executes the {@link SeQuery} that's used to fetch the required tiles from the
      * specified raster, and stores (as member variables) the {@link SeRow} to fetch the tiles from
      * and the {@link SeQuery} to be closed at the TileReader's disposal
-     *
-     * @throws IOException
      */
     private void execute() throws IOException {
         final GridEnvelope requestedTiles = this.requestedTiles;
@@ -531,11 +529,7 @@ final class NativeTileReader implements TileReader {
         return requestedTiles.getHigh(1);
     }
 
-    /**
-     * Executes a separate request to fetch this single tile
-     *
-     * @throws IOException
-     */
+    /** Executes a separate request to fetch this single tile */
     private SeRasterTile[] fetchSingleTile(final int tileX, final int tileY) throws IOException {
         if (LOGGER.isLoggable(Level.INFO)) {
             LOGGER.info(

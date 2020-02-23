@@ -182,8 +182,6 @@ public class SchemasTest extends TestCase {
     /**
      * Tests that element declarations and type definitions from imported schemas are parsed, even
      * if the importing schema itself contains no element nor type.
-     *
-     * @throws IOException
      */
     public void testImportsOnly() throws IOException {
         XSDSchema schema =
@@ -197,8 +195,6 @@ public class SchemasTest extends TestCase {
     /**
      * Tests that system property "org.geotools.xml.forceSchemaImport" is properly taken into
      * account.
-     *
-     * @throws IOException
      */
     public void testForcedSchemaImport() throws IOException {
         XSDSchema schema =
@@ -270,8 +266,6 @@ public class SchemasTest extends TestCase {
      * JVM. Deadlock used to occur in GeoServer, when schema was loaded from same GeoServer
      * instance, because schema consumer and schema server both synchronized on same {@link
      * org.geotools.xsd.Schemas} class instance.
-     *
-     * @throws IOException
      */
     public void testParseRemoteDoesNotBlock() throws IOException {
         URIConverter converter =

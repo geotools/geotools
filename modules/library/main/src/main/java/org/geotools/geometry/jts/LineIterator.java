@@ -106,14 +106,7 @@ public final class LineIterator extends AbstractLiteIterator {
     //
     //    }
 
-    /**
-     * @param ls a LineString
-     * @param at
-     * @param generalize
-     * @param maxDistance
-     * @param xScale
-     * @param yScale
-     */
+    /** @param ls a LineString */
     public void init(
             LineString ls,
             AffineTransform at,
@@ -127,12 +120,7 @@ public final class LineIterator extends AbstractLiteIterator {
         _init(ls, at, generalize, maxDistance);
     }
 
-    /**
-     * @param ls
-     * @param at
-     * @param generalize
-     * @param maxDistance
-     */
+    /** */
     public void init(LineString ls, AffineTransform at, boolean generalize, float maxDistance) {
         if (at == null) at = new AffineTransform();
         _init(ls, at, generalize, maxDistance);
@@ -149,12 +137,7 @@ public final class LineIterator extends AbstractLiteIterator {
                                         + (at.getShearY() * at.getShearY()));
     }
 
-    /**
-     * @param ls
-     * @param at
-     * @param generalize
-     * @param maxDistance
-     */
+    /** */
     private void _init(LineString ls, AffineTransform at, boolean generalize, float maxDistance) {
         if (at == null) {
             at = NO_TRANSFORM;

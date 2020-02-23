@@ -35,7 +35,6 @@ public class OracleFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
     /**
      * Test if the fast retrieval of bounds out of oracle metadata tables works
      *
-     * @throws Exception
      * @author Hendrik Peilke
      */
     public void testSDOGeomMetadataBounds() throws Exception {

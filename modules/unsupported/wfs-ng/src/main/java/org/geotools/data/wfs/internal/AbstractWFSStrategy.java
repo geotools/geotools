@@ -578,7 +578,6 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
      * Splits the filter provided by the geotools query into the server supported and unsupported
      * ones.
      *
-     * @param typeName
      * @return a two-element array where the first element is the supported filter and the second
      *     the one to post-process
      * @see org.geotools.data.wfs.internal.WFSStrategy#splitFilters(org.opengis.filter.Filter)

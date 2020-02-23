@@ -135,8 +135,6 @@ public class QueryTypeBindingTest extends WFSTestSupport {
      * Builds a {@link QueryType} instance equivalent to the test query in the file <code>
      * test-data/QueryTypeBinding.xml</code> in the <code>org.geotools.wfs.bindings</code> package
      * of the test resources.
-     *
-     * @return
      */
     @SuppressWarnings("unchecked")
     private QueryType buildTestQuery() {

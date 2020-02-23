@@ -253,11 +253,7 @@ public class WFSFeatureStoreTest {
         assertEquals("blah", feature.getAttribute("NAME"));
     }
 
-    /**
-     * Tests that WFS Transactions causing an ExceptionReport also end in a proper WFSException.
-     *
-     * @throws IOException
-     */
+    /** Tests that WFS Transactions causing an ExceptionReport also end in a proper WFSException. */
     @Test
     public void testTransactionExceptionReport() throws IOException {
         // makes test to use GeoServer_1.7.x/1.0.0/TransactionFailure_poi.xml

@@ -387,11 +387,7 @@ class NetCDFGeoreferenceManager {
             return dimensions.get(coordinateVariableName);
         }
 
-        /**
-         * Mapper parsing the coordinateVariables.
-         *
-         * @param coordinates
-         */
+        /** Mapper parsing the coordinateVariables. */
         public DimensionMapper(Map<String, CoordinateVariable<?>> coordinates) {
             // check other dimensions
             int coordinates2Dx = 0;
@@ -629,12 +625,7 @@ class NetCDFGeoreferenceManager {
         dimensionMapper = new DimensionMapper(coordinates);
     }
 
-    /**
-     * Initialize the bbox getter
-     *
-     * @throws IOException
-     * @throws FactoryException
-     */
+    /** Initialize the bbox getter */
     private void initBBox() throws IOException, FactoryException {
         bbox = hasSingleBBox ? new BBoxGetter() : new MultipleBBoxGetter();
     }
@@ -644,10 +635,6 @@ class NetCDFGeoreferenceManager {
      * coordinates will be stored in the provided array. The convention is that the stored
      * coordinates represent the center of the cell so we apply a half pixel offset to go to the
      * corner.
-     *
-     * @param cv
-     * @param coordinate
-     * @throws IOException
      */
     private void getCoordinate(CoordinateVariable<?> cv, double[] coordinate) throws IOException {
         if (cv.isRegular()) {

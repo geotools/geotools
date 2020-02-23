@@ -73,8 +73,6 @@ class EmfAppSchemaParser {
      * @param crs the CRS to be assigned to the geometric attributes in the parsed feature type.
      *     This information shall be provided here as the schema itself has no knowledge of the CRS
      *     used.
-     * @return
-     * @throws IOException
      */
     public static SimpleFeatureType parse(
             Configuration configuration, final QName featureName, CoordinateReferenceSystem crs)
@@ -97,12 +95,7 @@ class EmfAppSchemaParser {
         return parse(configuration, elementDecl, crs);
     }
 
-    /**
-     * Parse the provided element declaration into a SimpleFeatureType.
-     *
-     * @param elementDecl
-     * @return
-     */
+    /** Parse the provided element declaration into a SimpleFeatureType. */
     public static SimpleFeatureType parse(
             Configuration configuration,
             XSDElementDeclaration elementDecl,

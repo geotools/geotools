@@ -51,8 +51,6 @@ public class MBObjectStops {
      * zoom-and-property functions and if so, getting the distinct stops for each, building a list
      * of MBLayers (one for each stop) and setting ranges that are used to set min/max scale
      * denominators for each MBLayer.
-     *
-     * @param layer
      */
     public MBObjectStops(MBLayer layer) {
         try {
@@ -75,9 +73,6 @@ public class MBObjectStops {
 
     /**
      * Gets the current stop of the layer. This would be the bottom of the range i.e 0 for {0, 20}
-     *
-     * @param layer
-     * @return
      */
     public long getCurrentStop(MBLayer layer) {
         long stop = getStop(layer);
@@ -85,12 +80,7 @@ public class MBObjectStops {
         return stop;
     }
 
-    /**
-     * Finds all the stops within the layer and returns a sorted distinct list
-     *
-     * @param mbLayer
-     * @return
-     */
+    /** Finds all the stops within the layer and returns a sorted distinct list */
     List<Long> getStopLevels(MBLayer mbLayer) {
         Set<Long> distinctValues = new HashSet<>();
         List<Long> zoomLevels = new ArrayList<>();
@@ -112,11 +102,6 @@ public class MBObjectStops {
     /**
      * This method creates a copy of the incoming layer to be used for creating the unique layer for
      * each stop.
-     *
-     * @param layer
-     * @param layerStops
-     * @return
-     * @throws ParseException
      */
     List<MBLayer> getLayerStyleForStops(MBLayer layer, List<Long> layerStops)
             throws ParseException {
@@ -141,12 +126,7 @@ public class MBObjectStops {
         return layers;
     }
 
-    /**
-     * Accepts the list of stops for a layer and builds a list of ranges for each stop.
-     *
-     * @param stops
-     * @return
-     */
+    /** Accepts the list of stops for a layer and builds a list of ranges for each stop. */
     List<long[]> getStopLevelRanges(List<Long> stops) {
         List<long[]> ranges = new ArrayList<>();
         for (int i = 0; i < stops.size(); i++) {
@@ -169,13 +149,7 @@ public class MBObjectStops {
         return containsStops(jsonObject, ls);
     }
 
-    /**
-     * Finds the distinct range for the current stop.
-     *
-     * @param stop
-     * @param ranges
-     * @return
-     */
+    /** Finds the distinct range for the current stop. */
     public long[] getRangeForStop(Long stop, List<long[]> ranges) {
         long[] rangeForStopLevel = {0, 0};
         for (int i = 0; i < ranges.size(); i++) {
@@ -233,12 +207,7 @@ public class MBObjectStops {
         return ls;
     }
 
-    /**
-     * Accepts a distinct MBLayer and finds the stop for this layer.
-     *
-     * @param layer
-     * @return
-     */
+    /** Accepts a distinct MBLayer and finds the stop for this layer. */
     long stop(MBLayer layer) {
         long s = 0;
         if (layer.getPaint() != null) {
@@ -250,13 +219,7 @@ public class MBObjectStops {
         return s;
     }
 
-    /**
-     * This method reduces the Layer to just what is needed for the given range.
-     *
-     * @param layer
-     * @param range
-     * @return
-     */
+    /** This method reduces the Layer to just what is needed for the given range. */
     MBLayer createLayerStopStyle(MBLayer layer, long[] range) {
         if (layer.getPaint() != null) {
             reduceJsonForRange(layer.getPaint(), range);
@@ -268,13 +231,7 @@ public class MBObjectStops {
         return layer;
     }
 
-    /**
-     * Iterates over the JSONObject looking for the stops for the given stop.
-     *
-     * @param jsonObject
-     * @param layerStop
-     * @return
-     */
+    /** Iterates over the JSONObject looking for the stops for the given stop. */
     long findStop(JSONObject jsonObject, long layerStop) {
         Set<?> keySet = jsonObject.keySet();
         Iterator<?> keys = keySet.iterator();
@@ -296,13 +253,7 @@ public class MBObjectStops {
         return layerStop;
     }
 
-    /**
-     * Reduces the JSON to just the required values for the given range.
-     *
-     * @param jsonObject
-     * @param range
-     * @return
-     */
+    /** Reduces the JSON to just the required values for the given range. */
     JSONObject reduceJsonForRange(JSONObject jsonObject, long[] range) {
         Set<?> keySet = jsonObject.keySet();
         Iterator<?> keys = keySet.iterator();
@@ -363,13 +314,7 @@ public class MBObjectStops {
         return jsonObject;
     }
 
-    /**
-     * Iterates over the JSONObject finding the stops and adding them to the list.
-     *
-     * @param jsonObject
-     * @param layerZoomLevels
-     * @return
-     */
+    /** Iterates over the JSONObject finding the stops and adding them to the list. */
     List<Long> findStopLevels(JSONObject jsonObject, List<Long> layerZoomLevels) {
         Set<?> keySet = jsonObject.keySet();
         Iterator<?> keys = keySet.iterator();

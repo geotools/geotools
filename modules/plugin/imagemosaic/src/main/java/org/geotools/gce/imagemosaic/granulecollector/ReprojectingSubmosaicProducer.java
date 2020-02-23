@@ -255,11 +255,6 @@ class ReprojectingSubmosaicProducer extends BaseSubmosaicProducer {
     /**
      * Computes the sub-mosaic spatial extend based on the image size and the target grid to world
      * transformation
-     *
-     * @param mosaicProducer
-     * @param image
-     * @return
-     * @throws FactoryException
      */
     private ReferencedEnvelope computeSubmosaicBoundingBox(
             MathTransform2D tx, RenderedImage image, CoordinateReferenceSystem crs)
@@ -284,9 +279,6 @@ class ReprojectingSubmosaicProducer extends BaseSubmosaicProducer {
     /**
      * Given a coverage in the mosaic target CRS generates an RenderedImage properly positioned in
      * the mosaic output raster space
-     *
-     * @param resampledCoverage
-     * @return
      */
     private RenderedImage positionInOutputMosaic(GridCoverage2D resampledCoverage) {
         RenderedImage image = resampledCoverage.getRenderedImage();

@@ -63,12 +63,7 @@ public class ClientPropertyIdentifierTest {
         ff = new FilterFactoryImplNamespaceAware(namespaces);
     }
 
-    /**
-     * Load all the data accesses.
-     *
-     * @return
-     * @throws Exception
-     */
+    /** Load all the data accesses. */
     @Before
     public void loadDataAccess() throws Exception {
         /** Load observation data access */

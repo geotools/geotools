@@ -44,9 +44,6 @@ class RemappingFeatureCollection extends DecoratingSimpleFeatureCollection {
      * Returns a shapefile compatible collection, that is, geometry field is always named the_geom
      * and field names have a max length of 10. Will return the original collection if already
      * compatible
-     *
-     * @param fc
-     * @return
      */
     public static SimpleFeatureCollection getShapefileCompatibleCollection(
             SimpleFeatureCollection fc) {
@@ -63,12 +60,7 @@ class RemappingFeatureCollection extends DecoratingSimpleFeatureCollection {
         return fc;
     }
 
-    /**
-     * Maps schema attributes to shapefile-compatible attributes.
-     *
-     * @param schema
-     * @return
-     */
+    /** Maps schema attributes to shapefile-compatible attributes. */
     private static Map<String, String> createAttributeMappings(SimpleFeatureType schema) {
         Map<String, String> result = new HashMap<String, String>();
 
@@ -88,13 +80,7 @@ class RemappingFeatureCollection extends DecoratingSimpleFeatureCollection {
         return result;
     }
 
-    /**
-     * If necessary remaps the name so that it's less than 10 chars long and
-     *
-     * @param usedFieldNames
-     * @param name
-     * @return
-     */
+    /** If necessary remaps the name so that it's less than 10 chars long and */
     private static String getShapeCompatibleName(Set<String> usedFieldNames, String name) {
         // 10 chars limit
         if (name.length() > 10) {
@@ -128,9 +114,6 @@ class RemappingFeatureCollection extends DecoratingSimpleFeatureCollection {
     /**
      * Builds an inverted version of the given map. Inversion means that key->value becomes
      * value->key
-     *
-     * @param map
-     * @return
      */
     static Map<String, String> invertMappings(Map<String, String> map) {
         Map<String, String> result = new HashMap<String, String>();
@@ -138,12 +121,7 @@ class RemappingFeatureCollection extends DecoratingSimpleFeatureCollection {
         return result;
     }
 
-    /**
-     * Gets a new schema, built remapping attribute names via the attributeMappings map.
-     *
-     * @param schema
-     * @return
-     */
+    /** Gets a new schema, built remapping attribute names via the attributeMappings map. */
     private SimpleFeatureType remapSchema(SimpleFeatureType schema) {
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setName(schema.getName());
@@ -174,11 +152,6 @@ class RemappingFeatureCollection extends DecoratingSimpleFeatureCollection {
     /**
      * Remaps a SimpleFeature, using the given mappings (oldname -> mappedname). The builder uses
      * the mapped schema.
-     *
-     * @param source
-     * @param attributeMappings
-     * @param builder
-     * @return
      */
     static SimpleFeature remap(
             SimpleFeature source,

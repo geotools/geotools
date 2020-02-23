@@ -399,10 +399,6 @@ public class JTSUtilities {
     /**
      * Determine the default ShapeType using the descriptor and eventually the geometry to guess the
      * coordinate dimensions if not reported in the descriptor hints
-     *
-     * @param gd
-     * @param g
-     * @return
      */
     public static final ShapeType getShapeType(GeometryDescriptor gd) throws ShapefileException {
         Class featureClass = gd.getType().getBinding();

@@ -70,9 +70,6 @@ public class DefaultTemporalCoordinateSystem extends DefaultTemporalReferenceSys
     /**
      * Returns the equivalent Date in the Gregorian calendar and UTC of a coordinate value defined
      * in this temporal coordinate system.
-     *
-     * @param c_value
-     * @return
      */
     public Date transformCoord(TemporalCoordinate c_value) {
         Date response;
@@ -122,9 +119,6 @@ public class DefaultTemporalCoordinateSystem extends DefaultTemporalReferenceSys
     /**
      * Returns the equivalent TemporalCoordinate of a Date in Gregorian Calendar. Default of unit is
      * millisecond.
-     *
-     * @param dateTime
-     * @return
      */
     public TemporalCoordinate transformDateTime(Date dateTime) {
         TemporalCoordinate response;

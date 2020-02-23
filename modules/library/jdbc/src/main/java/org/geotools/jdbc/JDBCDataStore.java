@@ -307,7 +307,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
     /**
      * Adds a virtual table to the data store. If a virtual table with the same name was registered
-     * this method will replace it with the new one. * @param vt
      *
      * @throws IOException If the view definition is not valid
      */
@@ -323,21 +322,12 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         }
     }
 
-    /**
-     * Returns a modifiable list of connection lifecycle listeners
-     *
-     * @return
-     */
+    /** Returns a modifiable list of connection lifecycle listeners */
     public List<ConnectionLifecycleListener> getConnectionLifecycleListeners() {
         return connectionLifecycleListeners;
     }
 
-    /**
-     * Removes and returns the specified virtual table
-     *
-     * @param name
-     * @return
-     */
+    /** Removes and returns the specified virtual table */
     public VirtualTable dropVirtualTable(String name) {
         // the new vtable might be overriding a previous definition
         VirtualTable vt = virtualTables.remove(name);
@@ -347,11 +337,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         return vt;
     }
 
-    /**
-     * Returns a live, immutable view of the virtual tables map (from name to definition)
-     *
-     * @return
-     */
+    /** Returns a live, immutable view of the virtual tables map (from name to definition) */
     public Map<String, VirtualTable> getVirtualTables() {
         Map<String, VirtualTable> result = new HashMap<String, VirtualTable>();
         for (String key : virtualTables.keySet()) {
@@ -360,20 +346,12 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         return Collections.unmodifiableMap(result);
     }
 
-    /**
-     * Returns the finder used to build {@link PrimaryKey} representations
-     *
-     * @return
-     */
+    /** Returns the finder used to build {@link PrimaryKey} representations */
     public PrimaryKeyFinder getPrimaryKeyFinder() {
         return primaryKeyFinder;
     }
 
-    /**
-     * Sets the finder used to build {@link PrimaryKey} representations
-     *
-     * @param primaryKeyFinder
-     */
+    /** Sets the finder used to build {@link PrimaryKey} representations */
     public void setPrimaryKeyFinder(PrimaryKeyFinder primaryKeyFinder) {
         this.primaryKeyFinder = primaryKeyFinder;
     }
@@ -382,18 +360,12 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * The current fetch size. The fetch size influences how many records are read from the dbms at
      * a time. If set to a value less or equal than zero, all the records will be read in one shot,
      * severily increasing the memory requirements to read a big number of features.
-     *
-     * @return
      */
     public int getFetchSize() {
         return fetchSize;
     }
 
-    /**
-     * Changes the fetch size.
-     *
-     * @param fetchSize
-     */
+    /** Changes the fetch size. */
     public void setFetchSize(int fetchSize) {
         this.fetchSize = fetchSize;
     }
@@ -410,8 +382,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * JDBCInsertFeatureWriter} is changed in non backward compatible ways. If your code closes the
      * writer before closing the connection, you are fine. Plus, the feature added events will be
      * delayed until a batch is actually inserted.
-     *
-     * @param batchInsertSize
      */
     public void setBatchInsertSize(int batchInsertSize) {
         this.batchInsertSize = batchInsertSize;
@@ -1242,13 +1212,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         return getPrimaryKey(ensureEntry(featureType.getName()));
     }
 
-    /**
-     * Returns the expose primary key columns flag for the specified feature type
-     *
-     * @param featureType
-     * @return
-     * @throws IOException
-     */
+    /** Returns the expose primary key columns flag for the specified feature type */
     protected boolean isExposePrimaryKeyColumns(SimpleFeatureType featureType) throws IOException {
         ContentEntry entry = ensureEntry(featureType.getName());
         JDBCState state = (JDBCState) entry.getState(Transaction.AUTO_COMMIT);
@@ -1332,10 +1296,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
     /**
      * Returns true if the query will hit all the geometry columns with no row filtering (a
      * condition that allows to use spatial index statistics to compute the table bounds)
-     *
-     * @param query
-     * @param schema
-     * @return
      */
     private boolean isFullBoundsQuery(Query query, SimpleFeatureType schema) {
 
@@ -1361,15 +1321,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         return true;
     }
 
-    /**
-     * Merges two envelopes handling possibly different CRS
-     *
-     * @param base
-     * @param merge
-     * @return
-     * @throws TransformException
-     * @throws FactoryException
-     */
+    /** Merges two envelopes handling possibly different CRS */
     ReferencedEnvelope mergeEnvelope(ReferencedEnvelope base, ReferencedEnvelope merge)
             throws TransformException, FactoryException {
         if (base == null || base.isNull()) {
@@ -1508,9 +1460,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
     /**
      * Checks if the groupBy is a supported one, that is, if it's possible to turn to SQL the
      * various {@link Expression} it's using
-     *
-     * @param visitor
-     * @return
      */
     private boolean isSupportedGroupBy(GroupByVisitor visitor) {
         return visitor.getGroupByAttributes().stream().allMatch(xp -> fullySupports(xp));
@@ -2430,12 +2379,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         }
     }
 
-    /**
-     * Extracts a set of FeatureId objects from the locks Map.
-     *
-     * @param locks
-     * @return
-     */
+    /** Extracts a set of FeatureId objects from the locks Map. */
     private Set<FeatureId> getLockedIds(Map locks) {
         Set<FeatureId> ids = new HashSet<FeatureId>();
         for (Object lock : locks.keySet()) {
@@ -3479,15 +3423,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                 : createFilterToSQL(fullSchema);
     }
 
-    /**
-     * Encodes the sort-by portion of an sql query
-     *
-     * @param featureType
-     * @param sort
-     * @param key
-     * @param sql
-     * @throws IOException
-     */
+    /** Encodes the sort-by portion of an sql query */
     void sort(SimpleFeatureType featureType, SortBy[] sort, String prefix, StringBuffer sql)
             throws IOException {
         if ((sort != null) && (sort.length > 0)) {
@@ -3672,8 +3608,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
     /**
      * Returns true if the attribute descriptor matches a native SQL array (as recorded in its user
      * data via {@link #JDBC_NATIVE_TYPE}
-     *
-     * @return
      */
     private boolean isArray(AttributeDescriptor att) {
         Integer nativeType = (Integer) att.getUserData().get(JDBC_NATIVE_TYPE);
@@ -3829,9 +3763,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
     /**
      * Builds a list of the aggregate function calls necesary to compute each geometry column bounds
-     *
-     * @param featureType
-     * @param sql
      */
     void buildEnvelopeAggregates(SimpleFeatureType featureType, StringBuffer sql) {
         // walk through all geometry attributes and build the query
@@ -4037,12 +3968,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         return "gt_agg_" + idx;
     }
 
-    /**
-     * Returns true if the expressions have anything but property names
-     *
-     * @param expressions
-     * @return
-     */
+    /** Returns true if the expressions have anything but property names */
     private boolean hasComplexExpressions(List<Expression> expressions) {
         if (expressions == null || expressions.isEmpty()) {
             return false;
@@ -4148,11 +4074,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         return ps;
     }
 
-    /**
-     * Generates a 'INSERT INFO' sql statement.
-     *
-     * @throws IOException
-     */
+    /** Generates a 'INSERT INFO' sql statement. */
     protected String insertSQL(
             SimpleFeatureType featureType,
             SimpleFeature feature,
@@ -4295,8 +4217,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
     /**
      * Extracts the eventual native SRID user property from the descriptor, returns -1 if not found
-     *
-     * @param descriptor
      */
     protected int getDescriptorSRID(AttributeDescriptor descriptor) {
         int srid = -1;
@@ -4311,8 +4231,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
     /**
      * Extracts the eventual native dimension user property from the descriptor, returns -1 if not
      * found
-     *
-     * @param descriptor
      */
     protected int getDescriptorDimension(AttributeDescriptor descriptor) {
         int dimension = -1;
@@ -4679,7 +4597,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
     /**
      * Checks if the query needs limit/offset treatment
      *
-     * @param query
      * @return true if the query needs limit/offset treatment and if the sql dialect can do that
      *     natively
      */
@@ -4840,8 +4757,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * Encoding a geometry column with respect to hints Supported Hints are provided by {@link
      * SQLDialect#addSupportedHints(Set)}
      *
-     * @param gatt
-     * @param sql
      * @param hints , may be null
      */
     public void encodeGeometryColumn(GeometryDescriptor gatt, StringBuffer sql, Hints hints) {
@@ -4888,12 +4803,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         return tx;
     }
 
-    /**
-     * Creates a new database index
-     *
-     * @param index
-     * @throws IOException
-     */
+    /** Creates a new database index */
     public void createIndex(Index index) throws IOException {
         SimpleFeatureType schema = getSchema(index.typeName);
         Connection cx = null;
@@ -4907,12 +4817,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         }
     }
 
-    /**
-     * Creates a new database index
-     *
-     * @param index
-     * @throws IOException
-     */
+    /** Creates a new database index */
     public void dropIndex(String typeName, String indexName) throws IOException {
         SimpleFeatureType schema = getSchema(typeName);
 
@@ -4931,7 +4836,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * Lists all indexes associated to the given feature type
      *
      * @param typeName Name of the type for which indexes are searched. It's mandatory
-     * @return
      */
     public List<Index> getIndexes(String typeName) throws IOException {
         // just to ensure we have the type name specified

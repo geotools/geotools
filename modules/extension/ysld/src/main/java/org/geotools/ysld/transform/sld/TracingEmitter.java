@@ -62,11 +62,7 @@ public class TracingEmitter implements Emitable {
         delegate.emit(event);
     }
 
-    /**
-     * Writes logged events to out
-     *
-     * @param out
-     */
+    /** Writes logged events to out */
     public void dump(PrintStream out) {
         for (Pair p : events) {
             for (int i = 0; i < p.stack; i++) {

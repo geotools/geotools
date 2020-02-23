@@ -25,11 +25,7 @@ package org.geotools.gce.imagemosaic.jdbc;
  * @author mcr
  */
 class Toolbox {
-    /**
-     * read args and delegate job to the corresponding utility class
-     *
-     * @param args
-     */
+    /** read args and delegate job to the corresponding utility class */
     @SuppressWarnings("PMD.SystemPrintln")
     public static void main(String[] args) {
         if (args.length == 0) {

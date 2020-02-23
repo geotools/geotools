@@ -66,11 +66,7 @@ public final class JP2MrSIDTest extends GDALTestCase {
         }
     }
 
-    /**
-     * Creates a new instance of JP2MrSIDTest
-     *
-     * @param name
-     */
+    /** Creates a new instance of JP2MrSIDTest */
     public JP2MrSIDTest() {
         super("JP2MrSID", new JP2MrSIDFormatFactory());
     }

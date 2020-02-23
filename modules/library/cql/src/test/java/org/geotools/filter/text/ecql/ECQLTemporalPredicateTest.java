@@ -46,11 +46,7 @@ public class ECQLTemporalPredicateTest extends CQLTemporalPredicateTest {
         super(Language.ECQL);
     }
 
-    /**
-     * Before predicate with dateTime in the leftHand
-     *
-     * @throws CQLException
-     */
+    /** Before predicate with dateTime in the leftHand */
     @Test
     public void dateTimeExpresionBeforeDateTimeExpresion() throws CQLException {
 
@@ -71,11 +67,7 @@ public class ECQLTemporalPredicateTest extends CQLTemporalPredicateTest {
 
         Assert.assertTrue(resultFilter.evaluate(null));
     }
-    /**
-     * After predicate with dateTime in the leftHand
-     *
-     * @throws CQLException
-     */
+    /** After predicate with dateTime in the leftHand */
     @Test
     public void dateTimeExpresionAfterDateTimeExpresion() throws CQLException {
 
@@ -97,11 +89,7 @@ public class ECQLTemporalPredicateTest extends CQLTemporalPredicateTest {
         Assert.assertFalse(resultFilter.evaluate(null));
     }
 
-    /**
-     * During predicate with dateTime in the leftHand
-     *
-     * @throws CQLException
-     */
+    /** During predicate with dateTime in the leftHand */
     @Test
     public void dateTimeDuringPeriod() throws CQLException {
 
@@ -125,8 +113,6 @@ public class ECQLTemporalPredicateTest extends CQLTemporalPredicateTest {
     /**
      * The left hand should be a property or temporal expression. An math expression in the left
      * hand of the temporal predicate is a syntax error
-     *
-     * @throws CQLException
      */
     @Test(expected = CQLException.class)
     public void beforeInvalidLeftHandExpression() throws CQLException {

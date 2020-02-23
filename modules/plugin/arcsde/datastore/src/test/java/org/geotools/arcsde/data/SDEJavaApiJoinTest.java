@@ -141,15 +141,7 @@ public class SDEJavaApiJoinTest {
     /** an ArcSDEDataStore created on setUp() to run tests against */
     private ArcSDEDataStore store;
 
-    /**
-     * Initialization code for the whole test suite
-     *
-     * @throws IOException
-     * @throws SeException
-     * @throws FactoryException
-     * @throws NoSuchAuthorityCodeException
-     * @throws UnavailableConnectionException
-     */
+    /** Initialization code for the whole test suite */
     @BeforeClass
     public static void oneTimeSetUp()
             throws IOException, SeException, NoSuchAuthorityCodeException, FactoryException,
@@ -177,8 +169,6 @@ public class SDEJavaApiJoinTest {
     /**
      * loads {@code testData/testparams.properties} into a Properties object, wich is used to obtain
      * test tables names and is used as parameter to find the DataStore
-     *
-     * @throws Exception
      */
     @Before
     public void setUp() throws Exception {
@@ -451,11 +441,7 @@ public class SDEJavaApiJoinTest {
         assertEquals(expectedCount, itCount);
     }
 
-    /**
-     * Meant as example to be sure we're using the ArcSDE java api correctly
-     *
-     * @throws Exception
-     */
+    /** Meant as example to be sure we're using the ArcSDE java api correctly */
     @Test
     public void testApiOrderBy() throws Exception {
         ISession session = store.getSession(Transaction.AUTO_COMMIT);
@@ -625,8 +611,6 @@ public class SDEJavaApiJoinTest {
     /**
      * Meant as example to be sure we're using the ArcSDE java api correctly Nasty thing about group
      * by is that is seems that we cannot include/use the geometry column :(
-     *
-     * @throws Exception
      */
     @Test
     public void testApiGroupBy() throws Exception {
@@ -723,8 +707,6 @@ public class SDEJavaApiJoinTest {
      * Meant as example to be sure we're using the ArcSDE java api correctly. We can execute a plain
      * sql query, but shapes are not returned by ArcSDE. Instead, the SHAPE field contains the SHAPE
      * id, just like in the real business table.
-     *
-     * @throws Exception
      */
     @Test
     public void testApiPlainSql() throws Exception {

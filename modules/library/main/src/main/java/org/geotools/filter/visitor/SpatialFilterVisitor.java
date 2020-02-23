@@ -38,11 +38,7 @@ public class SpatialFilterVisitor extends DefaultFilterVisitor {
 
     boolean hasSpatialFilter = false;
 
-    /**
-     * True if the filter had a spatial filter, false otherwise
-     *
-     * @return
-     */
+    /** True if the filter had a spatial filter, false otherwise */
     public boolean hasSpatialFilter() {
         return hasSpatialFilter;
     }

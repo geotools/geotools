@@ -38,10 +38,6 @@ public class ServiceExceptionParser {
      * ServiceExceptions.
      *
      * <p>ServiceExceptions beyond the first can be accessed using ServiceException.next();
-     *
-     * @param inputStream
-     * @throws JDOMException
-     * @throws IOException
      */
     public static ServiceException parse(InputStream inputStream)
             throws JDOMException, IOException {

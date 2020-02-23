@@ -164,12 +164,7 @@ public class SLD {
         }
     }
 
-    /**
-     * Sets the Colour for the given Line symbolizer
-     *
-     * @param symbolizer
-     * @param colour
-     */
+    /** Sets the Colour for the given Line symbolizer */
     public static void setLineColour(LineSymbolizer symbolizer, Color colour) {
         if (symbolizer == null || colour == null) {
             return;
@@ -546,12 +541,7 @@ public class SLD {
         return color(symbolizer);
     }
 
-    /**
-     * Sets the Colour for the point symbolizer
-     *
-     * @param style
-     * @param colour
-     */
+    /** Sets the Colour for the point symbolizer */
     public static void setPointColour(Style style, Color colour) {
         if (style == null) {
             return;
@@ -1054,7 +1044,6 @@ public class SLD {
     /**
      * Retrieve the opacity from the provided fill; or return the default.
      *
-     * @param fill
      * @return opacity from the above fill; or return the Fill.DEFAULT value
      */
     public static double opacity(Fill fill) {

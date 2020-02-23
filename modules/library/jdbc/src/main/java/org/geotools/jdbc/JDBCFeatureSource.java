@@ -89,7 +89,6 @@ public class JDBCFeatureSource extends ContentFeatureSource {
      * Copy existing feature source
      *
      * @param featureSource jdbc feature source
-     * @throws IOException
      */
     protected JDBCFeatureSource(JDBCFeatureSource featureSource) throws IOException {
         super(featureSource.entry, featureSource.query);
@@ -706,13 +705,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         }
     }
 
-    /**
-     * Special case of nearest visitor, which can be computed by combining a min and a max visit
-     *
-     * @param query
-     * @param visitor
-     * @throws IOException
-     */
+    /** Special case of nearest visitor, which can be computed by combining a min and a max visit */
     private boolean handleNearestVisitor(Query query, FeatureVisitor visitor) throws IOException {
         NearestVisitor nearest = (NearestVisitor) visitor;
         Object targetValue = nearest.getValueToMatch();
@@ -765,16 +758,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         return true;
     }
 
-    /**
-     * Computes the column metadata from a plain database table
-     *
-     * @param cx
-     * @param databaseSchema
-     * @param tableName
-     * @param dialect
-     * @return
-     * @throws SQLException
-     */
+    /** Computes the column metadata from a plain database table */
     List<ColumnMetadata> getColumnMetadata(
             Connection cx, String databaseSchema, String tableName, SQLDialect dialect)
             throws SQLException {
@@ -837,15 +821,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         return result;
     }
 
-    /**
-     * Computes the column metadata by running the virtual table query
-     *
-     * @param cx
-     * @param vtable
-     * @param dialect
-     * @return
-     * @throws SQLException
-     */
+    /** Computes the column metadata by running the virtual table query */
     static List<ColumnMetadata> getColumnMetadata(
             Connection cx, VirtualTable vtable, SQLDialect dialect, JDBCDataStore store)
             throws SQLException {

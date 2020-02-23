@@ -154,12 +154,7 @@ public class H2MigratorTest {
         testMultiCoverageMosaic(testUrl, null);
     }
 
-    /**
-     * Returns a path usable for the property file (even on Windows)
-     *
-     * @param testDir
-     * @return
-     */
+    /** Returns a path usable for the property file (even on Windows) */
     private String getTargetDbForProperties(File testDir) {
         String path = new File(testDir, "target").getPath();
         return path.replace("\\", "\\\\");
@@ -396,14 +391,6 @@ public class H2MigratorTest {
     /**
      * Check that reading a single data value from an ImageMosaic of multi-coverage NetCDF files
      * yields the expected value.
-     *
-     * @param reader
-     * @param coverageName
-     * @param longitude
-     * @param latitude
-     * @param timestamp
-     * @param expected
-     * @throws Exception
      */
     private void checkMultiCoverage(
             ImageMosaicReader reader,

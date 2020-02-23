@@ -66,8 +66,6 @@ public class Collection_SumFunction extends FunctionExpressionImpl {
      * @param collection collection to calculate the sum
      * @param expression Single Expression argument
      * @return An object containing the sum value of the attributes
-     * @throws IllegalFilterException
-     * @throws IOException
      */
     static CalcResult calculateSum(SimpleFeatureCollection collection, Expression expression)
             throws IllegalFilterException, IOException {

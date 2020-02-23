@@ -107,10 +107,7 @@ public class TimeSeriesTest extends AppSchemaTestSupport {
         // Logging.GEOTOOLS.forceMonolineConsoleOutput(Level.FINEST);
     }
 
-    /**
-     * @param location schema location path discoverable through getClass().getResource()
-     * @return
-     */
+    /** @param location schema location path discoverable through getClass().getResource() */
     private SchemaIndex loadSchema(URL location) throws IOException {
         URL catalogLocation = getClass().getResource(schemaBase + "observations.oasis.xml");
         reader.setResolver(catalogLocation);
@@ -120,8 +117,6 @@ public class TimeSeriesTest extends AppSchemaTestSupport {
     /**
      * Tests if the schema-to-FM parsing code developed for complex datastore configuration loading
      * can parse the GeoSciML types
-     *
-     * @throws Exception
      */
     @Test
     public void testParseSchema() throws Exception {

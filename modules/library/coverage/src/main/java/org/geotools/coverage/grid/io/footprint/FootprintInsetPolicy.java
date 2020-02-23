@@ -72,9 +72,6 @@ public enum FootprintInsetPolicy {
         /**
          * Collects all sub-polygons into the specified geometry and returns them either as a single
          * polygon, or as a multipolygon, shaving off any other lower dimension geometry
-         *
-         * @param geometry
-         * @return
          */
         private Geometry collectPolygons(Geometry geometry) {
             if (geometry.isEmpty()) {
@@ -161,11 +158,7 @@ public enum FootprintInsetPolicy {
 
     public abstract Geometry applyInset(Geometry footprint, Geometry granuleBounds, double inset);
 
-    /**
-     * Returns the list of names for this enum
-     *
-     * @return
-     */
+    /** Returns the list of names for this enum */
     public static List<String> names() {
         FootprintInsetPolicy[] values = FootprintInsetPolicy.values();
         List<String> names = new ArrayList<String>(values.length);

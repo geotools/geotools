@@ -37,9 +37,6 @@ public abstract class DefaultTemporalGeometricPrimitive extends DefaultTemporalP
     /**
      * Returns the distance from this TM_GeometricPrimitive to another TM_GeometricPrimitive, i.e.
      * the absolute value of the difference between their temporal positions.
-     *
-     * @param other
-     * @return
      */
     public Duration distance(TemporalGeometricPrimitive other) {
         Duration response = null;
@@ -200,11 +197,7 @@ public abstract class DefaultTemporalGeometricPrimitive extends DefaultTemporalP
         return response;
     }
 
-    /**
-     * Returns the length of this TM_GeometricPrimitive
-     *
-     * @return
-     */
+    /** Returns the length of this TM_GeometricPrimitive */
     public Duration length() {
         Duration response = null;
         long diff = 0L;

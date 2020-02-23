@@ -69,8 +69,6 @@ public class Collection_AverageFunction extends FunctionExpressionImpl {
      * @param collection collection to calculate the average
      * @param expression Single Expression argument
      * @return An object containing the average value of the attributes
-     * @throws IllegalFilterException
-     * @throws IOException
      */
     static CalcResult calculateAverage(
             FeatureCollection<? extends FeatureType, ? extends Feature> collection,
@@ -91,7 +89,6 @@ public class Collection_AverageFunction extends FunctionExpressionImpl {
      * <p>To refer to all 'X': <code>featureMember/asterisk/X</code>
      *
      * @param params function parameters
-     * @throws IllegalArgumentException
      */
     public void setParameters(List params) {
         super.setParameters(params);

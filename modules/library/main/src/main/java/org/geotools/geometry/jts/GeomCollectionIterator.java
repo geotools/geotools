@@ -57,10 +57,7 @@ public final class GeomCollectionIterator extends AbstractLiteIterator {
 
     public GeomCollectionIterator() {}
 
-    /**
-     * @param gc
-     * @param at
-     */
+    /** */
     public void init(
             GeometryCollection gc, AffineTransform at, boolean generalize, double maxDistance) {
         this.gc = gc;

@@ -375,8 +375,6 @@ public class SolrDataStore extends ContentDataStore {
     /**
      * Create a group by field Solr query
      *
-     * @param featureType
-     * @param q
      * @param visitor UniqueVisitor with group settings
      * @return Solr query
      */

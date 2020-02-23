@@ -32,13 +32,7 @@ public class DefaultFieldType implements FieldType {
     // private Unit<Quantity> unit;
     private Set<SampleDimension> sampleDimensions;
 
-    /**
-     * @param name
-     * @param description
-     * @param unit
-     * @param axes
-     * @param samples
-     */
+    /** */
     public DefaultFieldType(
             Name name,
             InternationalString description,

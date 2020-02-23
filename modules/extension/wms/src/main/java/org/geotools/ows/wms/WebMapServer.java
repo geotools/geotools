@@ -348,10 +348,6 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
      *
      * <p>The implementation assumes that the server is located at:
      * capabilities.getRequest().getGetCapabilities().getGet()
-     *
-     * @param capabilities
-     * @throws IOException
-     * @throws ServiceException
      */
     public WebMapServer(WMSCapabilities capabilities) throws IOException, ServiceException {
         super(
@@ -599,8 +595,6 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
      * <p>If null is returned, no valid bounding box could be found and one couldn't be transformed
      * from another.
      *
-     * @param layer
-     * @param crs
      * @return an Envelope containing a valid bounding box, or null if none are found
      */
     public GeneralEnvelope getEnvelope(Layer layer, CoordinateReferenceSystem crs) {

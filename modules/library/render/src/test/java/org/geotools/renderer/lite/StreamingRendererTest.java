@@ -534,8 +534,6 @@ public class StreamingRendererTest {
     /**
      * Test that point features are rendered at the expected image coordinates when the map is
      * rotated. StreamingRenderer
-     *
-     * @throws Exception
      */
     @Test
     public void testRotatedTransform() throws Exception {
@@ -677,8 +675,6 @@ public class StreamingRendererTest {
     /**
      * Test that we don't have the geometry added twice by StreamingRenderer#findStyleAttributes
      * when geofence is filtering a layer.
-     *
-     * @throws Exception
      */
     @Test
     public void testFindLineStyleAttributeWithAddedFilter() throws Exception {

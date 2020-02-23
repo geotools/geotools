@@ -58,7 +58,6 @@ public class NoBifurcationIterator extends SourceGraphIterator {
      *
      * @param source node of degree less than or equal 2
      * @see SourceGraphIterator#setSource(Graphable)
-     * @throws IllegalStateException
      */
     @Override
     public void setSource(Graphable source) {

@@ -80,13 +80,7 @@ public class WMTSConfigurationTest {
         assertEquals(26, layers.size());
     }
 
-    /**
-     * @param capDoc
-     * @return
-     * @throws IOException
-     * @throws SAXException
-     * @throws ParserConfigurationException
-     */
+    /** */
     private Map<String, LayerType> parseCaps(String capDoc)
             throws IOException, SAXException, ParserConfigurationException {
         Parser p = new Parser(new WMTSConfiguration());

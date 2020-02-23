@@ -43,7 +43,6 @@ public class MapBoxStyle {
     /**
      * Read in the provided JSON as a {@link StyledLayerDescriptor}.
      *
-     * @param reader
      * @return generated style
      */
     public static StyledLayerDescriptor parse(Reader reader) throws IOException, ParseException {
@@ -57,7 +56,6 @@ public class MapBoxStyle {
     /**
      * Read in the provided JSON as a {@link StyledLayerDescriptor}.
      *
-     * @param stream
      * @return generated style
      */
     public static StyledLayerDescriptor parse(InputStream stream)

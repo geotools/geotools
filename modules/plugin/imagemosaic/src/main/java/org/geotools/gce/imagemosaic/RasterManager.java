@@ -16,6 +16,9 @@
  */
 package org.geotools.gce.imagemosaic;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
@@ -37,6 +40,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.media.jai.ImageLayout;
@@ -125,6 +130,26 @@ import org.opengis.referencing.operation.TransformException;
 public class RasterManager implements Cloneable {
 
     final Hints excludeMosaicHints = new Hints(Utils.EXCLUDE_MOSAIC, true);
+
+    LoadingCache<Integer, Boolean> alternativeCRSCache;
+
+    public static final String ALTERNATIVE_CRS_CACHE_EXPIRATION_SECONDS_KEY =
+            "org.geotools.imagemosaic.crscache.expiration.seconds";
+
+    public static final String ALTERNATIVE_CRS_CACHE_SIZE_KEY =
+            "org.geotools.imagemosaic.crscache.size";
+
+    private static final int DEFAULT_ALTERNATIVE_CRS_CACHE_EXPIRATION_SECONDS = 60;
+
+    private static final int DEFAULT_ALTERNATIVE_CRS_CACHE_SIZE = 150;
+
+    private static final Integer ALTERNATIVE_CRS_CACHE_EXPIRATION_SECONDS =
+            Integer.getInteger(
+                    ALTERNATIVE_CRS_CACHE_EXPIRATION_SECONDS_KEY,
+                    DEFAULT_ALTERNATIVE_CRS_CACHE_EXPIRATION_SECONDS);
+
+    private static final Integer ALTERNATIVE_CRS_CACHE_SIZE =
+            Integer.getInteger(ALTERNATIVE_CRS_CACHE_SIZE_KEY, DEFAULT_ALTERNATIVE_CRS_CACHE_SIZE);
 
     private SubmosaicProducerFactory submosaicProducerFactory =
             new DefaultSubmosaicProducerFactory();
@@ -898,6 +923,8 @@ public class RasterManager implements Cloneable {
 
     boolean heterogeneousGranules;
 
+    boolean heterogeneousCRS;
+
     double[][] levels;
 
     SpatialDomainManager spatialDomainManager;
@@ -944,6 +971,7 @@ public class RasterManager implements Cloneable {
         this.expandMe = configuration.isExpandToRGB();
         boolean checkAuxiliaryMetadata = configuration.isCheckAuxiliaryMetadata();
         this.heterogeneousGranules = configuration.getCatalogConfigurationBean().isHeterogeneous();
+        this.heterogeneousCRS = configuration.getCatalogConfigurationBean().isHeterogeneousCRS();
         this.configuration = configuration;
         hints = parentReader.getHints();
         this.name = configuration.getName();
@@ -1039,6 +1067,33 @@ public class RasterManager implements Cloneable {
                                     + "is misconfigured");
                 }
             }
+        }
+        if (heterogeneousCRS) {
+            // If the reader is kept open (and the rasterManager doesn't change)
+            // it would be useful to cache the result of a query for
+            // a specific EPSG code on the index, so that a DB access won't be
+            // repeated while the info is in cache.
+
+            alternativeCRSCache =
+                    CacheBuilder.newBuilder()
+                            .maximumSize(ALTERNATIVE_CRS_CACHE_SIZE)
+                            .expireAfterWrite(
+                                    ALTERNATIVE_CRS_CACHE_EXPIRATION_SECONDS, TimeUnit.SECONDS)
+                            .build(
+                                    new CacheLoader<Integer, Boolean>() {
+
+                                        @Override
+                                        public Boolean load(Integer epsgCode) throws Exception {
+                                            Query query = new Query(typeName);
+                                            String crsAttribute = getCrsAttribute();
+                                            query.setPropertyNames(Arrays.asList(crsAttribute));
+                                            final UniqueVisitor visitor =
+                                                    new UniqueVisitor(crsAttribute);
+                                            granuleCatalog.computeAggregateFunction(query, visitor);
+                                            Set set = visitor.getUnique();
+                                            return set != null && set.contains("EPSG:" + epsgCode);
+                                        }
+                                    });
         }
     }
 
@@ -1365,6 +1420,15 @@ public class RasterManager implements Cloneable {
                 : ((RangeVisitor) visitor).getRange();
     }
 
+    public boolean hasAlternativeCRS(Integer epsgCode) throws IOException {
+        try {
+            return epsgCode != null && heterogeneousCRS ? alternativeCRSCache.get(epsgCode) : false;
+        } catch (ExecutionException e) {
+            throw new IOException(
+                    "Exception Occurred while checking for alternative CRS:" + epsgCode, e);
+        }
+    }
+
     /** TODO this should not leak through */
     public GranuleCatalog getGranuleCatalog() {
         return granuleCatalog;
@@ -1408,6 +1472,9 @@ public class RasterManager implements Cloneable {
             // removing records from the catalog
             granuleCatalog.removeGranules(query);
             granuleCatalog.removeType(typeName);
+        }
+        if (alternativeCRSCache != null) {
+            alternativeCRSCache.invalidateAll();
         }
     }
 
@@ -1454,6 +1521,9 @@ public class RasterManager implements Cloneable {
                     }
                 }
             }
+        }
+        if (alternativeCRSCache != null) {
+            alternativeCRSCache.invalidateAll();
         }
     }
 
@@ -1510,6 +1580,9 @@ public class RasterManager implements Cloneable {
             try {
                 if (granuleCatalog != null) {
                     this.granuleCatalog.dispose();
+                }
+                if (alternativeCRSCache != null) {
+                    alternativeCRSCache.invalidateAll();
                 }
             } catch (Exception e) {
                 if (LOGGER.isLoggable(Level.FINE))
@@ -1576,6 +1649,9 @@ public class RasterManager implements Cloneable {
             throw new IOException(
                     "Exception occurred while initializing the SpatialDomainManager", e);
         }
+        if (alternativeCRSCache != null) {
+            alternativeCRSCache.invalidateAll();
+        }
     }
 
     /** Return the metadataNames for this manager */
@@ -1598,6 +1674,7 @@ public class RasterManager implements Cloneable {
         if (domainsManager != null) {
             metadataNames.addAll(domainsManager.getMetadataNames());
         }
+        metadataNames.add(AbstractGridCoverage2DReader.MULTICRS_READER);
         return metadataNames.toArray(new String[metadataNames.size()]);
     }
 
@@ -1660,9 +1737,36 @@ public class RasterManager implements Cloneable {
 
         // check if heterogeneous CRS
         if (name.equalsIgnoreCase(AbstractGridCoverage2DReader.MULTICRS_READER)) {
-            return String.valueOf(configuration.getCatalogConfigurationBean().isHeterogeneousCRS());
+            return String.valueOf(heterogeneousCRS);
         }
 
+        if (name.equalsIgnoreCase(AbstractGridCoverage2DReader.MULTICRS_EPSGCODES)
+                && heterogeneousCRS) {
+
+            // Extract the internal EPSG Codes found on the catalog
+            String crsAttribute = null;
+            try {
+                crsAttribute = getCrsAttribute();
+                if (crsAttribute != null) {
+                    Set<String> crsSet = extractDomain(crsAttribute);
+                    for (String crs : crsSet) {
+                        // Opportunistic caching:
+                        // LoadingCache usually loads objects at first need.
+                        // However, since this metadata method is doing a scan
+                        // of the available codes when invoked, let's take
+                        // advantage of that by putting the values on cache
+                        String epsgCode = crs.replaceAll("[^0-9,]", "");
+                        alternativeCRSCache.put(Integer.valueOf(epsgCode), true);
+                    }
+                    return String.join(",", crsSet);
+                }
+            } catch (IOException e) {
+                if (LOGGER.isLoggable(Level.WARNING)) {
+                    LOGGER.log(Level.WARNING, "Unable to retrieve the list of supported CRSs", e);
+                }
+                return "";
+            }
+        }
         // check additional domains
         if (domainsManager != null) {
             return domainsManager.getMetadataValue(name);
@@ -1688,27 +1792,50 @@ public class RasterManager implements Cloneable {
         return parentReader;
     }
 
+    public RasterManager getForGranuleCRS(
+            GranuleDescriptor templateDescriptor, ReferencedEnvelope requestBounds)
+            throws Exception {
+        return getForGranuleCRS(templateDescriptor, requestBounds, requestBounds);
+    }
+
     /**
      * Builds a RasterManager for the sub mosaic of a given template granule, and within a given
      * search bounds
      */
     public RasterManager getForGranuleCRS(
-            GranuleDescriptor templateDescriptor, ReferencedEnvelope requestBounds)
+            GranuleDescriptor templateDescriptor,
+            ReferencedEnvelope requestBounds,
+            ReferencedEnvelope requestBoundsQuery)
             throws Exception {
         CoordinateReferenceSystem granuleCRS =
                 templateDescriptor.getGranuleEnvelope().getCoordinateReferenceSystem();
-        if (CRS.equalsIgnoreMetadata(spatialDomainManager.coverageCRS2D, granuleCRS)) {
+        CoordinateReferenceSystem requestedCRS = requestBounds.getCoordinateReferenceSystem();
+
+        // When no requesting AlternativeCRSOutput, the provided
+        // requestBounds and requestBoundsQuery are the same object
+        boolean useAlternativeCRS =
+                heterogeneousCRS
+                        && hasAlternativeCRS(CRS.lookupEpsgCode(requestedCRS, false))
+                        && !requestBounds.equals(requestBoundsQuery);
+        CoordinateReferenceSystem referenceCRS =
+                useAlternativeCRS ? requestedCRS : spatialDomainManager.coverageCRS2D;
+        if (CRS.equalsIgnoreMetadata(referenceCRS, granuleCRS)) {
             return this;
         }
 
         // compute the bounds of the sub-mosaic in that CRS
-        ReferencedEnvelope bounds = getBoundsForGranuleCRS(templateDescriptor, requestBounds);
+        ReferencedEnvelope bounds = getBoundsForGranuleCRS(templateDescriptor, requestBoundsQuery);
         ReferencedEnvelope targetBounds = reprojectBounds(requestBounds, granuleCRS, bounds);
 
         // rebuild the raster manager
         RasterManager reprojected = (RasterManager) this.clone();
         reprojected.configuration = new MosaicConfigurationBean(this.configuration);
         reprojected.configuration.setCrs(granuleCRS);
+        if (useAlternativeCRS) {
+            // We are going to produce a submosaic in the requested CRS,
+            // so that it won't be handled as heterogeneous anymore.
+            reprojected.heterogeneousCRS = false;
+        }
         reprojected.configuration.setEnvelope(targetBounds);
         if (reprojected.imposedEnvelope != null) {
             // we might have an imposed bbox

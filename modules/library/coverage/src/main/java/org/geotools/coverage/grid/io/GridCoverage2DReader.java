@@ -118,6 +118,12 @@ public interface GridCoverage2DReader extends GridCoverageReader {
     public static final String MULTICRS_READER = "MultiCRSReader";
 
     /**
+     * When the above MULTICRS_READER property is present and evaluates to "true", this property may
+     * contain the list of internal EPSG Codes of the multiple CRS, if the reader implements it.
+     */
+    public static final String MULTICRS_EPSGCODES = "MultiCRSEPSGCodes";
+
+    /**
      * Return the original {@link GeneralEnvelope} for the default coverage served by the underlying
      * store.
      *

@@ -191,6 +191,20 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                     Boolean.FALSE);
 
     /**
+     * When this read parameter is set to true, the reader will produce output in the requested CRS,
+     * assuming it matches one of the native CRSs, as reported by the
+     * #GridCoverage2DReader@MULTICRS_EPSGCODES metadata entry, and that the requested grid geometry
+     * is expressed in said CRS. When set to false (default), then only the native CRS declared by
+     * #GridCoverage2DReader@getCoordinateReferenceSystem will be produced in output
+     */
+    public static final ParameterDescriptor<Boolean> OUTPUT_TO_ALTERNATIVE_CRS =
+            new DefaultParameterDescriptor<Boolean>(
+                    "Output To Alternative CRS",
+                    Boolean.class,
+                    new Boolean[] {Boolean.TRUE, Boolean.FALSE},
+                    Boolean.FALSE);
+
+    /**
      * Optional Sorting for the granules of the mosaic.
      *
      * <p>

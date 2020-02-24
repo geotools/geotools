@@ -80,6 +80,9 @@ import net.sf.ehcache.Element;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
+import org.apache.commons.lang3.StringUtils;
+import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.DataStoreFactorySpi;
@@ -206,6 +209,33 @@ public class Utils {
                         DEFAULT_COORDS_DECIMATION_THRESHOLD);
         CLEANUP_FILTER = initCleanUpFilter();
         MOSAIC_SUPPORT_FILES_FILTER = initMosaicSupportFilesFilter();
+    }
+
+    /** Check if the provided reader is a MultiCRS Reader and it can support the specified crs. */
+    public static boolean isSupportedCRS(GridCoverage2DReader reader, CoordinateReferenceSystem crs)
+            throws FactoryException, IOException {
+        String multiCrsReader =
+                reader.getMetadataValue(AbstractGridCoverage2DReader.MULTICRS_READER);
+        boolean isMultiCRS = multiCrsReader != null && Boolean.valueOf(multiCrsReader);
+        String supportedEpsgCodes = "";
+        if (isMultiCRS) {
+            supportedEpsgCodes =
+                    reader.getMetadataValue(AbstractGridCoverage2DReader.MULTICRS_EPSGCODES);
+        }
+        if (!StringUtils.isBlank(supportedEpsgCodes) && crs != null) {
+            Integer targetCRSEpsgCode = CRS.lookupEpsgCode(crs, false);
+            if (targetCRSEpsgCode != null) {
+                String code = String.valueOf(targetCRSEpsgCode);
+                supportedEpsgCodes = supportedEpsgCodes.replaceAll("[^0-9,]", "");
+                String[] epsgCodes = supportedEpsgCodes.split(",");
+                for (String epsgCode : epsgCodes) {
+                    if (code.equalsIgnoreCase(epsgCode)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     public static class Prop {

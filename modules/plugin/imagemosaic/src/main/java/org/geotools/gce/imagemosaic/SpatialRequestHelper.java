@@ -59,6 +59,7 @@ public class SpatialRequestHelper {
     }
 
     public static class CoverageProperties {
+
         public ReferencedEnvelope getBbox() {
             return bbox;
         }
@@ -115,8 +116,23 @@ public class SpatialRequestHelper {
             this.geographicCRS = geographicCRS2D;
         }
 
+        public ReferencedEnvelope getComputedBBox() {
+            return computedBBox;
+        }
+
+        public void setComputedBBox(ReferencedEnvelope computedBBox) {
+            this.computedBBox = computedBBox;
+        }
+
+        public boolean isReprojectionNeeded() {
+            return reprojectionNeeded;
+        }
+
+        public void setReprojectionNeeded(boolean reprojectionNeeded) {
+            this.reprojectionNeeded = reprojectionNeeded;
+        }
         // //
-        // Source Coverages properties
+        // Coverage's original properties
         // //
         ReferencedEnvelope bbox;
 
@@ -131,6 +147,22 @@ public class SpatialRequestHelper {
         ReferencedEnvelope geographicBBox;
 
         CoordinateReferenceSystem geographicCRS;
+
+        // //
+        //  Computed info to produce the Coverage
+        // //
+        ReferencedEnvelope computedBBox;
+
+        boolean reprojectionNeeded;
+    }
+
+    /**
+     * Set an alternative coverageProperties object when supporting output to alternative CRS.
+     *
+     * @param alternativeProperties
+     */
+    public void setAlternativeProperties(CoverageProperties alternativeProperties) {
+        this.alternativeProperties = alternativeProperties;
     }
 
     private static final Logger LOGGER =
@@ -138,9 +170,6 @@ public class SpatialRequestHelper {
 
     /** The {@link BoundingBox} requested */
     private ReferencedEnvelope requestedBBox;
-
-    /** The {@link BoundingBox} of the portion of the coverage that intersects the requested bbox */
-    private ReferencedEnvelope computedBBox;
 
     /** The region where to fit the requested envelope */
     private Rectangle requestedRasterArea;
@@ -162,6 +191,8 @@ public class SpatialRequestHelper {
 
     private final CoverageProperties coverageProperties;
 
+    private CoverageProperties alternativeProperties;
+
     private boolean accurateResolution;
 
     /**
@@ -170,9 +201,9 @@ public class SpatialRequestHelper {
      */
     private boolean emptyRequest;
 
-    private boolean needsReprojection = false;
-
     private GeneralEnvelope approximateRequestedBBoInNativeCRS;
+
+    private boolean isSupportingAlternativeCRSOutput;
 
     /**
      * The final Grid To World. In case there is a reprojection involved it is not the original one.
@@ -209,7 +240,7 @@ public class SpatialRequestHelper {
                     new ReferencedEnvelope(coverageProperties.bbox, coverageProperties.crs2D);
             requestedRasterArea = (Rectangle) coverageProperties.rasterArea.clone();
             computedResolution = coverageProperties.fullResolution.clone();
-            computedBBox =
+            coverageProperties.computedBBox =
                     new ReferencedEnvelope(coverageProperties.bbox, coverageProperties.crs2D);
             computedRasterArea = (Rectangle) coverageProperties.rasterArea.clone();
             // TODO harmonize the various types of transformations
@@ -240,7 +271,7 @@ public class SpatialRequestHelper {
         // Create the CROP BBOX in the coverage CRS for cropping it later on.
         //
         computeCropBBOX();
-        if (emptyRequest || computedBBox == null) {
+        if (emptyRequest || coverageProperties.computedBBox == null) {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.log(Level.FINE, "RequestedBBox empty or null");
             }
@@ -271,7 +302,7 @@ public class SpatialRequestHelper {
                             .append(computedRasterArea.toString())
                             .append("\n")
                             .append("Corresponding source Envelope = ")
-                            .append(computedBBox.toString());
+                            .append(coverageProperties.computedBBox.toString());
             LOGGER.log(Level.FINER, sb.toString());
         }
 
@@ -288,13 +319,24 @@ public class SpatialRequestHelper {
         //
         // Check if the request CRS is different from the coverage native CRS
         //
-        if (!CRS.equalsIgnoreMetadata(requestCRS, coverageProperties.crs2D))
+        CoordinateReferenceSystem referenceCRS = getReferenceCRS(false);
+        if (!CRS.equalsIgnoreMetadata(requestCRS, referenceCRS)) {
             try {
                 destinationToSourceTransform =
-                        CRS.findMathTransform(requestCRS, coverageProperties.crs2D, true);
+                        CRS.findMathTransform(requestCRS, referenceCRS, true);
+                if (isSupportingAlternativeCRSOutput) {
+                    MathTransform2D alternativeTransform =
+                            (MathTransform2D)
+                                    CRS.findMathTransform(requestCRS, getReferenceCRS(true), true);
+                    alternativeProperties.setGridToWorld2D(alternativeTransform);
+                    alternativeProperties.setReprojectionNeeded(
+                            alternativeTransform != null && !alternativeTransform.isIdentity());
+                }
             } catch (FactoryException e) {
                 throw new DataSourceException("Unable to inspect request CRS", e);
             }
+        }
+
         // now transform the requested envelope to source crs
         if (destinationToSourceTransform != null) {
             if (destinationToSourceTransform.isIdentity()) {
@@ -303,11 +345,10 @@ public class SpatialRequestHelper {
                 destinationToSourceTransform = null;
 
                 // we need to use the coverage one for the requested bbox to avoid problems later on
-                this.requestedBBox =
-                        new ReferencedEnvelope(requestedBBox, coverageProperties.crs2D);
+                this.requestedBBox = new ReferencedEnvelope(requestedBBox, referenceCRS);
             } else {
                 // we do need to reproject
-                needsReprojection = true;
+                coverageProperties.setReprojectionNeeded(true);
 
                 //
                 // k, the transformation between the various CRS is not null or the
@@ -342,7 +383,7 @@ public class SpatialRequestHelper {
 
                     // now clean up all the traces of the transformations
                     destinationToSourceTransform = null;
-                    needsReprojection = false;
+                    coverageProperties.setReprojectionNeeded(false);
                 }
             }
         }
@@ -355,7 +396,7 @@ public class SpatialRequestHelper {
     private void computeRasterArea() throws DataSourceException {
 
         // we have nothing to crop
-        if (emptyRequest || computedBBox == null) {
+        if (emptyRequest || getComputedBBox() == null) {
             throw new IllegalStateException(
                     "IllegalState, unable to compute raster area for null bbox");
         }
@@ -376,8 +417,7 @@ public class SpatialRequestHelper {
                                             PixelInCell.CELL_CENTER,
                                             PixelInCell.CELL_CORNER)
                                     .inverse();
-
-            if (!needsReprojection) {
+            if (!isNeedsReprojection(true)) {
 
                 // now get the requested bbox which have been already adjusted and project it back
                 // to raster space
@@ -385,7 +425,7 @@ public class SpatialRequestHelper {
                         new GeneralGridEnvelope(
                                         CRS.transform(
                                                 requestedWorldToGrid,
-                                                new GeneralEnvelope(computedBBox)),
+                                                new GeneralEnvelope(getComputedBBox(true))),
                                         PixelInCell.CELL_CORNER,
                                         false)
                                 .toRectangle();
@@ -397,7 +437,8 @@ public class SpatialRequestHelper {
                 // the same raster area somehow
                 //
                 Rectangle computedRasterArea =
-                        computeRasterArea(computedBBox, requestedWorldToGrid);
+                        computeRasterArea(
+                                (ReferencedEnvelope) getComputedBBox(true), requestedWorldToGrid);
                 this.computedRasterArea = computedRasterArea;
             }
         } catch (Exception e) {
@@ -456,17 +497,18 @@ public class SpatialRequestHelper {
             // directly
             //
             GridGeometry2D gridGeometry;
-            if (needsReprojection) {
+            ReferencedEnvelope computedBBOX = (ReferencedEnvelope) getComputedBBox(true);
+            if (isNeedsReprojection(true)) {
                 final GridToEnvelopeMapper geMapper =
                         new GridToEnvelopeMapper(
-                                new GridEnvelope2D(computedRasterArea), computedBBox);
+                                new GridEnvelope2D(computedRasterArea), computedBBOX);
                 computedGridToWorld = geMapper.createAffineTransform();
                 if (accurateResolution) {
                     gridGeometry = requestedGridGeometry;
                 } else {
                     gridGeometry =
                             new GridGeometry2D(
-                                    new GridEnvelope2D(computedRasterArea), computedBBox);
+                                    new GridEnvelope2D(computedRasterArea), computedBBOX);
                 }
             } else {
                 gridGeometry = requestedGridGeometry;
@@ -481,7 +523,7 @@ public class SpatialRequestHelper {
             calculator.setAccurateResolution(accurateResolution);
             computedResolution =
                     calculator.computeRequestedResolution(
-                            ReferencedEnvelope.reference(computedBBox));
+                            ReferencedEnvelope.reference(computedBBOX));
 
             // leave
             return;
@@ -501,6 +543,7 @@ public class SpatialRequestHelper {
 
     private void computeCropBBOX() throws DataSourceException {
 
+        ReferencedEnvelope computedBBox;
         try {
 
             //
@@ -508,15 +551,18 @@ public class SpatialRequestHelper {
             // by inspectCoordinateSystem()
 
             // now transform the requested envelope to source crs
-            if (needsReprojection) {
+            if (isNeedsReprojection()) {
                 try {
-                    this.computedBBox =
+                    computedBBox =
                             Utils.reprojectEnvelope(
                                     requestedBBox,
                                     coverageProperties.crs2D,
                                     coverageProperties.bbox);
                 } catch (FactoryException e) {
                     throw new DataSourceException(e);
+                }
+                if (isSupportingAlternativeCRSOutput && !isNeedsReprojection(true)) {
+                    alternativeProperties.computedBBox = requestedBBox;
                 }
             } else {
                 // we do not need to do anything, but we do this in order to avoid problems with the
@@ -530,13 +576,13 @@ public class SpatialRequestHelper {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine(
                             new StringBuilder("The computed CropBoundingBox ")
-                                    .append(computedBBox)
+                                    .append(coverageProperties.computedBBox)
                                     .append(" Doesn't intersect the coverage BoundingBox ")
                                     .append(coverageProperties.bbox)
                                     .append(" resulting in an empty request")
                                     .toString());
                 }
-                computedBBox = null;
+                coverageProperties.computedBBox = null;
                 emptyRequest = true;
                 return;
             }
@@ -551,6 +597,7 @@ public class SpatialRequestHelper {
                 // this means that we do not have anything to load at all!
                 emptyRequest = true;
             }
+            coverageProperties.computedBBox = computedBBox;
             return;
         } catch (TransformException te) {
             // something bad happened while trying to transform this
@@ -585,7 +632,7 @@ public class SpatialRequestHelper {
                 // STEP 2 intersection with the geographic bbox for this coverage
                 if (!requestedBBOXInCoverageGeographicCRS.intersects(
                         coverageProperties.geographicBBox, true)) {
-                    computedBBox = null;
+                    coverageProperties.computedBBox = null;
                     emptyRequest = true;
                     return;
                 }
@@ -603,7 +650,8 @@ public class SpatialRequestHelper {
                                 requestedBBOXInCoverageGeographicCRS, coverageProperties.crs2D);
                 approximateRequestedBBoInNativeCRS.setCoordinateReferenceSystem(
                         coverageProperties.crs2D);
-                computedBBox = new ReferencedEnvelope(approximateRequestedBBoInNativeCRS);
+                coverageProperties.computedBBox =
+                        new ReferencedEnvelope(approximateRequestedBBoInNativeCRS);
                 return;
             }
 
@@ -616,7 +664,7 @@ public class SpatialRequestHelper {
         LOGGER.log(
                 Level.INFO,
                 "We did not manage to crop the requested envelope, we fall back onto loading the whole coverage.");
-        computedBBox = null;
+        coverageProperties.computedBBox = null;
     }
 
     public boolean isEmpty() {
@@ -624,7 +672,17 @@ public class SpatialRequestHelper {
     }
 
     public boolean isNeedsReprojection() {
-        return needsReprojection;
+        return isNeedsReprojection(false);
+    }
+
+    public boolean isNeedsReprojection(boolean useAlternativeIfAvailable) {
+        return getProperty(useAlternativeIfAvailable).isReprojectionNeeded();
+    }
+
+    private CoverageProperties getProperty(boolean useAlternativeIfAvailable) {
+        return useAlternativeIfAvailable && isSupportingAlternativeCRSOutput
+                ? alternativeProperties
+                : coverageProperties;
     }
 
     public boolean isAccurateResolution() {
@@ -645,11 +703,27 @@ public class SpatialRequestHelper {
     }
 
     public BoundingBox getComputedBBox() {
-        return computedBBox;
+        return getComputedBBox(false);
+    }
+
+    public BoundingBox getComputedBBox(boolean useAlternativeIfAvailable) {
+        return getProperty(useAlternativeIfAvailable).getComputedBBox();
     }
 
     public BoundingBox getCoverageBBox() {
         return coverageProperties.getBbox();
+    }
+
+    public CoordinateReferenceSystem getReferenceCRS(boolean useAlternativeIfAvailable) {
+        return getProperty(useAlternativeIfAvailable).getCrs2D();
+    }
+
+    public boolean isSupportingAlternativeCRSOutput() {
+        return isSupportingAlternativeCRSOutput;
+    }
+
+    public void setSupportingAlternativeCRSOutput(boolean isSupportingAlternativeCRS) {
+        this.isSupportingAlternativeCRSOutput = isSupportingAlternativeCRS;
     }
 
     @Override
@@ -661,9 +735,9 @@ public class SpatialRequestHelper {
             builder.append(requestedBBox);
             builder.append(", ");
         }
-        if (computedBBox != null) {
+        if (coverageProperties.computedBBox != null) {
             builder.append("cropBBox=");
-            builder.append(computedBBox);
+            builder.append(coverageProperties.computedBBox);
             builder.append(", ");
         }
         if (requestedRasterArea != null) {
@@ -716,7 +790,7 @@ public class SpatialRequestHelper {
         builder.append(", empty=");
         builder.append(emptyRequest);
         builder.append(", needsReprojection=");
-        builder.append(needsReprojection);
+        builder.append(isNeedsReprojection());
         builder.append(", ");
         if (approximateRequestedBBoInNativeCRS != null) {
             builder.append("approximateRequestedBBoInNativeCRS=");

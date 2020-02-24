@@ -192,6 +192,10 @@ public class ImageMosaicReaderTest extends Assert {
 
     private static final Logger LOGGER = Logger.getLogger(ImageMosaicReaderTest.class.toString());
 
+    private static final int BASE_METADATANAMES_LENGTH = 13;
+
+    private static final int ADDITIONAL_DOMAINS_METADATANAMES_LENGTH = 19;
+
     public static junit.framework.Test suite() {
         return new JUnit4TestAdapter(ImageMosaicReaderTest.class);
     }
@@ -473,7 +477,7 @@ public class ImageMosaicReaderTest extends Assert {
 
         final String[] metadataNames = reader.getMetadataNames();
         assertNotNull(metadataNames);
-        assertEquals(metadataNames.length, 12);
+        assertEquals(BASE_METADATANAMES_LENGTH, metadataNames.length);
 
         assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
         final String timeMetadata = reader.getMetadataValue("TIME_DOMAIN");
@@ -743,7 +747,7 @@ public class ImageMosaicReaderTest extends Assert {
 
         final String[] metadataNames = reader.getMetadataNames();
         assertNotNull(metadataNames);
-        assertEquals(metadataNames.length, 12);
+        assertEquals(BASE_METADATANAMES_LENGTH, metadataNames.length);
 
         assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
         final String timeMetadata = reader.getMetadataValue("TIME_DOMAIN");
@@ -853,7 +857,7 @@ public class ImageMosaicReaderTest extends Assert {
 
         final String[] metadataNames = reader.getMetadataNames();
         assertNotNull(metadataNames);
-        assertEquals(metadataNames.length, 12);
+        assertEquals(BASE_METADATANAMES_LENGTH, metadataNames.length);
 
         assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
         final String timeMetadata = reader.getMetadataValue("TIME_DOMAIN");
@@ -931,7 +935,7 @@ public class ImageMosaicReaderTest extends Assert {
 
         final String[] metadataNames = reader.getMetadataNames();
         assertNotNull(metadataNames);
-        assertEquals(metadataNames.length, 12);
+        assertEquals(BASE_METADATANAMES_LENGTH, metadataNames.length);
         assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
         assertEquals("2004-02-01T00:00:00.000Z", reader.getMetadataValue("TIME_DOMAIN_MINIMUM"));
         assertEquals("2004-05-01T00:00:00.000Z", reader.getMetadataValue("TIME_DOMAIN_MAXIMUM"));
@@ -999,7 +1003,7 @@ public class ImageMosaicReaderTest extends Assert {
 
         final String[] metadataNames = reader.getMetadataNames();
         assertNotNull(metadataNames);
-        assertEquals(metadataNames.length, 12);
+        assertEquals(BASE_METADATANAMES_LENGTH, metadataNames.length);
         assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
         assertEquals("2004-02-01T12:05:00.000Z", reader.getMetadataValue("TIME_DOMAIN_MINIMUM"));
         assertEquals("2004-05-30T12:15:59.000Z", reader.getMetadataValue("TIME_DOMAIN_MAXIMUM"));
@@ -1022,7 +1026,7 @@ public class ImageMosaicReaderTest extends Assert {
 
         final String[] metadataNames = reader.getMetadataNames();
         assertNotNull(metadataNames);
-        assertEquals(metadataNames.length, 18);
+        assertEquals(ADDITIONAL_DOMAINS_METADATANAMES_LENGTH, metadataNames.length);
         assertEquals("true", reader.getMetadataValue("HAS_DATE_DOMAIN"));
         assertEquals("20081031T0000000,20081101T0000000", reader.getMetadataValue("DATE_DOMAIN"));
         assertEquals("java.lang.String", reader.getMetadataValue("DATE_DOMAIN_DATATYPE"));
@@ -1102,7 +1106,7 @@ public class ImageMosaicReaderTest extends Assert {
 
             final String[] metadataNames = reader.getMetadataNames();
             assertNotNull(metadataNames);
-            assertEquals(metadataNames.length, 18);
+            assertEquals(ADDITIONAL_DOMAINS_METADATANAMES_LENGTH, metadataNames.length);
             assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
             assertEquals(
                     "2008-10-31T00:00:00.000Z/2008-11-04T00:00:00.000Z/PT1S,2008-11-05T00:00:00.000Z/2008-11-07T00:00:00.000Z/PT1S",
@@ -1427,7 +1431,7 @@ public class ImageMosaicReaderTest extends Assert {
 
         final String[] metadataNames = reader.getMetadataNames();
         assertNotNull(metadataNames);
-        assertEquals(metadataNames.length, 18);
+        assertEquals(ADDITIONAL_DOMAINS_METADATANAMES_LENGTH, metadataNames.length);
         assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
         assertEquals(
                 "2008-10-31T00:00:00.000Z/2008-11-04T00:00:00.000Z/PT1S,2008-11-05T00:00:00.000Z/2008-11-07T00:00:00.000Z/PT1S",
@@ -1716,7 +1720,7 @@ public class ImageMosaicReaderTest extends Assert {
 
         final String[] metadataNames = reader.getMetadataNames();
         assertNotNull(metadataNames);
-        assertEquals(metadataNames.length, 18);
+        assertEquals(ADDITIONAL_DOMAINS_METADATANAMES_LENGTH, metadataNames.length);
         assertEquals("true", reader.getMetadataValue("HAS_DATE_DOMAIN"));
         assertEquals("20081031T0000000,20081101T0000000", reader.getMetadataValue("DATE_DOMAIN"));
         assertEquals("java.lang.String", reader.getMetadataValue("DATE_DOMAIN_DATATYPE"));
@@ -2417,7 +2421,7 @@ public class ImageMosaicReaderTest extends Assert {
 
         final String[] metadataNames = reader.getMetadataNames();
         assertNotNull(metadataNames);
-        assertEquals(metadataNames.length, 18);
+        assertEquals(ADDITIONAL_DOMAINS_METADATANAMES_LENGTH, metadataNames.length);
         assertEquals("true", reader.getMetadataValue("HAS_DATE_DOMAIN"));
         assertEquals("20081031T0000000,20081101T0000000", reader.getMetadataValue("DATE_DOMAIN"));
         assertEquals("java.lang.String", reader.getMetadataValue("DATE_DOMAIN_DATATYPE"));
@@ -2491,7 +2495,7 @@ public class ImageMosaicReaderTest extends Assert {
 
         final String[] metadataNames = reader.getMetadataNames();
         assertNotNull(metadataNames);
-        assertEquals(15, metadataNames.length);
+        assertEquals(16, metadataNames.length);
         assertEquals("false", reader.getMetadataValue("HAS_POLARIZ_DOMAIN"));
         assertEquals("true", reader.getMetadataValue("HAS_POLARIZATION_DOMAIN"));
         assertEquals(
@@ -3726,7 +3730,7 @@ public class ImageMosaicReaderTest extends Assert {
         try {
             String[] metadataNames = reader.getMetadataNames();
             assertNotNull(metadataNames);
-            assertEquals(metadataNames.length, 12);
+            assertEquals(BASE_METADATANAMES_LENGTH, metadataNames.length);
             assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
             assertEquals(
                     "2004-02-01T00:00:00.000Z", reader.getMetadataValue("TIME_DOMAIN_MINIMUM"));
@@ -3753,7 +3757,7 @@ public class ImageMosaicReaderTest extends Assert {
 
         final String[] metadataNames = reader.getMetadataNames();
         assertNotNull(metadataNames);
-        assertEquals(metadataNames.length, 18);
+        assertEquals(ADDITIONAL_DOMAINS_METADATANAMES_LENGTH, metadataNames.length);
 
         assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
         final String timeMetadata = reader.getMetadataValue("TIME_DOMAIN");
@@ -4109,7 +4113,7 @@ public class ImageMosaicReaderTest extends Assert {
 
         final String[] metadataNames = reader.getMetadataNames();
         assertNotNull(metadataNames);
-        assertEquals(metadataNames.length, 12);
+        assertEquals(BASE_METADATANAMES_LENGTH, metadataNames.length);
 
         // Getting some metadata
         assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));

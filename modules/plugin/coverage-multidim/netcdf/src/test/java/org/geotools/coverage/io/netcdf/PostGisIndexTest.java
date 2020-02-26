@@ -408,11 +408,7 @@ public final class PostGisIndexTest extends OnlineTestCase {
         }
     }
 
-    /**
-     * recursively delete indexes
-     *
-     * @param file
-     */
+    /** recursively delete indexes */
     private void cleanupFolders(final File file) {
         if (file.isFile()) {
         } else {
@@ -437,13 +433,7 @@ public final class PostGisIndexTest extends OnlineTestCase {
         Hints.removeSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
     }
 
-    /**
-     * Remove the postgis created tables
-     *
-     * @param tables
-     * @param database
-     * @throws Exception
-     */
+    /** Remove the postgis created tables */
     private void removeTables(String[] tables, String database) throws Exception {
         // delete tables
         Class.forName("org.postgresql.Driver");
@@ -494,10 +484,7 @@ public final class PostGisIndexTest extends OnlineTestCase {
         cleanUp();
     }
 
-    /**
-     * @param i
-     * @param sliceIndex
-     */
+    /** */
     private void spitOutSliceInformation(int i, Slice2DIndex sliceIndex) {
         if (TestData.isInteractiveTest()) {
             String variableName = sliceIndex.getVariableName();

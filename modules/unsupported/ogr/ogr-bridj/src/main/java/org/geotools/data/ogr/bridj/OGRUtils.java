@@ -67,11 +67,7 @@ class OGRUtils {
         }
     }
 
-    /**
-     * Gets a layer name in a version independent way
-     *
-     * @param layer
-     */
+    /** Gets a layer name in a version independent way */
     public static String getLayerName(Pointer layer) {
         Pointer<Byte> namePtr = null;
         try {

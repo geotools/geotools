@@ -62,8 +62,6 @@ public class Collection_CountFunction extends FunctionExpressionImpl {
      *
      * @param collection collection to calculate the count
      * @return An object containing the count value of the attributes
-     * @throws IllegalFilterException
-     * @throws IOException
      */
     static CalcResult calculateCount(SimpleFeatureCollection collection)
             throws IllegalFilterException, IOException {

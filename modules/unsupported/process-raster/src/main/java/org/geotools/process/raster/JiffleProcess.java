@@ -84,10 +84,6 @@ public class JiffleProcess implements RasterProcess {
     /**
      * Executes a Jiffle raster algebra. Check the {@link DescribeParameter} annotations for a
      * description of the various arguments
-     *
-     * @param progressListener
-     * @return
-     * @throws ProcessException
      */
     @DescribeResult(name = OUT_RESULT, description = "The map algebra output")
     public GridCoverage2D execute(
@@ -289,11 +285,6 @@ public class JiffleProcess implements RasterProcess {
     /**
      * Returns the source bands used, or null the bands indexes cannot be computed (e.g., they
      * depend on script variables)
-     *
-     * @param script
-     * @param sourceNames
-     * @return
-     * @throws JiffleException
      */
     private int[] getTransformationBands(String script, String[] sourceNames)
             throws JiffleException {

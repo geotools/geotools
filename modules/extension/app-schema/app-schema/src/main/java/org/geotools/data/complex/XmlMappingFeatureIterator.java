@@ -69,12 +69,10 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
 
     private String idXpath;
     /**
-     * @param store
      * @param mapping place holder for the target type, the surrogate FeatureSource and the mappings
      *     between them.
      * @param query the query over the target feature type, that is to be unpacked to its equivalent
      *     over the surrogate feature type.
-     * @throws IOException
      */
     public XmlMappingFeatureIterator(
             AppSchemaDataAccess store, FeatureTypeMapping mapping, Query query) throws IOException {

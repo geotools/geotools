@@ -32,10 +32,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  */
 public class ShellImpl extends CompositeSurfaceImpl implements Shell {
 
-    /**
-     * @param crs
-     * @param generator
-     */
+    /** */
     public ShellImpl(CoordinateReferenceSystem crs, List<OrientableSurface> generator) {
         super(generator);
     }

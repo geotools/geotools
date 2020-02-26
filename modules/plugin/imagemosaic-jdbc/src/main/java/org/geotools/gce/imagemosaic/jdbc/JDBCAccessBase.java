@@ -78,7 +78,6 @@ abstract class JDBCAccessBase implements JDBCAccess {
      * Constructor
      *
      * @param config the Config object
-     * @throws IOException
      */
     JDBCAccessBase(Config config) throws IOException {
         super();
@@ -156,8 +155,6 @@ abstract class JDBCAccessBase implements JDBCAccess {
      *
      * @param coverageName the coverage name stored in the sql meta table
      * @param con jdbc connection
-     * @throws SQLException
-     * @throws IOException
      */
     protected void initFromDB(String coverageName, Connection con)
             throws SQLException, IOException {
@@ -295,7 +292,6 @@ abstract class JDBCAccessBase implements JDBCAccess {
      * @param li ImageLevelInfo object
      * @param con JDBC Connection
      * @return CoordinateReferenceSystem or null
-     * @throws IOException
      */
     protected abstract CoordinateReferenceSystem getCRS(ImageLevelInfo li, Connection con)
             throws IOException;
@@ -306,7 +302,6 @@ abstract class JDBCAccessBase implements JDBCAccess {
      * @param li ImageLevelInfo object
      * @param con JDBC Connection
      * @return Ineger or null
-     * @throws IOException
      */
     protected Integer getSRSID(ImageLevelInfo li, Connection con) throws IOException {
         return null;
@@ -322,8 +317,6 @@ abstract class JDBCAccessBase implements JDBCAccess {
      * @param li ImageLevelInfo object
      * @param con JDBC Connection
      * @return Envelope for the extent for li
-     * @throws SQLException
-     * @throws IOException
      */
     protected Envelope getExtent(ImageLevelInfo li, Connection con)
             throws SQLException, IOException {
@@ -351,8 +344,6 @@ abstract class JDBCAccessBase implements JDBCAccess {
      *
      * @param coverageName The coverage name in the sql meta table
      * @param con JDBC connection
-     * @throws SQLException
-     * @throws IOException
      */
     void calculateExtentsFromDB(String coverageName, Connection con)
             throws SQLException, IOException {
@@ -420,8 +411,6 @@ abstract class JDBCAccessBase implements JDBCAccess {
      *
      * @param coverageName The coverage name in the sql meta table
      * @param con JDBC Connection
-     * @throws SQLException
-     * @throws IOException
      */
     void calculateResolutionsFromDB(String coverageName, Connection con)
             throws SQLException, IOException {
@@ -483,7 +472,6 @@ abstract class JDBCAccessBase implements JDBCAccess {
      * Sql statement to query the needed tiles for a request
      *
      * @param levelInfo ImageLevelInfo object
-     * @return
      */
     protected abstract String getGridSelectStatement(ImageLevelInfo levelInfo);
 
@@ -493,7 +481,6 @@ abstract class JDBCAccessBase implements JDBCAccess {
      * @param s the grid select statement
      * @param envelope the requested envelope
      * @param li ImageLevelInfo object
-     * @throws SQLException
      */
     protected abstract void setGridSelectParams(
             PreparedStatement s, GeneralEnvelope envelope, ImageLevelInfo li) throws SQLException;
@@ -607,7 +594,6 @@ abstract class JDBCAccessBase implements JDBCAccess {
     /**
      * @param resultSet Sql Result Set
      * @return byte array containing image bytes from curren sql cursor location
-     * @throws SQLException
      */
     protected byte[] getTileBytes(ResultSet resultSet) throws SQLException {
         byte[] buffer = new byte[16384];
@@ -632,7 +618,6 @@ abstract class JDBCAccessBase implements JDBCAccess {
      * @param tableName sql table name
      * @param con JDBC Connection
      * @return return number of rows in the table
-     * @throws SQLException
      */
     private int getRowCount(String tableName, Connection con) throws SQLException {
         try (PreparedStatement s = con.prepareStatement("select count(*) from " + tableName);
@@ -702,8 +687,6 @@ abstract class JDBCAccessBase implements JDBCAccess {
      * @param li ImageLevelInfo object
      * @param con JDBC Connection
      * @return the resolution for li, based on a random chosen tile
-     * @throws SQLException
-     * @throws IOException
      */
     protected double[] getPixelResolution(ImageLevelInfo li, Connection con)
             throws SQLException, IOException {

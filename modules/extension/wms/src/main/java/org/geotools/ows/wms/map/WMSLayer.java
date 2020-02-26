@@ -67,23 +67,12 @@ public class WMSLayer extends GridReaderLayer {
         STYLE.featureTypeStyles().add(type);
     }
 
-    /**
-     * Builds a new WMS layer
-     *
-     * @param wms
-     * @param layer
-     */
+    /** Builds a new WMS layer */
     public WMSLayer(WebMapServer wms, Layer layer) {
         super(new WMSCoverageReader(wms, layer), STYLE);
     }
 
-    /**
-     * Builds a new WMS layer
-     *
-     * @param wms
-     * @param layer
-     * @param style
-     */
+    /** Builds a new WMS layer */
     public WMSLayer(WebMapServer wms, Layer layer, String style) {
         super(new WMSCoverageReader(wms, layer, style), STYLE);
     }
@@ -108,8 +97,6 @@ public class WMSLayer extends GridReaderLayer {
      * Retrieves the feature info as text (assuming "text/plain" is a supported feature info format)
      *
      * @param pos the position to be checked, in real world coordinates
-     * @return
-     * @throws IOException
      */
     public String getFeatureInfoAsText(DirectPosition2D pos, int featureCount) throws IOException {
         GetMapRequest mapRequest = getReader().mapRequest;
@@ -135,8 +122,6 @@ public class WMSLayer extends GridReaderLayer {
      *
      * @param pos the position to be checked, in real world coordinates
      * @param infoFormat The INFO_FORMAT parameter in the GetFeatureInfo request
-     * @return
-     * @throws IOException
      */
     public InputStream getFeatureInfo(DirectPosition2D pos, String infoFormat, int featureCount)
             throws IOException {
@@ -149,10 +134,7 @@ public class WMSLayer extends GridReaderLayer {
      * GetMap request on this layer. Mostly useful for stateless users that rebuild the map context
      * for each rendering operation (e.g., GeoServer)
      *
-     * @param pos
      * @param infoFormat The INFO_FORMAT parameter in the GetFeatureInfo request
-     * @return
-     * @throws IOException
      */
     public InputStream getFeatureInfo(
             ReferencedEnvelope bbox,
@@ -190,66 +172,37 @@ public class WMSLayer extends GridReaderLayer {
         }
     }
 
-    /**
-     * Returns the {@link WebMapServer} used by this layer
-     *
-     * @return
-     */
+    /** Returns the {@link WebMapServer} used by this layer */
     public WebMapServer getWebMapServer() {
         return getReader().wms;
     }
 
-    /**
-     * Returns the WMS {@link Layer}s used by this layer
-     *
-     * @return
-     */
+    /** Returns the WMS {@link Layer}s used by this layer */
     public List<Layer> getWMSLayers() {
         return ((WMSCoverageReader) reader).getLayers();
     }
 
-    /**
-     * return the names of the styles used by this layer.
-     *
-     * @return
-     */
+    /** return the names of the styles used by this layer. */
     public List<String> getWMSStyles() {
         return ((WMSCoverageReader) reader).getStyles();
     }
 
-    /**
-     * Returns the CRS used to make requests to the remote WMS
-     *
-     * @return
-     */
+    /** Returns the CRS used to make requests to the remote WMS */
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
         return reader.getCoordinateReferenceSystem();
     }
 
-    /**
-     * Returns last GetMap request performed by this layer
-     *
-     * @return
-     */
+    /** Returns last GetMap request performed by this layer */
     public GetMapRequest getLastGetMap() {
         return getReader().mapRequest;
     }
 
-    /**
-     * Allows to add another WMS layer into the GetMap requests
-     *
-     * @param layer
-     */
+    /** Allows to add another WMS layer into the GetMap requests */
     public void addLayer(Layer layer) {
         addLayer(layer, "");
     }
 
-    /**
-     * Allows to add another WMS layer into the GetMap requests
-     *
-     * @param layer
-     * @param style
-     */
+    /** Allows to add another WMS layer into the GetMap requests */
     public void addLayer(Layer layer, String style) {
         getReader().addLayer(layer, style);
     }
@@ -258,9 +211,6 @@ public class WMSLayer extends GridReaderLayer {
      * Returns true if the specified CRS can be used directly to perform WMS requests. Natively
      * supported crs will provide the best rendering quality as no client side reprojection is
      * necessary, the image coming from the WMS server will be used as-is
-     *
-     * @param crs
-     * @return
      */
     public boolean isNativelySupported(CoordinateReferenceSystem crs) {
         try {

@@ -65,19 +65,12 @@ public class PreGeneralizedDataStore implements DataStore {
 
     private URI namespace;
 
-    /**
-     * @param infos
-     * @param repository
-     */
+    /** */
     public PreGeneralizedDataStore(GeneralizationInfos infos, Repository repository) {
         this(infos, repository, null);
     }
 
-    /**
-     * @param infos
-     * @param repository
-     * @param namespace
-     */
+    /** */
     public PreGeneralizedDataStore(
             GeneralizationInfos infos, Repository repository, URI namespace) {
         this.namespace = namespace;

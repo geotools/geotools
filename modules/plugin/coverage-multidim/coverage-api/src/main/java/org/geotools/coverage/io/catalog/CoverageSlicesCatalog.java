@@ -114,24 +114,14 @@ public class CoverageSlicesCatalog {
             super.removeGranules(typeName, refineFilter(filter), transaction);
         }
 
-        /**
-         * Refine query to make sure to restrict the query to the single file associated.
-         *
-         * @param q
-         * @return
-         */
+        /** Refine query to make sure to restrict the query to the single file associated. */
         private Query refineQuery(Query q) {
             Query query = new Query(q);
             query.setFilter(refineFilter(q.getFilter()));
             return query;
         }
 
-        /**
-         * Refine filter to make sure to AND the filter with a filter selecting the proper file
-         *
-         * @param filter
-         * @return
-         */
+        /** Refine filter to make sure to AND the filter with a filter selecting the proper file */
         private Filter refineFilter(Filter filter) {
             return filter != null ? FF.and(filter, queryFilter) : queryFilter;
         }

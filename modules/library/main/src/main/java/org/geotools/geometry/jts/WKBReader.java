@@ -451,9 +451,6 @@ public class WKBReader {
      * Casts the provided geometry factory to a curved one if possible, or wraps it into one with
      * infinite tolerance (the linearization will happen using the default base segments number set
      * in {@link CircularArc}
-     *
-     * @param gf
-     * @return
      */
     private CurvedGeometryFactory getCurvedGeometryFactory(GeometryFactory gf) {
         CurvedGeometryFactory curvedFactory;

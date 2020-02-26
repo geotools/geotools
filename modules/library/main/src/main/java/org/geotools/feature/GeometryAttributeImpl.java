@@ -83,8 +83,6 @@ public class GeometryAttributeImpl extends AttributeImpl implements GeometryAttr
     /**
      * Returns the non null envelope of this attribute. If the attribute's geometry is <code>null
      * </code> the returned Envelope <code>isNull()</code> is true.
-     *
-     * @return
      */
     public synchronized BoundingBox getBounds() {
         if (bounds == null) {

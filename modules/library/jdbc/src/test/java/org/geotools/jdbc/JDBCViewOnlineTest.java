@@ -59,18 +59,12 @@ public abstract class JDBCViewOnlineTest extends JDBCTestSupport {
     /**
      * Whether the pk field in a view is nillable or not (it is for most databases, but not for
      * Oracle for example).
-     *
-     * @return
      */
     protected boolean isPkNillable() {
         return true;
     }
 
-    /**
-     * Whether the database supports primary keys defined on views (Oracle does)
-     *
-     * @return
-     */
+    /** Whether the database supports primary keys defined on views (Oracle does) */
     protected boolean supportsPkOnViews() {
         return false;
     }
@@ -109,8 +103,6 @@ public abstract class JDBCViewOnlineTest extends JDBCTestSupport {
     /**
      * Subclasses may want to override this in case the database has a native way, other than the
      * pk, to identify a row
-     *
-     * @throws Exception
      */
     public void testReadOnly() throws Exception {
         try {

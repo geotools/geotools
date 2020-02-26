@@ -225,7 +225,6 @@ public class MaplayerTableViewer extends TableViewer implements ISelectionChange
      * Show a style dialog to create a new Style for the layer
      *
      * @param layer the layer to be styled
-     * @throws IOException
      */
     private void doSetStyle(Layer layer) throws IOException {
         if (layer instanceof StyleLayer) {

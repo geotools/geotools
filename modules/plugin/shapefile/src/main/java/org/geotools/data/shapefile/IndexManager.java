@@ -124,11 +124,7 @@ class IndexManager {
         return false;
     }
 
-    /**
-     * If the fid index can be used and it is missing this method will try to create it
-     *
-     * @return
-     */
+    /** If the fid index can be used and it is missing this method will try to create it */
     boolean hasFidIndex(boolean createIfMissing) {
         if (isIndexUseable(FIX)) {
             return true;
@@ -151,12 +147,7 @@ class IndexManager {
         }
     }
 
-    /**
-     * Returns true if the specified index exists, is up to date, and can be read
-     *
-     * @param indexType
-     * @return
-     */
+    /** Returns true if the specified index exists, is up to date, and can be read */
     boolean isIndexUseable(ShpFileType indexType) {
         if (shpFiles.isLocal()) {
             if (isIndexStale(indexType) || !shpFiles.exists(indexType)) {
@@ -184,12 +175,7 @@ class IndexManager {
         return true;
     }
 
-    /**
-     * Returns true if the index file is available
-     *
-     * @param indexType
-     * @return
-     */
+    /** Returns true if the index file is available */
     boolean isSpatialIndexAvailable() {
         return shpFiles.isLocal() && shpFiles.exists(QIX);
     }
@@ -197,9 +183,6 @@ class IndexManager {
     /**
      * Returns true if the specified index file is outdated compared to the shapefile .shp and .shx
      * files
-     *
-     * @param indexType
-     * @return
      */
     boolean isIndexStale(ShpFileType indexType) {
         if (!shpFiles.isLocal())
@@ -242,8 +225,6 @@ class IndexManager {
      *
      * @param fidFilter the fid filter identifying the ids
      * @return a list of Data objects
-     * @throws IOException
-     * @throws TreeException
      */
     List<Data> queryFidIndex(Id fidFilter) throws IOException {
         // sort by fid to increase performance and allow skipping on natural order
@@ -304,13 +285,7 @@ class IndexManager {
         return records;
     }
 
-    /**
-     * Queries the spatial index for features available in the specified bbox
-     *
-     * @param bbox
-     * @throws DataSourceException
-     * @throws IOException
-     */
+    /** Queries the spatial index for features available in the specified bbox */
     protected CloseableIterator<Data> querySpatialIndex(Envelope bbox)
             throws DataSourceException, IOException, TreeException {
         CloseableIterator<Data> tmp = null;
@@ -373,7 +348,6 @@ class IndexManager {
      * Convenience method for opening a QuadTree index.
      *
      * @return A new QuadTree
-     * @throws StoreException
      */
     protected QuadTree openQuadTree() throws StoreException {
         if (!shpFiles.isLocal()) {

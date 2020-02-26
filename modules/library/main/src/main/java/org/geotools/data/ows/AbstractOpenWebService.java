@@ -464,11 +464,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
         return hints;
     }
 
-    /**
-     * Sets the hints affecting the service operations
-     *
-     * @param hints
-     */
+    /** Sets the hints affecting the service operations */
     public void setHints(Map<String, Object> hints) {
         this.hints = hints;
     }

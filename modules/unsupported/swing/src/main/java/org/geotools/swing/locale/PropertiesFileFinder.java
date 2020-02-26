@@ -53,10 +53,6 @@ public class PropertiesFileFinder {
     /**
      * Searches for properties files in the specified resource directory and returns information
      * about each file and the {@code Locales} that it supports.
-     *
-     * @param resourceDir
-     * @return
-     * @throws IOException
      */
     public List<PropertiesFileInfo> scan(String resourceDir) throws IOException {
         List<SingleFileInfo> infoList = new ArrayList<SingleFileInfo>();

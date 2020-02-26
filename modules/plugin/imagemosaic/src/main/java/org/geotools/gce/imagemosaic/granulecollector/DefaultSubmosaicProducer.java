@@ -35,7 +35,6 @@ public class DefaultSubmosaicProducer extends BaseSubmosaicProducer {
     /**
      * Constructor.
      *
-     * @param rasterLayerResponse
      * @param granuleFilter the {@link Filter} we are supposed to use to select granules for this
      *     {@link DefaultSubmosaicProducer}.
      * @param dryRun whether we need to make

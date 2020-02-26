@@ -96,8 +96,6 @@ public class GMLComplexTypesTest {
     /**
      * Test for encoding of null values. No exception must occur if features containing a null
      * geometry are encoded.
-     *
-     * @throws Exception
      */
     @Test
     public void testEncodeFeatureWithNullAttributes() throws Exception {

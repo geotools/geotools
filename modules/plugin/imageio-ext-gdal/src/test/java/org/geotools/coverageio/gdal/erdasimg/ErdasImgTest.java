@@ -55,11 +55,7 @@ public final class ErdasImgTest extends GDALTestCase {
     /** file name of a valid Erdas Imagine sample data to be used for tests. */
     private static final String fileName = "sample.img";
 
-    /**
-     * Creates a new instance of {@code IDRISIImgTest}
-     *
-     * @param name
-     */
+    /** Creates a new instance of {@code IDRISIImgTest} */
     public ErdasImgTest() {
         super("ErdasImagine", new ErdasImgFormatFactory());
     }

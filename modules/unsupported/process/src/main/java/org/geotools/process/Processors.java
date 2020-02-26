@@ -61,11 +61,7 @@ public class Processors extends FactoryFinder {
         return registry;
     }
 
-    /**
-     * Dynamically register a new process factory into SPI
-     *
-     * @param factory
-     */
+    /** Dynamically register a new process factory into SPI */
     public static void addProcessFactory(ProcessFactory factory) {
         getServiceRegistry().registerFactory(factory);
     }
@@ -73,8 +69,6 @@ public class Processors extends FactoryFinder {
     /**
      * Dynamically removes a process factory from SPI. Normally the factory has been added before
      * via {@link #addProcessFactory(ProcessFactory)}
-     *
-     * @param factory
      */
     public static void removeProcessFactory(ProcessFactory factory) {
         if (lastFactory == factory) {
@@ -156,7 +150,6 @@ public class Processors extends FactoryFinder {
      * greyscale or color raster product; or choosing the version of GML produced etc...).
      *
      * @param name Name of the Process
-     * @param parameters
      * @return Description of the parameters required
      */
     public static synchronized Map<String, Parameter<?>> getResultInfo(

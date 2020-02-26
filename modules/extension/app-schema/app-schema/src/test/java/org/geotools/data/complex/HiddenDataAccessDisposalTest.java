@@ -40,12 +40,7 @@ public class HiddenDataAccessDisposalTest extends AbstractHiddenDataAccessDispos
 
     AppSchemaDataAccess mfDataAccess;
 
-    /**
-     * Load all the data accesses.
-     *
-     * @return
-     * @throws Exception
-     */
+    /** Load all the data accesses. */
     @Before
     public void loadDataAccesses() throws Exception {
         /** Load mapped feature data access */

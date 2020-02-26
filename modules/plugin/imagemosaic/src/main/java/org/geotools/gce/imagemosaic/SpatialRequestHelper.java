@@ -192,8 +192,6 @@ public class SpatialRequestHelper {
     /**
      * Compute this specific request settings all the parameters needed by a visiting {@link
      * RasterLayerResponse} object.
-     *
-     * @throws DataSourceException
      */
     public void compute() throws DataSourceException {
         //
@@ -353,8 +351,6 @@ public class SpatialRequestHelper {
     /**
      * Return a crop region from a specified envelope, leveraging on the grid to world
      * transformation.
-     *
-     * @throws DataSourceException
      */
     private void computeRasterArea() throws DataSourceException {
 

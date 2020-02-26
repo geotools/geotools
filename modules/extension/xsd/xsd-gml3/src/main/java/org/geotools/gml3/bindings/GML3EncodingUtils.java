@@ -343,9 +343,6 @@ public class GML3EncodingUtils {
     /**
      * Return the simple content of a {@link ComplexAttribute} if it represents a complexType with
      * simpleContent, otherwise null.
-     *
-     * @param complex
-     * @return
      */
     public static Object getSimpleContent(ComplexAttribute complex) {
         Property simpleContent = complex.getProperty(new NameImpl("simpleContent"));
@@ -360,9 +357,6 @@ public class GML3EncodingUtils {
      * Deep clones a {@link NamespaceSupport} so that it can be used outside of this parse (as its
      * state changes during the parse, and we need to keep all namespace mapping present at this
      * point for later usage)
-     *
-     * @param namespaceSupport
-     * @return
      */
     public static NamespaceSupport copyNamespaceSupport(NamespaceSupport namespaceSupport) {
         NamespaceSupport copy = new NamespaceSupport();

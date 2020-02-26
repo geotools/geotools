@@ -24,7 +24,6 @@ import static org.geotools.data.vpf.ifc.VPFCoverageIfc.FIELD_LEVEL;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -63,8 +62,6 @@ public class VPFCoverage {
     /**
      * Constructor
      *
-     * @param cLibrary
-     * @param feature
      * @param cDirectoryName path to directory containing coverage
      * @throws IOException if the directory does not contain a valid FCS file
      * @throws SchemaException For problems making one of the feature classes as a FeatureType.
@@ -77,10 +74,7 @@ public class VPFCoverage {
     /**
      * Constructor with namespace
      *
-     * @param cLibrary
-     * @param feature
      * @param cDirectoryName path to directory containing coverage
-     * @param namespace
      * @throws IOException if the directory does not contain a valid FCS file
      * @throws SchemaException For problems making one of the feature classes as a FeatureType.
      */
@@ -99,11 +93,7 @@ public class VPFCoverage {
         discoverFeatureTypes();
     }
 
-    /**
-     * Builds feature classes for the coverage
-     *
-     * @throws SQLException
-     */
+    /** Builds feature classes for the coverage */
     private void discoverFeatureClasses() throws IOException, SchemaException {
         VPFFeatureClass featureClass = null;
         // boolean hasFeatureClass;

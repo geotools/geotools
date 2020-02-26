@@ -50,10 +50,7 @@ public class Node2D extends Point2D.Double {
         this.object = null;
     }
 
-    /**
-     * @param d
-     * @param e
-     */
+    /** */
     public Node2D(double x, double y) {
         super(x, y);
         this.id = -1;
@@ -92,11 +89,7 @@ public class Node2D extends Point2D.Double {
         return (link instanceof Edge2D[]) ? (Edge2D[]) link : null;
     }
 
-    /**
-     * @param tri
-     * @param node2D
-     * @return
-     */
+    /** */
     public Simplex2D[] getSimplices(Node2D node2D) {
         HashSet<Simplex2D> hs = getSimplices();
         Simplex2D s0 = null;
@@ -206,10 +199,7 @@ public class Node2D extends Point2D.Double {
         }
     }
 
-    /**
-     * @param edge2D
-     * @return
-     */
+    /** */
     public boolean hasEdge(Edge2D edge) {
         Edge2D edges[] = this.getEdges();
         if (edges == null) return false;

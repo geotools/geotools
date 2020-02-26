@@ -71,7 +71,6 @@ public class ArcGISRestDataStoreFactoryTest {
      *
      * @param fileName File name to load
      * @return JSON content of the file
-     * @throws FileNotFoundException
      */
     public static String readJSONAsString(String fileName) throws FileNotFoundException {
         Scanner input =
@@ -92,7 +91,6 @@ public class ArcGISRestDataStoreFactoryTest {
      *
      * @param fileName File name to load
      * @return JSON content of the file
-     * @throws FileNotFoundException
      */
     public static InputStream readJSONAsStream(String fileName) throws FileNotFoundException {
         return new FileInputStream(
@@ -126,12 +124,6 @@ public class ArcGISRestDataStoreFactoryTest {
     /**
      * Helper method to create a data store
      *
-     * @param namespace
-     * @param url
-     * @param user
-     * @param password
-     * @return
-     * @throws IOException
      */
     public DataStore createDataStore(
             final String namespace,

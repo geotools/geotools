@@ -239,11 +239,7 @@ public abstract class ContentFeatureStore extends ContentFeatureSource
         return ids;
     }
 
-    /**
-     * Adds a collection of features to the store.
-     *
-     * @param featureCollection
-     */
+    /** Adds a collection of features to the store. */
     public List<FeatureId> addFeatures(
             FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection)
             throws IOException {
@@ -265,12 +261,7 @@ public abstract class ContentFeatureStore extends ContentFeatureSource
         return ids;
     }
 
-    /**
-     * Utility method that ensures we are going to write only in append mode
-     *
-     * @return
-     * @throws IOException
-     */
+    /** Utility method that ensures we are going to write only in append mode */
     private FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterAppend() throws IOException {
         FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
                 getWriter(Filter.INCLUDE, WRITER_ADD);

@@ -49,11 +49,7 @@ public final class JP2KTest extends GDALTestCase {
     /** file name of a valid JP2K sample data to be used for tests. */
     private static final String fileName = "sample.jp2";
 
-    /**
-     * Creates a new instance of JP2KTest
-     *
-     * @param name
-     */
+    /** Creates a new instance of JP2KTest */
     public JP2KTest() {
         super("JP2K", new JP2KFormatFactory());
     }

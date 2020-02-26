@@ -60,11 +60,7 @@ public class BindingFilterVisitor extends DuplicatingFilterVisitor {
 
     private ExpressionTypeVisitor expressionTypeVisitor;
 
-    /**
-     * Evaluates the
-     *
-     * @param schema
-     */
+    /** Evaluates the */
     public BindingFilterVisitor(FeatureType schema) {
         this.schema = schema;
         this.expressionTypeVisitor = new ExpressionTypeVisitor(schema);

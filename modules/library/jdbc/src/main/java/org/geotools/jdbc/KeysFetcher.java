@@ -383,10 +383,6 @@ abstract class KeysFetcher {
         /**
          * Returns the last generated value based on the connection. Deprecated, please
          * use/implement the version taking also the statement as an argument
-         *
-         * @param cx
-         * @return
-         * @throws SQLException
          */
         public Object getLastValue(Connection cx) throws SQLException {
             return getLastValue(cx, null);

@@ -53,13 +53,7 @@ public class TestPiecewise {
 
     private static final String LOGGER = null;
 
-    /**
-     * Testing {@link DefaultConstantPiecewiseTransformElement}.
-     *
-     * @throws IOException
-     * @throws TransformException
-     * @throws TransformationException
-     */
+    /** Testing {@link DefaultConstantPiecewiseTransformElement}. */
     @Test
     public void linearTransform() throws IOException, TransformException, TransformationException {
 
@@ -103,12 +97,7 @@ public class TestPiecewise {
         Assert.assertEquals(1, transform.getSourceDimensions());
         Assert.assertEquals(1, transform.getTargetDimensions());
     }
-    /**
-     * Testing {@link org.geotools.renderer.lite.gridcoverage2d.MathTransformationAdapter}.
-     *
-     * @throws IOException
-     * @throws TransformException
-     */
+    /** Testing {@link org.geotools.renderer.lite.gridcoverage2d.MathTransformationAdapter}. */
     @Test
     public void mathTransform1DAdapter() throws IOException, TransformException {
         // default adapter
@@ -133,9 +122,6 @@ public class TestPiecewise {
     /**
      * Testing {@link DefaultConstantPiecewiseTransformElement}.
      *
-     * @throws IOException
-     * @throws TransformException
-     * @throws TransformationException
      * @throws it.geosolutions.jaiext.piecewise.NoninvertibleTransformException
      */
     @Test
@@ -258,13 +244,7 @@ public class TestPiecewise {
         Assert.assertEquals(0.0, e0.transform(3), 0);
         Assert.assertEquals(transform.transform(3), 0.0, 0.0);
     }
-    /**
-     * Testing testPiecewiseLogarithm.
-     *
-     * @throws IOException
-     * @throws TransformException
-     * @throws TransformationException
-     */
+    /** Testing testPiecewiseLogarithm. */
     @Test
     public void piecewiseLogarithm()
             throws IOException, TransformException, TransformationException {
@@ -388,13 +368,7 @@ public class TestPiecewise {
         Assert.assertTrue(exceptionFound);
     }
 
-    /**
-     * Testing DefaultPiecewiseTransform1DElement.
-     *
-     * @throws IOException
-     * @throws TransformException
-     * @throws TransformationException
-     */
+    /** Testing DefaultPiecewiseTransform1DElement. */
     @Test
     public void defaultTransform() throws IOException, TransformException, TransformationException {
         ////
@@ -495,13 +469,7 @@ public class TestPiecewise {
         }
     }
 
-    /**
-     * Testing DefaultPassthroughPiecewiseTransform1DElement .
-     *
-     * @throws IOException
-     * @throws TransformException
-     * @throws TransformationException
-     */
+    /** Testing DefaultPassthroughPiecewiseTransform1DElement . */
     @Test
     public void passthroughTransform()
             throws IOException, TransformException, TransformationException {
@@ -578,12 +546,7 @@ public class TestPiecewise {
 
     }
 
-    /**
-     * Testing Short input values.
-     *
-     * @throws IOException
-     * @throws TransformException
-     */
+    /** Testing Short input values. */
     @Test
     public void lookupByte() throws IOException, TransformException {
 
@@ -629,11 +592,7 @@ public class TestPiecewise {
         else finalimage.getTiles();
     }
 
-    /**
-     * SWAN test-case.
-     *
-     * @throws IOException
-     */
+    /** SWAN test-case. */
     @Test
     public void SWANLOGARITHMIC() throws IOException {
         // /////////////////////////////////////////////////////////////////////
@@ -720,8 +679,6 @@ public class TestPiecewise {
      * Building an image based on SWAN data.
      *
      * @return {@linkplain BufferedImage}
-     * @throws IOException
-     * @throws FileNotFoundException
      */
     private RenderedImage getSWAN() throws IOException, FileNotFoundException {
         final AsciiGridsImageReader reader =

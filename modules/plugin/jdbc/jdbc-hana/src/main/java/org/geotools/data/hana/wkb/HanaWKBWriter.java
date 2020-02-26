@@ -192,7 +192,7 @@ public class HanaWKBWriter {
 
         write(shell.getCoordinateSequence(), dimension, buffer);
         for (int i = 0; i < numHoles; ++i) {
-            LineString hole = polygon.getInteriorRingN(0);
+            LineString hole = polygon.getInteriorRingN(i);
             write(hole.getCoordinateSequence(), dimension, buffer);
         }
     }

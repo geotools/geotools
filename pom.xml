@@ -427,12 +427,12 @@
            <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-checkstyle-plugin</artifactId>
-              <version>3.0.0</version>
+              <version>3.1.1</version>
               <dependencies>
                 <dependency>
                   <groupId>com.puppycrawl.tools</groupId>
                   <artifactId>checkstyle</artifactId>
-                  <version>8.18</version>
+                  <version>8.29</version>
                 </dependency>
                </dependencies>
               <configuration>
@@ -2361,6 +2361,14 @@
   <!--     This is where Maven looks for plugin dependencies.      -->
   <!-- =========================================================== -->
   <pluginRepositories>
+    <pluginRepository>
+      <id>central.maven.org</id>
+      <name>Central Maven repository</name>
+      <url>https://repo1.maven.org/maven2</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </pluginRepository>
     <pluginRepository>
       <id>osgeo</id>
       <name>Open Source Geospatial Foundation Maven 2 Repository</name>

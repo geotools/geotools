@@ -50,11 +50,7 @@ public class URLEncodeFunctionTest {
         assertEquals("strURLEncode", f.getName());
     }
 
-    /**
-     * Test of evaluate method, of class URLEncodeFunction.
-     *
-     * @throws Exception
-     */
+    /** Test of evaluate method, of class URLEncodeFunction. */
     @Test
     public void testURLEncodeWithDefault() throws Exception {
         URLEncodeFunction f = new URLEncodeFunction();
@@ -65,11 +61,7 @@ public class URLEncodeFunctionTest {
         assertEquals("Value%20With%20Spaces", f.evaluate(null));
     }
 
-    /**
-     * Test of evaluate method, of class URLEncodeFunction.
-     *
-     * @throws Exception
-     */
+    /** Test of evaluate method, of class URLEncodeFunction. */
     @Test
     public void testURLEncode() throws Exception {
         URLEncodeFunction f = new URLEncodeFunction();
@@ -82,11 +74,7 @@ public class URLEncodeFunctionTest {
         assertEquals("Value%20With%20Spaces", f.evaluate(null));
     }
 
-    /**
-     * Test of evaluate method, of class URLEncodeFunction.
-     *
-     * @throws Exception
-     */
+    /** Test of evaluate method, of class URLEncodeFunction. */
     @Test
     public void testFormURLEncode() throws Exception {
         URLEncodeFunction f = new URLEncodeFunction();

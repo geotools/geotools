@@ -74,7 +74,6 @@ public class GeneralizationInfo {
     }
 
     /**
-     * @param requestedDistance
      * @return The proper Generalization for the requested distance, null if no proper distance
      *     found example: Given are generalizations for 10.0 and 20 0<= requestedDistance < 10 --->
      *     return null 10<= requestedDistance < 20 ---> return distance info for 10.0 20<=

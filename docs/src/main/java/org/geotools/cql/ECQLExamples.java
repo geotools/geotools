@@ -159,11 +159,7 @@ public class ECQLExamples {
         }
     }
 
-    /**
-     * Example using the "contains" intersection matrix.
-     *
-     * @throws Exception
-     */
+    /** Example using the "contains" intersection matrix. */
     private static void relatePattern() throws Exception {
 
         // ecql relatePattern start
@@ -179,11 +175,7 @@ public class ECQLExamples {
         System.out.println("Result of filter evaluation: " + result);
     }
 
-    /**
-     * Example using the "contains" intersection matrix.
-     *
-     * @throws Exception
-     */
+    /** Example using the "contains" intersection matrix. */
     private static void referencedRelatePattern() throws Exception {
 
         // ecql referencedRelatePattern start
@@ -276,11 +268,7 @@ public class ECQLExamples {
         System.out.println("Result of filter evaluation: " + result);
     }
 
-    /**
-     * This example shows that ECQL syntax is compatible with CQL.
-     *
-     * @throws Exception
-     */
+    /** This example shows that ECQL syntax is compatible with CQL. */
     private static void comparisonPredicateCQLCompatibility() throws Exception {
 
         // comparisonCQLCompatibility start
@@ -299,11 +287,7 @@ public class ECQLExamples {
         }
     }
 
-    /**
-     * ECQL allows expressions in the left hand of comparison predicate.
-     *
-     * @throws Exception
-     */
+    /** ECQL allows expressions in the left hand of comparison predicate. */
     private static void expressionLessThanOrEqualToProperty() throws Exception {
 
         // ecql expressionLessThanOrEqualToProperty start
@@ -320,11 +304,7 @@ public class ECQLExamples {
         System.out.println("Result of filter evaluation: " + result);
     }
 
-    /**
-     * Comparison between persons under 18 years old and over 65 years old
-     *
-     * @throws Exception
-     */
+    /** Comparison between persons under 18 years old and over 65 years old */
     private static void comparisonUsingExpressions() throws Exception {
 
         // comparisonUsingExpressions start
@@ -374,11 +354,7 @@ public class ECQLExamples {
         System.out.println("Result of filter evaluation: " + result);
     }
 
-    /**
-     * Matching a property with a text pattern (case sensitive)
-     *
-     * @throws Exception
-     */
+    /** Matching a property with a text pattern (case sensitive) */
     private static void likePredicate() throws Exception {
         // ecql likePredicate start
         Filter filter = ECQL.toFilter("cityName LIKE 'New%'");
@@ -393,11 +369,7 @@ public class ECQLExamples {
         System.out.println("Result of filter evaluation: " + result);
     }
 
-    /**
-     * Matching a property with a text pattern (case insensitive)
-     *
-     * @throws Exception
-     */
+    /** Matching a property with a text pattern (case insensitive) */
     private static void ilikePredicate() throws Exception {
 
         // ecql ilikePredicate start
@@ -413,11 +385,7 @@ public class ECQLExamples {
         System.out.println("Result of filter evaluation: " + result);
     }
 
-    /**
-     * Matching a literal string
-     *
-     * @throws Exception
-     */
+    /** Matching a literal string */
     private static void likePredicateInString() throws Exception {
         // ecql likePredicateInString start
         Filter filter = ECQL.toFilter("'aabbcc' LIKE '%bb%'");

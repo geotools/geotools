@@ -493,10 +493,6 @@ public class DB2FilterToSQL extends PreparedFilterToSQL {
     /**
      * Performs custom visits for functions that cannot be encoded as <code>
      * functionName(p1, p2, ... pN).</code>
-     *
-     * @param function
-     * @param extraData
-     * @return
      */
     public boolean visitFunction(Function function, Object extraData) throws IOException {
         if (function instanceof FilterFunction_strConcat) {

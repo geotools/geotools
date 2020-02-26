@@ -263,9 +263,6 @@ public class LabelCacheImpl implements LabelCache {
      * its missing --> DEFAULT_PRIORITY 2. if its a number, return that number 3. if its not a
      * number, convert to string and try to parse the number; return the number 4. otherwise, return
      * DEFAULT_PRIORITY
-     *
-     * @param symbolizer
-     * @param feature
      */
     public double getPriority(TextSymbolizer symbolizer, Feature feature) {
         if (symbolizer.getPriority() == null) return DEFAULT_PRIORITY;
@@ -431,11 +428,7 @@ public class LabelCacheImpl implements LabelCache {
         return al;
     }
 
-    /**
-     * Returns a list of all active labels
-     *
-     * @return
-     */
+    /** Returns a list of all active labels */
     public List<LabelCacheItem> getActiveLabels() {
         // fill a list with the active labels
         List<LabelCacheItem> al = new ArrayList<LabelCacheItem>();
@@ -445,12 +438,7 @@ public class LabelCacheImpl implements LabelCache {
         return al;
     }
 
-    /**
-     * Is the label part of an active layer?
-     *
-     * @param layerIds
-     * @return
-     */
+    /** Is the label part of an active layer? */
     private boolean isActive(Set<String> layerIds) {
         for (String layerName : layerIds) {
             if (enabledLayers.contains(layerName)) return true;
@@ -611,10 +599,6 @@ public class LabelCacheImpl implements LabelCache {
      * and likely to give us problems due to invalid polygons SO, use a sample method - make a few
      * points inside the label and see if they're "close to" the polygon The method sucks, but works
      * well...
-     *
-     * @param painter
-     * @param transform
-     * @return
      */
     private double goodnessOfFit(
             LabelPainter painter, AffineTransform transform, PreparedGeometry representativeGeom) {
@@ -1190,11 +1174,6 @@ public class LabelCacheImpl implements LabelCache {
     /**
      * Sets up the transformation needed to position the label at the specified point, using the
      * positioning information loaded from the the text style
-     *
-     * @param tempTransform
-     * @param centroid
-     * @param textStyle
-     * @param painter
      */
     private void setupPointTransform(
             AffineTransform tempTransform,
@@ -1232,12 +1211,6 @@ public class LabelCacheImpl implements LabelCache {
     /**
      * Sets up the transformation needed to position the label at the current location of the line
      * string, using the positioning information loaded from the text style
-     *
-     * @param painter
-     * @param cursor
-     * @param centroid
-     * @param tempTransform
-     * @param followLine
      */
     private void setupLineTransform(
             LabelPainter painter,
@@ -1424,8 +1397,6 @@ public class LabelCacheImpl implements LabelCache {
     /**
      * Returns the closest angle that is a multiple of 45°
      *
-     * @param x
-     * @param y
      * @return an angle in degrees
      */
     int getClosestStandardAngle(double x, double y) {
@@ -1436,16 +1407,6 @@ public class LabelCacheImpl implements LabelCache {
     /**
      * Actually try to paint the label by setting up transformations, checking for conflicts and so
      * on
-     *
-     * @param painter
-     * @param tempTransform
-     * @param displayArea
-     * @param glyphs
-     * @param labelItem
-     * @param point
-     * @param textStyle
-     * @return
-     * @throws Exception
      */
     private boolean paintPointLabelInternal(
             LabelPainter painter,
@@ -1731,7 +1692,6 @@ public class LabelCacheImpl implements LabelCache {
      * to be "closest to the centoid of the possible points"
      *
      * @param geoms list of Point or MultiPoint (any other geometry types are rejected
-     * @param displayArea
      * @param partialsEnabled true if we don't want to exclude points out of the displayArea
      * @return a point or null (if there's nothing to draw)
      */
@@ -1777,9 +1737,7 @@ public class LabelCacheImpl implements LabelCache {
      * <p>NOTE: we clip after joining because there could be connections "going on" outside the
      * display bbox
      *
-     * @param geoms
      * @param displayArea must be poly
-     * @param removeOverlaps
      * @param partialsEnabled true if we don't want to clip lines on the displayArea
      */
     List<LineString> getLineSetRepresentativeLocation(
@@ -1899,8 +1857,6 @@ public class LabelCacheImpl implements LabelCache {
      *
      * <p>This will try to solve robustness problems, but read code as to what it does. It might
      * return the unclipped line if there's a problem!
-     *
-     * @param line
      */
     public MultiLineString clipLineString(LineString line) {
 
@@ -1935,8 +1891,6 @@ public class LabelCacheImpl implements LabelCache {
      * 1. make a list of all the polygons clipped to the displayGeometry NOTE: reject any points or
      * lines 2. choose the largest of the clipped geometries
      *
-     * @param geoms
-     * @param displayArea
      * @param partialsEnabled true if we don't want to clip lines on the displayArea
      */
     Polygon getPolySetRepresentativeLocation(
@@ -2010,9 +1964,6 @@ public class LabelCacheImpl implements LabelCache {
      * try to do a more robust way of clipping a polygon to a bounding box. This might return the
      * orginal polygon if it cannot clip TODO: this is a bit simplistic, there's lots more to do.
      *
-     * @param poly
-     * @param bbox
-     * @param displayGeomEnv
      * @return a MutliPolygon
      */
     public MultiPolygon clipPolygon(Polygon poly, Polygon bbox, Envelope displayGeomEnv) {
@@ -2105,9 +2056,6 @@ public class LabelCacheImpl implements LabelCache {
      * "result" 2. otherwise, merge it at the start/end with the LONGEST line there. 3. remove the
      * original line, and the lines it merged with from the hashtables 4. go again, with the merged
      * line
-     *
-     * @param edges
-     * @param nodes
      */
     public List<LineString> processNodes(
             List<LineString> edges, Map<Coordinate, List<LineString>> nodes) {
@@ -2207,9 +2155,6 @@ public class LabelCacheImpl implements LabelCache {
     /**
      * If possible, merge the two lines together (ie. their start/end points are equal) returns null
      * if not possible
-     *
-     * @param major
-     * @param minor
      */
     private LineString merge(LineString major, LineString minor) {
         Coordinate major_s = major.getCoordinateN(0);

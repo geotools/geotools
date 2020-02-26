@@ -43,11 +43,6 @@ public class DefaultIntervalLength extends DefaultDuration implements IntervalLe
     /**
      * Creates a new instance of IntervalUnit example : Unit="second" radix=10 factor=3 value=7
      * specifies a time interval length of 7ms.
-     *
-     * @param unit
-     * @param radix
-     * @param factor
-     * @param value
      */
     public DefaultIntervalLength(Unit unit, int radix, int factor, int value) {
         this.unit = unit;

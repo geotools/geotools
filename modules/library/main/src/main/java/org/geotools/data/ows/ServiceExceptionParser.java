@@ -46,7 +46,6 @@ public class ServiceExceptionParser {
      * <p>ServiceExceptions beyond the first can be accessed using ServiceException.next();
      *
      * @param inputStream stream to parse the exception report from, not closed by this method
-     * @throws IOException
      */
     public static ServiceException parse(InputStream inputStream) throws IOException {
         List<ServiceException> exceptions = new ArrayList<>();

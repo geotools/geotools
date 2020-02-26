@@ -51,11 +51,7 @@ public interface ISessionPool extends Closeable {
      */
     void close();
 
-    /**
-     * Returns whether this pool is closed
-     *
-     * @return
-     */
+    /** Returns whether this pool is closed */
     boolean isClosed();
 
     /** Returns the number of idle connections */

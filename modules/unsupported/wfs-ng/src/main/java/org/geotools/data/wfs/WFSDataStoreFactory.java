@@ -129,7 +129,6 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
      *
      * @param params wfs service connection parameters
      * @return the HttpClient instance
-     * @throws IOException
      */
     public HTTPClient getHttpClient(final Map<String, Serializable> params) throws IOException {
         final URL capabilitiesURL = (URL) URL.lookUp(params);
@@ -183,7 +182,6 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
      *
      * @param host non null URL from which to construct the WFS {@code GetCapabilities} request by
      *     discarding the query string, if any, and appending the propper query string.
-     * @return
      */
     public static URL createGetCapabilitiesRequest(URL host, Version version) {
         if (host == null) {
@@ -212,7 +210,6 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
      *
      * @param host non null URL pointing either to a base WFS service access point, or to a full
      *     {@code GetCapabilities} request.
-     * @return
      */
     public static URL createGetCapabilitiesRequest(final URL host) {
         if (host == null) {

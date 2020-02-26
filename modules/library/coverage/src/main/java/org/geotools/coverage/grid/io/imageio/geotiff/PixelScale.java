@@ -148,12 +148,7 @@ public final class PixelScale {
         return isComponentSet(scaleX) && isComponentSet(scaleY) && isComponentSet(scaleZ);
     }
 
-    /**
-     * Tells me if a component of this {@link PixelScale} is set.
-     *
-     * @param scale
-     * @return
-     */
+    /** Tells me if a component of this {@link PixelScale} is set. */
     private boolean isComponentSet(double scale) {
         return !Double.isInfinite(scale) && !Double.isNaN(scale) && Math.abs(scale) > 1E-6;
     }

@@ -65,11 +65,7 @@ public class CSSParseException extends IllegalArgumentException {
         return sb.toString();
     }
 
-    /**
-     * The parse errors
-     *
-     * @return
-     */
+    /** The parse errors */
     public List<ParseError> getErrors() {
         return errors;
     }

@@ -82,12 +82,7 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
 
     private final Map<String, String> metadataKeyValue = new HashMap<String, String>();
 
-    /**
-     * Constructor for a {@link GeoTiffWriter}.
-     *
-     * @param destination
-     * @throws IOException
-     */
+    /** Constructor for a {@link GeoTiffWriter}. */
     public GeoTiffWriter(Object destination) throws IOException {
         this(destination, null);
     }
@@ -109,13 +104,7 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
         }
     }
 
-    /**
-     * Constructor for a {@link GeoTiffWriter}.
-     *
-     * @param destination
-     * @param hints
-     * @throws IOException
-     */
+    /** Constructor for a {@link GeoTiffWriter}. */
     public GeoTiffWriter(Object destination, Hints hints) throws IOException {
 
         this.destination = destination;
@@ -269,7 +258,6 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
      * Takes care of writing the world file for this geotiff
      *
      * @param gc the {@link GridCoverage} to take the georefeerincing from.
-     * @param tr
      * @throws IOException in case something bad occurs while writing.
      */
     private void handleTFW(final GridCoverage gc, AffineTransform tr) throws IOException {
@@ -362,9 +350,6 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
     /**
      * Writes the provided rendered image to the provided image output stream using the supplied
      * geotiff metadata.
-     *
-     * @param gtParams
-     * @param listener
      */
     private boolean writeImage(
             final RenderedImage image,
@@ -443,7 +428,6 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
      * @param writer the image writer, must not be null
      * @param type the image type, must not be null
      * @param geoTIFFMetadata the GeoTIFFWritingUtilities metadata, must not be null
-     * @param params
      * @return the image metadata, never null
      * @throws IIOException if the metadata cannot be created
      */

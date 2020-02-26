@@ -78,7 +78,6 @@ public class OptNode extends OptGraphable implements Node {
     /**
      * Not supported.
      *
-     * @throws UnsupportedOperationException
      * @see Node#remove(Edge)
      */
     @Override
@@ -160,8 +159,6 @@ public class OptNode extends OptGraphable implements Node {
      * written out upon serialization, they must be recreated upon deserialization.
      *
      * @param in Object input stream containing serialized objects.
-     * @throws IOException
-     * @throws ClassNotFoundException
      */
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
 
@@ -178,8 +175,6 @@ public class OptNode extends OptGraphable implements Node {
      * store its degree explicitly, it must be written to the output stream.
      *
      * @param out Object output stream containing serialized objects.
-     * @throws IOException
-     * @throws ClassNotFoundException
      */
     private void writeObject(ObjectOutputStream out) throws IOException {
 
@@ -205,11 +200,7 @@ public class OptNode extends OptGraphable implements Node {
             m_node = node;
         }
 
-        /**
-         * Not supported.
-         *
-         * @throws UnsupportedOperationException
-         */
+        /** Not supported. */
         @Override
         public void remove() {
             throw new UnsupportedOperationException(getClass().getName() + "#remove()");

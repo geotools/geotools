@@ -240,10 +240,6 @@ public final class RendererUtilities {
      * <p>In GeoTools 12 this method started to take into account units of measure, if this is not
      * desirable in your application you can set the system variable
      * "org.geotoools.render.lite.scale.unitCompensation" to false.
-     *
-     * @param envelope
-     * @param imageWidth
-     * @return
      */
     public static double calculateOGCScale(ReferencedEnvelope envelope, int imageWidth, Map hints) {
         // if it's geodetic, we're dealing with lat/lon unit measures
@@ -264,8 +260,6 @@ public final class RendererUtilities {
      * measure providing the Unit used for conversion. To ignore unit disable {@link
      * #SCALE_UNIT_COMPENSATION} to for the unaltered size.
      *
-     * @param size
-     * @param crs
      * @return size adjusted for GeographicCRS or CRS units
      */
     private static double toMeters(double size, CoordinateReferenceSystem crs) {
@@ -307,7 +301,6 @@ public final class RendererUtilities {
      *     meters.
      * @param worldToScreen the transformation mapping world coordinates to screen coordinates.
      *     Might specify a rotation in addition to translation and scaling.
-     * @return
      */
     public static double calculateOGCScaleAffine(
             CoordinateReferenceSystem crs, AffineTransform worldToScreen, Map hints) {
@@ -345,7 +338,6 @@ public final class RendererUtilities {
      * Either gets a DPI from the hints, or return the OGC standard, stating that a pixel is 0.28 mm
      * (the result is a non integer DPI...)
      *
-     * @param hints
      * @return DPI as doubles, to avoid issues with integer trunking in scale computation expression
      */
     public static double getDpi(Map hints) {
@@ -378,15 +370,10 @@ public final class RendererUtilities {
      * pixels (which are allowed in WMS) ADDITIONAL NOTE from simboss: I added soe minor fixes. See
      * below.
      *
-     * @param envelope
-     * @param imageWidth
-     * @param imageHeight
      * @param DPI screen dots per inch (OGC standard is 90)
      *     <p>TODO should I take into account also the destination CRS? Otherwise I am just assuming
      *     that the final crs is lon,lat that is it maps lon to x (n raster space) and lat to y (in
      *     raster space).
-     * @throws TransformException
-     * @throws FactoryException
      */
     public static double calculateScale(
             ReferencedEnvelope envelope, int imageWidth, int imageHeight, double DPI)
@@ -557,8 +544,6 @@ public final class RendererUtilities {
      *
      * @param mapExtent The envelope of the map in lon,lat
      * @param paintArea The area to paint as a rectangle
-     * @param destinationCrs
-     * @throws TransformException
      * @todo add georeferenced envelope check when merge with trunk will be performed
      */
     public static AffineTransform worldToScreenTransform(
@@ -602,8 +587,6 @@ public final class RendererUtilities {
      * Finds the centroid of the input geometry if input = point, line, polygon --> return a point
      * that represents the centroid of that geom if input = geometry collection --> return a
      * multipoint that represents the centoid of each sub-geom
-     *
-     * @param g
      */
     public static Geometry getCentroid(Geometry g) {
         if (g instanceof Point || g instanceof MultiPoint) {
@@ -688,8 +671,6 @@ public final class RendererUtilities {
      * workaround against feature sources generating feature collections without a CRS (which is
      * fatal to the reprojection handling later in the code)
      *
-     * @param features
-     * @param sourceCrs
      * @return FeatureCollection<SimpleFeatureType, SimpleFeature> that produces results with the
      *     correct CRS
      */

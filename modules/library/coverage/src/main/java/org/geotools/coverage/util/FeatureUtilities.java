@@ -152,12 +152,7 @@ public final class FeatureUtilities {
         return collection;
     }
 
-    /**
-     * Checks if the feature type specified is a GridCoverage wrapper
-     *
-     * @param featureType
-     * @return
-     */
+    /** Checks if the feature type specified is a GridCoverage wrapper */
     public static boolean isWrappedCoverage(SimpleFeatureType featureType) {
         if (!"GridCoverage".equals(featureType.getName().getLocalPart())) return false;
 
@@ -228,12 +223,7 @@ public final class FeatureUtilities {
         return collection;
     }
 
-    /**
-     * Checks if the feature type specified is a GridCoverage2DReader wrapper
-     *
-     * @param featureType
-     * @return
-     */
+    /** Checks if the feature type specified is a GridCoverage2DReader wrapper */
     public static boolean isWrappedCoverageReader(SimpleFeatureType featureType) {
         if (!"GridCoverage".equals(featureType.getName().getLocalPart())) return false;
 

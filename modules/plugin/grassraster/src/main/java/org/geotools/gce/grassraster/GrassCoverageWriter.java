@@ -73,7 +73,6 @@ public class GrassCoverageWriter extends AbstractGridCoverageWriter implements G
      * <p>Note that this also takes care to cloes the file handle after writing to disk.
      *
      * @param gridCoverage2D the coverage to write.
-     * @throws IOException
      */
     public void writeRaster(GridCoverage2D gridCoverage2D) throws IOException {
         try {

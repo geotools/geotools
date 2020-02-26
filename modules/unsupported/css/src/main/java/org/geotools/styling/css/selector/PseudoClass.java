@@ -100,12 +100,7 @@ public class PseudoClass extends Selector {
         return visitor.visit(this);
     }
 
-    /**
-     * Returns true if this pseudo class is equals, or contains, the other
-     *
-     * @param pc
-     * @return
-     */
+    /** Returns true if this pseudo class is equals, or contains, the other */
     public boolean contains(PseudoClass pc) {
         if (this.equals(PseudoClass.ROOT)) {
             return true;
@@ -124,9 +119,6 @@ public class PseudoClass extends Selector {
     /**
      * Returns the most specific pseudo class in the set, or null if the set contains inconsistent
      * pseudo classes (e.g., "mark" and "fill")
-     *
-     * @param pseudoClasses
-     * @return
      */
     public static PseudoClass getMostSpecific(Set<PseudoClass> pseudoClasses) {
         PseudoClass mostSpecific = null;

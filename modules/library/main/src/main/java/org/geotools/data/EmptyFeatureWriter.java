@@ -29,11 +29,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 public class EmptyFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
     SimpleFeatureType featureType;
 
-    /**
-     * An Empty FeatureWriter of the provided <code>featureType</code>.
-     *
-     * @param featureType
-     */
+    /** An Empty FeatureWriter of the provided <code>featureType</code>. */
     public EmptyFeatureWriter(SimpleFeatureType featureType) {
         this.featureType = featureType;
     }
@@ -47,7 +43,6 @@ public class EmptyFeatureWriter implements FeatureWriter<SimpleFeatureType, Simp
      * Throws NoSuchElementException as this is an Empty FeatureWriter.
      *
      * @return Does not return
-     * @throws NoSuchElementException
      * @see org.geotools.data.FeatureWriter#next()
      */
     public SimpleFeature next() throws NoSuchElementException {

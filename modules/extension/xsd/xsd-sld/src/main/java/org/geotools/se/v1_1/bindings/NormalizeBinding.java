@@ -47,10 +47,7 @@ import org.opengis.filter.FilterFactory;
  */
 public class NormalizeBinding extends SLDNormalizeBinding {
 
-    /**
-     * @param styleFactory
-     * @param filterFactory
-     */
+    /** */
     public NormalizeBinding(StyleFactory styleFactory, FilterFactory filterFactory) {
         super(styleFactory, filterFactory);
         // TODO Auto-generated constructor stub

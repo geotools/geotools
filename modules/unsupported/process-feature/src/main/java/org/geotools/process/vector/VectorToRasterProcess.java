@@ -451,7 +451,6 @@ public class VectorToRasterProcess implements VectorProcess {
      * Sets the output coverage bounds and checks whether features need to be transformed into the
      * output CRS.
      *
-     * @param
      * @throws org.geotools.process.raster.VectorToRasterException
      */
     private void setBounds(SimpleFeatureCollection features, Envelope bounds)

@@ -143,9 +143,6 @@ class Binarizator {
     /**
      * Adds a ROI to the binarizator. This assumes the operation is already fully working in raster
      * space, in other words, the world to grid transformation is the identity
-     *
-     * @param roi
-     * @return
      */
     public boolean add(ROI roi) {
         // do we need to transform it?

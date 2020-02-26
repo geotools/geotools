@@ -53,10 +53,6 @@ public class CoordinateArrays {
     /**
      * Compares two {@link Coordinate} arrays in the forward direction of their coordinates, using
      * lexicographic ordering.
-     *
-     * @param pts1
-     * @param pts2
-     * @return
      */
     public static int compare(Coordinate[] pts1, Coordinate[] pts2) {
         int i = 0;
@@ -110,8 +106,6 @@ public class CoordinateArrays {
      * Determines whether two {@link Coordinate} arrays of equal length are equal in opposite
      * directions.
      *
-     * @param pts1
-     * @param pts2
      * @return <code>true</code> if the two arrays are equal in opposite directions.
      */
     private static boolean isEqualReversed(Coordinate[] pts1, Coordinate[] pts2) {
@@ -172,7 +166,6 @@ public class CoordinateArrays {
     /**
      * Creates a deep copy of the argument {@link Coordinate) array.
      *
-     * @param coordinates
      *            an array of Coordinates
      * @return a deep copy of the input
      */
@@ -335,12 +328,7 @@ public class CoordinateArrays {
         return extractPts;
     }
 
-    /**
-     * SJ TODO faellt evtl weg, wenn coordinate durch DirectPosition ausgetauscht wird
-     *
-     * @param aPositions
-     * @return
-     */
+    /** SJ TODO faellt evtl weg, wenn coordinate durch DirectPosition ausgetauscht wird */
     public static Coordinate[] toCoordinateArray(List<DirectPosition> aPositions) {
 
         Coordinate[] rCoords = new Coordinate[aPositions.size()];
@@ -356,9 +344,6 @@ public class CoordinateArrays {
      * Converts a Coordinate array into a list of Positions
      *
      * <p>SJ: faellt evtl weg, wenn coordinate durch DirectPosition ausgetauscht wird
-     *
-     * @param coordArray
-     * @return
      */
     public static List<Position> toPositionList(
             CoordinateReferenceSystem crs, Coordinate[] coordArray) {
@@ -372,13 +357,7 @@ public class CoordinateArrays {
         return rList;
     }
 
-    /**
-     * Converts a Coordinate array into a list of DirectPositions
-     *
-     * @param crs
-     * @param coordArray
-     * @return
-     */
+    /** Converts a Coordinate array into a list of DirectPositions */
     public static List<DirectPositionImpl> toDirectPositionList(
             CoordinateReferenceSystem crs, Coordinate[] coordArray) {
         List<DirectPositionImpl> rList = new ArrayList<DirectPositionImpl>();

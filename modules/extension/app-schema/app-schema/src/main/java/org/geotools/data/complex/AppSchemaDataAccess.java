@@ -37,7 +37,6 @@ import org.geotools.data.DataSourceException;
 import org.geotools.data.DataStore;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
-import org.geotools.data.SchemaNotFoundException;
 import org.geotools.data.ServiceInfo;
 import org.geotools.data.complex.config.NonFeatureTypeProxy;
 import org.geotools.data.complex.feature.type.Types;
@@ -101,7 +100,6 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
      *
      * @param mappings a Set containing a {@linkplain FeatureTypeMapping} for each FeatureType this
      *     DataAccess is going to produce.
-     * @throws IOException
      */
     public AppSchemaDataAccess(Set<FeatureTypeMapping> mappings) throws IOException {
         this(mappings, false);
@@ -114,7 +112,6 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
      *     DataAccess is going to produce.
      * @param hidden marks this data access as non-accessible, which makes it a candidate for
      *     automatic disposal
-     * @throws IOException
      */
     public AppSchemaDataAccess(Set<FeatureTypeMapping> mappings, boolean hidden)
             throws IOException {
@@ -186,10 +183,6 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
      * Returns the mapping suite for the given targetElement name or mappingName.
      *
      * <p>Note this method is public just for unit testing purposes
-     *
-     * @param typeName
-     * @return
-     * @throws IOException
      */
     public FeatureTypeMapping getMappingByName(Name typeName) throws IOException {
         FeatureTypeMapping mapping = (FeatureTypeMapping) this.mappings.get(typeName);
@@ -205,10 +198,6 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
      * in the TypeMapping if it exists, otherwise it's the target element name.
      *
      * <p>Note this method is public just for unit testing purposes
-     *
-     * @param typeName
-     * @return
-     * @throws IOException
      */
     public FeatureTypeMapping getMappingByNameOrElement(Name typeName) throws IOException {
         FeatureTypeMapping mapping = (FeatureTypeMapping) this.mappings.get(typeName);
@@ -259,10 +248,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
      * <p>Will return null if there is not fast way to compute the bounds. Since it's based on some
      * kind of header/cached information, it's not guaranteed to be real bound of the features
      *
-     * @param query
      * @return the bounds, or null if too expensive
-     * @throws SchemaNotFoundException
-     * @throws IOException
      */
     protected ReferencedEnvelope getBounds(Query query) throws IOException {
         FeatureTypeMapping mapping = getMappingByNameOrElement(getName(query));
@@ -280,7 +266,6 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
      * @param targetQuery Contains the Filter and MaxFeatures to find the bounds for.
      * @return The number of Features provided by the Query or <code>-1</code> if count is too
      *     expensive to calculate or any errors or occur.
-     * @throws IOException
      * @throws IOException if there are errors getting the count
      */
     protected int getCount(final Query targetQuery) throws IOException {
@@ -302,7 +287,6 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     /**
      * Return the name of the type that is queried.
      *
-     * @param query
      * @return Name constructed from the query.
      */
     private Name getName(Query query) {
@@ -327,10 +311,6 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
      * Creates a <code>org.geotools.data.Query</code> that operates over the surrogate DataStore, by
      * unrolling the <code>org.geotools.filter.Filter</code> contained in the passed <code>query
      * </code>, and replacing the list of required attributes by the ones of the mapped FeatureType.
-     *
-     * @param query
-     * @param mapping
-     * @return
      */
     @SuppressWarnings("unchecked")
     public Query unrollQuery(Query query, FeatureTypeMapping mapping) {
@@ -466,8 +446,6 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     }
 
     /**
-     * @param mappingProperties
-     * @param mapping
      * @return <code>null</code> if all surrogate attributes shall be queried, else the list of
      *     needed surrogate attributes to satisfy the mapping of prorperties in <code>
      *     mappingProperties</code>
@@ -623,7 +601,6 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
      * Takes a filter that operates against a {@linkplain FeatureTypeMapping}'s target FeatureType,
      * and unrolls it creating a new Filter that operates against the mapping's source FeatureType.
      *
-     * @param complexFilter
      * @return TODO: implement filter unrolling
      */
     public static Filter unrollFilter(Filter complexFilter, FeatureTypeMapping mapping) {
@@ -705,7 +682,6 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
      *
      * @param typeName mappingName or targetElement
      * @return Mapping feature source
-     * @throws IOException
      */
     public FeatureSource<FeatureType, Feature> getFeatureSourceByName(Name typeName)
             throws IOException {

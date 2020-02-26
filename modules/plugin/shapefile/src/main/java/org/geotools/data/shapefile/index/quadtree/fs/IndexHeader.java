@@ -41,11 +41,7 @@ public class IndexHeader {
         this.byteOrder = byteOrder;
     }
 
-    /**
-     * @param channel
-     * @throws IOException
-     * @throws StoreException
-     */
+    /** */
     public IndexHeader(ReadableByteChannel channel) throws IOException, StoreException {
         ByteBuffer buf = ByteBuffer.allocate(8);
 

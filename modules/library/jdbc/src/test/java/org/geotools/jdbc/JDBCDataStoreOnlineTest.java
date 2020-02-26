@@ -299,9 +299,6 @@ public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
     /**
      * Allows subclasses to use a axis order specific version of it (the outer is always east/north,
      * but the wrapped geographic CRS is order dependent)
-     *
-     * @return
-     * @throws FactoryException
      */
     protected CoordinateReferenceSystem getUTMCRS() throws FactoryException {
         return CRS.decode("EPSG:26713");

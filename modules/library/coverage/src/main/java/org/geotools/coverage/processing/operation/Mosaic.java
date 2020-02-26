@@ -345,13 +345,6 @@ public class Mosaic extends OperationJAI {
          * Method for resampling the input {@link GridCoverage2D} objects. The output of the method
          * is an object containing the resampled {@link RenderedImage}s and the final {@link
          * GridGeometry2D} object to use.
-         *
-         * @param sources
-         * @param alphas
-         * @param external
-         * @param parameters
-         * @param hints
-         * @return
          */
         public abstract ResampledRasters resampleGridGeometry(
                 GridCoverage2D[] sources,
@@ -363,9 +356,6 @@ public class Mosaic extends OperationJAI {
         /**
          * Static method to use for choosing the {@link GridGeometryPolicy} object associated to the
          * input string.
-         *
-         * @param policyString
-         * @return
          */
         public static GridGeometryPolicy getPolicyFromString(String policyString) {
             if (policyString.equalsIgnoreCase(FIRST.name)) {
@@ -383,12 +373,6 @@ public class Mosaic extends OperationJAI {
         /**
          * Private method for resampling the {@link GridCoverage2D}s to the same resolution imposed
          * by the {@link GridGeometry2D} object.
-         *
-         * @param sources
-         * @param alphas
-         * @param external
-         * @param parameters
-         * @return
          */
         private static ResampledRasters resampleCoverages(
                 GridCoverage2D[] sources,
@@ -548,12 +532,7 @@ public class Mosaic extends OperationJAI {
             return rr;
         }
 
-        /**
-         * Method for checking if Alpha Coverage and Image Coverage have the same dimensions
-         *
-         * @param coverage
-         * @param alpha
-         */
+        /** Method for checking if Alpha Coverage and Image Coverage have the same dimensions */
         private static void checkAlpha(GridCoverage2D coverage, GridCoverage2D alpha) {
             // Check GridGeometries
             if (!coverage.getGridGeometry().equals(alpha.getGridGeometry())) {
@@ -565,10 +544,6 @@ public class Mosaic extends OperationJAI {
         /**
          * This method creates a new {@link GridGeometry2D} object based on that of the {@link
          * GridCoverage2D} defined by the index.
-         *
-         * @param sources
-         * @param index
-         * @return
          */
         private static GridGeometry2D extractFinalGridGeometry(
                 GridCoverage2D[] sources, int index) {
@@ -636,11 +611,6 @@ public class Mosaic extends OperationJAI {
     /**
      * Prepares the parameters to store in the {@link ParameterBlockJAI} object and resample the
      * input {@link GridCoverage2D}.
-     *
-     * @param parameters
-     * @param sources
-     * @param hints
-     * @return
      */
     private Params prepareParameters(
             final ParameterValueGroup parameters, GridCoverage2D[] sources, Hints hints) {
@@ -1076,11 +1046,7 @@ public class Mosaic extends OperationJAI {
             return rasters;
         }
 
-        /**
-         * Set the array of the resampled RenderedImages
-         *
-         * @param rasters
-         */
+        /** Set the array of the resampled RenderedImages */
         public void setRasters(RenderedImage[] rasters) {
             this.rasters = rasters;
         }
@@ -1090,11 +1056,7 @@ public class Mosaic extends OperationJAI {
             return finalGeometry;
         }
 
-        /**
-         * Set the {@link GridGeometry2D} object to use for the mosaic
-         *
-         * @param finalGeometry
-         */
+        /** Set the {@link GridGeometry2D} object to use for the mosaic */
         public void setFinalGeometry(GridGeometry2D finalGeometry) {
             this.finalGeometry = finalGeometry;
         }
@@ -1104,11 +1066,7 @@ public class Mosaic extends OperationJAI {
             return alphas;
         }
 
-        /**
-         * Sets the array of the external alpha bands
-         *
-         * @param rasters
-         */
+        /** Sets the array of the external alpha bands */
         public void setAlphas(PlanarImage[] alphas) {
             this.alphas = alphas;
         }
@@ -1118,11 +1076,7 @@ public class Mosaic extends OperationJAI {
             return nodata;
         }
 
-        /**
-         * Set the nodata values for each mosaic element
-         *
-         * @param nodata
-         */
+        /** Set the nodata values for each mosaic element */
         public void setBackgrounds(double[] nodata) {
             this.nodata = nodata;
         }
@@ -1132,11 +1086,7 @@ public class Mosaic extends OperationJAI {
             return rois;
         }
 
-        /**
-         * Set the roi values for each mosaic element
-         *
-         * @param rois
-         */
+        /** Set the roi values for each mosaic element */
         public void setRois(ROI[] rois) {
             this.rois = rois;
         }
@@ -1146,11 +1096,7 @@ public class Mosaic extends OperationJAI {
             return hasNoData;
         }
 
-        /**
-         * Set the hasNoData boolean parameter
-         *
-         * @param hasNoData
-         */
+        /** Set the hasNoData boolean parameter */
         public void setHasNoData(boolean hasNoData) {
             this.hasNoData = hasNoData;
         }

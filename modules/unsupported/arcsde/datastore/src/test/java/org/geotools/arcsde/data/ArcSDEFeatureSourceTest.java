@@ -136,13 +136,7 @@ public class ArcSDEFeatureSourceTest {
         assertEquals(8, count);
     }
 
-    /**
-     * Checks that a query returns only the specified attributes.
-     *
-     * @throws IOException
-     * @throws IllegalAttributeException
-     * @throws SeException
-     */
+    /** Checks that a query returns only the specified attributes. */
     @Test
     public void testRestrictsAttributes()
             throws IOException, IllegalAttributeException, SeException {
@@ -215,11 +209,6 @@ public class ArcSDEFeatureSourceTest {
     /**
      * Say the query contains a set of propertynames to retrieve and the query filter others, the
      * returned feature type should still match the ones in Query.propertyNames
-     *
-     * @throws IOException
-     * @throws IllegalAttributeException
-     * @throws SeException
-     * @throws CQLException
      */
     @Test
     public void testRespectsQueryAttributes()
@@ -292,8 +281,6 @@ public class ArcSDEFeatureSourceTest {
      *   <li>A mixed query does not fails when getBounds() is performed
      *   <li>A mixed query does not fails when size() is performed
      * </ul>
-     *
-     * @throws Exception
      */
     @Test
     public void testMixedQueries() throws Exception {
@@ -360,8 +347,6 @@ public class ArcSDEFeatureSourceTest {
     /**
      * to expose GEOT-408, tests that queries in which only non spatial attributes are requested
      * does not fails due to the datastore trying to parse the geometry attribute.
-     *
-     * @throws Exception
      */
     @Test
     public void testAttributeOnlyQuery() throws Exception {
@@ -409,11 +394,7 @@ public class ArcSDEFeatureSourceTest {
         assertFalse(id.endsWith(".0"));
     }
 
-    /**
-     * Test that FID filters are correctly handled
-     *
-     * @throws Exception
-     */
+    /** Test that FID filters are correctly handled */
     @Test
     public void testFidFilters() throws Exception {
         final DataStore ds = testData.getDataStore();
@@ -513,12 +494,7 @@ public class ArcSDEFeatureSourceTest {
         }
     }
 
-    /**
-     * test that getFeatureSource over an sde layer works
-     *
-     * @throws IOException
-     * @throws SeException
-     */
+    /** test that getFeatureSource over an sde layer works */
     @Test
     public void testGetFeatureSourcePoint() throws IOException, SeException {
         testGetFeatureSource(store.getFeatureSource(testData.getTempTableName()));

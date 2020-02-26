@@ -63,9 +63,6 @@ class DescriptorValidator {
     //	 * <code>schema.sequence()</code> gets exhausted, and returns the list of
     //	 * remaining attributes.
     //	 *
-    //	 * @param schema
-    //	 * @param content
-    //	 * @return
     //	 */
     //	private static void validateSequence(AttributeDescriptor schema,
     //			List/*<Attribute>*/ content) {
@@ -250,11 +247,6 @@ class DescriptorValidator {
     //	 * of the expected type or minOccurs has not been satisfied. Never exceeds
     //	 * maxOccurs.
     //	 *
-    //	 * @param content
-    //	 * @param expectedType
-    //	 * @param min
-    //	 * @param max
-    //	 * @return
     //	 */
     //	private static List/*<Attribute>*/ processType(List/*<Attribute>*/ content,
     //			AttributeType expectedType, int min, int max) {
@@ -288,11 +280,6 @@ class DescriptorValidator {
     //	}
     //
     //	/**
-    //	 * @param allowedTypes
-    //	 * @param index
-    //	 * @param att
-    //	 * @return
-    //	 * @throws IllegalArgumentException
     //	 */
     //	private static void checkAttIsOfAllowedType(
     //			List/*<AttributeType>*/ allowedTypes, int index, Attribute att)

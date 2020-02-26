@@ -188,7 +188,6 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader
      * @param region the {@link JGrassRegion region}to read. If null, the map is read in its
      *     original boundary and resolution.
      * @return the {@link GridCoverage2D read coverage}.
-     * @throws IOException
      */
     public GridCoverage2D readRaster(JGrassRegion region) throws IOException {
         /*

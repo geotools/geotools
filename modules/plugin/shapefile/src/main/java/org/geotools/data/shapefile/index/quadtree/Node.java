@@ -91,11 +91,7 @@ public class Node {
         return (Node) this.subNodes.get(pos);
     }
 
-    /**
-     * Add a shape id
-     *
-     * @param id
-     */
+    /** Add a shape id */
     public void addShapeId(int id) {
         if (this.shapesId == null) {
             this.shapesId = new int[4];
@@ -127,11 +123,7 @@ public class Node {
         return this.shapesId[pos];
     }
 
-    /**
-     * Sets the shape ids
-     *
-     * @param ids
-     */
+    /** Sets the shape ids */
     public void setShapesId(int[] ids) {
         if (ids == null) {
             this.numShapesId = 0;

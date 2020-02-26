@@ -122,11 +122,7 @@ public class CoordinateOperationFactoryUsingWKTTest {
         assertTrue(factory.getAuthority().equals(Citations.EPSG));
     }
 
-    /**
-     * Test method for {@link CoordinateOperationFactoryUsingWKT#createCoordinateOperation}.
-     *
-     * @throws TransformException
-     */
+    /** Test method for {@link CoordinateOperationFactoryUsingWKT#createCoordinateOperation}. */
     @Test
     public void testCreateCoordinateOperation() throws TransformException {
 
@@ -167,8 +163,6 @@ public class CoordinateOperationFactoryUsingWKTTest {
     /**
      * Test method for {@link
      * CoordinateOperationFactoryUsingWKT#createFromCoordinateReferenceSystemCodes}.
-     *
-     * @throws TransformException
      */
     @Test
     public void testCreateFromCoordinateReferenceSystemCodes() throws TransformException {

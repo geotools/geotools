@@ -56,8 +56,6 @@ public class DataDefinition {
      *   <li>Double
      *   <li>Date
      * </ul>
-     *
-     * @param clazz
      */
     public void addField(Class clazz) {
         if (clazz.isAssignableFrom(Short.class)) {
@@ -80,8 +78,6 @@ public class DataDefinition {
     /**
      * For classes with unknown length; this values will be threated as <code>String</code>s and
      * truncated at the specified len
-     *
-     * @param len
      */
     public void addField(int len) {
         this.fields.add(new Field(String.class, len));

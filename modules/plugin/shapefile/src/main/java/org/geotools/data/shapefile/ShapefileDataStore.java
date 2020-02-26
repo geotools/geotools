@@ -193,45 +193,27 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
     /**
      * When set to true, will use the spatial index if available (but will not create it if missing,
      * unless also indexCreationEnabled is true)
-     *
-     * @param indexed
      */
     public void setIndexed(boolean indexed) {
         this.indexed = indexed;
     }
 
-    /**
-     * The current max shapefile size
-     *
-     * @return
-     */
+    /** The current max shapefile size */
     long getMaxShpSize() {
         return maxShpSize;
     }
 
-    /**
-     * Allows to set the maximum shapefile size (the natural limit of 2GB is used by default)
-     *
-     * @param maxShapeSize
-     */
+    /** Allows to set the maximum shapefile size (the natural limit of 2GB is used by default) */
     void setMaxShpSize(long maxShapeSize) {
         this.maxShpSize = maxShapeSize;
     }
 
-    /**
-     * The current max dbf file size
-     *
-     * @return
-     */
+    /** The current max dbf file size */
     long getMaxDbfSize() {
         return maxDbfSize;
     }
 
-    /**
-     * Allows to set the maximum DBF size (the natural limit of 4GB is used by default)
-     *
-     * @param maxShpSize
-     */
+    /** Allows to set the maximum DBF size (the natural limit of 4GB is used by default) */
     void setMaxDbfSize(long maxDbfSize) {
         this.maxDbfSize = maxDbfSize;
     }
@@ -319,12 +301,7 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
                 shpStoragefile, shxStoragefile, dbfStoragefile, prjStoragefile);
     }
 
-    /**
-     * Turns the CRS into a single line WKT, more compatible with ESRI software
-     *
-     * @param crs
-     * @return
-     */
+    /** Turns the CRS into a single line WKT, more compatible with ESRI software */
     String toSingleLineWKT(CoordinateReferenceSystem crs) {
         String wkt = null;
         try {
@@ -414,8 +391,6 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
      * any other thread making use of the shapefile.
      *
      * <p>
-     *
-     * @param crs
      */
     public void forceSchemaCRS(CoordinateReferenceSystem crs) throws IOException {
         if (crs == null) throw new NullPointerException("CRS required for .prj file");
@@ -460,18 +435,12 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
      * filters by feature id and allows for stable ids in face of feature removals, without it the
      * feature id is simply the position of the feature in the shapefile, something which changes
      * when data is removed
-     *
-     * @return
      */
     public boolean isFidIndexed() {
         return fidIndexed;
     }
 
-    /**
-     * Enables/disables the feature id index. The index is enabled by default
-     *
-     * @param fidIndexed
-     */
+    /** Enables/disables the feature id index. The index is enabled by default */
     public void setFidIndexed(boolean fidIndexed) {
         this.fidIndexed = fidIndexed;
     }
@@ -522,11 +491,7 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
         return indexCreationEnabled;
     }
 
-    /**
-     * If true (default) the index file will be created on demand if missing
-     *
-     * @param indexCreationEnabled
-     */
+    /** If true (default) the index file will be created on demand if missing */
     public void setIndexCreationEnabled(boolean indexCreationEnabled) {
         this.indexCreationEnabled = indexCreationEnabled;
     }

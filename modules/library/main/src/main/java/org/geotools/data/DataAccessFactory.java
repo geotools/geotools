@@ -495,7 +495,6 @@ public interface DataAccessFactory extends Factory {
          *   <li>parse( text ): if type != String.class
          * </ul>
          *
-         * @param text
          * @return Value as processed by text
          * @throws IOException If text could not be parsed
          */

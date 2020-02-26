@@ -121,12 +121,7 @@ public class SVGGraphicFactory implements Factory, ExternalGraphicFactory, Graph
         return svg;
     }
 
-    /**
-     * Splits the query string in
-     *
-     * @param url
-     * @return
-     */
+    /** Splits the query string in */
     Map<String, String> getParametersFromUrl(String url) {
         // url.getQuery won't work on file addresses
         int idx = url.indexOf("?");

@@ -19,10 +19,8 @@ package org.geotools.gce.imagepyramid;
 import it.geosolutions.imageio.maskband.DatasetLayout;
 import java.awt.*;
 import java.io.BufferedInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.util.ArrayList;
@@ -133,8 +131,6 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
      *
      * @param source The source object.
      * @param uHints {@link Hints} to control the behaviour of this reader.
-     * @throws IOException
-     * @throws UnsupportedEncodingException
      */
     public ImagePyramidReader(Object source, Hints uHints) throws IOException {
         // //
@@ -199,10 +195,6 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
     /**
      * Parses the main properties file loading the information regarding geographic extent and
      * overviews.
-     *
-     * @param sourceFile
-     * @throws IOException
-     * @throws FileNotFoundException
      */
     private void parseMainFile(final URL sourceURL) throws IOException {
 
@@ -266,8 +258,6 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
      * Constructor for an {@link ImagePyramidReader}.
      *
      * @param source The source object.
-     * @throws IOException
-     * @throws UnsupportedEncodingException
      */
     public ImagePyramidReader(Object source) throws IOException {
         this(source, null);
@@ -374,14 +364,7 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
      * This method loads the tiles which overlap the requested envelope using the provided values
      * for alpha and input ROI.
      *
-     * @param coverageName
-     * @param requestedEnvelope
-     * @param dim
-     * @param params
-     * @param overviewPolicy
      * @return A {@link GridCoverage}, well actually a {@link GridCoverage2D}.
-     * @throws TransformException
-     * @throws IOException
      */
     private GridCoverage2D loadRequestedTiles(
             final String coverageName,
@@ -443,13 +426,7 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
         return count;
     }
 
-    /**
-     * Retrieve meta data value from requested coverage and for requested metadata
-     *
-     * @param coverageName
-     * @param name
-     * @return
-     */
+    /** Retrieve meta data value from requested coverage and for requested metadata */
     @Override
     public String getMetadataValue(final String coverageName, final String name) {
         return getImageMosaicMetadataValue(coverageName, name);
@@ -519,13 +496,7 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
         return metadataNames.toArray(new String[metadataNames.size()]);
     }
 
-    /**
-     * Retrieve time domains metadata values for the requested ImageMosaicReader
-     *
-     * @param reader
-     * @param name
-     * @return
-     */
+    /** Retrieve time domains metadata values for the requested ImageMosaicReader */
     private String getTimeDomain(
             final String coverageName, ImageMosaicReader reader, final String name) {
         if (hasTimeDomain(coverageName, reader) && reader != null) {
@@ -537,7 +508,6 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
     /**
      * Verify if the requested Mosaic has a time domain configuration
      *
-     * @param reader
      * @return True if has time domain configuration
      */
     private boolean hasTimeDomain(final String coverageName, ImageMosaicReader reader) {

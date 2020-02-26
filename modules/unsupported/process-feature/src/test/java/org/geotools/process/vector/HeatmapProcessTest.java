@@ -45,8 +45,6 @@ public class HeatmapProcessTest {
      * <p>Test includes data which lies outside the heatmap buffer area, to check that it is
      * filtered correctly (i.e. does not cause out-of-range errors, and does not affect generated
      * surface).
-     *
-     * @throws Exception
      */
     @Test
     public void testSimpleSurface() {

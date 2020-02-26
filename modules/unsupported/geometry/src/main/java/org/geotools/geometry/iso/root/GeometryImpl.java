@@ -532,12 +532,8 @@ public abstract class GeometryImpl implements Geometry, Serializable {
      *
      * @version <A HREF="http://www.opengis.org/docs/01-101.pdf">Abstract Specification V5</A>, page
      *     126 (Clementini Operators)
-     * @param geom1
-     * @param geom2
-     * @param intersectionPatternMatrix
      * @return TRUE if the Intersection Pattern Matrix describes the topological relation between
      *     the two input geomtries correctly, FALSE if not.
-     * @throws UnsupportedDimensionException
      */
     public static boolean cRelate(Geometry g1, Geometry g2, String intersectionPatternMatrix)
             throws UnsupportedDimensionException {
@@ -552,11 +548,8 @@ public abstract class GeometryImpl implements Geometry, Serializable {
      *
      * @version <A HREF="http://www.opengis.org/docs/01-101.pdf">Abstract Specification V5</A>, page
      *     126 (Clementini Operators)
-     * @param aOther
-     * @param intersectionPatternMatrix
      * @return TRUE if the Intersection Pattern Matrix describes the topological relation between
      *     the two input geomtries correctly, FALSE if not.
-     * @throws UnsupportedDimensionException
      */
     public boolean relate(Geometry aOther, String intersectionPatternMatrix)
             throws UnsupportedDimensionException {
@@ -1089,9 +1082,6 @@ public abstract class GeometryImpl implements Geometry, Serializable {
     /**
      * Use this function to cast TransfiniteSet instances to a GeometryImpl instance. In that way we
      * can control the illegal injection of other instances at a central point.
-     *
-     * @param tf
-     * @return
      */
     protected static GeometryImpl castToGeometryImpl(TransfiniteSet tf) {
         if (tf instanceof GeometryImpl) {

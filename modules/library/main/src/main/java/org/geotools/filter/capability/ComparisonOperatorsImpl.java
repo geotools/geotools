@@ -37,11 +37,7 @@ public class ComparisonOperatorsImpl implements ComparisonOperators {
         this(new ArrayList<Operator>());
     }
 
-    /**
-     * Copy the provided ComparisonOperator
-     *
-     * @param copy
-     */
+    /** Copy the provided ComparisonOperator */
     public ComparisonOperatorsImpl(ComparisonOperators copy) {
         this.operators = new HashSet<Operator>(copy.getOperators());
     }

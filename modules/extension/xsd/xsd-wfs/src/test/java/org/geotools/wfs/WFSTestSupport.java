@@ -109,11 +109,6 @@ public abstract class WFSTestSupport extends XMLTestSupport {
     /**
      * Returns the value of the element named <code>propertyName</code> at index <code>index</code>,
      * where the index starts at 0 (zero).
-     *
-     * @param dom
-     * @param propertyName
-     * @param index
-     * @return
      */
     protected final String getElementValueByQName(
             final Document dom, final QName propertyName, final int index) {

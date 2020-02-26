@@ -36,11 +36,7 @@ public class SLDChannelSectionBindingTest extends SLDTestSupport {
         assertEquals(cs.getRGBChannels()[2].getChannelName().evaluate(null, String.class), "Blue");
     }
 
-    /**
-     * Test Expression ENV function on ChannelSelection
-     *
-     * @throws Exception
-     */
+    /** Test Expression ENV function on ChannelSelection */
     public void testRGBExpression() throws Exception {
         SLDMockData.channelSelectionExpression(document, document);
 

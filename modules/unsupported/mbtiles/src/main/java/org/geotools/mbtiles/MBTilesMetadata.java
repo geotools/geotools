@@ -258,8 +258,6 @@ public class MBTilesMetadata {
     /**
      * The description of vector tiles internal structure is a JSON document added in the "json" key
      * (by mbtiles specification)
-     *
-     * @return
      */
     public String getJson() {
         return json;

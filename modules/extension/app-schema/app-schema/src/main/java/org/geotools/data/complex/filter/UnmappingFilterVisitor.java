@@ -141,9 +141,6 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
     /**
      * Used by methods that visited a filter that produced one or more filters over the surrogate
      * feature type to combine them in an Or filter if necessary.
-     *
-     * @param combinedFilters
-     * @return
      */
     private Filter combineOred(List combinedFilters) {
         switch (combinedFilters.size()) {

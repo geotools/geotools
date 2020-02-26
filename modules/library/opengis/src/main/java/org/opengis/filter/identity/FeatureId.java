@@ -45,7 +45,6 @@ public interface FeatureId extends Identifier {
      * Check if the provided FeatureId is an exact match (including any optional version
      * information).
      *
-     * @param id
      * @return true if this is an exact match (including any optional version information)
      */
     boolean equalsExact(FeatureId id);
@@ -55,7 +54,6 @@ public interface FeatureId extends Identifier {
      *
      * <p>This comparison does not compare any optional version information.
      *
-     * @param id
      * @return true if both identifiers describe the same feature (does not compare version
      *     information).
      */

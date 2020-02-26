@@ -77,11 +77,7 @@ public abstract class JDBCJNDIDataSourceOnlineTest extends JDBCTestSupport {
 
     protected abstract JDBCDataStoreFactory getDataStoreFactory();
 
-    /**
-     * Extracts the base params all non JNDI JDBC factories have
-     *
-     * @return
-     */
+    /** Extracts the base params all non JNDI JDBC factories have */
     protected List<String> getBaseParams() {
         JDBCDataStoreFactory factory = getBaseFactory();
 
@@ -125,23 +121,14 @@ public abstract class JDBCJNDIDataSourceOnlineTest extends JDBCTestSupport {
         return factory;
     }
 
-    /**
-     * Extracts the common params all JNDI factories have
-     *
-     * @return
-     */
+    /** Extracts the common params all JNDI factories have */
     protected List<String> getBaseJNDIParams() {
         JDBCJNDIDataStoreFactory factory = new JDBCJNDIDataStoreFactory(getBaseFactory()) {};
 
         return getParamKeys(factory);
     }
 
-    /**
-     * Extracts the set of params available for a given factory
-     *
-     * @param factory
-     * @return
-     */
+    /** Extracts the set of params available for a given factory */
     protected List<String> getParamKeys(JDBCDataStoreFactory factory) {
         Param[] params = factory.getParametersInfo();
         List<String> results = new ArrayList<String>();

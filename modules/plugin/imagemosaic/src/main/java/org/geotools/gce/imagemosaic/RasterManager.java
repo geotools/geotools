@@ -191,14 +191,7 @@ public class RasterManager implements Cloneable {
             prepareCoverageSpatialElements();
         }
 
-        /**
-         * Initialize the 2D properties (CRS and Envelope) of this coverage
-         *
-         * @throws TransformException
-         * @throws FactoryException
-         * @throws TransformException
-         * @throws FactoryException
-         */
+        /** Initialize the 2D properties (CRS and Envelope) of this coverage */
         private void prepareCoverageSpatialElements() throws TransformException, FactoryException {
             //
             // basic initialization
@@ -388,11 +381,7 @@ public class RasterManager implements Cloneable {
             }
         }
 
-        /**
-         * Retrieves the values for this domain
-         *
-         * @return
-         */
+        /** Retrieves the values for this domain */
         private String getValues() {
             if (domainType == DomainType.SINGLE_VALUE) {
                 return getSingleValues();
@@ -400,11 +389,7 @@ public class RasterManager implements Cloneable {
             return getRangeValues();
         }
 
-        /**
-         * Retrieves the Range values for this domain
-         *
-         * @return
-         */
+        /** Retrieves the Range values for this domain */
         private String getRangeValues() {
             try {
                 Set<String> result =
@@ -428,11 +413,7 @@ public class RasterManager implements Cloneable {
             }
         }
 
-        /**
-         * Retrieves the single values list of this domain (no ranges available)
-         *
-         * @return
-         */
+        /** Retrieves the single values list of this domain (no ranges available) */
         private String getSingleValues() {
             try {
 
@@ -571,11 +552,7 @@ public class RasterManager implements Cloneable {
             return descriptors.get(0);
         }
 
-        /**
-         * @param domainAttributes
-         * @param simpleFeatureType
-         * @throws IllegalArgumentException
-         */
+        /** */
         private List<DimensionDescriptor> init(
                 Map<String, String> domainAttributes, SimpleFeatureType simpleFeatureType)
                 throws IllegalArgumentException {
@@ -655,9 +632,6 @@ public class RasterManager implements Cloneable {
         /**
          * build an AdditionalDomainManager on top of the provided additionalDomainAttributes (a
          * comma separated list of attribute names).
-         *
-         * @param additionalDomainAttributes
-         * @param simpleFeatureType
          */
         DomainManager(String additionalDomainAttributes, SimpleFeatureType simpleFeatureType) {
             Utilities.ensureNonNull("additionalDomainAttributes", additionalDomainAttributes);
@@ -680,10 +654,7 @@ public class RasterManager implements Cloneable {
             init(domainPairs, simpleFeatureType);
         }
 
-        /**
-         * @param domainName
-         * @return @TODO We can surely improve it by making use of Regular Expressions
-         */
+        /** @return @TODO We can surely improve it by making use of Regular Expressions */
         private String cleanupDomainName(String domainName) {
             if (attributeHasRange(domainName)
                     || (domainName.contains("(") && domainName.contains(")"))) {
@@ -780,9 +751,6 @@ public class RasterManager implements Cloneable {
         /**
          * Check whether a specific parameter (identified by the {@link Identifier} name) is
          * supported by this manager (and therefore, by the reader).
-         *
-         * @param name
-         * @return
          */
         public boolean isParameterSupported(final Identifier name) {
             if (!domainsMap.isEmpty()) {
@@ -797,11 +765,7 @@ public class RasterManager implements Cloneable {
             return false;
         }
 
-        /**
-         * Setup the List of metadataNames for this additional domains manager
-         *
-         * @return
-         */
+        /** Setup the List of metadataNames for this additional domains manager */
         public List<String> getMetadataNames() {
             final List<String> metadataNames = new ArrayList<String>();
             if (!domainsMap.isEmpty()) {
@@ -825,9 +789,6 @@ public class RasterManager implements Cloneable {
 
         /**
          * Return the value of a specific metadata by parsing the requested name as a Domain Name
-         *
-         * @param name
-         * @return
          */
         public String getMetadataValue(String name) {
             Utilities.ensureNonNull("name", name);
@@ -868,13 +829,7 @@ public class RasterManager implements Cloneable {
             return value;
         }
 
-        /**
-         * Setup a Filter on top of the specified domainRequest which is in the form "key=value"
-         *
-         * @param domain
-         * @param values
-         * @return
-         */
+        /** Setup a Filter on top of the specified domainRequest which is in the form "key=value" */
         public Filter createFilter(String domain, List values) {
             // === checks
             if (domain == null || domain.isEmpty()) {
@@ -896,8 +851,6 @@ public class RasterManager implements Cloneable {
         /**
          * Return the set of dynamic parameterDescriptors (the ones related to domains) for this
          * reader
-         *
-         * @return
          */
         public Set<ParameterDescriptor<List>> getDynamicParameters() {
             Set<ParameterDescriptor<List>> dynamicParameters =
@@ -1199,8 +1152,6 @@ public class RasterManager implements Cloneable {
     /**
      * This code tries to load the sample image from which we can extract SM and CM to use when
      * answering to requests that falls within a hole in the mosaic.
-     *
-     * @param configuration
      */
     private void loadSampleImage(MosaicConfigurationBean configuration) {
         if (this.parentReader.sourceURL == null) {
@@ -1349,12 +1300,7 @@ public class RasterManager implements Cloneable {
         return typeName;
     }
 
-    /**
-     * @param metadataName
-     * @param attributeName
-     * @return
-     * @throws IOException
-     */
+    /** */
     FeatureCalc createExtremaQuery(String metadataName, String attributeName) throws IOException {
         final Query query = new Query(typeName);
         query.setPropertyNames(Arrays.asList(attributeName));
@@ -1373,7 +1319,6 @@ public class RasterManager implements Cloneable {
      * <p>It retrieves a comma separated list of values as a Set of {@link String}.
      *
      * @return a comma separated list of values as a {@link String}.
-     * @throws IOException
      */
     Set extractDomain(final String attribute) throws IOException {
         Query query = new Query(typeName);
@@ -1388,9 +1333,7 @@ public class RasterManager implements Cloneable {
      *
      * <p>It retrieves a comma separated list of values as a Set of {@link String}.
      *
-     * @param domainType
      * @return a comma separated list of values as a Set of {@link String}.
-     * @throws IOException
      */
     private Set extractDomain(
             final String attribute, final String secondAttribute, final DomainType domainType)
@@ -1422,11 +1365,7 @@ public class RasterManager implements Cloneable {
                 : ((RangeVisitor) visitor).getRange();
     }
 
-    /**
-     * TODO this should not leak through
-     *
-     * @return
-     */
+    /** TODO this should not leak through */
     public GranuleCatalog getGranuleCatalog() {
         return granuleCatalog;
     }
@@ -1434,9 +1373,6 @@ public class RasterManager implements Cloneable {
     /**
      * Create a store for the coverage related to this {@link RasterManager} using the provided
      * schema
-     *
-     * @param indexSchema
-     * @throws IOException
      */
     public void createStore(SimpleFeatureType indexSchema) throws IOException {
         final String typeName = indexSchema.getTypeName();
@@ -1455,13 +1391,7 @@ public class RasterManager implements Cloneable {
         }
     }
 
-    /**
-     * Remove a store for the coverage related to this {@link RasterManager}
-     *
-     * @param forceDelete
-     * @param indexSchema
-     * @throws IOException
-     */
+    /** Remove a store for the coverage related to this {@link RasterManager} */
     public void removeStore(String typeName, boolean forceDelete, boolean checkForReferences)
             throws IOException {
         Utilities.ensureNonNull("typeName", typeName);
@@ -1481,13 +1411,7 @@ public class RasterManager implements Cloneable {
         }
     }
 
-    /**
-     * Delete granules from query.
-     *
-     * @param query
-     * @param checkForReferences
-     * @throws IOException
-     */
+    /** Delete granules from query. */
     private void cleanupGranules(Query query, boolean checkForReferences, boolean deleteData)
             throws IOException {
         final SimpleFeatureCollection collection = granuleCatalog.getGranules(query);
@@ -1533,13 +1457,7 @@ public class RasterManager implements Cloneable {
         }
     }
 
-    /**
-     * Check if there is any granule referred by other coverages.
-     *
-     * @param coverageName
-     * @return
-     * @throws IOException
-     */
+    /** Check if there is any granule referred by other coverages. */
     private boolean checkForReferences(String coverageName) throws IOException {
         final String[] coverageNames = parentReader.getGridCoverageNames();
         for (String typeName : coverageNames) {
@@ -1660,11 +1578,7 @@ public class RasterManager implements Cloneable {
         }
     }
 
-    /**
-     * Return the metadataNames for this manager
-     *
-     * @return
-     */
+    /** Return the metadataNames for this manager */
     String[] getMetadataNames() {
         final List<String> metadataNames = new ArrayList<String>();
         metadataNames.add(GridCoverage2DReader.TIME_DOMAIN);
@@ -1695,7 +1609,6 @@ public class RasterManager implements Cloneable {
      * Return the metadata value for the specified metadata name
      *
      * @param name the name of the metadata to be returned
-     * @return
      */
     String getMetadataValue(String name) {
         String value = null;
@@ -1778,8 +1691,6 @@ public class RasterManager implements Cloneable {
     /**
      * Builds a RasterManager for the sub mosaic of a given template granule, and within a given
      * search bounds
-     *
-     * @throws Exception
      */
     public RasterManager getForGranuleCRS(
             GranuleDescriptor templateDescriptor, ReferencedEnvelope requestBounds)
@@ -1861,11 +1772,6 @@ public class RasterManager implements Cloneable {
     /**
      * Grab the bounds of the mosaic granules in the template granule CRS (cannot reproject, in
      * general, the whole mosaic bounds in the granule local CRS)
-     *
-     * @param templateDescriptor
-     * @param requestBounds
-     * @return
-     * @throws IOException
      */
     private ReferencedEnvelope getBoundsForGranuleCRS(
             GranuleDescriptor templateDescriptor, ReferencedEnvelope requestBounds)
@@ -1896,9 +1802,6 @@ public class RasterManager implements Cloneable {
     /**
      * Returns the name of the crs attribute in heterogeneous mosaics (for non heterogenous ones, it
      * will return null
-     *
-     * @return
-     * @throws IOException
      */
     public String getCrsAttribute() throws IOException {
         String crsAttribute = configuration.getCRSAttribute();
@@ -1914,20 +1817,12 @@ public class RasterManager implements Cloneable {
         return crsAttribute;
     }
 
-    /**
-     * The parent directory that can be used with the {@link PathType} enumeration
-     *
-     * @return
-     */
+    /** The parent directory that can be used with the {@link PathType} enumeration */
     public String getParentLocation() {
         return URLs.fileToUrl(getParentReader().parentDirectory).toString();
     }
 
-    /**
-     * The attribute containing the location information for the single granules
-     *
-     * @return
-     */
+    /** The attribute containing the location information for the single granules */
     public String getLocationAttribute() {
         return getParentReader().locationAttributeName;
     }

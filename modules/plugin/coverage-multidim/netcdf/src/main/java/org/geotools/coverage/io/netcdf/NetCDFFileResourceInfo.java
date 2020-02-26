@@ -132,9 +132,6 @@ class NetCDFFileResourceInfo extends DefaultResourceInfo implements FileResource
          * multiple dimensions (as an instance, time, elevation, custom...)
          *
          * <p>The method also look for supportFiles.
-         *
-         * @return
-         * @throws IOException
          */
         private FileGroup buildFileGroup(List<CoverageSlice> slices) throws IOException {
             List<File> supportFiles = null;

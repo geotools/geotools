@@ -111,7 +111,6 @@ public class GraphicViewer {
     /**
      * Accepts a listener that will be notified when content changes.
      *
-     * @param listener1
      */
     public void addListener(SelectionListener listener1) {
         this.listener = listener1;
@@ -120,7 +119,6 @@ public class GraphicViewer {
     /**
      * Remove listener.
      *
-     * @param listener1
      */
     public void removeListener(SelectionListener listener1) {
         if (this.listener == listener1) this.listener = null;
@@ -129,7 +127,6 @@ public class GraphicViewer {
     /**
      * TODO summary sentence for fire ...
      *
-     * @param event
      */
     protected void fire(SelectionEvent event) {
         if (this.listener == null) return;
@@ -139,9 +136,6 @@ public class GraphicViewer {
     /**
      * TODO summary sentence for createControl ...
      *
-     * @param parent
-     * @param klisten
-     * @param build
      * @return Generated composite
      */
     public Composite createControl(Composite parent, KeyListener klisten, StyleBuilder build) {
@@ -173,9 +167,6 @@ public class GraphicViewer {
     /**
      * TODO summary sentence for getGraphic ...
      *
-     * @param filll
-     * @param stroke
-     * @param build
      * @return Graphic defined by this model
      */
     public Graphic getGraphic(Fill filll, Stroke stroke, StyleBuilder build) {
@@ -197,9 +188,6 @@ public class GraphicViewer {
     /**
      * TODO summary sentence for setGraphic ...
      *
-     * @param graphic
-     * @param mode
-     * @param enabled
      */
     public void setGraphic(Graphic graphic, Mode mode, Color defaultColor) {
         boolean enabled = true;

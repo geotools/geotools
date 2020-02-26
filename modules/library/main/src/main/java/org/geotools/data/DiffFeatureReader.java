@@ -74,7 +74,6 @@ public class DiffFeatureReader<T extends FeatureType, F extends Feature>
      * <p>This reader is not "live" to changes over the course of the Transaction. (Iterators are
      * not always stable of the course of modifications)
      *
-     * @param reader
      * @param diff2 Differences of Feature by FID
      */
     public DiffFeatureReader(FeatureReader<T, F> reader, Diff diff2) {
@@ -87,7 +86,6 @@ public class DiffFeatureReader<T extends FeatureType, F extends Feature>
      * <p>This reader is not "live" to changes over the course of the Transaction. (Iterators are
      * not always stable of the course of modifications)
      *
-     * @param reader
      * @param diff2 Differences of Feature by FID
      */
     public DiffFeatureReader(FeatureReader<T, F> reader, Diff diff2, Filter filter) {

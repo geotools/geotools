@@ -137,11 +137,7 @@ public class CircularRing extends LinearRing
         return delegate.getDimension();
     }
 
-    /**
-     * Returns a normalized ring (one that does not have a single arc closing on itself)
-     *
-     * @return
-     */
+    /** Returns a normalized ring (one that does not have a single arc closing on itself) */
     public CircularRing normalizeRing() {
         if (!isClosed() || getNumArcs() > 1) {
             return this;

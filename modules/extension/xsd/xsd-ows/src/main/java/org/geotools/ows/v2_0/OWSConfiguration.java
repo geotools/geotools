@@ -214,11 +214,7 @@ public class OWSConfiguration extends Configuration {
         container.registerComponentInstance(Ows20Factory.eINSTANCE);
     }
 
-    /**
-     * Generates the bindings registrations for this class
-     *
-     * @param args
-     */
+    /** Generates the bindings registrations for this class */
     @SuppressWarnings("PMD.SystemPrintln")
     public static void main(String[] args) {
         for (Field f : OWS.class.getFields()) {

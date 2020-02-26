@@ -194,7 +194,6 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
      *
      * @param input the input object.
      * @return the dataset or <code>null</code>.
-     * @throws IOException
      */
     private NetcdfDataset extractDataset(Object input) throws IOException {
         NetcdfDataset dataset = null;
@@ -307,13 +306,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         }
     }
 
-    /**
-     * Index Initialization. store indexing information.
-     *
-     * @return
-     * @throws InvalidRangeException
-     * @throws IOException
-     */
+    /** Index Initialization. store indexing information. */
     protected int initIndex() throws InvalidRangeException, IOException {
         DefaultTransaction transaction =
                 new DefaultTransaction("indexTransaction" + System.nanoTime());
@@ -428,13 +421,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         return numImages;
     }
 
-    /**
-     * Update features imageIndex by referring them to a specific offset
-     *
-     * @param collection
-     * @param offset
-     * @throws IOException
-     */
+    /** Update features imageIndex by referring them to a specific offset */
     private void updateFeaturesIndex(
             final ListFeatureCollection collection, final int offset, boolean isShared)
             throws IOException {
@@ -587,23 +574,12 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
                 new StringBuilder("Can't read file ").append(dataset.getLocation()).toString(), e);
     }
 
-    /**
-     * Return the {@link Slice2DIndex} associated to the specified imageIndex
-     *
-     * @param imageIndex
-     * @return
-     * @throws IOException
-     */
+    /** Return the {@link Slice2DIndex} associated to the specified imageIndex */
     public Slice2DIndex getSlice2DIndex(int imageIndex) throws IOException {
         return ancillaryFileManager.getSlice2DIndex(imageIndex);
     }
 
-    /**
-     * Return the {@link VariableWrapper} related to that imageIndex
-     *
-     * @param imageIndex
-     * @return
-     */
+    /** Return the {@link VariableWrapper} related to that imageIndex */
     protected VariableAdapter getCoverageDescriptor(int imageIndex) {
         checkImageIndex(imageIndex);
         try {
@@ -953,10 +929,6 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
     /**
      * Check whether the Y axis need to be flipped. Note that the method is synchronized since it
      * access the underlying Variable
-     *
-     * @param axis
-     * @return
-     * @throws IOException
      */
     private synchronized boolean needFlipYAxis(CoordinateAxis axis) throws IOException {
         boolean flipYAxis = false;
@@ -1042,12 +1014,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         }
     }
 
-    /**
-     * Create the schema in case not already defined
-     *
-     * @param indexSchema
-     * @throws IOException
-     */
+    /** Create the schema in case not already defined */
     private void forceSchemaCreation(SimpleFeatureType indexSchema) throws IOException {
         final String typeName = indexSchema.getTypeName();
         final CoverageSlicesCatalog catalog = getCatalog();
@@ -1101,12 +1068,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         return indexSchema;
     }
 
-    /**
-     * @param coverage
-     * @param cs
-     * @return
-     * @throws SchemaException
-     */
+    /** */
     String suggestSchemaFromCoordinateSystem(
             Coverage coverage, CoordinateSystem cs, boolean isShared) throws SchemaException {
 

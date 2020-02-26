@@ -57,8 +57,6 @@ public class TileEntry extends Entry {
      * Returns the tile matrix set bounds. The bounds are expressed in the same CRS as the entry,
      * but they might differ in extent (if null, then the tile matrix bounds are supposed to be the
      * same as the entry)
-     *
-     * @return
      */
     public ReferencedEnvelope getTileMatrixSetBounds() {
         return tileMatrixSetBounds != null ? tileMatrixSetBounds : bounds;

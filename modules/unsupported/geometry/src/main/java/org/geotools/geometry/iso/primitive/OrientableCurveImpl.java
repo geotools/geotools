@@ -38,11 +38,7 @@ public abstract class OrientableCurveImpl extends OrientablePrimitiveImpl
 
     public abstract CurveBoundary getBoundary();
 
-    /**
-     * Constructor
-     *
-     * @param crs
-     */
+    /** Constructor */
     protected OrientableCurveImpl(CoordinateReferenceSystem crs) {
         super(crs);
     }
@@ -52,10 +48,6 @@ public abstract class OrientableCurveImpl extends OrientablePrimitiveImpl
      * keine primitives, und sind auch in keien enthalten; verwechslung mit
      * complexes?!?!
      *
-     * @param factory
-     * @param containedPrimitive
-     * @param containingPrimitive
-     * @param complex
      */
     // protected OrientableCurveImpl(FeatGeomFactoryImpl factory, Set<Primitive>
     // containedPrimitive,

@@ -318,11 +318,7 @@ public class Schemas {
     /**
      * Fetches the contents of the URI into a byte[].
      *
-     * @param uri
-     * @param options
-     * @param response
      * @return The resource data
-     * @throws IOException
      */
     private static byte[] readUriResource(URI uri, ResourceSet resourceSet, Map<?, ?> response)
             throws IOException {
@@ -343,7 +339,6 @@ public class Schemas {
      * Fetches the map to be used as reponse from the given options, creating a new one if not
      * existing.
      *
-     * @param options
      * @return a map to be used as response
      */
     private static Map<?, ?> getOrCreateResponseFrom(Map<Object, Object> options) {
@@ -1636,11 +1631,7 @@ public class Schemas {
      * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
      */
     private static interface ElementVisitor {
-        /**
-         * The particle containing the element.
-         *
-         * @param element
-         */
+        /** The particle containing the element. */
         void visit(XSDParticle element);
     }
 

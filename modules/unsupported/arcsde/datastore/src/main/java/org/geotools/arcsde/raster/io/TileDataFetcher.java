@@ -71,7 +71,6 @@ abstract class TileDataFetcher {
      *
      * @param nativeType the arcsde raster's native pixel type
      * @param targetCellType the TileInfo's target pixel type
-     * @return
      */
     public static TileDataFetcher getTileDataFetcher(
             final RasterCellType nativeType, final RasterCellType targetCellType) {
@@ -107,12 +106,7 @@ abstract class TileDataFetcher {
         return tileDataFetcher;
     }
 
-    /**
-     * Grabs the native pixel data out of {@code tile}
-     *
-     * @param tile
-     * @param tileInfo
-     */
+    /** Grabs the native pixel data out of {@code tile} */
     public abstract void setTileData(SeRasterTile tile, TileInfo tileInfo);
 
     /** Returns whether the sample N in the bitmask byte array is marked as a no-data pixel */

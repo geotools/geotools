@@ -39,22 +39,13 @@ public class FileSystemIndexStore implements IndexStore {
     private File file;
     private byte byteOrder;
 
-    /**
-     * Constructor. The byte order defaults to NEW_MSB_ORDER
-     *
-     * @param file
-     */
+    /** Constructor. The byte order defaults to NEW_MSB_ORDER */
     public FileSystemIndexStore(File file) {
         this.file = file;
         this.byteOrder = IndexHeader.NEW_MSB_ORDER;
     }
 
-    /**
-     * Constructor
-     *
-     * @param file
-     * @param byteOrder
-     */
+    /** Constructor */
     public FileSystemIndexStore(File file, byte byteOrder) {
         this.file = file;
         this.byteOrder = byteOrder;
@@ -118,7 +109,6 @@ public class FileSystemIndexStore implements IndexStore {
      *
      * @param node The node
      * @param order byte order
-     * @throws IOException
      */
     private void writeNode(Node node, FileChannel channel, ByteOrder order)
             throws IOException, StoreException {
@@ -151,11 +141,7 @@ public class FileSystemIndexStore implements IndexStore {
         }
     }
 
-    /**
-     * Calculates the offset
-     *
-     * @param node
-     */
+    /** Calculates the offset */
     private int getSubNodeOffset(Node node) throws StoreException {
         int offset = 0;
         Node tmp = null;

@@ -166,7 +166,6 @@ public class OGRDataStore extends ContentDataStore {
      * @param approximateFields if true, OGR will try to create fields that are approximations of
      *     the required ones when an exact match cannt be provided
      * @param options OGR data source/layer creation options
-     * @throws IOException
      */
     public void createSchema(SimpleFeatureType schema, boolean approximateFields, String[] options)
             throws IOException {
@@ -225,7 +224,6 @@ public class OGRDataStore extends ContentDataStore {
      * @param approximateFields if true, OGR will try to create fields that are approximations of
      *     the required ones when an exact match cannt be provided
      * @param options OGR data source/layer creation options
-     * @throws IOException
      */
     public void createSchema(
             SimpleFeatureCollection data, boolean approximateFields, String[] options)

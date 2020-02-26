@@ -574,10 +574,7 @@ public class WMTSTileService extends TileService {
         this.templateURL = templateURL;
     }
 
-    /**
-     * @param zoomLevel
-     * @return
-     */
+    /** */
     public TileMatrix getTileMatrix(int zoomLevel) {
         if (matrixSet == null) {
             throw new RuntimeException("TileMatrix is not set in WMTSService");

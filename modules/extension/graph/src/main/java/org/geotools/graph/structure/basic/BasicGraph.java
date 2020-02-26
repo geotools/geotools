@@ -96,10 +96,7 @@ public class BasicGraph implements Graph, Serializable {
         return (List<Node>) (query(getNodes(), visitor));
     }
 
-    /**
-     * @return
-     * @see Graph#queryEdges(GraphVisitor)
-     */
+    /** @see Graph#queryEdges(GraphVisitor) */
     @Override
     public List<Edge> queryEdges(GraphVisitor visitor) {
         return (List<Edge>) (query(getEdges(), visitor));

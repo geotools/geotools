@@ -65,9 +65,6 @@ public class Specificity implements Comparable<Specificity> {
     /**
      * Returns a new Specificity object representing by performing a element by element sum of the
      * components
-     *
-     * @param other
-     * @return
      */
     public Specificity sum(Specificity other) {
         if (this == ZERO) {

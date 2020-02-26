@@ -130,8 +130,6 @@ class RasterLayerRequest {
      * Build a new {@code CoverageRequest} given a set of input parameters.
      *
      * @param params The {@code GeneralParameterValue}s to initialize this request
-     * @param baseGridCoverage2DReader
-     * @throws DataSourceException
      */
     public RasterLayerRequest(
             final GeneralParameterValue[] params, final RasterManager rasterManager)
@@ -399,8 +397,6 @@ class RasterLayerRequest {
     /**
      * Compute this specific request settings all the parameters needed by a visiting {@link
      * RasterLayerResponse} object.
-     *
-     * @throws DataSourceException
      */
     private void prepare() throws DataSourceException {
         //
@@ -535,7 +531,6 @@ class RasterLayerRequest {
      * transformation.
      *
      * @throws TransformException in case a problem occurs when going back to raster space.
-     * @throws DataSourceException
      */
     private void computeCropRasterArea() throws DataSourceException {
 
@@ -634,7 +629,6 @@ class RasterLayerRequest {
      * rectangle which is suitable for a successive read operation with {@link ImageIO} to do
      * crop-on-read.
      *
-     * @throws DataSourceException
      * @throws DataSourceException in case something bad occurs
      */
     private void computeRequestSpatialElements() throws DataSourceException {

@@ -122,11 +122,7 @@ public class OptLineGraphGenerator implements LineGraphGenerator {
         // which of them will be returned
     }
 
-    /**
-     * Unsupported operation.
-     *
-     * @throws UnsupportedOperationException
-     */
+    /** Unsupported operation. */
     public Graphable remove(Object obj) {
         throw new UnsupportedOperationException(getClass().getName() + "#remove(Object)");
     }

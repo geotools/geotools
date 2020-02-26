@@ -91,11 +91,7 @@ public abstract class EdgeEndStar {
         return (EdgeEnd) edgeList.get(iNextCW);
     }
 
-    /**
-     * Computes the labelling for the ???
-     *
-     * @param geom
-     */
+    /** Computes the labelling for the ??? */
     public void computeLabelling(GeometryGraph[] geom) {
         computeEdgeEndLabels();
         // Propagate side labels around the edges in the star

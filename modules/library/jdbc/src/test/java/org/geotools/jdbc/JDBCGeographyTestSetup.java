@@ -49,9 +49,6 @@ public abstract class JDBCGeographyTestSetup extends JDBCDelegatingTestSetup {
     /**
      * Subclasses should override if the database connected to the test does not have geography
      * support
-     *
-     * @return
-     * @throws Exception
      */
     public boolean isGeographySupportAvailable() throws Exception {
         return true;

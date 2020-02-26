@@ -37,11 +37,7 @@ public class OrderByElementQualifier implements OrderByVisitor {
 
     private Map<String, Object> tableAliases;
 
-    /**
-     * Creates a new OrderByElementQualifier object.
-     *
-     * @param session
-     */
+    /** Creates a new OrderByElementQualifier object. */
     private OrderByElementQualifier(ISession session, Map<String, Object> tableAliases) {
         this.session = session;
         this.tableAliases = tableAliases;

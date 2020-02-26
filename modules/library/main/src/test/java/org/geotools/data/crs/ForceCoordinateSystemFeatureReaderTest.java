@@ -46,8 +46,6 @@ public class ForceCoordinateSystemFeatureReaderTest extends TestCase {
      *
      * @param crs the CRS of the FeatureType
      * @param p the point to add, should be same CRS as crs
-     * @return
-     * @throws Exception
      */
     private SimpleFeatureCollection createTestFeatureCollection(
             CoordinateReferenceSystem crs, Point p) throws Exception {

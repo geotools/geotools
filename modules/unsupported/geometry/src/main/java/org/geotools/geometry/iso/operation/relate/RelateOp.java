@@ -39,10 +39,6 @@ public class RelateOp extends GeometryGraphOperation {
     /**
      * Creates a Relate Operation for the two given geometries and construct a noded graph between
      * those two geometry objects
-     *
-     * @param g0
-     * @param g1
-     * @throws UnsupportedDimensionException
      */
     public RelateOp(GeometryImpl g0, GeometryImpl g1) throws UnsupportedDimensionException {
         super(g0, g1);

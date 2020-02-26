@@ -109,9 +109,6 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
     /**
      * Tests that returned keys are actually allowing the code to get back the same feature inserted
      * (SQLServer code used to rely on a key generation approach that failed this test)
-     *
-     * @throws IOException
-     * @throws InterruptedException
      */
     public void testMultithreadedAddFeatures() throws IOException, InterruptedException {
         SimpleFeatureBuilder b = new SimpleFeatureBuilder(featureStore.getSchema());
@@ -272,22 +269,14 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
         }
     }
 
-    /**
-     * Check null encoding is working properly
-     *
-     * @throws IOException
-     */
+    /** Check null encoding is working properly */
     public void testAddNullAttributes() throws IOException {
         SimpleFeatureBuilder b = new SimpleFeatureBuilder(featureStore.getSchema());
         SimpleFeature nullFeature = b.buildFeature("testId");
         featureStore.addFeatures(Arrays.asList(nullFeature));
     }
 
-    /**
-     * Check null encoding is working properly
-     *
-     * @throws IOException
-     */
+    /** Check null encoding is working properly */
     public void testModifyNullAttributes() throws IOException {
         String[] attributeNames = new String[featureStore.getSchema().getAttributeCount()];
         for (int i = 0; i < attributeNames.length; i++) {

@@ -63,11 +63,7 @@ public class ECQLComparisonPredicateTest extends CQLComparisonPredicateTest {
         super(Language.ECQL);
     }
 
-    /**
-     * Equals predicate sample
-     *
-     * @throws Exception
-     */
+    /** Equals predicate sample */
     @Test
     public void deprecatedPredicate() throws Exception {
 
@@ -96,8 +92,6 @@ public class ECQLComparisonPredicateTest extends CQLComparisonPredicateTest {
      * Sample: (1+3) > aProperty
      *         (1+3) > (4-5)
      * </pre>
-     *
-     * @throws CQLException
      */
     @Test
     public void expressionComparisonProperty() throws CQLException {
@@ -112,11 +106,7 @@ public class ECQLComparisonPredicateTest extends CQLComparisonPredicateTest {
         testComparison(FilterECQLSample.EXPRESSIONS_WITH_PROPERTIES);
     }
 
-    /**
-     * Negative value test
-     *
-     * @throws CQLException
-     */
+    /** Negative value test */
     @Test
     public void negativeNumber() throws CQLException {
 
@@ -158,8 +148,6 @@ public class ECQLComparisonPredicateTest extends CQLComparisonPredicateTest {
      *          area( the_geom ) < abs(10)
      *
      * </pre>
-     *
-     * @throws CQLException
      */
     @Test
     public void functionsInComparison() throws CQLException {
@@ -231,11 +219,7 @@ public class ECQLComparisonPredicateTest extends CQLComparisonPredicateTest {
                 f, date(2012, FEBRUARY, 1, 12, 10, 13, 0, TimeZone.getTimeZone("GMT+8:00")));
     }
 
-    /**
-     * Checks that both positive and negative numbers are parsed to numbers, not strings
-     *
-     * @throws Exception
-     */
+    /** Checks that both positive and negative numbers are parsed to numbers, not strings */
     @Test
     public void testPositiveNegativeConsistent() throws Exception {
         BinaryComparisonOperator f =
@@ -299,7 +283,6 @@ public class ECQLComparisonPredicateTest extends CQLComparisonPredicateTest {
      * Asserts that the filter returned is the specified by the predicate
      *
      * @param testPredicate predicate to test
-     * @throws CQLException
      */
     private void testComparison(final String testPredicate) throws CQLException {
 

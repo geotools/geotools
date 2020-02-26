@@ -48,15 +48,7 @@ public abstract class AbstractLazyComplexTypeImpl extends AbstractLazyAttributeT
 
     private Map<Name, PropertyDescriptor> descriptorMap;
 
-    /**
-     * Constructor arguments have the same meaning as in {@link ComplexTypeImpl}.
-     *
-     * @param name
-     * @param identified
-     * @param isAbstract
-     * @param restrictions
-     * @param description
-     */
+    /** Constructor arguments have the same meaning as in {@link ComplexTypeImpl}. */
     public AbstractLazyComplexTypeImpl(
             Name name,
             boolean identified,

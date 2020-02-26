@@ -51,12 +51,7 @@ public class IndexedFidReader implements FIDReader, FileReader {
     private long currentId;
     private StringBuilder fidBuilder;
 
-    /**
-     * move the reader to the recno-th entry in the file.
-     *
-     * @param recno
-     * @throws IOException
-     */
+    /** move the reader to the recno-th entry in the file. */
     private long bufferStart = Long.MIN_VALUE;
 
     StreamLogging streamLogger = new StreamLogging("IndexedFidReader");
@@ -142,7 +137,6 @@ public class IndexedFidReader implements FIDReader, FileReader {
      * @param fid the fid to find.
      * @return Returns the record number of the record in the SHX file that the fid identifies. Will
      *     return -1 if the fid was not found.
-     * @throws IOException
      */
     public long findFid(String fid) throws IOException {
         try {
@@ -181,7 +175,6 @@ public class IndexedFidReader implements FIDReader, FileReader {
      * @param maxRec the first record that is known to be <em>after</em> the desired record.
      * @param predictedRec the record that is predicted to be the desired record.
      * @return returns the record number of the feature in the shx file.
-     * @throws IOException
      */
     long search(long desired, long minRec, long maxRec, long predictedRec) throws IOException {
         if (minRec == maxRec) {

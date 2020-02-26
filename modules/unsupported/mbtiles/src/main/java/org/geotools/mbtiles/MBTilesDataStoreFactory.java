@@ -127,8 +127,6 @@ public class MBTilesDataStoreFactory implements DataStoreFactorySpi {
     /**
      * Same as the GeoPackage data store, if you modify this, probably want to check if
      * modifications make sense there too
-     *
-     * @param params
      */
     protected DataSource createDataSource(Map<String, Serializable> params, boolean readOnly)
             throws IOException {

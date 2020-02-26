@@ -45,8 +45,6 @@ public class ForceCoordinateSystemFeatureIteratorTest extends TestCase {
      *
      * @param crs the CRS of the featuretype
      * @param p the point to add, should be same CRS as crs
-     * @return
-     * @throws Exception
      */
     private SimpleFeatureCollection createDatastore(CoordinateReferenceSystem crs, Point p)
             throws Exception {

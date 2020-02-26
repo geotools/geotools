@@ -1115,7 +1115,6 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
      * <p>As we care about supporting more stuff please add on to the end of this list...
      *
      * @return SimpleFeatureCollection For use in testing.
-     * @throws Exception
      */
     private SimpleFeatureCollection createFeatureCollection() throws Exception {
         SimpleFeatureType featureType = createExampleSchema();
@@ -1551,11 +1550,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         store.dispose();
     }
 
-    /**
-     * Checks if feature reading optimizations still allow to execute the queries or not
-     *
-     * @throws Exception
-     */
+    /** Checks if feature reading optimizations still allow to execute the queries or not */
     @Test
     public void testGetReaderOptimizations() throws Exception {
         URL url = TestData.url(STATE_POP);
@@ -1766,8 +1761,6 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
      * Issueing a request, whether its a query, update or delete, with a fid filter where feature
      * ids match the {@code <typeName>.<number>} structure but the {@code <typeName>} part does not
      * match the actual typeName, shoud ensure the invalid fids are ignored
-     *
-     * @throws Exception
      */
     @Test
     public void testWipesOutInvalidFidsFromFilters() throws Exception {
@@ -1972,9 +1965,6 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
     /**
      * This is useful to dump a UTF16 character to an UT16 escape sequence, basically the only way
      * to represent the chars we don't have on the keyboard (such as chinese ones :))
-     *
-     * @param c
-     * @return
      */
     public static String charToHex(char c) {
         // Returns hex String representation of char c

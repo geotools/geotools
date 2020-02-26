@@ -79,8 +79,6 @@ public class FIDReaderTest {
      * org.geotools.arcsde.data.FIDReader#getFidReader(org.geotools.arcsde.session.ISession,
      * com.esri.sde.sdk.client.SeTable, com.esri.sde.sdk.client.SeLayer,
      * com.esri.sde.sdk.client.SeRegistration)} .
-     *
-     * @throws IOException
      */
     @Test
     public void testGetFidReader() throws IOException {

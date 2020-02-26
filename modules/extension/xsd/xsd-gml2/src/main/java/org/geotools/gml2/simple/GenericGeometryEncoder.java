@@ -42,10 +42,7 @@ public class GenericGeometryEncoder extends GeometryEncoder<Geometry> {
         this.encoder = encoder;
     }
 
-    /**
-     * @param encoder
-     * @param gmlPrefix
-     */
+    /** */
     public GenericGeometryEncoder(Encoder encoder, String gmlPrefix) {
         super(encoder);
         this.encoder = encoder;

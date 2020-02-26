@@ -145,9 +145,6 @@ public class GeometryColumnEncoder {
     /**
      * Computes the number of digits preserved by TWKB based on the magnitude of the simplification
      * distance
-     *
-     * @param distance
-     * @return
      */
     private int getTWKBDigits(Double distance) {
         int result = -(int) Math.floor(Math.log10(distance));

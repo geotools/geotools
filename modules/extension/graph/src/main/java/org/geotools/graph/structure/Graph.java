@@ -119,18 +119,10 @@ public interface Graph {
      */
     public List<? extends Graphable> queryEdges(GraphVisitor visitor);
 
-    /**
-     * Applies the visitor pattern to the nodes of the graph.
-     *
-     * @param visitor
-     */
+    /** Applies the visitor pattern to the nodes of the graph. */
     public void visitNodes(GraphVisitor visitor);
 
-    /**
-     * Applies the visitor pattern to the edges of the graph.
-     *
-     * @param visitor
-     */
+    /** Applies the visitor pattern to the edges of the graph. */
     public void visitEdges(GraphVisitor visitor);
 
     /**

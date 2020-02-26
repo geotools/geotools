@@ -274,7 +274,6 @@ public class DataUtilities {
     /**
      * Retrieve the attributeNames defined by the featureType
      *
-     * @param featureType
      * @return array of simple attribute names
      */
     public static String[] attributeNames(SimpleFeatureType featureType) {
@@ -593,11 +592,7 @@ public class DataUtilities {
      *
      * <p>
      *
-     * @param featureType
-     * @param feature
      * @param duplicate True to perform {@link #duplicate(Object)} on each attribute
-     * @return
-     * @throws IllegalAttributeException
      */
     public static SimpleFeature reType(
             SimpleFeatureType featureType, SimpleFeature feature, boolean duplicate)
@@ -772,8 +767,6 @@ public class DataUtilities {
      * <p>The {@link #defaultValues(SimpleFeatureType)} method is used to generate the intial values
      * (making use of {@link AttributeDescriptor#getDefaultValue()} as required.
      *
-     * @param featureType
-     * @param featureID
      * @return Craeted feature
      */
     public static SimpleFeature template(SimpleFeatureType featureType, String featureID) {
@@ -783,7 +776,6 @@ public class DataUtilities {
     /**
      * Produce a set of default values for the provided FeatureType
      *
-     * @param featureType
      * @return Array of values, that are good starting point for data entry
      */
     public static Object[] defaultValues(SimpleFeatureType featureType) {
@@ -794,8 +786,6 @@ public class DataUtilities {
      * Create a new feature from the provided values, using appropriate default values for any nulls
      * provided.
      *
-     * @param featureType
-     * @param providedValues
      * @return newly created feature
      * @throws ArrayIndexOutOfBoundsException If the number of provided values does not match the
      *     featureType
@@ -809,8 +799,6 @@ public class DataUtilities {
      * Create a new feature from the provided values, using appropriate default values for any nulls
      * provided.
      *
-     * @param featureType
-     * @param featureID
      * @param providedValues provided attributes
      * @return newly created feature
      * @throws ArrayIndexOutOfBoundsException If the number of provided values does not match the
@@ -825,8 +813,6 @@ public class DataUtilities {
     /**
      * Create default values matching the provided feature type.
      *
-     * @param featureType
-     * @param values
      * @return set of default values
      * @throws ArrayIndexOutOfBoundsException If the number of provided values does not match the
      *     featureType
@@ -870,9 +856,6 @@ public class DataUtilities {
      *   <li>JTS Geometries
      *   <li>Arrays - will return an empty array of the appropriate type
      * </ul>
-     *
-     * @param type
-     * @return
      */
     public static Object defaultValue(Class type) {
         if (type == String.class || type == Object.class) {
@@ -1007,8 +990,6 @@ public class DataUtilities {
      *
      * @param featureArray Array of features
      * @return FeatureSource
-     * @throws IOException
-     * @throws RuntimeException
      */
     public static SimpleFeatureSource source(final SimpleFeature[] featureArray) {
         final SimpleFeatureType featureType;
@@ -1225,7 +1206,6 @@ public class DataUtilities {
     /**
      * Obtain the first feature from the collection as an exemplar.
      *
-     * @param featureCollection
      * @return first feature from the featureCollection
      */
     public static <F extends Feature> F first(FeatureCollection<?, F> featureCollection) {
@@ -1346,7 +1326,6 @@ public class DataUtilities {
      * @param featureType FeatureType being converted
      * @return SimpleFeatureType created by stripping any complicated content from the provided
      *     featureType
-     * @throws DataSourceException
      */
     public static SimpleFeatureType simple(final FeatureType featureType)
             throws DataSourceException {
@@ -1454,7 +1433,6 @@ public class DataUtilities {
     /**
      * Copies the provided features into a List.
      *
-     * @param featureCollection
      * @return List of features copied into memory
      */
     public static <F extends Feature> List<F> list(FeatureCollection<?, F> featureCollection) {
@@ -1473,7 +1451,6 @@ public class DataUtilities {
     /**
      * Copies the provided fetaures into a List.
      *
-     * @param featureCollection
      * @param maxFeatures Maximum number of features to load
      * @return List of features copied into memory
      */
@@ -1495,7 +1472,6 @@ public class DataUtilities {
      * Iteator wrapped around the provided FeatureIterator, implementing {@link Closeable}.
      *
      * @see #close(Iterator)
-     * @param featureIterator
      * @return Iterator wrapped around provided FeatureIterator, implements Closeable
      */
     public static <F extends Feature> Iterator<F> iterator(FeatureIterator<F> featureIterator) {
@@ -1506,9 +1482,6 @@ public class DataUtilities {
      * Copies the feature ids from each and every feature into a set.
      *
      * <p>This method can be slurp an in memory record of the contents of a
-     *
-     * @param featureCollection
-     * @return
      */
     public static Set<String> fidSet(FeatureCollection<?, ?> featureCollection) {
         final HashSet<String> fids = new HashSet<String>();
@@ -1530,7 +1503,6 @@ public class DataUtilities {
     /**
      * Used to quickly cast to a java.util.Collection.
      *
-     * @param featureCollection
      * @return Collection
      */
     @SuppressWarnings("unchecked")
@@ -1689,7 +1661,6 @@ public class DataUtilities {
      * @param properties If null, every property of the featureType in input will be used
      * @param override Intended CoordinateReferenceSystem, if null original will be used
      * @return derived FeatureType
-     * @throws SchemaException
      */
     public static SimpleFeatureType createSubType(
             SimpleFeatureType featureType, String[] properties, CoordinateReferenceSystem override)
@@ -1715,7 +1686,6 @@ public class DataUtilities {
      * @param typeName Type name override
      * @param namespace Namespace override
      * @return derived FeatureType
-     * @throws SchemaException
      */
     public static SimpleFeatureType createSubType(
             SimpleFeatureType featureType,
@@ -1795,10 +1765,7 @@ public class DataUtilities {
     /**
      * Create a type limited to the named properties provided.
      *
-     * @param featureType
-     * @param properties
      * @return type limited to the named properties provided
-     * @throws SchemaException
      */
     public static SimpleFeatureType createSubType(
             SimpleFeatureType featureType, String[] properties) throws SchemaException {
@@ -1891,7 +1858,6 @@ public class DataUtilities {
      *
      * @param typeName identification of FeatureType: (<i>namesapce</i>).<i>typeName</i>
      * @param typeSpec Specification of FeatureType attributes "name:Type,name2:Type2,..."
-     * @throws SchemaException
      */
     public static SimpleFeatureType createType(String typeName, String typeSpec)
             throws SchemaException {
@@ -1910,7 +1876,6 @@ public class DataUtilities {
      * @param namespace Typename namespace used to qualify the provided name
      * @param name Typename name, as qualified by namespace
      * @param typeSpec Definition of attributes, for details see {@link #createType(String, String)}
-     * @throws SchemaException
      */
     public static SimpleFeatureType createType(String namespace, String name, String typeSpec)
             throws SchemaException {
@@ -1954,7 +1919,6 @@ public class DataUtilities {
      *
      * <p>For more information please review the PropertyDataStore tutorials.
      *
-     * @param featureType
      * @return String representation of featureType suitable for use with {@link #createType}
      */
     public static String encodeType(SimpleFeatureType featureType) {
@@ -1983,7 +1947,6 @@ public class DataUtilities {
      * <p>
      *
      * @see CRS#lookupEpsgCode(CoordinateReferenceSystem, boolean) for full search
-     * @param crs
      * @return srid or -1 if not found
      */
     private static int toSRID(CoordinateReferenceSystem crs) {
@@ -2028,8 +1991,6 @@ public class DataUtilities {
      *   <li>Multi-line support using escaped line-feed characters
      *       <ul>
      *
-     * @param featureType
-     * @param line
      * @return SimpleFeature defined by the provided line of text
      */
     public static SimpleFeature createFeature(SimpleFeatureType featureType, String line) {
@@ -2124,10 +2085,6 @@ public class DataUtilities {
      *   <li>Handling: <code>"<null>"</code> as an explicit marker flag for a null value
      *   <li>Using {@link #decodeEscapedCharacters(String)} to unpack the raw text
      *   <li>Using {@link Converters} to convert the text to the requested value
-     *
-     * @param descriptor
-     * @param rawText
-     * @return
      */
     private static Object createValue(AttributeDescriptor descriptor, String rawText) {
         String stringValue = null;
@@ -2229,7 +2186,6 @@ public class DataUtilities {
      * @param fid Feature ID for new feature
      * @param text Text representation of values
      * @return newly created feature
-     * @throws IllegalAttributeException
      */
     public static SimpleFeature parse(SimpleFeatureType type, String fid, String[] text)
             throws IllegalAttributeException {
@@ -2267,7 +2223,6 @@ public class DataUtilities {
     /**
      * Used to encode common whitespace characters and | character for safe transport.
      *
-     * @param txt
      * @return txt encoded for storage
      * @see PropertyAttributeReader#decodeString(String)
      */
@@ -2316,7 +2271,6 @@ public class DataUtilities {
      *   <li>{@link SortBy#NATURAL_ORDER}: As sorting by FeatureID
      * </ul>
      *
-     * @param sortBy
      * @return Comparator suitable for use with Arrays.sort( SimpleFeature[], comparator )
      */
     public static Comparator<SimpleFeature> sortComparator(SortBy sortBy) {
@@ -2562,7 +2516,6 @@ public class DataUtilities {
      * @param type feature type
      * @param oldProps given list of properties
      * @return list of properties including all mandatory properties
-     * @throws IOException
      */
     public static List<PropertyName> addMandatoryProperties(
             SimpleFeatureType type, List<PropertyName> oldProps) {
@@ -2592,7 +2545,6 @@ public class DataUtilities {
      * <p>Will parse a String of the form: <i>"name:Type:hint" as described in {@link
      * #createType}</i>
      *
-     * @param typeSpec
      * @see #createType
      * @throws SchemaException If typeSpect could not be interpreted
      */
@@ -2684,7 +2636,6 @@ public class DataUtilities {
      * is intended for FeatureCollection implementors and test case verification. Client code should
      * always call {@link FeatureCollection#size()}
      *
-     * @param collection
      * @return number of featuers in feature collection
      */
     public static int count(FeatureIterator<?> iterator) {
@@ -2710,7 +2661,6 @@ public class DataUtilities {
      * <p>This implementation is intended for FeatureCollection implementors and test case
      * verification. Client code should always call {@link FeatureCollection#size()}
      *
-     * @param collection
      * @return number of featuers in feature collection
      */
     public static int count(
@@ -2734,9 +2684,6 @@ public class DataUtilities {
      * Manually calculate the bounds from the provided FeatureIteator. This implementation is
      * intended for FeatureCollection implementors and test case verification. Client code should
      * always call {@link FeatureCollection#getBounds()}.
-     *
-     * @param iterator
-     * @return
      */
     public static ReferencedEnvelope bounds(FeatureIterator<?> iterator) {
         if (iterator == null) {
@@ -2771,7 +2718,6 @@ public class DataUtilities {
      * <p>This implementation is intended for FeatureCollection implementors and test case
      * verification. Client code should always call {@link FeatureCollection#getBounds()}.
      *
-     * @param collection
      * @return bounds of features in feature collection
      */
     public static ReferencedEnvelope bounds(
@@ -2933,7 +2879,6 @@ public class DataUtilities {
      *
      * </code></pre>
      *
-     * @param params
      * @param arrayParameters Array of parameters returned by DataAccessFactory.getParametersInfo()
      * @return true if params is in agreement with getParametersInfo, override for additional
      *     checks.

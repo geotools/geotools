@@ -18,7 +18,6 @@ package org.geotools.jdbc;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -663,11 +662,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         }
     }
 
-    /**
-     * Test two transactions one removing feature, and one adding a feature.
-     *
-     * @throws IllegalAttributeException
-     */
+    /** Test two transactions one removing feature, and one adding a feature. */
     public void testTransactionIsolation() throws Exception {
         try (Transaction t1 = new DefaultTransaction();
                 Transaction t2 = new DefaultTransaction()) {
@@ -850,9 +845,6 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
      * second transaction does not lock up waiting to obtain the lock.
      *
      * @author chorner
-     * @throws IOException
-     * @throws IllegalAttributeException
-     * @throws SQLException
      */
     public void testGetFeatureWriterConcurrency() throws Exception {
         // if we don't have postgres >= 8.1, don't bother testing (it WILL block)
@@ -1026,8 +1018,6 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     /**
      * Test with a filter that won't be matched after the modification is done, was throwing an NPE
      * before the fix
-     *
-     * @throws IOException
      */
     public void testGetFeatureStoreModifyFeatures3() throws IOException {
         SimpleFeatureStore road = (SimpleFeatureStore) dataStore.getFeatureSource(tname("road"));

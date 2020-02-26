@@ -349,8 +349,6 @@ public abstract class Configuration {
      * Adds a dependent configuration.
      *
      * <p>This method should only be called from the constructor.
-     *
-     * @param dependency
      */
     protected void addDependency(Configuration dependency) {
         if (dependencies.contains(dependency)) {

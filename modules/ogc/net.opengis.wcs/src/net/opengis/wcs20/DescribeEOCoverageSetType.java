@@ -89,7 +89,6 @@ public interface DescribeEOCoverageSetType extends RequestBaseType {
     
     /**
      * @model
-     * @return
      */
     int getCount();
 

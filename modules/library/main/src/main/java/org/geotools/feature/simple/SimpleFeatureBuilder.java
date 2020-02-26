@@ -159,11 +159,7 @@ public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
         featureUserData = null;
     }
 
-    /**
-     * Returns the simple feature type used by this builder as a feature template
-     *
-     * @return
-     */
+    /** Returns the simple feature type used by this builder as a feature template */
     public SimpleFeatureType getFeatureType() {
         return featureType;
     }
@@ -327,13 +323,7 @@ public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
         return sf;
     }
 
-    /**
-     * Quickly builds the feature using the specified values and id
-     *
-     * @param id
-     * @param values
-     * @return
-     */
+    /** Quickly builds the feature using the specified values and id */
     public SimpleFeature buildFeature(String id, Object[] values) {
         addAll(values);
         return buildFeature(id);
@@ -419,13 +409,7 @@ public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
         return builder.buildFeature(original.getID());
     }
 
-    /**
-     * Builds a new feature whose attribute values are the default ones
-     *
-     * @param featureType
-     * @param featureId
-     * @return
-     */
+    /** Builds a new feature whose attribute values are the default ones */
     public static SimpleFeature template(SimpleFeatureType featureType, String featureId) {
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder(featureType);
         for (AttributeDescriptor ad : featureType.getAttributeDescriptors()) {
@@ -526,10 +510,6 @@ public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
     /**
      * Sets a feature wide use data key/value pair. The user data map is reset when the feature is
      * built
-     *
-     * @param key
-     * @param value
-     * @return
      */
     public SimpleFeatureBuilder featureUserData(Object key, Object value) {
         if (featureUserData == null) {

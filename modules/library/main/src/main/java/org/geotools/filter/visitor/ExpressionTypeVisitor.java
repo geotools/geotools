@@ -164,10 +164,6 @@ public class ExpressionTypeVisitor implements ExpressionVisitor {
     /**
      * Traverses the super-classes trying to find a common superclass. Won't consider interfaces
      * (good enough for the moment, all basic types we handle have a common superclass)
-     *
-     * @param c1
-     * @param c2
-     * @return
      */
     Class<?> getCommonSuperclass(Class<?> c1, Class<?> c2) {
         Class<?> curr = c1;

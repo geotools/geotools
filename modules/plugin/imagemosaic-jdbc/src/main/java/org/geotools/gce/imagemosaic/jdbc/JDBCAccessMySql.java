@@ -52,11 +52,7 @@ class JDBCAccessMySql extends JDBCAccessBase {
         initStatementStrings(config);
     }
 
-    /**
-     * Initialze needed sql statement strings
-     *
-     * @param config
-     */
+    /** Initialze needed sql statement strings */
     private void initStatementStrings(Config config) {
         String geomAttr = config.getGeomAttributeNameInSpatialTable();
         extentSelect = "select asbinary(envelope(" + geomAttr + ")) from {0}";

@@ -33,12 +33,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  */
 public class TriangulatedSurfaceImpl extends PolyhedralSurfaceImpl implements TriangulatedSurface {
 
-    /**
-     * Constructor
-     *
-     * @param crs
-     * @param triangles
-     */
+    /** Constructor */
     public TriangulatedSurfaceImpl(CoordinateReferenceSystem crs, List<Polygon> triangles) {
         super(crs, triangles);
     }
@@ -55,12 +50,7 @@ public class TriangulatedSurfaceImpl extends PolyhedralSurfaceImpl implements Tr
         super(boundary);
     }
 
-    /**
-     * Sets the Triangles for the Triangulated Surface
-     *
-     * @param triangles
-     * @param surfaceBoundary
-     */
+    /** Sets the Triangles for the Triangulated Surface */
     public void setTriangles(ArrayList<TriangleImpl> triangles) {
         super.setPatches(triangles);
         // JR eingefügt und aus den TIN Konstruktoren entfernt

@@ -80,11 +80,7 @@ public abstract class ComplexImpl extends GeometryImpl implements Complex {
         this.superComplex = null;
     }
 
-    /**
-     * Constructs a Complex Elements have to be added after
-     *
-     * @param crs
-     */
+    /** Constructs a Complex Elements have to be added after */
     public ComplexImpl(CoordinateReferenceSystem crs) {
         super(crs);
         this.elements = null;
@@ -92,11 +88,7 @@ public abstract class ComplexImpl extends GeometryImpl implements Complex {
         this.superComplex = null;
     }
 
-    /**
-     * Sets the elements contained by this Complex
-     *
-     * @param element
-     */
+    /** Sets the elements contained by this Complex */
     public void setElements(List<? extends Primitive> element) {
         this.elements = element;
     }
@@ -113,10 +105,7 @@ public abstract class ComplexImpl extends GeometryImpl implements Complex {
         return this.elements;
     }
 
-    /**
-     * @param primitive
-     * @return
-     */
+    /** */
     boolean hasElement(PrimitiveImpl primitive) {
         return this.elements.contains(primitive);
     }
@@ -136,20 +125,12 @@ public abstract class ComplexImpl extends GeometryImpl implements Complex {
         return ((superComplex == null) || superComplex.isEmpty());
     }
 
-    /**
-     * Adds an associated Sub Complex
-     *
-     * @param subComplex1
-     */
+    /** Adds an associated Sub Complex */
     protected void addSubComplex(Complex subComplex1) {
         this.subComplex.add(subComplex1);
     }
 
-    /**
-     * Adds an associated Super Complex
-     *
-     * @param superComplex1
-     */
+    /** Adds an associated Super Complex */
     protected void addSuperComplex(ComplexImpl superComplex1) {
         this.superComplex.add(superComplex1);
     }

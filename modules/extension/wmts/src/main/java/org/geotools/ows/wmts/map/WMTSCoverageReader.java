@@ -106,12 +106,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
 
     public final boolean debug = System.getProperty("wmts.debug") != null;
 
-    /**
-     * Builds a new WMS coverage reader
-     *
-     * @param server
-     * @param layer
-     */
+    /** Builds a new WMS coverage reader */
     public WMTSCoverageReader(WebMapTileServer server, Layer layer) {
         this.wmts = server;
 
@@ -390,12 +385,6 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
     /**
      * Sets up a map request with the provided parameters, making sure it is compatible with the
      * layers own native SRS list
-     *
-     * @param bbox
-     * @param width
-     * @param height
-     * @return
-     * @throws IOException
      */
     ReferencedEnvelope initTileRequest(ReferencedEnvelope bbox, int width, int height, String time)
             throws IOException {
@@ -469,11 +458,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
         return null;
     }
 
-    /**
-     * Returns the layer bounds
-     *
-     * @return
-     */
+    /** Returns the layer bounds */
     public void updateBounds() {
         if (LOGGER.isLoggable(Level.FINER)) LOGGER.entering("WMTSCoverage", "updatingBounds");
         GeneralEnvelope envelope = layer.getEnvelope(requestCRS);
@@ -484,12 +469,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
         this.originalEnvelope = new GeneralEnvelope(result);
     }
 
-    /**
-     * Converts a {@link Envelope} into a {@link ReferencedEnvelope}
-     *
-     * @param envelope
-     * @return
-     */
+    /** Converts a {@link Envelope} into a {@link ReferencedEnvelope} */
     ReferencedEnvelope reference(Envelope envelope) {
         ReferencedEnvelope env = new ReferencedEnvelope(envelope.getCoordinateReferenceSystem());
         env.expandToInclude(envelope.getMinimum(0), envelope.getMinimum(1));

@@ -48,10 +48,7 @@ public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
         super(name);
     }
 
-    /**
-     * @param testParam
-     * @throws Exception
-     */
+    /** */
     public void runMe(final File testFile) throws Exception {
 
         // create a temporary output file
@@ -141,12 +138,7 @@ public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
             }
     }
 
-    /**
-     * A Simple Test Method which read an arcGrid and write it as a GRASS Ascii Grid
-     *
-     * @param wf
-     * @param rf
-     */
+    /** A Simple Test Method which read an arcGrid and write it as a GRASS Ascii Grid */
     public void writeGrassUnCompressed(File rf, File wf) throws Exception {
 
         final Hints hints =
@@ -191,12 +183,7 @@ public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
         }
     }
 
-    /**
-     * A Simple Test Method which read an arcGrid and write it as an ArcGrid
-     *
-     * @param rf
-     * @param wf
-     */
+    /** A Simple Test Method which read an arcGrid and write it as an ArcGrid */
     public void writeEsriUnCompressed(File rf, File wf) throws Exception {
 
         final Hints hints =

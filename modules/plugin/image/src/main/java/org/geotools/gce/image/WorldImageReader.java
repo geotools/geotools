@@ -106,7 +106,6 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader
      * a Java URL it checks if it is ponting to a file and if so it converts the url into a file.
      *
      * @param input The source of a GridCoverage, can be a File, a URL or an input stream.
-     * @throws DataSourceException
      */
     public WorldImageReader(Object input) throws DataSourceException {
         this(input, null);
@@ -118,7 +117,6 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader
      * a Java URL it checks if it is ponting to a file and if so it converts the url into a file.
      *
      * @param input The source of a GridCoverage, can be a File, a URL or an input stream.
-     * @throws DataSourceException
      */
     public WorldImageReader(Object input, final Hints hints) throws DataSourceException {
         // /////////////////////////////////////////////////////////////////////
@@ -263,12 +261,7 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader
         }
     }
 
-    /**
-     * Gets the relevant information for the underlying raster.
-     *
-     * @throws IOException
-     * @throws TransformException
-     */
+    /** Gets the relevant information for the underlying raster. */
     private void getHRInfo() throws IOException, TransformException {
 
         // //
@@ -479,7 +472,6 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader
      * This method is used to check if we are connecting directly to a WMS with a getmap request. In
      * such a case we skip reading all the parameters we can read from this http string.
      *
-     * @param input
      * @return true if we are dealing with a WMS request, false otherwise.
      */
     private boolean WMSRequest(Object input) {
@@ -560,8 +552,6 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader
      * This method is responsible for reading the CRS whhther a projection file is provided. If no
      * projection file is provided the second choice is the CRS supplied via the crs paramter. If
      * even this one is not avalaible we default to EPSG:4326.
-     *
-     * @throws IOException
      */
     private void readCRS() throws IOException {
 
@@ -621,8 +611,6 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader
      * (whether possible);
      *
      * <p>TODO it would be great to having a centralized management for the world file
-     *
-     * @throws IOException
      */
     private void prepareWorldImageGridToWorldTransform() throws IOException {
 
@@ -678,9 +666,6 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader
      * This method is responsible for parsing a META file which is nothing more than another format
      * of a WorldFile used by the GIDB database.
      *
-     * @param file2Parse
-     * @throws NumberFormatException
-     * @throws IOException
      * @task move me to a separate implementation
      */
     private void parseMetaFile(File file2Parse) throws NumberFormatException, IOException {

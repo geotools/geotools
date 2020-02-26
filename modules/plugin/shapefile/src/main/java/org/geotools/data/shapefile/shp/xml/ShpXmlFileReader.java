@@ -41,8 +41,6 @@ public class ShpXmlFileReader implements FileReader {
      * Parse metadataFile (currently for bounding box information).
      *
      * <p>
-     *
-     * @param shapefileFiles
      */
     public ShpXmlFileReader(ShpFiles shapefileFiles) {
         this.shapefileFiles = shapefileFiles;

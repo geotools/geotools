@@ -69,8 +69,6 @@ public class TestData {
      *       </ul>
      *   <li>location
      * </ul>
-     *
-     * @return
      */
     public static FeatureType createComplexWaterQualityType() {
         FeatureTypeFactory tfac = new UniqueNameFeatureTypeFactoryImpl();
@@ -143,10 +141,6 @@ public class TestData {
      *
      * <pre>
      * </pre>
-     *
-     * @param targetFeature
-     * @return
-     * @throws Exception
      */
     public static List /* <AttributeMapping> */ createMappingsColumnsAndValues(
             AttributeDescriptor targetFeature) throws Exception {
@@ -244,10 +238,6 @@ public class TestData {
      *        results_value		--&gt;measurement/result
      *        location		--&gt;location
      * </pre>
-     *
-     * @param simpleStore
-     * @return
-     * @throws Exception
      */
     public static FeatureTypeMapping createMappingsGroupByStation(MemoryDataStore simpleStore)
             throws Exception {
@@ -403,9 +393,6 @@ public class TestData {
      * <td> POINT(10, 10) </td>
      * </tr>
      * </table>
-     *
-     * @return
-     * @throws Exception
      */
     public static MemoryDataStore createDenormalizedWaterQualityResults() throws Exception {
         MemoryDataStore dataStore = new MemoryDataStore();

@@ -239,9 +239,6 @@ public class ReprojectingFeatureCollection extends DecoratingSimpleFeatureCollec
     /**
      * Returns true if the visitor is geometryless, that is, it's not accessing a geometry field in
      * the target schema
-     *
-     * @param visitor
-     * @return
      */
     public static boolean isGeometryless(FeatureVisitor visitor, SimpleFeatureType schema) {
         if (visitor instanceof FeatureAttributeVisitor) {

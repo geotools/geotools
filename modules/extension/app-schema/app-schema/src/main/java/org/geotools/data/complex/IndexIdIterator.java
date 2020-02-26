@@ -65,12 +65,7 @@ public interface IndexIdIterator extends Iterator<String>, Closeable {
             indexIterator.close();
         }
 
-        /**
-         * Simplifies id value, cutting "typename." part if exists
-         *
-         * @param feature
-         * @return
-         */
+        /** Simplifies id value, cutting "typename." part if exists */
         protected String simplifyIndentifier(Feature feature) {
             String schemaPart = feature.getType().getName().getLocalPart() + ".";
             String fid = feature.getIdentifier().getID();

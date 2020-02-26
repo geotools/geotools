@@ -164,10 +164,7 @@ public class TimeSequenceTypeBinding extends AbstractComplexBinding {
         return null;
     }
 
-    /**
-     * @param date
-     * @return
-     */
+    /** */
     private static Date cvtToGmt(Date date) {
         TimeZone tz = TimeZone.getDefault();
         Date ret = new Date(date.getTime() - tz.getRawOffset());

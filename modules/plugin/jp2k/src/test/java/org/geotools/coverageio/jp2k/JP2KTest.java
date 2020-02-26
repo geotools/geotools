@@ -51,11 +51,7 @@ public final class JP2KTest extends BaseJP2K {
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(JP2KTest.class);
 
-    /**
-     * Creates a new instance of JP2KTest
-     *
-     * @param name
-     */
+    /** Creates a new instance of JP2KTest */
     public JP2KTest() {}
 
     @Test

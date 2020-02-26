@@ -474,7 +474,6 @@ public class JTextReporter {
      *
      * @param title dialog title (may be {@code null} or empty
      * @param initialText text to display initially (may be {@code null} or empty
-     * @param flags
      * @return a {@linkplain Connection} via which the text displayed by the dialog can be updated
      */
     public static Connection showDialog(String title, String initialText, int flags) {

@@ -31,7 +31,6 @@ public class YamlSeq extends YamlObject<List<Object>> implements Iterable<YamlOb
     /**
      * Quick inline sequence creation.
      *
-     * @param values
      * @return sequence of provided values.
      */
     public static YamlSeq from(Object... values) {
@@ -41,7 +40,6 @@ public class YamlSeq extends YamlObject<List<Object>> implements Iterable<YamlOb
     /**
      * Internal cast to List used by constructor.
      *
-     * @param obj
      * @return List
      * @throws IllegalArgumentException List required
      */

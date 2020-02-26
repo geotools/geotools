@@ -62,8 +62,6 @@ public interface Rule {
      * <p>A nice user interface may want to present the user with a legend that indicates how
      * features of a given type are being portrayed. Through its {@code LegendGraphic} property, a
      * {@code Rule} may provide a custom picture to be used in such a legend window.
-     *
-     * @return
      */
     @XmlElement("LegendGraphic")
     GraphicLegend getLegend();

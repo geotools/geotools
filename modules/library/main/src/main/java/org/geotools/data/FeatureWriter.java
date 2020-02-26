@@ -101,8 +101,6 @@ public interface FeatureWriter<T extends FeatureType, F extends Feature> extends
      *
      * <p>If you have not called write() when you call hasNext() or next(), no modification will
      * occur().
-     *
-     * @throws IOException
      */
     void write() throws IOException;
 

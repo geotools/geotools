@@ -79,7 +79,6 @@ public class GatherCoverageMetadataCommand extends Command<RasterDatasetInfo> {
 
     /**
      * @throws IOException if an exception occurs accessing the raster metadata
-     * @throws SeException
      * @throws IllegalArgumentException if the raster has no CRS, contains no raster attributes, has
      *     no pyramids, no bands or no statistics
      */
@@ -273,12 +272,7 @@ public class GatherCoverageMetadataCommand extends Command<RasterDatasetInfo> {
         return rasterAttList;
     }
 
-    /**
-     * @param band
-     * @param scon
-     * @return
-     * @throws ArcSdeException
-     */
+    /** */
     private Map<Long, IndexColorModel> loadColorMaps(
             final long rasterColumnId, final int bitsPerSample, SeConnection scon)
             throws IOException {
@@ -482,14 +476,7 @@ public class GatherCoverageMetadataCommand extends Command<RasterDatasetInfo> {
         return detachedBandInfo;
     }
 
-    /**
-     * @param numBands
-     * @param bandInfo
-     * @param band
-     * @param scon
-     * @param bitsPerSample only used if the band is colormapped to create the IndexColorModel
-     * @throws IOException
-     */
+    /** @param bitsPerSample only used if the band is colormapped to create the IndexColorModel */
     private void setBandInfo(
             final int numBands,
             final RasterBandInfo bandInfo,

@@ -71,68 +71,37 @@ public enum TestUtils {
                 scale);
     }
 
-    /**
-     * Matches a Literal expression with a value matching m
-     *
-     * @param m
-     * @return
-     */
+    /** Matches a Literal expression with a value matching m */
     @SuppressWarnings({"unchecked", "rawtypes"})
     public static Matcher<Expression> literal(Matcher m) {
         return (Matcher) allOf(instanceOf(Literal.class), hasProperty("value", m));
     }
 
-    /**
-     * Matches a Literal expression with a value matching o
-     *
-     * @param m
-     * @return
-     */
+    /** Matches a Literal expression with a value matching o */
     public static Matcher<Expression> literal(Object o) {
         return literal(lexEqualTo(o));
     }
 
-    /**
-     * Matches a nil expression or null.
-     *
-     * @return
-     */
+    /** Matches a nil expression or null. */
     @SuppressWarnings({"unchecked", "rawtypes"})
     public static Matcher<Expression> nilExpression() {
         return (Matcher) Matchers.anyOf(nullValue(), instanceOf(NilExpression.class));
     }
 
-    /**
-     * Matches as an attribute expression for a named attribute.
-     *
-     * @param name
-     * @return
-     */
+    /** Matches as an attribute expression for a named attribute. */
     public static Matcher<Expression> attribute(String name) {
         return Matchers.<Expression>allOf(
                 Matchers.<Expression>instanceOf(PropertyName.class),
                 Matchers.<Expression>hasProperty("propertyName", equalTo(name)));
     }
 
-    /**
-     * Matches a function with the given name and parameters matching the given matchers.
-     *
-     * @param name
-     * @param parameters
-     * @return
-     */
+    /** Matches a function with the given name and parameters matching the given matchers. */
     @SafeVarargs
     public static Matcher<Expression> function(String name, Matcher<Expression>... parameters) {
         return function(name, hasItems(parameters));
     }
 
-    /**
-     * Matches a function with the given name and a parameter list matching the given matcher.
-     *
-     * @param name
-     * @param parameters
-     * @return
-     */
+    /** Matches a function with the given name and a parameter list matching the given matcher. */
     @SuppressWarnings({"unchecked", "rawtypes"})
     public static Matcher<Expression> function(
             String name, Matcher<? extends Iterable<Expression>> parameters) {
@@ -143,12 +112,7 @@ public enum TestUtils {
                         hasProperty("parameters", parameters));
     }
 
-    /**
-     * Compares the string representation of the object being matched to that of value.
-     *
-     * @param value
-     * @return
-     */
+    /** Compares the string representation of the object being matched to that of value. */
     public static Matcher<? extends Object> lexEqualTo(final Object value) {
         return new BaseMatcher<Object>() {
 
@@ -170,9 +134,6 @@ public enum TestUtils {
     /**
      * Converts a Number to double, otherwise converts to string and then parses as double then
      * matches to the given value.
-     *
-     * @param value
-     * @return
      */
     public static Matcher<? extends Object> numEqualTo(final double value, final double epsilon) {
         return new BaseMatcher<Object>() {
@@ -199,9 +160,6 @@ public enum TestUtils {
     /**
      * Converts a Number to long, otherwise converts to string and then parses as double then
      * matches to the given value.
-     *
-     * @param value
-     * @return
      */
     public static Matcher<? extends Object> numEqualTo(final long value) {
         return new BaseMatcher<Object>() {
@@ -278,13 +236,7 @@ public enum TestUtils {
         return isColor(c);
     }
 
-    /**
-     * Matches a YamlSeq where the specified entry matching the given matcher
-     *
-     * @param i
-     * @param m
-     * @return
-     */
+    /** Matches a YamlSeq where the specified entry matching the given matcher */
     @SuppressWarnings({"rawtypes", "unchecked"})
     public static Matcher<Object> yHasItem(final int i, final Matcher<? extends Object> m) {
         return new BaseMatcher() {
@@ -317,13 +269,7 @@ public enum TestUtils {
         };
     }
 
-    /**
-     * Matches a YamlMap with an entry as named that has a value which matches the given matcher
-     *
-     * @param key
-     * @param m
-     * @return
-     */
+    /** Matches a YamlMap with an entry as named that has a value which matches the given matcher */
     @SuppressWarnings({"rawtypes", "unchecked"})
     public static Matcher<Object> yHasEntry(final String key, final Matcher<? extends Object> m) {
         return new BaseMatcher() {
@@ -357,12 +303,7 @@ public enum TestUtils {
         };
     }
 
-    /**
-     * Matches a YamlMap with an entry as named that has a value which matches the given matcher
-     *
-     * @param key
-     * @return
-     */
+    /** Matches a YamlMap with an entry as named that has a value which matches the given matcher */
     public static Matcher<Object> yHasEntry(final String key) {
         return yHasEntry(key, Matchers.any(Object.class));
     }
@@ -371,12 +312,7 @@ public enum TestUtils {
 
     private static final Pattern TUPLE_SPLIT = Pattern.compile("\\s*,\\s*");
 
-    /**
-     * Matches a YamlSeq
-     *
-     * @param matchers
-     * @return
-     */
+    /** Matches a YamlSeq */
     @SafeVarargs
     @SuppressWarnings({"rawtypes", "unchecked"})
     public static Matcher<? extends Object> yContains(final Matcher<? extends Object>... matchers) {
@@ -411,23 +347,13 @@ public enum TestUtils {
         };
     }
 
-    /**
-     * Matches a YSLD Tuple with values matching the given matchers.
-     *
-     * @param matchers
-     * @return
-     */
+    /** Matches a YSLD Tuple with values matching the given matchers. */
     @SafeVarargs
     public static Matcher<? extends Object> yTuple(final Matcher<? extends Object>... matchers) {
         return yContains(matchers);
     }
 
-    /**
-     * Matches a YSLD Tuple with n values
-     *
-     * @param n
-     * @return
-     */
+    /** Matches a YSLD Tuple with n values */
     @SuppressWarnings({"unchecked", "rawtypes"})
     public static Matcher<Object> yTuple(int n) {
         Matcher[] matchers = new Matcher[n];
@@ -435,12 +361,7 @@ public enum TestUtils {
         return Matchers.describedAs("A YSLD Tuple with %0 values", (Matcher) yTuple(matchers), n);
     }
 
-    /**
-     * For apparent consistency to the user, some values are wrapped in fake YAML strings.
-     *
-     * @param m
-     * @return
-     */
+    /** For apparent consistency to the user, some values are wrapped in fake YAML strings. */
     @SuppressWarnings({"rawtypes", "unchecked"})
     public static Matcher<? extends Object> fakeString(final Matcher<? extends Object> m) {
         return new BaseMatcher() {
@@ -467,12 +388,7 @@ public enum TestUtils {
         };
     }
 
-    /**
-     * For apparent consistency to the user, some values are wrapped in fake YAML strings.
-     *
-     * @param m
-     * @return
-     */
+    /** For apparent consistency to the user, some values are wrapped in fake YAML strings. */
     public static Matcher<? extends Object> fakeString(final String s) {
         return fakeString(equalTo(s));
     }

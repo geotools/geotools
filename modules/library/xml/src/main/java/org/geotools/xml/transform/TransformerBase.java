@@ -740,12 +740,7 @@ public abstract class TransformerBase {
             element(element, content, NULL_ATTS);
         }
 
-        /**
-         * Will only issue the provided element if content is non empty
-         *
-         * @param element
-         * @param content
-         */
+        /** Will only issue the provided element if content is non empty */
         protected void elementSafe(String element, String content) {
             if (content != null && content.length() != 0) {
                 element(element, content, NULL_ATTS);

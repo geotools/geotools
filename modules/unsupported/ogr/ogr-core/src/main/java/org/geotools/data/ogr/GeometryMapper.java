@@ -60,8 +60,6 @@ abstract class GeometryMapper {
         /**
          * Reads the current feature's geometry using wkb encoding. A wkbReader should be provided
          * since it's not thread safe by design.
-         *
-         * @throws IOException
          */
         Geometry parseOgrGeometry(Object geom) throws IOException {
             int wkbSize = ogr.GeometryGetWkbSize(geom);
@@ -101,8 +99,6 @@ abstract class GeometryMapper {
         /**
          * Reads the current feature's geometry using wkb encoding. A wkbReader should be provided
          * since it's not thread safe by design.
-         *
-         * @throws IOException
          */
         Geometry parseOgrGeometry(Object geom) throws IOException {
             int[] ret = new int[1];

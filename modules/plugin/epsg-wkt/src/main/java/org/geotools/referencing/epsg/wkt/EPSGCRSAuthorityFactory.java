@@ -114,8 +114,6 @@ public class EPSGCRSAuthorityFactory extends AbstractFactory implements CRSAutho
     /**
      * Loads from epsg.properties if the file exists, defaults to internal defintions exported from
      * postgis and cubeworks.
-     *
-     * @throws IOException
      */
     protected void loadDefault() throws IOException {
         // Check the application directory first

@@ -78,12 +78,7 @@ public class ShapefileDumper {
 
         SimpleFeatureType schema;
 
-        /**
-         * @param schema
-         * @throws MalformedURLException
-         * @throws FileNotFoundException
-         * @throws IOException
-         */
+        /** */
         public StoreWriter(SimpleFeatureType schema)
                 throws MalformedURLException, FileNotFoundException, IOException {
             // create the datastore for the current geom type
@@ -130,11 +125,7 @@ public class ShapefileDumper {
         this.targetDirectory = targetDirectory;
     }
 
-    /**
-     * Maximum size of the shapefiles being generated
-     *
-     * @return
-     */
+    /** Maximum size of the shapefiles being generated */
     public long getMaxShpSize() {
         return maxShpSize;
     }
@@ -148,11 +139,7 @@ public class ShapefileDumper {
         this.maxShpSize = maxShapeSize;
     }
 
-    /**
-     * Maximums size of the DBF files being generated
-     *
-     * @return
-     */
+    /** Maximums size of the DBF files being generated */
     public long getMaxDbfSize() {
         return maxDbfSize;
     }
@@ -166,38 +153,22 @@ public class ShapefileDumper {
         this.maxDbfSize = maxDbfSize;
     }
 
-    /**
-     * The charset used in the DBF files. It's ISO-8859-1 by default (per DBF spec)
-     *
-     * @return
-     */
+    /** The charset used in the DBF files. It's ISO-8859-1 by default (per DBF spec) */
     public Charset getCharset() {
         return charset;
     }
 
-    /**
-     * Sets the charset used to dump the DBF files.
-     *
-     * @param charset
-     */
+    /** Sets the charset used to dump the DBF files. */
     public void setCharset(Charset charset) {
         this.charset = charset;
     }
 
-    /**
-     * Returns true if empty shpaefile dumping is allowed (true by default)
-     *
-     * @return
-     */
+    /** Returns true if empty shpaefile dumping is allowed (true by default) */
     public boolean isEmptyShapefileAllowed() {
         return emptyShapefileAllowed;
     }
 
-    /**
-     * Settings this flag to false will avoid empty shapefiles to be created
-     *
-     * @param emptyShapefileAllowed
-     */
+    /** Settings this flag to false will avoid empty shapefiles to be created */
     public void setEmptyShapefileAllowed(boolean emptyShapefileAllowed) {
         this.emptyShapefileAllowed = emptyShapefileAllowed;
     }
@@ -209,7 +180,6 @@ public class ShapefileDumper {
      *
      * @param fc The input feature collection
      * @return True if at least one feature got written, false otherwise
-     * @throws IOException
      */
     public boolean dump(SimpleFeatureCollection fc) throws IOException {
         return dump(null, fc);
@@ -222,7 +192,6 @@ public class ShapefileDumper {
      *
      * @param fc The input feature collection
      * @return True if at least one feature got written, false otherwise
-     * @throws IOException
      */
     public boolean dump(String fileName, SimpleFeatureCollection fc) throws IOException {
         // make sure we are not trying to write out a geometryless data set
@@ -345,26 +314,13 @@ public class ShapefileDumper {
 
     /**
      * Allows subsclasses to perform extra actions against a shapefile that was completely written.
-     *
-     * @param fileName
-     * @param remappedSchema
      */
     protected void shapefileDumped(String fileName, SimpleFeatureType remappedSchema)
             throws IOException {
         // By default nothing extra is done
     }
 
-    /**
-     * Creates a shapefile data store for the specified schema
-     *
-     * @param tempDir
-     * @param charset
-     * @param schema
-     * @return
-     * @throws MalformedURLException
-     * @throws FileNotFoundException
-     * @throws IOException
-     */
+    /** Creates a shapefile data store for the specified schema */
     private ShapefileDataStore buildStore(SimpleFeatureType schema)
             throws MalformedURLException, FileNotFoundException, IOException {
         File file = new File(targetDirectory, schema.getTypeName() + ".shp");
@@ -520,10 +476,8 @@ public class ShapefileDumper {
      *
      * <p>This method will only be called if a custom name was not provided.
      *
-     * @param schema
      * @param geometryType The name of the geometry type, will be null if there is no need for a
      *     geometry type suffix
-     * @return
      */
     protected String getShapeName(SimpleFeatureType schema, String geometryType) {
         return getShapeName(schema.getTypeName(), geometryType);
@@ -532,11 +486,6 @@ public class ShapefileDumper {
     /**
      * Returns the shape name from the given suggested name (if available), schema and geometry
      * type.
-     *
-     * @param fileName
-     * @param schema
-     * @param geometryType
-     * @return
      */
     private String getShapeName(String fileName, SimpleFeatureType schema, String geometryType) {
         if (fileName == null) {
@@ -546,13 +495,7 @@ public class ShapefileDumper {
         }
     }
 
-    /**
-     * Returns the shape name from the given suggested name and geometry type.
-     *
-     * @param fileName
-     * @param geometryType
-     * @return
-     */
+    /** Returns the shape name from the given suggested name and geometry type. */
     private String getShapeName(String fileName, String geometryType) {
         if (geometryType == null) {
             return fileName;

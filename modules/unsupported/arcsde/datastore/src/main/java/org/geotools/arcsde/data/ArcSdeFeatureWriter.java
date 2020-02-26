@@ -152,10 +152,6 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
      * Creates the type of arcsde stream operation specified by the {@code streamType} class and,if
      * the working layer is of a versioned table, sets up the stream to being editing the default
      * database version.
-     *
-     * @param streamType
-     * @return
-     * @throws IOException
      */
     private SeStreamOp createStream(Class<? extends SeStreamOp> streamType) throws IOException {
         SeStreamOp streamOp;
@@ -379,9 +375,7 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
      * <p>The db row to modify is obtained from the feature id.
      *
      * @param modifiedFeature the newly create Feature to insert.
-     * @throws IOException
      * @throws SeException if thrown by any sde stream method
-     * @throws IOException
      */
     private void updateRow(final SimpleFeature modifiedFeature) throws IOException {
 
@@ -434,7 +428,6 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
      * Inserts a feature into an SeLayer.
      *
      * @param newFeature the newly create Feature to insert.
-     * @throws IOException
      */
     private Number insertSeRow(final SimpleFeature newFeature) throws IOException {
 
@@ -531,11 +524,6 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
      * SeConnection)} method
      *
      * @param feature the Feature where to get the property values from
-     * @param seCoordRef
-     * @param mutableColumns
-     * @param row
-     * @throws SeException
-     * @throws IOException
      */
     private static void setRowProperties(
             final SimpleFeature feature,
@@ -559,9 +547,6 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
     /**
      * Called when the layer row id is user managed to ask ArcSDE for the next available ID.
      *
-     * @return
-     * @throws IOException
-     * @throws SeException
      * @return a new available id if possible, {@code null} if thre seems not to be a sequence for
      *     the table
      */
@@ -613,10 +598,6 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
      * <p>This method is intended to be called from inside a {@link Command#execute(Session,
      * SeConnection)} method
      *
-     * @param row
-     * @param index
-     * @param convertedValue
-     * @param coordRef
      * @param attName for feedback purposes only in case of failure
      * @throws IOException if failed to set the row value
      */
@@ -710,8 +691,6 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
      *
      * @return a map keyed by mutable column name and valued by the index of the mutable column name
      *     in the SeTable structure
-     * @throws IOException
-     * @throws NoSuchElementException
      */
     private LinkedHashMap<Integer, String> getUpdatableColumnNames()
             throws NoSuchElementException, IOException {
@@ -838,8 +817,6 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
     /**
      * Creates a feature id for a new feature; the feature id is compound of the {@value
      * #NEW_FID_PREFIX} plus a UUID.
-     *
-     * @return
      */
     private String newFid() {
         return NEW_FID_PREFIX + UUID.randomUUID();
@@ -849,9 +826,6 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
      * Checks if <code>feature</code> has been created by this writer
      *
      * <p>A Feature is created but not yet inserted if its id starts with {@link #NEW_FID_PREFIX}
-     *
-     * @param aFeature
-     * @return
      */
     private final boolean isNewlyCreated(SimpleFeature aFeature) {
         final String id = aFeature.getID();

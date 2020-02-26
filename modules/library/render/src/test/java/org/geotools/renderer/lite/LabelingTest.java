@@ -169,8 +169,6 @@ public class LabelingTest extends TestCase {
      * This test tests for custom unit of measurement features, where the feature size translates to
      * something 0 < size < 1. in this case, an infinite loop used to occur, see
      * https://jira.codehaus.org/browse/GEOT-4284
-     *
-     * @throws Exception
      */
     public void testLineLabelingUom() throws Exception {
         FeatureCollection collection = createLineFeatureCollection();
@@ -194,11 +192,7 @@ public class LabelingTest extends TestCase {
         RendererBaseTest.showRender("testLineLabeling", renderer, timout, env);
     }
 
-    /**
-     * Checks we won't label a feature with a sharp U turn, when using a large font
-     *
-     * @throws Exception
-     */
+    /** Checks we won't label a feature with a sharp U turn, when using a large font */
     public void testLineLabelingSharpTurn() throws Exception {
         FeatureCollection collection = createTightUTurnLineCollection();
         Style style = loadStyle("LineStyleLarge.sld");
@@ -226,11 +220,7 @@ public class LabelingTest extends TestCase {
         ImageAssert.assertEquals(new File(refPath), image, 100);
     }
 
-    /**
-     * Checks we won't label a feature with a sharp U turn, when using a large font
-     *
-     * @throws Exception
-     */
+    /** Checks we won't label a feature with a sharp U turn, when using a large font */
     public void testLineLabelingSharpTurn2() throws Exception {
         FeatureCollection collection = createTightUTurnLineCollection2();
         Style style = loadStyle("LineStyleLarge2.sld");
@@ -258,11 +248,7 @@ public class LabelingTest extends TestCase {
         ImageAssert.assertEquals(new File(refPath), image, 1100);
     }
 
-    /**
-     * Checks we won't label a feature with an almost 90 degrees change in the last segment
-     *
-     * @throws Exception
-     */
+    /** Checks we won't label a feature with an almost 90 degrees change in the last segment */
     public void testSharpChangeLastSegment() throws Exception {
         FeatureCollection collection = createSharpTurnLineCollection();
         Style style = loadStyle("LineStyleLarge.sld");

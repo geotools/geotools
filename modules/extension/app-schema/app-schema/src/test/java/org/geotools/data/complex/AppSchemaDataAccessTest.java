@@ -291,8 +291,6 @@ public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
 
     /**
      * Loads config from an xml config file which uses a property datastore as source of features.
-     *
-     * @throws IOException
      */
     @Test
     public void testWithConfig() throws Exception {

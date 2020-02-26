@@ -24,8 +24,6 @@ public class XSBooleanStrategyTest extends TestSchema {
     /**
      * An instance of a datatype that is defined as ??boolean?? can have the following legal
      * literals {true, false, 1, 0}.
-     *
-     * @throws Exception
      */
 
     /*

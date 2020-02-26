@@ -59,10 +59,7 @@ public class BdryEdge2D extends BRepEdge2D {
         return surfaceRight == s || surfaceLeft == s;
     }
 
-    /**
-     * @param f
-     * @return
-     */
+    /** */
     public BRepFace2D getNeighborSimplex(BRepFace2D f) {
         return (surfaceRight == f) ? surfaceLeft : surfaceRight;
     }

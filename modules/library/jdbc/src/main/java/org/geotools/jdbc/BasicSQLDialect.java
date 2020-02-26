@@ -110,7 +110,6 @@ public abstract class BasicSQLDialect extends SQLDialect {
      * @param select The select statement being executed
      * @param cx The database connection
      * @param featureType The feature type the select is executing against.
-     * @throws SQLException
      */
     public void onSelect(Statement select, Connection cx, SimpleFeatureType featureType)
             throws SQLException {}
@@ -125,7 +124,6 @@ public abstract class BasicSQLDialect extends SQLDialect {
      * @param delete The delete statement being executed
      * @param cx The database connection
      * @param featureType The feature type the delete is executing against.
-     * @throws SQLException
      */
     public void onDelete(Statement delete, Connection cx, SimpleFeatureType featureType)
             throws SQLException {}
@@ -140,7 +138,6 @@ public abstract class BasicSQLDialect extends SQLDialect {
      * @param insert The delete statement being executed
      * @param cx The database connection
      * @param featureType The feature type the insert is executing against.
-     * @throws SQLException
      */
     public void onInsert(Statement insert, Connection cx, SimpleFeatureType featureType)
             throws SQLException {}
@@ -155,7 +152,6 @@ public abstract class BasicSQLDialect extends SQLDialect {
      * @param update The delete statement being executed
      * @param cx The database connection
      * @param featureType The feature type the update is executing against.
-     * @throws SQLException
      */
     public void onUpdate(Statement update, Connection cx, SimpleFeatureType featureType)
             throws SQLException {}

@@ -125,8 +125,6 @@ public class PostgisPSFilterToSql extends PreparedFilterToSQL {
      * Overrides base behavior to handler arrays
      *
      * @param filter the comparison to be turned into SQL.
-     * @param extraData
-     * @throws RuntimeException
      */
     protected void visitBinaryComparisonOperator(BinaryComparisonOperator filter, Object extraData)
             throws RuntimeException {

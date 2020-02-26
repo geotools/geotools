@@ -519,8 +519,8 @@ public class WMTSCapabilities extends Capabilities {
     }
 
     /**
-     * @param name
-     * @return
+     * @param name of the layer
+     * @return the WMTS layer
      */
     public WMTSLayer getLayer(String name) {
         return layerMap.get(name);

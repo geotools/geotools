@@ -47,8 +47,6 @@ public class GeometryDimensionCollector implements GeometryComponentFilter {
      *   <li>single geometry: in case there is a single item
      *   <li>multi-geometry: in all other cases
      * </ul>
-     *
-     * @return
      */
     public Geometry collect() {
         if (geometries.isEmpty()) {

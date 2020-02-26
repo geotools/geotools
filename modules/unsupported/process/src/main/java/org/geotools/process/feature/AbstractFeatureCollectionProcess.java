@@ -29,11 +29,7 @@ import org.opengis.feature.simple.SimpleFeature;
  */
 public abstract class AbstractFeatureCollectionProcess extends AbstractProcess {
 
-    /**
-     * Constructor
-     *
-     * @param factory
-     */
+    /** Constructor */
     public AbstractFeatureCollectionProcess(AbstractFeatureCollectionProcessFactory factory) {
         super(factory);
     }
@@ -57,7 +53,6 @@ public abstract class AbstractFeatureCollectionProcess extends AbstractProcess {
      *
      * @param feature the feature being processed
      * @param input a Map of input parameters
-     * @throws Exception
      */
     protected abstract void processFeature(SimpleFeature feature, Map<String, Object> input)
             throws Exception;

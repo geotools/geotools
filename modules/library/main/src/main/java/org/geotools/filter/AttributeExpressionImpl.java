@@ -347,11 +347,7 @@ public class AttributeExpressionImpl extends DefaultExpression implements Proper
         return visitor.visit(this, extraData);
     }
 
-    /**
-     * Sets lenient property.
-     *
-     * @param lenient
-     */
+    /** Sets lenient property. */
     public void setLenient(boolean lenient) {
         this.lenient = lenient;
     }

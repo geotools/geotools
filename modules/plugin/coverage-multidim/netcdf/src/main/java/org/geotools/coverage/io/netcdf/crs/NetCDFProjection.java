@@ -72,13 +72,7 @@ public class NetCDFProjection {
             this.attribute = attribute;
         }
 
-        /**
-         * Parse the Coordinate Reference System
-         *
-         * @param variable
-         * @return
-         * @throws FactoryException
-         */
+        /** Parse the Coordinate Reference System */
         abstract CoordinateReferenceSystem parseCoordinateReferenceSystem(
                 Variable variable, Map<String, Object> crsProperties) throws FactoryException;
 
@@ -87,7 +81,6 @@ public class NetCDFProjection {
          * containing a WKT String
          *
          * @param wktAttribute the NetCDF {@link Attribute} if any, containing WKT definition.
-         * @return
          */
         private static CoordinateReferenceSystem parseWKT(Attribute wktAttribute) {
             CoordinateReferenceSystem crs = null;
@@ -104,12 +97,7 @@ public class NetCDFProjection {
             return crs;
         }
 
-        /**
-         * Get a proper {@link CRSParser} for the input Variable.
-         *
-         * @param var
-         * @return
-         */
+        /** Get a proper {@link CRSParser} for the input Variable. */
         public static NetCDFProjection.CRSParser getCRSParser(Variable var) {
             if (var != null) {
                 Attribute attr = null;
@@ -208,29 +196,17 @@ public class NetCDFProjection {
     /** The OGC Projection name, needed to instantiate projection parameters */
     private String ogcName;
 
-    /**
-     * Returns the underlying unmodifiable Referencing to NetCDF parameters mapping.
-     *
-     * @return
-     */
+    /** Returns the underlying unmodifiable Referencing to NetCDF parameters mapping. */
     public Map<String, String> getParameters() {
         return netCDFParametersMapping;
     }
 
-    /**
-     * Return the NetCDF CF GridMapping name
-     *
-     * @return
-     */
+    /** Return the NetCDF CF GridMapping name */
     public String getName() {
         return name;
     }
 
-    /**
-     * Return the OGC/GeoTools projection name
-     *
-     * @return
-     */
+    /** Return the OGC/GeoTools projection name */
     public String getOGCName() {
         return ogcName;
     }
@@ -526,8 +502,6 @@ public class NetCDFProjection {
     /**
      * Extract the georeferencing projection information from the specified variable and setup a
      * {@link CoordinateReferenceSystem} instance
-     *
-     * @throws FactoryException
      */
     public static CoordinateReferenceSystem parseProjection(Variable var) throws FactoryException {
         return parseProjection(var, CRSParser.getCRSParser(var));
@@ -536,8 +510,6 @@ public class NetCDFProjection {
     /**
      * Extract the georeferencing projection information from the specified variable and setup a
      * {@link CoordinateReferenceSystem} instance
-     *
-     * @throws FactoryException
      */
     public static CoordinateReferenceSystem parseProjection(Variable var, CRSParser crsParser)
             throws FactoryException {
@@ -547,8 +519,6 @@ public class NetCDFProjection {
     /**
      * Extract the georeferencing projection information from the specified variable and setup a
      * {@link CoordinateReferenceSystem} instance
-     *
-     * @throws FactoryException
      */
     public static CoordinateReferenceSystem parseProjection(
             Variable var, CRSParser crsParser, Map<String, Object> crsProperties)
@@ -569,11 +539,6 @@ public class NetCDFProjection {
     /**
      * Get the NetCDF Attribute related to the specified OGC parameter and set the proper value
      * within the OGC parameters map.
-     *
-     * @param parametersMapping
-     * @param ogcParameters
-     * @param ogcParameterKey
-     * @param var
      */
     private static void handleParam(
             Map<String, String> parametersMapping,
@@ -635,7 +600,6 @@ public class NetCDFProjection {
      *
      * @param gridMappingVariable the variable to be analyzed
      * @param linearUnit the linear Unit to be used for the ellipsoid
-     * @return
      */
     private static Ellipsoid buildEllipsoid(Variable gridMappingVariable, Unit<Length> linearUnit) {
         Number semiMajorAxis = null;
@@ -690,7 +654,6 @@ public class NetCDFProjection {
      *
      * @param mappingName the input netCDF mappingName
      * @param var the gridMapping variable
-     * @return
      */
     private static String getProjectionName(String mappingName, Variable var) {
         String projectionName = mappingName;
@@ -711,20 +674,13 @@ public class NetCDFProjection {
     /**
      * Look for a SPATIAL_REF global attribute and parsing it (as WKT) to setup a {@link
      * CoordinateReferenceSystem}
-     *
-     * @param dataset
-     * @return
      */
     public static CoordinateReferenceSystem parseProjection(NetcdfDataset dataset) {
         Attribute attribute = dataset.findAttribute(NetCDFUtilities.SPATIAL_REF);
         return CRSParser.parseWKT(attribute);
     }
 
-    /**
-     * Check if any custom EPSG maps the provided crs and return that one
-     *
-     * @throws FactoryException
-     */
+    /** Check if any custom EPSG maps the provided crs and return that one */
     public static CoordinateReferenceSystem lookupForCustomEpsg(CoordinateReferenceSystem crs)
             throws FactoryException {
         if (!crsFactories.isEmpty()) {
@@ -749,14 +705,7 @@ public class NetCDFProjection {
         return lookForVariableCRS(dataset, defaultCrs, Collections.emptyMap());
     }
 
-    /**
-     * Look for a CoordinateReferenceSystem defined into a variable
-     *
-     * @param dataset
-     * @param defaultCrs
-     * @return
-     * @throws FactoryException
-     */
+    /** Look for a CoordinateReferenceSystem defined into a variable */
     public static CoordinateReferenceSystem lookForVariableCRS(
             NetcdfDataset dataset,
             CoordinateReferenceSystem defaultCrs,
@@ -783,9 +732,6 @@ public class NetCDFProjection {
     /**
      * Look for a dataset global {@link CoordinateReferenceSystem} definition provided through a
      * spatial_ref global attribute.
-     *
-     * @param dataset
-     * @return
      */
     public static CoordinateReferenceSystem lookForDatasetCRS(NetcdfDataset dataset) {
         CoordinateReferenceSystem projection = NetCDFProjection.parseProjection(dataset);

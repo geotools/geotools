@@ -50,12 +50,7 @@ public class OracleLongNamesTest extends JDBCTestSupport {
         return new OracleLongNameTestSetup(new OracleTestSetup());
     }
 
-    /**
-     * This test makes sne
-     *
-     * @return
-     * @throws Exception
-     */
+    /** This test makes sne */
     @Override
     protected boolean isOnline() throws Exception {
         if (!super.isOnline()) {

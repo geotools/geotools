@@ -20,7 +20,6 @@ import java.io.IOException;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Response;
 import org.geotools.ows.ServiceException;
-import org.xml.sax.SAXException;
 
 /**
  * Represents the results of a PutStyles request.
@@ -33,11 +32,7 @@ public class PutStylesResponse extends Response {
 
     private boolean success;
 
-    /**
-     * @param contentType
-     * @param inputStream
-     * @throws SAXException
-     */
+    /** */
     public PutStylesResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
         super(httpResponse);
 

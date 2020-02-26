@@ -42,12 +42,7 @@ public class HiddenDataAccessDisposalPolymorphicTest extends AbstractHiddenDataA
 
     AppSchemaDataAccess artifactDataAccess;
 
-    /**
-     * Load all the data accesses.
-     *
-     * @return
-     * @throws Exception
-     */
+    /** Load all the data accesses. */
     @Before
     public void loadDataAccesses() throws Exception {
         /** Load artifact data access using polymorphic mappings */

@@ -94,8 +94,6 @@ public class AppSchemaValidatorTest {
      * Test support for testing {@link AppSchemaValidator#validate(String)}. This method converts
      * reads a classpath resource into a string (using the default platform encoding) before
      * applying string schema validation.
-     *
-     * @param name
      */
     public static void validateResourceAsString(String name) {
         InputStream input = null;

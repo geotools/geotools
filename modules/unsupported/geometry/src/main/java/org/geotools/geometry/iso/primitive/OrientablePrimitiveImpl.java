@@ -73,24 +73,13 @@ public abstract class OrientablePrimitiveImpl extends PrimitiveImpl implements O
      */
     protected OrientablePrimitive proxy = null;
 
-    /**
-     * Constructor for empty Orientable Primitive
-     *
-     * @param crs
-     */
+    /** Constructor for empty Orientable Primitive */
     protected OrientablePrimitiveImpl(CoordinateReferenceSystem crs) {
         super(crs, null, null, null);
         this.proxy = this.createProxy();
     }
 
-    /**
-     * Constructor
-     *
-     * @param crs
-     * @param containedPrimitive
-     * @param containingPrimitive
-     * @param complex
-     */
+    /** Constructor */
     protected OrientablePrimitiveImpl(
             CoordinateReferenceSystem crs,
             Set<Primitive> containedPrimitive,

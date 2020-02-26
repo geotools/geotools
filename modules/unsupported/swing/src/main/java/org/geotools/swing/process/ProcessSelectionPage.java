@@ -185,7 +185,6 @@ public class ProcessSelectionPage extends JPage {
      * Populates an array of strings with the process factory titles based on the factory set
      *
      * @param factories the string array to populate
-     * @return
      */
     private TreeModel createFactoryTitleArray(Set<ProcessFactory> factories) {
         final List<ProcessFactory> root = new ArrayList<ProcessFactory>();

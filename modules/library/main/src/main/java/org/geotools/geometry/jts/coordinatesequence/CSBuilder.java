@@ -38,33 +38,17 @@ public interface CSBuilder {
     /** Stops the coordinate sequence building and returns the result */
     public CoordinateSequence end();
 
-    /**
-     * Sets and ordinate in the specified coordinate
-     *
-     * @param value
-     * @param ordinateIndex
-     * @param coordinateIndex
-     */
+    /** Sets and ordinate in the specified coordinate */
     public void setOrdinate(double value, int ordinateIndex, int coordinateIndex);
 
     /**
      * Utility method that allows to set an ordinate in an already built coordinate sequence Needed
      * because the CoordinateSequence interface does not expose it
-     *
-     * @param sequence
-     * @param value
-     * @param ordinateIndex
-     * @param coordinateIndex
      */
     public void setOrdinate(
             CoordinateSequence sequence, double value, int ordinateIndex, int coordinateIndex);
 
-    /**
-     * Gets an ordinate in the specified coordinate
-     *
-     * @param ordinateIndex
-     * @param coordinateIndex
-     */
+    /** Gets an ordinate in the specified coordinate */
     public double getOrdinate(int ordinateIndex, int coordinateIndex);
 
     /** Returns the size of the coordinate sequence we are building, -1 if there is none */

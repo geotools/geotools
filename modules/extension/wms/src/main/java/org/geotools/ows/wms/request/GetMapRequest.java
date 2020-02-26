@@ -186,11 +186,7 @@ public interface GetMapRequest extends Request {
      */
     public void setBBox(String bbox);
 
-    /**
-     * Sets the BBOX and SRS information from the provided Envelope (such as a CRSEnvelope).
-     *
-     * @param box
-     */
+    /** Sets the BBOX and SRS information from the provided Envelope (such as a CRSEnvelope). */
     public void setBBox(Envelope box);
 
     /**
@@ -212,9 +208,6 @@ public interface GetMapRequest extends Request {
      * minimum and maximum Y values. If the WMS server has declared that a Layer has fixed width and
      * height, then the Client shall specify exactly those WIDTH and HEIGHT values in the GetMap
      * request and the Server may issue a Service Exception otherwise."
-     *
-     * @param width
-     * @param height
      */
     public void setDimensions(String width, String height);
 
@@ -252,8 +245,6 @@ public interface GetMapRequest extends Request {
      *   <li>"application/vnd.ogc.se_inimage"
      *   <li>"application/vnd.ogc.se_blank"
      * </ul>
-     *
-     * @param exceptions
      */
     public void setExceptions(String exceptions);
 

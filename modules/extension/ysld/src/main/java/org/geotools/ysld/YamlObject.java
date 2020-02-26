@@ -46,7 +46,6 @@ public class YamlObject<T> {
      * Other data (Literals, Expressions) are considered atomic and do not provide a YamlObject
      * representation.
      *
-     * @param raw
      * @return Yaml object wrapper, or null if the provided raw object is null.
      */
     @SuppressWarnings("unchecked")
@@ -115,7 +114,6 @@ public class YamlObject<T> {
      *   <li>raw("x"): value for "x" in a map
      *   <li>raw("rules/2/symbolizers/3"): third symbolizer in second rule
      *
-     * @param path
      * @return raw value, or null if not available
      */
     public Object lookup(String path) {
@@ -165,8 +163,6 @@ public class YamlObject<T> {
     /**
      * See {@link #lookup}. Ensures that the result is wrapped as a YamlObject if it is a map, list,
      * or array.
-     *
-     * @param path
      */
     public Object lookupY(String path) {
         return yamlize(lookup(path));

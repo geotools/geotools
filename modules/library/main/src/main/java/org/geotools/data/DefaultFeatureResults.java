@@ -71,9 +71,6 @@ public class DefaultFeatureResults extends DataFeatureCollection {
      *
      * <p>Really? I think it would be, it would just reflect the same query against the
      * SimpleFeatureSource using AUTO_COMMIT.
-     *
-     * @param source
-     * @param query
      */
     public DefaultFeatureResults(SimpleFeatureSource source, Query query) throws IOException {
         super(null, getSchemaInternal(source, query));

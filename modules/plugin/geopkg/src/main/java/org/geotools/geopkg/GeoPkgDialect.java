@@ -84,11 +84,13 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         geomWriterConfig = new GeoPkgGeomWriter.Configuration();
     }
 
-    // The JDBC aggregate functions doesn't support the geopkg DateTime types.
-    //  This is because they are stored as strings in the database instead of real Date types
-    //   and the JDBC aggregate driver does NOT provide the needed conversions.
-    //
-    // since this doesn't work, we don't support it.
+    /**
+     * The JDBC aggregate functions doesn't support the geopkg DateTime types.
+     * This is because they are stored as strings in the database instead of real Date types
+     * and the JDBC aggregate driver does NOT provide the needed conversions.
+     * <p>
+     * Since this doesn't work, we don't support it.
+     */
     @Override
     public void registerAggregateFunctions(
             Map<Class<? extends FeatureVisitor>, String> aggregates) {

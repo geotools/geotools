@@ -45,16 +45,15 @@ public class GeoPkgFilterToSQL extends PreparedFilterToSQL {
     }
 
     /**
-     * cf.  visit(Literal expression,...)
-     * When doing temporal queries (like "time BETWEEN t1 AND t2")
-     * <p>
-     * The encoding of the column name ("time") and the literals must be the same!
-     * <p>
-     * datetime("Time",'localtime') BETWEEN datetime(?,'localtime') AND datetime(?,'localtime')
-     * <p>
-     * For non-time columns, this just relegates to the superclass
-     * <p>
-     * For GeoPKG, the time column is actually stored as a STRING.
+     * cf. visit(Literal expression,...) When doing temporal queries (like "time BETWEEN t1 AND t2")
+     *
+     * <p>The encoding of the column name ("time") and the literals must be the same!
+     *
+     * <p>datetime("Time",'localtime') BETWEEN datetime(?,'localtime') AND datetime(?,'localtime')
+     *
+     * <p>For non-time columns, this just relegates to the superclass
+     *
+     * <p>For GeoPKG, the time column is actually stored as a STRING.
      */
     @Override
     public String escapeName(String name) {

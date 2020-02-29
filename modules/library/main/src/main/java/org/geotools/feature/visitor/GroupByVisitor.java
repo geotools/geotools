@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.locationtech.jts.geom.Envelope;
@@ -347,5 +348,17 @@ public class GroupByVisitor implements FeatureCalc, FeatureAttributeVisitor {
         List<Expression> result = new ArrayList<>(groupByAttributes);
         result.add(expression);
         return result;
+    }
+
+    @Override
+    public Optional<List<Class>> getResultType(List<Class> inputTypes) {
+        // the set of expressions includes the group by attributes and the actual attribute
+        // being computed onto,
+        int expectedInputCount = groupByAttributes.size() + 1;
+        if (inputTypes == null || inputTypes.size() != expectedInputCount)
+            throw new IllegalArgumentException(
+                    "Expecting " + expectedInputCount + " types, get: " + inputTypes);
+
+        return Optional.of(Arrays.asList(inputTypes.get(expectedInputCount - 1)));
     }
 }

@@ -17,6 +17,7 @@
 package org.geotools.feature.visitor;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -95,7 +96,7 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
 
         Class type = inputTypes.get(0);
         if (Number.class.isAssignableFrom(type)) {
-            return Optional.of(inputTypes);
+            return Optional.of(Collections.singletonList(Double.class));
         }
         throw new IllegalArgumentException(
                 "The input type for sum must be numeric, instead this was found: " + type);

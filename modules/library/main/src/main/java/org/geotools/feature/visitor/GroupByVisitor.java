@@ -353,12 +353,20 @@ public class GroupByVisitor implements FeatureCalc, FeatureAttributeVisitor {
     @Override
     public Optional<List<Class>> getResultType(List<Class> inputTypes) {
         // the set of expressions includes the group by attributes and the actual attribute
-        // being computed onto,
+        // being computed onto
         int expectedInputCount = groupByAttributes.size() + 1;
         if (inputTypes == null || inputTypes.size() != expectedInputCount)
             throw new IllegalArgumentException(
                     "Expecting " + expectedInputCount + " types, get: " + inputTypes);
 
-        return Optional.of(Arrays.asList(inputTypes.get(expectedInputCount - 1)));
+        Class expressionType = inputTypes.get(expectedInputCount - 1);
+        switch (aggregate) {
+            case AVERAGE:
+            case STD_DEV:
+            case SUMAREA:
+                return Optional.of(Arrays.asList(Double.class));
+            default:
+                return Optional.of(Arrays.asList(expressionType));
+        }
     }
 }

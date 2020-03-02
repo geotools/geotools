@@ -1448,13 +1448,20 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                     rs = st.executeQuery(sql);
                 }
 
+                // give the dialect an opportunity to convert outputs, if needed, for databases
+                // with a weak/problematic type system (e.g., sqlite)
+                java.util.function.Function<Object, Object> converter =
+                        dialect.getAggregateConverter(visitor, featureType);
+
                 while (rs.next()) {
                     if (groupByExpressions == null || groupByExpressions.isEmpty()) {
                         Object value = rs.getObject(1);
-                        result = value;
-                        results.add(value);
+                        result = converter.apply(value);
+                        results.add(result);
                     } else {
-                        results.add(extractValuesFromResultSet(rs, groupByExpressions.size()));
+                        results.add(
+                                extractValuesFromResultSet(
+                                        rs, groupByExpressions.size(), converter));
                     }
                 }
             } finally {
@@ -1603,13 +1610,18 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * Helper method that translate the result set to the appropriate group by visitor result format
      */
     protected GroupByVisitor.GroupByRawResult extractValuesFromResultSet(
-            ResultSet resultSet, int numberOfGroupByAttributes) throws SQLException {
+            ResultSet resultSet,
+            int numberOfGroupByAttributes,
+            java.util.function.Function<Object, Object> converter)
+            throws SQLException {
         List<Object> groupByValues = new ArrayList<>();
         for (int i = 0; i < numberOfGroupByAttributes; i++) {
-            groupByValues.add(resultSet.getObject(i + 1));
+            Object result = resultSet.getObject(i + 1);
+            groupByValues.add(result);
         }
-        return new GroupByVisitor.GroupByRawResult(
-                groupByValues, resultSet.getObject(numberOfGroupByAttributes + 1));
+        Object aggregated = resultSet.getObject(numberOfGroupByAttributes + 1);
+        Object converted = converter.apply(aggregated);
+        return new GroupByVisitor.GroupByRawResult(groupByValues, converted);
     }
 
     /**

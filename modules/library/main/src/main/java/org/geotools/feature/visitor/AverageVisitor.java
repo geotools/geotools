@@ -17,7 +17,9 @@
 package org.geotools.feature.visitor;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.IllegalFilterException;
@@ -84,6 +86,20 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
     @Override
     public List<Expression> getExpressions() {
         return Arrays.asList(expr);
+    }
+
+    @Override
+    public Optional<List<Class>> getResultType(List<Class> inputTypes) {
+        if (inputTypes == null || inputTypes.size() != 1)
+            throw new IllegalArgumentException(
+                    "Expecting a single type in input, not " + inputTypes);
+
+        Class type = inputTypes.get(0);
+        if (Number.class.isAssignableFrom(type)) {
+            return Optional.of(Collections.singletonList(Double.class));
+        }
+        throw new IllegalArgumentException(
+                "The input type for sum must be numeric, instead this was found: " + type);
     }
 
     /**

@@ -16,6 +16,9 @@
  */
 package org.geotools.feature.visitor;
 
+import java.util.List;
+import java.util.Optional;
+
 public class CalcUtil {
 
     /**
@@ -263,5 +266,22 @@ public class CalcUtil {
 
         // now do the comparison
         return val1.compareTo(val2);
+    }
+
+    /**
+     * Utility method for {@link FeatureAttributeVisitor} implementations that are simply returnin
+     * the same type as the inputs
+     *
+     * @param inputTypes
+     * @return
+     */
+    public static Optional<List<Class>> reflectInputTypes(
+            int expectedInputCount, List<Class> inputTypes) {
+        if (inputTypes == null || inputTypes.size() != 1)
+            throw new IllegalArgumentException(
+                    "Expecting " + expectedInputCount + " types in input, but got " + inputTypes);
+
+        // same as the input
+        return Optional.of(inputTypes);
     }
 }

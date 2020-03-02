@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
@@ -98,6 +99,11 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
     @Override
     public List<Expression> getExpressions() {
         return Arrays.asList(expr);
+    }
+
+    @Override
+    public Optional<List<Class>> getResultType(List<Class> inputTypes) {
+        return CalcUtil.reflectInputTypes(1, inputTypes);
     }
 
     public void visit(SimpleFeature feature) {

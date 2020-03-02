@@ -18,6 +18,7 @@ package org.geotools.feature.visitor;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.IllegalFilterException;
@@ -65,6 +66,11 @@ public class MinVisitor implements FeatureCalc, FeatureAttributeVisitor {
     @Override
     public List<Expression> getExpressions() {
         return Arrays.asList(expr);
+    }
+
+    @Override
+    public Optional<List<Class>> getResultType(List<Class> inputTypes) {
+        return CalcUtil.reflectInputTypes(1, inputTypes);
     }
 
     /**

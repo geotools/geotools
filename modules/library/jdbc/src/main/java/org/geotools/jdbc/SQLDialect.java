@@ -31,18 +31,22 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.Join.Type;
 import org.geotools.data.Query;
 import org.geotools.feature.visitor.CountVisitor;
+import org.geotools.feature.visitor.FeatureAttributeVisitor;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.feature.visitor.MinVisitor;
 import org.geotools.feature.visitor.SumVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.function.InFunction;
+import org.geotools.filter.visitor.ExpressionTypeVisitor;
 import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -65,6 +69,7 @@ import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.Divide;
+import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.Multiply;
 import org.opengis.filter.expression.PropertyName;
@@ -1284,5 +1289,51 @@ public abstract class SQLDialect {
      */
     public boolean canSimplifyPoints() {
         return false;
+    }
+
+    /**
+     * Returns the list of aggregation output types for the given visitor and feature type (or an
+     * empty Optional if could not determine it)
+     */
+    protected Optional<List<Class>> getResultTypes(
+            FeatureVisitor visitor, SimpleFeatureType featureType) {
+        if (!(visitor instanceof FeatureAttributeVisitor)) {
+            return Optional.empty();
+        }
+
+        FeatureAttributeVisitor fav = (FeatureAttributeVisitor) visitor;
+        List<Expression> expressions = fav.getExpressions();
+        if (expressions == null || expressions.isEmpty()) {
+            return Optional.empty();
+        }
+
+        List<Class> inputTypes = new ArrayList<>();
+        for (Expression ex : expressions) {
+            ExpressionTypeVisitor etv = new ExpressionTypeVisitor(featureType);
+            Class expressionType = (Class) ex.accept(etv, null);
+            if (expressionType == null) {
+                return Optional.empty();
+            }
+
+            inputTypes.add(expressionType);
+        }
+
+        return fav.getResultType(inputTypes);
+    }
+
+    /**
+     * Returns a converter used to transform the results of an aggregation, for the given visitor
+     * and feature type. The default implementation returns an identify function, databases with
+     * type system limitations can use it to convert the result to the desired type. Implementations
+     * overriding this method might use {@link #getResultTypes(FeatureVisitor, SimpleFeatureType)}
+     * to compute the expected result type of the aggregation expressions.
+     *
+     * @param visitor
+     * @param featureType
+     * @return
+     */
+    public Function<Object, Object> getAggregateConverter(
+            FeatureVisitor visitor, SimpleFeatureType featureType) {
+        return Function.identity();
     }
 }

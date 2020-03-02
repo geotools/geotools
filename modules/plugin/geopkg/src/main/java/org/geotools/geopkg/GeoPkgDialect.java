@@ -31,10 +31,12 @@ import java.sql.Statement;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.logging.Level;
-import org.geotools.feature.visitor.CountVisitor;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
 import org.geotools.geometry.jts.Geometries;
@@ -47,6 +49,7 @@ import org.geotools.jdbc.PreparedStatementSQLDialect;
 import org.geotools.jdbc.PrimaryKey;
 import org.geotools.jdbc.PrimaryKeyColumn;
 import org.geotools.referencing.CRS;
+import org.geotools.util.Converters;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -82,20 +85,6 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     public GeoPkgDialect(JDBCDataStore dataStore) {
         super(dataStore);
         geomWriterConfig = new GeoPkgGeomWriter.Configuration();
-    }
-
-    /**
-     * The JDBC aggregate functions doesn't support the geopkg DateTime types. This is because they
-     * are stored as strings in the database instead of real Date types and the JDBC aggregate
-     * driver does NOT provide the needed conversions.
-     *
-     * <p>Since this doesn't work, we don't support it.
-     */
-    @Override
-    public void registerAggregateFunctions(
-            Map<Class<? extends FeatureVisitor>, String> aggregates) {
-        // this aggregate isn't type aware so doesn't cause issues
-        aggregates.put(CountVisitor.class, "count");
     }
 
     @Override
@@ -639,5 +628,38 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     protected void addSupportedHints(Set<Hints.Key> hints) {
         hints.add(Hints.GEOMETRY_DISTANCE);
         hints.add(Hints.SCREENMAP);
+    }
+
+    /**
+     * SQLite dates are just strings, they don't get converted to Date in case of aggregation, do it
+     * here instead
+     */
+    @Override
+    public Function<Object, Object> getAggregateConverter(
+            FeatureVisitor visitor, SimpleFeatureType featureType) {
+        Optional<List<Class>> maybeResultTypes = getResultTypes(visitor, featureType);
+        if (maybeResultTypes.isPresent()) {
+            List<Class> resultTypes = maybeResultTypes.get();
+            if (resultTypes.size() == 1) {
+                Class targetType = resultTypes.get(0);
+                if (Date.class.isAssignableFrom(targetType)) {
+                    return v -> {
+                        Object converted = Converters.convert(v, targetType);
+                        if (converted == null) {
+                            LOGGER.log(
+                                    Level.WARNING,
+                                    "Could not convert "
+                                            + v
+                                            + " to the desired return type "
+                                            + targetType);
+                            return v;
+                        }
+                        return converted;
+                    };
+                }
+            }
+        }
+        // otherwise no conversion needed
+        return Function.identity();
     }
 }

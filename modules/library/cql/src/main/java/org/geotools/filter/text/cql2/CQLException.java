@@ -68,21 +68,12 @@ public class CQLException extends ParseException {
         this(message, token, null, cqlSource);
     }
 
-    /**
-     * New instance of CQLException
-     *
-     * @param message
-     * @param cqlSource
-     */
+    /** New instance of CQLException */
     public CQLException(final String message, final String cqlSource) {
         this(message, null, null, cqlSource);
     }
 
-    /**
-     * New instance of CQLException
-     *
-     * @param message
-     */
+    /** New instance of CQLException */
     public CQLException(final String message) {
         this(message, null, null, "");
     }

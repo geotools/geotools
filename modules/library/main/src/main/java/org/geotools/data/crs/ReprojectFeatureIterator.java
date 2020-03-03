@@ -16,7 +16,6 @@
  */
 package org.geotools.data.crs;
 
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -96,9 +95,6 @@ public class ReprojectFeatureIterator implements Iterator<SimpleFeature>, Simple
      *
      * <p>Description ...
      *
-     * @throws IOException
-     * @throws IllegalAttributeException
-     * @throws NoSuchElementException
      * @see org.geotools.data.FeatureReader#next()
      */
     public SimpleFeature next() throws NoSuchElementException {
@@ -135,7 +131,6 @@ public class ReprojectFeatureIterator implements Iterator<SimpleFeature>, Simple
      *
      * <p>Description ...
      *
-     * @throws IOException
      * @see org.geotools.data.FeatureReader#hasNext()
      */
     public boolean hasNext() {
@@ -151,7 +146,6 @@ public class ReprojectFeatureIterator implements Iterator<SimpleFeature>, Simple
      *
      * <p>Description ...
      *
-     * @throws IOException
      * @see org.geotools.data.FeatureReader#close()
      */
     public void close() {

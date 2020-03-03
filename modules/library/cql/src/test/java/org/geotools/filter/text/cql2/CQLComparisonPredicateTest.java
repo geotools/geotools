@@ -112,7 +112,6 @@ public class CQLComparisonPredicateTest {
      * Equals predicate sample
      *
      * @see ECQLComparisonPredicateTest
-     * @throws Exception
      */
     @Test
     public void deprecatedPredicate() throws Exception {
@@ -129,8 +128,6 @@ public class CQLComparisonPredicateTest {
      * <pre>
      * Sample: gmd:aa:bb.gmd:cc.gmd:dd
      * </pre>
-     *
-     * @throws Exception
      */
     @Test
     public void attributeName() throws Exception {
@@ -173,11 +170,7 @@ public class CQLComparisonPredicateTest {
         Assert.assertEquals("not equal compare filter error", expected, actual);
     }
 
-    /**
-     * Comparison with boolean values
-     *
-     * @throws Exception
-     */
+    /** Comparison with boolean values */
     @Test
     public void booleanLiteral() throws Exception {
 
@@ -254,12 +247,7 @@ public class CQLComparisonPredicateTest {
         Assert.assertTrue(f3 instanceof And);
     }
 
-    /**
-     * General test for cql expressions
-     *
-     * @param cqlSample
-     * @throws Exception
-     */
+    /** General test for cql expressions */
     private void testEqualsExpressions(final String cqlSample) throws Exception {
         Filter expected = FilterCQLSample.getSample(cqlSample);
         Filter actual = CompilerUtil.parseFilter(language, cqlSample);

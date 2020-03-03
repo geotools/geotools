@@ -58,7 +58,6 @@ public class CurveTest extends TestCase {
     /**
      * Creates a pico container that knows about all the geom factories
      *
-     * @param crs
      * @return container
      */
     protected PicoContainer container(CoordinateReferenceSystem crs) {

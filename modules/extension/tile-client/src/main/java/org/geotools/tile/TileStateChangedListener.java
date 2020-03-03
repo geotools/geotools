@@ -28,31 +28,15 @@ package org.geotools.tile;
  * @since 12.0
  */
 public interface TileStateChangedListener {
-    /**
-     * Called when the screen state of a tile has changed.
-     *
-     * @param tile
-     */
+    /** Called when the screen state of a tile has changed. */
     void screenStateChanged(Tile tile);
 
-    /**
-     * Called when the render state of a tile has changed.
-     *
-     * @param tile
-     */
+    /** Called when the render state of a tile has changed. */
     void renderStateChanged(Tile tile);
 
-    /**
-     * Called when the context state of a tile has changed.
-     *
-     * @param tile
-     */
+    /** Called when the context state of a tile has changed. */
     void contextStateChanged(Tile tile);
 
-    /**
-     * Called when the validation state of a tile has changed.
-     *
-     * @param tile
-     */
+    /** Called when the validation state of a tile has changed. */
     void validationStateChanged(Tile tile);
 }

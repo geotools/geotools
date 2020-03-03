@@ -81,7 +81,6 @@ public class RecordTypeImpl implements RecordType {
      *
      * @param parent The schema that contains this record type.
      * @param typeName The name that identifies this record type.
-     * @param attributeTypes
      * @todo Should we really provide this method? There is no garantee that the user-provided
      *     values are consistent with {@link MemberName#getAttributeType}.
      */

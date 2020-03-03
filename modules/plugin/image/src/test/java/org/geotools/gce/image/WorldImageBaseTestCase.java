@@ -47,11 +47,7 @@ public abstract class WorldImageBaseTestCase extends TestCase {
             this.setExtensions(extensions);
         }
 
-        /**
-         * Sets the extensions that are allowed
-         *
-         * @param extensions
-         */
+        /** Sets the extensions that are allowed */
         private void setExtensions(String[] extensions) {
             if (extensions != null) {
                 this.extensions.clear();

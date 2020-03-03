@@ -39,12 +39,7 @@ public class DescribeProcessResponse extends Response {
     private ProcessDescriptionsType processDescs;
     private ExceptionReportType excepResponse;
 
-    /**
-     * @param contentType
-     * @param inputStream
-     * @throws ServiceException
-     * @throws SAXException
-     */
+    /** */
     public DescribeProcessResponse(HTTPResponse httpResponse) throws IOException, ServiceException {
         super(httpResponse);
 

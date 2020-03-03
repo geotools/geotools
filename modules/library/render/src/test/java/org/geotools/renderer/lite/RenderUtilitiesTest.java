@@ -35,8 +35,6 @@ public class RenderUtilitiesTest extends TestCase {
     /**
      * This tests a fix to handle Geographic CRSes (such as NAD83) whose domain of validity crosses
      * the Date Line. Previously this would cause a failure.
-     *
-     * @throws Exception
      */
     public void testNAD83() throws Exception {
         CoordinateReferenceSystem nad83 = CRS.decode("EPSG:4269", true);

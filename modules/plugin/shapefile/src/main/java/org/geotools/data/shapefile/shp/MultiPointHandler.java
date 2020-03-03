@@ -110,14 +110,15 @@ public class MultiPointHandler implements ShapeHandler {
 
         int numpoints = buffer.getInt();
         int dimensions = shapeType == ShapeType.MULTIPOINTZ && !flatGeometry ? 3 : 2;
+        int measure = flatGeometry ? 0 : 1;
         CoordinateSequence cs;
         if (shapeType == ShapeType.MULTIPOINTZ || shapeType == ShapeType.MULTIPOINTM) {
             cs =
                     JTS.createCS(
                             geometryFactory.getCoordinateSequenceFactory(),
                             numpoints,
-                            dimensions + 1,
-                            1);
+                            dimensions + measure,
+                            measure);
         } else {
             cs =
                     JTS.createCS(
@@ -132,7 +133,7 @@ public class MultiPointHandler implements ShapeHandler {
             cs.setOrdinate(t, CoordinateSequence.Y, ordinates[t * 2 + 1]);
         }
 
-        if (shapeType == ShapeType.MULTIPOINTZ) {
+        if (shapeType == ShapeType.MULTIPOINTZ && !flatGeometry) {
             dbuffer.position(dbuffer.position() + 2);
 
             dbuffer.get(ordinates, 0, numpoints);
@@ -141,7 +142,8 @@ public class MultiPointHandler implements ShapeHandler {
             }
         }
 
-        if (shapeType == ShapeType.MULTIPOINTZ || shapeType == ShapeType.MULTIPOINTM) {
+        if ((shapeType == ShapeType.MULTIPOINTZ || shapeType == ShapeType.MULTIPOINTM)
+                && !flatGeometry) {
             dbuffer.position(dbuffer.position() + 2);
 
             dbuffer.get(ordinates, 0, numpoints);

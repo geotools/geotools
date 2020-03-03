@@ -30,36 +30,16 @@ public abstract class Signature implements Cloneable {
     /** Increments the binary signature, that is, adds 1 to it */
     public abstract void increment();
 
-    /**
-     * Checks if this signature contains another
-     *
-     * @param other
-     * @param k
-     * @return
-     */
+    /** Checks if this signature contains another */
     public abstract boolean contains(Signature other, int k);
 
-    /**
-     * Returns the flag at the i-th position
-     *
-     * @param i
-     * @return
-     */
+    /** Returns the flag at the i-th position */
     public abstract boolean get(int i);
 
-    /**
-     * Sets the flag at the i-th position
-     *
-     * @param idx
-     * @param b
-     */
+    /** Sets the flag at the i-th position */
     public abstract void set(int idx, boolean b);
 
-    /**
-     * The size of the signature, in number of bits
-     *
-     * @return
-     */
+    /** The size of the signature, in number of bits */
     public abstract int size();
 
     /** Clones the signature */

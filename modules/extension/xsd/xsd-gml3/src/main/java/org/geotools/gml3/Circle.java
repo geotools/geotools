@@ -75,11 +75,6 @@ public class Circle {
      * bounds to this method that do not represent a square. If this is the case, we must force the
      * bounding rectangle to be a square. To this end, we check the box and set the side of the box
      * to the larger dimension of the rectangle
-     *
-     * @param xLeft
-     * @param yUpper
-     * @param xRight
-     * @param yLower
      */
     public Circle(double xLeft, double yUpper, double xRight, double yLower) {
         double side = Math.min(Math.abs(xRight - xLeft), Math.abs(yLower - yUpper));
@@ -91,10 +86,6 @@ public class Circle {
     /**
      * Three point method of circle construction. All three points must be on the circumference of
      * the circle.
-     *
-     * @param point1
-     * @param point2
-     * @param point3
      */
     public Circle(Coordinate point1, Coordinate point2, Coordinate point3) {
         initThreePointCircle(point1, point2, point3);
@@ -103,13 +94,6 @@ public class Circle {
     /**
      * Three point method of circle construction. All three points must be on the circumference of
      * the circle.
-     *
-     * @param x1
-     * @param y1
-     * @param x2
-     * @param y2
-     * @param x3
-     * @param y3
      */
     public Circle(double x1, double y1, double x2, double y2, double x3, double y3) {
         this(new Coordinate(x1, y1), new Coordinate(x2, y2), new Coordinate(x3, y3));

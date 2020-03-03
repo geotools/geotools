@@ -29,13 +29,7 @@ import org.opengis.temporal.TemporalReferenceSystem;
  */
 public class DefaultJulianDate extends DefaultTemporalCoordinate implements JulianDate {
 
-    /**
-     * Creates a new instance of JulianDate.
-     *
-     * @param frame
-     * @param indeterminatePosition
-     * @param coordinateValue
-     */
+    /** Creates a new instance of JulianDate. */
     public DefaultJulianDate(
             TemporalReferenceSystem frame,
             IndeterminateValue indeterminatePosition,

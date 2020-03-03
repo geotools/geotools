@@ -2017,7 +2017,6 @@ public class SymbolMBLayer extends MBLayer {
      * be handled by the {@link SpriteGraphicFactory}, but this method also supports GeoTools {@link
      * Mark}s as a special case.
      *
-     * @param transformer
      * @param styleContext The containing style (used to get the sprite source)
      * @return A graphic based on this style's 'icon-image' property.
      */

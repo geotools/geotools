@@ -69,11 +69,7 @@ public class GeometryTestOperation extends Assert {
         return operation;
     }
 
-    /**
-     * Sets the expected result.
-     *
-     * @param expectedResult
-     */
+    /** Sets the expected result. */
     public void setExpectedResult(Object expectedResult) {
         this.expectedResult = expectedResult;
     }
@@ -118,7 +114,6 @@ public class GeometryTestOperation extends Assert {
      *
      * @param a argument object a
      * @param b argument object b
-     * @return
      */
     public boolean run(Geometry a, Geometry b) {
         boolean result = false;

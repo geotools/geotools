@@ -240,13 +240,7 @@ public abstract class TestCaseSupport extends TestCase {
         }
     }
 
-    /**
-     * Returns the absolute path of a test file, given its location in the test data set
-     *
-     * @param testData
-     * @return
-     * @throws IOException
-     */
+    /** Returns the absolute path of a test file, given its location in the test data set */
     protected String getAbsolutePath(String testData) throws IOException {
         if (testData.endsWith(".shp"))
             copy(testData, new String[] {"shp", "dbf", "shx"}, new String[] {"prj"});
@@ -263,12 +257,7 @@ public abstract class TestCaseSupport extends TestCase {
         return new TestSuite(c);
     }
 
-    /**
-     * True if OGR supports the specified format
-     *
-     * @param format
-     * @return
-     */
+    /** True if OGR supports the specified format */
     protected boolean ogrSupports(String format) {
         return dataStoreFactory.getAvailableDrivers().contains(format);
     }

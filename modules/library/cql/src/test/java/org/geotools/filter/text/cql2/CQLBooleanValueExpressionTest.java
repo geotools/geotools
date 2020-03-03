@@ -56,11 +56,7 @@ public class CQLBooleanValueExpressionTest {
         this.language = language;
     }
 
-    /**
-     * Sample: ATTR1 < 10 AND ATTR2 < 2
-     *
-     * @throws CQLException
-     */
+    /** Sample: ATTR1 < 10 AND ATTR2 < 2 */
     @Test
     public void and() throws CQLException {
         Filter result = CompilerUtil.parseFilter(this.language, FilterCQLSample.FILTER_AND);
@@ -72,11 +68,7 @@ public class CQLBooleanValueExpressionTest {
         Assert.assertEquals("ATTR1 < 10 AND ATTR2 < 2 was expected", expected, result);
     }
 
-    /**
-     * Sample: "ATTR1 > 10 OR ATTR2 < 2"
-     *
-     * @throws CQLException
-     */
+    /** Sample: "ATTR1 > 10 OR ATTR2 < 2" */
     @Test
     public void or() throws CQLException {
         // "ATTR1 > 10 OR ATTR2 < 2"
@@ -92,8 +84,6 @@ public class CQLBooleanValueExpressionTest {
     /**
      * Sample 1: ATTR1 < 10 AND ATTR2 < 2 OR ATTR3 > 10 Sample 2: ATTR3 < 4 AND (ATT1 > 10 OR ATT2 <
      * 2)
-     *
-     * @throws CQLException
      */
     @Test
     public void andOr() throws CQLException {
@@ -118,11 +108,7 @@ public class CQLBooleanValueExpressionTest {
         Assert.assertEquals("a bad filter was expected", expected, result);
     }
 
-    /**
-     * Sample: NOT ATTR1 < 10
-     *
-     * @throws Exception
-     */
+    /** Sample: NOT ATTR1 < 10 */
     @Test
     public void not() throws Exception {
 
@@ -150,8 +136,6 @@ public class CQLBooleanValueExpressionTest {
      * ATTR3 < 4 AND (NOT( ATTR1 < 10 AND ATTR2 < 2))
      * ATTR1 < 1 AND (NOT (ATTR2 < 2)) AND ATTR3 < 3
      * </pre>
-     *
-     * @throws Exception
      */
     @Test
     public void andNot() throws Exception {

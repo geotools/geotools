@@ -74,28 +74,19 @@ public class GeoJSONFeatureStore extends ContentFeatureStore {
         return delegate.buildFeatureType();
     }
 
-    /**
-     * @return
-     * @see org.geotools.data.geojson.GeoJSONFeatureSource#getDataStore()
-     */
+    /** @see org.geotools.data.geojson.GeoJSONFeatureSource#getDataStore() */
     @Override
     public GeoJSONDataStore getDataStore() {
         return delegate.getDataStore();
     }
 
-    /**
-     * @return
-     * @see org.geotools.data.store.ContentFeatureSource#getEntry()
-     */
+    /** @see org.geotools.data.store.ContentFeatureSource#getEntry() */
     @Override
     public ContentEntry getEntry() {
         return delegate.getEntry();
     }
 
-    /**
-     * @return
-     * @see org.geotools.data.store.ContentFeatureSource#getTransaction()
-     */
+    /** @see org.geotools.data.store.ContentFeatureSource#getTransaction() */
     @Override
     public Transaction getTransaction() {
         return delegate.getTransaction();
@@ -108,37 +99,25 @@ public class GeoJSONFeatureStore extends ContentFeatureStore {
             delegate.setTransaction(transaction);
         }
     }
-    /**
-     * @return
-     * @see org.geotools.data.store.ContentFeatureSource#getState()
-     */
+    /** @see org.geotools.data.store.ContentFeatureSource#getState() */
     @Override
     public ContentState getState() {
         return delegate.getState();
     }
 
-    /**
-     * @return
-     * @see org.geotools.data.store.ContentFeatureSource#getInfo()
-     */
+    /** @see org.geotools.data.store.ContentFeatureSource#getInfo() */
     @Override
     public ResourceInfo getInfo() {
         return delegate.getInfo();
     }
 
-    /**
-     * @return
-     * @see org.geotools.data.store.ContentFeatureSource#getName()
-     */
+    /** @see org.geotools.data.store.ContentFeatureSource#getName() */
     @Override
     public Name getName() {
         return delegate.getName();
     }
 
-    /**
-     * @return
-     * @see org.geotools.data.store.ContentFeatureSource#getQueryCapabilities()
-     */
+    /** @see org.geotools.data.store.ContentFeatureSource#getQueryCapabilities() */
     @Override
     public QueryCapabilities getQueryCapabilities() {
         return delegate.getQueryCapabilities();

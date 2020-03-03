@@ -155,9 +155,6 @@ public class Circle2D {
     /**
      * Verifies weather the circle contains a node or not. Point laying at the border of the circle
      * are not contained by the circle.
-     *
-     * @param dp
-     * @return
      */
     public boolean contains(Point2D dp) {
         double dx = this.x - dp.getX();

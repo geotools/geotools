@@ -67,11 +67,7 @@ public class WKTReader {
     public WKTReader(CoordinateReferenceSystem crs) {
         this(crs, new PositionFactoryImpl(crs));
     }
-    /**
-     * Creates a reader that creates objects using the given {@link crs}.
-     *
-     * @param crs
-     */
+    /** Creates a reader that creates objects using the given {@link crs}. */
     public WKTReader(CoordinateReferenceSystem crs, PositionFactory aPositionFactory) {
         this.crs = crs;
         this.positionFactory = aPositionFactory;
@@ -265,7 +261,6 @@ public class WKTReader {
      * Throws a formatted ParseException for the current token.
      *
      * @param expected a description of what was expected
-     * @throws ParseException
      * @throws AssertionFailedException if an invalid token is encountered
      */
     private void parseError(String expected) throws ParseException {
@@ -401,12 +396,7 @@ public class WKTReader {
         return new SurfaceImpl(sfb); // this.primitiveFactory.createSurface(sfb);
     }
 
-    /**
-     * Creates a curve from a Coordinate array
-     *
-     * @param aCoords
-     * @return
-     */
+    /** Creates a curve from a Coordinate array */
     private OrientableCurve createCurve(Coordinate[] aCoords) {
         List<Position> points = new ArrayList<Position>();
         for (int i = 0; i < aCoords.length; i++) {

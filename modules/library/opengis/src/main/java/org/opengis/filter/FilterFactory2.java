@@ -137,17 +137,7 @@ public interface FilterFactory2 extends FilterFactory {
      */
     PropertyName property(String xpath, NamespaceSupport namespaceContext);
 
-    /**
-     * Character string comparison operator with pattern matching and specified wildcards.
-     *
-     * @param expr
-     * @param pattern
-     * @param wildcard
-     * @param singleChar
-     * @param escape
-     * @param matchCase
-     * @return
-     */
+    /** Character string comparison operator with pattern matching and specified wildcards. */
     PropertyIsLike like(
             Expression expr,
             String pattern,
@@ -156,18 +146,7 @@ public interface FilterFactory2 extends FilterFactory {
             String escape,
             boolean matchCase);
 
-    /**
-     * Character string comparison operator with pattern matching and specified wildcards.
-     *
-     * @param expr
-     * @param pattern
-     * @param wildcard
-     * @param singleChar
-     * @param escape
-     * @param matchCase
-     * @param matchAction
-     * @return
-     */
+    /** Character string comparison operator with pattern matching and specified wildcards. */
     PropertyIsLike like(
             Expression expr,
             String pattern,

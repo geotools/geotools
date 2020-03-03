@@ -71,8 +71,6 @@ public class RasterInfoTest {
      * ]
      * </pre>
      * </code>
-     *
-     * @return
      */
     private RasterInfo createPyramid() {
 

@@ -155,12 +155,7 @@ public class SimpleFeatureTypeImpl extends FeatureTypeImpl implements SimpleFeat
         return getName().getLocalPart();
     }
 
-    /**
-     * Builds the name -> position index used by simple features for fast attribute lookup
-     *
-     * @param featureType
-     * @return
-     */
+    /** Builds the name -> position index used by simple features for fast attribute lookup */
     static Map<String, Integer> buildIndex(SimpleFeatureType featureType) {
         // build an index of attribute name to index
         Map<String, Integer> index = new HashMap<String, Integer>();
@@ -174,12 +169,7 @@ public class SimpleFeatureTypeImpl extends FeatureTypeImpl implements SimpleFeat
         return index;
     }
 
-    /**
-     * Builds the name -> descriptor index used by simple features for fast attribute lookup
-     *
-     * @param featureType
-     * @return
-     */
+    /** Builds the name -> descriptor index used by simple features for fast attribute lookup */
     static Map<String, AttributeDescriptor> buildDescriptorIndex(SimpleFeatureType featureType) {
         // build an index of attribute name to index
         Map<String, AttributeDescriptor> index = new HashMap<>();

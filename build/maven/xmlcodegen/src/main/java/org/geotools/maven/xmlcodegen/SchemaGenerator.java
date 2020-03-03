@@ -219,8 +219,6 @@ public class SchemaGenerator extends AbstractGenerator {
     
     /**
      * Provide an explicit mapping from an XSD type
-     * @param namespace
-     * @param name
      */
     public void addTypeMapping(String namespace, String name,
         AttributeType gtType) {
@@ -253,7 +251,6 @@ public class SchemaGenerator extends AbstractGenerator {
      * If a type has a binding, it will be treated as non-complex and bound to
      * the named class.
      * 
-     * @param typeBindings
      */
     public void setTypeBindings(TypeBinding[] typeBindings) {
         Map<Name, String> bindings = new HashMap<Name, String>();

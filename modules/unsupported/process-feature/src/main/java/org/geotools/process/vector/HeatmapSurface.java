@@ -155,11 +155,7 @@ public class HeatmapSurface {
         return grid;
     }
 
-    /**
-     * Normalizes grid values to range [0,1]
-     *
-     * @param grid
-     */
+    /** Normalizes grid values to range [0,1] */
     private void normalize(float[][] grid) {
         float max = Float.NEGATIVE_INFINITY;
         for (int i = 0; i < grid.length; i++) {

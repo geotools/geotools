@@ -39,11 +39,7 @@ public interface ColorMapEntry {
     /** @param label */
     void setLabel(String label);
 
-    /**
-     * Expression resulting in a color
-     *
-     * @param color
-     */
+    /** Expression resulting in a color */
     void setColor(Expression color);
 
     /** @return Expression evaluated into a color */
@@ -54,11 +50,7 @@ public interface ColorMapEntry {
     /** @return Opacity expressed as a value between 0 and 1 */
     Expression getOpacity();
 
-    /**
-     * Quantity marking the start of this color map entry.
-     *
-     * @param quantity
-     */
+    /** Quantity marking the start of this color map entry. */
     void setQuantity(Expression quantity);
 
     /** @return Quanity marking the start of this color map entry */

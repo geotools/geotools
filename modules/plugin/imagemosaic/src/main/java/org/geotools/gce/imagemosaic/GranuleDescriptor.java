@@ -583,11 +583,7 @@ public class GranuleDescriptor {
         return overviewsController;
     }
 
-    /**
-     * Look for GDAL Auxiliary File and unmarshall it to setup a PamDataset if available
-     *
-     * @throws IOException
-     */
+    /** Look for GDAL Auxiliary File and unmarshall it to setup a PamDataset if available */
     private void checkPamDataset() throws IOException {
         final File file = URLs.urlToFile(granuleUrl);
         final String path = file.getCanonicalPath();
@@ -778,13 +774,7 @@ public class GranuleDescriptor {
                 hints);
     }
 
-    /**
-     * @param feature
-     * @param suggestedSPI
-     * @param pathType
-     * @param locationAttribute
-     * @param parentLocation
-     */
+    /** */
     public GranuleDescriptor(
             final SimpleFeature feature,
             final ImageReaderSpi suggestedSPI,
@@ -935,9 +925,6 @@ public class GranuleDescriptor {
     /**
      * Extracts the referenced envelope of the default geometry (used to be feature.getBounds, but
      * that method returns the bounds of all geometries in the feature)
-     *
-     * @param feature
-     * @return
      */
     private ReferencedEnvelope getFeatureBounds(final SimpleFeature feature) {
         Geometry g = (Geometry) feature.getDefaultGeometry();
@@ -1658,13 +1645,7 @@ public class GranuleDescriptor {
         }
     }
 
-    /**
-     * Returns the raw color model of the reader at the specified image index
-     *
-     * @param reader
-     * @param imageIndex
-     * @return
-     */
+    /** Returns the raw color model of the reader at the specified image index */
     private ColorModel getRawColorModel(ImageReader reader, int imageIndex) {
         try {
             ImageTypeSpecifier imageType = reader.getRawImageType(imageIndex);

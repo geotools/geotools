@@ -104,10 +104,7 @@ public class WMS1_1_1 extends WMS1_1_0 {
 
     public static class InternalGetStylesRequest extends AbstractGetStylesRequest {
 
-        /**
-         * @param onlineResource
-         * @param properties
-         */
+        /** */
         public InternalGetStylesRequest(URL onlineResource, Properties properties) {
             super(onlineResource, properties);
         }

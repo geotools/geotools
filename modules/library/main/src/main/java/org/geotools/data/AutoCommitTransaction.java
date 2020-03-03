@@ -146,9 +146,6 @@ class AutoCommitTransaction implements Transaction {
     /**
      * Implementation of addProperty.
      *
-     * @param key
-     * @param value
-     * @throws UnsupportedOperationException
      * @see org.geotools.data.Transaction#addProperty(java.lang.Object, java.lang.Object)
      */
     public void putProperty(Object key, Object value) {

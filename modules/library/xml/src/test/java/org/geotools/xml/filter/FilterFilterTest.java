@@ -286,8 +286,6 @@ public class FilterFilterTest {
     /**
      * As for GEOT-821, this test ensures that the filter parser makes proper use of the
      * characters(...) method in ContentHandler to not truncate the content of attribute names
-     *
-     * @throws Exception
      */
     @Test
     public void testLargeFilter() throws Exception {

@@ -154,12 +154,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
 
     private static BufferedImage worldDEMImage = null;
 
-    /**
-     * Creates a simple 128x128 {@link RenderedImage} for testing purposes.
-     *
-     * @param maximum
-     * @return
-     */
+    /** Creates a simple 128x128 {@link RenderedImage} for testing purposes. */
     private static RenderedImage getSynthetic(final double maximum) {
         final int width = 128;
         final int height = 128;
@@ -188,7 +183,6 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
      *
      * @param direct <code>true</code> when we request a {@link DirectColorModel}, <code>false
      *     </code> otherwise.
-     * @return
      */
     private static BufferedImage getSyntheticRGB(final boolean direct) {
         final int width = 128;
@@ -217,7 +211,6 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
      *
      * @param direct <code>true</code> when we request a {@link DirectColorModel}, <code>false
      *     </code> otherwise.
-     * @return
      */
     private static BufferedImage getSyntheticRGB(Color color, int sideSize) {
         final int width = sideSize;
@@ -244,7 +237,6 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
      *
      * @param direct <code>true</code> when we request a {@link DirectColorModel}, <code>false
      *     </code> otherwise.
-     * @return
      */
     private static BufferedImage getSyntheticSolidGray(byte gray, int sideSize) {
         final int width = sideSize;
@@ -259,11 +251,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         return image;
     }
 
-    /**
-     * Creates a test paletted image with translucency.
-     *
-     * @return
-     */
+    /** Creates a test paletted image with translucency. */
     private static BufferedImage getSyntheticTranslucentIndexed() {
         final byte bb[] = new byte[256];
         for (int i = 0; i < 256; i++) bb[i] = (byte) i;
@@ -277,11 +265,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         return new BufferedImage(icm, raster, false, null);
     }
 
-    /**
-     * Creates a test paletted image with nodata and no transparency
-     *
-     * @return
-     */
+    /** Creates a test paletted image with nodata and no transparency */
     private static RenderedImage getIndexedRGBNodata() {
         // a palette with just the first 200 entries filled, the others are all zero (but present!)
         final byte bb[] = new byte[256];
@@ -313,11 +297,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         return planarImage;
     }
 
-    /**
-     * Creates a test paletted image with a given number of entries in the map
-     *
-     * @return
-     */
+    /** Creates a test paletted image with a given number of entries in the map */
     private static BufferedImage getSyntheticGrayIndexed(int entries) {
         final byte bb[] = new byte[entries];
         for (int i = 0; i < entries; i++) bb[i] = (byte) i;
@@ -934,10 +914,6 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
     /**
      * Tests the {@link ImageWorker#makeColorTransparent} methods. Some trivial tests are performed
      * before.
-     *
-     * @throws IOException
-     * @throws FileNotFoundException
-     * @throws IllegalStateException
      */
     @Test
     public void testMakeColorTransparent()

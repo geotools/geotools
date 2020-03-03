@@ -84,19 +84,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
     /** The instances. */
     protected Map<Object, Instance> instances = new HashMap<Object, Instance>();
 
-    /**
-     * Constructor
-     *
-     * @param idExpression
-     * @param parentExpression
-     * @param targetXPath
-     * @param isMultiValued
-     * @param clientProperties
-     * @param sourceElement
-     * @param sourcePath
-     * @param namespaces
-     * @throws IOException
-     */
+    /** Constructor */
     public JoiningNestedAttributeMapping(
             Expression idExpression,
             Expression parentExpression,
@@ -123,17 +111,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
                 "Internal error: Not Allowed to run this method for Joining Nested Attribute Mapping!");
     }
 
-    /**
-     * Initialise a new iterator (for polymorphism, there could be multiple per instance)
-     *
-     * @param instance
-     * @param featureTypeName
-     * @param reprojection
-     * @param selectedProperties
-     * @param includeMandatory
-     * @return
-     * @throws IOException
-     */
+    /** Initialise a new iterator (for polymorphism, there could be multiple per instance) */
     public DataAccessMappingFeatureIterator initSourceFeatures(
             Instance instance,
             Name featureTypeName,
@@ -259,10 +237,6 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
     /**
      * Open an instance (cursor) for a specific caller. An instance holds a cursor and any
      * additional information to move through the features.
-     *
-     * @param caller
-     * @param baseTableQuery
-     * @throws IOException
      */
     public void open(Object caller, Query baseTableQuery, FeatureTypeMapping mapping)
             throws IOException {
@@ -278,11 +252,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
         }
     }
 
-    /**
-     * Close the instance of this caller.
-     *
-     * @param caller
-     */
+    /** Close the instance of this caller. */
     @SuppressWarnings("PMD.CloseResource") // iterators are getting closed right here
     public void close(Object caller) {
         Instance instance = instances.get(caller);
@@ -306,10 +276,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
     /**
      * Get matching input features that are stored in this mapping using a supplied link value.
      *
-     * @param foreignKeyValue
      * @return The matching input feature
-     * @throws IOException
-     * @throws IOException
      */
     @Override
     public List<Feature> getInputFeatures(
@@ -399,11 +366,9 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
     /**
      * Get the maching built features that are stored in this mapping using a supplied link value
      *
-     * @param foreignKeyValue
      * @param reprojection Reprojected CRS or null
      * @param selectedProperties list of properties to get
      * @return The matching simple features
-     * @throws IOException
      */
     @Override
     public List<Feature> getFeatures(
@@ -510,10 +475,6 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
     /**
      * If we have decided not to build the parent feature, we need to skip all rows that were
      * returned to build it
-     *
-     * @param caller
-     * @param foreignKeyValue
-     * @throws IOException
      */
     public void skip(Object caller, Object foreignKeyValue, List<Object> idValues)
             throws IOException {

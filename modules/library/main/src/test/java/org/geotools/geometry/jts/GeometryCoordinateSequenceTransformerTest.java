@@ -120,11 +120,7 @@ public class GeometryCoordinateSequenceTransformerTest {
         assertTrue(ls.getCoordinateSequence().size() > 3);
     }
 
-    /**
-     * Confirm that testing method is accurate!
-     *
-     * @throws Exception
-     */
+    /** Confirm that testing method is accurate! */
     @Test
     public void testDifferentDimensionsFailure() throws Exception {
         Geometry g1 = gb.box(10, 10, 20, 20);
@@ -137,9 +133,6 @@ public class GeometryCoordinateSequenceTransformerTest {
     /**
      * Check transformation correctness by transforming forwards and backwards using inverse
      * MathTransforms.
-     *
-     * @param g
-     * @throws TransformException
      */
     private void checkTransform(Geometry g) throws TransformException {
         GeometryCoordinateSequenceTransformer gcsTrans =

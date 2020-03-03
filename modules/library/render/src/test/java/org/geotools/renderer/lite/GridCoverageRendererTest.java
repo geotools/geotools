@@ -232,8 +232,6 @@ public class GridCoverageRendererTest {
      *     exclusive.
      * @return The "real world" grid coverage.
      * @throws IOException if an I/O operation was needed and failed.
-     * @throws ParseException
-     * @throws IllegalArgumentException
      */
     private final GridCoverage2D getGC()
             throws IOException, IllegalArgumentException, ParseException {
@@ -332,8 +330,6 @@ public class GridCoverageRendererTest {
     /**
      * Tests what happens when the grid coverage is associated with a broken style with no
      * symbolizers inside. It should just render nothing, a NPE was reported instead in GEOT-2543.
-     *
-     * @throws Exception
      */
     @Test
     public void paintWrongStyle() throws Exception {
@@ -1378,11 +1374,7 @@ public class GridCoverageRendererTest {
         ImageUtilities.disposeImage(image);
     }
 
-    /**
-     * Tests band selection with Env Function Expression
-     *
-     * @throws Exception
-     */
+    /** Tests band selection with Env Function Expression */
     @Test
     public void testBandSelectionExpression() throws Exception {
         // Create a solid color coverage
@@ -1938,13 +1930,7 @@ public class GridCoverageRendererTest {
         }
     }
 
-    /**
-     * Checks the pixel i/j is fully transparent
-     *
-     * @param image
-     * @param i
-     * @param j
-     */
+    /** Checks the pixel i/j is fully transparent */
     protected void assertPixelIsTransparent(BufferedImage image, int i, int j) {
         int pixel = image.getRGB(i, j);
         assertEquals(true, (pixel >> 24) == 0x00);
@@ -1963,13 +1949,7 @@ public class GridCoverageRendererTest {
         return symbolizer;
     }
 
-    /**
-     * Build a Symbolizer with ENV function ChannelName
-     *
-     * @param envVar
-     * @param band
-     * @return
-     */
+    /** Build a Symbolizer with ENV function ChannelName */
     private RasterSymbolizer buildEnvChannelSelectingSymbolizer(String envVar, int band) {
         StyleBuilder sb = new StyleBuilder();
         RasterSymbolizer symbolizer = sb.createRasterSymbolizer();
@@ -2192,11 +2172,7 @@ public class GridCoverageRendererTest {
         }
     }
 
-    /**
-     * Test painting a request outside the valid area
-     *
-     * @throws Exception
-     */
+    /** Test painting a request outside the valid area */
     @Test
     public void testPaintOutsideValidArea() throws Exception {
 
@@ -2253,11 +2229,7 @@ public class GridCoverageRendererTest {
         ImageAssert.assertEquals(reference, image, 0);
     }
 
-    /**
-     * Test custom PADDING is being used when provided as Hint
-     *
-     * @throws Exception
-     */
+    /** Test custom PADDING is being used when provided as Hint */
     @Test
     public void testPadding() throws Exception {
         CoordinateReferenceSystem wgs84 = CRS.decode("EPSG:4326", true);

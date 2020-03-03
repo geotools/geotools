@@ -190,14 +190,7 @@ public abstract class Selector implements Comparable<Selector> {
         return new Or(selectors);
     }
 
-    /**
-     * Combines in or and simplifies the two given selectors
-     *
-     * @param s1
-     * @param s2
-     * @param context
-     * @return
-     */
+    /** Combines in or and simplifies the two given selectors */
     public static Selector or(Selector s1, Selector s2, Object context) {
         // merge with Reject
         if (s1 instanceof Reject) {
@@ -272,11 +265,7 @@ public abstract class Selector implements Comparable<Selector> {
         return result;
     }
 
-    /**
-     * Returns the specificity of this selector
-     *
-     * @return
-     */
+    /** Returns the specificity of this selector */
     public abstract Specificity getSpecificity();
 
     @Override

@@ -278,13 +278,7 @@ public class LetterConflictTest extends TestCase {
         return count;
     }
 
-    /**
-     * Internal utility method used to write out image for debugging purposes.
-     *
-     * @param testName
-     * @param image
-     * @throws IOException
-     */
+    /** Internal utility method used to write out image for debugging purposes. */
     static void writeImage(String testName, BufferedImage image) throws IOException {
         if (IMAGE_SKIP) return;
 
@@ -298,9 +292,6 @@ public class LetterConflictTest extends TestCase {
      * Internal utility method used to display an image for interactive tests.
      *
      * @param testName test name used as window name
-     * @param timeOut
-     * @param image
-     * @throws InterruptedException
      */
     static void showImage(String testName, long timeOut, final BufferedImage image)
             throws InterruptedException {

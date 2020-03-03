@@ -329,12 +329,7 @@ public class SchemaHandler extends XSIElementHandler {
         return LOCALNAME;
     }
 
-    /**
-     * creates a smaller, more compact version of the schema
-     *
-     * @param thisURI
-     * @throws SAXException
-     */
+    /** creates a smaller, more compact version of the schema */
     protected Schema compress(URI thisURI) throws SAXException {
         if (schema != null) {
             return schema; // already compressed.
@@ -616,11 +611,7 @@ public class SchemaHandler extends XSIElementHandler {
         return null;
     }
 
-    /**
-     * convinience method for package classes
-     *
-     * @param qname
-     */
+    /** convinience method for package classes */
     protected SimpleType lookUpSimpleType(String qname) {
         int index = qname.indexOf(":");
         String localName, prefix1;
@@ -725,12 +716,7 @@ public class SchemaHandler extends XSIElementHandler {
         return null;
     }
 
-    /**
-     * convinience method for package
-     *
-     * @param qname
-     * @throws SAXException
-     */
+    /** convinience method for package */
     protected ComplexType lookUpComplexType(String qname) throws SAXException {
         int index = qname.indexOf(":");
         String localName, prefix1;
@@ -832,12 +818,7 @@ public class SchemaHandler extends XSIElementHandler {
         return null;
     }
 
-    /**
-     * convinience method for package
-     *
-     * @param qname
-     * @throws SAXException
-     */
+    /** convinience method for package */
     protected Element lookUpElement(String qname) throws SAXException {
         int index = qname.indexOf(":");
         String localName, prefix1;
@@ -946,12 +927,7 @@ public class SchemaHandler extends XSIElementHandler {
         return null;
     }
 
-    /**
-     * convinience method for package
-     *
-     * @param qname
-     * @throws SAXException
-     */
+    /** convinience method for package */
     protected Group lookUpGroup(String qname) throws SAXException {
         int index = qname.indexOf(":");
         String localName, prefix1;
@@ -1049,12 +1025,7 @@ public class SchemaHandler extends XSIElementHandler {
         return null;
     }
 
-    /**
-     * convinience method for the package
-     *
-     * @param qname
-     * @throws SAXException
-     */
+    /** convinience method for the package */
     protected AttributeGroup lookUpAttributeGroup(String qname) throws SAXException {
         int index = qname.indexOf(":");
         String localName, prefix1;
@@ -1154,12 +1125,7 @@ public class SchemaHandler extends XSIElementHandler {
         return null;
     }
 
-    /**
-     * convinience method for package
-     *
-     * @param qname
-     * @throws SAXException
-     */
+    /** convinience method for package */
     protected Attribute lookUpAttribute(String qname) throws SAXException {
         int index = qname.indexOf(":");
         String localName, prefix1;
@@ -1220,12 +1186,7 @@ public class SchemaHandler extends XSIElementHandler {
         return null;
     }
 
-    /**
-     * convinience method for package
-     *
-     * @param qname
-     * @throws SAXException
-     */
+    /** convinience method for package */
     protected Type lookUpType(String qname) throws SAXException {
         if (qname == null) return null;
         Type t = null;

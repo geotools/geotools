@@ -52,11 +52,7 @@ public class PrimitiveBoundaryImpl extends BoundaryImpl implements PrimitiveBoun
         this(null);
     }
 
-    /**
-     * Creates a new {@code PrimitiveBoundaryImpl}.
-     *
-     * @param crs
-     */
+    /** Creates a new {@code PrimitiveBoundaryImpl}. */
     public PrimitiveBoundaryImpl(final CoordinateReferenceSystem crs) {
         super(crs);
     }

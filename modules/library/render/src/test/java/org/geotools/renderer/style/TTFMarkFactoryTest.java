@@ -36,8 +36,6 @@ public class TTFMarkFactoryTest extends TestCase {
     /**
      * Checks various malformed ttf paths, some that should be ignored, some that we should complain
      * about
-     *
-     * @throws Exception
      */
     public void testInvalidPaths() throws Exception {
         assertNull(ttf.getShape(null, ff.literal("font://invalid"), null));
@@ -60,11 +58,7 @@ public class TTFMarkFactoryTest extends TestCase {
         }
     }
 
-    /**
-     * Checks valid paths
-     *
-     * @throws Exception
-     */
+    /** Checks valid paths */
     public void testValidPathSimpleNumber() throws Exception {
         Shape shape = ttf.getShape(null, ff.literal("ttf://Serif#56"), null);
         assertNotNull(shape);
@@ -72,11 +66,7 @@ public class TTFMarkFactoryTest extends TestCase {
         assertTrue(shape.getBounds2D().getHeight() <= 1);
     }
 
-    /**
-     * Checks valid paths
-     *
-     * @throws Exception
-     */
+    /** Checks valid paths */
     public void testValidPathHex() throws Exception {
         Shape shape = ttf.getShape(null, ff.literal("ttf://Serif#0xF054"), null);
         assertNotNull(shape);
@@ -84,11 +74,7 @@ public class TTFMarkFactoryTest extends TestCase {
         assertTrue(shape.getBounds2D().getHeight() <= 1);
     }
 
-    /**
-     * Checks valid paths
-     *
-     * @throws Exception
-     */
+    /** Checks valid paths */
     public void testValidPathUnicode() throws Exception {
         Shape shape = ttf.getShape(null, ff.literal("ttf://Serif#U+0041"), null);
         assertNotNull(shape);
@@ -96,11 +82,7 @@ public class TTFMarkFactoryTest extends TestCase {
         assertTrue(shape.getBounds2D().getHeight() <= 1);
     }
 
-    /**
-     * Checks valid paths
-     *
-     * @throws Exception
-     */
+    /** Checks valid paths */
     public void testLocalFont() throws Exception {
         String fontPath =
                 TestData.getResource(StreamingRenderer.class, "recreate.ttf").toURI().toString();

@@ -50,15 +50,7 @@ class FeatureTypeMapper {
         this.ogr = ogr;
     }
 
-    /**
-     * Returns the geotools feature type equivalent from the native OGR one
-     *
-     * @param layer
-     * @param typeName
-     * @param namespaceURI
-     * @return
-     * @throws IOException
-     */
+    /** Returns the geotools feature type equivalent from the native OGR one */
     SimpleFeatureType getFeatureType(Object layer, String typeName, String namespaceURI)
             throws IOException {
         Object definition = null;
@@ -111,12 +103,7 @@ class FeatureTypeMapper {
         }
     }
 
-    /**
-     * Maps the OGR field type to a java class
-     *
-     * @param field
-     * @return
-     */
+    /** Maps the OGR field type to a java class */
     private Class getBinding(Object field) {
         long type = ogr.FieldGetType(field);
         int width = ogr.FieldGetWidth(field);
@@ -171,9 +158,6 @@ class FeatureTypeMapper {
      *   <li>precision is the number of chars after decimal pont
      *   <li>justification: right or left (in outputs)
      * </ul>
-     *
-     * @param ad
-     * @throws IOException
      */
     public Object getOGRFieldDefinition(AttributeDescriptor ad) throws IOException {
         final Class type = ad.getType().getBinding();
@@ -240,13 +224,7 @@ class FeatureTypeMapper {
         return def;
     }
 
-    /**
-     * Returns the OGR geometry type constant given a geometry attribute type
-     *
-     * @param descriptor
-     * @return
-     * @throws IOException
-     */
+    /** Returns the OGR geometry type constant given a geometry attribute type */
     public long getOGRGeometryType(GeometryDescriptor descriptor) throws IOException {
         Class binding = descriptor.getType().getBinding();
         if (GeometryCollection.class.isAssignableFrom(binding)) {
@@ -274,13 +252,7 @@ class FeatureTypeMapper {
         }
     }
 
-    /**
-     * Returns the JTS geometry type equivalent to the layer native one
-     *
-     * @param definition
-     * @return
-     * @throws IOException
-     */
+    /** Returns the JTS geometry type equivalent to the layer native one */
     private Class<? extends Geometry> getGeometryBinding(Object definition) throws IOException {
         long value = ogr.LayerGetGeometryType(definition);
 
@@ -314,13 +286,7 @@ class FeatureTypeMapper {
         }
     }
 
-    /**
-     * Returns the GeoTools {@link CoordinateReferenceSystem} equivalent to the layer native one
-     *
-     * @param layer
-     * @return
-     * @throws IOException
-     */
+    /** Returns the GeoTools {@link CoordinateReferenceSystem} equivalent to the layer native one */
     private CoordinateReferenceSystem getCRS(Object layer) throws IOException {
         Object spatialReference = null;
         CoordinateReferenceSystem crs = null;
@@ -355,9 +321,6 @@ class FeatureTypeMapper {
 
     /**
      * Returns a Pointer to a OGR spatial reference object equivalent to the specified GeoTools CRS
-     *
-     * @param crs
-     * @return
      */
     public Object getSpatialReference(CoordinateReferenceSystem crs) {
         if (crs == null) {

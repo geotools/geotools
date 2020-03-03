@@ -46,7 +46,6 @@ public interface GraphReaderWriter {
      * Creates a Graph from some permanent representation.
      *
      * @return The represented graph.
-     * @throws Exception
      */
     public Graph read() throws Exception;
 
@@ -54,7 +53,6 @@ public interface GraphReaderWriter {
      * Writes the graph to a permanent representation.
      *
      * @param g The graph to be
-     * @throws Exception
      */
     public void write(Graph g) throws Exception;
 }

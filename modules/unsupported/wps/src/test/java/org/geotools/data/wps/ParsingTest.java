@@ -59,8 +59,6 @@ public class ParsingTest {
      *   <li>http://schemas.opengis.net/wps/1.0.0/examples/40_wpsDescribeProcess_response.xml <br>
      *       referenceProcessDescriptions.xml
      * </ul>
-     *
-     * @throws IOException
      */
     @Test
     public void testDescribeProcessParsing() throws Exception {

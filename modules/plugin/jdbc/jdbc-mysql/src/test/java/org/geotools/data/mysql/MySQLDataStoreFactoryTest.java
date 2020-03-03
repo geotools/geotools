@@ -42,11 +42,7 @@ public class MySQLDataStoreFactoryTest extends TestCase {
         assertTrue(factory.canProcess(params));
     }
 
-    /**
-     * check fix of possible NPE issue during MySQLVersion56 check (pull request #2033)
-     *
-     * @throws Exception
-     */
+    /** check fix of possible NPE issue during MySQLVersion56 check (pull request #2033) */
     public void testNoNpeOnConnectionFailure() throws Exception {
         // create a dummy JDBC store
         JDBCDataStore store = new JDBCDataStore();

@@ -135,11 +135,7 @@ public class AppSchemaDataAccessConfigurator {
 
     private Map schemaURIs;
 
-    /**
-     * Convenience method for "joining" property.
-     *
-     * @return
-     */
+    /** Convenience method for "joining" property. */
     public static boolean isJoining() {
         String s =
                 AppSchemaDataAccessRegistry.getAppSchemaProperties().getProperty(PROPERTY_JOINING);
@@ -263,8 +259,6 @@ public class AppSchemaDataAccessConfigurator {
      *
      * <p>Build steps are: - parse xml schemas to FM types - connect to source datastores - build
      * mappings
-     *
-     * @return
      */
     private Set<FeatureTypeMapping> buildMappings() throws IOException {
         // -parse target xml schemas, let parsed types on <code>registry</code>
@@ -289,12 +283,7 @@ public class AppSchemaDataAccessConfigurator {
         }
     }
 
-    /**
-     * Ensure any source data stores not used in a mapping are disposed.
-     *
-     * @param sourceDataStores
-     * @param featureTypeMappings
-     */
+    /** Ensure any source data stores not used in a mapping are disposed. */
     private void disposeUnusedSourceDataStores(
             Map<String, DataAccess<FeatureType, Feature>> sourceDataStores,
             Set<FeatureTypeMapping> featureTypeMappings) {
@@ -501,10 +490,6 @@ public class AppSchemaDataAccessConfigurator {
     /**
      * Creates a list of {@link org.geotools.data.complex.AttributeMapping} from the attribute
      * mapping configurations in the provided list of {@link AttributeMapping}
-     *
-     * @param root
-     * @param attDtos
-     * @return
      */
     private List getAttributeMappings(
             final AttributeDescriptor root,
@@ -688,8 +673,6 @@ public class AppSchemaDataAccessConfigurator {
      * Throws an IllegalArgumentException if some Step in the given xpath StepList has a prefix for
      * which no prefix to namespace mapping were provided (as in the Namespaces section of the
      * mappings xml configuration file)
-     *
-     * @param targetXPathSteps
      */
     private void validateConfiguredNamespaces(StepList targetXPathSteps) {
         for (Iterator it = targetXPathSteps.iterator(); it.hasNext(); ) {
@@ -747,10 +730,8 @@ public class AppSchemaDataAccessConfigurator {
     }
 
     /**
-     * @param dto
      * @return Map&lt;Name, Expression&gt; with the values per qualified name (attribute name in the
      *     mapping)
-     * @throws DataSourceException
      */
     private Map getClientProperties(org.geotools.data.complex.config.AttributeMapping dto)
             throws DataSourceException {
@@ -815,8 +796,6 @@ public class AppSchemaDataAccessConfigurator {
      * <p>The list of file names to parse is obtained from config.getTargetSchemasUris(). If a file
      * name contained in that list is a relative path (i.e., does not starts with file: or http:,
      * config.getBaseSchemasUrl() is used to resolve relative paths against.
-     *
-     * @throws IOException
      */
     private void parseGmlSchemas() throws IOException {
         AppSchemaDataAccessConfigurator.LOGGER.finer("about to parse target schemas");
@@ -924,7 +903,6 @@ public class AppSchemaDataAccessConfigurator {
     /**
      * @return a Map&lt;String,DataStore&gt; where the key is the id given to the datastore in the
      *     configuration.
-     * @throws IOException
      */
     private Map<String, DataAccess<FeatureType, Feature>> acquireSourceDatastores()
             throws IOException {
@@ -1036,9 +1014,6 @@ public class AppSchemaDataAccessConfigurator {
     /**
      * Return datastore params filtered to include only known-safe parameters. We cannot try to find
      * passwords, because even dbtype could be misspelled.
-     *
-     * @param datastoreParams
-     * @return
      */
     @SuppressWarnings("unchecked")
     private Map filterDatastoreParams(Map datastoreParams) {
@@ -1055,7 +1030,6 @@ public class AppSchemaDataAccessConfigurator {
      * Resolves any source datastore parameter settled as a file path relative to the location of
      * the xml mappings configuration file as an absolute path and returns a new Map with it.
      *
-     * @param datastoreParams
      * @return parameter map with resolved file url
      */
     private Map<String, Serializable> resolveRelativePaths(

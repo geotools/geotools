@@ -88,10 +88,7 @@ public class RuleParser extends YsldParseHandler {
         }
     }
 
-    /**
-     * @param r
-     * @return The parsed scale, or null if the {@link YamlMap} has no "scale" key.
-     */
+    /** @return The parsed scale, or null if the {@link YamlMap} has no "scale" key. */
     @Nullable
     private ScaleRange parseScale(YamlMap r) {
         if (r.has("scale")) {

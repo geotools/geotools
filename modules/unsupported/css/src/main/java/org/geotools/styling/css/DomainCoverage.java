@@ -87,9 +87,6 @@ class DomainCoverage {
         /**
          * Returns a list of scale dependent filters that represent the difference (the uncovered
          * area) between this {@link SLDSelector} and then specified rule
-         *
-         * @param rule
-         * @return
          */
         public List<SLDSelector> difference(SLDSelector other) {
             List<SLDSelector> result = new ArrayList<>();
@@ -222,11 +219,7 @@ class DomainCoverage {
      */
     int complexityThreshold = 0;
 
-    /**
-     * Create a new domain coverage for the given feature type
-     *
-     * @param targetFeatureType
-     */
+    /** Create a new domain coverage for the given feature type */
     public DomainCoverage(
             FeatureType targetFeatureType, UnboundSimplifyingFilterVisitor simplifier) {
         this.elements = new ArrayList<>();
@@ -237,9 +230,6 @@ class DomainCoverage {
     /**
      * Adds a rule to the domain, and returns a list of rules representing bits of the domain that
      * were still not covered by the previous rules
-     *
-     * @param rule
-     * @return
      */
     public List<CssRule> addRule(CssRule rule) {
         Selector selector = rule.getSelector();
@@ -366,13 +356,7 @@ class DomainCoverage {
         return result;
     }
 
-    /**
-     * Turns the specified selector into a list of "standardized" SLDSelector
-     *
-     * @param selector
-     * @param targetFeatureType
-     * @return
-     */
+    /** Turns the specified selector into a list of "standardized" SLDSelector */
     List<SLDSelector> toSLDSelectors(Selector selector, FeatureType targetFeatureType) {
         List<SLDSelector> result = new ArrayList<>();
         if (selector instanceof Or) {
@@ -396,10 +380,6 @@ class DomainCoverage {
     /**
      * Flattens a single SLD selector into a list of {@link SLDSelector}, adding them into the
      * scaleDependentFilters list
-     *
-     * @param selector
-     * @param targetFeatureType
-     * @param scaleDependentFilters
      */
     private void toIndependentSLDSelectors(
             Selector selector,
@@ -433,9 +413,6 @@ class DomainCoverage {
     /**
      * Simplifies a filter via the simplifying filter visitor, taking into account the target
      * feature type
-     *
-     * @param filter
-     * @return
      */
     Filter simplify(Filter filter) {
         return (Filter) filter.accept(simplifier, null);

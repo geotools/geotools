@@ -62,7 +62,6 @@ public class ColorBrewer {
      * Creates a static instance of ColorBrewer containing all default palettes
      *
      * @return The ColorBrewer instance with all the default palettes.
-     * @throws IOException
      */
     public static ColorBrewer instance() {
         ColorBrewer me = new ColorBrewer();
@@ -76,7 +75,6 @@ public class ColorBrewer {
      *
      * @param type A PaletteType object which will be used to configure the returned ColorBrewer.
      * @return The ColorBrewer instance with the palette from the parameter.
-     * @throws IOException
      */
     public static ColorBrewer instance(PaletteType type) throws IOException {
         ColorBrewer me = new ColorBrewer();
@@ -249,11 +247,7 @@ public class ColorBrewer {
         return (BrewerPalette) palettes.get(name);
     }
 
-    /**
-     * Loads the default ColorBrewer palettes.
-     *
-     * @throws IOException
-     */
+    /** Loads the default ColorBrewer palettes. */
     public void loadPalettes() {
         loadPalettes(SEQUENTIAL);
         loadPalettes(DIVERGING);
@@ -265,7 +259,6 @@ public class ColorBrewer {
      * that of the parameter.
      *
      * @param type The PaletteType for the palettes to load.
-     * @throws IOException
      */
     public void loadPalettes(PaletteType type) {
         if (type.equals(ALL)) {
@@ -303,7 +296,6 @@ public class ColorBrewer {
     /**
      * Loads into the ColorBrewer instance the set of palettes matching the given parameters.
      *
-     * @param XMLinput
      * @param type identifier for palettes. use "new PaletteType();"
      */
     public void loadPalettes(InputStream XMLinput, PaletteType type) {

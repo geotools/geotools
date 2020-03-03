@@ -319,9 +319,7 @@ public class IntersectionMatrix implements Cloneable {
     //	 * Returns <code>true</code> if this <code>IntersectionMatrix</code> is
     //	 * FT*******, F**T***** or F***T****.
     //	 *
-    //	 * @param dimensionOfGeometryA
     //	 *            the dimension of the first <code>Geometry</code>
-    //	 * @param dimensionOfGeometryB
     //	 *            the dimension of the second <code>Geometry</code>
     //	 * @return <code>true</code> if the two <code>Geometry</code> s related
     //	 *         by this <code>IntersectionMatrix</code> touch; Returns false if
@@ -367,9 +365,7 @@ public class IntersectionMatrix implements Cloneable {
     //	 * situations. JTS extends the definition to apply to L/P, A/P and A/L
     //	 * situations as well. This makes the relation symmetric.
     //	 *
-    //	 * @param dimensionOfGeometryA
     //	 *            the dimension of the first <code>Geometry</code>
-    //	 * @param dimensionOfGeometryB
     //	 *            the dimension of the second <code>Geometry</code>
     //	 * @return <code>true</code> if the two <code>Geometry</code>s related
     //	 *         by this <code>IntersectionMatrix</code> cross.
@@ -466,9 +462,7 @@ public class IntersectionMatrix implements Cloneable {
     //	 * Returns <code>true</code> if this <code>IntersectionMatrix</code> is
     //	 * T*F**FFF*.
     //	 *
-    //	 * @param dimensionOfGeometryA
     //	 *            the dimension of the first <code>Geometry</code>
-    //	 * @param dimensionOfGeometryB
     //	 *            the dimension of the second <code>Geometry</code>
     //	 * @return <code>true</code> if the two <code>Geometry</code> s related
     //	 *         by this <code>IntersectionMatrix</code> are equal; the
@@ -493,9 +487,7 @@ public class IntersectionMatrix implements Cloneable {
     //	 * <LI> 1*T***T** (for two curves)
     //	 * </UL> .
     //	 *
-    //	 * @param dimensionOfGeometryA
     //	 *            the dimension of the first <code>Geometry</code>
-    //	 * @param dimensionOfGeometryB
     //	 *            the dimension of the second <code>Geometry</code>
     //	 * @return <code>true</code> if the two <code>Geometry</code> s related
     //	 *         by this <code>IntersectionMatrix</code> overlap. For this

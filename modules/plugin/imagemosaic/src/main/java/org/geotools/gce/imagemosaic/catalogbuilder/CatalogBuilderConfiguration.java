@@ -74,12 +74,7 @@ public class CatalogBuilderConfiguration implements Cloneable {
         this.hints = hints;
     }
 
-    /**
-     * Get the schema with the specified name
-     *
-     * @param name
-     * @return
-     */
+    /** Get the schema with the specified name */
     public String getSchema(String name) {
         // return schema;
         SchemasType schemas = indexer.getSchemas();
@@ -94,12 +89,7 @@ public class CatalogBuilderConfiguration implements Cloneable {
         return null;
     }
 
-    /**
-     * Set the indexer parameter
-     *
-     * @param parameterName
-     * @param parameterValue
-     */
+    /** Set the indexer parameter */
     public void setParameter(String parameterName, String parameterValue) {
         List<Parameter> params = indexer.getParameters().getParameter();
         parameterValue = IndexerUtils.refineParameterValue(parameterName, parameterValue);

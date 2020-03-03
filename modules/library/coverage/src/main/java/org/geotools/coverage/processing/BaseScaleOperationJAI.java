@@ -67,7 +67,6 @@ public abstract class BaseScaleOperationJAI extends OperationJAI {
      * Constructor for {@link BaseScaleOperationJAI}.
      *
      * @param operation name of the {@link JAI} operation we wrap.
-     * @throws OperationNotFoundException
      */
     public BaseScaleOperationJAI(String operation) throws OperationNotFoundException {
         super(operation);
@@ -86,7 +85,6 @@ public abstract class BaseScaleOperationJAI extends OperationJAI {
      * Constructor for {@link BaseScaleOperationJAI}.
      *
      * @param operation {@link OperationDescriptor} of the {@link JAI} operation we wrap.
-     * @param descriptor
      */
     public BaseScaleOperationJAI(
             OperationDescriptor operation, ParameterDescriptorGroup descriptor) {

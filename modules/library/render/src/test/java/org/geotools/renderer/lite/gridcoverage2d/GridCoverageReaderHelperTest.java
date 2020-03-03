@@ -420,8 +420,6 @@ public class GridCoverageReaderHelperTest {
      * Checks that code does not end up reading an mosaicking a secondary part of data that's
      * overlapping with the larger area requested, only because the source data self overlaps (has
      * data beyond the dateline in both directions)
-     *
-     * @throws Exception
      */
     @Test
     public void testReadOffDatelineBothSides() throws Exception {

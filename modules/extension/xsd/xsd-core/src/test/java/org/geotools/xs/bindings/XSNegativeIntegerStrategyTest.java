@@ -27,8 +27,6 @@ public class XSNegativeIntegerStrategyTest extends TestSchema {
      * a finite-length sequence of decimal digits (#x30-#x39).
      *
      * <p>For example: -1, -12678967543233, -100000.
-     *
-     * @throws Exception
      */
     public void validateValues(String text, Number expected) throws Exception {
         Object value = new BigInteger(text.trim());

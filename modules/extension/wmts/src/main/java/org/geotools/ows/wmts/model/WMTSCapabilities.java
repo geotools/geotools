@@ -518,10 +518,7 @@ public class WMTSCapabilities extends Capabilities {
         return matrixSetMap.get(identifier);
     }
 
-    /**
-     * @param string
-     * @return
-     */
+    /** */
     public WMTSLayer getLayer(String name) {
         return layerMap.get(name);
     }

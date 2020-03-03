@@ -149,9 +149,6 @@ public class Filters {
      * Safe version of FilterFactory *and* that is willing to combine filter1 and filter2 correctly
      * in the even either of them is already an And filter.
      *
-     * @param ff
-     * @param filter1
-     * @param filter2
      * @return And
      */
     public static Filter and(org.opengis.filter.FilterFactory ff, Filter filter1, Filter filter2) {
@@ -201,11 +198,6 @@ public class Filters {
     /**
      * Safe version of FilterFactory *or* that is willing to combine filter1 and filter2 correctly
      * in the even either of them is already an Or filter.
-     *
-     * @param ff
-     * @param filter1
-     * @param filter2
-     * @return
      */
     public static Filter or(org.opengis.filter.FilterFactory ff, Filter filter1, Filter filter2) {
         ArrayList<Filter> list = new ArrayList<Filter>();
@@ -258,7 +250,6 @@ public class Filters {
      * </pre>
      *
      * @see ExpressionType
-     * @param experssion
      * @return ExpressionType constant.
      */
     public static short getExpressionType(org.opengis.filter.expression.Expression experssion) {
@@ -303,7 +294,6 @@ public class Filters {
      *
      * <p>This method is quickly used to safely check Literal expressions.
      *
-     * @param expr
      * @return int value of first Number, or NOTFOUND
      */
     public static int asInt(Expression expr) {
@@ -344,7 +334,6 @@ public class Filters {
      *
      * <p>This method only reliably works when the Expression is a Literal.
      *
-     * @param expr
      * @return Expression as a String, or null
      */
     public static String asString(Expression expr) {
@@ -360,7 +349,6 @@ public class Filters {
     /**
      * Obtain the provided Expression as a double.
      *
-     * @param expr
      * @return int value of first Number, or Double.NaN
      */
     public static double asDouble(Expression expr) {
@@ -393,7 +381,6 @@ public class Filters {
      *   <li>String - valid Integer and Double encodings
      * </ul>
      *
-     * @param value
      * @return double or Double.NaN;
      * @throws IllegalArgumentException For non numerical among us -- like Geometry
      */
@@ -440,8 +427,6 @@ public class Filters {
      * Remember Strong typing is for whimps who know what they are doing ahead of time. Real
      * programmers let their program learn at runtime... :-)
      *
-     * @param text
-     * @param TYPE
      * @throws open set of Throwable reflection for TYPE( String )
      */
     public static <T> T gets(String text, Class<T> TYPE) throws Throwable {
@@ -504,7 +489,6 @@ public class Filters {
      *   <li>Filters.puts( 1.0 ) => "1"
      * </ul>
      *
-     * @param number
      * @return text representation
      */
     public static String puts(double number) {
@@ -549,7 +533,6 @@ public class Filters {
      * <p>This method has been superseeded by Converters which offers a more general and open ended
      * solution.
      *
-     * @param color
      * @return String representation of provided color.
      */
     public static String puts(Color color) {
@@ -573,9 +556,6 @@ public class Filters {
     /**
      * Returns true if the given filter can contain more than one subfilter. Only And and Or filters
      * match this now.
-     *
-     * @param filter
-     * @return
      */
     //    static boolean isGroupFilter(Filter filter) {
     //        //Note: Can't use BinaryLogicOperator here because the Not implementation also
@@ -597,10 +577,6 @@ public class Filters {
      *       last item is removed from an Or statement then Filter.EXCLUDE is return If the last
      *       item is removed from an And statement then Filter.INCLUDE is returned
      * </ul>
-     *
-     * @param baseFilter
-     * @param targetFilter
-     * @return
      */
     public Filter remove(Filter baseFilter, Filter targetFilter) {
         return remove(baseFilter, targetFilter, true);
@@ -615,11 +591,8 @@ public class Filters {
      * See {@link #removeFilter(org.opengis.filter.Filter, org.opengis.filter.Filter)} for details,
      * except this method includes the option to not recurse into child filters.
      *
-     * @param baseFilter
-     * @param targetFilter
      * @param recurse true if the method should descend into child group filters looking for the
      *     target
-     * @return
      */
     public Filter remove(Filter baseFilter, final Filter targetFilter, boolean recurse) {
         if (baseFilter == null) {
@@ -733,7 +706,6 @@ public class Filters {
      *
      * <p>You can use this method to quickly build up the set of any mentioned attribute names.
      *
-     * @param filter
      * @return Set of propertyNames
      */
     public Set<String> attributeNames(Filter filter) {
@@ -810,9 +782,7 @@ public class Filters {
      * <p>Note this is a simple test and is faster than calling <code>
      * attributeNames( filter ).contains( name )</code>
      *
-     * @param filter
      * @param propertyName - name of the property to look for
-     * @return
      */
     static boolean uses(Filter filter, final String propertyName) {
         if (filter == null) {
@@ -847,7 +817,6 @@ public class Filters {
      *
      * Any other filter will return false.
      *
-     * @param filter
      * @return list of child filters
      */
     public static boolean hasChildren(Filter filter) {
@@ -873,7 +842,6 @@ public class Filters {
      * new filter when you are ready. To make that explicit I am returning an ArrayList so it is
      * clear that the result can be modified.
      *
-     * @param filter
      * @return are belong to us
      */
     public static ArrayList<Filter> children(Filter filter) {
@@ -900,7 +868,6 @@ public class Filters {
      * new filter when you are ready. To make that explicit I am returning an ArrayList so it is
      * clear that the result can be modified.
      *
-     * @param filter
      * @param all true to recurse into the filter and retrieve all children; false to only return
      *     the top level children
      * @return are belong to us
@@ -975,10 +942,8 @@ public class Filters {
      * Find the first child-filter (or the base filter itself) that is of the given type and uses
      * the specified property.
      *
-     * @param filter
      * @param filterType - class of the filter to look for
      * @param propertyName - name of the property to look for
-     * @return
      */
     public static <T extends Filter> T search(
             Filter filter, Class<T> filterType, String propertyName) {
@@ -994,9 +959,6 @@ public class Filters {
     /**
      * Given a filter which contains a term which is a PropertyName, returns the name of the
      * property. Returns null if no PropertyName is passed
-     *
-     * @param filter
-     * @return
      */
     public static String findPropertyName(Filter filter) {
         if (filter == null) return null;
@@ -1018,9 +980,6 @@ public class Filters {
      * Find all filters (including the base filter itself) that are of the given type and use the
      * specified property.
      *
-     * @param filter
-     * @param filterType
-     * @param property
      * @return all filters that are of the given type using the specified property
      */
     static <T extends Filter> List<T> findAllByTypeAndName(

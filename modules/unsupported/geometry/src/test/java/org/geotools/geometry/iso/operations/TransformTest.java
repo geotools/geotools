@@ -286,8 +286,6 @@ public class TransformTest extends TestCase {
      * than factories.
      *
      * <p>Thanks to SriPuligundla for the bug report.
-     *
-     * @throws Exception
      */
     public void testSurfaceIdentityTransform() throws Exception {
         CoordinateReferenceSystem wsg1 = CRS.decode("EPSG:4326");

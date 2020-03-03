@@ -151,7 +151,6 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
     /**
      * Finds the attribute mappings for the given source expression.
      *
-     * @param sourceExpression
      * @return list of matching attribute mappings
      */
     public List<AttributeMapping> getAttributeMappingsByExpression(
@@ -498,8 +497,6 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
      * same property applies, regardless of the mapping. For example, if there are mappings for
      * <code>gml:name[1]</code>, <code>gml:name[2]</code> and <code>gml:name[3]</code>, but
      * propertyName is just <code>gml:name</code>, all three mappings apply.
-     *
-     * @return
      */
     @Override
     public List<Expression> findMappingsFor(

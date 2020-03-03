@@ -90,7 +90,6 @@ public class AppSchemaFileDataTest extends AppSchemaTestSupport {
      *
      * @param baseFileName base filename (without any path) of the file to be copied
      * @param destDir destination filename
-     * @throws IOException
      */
     private static void copyTestData(String baseFileName, File destDir) throws IOException {
         destDir.mkdirs();
@@ -103,7 +102,6 @@ public class AppSchemaFileDataTest extends AppSchemaTestSupport {
      * Return the path to a file in the test directory.
      *
      * @param baseFileName file name without any path
-     * @return
      */
     private static String getTestDirPath(String baseFileName) {
         return (new File(testDir, baseFileName)).getPath();
@@ -255,8 +253,6 @@ public class AppSchemaFileDataTest extends AppSchemaTestSupport {
      *
      * @param filePathIn the original mapping file
      * @param filePathOut the new mapping file
-     * @return
-     * @throws Exception
      */
     private String copyRelativeToAbsolute(String filePathIn, String filePathOut) throws Exception {
 

@@ -78,7 +78,6 @@ public interface Symbolizer extends org.opengis.style.Symbolizer {
      * Tile and Abstract of Symbolzer.
      *
      * @since SymbologyEncoding 1.1
-     * @param description
      */
     void setDescription(org.opengis.style.Description description);
 
@@ -89,7 +88,6 @@ public interface Symbolizer extends org.opengis.style.Symbolizer {
      * symbolizer in a user interface.
      *
      * @since SymbologyEncoding 1.1
-     * @param name
      */
     void setName(String name);
 
@@ -121,11 +119,7 @@ public interface Symbolizer extends org.opengis.style.Symbolizer {
      */
     Expression getGeometry();
 
-    /**
-     * Sets the expression used for styling. See {@link #getGeometry()} for further details.
-     *
-     * @param geometry
-     */
+    /** Sets the expression used for styling. See {@link #getGeometry()} for further details. */
     void setGeometry(Expression geometry);
 
     /** Determines if a vendor option with the specific key has been set on this symbolizer. */

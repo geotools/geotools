@@ -30,11 +30,6 @@ class WMTSTileIdentifier extends TileIdentifier {
 
     /**
      * create an identifier based on /layername/{TileMatrixSet}/{TileMatrix}/{TileCol}/{TileRow}.png
-     *
-     * @param x
-     * @param y
-     * @param zoomLevel
-     * @param serviceName
      */
     public WMTSTileIdentifier(int x, int y, ZoomLevel zoomLevel, String serviceName) {
         super(x, y, zoomLevel, serviceName);

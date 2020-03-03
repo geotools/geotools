@@ -447,15 +447,7 @@ public class AttributeBuilder {
         }
     }
 
-    /**
-     * Create complex attribute
-     *
-     * @param value
-     * @param type
-     * @param descriptor
-     * @param id
-     * @return
-     */
+    /** Create complex attribute */
     public ComplexAttribute createComplexAttribute(
             Object value, ComplexType type, AttributeDescriptor descriptor, String id) {
         return descriptor != null
@@ -519,8 +511,6 @@ public class AttributeBuilder {
      * @param value the value to be set
      * @param type the type of the value
      * @param descriptor the attribute descriptor of anyType type
-     * @param id
-     * @return
      */
     public Attribute addAnyTypeValue(
             Object value, AttributeType type, AttributeDescriptor descriptor, String id) {
@@ -532,11 +522,6 @@ public class AttributeBuilder {
     /**
      * Create a complex attribute for XS.AnyType, since it's defined as a simple type. We need a
      * complex attribute so we can set xlink:href in it.
-     *
-     * @param value
-     * @param descriptor
-     * @param id
-     * @return
      */
     public Attribute addComplexAnyTypeAttribute(
             Object value, AttributeDescriptor descriptor, String id) {

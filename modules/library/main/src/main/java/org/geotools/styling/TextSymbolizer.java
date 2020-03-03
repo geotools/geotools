@@ -370,8 +370,6 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer, Symbol
     /**
      * Set initial font used to render label. This will replace the initial entry in the {@link
      * #fonts()} list.
-     *
-     * @param font
      */
     public void setFont(org.opengis.style.Font font);
 

@@ -267,10 +267,6 @@ public class GeometryConformanceTestCases extends TestCase {
     /**
      * Scans the operations in the testcase and removes or replaces the entries as specified in the
      * excludes property.
-     *
-     * @param testCase
-     * @param excludes
-     * @return
      */
     public static GeometryTestCase overrideOps(GeometryTestCase testCase, Properties excludes) {
         String test = testCase.getDescription().replaceAll(" ", "_");

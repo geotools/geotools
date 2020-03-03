@@ -135,7 +135,6 @@ public class XPath extends XPathUtil {
      * @param targetNodeType the expected type of the attribute addressed by <code>xpath</code>, or
      *     <code>null</code> if unknown
      * @param isXlinkRef true if the attribute would only contain xlink:href client property
-     * @return
      */
     public Attribute set(
             final Attribute att,
@@ -713,13 +712,7 @@ public class XPath extends XPathUtil {
         }
     }
 
-    /**
-     * Return value converted into a type suitable for this descriptor.
-     *
-     * @param descriptor
-     * @param value
-     * @return
-     */
+    /** Return value converted into a type suitable for this descriptor. */
     @SuppressWarnings("serial")
     private Object convertValue(final AttributeDescriptor descriptor, final Object value) {
         final AttributeType type = descriptor.getType();
@@ -775,12 +768,7 @@ public class XPath extends XPathUtil {
         return FF.literal(value).evaluate(value, binding);
     }
 
-    /**
-     * Get base (non-collection) type of simple content.
-     *
-     * @param type
-     * @return
-     */
+    /** Get base (non-collection) type of simple content. */
     static AttributeType getSimpleContentType(AttributeType type) {
         Class<?> binding = type.getBinding();
         if (binding == Collection.class) {
@@ -790,13 +778,7 @@ public class XPath extends XPathUtil {
         }
     }
 
-    /**
-     * Create a fake property for simple content of a complex type.
-     *
-     * @param type
-     * @param value
-     * @return
-     */
+    /** Create a fake property for simple content of a complex type. */
     Attribute buildSimpleContent(AttributeType type, Object value) {
         AttributeType simpleContentType = getSimpleContentType(type);
         return buildSimpleContentInternal(simpleContentType, value);
@@ -807,10 +789,6 @@ public class XPath extends XPathUtil {
      *
      * <p>Passed in value is converted to a string and then stored in the special <code>
      * simpleContent</code> attribute.
-     *
-     * @param type
-     * @param value
-     * @return
      */
     Attribute buildTextContent(AttributeType type, Object value) {
         AttributeTypeBuilder atb = new AttributeTypeBuilder();

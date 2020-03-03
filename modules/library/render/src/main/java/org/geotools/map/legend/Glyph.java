@@ -51,11 +51,7 @@ public class Glyph {
     private static final Color DEFAULT_BORDER = new Color(0, 0, 0);
     private static final Color DEFAULT_FILL = new Color(27, 158, 119, 255);
 
-    /**
-     * Create a transparent image, this is a *real* resource against the provided display.
-     *
-     * @return
-     */
+    /** Create a transparent image, this is a *real* resource against the provided display. */
     public static BufferedImage image() {
         BufferedImage bi = new BufferedImage(DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_DEPTH);
         return bi;
@@ -66,7 +62,6 @@ public class Glyph {
      *
      * <p>Simple render of point in the center of the screen.
      *
-     * @param style
      * @return Icon representing style applyed to an image
      */
     public static BufferedImage point(final Rule rule) {
@@ -80,8 +75,6 @@ public class Glyph {
      *
      * <p>XXX: Suggest point( SLD style ) at a later time.
      *
-     * @param color
-     * @param fill
      * @return ImageDescriptor
      */
     public static BufferedImage point(final Color color, final Color fill) {
@@ -131,7 +124,6 @@ public class Glyph {
      * 15
      * </code><pre>
      * </p>
-     * @param style
      * @return Icon representing geometry style
      */
     public static BufferedImage line(final Rule rule) {
@@ -146,7 +138,6 @@ public class Glyph {
      *
      * <p>XXX: Suggest line( SLD style ) at a later time.
      *
-     * @param black
      * @return Icon
      */
     public static BufferedImage line(Color color, int width) {
@@ -198,7 +189,6 @@ public class Glyph {
      * 15
      * </code><pre>
      * </p>
-     * @param style
      * @return Icon representing geometry style
      */
     public static BufferedImage geometry(final Rule rule) {
@@ -217,8 +207,6 @@ public class Glyph {
     /**
      * Icon for generic Geometry or Geometry Collection.
      *
-     * @param color
-     * @param fill
      * @return Icon
      */
     public static BufferedImage geometry(final Color color, final Color fill) {
@@ -269,7 +257,6 @@ public class Glyph {
      * 15
      * </code><pre>
      * </p>
-     * @param style
      * @return Icon representing geometry style
      */
     public static BufferedImage Polygon(final Rule rule) {
@@ -282,14 +269,7 @@ public class Glyph {
         return bi;
     }
 
-    /**
-     * Icon for polygon in provided border, fill and width
-     *
-     * @param black
-     * @param gray
-     * @param i
-     * @return
-     */
+    /** Icon for polygon in provided border, fill and width */
     public static BufferedImage polygon(final Color color, final Color fill, final int width) {
         BufferedImage bi =
                 new BufferedImage(DEFAULT_WIDTH, DEFAULT_HEIGHT, BufferedImage.TYPE_INT_ARGB);
@@ -342,10 +322,6 @@ public class Glyph {
      * 15
      * </code><pre>
      * </p>
-     * @param a
-     * @param b
-     * @param c
-     * @param d1
      * @return Icon representing a grid
      *
      */
@@ -405,7 +381,6 @@ public class Glyph {
      * 15
      * </code><pre>
      * </p>
-     * @param style
      * @return Icon representing geometry style
      */
     public static BufferedImage swatch(Color c) {

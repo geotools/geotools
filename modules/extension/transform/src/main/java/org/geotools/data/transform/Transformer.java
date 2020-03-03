@@ -88,11 +88,7 @@ class Transformer {
         }
     }
 
-    /**
-     * Locates all geometry properties in the transformed type
-     *
-     * @return
-     */
+    /** Locates all geometry properties in the transformed type */
     List<String> getGeometryPropertyNames() {
         List<String> result = new ArrayList<String>();
 
@@ -108,11 +104,6 @@ class Transformer {
     /**
      * Computes the target schema, first trying a static analysis, and if that one does not work,
      * evaluating the expressions against a sample feature
-     *
-     * @param typeName
-     * @param definitions
-     * @return
-     * @throws IOException
      */
     private SimpleFeatureType computeTargetSchema(Name typeName, List<Definition> definitions)
             throws IOException {
@@ -211,9 +202,6 @@ class Transformer {
     /**
      * Returns the list of original names for the specified properties. If a property does not have
      * an equivalent original name (it is not a simple rename) it won't be returned
-     *
-     * @param names
-     * @return
      */
     public List<String> getOriginalNames(List<String> names) {
 
@@ -241,9 +229,6 @@ class Transformer {
     /**
      * Injects the transformed attribute expressions into the filter to make it runnable against the
      * original data
-     *
-     * @param filter
-     * @return
      */
     Filter transformFilter(Filter filter) {
         TransformFilterVisitor transformer = new TransformFilterVisitor(expressions);
@@ -253,9 +238,6 @@ class Transformer {
     /**
      * Injects the transformed attribute expressions into the expression to make it runnable against
      * the original data
-     *
-     * @param filter
-     * @return
      */
     Expression transformExpression(Expression expression) {
         TransformFilterVisitor transformer = new TransformFilterVisitor(expressions);
@@ -265,9 +247,6 @@ class Transformer {
     /**
      * Transforms a query so that it can be run against the original feature source and provides all
      * the necessary attributes to evaluate the requested expressions
-     *
-     * @param query
-     * @return
      */
     Query transformQuery(Query query) {
         Filter txFilter = transformFilter(query.getFilter());
@@ -301,12 +280,7 @@ class Transformer {
         return txQuery;
     }
 
-    /**
-     * Transforms a SortBy[] so that it can be sent down to the original store
-     *
-     * @param query
-     * @return
-     */
+    /** Transforms a SortBy[] so that it can be sent down to the original store */
     SortBy[] getTransformedSortBy(Query query) {
         SortBy[] original = query.getSortBy();
         if (original == null) {
@@ -335,13 +309,7 @@ class Transformer {
         return transformed.toArray(new SortBy[transformed.size()]);
     }
 
-    /**
-     * Builds the list of original attributes required to run the specified query
-     *
-     * @param source
-     * @param query
-     * @return
-     */
+    /** Builds the list of original attributes required to run the specified query */
     String[] getRequiredAttributes(Query query) {
         Set<String> attributes = new HashSet<String>();
 

@@ -167,11 +167,7 @@ public interface Graphic
      */
     public AnchorPoint getAnchorPoint();
 
-    /**
-     * Anchor point (expressed as an x/y percentage of the graphic size).
-     *
-     * @param anchorPoint
-     */
+    /** Anchor point (expressed as an x/y percentage of the graphic size). */
     public void setAnchorPoint(org.opengis.style.AnchorPoint anchorPoint);
 
     /**

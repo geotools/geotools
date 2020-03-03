@@ -309,12 +309,7 @@ public class CircularArc {
         radius = Double.NaN;
     }
 
-    /**
-     * Checks if the two doubles provided are at a distance less than EPS
-     *
-     * @param a
-     * @param b
-     */
+    /** Checks if the two doubles provided are at a distance less than EPS */
     static boolean equals(double a, double b) {
         return Math.abs(a - b) < EPS;
     }
@@ -325,11 +320,7 @@ public class CircularArc {
         return result;
     }
 
-    /**
-     * Expands the given envelope
-     *
-     * @param envelope
-     */
+    /** Expands the given envelope */
     void expandEnvelope(Envelope envelope) {
         initializeCenterRadius();
 

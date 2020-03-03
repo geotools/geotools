@@ -67,8 +67,6 @@ public class Collection_NearestFunction extends FunctionImpl {
      * @param expression Single Expression argument
      * @param value Attribute value used for nearest search
      * @return An object containing the maximum value of the attributes
-     * @throws IllegalFilterException
-     * @throws IOException
      */
     static Object near(SimpleFeatureCollection collection, Expression expression, Object value)
             throws IllegalFilterException, IOException {

@@ -47,11 +47,7 @@ public class AppSchemaXSD extends XSD {
     /** The {@link Configuration} used to encode documents with this schema. */
     private AppSchemaConfiguration configuration;
 
-    /**
-     * @param namespaceUri
-     * @param schemaLocation
-     * @param resolver
-     */
+    /** */
     public AppSchemaXSD(String namespaceUri, String schemaLocation, SchemaResolver resolver) {
         this.namespaceUri = namespaceUri;
         this.schemaLocation = resolver.resolve(schemaLocation);

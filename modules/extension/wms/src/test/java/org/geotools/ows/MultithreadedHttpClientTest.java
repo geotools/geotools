@@ -66,9 +66,6 @@ public class MultithreadedHttpClientTest {
     /**
      * Verifies that the default configuration (with proxy settings) is used when a GET is executed,
      * matching no nonProxyHost.
-     *
-     * @throws IOException
-     * @throws MalformedURLException
      */
     @Test
     public void testGetWithNoMatchingNonProxyHost() throws MalformedURLException, IOException {
@@ -82,12 +79,7 @@ public class MultithreadedHttpClientTest {
         verify(mockHttpClient, times(1)).executeMethod(any(HttpMethod.class));
     }
 
-    /**
-     * Verifies that method is executed without specifying nonProxyHosts.
-     *
-     * @throws IOException
-     * @throws MalformedURLException
-     */
+    /** Verifies that method is executed without specifying nonProxyHosts. */
     @Test
     public void testGetWithoutNonProxyHost() throws MalformedURLException, IOException {
         MultithreadedHttpClient sut = new MultithreadedHttpTestClient();
@@ -103,12 +95,7 @@ public class MultithreadedHttpClientTest {
         verify(mockHttpClient, times(2)).executeMethod(any(HttpMethod.class));
     }
 
-    /**
-     * Verifies that the nonProxyConfig is used when a GET is executed, matching a nonProxyHost.
-     *
-     * @throws IOException
-     * @throws HttpException
-     */
+    /** Verifies that the nonProxyConfig is used when a GET is executed, matching a nonProxyHost. */
     @Test
     public void testGetWithMatchingNonProxyHost() throws HttpException, IOException {
         System.setProperty(SYS_PROP_KEY_HOST, "myproxy");

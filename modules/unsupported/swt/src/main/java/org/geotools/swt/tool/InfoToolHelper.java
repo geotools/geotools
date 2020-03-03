@@ -94,7 +94,6 @@ public abstract class InfoToolHelper<T> {
      * }
      * </code></pre>
      *
-     * @return
      */
     public abstract boolean isValid();
 

@@ -28,9 +28,6 @@ public interface GlyphRenderer {
 
     public List getFormats();
     /**
-     * @param graphic
-     * @param eg
-     * @param feature
      * @param height use <=0 if you dont want any scaling done. THIS MIGHT BE IGNORED by the
      *     renderer!
      */

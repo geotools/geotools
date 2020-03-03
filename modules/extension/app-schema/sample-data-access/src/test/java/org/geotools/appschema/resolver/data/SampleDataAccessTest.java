@@ -38,8 +38,6 @@ public class SampleDataAccessTest extends TestCase {
     /**
      * Test that {@link org.geotools.appschema.resolver.data.SampleDataAccess} can be used to obtain
      * two features.
-     *
-     * @throws Exception
      */
     public static void testDataAccess() throws Exception {
         DataAccess<FeatureType, Feature> dataAccess =

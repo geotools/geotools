@@ -62,10 +62,6 @@ public class UniqueFIDIntegrityValidation implements IntegrityValidation {
      * UniqueFIDIntegrityValidation constructor.
      *
      * <p>Description
-     *
-     * @param name
-     * @param description
-     * @param typeNames
      */
     public UniqueFIDIntegrityValidation(
             String name, String description, String[] typeNames, String uniqueID) {
@@ -81,7 +77,6 @@ public class UniqueFIDIntegrityValidation implements IntegrityValidation {
      * <p>Description ...
      *
      * @see org.geotools.validation.Validation#setName(java.lang.String)
-     * @param name
      */
     public void setName(String name) {
         this.name = name;
@@ -104,7 +99,6 @@ public class UniqueFIDIntegrityValidation implements IntegrityValidation {
      * <p>Description ...
      *
      * @see org.geotools.validation.Validation#setDescription(java.lang.String)
-     * @param description
      */
     public void setDescription(String description) {
         this.description = description;
@@ -138,7 +132,6 @@ public class UniqueFIDIntegrityValidation implements IntegrityValidation {
      * <p>Description ...
      *
      * @see org.geotools.validation.Validation#setTypeNames(java.lang.String[])
-     * @param names
      */
     public void setTypeNames(String[] names) {
         this.typeNames = names;
@@ -162,9 +155,6 @@ public class UniqueFIDIntegrityValidation implements IntegrityValidation {
      *
      * @see org.geotools.validation.IntegrityValidation#validate(java.util.Map,
      *     org.locationtech.jts.geom.Envelope, org.geotools.validation.ValidationResults)
-     * @param layers
-     * @param envelope
-     * @param results
      */
     public boolean validate(Map layers, ReferencedEnvelope envelope, ValidationResults results)
             throws Exception {

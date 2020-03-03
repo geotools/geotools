@@ -36,8 +36,6 @@ public class PaletteType {
      * Creates an identifier for palettes
      *
      * @param name simple identifier
-     * @param suitableRanged
-     * @param suitableUnique
      */
     public PaletteType(boolean suitableRanged, boolean suitableUnique, String name) {
         this.name = name;
@@ -45,10 +43,7 @@ public class PaletteType {
         this.suitableUnique = suitableUnique;
     }
 
-    /**
-     * @param suitableRanged true, false, or null (for don't care)
-     * @param suitableUnique
-     */
+    /** @param suitableRanged true, false, or null (for don't care) */
     public PaletteType(boolean suitableRanged, boolean suitableUnique) {
         this.name = null;
         this.suitableRanged = suitableRanged;

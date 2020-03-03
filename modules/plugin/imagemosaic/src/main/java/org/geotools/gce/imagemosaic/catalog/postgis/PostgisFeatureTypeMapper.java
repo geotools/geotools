@@ -113,12 +113,7 @@ public class PostgisFeatureTypeMapper implements FeatureTypeMapper {
         this.srID = srID;
     }
 
-    /**
-     * Create a new {@link PostgisFeatureTypeMapper} on top of the original featureType provided
-     *
-     * @param featureType
-     * @throws CQLException
-     */
+    /** Create a new {@link PostgisFeatureTypeMapper} on top of the original featureType provided */
     public PostgisFeatureTypeMapper(SimpleFeatureType featureType) throws CQLException {
         wrappedFeatureType = featureType;
         originalName = featureType.getName();

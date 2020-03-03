@@ -79,11 +79,7 @@ public class CQLAttributeNameTest {
                 "gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:abstract");
     }
 
-    /**
-     * Invalid attribute names
-     *
-     * @throws CQLException
-     */
+    /** Invalid attribute names */
     @Test(expected = CQLException.class)
     public void invalidAttribute() throws CQLException {
 
@@ -94,11 +90,7 @@ public class CQLAttributeNameTest {
         testAttribute("startpart part1");
     }
 
-    /**
-     * Using a CQL Keyword as property name
-     *
-     * @throws Exception
-     */
+    /** Using a CQL Keyword as property name */
     @Test
     public void keywordAsAttribute() throws CQLException {
 
@@ -109,11 +101,7 @@ public class CQLAttributeNameTest {
         testAttributeBetweenDoubleQuotes("\"OR\"");
     }
 
-    /**
-     * Using different local characters as property name.
-     *
-     * @throws Exception
-     */
+    /** Using different local characters as property name. */
     @Test
     public void localCharactersetInAttributeName() throws CQLException {
 

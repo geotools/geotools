@@ -81,8 +81,6 @@ public class StyleGenerator {
     /**
      * Obtains the colour for the indexed rule. If an else rule is also to be created from the
      * colour palette, the appropriate offset is applied.
-     *
-     * @param index
      */
     private static Color getColor(int elseMode, Color[] colors, int index) {
         if (elseMode == ELSEMODE_IGNORE) {
@@ -110,15 +108,7 @@ public class StyleGenerator {
      * Merges a classifier, array of colors and other data into a FeatureTypeStyle object. Yes, this
      * constructor is insane and likely to change very soon.
      *
-     * @param classifier
-     * @param colors
      * @param typeId semantic type identifier, which will be prefixed with "colorbrewer:"
-     * @param geometryAttrType
-     * @param elseMode
-     * @param opacity
-     * @param defaultStroke
-     * @return
-     * @throws IllegalFilterException
      */
     public static FeatureTypeStyle createFeatureTypeStyle(
             Classifier classifier,
@@ -216,10 +206,6 @@ public class StyleGenerator {
     /**
      * Creates a symbolizer for the given geometry
      *
-     * @param sb
-     * @param geometryAttrType
-     * @param color
-     * @param opacity
      * @param defaultStroke stroke used for borders
      */
     private static Symbolizer createSymbolizer(
@@ -258,7 +244,6 @@ public class StyleGenerator {
     /**
      * Truncates an unneeded trailing decimal zero (1.0 --> 1) by converting to an Integer object.
      *
-     * @param value
      * @return Integer(value) if applicable
      */
     private static Object chopInteger(Object value) {
@@ -269,11 +254,7 @@ public class StyleGenerator {
         }
     }
 
-    /**
-     * Generates a quick name for each rule with a leading zero.
-     *
-     * @param count
-     */
+    /** Generates a quick name for each rule with a leading zero. */
     private static String getRuleName(int count) {
         String strVal = Integer.valueOf(count).toString();
 
@@ -411,14 +392,7 @@ public class StyleGenerator {
 
         return rule;
     }
-    /**
-     * Used to update an existing style based on the provided input.
-     *
-     * @param fts
-     * @param ruleIndex
-     * @param styleExpression
-     * @throws IllegalFilterException
-     */
+    /** Used to update an existing style based on the provided input. */
     public static void modifyFTS(FeatureTypeStyle fts, int ruleIndex, String styleExpression)
             throws IllegalFilterException {
         Rule thisRule = fts.rules().get(ruleIndex);
@@ -526,10 +500,7 @@ public class StyleGenerator {
      *
      * @param styleExpression strings of ranged expressions "lowValue..highValue" or explicit values
      *     "value1, value2"
-     * @param featureType
-     * @param attributeTypeName
      * @return an array with all the filters
-     * @throws IllegalFilterException
      */
     public static Filter[] toFilter(
             String[] styleExpression, SimpleFeatureType[] featureType, String[] attributeTypeName)
@@ -593,7 +564,6 @@ public class StyleGenerator {
      * @param attributeTypeName the attributeTypeName whose values correspond to
      * @param upperBoundClosed does the upper bound include the max value? (true: <=, false: <)
      * @return a filter
-     * @throws IllegalFilterException
      */
     public static Filter toRangedFilter(
             String styleExpression,
@@ -717,7 +687,6 @@ public class StyleGenerator {
      *     spaces)
      * @param attributeTypeName A Sting with the attributeTypeName whose values correspond to
      * @return a filter
-     * @throws IllegalFilterException
      */
     public static Filter toExplicitFilter(
             String styleExpression, SimpleFeatureType featureType, String attributeTypeName)
@@ -757,7 +726,6 @@ public class StyleGenerator {
      * @param attribExpr an Expression to compare each value with (simple case =
      *     attributeExpression)
      * @return a filter
-     * @throws IllegalFilterException
      */
     public static Filter toExplicitFilter(String styleExpression, Expression attribExpr)
             throws IllegalFilterException {
@@ -788,8 +756,6 @@ public class StyleGenerator {
      *
      * <p>Example:<br>
      * <code>[[attr = 49] OR [attr = 92]] --> "49, 92"</code>
-     *
-     * @param filter
      */
     private static String toExplicitStyleExpression(Filter filter) {
         String styleExpression = "";

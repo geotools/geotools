@@ -73,11 +73,7 @@ class ExpressionQualifier implements ExpressionVisitor {
 
     private Map<String, Object> tableAliases;
 
-    /**
-     * Creates a new ExpressionQualifier object.
-     *
-     * @param session
-     */
+    /** Creates a new ExpressionQualifier object. */
     private ExpressionQualifier(ISession session, Map<String, Object> tableAliases) {
         this.session = session;
         this.tableAliases = tableAliases;

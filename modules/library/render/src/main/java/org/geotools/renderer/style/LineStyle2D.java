@@ -72,8 +72,6 @@ public class LineStyle2D extends Style2D {
     /**
      * Sets the contour color for the {@linkplain org.geotools.renderer.geom.Polyline polyline} to
      * be rendered
-     *
-     * @param contour
      */
     public void setContour(Paint contour) {
         this.contour = contour;
@@ -92,8 +90,6 @@ public class LineStyle2D extends Style2D {
     /**
      * Sets the contour Composite for the {@linkplain org.geotools.renderer.geom.Polyline polyline}
      * to be rendered. Set it to <code>null</code> if the contour is to be opaque
-     *
-     * @param contourComposite
      */
     public void setContourComposite(Composite contourComposite) {
         this.contourComposite = contourComposite;

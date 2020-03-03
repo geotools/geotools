@@ -52,11 +52,7 @@ public class BoundaryImpl extends ComplexImpl implements Boundary {
         this(null);
     }
 
-    /**
-     * Creates a new {@code BoundaryImpl}.
-     *
-     * @param crs
-     */
+    /** Creates a new {@code BoundaryImpl}. */
     public BoundaryImpl(final CoordinateReferenceSystem crs) {
         super(crs);
     }

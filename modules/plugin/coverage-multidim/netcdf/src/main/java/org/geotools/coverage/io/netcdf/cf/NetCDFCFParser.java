@@ -98,13 +98,7 @@ public class NetCDFCFParser {
         keys.addAll(aliasMap.keySet());
     }
 
-    /**
-     * Create a {@link NetCDFCFParser} instance for the specified file.
-     *
-     * @param file
-     * @return
-     * @throws JAXBException
-     */
+    /** Create a {@link NetCDFCFParser} instance for the specified file. */
     public static NetCDFCFParser unmarshallXml(File file) throws JAXBException {
 
         // We assume we have a single (or reduced number) of files to be unmarshalled

@@ -93,12 +93,7 @@ public class CSVFileState {
         this.namespace = namespace;
         this.dataInput = null;
     }
-    /**
-     * Internal constructor for testing purposes?
-     *
-     * @param dataInput
-     * @param typeName
-     */
+    /** Internal constructor for testing purposes? */
     public CSVFileState(String dataInput, String typeName) {
         this.dataInput = dataInput;
         this.typeName = typeName;

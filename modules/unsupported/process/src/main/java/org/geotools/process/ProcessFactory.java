@@ -64,7 +64,6 @@ public interface ProcessFactory extends OptionalFactory {
      * Human readable description of the specified process
      *
      * @param name the process whose description is to be returned
-     * @return
      */
     public InternationalString getDescription(Name name);
 
@@ -89,8 +88,6 @@ public interface ProcessFactory extends OptionalFactory {
      *
      * @param name the process identifier
      * @param parameters the parameters to be used
-     * @return
-     * @throws IllegalArgumentException
      */
     public Map<String, Parameter<?>> getResultInfo(Name name, Map<String, Object> parameters)
             throws IllegalArgumentException;

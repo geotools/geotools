@@ -209,7 +209,6 @@ public class NetCDFTimeUtilities {
      * Converts NetCDF time units into opportune Calendar ones.
      *
      * @param units {@link String}
-     * @param d
      * @return int
      */
     public static int getTimeUnits(String units, Double vd) {
@@ -279,10 +278,7 @@ public class NetCDFTimeUtilities {
         return -1;
     }
 
-    /**
-     * @param value
-     * @return
-     */
+    /** */
     public static String trimFractionalPart(String value) {
         value = value.trim();
         for (int i = value.length(); --i >= 0; ) {

@@ -93,8 +93,6 @@ public class QueryCapabilities {
      * Boolean#TRUE} value, if the key/value pair is there an attempt to use the provided id will be
      * made, and the operation will fail of the key cannot be parsed into a valid storage
      * identifier.
-     *
-     * @return
      */
     public boolean isUseProvidedFIDSupported() {
         return false;

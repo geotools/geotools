@@ -110,7 +110,6 @@ public class SimpleFeaturePropertyAccessorFactory implements PropertyAccessorFac
      *   <li>AFTER: bar
      * </ul>
      *
-     * @param xpath
      * @return xpath with any XML prefixes removed
      */
     static String stripPrefixIndex(String xpath) {

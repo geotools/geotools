@@ -38,11 +38,7 @@ public class PaintGMObject {
     public static final int TYPE_LINES = 2;
     public static final int TYPE_LINESTRING = 3;
 
-    /**
-     * Paints an GM_Object
-     *
-     * @param object
-     */
+    /** Paints an GM_Object */
     public static void paint(GeometryImpl object) {
         PaintGMObject p = new PaintGMObject();
         p.startPainting(object);

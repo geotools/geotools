@@ -13,6 +13,7 @@ For all pull requests:
 
 The following are required only for core and extension modules (they are welcomed, but not required, for unsupported modules):
 - [ ] There is a ticket in Jira describing the issue/improvement/feature (a notable exemptions is, changes not visible to end users)
+- [ ] The pull request contains changes related to a single objective. If multiple focuses cannot be avoided, each one is in its own commit and has a separate ticket describing it.
 - [ ] PR for bug fixes and small new features are presented as a single commit
 - [ ] Commit message must be in the form "[GEOT-XYZW] Title of the Jira ticket"
 - [ ] New unit tests have been added covering the changes

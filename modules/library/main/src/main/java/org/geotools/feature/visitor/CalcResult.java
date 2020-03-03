@@ -16,7 +16,6 @@
  */
 package org.geotools.feature.visitor;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -67,7 +66,6 @@ public interface CalcResult {
      * <p>For example: merging two min functions would return the smaller of the two values; merging
      * a count and a sum would return an average.
      *
-     * @param resultsToAdd
      * @return the merged results
      */
     public CalcResult merge(CalcResult resultsToAdd);
@@ -83,7 +81,6 @@ public interface CalcResult {
      * Access getValue as an int
      *
      * @return the calculation result as a int (or 0 if not applicable)
-     * @throws IOException
      */
     public int toInt();
 

@@ -272,9 +272,6 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
      * collection just to get the size of the collection. The result is indicative, just an
      * heuristic to quickly compare attributes in order to find a suitably small one, it's not meant
      * to be the actual size of an attribute in bytes.
-     *
-     * @param ad
-     * @return
      */
     int size(AttributeDescriptor ad) {
         Class<?> binding = ad.getType().getBinding();

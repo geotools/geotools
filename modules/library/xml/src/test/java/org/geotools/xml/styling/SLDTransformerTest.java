@@ -227,8 +227,6 @@ public class SLDTransformerTest {
     /**
      * This is a problem reported from uDig 1.2; we are trying to save a LineSymbolizer (and then
      * restore it) and the stroke is comming back black and with width 1 all the time.
-     *
-     * @throws Exception
      */
     @Test
     public void testStroke() throws Exception {
@@ -254,11 +252,7 @@ public class SLDTransformerTest {
         assertEquals("expected width", 2, (int) stroke.getWidth().evaluate(null, Integer.class));
     }
 
-    /**
-     * SLD Fragment reported to produce error on user list - no related Jira.
-     *
-     * @throws Exception
-     */
+    /** SLD Fragment reported to produce error on user list - no related Jira. */
     @Test
     public void testTextSymbolizerLabelPalcement() throws Exception {
         String xml =
@@ -383,8 +377,6 @@ public class SLDTransformerTest {
      * the spec allows.
      *
      * <p>See also http://jira.codehaus.org/browse/GEOS-6748
-     *
-     * @throws TransformerException
      */
     @Test
     public void testPointPlacementNoAnchorPoint() throws TransformerException {
@@ -447,8 +439,6 @@ public class SLDTransformerTest {
     /**
      * Another bug reported from uDig 1.2; we are trying to save a LineSymbolizer (and then restore
      * it) and the stroke is comming back black and with width 1 all the time.
-     *
-     * @throws Exception
      */
     @Test
     public void testPointSymbolizer() throws Exception {
@@ -553,8 +543,6 @@ public class SLDTransformerTest {
     /**
      * We have a pretty serious issue with this class not behaving well when logging is turned on!
      * This is the same test as above but with logging enganged at the FINEST level.
-     *
-     * @throws Exception
      */
     @Test
     public void testStrokeWithLogging() throws Exception {
@@ -1075,8 +1063,6 @@ public class SLDTransformerTest {
     /**
      * Checks the output of encoding a default line symbolizer does not include all the default
      * values
-     *
-     * @throws Exception
      */
     @Test
     public void testMinimumLineSymbolizer() throws Exception {
@@ -1362,14 +1348,7 @@ public class SLDTransformerTest {
                 copy.getOtherText().getText());
     }
 
-    /**
-     * Test that perpendicularOffset for LineSymbolizer is correctly exported and reimported
-     *
-     * @throws TransformerException
-     * @throws SAXException
-     * @throws IOException
-     * @throws XpathException
-     */
+    /** Test that perpendicularOffset for LineSymbolizer is correctly exported and reimported */
     @Test
     public void testLineSymbolizerWithPerpendicularOffset()
             throws TransformerException, SAXException, IOException, XpathException {
@@ -1658,11 +1637,7 @@ public class SLDTransformerTest {
         assertTrue(xml.contains("<![CDATA[ def]]>"));
     }
 
-    /**
-     * Test the transformation of an WellKnownName element that contains an expression.
-     *
-     * @throws Exception
-     */
+    /** Test the transformation of an WellKnownName element that contains an expression. */
     @Test
     public void testWellKnownNameWithExpression() throws Exception {
 
@@ -1708,11 +1683,7 @@ public class SLDTransformerTest {
         validateWellKnownNameWithExpressionStyle(transformedStyleXml);
     }
 
-    /**
-     * Test the transformation of a stroke-dasharray element that contains expressions.
-     *
-     * @throws Exception
-     */
+    /** Test the transformation of a stroke-dasharray element that contains expressions. */
     @Test
     public void testStrokeDasharrayWithExpressions() throws Exception {
 
@@ -1788,8 +1759,6 @@ public class SLDTransformerTest {
 
     /**
      * Test the transformation of a stroke-dasharray element that contains only literal expressions.
-     *
-     * @throws Exception
      */
     @Test
     public void testStrokeDasharrayWithOnlyLiteralExpressions() throws Exception {
@@ -2098,11 +2067,7 @@ public class SLDTransformerTest {
                 "2", "//sld:LineSymbolizer/sld:PerpendicularOffset/ogc:Mul/ogc:Literal", doc);
     }
 
-    /**
-     * See https://osgeo-org.atlassian.net/browse/GEOT-5613
-     *
-     * @throws Exception
-     */
+    /** See https://osgeo-org.atlassian.net/browse/GEOT-5613 */
     @Test
     public void testDefaults() throws Exception {
         StyleBuilder sb = new StyleBuilder();

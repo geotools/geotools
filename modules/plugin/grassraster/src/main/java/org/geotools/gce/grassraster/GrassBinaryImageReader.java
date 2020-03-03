@@ -28,7 +28,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.zip.DataFormatException;
-import javax.imageio.IIOException;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.ImageTypeSpecifier;
@@ -140,8 +139,6 @@ public class GrassBinaryImageReader extends ImageReader {
      *
      * <p>This method has to be called before any data access, in order to already have the native
      * raster data metadata available.
-     *
-     * @throws IIOException
      */
     private void ensureOpen() throws IOException {
         if (rasterHandler == null) {

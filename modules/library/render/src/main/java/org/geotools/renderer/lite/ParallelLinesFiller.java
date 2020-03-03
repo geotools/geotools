@@ -74,12 +74,7 @@ public class ParallelLinesFiller {
         this.yStep = yStep;
     }
 
-    /**
-     * Builds a line filler from a stipple shape, if at all possible, or returns null otherwise
-     *
-     * @param shape
-     * @return
-     */
+    /** Builds a line filler from a stipple shape, if at all possible, or returns null otherwise */
     public static ParallelLinesFiller fromStipple(Shape shape) {
         Rectangle2D bounds = shape.getBounds2D();
 
@@ -164,25 +159,12 @@ public class ParallelLinesFiller {
         }
     }
 
-    /**
-     * Checks if two doubles are equal with a small tolerance
-     *
-     * @param d1
-     * @param d2
-     * @return
-     */
+    /** Checks if two doubles are equal with a small tolerance */
     private static boolean equals(double d1, double d2) {
         return Math.abs(d1 - d2) < 1e-3;
     }
 
-    /**
-     * Fills the specified rectangle with parallel lines
-     *
-     * @param bounds
-     * @param painter
-     * @param graphics
-     * @param ls2d
-     */
+    /** Fills the specified rectangle with parallel lines */
     public void fillRectangle(
             Rectangle2D bounds, StyledShapePainter painter, Graphics2D graphics, LineStyle2D ls2d) {
         // the shape painter works only with liteshape, prepare objects so that we don't end up

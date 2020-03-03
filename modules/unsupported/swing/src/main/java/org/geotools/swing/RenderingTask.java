@@ -47,13 +47,7 @@ public class RenderingTask implements Callable<Boolean>, RenderListener {
     private final AtomicBoolean failed;
     private final AtomicBoolean cancelled;
 
-    /**
-     * Creates a new rendering task.
-     *
-     * @param mapContent
-     * @param renderer
-     * @param graphics
-     */
+    /** Creates a new rendering task. */
     public RenderingTask(
             MapContent mapContent, Graphics2D destinationGraphics, GTRenderer renderer) {
 
@@ -90,7 +84,6 @@ public class RenderingTask implements Callable<Boolean>, RenderListener {
      * Called by the executor to run this rendering task.
      *
      * @return result of the task: completed or failed
-     * @throws Exception
      */
     @Override
     public Boolean call() throws Exception {

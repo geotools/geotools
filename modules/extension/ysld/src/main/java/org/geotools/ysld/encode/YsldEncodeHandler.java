@@ -105,13 +105,7 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
         return this;
     }
 
-    /**
-     * Should be used to encode values parsed with Util.name
-     *
-     * @param key
-     * @param expr
-     * @return
-     */
+    /** Should be used to encode values parsed with Util.name */
     YsldEncodeHandler<T> putName(String key, Expression expr) {
         if (expr != null && expr != Expression.NIL) {
             put(key, toObjOrNull(expr, true));
@@ -182,12 +176,7 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
         return obj;
     }
 
-    /**
-     * See {@link #toObjOrNull(Expression, boolean)}
-     *
-     * @param expr
-     * @return
-     */
+    /** See {@link #toObjOrNull(Expression, boolean)} */
     Object toObjOrNull(Expression expr) {
         return toObjOrNull(expr, false);
     }
@@ -222,7 +211,6 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
      * was null
      *
      * @param expr Expression to encode
-     * @param isname
      * @return {@link String} or {@link Number} representation of expr, or null if expr is null.
      */
     Object toObjOrNull(Expression expr, boolean isname) {

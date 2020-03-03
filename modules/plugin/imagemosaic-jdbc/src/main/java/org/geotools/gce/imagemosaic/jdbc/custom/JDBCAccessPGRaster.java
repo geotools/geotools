@@ -257,8 +257,6 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
      *
      * @param coverageName the coverage name stored in the sql meta table
      * @param con jdbc connection
-     * @throws SQLException
-     * @throws IOException
      */
     protected void initFromDB(String coverageName, Connection con)
             throws SQLException, IOException {
@@ -405,8 +403,6 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
      *
      * @param coverageName The coverage name in the sql meta table
      * @param con JDBC connection
-     * @throws SQLException
-     * @throws IOException
      */
     void calculateExtentsFromDB(String coverageName, Connection con)
             throws SQLException, IOException {
@@ -507,8 +503,6 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
      *
      * @param coverageName The coverage name in the sql meta table
      * @param con JDBC Connection
-     * @throws SQLException
-     * @throws IOException
      */
     void calculateResolutionsFromDB(String coverageName, Connection con)
             throws SQLException, IOException {
@@ -660,11 +654,7 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
         return factory.createPolygon(factory.createLinearRing(coords), new LinearRing[0]);
     }
 
-    /**
-     * creates a thread pool
-     *
-     * @return
-     */
+    /** creates a thread pool */
     public ExecutorService getExecutorServivicePool() {
         int availableProcessors = Runtime.getRuntime().availableProcessors();
         LOGGER.info("Using " + availableProcessors + " CPU(s)");
@@ -675,9 +665,6 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
      * List the formats supported by the used gdal library
      *
      * <p>Check from the command line with <code>gdalinfo --formats</code>
-     *
-     * @param con
-     * @throws SQLException
      */
     public void listGDALFormats(Connection con) throws SQLException {
         if (LOGGER.isLoggable(Level.INFO) == false) return;

@@ -108,12 +108,7 @@ public abstract class RendererBaseTest {
         assert (hasData);
     }
 
-    /**
-     * responsible for actually rendering.
-     *
-     * @param g
-     * @param bounds
-     */
+    /** responsible for actually rendering. */
     private static void render(Object obj, Graphics g, Rectangle rect, ReferencedEnvelope bounds) {
         if (obj instanceof GTRenderer) {
             GTRenderer renderer = (GTRenderer) obj;

@@ -129,7 +129,6 @@ public class PropertyFeatureReader implements FeatureReader<SimpleFeatureType, S
      * Grab the next feature from the property file.
      *
      * @return feature
-     * @throws IOException
      * @throws NoSuchElementException Check hasNext() to avoid reading off the end of the file
      */
     public SimpleFeature next() throws IOException, NoSuchElementException {
@@ -173,8 +172,6 @@ public class PropertyFeatureReader implements FeatureReader<SimpleFeatureType, S
      *
      * @param index Attribute position to read
      * @return Value for the attribtue in position <code>index</code>
-     * @throws IOException
-     * @throws ArrayIndexOutOfBoundsException
      */
     public Object read(int index) throws IOException, ArrayIndexOutOfBoundsException {
         if (line == null) {
@@ -235,7 +232,6 @@ public class PropertyFeatureReader implements FeatureReader<SimpleFeatureType, S
      * Check if additional content is available.
      *
      * @return <code>true</code> if additional content is available
-     * @throws IOException
      */
     public boolean hasNext() throws IOException {
         if (next != null) {
@@ -279,7 +275,6 @@ public class PropertyFeatureReader implements FeatureReader<SimpleFeatureType, S
      * Trim leading white space as described Properties.
      *
      * @see Properties#load(java.io.Reader)
-     * @param txt
      * @return txt leading whitespace removed
      */
     String trimLeft(String txt) {
@@ -301,8 +296,6 @@ public class PropertyFeatureReader implements FeatureReader<SimpleFeatureType, S
     /**
      * Be sure to call close when you are finished with this reader; as it must close the file it
      * has open.
-     *
-     * @throws IOException
      */
     public void close() throws IOException {
         if (reader == null) {

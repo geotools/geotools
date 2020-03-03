@@ -162,7 +162,6 @@ public class UnitsTest {
     /**
      * Recognize representation of NonSI.DEEGREE_ANGLE to prevent unnecessary conversion.
      *
-     * @param unit
      * @return true if MultiplyConverter is close to PI/180.0
      */
     public static final boolean isDegreeAngle(Unit<?> unit) {

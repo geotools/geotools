@@ -332,11 +332,7 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
         return factory;
     }
 
-    /**
-     * @param directory
-     * @return
-     * @throws IOException
-     */
+    /** */
     @SuppressWarnings("PMD.CloseResource")
     FileLock acquireLock(File directory) throws IOException {
         // Get a file channel for the file

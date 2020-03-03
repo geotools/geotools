@@ -78,11 +78,7 @@ public class MemoryDataStoreTest extends DataTestCase {
     SimpleFeature[] riverFeatures;
     ReferencedEnvelope riverBounds;
     Transaction defaultTransaction = new DefaultTransaction();
-    /**
-     * Constructor for MemoryDataStoreTest.
-     *
-     * @param arg0
-     */
+    /** Constructor for MemoryDataStoreTest. */
     public MemoryDataStoreTest(String arg0) {
         super(arg0);
     }

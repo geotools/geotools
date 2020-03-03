@@ -730,21 +730,11 @@ public class SimpleFeatureTypeBuilder {
         return null;
     }
 
-    /**
-     * Replace the descriptor at the provided index.
-     *
-     * @param index
-     * @param descriptor
-     */
+    /** Replace the descriptor at the provided index. */
     public void set(int index, AttributeDescriptor descriptor) {
         attributes().set(index, descriptor);
     }
-    /**
-     * Replace the descriptor at the provided index.
-     *
-     * @param index
-     * @param descriptor
-     */
+    /** Replace the descriptor at the provided index. */
     public void set(AttributeDescriptor descriptor) {
         int index = indexOf(descriptor.getLocalName());
         if (index == -1) {
@@ -754,12 +744,7 @@ public class SimpleFeatureTypeBuilder {
         }
         set(index, descriptor);
     }
-    /**
-     * Replace the descriptor at the provided index.
-     *
-     * @param index
-     * @param descriptor
-     */
+    /** Replace the descriptor at the provided index. */
     public void set(String attributeName, AttributeDescriptor descriptor) {
         int index = indexOf(attributeName);
         if (index == -1) {
@@ -781,12 +766,7 @@ public class SimpleFeatureTypeBuilder {
         }
         return -1;
     }
-    /**
-     * Replace the descriptor at the provided index.
-     *
-     * @param index
-     * @param descriptor
-     */
+    /** Replace the descriptor at the provided index. */
     public void set(String attributeName, AttributeTypeBuilder attributeBuilder) {
         AttributeDescriptor descriptor = attributeBuilder.buildDescriptor(attributeName);
         set(attributeName, descriptor);

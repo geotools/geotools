@@ -67,7 +67,6 @@ final class FixedSizeObjectCache implements ObjectCache {
     /**
      * Check if an entry exists in the cache.
      *
-     * @param key
      * @return boolean
      */
     public boolean containsKey(final Object key) {

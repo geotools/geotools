@@ -123,7 +123,6 @@ public interface LabelCache {
     /**
      * Return a list with all the values in priority order. Both grouped and non-grouped
      *
-     * @param labelCache
      * @return list with all values in priority order
      */
     public List orderedLabels();

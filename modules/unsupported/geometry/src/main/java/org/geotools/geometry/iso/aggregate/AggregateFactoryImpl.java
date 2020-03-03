@@ -92,7 +92,6 @@ public class AggregateFactoryImpl implements Factory, AggregateFactory {
      * Creates a MultiPrimitive by a set of Primitives.
      *
      * @param primitives Set of Points which shall be contained by the MultiPoint
-     * @return
      */
     public MultiPrimitive createMultiPrimitive(Set<Primitive> primitives) {
         return new MultiPrimitiveImpl(crs, primitives);
@@ -102,7 +101,6 @@ public class AggregateFactoryImpl implements Factory, AggregateFactory {
      * Creates a MultiPoint by a set of Points.
      *
      * @param points Set of Points which shall be contained by the MultiPoint
-     * @return
      */
     public MultiPoint createMultiPoint(Set<Point> points) {
         return new MultiPointImpl(crs, points);
@@ -112,7 +110,6 @@ public class AggregateFactoryImpl implements Factory, AggregateFactory {
      * Creates a MultiCurve by a set of Curves.
      *
      * @param curves Set of Curves which shall be contained by the MultiCurve
-     * @return
      */
     public MultiCurve createMultiCurve(Set<OrientableCurve> curves) {
         return new MultiCurveImpl(crs, curves);
@@ -122,7 +119,6 @@ public class AggregateFactoryImpl implements Factory, AggregateFactory {
      * Creates a MultiSurface by a set of Surfaces.
      *
      * @param surfaces Set of Surfaces which shall be contained by the MultiSurface
-     * @return
      */
     public MultiSurface createMultiSurface(Set<OrientableSurface> surfaces) {
         return new MultiSurfaceImpl(crs, surfaces);

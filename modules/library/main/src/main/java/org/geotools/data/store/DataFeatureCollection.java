@@ -449,7 +449,6 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
      * specification. This method should also be able to handle GeoTools specific sorting through
      * detecting order as a SortBy2 instance.
      *
-     * @param order
      * @since GeoTools 2.2, Filter 1.1
      * @return FeatureList sorted according to provided order
      */

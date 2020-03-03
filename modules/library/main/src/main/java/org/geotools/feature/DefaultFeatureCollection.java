@@ -267,7 +267,6 @@ public class DefaultFeatureCollection
     /**
      * Test for collection membership.
      *
-     * @param collection
      * @return true if collection is completly covered
      */
     public boolean containsAll(Collection<?> collection) {

@@ -131,7 +131,6 @@ public class KMLDataStoreFactory implements DataStoreFactorySpi {
      * directory is not found, then it is treated as a relative path, taking Java system property
      * <code>"user.dir"</code> as the base.
      *
-     * @param params
      * @throws IllegalArgumentException if file is a directory.
      * @throws FileNotFoundException if directory does not exists
      * @throws IOException if {@linkplain #DIRECTORY} doesn't find parameter in <code>params</code>

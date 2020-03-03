@@ -137,11 +137,7 @@ class FootprintUtils {
         return null;
     }
 
-    /**
-     * Init the provided footprint map containing <String(location), Geometry(footprint)> pairs.
-     *
-     * @throws IOException
-     */
+    /** Init the provided footprint map containing <String(location), Geometry(footprint)> pairs. */
     static void initFootprintsLocationGeometryMap(
             final ShapefileDataStore footprintStore, final Map<String, Geometry> footprintsMap)
             throws IOException {
@@ -201,12 +197,6 @@ class FootprintUtils {
     /**
      * Build a "ID=Geometry" pair for the provided feature ID, by looking for a geometry in the
      * provided footprintsMap for the specified locationKey
-     *
-     * @param footprintGeometryMap
-     * @param featureID
-     * @param locationKey
-     * @param writer
-     * @return
      */
     private static String buildIDGeometryPair(
             final Map<String, Geometry> footprintGeometryMap,
@@ -332,12 +322,7 @@ class FootprintUtils {
         }
     }
 
-    /**
-     * Search the footprint shape file in the specified directory.
-     *
-     * @param indexingDirectory
-     * @return
-     */
+    /** Search the footprint shape file in the specified directory. */
     static File searchFootprint(final String indexingDirectory) {
         File footprintFile = null;
         if (indexingDirectory != null && indexingDirectory.trim().length() > 0) {

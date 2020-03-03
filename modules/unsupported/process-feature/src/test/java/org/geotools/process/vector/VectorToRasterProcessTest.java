@@ -314,9 +314,6 @@ public class VectorToRasterProcessTest {
     /**
      * Creates randomly located points constrained so that only one point can lie in any grid cell.
      * The number of points will be approx number of grid cells / 4.
-     *
-     * @param numPoints
-     * @return
      */
     private SimpleFeatureCollection createPoints(ReferencedEnvelope bounds, Dimension gridDim)
             throws Exception {

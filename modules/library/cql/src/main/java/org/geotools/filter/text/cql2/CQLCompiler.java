@@ -62,12 +62,7 @@ public class CQLCompiler extends CQLParser implements ICompiler {
 
     private CQLFilterBuilder builder;
 
-    /**
-     * new instance of CQL Compiler
-     *
-     * @param cqlSource
-     * @param filterFactory
-     */
+    /** new instance of CQL Compiler */
     public CQLCompiler(final String cqlSource, final FilterFactory filterFactory) {
         super(new StringReader(cqlSource));
 
@@ -130,7 +125,6 @@ public class CQLCompiler extends CQLParser implements ICompiler {
      * Return the filter resultant of compiling process
      *
      * @return Filter
-     * @throws CQLException
      */
     public final Filter getFilter() throws CQLException {
         return this.builder.getFilter();
@@ -139,7 +133,6 @@ public class CQLCompiler extends CQLParser implements ICompiler {
      * Return the expression resultant of compiling process
      *
      * @return Expression
-     * @throws CQLException
      */
     public final Expression getExpression() throws CQLException {
 
@@ -182,7 +175,6 @@ public class CQLCompiler extends CQLParser implements ICompiler {
      *
      * @param cqlNode a Node instance
      * @return Filter or Expression
-     * @throws CQLException
      */
     private Object build(Node cqlNode) throws CQLException {
         switch (cqlNode.getType()) {
@@ -465,9 +457,7 @@ public class CQLCompiler extends CQLParser implements ICompiler {
     /**
      * Creates Binary Spatial Operator
      *
-     * @param tipeNode
      * @return BinarySpatialOperator
-     * @throws CQLException
      */
     private BinarySpatialOperator buildBinarySpatialOperator(final int nodeType)
             throws CQLException {
@@ -519,9 +509,7 @@ public class CQLCompiler extends CQLParser implements ICompiler {
     /**
      * Builds Distance Buffer Operator
      *
-     * @param nodeType
      * @return DistanceBufferOperator dwithin and beyond filters
-     * @throws CQLException
      */
     private DistanceBufferOperator buildDistanceBufferOperator(final int nodeType)
             throws CQLException {
@@ -593,7 +581,6 @@ public class CQLCompiler extends CQLParser implements ICompiler {
      * Build the convenient filter for before date and before period filters
      *
      * @return Before
-     * @throws CQLException
      */
     private Before buildBeforePredicate() throws CQLException {
         Before filter = null;
@@ -625,7 +612,6 @@ public class CQLCompiler extends CQLParser implements ICompiler {
      * Build the convenient filter for during period filters
      *
      * @return Filter
-     * @throws CQLException
      */
     private During buildDuring() throws CQLException {
         During filter = null;
@@ -654,7 +640,6 @@ public class CQLCompiler extends CQLParser implements ICompiler {
      * build filter for after date and after period
      *
      * @return a filter
-     * @throws CQLException
      */
     private After buildAfterPredicate() throws CQLException {
         After filter = null;
@@ -686,9 +671,7 @@ public class CQLCompiler extends CQLParser implements ICompiler {
     /**
      * Builds a compare filter
      *
-     * @param filterTipa
      * @return BinaryComparisonOperator
-     * @throws CQLException
      */
     private BinaryComparisonOperator buildBinaryComparasionOperator(int filterType)
             throws CQLException {
@@ -717,8 +700,6 @@ public class CQLCompiler extends CQLParser implements ICompiler {
     /**
      * On line cql interpreter
      *
-     * @param args
-     * @throws ParseException
      * @deprecate use CQL.main()
      */
     public static void main(String args[]) throws ParseException {

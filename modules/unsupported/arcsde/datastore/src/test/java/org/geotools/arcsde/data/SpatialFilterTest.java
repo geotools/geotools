@@ -446,10 +446,7 @@ public class SpatialFilterTest {
         runTestWithFilter(ft, filter, false, 1);
     }
 
-    /**
-     * @param string
-     * @return
-     */
+    /** */
     private Geometry findGeom(String cql) throws Exception {
 
         Query query = new Query(testData.getTempTableName());

@@ -71,19 +71,13 @@ public class GeometryCoordinateSequenceTransformer {
      * <p><b>WARNING:</b> The CoordinateSequenceTransformer must use the same {@link
      * CoordinateSequenceFactory} as the output GeometryFactory, so that geometries are constructed
      * consistently.
-     *
-     * @param transformer
      */
     public GeometryCoordinateSequenceTransformer(CoordinateSequenceTransformer transformer) {
         inputCSTransformer = transformer;
         csTransformer = transformer;
     }
 
-    /**
-     * Sets the math transform to be used for transformation
-     *
-     * @param transform
-     */
+    /** Sets the math transform to be used for transformation */
     public void setMathTransform(MathTransform transform) {
         this.transform = transform;
         this.curveCompatible = isCurveCompatible(transform);
@@ -122,7 +116,6 @@ public class GeometryCoordinateSequenceTransformer {
      *
      * @param g the geometry to transform
      * @return a new transformed geometry
-     * @throws TransformException
      */
     public Geometry transform(Geometry g) throws TransformException {
         GeometryFactory factory = g.getFactory();
@@ -251,10 +244,7 @@ public class GeometryCoordinateSequenceTransformer {
         }
     }
 
-    /**
-     * @param point
-     * @throws TransformException
-     */
+    /** */
     public Point transformPoint(Point point, GeometryFactory gf) throws TransformException {
 
         // if required, init csTransformer using geometry's CSFactory
@@ -266,19 +256,13 @@ public class GeometryCoordinateSequenceTransformer {
         return transformed;
     }
 
-    /**
-     * @param cs a CoordinateSequence
-     * @throws TransformException
-     */
+    /** @param cs a CoordinateSequence */
     private CoordinateSequence projectCoordinateSequence(CoordinateSequence cs)
             throws TransformException {
         return csTransformer.transform(cs, transform);
     }
 
-    /**
-     * @param polygon
-     * @throws TransformException
-     */
+    /** */
     public Polygon transformPolygon(Polygon polygon, GeometryFactory gf) throws TransformException {
         LinearRing exterior = (LinearRing) transformLineString(polygon.getExteriorRing(), gf);
         LinearRing[] interiors = new LinearRing[polygon.getNumInteriorRing()];

@@ -82,7 +82,6 @@ public class AStarShortestPathFinder implements GraphWalker {
      * @see Path#riterator()
      * @see Path#reverse()
      * @return A path from the target to the source.
-     * @throws WrongPathException
      */
     public Path getPath() throws WrongPathException {
         Path path = new Path();

@@ -28,8 +28,6 @@ public interface FeatureVisitor {
      *
      * <p>Please consult the documentation for the FeatureCollection you are visiting to learn more
      * - the provided feature may be invalid, or read only.
-     *
-     * @param feature
      */
     void visit(Feature feature);
 }

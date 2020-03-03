@@ -34,11 +34,7 @@ import org.xml.sax.SAXException;
  */
 public class CoordinateWriterTest extends TestCase {
 
-    /**
-     * Test normal 2D output
-     *
-     * @throws Exception
-     */
+    /** Test normal 2D output */
     public void test2DCoordSeq() throws Exception {
         CoordinateSequence coords =
                 new CoordinateArraySequence(coords2D(new int[] {1, 1, 4, 4, 0, 4, 1, 1}));
@@ -53,11 +49,7 @@ public class CoordinateWriterTest extends TestCase {
         assertEquals("<coordinates>1,1 4,4 0,4 1,1</coordinates>", output.received);
     }
 
-    /**
-     * Test normal 2D output
-     *
-     * @throws Exception
-     */
+    /** Test normal 2D output */
     public void test2D() throws Exception {
         Coordinate[] coords = coords2D(new int[] {1, 1, 4, 4, 0, 4, 1, 1});
         assertNotNull(coords);

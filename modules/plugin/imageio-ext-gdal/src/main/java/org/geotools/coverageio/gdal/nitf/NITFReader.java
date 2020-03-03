@@ -38,7 +38,6 @@ public final class NITFReader extends BaseGDALGridCoverage2DReader implements Gr
      * Creates a new instance of a {@link NITFReader}. I assume nothing about file extension.
      *
      * @param input Source object for which we want to build an {@link NITFReader}.
-     * @throws DataSourceException
      */
     public NITFReader(Object input) throws DataSourceException {
         this(input, null);
@@ -49,7 +48,6 @@ public final class NITFReader extends BaseGDALGridCoverage2DReader implements Gr
      *
      * @param input Source object for which we want to build an {@link NITFReader}.
      * @param hints Hints to be used by this reader throughout his life.
-     * @throws DataSourceException
      */
     public NITFReader(Object input, Hints hints) throws DataSourceException {
         super(input, hints, worldFileExt, new NITFImageReaderSpi());

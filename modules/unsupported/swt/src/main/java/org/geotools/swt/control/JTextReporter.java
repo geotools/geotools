@@ -58,8 +58,6 @@ public class JTextReporter extends Dialog {
      *   <li>Will be disposed of when closed
      * </ul>
      *
-     * @param dialogTrim
-     * @param parent
      * @param title title for the dialog (may be {@code null})
      * @param rows number of text rows displayed without scrolling (if zero or negative, the default
      *     is used)

@@ -634,9 +634,6 @@ class BatchValidatorProcessor extends ValidationProcessor {
      * load purpose.
      *
      * <p>loads this instance data into this instance.
-     *
-     * @param testSuites
-     * @param plugIns
      */
     public void load(Map testSuites, Map plugIns) {
         // step 1 make a list required plug-ins

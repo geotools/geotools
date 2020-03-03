@@ -33,23 +33,11 @@ import org.opengis.util.InternationalString;
  * @since GeoAPI 2.2
  */
 public interface StyleFactory {
-    /**
-     * @param x
-     * @param y
-     * @return
-     */
+    /** */
     AnchorPoint anchorPoint(Expression x, Expression y);
-    /**
-     * @param gray
-     * @return
-     */
+    /** */
     ChannelSelection channelSelection(SelectedChannelType gray);
-    /**
-     * @param red
-     * @param green
-     * @param blue
-     * @return
-     */
+    /** */
     ChannelSelection channelSelection(
             SelectedChannelType red, SelectedChannelType green, SelectedChannelType blue);
 
@@ -82,43 +70,18 @@ public interface StyleFactory {
      * @return ColorReplacement wrapped around a Function
      */
     ColorReplacement colorReplacement(Expression propertyName, Expression... mapping);
-    /**
-     * @param gamma
-     * @param method
-     * @return
-     */
+    /** */
     ContrastEnhancement contrastEnhancement(Expression gamma, ContrastMethod method);
-    /**
-     * @param gamma
-     * @param method
-     * @return
-     */
+    /** */
     ContrastEnhancement contrastEnhancement(Expression gamma, String method);
 
-    /**
-     * @param title
-     * @param description
-     * @return
-     */
+    /** */
     Description description(InternationalString title, InternationalString description);
 
-    /**
-     * Create Displacement
-     *
-     * @param dx
-     * @param dy
-     * @return
-     */
+    /** Create Displacement */
     Displacement displacement(Expression dx, Expression dy);
 
-    /**
-     * Create externalGraphic
-     *
-     * @param resource
-     * @param format
-     * @param replacements
-     * @return
-     */
+    /** Create externalGraphic */
     ExternalGraphic externalGraphic(
             OnLineResource resource, String format, Collection<ColorReplacement> replacements);
 
@@ -127,36 +90,16 @@ public interface StyleFactory {
      *
      * <p>This is used to produce high quality output by allowing you to directly draw each symbol
      * by supplying your own Icon implementation.
-     *
-     * @param inline
-     * @param replacements
-     * @return
      */
     ExternalGraphic externalGraphic(Icon inline, Collection<ColorReplacement> replacements);
 
-    /**
-     * @param resource
-     * @param format
-     * @param markIndex
-     * @return
-     */
+    /** */
     ExternalMark externalMark(OnLineResource resource, String format, int markIndex);
 
-    /**
-     * @param inline
-     * @return
-     */
+    /** */
     ExternalMark externalMark(Icon inline);
 
-    /**
-     * @param name
-     * @param description
-     * @param definedFor
-     * @param featureTypeNames
-     * @param types
-     * @param rules May not be null or empty
-     * @return
-     */
+    /** @param rules May not be null or empty */
     FeatureTypeStyle featureTypeStyle(
             String name,
             Description description,
@@ -165,14 +108,7 @@ public interface StyleFactory {
             Set<SemanticType> types,
             List<Rule> rules);
 
-    /**
-     * Create fill.
-     *
-     * @param fill
-     * @param color
-     * @param opacity
-     * @return
-     */
+    /** Create fill. */
     Fill fill(GraphicFill fill, Expression color, Expression opacity);
 
     /**
@@ -183,24 +119,10 @@ public interface StyleFactory {
      * <p>If fonts are not showing up as you expect please review the list of fonts installed into
      * your JRE.
      *
-     * @param family
-     * @param style
-     * @param weight
-     * @param size
      * @return Font
      */
     Font font(List<Expression> family, Expression style, Expression weight, Expression size);
-    /**
-     * Create a graphic.
-     *
-     * @param symbols
-     * @param opacity
-     * @param size
-     * @param rotation
-     * @param anchor
-     * @param disp
-     * @return
-     */
+    /** Create a graphic. */
     Graphic graphic(
             List<GraphicalSymbol> symbols,
             Expression opacity,
@@ -209,14 +131,7 @@ public interface StyleFactory {
             AnchorPoint anchor,
             Displacement disp);
 
-    /**
-     * @param symbols
-     * @param opacity
-     * @param size
-     * @param anchorPoint
-     * @param displacement
-     * @return
-     */
+    /** */
     GraphicFill graphicFill(
             List<GraphicalSymbol> symbols,
             Expression opacity,
@@ -225,14 +140,7 @@ public interface StyleFactory {
             AnchorPoint anchorPoint,
             Displacement displacement);
 
-    /**
-     * @param symbols
-     * @param opacity
-     * @param size
-     * @param anchorPoint
-     * @param displacement
-     * @return
-     */
+    /** */
     GraphicLegend graphicLegend(
             List<GraphicalSymbol> symbols,
             Expression opacity,
@@ -240,16 +148,7 @@ public interface StyleFactory {
             Expression rotation,
             AnchorPoint anchorPoint,
             Displacement displacement);
-    /**
-     * @param symbols
-     * @param opacity
-     * @param size
-     * @param anchorPoint
-     * @param displacement
-     * @param initialGap
-     * @param gap
-     * @return
-     */
+    /** */
     GraphicStroke graphicStroke(
             List<GraphicalSymbol> symbols,
             Expression opacity,
@@ -260,22 +159,10 @@ public interface StyleFactory {
             Expression initialGap,
             Expression gap);
 
-    /**
-     * @param fill
-     * @param radius
-     * @return
-     */
+    /** */
     Halo halo(Fill fill, Expression radius);
 
-    /**
-     * @param offset
-     * @param initialGap
-     * @param gap
-     * @param repeated
-     * @param aligned
-     * @param generalizedLine
-     * @return
-     */
+    /** */
     LinePlacement linePlacement(
             Expression offset,
             Expression initialGap,
@@ -286,7 +173,6 @@ public interface StyleFactory {
     /**
      * @param name handle used to refer to this symbolizer (machine readible)
      * @param geometry Expression used to produce the Geometry to renderer; often a PropertyName
-     * @param description
      * @param unit Unit of measure used to define this symbolizer
      * @param stroke Definition of how to stroke linework
      * @param offset Offset used to position line relative to origional
@@ -300,26 +186,11 @@ public interface StyleFactory {
             Stroke stroke,
             Expression offset);
 
-    /**
-     * @param wellKnownName
-     * @param fill
-     * @param stroke
-     * @return
-     */
+    /** */
     Mark mark(Expression wellKnownName, Fill fill, Stroke stroke);
-    /**
-     * @param externalMark
-     * @param fill
-     * @param stroke
-     * @return
-     */
+    /** */
     Mark mark(ExternalMark externalMark, Fill fill, Stroke stroke);
-    /**
-     * @param anchor
-     * @param displacement
-     * @param rotation
-     * @return
-     */
+    /** */
     PointPlacement pointPlacement(
             AnchorPoint anchor, Displacement displacement, Expression rotation);
     /**
@@ -343,11 +214,6 @@ public interface StyleFactory {
      * @param geometry Expression used to extract the Geometry rendered; usually a PropertyName
      * @param description Human readable description of symboizer
      * @param unit Unit of Measure used to interpret symbolizer distances
-     * @param stroke
-     * @param fill
-     * @param displacement
-     * @param offset
-     * @return
      */
     PolygonSymbolizer polygonSymbolizer(
             String name,
@@ -363,13 +229,6 @@ public interface StyleFactory {
      * @param geometry Expression used to extract the Geometry rendered; usually a PropertyName
      * @param description Human readable description of symboizer
      * @param unit Unit of Measure used to interpret symbolizer distances
-     * @param opacity
-     * @param channelSelection
-     * @param overlapsBehaviour
-     * @param colorMap
-     * @param contrast
-     * @param shaded
-     * @param outline
      * @return RasterSymbolizer
      */
     RasterSymbolizer rasterSymbolizer(
@@ -415,8 +274,6 @@ public interface StyleFactory {
      * @param legend Graphic used to indicate this rule in a legend or user interface
      * @param min minimum scale denominator used to control when this rule is applied
      * @param max maximum scale denominator used to control when this rule is applied
-     * @param symbolizers
-     * @param filter
      * @return Newly created Rule
      */
     Rule rule(
@@ -428,27 +285,15 @@ public interface StyleFactory {
             List<Symbolizer> symbolizers,
             Filter filter);
 
-    /**
-     * @param channelName
-     * @param contrastEnhancement
-     * @return SelectedChannelType
-     */
+    /** @return SelectedChannelType */
     SelectedChannelType selectedChannelType(
             Expression channelName, ContrastEnhancement contrastEnhancement);
 
-    /**
-     * @param channelName
-     * @param contrastEnhancement
-     * @return SelectedChannelType
-     */
+    /** @return SelectedChannelType */
     SelectedChannelType selectedChannelType(
             String channelName, org.opengis.style.ContrastEnhancement contrastEnhancement);
 
-    /**
-     * @param reliefFactor
-     * @param brightnessOnly
-     * @return ShadedRelief
-     */
+    /** @return ShadedRelief */
     ShadedRelief shadedRelief(Expression reliefFactor, boolean brightnessOnly);
 
     Stroke stroke(
@@ -480,14 +325,7 @@ public interface StyleFactory {
             float[] dashes,
             Expression offset);
 
-    /**
-     * @param name
-     * @param description
-     * @param isDefault
-     * @param featureTypeStyles
-     * @param defaultSymbolizer
-     * @return
-     */
+    /** */
     Style style(
             String name,
             Description description,

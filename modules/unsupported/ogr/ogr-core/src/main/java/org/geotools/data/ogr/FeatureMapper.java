@@ -26,7 +26,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.TimeZone;
-import org.geotools.data.DataSourceException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.util.Converters;
 import org.locationtech.jts.geom.Geometry;
@@ -94,14 +93,7 @@ class FeatureMapper {
         }
     }
 
-    /**
-     * Converts an OGR feature into a GeoTools one
-     *
-     * @param schema
-     * @param ogrFeature
-     * @return
-     * @throws IOException
-     */
+    /** Converts an OGR feature into a GeoTools one */
     SimpleFeature convertOgrFeature(Object ogrFeature) throws IOException {
         // Extract all attributes (do not assume any specific order, the feature
         // type may have been re-ordered by the Query)
@@ -121,13 +113,7 @@ class FeatureMapper {
         return builder.buildFeature(fid);
     }
 
-    /**
-     * Turns a GeoTools feature into an OGR one
-     *
-     * @param feature
-     * @return
-     * @throws DataSourceException
-     */
+    /** Turns a GeoTools feature into an OGR one */
     Object convertGTFeature(Object featureDefinition, SimpleFeature feature) throws IOException {
         // create a new empty OGR feature
         Object ogrFeature = ogr.LayerNewFeature(featureDefinition);
@@ -202,10 +188,6 @@ class FeatureMapper {
      * Turns line and polygon into multiline and multipolygon. This is a stop-gap measure to make
      * things works against shapefiles, I've asked the GDAL mailing list on how to properly handle
      * this in the meantime
-     *
-     * @param ogrGeometry
-     * @param ad
-     * @return
      */
     Geometry fixGeometryType(Geometry ogrGeometry, AttributeDescriptor ad) {
         if (MultiPolygon.class.equals(ad.getType().getBinding())) {
@@ -223,9 +205,6 @@ class FeatureMapper {
     /**
      * Reads the current feature's specified field using the most appropriate OGR field extraction
      * method
-     *
-     * @param ad
-     * @return
      */
     Object getOgrField(AttributeDescriptor ad, Object ogrFeature) throws IOException {
         if (ad instanceof GeometryDescriptor) {
@@ -293,13 +272,7 @@ class FeatureMapper {
         }
     }
 
-    /**
-     * Reads a date field from the OGR api
-     *
-     * @param ogrFeature
-     * @param idx
-     * @return
-     */
+    /** Reads a date field from the OGR api */
     private Calendar getDateField(Object ogrFeature, Integer idx) {
         int[] year = new int[1];
         int[] month = new int[1];
@@ -336,24 +309,13 @@ class FeatureMapper {
         return cal;
     }
 
-    /**
-     * Generates a GT2 feature id given its feature type and an OGR feature
-     *
-     * @param schema
-     * @param ogrFeature
-     * @return
-     */
+    /** Generates a GT2 feature id given its feature type and an OGR feature */
     String convertOGRFID(SimpleFeatureType schema, Object ogrFeature) {
         long id = ogr.FeatureGetFID(ogrFeature);
         return schema.getTypeName() + "." + id;
     }
 
-    /**
-     * Decodes a GT2 feature id into an OGR one
-     *
-     * @param feature
-     * @return
-     */
+    /** Decodes a GT2 feature id into an OGR one */
     long convertGTFID(SimpleFeature feature) {
         String id = feature.getID();
         return Long.parseLong(id.substring(id.indexOf(".") + 1));

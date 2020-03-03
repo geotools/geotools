@@ -68,11 +68,7 @@ public class WKTReader2Test {
         assertEquals(new Coordinate(110, -46.5), mp.getGeometryN(1).getCoordinate());
     }
 
-    /**
-     * Draw a circle between the start and end point; or each group of three their after.
-     *
-     * @throws Exception
-     */
+    /** Draw a circle between the start and end point; or each group of three their after. */
     @Test
     public void circularString() throws Exception {
         String WKT =

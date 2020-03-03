@@ -162,8 +162,6 @@ public class ParseExecutor implements Visitor {
      * Pre-parses the instance compontent checking the following:
      *
      * <p>
-     *
-     * @param instance
      */
     protected Object preParse(InstanceComponent instance) {
         // we only preparse text, so simple types

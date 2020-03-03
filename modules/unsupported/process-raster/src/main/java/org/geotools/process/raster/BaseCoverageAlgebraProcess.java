@@ -90,12 +90,7 @@ public class BaseCoverageAlgebraProcess {
         }
     }
 
-    /**
-     * Utility method for ensuring that all the Input Coverages have the same CRS
-     *
-     * @param coverages
-     * @throws ProcessException
-     */
+    /** Utility method for ensuring that all the Input Coverages have the same CRS */
     public static void checkCompatibleCoveragesForMerge(Collection<GridCoverage2D> coverages)
             throws ProcessException {
         if (coverages == null || coverages.isEmpty()) {
@@ -127,12 +122,7 @@ public class BaseCoverageAlgebraProcess {
         }
     }
 
-    /**
-     * Utility method for checking if two CRS are equals
-     *
-     * @param crsA
-     * @param crsB
-     */
+    /** Utility method for checking if two CRS are equals */
     public static void checkCompatibleCRS(
             CoordinateReferenceSystem crsA, CoordinateReferenceSystem crsB) {
         // check if they are equal

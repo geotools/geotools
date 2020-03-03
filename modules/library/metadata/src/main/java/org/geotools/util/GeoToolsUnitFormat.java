@@ -135,11 +135,7 @@ public abstract class GeoToolsUnitFormat extends SimpleUnitFormat {
             }
         }
 
-        /**
-         * Defaults to being a no-op, subclasses can override
-         *
-         * @param unit
-         */
+        /** Defaults to being a no-op, subclasses can override */
         protected void addUnit(Unit<?> unit) {}
 
         @Override

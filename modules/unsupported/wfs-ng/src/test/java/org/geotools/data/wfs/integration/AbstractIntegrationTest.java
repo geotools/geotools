@@ -128,16 +128,12 @@ public abstract class AbstractIntegrationTest {
      *   return data;
      * </code>
      * </pre>
-     *
-     * @throws Exception
      */
     public abstract DataStore createDataStore() throws Exception;
 
     /**
      * This method must remove the roads and rivers types from the datastore. It must also close all
      * connections to the datastore if it has connections and get rid of any temporary files.
-     *
-     * @throws Exception
      */
     public abstract DataStore tearDownDataStore(DataStore data) throws Exception;
 

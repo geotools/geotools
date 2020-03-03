@@ -411,8 +411,6 @@ public class ArcSDEFeatureStoreTest {
      * Tests that all the features that match a filter based on attribute only filters (aka non
      * spatial filters), are deleted correctly. This test assumes that there are no duplicate values
      * in the test data.
-     *
-     * @throws Exception
      */
     @Test
     public void testDeleteByAttOnlyFilter() throws Exception {
@@ -473,8 +471,6 @@ public class ArcSDEFeatureStoreTest {
      * Add features to a FeatureWriter with a {@link Transaction} and ensure if the transaction was
      * not committed, a request gets no features, and when the transaction is committed the query
      * returns it.
-     *
-     * @throws Exception
      */
     @Test
     public void testInsertTransaction() throws Exception {
@@ -1161,8 +1157,6 @@ public class ArcSDEFeatureStoreTest {
     /**
      * Ensure modified features for a given FeatureStore are returned by subsequent queries even if
      * the transaction has not been committed.
-     *
-     * @throws Exception
      */
     @Test
     public void testTransactionStateDiff() throws Exception {

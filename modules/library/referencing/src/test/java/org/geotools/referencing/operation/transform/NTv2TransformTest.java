@@ -120,8 +120,6 @@ public class NTv2TransformTest {
 
     /**
      * Test method for {@link org.geotools.referencing.operation.transform.NTv2Transform#inverse()}.
-     *
-     * @throws TransformException
      */
     @Test
     public void testInverse() throws TransformException {
@@ -140,8 +138,6 @@ public class NTv2TransformTest {
      * Test method for {@link
      * org.geotools.referencing.operation.transform.NTv2Transform#transform(double[], int, double[],
      * int, int)}.
-     *
-     * @throws TransformException
      */
     @Test
     public void testTransform() throws TransformException {
@@ -169,8 +165,6 @@ public class NTv2TransformTest {
      * Test method for {@link
      * org.geotools.referencing.operation.transform.NTv2Transform#inverseTransform(double[], int,
      * double[], int, int)}.
-     *
-     * @throws TransformException
      */
     @Test
     public void testInverseTransform() throws TransformException {

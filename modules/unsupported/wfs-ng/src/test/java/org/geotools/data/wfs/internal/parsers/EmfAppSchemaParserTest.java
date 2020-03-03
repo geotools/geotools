@@ -46,8 +46,6 @@ public class EmfAppSchemaParserTest {
 
     /**
      * Test method for {@link EmfAppSchemaParser#parse(javax.xml.namespace.QName, java.net.URL)}.
-     *
-     * @throws IOException
      */
     @Test
     public void testParseGeoServerSimpleFeatureType() throws IOException {
@@ -111,11 +109,6 @@ public class EmfAppSchemaParserTest {
     }
 
     /**
-     * @param featureTypeName
-     * @param schemaLocation
-     * @param expectedAttributeCount
-     * @return
-     * @throws IOException
      * @see {@link EmfAppSchemaParser#parseSimpleFeatureType(Configuration, QName, URL,
      *     CoordinateReferenceSystem)}
      */

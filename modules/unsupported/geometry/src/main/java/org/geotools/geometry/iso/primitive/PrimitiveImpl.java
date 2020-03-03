@@ -96,12 +96,7 @@ public abstract class PrimitiveImpl extends GeometryImpl implements Primitive {
      */
     protected Set<Complex> complex = null;
 
-    /**
-     * @param crs
-     * @param containedPrimitive
-     * @param containingPrimitive
-     * @param complex
-     */
+    /** */
     protected PrimitiveImpl(
             CoordinateReferenceSystem crs,
             Set<Primitive> containedPrimitive,
@@ -146,29 +141,19 @@ public abstract class PrimitiveImpl extends GeometryImpl implements Primitive {
     /**
      * Adds a new subelement of same or lower dimension then this object. This object contains the
      * given subelement
-     *
-     * @param newSubelement
      */
     public void addContainingPrimitive(PrimitiveImpl newSubelement) {
         if (this.containingPrimitive == null) this.containingPrimitive = new HashSet<Primitive>();
         this.containingPrimitive.add(newSubelement);
     }
 
-    /**
-     * Adds a the super element where this object in contained in
-     *
-     * @param newSuperelement
-     */
+    /** Adds a the super element where this object in contained in */
     public void addContainedPrimitive(PrimitiveImpl newSuperelement) {
         if (this.containedPrimitive == null) this.containedPrimitive = new HashSet<Primitive>();
         this.containedPrimitive.add(newSuperelement);
     }
 
-    /**
-     * Adds a new complex to the set of complexes containing this primitive
-     *
-     * @param newComplex
-     */
+    /** Adds a new complex to the set of complexes containing this primitive */
     public void addComplex(ComplexImpl newComplex) {
         if (this.complex == null) this.complex = new HashSet<Complex>();
         this.complex.add(newComplex);

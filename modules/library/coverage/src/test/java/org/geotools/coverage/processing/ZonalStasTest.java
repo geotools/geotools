@@ -180,8 +180,6 @@ public class ZonalStasTest extends TestCase {
          *
          * <p>This is the moment in which the analysis takes place. This method is intended to give
          * the user the possibility to choose the moment in which the workload is done.
-         *
-         * @throws Exception
          */
         public void run() throws Exception {
             processPolygonMode();

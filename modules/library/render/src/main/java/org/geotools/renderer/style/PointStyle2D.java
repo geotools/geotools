@@ -57,11 +57,7 @@ public interface PointStyle2D {
     /** Sets the point symbol y anchor, between 0 and 1 */
     public void setAnchorPointY(float anchorPointY);
 
-    /**
-     * Returns the composite for this point symbol
-     *
-     * @return
-     */
+    /** Returns the composite for this point symbol */
     public Composite getComposite();
 
     /** Sets the composite for this point symbol */

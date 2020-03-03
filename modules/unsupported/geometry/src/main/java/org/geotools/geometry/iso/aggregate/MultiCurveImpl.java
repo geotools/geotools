@@ -28,7 +28,6 @@ public class MultiCurveImpl extends MultiPrimitiveImpl implements MultiCurve {
     /**
      * Creates a MultiCurve by a set of Curves.
      *
-     * @param crs
      * @param curves Set of Curves which shall be contained by the MultiCurve
      */
     public MultiCurveImpl(CoordinateReferenceSystem crs, Set<OrientableCurve> curves) {

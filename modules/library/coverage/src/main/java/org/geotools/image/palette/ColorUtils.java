@@ -24,38 +24,22 @@ package org.geotools.image.palette;
  */
 final class ColorUtils {
 
-    /**
-     * Returns the alpha component of the specified color
-     *
-     * @param color
-     */
+    /** Returns the alpha component of the specified color */
     public static int alpha(int color) {
         return ((color >> 24) & 0xFF);
     }
 
-    /**
-     * Returns the red component of the specified color
-     *
-     * @param color
-     */
+    /** Returns the red component of the specified color */
     public static int red(int color) {
         return (color >> 16) & 0xFF;
     }
 
-    /**
-     * Returns the green component of the specified color
-     *
-     * @param color
-     */
+    /** Returns the green component of the specified color */
     public static int green(int color) {
         return (color >> 8) & 0xFF;
     }
 
-    /**
-     * Returns the blue component of the specified color
-     *
-     * @param color
-     */
+    /** Returns the blue component of the specified color */
     public static int blue(int color) {
         return color & 0xFF;
     }
@@ -68,13 +52,7 @@ final class ColorUtils {
                 | ((blue & 0xFF) << 0);
     }
 
-    /**
-     * Bit shifts a color component, loosing the less significant bits
-     *
-     * @param component
-     * @param shift
-     * @return
-     */
+    /** Bit shifts a color component, loosing the less significant bits */
     public static int shift(int component, int shift) {
         return component >> shift;
     }
@@ -82,10 +60,6 @@ final class ColorUtils {
     /**
      * Undoes what shift did, with some heuristics to preserve full "black", full "white" and
      * lighter colors
-     *
-     * @param component
-     * @param shift
-     * @return
      */
     public static int unshift(int component, int shift) {
         if (component == 0) {
@@ -100,13 +74,7 @@ final class ColorUtils {
         }
     }
 
-    /**
-     * Compares two longs, to be used in comparators
-     *
-     * @param l1
-     * @param l2
-     * @return
-     */
+    /** Compares two longs, to be used in comparators */
     public static int compareLong(long l1, long l2) {
         long diff = l1 - l2;
         if (diff == 0) {

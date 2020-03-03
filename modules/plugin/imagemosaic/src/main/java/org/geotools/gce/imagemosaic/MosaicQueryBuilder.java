@@ -184,7 +184,6 @@ class MosaicQueryBuilder {
      * Handles the optional {@link SortBy} clause for the query to the catalog
      *
      * @param query the {@link Query} to set the {@link SortBy} for.
-     * @throws IOException
      */
     private void handleSortByClause(final Query query) throws IOException {
         Utilities.ensureNonNull("query", query);

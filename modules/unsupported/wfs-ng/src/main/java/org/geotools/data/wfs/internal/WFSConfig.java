@@ -248,11 +248,7 @@ public class WFSConfig {
         return gmlCompatibleTypenames;
     }
 
-    /**
-     * Returns the entity resolved to be used for XML parses
-     *
-     * @return
-     */
+    /** Returns the entity resolved to be used for XML parses */
     public EntityResolver getEntityResolver() {
         return entityResolver;
     }
@@ -273,10 +269,6 @@ public class WFSConfig {
     /**
      * Checks if axis flipping is needed comparing axis order requested for the DataStore with query
      * crs.
-     *
-     * @param axisOrder
-     * @param coordinateSystem
-     * @return
      */
     public static boolean invertAxisNeeded(String axisOrder, CoordinateReferenceSystem crs) {
         CRS.AxisOrder requestedAxis = CRS.getAxisOrder(crs);

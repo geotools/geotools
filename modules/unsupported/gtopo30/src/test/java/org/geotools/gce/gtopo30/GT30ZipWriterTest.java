@@ -42,11 +42,7 @@ public class GT30ZipWriterTest extends GT30TestBase {
         super(name);
     }
 
-    /**
-     * Testing zipped-package writing capabilites.
-     *
-     * @throws Exception
-     */
+    /** Testing zipped-package writing capabilites. */
     public void test() throws Exception {
         final URL statURL = TestData.getResource(this, this.fileName + ".DEM");
         final AbstractGridFormat format =
@@ -81,11 +77,7 @@ public class GT30ZipWriterTest extends GT30TestBase {
         }
     }
 
-    /**
-     * Testing zipped-package writing capabilites.
-     *
-     * @throws Exception
-     */
+    /** Testing zipped-package writing capabilites. */
     public void testExternalZIP() throws Exception {
         final URL sourceURL = TestData.getResource(this, this.fileName + ".DEM");
         final AbstractGridFormat format =

@@ -29,10 +29,10 @@ public class PostGISUuidOnlineTest extends JDBCUuidOnlineTest {
         return new PostGISUuidTestSetup(new PostGISTestSetup());
     }
 
-    @Override
+    
     // Create a collection where the feature does not have a UUID,
     // so KeysFetcher will need to generate a new ID for this feature
-    protected SimpleFeatureCollection createFeatureCollection() throws Exception {
+    private SimpleFeatureCollection createFeatureCollection() throws Exception {
         SimpleFeatureType type = dataStore.getSchema(tname("uuidt"));
 
         GeometryFactory gf = new GeometryFactory();
@@ -40,7 +40,8 @@ public class PostGISUuidOnlineTest extends JDBCUuidOnlineTest {
 
         SimpleFeature feature1 =
                 SimpleFeatureBuilder.build(type, new Object[] {p}, uuid1.toString());
-        feature1.getUserData().put(Hints.USE_PROVIDED_FID, false);      // false, so that a UUID will be generated
+        feature1.getUserData()
+                .put(Hints.USE_PROVIDED_FID, false); // false, so that a UUID will be generated
         // feature1.getUserData().put(Hints.PROVIDED_FID, uuid1);
 
         return DataUtilities.collection(new SimpleFeature[] {feature1});

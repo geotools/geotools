@@ -29,7 +29,6 @@ public class PostGISUuidOnlineTest extends JDBCUuidOnlineTest {
         return new PostGISUuidTestSetup(new PostGISTestSetup());
     }
 
-    
     // Create a collection where the feature does not have a UUID,
     // so KeysFetcher will need to generate a new ID for this feature
     private SimpleFeatureCollection createFeatureCollection() throws Exception {

@@ -66,11 +66,7 @@ public class XXEProtectionTest {
         }
     }
 
-    /**
-     * The pull parser we use has entity resolution disabled, make sure it stays that way
-     *
-     * @throws Exception
-     */
+    /** The pull parser we use has entity resolution disabled, make sure it stays that way */
     @Test
     public void testGetFeatureProtection() throws Exception {
         WFSConfig config = WFSTestData.getGmlCompatibleConfig();

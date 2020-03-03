@@ -243,8 +243,6 @@ public class PostGISDialect extends BasicSQLDialect {
     /**
      * Enables/disables usage of ST_Simplify geometry wrapping when the Query contains a geometry
      * simplification hint
-     *
-     * @param simplifyEnabled
      */
     public void setSimplifyEnabled(boolean simplifyEnabled) {
         this.simplifyEnabled = simplifyEnabled;
@@ -1429,11 +1427,7 @@ public class PostGISDialect extends BasicSQLDialect {
         return -1;
     }
 
-    /**
-     * Returns the PostGIS version
-     *
-     * @return
-     */
+    /** Returns the PostGIS version */
     public Version getVersion(Connection conn) throws SQLException {
         if (version == null) {
             Statement st = null;

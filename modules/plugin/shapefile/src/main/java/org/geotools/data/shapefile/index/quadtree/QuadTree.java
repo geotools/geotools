@@ -116,15 +116,7 @@ public class QuadTree implements Closeable {
         this.insert(this.root, recno, bounds, this.maxDepth);
     }
 
-    /**
-     * Inserts a shape record id in the quadtree
-     *
-     * @param node
-     * @param recno
-     * @param bounds
-     * @param maxDepth
-     * @throws StoreException
-     */
+    /** Inserts a shape record id in the quadtree */
     public void insert(Node node, int recno, Envelope bounds, int maxDepth) throws StoreException {
 
         if (maxDepth > 1 && node.getNumSubNodes() > 0) {
@@ -182,10 +174,7 @@ public class QuadTree implements Closeable {
         node.addShapeId(recno);
     }
 
-    /**
-     * @param bounds
-     * @return A List of Integer
-     */
+    /** @return A List of Integer */
     public CloseableIterator<Data> search(Envelope bounds) throws StoreException {
         if (LOGGER.isLoggable(Level.FINEST)) {
             LOGGER.log(Level.FINEST, "Querying " + bounds);
@@ -199,11 +188,7 @@ public class QuadTree implements Closeable {
         }
     }
 
-    /**
-     * Closes this QuadTree after use...
-     *
-     * @throws StoreException
-     */
+    /** Closes this QuadTree after use... */
     public void close(Iterator iter) throws IOException {
         iterators.remove(iter);
     }

@@ -48,7 +48,6 @@ public abstract class Measure<V extends Number, Q extends Quantity<Q>>
     /**
      * Numeric representation of measure in the provided unit
      *
-     * @param unit
      * @return numeric representation.
      */
     public Number numericValue(Unit<Q> unit) {

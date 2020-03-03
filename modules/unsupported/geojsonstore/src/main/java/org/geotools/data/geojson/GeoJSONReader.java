@@ -146,11 +146,7 @@ public class GeoJSONReader implements AutoCloseable {
         return DataUtilities.collection(features);
     }
 
-    /**
-     * @param node
-     * @return
-     * @throws IOException
-     */
+    /** */
     private SimpleFeature getNextFeature(ObjectNode node) throws IOException {
         JsonNode type = node.get("type");
         if (!"Feature".equalsIgnoreCase(type.asText())) {
@@ -206,10 +202,7 @@ public class GeoJSONReader implements AutoCloseable {
         return feature;
     }
 
-    /**
-     * @param props
-     * @return
-     */
+    /** */
     private SimpleFeatureBuilder getBuilder(JsonNode props) {
 
         if (schema == null) {

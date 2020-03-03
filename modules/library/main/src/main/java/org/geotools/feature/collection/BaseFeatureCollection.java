@@ -208,9 +208,6 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
      * Convenience implementation that just wraps this collection into a {@link
      * FilteringFeatureCollection}. Subclasses might want to override this in case the filter can be
      * cascaded to their data sources.
-     *
-     * @param filter
-     * @return
      */
     public FeatureCollection<T, F> subCollection(Filter filter) {
         if (filter == Filter.INCLUDE) {

@@ -89,18 +89,12 @@ public class WMTSLayer extends Layer {
         this.infoFormats = infoFormats;
     }
 
-    /**
-     * @param format
-     * @param template
-     */
+    /** */
     public void putResourceURL(String format, String template) {
         templates.put(format, template);
     }
 
-    /**
-     * @param object
-     * @return
-     */
+    /** */
     public String getTemplate(String key) {
         return templates.get(key);
     }

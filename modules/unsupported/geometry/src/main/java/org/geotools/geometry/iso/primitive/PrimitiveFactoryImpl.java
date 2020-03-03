@@ -209,8 +209,6 @@ public class PrimitiveFactoryImpl implements Serializable, Factory, PrimitiveFac
     /**
      * Creates a CurveBoundary
      *
-     * @param dp0
-     * @param dp1
      * @return CurveBoundaryImpl
      */
     public CurveBoundaryImpl createCurveBoundary(DirectPosition dp0, DirectPosition dp1) {
@@ -224,8 +222,6 @@ public class PrimitiveFactoryImpl implements Serializable, Factory, PrimitiveFac
     /**
      * Creates a CurveBoundary
      *
-     * @param p0
-     * @param p1
      * @return CurveBoundaryImpl
      */
     public CurveBoundaryImpl createCurveBoundary(Point p0, Point p1) {
@@ -472,12 +468,7 @@ public class PrimitiveFactoryImpl implements Serializable, Factory, PrimitiveFac
         throw new UnsupportedOperationException("Not yet 3D");
     }
 
-    /**
-     * This is the first and easy step ...
-     *
-     * @param bounds
-     * @param dimension
-     */
+    /** This is the first and easy step ... */
     public LineSegment processBoundsToSegment(Envelope bounds) {
         final int D = 0;
         CoordinateReferenceSystem crs = bounds.getCoordinateReferenceSystem();
@@ -497,11 +488,7 @@ public class PrimitiveFactoryImpl implements Serializable, Factory, PrimitiveFac
 
         return new LineSegmentImpl(array, 0.0);
     }
-    /**
-     * This is pass #2 ...
-     *
-     * @return
-     */
+    /** This is pass #2 ... */
     public Ring processBoundsToRing(Envelope bounds, LineSegment segment, final int D) {
         DirectPosition one =
                 positionFactory.createDirectPosition(
@@ -543,7 +530,6 @@ public class PrimitiveFactoryImpl implements Serializable, Factory, PrimitiveFac
      * Creates a Ring conforming to the given DirectPositions. Helps to build Rings for
      * SurfaceBoundaries.
      *
-     * @param directPositions
      * @return a Ring
      */
     public Ring createRingByDirectPositions(List<DirectPosition> directPositions) {
@@ -557,12 +543,7 @@ public class PrimitiveFactoryImpl implements Serializable, Factory, PrimitiveFac
         return this.createRing(orientableCurves);
     }
 
-    /**
-     * Creates a Ring conforming to the given Positions
-     *
-     * @param aPositions
-     * @return
-     */
+    /** Creates a Ring conforming to the given Positions */
     public Ring createRingByPositions(List<Position> aPositions) {
 
         // Create List of OrientableCurve´s (Curve´s)
@@ -576,7 +557,6 @@ public class PrimitiveFactoryImpl implements Serializable, Factory, PrimitiveFac
     /**
      * Creates a Curve conforming to the given DirectPositions Tested by Sanjay -
      *
-     * @param directPositions
      * @return a Ring
      */
     public Curve createCurveByDirectPositions(List<DirectPosition> aDirectPositions) {
@@ -620,7 +600,6 @@ public class PrimitiveFactoryImpl implements Serializable, Factory, PrimitiveFac
     /**
      * Creates a curve bu Positions
      *
-     * @param aPositions
      * @return Curve
      */
     public CurveImpl createCurveByPositions(List<Position> aPositions) {

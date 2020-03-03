@@ -64,12 +64,7 @@ public class WMTSMapLayer extends GridReaderLayer {
 
     private String rawTime;
 
-    /**
-     * Builds a new WMTS map layer
-     *
-     * @param wmts
-     * @param layer
-     */
+    /** Builds a new WMTS map layer */
     public WMTSMapLayer(WebMapTileServer wmts, Layer layer) {
         super(new WMTSCoverageReader(wmts, layer), createStyle());
     }
@@ -86,29 +81,17 @@ public class WMTSMapLayer extends GridReaderLayer {
         return super.getBounds();
     }
 
-    /**
-     * Returns the {@link WebMapTileServer} used by this layer
-     *
-     * @return
-     */
+    /** Returns the {@link WebMapTileServer} used by this layer */
     public WebMapTileServer getWebMapServer() {
         return getReader().wmts;
     }
 
-    /**
-     * Returns the CRS used to make requests to the remote WMTS
-     *
-     * @return
-     */
+    /** Returns the CRS used to make requests to the remote WMTS */
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
         return reader.getCoordinateReferenceSystem();
     }
 
-    /**
-     * Returns last GetMap request performed by this layer
-     *
-     * @return
-     */
+    /** Returns last GetMap request performed by this layer */
     public GetTileRequest getLastGetMap() {
         return getReader().getTileRequest();
     }
@@ -118,9 +101,6 @@ public class WMTSMapLayer extends GridReaderLayer {
      *
      * <p>Natively supported crs will provide the best rendering quality as no client side
      * reprojection is necessary, the tiles coming from the WMTS server will be used as-is
-     *
-     * @param crs
-     * @return
      */
     public boolean isNativelySupported(CoordinateReferenceSystem crs) {
         try {

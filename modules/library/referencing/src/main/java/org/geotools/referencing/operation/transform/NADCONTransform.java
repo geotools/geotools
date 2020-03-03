@@ -478,11 +478,6 @@ public class NADCONTransform extends AbstractMathTransform
         /**
          * Inverse transform an array of points.
          *
-         * @param source
-         * @param srcOffset
-         * @param dest
-         * @param dstOffset
-         * @param length
          * @throws TransformException if the input point is outside the area covered by this grid.
          */
         public void transform(

@@ -1326,8 +1326,6 @@ public class GeoPackage implements Closeable {
      * @param highCol high column boundary
      * @param lowRow low row boundary
      * @param highRow high row boundary
-     * @return
-     * @throws IOException
      */
     @SuppressWarnings("PMD.CloseResource") // cx and st get into the TileReader
     public TileReader reader(
@@ -1391,7 +1389,6 @@ public class GeoPackage implements Closeable {
      *
      * @param entry The feature entry.
      * @return whether this feature entry has a spatial index available.
-     * @throws IOException
      */
     public boolean hasSpatialIndex(FeatureEntry entry) throws IOException {
         try {
@@ -1502,7 +1499,6 @@ public class GeoPackage implements Closeable {
      * @param isMax true for max boundary, false for min boundary
      * @param isRow true for rows, false for columns
      * @return the min/max column/row of the zoom level available in the data
-     * @throws IOException
      */
     public int getTileBound(TileEntry entry, int zoom, boolean isMax, boolean isRow)
             throws IOException {

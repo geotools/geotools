@@ -48,12 +48,7 @@ public abstract class FilterAbstract implements org.opengis.filter.Filter {
         return evaluate(feature);
     }
 
-    /**
-     * Unpacks a value from an attribute container
-     *
-     * @param value
-     * @return
-     */
+    /** Unpacks a value from an attribute container */
     private Object unpack(Object value) {
 
         if (value instanceof org.opengis.feature.ComplexAttribute) {
@@ -78,8 +73,6 @@ public abstract class FilterAbstract implements org.opengis.filter.Filter {
      * Helper method for subclasses to reduce null checks and automatically unpack values from
      * attributes and collections
      *
-     * @param expression
-     * @param object
      * @return value or null
      */
     @SuppressWarnings("unchecked")
@@ -101,9 +94,6 @@ public abstract class FilterAbstract implements org.opengis.filter.Filter {
     /**
      * Helper method for subclasses to reduce null checks
      *
-     * @param expression
-     * @param object
-     * @param context
      * @return value or null
      */
     protected Object eval(

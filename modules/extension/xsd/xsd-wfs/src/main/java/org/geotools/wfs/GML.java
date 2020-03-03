@@ -193,29 +193,18 @@ public class GML {
      * correct (something you can only tell when parsing the produced result!). Setting this value
      * to false will use the same GMLConfiguration employed when parsing and has less risk of
      * producing invalid content.
-     *
-     * @param legacy
      */
     public void setLegacy(boolean legacy) {
         this.legacy = legacy;
     }
 
-    /**
-     * Set the target namespace for the encoding.
-     *
-     * @param prefix
-     * @param namespace
-     */
+    /** Set the target namespace for the encoding. */
     public void setNamespace(String prefix, String namespace) {
         this.prefix = prefix;
         this.namespace = namespace;
     }
 
-    /**
-     * Set the encoding to use.
-     *
-     * @param encoding
-     */
+    /** Set the encoding to use. */
     public void setEncoding(Charset encoding) {
         this.encoding = encoding;
     }
@@ -230,8 +219,6 @@ public class GML {
      *
      * <p>In a few cases (such as decoding a SimpleFeatureType) the file format does not include the
      * required CooridinateReferenceSystem and you are asked to supply it.
-     *
-     * @param crs
      */
     public void setCoordinateReferenceSystem(CoordinateReferenceSystem crs) {
         this.crs = crs;
@@ -252,8 +239,6 @@ public class GML {
      *   <li>wfs1.0 - not yet available
      *   <li>wfs1.1 - not yet available
      * </ul>
-     *
-     * @param version
      */
     protected void init() {
         List<Schema> schemas = new ArrayList<Schema>();
@@ -456,10 +441,7 @@ public class GML {
      * <p>The XMLSchema does not include CoordinateReferenceSystem we need to ask you to supply this
      * information.
      *
-     * @param schemaLocation
-     * @param typeName
      * @return SimpleFeatureType
-     * @throws IOException
      */
     public SimpleFeatureType decodeSimpleFeatureType(URL schemaLocation, Name typeName)
             throws IOException {
@@ -505,12 +487,6 @@ public class GML {
     /**
      * Decodes a feature collection from the stream provided. It assumes the features are uniform
      * and that all attributes are available in the first feature
-     *
-     * @param in
-     * @return
-     * @throws IOException
-     * @throws SAXException
-     * @throws ParserConfigurationException
      */
     public SimpleFeatureCollection decodeFeatureCollection(InputStream in)
             throws IOException, SAXException, ParserConfigurationException {
@@ -520,14 +496,9 @@ public class GML {
     /**
      * Decodes a feature collection from the stream provided.
      *
-     * @param in
      * @param computeFullFeatureType When true, all features are parsed and then a global feature
      *     type is determined that has attributes covering all feature needs, when false, the first
      *     feature attributes
-     * @return
-     * @throws IOException
-     * @throws SAXException
-     * @throws ParserConfigurationException
      */
     public SimpleFeatureCollection decodeFeatureCollection(
             InputStream in, boolean computeFullFeatureType)
@@ -558,12 +529,7 @@ public class GML {
         return null;
     }
 
-    /**
-     * Gets the complete feature type of a collection having potentially mixed attributes
-     *
-     * @param collection
-     * @return
-     */
+    /** Gets the complete feature type of a collection having potentially mixed attributes */
     private SimpleFeatureType getCompleteFeatureType(SimpleFeatureCollection collection) {
         if (collection.isEmpty()) {
             return collection.getSchema();
@@ -658,11 +624,7 @@ public class GML {
      *
      * <p>The schema used by the XML is consulted to determine what element extends AbstractFeature.
      *
-     * @param in
      * @return Iterator that can be used to parse features one at a time
-     * @throws SAXException
-     * @throws ParserConfigurationException
-     * @throws IOException
      */
     public SimpleFeatureIterator decodeFeatureIterator(InputStream in)
             throws IOException, ParserConfigurationException, SAXException {
@@ -681,9 +643,6 @@ public class GML {
      * @param in InputStream used as a source of SimpleFeature content
      * @param elementName The simple feature element; the schema will be checked for an entry that
      *     extends AbstratFeatureType
-     * @return
-     * @throws SAXException
-     * @throws ParserConfigurationException
      */
     public SimpleFeatureIterator decodeFeatureIterator(InputStream in, QName elementName)
             throws IOException, ParserConfigurationException, SAXException {
@@ -706,7 +665,6 @@ public class GML {
     /**
      * Go through collection contents and morph contents into SimpleFeatures as required.
      *
-     * @param collection
      * @return SimpleFeatureCollection
      */
     private SimpleFeatureCollection simpleFeatureCollection(Collection<?> collection) {
@@ -731,9 +689,6 @@ public class GML {
      * <ul>
      *   <li>SimpleFeature - is returned as is
      *   <li>
-     *
-     * @param parser
-     * @return
      */
     protected SimpleFeatureIterator iterator(final StreamingParser parser) {
         return new SimpleFeatureIterator() {
@@ -832,8 +787,6 @@ public class GML {
     /**
      * Morph provided obj to a SimpleFeature if possible.
      *
-     * @param obj
-     * @param schema
      * @return SimpleFeature, or null if not possible
      */
     protected SimpleFeature simpleFeature(Object obj, SimpleFeatureType schema) {

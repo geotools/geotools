@@ -431,8 +431,6 @@ public class Encoder {
      *
      * <p>Warning that setting this to <code>false</code> will result in no namespace prefixes on
      * encoded elements and attributes, and no schema declarations on the root element.document;
-     *
-     * @param namespaces
      */
     public void setNamespaceAware(boolean namespaceAware) {
         this.namespaceAware = namespaceAware;
@@ -524,7 +522,6 @@ public class Encoder {
      * @param object The object being encoded.
      * @param name The name of the element being encoded in the schema.
      * @param out The output stream.
-     * @throws IOException
      */
     public void encode(Object object, QName name, OutputStream out) throws IOException {
         if (inline) {
@@ -1145,9 +1142,6 @@ public class Encoder {
     /**
      * Makes a defensive copy of an e-list handling the eventual issues due to concurrent
      * modifications
-     *
-     * @param substitutionGroup
-     * @return
      */
     private List safeCopy(EList substitutionGroup) {
         while (true) {
@@ -1518,20 +1512,12 @@ public class Encoder {
         return configuration;
     }
 
-    /**
-     * Returns the object used to load xml bindings in this encoder
-     *
-     * @return
-     */
+    /** Returns the object used to load xml bindings in this encoder */
     public BindingLoader getBindingLoader() {
         return bindingLoader;
     }
 
-    /**
-     * Returns the Pico context used by this encoder
-     *
-     * @return
-     */
+    /** Returns the Pico context used by this encoder */
     public PicoContainer getContext() {
         return context;
     }

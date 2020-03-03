@@ -104,7 +104,6 @@ public class GeometryConverter {
      *
      * @param sdoGeometry datum STRUCT to be converted to a double[]
      * @return JTS <code>Geometry</code> representing the provided <code>datum</code>
-     * @throws SQLException
      * @see net.refractions.jspatial.Converter#toObject(oracle.sql.STRUCT)
      */
     public Geometry asGeometry(STRUCT sdoGeometry) throws SQLException {

@@ -883,12 +883,7 @@ public class DbaseFileHeader {
                 + fs;
     }
 
-    /**
-     * Returns the expected file size for the given number of records in the file
-     *
-     * @param records
-     * @return
-     */
+    /** Returns the expected file size for the given number of records in the file */
     public long getLengthForRecords(int records) {
         return headerLength + records * recordLength;
     }

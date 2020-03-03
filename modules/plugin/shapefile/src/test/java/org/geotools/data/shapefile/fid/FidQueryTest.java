@@ -188,8 +188,6 @@ public class FidQueryTest extends FIDTestCase {
     /**
      * Attempt to test GEOT-5830 User reports that deleting a feature, re-requesting the data gives
      * a duplicate FID and the subsequent attempt to delete fails due to corrupt FIX
-     *
-     * @throws Exception
      */
     @Test
     public void testDeleteCloseAndRerequestFID() throws Exception {

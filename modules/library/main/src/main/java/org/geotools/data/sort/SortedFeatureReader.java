@@ -44,21 +44,12 @@ public class SortedFeatureReader implements SimpleFeatureReader {
     /**
      * Checks if the schema and the sortBy are suitable for merge/sort. All attributes need to be
      * {@link Serializable}, all sorting attributes need to be {@link Comparable}
-     *
-     * @param schema
-     * @param sortBy
-     * @return
      */
     public static final boolean canSort(SimpleFeatureType schema, SortBy[] sortBy) {
         return MergeSortDumper.canSort(schema, sortBy);
     }
 
-    /**
-     * Gets the max amount amount of features to keep in memory from the query and system hints
-     *
-     * @param query
-     * @return
-     */
+    /** Gets the max amount amount of features to keep in memory from the query and system hints */
     public static int getMaxFeaturesInMemory(Query q) {
         return MergeSortDumper.getMaxFeatures(q);
     }
@@ -80,7 +71,6 @@ public class SortedFeatureReader implements SimpleFeatureReader {
      * @param reader The reader to be sorted
      * @param sortBy The sorting directives
      * @param maxFeatures The maximum number of features to keep in memory
-     * @throws IOException
      */
     public SortedFeatureReader(SimpleFeatureReader reader, SortBy[] sortBy, int maxFeatures)
             throws IOException {
@@ -104,12 +94,7 @@ public class SortedFeatureReader implements SimpleFeatureReader {
         delegate.close();
     }
 
-    /**
-     * Builds a comparator that can be used to sort SimpleFeature instances in memory
-     *
-     * @param sortBy
-     * @return
-     */
+    /** Builds a comparator that can be used to sort SimpleFeature instances in memory */
     public static Comparator<SimpleFeature> getComparator(SortBy[] sortBy) {
         // handle the easy cases, no sorting or natural sorting
         if (sortBy == SortBy.UNSORTED || sortBy == null) {

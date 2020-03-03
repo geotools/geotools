@@ -114,7 +114,6 @@ public interface ObjectCache {
      * <p>This method is used by a writer to test if someone (ie another writer) has provided the
      * value for us (while we were blocked waiting for them).
      *
-     * @param key
      * @return The value, may be <code>null</code>
      */
     Object peek(Object key);
@@ -146,18 +145,10 @@ public interface ObjectCache {
      */
     void put(Object key, Object object);
 
-    /**
-     * Acquire a write lock on the indicated key.
-     *
-     * @param key
-     */
+    /** Acquire a write lock on the indicated key. */
     void writeLock(Object key); // TODO: how to indicate lock was not acquired?
 
-    /**
-     * Release write lock on the indicated key.
-     *
-     * @param key
-     */
+    /** Release write lock on the indicated key. */
     void writeUnLock(Object key);
 
     /**
@@ -170,10 +161,6 @@ public interface ObjectCache {
      */
     Set<Object> getKeys();
 
-    /**
-     * Removes a given key from the cache.
-     *
-     * @param key
-     */
+    /** Removes a given key from the cache. */
     void remove(Object key);
 }

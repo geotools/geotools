@@ -298,11 +298,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
         }
     }
 
-    /**
-     * SJ
-     *
-     * @return
-     */
+    /** SJ */
     public double[] getCoordinates() {
         double[] rCoord;
         if (Double.isNaN(this.z)) {

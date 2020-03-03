@@ -130,10 +130,7 @@ public class SurfaceImpl extends GeometryImpl implements Surface {
         return null;
     }
 
-    /**
-     * @return
-     * @see com.polexis.lite.spatialschema.geometry.GeometryImpl#computeJTSPeer()
-     */
+    /** @see com.polexis.lite.spatialschema.geometry.GeometryImpl#computeJTSPeer() */
     protected org.locationtech.jts.geom.Geometry computeJTSPeer() {
         if (patches.size() > 1) {
             // throw new UnsupportedOperationException("This implementation does not support

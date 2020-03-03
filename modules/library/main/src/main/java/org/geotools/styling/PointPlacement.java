@@ -91,8 +91,6 @@ public interface PointPlacement extends org.opengis.style.PointPlacement, LabelP
      * sets the rotation of the label.
      *
      * <p>Sets the rotation of the label.
-     *
-     * @param rotation
      */
     void setRotation(Expression rotation);
 

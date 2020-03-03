@@ -162,9 +162,6 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
     /**
      * Converts the envelope to a general envelope, avoiding the construction of a new object in
      * case the input envelope is already a GeneralEnvelope
-     *
-     * @param envelope
-     * @return
      */
     public static GeneralEnvelope toGeneralEnvelope(final Envelope envelope) {
         if (envelope instanceof GeneralEnvelope) {
@@ -762,13 +759,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
         return true;
     }
 
-    /**
-     * Check if the ordinates indicate a "nil" envelope.
-     *
-     * @param ordinates
-     * @return
-     * @throws IllegalArgumentException
-     */
+    /** Check if the ordinates indicate a "nil" envelope. */
     private static boolean isNilCoordinates(final double[] ordinates)
             throws IllegalArgumentException {
         for (int i = 0; i < ordinates.length; i++) {
@@ -797,7 +788,6 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
     /**
      * Static method used to recognize an empty encoding of ordinates
      *
-     * @param ordinates
      * @return true of the ordinates indicate an empty envelope
      * @see #isEmpty()
      */

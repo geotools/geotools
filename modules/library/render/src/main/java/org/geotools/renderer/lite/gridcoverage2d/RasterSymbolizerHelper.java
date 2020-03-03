@@ -190,10 +190,7 @@ public class RasterSymbolizerHelper extends SubchainStyleVisitorCoverageProcessi
                         properties);
     }
 
-    /**
-     * @param sourceCoverage
-     * @param hints
-     */
+    /** */
     public RasterSymbolizerHelper(GridCoverage2D sourceCoverage, Hints hints) {
         super(
                 1,

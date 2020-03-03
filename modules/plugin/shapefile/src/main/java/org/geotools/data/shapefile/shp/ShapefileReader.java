@@ -279,8 +279,6 @@ public class ShapefileReader implements FileReader {
     /**
      * Disables .shx file usage. By doing so you drop support for sparse shapefiles, the .shp will
      * have to be without holes, all the valid shapefile records will have to be contiguous.
-     *
-     * @throws IOException
      */
     public void disableShxUsage() throws IOException {
         if (shxReader != null) {
@@ -400,7 +398,6 @@ public class ShapefileReader implements FileReader {
      * the length of a record. If this is true and the record indicates the next logical record
      * number, there exists more records.
      *
-     * @throws IOException
      * @return True if has next record, false otherwise.
      */
     public boolean hasNext() throws IOException {
@@ -413,7 +410,6 @@ public class ShapefileReader implements FileReader {
      * number (if checkRecord == true), there exists more records.
      *
      * @param checkRecno If true then record number is checked
-     * @throws IOException
      * @return True if has next record, false otherwise.
      */
     private boolean hasNext(boolean checkRecno) throws IOException {
@@ -532,7 +528,6 @@ public class ShapefileReader implements FileReader {
     /**
      * Fetch the next record information.
      *
-     * @throws IOException
      * @return The record instance associated with this reader.
      */
     public Record nextRecord() throws IOException {
@@ -627,10 +622,6 @@ public class ShapefileReader implements FileReader {
      *   <li>once you call this, reading with hasNext/next on sparse shapefiles will be broken (we
      *       don't know anymore at which shape we are)
      * </ul>
-     *
-     * @param offset
-     * @throws IOException
-     * @throws UnsupportedOperationException
      */
     public void goTo(int offset) throws IOException, UnsupportedOperationException {
         disableShxUsage();
@@ -659,10 +650,6 @@ public class ShapefileReader implements FileReader {
      *   <li>once you call this, reading with hasNext/next on sparse shapefiles will be broken (we
      *       don't know anymore at which shape we are)
      * </ul>
-     *
-     * @param offset
-     * @throws IOException
-     * @throws UnsupportedOperationException
      */
     public Object shapeAt(int offset) throws IOException, UnsupportedOperationException {
         disableShxUsage();

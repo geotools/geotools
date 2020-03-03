@@ -67,8 +67,6 @@ public class EmfComplexFeatureReader {
     /**
      * Set resolver based on catalog. Use this for testing only, because it does not support cached
      * downloads.
-     *
-     * @param catalogLocation
      */
     public void setResolver(URL catalogLocation) {
         this.resolver = new SchemaResolver(SchemaCatalog.build(catalogLocation));
@@ -80,7 +78,6 @@ public class EmfComplexFeatureReader {
      *
      * @param configuration configuration object used to access the XSDSchema to parse. This
      *     configuration object might contain {@link Binding}s
-     * @throws IOException
      */
     public SchemaIndex parse(Configuration configuration) throws IOException {
         // find out the schemas involved in the app schema configuration
@@ -121,13 +118,7 @@ public class EmfComplexFeatureReader {
         return parse(nameSpace, schemaLocation);
     }
 
-    /**
-     * Finds out the targetNamespace of the xsd schema referenced by <code>location</code>
-     *
-     * @param location
-     * @return
-     * @throws IOException
-     */
+    /** Finds out the targetNamespace of the xsd schema referenced by <code>location</code> */
     public String findSchemaNamespace(URL location) throws IOException {
         String targetNamespace = null;
         // parse some of the instance document to find out the

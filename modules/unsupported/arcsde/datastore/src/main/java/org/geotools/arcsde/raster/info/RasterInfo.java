@@ -79,8 +79,6 @@ public final class RasterInfo {
      * information/ doing calculations with it.
      *
      * @param rasterAttributes the SeRasterAttr object for the raster of interest.
-     * @param crs
-     * @throws DataSourceException
      */
     RasterInfo(final SeRasterAttr rasterAttributes, final CoordinateReferenceSystem crs)
             throws DataSourceException {
@@ -210,10 +208,7 @@ public final class RasterInfo {
         return pyramidList.size();
     }
 
-    /**
-     * @param pyramidLevel
-     * @return resx, resy, scalefactor
-     */
+    /** @return resx, resy, scalefactor */
     double[] getResolution(final int pyramidLevel) {
         final double highestRes = getPyramidLevel(0).getXRes();
         PyramidLevelInfo level = getPyramidLevel(pyramidLevel);
@@ -230,9 +225,6 @@ public final class RasterInfo {
      *
      * <p>NOTE: logic stolen and adapted from {@code
      * AbstractGridCoverage2DReader#getOverviewImage()}
-     *
-     * @param policy
-     * @return
      */
     public int getOptimalPyramidLevel(final OverviewPolicy policy, final double[] requestedRes) {
 

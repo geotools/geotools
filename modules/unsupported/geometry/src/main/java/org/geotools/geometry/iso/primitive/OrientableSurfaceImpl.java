@@ -37,21 +37,12 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 public abstract class OrientableSurfaceImpl extends OrientablePrimitiveImpl
         implements OrientablePrimitive {
 
-    /**
-     * Constructor
-     *
-     * @param crs
-     */
+    /** Constructor */
     protected OrientableSurfaceImpl(CoordinateReferenceSystem crs) {
         super(crs);
     }
 
-    /**
-     * @param crs
-     * @param containedPrimitive
-     * @param containingPrimitive
-     * @param complex
-     */
+    /** */
     protected OrientableSurfaceImpl(
             CoordinateReferenceSystem crs,
             Set<Primitive> containedPrimitive,
@@ -63,7 +54,6 @@ public abstract class OrientableSurfaceImpl extends OrientablePrimitiveImpl
     // /**
     // * Sets the primitive
     // * (influences the orientation directly).
-    // * @param primitive
     // */
     // protected void setPrimitive(Primitive primitive) {
     // super.setPrimitive(primitive);
@@ -76,7 +66,6 @@ public abstract class OrientableSurfaceImpl extends OrientablePrimitiveImpl
 
     // /**
     // * Sets the Boundary of the Orientable Surface
-    // * @param Boundary
     // */
     // protected void setBoundary(SurfaceBoundary boundary) {
     // this.m_boundary = boundary;

@@ -92,7 +92,6 @@ public class ChildExpressionBuilder<P extends Builder<?>> extends ExpressionBuil
      * </code>
      *
      * @see _build()
-     * @return
      */
     public P end() {
         build();

@@ -16,7 +16,6 @@
  */
 package org.geotools.swing.wms;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,13 +27,7 @@ public class WMSChooser {
         return showChooseWMS(defaultServers());
     }
 
-    /**
-     * Prompt for a URL to a Web Map Server, providing a list of recommended options.
-     *
-     * @param args
-     * @return
-     * @throws MalformedURLException
-     */
+    /** Prompt for a URL to a Web Map Server, providing a list of recommended options. */
     public static URL showChooseWMS(List<String> servers) {
         if (servers == null) {
             servers = defaultServers();

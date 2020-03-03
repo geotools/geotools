@@ -45,11 +45,7 @@ class JDBCAccessUniversal extends JDBCAccessBase {
         initStatementStrings(config);
     }
 
-    /**
-     * Initalize needed sql statement strings
-     *
-     * @param config
-     */
+    /** Initalize needed sql statement strings */
     private void initStatementStrings(Config config) {
         extentSelect = "SELECT ";
         extentSelect += ("min(" + config.getTileMinXAttribute() + "),");

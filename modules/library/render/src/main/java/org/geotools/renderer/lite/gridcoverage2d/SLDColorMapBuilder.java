@@ -197,9 +197,6 @@ public class SLDColorMapBuilder {
      * building a {@link LinearColorMap}.
      *
      * <p>
-     *
-     * @param colorMapEntry
-     * @return
      */
     public SLDColorMapBuilder addColorMapEntry(ColorMapEntry colorMapEntry) {
         ///////////////////////////////////////////////////////////////////////
@@ -473,11 +470,7 @@ public class SLDColorMapBuilder {
         return this.preservedValuesColor;
     }
 
-    /**
-     * @param entry
-     * @return
-     * @throws NumberFormatException
-     */
+    /** */
     @SuppressFBWarnings("NP_NULL_PARAM_DEREF")
     private static Color getColor(ColorMapEntry entry) throws NumberFormatException {
         ColorMapUtilities.ensureNonNull("ColorMapEntry", entry);
@@ -492,12 +485,7 @@ public class SLDColorMapBuilder {
         return Color.decode(colorString);
     }
 
-    /**
-     * @param entry
-     * @return
-     * @throws IllegalArgumentException
-     * @throws MissingResourceException
-     */
+    /** */
     private static double getOpacity(ColorMapEntry entry)
             throws IllegalArgumentException, MissingResourceException {
 
@@ -533,10 +521,7 @@ public class SLDColorMapBuilder {
         return opacityValue.doubleValue();
     }
 
-    /**
-     * @param entry
-     * @return
-     */
+    /** */
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
     private static double getQuantity(ColorMapEntry entry) {
         ColorMapUtilities.ensureNonNull("ColorMapEntry", entry);
@@ -577,7 +562,6 @@ public class SLDColorMapBuilder {
      * use.
      *
      * @param extendedColors The extendedColors to set.
-     * @return
      * @uml.property name="extendedColors"
      */
     public SLDColorMapBuilder setExtendedColors(boolean extendedColors) {
@@ -605,7 +589,6 @@ public class SLDColorMapBuilder {
      * Setter of the property <tt>numberColorMapEntries</tt>
      *
      * @param numberColorMapEntries The numberColorMapEntries to set.
-     * @return
      * @uml.property name="numberColorMapEntries"
      */
     public SLDColorMapBuilder setNumberColorMapEntries(final int numberColorMapEntries) {

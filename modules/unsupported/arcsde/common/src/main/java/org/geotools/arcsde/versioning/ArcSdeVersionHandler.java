@@ -26,43 +26,25 @@ import org.geotools.arcsde.session.ISession;
  */
 public interface ArcSdeVersionHandler {
 
-    /**
-     * Sets up the stream to work over the version/state needed
-     *
-     * @param streamOperation
-     * @throws IOException
-     */
+    /** Sets up the stream to work over the version/state needed */
     void setUpStream(ISession session, SeStreamOp streamOperation) throws IOException;
 
     /**
      * Called when a single edit operation that was settled up with {@link #setUpStream(SeStreamOp)}
      * fails
-     *
-     * @throws IOException
      */
     void editOperationFailed(SeStreamOp editOperation) throws IOException;
 
     /**
      * Called after successful execution of any single edit (SeInsert, SeUpdate, SeDelete)
      * operation.
-     *
-     * @param editOperation
-     * @throws IOException
      */
     void editOperationWritten(SeStreamOp editOperation) throws IOException;
 
-    /**
-     * Causes the current version to synchronize with the current edit state.
-     *
-     * @throws IOException
-     */
+    /** Causes the current version to synchronize with the current edit state. */
     void commitEditState() throws IOException;
 
-    /**
-     * Called when a transaction is being rolled back
-     *
-     * @throws IOException
-     */
+    /** Called when a transaction is being rolled back */
     void rollbackEditState() throws IOException;
 
     /** Null object to handle non versioned tables, does nothing. */

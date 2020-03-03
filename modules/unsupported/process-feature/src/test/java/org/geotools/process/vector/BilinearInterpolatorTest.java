@@ -60,13 +60,7 @@ public class BilinearInterpolatorTest {
         return true;
     }
 
-    /**
-     * Extracts a slice of a grid along the X dimension (a row)
-     *
-     * @param grid
-     * @param j
-     * @return
-     */
+    /** Extracts a slice of a grid along the X dimension (a row) */
     private float[] sliceX(float[][] grid, int y) {
         float[] slice = new float[grid.length];
         for (int i = 0; i < slice.length; i++) {
@@ -75,13 +69,7 @@ public class BilinearInterpolatorTest {
         return slice;
     }
 
-    /**
-     * Extracts a slice of a grid along the Y dimension (a column)
-     *
-     * @param grid
-     * @param y
-     * @return
-     */
+    /** Extracts a slice of a grid along the Y dimension (a column) */
     private float[] sliceY(float[][] grid, int x) {
         float[] slice = new float[grid[0].length];
         for (int i = 0; i < slice.length; i++) {
@@ -93,10 +81,6 @@ public class BilinearInterpolatorTest {
     /**
      * Checks if a sequence of values is monotonic, ignoring values at the end of the sequence which
      * are NO_DATA.
-     *
-     * @param seq
-     * @param noDataValue
-     * @return
      */
     private boolean isMonotonicSequence(float[] seq, final float noDataValue) {
         int istart = 0;

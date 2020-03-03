@@ -33,22 +33,14 @@ public class Tuple {
     static Logger LOG = Logging.getLogger(Tuple.class);
     static final Map<Integer, Pattern> PATTERNS = new HashMap<Integer, Pattern>();
 
-    /**
-     * Return a tuple comprised of the passed values
-     *
-     * @param values
-     */
+    /** Return a tuple comprised of the passed values */
     public static Tuple of(Object... values) {
         Tuple t = of(values.length);
         t.values = values;
         return t;
     }
 
-    /**
-     * Returns an empty tuple of length n.
-     *
-     * @param n
-     */
+    /** Returns an empty tuple of length n. */
     public static Tuple of(int n) {
         if (n < 1) {
             throw new IllegalArgumentException("n must be greater than zero");
@@ -98,7 +90,6 @@ public class Tuple {
     /**
      * Parse the values of seq and write them to this Tuple
      *
-     * @param seq
      * @throws IllegalArgumentException if seq and this differ in length
      */
     public Tuple parse(List<?> seq) throws IllegalArgumentException {
@@ -119,7 +110,6 @@ public class Tuple {
     /**
      * Parse an object to this Tuple
      *
-     * @param obj
      * @throws IllegalArgumentException if obj cannot be parsed to a Tuple
      */
     public Tuple parse(Object obj) throws IllegalArgumentException {
@@ -133,18 +123,12 @@ public class Tuple {
         throw new IllegalArgumentException();
     }
 
-    /**
-     * @param i
-     * @return the ith value of the tuple
-     */
+    /** @return the ith value of the tuple */
     public Object at(int i) {
         return values[i];
     }
 
-    /**
-     * @param i
-     * @return the ith value of the tuple, as a String.
-     */
+    /** @return the ith value of the tuple, as a String. */
     public String strAt(int i) {
         Object obj = at(i);
         return obj != null ? obj.toString() : null;

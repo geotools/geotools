@@ -48,11 +48,7 @@ public abstract class FeatureBuilder<FT extends FeatureType, F extends Feature> 
         this.factory = factory;
     }
 
-    /**
-     * Returns the feature type used by this builder as a feature template
-     *
-     * @return
-     */
+    /** Returns the feature type used by this builder as a feature template */
     public FT getFeatureType() {
         return featureType;
     }

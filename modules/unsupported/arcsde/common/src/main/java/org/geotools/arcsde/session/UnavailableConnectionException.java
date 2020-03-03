@@ -28,12 +28,7 @@ public class UnavailableConnectionException extends Exception {
 
     private static final long serialVersionUID = -7964603239735118491L;
 
-    /**
-     * Creates a new UnavailableArcSDEConnectionException object.
-     *
-     * @param usedConnections
-     * @param config
-     */
+    /** Creates a new UnavailableArcSDEConnectionException object. */
     UnavailableConnectionException(final int usedConnections, final ArcSDEConnectionConfig config) {
         super(
                 "The maximun of "

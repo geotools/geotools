@@ -93,14 +93,12 @@ public interface CoverageAccess {
      * CoverageSource
      *
      * @return Names of the available contents.
-     * @throws IOException
      */
     public List<Name> getNames(final ProgressListener listener);
 
     /**
      * The number of Coverages made available.
      *
-     * @param listener
      * @return getNames( listener ).size()
      */
     public int getCoveragesNumber(final ProgressListener listener);
@@ -223,12 +221,7 @@ public interface CoverageAccess {
      * <p>Many file based formats won't allow to perform such operation, but db based source should
      * be quite happy with it.
      *
-     * @param name
-     * @param params
-     * @param accessType
-     * @param hints
      * @return {@code true} in case of success.
-     * @throws IOException
      */
     public boolean delete(Name name, Map<String, Serializable> params, Hints hints)
             throws IOException;

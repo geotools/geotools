@@ -181,9 +181,6 @@ class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRule> {
      * their pseudo-classes matched by the main rule symbolizers. Two lists will be returned, an
      * in-conditional one, where the mixins just blend into the main rule, and a conditional one,
      * where the mixin adds its own conditions, and thus require its own power set expansion
-     *
-     * @param rule
-     * @return
      */
     private List<CssRule> getApplicableMixins(CssRule rule) {
         Set<PseudoClass> mixablePseudoClasses = rule.getMixablePseudoClasses();
@@ -208,13 +205,7 @@ class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRule> {
         return result;
     }
 
-    /**
-     * Filter applicable mixin rules. Defaults to accepting all rules.
-     *
-     * @param rule
-     * @param mixinRule
-     * @return
-     */
+    /** Filter applicable mixin rules. Defaults to accepting all rules. */
     protected boolean acceptMixinCssRule(CssRule rule, CssRule mixinRule) {
         return true;
     }

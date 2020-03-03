@@ -361,15 +361,7 @@ public class RenderingTransformationTest {
         assertEquals(Color.RED, getPixelColor(image, image.getWidth() / 2, image.getHeight() / 2));
     }
 
-    /**
-     * Gets a specific pixel color from the specified buffered image
-     *
-     * @param image
-     * @param i
-     * @param j
-     * @param color
-     * @return
-     */
+    /** Gets a specific pixel color from the specified buffered image */
     protected Color getPixelColor(BufferedImage image, int i, int j) {
         ColorModel cm = image.getColorModel();
         Raster raster = image.getRaster();

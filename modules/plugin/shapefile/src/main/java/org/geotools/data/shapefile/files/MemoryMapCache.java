@@ -78,8 +78,6 @@ class MemoryMapCache {
     /**
      * Cleans up all memory mapped regions for a specified file. It is necessary to call this method
      * before any attempt to open a file for writing on Windows
-     *
-     * @param file
      */
     void cleanFileCache(URL url) {
         try {

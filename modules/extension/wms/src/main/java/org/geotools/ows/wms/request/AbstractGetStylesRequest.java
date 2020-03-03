@@ -30,10 +30,7 @@ public abstract class AbstractGetStylesRequest extends AbstractWMSRequest
 
     private Layer[] layers;
 
-    /**
-     * @param onlineResource
-     * @param properties
-     */
+    /** */
     public AbstractGetStylesRequest(URL onlineResource, Properties properties) {
         super(onlineResource, properties);
     }

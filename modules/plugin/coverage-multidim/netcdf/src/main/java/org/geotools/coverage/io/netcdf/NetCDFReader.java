@@ -354,14 +354,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
         return setNames.size();
     }
 
-    /**
-     * Parse a domain
-     *
-     * @param name
-     * @param domain
-     * @return
-     * @throws IOException
-     */
+    /** Parse a domain */
     private String parseDomain(String name, Object domain) throws IOException {
         name = name.toLowerCase();
         if (domain instanceof VerticalDomain) {
@@ -464,12 +457,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
         return buff.toString();
     }
 
-    /**
-     * Setup a String containing vertical domain by doing a scan of a set of vertical Elements
-     *
-     * @param verticalElements
-     * @return
-     */
+    /** Setup a String containing vertical domain by doing a scan of a set of vertical Elements */
     private String buildVerticalList(SortedSet<? extends NumberRange<Double>> verticalElements) {
         Iterator<NumberRange<Double>> iterator =
                 (Iterator<NumberRange<Double>>) verticalElements.iterator();
@@ -485,7 +473,6 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
     /**
      * Setup a String containing additional domain by doing a scan of a set of Elements
      *
-     * @param elements
      * @return TODO: improve that to deal with multiple types
      */
     private String buildElementsList(Set<Object> elements) {
@@ -516,13 +503,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
         return resp.getGridCoverage2D();
     }
 
-    /**
-     * Create the coverageReadRequest on top of the specified read params
-     *
-     * @param params
-     * @return
-     * @throws IOException
-     */
+    /** Create the coverageReadRequest on top of the specified read params */
     private CoverageReadRequest setupCoverageRequest(
             GeneralParameterValue[] params, final CoverageSource gridSource) throws IOException {
         CoverageReadRequest request = new CoverageReadRequest();
@@ -657,13 +638,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
         }
     }
 
-    /**
-     * Return a {@link CoverageSource} related to the specified coverageName
-     *
-     * @param coverageName
-     * @return
-     * @throws IOException
-     */
+    /** Return a {@link CoverageSource} related to the specified coverageName */
     private CoverageSource getGridCoverageSource(final String coverageName) throws IOException {
         // Preliminar check on name availability
         checkIsSupported(coverageName);
@@ -681,11 +656,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
         }
     }
 
-    /**
-     * Check whether the specified coverageName is one of the coverage available for the reader
-     *
-     * @param coverageName
-     */
+    /** Check whether the specified coverageName is one of the coverage available for the reader */
     private void checkIsSupported(final String coverageName) {
         if (!setNames.contains(coverageName)) {
             throw new IllegalArgumentException(
@@ -733,12 +704,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
         }
     }
 
-    /**
-     * Build a String containing comma separated values from the result set
-     *
-     * @param result
-     * @return
-     */
+    /** Build a String containing comma separated values from the result set */
     private String buildResultsString(Set<String> result) {
         if (result.size() <= 0) {
             return "";

@@ -39,11 +39,7 @@ public class PostgisDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
         // postgis will lock indefinitely, won't throw an exception
     }
 
-    /**
-     * Test PostGIS specific collapsed simplified geometries (GEOT-4737)
-     *
-     * @throws Exception
-     */
+    /** Test PostGIS specific collapsed simplified geometries (GEOT-4737) */
     public void testSimplificationPreserveCollapsed() throws Exception {
         Connection cx = dataStore.getDataSource().getConnection();
         PostGISDialect dialect = ((PostGISDialect) dataStore.getSQLDialect());

@@ -51,12 +51,7 @@ public class HsqlDialectEpsgMediator extends AbstractEpsgMediator {
         super(hints, HsqlEpsgDatabase.createDataSource(hints));
     }
 
-    /**
-     * Creates an HsqlDialectEpsgMediator with a 20 min timeout, single worker, and no cache.
-     *
-     * @param priority
-     * @param datasource
-     */
+    /** Creates an HsqlDialectEpsgMediator with a 20 min timeout, single worker, and no cache. */
     public HsqlDialectEpsgMediator(int priority, DataSource datasource) {
         this(
                 priority,

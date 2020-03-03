@@ -169,7 +169,6 @@ public class TransformProcess implements VectorProcess {
      * <p>The format expected here is one definition per line; using the format
      * "name=...expression..".
      *
-     * @param definition
      * @return List of definition
      */
     public static List<Definition> toDefinition(String definition) {

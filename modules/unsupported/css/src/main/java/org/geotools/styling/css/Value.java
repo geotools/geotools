@@ -292,12 +292,7 @@ abstract class Value {
 
         public List<Value> parameters;
 
-        /**
-         * Builds a function
-         *
-         * @param name
-         * @param parameters
-         */
+        /** Builds a function */
         public Function(String name, List<Value> parameters) {
             super();
             this.parameters = parameters;
@@ -308,12 +303,7 @@ abstract class Value {
             }
         }
 
-        /**
-         * Builds a function
-         *
-         * @param name
-         * @param parameters
-         */
+        /** Builds a function */
         public Function(String name, Value... parameters) {
             this(name, Arrays.asList(parameters));
         }
@@ -373,12 +363,7 @@ abstract class Value {
 
         public Map<String, Value> parameters;
 
-        /**
-         * Builds a function
-         *
-         * @param name
-         * @param parameters
-         */
+        /** Builds a function */
         public TransformFunction(String name, Map<String, Value> parameters) {
             super();
             this.parameters = parameters;

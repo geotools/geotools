@@ -178,7 +178,6 @@ public abstract class MBExpression extends FunctionImpl {
      * A function to evaluate a given parameter as an expression and use the MBStyleTransformer to
      * transform Mapbox tokens into CQL expressions.
      *
-     * @param ex
      * @return cq; text expression
      */
     public Expression transformLiteral(Expression ex) {

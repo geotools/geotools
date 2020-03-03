@@ -92,9 +92,6 @@ public class FootprintExtractionProcess implements RasterProcess {
      *     holes)
      * @param imageLoadingType specifies the type of imageLoading (DEFERRED vs IMMEDIATE). Default
      *     is {@link ImageLoadingType#getDefault()}.
-     * @param progressListener
-     * @return
-     * @throws ProcessException
      */
     @DescribeResult(name = "result", description = "The compute footprint geometry")
     public SimpleFeatureCollection execute(

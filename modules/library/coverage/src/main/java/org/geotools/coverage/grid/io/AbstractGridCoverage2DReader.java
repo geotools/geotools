@@ -184,7 +184,6 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      * Creates a new instance of a {@link AIGReader}. I assume nothing about file extension.
      *
      * @param input Source object for which we want to build an {@link AIGReader}.
-     * @throws DataSourceException
      */
     public AbstractGridCoverage2DReader(Object input) throws DataSourceException {
         this(input, null);
@@ -195,7 +194,6 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      *
      * @param input Source object for which we want to build an {@link AIGReader}.
      * @param hints Hints to be used by this reader throughout his life.
-     * @throws DataSourceException
      */
     public AbstractGridCoverage2DReader(Object input, Hints hints) throws DataSourceException {
 
@@ -306,8 +304,6 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      * @param requestedEnvelope the {@link GeneralEnvelope} we are requesting.
      * @param requestedDim the requested dimensions.
      * @return the index of the raster to read in the underlying data source.
-     * @throws IOException
-     * @throws TransformException
      */
     protected Integer setReadParams(
             OverviewPolicy overviewPolicy,
@@ -336,8 +332,6 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      * @param requestedEnvelope the {@link GeneralEnvelope} we are requesting.
      * @param requestedDim the requested dimensions.
      * @return the index of the raster to read in the underlying data source.
-     * @throws IOException
-     * @throws TransformException
      */
     protected Integer setReadParams(
             String coverageName,
@@ -525,11 +519,6 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     /**
      * Returns the actual resolution used to read the data given the specified target resolution and
      * the specified overview policy
-     *
-     * @param policy
-     * @param resolutions
-     * @return
-     * @throws IOException
      */
     public double[] getReadingResolutions(OverviewPolicy policy, double[] requestedResolution)
             throws IOException {
@@ -540,10 +529,6 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     /**
      * Returns the actual resolution used to read the data given the specified target resolution and
      * the specified overview policy
-     *
-     * @param policy
-     * @param resolutions
-     * @return
      */
     @Override
     public double[] getReadingResolutions(
@@ -613,10 +598,6 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      *
      * <p>Anyhow this method should not be called directly but subclasses should make use of the
      * setReadParams method instead in order to transparently look for overviews.
-     *
-     * @param imageChoice
-     * @param readP
-     * @param requestedRes
      */
     protected final void decimationOnReadingControl(
             String coverageName, Integer imageChoice, ImageReadParam readP, double[] requestedRes) {
@@ -681,7 +662,6 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      *
      * @param image contains the data for the coverage to create.
      * @return a {@link GridCoverage}
-     * @throws IOException
      */
     protected final GridCoverage createImageCoverage(PlanarImage image) throws IOException {
         return createImageCoverage(coverageName, image);
@@ -691,10 +671,8 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      * Creates a {@link GridCoverage} for the provided {@link PlanarImage} using the {@link
      * #originalEnvelope} that was provided for this coverage.
      *
-     * @param coverageName
      * @param image contains the data for the coverage to create.
      * @return a {@link GridCoverage}
-     * @throws IOException
      */
     protected final GridCoverage createImageCoverage(String coverageName, PlanarImage image)
             throws IOException {
@@ -712,7 +690,6 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      * @param raster2Model is the {@link MathTransform} that maps from the raster space to the model
      *     space.
      * @return a {@link GridCoverage}
-     * @throws IOException
      */
     protected final GridCoverage2D createImageCoverage(
             PlanarImage image, MathTransform raster2Model) throws IOException {
@@ -726,12 +703,10 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      * <p>This method is vital when working with coverages that have a raster to model
      * transformation that is not a simple scale and translate.
      *
-     * @param coverageName
      * @param image contains the data for the coverage to create.
      * @param raster2Model is the {@link MathTransform} that maps from the raster space to the model
      *     space.
      * @return a {@link GridCoverage}
-     * @throws IOException
      */
     protected final GridCoverage2D createImageCoverage(
             String coverageName, PlanarImage image, MathTransform raster2Model) throws IOException {
@@ -780,9 +755,6 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      * <p>TODO use orthodromic distance?
      *
      * @param envelope the GeneralEnvelope
-     * @param dim
-     * @param crs
-     * @throws DataSourceException
      */
     protected static final double[] getResolution(
             GeneralEnvelope envelope, Rectangle2D dim, CoordinateReferenceSystem crs)
@@ -1051,9 +1023,6 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     /**
      * Returns a list of files making up the source data for this reader (as a whole). The default
      * implementation returns the source, if it can be made into a File object, or null otherwise.
-     *
-     * @return
-     * @throws IOException
      */
     protected List<FileGroup> getFiles() throws IOException {
         File file = getSourceAsFile();
@@ -1065,11 +1034,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         }
     }
 
-    /**
-     * Returns the source as a File, if it can be converted to one, and it exists
-     *
-     * @return
-     */
+    /** Returns the source as a File, if it can be converted to one, and it exists */
     protected File getSourceAsFile() {
         File file = null;
         if (source instanceof File) {
@@ -1086,9 +1051,6 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     /**
      * Default implementation returns a FileResourceInfo containing same fileGroup list contained in
      * the ServiceInfo object.
-     *
-     * @param coverageName
-     * @return
      */
     @Override
     public ResourceInfo getInfo(String coverageName) {
@@ -1122,8 +1084,6 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     /**
      * Return the set of dynamic parameterDescriptors (the ones related to domains) for this reader.
      * Default implementation returns an empty set of parameters
-     *
-     * @return
      */
     @SuppressWarnings("rawtypes")
     public Set<ParameterDescriptor<List>> getDynamicParameters() throws IOException {
@@ -1133,8 +1093,6 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     /**
      * Return the set of dynamic parameterDescriptors (the ones related to domains) for this reader.
      * Default implementation returns an empty set of parameters
-     *
-     * @return
      */
     @SuppressWarnings("rawtypes")
     public Set<ParameterDescriptor<List>> getDynamicParameters(String coverageName)
@@ -1265,20 +1223,12 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         return getHighestRes(coverageName);
     }
 
-    /**
-     * Return the ground control points for the default coverage, or null if there are none
-     *
-     * @return
-     */
+    /** Return the ground control points for the default coverage, or null if there are none */
     public GroundControlPoints getGroundControlPoints() {
         return null;
     }
 
-    /**
-     * Return the ground control points for the specified, or null if there are none
-     *
-     * @return
-     */
+    /** Return the ground control points for the specified, or null if there are none */
     public GroundControlPoints getGroundControlPoints(String coverageName) {
         if (!checkName(coverageName)) {
             throw new IllegalArgumentException(
@@ -1290,9 +1240,6 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     /**
      * Computes the raster to model of a rescaled output raster, based on the original transform and
      * output raster scaling factor
-     *
-     * @param coverageRaster
-     * @return
      */
     protected AffineTransform getRescaledRasterToModel(RenderedImage coverageRaster) {
         final int ssWidth = coverageRaster.getWidth();
@@ -1328,13 +1275,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         return tempRaster2Model;
     }
 
-    /**
-     * Retrieves the sibling of the specified file, if available, or null otherwise
-     *
-     * @param file
-     * @param extension
-     * @return
-     */
+    /** Retrieves the sibling of the specified file, if available, or null otherwise */
     protected static File getSibling(final File file, String extension) {
         String parentPath = file.getParent();
         String filename = file.getName();
@@ -1359,13 +1300,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         }
     }
 
-    /**
-     * Adds all the siblings that could be found to exist to the given file list
-     *
-     * @param file
-     * @param extension
-     * @return
-     */
+    /** Adds all the siblings that could be found to exist to the given file list */
     protected void addAllSiblings(final File file, List<File> files, String... extensions) {
         String parentPath = file.getParent();
         String filename = file.getName();
@@ -1390,12 +1325,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         }
     }
 
-    /**
-     * Adds the specified siblings, if not null, and existing
-     *
-     * @param files
-     * @param siblings
-     */
+    /** Adds the specified siblings, if not null, and existing */
     protected void addSiblings(List<File> files, File... siblings) {
         for (File sibling : siblings) {
             if (sibling != null && sibling.exists()) {

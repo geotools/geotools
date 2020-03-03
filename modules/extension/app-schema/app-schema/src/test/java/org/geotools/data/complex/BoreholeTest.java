@@ -124,8 +124,6 @@ public class BoreholeTest extends AppSchemaTestSupport {
     /**
      * Tests if the schema-to-FM parsing code developed for complex datastore configuration loading
      * can parse the GeoSciML types
-     *
-     * @throws Exception
      */
     @Test
     public void testParseBoreholeSchema() throws Exception {
@@ -369,11 +367,7 @@ public class BoreholeTest extends AppSchemaTestSupport {
         // assertEquals(queryLiteral, obtainedValue);
     }
 
-    /**
-     * Grab a feature and traverse it in deep as an encoder might do
-     *
-     * @throws Exception
-     */
+    /** Grab a feature and traverse it in deep as an encoder might do */
     @Test
     public void testTraverseDeep() throws Exception {
         final FeatureSource<FeatureType, Feature> fSource =

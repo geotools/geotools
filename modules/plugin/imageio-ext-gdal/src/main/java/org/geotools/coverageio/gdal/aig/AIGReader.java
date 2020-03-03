@@ -43,7 +43,6 @@ public final class AIGReader extends BaseGDALGridCoverage2DReader implements Gri
      * Creates a new instance of a {@link AIGReader}. I assume nothing about file extension.
      *
      * @param input Source object for which we want to build an {@link AIGReader}.
-     * @throws DataSourceException
      */
     public AIGReader(Object input) throws DataSourceException {
         this(input, null);
@@ -54,7 +53,6 @@ public final class AIGReader extends BaseGDALGridCoverage2DReader implements Gri
      *
      * @param input Source object for which we want to build an {@link AIGReader}.
      * @param hints Hints to be used by this reader throughout his life.
-     * @throws DataSourceException
      */
     public AIGReader(Object input, Hints hints) throws DataSourceException {
         super(input, hints, DEFAULT_WORLDFILE_EXT, new ArcBinaryGridImageReaderSpi());

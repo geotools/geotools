@@ -71,12 +71,7 @@ public class PolygonGraphGenerator implements GraphGenerator {
 
     /** Determines the relationship among two polygons. */
     public static interface PolygonRelationship {
-        /**
-         * Determines if two polygons are related in any way. Rel
-         *
-         * @param p1
-         * @param p2
-         */
+        /** Determines if two polygons are related in any way. Rel */
         boolean related(Polygon p1, Polygon p2);
 
         boolean equal(Polygon p1, Polygon p2);

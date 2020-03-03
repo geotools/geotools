@@ -126,7 +126,6 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
      * Creates a new instance of a {@link JP2KReader}. I assume nothing about file extension.
      *
      * @param input Source object for which we want to build an JP2KReader.
-     * @throws DataSourceException
      */
     public JP2KReader(Object input) throws IOException {
         this(input, null);
@@ -137,7 +136,6 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
      *
      * @param reader the {@code ImageReader} from which to retrieve metadata (if available) for
      *     setting properties
-     * @throws IOException
      */
     protected void setCoverageProperties(ImageReader reader) throws IOException {
         // //
@@ -219,12 +217,7 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
         return true;
     }
 
-    /**
-     * Look for XML boxes containing GMLJP2 boxes
-     *
-     * @param metadata
-     * @throws IOException
-     */
+    /** Look for XML boxes containing GMLJP2 boxes */
     private void checkXMLBoxes(final IIOMetadata metadata) throws IOException {
         if (!(metadata instanceof JP2KStreamMetadata)) {
             if (LOGGER.isLoggable(FINE))
@@ -253,9 +246,6 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
     /**
      * Checks if the node provided is a GMLJP2 one, according to the spec, the parent has to be an
      * ASOC box, the grand-parent too, and this last one has a LBL box child with "gml.data"
-     *
-     * @param node
-     * @return
      */
     private boolean isGMLJP2Box(IIOMetadataNode node) {
         if (!(node instanceof XMLBoxMetadataNode)) {
@@ -424,12 +414,7 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
         return (Node) xpath.evaluate(path, rectifiedGrid, XPathConstants.NODE);
     }
 
-    /**
-     * Look for UUID boxes containing GeoJP2 Boxes / MSIG World Box
-     *
-     * @param metadata
-     * @throws IOException
-     */
+    /** Look for UUID boxes containing GeoJP2 Boxes / MSIG World Box */
     private void checkUUIDBoxes(final IIOMetadata metadata) throws IOException {
         if (!(metadata instanceof JP2KStreamMetadata)) {
             if (LOGGER.isLoggable(FINE))
@@ -570,12 +555,7 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
         }
     }
 
-    /**
-     * Get the degenerate GeoTIFF to obtain the related CoordinateReferenceSystem tags
-     *
-     * @param uuid
-     * @throws IOException
-     */
+    /** Get the degenerate GeoTIFF to obtain the related CoordinateReferenceSystem tags */
     private void getGeoJP2(final UUIDBoxMetadataNode uuid) throws IOException {
 
         CoordinateReferenceSystem coordinateReferenceSystem = null;
@@ -653,8 +633,6 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
      * Constructor.
      *
      * @param source The source object.
-     * @throws IOException
-     * @throws UnsupportedEncodingException
      */
     public JP2KReader(Object source, Hints uHints) throws IOException {
         super(source, uHints);
@@ -797,8 +775,6 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
     /**
      * Gets the coordinate reference system that will be associated to the {@link GridCoverage} by
      * looking for a related PRJ.
-     *
-     * @throws UnsupportedEncodingException
      */
     protected void parsePRJFile() throws UnsupportedEncodingException {
         String prjPath =
@@ -836,9 +812,6 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
     /**
      * Checks whether a world file is associated with the data source. If found, set a proper
      * envelope.
-     *
-     * @throws IllegalStateException
-     * @throws IOException
      */
     protected void parseWorldFile() throws IOException {
         final String worldFilePath =
@@ -900,9 +873,6 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
      * Gets resolution information about the coverage itself.
      *
      * @param reader an {@link ImageReader} to use for getting the resolution information.
-     * @throws IOException
-     * @throws TransformException
-     * @throws DataSourceException
      */
     private void setResolutionInfo(ImageReader reader) throws IOException {
         // //

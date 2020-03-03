@@ -230,15 +230,7 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
     /** Called in case the initialization of the class failed, allows subclasses to clean up */
     protected abstract void handleInitializationException(Throwable t);
 
-    /**
-     * Allows initialization of the tile index store before scanning type names.
-     *
-     * @param params
-     * @param create
-     * @param spi
-     * @throws IOException
-     * @throws MalformedURLException
-     */
+    /** Allows initialization of the tile index store before scanning type names. */
     protected abstract void initTileIndexStore(
             final Properties params, final boolean create, final DataStoreFactorySpi spi)
             throws IOException, MalformedURLException;
@@ -261,12 +253,7 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
         }
     }
 
-    /**
-     * Checks the provided schema, and throws an exception if not valid
-     *
-     * @param schema
-     * @throws IOException
-     */
+    /** Checks the provided schema, and throws an exception if not valid */
     private void checkMosaicSchema(String typeName) throws IOException {
         SimpleFeatureType schema = getTileIndexStore().getSchema(typeName);
         if (schema == null) {
@@ -276,11 +263,7 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
         }
     }
 
-    /**
-     * Checks the provided schema, and throws an exception if not valid
-     *
-     * @param schema
-     */
+    /** Checks the provided schema, and throws an exception if not valid */
     private void checkMosaicSchema(SimpleFeatureType schema) {
         if (!Utils.isValidMosaicSchema(schema, getLocationAttributeName())) {
             throw new IllegalArgumentException(
@@ -720,18 +703,12 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
         }
     }
 
-    /**
-     * Returns the tile index store
-     *
-     * @return
-     */
+    /** Returns the tile index store */
     protected abstract DataStore getTileIndexStore();
 
     /**
      * Returns the set of valid type names (this is going to be a live collection, the code is
      * allowed to modify it)
-     *
-     * @return
      */
     protected abstract Set<String> getValidTypeNames();
 }

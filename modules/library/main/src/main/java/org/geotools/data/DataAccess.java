@@ -127,8 +127,6 @@ public interface DataAccess<T extends FeatureType, F extends Feature> {
      * <p>This functionality is similar to an "alter table" statement in SQL. Implementation is
      * optional; it may not be supported by all servers or files.
      *
-     * @param typeName
-     * @param featureType
      * @throws IOException if the operation failed
      * @throws UnsupportedOperation if functionality is not available
      */
@@ -140,7 +138,6 @@ public interface DataAccess<T extends FeatureType, F extends Feature> {
      * <p>This functionality is similar to an "drop table" statement in SQL. Implementation is
      * optional; it may not be supported by all servers or files.
      *
-     * @param typeName
      * @throws IOException if the operation failed
      * @throws UnsupportedOperation if functionality is not available
      */
@@ -152,7 +149,6 @@ public interface DataAccess<T extends FeatureType, F extends Feature> {
      * <p>For additional information please see getInfo( Name ) and getSchema( Name ).
      *
      * @return Names of the available contents.
-     * @throws IOException
      */
     List<Name> getNames() throws IOException;
 
@@ -164,7 +160,6 @@ public interface DataAccess<T extends FeatureType, F extends Feature> {
      *
      * @param name Type name a the resource from getNames()
      * @return Description of the FeatureType being made avaialble
-     * @throws IOException
      */
     T getSchema(Name name) throws IOException;
 
@@ -182,9 +177,7 @@ public interface DataAccess<T extends FeatureType, F extends Feature> {
      *       <ul>
      *         Additional interfaces may be supported by the implementation you are using.
      *
-     * @param typeName
      * @return Access to the named resource being made available
-     * @throws IOException
      */
     FeatureSource<T, F> getFeatureSource(Name typeName) throws IOException;
 

@@ -30,9 +30,6 @@ public class StyleTransformFunctionTest {
      * Right now these tests exist basically to ensure that these styles with functions are parsed
      * without exception. Lower level unit tests exist to test the results of parsing individual
      * elements
-     *
-     * @throws IOException
-     * @throws ParseException
      */
     @Test
     public void testLineLayerWithFunctions() throws IOException, ParseException {

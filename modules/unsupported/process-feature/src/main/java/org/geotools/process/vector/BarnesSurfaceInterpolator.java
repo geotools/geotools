@@ -173,8 +173,6 @@ public class BarnesSurfaceInterpolator {
      * phenomena which is being measured.
      *
      * <p>
-     *
-     * @param lengthScale
      */
     public void setLengthScale(double lengthScale) {
         this.lengthScale = lengthScale;

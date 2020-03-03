@@ -83,11 +83,7 @@ final class GT30Stats {
         }
     }
 
-    /**
-     * Write this object to a stats file.
-     *
-     * @param out
-     */
+    /** Write this object to a stats file. */
     public void writeTo(final OutputStream out) {
         if (out == null) {
             return;

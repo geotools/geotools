@@ -856,11 +856,7 @@ public class DuplicatingStyleVisitorTest extends TestCase {
                 copy.getPerpendicularOffset());
     }
 
-    /**
-     * Test SelectedChannelType copy with Expression
-     *
-     * @throws Exception
-     */
+    /** Test SelectedChannelType copy with Expression */
     @Test
     public void testSelectedChannelTypeDuplication() throws Exception {
         final String b1 = "b1";

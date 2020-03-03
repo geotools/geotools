@@ -102,7 +102,6 @@ public final class GTopo30Format extends AbstractGridFormat implements Format {
      *
      * @param destination The destination object
      * @return a GridCoverageWriter object
-     * @throws DataSourceException
      */
     @Override
     public GridCoverageWriter getWriter(final Object destination, Hints hints) {

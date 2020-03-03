@@ -98,12 +98,7 @@ public class SupportFilesCollector {
         this.supportingExtensions = supportingExtensions;
     }
 
-    /**
-     * Return supportFiles (if found) for the specified file
-     *
-     * @param filePath
-     * @return
-     */
+    /** Return supportFiles (if found) for the specified file */
     public List<File> getSupportFiles(String filePath) {
         LinkedHashSet<File> supportFiles = null;
         String parent = FilenameUtils.getFullPath(filePath);

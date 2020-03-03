@@ -46,8 +46,6 @@ public abstract class FeatureWrapper {
     /**
      * Sets the underlying complex attribute. That is, the complex attribute that was wrapped. NB:
      * This could be a Feature.
-     *
-     * @param underlyingComplexAttribute
      */
     public void setUnderlyingComplexAttribute(ComplexAttribute underlyingComplexAttribute) {
         this.underlyingComplexAttribute = underlyingComplexAttribute;

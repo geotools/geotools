@@ -63,7 +63,6 @@ public class ComplexElementHandler extends XMLElementHandler {
      *
      * @param ehf ElementHandlerFactory
      * @param elem Element
-     * @throws SAXException
      */
     public ComplexElementHandler(ElementHandlerFactory ehf, Element elem) throws SAXException {
         this.ehf = ehf;
@@ -108,13 +107,7 @@ public class ComplexElementHandler extends XMLElementHandler {
         }
     }
 
-    /**
-     * @param namespaceURI
-     * @param localName
-     * @param hints
-     * @throws SAXException
-     * @throws OperationNotSupportedException
-     */
+    /** */
     public void endElement(URI namespaceURI, String localName, Map hints)
             throws OperationNotSupportedException, SAXException {
         text = (text == null) ? null : text.trim();
@@ -497,9 +490,6 @@ public class ComplexElementHandler extends XMLElementHandler {
      *
      * @see org.geotools.xml.XMLElementHandler#startElement(java.net.URI, java.lang.String,
      *     org.xml.sax.Attributes)
-     * @param namespaceURI
-     * @param localName
-     * @param attr1
      */
     public void startElement(URI namespaceURI, String localName, Attributes attr1) {
         this.attr = new AttributesImpl(attr1);
@@ -510,11 +500,7 @@ public class ComplexElementHandler extends XMLElementHandler {
      *
      * @see org.geotools.xml.XMLElementHandler#getHandler(java.net.URI, java.lang.String,
      *     java.util.Map)
-     * @param namespaceURI
-     * @param localName
-     * @param hints
      * @return XMLElementHandler
-     * @throws SAXException
      */
     public XMLElementHandler getHandler(URI namespaceURI, String localName, Map hints)
             throws SAXException {
@@ -581,11 +567,7 @@ public class ComplexElementHandler extends XMLElementHandler {
         return elem.getName();
     }
 
-    /**
-     * Remove the given XMLElementHandler from the Child-List
-     *
-     * @param handler
-     */
+    /** Remove the given XMLElementHandler from the Child-List */
     public void removeElement(XMLElementHandler handler) {
         if (elements != null) {
             elements.remove(handler);

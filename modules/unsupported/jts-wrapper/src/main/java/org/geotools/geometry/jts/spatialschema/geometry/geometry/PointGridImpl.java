@@ -141,8 +141,6 @@ public class PointGridImpl implements PointGrid {
      * <p>Please note all example code uses getTarget( row, col ).clone() when returning a direct
      * position to client code.
      *
-     * @param row
-     * @param column
      * @return DirectPosition
      */
     DirectPosition getInternal(int row, int column) {

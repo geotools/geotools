@@ -116,10 +116,7 @@ public class GeometryToWKTString {
         return "CompositeCurve(" + compositeCurveCoordToString(cc) + ")";
     }
 
-    /**
-     * @param dp
-     * @return Format: "x1 y1 z1"
-     */
+    /** @return Format: "x1 y1 z1" */
     private String directPositionToString(DirectPosition dp) {
         double coord[] = dp.getCoordinate();
         String str = Double.toString(coord[0]);

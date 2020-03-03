@@ -89,8 +89,6 @@ public interface GraphicLegend extends org.opengis.style.GraphicLegend {
      *
      * <p>If this value is null the natural size of the graphic will be used; or for graphics
      * without a natural size like SVG files 16x16 will be used.
-     *
-     * @param size
      */
     public void setSize(Expression size);
     /**

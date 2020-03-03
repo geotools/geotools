@@ -431,8 +431,6 @@ public class FilterCapabilities {
      * AFTER: filter instanceof Contains
      * </code>
      * </pre>
-     *
-     * @param filter
      */
     private static short getFilterType(org.opengis.filter.Filter filter) {
         if (filter == null) return 0;

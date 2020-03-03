@@ -218,19 +218,12 @@ public class MBTilesFile implements AutoCloseable {
     /**
      * Create an MBTilesFile from an SQL DataSource connected to an MBTiles file. Behaviour is
      * undefined if the DataSource is any other form of database.
-     *
-     * @param dataSource
      */
     public MBTilesFile(DataSource dataSource) {
         this.connPool = dataSource;
     }
 
-    /**
-     * Store MetaData in file
-     *
-     * @param metaData
-     * @throws IOException
-     */
+    /** Store MetaData in file */
     public void saveMetaData(MBTilesMetadata metaData) throws IOException {
         try {
             Connection cx = connPool.getConnection();
@@ -258,7 +251,6 @@ public class MBTilesFile implements AutoCloseable {
      *
      * @param min The minimum zoom level
      * @param max The maximum zoom level
-     * @throws IOException
      */
     public void saveMinMaxZoomMetadata(int min, int max) throws IOException {
         try {
@@ -274,11 +266,7 @@ public class MBTilesFile implements AutoCloseable {
         }
     }
 
-    /**
-     * Store a tile
-     *
-     * @throws IOException
-     */
+    /** Store a tile */
     public void saveTile(MBTilesTile entry) throws IOException {
         try {
             Connection cx = connPool.getConnection();
@@ -331,11 +319,7 @@ public class MBTilesFile implements AutoCloseable {
         }
     }
 
-    /**
-     * Store a grid
-     *
-     * @throws IOException
-     */
+    /** Store a grid */
     public void saveGrid(MBTilesGrid entry) throws IOException {
         try (Connection cx = connPool.getConnection()) {
             if (entry.getGrid() != null) {
@@ -893,11 +877,6 @@ public class MBTilesFile implements AutoCloseable {
      * Converts the envelope into a tiles rectangle containing it, at the requested zoom level. X
      * tiles start from west and increase towards east, Y tiles start from north and increase
      * towards south
-     *
-     * @param envelope
-     * @param zoomLevel
-     * @return
-     * @throws SQLException
      */
     protected RectangleLong toTilesRectangle(Envelope envelope, long zoomLevel)
             throws SQLException {
@@ -929,14 +908,7 @@ public class MBTilesFile implements AutoCloseable {
         return Math.round(Math.pow(2, zoomLevel));
     }
 
-    /**
-     * Returns the actual tile bounds for the given zoom level,
-     *
-     * @param zoomLevel
-     * @param exact
-     * @return
-     * @throws SQLException
-     */
+    /** Returns the actual tile bounds for the given zoom level, */
     protected RectangleLong getTileBounds(long zoomLevel, boolean exact) throws SQLException {
         if (exact) {
             long minRow = minRow(zoomLevel);
@@ -950,12 +922,7 @@ public class MBTilesFile implements AutoCloseable {
         }
     }
 
-    /**
-     * Returns the zoom level for the given simplification distance
-     *
-     * @param d
-     * @return
-     */
+    /** Returns the zoom level for the given simplification distance */
     protected long getZoomLevel(double distance) throws SQLException {
         final long maxZoom = maxZoom();
         final long numberOfTiles = tilesForZoom(maxZoom);
@@ -977,7 +944,6 @@ public class MBTilesFile implements AutoCloseable {
      *
      * @param rect The tile rectangle, in tile space
      * @param zoom The zoom level
-     * @return
      */
     protected ReferencedEnvelope toEnvelope(RectangleLong rect, long zoom) {
         final long numberOfTiles = tilesForZoom(zoom);

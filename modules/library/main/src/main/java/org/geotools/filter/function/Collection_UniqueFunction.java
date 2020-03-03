@@ -65,8 +65,6 @@ public class Collection_UniqueFunction extends FunctionExpressionImpl {
      * @param collection collection to calculate the unique
      * @param expression Single Expression argument
      * @return An object containing the unique value of the attributes
-     * @throws IllegalFilterException
-     * @throws IOException
      */
     static CalcResult calculateUnique(SimpleFeatureCollection collection, Expression expression)
             throws IllegalFilterException, IOException {

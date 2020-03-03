@@ -46,7 +46,6 @@ public final class MrSIDReader extends BaseGDALGridCoverage2DReader implements G
      * Creates a new instance of a {@link MrSIDReader}. I assume nothing about file extension.
      *
      * @param input Source object for which we want to build a {@link MrSIDReader}.
-     * @throws DataSourceException
      */
     public MrSIDReader(Object input) throws DataSourceException {
         this(input, null);
@@ -57,7 +56,6 @@ public final class MrSIDReader extends BaseGDALGridCoverage2DReader implements G
      *
      * @param input Source object for which we want to build a {@link MrSIDReader}.
      * @param hints Hints to be used by this reader throughout his life.
-     * @throws DataSourceException
      */
     public MrSIDReader(Object input, final Hints hints) throws DataSourceException {
         super(input, hints, worldFileExt, new MrSIDImageReaderSpi());
@@ -68,7 +66,6 @@ public final class MrSIDReader extends BaseGDALGridCoverage2DReader implements G
      *
      * @param reader the {@code ImageReader} from which to retrieve metadata (if available) for
      *     setting properties
-     * @throws IOException
      */
     @Override
     protected void setCoverageProperties(ImageReader reader) throws IOException {

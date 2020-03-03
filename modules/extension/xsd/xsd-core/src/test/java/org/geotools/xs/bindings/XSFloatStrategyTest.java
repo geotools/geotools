@@ -29,8 +29,6 @@ public class XSFloatStrategyTest extends TestSchema {
     /**
      * For example, -1E4, 1267.43233E12, 12.78e-2, 12 , -0, 0 and INF are all legal literals for
      * float.
-     *
-     * @throws Exception
      */
     public void testWhiteSpace() throws Exception {
         validateValues(" \n12", Float.valueOf(12));

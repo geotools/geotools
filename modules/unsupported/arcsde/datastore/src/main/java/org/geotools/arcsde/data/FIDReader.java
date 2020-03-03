@@ -58,11 +58,7 @@ public abstract class FIDReader {
 
     private int columnIndex;
 
-    /**
-     * Creates a new FIDStrategy object.
-     *
-     * @param fidColumns
-     */
+    /** Creates a new FIDStrategy object. */
     private FIDReader(String layerName, String fidColumn) {
         this.layerName = layerName;
         this.fidColumn = fidColumn;
@@ -116,14 +112,7 @@ public abstract class FIDReader {
         return attNames.toArray(new String[attNames.size()]);
     }
 
-    /**
-     * Returns a FID strategy appropriate for the given SeLayer
-     *
-     * @param session
-     * @param tableName
-     * @return
-     * @throws IOException
-     */
+    /** Returns a FID strategy appropriate for the given SeLayer */
     public static FIDReader getFidReader(
             final ISession session,
             final SeTable table,

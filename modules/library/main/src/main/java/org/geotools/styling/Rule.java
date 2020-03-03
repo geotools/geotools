@@ -124,8 +124,6 @@ public interface Rule extends org.opengis.style.Rule {
      * Filter used to select content for this rule to display.
      *
      * <p>This filter is only consulted if isElseFilter is false.
-     *
-     * @param filter
      */
     void setFilter(Filter filter);
 
@@ -167,10 +165,6 @@ public interface Rule extends org.opengis.style.Rule {
     /** @param resource Indicates where this style is defined */
     void setOnlineResource(OnLineResource resource);
 
-    /**
-     * Used to traverse the style data structure.
-     *
-     * @param visitor
-     */
+    /** Used to traverse the style data structure. */
     void accept(org.geotools.styling.StyleVisitor visitor);
 }

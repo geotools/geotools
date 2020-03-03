@@ -108,7 +108,6 @@ public class DoubleBits {
      * the hidden bit, which is always 1. It does not determine whether the numbers have the same
      * exponent - if they do not, the value computed by this function is meaningless.
      *
-     * @param db
      * @return the number of common most-significant mantissa bits
      */
     public int numCommonMantissaBits(DoubleBits db) {

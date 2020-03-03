@@ -153,10 +153,6 @@ public class FunctionImpl extends ExpressionAbstract implements Function {
     /**
      * Evaluates a specific argument against the context, checking for required values and proper
      * conversion.
-     *
-     * @param object
-     * @param argumentIndex
-     * @return
      */
     protected Object getParameterValue(Object object, int argumentIndex) {
         Parameter<?> parameter = getFunctionName().getArguments().get(argumentIndex);
@@ -188,11 +184,6 @@ public class FunctionImpl extends ExpressionAbstract implements Function {
     /**
      * Evaluates a specific argument against the context, checking for required values and proper
      * conversion. This version accepts a default value
-     *
-     * @param object
-     * @param argumentIndex
-     * @param defaultValue
-     * @return
      */
     protected Object getParameterValue(Object object, int argumentIndex, Object defaultValue) {
         Object value = getParameterValue(object, argumentIndex);

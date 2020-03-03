@@ -49,11 +49,7 @@ public abstract class AbstractGeometryTest extends TestCase {
                     + "AXIS[\"Longitude\",EAST], AXIS[\"Latitude\",NORTH]]";
     private PositionFactory posFact;
 
-    /**
-     * setUp Called before each test.
-     *
-     * @throws FactoryException
-     */
+    /** setUp Called before each test. */
     public void setUp() throws FactoryException {
         GeometryBuilder builder = new GeometryBuilder(DefaultGeographicCRS.WGS84);
         gFact = builder.getGeometryFactory();
@@ -79,7 +75,6 @@ public abstract class AbstractGeometryTest extends TestCase {
     /**
      * A helper method for creating a Curve from an array of DirectPositions
      *
-     * @param points
      * @return a <tt>Curve</tt>
      */
     protected Curve createCurve(final DirectPosition[] points) {
@@ -91,7 +86,6 @@ public abstract class AbstractGeometryTest extends TestCase {
     /**
      * A helper method for creating a lineString from an array of DirectPositions
      *
-     * @param points
      * @return <tt>LineString</tt>
      */
     protected LineString createLineString(final DirectPosition[] points) {
@@ -102,7 +96,6 @@ public abstract class AbstractGeometryTest extends TestCase {
     /**
      * A helper method for creating a Ring from an array of DirectPositions
      *
-     * @param curve
      * @return a <tt>Ring</tt>
      */
     protected Ring createRing(final Curve curve) {
@@ -114,7 +107,6 @@ public abstract class AbstractGeometryTest extends TestCase {
     /**
      * creates a SurfaceBoundary using a curve as the exterior
      *
-     * @param exterior
      * @return <tt>SurfaceBoundary</tt>
      */
     protected SurfaceBoundary createSurfaceBoundary(Curve exterior) {

@@ -92,7 +92,6 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
      * <p>We do optimize the case where the provided expression is a literal; no sense doing a
      * calculation each time if we don't have to.
      *
-     * @param expr
      * @return expr multiplied by the provided scale
      */
     protected Expression rescale(Expression expr) {
@@ -119,12 +118,7 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
         return rescaled;
     }
 
-    /**
-     * Rescale using listMultiply, if there is only one entry.
-     *
-     * @param expressions
-     * @return
-     */
+    /** Rescale using listMultiply, if there is only one entry. */
     protected List<Expression> rescaleDashArray(List<Expression> expressions) {
         if (expressions == null || expressions.isEmpty()) {
             return expressions;
@@ -326,14 +320,7 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
         }
     }
 
-    /**
-     * Rescales the specified vendor option
-     *
-     * @param options
-     * @param key
-     * @param defaultAutoWrap
-     * @param value
-     */
+    /** Rescales the specified vendor option */
     protected void rescaleOption(Map<String, String> options, String key, double defaultValue) {
         double scaleFactor = (double) scale.evaluate(null, Double.class);
         if (options.get(key) != null) {
@@ -344,14 +331,7 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
         }
     };
 
-    /**
-     * Rescales the specified vendor option
-     *
-     * @param options
-     * @param key
-     * @param defaultAutoWrap
-     * @param value
-     */
+    /** Rescales the specified vendor option */
     protected void rescaleOption(Map<String, String> options, String key, int defaultValue) {
         double scaleFactor = (double) scale.evaluate(null, Double.class);
         if (options.get(key) != null) {
@@ -366,14 +346,7 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
         }
     };
 
-    /**
-     * Rescales the specified vendor option
-     *
-     * @param options
-     * @param key
-     * @param defaultAutoWrap
-     * @param value
-     */
+    /** Rescales the specified vendor option */
     protected void rescaleArrayOption(Map<String, String> options, String key, int defaultValue) {
         double scaleFactor = (double) scale.evaluate(null, Double.class);
         if (options.get(key) != null) {

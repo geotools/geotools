@@ -92,9 +92,6 @@ public class GML3ParsingUtils {
      * has it, not the posList). If no srsDimension can be found, check the srsName the same way and
      * return the srsDimensions instead. Returns 2 if no srsDimension or srsName attribute could be
      * found.
-     *
-     * @param node
-     * @return
      */
     public static int dimensions(Node node) {
         Node current = node;
@@ -197,11 +194,6 @@ public class GML3ParsingUtils {
     /**
      * Returns a curved geometry factory given the linearization constraints, the original factory,
      * and a coordinate sequence representing the control points of a curved geometry
-     *
-     * @param arcParameters
-     * @param gFactory
-     * @param cs
-     * @return
      */
     public static CurvedGeometryFactory getCurvedGeometryFactory(
             ArcParameters arcParameters, GeometryFactory gFactory, CoordinateSequence cs) {

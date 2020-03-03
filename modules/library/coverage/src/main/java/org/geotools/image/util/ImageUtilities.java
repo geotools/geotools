@@ -849,7 +849,6 @@ public final class ImageUtilities {
      * @param image the {@link RenderedImage} to work on
      * @return a new {@link RenderedImage} where the provided {@link Color} has turned into
      *     transparent.
-     * @throws IllegalStateException
      */
     public static RenderedImage maskColor(final Color transparentColor, final RenderedImage image)
             throws IllegalStateException {
@@ -1125,10 +1124,6 @@ public final class ImageUtilities {
     /**
      * Build a background values array using the same dataType of the input {@link SampleModel} (if
      * available) and the values provided in the input array.
-     *
-     * @param sampleModel
-     * @param backgroundValues
-     * @return
      */
     public static Number[] getBackgroundValues(
             final SampleModel sampleModel, final double[] backgroundValues) {
@@ -1269,11 +1264,7 @@ public final class ImageUtilities {
         }
     }
 
-    /**
-     * Disposes the specified image, without recursing back in the sources
-     *
-     * @param planarImage
-     */
+    /** Disposes the specified image, without recursing back in the sources */
     public static void disposeSinglePlanarImage(PlanarImage planarImage) {
         // Looking for an ROI image and disposing it too
         Object roi = null;
@@ -1319,27 +1310,13 @@ public final class ImageUtilities {
         planarImage.dispose();
     }
 
-    /**
-     * Helper that cleans up a field
-     *
-     * @param theObject
-     * @param fieldName
-     * @throws NoSuchFieldException
-     * @throws IllegalAccessException
-     */
+    /** Helper that cleans up a field */
     private static void cleanField(Object theObject, String fieldName)
             throws NoSuchFieldException, IllegalAccessException {
         cleanField(theObject, fieldName, false);
     }
 
-    /**
-     * Helper that cleans up a field
-     *
-     * @param theObject
-     * @param fieldName
-     * @throws NoSuchFieldException
-     * @throws IllegalAccessException
-     */
+    /** Helper that cleans up a field */
     private static void cleanField(Object theObject, String fieldName, boolean superClass)
             throws NoSuchFieldException, IllegalAccessException {
         // getDeclaredField only provides access to current class,
@@ -1356,7 +1333,6 @@ public final class ImageUtilities {
     /**
      * Transform a data type into a representative {@link String}.
      *
-     * @param dataType
      * @return a representative {@link String}.
      */
     public static String getDatabufferTypeName(int dataType) {

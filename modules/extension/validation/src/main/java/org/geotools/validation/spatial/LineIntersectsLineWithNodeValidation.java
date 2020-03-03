@@ -128,9 +128,6 @@ public class LineIntersectsLineWithNodeValidation extends LineLineAbstractValida
      * hasPair purpose.
      *
      * <p>finds a pair of points, assumes the sequence is sorted smallest to largest.
-     *
-     * @param a1
-     * @param a2
      */
     private boolean hasPair(CoordinateSequence a1, CoordinateSequence a2) {
         int i = 0;

@@ -118,7 +118,6 @@ public class JGrassRegion {
      * <p>The supplied path has to be of the format of a GRASS WIND file.
      *
      * @param regionFilePath a GRASS region file path.
-     * @throws IOException
      */
     public JGrassRegion(String regionFilePath) throws IOException {
         readRegionFromFile(regionFilePath, this);
@@ -394,7 +393,6 @@ public class JGrassRegion {
      *
      * @param mapsetPath the path to the mapset folder.
      * @param activeRegion the active region.
-     * @throws IOException
      */
     public static void writeWINDToMapset(String mapsetPath, JGrassRegion activeRegion)
             throws IOException {
@@ -406,7 +404,6 @@ public class JGrassRegion {
      *
      * @param locationPath the path to the location folder.
      * @param region a region.
-     * @throws IOException
      */
     public static void writeDEFAULTWINDToLocation(String locationPath, JGrassRegion region)
             throws IOException {
@@ -453,10 +450,7 @@ public class JGrassRegion {
         return newRegion;
     }
 
-    /**
-     * @param subregionsNum
-     * @return
-     */
+    /** */
     public List<JGrassRegion> toSubRegions(int subregionsNum) {
         int tmpR = getRows();
         int tmpC = getCols();
@@ -743,7 +737,6 @@ public class JGrassRegion {
      *
      * @param regionFilePath the path to the region file.
      * @param region the region to be written to file
-     * @throws IOException
      */
     private static void writeRegionToFile(String regionFilePath, JGrassRegion region)
             throws IOException {

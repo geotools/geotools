@@ -82,12 +82,7 @@ public class IsSimpleOp {
     // return true;
     // }
 
-    /**
-     * Works for: - Curve - ...
-     *
-     * @param geom
-     * @return
-     */
+    /** Works for: - Curve - ... */
     private boolean isSimpleLinearGeometry(GeometryImpl geom) {
 
         // TODO auskommentiert; checken!

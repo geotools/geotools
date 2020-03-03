@@ -391,9 +391,6 @@ public class FeatureTypeRegistry {
      * If the type of elemDecl is annonymous creates a new type with the same name than the
      * atrribute and returns it. If it is not anonymous, looks it up on the registry and in case the
      * type does not exists in the registry uses a proxy.
-     *
-     * @param elemDecl
-     * @return
      */
     private AttributeType getTypeOf(XSDElementDeclaration elemDecl, CoordinateReferenceSystem crs) {
         XSDTypeDefinition typeDefinition;
@@ -495,10 +492,6 @@ public class FeatureTypeRegistry {
      * <p>If it is a complex attribute, it will contain all the properties declared in the <code>
      * typeDefinition</code>, as well as all the properties declared in its super types. TODO:
      * handle the case where the extension mechanism is restriction.
-     *
-     * @param assignedName
-     * @param typeDefinition
-     * @return
      */
     private AttributeType createType(
             final Name assignedName,
@@ -636,15 +629,7 @@ public class FeatureTypeRegistry {
         return attType;
     }
 
-    /**
-     * NOTE: to be called only by {@link #createType(Name, XSDTypeDefinition)}
-     *
-     * @param assignedName
-     * @param schema
-     * @param typeDefinition
-     * @param superType
-     * @return
-     */
+    /** NOTE: to be called only by {@link #createType(Name, XSDTypeDefinition)} */
     private AttributeType createComplexAttributeType(
             final Name assignedName,
             final Collection<PropertyDescriptor> schema,

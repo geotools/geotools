@@ -186,8 +186,6 @@ public class SpatialRequestHelper {
     /**
      * Compute this specific request settings all the parameters needed by a visiting {@link
      * RasterLayerResponse} object.
-     *
-     * @throws DataSourceException
      */
     public void prepare() throws DataSourceException {
         //
@@ -226,7 +224,6 @@ public class SpatialRequestHelper {
      * rectangle which is suitable for a successive read operation with {@link ImageIO} to do
      * crop-on-read.
      *
-     * @throws DataSourceException
      * @throws DataSourceException in case something bad occurs
      */
     private void computeRequestSpatialElements() throws DataSourceException {
@@ -353,7 +350,6 @@ public class SpatialRequestHelper {
      * transformation.
      *
      * @throws TransformException in case a problem occurs when going back to raster space.
-     * @throws DataSourceException
      */
     private void computeCropRasterArea() throws DataSourceException {
 

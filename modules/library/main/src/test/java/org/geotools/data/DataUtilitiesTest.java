@@ -87,11 +87,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Jody Garnett, Refractions Research
  */
 public class DataUtilitiesTest extends DataTestCase {
-    /**
-     * Constructor for DataUtilitiesTest.
-     *
-     * @param arg0
-     */
+    /** Constructor for DataUtilitiesTest. */
     public DataUtilitiesTest(String arg0) {
         super(arg0);
     }
@@ -740,11 +736,7 @@ public class DataUtilitiesTest extends DataTestCase {
         assertEquals(2, s.getFeatures(rd12Filter).size());
     }
 
-    /**
-     * tests the policy of DataUtilities.mixQueries
-     *
-     * @throws Exception
-     */
+    /** tests the policy of DataUtilities.mixQueries */
     public void testMixQueries() throws Exception {
         Query firstQuery;
         Query secondQuery;

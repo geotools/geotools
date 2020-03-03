@@ -110,7 +110,6 @@ public final class GTopo30Writer extends AbstractGridCoverageWriter implements G
      * @param dest The destination object can be a {@link File} (a directory actually), an {@link
      *     URL} to a directory, or a String representing a directory or an {@link URL} to a
      *     directory.
-     * @throws DataSourceException
      */
     public GTopo30Writer(final Object dest) throws DataSourceException {
         this(dest, null);
@@ -121,7 +120,6 @@ public final class GTopo30Writer extends AbstractGridCoverageWriter implements G
      *
      * @param dest The destination object can be a File (a directory actually), an URL to a
      *     directory, or a String representing a directory or an URL to a directory.
-     * @throws DataSourceException
      */
     public GTopo30Writer(final Object dest, final Hints hints) throws DataSourceException {
 

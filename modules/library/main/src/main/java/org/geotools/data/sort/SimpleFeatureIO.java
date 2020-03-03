@@ -62,12 +62,7 @@ public class SimpleFeatureIO {
         this.builder = new SimpleFeatureBuilder(schema);
     }
 
-    /**
-     * Writes the feature to the file
-     *
-     * @param sf
-     * @throws IOException
-     */
+    /** Writes the feature to the file */
     public void write(SimpleFeature sf) throws IOException {
         // write each attribute in the random access file
         List<AttributeDescriptor> attributes = schema.getAttributeDescriptors();
@@ -161,12 +156,7 @@ public class SimpleFeatureIO {
                 && ((Boolean) ad.getUserData().get(BIG_STRING));
     }
 
-    /**
-     * Reads the next feature form the file
-     *
-     * @return
-     * @throws IOException
-     */
+    /** Reads the next feature form the file */
     public SimpleFeature read() throws IOException {
         // read the fid, check for file end
         String fid = raf.readUTF();
@@ -180,13 +170,7 @@ public class SimpleFeatureIO {
         return builder.buildFeature(fid);
     }
 
-    /**
-     * Reads the attributes.
-     *
-     * @param ad
-     * @return
-     * @throws IOException
-     */
+    /** Reads the attributes. */
     Object readAttribute(AttributeDescriptor ad) throws IOException {
         // See the comments in {@link MergeSortDumper#writeAttribute(RandomAccessFile,
         // AttributeDescriptor, Object)} to get an insight on why the method is built like this
@@ -259,42 +243,22 @@ public class SimpleFeatureIO {
         }
     }
 
-    /**
-     * Moves the IO to the specified offset in the file
-     *
-     * @param offset
-     * @throws IOException
-     */
+    /** Moves the IO to the specified offset in the file */
     public void seek(long offset) throws IOException {
         raf.seek(offset);
     }
 
-    /**
-     * Returns the current reading position in the file
-     *
-     * @return
-     * @throws IOException
-     */
+    /** Returns the current reading position in the file */
     public long getOffset() throws IOException {
         return raf.getFilePointer();
     }
 
-    /**
-     * Returns true if the end of file has been reached
-     *
-     * @return
-     * @throws IOException
-     */
+    /** Returns true if the end of file has been reached */
     public boolean endOfFile() throws IOException {
         return getOffset() >= raf.length();
     }
 
-    /**
-     * Closes the IO, eventually deleting the file in the process
-     *
-     * @param deleteFile
-     * @throws IOException
-     */
+    /** Closes the IO, eventually deleting the file in the process */
     public void close(boolean deleteFile) throws IOException {
         try {
             raf.close();

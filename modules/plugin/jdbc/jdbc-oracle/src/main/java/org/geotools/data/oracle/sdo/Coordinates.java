@@ -175,12 +175,7 @@ public class Coordinates {
         return newSeq;
     }
 
-    /**
-     * Reverse provided coordinate sequence (used to correct CW vs CCW order).
-     *
-     * @param factory
-     * @param sequence
-     */
+    /** Reverse provided coordinate sequence (used to correct CW vs CCW order). */
     public static CoordinateSequence reverse(
             CoordinateSequenceFactory factory, CoordinateSequence sequence) {
         if (sequence instanceof CoordinateAccess) {

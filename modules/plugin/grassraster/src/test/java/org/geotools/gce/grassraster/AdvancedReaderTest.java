@@ -59,11 +59,7 @@ public class AdvancedReaderTest extends TestCase {
         grassFile = new File(testUrl.toURI());
     }
 
-    /**
-     * Read the whole Image (at file region and resolution)
-     *
-     * @throws IOException
-     */
+    /** Read the whole Image (at file region and resolution) */
     public void testReadFromFileRegion() throws Exception {
         double n = 5140020.0;
         double s = 5139780.0;
@@ -76,11 +72,7 @@ public class AdvancedReaderTest extends TestCase {
         checkMatrixEqual(gc.getRenderedImage(), TestMaps.matrix, 0);
     }
 
-    /**
-     * Read a region which is bigger, in all direction, than the file region.
-     *
-     * @throws IOException
-     */
+    /** Read a region which is bigger, in all direction, than the file region. */
     public void testReadFromWrappingRegion() throws IOException {
         JGrassRegion r = new JGrassRegion(1640590.0, 1641010.0, 5139720.0, 5140080.0, 30.0, 30.0);
 
@@ -89,11 +81,7 @@ public class AdvancedReaderTest extends TestCase {
         checkMatrixEqual(gc.getRenderedImage(), TestMaps.matrixMore, 0);
     }
 
-    /**
-     * Read a region which dimension is smaller and completely contained in thefile region.
-     *
-     * @throws IOException
-     */
+    /** Read a region which dimension is smaller and completely contained in thefile region. */
     public void testReadFromContainedRegion() throws IOException {
         JGrassRegion r = new JGrassRegion(1640710.0, 1640890.0, 5139840.0, 5139960.0, 30.0, 30.0);
 
@@ -115,8 +103,6 @@ public class AdvancedReaderTest extends TestCase {
      * <td>21</td><td>22</td>
      * </tr>
      * </table>
-     *
-     * @throws IOException
      */
     public void testReadFromRegion12() throws IOException {
         JGrassRegion r = new JGrassRegion(1640710.0, 1641010.0, 5139840.0, 5140080.0, 30.0, 30.0);
@@ -138,8 +124,6 @@ public class AdvancedReaderTest extends TestCase {
      * <td>21</td><td>22</td>
      * </tr>
      * </table>
-     *
-     * @throws IOException
      */
     public void testReadFromRegion21() throws IOException {
         JGrassRegion r = new JGrassRegion(1640590.0, 1640890.0, 5139720.0, 5139960.0, 30.0, 30.0);
@@ -161,8 +145,6 @@ public class AdvancedReaderTest extends TestCase {
      * <td>21</td><td>22</td>
      * </tr>
      * </table>
-     *
-     * @throws IOException
      */
     public void testReadFromRegion22() throws IOException {
         JGrassRegion r = new JGrassRegion(1640710.0, 1641010.0, 5139720.0, 5139960.0, 30.0, 30.0);
@@ -184,8 +166,6 @@ public class AdvancedReaderTest extends TestCase {
      * <td>21</td><td>22</td>
      * </tr>
      * </table>
-     *
-     * @throws IOException
      */
     public void testReadFromRegion11() throws IOException {
         JGrassRegion r = new JGrassRegion(1640590.0, 1640830.0, 5139840.0, 5140080.0, 30.0, 30.0);
@@ -194,11 +174,7 @@ public class AdvancedReaderTest extends TestCase {
         checkMatrixEqual(gc.getRenderedImage(), TestMaps.differentRegion4, 0);
     }
 
-    /**
-     * Read the whole Image with a different resolution than the original map.
-     *
-     * @throws IOException
-     */
+    /** Read the whole Image with a different resolution than the original map. */
     public void testDifferentResolution() throws IOException {
         JGrassRegion r = new JGrassRegion(1640650.0, 1640950.0, 5139780.0, 5140020.0, 60.0, 60.0);
         GridCoverage2D gc = read(pitFile, r, crs);

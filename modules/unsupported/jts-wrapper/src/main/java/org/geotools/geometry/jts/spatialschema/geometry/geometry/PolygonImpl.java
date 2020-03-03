@@ -58,7 +58,6 @@ public class PolygonImpl extends SurfacePatchImpl implements Polygon {
     }
 
     /**
-     * @return
      * @see com.polexis.lite.spatialschema.geometry.primitive.SurfacePatchImpl#calculateJTSPeer()
      */
     public org.locationtech.jts.geom.Geometry calculateJTSPeer() {
@@ -85,10 +84,7 @@ public class PolygonImpl extends SurfacePatchImpl implements Polygon {
         return (PolyhedralSurface) super.getSurface();
     }
 
-    /**
-     * @return
-     * @see org.opengis.geometry.coordinate.Polygon#getSpanningSurface()
-     */
+    /** @see org.opengis.geometry.coordinate.Polygon#getSpanningSurface() */
     public List getSpanningSurface() {
         // Why the hell is this a list???
         return spanningSurface;

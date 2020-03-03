@@ -87,13 +87,7 @@ public class JMapPaneGraphicsTest extends JMapPaneGraphicsTestBase {
         mapPane = null;
     }
 
-    /**
-     * Test for GEOT-6342, background color is not used in 1st rendering of map
-     *
-     * @throws InvocationTargetException
-     * @throws InterruptedException
-     * @throws IOException
-     */
+    /** Test for GEOT-6342, background color is not used in 1st rendering of map */
     @Test
     public void drawLayersSetsBackgroundonStartup()
             throws InvocationTargetException, InterruptedException, IOException {

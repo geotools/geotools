@@ -64,13 +64,7 @@ public class OverlayOp extends GeometryGraphOperation {
 
     public static final int SYMDIFFERENCE = 4;
 
-    /**
-     * @param geom0
-     * @param geom1
-     * @param opCode
-     * @return
-     * @throws UnsupportedDimensionException
-     */
+    /** */
     public static GeometryImpl overlayOp(GeometryImpl geom0, GeometryImpl geom1, int opCode)
             throws UnsupportedDimensionException {
         OverlayOp gov = new OverlayOp(geom0, geom1);
@@ -78,25 +72,14 @@ public class OverlayOp extends GeometryGraphOperation {
         return geomOv;
     }
 
-    /**
-     * @param label
-     * @param opCode
-     * @return
-     */
+    /** */
     public static boolean isResultOfOp(Label label, int opCode) {
         int loc0 = label.getLocation(0);
         int loc1 = label.getLocation(1);
         return isResultOfOp(loc0, loc1, opCode);
     }
 
-    /**
-     * This method will handle arguments of Location.NONE correctly
-     *
-     * @param loc0
-     * @param loc1
-     * @param opCode
-     * @return
-     */
+    /** This method will handle arguments of Location.NONE correctly */
     public static boolean isResultOfOp(int loc0, int loc1, int opCode) {
         if (loc0 == Location.BOUNDARY) loc0 = Location.INTERIOR;
         if (loc1 == Location.BOUNDARY) loc1 = Location.INTERIOR;
@@ -136,7 +119,6 @@ public class OverlayOp extends GeometryGraphOperation {
      *
      * @param g0 First geometric object
      * @param g1 Second geometric object
-     * @throws UnsupportedDimensionException
      */
     public OverlayOp(GeometryImpl g0, GeometryImpl g1) throws UnsupportedDimensionException {
         super(g0, g1);

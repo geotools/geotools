@@ -90,8 +90,6 @@ public final class SDO {
      * </ul>
      *
      * <p>Definition provided by Oracle Spatial User�s Guide and Reference.
-     *
-     * @param geom
      */
     public static int gType(Geometry geom) {
         int d = D(geom) * 1000;
@@ -109,7 +107,6 @@ public final class SDO {
      *
      * <p>Subclasses may override as required.
      *
-     * @param geom
      * @return <code>3</code>
      */
     public static int D(Geometry geom) {
@@ -134,7 +131,6 @@ public final class SDO {
      *
      * <p>Subclasses may override as required.
      *
-     * @param geom
      * @return <code>0</code>
      */
     public static int L(Geometry geom) {
@@ -166,7 +162,6 @@ public final class SDO {
      * 07    MULTIPOLYGON     MultiPolygon
      * </code></pre>
      *
-     * @param geom
      * @return <code>TT</code> representing <code>geom</code>
      * @throws IllegalArgumentException If SDO_GTYPE can not be represetned by JTS
      */
@@ -222,8 +217,6 @@ public final class SDO {
      *
      * <p>Subclasses may wish to repress this method and force Points to be represented using
      * SDO_ORDINATES.
-     *
-     * @param geom
      */
     public static double[] point(Geometry geom) {
         if (geom instanceof Point && (L(geom) == 0)) {
@@ -469,7 +462,6 @@ public final class SDO {
      *
      * <p>Describes ordinates as part of <code>SDO_ELEM_INFO</code> data type.
      *
-     * @param geom
      * @return <code>1</code> for non nested <code>geom</code>
      */
     public static int elemInfoStartingOffset(Geometry geom) {
@@ -512,7 +504,6 @@ public final class SDO {
      *
      * @param geom Geometry being represented
      * @return Descriptionof Ordinates representation
-     * @throws IllegalArgumentException
      */
     protected static int elemInfoEType(Geometry geom) {
         switch (TT(geom)) {
@@ -573,8 +564,6 @@ public final class SDO {
      * A start point, any point on the arc and the end point. The last point of an arc is the start
      * point of the next. When used to describe a polygon (SDO_ETYPE==1003 or 2003) the first and
      * last point must be the same.
-     *
-     * @param geom
      */
     public static int elemInfoInterpretation(Geometry geom) {
         return elemInfoInterpretation(geom, elemInfoEType(geom));
@@ -680,8 +669,6 @@ public final class SDO {
      * </ul>
      *
      * <p>While Oracle is silient on these errors - all other errors will not be detected!
-     *
-     * @param geom
      */
     public static double[] ordinates(Geometry geom) {
         List list = new ArrayList();
@@ -745,8 +732,6 @@ public final class SDO {
      * getLineStringCS purpose.
      *
      * <p>Description ...
-     *
-     * @param string
      */
     private static CoordinateSequence getLineStringCS(LineString ls) {
         if (ls.getCoordinateSequence() instanceof CoordinateAccess) {
@@ -818,9 +803,6 @@ public final class SDO {
      * Adds a double array to list.
      *
      * <p>The double array will contain all the ordinates in the Coordinate sequence.
-     *
-     * @param list
-     * @param sequence
      */
     private static void addCoordinates(List list, CoordinateSequence sequence) {
         double[] ords;
@@ -1010,9 +992,6 @@ public final class SDO {
      *   <li>2: g ordinate array
      *   <li>3: m ordinate array
      * </ul>
-     *
-     * @param coords
-     * @param ordinate
      */
     public static double[] ordinateArray(CoordinateSequence coords, int ordinate) {
         if (coords instanceof CoordinateAccess) {
@@ -1063,9 +1042,6 @@ public final class SDO {
      *   <li>2: z ordinate array
      *   <li>3: empty ordinate array
      * </ul>
-     *
-     * @param array
-     * @param ordinate
      */
     public static double[] ordinateArray(Coordinate[] array, int ordinate) {
         if (array == null) {
@@ -1144,9 +1120,6 @@ public final class SDO {
      *   <li>geometryGTypeD - chooses between 2d and 3d representation
      *   <li>geometryGTypeL - number of LRS measures
      * </ul>
-     *
-     * @param list
-     * @param geom
      */
     public static double[] ordinates(List list, Geometry geom) {
         LOGGER.finest("ordinates D:" + D(geom));
@@ -1328,7 +1301,6 @@ public final class SDO {
     /**
      * We need to check if a <code>polygon</code> a cicle so we can produce the correct encoding.
      *
-     * @param polygon
      * @return <code>true</code> if polygon is a circle
      */
     private static boolean isCircle(Polygon polygon) {
@@ -1341,7 +1313,6 @@ public final class SDO {
      *
      * <p>Rectangles are only supported without a SRID!
      *
-     * @param polygon
      * @return <code>true</code> if polygon is SRID==0 and a rectangle
      */
     private static boolean isRectangle(Polygon polygon) {
@@ -1406,7 +1377,6 @@ public final class SDO {
      *
      * <p>
      *
-     * @param polygon
      * @return <code>false</code> as JTS does not support curves
      */
     private static boolean isCurve(Polygon polygon) {
@@ -1419,7 +1389,6 @@ public final class SDO {
      *
      * <p>
      *
-     * @param lineString
      * @return <code>false</code> as JTS does not support curves
      */
     private static boolean isCurve(LineString lineString) {
@@ -1435,8 +1404,6 @@ public final class SDO {
      * @param factory Factory used for JTS
      * @param coords Coordinates
      * @param GTYPE Encoding of <b>D</b>imension, <b>L</b>RS and <b>TT</b>ype
-     * @param elemInfo
-     * @param triplet
      */
     private static CoordinateSequence subList(
             CoordinateSequenceFactory factory,
@@ -1532,9 +1499,6 @@ public final class SDO {
      * <pre><code>
      * new MultiPoint( toArray( list, Coordinate.class ) );
      * </code></pre>
-     *
-     * @param list
-     * @param type
      */
     private static Object toArray(List list, Class type) {
         if (list == null) {
@@ -1657,9 +1621,6 @@ public final class SDO {
      *         "inconsistent with COORDINATES length "+size( coords, GTYPE ) );
      * }
      * </code></pre>
-     *
-     * @param coords
-     * @param GTYPE
      */
     private static int ordinateSize(CoordinateSequence coords, int GTYPE) {
         if (coords == null) {
@@ -1673,8 +1634,6 @@ public final class SDO {
      * <p>
      *
      * @see ETYPE for an indication of possible values
-     * @param elemInfo
-     * @param triplet
      * @return ETYPE for indicated triplet
      */
     private static int ETYPE(int[] elemInfo, int triplet) {
@@ -1731,7 +1690,6 @@ public final class SDO {
      *
      * @param f CoordinateSequenceFactory used to encode ordiantes for JTS
      * @param GTYPE Encoding of <b>D</b>imension, <b>L</b>RS and <b>TT</b>ype
-     * @param ordinates
      */
     public static CoordinateSequence coordinates(
             CoordinateSequenceFactory f, final int GTYPE, double[] ordinates) {
@@ -1905,9 +1863,6 @@ public final class SDO {
      * @param gf Used to construct returned Geometry
      * @param GTYPE SDO_GTYPE represents dimension, LRS, and geometry type
      * @param SRID SDO_SRID represents Spatial Reference System
-     * @param point
-     * @param elemInfo
-     * @param ordinates
      * @return Geometry as encoded
      */
     public static Geometry create(
@@ -1965,11 +1920,7 @@ public final class SDO {
      * <p>Helpful when dealing construction Geometries with your own Coordinate Types. The
      * dimensionality specified in GTYPE will be used to interpret the offsets in elemInfo.
      *
-     * @param gf
      * @param GTYPE Encoding of <b>D</b>imension, <b>L</b>RS and <b>TT</b>ype
-     * @param SRID
-     * @param elemInfo
-     * @param coords
      * @param N Number of triplets (-1 for unknown/don't care)
      * @return Geometry as encoded, or null w/ log if it cannot be represented via JTS
      */
@@ -2024,9 +1975,6 @@ public final class SDO {
      * Casts the provided geometry factory to a curved one if possible, or wraps it into one with
      * infinite tolerance (the linearization will happen using the default base segments number set
      * in {@link CircularArc}
-     *
-     * @param gf
-     * @return
      */
     private static CurvedGeometryFactory getCurvedGeometryFactory(GeometryFactory gf) {
         CurvedGeometryFactory curvedFactory;
@@ -2041,12 +1989,7 @@ public final class SDO {
     /**
      * Create Point as encoded.
      *
-     * @param gf
      * @param GTYPE Encoding of <b>D</b>imension, <b>L</b>RS and <b>TT</b>ype
-     * @param SRID
-     * @param elemInfo
-     * @param element
-     * @param coords
      * @return Point
      */
     private static Point createPoint(
@@ -2093,12 +2036,7 @@ public final class SDO {
     /**
      * Create LineString as encoded.
      *
-     * @param gf
      * @param GTYPE Encoding of <b>D</b>imension, <b>L</b>RS and <b>TT</b>ype
-     * @param SRID
-     * @param elemInfo
-     * @param triplet
-     * @param coords
      * @param compoundElement TODO
      * @throws IllegalArgumentException If asked to create a curve
      */
@@ -2297,12 +2235,7 @@ public final class SDO {
      * <p>The dimensionality of GTYPE will be used to transalte the <code>STARTING_OFFSET</code>
      * provided by elemInfo into an index into <code>coords</code>.
      *
-     * @param gf
      * @param GTYPE Encoding of <b>D</b>imension, <b>L</b>RS and <b>TT</b>ype
-     * @param SRID
-     * @param elemInfo
-     * @param triplet
-     * @param coords
      * @return LinearRing
      * @throws IllegalArgumentException If circle, or curve is requested
      */

@@ -152,9 +152,6 @@ class PurgingGranuleStore extends GranuleStoreDecorator {
     /**
      * Counts granule usages in all coverages managed by the reader, as the same file can act as a
      * source for multiple coverages
-     *
-     * @param locations
-     * @return
      */
     private Map<String, Integer> countGranulesMatchingLocations(Set<String> locations)
             throws IOException {

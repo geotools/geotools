@@ -231,11 +231,7 @@ class WindBarb {
         shortBarbs = (knots - (pennants * 50) - (longBarbs * 10)) / 5;
     }
 
-    /**
-     * Build a {@Shape} WindBarb
-     *
-     * @return
-     */
+    /** Build a {@Shape} WindBarb */
     Shape build() {
         if (knots < 0) {
             return buildAbsentModule();
@@ -293,11 +289,7 @@ class WindBarb {
         return createTransformedShape;
     }
 
-    /**
-     * Build a {@Shape} WindBarb
-     *
-     * @return
-     */
+    /** Build a {@Shape} WindBarb */
     Shape buildAbsentModule() {
 
         // Base barb
@@ -329,13 +321,7 @@ class WindBarb {
         return createTransformedShape;
     }
 
-    /**
-     * Add short barbs to the shape
-     *
-     * @param path
-     * @param positionOnPath
-     * @return
-     */
+    /** Add short barbs to the shape */
     private int drawShortBarb(Path2D path, int positionOnPath) {
         if (pennants == 0 && longBarbs == 0) {
             positionOnPath = -windBarbDefinition.vectorLength + DEFAULT_ELEMENTS_SPACING;
@@ -348,13 +334,7 @@ class WindBarb {
         return positionOnPath;
     }
 
-    /**
-     * Add long barbs to the shape
-     *
-     * @param path
-     * @param positionOnPath
-     * @return
-     */
+    /** Add long barbs to the shape */
     private int drawLongBarbs(Path2D path, int positionOnPath) {
         if (longBarbs <= 0) {
             return positionOnPath;
@@ -374,13 +354,7 @@ class WindBarb {
         return positionOnPath;
     }
 
-    /**
-     * add Pennants to the shape
-     *
-     * @param path
-     * @param positionOnPath
-     * @return
-     */
+    /** add Pennants to the shape */
     private int drawPennants(Path2D path, int positionOnPath) {
         if (pennants <= 0) {
             return positionOnPath;

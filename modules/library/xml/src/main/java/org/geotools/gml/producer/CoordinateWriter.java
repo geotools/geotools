@@ -261,10 +261,6 @@ public class CoordinateWriter {
      *   <li>namespaceAware: is true the prefix and namespaceUri will be used
      *   <li>
      * </ul>
-     *
-     * @param c
-     * @param output
-     * @throws SAXException
      */
     public void writeCoordinates(CoordinateSequence c, ContentHandler output) throws SAXException {
 

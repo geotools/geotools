@@ -157,8 +157,6 @@ public class ReferencingExamples {
      * An example of creating a CRS from a WKT string.
      *
      * <p>Additional examples of WKT strings can be found in the test data.
-     *
-     * @throws Exception
      */
     void creatCRSFromWKT() throws Exception {
         System.out.println("------------------------------------------");
@@ -251,8 +249,6 @@ public class ReferencingExamples {
     /**
      * Creates a WGS 84/UTM Zone 10N CRS mostly (uses some premade objects) by hand. Uses the higher
      * level FactoryGroup instead of the lower level MathTransformFactory (commented out).
-     *
-     * @throws Exception
      */
     void createCRSByHand1() throws Exception {
         System.out.println("------------------------------------------");
@@ -364,8 +360,6 @@ public class ReferencingExamples {
      * (x,y,z) axises.
      *
      * <p>TODO the Airy CRS described below is actually wgs84, FIX this.
-     *
-     * @throws FactoryException
      */
     void createCRSByHand3() throws FactoryException {
         System.out.println("------------------------------------------");

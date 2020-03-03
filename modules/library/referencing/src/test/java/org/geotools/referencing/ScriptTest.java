@@ -192,101 +192,61 @@ public final class ScriptTest {
         runScript("scripts/Krovak.txt");
     }
 
-    /**
-     * Run "EquidistantConic.txt"
-     *
-     * @throws Exception
-     */
+    /** Run "EquidistantConic.txt" */
     @Test
     public void testEquidistantConic() throws Exception {
         runScript("scripts/EquidistantConic.txt");
     }
 
-    /**
-     * Run "Polyconic.txt"
-     *
-     * @throws Exception
-     */
+    /** Run "Polyconic.txt" */
     @Test
     public void testPolyconic() throws Exception {
         runScript("scripts/Polyconic.txt");
     }
 
-    /**
-     * Run "Robinson.txt"
-     *
-     * @throws Exception
-     */
+    /** Run "Robinson.txt" */
     @Test
     public void testRobinson() throws Exception {
         runScript("scripts/Robinson.txt");
     }
 
-    /**
-     * Run "WinkelTripel.txt"
-     *
-     * @throws Exception
-     */
+    /** Run "WinkelTripel.txt" */
     @Test
     public void testWinkelTripel() throws Exception {
         runScript("scripts/WinkelTripel.txt");
     }
 
-    /**
-     * Run "HammerAitoff.txt"
-     *
-     * @throws Exception
-     */
+    /** Run "HammerAitoff.txt" */
     @Test
     public void testAitoff() throws Exception {
         runScript("scripts/Aitoff.txt");
     }
 
-    /**
-     * Run "EckertIV.txt"
-     *
-     * @throws Exception
-     */
+    /** Run "EckertIV.txt" */
     @Test
     public void testEckertIV() throws Exception {
         runScript("scripts/EckertIV.txt");
     }
 
-    /**
-     * Run "Mollweide.txt"
-     *
-     * @throws Exception
-     */
+    /** Run "Mollweide.txt" */
     @Test
     public void testMollweide() throws Exception {
         runScript("scripts/Mollweide.txt");
     }
 
-    /**
-     * Run "WagnerIV.txt"
-     *
-     * @throws Exception
-     */
+    /** Run "WagnerIV.txt" */
     @Test
     public void testWagnerIV() throws Exception {
         runScript("scripts/WagnerIV.txt");
     }
 
-    /**
-     * Run "GeneralOblique.txt"
-     *
-     * @throws Exception
-     */
+    /** Run "GeneralOblique.txt" */
     @Test
     public void testGeneralOblique() throws Exception {
         runScript("scripts/GeneralOblique.txt");
     }
 
-    /**
-     * Run "MeteosatSG.txt"
-     *
-     * @throws Exception
-     */
+    /** Run "MeteosatSG.txt" */
     @Test
     public void testMeteosatSG() throws Exception {
         runScript("scripts/MeteosatSG.txt");
@@ -308,21 +268,13 @@ public final class ScriptTest {
         runScript("scripts/WorldVanDerGrintenI.txt");
     }
 
-    /**
-     * Run "Sinusoidal.txt"
-     *
-     * @throws Exception
-     */
+    /** Run "Sinusoidal.txt" */
     @Test
     public void testSinusoidal() throws Exception {
         runScript("scripts/Sinusoidal.txt");
     }
 
-    /**
-     * Run "Gnomonic.txt"
-     *
-     * @throws Exception
-     */
+    /** Run "Gnomonic.txt" */
     @Test
     public void testGnomonic() throws Exception {
         runScript("scripts/Gnomonic.txt");
@@ -344,8 +296,6 @@ public final class ScriptTest {
      * as well by adding the org.geotools.referencing.operation.projection.Mollweide$WagnerVProvider
      * line into
      * referencing/src/main/resources/META-INF/services/org.geotools.referencing.operation.MathTransformProvider
-     *
-     * @throws Exception
      */
     @Test
     @Ignore
@@ -375,11 +325,7 @@ public final class ScriptTest {
         runScript("scripts/NADCON.txt");
     }
 
-    /**
-     * Run "Cassini.txt"
-     *
-     * @throws Exception
-     */
+    /** Run "Cassini.txt" */
     @Test
     public void testCassini() throws Exception {
         try {

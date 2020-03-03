@@ -146,11 +146,6 @@ public class ContourProcessTest {
 
     /**
      * Tests that the process doesn't blow up when the contour process provides invalid lineStrings
-     *
-     * @throws IOException
-     * @throws FileNotFoundException
-     * @throws FactoryException
-     * @throws NoSuchAuthorityCodeException
      */
     @Test
     public void invalidLinestrings()

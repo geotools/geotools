@@ -146,11 +146,7 @@ public class FontImpl implements Font, Cloneable {
         return false;
     }
 
-    /**
-     * Utility method to capture the default font in one place.
-     *
-     * @return
-     */
+    /** Utility method to capture the default font in one place. */
     static Font createDefault(FilterFactory filterFactory) {
         Font font = new FontImpl();
         try {

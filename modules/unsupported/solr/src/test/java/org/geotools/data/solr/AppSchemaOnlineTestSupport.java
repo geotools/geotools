@@ -82,11 +82,7 @@ public abstract class AppSchemaOnlineTestSupport extends OnlineTestCase {
                 URLs.urlToFile(this.getClass().getResource(testData + baseFileName)), destDir);
     }
 
-    /**
-     * Clone entire folder to temp for possible modifications
-     *
-     * @throws IOException
-     */
+    /** Clone entire folder to temp for possible modifications */
     private void createTestFolder() throws IOException {
         tempfolder.create();
         tempDir = tempfolder.newFolder(this.getClass().getSimpleName());

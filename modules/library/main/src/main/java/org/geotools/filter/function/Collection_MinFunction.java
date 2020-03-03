@@ -65,8 +65,6 @@ public class Collection_MinFunction extends FunctionExpressionImpl {
      * @param collection collection to calculate the minimum
      * @param expression Single Expression argument
      * @return An object containing the minimum value of the attributes
-     * @throws IllegalFilterException
-     * @throws IOException
      */
     static CalcResult calculateMin(SimpleFeatureCollection collection, Expression expression)
             throws IllegalFilterException, IOException {

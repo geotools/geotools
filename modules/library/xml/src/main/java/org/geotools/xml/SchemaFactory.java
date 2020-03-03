@@ -199,10 +199,8 @@ public class SchemaFactory {
      * Returns an instance of the desired class. There is no provision for: a) same instances each
      * call b) different instances each call c) this factory being thread safe
      *
-     * @param targetNamespace
      * @param desiredSchema URI the uri of which you want a schema instance.
      * @return Schema an instance of the desired schema.
-     * @throws SAXException
      */
     public static Schema getInstance(URI targetNamespace, URI desiredSchema) throws SAXException {
         return getInstance(targetNamespace, desiredSchema, Level.WARNING);
@@ -225,7 +223,6 @@ public class SchemaFactory {
      * targetNamespaces which can be found are either hard-coded namespaces
      * (SchemaFactory.properties), have already been parsed or were registered.
      *
-     * @param targetNamespace
      * @see #registerSchema(Strin,Schema)
      */
     public static synchronized Schema getInstance(URI targetNamespace) {
@@ -335,10 +332,7 @@ public class SchemaFactory {
         return (Schema) schemas.get(targetNamespace);
     }
 
-    /**
-     * @param desiredSchema
-     * @return
-     */
+    /** */
     private String resolveSchema(URI schema) {
         return resolver.resolve(schema.toString());
     }
@@ -408,9 +402,6 @@ public class SchemaFactory {
      * to ensure the intended targetNamespace (schema.getTargetNamespace()) is equal to
      * targetNamespace. The ramifications is that you may hack wildly within the repository, but we
      * aware you may have some 'undocumented features' as a result (odd Schemas being returned).
-     *
-     * @param targetNamespace
-     * @param schema
      */
     public static void registerSchema(URI targetNamespace, Schema schema) {
         getInstance().registerRealSchema(targetNamespace, schema);

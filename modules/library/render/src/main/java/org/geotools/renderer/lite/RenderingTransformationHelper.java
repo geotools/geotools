@@ -286,15 +286,7 @@ public abstract class RenderingTransformationHelper {
         return result;
     }
 
-    /**
-     * Subclasses will override and provide means to read the coverage
-     *
-     * @param reader
-     * @param params
-     * @param readGG
-     * @return
-     * @throws IOException
-     */
+    /** Subclasses will override and provide means to read the coverage */
     protected abstract GridCoverage2D readCoverage(
             GridCoverage2DReader reader, Object params, GridGeometry2D readGG) throws IOException;
 }

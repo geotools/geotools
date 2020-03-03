@@ -99,7 +99,6 @@ public class GrassBinaryRasterWriteHandler implements Closeable {
      *
      * @param destMapset the mapset file into which the map has to be written.
      * @param newMapName the name for the written map.
-     * @param monitor
      */
     public GrassBinaryRasterWriteHandler(
             File destMapset, String newMapName, ProgressListener monitor) {
@@ -119,7 +118,6 @@ public class GrassBinaryRasterWriteHandler implements Closeable {
      * @param xRes the east-west resolution of the raster to write.
      * @param yRes the north-south resolution of the raster to write.
      * @param noDataValue the value representing noData.
-     * @throws IOException
      */
     public void writeRaster(
             RenderedImage renderedImage,
@@ -175,7 +173,6 @@ public class GrassBinaryRasterWriteHandler implements Closeable {
      * Calculates the region that is going to be written.
      *
      * @return the region that will be written by this Writer.
-     * @throws IOException
      */
     public JGrassRegion getWriteRegion() throws IOException {
         if (writeRegion == null) {
@@ -360,7 +357,6 @@ public class GrassBinaryRasterWriteHandler implements Closeable {
      * @param chewres the east-west resolution.
      * @param chformat the map type.
      * @param chcompressed the compression type.
-     * @throws IOException
      */
     @SuppressWarnings("nls")
     private void createCellhd(

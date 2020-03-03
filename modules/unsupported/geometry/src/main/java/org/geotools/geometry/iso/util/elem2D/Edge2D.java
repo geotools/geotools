@@ -99,10 +99,7 @@ public class Edge2D extends Line2D {
         surfaceLeft = s;
     }
 
-    /**
-     * @param f
-     * @return
-     */
+    /** */
     public Simplex2D getNeighborSimplex(Simplex2D f) {
         return (surfaceRight == f) ? surfaceLeft : surfaceRight;
     }
@@ -198,9 +195,6 @@ public class Edge2D extends Line2D {
     /**
      * returns the neighbour edge from this connected to node n. Returns null if the node n does not
      * belong to this edge or if the node n is not connected with exactly two edges
-     *
-     * @param n
-     * @return
      */
     public Edge2D getNeighbourEdge(Node2D n) {
         if (this.p1 != n && this.p2 != n) return null;

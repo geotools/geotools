@@ -67,11 +67,7 @@ public class ArrayFeatureReaderTest extends TestCase {
         assertEquals(type, featureCollectionReader.getFeatureType());
     }
 
-    /**
-     * Test method for 'org.geotools.data.ArrayFeatureReader.next()'
-     *
-     * @throws Exception
-     */
+    /** Test method for 'org.geotools.data.ArrayFeatureReader.next()' */
     public void testNext() throws Exception {
         assertEquals(features[0], arrayReader.next());
         assertEquals(features[1], arrayReader.next());

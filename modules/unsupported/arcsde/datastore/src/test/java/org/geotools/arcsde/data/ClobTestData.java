@@ -27,7 +27,6 @@ import org.geotools.arcsde.session.SessionPoolFactory;
 import org.geotools.arcsde.session.UnavailableConnectionException;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
 
 public class ClobTestData {
@@ -167,7 +166,6 @@ public class ClobTestData {
      * *Stolen as is from TestData*
      *
      * @return Returns the temp_table.
-     * @throws SeException
      */
     public String getTempTableName(ISession session) throws IOException {
         String dbName = session.getDatabaseName();
@@ -308,8 +306,6 @@ public class ClobTestData {
      * Truncates the temp layer and populates it with fresh data. This method cannot be called if
      * {@link #createTempTable(boolean)} has not been called first, no matter if the table already
      * exists, it needs instance state initialized by createTempTable *Stolen as is from TestData*
-     *
-     * @throws Exception
      */
     public void insertTestData() throws Exception {
         truncateTempTable();
@@ -437,11 +433,7 @@ public class ClobTestData {
         return colDefs;
     }
 
-    /**
-     * Inserts two data rows, creating weak geometries and short clobs.
-     *
-     * @throws ParseException
-     */
+    /** Inserts two data rows, creating weak geometries and short clobs. */
     private void insertData(
             final SeLayer layer, final ISession session, final SeColumnDefinition[] colDefs)
             throws Exception {

@@ -241,12 +241,7 @@ public class FeatureTypeTransformer extends TransformerBase {
             }
         }
 
-        /**
-         * Start the schema fragment for a feature type.
-         *
-         * @param name
-         * @throws SAXException
-         */
+        /** Start the schema fragment for a feature type. */
         protected final void startSchemaType(String name, String namespace) throws SAXException {
             AttributesImpl atts = new AttributesImpl();
 
@@ -266,11 +261,7 @@ public class FeatureTypeTransformer extends TransformerBase {
             contentHandler.startElement(SCHEMA_NS, "sequence", "xs:sequence", new AttributesImpl());
         }
 
-        /**
-         * End the schema fragment for a feature type.
-         *
-         * @throws SAXException
-         */
+        /** End the schema fragment for a feature type. */
         protected void endSchemaType() throws SAXException {
             contentHandler.endElement(SCHEMA_NS, "sequence", "xs:sequence");
 
@@ -281,12 +272,7 @@ public class FeatureTypeTransformer extends TransformerBase {
             contentHandler.endElement(SCHEMA_NS, "complexType", "xs:complexType");
         }
 
-        /**
-         * Encode an AttributeType.
-         *
-         * @param attribute
-         * @throws SAXException
-         */
+        /** Encode an AttributeType. */
         protected void encode(AttributeDescriptor attribute) throws SAXException {
             Class type = attribute.getType().getBinding();
 
@@ -309,12 +295,7 @@ public class FeatureTypeTransformer extends TransformerBase {
             }
         }
 
-        /**
-         * Encode an AttributeType whose value type is a Boolean.
-         *
-         * @param attribute
-         * @throws SAXException
-         */
+        /** Encode an AttributeType whose value type is a Boolean. */
         protected void encodeBoolean(AttributeDescriptor attribute) throws SAXException {
             AttributesImpl atts = createStandardAttributes(attribute);
 
@@ -329,7 +310,6 @@ public class FeatureTypeTransformer extends TransformerBase {
          * Encode an AttributeType whose value type is a String.
          *
          * @param attribute the attribute to encode
-         * @throws SAXException
          */
         protected void encodeString(AttributeDescriptor attribute) throws SAXException {
             int length = Integer.MAX_VALUE;
@@ -397,12 +377,7 @@ public class FeatureTypeTransformer extends TransformerBase {
             }
         }
 
-        /**
-         * Encode an AttributeType whose value type is a Number.
-         *
-         * @param attribute
-         * @throws SAXException
-         */
+        /** Encode an AttributeType whose value type is a Number. */
         protected void encodeNumber(AttributeDescriptor attribute) throws SAXException {
             AttributesImpl atts = createStandardAttributes(attribute);
 
@@ -439,12 +414,7 @@ public class FeatureTypeTransformer extends TransformerBase {
             contentHandler.endElement(SCHEMA_NS, "element", "xs:element");
         }
 
-        /**
-         * Encode an AttributeType whose value type is a Date.
-         *
-         * @param attribute
-         * @throws SAXException
-         */
+        /** Encode an AttributeType whose value type is a Date. */
         protected void encodeDate(AttributeDescriptor attribute) throws SAXException {
             AttributesImpl atts = createStandardAttributes(attribute);
 
@@ -460,12 +430,7 @@ public class FeatureTypeTransformer extends TransformerBase {
             contentHandler.endElement(SCHEMA_NS, "element", "xs:element");
         }
 
-        /**
-         * Encode an AttributeType whose value type is a Geometry.
-         *
-         * @param attribute
-         * @throws SAXException
-         */
+        /** Encode an AttributeType whose value type is a Geometry. */
         protected void encodeGeometry(AttributeDescriptor attribute) throws SAXException {
             AttributesImpl atts = createStandardAttributes(attribute);
 
@@ -502,11 +467,7 @@ public class FeatureTypeTransformer extends TransformerBase {
             contentHandler.endElement(SCHEMA_NS, "element", "xs:element");
         }
 
-        /**
-         * Encode an AttributeType whose value type is a Feature.
-         *
-         * @param attribute
-         */
+        /** Encode an AttributeType whose value type is a Feature. */
 
         /*protected void encodeFeature(AttributeType attribute) throws SAXException {
 

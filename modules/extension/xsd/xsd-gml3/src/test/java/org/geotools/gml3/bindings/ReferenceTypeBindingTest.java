@@ -30,11 +30,7 @@ import org.opengis.feature.type.AttributeType;
  */
 public class ReferenceTypeBindingTest extends GML3TestSupport {
 
-    /**
-     * Make sure no xlink:href is created if id is not set.
-     *
-     * @throws Exception
-     */
+    /** Make sure no xlink:href is created if id is not set. */
     public void testXlinkHrefNull() throws Exception {
         AttributeType attType =
                 new AttributeTypeImpl(
@@ -51,11 +47,7 @@ public class ReferenceTypeBindingTest extends GML3TestSupport {
         assertNull(xlink);
     }
 
-    /**
-     * Test xlink:href returns gml:id.
-     *
-     * @throws Exception
-     */
+    /** Test xlink:href returns gml:id. */
     public void testXlinkHref() throws Exception {
         AttributeType attType =
                 new AttributeTypeImpl(

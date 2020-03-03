@@ -56,8 +56,6 @@ public class WrappingProjectionHandler extends ProjectionHandler {
     /**
      * Provides the strategy with the area we want to render and its CRS (the SPI lookup will do
      * this step)
-     *
-     * @throws FactoryException
      */
     public WrappingProjectionHandler(
             ReferencedEnvelope renderingEnvelope,
@@ -86,8 +84,6 @@ public class WrappingProjectionHandler extends ProjectionHandler {
     /**
      * Set one of the supported projection parameters: - datelineWrappingCheckEnabled (boolean) if
      * false disables the heuristic for dateline wrapping check (true by default)
-     *
-     * @param projectionParameters
      */
     @Override
     public void setProjectionParameters(Map projectionParameters) {
@@ -243,9 +239,6 @@ public class WrappingProjectionHandler extends ProjectionHandler {
      * Adds the geometries into the collection by recursively splitting apart geometry collections,
      * so that geoms will contains only simple geometries.
      *
-     * @param geoms
-     * @param geometry
-     * @param geomType
      * @return the geometry type that all geometries added to the collection conform to. Worst case
      *     it's going to be Geometry.class
      */
@@ -284,8 +277,6 @@ public class WrappingProjectionHandler extends ProjectionHandler {
     /**
      * Enables the check using the "half world" heuristic on the input geometries, if larger it
      * assumes they spanned the dateline. Enabled by default
-     *
-     * @param datelineWrappingCheckEnabled
      */
     public void setDatelineWrappingCheckEnabled(boolean datelineWrappingCheckEnabled) {
         this.datelineWrappingCheckEnabled = datelineWrappingCheckEnabled;

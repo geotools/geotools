@@ -31,11 +31,7 @@ import org.opengis.filter.Filter;
 public class FilteringFeatureReaderTest extends DataTestCase {
     FeatureReader<SimpleFeatureType, SimpleFeature> roadReader;
     FeatureReader<SimpleFeatureType, SimpleFeature> riverReader;
-    /**
-     * Constructor for FilteringFeatureReaderTest.
-     *
-     * @param arg0
-     */
+    /** Constructor for FilteringFeatureReaderTest. */
     public FilteringFeatureReaderTest(String arg0) {
         super(arg0);
     }

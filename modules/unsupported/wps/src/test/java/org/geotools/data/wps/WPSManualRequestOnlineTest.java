@@ -209,13 +209,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         }
     }
 
-    /**
-     * run multiple buffer tests with various geometry types
-     *
-     * @throws ParseException
-     * @throws IOException
-     * @throws ServiceException
-     */
+    /** run multiple buffer tests with various geometry types */
     public void testExecuteProcessBufferLocal()
             throws ParseException, ServiceException, IOException {
 
@@ -430,13 +424,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         exeRequest.addInput(idt.getIdentifier().getValue(), list);
     }
 
-    /**
-     * Do some more local process tests, such as union
-     *
-     * @throws ServiceException
-     * @throws IOException
-     * @throws ParseException
-     */
+    /** Do some more local process tests, such as union */
     public void testExecuteLocalUnion() throws ServiceException, IOException, ParseException {
 
         // don't run the test if the server is not up
@@ -541,13 +529,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         }
     }
 
-    /**
-     * Do some more local process tests, such as double addtion
-     *
-     * @throws ServiceException
-     * @throws IOException
-     * @throws ParseException
-     */
+    /** Do some more local process tests, such as double addtion */
     public void testExecuteLocalAdd() throws ServiceException, IOException, ParseException {
 
         // don't run the test if the server is not up
@@ -644,13 +626,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         exeRequest.addInput(idt2.getIdentifier().getValue(), list2);
     }
 
-    /**
-     * Try to get an area grid in arcgrid format, raw
-     *
-     * @throws ServiceException
-     * @throws IOException
-     * @throws ParseException
-     */
+    /** Try to get an area grid in arcgrid format, raw */
     public void testExecuteLocalAreaGrid() throws ServiceException, IOException, ParseException {
 
         // don't run the test if the server is not up
@@ -746,10 +722,6 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
     /**
      * Request for area grid with raw output but wrong parameters, check the response is an
      * exception
-     *
-     * @throws ServiceException
-     * @throws IOException
-     * @throws ParseException
      */
     public void testExecuteLocalAreaGridException()
             throws ServiceException, IOException, ParseException {
@@ -818,13 +790,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         assertNotNull(executeResponse.getStatus().getProcessFailed().getExceptionReport());
     }
 
-    /**
-     * Try to get an area grid with output in asynchronous mode
-     *
-     * @throws ServiceException
-     * @throws IOException
-     * @throws ParseException
-     */
+    /** Try to get an area grid with output in asynchronous mode */
     public void testExecuteAsynchAreaGrid() throws ServiceException, IOException, ParseException {
 
         // don't run the test if the server is not up
@@ -932,13 +898,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         assertTrue(arcgrid.startsWith(expectedHeader));
     }
 
-    /**
-     * Test exception parsing on invalid process request
-     *
-     * @throws ServiceException
-     * @throws IOException
-     * @throws ParseException
-     */
+    /** Test exception parsing on invalid process request */
     public void testInvalidProcess() throws ServiceException, IOException, ParseException {
 
         // don't run the test if the server is not up
@@ -997,13 +957,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         assertTrue(errorMessage.get(0).contains(processIdenLocal));
     }
 
-    /**
-     * Make sure we get the proper exception report
-     *
-     * @throws ServiceException
-     * @throws IOException
-     * @throws ParseException
-     */
+    /** Make sure we get the proper exception report */
     public void testInvalidParamsRawOutput() throws ServiceException, IOException, ParseException {
 
         // don't run the test if the server is not up

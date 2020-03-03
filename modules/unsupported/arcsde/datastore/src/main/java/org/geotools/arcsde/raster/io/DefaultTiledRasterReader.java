@@ -51,8 +51,6 @@ class DefaultTiledRasterReader implements TiledRasterReader {
      *
      * @param sessionPool where to grab sessions from to query the rasters described by {@code
      *     rasterInfo}
-     * @param rasterInfo
-     * @throws IOException
      */
     public DefaultTiledRasterReader(
             final ISessionPool sessionPool, final RasterDatasetInfo rasterInfo) throws IOException {
@@ -85,12 +83,6 @@ class DefaultTiledRasterReader implements TiledRasterReader {
     /**
      * Creates an image representing the whole pyramid level but with a tile reader ready to read
      * only the required tiles, the calling code is responsible for cropping it as needed
-     *
-     * @param tileReader
-     * @param tileRange
-     * @param rasterId
-     * @return
-     * @throws IOException
      */
     private RenderedImage createTiledRaster(
             final TileReader tileReader, final GridEnvelope tileRange, final long rasterId)

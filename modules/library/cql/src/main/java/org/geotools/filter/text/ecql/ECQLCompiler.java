@@ -58,12 +58,7 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
 
     private final ECQLFilterBuilder builder;
 
-    /**
-     * new instance of TXTCompiler
-     *
-     * @param txtSource
-     * @param filterFactory
-     */
+    /** new instance of TXTCompiler */
     public ECQLCompiler(final String txtSource, final FilterFactory filterFactory) {
         super(new StringReader(txtSource));
 
@@ -76,8 +71,6 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
     /**
      * compile source to produce a Filter. The filter result must be retrieved with {@link
      * #getFilter()}.
-     *
-     * @throws CQLException
      */
     public void compileFilter() throws CQLException {
         try {
@@ -130,7 +123,6 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
      * Return the filter resultant of compiling process
      *
      * @return Filter
-     * @throws CQLException
      */
     public final Filter getFilter() throws CQLException {
         return this.builder.getFilter();
@@ -139,7 +131,6 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
      * Return the expression resultant of compiling process
      *
      * @return Expression
-     * @throws CQLException
      */
     public final Expression getExpression() throws CQLException {
 
@@ -186,7 +177,6 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
      *
      * @param n a Node instance
      * @return Filter or Expression
-     * @throws CQLException
      */
     private Object build(Node n) throws CQLException {
 
@@ -538,9 +528,7 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
     /**
      * Creates Binary Spatial Operator
      *
-     * @param tipeNode
      * @return BinarySpatialOperator
-     * @throws CQLException
      */
     private BinarySpatialOperator buildBinarySpatialOperator(final int nodeType)
             throws CQLException {
@@ -592,9 +580,7 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
     /**
      * Builds Distance Buffer Operator
      *
-     * @param nodeType
      * @return DistanceBufferOperator dwithin and beyond filters
-     * @throws CQLException
      */
     private DistanceBufferOperator buildDistanceBufferOperator(final int nodeType)
             throws CQLException {
@@ -665,9 +651,7 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
     /**
      * Build the convenient filter for before date and before period filters
      *
-     * @param nodeType
      * @return Filter
-     * @throws CQLException
      */
     private Before buildBefore() throws CQLException {
         Before filter = null;
@@ -700,7 +684,6 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
      * Build the convenient filter for during period filters
      *
      * @return Filter
-     * @throws CQLException
      */
     private During buildDuring() throws CQLException {
         During filter = null;
@@ -729,7 +712,6 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
      * build filter for after date and after period
      *
      * @return a filter
-     * @throws CQLException
      */
     private After buildAfterPredicate() throws CQLException {
         After filter = null;
@@ -761,9 +743,7 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
     /**
      * Builds a compare filter
      *
-     * @param filterTipa
      * @return BinaryComparisonOperator
-     * @throws CQLException
      */
     private BinaryComparisonOperator buildBinaryComparasionOperator(int filterType)
             throws CQLException {

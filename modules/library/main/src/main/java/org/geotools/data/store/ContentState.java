@@ -241,11 +241,7 @@ public class ContentState {
         return batchFeatureEvent;
     }
 
-    /**
-     * Used to quickly test if any listeners are available.
-     *
-     * @return
-     */
+    /** Used to quickly test if any listeners are available. */
     public final boolean hasListener() {
         if (!listeners.isEmpty()) {
             return true;
@@ -285,12 +281,7 @@ public class ContentState {
         fireFeatureEvent(event);
     }
 
-    /**
-     * Used to issue a Type.ADDED FeatureEvent indicating a new feature being created
-     *
-     * @param source
-     * @param feature
-     */
+    /** Used to issue a Type.ADDED FeatureEvent indicating a new feature being created */
     public final void fireFeatureAdded(FeatureSource<?, ?> source, Feature feature) {
         if (listeners.isEmpty() && tx != Transaction.AUTO_COMMIT) return;
 
@@ -329,8 +320,6 @@ public class ContentState {
      *
      * <p>If not this event will be recored as part of a BatchFeatureEvent that will to be issued
      * using issueBatchFeatureEvent()
-     *
-     * @param event
      */
     public final void fireFeatureEvent(FeatureEvent event) {
         if (this.tx == Transaction.AUTO_COMMIT) {

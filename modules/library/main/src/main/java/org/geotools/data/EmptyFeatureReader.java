@@ -32,8 +32,6 @@ public class EmptyFeatureReader<T extends FeatureType, F extends Feature>
     /**
      * An Empty FeatureReader<SimpleFeatureType, SimpleFeature> of the provided <code>featureType
      * </code>.
-     *
-     * @param featureType
      */
     public EmptyFeatureReader(T featureType) {
         this.featureType = featureType;
@@ -48,7 +46,6 @@ public class EmptyFeatureReader<T extends FeatureType, F extends Feature>
      * Throws NoSuchElementException as this is an Empty FeatureReader.
      *
      * @return Does not return
-     * @throws NoSuchElementException
      * @see org.geotools.data.FeatureReader#next()
      */
     public F next() throws NoSuchElementException {

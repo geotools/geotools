@@ -60,11 +60,7 @@ public class SelectQualifier implements net.sf.jsqlparser.statement.select.Selec
 
     private PlainSelect qualifiedSelect;
 
-    /**
-     * Creates a new SelectQualifier object.
-     *
-     * @param session
-     */
+    /** Creates a new SelectQualifier object. */
     public SelectQualifier(ISession session) {
         this.session = session;
     }

@@ -259,10 +259,7 @@ public class LineStringImpl extends GenericCurveImpl implements LineString, JTSG
         return null;
     }
 
-    /**
-     * @return
-     * @see com.polexis.lite.spatialschema.geometry.geometry.GenericCurveImpl#computeJTSPeer()
-     */
+    /** @see com.polexis.lite.spatialschema.geometry.geometry.GenericCurveImpl#computeJTSPeer() */
     protected Geometry computeJTSPeer() {
         int n = controlPoints.size();
         org.locationtech.jts.geom.Coordinate[] coords = new org.locationtech.jts.geom.Coordinate[n];
@@ -280,20 +277,12 @@ public class LineStringImpl extends GenericCurveImpl implements LineString, JTSG
         return 0;
     }
 
-    /**
-     * @param cp
-     * @return
-     * @see org.opengis.geometry.coordinate.GenericCurve#forConstructiveParam(double)
-     */
+    /** @see org.opengis.geometry.coordinate.GenericCurve#forConstructiveParam(double) */
     public DirectPosition forConstructiveParam(double cp) {
         return null;
     }
 
-    /**
-     * @param s
-     * @return
-     * @see org.opengis.geometry.coordinate.GenericCurve#forParam(double)
-     */
+    /** @see org.opengis.geometry.coordinate.GenericCurve#forParam(double) */
     public DirectPosition forParam(double s) {
         return null;
     }

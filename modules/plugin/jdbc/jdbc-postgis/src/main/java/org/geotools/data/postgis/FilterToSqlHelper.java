@@ -434,9 +434,6 @@ class FilterToSqlHelper {
 
     /**
      * Given a geometry that might contain heterogeneous components extracts only the polygonal ones
-     *
-     * @param geometry
-     * @return
      */
     private Geometry sanitizePolygons(Geometry geometry) {
         // already sane?
@@ -471,12 +468,7 @@ class FilterToSqlHelper {
         }
     }
 
-    /**
-     * Returns true if the geometry covers the entire world
-     *
-     * @param geometry
-     * @return
-     */
+    /** Returns true if the geometry covers the entire world */
     private boolean isWorld(Literal geometry) {
         if (geometry != null) {
             Geometry g = geometry.evaluate(null, Geometry.class);
@@ -487,12 +479,7 @@ class FilterToSqlHelper {
         return false;
     }
 
-    /**
-     * Returns true if the geometry is fully empty
-     *
-     * @param geometry
-     * @return
-     */
+    /** Returns true if the geometry is fully empty */
     private boolean isEmpty(Literal geometry) {
         if (geometry != null) {
             Geometry g = geometry.evaluate(null, Geometry.class);
@@ -501,12 +488,7 @@ class FilterToSqlHelper {
         return false;
     }
 
-    /**
-     * Maps a function to its native db equivalent
-     *
-     * @param function
-     * @return
-     */
+    /** Maps a function to its native db equivalent */
     public String getFunctionName(Function function) {
         if (function instanceof FilterFunction_strLength || function instanceof LengthFunction) {
             return "char_length";
@@ -526,10 +508,6 @@ class FilterToSqlHelper {
     /**
      * Performs custom visits for functions that cannot be encoded as <code>
      * functionName(p1, p2, ... pN).</code>
-     *
-     * @param function
-     * @param extraData
-     * @return
      */
     public boolean visitFunction(Function function, Object extraData) throws IOException {
         if (function instanceof DateDifferenceFunction) {
@@ -817,11 +795,6 @@ class FilterToSqlHelper {
     /**
      * When using prepared statements we need the AttributeDescritor's stored native type name to
      * set array values in the PreparedStatement
-     *
-     * @param thisExpression
-     * @param otherExpression
-     * @param context
-     * @return
      */
     private Object getArrayComparisonContext(
             Expression thisExpression, Expression otherExpression, Class context) {
@@ -865,12 +838,7 @@ class FilterToSqlHelper {
         }
     }
 
-    /**
-     * Returns the type cast needed to match this property
-     *
-     * @param pn
-     * @return
-     */
+    /** Returns the type cast needed to match this property */
     String getArrayTypeCast(PropertyName pn) {
         AttributeDescriptor at = pn.evaluate(delegate.getFeatureType(), AttributeDescriptor.class);
         if (at != null) {

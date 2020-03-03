@@ -26,7 +26,6 @@ public interface TemporalFactory {
 
     /**
      * @param name : This is a name that uniquely identifies the temporal reference system.
-     * @param domainOfValidit
      * @return Calendar
      */
     Calendar createCalendar(ReferenceIdentifier name, Extent domainOfValidit);
@@ -73,7 +72,6 @@ public interface TemporalFactory {
 
     /**
      * @param name : This is a name that uniquely identifies the temporal reference system.
-     * @param domainOfValidity
      * @param referenceEvent : Provide the name or description of an event, such as solar noon or
      *     sunrise.
      * @param referenceTime : Provide the time of day associated with the reference event expressed
@@ -166,7 +164,6 @@ public interface TemporalFactory {
      * @param beginning : This is the temporal position at which the ordinal era began, if it is
      *     known.
      * @param end : This is the temporal position at which the ordinal era ended.
-     * @param composition
      * @return OrdinalEra
      */
     OrdinalEra createOrdinalEra(
@@ -187,7 +184,6 @@ public interface TemporalFactory {
 
     /**
      * @param name : This is a name that uniquely identifies the temporal reference system.
-     * @param domainOfValidity
      * @param ordinalEraSequence : An ordinal temporal reference system consists of a set of ordinal
      *     eras.
      * @return OrdinalReferenceSystem
@@ -204,16 +200,7 @@ public interface TemporalFactory {
      */
     Period createPeriod(Instant begin, Instant end);
 
-    /**
-     * @param years
-     * @param months
-     * @param week
-     * @param days
-     * @param hours
-     * @param minutes
-     * @param seconds
-     * @return PeriodDuration
-     */
+    /** @return PeriodDuration */
     PeriodDuration createPeriodDuration(
             InternationalString years,
             InternationalString months,
@@ -246,7 +233,6 @@ public interface TemporalFactory {
 
     /**
      * @param name : This is a name that uniquely identifies the temporal reference system.
-     * @param domainOfValidity
      * @param origin : The origin of the scale, it must be specified in the Gregorian calendar with
      *     time of day in UTC.
      * @param interval : The name of a single unit of measure used as the base interval for the
@@ -272,7 +258,6 @@ public interface TemporalFactory {
 
     /**
      * @param name : This is a name that uniquely identifies the temporal reference system.
-     * @param domainOfValidity
      * @return TemporalReferenceSystem
      */
     TemporalReferenceSystem createTemporalReferenceSystem(

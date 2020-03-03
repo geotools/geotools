@@ -115,7 +115,6 @@ public interface Node {
      * return ((Node)getChildren.get( index )).getValue();
      * </code>
      *
-     * @param index
      * @return the value of the child at the given index
      */
     Object getChildValue(int index);

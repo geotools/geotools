@@ -495,8 +495,6 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
          * <p>In practice, this is the last linked feature type in the chain, except when the last
          * chaining is done by reference (via an xlink:href attribute), in which case the second
          * last feature type is returned.
-         *
-         * @return
          */
         public FeatureTypeMapping getFeatureTypeOwningAttribute() {
             FeatureChainLink lastLink = getLastLink();

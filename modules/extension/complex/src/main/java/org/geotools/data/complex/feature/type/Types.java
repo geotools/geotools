@@ -69,9 +69,6 @@ public class Types extends org.geotools.feature.type.Types {
     /**
      * Return true if the type is either a simple type or has a simple type as its supertype. In
      * particular, complex types with simple content will return true.
-     *
-     * @param type
-     * @return
      */
     public static boolean isSimpleContentType(PropertyType type) {
         if (type == XSSchema.ANYSIMPLETYPE_TYPE) {
@@ -115,9 +112,6 @@ public class Types extends org.geotools.feature.type.Types {
      *    &lt;/complexContent&gt;
      *  &lt;/complexType&gt;
      * </pre>
-     *
-     * @param type
-     * @return
      */
     public static boolean canHaveTextContent(PropertyType type) {
         if (type == XSSchema.ANYTYPE_TYPE) {

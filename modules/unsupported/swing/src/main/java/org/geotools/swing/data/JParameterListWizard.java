@@ -117,7 +117,6 @@ public class JParameterListWizard extends JWizard {
     /**
      * Method used to fill in any required "programming" level defaults such as dbtype.
      *
-     * @param contents
      * @param connectionParams a {@code Map} of initial parameter values
      */
     private void fillInDefaults(List<Parameter<?>> contents, Map<String, Object> connectionParams) {

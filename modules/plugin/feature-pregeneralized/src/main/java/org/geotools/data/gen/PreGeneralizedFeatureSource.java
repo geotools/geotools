@@ -437,10 +437,7 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
         listenerManager.removeFeatureListener(this, listener);
     }
 
-    /**
-     * @param requestedDistance
-     * @return the proper feature source for the given distance
-     */
+    /** @return the proper feature source for the given distance */
     private SimpleFeatureSource getFeatureSourceFor(Double requestedDistance) throws IOException {
 
         if (requestedDistance == null || requestedDistance == 0) return getBaseFeatureSource();

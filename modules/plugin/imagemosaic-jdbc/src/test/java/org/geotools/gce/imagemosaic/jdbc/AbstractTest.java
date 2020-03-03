@@ -451,10 +451,7 @@ public abstract class AbstractTest extends TestCase {
     /**
      * Test if files are the same by comparing their canonical name.
      *
-     * @param file1
-     * @param file2
      * @return true if files have the same canonical name
-     * @throws Exception
      */
     public static boolean isSameFile(String file1, String file2) throws Exception {
         return new File(file1).getCanonicalPath().equals(new File(file2).getCanonicalPath());
@@ -463,20 +460,13 @@ public abstract class AbstractTest extends TestCase {
     /**
      * Test if files are the same by comparing their canonical name.
      *
-     * @param file1
-     * @param file2
      * @return true if files have the same canonical name
-     * @throws Exception
      */
     public static boolean isSameFile(URL file1, String file2) throws Exception {
         return URLs.urlToFile(file1).getCanonicalPath().equals(new File(file2).getCanonicalPath());
     }
 
-    /**
-     * Unit test for {{@link #isSameFile(String, String)}.
-     *
-     * @throws Exception
-     */
+    /** Unit test for {{@link #isSameFile(String, String)}. */
     public void testIsSameFile() throws Exception {
         assertTrue(isSameFile("foo", "./foo"));
         assertTrue(isSameFile("foo", "bar/../foo"));

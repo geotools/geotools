@@ -176,11 +176,7 @@ public class LikeToRegexConverter {
         return tmp.toString();
     }
 
-    /**
-     * Returns the equivalent Java pattern
-     *
-     * @return
-     */
+    /** Returns the equivalent Java pattern */
     public String getPattern() {
         return pattern;
     }

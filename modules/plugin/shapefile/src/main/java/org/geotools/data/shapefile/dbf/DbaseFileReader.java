@@ -419,8 +419,6 @@ public class DbaseFileReader implements FileReader, Closeable {
     /**
      * Reads the next record into memory. You need to use this directly when reading only a subset
      * of the fields using {@link #readField(int)}.
-     *
-     * @throws IOException
      */
     public void read() throws IOException {
         boolean foundRecord = false;
@@ -605,10 +603,6 @@ public class DbaseFileReader implements FileReader, Closeable {
     /**
      * Performs a faster byte[] to String conversion under the assumption the content is represented
      * with one byte per char
-     *
-     * @param fieldLen
-     * @param fieldOffset
-     * @return
      */
     String fastParse(final byte[] bytes, final int fieldOffset, final int fieldLen) {
         // faster reading path, the decoder is for some reason slower,

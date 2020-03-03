@@ -112,7 +112,6 @@ public class DefaultTransaction implements Transaction {
      * <p>Currently does not complain if there is no State associated with key to remove - this may
      * change in the future.
      *
-     * @param key
      * @throws IllegalArgumentException If no State was maintained for supplied <code>key</code>
      * @see org.geotools.data.Transaction#removeState(java.lang.Object)
      */
@@ -137,7 +136,6 @@ public class DefaultTransaction implements Transaction {
      * <p>Used by DataStore implementations to externalize information required for Transaction
      * support using the GOF Momento pattern.
      *
-     * @param key
      * @return Previously externalized State.
      * @see org.geotools.data.Transaction#getState(java.lang.Object)
      */
@@ -303,7 +301,6 @@ public class DefaultTransaction implements Transaction {
      * Implementation of getProperty.
      *
      * @see org.geotools.data.Transaction#getProperty(java.lang.Object)
-     * @param key
      */
     public Object getProperty(Object key) {
         if (propertyLookup == null) {
@@ -316,9 +313,6 @@ public class DefaultTransaction implements Transaction {
      * Implementation of addProperty.
      *
      * @see org.geotools.data.Transaction#addProperty(java.lang.Object, java.lang.Object)
-     * @param key
-     * @param value
-     * @throws IOException
      */
     public void putProperty(Object key, Object value) throws IOException {
         if (propertyLookup == null) {

@@ -72,8 +72,6 @@ public class ImageIOExt {
      *
      * @param image the image to be written on the destination (can be null)
      * @param destination the destination
-     * @return
-     * @throws IOException
      */
     public static ImageOutputStream createImageOutputStream(RenderedImage image, Object destination)
             throws IOException {
@@ -101,10 +99,6 @@ public class ImageIOExt {
 
     /**
      * Returns a {@link ImageOutputStream} suitable for writing on the specified <code>input</code>
-     *
-     * @param destination
-     * @return
-     * @throws IOException
      */
     public static ImageInputStream createImageInputStream(Object input) throws IOException {
         return ImageIO.createImageInputStream(input);
@@ -137,8 +131,6 @@ public class ImageIOExt {
      * {@link FileCacheImageOutputStream}. If the in memory, uncompressed image size is lower than
      * the threshold a {@link MemoryCacheImageOutputStream} will be returned, otherwise a {@link
      * FileCacheImageOutputStream} will be used instead
-     *
-     * @return
      */
     public static Long getFilesystemThreshold() {
         return filesystemThreshold;
@@ -147,7 +139,6 @@ public class ImageIOExt {
     /**
      * Sets the memory/file usage threshold (or null to have the code fall back on ImageIO behavior)
      *
-     * @param filesystemThreshold
      * @see #getFilesystemThreshold()
      */
     public static void setFilesystemThreshold(Long filesystemThreshold) {
@@ -298,12 +289,7 @@ public class ImageIOExt {
         return readersIt.next();
     }
 
-    /**
-     * Computes the image size based on the SampleModel and image dimension
-     *
-     * @param image
-     * @return
-     */
+    /** Computes the image size based on the SampleModel and image dimension */
     static long computeImageSize(RenderedImage image) {
         long bits = 0;
         final int bands = image.getSampleModel().getNumBands();
@@ -321,7 +307,6 @@ public class ImageIOExt {
      * @param input A non null image source, like a {@link File}, {@link java.net.URL}, or {@link
      *     java.io.InputStream}
      * @return A image
-     * @throws IOException
      */
     public static RenderedImage read(Object input) throws IOException {
         if (input == null) {
@@ -398,7 +383,6 @@ public class ImageIOExt {
      * other method for efficiency sake.
      *
      * @return A image
-     * @throws IOException
      */
     public static BufferedImage readBufferedImage(Object input) throws IOException {
         RenderedImage ri = ImageIOExt.read(input);

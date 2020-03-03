@@ -60,9 +60,6 @@ public class AggregateProcess implements VectorProcess {
      *
      * @param features FeatureCollection to aggregate
      * @param aggAttribute target attribute
-     * @param functions
-     * @param singlePass
-     * @param progressListener
      * @return aggregate Results
      */
     public static Results process(

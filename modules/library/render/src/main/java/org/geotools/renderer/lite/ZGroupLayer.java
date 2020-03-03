@@ -227,8 +227,6 @@ class ZGroupLayer extends Layer {
      * Ensures that all SortBy are meaningful for a cross layer z-order. We need the SortKey for all
      * the layers to have the same structure, be comparable, and be class compatible with each other
      * (and of course, exist in the first place)
-     *
-     * @param painters
      */
     private void validateSortBy(List<ZGroupLayerPainter> painters) {
         Class[] referenceClasses = null;

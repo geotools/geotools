@@ -31,8 +31,6 @@ package org.geotools.data.oracle.sdo;
 public class JGeometryConverter {
     //    /**
     //     * Converts a JGeometry into the equivalent JTS geometry
-    //     * @param geom
-    //     * @return
     //     */
     //    public static Geometry toJTS(GeometryFactory gf, JGeometry geom) {
     //        int dimensions = geom.getDimensions();
@@ -44,8 +42,6 @@ public class JGeometryConverter {
     //
     //    /**
     //     * Converts a JTS geometry in the equivalent JTS geometry
-    //     * @param geom
-    //     * @return
     //     */
     //    public static JGeometry toJGeometry(Geometry geom, int srid) {
     //        if( geom == null)

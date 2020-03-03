@@ -193,11 +193,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
     /** Remembers whether the USER_SDO_* views could be accessed or not */
     Boolean canAccessUserViews;
 
-    /**
-     * The direct geometry metadata table, if any
-     *
-     * @param dataStore
-     */
+    /** The direct geometry metadata table, if any */
     String geometryMetadataTable;
 
     /** Whether to use metadata tables to get bbox */
@@ -232,9 +228,6 @@ public class OracleDialect extends PreparedStatementSQLDialect {
      * Checks the user has permissions to read from the USER_SDO_INDEX_METADATA and
      * USER_SDO_GEOM_METADATA. The code can use this information to decide to access the
      * ALL_SDO_INDEX_METADATA and ALL_SOD_GEOM_METADATA views instead.
-     *
-     * @param cx
-     * @return
      */
     boolean canAccessUserViews(Connection cx) {
         if (canAccessUserViews == null) {
@@ -295,16 +288,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         }
     }
 
-    /**
-     * Tries to use the geometry metadata table, if available
-     *
-     * @param cx
-     * @param tableName
-     * @param columnName
-     * @param schema
-     * @return
-     * @throws SQLException
-     */
+    /** Tries to use the geometry metadata table, if available */
     private Class<?> lookupGeometryOnMetadataTable(
             Connection cx, String tableName, String columnName, String schema) throws SQLException {
         if (geometryMetadataTable == null) {
@@ -391,11 +375,6 @@ public class OracleDialect extends PreparedStatementSQLDialect {
     /**
      * Reads the geometry type from the first column returned by executing the specified SQL
      * statement
-     *
-     * @param cx
-     * @param sql
-     * @return
-     * @throws SQLException
      */
     private Class readGeometryClassFromStatement(Connection cx, String sql, List<String> parameters)
             throws SQLException {
@@ -776,15 +755,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         return readIntegerFromStatement(cx, allSdoSql, parameters);
     }
 
-    /**
-     * Reads the SRID from the SDO_USER* views
-     *
-     * @param tableName
-     * @param columnName
-     * @param cx
-     * @return
-     * @throws SQLException
-     */
+    /** Reads the SRID from the SDO_USER* views */
     private Integer lookupSRIDFromUserViews(String tableName, String columnName, Connection cx)
             throws SQLException {
         // we run this only if we can access the user views
@@ -898,15 +869,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         return readIntegerFromStatement(cx, allSdoSql, parameters);
     }
 
-    /**
-     * Reads the SRID from the SDO_USER* views
-     *
-     * @param tableName
-     * @param columnName
-     * @param cx
-     * @return
-     * @throws SQLException
-     */
+    /** Reads the SRID from the SDO_USER* views */
     private Integer lookupDimensionFromUserViews(String tableName, String columnName, Connection cx)
             throws SQLException {
         // we run this only if we can access the user views
@@ -1441,11 +1404,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         return true;
     }
 
-    /**
-     * Checks if the specified srid is geodetic or not
-     *
-     * @throws SQLException
-     */
+    /** Checks if the specified srid is geodetic or not */
     protected boolean isGeodeticSrid(Integer srid, Connection cx) {
         if (srid == null) return false;
 
@@ -1547,28 +1506,18 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         }
     }
 
-    /**
-     * The geometry metadata table in use, if any
-     *
-     * @return
-     */
+    /** The geometry metadata table in use, if any */
     public String getGeometryMetadataTable() {
         return geometryMetadataTable;
     }
 
-    /**
-     * Sets the geometry metadata table
-     *
-     * @param geometryMetadataTable
-     */
+    /** Sets the geometry metadata table */
     public void setGeometryMetadataTable(String geometryMetadataTable) {
         this.geometryMetadataTable = geometryMetadataTable;
     }
 
     /**
      * Sets the decision if the table MDSYS.USER_SDO_GEOM_METADATA can be used for index calculation
-     *
-     * @param geometryMetadataTable
      */
     public void setMetadataBboxEnabled(boolean metadataBboxEnabled) {
         this.metadataBboxEnabled = metadataBboxEnabled;

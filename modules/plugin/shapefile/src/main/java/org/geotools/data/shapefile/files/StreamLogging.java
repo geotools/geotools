@@ -26,11 +26,7 @@ public class StreamLogging {
     private String name;
     private int open = 0;
 
-    /**
-     * The name that will appear in the debug message
-     *
-     * @param name
-     */
+    /** The name that will appear in the debug message */
     public StreamLogging(String name) {
         this.name = name;
     }

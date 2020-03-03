@@ -87,7 +87,6 @@ public class OGCPropertyIsLikeTypeBindingTest extends FilterTestSupport {
     /*
      * test for GEOT-5920 can't have function on LHS Like filters
      *
-     * @throws Exception
      */
 
     public void testEncodeWithFunctionAsFilter() throws Exception {

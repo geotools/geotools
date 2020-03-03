@@ -42,7 +42,6 @@ public class GTXML {
      * @param name name to parse out as a feature type
      * @param crs Optional coordinate reference system for generated feature type
      * @return FeatureType
-     * @throws IOException
      */
     public static FeatureType parseFeatureType(
             Configuration configuration, QName name, CoordinateReferenceSystem crs)

@@ -82,7 +82,6 @@ public class Mosaicker {
     }
 
     /**
-     * @return
      * @param useFinalImageLayout whether the layout should be created from the requested bounds or
      *     no layout should be provided
      */

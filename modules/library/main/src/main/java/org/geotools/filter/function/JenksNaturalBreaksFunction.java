@@ -21,6 +21,7 @@ import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -30,6 +31,7 @@ import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.capability.FunctionName;
+import org.opengis.filter.expression.Literal;
 
 /**
  * Calculate the Jenks' Natural Breaks classification for a featurecollection
@@ -46,7 +48,8 @@ public class JenksNaturalBreaksFunction extends ClassificationFunction {
                     "Jenks",
                     RangedClassifier.class,
                     parameter("value", Double.class),
-                    parameter("classes", Integer.class));
+                    parameter("classes", Integer.class),
+                    parameter("percentages", Boolean.class, 0, 1));
 
     public JenksNaturalBreaksFunction() {
         super(NAME);
@@ -200,6 +203,38 @@ public class JenksNaturalBreaksFunction extends ClassificationFunction {
         /*
          * for(int k1=0;k1<k;k1++) { // System.out.println(k1+" "+localMin[k1]+" - "+localMax[k1]); }
          */
-        return new RangedClassifier(localMin, localMax);
+
+        RangedClassifier classifier = new RangedClassifier(localMin, localMax);
+        if (getParameters().size() > 2) {
+            Literal literal = (Literal) getParameters().get(2);
+            Boolean percentages = (Boolean) literal.getValue();
+            if (percentages.booleanValue()) {
+                setPercentages(classifier, data, m);
+            }
+        }
+        return classifier;
+    }
+
+    private void setPercentages(RangedClassifier classifier, List<Double> data, double total) {
+        int classN = classifier.getSize();
+        double[] percentages = new double[classN];
+        for (int i = 0; i < classN; i++) {
+            double classMembers = getClassMembers(data, classifier, i);
+            percentages[i] = (classMembers / total) * 100;
+        }
+        classifier.setPercentages(percentages);
+    }
+
+    private double getClassMembers(List<Double> data, RangedClassifier classifier, int currentIdx) {
+        double result;
+        double max = (double) classifier.getMax(currentIdx);
+        double min = (double) classifier.getMin(currentIdx);
+        if (max == min) {
+            result = data.stream().filter(d -> d == max).count();
+        } else {
+            if (currentIdx == 0) result = data.stream().filter(d -> d >= min && d <= max).count();
+            else result = data.stream().filter(d -> d > min && d <= max).count();
+        }
+        return result;
     }
 }

@@ -19,11 +19,7 @@
 package org.geotools.filter.function;
 
 import java.awt.RenderingHints;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.DefaultExpression;
 import org.geotools.filter.FunctionExpression;

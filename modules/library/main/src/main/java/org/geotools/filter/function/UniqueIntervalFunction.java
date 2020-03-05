@@ -19,19 +19,19 @@ package org.geotools.filter.function;
 import static org.geotools.filter.capability.FunctionNameImpl.*;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.util.NullProgressListener;
 import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.visitor.Aggregate;
 import org.geotools.feature.visitor.CalcResult;
+import org.geotools.feature.visitor.GroupByVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
 
 /**
  * Clone of EqualIntervalFunction for unique values
@@ -45,7 +45,8 @@ public class UniqueIntervalFunction extends ClassificationFunction {
                     "UniqueInterval",
                     RangedClassifier.class,
                     parameter("value", Double.class),
-                    parameter("classes", Integer.class));
+                    parameter("classes", Integer.class),
+                    parameter("percentages", Boolean.class, 0, 1));
 
     public UniqueIntervalFunction() {
         super(NAME);
@@ -124,7 +125,15 @@ public class UniqueIntervalFunction extends ClassificationFunction {
                 }
             }
             // save the result (list), finally
-            return new ExplicitClassifier(values);
+            ExplicitClassifier classifier = new ExplicitClassifier(values);
+            if (getParameters().size() > 2) {
+                Literal literal = (Literal) getParameters().get(2);
+                Boolean percentages = (Boolean) literal.getValue();
+                if (percentages.booleanValue()) {
+                    classifier.setPercentages(getPercentages(featureCollection, values));
+                }
+            }
+            return classifier;
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "UniqueIntervalFunction calculate failed", e);
             return null;
@@ -136,5 +145,33 @@ public class UniqueIntervalFunction extends ClassificationFunction {
             return null;
         }
         return calculate((SimpleFeatureCollection) feature);
+    }
+
+    private double[] getPercentages(FeatureCollection collection, Set[] values) throws IOException {
+        Expression prop = getParameters().get(0);
+        GroupByVisitor groupBy =
+                new GroupByVisitor(Aggregate.COUNT, prop, Arrays.asList(prop), null);
+        collection.accepts(groupBy, null);
+        Map<List, Integer> result = groupBy.getResult().toMap();
+        return computePercentages(result, collection.size(), values);
+    }
+
+    private double[] computePercentages(
+            Map<List, Integer> queryResult, int totalSize, Set[] values) {
+        double[] percentages = new double[values.length];
+        for (int i = 0; i < values.length; i++) {
+            Set s = values[i];
+            double value = 0.0;
+            for (Object o : s) {
+                List key = Arrays.asList(o);
+                value += (double) queryResult.get(key);
+            }
+            if (value > 0.0) {
+                percentages[i] = (value / totalSize) * 100;
+            } else {
+                percentages[i] = 0.0;
+            }
+        }
+        return percentages;
     }
 }

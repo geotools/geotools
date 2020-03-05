@@ -67,12 +67,16 @@ public abstract class AbstractQuantityClassificationFunction extends Classificat
             return null;
         }
         Comparable globalMax = (Comparable) lastBin[lastBin.length - 1];
-
+        Classifier result;
         if ((globalMin instanceof Number) && (globalMax instanceof Number)) {
-            return calculateNumerical(bin, globalMin, globalMax);
+            result = (Classifier) calculateNumerical(bin, globalMin, globalMax);
         } else {
-            return calculateNonNumerical(bin, globalMin, globalMax);
+            result = (Classifier) calculateNonNumerical(bin, globalMin, globalMax);
         }
+        if (percentages())
+            result.setPercentages(calculatePercentages(bin, featureCollection.size()));
+
+        return result;
     }
 
     private Object calculateNumerical(List[] bin, Comparable globalMin, Comparable globalMax) {
@@ -166,4 +170,15 @@ public abstract class AbstractQuantityClassificationFunction extends Classificat
         }
         return calculate((SimpleFeatureCollection) feature);
     }
+
+    private double[] calculatePercentages(List[] bin, int totalSize) {
+        double[] percentages = new double[bin.length];
+        for (int i = 0; i < bin.length; i++) {
+            percentages[i] = ((double) bin[i].size() / (double) totalSize) * 100;
+        }
+        return percentages;
+    }
+
+    /** @return true if percentages computation is enabled, false if not */
+    protected abstract boolean percentages();
 }

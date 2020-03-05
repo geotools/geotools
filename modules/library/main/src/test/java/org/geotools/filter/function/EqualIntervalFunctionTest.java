@@ -17,6 +17,7 @@
 package org.geotools.filter.function;
 
 import org.geotools.factory.CommonFactoryFinder;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
@@ -138,5 +139,37 @@ public class EqualIntervalFunctionTest extends FunctionTestSupport {
         assertEquals(1, classifier.getSize());
         assertEquals("abc", classifier.getMin(0));
         assertEquals("abc", classifier.getMax(0));
+    }
+
+    @Test
+    public void testEvaluateNumericalWithPercentages() {
+        Literal classes = ff.literal(3);
+        PropertyName name = ff.property("foo");
+        Function func = ff.function("EqualInterval", name, classes, ff.literal(true));
+
+        Object classifier = func.evaluate(featureCollection);
+        assertTrue(classifier instanceof RangedClassifier);
+        RangedClassifier ranged = (RangedClassifier) classifier;
+        double[] percentages = ranged.getPercentages();
+        assertEquals(3, percentages.length);
+        assertEquals(62.5, percentages[0]);
+        assertEquals(25.0, percentages[1]);
+        assertEquals(12.5, percentages[2]);
+    }
+
+    @Test
+    public void testEvaluateNonNumericalWithPercentages() {
+        Literal classes = ff.literal(3);
+        PropertyName name = ff.property("foo");
+        Function func = ff.function("EqualInterval", name, classes, ff.literal(true));
+
+        Object classifier = func.evaluate(featureCollection);
+        assertTrue(classifier instanceof RangedClassifier);
+        RangedClassifier ranged = (RangedClassifier) classifier;
+        double[] percentages = ranged.getPercentages();
+        assertEquals(3, percentages.length);
+        assertEquals(62.5, percentages[0]);
+        assertEquals(25.0, percentages[1]);
+        assertEquals(12.5, percentages[2]);
     }
 }

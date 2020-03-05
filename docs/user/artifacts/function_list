@@ -99,23 +99,27 @@ Contains 203 functions.
 
 * ``result`` (``String``)
 
-``EqualArea(value, classes, areaFunction)``: returns ``EqualArea``
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+``EqualArea(value, classes, areaFunction, percentages)``: returns ``EqualArea``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 * ``value`` (``Double``) required
 
 * ``classes`` (``Integer``) required
 
-* ``areaFunction`` (``Double``) optional
+* ``areaFunction`` (``Double``) optional if no parameter follows, otherwise required
+
+* ``percentages`` (``Boolean``) optional
 
 * ``EqualArea`` (``RangedClassifier``)
 
-``EqualInterval(value, classes)``: returns ``EqualInterval``
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+``EqualInterval(value, classes, percentages)``: returns ``EqualInterval``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 * ``value`` (``Double``) required
 
 * ``classes`` (``Integer``) required
+
+* ``percentages`` (``Boolean``) optional
 
 * ``EqualInterval`` (``RangedClassifier``)
 
@@ -139,12 +143,14 @@ Contains 203 functions.
 
 * ``lookup``
 
-``Jenks(value, classes)``: returns ``Jenks``
-''''''''''''''''''''''''''''''''''''''''''''
+``Jenks(value, classes, percentages)``: returns ``Jenks``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 * ``value`` (``Double``) required
 
 * ``classes`` (``Integer``) required
+
+* ``percentages`` (``Boolean``) optional
 
 * ``Jenks`` (``RangedClassifier``)
 
@@ -155,12 +161,14 @@ Contains 203 functions.
 
 * ``exists`` (``Boolean``)
 
-``Quantile(value, classes)``: returns ``Quantile``
-''''''''''''''''''''''''''''''''''''''''''''''''''
+``Quantile(value, classes, percentages)``: returns ``Quantile``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 * ``value`` (``Double``) required
 
 * ``classes`` (``Integer``) required
+
+* ``percentages`` (``Boolean``) optional
 
 * ``Quantile`` (``RangedClassifier``)
 
@@ -188,12 +196,14 @@ Contains 203 functions.
 
 * ``StandardDeviation`` (``RangedClassifier``)
 
-``UniqueInterval(value, classes)``: returns ``UniqueInterval``
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+``UniqueInterval(value, classes, percentages)``: returns ``UniqueInterval``
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 * ``value`` (``Double``) required
 
 * ``classes`` (``Integer``) required
+
+* ``percentages`` (``Boolean``) optional
 
 * ``UniqueInterval`` (``RangedClassifier``)
 
@@ -2936,4 +2946,3 @@ Contains 1 functions.
 * ``tolerance`` (``double``) required
 
 * ``labelPoint`` (``Point``)
-

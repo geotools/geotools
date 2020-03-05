@@ -19,7 +19,9 @@ package org.geotools.filter.function;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.DefaultFeatureCollection;
+import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.expression.Divide;
@@ -234,5 +236,92 @@ public class QuantileFunctionTest extends FunctionTestSupport {
         assertEquals(1, classifier.getSize());
         assertEquals(1, classifier.getValues(0).size());
         assertEquals("abc", classifier.getValues(0).iterator().next());
+    }
+
+    @Test
+    public void testEvaluateNumericalWithPercentages() {
+        // numerical
+        Literal classes = ff.literal(2);
+        PropertyName exp = ff.property("foo");
+        Function func = ff.function("Quantile", exp, classes, ff.literal(true));
+
+        Object value = func.evaluate(featureCollection);
+        assertTrue(value instanceof RangedClassifier);
+        RangedClassifier ranged = (RangedClassifier) value;
+        double[] percentages = ranged.getPercentages();
+        assertEquals(percentages.length, 2);
+        assertEquals(percentages[0], 50.0);
+        assertEquals(percentages[1], 50.0);
+    }
+
+    @Test
+    public void testEvaluateNotNumericalWithPercentages() throws SchemaException {
+        SimpleFeatureType dataType =
+                DataUtilities.createType("classification.test1", "id:0,value:String");
+        String sVal[] = new String[] {"a", "b", "c", "d", "e", "f"};
+        SimpleFeature[] myfeatures = new SimpleFeature[sVal.length];
+        for (int i = 0; i < sVal.length; i++) {
+            myfeatures[i] =
+                    SimpleFeatureBuilder.build(
+                            dataType,
+                            new Object[] {Integer.valueOf(i + 1), sVal[i]},
+                            "classification.test1" + (i + 1));
+        }
+
+        SimpleFeatureCollection myFeatureCollection = DataUtilities.collection(myfeatures);
+        org.opengis.filter.expression.Expression func2 =
+                ff.function("Quantile", ff.property("value"), ff.literal(6), ff.literal(true));
+
+        Object value2 = func2.evaluate(myFeatureCollection);
+        Classifier ranged2 = (Classifier) value2;
+        double[] percentages2 = ranged2.getPercentages();
+        assertEquals(percentages2.length, 6);
+        for (int i = 0; i < percentages2.length; i++) {
+            assertEquals(Math.floor(percentages2[i]), 16.0);
+        }
+    }
+
+    @Test
+    public void testPercentagesConsistencyWithUnevenDistributedValues() throws SchemaException {
+
+        SimpleFeatureType dataType =
+                DataUtilities.createType("classification.test1", "id:0,value:int");
+        int iVal[] = new int[] {1, 1, 2, 3, 4, 5};
+        SimpleFeature[] myfeatures = new SimpleFeature[iVal.length];
+        for (int i = 0; i < iVal.length; i++) {
+            myfeatures[i] =
+                    SimpleFeatureBuilder.build(
+                            dataType,
+                            new Object[] {Integer.valueOf(i + 1), Integer.valueOf(iVal[i])},
+                            "classification.test1" + (i + 1));
+        }
+
+        SimpleFeatureCollection myFeatureCollection = DataUtilities.collection(myfeatures);
+        org.opengis.filter.expression.Expression func =
+                ff.function("Quantile", ff.property("value"), ff.literal(5), ff.literal(true));
+
+        Object value = func.evaluate(myFeatureCollection);
+        assertTrue(value instanceof RangedClassifier);
+        RangedClassifier ranged = (RangedClassifier) value;
+        double[] percentages = ranged.getPercentages();
+        assertEquals(percentages.length, 5);
+        assertEquals(Math.floor(percentages[0]), 33.0);
+        for (int i = 1; i < percentages.length; i++) {
+            assertEquals(Math.floor(percentages[i]), 16.0);
+        }
+    }
+
+    @Test
+    public void testPercentagesConsistencyWithMoreClassThanIntervals() {
+        org.opengis.filter.expression.Expression func =
+                ff.function("Quantile", ff.property("foo"), ff.literal(10), ff.literal(true));
+        Object value = func.evaluate(featureCollection);
+        assertTrue(value instanceof RangedClassifier);
+        RangedClassifier ranged = (RangedClassifier) value;
+        double[] percentages = ranged.getPercentages();
+        assertEquals(percentages.length, 8);
+        for (int i = 0; i < percentages.length; i++) {
+            assertTrue(percentages[i] == 12.5);
+        }
     }
 }

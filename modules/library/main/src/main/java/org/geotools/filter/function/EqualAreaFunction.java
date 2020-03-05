@@ -26,6 +26,7 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
+import org.opengis.filter.expression.Literal;
 
 /**
  * Breaks a SimpleFeatureCollection into classes with (roughtly) equal total items area in each
@@ -43,7 +44,8 @@ public class EqualAreaFunction extends AbstractQuantityClassificationFunction {
                     RangedClassifier.class,
                     parameter("value", Double.class),
                     parameter("classes", Integer.class),
-                    parameter("areaFunction", Double.class, 0, 1));
+                    parameter("areaFunction", Double.class, 0, 1),
+                    parameter("percentages", Boolean.class, 0, 1));
 
     public EqualAreaFunction() {
         super(NAME);
@@ -63,12 +65,27 @@ public class EqualAreaFunction extends AbstractQuantityClassificationFunction {
     }
 
     protected FeatureCalc getListVisitor() {
-        Expression areaFunction;
-        if (getParameters().size() > 2) {
-            areaFunction = getParameters().get(2);
-        } else {
+        Expression areaFunction = getEqualAreaParameter();
+        if (areaFunction == null) {
             areaFunction = getCartesianAreaFunction();
         }
         return new EqualAreaListVisitor(getParameters().get(0), areaFunction, getClasses());
+    }
+
+    @Override
+    protected boolean percentages() {
+        if (getParameters().size() > 3) {
+            Object value = ((Literal) getParameters().get(3)).getValue();
+            if (value instanceof Boolean) return ((Boolean) value).booleanValue();
+        }
+        return false;
+    }
+
+    private Literal getEqualAreaParameter() {
+        if (getParameters().size() > 2) {
+            Literal literal = (Literal) getParameters().get(2);
+            if (literal.getValue() instanceof Double) return literal;
+        }
+        return null;
     }
 }

@@ -241,4 +241,19 @@ public class JenksFunctionTest extends FunctionTestSupport {
         assertEquals(123.123, (Double) classifier.getMin(0), 0d);
         assertEquals(123.123, (Double) classifier.getMax(0), 0d);
     }
+
+    public void testEvaluateNumericalWithPercentages() throws Exception {
+        Literal classes = ff.literal(3);
+        PropertyName exp = ff.property("foo");
+        Function func = ff.function("Jenks", exp, classes, ff.literal(true));
+        Object value = func.evaluate(featureCollection);
+        assertNotNull(value);
+        assertTrue(value instanceof RangedClassifier);
+        RangedClassifier ranged = (RangedClassifier) value;
+        double[] percentages = ranged.getPercentages();
+        assertEquals(percentages.length, 3);
+        assertEquals(percentages[0], 37.5);
+        assertEquals(percentages[1], 25.0);
+        assertEquals(percentages[2], 37.5);
+    }
 }

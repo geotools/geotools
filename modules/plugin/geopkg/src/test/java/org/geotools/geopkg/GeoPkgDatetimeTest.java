@@ -124,6 +124,27 @@ public class GeoPkgDatetimeTest {
         }
     }
 
+    /**
+     * Tests attribute "time" (timestamp) as is used by LIST in WMS time dimension GetCapabilities
+     * CF. testUnique()
+     *
+     * @throws IOException
+     */
+    @Test
+    public void testUnique_timestamp() throws IOException {
+        UniqueVisitor highlander = new UniqueVisitor("time");
+        SimpleFeatureSource fs = gpkg.getFeatureSource(gpkg.getTypeNames()[0]);
+
+        SimpleFeatureCollection features = fs.getFeatures();
+        features.accepts(highlander, NULL_LISTENER);
+
+        Set uniqueSet = highlander.getUnique();
+        assertEquals(uniqueSet.size(), features.size());
+        for (Object value : uniqueSet) {
+            assertThat(value, CoreMatchers.instanceOf(java.sql.Timestamp.class));
+        }
+    }
+
     @Test
     public void testMax() throws IOException {
         MaxVisitor max = new MaxVisitor("date");
@@ -136,6 +157,17 @@ public class GeoPkgDatetimeTest {
     }
 
     @Test
+    public void testMax_timestamp() throws IOException {
+        MaxVisitor max = new MaxVisitor("time");
+        SimpleFeatureSource fs = gpkg.getFeatureSource(gpkg.getTypeNames()[0]);
+
+        SimpleFeatureCollection features = fs.getFeatures();
+        features.accepts(max, NULL_LISTENER);
+
+        assertEquals(java.sql.Timestamp.valueOf("2020-03-19 01:00:00"), max.getMax());
+    }
+
+    @Test
     public void testMin() throws IOException {
         MinVisitor min = new MinVisitor("date");
         SimpleFeatureSource fs = gpkg.getFeatureSource(gpkg.getTypeNames()[0]);
@@ -144,6 +176,17 @@ public class GeoPkgDatetimeTest {
         features.accepts(min, NULL_LISTENER);
 
         assertEquals(java.sql.Date.valueOf("2020-02-19"), min.getMin());
+    }
+
+    @Test
+    public void testMin_timestamp() throws IOException {
+        MinVisitor min = new MinVisitor("time");
+        SimpleFeatureSource fs = gpkg.getFeatureSource(gpkg.getTypeNames()[0]);
+
+        SimpleFeatureCollection features = fs.getFeatures();
+        features.accepts(min, NULL_LISTENER);
+
+        assertEquals(java.sql.Timestamp.valueOf("2020-02-19 22:00:00"), min.getMin());
     }
 
     @Test
@@ -164,6 +207,40 @@ public class GeoPkgDatetimeTest {
         assertEquals(java.sql.Date.valueOf("2020-02-20"), results.get(singletonList("2")));
     }
 
+    @Test
+    public void testGroupBy_timestamp() throws IOException {
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+        GroupByVisitor visitor =
+                new GroupByVisitor(
+                        Aggregate.MAX,
+                        ff.property("time"),
+                        Arrays.asList(ff.property("txt")),
+                        NULL_LISTENER);
+
+        SimpleFeatureSource fs = gpkg.getFeatureSource(gpkg.getTypeNames()[0]);
+        SimpleFeatureCollection features = fs.getFeatures();
+        features.accepts(visitor, NULL_LISTENER);
+        Map results = (Map) visitor.getResult().toMap();
+
+        assertEquals(5, results.size());
+
+        assertEquals(
+                java.sql.Timestamp.valueOf("2020-02-19 22:00:00.0"),
+                results.get(singletonList("1")));
+        assertEquals(
+                java.sql.Timestamp.valueOf("2020-02-19 23:00:00.0"),
+                results.get(singletonList("2")));
+        assertEquals(
+                java.sql.Timestamp.valueOf("2020-03-19 00:00:00.0"),
+                results.get(singletonList("3")));
+        assertEquals(
+                java.sql.Timestamp.valueOf("2020-03-19 01:00:00.0"),
+                results.get(singletonList("4")));
+        assertEquals(
+                java.sql.Timestamp.valueOf("2020-02-20 02:00:00.0"),
+                results.get(singletonList("5")));
+    }
+
     /**
      * Test avoidance of aggregate between filter (as this needed some help to respect date and
      * timestamp)
@@ -173,6 +250,16 @@ public class GeoPkgDatetimeTest {
     @Test
     public void testBetween() throws IOException, CQLException {
         Filter between = ECQL.toFilter("date BETWEEN '2020-02-20' AND '2020-02-22'");
+
+        SimpleFeatureSource fs = gpkg.getFeatureSource(gpkg.getTypeNames()[0]);
+        SimpleFeatureCollection features = fs.getFeatures(between);
+        assertEquals(3, features.size());
+    }
+
+    @Test
+    public void testBetween_timestamp() throws IOException, CQLException {
+        Filter between =
+                ECQL.toFilter("time BETWEEN '2020-02-19 23:00:00' AND '2020-03-19 00:00:00'");
 
         SimpleFeatureSource fs = gpkg.getFeatureSource(gpkg.getTypeNames()[0]);
         SimpleFeatureCollection features = fs.getFeatures(between);

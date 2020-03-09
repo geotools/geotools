@@ -642,7 +642,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             List<Class> resultTypes = maybeResultTypes.get();
             if (resultTypes.size() == 1) {
                 Class targetType = resultTypes.get(0);
-                if (Date.class.isAssignableFrom(targetType)) {
+                if (java.util.Date.class.isAssignableFrom(targetType)) {
                     return v -> {
                         Object converted = Converters.convert(v, targetType);
                         if (converted == null) {

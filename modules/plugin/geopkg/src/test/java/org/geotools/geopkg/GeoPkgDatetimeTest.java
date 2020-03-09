@@ -164,6 +164,22 @@ public class GeoPkgDatetimeTest {
         assertEquals(java.sql.Date.valueOf("2020-02-20"), results.get(singletonList("2")));
     }
 
+    @Test
+    public void testUniqueTimestamp() throws IOException {
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+        UniqueVisitor visitor =
+                new UniqueVisitor(
+                        "datetime", gpkg.getFeatureSource(gpkg.getTypeNames()[0]).getSchema());
+
+        SimpleFeatureSource fs = gpkg.getFeatureSource(gpkg.getTypeNames()[0]);
+        SimpleFeatureCollection features = fs.getFeatures();
+        features.accepts(visitor, NULL_LISTENER);
+        List results = visitor.getResult().toList();
+        for (Object result : results) {
+            assertThat(result, CoreMatchers.instanceOf(Timestamp.class));
+        }
+    }
+
     /**
      * Test avoidance of aggregate between filter (as this needed some help to respect date and
      * timestamp)

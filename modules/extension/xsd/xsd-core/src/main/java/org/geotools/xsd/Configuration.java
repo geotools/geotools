@@ -384,7 +384,7 @@ public abstract class Configuration {
     public final Map setupBindings() {
         HashMap bindings = new HashMap();
 
-        // wrap the binding map up in a pico container for backwards compatability
+        // wrap the binding map up in a pico container for backwards compatibility
         // with old api which registered bindings in a pico container
         PicoMap container = new PicoMap(bindings);
 

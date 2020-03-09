@@ -28,8 +28,8 @@ import org.geotools.data.ows.OperationType;
  */
 public class WMTSRequest {
     private OperationType getCapabilities;
-
     private OperationType getTile;
+    private OperationType getFeatureInfo;
 
     public OperationType getGetCapabilities() {
         return getCapabilities;
@@ -45,5 +45,15 @@ public class WMTSRequest {
 
     public void setGetTile(OperationType getTile) {
         this.getTile = getTile;
+    }
+
+    /** @return Returns the getFeatureInfo. */
+    public OperationType getGetFeatureInfo() {
+        return getFeatureInfo;
+    }
+
+    /** @param getFeatureInfo The getFeatureInfo to set. */
+    public void setGetFeatureInfo(OperationType getFeatureInfo) {
+        this.getFeatureInfo = getFeatureInfo;
     }
 }

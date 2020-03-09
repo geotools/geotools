@@ -127,6 +127,7 @@ public class GeoPkgDatetimeTest {
     /**
      * Tests attribute "time" (timestamp) as is used by LIST in WMS time dimension GetCapabilities
      * CF. testUnique()
+     *
      * @throws IOException
      */
     @Test
@@ -143,7 +144,6 @@ public class GeoPkgDatetimeTest {
             assertThat(value, CoreMatchers.instanceOf(java.sql.Timestamp.class));
         }
     }
-
 
     @Test
     public void testMax() throws IOException {
@@ -166,7 +166,6 @@ public class GeoPkgDatetimeTest {
 
         assertEquals(java.sql.Timestamp.valueOf("2020-03-19 01:00:00"), max.getMax());
     }
-
 
     @Test
     public void testMin() throws IOException {
@@ -223,13 +222,23 @@ public class GeoPkgDatetimeTest {
         features.accepts(visitor, NULL_LISTENER);
         Map results = (Map) visitor.getResult().toMap();
 
-        assertEquals(5,results.size());
+        assertEquals(5, results.size());
 
-        assertEquals(java.sql.Timestamp.valueOf("2020-02-19 22:00:00.0"), results.get(singletonList("1")));
-        assertEquals(java.sql.Timestamp.valueOf("2020-02-19 23:00:00.0"), results.get(singletonList("2")));
-        assertEquals(java.sql.Timestamp.valueOf("2020-03-19 00:00:00.0"), results.get(singletonList("3")));
-        assertEquals(java.sql.Timestamp.valueOf("2020-03-19 01:00:00.0"), results.get(singletonList("4")));
-        assertEquals(java.sql.Timestamp.valueOf("2020-02-20 02:00:00.0"), results.get(singletonList("5")));
+        assertEquals(
+                java.sql.Timestamp.valueOf("2020-02-19 22:00:00.0"),
+                results.get(singletonList("1")));
+        assertEquals(
+                java.sql.Timestamp.valueOf("2020-02-19 23:00:00.0"),
+                results.get(singletonList("2")));
+        assertEquals(
+                java.sql.Timestamp.valueOf("2020-03-19 00:00:00.0"),
+                results.get(singletonList("3")));
+        assertEquals(
+                java.sql.Timestamp.valueOf("2020-03-19 01:00:00.0"),
+                results.get(singletonList("4")));
+        assertEquals(
+                java.sql.Timestamp.valueOf("2020-02-20 02:00:00.0"),
+                results.get(singletonList("5")));
     }
 
     /**
@@ -249,7 +258,8 @@ public class GeoPkgDatetimeTest {
 
     @Test
     public void testBetween_timestamp() throws IOException, CQLException {
-        Filter between = ECQL.toFilter("time BETWEEN '2020-02-19 23:00:00' AND '2020-03-19 00:00:00'");
+        Filter between =
+                ECQL.toFilter("time BETWEEN '2020-02-19 23:00:00' AND '2020-03-19 00:00:00'");
 
         SimpleFeatureSource fs = gpkg.getFeatureSource(gpkg.getTypeNames()[0]);
         SimpleFeatureCollection features = fs.getFeatures(between);

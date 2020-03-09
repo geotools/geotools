@@ -496,9 +496,9 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
                 ps.setString(column, ((Time) value).toString());
                 break;
             case Types.TIMESTAMP:
-                //2020-02-19 23:00:00.0  --> 2020-02-19 23:00:00.0Z
-                //We need the "Z" or sql lite will interpret the value as local time
-                ps.setString(column, ((Timestamp) value).toString()+"Z");
+                // 2020-02-19 23:00:00.0  --> 2020-02-19 23:00:00.0Z
+                // We need the "Z" or sql lite will interpret the value as local time
+                ps.setString(column, ((Timestamp) value).toString() + "Z");
                 break;
             default:
                 super.setValue(value, binding, ps, column, cx);

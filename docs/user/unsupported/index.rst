@@ -30,11 +30,11 @@ Research and Development:
 
 Unsupported DataStore implementations:
 
-* :doc:`/library/data/dxf` (Inactive) Support for DXF format files
-* :doc:`/library/data/georest` (Unknown) Support for a REST service using GeoJSON
-* :doc:`/library/data/mongodb` (Unknown) Support for using mongodb (https://www.mongodb.com/, https://en.wikipedia.org/wiki/MongoDB) as a feature store.
 * :doc:`/library/data/arcsde` (Inactive) Support for using an ArcSDE gateway service, versions 10.2/10.3
+* :doc:`/library/data/elasticsearch` Support for search and analytics engine
+* :doc:`/library/data/georest` (Unknown) Support for a REST service using GeoJSON
 * :doc:`/library/data/wfs-ng` (Active) Supports communication with a Web Feature Server using the standard GeoTools DataStore API
+* :doc:`/library/data/mongodb` (Unknown) Support for using mongodb (https://www.mongodb.com/, https://en.wikipedia.org/wiki/MongoDB) as a feature store.
 
 Unsupported Raster modules:
 

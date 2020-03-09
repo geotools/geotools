@@ -24,10 +24,6 @@
   <!--                        modules or example code used by the  -->
   <!--                        build box.                           -->
   <!--                                                             -->
-  <!--    -Doracle=true       Indicate that the real oracle driver -->
-  <!--                        has been installed into the local    -->
-  <!--                        repository and should be used.       -->
-  <!--                                                             -->
   <!--   Available profiles are:                                   -->
   <!--                                                             -->
   <!--     docs               include docs                         -->
@@ -68,7 +64,6 @@
   <!--       mvn -P extensive.tests install                        -->
   <!--       mvn -P online,stress install                          -->
   <!--       mvn -P site.build site                                -->
-  <!--       mvn eclipse:eclipse -Doracle=true -P pending          -->
   <!--                                                             -->
   <!--     While you can specify properties one at a time on the   -->
   <!--     command line, for properties describing your            -->
@@ -80,7 +75,6 @@
   <!--     manner relevant to the purpose of the "site" goal.      -->
   <!-- =========================================================== -->
   <properties>
-    <oracle>false</oracle>
     <allow.test.skip>true</allow.test.skip>
     <allow.test.failure.ignore>false</allow.test.failure.ignore>
     <extensive.tests>false</extensive.tests>
@@ -1267,11 +1261,10 @@
       </dependency>
 
       <!-- ORACLE -->
-      <!-- Download and install into your own repo -->
       <dependency>
-        <artifactId>ojdbc7</artifactId>
-        <groupId>com.oracle</groupId>
-        <version>12.1.0.2</version>
+        <artifactId>ojdbc8</artifactId>
+        <groupId>com.oracle.database.jdbc</groupId>
+        <version>19.3.0.0</version>
       </dependency>
       <!-- Older version required by imagemosaic -->
       <dependency>

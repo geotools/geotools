@@ -91,7 +91,7 @@ The following connection management facilities are provided:
 Example using the popular ``commons-dbcp`` implementation of DataSource::
     
     BasicDataSource source = new BasicDataSource();
-    source.setDriverClassName("oracle.jdbc.driver.OracleDriver");
+    source.setDriverClassName("oracle.jdbc.OracleDriver");
     source.setUsername( user );
     source.setPassword( password );
     source.setUrl( url );
@@ -142,7 +142,7 @@ The following hints effect the performance of ``epsg-oracle`` plugin and may be 
   application::
     
     BasicDataSource source = new BasicDataSource();
-    source.setDriverClassName("oracle.jdbc.driver.OracleDriver");
+    source.setDriverClassName("oracle.jdbc.OracleDriver");
     source.setUsername( user );
     source.setPassword( password );
     source.setUrl( url );
@@ -170,7 +170,7 @@ The following hints effect the performance of ``epsg-oracle`` plugin and may be 
   keep 3 connections in reserve (until they time out) in order to quickly respond to multiple threads.::
     
     BasicDataSource source = new BasicDataSource();
-    source.setDriverClassName("oracle.jdbc.driver.OracleDriver");
+    source.setDriverClassName("oracle.jdbc.OracleDriver");
     source.setUsername( user );
     source.setPassword( password );
     source.setUrl( url );
@@ -196,7 +196,7 @@ The following hints effect the performance of ``epsg-oracle`` plugin and may be 
   In this configuration we are going to hold a connection open and not cache anything.::
     
     BasicDataSource source = new BasicDataSource();
-    source.setDriverClassName("oracle.jdbc.driver.OracleDriver");
+    source.setDriverClassName("oracle.jdbc.OracleDriver");
     source.setUsername( user );
     source.setPassword( password );
     source.setUrl( url );

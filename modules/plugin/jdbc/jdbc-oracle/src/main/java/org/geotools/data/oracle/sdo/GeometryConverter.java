@@ -17,16 +17,15 @@
 package org.geotools.data.oracle.sdo;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Iterator;
+import oracle.jdbc.OracleArray;
 import oracle.jdbc.OracleConnection;
-import oracle.sql.ARRAY;
-import oracle.sql.ArrayDescriptor;
+import oracle.jdbc.OracleStruct;
 import oracle.sql.CHAR;
 import oracle.sql.CharacterSet;
 import oracle.sql.Datum;
 import oracle.sql.NUMBER;
-import oracle.sql.STRUCT;
-import oracle.sql.StructDescriptor;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateList;
 import org.locationtech.jts.geom.Envelope;
@@ -47,6 +46,7 @@ import org.locationtech.jts.geom.Polygon;
  * ordinates beyond xyz.
  *
  * @author jgarnett
+ * @author Mark Prins, B3Partners
  */
 public class GeometryConverter {
     protected OracleConnection connection;
@@ -65,8 +65,8 @@ public class GeometryConverter {
     /**
      * Used to handle MDSYS.SDO_GEOMETRY.
      *
-     * @return <code>MDSYS.SDO_GEOMETRY</code>
-     * @see net.refractions.jspatial.Converter#getDataType()
+     * @return {@code MDSYS.SDO_GEOMETRY}
+     * @see #DATATYPE
      */
     public String getDataTypeName() {
         return DATATYPE;
@@ -78,8 +78,7 @@ public class GeometryConverter {
      * <p>This Converter does not support SpatialCoordinates
      *
      * @param geom the Geometry to be converted
-     * @return <code>true</code> if <code>obj</code> is a JTS Geometry
-     * @see net.refractions.jspatial.Converter#isCapable(java.lang.Object)
+     * @return {@code true} if {@code obj} is a JTS Geometry
      */
     public boolean isCapable(Geometry geom) {
         if (geom == null) return true;
@@ -100,22 +99,21 @@ public class GeometryConverter {
     /**
      * Convert provided SDO_GEOMETRY to JTS Geometry.
      *
-     * <p>Will return <code>null</code> as <code>null</code>.
+     * <p>Will return {@code null} as {@code null}.
      *
-     * @param sdoGeometry datum STRUCT to be converted to a double[]
-     * @return JTS <code>Geometry</code> representing the provided <code>datum</code>
-     * @see net.refractions.jspatial.Converter#toObject(oracle.sql.STRUCT)
+     * @param sdoGeometry datum STRUCT to be converted to a geometry
+     * @return JTS {@code Geometry} representing the provided {@code datum}
      */
-    public Geometry asGeometry(STRUCT sdoGeometry) throws SQLException {
+    public Geometry asGeometry(OracleStruct sdoGeometry) throws SQLException {
         // Note Returning null for null Datum
         if (sdoGeometry == null) return null;
 
-        Datum data[] = sdoGeometry.getOracleAttributes();
-        final int GTYPE = asInteger(data[0], 0);
-        final int SRID = asInteger(data[1], SDO.SRID_NULL);
-        final double POINT[] = asDoubleArray((STRUCT) data[2], Double.NaN);
-        final int ELEMINFO[] = asIntArray((ARRAY) data[3], 0);
-        final double ORDINATES[] = asDoubleArray((ARRAY) data[4], Double.NaN);
+        Object data[] = sdoGeometry.getAttributes();
+        final int GTYPE = asInteger((Number) data[0], 0);
+        final int SRID = asInteger((Number) data[1], SDO.SRID_NULL);
+        final double POINT[] = asDoubleArray((OracleStruct) data[2], Double.NaN);
+        final int ELEMINFO[] = asIntArray((OracleArray) data[3], 0);
+        final double ORDINATES[] = asDoubleArray((OracleArray) data[4], Double.NaN);
 
         return SDO.create(geometryFactory, GTYPE, SRID, POINT, ELEMINFO, ORDINATES);
     }
@@ -123,26 +121,24 @@ public class GeometryConverter {
     /**
      * Used to convert double[] to SDO_ODINATE_ARRAY.
      *
-     * <p>Will return <code>null</code> as an empty <code>SDO_GEOMETRY</code>
+     * <p>Will return {@code null} as an empty {@code SDO_GEOMETRY}
      *
      * @param geom Map to be represented as a STRUCT
-     * @return STRUCT representing provided Map
-     * @see net.refractions.jspatial.Converter#toDataType(java.lang.Object)
+     * @return Struct representing provided Map
      */
-    public STRUCT toSDO(Geometry geom) throws SQLException {
+    public OracleStruct toSDO(Geometry geom) throws SQLException {
         return toSDO(geom, geom.getSRID());
     }
 
     /**
      * Used to convert double[] to SDO_ODINATE_ARRAY.
      *
-     * <p>Will return <code>null</code> as an empty <code>SDO_GEOMETRY</code>
+     * <p>Will return {@code null} as an empty {@code SDO_GEOMETRY}
      *
      * @param geom Map to be represented as a STRUCT
      * @return STRUCT representing provided Map
-     * @see net.refractions.jspatial.Converter#toDataType(java.lang.Object)
      */
-    public STRUCT toSDO(Geometry geom, int srid) throws SQLException {
+    public OracleStruct toSDO(Geometry geom, int srid) throws SQLException {
         if (geom == null || geom.isEmpty()) return asEmptyDataType();
 
         int gtype = SDO.gType(geom);
@@ -151,10 +147,10 @@ public class GeometryConverter {
         NUMBER SDO_SRID = (srid == SDO.SRID_NULL || srid == 0) ? null : new NUMBER(srid);
 
         double[] point = SDO.point(geom);
-        STRUCT SDO_POINT;
+        OracleStruct SDO_POINT;
 
-        ARRAY SDO_ELEM_INFO;
-        ARRAY SDO_ORDINATES;
+        OracleArray SDO_ELEM_INFO;
+        OracleArray SDO_ORDINATES;
 
         if (point == null) {
             final Envelope env = geom.getEnvelopeInternal();
@@ -165,7 +161,6 @@ public class GeometryConverter {
                 // rectangle optimization. Actually, more than an optimization. A few operators
                 // do not work properly if they don't get rectangular geoms encoded as rectangles
                 // SDO_FILTER is an example of this silly situation
-                SDO_POINT = null;
                 int elemInfo[] = new int[] {1, 1003, 3};
                 double ordinates[];
                 if (SDO.D(geom) == 2)
@@ -199,57 +194,61 @@ public class GeometryConverter {
             SDO_ELEM_INFO = null;
             SDO_ORDINATES = null;
         }
-        Datum attributes[] =
-                new Datum[] {SDO_GTYPE, SDO_SRID, SDO_POINT, SDO_ELEM_INFO, SDO_ORDINATES};
+        Object attributes[] =
+                new Object[] {SDO_GTYPE, SDO_SRID, SDO_POINT, SDO_ELEM_INFO, SDO_ORDINATES};
         return toSTRUCT(attributes, DATATYPE);
     }
 
     /**
-     * Representation of <code>null</code> as an Empty <code>SDO_GEOMETRY</code>.
+     * Representation of {@code null} as an Empty {@code SDO_GEOMETRY}.
      *
-     * @return <code>null</code> as a SDO_GEOMETRY
+     * @return {@code null} as a SDO_GEOMETRY
      */
-    protected STRUCT asEmptyDataType() throws SQLException {
+    protected OracleStruct asEmptyDataType() throws SQLException {
         return toSTRUCT(null, DATATYPE);
     }
 
-    /** Convience method for STRUCT construction. */
-    protected final STRUCT toSTRUCT(Datum attributes[], String dataType) throws SQLException {
+    /** Convenience method for OracleStruct construction. */
+    protected final OracleStruct toSTRUCT(Datum attributes[], String dataType) throws SQLException {
         if (dataType.startsWith("*.")) {
             dataType = "DRA." + dataType.substring(2); // TODO here
         }
-        StructDescriptor descriptor = StructDescriptor.createDescriptor(dataType, connection);
+        return (OracleStruct) connection.createStruct(dataType, attributes);
+    }
 
-        return new STRUCT(descriptor, connection, attributes);
+    /** Convenience method for OracleStruct construction. */
+    private OracleStruct toSTRUCT(Object attributes[], String dataType) throws SQLException {
+        if (dataType.startsWith("*.")) {
+            dataType = "DRA." + dataType.substring(2); // TODO here
+        }
+        return (OracleStruct) connection.createStruct(dataType, attributes);
     }
 
     /**
-     * Convience method for ARRAY construction.
+     * Convenience method for OracleArray construction.
      *
-     * <p>Compare and contrast with toORDINATE - which treats <code>Double.NaN</code> as<code>NULL
-     * </code>
+     * <p>Compare and contrast with toORDINATE - which treats {@code Double.NaN} as {@code NULL}
      */
-    protected final ARRAY toARRAY(double doubles[], String dataType) throws SQLException {
-        ArrayDescriptor descriptor = ArrayDescriptor.createDescriptor(dataType, connection);
-
-        return new ARRAY(descriptor, connection, doubles);
+    protected final OracleArray toARRAY(double doubles[], String dataType) throws SQLException {
+        return connection.createARRAY(dataType, doubles);
     }
 
     /**
-     * Convience method for ARRAY construction.
+     * Convenience method for OracleArray construction.
      *
-     * <p>Forced to burn memory here - only way to actually place <code>NULL</code> numbers in the
+     * <p>Forced to burn memory here - only way to actually place {@code NULL} numbers in the
      * ordinate stream.
      *
      * <ul>
-     *   <li>JTS: records lack of data as <code>Double.NaN</code>
-     *   <li>SDO: records lack of data as <code>NULL</code>
+     *   <li>JTS: records lack of data as {@code Double.NaN}
+     *   <li>SDO: records lack of data as {@code NULL}
      * </ul>
      *
      * <p>The alternative is to construct the array from a array of doubles, which does not record
-     * <code>NULL</code> NUMBERs.
+     * {@code NULL} NUMBERs.
      *
-     * <p>The results is an "MDSYS.SDO_ORDINATE_ARRAY" <code><pre>
+     * <p>The results is an "MDSYS.SDO_ORDINATE_ARRAY"
+     * <pre> {@code
      * list     = c1(1,2,0), c2(3,4,Double.NaN)
      * measures = {{5,6},{7,8}
      *
@@ -261,16 +260,15 @@ public class GeometryConverter {
      *
      * toORDINATE( list, null, 2 )
      * = (1,2, 3,4)
-     * </pre></code>
+     * }
+     * </pre>
      *
      * @param list CoordinateList to be represented
-     * @param measures Per Coordinate Measures, <code>null</code> if not required
+     * @param measures Per Coordinate Measures, {@code null} if not required
      * @param D Dimension of Coordinates (limited to 2d, 3d)
      */
-    protected final ARRAY toORDINATE(CoordinateList list, double measures[][], final int D)
+    protected final OracleArray toORDINATE(CoordinateList list, double measures[][], final int D)
             throws SQLException {
-        ArrayDescriptor descriptor =
-                ArrayDescriptor.createDescriptor("MDSYS.SDO_ORDINATE_ARRAY", connection);
 
         final int LENGTH = measures != null ? measures.length : 0;
         final int LEN = D + LENGTH;
@@ -291,13 +289,10 @@ public class GeometryConverter {
                 data[offset++] = toNUMBER(measures[j][index]);
             }
         }
-        return new ARRAY(descriptor, connection, data);
+        return connection.createARRAY("MDSYS.SDO_ORDINATE_ARRAY", data);
     }
 
-    protected final ARRAY toORDINATE(double ords[]) throws SQLException {
-        ArrayDescriptor descriptor =
-                ArrayDescriptor.createDescriptor("MDSYS.SDO_ORDINATE_ARRAY", connection);
-
+    protected final OracleArray toORDINATE(double ords[]) throws SQLException {
         final int LENGTH = ords.length;
 
         Datum data[] = new Datum[LENGTH];
@@ -305,12 +300,10 @@ public class GeometryConverter {
         for (int i = 0; i < LENGTH; i++) {
             data[i] = toNUMBER(ords[i]);
         }
-        return new ARRAY(descriptor, connection, data);
+        return connection.createARRAY("MDSYS.SDO_ORDINATE_ARRAY", data);
     }
 
-    protected final ARRAY toATTRIBUTE(double ords[], String desc) throws SQLException {
-        ArrayDescriptor descriptor = ArrayDescriptor.createDescriptor(desc, connection);
-
+    protected final OracleArray toATTRIBUTE(double ords[], String desc) throws SQLException {
         final int LENGTH = ords.length;
 
         Datum data[] = new Datum[LENGTH];
@@ -318,13 +311,13 @@ public class GeometryConverter {
         for (int i = 0; i < LENGTH; i++) {
             data[i] = toNUMBER(ords[i]);
         }
-        return new ARRAY(descriptor, connection, data);
+        return connection.createARRAY(desc, data);
     }
 
     /**
-     * Convience method for NUMBER construction.
+     * Convenience method for NUMBER construction.
      *
-     * <p>Double.NaN is represented as <code>NULL</code> to agree with JTS use.
+     * <p>Double.NaN is represented as {@code NULL} to agree with JTS use.
      */
     protected final NUMBER toNUMBER(double number) throws SQLException {
         if (Double.isNaN(number)) {
@@ -333,23 +326,21 @@ public class GeometryConverter {
         return new NUMBER(number);
     }
 
-    /** Convience method for ARRAY construction. */
-    protected final ARRAY toARRAY(int ints[], String dataType) throws SQLException {
-        ArrayDescriptor descriptor = ArrayDescriptor.createDescriptor(dataType, connection);
-
-        return new ARRAY(descriptor, connection, ints);
+    /** Convenience method for OracleArray construction. */
+    protected final OracleArray toARRAY(int ints[], String dataType) throws SQLException {
+        return connection.createARRAY(dataType, ints);
     }
 
-    /** Convience method for NUMBER construction */
+    /** Convenience method for NUMBER construction */
     protected final NUMBER toNUMBER(int number) {
         return new NUMBER(number);
     }
 
-    /** Convience method for CHAR construction */
+    /** Convenience method for CHAR construction */
     protected final CHAR toCHAR(String s) {
 
         // make sure if the string is larger than one character, only take the first character
-        if (s.length() > 1) s = new String((Character.valueOf(s.charAt(0))).toString());
+        if (s.length() > 1) s = Character.valueOf(s.charAt(0)).toString();
         try {
             // BUG: make sure I am correct
             return new CHAR(s, CharacterSet.make(CharacterSet.ISO_LATIN_1_CHARSET));
@@ -365,26 +356,51 @@ public class GeometryConverter {
     /** Presents datum as an int */
     protected int asInteger(Datum datum, final int DEFAULT) throws SQLException {
         if (datum == null) return DEFAULT;
-        return ((NUMBER) datum).intValue();
+        return datum.intValue();
+    }
+    /**
+     * Presents Number as an int with optional default value in case the {@code datum} argument is
+     * {@code null}.
+     *
+     * @see #asInteger(Datum, int)
+     */
+    private int asInteger(Number datum, final int DEFAULT) throws SQLException {
+        if (datum == null) return DEFAULT;
+        return datum.intValue();
     }
     /** Presents datum as a double */
     protected double asDouble(Datum datum, final double DEFAULT) throws SQLException {
         if (datum == null) return DEFAULT;
         return ((NUMBER) datum).doubleValue();
     }
+    /**
+     * Presents Number as a double with optional default value in case the {@code datum} argument is
+     * {@code null}.
+     *
+     * @see #asDouble(Datum, double)
+     */
+    private double asDouble(Number datum, final double DEFAULT) throws SQLException {
+        if (datum == null) return DEFAULT;
+        return datum.doubleValue();
+    }
 
     /** Presents struct as a double[] */
-    protected double[] asDoubleArray(STRUCT struct, final double DEFAULT) throws SQLException {
+    protected double[] asDoubleArray(OracleStruct struct, final double DEFAULT)
+            throws SQLException {
         if (struct == null) return null;
-        return asDoubleArray(struct.getOracleAttributes(), DEFAULT);
+        // cannot cast Object[] to Number[]
+        return asDoubleArray(
+                Arrays.copyOf(
+                        struct.getAttributes(), struct.getAttributes().length, Number[].class),
+                DEFAULT);
     }
 
     /** Presents array as a double[] */
-    protected double[] asDoubleArray(ARRAY array, final double DEFAULT) throws SQLException {
+    protected double[] asDoubleArray(OracleArray array, final double DEFAULT) throws SQLException {
         if (array == null) return null;
         if (DEFAULT == 0) return array.getDoubleArray();
 
-        return asDoubleArray(array.getOracleArray(), DEFAULT);
+        return asDoubleArray((Number[]) array.getArray(), DEFAULT);
     }
 
     /** Presents Datum[] as a double[] */
@@ -396,13 +412,26 @@ public class GeometryConverter {
         }
         return array;
     }
+    /**
+     * Presents Number[] as a double[] with optional default value in case an {@code data[n]}
+     * argument is {@code null}.
+     */
+    private double[] asDoubleArray(Number data[], final double DEFAULT) throws SQLException {
+        if (data == null) return null;
+        double array[] = new double[data.length];
+        for (int i = 0; i < data.length; i++) {
+            array[i] = asDouble(data[i], DEFAULT);
+        }
+        return array;
+    }
 
-    protected int[] asIntArray(ARRAY array, int DEFAULT) throws SQLException {
+    protected int[] asIntArray(OracleArray array, int DEFAULT) throws SQLException {
         if (array == null) return null;
         if (DEFAULT == 0) return array.getIntArray();
-
-        return asIntArray(array.getOracleArray(), DEFAULT);
+        // call with Datum[]
+        return asIntArray((Datum[]) array.getArray(), DEFAULT);
     }
+
     /** Presents Datum[] as a int[] */
     protected int[] asIntArray(Datum data[], final int DEFAULT) throws SQLException {
         if (data == null) return null;

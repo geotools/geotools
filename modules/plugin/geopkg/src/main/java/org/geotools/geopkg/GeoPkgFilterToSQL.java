@@ -49,7 +49,7 @@ public class GeoPkgFilterToSQL extends PreparedFilterToSQL {
      *
      * <p>The encoding of the column name ("time") and the literals must be the same!
      *
-     * <p>datetime("Time",'localtime') BETWEEN datetime(?,'localtime') AND datetime(?,'localtime')
+     * <p>datetime("Time",'utc') BETWEEN datetime(?,'utc') AND datetime(?,'utc')
      *
      * <p>For non-time columns, this just relegates to the superclass
      *
@@ -62,18 +62,18 @@ public class GeoPkgFilterToSQL extends PreparedFilterToSQL {
         // desc might be null in the case of joins et al
         if ((desc != null) && (desc.getType().getBinding() != null)) {
             Class<?> binding = desc.getType().getBinding();
-            // localtime -- everything must be consistent -- see literal visitor
+            // utc -- everything must be consistent -- see literal visitor
             if (Time.class.isAssignableFrom(binding)) {
-                return "time(" + super_result + ",'localtime')";
+                return "time(" + super_result + ",'utc')";
             } else if (Timestamp.class.isAssignableFrom(binding)) {
                 return "datetime("
                         + super_result
-                        + ",'localtime')"; // localtime -- everything must be consistent -- see
+                        + ",'utc')"; // utc -- everything must be consistent -- see
                 // literal visitor
             } else if (java.sql.Date.class.isAssignableFrom(binding)) {
                 return "date("
                         + super_result
-                        + ",'localtime')"; // localtime -- everything must be consistent -- see
+                        + ",'utc')"; // utc -- everything must be consistent -- see
                 // literal visitor
             }
         }
@@ -142,11 +142,11 @@ public class GeoPkgFilterToSQL extends PreparedFilterToSQL {
                     dialect.prepareGeometryValue(
                             (Geometry) literalValue, dimension, srid, Geometry.class, sb);
                 } else if (Time.class.isAssignableFrom(literalValue.getClass())) {
-                    sb.append("time(?,'localtime')");
+                    sb.append("time(?,'utc')");
                 } else if (Timestamp.class.isAssignableFrom(literalValue.getClass())) {
-                    sb.append("datetime(?,'localtime')");
+                    sb.append("datetime(?,'utc')");
                 } else if (java.sql.Date.class.isAssignableFrom(literalValue.getClass())) {
-                    sb.append("date(?,'localtime')");
+                    sb.append("date(?,'utc')");
                 } else if (encodingFunction) {
                     dialect.prepareFunctionArgument(clazz, sb);
                 } else {

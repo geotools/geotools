@@ -496,7 +496,9 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
                 ps.setString(column, ((Time) value).toString());
                 break;
             case Types.TIMESTAMP:
-                ps.setString(column, ((Timestamp) value).toString());
+                //2020-02-19 23:00:00.0  --> 2020-02-19 23:00:00.0Z
+                //We need the "Z" or sql lite will interpret the value as local time
+                ps.setString(column, ((Timestamp) value).toString()+"Z");
                 break;
             default:
                 super.setValue(value, binding, ps, column, cx);
@@ -642,7 +644,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             List<Class> resultTypes = maybeResultTypes.get();
             if (resultTypes.size() == 1) {
                 Class targetType = resultTypes.get(0);
-                if (Date.class.isAssignableFrom(targetType)) {
+                if (java.util.Date.class.isAssignableFrom(targetType)) {
                     return v -> {
                         Object converted = Converters.convert(v, targetType);
                         if (converted == null) {

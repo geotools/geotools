@@ -43,6 +43,7 @@ public class OracleTestSetup extends JDBCTestSetup {
         return new OracleNGDataStoreFactory();
     }
 
+    @Override
     protected void setUpDataStore(JDBCDataStore dataStore) {
         super.setUpDataStore(dataStore);
         // tests do assume the dialect is working in non loose mode
@@ -54,13 +55,14 @@ public class OracleTestSetup extends JDBCTestSetup {
     @Override
     protected Properties createExampleFixture() {
         Properties fixture = new Properties();
-        fixture.put("driver", "oracle.jdbc.driver.OracleDriver");
+        fixture.put("driver", "oracle.jdbc.OracleDriver");
         fixture.put("url", "jdbc:oracle:thin:@192.168.1.200:1521:xe");
         fixture.put("host", "192.168.1.200");
         fixture.put("port", "1521");
         fixture.put("database", "xe");
         fixture.put("username", "geoserver");
         fixture.put("user", "geoserver");
+        fixture.put("schema", "geoserver");
         fixture.put("password", "postgis");
         fixture.put("dbtype", "Oracle");
         return fixture;

@@ -101,11 +101,11 @@ public class SDOSqlDumper {
                     ""
                             + SDO.D(line)
                             + " dimensioned geometry provided."
-                            + " This encoder only supports 2D geometries. The query will be constructed as"
+                            + " This encoder only supports 2D linestring geometries. The query will be constructed as"
                             + " a 2D query.");
         }
 
-        StringBuffer buffer = new StringBuffer("MDSYS.SDO_GEOMETRY(");
+        StringBuilder buffer = new StringBuilder("MDSYS.SDO_GEOMETRY(");
 
         buffer.append(SDO.D(line));
         buffer.append("002,");
@@ -153,11 +153,11 @@ public class SDOSqlDumper {
                     ""
                             + SDO.D(point)
                             + " dimensioned geometry provided."
-                            + " This encoder only supports 2D geometries. The query will be constructed as"
+                            + " This encoder only supports 2D point geometries. The query will be constructed as"
                             + " a 2D query.");
         }
 
-        StringBuffer buffer = new StringBuffer("MDSYS.SDO_GEOMETRY(");
+        StringBuilder buffer = new StringBuilder("MDSYS.SDO_GEOMETRY(");
 
         buffer.append(SDO.D(point));
         buffer.append("001,");
@@ -189,14 +189,14 @@ public class SDOSqlDumper {
      * @return An SDO SQL geometry object construction statement
      */
     private static String toSDOGeom(Polygon polygon, int srid) {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
 
         if (SDO.D(polygon) > 2) {
             LOGGER.warning(
                     ""
                             + SDO.D(polygon)
                             + " dimensioned geometry provided."
-                            + " This encoder only supports 2D geometries. The query will be constructed as"
+                            + " This encoder only supports 2D polygon geometries. The query will be constructed as"
                             + " a 2D query.");
         }
 
@@ -268,7 +268,7 @@ public class SDOSqlDumper {
      * @return An SDO SQL geometry object construction statement
      */
     private static String toSDOGeom(Envelope envelope, int srid) {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         buffer.append("MDSYS.SDO_GEOMETRY(");
         buffer.append("2003,");
 

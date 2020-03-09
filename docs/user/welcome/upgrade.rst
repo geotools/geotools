@@ -28,6 +28,11 @@ But first to upgrade - change your dependency geotools.version to |release| (or 
         ....
     </dependencies>
 
+GeoTools 24.x
+-------------
+
+The Oracle extension was upgraded to use the current JDBC driver release. If you are using ``oracle.jdbc.driver.OracleDriver`` in your code to load the JDBC driver you should change this to ``oracle.jdbc.OracleDriver``.
+
 GeoTools 22.x
 -------------
 

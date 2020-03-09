@@ -128,7 +128,9 @@ public class Homolosine extends MapProjection {
             offset = -offset;
         }
 
-        while (lam > interruptions[++i]) ;
+        if (lam > interruptions[interruptions.length - 1]) i = interruptions.length;
+        else while (lam > interruptions[i]) i++;
+
         central_merid = central_merids[i - 1];
         lam_shift = lam - central_merid;
 
@@ -179,7 +181,9 @@ public class Homolosine extends MapProjection {
                 interruptions[j] = sinu.transformNormalized(INTERRUP_SOUTH[j], 0, null).getX();
         }
 
-        while (x > interruptions[++i]) ;
+        if (x > interruptions[interruptions.length - 1]) i = interruptions.length;
+        else while (x > interruptions[i]) i++;
+
         central_merid = central_merids[i - 1];
         shift = sinu.transformNormalized(central_merid, 0, null);
 

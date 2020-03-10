@@ -1035,7 +1035,7 @@
         <artifactId>jt-zonalstats</artifactId>
         <version>${jt.version}</version>
       </dependency>
-			<!-- JAXB -->
+      <!-- JAXB -->
       <dependency>
         <groupId>javax.xml.bind</groupId>
         <artifactId>jaxb-api</artifactId>
@@ -1050,12 +1050,22 @@
       <dependency>
         <groupId>org.locationtech.jts</groupId>
         <artifactId>jts-core</artifactId>
-	      <version>${jts.version}</version>
+        <version>${jts.version}</version>
       </dependency>
       <dependency>
         <groupId>org.locationtech.jts</groupId>
         <artifactId>jts-example</artifactId>
         <version>${jts.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.locationtech.spatial4j</groupId>
+        <artifactId>spatial4j</artifactId>
+        <version>0.6</version>
+      </dependency>
+      <dependency>
+        <groupId>com.github.davidmoten</groupId>
+        <artifactId>geo</artifactId>
+        <version>0.7.4</version>
       </dependency>
       <dependency>
         <groupId>org.wkb4j</groupId>
@@ -1349,6 +1359,16 @@
         <groupId>net.sf.ehcache</groupId>
         <artifactId>ehcache</artifactId>
         <version>2.10.3</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>25.1-jre</version>
+      </dependency>
+      <dependency>
+        <groupId>joda-time</groupId>
+        <artifactId>joda-time</artifactId>
+        <version>2.10.1</version>
       </dependency>
 
       <!-- Tests or legacy -->

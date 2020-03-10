@@ -11,6 +11,12 @@ Elasticsearch is a popular search and analytics engine.
       <version>${geotools.version}</version>
     </dependency>
 
+.. note: Community Experiment
+   
+   This is an :doc:`unsupported <../../unsupport>` community plugin to work with `Elasticsearch <https://www.elastic.co/elasticsearch/>`__ search and analytics engine.
+   
+   This is a plugin was added in 2020, gathered from public domain implementations. If you are interested in this functionality contact the author ant help make this plugin part of GeoTools!
+
 Connection Parameters
 ^^^^^^^^^^^^^^^^^^^^^
 

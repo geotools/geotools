@@ -71,10 +71,7 @@ public class GeoPkgFilterToSQL extends PreparedFilterToSQL {
                         + ",'utc')"; // utc -- everything must be consistent -- see
                 // literal visitor
             } else if (java.sql.Date.class.isAssignableFrom(binding)) {
-                return "date("
-                        + super_result
-                        + ",'utc')"; // utc -- everything must be consistent -- see
-                // literal visitor
+                return "date(" + super_result + ")";
             }
         }
         return super_result;
@@ -146,7 +143,7 @@ public class GeoPkgFilterToSQL extends PreparedFilterToSQL {
                 } else if (Timestamp.class.isAssignableFrom(literalValue.getClass())) {
                     sb.append("datetime(?,'utc')");
                 } else if (java.sql.Date.class.isAssignableFrom(literalValue.getClass())) {
-                    sb.append("date(?,'utc')");
+                    sb.append("date(?)");
                 } else if (encodingFunction) {
                     dialect.prepareFunctionArgument(clazz, sb);
                 } else {

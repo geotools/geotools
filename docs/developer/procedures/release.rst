@@ -80,6 +80,10 @@ When creating the first release candidate of a series, there are some extra step
 * Checkout the master branch and update the version in all ``pom.xml`` files and a few miscellaneous files; for example, if changing master from ``17-SNAPSHOT`` to ``18-SNAPSHOT``::
 
     git checkout master
+    ant -f build/release.xml -Drelease=24-SNAPSHOT
+    
+  This replaces::
+
     find . -name ``pom.xml`` -exec sed -i 's/17-SNAPSHOT/18-SNAPSHOT/g' {} \;
     sed -i 's/17-SNAPSHOT/18-SNAPSHOT/g' \
         build/rename.xml \
@@ -89,22 +93,26 @@ When creating the first release candidate of a series, there are some extra step
         docs/user/tutorial/quickstart/artifacts/pom2.xml \
         modules/library/metadata/src/main/java/org/geotools/factory/GeoTools.java
 
-.. note:: If you are on macOS, you will need to add ``''`` after the ``-i`` argument for each ``sed`` command.
+  .. note:: If you are on macOS, you will need to add ``''`` after the ``-i`` argument for each ``sed`` command.
+     
+     ::
+  
+        find . -name ``pom.xml`` -exec sed -i '' 's/17-SNAPSHOT/18-SNAPSHOT/g' {} \;
 
 * Commit the changes and push to the master branch on GitHub::
 
-      git commit -am "Update version to 18-SNAPSHOT"
-      git push geotools master
+    git commit -am "Update version to 24-SNAPSHOT"
+    git push geotools master
       
-* Create the new release candidate version in `JIRA <https://osgeo-org.atlassian.net/projects/GEOT>`_ for issues on master; for example, if master is now ``18-SNAPSHOT``, create a Jira version ``18-RC1`` for the first release of the ``18.x`` series
+* Create the new release candidate version in `JIRA <https://osgeo-org.atlassian.net/projects/GEOT>`_ for issues on master; for example, if master is now ``24-SNAPSHOT``, create a Jira version ``24-RC1`` for the first release of the ``24.x`` series
 
 * Create the new ``GeoTools $VER Releases`` (e.g. ``GeoTools 22 Releases``) folder in `SourceForge <https://sourceforge.net/projects/geotools/files/>`__
 
 * Update the jobs on build.geoserver.org:
   
-  * disable the maintenance jobs, and remove them from the geotools view
-  * create new jobs, create from the existing master jobs, editing the branch and the DIST=stable configuration. Remember to also create the new docs jobs.
-  * edit the previous stable branch, changing to DIST=maintenance
+  * Disable the maintenance jobs, and remove them from the geotools view
+  * Create new jobs, create from the existing master jobs, editing the branch and the DIST=stable configuration. Remember to also create the new docs jobs.
+  * Edit the previous stable branch, changing to DIST=maintenance
 
 * Announce on the developer mailing list that the new stable branch has been created.
 

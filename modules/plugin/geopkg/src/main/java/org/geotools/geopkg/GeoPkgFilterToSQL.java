@@ -49,7 +49,15 @@ public class GeoPkgFilterToSQL extends PreparedFilterToSQL {
      *
      * <p>The encoding of the column name ("time") and the literals must be the same!
      *
+     * <p>There is different handling for Date (DATE) and Timestamp (DATETIME).
+     *
+     * <p>For Timestamp (DATETIME), we use the datetime(XYZ, 'utc'):
+     *
      * <p>datetime("Time",'utc') BETWEEN datetime(?,'utc') AND datetime(?,'utc')
+     *
+     * <p>For Date (DATE), we do no conversion in the sql lite:
+     *
+     * <p>datetime("Date") BETWEEN datetime(?) AND datetime(?)
      *
      * <p>For non-time columns, this just relegates to the superclass
      *
@@ -71,10 +79,7 @@ public class GeoPkgFilterToSQL extends PreparedFilterToSQL {
                         + ",'utc')"; // utc -- everything must be consistent -- see
                 // literal visitor
             } else if (java.sql.Date.class.isAssignableFrom(binding)) {
-                return "date("
-                        + super_result
-                        + ",'utc')"; // utc -- everything must be consistent -- see
-                // literal visitor
+                return "date(" + super_result + ")";
             }
         }
         return super_result;
@@ -146,7 +151,7 @@ public class GeoPkgFilterToSQL extends PreparedFilterToSQL {
                 } else if (Timestamp.class.isAssignableFrom(literalValue.getClass())) {
                     sb.append("datetime(?,'utc')");
                 } else if (java.sql.Date.class.isAssignableFrom(literalValue.getClass())) {
-                    sb.append("date(?,'utc')");
+                    sb.append("date(?)");
                 } else if (encodingFunction) {
                     dialect.prepareFunctionArgument(clazz, sb);
                 } else {

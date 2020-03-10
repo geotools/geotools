@@ -6,7 +6,7 @@
     ant -f release.xml -Drelease=24-SNAPSHOT
   -->
   <tstamp/>
-  <property name="release" value="24-SNAPSHOT"/>
+  <property name="release" value="25-SNAPSHOT"/>
   
   <target name="test">
      <echo>release: ${release}</echo>
@@ -24,7 +24,7 @@
       <include name="docs/common.py"/>
       <include name="docs/**/pom3.xml"/>
       <include name="docs/**/pom3.xml"/>
-      <replacefilter token="23-SNAPSHOT" value="${release}"/>
+      <replacefilter token="24-SNAPSHOT" value="${release}"/>
     </replace>
   </target>
 

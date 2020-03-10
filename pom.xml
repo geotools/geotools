@@ -463,7 +463,7 @@
   <groupId>org.geotools</groupId>
   <artifactId>geotools</artifactId>
   <packaging>pom</packaging>
-  <version>23-SNAPSHOT</version>
+  <version>24-SNAPSHOT</version>
   <name>GeoTools</name>
 
   <scm>

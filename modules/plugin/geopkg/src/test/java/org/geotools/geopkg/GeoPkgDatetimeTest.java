@@ -26,11 +26,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -142,6 +138,27 @@ public class GeoPkgDatetimeTest {
         assertEquals(uniqueSet.size(), features.size());
         for (Object value : uniqueSet) {
             assertThat(value, CoreMatchers.instanceOf(java.sql.Timestamp.class));
+        }
+    }
+
+    // messes with the timezone to do testing in different timezones
+    // Noticed that people in different timezones had different results
+    // So, this tests 3 different timezone a negative TZ, UTC, and a positive TZ
+    @Test
+    public void testMax_Timezone() throws IOException {
+        TimeZone originalTZ = TimeZone.getDefault();
+        try {
+            TimeZone.setDefault(TimeZone.getTimeZone("EST")); // UTC-5
+            testMax();
+            testMax_timestamp();
+            TimeZone.setDefault(TimeZone.getTimeZone("GMT")); // UTC
+            testMax();
+            testMax_timestamp();
+            TimeZone.setDefault(TimeZone.getTimeZone("CET")); // UTC+1
+            testMax();
+            testMax_timestamp();
+        } finally {
+            TimeZone.setDefault(originalTZ);
         }
     }
 

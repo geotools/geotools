@@ -31,7 +31,7 @@ extlinks = {
     'website': ('http://geotools.org/%s',''),
     'geoserver': ('http://docs.geoserver.org/stable/en/user/%s',''),
     'developer': ('http://docs.geotools.org/stable/developer/%s',''),
-    'user': ('http://docs.geotools.org/stable/userguide/%s',''),
+    'user': ('http://docs.geotools.org/maintenance/userguide/%s',''),
     'geot': ('https://osgeo-org.atlassian.net/browse/GEOT-%s','GEOT-')
 }
 

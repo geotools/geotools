@@ -1,17 +1,17 @@
 ![GeoTools logo](/geotools-logo.png)
 
 [GeoTools](http://geotools.org) is an open source Java library that provides
- tools for geospatial data. Our Users guide provides an [overview](http://docs.geotools.org/stable/userguide/geotools.html) of the core features, supported formats and standards support.
+ tools for geospatial data. Our Users guide provides an [overview](http://docs.geotools.org/maintenance/userguide/geotools.html) of the core features, supported formats and standards support.
 
 ## License
 
-GeoTools is licensed under the [LGPL](http://www.gnu.org/licenses/lgpl.html). The user guide [license](http://docs.geotools.org/stable/userguide/welcome/license.html) page describes the less restrictive license for documentation and source code examples.
+GeoTools is licensed under the [LGPL](http://www.gnu.org/licenses/lgpl.html). The user guide [license](http://docs.geotools.org/maintenance/userguide/welcome/license.html) page describes the less restrictive license for documentation and source code examples.
 
 ## Contributing
 
-The developers guide outlines ways to [contribute ](http://docs.geotools.org/stable/developer/procedures/contribute.html) to GeoTools using patches, pull requests and setting up new modules.
+The developers guide outlines ways to [contribute ](http://docs.geotools.org/maintenance/developer/procedures/contribute.html) to GeoTools using patches, pull requests and setting up new modules.
 
-If you are already experienced with GitHub please check our [pull request](http://docs.geotools.org/stable/developer/procedures/pull_requests.html) page before you start!
+If you are already experienced with GitHub please check our [pull request](http://docs.geotools.org/maintenance/developer/procedures/pull_requests.html) page before you start!
 
 ## Building
 
@@ -20,7 +20,7 @@ build the library run maven from the root of the repository.
 
     % mvn clean install
 
-See the [user guide](http://docs.geotools.org/stable/userguide/build/index.html) 
+See the [user guide](http://docs.geotools.org/maintenance/userguide/build/index.html) 
 for more details.
 
 ## Bugs

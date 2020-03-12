@@ -9,9 +9,9 @@ GeoTools is licensed under the [LGPL](http://www.gnu.org/licenses/lgpl.html). Th
 
 ## Contributing
 
-The developers guide outlines ways to [contribute ](http://docs.geotools.org/stable/developer/procedures/contribute.html) to GeoTools using patches, pull requests and setting up new modules.
+The developers guide outlines ways to [contribute ](http://docs.geotools.org/latest/developer/procedures/contribute.html) to GeoTools using patches, pull requests and setting up new modules.
 
-If you are already experienced with GitHub please check our [pull request](http://docs.geotools.org/stable/developer/procedures/pull_requests.html) page before you start!
+If you are already experienced with GitHub please check our [pull request](http://docs.geotools.org/latest/developer/procedures/pull_requests.html) page before you start!
 
 ## Building
 

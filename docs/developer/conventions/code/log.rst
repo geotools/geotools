@@ -40,6 +40,7 @@ Logging Messages
 ^^^^^^^^^^^^^^^^
 
 Message can be conveniently logged using one of 7 predefined levels. The levels in descending order are:
+
 ========== ================================ ====================================================
 Level      Displayed on standard output     Comments 
 ========== ================================ ====================================================

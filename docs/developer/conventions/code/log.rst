@@ -40,6 +40,7 @@ Logging Messages
 ^^^^^^^^^^^^^^^^
 
 Message can be conveniently logged using one of 7 predefined levels. The levels in descending order are:
+
 ========== ================================ ====================================================
 Level      Displayed on standard output     Comments 
 ========== ================================ ====================================================
@@ -156,4 +157,4 @@ Log4J offers similar functionalities with a wider range of handler implementatio
 
 We are not claiming that Java logging in superior to Log4J, neither we are forcing peoples to use Java logging. We push for usage of Java logging API, which may very well redirect to Log4J under the hood through java.util.logging.Log4JLoggerFactory implementations.
 
-Commons-logging is widely used in server containers, but other communities like scientists face a different picture. For example the NetCDF library developed by the University Corporation for Atmospheric Research (UCAR) uses SLF4J, yet other logging framework that aims to be a replacement for commons-logging.
+Commons-logging is widely used in server containers, but other communities like scientists face a different picture. For example the NetCDF library developed by the University Corporation for Atmospheric Research (UCAR) uses SLF4J, yet another logging framework that aims to be a replacement for commons-logging.

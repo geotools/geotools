@@ -92,15 +92,13 @@ public class Homolosine extends MapProjection {
 
     /**
      * Computes the Northing difference between Sinusoidal and Mollweide at the threshold latitude.
-     * Result depends on the datum and scaling parameters.
      *
      * @return Northing offset between Sinusoidal and Mollweide at threshold latitude.
      * @throws ProjectionException
      */
     protected double computeOffset() throws ProjectionException {
-        Point2D sinu_tresh = sinu.transformNormalized(0, LAT_THRESH, null);
         Point2D moll_tresh = moll.transformNormalized(0, LAT_THRESH, null);
-        return moll_tresh.getY() - sinu_tresh.getY();
+        return moll_tresh.getY() - LAT_THRESH;
     }
 
     /**
@@ -137,8 +135,8 @@ public class Homolosine extends MapProjection {
         if (phi > LAT_THRESH || phi < -LAT_THRESH) { // Mollweide
             p = moll.transformNormalized(lam_shift, phi, ptDst);
             p.setLocation(p.getX(), p.getY() - offset);
-        } else { // Sinusoidal
-            p = sinu.transformNormalized(lam_shift, phi, ptDst);
+        } else { // Sinusoidal in spherical form
+            p = new Point2D.Double(lam_shift * Math.cos(phi), phi);
         }
 
         shift = sinu.transformNormalized(central_merid, 0., null);
@@ -166,7 +164,7 @@ public class Homolosine extends MapProjection {
         double central_merid = 0;
         Point2D p;
         Point2D shift;
-        double thresh_map = sinu.transformNormalized(0, LAT_THRESH, null).getY();
+        double thresh_map = LAT_THRESH; // spherical model
 
         if (y >= 0) {
             central_merids = CENTRAL_MERID_NORTH;
@@ -189,8 +187,8 @@ public class Homolosine extends MapProjection {
 
         if (y > thresh_map || y < -thresh_map) { // Mollweide
             p = moll.inverseTransformNormalized(x - shift.getX(), y + offset, ptDst);
-        } else { // Sinusoidal
-            p = sinu.inverseTransformNormalized(x - shift.getX(), y, ptDst);
+        } else { // Sinusoidal in spherical mode
+            p = new Point2D.Double((x - shift.getX()) / Math.cos(y), y);
         }
 
         p.setLocation(p.getX() + central_merid, p.getY());

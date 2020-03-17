@@ -17,6 +17,8 @@
 package org.geotools.geojson;
 
 import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.util.List;
 import org.geotools.data.DataUtilities;
@@ -95,6 +97,22 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
         fjson.writeFeature(featureArray(1), writer);
 
         assertEquals(strip(featureArrayText(1, false, false)), strip(writer.toString()));
+    }
+
+    public void testMultipleFeatureArrayWritesWithOutputStreamWriter() throws Exception {
+        OutputStream outputStream = new ByteArrayOutputStream();
+        OutputStreamWriter writer = new OutputStreamWriter(outputStream);
+        fjson.writeFeature(featureArray(1), writer);
+        writer.write(",");
+        fjson.writeFeature(featureArray(2), writer);
+        writer.flush();
+        writer.close();
+
+        assertEquals(
+                strip(featureArrayText(1, false, false))
+                        .concat(",")
+                        .concat(strip(featureArrayText(2, false, false))),
+                strip(outputStream.toString()));
     }
 
     public void testWriteReadNoProperties() throws Exception {

@@ -119,6 +119,7 @@ public class GeoJSONUtil {
         if (output instanceof OutputStreamWriter) {
             return new Writer() {
                 Writer writer = new BufferedWriter((Writer) output);
+
                 @Override
                 public void write(char[] cbuf, int off, int len) throws IOException {
                     writer.write(cbuf, off, len);
@@ -130,7 +131,7 @@ public class GeoJSONUtil {
                 }
 
                 @Override
-                public void close() throws IOException { }
+                public void close() throws IOException {}
             };
         }
 

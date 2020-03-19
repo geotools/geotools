@@ -52,6 +52,7 @@ public class OracleOnlineTest extends AbstractTest {
         suite.addTest(new OracleOnlineTest("testDrop"));
         suite.addTest(new OracleOnlineTest("testCreate"));
         suite.addTest(new OracleOnlineTest("testImage1"));
+        suite.addTest(new OracleOnlineTest("testImage2"));
         suite.addTest(new OracleOnlineTest("testFullExtent"));
         suite.addTest(new OracleOnlineTest("testNoData"));
         suite.addTest(new OracleOnlineTest("testPartial"));
@@ -60,6 +61,7 @@ public class OracleOnlineTest extends AbstractTest {
         suite.addTest(new OracleOnlineTest("testDrop"));
         suite.addTest(new OracleOnlineTest("testCreateJoined"));
         suite.addTest(new OracleOnlineTest("testImage1Joined"));
+        suite.addTest(new OracleOnlineTest("testImage2Joined"));
         suite.addTest(new OracleOnlineTest("testFullExtentJoined"));
         suite.addTest(new OracleOnlineTest("testNoDataJoined"));
         suite.addTest(new OracleOnlineTest("testPartialJoined"));

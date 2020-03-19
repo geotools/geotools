@@ -48,6 +48,7 @@ public class PostGisOnlineTest extends AbstractTest {
         suite.addTest(new PostGisOnlineTest("testDrop"));
         suite.addTest(new PostGisOnlineTest("testCreate"));
         suite.addTest(new PostGisOnlineTest("testImage1"));
+        suite.addTest(new PostGisOnlineTest("testImage2"));
         suite.addTest(new PostGisOnlineTest("testFullExtent"));
         suite.addTest(new PostGisOnlineTest("testNoData"));
         suite.addTest(new PostGisOnlineTest("testPartial"));
@@ -56,6 +57,7 @@ public class PostGisOnlineTest extends AbstractTest {
         suite.addTest(new PostGisOnlineTest("testDrop"));
         suite.addTest(new PostGisOnlineTest("testCreateJoined"));
         suite.addTest(new PostGisOnlineTest("testImage1Joined"));
+        suite.addTest(new PostGisOnlineTest("testImage2Joined"));
         suite.addTest(new PostGisOnlineTest("testFullExtentJoined"));
         suite.addTest(new PostGisOnlineTest("testNoDataJoined"));
         suite.addTest(new PostGisOnlineTest("testPartialJoined"));

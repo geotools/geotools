@@ -68,6 +68,9 @@ public abstract class AbstractTest extends TestCase {
     protected static GeneralEnvelope ENV_1 =
             new GeneralEnvelope(new double[] {14, 47}, new double[] {16, 48});
 
+    protected static GeneralEnvelope ENV_2 =
+            new GeneralEnvelope(new double[] {13.5773580744, 47}, new double[] {16, 48});
+
     protected static GeneralEnvelope ENV_VIENNA =
             new GeneralEnvelope(new double[] {16.2533, 48.1371}, new double[] {16.4909, 48.2798});
 
@@ -640,6 +643,14 @@ public abstract class AbstractTest extends TestCase {
         doTestImage1("image1_joined");
     }
 
+    public void testImage2() {
+        doTestImage2("image2");
+    }
+
+    public void testImage2Joined() {
+        doTestImage2("image2_joined");
+    }
+
     public void testFullExtent() {
         doFullExtent("fullExtent");
     }
@@ -702,6 +713,15 @@ public abstract class AbstractTest extends TestCase {
         try {
             ENV_1.setCoordinateReferenceSystem(CRS.decode(CRSNAME));
             imageMosaic(name, getConfigUrl(), ENV_1, 500, 250, true);
+        } catch (Exception e) {
+            Assert.fail(e.getMessage());
+        }
+    }
+
+    private void doTestImage2(String name) {
+        try {
+            ENV_2.setCoordinateReferenceSystem(CRS.decode(CRSNAME));
+            imageMosaic(name, getConfigUrl(), ENV_2, 500, 250, true);
         } catch (Exception e) {
             Assert.fail(e.getMessage());
         }

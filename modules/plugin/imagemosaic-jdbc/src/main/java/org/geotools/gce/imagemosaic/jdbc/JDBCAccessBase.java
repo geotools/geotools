@@ -33,11 +33,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -511,6 +514,7 @@ abstract class JDBCAccessBase implements JDBCAccess {
         ExecutorService pool = getExecutorServivicePool();
 
         String statementString = getGridSelectStatement(levelInfo);
+        Queue<Future<?>> runResults = new LinkedList<Future<?>>();
 
         try (Connection con = dataSource.getConnection();
                 PreparedStatement s = con.prepareStatement(statementString)) {
@@ -542,7 +546,7 @@ abstract class JDBCAccessBase implements JDBCAccess {
                                     config);
                     //				thread.start();
                     threads.add(thread);
-                    pool.execute(thread);
+                    runResults.add(pool.submit(thread));
                 }
             }
 
@@ -579,6 +583,16 @@ abstract class JDBCAccessBase implements JDBCAccess {
         //				throw new RuntimeException(e.getLocalizedMessage());
         //			}
         //		}
+
+        // rethrow unhandled exceptions into main thread
+        for (Future<?> jobDone : runResults) {
+            try {
+                jobDone.get();
+            } catch (Exception ex) {
+                LOGGER.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
+                throw new RuntimeException(ex);
+            }
+        }
 
         tileQueue.add(TileQueueElement.ENDELEMENT);
 

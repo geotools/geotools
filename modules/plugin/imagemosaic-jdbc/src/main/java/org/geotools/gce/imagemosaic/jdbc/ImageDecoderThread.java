@@ -109,34 +109,37 @@ public class ImageDecoderThread extends AbstractThread {
 
                 double scaleX = savedTileEnvelope.getSpan(0) / bufferedImage.getWidth();
                 double scaleY = savedTileEnvelope.getSpan(1) / bufferedImage.getHeight();
-                int x =
+                int xmin =
                         (int)
                                 (Math.round(
                                         (tileEnvelope.getMinimum(0)
                                                         - savedTileEnvelope.getMinimum(0))
                                                 / scaleX));
-                int y =
+                int ymin =
                         (int)
                                 (Math.round(
                                         (savedTileEnvelope.getMaximum(1)
                                                         - tileEnvelope.getMaximum(1))
                                                 / scaleY));
-                int width =
+                int xmax =
                         (int)
                                 (Math.round(
-                                        bufferedImage.getWidth()
-                                                / savedTileEnvelope.getSpan(0)
-                                                * tileEnvelope.getSpan(0)));
-                int height =
+                                        (tileEnvelope.getMaximum(0)
+                                                        - savedTileEnvelope.getMinimum(0))
+                                                / scaleX));
+                int ymax =
                         (int)
                                 (Math.round(
-                                        bufferedImage.getHeight()
-                                                / savedTileEnvelope.getSpan(1)
-                                                * tileEnvelope.getSpan(1)));
+                                        (savedTileEnvelope.getMaximum(1)
+                                                        - tileEnvelope.getMinimum(1))
+                                                / scaleY));
+                int width = xmax - xmin;
+                int height = ymax - ymin;
 
                 if ((width > 0) && (height > 0)) {
 
-                    BufferedImage clippedImage = bufferedImage.getSubimage(x, y, width, height);
+                    BufferedImage clippedImage =
+                            bufferedImage.getSubimage(xmin, ymin, width, height);
 
                     tileQueue.add(new TileQueueElement(location, clippedImage, tileEnvelope));
                 }

@@ -46,7 +46,6 @@ public final class EsriHdrReader extends BaseGDALGridCoverage2DReader
      * Creates a new instance of a {@link EsriHdrReader}. I assume nothing about file extension.
      *
      * @param input Source object for which we want to build an {@link EsriHdrReader}.
-     * @throws DataSourceException
      */
     public EsriHdrReader(Object input) throws DataSourceException {
         this(input, null);
@@ -57,7 +56,6 @@ public final class EsriHdrReader extends BaseGDALGridCoverage2DReader
      *
      * @param input Source object for which we want to build an {@link EsriHdrReader}.
      * @param hints Hints to be used by this reader throughout his life.
-     * @throws DataSourceException
      */
     public EsriHdrReader(Object input, Hints hints) throws DataSourceException {
         super(input, hints, worldFileExt, new EsriHdrImageReaderSpi());

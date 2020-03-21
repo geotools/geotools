@@ -20,14 +20,11 @@ import java.util.logging.Level;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.feature.SchemaException;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.styling.Style;
-import org.geotools.util.factory.FactoryRegistryException;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * Layer used to draw a raster {@link GridCoverage2DReader}.
@@ -51,10 +48,6 @@ public class GridReaderLayer extends RasterLayer {
      * Create a lyaer to draw the provided grid coverage reader.
      *
      * @param reader a reader with the new layer that will be added
-     * @param style
-     * @throws SchemaException
-     * @throws FactoryRegistryException
-     * @throws TransformException
      */
     public GridReaderLayer(GridCoverage2DReader reader, Style style) {
         this(reader, style, null, null);
@@ -64,9 +57,6 @@ public class GridReaderLayer extends RasterLayer {
      * Create a layer to draw the provided grid coverage reader.
      *
      * @param reader a reader with the new layer that will be added.
-     * @throws SchemaException
-     * @throws FactoryRegistryException
-     * @throws TransformException
      */
     public GridReaderLayer(GridCoverage2DReader reader, Style style, String title) {
         this(reader, style, title, null);
@@ -76,11 +66,6 @@ public class GridReaderLayer extends RasterLayer {
      * Create a layer with optional parameters to control the rendering process.
      *
      * @param reader a reader with the new layer that will be added.
-     * @param style
-     * @param title
-     * @throws SchemaException
-     * @throws FactoryRegistryException
-     * @throws TransformException
      */
     public GridReaderLayer(
             GridCoverage2DReader reader, Style style, GeneralParameterValue[] params) {
@@ -91,13 +76,8 @@ public class GridReaderLayer extends RasterLayer {
      * Create layer title and optional parameters used to control the rendering process.
      *
      * @param reader a reader with the new layer that will be added.
-     * @param style
-     * @param title
      * @param params GeneralParameterValue[] that describe how the {@link
      *     AbstractGridCoverage2DReader} shall read the images
-     * @throws SchemaException
-     * @throws FactoryRegistryException
-     * @throws TransformException
      */
     public GridReaderLayer(
             GridCoverage2DReader reader,
@@ -143,11 +123,7 @@ public class GridReaderLayer extends RasterLayer {
         return null;
     }
 
-    /**
-     * Reader used for efficient access to raster content.
-     *
-     * @return
-     */
+    /** Reader used for efficient access to raster content. */
     public GridCoverage2DReader getReader() {
         return reader;
     }

@@ -84,9 +84,6 @@ public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeSty
     /**
      * Accumulates another feature type name in the list of the feature type names for this {@link
      * FeatureTypeStyle}
-     *
-     * @param featureTypeName
-     * @return
      */
     public FeatureTypeStyleBuilder featureTypeName(String featureTypeName) {
         this.featureTypeNames.add(new NameImpl(featureTypeName));
@@ -150,9 +147,6 @@ public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeSty
     /**
      * Accumulates another feature type name in the list of the feature type names for this {@link
      * FeatureTypeStyle}
-     *
-     * @param featureTypeName
-     * @return
      */
     public FeatureTypeStyleBuilder featureTypeName(Name featureTypeName) {
         this.featureTypeNames.add(featureTypeName);

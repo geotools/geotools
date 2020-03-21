@@ -88,7 +88,6 @@ public class SurfaceImpl extends OrientableSurfaceImpl implements Surface {
     // /**
     // * Constructor without arguments
     // * Surface Patches have to be setted after
-    // * @param factory
     // */
     // public SurfaceImpl(GeometryFactoryImpl factory) {
     // super(factory);
@@ -100,9 +99,6 @@ public class SurfaceImpl extends OrientableSurfaceImpl implements Surface {
      * with the appropriate side-toside relationships and creates a Surface.
      *
      * <p>Surface::Surface(patch[1..n] : SurfacePatch) : Surface
-     *
-     * @param crs
-     * @param patch
      */
     public SurfaceImpl(CoordinateReferenceSystem crs, List<? extends SurfacePatch> patch) {
         super(crs, null, null, null);
@@ -264,7 +260,6 @@ public class SurfaceImpl extends OrientableSurfaceImpl implements Surface {
 
     // Not used
     //	/**
-    //	 * @param distance
     //	 */
     //	public void splitBoundary(double distance) {
     //		this.getBoundary().split(distance);

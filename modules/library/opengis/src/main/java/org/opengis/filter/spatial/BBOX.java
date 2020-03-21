@@ -27,67 +27,7 @@ import org.opengis.geometry.BoundingBox;
 @XmlElement("BBOX")
 public interface BBOX extends BinarySpatialOperator {
     /** Operator name used to check FilterCapabilities */
-    public static String NAME = "BBOX";
-
-    /**
-     * Name of the geometric property that will be used in this spatial operator.
-     *
-     * <p>This may be null if the default spatial property is to be used.
-     *
-     * @deprecated Please check getExpression1(), if it is a PropertyName
-     */
-    @XmlElement("PropertyName")
-    String getPropertyName();
-
-    /**
-     * Returns the spatial reference system in which the bounding box coordinates contained by this
-     * object should be interpreted.
-     *
-     * <p>This string must take one of two forms: either
-     *
-     * <ul>
-     *   <li>"EPSG:xxxxx" where "xxxxx" is a valid EPSG coordinate system code;
-     *   <li>OGC URI format
-     *   <li>or an OGC well-known-text representation of a coordinate system as defined in the OGC
-     *       Simple Features for SQL specification.
-     * </ul>
-     *
-     * @deprecated please use getExpression2(), if it is a literal
-     *     BoundingBox.getCoordinateReferenceSystem()
-     */
-    String getSRS();
-
-    /**
-     * Assuming getExpression2() is a literal bounding box access the minimum value for the first
-     * coordinate.
-     *
-     * @deprecated please use getExpression2(), to check for a literal BoundingBox.getMinimum(0)
-     */
-    double getMinX();
-
-    /**
-     * Assuming getExpression2() is a literal bounding box access the minimum value for the second
-     * ordinate.
-     *
-     * @deprecated please use getExpression2(), to check for a literal BoundingBox.getMinimum(1)
-     */
-    double getMinY();
-
-    /**
-     * Assuming getExpression2() is a literal bounding box access the maximum value for the first
-     * ordinate.
-     *
-     * @deprecated please use getExpression2(), to check for a literal BoundingBox.getMaximum(0)
-     */
-    double getMaxX();
-
-    /**
-     * Assuming getExpression2() is a literal bounding box access the maximum value for the second
-     * coordinate.
-     *
-     * @deprecated please use getExpression2(), to check for a literal BoundingBox.getMaximum(1)
-     */
-    double getMaxY();
+    String NAME = "BBOX";
 
     /** Return Bounding Box object representing the bounds of the filter @Return Bounds of Filter */
     BoundingBox getBounds();

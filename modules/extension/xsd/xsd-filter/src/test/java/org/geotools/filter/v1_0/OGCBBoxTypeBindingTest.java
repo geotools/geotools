@@ -16,8 +16,12 @@
  */
 package org.geotools.filter.v1_0;
 
+import org.geotools.geometry.jts.JTS;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.gml2.GML;
+import org.geotools.referencing.CRS;
 import org.geotools.xsd.Binding;
+import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BBOX;
 import org.w3c.dom.Document;
 
@@ -35,12 +39,12 @@ public class OGCBBoxTypeBindingTest extends FilterTestSupport {
 
         BBOX box = (BBOX) parse();
 
-        assertEquals("foo", box.getPropertyName());
-        assertEquals(0, box.getMinX(), 0.0);
-        assertEquals(0, box.getMinY(), 0.0);
-        assertEquals(1, box.getMaxX(), 0.0);
-        assertEquals(1, box.getMaxY(), 0.0);
-        assertEquals("EPSG:4326", box.getSRS());
+        assertEquals("foo", ((PropertyName) box.getExpression1()).getPropertyName());
+        assertTrue(
+                JTS.equals(
+                        new ReferencedEnvelope(0, 1, 0, 1, CRS.decode("EPSG:4326")),
+                        box.getBounds(),
+                        1e-6));
     }
 
     public void testEncode() throws Exception {

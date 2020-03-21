@@ -11,9 +11,9 @@ classes in a casual use of GeoTools.
 
 That is it - just three of them:
 
-* Envelope represents a an extent with an upper and lower bounds
-* BoundingBox specifically represents a two dimensional extent
-* DirectPosition is a location on the earth defined using a set of ordinates, and a CoordinateReferenceSystem so we can tell what the numbers mean
+* ``Envelope`` represents an extent with an upper and lower bounds
+* ``BoundingBox`` specifically represents a two dimensional extent
+* ``DirectPosition`` is a location on the earth defined using a set of ordinates, and a ``CoordinateReferenceSystem`` so we can tell what the numbers mean
 
 ISO 19107
 ^^^^^^^^^
@@ -24,24 +24,24 @@ isolate common qualities.
 
 * High Level "Geometry" classes
   
-  * Point
-  * Curve
-  * Surface
+  * ``Point``
+  * ``Curve``
+  * ``Surface``
 
 * Composed of smaller segments or patches
   
-  * Point is defined by a single DirectPosition
-  * Curve is defined as a series of CurveSegment
-  * Surface is defined as a series of SurfacePatch
+  * ``Point`` is defined by a single ``DirectPosition``
+  * ``Curve`` is defined as a series of ``CurveSegment``
+  * ``Surface`` is defined as a series of ``SurfacePatch``
 
 * There is a wide range of options when defining a segment or patch
   
-  * LineString - a simple list of LineSegments (just like we are used to)
-  * SplineCurve - a range of common splines such as BSpline
-  * Conic - very useful for great circles in GIS
-  * ArcString - common with CAD drawings
+  * ``LineString`` - a simple list of ``LineSegments`` (just like we are used to)
+  * ``SplineCurve`` - a range of common splines such as ``BSpline``
+  * ``Conic`` - very useful for great circles in GIS
+  * ``ArcString`` - common with CAD drawings
 
-Here is an example of the types defined around Geometry, see if you can spot Point, Curve and Surface mentioned above.
+Here is an example of the types defined around ``Geometry``, see if you can spot ``Point``, ``Curve`` and ``Surface`` mentioned above.
 
 
 .. image:: /images/geometry_iso.PNG
@@ -71,7 +71,7 @@ These interfaces are many, varied, and well documented. The problem is they are 
 
 * Q: I need to represent Curves?
   
-  Have a look at our JTS utility class, there are methods that help you define a JTS LineString
+  Have a look at our JTS utility class, there are methods that help you define a JTS ``LineString``
   based on a curve formula.
 
 * Q: Which implementation should I use?
@@ -80,7 +80,7 @@ These interfaces are many, varied, and well documented. The problem is they are 
   (because you are limiting your project to ISO19107 only interfaces)
   they are not recommended.
   
-  * The JTS-Wrapper implementation is field tested, but limited to
+  * The ``JTSWrapper`` implementation is field tested, but limited to
     constructs similar to JTS. On the bright side because it always
     uses the latest JTS the performance of this implementation has
     improved over time.

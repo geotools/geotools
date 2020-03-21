@@ -54,8 +54,6 @@ public class CompositeSurfaceImpl extends CompositeImpl<OrientableSurfaceImpl>
      * <p>NOTE To get a full representation of the elements in the Complex, the Curves and Points on
      * the boundary of the generator set of Surfaces would be added to the curves in the generator
      * list.
-     *
-     * @param generator
      */
     public CompositeSurfaceImpl(List<? extends OrientableSurface> generator) {
         super(generator);
@@ -74,7 +72,6 @@ public class CompositeSurfaceImpl extends CompositeImpl<OrientableSurfaceImpl>
     //	 * is NULL, then the method returns the largest possible dimension for any
     //	 * DirectPosition2D in this Object.
     //	 *
-    //	 * @param point
     //	 *            a <code>DirectPosition2D</code> value
     //	 * @return an <code>int</code> value
     //	 */

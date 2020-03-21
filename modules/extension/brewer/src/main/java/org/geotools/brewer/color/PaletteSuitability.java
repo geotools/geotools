@@ -98,7 +98,6 @@ public class PaletteSuitability {
     /**
      * @param numClasses Index of the property.
      * @param suitability New value of the property at<CODE>index</CODE>.
-     * @throws IOException
      */
     public void setSuitability(int numClasses, String[] suitability) throws IOException {
         // update max number of classes

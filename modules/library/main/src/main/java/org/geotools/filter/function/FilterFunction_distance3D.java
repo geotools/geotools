@@ -59,6 +59,6 @@ public class FilterFunction_distance3D extends FunctionExpressionImpl {
                     "Filter Function problem for function distance3D argument #1 - expected type Geometry");
         }
 
-        return new Double(Distance3DOp.distance(arg0, arg1));
+        return Double.valueOf(Distance3DOp.distance(arg0, arg1));
     }
 }

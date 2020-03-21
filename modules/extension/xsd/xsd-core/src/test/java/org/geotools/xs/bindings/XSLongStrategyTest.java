@@ -26,8 +26,6 @@ public class XSLongStrategyTest extends TestSchema {
      * sequence of decimal digits (#x30-#x39). If the sign is omitted, "+" is assumed.
      *
      * <p>For example: -1, 0, 12678967543233, +100000.
-     *
-     * @throws Exception
      */
 
     /*

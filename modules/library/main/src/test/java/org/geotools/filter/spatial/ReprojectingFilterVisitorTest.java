@@ -7,6 +7,8 @@ import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.filter.capability.FunctionNameImpl;
+import org.geotools.geometry.jts.JTS;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
@@ -62,19 +64,19 @@ public class ReprojectingFilterVisitorTest extends TestCase {
         assertEquals(bbox, clone);
     }
 
-    public void testBboxReproject() {
+    public void testBboxReproject() throws FactoryException {
         // see if coordinates gets flipped, urn forces lat/lon interpretation
         BBOX bbox =
                 ff.bbox(ff.property("geom"), 10, 15, 20, 25, "urn:x-ogc:def:crs:EPSG:6.11.2:4326");
         Filter clone = (Filter) bbox.accept(reprojector, null);
         assertNotSame(bbox, clone);
         BBOX clonedBbox = (BBOX) clone;
-        assertEquals(bbox.getPropertyName(), clonedBbox.getPropertyName());
-        assertEquals(15, clonedBbox.getMinX(), 1e-6);
-        assertEquals(10, clonedBbox.getMinY(), 1e-6);
-        assertEquals(25, clonedBbox.getMaxX(), 1e-6);
-        assertEquals(20, clonedBbox.getMaxY(), 1e-6);
-        assertEquals("EPSG:4326", clonedBbox.getSRS());
+        assertEquals(bbox.getExpression1(), clonedBbox.getExpression1());
+        assertTrue(
+                JTS.equals(
+                        new ReferencedEnvelope(15, 25, 10, 20, CRS.decode("EPSG:4326", false)),
+                        clonedBbox.getBounds(),
+                        1e-6));
     }
 
     public void testBboxReprojectNoNativeAuthority() throws Exception {
@@ -90,14 +92,12 @@ public class ReprojectingFilterVisitorTest extends TestCase {
         Filter clone = (Filter) bbox.accept(reprojector, null);
         assertNotSame(bbox, clone);
         BBOX clonedBbox = (BBOX) clone;
-        assertEquals(bbox.getPropertyName(), clonedBbox.getPropertyName());
-        assertTrue(15 == clonedBbox.getMinX());
-        assertTrue(10 == clonedBbox.getMinY());
-        assertTrue(25 == clonedBbox.getMaxX());
-        assertTrue(20 == clonedBbox.getMaxY());
-        // the srs code cannot be found, but it's legal to use a WKT description instead
-        //        CoordinateReferenceSystem reprojected = CRS.parseWKT(clonedBbox.getSRS());
-        //        assertTrue(CRS.equalsIgnoreMetadata(crs, reprojected));
+        assertEquals(bbox.getExpression1(), clonedBbox.getExpression1());
+        assertTrue(
+                JTS.equals(
+                        new ReferencedEnvelope(15, 25, 10, 20, CRS.decode("EPSG:4326", false)),
+                        clonedBbox.getBounds(),
+                        1e-6));
     }
 
     public void testBboxReprojectUnreferencedProperty() {
@@ -275,18 +275,23 @@ public class ReprojectingFilterVisitorTest extends TestCase {
 
     /** The provided target CRS (3857) should override the native one (4326). */
     public void testBboxReprojectWithTargetCrsProvided() throws FactoryException {
-        ReprojectingFilterVisitor reprojector =
-                new ReprojectingFilterVisitor(ff, ft, CRS.decode("EPSG:3857"));
+        CoordinateReferenceSystem webMercator = CRS.decode("EPSG:3857");
+        ReprojectingFilterVisitor reprojector = new ReprojectingFilterVisitor(ff, ft, webMercator);
         BBOX bbox = ff.bbox(ff.property("geom"), 10, 15, 20, 25, "EPSG:4326");
         Filter clone = (Filter) bbox.accept(reprojector, null);
         assertNotSame(bbox, clone);
         BBOX clonedBbox = (BBOX) clone;
-        assertEquals(bbox.getPropertyName(), clonedBbox.getPropertyName());
-        assertEquals(1113194.9079327357, clonedBbox.getMinX(), 0.1);
-        assertEquals(1689200.1396078924, clonedBbox.getMinY(), 0.1);
-        assertEquals(2226389.8158654715, clonedBbox.getMaxX(), 0.1);
-        assertEquals(2875744.6243522423, clonedBbox.getMaxY(), 0.1);
-        assertEquals("EPSG:3857", clonedBbox.getSRS());
+        assertEquals(bbox.getExpression1(), clonedBbox.getExpression1());
+        assertTrue(
+                JTS.equals(
+                        new ReferencedEnvelope(
+                                1113194.9079327357,
+                                2226389.8158654715,
+                                1689200.1396078924,
+                                2875744.6243522423,
+                                webMercator),
+                        clonedBbox.getBounds(),
+                        1e-6));
     }
 
     /**
@@ -300,12 +305,12 @@ public class ReprojectingFilterVisitorTest extends TestCase {
         BBOX clone = (BBOX) bbox.accept(reprojector, null);
         assertNotSame(bbox, clone);
         // check that no reprojection was applied
-        assertEquals(bbox.getPropertyName(), clone.getPropertyName());
-        assertEquals(10.0, clone.getMinX(), 0.1);
-        assertEquals(15.0, clone.getMinY(), 0.1);
-        assertEquals(20.0, clone.getMaxX(), 0.1);
-        assertEquals(25.0, clone.getMaxY(), 0.1);
-        assertEquals("EPSG:4326", clone.getSRS());
+        assertEquals(bbox.getExpression1(), clone.getExpression1());
+        assertTrue(
+                JTS.equals(
+                        new ReferencedEnvelope(10, 20, 15, 25, CRS.decode("EPSG:4326")),
+                        clone.getBounds(),
+                        0.1));
     }
 
     private final class GeometryFunction implements Function {

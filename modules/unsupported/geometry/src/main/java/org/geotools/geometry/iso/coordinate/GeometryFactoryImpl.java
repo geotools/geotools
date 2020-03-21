@@ -245,19 +245,12 @@ public class GeometryFactoryImpl implements Factory, GeometryFactory {
     // **************************************************************************
     // **************************************************************************
 
-    /**
-     * @param dp
-     * @return DirectPositionImpl
-     */
+    /** @return DirectPositionImpl */
     public DirectPosition createDirectPosition(DirectPosition dp) {
         return (DirectPosition) positionFactory.createDirectPosition(dp.getCoordinate());
     }
 
-    /**
-     * @param coordList
-     * @param directPositions
-     * @return Collection<PositionImpl>
-     */
+    /** @return Collection<PositionImpl> */
     public Collection<DirectPosition> createDirectPositions(
             Collection<double[]> coordList, Collection<DirectPosition> directPositions) {
         if (coordList == null || coordList.isEmpty())
@@ -265,7 +258,7 @@ public class GeometryFactoryImpl implements Factory, GeometryFactory {
         if (directPositions == null)
             directPositions = new ArrayList<DirectPosition>(coordList.size());
         for (double[] coords : coordList) {
-            directPositions.add(createDirectPosition(coords));
+            directPositions.add(positionFactory.createDirectPosition(coords));
         }
         return directPositions;
     }
@@ -281,7 +274,7 @@ public class GeometryFactoryImpl implements Factory, GeometryFactory {
         // TODO Test
         if (coord.length != this.getDimension()) throw new MismatchedDimensionException();
 
-        return (PositionImpl) createPosition(createDirectPosition(coord));
+        return (PositionImpl) createPosition(positionFactory.createDirectPosition(coord));
     }
 
     /* (non-Javadoc)
@@ -295,7 +288,6 @@ public class GeometryFactoryImpl implements Factory, GeometryFactory {
     /**
      * Creates a new PointArray
      *
-     * @param positions
      * @return PointArrayImpl
      */
     public PointArrayImpl createPointArray(List<Position> positions) {
@@ -320,24 +312,19 @@ public class GeometryFactoryImpl implements Factory, GeometryFactory {
     public EnvelopeImpl createEnvelope(double[] c) {
         if (c.length != this.getDimension()) throw new MismatchedDimensionException();
 
-        return new EnvelopeImpl(createDirectPosition(c));
+        return new EnvelopeImpl(positionFactory.createDirectPosition(c));
     }
 
     /**
      * Creates a new Envelope equal to the given envelope
      *
-     * @param env
      * @return Envelope
      */
     public EnvelopeImpl createEnvelope(Envelope env) {
         return new EnvelopeImpl(env);
     }
 
-    /**
-     * @param coordList
-     * @param positions
-     * @return Collection<PositionImpl>
-     */
+    /** @return Collection<PositionImpl> */
     public List<Position> createPositions(
             Collection<double[]> coordList, List<Position> positions) {
         if (coordList == null || coordList.isEmpty())
@@ -357,12 +344,7 @@ public class GeometryFactoryImpl implements Factory, GeometryFactory {
      * <p>This method creates a LineSegment without references to the parent Curve. this will cause
      * NullPointerExceptions in use of some methods
      *
-     * @param fromPosition
-     * @param toPosition
-     * @param startPar
      * @return LineSegmentImpl
-     * @throws MismatchedDimensionException
-     * @throws IllegalArgumentException
      */
     public LineSegmentImpl createLineSegment(
             double[] fromPosition, double[] toPosition, double startPar) {
@@ -378,9 +360,6 @@ public class GeometryFactoryImpl implements Factory, GeometryFactory {
     /**
      * Creates a LineSegment with a given value as startParam
      *
-     * @param p0
-     * @param p1
-     * @param startPar
      * @return a new LineSegmentImpl
      */
     public LineSegmentImpl createLineSegment(Position p0, Position p1, double startPar) {
@@ -390,11 +369,7 @@ public class GeometryFactoryImpl implements Factory, GeometryFactory {
         return new LineSegmentImpl(createPointArray(positions), startPar);
     }
 
-    /**
-     * @param pointArray
-     * @param startPar
-     * @return LineStringImpl
-     */
+    /** @return LineStringImpl */
     public LineStringImpl createLineString(PointArrayImpl pointArray, double startPar) {
         if (pointArray == null || pointArray.isEmpty())
             throw new IllegalArgumentException(""); // $NON-NLS-1$
@@ -404,19 +379,13 @@ public class GeometryFactoryImpl implements Factory, GeometryFactory {
     /**
      * Creates LineString from Array of DirectPosition2D
      *
-     * @param positions
-     * @param startPar
      * @return LineString
      */
     public LineStringImpl createLineString(List<Position> positions, double startPar) {
         return new LineStringImpl(createPointArray(positions), startPar);
     }
 
-    /**
-     * @param coordLists
-     * @param lineStrings
-     * @return Collection<LineStringImpl>
-     */
+    /** @return Collection<LineStringImpl> */
     public Collection<LineStringImpl> createLineStrings(
             Collection<List<double[]>> coordLists, List<LineStringImpl> lineStrings) {
         if (lineStrings == null) lineStrings = new ArrayList<LineStringImpl>(coordLists.size());
@@ -446,10 +415,6 @@ public class GeometryFactoryImpl implements Factory, GeometryFactory {
     /**
      * Creates a Triangle from three DirectPositions Builds the Surface Boundary for the Triangle
      *
-     * @param ts
-     * @param p1
-     * @param p2
-     * @param p3
      * @return Triangle
      */
     public TriangleImpl createTriangle(
@@ -498,10 +463,7 @@ public class GeometryFactoryImpl implements Factory, GeometryFactory {
     // da es unuebersichtlich wird, wann alle notwendigen daten erzeugt sind
     // generell sollte es ziel sein, dass die Factories nur objekte erzeugen,
     // welche in sich
-    /**
-     * @param triangles
-     * @return ArrayList<Triangle>
-     */
+    /** @return ArrayList<Triangle> */
     public ArrayList<Triangle> createTriangles(ArrayList<double[][]> triangles) {
 
         ArrayList<Triangle> result = new ArrayList<Triangle>();
@@ -512,9 +474,9 @@ public class GeometryFactoryImpl implements Factory, GeometryFactory {
             result.add(
                     this.createTriangle(
                             null,
-                            createDirectPosition(coord0),
-                            createDirectPosition(coord1),
-                            createDirectPosition(coord2)));
+                            positionFactory.createDirectPosition(coord0),
+                            positionFactory.createDirectPosition(coord1),
+                            positionFactory.createDirectPosition(coord2)));
         }
         return result;
     }
@@ -650,10 +612,6 @@ public class GeometryFactoryImpl implements Factory, GeometryFactory {
 
     //	/**
     //	 *
-    //	 * @param p0
-    //	 * @param p1
-    //	 * @param startPoints
-    //	 * @param lineSegments
     //	 * @return ArrayList<LineSegmentImpl>
     //	 */
     //	public Collection<LineSegmentImpl> createLineSegments(
@@ -678,8 +636,6 @@ public class GeometryFactoryImpl implements Factory, GeometryFactory {
     //	}
     //
     //	/**
-    //	 * @param points
-    //	 * @param lineSegments
     //	 * @return Collection<LineSegmentImpl>
     //	 */
     //	public List<LineSegmentImpl> createLineSegments(

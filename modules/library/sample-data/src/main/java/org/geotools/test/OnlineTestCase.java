@@ -203,14 +203,14 @@ public abstract class OnlineTestCase extends TestCase {
             exFixtureFile.getParentFile().mkdirs();
             exFixtureFile.createNewFile();
 
-            FileOutputStream fout = new FileOutputStream(exFixtureFile);
+            try (FileOutputStream fout = new FileOutputStream(exFixtureFile)) {
 
-            exampleFixture.store(
-                    fout,
-                    "This is an example fixture. Update the "
-                            + "values and remove the .example suffix to enable the test");
-            fout.flush();
-            fout.close();
+                exampleFixture.store(
+                        fout,
+                        "This is an example fixture. Update the "
+                                + "values and remove the .example suffix to enable the test");
+                fout.flush();
+            }
             // System.out.println("Wrote example fixture file to " + exFixtureFile);
         } catch (IOException ioe) {
             // System.out.println("Unable to write out example fixture " + exFixtureFile);

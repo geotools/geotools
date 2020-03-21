@@ -41,7 +41,6 @@ public interface Identifier {
     /**
      * Identifier is a data object, equals is based just on getID()
      *
-     * @param obj
      * @return true if obj is an Identifier with the same getID()
      */
     /// @Override

@@ -94,6 +94,21 @@ public class TimestampFileNameExtractorTest {
     }
 
     @Test
+    public void testParseCustomTimestampUseHighTime() {
+        PropertiesCollectorSPI spi = getTimestampSpi();
+        PropertiesCollector collector =
+                spi.create(
+                        "regex=[0-9]{10},format=yyyyMMddHH,useHighTime=true",
+                        Arrays.asList("time"));
+        File file = new File("Temperature_2017111319.tif");
+        collector.collect(file);
+        collector.setProperties(feature);
+        Date time = (Date) feature.getAttribute("time");
+        assertNotNull(time);
+        assertEquals("2017-11-13T19:59:59.999Z", df.format(time));
+    }
+
+    @Test
     public void testParseFullPathTimestamp() {
         PropertiesCollectorSPI spi = getTimestampSpi();
         String regex = "(?:\\\\)(\\d{8})(?:\\\\)(?:file.)(T\\d{6})(?:.txt)";
@@ -105,6 +120,20 @@ public class TimestampFileNameExtractorTest {
         Date time = (Date) feature.getAttribute("time");
         assertNotNull(time);
         assertEquals("2012-06-02T12:00:00.000Z", df.format(time));
+    }
+
+    @Test
+    public void testTimestampWithHighTimeRange() {
+        PropertiesCollectorSPI spi = getTimestampSpi();
+        PropertiesCollector collector =
+                spi.create("regex=[0-9]{8},useHighTime=true", Arrays.asList("time"));
+        File file = new File("polyphemus_20130301.nc");
+        collector.collect(file);
+        collector.setProperties(feature);
+        Date time = (Date) feature.getAttribute("time");
+        assertNotNull(time);
+        // Getting the higher time value of that time range
+        assertEquals("2013-03-01T23:59:59.999Z", df.format(time));
     }
 
     @Test
@@ -121,6 +150,58 @@ public class TimestampFileNameExtractorTest {
         Date time = (Date) feature.getAttribute("time");
         assertNotNull(time);
         assertEquals("2012-06-02T12:00:00.000Z", df.format(time));
+    }
+
+    @Test
+    public void testParseFullPathTimestampWithCustomFormat2() {
+        PropertiesCollectorSPI spi = getTimestampSpi();
+        String regex = "(?:\\\\)(\\d{8})(?:\\\\)(?:file.)(t\\d{2}z)(?:.txt)";
+        PropertiesCollector collector =
+                spi.create(
+                        "regex=" + regex + ",fullPath=true,format=yyyyMMdd't'HH'z'",
+                        Arrays.asList("time"));
+        File file = new File("c:\\data\\20120602\\file.t12z.txt");
+        collector.collect(file);
+        collector.setProperties(feature);
+        Date time = (Date) feature.getAttribute("time");
+        assertNotNull(time);
+        assertEquals("2012-06-02T12:00:00.000Z", df.format(time));
+    }
+
+    @Test
+    public void testParseFullPathTimestampWithCustomFormatHighTimeRange() {
+        PropertiesCollectorSPI spi = getTimestampSpi();
+        String regex = "(?:\\\\)(\\d{8})(?:\\\\)(?:file.)(t\\d{2}z)(?:.txt)";
+        PropertiesCollector collector =
+                spi.create(
+                        "regex="
+                                + regex
+                                + ",fullPath=true,format=yyyyMMdd't'HH'z',useHighTime=true",
+                        Arrays.asList("time"));
+        File file = new File("c:\\data\\20120602\\file.t12z.txt");
+        collector.collect(file);
+        collector.setProperties(feature);
+        Date time = (Date) feature.getAttribute("time");
+        assertNotNull(time);
+        assertEquals("2012-06-02T12:59:59.999Z", df.format(time));
+    }
+
+    @Test
+    public void testParseFullPathTimestampWithCustomFormatHighTimeRange2() {
+        PropertiesCollectorSPI spi = getTimestampSpi();
+        String regex = "(?:\\\\)(\\d{8})(?:\\\\)(?:file.)(t\\d{2}z)(?:.txt)";
+        PropertiesCollector collector =
+                spi.create(
+                        "regex="
+                                + regex
+                                + ",format=yyyyMMdd't'HH'z', useHighTime=true,   fullPath=true",
+                        Arrays.asList("time"));
+        File file = new File("c:\\data\\20120602\\file.t12z.txt");
+        collector.collect(file);
+        collector.setProperties(feature);
+        Date time = (Date) feature.getAttribute("time");
+        assertNotNull(time);
+        assertEquals("2012-06-02T12:59:59.999Z", df.format(time));
     }
 
     private PropertiesCollectorSPI getTimestampSpi() {

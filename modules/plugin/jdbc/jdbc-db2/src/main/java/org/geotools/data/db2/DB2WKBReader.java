@@ -103,8 +103,6 @@ public class DB2WKBReader {
      *
      * @param is the stream to read from
      * @return the Geometry read
-     * @throws IOException
-     * @throws ParseException
      */
     public Geometry read(InStream is) throws IOException, ParseException {
         dis.setInStream(is);

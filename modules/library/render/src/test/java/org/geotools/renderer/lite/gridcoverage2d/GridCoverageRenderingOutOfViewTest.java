@@ -13,23 +13,31 @@
 package org.geotools.renderer.lite.gridcoverage2d;
 
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
+import java.awt.Color;
 import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.concurrent.atomic.AtomicReference;
+import javax.media.jai.Interpolation;
 import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.gce.image.WorldImageReader;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.GridCoverageLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
 import org.geotools.renderer.RenderListener;
+import org.geotools.renderer.lite.GridCoverageRendererTest;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.styling.RasterSymbolizer;
+import org.geotools.styling.RasterSymbolizerImpl;
 import org.geotools.styling.StyleBuilder;
 import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
@@ -37,8 +45,10 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class GridCoverageRenderingOutOfViewTest {
+
     private final String rasterBase = "test_raster_NZTM";
 
     @Test
@@ -74,6 +84,51 @@ public class GridCoverageRenderingOutOfViewTest {
         map.dispose();
 
         assertNull(error.get());
+    }
+
+    @Test
+    public void testOversamplingOnLayoutHelperArithmetic() throws Exception {
+
+        URL coverageFile =
+                org.geotools.test.TestData.url(GridCoverageRendererTest.class, "arithmetic.tif");
+        GeoTiffReader reader = new GeoTiffReader(coverageFile);
+        GridCoverage2D coverage = reader.read(null);
+        CoordinateReferenceSystem crs = reader.getCoordinateReferenceSystem();
+
+        // Setup params for a tiny bbox and oversampling
+        ReferencedEnvelope mapExtent =
+                new ReferencedEnvelope(
+                        244897.2157599071,
+                        244897.2203125144,
+                        202588.4763366661,
+                        202588.4808892734,
+                        crs);
+        Rectangle screenSize = new Rectangle(0, 0, 200, 200);
+        AffineTransform w2s =
+                new AffineTransform(
+                        43930.870040629205,
+                        0.0,
+                        0.0,
+                        -43930.870040629205,
+                        -1.0758547758860409E10,
+                        8.899888225675163E9);
+        GridCoverageRenderer renderer = new GridCoverageRenderer(crs, mapExtent, screenSize, w2s);
+
+        RasterSymbolizer rasterSymbolizer = new RasterSymbolizerImpl();
+
+        RenderedImage rendered =
+                renderer.renderImage(
+                        coverage,
+                        rasterSymbolizer,
+                        Interpolation.getInstance(Interpolation.INTERP_NEAREST),
+                        Color.RED,
+                        200,
+                        200);
+        // No java.lang.ArithmeticException: / by zero occurred
+        assertTrue(rendered.getWidth() > 0);
+        assertTrue(rendered.getHeight() > 0);
+
+        coverage.dispose(true);
     }
 
     public Layer loadGeoReferencedImageFile(GridCoverage2D gc, String title)

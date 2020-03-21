@@ -74,10 +74,6 @@ public interface UserLayer extends StyledLayer {
 
     public void addUserStyle(Style style);
 
-    /**
-     * Used to navigate a Style/SLD.
-     *
-     * @param visitor
-     */
+    /** Used to navigate a Style/SLD. */
     void accept(org.geotools.styling.StyleVisitor visitor);
 }

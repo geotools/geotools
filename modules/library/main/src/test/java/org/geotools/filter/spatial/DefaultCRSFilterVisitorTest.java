@@ -19,10 +19,10 @@ package org.geotools.filter.spatial;
 import static org.junit.Assert.*;
 
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope3D;
 import org.geotools.referencing.CRS;
 import org.junit.Test;
-import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.spatial.BBOX;
@@ -40,8 +40,8 @@ public class DefaultCRSFilterVisitorTest {
         DefaultCRSFilterVisitor visitor = new DefaultCRSFilterVisitor(ff, crs);
         BBOX filtered = (BBOX) bbox.accept(visitor, null);
         Literal box = (Literal) filtered.getExpression2();
-        Geometry g = (Geometry) box.evaluate(null);
-        assertEquals(hcrs, g.getUserData());
+        ReferencedEnvelope re = (ReferencedEnvelope) box.evaluate(null);
+        assertEquals(hcrs, re.getCoordinateReferenceSystem());
     }
 
     @Test
@@ -55,7 +55,7 @@ public class DefaultCRSFilterVisitorTest {
         DefaultCRSFilterVisitor visitor = new DefaultCRSFilterVisitor(ff, crs);
         BBOX filtered = (BBOX) bbox.accept(visitor, null);
         Literal box = (Literal) filtered.getExpression2();
-        Geometry g = (Geometry) box.evaluate(null);
-        assertEquals(crs, g.getUserData());
+        ReferencedEnvelope re = (ReferencedEnvelope) box.evaluate(null);
+        assertEquals(crs, re.getCoordinateReferenceSystem());
     }
 }

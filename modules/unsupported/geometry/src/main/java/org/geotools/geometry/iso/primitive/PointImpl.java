@@ -71,9 +71,6 @@ public class PointImpl extends PrimitiveImpl implements Point {
     /**
      * The constructor PointImpl creates a Point at a given position, backed by the DirectPosition
      * PointImpl::PointImpl(position : DirectPositionImpl) : PointImpl
-     *
-     * @param crs
-     * @param dp
      */
     public PointImpl(CoordinateReferenceSystem crs, final DirectPositionImpl dp) {
         super(crs, null, null, null);
@@ -95,37 +92,10 @@ public class PointImpl extends PrimitiveImpl implements Point {
     /*
      * (non-Javadoc)
      *
-     * @see org.opengis.geometry.primitive.Point#getPosition()
-     */
-    @Deprecated
-    public DirectPositionImpl getPosition() {
-        return this.position;
-    }
-
-    /*
-     * (non-Javadoc)
-     *
      * @see org.opengis.geometry.primitive.Point#getDirectPosition()
      */
     public DirectPositionImpl getDirectPosition() {
         return this.position;
-    }
-
-    /**
-     * Sets the value of position
-     *
-     * @param p
-     */
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.opengis.geometry.primitive.Point#setPosition(org.opengis.geometry.coordinate.DirectPosition)
-     */
-    @Deprecated
-    public void setPosition(DirectPosition p) {
-        this.position = new DirectPositionImpl(p);
-        // this.position =
-        // this.getGeometryFactory().getGeometryFactoryImpl().createDirectPosition(p);
     }
 
     /*
@@ -158,7 +128,6 @@ public class PointImpl extends PrimitiveImpl implements Point {
      *
      * <p>NOTE The type "Vector" is a common data type defined in ISO TS 19103.
      *
-     * @param toPoint
      * @return Bearing
      */
     /*
@@ -292,7 +261,7 @@ public class PointImpl extends PrimitiveImpl implements Point {
 
         // If the parameter is not a Point, call the equals method from GM_Object
         if (!(pointSet instanceof PointImpl)) return super.equals(pointSet);
-        return this.getPosition().equals(((PointImpl) pointSet).getPosition());
+        return getDirectPosition().equals(((PointImpl) pointSet).getDirectPosition());
     }
 
     public Complex getClosure() {
@@ -313,7 +282,7 @@ public class PointImpl extends PrimitiveImpl implements Point {
                 new PositionFactoryImpl(newCRS, getPositionFactory().getPrecision());
         PrimitiveFactory newPrimitiveFactory = new PrimitiveFactoryImpl(newCRS, newPositionFactory);
         DirectPosition dp1 = new DirectPositionImpl(newCRS);
-        dp1 = transform.transform(((PointImpl) this).getPosition(), dp1);
+        dp1 = transform.transform(((PointImpl) this).getDirectPosition(), dp1);
         return newPrimitiveFactory.createPoint(dp1);
     }
 }

@@ -122,20 +122,8 @@ public abstract class LineIntersector {
     }
 
     /**
-     * Force computed intersection to be rounded to a given precision model
-     *
-     * @param precisionModel
-     * @deprecated use <code>setPrecisionModel</code> instead
-     */
-    public void setMakePrecise(PrecisionModel precisionModel) {
-        this.precisionModel = precisionModel;
-    }
-
-    /**
      * Force computed intersection to be rounded to a given precision model. No getter is provided,
      * because the precision model is not required to be specified.
-     *
-     * @param precisionModel
      */
     public void setPrecisionModel(PrecisionModel precisionModel) {
         this.precisionModel = precisionModel;

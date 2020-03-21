@@ -33,6 +33,8 @@ public class PreGeneralizedFeatureIterator implements SimpleFeatureIterator {
 
     protected SimpleFeatureType featureTyp;
 
+    protected SimpleFeatureType returnedFeatureType;
+
     protected String geomPropertyName, backendGeomPropertyName;
 
     protected int[] indexMapping;
@@ -40,12 +42,14 @@ public class PreGeneralizedFeatureIterator implements SimpleFeatureIterator {
     public PreGeneralizedFeatureIterator(
             SimpleFeatureIterator backendIterator,
             SimpleFeatureType featureTyp,
+            SimpleFeatureType returnedFeatureType,
             int indexMapping[],
             String geomPropertyName,
             String backendGeomPropertyName) {
         super();
         this.backendIterator = backendIterator;
         this.featureTyp = featureTyp;
+        this.returnedFeatureType = returnedFeatureType;
         this.geomPropertyName = geomPropertyName;
         this.backendGeomPropertyName = backendGeomPropertyName;
         this.indexMapping = indexMapping;
@@ -63,6 +67,11 @@ public class PreGeneralizedFeatureIterator implements SimpleFeatureIterator {
         SimpleFeature f = backendIterator.next();
         if (f == null) return null;
         return new PreGeneralizedSimpleFeature(
-                featureTyp, indexMapping, f, geomPropertyName, backendGeomPropertyName);
+                featureTyp,
+                returnedFeatureType,
+                indexMapping,
+                f,
+                geomPropertyName,
+                backendGeomPropertyName);
     }
 }

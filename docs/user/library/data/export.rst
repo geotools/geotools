@@ -24,7 +24,7 @@ it is under construction.
       :start-after: // exportToShapefile start
       :end-before: // exportToShapefile end
   
-* We also have an alternative example (thanks gaby) using FeatureWriter.
+* We also have an alternative example (thanks Gaby) using FeatureWriter.
   
   FeatureSource and FeatureCollection are high level API, to get down and dirty you
   can use the low-level FeatureReader / FeatureWriter API.
@@ -54,8 +54,9 @@ A couple of hints:
       :start-after: // fixWFSTypeName start
       :end-before: // fixWFSTypeName end
 
-* The WFS-T protocol does not allow us to implement createSchema so creating a new featureType
-  will need to be done according to the procedure for your WFS prior to calling addFeature
+* The WFS-T protocol does not allow us to implement ``createSchema`` so creating a new ``featureType``
+  will need to be done according to the procedure for your WFS prior to calling
+  ``addFeature``.
   
   As an example GeoServer supports the use of a REST API for this purpose.
 
@@ -65,6 +66,6 @@ PostGIS
 To copy information into PostGIS:
 
 * You can export from PostGIS as expected using the examples above
-* PostGIS also supports createSchema allowing you to create a new table to hold the content
-* You may wish to adjust the featureType information, especially the lengths of strings
-  prior to calling createSchema
+* PostGIS also supports ``createSchema`` allowing you to create a new table to hold the content
+* You may wish to adjust the ``featureType`` information, especially the lengths of strings
+  prior to calling ``createSchema``

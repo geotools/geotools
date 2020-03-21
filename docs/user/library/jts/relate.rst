@@ -38,10 +38,10 @@ This method will fail if called on an invalid geometry.
     
     return geometry.equalsExact( (Geometry) geometry2 );
 
-  This method is faster than equals( geometry ) and is closer to what normal Java programs assume for a data
+  This method is faster than ``equals(geometry)`` and is closer to what normal Java programs assume for a data
   object equals method implementation. We are checking the internal structure; rather than the meaning.
 
-  The equalsExact method is able to function on invalid geometries.
+  The ``equalsExact`` method is able to function on invalid geometries.
 
 * Alternative - Identity Operator
   
@@ -82,7 +82,7 @@ The geometries only touch edges and do not overlap in any way::
 Crosses
 ^^^^^^^^
 
-The geometries do more than touch, they actually overlap edges:
+The geometries do more than touch, they actually overlap edges::
 
     return geometryA.crosses( geometry2 );
 
@@ -112,8 +112,8 @@ The definition of the overlaps relationship is a little bit different than that 
 Relates
 ^^^^^^^
 
-Computes the "DE-9IM Matrix" for two Geometries allowing you to study exactly how they interact with each other.::
+Computes the "DE-9IM Matrix" for two ``Geometries`` allowing you to study exactly how they interact with each other.::
    
    IntersectionMatrix m = a.relate(b);
 
-The IntersectionMatrix allows you to separately test how the interior, exterior and edges of two geometries interact. All the above operations can be viewed as a summary of this IntersectionMatrix.
+The ``IntersectionMatrix`` allows you to separately test how the interior, exterior and edges of two geometries interact. All the above operations can be viewed as a summary of this ``IntersectionMatrix``.

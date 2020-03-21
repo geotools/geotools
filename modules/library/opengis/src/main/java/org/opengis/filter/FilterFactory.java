@@ -302,6 +302,10 @@ public interface FilterFactory {
      */
     BBOX bbox(String propertyName, double minx, double miny, double maxx, double maxy, String srs);
 
+    BBOX bbox(Expression propertyName, Expression bounds);
+
+    BBOX bbox(Expression propertyName, Expression bounds, MatchAction matchAction);
+
     BBOX3D bbox(String propertyName, BoundingBox3D env);
 
     BBOX3D bbox(String propertyName, BoundingBox3D env, MatchAction matchAction);

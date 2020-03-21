@@ -84,37 +84,6 @@ public class ScaleZoomLevelMatcher {
         this.scale = scale;
     }
 
-    /** @deprecated is wmtSource.getTileCrs() really meaningful? */
-    @Deprecated
-    public static ScaleZoomLevelMatcher createMatcher(
-            ReferencedEnvelope mapExtentMapCrs, double scale, TileService wmtSource)
-            throws Exception {
-
-        CoordinateReferenceSystem crsMap = mapExtentMapCrs.getCoordinateReferenceSystem();
-        // the CRS used for the tile cutting
-        CoordinateReferenceSystem crsTiles = wmtSource.getTileCrs();
-
-        // Transformation: MapCrs -> TileCrs (mostly WGS_84)
-        MathTransform transformMapToTileCrs = CRS.findMathTransform(crsMap, crsTiles);
-
-        // Transformation: TileCrs (mostly WGS_84) -> MapCrs (needed for the
-        // blank tiles)
-        MathTransform transformTileCrsToMap = CRS.findMathTransform(crsTiles, crsMap);
-
-        // Get the mapExtent in the tiles CRS
-        ReferencedEnvelope mapExtentTileCrs =
-                getProjectedEnvelope(mapExtentMapCrs, crsTiles, transformMapToTileCrs);
-
-        return new ScaleZoomLevelMatcher(
-                crsMap,
-                crsTiles,
-                transformMapToTileCrs,
-                transformTileCrsToMap,
-                mapExtentTileCrs,
-                mapExtentMapCrs,
-                scale);
-    }
-
     public static ScaleZoomLevelMatcher createMatcher(
             ReferencedEnvelope requestExtent, CoordinateReferenceSystem crsTiles, double scale)
             throws FactoryException, TransformException {
@@ -141,15 +110,7 @@ public class ScaleZoomLevelMatcher {
                 scale);
     }
 
-    /**
-     * Re-Projects the given envelope to destinationCRS using transformation.
-     *
-     * @param envelope
-     * @param destinationCRS
-     * @param transformation
-     * @return
-     * @throws Exception
-     */
+    /** Re-Projects the given envelope to destinationCRS using transformation. */
     public static ReferencedEnvelope getProjectedEnvelope(
             ReferencedEnvelope envelope,
             CoordinateReferenceSystem destinationCRS,
@@ -192,13 +153,7 @@ public class ScaleZoomLevelMatcher {
         return scale;
     }
 
-    /**
-     * Finds out the best fitting zoom-level for a given map-scale.
-     *
-     * @param service
-     * @param tempScaleList
-     * @return
-     */
+    /** Finds out the best fitting zoom-level for a given map-scale. */
     public int getZoomLevelFromScale(TileService service, double[] tempScaleList) {
         double[] scaleList = service.getScaleList();
 
@@ -227,11 +182,6 @@ public class ScaleZoomLevelMatcher {
      * Calculates the "best" scale for a given zoom-level by calculating the scale for a tile in the
      * center of the map-extent and by taking the mapCrs in account. "Best" scale is the scale where
      * a 256x256 tile has also this size when displayed in uDig.
-     *
-     * @param zoomLevel
-     * @param service
-     * @param tempScaleList
-     * @return
      */
     public double getOptimumScaleFromZoomLevel(
             int zoomLevel, TileService service, double[] tempScaleList) {
@@ -269,11 +219,6 @@ public class ScaleZoomLevelMatcher {
     /**
      * Returns the bounds of the tile which covers the center of the map extent in the CRS of the
      * map.
-     *
-     * @param zoomLevel
-     * @param wmtSource
-     * @return
-     * @throws Exception
      */
     private ReferencedEnvelope getBoundsOfCenterTileInMapCrs(int zoomLevel, TileService wmtSource)
             throws Exception {
@@ -284,13 +229,7 @@ public class ScaleZoomLevelMatcher {
         return boundsInMapCrs;
     }
 
-    /**
-     * Returns the tile which covers the center of the map extent.
-     *
-     * @param zoomLevel
-     * @param wmtSource
-     * @return
-     */
+    /** Returns the tile which covers the center of the map extent. */
     private Tile getCenterTile(int zoomLevel, TileService wmtSource) {
         TileFactory tileFactory = wmtSource.getTileFactory();
         ZoomLevel zoomLevelInstance = tileFactory.getZoomLevel(zoomLevel, wmtSource);

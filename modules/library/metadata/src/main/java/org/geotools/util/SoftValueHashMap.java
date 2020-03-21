@@ -109,11 +109,7 @@ public class SoftValueHashMap<K, V> extends AbstractMap<K, V> {
         this.hardReferencesCount = hardReferencesCount;
     }
 
-    /**
-     * Returns the number of hard references kept in this cache
-     *
-     * @return
-     */
+    /** Returns the number of hard references kept in this cache */
     public int getHardReferencesCount() {
         return this.hardReferencesCount;
     }
@@ -594,11 +590,7 @@ public class SoftValueHashMap<K, V> extends AbstractMap<K, V> {
      * @author Andrea Aime - OpenGeo
      */
     public static interface ValueCleaner {
-        /**
-         * Cleans the specified object
-         *
-         * @param object
-         */
+        /** Cleans the specified object */
         public void clean(Object key, Object object);
     }
 

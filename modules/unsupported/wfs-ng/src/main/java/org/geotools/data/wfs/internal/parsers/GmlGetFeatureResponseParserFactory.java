@@ -22,9 +22,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import javax.xml.namespace.QName;
-import org.geotools.data.wfs.internal.GetFeatureParser;
 import org.geotools.data.wfs.internal.GetFeatureRequest;
+import org.geotools.data.wfs.internal.GetParser;
 import org.geotools.data.wfs.internal.Versions;
+import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;
 
@@ -33,7 +34,7 @@ import org.opengis.feature.type.FeatureType;
  *
  * <p>Supports only GML 2 and GML 3.1
  *
- * <p>//@deprecated should be removed as long as {@link GetFeatureResponseParserFactory} works well
+ * <p>
  */
 @SuppressWarnings("nls")
 public class GmlGetFeatureResponseParserFactory extends AbstractGetFeatureResponseParserFactory {
@@ -69,7 +70,7 @@ public class GmlGetFeatureResponseParserFactory extends AbstractGetFeatureRespon
                     Arrays.asList(Versions.v1_0_0.toString(), Versions.v1_1_0.toString()));
 
     @Override
-    protected GetFeatureParser parser(GetFeatureRequest request, InputStream in)
+    protected GetParser<SimpleFeature> parser(GetFeatureRequest request, InputStream in)
             throws IOException {
 
         final QName remoteFeatureName = request.getTypeName();
@@ -84,7 +85,7 @@ public class GmlGetFeatureResponseParserFactory extends AbstractGetFeatureRespon
 
         SimpleFeatureType schema = (SimpleFeatureType) queryType;
 
-        GetFeatureParser featureReader =
+        GetParser<SimpleFeature> featureReader =
                 new XmlSimpleFeatureParser(
                         in,
                         schema,

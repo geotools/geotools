@@ -52,8 +52,8 @@ public class TableRowTest extends TestCase implements DataTypesDefinition {
     } // end of main(Stringp[] args)
 
     public static final RowField[] TEST_FIELDS = {
-        new RowField(new Float(1f), DATA_SHORT_FLOAT),
-        new RowField(new Short((short) 2), DATA_SHORT_INTEGER),
+        new RowField(Float.valueOf(1f), DATA_SHORT_FLOAT),
+        new RowField(Short.valueOf((short) 2), DATA_SHORT_INTEGER),
         new RowField(new VPFDate("200301301149.00000"), DATA_DATE_TIME)
     };
 

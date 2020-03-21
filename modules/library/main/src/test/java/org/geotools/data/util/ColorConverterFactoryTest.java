@@ -16,7 +16,12 @@
  */
 package org.geotools.data.util;
 
-import java.awt.Color;
+import static java.awt.Color.BLACK;
+import static java.awt.Color.GREEN;
+import static java.awt.Color.RED;
+import static java.awt.Color.WHITE;
+
+import java.awt.*;
 import junit.framework.TestCase;
 import org.geotools.filter.ConstantExpression;
 import org.geotools.util.Converter;
@@ -102,7 +107,7 @@ public class ColorConverterFactoryTest extends TestCase {
         assertEquals("gray", GRAY, converter.convert("gray", Color.class));
         assertEquals("lemonchiffon", LEMON_CHIFFON, converter.convert("lemonchiffon", Color.class));
         assertEquals("WHITE", Color.WHITE, converter.convert("WHITE", Color.class));
-        assertEquals("black", Color.BLACK, converter.convert("black", Color.class));
+        assertEquals("black", BLACK, converter.convert("black", Color.class));
         assertEquals("thistle", THISTLE, converter.convert("thistle", Color.class));
         assertEquals("hex", GRAY, converter.convert("#808080", Color.class));
 
@@ -145,5 +150,25 @@ public class ColorConverterFactoryTest extends TestCase {
         assertEquals(170, color.getRed());
         assertEquals(170, color.getGreen());
         assertEquals(170, color.getBlue());
+    }
+
+    public void testHsl() throws Exception {
+        Converter converter =
+                factory.createConverter(
+                        String.class, Color.class, new Hints(Hints.COLOR_DEFINITION, "CSS"));
+        assertEquals(BLACK, converter.convert("hsl(0, 0, 0)", Color.class));
+        assertEquals(WHITE, converter.convert("hsl(0, 0, 100%)", Color.class));
+        assertEquals(RED, converter.convert("hsl(0, 100%, 50%)", Color.class));
+        assertEquals(GREEN, converter.convert("hsl(120, 100%, 50%)", Color.class));
+    }
+
+    public void testHsla() throws Exception {
+        Converter converter =
+                factory.createConverter(
+                        String.class, Color.class, new Hints(Hints.COLOR_DEFINITION, "CSS"));
+        assertEquals(BLACK, converter.convert("hsla(0, 0%, 0%, 1)", Color.class));
+        assertEquals(
+                new Color(255, 255, 255, 128),
+                converter.convert("hsla(0, 0%, 100%, 0.5)", Color.class));
     }
 }

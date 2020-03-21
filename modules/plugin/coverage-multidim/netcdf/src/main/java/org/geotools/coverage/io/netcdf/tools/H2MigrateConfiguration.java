@@ -21,6 +21,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.Properties;
 import org.geotools.data.DataStore;
@@ -40,13 +41,15 @@ public class H2MigrateConfiguration {
      */
     public static DataStore getDataStore(Properties configuration)
             throws IOException, ClassNotFoundException, IllegalAccessException,
-                    InstantiationException {
+                    InstantiationException, NoSuchMethodException, InvocationTargetException {
         // first try out the default GeoTools approach
         final DataStore dataStore = DataStoreFinder.getDataStore(configuration);
         if (dataStore == null) {
             // use ImageMosaic bizarre own way
             final String spiClass = (String) configuration.get("SPI");
-            DataStoreFactorySpi spi = (DataStoreFactorySpi) Class.forName(spiClass).newInstance();
+            DataStoreFactorySpi spi =
+                    (DataStoreFactorySpi)
+                            Class.forName(spiClass).getDeclaredConstructor().newInstance();
             Map<String, Serializable> datastoreParams =
                     Utils.filterDataStoreParams(configuration, spi);
             return spi.createDataStore(datastoreParams);

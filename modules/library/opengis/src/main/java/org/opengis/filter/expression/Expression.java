@@ -36,7 +36,11 @@ public interface Expression {
      */
     Expression NIL = new NilExpression();
 
-    /** Evaluates the given expression based on the content of the given object. */
+    /**
+     * Evaluates the given expression based on the content of the given object.
+     *
+     * @return computed value
+     */
     @Extension
     Object evaluate(Object object);
 

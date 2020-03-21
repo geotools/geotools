@@ -29,7 +29,7 @@ import org.opengis.filter.sort.SortBy;
  *
  * @author Andrea Aime - GeoSolutions
  */
-class ZGroupLayerPainter {
+class ZGroupLayerPainter implements AutoCloseable {
 
     Feature currentFeature;
 
@@ -76,7 +76,8 @@ class ZGroupLayerPainter {
         for (int i = 0; i < lfts.size(); i++) {
             while (!complete && reference.equals(currentKey)) {
                 renderable.setFeature(currentFeature);
-                renderer.processFeature(renderable, lfts.get(i));
+                LiteFeatureTypeStyle lftsi = lfts.get(i);
+                renderer.processFeature(renderable, lftsi, lftsi.projectionHandler);
                 if (renderer.renderingStopRequested) {
                     return;
                 }

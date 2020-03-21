@@ -118,13 +118,6 @@ public class DocumentWriter {
      *   <li>USE_NEAREST - (Boolean) not implemented
      *   <li>SCHEMA_ORDER - (String[] or Schema[]) resolve ambiguity & import
      * </ul>
-     *
-     * @param value
-     * @param schema
-     * @param f
-     * @param hints
-     * @throws OperationNotSupportedException
-     * @throws IOException
      */
     public static void writeDocument(Object value, Schema schema, File f, Map hints)
             throws OperationNotSupportedException, IOException {
@@ -140,14 +133,14 @@ public class DocumentWriter {
                     new File(
                             f.getParentFile(),
                             f.getName().substring(0, f.getName().indexOf(".")) + ".xsd");
-            FileWriter wf = new FileWriter(f2);
-            writeSchema(schema, wf, hints2);
-            wf.close();
+            try (FileWriter wf = new FileWriter(f2)) {
+                writeSchema(schema, wf, hints2);
+            }
         }
 
-        FileWriter wf = new FileWriter(f);
-        writeDocument(value, schema, wf, hints);
-        wf.close();
+        try (FileWriter wf = new FileWriter(f)) {
+            writeDocument(value, schema, wf, hints);
+        }
     }
 
     /**
@@ -162,16 +155,12 @@ public class DocumentWriter {
      *   <li>SCHEMA_ORDER - (String[] or Schema[]) resolve ambiguity & import
      * </ul>
      *
-     * @param value
-     * @param schema
-     * @param w
      * @param hints optional hints for writing
-     * @throws OperationNotSupportedException
-     * @throws IOException
      */
     public static void writeDocument(Object value, Schema schema, Writer w, Map hints)
             throws OperationNotSupportedException, IOException {
         if ((hints != null) && hints.containsKey(WRITE_SCHEMA)) {
+            @SuppressWarnings("PMD.CloseResource")
             Writer w2 = (Writer) hints.get(WRITE_SCHEMA);
             writeSchema(schema, w2, hints);
         }
@@ -196,13 +185,6 @@ public class DocumentWriter {
      *   <li>USE_NEAREST - (Boolean) not implemented
      *   <li>SCHEMA_ORDER - (String[] or Schema[]) resolve ambiguity & import
      * </ul>
-     *
-     * @param value
-     * @param schema
-     * @param f
-     * @param hints
-     * @throws OperationNotSupportedException
-     * @throws IOException
      */
     public static void writeFragment(Object value, Schema schema, File f, Map hints)
             throws OperationNotSupportedException, IOException {
@@ -210,9 +192,9 @@ public class DocumentWriter {
             throw new IOException("Cannot write to " + f);
         }
 
-        FileWriter wf = new FileWriter(f);
-        writeFragment(value, schema, wf, hints);
-        wf.close();
+        try (FileWriter wf = new FileWriter(f)) {
+            writeFragment(value, schema, wf, hints);
+        }
     }
 
     /**
@@ -226,12 +208,7 @@ public class DocumentWriter {
      *   <li>SCHEMA_ORDER - (String[] or Schema[]) resolve ambiguity & import
      * </ul>
      *
-     * @param value
-     * @param schema
-     * @param w
      * @param hints optional hints for writing
-     * @throws OperationNotSupportedException
-     * @throws IOException
      */
     public static void writeFragment(Object value, Schema schema, Writer w, Map hints)
             throws OperationNotSupportedException, IOException {
@@ -1552,9 +1529,6 @@ public class DocumentWriter {
         /**
          * @see PrintHandler#characters(char[], int, int)
          * @see Writer#write(char[], int, int)
-         * @param arg0
-         * @param arg1
-         * @param arg2
          */
         public void characters(char[] arg0, int arg1, int arg2) throws IOException {
             writer.write(arg0, arg1, arg2);
@@ -1572,10 +1546,6 @@ public class DocumentWriter {
         /**
          * @see org.xml.sax.ContentHandler#ignorableWhitespace(char[], int, int)
          * @see Writer#write(char[], int, int)
-         * @param arg0
-         * @param arg1
-         * @param arg2
-         * @throws IOException
          */
         public void ignorableWhitespace(char[] arg0, int arg1, int arg2) throws IOException {
             writer.write(arg0, arg1, arg2);

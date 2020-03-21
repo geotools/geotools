@@ -24,6 +24,7 @@ import org.geotools.geometry.iso.primitive.CurveImpl;
 import org.geotools.geometry.iso.primitive.PrimitiveFactoryImpl;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.geometry.DirectPosition;
+import org.opengis.geometry.PositionFactory;
 import org.opengis.geometry.coordinate.LineSegment;
 import org.opengis.geometry.coordinate.PointArray;
 import org.opengis.geometry.coordinate.Position;
@@ -47,17 +48,13 @@ public class LineStringLineSegmentTest extends TestCase {
 
         GeometryFactoryImpl tCoordFactory = (GeometryFactoryImpl) builder.getGeometryFactory();
         PrimitiveFactoryImpl tPrimFactory = (PrimitiveFactoryImpl) builder.getPrimitiveFactory();
+        PositionFactory pf = builder.getPositionFactory();
 
-        PositionImpl p1 =
-                new PositionImpl(tCoordFactory.createDirectPosition(new double[] {-50, 0}));
-        PositionImpl p2 =
-                new PositionImpl(tCoordFactory.createDirectPosition(new double[] {-30, 30}));
-        PositionImpl p3 =
-                new PositionImpl(tCoordFactory.createDirectPosition(new double[] {0, 50}));
-        PositionImpl p4 =
-                new PositionImpl(tCoordFactory.createDirectPosition(new double[] {30, 30}));
-        PositionImpl p5 =
-                new PositionImpl(tCoordFactory.createDirectPosition(new double[] {50, 0}));
+        PositionImpl p1 = new PositionImpl(pf.createDirectPosition(new double[] {-50, 0}));
+        PositionImpl p2 = new PositionImpl(pf.createDirectPosition(new double[] {-30, 30}));
+        PositionImpl p3 = new PositionImpl(pf.createDirectPosition(new double[] {0, 50}));
+        PositionImpl p4 = new PositionImpl(pf.createDirectPosition(new double[] {30, 30}));
+        PositionImpl p5 = new PositionImpl(pf.createDirectPosition(new double[] {50, 0}));
 
         LineStringImpl line1 = null;
 
@@ -279,10 +276,8 @@ public class LineStringLineSegmentTest extends TestCase {
         assertEquals(Math.round(dp[1] * 100), -83);
 
         // ***** merge(LineString)
-        PositionImpl p6 =
-                new PositionImpl(tCoordFactory.createDirectPosition(new double[] {80, 40}));
-        PositionImpl p7 =
-                new PositionImpl(tCoordFactory.createDirectPosition(new double[] {130, 60}));
+        PositionImpl p6 = new PositionImpl(pf.createDirectPosition(new double[] {80, 40}));
+        PositionImpl p7 = new PositionImpl(pf.createDirectPosition(new double[] {130, 60}));
         ArrayList<Position> positionList2 = new ArrayList<Position>();
         positionList2.add(p5);
         positionList2.add(p6);
@@ -330,11 +325,11 @@ public class LineStringLineSegmentTest extends TestCase {
         PointArray controlPoints = line1.getControlPoints();
         assertEquals(controlPoints.size(), 5);
         // control points are in opposite order
-        assertEquals(controlPoints.getDirectPosition(0, null), p5.getPosition());
-        assertEquals(controlPoints.getDirectPosition(1, null), p4.getPosition());
-        assertEquals(controlPoints.getDirectPosition(2, null), p3.getPosition());
-        assertEquals(controlPoints.getDirectPosition(3, null), p2.getPosition());
-        assertEquals(controlPoints.getDirectPosition(4, null), p1.getPosition());
+        assertEquals(controlPoints.getDirectPosition(0, null), p5.getDirectPosition());
+        assertEquals(controlPoints.getDirectPosition(1, null), p4.getDirectPosition());
+        assertEquals(controlPoints.getDirectPosition(2, null), p3.getDirectPosition());
+        assertEquals(controlPoints.getDirectPosition(3, null), p2.getDirectPosition());
+        assertEquals(controlPoints.getDirectPosition(4, null), p1.getDirectPosition());
         // System.out.println("Reversed. Line1: " + line1);
 
         // test more curvesegment methods using tLineList

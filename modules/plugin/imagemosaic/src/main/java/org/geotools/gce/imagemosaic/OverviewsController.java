@@ -73,8 +73,6 @@ final class OverviewsController {
      * Given a specified {@link OverviewPolicy} and a {@link RasterLayerRequest}, suggest the proper
      * overview level index.
      *
-     * @param policy
-     * @param request
      * @return the OverviewLevel index
      */
     int pickOverviewLevel(
@@ -255,12 +253,7 @@ final class OverviewsController {
 
         int imageChoice;
 
-        /**
-         * @param scaleFactor
-         * @param resolutionX
-         * @param resolutionY
-         * @param imageChoice
-         */
+        /** */
         public OverviewLevel(
                 final double scaleFactor,
                 final double resolutionX,

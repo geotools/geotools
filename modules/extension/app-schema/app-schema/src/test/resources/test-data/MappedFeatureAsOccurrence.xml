@@ -65,6 +65,12 @@
 						<OCQL>SHAPE</OCQL>
 					</sourceExpression>
 				</AttributeMapping>
+				<AttributeMapping>
+					<targetAttribute>/gsml:positionalAccuracy/gsml:CGI_NumericValue/gsml:principalValue</targetAttribute>
+					<sourceExpression>
+						<OCQL>LOC_ACC</OCQL>
+					</sourceExpression>
+				</AttributeMapping>
 			</attributeMappings>
 		</FeatureTypeMapping>
 	</typeMappings>

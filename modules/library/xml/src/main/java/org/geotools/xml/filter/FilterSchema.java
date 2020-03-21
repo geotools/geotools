@@ -85,7 +85,6 @@ public class FilterSchema implements Schema {
      * Grab provided FilterFactory from hints, or use default provided by
      * FilterFactoryFinder.createFilterFactory();
      *
-     * @param hints
      * @return FilterFactory
      */
     static FilterFactory2 filterFactory(Map map) {
@@ -363,31 +362,17 @@ public class FilterSchema implements Schema {
     }
 
     static class FilterAttribute extends AttributeGT {
-        /**
-         * @param name
-         * @param type
-         */
+        /** */
         public FilterAttribute(String name, SimpleType type) {
             super(null, name, NAMESPACE, type, 0, null, null, false);
         }
 
-        /**
-         * @param name
-         * @param type
-         * @param use
-         */
+        /** */
         public FilterAttribute(String name, SimpleType type, int use) {
             super(null, name, NAMESPACE, type, use, null, null, false);
         }
 
-        /**
-         * @param name
-         * @param type
-         * @param use
-         * @param defaulT
-         * @param fixed
-         * @param form
-         */
+        /** */
         public FilterAttribute(
                 String name, SimpleType type, int use, String defaulT, String fixed, boolean form) {
             super(null, name, NAMESPACE, type, use, defaulT, fixed, form);

@@ -69,9 +69,6 @@ public class HsqlEpsgDatabase {
      *
      * <p>This method pays attention to the system property "EPSG-HSQL.directory" and makes use of
      * the default database name "EPSG".
-     *
-     * @return
-     * @throws SQLException
      */
     public static javax.sql.DataSource createDataSource() throws SQLException {
         return createDataSource(getDirectory());
@@ -132,12 +129,12 @@ public class HsqlEpsgDatabase {
         Logging.getLogger(HsqlEpsgDatabase.class)
                 .config("Creating cached EPSG database."); // TODO: localize
         try (Connection connection = dataSource.getConnection();
-                Statement statement = connection.createStatement()) {
-            final BufferedReader in =
-                    new BufferedReader(
-                            new InputStreamReader(
-                                    HsqlEpsgDatabase.class.getResourceAsStream("EPSG.sql"),
-                                    "ISO-8859-1"));
+                Statement statement = connection.createStatement();
+                BufferedReader in =
+                        new BufferedReader(
+                                new InputStreamReader(
+                                        HsqlEpsgDatabase.class.getResourceAsStream("EPSG.sql"),
+                                        "ISO-8859-1"))) {
             StringBuilder insertStatement = null;
             String line;
             while ((line = in.readLine()) != null) {
@@ -174,7 +171,6 @@ public class HsqlEpsgDatabase {
                     statement.execute(line);
                 }
             }
-            in.close();
         } catch (IOException exception) {
             SQLException e = new SQLException("Can't read the SQL script."); // TODO: localize
             e.initCause(exception); // TODO: inline cause when we will be allowed to target Java 6.
@@ -184,14 +180,15 @@ public class HsqlEpsgDatabase {
 
     private static void forceReadOnly(File directory) throws IOException {
         final File file = new File(directory, HsqlEpsgDatabase.DATABASE_NAME + ".properties");
-        final InputStream propertyIn = new FileInputStream(file);
         final Properties properties = new Properties();
-        properties.load(propertyIn);
-        propertyIn.close();
+        try (InputStream propertyIn = new FileInputStream(file)) {
+
+            properties.load(propertyIn);
+        }
         properties.put("readonly", "true");
-        final OutputStream out = new FileOutputStream(file);
-        properties.store(out, "EPSG database on HSQL");
-        out.close();
+        try (OutputStream out = new FileOutputStream(file)) {
+            properties.store(out, "EPSG database on HSQL");
+        }
     }
 
     /**
@@ -199,8 +196,6 @@ public class HsqlEpsgDatabase {
      * {@linkplain System#getProperty(String) system property} is defined and contains the name of a
      * directory with a valid {@linkplain File#getParent parent}, then the {@value #DATABASE_NAME}
      * database will be saved in that directory. Otherwise, a temporary directory will be used.
-     *
-     * @throws SQLException
      */
     static File getDirectory() throws SQLException {
         try {

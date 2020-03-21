@@ -99,7 +99,6 @@ public class WMS1_0_0 extends WMSSpecification {
      *
      * <p>
      *
-     * @param format
      * @return MIME type for format
      */
     public static final String toFormatMIME(String format) {
@@ -291,10 +290,7 @@ public class WMS1_0_0 extends WMSSpecification {
 
     /** A GetFeatureInfoRequest for a 1.0.0 server */
     public static class GetFeatureInfoRequest extends AbstractGetFeatureInfoRequest {
-        /**
-         * @param onlineResource
-         * @param request
-         */
+        /** */
         public GetFeatureInfoRequest(
                 URL onlineResource, org.geotools.ows.wms.request.GetMapRequest request) {
             super(onlineResource, request);

@@ -224,8 +224,6 @@ public interface Transaction extends Closeable {
      *
      * <p>Authorization ID is provided as a String, rather than a FeatureLock, to account for across
      * process lock use.
-     *
-     * @param authID
      */
     void addAuthorization(String authID) throws IOException;
 
@@ -244,8 +242,6 @@ public interface Transaction extends Closeable {
      *
      * <p>It is hoped that FeatureStore implementations that have externalized their State with the
      * transaction take the opportunity to revert to Transction.AUTO_COMMIT.
-     *
-     * @throws IOException
      */
     void close() throws IOException;
 
@@ -271,8 +267,6 @@ public interface Transaction extends Closeable {
          *
          * <p>setTransaction is called with <code>null</code> when removeState is called (usually
          * during Transaction.close() ).
-         *
-         * @param transaction
          */
         void setTransaction(Transaction transaction);
 

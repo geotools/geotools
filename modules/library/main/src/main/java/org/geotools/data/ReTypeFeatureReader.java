@@ -175,7 +175,11 @@ public class ReTypeFeatureReader
             else builder.add(next.getAttribute(xpath));
         }
 
-        return builder.buildFeature(id);
+        SimpleFeature feature = builder.buildFeature(id);
+        if (next.hasUserData()) {
+            feature.getUserData().putAll(next.getUserData());
+        }
+        return feature;
     }
 
     /** @see org.geotools.data.FeatureReader#hasNext() */

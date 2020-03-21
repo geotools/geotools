@@ -69,20 +69,7 @@ public class ReprojectFeatureResults extends AbstractFeatureCollection {
     FeatureCollection<SimpleFeatureType, SimpleFeature> results;
     MathTransform transform;
 
-    /**
-     * Creates a new reprojecting feature results
-     *
-     * @param results
-     * @param destinationCS
-     * @throws IOException
-     * @throws SchemaException
-     * @throws TransformException
-     * @throws FactoryException
-     * @throws NoSuchElementException
-     * @throws OperationNotFoundException
-     * @throws CannotCreateTransformException
-     * @throws IllegalArgumentException
-     */
+    /** Creates a new reprojecting feature results */
     public ReprojectFeatureResults(
             FeatureCollection<SimpleFeatureType, SimpleFeature> results,
             CoordinateReferenceSystem destinationCS)
@@ -105,6 +92,7 @@ public class ReprojectFeatureResults extends AbstractFeatureCollection {
         return new ReprojectFeatureIterator(results.features(), getSchema(), transform);
     }
 
+    @SuppressWarnings("PMD.CloseResource")
     public void closeIterator(Iterator close) {
         if (close == null) return;
         if (close instanceof ReprojectFeatureIterator) {

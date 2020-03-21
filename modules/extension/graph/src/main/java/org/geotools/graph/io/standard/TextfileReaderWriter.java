@@ -62,17 +62,19 @@ public abstract class TextfileReaderWriter extends AbstractReaderWriter
         GraphGenerator generator = (GraphGenerator) getProperty(GENERATOR);
 
         // create in the file reader
-        BufferedReader in = new BufferedReader(new FileReader((String) getProperty(FILENAME)));
+        try (BufferedReader in =
+                new BufferedReader(new FileReader((String) getProperty(FILENAME)))) {
 
-        // read the delimiter property
-        String delim = (String) getProperty(DELIMITER);
-        delim = delim != null ? delim : ",";
+            // read the delimiter property
+            String delim = (String) getProperty(DELIMITER);
+            delim = delim != null ? delim : ",";
 
-        // read file line by line passing each line to template method
-        String line;
-        while ((line = in.readLine()) != null) {
-            StringTokenizer st = new StringTokenizer(line, delim);
-            generator.add(readInternal(st));
+            // read file line by line passing each line to template method
+            String line;
+            while ((line = in.readLine()) != null) {
+                StringTokenizer st = new StringTokenizer(line, delim);
+                generator.add(readInternal(st));
+            }
         }
 
         return (generator.getGraph());
@@ -87,19 +89,21 @@ public abstract class TextfileReaderWriter extends AbstractReaderWriter
      */
     public void write(Graph g) throws Exception {
         // create the file writer
-        BufferedWriter out = new BufferedWriter(new FileWriter((String) getProperty(FILENAME)));
+        try (BufferedWriter out =
+                new BufferedWriter(new FileWriter((String) getProperty(FILENAME)))) {
 
-        // check NODES property
-        if (getProperty(NODES) != null) {
-            for (Iterator itr = g.getNodes().iterator(); itr.hasNext(); ) {
-                writeNode(out, (Node) itr.next());
+            // check NODES property
+            if (getProperty(NODES) != null) {
+                for (Iterator itr = g.getNodes().iterator(); itr.hasNext(); ) {
+                    writeNode(out, (Node) itr.next());
+                }
             }
-        }
 
-        // check EDGES property
-        if (getProperty(EDGES) != null) {
-            for (Iterator itr = g.getEdges().iterator(); itr.hasNext(); ) {
-                writeEdge(out, (Edge) itr.next());
+            // check EDGES property
+            if (getProperty(EDGES) != null) {
+                for (Iterator itr = g.getEdges().iterator(); itr.hasNext(); ) {
+                    writeEdge(out, (Edge) itr.next());
+                }
             }
         }
     }

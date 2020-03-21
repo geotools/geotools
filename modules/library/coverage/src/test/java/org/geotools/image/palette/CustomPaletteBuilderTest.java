@@ -16,6 +16,8 @@
  */
 package org.geotools.image.palette;
 
+import static org.junit.Assert.*;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -27,7 +29,6 @@ import javax.media.jai.OperationDescriptor;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.TiledImage;
-import junit.framework.Assert;
 import org.geotools.image.ImageWorker;
 import org.junit.Test;
 
@@ -36,7 +37,7 @@ import org.junit.Test;
  *
  * @author Simone Giannecchini, GeoSolutions SAS
  */
-public class CustomPaletteBuilderTest extends Assert {
+public class CustomPaletteBuilderTest {
 
     @Test
     public void test2BandsBug() {

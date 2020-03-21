@@ -65,11 +65,7 @@ public class JDataStoreWizard extends JWizard {
         this(extension == null ? null : FileDataStoreFinder.getDataStoreFactory(extension));
     }
 
-    /**
-     * Set up the wizard with a "default" set of parameters.
-     *
-     * @param format
-     */
+    /** Set up the wizard with a "default" set of parameters. */
     public JDataStoreWizard(DataStoreFactorySpi format) {
         this(format, new HashMap<String, Object>());
     }
@@ -118,12 +114,7 @@ public class JDataStoreWizard extends JWizard {
         }
     }
 
-    /**
-     * Method used to fill in any required "programming" level defaults such as dbtype.
-     *
-     * @param format2
-     * @param params
-     */
+    /** Method used to fill in any required "programming" level defaults such as dbtype. */
     private void fillInDefaults(DataStoreFactorySpi format, Map<String, Object> params) {
         if (format == null) return;
         for (Param param : format.getParametersInfo()) {

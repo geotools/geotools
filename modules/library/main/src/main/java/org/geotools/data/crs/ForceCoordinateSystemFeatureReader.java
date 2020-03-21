@@ -58,38 +58,21 @@ public class ForceCoordinateSystemFeatureReader
     protected FeatureReader<SimpleFeatureType, SimpleFeature> reader;
     protected SimpleFeatureBuilder builder;
 
-    /**
-     * Shortcut constructor that can be used if the new schema has already been computed
-     *
-     * @param reader
-     * @param schema
-     */
+    /** Shortcut constructor that can be used if the new schema has already been computed */
     ForceCoordinateSystemFeatureReader(
             FeatureReader<SimpleFeatureType, SimpleFeature> reader, SimpleFeatureType schema) {
         this.reader = reader;
         this.builder = new SimpleFeatureBuilder(schema);
     }
 
-    /**
-     * Builds a new ForceCoordinateSystemFeatureReader
-     *
-     * @param reader
-     * @param cs
-     * @throws SchemaException
-     */
+    /** Builds a new ForceCoordinateSystemFeatureReader */
     public ForceCoordinateSystemFeatureReader(
             FeatureReader<SimpleFeatureType, SimpleFeature> reader, CoordinateReferenceSystem cs)
             throws SchemaException {
         this(reader, cs, false);
     }
 
-    /**
-     * Builds a new ForceCoordinateSystemFeatureReader
-     *
-     * @param reader
-     * @param cs
-     * @throws SchemaException
-     */
+    /** Builds a new ForceCoordinateSystemFeatureReader */
     public ForceCoordinateSystemFeatureReader(
             FeatureReader<SimpleFeatureType, SimpleFeature> reader,
             CoordinateReferenceSystem cs,

@@ -48,15 +48,7 @@ public abstract class AbstractLazyComplexTypeImpl extends AbstractLazyAttributeT
 
     private Map<Name, PropertyDescriptor> descriptorMap;
 
-    /**
-     * Constructor arguments have the same meaning as in {@link ComplexTypeImpl}.
-     *
-     * @param name
-     * @param identified
-     * @param isAbstract
-     * @param restrictions
-     * @param description
-     */
+    /** Constructor arguments have the same meaning as in {@link ComplexTypeImpl}. */
     public AbstractLazyComplexTypeImpl(
             Name name,
             boolean identified,
@@ -116,16 +108,25 @@ public abstract class AbstractLazyComplexTypeImpl extends AbstractLazyAttributeT
         return descriptorMap.get(name);
     }
 
+    /** @see org.opengis.feature.type.ComplexType#isInline() */
+    public boolean isInline() {
+        return false;
+    }
+
+    /** @see org.geotools.feature.type.AbstractLazyAttributeTypeImpl#toString() */
+    @Override
+    public String toString() {
+        return "LazyComplexType: " + getName();
+    }
+
     /**
      * The namespace-ignorant version of {@link #getDescriptor(Name)}. Note that we honour the same
      * permissive algorithm as {@link ComplexTypeImpl}: (1) try no-namespace, (2) try
-     * container-namespace, (2) search for match ignoring namespace. <b>*Shudder*</b>
+     * container-namespace, (2) search for match ignoring namespace. <b>*Shudder*</b>. Warning: Any
+     * code that uses this method instead of {@link #getDescriptor(Name)} is * inherently unsafe.
      *
      * @see org.opengis.feature.type.ComplexType#getDescriptor(java.lang.String)
-     * @deprecated Any code that uses this method instead of {@link #getDescriptor(Name)} is
-     *     inherently unsafe.
      */
-    @Deprecated
     public PropertyDescriptor getDescriptor(String name) {
         requireDescriptors();
         PropertyDescriptor result = getDescriptor(new NameImpl(name));
@@ -140,16 +141,5 @@ public abstract class AbstractLazyComplexTypeImpl extends AbstractLazyAttributeT
             }
         }
         return result;
-    }
-
-    /** @see org.opengis.feature.type.ComplexType#isInline() */
-    public boolean isInline() {
-        return false;
-    }
-
-    /** @see org.geotools.feature.type.AbstractLazyAttributeTypeImpl#toString() */
-    @Override
-    public String toString() {
-        return "LazyComplexType: " + getName();
     }
 }

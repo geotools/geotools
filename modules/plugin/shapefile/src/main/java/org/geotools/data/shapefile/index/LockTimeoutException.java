@@ -28,10 +28,7 @@ public class LockTimeoutException extends Exception {
         super(message);
     }
 
-    /**
-     * @param message
-     * @param cause
-     */
+    /** */
     public LockTimeoutException(String message, Throwable cause) {
         super(message, cause);
     }

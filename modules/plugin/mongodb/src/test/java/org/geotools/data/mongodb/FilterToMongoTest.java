@@ -31,13 +31,14 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Test;
-import org.locationtech.jts.algorithm.CGAlgorithms;
+import org.locationtech.jts.algorithm.Orientation;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.opengis.filter.And;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsBetween;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.PropertyIsGreaterThan;
@@ -96,7 +97,7 @@ public class FilterToMongoTest extends TestCase {
         assertNotNull(filterIntersectsGeometry);
 
         Geometry geometry = geometryBuilder.toGeometry(filterIntersectsGeometry);
-        assertTrue(CGAlgorithms.isCCW(geometry.getCoordinates()));
+        assertTrue(Orientation.isCCW(geometry.getCoordinates()));
 
         BasicDBObject filterIntersectsCrs = (BasicDBObject) filterIntersectsGeometry.get("crs");
         assertNotNull(filterIntersectsCrs);
@@ -139,7 +140,7 @@ public class FilterToMongoTest extends TestCase {
         assertNotNull(filterIntersectsGeometry);
 
         Geometry geometry = geometryBuilder.toGeometry(filterIntersectsGeometry);
-        assertTrue(CGAlgorithms.isCCW(geometry.getCoordinates()));
+        assertTrue(Orientation.isCCW(geometry.getCoordinates()));
 
         BasicDBObject filterIntersectsCrs = (BasicDBObject) filterIntersectsGeometry.get("crs");
         assertNotNull(filterIntersectsCrs);
@@ -182,7 +183,7 @@ public class FilterToMongoTest extends TestCase {
         assertNotNull(filterIntersectsGeometry);
 
         Geometry geometry = geometryBuilder.toGeometry(filterIntersectsGeometry);
-        assertTrue(CGAlgorithms.isCCW(geometry.getCoordinates()));
+        assertTrue(Orientation.isCCW(geometry.getCoordinates()));
 
         BasicDBObject filterIntersectsCrs = (BasicDBObject) filterIntersectsGeometry.get("crs");
         assertNotNull(filterIntersectsCrs);
@@ -281,6 +282,18 @@ public class FilterToMongoTest extends TestCase {
         BasicDBList andFilter = (BasicDBList) obj.get("$and");
         assertNotNull(andFilter);
         assertEquals(andFilter.size(), 2);
+    }
+
+    public void testOrComparison() {
+        PropertyIsGreaterThan greaterThan = ff.greater(ff.property("property"), ff.literal(0));
+        PropertyIsLessThan lessThan = ff.less(ff.property("property"), ff.literal(10));
+        Or or = ff.or(greaterThan, lessThan);
+        BasicDBObject obj = (BasicDBObject) or.accept(filterToMongo, null);
+        assertNotNull(obj);
+
+        BasicDBList orFilter = (BasicDBList) obj.get("$or");
+        assertNotNull(orFilter);
+        assertEquals(orFilter.size(), 2);
     }
 
     public void testEqualToInteger() throws Exception {

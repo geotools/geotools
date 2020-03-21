@@ -85,7 +85,6 @@ public class AnnotatedBeanProcessFactory extends AnnotationDrivenProcessFactory 
      * <p>This is isolated as a static method to allow for unit test; it is called by the
      * constructor.
      *
-     * @param beanClasses
      * @return class map from process name to implementing class.
      */
     static Map<String, Class<?>> classMap(Class<?>... beanClasses) {
@@ -211,10 +210,8 @@ public class AnnotatedBeanProcessFactory extends AnnotationDrivenProcessFactory 
             if (processClass == null) {
                 throw new IllegalArgumentException("Process " + name + " is unknown");
             }
-            return processClass.newInstance();
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
+            return processClass.getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

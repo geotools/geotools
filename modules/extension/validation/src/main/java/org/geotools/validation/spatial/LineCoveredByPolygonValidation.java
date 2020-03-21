@@ -78,44 +78,48 @@ public class LineCoveredByPolygonValidation extends LinePolygonAbstractValidatio
         SimpleFeatureSource fsLine = (SimpleFeatureSource) layers.get(getLineTypeRef());
 
         SimpleFeatureCollection fcLine = fsLine.getFeatures();
-        SimpleFeatureIterator fLine = fcLine.features();
+        try (SimpleFeatureIterator fLine = fcLine.features()) {
 
-        SimpleFeatureSource fsPoly =
-                (SimpleFeatureSource) layers.get(getRestrictedPolygonTypeRef());
+            SimpleFeatureSource fsPoly =
+                    (SimpleFeatureSource) layers.get(getRestrictedPolygonTypeRef());
 
-        ListFeatureCollection fcPoly = new ListFeatureCollection(fsPoly.getFeatures());
+            ListFeatureCollection fcPoly = new ListFeatureCollection(fsPoly.getFeatures());
 
-        while (fLine.hasNext()) {
-            SimpleFeature line = fLine.next();
-            SimpleFeatureIterator fPoly = fcPoly.features();
-            Geometry lineGeom = (Geometry) line.getDefaultGeometry();
-            if (envelope.contains(lineGeom.getEnvelopeInternal())) {
-                // 	check for valid comparison
-                if (LineString.class.isAssignableFrom(lineGeom.getClass())) {
-                    while (fPoly.hasNext()) {
-                        SimpleFeature poly = fPoly.next();
-                        Geometry polyGeom = (Geometry) poly.getDefaultGeometry();
-                        if (envelope.contains(polyGeom.getEnvelopeInternal())) {
-                            if (Polygon.class.isAssignableFrom(polyGeom.getClass())) {
-                                if (!polyGeom.contains(lineGeom)) {
-                                    results.error(
-                                            poly, "Polygon does not contain the specified Line.");
-                                    r = false;
+            while (fLine.hasNext()) {
+                SimpleFeature line = fLine.next();
+                try (SimpleFeatureIterator fPoly = fcPoly.features()) {
+                    Geometry lineGeom = (Geometry) line.getDefaultGeometry();
+                    if (envelope.contains(lineGeom.getEnvelopeInternal())) {
+                        // 	check for valid comparison
+                        if (LineString.class.isAssignableFrom(lineGeom.getClass())) {
+                            while (fPoly.hasNext()) {
+                                SimpleFeature poly = fPoly.next();
+                                Geometry polyGeom = (Geometry) poly.getDefaultGeometry();
+                                if (envelope.contains(polyGeom.getEnvelopeInternal())) {
+                                    if (Polygon.class.isAssignableFrom(polyGeom.getClass())) {
+                                        if (!polyGeom.contains(lineGeom)) {
+                                            results.error(
+                                                    poly,
+                                                    "Polygon does not contain the specified Line.");
+                                            r = false;
+                                        }
+                                        // do next.
+                                    } else {
+                                        fcPoly.remove(poly);
+                                        results.warning(
+                                                poly,
+                                                "Invalid type: this feature is not a derivative of a Polygon");
+                                    }
+                                } else {
+                                    fcPoly.remove(poly);
                                 }
-                                // do next.
-                            } else {
-                                fcPoly.remove(poly);
-                                results.warning(
-                                        poly,
-                                        "Invalid type: this feature is not a derivative of a Polygon");
                             }
                         } else {
-                            fcPoly.remove(poly);
+                            results.warning(
+                                    line,
+                                    "Invalid type: this feature is not a derivative of a LineString");
                         }
                     }
-                } else {
-                    results.warning(
-                            line, "Invalid type: this feature is not a derivative of a LineString");
                 }
             }
         }

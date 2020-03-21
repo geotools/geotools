@@ -17,9 +17,10 @@
 package org.geotools.renderer.label;
 
 import java.awt.geom.Rectangle2D;
-import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.index.ItemVisitor;
 import org.locationtech.jts.index.quadtree.Quadtree;
 
 /**
@@ -36,10 +37,6 @@ public class LabelIndex {
      * Returns true if there is any label in the index within the specified distance from the
      * bounds. For speed reasons the bounds will be simply expanded by the distance, no curved
      * buffer will be generated
-     *
-     * @param bounds
-     * @param distance
-     * @return
      */
     @SuppressWarnings("unchecked")
     public boolean labelsWithinDistance(Rectangle2D bounds, double distance) {
@@ -47,34 +44,29 @@ public class LabelIndex {
 
         Envelope e = toEnvelope(bounds);
         e.expandBy(distance);
-        List<InterferenceItem> results = index.query(e);
-        if (results.size() == 0) return false;
-        for (Iterator<InterferenceItem> it = results.iterator(); it.hasNext(); ) {
-            InterferenceItem item = it.next();
-            if (item.env.intersects(e)) {
-                return true;
-            }
-        }
-        return false;
+        AtomicBoolean intersectionFound = new AtomicBoolean(false);
+        index.query(
+                e,
+                new ItemVisitor() {
+                    @Override
+                    public void visitItem(Object o) {
+                        if (intersectionFound.get()) return;
+                        InterferenceItem item = (InterferenceItem) o;
+                        if (item.env.intersects(e)) {
+                            intersectionFound.set(true);
+                        }
+                    }
+                });
+        return intersectionFound.get();
     }
 
-    /**
-     * Adds a label into the index
-     *
-     * @param item
-     * @param bounds
-     */
+    /** Adds a label into the index */
     public void addLabel(LabelCacheItem item, Rectangle2D bounds) {
         Envelope e = toEnvelope(bounds);
         index.insert(e, new InterferenceItem(e, item));
     }
 
-    /**
-     * Turns the specified Java2D rectangle into a JTS envelope
-     *
-     * @param bounds
-     * @return
-     */
+    /** Turns the specified Java2D rectangle into a JTS envelope */
     private Envelope toEnvelope(Rectangle2D bounds) {
         return new Envelope(bounds.getMinX(), bounds.getMaxX(), bounds.getMinY(), bounds.getMaxY());
     }
@@ -96,11 +88,7 @@ public class LabelIndex {
         }
     }
 
-    /**
-     * Reserve the area indicated by these Geometry.
-     *
-     * @param reserved
-     */
+    /** Reserve the area indicated by these Geometry. */
     public void reserveArea(List<Rectangle2D> reserved) {
         for (Rectangle2D area : reserved) {
             Envelope env = toEnvelope(area);

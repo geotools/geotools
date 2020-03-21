@@ -41,15 +41,9 @@ public interface ZoomContext {
      *
      * @param min Minimum zoom level. Absent for open ended.
      * @param max Maximum zoom level. Absent for open ended.
-     * @return
      */
     public ScaleRange getRange(@Nullable Integer min, @Nullable Integer max);
 
-    /**
-     * Is the given level within the range for which the context has clearly defined scales.
-     *
-     * @param level
-     * @return
-     */
+    /** Is the given level within the range for which the context has clearly defined scales. */
     public boolean isInRange(int level);
 }

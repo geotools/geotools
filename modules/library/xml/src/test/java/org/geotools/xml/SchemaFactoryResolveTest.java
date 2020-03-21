@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
+import java.net.UnknownHostException;
 import junit.framework.TestCase;
 
 /** @author "Mauro Bartolomeoli - mauro.bartolomeoli@geo-solutions.it" */
@@ -81,10 +82,18 @@ public class SchemaFactoryResolveTest extends TestCase {
     }
 
     public void testRemotePathResolve() throws Exception {
-        assertNotNull(
-                SchemaFactory.getInstance(
-                        URI.create("http://www.w3.org/XML/1998/namespace/remote"),
-                        URI.create("http://www.w3.org/2001/03/xml.xsd")));
+        try {
+            assertNotNull(
+                    SchemaFactory.getInstance(
+                            URI.create("http://www.w3.org/XML/1998/namespace/remote"),
+                            URI.create("http://www.w3.org/2001/03/xml.xsd")));
+        } catch (RuntimeException e) {
+            if (e.getCause() instanceof UnknownHostException) {
+                // fine, it just means the test is running offline
+                return;
+            }
+            throw e;
+        }
     }
 
     private void delete(File f, boolean onlyContent) {

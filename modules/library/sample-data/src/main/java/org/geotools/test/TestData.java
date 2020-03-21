@@ -148,7 +148,9 @@ public class TestData implements Runnable {
                                                 // invoke
                                                 final Object paramsObj[] = {};
 
-                                                final Object o = mImage.newInstance();
+                                                final Object o =
+                                                        mImage.getDeclaredConstructor()
+                                                                .newInstance();
                                                 return (Boolean) method.invoke(o, paramsObj);
                                             } catch (Throwable e) {
                                                 return false;
@@ -372,31 +374,6 @@ public class TestData implements Runnable {
     }
 
     /**
-     * Provides a {@link java.io.BufferedReader} for named test data. It is the caller
-     * responsability to close this reader after usage.
-     *
-     * @param caller The class of the object associated with named data.
-     * @param name of test data to load.
-     * @return The reader, or {@code null} if the named test data are not found.
-     * @throws IOException if an error occurs during an input operation.
-     * @deprecated Use {@link #openReader} instead. The {@code openReader} method throws an
-     *     exception if the resource is not found, instead of returning null. This make debugging
-     *     easier, since it replaces infamous {@link NullPointerException} by a more explicit error
-     *     message during tests. Furthermore, the {@code openReader} name make it more obvious that
-     *     the stream is not closed automatically and is also consistent with other method names in
-     *     this class.
-     */
-    @Deprecated
-    public static BufferedReader getReader(final Object caller, final String name)
-            throws IOException {
-        final URL url = getResource(caller, name);
-        if (url == null) {
-            return null; // echo handling of getResource( ... )
-        }
-        return new BufferedReader(new InputStreamReader(url.openStream()));
-    }
-
-    /**
      * Provides a channel for named test data. It is the caller responsability to close this chanel
      * after usage.
      *
@@ -440,37 +417,36 @@ public class TestData implements Runnable {
             throws FileNotFoundException, IOException {
         final File file = file(caller, name);
         final File parent = file.getParentFile().getAbsoluteFile();
-        final ZipFile zipFile = new ZipFile(file);
-        final Enumeration entries = zipFile.entries();
-        final byte[] buffer = new byte[4096];
-        while (entries.hasMoreElements()) {
-            final ZipEntry entry = (ZipEntry) entries.nextElement();
-            if (entry.isDirectory()) {
-                continue;
+        try (final ZipFile zipFile = new ZipFile(file)) {
+            final Enumeration entries = zipFile.entries();
+            final byte[] buffer = new byte[4096];
+            while (entries.hasMoreElements()) {
+                final ZipEntry entry = (ZipEntry) entries.nextElement();
+                if (entry.isDirectory()) {
+                    continue;
+                }
+                final File path = new File(parent, entry.getName());
+                if (path.exists()) {
+                    continue;
+                }
+                final File directory = path.getParentFile();
+                if (directory != null && !directory.exists()) {
+                    directory.mkdirs();
+                }
+                // Copy the file. Note: no need for a BufferedOutputStream,
+                // since we are already using a buffer of type byte[4096].
+                try (InputStream in = zipFile.getInputStream(entry);
+                        OutputStream out = new FileOutputStream(path)) {
+                    int len;
+                    while ((len = in.read(buffer)) >= 0) {
+                        out.write(buffer, 0, len);
+                    }
+                }
+                // Call 'deleteOnExit' only after after we closed the file,
+                // because this method will save the modification time.
+                deleteOnExit(path, false);
             }
-            final File path = new File(parent, entry.getName());
-            if (path.exists()) {
-                continue;
-            }
-            final File directory = path.getParentFile();
-            if (directory != null && !directory.exists()) {
-                directory.mkdirs();
-            }
-            // Copy the file. Note: no need for a BufferedOutputStream,
-            // since we are already using a buffer of type byte[4096].
-            final InputStream in = zipFile.getInputStream(entry);
-            final OutputStream out = new FileOutputStream(path);
-            int len;
-            while ((len = in.read(buffer)) >= 0) {
-                out.write(buffer, 0, len);
-            }
-            out.close();
-            in.close();
-            // Call 'deleteOnExit' only after after we closed the file,
-            // because this method will save the modification time.
-            deleteOnExit(path, false);
         }
-        zipFile.close();
     }
 
     /**

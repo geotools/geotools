@@ -92,7 +92,7 @@ abstract class NumericFileNameExtractor<N extends Number & Comparable<N>>
             List<String> propertyNames,
             String regex,
             final Class<N> targetClass) {
-        super(spi, propertyNames, regex);
+        super(spi, propertyNames, regex, false);
 
         this.targetClasse = targetClass;
         this.converter =

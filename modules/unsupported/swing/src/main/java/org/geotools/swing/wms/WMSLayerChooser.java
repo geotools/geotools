@@ -167,7 +167,7 @@ public class WMSLayerChooser extends JDialog implements ActionListener {
 
     public ArrayList<Layer> getLayers() {
         ArrayList<Layer> layers = new ArrayList<Layer>();
-        for (Object selected : list.getSelectedValues()) {
+        for (Object selected : list.getSelectedValuesList()) {
             layers.add((Layer) selected);
         }
         return layers;

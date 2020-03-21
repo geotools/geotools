@@ -26,7 +26,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import org.geotools.data.DataStore;
-import org.geotools.data.DataStoreFinder;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.test.TestData;
@@ -40,40 +39,40 @@ public class GeoJSONDataStoreFactoryTest {
 
     private URL url;
     private DataStore store;
+    GeoJSONDataStoreFactory fac = new GeoJSONDataStoreFactory();
 
     @Before
     public void setUp() throws Exception {
         url = TestData.url(GeoJSONDataStore.class, "ne_110m_admin_1_states_provinces.geojson");
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
-        params.put("url", url);
-
-        store = DataStoreFinder.getDataStore(params);
+        Map<String, Serializable> params = new HashMap<>();
+        params.put(GeoJSONDataStoreFactory.URL_PARAM.key, url);
+        store = fac.createDataStore(params);
         assertNotNull("didn't create store", store);
     }
 
     @Test
     public void testExtensions() throws IOException {
         URL t1 = new URL("http://example.com/ian.json");
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("url", t1);
 
-        DataStore store1 = DataStoreFinder.getDataStore(params);
+        DataStore store1 = fac.createDataStore(params);
         assertNotNull("didn't create store", store1);
         URL t2 = new URL("http://example.com/ian.geojson");
 
         params.put("url", t2);
-        store1 = DataStoreFinder.getDataStore(params);
+        store1 = fac.createDataStore(params);
         assertNotNull("didn't create store", store1);
 
         URL t3 = new URL("http://example.com/ian.randomjson");
         store1 = null;
         params.put("url", t3);
-        store = DataStoreFinder.getDataStore(params);
+        store = fac.createDataStore(params);
         assertNull("created bad store", store1);
         URL t4 = new URL("http://example.com/ian.random");
         store1 = null;
         params.put("url", t4);
-        store = DataStoreFinder.getDataStore(params);
+        store = fac.createDataStore(params);
         assertNull("created bad store", store1);
     }
 
@@ -97,8 +96,9 @@ public class GeoJSONDataStoreFactoryTest {
     @Test
     public void testGetFeatureReader() throws IOException {
         String names[] = store.getTypeNames();
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                store.getFeatureReader(new Query(names[0], Filter.INCLUDE), null);
-        assertNotNull("failed to get FeatureReader", reader);
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                store.getFeatureReader(new Query(names[0], Filter.INCLUDE), null)) {
+            assertNotNull("failed to get FeatureReader", reader);
+        }
     }
 }

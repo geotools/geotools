@@ -150,13 +150,7 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
         return createNewDataStore(params);
     }
 
-    /**
-     * Not implemented yet.
-     *
-     * @param params
-     * @throws IOException
-     * @throws UnsupportedOperationException
-     */
+    /** Not implemented yet. */
     public DataStore createNewDataStore(Map params) throws IOException {
 
         DataStore ds;
@@ -165,8 +159,13 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
         String ogrDriver = (String) OGR_DRIVER_NAME.lookUp(params);
         URI namespace = (URI) NAMESPACEP.lookUp(params);
         OGR ogr = createOGR();
-        OGRDataSourcePool dataSourcePool = new OGRDataSourcePool(ogr, ogrName, ogrDriver, params);
-        ds = new OGRDataStore(ogrName, ogrDriver, namespace, ogr, dataSourcePool);
+        ds =
+                new OGRDataStore(
+                        ogrName,
+                        ogrDriver,
+                        namespace,
+                        ogr,
+                        new OGRDataSourcePool(ogr, ogrName, ogrDriver, params));
 
         return ds;
     }
@@ -249,10 +248,6 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
     /**
      * Assume we can process an ogrName if the ogrName exists and can be opened, or if the specified
      * driver does exist.
-     *
-     * @param ogrName
-     * @param driverName
-     * @return
      */
     public boolean canProcess(String ogrName, String driverName) {
         OGR ogr = createOGR();

@@ -15,9 +15,9 @@ If you already know what kind of file you have you have you can create the reade
   GeoTiffReader reader = new GeoTiffReader(file, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE));
   GridCoverage2D coverage = reader.read(null);
 
-You can also create a GridCoverage "by hand" if you have a BufferedImage in memory that you would like to place onto a map.
+You can also create a GridCoverage "by hand" if you have a ``BufferedImage``  in memory that you would like to place onto a map.
 
-Here is an example of creating a grid coverage from a tile (containing a bufferedImage and a ReferencedEnvelope location:
+Here is an example of creating a grid coverage from a tile (containing a ``BufferedImage``  and a ``ReferencedEnvelope``  location:
 
 .. literalinclude:: /../src/main/java/org/geotools/coverage/CoverageExamples.java
    :language: java
@@ -49,19 +49,23 @@ You can also evaluate the coverage at a specific point in order to determine wha
 RenderedImage
 '''''''''''''
 
-We can trivially get an AWT image from a GridCoverage2D with a simple call to the getRenderedImage() method. The result is a standard RenderedImage.
+We can trivially get an AWT image from a ``GridCoverage2D``  with a simple call to 
+the ``getRenderedImage()`` method. The result is a standard ``RenderedImage``.
 
 Obviously we can combine two of these steps to go directly from the created grid coverage to the final image::
   
   RenderedImage ri = myGridCoverage.getView(ViewType.GEOPHYSICS).getRenderedImage();
 
-It should be possible, when generating the RenderedImage to specify the color scheme to use for that particular image. Currently this
-is handled as part of the rendering process using a RasterSymbolizer.
+It should be possible, when generating the ``RenderedImage``  to specify the color scheme to use for that particular image. Currently this
+is handled as part of the rendering process using a ``RasterSymbolizer``.
 
 Advanced
 ^^^^^^^^
 
-The coverage module provides some powerful methods to use the different views of the grid coverage. Many of these uses are backed by the standard JAI mechanisms behind the scenes, sometimes combined with the georeferencing operations of the referencing module.
+The coverage module provides some powerful methods to use the different
+views of the grid coverage. Many of these uses are backed by the
+standard JAI mechanisms behind the scenes, sometimes combined with the
+georeferencing operations of the referencing module.
 
 The GeoTools coverage module provides **Operations** for convenience, this class bundles up the sophisticated and powerful internal mechanism of the processing package. The package summary in javadocs begins the explanation of the internal mechanism. This documentation page will need to be expanded with a better explanation of the coverage module operation system.
 
@@ -70,7 +74,7 @@ The basic pattern of the operations mechanism runs as follows:
 1. Instantiate a new Processor
 2. Get the parameter group for the desired operation
 3. Configure the parameters in the parameter group
-4. Call the doOperation(..) method on the Processor
+4. Call the ``doOperation(..)`` method on the Processor
    
    With several options for configuration along the way.
 
@@ -105,7 +109,16 @@ We can use the resample(..) method to transform any GridCoverage to another CRS.
 
 Wow, this is getting fun!
 
-This georeferencing transformation works backwards from what one might naively expect and from what happens with vector data. With vector data, tranformations take the positions in the original referencing system and calculate the positions in the target referencing system. In the GridCoverage system, we are expecting a regular grid in the target referencing system. Therefore, we first calculate the position of the grid points in the target referencing system, then, for each, we calculate the equivalent position in the original referencing system and estimate the value which the original grid would have at that calculated position. This is why we go through the resample(..) operation.
+This georeferencing transformation works backwards from what one might
+naively expect and from what happens with vector data. With vector
+data, transformations take the positions in the original referencing
+system and calculate the positions in the target referencing system. In
+the GridCoverage system, we are expecting a regular grid in the target
+referencing system. Therefore, we first calculate the position of the grid
+points in the target referencing system, then, for each, we calculate the
+equivalent position in the original referencing system and estimate the
+value which the original grid would have at that calculated position. This
+is why we go through the ``resample(..)`` operation.
 
 interpolate
 '''''''''''
@@ -154,7 +167,8 @@ Users can create their own operations and add them to the operation system.
 CoverageStack
 ^^^^^^^^^^^^^
 
-We can combine several GridCoverage2D instances into a 3 dimensional stack of coverages using the CoverageStack class.
+We can combine several GridCoverage2D instances into a 3 dimensional
+stack of coverages using the CoverageStack class.
 
 Utility classes
 ^^^^^^^^^^^^^^^

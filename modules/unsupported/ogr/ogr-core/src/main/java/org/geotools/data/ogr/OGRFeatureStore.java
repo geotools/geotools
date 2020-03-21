@@ -62,6 +62,7 @@ class OGRFeatureStore extends ContentFeatureStore {
             dataSource = getDataStore().openOGRDataSource(true);
             layer = getDataStore().openOGRLayer(dataSource, typeName, false);
 
+            @SuppressWarnings("PMD.CloseResource") // wrapped and returned
             FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                     delegate.getReaderInternal(dataSource, layer, query);
             GeometryFactory gf = delegate.getGeometryFactory(query);

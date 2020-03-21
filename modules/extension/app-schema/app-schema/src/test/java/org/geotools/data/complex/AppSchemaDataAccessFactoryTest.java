@@ -20,6 +20,7 @@ package org.geotools.data.complex;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -183,5 +184,49 @@ public class AppSchemaDataAccessFactoryTest extends AppSchemaTestSupport {
     public void testGetImplementationHints() {
         assertNotNull(factory.getImplementationHints());
         assertEquals(0, factory.getImplementationHints().size());
+    }
+
+    /** Testing class for check data store creation failure handling and resilience. */
+    public static class AppSchemaDataAccessFactoryFailureTest extends AppSchemaTestSupport {
+
+        private AppSchemaDataAccessFactory factory;
+        private Map params;
+
+        /**
+         * Checks that App-schema data store factory unregisters correctly the included mappings
+         * stores on a creation failure.
+         */
+        @Test
+        public void testUnregisterOnFailure() throws Exception {
+            factory = new AppSchemaDataAccessFactory();
+            params = new HashMap();
+            params.put("dbtype", "app-schema");
+            URL resource =
+                    getClass().getResource("/test-data/creation_failure/roadsegments_bad.xml");
+            if (resource == null) {
+                fail("Can't find resouce /test-data/creation_failure/roadsegments_bad.xml");
+            }
+            params.put("url", resource);
+
+            DataAccess<FeatureType, Feature> ds;
+            boolean exceptionCatched = false;
+            try {
+                ds = factory.createDataStore(params);
+                assertNotNull(ds);
+                FeatureSource<FeatureType, Feature> mappedSource =
+                        ds.getFeatureSource(mappedTypeName);
+                assertNull(mappedSource);
+            } catch (Exception ex) {
+                exceptionCatched = true;
+            }
+            assertTrue(exceptionCatched);
+            assertFalse(DataAccessRegistry.hasName(mappedTypeName));
+        }
+
+        @After
+        public void tearDown() throws Exception {
+            factory = null;
+            params = null;
+        }
     }
 }

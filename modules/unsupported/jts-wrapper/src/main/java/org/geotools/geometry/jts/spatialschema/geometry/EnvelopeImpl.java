@@ -64,12 +64,7 @@ public class EnvelopeImpl implements Envelope {
     //  Constructors
     // *************************************************************************
 
-    /**
-     * Creates a new {@code EnvelopeImpl}.
-     *
-     * @param lowerCorner
-     * @param upperCorner
-     */
+    /** Creates a new {@code EnvelopeImpl}. */
     public EnvelopeImpl(final DirectPosition lowerCorner, final DirectPosition upperCorner) {
         this.lowerCorner = new DirectPositionImpl(lowerCorner);
         this.upperCorner = new DirectPositionImpl(upperCorner);
@@ -105,28 +100,10 @@ public class EnvelopeImpl implements Envelope {
 
     /**
      * @inheritDoc
-     * @see org.opengis.geometry.coordinate.Envelope#getCenter(int)
-     */
-    @Deprecated
-    public final double getCenter(int dimension) {
-        return 0.5 * (upperCorner.getOrdinate(dimension) + lowerCorner.getOrdinate(dimension));
-    }
-
-    /**
-     * @inheritDoc
      * @see org.opengis.geometry.coordinate.Envelope#getMedian(int)
      */
     public final double getMedian(int dimension) {
         return 0.5 * (upperCorner.getOrdinate(dimension) + lowerCorner.getOrdinate(dimension));
-    }
-
-    /**
-     * @inheritDoc
-     * @see org.opengis.geometry.coordinate.Envelope#getLength(int)
-     */
-    @Deprecated
-    public final double getLength(int dimension) {
-        return upperCorner.getOrdinate(dimension) - lowerCorner.getOrdinate(dimension);
     }
 
     /**

@@ -91,11 +91,7 @@ public class ImageGraphicFactory implements ExternalGraphicFactory, GraphicCache
         return new ImageIcon(image);
     }
 
-    /**
-     * Returs the set of mime types supported by this factory
-     *
-     * @return
-     */
+    /** Returs the set of mime types supported by this factory */
     public Set<String> getSupportedMimeTypes() {
         return Collections.unmodifiableSet(supportedGraphicFormats);
     }

@@ -25,7 +25,7 @@ import static java.lang.Math.tan;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.locationtech.jts.algorithm.CGAlgorithms;
+import org.locationtech.jts.algorithm.Distance;
 import org.locationtech.jts.algorithm.LineIntersector;
 import org.locationtech.jts.algorithm.RobustLineIntersector;
 import org.locationtech.jts.geom.Coordinate;
@@ -150,12 +150,7 @@ public class OffsetCurveBuilder {
         }
     }
 
-    /**
-     * Extracts all the {@link LineString} present in the given geometry
-     *
-     * @param g
-     * @return
-     */
+    /** Extracts all the {@link LineString} present in the given geometry */
     private List<LineString> extractLineStrings(Geometry g) {
         // normalize order of polygons so that
         // left is equivalent to outwards
@@ -193,12 +188,7 @@ public class OffsetCurveBuilder {
         return lines;
     }
 
-    /**
-     * Offsets a single linestring
-     *
-     * @param ls
-     * @return
-     */
+    /** Offsets a single linestring */
     private LineString offset(LineString ls) {
         boolean closed = ls instanceof LinearRing;
         CoordinateSequence cs = ls.getCoordinateSequence();
@@ -326,7 +316,7 @@ public class OffsetCurveBuilder {
                     break;
                 } else if (j == max - 2 && !closed) {
                     // check if we have an almost closed curl
-                    double distancePointLine = CGAlgorithms.distancePointLine(c4, c1, c2);
+                    double distancePointLine = Distance.pointToLinePerpendicular(c4, c1, c2);
                     if (distancePointLine < abs(offset) / 10) {
                         c2.x = c4.x;
                         c2.y = c4.y;
@@ -471,11 +461,6 @@ public class OffsetCurveBuilder {
     /**
      * Appends to ordinates a point calculated as being the joining point of two segments with
      * angles angle01, angle02 and starting in x,y
-     *
-     * @param dx10
-     * @param dy10
-     * @param dx12
-     * @param dy12
      */
     private void appendInternalJoint(
             double x,

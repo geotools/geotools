@@ -38,11 +38,7 @@ public class PaintGMObject {
     public static final int TYPE_LINES = 2;
     public static final int TYPE_LINESTRING = 3;
 
-    /**
-     * Paints an GM_Object
-     *
-     * @param object
-     */
+    /** Paints an GM_Object */
     public static void paint(GeometryImpl object) {
         PaintGMObject p = new PaintGMObject();
         p.startPainting(object);
@@ -68,7 +64,7 @@ public class PaintGMObject {
         } else if (object instanceof PointImpl) {
             object_x = new int[1];
             object_y = new int[1];
-            DirectPositionImpl pos = ((PointImpl) object).getPosition();
+            DirectPositionImpl pos = ((PointImpl) object).getDirectPosition();
             object_x[0] = (int) pos.getX();
             object_y[0] = (int) pos.getY();
 

@@ -27,6 +27,7 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 
 /**
  * @author aaime
@@ -57,7 +58,7 @@ public class MultiPointHandler implements ShapeHandler {
     /**
      * Returns the shapefile shape type value for a point
      *
-     * @return int Shapefile.POINT
+     * @return int Shapefile.MULTIPOINT
      */
     public ShapeType getShapeType() {
         return shapeType;
@@ -96,8 +97,7 @@ public class MultiPointHandler implements ShapeHandler {
     }
 
     private Object createNull() {
-        Coordinate[] c = null;
-        return geometryFactory.createMultiPoint(c);
+        return geometryFactory.createMultiPoint((CoordinateSequence) null);
     }
 
     public Object read(ByteBuffer buffer, ShapeType type, boolean flatGeometry) {
@@ -109,24 +109,46 @@ public class MultiPointHandler implements ShapeHandler {
         buffer.position(buffer.position() + 4 * 8);
 
         int numpoints = buffer.getInt();
-        int dimensions = shapeType == shapeType.MULTIPOINTZ && !flatGeometry ? 3 : 2;
-        CoordinateSequence cs =
-                JTS.createCS(geometryFactory.getCoordinateSequenceFactory(), numpoints, dimensions);
+        int dimensions = shapeType == ShapeType.MULTIPOINTZ && !flatGeometry ? 3 : 2;
+        int measure = flatGeometry ? 0 : 1;
+        CoordinateSequence cs;
+        if (shapeType == ShapeType.MULTIPOINTZ || shapeType == ShapeType.MULTIPOINTM) {
+            cs =
+                    JTS.createCS(
+                            geometryFactory.getCoordinateSequenceFactory(),
+                            numpoints,
+                            dimensions + measure,
+                            measure);
+        } else {
+            cs =
+                    JTS.createCS(
+                            geometryFactory.getCoordinateSequenceFactory(), numpoints, dimensions);
+        }
 
         DoubleBuffer dbuffer = buffer.asDoubleBuffer();
         double[] ordinates = new double[numpoints * 2];
         dbuffer.get(ordinates);
         for (int t = 0; t < numpoints; t++) {
-            cs.setOrdinate(t, 0, ordinates[t * 2]);
-            cs.setOrdinate(t, 1, ordinates[t * 2 + 1]);
+            cs.setOrdinate(t, CoordinateSequence.X, ordinates[t * 2]);
+            cs.setOrdinate(t, CoordinateSequence.Y, ordinates[t * 2 + 1]);
         }
 
-        if (dimensions > 2) {
+        if (shapeType == ShapeType.MULTIPOINTZ && !flatGeometry) {
             dbuffer.position(dbuffer.position() + 2);
 
             dbuffer.get(ordinates, 0, numpoints);
             for (int t = 0; t < numpoints; t++) {
-                cs.setOrdinate(t, 2, ordinates[t]); // z
+                cs.setOrdinate(t, CoordinateSequence.Z, ordinates[t]); // z
+            }
+        }
+
+        if ((shapeType == ShapeType.MULTIPOINTZ || shapeType == ShapeType.MULTIPOINTM)
+                && !flatGeometry) {
+            dbuffer.position(dbuffer.position() + 2);
+
+            dbuffer.get(ordinates, 0, numpoints);
+            for (int t = 0; t < numpoints; t++) {
+                cs.setOrdinate(t, CoordinateSequence.M, ordinates[t]); // m
             }
         }
 
@@ -151,7 +173,9 @@ public class MultiPointHandler implements ShapeHandler {
         }
 
         if (shapeType == ShapeType.MULTIPOINTZ) {
-            double[] zExtreame = JTSUtilities.zMinMax(mp.getCoordinates());
+            double[] result = {Double.NaN, Double.NaN};
+            JTSUtilities.zMinMax(new CoordinateArraySequence(mp.getCoordinates()), result);
+            double[] zExtreame = result;
 
             if (Double.isNaN(zExtreame[0])) {
                 buffer.putDouble(0.0);
@@ -163,7 +187,7 @@ public class MultiPointHandler implements ShapeHandler {
 
             for (int t = 0; t < mp.getNumGeometries(); t++) {
                 Coordinate c = (mp.getGeometryN(t)).getCoordinate();
-                double z = c.z;
+                double z = c.getZ();
 
                 if (Double.isNaN(z)) {
                     buffer.putDouble(0.0);

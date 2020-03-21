@@ -139,7 +139,6 @@ public class GridCoverage2DRIA extends GeometricOpImage {
      * @param nodata the nodata values to set for cells not covered by src but included in dst. All
      *     bands will use the related nodata value.
      * @param hints hints to use for the Rendering, Actually only ImageLayout is considered
-     * @param roi
      * @return an instance of Coverage2RenderedImageAdapter
      */
     public static GridCoverage2DRIA create(
@@ -212,7 +211,6 @@ public class GridCoverage2DRIA extends GeometricOpImage {
      * @param dst the provider of the final grid
      * @param nodata the nodata values to set for cells not covered by src but included in dst. All
      *     bands will use the related nodata value.
-     * @param roi
      * @return an instance of Coverage2RenderedImageAdapter
      */
     public static GridCoverage2DRIA create(
@@ -1441,8 +1439,6 @@ public class GridCoverage2DRIA extends GeometricOpImage {
     /**
      * This method provides a lazy initialization of the image associated to the ROI. The method
      * uses the Double-checked locking in order to maintain thread-safety
-     *
-     * @return
      */
     private PlanarImage getImage() {
         if (roiImage == null) {
@@ -1556,7 +1552,7 @@ public class GridCoverage2DRIA extends GeometricOpImage {
 
                 final PlanarImage constantImage =
                         ConstantDescriptor.create(
-                                new Float(w), new Float(h), new Byte[] {(byte) 255}, hints);
+                                Float.valueOf(w), Float.valueOf(h), new Byte[] {(byte) 255}, hints);
 
                 GridCoverage2D input =
                         new GridCoverageFactory(GeoTools.getDefaultHints())

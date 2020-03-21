@@ -94,11 +94,7 @@ public abstract class JDBCDistanceFiltersTest extends JDBCTestSupport {
         assertBeyondFilter(0, pointDistance * 3.1, "ft");
     }
 
-    /**
-     * Subclasses testing for "proper" distance calculations should return true
-     *
-     * @return
-     */
+    /** Subclasses testing for "proper" distance calculations should return true */
     protected boolean areDistanceUnitsSupported() {
         LOGGER.info("Skipping dWithin with unit of measure calculation tests");
         return false;

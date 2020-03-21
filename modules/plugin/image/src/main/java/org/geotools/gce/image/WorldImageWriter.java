@@ -76,8 +76,6 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter
     /**
      * Destination must be a File. The directory it resides in must already exist. It must point to
      * where the raster image is to be located. The world image will be derived from there.
-     *
-     * @param destination
      */
     public WorldImageWriter(Object destination) {
         this(destination, null);
@@ -86,8 +84,6 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter
     /**
      * Destination must be a File. The directory it resides in must already exist. It must point to
      * where the raster image is to be located. The world image will be derived from there.
-     *
-     * @param destination
      */
     public WorldImageWriter(Object destination, Hints hints) {
         this.destination = destination;
@@ -199,18 +195,14 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter
      * This method is responsible for creating a projection file using the WKT representation of
      * this coverage's coordinate reference system. We can reuse this file in order to rebuild later
      * the crs.
-     *
-     * @param baseFile
-     * @param coordinateReferenceSystem
-     * @throws IOException
      */
     private static void createProjectionFile(
             final String baseFile, final CoordinateReferenceSystem coordinateReferenceSystem)
             throws IOException {
         final File prjFile = new File(new StringBuffer(baseFile).append(".prj").toString());
-        BufferedWriter out = new BufferedWriter(new FileWriter(prjFile));
-        out.write(coordinateReferenceSystem.toWKT());
-        out.close();
+        try (BufferedWriter out = new BufferedWriter(new FileWriter(prjFile))) {
+            out.write(coordinateReferenceSystem.toWKT());
+        }
     }
 
     /**
@@ -223,8 +215,6 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter
      * @param image Image to be used.
      * @param baseFile Basename and path for this image.
      * @throws IOException In case we cannot create the world file.
-     * @throws TransformException
-     * @throws TransformException
      */
     private static void createWorldFile(
             final GridCoverage gc,
@@ -268,15 +258,15 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter
         if (!it.hasNext()) throw new DataSourceException("Unable to parse extension " + extension);
         buff.append((String) it.next());
         final File worldFile = new File(buff.toString());
-        final PrintWriter out = new PrintWriter(new FileOutputStream(worldFile));
-        out.println(xPixelSize);
-        out.println(rotation1);
-        out.println(rotation2);
-        out.println(yPixelSize);
-        out.println(xLoc);
-        out.println(yLoc);
-        out.flush();
-        out.close();
+        try (PrintWriter out = new PrintWriter(new FileOutputStream(worldFile))) {
+            out.println(xPixelSize);
+            out.println(rotation1);
+            out.println(rotation2);
+            out.println(yPixelSize);
+            out.println(xLoc);
+            out.println(yLoc);
+            out.flush();
+        }
     }
 
     /**
@@ -284,8 +274,6 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter
      *
      * @param sourceCoverage the coverage to be encoded.s
      * @param outstream OutputStream
-     * @throws IOException
-     * @throws IOException
      */
     private static void encode(
             final GridCoverage2D sourceCoverage,

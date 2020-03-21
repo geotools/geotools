@@ -36,11 +36,7 @@ public class Triangle2D extends Simplex2D {
         (1 << 2) | (1 << 0) // v[2] && v[0]
     };
 
-    /**
-     * @param startPoint
-     * @param p2
-     * @param endPoint
-     */
+    /** */
     public Triangle2D(Node2D p0, Node2D p1, Node2D p2) {
         super(new Node2D[] {p0, p1, p2});
     }

@@ -116,10 +116,11 @@ public class XmlXpathUtilites {
 
             if (start > -1) {
                 int end = step.indexOf(']');
-                Scanner scanner = new Scanner(step.substring(start + 1, end));
-                if (scanner.hasNextInt()) {
-                    // remove index and the brackets
-                    step = step.substring(0, start);
+                try (Scanner scanner = new Scanner(step.substring(start + 1, end))) {
+                    if (scanner.hasNextInt()) {
+                        // remove index and the brackets
+                        step = step.substring(0, start);
+                    }
                 }
             }
             buf.append(step);

@@ -41,10 +41,11 @@ import org.geotools.data.joining.JoiningQuery;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.filter.identity.FeatureIdImpl;
-import org.geotools.geometry.jts.EmptyGeometry;
 import org.geotools.util.factory.Hints;
 import org.geotools.xlink.XLINK;
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.PrecisionModel;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureFactory;
@@ -74,12 +75,25 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
     protected static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(AbstractMappingFeatureIterator.class);
 
+    public static final GeometryFactory GEOMETRY_FACTORY =
+            new GeometryFactory(new PrecisionModel(PrecisionModel.FLOATING));
+
     protected FilterFactory2 filterFac = CommonFactoryFinder.getFilterFactory2(null);
 
     protected FeatureTypeFactory ftf = new ComplexFeatureTypeFactoryImpl();
 
     /** Name representation of xlink:href */
     public static final Name XLINK_HREF_NAME = Types.toTypeName(XLINK.HREF);
+
+    /**
+     * Key value for Attribute userData Map for indicating the presence of a multi value classifier.
+     */
+    public static final String MULTI_VALUE_TYPE = "multi_value_type";
+
+    /**
+     * Value for Attribute userData Map for indicating an anonymous unbounded sequence classifier.
+     */
+    public static final String UNBOUNDED_MULTI_VALUE = "unbounded-multi-value";
 
     /** Milliseconds between polls of resolver thread. */
     public static final long RESOLVE_TIMEOUT_POLL_INTERVAL = 100;
@@ -624,7 +638,7 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
             Geometry geom;
             if (target.getValue() == null) {
                 // create empty geometry if null but attributes
-                geom = new EmptyGeometry();
+                geom = GEOMETRY_FACTORY.createGeometryCollection();
             } else {
                 // need to clone because it seems the same geometry object from the
                 // db is reused instead of regenerated if different attributes refer

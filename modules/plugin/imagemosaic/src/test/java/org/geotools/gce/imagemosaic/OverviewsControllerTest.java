@@ -164,11 +164,6 @@ public class OverviewsControllerTest extends Assert {
      *
      * <p>world_a.tif => Pixel Size = (0.833333333333333,-0.833333333333333); 4 overviews
      * world_b.tif => Pixel Size = (1.406250000000000,-1.406250000000000); 2 overviews
-     *
-     * @throws IOException
-     * @throws MismatchedDimensionException
-     * @throws FactoryException
-     * @throws TransformException
      */
     @Test
     public void testHeterogeneousGranules()
@@ -196,7 +191,7 @@ public class OverviewsControllerTest extends Assert {
         Assert.assertNotNull(reader);
 
         final String name = reader.getGridCoverageNames()[0];
-        final int nOv = reader.getNumOverviews();
+        final int nOv = reader.getDatasetLayout().getNumInternalOverviews();
         final double[][] hRes = reader.getResolutionLevels();
         final RasterManager rasterManager = reader.getRasterManager(name);
 
@@ -328,12 +323,7 @@ public class OverviewsControllerTest extends Assert {
         cleanUp();
     }
 
-    /**
-     * Cleaning up the generated files (shape and properties so that we recreate them).
-     *
-     * @throws FileNotFoundException
-     * @throws IOException
-     */
+    /** Cleaning up the generated files (shape and properties so that we recreate them). */
     private void cleanUp() throws FileNotFoundException, IOException {
         File dir = TestData.file(this, "heterogeneous/");
         File[] files =

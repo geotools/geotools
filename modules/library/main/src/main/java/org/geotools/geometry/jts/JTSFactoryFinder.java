@@ -199,28 +199,6 @@ public class JTSFactoryFinder extends FactoryFinder {
                             }));
         }
 
-        /**
-         * Creates a new instance of the specified factory using the specified hints.
-         *
-         * @param category The category to instantiate.
-         * @param implementation The factory class to instantiate.
-         * @param hints The implementation hints.
-         * @return The factory.
-         * @throws FactoryRegistryException if the factory creation failed.
-         */
-        protected Object createServiceProvider(
-                final Class category, final Class implementation, final Hints hints)
-                throws FactoryRegistryException {
-            if (GeometryFactory.class.isAssignableFrom(category)
-                    && GeometryFactory.class.equals(implementation)) {
-                return new GeometryFactory(
-                        getPrecisionModel(hints),
-                        getSRID(hints),
-                        getCoordinateSequenceFactory(hints));
-            }
-            return super.createServiceProvider(category, implementation, hints);
-        }
-
         /** Extracts the SRID from the hints, or returns {@code 0} if none. */
         private static int getSRID(final Hints hints) {
             if (hints != null) {

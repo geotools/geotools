@@ -17,12 +17,16 @@
 
 package org.geotools.xml.resolver;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.PrintWriter;
 import java.net.URI;
 import org.geotools.util.URLs;
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 /**
  * Tests for {@link SchemaCache}.
@@ -30,6 +34,8 @@ import org.junit.Test;
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  */
 public class SchemaCacheTest {
+
+    @Rule public TemporaryFolder folder = new TemporaryFolder();
 
     /**
      * Test the {@link SchemaCache#delete(File) method.
@@ -77,5 +83,19 @@ public class SchemaCacheTest {
                         .getCanonicalFile()
                         .toURI()
                         .toString());
+    }
+
+    /**
+     * Tests if current data directory have workspace and styles directories and workspace directory
+     * has default.xml file inside.
+     */
+    @Test
+    public void testIsSuitableDirectoryToContainCache() throws Exception {
+        File dataFolder = folder.newFolder("data");
+        File workspaceFolder = folder.newFolder("data", "workspaces");
+        folder.newFolder("data", "styles");
+        File defaultXmlFile = new File(workspaceFolder, "default.xml");
+        defaultXmlFile.createNewFile();
+        assertTrue(SchemaCache.isSuitableDirectoryToContainCache(dataFolder));
     }
 }

@@ -72,7 +72,6 @@ public class DateRange extends Range<Date> {
      *
      * @param range The range to convert.
      * @param origin The date to use as the origin.
-     * @throws IncommensurableException
      * @throws ConversionException if the given range doesn't have a {@linkplain
      *     MeasurementRange#getUnits unit} compatible with milliseconds.
      */
@@ -103,8 +102,6 @@ public class DateRange extends Range<Date> {
     /**
      * Workaround for RFE #4093999 ("Relax constraint on placement of this()/super() call in
      * constructors").
-     *
-     * @throws IncommensurableException
      */
     private static UnitConverter getConverter(final Unit<Time> source)
             throws IncommensurableException {

@@ -37,18 +37,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.And;
 import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.Filter;
-import org.opengis.filter.Id;
 import org.opengis.filter.Not;
 import org.opengis.filter.Or;
-import org.opengis.filter.PropertyIsBetween;
-import org.opengis.filter.PropertyIsEqualTo;
-import org.opengis.filter.PropertyIsGreaterThan;
-import org.opengis.filter.PropertyIsGreaterThanOrEqualTo;
-import org.opengis.filter.PropertyIsLessThan;
-import org.opengis.filter.PropertyIsLessThanOrEqualTo;
-import org.opengis.filter.PropertyIsLike;
-import org.opengis.filter.PropertyIsNotEqualTo;
-import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.Divide;
 import org.opengis.filter.expression.Expression;
@@ -57,17 +47,6 @@ import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.Multiply;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.expression.Subtract;
-import org.opengis.filter.spatial.BBOX;
-import org.opengis.filter.spatial.Beyond;
-import org.opengis.filter.spatial.Contains;
-import org.opengis.filter.spatial.Crosses;
-import org.opengis.filter.spatial.DWithin;
-import org.opengis.filter.spatial.Disjoint;
-import org.opengis.filter.spatial.Equals;
-import org.opengis.filter.spatial.Intersects;
-import org.opengis.filter.spatial.Overlaps;
-import org.opengis.filter.spatial.Touches;
-import org.opengis.filter.spatial.Within;
 
 /**
  * Utility class for working with Filters & Expression.
@@ -132,9 +111,6 @@ public class Filters {
      */
     private static Filters STATIC = new Filters();
 
-    /** Set to true to start throwing exceptions when org.geotools.filter.Filter is used. */
-    private static final boolean STRICT = false;
-
     org.opengis.filter.FilterFactory2 ff;
 
     /** Create Filters helper object using global FilterFactory provided by CommonFactoryFinder */
@@ -173,9 +149,6 @@ public class Filters {
      * Safe version of FilterFactory *and* that is willing to combine filter1 and filter2 correctly
      * in the even either of them is already an And filter.
      *
-     * @param ff
-     * @param filter1
-     * @param filter2
      * @return And
      */
     public static Filter and(org.opengis.filter.FilterFactory ff, Filter filter1, Filter filter2) {
@@ -225,11 +198,6 @@ public class Filters {
     /**
      * Safe version of FilterFactory *or* that is willing to combine filter1 and filter2 correctly
      * in the even either of them is already an Or filter.
-     *
-     * @param ff
-     * @param filter1
-     * @param filter2
-     * @return
      */
     public static Filter or(org.opengis.filter.FilterFactory ff, Filter filter1, Filter filter2) {
         ArrayList<Filter> list = new ArrayList<Filter>();
@@ -282,7 +250,6 @@ public class Filters {
      * </pre>
      *
      * @see ExpressionType
-     * @param experssion
      * @return ExpressionType constant.
      */
     public static short getExpressionType(org.opengis.filter.expression.Expression experssion) {
@@ -323,66 +290,10 @@ public class Filters {
     }
 
     /**
-     * Convert filter to a constant for use in switch statements. This is an alternative to
-     * performing instanceof checks.
-     *
-     * <p>This utility method for those upgrading to a newer version of GeoTools, instance of checks
-     * are preferred as they will take into account new kinds of filters (example temporal filters
-     * added for Filter 2.0 specification). Example:
-     *
-     * <pre>
-     * <code>
-     * BEFORE: filter.getFilterType() == FilterType.GEOMETRY_CONTAINS
-     * QUICK:  Filters.getFilterType( filter ) == FilterType.GEOMETRY_CONTAINS
-     * AFTER: filter instanceof Contains
-     * </code>
-     * </pre>
-     *
-     * @param filter
-     * @deprecated please use instanceof checks
-     */
-    public static short getFilterType(org.opengis.filter.Filter filter) {
-        if (filter == null) return 0;
-        if (filter == org.opengis.filter.Filter.EXCLUDE) return FilterType.ALL;
-        if (filter == org.opengis.filter.Filter.INCLUDE) return FilterType.NONE;
-        if (filter instanceof PropertyIsBetween) return FilterType.BETWEEN;
-        if (filter instanceof PropertyIsEqualTo) return FilterType.COMPARE_EQUALS;
-        if (filter instanceof PropertyIsGreaterThan) return FilterType.COMPARE_GREATER_THAN;
-        if (filter instanceof PropertyIsGreaterThanOrEqualTo)
-            return FilterType.COMPARE_GREATER_THAN_EQUAL;
-        if (filter instanceof PropertyIsLessThan) return FilterType.COMPARE_LESS_THAN;
-        if (filter instanceof PropertyIsLessThanOrEqualTo)
-            return FilterType.COMPARE_LESS_THAN_EQUAL;
-        if (filter instanceof PropertyIsNotEqualTo) return FilterType.COMPARE_NOT_EQUALS;
-        if (filter instanceof Id) return FilterType.FID;
-        if (filter instanceof BBOX) return FilterType.GEOMETRY_BBOX;
-        if (filter instanceof Beyond) return FilterType.GEOMETRY_BEYOND;
-        if (filter instanceof Contains) return FilterType.GEOMETRY_CONTAINS;
-        if (filter instanceof Crosses) return FilterType.GEOMETRY_CROSSES;
-        if (filter instanceof Disjoint) return FilterType.GEOMETRY_DISJOINT;
-        if (filter instanceof DWithin) return FilterType.GEOMETRY_DWITHIN;
-        if (filter instanceof Equals) return FilterType.GEOMETRY_EQUALS;
-        if (filter instanceof Intersects) return FilterType.GEOMETRY_INTERSECTS;
-        if (filter instanceof Overlaps) return FilterType.GEOMETRY_OVERLAPS;
-        if (filter instanceof Touches) return FilterType.GEOMETRY_TOUCHES;
-        if (filter instanceof Within) return FilterType.GEOMETRY_WITHIN;
-        if (filter instanceof PropertyIsLike) return FilterType.LIKE;
-        if (filter instanceof And) return FilterType.LOGIC_AND;
-        if (filter instanceof Not) return FilterType.LOGIC_NOT;
-        if (filter instanceof Or) return FilterType.LOGIC_OR;
-        if (filter instanceof PropertyIsNull) return FilterType.NULL;
-
-        if (filter instanceof Filter) {
-            return 0;
-        }
-        return 0;
-    }
-    /**
      * Obtain the provided Expression as an integer.
      *
      * <p>This method is quickly used to safely check Literal expressions.
      *
-     * @param expr
      * @return int value of first Number, or NOTFOUND
      */
     public static int asInt(Expression expr) {
@@ -423,7 +334,6 @@ public class Filters {
      *
      * <p>This method only reliably works when the Expression is a Literal.
      *
-     * @param expr
      * @return Expression as a String, or null
      */
     public static String asString(Expression expr) {
@@ -439,7 +349,6 @@ public class Filters {
     /**
      * Obtain the provided Expression as a double.
      *
-     * @param expr
      * @return int value of first Number, or Double.NaN
      */
     public static double asDouble(Expression expr) {
@@ -459,61 +368,6 @@ public class Filters {
     }
 
     /**
-     * Navigate through the expression searching for something that can be a TYPE.
-     *
-     * <p>This will work even with dynamic expression that would normally require a feature. It
-     * works especially well when the Expression is a Literal literal (which is usually the case).
-     *
-     * <p>If you have a specific Feature, please do this:
-     *
-     * <pre><code>
-     * Color value = expr.evaualte( feature, Color.class );
-     * return value instanceof Color ? (Color) value : null;
-     * </code></pre>
-     *
-     * @param expr This only really works for down casting literals to a value
-     * @param type Target type
-     * @return expr smunched into indicated type
-     * @deprecated This is not a good idea; use expr.evaulate( null, TYPE )
-     */
-    public static <T> T asType(Expression expr, Class<T> type) {
-        if (expr == null) {
-            return null;
-        }
-        if (STRICT) {
-            return expr.evaluate(null, type);
-        } else if (expr instanceof Literal) {
-            Literal literal = (Literal) expr;
-            return (T) literal.evaluate(null, type);
-        } else if (expr instanceof Function) {
-            Function function = (Function) expr;
-            List<Expression> params = function.getParameters();
-            if (params != null && params.size() != 0) {
-                for (int i = 0; i < params.size(); i++) {
-                    Expression e = (Expression) params.get(i);
-                    T value = asType(e, type);
-
-                    if (value != null) {
-                        return value;
-                    }
-                }
-            }
-        } else {
-            try { // this is a bad idea, not expected to work much
-                T value = expr.evaluate(null, type);
-
-                if (type.isInstance(value)) {
-                    return value;
-                }
-            } catch (NullPointerException expected) {
-                return null; // well that was not unexpected
-            } catch (Throwable ignore) { // I did say that was a bad idea
-            }
-        }
-        return null; // really need a Feature to acomplish this one
-    }
-
-    /**
      * Treat provided value as a Number, used for math opperations.
      *
      * <p>This function allows for the non stongly typed Math Opperations favoured by the Expression
@@ -527,7 +381,6 @@ public class Filters {
      *   <li>String - valid Integer and Double encodings
      * </ul>
      *
-     * @param value
      * @return double or Double.NaN;
      * @throws IllegalArgumentException For non numerical among us -- like Geometry
      */
@@ -574,8 +427,6 @@ public class Filters {
      * Remember Strong typing is for whimps who know what they are doing ahead of time. Real
      * programmers let their program learn at runtime... :-)
      *
-     * @param text
-     * @param TYPE
      * @throws open set of Throwable reflection for TYPE( String )
      */
     public static <T> T gets(String text, Class<T> TYPE) throws Throwable {
@@ -638,7 +489,6 @@ public class Filters {
      *   <li>Filters.puts( 1.0 ) => "1"
      * </ul>
      *
-     * @param number
      * @return text representation
      */
     public static String puts(double number) {
@@ -683,7 +533,6 @@ public class Filters {
      * <p>This method has been superseeded by Converters which offers a more general and open ended
      * solution.
      *
-     * @param color
      * @return String representation of provided color.
      */
     public static String puts(Color color) {
@@ -707,9 +556,6 @@ public class Filters {
     /**
      * Returns true if the given filter can contain more than one subfilter. Only And and Or filters
      * match this now.
-     *
-     * @param filter
-     * @return
      */
     //    static boolean isGroupFilter(Filter filter) {
     //        //Note: Can't use BinaryLogicOperator here because the Not implementation also
@@ -731,10 +577,6 @@ public class Filters {
      *       last item is removed from an Or statement then Filter.EXCLUDE is return If the last
      *       item is removed from an And statement then Filter.INCLUDE is returned
      * </ul>
-     *
-     * @param baseFilter
-     * @param targetFilter
-     * @return
      */
     public Filter remove(Filter baseFilter, Filter targetFilter) {
         return remove(baseFilter, targetFilter, true);
@@ -749,11 +591,8 @@ public class Filters {
      * See {@link #removeFilter(org.opengis.filter.Filter, org.opengis.filter.Filter)} for details,
      * except this method includes the option to not recurse into child filters.
      *
-     * @param baseFilter
-     * @param targetFilter
      * @param recurse true if the method should descend into child group filters looking for the
      *     target
-     * @return
      */
     public Filter remove(Filter baseFilter, final Filter targetFilter, boolean recurse) {
         if (baseFilter == null) {
@@ -867,7 +706,6 @@ public class Filters {
      *
      * <p>You can use this method to quickly build up the set of any mentioned attribute names.
      *
-     * @param filter
      * @return Set of propertyNames
      */
     public Set<String> attributeNames(Filter filter) {
@@ -944,9 +782,7 @@ public class Filters {
      * <p>Note this is a simple test and is faster than calling <code>
      * attributeNames( filter ).contains( name )</code>
      *
-     * @param filter
      * @param propertyName - name of the property to look for
-     * @return
      */
     static boolean uses(Filter filter, final String propertyName) {
         if (filter == null) {
@@ -981,7 +817,6 @@ public class Filters {
      *
      * Any other filter will return false.
      *
-     * @param filter
      * @return list of child filters
      */
     public static boolean hasChildren(Filter filter) {
@@ -1007,7 +842,6 @@ public class Filters {
      * new filter when you are ready. To make that explicit I am returning an ArrayList so it is
      * clear that the result can be modified.
      *
-     * @param filter
      * @return are belong to us
      */
     public static ArrayList<Filter> children(Filter filter) {
@@ -1034,7 +868,6 @@ public class Filters {
      * new filter when you are ready. To make that explicit I am returning an ArrayList so it is
      * clear that the result can be modified.
      *
-     * @param filter
      * @param all true to recurse into the filter and retrieve all children; false to only return
      *     the top level children
      * @return are belong to us
@@ -1109,10 +942,8 @@ public class Filters {
      * Find the first child-filter (or the base filter itself) that is of the given type and uses
      * the specified property.
      *
-     * @param filter
      * @param filterType - class of the filter to look for
      * @param propertyName - name of the property to look for
-     * @return
      */
     public static <T extends Filter> T search(
             Filter filter, Class<T> filterType, String propertyName) {
@@ -1128,9 +959,6 @@ public class Filters {
     /**
      * Given a filter which contains a term which is a PropertyName, returns the name of the
      * property. Returns null if no PropertyName is passed
-     *
-     * @param filter
-     * @return
      */
     public static String findPropertyName(Filter filter) {
         if (filter == null) return null;
@@ -1152,9 +980,6 @@ public class Filters {
      * Find all filters (including the base filter itself) that are of the given type and use the
      * specified property.
      *
-     * @param filter
-     * @param filterType
-     * @param property
      * @return all filters that are of the given type using the specified property
      */
     static <T extends Filter> List<T> findAllByTypeAndName(

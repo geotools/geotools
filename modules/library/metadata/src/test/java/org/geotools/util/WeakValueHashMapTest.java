@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 import org.junit.Test;
 
 /**
@@ -78,19 +79,18 @@ public final class WeakValueHashMapTest {
     public void testWeakReferences() throws InterruptedException {
         final Random random = new Random();
         for (int pass = 0; pass < 2; pass++) {
-            final WeakValueHashMap<Integer, Integer> weakMap =
-                    new WeakValueHashMap<Integer, Integer>();
-            final HashMap<Integer, Integer> strongMap = new HashMap<Integer, Integer>();
+            final WeakValueHashMap<UUID, UUID> weakMap = new WeakValueHashMap<>();
+            final HashMap<UUID, UUID> strongMap = new HashMap<>();
             for (int i = 0; i < SAMPLE_SIZE; i++) {
                 // We really want new instances here.
-                final Integer key = new Integer(random.nextInt(SAMPLE_SIZE));
-                final Integer value = new Integer(random.nextInt(SAMPLE_SIZE));
+                final UUID key = UUID.randomUUID();
+                final UUID value = UUID.randomUUID();
                 if (random.nextBoolean()) {
                     /*
                      * Tests addition.
                      */
-                    final Integer weakPrevious = weakMap.put(key, value);
-                    final Integer strongPrevious = strongMap.put(key, value);
+                    final UUID weakPrevious = weakMap.put(key, value);
+                    final UUID strongPrevious = strongMap.put(key, value);
                     if (weakPrevious == null) {
                         // If the element was not in the WeakValueHashMap (i.e. if the garbage
                         // collector has cleared it), then it must not been in HashMap neither
@@ -108,8 +108,8 @@ public final class WeakValueHashMapTest {
                     /*
                      * Tests remove
                      */
-                    final Integer weakPrevious = weakMap.get(key);
-                    final Integer strongPrevious = strongMap.remove(key);
+                    final UUID weakPrevious = weakMap.get(key);
+                    final UUID strongPrevious = strongMap.remove(key);
                     if (strongPrevious != null) {
                         assertSame("remove:", strongPrevious, weakPrevious);
                     }

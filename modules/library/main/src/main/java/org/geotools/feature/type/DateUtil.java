@@ -86,7 +86,7 @@ public abstract class DateUtil {
         0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365
     };
 
-    /** Day number for start of month in non-leap year. */
+    /** Day number for start of month in leap year. */
     private static final int[] MONTHS_LEAP = {
         0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366
     };
@@ -1073,7 +1073,10 @@ public abstract class DateUtil {
                 year--;
             }
 
-            int dcnt = ((year % 4) == 0) ? 366 : 365;
+            boolean isNormalLeapYear = ((year % 4) == 0);
+            boolean is400LeapYear = ((year % 400) == 0);
+            boolean is100NotLeapYear = ((year % 100) == 0);
+            int dcnt = (is400LeapYear || (isNormalLeapYear && (!is100NotLeapYear))) ? 366 : 365;
 
             if (!bce) {
                 year--;

@@ -18,7 +18,6 @@ package org.geotools.jdbc;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +27,6 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureLock;
 import org.geotools.data.FeatureLockException;
-import org.geotools.data.FeatureLockFactory;
 import org.geotools.data.FeatureLocking;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
@@ -41,6 +39,7 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.function.FilterFunction_geometryType;
@@ -58,6 +57,7 @@ import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsEqualTo;
@@ -662,11 +662,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         }
     }
 
-    /**
-     * Test two transactions one removing feature, and one adding a feature.
-     *
-     * @throws IllegalAttributeException
-     */
+    /** Test two transactions one removing feature, and one adding a feature. */
     public void testTransactionIsolation() throws Exception {
         try (Transaction t1 = new DefaultTransaction();
                 Transaction t2 = new DefaultTransaction()) {
@@ -849,9 +845,6 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
      * second transaction does not lock up waiting to obtain the lock.
      *
      * @author chorner
-     * @throws IOException
-     * @throws IllegalAttributeException
-     * @throws SQLException
      */
     public void testGetFeatureWriterConcurrency() throws Exception {
         // if we don't have postgres >= 8.1, don't bother testing (it WILL block)
@@ -988,8 +981,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         // FilterFactory factory = FilterFactoryFinder.createFilterFactory();
         // rd1Filter = factory.createFidFilter( roadFeatures[0].getID() );
         Object changed = Integer.valueOf(5);
-        AttributeDescriptor name = td.roadType.getDescriptor(aname("id"));
-        road.modifyFeatures(name, changed, td.rd1Filter);
+        road.modifyFeatures(new NameImpl(aname("id")), changed, td.rd1Filter);
 
         SimpleFeatureCollection results = road.getFeatures(td.rd1Filter);
         try (SimpleFeatureIterator features = results.features()) {
@@ -1007,10 +999,9 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         Filter rd1Filter =
                 factory.id(Collections.singleton(factory.featureId(td.roadFeatures[0].getID())));
 
-        AttributeDescriptor name = td.roadType.getDescriptor(aname("name"));
         road.modifyFeatures(
-                new AttributeDescriptor[] {
-                    name,
+                new Name[] {
+                    new NameImpl(aname("name")),
                 },
                 new Object[] {
                     "changed",
@@ -1027,8 +1018,6 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     /**
      * Test with a filter that won't be matched after the modification is done, was throwing an NPE
      * before the fix
-     *
-     * @throws IOException
      */
     public void testGetFeatureStoreModifyFeatures3() throws IOException {
         SimpleFeatureStore road = (SimpleFeatureStore) dataStore.getFeatureSource(tname("road"));
@@ -1036,10 +1025,9 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         PropertyIsEqualTo filter = ff.equals(ff.property(aname("name")), ff.literal("r1"));
 
-        AttributeDescriptor name = td.roadType.getDescriptor(aname("name"));
         road.modifyFeatures(
-                new AttributeDescriptor[] {
-                    name,
+                new Name[] {
+                    new NameImpl(aname("name")),
                 },
                 new Object[] {
                     "changed",
@@ -1106,7 +1094,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
      * Test for void lockFeatures()
      */
     public void testLockFeatures() throws IOException {
-        FeatureLock lock = FeatureLockFactory.generate("test", LOCK_DURATION);
+        FeatureLock lock = new FeatureLock("test", LOCK_DURATION);
         FeatureLocking<SimpleFeatureType, SimpleFeature> road =
                 (FeatureLocking<SimpleFeatureType, SimpleFeature>)
                         dataStore.getFeatureSource(tname("road"));
@@ -1118,7 +1106,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     }
 
     public void testUnLockFeatures() throws IOException {
-        FeatureLock lock = FeatureLockFactory.generate("test", LOCK_DURATION);
+        FeatureLock lock = new FeatureLock("test", LOCK_DURATION);
         FeatureLocking<SimpleFeatureType, SimpleFeature> road =
                 (FeatureLocking<SimpleFeatureType, SimpleFeature>)
                         dataStore.getFeatureSource(tname("road"));
@@ -1146,8 +1134,8 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     }
 
     public void testLockFeatureInteraction() throws IOException {
-        FeatureLock lockA = FeatureLockFactory.generate("LockA", LOCK_DURATION);
-        FeatureLock lockB = FeatureLockFactory.generate("LockB", LOCK_DURATION);
+        FeatureLock lockA = new FeatureLock("LockA", LOCK_DURATION);
+        FeatureLock lockB = new FeatureLock("LockB", LOCK_DURATION);
         try (Transaction t1 = new DefaultTransaction();
                 Transaction t2 = new DefaultTransaction()) {
             FeatureLocking<SimpleFeatureType, SimpleFeature> road1 =
@@ -1203,7 +1191,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     }
 
     public void testGetFeatureLockingExpire() throws Exception {
-        FeatureLock lock = FeatureLockFactory.generate("Timed", 1000);
+        FeatureLock lock = new FeatureLock("Timed", 1000);
 
         FeatureLocking<SimpleFeatureType, SimpleFeature> road =
                 (FeatureLocking<SimpleFeatureType, SimpleFeature>)

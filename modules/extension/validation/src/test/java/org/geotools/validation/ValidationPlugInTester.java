@@ -59,8 +59,6 @@ public class ValidationPlugInTester extends DataTestCase {
      * ValidationPlugInTester constructor.
      *
      * <p>Description
-     *
-     * @param arg0
      */
     public ValidationPlugInTester(String arg0) {
         super(arg0);
@@ -70,7 +68,6 @@ public class ValidationPlugInTester extends DataTestCase {
      * Construct data store for use.
      *
      * @see junit.framework.TestCase#setUp()
-     * @throws Exception
      */
     protected void setUp() throws Exception {
         super.setUp();
@@ -84,7 +81,6 @@ public class ValidationPlugInTester extends DataTestCase {
      * Override tearDown.
      *
      * @see junit.framework.TestCase#tearDown()
-     * @throws Exception
      */
     protected void tearDown() throws Exception {
         store = null;

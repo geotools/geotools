@@ -49,7 +49,6 @@ public interface Type {
      * <p>A SAXNotSupportedException should be thrown when the child's [inherited, default
      * implementation of getValue(ElementValue[],Attributes)] method should be used.
      *
-     * @throws OperationNotSupportedException
      * @see ElementValue
      * @return Object
      */

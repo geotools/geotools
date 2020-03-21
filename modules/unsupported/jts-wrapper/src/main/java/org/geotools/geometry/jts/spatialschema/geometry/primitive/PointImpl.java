@@ -76,21 +76,12 @@ public class PointImpl extends GeometryImpl implements Point {
         this(null, DefaultGeographicCRS.WGS84);
     }
 
-    /**
-     * Creates a new {@code PointImpl}.
-     *
-     * @param position
-     */
+    /** Creates a new {@code PointImpl}. */
     public PointImpl(final DirectPosition position) {
         this(position, position.getCoordinateReferenceSystem());
     }
 
-    /**
-     * Creates a new {@code PointImpl}.
-     *
-     * @param position
-     * @param crs
-     */
+    /** Creates a new {@code PointImpl}. */
     public PointImpl(final DirectPosition position, final CoordinateReferenceSystem crs) {
         super(crs);
         this.position = (position == null) ? new DirectPositionImpl(crs) : position;
@@ -100,11 +91,6 @@ public class PointImpl extends GeometryImpl implements Point {
     //  Methods
     // *************************************************************************
 
-    @Deprecated
-    public DirectPosition getPosition() {
-        return getDirectPosition();
-    }
-
     /**
      * Returns a copy of this point's position. We must return a copy (and not a reference to our
      * internal object), otherwise the caller could modify the values of the object and we would not
@@ -112,11 +98,6 @@ public class PointImpl extends GeometryImpl implements Point {
      */
     public DirectPosition getDirectPosition() {
         return new DirectPositionImpl(position);
-    }
-
-    @Deprecated
-    public void setPosition(final DirectPosition position) throws UnmodifiableGeometryException {
-        setDirectPosition(position);
     }
 
     /**

@@ -58,18 +58,7 @@ public class VPFColumn {
     /** Describe variable <code>valDescTableName</code> here. */
     private final String valDescTableName;
 
-    /**
-     * Constructor with all of the elements of a VPF column
-     *
-     * @param name
-     * @param type
-     * @param elementsNumber
-     * @param keyType
-     * @param colDesc
-     * @param valDescTableName
-     * @param thematicIdx
-     * @param narrTable
-     */
+    /** Constructor with all of the elements of a VPF column */
     public VPFColumn(
             String name,
             char type,

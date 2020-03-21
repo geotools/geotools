@@ -16,7 +16,6 @@
  */
 package org.geotools.styling;
 
-import java.util.logging.Logger;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.GeoTools;
@@ -30,13 +29,8 @@ import org.opengis.util.Cloneable;
  * @author James Macgill, CCG
  */
 public class FillImpl implements Fill, Cloneable {
-    /** The logger for the default core module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(FillImpl.class);
-
     private FilterFactory filterFactory;
     private Expression color = null;
-    private Expression backgroundColor = null;
     private Expression opacity = null;
     private Graphic graphicFill = null;
 
@@ -88,40 +82,6 @@ public class FillImpl implements Fill, Cloneable {
         if (color.toString().equals(rgb)) return;
 
         setColor(filterFactory.literal(rgb));
-    }
-
-    /**
-     * This parameter gives the solid color that will be used as a background for a Fill.<br>
-     * The color value is RGB-encoded using two hexidecimal digits per primary-color component, in
-     * the order Red, Green, Blue, prefixed with the hash (#) sign. The hexidecimal digits between A
-     * and F may be in either upper or lower case. For example, full red is encoded as "#ff0000"
-     * (with no quotation marks). The default color is defined to be transparent.
-     *
-     * @return The color of the Fill encoded as a hexidecimal RGB value.
-     */
-    public Expression getBackgroundColor() {
-        return backgroundColor;
-    }
-
-    /**
-     * This parameter gives the solid color that will be used as a background for a Fill.<br>
-     * The color value is RGB-encoded using two hexidecimal digits per primary-color component, in
-     * the order Red, Green, Blue, prefixed with the hash (#) sign. The hexidecimal digits between A
-     * and F may be in either upper or lower case. For example, full red is encoded as "#ff0000"
-     * (with no quotation marks).
-     *
-     * @param rgb The color of the Fill encoded as a hexidecimal RGB value.
-     */
-    public void setBackgroundColor(Expression rgb) {
-        if (this.backgroundColor == rgb) return;
-        backgroundColor = rgb;
-    }
-
-    public void setBackgroundColor(String rgb) {
-        LOGGER.fine("setting bg color with " + rgb + " as a string");
-        if (backgroundColor.toString().equals(rgb)) return;
-
-        setBackgroundColor(filterFactory.literal(rgb));
     }
 
     /**
@@ -213,9 +173,6 @@ public class FillImpl implements Fill, Cloneable {
         if (color != null) {
             result = PRIME * result + color.hashCode();
         }
-        if (backgroundColor != null) {
-            result = PRIME * result + backgroundColor.hashCode();
-        }
         if (opacity != null) {
             result = PRIME * result + opacity.hashCode();
         }
@@ -243,7 +200,6 @@ public class FillImpl implements Fill, Cloneable {
         if (oth instanceof FillImpl) {
             FillImpl other = (FillImpl) oth;
             return Utilities.equals(this.color, other.color)
-                    && Utilities.equals(this.backgroundColor, other.backgroundColor)
                     && Utilities.equals(this.opacity, other.opacity)
                     && Utilities.equals(this.graphicFill, other.graphicFill);
         }
@@ -261,7 +217,6 @@ public class FillImpl implements Fill, Cloneable {
             copy.color = fill.getColor();
             copy.graphicFill = GraphicImpl.cast(fill.getGraphicFill());
             copy.opacity = fill.getOpacity();
-            copy.backgroundColor = null; // does not have an equivalent
             return copy;
         }
     }

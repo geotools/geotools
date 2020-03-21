@@ -25,6 +25,7 @@ import org.geotools.test.OnlineTestCase;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 
+@SuppressWarnings("deprecation") // DB was replaced by MongoDatabase but API is not the same
 public abstract class MongoTestSupport extends OnlineTestCase {
 
     protected MongoTestSetup testSetup;

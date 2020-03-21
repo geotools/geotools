@@ -66,6 +66,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.factory.ReferencingFactoryContainer;
+import org.geotools.referencing.factory.ReferencingObjectFactory;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.util.NumberRange;
 import org.geotools.util.URLs;
@@ -79,7 +80,9 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.cs.CartesianCS;
 import org.opengis.referencing.datum.PixelInCell;
+import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransformFactory;
+import org.opengis.referencing.operation.OperationMethod;
 import org.opengis.referencing.operation.TransformException;
 import si.uom.SI;
 
@@ -138,7 +141,6 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader
      * @param source The source object (can be a File, an URL or a String representing a File or an
      *     URL).
      * @throws MalformedURLException if the URL does not correspond to one of the GTopo30 files
-     * @throws IOException
      * @throws DataSourceException if the given url points to an unrecognized file
      */
     public GTopo30Reader(final Object source) throws IOException {
@@ -151,7 +153,6 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader
      * @param source The source object (can be a File, an URL or a String representing a File or an
      *     URL).
      * @throws MalformedURLException if the URL does not correspond to one of the GTopo30 files
-     * @throws IOException
      * @throws DataSourceException if the given url points to an unrecognized file
      */
     public GTopo30Reader(final Object source, final Hints hints) throws IOException {
@@ -351,10 +352,8 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader
      * Gets the bounding box of this datasource using the default speed of this datasource as set by
      * the implementer.
      *
-     * @param lonFirst
      * @return The bounding box of the datasource or null if unknown and too expensive for the
      *     method to calculate.
-     * @throws IOException
      */
     private GeneralEnvelope getBounds(CoordinateReferenceSystem crs) throws IOException {
         GeneralEnvelope env = new GeneralEnvelope(new double[] {0, 0}, new double[] {0, 0});
@@ -390,9 +389,6 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader
      * Retrieves a grid coverage based on the DEM assoicated to this gtopo coverage. The color
      * palette is fixed and there is no possibility for the final user to change it.
      *
-     * @param dim
-     * @param requestedEnvelope
-     * @param overviewPolicy
      * @return the GridCoverage object
      * @throws DataSourceException if an error occurs
      */
@@ -432,6 +428,7 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader
         // /////////////////////////////////////////////////////////////////////
         // trying to create a channel to the file to read
         final File file = URLs.urlToFile(demURL);
+        @SuppressWarnings("PMD.CloseResource") // used in deferred loading
         final ImageInputStream iis = ImageIO.createImageInputStream(file);
         if (header.getByteOrder().compareToIgnoreCase("M") == 0) {
             iis.setByteOrder(ByteOrder.BIG_ENDIAN);
@@ -446,6 +443,7 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader
                 new ImageTypeSpecifier(layout.getColorModel(null), layout.getSampleModel(null));
 
         // Finally, build the image input stream
+        @SuppressWarnings("PMD.CloseResource") // used in deferred loading
         final RawImageInputStream raw =
                 new RawImageInputStream(
                         iis,
@@ -528,9 +526,8 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader
      * are two, EPSG:4326 and POlar Stereographc. Inc ase an error occurs the default CRS is chosen.
      *
      * @return CoordinateReferenceSystem a CRS for this coverage.
-     * @throws IOException
-     * @throws FactoryException
      */
+    @SuppressWarnings("deprecation")
     private CoordinateReferenceSystem initCRS() {
         BufferedReader reader = null;
         try {
@@ -577,8 +574,16 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader
                             Collections.singletonMap(
                                     "name", "WGS 84 / Antartic Polar Stereographic");
 
-                    return factories.createProjectedCRS(
-                            properties, geoCRS, null, parameters, cartCS);
+                    OperationMethod method = null;
+                    final MathTransform mt =
+                            factories
+                                    .getMathTransformFactory()
+                                    .createBaseToDerived(geoCRS, parameters, cartCS);
+                    if (method == null) {
+                        method = factories.getMathTransformFactory().getLastMethodUsed();
+                    }
+                    return ((ReferencingObjectFactory) factories.getCRSFactory())
+                            .createProjectedCRS(properties, method, geoCRS, mt, cartCS);
                 }
 
                 if (crsDescription.endsWith("GEOGRAPHIC")) {

@@ -55,18 +55,13 @@ public class DefaultPosition implements Position {
      * in the futur version of jdk (jdk7). example of datetime argument: format specified by the
      * ISO8601 yyyy-mm-DDTHH:MM:SSZ - example : 2003-02-13T12:28:00.000GMT-08:00.
      *
-     * @param dateTime
      * @throws java.text.ParseException
      */
     public DefaultPosition(final InternationalString datetime) throws ParseException {
         this.position = Utils.getDateFromString(datetime.toString());
     }
 
-    /**
-     * This constructor set the position property as a TemporalPosition.
-     *
-     * @param anyOther
-     */
+    /** This constructor set the position property as a TemporalPosition. */
     public DefaultPosition(final TemporalPosition anyOther) {
         this.position = anyOther;
     }

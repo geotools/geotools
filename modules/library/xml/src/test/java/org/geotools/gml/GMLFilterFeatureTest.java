@@ -24,6 +24,9 @@ import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.TransformerException;
 import org.custommonkey.xmlunit.SimpleNamespaceContext;
 import org.custommonkey.xmlunit.XMLUnit;
@@ -45,7 +48,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLFilterImpl;
-import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
  * {@link GMLFilterFeature} modifies whitespaces in attribute values, this way tampering with input
@@ -72,7 +74,8 @@ public class GMLFilterFeatureTest {
     }
 
     @Test
-    public void test() throws TransformerException, SAXException, IOException {
+    public void test()
+            throws TransformerException, SAXException, IOException, ParserConfigurationException {
 
         final String gml = createTestGMLInput();
         // System.out.format("%s\n", gml);
@@ -87,7 +90,10 @@ public class GMLFilterFeatureTest {
         final GMLFilterFeature filterFeature = new GMLFilterFeature(handler);
         final GMLFilterGeometry filterGeometry = new GMLFilterGeometry(filterFeature);
         final GMLFilterDocument filterDocument = new GMLFilterDocument(filterGeometry);
-        final XMLReader reader = XMLReaderFactory.createXMLReader();
+        final SAXParserFactory parserFactory = SAXParserFactory.newInstance();
+        parserFactory.setNamespaceAware(true);
+        final SAXParser parser = parserFactory.newSAXParser();
+        final XMLReader reader = parser.getXMLReader();
         reader.setContentHandler(filterDocument);
         reader.parse(new InputSource(new StringReader(gml)));
         assertTrue(featureCollection.size() == 2);

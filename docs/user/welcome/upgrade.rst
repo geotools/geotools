@@ -45,33 +45,33 @@ The following table shows how maven dependencies have changed, and the resulting
    * - Dependency
      - Upgrade
      - Automatic Module Name
-   * - gt-opengis
-     - gt-opengis
-     - org.geotools.opengis
-   * - gt-metadata
-     - gt-metadata
-     - org.geotools.metadata
-   * - gt-api
+   * - ``gt-opengis``
+     - ``gt-opengis``
+     - ``org.geotools.opengis``
+   * - ``gt-metadata``
+     - ``gt-metadata``
+     - ``org.geotools.metadata``
+   * - ``gt-api``
      - (removed)
      - 
-   * - gt-referencing 
-     - gt-referencing 
-     - org.geotools.referencing
-   * - gt-main
-     - gt-main
-     - org.geotools.main
-   * - gt-xml
-     - gt-xml
-     - org.geotools.xml
-   * - gt-xml
-     - gt-xml
-     - org.geotools.xml
-   * - gt-main
-     - gt-main
-     - org.geotools.data
-   * - gt-jdbc
-     - gt-jdbc
-     - org.geotools.jdbc
+   * - ``gt-referencing``
+     - ``gt-referencing``
+     - ``org.geotools.referencing``
+   * - ``gt-main``
+     - ``gt-main``
+     - ``org.geotools.main``
+   * - ``gt-xml``
+     - ``gt-xml``
+     - ``org.geotools.xml``
+   * - ``gt-xml``
+     - ``gt-xml``
+     - ``org.geotools.xml``
+   * - ``gt-main``
+     - ``gt-main``
+     - ``org.geotools.data``
+   * - ``gt-jdbc``
+     - ``gt-jdbc``
+     - ``org.geotools.jdbc``
 
 Repackage Library
 ^^^^^^^^^^^^^^^^^
@@ -88,42 +88,42 @@ Previously GeoTools reused packages across modules by design, this approach is n
      - Package
    * - 
      - Classes Affected
-   * - **gt-api**
-     - **org.geotools.decorate**
-   * - gt-metadata
-     - org.geotools.util.decorate
+   * - ``gt-api``
+     - ``org.geotools.decorate``
+   * - ``gt-metadata``
+     - ``org.geotools.util.decorate``
    * - 
      - Abstract Store, Wrapper
-   * - **gt-api**
-     - **org.geotools.data**
-   * - gt-main
-     - org.geotools.data
-   * - **gt-api**
-     - **org.geotools.data.simple**
-   * - gt-main
-     - org.geotools.data.simple
-   * - **gt-api**
-     - **org.geotools.decorate**
-   * - gt-main
-     - org.geotools.util.decorate
+   * - ``gt-api``
+     - ``org.geotools.data``
+   * - ``gt-main``
+     - ``org.geotools.data``
+   * - ``gt-api``
+     - ``org.geotools.data.simple``
+   * - ``gt-main``
+     - ``org.geotools.data.simple``
+   * - ``gt-api``
+     - ``org.geotools.decorate``
+   * - ``gt-main``
+     - ``org.geotools.util.decorate``
    * - 
      - AbstractDecorator, Wrapper
-   * - **gt-api**
-     - **org.geotools.factory**
-   * - gt-main
-     - org.geotools.factory
-   * - **gt-api**
-     - **org.geotools.feature**
-   * - gt-main
-     - org.geotools.feature
-   * - **gt-api**
-     - **org.geotools.filter**
-   * - gt-main
-     - org.geotools.filter
-   * - **gt-api**
-     - **org.geotools.filter.expression**
-   * - gt-main
-     - org.geotools.filter.expression
+   * - ``gt-api``
+     - ``org.geotools.factory``
+   * - ``gt-main``
+     - ``org.geotools.factory``
+   * - ``gt-api``
+     - ``org.geotools.feature``
+   * - ``gt-main``
+     - ``org.geotools.feature``
+   * - ``gt-api``
+     - ``org.geotools.filter``
+   * - ``gt-main``
+     - ``org.geotools.filter``
+   * - ``gt-api``
+     - ``org.geotools.filter.expression``
+   * - ``gt-main``
+     - ``org.geotools.filter.expression``
 
 GeoTools 20.x
 -------------
@@ -145,7 +145,7 @@ The transitive dependency will correctly bring in the required jars::
 
 This release changes the package names from ``com.vividsolutions.jts`` to ``org.locationtech.jts``. To update your own code follow the `JTS Upgrade Guide <https://github.com/locationtech/jts/blob/master/MIGRATION.md>`__ instructions.
 
-Using the command line to update your own pom.xml files::
+Using the command line to update your own ``pom.xml`` files::
 
    git grep -l com.vividsolutions | grep pom.xml | xargs sed -i "s/com.vividsolutions/org.locationtech.jts/g"
    
@@ -155,7 +155,7 @@ And codebase::
 
 **Use of copy rather than clone**
 
-If you are in the habit of using **clone** to duplicate JTS objects (such as Geometry and Coordinate) you will find the **clone** method has been deprecated, and a **copy** method introduced to explicitly perform a deep copy::
+If you are in the habit of using ``clone`` to duplicate JTS objects (such as Geometry and Coordinate) you will find the ``clone`` method has been deprecated, and a ``copy`` method introduced to explicitly perform a deep copy::
     
     Geometry duplicate = geom.copy();
 
@@ -177,7 +177,7 @@ Package names have changed, resulting in some common search and replaces when up
 * Search ``javax.measure.unit.Unit`` replace ``javax.measure.Unit``
 * Search ``ConversionException`` replace  ``IncommensurableException``
   
-  This is a checked exception, in areas of the GeoTools library where this was found we now return an IllegalArgument exception.
+  This is a checked exception, in areas of the GeoTools library where this was found we now return an ``IllegalArgument`` exception.
   
 * Search ``converter == UnitConverter.IDENTITY`` replace ``converter.isIdentity()``
 * Search ``javax.measure.unit.NonSI`` replace ``import si.uom.NonSI``
@@ -193,7 +193,7 @@ Package names have changed, resulting in some common search and replaces when up
 
 If you know the unit to use at compile time, use one of the Unit instances defined as static variables in ``org.geotools.measure.Units``, ``si.uom.SI``, ``si.uom.NonSI`` or ``systems.uom.common.USCustomary``.
 
-If you need to define new Units at runtime, it is important to immediately try to convert the new unit to one of the existing instances using Units.autocorrect method. Autocorrect applies some tolerance to locate an equivalent Unit. Skipping autocorrect will produce unexpected results and errors due to small differences in units definition.
+If you need to define new Units at runtime, it is important to immediately try to convert the new unit to one of the existing instances using ``Units.autocorrect`` method. Autocorrect applies some tolerance to locate an equivalent Unit. Skipping autocorrect will produce unexpected results and errors due to small differences in units definition.
 
 .. code-block:: java
 
@@ -249,7 +249,7 @@ Use ``org.geotools.measure.Units.getDefaultFormat().format()`` to get the unit l
   
 **Converting units**
 
-If the unit Quantity type is known, use the type-safe getConverterTo() method:
+If the unit ``Quantity`` type is known, use the type-safe ``getConverterTo()`` method:
 
 .. code-block:: java
 
@@ -257,7 +257,7 @@ If the unit Quantity type is known, use the type-safe getConverterTo() method:
    UnitConverter converter = unit.getConverterTo(SI.RADIAN);
    double convertedQuantity = converter.convert(3.1415);
 
-If the Quantity type is undefined, use the convenience method ``org.geotools.measure.Units.getConverterToAny()``. Note that this method throws an IllegalArgumentException if units can't be converted:
+If the ``Quantity`` type is undefined, use the convenience method ``org.geotools.measure.Units.getConverterToAny()``. Note that this method throws an ``IllegalArgumentException`` if units can't be converted:
 
 .. code-block:: java
 
@@ -322,20 +322,20 @@ GeoTools 15.x requires Java 8::
 
 GeoTools 14.x
 -------------
-From 14.x version, the `JAI-EXT Project <https://github.com/geosolutions-it/jai-ext>`_ has been integrated in GeoTools. This project provides a high scalable Java API for image processing with support for NoData and ROI. 
+From 14.x version, the `JAI-EXT Project <https://github.com/geosolutions-it/jai-ext>`_ has been integrated in GeoTools. This project provides a high scalable Java API for image processing with support for ``NoData`` and ``ROI``. 
 This integration provides also the removal of the following classes, since they are now inside JAI-EXT:
 
-* **ColorIndexer** from *gt-coverage* module;
-* **GTCrop** from *gt-coverage* module;
-* **GenericPiecewise** from *gt-render* module;
-* **RasterClassifier** from *gt-render* module;
-* **ArtifactsFilter** from *gt-imagemosaic* module.
+* ``ColorIndexer`` from *gt-coverage* module;
+* ``GTCrop`` from *gt-coverage* module;
+* ``GenericPiecewise`` from *gt-render* module;
+* ``RasterClassifier`` from *gt-render* module;
+* ``ArtifactsFilter`` from *gt-imagemosaic* module.
 
-Users may now decide to choose between JAI and JAI-EXT operations by simply using the **JAIExt** class containing utility methods for handling JAI/JAI-EXT registration.
+Users may now decide to choose between JAI and JAI-EXT operations by simply using the ``JAIExt`` class containing utility methods for handling JAI/JAI-EXT registration.
 
 A more detailed tutorial on how to use JAI-EXT may be found at the following :ref:`JAI-EXT Tutorial Page<jaiext>`.
 
-TextSymbolizer provides direct access to the device independent Font list, removing deprecated array access methods. This change restores SLD 1.0 multi-lingual behaviour allowing several face/size combinations to be used during labeling.
+``TextSymbolizer`` provides direct access to the device independent Font list, removing deprecated array access methods. This change restores SLD 1.0 multi-lingual behavior allowing several face/size combinations to be used during labeling.
 
 BEFORE::
 
@@ -353,7 +353,7 @@ AFTER::
      ...
   }
 
-Transaction is now Closable for use with try-with-resource syntax::
+``Transaction`` is now ``Closable`` for use with try-with-resource syntax::
 
    try (Transaction t = new DefaultTransaction()){
         store.setTransaction( t );
@@ -361,15 +361,15 @@ Transaction is now Closable for use with try-with-resource syntax::
         t.commit();
    }
 
-ShapefileDataStore representing shapefiles without any data, now return empty bounds on getBounds() instead of the bounds inside the shapefile header (mostly [0:0,0:0]). So bounds.isEmpty() and bounds.isNull() will return true for empty shapefiles.
+``ShapefileDataStore`` representing shapefiles without any data, now return empty bounds on ``getBounds()`` instead of the bounds inside the shapefile header (mostly [0:0,0:0]). So ``bounds.isEmpty()`` and ``bounds.isNull()`` will return true for empty shapefiles.
 
 GeoTools 13.0
 -------------
-As of GeoTools 13.0, the CoverageViewType classes have been removed. The AbstractDataStore class is also now deprecated. Extensive work has been done to bring in ContentDataStore as its replacement.
+As of GeoTools 13.0, the ``CoverageViewType`` classes have been removed. The ``AbstractDataStore`` class is also now deprecated. Extensive work has been done to bring in ``ContentDataStore`` as its replacement.
 
-There is a `ContentDataStore Tutorial <http://docs.geotools.org/latest/userguide/tutorial/datastore/index.html>`_ to help with migration from AbstractDataStore.
+There is a `ContentDataStore Tutorial <http://docs.geotools.org/latest/userguide/tutorial/datastore/index.html>`_ to help with migration from ``AbstractDataStore``.
 
-Many readers and iterators are now Closable for use with try-with-resource syntax::
+Many readers and iterators are now ``Closable`` for use with try-with-resource syntax::
 
    try( SimpleFeatureIterator features = source.getFeatures( filter ) ){
        while( features.hasNext() ){
@@ -398,7 +398,7 @@ GeoTools 10.0
    For background details on any API changes review the change proposals above.
 
 GeoTools 10 add significant improvements in the coverage reading API.
-For those migrating the first visible benefit is that referring to a generic grid coverage reader does not require anymore to use AbstractGridCoverage2DReader (an abstract class) but to the new GridCoverage2DReader interface. The old usage is still supported though, as most readers are still extending the same base class, but the usage of the interface allows for reader wrappers.
+For those migrating the first visible benefit is that referring to a generic grid coverage reader does not require anymore to use ``AbstractGridCoverage2DReader`` (an abstract class) but to the new ``GridCoverage2DReader`` interface. The old usage is still supported though, as most readers are still extending the same base class, but the usage of the interface allows for reader wrappers.
 
 BEFORE::
 
@@ -417,18 +417,18 @@ GeoTools 9.0
 
    For background details on any API changes review the change proposals above.
 
-GeoTools 9 has resolved a long standing conflict between FeatureCollection acting as a "result" set capable of
-streaming large datasets vs. acting as a familiar Java Collection. The Java 5 "for each" syntax prevents
-the safe use of Iterator (as we cannot ensure it will be closed). As a result FeatureCollection no longer
-can extend java Collection and is acting as a pure "result set" with streaming access provided by FeatureIterator.
+GeoTools 9 has resolved a long standing conflict between ``FeatureCollection`` acting as a "result" set capable of
+streaming large data sets vs. acting as a familiar Java Collection. The Java 5 "for each" syntax prevents
+the safe use of Iterator (as we cannot ensure it will be closed). As a result ``FeatureCollection`` no longer
+can extend java Collection and is acting as a pure "result set" with streaming access provided by ``FeatureIterator``.
 
 ReferencedEnvelope and CRS
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-ReferencedEnvelope has in the past only supported 2D extents, we have introduced the subclass ReferencedEnvelope3D
-to support CoordinateReferenceSystems with three dimensions.
+``ReferencedEnvelope`` has in the past only supported 2D extents, we have introduced the subclass ``ReferencedEnvelope3D``
+to support ``CoordinateReferenceSystems`` with three dimensions.
 
-There is now a new factory method to safely construct the appropriate implementation for a provided CoordinateReferenceSystem
+There is now a new factory method to safely construct the appropriate implementation for a provided ``CoordinateReferenceSystem``
 as shown below.
 
 BEFORE::
@@ -441,13 +441,13 @@ AFTER::
   ReferencedEnvelope bbox = ReferencedEnvelope.create( crs );
   ReferencedEnvelope copy = ReferencedEnvelope.create( bbox );
 
-This represents an *incompatible API change*, existing code using "new ReferencedEnvelope" may now throw
-a RuntimeException when supplied with an incompatible CoordinateReferenceSystem.
+This represents an *incompatible API change*, existing code using ``new ReferencedEnvelope`` may now throw
+a ``RuntimeException`` when supplied with an incompatible ``CoordinateReferenceSystem``.
 
 FeatureCollection Add
 ^^^^^^^^^^^^^^^^^^^^^
 
-With the FeatureCollection.add method being removed, you will need to use an explicit instance that supports
+With the ``FeatureCollection.add`` method being removed, you will need to use an explicit instance that supports
 adding content.
 
 BEFORE::
@@ -465,7 +465,8 @@ AFTER::
        features.add( feature );
     }
 
-ALTERNATE (will throw exception if FeatureCollection does not implement java.util.Collection)::
+ALTERNATE (will throw exception if ``FeatureCollection`` does not implement
+``java.util.Collection``)::
 
     Collection<SimpleFeature> collection = DataUtilities.collectionCast( featureCollection );
     collection.addAll( list );
@@ -488,7 +489,7 @@ SPECIFIC::
 FeatureCollection Iterator
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The deprecated FeatureCollection.iterator() method is no longer available, please use FeatureCollection.features()
+The deprecated ``FeatureCollection.iterator()`` method is no longer available, please use ``FeatureCollection.features()``
 as shown below.
 
 BEFORE::
@@ -530,10 +531,11 @@ JAVA7::
 How to Close an Iterator
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-We have made FeatureIterator implement Closable (for Java 7 try-with-resource compatibility). This
-also provides an excellent replacement for FeatureCollection.close( Iterator ).
+We have made ``FeatureIterator`` implement ``Closable`` (for Java 7 try-with-resource compatibility). This
+also provides an excellent replacement for
+``FeatureCollection.close(Iterator)``.
 
-If you are using any wrapping Iterators that still require the ability to close()
+If you are using any wrapping ``Iterators`` that still require the ability to ``close()``
 please consider the following approach.
 
 BEFORE::
@@ -573,7 +575,7 @@ DETAIL::
         }
     }
 
-JAVA7 using try-with-resource syntax for Iterator that implements Closeable::
+JAVA7 using try-with-resource syntax for ``Iterator`` that implements ``Closeable``::
 
     try ( Iterator i=collection.features()){
         while( i.hasNext() ){
@@ -601,10 +603,10 @@ your code more readable.
 Style
 ^^^^^
 
-Some of the **gt-opengis** style methods that have been deprecated for a while are now removed.
+Some of the ``gt-opengis`` style methods that have been deprecated for a while are now removed.
 
-* Mark.getRotation() / Mark.setRotation( Expression )
-* Mark.getSize() / Mark.setSize( Expression )
+* ``Mark.getRotation()`` / ``Mark.setRotation( Expression )``
+* ``Mark.getSize()`` / ``Mark.setSize( Expression )``
 
 These are handled in a similar manner:
 
@@ -651,7 +653,7 @@ FeatureId
 Function
 ''''''''
 
-We have extended **gt-opengis** Function to make the FunctionName description (especially
+We have extended ``gt-opengis`` ``Function`` to make the ``FunctionName`` description (especially
 argument names) more available.
 
 * To update your code::
@@ -666,12 +668,12 @@ argument names) more available.
     }
 
 If you are extending abstract function expression base class; it provides a default implementation
-of getFunctionName() allowing your code to compile.
+of ``getFunctionName()`` allowing your code to compile.
 
 FunctionExpression
 ''''''''''''''''''
 
-In a related matter **gt-main** no longer provides access to the deprecated FunctionExpression
+In a related matter ``gt-main`` no longer provides access to the deprecated ``FunctionExpression``
 interface (it has returned an empty set for several releases now):
 
 * BEFORE::
@@ -694,31 +696,31 @@ interface (it has returned an empty set for several releases now):
 Direct Position and Envelope
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Deprecated methods in **gt-opengis** and **gt-referencing** have now been removed.
+Deprecated methods in ``gt-opengis`` and ``gt-referencing`` have now been removed.
 
-======================================= ================================ ===============================
-Deprecated method in 2.7                Replacement in 8.0               Notes
-======================================= ================================ ===============================
-DirectPosition.getCoordinates()         DirectPosition.getCoordinate()   For consistency with ISO 19107
-Envelope.getCenter()                    Envelope.getMedian()}}           For consistency with ISO 19107
-Envelope.getLength()                    Envelope.getSpan()               For consistency with ISO 19107
-Precision.getMaximumSignificantDigits() Precision.getScale()}}           Remove duplication
-PointArray.length()                     List.size()                      PointArray instance can be used
-PointArray.position()                   this                             PointArray instance can be used
-Position.getPosition()                  Position.getDirectPosition()     For consistency with ISO 19107
-Point.setPosition()                     Point.setDirectPosition()        For consistency with ISO 19107
-======================================= ================================ ===============================
+=========================================== ==================================== ===================================
+Deprecated method in 2.7                    Replacement in 8.0                   Notes
+=========================================== ==================================== ===================================
+``DirectPosition.getCoordinates()``         ``DirectPosition.getCoordinate()``   For consistency with ISO 19107
+``Envelope.getCenter()``                    ``Envelope.getMedian()``             For consistency with ISO 19107
+``Envelope.getLength()``                    ``Envelope.getSpan()``               For consistency with ISO 19107
+``Precision.getMaximumSignificantDigits()`` ``Precision.getScale()}}``           Remove duplication
+``PointArray.length()``                     ``List.size()``                      ``PointArray`` instance can be used
+``PointArray.position()``                   ``this``                             ``PointArray`` instance can be used
+``Position.getPosition()``                  ``Position.getDirectPosition()``     For consistency with ISO 19107
+``Point.setPosition()``                     ``Point.setDirectPosition()``        For consistency with ISO 19107
+=========================================== ==================================== ===================================
 
 NumberRange
 ^^^^^^^^^^^
 
-The **gt-metadata** NumberRange class is finally shedding some of its deprecated methods.
+The ``gt-metadata`` ``NumberRange`` class is finally shedding some of its deprecated methods.
 
-** BEFORE::
+BEFORE::
 
       NumberRange before = new NumberRange( 0.0, 5.0 );
 
-** AFTER::
+AFTER::
 
       NumberRange<Double> after1 = new NumberRange( Double.class, 0.0, 5.0 );
       NumberRange<Double> after2 = NumberRage.create( 0.0, 5.0 );
@@ -734,39 +736,39 @@ GeoTools 2.7
    on the following changes.
 
 The changes from GeoTools 2.6 to GeoTools 2.7 focus on making your code more readable; you will
-find a number of optional changes (such as using Query rather than DefaultQuery) which will
+find a number of optional changes (such as using Query rather than ``DefaultQuery``) which will
 simplify make your code easier to follow.
 
 
 Query
 ^^^^^
 
-The *gt-api** module has been updated to make **Query** a concrete class rather than an interface.
+The ``gt-api`` module has been updated to make ``Query`` a concrete class rather than an interface.
 
-* BEFORE::
+BEFORE::
 
         Query query = new DefaultQuery( typeName, filter );
 
-* AFTER::
+AFTER::
 
         Query query = new Query( typeName, filter );
 
 Tips:
 
-* You can perform a search and replace to change DefaultQuery to Query on your code base
-* If you have your own implementation of Query your code is now broken; after many years we have
-  never seen an implementation of Query in the wild. You should be able to fix by extending rather
-  then implementing Query.
-* DefaultQuery still exists but all of the implementation code has now been "pulled up" into
-  Query and DefaultQuery marked as deprecated.
-* In a similar fashion *FeatureLock* can now be directly constructed rather than use a Factory.
+* You can perform a search and replace to change ``DefaultQuery`` to ``Query`` on your code base
+* If you have your own implementation of ``Query`` your code is now broken; after many years we have
+  never seen an implementation of ``Query`` in the wild. You should be able to fix by extending rather
+  then implementing ``Query``.
+* ``DefaultQuery`` still exists but all of the implementation code has now been "pulled up" into
+  ``Query`` and ``DefaultQuery`` marked as deprecated.
+* In a similar fashion ``FeatureLock`` can now be directly constructed rather than use a ``Factory``.
 
 SimpleFeatureCollection
 ^^^^^^^^^^^^^^^^^^^^^^^
 
 We have vastly cut down the use of Java generics for casual users of the GeoTools library. The
-primary example of this is the introduction of **SimpleFeatureCollection** (which saves you
-typing in **FeatureCollection<SimpleFeatureType,SimpleFeature>** each time).
+primary example of this is the introduction of ``SimpleFeatureCollection`` (which saves you
+typing in ``FeatureCollection<SimpleFeatureType,SimpleFeature>`` each time).
 
 * BEFORE::
 
@@ -784,12 +786,12 @@ typing in **FeatureCollection<SimpleFeatureType,SimpleFeature>** each time).
 Tips:
 
 * You can do a search and replace on this one; but you need to be very careful with any
-  implementations you have that accept a FeatureCollection<SimpleFeatureType,SimpleFeature>
+  implementations you have that accept a ``FeatureCollection<SimpleFeatureType,SimpleFeature>``
   as a method parameter!
 
-* Be careful if you have your own FeatureStore implementation; a search and replace will change
+* Be careful if you have your own ``FeatureStore`` implementation; a search and replace will change
   several of your methods so they no longer "override" the default implementation provided by
-  AbstractFeatureStore.::
+  ``AbstractFeatureStore``.::
 
        @Override // this would fail; you do use Override right?
        public Set addFeatures( SimpleFeatureCollection features ){
@@ -801,14 +803,14 @@ Tips:
        public Set addFeatures( FeatureCollection<SimpleFeatureType,SimpleFeature> features ){
           ... your implementation goes here ...
 
-  Note: If you use the @Override annotation in your code you will get a proper error; since your
+  Note: If you use the ``@Override`` annotation in your code you will get a proper error; since your
   new method would no longer override anything.
 
 SimpleFeatureSource
 ^^^^^^^^^^^^^^^^^^^
 
-The **gt-api** module now defines **SimpleFeatuyreSource** (to save you a bit of typing). In addition
-the **DataStore** interface now returns a **SimpleFeatureSource**; so if you want you optionally
+The ``gt-api`` module now defines ``SimpleFeatuyreSource`` (to save you a bit of typing). In addition
+the ``DataStore`` interface now returns a ``SimpleFeatureSource``; so if you want you optionally
 can update your code for readability.
 
 * BEFORE::
@@ -816,17 +818,17 @@ can update your code for readability.
     FeatureSource<SimpleFeatureType,SimpleFeature> source =
            (FeatureSource<SimpleFeatureType,SimpleFeature>) dataStore.getFeatureSource( typeName );
 
-* AFTER:
+* AFTER::
 
     SimpleFeatureSource source =  dataStore.getFeatureSource( typeName );
 
 Tips:
 * you can do this with a search and replace
-* Be a bit careful when you have one of your own methods that is expecting a FeatureSource
+* Be a bit careful when you have one of your own methods that is expecting a ``FeatureSource``
 
 SimpleFeatureStore
 ^^^^^^^^^^^^^^^^^^
-In a similar fashion returns a SimpleFeatureCollection; it also has a couple of its own tricks:
+In a similar fashion returns a ``SimpleFeatureCollection``; it also has a couple of its own tricks:
 
 * BEFORE::
 
@@ -851,13 +853,13 @@ In a similar fashion returns a SimpleFeatureCollection; it also has a couple of 
 SimpleFeatureLocking
 ^^^^^^^^^^^^^^^^^^^^
 
-You can also explicitly use SimpleFeatureLocking if you want read/write/lock access to simple
-feature content. Much like **Query** it has been made a concrete class.
+You can also explicitly use ``SimpleFeatureLocking`` if you want read/write/lock access to simple
+feature content. Much like ``Query`` it has been made a concrete class.
 
-FeatureStore modifyFeatures by Name
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+``FeatureStore`` ``modifyFeatures`` by ``Name``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The **FeatureStore** method modifyFeatures now allows you to modify features by name.
+The ``FeatureStore`` method ``modifyFeatures`` now allows you to modify features by name.
 
 * BEFORE::
 
@@ -883,13 +885,13 @@ The **FeatureStore** method modifyFeatures now allows you to modify features by 
 
 Tips:
 
-* Generic FeatureSource allows modifyFeatures( Name, Value, filter )
+* Generic ``FeatureSource`` allows ``modifyFeatures(Name, Value, filter)``
 
 CoverageProcessor
 ^^^^^^^^^^^^^^^^^
 
-The DefaultProcessor and AbstractProcessor classes have been merged into a single class called
-**CoverageProcessor**.
+The ``DefaultProcessor`` and ``AbstractProcessor`` classes have been merged into a single class called
+``CoverageProcessor``.
 
 * BEFORE::
 
@@ -905,21 +907,21 @@ The DefaultProcessor and AbstractProcessor classes have been merged into a singl
 
 Tips:
 
-* Try to always use the static getDefaultInstance method in order to leverage on SoftReference caching
+* Try to always use the static ``getDefaultInstance`` method in order to leverage on ``SoftReference`` caching
 
 GeneralEnvelope
 ^^^^^^^^^^^^^^^
 
-We have been removing old deprecated code from the **GeneralEnvelope** class.
+We have been removing old deprecated code from the ``GeneralEnvelope`` class.
 
-=============================== ===============================================
-Old Method                      New Method
-=============================== ===============================================
-double getCenter(dimension)     DirectPosition getMedian()
-double getCenter()              double getMedian(dimension)
-double getLength(dimension)     double getSpan(dimension)
-getLength(dimension, unit)      double getSpan(dimension, unit)
-=============================== ===============================================
+=================================== ===================================================
+Old Method                          New Method     
+=================================== ===================================================
+``double getCenter(dimension)``     ``DirectPosition getMedian()``
+``double getCenter()``              ``double getMedian(dimension)``
+``double getLength(dimension)``     ``double getSpan(dimension)``
+``getLength(dimension, unit)``      ``double getSpan(dimension, unit)``
+=================================== ===================================================
 
 GeoTools 2.6
 ------------
@@ -932,39 +934,39 @@ GeoTools 2.6
    on the following changes.
 
 The GeoTools 2.6.0 release is incremental in nature with the main change being the introduction
-of the "JDBC-NG" datastores the idea of Query capabilities (so you can check what hints are
+of the ``JDBC-NG`` DataStores the idea of ``Query`` capabilities (so you can check what hints are
 supported).
 
 GridRange Removed
 ^^^^^^^^^^^^^^^^^
 
-GridRange implementations have been removed as the result of a change we are inheriting from GeoAPI
-where a swtich from GridRange to GridEnvelope has been made. GridRange comes from
+``GridRange`` implementations have been removed as the result of a change we are inheriting from GeoAPI
+where a switch from ``GridRange`` to ``GridEnvelope`` has been made. ``GridRange`` comes from
 Grid Coverages Implementation specification 1.0 (which is basically dead) while
-GridEnvelope comes from ISO 19123 which looks like the replacement.
+``GridEnvelope`` comes from ISO 19123 which looks like the replacement.
 
 There is a big difference between interfaces though:
 
-* **GridRange** treats its own maximum grid coordinates as EXCLUSIVES (like Java2D classes
-  Rectangle2D, RenderedImage and Raster do); while
-* **GridEnvelope** uses a different convention where maximum grid coordinates are INCLUSIVES.
+* ``GridRange`` treats its own maximum grid coordinates as EXCLUSIVE (like Java2D classes
+  ``Rectangle2D``, ``RenderedImage`` and ``Raster`` do); while
+* ``GridEnvelope`` uses a different convention where maximum grid coordinates are INCLUSIVE.
 
-This is shown in the code example below with the maxx variable.
+This is shown in the code example below with the ``maxx`` variable.
 
 As far as switching over to the new classes, the equivalence are as follows:
 
-1. Replace **GridRange2D** with **GridEnvelope2D**
+1. Replace ``GridRange2D`` with ``GridEnvelope2D``
 
-   Notice that now GridEnvelope2D is a Java2D rectangle and that it is also mutable!
-2. Replace **GeneralGridRange** with **GeneralGridEnvelope**
+   Notice that now ``GridEnvelope2D`` is a Java2D ``Rectangle`` and that it is also mutable!
+2. Replace ``GeneralGridRange`` with ``GeneralGridEnvelope``
 
 There are a few more caveats, which we are showing here below.
 
 BEFORE:
 
-1. Use getSpan where getLength was used
+1. Use ``getSpan`` where ``getLength`` was used
 2. Be EXTREMELY careful with the conventions for the inclusion/exclusion of the maximum coordinates.
-3. GridRange2D IS a Rectangle and is mutable now!
+3. ``GridRange2D`` IS a ``Rectangle`` and is mutable now!
 
    BEFORE::
 
@@ -998,20 +1000,20 @@ BEFORE:
         final int maxx = originalGridRange2D.getHigh(0)+1;
         final Rectangle rect = (Rectangle)originalGridRange2D.clone();
 
-OverviewPolicy Enum replace Hint use
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+``OverviewPolicy`` ``Enum`` replace ``Hint`` use
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The hints to control overviews were deprecated and have now been removed.
 
 The current deprecated values have been remove from the Hints class inside the Metadata module:
 
-* VALUE_OVERVIEW_POLICY_QUALITY
-* IGNORE_COVERAGE_OVERVIEW
-* VALUE_OVERVIEW_POLICY_IGNORE
-* VALUE_OVERVIEW_POLICY_NEAREST
-* VALUE_OVERVIEW_POLICY_SPEED
+* ``VALUE_OVERVIEW_POLICY_QUALITY``
+* ``IGNORE_COVERAGE_OVERVIEW``
+* ``VALUE_OVERVIEW_POLICY_IGNORE``
+* ``VALUE_OVERVIEW_POLICY_NEAREST``
+* ``VALUE_OVERVIEW_POLICY_SPEED``
 
-You should use the enum that comes with the OverviewPolicy enum. Here below you will find a few examples:
+You should use the ``Enum`` that comes with the ``OverviewPolicy`` ``Enum``. Here below you will find a few examples:
 
 * BEFORE::
 
@@ -1027,18 +1029,18 @@ You should use the enum that comes with the OverviewPolicy enum. Here below you 
 
 Hints:
 
-* Please, notice that the OverviewPolicy enum provide a method to get the default policy for
-  overviews. The method is getDefaultPolicy().
+* Please, notice that the ``OverviewPolicy`` ``Enum`` provides a method to get the default policy for
+  overviews. The method is ``getDefaultPolicy()``.
 
 CoverageUtilities and FeatureUtilities
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Deprecated methods have been remove from coverage utilities classes&nbsp;
+Deprecated methods have been remove from coverage utilities classes;
 
 We have removed deprecated methods from classes:
 
-* CoverageUtilities.java
-* FeatureUtilities.java
+* ``CoverageUtilities.java``
+* ``FeatureUtilities.java``
 
 Existing code should change as follows:
 
@@ -1055,7 +1057,7 @@ Existing code should change as follows:
 Hints:
 
 * This change allows us to store basic parameters to control how we will perform subsequent
-  reads from this reader. The&nbsp; AbstractGridFormat READ_GRIDGEOMETRY2D parameter will be
+  reads from this reader. The ``AbstractGridFormat`` ``READ_GRIDGEOMETRY2D`` parameter will be
   always overridden during a subsequent read.
 
 Coverage Processing Classes
@@ -1063,7 +1065,7 @@ Coverage Processing Classes
 
 Deprecated methods have been remove from coverage processing classes:
 
-* filteredSubsample(GridCoverage, int, int, float[], Interpolation, BorderExtender) has been removed
+* ``filteredSubsample(GridCoverage, int, int, float[], Interpolation, BorderExtender)`` has been removed
 
 Here is what that looks like in code:
 
@@ -1117,7 +1119,7 @@ Here is what that looks like in code:
 DefaultParameterDescriptor and Parameter
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Removed deprecated constructors from DefaultParameterDescriptor and Parameter classes.
+Removed deprecated constructors from ``DefaultParameterDescriptor`` and ``Parameter`` classes.
 
 * BEFORE::
 
@@ -1154,10 +1156,10 @@ FeatureCollction
 ^^^^^^^^^^^^^^^^
 
 In transitioning your code to Java 5 please be careful not use use the *for each* loop construct.
-We still need to call FeatureCollection.close( iterator).
+We still need to call ``FeatureCollection.close( iterator)``.
 
-Due to this restriction (of not using *for each* loop construct we have had to make FeatureCollection
-no longer Collection.
+Due to this restriction (of not using *for each* loop construct we have had to make ``FeatureCollection``
+no longer ``Collection``.
 
 * Example (GeoTools 2.5 code)::
 
@@ -1192,8 +1194,8 @@ no longer Collection.
 JTSFactory
 ^^^^^^^^^^
 
-We are cutting down on "anonymous" FactoryFinder use; creating JTSFactory to allow the
-entire GeoTools library to share a JTS GeometryFactory.
+We are cutting down on "anonymous" ``FactoryFinder`` use; creating ``JTSFactory`` to allow the
+entire GeoTools library to share a JTS ``GeometryFactory``.
 
 * BEFORE (GeoTools 2.4 code)::
 
@@ -1206,7 +1208,7 @@ entire GeoTools library to share a JTS GeometryFactory.
 ProgressListener
 ^^^^^^^^^^^^^^^^
 
-Transition to gt-opengis ProgressListener.
+Transition to ``gt-opengis`` ``ProgressListener``.
 
 * Before (GeoTools 2.2 Code)::
 
@@ -1218,9 +1220,9 @@ Transition to gt-opengis ProgressListener.
 
 To upgrade:
 
-1. Search: import org.geotools.util.ProgressListener
+1. Search: ``import org.geotools.util.ProgressListener``
 
-   Replace: import org.opengis.util.ProgressListener
+   Replace: ``import org.opengis.util.ProgressListener``
 
 2. Update::
 
@@ -1230,9 +1232,9 @@ SimpleFeature
 ^^^^^^^^^^^^^
 
 We have (finally) made the move to an improved feature model. Please take the opportunity
-to change your existing code to use *org.opengis.feature.simple.SimpleFeature*. The existing
+to change your existing code to use ``org.opengis.feature.simple.SimpleFeature``. The existing
 GeoTools Feature interface is still in use; but it has been updated in
-place to extend SimpleFeature.
+place to extend ``SimpleFeature``.
 
 * Before (GeoTools 2.4 Code)::
 
@@ -1280,15 +1282,15 @@ Here are some steps to start you off updating your code:
 
 1. Search Replace
 
-   * Search: **Feature** replace with **SimpleFeature**
-   * Search: **FeatureType** replace with **SimpleFeatureType**
+   * Search: ``Feature`` replace with ``SimpleFeature``
+   * Search: ``FeatureType`` replace with ``SimpleFeatureType``
 
 2. Fix the imports
 
    * Control-Shift-O in Eclipse IDE
-   * Add casts as required for getDefaultGeometry()
+   * Add casts as required for ``getDefaultGeometry()``
 
-3. FeatureType.create has been replaced with SimpleFeatureBuilder
+3. ``FeatureType.create`` has been replaced with ``SimpleFeatureBuilder``
 
    There is a static method to make the transition easier::
 
@@ -1301,7 +1303,7 @@ Here are some steps to start you off updating your code:
 AttributeDescriptor and AttributeType
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The concept of an AttributeType has been split into two now (allowing you to reuse common types).
+The concept of an ``AttributeType`` has been split into two now (allowing you to reuse common types).
 
 * BEFORE (GeoTools 2.4 Code)::
 
@@ -1332,8 +1334,8 @@ Name
 ^^^^
 
 In order to better support app-schema work we can no longer assume names are a simple String. The
-**Name** class has been introduced to make this easier and is available
-throughout the library: example FeatureSource.getName().
+``Name`` class has been introduced to make this easier and is available
+throughout the library: example ``FeatureSource.getName()``.
 
 * BEFORE  (GeoTools 2.4 Code)::
 
@@ -1362,7 +1364,7 @@ Transition to use of Java 5 Generics with DataStore API.
 .. tip
 
    We have removed the need to use Generics in GeoTools 2.7 allowing the use of
-   SimpleFeatureSource, SimpleFeatureCollection, SimpleFeatureStore etc.
+   ``SimpleFeatureSource``, ``SimpleFeatureCollection``, ``SimpleFeatureStore`` etc.
 
 * BEFORE  (GeoTools 2.4 Code)::
 
@@ -1416,7 +1418,7 @@ Transition to use of Java 5 Generics with DataStore API.
 DataAccess and DataStore
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-* The DataAcess super class has been introduced, leaving DataStore to *only* work with SimpleFeature
+* The ``DataAccess`` super class has been introduced, leaving DataStore to *only* work with ``SimpleFeature``
   capable implementations.::
 
     import org.opengis.feature.type.Name;
@@ -1439,7 +1441,7 @@ DataAccess and DataStore
     FeatureReader<SimpleFeatureType, SimpleFeature> reader = ds.getFeatureReader(new DefaultQuery(typeName), transaction);
     FeatureWriter<SimpleFeatureType, SimpleFeature> writer = ds.getFeatureWriter(typeName, transaction);
 
-* DataAccess: works both with SimpleFeature and normal Feature capable implementations::
+* ``DataAccess``: works both with ``SimpleFeature`` and normal ``Feature`` capable implementations::
 
     import org.opengis.feature.FeatureType;
     import org.opengis.feature.Feature;
@@ -1470,16 +1472,16 @@ GeoTools 2.4
    You are encouraged to review the change proposals for GeoTools 2.4.0 for background information
    on the following changes.
 
-The GeoTools 2.4.0 release is a major change to the GeoTools library due to the adoption of geoapi
-Filter model. This new filter model is immutable making it impossible to modify filters that
-have already been constructed; in trade it is threadsafe.
+The GeoTools 2.4.0 release is a major change to the GeoTools library due to the adoption of GeoAPI
+``Filter`` model. This new filter model is immutable making it impossible to modify filters that
+have already been constructed; in trade it is thread safe.
 
 The following is needed when upgrading to 2.4.
 
 ReferencingFactoryFinder
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-Rename FactoryFinder to ReferencingFactoryFinder
+Rename ``FactoryFinder`` to ``ReferencingFactoryFinder``
 
 * BEFORE (GeoTools 2.2 Code)::
 
@@ -1489,10 +1491,10 @@ Rename FactoryFinder to ReferencingFactoryFinder
 
     CRSFactory factory = ReferencingFactoryFinder.getCSFactory( null );
 
-FeatureStore addFeatures
-^^^^^^^^^^^^^^^^^^^^^^^^
+``FeatureStore`` ``addFeatures``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The use of FeatureReader has been removed from the FeatureStore API.
+The use of ``FeatureReader`` has been removed from the ``FeatureStore`` API.
 
 * Before (GeoTools 2.2 Code)::
 
@@ -1510,14 +1512,14 @@ The use of FeatureReader has been removed from the FeatureStore API.
 
 Note:
 
-* DataUtilities.collection( reader ) will currently load the contents into memory, if you have
+* ``DataUtilities.collection(reader)`` will currently load the contents into memory, if you have
   any volunteer time a "lazy" implementation would be helpful.
 
-FeatureSource getSupportedHints
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+``FeatureSource`` ``getSupportedHints``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-We added a getSupportedHints() method that can be used to check which Query hints are supported
-by a certain FeatureSource. If your FeatureSource does not intend to leverage query hints, just
+We added a ``getSupportedHints()`` method that can be used to check which ``Query`` hints are supported
+by a certain ``FeatureSource``. If your ``FeatureSource`` does not intend to leverage query hints, just
 return an empty set.
 
 * After (GeoTools 2.4 Code)::
@@ -1529,13 +1531,13 @@ return an empty set.
         return Collections.EMPTY_SET;
     }
 
-Query getHints
-^^^^^^^^^^^^^^
+``Query`` ``getHints``
+^^^^^^^^^^^^^^^^^^^^^^
 
-We have added the method Query.getHints() allow users to pass in hints to control the query
+We have added the method ``Query.getHints()`` allow users to pass in hints to control the query
 process.
 
-If you have a Query implementation other than DefaultQuery you'll need to add the getHints() method.
+If you have a ``Query`` implementation other than ``DefaultQuery`` you'll need to add the ``getHints()`` method.
 The default implementation, if you don't plan to leverage hints, can just return an
 empty Hints object.
 
@@ -1596,26 +1598,26 @@ Here are the steps to follow to update your own code:
 
 1. Substitute.
 
-   =================================== =================================================
-   Search                              Replace
-   =================================== =================================================
-   import org.geotools.filter.Filter;  import org.opengis.filter.Filter;
-   import org.geotools.filter.SortBy;  import org.opengis.filter.sort.SortBy;
-   Filter.NONE                         Filter.INCLUDE
-   Filter.ALL                          Filter.EXCLUDE
-   AbstractFilter.COMPARE              FilterType.COMPARE
-   Filter.COMPARE                      FilterType.COMPARE
-   Filter.GEOMETRY                     FilterType.GEOMETRY
-   Filter.LOGIC                        FilterType.LOGIC
-   =================================== =================================================
+   ======================================= =================================================
+   Search                                  Replace
+   ======================================= =================================================
+   ``import org.geotools.filter.Filter;``  ``import org.opengis.filter.Filter;``
+   ``import org.geotools.filter.SortBy;``  ``import org.opengis.filter.sort.SortBy;``
+   ``Filter.NONE``                         ``Filter.INCLUDE``
+   ``Filter.ALL``                          ``Filter.EXCLUDE``
+   ``AbstractFilter.COMPARE``              ``FilterType.COMPARE``
+   ``Filter.COMPARE``                      ``FilterType.COMPARE``
+   ``Filter.GEOMETRY``                     ``FilterType.GEOMETRY``
+   ``Filter.LOGIC``                        ``FilterType.LOGIC``
+   ======================================= =================================================
 
-2. FilterType is no longer supported directly.
+2. ``Filterype`` is no longer supported directly.
 
-   BEFORE:
+   BEFORE::
 
       int type = filter.getFilterType();
 
-   AFTER:
+   AFTER::
 
       int type = Filters.getFilterType( filter );
 
@@ -1629,7 +1631,7 @@ Here are the steps to follow to update your own code:
 
      filter = filterFactory.and( filter, other );
 
-4. We have provided an adaptor for your old filter visitors.
+4. We have provided an adapter for your old filter visitors.
 
    BEFORE::
 
@@ -1672,7 +1674,7 @@ Here are the steps to follow to update your own code:
 
      Filter filter = filterFactory.property(name);
 
-h4. After (GeoTools 2.4 Code)::
+After (GeoTools 2.4 Code)::
 
         public void testAfter() throws Exception {
             FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
@@ -1688,17 +1690,17 @@ h4. After (GeoTools 2.4 Code)::
 1. Substitute
 
 
-   =============================================== ===================================================
-   Search                                          Replace
-   =============================================== ===================================================
-   import org.geotools.filter.FilterFactory;       import org.opengis.filter.FilterFactory;
-   FilterFactoryFinder.createFilterFactory()       CommonFactoryFinder.getFilterFactory(null);
-   import org.geotools.filter.FilterFactoryFinder; import org.geotools.factory.CommonFactoryFinder
-   import org.geotools.filter.CompareFilter;       import org.geoapi.spatial.BinaryComparisonOperator
-   CompareFilter                                   BinaryComparisonOperator
-   =============================================== ===================================================
+   =================================================== =======================================================
+   Search                                              Replace
+   =================================================== =======================================================
+   ``import org.geotools.filter.FilterFactory;``       ``import org.opengis.filter.FilterFactory;``
+   ``FilterFactoryFinder.createFilterFactory()``       ``CommonFactoryFinder.getFilterFactory(null);``
+   ``import org.geotools.filter.FilterFactoryFinder;`` ``import org.geotools.factory.CommonFactoryFinder``
+   ``import org.geotools.filter.CompareFilter;``       ``import org.geoapi.spatial.BinaryComparisonOperator``
+   ``CompareFilter``                                   ``BinaryComparisonOperator``
+   =================================================== =======================================================
 
-2. Update code to use evaulate.
+2. Update code to use evaluate.
 
    BEFORE::
 
@@ -1708,7 +1710,7 @@ h4. After (GeoTools 2.4 Code)::
 
       if( filter.evaluate( feature ){
 
-3. Update code to use instanceof checks.
+3. Update code to use ``instanceof`` checks.
 
    BEFORE::
 
@@ -1721,17 +1723,17 @@ h4. After (GeoTools 2.4 Code)::
 
 Note regarding different Geometries
 
-* Geotools was formally limited to only JTS Geometry
-* GeoTools filter nows can take either JTS Geometry or ISO Geometry
+* GeoTools was formally limited to only JTS Geometry
+* GeoTools filter now can take either JTS Geometry or ISO Geometry
 
 * If you need to convert from one to the other::
 
      JTSUtils.jtsToGo1(p, CRS.decode("EPSG:4326"));
 
-Feature.getParent removed
-^^^^^^^^^^^^^^^^^^^^^^^^^
+``Feature.getParent`` removed
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The feature.getParent() method have been deprecated as a mistake and has now been removed.
+The ``feature.getParent()`` method have been deprecated as a mistake and has now been removed.
 
 * BEFORE (GeoTools 2.0 Code)::
 
@@ -1784,41 +1786,41 @@ Notes:
 * you will have to make API changes to pass the intended parent collection in
 
 This is a mistake with the previous feature model (for a feature can exist in more then one
-collection) and we apologise for the inconvenience.
+collection) and we apologize for the inconvenience.
 
 Split Classification Expressions
 
-The biggest user of the feature.getParent() mistake was the implementation of classification
+The biggest user of the ``feature.getParent()`` mistake was the implementation of classification
 functions. You will now need to split up these expressions into two parts.
 
 * BEFORE (GeoTools 2.3):
 
-  1. equal_interval( SPEED, 12 )
-  2. uses getParent() internally to produce classification on feature collection;
+  1. ``equal_interval( SPEED, 12 )``
+  2. uses ``getParent()`` internally to produce classification on feature collection;
   3. then checks which category each feature falls into
 
   Notes:
 
-  * please note the above code depends on getParent(), so it is not safe even for GeoTools 2.3 (as some features have a null parent).
+  * please note the above code depends on ``getParent()`` so it is not safe even for GeoTools 2.3 (as some features have a null parent).
 
 * AFTER (GeoTools 2.4):
 
   Apply the aggregation function to the feature collection:
 
-  1. equalInterval( SPEED, 12 )
+  1. ``equalInterval( SPEED, 12 )``
   2. produce classification on provided feature collection
   3. Construct a slot expression using the resulting literal::
 
         classify( SPEED, {0} )
 
-  4. uses literal classification from step one
+  4. use literal classification from step one
 
 GTRenderer
 ^^^^^^^^^^
 
-The GTRender interface was produced as a neutral ground for client code; traditional users of
-LiteRenderer and LiteRenderer2 are asked to move to the implementation of GTRenderer called
-StreamingRenderer.
+The ``GTRender`` interface was produced as a neutral ground for client code; traditional users of
+``LiteRenderer`` and ``LiteRenderer2`` are asked to move to the implementation of ``GTRenderer`` called
+``StreamingRenderer``.
 
 * BEFORE (GeoTools 2.1):
 
@@ -1847,7 +1849,7 @@ StreamingRenderer.
 
     draw.paint(g2d, outputArea, map.getLayerBounds() );
 
-  By letting your code depend only on the GTRenderer interface you can experiment with
+  By letting your code depend only on the ``GTRenderer`` interface you can experiment with
   alternative implementations to find the best fit.
 
 JTS
@@ -1912,19 +1914,19 @@ Swap to moved Coverage utility classes.
     import org.geotools.data.coverage.grid.*
     import org.geotools.image.imageio.*
 
-  Wrapping a GridCoverage into a feature in 2.3::
+  Wrapping a ``GridCoverage`` into a feature in 2.3::
 
     org.geotools.data.DataUtilities#wrapGc(GridCoverage gridCoverage)
     org.geotools.data.DataUtilities#wrapGcReader(
                 AbstractGridCoverage2DReader gridCoverageReader,
                 GeneralParameterValue[] params)
 
-  GridCoverageExchange Utility classes in 2.3::
+  ``GridCoverageExchange`` Utility classes in 2.3::
 
     org.geotools.data.coverage.grid.file.*
     org.geotools.data.coverage.grid.stream .*
 
-  org.geotools.coverage.io classes in 2.3::
+  ``org.geotools.coverage.io`` classes in 2.3::
 
     org.geotools.coverage.io.AbstractGridCoverageReader.java,
     org.geotools.coverage.io.AmbiguousMetadataException.java,
@@ -1938,31 +1940,31 @@ Swap to moved Coverage utility classes.
     import org.geotools.coverage.grid.io.*
     import  org.geotools.coverage.grid.io.imageio.*
 
-  Wrapping a GridCoverage into a feature in 2.4::
+  Wrapping a ``GridCoverage`` into a feature in 2.4::
 
     org.geotools.referencing.util.coverage.CoverageUtilities #wrapGc(GridCoverage gridCoverage)
     org.geotools.referencing.util.coverage.CoverageUtilities #wrapGcReader(
                 AbstractGridCoverage2DReader gridCoverageReader,
                 GeneralParameterValue[] params)
 
-  GridCoverageExchange Utility classes in 2.4.
+  ``GridCoverageExchange`` Utility classes in 2.4.
 
   The classes have been dismissed since apparently nobody was using. If needed
   we can reintroduce them as deprecated.
 
-  org.geotools.coverage.io classes in 2.4.
+  ``org.geotools.coverage.io`` classes in 2.4.
 
-  These classes have been moved to spike/exoreferenced waiting for Martin to review and merge into
-  org.geotools.coverage.grid.io package
+  These classes have been moved to ``spike/exoreferenced`` waiting for Martin to review and merge into
+  ``org.geotools.coverage.grid.io`` package
 
-spatialschema
-^^^^^^^^^^^^^
+``spatialschema``
+^^^^^^^^^^^^^^^^^
 
-Renamed spatialschema to geometry.
+Renamed ``spatialschema`` to ``geometry``.
 
-* Do you know what **spatialschema** was? We did not find it clear either.
+* Do you know what ``spatialschema`` was? We did not find it clear either.
 
-  Renamed to **geometry**?
+  Renamed to ``geometry``?
 
 * BEFORE::
 
@@ -1983,7 +1985,7 @@ Renamed spatialschema to geometry.
 Repackage ArcSDE
 ^^^^^^^^^^^^^^^^
 
-Repackage arcsde datastore.
+Repackage ArcSDE datastore.
 
 * BEFORE::
 
@@ -1993,11 +1995,12 @@ Repackage arcsde datastore.
 
     import org.geotools.arcsde.ArcSDEDataStoreFactory;
 
-WorldImage
-^^^^^^^^^^
+World Image
+^^^^^^^^^^^
 
-Sets of WorldImage extensions. Changed from a single String to a Set<String> .. because
-one wld is not enough?
+Sets of World Image extensions. Changed from a single String to a
+``Set<String>`` .. because
+one ``wld`` is not enough?
 
 * BEFORE::
 

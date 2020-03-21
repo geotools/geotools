@@ -41,6 +41,9 @@ public interface PositionFactory {
      */
     Precision getPrecision();
 
+    /** Creates a direct position with ordinates set to zero */
+    DirectPosition createDirectPosition() throws MismatchedDimensionException;
+
     /**
      * Creates a direct position at the specified location specified by coordinates.
      *

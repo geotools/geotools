@@ -247,6 +247,40 @@ public class WMTSCapabilitiesTest extends TestCase {
         }
     }
 
+    // This particular capabilities response does not contain a ServiceProvider section
+    // Make sure things still work
+    public void testParser4() throws Exception {
+        WMTSCapabilities capabilities = createCapabilities("geodata.nationaalgeoregister.nl.xml");
+        try {
+            assertEquals("1.0.0", capabilities.getVersion());
+
+            WMTSService service = (WMTSService) capabilities.getService();
+            assertEquals("OGC WMTS", service.getName());
+            assertEquals("Web Map Tile Service", service.getTitle());
+
+            WMTSRequest request = capabilities.getRequest();
+
+            OperationType getTile = request.getGetTile();
+            assertNotNull(getTile);
+
+            assertEquals(44, capabilities.getLayerList().size());
+
+            List<WMTSLayer> layers = capabilities.getLayerList();
+            WMTSLayer l0 = layers.get(0);
+
+            assertEquals("brtachtergrondkaart", l0.getName());
+            assertTrue(l0.getSrs().contains("urn:ogc:def:crs:EPSG::28992")); // case
+
+        } catch (Exception e) {
+            // a standard catch block shared with the other tests
+            if ((e.getMessage() != null) && e.getMessage().indexOf("timed out") > 0) {
+                // System.err.println("Unable to test - timed out: " + e);
+            } else {
+                throw (e);
+            }
+        }
+    }
+
     protected WebMapTileServer getCustomWMS(URL featureURL)
             throws SAXException, URISyntaxException, IOException {
         return new WebMapTileServer(featureURL);

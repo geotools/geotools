@@ -62,8 +62,6 @@ public abstract class SingleProcessFactory implements ProcessFactory {
     /**
      * Checks the process name and makes sure it's consistent with the only process name this
      * factory knows about
-     *
-     * @param name
      */
     void checkName(Name name) {
         if (name == null) throw new NullPointerException("Process name cannot be null");

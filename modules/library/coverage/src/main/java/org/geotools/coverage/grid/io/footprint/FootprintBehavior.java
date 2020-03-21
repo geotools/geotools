@@ -36,7 +36,13 @@ import org.geotools.util.factory.Hints;
  * @author Simone Giannecchini, GeoSolutions SAS
  */
 public enum FootprintBehavior {
-    None(false),
+    None(false) {
+        @Override
+        public RenderedImage postProcessBlankResponse(
+                RenderedImage finalImage, RenderingHints hints) {
+            return finalImage;
+        }
+    },
     Cut(true),
     Transparent(true) {
         @Override
@@ -122,10 +128,7 @@ public enum FootprintBehavior {
             return result;
         }
 
-        /**
-         * @param hints
-         * @return
-         */
+        /** */
         private RenderingHints prepareHints(RenderingHints hints) {
             if (hints == null) {
                 hints = new Hints();
@@ -207,24 +210,13 @@ public enum FootprintBehavior {
         return valuesS;
     }
 
-    /**
-     * Applies post processing to the result mosaic, eventually making certain areas transparent
-     *
-     * @param mosaic
-     * @param overallROI
-     * @return
-     */
+    /** Applies post processing to the result mosaic, eventually making certain areas transparent */
     public RenderedImage postProcessMosaic(
             RenderedImage mosaic, ROI overallROI, RenderingHints hints) {
         return mosaic;
     }
 
-    /**
-     * Post processes a blank image response, eventually making it transparent
-     *
-     * @param finalImage
-     * @return
-     */
+    /** Post processes a blank image response, eventually making it transparent */
     public RenderedImage postProcessBlankResponse(RenderedImage finalImage, RenderingHints hints) {
         // prepare a ROI made of only zeroes
         ImageLayout layout =

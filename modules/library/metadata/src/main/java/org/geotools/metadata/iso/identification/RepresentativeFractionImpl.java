@@ -70,12 +70,6 @@ public class RepresentativeFractionImpl extends Number implements Representative
         }
     }
 
-    /** @deprecated This is equivalent to {@link #doubleValue}. */
-    @Deprecated
-    public double toScale() {
-        return doubleValue();
-    }
-
     /**
      * Returns the scale in a form usable for computation.
      *

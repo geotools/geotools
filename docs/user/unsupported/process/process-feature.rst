@@ -1,7 +1,7 @@
 Process Feature Plugin
 ----------------------
 
-The gt-process-feature plugin gathers up a number of high quality processes for working with
+The ``gt-process-feature`` plugin gathers up a number of high quality processes for working with
 vector information.
 
 **Maven**::
@@ -42,7 +42,7 @@ This is a very flexible process which can be used to:
      id: Long              summary=description            summary: String
      description: String
  
-* Process geometry - using functions like "the_geom=simplify( the_geom, 2.0 )" or "the_geom=centriod( the_geom )"::
+* Process geometry - using functions like ``the_geom=simplify( the_geom, 2.0 )`` or ``the_geom=centriod( the_geom )``::
 
      INPUT Schema          DEFINITION                     OUTPUT Schema
      the_geom: Polygon     the_geom=centriod(the_geom)    the_geom: Point
@@ -50,7 +50,7 @@ This is a very flexible process which can be used to:
      id: Long              id                             id: Long
      description: String   description                    description: String
  
-* Generate additional attributes using the form: area=area( the_geom )::
+* Generate additional attributes using the form: ``area=area( the_geom )``::
 
      INPUT Schema          DEFINITION                     OUTPUT Schema
      the_geom: Polygon     the_geom=centriod(the_geom)    the_geom: Point

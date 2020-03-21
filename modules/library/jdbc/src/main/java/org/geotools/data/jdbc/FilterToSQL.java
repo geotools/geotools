@@ -37,21 +37,23 @@ import java.util.logging.Logger;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
 import javax.measure.quantity.Length;
-import org.geotools.data.jdbc.fidmapper.FIDMapper;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.LikeFilterImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.filter.function.InFunction;
+import org.geotools.filter.spatial.BBOXImpl;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JoinPropertyName;
 import org.geotools.jdbc.PrimaryKey;
+import org.geotools.jdbc.PrimaryKeyColumn;
 import org.geotools.referencing.CRS;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.Converters;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -199,13 +201,6 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     /** where to write the constructed string from visiting the filters. */
     protected Writer out;
 
-    /**
-     * the fid mapper used to encode the fid filters
-     *
-     * @deprecated use {@link #primaryKey}
-     */
-    protected FIDMapper mapper;
-
     /** The primary key corresponding to the table the filter is being encoded against. */
     protected PrimaryKey primaryKey;
 
@@ -303,9 +298,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * <p>StringWriter out = new StringWriter(); new FilterToSQL(out).encode(filter);
      * out.getBuffer().toString();
      *
-     * @param filter
      * @return a string representing the filter encoded to SQL.
-     * @throws FilterToSQLException
      */
     public String encodeToString(Filter filter) throws FilterToSQLException {
         StringWriter out = new StringWriter();
@@ -333,9 +326,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * <p>StringWriter out = new StringWriter(); new FilterToSQL(out).encode(filter);
      * out.getBuffer().toString();
      *
-     * @param filter
      * @return a string representing the filter encoded to SQL.
-     * @throws FilterToSQLException
      */
     public String encodeToString(Expression expression) throws FilterToSQLException {
         StringWriter out = new StringWriter();
@@ -348,36 +339,14 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * Sets the featuretype the encoder is encoding sql for.
      *
      * <p>This is used for context for attribute expressions when encoding to sql.
-     *
-     * @param featureType
      */
     public void setFeatureType(SimpleFeatureType featureType) {
         this.featureType = featureType;
     }
 
-    /**
-     * Returns the feature type set in this encoder, if any
-     *
-     * @return
-     */
+    /** Returns the feature type set in this encoder, if any */
     public SimpleFeatureType getFeatureType() {
         return this.featureType;
-    }
-
-    /**
-     * Sets the FIDMapper that will be used in subsequente visit calls. There must be a FIDMapper in
-     * order to invoke the FIDFilter encoder.
-     *
-     * @param mapper
-     * @deprecated use {@link #setPrimaryKey(PrimaryKey)}
-     */
-    public void setFIDMapper(FIDMapper mapper) {
-        this.mapper = mapper;
-    }
-
-    /** @deprecated use {@link #getPrimaryKey()} */
-    public FIDMapper getFIDMapper() {
-        return this.mapper;
     }
 
     public PrimaryKey getPrimaryKey() {
@@ -544,8 +513,8 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
 
         // JD: hack for date values, we append some additional padding to handle
         // the matching of time/timezone/etc...
-        AttributeDescriptor ad = (AttributeDescriptor) att.evaluate(featureType);
-        if (ad != null && Date.class.isAssignableFrom(ad.getType().getBinding())) {
+        Class attributeType = getExpressionType(att);
+        if (Date.class.isAssignableFrom(attributeType)) {
             literal += multi;
         }
 
@@ -902,13 +871,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         }
     }
 
-    /**
-     * Writes out an expression, wrapping it in parenthesis if it's a binary one
-     *
-     * @param exp
-     * @param context
-     * @throws IOException
-     */
+    /** Writes out an expression, wrapping it in parenthesis if it's a binary one */
     protected void writeBinaryExpressionMember(Expression exp, Class context) throws IOException {
         if (context != null && isBinaryExpression(exp)) {
             writeBinaryExpression(exp, context);
@@ -924,7 +887,6 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * in geotools are free to use a string where a number is needed due to the on the fly
      * conversion, here we are concerned only with types that are a reliable reference).
      *
-     * @param expression
      * @return The expression return type, or null if cannot be computed
      */
     public Class getExpressionType(Expression expression) {
@@ -960,6 +922,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         visitInFunction(in, false, negated, null);
     }
 
+    @SuppressWarnings("PMD.CloseResource") // no need to close, it's a field
     protected void writeBinaryExpression(Expression e, Class context) throws IOException {
         Writer tmp = out;
         try {
@@ -968,7 +931,6 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             e.accept(this, null);
             out.write(")");
             tmp.write(cast(out.toString(), context));
-
         } finally {
             out = tmp;
         }
@@ -1027,39 +989,33 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * @throws RuntimeException If there's a problem writing output
      */
     public Object visit(Id filter, Object extraData) {
-        if (mapper == null) {
-            throw new RuntimeException("Must set a fid mapper before trying to encode FIDFilters");
+        if (primaryKey == null) {
+            throw new RuntimeException("Must set primary key before trying to encode FIDFilters");
         }
 
         Set ids = filter.getIdentifiers();
 
         LOGGER.finer("Exporting FID=" + ids);
-
-        // prepare column name array
-        String[] colNames = new String[mapper.getColumnCount()];
-
-        for (int i = 0; i < colNames.length; i++) {
-            colNames[i] = mapper.getColumnName(i);
-        }
-
         try {
             if (ids.size() > 1) {
                 out.write("(");
             }
+            List<PrimaryKeyColumn> columns = primaryKey.getColumns();
             for (Iterator i = ids.iterator(); i.hasNext(); ) {
                 Identifier id = (Identifier) i.next();
-                Object[] attValues = mapper.getPKAttributes(id.toString());
+                List<Object> attValues = JDBCDataStore.decodeFID(primaryKey, id.toString(), false);
 
                 out.write("(");
 
-                for (int j = 0; j < attValues.length; j++) {
-                    out.write(escapeName(colNames[j]));
+                for (int j = 0; j < attValues.size(); j++) {
+                    out.write(escapeName(columns.get(j).getName()));
                     out.write(" = '");
-                    out.write(attValues[j].toString()); // DJB: changed this to attValues[j] from
+                    out.write(
+                            attValues.get(j).toString()); // DJB: changed this to attValues[j] from
                     // attValues[i].
                     out.write("'");
 
-                    if (j < (attValues.length - 1)) {
+                    if (j < (attValues.size() - 1)) {
                         out.write(" AND ");
                     }
                 }
@@ -1450,10 +1406,6 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     /**
      * Gives the opportunity to subclasses to force the property to the desired type. By default it
      * simply writes out the property as-is (the property must be already escaped).
-     *
-     * @param encodedProperty
-     * @param target
-     * @throws IOException
      */
     protected String cast(String encodedProperty, Class target) throws IOException {
         return encodedProperty;
@@ -1482,6 +1434,9 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             if (literal instanceof Geometry) {
                 // call this method for backwards compatibility with subclasses
                 visitLiteralGeometry(filterFactory.literal(literal));
+            } else if (literal instanceof Envelope) {
+                visitLiteralGeometry(
+                        filterFactory.literal(BBOXImpl.boundingPolygon((Envelope) literal)));
             } else {
                 // write out the literal allowing subclasses to override this
                 // behaviour (for writing out dates and the like using the BDMS custom functions)
@@ -1550,9 +1505,6 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * Writes out a non null, non geometry literal. The base class properly handles null, numeric
      * and booleans (true|false), and turns everything else into a string. Subclasses are expected
      * to override this shall they need a different treatment (e.g. for dates)
-     *
-     * @param literal
-     * @throws IOException
      */
     protected void writeLiteral(Object literal) throws IOException {
         if (literal == null) {
@@ -1599,8 +1551,6 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     /**
      * Subclasses must implement this method in order to encode geometry filters according to the
      * specific database implementation
-     *
-     * @param expression
      */
     protected void visitLiteralGeometry(Literal expression) throws IOException {
         throw new RuntimeException(
@@ -1717,12 +1667,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         return extraData;
     }
 
-    /**
-     * Encodes a "in" function (as recognized by {@link InFunction#isInFunction(Expression)}
-     *
-     * @param function
-     * @param extraData
-     */
+    /** Encodes a "in" function (as recognized by {@link InFunction#isInFunction(Expression)} */
     protected void visitInFunction(
             Function function, boolean encodeAsExpression, boolean negate, Object extraData) {
         try {
@@ -1776,8 +1721,6 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     /**
      * Returns the n-th parameter of a function, throwing an exception if the parameter is not there
      * and has been marked as mandatory
-     *
-     * @return
      */
     protected Expression getParameter(Function function, int idx, boolean mandatory) {
         final List<Expression> params = function.getParameters();
@@ -1796,12 +1739,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         return params.get(idx);
     }
 
-    /**
-     * Maps the function to the native database function name
-     *
-     * @param function
-     * @return
-     */
+    /** Maps the function to the native database function name */
     protected String getFunctionName(Function function) {
         return function.getName();
     }
@@ -1883,6 +1821,8 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      *
      * <p>Typically this is the double-quote character, ", but may not be for all databases.
      *
+     * <p>If a name contains the escape string itself, the escape string is duplicated.
+     *
      * <p>For example, consider the following query:
      *
      * <p>SELECT Geom FROM Spear.ArchSites May be interpreted by the database as: SELECT GEOM FROM
@@ -1896,12 +1836,25 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     }
 
     /**
-     * Surrounds a name with the SQL escape character.
+     * Surrounds a name with the SQL escape string.
      *
-     * @param name
+     * <p>If the name contains the SQL escape string, the SQL escape string is duplicated.
      */
     public String escapeName(String name) {
-        return sqlNameEscape + name + sqlNameEscape;
+        if (sqlNameEscape.isEmpty()) return name;
+        StringBuilder sb = new StringBuilder();
+        sb.append(sqlNameEscape);
+        int offset = 0;
+        int escapeOffset;
+        while ((escapeOffset = name.indexOf(sqlNameEscape, offset)) != -1) {
+            sb.append(name.substring(offset, escapeOffset));
+            sb.append(sqlNameEscape);
+            sb.append(sqlNameEscape);
+            offset = escapeOffset + sqlNameEscape.length();
+        }
+        sb.append(name.substring(offset));
+        sb.append(sqlNameEscape);
+        return sb.toString();
     }
 
     /**
@@ -1939,8 +1892,6 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     /**
      * Converts the distance of the operator in meters, or returns the current value if there is no
      * units distance
-     *
-     * @param operator
      */
     protected double getDistanceInMeters(DistanceBufferOperator operator) {
         double distance = operator.getDistance();
@@ -1958,8 +1909,6 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * Rough evaluation of distance in the units of the current SRID, assuming that the SRID maps to
      * a known EPSG code. Will use a rather imprecise transformation for distances over degrees, but
      * better than nothing.
-     *
-     * @param operator
      */
     protected double getDistanceInNativeUnits(DistanceBufferOperator operator) {
         if (currentSRID == null) {
@@ -1999,12 +1948,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         }
     }
 
-    /**
-     * Returns the center of the reference geometry of the distance buffer operator, in case
-     *
-     * @param operator
-     * @return
-     */
+    /** Returns the center of the reference geometry of the distance buffer operator, in case */
     protected Coordinate getReferenceGeometryCentroid(DistanceBufferOperator operator) {
         Geometry geom = operator.getExpression1().evaluate(null, Geometry.class);
         if (geom == null) {

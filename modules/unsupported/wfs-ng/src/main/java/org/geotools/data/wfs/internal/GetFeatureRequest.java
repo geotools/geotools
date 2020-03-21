@@ -61,17 +61,6 @@ public class GetFeatureRequest extends WFSRequest {
         resultType = ResultType.RESULTS;
     }
 
-    //
-    // public GetFeatureRequest(GetFeatureRequest query) {
-    // setFilter(query.getFilter());
-    // setMaxFeatures(query.getMaxFeatures());
-    // setOutputFormat(query.getOutputFormat());
-    // setPropertyNames(query.getPropertyNames());
-    // setResultType(query.getResultType());
-    // setSortBy(query.getSortBy());
-    // setSrsName(query.getSrsName());
-    // }
-
     public String[] getPropertyNames() {
         return propertyNames;
     }

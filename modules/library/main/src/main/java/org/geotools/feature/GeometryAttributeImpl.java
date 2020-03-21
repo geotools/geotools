@@ -63,7 +63,6 @@ public class GeometryAttributeImpl extends AttributeImpl implements GeometryAttr
         return (GeometryDescriptor) super.getDescriptor();
     }
 
-    /** @deprecated */
     public Geometry getValue() {
         return (Geometry) super.getValue();
     }
@@ -72,7 +71,6 @@ public class GeometryAttributeImpl extends AttributeImpl implements GeometryAttr
         super.setValue((Geometry) newValue);
     }
 
-    /** @deprecated */
     public void setValue(Geometry geometry) {
         super.setValue(geometry);
     }
@@ -85,8 +83,6 @@ public class GeometryAttributeImpl extends AttributeImpl implements GeometryAttr
     /**
      * Returns the non null envelope of this attribute. If the attribute's geometry is <code>null
      * </code> the returned Envelope <code>isNull()</code> is true.
-     *
-     * @return
      */
     public synchronized BoundingBox getBounds() {
         if (bounds == null) {

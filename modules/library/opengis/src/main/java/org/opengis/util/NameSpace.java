@@ -12,7 +12,6 @@ package org.opengis.util;
 import static org.opengis.annotation.Obligation.*;
 import static org.opengis.annotation.Specification.*;
 
-import java.util.Set;
 import org.opengis.annotation.UML;
 
 /**
@@ -46,34 +45,4 @@ public interface NameSpace {
      */
     @UML(identifier = "name", obligation = MANDATORY, specification = ISO_19103)
     GenericName name();
-
-    /**
-     * Returns the set of {@linkplain GenericName generic names} registered with this namespace.
-     * Duplicate names are forbidden. The names may be either:
-     *
-     * <p>
-     *
-     * <ul>
-     *   <li>A {@link LocalName}.
-     *   <li>A {@link ScopedName} with the following constraints:
-     *       <ul>
-     *         <li>All elements of the {@linkplain ScopedName#getParsedNames parsed names list}
-     *             except for the {@linkplain ScopedName#tail tail} must refer to a {@code
-     *             NameSpace}.
-     *         <li>Each element of the {@linkplain ScopedName#getParsedNames parsed names list}
-     *             except for the {@linkplain ScopedName#head head} must be defined in the {@code
-     *             NameSpace} referred to by the previous element.
-     *       </ul>
-     * </ul>
-     *
-     * @return All generic names registered with this namespace.
-     * @todo This method will put a significant burden on implementations (they will need to manage
-     *     a list of names, probably through weak references, etc.). Is the ISO 19103 association
-     *     really naviguable that way?
-     * @deprecated Not implementable in a simple naming system. We may create a {@code Register}
-     *     subclass (or something similar) later for this kind of job.
-     */
-    @Deprecated
-    @UML(identifier = "names", obligation = MANDATORY, specification = ISO_19103)
-    Set<GenericName> getNames();
 }

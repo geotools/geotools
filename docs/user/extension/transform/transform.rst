@@ -4,11 +4,11 @@ Transform plugin
 The *gt-transform* module allows to wrap ``SimpleFeatureSource`` or ``SimpleFeatureStore`` objects and transform their features and feature types. The transformation abilities include:
 
   * renaming existing attributes
-  * convert an attribute type to a different type (via Converters api)
+  * convert an attribute type to a different type (via Converters API)
   * create a new attribute as an Expression of existing attributes (the module will try to figure out the target type of the new attribute if none is provided)
   * remove attributes
 
-The transformed feature source will make sure all ``Filter`` and ``Query`` are translated back to the original feature type when accessing data, and will apply the transformations on the fly when returning data. If the original source was writeable, the transformed version will still work as writeable, with back transformations of renamed/retyped attributes.
+The transformed feature source will make sure all ``Filter`` and ``Query`` are translated back to the original feature type when accessing data, and will apply the transformations on the fly when returning data. If the original source was writable, the transformed version will still work as writable, with back transformations of renamed/retyped attributes.
 
 **Maven**::
    

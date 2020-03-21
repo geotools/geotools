@@ -16,6 +16,7 @@
  */
 package org.geotools.data.util;
 
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
@@ -24,6 +25,7 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Converter factory performing converstions among geometric types.
@@ -83,7 +85,12 @@ public class GeometryConverterFactory implements ConverterFactory {
                 return new Converter() {
                     public Object convert(Object source, Class target) throws Exception {
                         Geometry geometry = (Geometry) source;
-                        return geometry.getEnvelopeInternal();
+                        Envelope envelope = geometry.getEnvelopeInternal();
+                        if (geometry.getUserData() instanceof CoordinateReferenceSystem) {
+                            return new ReferencedEnvelope(
+                                    envelope, (CoordinateReferenceSystem) geometry.getUserData());
+                        }
+                        return envelope;
                     }
                 };
             }

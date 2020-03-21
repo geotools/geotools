@@ -1,24 +1,24 @@
 Map data and display classes
 ----------------------------
 
-The gt-render module defines a new data structure to represent the contents of a map. MapContent
+The ``gt-render`` module defines a new data structure to represent the contents of a map. ``MapContent``
 defines a map as a series of layers (which are drawn in order). This is not part of the formal
-gt-opengis module because it is not based on a standard.
+``gt-opengis`` module because it is not based on a standard.
 
 MapContent
 ^^^^^^^^^^
 
-MapContent is used to capture the contents of a map for rendering.
+``MapContent`` is used to capture the contents of a map for rendering.
 
 .. image:: /images/map_content.PNG
 
 These ideas are broken down into the following three classes:
 
-* **MapContent**
+* ``MapContent``
   
   The contents of a map to be drawn.
 
-* **MapViewport**
+* ``MapViewport``
   
   Represents the area of the map to drawn. The viewport stores:
  
@@ -26,14 +26,14 @@ These ideas are broken down into the following three classes:
   * the screen, image or device bounds to draw into;
   * the coordinate transforms used to convert between world and screen positions.
 
-  In practice, you provide the world and screen bounds to a MapViewport object and
+  In practice, you provide the world and screen bounds to a ``MapViewport`` object and
   it calculates the coordinate transforms for you (see :ref:`aspect-ratio` for more details).
 
   Potentially, a viewport could also work with parameters other than horizontal spatial extent when
-  defining the map data to be drawn such as height or time. The MapViewport class does not presently
+  defining the map data to be drawn such as height or time. The ``MapViewport`` class does not presently
   support such usage but you could derive a sub-class for this purpose.
   
-* **Layer** - represents a layer of content to be drawn; layers are held in a list and are drawn in
+* ``Layer`` - represents a layer of content to be drawn; layers are held in a list and are drawn in
   order.
 
 Examples:
@@ -74,12 +74,12 @@ Aspect-ratio of map and screen bounds
 '''''''''''''''''''''''''''''''''''''
 
 Very often, the aspect ratio (ratio of width to height) of the world and screen bounds will differ.
-By default, MapViewport does not make any correction for this (this behaviour accords with the OGC
-WMS specification which states that a map server should honour the bounds provided by the user
+By default, ``MapViewport`` does not make any correction for this (this behavior accords with the OGC
+WMS specification which states that a map server should honor the bounds provided by the user
 regardless of any distortion which results).
 
-In many cases, it is preferable to have MapViewport automatically correct for differing aspect
-ratios, thereby avoiding distortion in the map display. You can request this behaviour as follows::
+In many cases, it is preferable to have ``MapViewport`` automatically correct for differing aspect
+ratios, thereby avoiding distortion in the map display. You can request this behavior as follows::
 
     MapViewport vp = myMapContent.getViewport();
     vp.setMatchingAspectRatio( true );
@@ -92,27 +92,27 @@ user.
 Layer
 ^^^^^
 
-We have different subclasses of of Layer each specifically made for working with different kinds
+We have different subclasses of of ``Layer`` each specifically made for working with different kinds
 of content.
 
 .. image:: /images/layer.PNG
 
-The important information each Layer implementation must provided is:
+The important information each ``Layer`` implementation must provided is:
 
-* Layer.getTitle()
-* Layer.setTitle( String )
+* ``Layer.getTitle()``
+* ``Layer.setTitle( String )``
   
   Used in a legend to display to the user
-* Layer.isVisible()
-* Layer.setVisible( boolean )
-* Layer.getuserData()
+* ``Layer.isVisible()``
+* ``Layer.setVisible( boolean )``
+* ``Layer.getuserData()``
   
   A general purpose map used by applications to hold information. This
-  approach was preferred as an alternative to loading up Layer with additional methods to
+  approach was preferred as an alternative to loading up ``Layer`` with additional methods to
   handle selection, error feedback and so forth.
-* Layer.getBounds() - the extent of the data being rendered by the Layer
-* Layer.addMapLayerListener()
-* Layer.removeMapLayerListener()
+* ``Layer.getBounds()`` - the extent of the data being rendered by the ``Layer``
+* ``Layer.addMapLayerListener()``
+* ``Layer.removeMapLayerListener()``
   
   Used to notify the renderer of any changes when used in an interactive setting.
 
@@ -122,49 +122,49 @@ to a map:
 FeatureLayer
 ''''''''''''
 
-Feature layer is set up to render information from a FeatureSource.
+``FeatureLayer`` is set up to render information from a ``FeatureSource``.
   
 .. image:: /images/feature_layer.PNG
  
-You can use the various method of the DataUtilities class to convert your information into
-a FeatureSource if it happens to be in another format. This is what the constructor that
-takes a FeatureCollection does internally.
+You can use the various method of the ``DataUtilities`` class to convert your information into
+a ``FeatureSource`` if it happens to be in another format. This is what the constructor that
+takes a ``FeatureCollection`` does internally.
 
 GridCoverageLayer
 '''''''''''''''''
 
-Used to render a GridCoverage.
+Used to render a ``GridCoverage``.
 
 .. image:: /images/gridcoverage_layer.PNG
 
-Note that direct use of a GridCoverage in this fashion is generally not as efficient 
-as using GridReaderLayer below.
+Note that direct use of a ``GridCoverage`` in this fashion is generally not as efficient 
+as using ``GridReaderLayer`` below.
 
 GridReaderLayer
 '''''''''''''''
 
-Used to render raster information on the fly directly from a GridCoverageReader.
+Used to render raster information on the fly directly from a ``GridCoverageReader``.
 
 .. image:: /images/gridreader_layer.PNG
   
-This is an efficient solution (much like FeatureSource) in that for many cases the correct visual
+This is an efficient solution (much like ``FeatureSource``) in that for many cases the correct visual
 can be determined without reading all of the raster into memory:
 
 * When zoomed in the amount of the file read can be limited when working with common formats
-  such as geotiff. Other formats such as JPEG require that the entire image be loaded each time.
-* When zoomed out information from a raster overlay can be used (if avaialble) to avoid reading the
+  such as GeoTiff. Other formats such as JPEG require that the entire image be loaded each time.
+* When zoomed out information from a raster overlay can be used (if available) to avoid reading the
   entire file.
 
-The performance of GridReaderLayer is dependent on how you have tuned your Java Advanced Imaging
-"TileCache" and on the amount of work you have put into preparing your data for display.
+The performance of ``GridReaderLayer`` is dependent on how you have tuned your Java Advanced Imaging
+``TileCache`` and on the amount of work you have put into preparing your data for display.
 
-This class has been extended by gt-wms for the rendering of WMS information.
+This class has been extended by ``gt-wms`` for the rendering of WMS information.
 
 DirectLayer
 '''''''''''
 
-*Experimental*: DirectLayer is used fill in your own custom renderer (primarily intended for
-drawing scalebars, north arrows and grids to decorate the map).
+*Experimental*: ``DirectLayer`` is used fill in your own custom renderer (primarily intended for
+drawing scale bars, north arrows and grids to decorate the map).
   
 .. image:: /images/direct_layer.PNG
   
@@ -179,7 +179,7 @@ An earlier draft of these ideas is based on initial OGC discussion papers:
 * Open Web Service Context (OWS Context)
 
 The GeoTools community actively looking to collaborate with other projects (such as OpenJUMP,
-uDig and deegree) in order to collaborate on these ideas. If open source collaboration fails
+uDig and Deegree) in order to collaborate on these ideas. If open source collaboration fails
 we will look to traditional collaboration with a standards body in the form of the
 OGC working group on "Open Web Context" documents.
    
@@ -188,7 +188,7 @@ References:
 * http://www.opengeospatial.org/standards/wmc
 * http://www.opengeospatial.org/projects/groups/owscontextswg
 
-These initial concepts are preserved with the following extensions to MapContent.
+These initial concepts are preserved with the following extensions to ``MapContent``.
 
 .. image:: /images/map_context.PNG
 
@@ -206,7 +206,7 @@ kind of content is in use).
   etc...).
   
   In the event client code is expecting a MapLayer; this wrapper is recreated as needed and
-  returned from getLayer( int ) method.
+  returned from ``getLayer(int)`` method.
   
   In a similar fashion the various methods for managing the area of interest delegate to
   MapViewport.

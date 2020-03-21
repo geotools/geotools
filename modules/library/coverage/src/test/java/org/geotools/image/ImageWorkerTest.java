@@ -38,7 +38,12 @@ import it.geosolutions.jaiext.range.NoDataContainer;
 import it.geosolutions.jaiext.range.Range;
 import it.geosolutions.jaiext.range.RangeFactory;
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.Transparency;
 import java.awt.color.ColorSpace;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
@@ -49,6 +54,7 @@ import java.awt.image.ComponentColorModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.DirectColorModel;
 import java.awt.image.IndexColorModel;
+import java.awt.image.PixelInterleavedSampleModel;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
@@ -75,11 +81,11 @@ import javax.media.jai.ROI;
 import javax.media.jai.ROIShape;
 import javax.media.jai.RasterFactory;
 import javax.media.jai.RenderedOp;
+import javax.media.jai.TiledImage;
 import javax.media.jai.Warp;
 import javax.media.jai.WarpAffine;
 import javax.media.jai.operator.ConstantDescriptor;
 import javax.media.jai.operator.MosaicDescriptor;
-import org.apache.commons.io.IOUtils;
 import org.geotools.TestData;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
@@ -140,19 +146,15 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
             smallWorld,
             gray,
             grayAlpha,
-            imageWithNodata;
+            imageWithNodata,
+            imageWithNodata2;
 
     /** {@code true} if the image should be visualized. */
     private static final boolean SHOW = TestData.isInteractiveTest();
 
     private static BufferedImage worldDEMImage = null;
 
-    /**
-     * Creates a simple 128x128 {@link RenderedImage} for testing purposes.
-     *
-     * @param maximum
-     * @return
-     */
+    /** Creates a simple 128x128 {@link RenderedImage} for testing purposes. */
     private static RenderedImage getSynthetic(final double maximum) {
         final int width = 128;
         final int height = 128;
@@ -181,7 +183,6 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
      *
      * @param direct <code>true</code> when we request a {@link DirectColorModel}, <code>false
      *     </code> otherwise.
-     * @return
      */
     private static BufferedImage getSyntheticRGB(final boolean direct) {
         final int width = 128;
@@ -210,7 +211,6 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
      *
      * @param direct <code>true</code> when we request a {@link DirectColorModel}, <code>false
      *     </code> otherwise.
-     * @return
      */
     private static BufferedImage getSyntheticRGB(Color color, int sideSize) {
         final int width = sideSize;
@@ -237,7 +237,6 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
      *
      * @param direct <code>true</code> when we request a {@link DirectColorModel}, <code>false
      *     </code> otherwise.
-     * @return
      */
     private static BufferedImage getSyntheticSolidGray(byte gray, int sideSize) {
         final int width = sideSize;
@@ -252,11 +251,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         return image;
     }
 
-    /**
-     * Creates a test paletted image with translucency.
-     *
-     * @return
-     */
+    /** Creates a test paletted image with translucency. */
     private static BufferedImage getSyntheticTranslucentIndexed() {
         final byte bb[] = new byte[256];
         for (int i = 0; i < 256; i++) bb[i] = (byte) i;
@@ -270,11 +265,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         return new BufferedImage(icm, raster, false, null);
     }
 
-    /**
-     * Creates a test paletted image with nodata and no transparency
-     *
-     * @return
-     */
+    /** Creates a test paletted image with nodata and no transparency */
     private static RenderedImage getIndexedRGBNodata() {
         // a palette with just the first 200 entries filled, the others are all zero (but present!)
         final byte bb[] = new byte[256];
@@ -306,11 +297,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         return planarImage;
     }
 
-    /**
-     * Creates a test paletted image with a given number of entries in the map
-     *
-     * @return
-     */
+    /** Creates a test paletted image with a given number of entries in the map */
     private static BufferedImage getSyntheticGrayIndexed(int entries) {
         final byte bb[] = new byte[entries];
         for (int i = 0; i < entries; i++) bb[i] = (byte) i;
@@ -377,6 +364,12 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         if (imageWithNodata == null) {
             final InputStream input = org.geotools.test.TestData.openStream(this, "nodataD.tiff");
             imageWithNodata = ImageIO.read(input);
+            input.close();
+        }
+
+        if (imageWithNodata2 == null) {
+            final InputStream input = org.geotools.test.TestData.openStream(this, "nodata.tiff");
+            imageWithNodata2 = ImageIO.read(input);
             input.close();
         }
     }
@@ -533,6 +526,20 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         readWorker.setImage(ImageIO.read(outFile));
         show(readWorker, "Pure Java JPEG");
         outFile.delete();
+
+        // /////////////////////////////////////////////////////////////////////
+        // test alpha channel is removed with nodata value
+        // /////////////////////////////////////////////////////////////////////
+        worker.setImage(getIndexedRGBNodata());
+        worker.forceIndexColorModel(false);
+        worker.writeJPEG(outFile, "JPEG", 0.75f, true);
+        // with the native imageIO, an exception would have been thrown by now.
+        // with non-native, writing the alpha channel to JPEG will work
+        // as well as reading it (!), but this is not generally supported
+        // and will confuse other image readers,
+        // so alpha should be removed for JPEG
+        BufferedImage image = ImageIO.read(outFile);
+        assertFalse(image.getColorModel().hasAlpha());
     }
 
     /**
@@ -636,10 +643,8 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         // and the palette does not get compressed
         InputStream gzippedStream =
                 ImageWorkerTest.class.getResource("test-data/sf-sfdem.tif.gz").openStream();
-        GZIPInputStream is = new GZIPInputStream(gzippedStream);
-        ImageInputStream iis = null;
-        try {
-            iis = ImageIO.createImageInputStream(is);
+        try (ImageInputStream iis =
+                ImageIO.createImageInputStream(new GZIPInputStream(gzippedStream))) {
             ImageReader reader = new TIFFImageReaderSpi().createReaderInstance(iis);
             reader.setInput(iis);
             BufferedImage bi = reader.read(0);
@@ -671,9 +676,6 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
             icm = (IndexColorModel) back.getColorModel();
             assertEquals(3, icm.getNumColorComponents());
             assertTrue(icm.getMapSize() <= 256);
-        } finally {
-            IOUtils.closeQuietly(is);
-            IOUtils.closeQuietly(iis);
         }
     }
 
@@ -912,10 +914,6 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
     /**
      * Tests the {@link ImageWorker#makeColorTransparent} methods. Some trivial tests are performed
      * before.
-     *
-     * @throws IOException
-     * @throws FileNotFoundException
-     * @throws IllegalStateException
      */
     @Test
     public void testMakeColorTransparent()
@@ -1595,25 +1593,17 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
 
     @Test
     public void testRescaleNoData() {
-        // Getting input gray scale image
-        ImageWorker w = new ImageWorker(gray);
-        // Removing optional Alpha band
-        w.retainFirstBand();
-        // Formatting to int (avoid to convert values greater to 127 into negative values during
-        // rescaling)
-        w.format(DataBuffer.TYPE_INT);
+        ImageWorker w = new ImageWorker(imageWithNodata2);
         // Setting NoData
-        Range noData = RangeFactory.create(0, 0);
+        Range noData = RangeFactory.create(-10000, -10000);
         w.setNoData(noData);
-        // Setting background to 10
-        w.setBackground(new double[] {10d});
-        // Rescaling data
-        w.rescale(new double[] {2}, new double[] {2});
+        w.setBackground(new double[] {0});
+        w.rescale(new double[] {0.002}, new double[] {2});
 
-        // Getting Minimum value, It cannot be equal or lower than the offset value (2)
+        // Getting Minimum value, It cannot be equal or lower than the offset value
         double minimum = w.getMinimums()[0];
         assertTrue(minimum > 2);
-        assertNoData(w.getRenderedImage(), noData);
+        assertNoData(w.getRenderedImage(), RangeFactory.create((byte) 0, (byte) 0));
     }
 
     @Test
@@ -1696,6 +1686,31 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         RenderedImage image = iw.bandMerge(4).getRenderedImage();
         assertEquals(4, image.getTile(0, 0).getSampleModel().getNumBands());
         assertNoData(image, null);
+    }
+
+    @Test
+    public void testBandMergeWithNodata() throws FileNotFoundException, IOException {
+        double noDataValue = -10000d;
+        Range nodata = RangeFactory.create(noDataValue, noDataValue);
+        double[] background = new double[] {noDataValue};
+
+        RenderedImage twoBands = null;
+        PlanarImage pi = PlanarImage.wrapRenderedImage(imageWithNodata2);
+        pi.setProperty("GC_NODATA", new NoDataContainer(nodata));
+
+        ImageWorker worker = new ImageWorker(pi).setNoData(nodata).setBackground(background);
+
+        twoBands = worker.addBand(worker.getRenderedImage(), false).getRenderedImage();
+        RenderedImage oneBand = new ImageWorker(twoBands).retainBands(1).getRenderedImage();
+        RenderedImage threeBands =
+                new ImageWorker(twoBands).addBand(oneBand, false).getRenderedImage();
+
+        // Check that the noData holes are still noData after bandMerge
+        double[] threeSamples = new double[3];
+        threeBands.getData().getPixel(18, 18, threeSamples);
+        for (double sample : threeSamples) {
+            assertEquals(noDataValue, sample, 1E-6);
+        }
     }
 
     static void assertNoData(ImageWorker worker, Range nodata) {
@@ -2249,6 +2264,46 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         assertMinMax(getSynthetic(1000), 8, 8, 4, 985);
         assertMinMax(getSynthetic(1000), 16, 16, 9, 985);
         assertMinMax(getSynthetic(1000), 32, 32, 11, 931);
+    }
+
+    @Test(expected = Test.None.class)
+    public void testImageLayout() {
+        int tileWitdh = 161;
+        int tileHeight = 21; // a small tileHeight
+        PixelInterleavedSampleModel sm =
+                new PixelInterleavedSampleModel(
+                        DataBuffer.TYPE_BYTE, tileWitdh, tileHeight, 1, tileWitdh, new int[] {0});
+        ComponentColorModel cm =
+                new ComponentColorModel(
+                        ColorSpace.getInstance(ColorSpace.CS_GRAY),
+                        false,
+                        false,
+                        Transparency.OPAQUE,
+                        DataBuffer.TYPE_BYTE);
+        RenderedImage image = new TiledImage(0, 0, tileWitdh, tileHeight, 0, 0, sm, cm);
+        ImageWorker worker = new ImageWorker(image);
+        RenderingHints hints = worker.getRenderingHints();
+        ImageLayout layout = (ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT);
+
+        // No IllegalArgumentException will be thrown at this point when creating a new ImageLayout
+        // on top of a reference one.
+        ImageLayout newLayout =
+                new ImageLayout(
+                        layout.getTileGridXOffset(null),
+                        layout.getTileGridYOffset(null),
+                        layout.getTileWidth(null),
+                        layout.getTileHeight(null),
+                        sm,
+                        cm);
+        assertEquals(tileWitdh, newLayout.getTileWidth(null));
+
+        final int imageUtilitiesTileHeight = newLayout.getTileHeight(null);
+        assertNotEquals(tileHeight, imageUtilitiesTileHeight);
+        // That's the default tilesize provided by ImageUtilities
+        // when the original tile size is smaller than a reference value (64).
+        assertEquals(512, imageUtilitiesTileHeight);
+        assertEquals(0, newLayout.getTileGridXOffset(null));
+        assertEquals(0, newLayout.getTileGridYOffset(null));
     }
 
     private void assertMinMax(

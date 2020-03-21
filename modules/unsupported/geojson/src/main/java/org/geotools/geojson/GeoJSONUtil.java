@@ -72,7 +72,6 @@ public class GeoJSONUtil {
      *
      * @param input The input object.
      * @return A reader.
-     * @throws IOException
      */
     public static Reader toReader(Object input) throws IOException {
         if (input instanceof BufferedReader) {
@@ -114,7 +113,6 @@ public class GeoJSONUtil {
      *
      * @param output The output object.
      * @return A writer.
-     * @throws IOException
      */
     public static Writer toWriter(Object output) throws IOException {
         if (output instanceof BufferedWriter) {
@@ -234,7 +232,7 @@ public class GeoJSONUtil {
             c.y = ((Number) ordinates.get(1)).doubleValue();
         }
         if (ordinates.size() > 2) {
-            c.z = ((Number) ordinates.get(2)).doubleValue();
+            c.setZ(((Number) ordinates.get(2)).doubleValue());
         }
         return c;
     }
@@ -245,34 +243,37 @@ public class GeoJSONUtil {
 
     public static <T> T parse(IContentHandler<T> handler, Object input, boolean trace)
             throws IOException {
-        Reader reader = toReader(input);
-        if (trace) {
-            handler =
-                    (IContentHandler<T>)
-                            Proxy.newProxyInstance(
-                                    handler.getClass().getClassLoader(),
-                                    new Class[] {IContentHandler.class},
-                                    new TracingHandler(handler));
-        }
+        try (Reader reader = toReader(input)) {
+            if (trace) {
+                handler =
+                        (IContentHandler<T>)
+                                Proxy.newProxyInstance(
+                                        handler.getClass().getClassLoader(),
+                                        new Class[] {IContentHandler.class},
+                                        new TracingHandler(handler));
+            }
 
-        JSONParser parser = new JSONParser();
-        try {
-            parser.parse(reader, handler);
-            return handler.getValue();
-        } catch (ParseException e) {
-            throw (IOException) new IOException().initCause(e);
+            JSONParser parser = new JSONParser();
+            try {
+                parser.parse(reader, handler);
+                return handler.getValue();
+            } catch (ParseException e) {
+                throw (IOException) new IOException().initCause(e);
+            }
         }
     }
 
     public static void encode(String json, Object output) throws IOException {
-        Writer w = toWriter(output);
-        w.write(json);
-        w.flush();
+        try (Writer w = toWriter(output)) {
+            w.write(json);
+            w.flush();
+        }
     }
 
     public static void encode(Map<String, Object> obj, Object output) throws IOException {
-        Writer w = toWriter(output);
-        JSONObject.writeJSONString(obj, w);
-        w.flush();
+        try (Writer w = toWriter(output)) {
+            JSONObject.writeJSONString(obj, w);
+            w.flush();
+        }
     }
 }

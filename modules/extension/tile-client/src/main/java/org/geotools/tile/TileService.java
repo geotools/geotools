@@ -17,12 +17,11 @@
  */
 package org.geotools.tile;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.data.ows.HTTPClient;
+import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -59,6 +58,7 @@ public abstract class TileService {
     private String baseURL;
 
     private String name;
+    private final HTTPClient client;
 
     /**
      * Create a new TileService with a name and a base URL
@@ -69,8 +69,24 @@ public abstract class TileService {
      *     URL is well-formed.
      */
     protected TileService(String name, String baseURL) {
+        this(name, baseURL, new SimpleHttpClient());
+    }
+
+    /**
+     * Create a new TileService with a name and a base URL
+     *
+     * @param name the name. Cannot be null.
+     * @param baseURL the base URL. This is a string representing the common part of the URL for all
+     *     this service's tiles. Cannot be null. Note that this constructor doesn't ensure that the
+     *     URL is well-formed.
+     * @param client HTTPClient instance to use for a tile request.
+     */
+    protected TileService(String name, String baseURL, HTTPClient client) {
         setName(name);
         setBaseURL(baseURL);
+
+        Objects.requireNonNull(client);
+        this.client = client;
     }
 
     private void setBaseURL(String baseURL) {
@@ -99,21 +115,12 @@ public abstract class TileService {
         return 256;
     }
 
-    /**
-     * Returns the prefix of an tile-url, e.g.: http://tile.openstreetmap.org/
-     *
-     * @return
-     */
+    /** Returns the prefix of an tile-url, e.g.: http://tile.openstreetmap.org/ */
     public String getBaseUrl() {
         return this.baseURL;
     }
 
-    /**
-     * The CRS that is used when the extent is cut in tiles.
-     *
-     * @deprecated is it really meaningful?
-     */
-    @Deprecated
+    /** The CRS that is used when the extent is cut in tiles. */
     public CoordinateReferenceSystem getTileCrs() {
         return DefaultGeographicCRS.WGS84;
     }
@@ -160,11 +167,8 @@ public abstract class TileService {
     /**
      * Returns the zoom-level that should be used to fetch the tiles.
      *
-     * @param scale
-     * @param scaleFactor
      * @param useRecommended always use the calculated zoom-level, do not use the one the user
      *     selected
-     * @return
      */
     public int getZoomLevelToUse(
             ScaleZoomLevelMatcher zoomLevelMatcher, int scaleFactor, boolean useRecommended) {
@@ -188,12 +192,7 @@ public abstract class TileService {
         }
     }
 
-    /**
-     * Returns the lowest zoom-level number from the scaleList.
-     *
-     * @param scaleList
-     * @return
-     */
+    /** Returns the lowest zoom-level number from the scaleList. */
     public int getMinZoomLevel() {
         double[] scaleList = getScaleList();
         int minZoomLevel = 0;
@@ -205,12 +204,7 @@ public abstract class TileService {
         return minZoomLevel;
     }
 
-    /**
-     * Returns the highest zoom-level number from the scaleList.
-     *
-     * @param scaleList
-     * @return
-     */
+    /** Returns the highest zoom-level number from the scaleList. */
     public int getMaxZoomLevel() {
         double[] scaleList = getScaleList();
         int maxZoomLevel = scaleList.length - 1;
@@ -393,9 +387,6 @@ public abstract class TileService {
      *
      * <p>But cutExtentIntoTiles(..) requires an extent that looks like this: MaxY: 85° (or 90°)
      * MinY: -85° (or -90°) MaxX: 180° MinX: -180°
-     *
-     * @param envelope
-     * @return
      */
     private ReferencedEnvelope normalizeExtent(ReferencedEnvelope envelope) {
         ReferencedEnvelope bounds = getBounds();
@@ -426,5 +417,9 @@ public abstract class TileService {
 
     public String toString() {
         return getName();
+    }
+
+    public final HTTPClient getHttpClient() {
+        return this.client;
     }
 }

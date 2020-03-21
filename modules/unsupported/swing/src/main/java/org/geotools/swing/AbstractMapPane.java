@@ -198,11 +198,7 @@ public abstract class AbstractMapPane extends JPanel
         doSetRenderingExecutor(executor);
     }
 
-    /**
-     * Draws layers into one or more images which will then be displayed by the map pane.
-     *
-     * @param recreate
-     */
+    /** Draws layers into one or more images which will then be displayed by the map pane. */
     protected abstract void drawLayers(boolean recreate);
 
     /**
@@ -743,7 +739,7 @@ public abstract class AbstractMapPane extends JPanel
     public void layerAdded(MapLayerListEvent event) {
         paramsLock.writeLock().lock();
         try {
-            Layer layer = event.getElement();
+            Layer layer = event.getLayer();
 
             if (layer instanceof ComponentListener) {
                 addComponentListener((ComponentListener) layer);
@@ -768,7 +764,7 @@ public abstract class AbstractMapPane extends JPanel
     public void layerRemoved(MapLayerListEvent event) {
         paramsLock.writeLock().lock();
         try {
-            Layer layer = event.getElement();
+            Layer layer = event.getLayer();
 
             if (layer instanceof ComponentListener) {
                 removeComponentListener((ComponentListener) layer);

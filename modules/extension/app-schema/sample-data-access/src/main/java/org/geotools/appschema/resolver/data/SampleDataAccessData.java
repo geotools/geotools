@@ -120,7 +120,6 @@ public class SampleDataAccessData {
      * @param bgsid an alternate id (not yet used)
      * @param description name of the feature
      * @param shape the shape of the feature
-     * @return
      */
     public static Feature createMappedFeature(
             String id,

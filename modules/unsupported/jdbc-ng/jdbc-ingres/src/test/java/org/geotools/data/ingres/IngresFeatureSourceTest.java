@@ -2,7 +2,7 @@ package org.geotools.data.ingres;
 
 import java.util.Iterator;
 
-import org.geotools.data.DefaultQuery;
+
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
 import org.geotools.data.simple.SimpleFeatureCollection;

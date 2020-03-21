@@ -134,6 +134,7 @@ class OGRDataSource {
     }
 
     @Override
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() {
         if (source != null) {
             LOGGER.warning(

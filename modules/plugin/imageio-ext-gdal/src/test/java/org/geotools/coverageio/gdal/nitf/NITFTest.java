@@ -55,11 +55,7 @@ public final class NITFTest extends GDALTestCase {
      */
     private static final String fileName = "001zc013.on1";
 
-    /**
-     * Creates a new instance of {@code NITFTest}
-     *
-     * @param name
-     */
+    /** Creates a new instance of {@code NITFTest} */
     public NITFTest() {
         super("NITF", new NITFFormatFactory());
     }
@@ -123,7 +119,7 @@ public final class NITFTest extends GDALTestCase {
                             oldEnvelope.getUpperCorner().getOrdinate(0),
                             oldEnvelope.getUpperCorner().getOrdinate(1)
                         });
-        cropEnvelope.setCoordinateReferenceSystem(reader.getCrs());
+        cropEnvelope.setCoordinateReferenceSystem(reader.getCoordinateReferenceSystem());
 
         final ParameterValue gg =
                 (ParameterValue)

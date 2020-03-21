@@ -22,6 +22,8 @@ import static org.junit.Assert.*;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+import org.geotools.filter.AndImpl;
+import org.geotools.filter.NotImpl;
 import org.geotools.filter.text.commons.CompilerUtil;
 import org.geotools.filter.text.commons.Language;
 import org.geotools.filter.text.cql2.CQLComparisonPredicateTest;
@@ -32,6 +34,10 @@ import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.Filter;
 import org.opengis.filter.PropertyIsBetween;
 import org.opengis.filter.PropertyIsEqualTo;
+import org.opengis.filter.PropertyIsGreaterThan;
+import org.opengis.filter.PropertyIsGreaterThanOrEqualTo;
+import org.opengis.filter.PropertyIsLessThan;
+import org.opengis.filter.PropertyIsLessThanOrEqualTo;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 
@@ -57,6 +63,28 @@ public class ECQLComparisonPredicateTest extends CQLComparisonPredicateTest {
         super(Language.ECQL);
     }
 
+    /** Equals predicate sample */
+    @Test
+    public void deprecatedPredicate() throws Exception {
+
+        ECQL.toFilter("POP_RANK eq 6");
+        ECQL.toFilter("POP_RANK neq 6");
+        ECQL.toFilter("POP_RANK lte 6");
+        ECQL.toFilter("! (POP_RANK = 6)");
+
+        assertTrue(ECQL.toFilter("POP_RANK eq 6") instanceof PropertyIsEqualTo);
+        assertTrue(ECQL.toFilter("POP_RANK == 6") instanceof PropertyIsEqualTo);
+
+        assertTrue(ECQL.toFilter("POP_RANK lte 6") instanceof PropertyIsLessThanOrEqualTo);
+        assertTrue(ECQL.toFilter("POP_RANK gte 6") instanceof PropertyIsGreaterThanOrEqualTo);
+        assertTrue(ECQL.toFilter("POP_RANK lt 6") instanceof PropertyIsLessThan);
+        assertTrue(ECQL.toFilter("POP_RANK gt 6") instanceof PropertyIsGreaterThan);
+
+        assertTrue(ECQL.toFilter("! (POP_RANK == 6)") instanceof NotImpl);
+        assertTrue(ECQL.toFilter("POP_RANK neq 6") instanceof NotImpl);
+
+        assertTrue(ECQL.toFilter("A > 2 && B < 1") instanceof AndImpl);
+    }
     /**
      * Test: Expression on the Left hand of comparison predicate
      *
@@ -64,8 +92,6 @@ public class ECQLComparisonPredicateTest extends CQLComparisonPredicateTest {
      * Sample: (1+3) > aProperty
      *         (1+3) > (4-5)
      * </pre>
-     *
-     * @throws CQLException
      */
     @Test
     public void expressionComparisonProperty() throws CQLException {
@@ -80,11 +106,7 @@ public class ECQLComparisonPredicateTest extends CQLComparisonPredicateTest {
         testComparison(FilterECQLSample.EXPRESSIONS_WITH_PROPERTIES);
     }
 
-    /**
-     * Negative value test
-     *
-     * @throws CQLException
-     */
+    /** Negative value test */
     @Test
     public void negativeNumber() throws CQLException {
 
@@ -126,8 +148,6 @@ public class ECQLComparisonPredicateTest extends CQLComparisonPredicateTest {
      *          area( the_geom ) < abs(10)
      *
      * </pre>
-     *
-     * @throws CQLException
      */
     @Test
     public void functionsInComparison() throws CQLException {
@@ -199,11 +219,7 @@ public class ECQLComparisonPredicateTest extends CQLComparisonPredicateTest {
                 f, date(2012, FEBRUARY, 1, 12, 10, 13, 0, TimeZone.getTimeZone("GMT+8:00")));
     }
 
-    /**
-     * Checks that both positive and negative numbers are parsed to numbers, not strings
-     *
-     * @throws Exception
-     */
+    /** Checks that both positive and negative numbers are parsed to numbers, not strings */
     @Test
     public void testPositiveNegativeConsistent() throws Exception {
         BinaryComparisonOperator f =
@@ -267,7 +283,6 @@ public class ECQLComparisonPredicateTest extends CQLComparisonPredicateTest {
      * Asserts that the filter returned is the specified by the predicate
      *
      * @param testPredicate predicate to test
-     * @throws CQLException
      */
     private void testComparison(final String testPredicate) throws CQLException {
 

@@ -38,17 +38,7 @@ public class DefaultPeriodDuration extends DefaultDuration implements PeriodDura
     private InternationalString minutes;
     private InternationalString seconds;
 
-    /**
-     * Creates a new instances of PeriodDuration.
-     *
-     * @param years
-     * @param months
-     * @param weeks
-     * @param days
-     * @param hours
-     * @param minutes
-     * @param seconds
-     */
+    /** Creates a new instances of PeriodDuration. */
     public DefaultPeriodDuration(
             InternationalString years,
             InternationalString months,
@@ -70,8 +60,6 @@ public class DefaultPeriodDuration extends DefaultDuration implements PeriodDura
      * Creates a new instance of PeriodDuration from a long value passed in parameter. if the long
      * contains milliseconds, this will be ignored because there is no MilliSeconds specified in the
      * string format PnYnMnDTnHnMnS, see ISO 8601.
-     *
-     * @param durationInMilliSeconds
      */
     public DefaultPeriodDuration(long durationInMilliSeconds) {
         long yearMS = 31536000000L;
@@ -240,8 +228,6 @@ public class DefaultPeriodDuration extends DefaultDuration implements PeriodDura
 
     /**
      * Returns a duration in long. note there is no starting instant to accurate the returned value.
-     *
-     * @return
      */
     public long getTimeInMillis() {
         String periodDescription = this.toString();

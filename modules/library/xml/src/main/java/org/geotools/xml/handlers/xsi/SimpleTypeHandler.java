@@ -158,11 +158,7 @@ public class SimpleTypeHandler extends XSIElementHandler {
         }
     }
 
-    /**
-     * translates the final attribute to an integer mask
-     *
-     * @param finaL
-     */
+    /** translates the final attribute to an integer mask */
     public static int findFinal(String finaL) {
         if ((finaL == null) || "".equalsIgnoreCase(finaL)) {
             return NONE;
@@ -203,11 +199,7 @@ public class SimpleTypeHandler extends XSIElementHandler {
         return name;
     }
 
-    /**
-     * compacts the data resolving references.
-     *
-     * @param parent
-     */
+    /** compacts the data resolving references. */
     protected SimpleType compress(SchemaHandler parent) {
         logger.info("Start compressing SimpleType " + getName());
 

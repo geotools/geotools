@@ -134,6 +134,8 @@ public class AttributeMapping implements Serializable {
      */
     private MultipleValue multipleValue;
 
+    private Map<String, String> anonymousAttributes = new HashMap<String, String>();
+
     /**
      * Returns the expression whose evaluation result against a Feature of the source FeatureType is
      * going to be the value of the target attribute in output FeatureType.
@@ -189,8 +191,6 @@ public class AttributeMapping implements Serializable {
     /**
      * Set the input XPath expression where we are getting the features from a data access instead
      * of a data store.
-     *
-     * @param inputAttributePath
      */
     public void setInputAttributePath(String inputAttributePath) {
         this.inputAttributePath = inputAttributePath;
@@ -245,11 +245,7 @@ public class AttributeMapping implements Serializable {
         return linkElement;
     }
 
-    /**
-     * Sets the name of the linked element type of which this attribute is nesting/targeting.
-     *
-     * @param linkElement
-     */
+    /** Sets the name of the linked element type of which this attribute is nesting/targeting. */
     public void setLinkElement(String linkElement) {
         this.linkElement = linkElement;
     }
@@ -266,8 +262,6 @@ public class AttributeMapping implements Serializable {
 
     /**
      * Sets the XPath expression addressing the target attribute in the linked target feature type
-     *
-     * @param linkField
      */
     public void setLinkField(String linkField) {
         this.linkField = linkField;
@@ -381,7 +375,6 @@ public class AttributeMapping implements Serializable {
      * Helper method to allow config digester passing a string.
      *
      * @see #setList(boolean)
-     * @param isList
      */
     public void setList(String list) {
         boolean isList = Boolean.valueOf(list).booleanValue();
@@ -402,7 +395,6 @@ public class AttributeMapping implements Serializable {
      * Helper method to allow config digester passing a string.
      *
      * @see #setMultiple(boolean)
-     * @param isMultiple
      */
     public void setMultiple(String isMultiple) {
         boolean multiple = Boolean.valueOf(isMultiple).booleanValue();
@@ -475,5 +467,22 @@ public class AttributeMapping implements Serializable {
 
     public void setIndexField(String indexField) {
         this.indexField = indexField;
+    }
+
+    /** Attribute definition map for anonymous unbounded sequences on complexType Elements. */
+    public Map<String, String> getAnonymousAttributes() {
+        return anonymousAttributes;
+    }
+
+    public void setAnonymousAttributes(Map<String, String> anonymousAttributes) {
+        if (anonymousAttributes == null) throw new IllegalArgumentException("Map is not nullable");
+        this.anonymousAttributes = anonymousAttributes;
+    }
+
+    public void putAnonymousAttribute(String name, String expression) {
+        if (name == null || expression == null) {
+            throw new IllegalArgumentException("name=" + name + ", expression=" + expression);
+        }
+        getAnonymousAttributes().put(name, expression);
     }
 }

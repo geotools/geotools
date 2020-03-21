@@ -191,7 +191,6 @@ public class ImageMosaicEventHandlers {
      * Firing an event to listeners in order to inform them about what we are doing and about the
      * percentage of work already carried out.
      *
-     * @param level
      * @param inMessage The message to show.
      * @param percentage The percentage for the process.
      */

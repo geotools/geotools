@@ -24,6 +24,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import org.geotools.data.Base64;
 import org.geotools.data.DataSourceException;
+import org.geotools.geometry.jts.WKBReader;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.io.ByteArrayInStream;
@@ -39,6 +40,7 @@ public class WKBAttributeIO {
     WKBReader wkbr;
     ByteArrayInStream inStream = new ByteArrayInStream(new byte[0]);
     GeometryFactory gf;
+    boolean base64EncodingEnabled = true;
 
     public WKBAttributeIO() {
         this(new GeometryFactory());
@@ -54,6 +56,14 @@ public class WKBAttributeIO {
             this.gf = gf;
             wkbr = new WKBReader(gf);
         }
+    }
+
+    public boolean isBase64EncodingEnabled() {
+        return base64EncodingEnabled;
+    }
+
+    public void setBase64EncodingEnabled(boolean base64EncodingEnabled) {
+        this.base64EncodingEnabled = base64EncodingEnabled;
     }
 
     /**
@@ -85,7 +95,10 @@ public class WKBAttributeIO {
             byte bytes[] = rs.getBytes(columnName);
             if (bytes == null) // ie. its a null column -> return a null geometry!
             return null;
-            return wkb2Geometry(Base64.decode(bytes));
+            if (base64EncodingEnabled) {
+                bytes = Base64.decode(bytes);
+            }
+            return wkb2Geometry(bytes);
         } catch (SQLException e) {
             throw new DataSourceException("SQL exception occurred while reading the geometry.", e);
         }
@@ -97,7 +110,10 @@ public class WKBAttributeIO {
             byte bytes[] = rs.getBytes(columnIndex);
             if (bytes == null) // ie. its a null column -> return a null geometry!
             return null;
-            return wkb2Geometry(Base64.decode(bytes));
+            if (base64EncodingEnabled) {
+                bytes = Base64.decode(bytes);
+            }
+            return wkb2Geometry(bytes);
         } catch (SQLException e) {
             throw new DataSourceException("SQL exception occurred while reading the geometry.", e);
         }
@@ -119,11 +135,7 @@ public class WKBAttributeIO {
         }
     }
 
-    /**
-     * Turns a char that encodes four bits in hexadecimal notation into a byte
-     *
-     * @param c
-     */
+    /** Turns a char that encodes four bits in hexadecimal notation into a byte */
     public static byte getFromChar(char c) {
         if (c <= '9') {
             return (byte) (c - '0');

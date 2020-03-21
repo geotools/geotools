@@ -66,7 +66,6 @@ public class WMSCapabilities extends Capabilities {
      *
      * <p>Call layer.clearCache() after this method.
      *
-     * @param layer
      * @param forceXY true prior to WMS 1.3.0, false after WMS 1.3.0
      */
     static void fixLayerBoundingBox(Layer layer, boolean forceXY) {

@@ -45,6 +45,6 @@ public class FilterFunction_geomLength extends FunctionExpressionImpl {
                     "Filter Function problem for function geomLength argument #0 - expected type Geometry");
         }
 
-        return new Double(StaticGeometry.geomLength(arg0));
+        return Double.valueOf(StaticGeometry.geomLength(arg0));
     }
 }

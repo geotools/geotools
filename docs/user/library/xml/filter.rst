@@ -3,11 +3,11 @@ Filter
 
 No utility class, this time out we will be making direct use of the three available GTXML configurations:
 
-* org.geotools.filter.v1_0.OGCConfiguration
-* org.geotools.filter.v1_1.OGCConfiguration
-* org.geotools.filter.v2_0.FESConfiguration
+* ``org.geotools.filter.v1_0.OGCConfiguration``
+* ``org.geotools.filter.v1_1.OGCConfiguration``
+* ``org.geotools.filter.v2_0.FESConfiguration``
 
-The definition of *filter* is considered part of the ogc schema, hence the use of OGCConfiguration above. 
+The definition of *filter* is considered part of the OGC schema, hence the use of ``OGCConfiguration`` above. 
 
 Filter1
 ^^^^^^^
@@ -25,7 +25,7 @@ To encode a filter::
   org.geotools.xsd.Encoder encoder = new org.geotools.xsd.Encoder( configuration );
   encoder.encode( filter, org.geotools.filter.v1_0.OGC.FILTER, outputStream );
 
-This configurations bring in the correct GML2 version of GMLConfiguration to handle any geometry mentioned in your Filter.
+This configurations bring in the correct GML2 version of ``GMLConfiguration`` to handle any geometry mentioned in your Filter.
 
 Consider the following filter::
   
@@ -85,7 +85,7 @@ FilterFilter (SAX)
 
 An alternative to using a GTXML configuration is to directly handle the SAX events yourself.
 
-As mentioned n the previous page on :doc:`geometry page <geometry>` sax events involve defining a callback class that can be invoked as each Filter is recognised.
+As mentioned n the previous page on :doc:`geometry page <geometry>` sax events involve defining a callback class that can be invoked as each Filter is recognized.
 
 Here is a quick example:
 
@@ -132,12 +132,12 @@ You can use the DOM parser to parse individual filter nodes::
 Filter 1.1
 ^^^^^^^^^^
 
-The Filter 1.1 specification is provided by v1_1 OGCConfiguration.
+The Filter 1.1 specification is provided by ``v1_1.OGCConfiguration``.
 
-.. note:: Filter 1.1 uses GML3 to represent Geometry as required by the specification.
+.. note:: Filter 1.1 uses GML3 to represent ``Geometry`` as required by the specification.
 
-Ecode
-'''''
+Encode
+''''''
 
 To encode a filter::
   
@@ -158,7 +158,7 @@ To parse a filter::
 Filter2
 ^^^^^^^
 
-The Filter 2.0 specification is provided by v2_0 FESConfiguration.
+The Filter 2.0 specification is provided by ``v2_0.FESConfiguration``.
 
 Parse
 '''''

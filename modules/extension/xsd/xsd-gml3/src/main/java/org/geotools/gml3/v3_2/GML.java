@@ -54,15 +54,7 @@ public final class GML extends XSD {
     }
 
     /** private constructor */
-    private GML() {
-        // Trigger immediate construction of full GML schema before dependencies are constructed, to
-        // handle cyclic dependencies. See GEOT-3327.
-        try {
-            getSchema();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    private GML() {}
 
     protected void addDependencies(Set dependencies) {
         dependencies.add(XLINK.getInstance());

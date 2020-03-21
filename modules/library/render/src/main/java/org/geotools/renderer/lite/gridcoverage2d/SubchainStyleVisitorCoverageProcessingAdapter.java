@@ -87,7 +87,6 @@ public abstract class SubchainStyleVisitorCoverageProcessingAdapter
     /**
      * Sets the sink {@link CoverageProcessingNode} for this chain.
      *
-     * @param sink
      * @uml.property name="sink"
      */
     protected void setSink(CoverageProcessingNode sink) {

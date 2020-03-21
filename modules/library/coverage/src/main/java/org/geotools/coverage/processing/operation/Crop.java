@@ -898,9 +898,6 @@ public class Crop extends Operation2D {
     /**
      * Stop gap measure to get a ROI that can scale up to massive images, until ROIGeometry gets
      * fixed to be a good ROIShape replacement
-     *
-     * @param theGeom
-     * @return
      */
     private static ROI getAsROI(Geometry theGeom) {
         org.locationtech.jts.geom.Envelope env = theGeom.getEnvelopeInternal();

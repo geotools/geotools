@@ -13,7 +13,7 @@
 Welcome
 =========
 
-Welcome to Geospatial for Java. This workbook is aimed at Java developers who
+Welcome to geospatial for Java. This workbook is aimed at Java developers who
 are new to geospatial and would like to get started.
 
 .. _quickstarts: ../quickstart/index.html
@@ -37,21 +37,21 @@ This tutorial gives a visual demonstration of coordinate reference systems by
 displaying a shapefile and shows how changing the map projection morphs
 the geometry of the features.
 
-1. Please ensure your pom.xml includes the following:
+1. Please ensure your ``pom.xml`` includes the following:
 
 .. literalinclude:: ./artifacts/pom.xml
         :language: xml
         :start-after: </properties>
         :end-before: </project>
     
-2. Create the package **org.geotools.tutorial.crs** and class **CRSLab.java** file and copy and paste the following code:
+2. Create the package ``org.geotools.tutorial.crs`` and class ``CRSLab.java`` file and copy and paste the following code:
 
 .. literalinclude:: /../src/main/java/org/geotools/tutorial/crs/CRSLab.java
    :language: java
    :start-after: // docs start source
    :end-before: // docs end main
 
-3. Notice that we are customizing the JMapFrame by adding two buttons to its
+3. Notice that we are customizing the ``JMapFrame`` by adding two buttons to its
    toolbar: one to check that feature geometries are valid (e.g. polygon
    boundaries are closed) and one to export reprojected feature data.
 
@@ -60,7 +60,7 @@ the geometry of the features.
       :start-after: // docs start display
       :end-before: // docs end display
 
-4. Here is how we have configured JMapFrame:
+4. Here is how we have configured ``JMapFrame``:
 
    * We have enabled a status line; this contains a button allowing the map
      coordinate reference system to be changed.
@@ -74,7 +74,7 @@ Validate Geometry
 Our toolbar action is implemented as a nested class, with most of the work being
 done by a helper method in the parent class.
 
-1. Create the **ValidateGeometryAction** mentioned in the previous section
+1. Create the ``ValidateGeometryAction`` mentioned in the previous section
    as an inner class.
 
 .. literalinclude:: /../src/main/java/org/geotools/tutorial/crs/CRSLab.java
@@ -93,7 +93,7 @@ done by a helper method in the parent class.
 Export Reprojected Shapefile
 -----------------------------
 
-.. sidebar:: FeatureIterator
+.. sidebar:: ``FeatureIterator``
    
    Please close feature iterator after use to prevent resource leaks.
 
@@ -101,16 +101,16 @@ The next action will form a little utility that can  read in a shapefile and
 write out a shapefile in a different coordinate reference system.
 
 One important thing to pick up from this lab is how easy it is to create a
-MathTransform between two CoordinateReferenceSystems. You can use the
-MathTransform to transform points one at a time; or use the JTS utility class
-to create a copy of a Geometry with the points modified.
+``MathTransform`` between two ``CoordinateReferenceSystems``. You can use the
+``MathTransform`` to transform points one at a time; or use the ``JTS`` utility class
+to create a copy of a ``Geometry`` with the points modified.
 
-We use similar steps to export a shapefile as used by the Csv2Shape example.
+We use similar steps to export a shapefile as used by the CSV2SHAPE example.
 In this case we are reading the contents from an existing shapefile using
-a **FeatureIterator**; and writing out the contents one at a time
-using a **FeatureWriter**. Please close these objects after use.
+a ``FeatureIterator``; and writing out the contents one at a time
+using a ``FeatureWriter``. Please close these objects after use.
 
-1. The action is a nested class that delegates to the exportToShapefile
+1. The action is a nested class that delegates to the ``exportToShapefile``
    method in the parent class.
 
 .. literalinclude:: /../src/main/java/org/geotools/tutorial/crs/CRSLab.java
@@ -139,9 +139,9 @@ using a **FeatureWriter**. Please close these objects after use.
    :start-after: // grab all features
    :end-before: // And create a new Shapefile with a slight modified schema
 
-5. To create a new shapefile we will need to produce a FeatureType that is
+5. To create a new shapefile we will need to produce a ``FeatureType`` that is
    similar to our original. The only difference will be the
-   CoordinateReferenceSystem of the geometry descriptor.
+   ``CoordinateReferenceSystem`` of the geometry descriptor.
 
 .. literalinclude:: /../src/main/java/org/geotools/tutorial/crs/CRSLab.java
    :language: java
@@ -163,7 +163,7 @@ To switch between map projections:
 
 1. When you start the application you will be prompted for a shapefile to display.
    In the screenshots below we are using the *bc_border* map which can be
-   downloaded as part of the `uDig sample dataset <http://udig.refractions.net/docs/data-v1_2.zip>`_
+   downloaded as part of the `uDig sample data set <http://udig.refractions.net/docs/data-v1_2.zip>`_
 
 .. image:: images/CRSLab_start.png
    :width: 60%
@@ -172,7 +172,7 @@ To switch between map projections:
    EPSG reference numbers. For our example shapefile, an appropriate alternative
    map projection is *BC Albers*.
    
-   You can find this quickly in the chooser list by typing 3005.
+   You can find this quickly in the chooser list by typing **3005**.
 
    When you click OK the map is displayed in the new projection:
 
@@ -190,8 +190,7 @@ To switch between map projections:
 
 Exporting the reprojected data:
 
-1. When you change the map projection for the display the shapefile remains
-   unchanged.
+1. When you change the map projection for the display the data in the shapefile remains unchanged.
    
    With the *bc_border* shapefile, the feature data are still in degrees but
    when we select the *BC Albers* projection the features are reprojected on
@@ -200,7 +199,7 @@ Exporting the reprojected data:
 2. Set the display of reprojected data (e.g. 3005 BC Albers for the *bc_border*
    shapefile).
    
-3. Click the *Validate geometry* button to check feature geometries are ok.
+3. Click the *Validate geometry* button to check feature geometries are OK.
 4. If there are no geometry problems, click the *Export* button and enter a name
    and path for the new shapefile.
 
@@ -215,12 +214,12 @@ Here are a couple things to try with the above application.
 
 * Make a button to print out the map coordinate reference system as human
   readable "Well Known Text". This is the same text format used by a
-  shapefile's "prj" side car file.
+  shapefile's ``prj`` side car file.
 
-* It is bad manners to keep the user waiting; the SwingWorker class is part of
+* It is bad manners to keep the user waiting; the ``SwingWorker`` class is part of
   Java.
   
-  Replace your ValidateGeometryAction with the following: 
+  Replace your ``ValidateGeometryAction`` with the following: 
   
 .. literalinclude:: /../src/main/java/org/geotools/tutorial/crs/CRSLab.java
    :language: java
@@ -236,19 +235,19 @@ Here are a couple things to try with the above application.
 .. _TopologyPreservingSimplifier: https://locationtech.github.io/jts/javadoc/org/locationtech/jts/simplify/TopologyPreservingSimplifier.html
 .. _DouglasPeuckerSimplifier: https://locationtech.github.io/jts/javadoc/org/locationtech/jts/simplify/DouglasPeuckerSimplifier.html
 
-  This exercise is a common form of data preparation.
+This exercise is a common form of data preparation.
 
 * One thing that can be dangerous about geometry, especially ones you make
   yourself, is that they can be invalid. 
   
   There are many tricks to fixing an invalid geometry. An easy place to start
-  is to use geometry.buffer(0). Use this tip to build your own shapefile
+  is to use ``geometry.buffer(0)``. Use this tip to build your own shapefile
   data cleaner.
   
 * An alternate to doing all the geometry transformations by hand is to ask
   for the data in the projection required.
 
-  This version of the export method shows how to use a **Query** object to
+  This version of the export method shows how to use a ``Query`` object to
   retrieve reprojected features and write them to a new shapefile instead of
   transforming the features 'by hand' as we did above.
 
@@ -269,8 +268,8 @@ several representations of the same thing.
 
 We can represent the city of Sydney:
 
-* as a single location, ie. a point
-* as the city limits (so you can tell when you are inside Sydney), ie.  a polygon
+* as a single location, i.e. a point
+* as the city limits (so you can tell when you are inside Sydney), i.e.  a polygon
 
 Point
 -----
@@ -278,38 +277,38 @@ Here is an example of creating a point using the Well-Known-Text (WKT) format.
 
 .. code-block:: java
 
-   GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory( null );
+   GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory(null);
 
-   WKTReader reader = new WKTReader( geometryFactory );
+   WKTReader reader = new WKTReader(geometryFactory);
    Point point = (Point) reader.read("POINT (1 1)");
 
-You can also create a Point by hand using the GeometryFactory directly.
+You can also create a ``Point`` by hand using the ``GeometryFactory`` directly.
 
 .. code-block:: java
 
-   GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory( null );
-   Coordinate coord = new Coordinate( 1, 1 );
-   Point point = geometryFactory.createPoint( coord );
+   GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory(null);
+   Coordinate coord = new Coordinate(1, 1);
+   Point point = geometryFactory.createPoint(coord);
 
 Line
 ----
-Here is an example of a WKT LineString.
+Here is an example of a WKT ``LineString``.
 
 .. code-block:: java
 
-	GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory( null );
+	GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory(null);
 	
-	WKTReader reader = new WKTReader( geometryFactory );
+	WKTReader reader = new WKTReader(geometryFactory);
 	LineString line = (LineString) reader.read("LINESTRING(0 2, 2 0, 8 6)");
 
-A LineString is a sequence of segments in the same manner as a java String is a
+A ``LineString`` is a sequence of segments in the same manner as a java String is a
 sequence of characters.
 
-Here is an example using the Geometry Factory.
+Here is an example using the ``GeometryFactory``.
 
 .. code-block:: java
 
-	GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory( null );
+	GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory(null);
 
 	Coordinate[] coords  =
     	new Coordinate[] {new Coordinate(0, 2), new Coordinate(2, 0), new Coordinate(8, 6) };
@@ -320,37 +319,37 @@ Here is an example using the Geometry Factory.
 Polygon
 -------
 
-A polygon is formed in WKT by constructing an outer ring, and then a series of holes.
+A ``Polygon`` is formed in WKT by constructing an outer ring, and then a series of holes.
 
 .. code-block:: java
 
-	GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory( null );
-	WKTReader reader = new WKTReader( geometryFactory );
+	GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory(null);
+	WKTReader reader = new WKTReader(geometryFactory);
 	Polygon polygon = (Polygon) reader.read("POLYGON((20 10, 30 0, 40 10, 30 20, 20 10))");
 
 Why not use Java Shape
 ----------------------
 
-Java Shape is actually very useful and covers ideas mentioned above – it is
-however very focused on drawing. Geometry allows us to handle the "information"
+Java ``Shape`` is actually very useful and covers ideas mentioned above – it is
+however very focused on drawing. ``Geometry`` allows us to handle the "information"
 part of Geographic  Information System – we can use it to create new geometry
 and test the relationships between geometries.
 
 .. code-block:: java
 
         // Create Geometry using other Geometry
-        Geometry smoke = fire.buffer( 10 );        
-        Geometry evacuate = cities.intersection( smoke );
+        Geometry smoke = fire.buffer(10);        
+        Geometry evacuate = cities.intersection(smoke);
         
         // test important relationships
-        boolean onFire = me.intersects( fire );
-        boolean thatIntoYou = me.disjoint( you );
-        boolean run = you.isWithinDistance( fire, 2 );
+        boolean onFire = me.intersects(fire);
+        boolean thatIntoYou = me.disjoint(you);
+        boolean run = you.isWithinDistance(fire, 2);
         
         // relationships actually captured as a fancy
         // String called an intersection matrix
         //
-        IntersectionMatrix matrix = he.relate( you );        
+        IntersectionMatrix matrix = he.relate(you);        
         thatIntoYou = matrix.isDisjoint();
 
         // it really is a fancy string; you can do
@@ -364,18 +363,18 @@ You are encouraged to read the javadocs for JTS which contains helpful definitio
 	The disjoint predicate has the following equivalent definitions:
 	
 	* The two geometries have no point in common
-	* The DE-9IM Intersection Matrix for the two geometries is FF*FF****
-	* !g.intersects(this) (disjoint is the inverse of intersects)
+	* The DE-9IM Intersection Matrix for the two geometries is ``FF*FF****``
+	* ``!g.intersects(this)`` (disjoint is the inverse of intersects)
 
 Coordinate Reference System
 ===========================
 
 Earlier we talked about the JTS library which provides our data model for
-Geometry. This is the real rocket science for map making – the idea of a shape
+``Geometry.`` This is the real rocket science for map making – the idea of a shape
 and enough math to do something fun with it. But there is one question we have
 not answered yet – what does a geometry mean?
 
-You may think I am joking but the question is serious. A Geometry is just a
+You may think I am joking but the question is serious. A ``Geometry`` is just a
 bunch of math (a set of points in the mathematical sense). They have no meaning
 on their own.
 
@@ -383,7 +382,7 @@ An easier example is the number 3. The number 3 has no meaning on
 its own. It is only when you attach a "unit" that  the number 3 can represent a
 concept. 3 metres. 3 feet. 3 score years.
 
-In order to provide a Geometry with meaning we need to know what those
+In order to provide a ``Geometry`` with meaning we need to know what those
 individual points mean. We need to know where they are located – and the data
 structure that tells us this is called the Coordinate Reference System.
 
@@ -392,8 +391,8 @@ concepts for us:
 
 * It defines the axis used – along with the units of measure.
 
-  So you can have lat measured in degrees , and lon measured in degrees from the
-  equator.
+  So you can have latitude measured in degrees from the Equator, and longitude measured in degrees from the
+  Greenwich meridian.
 
   Or you can have x measured in metres, and y measured in metres which is very
   handy for calculating distances or areas.
@@ -407,7 +406,7 @@ concepts for us:
 As a programmer I view the coordinate reference system idea as a neat hack.
 Everyone is really talking about points in 3D space here – and rather than
 having to record x,y,z all the time we are cheating and only recording two
-points (lat,lon) and using a model of the shape of the earth in order to
+points ``(lat,lon)`` and using a model of the shape of the Earth in order to
 calculate z.
 
 EPSG Codes
@@ -423,14 +422,14 @@ EPSG:4326
    .. image:: images/epsg4326.png
       :scale: 30
    
-   This is the big one: information measured by lat/lon using decimal degrees.
+   This is the big one: information measured by latitude/longitude using decimal degrees.
         
    ``CRS.decode("EPSG:4326");``
 
-   `DefaultGeographicCRS.WGS84;``
+   ``DefaultGeographicCRS.WGS84;``
 
 EPSG: 3785
-    Popular Visualisation CRS / Mercator 
+    Popular Visualization CRS / Mercator 
 
     .. image:: images/epsg3785.png
        :scale: 30
@@ -453,11 +452,10 @@ EPSG:3005
     ``CRS.decode("EPSG:3005");``
 
 
-
 Axis Order
 ----------
 
-.. sidebar:: Why
+.. sidebar:: Why?
 
    When navigating by stars you can figure out latitude by the angle to the
    north star – but you need to guess for longitude based on how many days you
@@ -481,7 +479,7 @@ So if you see some data in "EPSG:4326" you have no idea if it is in x/y order or
 in y/x order.
 
 We have finally sorted out an alternative; rather than EPSG:4326 we are supposed
-to use "urn:ogc:def:crs:EPSG:6.6:4326". If you ever see that you can be sure
+to use ``urn:ogc:def:crs:EPSG:6.6:4326``. If you ever see that you can be sure
 that a) someone really knows what they are doing and b) the data is recorded in
 exactly the order defined by the EPSG database.
 
@@ -495,7 +493,7 @@ You can perform a workaround on a case by case basis::
 
 Or you can set a global hint to force GeoTools to use x/y order::
    
-   static void main( String args []){
+   static void main(String args []){
       System.setProperty("org.geotools.referencing.forceXY", "true");
       
       ....
@@ -506,7 +504,7 @@ For more Information
 
 `EPSG registry <http://www.epsg-registry.org/>`_ 
   This is *the* place to go to look up map projections. You can search by
-  geographic area, name and type and epsg code.
+  geographic area, name and type and EPSG code.
 
 `spatialreference.org <http://spatialreference.org/>`_
   An easy to use service listing EPSG and OGC references code showing their representation in different software products.

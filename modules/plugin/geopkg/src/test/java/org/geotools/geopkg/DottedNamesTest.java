@@ -58,9 +58,6 @@ public class DottedNamesTest {
     /**
      * Test for GEOT-5852 - SQL exception when querying Geopackage table containing a dot in the
      * name
-     *
-     * @throws IOException
-     * @throws CQLException
      */
     @Test
     public void testGetContents() throws IOException, CQLException {

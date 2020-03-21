@@ -99,11 +99,7 @@ public class PropSelectionTest extends AppSchemaTestSupport {
         mfSource = mfDataAccess.getFeatureSource(MAPPED_FEATURE);
     }
 
-    /**
-     * Testing Property Name Selection
-     *
-     * @throws IOException
-     */
+    /** Testing Property Name Selection */
     @Test
     public void testPropertyNameSelection() throws IOException {
 

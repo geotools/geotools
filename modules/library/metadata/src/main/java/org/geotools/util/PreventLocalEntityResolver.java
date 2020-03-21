@@ -18,8 +18,11 @@ package org.geotools.util;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.URI;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.logging.Logging;
 import org.xml.sax.InputSource;
@@ -48,6 +51,13 @@ public class PreventLocalEntityResolver implements EntityResolver2, Serializable
 
     protected static final Logger LOGGER = Logging.getLogger(PreventLocalEntityResolver.class);
 
+    // allow schema parsing for validation.
+    // http(s) - external schema reference
+    // jar - internal schema reference
+    // vfs - internal schema reference (JBoss/WildFly)
+    private static final Pattern ALLOWED_URIS =
+            Pattern.compile("(?i)(jar:file|http|vfs)[^?#;]*\\.xsd");
+
     /** Singleton instance of PreventLocalEntityResolver */
     public static final PreventLocalEntityResolver INSTANCE = new PreventLocalEntityResolver();
 
@@ -58,20 +68,7 @@ public class PreventLocalEntityResolver implements EntityResolver2, Serializable
     @Override
     public InputSource resolveEntity(String publicId, String systemId)
             throws SAXException, IOException {
-        if (LOGGER.isLoggable(Level.FINEST)) {
-            LOGGER.finest("resolveEntity request: publicId=" + publicId + ", systemId=" + systemId);
-        }
-
-        // allow schema parsing for validation.
-        // http(s) - external schema reference
-        // jar - internal schema reference
-        // vfs - internal schema reference (JBOSS)
-        if (systemId != null && systemId.matches("(?i)(jar:file|http|vfs)[^?#;]*\\.xsd")) {
-            return null;
-        }
-
-        // do not allow external entities
-        throw new SAXException(ERROR_MESSAGE_BASE + systemId);
+        return resolveEntity(null, publicId, null, systemId);
     }
 
     @Override
@@ -90,9 +87,29 @@ public class PreventLocalEntityResolver implements EntityResolver2, Serializable
     @Override
     public InputSource resolveEntity(String name, String publicId, String baseURI, String systemId)
             throws SAXException, IOException {
-        if (baseURI != null && baseURI.matches("(?i)(jar:file|http|vfs)[^?#;]*\\.xsd")) {
-            return null;
+        if (LOGGER.isLoggable(Level.FINEST)) {
+            LOGGER.finest(
+                    String.format(
+                            "resolveEntity request: name=%s, publicId=%s, baseURI=%s, systemId=%s",
+                            name, publicId, baseURI, systemId));
         }
-        return resolveEntity(publicId, systemId);
+
+        try {
+            String uri = systemId;
+            // ignore the baseURI if the systemId is absolute
+            if (!URI.create(systemId).isAbsolute()) {
+                // use the baseURI to convert a relative systemId to absolute
+                uri = new URL(new URL(baseURI), systemId).toString();
+            }
+            // check if the absolute systemId is an allowed URI
+            if (ALLOWED_URIS.matcher(uri).matches()) {
+                return null;
+            }
+        } catch (Exception e) {
+            // do nothing
+        }
+
+        // do not allow external entities
+        throw new SAXException(ERROR_MESSAGE_BASE + systemId);
     }
 }

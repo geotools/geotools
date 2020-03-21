@@ -40,7 +40,7 @@ public abstract class RenderingExecutorTestBase {
 
     protected static final Rectangle PANE = new Rectangle(200, 150);
 
-    protected static final long WAIT_TIMEOUT = 500;
+    protected static final long WAIT_TIMEOUT = 5000;
 
     protected RenderingExecutor executor;
     protected Graphics2D graphics;

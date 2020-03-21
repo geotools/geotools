@@ -46,11 +46,6 @@ import org.opengis.util.InternationalString;
  * @author Rueben Schulz
  * @author Martin Desruisseaux
  * @author Simon Schafer
- * @deprecated This class will move in a <code>org.geotools.referencing.factory.<strong>web</strong>
- *     </code> package in a future Geotools version, in order to put together other web-related
- *     factories defined outside the WMS specification. Don't use this class directly. You should
- *     not need to anyway - use {@link org.geotools.referencing.ReferencingFactoryFinder} instead,
- *     which will continue to work no matter where this class is located.
  */
 public class AutoCRSFactory extends DirectAuthorityFactory implements CRSAuthorityFactory {
     /**
@@ -84,10 +79,11 @@ public class AutoCRSFactory extends DirectAuthorityFactory implements CRSAuthori
         add(Auto42002.DEFAULT);
         add(Auto42003.DEFAULT);
         add(Auto42004.DEFAULT);
-        add(Auto97001.DEFAULT);
-        add(Auto97002.DEFAULT);
         // We don't actually support the Mollweide projection
         // add(Auto42005.DEFAULT);
+        add(Auto97001.DEFAULT);
+        add(Auto97002.DEFAULT);
+        add(Auto97003.DEFAULT);
     }
 
     /** Add the specified factlet. */

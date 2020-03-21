@@ -98,7 +98,6 @@ public abstract class Abstract_URI_AuthorityFactory extends AuthorityFactoryAdap
      * URI.
      *
      * @param code the URI to be parsed
-     * @return
      */
     protected abstract URI_Parser buildParser(String code) throws NoSuchAuthorityCodeException;
 

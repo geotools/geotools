@@ -43,12 +43,7 @@ public class YsldEncoder {
         this.uomMapper = uomMapper;
     }
 
-    /**
-     * Encode the passed {@link StyledLayerDescriptor} as YSLD.
-     *
-     * @param sld
-     * @throws IOException
-     */
+    /** Encode the passed {@link StyledLayerDescriptor} as YSLD. */
     public void encode(StyledLayerDescriptor sld) throws IOException {
         DumperOptions dumpOpts = new DumperOptions();
         dumpOpts.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);

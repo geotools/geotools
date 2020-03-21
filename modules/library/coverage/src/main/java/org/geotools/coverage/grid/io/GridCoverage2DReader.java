@@ -118,6 +118,12 @@ public interface GridCoverage2DReader extends GridCoverageReader {
     public static final String MULTICRS_READER = "MultiCRSReader";
 
     /**
+     * When the above MULTICRS_READER property is present and evaluates to "true", this property may
+     * contain the list of internal EPSG Codes of the multiple CRS, if the reader implements it.
+     */
+    public static final String MULTICRS_EPSGCODES = "MultiCRSEPSGCodes";
+
+    /**
      * Return the original {@link GeneralEnvelope} for the default coverage served by the underlying
      * store.
      *
@@ -290,28 +296,6 @@ public interface GridCoverage2DReader extends GridCoverageReader {
     double[] getReadingResolutions(
             String coverageName, OverviewPolicy policy, double[] requestedResolution)
             throws IOException;
-
-    /**
-     * Number of predetermined overviews for the default coverage.
-     *
-     * @return The number of predetermined overviews for the default coverage. Zero if none are
-     *     available, -1 if infinite are available, otherwise a positive number.
-     * @deprecated It should be used getDatasetLayout().getNumInternalOverviews() instead
-     */
-    int getNumOverviews();
-
-    /**
-     * Number of predetermined overviews for the specified coverage.
-     *
-     * @param coverageName the name of the coverage for which we do want to get the number of
-     *     overviews.
-     * @return The number of predetermined overviews for the specified coverage. 0 if none are
-     *     available, -1 if infinite are available, otherwise a positive number.
-     * @throws NullPointerException if the specified coverageName is <code>null</code>
-     * @throws IllegalArgumentException if the specified coverageName does not exist
-     * @deprecated It should be used getDatasetLayout().getNumInternalOverviews() instead
-     */
-    int getNumOverviews(String coverageName);
 
     /**
      * Returns the {@link DatasetLayout} for the coverage.

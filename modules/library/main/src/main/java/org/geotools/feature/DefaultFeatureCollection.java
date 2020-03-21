@@ -267,7 +267,6 @@ public class DefaultFeatureCollection
     /**
      * Test for collection membership.
      *
-     * @param collection
      * @return true if collection is completly covered
      */
     public boolean containsAll(Collection<?> collection) {
@@ -480,6 +479,7 @@ public class DefaultFeatureCollection
     //    }
 
     public FeatureReader<SimpleFeatureType, SimpleFeature> reader() throws IOException {
+        @SuppressWarnings("PMD.CloseResource") // wrapped and returned
         final SimpleFeatureIterator iterator = features();
         return new FeatureReader<SimpleFeatureType, SimpleFeature>() {
             public SimpleFeatureType getFeatureType() {

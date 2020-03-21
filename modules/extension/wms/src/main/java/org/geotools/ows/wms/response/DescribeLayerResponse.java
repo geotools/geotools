@@ -21,7 +21,6 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
-import org.apache.commons.io.IOUtils;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Response;
 import org.geotools.ows.ServiceException;
@@ -53,14 +52,11 @@ public class DescribeLayerResponse extends Response {
             hints.put(DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY, WMSSchema.getInstance());
 
             Object object;
-            InputStream inputStream = null;
-            try {
-                inputStream = getInputStream();
+
+            try (InputStream inputStream = getInputStream(); ) {
                 object = DocumentFactory.getInstance(inputStream, hints, Level.WARNING);
             } catch (SAXException e) {
                 throw (IOException) new IOException().initCause(e);
-            } finally {
-                IOUtils.closeQuietly(inputStream);
             }
 
             layerDescs = (LayerDescription[]) object;

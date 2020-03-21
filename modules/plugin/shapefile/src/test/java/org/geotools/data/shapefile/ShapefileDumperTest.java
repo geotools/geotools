@@ -97,6 +97,15 @@ public class ShapefileDumperTest {
     }
 
     @Test
+    public void testBasicPolygonsOtherName() throws Exception {
+        SimpleFeatureCollection fc = getFeaturesFromProperties(BASIC_POLYGONS);
+        ShapefileDumper dumper = new ShapefileDumper(dumperFolder);
+        dumper.dump("DaBasicPolygons", fc);
+
+        testBasicPolygonCollection(3, "DaBasicPolygons");
+    }
+
+    @Test
     public void testLongNames() throws Exception {
         SimpleFeatureCollection fc = getFeaturesFromProperties(LONGNAMES);
         ShapefileDumper dumper = new ShapefileDumper(dumperFolder);
@@ -155,7 +164,7 @@ public class ShapefileDumperTest {
         assertEquals(expectedSize, fc.size());
         assertFieldsNotEmpty(fc);
         checkTypeStructure(fc.getSchema(), MultiPolygon.class, "ID");
-        assertCst(BASIC_POLYGONS, "ISO-8859-1");
+        assertCst(typeName, "ISO-8859-1");
         return fc;
     }
 
@@ -300,14 +309,10 @@ public class ShapefileDumperTest {
         testBasicPolygonCollection(1, BASIC_POLYGONS + "2");
     }
 
-    /**
-     * Verifies the contents of the CST file are the expected ones
-     *
-     * @throws IOException
-     */
+    /** Verifies the contents of the CST file are the expected ones */
     private void assertCst(String typeName, String expectedCharset) throws IOException {
         File cst = new File(dumperFolder, typeName + ".cst");
-        String actualCharset = FileUtils.readFileToString(cst);
+        String actualCharset = FileUtils.readFileToString(cst, "UTF-8");
         assertEquals(expectedCharset, actualCharset);
     }
 
@@ -315,8 +320,6 @@ public class ShapefileDumperTest {
      * Returns a collection from one of the property sample data
      *
      * @param typeName The name of the property file (without .properties)
-     * @return
-     * @throws IOException
      */
     private SimpleFeatureCollection getFeaturesFromProperties(String typeName) throws IOException {
         return propertyStore.getFeatureSource(typeName).getFeatures();
@@ -325,10 +328,6 @@ public class ShapefileDumperTest {
     /**
      * Returns a collection from the dumper folder given a type name. The support shapefile data
      * store will be closed automatically by the test machinery during tear down
-     *
-     * @param typeName
-     * @return
-     * @throws IOException
      */
     private SimpleFeatureCollection getFeaturesFromShapefile(String typeName) throws IOException {
         File shp = new File(dumperFolder, typeName + ".shp");
@@ -360,10 +359,6 @@ public class ShapefileDumperTest {
 
     /**
      * Verifies the specified type has the right geometry type, and the specified list of attributes
-     *
-     * @param type
-     * @param geometryType
-     * @param attributes
      */
     private void checkTypeStructure(
             SimpleFeatureType type, Class geometryType, String... attributes) {

@@ -18,6 +18,7 @@ package org.geotools.brewer.styling.builder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Style;
 import org.geotools.util.SimpleInternationalString;
@@ -32,6 +33,8 @@ public class StyleBuilder extends AbstractStyleBuilder<Style> {
     String title;
 
     boolean isDefault;
+
+    FillBuilder background;
 
     public StyleBuilder() {
         super(null);
@@ -66,6 +69,13 @@ public class StyleBuilder extends AbstractStyleBuilder<Style> {
         return ftsBuilder;
     }
 
+    public FillBuilder background() {
+        this.unset = false;
+        this.background = new FillBuilder();
+
+        return background;
+    }
+
     public Style build() {
         if (unset) {
             return null;
@@ -86,6 +96,9 @@ public class StyleBuilder extends AbstractStyleBuilder<Style> {
             }
             s.setDefault(isDefault);
         }
+        if (background != null) {
+            s.setBackground(background.build());
+        }
 
         reset();
         return s;
@@ -101,6 +114,7 @@ public class StyleBuilder extends AbstractStyleBuilder<Style> {
         styleAbstract = null;
         title = null;
         isDefault = false;
+        background = null;
         unset = false;
         return this;
     }
@@ -114,9 +128,16 @@ public class StyleBuilder extends AbstractStyleBuilder<Style> {
             fts.add(new FeatureTypeStyleBuilder(this).reset(ft));
         }
         name = style.getName();
-        styleAbstract = style.getAbstract();
-        title = style.getTitle();
+        styleAbstract =
+                Optional.ofNullable(style.getDescription().getAbstract())
+                        .map(Object::toString)
+                        .orElse(null);
+        title =
+                Optional.ofNullable(style.getDescription().getTitle())
+                        .map(Object::toString)
+                        .orElse(null);
         isDefault = style.isDefault();
+        background = new FillBuilder().reset(style.getBackground());
         unset = false;
         return this;
     }

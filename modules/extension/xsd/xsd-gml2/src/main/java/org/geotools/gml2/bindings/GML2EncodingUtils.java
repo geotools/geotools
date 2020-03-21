@@ -77,11 +77,6 @@ public class GML2EncodingUtils {
         return null;
     }
 
-    /** @deprecated use {@link #toURI(CoordinateReferenceSystem)}. */
-    public static String crs(CoordinateReferenceSystem crs) {
-        return toURI(crs);
-    }
-
     /** Encodes the crs object as a uri. */
     public static String toURI(CoordinateReferenceSystem crs) {
         return toURI(crs, false);
@@ -267,10 +262,6 @@ public class GML2EncodingUtils {
     /**
      * Returns the geometry dimension, either as forced in the configuration, or the geometry
      * natural one
-     *
-     * @param geometry
-     * @param config
-     * @return
      */
     public static Integer getGeometryDimension(Geometry geometry, Configuration config) {
         if (GMLEncodingUtils.isEmpty(geometry)) {

@@ -24,6 +24,7 @@ import junit.framework.TestCase;
 import org.geotools.geometry.GeometryBuilder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.geometry.DirectPosition;
+import org.opengis.geometry.PositionFactory;
 import org.opengis.geometry.coordinate.GeometryFactory;
 import org.opengis.geometry.coordinate.LineString;
 import org.opengis.geometry.primitive.Curve;
@@ -46,16 +47,14 @@ public abstract class AbstractGeometryTest extends TestCase {
             "GEOGCS[\"WGS84\", DATUM[\"WGS84\", SPHEROID[\"WGS84\", 6378137.0, 298.257223563]],"
                     + "PRIMEM[\"Greenwich\", 0.0], UNIT[\"degree\",0.017453292519943295], "
                     + "AXIS[\"Longitude\",EAST], AXIS[\"Latitude\",NORTH]]";
+    private PositionFactory posFact;
 
-    /**
-     * setUp Called before each test.
-     *
-     * @throws FactoryException
-     */
+    /** setUp Called before each test. */
     public void setUp() throws FactoryException {
         GeometryBuilder builder = new GeometryBuilder(DefaultGeographicCRS.WGS84);
         gFact = builder.getGeometryFactory();
         pFact = builder.getPrimitiveFactory();
+        posFact = builder.getPositionFactory();
     }
 
     protected GeometryFactory getGeometryFactory() {
@@ -70,13 +69,12 @@ public abstract class AbstractGeometryTest extends TestCase {
         double[] coords = new double[2];
         coords[0] = x;
         coords[1] = y;
-        return gFact.createDirectPosition(coords);
+        return posFact.createDirectPosition(coords);
     }
 
     /**
      * A helper method for creating a Curve from an array of DirectPositions
      *
-     * @param points
      * @return a <tt>Curve</tt>
      */
     protected Curve createCurve(final DirectPosition[] points) {
@@ -88,7 +86,6 @@ public abstract class AbstractGeometryTest extends TestCase {
     /**
      * A helper method for creating a lineString from an array of DirectPositions
      *
-     * @param points
      * @return <tt>LineString</tt>
      */
     protected LineString createLineString(final DirectPosition[] points) {
@@ -99,7 +96,6 @@ public abstract class AbstractGeometryTest extends TestCase {
     /**
      * A helper method for creating a Ring from an array of DirectPositions
      *
-     * @param curve
      * @return a <tt>Ring</tt>
      */
     protected Ring createRing(final Curve curve) {
@@ -111,7 +107,6 @@ public abstract class AbstractGeometryTest extends TestCase {
     /**
      * creates a SurfaceBoundary using a curve as the exterior
      *
-     * @param exterior
      * @return <tt>SurfaceBoundary</tt>
      */
     protected SurfaceBoundary createSurfaceBoundary(Curve exterior) {

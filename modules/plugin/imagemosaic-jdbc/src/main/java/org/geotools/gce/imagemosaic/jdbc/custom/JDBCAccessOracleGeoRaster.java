@@ -21,7 +21,7 @@ import com.sun.media.jai.codec.ByteArraySeekableStream;
 import com.sun.media.jai.codec.ImageCodec;
 import com.sun.media.jai.codec.ImageDecoder;
 import com.sun.media.jai.codec.SeekableStream;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.RenderedImage;
@@ -220,29 +220,21 @@ public class JDBCAccessOracleGeoRaster extends JDBCAccessCustom {
                         + getConfig().getCoverageNameAttribute()
                         + "=?";
 
-        PreparedStatement s = null;
-        ResultSet r = null;
         Envelope extent = null;
 
-        try {
-            s = con.prepareStatement(extentSelectLBX);
+        try (PreparedStatement s = con.prepareStatement(extentSelectLBX)) {
             s.setString(1, getConfig().getCoverageName());
-            r = s.executeQuery();
-            if (r.next()) {
-                throw new SQLException("Did not get any result from the database bounds query");
+            try (ResultSet r = s.executeQuery()) {
+                if (r.next()) {
+                    throw new SQLException("Did not get any result from the database bounds query");
+                }
+                byte[] wkb = r.getBytes(1);
+                Geometry geom = new WKBReader().read(wkb);
+                extent = geom.getEnvelopeInternal();
+                LOGGER.fine("creating Extent");
             }
-            byte[] wkb = r.getBytes(1);
-            Geometry geom = new WKBReader().read(wkb);
-            extent = geom.getEnvelopeInternal();
-            LOGGER.fine("creating Extent");
-
         } catch (Exception e) {
             throw new RuntimeException(e);
-
-        } finally {
-
-            closeResultSet(r);
-            closePreparedStmt(s);
         }
 
         LOGGER.fine("returning Extent");
@@ -267,25 +259,16 @@ public class JDBCAccessOracleGeoRaster extends JDBCAccessCustom {
                         + getConfig().getCoverageNameAttribute()
                         + "=?";
 
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
         int srid = 0;
-
-        try {
-            stmt = con.prepareStatement(SRSSelect);
-
+        try (PreparedStatement stmt = con.prepareStatement(SRSSelect)) {
             stmt.setString(1, getConfig().getCoverageName());
-            rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                srid = rs.getInt(1);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    srid = rs.getInt(1);
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } finally {
-
-            closeResultSet(rs);
-            closePreparedStmt(stmt);
         }
 
         return srid;
@@ -312,28 +295,22 @@ public class JDBCAccessOracleGeoRaster extends JDBCAccessCustom {
         LOGGER.fine("Sptial Reso SQL:" + sqlSpatialResolution);
 
         double[] spatialResolution = new double[2];
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-
-        try {
-            stmt = con.prepareStatement(sqlSpatialResolution);
+        try (PreparedStatement stmt = con.prepareStatement(sqlSpatialResolution)) {
             stmt.setString(1, getConfig().getCoverageName());
-            rs = stmt.executeQuery();
-            if (!rs.next()) {
-                throw new SQLException(
-                        "Query to get returned spatial resolutions did not return any result");
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (!rs.next()) {
+                    throw new SQLException(
+                            "Query to get returned spatial resolutions did not return any result");
+                }
+                Array array = rs.getArray(1);
+                BigDecimal[] javaArray = (BigDecimal[]) array.getArray();
+                spatialResolution[1] = javaArray[0].doubleValue();
+                spatialResolution[0] = javaArray[1].doubleValue();
+                LOGGER.fine("Assigned X Value: " + spatialResolution[0]);
+                LOGGER.fine("Assigned Y Value: " + spatialResolution[1]);
             }
-            Array array = rs.getArray(1);
-            BigDecimal[] javaArray = (BigDecimal[]) array.getArray();
-            spatialResolution[1] = javaArray[0].doubleValue();
-            spatialResolution[0] = javaArray[1].doubleValue();
-            LOGGER.fine("Assigned X Value: " + spatialResolution[0]);
-            LOGGER.fine("Assigned Y Value: " + spatialResolution[1]);
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Failure getting spatial resolution", ex);
-        } finally {
-            closeResultSet(rs);
-            closePreparedStmt(stmt);
         }
 
         LOGGER.fine("getSpatialResolution Finished");
@@ -358,27 +335,19 @@ public class JDBCAccessOracleGeoRaster extends JDBCAccessCustom {
                         + getConfig().getCoverageNameAttribute()
                         + " = ?";
 
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
         int numberOfPyramidLevels = 0;
-
-        try {
-
-            LOGGER.fine("get pyramid level sql: " + sqlPyramidLevels);
-            stmt = con.prepareStatement(sqlPyramidLevels);
+        LOGGER.fine("get pyramid level sql: " + sqlPyramidLevels);
+        try (PreparedStatement stmt = con.prepareStatement(sqlPyramidLevels)) {
             stmt.setString(1, getConfig().getCoverageName());
-            rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                LOGGER.fine("Assiging number of levels");
-                numberOfPyramidLevels = rs.getInt(1) + 1;
-                LOGGER.fine("Assigned number of levels");
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    LOGGER.fine("Assiging number of levels");
+                    numberOfPyramidLevels = rs.getInt(1) + 1;
+                    LOGGER.fine("Assigned number of levels");
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } finally {
-            closeResultSet(rs);
-            closePreparedStmt(stmt);
         }
 
         LOGGER.fine("Returning Pyramid Levels");
@@ -446,32 +415,33 @@ public class JDBCAccessOracleGeoRaster extends JDBCAccessCustom {
             byte[] bytes = getImageBytesUsingSDOExport(envelope, level, conn);
 
             // start creating a java Buffered image from the blob
-            SeekableStream stream = new ByteArraySeekableStream(bytes);
+            try (SeekableStream stream = new ByteArraySeekableStream(bytes)) {
 
-            // find an ImageDecorder
-            String decoderName = null;
-            for (String dn : ImageCodec.getDecoderNames(stream)) {
-                decoderName = dn;
-                break;
+                // find an ImageDecorder
+                String decoderName = null;
+                for (String dn : ImageCodec.getDecoderNames(stream)) {
+                    decoderName = dn;
+                    break;
+                }
+                // decode Image
+                ImageDecoder decoder = ImageCodec.createImageDecoder(decoderName, stream, null);
+                RenderedImage rimage = decoder.decodeAsRenderedImage();
+
+                // Check for the color model, if there is none, create one
+                ColorModel cm = rimage.getColorModel();
+                if (cm == null) cm = PlanarImage.createColorModel(rimage.getSampleModel());
+
+                // Convert to BufferedImage
+                PlanarImage pimage = PlanarImage.wrapRenderedImage(rimage);
+                bimg = pimage.getAsBufferedImage(null, cm);
+
+                LOGGER.fine("Creating BufferedImage from GeoRaster Object");
+
+                // LOGGER.fine("Writing Retrieved Image to disk (Should be for Debugging only!)");
+                // ImageIO.write(bimg,"png", new File("/tmp/pics/test.png"));
+
+                return new TileQueueElement(getConfig().getCoverageName(), bimg, envelope);
             }
-            // decode Image
-            ImageDecoder decoder = ImageCodec.createImageDecoder(decoderName, stream, null);
-            RenderedImage rimage = decoder.decodeAsRenderedImage();
-
-            // Check for the color model, if there is none, create one
-            ColorModel cm = rimage.getColorModel();
-            if (cm == null) cm = PlanarImage.createColorModel(rimage.getSampleModel());
-
-            // Convert to BufferedImage
-            PlanarImage pimage = PlanarImage.wrapRenderedImage(rimage);
-            bimg = pimage.getAsBufferedImage(null, cm);
-
-            LOGGER.fine("Creating BufferedImage from GeoRaster Object");
-
-            // LOGGER.fine("Writing Retrieved Image to disk (Should be for Debugging only!)");
-            // ImageIO.write(bimg,"png", new File("/tmp/pics/test.png"));
-
-            return new TileQueueElement(getConfig().getCoverageName(), bimg, envelope);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -487,13 +457,9 @@ public class JDBCAccessOracleGeoRaster extends JDBCAccessCustom {
      */
     private byte[] getImageBytesUsingSDOExport(
             GeneralEnvelope envelope, int level, Connection conn) {
-        PreparedStatement ps = null;
-        CallableStatement cs = null;
-        ResultSet r = null;
-
-        try {
-            ps = conn.prepareStatement(stmtPixel);
-
+        BigDecimal[] pixelCoords1 = null;
+        BigDecimal[] pixelCoords2 = null;
+        try (PreparedStatement ps = conn.prepareStatement(stmtPixel)) {
             ps.setInt(1, level);
             ps.setDouble(2, envelope.getMinimum(0));
             ps.setDouble(3, envelope.getMaximum(1));
@@ -502,24 +468,21 @@ public class JDBCAccessOracleGeoRaster extends JDBCAccessCustom {
             ps.setDouble(6, envelope.getMinimum(1));
             ps.setString(7, getConfig().getCoverageName());
 
-            r = ps.executeQuery();
-            BigDecimal[] pixelCoords1 = null;
-            BigDecimal[] pixelCoords2 = null;
-
-            if (r.next()) {
-                pixelCoords1 = (BigDecimal[]) r.getArray(1).getArray();
-                pixelCoords2 = (BigDecimal[]) r.getArray(2).getArray();
-            } else {
-                throw new RuntimeException(
-                        "No cell/pixel coordinates for world Envelope " + envelope);
+            try (ResultSet r = ps.executeQuery()) {
+                if (r.next()) {
+                    pixelCoords1 = (BigDecimal[]) r.getArray(1).getArray();
+                    pixelCoords2 = (BigDecimal[]) r.getArray(2).getArray();
+                } else {
+                    throw new RuntimeException(
+                            "No cell/pixel coordinates for world Envelope " + envelope);
+                }
             }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
-            r.close();
-            ps.close();
-
-            // Export the georaster object, cropped by cell coordinates as a TIFF image into a BLOB
-
-            cs = conn.prepareCall(stmtExport);
+        // Export the georaster object, cropped by cell coordinates as a TIFF image into a BLOB
+        try (CallableStatement cs = conn.prepareCall(stmtExport)) {
             cs.setString(1, getConfig().getCoverageName());
             String params =
                     String.format(
@@ -544,14 +507,9 @@ public class JDBCAccessOracleGeoRaster extends JDBCAccessCustom {
                 }
             }
             if (freeTemporary != null) freeTemporary.invoke(blob);
-            cs.close();
             return bytes;
         } catch (Exception e) {
             throw new RuntimeException(e);
-        } finally {
-            closeResultSet(r);
-            closeStmt(ps);
-            closeStmt(cs);
         }
     }
 }

@@ -54,7 +54,6 @@ public class PicoLineStringLineSegmentTest extends TestCase {
     /**
      * Creates a pico container that knows about all the geom factories
      *
-     * @param crs
      * @return container
      */
     protected PicoContainer container(CoordinateReferenceSystem crs) {
@@ -362,10 +361,10 @@ public class PicoLineStringLineSegmentTest extends TestCase {
         PointArray controlPoints = line1.getControlPoints();
         assertEquals(controlPoints.size(), 5);
         // control points are in opposite order
-        assertEquals(controlPoints.getDirectPosition(0, null), p5.getPosition());
-        assertEquals(controlPoints.getDirectPosition(1, null), p4.getPosition());
-        assertEquals(controlPoints.getDirectPosition(2, null), p3.getPosition());
-        assertEquals(controlPoints.getDirectPosition(3, null), p2.getPosition());
-        assertEquals(controlPoints.getDirectPosition(4, null), p1.getPosition());
+        assertEquals(controlPoints.getDirectPosition(0, null), p5.getDirectPosition());
+        assertEquals(controlPoints.getDirectPosition(1, null), p4.getDirectPosition());
+        assertEquals(controlPoints.getDirectPosition(2, null), p3.getDirectPosition());
+        assertEquals(controlPoints.getDirectPosition(3, null), p2.getDirectPosition());
+        assertEquals(controlPoints.getDirectPosition(4, null), p1.getDirectPosition());
     }
 }

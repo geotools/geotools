@@ -3,7 +3,7 @@ Prepare db2 with spatial extender
 
 Preparing a db2 database needs the following steps:
 
-1. After you created the db, use the db2se utility to do the following::
+1. After you created the db, use the ``db2se`` utility to do the following::
      
      db2se enable_db db_name
 

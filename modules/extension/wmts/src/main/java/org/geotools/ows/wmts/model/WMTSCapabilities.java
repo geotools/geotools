@@ -101,7 +101,7 @@ public class WMTSCapabilities extends Capabilities {
 
     public WMTSCapabilities(CapabilitiesType capabilities) throws ServiceException {
         caps = capabilities;
-        setService(new WMTSService(caps.getServiceIdentification()));
+        setService(new WMTSService(caps.getServiceIdentification(), caps.getServiceProvider()));
         setVersion(caps.getServiceIdentification().getServiceTypeVersion().toString());
         ContentsType contents = caps.getContents();
 
@@ -181,7 +181,10 @@ public class WMTSCapabilities extends Capabilities {
                 if (wmtsLayer.getLatLonBoundingBox() == null) {
                     // We did not find any good bbox
                     LOGGER.warning("No good Bbox found for layer " + l.getName());
-                    throw new ServiceException("No good Bbox found for layer " + l.getName());
+                    // throw new ServiceException("No good Bbox found for layer " + l.getName());
+                    CRSEnvelope latLonBoundingBox = new CRSEnvelope("CRS:84", -180, -90, 180, 90);
+                    wmtsLayer.setLatLonBoundingBox(latLonBoundingBox);
+                    wmtsLayer.setBoundingBoxes(latLonBoundingBox);
                 }
             }
 
@@ -516,8 +519,8 @@ public class WMTSCapabilities extends Capabilities {
     }
 
     /**
-     * @param string
-     * @return
+     * @param name of the layer
+     * @return the WMTS layer
      */
     public WMTSLayer getLayer(String name) {
         return layerMap.get(name);

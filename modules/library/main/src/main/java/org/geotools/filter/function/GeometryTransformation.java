@@ -29,11 +29,6 @@ import org.opengis.filter.expression.Function;
  * @author Andrea Aime - GeoSolutions
  */
 public interface GeometryTransformation extends Function {
-    /**
-     * Returns a query envelope given a certain
-     *
-     * @param renderingEnvelope
-     * @return
-     */
+    /** Returns a query envelope given a certain */
     ReferencedEnvelope invert(ReferencedEnvelope renderingEnvelope);
 }

@@ -39,7 +39,6 @@ class JDBCAccessFactory {
      *
      * @param config The Config object
      * @return the corresponding JDBCAccess object
-     * @throws Exception
      */
     @SuppressWarnings("unchecked")
     static synchronized JDBCAccess getJDBCAcess(Config config) throws Exception {

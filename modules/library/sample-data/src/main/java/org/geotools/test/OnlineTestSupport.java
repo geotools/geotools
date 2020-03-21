@@ -72,7 +72,6 @@ public abstract class OnlineTestSupport {
      * <p>Subclasses do not have to override this method, but doing so allows builders to choose to
      * have this test disable itself when the online resource is not available.
      *
-     * @throws Exception
      * @see OnlineTestCase#connect()
      */
     protected void connect() throws Exception {}
@@ -80,7 +79,6 @@ public abstract class OnlineTestSupport {
     /**
      * Override this method to disconnect from an online resource. Throw an exception on failure.
      *
-     * @throws Exception
      * @see OnlineTestCase#disconnect()
      */
     protected void disconnect() throws Exception {}
@@ -90,7 +88,6 @@ public abstract class OnlineTestSupport {
      * this test is not available,
      *
      * @return false if a required resource is not online
-     * @throws Exception
      * @see OnlineTestCase#isOnline()
      */
     protected boolean isOnline() throws Exception {

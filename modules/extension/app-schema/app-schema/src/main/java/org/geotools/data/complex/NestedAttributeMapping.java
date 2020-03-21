@@ -88,15 +88,8 @@ public class NestedAttributeMapping extends AttributeMapping {
     /**
      * Sole constructor
      *
-     * @param idExpression
-     * @param parentExpression
-     * @param targetXPath
-     * @param targetNodeInstance
-     * @param isMultiValued
-     * @param clientProperties
      * @param sourceElement parent feature element type
      * @param sourcePath XPath link to nested feature
-     * @throws IOException
      */
     public NestedAttributeMapping(
             Expression idExpression,
@@ -134,10 +127,7 @@ public class NestedAttributeMapping extends AttributeMapping {
     /**
      * Get matching input features that are stored in this mapping using a supplied link value.
      *
-     * @param foreignKeyValue
      * @return The matching input feature
-     * @throws IOException
-     * @throws IOException
      */
     public List<Feature> getInputFeatures(
             Object caller,
@@ -223,7 +213,6 @@ public class NestedAttributeMapping extends AttributeMapping {
      * @param isMultiple true if the table is denormalised and multiple values are possible for the
      *     same id
      * @return list of built features
-     * @throws IOException
      */
     private List<Feature> getFilteredFeatures(Object foreignKeyValue, boolean isMultiple)
             throws IOException {
@@ -297,10 +286,7 @@ public class NestedAttributeMapping extends AttributeMapping {
     /**
      * Get matching input features that are stored in this mapping using a supplied link value.
      *
-     * @param foreignKeyValue
      * @return The matching input feature
-     * @throws IOException
-     * @throws IOException
      */
     public List<Feature> getInputFeatures(Object foreignKeyValue, FeatureTypeMapping fMapping)
             throws IOException {
@@ -342,10 +328,8 @@ public class NestedAttributeMapping extends AttributeMapping {
     /**
      * Get the maching built features that are stored in this mapping using a supplied link value
      *
-     * @param foreignKeyValue
      * @param reprojection Reprojected CRS or null
      * @return The matching simple features
-     * @throws IOException
      */
     public List<Feature> getFeatures(
             Object foreignKeyValue,
@@ -369,11 +353,9 @@ public class NestedAttributeMapping extends AttributeMapping {
     /**
      * Get the maching built features that are stored in this mapping using a supplied link value
      *
-     * @param foreignKeyValue
      * @param reprojection Reprojected CRS or null
      * @param selectedProperties list of properties to get
      * @return The matching simple features
-     * @throws IOException
      */
     public List<Feature> getFeatures(
             Object source,

@@ -60,8 +60,6 @@ public class LineStringImpl extends CurveSegmentImpl implements LineString {
      * and constructs a LineString with those points as controlPoints. The constructor of a
      * LineString takes two or more positions and creates the appropriate line string joining them.
      * LineString::LineString(points[2..n]:Position):LineString
-     *
-     * @param lineString
      */
     public LineStringImpl(LineStringImpl lineString) {
         super(lineString);
@@ -74,12 +72,7 @@ public class LineStringImpl extends CurveSegmentImpl implements LineString {
         this.envelope = new EnvelopeImpl(lineString.getEnvelope());
     }
 
-    /**
-     * Constructor by a PointArray and a StartParam
-     *
-     * @param pointArray
-     * @param startPar
-     */
+    /** Constructor by a PointArray and a StartParam */
     public LineStringImpl(PointArrayImpl pointArray, double startPar) {
         super(startPar);
         super.setInterpolation(CurveInterpolation.LINEAR);
@@ -609,7 +602,6 @@ public class LineStringImpl extends CurveSegmentImpl implements LineString {
 
     // Not used!
     // /**
-    // * @param minSpacing
     // */
     // public void merge(double minSpacing) {
     // // TO DO test

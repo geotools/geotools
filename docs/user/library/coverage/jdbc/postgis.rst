@@ -1,4 +1,4 @@
-Prepare for postgis
+Prepare for PostGIS
 -------------------
 
 1. Install PostGIS
@@ -7,7 +7,7 @@ Prepare for postgis
    
    * http://www.postgis.org/docs/ch02.html
 
-2. Spatially enabling a postgres db needs the following steps from the command line::
+2. Spatially enabling a PostgreSQL database needs the following steps from the command line::
      
      createlang plpgsql [yourdatabase]
      psql -d [yourdatabase] -f lwpostgis.sql

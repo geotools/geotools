@@ -38,11 +38,7 @@ public class DescriptionImpl implements Description {
         this.description = description;
     }
 
-    /**
-     * Copy constructor.
-     *
-     * @param description
-     */
+    /** Copy constructor. */
     public DescriptionImpl(org.opengis.style.Description description) {
         this(description.getTitle(), description.getAbstract());
     }
@@ -56,7 +52,7 @@ public class DescriptionImpl implements Description {
     }
 
     public void setTitle(String title) {
-        this.title = new SimpleInternationalString(title);
+        this.title = title != null ? new SimpleInternationalString(title) : null;
     }
 
     public InternationalString getAbstract() {
@@ -67,8 +63,8 @@ public class DescriptionImpl implements Description {
         this.description = description;
     }
 
-    public void setAbstract(String title) {
-        this.description = new SimpleInternationalString(title);
+    public void setAbstract(String description) {
+        this.description = description != null ? new SimpleInternationalString(description) : null;
     }
 
     public Object accept(org.opengis.style.StyleVisitor visitor, Object extraData) {
@@ -106,7 +102,6 @@ public class DescriptionImpl implements Description {
     /**
      * Check the provided description return it as a DescriptionImpl
      *
-     * @param description
      * @return DescriptionImpl from the provided description
      */
     static DescriptionImpl cast(org.opengis.style.Description description) {

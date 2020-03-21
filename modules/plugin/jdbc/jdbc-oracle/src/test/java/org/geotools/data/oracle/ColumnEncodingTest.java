@@ -31,7 +31,7 @@ public class ColumnEncodingTest {
     public void test() {
         StringBuffer buffer = new StringBuffer();
         OracleDialect dialect = new OracleDialect(null);
-        dialect.encodeColumnName("name", buffer);
+        dialect.encodeColumnName(null, "name", buffer);
         assertEquals("NAME", buffer.toString());
     }
 
@@ -40,7 +40,7 @@ public class ColumnEncodingTest {
     public void testspaces() {
         StringBuffer buffer = new StringBuffer();
         OracleDialect dialect = new OracleDialect(null);
-        dialect.encodeColumnName("name with space", buffer);
+        dialect.encodeColumnName(null, "name with space", buffer);
         assertEquals("\"NAME WITH SPACE\"", buffer.toString());
     }
 }

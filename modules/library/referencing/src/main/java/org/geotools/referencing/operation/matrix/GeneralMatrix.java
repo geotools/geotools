@@ -355,9 +355,6 @@ public class GeneralMatrix implements XMatrix, Serializable {
     //
     /**
      * Cast (or convert) Matrix to internal DMatrixRMaj representation required for CommonOps_DDRM.
-     *
-     * @param matrix
-     * @return
      */
     private DMatrixRMaj internal(Matrix matrix) {
         if (matrix instanceof GeneralMatrix) {
@@ -526,8 +523,6 @@ public class GeneralMatrix implements XMatrix, Serializable {
     /**
      * Returns the value at the row, column position in the matrix.
      *
-     * @param row
-     * @param column
      * @return Matrix value at the given row and column.
      */
     @Override
@@ -570,13 +565,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
         }
     }
 
-    /**
-     * Sets the value of the row, column position in the matrix.
-     *
-     * @param row
-     * @param column
-     * @param value
-     */
+    /** Sets the value of the row, column position in the matrix. */
     @Override
     public void setElement(int row, int column, double value) {
         mat.set(row, column, value);
@@ -860,12 +849,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
                 mat, rowSource, rowLimit, colSource, colLimit, target.mat, rowDest, colDest);
     }
 
-    /**
-     * Extract col to provided array.
-     *
-     * @param col
-     * @param array
-     */
+    /** Extract col to provided array. */
     public void getColumn(int col, double[] array) {
         for (int j = 0; j < array.length; j++) {
             array[j] = mat.get(j, col);
@@ -884,23 +868,14 @@ public class GeneralMatrix implements XMatrix, Serializable {
         mat = a;
     }
 
-    /**
-     * Extract row to provided array
-     *
-     * @param row
-     * @param array
-     */
+    /** Extract row to provided array */
     public void getRow(int row, double[] array) {
         for (int i = 0; i < array.length; i++) {
             array[i] = mat.get(row, i);
         }
     }
 
-    /**
-     * In-place multiply with provided matrix.
-     *
-     * @param matrix
-     */
+    /** In-place multiply with provided matrix. */
     public final void mul(Matrix matrix) {
         DMatrixRMaj b = internal(matrix);
         DMatrixRMaj ret = new DMatrixRMaj(mat.numRows, b.numCols);
@@ -908,12 +883,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
         mat = ret;
     }
 
-    /**
-     * In-place update from matrix1 * matrix2.
-     *
-     * @param matrix1
-     * @param matrix2
-     */
+    /** In-place update from matrix1 * matrix2. */
     public void mul(Matrix matrix1, Matrix matrix2) {
         DMatrixRMaj a = internal(matrix1);
         DMatrixRMaj b = internal(matrix2);
@@ -948,11 +918,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
         CommonOps_DDRM.subtract(a, b, mat);
     }
 
-    /**
-     * Update in place to the provided matrix (row-order).
-     *
-     * @param matrix
-     */
+    /** Update in place to the provided matrix (row-order). */
     public void set(double[] matrix) {
         mat.setData(matrix);
     }

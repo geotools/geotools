@@ -63,12 +63,7 @@ import org.geotools.util.NIOUtilities;
  */
 public class IndexedDbaseFileReader extends DbaseFileReader {
 
-    /**
-     * Like calling DbaseFileReader(ReadableByteChannel, true);
-     *
-     * @param channel
-     * @throws IOException
-     */
+    /** Like calling DbaseFileReader(ReadableByteChannel, true); */
     public IndexedDbaseFileReader(ShpFiles shpFiles) throws IOException {
         this(shpFiles, false);
     }
@@ -103,6 +98,7 @@ public class IndexedDbaseFileReader extends DbaseFileReader {
         super(shpFiles, useMemoryMappedBuffer, stringCharset, timeZone);
     }
 
+    @SuppressWarnings("PMD.CloseResource") // this.channel is managed as a field
     public void goTo(int recno) throws IOException, UnsupportedOperationException {
 
         if (this.randomAccessEnabled) {
@@ -153,12 +149,13 @@ public class IndexedDbaseFileReader extends DbaseFileReader {
 
     @SuppressWarnings("PMD.SystemPrintln")
     public static void main(String[] args) throws Exception {
-        IndexedDbaseFileReader reader = new IndexedDbaseFileReader(new ShpFiles(args[0]), false);
-        System.out.println(reader.getHeader());
-        int r = 0;
-        while (reader.hasNext()) {
-            System.out.println(++r + "," + java.util.Arrays.asList(reader.readEntry()));
+        try (IndexedDbaseFileReader reader =
+                new IndexedDbaseFileReader(new ShpFiles(args[0]), false)) {
+            System.out.println(reader.getHeader());
+            int r = 0;
+            while (reader.hasNext()) {
+                System.out.println(++r + "," + java.util.Arrays.asList(reader.readEntry()));
+            }
         }
-        reader.close();
     }
 }

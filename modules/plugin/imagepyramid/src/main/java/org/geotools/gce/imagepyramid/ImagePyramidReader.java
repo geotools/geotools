@@ -19,10 +19,8 @@ package org.geotools.gce.imagepyramid;
 import it.geosolutions.imageio.maskband.DatasetLayout;
 import java.awt.*;
 import java.io.BufferedInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.util.ArrayList;
@@ -34,7 +32,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageReadParam;
 import javax.media.jai.ImageLayout;
-import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -43,11 +40,11 @@ import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.data.DataSourceException;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.PrjFileReader;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
+import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
@@ -134,8 +131,6 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
      *
      * @param source The source object.
      * @param uHints {@link Hints} to control the behaviour of this reader.
-     * @throws IOException
-     * @throws UnsupportedEncodingException
      */
     public ImagePyramidReader(Object source, Hints uHints) throws IOException {
         // //
@@ -163,7 +158,7 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
         }
 
         // get the crs if able to
-        final URL prjURL = DataUtilities.changeUrlExt(sourceURL, "prj");
+        final URL prjURL = URLs.changeUrlExt(sourceURL, "prj");
         PrjFileReader crsReader = null;
         try {
             crsReader = new PrjFileReader(Channels.newChannel(prjURL.openStream()));
@@ -200,21 +195,14 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
     /**
      * Parses the main properties file loading the information regarding geographic extent and
      * overviews.
-     *
-     * @param sourceFile
-     * @throws IOException
-     * @throws FileNotFoundException
      */
     private void parseMainFile(final URL sourceURL) throws IOException {
 
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine("Parsing pyramid properties file at:" + sourceURL.toExternalForm());
         }
-        BufferedInputStream propertyStream = null;
-        InputStream openStream = null;
-        try {
-            openStream = sourceURL.openStream();
-            propertyStream = new BufferedInputStream(openStream);
+        try (InputStream in = sourceURL.openStream();
+                BufferedInputStream propertyStream = new BufferedInputStream(in)) {
             final Properties properties = new Properties();
             properties.load(propertyStream);
 
@@ -263,11 +251,6 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Parsed pyramid properties file at:" + sourceURL.toExternalForm());
             }
-        } finally {
-            // close input stream
-            if (propertyStream != null) IOUtils.closeQuietly(propertyStream);
-
-            if (openStream != null) IOUtils.closeQuietly(openStream);
         }
     }
 
@@ -275,8 +258,6 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
      * Constructor for an {@link ImagePyramidReader}.
      *
      * @param source The source object.
-     * @throws IOException
-     * @throws UnsupportedEncodingException
      */
     public ImagePyramidReader(Object source) throws IOException {
         this(source, null);
@@ -320,12 +301,6 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
     public Set<ParameterDescriptor<List>> getDynamicParameters(String coverageName) {
         return getFirstLevelReader(coverageName, false)
                 .getDynamicParameters(getReaderCoverageName(coverageName));
-    }
-
-    @Override
-    public int getNumOverviews(String coverageName) {
-        return getFirstLevelReader(coverageName, false)
-                .getNumOverviews(getReaderCoverageName(coverageName));
     }
 
     @Override
@@ -389,14 +364,7 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
      * This method loads the tiles which overlap the requested envelope using the provided values
      * for alpha and input ROI.
      *
-     * @param coverageName
-     * @param requestedEnvelope
-     * @param dim
-     * @param params
-     * @param overviewPolicy
      * @return A {@link GridCoverage}, well actually a {@link GridCoverage2D}.
-     * @throws TransformException
-     * @throws IOException
      */
     private GridCoverage2D loadRequestedTiles(
             final String coverageName,
@@ -458,13 +426,7 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
         return count;
     }
 
-    /**
-     * Retrieve meta data value from requested coverage and for requested metadata
-     *
-     * @param coverageName
-     * @param name
-     * @return
-     */
+    /** Retrieve meta data value from requested coverage and for requested metadata */
     @Override
     public String getMetadataValue(final String coverageName, final String name) {
         return getImageMosaicMetadataValue(coverageName, name);
@@ -534,13 +496,7 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
         return metadataNames.toArray(new String[metadataNames.size()]);
     }
 
-    /**
-     * Retrieve time domains metadata values for the requested ImageMosaicReader
-     *
-     * @param reader
-     * @param name
-     * @return
-     */
+    /** Retrieve time domains metadata values for the requested ImageMosaicReader */
     private String getTimeDomain(
             final String coverageName, ImageMosaicReader reader, final String name) {
         if (hasTimeDomain(coverageName, reader) && reader != null) {
@@ -552,7 +508,6 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
     /**
      * Verify if the requested Mosaic has a time domain configuration
      *
-     * @param reader
      * @return True if has time domain configuration
      */
     private boolean hasTimeDomain(final String coverageName, ImageMosaicReader reader) {

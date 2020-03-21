@@ -214,7 +214,6 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
      *
      * @return The expression which evaluates to LATEST_ON_TOP, EARLIEST_ON_TOP, AVERAGE or RANDOM
      */
-    @Deprecated
     public Expression getOverlap() {
         OverlapBehavior overlap = getOverlapBehavior();
         if (overlap == null) {
@@ -370,7 +369,6 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
      * @param overlap the expression which evaluates to LATEST_ON_TOP, EARLIEST_ON_TOP, AVERAGE or
      *     RANDOM
      */
-    @Deprecated
     public void setOverlap(Expression overlap) {
         if (overlap == null) {
             return;

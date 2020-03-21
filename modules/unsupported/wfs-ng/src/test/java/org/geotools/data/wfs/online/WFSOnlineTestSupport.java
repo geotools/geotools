@@ -354,7 +354,7 @@ public class WFSOnlineTestSupport {
 
         fr.close();
         // System.out.println("Update Modify");
-        fs.modifyFeatures(at, newValue, Filter.INCLUDE);
+        fs.modifyFeatures(at.getName(), newValue, Filter.INCLUDE);
 
         // System.out.println("Update Read 2");
         fr = fs.getFeatures(f).features();
@@ -381,7 +381,7 @@ public class WFSOnlineTestSupport {
             assertEquals(count2, count3);
         } finally {
             // cleanup
-            fs.modifyFeatures(at, oldValue, Filter.INCLUDE);
+            fs.modifyFeatures(at.getName(), oldValue, Filter.INCLUDE);
             t.commit();
         }
     }

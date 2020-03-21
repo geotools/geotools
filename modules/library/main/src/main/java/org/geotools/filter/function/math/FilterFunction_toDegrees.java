@@ -22,6 +22,8 @@ import static org.geotools.filter.capability.FunctionNameImpl.*;
 
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
+import org.geotools.util.Converters;
+import org.geotools.util.factory.Hints;
 import org.opengis.filter.capability.FunctionName;
 
 public class FilterFunction_toDegrees extends FunctionExpressionImpl {
@@ -38,16 +40,19 @@ public class FilterFunction_toDegrees extends FunctionExpressionImpl {
     }
 
     public Object evaluate(Object feature) {
-        double arg0;
 
-        try { // attempt to get value and perform conversion
-            arg0 = getExpression(0).evaluate(feature, Double.class).doubleValue();
-        } catch (Exception e) {
-            // probably a type error
+        Object arg0 = getExpression(0).evaluate(feature);
+
+        if (arg0 == null) {
+            return null;
+        }
+
+        arg0 = Converters.convert(arg0, Double.class, new Hints());
+        if (arg0 == null) {
             throw new IllegalArgumentException(
                     "Filter Function problem for function toDegrees argument #0 - expected type double");
         }
 
-        return new Double(Math.toDegrees(arg0));
+        return Math.toDegrees((Double) arg0);
     }
 }

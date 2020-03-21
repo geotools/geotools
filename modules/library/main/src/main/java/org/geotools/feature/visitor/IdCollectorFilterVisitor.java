@@ -33,11 +33,6 @@ public class IdCollectorFilterVisitor extends DefaultFilterVisitor {
             new IdCollectorFilterVisitor(false);
     private final boolean mCollectStringIds;
 
-    /** @deprecated use {@link #IdCollectorFilterVisitor(boolean)} */
-    protected IdCollectorFilterVisitor() {
-        mCollectStringIds = true;
-    }
-
     protected IdCollectorFilterVisitor(boolean collectStringIds) {
         mCollectStringIds = collectStringIds;
     }

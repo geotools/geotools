@@ -86,10 +86,7 @@ public class SolidBoundaryImpl extends PrimitiveBoundaryImpl implements SolidBou
         return false;
     }
 
-    /**
-     * @param point
-     * @return 3
-     */
+    /** @return 3 */
     @Override
     public int getDimension(DirectPosition point) {
         return point.getDimension();

@@ -224,11 +224,7 @@ public class MapViewport {
         }
     }
 
-    /**
-     * Used by client application to track the bounds of this viewport.
-     *
-     * @param listener
-     */
+    /** Used by client application to track the bounds of this viewport. */
     public void addMapBoundsListener(MapBoundsListener listener) {
         lock.writeLock().lock();
         try {

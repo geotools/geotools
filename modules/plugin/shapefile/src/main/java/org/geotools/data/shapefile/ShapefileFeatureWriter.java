@@ -120,6 +120,7 @@ class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
 
     private long maxDbfSize = DEFAULT_MAX_DBF_SIZE;
 
+    @SuppressWarnings("PMD.CloseResource") // closeables are managed as fields
     public ShapefileFeatureWriter(
             ShpFiles shpFiles,
             ShapefileFeatureReader featureReader,
@@ -199,6 +200,7 @@ class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
     }
 
     /** In case someone doesn't close me. */
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         if (featureReader != null) {
             try {

@@ -19,7 +19,7 @@ package org.geotools.filter.function;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.feature.FeatureCollections;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -44,12 +44,12 @@ public class JenksFunctionTest extends FunctionTestSupport {
     }
 
     public void testInstance() {
-        Function equInt = ff.function("Jenks", ff.literal(FeatureCollections.newCollection()));
+        Function equInt = ff.function("Jenks", ff.literal(new DefaultFeatureCollection()));
         assertNotNull(equInt);
     }
 
     public void testGetName() {
-        Function qInt = ff.function("Jenks", ff.literal(FeatureCollections.newCollection()));
+        Function qInt = ff.function("Jenks", ff.literal(new DefaultFeatureCollection()));
         assertEquals("Jenks", qInt.getName());
     }
 
@@ -113,8 +113,6 @@ public class JenksFunctionTest extends FunctionTestSupport {
      *
      * <p>Creates a feature collection with five features 1-5. Then uses the quantile function to
      * put these features in 5 bins. Each bin should have a single feature.
-     *
-     * @throws Exception
      */
     public void testSingleBin() throws Exception {
 
@@ -199,14 +197,14 @@ public class JenksFunctionTest extends FunctionTestSupport {
                 };
         Double dVal[] =
                 new Double[] {
-                    new Double(0.0),
-                    new Double(50.01),
+                    Double.valueOf(0.0),
+                    Double.valueOf(50.01),
                     null,
-                    new Double(0.0),
-                    new Double(50.01),
+                    Double.valueOf(0.0),
+                    Double.valueOf(50.01),
                     null,
-                    new Double(0.0),
-                    new Double(50.01),
+                    Double.valueOf(0.0),
+                    Double.valueOf(50.01),
                     null
                 };
 
@@ -242,5 +240,20 @@ public class JenksFunctionTest extends FunctionTestSupport {
         assertEquals(1, classifier.getSize());
         assertEquals(123.123, (Double) classifier.getMin(0), 0d);
         assertEquals(123.123, (Double) classifier.getMax(0), 0d);
+    }
+
+    public void testEvaluateNumericalWithPercentages() throws Exception {
+        Literal classes = ff.literal(3);
+        PropertyName exp = ff.property("foo");
+        Function func = ff.function("Jenks", exp, classes, ff.literal(true));
+        Object value = func.evaluate(featureCollection);
+        assertNotNull(value);
+        assertTrue(value instanceof RangedClassifier);
+        RangedClassifier ranged = (RangedClassifier) value;
+        double[] percentages = ranged.getPercentages();
+        assertEquals(percentages.length, 3);
+        assertEquals(percentages[0], 37.5);
+        assertEquals(percentages[1], 25.0);
+        assertEquals(percentages[2], 37.5);
     }
 }

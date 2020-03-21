@@ -46,11 +46,7 @@ public abstract class JDBCInEncodingOnlineTest extends JDBCTestSupport {
         assertEquals(getCaseInsensitiveSet("ft1.1", "ft1.2"), collectFeatureIds(fc));
     }
 
-    /**
-     * Tests "in3" with 3 values that are the same
-     *
-     * @throws IOException
-     */
+    /** Tests "in3" with 3 values that are the same */
     public void testSimpleIn3() throws IOException {
         FilterFactory ff = dataStore.getFilterFactory();
         Function function =

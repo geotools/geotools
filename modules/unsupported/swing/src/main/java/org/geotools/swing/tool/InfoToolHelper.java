@@ -126,11 +126,7 @@ public abstract class InfoToolHelper implements MapBoundsListener {
         clearTransform();
     }
 
-    /**
-     * Gets the map layer associated with this helper.
-     *
-     * @return
-     */
+    /** Gets the map layer associated with this helper. */
     public Layer getLayer() {
         return layerRef != null ? layerRef.get() : null;
     }

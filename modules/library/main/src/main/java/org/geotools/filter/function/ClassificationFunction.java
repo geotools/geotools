@@ -19,11 +19,7 @@
 package org.geotools.filter.function;
 
 import java.awt.RenderingHints;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.DefaultExpression;
 import org.geotools.filter.FunctionExpression;
@@ -107,19 +103,9 @@ public abstract class ClassificationFunction extends DefaultExpression
         this.progress = progress;
     }
 
-    /** @deprecated use getClasses() */
-    public int getNumberOfClasses() {
-        return getClasses();
-    }
-
     public int getClasses() {
         Literal classes = (Literal) getParameters().get(1);
         return ((Integer) classes.evaluate(null, Integer.class)).intValue();
-    }
-
-    /** @deprecated use setClasses() */
-    public void setNumberOfClasses(int classes) {
-        setClasses(classes);
     }
 
     public void setClasses(int classes) {
@@ -133,11 +119,7 @@ public abstract class ClassificationFunction extends DefaultExpression
         return Collections.emptyMap();
     }
 
-    /**
-     * Determines the number of decimal places to truncate the interval at.
-     *
-     * @param slotWidth
-     */
+    /** Determines the number of decimal places to truncate the interval at. */
     protected int decimalPlaces(double slotWidth) {
         if (slotWidth == 0) {
             return 5;
@@ -148,7 +130,7 @@ public abstract class ClassificationFunction extends DefaultExpression
                 str = str.substring(0, str.length() - 1);
             }
         }
-        int intPart = new Double(Math.floor(slotWidth)).intValue();
+        int intPart = Double.valueOf(Math.floor(slotWidth)).intValue();
         double decPart = slotWidth - intPart;
         int intPoints = Integer.toString(intPart).length();
         int decPoints = str.length() - intPoints;
@@ -201,10 +183,6 @@ public abstract class ClassificationFunction extends DefaultExpression
      * the smallest one). This should usually be used to adjust the bounds to include a value.
      * Example: 0.31-->0.44 where 0.44 is the maximum value and end of the range. We could just make
      * the , round(0.31, 1)=0.3; round(0.44 max value = 0.49
-     *
-     * @param value
-     * @param decimalPlaces
-     * @param up
      */
     protected double fixRound(double value, int decimalPlaces, boolean up) {
         double divisor = Math.pow(10, decimalPlaces);

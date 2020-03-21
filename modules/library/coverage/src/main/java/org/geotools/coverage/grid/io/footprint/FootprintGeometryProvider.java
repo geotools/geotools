@@ -31,8 +31,6 @@ public interface FootprintGeometryProvider {
      *
      * @param feature the granule representative feature (if any). Specifying a null feature will
      *     return a default footprint (this is used in general for single-granule stores)
-     * @return
-     * @throws IOException
      */
     Geometry getFootprint(SimpleFeature feature) throws IOException;
 

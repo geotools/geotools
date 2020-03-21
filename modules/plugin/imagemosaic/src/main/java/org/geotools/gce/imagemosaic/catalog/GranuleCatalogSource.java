@@ -16,10 +16,16 @@
  */
 package org.geotools.gce.imagemosaic.catalog;
 
+import java.awt.*;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Objects;
+import java.util.Set;
 import org.geotools.coverage.grid.io.GranuleSource;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.gce.imagemosaic.RasterManager;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.factory.Hints;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -39,34 +45,50 @@ public class GranuleCatalogSource implements GranuleSource {
 
     protected Hints hints;
 
-    public GranuleCatalogSource(GranuleCatalog catalog, final String typeName, final Hints hints) {
+    protected RasterManager manager;
+
+    public GranuleCatalogSource(
+            RasterManager manager,
+            GranuleCatalog catalog,
+            final String typeName,
+            final Hints hints) {
 
         // TODO: once we allow to create different catalogs (based on different featureTypes)
         // we can stop filtering by name
         this.catalog = catalog;
         this.typeName = typeName;
         this.hints = hints;
+        this.manager = manager;
     }
 
     @Override
     public SimpleFeatureCollection getGranules(Query q) throws IOException {
         final Query updatedQuery = setupBaseQuery(q);
+        if (Boolean.TRUE.equals(q.getHints().get(GranuleSource.FILE_VIEW))) {
+            // FIGURE OUT how to get the paramaters
+            return new FileViewCollection(catalog, updatedQuery, manager);
+        }
         return catalog.getGranules(updatedQuery);
     }
 
     private Query setupBaseQuery(Query q) {
+        Query baseQuery = new Query();
+        baseQuery.setHints(hints);
+        baseQuery.setTypeName(typeName);
+
         if (q == null) {
-            q = new Query();
+            return baseQuery;
         } else {
-            q = new Query(q);
+            if (q.getTypeName() != null && !Objects.equals(this.typeName, q.getTypeName())) {
+                throw new IllegalArgumentException(
+                        "Invalid type name in query "
+                                + q.getTypeName()
+                                + ", this granule source only returns "
+                                + this.typeName);
+            }
+
+            return DataUtilities.mixQueries(baseQuery, q, null);
         }
-        if (hints != null) {
-            q.setHints(hints);
-        }
-        if (q.getTypeName() == null) {
-            q.setTypeName(typeName);
-        }
-        return q;
     }
 
     @Override
@@ -91,5 +113,10 @@ public class GranuleCatalogSource implements GranuleSource {
         // TODO: check if we need to dispose it or not
         // Does nothing, the catalog should be disposed by the user
 
+    }
+
+    @Override
+    public Set<RenderingHints.Key> getSupportedHints() {
+        return Collections.singleton(GranuleSource.FILE_VIEW);
     }
 }

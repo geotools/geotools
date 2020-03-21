@@ -38,7 +38,6 @@ public class Text {
      * <p>We will hook up this method to a properties file at a later time, making other
      * translations available via the Factory SPI mechanism.
      *
-     * @param english
      * @return SimpleInternationalString
      */
     public static InternationalString text(String english) {

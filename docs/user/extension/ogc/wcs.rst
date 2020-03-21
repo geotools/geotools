@@ -1,5 +1,5 @@
-net.opengis.wcs
----------------
+``net.opengis.wcs`` 
+--------------------
 
 Additional generated objects for web coverage service.
 

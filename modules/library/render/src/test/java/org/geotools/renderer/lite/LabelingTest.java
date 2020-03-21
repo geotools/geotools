@@ -26,18 +26,18 @@ import java.io.IOException;
 import junit.framework.TestCase;
 import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
-import org.geotools.map.DefaultMapContext;
-import org.geotools.map.MapContext;
+import org.geotools.map.FeatureLayer;
+import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyleFactoryFinder;
 import org.geotools.test.TestData;
 import org.geotools.xml.styling.SLDParser;
 import org.locationtech.jts.geom.Coordinate;
@@ -81,12 +81,12 @@ public class LabelingTest extends TestCase {
         FeatureCollection collection = createPointFeatureCollection();
         Style style = loadStyle("PointStyle.sld");
         assertNotNull(style);
-        MapContext map = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        map.addLayer(collection, style);
+        MapContent map = new MapContent();
+        map.addLayer(new FeatureLayer(collection, style));
 
         StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setContext(map);
-        ReferencedEnvelope env = map.getLayerBounds();
+        renderer.setMapContent(map);
+        ReferencedEnvelope env = map.getMaxBounds();
         int boundary = 10;
         env =
                 new ReferencedEnvelope(
@@ -99,7 +99,7 @@ public class LabelingTest extends TestCase {
     }
 
     private Style loadStyle(String sldFilename) throws IOException {
-        StyleFactory factory = StyleFactoryFinder.createStyleFactory();
+        StyleFactory factory = CommonFactoryFinder.getStyleFactory();
 
         java.net.URL surl = TestData.getResource(this, sldFilename);
         SLDParser stylereader = new SLDParser(factory, surl);
@@ -147,12 +147,12 @@ public class LabelingTest extends TestCase {
         FeatureCollection collection = createLineFeatureCollection();
         Style style = loadStyle("LineStyle.sld");
         assertNotNull(style);
-        MapContext map = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        map.addLayer(collection, style);
+        MapContent map = new MapContent();
+        map.addLayer(new FeatureLayer(collection, style));
 
         StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setContext(map);
-        ReferencedEnvelope env = map.getLayerBounds();
+        renderer.setMapContent(map);
+        ReferencedEnvelope env = map.getMaxBounds();
         int boundary = 10;
         env =
                 new ReferencedEnvelope(
@@ -169,19 +169,17 @@ public class LabelingTest extends TestCase {
      * This test tests for custom unit of measurement features, where the feature size translates to
      * something 0 < size < 1. in this case, an infinite loop used to occur, see
      * https://jira.codehaus.org/browse/GEOT-4284
-     *
-     * @throws Exception
      */
     public void testLineLabelingUom() throws Exception {
         FeatureCollection collection = createLineFeatureCollection();
         Style style = loadStyle("LineStyleUom.sld");
         assertNotNull(style);
-        MapContext map = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        map.addLayer(collection, style);
+        MapContent map = new MapContent();
+        map.addLayer(new FeatureLayer(collection, style));
 
         StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setContext(map);
-        ReferencedEnvelope env = map.getLayerBounds();
+        renderer.setMapContent(map);
+        ReferencedEnvelope env = map.getMaxBounds();
         int boundary = 10000;
         env =
                 new ReferencedEnvelope(
@@ -194,23 +192,19 @@ public class LabelingTest extends TestCase {
         RendererBaseTest.showRender("testLineLabeling", renderer, timout, env);
     }
 
-    /**
-     * Checks we won't label a feature with a sharp U turn, when using a large font
-     *
-     * @throws Exception
-     */
+    /** Checks we won't label a feature with a sharp U turn, when using a large font */
     public void testLineLabelingSharpTurn() throws Exception {
         FeatureCollection collection = createTightUTurnLineCollection();
         Style style = loadStyle("LineStyleLarge.sld");
         assertNotNull(style);
-        MapContext map = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        map.addLayer(collection, style);
+        MapContent map = new MapContent();
+        map.addLayer(new FeatureLayer(collection, style));
 
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
-        renderer.setContext(map);
+        renderer.setMapContent(map);
         int boundary = 2;
-        ReferencedEnvelope env = map.getLayerBounds();
+        ReferencedEnvelope env = map.getMaxBounds();
         env =
                 new ReferencedEnvelope(
                         env.getMinX() - boundary,
@@ -226,23 +220,19 @@ public class LabelingTest extends TestCase {
         ImageAssert.assertEquals(new File(refPath), image, 100);
     }
 
-    /**
-     * Checks we won't label a feature with a sharp U turn, when using a large font
-     *
-     * @throws Exception
-     */
+    /** Checks we won't label a feature with a sharp U turn, when using a large font */
     public void testLineLabelingSharpTurn2() throws Exception {
         FeatureCollection collection = createTightUTurnLineCollection2();
         Style style = loadStyle("LineStyleLarge2.sld");
         assertNotNull(style);
-        MapContext map = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        map.addLayer(collection, style);
+        MapContent map = new MapContent();
+        map.addLayer(new FeatureLayer(collection, style));
 
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
-        renderer.setContext(map);
+        renderer.setMapContent(map);
         double boundary = 2;
-        ReferencedEnvelope env = map.getLayerBounds();
+        ReferencedEnvelope env = map.getMaxBounds();
         env =
                 new ReferencedEnvelope(
                         env.getMinX() - boundary,
@@ -255,26 +245,22 @@ public class LabelingTest extends TestCase {
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/lineLabelSharpTurn2.png";
         // small tolerance
-        ImageAssert.assertEquals(new File(refPath), image, 1000);
+        ImageAssert.assertEquals(new File(refPath), image, 1100);
     }
 
-    /**
-     * Checks we won't label a feature with an almost 90 degrees change in the last segment
-     *
-     * @throws Exception
-     */
+    /** Checks we won't label a feature with an almost 90 degrees change in the last segment */
     public void testSharpChangeLastSegment() throws Exception {
         FeatureCollection collection = createSharpTurnLineCollection();
         Style style = loadStyle("LineStyleLarge.sld");
         assertNotNull(style);
-        MapContext map = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        map.addLayer(collection, style);
+        MapContent map = new MapContent();
+        map.addLayer(new FeatureLayer(collection, style));
 
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
-        renderer.setContext(map);
+        renderer.setMapContent(map);
         int boundary = 2;
-        ReferencedEnvelope env = map.getLayerBounds();
+        ReferencedEnvelope env = map.getMaxBounds();
         env =
                 new ReferencedEnvelope(
                         env.getMinX() - boundary,
@@ -359,11 +345,11 @@ public class LabelingTest extends TestCase {
         FeatureCollection collection = createPolyFeatureCollection();
         Style style = loadStyle("PolyStyle.sld");
         assertNotNull(style);
-        MapContext map = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        map.addLayer(collection, style);
+        MapContent map = new MapContent();
+        map.addLayer(new FeatureLayer(collection, style));
         StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setContext(map);
-        ReferencedEnvelope env = map.getLayerBounds();
+        renderer.setMapContent(map);
+        ReferencedEnvelope env = map.getMaxBounds();
         int boundary = 10;
         env =
                 new ReferencedEnvelope(

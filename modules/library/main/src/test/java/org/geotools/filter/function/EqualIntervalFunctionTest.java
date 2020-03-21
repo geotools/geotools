@@ -17,6 +17,7 @@
 package org.geotools.filter.function;
 
 import org.geotools.factory.CommonFactoryFinder;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
@@ -82,14 +83,14 @@ public class EqualIntervalFunctionTest extends FunctionTestSupport {
         assertEquals("32.667..61.333", ranged.getTitle(1));
         assertEquals("61.333..90", ranged.getTitle(2));
         // check classifier binning
-        assertEquals(0, ranged.classify(new Double(4)));
+        assertEquals(0, ranged.classify(Double.valueOf(4)));
         assertEquals(2, ranged.classify(name, testFeatures[1])); // 90
-        assertEquals(0, ranged.classify(new Double(20)));
-        assertEquals(1, ranged.classify(new Double(43)));
-        assertEquals(0, ranged.classify(new Double(29)));
-        assertEquals(1, ranged.classify(new Double(61)));
+        assertEquals(0, ranged.classify(Double.valueOf(20)));
+        assertEquals(1, ranged.classify(Double.valueOf(43)));
+        assertEquals(0, ranged.classify(Double.valueOf(29)));
+        assertEquals(1, ranged.classify(Double.valueOf(61)));
         assertEquals(0, ranged.classify(name, testFeatures[6])); // 8
-        assertEquals(0, ranged.classify(new Double(12)));
+        assertEquals(0, ranged.classify(Double.valueOf(12)));
 
         // try again with foo
     }
@@ -138,5 +139,37 @@ public class EqualIntervalFunctionTest extends FunctionTestSupport {
         assertEquals(1, classifier.getSize());
         assertEquals("abc", classifier.getMin(0));
         assertEquals("abc", classifier.getMax(0));
+    }
+
+    @Test
+    public void testEvaluateNumericalWithPercentages() {
+        Literal classes = ff.literal(3);
+        PropertyName name = ff.property("foo");
+        Function func = ff.function("EqualInterval", name, classes, ff.literal(true));
+
+        Object classifier = func.evaluate(featureCollection);
+        assertTrue(classifier instanceof RangedClassifier);
+        RangedClassifier ranged = (RangedClassifier) classifier;
+        double[] percentages = ranged.getPercentages();
+        assertEquals(3, percentages.length);
+        assertEquals(62.5, percentages[0]);
+        assertEquals(25.0, percentages[1]);
+        assertEquals(12.5, percentages[2]);
+    }
+
+    @Test
+    public void testEvaluateNonNumericalWithPercentages() {
+        Literal classes = ff.literal(3);
+        PropertyName name = ff.property("foo");
+        Function func = ff.function("EqualInterval", name, classes, ff.literal(true));
+
+        Object classifier = func.evaluate(featureCollection);
+        assertTrue(classifier instanceof RangedClassifier);
+        RangedClassifier ranged = (RangedClassifier) classifier;
+        double[] percentages = ranged.getPercentages();
+        assertEquals(3, percentages.length);
+        assertEquals(62.5, percentages[0]);
+        assertEquals(25.0, percentages[1]);
+        assertEquals(12.5, percentages[2]);
     }
 }

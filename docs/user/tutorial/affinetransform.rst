@@ -19,7 +19,7 @@ making use of the power of these kind of calculations.
 
 .. topic:: About Your Instructor
    
-   Christian Mueller is a geotools developer and is working for a big customer to build
+   Christian Mueller is a GeoTools developer and is working for a big customer to build
    up a GIS infrastructure. In the GeoTools project he is best known for his work on
    :doc:`/library/coverage/jdbc/index`
 
@@ -31,40 +31,40 @@ Before we start, some important definitions.
 ============= ====================
 Abbreviation  Meaning
 ============= ====================
-LLC           lower left corner 
-ULC           upper left corner 
-URC           upper right corner
-LRC           lower right corner
+``LLC``       lower left corner 
+``ULC``       upper left corner 
+``URC``       upper right corner
+``LRC``       lower right corner
 ============= ====================
 
-We have a rectangle in world coordinates, the origin is at the LLC, x = 2000, y = 3000,width = 8000
-units an height = 9000 units.
+We have a rectangle in world coordinates, the origin is at the ``LLC, x = 2000, y = 3000,width = 8000``
+units an ``height=9000`` units.
 
 The resulting corner points are:
 
-============= ====================
-Point         world x,y coords
-============= ====================
-LLC            2000,  3000 
-ULC            2000, 12000 
-URC           10000, 12000 
-LRC           10000,  3000 
-============= ====================
+============= =====================
+Point         world x,y coordinates
+============= =====================
+``LLC``            2000,  3000 
+``ULC``            2000, 12000 
+``URC``           10000, 12000 
+``LRC``           10000,  3000 
+============= =====================
 
 .. image:: images/world.png
 
-Next, we want to map this rectangle to a screen, using pixel coordinates. The available scree
-size = 400x300 pixels. Unfortunately, pixel coordinates have their origin in the ULC normally,
-not in the LLC. The next table shows the mappings.:
+Next, we want to map this rectangle to a screen, using pixel coordinates. The available screen
+``size=400x300`` pixels. Unfortunately, pixel coordinates have their origin in the ``ULC`` normally,
+not in the ``LLC``. The next table shows the mappings.:
 
-============= ==================== ====================
-Point         world x,y coords     pixel x,y coords
-============= ==================== ====================
-LLC           2000, 3000           0,300
-ULC           2000,12000           0,  0 
-URC           10000,12000          400,  0
-LRC           10000, 3000          400,300
-============= ==================== ====================
+============= ====================== =====================
+Point         world x,y coordinates  pixel x,y coordinates 
+============= ====================== =====================
+``LLC``       2000, 3000             0,300
+``ULC``       2000,12000             0,  0 
+``URC``       10000,12000            400,  0
+``LRC``       10000, 3000            400,300
+============= ====================== =====================
 
 .. image:: images/screen.png
 
@@ -77,7 +77,7 @@ Mathematical Background
 Since most people I know dislike mathematics I will reduce this section to an absolute minimum.
 An affine transformation is based on a matrix.
 
-* Here we need a 3x3 matrix like this one::
+* Here we need a ``3x3`` matrix like this one::
   
     [ m00 m01 m02 ] 
     [ m10 m11 m12 ] 
@@ -151,7 +151,7 @@ An affine transformation is based on a matrix.
 Calculation
 ===========
 
-We need three steps for getting pixel x/y from world x/y.
+We need three steps for getting pixel ``x/y`` from world ``x/y``.
 
 1. Translate
 2. Scale
@@ -162,8 +162,8 @@ These are discussed below.
 Translate Operation
 -------------------
    
-1. We have to shift the origin of the world rectangle to 0,0. This is easy. The LLC has values
-   2000,3000, we only need to subtract 2000 from x  and 3000 from y. We use the URC with
+1. We have to shift the origin of the world rectangle to 0,0. This is easy. The ``LLC`` has values
+   2000,3000, we only need to subtract 2000 from ``x``  and 3000 from ``y``. We use the ``URC`` with
    values 10000,12000 to demonstrate the calculation.
 
 2. Java Code
@@ -180,8 +180,8 @@ Translate Operation
      Translate:AffineTransform[[1.0, 0.0, -2000.0], [0.0, 1.0, -3000.0]]
      Point2D.Double[0.0, 0.0]
   
-4. The toString() method of the AffineTransform class only shows the first two rows of the
-   matrix. The static method getTranslateInstance is a convenience method, otherwise you have
+4. The ``toString()`` method of the ``AffineTransform`` class only shows the first two rows of the
+   matrix. The static method ``getTranslateInstance`` is a convenience method, otherwise you have
    to call a constructor with 6 values.
 
 5. The matrix used::
@@ -198,14 +198,14 @@ Translate Operation
 
 7. The result of all four corner points is:
    
-   ======= ==================== ====================
-   Point           before               after
-   ======= ==================== ====================
-   LLC              2000, 3000             0,    0
-   ULC              2000,12000             0, 9000
-   URC             10000,12000          8000, 9000
-   LRC             10000, 3000          8000,    0
-   ======= ==================== ====================
+    ======= ==================== ====================
+    Point           before               after
+    ======= ==================== ====================
+    ``LLC``          2000, 3000         0,    0
+    ``ULC``          2000,12000         0, 9000
+    ``URC``         10000,12000      8000, 9000
+    ``LRC``         10000, 3000      8000,    0
+    ======= ==================== ====================
 
 Scale Operation
 ---------------
@@ -215,7 +215,7 @@ a width of 400 pixels and a height of 300  pixels. We need to scale with 400/800
 300 / 9000.0.
 
 1. Let us use the point in the middle of the world rectangle after the translate
-   operation, having its LLC at 0,0.
+   operation, having its ``LLC`` at 0,0.
 
 2. Java Code
    
@@ -249,17 +249,17 @@ a width of 400 pixels and a height of 300  pixels. We need to scale with 400/800
     ======= ==================== ====================
     Point           before               after
     ======= ==================== ====================
-    LLC                 0,    0             0,    0
-    ULC                 0, 9000             0,  300
-    URC              8000, 9000           400,  300
-    LRC              8000,    0           400,    0
+    ``LLC``             0,    0             0,    0
+    ``ULC``             0, 9000             0,  300
+    ``URC``          8000, 9000           400,  300
+    ``LRC``          8000,    0           400,    0
     ======= ==================== ====================
 
 Mirror Operation
 ----------------
 
-Remember: The world rectangle has its origin in the LLC and  the pixel rectangle has its origin
-in the ULC !
+Remember: The world rectangle has its origin in the ``LLC`` and  the pixel rectangle has its origin
+in the ``ULC``!
 
 There is a need for a mirroring operation. After the scale operation, we have already pixel
 values, but we must mirror the y value. The x value should not change. For mirroring,
@@ -302,10 +302,10 @@ we must calculate::
    ======= ==================== ====================
    Point           before               after
    ======= ==================== ====================
-   LLC                 0,    0             0,  300
-   ULC                 0,  300             0,    0
-   URC               400,  300           400,    0
-   LRC               400,    0           400,  300
+   ``LLC``             0,    0             0,  300
+   ``ULC``             0,  300             0,    0
+   ``URC``           400,  300           400,    0
+   ``LRC``           400,    0           400,  300
    ======= ==================== ====================
 
 Matrix Magic
@@ -318,15 +318,15 @@ Concatenation
    
    The ability to concatenate transforms
    into a single matrix is vital to the
-   performance of computer grapphics and GIS.
+   performance of computer graphics and GIS.
 
-Until now, most of you will say that it is easier to write this calculations without the use of the AffineTransform class, be patient.
-We have created 3 AffineTransform objects, now we combine them. There is a method 
+Until now, most of you will say that it is easier to write this calculations without the use of the ``AffineTransform`` class, be patient.
+We have created 3 ``AffineTransform`` objects, now we combine them. There is a method 
 
-* AffineTransform.concatenate(AffineTransform other) 
+* ``AffineTransform.concatenate(AffineTransform other)``
 
 Which we will be introducing in this section. The only important thing to know is that you have
-to START with the LAST AffineTransform object, NOT with the first.
+to START with the LAST ``AffineTransform`` object, NOT with the first.
 
 1. Java Code
    
@@ -359,21 +359,22 @@ to START with the LAST AffineTransform object, NOT with the first.
      [  0.00 -0.03  400.00 ] 
      [  0.00  0.00    1.00 ] 
    
-5. Lets use LRC (10000,3000) to show a detailed calculation::
+5. Lets use ``LRC`` (10000,3000) to show a detailed calculation::
 
       0.05 * 10000 +     0 * 3000 + 1 * -100  = 400
       0    * 10000 + -0.03.. 3000 + 1 *  400  = 300 
 
-6. At the end of the day, you have exactly one AffineTransform object doing the job.
+6. At the end of the day, you have exactly one ``AffineTransform`` object doing the job.
 
 Graphics2D
 ^^^^^^^^^^
 
-As an example of the power of Affinetransformation, the java.awt.Graphics2D class has a method:
+As an example of the power of ``Affinetransformation``, the
+``java.awt.Graphics2D`` class has a method:
 
-* Graphic2d.setTransform(AffineTransform tx)
+* ``Graphic2d.setTransform(AffineTransform tx)``
 
-If you set our transform object in your Graphics2D object, you can draw and paint with world
+If you set our transform object in your ``Graphics2D`` object, you can draw and paint with world
 coordinates.
 
 Inversion
@@ -434,10 +435,10 @@ This is easy, get the **inverse** transform as shown here:
    ======= ==================== ====================
    Point           before               after
    ======= ==================== ====================
-   LLC                 0,  300          2000, 3000
-   ULC                 0,    0          2000,12000
-   URC               400,    0         10000,12000
-   LRC               400,  300         10000, 3000
+   ``LLC``          0,  300          2000, 3000
+   ``ULC``          0,    0          2000,12000
+   ``URC``        400,    0         10000,12000
+   ``LRC``        400,  300         10000, 3000
    ======= ==================== ====================
 
 .. hint::
@@ -456,7 +457,7 @@ A matrix has a determinant. For creating the inverse matrix, divisions by the de
 needed. As we know from school, it is not  allowed to divide by zero. As a consequence, the
 determinant with value 0 prevents the creation of an inverse matrix.
 
-* For a 2x2 matrix::
+* For a ``2x2`` matrix::
 
      [ a b ]
      [ c d ]
@@ -465,7 +466,7 @@ determinant with value 0 prevents the creation of an inverse matrix.
  
       a*d - c*b
 
-* For a 3x3 matrix::
+* For a ``3x3`` matrix::
 
      [ a b c]
      [ d e f]
@@ -489,7 +490,7 @@ Fortunately, our matrices always have g = 0,  h = 0 and i = 1.
 
       a * e - d * b
 
-This is in fact the same calculation as for the 2x2 matrix.
+This is in fact the same calculation as for the ``2x2`` matrix.
 
 1. Let as construct such a matrix 
    
@@ -531,13 +532,13 @@ Conclusion
 I hope this tutorial helps to demystify affine transforms, once you are used to working with them
 you will never return to doing coordinate calculations "by hand".
 
-Take a look at the Java API of the java.awt.geom.AffineTransform class to see further
-possibilities. (rotate, shear,...)
+Take a look at the Java API of the ``java.awt.geom.AffineTransform`` class to see further
+possibilities (rotate, shear,...).
 
 References
 ==========
 
-* Java AffineTransform `class javadocs`_. 
+* Java ``AffineTransform`` `class javadocs`_. 
 
 .. _class javadocs: http://download.oracle.com/javase/6/docs/api/java/awt/geom/AffineTransform.html
 

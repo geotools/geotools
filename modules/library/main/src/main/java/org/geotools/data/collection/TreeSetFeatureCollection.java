@@ -189,11 +189,6 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
         return true;
     }
 
-    @Deprecated
-    protected boolean add(SimpleFeature feature, boolean fire) {
-        return add(feature);
-    }
-
     /**
      * Adds all of the elements in the specified collection to this collection (optional operation).
      * The behavior of this operation is undefined if the specified collection is modified while the
@@ -283,7 +278,6 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
     /**
      * Test for collection membership.
      *
-     * @param collection
      * @return true if collection is completly covered
      */
     public boolean containsAll(Collection collection) {
@@ -503,6 +497,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
         // nop
     }
 
+    @SuppressWarnings("PMD.CloseResource") // closed in the wrapper
     public FeatureReader<SimpleFeatureType, SimpleFeature> reader() throws IOException {
         final SimpleFeatureIterator iterator = features();
         return new FeatureReader<SimpleFeatureType, SimpleFeature>() {

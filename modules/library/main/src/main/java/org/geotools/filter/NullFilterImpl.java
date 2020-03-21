@@ -16,10 +16,10 @@
  */
 package org.geotools.filter;
 
+import java.util.Objects;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.PropertyName;
 
 /**
  * Defines a null filter, which checks to see if an attribute is null.
@@ -30,13 +30,6 @@ import org.opengis.filter.expression.PropertyName;
 public class NullFilterImpl extends AbstractFilter implements PropertyIsNull {
     /** The null check value, which must be an attribute expression. */
     private org.opengis.filter.expression.Expression nullCheck = null;
-
-    /**
-     * Constructor which sets the type as null check.
-     *
-     * @deprecated No argument constructor for use with SAX parser
-     */
-    protected NullFilterImpl() {}
 
     protected NullFilterImpl(org.opengis.filter.expression.Expression expresion) {
         setExpression(expresion);
@@ -49,10 +42,10 @@ public class NullFilterImpl extends AbstractFilter implements PropertyIsNull {
 
     /** Sets the expression which represents the null check. */
     public void setExpression(Expression nullCheck) {
-        if (nullCheck != null && nullCheck instanceof PropertyName) {
+        if (nullCheck != null) {
             this.nullCheck = nullCheck;
         } else {
-            throw new IllegalFilterException("PropertyName expression required");
+            throw new IllegalFilterException("Expression required");
         }
     }
 
@@ -84,18 +77,15 @@ public class NullFilterImpl extends AbstractFilter implements PropertyIsNull {
      * same as this filter. Checks to make sure the filter types, and the NullCheckValue are the
      * same.
      *
-     * @param obj - the object to compare this LikeFilter against.
+     * @param o - the object to compare this LikeFilter against.
      * @return true if specified object is equal to this filter; false otherwise.
      */
-    public boolean equals(Object obj) {
-        if (obj != null && obj.getClass() == this.getClass()) {
-            NullFilterImpl nullFilter = (NullFilterImpl) obj;
-
-            return ((Filters.getFilterType(nullFilter) == Filters.getFilterType(this))
-                    && nullFilter.getExpression().equals(this.nullCheck));
-        } else {
-            return false;
-        }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NullFilterImpl that = (NullFilterImpl) o;
+        return Objects.equals(nullCheck, that.nullCheck);
     }
 
     /**

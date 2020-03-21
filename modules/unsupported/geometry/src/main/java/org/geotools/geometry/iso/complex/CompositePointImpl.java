@@ -47,9 +47,6 @@ public class CompositePointImpl extends CompositeImpl<PointImpl> implements Comp
      *
      * <p>The generator is realised by the element ArrayList of the super class Complex and will be
      * passed through the super constructor
-     *
-     * @param crs
-     * @param generator
      */
     public CompositePointImpl(CoordinateReferenceSystem crs, PointImpl generator) {
         /* Call super constructor; elements will be set later */
@@ -136,7 +133,7 @@ public class CompositePointImpl extends CompositeImpl<PointImpl> implements Comp
      */
     public DirectPosition getRepresentativePoint() {
         // Return the point which defines this CompositePoint
-        return ((PointImpl) this.elements.get(0)).getPosition();
+        return ((PointImpl) this.elements.get(0)).getDirectPosition();
     }
 
     /* (non-Javadoc)

@@ -18,15 +18,11 @@ package org.geotools.styling;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
-import org.geotools.feature.NameImpl;
-import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.Utilities;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Id;
@@ -54,9 +50,6 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
 
     /** Only the first matching rule gets executed, all the others are skipped */
     public static String VALUE_EVALUATION_MODE_FIRST = "first";
-
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(FeatureTypeStyleImpl.class);
 
     private List<Rule> rules = new ArrayList<Rule>();
     private Set<SemanticType> semantics = new LinkedHashSet<SemanticType>();
@@ -105,93 +98,12 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
         return rules;
     }
 
-    @Deprecated
-    public org.geotools.styling.Rule[] getRules() {
-        final org.geotools.styling.Rule[] ret;
-
-        ret = new org.geotools.styling.Rule[rules.size()];
-        for (int i = 0, n = rules.size(); i < n; i++) {
-            ret[i] = rules.get(i);
-        }
-
-        return ret;
-    }
-
-    @Deprecated
-    public void setRules(org.geotools.styling.Rule[] newRules) {
-        rules = new ArrayList<Rule>();
-        rules.addAll(Arrays.asList(newRules));
-
-        // fireChanged();
-    }
-
-    @Deprecated
-    public void addRule(org.geotools.styling.Rule rule) {
-        rules.add(rule);
-
-        // fireChildAdded(rule);
-    }
-
     public Set<SemanticType> semanticTypeIdentifiers() {
         return semantics;
     }
 
-    @Deprecated
-    public String[] getSemanticTypeIdentifiers() {
-        String[] ids = new String[semantics.size()];
-
-        Iterator<SemanticType> types = semantics.iterator();
-        int i = 0;
-        while (types.hasNext()) {
-            ids[i] = types.next().name();
-            i++;
-        }
-
-        if (ids.length == 0) {
-            ids = new String[] {SemanticType.ANY.toString()};
-        }
-
-        return ids;
-    }
-
-    @Deprecated
-    public void setSemanticTypeIdentifiers(String[] types) {
-        semantics.clear();
-
-        for (String id : types) {
-
-            SemanticType st = SemanticType.valueOf(id);
-
-            if (st != null) semantics.add(st);
-        }
-    }
-
     public Set<Name> featureTypeNames() {
         return featureTypeNames;
-    }
-
-    @Deprecated
-    public String getFeatureTypeName() {
-        if (!featureTypeNames.isEmpty()) {
-            return featureTypeNames.iterator().next().getLocalPart();
-        } else {
-            return "Feature"; // this is the deafault value - matches to any feature
-        }
-    }
-
-    @Deprecated
-    public void setFeatureTypeName(String name) {
-        featureTypeNames.clear();
-
-        if (name.equals("feature")) {
-            LOGGER.warning(
-                    "FeatureTypeStyle with typename 'feature' - "
-                            + "did you mean to say 'Feature' (with a capital F) for the 'generic' FeatureType");
-        }
-
-        Name featurename = new NameImpl(name);
-
-        featureTypeNames.add(featurename);
     }
 
     public Id getFeatureInstanceIDs() {
@@ -208,32 +120,6 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Deprecated
-    public String getAbstract() {
-        if (description == null || description.getAbstract() == null) {
-            return null;
-        }
-        return description.getAbstract().toString();
-    }
-
-    @Deprecated
-    public void setAbstract(String abstractStr) {
-        description.setAbstract(new SimpleInternationalString(abstractStr));
-    }
-
-    @Deprecated
-    public String getTitle() {
-        if (description == null || description.getTitle() == null) {
-            return null;
-        }
-        return description.getTitle().toString();
-    }
-
-    @Deprecated
-    public void setTitle(String title) {
-        description.setTitle(new SimpleInternationalString(title));
     }
 
     public Object accept(StyleVisitor visitor, Object data) {

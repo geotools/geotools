@@ -17,16 +17,21 @@
 package org.geotools.renderer.label;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
+import java.io.IOException;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.renderer.label.LabelCacheImpl.LabelRenderingMode;
+import org.geotools.renderer.lite.RendererBaseTest;
+import org.geotools.renderer.style.MarkStyle2D;
+import org.geotools.renderer.style.Style2D;
 import org.geotools.renderer.style.TextStyle2D;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyleFactoryImpl;
@@ -49,7 +54,8 @@ public class LabelPainterTest {
     LiteShape2 shape;
 
     @Before
-    public void setUp() throws TransformException, FactoryException {
+    public void setUp()
+            throws TransformException, FactoryException, IOException, FontFormatException {
         graphics = Mockito.mock(Graphics2D.class);
         Mockito.when(graphics.getFontRenderContext())
                 .thenReturn(
@@ -57,6 +63,7 @@ public class LabelPainterTest {
                                 new AffineTransform(),
                                 RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT,
                                 RenderingHints.VALUE_FRACTIONALMETRICS_DEFAULT));
+        Mockito.when(graphics.getTransform()).thenReturn(new AffineTransform());
         style = new TextStyle2D();
         style.setFont(new Font("Serif", Font.PLAIN, 10));
         shape =
@@ -66,6 +73,8 @@ public class LabelPainterTest {
                         null,
                         false);
         symbolizer = styleFactory.createTextSymbolizer();
+
+        RendererBaseTest.setupVeraFonts();
     }
 
     @Test
@@ -125,5 +134,107 @@ public class LabelPainterTest {
         assertTrue(
                 painter.lines.get(painter.getLineCount() - 1).getLineHeight()
                         == painter.getLineHeightForAnchorY(1));
+    }
+
+    @Test
+    public void testFullLabelBoundsNativeSize() throws Exception {
+        TextStyle2D style = new TextStyle2D();
+        style.setFont(new Font("Bitstream Vera Sans", Font.PLAIN, 10));
+
+        LabelPainter painter = new LabelPainter(graphics, LabelRenderingMode.STRING);
+        LabelCacheItem labelItem = new LabelCacheItem("LAYERID", style, shape, "line1", symbolizer);
+        painter.setLabel(labelItem);
+
+        double tolerance = 2; // account for JDK/OS specific differences despite the same font
+
+        // check bounds with no graphic
+        Rectangle2D lBounds = painter.getFullLabelBounds();
+        assertEquals(0, lBounds.getMinX(), tolerance);
+        assertEquals(-7.5, lBounds.getMinY(), tolerance);
+        assertEquals(22, lBounds.getWidth(), tolerance);
+        assertEquals(8, lBounds.getHeight(), tolerance);
+
+        // set a graphic
+        MarkStyle2D mark = new MarkStyle2D();
+        mark.setShape(new Rectangle2D.Double(-.5, -.5, 1., 1.));
+        mark.setSize(20);
+        style.setGraphic(mark);
+        painter.setLabel(labelItem);
+
+        // check bounds with graphic (expands height)
+        Rectangle2D lgBounds = painter.getFullLabelBounds();
+        assertEquals(0, lgBounds.getMinX(), tolerance);
+        assertEquals(-13.5, lgBounds.getMinY(), tolerance);
+        assertEquals(22, lgBounds.getWidth(), tolerance);
+        assertEquals(20, lgBounds.getHeight(), tolerance);
+
+        // stretch graphics with margin
+        labelItem.setGraphicsResize(LabelCacheItem.GraphicResize.STRETCH);
+        labelItem.setGraphicMargin(new int[] {5, 5, 5, 5});
+        painter.setLabel(labelItem);
+
+        Rectangle2D lgsBounds = painter.getFullLabelBounds();
+        assertEquals(-5, lgsBounds.getMinX(), tolerance);
+        assertEquals(-12.5, lgsBounds.getMinY(), tolerance);
+        assertEquals(32, lgsBounds.getWidth(), tolerance);
+        assertEquals(18, lgsBounds.getHeight(), tolerance);
+
+        // same as above but grow proportionally instead
+        labelItem.setGraphicsResize(LabelCacheItem.GraphicResize.PROPORTIONAL);
+        labelItem.setGraphicMargin(null);
+        painter.setLabel(labelItem);
+
+        Rectangle2D lgpBounds = painter.getFullLabelBounds();
+        assertEquals(0, lgpBounds.getMinX(), tolerance);
+        assertEquals(-14, lgpBounds.getMinY(), tolerance);
+        assertEquals(22, lgpBounds.getWidth(), tolerance);
+        assertEquals(22, lgpBounds.getHeight(), tolerance);
+    }
+
+    @Test
+    public void testResizeGraphicWithMark2DGraphicResizeStrech() throws Exception {
+        LabelCacheItem labelItem = new LabelCacheItem("LayerID", style, shape, "Test", symbolizer);
+        labelItem.setGraphicsResize(LabelCacheItem.GraphicResize.STRETCH);
+        Rectangle2D labelBounds = new Rectangle2D.Double(0.0, -0.6875, 0.4, 0.4);
+        MarkStyle2D style2D = new MarkStyle2D();
+        style2D.setShape(new Rectangle2D.Double(-0.5, -0.5, 1.0, 1.0));
+        int[] graphicMargin = new int[4];
+        graphicMargin[0] = 0;
+        graphicMargin[1] = 0;
+        graphicMargin[2] = 0;
+        graphicMargin[3] = 0;
+        labelItem.setGraphicMargin(graphicMargin);
+        LabelPainter painter = new LabelPainter(graphics, LabelRenderingMode.OUTLINE);
+        painter.setLabel(labelItem);
+
+        // with these bounds the code should return a small but non null style
+        painter.labelBounds = labelBounds;
+        Style2D reply = painter.resizeGraphic(style2D);
+        assertNotNull(reply);
+    }
+
+    @Test
+    public void testResizeGraphicWithMark2DGraphicResizeStrechNegativeMargin() throws Exception {
+        LabelCacheItem labelItem = new LabelCacheItem("LayerID", style, shape, "Test", symbolizer);
+        labelItem.setGraphicsResize(LabelCacheItem.GraphicResize.STRETCH);
+        Rectangle2D labelBounds = new Rectangle2D.Double(0.0, -0.6875, 0.4, 0.4);
+        MarkStyle2D style2D = new MarkStyle2D();
+        style2D.setShape(new Rectangle2D.Double(-0.5, -0.5, 1.0, 1.0));
+        int[] graphicMargin = new int[4];
+        graphicMargin[0] = -1;
+        graphicMargin[1] = -1;
+        graphicMargin[2] = -1;
+        graphicMargin[3] = -1;
+        labelItem.setGraphicMargin(graphicMargin);
+        LabelPainter painter = new LabelPainter(graphics, LabelRenderingMode.OUTLINE);
+        painter.setLabel(labelItem);
+
+        // negative bounds due to margin, should still return null
+        painter.labelBounds = labelBounds;
+        Style2D reply = painter.resizeGraphic(style2D);
+        assertNull(reply);
+
+        // despite that, the label painting should not NPE, but just skip painting the graphic
+        painter.paintStraightLabel(new AffineTransform());
     }
 }

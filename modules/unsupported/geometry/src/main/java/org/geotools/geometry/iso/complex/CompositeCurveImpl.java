@@ -67,8 +67,6 @@ public class CompositeCurveImpl extends CompositeImpl<OrientableCurveImpl>
      * the Curves will be checked within the constructor of the CompositeCurve
      *
      * <p>Constructs a Composite Curve
-     *
-     * @param generator
      */
     public CompositeCurveImpl(List<OrientableCurve> generator) {
         /* Pass elements to super constructor */
@@ -224,11 +222,7 @@ public class CompositeCurveImpl extends CompositeImpl<OrientableCurveImpl>
         return this.asLineString(0.0, 0.0);
     }
 
-    /**
-     * @param maxSpacing
-     * @param maxOffset
-     * @return LineStringImpl
-     */
+    /** @return LineStringImpl */
     public LineStringImpl asLineString(double maxSpacing, double maxOffset) {
         // The function "asLineString" constructs a line string (sequence of
         // line segments) where the control points (ends of

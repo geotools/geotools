@@ -154,11 +154,7 @@ public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
         checkSingleResult(features, "r2");
     }
 
-    /**
-     * Same as contains, with roles reversed
-     *
-     * @throws Exception
-     */
+    /** Same as contains, with roles reversed */
     public void testWithinFilter() throws Exception {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
         // should match only "r2"

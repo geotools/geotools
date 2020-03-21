@@ -21,6 +21,7 @@ package org.geotools.data.shapefile.dbf;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
+import java.io.Closeable;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -64,7 +65,8 @@ import org.geotools.util.NIOUtilities;
  *
  * @author Ian Schneider, Andrea Aaime
  */
-public class DbaseFileReader implements FileReader {
+@SuppressWarnings("PMD.CloseResource") // closeables managed as fields
+public class DbaseFileReader implements FileReader, Closeable {
 
     public final class Row {
 
@@ -417,8 +419,6 @@ public class DbaseFileReader implements FileReader {
     /**
      * Reads the next record into memory. You need to use this directly when reading only a subset
      * of the fields using {@link #readField(int)}.
-     *
-     * @throws IOException
      */
     public void read() throws IOException {
         boolean foundRecord = false;
@@ -603,10 +603,6 @@ public class DbaseFileReader implements FileReader {
     /**
      * Performs a faster byte[] to String conversion under the assumption the content is represented
      * with one byte per char
-     *
-     * @param fieldLen
-     * @param fieldOffset
-     * @return
      */
     String fastParse(final byte[] bytes, final int fieldOffset, final int fieldLen) {
         // faster reading path, the decoder is for some reason slower,
@@ -621,15 +617,15 @@ public class DbaseFileReader implements FileReader {
 
     @SuppressWarnings("PMD.SystemPrintln")
     public static void main(final String[] args) throws Exception {
-        final DbaseFileReader reader =
+        try (final DbaseFileReader reader =
                 new DbaseFileReader(
-                        new ShpFiles(args[0]), false, Charset.forName("ISO-8859-1"), null);
-        System.out.println(reader.getHeader());
-        int r = 0;
-        while (reader.hasNext()) {
-            System.out.println(++r + "," + java.util.Arrays.asList(reader.readEntry()));
+                        new ShpFiles(args[0]), false, Charset.forName("ISO-8859-1"), null)) {
+            System.out.println(reader.getHeader());
+            int r = 0;
+            while (reader.hasNext()) {
+                System.out.println(++r + "," + java.util.Arrays.asList(reader.readEntry()));
+            }
         }
-        reader.close();
     }
 
     public String id() {

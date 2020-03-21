@@ -133,6 +133,7 @@ public enum ReadType {
                 }
 
                 // check input stream
+                @SuppressWarnings("PMD.CloseResource") // delayed read, should not close
                 final ImageInputStream inStream = (ImageInputStream) reader.getInput();
                 // read data
                 inStream.seek(0);
@@ -193,10 +194,6 @@ public enum ReadType {
     /**
      * Load the raster data from the underlying source with the specified read type.
      *
-     * @param readParameters
-     * @param imageIndex
-     * @param rasterUrl
-     * @param readDimension
      * @param hints {@link Hints} to control the read process
      * @return a {@link RenderedImage} instance that matches the provided request parameters as
      *     close as possible.

@@ -22,7 +22,6 @@ import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
@@ -103,12 +102,7 @@ public class ImageMosaicJDBCReader extends AbstractGridCoverage2DReader {
         UPDirections.add(AxisDirection.ROW_POSITIVE);
     }
 
-    /**
-     * @param source The source object.
-     * @param uHints
-     * @throws IOException
-     * @throws MalformedURLException
-     */
+    /** @param source The source object. */
     public ImageMosaicJDBCReader(Object source, Hints uHints)
             throws IOException, MalformedURLException {
         this.source = source;
@@ -230,8 +224,6 @@ public class ImageMosaicJDBCReader extends AbstractGridCoverage2DReader {
      * Constructor.
      *
      * @param source The source object.
-     * @throws IOException
-     * @throws UnsupportedEncodingException
      */
     public ImageMosaicJDBCReader(Object source) throws IOException {
         this(source, null);
@@ -334,11 +326,7 @@ public class ImageMosaicJDBCReader extends AbstractGridCoverage2DReader {
         return coverage;
     }
 
-    /**
-     * transforms (if neccessairy) the requested envelope into the CRS used by this reader.
-     *
-     * @throws DataSourceException
-     */
+    /** transforms (if neccessairy) the requested envelope into the CRS used by this reader. */
     private void transformRequestEnvelope(ImageMosaicJDBCReaderState state)
             throws DataSourceException {
 
@@ -405,9 +393,7 @@ public class ImageMosaicJDBCReader extends AbstractGridCoverage2DReader {
     /**
      * @param backgroundColor the background color
      * @param outputTransparentColor the transparent color
-     * @param pixelDimension
      * @return the gridcoverage as the final result
-     * @throws IOException
      */
     @SuppressFBWarnings("NP_NULL_PARAM_DEREF") // pixelDimension gets into the ImageComposerThread
     // and is eventually dereferenced by some call to base constructor. Verified the bug is here,
@@ -568,13 +554,7 @@ public class ImageMosaicJDBCReader extends AbstractGridCoverage2DReader {
                 result.getName(), result.getRenderedImage(), result.getEnvelope());
     }
 
-    /**
-     * @param width
-     * @param height
-     * @param backgroundColor
-     * @param outputTransparentColor
-     * @return BufferdImage filled with outputTransparentColor
-     */
+    /** @return BufferdImage filled with outputTransparentColor */
     private BufferedImage getEmptyImage(
             int width, int height, Color backGroundcolor, Color outputTransparentColor) {
         BufferedImage emptyImage = new BufferedImage(width, height, DEFAULT_IMAGE_TYPE);

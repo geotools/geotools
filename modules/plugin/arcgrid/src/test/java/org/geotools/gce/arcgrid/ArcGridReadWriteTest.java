@@ -48,10 +48,7 @@ public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
         super(name);
     }
 
-    /**
-     * @param testParam
-     * @throws Exception
-     */
+    /** */
     public void runMe(final File testFile) throws Exception {
 
         // create a temporary output file
@@ -110,8 +107,8 @@ public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
         }
 
         /** Checking values */
-        final Double noData1 = new Double(ArcGridWriter.getCandidateNoData(gc1));
-        final Double noData2 = new Double(ArcGridWriter.getCandidateNoData(gc2));
+        final Double noData1 = Double.valueOf(ArcGridWriter.getCandidateNoData(gc1));
+        final Double noData2 = Double.valueOf(ArcGridWriter.getCandidateNoData(gc2));
         final int minTileX1 = gc1.getRenderedImage().getMinTileX();
         final int minTileY1 = gc1.getRenderedImage().getMinTileY();
         final int width = gc1.getRenderedImage().getTileWidth();
@@ -141,12 +138,7 @@ public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
             }
     }
 
-    /**
-     * A Simple Test Method which read an arcGrid and write it as a GRASS Ascii Grid
-     *
-     * @param wf
-     * @param rf
-     */
+    /** A Simple Test Method which read an arcGrid and write it as a GRASS Ascii Grid */
     public void writeGrassUnCompressed(File rf, File wf) throws Exception {
 
         final Hints hints =
@@ -191,12 +183,7 @@ public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
         }
     }
 
-    /**
-     * A Simple Test Method which read an arcGrid and write it as an ArcGrid
-     *
-     * @param rf
-     * @param wf
-     */
+    /** A Simple Test Method which read an arcGrid and write it as an ArcGrid */
     public void writeEsriUnCompressed(File rf, File wf) throws Exception {
 
         final Hints hints =

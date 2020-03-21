@@ -56,6 +56,7 @@ import org.geotools.feature.TypeBuilder;
 import org.geotools.filter.IsEqualsToImpl;
 import org.geotools.filter.OrImpl;
 import org.geotools.filter.spatial.BBOX3DImpl;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope3D;
 import org.geotools.gml3.GML;
 import org.geotools.test.AppSchemaTestSupport;
@@ -142,9 +143,6 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
      * Creates a mapping from the test case simple source to a complex type with an
      * "areaOfInfluence" attribute, which is a buffer over the simple "location" attribute and
      * another which is the concatenation of the attributes "anzlic_no" and "project_no"
-     *
-     * @return
-     * @throws Exception
      */
     @SuppressWarnings("unchecked")
     private FeatureTypeMapping createSampleDerivedAttributeMappings() throws Exception {
@@ -285,12 +283,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
                         .function("getID", new org.opengis.filter.expression.Expression[0]));
     }
 
-    /**
-     * Implementation for tests of fid -> fid unmapping.
-     *
-     * @param idExpression
-     * @throws Exception
-     */
+    /** Implementation for tests of fid -> fid unmapping. */
     private void checkUnrollIdExpression(Expression idExpression) throws Exception {
         AttributeMapping featureMapping = null;
         Name featurePath = mapping.getTargetFeature().getName();
@@ -370,8 +363,6 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
     /**
      * An xpath expression may target a "client property" mapping (in xml land, an xml attribute
      * rather than a xml element).
-     *
-     * @throws Exception
      */
     @Test
     public void testPropertyNameWithXlinkAttribute() throws Exception {
@@ -402,8 +393,6 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
     /**
      * An x-path expression may target a "client property" mapping (in xml land, an xml attribute
      * rather than a xml element).
-     *
-     * @throws Exception
      */
     @Test
     public void testPropertyNameWithGmlIdAttribute() throws Exception {
@@ -487,7 +476,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
         PropertyName attExp = (PropertyName) left;
         String expectedAtt = "results_value";
         assertEquals(expectedAtt, attExp.getPropertyName());
-        assertEquals(new Double(1.1), ((Literal) right).getValue());
+        assertEquals(Double.valueOf(1.1), ((Literal) right).getValue());
     }
 
     /**
@@ -511,8 +500,6 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
      *          OR ORIGINAL_N = "SWADLINCOTE"</code>
      *
      * <p>
-     *
-     * @throws Exception
      */
     @Test
     public void testCompareFilterMultipleMappingsPerPropertyName() throws Exception {
@@ -592,7 +579,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
         assertTrue(right instanceof Literal);
 
         assertEquals("results_value", ((PropertyName) left).getPropertyName());
-        assertEquals(new Double(1.1), ((Literal) right).getValue());
+        assertEquals(Double.valueOf(1.1), ((Literal) right).getValue());
 
         Filter sourceGreater = (Filter) sourceAnd.getChildren().get(1);
         assertTrue(sourceGreater instanceof PropertyIsGreaterThan);
@@ -788,11 +775,6 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
 
         assertTrue(unrolled instanceof BBOX3DImpl);
         BBOX3DImpl unrolled3d = (BBOX3DImpl) unrolled;
-        assertEquals(bbox3d.getMinX(), unrolled3d.getMinX(), 0.0);
-        assertEquals(bbox3d.getMaxX(), unrolled3d.getMaxX(), 0.0);
-        assertEquals(bbox3d.getMinY(), unrolled3d.getMinY(), 0.0);
-        assertEquals(bbox3d.getMaxY(), unrolled3d.getMaxY(), 0.0);
-        assertEquals(bbox3d.getMinZ(), unrolled3d.getMinZ(), 0.0);
-        assertEquals(bbox3d.getMaxZ(), unrolled3d.getMaxZ(), 0.0);
+        assertTrue(JTS.equals(bbox3d.getBounds(), unrolled3d.getBounds(), 0));
     }
 }

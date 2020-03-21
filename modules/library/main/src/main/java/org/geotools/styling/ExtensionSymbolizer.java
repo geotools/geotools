@@ -33,11 +33,7 @@ public interface ExtensionSymbolizer extends org.opengis.style.ExtensionSymboliz
      */
     String getExtensionName();
 
-    /**
-     * Name of vendor specific extensions
-     *
-     * @param name
-     */
+    /** Name of vendor specific extensions */
     void setExtensionName(String name);
 
     /**

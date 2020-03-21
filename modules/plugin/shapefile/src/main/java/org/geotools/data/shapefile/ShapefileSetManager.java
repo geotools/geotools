@@ -124,7 +124,6 @@ class ShapefileSetManager implements FileReader {
      * Convenience method for opening an index file.
      *
      * @return An IndexFile
-     * @throws IOException
      */
     protected IndexFile openIndexFile() throws IOException {
         if (shpFiles.get(SHX) == null) {

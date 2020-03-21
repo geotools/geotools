@@ -57,11 +57,7 @@ public class CQLExistenceTest {
         this.language = language;
     }
 
-    /**
-     * Sample: attribute_name DOES-NOT-EXIST
-     *
-     * @throws CQLException
-     */
+    /** Sample: attribute_name DOES-NOT-EXIST */
     @Test
     public void attributeDoesNotExist() throws CQLException {
         // -------------------------------------------------------------

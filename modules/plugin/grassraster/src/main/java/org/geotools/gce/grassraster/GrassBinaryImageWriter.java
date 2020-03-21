@@ -127,7 +127,6 @@ public class GrassBinaryImageWriter extends ImageWriter {
      * Initialize all required fields which will be written to the header.
      *
      * @param root The root node containing metadata
-     * @throws IOException
      */
     // private void retrieveMetadata( Node root ) throws IOException {
     // // Grid description

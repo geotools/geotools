@@ -42,7 +42,6 @@ public enum CoverageCapabilities {
     /**
      * Check if this capability is permissible for the provided access type.
      *
-     * @param type
      * @return true if capability is permissible
      */
     public boolean isSupported(AccessType type) {

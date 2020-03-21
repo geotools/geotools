@@ -47,6 +47,7 @@ import org.geotools.gce.imagemosaic.RasterLayerRequest;
 import org.geotools.gce.imagemosaic.RasterLayerResponse;
 import org.geotools.gce.imagemosaic.RasterManager;
 import org.geotools.gce.imagemosaic.Utils;
+import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
@@ -91,6 +92,26 @@ class ReprojectingSubmosaicProducer extends BaseSubmosaicProducer {
             boolean dryRun) {
         super(response, dryRun);
         this.targetCRS = rasterManager.getConfiguration().getCrs();
+        Envelope2D requestedBounds = request.getRequestedBounds();
+        if (rasterManager.getConfiguration().getCatalogConfigurationBean().isHeterogeneousCRS()
+                && requestedBounds != null) {
+            CoordinateReferenceSystem crs = requestedBounds.getCoordinateReferenceSystem();
+            Integer code = null;
+            try {
+                code = CRS.lookupEpsgCode(crs, false);
+                // Let's switch the targetCRS to the requested one if supported
+                if (request.isUseAlternativeCRS() && rasterManager.hasAlternativeCRS(code)) {
+                    targetCRS = crs;
+                }
+            } catch (IOException | FactoryException e) {
+                if (LOGGER.isLoggable(Level.WARNING)) {
+                    LOGGER.warning(
+                            "Unable to check for alternative CRS: "
+                                    + code
+                                    + " Proceeding with default target CRS");
+                }
+            }
+        }
         this.dryRun = dryRun;
 
         Hints hints = rasterManager.getHints();
@@ -255,11 +276,6 @@ class ReprojectingSubmosaicProducer extends BaseSubmosaicProducer {
     /**
      * Computes the sub-mosaic spatial extend based on the image size and the target grid to world
      * transformation
-     *
-     * @param mosaicProducer
-     * @param image
-     * @return
-     * @throws FactoryException
      */
     private ReferencedEnvelope computeSubmosaicBoundingBox(
             MathTransform2D tx, RenderedImage image, CoordinateReferenceSystem crs)
@@ -284,9 +300,6 @@ class ReprojectingSubmosaicProducer extends BaseSubmosaicProducer {
     /**
      * Given a coverage in the mosaic target CRS generates an RenderedImage properly positioned in
      * the mosaic output raster space
-     *
-     * @param resampledCoverage
-     * @return
      */
     private RenderedImage positionInOutputMosaic(GridCoverage2D resampledCoverage) {
         RenderedImage image = resampledCoverage.getRenderedImage();

@@ -22,8 +22,8 @@ import org.geotools.data.DataStore;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.FeatureCollections;
 import org.geotools.process.ProcessException;
 import org.geotools.test.TestData;
 import org.junit.After;
@@ -138,7 +138,7 @@ public class LRSSegmentProcessTest {
     @Test
     public void testNoFeaturesGiven() throws Exception {
         LRSSegmentProcess process = new LRSSegmentProcess();
-        FeatureCollection origional = FeatureCollections.newCollection();
+        FeatureCollection origional = new DefaultFeatureCollection();
 
         FeatureCollection result = process.execute(origional, "from_lrs", "to_lrs", 1.0, 2.0);
         Assert.assertEquals(0, result.size());

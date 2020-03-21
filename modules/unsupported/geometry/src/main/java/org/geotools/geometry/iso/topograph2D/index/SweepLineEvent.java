@@ -18,7 +18,7 @@
 package org.geotools.geometry.iso.topograph2D.index;
 
 /** Models an Event point within the Sweep Line Intersection Algorithm */
-public class SweepLineEvent implements Comparable {
+public class SweepLineEvent implements Comparable<SweepLineEvent> {
     public static final int INSERT = 1;
 
     public static final int DELETE = 2;
@@ -35,12 +35,7 @@ public class SweepLineEvent implements Comparable {
 
     private Object obj;
 
-    /**
-     * @param edgeSet
-     * @param x
-     * @param insertEvent
-     * @param obj
-     */
+    /** */
     public SweepLineEvent(Object edgeSet, double x, SweepLineEvent insertEvent, Object obj) {
         this.edgeSet = edgeSet;
         xValue = x;
@@ -79,8 +74,7 @@ public class SweepLineEvent implements Comparable {
      * important that Insert events are sorted before Delete events, so that items whose Insert and
      * Delete events occur at the same x-value will be correctly handled.
      */
-    public int compareTo(Object o) {
-        SweepLineEvent pe = (SweepLineEvent) o;
+    public int compareTo(SweepLineEvent pe) {
         if (xValue < pe.xValue) return -1;
         if (xValue > pe.xValue) return 1;
         if (eventType < pe.eventType) return -1;

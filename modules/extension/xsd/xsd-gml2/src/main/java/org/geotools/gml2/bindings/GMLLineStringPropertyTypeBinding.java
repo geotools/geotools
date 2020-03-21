@@ -18,6 +18,7 @@ package org.geotools.gml2.bindings;
 
 import java.util.List;
 import javax.xml.namespace.QName;
+import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.gml2.GML;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
@@ -55,7 +56,7 @@ import org.locationtech.jts.geom.LineString;
 public class GMLLineStringPropertyTypeBinding extends AbstractComplexBinding {
     /** @generated */
     public QName getTarget() {
-        return GML.LINESTRINGPROPERTYTYPE;
+        return GML.LineStringPropertyType;
     }
 
     /**
@@ -85,7 +86,7 @@ public class GMLLineStringPropertyTypeBinding extends AbstractComplexBinding {
         return GML2EncodingUtils.GeometryPropertyType_getProperty((LineString) object, name, false);
     }
 
-    public List getProperties(Object object) throws Exception {
+    public List getProperties(Object object, XSDElementDeclaration element) throws Exception {
         return GML2EncodingUtils.GeometryPropertyType_getProperties((LineString) object);
     }
 }

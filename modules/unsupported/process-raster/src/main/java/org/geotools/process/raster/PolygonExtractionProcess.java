@@ -95,7 +95,6 @@ public class PolygonExtractionProcess implements RasterProcess {
      * @return a feature collection where each feature has a {@code Polygon} ("the_geom") and an
      *     attribute "value" with value of the corresponding region in either {@code coverage} or
      *     the classified coverage (when {@code classificationRanges} is used)
-     * @throws ProcessException
      */
     @DescribeResult(name = "result", description = "The extracted polygon features")
     public SimpleFeatureCollection execute(

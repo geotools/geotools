@@ -1,18 +1,18 @@
 Text
 ----
 
-Many projects use Java String to represent text. This page goes over some of the String alternative used to text in a consistent manner.
+Many projects use Java ``String`` to represent text. This page goes over some of the alternatives used to handle text in a consistent manner.
 
-Enum
-^^^^
+``Enum``
+^^^^^^^^^
 
-The first alternative is a normal Java 5 **enum**. We use enumerations to represent a frozen set of machine readable text.
+The first alternative is a normal Java 5 ``Enum``. We use enumerations to represent a frozen set of machine readable text.
 
 The key idea here is:
 
 * this is machine readable; you don't need to show this to your end users
 * it is frozen; literally it is boiled into the jar you download and you cannot modify the list of defined codes in any way
-* If you are reading any of the ISO specifications you will find this concept is called an **Enum** there as well, our use agrees with typical Java practice.
+* If you are reading any of the ISO specifications you will find this concept is called an ``Enum`` there as well, our use agrees with typical Java practice.
 
 Here is an example for reference::
 
@@ -23,7 +23,7 @@ Here is an example for reference::
       RANDOM
   }
 
-As this set of text form directives to a rendering engine on handling overlapping images they are represented as an Enum.
+As this set of text form directives to a rendering engine on handling overlapping images they are represented as an ``Enum``.
 
 * The "vocabulary" of allowed text values is fixed at compile time (and is well documented for those implementing a rendering engine).
 * As this text is intended to direct a rendering engine the entries are considered machine readable.
@@ -33,13 +33,13 @@ An easy test to see if something is considered machine readable is to consider i
 CodeList
 ^^^^^^^^
 
-A CodeList is used to represent an extensible set of machine readable text.
+A ``CodeList`` is used to represent an extensible set of machine readable text.
 
-In pragmatic terms this is behaves just like a Java 5 Enum, except that you can add to it at runtime.
+In pragmatic terms this is behaves just like a Java 5 ``Enum``, except that you can add to it at runtime.
 
-The ISO specifications call this concept is a CodeList as well,
+The ISO specifications call this concept is a ``CodeList`` as well,
 
-Here is an example of a CodeList::
+Here is an example of a ``CodeList``::
    
    public final class SortOrder extends CodeList<SortOrder> {
       private static final long serialVersionUID = 7840334200112859571L;
@@ -56,13 +56,13 @@ Here is an example of a CodeList::
       }
    }
 
-The above implementation is actually very similar to the definition of an Enum and can give you some insight into have Enums are represented as Objects by Java.
+The above implementation is actually very similar to the definition of an ``Enum`` and can give you some insight into have ``Enum``\ s are represented as ``Object``\ s by Java.
 
-The difference here is that your application can add additional SortOrders at runtime::
+The difference here is that your application can add additional ``SortOrder``\ s at runtime::
    
    SortOrder order = SortOrder.valueOf( SortOrder.class, "NATURAL" );
 
-Once again a CodeList is considered:
+Once again a ``CodeList`` is considered:
 
 * Machine Readable - the text values are intended for programs not people
 * Open ended, application code can add additional values to the "vocabulary"
@@ -72,9 +72,9 @@ String
 
 String also has a place, in this case for free form machine readable text. Good examples are common query language "query" strings, or version numbers which change with each release.
 
-Please note that we are not using Strings to communicate to the end user, we have a special class (InternationalString) to address Internationalization issues.
+.. note:: We are not using ``Strings`` to communicate to the end user, we have a special class (``InternationalString``) to address internationalization issues.
 
-The ISO specifications call this concept a **CharacterString**. However you have to be careful and read how they are using it on a case by case basis. Our use does not agree with typical Java practice; we are reserving the use of String for machine readable text.
+The ISO specifications call this concept a ``CharacterString``. However you have to be careful and read how they are using it on a case by case basis. Our use does not agree with typical Java practice; we are reserving the use of String for machine readable text.
 
 Here is an example::
    
@@ -85,20 +85,20 @@ Here is an example::
 With this in mind String is considered:
 
 * Machine readable (the values are not translated!)
-* Freeform (i.e. does not belong to a set vocabulary of defined values)
+* Free form (i.e. does not belong to a set vocabulary of defined values)
 
 InternationalString
 ^^^^^^^^^^^^^^^^^^^
 
-An **InternationalString** is used to represent free form human readable text. The InternationalString interface makes every translation of the text available through one class.
+An ``InternationalString`` is used to represent free form human readable text. The ``InternationalString`` interface makes every translation of the text available through one class.
 
-The ISO specifications call this concept a CharacterString, but once again you need to check how they are using it.
+The ISO specifications call this concept a ``CharacterString``, but once again you need to check how they are using it.
 
-To use an InternationalString with the current locale::
+To use an ``InternationalString`` with the current locale::
    
    return title.toString();
 
-To use the InternationalString with a different locale::
+To use the ``InternationalString`` with a different locale::
    
    return title.toString( locale );
 

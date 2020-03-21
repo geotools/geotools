@@ -145,8 +145,6 @@ final class DefaultObjectCache implements ObjectCache {
         /**
          * Stores the value in the entry, using the write lock. It is common to use this method
          * while already holding the writeLock (since writeLock is re-entrant).
-         *
-         * @param value
          */
         public void setValue(Object value) {
             try {
@@ -196,7 +194,6 @@ final class DefaultObjectCache implements ObjectCache {
     /**
      * Check if an entry exists in the cache.
      *
-     * @param key
      * @return boolean
      */
     public boolean containsKey(final Object key) {
@@ -248,7 +245,6 @@ final class DefaultObjectCache implements ObjectCache {
     /**
      * Retrieve cache entry, will create one if needed.
      *
-     * @param key
      * @return ObjectCacheEntry
      */
     private ObjectCacheEntry getEntry(Object key) {

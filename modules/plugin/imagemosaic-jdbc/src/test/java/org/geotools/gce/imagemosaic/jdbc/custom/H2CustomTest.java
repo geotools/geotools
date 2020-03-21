@@ -26,13 +26,13 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import javax.imageio.ImageIO;
-import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.geotools.gce.imagemosaic.jdbc.AbstractTest;
 import org.geotools.gce.imagemosaic.jdbc.Config;
 import org.geotools.gce.imagemosaic.jdbc.DBDialect;
 import org.geotools.gce.imagemosaic.jdbc.UniversalDialect;
+import org.junit.Assert;
 
 /** @author mcr */
 public class H2CustomTest extends AbstractTest {
@@ -137,12 +137,12 @@ public class H2CustomTest extends AbstractTest {
             // read world file
             InputStream worldIn = new URL("file:target/resources/baseimage/map.tfw").openStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(worldIn));
-            double xRes = new Double(reader.readLine());
+            double xRes = Double.valueOf(reader.readLine());
             reader.readLine();
             reader.readLine();
-            double yRes = new Double(reader.readLine());
-            double ulx = new Double(reader.readLine());
-            double uly = new Double(reader.readLine());
+            double yRes = Double.valueOf(reader.readLine());
+            double ulx = Double.valueOf(reader.readLine());
+            double uly = Double.valueOf(reader.readLine());
             reader.close();
 
             URL baseImageUrl = new URL("file:target/resources/baseimage/map.tif");

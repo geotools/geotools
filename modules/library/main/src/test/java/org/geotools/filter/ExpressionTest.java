@@ -16,6 +16,9 @@
  */
 package org.geotools.filter;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.logging.Logger;
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -120,6 +123,8 @@ public class ExpressionTest extends TestCase {
         ftb.add("testDouble", Double.class);
         ftb.add("testString", String.class);
         ftb.add("testZeroDouble", Double.class);
+        ftb.add("testList", Collection.class);
+        ftb.add("testList2", Collection.class);
         ftb.setName("testSchema");
         testSchema = ftb.buildFeatureType();
 
@@ -134,18 +139,20 @@ public class ExpressionTest extends TestCase {
         GeometryFactory gf = new GeometryFactory(new PrecisionModel());
         attributes[0] = gf.createLineString(coords);
         attributes[1] = Boolean.valueOf(true);
-        attributes[2] = new Character('t');
+        attributes[2] = Character.valueOf('t');
         attributes[3] = Byte.valueOf("10");
         attributes[4] = Short.valueOf("101");
         attributes[5] = Integer.valueOf(1002);
         attributes[6] = Long.valueOf(10003);
-        attributes[7] = new Float(10000.4);
-        attributes[8] = new Double(100000.5);
+        attributes[7] = Float.valueOf(10000.4f);
+        attributes[8] = Double.valueOf(100000.5);
         attributes[9] = "test string data";
 
         // Creates the feature itself
         // FlatFeatureFactory factory = new FlatFeatureFactory(testSchema);
         testFeature = SimpleFeatureBuilder.build(testSchema, attributes, null);
+        // support for properties with lists
+        testFeature.setAttribute("testList", Arrays.asList(1, 2, 3, 4));
         LOGGER.finer("...feature created");
     }
 
@@ -238,14 +245,14 @@ public class ExpressionTest extends TestCase {
     public void testMinFunctionOld() throws IllegalFilterException {
         org.opengis.filter.expression.Expression a, b;
         a = new AttributeExpressionImpl(testSchema, "testInteger");
-        b = new LiteralExpressionImpl(new Double(1004));
+        b = new LiteralExpressionImpl(Double.valueOf(1004));
 
         Function min = ff.function("min", a, b);
 
         Object value = min.evaluate(testFeature);
         assertEquals(1002d, ((Double) value).doubleValue(), 0);
 
-        b = ff.literal(new Double(-100.001));
+        b = ff.literal(Double.valueOf(-100.001));
         min = ff.function("min", a, b);
 
         value = min.evaluate(testFeature);
@@ -274,12 +281,12 @@ public class ExpressionTest extends TestCase {
     public void testMaxFunction() throws IllegalFilterException {
         org.opengis.filter.expression.Expression a, b;
         a = new AttributeExpressionImpl(testSchema, "testInteger");
-        b = new LiteralExpressionImpl(new Double(1004));
+        b = new LiteralExpressionImpl(Double.valueOf(1004));
 
         Function max = ff.function("max", a, b);
         assertEquals(1004d, ((Double) max.evaluate(testFeature)).doubleValue(), 0);
 
-        b = new LiteralExpressionImpl(new Double(-100.001));
+        b = new LiteralExpressionImpl(Double.valueOf(-100.001));
         max = ff.function("max", a, b);
         assertEquals(1002d, ((Double) max.evaluate(testFeature)).doubleValue(), 0);
     }
@@ -292,7 +299,8 @@ public class ExpressionTest extends TestCase {
     public void testMaxFunctionObject() throws IllegalFilterException {
         MockDataObject testObj = new MockDataObject(10, "diez");
         org.opengis.filter.expression.Expression a = new AttributeExpressionImpl("intVal");
-        org.opengis.filter.expression.Expression b = new LiteralExpressionImpl(new Double(1004));
+        org.opengis.filter.expression.Expression b =
+                new LiteralExpressionImpl(Double.valueOf(1004));
 
         Function max = ff.function("max", a, b);
         assertEquals("max", max.getName());
@@ -300,7 +308,7 @@ public class ExpressionTest extends TestCase {
         Object maxValue = max.evaluate(testObj);
         assertEquals(1004d, ((Double) maxValue).doubleValue(), 0);
 
-        b = new LiteralExpressionImpl(new Double(-100.001));
+        b = new LiteralExpressionImpl(Double.valueOf(-100.001));
 
         max = ff.function("max", a, b);
         maxValue = max.evaluate(testObj);
@@ -387,7 +395,7 @@ public class ExpressionTest extends TestCase {
                         + testAttribute2.evaluate(testFeature)
                         + " = "
                         + mathTest.evaluate(testFeature));
-        assertEquals(new Double(2), mathTest.evaluate(testFeature));
+        assertEquals(Double.valueOf(2), mathTest.evaluate(testFeature));
     }
 
     /**
@@ -430,6 +438,32 @@ public class ExpressionTest extends TestCase {
         mathTest.setExpression1(testAttribute1);
         mathTest.setExpression2(testAttribute2);
 
-        assertEquals(new Double(2), mathTest.evaluate(testObject));
+        assertEquals(Double.valueOf(2), mathTest.evaluate(testObject));
+    }
+
+    public void testMathObjectwithLists() throws IllegalFilterException {
+        FilterFactory2 ff = new FilterFactoryImpl();
+        // Multiply Test
+        // list x 2
+        MathExpressionImpl mathExpression =
+                new MultiplyImpl(ff.property("testList"), ff.literal(Integer.valueOf(2)));
+        List scaledList = (List) mathExpression.evaluate(testFeature);
+        // verify multiplication
+        assertEquals(Double.valueOf(2), scaledList.get(0));
+
+        // list - 1
+        mathExpression = new SubtractImpl(ff.property("testList"), ff.literal(Integer.valueOf(1)));
+        List subtractedList = (List) mathExpression.evaluate(testFeature);
+        assertEquals(Double.valueOf(0), subtractedList.get(0));
+
+        // list + 1
+        mathExpression = new AddImpl(ff.literal(Integer.valueOf(1)), ff.property("testList"));
+        List addedList = (List) mathExpression.evaluate(testFeature);
+        assertEquals(Double.valueOf(2), addedList.get(0));
+
+        // list / 2
+        mathExpression = new DivideImpl(ff.literal(Integer.valueOf(2)), ff.property("testList"));
+        List dividedList = (List) mathExpression.evaluate(testFeature);
+        assertEquals(Double.valueOf(0.5), dividedList.get(0));
     }
 }

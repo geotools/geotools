@@ -31,12 +31,7 @@ import org.opengis.filter.FilterFactory;
  */
 final class CQLFilterBuilder extends AbstractFilterBuilder {
 
-    /**
-     * New instance of CQLFilterBuilder
-     *
-     * @param cqlSource
-     * @param filterFactory
-     */
+    /** New instance of CQLFilterBuilder */
     public CQLFilterBuilder(final String cqlSource, final FilterFactory filterFactory) {
 
         super(cqlSource, filterFactory);

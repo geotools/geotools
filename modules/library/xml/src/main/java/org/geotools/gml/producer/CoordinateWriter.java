@@ -16,9 +16,7 @@
  */
 package org.geotools.gml.producer;
 
-import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
@@ -263,30 +261,6 @@ public class CoordinateWriter {
      *   <li>namespaceAware: is true the prefix and namespaceUri will be used
      *   <li>
      * </ul>
-     *
-     * @param c
-     * @param output
-     * @throws SAXException
-     * @deprecated use #writeCoordinates(CoordinateSequence, ContentHandler) instead
-     */
-    public void writeCoordinates(Coordinate[] c, ContentHandler output) throws SAXException {
-        writeCoordinates(new CoordinateArraySequence(c), output);
-    }
-
-    /**
-     * Write the provided list of coordinates out.
-     *
-     * <p>There are a range of constants that control exactly what is written:
-     *
-     * <ul>
-     *   <li>useDummyZ: if true dummyZ will be added to each coordiante
-     *   <li>namespaceAware: is true the prefix and namespaceUri will be used
-     *   <li>
-     * </ul>
-     *
-     * @param c
-     * @param output
-     * @throws SAXException
      */
     public void writeCoordinates(CoordinateSequence c, ContentHandler output) throws SAXException {
 

@@ -26,28 +26,16 @@ import java.awt.image.WritableRaster;
  */
 interface RgbaAccessor {
 
-    /**
-     * Sets the current row. This will cause the current row to be read in memory
-     *
-     * @param y
-     */
+    /** Sets the current row. This will cause the current row to be read in memory */
     void readRow(int y);
 
-    /**
-     * Gets the color at the current row/column from the in memory buffer of the current row
-     *
-     * @param rgba
-     */
+    /** Gets the color at the current row/column from the in memory buffer of the current row */
     void getColor(int x, int[] rgba);
 
     /**
      * Sets the color in the current row memory buffer
      *
      * @param x The column to be written
-     * @param r
-     * @param g
-     * @param b
-     * @param a
      */
     public void setColor(int x, int r, int g, int b, int a);
 

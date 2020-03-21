@@ -47,8 +47,6 @@ public class AppSchemaDataAccessRegistry extends DataAccessRegistry {
      * it doesn't, then it will match the targetElementName.
      *
      * @param featureTypeName Feature type name
-     * @return
-     * @throws IOException
      */
     public static boolean hasName(Name featureTypeName) throws IOException {
         return getInstance().hasAppSchemaAccessName(featureTypeName);
@@ -58,9 +56,7 @@ public class AppSchemaDataAccessRegistry extends DataAccessRegistry {
      * Get a feature type mapping from a registered app-schema data access. Please note that this is
      * only possible for app-schema data access instances.
      *
-     * @param featureTypeName
      * @return feature type mapping
-     * @throws IOException
      */
     public static FeatureTypeMapping getMappingByName(Name featureTypeName) throws IOException {
         return getInstance().mappingByName(featureTypeName);
@@ -73,9 +69,7 @@ public class AppSchemaDataAccessRegistry extends DataAccessRegistry {
     /**
      * Get a feature source for simple features with supplied feature type name.
      *
-     * @param featureTypeName
      * @return feature source
-     * @throws IOException
      */
     @SuppressWarnings("unchecked")
     public static FeatureSource<FeatureType, Feature> getSimpleFeatureSource(Name featureTypeName)
@@ -86,10 +80,6 @@ public class AppSchemaDataAccessRegistry extends DataAccessRegistry {
     /**
      * Return true if a type name is mapped in one of the registered app-schema data accesses as
      * targetElementName, regardless whether or not mappingName exists.
-     *
-     * @param featureTypeName
-     * @return
-     * @throws IOException
      */
     public static boolean hasTargetElement(Name featureTypeName) throws IOException {
         return getInstance().hasAppSchemaTargetElement(featureTypeName);

@@ -21,6 +21,7 @@ import static org.junit.Assert.*;
 import java.util.Collection;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.ReferencingFactoryFinder;
+import org.geotools.referencing.operation.projection.AzimuthalEquidistant;
 import org.geotools.referencing.operation.projection.EquatorialOrthographic;
 import org.geotools.referencing.operation.projection.EquidistantCylindrical;
 import org.geotools.referencing.operation.projection.Gnomonic;
@@ -188,5 +189,32 @@ public final class AUTOTest {
                         .parameter(semiMinorString)
                         .doubleValue();
         assertEquals(semiMajor, semiMinor, 1e-9);
+    }
+
+    @Test
+    public void test97003() throws Exception {
+        ProjectedCRS crs = factory.createProjectedCRS("AUTO:97003,9001,-71.43,42.56");
+        assertEquals(
+                "Azimuthal_Equidistant",
+                crs.getConversionFromBase().getMethod().getName().getCode());
+        assertTrue(
+                crs.getConversionFromBase().getMathTransform()
+                        instanceof AzimuthalEquidistant.Ellipsoidal);
+
+        String centreLongCode = Stereographic.Provider.CENTRAL_MERIDIAN.getName().getCode();
+        double centreLong =
+                crs.getConversionFromBase()
+                        .getParameterValues()
+                        .parameter(centreLongCode)
+                        .doubleValue();
+        assertEquals(-71.43, centreLong, 1e-9);
+
+        String centreLatCode = Stereographic.Provider.LATITUDE_OF_ORIGIN.getName().getCode();
+        double centreLat =
+                crs.getConversionFromBase()
+                        .getParameterValues()
+                        .parameter(centreLatCode)
+                        .doubleValue();
+        assertEquals(42.56, centreLat, 1e-9);
     }
 }

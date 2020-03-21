@@ -86,21 +86,5 @@ public interface ChannelSelection extends org.opengis.style.ChannelSelection {
      */
     SelectedChannelType getGrayChannel();
 
-    /**
-     * set the channels to be used
-     *
-     * @param channels array of channels
-     * @deprecated Please use setRGBChannels
-     */
-    void setSelectedChannels(SelectedChannelType[] channels);
-
-    /**
-     * get the channels to be used
-     *
-     * @return array of channels
-     * @deprecated Please use getRGBChannels
-     */
-    SelectedChannelType[] getSelectedChannels();
-
-    public void accept(org.geotools.styling.StyleVisitor visitor);
+    void accept(org.geotools.styling.StyleVisitor visitor);
 }

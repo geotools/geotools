@@ -3,14 +3,14 @@ Wizard classes
 
 Wizards are dialogs that prompt for user inputs, possibly with a sequence of dialog pages (think Next and Back buttons). They also provide validation of the inputs.
 
-Swing doesn't have a wizard class so GeoTools has filled this void with JWizard.
+Swing doesn't have a wizard class so GeoTools has filled this void with ``JWizard``.
 
-JDataStoreWizard
-^^^^^^^^^^^^^^^^
+``JDataStoreWizard``
+^^^^^^^^^^^^^^^^^^^^
 
 Quickly collect connection parameter information for a DataStore:
 
-The DataStore api makes use of a list of **Parameter**s to describe valid connection parameters. You can make use of **JDataStoreWizard** to prompt the user for appropriate values.
+The ``DataStore`` API makes use of a list of ``Parameter``\ s to describe valid connection parameters. You can make use of ``JDataStoreWizard`` to prompt the user for appropriate values.
 
 * You can allow your user to select the kind of DataStore they want to use::
   
@@ -51,7 +51,7 @@ The DataStore api makes use of a list of **Parameter**s to describe valid connec
   .. image:: /tutorial/filter/images/shapeWizard2.png
      :scale: 60
 
-* Or you can prompt for a specific datastore; such as ShapefileDataStoreFactory::
+* Or you can prompt for a specific datastore; such as ``ShapefileDataStoreFactory``::
 
         DataStoreFactorySpi format = new ShapefileDataStoreFactory();
         JDataStoreWizard wizard = new JDataStoreWizard(format);
@@ -64,10 +64,10 @@ The DataStore api makes use of a list of **Parameter**s to describe valid connec
             }
         }
 
-JParameterListWizard
-^^^^^^^^^^^^^^^^^^^^
+``JParameterListWizard``
+^^^^^^^^^^^^^^^^^^^^^^^^
 
-The process api also makes use of a list of **Parameter**s to describe inputs. You can make use of **JParameterListWizard** to prompt the user for appropriate values.
+The process API also makes use of a list of ``Parameter``\ s to describe inputs. You can make use of ``JParameterListWizard`` to prompt the user for appropriate values.
 
 .. image:: /images/paramlistwizard.png
 
@@ -92,10 +92,10 @@ Example::
         File imageFile = (File) wizard.getConnectionParameters().get("image");
         File shapeFile = (File) wizard.getConnectionParameters().get("shape");
 
-JWizard
-^^^^^^^
+``JWizard``
+^^^^^^^^^^^
 
-The base class for these wizards is **JWizard**, you can use this base class in the construction of your own custom wizards.
+The base class for these wizards is ``JWizard``, you can use this base class in the construction of your own custom wizards.
 
 Example
 '''''''
@@ -103,10 +103,12 @@ Example
 The following example shows how to create a wizard from scratch using the base classes mentioned above.
 
 * Page 1
-  .. image:: /images/jwizard1.gif
+
+  .. image:: /images/jwizard1.png
 
 * Page 2
-  .. image:: /images/jwizard2.gif
+
+  .. image:: /images/jwizard2.png
 
 You can download the complete example here: :download:`JExampleWizard.java </../src/main/java/org/geotools/swing/JExampleWizard.java>`
 
@@ -127,25 +129,25 @@ You can download the complete example here: :download:`JExampleWizard.java </../
 2. Create the first wizard page
    
    To construct this wizard we begin by making the page in much the
-   same way that we would when creating a JDialog or JFrame, except
-   that here we derive our page class from JPage:
+   same way that we would when creating a ``JDialog`` or ``JFrame``, except
+   that here we derive our page class from ``JPage``:
    
    .. literalinclude:: /../src/main/java/org/geotools/swing/JExampleWizard.java
      :language: java
      :start-after: // page1 start
      :end-before: // page1 end
 
-3. Note that we override the JPage.isValid method to check that the user has entered a valid number.
+3. Note that we override the ``JPage.isValid`` method to check that the user has entered a valid number.
    
-   * getJWizard().getController() is added as a listener to the
+   * ``getJWizard().getController()`` is added as a listener to the
      field. The controller implements most swing listeners allowing
      you to use it with fields, lists and buttons as needed
    
    * The controller is responsible for listening to any and all
-     user input resulting in its syncButtonsToPage() method being
-     callled.
+     user input resulting in its ``syncButtonsToPage()`` method being
+     called.
    
-   * The syncButtonsToPage() method will use page.isValid() 
+   * The ``syncButtonsToPage()`` method will use ``page.isValid()``
      to determine if the **Next** or **Finish** buttons should
      be enabled.
 

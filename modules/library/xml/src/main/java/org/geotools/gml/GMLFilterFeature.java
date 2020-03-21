@@ -317,7 +317,6 @@ public class GMLFilterFeature extends XMLFilterImpl implements GMLHandlerJTS {
 
                 attributes.add(tempValue);
                 attributeNames.add(attName);
-                tempValue = null;
             }
 
             endAttribute();
@@ -341,6 +340,7 @@ public class GMLFilterFeature extends XMLFilterImpl implements GMLHandlerJTS {
         }
 
         // _log.debug("attName now equals " + attName);
+        tempValue = null;
         insideAttribute = false;
     }
 }

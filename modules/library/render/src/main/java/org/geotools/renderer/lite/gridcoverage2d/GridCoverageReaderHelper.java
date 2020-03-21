@@ -53,6 +53,7 @@ import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.metadata.spatial.PixelOrientation;
 import org.opengis.parameter.GeneralParameterValue;
+import org.opengis.parameter.ParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -160,10 +161,6 @@ public class GridCoverageReaderHelper {
     /**
      * Returns true if the reader is a reprojecting one, that is, one that can handle the coverage
      * reprojection on its own
-     *
-     * @param reader
-     * @return
-     * @throws IOException
      */
     public static boolean isReprojectingReader(GridCoverage2DReader reader) throws IOException {
         return "true".equals(reader.getMetadataValue(GridCoverage2DReader.REPROJECTING_READER));
@@ -173,10 +170,6 @@ public class GridCoverageReaderHelper {
      * Returns true if the reader is advertising a single CRS, cannot fully perform a reproject to
      * any target CRS, but internally is working with several CRSs and could use some extra padding
      * on the requests
-     *
-     * @param reader
-     * @return
-     * @throws IOException
      */
     boolean isMultiCRSReader(GridCoverage2DReader reader) throws IOException {
         return "true".equals(reader.getMetadataValue(GridCoverage2DReader.MULTICRS_READER));
@@ -315,13 +308,7 @@ public class GridCoverageReaderHelper {
         return coverages;
     }
 
-    /**
-     * Checks if any coverage in the list already fully contains the area of the test coverage
-     *
-     * @param coverages
-     * @param test
-     * @return
-     */
+    /** Checks if any coverage in the list already fully contains the area of the test coverage */
     private boolean coveragesContainArea(List<GridCoverage2D> coverages, GridCoverage2D test) {
         for (GridCoverage2D coverage : coverages) {
             if (coverage.getEnvelope2D().contains((BoundingBox) test.getEnvelope2D())) {
@@ -373,7 +360,8 @@ public class GridCoverageReaderHelper {
 
         GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(mapRasterArea), mapExtent);
         GridGeometry2D readingGridGeometry =
-                computeReadingGeometry(gg, readerCRS, polygon, handler);
+                computeReadingGeometry(gg, readerCRS, polygon, handler, readParams);
+
         if (readingGridGeometry == null) {
             return null;
         }
@@ -465,7 +453,8 @@ public class GridCoverageReaderHelper {
             GridGeometry2D gg,
             CoordinateReferenceSystem readerCRS,
             Polygon polygon,
-            ProjectionHandler handler)
+            ProjectionHandler handler,
+            GeneralParameterValue[] readParams)
             throws TransformException, FactoryException, IOException {
         GridGeometry2D readingGridGeometry;
         MathTransform2D crsToGrid2D = gg.getCRSToGrid2D();
@@ -513,7 +502,25 @@ public class GridCoverageReaderHelper {
                             localGridGeometry,
                             readerCRS,
                             resolutionLevels != null ? resolutionLevels[0] : null);
-            calculator.setAccurateResolution(isAccurateResolutionComputationSafe(readEnvelope));
+            final String name = "Accurate resolution computation";
+            boolean accurateResolution = true;
+            if (readParams != null) {
+                for (GeneralParameterValue gParam : readParams) {
+                    if (gParam != null
+                            && name.equalsIgnoreCase(gParam.getDescriptor().getName().toString())) {
+                        if (gParam instanceof ParameterValue<?>) {
+                            final ParameterValue<?> param = (ParameterValue<?>) gParam;
+                            final Object value = param.getValue();
+                            if (value != null) {
+                                accurateResolution = (Boolean) value;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+            calculator.setAccurateResolution(
+                    accurateResolution && isAccurateResolutionComputationSafe(readEnvelope));
             double[] readResolution = calculator.computeRequestedResolution(reducedEnvelope);
             int width =
                     (int)
@@ -590,9 +597,6 @@ public class GridCoverageReaderHelper {
      * Reads a single coverage given the specified read parameters and the grid geometry
      *
      * @param readParams (might be null)
-     * @param gg
-     * @return
-     * @throws IOException
      */
     GridCoverage2D readSingleCoverage(GeneralParameterValue[] readParams, GridGeometry2D gg)
             throws IOException {

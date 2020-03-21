@@ -21,9 +21,9 @@ import java.sql.CallableStatement;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.logging.Level;
-import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestSuite;
+import org.junit.Assert;
 
 public class DB2OnlineTest extends AbstractTest {
     static DBDialect dialect = null;

@@ -19,6 +19,7 @@ package org.geotools.data.ows;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Map;
 
 public class DelegateHTTPClient implements HTTPClient {
 
@@ -37,6 +38,11 @@ public class DelegateHTTPClient implements HTTPClient {
     @Override
     public HTTPResponse get(URL url) throws IOException {
         return delegate.get(url);
+    }
+
+    @Override
+    public HTTPResponse get(URL url, Map<String, String> headers) throws IOException {
+        return delegate.get(url, headers);
     }
 
     @Override

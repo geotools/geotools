@@ -3,7 +3,7 @@ Utilities
 
 The Utilities class is interesting, in that it contains helper
 methods used when implementing basic Java functionality such
-as equals or hashcode.
+as ``equals`` or ``hashcode``.
 
 * It is fairly annoying to compare if two objects are equal, when either of the objects could be null.
 * It is also annoying to sort out how to compare or print an array

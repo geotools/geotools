@@ -21,7 +21,6 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import junit.framework.Assert;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
@@ -184,16 +183,11 @@ public final class MathTransformBuilderTest {
             AffineToGeometric a2g =
                     new AffineToGeometric((AffineTransform2D) aab.getMathTransform());
             Assert.assertEquals(a2g.getSkew(), 0, 0.000000001);
-
         } catch (Exception e) {
             fail(e.getMessage());
         }
     }
-    /**
-     * Test for MismatchedSizeException.
-     *
-     * @throws TransformException
-     */
+    /** Test for MismatchedSizeException. */
     @Test(expected = IllegalArgumentException.class)
     public void testMismatchedSizeException() throws TransformException {
         // The exception should be thrown when the number of points is less than necessary
@@ -201,11 +195,7 @@ public final class MathTransformBuilderTest {
         new AffineTransformBuilder(pts);
     }
 
-    /**
-     * Test for MissingInfoException.
-     *
-     * @throws FactoryException
-     */
+    /** Test for MissingInfoException. */
     @Test(expected = MissingInfoException.class)
     public void testMissingInfoException() throws FactoryException {
         // The exception should be thrown when the number of points is less than necessary

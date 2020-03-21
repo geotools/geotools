@@ -68,11 +68,7 @@ public class PolymorphicChainingTest extends AppSchemaTestSupport {
         // System.out.println("Set up time: " + sw.getTimeString());
     }
 
-    /**
-     * Basic test to make sure everything got loaded correctly
-     *
-     * @throws Exception
-     */
+    /** Basic test to make sure everything got loaded correctly */
     @Test
     public void testSimpleFilter() throws Exception {
         Expression property = ff.property("ex:seqId");
@@ -86,11 +82,7 @@ public class PolymorphicChainingTest extends AppSchemaTestSupport {
         assertId("a.101", feature);
     }
 
-    /**
-     * Test filtering attributes on nested features.
-     *
-     * @throws Exception
-     */
+    /** Test filtering attributes on nested features. */
     @Test
     public void testMultiMappedFilter() throws Exception {
         Expression property = ff.property("ex:attributes/ex:Attribute/ex:key", namespaces);
@@ -129,12 +121,7 @@ public class PolymorphicChainingTest extends AppSchemaTestSupport {
         assertEquals("Incorrect id: " + actual, expected, actual);
     }
 
-    /**
-     * Load all the data accesses.
-     *
-     * @return
-     * @throws Exception
-     */
+    /** Load all the data accesses. */
     private static void loadDataAccesses() throws Exception {
         /** Load mapped feature data access */
         Map dsParams = new HashMap();

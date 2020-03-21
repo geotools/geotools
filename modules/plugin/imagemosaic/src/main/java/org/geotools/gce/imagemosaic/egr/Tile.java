@@ -257,7 +257,6 @@ class Tile {
      * Draws a binary image already in raster space. Updates the coverage count as a side effect, so
      * no need to call {@link #refreshCoverageCount()} after it
      *
-     * @param roiImage
      * @return True if at least one pixel has been added
      */
     public boolean draw(PlanarImage binaryImage) {

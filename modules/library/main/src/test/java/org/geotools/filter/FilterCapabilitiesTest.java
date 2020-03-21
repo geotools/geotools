@@ -21,7 +21,16 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.geotools.factory.CommonFactoryFinder;
+import org.opengis.filter.And;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.Not;
+import org.opengis.filter.Or;
+import org.opengis.filter.PropertyIsBetween;
+import org.opengis.filter.PropertyIsEqualTo;
+import org.opengis.filter.PropertyIsGreaterThan;
+import org.opengis.filter.PropertyIsLessThan;
+import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.PropertyIsNull;
 
 /**
  * Unit test for FilterCapabilities.
@@ -88,24 +97,24 @@ public class FilterCapabilitiesTest extends TestCase {
             LOGGER.fine("Bad filter " + ife);
         }
 
-        capabilities.addType(AbstractFilter.LOGIC_OR);
-        capabilities.addType(AbstractFilter.LOGIC_AND);
-        capabilities.addType(AbstractFilter.LOGIC_NOT);
-        capabilities.addType(FilterType.COMPARE_EQUALS);
-        capabilities.addType(FilterType.COMPARE_LESS_THAN);
-        capabilities.addType(AbstractFilter.BETWEEN);
+        capabilities.addType(Or.class);
+        capabilities.addType(And.class);
+        capabilities.addType(Not.class);
+        capabilities.addType(PropertyIsEqualTo.class);
+        capabilities.addType(PropertyIsLessThan.class);
+        capabilities.addType(PropertyIsBetween.class);
     }
 
     public void testAdd() {
-        capabilities.addType(FilterType.COMPARE_GREATER_THAN);
-        capabilities.addType(FilterType.COMPARE_LESS_THAN_EQUAL);
-        capabilities.addType(AbstractFilter.NULL);
-        assertTrue(capabilities.supports(AbstractFilter.NULL));
+        capabilities.addType(PropertyIsGreaterThan.class);
+        capabilities.addType(PropertyIsLessThan.class);
+        capabilities.addType(PropertyIsNull.class);
+        assertTrue(capabilities.supports(PropertyIsNull.class));
     }
 
     public void testShortSupports() {
-        assertTrue(capabilities.supports(AbstractFilter.LOGIC_AND));
-        assertTrue(!(capabilities.supports(AbstractFilter.LIKE)));
+        assertTrue(capabilities.supports(And.class));
+        assertTrue(!(capabilities.supports(PropertyIsLike.class)));
     }
 
     public void testFilterSupports() {

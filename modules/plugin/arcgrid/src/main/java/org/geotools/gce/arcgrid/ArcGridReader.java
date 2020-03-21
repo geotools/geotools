@@ -72,7 +72,6 @@ import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.geometry.Envelope;
-import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.FactoryException;
@@ -106,7 +105,6 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
      * compressed or not. I assume nothing about file extension.
      *
      * @param input Source object for which we want to build an ArcGridReader.
-     * @throws DataSourceException
      */
     public ArcGridReader(Object input) throws DataSourceException {
         this(input, null);
@@ -118,7 +116,6 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
      *
      * @param input Source object for which we want to build an ArcGridReader.
      * @param hints Hints to be used by this reader throughout his life.
-     * @throws DataSourceException
      */
     public ArcGridReader(Object input, final Hints hints) throws DataSourceException {
         super(input, hints);
@@ -179,8 +176,6 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
      * Close the {@link InStream} {@link ImageInputStream} if we open it up on purpose to read
      * header info for this {@link AbstractGridCoverage2DReader}. If the stream cannot be closed, we
      * just reset and mark it.
-     *
-     * @throws IOException
      */
     private void finalStreamPreparation() throws IOException {
         if (closeMe) inStream.close();
@@ -196,10 +191,6 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
      *
      * @param input provided to this {@link ArcGridReader}.
      * @param hints Hints to be used by this reader throughout his life.
-     * @throws UnsupportedEncodingException
-     * @throws DataSourceException
-     * @throws IOException
-     * @throws FileNotFoundException
      */
     private void checkSource(Object input, final Hints hints)
             throws UnsupportedEncodingException, DataSourceException, IOException,
@@ -255,20 +246,18 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
         // //
         if (input instanceof URL) {
             final URL tempURL = ((URL) input);
-            input = tempURL.openConnection().getInputStream();
-            GZIPInputStream gzInStream = null;
             try {
-                gzInStream = new GZIPInputStream((InputStream) input);
-                gzipped = false;
+                input = tempURL.openConnection().getInputStream();
+                inStream = ImageIO.createImageInputStream(new GZIPInputStream((InputStream) input));
+                gzipped = true;
             } catch (Exception e) {
+                // close the stream used to check if the input was zipped
+                ((InputStream) input).close();
+                // use as non gzipped
                 gzipped = false;
+                inStream =
+                        ImageIO.createImageInputStream(tempURL.openConnection().getInputStream());
             }
-            input = tempURL.openConnection().getInputStream();
-            inStream =
-                    gzipped
-                            ? ImageIO.createImageInputStream(gzInStream)
-                            : ImageIO.createImageInputStream(
-                                    tempURL.openConnection().getInputStream());
         } else
         // //
         //
@@ -302,8 +291,6 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
      * Gets resolution information about the coverage itself.
      *
      * @param reader an {@link ImageReader} to use for getting the resolution information.
-     * @throws IOException
-     * @throws TransformException
      */
     private void getResolutionInfo(ImageReader reader) throws IOException, TransformException {
 
@@ -372,8 +359,6 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
     /**
      * This method creates the GridCoverage2D from the underlying file.
      *
-     * @param requestedDim
-     * @param readEnvelope
      * @return a GridCoverage
      * @throws java.io.IOException
      */
@@ -496,7 +481,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
             final GridSampleDimension band =
                     new GridSampleDimension(coverageName, new Category[] {nan}, uom);
             final Map<String, Object> properties = new HashMap<String, Object>();
-            CoverageUtilities.setNoDataProperty(properties, new Double(inNoData));
+            CoverageUtilities.setNoDataProperty(properties, Double.valueOf(inNoData));
 
             //
             // Coverage
@@ -521,7 +506,6 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
      * maps to latitude.
      *
      * @param reader The {@link ImageReader} to parse.
-     * @throws MismatchedDimensionException
      */
     private void parseMetadata(ImageReader reader) throws Exception {
 
@@ -602,10 +586,6 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
      * cannot rely on receiving a prj file too. In this case the exchange of information about
      * referencing should proceed the exchange of data thus I rely on this and I ask the user who's
      * invoking the read operation to provide me a valid crs and envelope through read parameters.
-     *
-     * @throws FactoryException
-     * @throws IOException
-     * @throws FileNotFoundException
      */
     private void initCoordinateReferenceSystem() throws FileNotFoundException, IOException {
 
@@ -628,10 +608,8 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
             final File prjFile = new File(prjFileName.toString());
             if (prjFile.exists()) {
                 // it exists then we have top read it
-                PrjFileReader projReader = null;
-                try {
-                    FileChannel channel = new FileInputStream(prjFile).getChannel();
-                    projReader = new PrjFileReader(channel);
+                try (FileChannel channel = new FileInputStream(prjFile).getChannel();
+                        PrjFileReader projReader = new PrjFileReader(channel)) {
                     crs = projReader.getCoordinateReferenceSystem();
                 } catch (FileNotFoundException e) {
                     // warn about the error but proceed, it is not fatal
@@ -645,15 +623,6 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
                     // warn about the error but proceed, it is not fatal
                     // we have at least the default crs to use
                     LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-                } finally {
-                    if (projReader != null)
-                        try {
-                            projReader.close();
-                        } catch (IOException e) {
-                            // warn about the error but proceed, it is not fatal
-                            // we have at least the default crs to use
-                            LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-                        }
                 }
             }
         }

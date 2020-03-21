@@ -23,10 +23,7 @@ package org.geotools.geometry.iso.util.topology;
  */
 public class BdryNode2D extends BRepNode2D {
 
-    /**
-     * @param x
-     * @param y
-     */
+    /** */
     public BdryNode2D(double x, double y) {
         super(x, y);
     }

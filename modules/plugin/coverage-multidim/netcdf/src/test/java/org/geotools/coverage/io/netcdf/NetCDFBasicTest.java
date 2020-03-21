@@ -157,7 +157,8 @@ public final class NetCDFBasicTest extends Assert {
         indexDirectory.mkdir();
         File properties = new File(indexDirectory, "test.properties");
         String theStoreName = "testStore";
-        FileUtils.writeStringToFile(properties, NetCDFUtilities.STORE_NAME + "=" + theStoreName);
+        FileUtils.writeStringToFile(
+                properties, NetCDFUtilities.STORE_NAME + "=" + theStoreName, "UTF-8");
 
         DirectoryDataStore dataStore = new DirectoryDataStore(indexDirectory, dialect);
 
@@ -301,11 +302,7 @@ public final class NetCDFBasicTest extends Assert {
         }
     }
 
-    /**
-     * recursively delete indexes
-     *
-     * @param file
-     */
+    /** recursively delete indexes */
     private void removeIndexes(final File file) {
         if (file != null) {
             if (file.isFile()) {
@@ -598,10 +595,7 @@ public final class NetCDFBasicTest extends Assert {
         }
     }
 
-    /**
-     * @param i
-     * @param sliceIndex
-     */
+    /** */
     private void spitOutSliceInformation(int i, Slice2DIndex sliceIndex) {
         if (TestData.isInteractiveTest()) {
             String variableName = sliceIndex.getVariableName();
@@ -762,11 +756,7 @@ public final class NetCDFBasicTest extends Assert {
         assertTrue(readerSpi.canDecodeInput(file));
     }
 
-    /**
-     * We can NOT read a CDL file
-     *
-     * @throws IOException
-     */
+    /** We can NOT read a CDL file */
     @Test
     public void testReadCDL() throws IOException {
         NetCDFImageReaderSpi readerSpi = new NetCDFImageReaderSpi();

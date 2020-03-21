@@ -24,7 +24,6 @@ import org.geotools.util.factory.Hints;
 import org.opengis.coverage.Coverage;
 import org.opengis.coverage.processing.Operation;
 import org.opengis.filter.identity.Identifier;
-import org.opengis.metadata.citation.Citation;
 import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptorGroup;
@@ -71,10 +70,7 @@ public abstract class AbstractOperation implements Operation, Serializable {
     /**
      * Returns the description of the processing operation. If there is no description, returns
      * {@code null}. The default implementation returns the {@linkplain #descriptor} remarks.
-     *
-     * @deprecated Return type need to be changed, maybe to {@link InternationalString}.
      */
-    @Deprecated
     public String getDescription() {
         final InternationalString remarks = descriptor.getRemarks();
         return (remarks != null) ? remarks.toString() : null;
@@ -83,20 +79,12 @@ public abstract class AbstractOperation implements Operation, Serializable {
     /**
      * Returns the URL for documentation on the processing operation. If no online documentation is
      * available the string will be null. The default implementation returns {@code null}.
-     *
-     * @deprecated To be replaced by a method returning a {@link Citation}.
      */
-    @Deprecated
     public String getDocURL() {
         return null;
     }
 
-    /**
-     * Returns the version number of the implementation.
-     *
-     * @deprecated Replacement to be determined.
-     */
-    @Deprecated
+    /** Returns the version number of the implementation. */
     public String getVersion() {
         return descriptor.getName().getVersion();
     }
@@ -104,10 +92,7 @@ public abstract class AbstractOperation implements Operation, Serializable {
     /**
      * Returns the vendor name of the processing operation implementation. The default
      * implementation returns "Geotools 2".
-     *
-     * @deprecated Replaced by {@code getName().getAuthority()}.
      */
-    @Deprecated
     public String getVendor() {
         return "Geotools 2";
     }

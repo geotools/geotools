@@ -12,12 +12,14 @@ concerning raster data.
   
   * An existing database layout (tables,views) holding the raster data.
 
-Image Mosaicing Pyramidal JDBC Plugin has an interface called org.geotools.gce.imagemosaic.jdbc.JDBCAccess.
-Classes implementing this interface are responsible for the jdbc communication. Additionally, there is an
-abstract base class with some default implementations, org.geotools.gce.imagemosaic.jdbc.JDBCAccessCustom.
+Image Mosaicing Pyramidal JDBC Plugin has an interface called
+``org.geotools.gce.imagemosaic.jdbc.JDBCAccess``.  Classes implementing this
+interface are responsible for the jdbc communication. Additionally,
+there is an abstract base class with some default implementations,
+``org.geotools.gce.imagemosaic.jdbc.JDBCAccessCustom``.
 
 A customized implementation should subclass this class and implement two methods. The name of this
-subclass is a configuration parameter in the xml config file.
+subclass is a configuration parameter in the XML configuration file.
 
 The concrete procedure
 ''''''''''''''''''''''
@@ -26,9 +28,9 @@ The concrete procedure
    
    The abstract super class has some nice methods, especially
    
-   * Connection getConnection()
-   * Config getConfig()
-   * CoordinateReferenceSystem getCRS
+   * ``Connection getConnection()``
+   * ``Config getConfig()``
+   * ``CoordinateReferenceSystem getCRS()``
    
    Here is an example::
         
@@ -55,13 +57,13 @@ The concrete procedure
         
 2. Initialize the meta info
    
-   This is done in the method initialize. This method is called only once for each coverage / xml
-   config file.
+   This is done in the method initialize. This method is called only once for each coverage / XML
+   configuration file.
    
-   The essential part is to create a list of org.geotools.gce.imagemosaic.jdbc.ImageLevelInfo objects.
+   The essential part is to create a list of ``org.geotools.gce.imagemosaic.jdbc.ImageLevelInfo`` objects.
    
-   The info object at index 0 describes the base image, at index 1 is the info for the first pyramid,
-   and so on. If there are no pyramids, the list has only one info object.
+   The ``info`` object at index 0 describes the base image, at index 1 is the info for the first pyramid,
+   and so on. If there are no pyramids, the list has only one ``info`` object.
    
    A code template::
 
@@ -102,53 +104,53 @@ The concrete procedure
 
 3. Fetch raster data
    
-   This is done in the method startTileDecoders. There are a lot of parameters, maybe not all
+   This is done in the method ``startTileDecoders``. There are a lot of parameters, maybe not all
    are useful for a custom implementation.
    
-   Rectangle pixelDimension
+   ``Rectangle pixelDimension``
       The requested size in pixel of the result image, perhaps not needed
    
-   GeneralEnvelope requestEnvelope
+    ``GeneralEnvelope requestEnvelope``
       The requested size in world coordinates
    
-   ImageLevelInfo info
+    ``ImageLevelInfo info``
       The info object of the pyramid to use
    
-   LinkedBlockingQueue<TileQueueElement> tileQueue
+    ``LinkedBlockingQueue<TileQueueElement> tileQueue``
       Queue for holding tile queue elements
    
-   GridCoverageFactory coverageFactory
+    ``GridCoverageFactory coverageFactory``
       perhaps not needed
    
    This method is responsible for
    
    1. Fetching the tiles for the given level, the area covered may be larger than the area requested
-      in the requestEnvelope parameter. This is the minimum to implement.
-   2. Additionally to 1. , mosiac the the tiles to one image.
-   3. Additionally to 2. , crop the image according to the requestEnvelope param
-   4. Additionally to 3, use the pixel dimension of the image and the pixelDimension parameter to
+      in the ``requestEnvelope`` parameter. This is the minimum to implement.
+   2. Additionally to 1. , mosaic the tiles to one image.
+   3. Additionally to 2. , crop the image according to the ``requestEnvelope`` parameters
+   4. Additionally to 3, use the pixel dimension of the image and the ``pixelDimension`` parameter to
       rescale the image.
    
    The interesting construct is the tile queue and a tile queue element. Before this method is
-   called, a tile queue is created. Additionally an ImageComposerThread is created an started. This
+   called, a tile queue is created. Additionally an ``ImageComposerThread`` is created an started. This
    thread is responsible for creating the result image. Depending on the implementation
    possibilities described above, this thread is responsible to do the missing steps.
    
    As an example:
    
-   * if the custom implementation of startTileDecoders implements step 1 and 2, 
-   * the ImageComposerThread will do the missing steps 3 and 4.
+   * if the custom implementation of ``startTileDecoders`` implements step 1 and 2, 
+   * the ``ImageComposerThread`` will do the missing steps 3 and 4.
    
-   The primary job of the startTileDecoders method is to fetch the image data as fast as possible,
+   The primary job of the ``startTileDecoders`` method is to fetch the image data as fast as possible,
    creating on or more tile queue elements and put these elements into the queue. The
-   ImageCompoerThread starts working when the first element is in the queue. It stops working when
+   ``ImageComposerThread`` starts working when the first element is in the queue. It stops working when
    it reads a special END Element.
    
    A tile queue element for itself has
    
    * an optional name
-   * a BufferedImage object
-   * a GeneralEnvelope describing the the tile rectangle in world coordinates
+   * a ``BufferedImage`` object
+   * a ``GeneralEnvelope`` describing the the tile rectangle in world coordinates
    
    A code template::
 
@@ -158,13 +160,10 @@ The concrete procedure
                 GridCoverageFactory coverageFactory) throws IOException {
             try {
                 Connection con = getConnection();
-    
                 // getting the index of the level info object
                 int level = getLevelInfos().indexOf(info);
-    
                 // this example reads exactly one tile
                 BufferedImage img = getBufferedImage(level, con);
-    
                 GeneralEnvelope genv = new GeneralEnvelope(info.getCrs());
                 genv.setRange(0, info.getExtentMinX(), info.getExtentMaxX());
                 genv.setRange(1, info.getExtentMinY(), info.getExtentMaxY());
@@ -178,25 +177,25 @@ The concrete procedure
             tileQueue.add(TileQueueElement.ENDELEMENT);
         }
    
-   This is a simple template. A more complex implementation can be found in class JDBCAccessBase.
+   This is a simple template. A more complex implementation can be found in class ``JDBCAccessBase``.
    This implementation fetches tiles, starts decoder threads to utilize full CPU power, waits for
    all decoder threads to finish and sends the end element.
    
    HINT: Hurry up to bring your first tile queue element into the queue.
    
-   IMPORTANT: This method must be thread safe, do not modify instance vars or implement other
+   IMPORTANT: This method must be thread safe, do not modify instance variables or implement other
    actions causing problems under load.
 
-The Config file
-'''''''''''''''
+The Configuration file
+''''''''''''''''''''''
 
-Here is an example config file::
+Here is an example configuration file::
 
     <?xml version="1.0" encoding="UTF-8" standalone="no"?>
     <config version="1.0">
         <coverageName name="oek"/>
         <coordsys name="EPSG:4326"/>
-        <!-- interpolation 1 = nearest neighbour, 2 = bipolar, 3 = bicubic -->
+        <!-- interpolation 1 = nearest neighbor, 2 = bipolar, 3 = bicubic -->
         <scaleop  interpolation="1"/>
         <axisOrder ignore="false"/>
         <spatialExtension name="custom"/>       
@@ -219,13 +218,13 @@ Here is an example config file::
 Most elements are self explanatory, the detailed documentation is in Image Mosaicing Pyramidal
 JDBC Plugin 
 
-* The name attribute of the <spatialExtension> Element must be custom.
-* The name attribute of the <jdbcAccessClassName> Element holds the class name of your implementation, org.mycompany.jdbc.MyJDBCAccessImpl in this example.
+* The name attribute of the ``<spatialExtension>`` Element must be custom.
+* The name attribute of the ``<jdbcAccessClassName>`` Element holds the class name of your implementation, ``org.mycompany.jdbc.MyJDBCAccessImpl`` in this example.
 
 Deployment
 ''''''''''
 
-Package the Java class(es) in a jar file and copy this jar file to your classpath.
+Package the Java classes in a jar file and copy this jar file to your classpath.
 
 Java Example
 ''''''''''''
@@ -233,4 +232,3 @@ Java Example
 How to use the new coverage? Again, see at the end of Image Mosaicing Pyramidal JDBC Plugin.
 
 
-Document generated by Confluence on Feb 16, 2011 06:43

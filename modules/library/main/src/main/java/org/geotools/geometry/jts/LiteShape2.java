@@ -72,8 +72,6 @@ public final class LiteShape2 implements Shape, Cloneable {
      * @param decimator -
      * @param generalize - set to true if the geometry need to be generalized during rendering
      * @param maxDistance - distance used in the generalization process
-     * @throws TransformException
-     * @throws FactoryException
      */
     public LiteShape2(
             Geometry geom,
@@ -94,8 +92,6 @@ public final class LiteShape2 implements Shape, Cloneable {
      *     shape points
      * @param decimator -
      * @param generalize - set to true if the geometry need to be generalized during rendering
-     * @throws TransformException
-     * @throws FactoryException
      */
     public LiteShape2(
             Geometry geom, MathTransform mathTransform, Decimator decimator, boolean generalize)
@@ -113,8 +109,6 @@ public final class LiteShape2 implements Shape, Cloneable {
      * @param generalize - set to true if the geometry need to be generalized during rendering
      * @param clone - if clone is false the original geometry may be modified directly, if true it
      *     will be cloned to make sure the original remains untouched
-     * @throws TransformException
-     * @throws FactoryException
      */
     public LiteShape2(
             Geometry geom,
@@ -141,7 +135,10 @@ public final class LiteShape2 implements Shape, Cloneable {
                     && !mathTransform.isIdentity()
                     && generalize
                     && geometry != null) {
-                new Decimator(mathTransform.inverse()).decimate(this.geometry);
+                new Decimator(
+                                mathTransform.inverse(),
+                                getRectangle(this.geometry.getEnvelopeInternal()))
+                        .decimate(this.geometry);
                 this.geometry.geometryChanged();
             }
             if (geometry != null) {
@@ -150,6 +147,14 @@ public final class LiteShape2 implements Shape, Cloneable {
             }
         }
         this.generalize = false;
+    }
+
+    private Rectangle getRectangle(Envelope envelope) {
+        int minX = (int) Math.floor(envelope.getMinX());
+        int minY = (int) Math.floor(envelope.getMinY());
+        int maxX = (int) Math.floor(envelope.getMaxX());
+        int maxY = (int) Math.floor(envelope.getMaxY());
+        return new Rectangle(minX, minY, maxX - minX, maxY - minY);
     }
 
     private void transformGeometry(Geometry geometry) throws TransformException, FactoryException {
@@ -194,10 +199,6 @@ public final class LiteShape2 implements Shape, Cloneable {
     /**
      * Sets the geometry contained in this lite shape. Convenient to reuse this object instead of
      * creating it again and again during rendering
-     *
-     * @param g
-     * @throws TransformException
-     * @throws FactoryException
      */
     public void setGeometry(Geometry g) throws TransformException, FactoryException {
         if (g != null) {

@@ -35,11 +35,7 @@ public class Stylesheet {
         this.directives = directives;
     }
 
-    /**
-     * The list of rules in the stylesheet
-     *
-     * @return
-     */
+    /** The list of rules in the stylesheet */
     List<CssRule> getRules() {
         return rules;
     }
@@ -48,11 +44,7 @@ public class Stylesheet {
         this.rules = rules;
     }
 
-    /**
-     * The list of directives parsed from the style
-     *
-     * @return
-     */
+    /** The list of directives parsed from the style */
     public List<Directive> getDirectives() {
         return directives;
     }

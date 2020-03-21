@@ -136,8 +136,8 @@ public class Encoder {
     /**
      * Special name recognized by the encoder as a comment.
      *
-     * <p>Bindings can return this name in {@link ComplexBinding#getProperties(Object)} to provide
-     * comments to be encoded.
+     * <p>Bindings can return this name in {@link ComplexBinding#getProperties(Object,
+     * XSDElementDeclaration)} to provide comments to be encoded.
      */
     public static final QName COMMENT = new QName("http://www.geotools.org", "comment");
 
@@ -206,7 +206,15 @@ public class Encoder {
      * @param configuration The encoder configuration.
      */
     public Encoder(Configuration configuration) {
-        this(configuration, configuration.schema());
+        this(configuration, getSchema(configuration));
+    }
+
+    public static XSDSchema getSchema(Configuration configuration) {
+        try {
+            return configuration.getXSD().getSchema();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -423,8 +431,6 @@ public class Encoder {
      *
      * <p>Warning that setting this to <code>false</code> will result in no namespace prefixes on
      * encoded elements and attributes, and no schema declarations on the root element.document;
-     *
-     * @param namespaces
      */
     public void setNamespaceAware(boolean namespaceAware) {
         this.namespaceAware = namespaceAware;
@@ -448,17 +454,6 @@ public class Encoder {
      */
     public NamespaceSupport getNamespaces() {
         return namespaces;
-    }
-
-    /**
-     * True if we are encoding a full document, false if the xml headers should be omitted (the
-     * encoder is used to generate part of a large document)
-     *
-     * @param encodeFullDocument
-     * @deprecated use {@link #setInline(boolean)}.
-     */
-    public void setEncodeFullDocument(boolean encodeFullDocument) {
-        this.inline = !encodeFullDocument;
     }
 
     /**
@@ -513,12 +508,6 @@ public class Encoder {
         return schema;
     }
 
-    /** @deprecated use {@link #encode(Object, QName, OutputStream)}. */
-    public void write(Object object, QName name, OutputStream out)
-            throws IOException, SAXException {
-        encode(object, name, out);
-    }
-
     /** @return The document used as a factory to create dom nodes. */
     public Document getDocument() {
         return doc;
@@ -533,7 +522,6 @@ public class Encoder {
      * @param object The object being encoded.
      * @param name The name of the element being encoded in the schema.
      * @param out The output stream.
-     * @throws IOException
      */
     public void encode(Object object, QName name, OutputStream out) throws IOException {
         if (inline) {
@@ -589,7 +577,10 @@ public class Encoder {
                 .stream()
                 .allMatch(
                         property ->
-                                property.getType().getName().equals(complex.getType().getName()))) {
+                                property == null
+                                        || property.getType()
+                                                .getName()
+                                                .equals(complex.getType().getName()))) {
             // different types which means we are not in the case of nested complex features
             return false;
         }
@@ -1151,9 +1142,6 @@ public class Encoder {
     /**
      * Makes a defensive copy of an e-list handling the eventual issues due to concurrent
      * modifications
-     *
-     * @param substitutionGroup
-     * @return
      */
     private List safeCopy(EList substitutionGroup) {
         while (true) {
@@ -1524,20 +1512,12 @@ public class Encoder {
         return configuration;
     }
 
-    /**
-     * Returns the object used to load xml bindings in this encoder
-     *
-     * @return
-     */
+    /** Returns the object used to load xml bindings in this encoder */
     public BindingLoader getBindingLoader() {
         return bindingLoader;
     }
 
-    /**
-     * Returns the Pico context used by this encoder
-     *
-     * @return
-     */
+    /** Returns the Pico context used by this encoder */
     public PicoContainer getContext() {
         return context;
     }

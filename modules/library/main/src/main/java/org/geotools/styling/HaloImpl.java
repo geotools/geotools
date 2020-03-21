@@ -44,7 +44,6 @@ public class HaloImpl implements Halo, Cloneable {
     /**
      * Cast to HaloImpl (creating a copy if needed).
      *
-     * @param halo
      * @return HaloImpl equal to the provided halo
      */
     static HaloImpl cast(org.opengis.style.Halo halo) {

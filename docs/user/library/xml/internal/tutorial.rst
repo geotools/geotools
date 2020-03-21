@@ -6,24 +6,24 @@ This tutorial covers how to implement XML support for a particular schema.
 Prerequisites at the time of writing:
 
 * Maven 3
-* Build GeoTools trunk locally; the gt2-xmlcodegen maven plugin is not published anywhere - you need to build it
+* Build GeoTools trunk locally; the ``gt2-xmlcodegen`` maven plugin is not published anywhere - you need to build it
 
 Create a New Project
 ''''''''''''''''''''
 Somewhere on your system:
 
-1. Create a new directory called xml-po
-2. Add the the following **pom.xml** to the xml-po directory
+1. Create a new directory called ``xml-po``
+2. Add the following ``pom.xml`` to the ``xml-po`` directory
 
    .. literalinclude:: /artifacts/xml/pom1.xml
 
-3. Create the directories src/main/java and src/main/xsd::
+3. Create the directories ``src/main/java and src/main/xsd``::
 
      mkdir -p src/main/java
      mkdir -p src/main/resources
      mkdir -p src/test/java
 
-4. Copy :download:`po.xsd <../../../artifacts/xml/po.xsd>` into src/main/resources
+4. Copy :download:`po.xsd <../../../artifacts/xml/po.xsd>` into ``src/main/resources``
 
    .. literalinclude:: ../../../artifacts/xml/po.xsd
 
@@ -32,13 +32,13 @@ Generate the Model
 
 The first step is to come up with an object model to work with. There are a number of technologies that will take an XML schema and generate Java code from it. To name a few:
 
-* Eclipse Modelling Framework
+* Eclipse Modeling Framework
 * Java Architecture for XML Binding (JAXB)
 * XML Beans
 
 For this tutorial we will use JAXB.
 
-First we must configure the pom.xml file of our project to use the `maven-jaxb2-plugin <http://java.net/projects/maven-jaxb2-plugin/>`_ plugin, and also depend on jaxb as it will add some annotations.
+First we must configure the ``pom.xml`` file of our project to use the `maven-jaxb2-plugin <http://java.net/projects/maven-jaxb2-plugin/>`_ plugin, and also depend on JAXB as it will add some annotations.
 
 .. note::
 
@@ -48,13 +48,13 @@ First we must configure the pom.xml file of our project to use the `maven-jaxb2-
 
    You may wish to download a newer copy of the instructions if they seem out of date.
 
-1. Add a dependency on jaxb api:
+1. Add a dependency on ``jaxb api``:
 
 .. literalinclude:: /artifacts/xml/pom2.xml
    :start-after: </name>
    :end-before: <build>
 
-2. Configure the jaxb maven plugin:
+2. Configure the JAXB maven plugin:
 
    .. literalinclude:: /artifacts/xml/pom2.xml
       :start-after: </dependencies>
@@ -67,7 +67,7 @@ First we must configure the pom.xml file of our project to use the `maven-jaxb2-
 
 4. Now we are ready to generate the model.
 
-   Run the jaxb2 code generation::
+   Run the JAXB2 code generation::
 
      [xml-po]$ mvn jaxb2:xjc
      [INFO] Scanning for projects...
@@ -91,25 +91,25 @@ First we must configure the pom.xml file of our project to use the `maven-jaxb2-
 
      [xml-po]% mvn install
 
-6. At this point, the model should have been generated under src/main/java.
+6. At this point, the model should have been generated under ``src/main/java``.
 
-   * Items.java
-   * ObjectFactory.java
-   * PurchaseOrderType.java
-   * USAddress.java
+   * ``Items.java``
+   * ``ObjectFactory.java``
+   * ``PurchaseOrderType.java``
+   * ``USAddress.java``
 
 Generate the Bindings
 '''''''''''''''''''''
 
-At this point, we have generated objects from the original schema. The next step will be to generate XML bindings from the original schema. To do this we will make use of the geotools XML generation plugin.
+At this point, we have generated objects from the original schema. The next step will be to generate XML bindings from the original schema. To do this we will make use of the GeoTools XML generation plugin.
 
-1. Add a dependency on the geotools xml module:
+1. Add a dependency on the GeoTools XML module:
 
    .. literalinclude:: /artifacts/xml/pom3.xml
       :start-after: <dependencies>
       :end-before: </dependencies>
 
-2. Configure the xml generation plugin:
+2. Configure the XML generation plugin:
 
    .. literalinclude:: /artifacts/xml/pom3.xml
       :start-after: <!--  geotools generator -->
@@ -117,11 +117,11 @@ At this point, we have generated objects from the original schema. The next step
 
 3. A couple of things to note about the configuration:
 
-   * The schemaLocation tag defines the target schema, in this case po.xsd.
-   * The destinationPackage defines which package we would like the generate
-      code to end up in, in this case org.geotools.po.bindings
-   * The constructorArguments tag defines the constructor arguments we want our
-     xml bindings to take, in this case org.geotools.po.ObjectFactory which is
+   * The ``schemaLocation`` tag defines the target schema, in this case ``po.xsd``.
+   * The ``destinationPackage`` defines which package we would like the generate
+      code to end up in, in this case ``org.geotools.po.bindings``
+   * The ``constructorArguments`` tag defines the constructor arguments we want our
+     XML bindings to take, in this case ``org.geotools.po.ObjectFactory`` which is
      a factory that was generated in our model in the previous section
 
 4. At this point, your pom should look like this :download:`pom.xml </artifacts/xml/pom3.xml>` .
@@ -172,7 +172,7 @@ At this point, we have generated objects from the original schema. The next step
     [INFO] Final Memory: 15M/291M
     [INFO] ------------------------------------------------------------------------
 
-5. At this point, the bindings should have been generated under src/main/java::
+5. At this point, the bindings should have been generated under ``src/main/java``::
 
      [xml-po]% ls src/main/java/org/geotools/po/bindings
 
@@ -184,19 +184,23 @@ At this point, we have generated objects from the original schema. The next step
 
 6. Some explanation of the generated files is in order:
 
-   * Binding.java
+   * ``Binding.java``
 
      These are the bindings themselves, there should be one for every type in the purchase order schema
-   * PO.java
+
+   * ``PO.java``
 
      An interface which contains constants for the qualified names of attributes, elements, and types defined in the schema
-   * POConfiguration
 
-     The parser configuration used to prepare the xml parser for parsing an instance of the schema
-   *  POSchemaLocationResolver.java
+   * ``POConfiguration``
+
+     The parser configuration used to prepare the XML parser for parsing an instance of the schema
+
+   *  ``POSchemaLocationResolver.java``
 
       Helper class used by the configuration to locate our schema file while parsing
-   * POBindingConfiguration.java
+
+   * ``POBindingConfiguration.java``
 
      Helper class used by the configuration to register the generated bindings with the parser
 
@@ -227,15 +231,15 @@ The next step is to implement the bindings, which are at this point contain stub
      [INFO]
 
 2. The command will produce a few warnings were it cannot find source or
-   javadoc files but it will generate a .project and .classpath allowing you to
+   javadoc files but it will generate a ``.project`` and ``.classpath`` allowing you to
    import the project into eclipse.
 
    .. image:: /images/xml/eclipseImport.png
 
 .. note::
-    You may get a compile error from Eclipse noting `The method parse(InstanceComponent, Object) in the type AbstractSimpleBinding is not applicable for the arguments (ElementInstance, Node, Object) PurchaseOrderBinding.java /xml-po/src/main/java/org/geotools/po/bindings  line 60 Java Problem`
+    You may get a compile error from Eclipse noting ``The method parse(InstanceComponent, Object) in the type AbstractSimpleBinding is not applicable for the arguments (ElementInstance, Node, Object) PurchaseOrderBinding.java /xml-po/src/main/java/org/geotools/po/bindings  line 60 Java Problem``
 
-    This is easily solved by changing PurchaseOrderBinding to exend AbstractComplexBinding instead of the generated AbstractSimpleBinding.
+    This is easily solved by changing PurchaseOrderBinding to extend AbstractComplexBinding instead of the generated ``AbstractSimpleBinding``.
 
 3. We will take a bottom approach to implementation of the bindings, that is starting with bindings for types that are referenced by other types.
 
@@ -251,7 +255,7 @@ SKU (Simple Type)
      </xsd:simpleType>
 
 2. From the schema definition, we see that the SKU type is a Simple Type,
-   which extends xsd:string. In the realm of xml schema, the following diagram
+   which extends ``xsd:string.`` In the realm of XML schema, the following diagram
    depicts the inheritance hierarchy of the SKU type:
 
    .. image:: /images/xml/skuHierachy.png
@@ -265,7 +269,7 @@ SKU (Simple Type)
 
 4. Implement the parse method
 
-   So with that explanation, we can implement the SKUBinding.parse method::
+   So with that explanation, we can implement the ``SKUBinding.parse`` method::
 
       Object parse( InstanceComponent instance, Object value ) {
          return null;
@@ -273,7 +277,7 @@ SKU (Simple Type)
       }
 
    The value parameter is the parsed value that has been passed down from the
-   parent ( xsd:string ), which is an instance of java.lang.String, so we can
+   parent ( ``xsd:string`` ), which is an instance of ``java.lang.String``, so we can
    cast accordingly.::
 
       Object parse( InstanceComponent instance, Object value ) {
@@ -295,11 +299,11 @@ SKU (Simple Type)
          return sku;
       }
 
-5. Implement the getType method
+5. Implement the ``getType`` method
 
    The last thing to do in implementing the SKU binding is to declare the type
    of the object that it returns. From the implementation parse it is clear that
-   this is java.lang.String.::
+   this is ``java.lang.String``.::
 
      Class getType() [
        return String.class;
@@ -310,29 +314,29 @@ SKU (Simple Type)
 Comment (Simple Type)
 '''''''''''''''''''''
 
-1. We will start by implementing the binding for the Comment type in our schema::
+1. We will start by implementing the binding for the ``Comment`` type in our schema::
 
     <xsd:element name="comment" type="xsd:string"/>
 
-2. Implement the parse method::
+2. Implement the ``parse`` method::
 
     Object parse(InstanceComponent instance, Object value) throws Exception {
       String comment = (String) value;
       return comment;
     }
 
-3. Implement the getType method::
+3. Implement the ``getType`` method::
 
     Class getType() {
       return String.class;
     }
 
-4. You can download completed :download:`CommentBinding.java </../src/main/java/org/geotools/po/bindings/CommentBinding.java>` .
+4. You can download the completed code :download:`CommentBinding.java </../src/main/java/org/geotools/po/bindings/CommentBinding.java>` .
 
 USAddress (Complex Type)
 ''''''''''''''''''''''''
 
-1. Next we will move on to implement a binding for the ComplexType USAddress::
+1. Next we will move on to implement a binding for the ``ComplexType`` ``USAddress``::
 
      <xsd:complexType name="USAddress">
        <xsd:sequence>
@@ -355,7 +359,7 @@ USAddress (Complex Type)
        return null;
      }
 
-3. The difference is the addition of the node parameter. A Node instance
+3. The difference is the addition of the node parameter. A ``Node`` instance
    contains the parsed values of all elements and attributes contained within
    the complex type. The node API is map like in which element and attribute
    values can be looked up by name::
@@ -365,13 +369,13 @@ USAddress (Complex Type)
           Object getAttributeValue( String name ):
      }
 
-  So in implementing the binding for USAddress, we will make use of the node to
+  So in implementing the binding for ``USAddress``, we will make use of the node to
   obtain the properties of the address.
 
 4. Implement the parse method
 
-   The first step is to create a new instance of USAddress. To do so we make
-   use of the org.geotools.po.ObjectFactory. If you remember earlier when we
+   The first step is to create a new instance of ``USAddress``. To do so we make
+   use of the ``org.geotools.po.ObjectFactory``. If you remember earlier when we
    configured the binding generator, we specified that each binding should take
    one of these factories in its constructor. Well know we will put it to use.::
 
@@ -381,7 +385,7 @@ USAddress (Complex Type)
       }
 
 5. Next, we must get the values for each of the elements and attributes defined
-   in the XML schema type for USAddress from the node parameter::
+   in the XML schema type for ``USAddress`` from the node parameter::
 
       Object parse(ElementInstance instance, Node node, Object value) throws Exception {
          USAddress address = factory.createUSAddress();
@@ -399,10 +403,10 @@ USAddress (Complex Type)
          return address;
       }
 
-6. Implement the getType method
+6. Implement the ``getType`` method
 
    Same as with simple types above, complex bindings must declare the type of
-   object they create. An so::
+   object they create. And so::
 
       Class getType() {
          return USAddress.class;
@@ -437,11 +441,11 @@ Moving along we encounter the Items type. The schema for the type is relatively 
     </xsd:sequence>
   </xsd:complexType>
 
-However, the element "item" itself provides a small wrinkle: it has an Anonymous Inline Type Definition.
+However, the element ``item`` itself provides a small wrinkle: it has an Anonymous Inline Type Definition.
 
 1. The convention used for the binding append the element name to the name of the parent.
 
-   In this case "Items_item".::
+   In this case ``Items_item``.::
 
       Class getType() {
               return Items.Item.class;
@@ -469,7 +473,7 @@ Items ( Another Complex Type )
 
 Items is just a container for multiple Item elements.
 
-1. In implementing we make use of the getChildValues() method of Node, which returns a collection of child elements corresponding to a particular name.::
+1. In implementing we make use of the ``getChildValues()`` method of Node, which returns a collection of child elements corresponding to a particular name.::
 
       Class getType() {
              return Items.class;
@@ -491,7 +495,7 @@ Items is just a container for multiple Item elements.
 PurchaseOrder ( Another Complex Type )
 ''''''''''''''''''''''''''''''''''''''
 
-1. PurchaseOrder is a complex type based upon the complex type PurchaseOrderType::
+1. ``PurchaseOrder`` is a complex type based upon the complex type ``PurchaseOrderType``::
 
     <xsd:element name="purchaseOrder" type="PurchaseOrderType"/>
 
@@ -516,7 +520,7 @@ PurchaseOrder ( Another Complex Type )
 PurchaseOrderType( The Last One )
 '''''''''''''''''''''''''''''''''
 
-Onto the final binding to implement PurchaseOrderType.
+Onto the final binding to implement ``PurchaseOrderType``.
 
 1. Compared to the binding for Items it is simple::
 
@@ -540,14 +544,14 @@ Onto the final binding to implement PurchaseOrderType.
 
 All Done!! ... for now.
 
-And thats that for implementing the bindings. In the continuing sections we will focus on configuring the parser in order to hook up the bindings implemented in this section.
+And that's that for implementing the bindings. In the continuing sections we will focus on configuring the parser in order to hook up the bindings implemented in this section.
 
 Configure the Binding Context
 '''''''''''''''''''''''''''''
 
-You should recall above our discussion about injecting all of our bindings with an instance of org.geotools.po.ObjectFactory. But where does this come from? The answer is the Binding Context. The Binding Context is a container ( PicoContainer ) in which all the bindings are created in. The container uses Dependency Injection to satisfy binding dependencies. Therefore anytime a binding requires a factory or some other class to do work, it just has to declare one in its constructor.
+You should recall above our discussion about injecting all of our bindings with an instance of ``org.geotools.po.ObjectFactory``. But where does this come from? The answer is the Binding Context. The Binding Context is a container ( ``PicoContainer`` ) in which all the bindings are created in. The container uses Dependency Injection to satisfy binding dependencies. Therefore anytime a binding requires a factory or some other class to do work, it just has to declare one in its constructor.
 
-But, these dependencies have to be placed in the container at some point. This is done by the Configuration class. So in our case we would like to place an instance of org.geotools.po.ObjectFactory in the context. We do this by implementing the configureContext method in POConfiguration.::
+But, these dependencies have to be placed in the container at some point. This is done by the Configuration class. So in our case we would like to place an instance of ``org.geotools.po.ObjectFactory`` in the context. We do this by implementing the ``configureContext`` method in ``POConfiguration``.::
 
       class POConfiguration {
            ...
@@ -557,14 +561,14 @@ But, these dependencies have to be placed in the container at some point. This i
            }
       }
 
-The complete implementation of POConfiguration can be found here.
+The complete implementation of ``POConfiguration`` can be found here.
 
 Test the Bindings
 '''''''''''''''''
 
 Now that the bindings are implemented, it is time to do some testing.
 
-1. Add the junit dependency to the pom::
+1. Add the ``junit`` dependency to the pom::
 
       <dependency>
           <groupId>junit</groupId>
@@ -577,13 +581,13 @@ Now that the bindings are implemented, it is time to do some testing.
 
      [xml-po]% mvn eclipse:eclipse
 
-3. Switch to your ide and create a new test class: POTest ( remember that test cases live under src/test/java in the project )::
+3. Switch to your IDE and create a new test class: ``POTest`` ( remember that test cases live under ``src/test/java`` in the project )::
 
       class POTest extends TestCase {
 
       }
 
-4. Next, create a test method called test, which will build up a dom tree for an USAddress element.::
+4. Next, create a test method called test, which will build up a DOM tree for an ``USAddress`` element.::
 
       public void test() throws Exception {
 
@@ -596,11 +600,11 @@ Now that the bindings are implemented, it is time to do some testing.
         assertNotNull( po );
       }
 
-5. The complete implementation of POTest can be found here.
+5. The complete implementation of ``POTest`` can be found here.
 
 6. To run the test we will create a test resource directory::
 
       [xml-po]% mkdir -p src/test/resources/org/geotools/po
 
-7. Copy po.xml into the new directory
+7. Copy ``po.xml`` into the new directory
 8. Run the test from your IDE

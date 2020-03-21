@@ -63,26 +63,12 @@ public interface LockingManager {
      */
     boolean refresh(String authID, Transaction transaction) throws IOException;
 
-    /**
-     * FeatureID based unlocking.
-     *
-     * @param typeName
-     * @param authID
-     * @param transaction
-     * @param featureLock
-     */
+    /** FeatureID based unlocking. */
     void unLockFeatureID(
             String typeName, String authID, Transaction transaction, FeatureLock featureLock)
             throws IOException;
 
-    /**
-     * FeatureID based locking.
-     *
-     * @param typeName
-     * @param authID
-     * @param transaction
-     * @param featureLock
-     */
+    /** FeatureID based locking. */
     void lockFeatureID(
             String typeName, String authID, Transaction transaction, FeatureLock featureLock)
             throws IOException;

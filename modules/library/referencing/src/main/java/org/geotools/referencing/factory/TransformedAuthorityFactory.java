@@ -75,7 +75,7 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
     private transient CoordinateOperationFactory opFactory;
 
     /** A pool of modified objects created up to date. */
-    private final CanonicalSet pool = new CanonicalSet();
+    private final CanonicalSet pool = CanonicalSet.newInstance(Object.class);
 
     /**
      * Creates a wrapper around the specified factory.

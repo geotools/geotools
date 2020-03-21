@@ -75,35 +75,21 @@ public class FeatureListenerManager {
             new WeakHashMap<
                     FeatureSource<? extends FeatureType, ? extends Feature>, EventListenerList>();
 
-    /**
-     * Used by FeaureSource implementations to provide listener support.
-     *
-     * @param featureSource
-     * @param featureListener
-     */
+    /** Used by FeaureSource implementations to provide listener support. */
     public void addFeatureListener(
             FeatureSource<? extends FeatureType, ? extends Feature> featureSource,
             FeatureListener featureListener) {
         eventListenerList(featureSource).add(FeatureListener.class, featureListener);
     }
 
-    /**
-     * Used to clean up a weak reference to a feature listener after it is no longer in use.
-     *
-     * @param listener
-     */
+    /** Used to clean up a weak reference to a feature listener after it is no longer in use. */
     void removeFeatureListener(WeakFeatureListener listener) {
         for (EventListenerList list : listenerMap.values()) {
             list.remove(FeatureListener.class, listener);
         }
     }
 
-    /**
-     * Used by SimpleFeatureSource implementations to provide listener support.
-     *
-     * @param featureSource
-     * @param featureListener
-     */
+    /** Used by SimpleFeatureSource implementations to provide listener support. */
     public void removeFeatureListener(
             FeatureSource<? extends FeatureType, ? extends Feature> featureSource,
             FeatureListener featureListener) {
@@ -117,12 +103,7 @@ public class FeatureListenerManager {
         }
     }
 
-    /**
-     * Retrieve the EvenListenerList for the provided FeatureSource.
-     *
-     * @param featureSource
-     * @return
-     */
+    /** Retrieve the EvenListenerList for the provided FeatureSource. */
     private EventListenerList eventListenerList(
             FeatureSource<? extends FeatureType, ? extends Feature> featureSource) {
         synchronized (listenerMap) {
@@ -235,19 +216,15 @@ public class FeatureListenerManager {
     public void fireFeaturesAdded(
             String typeName, Transaction transaction, ReferencedEnvelope bounds, boolean commit) {
         if (commit) {
-            fireCommit(typeName, transaction, FeatureEvent.FEATURES_ADDED, bounds);
+            fireCommit(typeName, transaction, FeatureEvent.Type.ADDED, bounds);
         } else {
-            fireEvent(typeName, transaction, FeatureEvent.FEATURES_ADDED, bounds);
+            fireEvent(typeName, transaction, FeatureEvent.Type.ADDED, bounds);
         }
     }
 
     /**
      * Provided event will be used as a template for notifying all FeatureSources for the provided
      * typeName.
-     *
-     * @param typeName
-     * @param transaction
-     * @param event
      */
     public void fireEvent(String typeName, Transaction transaction, FeatureEvent event) {
         if (event.getType() == FeatureEvent.Type.COMMIT
@@ -331,9 +308,9 @@ public class FeatureListenerManager {
     public void fireFeaturesChanged(
             String typeName, Transaction transaction, ReferencedEnvelope bounds, boolean commit) {
         if (commit) {
-            fireCommit(typeName, transaction, FeatureEvent.FEATURES_CHANGED, bounds);
+            fireCommit(typeName, transaction, FeatureEvent.Type.CHANGED, bounds);
         } else {
-            fireEvent(typeName, transaction, FeatureEvent.FEATURES_CHANGED, bounds);
+            fireEvent(typeName, transaction, FeatureEvent.Type.CHANGED, bounds);
         }
     }
 
@@ -358,20 +335,18 @@ public class FeatureListenerManager {
      */
     public void fireChanged(String typeName, Transaction transaction, boolean commit) {
         if (commit) {
-            fireCommit(typeName, transaction, FeatureEvent.FEATURES_CHANGED, null);
+            fireCommit(typeName, transaction, FeatureEvent.Type.CHANGED, null);
         } else {
-            fireEvent(typeName, transaction, FeatureEvent.FEATURES_CHANGED, null);
+            fireEvent(typeName, transaction, FeatureEvent.Type.CHANGED, null);
         }
     }
 
-    /**
-     * Fire notifications out to everyone.
-     *
-     * @param typeName
-     * @param transaction
-     */
+    /** Fire notifications out to everyone. */
     private void fireCommit(
-            String typeName, Transaction transaction, int type, ReferencedEnvelope bounds) {
+            String typeName,
+            Transaction transaction,
+            FeatureEvent.Type type,
+            ReferencedEnvelope bounds) {
         FeatureSource<? extends FeatureType, ? extends Feature> featureSource;
         FeatureListener[] listeners;
         FeatureEvent event;
@@ -394,16 +369,12 @@ public class FeatureListenerManager {
             }
         }
     }
-    /**
-     * Fire notifications out to those listing on this transaction.
-     *
-     * @param typeName
-     * @param transaction
-     * @param type
-     * @param bounds
-     */
+    /** Fire notifications out to those listing on this transaction. */
     private void fireEvent(
-            String typeName, Transaction transaction, int type, ReferencedEnvelope bounds) {
+            String typeName,
+            Transaction transaction,
+            FeatureEvent.Type type,
+            ReferencedEnvelope bounds) {
         FeatureSource<? extends FeatureType, ? extends Feature> featureSource;
         FeatureListener[] listeners;
         FeatureEvent event;
@@ -441,9 +412,9 @@ public class FeatureListenerManager {
     public void fireFeaturesRemoved(
             String typeName, Transaction transaction, ReferencedEnvelope bounds, boolean commit) {
         if (commit) {
-            fireCommit(typeName, transaction, FeatureEvent.FEATURES_REMOVED, bounds);
+            fireCommit(typeName, transaction, FeatureEvent.Type.REMOVED, bounds);
         } else {
-            fireEvent(typeName, transaction, FeatureEvent.FEATURES_REMOVED, bounds);
+            fireEvent(typeName, transaction, FeatureEvent.Type.REMOVED, bounds);
         }
     }
 }

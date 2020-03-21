@@ -33,8 +33,8 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
 import org.geotools.util.factory.Hints;
+import org.junit.AssumptionViolatedException;
 import org.junit.Test;
-import org.junit.internal.AssumptionViolatedException;
 import org.opengis.geometry.Envelope;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
@@ -51,11 +51,7 @@ public final class JP2KTest extends BaseJP2K {
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(JP2KTest.class);
 
-    /**
-     * Creates a new instance of JP2KTest
-     *
-     * @param name
-     */
+    /** Creates a new instance of JP2KTest */
     public JP2KTest() {}
 
     @Test

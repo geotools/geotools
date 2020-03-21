@@ -37,8 +37,8 @@ is used to describe the grammar.
 
 ```
     <sequence of search conditions> ::=
-                <search condition>
-                   |<sequence of search conditions> <semicolon> <search condition>
+        <search condition>
+        | <sequence of search conditions> <semicolon> <search condition>
 
     <search condition> ::= <boolean value expression>
 ```
@@ -62,7 +62,7 @@ is used to describe the grammar.
 ```
     <boolean primary> ::=
         <predicate>
-        | <left parent> <search condition> <right parent>
+        | <left paren> <search condition> <right paren>
         | <left bracket> <search condition> <right bracket>
 
     <predicate> ::=
@@ -384,7 +384,7 @@ New Syntax (since 2.7.rc1)
     <vertical bar> ::= |
     <left brace> ::={
     <right brace> ::=}
-    <separator> ::= { <comment> | <space> | <newline> }...
+
     /* The next section of the BNF defines the tokens available to the
        language. I have deleted the concepts of bit string, hex string and
        national character string literal. Keywords have been added to support the

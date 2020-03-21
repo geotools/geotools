@@ -68,31 +68,33 @@ public class LineNoPseudoNodeValidation extends LineAbstractValidation {
 
         SimpleFeatureSource fsLine = (SimpleFeatureSource) layers.get(getLineTypeRef());
         SimpleFeatureCollection fcLine = fsLine.getFeatures();
-        SimpleFeatureIterator fLine = fcLine.features();
+        try (SimpleFeatureIterator fLine = fcLine.features()) {
 
-        while (fLine.hasNext()) {
-            SimpleFeature line = fLine.next();
-            Geometry lineGeom = (Geometry) line.getDefaultGeometry();
-            if (envelope.contains(lineGeom.getEnvelopeInternal())) {
-                // 	check for valid comparison
-                if (LineString.class.isAssignableFrom(lineGeom.getClass())) {
-                    Coordinate[] c = lineGeom.getCoordinates();
-                    int i = 0;
-                    while (i + 2 < c.length) {
-                        LineSegment ls1 = new LineSegment(c[i], c[i + 1]);
-                        LineSegment ls2 = new LineSegment(c[i + 1], c[i + 2]);
-                        double a1 = ls1.angle();
-                        double a2 = ls2.angle();
-                        if (!((a1 - degreesAllowable) < a1 && (a1 + degreesAllowable) > a2)) {
-                            results.error(
-                                    line,
-                                    "Atleast one node was too close to the other the perpendicular line between the node's two neighbours.");
-                            i = c.length;
+            while (fLine.hasNext()) {
+                SimpleFeature line = fLine.next();
+                Geometry lineGeom = (Geometry) line.getDefaultGeometry();
+                if (envelope.contains(lineGeom.getEnvelopeInternal())) {
+                    // 	check for valid comparison
+                    if (LineString.class.isAssignableFrom(lineGeom.getClass())) {
+                        Coordinate[] c = lineGeom.getCoordinates();
+                        int i = 0;
+                        while (i + 2 < c.length) {
+                            LineSegment ls1 = new LineSegment(c[i], c[i + 1]);
+                            LineSegment ls2 = new LineSegment(c[i + 1], c[i + 2]);
+                            double a1 = ls1.angle();
+                            double a2 = ls2.angle();
+                            if (!((a1 - degreesAllowable) < a1 && (a1 + degreesAllowable) > a2)) {
+                                results.error(
+                                        line,
+                                        "Atleast one node was too close to the other the perpendicular line between the node's two neighbours.");
+                                i = c.length;
+                            }
                         }
+                    } else {
+                        results.warning(
+                                line,
+                                "Invalid type: this feature is not a derivative of a LineString");
                     }
-                } else {
-                    results.warning(
-                            line, "Invalid type: this feature is not a derivative of a LineString");
                 }
             }
         }

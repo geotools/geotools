@@ -16,7 +16,7 @@
  */
 package org.geotools.data.ingres;
 
-import org.geotools.data.DefaultQuery;
+
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Transaction;
 import org.geotools.jdbc.JDBCBooleanTest;

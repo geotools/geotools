@@ -68,8 +68,6 @@ public class Collection_MedianFunction extends FunctionExpressionImpl {
      * @param collection collection to calculate the median
      * @param expression Single Expression argument
      * @return An object containing the median value of the attributes
-     * @throws IllegalFilterException
-     * @throws IOException
      */
     static CalcResult calculateMedian(
             FeatureCollection<? extends FeatureType, ? extends Feature> collection,

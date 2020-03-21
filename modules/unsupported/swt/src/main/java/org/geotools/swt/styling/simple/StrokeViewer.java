@@ -127,8 +127,6 @@ public class StrokeViewer {
     /**
      * TODO summary sentence for createControl ...
      *
-     * @param parent
-     * @param klisten
      * @return Generated composite
      */
     public Composite createControl(Composite parent, KeyListener klisten) {
@@ -163,7 +161,6 @@ public class StrokeViewer {
     /**
      * Accepts a listener that will be notified when content changes.
      *
-     * @param listener1
      */
     public void addListener(SelectionListener listener1) {
         this.listener = listener1;
@@ -172,7 +169,6 @@ public class StrokeViewer {
     /**
      * Remove listener.
      *
-     * @param listener1
      */
     public void removeListener(SelectionListener listener1) {
         if (this.listener == listener1) this.listener = null;
@@ -181,7 +177,6 @@ public class StrokeViewer {
     /**
      * TODO summary sentence for fire ...
      *
-     * @param event
      */
     protected void fire(SelectionEvent event) {
         if (this.listener == null) return;
@@ -209,9 +204,6 @@ public class StrokeViewer {
     /**
      * TODO summary sentence for setStroke ...
      *
-     * @param line
-     * @param mode
-     * @param defaultColor
      */
     public void setStroke(Stroke aLine, Mode mode, Color defaultColor) {
         listen(false);
@@ -253,7 +245,6 @@ public class StrokeViewer {
     /**
      * TODO summary sentence for getStroke ...
      *
-     * @param build
      * @return Stroke defined by this model
      */
     public Stroke getStroke(StyleBuilder build) {

@@ -28,7 +28,6 @@ public class MultiSurfaceImpl extends MultiPrimitiveImpl implements MultiSurface
     /**
      * Creates a MultiSurface by a set of Curves.
      *
-     * @param crs
      * @param surfaces Set of Surfaces which shall be contained by the MultiSurface
      */
     public MultiSurfaceImpl(CoordinateReferenceSystem crs, Set<OrientableSurface> surfaces) {

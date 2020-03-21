@@ -324,6 +324,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
         // see if we can use indexing to speedup the data access
         Filter filter = q != null ? q.getFilter() : null;
         IndexManager indexManager = getDataStore().indexManager;
+        @SuppressWarnings("PMD.CloseResource") // eventually gets returned and managed in the reader
         CloseableIterator<Data> goodRecs = null;
         if (getDataStore().isFidIndexed()
                 && filter instanceof Id
@@ -369,6 +370,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
         // setup the feature readers
         ShapefileSetManager shpManager = getDataStore().shpManager;
         ShapefileReader shapeReader = shpManager.openShapeReader(geometryFactory, goodRecs != null);
+        @SuppressWarnings("PMD.CloseResource") // managed as a field of the return value
         DbaseFileReader dbfReader = null;
         List<AttributeDescriptor> attributes = readSchema.getAttributeDescriptors();
         if (attributes.size() < 1
@@ -444,12 +446,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
         return SimpleFeatureTypeBuilder.retype(getSchema(), new ArrayList<String>(attributes));
     }
 
-    /**
-     * Builds the most appropriate geometry factory depending on the available query hints
-     *
-     * @param query
-     * @return
-     */
+    /** Builds the most appropriate geometry factory depending on the available query hints */
     protected GeometryFactory getGeometryFactory(Query query) {
         // if no hints, use the default geometry factory
         if (query == null || query.getHints() == null) {

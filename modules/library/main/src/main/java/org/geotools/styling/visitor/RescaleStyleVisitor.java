@@ -26,13 +26,11 @@ import javax.measure.quantity.Length;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.Displacement;
-import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.Font;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.LabelPlacement;
 import org.geotools.styling.LinePlacement;
 import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
 import org.geotools.styling.PointPlacement;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
@@ -45,6 +43,7 @@ import org.geotools.util.Converters;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
+import org.opengis.style.GraphicalSymbol;
 
 /**
  * This is a style visitor that will produce a copy of the provided style rescaled by a provided
@@ -93,7 +92,6 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
      * <p>We do optimize the case where the provided expression is a literal; no sense doing a
      * calculation each time if we don't have to.
      *
-     * @param expr
      * @return expr multiplied by the provided scale
      */
     protected Expression rescale(Expression expr) {
@@ -120,12 +118,7 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
         return rescaled;
     }
 
-    /**
-     * Rescale using listMultiply, if there is only one entry.
-     *
-     * @param expressions
-     * @return
-     */
+    /** Rescale using listMultiply, if there is only one entry. */
     protected List<Expression> rescaleDashArray(List<Expression> expressions) {
         if (expressions == null || expressions.isEmpty()) {
             return expressions;
@@ -188,42 +181,29 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
             anchorCopy = (AnchorPoint) pages.pop();
         }
 
-        ExternalGraphic[] externalGraphics = gr.getExternalGraphics();
-        ExternalGraphic[] externalGraphicsCopy = new ExternalGraphic[externalGraphics.length];
+        List<GraphicalSymbol> symbols = gr.graphicalSymbols();
+        List<GraphicalSymbol> symbolsCopy = new ArrayList<>(symbols.size());
 
-        int length = externalGraphics.length;
-        for (int i = 0; i < length; i++) {
-            externalGraphicsCopy[i] = copy(externalGraphics[i]);
-        }
-
-        Mark[] marks = gr.getMarks();
-        Mark[] marksCopy = new Mark[marks.length];
-        length = marks.length;
-        for (int i = 0; i < length; i++) {
-            marksCopy[i] = copy(marks[i]);
+        for (GraphicalSymbol symbol : symbols) {
+            if (symbol instanceof Symbol) {
+                symbolsCopy.add(copy((Symbol) symbol));
+            } else {
+                throw new RuntimeException("Don't know how to rescale " + symbol);
+            }
         }
 
         Expression opacityCopy = copy(gr.getOpacity());
         Expression rotationCopy = copy(gr.getRotation());
         Expression sizeCopy = rescaleGraphicSize(gr);
 
-        Symbol[] symbols = gr.getSymbols();
-        length = symbols.length;
-        Symbol[] symbolCopys = new Symbol[length];
-
-        for (int i = 0; i < length; i++) {
-            symbolCopys[i] = copy(symbols[i]);
-        }
-
         copy = sf.createDefaultGraphic();
         copy.setDisplacement(displacementCopy);
         copy.setAnchorPoint(anchorCopy);
-        copy.setExternalGraphics(externalGraphicsCopy);
-        copy.setMarks(marksCopy);
-        copy.setOpacity((Expression) opacityCopy);
-        copy.setRotation((Expression) rotationCopy);
-        copy.setSize((Expression) sizeCopy);
-        copy.setSymbols(symbolCopys);
+        copy.graphicalSymbols().clear();
+        copy.graphicalSymbols().addAll(symbolsCopy);
+        copy.setOpacity(opacityCopy);
+        copy.setRotation(rotationCopy);
+        copy.setSize(sizeCopy);
 
         pages.push(copy);
     }
@@ -340,14 +320,7 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
         }
     }
 
-    /**
-     * Rescales the specified vendor option
-     *
-     * @param options
-     * @param key
-     * @param defaultAutoWrap
-     * @param value
-     */
+    /** Rescales the specified vendor option */
     protected void rescaleOption(Map<String, String> options, String key, double defaultValue) {
         double scaleFactor = (double) scale.evaluate(null, Double.class);
         if (options.get(key) != null) {
@@ -358,14 +331,7 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
         }
     };
 
-    /**
-     * Rescales the specified vendor option
-     *
-     * @param options
-     * @param key
-     * @param defaultAutoWrap
-     * @param value
-     */
+    /** Rescales the specified vendor option */
     protected void rescaleOption(Map<String, String> options, String key, int defaultValue) {
         double scaleFactor = (double) scale.evaluate(null, Double.class);
         if (options.get(key) != null) {
@@ -380,14 +346,7 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
         }
     };
 
-    /**
-     * Rescales the specified vendor option
-     *
-     * @param options
-     * @param key
-     * @param defaultAutoWrap
-     * @param value
-     */
+    /** Rescales the specified vendor option */
     protected void rescaleArrayOption(Map<String, String> options, String key, int defaultValue) {
         double scaleFactor = (double) scale.evaluate(null, Double.class);
         if (options.get(key) != null) {

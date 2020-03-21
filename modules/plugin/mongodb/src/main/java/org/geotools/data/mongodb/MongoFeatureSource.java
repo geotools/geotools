@@ -48,6 +48,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.Filter;
 import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
@@ -71,7 +72,11 @@ public class MongoFeatureSource extends ContentFeatureSource {
     final void initMapper() {
         // use schema with mapping info if it exists
         SimpleFeatureType type = entry.getState(null).getFeatureType();
-        setMapper(type != null ? new MongoSchemaMapper(type) : new MongoInferredMapper());
+        setMapper(
+                type != null
+                        ? new MongoSchemaMapper(type)
+                        : new MongoInferredMapper(
+                                getDataStore().getSchemaInitParams().orElse(null)));
     }
 
     public DBCollection getCollection() {
@@ -142,6 +147,7 @@ public class MongoFeatureSource extends ContentFeatureSource {
 
         List<Filter> postFilterList = new ArrayList<Filter>();
         List<String> postFilterAttributes = new ArrayList<String>();
+        @SuppressWarnings("PMD.CloseResource") // wrapped and returned
         DBCursor cursor = toCursor(query, postFilterList, postFilterAttributes);
         FeatureReader<SimpleFeatureType, SimpleFeature> r = new MongoFeatureReader(cursor, this);
 
@@ -187,11 +193,12 @@ public class MongoFeatureSource extends ContentFeatureSource {
             // Sorting to get min only need to get one result
             newQuery.setMaxFeatures(1);
 
-            FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(newQuery);
-            if (reader.hasNext()) {
-                // Don't need to visit all features, retrieved the min value lets just tell the
-                // MinVisitor
-                minVisitor.setValue(propertyName.evaluate(reader.next()));
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(newQuery)) {
+                if (reader.hasNext()) {
+                    // Don't need to visit all features, retrieved the min value lets just tell the
+                    // MinVisitor
+                    minVisitor.setValue(propertyName.evaluate(reader.next()));
+                }
             }
         } else if (visitor instanceof MaxVisitor) {
             MaxVisitor maxVisitor = (MaxVisitor) visitor;
@@ -209,11 +216,12 @@ public class MongoFeatureSource extends ContentFeatureSource {
             // Sorting to get max only need to get one result
             newQuery.setMaxFeatures(1);
 
-            FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(newQuery);
-            if (reader.hasNext()) {
-                // Don't need to visit all features, retrieved the min value lets just tell the
-                // MaxVisitor
-                maxVisitor.setValue(propertyName.evaluate(reader.next()));
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(newQuery)) {
+                if (reader.hasNext()) {
+                    // Don't need to visit all features, retrieved the min value lets just tell the
+                    // MaxVisitor
+                    maxVisitor.setValue(propertyName.evaluate(reader.next()));
+                }
             }
         } else {
             return false;
@@ -370,6 +378,12 @@ public class MongoFeatureSource extends ContentFeatureSource {
                         }
 
                         preStack.pop(); // value
+                        preStack.push(filter);
+                        return null;
+                    }
+
+                    @Override
+                    public Object visit(PropertyIsNull filter, Object notUsed) {
                         preStack.push(filter);
                         return null;
                     }

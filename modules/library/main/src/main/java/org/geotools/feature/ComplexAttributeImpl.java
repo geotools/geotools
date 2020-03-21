@@ -121,7 +121,7 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
 
         Collection clone = null;
         try {
-            clone = original.getClass().newInstance();
+            clone = original.getClass().getDeclaredConstructor().newInstance();
         } catch (Exception e) {
             clone = new ArrayList();
         }
@@ -198,8 +198,6 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
     //             * default value.
     //             * </p>
     //             *
-    //             * @param index
-    //             * @param type
     //             */
     //            // @Override
     //            public void add(int index, Object o) {
@@ -253,8 +251,6 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
     //             * out that there is only one binding for the provided object.
     //             * </p>
     //             *
-    //             * @param index
-    //             * @param testType
     //             */
     //            // @Override
     //            public void add(int index, Object value) {

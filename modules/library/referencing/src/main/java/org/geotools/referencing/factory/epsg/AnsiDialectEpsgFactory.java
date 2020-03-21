@@ -111,7 +111,6 @@ public class AnsiDialectEpsgFactory extends AbstractEpsgFactory {
      * Constructs an authority factory, the hints should describe the data source it use.
      *
      * @param userHints The underlying factories used for objects creation.
-     * @throws FactoryException
      */
     public AnsiDialectEpsgFactory(final Hints userHints) throws FactoryException {
         super(userHints);
@@ -124,7 +123,6 @@ public class AnsiDialectEpsgFactory extends AbstractEpsgFactory {
      *
      * @param hints The underlying factories used for objects creation.
      * @param connection The connection to the underlying EPSG database.
-     * @throws FactoryException
      */
     public AnsiDialectEpsgFactory(Hints hints, Connection connection) {
         super(hints, connection);
@@ -137,7 +135,6 @@ public class AnsiDialectEpsgFactory extends AbstractEpsgFactory {
      *
      * @param hints The underlying factories used for objects creation.
      * @param dataSource Used to create a connection to the underlying EPSG database
-     * @throws FactoryException
      */
     public AnsiDialectEpsgFactory(Hints hints, DataSource dataSource) {
         super(hints, dataSource);

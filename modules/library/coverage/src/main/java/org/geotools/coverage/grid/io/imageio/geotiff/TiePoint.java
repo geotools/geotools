@@ -136,12 +136,7 @@ public final class TiePoint {
         return builder.toString();
     }
 
-    /**
-     * Tells me if a component of this {@link PixelScale} is set.
-     *
-     * @param value
-     * @return
-     */
+    /** Tells me if a component of this {@link PixelScale} is set. */
     private boolean isComponentSet(double value) {
         return !Double.isInfinite(value) && !Double.isNaN(value) && Math.abs(value) > 1E-6;
     }

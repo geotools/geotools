@@ -71,9 +71,6 @@ public class DefaultFeatureResults extends DataFeatureCollection {
      *
      * <p>Really? I think it would be, it would just reflect the same query against the
      * SimpleFeatureSource using AUTO_COMMIT.
-     *
-     * @param source
-     * @param query
      */
     public DefaultFeatureResults(SimpleFeatureSource source, Query query) throws IOException {
         super(null, getSchemaInternal(source, query));
@@ -89,11 +86,8 @@ public class DefaultFeatureResults extends DataFeatureCollection {
             // option 1: remove Query.getTypeName
             // option 2: throw a warning
             // option 3: restore exception code
-            this.query = new DefaultQuery(query);
-            ((DefaultQuery) this.query).setTypeName(typeName);
-            // ((DefaultQuery) this.query).setCoordinateSystem(query.getCoordinateSystem());
-            // ((DefaultQuery)
-            // this.query).setCoordinateSystemReproject(query.getCoordinateSystemReproject());
+            this.query = new Query(query);
+            this.query.setTypeName(typeName);
         }
 
         if (originalType.getGeometryDescriptor() == null) {
@@ -223,7 +217,7 @@ public class DefaultFeatureResults extends DataFeatureCollection {
             if (at instanceof GeometryDescriptorImpl) attributes.add(at.getLocalName());
         }
 
-        DefaultQuery q = new DefaultQuery(query);
+        Query q = new Query(query);
         q.setPropertyNames(attributes);
         FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                 ((DataStore) featureSource.getDataStore()).getFeatureReader(q, getTransaction());

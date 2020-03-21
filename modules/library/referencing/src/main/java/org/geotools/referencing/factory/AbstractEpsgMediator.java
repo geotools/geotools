@@ -65,7 +65,6 @@ public abstract class AbstractEpsgMediator extends AbstractAuthorityMediator {
      *   <li>An actual DataSource instance
      * </ul>
      *
-     * @param hints
      * @return DataSource
      */
     static DataSource lookupDataSource(Hints hints) throws FactoryException {

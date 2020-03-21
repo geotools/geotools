@@ -87,11 +87,7 @@ public class WFSContentDataAccess implements DataAccess<FeatureType, Feature> {
         this.namespaceURI = namespaceURI;
     }
 
-    /**
-     * The WFS capabilities document.
-     *
-     * @param capabilities
-     */
+    /** The WFS capabilities document. */
     public WFSContentDataAccess(final WFSClient client) {
         this.client = client;
         this.names = new ConcurrentHashMap<Name, QName>();
@@ -139,7 +135,6 @@ public class WFSContentDataAccess implements DataAccess<FeatureType, Feature> {
      *
      * @param localTypeName The local type name whose QName equivalent you'd like.
      * @return The QName that corresponds to the Name you passed in.
-     * @throws IOException
      */
     public QName getRemoteTypeName(Name localTypeName) throws IOException {
         if (names.isEmpty()) {

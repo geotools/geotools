@@ -41,22 +41,13 @@ public class SampleImage implements Serializable {
 
     transient ColorModel colorModel;
 
-    /**
-     * Builds a new sample image
-     *
-     * @param sampleModel
-     * @param colorModel
-     */
+    /** Builds a new sample image */
     public SampleImage(SampleModel sampleModel, ColorModel colorModel) {
         this.sampleModel = sampleModel;
         this.colorModel = colorModel;
     }
 
-    /**
-     * Builds a 1x1 BufferedImage with the provided sample model and color model
-     *
-     * @return
-     */
+    /** Builds a 1x1 BufferedImage with the provided sample model and color model */
     public BufferedImage toBufferedImage() {
         final SampleModel sm = sampleModel.createCompatibleSampleModel(1, 1);
         final WritableRaster raster = RasterFactory.createWritableRaster(sm, null);

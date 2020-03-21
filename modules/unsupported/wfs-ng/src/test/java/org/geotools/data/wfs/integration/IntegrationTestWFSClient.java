@@ -50,9 +50,9 @@ import org.geotools.data.wfs.internal.DescribeFeatureTypeRequest;
 import org.geotools.data.wfs.internal.DescribeFeatureTypeResponse;
 import org.geotools.data.wfs.internal.GetCapabilitiesRequest;
 import org.geotools.data.wfs.internal.GetCapabilitiesResponse;
-import org.geotools.data.wfs.internal.GetFeatureParser;
 import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.data.wfs.internal.GetFeatureResponse;
+import org.geotools.data.wfs.internal.GetParser;
 import org.geotools.data.wfs.internal.TransactionRequest;
 import org.geotools.data.wfs.internal.TransactionRequest.Delete;
 import org.geotools.data.wfs.internal.TransactionRequest.Insert;
@@ -168,7 +168,7 @@ public class IntegrationTestWFSClient extends WFSClient {
         }
 
         final GetFeatureResponse gfr = (GetFeatureResponse) response;
-        final GetFeatureParser allFeatures = gfr.getFeatures();
+        final GetParser<SimpleFeature> allFeatures = gfr.getFeatures();
 
         // register custom scheme
         if (allFeatures instanceof PullParserFeatureReader) {
@@ -237,8 +237,8 @@ public class IntegrationTestWFSClient extends WFSClient {
         serverFilteredReader =
                 new DiffFeatureReader<SimpleFeatureType, SimpleFeature>(
                         allFeaturesReader, diff, serverFiler);
-        final GetFeatureParser filteredParser =
-                new GetFeatureParser() {
+        final GetParser<SimpleFeature> filteredParser =
+                new GetParser<SimpleFeature>() {
 
                     @Override
                     public void setGeometryFactory(GeometryFactory geometryFactory) {
@@ -402,7 +402,7 @@ public class IntegrationTestWFSClient extends WFSClient {
         gf.setFilter(Filter.INCLUDE);
 
         GetFeatureResponse response = (GetFeatureResponse) mockGetFeature(gf);
-        GetFeatureParser features = response.getFeatures();
+        GetParser<SimpleFeature> features = response.getFeatures();
         List<SimpleFeature> result = new ArrayList<SimpleFeature>();
         SimpleFeature f;
         while ((f = features.parse()) != null) {

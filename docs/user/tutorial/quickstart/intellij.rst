@@ -24,7 +24,7 @@ Create a New Project
 --------------------
 To start with we'll create a new project using the Maven quickstart archetype.
 
-#. Choose File -> New Project from the menu. In the New Project dialog choose Maven project, ensure *Create from archetype* is selected,
+#. Choose :menuselection:`File -> New Project` from the menu. In the New Project dialog choose Maven project, ensure *Create from archetype* is selected,
    and choose the *org.apache.maven.archetypes:maven-archetype-quickstart* archetype. Press *Next*
    
    .. image:: images/intellij/new_project_screen.png
@@ -33,16 +33,16 @@ To start with we'll create a new project using the Maven quickstart archetype.
       
 #. The next screen asks us for basic identifying information for our project:
    
-   * GroupId: org.geotools
-   * ArtifactId: tutorial
-   * Version: 1.0-SNAPSHOT
+   * GroupId: ``org.geotools``
+   * ArtifactId: ``tutorial``
+   * Version: ``1.0-SNAPSHOT``
    
    .. image:: images/intellij/new_project2.png
       :scale: 65 %
       :align: center
       
 #. Hit next. The following screen we should be able to leave with the defaults. For our purposes IntelliJ's bundled Maven should be
-   fine, unless the version is lower than 3, in which case you should consider using a new external verision. 
+   fine, unless the version is lower than 3, in which case you should consider using a new external version. 
    
    .. image:: images/intellij/new_project3.png
       :scale: 65 %
@@ -80,11 +80,11 @@ Adding Jars to Your Project
    
    To turn on Offline Mode:
    
-   #. Open the *Settings*. On OS X this is IntelliJ -> Preferences, on other OSes it's under File -> Settings
-   #. Choose Build, Execution, Deployment -> Build Tools -> Maven
+   #. Open the *Settings*. On OS X this is :menuselection:`IntelliJ -> Preferences`, on other OSes it's under :menuselection:`File -> Settings`
+   #. Choose :menuselection:`Build, Execution, Deployment -> Build Tools -> Maven`
    #. Check the *Work Offline* option
    
-The pom.xml file describes the structure, configuration, dependencies and many other facets of your project. We are going to focus
+The ``pom.xml`` file describes the structure, configuration, dependencies and many other facets of your project. We are going to focus
 on the dependencies needed for your project.
 
 When downloading jars Maven makes use of a "local repository" to store copies if the dependencies it downloads.
@@ -102,7 +102,7 @@ Maven downloads jars from public repositories on the internet where projects suc
 #. Open up the `pom.xml` file at the root of the project. You can see some of the information we entered through the wizard
    earlier.
    
-#. We're going to add three things to this file. First, at the top of the file after moduleVersion we want to add a 
+#. We're going to add three things to this file. First, at the top of the file after ``moduleVersion`` we want to add a 
    properties element defining the version of GeoTools we wish to use. This workbook was written for |release| 
    although you may wish to try a different version.
    
@@ -121,14 +121,14 @@ Maven downloads jars from public repositories on the internet where projects suc
         :end-before: <dependencies>
         
 #. We are going to add a dependence to GeoTools :file:`gt-main` and :file:`gt-swing` jars. Note we
-   are making use of the geotools.version defined above.
+   are making use of the ``geotools.version`` defined above.
    
    .. literalinclude:: artifacts/pom.xml
         :language: xml
         :start-after: </properties>
         :end-before: <repositories>
     
-#. Finally we need to list the external *repositories* where maven can download GeoTools and and
+#. Finally we need to list the external *repositories* where maven can download GeoTools and
    other required jars from.
 
    .. literalinclude:: artifacts/pom.xml
@@ -138,7 +138,7 @@ Maven downloads jars from public repositories on the internet where projects suc
 
    .. note:: Note the snapshot repository above is only required if you are using a nightly build (such as |branch|-SNAPSHOT)
 
-#. If you'd like to use Java 8 language level features (eg. lambdas), you need to tell Maven to use the 1.8 source level
+#. If you'd like to use Java 8 language level features (e.g. lambdas), you need to tell Maven to use the 1.8 source level
 
    .. literalinclude:: artifacts/pom2.xml
       :language: xml
@@ -147,13 +147,13 @@ Maven downloads jars from public repositories on the internet where projects suc
 
 8. For comparison here is the completed :download:`pom.xml <artifacts/pom.xml>` file for download.
 
-   You may find cutting and pasting to be easier than typing, you can choose Code -> Reformat Code to
+   You may find cutting and pasting to be easier than typing, you can choose :menuselection:`Code -> Reformat Code` to
    fix indentation
    
 Tips:
 
 * If Maven isn't downloading dependencies automatically for some reason (maybe *Auto-Import* is turned off)
-  you can manually download dependencies by right-clicking on your project and choosing Maven -> Reimport.
+  you can manually download dependencies by right-clicking on your project and choosing :menuselection:`Maven -> Reimport`.
 * If you'd like to download the Javadoc for your dependencies you can again go to the Maven context menu and choose
   *Download Documentation*
   
@@ -162,9 +162,9 @@ Quickstart Application
 Now that our environment is set up we can put together a simple Quickstart. This example will display a
 shapefile on the screen.
 
-#. Let's create a class called `Quickstart` in the package `org.geotools.tutorial.quickstart`. IntelliJ can 
-   create both the package and the class for us in one shot; right click on the org.geootools package in the Project panel
-   and in the context menu choose New -> Java Class.
+#. Let's create a class called `Quickstart` in the package ``org.geotools.tutorial.quickstart``. IntelliJ can 
+   create both the package and the class for us in one shot; right click on the ``org.geootools`` package in the Project panel
+   and in the context menu choose :menuselection:`New -> Java Class`.
    
    .. image:: images/intellij/new_class_menu.png
       :align: center
@@ -184,7 +184,7 @@ shapefile on the screen.
 
    Please unzip the above data into a location you can find easily such as the desktop.
 
-#. Run the application to open a file chooser. Choose a shapefile from the example dataset.
+#. Run the application to open a file chooser. Choose a shapefile from the example data set.
 
    .. image:: images/QuickstartOpen.png
       :scale: 60
@@ -214,7 +214,7 @@ Here are some additional challenges for you to try:
 * Try out the different sample data sets
 
 * You can zoom in, zoom out and show the full extents and Use the select tool to examine individual
-  countries in the sample countries.shp file
+  countries in the sample ``countries.shp`` file
 
 * Download the largest shapefile you can find and see how quickly it can be rendered. You should
   find that the very first time it will take a while as a spatial index is generated. After that
@@ -234,26 +234,17 @@ If you would like to ask GeoTools to cache the shapefile in memory try the follo
 
 This code won't compile initially because we're missing an import. IntelliJ should prompt to import
 the missing class immediately. Press Alt-Enter (^-Enter on OS X) to bring up a dialog to import the missing class.
-It will pull in the following import:
 
-    .. code-block:: java
-
-       import org.geotools.data.CachingFeatureSource;
-
-    .. Note::
-
-       When building you may see a message that CachingFeatureSource is deprecated. It's ok to ignore
-       it, it's just a warning. The class is still under test but usable.
 
 ..  The ability to grab figure out what classes to import is a key skill; we are
   starting off here with a simple example with a single import.
 
 * Try and sort out what all the different "side car" files are - and what they are for. The sample
-  data set includes "shp", "dbf" and "shx". How many other side car files are there?
+  data set includes ``shp``, ``dbf`` and ``shx``. How many other side car files are there?
 
 .. This exercise asks users to locate the geotools user guide or wikipedia
 
-* Advanced: The use of FileDataStoreFinder allows us to work easily with files. The other way to do
+* Advanced: The use of ``FileDataStoreFinder`` allows us to work easily with files. The other way to do
   things is with a map of connection parameters. This techniques gives us a little more control over
   how we work with a shapefile and also allows us to connect to databases and web feature servers.
 
@@ -264,7 +255,7 @@ It will pull in the following import:
 
 
 * Important: GeoTools is an active open source project - you can quickly use maven to try out the
-  latest nightly build by changing your pom.xml file to use a "SNAPSHOT" release.
+  latest nightly build by changing your ``pom.xml`` file to use a "SNAPSHOT" release.
 
 At the time of writing |branch|-SNAPSHOT is under active development.
 
@@ -273,7 +264,7 @@ At the time of writing |branch|-SNAPSHOT is under active development.
      :start-after: <url>http://maven.apache.org</url>
      :end-before: <dependencies>
 
-You will also need to change your pom.xml file to include the following snapshot repository:
+You will also need to change your ``pom.xml`` file to include the following snapshot repository:
 
     .. literalinclude:: artifacts/pom2.xml
      :language: xml

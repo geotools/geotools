@@ -183,12 +183,7 @@ public abstract class FunctionExpressionImpl extends org.geotools.filter.Default
         return sb.toString();
     }
 
-    /**
-     * Utility method for subclasses to ask for an argument at a given index
-     *
-     * @param index
-     * @return
-     */
+    /** Utility method for subclasses to ask for an argument at a given index */
     protected org.opengis.filter.expression.Expression getExpression(int index) {
         org.opengis.filter.expression.Expression exp;
         exp = getParameters().get(index);

@@ -59,7 +59,9 @@ public class YsldParseCookbookTest {
         //   </FeatureTypeStyle>
         // </UserStyle>
         Style style = parse("point", "simple.sld");
-        assertEquals("SLD Cook Book: Simple Point With Stroke", style.getTitle());
+        assertEquals(
+                "SLD Cook Book: Simple Point With Stroke",
+                style.getDescription().getTitle().toString());
 
         PointSymbolizer point = SLD.pointSymbolizer(style);
         assertEquals("circle", SLD.wellKnownName(SLD.mark(point)));
@@ -1144,7 +1146,7 @@ public class YsldParseCookbookTest {
         assertEquals(Color.black, SLD.color(text.getFill()));
 
         Font font = SLD.font(text);
-        assertEquals("Arial", Filters.asString(font.getFontFamily()));
+        assertEquals("Arial", Filters.asString(font.getFamily().get(0)));
         assertEquals(10, Filters.asInt(font.getSize()));
         assertEquals("normal", Filters.asString(font.getStyle()));
         assertEquals("bold", Filters.asString(font.getWeight()));
@@ -1500,7 +1502,7 @@ public class YsldParseCookbookTest {
         assertEquals(0.5, Filters.asDouble(place.getAnchorPoint().getAnchorPointY()), 0.1);
 
         Font font = SLD.font(text);
-        assertEquals("Arial", Filters.asString(font.getFontFamily()));
+        assertEquals("Arial", Filters.asString(font.getFamily().get(0)));
         assertEquals(11, Filters.asInt(font.getSize()));
         assertEquals("normal", Filters.asString(font.getStyle()));
         assertEquals("bold", Filters.asString(font.getWeight()));
@@ -1893,7 +1895,7 @@ public class YsldParseCookbookTest {
     Style parse(String dir, String file) throws IOException {
         StringWriter writer = new StringWriter();
         transform(YsldTests.sld(dir, file), writer);
-        // System.out.println(writer.toString());
+
         YsldParser p = new YsldParser(new StringReader(writer.toString()));
         return SLD.defaultStyle(p.parse());
     }

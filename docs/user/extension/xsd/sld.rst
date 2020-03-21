@@ -1,4 +1,4 @@
 XSD SLD
 -------
 
-SLD Schema for gt-xml.
+SLD Schema for ``gt-xml`` 

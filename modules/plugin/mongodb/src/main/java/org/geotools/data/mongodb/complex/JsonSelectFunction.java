@@ -52,11 +52,9 @@ public final class JsonSelectFunction extends FunctionExpressionImpl implements 
         String path = (String) this.params.get(0).evaluate(object);
         if (object instanceof MongoCollectionFeature) {
             // in the case of a mongo collection we need to append the parent path
-            if (!MongoComplexUtilities.useLegacyPaths()) {
-                String parentPath = ((MongoCollectionFeature) object).getCollectionPath();
-                // full path of the referenced property
-                path = parentPath + "." + path;
-            }
+            String parentPath = ((MongoCollectionFeature) object).getCollectionPath();
+            // full path of the referenced property
+            path = parentPath + "." + path;
         }
         if (object == null) {
             // return an attribute describing this property using the JSON path

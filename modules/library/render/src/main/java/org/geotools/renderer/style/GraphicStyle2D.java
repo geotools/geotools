@@ -93,8 +93,6 @@ public class GraphicStyle2D extends Style2D implements PointStyle2D {
     /**
      * The actual image size might have been extended with an extra border (usually of one pixel) to
      * preserve antialiasing pixels
-     *
-     * @return
      */
     public int getBorder() {
         return border;

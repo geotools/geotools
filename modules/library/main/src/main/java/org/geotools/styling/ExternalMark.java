@@ -53,13 +53,8 @@ public interface ExternalMark extends org.opengis.style.ExternalMark {
      * Icon to use for inline content.
      *
      * <p>This is often a SwingImageIcon with a format defined by getFormat()
-     *
-     * @param inline
      */
     void setInlineContent(Icon inline);
-
-    /** @deprecated use {@link #setInlineContent(Icon)} */
-    void getInlineContent(Icon inline);
 
     /**
      * Mime type of the onlineResource/InlineContent
@@ -90,10 +85,6 @@ public interface ExternalMark extends org.opengis.style.ExternalMark {
      */
     int getMarkIndex();
 
-    /**
-     * Mark index used to specify true type font character; or frame of an animated gif.
-     *
-     * @param markIndex
-     */
+    /** Mark index used to specify true type font character; or frame of an animated gif. */
     void setMarkIndex(int markIndex);
 }

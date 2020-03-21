@@ -32,6 +32,6 @@ public class FilterFunction_random extends FunctionExpressionImpl implements Vol
     }
 
     public Object evaluate(Object feature) {
-        return new Double(Math.random());
+        return Double.valueOf(Math.random());
     }
 }

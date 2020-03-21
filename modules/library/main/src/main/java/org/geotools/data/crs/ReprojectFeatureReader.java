@@ -147,9 +147,6 @@ public class ReprojectFeatureReader
      *
      * <p>Description ...
      *
-     * @throws IOException
-     * @throws IllegalAttributeException
-     * @throws NoSuchElementException
      * @see org.geotools.data.FeatureReader#next()
      */
     public SimpleFeature next()
@@ -174,7 +171,9 @@ public class ReprojectFeatureReader
         // building the new reprojected feature
         SimpleFeature reprojected = SimpleFeatureBuilder.build(schema, attributes, next.getID());
         // copying the user data if any
-        reprojected.getUserData().putAll(next.getUserData());
+        if (next.hasUserData()) {
+            reprojected.getUserData().putAll(next.getUserData());
+        }
         return reprojected;
     }
 
@@ -183,7 +182,6 @@ public class ReprojectFeatureReader
      *
      * <p>Description ...
      *
-     * @throws IOException
      * @see org.geotools.data.FeatureReader#hasNext()
      */
     public boolean hasNext() throws IOException {
@@ -199,7 +197,6 @@ public class ReprojectFeatureReader
      *
      * <p>Description ...
      *
-     * @throws IOException
      * @see org.geotools.data.FeatureReader#close()
      */
     public void close() throws IOException {

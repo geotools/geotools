@@ -21,10 +21,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,6 +39,7 @@ import org.geotools.data.complex.config.SourceDataStore;
 import org.geotools.data.complex.config.TypeMapping;
 import org.geotools.data.complex.feature.type.Types;
 import org.geotools.test.AppSchemaTestSupport;
+import org.geotools.util.URLs;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.feature.Feature;
@@ -104,11 +102,7 @@ public class AppSchemaDataAccessRegistryTest extends AppSchemaTestSupport {
     /** App-schema mapping file extract. */
     private static AppSchemaDataAccessDTO config;
 
-    /**
-     * Test registering and unregistering all data accesses works.
-     *
-     * @throws Exception
-     */
+    /** Test registering and unregistering all data accesses works. */
     @Test
     public void testRegisterAndUnregisterDataAccess() throws Exception {
         loadDataAccesses();
@@ -130,8 +124,6 @@ public class AppSchemaDataAccessRegistryTest extends AppSchemaTestSupport {
     /**
      * Test that asking for a nonexistent type causes an excception to be thrown with the correct
      * number of type names in the detail message.
-     *
-     * @throws Exception
      */
     @Test
     public void testThrowDataSourceException() throws Exception {
@@ -148,11 +140,7 @@ public class AppSchemaDataAccessRegistryTest extends AppSchemaTestSupport {
                 "Expected a DataSourceException to have been thrown and handled", handledException);
     }
 
-    /**
-     * Load all data accesses
-     *
-     * @throws Exception
-     */
+    /** Load all data accesses */
     public static void loadDataAccesses() throws Exception {
         /** Load Mapped Feature data access */
         Map dsParams = new HashMap();
@@ -200,13 +188,7 @@ public class AppSchemaDataAccessRegistryTest extends AppSchemaTestSupport {
         assertNotNull(url);
         final SourceDataStore ds = new SourceDataStore();
         ds.setId(SOURCE_ID);
-        try {
-            dsParams.put("directory", new File(url.toURI()).toURL().toString());
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
+        dsParams.put("directory", URLs.urlToFile(url).getPath());
         ds.setParams(dsParams);
         config = new AppSchemaDataAccessDTO();
         config.setSourceDataStores(
@@ -249,7 +231,6 @@ public class AppSchemaDataAccessRegistryTest extends AppSchemaTestSupport {
      * @param dataAccess The app schema data access to check
      * @param typeName Feature type
      * @param isNonFeature true if the type is non feature
-     * @throws IOException
      */
     private void checkRegisteredDataAccess(
             AppSchemaDataAccess dataAccess, Name typeName, boolean isNonFeature)
@@ -281,7 +262,6 @@ public class AppSchemaDataAccessRegistryTest extends AppSchemaTestSupport {
      *
      * @param dataAccess The data access
      * @param typeName The feature type name
-     * @throws IOException
      */
     private void unregister(DataAccess dataAccess, Name typeName) throws IOException {
         dataAccess.dispose();
@@ -312,8 +292,6 @@ public class AppSchemaDataAccessRegistryTest extends AppSchemaTestSupport {
     /**
      * Fail scenarios for breaking uniqueness of FeatureTypeMapping key (mappingName or
      * targetElement).
-     *
-     * @throws IOException
      */
     @Test
     public void testDuplicateKey() throws IOException {
@@ -390,9 +368,6 @@ public class AppSchemaDataAccessRegistryTest extends AppSchemaTestSupport {
     /**
      * Success scenarios for keeping uniqueness of FeatureTypeMapping key (mappingName or
      * targetElement).
-     *
-     * @throws IOException
-     * @throws IOException
      */
     @Test
     public void testUniqueKey() throws IOException {

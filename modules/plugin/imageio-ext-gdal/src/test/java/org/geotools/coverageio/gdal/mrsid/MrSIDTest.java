@@ -28,10 +28,7 @@ import java.util.Iterator;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.coverage.grid.io.GridFormatFactorySpi;
-import org.geotools.coverage.grid.io.GridFormatFinder;
-import org.geotools.coverage.grid.io.OverviewPolicy;
+import org.geotools.coverage.grid.io.*;
 import org.geotools.coverageio.gdal.BaseGDALGridFormat;
 import org.geotools.coverageio.gdal.GDALTestCase;
 import org.geotools.data.ServiceInfo;
@@ -64,20 +61,12 @@ public final class MrSIDTest extends GDALTestCase {
      */
     private static final String fileName = "n13250i.sid";
 
-    /**
-     * Creates a new instance of {@link MrSIDTest}
-     *
-     * @param name
-     */
+    /** Creates a new instance of {@link MrSIDTest} */
     public MrSIDTest() {
         super("MrSID", new MrSIDFormatFactory());
     }
 
-    /**
-     * Test for reading a grid coverage from a MrSID source
-     *
-     * @throws Exception
-     */
+    /** Test for reading a grid coverage from a MrSID source */
     @org.junit.Test
     public void test() throws Exception {
         if (!testingEnabled()) {
@@ -135,7 +124,7 @@ public final class MrSIDTest extends GDALTestCase {
                             originalEnvelope.getMedian().getOrdinate(0),
                             originalEnvelope.getMedian().getOrdinate(1)
                         });
-        reducedEnvelope.setCoordinateReferenceSystem(reader.getCrs());
+        reducedEnvelope.setCoordinateReferenceSystem(reader.getCoordinateReferenceSystem());
 
         final ParameterValue gg =
                 (ParameterValue)
@@ -226,11 +215,7 @@ public final class MrSIDTest extends GDALTestCase {
         }
     }
 
-    /**
-     * Test class methods
-     *
-     * @throws Exception
-     */
+    /** Test class methods */
     @org.junit.Test
     public void test2() throws Exception {
         if (!testingEnabled()) {
@@ -256,9 +241,7 @@ public final class MrSIDTest extends GDALTestCase {
         MrSIDReader reader = (MrSIDReader) format.getReader(file);
 
         final int numImages = reader.getGridCoverageCount();
-        final boolean hasMoreGridCoverages = reader.hasMoreGridCoverages();
         Assert.assertEquals(1, numImages);
-        Assert.assertEquals(false, hasMoreGridCoverages);
 
         final ServiceInfo serviceInfo = reader.getInfo();
         reader.getInfo("coverage");

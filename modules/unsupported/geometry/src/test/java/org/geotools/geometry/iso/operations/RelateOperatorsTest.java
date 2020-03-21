@@ -333,13 +333,6 @@ public class RelateOperatorsTest extends TestCase {
      *
      * @param g1 First Geometry
      * @param g2 Second Geometry
-     * @param shouldBeEqual
-     * @param shouldIntersectAndNotBeDisjoint
-     * @param shouldOverlap
-     * @param shouldTouch
-     * @param shouldContain
-     * @param shouldbeWithin
-     * @param shouldCross
      */
     private void testAndAssertTest(
             String testCaseID,

@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>org.geotools</groupId>
 		<artifactId>modules</artifactId>
-		<version>22-SNAPSHOT</version>
+		<version>24-SNAPSHOT</version>
 	</parent>
 
 
@@ -36,16 +36,6 @@
 
 
 	<profiles>
-
-		<!-- ================================================== -->
-		<!-- Modules not yet included in the build -->
-		<!-- ================================================== -->
-		<profile>
-			<id>pending</id>
-			<modules>
-				<module>excel</module>
-			</modules>
-		</profile>
 
 		<!-- ================================================== -->
 		<!-- Unsupported Modules -->
@@ -116,17 +106,6 @@
 			</modules>
 		</profile>
 		<profile>
-			<id>app-schema</id>
-			<activation>
-				<property>
-					<name>all</name>
-				</property>
-			</activation>
-			<modules>
-				<module>app-schema</module>
-			</modules>
-		</profile>
-		<profile>
 			<id>swt</id>
 			<modules>
 				<module>swt</module>
@@ -150,6 +129,17 @@
 			</modules>
 		</profile>
 		<profile>
+			<id>elasticsearch</id>
+			<activation>
+				<property>
+					<name>all</name>
+				</property>
+			</activation>
+			<modules>
+				<module>elasticsearch</module>
+			</modules>
+		</profile>
+		<profile>
 			<id>geobuf</id>
 			<activation>
 				<property>
@@ -158,6 +148,17 @@
 			</activation>
 			<modules>
 				<module>geobuf</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>flatgeobuf</id>
+			<activation>
+				<property>
+					<name>all</name>
+				</property>
+			</activation>
+			<modules>
+				<module>flatgeobuf</module>
 			</modules>
 		</profile>
 		<profile>
@@ -190,17 +191,6 @@
           </modules>
         </profile>
         <profile>
-            <id>mbstyle</id>
-            <activation>
-                <property>
-                    <name>all</name>
-                </property>
-            </activation>
-            <modules>
-                <module>mbstyle</module>
-            </modules>
-        </profile>        
-        <profile>
             <id>s3-geotiff</id>
             <modules>
                 <module>s3-geotiff</module>
@@ -220,10 +210,9 @@
 				</property>
 			</activation>
 			<modules>
-				<module>csv</module>
-				<module>epsg-oracle</module>
 				<module>jdbc-ng</module>
 				<module>solr</module>
+				<module>elasticsearch</module>
 				<module>css</module>
 				<module>geojsonstore</module>
         		<module>s3-geotiff</module>
@@ -236,6 +225,17 @@
 			<id>arcgis-rest</id>
 			<modules>
 				<module>arcgis-rest</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>arcsde</id>
+			<activation>
+				<property>
+					<name>all</name>
+				</property>
+			</activation>
+			<modules>
+				<module>arcsde</module>
 			</modules>
 		</profile>
 

@@ -59,13 +59,15 @@ public class GeometryTestParser {
         GeometryBuilder builder = new GeometryBuilder(DefaultGeographicCRS.WGS84);
         GeometryFactory geomFact = builder.getGeometryFactory();
         PrimitiveFactory primFact = builder.getPrimitiveFactory();
-        wktFactory = new WKTParser(geomFact, primFact, null, builder.getAggregateFactory());
+        wktFactory =
+                new WKTParser(
+                        geomFact,
+                        primFact,
+                        builder.getPositionFactory(),
+                        builder.getAggregateFactory());
     }
 
-    /**
-     * @param inputSource
-     * @return GeometryTestContainer
-     */
+    /** @return GeometryTestContainer */
     public GeometryTestContainer parseTestDefinition(InputSource inputSource) {
         Document doc = null;
         try {
@@ -94,9 +96,7 @@ public class GeometryTestParser {
     /**
      * Processes the root "run" node
      *
-     * @param node
      * @return GeometryTestContainer
-     * @throws ParseException
      */
     public GeometryTestContainer processRootNode(Node node) throws ParseException {
         if (!node.getNodeName().equalsIgnoreCase("run")) {
@@ -130,7 +130,6 @@ public class GeometryTestParser {
      * <p>From looking at various JTS test cases and seeing how their testbuilder program works, I
      * think its safe to assume that there will always be just one or two objects, named a and b.
      *
-     * @param testCaseNode
      * @return GeometryTestCase
      */
     private GeometryTestCase readTestCase(Node testCaseNode) throws ParseException {

@@ -18,6 +18,7 @@ package org.geotools.filter;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /** @author jdeolive */
 public abstract class BinaryLogicAbstract extends AbstractFilter {
@@ -33,5 +34,20 @@ public abstract class BinaryLogicAbstract extends AbstractFilter {
 
     public void setChildren(List<org.opengis.filter.Filter> children) {
         this.children = children;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BinaryLogicAbstract that = (BinaryLogicAbstract) o;
+        if (children == null) return that.children == null;
+        if (children.size() != that.children.size()) return false;
+        return children.containsAll(that.children);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(children);
     }
 }

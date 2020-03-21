@@ -153,14 +153,7 @@ public class MosaicTest extends GridProcessingTestBase {
         coverage4 = readInputFile("sampleData4");
     }
 
-    /**
-     * Private method for reading the input file.
-     *
-     * @param filename
-     * @return
-     * @throws FileNotFoundException
-     * @throws IOException
-     */
+    /** Private method for reading the input file. */
     private static GridCoverage2D readInputFile(String filename)
             throws FileNotFoundException, IOException {
         final File tiff = TestData.file(MosaicTest.class, filename + ".tif");
@@ -908,11 +901,7 @@ public class MosaicTest extends GridProcessingTestBase {
         disposeCoveragePlanarImage(coverage2);
     }
 
-    /**
-     * Method for disposing the {@link RenderedImage} chain of the {@link GridCoverage2D}
-     *
-     * @param coverage
-     */
+    /** Method for disposing the {@link RenderedImage} chain of the {@link GridCoverage2D} */
     private static void disposeCoveragePlanarImage(GridCoverage2D coverage) {
         // Dispose the single planar image since some images are input of other tests and
         // disposing the whole chain may therefore throw exceptions
@@ -920,12 +909,7 @@ public class MosaicTest extends GridProcessingTestBase {
                 PlanarImage.wrapRenderedImage(coverage.getRenderedImage()));
     }
 
-    /**
-     * Method for calculating the resolution of the input {@link GridCoverage2D}
-     *
-     * @param coverage
-     * @return
-     */
+    /** Method for calculating the resolution of the input {@link GridCoverage2D} */
     private static double calculateResolution(GridCoverage2D coverage) {
         GridGeometry2D gg2D = coverage.getGridGeometry();
         double envW = gg2D.getEnvelope2D().width;
@@ -934,12 +918,7 @@ public class MosaicTest extends GridProcessingTestBase {
         return res;
     }
 
-    /**
-     * Method which ensures that the two {@link Envelope2D} objects are equals.
-     *
-     * @param expected
-     * @param actual
-     */
+    /** Method which ensures that the two {@link Envelope2D} objects are equals. */
     private void assertEqualBBOX(Envelope2D expected, Envelope2D actual) {
         Assert.assertEquals(expected.getX(), actual.getX(), TOLERANCE);
         Assert.assertEquals(expected.getY(), actual.getY(), TOLERANCE);
@@ -947,13 +926,7 @@ public class MosaicTest extends GridProcessingTestBase {
         Assert.assertEquals(expected.getWidth(), actual.getWidth(), TOLERANCE);
     }
 
-    /**
-     * Method for cropping the input coverage with the defined envelope.
-     *
-     * @param gc
-     * @param envelope
-     * @return
-     */
+    /** Method for cropping the input coverage with the defined envelope. */
     private GridCoverage2D crop(GridCoverage2D gc, GeneralEnvelope envelope) {
         final GeneralEnvelope oldEnvelope = (GeneralEnvelope) gc.getEnvelope();
         // intersect the envelopes in order to prepare for cropping the coverage
@@ -977,14 +950,7 @@ public class MosaicTest extends GridProcessingTestBase {
         return (GridCoverage2D) processor.doOperation(param, GeoTools.getDefaultHints());
     }
 
-    /**
-     * Method for mosaicking two input images and setting the final BoundingBox
-     *
-     * @param coverages
-     * @param renderingEnvelope
-     * @param hints
-     * @return
-     */
+    /** Method for mosaicking two input images and setting the final BoundingBox */
     private GridCoverage2D mosaic(
             List<GridCoverage2D> coverages, GeneralEnvelope renderingEnvelope, Hints hints) {
         // setup the grid geometry

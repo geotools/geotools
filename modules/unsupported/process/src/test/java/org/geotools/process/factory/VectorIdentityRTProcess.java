@@ -19,7 +19,6 @@ package org.geotools.process.factory;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.process.ProcessException;
-import org.geotools.process.gs.GSProcess;
 import org.opengis.coverage.grid.GridGeometry;
 
 /**
@@ -31,7 +30,7 @@ import org.opengis.coverage.grid.GridGeometry;
     title = "SimpleVectorRTProcess",
     description = "Simple test RT process taking a vector dataset as input."
 )
-public class VectorIdentityRTProcess implements GSProcess {
+public class VectorIdentityRTProcess {
     /** Note: for testing purposes only. A real Rendering Transformation must never store state. */
     int invertQueryValue;
 

@@ -1,7 +1,7 @@
 Online Tests
 ------------
 
-We make use of a naming convention, ie ensure the name of your TestCase ends in OnlineTest, to indicate the use of external web services and databases. If a unit test requires a network connection to pass, it is an online test.
+We make use of a naming convention, i.e. ensure the name of your TestCase ends in OnlineTest, to indicate the use of external web services and databases. If a unit test requires a network connection to pass, it is an online test.
 
 These tests will be skipped as part of the normal build process, but will be executed by certain build boxes.
 

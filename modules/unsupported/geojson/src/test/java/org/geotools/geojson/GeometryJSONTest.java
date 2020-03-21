@@ -29,6 +29,7 @@ import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 
 public class GeometryJSONTest extends GeoJSONTestSupport {
 
@@ -260,7 +261,10 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
     }
 
     MultiPoint multiPoint() {
-        MultiPoint mpoint = gf.createMultiPoint(array(new double[][] {{100.1, 0.1}, {101.1, 1.1}}));
+        MultiPoint mpoint =
+                gf.createMultiPoint(
+                        new CoordinateArraySequence(
+                                array(new double[][] {{100.1, 0.1}, {101.1, 1.1}})));
         return mpoint;
     }
 
@@ -273,7 +277,9 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
 
     MultiPoint multiPoint3d() {
         MultiPoint mpoint =
-                gf.createMultiPoint(array(new double[][] {{100.1, 0.1, 10.2}, {101.1, 1.1, 11.2}}));
+                gf.createMultiPoint(
+                        new CoordinateArraySequence(
+                                array(new double[][] {{100.1, 0.1, 10.2}, {101.1, 1.1, 11.2}})));
         return mpoint;
     }
 
@@ -594,7 +600,7 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
         for (int i = 0; i < coords.length; i++) {
             Coordinate c = new Coordinate(coords[i][0], coords[i][1]);
             if (coords[i].length > 2) {
-                c.z = coords[i][2];
+                c.setZ(coords[i][2]);
             }
 
             coordinates[i] = c;

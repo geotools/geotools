@@ -20,6 +20,7 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.label.LabelCacheImpl;
 import org.geotools.styling.Style;
 import org.geotools.test.TestData;
+import org.geotools.util.factory.GeoTools;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -36,6 +37,7 @@ public class LabelShieldTest {
 
     @BeforeClass
     public static void prepareCRS() {
+        System.setProperty(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER, "true");
         CRS.reset("all");
     }
 
@@ -85,6 +87,24 @@ public class LabelShieldTest {
 
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/textLabelShieldUnderTheLine.png";
+        ImageAssert.assertEquals(new File(refPath), image, 1200);
+    }
+
+    @Test
+    public void testPointIndependentGraphic() throws Exception {
+        Style style = RendererBaseTest.loadStyle(this, "textLabelIndependentGraphic.sld");
+
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(pointShield, style));
+
+        renderer.setMapContent(mc);
+        final ReferencedEnvelope pointBounds = pointShield.getBounds();
+        pointBounds.expandBy(3, 3);
+        BufferedImage image =
+                RendererBaseTest.showRender("Graphic above text", renderer, TIME, pointBounds);
+
+        String refPath =
+                "./src/test/resources/org/geotools/renderer/lite/test-data/textLabelIndependentGraphic.png";
         ImageAssert.assertEquals(new File(refPath), image, 1200);
     }
 

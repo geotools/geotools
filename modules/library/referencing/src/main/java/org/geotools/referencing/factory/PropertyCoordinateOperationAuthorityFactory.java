@@ -134,9 +134,9 @@ public class PropertyCoordinateOperationAuthorityFactory extends DirectAuthority
         ensureNonNull("authority", authority);
 
         // Load properties
-        final InputStream in = definitions.openStream();
-        this.definitions.load(in);
-        in.close();
+        try (InputStream in = definitions.openStream()) {
+            this.definitions.load(in);
+        }
     }
 
     /**

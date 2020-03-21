@@ -17,6 +17,7 @@
 package org.geotools.gce.pgraster;
 
 import com.google.common.annotations.VisibleForTesting;
+import java.io.Closeable;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.Optional;
@@ -61,7 +62,7 @@ import org.w3c.dom.NodeList;
  *     &lt;/pgraster>
  *   </pre>
  */
-class PGRasterConfig {
+class PGRasterConfig implements Closeable {
 
     static final Logger LOG = Logging.getLogger(PGRasterConfig.class);
 

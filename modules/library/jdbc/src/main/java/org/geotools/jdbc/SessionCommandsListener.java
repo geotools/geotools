@@ -114,9 +114,6 @@ public class SessionCommandsListener implements ConnectionLifecycleListener {
      * gt-renderer ExpressionExtractor code, but simplified to only have enviroment variable
      * references instead of CQL to avoid creating a dependendcy cascading issue
      * (ExpressionExtractor would have to be moved to gt-cql and gt-jdbc made to depend on it.
-     *
-     * @param sql
-     * @return
      */
     Expression expandEviromentVariables(String sql) {
         if (sql == null || "".equals(sql)) {

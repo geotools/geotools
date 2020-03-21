@@ -17,7 +17,7 @@
 package org.geotools.image.io;
 
 import com.sun.media.imageioimpl.common.PackageUtil;
-import java.awt.Color;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ComponentColorModel;
 import java.awt.image.RenderedImage;
@@ -72,8 +72,6 @@ public class ImageIOExt {
      *
      * @param image the image to be written on the destination (can be null)
      * @param destination the destination
-     * @return
-     * @throws IOException
      */
     public static ImageOutputStream createImageOutputStream(RenderedImage image, Object destination)
             throws IOException {
@@ -101,10 +99,6 @@ public class ImageIOExt {
 
     /**
      * Returns a {@link ImageOutputStream} suitable for writing on the specified <code>input</code>
-     *
-     * @param destination
-     * @return
-     * @throws IOException
      */
     public static ImageInputStream createImageInputStream(Object input) throws IOException {
         return ImageIO.createImageInputStream(input);
@@ -137,8 +131,6 @@ public class ImageIOExt {
      * {@link FileCacheImageOutputStream}. If the in memory, uncompressed image size is lower than
      * the threshold a {@link MemoryCacheImageOutputStream} will be returned, otherwise a {@link
      * FileCacheImageOutputStream} will be used instead
-     *
-     * @return
      */
     public static Long getFilesystemThreshold() {
         return filesystemThreshold;
@@ -147,7 +139,6 @@ public class ImageIOExt {
     /**
      * Sets the memory/file usage threshold (or null to have the code fall back on ImageIO behavior)
      *
-     * @param filesystemThreshold
      * @see #getFilesystemThreshold()
      */
     public static void setFilesystemThreshold(Long filesystemThreshold) {
@@ -298,12 +289,7 @@ public class ImageIOExt {
         return readersIt.next();
     }
 
-    /**
-     * Computes the image size based on the SampleModel and image dimension
-     *
-     * @param image
-     * @return
-     */
+    /** Computes the image size based on the SampleModel and image dimension */
     static long computeImageSize(RenderedImage image) {
         long bits = 0;
         final int bands = image.getSampleModel().getNumBands();
@@ -321,7 +307,6 @@ public class ImageIOExt {
      * @param input A non null image source, like a {@link File}, {@link java.net.URL}, or {@link
      *     java.io.InputStream}
      * @return A image
-     * @throws IOException
      */
     public static RenderedImage read(Object input) throws IOException {
         if (input == null) {
@@ -329,65 +314,67 @@ public class ImageIOExt {
         }
 
         // build an image input stream
-        ImageInputStream stream;
-        if (input instanceof ImageInputStream) {
-            stream = (ImageInputStream) input;
-        } else {
-            stream = ImageIO.createImageInputStream(input);
+        try (ImageInputStream stream = getImageInputStream(input)) {
+            // get the readers
+            Iterator iter = ImageIO.getImageReaders(stream);
+            if (!iter.hasNext()) {
+                return null;
+            }
+
+            ImageReader reader = (ImageReader) iter.next();
+            // work around PNG with transparent RGB color if needed
+            // we can remove it once we run on JDK 11, see
+            // https://bugs.openjdk.java.net/browse/JDK-6788458
+            boolean isJdkPNGReader =
+                    "com.sun.imageio.plugins.png.PNGImageReader"
+                            .equals(reader.getClass().getName());
+            // if it's the JDK PNG reader, we cannot skip the metadata, the tRNS section will be in
+            // there
+            reader.setInput(stream, true, !isJdkPNGReader);
+
+            BufferedImage bi;
+            try {
+                ImageReadParam param = reader.getDefaultReadParam();
+                bi = reader.read(0, param);
+            } finally {
+                reader.dispose();
+            }
+
+            // apply transparency in post-processing if needs be
+            if (isJdkPNGReader
+                    && bi.getColorModel() instanceof ComponentColorModel
+                    && !bi.getColorModel().hasAlpha()
+                    && bi.getColorModel().getNumComponents() == 3) {
+                IIOMetadata imageMetadata = reader.getImageMetadata(0);
+                Node tree = imageMetadata.getAsTree(imageMetadata.getNativeMetadataFormatName());
+                Node trns_rgb = getNodeFromPath(tree, Arrays.asList("tRNS", "tRNS_RGB"));
+                if (trns_rgb != null) {
+                    NamedNodeMap attributes = trns_rgb.getAttributes();
+                    Integer red = getIntegerAttribute(attributes, "red");
+                    Integer green = getIntegerAttribute(attributes, "green");
+                    Integer blue = getIntegerAttribute(attributes, "blue");
+
+                    if (red != null && green != null && blue != null) {
+                        Color color = new Color(red, green, blue);
+                        ImageWorker iw = new ImageWorker(bi);
+                        iw.makeColorTransparent(color);
+                        return iw.getRenderedImage();
+                    }
+                }
+            }
+            return bi;
         }
+    }
+
+    private static ImageInputStream getImageInputStream(Object input) throws IOException {
+        if (input instanceof ImageInputStream) {
+            return (ImageInputStream) input;
+        }
+        ImageInputStream stream = ImageIO.createImageInputStream(input);
         if (stream == null) {
             throw new IOException("Can't create an ImageInputStream!");
         }
-
-        // get the readers
-        Iterator iter = ImageIO.getImageReaders(stream);
-        if (!iter.hasNext()) {
-            return null;
-        }
-
-        ImageReader reader = (ImageReader) iter.next();
-        // work around PNG with transparent RGB color if needed
-        // we can remove it once we run on JDK 11, see
-        // https://bugs.openjdk.java.net/browse/JDK-6788458
-        boolean isJdkPNGReader =
-                "com.sun.imageio.plugins.png.PNGImageReader".equals(reader.getClass().getName());
-        // if it's the JDK PNG reader, we cannot skip the metadata, the tRNS section will be in
-        // there
-        reader.setInput(stream, true, !isJdkPNGReader);
-
-        BufferedImage bi;
-        try {
-            ImageReadParam param = reader.getDefaultReadParam();
-            bi = reader.read(0, param);
-        } finally {
-            reader.dispose();
-            stream.close();
-        }
-
-        // apply transparency in post-processing if needs be
-        if (isJdkPNGReader
-                && bi.getColorModel() instanceof ComponentColorModel
-                && !bi.getColorModel().hasAlpha()
-                && bi.getColorModel().getNumComponents() == 3) {
-            IIOMetadata imageMetadata = reader.getImageMetadata(0);
-            Node tree = imageMetadata.getAsTree(imageMetadata.getNativeMetadataFormatName());
-            Node trns_rgb = getNodeFromPath(tree, Arrays.asList("tRNS", "tRNS_RGB"));
-            if (trns_rgb != null) {
-                NamedNodeMap attributes = trns_rgb.getAttributes();
-                Integer red = getIntegerAttribute(attributes, "red");
-                Integer green = getIntegerAttribute(attributes, "green");
-                Integer blue = getIntegerAttribute(attributes, "blue");
-
-                if (red != null && green != null && blue != null) {
-                    Color color = new Color(red, green, blue);
-                    ImageWorker iw = new ImageWorker(bi);
-                    iw.makeColorTransparent(color);
-                    return iw.getRenderedImage();
-                }
-            }
-        }
-
-        return bi;
+        return stream;
     }
 
     /**
@@ -396,7 +383,6 @@ public class ImageIOExt {
      * other method for efficiency sake.
      *
      * @return A image
-     * @throws IOException
      */
     public static BufferedImage readBufferedImage(Object input) throws IOException {
         RenderedImage ri = ImageIOExt.read(input);

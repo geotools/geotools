@@ -216,10 +216,6 @@ class RasterManager {
          *
          * <p>Anyhow this method should not be called directly but subclasses should make use of the
          * setReadParams method instead in order to transparently look for overviews.
-         *
-         * @param imageIndex
-         * @param readParameters
-         * @param requestedRes
          */
         void performDecimation(
                 final int imageIndex,
@@ -329,14 +325,7 @@ class RasterManager {
         MathTransform2D coverageGridToWorld2D;
         /** The base grid range for the coverage */
         Rectangle coverageRasterArea;
-        /**
-         * Initialize the 2D properties (CRS and Envelope) of this coverage
-         *
-         * @throws TransformException
-         * @throws FactoryException
-         * @throws TransformException
-         * @throws FactoryException
-         */
+        /** Initialize the 2D properties (CRS and Envelope) of this coverage */
         private void prepareCoverageSpatialElements() throws TransformException, FactoryException {
             //
             // basic initialization
@@ -423,7 +412,7 @@ class RasterManager {
         hints = reader.getHints();
         coverageEnvelope = reader.getOriginalEnvelope();
         coverageGridrange = reader.getOriginalGridRange();
-        coverageCRS = reader.getCrs();
+        coverageCRS = reader.getCoordinateReferenceSystem();
         raster2Model = reader.getOriginalGridToWorld(PixelInCell.CELL_CENTER);
         this.coverageIdentifier = reader.getName();
         this.coverageFactory = reader.getGridCoverageFactory();

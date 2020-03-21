@@ -201,10 +201,7 @@ public class WPS1_0_0 extends WPSSpecification {
 
     public static class InternalDescribeProcessRequest extends AbstractDescribeProcessRequest {
 
-        /**
-         * @param onlineResource
-         * @param properties
-         */
+        /** */
         public InternalDescribeProcessRequest(URL onlineResource, Properties properties) {
             super(onlineResource, properties);
         }
@@ -221,10 +218,7 @@ public class WPS1_0_0 extends WPSSpecification {
 
     public static class InternalExecuteProcessRequest extends AbstractExecuteProcessRequest {
 
-        /**
-         * @param onlineResource
-         * @param properties
-         */
+        /** */
         public InternalExecuteProcessRequest(URL onlineResource, Properties properties) {
             super(onlineResource, properties);
         }

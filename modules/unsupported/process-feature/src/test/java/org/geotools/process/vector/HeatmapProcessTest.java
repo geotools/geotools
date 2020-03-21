@@ -45,8 +45,6 @@ public class HeatmapProcessTest {
      * <p>Test includes data which lies outside the heatmap buffer area, to check that it is
      * filtered correctly (i.e. does not cause out-of-range errors, and does not affect generated
      * surface).
-     *
-     * @throws Exception
      */
     @Test
     public void testSimpleSurface() {
@@ -120,7 +118,7 @@ public class HeatmapProcessTest {
         for (Coordinate p : pts) {
             Geometry point = factory.createPoint(p);
             fb.add(point);
-            fb.add(p.z);
+            fb.add(p.getZ());
             fc.add(fb.buildFeature(null));
         }
 

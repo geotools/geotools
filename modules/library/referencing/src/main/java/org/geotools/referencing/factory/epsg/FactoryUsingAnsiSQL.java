@@ -32,7 +32,6 @@ import org.geotools.util.factory.Hints;
  * @author Martin Desruisseaux
  * @author Didier Richard
  * @author John Grange
- * @deprecated Please use {@link AnsiDialectEpsgFactory}.
  */
 public class FactoryUsingAnsiSQL extends FactoryUsingSQL {
     /** The default map using ANSI names. */

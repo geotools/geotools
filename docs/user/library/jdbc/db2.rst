@@ -11,7 +11,7 @@ A couple of really good things have happened for DB2 support recently. We have o
 
 **Maven**
    
-Note that the groupId is **org.geotools.jdbc** for this and other JDBC plugin modules.
+Note that the ``groupId`` is ``org.geotools.jdbc`` for this and other JDBC plugin modules.
 
 ::
 
@@ -24,23 +24,23 @@ Note that the groupId is **org.geotools.jdbc** for this and other JDBC plugin mo
 Connection Parameters
 ^^^^^^^^^^^^^^^^^^^^^
 
-+-------------+------------------------------------------+
-| Parameter   | Description                              |
-+=============+==========================================+
-| "dbtype"    | Must be the string "db2"                 |
-+-------------+------------------------------------------+
-| "host"      | Machine name or IP address to connect to |
-+-------------+------------------------------------------+
-| "port"      | Port number to connect to, default 50000 |
-+-------------+------------------------------------------+
-| "tabschema" | The database schema to access            |
-+-------------+------------------------------------------+
-| "database"  | The database to connect to               |
-+-------------+------------------------------------------+
-| "user"      | User name                                |
-+-------------+------------------------------------------+
-| "passwd"    | Password                                 |
-+-------------+------------------------------------------+
++---------------+------------------------------------------+
+| Parameter     |     Description                          |
++===============+==========================================+
+| ``dbtype``    | Must be the string ``db2``               |
++---------------+------------------------------------------+
+| ``host``      | Machine name or IP address to connect to |
++---------------+------------------------------------------+
+| ``port``      | Port number to connect to, default 50000 |
++---------------+------------------------------------------+
+| ``tabschema`` | The database schema to access            |
++---------------+------------------------------------------+
+| ``database``  | The database to connect to               |
++---------------+------------------------------------------+
+| ``user``      | User name                                |
++---------------+------------------------------------------+
+| ``passwd``    | Password                                 |
++---------------+------------------------------------------+
 
 Creating
 ^^^^^^^^
@@ -64,24 +64,24 @@ Advanced Connection Parameters
 Additional connection parameters are available to configure connection pool use, or
 to feed in your own DataSource.
 
-For more information check the java docs for:
+For more information check the Java docs for:
 
-* DB2NGJNDIDataStoreFactory
-* DB2NGDataStoreFactory
+* ``DB2NGJNDIDataStoreFactory``
+* ``DB2NGDataStoreFactory``
 
-Advanced Geotools Parameters
+Advanced GeoTools Parameters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-+-------------------+------------------------------------------+
-| Parameter         | Description                              |
-+===================+==========================================+
-| "loose bbox"      | Flag controlling loose bbox comparisons, |
-|                   | default is true                          |
-+-------------------+------------------------------------------+
-| "use selectivity" | Flag to raise the priority of spatial    |
-|                   | indices for the db2 optimizer,           |
-|                   | default is false                         |
-+-------------------+------------------------------------------+
++---------------------+------------------------------------------+
+| Parameter           | Description                              |
++=====================+==========================================+
+| ``loose bbox``      | Flag controlling loose ``bbox``          |
+|                     | comparisons, default is true             |
++---------------------+------------------------------------------+
+| ``use selectivity`` | Flag to raise the priority of spatial    |
+|                     | indices for the ``db2`` optimizer,       |
+|                     | default is false                         |
++---------------------+------------------------------------------+
 
 Example use::
   
@@ -121,15 +121,15 @@ Since DB2 Spatial Extender V10 it is possible to store the extent of a geometry 
 Paging Support
 ^^^^^^^^^^^^^^
 
-Paging support is necessary to retrieve only a subset of a query result. (e. g. rows numbered 100 - 200). Many databases support the SQL keywords
-LIMIT and OFFSET, Oracle uses a pseudo column called ROWNUM. This plugin uses a strategy depending on the DB2 compatibility mode.          
+Paging support is necessary to retrieve only a subset of a query result. (e.g. rows numbered 100 - 200). Many databases support the SQL keywords
+LIMIT and OFFSET, Oracle uses a pseudo column called ``ROWNUM``. This plugin uses a strategy depending on the DB2 compatibility mode.          
 
-*  In MYSQL compatibility mode, LIMIT and OFFSET is used 
+*  In MYSQL compatibility mode, ``LIMIT`` and ``OFFSET`` is used 
 
-*  In Oracle compatibility mode, ROWNUM is used
+*  In Oracle compatibility mode, ``ROWNUM`` is used
 
-*  Fetch needed rows and ignore the unneeded rows (e. g fetch rows 1 - 200 and ignore rows from 1-100). 
-   This may result in very bad performance. Using a scrollable cursor would not help since BLOBs (vector data) are
+*  Fetch needed rows and ignore the unneeded rows (e.g. fetch rows 1 - 200 and ignore rows from 1-100). 
+   This may result in very bad performance. Using a scrollable cursor would not help since ``BLOBs`` (vector data) are
    not supported for such cursors in DB2.
    
 The strategy used can be found in the log file. If no paging support is enabled, the log file contains a warning::        

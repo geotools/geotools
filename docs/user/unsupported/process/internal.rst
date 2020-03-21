@@ -19,7 +19,7 @@ This API allows developers to:
 * execute processes
 * track the progress of an executing process
 
-This API allows implementors to:
+This API allows implementers to:
 
 * define what the input parameters are (with a map of parameters)
 * define what the output parameters are (with a map of results)
@@ -30,9 +30,9 @@ A main design goal of this module is to make a process quick and easy to impleme
 Process
 ^^^^^^^
 
-The Process interface is used to define a process. Making a new process is simple and only requires implementing the execute method (which is where the work is done to actually run a process). This method accepts the inputs and a ProgressListener. It is up to the implementor to update this listener with the progress of the process execution. There is also a SimpleProcess abstract class that simple processes can extend when they are so quick to execute that updating the progress is not necessary.
+The Process interface is used to define a process. Making a new process is simple and only requires implementing the execute method (which is where the work is done to actually run a process). This method accepts the inputs and a ``ProgressListener``. It is up to the implementer to update this listener with the progress of the process execution. There is also a ``SimpleProcess`` abstract class that simple processes can extend when they are so quick to execute that updating the progress is not necessary.
 
-BufferProcess example::
+``BufferProcess`` example::
 
     class BufferProcess extends AbstractProcess {
         private boolean started = false;
@@ -86,17 +86,17 @@ BufferProcess example::
             }
     }
 
-ProcessFactory
-^^^^^^^^^^^^^^
+``ProcessFactory``
+^^^^^^^^^^^^^^^^^^
 
 
-To advertise (and describe) a process implementation (like buffer above) we will need to create a ProcessFactory.
+To advertise (and describe) a process implementation (like buffer above) we will need to create a ``ProcessFactory``.
 
-The ProcessFactory interface is used to describe a process and its parameters, and for creating new instances of those processes. Typically, a ProcessFactory will be found and created using the Processors FactoryFinder. Below is an example of an implemented ProcessFactory.
+The ``ProcessFactory`` interface is used to describe a process and its parameters, and for creating new instances of those processes. Typically, a ``ProcessFactory`` will be found and created using the Processors ``FactoryFinder``. Below is an example of an implemented ``ProcessFactory``.
 
 The process factory includes other implementation (like name and version) to allow user interfaces and WPS implementations to make this service available in a controlled manner.
 
-BufferFactory Example::
+``BufferFactory`` Example::
 
     public class BufferFactory extends AbstractProcessFactory {
         // making parameters available as static constants to help java programmers
@@ -180,7 +180,7 @@ The Parameter interface provides a way to define these objects. This interface c
 
 The Parameter interface is part of the 04 API module and is used to define connection parameters for data access.
 
-Here is an example of asking the user to supply a "geomIn" parameter::
+Here is an example of asking the user to supply a ``geomIn`` parameter::
 
     Parameter<Geometry> geomInput = new Parameter<Geometry>("geomIn", Geometry.class, Text.text("Geometry"), 
         Text.text("Geometry input parameter"),  true, 2, -1, null, null);
@@ -192,11 +192,11 @@ In a similar manner you can indicate the result you produce::
 Process Executor
 ^^^^^^^^^^^^^^^^
 
-The ProcessExecutor provides methods to manage process executions and for tracking asynchronous tasks. By implementing the submit method that returns a Progress object, the process execution can be tracked or terminated. Below is an example of a very simple implementation of the ProcessExecutor interface.
+The ``ProcessExecutor`` provides methods to manage process executions and for tracking asynchronous tasks. By implementing the submit method that returns a Progress object, the process execution can be tracked or terminated. Below is an example of a very simple implementation of the ``ProcessExecutor`` interface.
 
 You may wish to implement the Process Executor class if you are backing onto an existing scheduling facility such as that provided by a workflow engine.
 
-ThreadPoolProcessExecutor Example::
+``ThreadPoolProcessExecutor`` Example::
 
     public class ThreadPoolProcessExecutor extends ThreadPoolExecutor 
         implements ProcessExecutor {

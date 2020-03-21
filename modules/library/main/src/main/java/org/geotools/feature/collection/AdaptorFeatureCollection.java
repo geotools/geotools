@@ -56,7 +56,7 @@ public abstract class AdaptorFeatureCollection implements SimpleFeatureCollectio
     // SimpleFeatureCollection - Feature Access
     //
     public SimpleFeatureIterator features() {
-        SimpleFeatureIterator iter = new DelegateSimpleFeatureIterator(this, openIterator());
+        SimpleFeatureIterator iter = new DelegateSimpleFeatureIterator(openIterator());
         return iter;
     }
 
@@ -78,11 +78,7 @@ public abstract class AdaptorFeatureCollection implements SimpleFeatureCollectio
         iter.close();
     }
 
-    /**
-     * Accepts a visitor, which then visits each feature in the collection.
-     *
-     * @throws IOException
-     */
+    /** Accepts a visitor, which then visits each feature in the collection. */
     public void accepts(FeatureVisitor visitor, ProgressListener progress) throws IOException {
         DataUtilities.visit(this, visitor, progress);
     }
@@ -266,8 +262,6 @@ public abstract class AdaptorFeatureCollection implements SimpleFeatureCollectio
      *     collection.close( iterator );
      * }
      * </code></pre>
-     *
-     * @param close
      */
     public final void close(Iterator close) {
         if (close == null) return;

@@ -16,15 +16,15 @@
  */
 package org.geotools.image.util;
 
+import com.sun.media.imageioimpl.common.BogusColorSpace;
 import com.sun.media.jai.operator.ImageReadDescriptor;
 import com.sun.media.jai.util.Rational;
 import it.geosolutions.imageio.imageioimpl.EnhancedImageReadParam;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
+import it.geosolutions.jaiext.utilities.ImageLayout2;
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.awt.image.ComponentColorModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferByte;
 import java.awt.image.DataBufferDouble;
@@ -46,6 +46,7 @@ import java.security.PrivilegedAction;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -61,6 +62,7 @@ import javax.media.jai.JAI;
 import javax.media.jai.OpImage;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
+import javax.media.jai.RasterFactory;
 import javax.media.jai.RenderedImageAdapter;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.WritableRenderedImageAdapter;
@@ -72,6 +74,7 @@ import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.metadata.extent.GeographicBoundingBox;
@@ -136,7 +139,9 @@ public final class ImageUtilities {
                                                 // invoke
                                                 final Object[] paramsObj = {};
 
-                                                final Object o = mImage.newInstance();
+                                                final Object o =
+                                                        mImage.getDeclaredConstructor()
+                                                                .newInstance();
                                                 return (Boolean) method.invoke(o, paramsObj);
                                             } catch (Throwable e) {
                                                 return false;
@@ -345,30 +350,32 @@ public final class ImageUtilities {
             if (defaultSize == null) {
                 defaultSize = GEOTOOLS_DEFAULT_TILE_SIZE;
             }
-            int s;
-            if ((s = toTileSize(image.getWidth(), defaultSize.width)) != 0) {
+            int sw;
+            int sh;
+            sw = toTileSize(image.getWidth(), defaultSize.width);
+            sh = toTileSize(image.getHeight(), defaultSize.height);
+            boolean smallTileWidth = image.getTileWidth() <= STRIPE_SIZE;
+            boolean smallTileHeight = image.getTileHeight() < STRIPE_SIZE;
+            if (sw != 0 || sh != 0 || smallTileHeight || smallTileWidth) {
                 if (layout == null) {
                     layout = new ImageLayout();
                 }
-                layout = layout.setTileWidth(s);
-                layout.setTileGridXOffset(image.getMinX());
-            } else if (image.getTileWidth() <= STRIPE_SIZE) {
-                if (layout == null) {
-                    layout = new ImageLayout();
+                if (sw != 0) {
+                    layout = layout.setTileWidth(sw);
+                    layout.setTileGridXOffset(image.getMinX());
+                } else if (smallTileWidth) {
+                    layout = layout.setTileWidth(defaultSize.width);
+                } else {
+                    layout = layout.setTileWidth(image.getTileWidth());
                 }
-                layout = layout.setTileWidth(defaultSize.width);
-            }
-            if ((s = toTileSize(image.getHeight(), defaultSize.height)) != 0) {
-                if (layout == null) {
-                    layout = new ImageLayout();
+                if (sh != 0) {
+                    layout = layout.setTileHeight(sh);
+                    layout.setTileGridYOffset(image.getMinY());
+                } else if (smallTileHeight) {
+                    layout = layout.setTileHeight(defaultSize.height);
+                } else {
+                    layout = layout.setTileHeight(image.getTileHeight());
                 }
-                layout = layout.setTileHeight(s);
-                layout.setTileGridYOffset(image.getMinY());
-            } else if (image.getTileHeight() < STRIPE_SIZE) {
-                if (layout == null) {
-                    layout = new ImageLayout();
-                }
-                layout = layout.setTileHeight(defaultSize.height);
             }
         }
         return layout;
@@ -817,6 +824,7 @@ public final class ImageUtilities {
             RenderedOp op = (RenderedOp) pi;
             for (Object param : op.getParameterBlock().getParameters()) {
                 if (param instanceof ImageInputStream) {
+                    @SuppressWarnings("PMD.CloseResource") // we are actually closing it...
                     ImageInputStream iis = (ImageInputStream) param;
                     try {
                         iis.close();
@@ -841,7 +849,6 @@ public final class ImageUtilities {
      * @param image the {@link RenderedImage} to work on
      * @return a new {@link RenderedImage} where the provided {@link Color} has turned into
      *     transparent.
-     * @throws IllegalStateException
      */
     public static RenderedImage maskColor(final Color transparentColor, final RenderedImage image)
             throws IllegalStateException {
@@ -1117,10 +1124,6 @@ public final class ImageUtilities {
     /**
      * Build a background values array using the same dataType of the input {@link SampleModel} (if
      * available) and the values provided in the input array.
-     *
-     * @param sampleModel
-     * @param backgroundValues
-     * @return
      */
     public static Number[] getBackgroundValues(
             final SampleModel sampleModel, final double[] backgroundValues) {
@@ -1236,7 +1239,9 @@ public final class ImageUtilities {
                     }
 
                     if ((imageReader != null) && (imageReader instanceof ImageReader)) {
+                        @SuppressWarnings("PMD.CloseResource") // we are actually closing it
                         final ImageReader reader = (ImageReader) imageReader;
+                        @SuppressWarnings("PMD.CloseResource") // we are actually closing it
                         final ImageInputStream stream = (ImageInputStream) reader.getInput();
                         try {
                             stream.close();
@@ -1259,11 +1264,7 @@ public final class ImageUtilities {
         }
     }
 
-    /**
-     * Disposes the specified image, without recursing back in the sources
-     *
-     * @param planarImage
-     */
+    /** Disposes the specified image, without recursing back in the sources */
     public static void disposeSinglePlanarImage(PlanarImage planarImage) {
         // Looking for an ROI image and disposing it too
         Object roi = null;
@@ -1309,27 +1310,13 @@ public final class ImageUtilities {
         planarImage.dispose();
     }
 
-    /**
-     * Helper that cleans up a field
-     *
-     * @param theObject
-     * @param fieldName
-     * @throws NoSuchFieldException
-     * @throws IllegalAccessException
-     */
+    /** Helper that cleans up a field */
     private static void cleanField(Object theObject, String fieldName)
             throws NoSuchFieldException, IllegalAccessException {
         cleanField(theObject, fieldName, false);
     }
 
-    /**
-     * Helper that cleans up a field
-     *
-     * @param theObject
-     * @param fieldName
-     * @throws NoSuchFieldException
-     * @throws IllegalAccessException
-     */
+    /** Helper that cleans up a field */
     private static void cleanField(Object theObject, String fieldName, boolean superClass)
             throws NoSuchFieldException, IllegalAccessException {
         // getDeclaredField only provides access to current class,
@@ -1346,7 +1333,6 @@ public final class ImageUtilities {
     /**
      * Transform a data type into a representative {@link String}.
      *
-     * @param dataType
      * @return a representative {@link String}.
      */
     public static String getDatabufferTypeName(int dataType) {
@@ -1367,5 +1353,84 @@ public final class ImageUtilities {
             default:
                 throw new UnsupportedOperationException("Wrong data type:" + dataType);
         }
+    }
+
+    /**
+     * Applies values rescaling if either the scales or the offsets array is non null, or has any
+     * value that is not a default (1 for scales, 0 for offsets)
+     *
+     * @param scales The scales array
+     * @param offsets The offsets array
+     * @param image The image to be rescaled
+     * @param hints The image processing hints, if any (can be null)
+     * @return The original image, or a rescaled image
+     */
+    public static RenderedImage applyRescaling(
+            Double[] scales, Double[] offsets, RenderedImage image, Hints hints) {
+        // if there is nothing to do, return immediately
+        if (scales == null && offsets == null) {
+            return image;
+        }
+
+        // convert to primitives, apply defaults to nullable elements
+        int numBands = image.getSampleModel().getNumBands();
+        double[] pscales = toPrimitiveArray(scales, numBands, 1);
+        double[] poffsets = toPrimitiveArray(offsets, numBands, 0);
+        boolean hasRescaling = false;
+        for (int i = 0; i < numBands && !hasRescaling; i++) {
+            hasRescaling = poffsets[i] != 0 || pscales[i] != 1;
+        }
+        if (!hasRescaling) {
+            return image;
+        }
+
+        // use the input hints if possible, but create a proper layout to impose the target data
+        // type
+        RenderingHints localHints =
+                hints != null
+                        ? hints.clone()
+                        : (RenderingHints) JAI.getDefaultInstance().getRenderingHints().clone();
+        final ImageLayout layout =
+                Optional.ofNullable((ImageLayout) localHints.get(JAI.KEY_IMAGE_LAYOUT))
+                        .map(il -> (ImageLayout) il.clone())
+                        .orElse(new ImageLayout2(image));
+        SampleModel sm =
+                RasterFactory.createBandedSampleModel(
+                        DataBuffer.TYPE_DOUBLE,
+                        image.getTileWidth(),
+                        image.getTileHeight(),
+                        image.getSampleModel().getNumBands());
+        layout.setSampleModel(sm);
+        layout.setColorModel(
+                new ComponentColorModel(
+                        new BogusColorSpace(numBands),
+                        false,
+                        false,
+                        Transparency.OPAQUE,
+                        DataBuffer.TYPE_DOUBLE));
+        localHints.put(JAI.KEY_IMAGE_LAYOUT, layout);
+
+        // at least one band is getting rescaled, apply the operation
+        ImageWorker iw = new ImageWorker(image);
+        iw.setRenderingHints(localHints);
+        iw.rescale(pscales, poffsets);
+        return iw.getRenderedImage();
+    }
+
+    private static double[] toPrimitiveArray(Double[] input, int numBands, double defaultValue) {
+        double[] result = new double[numBands];
+        Arrays.fill(result, defaultValue);
+
+        if (input != null) {
+            int loopMax = Math.min(input.length, numBands);
+            for (int i = 0; i < loopMax; i++) {
+                Double v = input[i];
+                if (v != null) {
+                    result[i] = v;
+                }
+            }
+        }
+
+        return result;
     }
 }

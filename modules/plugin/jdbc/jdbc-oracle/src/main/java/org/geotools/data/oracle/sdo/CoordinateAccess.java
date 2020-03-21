@@ -65,7 +65,6 @@ public interface CoordinateAccess extends CoordinateSequence {
      *
      * <p>attribute is between 0 and getNumAttributes()
      *
-     * @param coordinate
      * @param attribute is between 0 and getNumAttributes()
      */
     Object getAttribute(int coordinate, int attribute);
@@ -86,7 +85,6 @@ public interface CoordinateAccess extends CoordinateSequence {
      *
      * @param coordinate the coordinate to be modified
      * @param attribute between 0 and getNumAttributes()
-     * @param value
      */
     void setAttribute(int coordinate, int attribute, Object value);
 

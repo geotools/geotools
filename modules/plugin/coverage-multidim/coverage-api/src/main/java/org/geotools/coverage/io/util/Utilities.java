@@ -16,7 +16,7 @@
  */
 package org.geotools.coverage.io.util;
 
-import it.geosolutions.imageio.stream.input.FileImageInputStreamExt;
+import it.geosolutions.imageio.stream.AccessibleStream;
 import it.geosolutions.imageio.stream.input.FileImageInputStreamExtImpl;
 import it.geosolutions.imageio.stream.input.URIImageInputStream;
 import it.geosolutions.imageio.stream.input.URIImageInputStreamImpl;
@@ -24,7 +24,6 @@ import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.renderable.ParameterBlock;
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -46,7 +45,6 @@ import javax.measure.Unit;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GeneralGridEnvelope;
@@ -69,11 +67,13 @@ import org.geotools.referencing.datum.DefaultEllipsoid;
 import org.geotools.referencing.datum.DefaultGeodeticDatum;
 import org.geotools.referencing.datum.DefaultPrimeMeridian;
 import org.geotools.referencing.factory.ReferencingFactoryContainer;
+import org.geotools.referencing.factory.ReferencingObjectFactory;
 import org.geotools.referencing.operation.DefaultMathTransformFactory;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.operation.transform.IdentityTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
+import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.grid.GridEnvelope;
@@ -87,6 +87,7 @@ import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.MathTransformFactory;
+import org.opengis.referencing.operation.OperationMethod;
 import org.opengis.referencing.operation.TransformException;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -221,9 +222,17 @@ public class Utilities {
 
             final Map<String, String> props = new HashMap<String, String>();
             props.put("name", "Mercator CRS");
+            OperationMethod method = null;
+            final MathTransform mt =
+                    fg.getMathTransformFactory()
+                            .createBaseToDerived(sourceCRS, params, DefaultCartesianCS.PROJECTED);
+            if (method == null) {
+                method = fg.getMathTransformFactory().getLastMethodUsed();
+            }
             projectedCRS =
-                    fg.createProjectedCRS(
-                            props, sourceCRS, null, params, DefaultCartesianCS.PROJECTED);
+                    ((ReferencingObjectFactory) fg.getCRSFactory())
+                            .createProjectedCRS(
+                                    props, method, sourceCRS, mt, DefaultCartesianCS.PROJECTED);
         } catch (FactoryException e) {
             throw new DataSourceException(e);
         }
@@ -260,12 +269,7 @@ public class Utilities {
         return attributeValue;
     }
 
-    /**
-     * Return a {@link Unit} instance for the specified uom String.
-     *
-     * @param uom
-     * @return
-     */
+    /** Return a {@link Unit} instance for the specified uom String. */
     public static Unit<? extends Quantity> parseUnit(final String uom) {
         Unit<? extends Quantity> unit = AbstractUnit.ONE;
         if (uom != null && uom.trim().length() > 0) {
@@ -290,15 +294,11 @@ public class Utilities {
      * allows to specify if we need the returned coverage as an
      * {@code Envelope2D} or a more general {@code GeneralEnvelope} instance.
      *
-     * @param envelope
-     * @param get2D
      *                if {@code true}, the requested envelope will be an
      *                instance of {@link Envelope2D}. If {@code false} it will
      *                be an instance of {@link GeneralEnvelope
      * @return a WGS84 envelope as {@link Envelope2D} in case of request for a
      *         2D WGS84 Envelope, or a {@link GeneralEnvelope} otherwise.
-     * @throws FactoryException
-     * @throws TransformException
      */
     public static Envelope getEnvelopeAsWGS84(final Envelope envelope, boolean get2D)
             throws FactoryException, TransformException {
@@ -331,8 +331,6 @@ public class Utilities {
      *
      * @param requestedEnvelope the {@code GeneralEnvelope} to be returned as 2D.
      * @return the 2D requested envelope
-     * @throws FactoryException
-     * @throws TransformException
      */
     public static GeneralEnvelope getRequestedEnvelope2D(GeneralEnvelope requestedEnvelope)
             throws FactoryException, TransformException {
@@ -407,8 +405,6 @@ public class Utilities {
      *     envelope with the specified requested envelope.
      * @return the resulting intersection of envelopes. In case of empty intersection, this method
      *     is allowed to return {@code null}
-     * @throws TransformException
-     * @throws FactoryException
      * @todo TODO XXX refactor this method leveraging on the coverageSourceCapabilities of
      *     reprojection. Moreover add a boolean parameter saying if trying to reproject to WGS84
      *     always need to be done
@@ -541,15 +537,12 @@ public class Utilities {
      * rectangle which is suitable for a successive read operation with {@link ImageIO} to do
      * crop-on-read.
      *
-     * @param originalGridToWorld
-     * @param coordinateReferenceSystem
      * @param requestedEnvelope is the envelope we are requested to load.
      * @param sourceRegion represents the area to load in raster space. This parameter cannot be
      *     null since it gets filled with whatever the crop region is depending on the <code>
      *     requestedEnvelope</code>.
      * @param requestedDim is the requested region where to load data of the specified envelope.
      * @param readGridToWorld the Grid to world transformation to be used
-     * @param wgs84BaseEnvelope2D
      * @return the adjusted requested envelope, empty if no requestedEnvelope has been specified,
      *     {@code null} in case the requested envelope does not intersect the coverage envelope or
      *     in case the adjusted requested envelope is covered by a too small raster region (an empty
@@ -653,12 +646,10 @@ public class Utilities {
      * <p>This method is vital when working with coverages that have a raster to model
      * transformation that is not a simple scale and translate.
      *
-     * @param imageIndex
      * @param image contains the data for the coverage to create.
      * @param raster2Model is the {@link MathTransform} that maps from the raster space to the model
      *     space.
      * @return a {@link GridCoverage}
-     * @throws IOException
      */
     public static GridCoverage createCoverageFromImage(
             final GridCoverageFactory coverageFactory,
@@ -770,9 +761,6 @@ public class Utilities {
      * @param readParam an instance of {@link ImageReadParam} for setting the subsampling factors.
      * @param requestedEnvelope the {@link GeneralEnvelope} we are requesting.
      * @param requestedDim the requested dimensions.
-     * @param gridRange
-     * @throws IOException
-     * @throws TransformException
      */
     public static void setReadParameters(
             OverviewPolicy overviewPolicy,
@@ -937,7 +925,6 @@ public class Utilities {
      * Returns a {@code PlanarImage} given a set of parameter specifying the type of read operation
      * to be performed.
      *
-     * @param imageIndex
      * @param input the input to be used for reading the image.
      * @param useJAI {@code true} if we need to use a JAI ImageRead operation, {@code false} if we
      *     need a simple direct {@code ImageReader.read(...)} call.
@@ -945,8 +932,8 @@ public class Utilities {
      * @param useMultithreading {@code true} if a JAI ImageRead operation is requested with support
      *     for multithreading. This parameter will be ignored if requesting a direct read operation.
      * @return the read {@code PlanarImage}
-     * @throws IOException
      */
+    @SuppressWarnings("PMD.CloseResource") // stream managed in the returned delayed read op
     public static PlanarImage readImage(
             final ImageReaderSpi spi,
             final Object input,
@@ -958,8 +945,8 @@ public class Utilities {
         ImageInputStream paramInput = null;
         if (input instanceof File) {
             paramInput = new FileImageInputStreamExtImpl((File) input);
-        } else if (input instanceof FileImageInputStreamExt) {
-            paramInput = (FileImageInputStreamExt) input;
+        } else if (input instanceof AccessibleStream && input instanceof ImageInputStream) {
+            paramInput = (ImageInputStream) input;
         } else if (input instanceof URIImageInputStream) {
             paramInput = (URIImageInputStream) input;
         } else if (input instanceof URL) {
@@ -967,7 +954,7 @@ public class Utilities {
             String protocol = tempURL.getProtocol();
             if (protocol.equalsIgnoreCase("file")) {
                 try {
-                    File file = it.geosolutions.imageio.utilities.Utilities.urlToFile(tempURL);
+                    File file = URLs.urlToFile(tempURL);
                     paramInput = new FileImageInputStreamExtImpl(file);
                 } catch (IOException e) {
                     throw new RuntimeException("Failed to create a valid input stream ", e);
@@ -1017,16 +1004,6 @@ public class Utilities {
      * Compute the coverage request and produce a grid coverage. The produced grid coverage may be
      * {@code null} in case of empty request.
      *
-     * @param index
-     * @param imageReadParam
-     * @param isEmptyRequest
-     * @param needTransformation
-     * @param imageReaderSpi
-     * @param coverageName
-     * @param coverageFactory
-     * @param raster2Model
-     * @param coordinateReferenceSystem
-     * @param envelope2D
      * @throws IOException @TODO: handle more input types
      */
     public static GridCoverage compute(
@@ -1087,10 +1064,6 @@ public class Utilities {
     //    /**
     //     * Build a suitable {@link GridSampleDimension}
     //     *
-    //     * @param sampleDim
-    //     * @param elementName
-    //     * @param unit
-    //     * @return
     //     */
     //    public static GridSampleDimension buildBands(final Band sampleDim, final String
     // elementName,
@@ -1182,9 +1155,6 @@ public class Utilities {
     // instant is
     // * contained within the period. In case they are Periods, check for an intersection.
     // *
-    // * @param containing
-    // * @param contained
-    // * @return
     // */
     // public static boolean contains(TemporalGeometricPrimitive containing,
     // TemporalGeometricPrimitive contained) {
@@ -1244,9 +1214,6 @@ public class Utilities {
     // /**
     // * Move these methods to an Utility Class and improve the logic.
     // *
-    // * @param first
-    // * @param second
-    // * @return
     // */
     // public static boolean isTimeAccepted( TemporalGeometricPrimitive first,
     // TemporalGeometricPrimitive second ) {
@@ -1301,12 +1268,8 @@ public class Utilities {
 
     public static Properties loadPropertiesFromURL(URL propsURL) {
         final Properties properties = new Properties();
-        InputStream stream = null;
-        InputStream openStream = null;
-        try {
-            openStream = propsURL.openStream();
-            stream = new BufferedInputStream(openStream);
-            properties.load(stream);
+        try (InputStream openStream = propsURL.openStream()) {
+            properties.load(openStream);
         } catch (FileNotFoundException e) {
             if (LOGGER.isLoggable(Level.SEVERE))
                 LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
@@ -1315,14 +1278,6 @@ public class Utilities {
             if (LOGGER.isLoggable(Level.SEVERE))
                 LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
             return null;
-        } finally {
-
-            if (stream != null) {
-                IOUtils.closeQuietly(stream);
-            }
-            if (openStream != null) {
-                IOUtils.closeQuietly(openStream);
-            }
         }
         return properties;
     }

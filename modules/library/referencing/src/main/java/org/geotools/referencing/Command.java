@@ -363,6 +363,7 @@ final class Command {
     }
 
     /** Implementation of {@link CRS#main}. */
+    @SuppressWarnings("PMD.CloseResource")
     public static void execute(String[] args) {
         final Arguments arguments = new Arguments(args);
         final PrintWriter out = arguments.out;

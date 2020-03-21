@@ -45,6 +45,6 @@ public class FilterFunction_getZ extends FunctionExpressionImpl {
                     "Filter Function problem for function getZ argument #0 - expected type Geometry");
         }
 
-        return new Double(arg0.getCentroid().getCoordinate().z);
+        return Double.valueOf(arg0.getCentroid().getCoordinate().getZ());
     }
 }

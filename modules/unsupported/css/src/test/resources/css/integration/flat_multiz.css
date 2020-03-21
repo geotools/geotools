@@ -1,0 +1,14 @@
+@mode 'Flat';
+
+[@sd > 1M] {
+  stroke: #AAAAAA;
+}
+
+
+[@sd < 1M] {
+  stroke: #000000;
+  [@sd < 200k] {
+    stroke: #c24e6b, #e892a2;
+    z-index: 1, 2;
+  };
+}

@@ -16,7 +16,7 @@
  */
 package org.geotools.jdbc;
 
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -84,9 +84,6 @@ public class JDBCTransactionStateTest {
     /**
      * Tests if connection gets closed on internally managed connections and creation of log
      * statements.
-     *
-     * @throws IOException
-     * @throws SQLException
      */
     @Test
     public void testSetTransactionNullWithInternalConnection() throws IOException, SQLException {

@@ -38,7 +38,6 @@ public final class DTEDReader extends BaseGDALGridCoverage2DReader implements Gr
      * Creates a new instance of a {@link DTEDReader}. I assume nothing about file extension.
      *
      * @param input Source object for which we want to build an {@link DTEDReader}.
-     * @throws DataSourceException
      */
     public DTEDReader(Object input) throws DataSourceException {
         this(input, null);
@@ -49,7 +48,6 @@ public final class DTEDReader extends BaseGDALGridCoverage2DReader implements Gr
      *
      * @param input Source object for which we want to build an {@link DTEDReader}.
      * @param hints Hints to be used by this reader throughout his life.
-     * @throws DataSourceException
      */
     public DTEDReader(Object input, Hints hints) throws DataSourceException {
         super(input, hints, worldFileExt, new DTEDImageReaderSpi());

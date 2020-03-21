@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.FilteringFeatureReader;
@@ -90,7 +89,6 @@ public class JDBCFeatureSource extends ContentFeatureSource {
      * Copy existing feature source
      *
      * @param featureSource jdbc feature source
-     * @throws IOException
      */
     protected JDBCFeatureSource(JDBCFeatureSource featureSource) throws IOException {
         super(featureSource.entry, featureSource.query);
@@ -417,16 +415,16 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                 // grab a reader
                 Query preQuery = new Query(query);
                 query.setFilter(preFilter);
-                FeatureReader<SimpleFeatureType, SimpleFeature> preReader = getReader(preQuery);
-                // wrap with post filter
-                FilteringFeatureReader reader = new FilteringFeatureReader(preReader, postFilter);
-                try {
-                    while (reader.hasNext()) {
-                        reader.next();
-                        count++;
+                try (FeatureReader<SimpleFeatureType, SimpleFeature> preReader =
+                        getReader(preQuery)) {
+                    // wrap with post filter
+                    try (FilteringFeatureReader reader =
+                            new FilteringFeatureReader(preReader, postFilter)) {
+                        while (reader.hasNext()) {
+                            reader.next();
+                            count++;
+                        }
                     }
-                } finally {
-                    reader.close();
                 }
 
                 return count;
@@ -438,7 +436,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
             // either way we can use the datastore optimization
             Connection cx = store.getConnection(getState());
             try {
-                DefaultQuery q = new DefaultQuery(query);
+                Query q = new Query(query);
                 q.setFilter(preFilter);
                 int count = store.getCount(getSchema(), q, cx);
                 // if native support for limit and offset is not implemented, we have to ajust the
@@ -482,7 +480,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                 ReferencedEnvelope bounds = new ReferencedEnvelope(flatCRS);
 
                 // grab a reader
-                DefaultQuery q = new DefaultQuery(query);
+                Query q = new Query(query);
                 q.setFilter(postFilter);
                 FeatureReader<SimpleFeatureType, SimpleFeature> i = getReader(q);
                 try {
@@ -505,7 +503,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                 // use datastore optimization
                 Connection cx = dataStore.getConnection(getState());
                 try {
-                    DefaultQuery q = new DefaultQuery(query);
+                    Query q = new Query(query);
                     q.setFilter(preFilter);
                     return dataStore.getBounds(getSchema(), q, cx);
                 } finally {
@@ -554,7 +552,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         boolean postFilterRequired = postFilter != null && postFilter != Filter.INCLUDE;
 
         // rebuild a new query with the same params, but just the pre-filter
-        DefaultQuery preQuery = new DefaultQuery(query);
+        Query preQuery = new Query(query);
         preQuery.setFilter(preFilter);
         // in case of post filtering, we cannot do native paging
         if (postFilterRequired) {
@@ -707,13 +705,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         }
     }
 
-    /**
-     * Special case of nearest visitor, which can be computed by combining a min and a max visit
-     *
-     * @param query
-     * @param visitor
-     * @throws IOException
-     */
+    /** Special case of nearest visitor, which can be computed by combining a min and a max visit */
     private boolean handleNearestVisitor(Query query, FeatureVisitor visitor) throws IOException {
         NearestVisitor nearest = (NearestVisitor) visitor;
         Object targetValue = nearest.getValueToMatch();
@@ -766,16 +758,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         return true;
     }
 
-    /**
-     * Computes the column metadata from a plain database table
-     *
-     * @param cx
-     * @param databaseSchema
-     * @param tableName
-     * @param dialect
-     * @return
-     * @throws SQLException
-     */
+    /** Computes the column metadata from a plain database table */
     List<ColumnMetadata> getColumnMetadata(
             Connection cx, String databaseSchema, String tableName, SQLDialect dialect)
             throws SQLException {
@@ -838,15 +821,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         return result;
     }
 
-    /**
-     * Computes the column metadata by running the virtual table query
-     *
-     * @param cx
-     * @param vtable
-     * @param dialect
-     * @return
-     * @throws SQLException
-     */
+    /** Computes the column metadata by running the virtual table query */
     static List<ColumnMetadata> getColumnMetadata(
             Connection cx, VirtualTable vtable, SQLDialect dialect, JDBCDataStore store)
             throws SQLException {

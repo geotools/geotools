@@ -27,7 +27,7 @@ public class FontEncoder extends YsldEncodeHandler<Font> {
 
     @Override
     protected void encode(Font font) {
-        putName("font-family", font.getFontFamily());
+        putName("font-family", font.getFamily().get(0));
         put("font-size", font.getSize());
         putName("font-style", font.getStyle());
         putName("font-weight", font.getWeight());

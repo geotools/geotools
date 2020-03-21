@@ -114,7 +114,6 @@ public class ImageTiler {
      * Argument parsing and initial setup.
      *
      * @param args Program arguments
-     * @throws Exception
      */
     // docs start main
     public static void main(String[] args) throws Exception {

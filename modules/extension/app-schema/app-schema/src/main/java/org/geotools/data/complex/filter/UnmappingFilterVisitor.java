@@ -141,9 +141,6 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
     /**
      * Used by methods that visited a filter that produced one or more filters over the surrogate
      * feature type to combine them in an Or filter if necessary.
-     *
-     * @param combinedFilters
-     * @return
      */
     private Filter combineOred(List combinedFilters) {
         switch (combinedFilters.size()) {
@@ -525,7 +522,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
     }
 
     public Object visit(BBOX filter, Object arg1) {
-        String propertyName = filter.getPropertyName();
+        String propertyName = ((PropertyName) filter.getExpression1()).getPropertyName();
         if (propertyName.length() < 1) {
             // see GetFeatureKvpRequestReader bboxFilter()
             // propertyName is meant to be empty, and it will get it from the feature

@@ -44,7 +44,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -79,13 +78,14 @@ import javax.xml.bind.Unmarshaller;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
+import org.apache.commons.lang3.StringUtils;
+import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.DataStoreFactorySpi;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.visitor.DefaultFilterVisitor;
@@ -209,6 +209,33 @@ public class Utils {
                         DEFAULT_COORDS_DECIMATION_THRESHOLD);
         CLEANUP_FILTER = initCleanUpFilter();
         MOSAIC_SUPPORT_FILES_FILTER = initMosaicSupportFilesFilter();
+    }
+
+    /** Check if the provided reader is a MultiCRS Reader and it can support the specified crs. */
+    public static boolean isSupportedCRS(GridCoverage2DReader reader, CoordinateReferenceSystem crs)
+            throws FactoryException, IOException {
+        String multiCrsReader =
+                reader.getMetadataValue(AbstractGridCoverage2DReader.MULTICRS_READER);
+        boolean isMultiCRS = multiCrsReader != null && Boolean.valueOf(multiCrsReader);
+        String supportedEpsgCodes = "";
+        if (isMultiCRS) {
+            supportedEpsgCodes =
+                    reader.getMetadataValue(AbstractGridCoverage2DReader.MULTICRS_EPSGCODES);
+        }
+        if (!StringUtils.isBlank(supportedEpsgCodes) && crs != null) {
+            Integer targetCRSEpsgCode = CRS.lookupEpsgCode(crs, false);
+            if (targetCRSEpsgCode != null) {
+                String code = String.valueOf(targetCRSEpsgCode);
+                supportedEpsgCodes = supportedEpsgCodes.replaceAll("[^0-9,]", "");
+                String[] epsgCodes = supportedEpsgCodes.split(",");
+                for (String epsgCode : epsgCodes) {
+                    if (code.equalsIgnoreCase(epsgCode)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     public static class Prop {
@@ -574,7 +601,7 @@ public class Utils {
         //
         URL propsURL = sourceURL;
         if (!sourceURL.toExternalForm().endsWith(".properties")) {
-            propsURL = DataUtilities.changeUrlExt(sourceURL, "properties");
+            propsURL = URLs.changeUrlExt(sourceURL, "properties");
             if (propsURL.getProtocol().equals("file")) {
                 final File sourceFile = URLs.urlToFile(propsURL);
                 if (!sourceFile.exists()) {
@@ -819,7 +846,11 @@ public class Utils {
                                             Prop.ABSOLUTE_PATH,
                                             Boolean.toString(Utils.DEFAULT_PATH_BEHAVIOR))
                                     .trim());
-            catalogConfigurationBean.setAbsolutePath(absolutePath);
+            if (absolutePath) {
+                catalogConfigurationBean.setPathType(PathType.ABSOLUTE);
+            } else {
+                catalogConfigurationBean.setPathType(PathType.RELATIVE);
+            }
         }
 
         if (!ignoreSome || !ignorePropertiesSet.contains(Prop.PATH_TYPE)) {
@@ -1070,12 +1101,7 @@ public class Utils {
         return message;
     }
 
-    /**
-     * @param testingDirectory
-     * @return
-     * @throws IllegalArgumentException
-     * @throws IOException
-     */
+    /** */
     public static String checkDirectory(String testingDirectory, boolean writable)
             throws IllegalArgumentException {
 
@@ -1166,11 +1192,7 @@ public class Utils {
 
     public static final boolean DEFAULT_RECURSION_BEHAVIOR = true;
 
-    /**
-     * @param datastoreProperties
-     * @return
-     * @throws IOException
-     */
+    /** */
     public static Map<String, Serializable> createDataStoreParamsFromPropertiesFile(
             final URL datastoreProperties) throws IOException {
         // read the properties file
@@ -1182,7 +1204,8 @@ public class Utils {
         try {
             // create a datastore as instructed
             final DataStoreFactorySpi spi =
-                    (DataStoreFactorySpi) Class.forName(SPIClass).newInstance();
+                    (DataStoreFactorySpi)
+                            Class.forName(SPIClass).getDeclaredConstructor().newInstance();
             return createDataStoreParamsFromPropertiesFile(properties, spi);
         } catch (Exception e) {
             final IOException ioe = new IOException();
@@ -1205,23 +1228,10 @@ public class Utils {
         SampleImage sampleImage = new SampleImage(defaultSM, defaultCM);
 
         // serialize it
-        OutputStream outStream = null;
-        ObjectOutputStream ooStream = null;
-        try {
-            outStream = new BufferedOutputStream(new FileOutputStream(sampleImageFile));
-            ooStream = new ObjectOutputStream(outStream);
+        try (ObjectOutputStream ooStream =
+                new ObjectOutputStream(
+                        new BufferedOutputStream(new FileOutputStream(sampleImageFile)))) {
             ooStream.writeObject(sampleImage);
-        } finally {
-            try {
-                if (ooStream != null) ooStream.close();
-            } catch (Throwable e) {
-                IOUtils.closeQuietly(ooStream);
-            }
-            try {
-                if (outStream != null) outStream.close();
-            } catch (Throwable e) {
-                IOUtils.closeQuietly(outStream);
-            }
         }
     }
 
@@ -1570,16 +1580,7 @@ public class Utils {
         return null;
     }
 
-    /**
-     * Look for a proper sourceURL to be returned.
-     *
-     * @param sourceURL
-     * @param datastoreFound
-     * @param locationPath
-     * @param defaultIndexName
-     * @param emptyFile
-     * @return
-     */
+    /** Look for a proper sourceURL to be returned. */
     private static URL updateSourceURL(
             URL sourceURL,
             boolean datastoreFound,
@@ -1690,8 +1691,6 @@ public class Utils {
 
     /**
      * Private constructor to initialize the ehCache instance. It can be configured through a Bean.
-     *
-     * @param ehcache
      */
     private Utils(Cache ehcache) {
         Utils.ehcache = ehcache;
@@ -1700,7 +1699,6 @@ public class Utils {
     /**
      * Setup a {@link Histogram} object by deserializing a file representing a serialized Histogram.
      *
-     * @param file
      * @return the deserialized histogram.
      */
     public static Histogram getHistogram(final String file) {
@@ -1713,7 +1711,7 @@ public class Utils {
             if (ehcache.isElementInMemory(file)) {
                 final Element element = ehcache.get(file);
                 if (element != null) {
-                    final Serializable value = element.getValue();
+                    final Object value = element.getObjectValue();
                     if (value != null && value instanceof Histogram) {
                         histogram = (Histogram) value;
                         return histogram;
@@ -1724,12 +1722,8 @@ public class Utils {
 
         // No histogram in cache. Deserializing...
         if (histogram == null) {
-            FileInputStream fileStream = null;
-            ObjectInputStream objectStream = null;
-            try {
-
-                fileStream = new FileInputStream(file);
-                objectStream = new ObjectInputStream(fileStream);
+            try (ObjectInputStream objectStream =
+                    new ObjectInputStream(new FileInputStream(file))) {
                 histogram = (Histogram) objectStream.readObject();
                 if (ehcache != null) {
                     ehcache.put(new Element(file, histogram));
@@ -1745,13 +1739,6 @@ public class Utils {
             } catch (ClassNotFoundException e) {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine("Unable to parse Histogram:" + e.getLocalizedMessage());
-                }
-            } finally {
-                if (objectStream != null) {
-                    IOUtils.closeQuietly(objectStream);
-                }
-                if (fileStream != null) {
-                    IOUtils.closeQuietly(fileStream);
                 }
             }
         }
@@ -1822,9 +1809,6 @@ public class Utils {
     /**
      * Checks if the Shape equates to a Rectangle, if it does it performs a conversion, otherwise
      * returns null
-     *
-     * @param shape
-     * @return
      */
     static Rectangle toRectangle(Shape shape) {
         if (shape instanceof Rectangle) {
@@ -1955,13 +1939,7 @@ public class Utils {
         return hints;
     }
 
-    /**
-     * Create a Range of numbers from a couple of values.
-     *
-     * @param firstValue
-     * @param secondValue
-     * @return
-     */
+    /** Create a Range of numbers from a couple of values. */
     public static Range<? extends Number> createRange(Object firstValue, Object secondValue) {
         Class<? extends Object> targetClass = firstValue.getClass();
         Class<? extends Object> target2Class = secondValue.getClass();
@@ -1988,12 +1966,7 @@ public class Utils {
         } else return null;
     }
 
-    /**
-     * Simple minimal check which checks whether and indexer file exists
-     *
-     * @param source
-     * @return
-     */
+    /** Simple minimal check which checks whether and indexer file exists */
     public static boolean minimalIndexCheck(Object source) {
         File sourceFile = null;
         URL sourceURL = null;
@@ -2026,14 +1999,7 @@ public class Utils {
         return false;
     }
 
-    /**
-     * Check whether 2 resolution levels sets are homogeneous (within a tolerance)
-     *
-     * @param numberOfLevels
-     * @param resolutionLevels
-     * @param compareLevels
-     * @return
-     */
+    /** Check whether 2 resolution levels sets are homogeneous (within a tolerance) */
     public static boolean homogeneousCheck(
             final int numberOfLevels, double[][] resolutionLevels, double[][] compareLevels) {
         for (int k = 0; k < numberOfLevels; k++) {
@@ -2047,13 +2013,7 @@ public class Utils {
         return true;
     }
 
-    /**
-     * Unmarshal the file and return and Indexer object.
-     *
-     * @param indexerFile
-     * @return
-     * @throws JAXBException
-     */
+    /** Unmarshal the file and return and Indexer object. */
     public static Indexer unmarshal(File indexerFile) throws JAXBException {
         Unmarshaller unmarshaller = null;
         Indexer indexer = null;
@@ -2064,13 +2024,7 @@ public class Utils {
         return indexer;
     }
 
-    /**
-     * Marshals the Indexer object to the specified file
-     *
-     * @param indexerFile
-     * @return
-     * @throws JAXBException
-     */
+    /** Marshals the Indexer object to the specified file */
     public static void marshal(Indexer indexer, File indexerFile) throws JAXBException {
         Marshaller marshaller = CONTEXT.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -2086,9 +2040,6 @@ public class Utils {
      * <p>It is worth to point out that we also check if, in case we have two index color model
      * image, we also try to suggest whether or not we should do a color expansion.
      *
-     * @param defaultCM
-     * @param defaultPalette
-     * @param actualCM
      * @return a boolean asking to skip this feature.
      */
     public static boolean checkColorModels(
@@ -2153,12 +2104,7 @@ public class Utils {
                 || "org.geotools.data.postgis.PostgisNGDataStoreFactory".equals(spiName);
     }
 
-    /**
-     * Merge statistics across datasets.
-     *
-     * @param pamDatasets
-     * @return
-     */
+    /** Merge statistics across datasets. */
     public static PAMDataset mergePamDatasets(PAMDataset[] pamDatasets) {
         PAMDataset merged = pamDatasets[0];
         if (pamDatasets.length > 1) {
@@ -2175,9 +2121,6 @@ public class Utils {
     /**
      * Merge basic statistics on destination {@link PAMDataset} {@link PAMRasterBand}s need to have
      * same size. No checks are performed here
-     *
-     * @param inputPamDataset
-     * @param outputPamDataset
      */
     private static void updatePamDatasets(PAMDataset inputPamDataset, PAMDataset outputPamDataset) {
         List<PAMRasterBand> inputRasterBands = inputPamDataset.getPAMRasterBand();
@@ -2190,9 +2133,6 @@ public class Utils {
     /**
      * Merge basic statistics on {@link PAMRasterBand} by updating min/max Other statistics still
      * need some work. {@link MDI}s need to have same size. No checks are performed here
-     *
-     * @param inputPamRasterBand
-     * @param outputPamRasterBand
      */
     private static void updateRasterBand(
             PAMRasterBand inputPamRasterBand, PAMRasterBand outputPamRasterBand) {
@@ -2208,9 +2148,6 @@ public class Utils {
     /**
      * Update min and max for mdiOutput. Other statistics need better management. For the moment we
      * simply returns the min between them
-     *
-     * @param mdiInput
-     * @param mdiOutput
      */
     private static void updateMDI(MDI mdiInput, MDI mdiOutput) {
         Double current = Double.parseDouble(mdiInput.getValue());
@@ -2233,10 +2170,6 @@ public class Utils {
     /**
      * Initialize a list of {@link PAMRasterBand}s having same size of the sample {@link PAMDataset}
      * and same metadata names.
-     *
-     * @param merged
-     * @param samplePam
-     * @return
      */
     private static PAMDataset initRasterBands(PAMDataset samplePam) {
         PAMDataset merged = null;
@@ -2312,12 +2245,7 @@ public class Utils {
         return streamSPI;
     }
 
-    /**
-     * Extract the palette from an {@link IndexColorModel}.
-     *
-     * @param indexColorModel
-     * @return
-     */
+    /** Extract the palette from an {@link IndexColorModel}. */
     public static byte[][] extractPalette(IndexColorModel indexColorModel) {
         Utilities.ensureNonNull("indexColorModel", indexColorModel);
         byte[][] palette = new byte[3][indexColorModel.getMapSize()];
@@ -2369,13 +2297,6 @@ public class Utils {
     /**
      * Reprojects an envelope using the {@link ProjectionHandler} machinery. The output can be a
      * multipolygon in case of wrapping, which might or might not be what you want, act accordingly
-     *
-     * @param sourceEnvelope
-     * @param targetCRS
-     * @param targetReferenceEnvelope
-     * @return
-     * @throws FactoryException
-     * @throws TransformException
      */
     public static Geometry reprojectEnvelopeToGeometry(
             ReferencedEnvelope sourceEnvelope,
@@ -2439,12 +2360,7 @@ public class Utils {
         return file;
     }
 
-    /**
-     * Decimate a geometry (reducing the number of vertices) for incoming buffering
-     *
-     * @param geometry
-     * @return
-     */
+    /** Decimate a geometry (reducing the number of vertices) for incoming buffering */
     public static Geometry decimate(Geometry geometry) {
         Coordinate[] coordinates = geometry.getCoordinates();
         if (coordinates.length <= Utils.COORDS_DECIMATION_THRESHOLD) {
@@ -2463,11 +2379,6 @@ public class Utils {
     /**
      * Intersects a ROI with a ROI geometry, with fallback on GeometrySnapper if a TopologyException
      * occurs
-     *
-     * @param roi
-     * @param roiGeometry
-     * @param hints
-     * @return
      */
     public static ROI roiIntersect(ROI roi, ROIGeometry roiGeometry, RenderingHints hints) {
         try {

@@ -30,10 +30,31 @@ class SqlServerBinary {
 
     private int srid;
     private int numberOfPoints;
+    /**
+     * Version 1 products:
+     *
+     * <ul>
+     *   <li>SQL Server 2008 R2
+     *   <li>SQL Server 2012
+     *   <li>SQL Server 2014
+     *   <li>SQL Server 2016
+     * </ul>
+     *
+     * Version 2 products:
+     *
+     * <ul>
+     *   <li>SQL Server 2012
+     *   <li>SQL Server 2014
+     *   <li>SQL Server 2016
+     * </ul>
+     */
+    private int version;
+
     private Coordinate[] coordinates;
     private Shape[] shapes;
     private Figure[] figures;
-    private CoordinateSequence[] sequences;
+    private Segment[] segments;
+    private CoordinateSequence[][] sequences;
 
     public int getSrid() {
         return srid;
@@ -97,7 +118,7 @@ class SqlServerBinary {
         return figures;
     }
 
-    public void setSequences(CoordinateSequence[] sequences) {
+    public void setSequences(CoordinateSequence[][] sequences) {
         this.sequences = sequences;
     }
 
@@ -113,7 +134,40 @@ class SqlServerBinary {
         return figures[index];
     }
 
-    public CoordinateSequence getSequence(int index) {
+    public CoordinateSequence[] getSequence(int index) {
         return sequences[index];
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    /**
+     * Set the serialization format version.
+     *
+     * @param version a supported serialization format, ({@code 1} or {@code 2})
+     */
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
+    /**
+     * @return {@code true} is any of the {@link Figure figures} of this object is a composite curve
+     */
+    public boolean hasSegments() {
+        for (Figure f : figures) {
+            if (f.getAttribute() == 3) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Segment[] getSegments() {
+        return segments;
+    }
+
+    public void setSegments(Segment[] segments) {
+        this.segments = segments;
     }
 }

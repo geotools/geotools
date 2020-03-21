@@ -72,14 +72,12 @@ public class OpacityFinder extends AbstractStyleVisitor implements StyleVisitor 
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Style)
      */
     public void visit(Style style) {
-        FeatureTypeStyle[] styles = style.getFeatureTypeStyles();
-
-        for (int i = 0; i < styles.length; i++) {
+        for (FeatureTypeStyle featureTypeStyle : style.featureTypeStyles()) {
             if (hasOpacity) {
                 break;
             }
 
-            styles[i].accept(this);
+            featureTypeStyle.accept(this);
         }
     }
 
@@ -89,14 +87,12 @@ public class OpacityFinder extends AbstractStyleVisitor implements StyleVisitor 
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Rule)
      */
     public void visit(Rule rule) {
-        Symbolizer[] symbs = rule.getSymbolizers();
-
-        for (int i = 0; i < symbs.length; i++) {
+        for (Symbolizer symbolizer : rule.symbolizers()) {
             if (hasOpacity) {
                 break;
             }
 
-            symbs[i].accept(this);
+            symbolizer.accept(this);
         }
     }
 
@@ -106,14 +102,12 @@ public class OpacityFinder extends AbstractStyleVisitor implements StyleVisitor 
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.FeatureTypeStyle)
      */
     public void visit(FeatureTypeStyle fts) {
-        Rule[] rules = fts.getRules();
-
-        for (int i = 0; i < rules.length; i++) {
+        for (Rule rule : fts.rules()) {
             if (hasOpacity) {
                 break;
             }
 
-            rules[i].accept(this);
+            rule.accept(this);
         }
     }
 

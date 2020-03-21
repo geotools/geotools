@@ -30,30 +30,17 @@ public class UnsupportedFilterException extends Exception {
         super();
     }
 
-    /**
-     * Filter is not supported.
-     *
-     * @param message
-     */
+    /** Filter is not supported. */
     public UnsupportedFilterException(String message) {
         super(message);
     }
 
-    /**
-     * Filter is not supported.
-     *
-     * @param message
-     * @param cause
-     */
+    /** Filter is not supported. */
     public UnsupportedFilterException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    /**
-     * Filter is not supported.
-     *
-     * @param cause
-     */
+    /** Filter is not supported. */
     public UnsupportedFilterException(Throwable cause) {
         super(cause);
     }

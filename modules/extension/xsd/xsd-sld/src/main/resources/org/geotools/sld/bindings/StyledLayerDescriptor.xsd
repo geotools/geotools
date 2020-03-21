@@ -233,6 +233,7 @@
         <xsd:element ref="sld:Title" minOccurs="0"/>
         <xsd:element ref="sld:Abstract" minOccurs="0"/>
         <xsd:element ref="sld:IsDefault" minOccurs="0"/>
+        <xsd:element ref="sld:Background" minOccurs="0"/>
         <xsd:element ref="sld:FeatureTypeStyle" maxOccurs="unbounded"/>
       </xsd:sequence>
     </xsd:complexType>
@@ -493,6 +494,22 @@
     <xsd:annotation>
       <xsd:documentation>
         A "Fill" specifies the pattern for filling an area geometry.
+        The allowed CssParameters are: "fill" (color) and "fill-opacity".
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="sld:GraphicFill" minOccurs="0"/>
+        <xsd:element ref="sld:CssParameter" minOccurs="0"
+                     maxOccurs="unbounded"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="Background">
+    <xsd:annotation>
+      <xsd:documentation>
+        A "Background" specifies the pattern for filling the map area background.
         The allowed CssParameters are: "fill" (color) and "fill-opacity".
       </xsd:documentation>
     </xsd:annotation>

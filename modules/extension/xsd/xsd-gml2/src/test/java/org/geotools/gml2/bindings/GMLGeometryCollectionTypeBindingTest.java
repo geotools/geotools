@@ -16,6 +16,7 @@
  */
 package org.geotools.gml2.bindings;
 
+import javax.xml.namespace.QName;
 import org.geotools.gml2.GML;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
@@ -40,12 +41,17 @@ public class GMLGeometryCollectionTypeBindingTest extends AbstractGMLBindingTest
     protected void setUp() throws Exception {
         super.setUp();
 
-        point1 = createElement(GML.NAMESPACE, "myPoint", GML.POINTMEMBERTYPE, null);
-        point2 = createElement(GML.NAMESPACE, "myPoint", GML.POINTMEMBERTYPE, null);
-        line1 = createElement(GML.NAMESPACE, "myLine", GML.LINESTRINGMEMBERTYPE, null);
-        ring1 = createElement(GML.NAMESPACE, "myLine", GML.LINEARRINGMEMBERTYPE, null);
-        poly1 = createElement(GML.NAMESPACE, "myPoly", GML.POLYGONMEMBERTYPE, null);
-        gcol = createElement(GML.NAMESPACE, "myColl", GML.GEOMETRYCOLLECTIONTYPE, null);
+        point1 = createElement(GML.NAMESPACE, "myPoint", GML.PointMemberType, null);
+        point2 = createElement(GML.NAMESPACE, "myPoint", GML.PointMemberType, null);
+        line1 =
+                createElement(
+                        GML.NAMESPACE,
+                        "myLine",
+                        new QName("http://www.opengis.net/gml", "LineStringMemberType"),
+                        null);
+        ring1 = createElement(GML.NAMESPACE, "myLine", GML.LinearRingMemberType, null);
+        poly1 = createElement(GML.NAMESPACE, "myPoly", GML.PolygonMemberType, null);
+        gcol = createElement(GML.NAMESPACE, "myColl", GML.GeometryCollectionType, null);
         gf = new GeometryFactory();
 
         container = new DefaultPicoContainer();

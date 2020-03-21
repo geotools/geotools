@@ -55,7 +55,7 @@ import org.locationtech.jts.geom.Envelope;
 public class GMLNullTypeBinding implements SimpleBinding {
     /** @generated */
     public QName getTarget() {
-        return GML.NULLTYPE;
+        return GML.NullType;
     }
 
     /**

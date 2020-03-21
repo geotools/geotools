@@ -1,0 +1,448 @@
+{
+  "features": [
+    {
+      "geo": "0,0",
+      "geo2": {
+        "coordinates": [[0,0],[0,1]],
+        "type": "linestring"
+      },
+      "geo3": {
+        "coordinates": [[0,1],[1,0]],
+        "type": "envelope"
+      },
+      "geo5": [
+        0,
+        0
+      ],
+      "id": "01",
+      "installed_td": 1305912798000,
+      "installed_tdt": "2011-05-20T17:33:18Z",
+      "modem_b": true,
+      "nested": {
+        "hej": 10.8,
+        "parent": {
+          "child": "ab"
+        }
+      },
+      "object": {
+        "hejda": 12.8
+      },
+      "security_ss": [
+        "WEP",
+        "WPA"
+      ],
+      "speed_is": 150,
+      "standard_ss": [
+        "IEEE 802.11b",
+        "IEEE 802.11n"
+      ],
+      "status_s": "active",
+      "vendor_s": "D-Link"
+    },
+    {
+      "geo": "15,10",
+      "geo2": {
+        "coordinates": [[10,15],[10,16]],
+        "type": "linestring"
+      },
+      "geo3": {
+        "coordinates": [[10,16],[16,11]],
+        "type": "envelope"
+      },
+      "geo5": [
+        10,
+        15
+      ],
+      "id": "02",
+      "installed_td": 1305912798000,
+      "installed_tdt": "2012-01-10T07:43:58Z",
+      "modem_b": true,
+      "nested": {
+        "hej": 16.9,
+        "parent": {
+          "child": "bd"
+        }
+      },
+      "object": {
+        "hejda": 19.9
+      },
+      "security_ss": "WEP",
+      "speed_is": [
+        150,
+        300
+      ],
+      "standard_ss": "IEEE 802.11b",
+      "status_s": "active",
+      "vendor_s": "Linksys"
+    },
+    {
+      "geo": "7,5",
+      "geo2": {
+        "coordinates": [[5,7],[5,8]],
+        "type": "linestring"
+      },
+      "geo3": {
+        "coordinates": [[5,8],[8,5]],
+        "type": "envelope"
+      },
+      "geo5": [
+        5,
+        7
+      ],
+      "id": "03",
+      "installed_td": 1305912798000,
+      "installed_tdt": "2013-10-01T00:13:11Z",
+      "modem_b": true,
+      "nested": {
+        "hej": 7.9,
+        "parent": {
+          "child": "bc"
+        }
+      },
+      "object": {
+        "hejda": 16.3
+      },
+      "security_ss": "WEP",
+      "speed_is": 150,
+      "standard_ss": "IEEE 802.11n",
+      "status_s": "active",
+      "vendor_s": "D-Link"
+    },
+    {
+      "geo": "2,24",
+      "geo2": {
+        "coordinates": [[24,2],[24,3]],
+        "type": "linestring"
+      },
+      "geo3": {
+        "coordinates": [[22,3],[24,2]],
+        "type": "envelope"
+      },
+      "geo5": [
+        24,
+        2
+      ],
+      "id": "04",
+      "installed_td": 1305912798000,
+      "installed_tdt": "2013-12-01T00:16:21Z",
+      "modem_b": false,
+      "nested": {
+        "hej": 13.8,
+        "parent": {
+          "child": "cb"
+        }
+      },
+      "object": {
+        "hejda": 18.8
+      },
+      "security_ss": [
+        "WEP",
+        "WPA"
+      ],
+      "speed_is": 300,
+      "standard_ss": [
+        "IEEE 802.11b",
+        "IEEE 802.11n"
+      ],
+      "status_s": "active",
+      "vendor_s": "Cisco"
+    },
+    {
+      "geo": "17,12",
+      "geo2": {
+        "coordinates": [[12,17],[12,18]],
+        "type": "linestring"
+      },
+      "geo3": {
+        "coordinates": [[12,18],[13,17]],
+        "type": "envelope"
+      },
+      "geo5": [
+        12,
+        17
+      ],
+      "id": "05",
+      "installed_td": 1305912798000,
+      "installed_tdt": "2000-11-11T11:16:21Z",
+      "modem_b": true,
+      "nested": {
+        "hej": 7.0,
+        "parent": {
+          "child": "aa"
+        }
+      },
+      "object": {
+        "hejda": 7.9
+      },
+      "security_ss": "WPA",
+      "speed_is": 150,
+      "standard_ss": "IEEE 802.11n",
+      "status_s": "active",
+      "vendor_s": "Cisco"
+    },
+    {
+      "geo": "9,13",
+      "geo2": {
+        "coordinates": [[13,9],[13,10]],
+        "type": "linestring"
+      },
+      "geo3": {
+        "coordinates": [[13,10],[14,9]],
+        "type": "envelope"
+      },
+      "geo5": [
+        13,
+        9
+      ],
+      "id": "06",
+      "installed_td": 1305912798000,
+      "installed_tdt": "2001-04-28T23:23:21Z",
+      "modem_b": false,
+      "nested": {
+        "hej": 10.9,
+        "parent": {
+          "child": "bb"
+        }
+      },
+      "object": {
+        "hejda": 8.0
+      },
+      "security_ss": "WPA",
+      "speed_is": 300,
+      "standard_ss": [
+        "IEEE 802.11b",
+        "IEEE 802.11n"
+      ],
+      "status_s": "active",
+      "vendor_s": "D-Link"
+    },
+    {
+      "geo": "27,22",
+      "geo2": {
+        "coordinates": [[22,27],[22,28]],
+        "type": "linestring"
+      },
+      "geo3": {
+        "coordinates": [[22,28],[23,27]],
+        "type": "envelope"
+      },
+      "geo5": [
+        22,
+        27
+      ],
+      "id": "07",
+      "installed_td": 10,
+      "installed_tdt": "2004-06-20T03:44:56Z",
+      "modem_b": false,
+      "nested": {
+        "hej": 12.0,
+        "parent": {
+          "child": "ba"
+        }
+      },
+      "object": {
+        "hejda": 4.1
+      },
+      "security_ss": "WPA",
+      "speed_is": 150,
+      "standard_ss": "IEEE 802.11n",
+      "status_s": "active",
+      "vendor_s": "TP-Link"
+    },
+    {
+      "geo": "3,2",
+      "geo2": {
+        "coordinates": [[2,3],[2,4]],
+        "type": "linestring"
+      },
+      "geo3": {
+        "coordinates": [[2,4],[3,3]],
+        "type": "envelope"
+      },
+      "geo5": [
+        2,
+        3
+      ],
+      "id": "08",
+      "installed_td": 1305912798000,
+      "installed_tdt": "2014-02-12T06:37:48Z",
+      "modem_b": true,
+      "nested": {
+        "hej": 12.2,
+        "parent": {
+          "child": "ca"
+        }
+      },
+      "object": {
+        "hejda": 0.4
+      },
+      "security_ss": "WEP",
+      "speed_is": 150,
+      "standard_ss": "IEEE 802.11b",
+      "status_s": "active",
+      "vendor_s": "Linksys"
+    },
+    {
+      "geo": "23,7",
+      "geo2": {
+        "coordinates": [[7,23],[7,24]],
+        "type": "linestring"
+      },
+      "geo3": {
+        "coordinates": [[7,24],[8,23]],
+        "type": "envelope"
+      },
+      "geo5": [
+        7,
+        23
+      ],
+      "id": "09",
+      "installed_td": 10,
+      "installed_tdt": "2008-09-23T16:43:23Z",
+      "modem_b": true,
+      "nested": {
+        "hej": 12.4,
+        "parent": {
+          "child": "ce"
+        }
+      },
+      "object": {
+        "hejda": 0.5
+      },
+      "security_ss": "WEP",
+      "speed_is": [
+        150,
+        300
+      ],
+      "standard_ss": "IEEE 802.11n",
+      "status_s": "active",
+      "vendor_s": "D-Link"
+    },
+    {
+      "geo": "0,0",
+      "geo2": {
+        "coordinates": [[0,0],[0,1]],
+        "type": "linestring"
+      },
+      "geo3": {
+        "coordinates": [[0,1],[1,0]],
+        "type": "envelope"
+      },
+      "geo5": [
+        0,
+        0
+      ],
+      "id": "10",
+      "installed_td": 10,
+      "modem_b": true,
+      "nested": {
+        "hej": 6.3,
+        "parent": {
+          "child": "bd"
+        }
+      },
+      "object": {
+        "hejda": 14.8
+      },
+      "security_ss": "WPA",
+      "speed_is": [
+        150,
+        300
+      ],
+      "standard_ss": [
+        "IEEE 802.11b",
+        "IEEE 802.11n"
+      ],
+      "status_s": "active",
+      "vendor_s": "HP"
+    },
+    {
+      "geo": "43,1",
+      "geo2": {
+        "coordinates": [[1,43],[1,44]],
+        "type": "linestring"
+      },
+      "geo3": {
+        "coordinates": [[1,44],[2,43]],
+        "type": "envelope"
+      },
+      "geo5": [
+        1,
+        43
+      ],
+      "id": "11",
+      "installed_td": 10,
+      "modem_b": true,
+      "nested": {
+        "hej": 11.8,
+        "parent": {
+          "child": "cd"
+        }
+      },
+      "object": {
+        "hejda": 13.6
+      },
+      "speed_is": 150,
+      "standard_ss": "IEEE 802.11b",
+      "status_s": "active",
+      "vendor_s": "Asus"
+    },
+    {
+      "geo3": {
+        "coordinates": [[[1,1],[5,1],[5,5],[1,5],[1,1]]],
+        "type": "polygon"
+      },
+      "geo6": "POLYGON ((1 1, 5 1, 5 5, 1 5, 1 1))",
+      "id": "12",
+      "installed_td": 10,
+      "modem_b": true,
+      "security_ss": "WPA",
+      "speed_is": 300,
+      "standard_ss": [
+        "IEEE 802.11b",
+        "IEEE 802.11n"
+      ],
+      "status_s": "not-active",
+      "vendor_s": "Asus"
+    },
+    {
+      "geo3": {
+        "coordinates": [[[3,2],[6,2],[6,7],[3,7],[3,2]]],
+        "type": "polygon"
+      },
+      "geo4": {
+        "coordinates": [3.0,2.5],
+        "type": "POINT"
+      },
+      "geo6": "POLYGON ((3 2, 6 2, 6 7, 3 7, 3 2))",
+      "id": "13",
+      "installed_td": 10,
+      "modem_b": true,
+      "speed_is": 300,
+      "standard_ss": [
+        "IEEE 802.11b",
+        "IEEE 802.11n"
+      ],
+      "status_s": "not-active",
+      "vendor_s": "Asus"
+    },
+    {
+      "geo": "45,-179",
+      "geo2": {
+        "coordinates": [[-179,45],[-179,46]],
+        "type": "linestring"
+      },
+      "id": "100",
+      "status_s": "not-active"
+    },
+    {
+      "geo": "45,179",
+      "geo2": {
+        "coordinates": [[179,45],[179,46]],
+        "type": "linestring"
+      },
+      "id": "101",
+      "status_s": "not-active"
+    }
+  ]
+}

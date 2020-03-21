@@ -17,8 +17,11 @@
  */
 package org.geotools.data.mongodb;
 
-import static org.geotools.data.mongodb.MongoSchemaDBStore.*;
-import static org.hamcrest.CoreMatchers.*;
+import static org.geotools.data.mongodb.MongoSchemaDBStore.DEFAULT_collectionName;
+import static org.geotools.data.mongodb.MongoSchemaDBStore.DEFAULT_databaseName;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assume.assumeThat;
 
@@ -30,6 +33,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Logger;
+import java.util.stream.StreamSupport;
 import org.geotools.util.logging.Logging;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -37,6 +41,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /** @author tkunicki@boundlessgeo.com */
+@SuppressWarnings("deprecation") // DB was replaced by MongoDatabase but API is not the same
 public class MongoSchemaDBStoreTest extends MongoSchemaStoreTest<MongoSchemaDBStore> {
 
     static final Logger LOGGER = Logging.getLogger(MongoSchemaDBStore.class);
@@ -70,7 +75,9 @@ public class MongoSchemaDBStoreTest extends MongoSchemaStoreTest<MongoSchemaDBSt
             try {
                 client = new MongoClient(clientURI);
                 // perform an operation to determine if we're actually connected
-                defaultDBExists = client.getDatabaseNames().contains(DEFAULT_databaseName);
+                defaultDBExists =
+                        StreamSupport.stream(client.listDatabaseNames().spliterator(), false)
+                                .anyMatch(n -> DEFAULT_databaseName.equalsIgnoreCase(n));
                 if (defaultDBExists) {
                     defaultCollectionExists =
                             client.getDB(DEFAULT_databaseName)

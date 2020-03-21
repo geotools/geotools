@@ -140,8 +140,6 @@ public class FeatureTypeTest extends DataTestCase {
      * that the expected ancestors are returned at each level in reverse order.
      *
      * <p>UML type hierarchy of test types: Feature <|-- A <|-- B <|-- C
-     *
-     * @throws Exception
      */
     @SuppressWarnings("serial")
     public void testAncestors() throws Exception {
@@ -208,8 +206,8 @@ public class FeatureTypeTest extends DataTestCase {
         // primative
         String str = "FooBar";
         Integer i = Integer.valueOf(3);
-        Float f = new Float(3.14);
-        Double d = new Double(3.14159);
+        Float f = Float.valueOf(3.14f);
+        Double d = Double.valueOf(3.14159);
 
         AttributeTypeBuilder ab = new AttributeTypeBuilder();
 

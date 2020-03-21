@@ -48,12 +48,10 @@ public class WFSExtensions {
      *
      * <ul>
      *   <li>a {@link WFSException} exception if the WFS response was an exception report
-     *   <li>a {@link GetFeatureParser} if the WFS returned a FeatureCollection
+     *   <li>a {@link GetParser<SimpleFeature>} if the WFS returned a FeatureCollection
      *
      * @param request the WFS request that originated the given response
      * @param response the handle to the WFS response contents
-     * @return
-     * @throws IOException
      */
     // public static Object process(WFSResponse response) throws IOException {
     //
@@ -66,12 +64,7 @@ public class WFSExtensions {
     // return result;
     // }
 
-    /**
-     * @param originatingRequest
-     * @param contentType
-     * @return
-     * @throws FactoryNotFoundException
-     */
+    /** */
     public static WFSResponseFactory findResponseFactory(
             final WFSRequest originatingRequest, final String contentType) {
 

@@ -315,7 +315,7 @@ public class ExpressionSAXParser {
                         currentState = "complete";
                     } catch (NumberFormatException nfe1) {
                         try {
-                            Object temp = new Double(message);
+                            Object temp = Double.valueOf(message);
                             ((LiteralExpressionImpl) curExprssn).setValue(temp);
                             currentState = "complete";
                         } catch (NumberFormatException nfe2) {
@@ -423,8 +423,6 @@ public class ExpressionSAXParser {
      * stolen from the DOM parser -- for a list of attributes, find the "name" ie. for <Function
      * name="geomLength"> return "geomLength" NOTE: if someone uses <Function name="geomLength"> or
      * <Function ogc:name="geomLength"> this will work, if they use a different prefix, it will not.
-     *
-     * @param map
      */
     public String getFunctionName(Attributes map) {
         String result = map.getValue("name");

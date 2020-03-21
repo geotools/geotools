@@ -116,8 +116,11 @@ import org.xml.sax.SAXException;
  *    }
  *  </pre>
  *
+ * {@link PullParser} offers similar functionality out of a pull parser instead of a SAX parser,
+ * it's supposed to be better, but won't (yet) cover the entire functionality offered by {@link
+ * StreamingParser}
+ *
  * @author Justin Deoliveira, The Open Planning Project
- * @deprecated {@link PullParser} is meant as a better replacement.
  */
 public class StreamingParser {
     /** The sax driver / handler. */
@@ -138,8 +141,6 @@ public class StreamingParser {
      * @param configuration Object representing the configuration of the parser.
      * @param input The input stream representing the instance document to be parsed.
      * @param type The type of parsed objects to stream back.
-     * @throws ParserConfigurationException
-     * @throws SAXException
      */
     public StreamingParser(Configuration configuration, InputStream input, Class type)
             throws ParserConfigurationException, SAXException {
@@ -152,8 +153,6 @@ public class StreamingParser {
      * @param configuration Object representing the configuration of the parser.
      * @param input The input stream representing the instance document to be parsed.
      * @param elementName The name of elements to stream back.
-     * @throws ParserConfigurationException
-     * @throws SAXException
      */
     public StreamingParser(Configuration configuration, InputStream input, QName elementName)
             throws ParserConfigurationException, SAXException {
@@ -170,8 +169,6 @@ public class StreamingParser {
      * @param input The input stream representing the instance document to be parsed.
      * @param xpath An xpath expression which dictates how the parser streams objects back to the
      *     client.
-     * @throws ParserConfigurationException
-     * @throws SAXException
      */
     public StreamingParser(Configuration configuration, InputStream input, String xpath)
             throws ParserConfigurationException, SAXException {
@@ -182,10 +179,6 @@ public class StreamingParser {
      * Method for dynamic creation of the xpath streaming parser handler.
      *
      * <p>We do this to allow the jxpath component to be removed... and avoid its dependencies.
-     *
-     * @param configuration
-     * @param xpath
-     * @return
      */
     static StreamingParserHandler createJXpathStreamingParserHandler(
             Configuration configuration, String xpath) throws ParserConfigurationException {

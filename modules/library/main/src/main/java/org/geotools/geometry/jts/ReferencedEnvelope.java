@@ -330,7 +330,6 @@ public class ReferencedEnvelope extends Envelope
     /**
      * Make sure that the specified location uses the same CRS as this one.
      *
-     * @param location
      * @throws MismatchedReferenceSystemException if the CRS are incompatible.
      */
     protected void ensureCompatibleReferenceSystem(DirectPosition location) {
@@ -347,14 +346,6 @@ public class ReferencedEnvelope extends Envelope
     /** Returns the coordinate reference system associated with this envelope. */
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
         return crs;
-    }
-
-    /**
-     * @deprecated Use {@link #getCoordinateReferenceSystem}, since it is the method inherited from
-     *     the interface.
-     */
-    public CoordinateReferenceSystem crs() {
-        return getCoordinateReferenceSystem();
     }
 
     /** Returns the number of dimensions. */
@@ -376,16 +367,6 @@ public class ReferencedEnvelope extends Envelope
         }
     }
 
-    /** @deprecated Use {@link #getMinX}. */
-    public double minX() {
-        return getMinX();
-    }
-
-    /** @deprecated Use {@link #getMinY}. */
-    public double minY() {
-        return getMinY();
-    }
-
     /** Returns the maximal ordinate along the specified dimension. */
     public double getMaximum(final int dimension) {
         switch (dimension) {
@@ -400,21 +381,6 @@ public class ReferencedEnvelope extends Envelope
         }
     }
 
-    /** @deprecated Use {@link #getMaxX}. */
-    public double maxX() {
-        return getMaxX();
-    }
-
-    /** @deprecated Use {@link #getMaxY}. */
-    public double maxY() {
-        return getMaxY();
-    }
-
-    /** @deprecated Use {@link #getMedian}. */
-    public double getCenter(final int dimension) {
-        return getMedian(dimension);
-    }
-
     /** Returns the center ordinate along the specified dimension. */
     public double getMedian(final int dimension) {
         switch (dimension) {
@@ -427,11 +393,6 @@ public class ReferencedEnvelope extends Envelope
             default:
                 throw new IndexOutOfBoundsException(String.valueOf(dimension));
         }
-    }
-
-    /** @deprecated Use {@link #getSpan}. */
-    public double getLength(final int dimension) {
-        return getSpan(dimension);
     }
 
     /**
@@ -530,11 +491,7 @@ public class ReferencedEnvelope extends Envelope
         }
         expandToInclude(ReferencedEnvelope.reference(bbox));
     }
-    /**
-     * Expand to include the provided DirectPosition
-     *
-     * @param pt
-     */
+    /** Expand to include the provided DirectPosition */
     public void expandToInclude(DirectPosition pt) {
         Coordinate coordinate = new Coordinate(pt.getOrdinate(0), pt.getOrdinate(1));
         expandToInclude(coordinate);
@@ -887,7 +844,6 @@ public class ReferencedEnvelope extends Envelope
      * is, itself is returned. If not <code>new ReferencedEnvelpe(e)</code> is returned.
      *
      * @param e The envelope.
-     * @return
      */
     public static ReferencedEnvelope reference(ReferencedEnvelope e) {
         return reference((org.opengis.geometry.Envelope) e);

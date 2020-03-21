@@ -68,6 +68,8 @@ public abstract class AbstractGridCoverageWriter implements GridCoverageWriter {
                 } catch (Throwable e) {
 
                 }
+                outStream = null;
+                destination = null;
             }
         }
     }
@@ -110,6 +112,7 @@ public abstract class AbstractGridCoverageWriter implements GridCoverageWriter {
      * an open {@link ImageOutputStream}
      */
     @Override
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         dispose();
         super.finalize();

@@ -1,5 +1,5 @@
-net.opengis.wps
----------------
+``net.opengis.wps`` 
+--------------------
 
 Additional generated objects for web processing service.
 

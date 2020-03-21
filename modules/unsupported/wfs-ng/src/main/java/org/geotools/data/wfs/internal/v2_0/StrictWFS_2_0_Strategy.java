@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import net.opengis.fes20.AbstractQueryExpressionType;
 import net.opengis.ows11.DCPType;
@@ -177,11 +178,20 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
     public boolean supports(ResultType resultType) {
         switch (resultType) {
             case RESULTS:
-            case HITS:
                 return true;
+            case HITS:
             default:
                 return false;
         }
+    }
+
+    @Override
+    /**
+     * Currently the wfs-ng client is unable to handle max features and filters. Setting canLimit to
+     * false is inefficient but gives correct results.
+     */
+    public boolean canLimit() {
+        return false;
     }
 
     @Override
@@ -258,8 +268,25 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
                 String count = kvp.remove("MAXFEATURES");
                 kvp.put("COUNT", count);
             }
+            // Also crude
+            String typeName = kvp.remove("TYPENAME");
+            kvp.put("TYPENAMES", typeName);
         }
 
+        return kvp;
+    }
+
+    @Override
+    protected Map<String, String> buildDescribeFeatureTypeParametersForGET(
+            Map<String, String> kvp, QName typeName) {
+        String prefixedTypeName = getPrefixedTypeName(typeName);
+
+        kvp.put("TYPENAMES", prefixedTypeName);
+
+        if (!XMLConstants.DEFAULT_NS_PREFIX.equals(typeName.getPrefix())) {
+            String nsUri = typeName.getNamespaceURI();
+            kvp.put("NAMESPACES", "xmlns(" + typeName.getPrefix() + "," + nsUri + ")");
+        }
         return kvp;
     }
 

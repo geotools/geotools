@@ -19,9 +19,9 @@ package org.geotools.geometry.xml;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-import junit.framework.Assert;
 import org.geotools.geometry.iso.UnsupportedDimensionException;
 import org.geotools.geometry.iso.root.GeometryImpl;
+import org.junit.Assert;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Geometry;
 import org.opengis.geometry.TransfiniteSet;
@@ -69,11 +69,7 @@ public class GeometryTestOperation extends Assert {
         return operation;
     }
 
-    /**
-     * Sets the expected result.
-     *
-     * @param expectedResult
-     */
+    /** Sets the expected result. */
     public void setExpectedResult(Object expectedResult) {
         this.expectedResult = expectedResult;
     }
@@ -118,7 +114,6 @@ public class GeometryTestOperation extends Assert {
      *
      * @param a argument object a
      * @param b argument object b
-     * @return
      */
     public boolean run(Geometry a, Geometry b) {
         boolean result = false;

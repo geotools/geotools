@@ -74,7 +74,6 @@ public class AttributeList extends AbstractList {
      *
      * <p>Description of get.
      *
-     * @param index
      * @see java.util.List#get(int)
      */
     public Object get(int index) {

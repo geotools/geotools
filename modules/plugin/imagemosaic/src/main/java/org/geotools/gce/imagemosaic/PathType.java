@@ -21,7 +21,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.data.DataUtilities;
 import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 
@@ -51,7 +50,7 @@ public enum PathType {
             }
             // create a URL for the provided location, relative to parent location
             try {
-                URL rasterURL = DataUtilities.extendURL(new URL(parentLocation), location);
+                URL rasterURL = URLs.extendUrl(new URL(parentLocation), location);
                 if (!Utils.checkURLReadable(rasterURL)) {
                     if (LOGGER.isLoggable(Level.INFO))
                         LOGGER.info("Unable to read image for file " + rasterURL);
@@ -131,8 +130,6 @@ public enum PathType {
      * <p>the location can never be null, while the parent location could be null, as an instance
      * when the path is relative.
      *
-     * @param parentLocation
-     * @param location
      * @return a {@link File} instance that points to a location which could be relative or absolute
      *     depending on the flavor of the enum where this method is applied. This method might
      *     return <code>null</code> in case something bad happens.

@@ -431,10 +431,9 @@ public class DbaseFileWriter {
             final int days = (int) (difference / MILLISECS_PER_DAY);
             final int time = (int) (difference % MILLISECS_PER_DAY);
 
-            try {
-                ByteArrayOutputStream o_bytes = new ByteArrayOutputStream();
-                DataOutputStream o_stream;
-                o_stream = new DataOutputStream(new BufferedOutputStream(o_bytes));
+            try (ByteArrayOutputStream o_bytes = new ByteArrayOutputStream();
+                    DataOutputStream o_stream =
+                            new DataOutputStream(new BufferedOutputStream(o_bytes))) {
                 o_stream.writeInt(days);
                 o_stream.writeInt(time);
                 o_stream.flush();

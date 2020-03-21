@@ -462,9 +462,9 @@ public class WKTWriter2 extends WKTWriter {
      */
     private void appendCoordinate(Coordinate coordinate, Writer writer) throws IOException {
         writer.write(writeNumber(coordinate.x) + " " + writeNumber(coordinate.y));
-        if (outputDimension >= 3 && !Double.isNaN(coordinate.z)) {
+        if (outputDimension >= 3 && !Double.isNaN(coordinate.getZ())) {
             writer.write(" ");
-            writer.write(writeNumber(coordinate.z));
+            writer.write(writeNumber(coordinate.getZ()));
         }
     }
 

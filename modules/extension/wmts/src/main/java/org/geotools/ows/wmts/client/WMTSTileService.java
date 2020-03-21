@@ -23,6 +23,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.data.ows.HTTPClient;
+import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.wms.CRSEnvelope;
 import org.geotools.ows.wms.StyleImpl;
@@ -103,7 +105,27 @@ public class WMTSTileService extends TileService {
             WMTSLayer layer,
             String styleName,
             TileMatrixSet tileMatrixSet) {
-        super("wmts", templateURL);
+        this(templateURL, type, layer, styleName, tileMatrixSet, new SimpleHttpClient());
+    }
+
+    /**
+     * create a service directly with out parsing the capabilties again.
+     *
+     * @param templateURL - where to ask for tiles
+     * @param type - KVP or REST
+     * @param layer - layer to request
+     * @param styleName - name of the style to use?
+     * @param tileMatrixSet - matrixset
+     * @param client - HttpClient instance to use for Tile requests.
+     */
+    public WMTSTileService(
+            String templateURL,
+            WMTSServiceType type,
+            WMTSLayer layer,
+            String styleName,
+            TileMatrixSet tileMatrixSet,
+            HTTPClient client) {
+        super("wmts", templateURL, client);
 
         this.layer = layer;
         this.tileMatrixSetName = tileMatrixSet.getIdentifier();
@@ -189,7 +211,7 @@ public class WMTSTileService extends TileService {
                                 + ex.getMessage());
 
                 // maybe the req area is too wide for the data; let's try an
-                // inverse trasformation
+                // inverse transformation
                 try {
                     ReferencedEnvelope covExtentInReqCrs = envelope.transform(reqCrs, true);
                     requestedExtent = requestedExtent.intersection(covExtentInReqCrs);
@@ -552,10 +574,7 @@ public class WMTSTileService extends TileService {
         this.templateURL = templateURL;
     }
 
-    /**
-     * @param zoomLevel
-     * @return
-     */
+    /** */
     public TileMatrix getTileMatrix(int zoomLevel) {
         if (matrixSet == null) {
             throw new RuntimeException("TileMatrix is not set in WMTSService");

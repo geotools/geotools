@@ -46,23 +46,12 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
     SimpleFeature live; // live value supplied by FeatureReader
     SimpleFeature current; // duplicate provided to user
 
-    /**
-     * DiffFeatureWriter construction.
-     *
-     * @param reader
-     * @param diff
-     */
+    /** DiffFeatureWriter construction. */
     public DiffFeatureWriter(FeatureReader<SimpleFeatureType, SimpleFeature> reader, Diff diff) {
         this(reader, diff, Filter.INCLUDE);
     }
 
-    /**
-     * DiffFeatureWriter construction.
-     *
-     * @param reader
-     * @param diff
-     * @param filter
-     */
+    /** DiffFeatureWriter construction. */
     public DiffFeatureWriter(
             FeatureReader<SimpleFeatureType, SimpleFeature> reader, Diff diff, Filter filter) {
         this.reader = new DiffFeatureReader<SimpleFeatureType, SimpleFeature>(reader, diff, filter);
@@ -124,7 +113,7 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
             // mark live as removed
             diff.remove(live.getID());
             fireNotification(
-                    FeatureEvent.FEATURES_REMOVED, ReferencedEnvelope.reference(live.getBounds()));
+                    FeatureEvent.Type.REMOVED.type, ReferencedEnvelope.reference(live.getBounds()));
             live = null;
             current = null;
         } else if (current != null) {
@@ -136,7 +125,6 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
     /**
      * Writes out the current feature.
      *
-     * @throws IOException
      * @see org.geotools.data.FeatureWriter#write()
      */
     public void write() throws IOException {
@@ -150,7 +138,7 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
             ReferencedEnvelope bounds = new ReferencedEnvelope((CoordinateReferenceSystem) null);
             bounds.include(live.getBounds());
             bounds.include(current.getBounds());
-            fireNotification(FeatureEvent.FEATURES_CHANGED, bounds);
+            fireNotification(FeatureEvent.Type.CHANGED.type, bounds);
             live = null;
             current = null;
         } else if ((live == null) && (current != null)) {
@@ -169,7 +157,8 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
             }
             diff.add(fid, current);
             fireNotification(
-                    FeatureEvent.FEATURES_ADDED, ReferencedEnvelope.reference(current.getBounds()));
+                    FeatureEvent.Type.ADDED.type,
+                    ReferencedEnvelope.reference(current.getBounds()));
             current = null;
         } else {
             throw new IOException("No feature available to write");
@@ -240,7 +229,6 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
      *
      * @param eventType One of FeatureType.FEATURES_ADDED, FeatureType.CHANGED,
      *     FeatureType.FEATURES_REMOVED
-     * @param bounds
      */
     protected abstract void fireNotification(int eventType, ReferencedEnvelope bounds);
 }

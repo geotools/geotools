@@ -114,28 +114,18 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
         buffer = 0;
     }
 
-    /**
-     * @return
-     * @uml.property name="buffer"
-     */
+    /** @uml.property name="buffer" */
     public int getBuffer() {
         return buffer;
     }
 
-    /**
-     * @return
-     * @uml.property name="estimateAccurate"
-     */
+    /** @uml.property name="estimateAccurate" */
     public boolean isEstimateAccurate() {
         return estimateAccurate;
     }
 
     public void visit(Style style) {
-        FeatureTypeStyle[] ftStyles = style.getFeatureTypeStyles();
-
-        for (int i = 0; i < ftStyles.length; i++) {
-            ftStyles[i].accept(this);
-        }
+        style.featureTypeStyles().forEach(ft -> ft.accept(this));
     }
 
     public void visit(Rule rule) {
@@ -145,21 +135,11 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
             filter.accept(this, null);
         }
 
-        Symbolizer[] symbolizers = rule.getSymbolizers();
-
-        if (symbolizers != null) {
-            for (int i = 0; i < symbolizers.length; i++) {
-                Symbolizer symbolizer = symbolizers[i];
-                symbolizer.accept(this);
-            }
-        }
+        rule.symbolizers().forEach(s -> s.accept(this));
     }
 
     public void visit(FeatureTypeStyle fts) {
-        Rule[] rules = fts.getRules();
-
-        for (int i = 0; i < rules.length; i++) {
-            Rule rule = rules[i];
+        for (Rule rule : fts.rules()) {
             rule.accept(this);
         }
     }

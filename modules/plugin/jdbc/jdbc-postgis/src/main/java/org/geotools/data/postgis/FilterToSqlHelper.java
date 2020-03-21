@@ -47,6 +47,7 @@ import org.geotools.filter.function.FilterFunction_strToLowerCase;
 import org.geotools.filter.function.FilterFunction_strToUpperCase;
 import org.geotools.filter.function.FilterFunction_strTrim;
 import org.geotools.filter.function.FilterFunction_strTrim2;
+import org.geotools.filter.function.InArrayFunction;
 import org.geotools.filter.function.math.FilterFunction_abs;
 import org.geotools.filter.function.math.FilterFunction_abs_2;
 import org.geotools.filter.function.math.FilterFunction_abs_3;
@@ -180,6 +181,9 @@ class FilterToSqlHelper {
 
             // n nearest function
             caps.addType(FilterFunction_pgNearest.class);
+
+            // array functions
+            caps.addType(InArrayFunction.class);
         }
 
         // native filter support
@@ -430,9 +434,6 @@ class FilterToSqlHelper {
 
     /**
      * Given a geometry that might contain heterogeneous components extracts only the polygonal ones
-     *
-     * @param geometry
-     * @return
      */
     private Geometry sanitizePolygons(Geometry geometry) {
         // already sane?
@@ -467,12 +468,7 @@ class FilterToSqlHelper {
         }
     }
 
-    /**
-     * Returns true if the geometry covers the entire world
-     *
-     * @param geometry
-     * @return
-     */
+    /** Returns true if the geometry covers the entire world */
     private boolean isWorld(Literal geometry) {
         if (geometry != null) {
             Geometry g = geometry.evaluate(null, Geometry.class);
@@ -483,12 +479,7 @@ class FilterToSqlHelper {
         return false;
     }
 
-    /**
-     * Returns true if the geometry is fully empty
-     *
-     * @param geometry
-     * @return
-     */
+    /** Returns true if the geometry is fully empty */
     private boolean isEmpty(Literal geometry) {
         if (geometry != null) {
             Geometry g = geometry.evaluate(null, Geometry.class);
@@ -497,12 +488,7 @@ class FilterToSqlHelper {
         return false;
     }
 
-    /**
-     * Maps a function to its native db equivalent
-     *
-     * @param function
-     * @return
-     */
+    /** Maps a function to its native db equivalent */
     public String getFunctionName(Function function) {
         if (function instanceof FilterFunction_strLength || function instanceof LengthFunction) {
             return "char_length";
@@ -522,10 +508,6 @@ class FilterToSqlHelper {
     /**
      * Performs custom visits for functions that cannot be encoded as <code>
      * functionName(p1, p2, ... pN).</code>
-     *
-     * @param function
-     * @param extraData
-     * @return
      */
     public boolean visitFunction(Function function, Object extraData) throws IOException {
         if (function instanceof DateDifferenceFunction) {
@@ -813,11 +795,6 @@ class FilterToSqlHelper {
     /**
      * When using prepared statements we need the AttributeDescritor's stored native type name to
      * set array values in the PreparedStatement
-     *
-     * @param thisExpression
-     * @param otherExpression
-     * @param context
-     * @return
      */
     private Object getArrayComparisonContext(
             Expression thisExpression, Expression otherExpression, Class context) {
@@ -843,6 +820,7 @@ class FilterToSqlHelper {
         }
     }
 
+    @SuppressWarnings("PMD.CloseResource") // tmp it a copy of out, that's managed elsewhere
     protected void writeBinaryExpression(Expression e, Object context) throws IOException {
         Writer tmp = out;
         try {
@@ -860,12 +838,7 @@ class FilterToSqlHelper {
         }
     }
 
-    /**
-     * Returns the type cast needed to match this property
-     *
-     * @param pn
-     * @return
-     */
+    /** Returns the type cast needed to match this property */
     String getArrayTypeCast(PropertyName pn) {
         AttributeDescriptor at = pn.evaluate(delegate.getFeatureType(), AttributeDescriptor.class);
         if (at != null) {
@@ -928,6 +901,41 @@ class FilterToSqlHelper {
             dialect.encodeColumnName(null, c.getName(), sb);
         }
         return sb.toString();
+    }
+
+    public Object visit(InArrayFunction filter, Object extraData) {
+        Expression candidate = getParameter(filter, 0, true);
+        Expression array = getParameter(filter, 1, true);
+        Class<?> arrayType = getBaseType(array);
+        Class<?> candidateType = getBaseType(candidate);
+        String castToArrayType = "";
+        if (arrayType != null && (candidateType == null || !candidateType.equals(arrayType))) {
+            castToArrayType = cast("", arrayType);
+        }
+        try {
+            candidate.accept(delegate, extraData);
+            out.write(castToArrayType);
+            out.write("=any(");
+            array.accept(delegate, extraData);
+            out.write(")");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return extraData;
+    }
+
+    private Class<?> getBaseType(Expression expr) {
+        Class<?> type = delegate.getExpressionType(expr);
+        if (type == null && expr instanceof Literal) {
+            Object value = delegate.evaluateLiteral((Literal) expr, Object.class);
+            if (value != null) {
+                type = value.getClass();
+            }
+        }
+        if (isArray(type)) {
+            type = type.getComponentType();
+        }
+        return type;
     }
 
     public Object visit(
@@ -1005,6 +1013,25 @@ class FilterToSqlHelper {
 
         public void setEncodeGeometryValue(BiConsumer<Geometry, StringBuffer> encodeGeometryValue) {
             this.encodeGeometryValue = encodeGeometryValue;
+        }
+    }
+
+    /**
+     * Detects and return a InArrayFunction if found, otherwise null
+     *
+     * @param filter filter to evaluate
+     * @return FilterFunction_any if found
+     */
+    public InArrayFunction getInArray(PropertyIsEqualTo filter) {
+        Expression expr1 = filter.getExpression1();
+        Expression expr2 = filter.getExpression2();
+        if (expr2 instanceof InArrayFunction) {
+            return (InArrayFunction) expr2;
+        }
+        if (expr1 instanceof InArrayFunction) {
+            return (InArrayFunction) expr1;
+        } else {
+            return null;
         }
     }
 

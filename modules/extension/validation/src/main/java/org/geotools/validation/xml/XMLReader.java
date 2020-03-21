@@ -322,8 +322,6 @@ public class XMLReader {
      * loadPlugIns purpose.
      *
      * <p>Loads all the plugins in the directory
-     *
-     * @param plugInDir
      */
     public static Map loadPlugIns(File plugInDir) throws ValidationException {
         Map r = null;
@@ -337,10 +335,10 @@ public class XMLReader {
             if (fileList != null) {
                 for (int i = 0; i < fileList.length; i++) {
                     if (fileList[i].canWrite() && fileList[i].isFile()) {
-                        FileReader fr = new FileReader(fileList[i]);
-                        PlugInDTO dto = XMLReader.readPlugIn(fr);
-                        r.put(dto.getName(), dto);
-                        fr.close();
+                        try (FileReader fr = new FileReader(fileList[i])) {
+                            PlugInDTO dto = XMLReader.readPlugIn(fr);
+                            r.put(dto.getName(), dto);
+                        }
                     }
                 }
             }
@@ -354,7 +352,6 @@ public class XMLReader {
     /**
      * Loads all the test suites in the validations directory
      *
-     * @param validationDir
      * @param plugInDTOs Already loaded list of plug-ins to link.
      */
     public static Map loadValidations(File validationDir, Map plugInDTOs)

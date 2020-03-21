@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.util.List;
 import junit.framework.TestCase;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.ServiceInfo;
@@ -54,7 +53,7 @@ public class PreGeneralizedDataStoreTest extends TestCase {
 
             String typeName = ds.getTypeNames()[0];
             assertTrue("GenStreams".equals(typeName));
-            Query query = new DefaultQuery(typeName);
+            Query query = new Query(typeName);
 
             FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                     ds.getFeatureReader(query, Transaction.AUTO_COMMIT);

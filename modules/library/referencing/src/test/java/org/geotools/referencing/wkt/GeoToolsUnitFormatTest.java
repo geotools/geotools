@@ -41,8 +41,6 @@ public class GeoToolsUnitFormatTest {
      * java.lang.Appendable)} for units that have labels or aliases defined in the default format.
      * The goal is ensuring that the label and alias definitions have been correctly cloned from the
      * default format instance to the GT format instances
-     *
-     * @throws IOException
      */
     @Test
     public void testFormatUnitOfQAppendable() throws IOException {
@@ -63,8 +61,6 @@ public class GeoToolsUnitFormatTest {
      * Test method for {@link javax.measure.unit.UnitFormat#format(javax.measure.unit.Unit,
      * java.lang.Appendable)} for units that have labels or aliases defined only in the custom GT
      * formats
-     *
-     * @throws IOException
      */
     @Test
     public void testGTDefinedFormats() throws IOException {
@@ -80,8 +76,6 @@ public class GeoToolsUnitFormatTest {
      * Test method for {@link javax.measure.unit.UnitFormat#format(javax.measure.unit.Unit,
      * java.lang.Appendable)} for units that have labels or aliases defined by GT in the default
      * format
-     *
-     * @throws IOException
      */
     @Test
     public void testFormatForGTDefinedUnits() throws IOException {

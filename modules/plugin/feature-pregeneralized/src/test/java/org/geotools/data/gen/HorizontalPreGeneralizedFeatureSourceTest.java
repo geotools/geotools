@@ -26,6 +26,10 @@ public class HorizontalPreGeneralizedFeatureSourceTest
         testGetCount(ConfigName);
     }
 
+    public void testPropertySelection() {
+        testPropertySelection(ConfigName);
+    }
+
     public void testGetBounds() {
         testGetBounds(ConfigName);
     }

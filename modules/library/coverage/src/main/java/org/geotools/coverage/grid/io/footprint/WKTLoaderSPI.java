@@ -21,7 +21,6 @@ import java.io.FileReader;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import org.apache.commons.io.IOUtils;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.WKTReader;
 
@@ -41,12 +40,8 @@ public class WKTLoaderSPI implements FootprintLoaderSpi {
         public Geometry loadFootprint(String pathNoExtension) throws Exception {
             File file = new File(pathNoExtension + ".wkt");
             if (file.exists()) {
-                FileReader fr = null;
-                try {
-                    fr = new FileReader(file);
+                try (FileReader fr = new FileReader(file)) {
                     return reader.read(fr);
-                } finally {
-                    IOUtils.closeQuietly(fr);
                 }
             }
 

@@ -199,10 +199,7 @@ public class XSISimpleTypes {
      * @author dzwiers
      */
     protected abstract static class XSISimpleType implements SimpleType {
-        /**
-         * @param name
-         * @see org.geotools.xml.schema.Type#findChildElement(java.lang.String)
-         */
+        /** @see org.geotools.xml.schema.Type#findChildElement(java.lang.String) */
         public Element findChildElement(String name) {
             return null;
         }
@@ -322,11 +319,6 @@ public class XSISimpleTypes {
         }
 
         /**
-         * @param element
-         * @param value
-         * @param attrsgetValue
-         * @param hints
-         * @throws SAXException
          * @see org.geotools.xml.xsi.Type#getValue(org.geotools.xml.xsi.Element,
          *     org.geotools.xml.xsi.ElementValue[], org.xml.sax.Attributes)
          */
@@ -335,7 +327,7 @@ public class XSISimpleTypes {
             if ((value.length >= 1)
                     && (value[0].getValue() != null)
                     && (!"".equals(value[0].getValue()))) {
-                return new java.lang.Integer((java.lang.String) value[0].getValue());
+                return java.lang.Integer.valueOf((java.lang.String) value[0].getValue());
             }
 
             return null;
@@ -371,11 +363,6 @@ public class XSISimpleTypes {
         }
 
         /**
-         * @param element
-         * @param value
-         * @param attrs
-         * @param hints
-         * @throws SAXException
          * @see org.geotools.xml.xsi.Type#getValue(org.geotools.xml.xsi.Element,
          *     org.geotools.xml.xsi.ElementValue[], org.xml.sax.Attributes)
          */
@@ -383,7 +370,7 @@ public class XSISimpleTypes {
             if ((value.length == 1)
                     && (value[0].getValue() != null)
                     && (!"".equals(value[0].getValue()))) {
-                return new java.lang.Double((java.lang.String) value[0].getValue());
+                return java.lang.Double.valueOf((java.lang.String) value[0].getValue());
             }
 
             return null;
@@ -421,7 +408,8 @@ public class XSISimpleTypes {
             if ((value.length == 1)
                     && (value[0].getValue() != null)
                     && (!"".equals(value[0].getValue()))) {
-                java.lang.Integer i = new java.lang.Integer((java.lang.String) value[0].getValue());
+                java.lang.Integer i =
+                        java.lang.Integer.valueOf((java.lang.String) value[0].getValue());
 
                 return (i.intValue() < 0) ? i : null;
             }
@@ -458,17 +446,14 @@ public class XSISimpleTypes {
          *
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
-         * @param element
-         * @param value
-         * @param attrs
-         * @param hints
          * @return Object
          */
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints) {
             if ((value.length == 1)
                     && (value[0].getValue() != null)
                     && (!"".equals(value[0].getValue()))) {
-                java.lang.Integer i = new java.lang.Integer((java.lang.String) value[0].getValue());
+                java.lang.Integer i =
+                        java.lang.Integer.valueOf((java.lang.String) value[0].getValue());
 
                 return (i.intValue() >= 0) ? i : null;
             }
@@ -505,7 +490,8 @@ public class XSISimpleTypes {
             if ((value.length == 1)
                     && (value[0].getValue() != null)
                     && (!"".equals(value[0].getValue()))) {
-                java.lang.Integer i = new java.lang.Integer((java.lang.String) value[0].getValue());
+                java.lang.Integer i =
+                        java.lang.Integer.valueOf((java.lang.String) value[0].getValue());
 
                 return (i.intValue() > 0) ? i : null;
             }
@@ -542,7 +528,8 @@ public class XSISimpleTypes {
             if ((value.length == 1)
                     && (value[0].getValue() != null)
                     && (!"".equals(value[0].getValue()))) {
-                java.lang.Integer i = new java.lang.Integer((java.lang.String) value[0].getValue());
+                java.lang.Integer i =
+                        java.lang.Integer.valueOf((java.lang.String) value[0].getValue());
 
                 return (i.intValue() <= 0) ? i : null;
             }
@@ -579,7 +566,7 @@ public class XSISimpleTypes {
             if ((value.length == 1)
                     && (value[0].getValue() != null)
                     && (!"".equals(value[0].getValue()))) {
-                java.lang.Long i = new java.lang.Long((java.lang.String) value[0].getValue());
+                java.lang.Long i = java.lang.Long.valueOf((java.lang.String) value[0].getValue());
 
                 return i;
             }
@@ -616,7 +603,8 @@ public class XSISimpleTypes {
             if ((value.length == 1)
                     && (value[0].getValue() != null)
                     && (!"".equals(value[0].getValue()))) {
-                java.lang.Integer i = new java.lang.Integer((java.lang.String) value[0].getValue());
+                java.lang.Integer i =
+                        java.lang.Integer.valueOf((java.lang.String) value[0].getValue());
 
                 return i;
             }
@@ -653,7 +641,7 @@ public class XSISimpleTypes {
             if ((value.length == 1)
                     && (value[0].getValue() != null)
                     && (!"".equals(value[0].getValue()))) {
-                java.lang.Short i = new java.lang.Short((java.lang.String) value[0].getValue());
+                java.lang.Short i = java.lang.Short.valueOf((java.lang.String) value[0].getValue());
 
                 return i;
             }
@@ -690,7 +678,7 @@ public class XSISimpleTypes {
             if ((value.length == 1)
                     && (value[0].getValue() != null)
                     && (!"".equals(value[0].getValue()))) {
-                java.lang.Byte i = new java.lang.Byte((java.lang.String) value[0].getValue());
+                java.lang.Byte i = java.lang.Byte.valueOf((java.lang.String) value[0].getValue());
 
                 return i;
             }
@@ -727,7 +715,7 @@ public class XSISimpleTypes {
             if ((value.length == 1)
                     && (value[0].getValue() != null)
                     && (!"".equals(value[0].getValue()))) {
-                java.lang.Long i = new java.lang.Long((java.lang.String) value[0].getValue());
+                java.lang.Long i = java.lang.Long.valueOf((java.lang.String) value[0].getValue());
 
                 return i;
             }
@@ -764,7 +752,7 @@ public class XSISimpleTypes {
             if ((value.length == 1)
                     && (value[0].getValue() != null)
                     && (!"".equals(value[0].getValue()))) {
-                java.lang.Short i = new java.lang.Short((java.lang.String) value[0].getValue());
+                java.lang.Short i = java.lang.Short.valueOf((java.lang.String) value[0].getValue());
 
                 return i;
             }
@@ -801,7 +789,8 @@ public class XSISimpleTypes {
             if ((value.length == 1)
                     && (value[0].getValue() != null)
                     && (!"".equals(value[0].getValue()))) {
-                java.lang.Integer i = new java.lang.Integer((java.lang.String) value[0].getValue());
+                java.lang.Integer i =
+                        java.lang.Integer.valueOf((java.lang.String) value[0].getValue());
 
                 return i;
             }
@@ -838,7 +827,7 @@ public class XSISimpleTypes {
             if ((value.length == 1)
                     && (value[0].getValue() != null)
                     && (!"".equals(value[0].getValue()))) {
-                java.lang.Byte i = new java.lang.Byte((java.lang.String) value[0].getValue());
+                java.lang.Byte i = java.lang.Byte.valueOf((java.lang.String) value[0].getValue());
 
                 return i;
             }
@@ -875,7 +864,7 @@ public class XSISimpleTypes {
             if ((value.length == 1)
                     && (value[0].getValue() != null)
                     && (!"".equals(value[0].getValue()))) {
-                java.lang.Float i = new java.lang.Float((java.lang.String) value[0].getValue());
+                java.lang.Float i = java.lang.Float.valueOf((java.lang.String) value[0].getValue());
 
                 return i;
             }
@@ -912,7 +901,8 @@ public class XSISimpleTypes {
             if ((value.length == 1)
                     && (value[0].getValue() != null)
                     && (!"".equals(value[0].getValue()))) {
-                java.lang.Double i = new java.lang.Double((java.lang.String) value[0].getValue());
+                java.lang.Double i =
+                        java.lang.Double.valueOf((java.lang.String) value[0].getValue());
 
                 return i;
             }
@@ -2151,8 +2141,6 @@ public class XSISimpleTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#cache(org.geotools.xml.schema.Element,
          *     java.util.Map)
-         * @param element
-         * @param hints
          */
         public boolean cache(Element element, Map hints) {
             return false;
@@ -2163,12 +2151,6 @@ public class XSISimpleTypes {
          *
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
-         * @param element
-         * @param value
-         * @param attrs
-         * @param hints
-         * @throws SAXException
-         * @throws OperationNotSupportedException
          */
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws OperationNotSupportedException {

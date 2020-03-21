@@ -17,16 +17,10 @@
  */
 package org.geotools.filter.spatial;
 
-import org.geotools.filter.IllegalFilterException;
 import org.geotools.geometry.jts.ReferencedEnvelope3D;
-import org.geotools.referencing.CRS;
 import org.geotools.util.Converters;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.geom.TopologyException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterVisitor;
@@ -53,40 +47,12 @@ public class BBOX3DImpl implements BBOX3D {
         this.factory = factory;
     }
 
-    public double getMaxX() {
-        return envelope.getMaxX();
-    }
-
-    public double getMaxY() {
-        return envelope.getMaxY();
-    }
-
-    public double getMinX() {
-        return envelope.getMinX();
-    }
-
-    public double getMinY() {
-        return envelope.getMinY();
-    }
-
-    public double getMinZ() {
-        return envelope.getMinX();
-    }
-
-    public double getMaxZ() {
-        return envelope.getMaxZ();
-    }
-
     public PropertyName getProperty() {
         return property;
     }
 
     public String getPropertyName() {
         return property.getPropertyName();
-    }
-
-    public String getSRS() {
-        return CRS.toSRS(envelope.getCoordinateReferenceSystem());
     }
 
     public BoundingBox3D getBounds() {
@@ -98,33 +64,35 @@ public class BBOX3DImpl implements BBOX3D {
     }
 
     public Expression getExpression2() {
-        // in this case, the 3D BBOX falls back to regular 2D bbox behaviour (until there is more
-        // support for 3D geometries)
-        // 3DBBOX must be run as a post-filter in order to support the third coordinate.
-
-        Coordinate[] coords = new Coordinate[5];
-        coords[0] = new Coordinate(envelope.getMinX(), envelope.getMinY());
-        coords[1] = new Coordinate(envelope.getMinX(), envelope.getMaxY());
-        coords[2] = new Coordinate(envelope.getMaxX(), envelope.getMaxY());
-        coords[3] = new Coordinate(envelope.getMaxX(), envelope.getMinY());
-        coords[4] = new Coordinate(envelope.getMinX(), envelope.getMinY());
-
-        LinearRing ring = null;
-
-        GeometryFactory gfac = new GeometryFactory();
-        try {
-            ring = gfac.createLinearRing(coords);
-        } catch (TopologyException tex) {
-            throw new IllegalFilterException(tex.toString());
-        }
-
-        Polygon polygon = gfac.createPolygon(ring, null);
-        if (envelope instanceof ReferencedEnvelope3D) {
-            ReferencedEnvelope3D refEnv = (ReferencedEnvelope3D) envelope;
-            polygon.setUserData(refEnv.getCoordinateReferenceSystem());
-        }
-
-        return factory.literal(polygon);
+        //        // in this case, the 3D BBOX falls back to regular 2D bbox behaviour (until there
+        // is more
+        //        // support for 3D geometries)
+        //        // 3DBBOX must be run as a post-filter in order to support the third coordinate.
+        //
+        //        Coordinate[] coords = new Coordinate[5];
+        //        coords[0] = new Coordinate(envelope.getMinX(), envelope.getMinY());
+        //        coords[1] = new Coordinate(envelope.getMinX(), envelope.getMaxY());
+        //        coords[2] = new Coordinate(envelope.getMaxX(), envelope.getMaxY());
+        //        coords[3] = new Coordinate(envelope.getMaxX(), envelope.getMinY());
+        //        coords[4] = new Coordinate(envelope.getMinX(), envelope.getMinY());
+        //
+        //        LinearRing ring = null;
+        //
+        //        GeometryFactory gfac = new GeometryFactory();
+        //        try {
+        //            ring = gfac.createLinearRing(coords);
+        //        } catch (TopologyException tex) {
+        //            throw new IllegalFilterException(tex.toString());
+        //        }
+        //
+        //        Polygon polygon = gfac.createPolygon(ring, null);
+        //        if (envelope instanceof ReferencedEnvelope3D) {
+        //            ReferencedEnvelope3D refEnv = (ReferencedEnvelope3D) envelope;
+        //            polygon.setUserData(refEnv.getCoordinateReferenceSystem());
+        //        }
+        //
+        //        return factory.literal(polygon);
+        return factory.literal(envelope);
     }
 
     public Object accept(FilterVisitor visitor, Object context) {

@@ -84,6 +84,8 @@ public class DataTestCase extends TestCase {
     protected ReferencedEnvelope buildingBounds;
     protected FilterFactory2 ff;
 
+    public DataTestCase() {}
+
     /** Creates a default test case with the given name. */
     public DataTestCase(final String name) {
         super(name);
@@ -219,7 +221,7 @@ public class DataTestCase extends TestCase {
                                         {7, 5, 9, 3, 11, 3}
                                     }),
                             "rv1",
-                            new Double(4.5)
+                            Double.valueOf(4.5)
                         },
                         "river.rv1");
 
@@ -235,7 +237,7 @@ public class DataTestCase extends TestCase {
                             Integer.valueOf(2),
                             lines(new int[][] {{4, 6, 4, 8, 6, 10}}),
                             "rv2",
-                            new Double(3.0)
+                            Double.valueOf(3.0)
                         },
                         "river.rv2");
         riverBounds = new ReferencedEnvelope();
@@ -256,7 +258,7 @@ public class DataTestCase extends TestCase {
                             Integer.valueOf(3),
                             lines(new int[][] {{9, 5, 11, 5, 13, 3}}),
                             "rv3",
-                            new Double(1.5)
+                            Double.valueOf(1.5)
                         },
                         "river.rv3");
 

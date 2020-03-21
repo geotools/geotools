@@ -96,7 +96,6 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
      * URL that can then be written to.
      *
      * @param destination the URL or String pointing to the file to load the ArcGrid
-     * @throws DataSourceException
      */
     public ArcGridWriter(Object destination) throws DataSourceException {
         this(destination, null);
@@ -107,7 +106,6 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
      * URL that can then be written to.
      *
      * @param destination the URL or String pointing to the file to load the ArcGrid
-     * @throws DataSourceException
      */
     public ArcGridWriter(Object destination, Hints hints) throws DataSourceException {
         this.destination = destination;
@@ -417,7 +415,6 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
      * Writing {@link CoordinateReferenceSystem} WKT representation on a prj file.
      *
      * @param crs the {@link CoordinateReferenceSystem} to be written out.
-     * @throws IOException
      */
     private void writeCRSInfo(CoordinateReferenceSystem crs) throws IOException {
         // is it null?
@@ -486,7 +483,6 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
      *
      * @param coverage to check for the possibility to be written b this writer.
      * @param parameters to control the writing process.
-     * @throws IOException
      */
     private static void ensureWeCanWrite(GridCoverage coverage, GeneralParameterValue[] parameters)
             throws IOException {

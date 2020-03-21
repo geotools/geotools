@@ -26,7 +26,7 @@ import org.opengis.filter.Filter;
 /**
  * This represents a physical source of feature data, such as a shapefiles or database, where the
  * features will be instances of {@code SimpleFeature}. It is derived from the {@code DataAccess}
- * interface (which works at the more general {@code Feature} level.
+ * interface (which works at the more general {@code Feature} level).
  *
  * @see DataAccess
  * @see org.opengis.feature.Feature
@@ -52,7 +52,6 @@ public interface DataStore extends DataAccess<SimpleFeatureType, SimpleFeature> 
      * <p>This functionality is similar to an "drop table" statement in SQL. Implementation is
      * optional; it may not be supported by all servers or files.
      *
-     * @param typeName
      * @throws IOException if the operation failed
      * @throws UnsupportedOperation if functionality is not available
      */

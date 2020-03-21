@@ -25,13 +25,13 @@ public class GMLNullTypeBindingTest extends AbstractGMLBindingTest {
 
     protected void setUp() throws Exception {
         super.setUp();
-        nul = createElement(GML.NAMESPACE, "myNull", GML.NULLTYPE, null);
+        nul = createElement(GML.NAMESPACE, "myNull", GML.NullType, null);
     }
 
     public void testAllowable() throws Exception {
         Node node = createNode(nul, null, null, null, null);
 
-        GMLNullTypeBinding s = (GMLNullTypeBinding) getBinding(GML.NULLTYPE);
+        GMLNullTypeBinding s = (GMLNullTypeBinding) getBinding(GML.NullType);
 
         assertEquals("inapplicable", s.parse(nul, "inapplicable"));
         assertEquals("unknown", s.parse(nul, "unknown"));

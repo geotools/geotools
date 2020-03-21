@@ -16,7 +16,7 @@
  */
 package org.geotools.data.util;
 
-import java.awt.Color;
+import java.awt.*;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Collections;
@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import org.geotools.filter.function.color.HSLColor;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.factory.Hints;
@@ -398,6 +399,22 @@ public class ColorConverterFactory implements ConverterFactory {
                                                                     ? 255
                                                                     : opacity * 256f)));
                             return target.cast(c);
+                        } else if (text.startsWith("hsl(")) {
+                            String colorString = text.substring(4, text.length() - 1);
+                            String hsl[] = colorString.split("\\s*,\\s*");
+                            double hue = Double.parseDouble(hsl[0]);
+                            double saturation = parsePercentage(hsl[1]);
+                            double lightness = parsePercentage(hsl[2]);
+                            return target.cast(new HSLColor(hue, saturation, lightness).toRGB());
+                        } else if (text.startsWith("hsla(")) {
+                            String colorString = text.substring(5, text.length() - 1);
+                            String hsla[] = colorString.split("\\s*,\\s*");
+                            double hue = Double.parseDouble(hsla[0]);
+                            double saturation = parsePercentage(hsla[1]);
+                            double lightness = parsePercentage(hsla[2]);
+                            double alpha = parsePercentage(hsla[3]);
+                            return target.cast(
+                                    new HSLColor(hue, saturation, lightness, alpha).toRGB());
                         } else if (text.startsWith("#") || text.startsWith("0x")) {
                             Number number = Long.decode(text);
                             long rgba = number.longValue();
@@ -423,6 +440,14 @@ public class ColorConverterFactory implements ConverterFactory {
                     } catch (NumberFormatException badRGB) {
                         // unavailable
                         return null;
+                    }
+                }
+
+                private double parsePercentage(String spec) {
+                    if (spec.endsWith("%")) {
+                        return Double.parseDouble(spec.substring(0, spec.length() - 1)) / 100;
+                    } else {
+                        return Double.parseDouble(spec);
                     }
                 }
 

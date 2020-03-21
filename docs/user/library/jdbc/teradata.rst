@@ -17,7 +17,7 @@ Supports direct access to a Teradata database.
       <version>${geotools.version}</version>
     </dependency>
 
-Note that the groupId is **org.geotools.jdbc** for this and other JDBC plugin modules.
+Note that the ``groupId`` is ``org.geotools.jdbc`` for this and other JDBC plugin modules.
 
 Connection Parameters
 ^^^^^^^^^^^^^^^^^^^^^
@@ -25,12 +25,12 @@ Connection Parameters
 ============== ============================================
 Parameter      Description
 ============== ============================================
-"dbtype"       Must be the string "teradata"
-"host"         Machine name or IP address to connect to
-"port"         Port number to connect to, default is 1025
-"database"     The database to connect to, usually same as "user"
-"user"         User name
-"passwd"       Password
+``dbtype``       Must be the string ``teradata``
+``host``         Machine name or IP address to connect to
+``port``         Port number to connect to, default is 1025
+``database``     The database to connect to, usually same as ``user``
+``user``         User name
+``passwd``       Password
 ============== ============================================
 
 Access

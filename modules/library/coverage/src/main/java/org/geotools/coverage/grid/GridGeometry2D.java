@@ -1276,7 +1276,6 @@ public class GridGeometry2D extends GeneralGridGeometry {
      * processing, as JAI is not meant to be used for images whose ordinates are in the range of the
      * millions and starts to exhibit numerical issues when used there.
      *
-     * @return
      * @since 13.3
      */
     public GridGeometry2D toCanonical() {

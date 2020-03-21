@@ -47,11 +47,7 @@ public class ElementEncoder {
         this.context = context;
     }
 
-    /**
-     * Sets the logger for the encoder to use.
-     *
-     * @param logger
-     */
+    /** Sets the logger for the encoder to use. */
     public void setLogger(Logger logger) {
         this.logger = logger;
     }

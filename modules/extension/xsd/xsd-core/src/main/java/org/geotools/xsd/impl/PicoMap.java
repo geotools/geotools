@@ -34,7 +34,7 @@ import org.picocontainer.defaults.DecoratingComponentAdapter;
 import org.picocontainer.defaults.InstanceComponentAdapter;
 
 /**
- * A {@link Map} dectorator which implements the {@link MutablePicoContainer} interface.
+ * A {@link Map} decorator which implements the {@link MutablePicoContainer} interface.
  *
  * <p>This class is used internally to help transitition from pico container to a map based system
  * for registering bindings.
@@ -263,7 +263,7 @@ public class PicoMap implements Map, MutablePicoContainer {
             // TODO: instantiate
             Class clazz = (Class) o;
             try {
-                return clazz.newInstance();
+                return clazz.getDeclaredConstructor().newInstance();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -343,6 +343,7 @@ public class PicoMap implements Map, MutablePicoContainer {
         return null;
     }
 
+    @SuppressWarnings("deprecation")
     public void verify() throws PicoVerificationException {}
 
     public void start() {}

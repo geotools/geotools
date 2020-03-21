@@ -53,7 +53,6 @@ import org.opengis.filter.expression.NilExpression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.expression.Subtract;
 import org.opengis.filter.spatial.BBOX;
-import org.opengis.filter.spatial.BBOX3D;
 import org.opengis.filter.spatial.Beyond;
 import org.opengis.filter.spatial.Contains;
 import org.opengis.filter.spatial.Crosses;
@@ -113,13 +112,7 @@ public class DuplicatingFilterVisitor implements FilterVisitor, ExpressionVisito
         return filter;
     }
 
-    /**
-     * Null safe expression cloning
-     *
-     * @param expression
-     * @param extraData
-     * @return
-     */
+    /** Null safe expression cloning */
     protected Expression visit(Expression expression, Object extraData) {
         if (expression == null) return null;
         return (Expression) expression.accept(this, extraData);
@@ -238,18 +231,8 @@ public class DuplicatingFilterVisitor implements FilterVisitor, ExpressionVisito
 
     public Object visit(BBOX filter, Object extraData) {
         Expression propertyName = visit(filter.getExpression1(), extraData);
-
-        if (!(filter instanceof BBOX3D)) {
-            double minx = filter.getMinX();
-            double miny = filter.getMinY();
-            double maxx = filter.getMaxX();
-            double maxy = filter.getMaxY();
-            String srs = filter.getSRS();
-            return getFactory(extraData)
-                    .bbox(propertyName, minx, miny, maxx, maxy, srs, filter.getMatchAction());
-        }
-
-        return getFactory(extraData).bbox(propertyName, filter.getBounds());
+        Expression box = visit(filter.getExpression2(), extraData);
+        return getFactory(extraData).bbox(propertyName, box, filter.getMatchAction());
     }
 
     public Object visit(Beyond filter, Object extraData) {

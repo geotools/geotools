@@ -80,11 +80,7 @@ public class OptDirectedEdge extends OptGraphable implements DirectedEdge {
         return (node == m_in ? m_out : node == m_out ? m_in : null);
     }
 
-    /**
-     * Unsupported Operation.
-     *
-     * @throws UnsupportedOperationException
-     */
+    /** Unsupported Operation. */
     @Override
     public void reverse() {
         throw new UnsupportedOperationException(getClass().getName() + "#reverse()");
@@ -208,11 +204,7 @@ public class OptDirectedEdge extends OptGraphable implements DirectedEdge {
             }
         }
 
-        /**
-         * Unsupported Operation.
-         *
-         * @throws UnsupportedOperationException
-         */
+        /** Unsupported Operation. */
         @Override
         public void remove() {
             throw new UnsupportedOperationException(getClass().getName() + "#remove()");

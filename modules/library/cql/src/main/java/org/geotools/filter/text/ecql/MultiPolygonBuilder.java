@@ -33,10 +33,7 @@ import org.locationtech.jts.geom.Polygon;
  */
 final class MultiPolygonBuilder extends GeometryBuilder {
 
-    /**
-     * @param statement
-     * @param resultStack
-     */
+    /** */
     public MultiPolygonBuilder(String statement, BuildResultStack resultStack) {
         super(statement, resultStack);
     }

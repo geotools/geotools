@@ -84,12 +84,7 @@ public class CompositeCurveTypeBinding extends LineStringTypeBinding {
         }
     }
 
-    /**
-     * Construct a line string from CurveMembers coordinates.
-     *
-     * @param node
-     * @return
-     */
+    /** Construct a line string from CurveMembers coordinates. */
     public static CoordinateList extractCurveMemberCoordinates(Node node) {
         List curveMembers = node.getChildren("curveMember");
         CoordinateList clist = new CoordinateList();

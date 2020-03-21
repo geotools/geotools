@@ -57,7 +57,7 @@ import org.locationtech.jts.geom.MultiPolygon;
 public class GMLMultiPolygonPropertyTypeBinding extends AbstractComplexBinding {
     /** @generated */
     public QName getTarget() {
-        return GML.MULTIPOLYGONPROPERTYTYPE;
+        return GML.MultiPolygonPropertyType;
     }
 
     /**

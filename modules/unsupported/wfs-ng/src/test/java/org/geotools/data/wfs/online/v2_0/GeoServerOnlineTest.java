@@ -33,7 +33,7 @@ import org.opengis.filter.FilterFactory2;
 public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
 
     public static final String SERVER_URL =
-            "http://localhost:9090/geoserver/wfs?service=WFS&request=GetCapabilities&version=2.0.0";
+            "http://localhost:8080/geoserver/wfs?service=WFS&request=GetCapabilities&version=2.0.0";
 
     public GeoServerOnlineTest() {
         super(

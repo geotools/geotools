@@ -76,7 +76,7 @@ public class MapBoundsEvent extends EventObject {
      * @throws IllegalArgumentException if type is invalid
      */
     public MapBoundsEvent(
-            MapContext source,
+            MapContent source,
             int type,
             ReferencedEnvelope oldAreaOfInterest,
             ReferencedEnvelope newAreaOfInterest) {
@@ -161,11 +161,7 @@ public class MapBoundsEvent extends EventObject {
         return field;
     }
 
-    /**
-     * Set of event types raised for this event.
-     *
-     * @return
-     */
+    /** Set of event types raised for this event. */
     public EnumSet<Type> getEventType() {
         return type;
     }

@@ -44,7 +44,7 @@ differently.
 * Create
   
   To create a new shapefile on disk we are going to have to go one level deeper
-  and ask FileDataStoreFinder for a factory matching the "shp" extension.::
+  and ask FileDataStoreFinder for a factory matching the ``shp`` extension.::
   
     FileDataStoreFactorySpi factory = FileDataStoreFinder.getDataStoreFactory("shp");
     
@@ -124,7 +124,7 @@ If you are working with GeoServer or uDig you have access to some great faciliti
   // Making the DataStore
   DataStore dataStore = service.resolve( DataStore.class, new NullProgressListener() );
 
-The idea works similar to a "file handle", you can make a IService "handle" that represents your DataStore (and you can ask the handle several fun questions like "what is your name") before you actually create the beast.
+The idea works similar to a "file handle", you can make a ``IService`` "handle" that represents your DataStore (and you can ask the handle several fun questions like "what is your name") before you actually create the beast.
 
 This separation is really important in an application expecting to talk about thousands of sources of data at a time. Just because your application wants to know about a source of data does not always mean you need a DataStore yet.
 

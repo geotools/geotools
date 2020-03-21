@@ -62,7 +62,6 @@ public class PicoCurveTest extends TestCase {
     /**
      * Creates a pico container that knows about all the geom factories
      *
-     * @param crs
      * @return container
      */
     protected PicoContainer container(CoordinateReferenceSystem crs) {
@@ -118,18 +117,14 @@ public class PicoCurveTest extends TestCase {
     private void _testCurve(GeometryBuilder builder) {
 
         GeometryFactoryImpl tCoordFactory = (GeometryFactoryImpl) builder.getGeometryFactory();
+        PositionFactory pf = builder.getPositionFactory();
         PrimitiveFactoryImpl tPrimFactory = (PrimitiveFactoryImpl) builder.getPrimitiveFactory();
 
-        PositionImpl p1 =
-                new PositionImpl(tCoordFactory.createDirectPosition(new double[] {-50, 0}));
-        PositionImpl p2 =
-                new PositionImpl(tCoordFactory.createDirectPosition(new double[] {-30, 30}));
-        PositionImpl p3 =
-                new PositionImpl(tCoordFactory.createDirectPosition(new double[] {0, 50}));
-        PositionImpl p4 =
-                new PositionImpl(tCoordFactory.createDirectPosition(new double[] {30, 30}));
-        PositionImpl p5 =
-                new PositionImpl(tCoordFactory.createDirectPosition(new double[] {50, 0}));
+        PositionImpl p1 = new PositionImpl(pf.createDirectPosition(new double[] {-50, 0}));
+        PositionImpl p2 = new PositionImpl(pf.createDirectPosition(new double[] {-30, 30}));
+        PositionImpl p3 = new PositionImpl(pf.createDirectPosition(new double[] {0, 50}));
+        PositionImpl p4 = new PositionImpl(pf.createDirectPosition(new double[] {30, 30}));
+        PositionImpl p5 = new PositionImpl(pf.createDirectPosition(new double[] {50, 0}));
 
         LineStringImpl line1 = null;
 
@@ -255,8 +250,8 @@ public class PicoCurveTest extends TestCase {
 
         // ***** Curve.Merge(Curve)
 
-        DirectPosition p6 = tCoordFactory.createDirectPosition(new double[] {80, 20});
-        DirectPosition p7 = tCoordFactory.createDirectPosition(new double[] {130, 60});
+        DirectPosition p6 = pf.createDirectPosition(new double[] {80, 20});
+        DirectPosition p7 = pf.createDirectPosition(new double[] {130, 60});
 
         List<DirectPosition> directPositions = new ArrayList<DirectPosition>();
 

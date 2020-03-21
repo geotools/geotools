@@ -10,12 +10,12 @@ References:
 ArcSDE Raster
 ^^^^^^^^^^^^^
 
-Since Geotools 2.3.x and 2.4.x.
+Since GeoTools 2.3.x and 2.4.x.
 
 ESRI's ArcSDE spatial database product allows raster data to be stored inside a host RDBMS. ArcSDE then provides a standard API to access the raster data. It's worth noting that the merits of storing large chunks of raster data inside an RDBMS are arguable. Perhaps the DBMS is better at handling Disk I/O, and perhaps there are enterprise or data-management advantages. However, many people actually store raster data inside ArcSDE, so there is a need to support it.
 
-Connecting to ArcSDE Raster datasets
-''''''''''''''''''''''''''''''''''''
+Connecting to ArcSDE Raster data sets
+'''''''''''''''''''''''''''''''''''''
 
 When using ArcSDE Raster support, you can use it just like a standard GridCoverage2DReader. However,
 when instantiating it, you must pass it a String or File containing the URL of the SDE instance
@@ -48,7 +48,7 @@ Raster Support Features
 
 * Connection pooling (based on GT ArcSDE connection pooling)
 * Auto-discovery of available CRS information
-* Pyramid support (RRD or "overviews"), if present in the underlying raster dataset
+* Pyramid support (RRD or "overviews"), if present in the underlying raster data set
   
   * 3 or 4 Band unsigned-byte RGBX Rasters
   * Colormapped rasters
@@ -57,7 +57,7 @@ Raster Support Features
 Supported Raster Types
 ''''''''''''''''''''''
 
-Currently ArcSDE Raster support is limited to 3-band or 4-band, one-byte-per-band, non-colormapped rasters. Support for further ArcSDE raster types is in progress. To check out what's on the roadmap, look at the GeoTools ArcSDE Raster Format information page.
+Currently ArcSDE Raster support is limited to 3-band or 4-band, one-byte-per-band, non-colormapped rasters. Support for further ArcSDE raster types is in progress. To check out what's on the road map, look at the GeoTools ArcSDE Raster Format information page.
 
 ======== =======================================
 Support  Raster Type
@@ -70,7 +70,7 @@ no       Non unsigned-byte Rasters
 General configuration notes
 '''''''''''''''''''''''''''
 
-Also make sure that the port number specified is the same as in the services file (%(%(%systemRoot%\system32\drivers\etc\services in windows), it should contain a line like (if yours is different then change the port param of your datastore definition)::
+Also make sure that the port number specified is the same as in the services file ``(%(%(%systemRoot%\system32\drivers\etc\services in windows)``,  it should contain a line like (if yours is different then change the port parameter of your datastore definition)::
   
   esri_sde
   5151/tcp
@@ -82,7 +82,7 @@ Also make sure that the port number specified is the same as in the services fil
   There is limited support for different kinds of rasters (see the Raster Support Features section
   below for specific details) and the code has only been used in one ArcSDE environment.
     
-  The 'Raster Support Plan' section, below, outlines a plan to make the Geotools ArcSDE raster
+  The 'Raster Support Plan' section, below, outlines a plan to make the GeoTools ArcSDE raster
   code both support more formats, as well as enter the mainline development tree/process.
   
   Raster Support Plan:

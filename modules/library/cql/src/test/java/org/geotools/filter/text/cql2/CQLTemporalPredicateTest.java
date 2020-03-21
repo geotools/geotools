@@ -61,11 +61,7 @@ public class CQLTemporalPredicateTest {
         this(Language.CQL);
     }
 
-    /**
-     * New instance of CQLTemporalPredicateTest
-     *
-     * @param language
-     */
+    /** New instance of CQLTemporalPredicateTest */
     protected CQLTemporalPredicateTest(final Language language) {
 
         assert language != null : "language cannot be null value";
@@ -168,11 +164,7 @@ public class CQLTemporalPredicateTest {
         Assert.assertEquals("greater filter", expected, resultFilter);
     }
 
-    /**
-     * It must produce a filter with an instance of Date object
-     *
-     * @throws Exception
-     */
+    /** It must produce a filter with an instance of Date object */
     @Test(expected = CQLException.class)
     public void lostTime() throws CQLException {
 
@@ -190,11 +182,7 @@ public class CQLTemporalPredicateTest {
                 "CQLException is expected. The \"date-time\" rule require a time preceded by \"T\"");
     }
 
-    /**
-     * It must produce a filter with an instance of Date object
-     *
-     * @throws Exception
-     */
+    /** It must produce a filter with an instance of Date object */
     @Test
     public void dateTime() throws Exception {
 
@@ -219,11 +207,7 @@ public class CQLTemporalPredicateTest {
         Assert.assertEquals(expectedDate, actualDate);
     }
 
-    /**
-     * Test local time
-     *
-     * @throws Exception
-     */
+    /** Test local time */
     @Test
     public void dateTimeWithLocalTime() throws Exception {
 
@@ -249,11 +233,7 @@ public class CQLTemporalPredicateTest {
         Assert.assertEquals(expectedDate, actualDate);
     }
 
-    /**
-     * Test time zone offset
-     *
-     * @throws Exception
-     */
+    /** Test time zone offset */
     @Test
     public void dateTimeWithOffset() throws Exception {
 
@@ -312,8 +292,6 @@ public class CQLTemporalPredicateTest {
      * before with compound attribute
      *
      * <p>sample: gmd:aa:bb.gmd:cc.gmd:dd BEFORE P10Y10M10DT5H5M5S/2006-11-30T01:30:00Z
-     *
-     * @throws CQLException
      */
     @Test
     public void beforeCompundProperty() throws CQLException {
@@ -672,8 +650,6 @@ public class CQLTemporalPredicateTest {
      * <p>http://jira.codehaus.org/browse/GEOT-2157?page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel&focusedCommentId=154661#action_154661
      *
      * <p>Note: this test is ignored to avoid to add cycles in the geotools general build.
-     *
-     * @throws Exception
      */
     @Ignore
     public void issueCOT2157() throws Exception {

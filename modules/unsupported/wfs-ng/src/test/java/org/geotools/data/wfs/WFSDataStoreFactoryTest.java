@@ -142,8 +142,6 @@ public class WFSDataStoreFactoryTest {
     /**
      * Test for GZIP settings, backwards compatibility: If no gzip settings is present, client has
      * to enable gzip
-     *
-     * @throws IOException
      */
     @Test
     public void testHttpClientGzipEncodingDefault() throws IOException {
@@ -152,11 +150,7 @@ public class WFSDataStoreFactoryTest {
         assertExpectForGzipParam(expectedGzipOnClient, tryGzip);
     }
 
-    /**
-     * Test for GZIP settings: Ensure "true" is passed to http client.
-     *
-     * @throws IOException
-     */
+    /** Test for GZIP settings: Ensure "true" is passed to http client. */
     @Test
     public void testHttpClientGzipEncodingTrue() throws IOException {
         Boolean tryGzip = true;
@@ -164,11 +158,7 @@ public class WFSDataStoreFactoryTest {
         assertExpectForGzipParam(expectedGzipOnClient, tryGzip);
     }
 
-    /**
-     * Test for GZIP settings: Ensure "false" is passed to http client.
-     *
-     * @throws IOException
-     */
+    /** Test for GZIP settings: Ensure "false" is passed to http client. */
     @Test
     public void testHttpClientGzipEncodingFalse() throws IOException {
         Boolean tryGzip = false;

@@ -216,15 +216,6 @@ public class AbstractDatum extends AbstractIdentifiedObject implements Datum {
     }
 
     /**
-     * Area or region in which this datum object is valid.
-     *
-     * @deprecated Renamed {@link #getDomainOfValidity}.
-     */
-    public Extent getValidArea() {
-        return domainOfValidity;
-    }
-
-    /**
      * Description of domain of usage, or limitations of usage, for which this datum object is
      * valid.
      */

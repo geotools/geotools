@@ -16,7 +16,6 @@
  */
 package org.geotools.styling.css;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -102,8 +101,6 @@ public class CssParser extends BaseParser<Object> {
     /**
      * Returns the single instance of the CSS parser. The CSSParser should not be instantiated
      * directly, Parboiled needs to do it instead.
-     *
-     * @return
      */
     public static CssParser getInstance() {
         // we need to lazily create it, otherwise Parboiled won't be able to instrument the class
@@ -117,9 +114,6 @@ public class CssParser extends BaseParser<Object> {
     /**
      * Turns the CSS provided into a {@link Stylesheet} object, will throw a {@link
      * CSSParseException} in case of syntax errors
-     *
-     * @return
-     * @throws IOException
      */
     public static Stylesheet parse(String css) throws CSSParseException {
         CssParser parser = getInstance();
@@ -266,7 +260,8 @@ public class CssParser extends BaseParser<Object> {
     }
 
     Rule ClassName() {
-        return Sequence(FirstOf("mark", "stroke", "fill", "symbol", "shield"), push(match()));
+        return Sequence(
+                FirstOf("mark", "stroke", "fill", "symbol", "shield", "background"), push(match()));
     }
 
     @SuppressSubnodes
@@ -552,11 +547,7 @@ public class CssParser extends BaseParser<Object> {
                 push(new Value.Function("url", (Value) pop())));
     }
 
-    /**
-     * Very relaxed URL matcher, as we need to match also relative urls
-     *
-     * @return
-     */
+    /** Very relaxed URL matcher, as we need to match also relative urls */
     Rule URL() {
         return FirstOf(QuotedURL(), SimpleURL());
     }

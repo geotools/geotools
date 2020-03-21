@@ -37,18 +37,12 @@ public class PolyhedralSurfaceImpl extends SurfaceImpl implements PolyhedralSurf
      * aggregate surface.
      *
      * <p>PolyhedralSurface::PolyhedralSurface(tiles[1..n]: Polygon ) : PolyhedralSurface
-     *
-     * @param crs
-     * @param tiles
      */
     public PolyhedralSurfaceImpl(CoordinateReferenceSystem crs, List<Polygon> tiles) {
         super(crs, tiles);
     }
 
-    /**
-     * @param factory
-     * @param boundary
-     */
+    /** */
     public PolyhedralSurfaceImpl(SurfaceBoundaryImpl boundary) {
         super(boundary);
     }
@@ -62,7 +56,6 @@ public class PolyhedralSurfaceImpl extends SurfaceImpl implements PolyhedralSurf
 
     // /**
     // * Constructor without arguments Surface Polygons has to be setted later
-    // * @param factory
     // */
     // public PolyhedralSurfaceImpl(GeometryFactoryImpl factory) {
     // super(factory);

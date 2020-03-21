@@ -77,7 +77,6 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
      * @param server The SOLR server
      * @param solrQuery the SOLR query to execute
      * @param solrDataStore the SOLR store
-     * @throws SolrServerException
      * @throws java.io.IOException
      */
     public SolrFeatureReader(
@@ -225,7 +224,13 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
                     try {
                         QueryResponse rsp = server.query(solrQuery);
                         if (this.solrDataStore.getLogger().isLoggable(Level.FINE)) {
-                            this.solrDataStore.getLogger().log(Level.FINE, solrQuery.toString());
+                            this.solrDataStore
+                                    .getLogger()
+                                    .log(
+                                            Level.FINE,
+                                            server.getBaseURL()
+                                                    + "/select?"
+                                                    + solrQuery.toString());
                         }
                         this.solrDocIterator = rsp.getResults().iterator();
                         nextCursorMark = rsp.getNextCursorMark();

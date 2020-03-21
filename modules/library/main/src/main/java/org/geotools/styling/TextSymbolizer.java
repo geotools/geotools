@@ -285,6 +285,15 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer, Symbol
     public static final double DEFAULT_WORD_SPACING = 0;
 
     /**
+     * Option expressed in value of pixels. This option does not support negative values. Works only
+     * on polygons.
+     */
+    public static final String FONT_SHRINK_SIZE_MIN = "fontShrinkSizeMin";
+
+    /** Default font shrink size */
+    public static final int DEFAULT_FONT_SHRINK_SIZE_MIN = 0;
+
+    /**
      * Option to control displacement of labels. Available values are defined as enum values @see
      * {@link DisplacementMode}
      */
@@ -312,6 +321,24 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer, Symbol
         }
     }
 
+    /** Placement of the graphic element, see GraphicPlacement enumeration for possible value */
+    public static final String GRAPHIC_PLACEMENT_KEY = "graphicPlacement";
+
+    /** GraphicPlacemnts controls the position of the Graphic associated with the label */
+    public static enum GraphicPlacement {
+        /**
+         * Centered with the label, thus moving with it considering its offsets and anchors relative
+         * to the label point. If not specified, this is the default behavior.
+         */
+        LABEL,
+        /**
+         * Places the graphic independent of the label own offset and anchor, but applying the
+         * Graphic offset and anchor instead, on top of the chosen label point. This allows to
+         * create graphics that are at an offset compared to the label
+         */
+        INDEPENDENT
+    }
+
     /**
      * Returns the expression that will be evaluated to determine what text is displayed.
      *
@@ -334,13 +361,6 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer, Symbol
     List<Font> fonts();
 
     /**
-     * Returns a device independent Font object that is to be used to render the label.
-     *
-     * @deprecated use fonts()
-     */
-    Font[] getFonts();
-
-    /**
      * Initial Font to use when rendering this symbolizer. For alternatives see {@link #fonts()}.
      *
      * @return Initial Font used to render label, or null if unavailable.
@@ -350,17 +370,8 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer, Symbol
     /**
      * Set initial font used to render label. This will replace the initial entry in the {@link
      * #fonts()} list.
-     *
-     * @param font
      */
     public void setFont(org.opengis.style.Font font);
-
-    /**
-     * Sets a list of device independent Font objects to be used to render the label.
-     *
-     * @deprecated use fonts() to directly modify list of fonts in place
-     */
-    void setFonts(Font[] fonts);
 
     /**
      * A LabelPlacement specifies how a text element should be rendered relative to its geometric
@@ -373,22 +384,6 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer, Symbol
      * point or line.
      */
     void setLabelPlacement(org.opengis.style.LabelPlacement labelPlacement);
-
-    /**
-     * A LabelPlacement specifies how a text element should be rendered relative to its geometric
-     * point or line.
-     *
-     * @deprecated Please use setLabelPlacement
-     */
-    void setPlacement(LabelPlacement labelPlacement);
-
-    /**
-     * A LabelPlacement specifies how a text element should be rendered relative to its geometric
-     * point or line.
-     *
-     * @deprecated Please use getLabelPlacement()
-     */
-    LabelPlacement getPlacement();
 
     /**
      * A halo fills an extended area outside the glyphs of a rendered text label to make the label
@@ -421,21 +416,6 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer, Symbol
      * evaluates to a number (ie. Integer, Long, Double...) Larger = more likely to be rendered
      */
     Expression getPriority();
-
-    /**
-     * Adds a parameter value to the options map
-     *
-     * @deprecated Please use getOptions().put( key, value )
-     */
-    void addToOptions(String key, String value);
-
-    /**
-     * Find the value of a key in the map (may return null)
-     *
-     * @param key
-     * @deprecated Please use getOptions.get( key )
-     */
-    String getOption(String key);
 
     /**
      * return the map of option

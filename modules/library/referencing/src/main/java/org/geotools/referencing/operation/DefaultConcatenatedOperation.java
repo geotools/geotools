@@ -292,7 +292,7 @@ public class DefaultConcatenatedOperation extends AbstractCoordinateOperation
     /**
      * Compare this concatenated operation with the specified object for equality. If {@code
      * compareMetadata} is {@code true}, then all available properties are compared including
-     * {@linkplain #getValidArea valid area} and {@linkplain #getScope scope}.
+     * {@linkplain #getDomainOfValidity() valid area} and {@linkplain #getScope scope}.
      *
      * @param object The object to compare to {@code this}.
      * @param compareMetadata {@code true} for performing a strict comparaison, or {@code false} for

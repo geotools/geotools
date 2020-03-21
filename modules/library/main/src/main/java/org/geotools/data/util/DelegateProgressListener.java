@@ -44,10 +44,6 @@ public class DelegateProgressListener implements org.opengis.util.ProgressListen
         delegate.exceptionOccurred(exception);
     }
 
-    public String getDescription() {
-        return delegate.getDescription();
-    }
-
     public InternationalString getTask() {
         return delegate.getTask();
     }
@@ -66,10 +62,6 @@ public class DelegateProgressListener implements org.opengis.util.ProgressListen
 
     public void setCanceled(boolean cancel) {
         delegate.setCanceled(cancel);
-    }
-
-    public void setDescription(String description) {
-        delegate.setDescription(description);
     }
 
     public void setTask(InternationalString task) {

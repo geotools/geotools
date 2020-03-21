@@ -37,6 +37,7 @@ import org.opengis.filter.spatial.DWithin;
 import org.opengis.filter.spatial.DistanceBufferOperator;
 import org.opengis.filter.temporal.BinaryTemporalOperator;
 import org.opengis.filter.temporal.During;
+import org.opengis.geometry.BoundingBox;
 
 /**
  * The method of this utility class allows to build the CQL/ECQL predicate associated to a {@link
@@ -55,12 +56,7 @@ public final class FilterToTextUtil {
         // utility class
     }
 
-    /**
-     * Process the possibly user supplied extraData parameter into a StringBuilder.
-     *
-     * @param extraData
-     * @return
-     */
+    /** Process the possibly user supplied extraData parameter into a StringBuilder. */
     public static StringBuilder asStringBuilder(Object extraData) {
         if (extraData instanceof StringBuilder) {
             return (StringBuilder) extraData;
@@ -137,8 +133,6 @@ public final class FilterToTextUtil {
      * Builds a comparison predicate inserting the operato1 or operator2 taking into account the
      * PropertyName position in the comparison filter.
      *
-     * @param filter
-     * @param extraData
      * @param operator an operator
      * @return SringBuffer
      */
@@ -190,17 +184,17 @@ public final class FilterToTextUtil {
     public static Object buildBBOX(BBOX filter, Object extraData) {
 
         StringBuilder output = asStringBuilder(extraData);
-
+        BoundingBox bounds = filter.getBounds();
         output.append("BBOX(");
-        output.append(filter.getPropertyName());
+        output.append(((PropertyName) filter.getExpression1()).getPropertyName());
         output.append(", ");
-        output.append(filter.getMinX());
+        output.append(bounds.getMinX());
         output.append(",");
-        output.append(filter.getMinY());
+        output.append(bounds.getMinY());
         output.append(",");
-        output.append(filter.getMaxX());
+        output.append(bounds.getMaxX());
         output.append(",");
-        output.append(filter.getMaxY());
+        output.append(bounds.getMaxY());
         output.append(")");
 
         return output;

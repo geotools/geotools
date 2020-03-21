@@ -300,7 +300,6 @@ public class RasterLayerResponse {
          * <p>A dry run means: no tasks are executed.
          *
          * @param dryRun <code>true</code> for a dry run, <code>false</code> otherwise.
-         * @param collectors
          */
         private MosaicProducer(final boolean dryRun, List<SubmosaicProducer> collectors) {
             this.granuleCollectors = collectors;
@@ -322,17 +321,17 @@ public class RasterLayerResponse {
             // load raster data
             //
             // create a granuleDescriptor loader
-            final Geometry bb = JTS.toGeometry((BoundingBox) mosaicBBox);
+            final Geometry bb = JTS.toGeometry((BoundingBox) queryBBox);
             Geometry inclusionGeometry = granuleDescriptor.getFootprint();
             boolean intersects = false;
             if (inclusionGeometry != null) {
                 CoordinateReferenceSystem granuleCRS =
                         granuleDescriptor.getGranuleEnvelope().getCoordinateReferenceSystem();
-                CoordinateReferenceSystem mosaicCRS = mosaicBBox.getCoordinateReferenceSystem();
+                CoordinateReferenceSystem mosaicCRS = queryBBox.getCoordinateReferenceSystem();
                 try {
                     if (!CRS.equalsIgnoreMetadata(granuleCRS, mosaicCRS)) {
                         ProjectionHandler handler =
-                                ProjectionHandlerFinder.getHandler(mosaicBBox, granuleCRS, true);
+                                ProjectionHandlerFinder.getHandler(queryBBox, granuleCRS, true);
                         MathTransform mt = CRS.findMathTransform(granuleCRS, mosaicCRS);
                         if (handler != null) {
                             Geometry preProcessed = handler.preProcess(inclusionGeometry);
@@ -401,9 +400,6 @@ public class RasterLayerResponse {
          *   <li>step 1 is for merging flat on each value for the dimension
          *   <li>step 2 is for merging stack on the resulting mosaics
          * </ol>
-         *
-         * @return
-         * @throws IOException
          */
         private MosaicOutput produce() throws IOException {
             // checks
@@ -481,6 +477,14 @@ public class RasterLayerResponse {
 
     private ReferencedEnvelope mosaicBBox;
 
+    /**
+     * All the geometries in the mosaic catalog have a unique CRS, even for a heterogeneous CRS
+     * mosaic with granules in different native CRSs. Queries against the spatial index need to be
+     * made in that unique CRS. In that case the final mosaic bbox and the query bbox will be
+     * different (due to different CRS).
+     */
+    private ReferencedEnvelope queryBBox;
+
     private Rectangle rasterBounds;
 
     private MathTransform2D finalGridToWorldCorner;
@@ -532,7 +536,6 @@ public class RasterLayerResponse {
      *
      * @param request a {@link RasterLayerRequest} originating this response.
      * @param rasterManager raster manager being used
-     * @param collectorsFactory
      */
     public RasterLayerResponse(
             final RasterLayerRequest request,
@@ -564,7 +567,6 @@ public class RasterLayerResponse {
      *
      * @return the {@link GridCoverage} produced as computation of this response using the {@link
      *     #createResponse()} method.
-     * @throws IOException
      * @uml.property name="gridCoverage"
      */
     public GridCoverage2D createResponse() throws IOException {
@@ -636,7 +638,6 @@ public class RasterLayerResponse {
      * provided values for alpha and input ROI.
      *
      * @return the mosaic output for the request
-     * @throws DataSourceException
      */
     private MosaicOutput prepareResponse() throws DataSourceException {
 
@@ -657,7 +658,7 @@ public class RasterLayerResponse {
             initExcessGranuleRemover();
 
             // === create query and basic BBOX filtering
-            MosaicQueryBuilder queryBuilder = new MosaicQueryBuilder(request, mosaicBBox);
+            MosaicQueryBuilder queryBuilder = new MosaicQueryBuilder(request, queryBBox);
             final Query query = queryBuilder.build();
 
             // === collect granules
@@ -688,7 +689,7 @@ public class RasterLayerResponse {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine(
                             "Loaded bbox "
-                                    + mosaicBBox.toString()
+                                    + queryBBox.toString()
                                     + " while crop bbox "
                                     + request.spatialRequestHelper.getComputedBBox().toString());
                 }
@@ -730,8 +731,8 @@ public class RasterLayerResponse {
 
             // do we return a null (outside of the coverage) or a blank? The choice is "hard" as we
             // might be in a hole of the coverage and not know it
-            if (!mosaicBBox.intersects((BoundingBox) ReferencedEnvelope.reference(coverageEnvelope))
-                    && !mosaicBBox.intersects(
+            if (!queryBBox.intersects((BoundingBox) ReferencedEnvelope.reference(coverageEnvelope))
+                    && !queryBBox.intersects(
                             (BoundingBox)
                                     ReferencedEnvelope.reference(
                                             rasterManager.spatialDomainManager.coverageBBox))) {
@@ -793,12 +794,14 @@ public class RasterLayerResponse {
         // make sure the expanded bounds are still within the reach of the granule bounds, not
         // larger
         // (the above expansion might have made them so)
-        final GeneralEnvelope levelRasterArea_ =
-                CRS.transform(
-                        finalWorldToGridCorner, request.spatialRequestHelper.getCoverageBBox());
-        final GridEnvelope2D levelRasterArea =
-                new GridEnvelope2D(new Envelope2D(levelRasterArea_), PixelInCell.CELL_CORNER);
-        XRectangle2D.intersect(levelRasterArea, rasterBounds, rasterBounds);
+        if (!request.spatialRequestHelper.isSupportingAlternativeCRSOutput()) {
+            final GeneralEnvelope levelRasterArea_ =
+                    CRS.transform(
+                            finalWorldToGridCorner, request.spatialRequestHelper.getCoverageBBox());
+            final GridEnvelope2D levelRasterArea =
+                    new GridEnvelope2D(new Envelope2D(levelRasterArea_), PixelInCell.CELL_CORNER);
+            XRectangle2D.intersect(levelRasterArea, rasterBounds, rasterBounds);
+        }
     }
 
     /**
@@ -885,9 +888,18 @@ public class RasterLayerResponse {
         // ok we got something to return, let's load records from the index
         final BoundingBox cropBBOX = request.spatialRequestHelper.getComputedBBox();
         if (cropBBOX != null) {
-            mosaicBBox = ReferencedEnvelope.reference(cropBBOX);
+            queryBBox = ReferencedEnvelope.reference(cropBBOX);
+            mosaicBBox = queryBBox;
+            if (request.spatialRequestHelper.isSupportingAlternativeCRSOutput()) {
+                // When supporting Output in alternative CRS
+                // BBOX for query and BBOX for computations are different
+                mosaicBBox =
+                        ReferencedEnvelope.reference(
+                                request.spatialRequestHelper.getComputedBBox(true));
+            }
         } else {
-            mosaicBBox = new ReferencedEnvelope(coverageEnvelope);
+            queryBBox = new ReferencedEnvelope(coverageEnvelope);
+            mosaicBBox = queryBBox;
         }
     }
 
@@ -1339,11 +1351,7 @@ public class RasterLayerResponse {
         this.granulesPaths = granulesPaths;
     }
 
-    /**
-     * See {@link GridCoverage2DReader#SOURCE_URL_PROPERTY}.
-     *
-     * @param sourceUrl
-     */
+    /** See {@link GridCoverage2DReader#SOURCE_URL_PROPERTY}. */
     public void setSourceUrl(URL sourceUrl) {
         this.sourceUrl = sourceUrl;
     }
@@ -1380,27 +1388,27 @@ public class RasterLayerResponse {
         return heterogeneousCRS;
     }
 
-    /**
-     * Builds an alternate view of request/response/manager based on a template descriptor
-     *
-     * @param templateDescriptor
-     * @return
-     * @throws Exception
-     */
+    /** Builds an alternate view of request/response/manager based on a template descriptor */
     public RasterLayerResponse reprojectTo(GranuleDescriptor templateDescriptor) throws Exception {
         // optimization in case the granule CRS and the mosaic CRS correspond
         CoordinateReferenceSystem granuleCRS =
                 templateDescriptor.getGranuleEnvelope().getCoordinateReferenceSystem();
-        if (CRS.equalsIgnoreMetadata(
-                rasterManager.spatialDomainManager.coverageCRS2D, granuleCRS)) {
+        RasterLayerRequest originalRequest = this.getRequest();
+        CoordinateReferenceSystem referenceCRS =
+                originalRequest.spatialRequestHelper.getReferenceCRS(true);
+        if (CRS.equalsIgnoreMetadata(referenceCRS, granuleCRS)) {
             return this;
         }
 
         // rebuild
-        RasterLayerRequest originalRequest = this.getRequest();
         RasterManager originalRasterManager = originalRequest.getRasterManager();
         RasterManager manager =
-                originalRasterManager.getForGranuleCRS(templateDescriptor, this.mosaicBBox);
+                originalRasterManager.getForGranuleCRS(
+                        templateDescriptor,
+                        this.mosaicBBox,
+                        originalRequest.spatialRequestHelper.isSupportingAlternativeCRSOutput()
+                                ? this.queryBBox
+                                : this.mosaicBBox);
         RasterLayerRequest request =
                 new RasterLayerRequest(originalRequest.getParams(), manager) {
                     @Override

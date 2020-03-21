@@ -22,6 +22,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
@@ -142,7 +143,7 @@ public class H2Migrator {
 
     private String[] getFilesFromStore(LinkedHashSet<String> filePaths)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException,
-                    IOException {
+                    IOException, NoSuchMethodException, InvocationTargetException {
         DataStore sourceStore =
                 H2MigrateConfiguration.getDataStore(configuration.getSourceStoreConfiguration());
         final String[] indexTables =
@@ -175,8 +176,6 @@ public class H2Migrator {
     /**
      * Returns the coverage names provided by the user, or tries to guess them by looking at
      * property files in the mosaic directory
-     *
-     * @return
      */
     private String[] getCoverageNames() {
         String[] names = configuration.getCoverageNames();

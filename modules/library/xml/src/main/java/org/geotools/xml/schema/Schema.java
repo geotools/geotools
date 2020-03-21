@@ -171,7 +171,6 @@ public interface Schema extends Factory {
      *
      * <p>Used to determine if the uri should provided should be included in an instance document.
      *
-     * @param uri
      * @see #getUris()
      */
     public boolean includesURI(URI uri);

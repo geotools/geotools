@@ -37,12 +37,12 @@ public class GMLLineStringTypeBindingTest extends AbstractGMLBindingTest {
     protected void setUp() throws Exception {
         super.setUp();
 
-        line = createElement(GML.NAMESPACE, "myLineString", GML.LINESTRINGTYPE, null);
-        coord1 = createElement(GML.NAMESPACE, "coord", GML.COORDTYPE, null);
-        coord2 = createElement(GML.NAMESPACE, "coord", GML.COORDTYPE, null);
-        coord3 = createElement(GML.NAMESPACE, "coord", GML.COORDTYPE, null);
+        line = createElement(GML.NAMESPACE, "myLineString", GML.LineStringType, null);
+        coord1 = createElement(GML.NAMESPACE, "coord", GML.CoordType, null);
+        coord2 = createElement(GML.NAMESPACE, "coord", GML.CoordType, null);
+        coord3 = createElement(GML.NAMESPACE, "coord", GML.CoordType, null);
 
-        coords = createElement(GML.NAMESPACE, "coordinates", GML.COORDINATESTYPE, null);
+        coords = createElement(GML.NAMESPACE, "coordinates", GML.CoordinatesType, null);
 
         container = new DefaultPicoContainer();
         container.registerComponentInstance(CoordinateArraySequenceFactory.instance());

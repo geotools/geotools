@@ -37,7 +37,7 @@ import org.geotools.swt.utils.Messages;
  * Displays a list of the map layers in an associated {@linkplain JMapPane} and provides controls to
  * set the visibility, selection and style of each layer.
  *
- * <p>Implementation note: DefaultMapContext stores its list of MapLayer objects in rendering order,
+ * <p>Implementation note: DefaultMapContent stores its list of MapLayer objects in rendering order,
  * ie. the layer at index 0 is rendererd first, followed by index 1 etc. MapLayerTable stores its
  * layers in the reverse order since it is more intuitive for the user to think of a layer being 'on
  * top' of other layers.
@@ -78,7 +78,7 @@ public class MapLayerComposite extends Composite {
     /**
      * Add a new layer to those listed in the table. This method will be called by the associated
      * map pane automatically as part of the event sequence when a new MapLayer is added to the
-     * pane's MapContext.
+     * pane's MapContent.
      *
      * @param layer the map layer
      */
@@ -89,7 +89,7 @@ public class MapLayerComposite extends Composite {
     /**
      * Remove a layer from those listed in the table. This method will be called by the associated
      * map pane automatically as part of the event sequence when a new MapLayer is removed from the
-     * pane's MapContext.
+     * pane's MapContent.
      *
      * @param layer the map layer
      */
@@ -138,8 +138,8 @@ public class MapLayerComposite extends Composite {
                         if (selectedMapLayer == null) {
                             return;
                         }
-                        MapContent mapContext = pane.getMapContent();
-                        mapContext.removeLayer(selectedMapLayer);
+                        MapContent MapContent = pane.getMapContent();
+                        MapContent.removeLayer(selectedMapLayer);
                         mapLayerTableViewer.selectionChanged(null);
                     }
                 });
@@ -211,7 +211,7 @@ public class MapLayerComposite extends Composite {
 
         /*
          * MapLayerTable stores layers in the reverse order to
-         * DefaultMapContext (see comment in javadocs for this class)
+         * DefaultMapContent (see comment in javadocs for this class)
          */
         int newContextIndex = contextIndex - delta;
         if (newContextIndex < 0 || newContextIndex > mapContent.layers().size() - 1) {

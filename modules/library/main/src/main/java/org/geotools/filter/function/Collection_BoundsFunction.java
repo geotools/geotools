@@ -66,8 +66,6 @@ public class Collection_BoundsFunction extends FunctionExpressionImpl {
      *
      * @param collection collection to calculate the unique
      * @return An object containing the unique value of the attributes
-     * @throws IllegalFilterException
-     * @throws IOException
      */
     static CalcResult calculateBounds(
             FeatureCollection<? extends FeatureType, ? extends Feature> collection)

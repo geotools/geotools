@@ -16,6 +16,7 @@
  */
 package org.geotools.filter.expression;
 
+import java.util.Collection;
 import org.geotools.filter.Filters;
 import org.geotools.filter.MathExpressionImpl;
 import org.geotools.util.Utilities;
@@ -36,11 +37,16 @@ public class MultiplyImpl extends MathExpressionImpl implements Multiply {
 
     public Object evaluate(Object feature) throws IllegalArgumentException {
         ensureOperandsSet();
+        Object eval1 = getExpression1().evaluate(feature);
+        Object eval2 = getExpression2().evaluate(feature);
+        if (eval1 instanceof Collection || eval2 instanceof Collection) {
+            return handleCollection(eval1, eval2);
+        } else {
+            double leftDouble = Filters.number(getExpression1().evaluate(feature, Number.class));
+            double rightDouble = Filters.number(getExpression2().evaluate(feature, Number.class));
 
-        double leftDouble = Filters.number(getExpression1().evaluate(feature));
-        double rightDouble = Filters.number(getExpression2().evaluate(feature));
-
-        return number(leftDouble * rightDouble);
+            return doArithmeticOperation(leftDouble, rightDouble);
+        }
     }
 
     public Object accept(ExpressionVisitor visitor, Object extraData) {
@@ -79,5 +85,10 @@ public class MultiplyImpl extends MathExpressionImpl implements Multiply {
 
     public String toString() {
         return "(" + getExpression1().toString() + "*" + getExpression2().toString() + ")";
+    }
+
+    @Override
+    protected Object doArithmeticOperation(Double operand1, Double operand2) {
+        return number(operand1 * operand2);
     }
 }

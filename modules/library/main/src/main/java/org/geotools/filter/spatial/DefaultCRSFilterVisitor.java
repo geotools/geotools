@@ -42,8 +42,9 @@ public class DefaultCRSFilterVisitor extends DuplicatingFilterVisitor {
 
     public Object visit(BBOX filter, Object extraData) {
         // if no srs is specified we can't transform anyways
-        String srs = filter.getSRS();
-        if (srs != null && !"".equals(srs.trim())) return super.visit(filter, extraData);
+        ReferencedEnvelope envelope = ReferencedEnvelope.reference(filter.getBounds());
+        if (envelope != null && envelope.getCoordinateReferenceSystem() != null)
+            return super.visit(filter, extraData);
 
         if (defaultCrs == null
                 || filter.getBounds() == null
@@ -60,7 +61,7 @@ public class DefaultCRSFilterVisitor extends DuplicatingFilterVisitor {
                         ReferencedEnvelope.create(filter.getBounds(), horizontalCRS);
                 return getFactory(extraData).bbox(filter.getExpression1(), bounds);
             } catch (Exception e) {
-                throw new RuntimeException("Could not decode srs '" + srs + "'", e);
+                throw new RuntimeException("Failed to create filter with defaulted CRS", e);
             }
         }
     }

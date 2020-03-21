@@ -75,25 +75,13 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
 
     protected CoordinateReferenceSystem crs;
 
-    /**
-     * Returns the name of the feature type with 3d lines
-     *
-     * @return
-     */
+    /** Returns the name of the feature type with 3d lines */
     protected abstract String getLine3d();
 
-    /**
-     * Returns the name of the feature type with 3d points
-     *
-     * @return
-     */
+    /** Returns the name of the feature type with 3d points */
     protected abstract String getPoint3d();
 
-    /**
-     * Returns the name of the feature type with 3d polygons
-     *
-     * @return
-     */
+    /** Returns the name of the feature type with 3d polygons */
     protected abstract String getPoly3d();
 
     @Override
@@ -286,8 +274,6 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
     /**
      * Creates the polygon schema, inserts a 3D geometry into the datastore, and retrieves it back
      * to make sure 3d data is preserved.
-     *
-     * @throws Exception
      */
     private void checkCreateSchemaAndInsert(Geometry poly) throws Exception {
         dataStore.createSchema(poly3DType);
@@ -341,15 +327,13 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
      * two coordinates are identical in location, then the Z values are equal. This should always be
      * the case for valid data.
      *
-     * @param g1
-     * @param g2
      * @return true if the geometries are location-equal in Z
      */
     private static boolean hasMatchingZValues(Geometry g1, Geometry g2) {
         Coordinate[] pt1 = g1.getCoordinates();
         Map<Coordinate, Double> coordZMap = new HashMap<Coordinate, Double>();
         for (int i = 0; i < pt1.length; i++) {
-            coordZMap.put(pt1[i], pt1[i].z);
+            coordZMap.put(pt1[i], pt1[i].getZ());
         }
 
         Coordinate[] pt2 = g2.getCoordinates();
@@ -357,18 +341,14 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
         for (int i2 = 0; i2 < pt2.length; i2++) {
             Coordinate p2 = pt2[i2];
             double z = coordZMap.get(p2);
-            boolean isEqualZ = p2.z == z || (Double.isNaN(p2.z) && Double.isNaN(z));
+            boolean isEqualZ = p2.getZ() == z || (Double.isNaN(p2.getZ()) && Double.isNaN(z));
             if (!isEqualZ) return false;
         }
 
         return true;
     }
 
-    /**
-     * Make sure we can properly retrieve the bounds of 3d layers
-     *
-     * @throws Exception
-     */
+    /** Make sure we can properly retrieve the bounds of 3d layers */
     public void testBounds() throws Exception {
         ReferencedEnvelope env = dataStore.getFeatureSource(tname(getLine3d())).getBounds();
 

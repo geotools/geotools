@@ -21,7 +21,6 @@ package org.geotools.metadata.iso;
 
 import java.net.URI;
 import org.opengis.metadata.ApplicationSchemaInformation;
-import org.opengis.metadata.SpatialAttributeSupplement;
 import org.opengis.metadata.citation.Citation;
 
 /**
@@ -57,9 +56,6 @@ public class ApplicationSchemaInformationImpl extends MetadataEntity
 
     /** Software dependent format used for the application schema software dependent file. */
     private String softwareDevelopmentFileFormat;
-
-    /** Information about the spatial attributes in the application schema for the feature types. */
-    private SpatialAttributeSupplement featureCatalogueSupplement;
 
     /** Construct an initially empty application schema information. */
     public ApplicationSchemaInformationImpl() {}
@@ -158,26 +154,5 @@ public class ApplicationSchemaInformationImpl extends MetadataEntity
     public void setSoftwareDevelopmentFileFormat(final String newValue) {
         checkWritePermission();
         softwareDevelopmentFileFormat = newValue;
-    }
-
-    /**
-     * Information about the spatial attributes in the application schema for the feature types.
-     *
-     * @deprecated removed from ISO 19115
-     */
-    @Deprecated
-    public SpatialAttributeSupplement getFeatureCatalogueSupplement() {
-        return featureCatalogueSupplement;
-    }
-
-    /**
-     * Set information about the spatial attributes in the application schema for the feature types.
-     *
-     * @deprecated removed from ISO 19115
-     */
-    @Deprecated
-    public void setFeatureCatalogueSupplement(final SpatialAttributeSupplement newValue) {
-        checkWritePermission();
-        featureCatalogueSupplement = newValue;
     }
 }

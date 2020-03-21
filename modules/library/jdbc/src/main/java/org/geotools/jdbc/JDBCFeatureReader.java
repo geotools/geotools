@@ -483,8 +483,6 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
      * Builds an array containing the position in the result set for each attribute. It takes into
      * account that rs positions start by one, about the exposed primary keys, and the fact that
      * exposed pk can be only partially selected in the output
-     *
-     * @return
      */
     private int[] buildAttributeRsIndex() {
         LinkedHashSet<String> pkColumns = dataStore.getColumnNames(pkey);
@@ -535,6 +533,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
     }
 
     @Override
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         if (dataStore != null) {
             LOGGER.warning(
@@ -774,15 +773,11 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             return dirty[index];
         }
 
-        /** @deprecated use {@link #isDirty(String)} instead */
-        public boolean isDirrty(String name) {
-            return isDirty(name);
-        }
-
         public boolean isDirty(String name) {
             return isDirty(index.get(name));
         }
 
+        /** Just releasing references, not an actual "Closeable" close */
         public void close() {
             rs = null;
             cx = null;

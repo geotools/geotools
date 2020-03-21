@@ -137,8 +137,6 @@ public class NetCDFUnitFormat {
 
     /**
      * Configures the aliases to be used on the unit parser. An alias is a different name for a unit
-     *
-     * @param aliases
      */
     public static void setAliases(Map<String, String> aliases) {
         SimpleUnitFormat format = AbstractNetCDFUnitFormat.getNewInstance();

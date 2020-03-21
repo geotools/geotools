@@ -57,11 +57,7 @@ public final class EsriHdrTest extends GDALTestCase {
     /** file name of a valid EHdr sample data to be used for tests. */
     private static final String fileName = "elggll.bil";
 
-    /**
-     * Creates a new instance of {@code EsriHdrTest}
-     *
-     * @param name
-     */
+    /** Creates a new instance of {@code EsriHdrTest} */
     public EsriHdrTest() {
         super("EHdr", new EsriHdrFormatFactory());
     }
@@ -127,7 +123,7 @@ public final class EsriHdrTest extends GDALTestCase {
                             oldEnvelope.getUpperCorner().getOrdinate(0),
                             oldEnvelope.getUpperCorner().getOrdinate(1)
                         });
-        cropEnvelope.setCoordinateReferenceSystem(reader.getCrs());
+        cropEnvelope.setCoordinateReferenceSystem(reader.getCoordinateReferenceSystem());
 
         final ParameterValue gg =
                 (ParameterValue)
@@ -173,7 +169,7 @@ public final class EsriHdrTest extends GDALTestCase {
                             oldEnvelope.getUpperCorner().getOrdinate(0) + translate0,
                             oldEnvelope.getUpperCorner().getOrdinate(1) + translate1
                         });
-        wrongEnvelope.setCoordinateReferenceSystem(reader.getCrs());
+        wrongEnvelope.setCoordinateReferenceSystem(reader.getCoordinateReferenceSystem());
 
         final ParameterValue gg2 =
                 (ParameterValue)

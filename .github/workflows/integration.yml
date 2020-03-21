@@ -1,0 +1,57 @@
+name: Downstream integration build (GeoWebCache and GeoServer)
+
+on:
+  # trigger on PR, but only on master branch, the checkouts of the downstream projects are also targeting master (default branch)
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - uses: actions/checkout@v1
+    - name: Maven repository caching
+      uses: actions/cache@v1
+      with:
+        path: ~/.m2/repository
+        key: integration-${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          integration-${{ runner.os }}-maven-
+    - name: Build GeoTools (no tests, prepare fresh artifacts)
+      run: mvn -B clean install -T2 -Dall --file pom.xml -DskipTests
+    - name: Checkout GeoWebCache and GeoServer
+      run: |
+        cd ~
+        echo "Preparing git ssh checkouts"
+        mkdir ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
+        echo "Checking out GeoWebCache"
+        mkdir geowebcache
+        git clone https://github.com/GeoWebCache/geowebcache.git geowebcache
+        echo "Checking out GeoServer"
+        mkdir geoserver
+        git clone https://github.com/geoserver/geoserver.git geoserver
+    - name: Build GeoWebCache with tests
+      run: |
+        export TEST_OPTS="-XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10"
+        export MAVEN_OPTS="-Xmx512m $TEST_OPTS"
+        cd ~
+        mvn -B -f geowebcache/geowebcache/pom.xml install -nsu -Dfmt.skip=true -DskipTests
+        mvn -B -f geowebcache/geowebcache/pom.xml test -nsu -T2 -Dfmt.skip=true
+    - name: Build GeoServer with tests
+      run: |
+        export TEST_OPTS="-XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10"
+        export MAVEN_OPTS="-Xmx256m $TEST_OPTS"
+        cd ~
+        mvn -B -f geoserver/src/pom.xml install -nsu -Prelease -Dfmt.skip=true -DskipTests
+        mvn -B -f geoserver/src/community/pom.xml install -nsu -DcommunityRelease -Dfmt.skip=true -DskipTests
+        mvn -B -f geoserver/src/pom.xml test -T2 -nsu -Dtest.maxHeapSize=512m -Djvm.opts="$TEST_OPTS" -Prelease -Dfmt.skip=true
+    - name: Remove SNAPSHOT jars from repository
+      run: |
+        find ~/.m2/repository -name "*SNAPSHOT*" -type d | xargs rm -rf {} 

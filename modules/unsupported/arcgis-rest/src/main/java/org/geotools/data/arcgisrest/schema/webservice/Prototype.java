@@ -1,4 +1,3 @@
-
 package org.geotools.data.arcgisrest.schema.webservice;
 
 import com.google.gson.annotations.Expose;
@@ -6,29 +5,17 @@ import com.google.gson.annotations.SerializedName;
 
 public class Prototype {
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     @SerializedName("attributes")
     @Expose
     private Attributes attributes;
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     public Attributes getAttributes() {
         return attributes;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     public void setAttributes(Attributes attributes) {
         this.attributes = attributes;
     }
@@ -36,13 +23,16 @@ public class Prototype {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(Prototype.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append(Prototype.class.getName())
+                .append('@')
+                .append(Integer.toHexString(System.identityHashCode(this)))
+                .append('[');
         sb.append("attributes");
         sb.append('=');
-        sb.append(((this.attributes == null)?"<null>":this.attributes));
+        sb.append(((this.attributes == null) ? "<null>" : this.attributes));
         sb.append(',');
-        if (sb.charAt((sb.length()- 1)) == ',') {
-            sb.setCharAt((sb.length()- 1), ']');
+        if (sb.charAt((sb.length() - 1)) == ',') {
+            sb.setCharAt((sb.length() - 1), ']');
         } else {
             sb.append(']');
         }
@@ -52,7 +42,7 @@ public class Prototype {
     @Override
     public int hashCode() {
         int result = 1;
-        result = ((result* 31)+((this.attributes == null)? 0 :this.attributes.hashCode()));
+        result = ((result * 31) + ((this.attributes == null) ? 0 : this.attributes.hashCode()));
         return result;
     }
 
@@ -65,7 +55,7 @@ public class Prototype {
             return false;
         }
         Prototype rhs = ((Prototype) other);
-        return ((this.attributes == rhs.attributes)||((this.attributes!= null)&&this.attributes.equals(rhs.attributes)));
+        return ((this.attributes == rhs.attributes)
+                || ((this.attributes != null) && this.attributes.equals(rhs.attributes)));
     }
-
 }

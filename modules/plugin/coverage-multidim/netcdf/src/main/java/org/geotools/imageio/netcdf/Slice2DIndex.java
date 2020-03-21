@@ -170,7 +170,6 @@ public class Slice2DIndex {
          *
          * @param imageIndex the imageIndex to look for.
          * @return the {@link Slice2DIndex} for the picked image.
-         * @throws IOException
          */
         public synchronized Slice2DIndex getSlice2DIndex(int imageIndex) throws IOException {
             // Synchronized these access due to the RAF usage.
@@ -218,7 +217,6 @@ public class Slice2DIndex {
          *
          * @param file the file to write to.
          * @param indexList the list of {@link Slice2DIndex} to dump to file.
-         * @throws IOException
          */
         public static void writeIndexFile(File file, List<Slice2DIndex> indexList)
                 throws IOException {
@@ -268,6 +266,7 @@ public class Slice2DIndex {
         }
 
         @Override
+        @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
         protected void finalize() throws Throwable {
             if (raf != null) {
                 LOGGER.warning(

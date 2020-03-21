@@ -21,16 +21,14 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.lang3.StringUtils;
+import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Response;
+import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.ServiceException;
 import org.geotools.ows.wms.StyleImpl;
@@ -78,6 +76,10 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
 
     public static final String TILEMATRIXSET = "TileMatrixSet";
 
+    public static final String FORMAT = "Format";
+
+    private final HTTPClient client;
+
     private WMTSLayer layer = null;
 
     private String styleName = "";
@@ -109,7 +111,13 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
      * @param properties pre-set properties to be used. Can be null.
      */
     public AbstractGetTileRequest(URL onlineResource, Properties properties) {
+        this(onlineResource, properties, new SimpleHttpClient());
+    }
+
+    public AbstractGetTileRequest(URL onlineResource, Properties properties, HTTPClient client) {
         super(onlineResource, properties);
+        Objects.requireNonNull(client, "client");
+        this.client = client;
     }
 
     protected abstract void initVersion();
@@ -212,13 +220,24 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
         TileMatrixSet matrixSet = selectMatrixSet();
 
         String requestUrl = onlineResource.toString();
-        if (WMTSServiceType.REST.equals(type)) {
-            String format = (String) getProperties().get("Format");
-            if (format == null || format.isEmpty()) {
-                format = "image/png";
-                if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.fine("Format not set, trying with " + format);
+        String format = (String) getProperties().get(FORMAT);
+        if (StringUtils.isEmpty(format)) {
+            if (!layer.getFormats().isEmpty()) {
+                format = layer.getFormats().get(0);
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine(
+                            "Format is not set, available formats: "
+                                    + layer.getFormats()
+                                    + " -- Selecting "
+                                    + format);
+                }
             }
+        }
+        if (StringUtils.isEmpty(format)) {
+            format = "image/png";
+            if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("Format not set, trying with " + format);
+        }
+        if (WMTSServiceType.REST.equals(type)) {
             requestUrl = layer.getTemplate(format);
             if (requestUrl == null) {
                 if (LOGGER.isLoggable(Level.INFO))
@@ -233,7 +252,9 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
         }
 
         WMTSTileService wmtsService =
-                new WMTSTileService(requestUrl, type, layer, styleString, matrixSet);
+                new WMTSTileService(requestUrl, type, layer, styleString, matrixSet, this.client);
+
+        wmtsService.setFormat(format);
 
         wmtsService.getDimensions().put(WMTSTileService.DIMENSION_TIME, requestedTime);
 

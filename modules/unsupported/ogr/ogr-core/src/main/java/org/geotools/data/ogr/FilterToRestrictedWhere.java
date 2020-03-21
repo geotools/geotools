@@ -16,7 +16,6 @@
  */
 package org.geotools.data.ogr;
 
-import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -323,9 +322,6 @@ class FilterToRestrictedWhere implements FilterVisitor, ExpressionVisitor {
      * Writes out a non null, non geometry literal. The base class properly handles null, numeric
      * and booleans (true|false), and turns everything else into a string. Subclasses are expected
      * to override this shall they need a different treatment (e.g. for dates)
-     *
-     * @param literal
-     * @throws IOException
      */
     protected void writeLiteral(Object literal) {
         if (literal == null) {

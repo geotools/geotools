@@ -22,6 +22,8 @@ import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
+import org.geotools.util.Converters;
+import org.geotools.util.factory.Hints;
 import org.opengis.filter.capability.FunctionName;
 
 public class FilterFunction_round extends FunctionExpressionImpl {
@@ -36,17 +38,19 @@ public class FilterFunction_round extends FunctionExpressionImpl {
     }
 
     public Object evaluate(Object feature) {
-        float arg0;
 
-        try { // attempt to get value and perform conversion
-            Number number = getExpression(0).evaluate(feature, Float.class);
-            arg0 = number.floatValue();
-        } catch (Exception e) {
-            // probably a type error
+        Object arg0 = getExpression(0).evaluate(feature);
+
+        if (arg0 == null) {
+            return null;
+        }
+
+        arg0 = Converters.convert(arg0, Float.class, new Hints());
+        if (arg0 == null) {
             throw new IllegalArgumentException(
                     "Filter Function problem for function round argument #0 - expected type float");
         }
 
-        return Integer.valueOf(Math.round(arg0));
+        return Integer.valueOf(Math.round((Float) arg0));
     }
 }

@@ -1,11 +1,11 @@
 Referencing FAQ
 ---------------
 
-Q: Why can't I display shapefile over a WMS layer?
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Q: Why can't I display a shapefile over a WMS layer?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This can happen when the axis definition (ie. which way is X ?) differs between the coordinate reference system used by
-the shapefile and that used by the WMS layer.  It can be fixed by requesting GeoTools to enforce lon - lat axis order by 
+This can happen when the axis definition (i.e. which way is X ?) differs between the coordinate reference system used by
+the shapefile and that used by the WMS layer.  It can be fixed by requesting GeoTools to enforce longitude - latitude axis order by 
 including this statement in your code prior to displaying layers...
 
 .. sourcecode:: java
@@ -29,26 +29,26 @@ Q: How to choose an EPSG Authority?
 The referencing module does not do very much out of the box - it needs someone
  to tell it what all the funny codes mean (such as "EPSG:4326").
 
-You need to choose a single "epsg" jar to have on your classpath; if you have
-several epsg jars on your classpath you will get a FactoryException.
+You need to choose a single EPSG jar to have on your classpath; if you have
+several EPSG jars on your classpath you will get a FactoryException.
   
-For most needs just use the **gt-epsg-hsql** plugin:
+For most needs just use the ``gt-epsg-hsql`` plugin:
 
-* **gt-epsgh-hsql**: will unpack an hsql database containing the official epsg
+* ``gt-epsgh-hsql``: will unpack an HSQL database containing the official EPSG
   database into a temp directory, a great solution for desktop applications.
 
 There are several alternatives:
 
-* **gt-epsg-wkt**: uses an internal property file and is lightweight rather than
+* ``gt-epsg-wkt``: uses an internal property file and is lightweight rather than
   official and correct. A great solution for applets
-* **gt-epsg-postgres**: uses the official epsg database which you have to load
+* ``gt-epsg-postgres``: uses the official EPSG database which you have to load
   into PostgreSQL yourself. A great solution for Java EE applications.  
-* **gt-epsg-access**: irectly use an the official epsg database as distributed.
+* ``gt-epsg-access``: directly use an the official EPSG database as distributed.
   A great solution for windows users that need the latest official database.
 
 Unsupported:
 
-* **gt-epsg-oracle**: Load the official epsg database into oracle to use this plugin
+* ``gt-epsg-oracle``: Load the official EPSG database into oracle to use this plugin
 * **gt-epsgh-h2**: use this popular pure java database
 
 Q: Are other authorities other than EPSG supported?
@@ -60,7 +60,7 @@ inspired ideas.
 Q: What Jars does gt-referencing need?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-As an example to use **gt-epsg-hsql** you will need::
+As an example to use ``gt-epsg-hsql`` you will need::
     
     C:\geotools\trunk\modules\plugin\epsg-hsql>mvn dependency:tree
     ...
@@ -108,16 +108,16 @@ the same datum it was collected in.
 * A: Match your PRJ file
   
   Usually this occurs when you have loaded a CoordinateReferenceSystem from a
-  "prj" file included with your shapefile.
+  ``prj`` file included with your shapefile.
   
   To fix look up the complete definition in the EPSG database using the CRS
   utility class. The EPSG database contains more information than can be
-  Expressed in your "prj" file.
+  Expressed in your ``prj`` file.
   
 * A: Datum shift by Grid
   
   Finally in the rare case of a Datum shift backed by grids are only partially
-  implemented. Rueben Shulz has implemented data shift backed by grids for
+  implemented. Reuben Schulz has implemented data shift backed by grids for
   NADCON with the following limitations:
 
   * Use of NADCON grids has not been integrated with
@@ -131,7 +131,7 @@ Q: What does gt-referencing do?
 You will eventually care about this as it defines how 2D data actually means 3D
 data.
 
-You can take a measurement (ie a coordinate) plus a coordinate reference system (the
+You can take a measurement (i.e. a coordinate) plus a coordinate reference system (the
 meaning) and figure out where a position on the earth is in 3D space.
 
 It is easy to assume that Coordinates are recorded in double[] as repeating x/y values
@@ -151,14 +151,14 @@ We will get into this again when you actually have some data - the CoordinateRef
 Q: Can I just use Referencing without the rest of GeoTools?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Yes, you will need to use the metadata module, and one of the epsg modules. Along with
+Yes, you will need to use the metadata module, and one of the EPSG modules. Along with
 their dependencies such as units.
   
 Q: I cannot find an EPSG Code?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You need to have one, and only one, of the epsg plugins on your CLASSPATH. We
-recommend epsg-hsql for most uses.
+You need to have one, and only one, of the EPSG plugins on your CLASSPATH. We
+recommend   ``epsg-hsql`` for most uses.
 
 Q: I cannot re-project my shapefile (missing "Bursa wolf parameters")?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -169,17 +169,17 @@ reference system::
      MathTransform transform = CRS.findMathTransform(DefaultGeographicCRS.WGS84, moroccoCRS);
   
 This problem often occurs when working with a custom coordinate reference system, if
-you look in your shapefile's prj file you will see that the contents is normal "well
+you look in your shapefile's PRJ file you will see that the contents is normal "well
 known text".
 
 The "Bursa-Wolf parameters" define the relationship (and a transformation) between the
 spheroid being used by your shapefile and the normal WGS84 spheroid.
 
-The opengis javadocs has some help for you here:
+The ``opengis`` javadocs has some help for you here:
 
 * http://docs.geotools.org/stable/javadocs/org/opengis/referencing/doc-files/WKT.html#TOWGS84
 
-Your best bet is to look up the normal EPSG code for your area; and update your "prj"
+Your best bet is to look up the normal EPSG code for your area; and update your ``prj``
 file to include the official definition.
 
 Q: How do I Transform?
@@ -230,23 +230,23 @@ the system.
 This is often used by those working with a national standards body that maintains its
 own set of official codes.
 
-You can use the **gt-epsg-wkt** plugin as an example of the following options:
+You can use the ``gt-epsg-wkt`` plugin as an example of the following options:
 
-* Through a property file and programatic registration of the factory
+* Through a property file and programmatic registration of the factory
   
   You can create a file with your CRS in the WKT format, instantiate a 
   PropertyAuthorityFactory with that CRS:
   
   1. Create a property file with your CRS definitions in Well-Known Text (WKT) format.
-  2. Each line of the file should be "someUniqueCodeValue = crsInWKT".
+  2. Each line of the file should be ``someUniqueCodeValue = crsInWKT`` .
   3. Place that file as a resource available from your code at run time
-  4. Create a org.geotools.referencing.factory.PropertyAuthorityFactory with a custom
+  4. Create a ``org.geotools.referencing.factory.PropertyAuthorityFactory`` with a custom
      code for the authority such as "CUSTOM" and a URI to your file
-  5. Register your factory with the ReferencingFactoryFinder.addAuthorityFactory(..)
+  5. Register your factory with the ``ReferencingFactoryFinder.addAuthorityFactory(..)`` 
      method
   
-  After that, the desired CRS can be invoked as "CUSTOM:someUniqueCodeValue" so, for
-  example, a CRS object can be created using the CRS.decode(..) method with the string
+  After that, the desired CRS can be invoked as ``CUSTOM:someUniqueCodeValue``  so, for
+  example, a CRS object can be created using the ``CRS.decode(..)`` method with the string
   nomenclature of authority-colon-code. The CRS's defined in this way will also be taken
   into consideration by the rest of the referencing subsystem.
 
@@ -260,12 +260,12 @@ You can use the **gt-epsg-wkt** plugin as an example of the following options:
 Q: How to I add my own EPSG Codes?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The gt-epsg-wkt plugin is intended to be used on its own and should not be combined
-with any of the other gt-epsg-h2, or gt-epsg-hsql plugins as they will end up in
+The   ``gt-epsg-wkt`` plugin is intended to be used on its own and should not be combined
+with any of the other   ``gt-epsg-h2``  or   ``gt-epsg-hsql`` plugins as they will end up in
 conflict.
 
 If you want to add a few more definitions over and above those provided by the
-official database (ie epsg-hsql or epsg-h2) please use the following (taken from the
+official database (i.e. ``gt-epsg-hsql`` or ``gt-epsg-h2``)  please use the following (taken from the
 uDig application)::
   
      URL url = new URL(url, "epsg.properties");

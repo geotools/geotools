@@ -29,8 +29,6 @@ public class XSNonPositiveIntegerStrategyTest extends TestSchema {
      * sign ("-") must be present.
      *
      * <p>For example: -1, 0, -12678967543233, -100000.
-     *
-     * @throws Exception
      */
     public void validateValues(String text, Number expected) throws Exception {
         Object value = new BigInteger(text.trim());

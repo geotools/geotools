@@ -27,6 +27,7 @@ import org.geotools.data.ServiceInfo;
 import org.geotools.data.ows.AbstractOpenWebService;
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.OperationType;
+import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.ows.ServiceException;
 import org.geotools.ows.wms.CRSEnvelope;
@@ -55,14 +56,7 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
 
     private final Map<String, String> headers = new HashMap<>();
 
-    /**
-     * @param serverURL
-     * @param httpClient
-     * @param capabilities
-     * @param hints
-     * @throws ServiceException
-     * @throws IOException
-     */
+    /** */
     public WebMapTileServer(
             URL serverURL,
             HTTPClient httpClient,
@@ -73,44 +67,29 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
         setType(capabilities.getType());
     }
 
-    /**
-     * @param serverURL
-     * @param httpClient
-     * @param capabilities
-     * @throws ServiceException
-     * @throws IOException
-     */
+    /** */
     public WebMapTileServer(URL serverURL, HTTPClient httpClient, WMTSCapabilities capabilities)
             throws ServiceException, IOException {
         super(serverURL, httpClient, capabilities);
         setType(super.capabilities.getType());
     }
 
-    /**
-     * @param serverURL
-     * @throws IOException
-     * @throws ServiceException
-     */
+    /** */
     public WebMapTileServer(URL serverURL) throws IOException, ServiceException {
         super(serverURL);
         setType(capabilities.getType());
     }
 
-    /**
-     * @param capabilities
-     * @throws IOException
-     * @throws ServiceException
-     */
+    /** */
     public WebMapTileServer(WMTSCapabilities capabilities) throws ServiceException, IOException {
-        super(capabilities, capabilities.getRequest().getGetCapabilities().getGet());
+        super(
+                capabilities.getRequest().getGetCapabilities().getGet(),
+                new SimpleHttpClient(),
+                capabilities);
         setType(capabilities.getType());
     }
 
-    /**
-     * @param delegate
-     * @throws IOException
-     * @throws ServiceException
-     */
+    /** */
     public WebMapTileServer(WebMapTileServer delegate) throws ServiceException, IOException {
         this(delegate.serverURL);
     }
@@ -139,10 +118,7 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
         specs[0] = new WMTSSpecification();
     }
 
-    /**
-     * @param tileRequest
-     * @return
-     */
+    /** */
     public Set<Tile> issueRequest(GetTileRequest tileRequest) throws ServiceException {
 
         return tileRequest.getTiles();
@@ -160,9 +136,9 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
         }
 
         GetTileRequest request =
-                (GetTileRequest)
-                        ((WMTSSpecification) specification)
-                                .createGetTileRequest(url, (Properties) null, capabilities);
+                ((WMTSSpecification) specification)
+                        .createGetTileRequest(
+                                url, (Properties) null, capabilities, this.getHTTPClient());
 
         request.getHeaders().putAll(headers);
 
@@ -181,19 +157,13 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
         }
     }
 
-    /**
-     * @param getmap
-     * @return
-     */
+    /** */
     public GetFeatureInfoRequest createGetFeatureInfoRequest(GetTileRequest getmap) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    /**
-     * @param request
-     * @return
-     */
+    /** */
     public GetFeatureInfoResponse issueRequest(GetFeatureInfoRequest request) {
         // TODO Auto-generated method stub
         return null;
@@ -212,11 +182,7 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
         return headers;
     }
 
-    /**
-     * @param layer
-     * @param crs
-     * @return
-     */
+    /** */
     public GeneralEnvelope getEnvelope(Layer layer, CoordinateReferenceSystem crs) {
         Map<String, CRSEnvelope> boundingBoxes = layer.getBoundingBoxes();
         CRSEnvelope box = boundingBoxes.get(crs.getName().getCode());

@@ -25,6 +25,7 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.style.GraphicalSymbol;
 
 /**
  * A simple visitor whose purpose is to extract the set of attributes used by a Style, that is,
@@ -56,11 +57,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
         return symbolizerGeometriesVisitEnabled;
     }
 
-    /**
-     * Enables/disables visit of the symbolizer geometry property (on by default)
-     *
-     * @param symbolizerGeometriesVisitEnabled
-     */
+    /** Enables/disables visit of the symbolizer geometry property (on by default) */
     public void setSymbolizerGeometriesVisitEnabled(boolean symbolizerGeometriesVisitEnabled) {
         this.symbolizerGeometriesVisitEnabled = symbolizerGeometriesVisitEnabled;
     }
@@ -76,11 +73,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
 
     /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Style) */
     public void visit(org.geotools.styling.Style style) {
-        FeatureTypeStyle[] ftStyles = style.getFeatureTypeStyles();
-
-        for (int i = 0; i < ftStyles.length; i++) {
-            ftStyles[i].accept(this);
-        }
+        style.featureTypeStyles().forEach(ft -> ft.accept(this));
     }
 
     /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Rule) */
@@ -91,32 +84,18 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
             filter.accept(this, null);
         }
 
-        Symbolizer[] symbolizers = rule.getSymbolizers();
-
-        if (symbolizers != null) {
-            for (int i = 0; i < symbolizers.length; i++) {
-                Symbolizer symbolizer = symbolizers[i];
-                symbolizer.accept(this);
-            }
-        }
+        rule.symbolizers().forEach(s -> s.accept(this));
     }
 
     /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.FeatureTypeStyle) */
     public void visit(FeatureTypeStyle fts) {
-        Rule[] rules = fts.getRules();
-
-        for (int i = 0; i < rules.length; i++) {
-            Rule rule = rules[i];
+        for (Rule rule : fts.rules()) {
             rule.accept(this);
         }
     }
 
     /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Fill) */
     public void visit(Fill fill) {
-        if (fill.getBackgroundColor() != null) {
-            fill.getBackgroundColor().accept(this, null);
-        }
-
         if (fill.getColor() != null) {
             fill.getColor().accept(this, null);
         }
@@ -326,12 +305,11 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
 
     /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Graphic) */
     public void visit(Graphic gr) {
-        if (gr.getSymbols() != null) {
-            Symbol[] symbols = gr.getSymbols();
-
-            for (int i = 0; i < symbols.length; i++) {
-                Symbol symbol = symbols[i];
-                symbol.accept(this);
+        for (GraphicalSymbol symbol : gr.graphicalSymbols()) {
+            if (symbol instanceof Symbol) {
+                ((Symbol) symbol).accept(this);
+            } else {
+                throw new RuntimeException("Don't know how to visit " + symbol);
             }
         }
 
@@ -371,11 +349,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
         }
     }
 
-    /**
-     * Handles the special CQL expressions embedded in the style markers since the time
-     *
-     * @param expression
-     */
+    /** Handles the special CQL expressions embedded in the style markers since the time */
     private void visitCqlExpression(String expression) {
         Expression parsed = ExpressionExtractor.extractCqlExpressions(expression);
         if (parsed != null) parsed.accept(this, null);

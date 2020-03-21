@@ -31,6 +31,7 @@ import org.geotools.geometry.iso.io.CollectionFactoryMemoryImpl;
 import org.geotools.geometry.iso.util.elem2D.Geo2DFactory;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.geometry.DirectPosition;
+import org.opengis.geometry.PositionFactory;
 import org.opengis.geometry.Precision;
 import org.opengis.geometry.coordinate.GeometryFactory;
 import org.opengis.geometry.coordinate.LineString;
@@ -58,6 +59,8 @@ public class PicoSurfaceTest extends TestCase {
 
         GeometryFactoryImpl tGeomFactory =
                 (GeometryFactoryImpl) container.getComponentInstanceOfType(GeometryFactory.class);
+        PositionFactory pf =
+                (PositionFactory) container.getComponentInstanceOfType(PositionFactory.class);
         PrimitiveFactoryImpl tPrimFactory =
                 (PrimitiveFactoryImpl)
                         container.getComponentInstanceOfType(PrimitiveFactoryImpl.class);
@@ -65,19 +68,18 @@ public class PicoSurfaceTest extends TestCase {
         // container.getComponentInstanceOfType( PositionFactory.class );
 
         // Creates by SurfaceBoundary
-        this._testSurface2(tGeomFactory, tPrimFactory);
+        this._testSurface2(tGeomFactory, pf, tPrimFactory);
 
         // Created by Patches
         this._testSurface1(tGeomFactory, tPrimFactory);
 
         // test other surface methods
-        this._testOhterSurfaceMethods(tGeomFactory, tPrimFactory);
+        this._testOhterSurfaceMethods(tGeomFactory, pf, tPrimFactory);
     }
 
     /**
      * Creates a pico container that knows about all the geom factories
      *
-     * @param crs
      * @return container
      */
     protected PicoContainer container(CoordinateReferenceSystem crs) {
@@ -122,11 +124,7 @@ public class PicoSurfaceTest extends TestCase {
         return triangleList;
     }
 
-    /**
-     * Create a surface on basis of SurfacePatches (Triangles)
-     *
-     * @param aGeomFactory
-     */
+    /** Create a surface on basis of SurfacePatches (Triangles) */
     private void _testSurface1(
             GeometryFactoryImpl aGeomFactory, PrimitiveFactoryImpl tPrimFactory) {
 
@@ -141,15 +139,17 @@ public class PicoSurfaceTest extends TestCase {
     }
 
     public Surface _testSurface2(
-            GeometryFactoryImpl aGeomFactory, PrimitiveFactoryImpl tPrimFactory) {
+            GeometryFactoryImpl aGeomFactory,
+            PositionFactory pf,
+            PrimitiveFactoryImpl tPrimFactory) {
 
         List<DirectPosition> directPositionList = new ArrayList<DirectPosition>();
-        directPositionList.add(aGeomFactory.createDirectPosition(new double[] {20, 10}));
-        directPositionList.add(aGeomFactory.createDirectPosition(new double[] {40, 10}));
-        directPositionList.add(aGeomFactory.createDirectPosition(new double[] {50, 40}));
-        directPositionList.add(aGeomFactory.createDirectPosition(new double[] {30, 50}));
-        directPositionList.add(aGeomFactory.createDirectPosition(new double[] {10, 30}));
-        directPositionList.add(aGeomFactory.createDirectPosition(new double[] {20, 10}));
+        directPositionList.add(pf.createDirectPosition(new double[] {20, 10}));
+        directPositionList.add(pf.createDirectPosition(new double[] {40, 10}));
+        directPositionList.add(pf.createDirectPosition(new double[] {50, 40}));
+        directPositionList.add(pf.createDirectPosition(new double[] {30, 50}));
+        directPositionList.add(pf.createDirectPosition(new double[] {10, 30}));
+        directPositionList.add(pf.createDirectPosition(new double[] {20, 10}));
 
         Ring exteriorRing = tPrimFactory.createRingByDirectPositions(directPositionList);
         List<Ring> interiors = new ArrayList<Ring>();
@@ -200,15 +200,17 @@ public class PicoSurfaceTest extends TestCase {
     }
 
     public void _testOhterSurfaceMethods(
-            GeometryFactoryImpl aGeomFactory, PrimitiveFactoryImpl tPrimFactory) {
+            GeometryFactoryImpl aGeomFactory,
+            PositionFactory pf,
+            PrimitiveFactoryImpl tPrimFactory) {
 
         List<DirectPosition> directPositionList = new ArrayList<DirectPosition>();
-        directPositionList.add(aGeomFactory.createDirectPosition(new double[] {20, 10}));
-        directPositionList.add(aGeomFactory.createDirectPosition(new double[] {40, 10}));
-        directPositionList.add(aGeomFactory.createDirectPosition(new double[] {50, 40}));
-        directPositionList.add(aGeomFactory.createDirectPosition(new double[] {30, 50}));
-        directPositionList.add(aGeomFactory.createDirectPosition(new double[] {10, 30}));
-        directPositionList.add(aGeomFactory.createDirectPosition(new double[] {20, 10}));
+        directPositionList.add(pf.createDirectPosition(new double[] {20, 10}));
+        directPositionList.add(pf.createDirectPosition(new double[] {40, 10}));
+        directPositionList.add(pf.createDirectPosition(new double[] {50, 40}));
+        directPositionList.add(pf.createDirectPosition(new double[] {30, 50}));
+        directPositionList.add(pf.createDirectPosition(new double[] {10, 30}));
+        directPositionList.add(pf.createDirectPosition(new double[] {20, 10}));
 
         Ring exteriorRing = tPrimFactory.createRingByDirectPositions(directPositionList);
         List<Ring> interiors = new ArrayList<Ring>();
@@ -270,8 +272,8 @@ public class PicoSurfaceTest extends TestCase {
         assertFalse(surfaceBoundary1.equals((Object) surfacePatches1));
         assertFalse(surfaceBoundary1.equals((Object) null));
         directPositionList.remove(directPositionList.size() - 1);
-        directPositionList.add(aGeomFactory.createDirectPosition(new double[] {15, 25}));
-        directPositionList.add(aGeomFactory.createDirectPosition(new double[] {20, 10}));
+        directPositionList.add(pf.createDirectPosition(new double[] {15, 25}));
+        directPositionList.add(pf.createDirectPosition(new double[] {20, 10}));
         Ring exteriorRing2 = tPrimFactory.createRingByDirectPositions(directPositionList);
         SurfaceBoundaryImpl surfaceBoundary2 =
                 tPrimFactory.createSurfaceBoundary(exteriorRing2, interiors);
@@ -289,12 +291,12 @@ public class PicoSurfaceTest extends TestCase {
 
         //		 create a list of connected directpositions
         List<Position> dps = new ArrayList<Position>();
-        dps.add(aGeomFactory.createDirectPosition(new double[] {20, 10}));
-        dps.add(aGeomFactory.createDirectPosition(new double[] {40, 10}));
-        dps.add(aGeomFactory.createDirectPosition(new double[] {50, 40}));
-        dps.add(aGeomFactory.createDirectPosition(new double[] {30, 50}));
-        dps.add(aGeomFactory.createDirectPosition(new double[] {10, 30}));
-        dps.add(aGeomFactory.createDirectPosition(new double[] {20, 10}));
+        dps.add(pf.createDirectPosition(new double[] {20, 10}));
+        dps.add(pf.createDirectPosition(new double[] {40, 10}));
+        dps.add(pf.createDirectPosition(new double[] {50, 40}));
+        dps.add(pf.createDirectPosition(new double[] {30, 50}));
+        dps.add(pf.createDirectPosition(new double[] {10, 30}));
+        dps.add(pf.createDirectPosition(new double[] {20, 10}));
 
         //		 create linestring from directpositions
         LineString line = aGeomFactory.createLineString(dps);

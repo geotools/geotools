@@ -82,12 +82,7 @@ public class ConvexHull {
         this.crs = crs;
     }
 
-    /**
-     * Get coordinates from a geometry and eliminate positions with equal coordinates
-     *
-     * @param geom
-     * @return
-     */
+    /** Get coordinates from a geometry and eliminate positions with equal coordinates */
     // positions might actually go NPE, just ignoring it as the module is generally broken
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
     private static Coordinate[] extractCoordinates(GeometryImpl geom) {
@@ -98,7 +93,7 @@ public class ConvexHull {
         if (geom instanceof PointImpl) {
             // Add point
             positions = new ArrayList<DirectPositionImpl>();
-            positions.add(((PointImpl) geom).getPosition());
+            positions.add(((PointImpl) geom).getDirectPosition());
         } else if (geom instanceof CurveImpl) {
             // Add control points
             positions = ((CurveImpl) geom).asDirectPositions();
@@ -208,7 +203,8 @@ public class ConvexHull {
             if (pos instanceof DirectPositionImpl) {
                 filter.filter(new Coordinate(((DirectPositionImpl) pos).getCoordinate()));
             } else if (pos instanceof PointImpl) {
-                filter.filter(new Coordinate(((PointImpl) pos).getPosition().getCoordinate()));
+                filter.filter(
+                        new Coordinate(((PointImpl) pos).getDirectPosition().getCoordinate()));
             } else Assert.isTrue(false, "Invalid coordinate type");
         }
 
@@ -285,9 +281,6 @@ public class ConvexHull {
      *
      * <p>Note that even if the method used to determine the polygon vertices is not 100% robust,
      * this does not affect the robustness of the convex hull.
-     *
-     * @param pts
-     * @return
      */
     private Coordinate[] reduce(Coordinate[] inputPts) {
         // Coordinate[] polyPts = computeQuad(inputPts);

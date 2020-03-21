@@ -50,7 +50,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
@@ -314,8 +313,6 @@ public class FeatureJSON {
      * Check for GeoJSON default (EPSG:4326 in easting/northing order).
      *
      * @return true if crs is the default for GeoJSON
-     * @throws NoSuchAuthorityCodeException
-     * @throws FactoryException
      */
     private boolean isStandardCRS(CoordinateReferenceSystem crs) {
         if (crs == null) {
@@ -355,22 +352,25 @@ public class FeatureJSON {
      */
     public FeatureCollection readFeatureCollection(Object input) throws IOException {
         DefaultFeatureCollection features = new DefaultFeatureCollection(null, null);
-        FeatureCollectionIterator it = (FeatureCollectionIterator) streamFeatureCollection(input);
-        while (it.hasNext()) {
-            features.add(it.next());
-        }
-
-        // check for the case of a crs specified post features in the json
-        if (features.getSchema() != null
-                && features.getSchema().getCoordinateReferenceSystem() == null
-                && it.getHandler().getCRS() != null) {
-            try {
-                return new ForceCoordinateSystemFeatureResults(features, it.getHandler().getCRS());
-            } catch (SchemaException e) {
-                throw (IOException) new IOException().initCause(e);
+        try (FeatureCollectionIterator it =
+                (FeatureCollectionIterator) streamFeatureCollection(input)) {
+            while (it.hasNext()) {
+                features.add(it.next());
             }
+
+            // check for the case of a crs specified post features in the json
+            if (features.getSchema() != null
+                    && features.getSchema().getCoordinateReferenceSystem() == null
+                    && it.getHandler().getCRS() != null) {
+                try {
+                    return new ForceCoordinateSystemFeatureResults(
+                            features, it.getHandler().getCRS());
+                } catch (SchemaException e) {
+                    throw (IOException) new IOException().initCause(e);
+                }
+            }
+            return features;
         }
-        return features;
     }
 
     /**
@@ -439,7 +439,6 @@ public class FeatureJSON {
      *
      * @param crs CoordinateReferenceSystem or null for default
      * @return properties map naming crs identifier
-     * @throws IOException
      */
     Map<String, Object> createCRS(CoordinateReferenceSystem crs) throws IOException {
         Map<String, Object> obj = new LinkedHashMap<String, Object>();

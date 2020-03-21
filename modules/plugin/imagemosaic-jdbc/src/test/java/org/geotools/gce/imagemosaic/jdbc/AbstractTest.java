@@ -38,7 +38,6 @@ import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import javax.imageio.ImageIO;
-import junit.framework.Assert;
 import junit.framework.TestCase;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -51,6 +50,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
+import org.junit.Assert;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -451,10 +451,7 @@ public abstract class AbstractTest extends TestCase {
     /**
      * Test if files are the same by comparing their canonical name.
      *
-     * @param file1
-     * @param file2
      * @return true if files have the same canonical name
-     * @throws Exception
      */
     public static boolean isSameFile(String file1, String file2) throws Exception {
         return new File(file1).getCanonicalPath().equals(new File(file2).getCanonicalPath());
@@ -463,20 +460,13 @@ public abstract class AbstractTest extends TestCase {
     /**
      * Test if files are the same by comparing their canonical name.
      *
-     * @param file1
-     * @param file2
      * @return true if files have the same canonical name
-     * @throws Exception
      */
     public static boolean isSameFile(URL file1, String file2) throws Exception {
         return URLs.urlToFile(file1).getCanonicalPath().equals(new File(file2).getCanonicalPath());
     }
 
-    /**
-     * Unit test for {{@link #isSameFile(String, String)}.
-     *
-     * @throws Exception
-     */
+    /** Unit test for {{@link #isSameFile(String, String)}. */
     public void testIsSameFile() throws Exception {
         assertTrue(isSameFile("foo", "./foo"));
         assertTrue(isSameFile("foo", "bar/../foo"));

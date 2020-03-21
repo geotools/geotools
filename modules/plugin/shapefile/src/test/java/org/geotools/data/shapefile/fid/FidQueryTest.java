@@ -34,6 +34,7 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.DefaultFeatureCollection;
+import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.junit.After;
 import org.junit.Before;
@@ -139,8 +140,7 @@ public class FidQueryTest extends FIDTestCase {
         Id createFidFilter = ff.id(Collections.singleton(ff.featureId(feature.getID())));
 
         SimpleFeatureType schema = feature.getFeatureType();
-        featureStore.modifyFeatures(
-                schema.getDescriptor("ID"), Integer.valueOf(newId), createFidFilter);
+        featureStore.modifyFeatures(new NameImpl("ID"), Integer.valueOf(newId), createFidFilter);
 
         SimpleFeatureIterator features = featureStore.getFeatures(createFidFilter).features();
         try {
@@ -188,8 +188,6 @@ public class FidQueryTest extends FIDTestCase {
     /**
      * Attempt to test GEOT-5830 User reports that deleting a feature, re-requesting the data gives
      * a duplicate FID and the subsequent attempt to delete fails due to corrupt FIX
-     *
-     * @throws Exception
      */
     @Test
     public void testDeleteCloseAndRerequestFID() throws Exception {

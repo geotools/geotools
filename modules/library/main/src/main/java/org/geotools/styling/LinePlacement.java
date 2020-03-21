@@ -47,14 +47,8 @@ import org.opengis.filter.expression.Expression;
  * @author Ian Turton, CCG
  */
 public interface LinePlacement extends org.opengis.style.LinePlacement, LabelPlacement {
-    /** @deprecated */
-    boolean IsAligned();
 
-    /**
-     * Correct method name violation from GeoAPI.
-     *
-     * @return
-     */
+    /** Correct method name violation from GeoAPI. */
     boolean isAligned();
 
     /**
@@ -68,8 +62,6 @@ public interface LinePlacement extends org.opengis.style.LinePlacement, LabelPla
     /**
      * Sets the expression that is used to compute how far from the lines the text will be drawn.
      * See {@link #getPerpendicularOffset} for details.
-     *
-     * @param offset
      */
     void setPerpendicularOffset(Expression offset);
 

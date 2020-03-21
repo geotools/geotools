@@ -30,7 +30,7 @@ Review a couple of the repository search websites:
         <version>1.0.2</version>
       </dependency>
 
-3. Navigate to the root pom.xml for the project and go to the dependency management section.
+3. Navigate to the root ``pom.xml`` for the project and go to the dependency management section.
    
    Cut and past paste the dependency information here as well::
       
@@ -40,7 +40,7 @@ Review a couple of the repository search websites:
         <version>1.0.2</version>
       </dependency>
 
-3. You can then adjust your pom.xml to not include the version number (as it will be retrieved
+3. You can then adjust your ``pom.xml`` to not include the version number (as it will be retrieved
    from the dependency management section).::
       
       <dependency>
@@ -52,14 +52,14 @@ Review a couple of the repository search websites:
 Recommended reading on Dependencies
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If you are not familiar with the way to declare a dependency in a Maven pom.xml file, see "How do I use external dependencies?" in the Maven Getting started guide. More information can also be found in the Guide to deploying 3rd party JARs to remote repository in Maven documentation.
+If you are not familiar with the way to declare a dependency in a Maven ``pom.xml`` file, see "How do I use external dependencies?" in the Maven Getting started guide. More information can also be found in the Guide to deploying 3rd party JARs to remote repository in Maven documentation.
 
 References:
 
 * http://maven.apache.org/guides/getting-started/index.html
 * http://maven.apache.org/guides/mini/guide-3rd-party-jars-local.html
 
-Our build process does not include jar files inside the subversion repository, instead Maven downloads jar files it needs from remote repositories (web sites). The location of these web sites is specified in the parent pom.xml file, which is inherited by all modules. There are mainly three sites available:
+Our build process does not include jar files inside the subversion repository, instead Maven downloads jar files it needs from remote repositories (web sites). The location of these web sites is specified in the parent ``pom.xml`` file, which is inherited by all modules. There are mainly three sites available:
 
 * Java.net repository
   
@@ -82,14 +82,14 @@ Our build process does not include jar files inside the subversion repository, i
   
   General utility open source projects, especially apache related
 
-Take a look at these sites and some of the "mystery" out of how Maven works. You may notice that the directory structure matches the dependency entries that you see in the pom.xml files. If the dependency entry has a groupId tag then this will be the name of the folder, if it just has an id tag then this will be used for the name of the folder and the jar within it.
+Take a look at these sites and some of the "mystery" out of how Maven works. You may notice that the directory structure matches the dependency entries that you see in the ``pom.xml`` files. If the dependency entry has a groupId tag then this will be the name of the folder, if it just has an id tag then this will be used for the name of the folder and the jar within it.
 
 It is always worth taking a look at these sites (particularly the maven one) just to check that a version of the jar you want to use is not already available.
 
 It really is not available - how to upload?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Assuming the jar you want is not already hosted on one of these sites you need to upload it and add a dependency entry to your pom.xml file.
+Assuming the jar you want is not already hosted on one of these sites you need to upload it and add a dependency entry to your ``pom.xml`` file.
 
 * Upload with Maven (not by copy-and-paste)
   
@@ -108,7 +108,7 @@ Deploying to Open Source Geospatial Foundation Maven 2 Repository:
    
    Your OSGeo ID must be on this list to enable WebDAV access. Anyone on the list can add you:
    
-   * https://www2.osgeo.org/cgi-bin/auth/ldap_group.py?group=geotools
+   * https://id.osgeo.org/ldap/group?group=geotools
 
 3. Create or update your ~/.m2/settings.xml file as below (~ is your home directory)::
      
@@ -131,14 +131,14 @@ Deploying to Open Source Geospatial Foundation Maven 2 Repository:
                             -Dfile=<path-to-file>        \
                             -Dpackaging=jar              \
                             -DrepositoryId=osgeo   \
-                            -Durl=dav:http://download.osgeo.org/webdav/geotools/
+                            -Durl=dav:http://download.osgeo.org/upload/geotools/
 
 4. Or if you have a pom file::
      
      mvn deploy:deploy-file -DpomFile=<path-to-pom>      \
                             -Dfile=<path-to-file>        \
                             -DrepositoryId=osgeo   \
-                            -Durl=dav:http://download.osgeo.org/webdav/geotools/
+                            -Durl=dav:http://download.osgeo.org/upload/geotools/
 
 5. Elements in bracket (<foo>) need to be replaced by their actual values.
 
@@ -169,14 +169,14 @@ Uploading to Ibiblio
 Examples of Updating JTS Jar
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-1. Change into one of the GeoTools directories (the geotools pom.xml has all the
+1. Change into one of the GeoTools directories (the geotools ``pom.xml`` has all the
    repository definitions so changing directories is easier than editing your settings.xml)::
      
      C:\> cd java\geotools\trunk
 
 2. Here is an example of how to deploy the JTS binary jar::
      
-      C:\java\geotools\trunk>mvn deploy:deploy-file -DgroupId=org.locationtech -DartifactId=jts -Dversion=1.13 -Dfile=C:\java\jts\lib\jts-1.13.jar -Dpackaging=jar -DrepositoryId=osgeo -Durl=dav:http://download.osgeo.org/webdav/geotools/
+      C:\java\geotools\trunk>mvn deploy:deploy-file -DgroupId=org.locationtech -DartifactId=jts-core -Dversion=1.13 -Dfile=C:\java\jts\lib\jts-1.13.jar -Dpackaging=jar -DrepositoryId=osgeo -Durl=dav:http://download.osgeo.org/upload/geotools/
 
 3. And the source code (you will need to zip this up first since JTS does not provide a source download)::
     

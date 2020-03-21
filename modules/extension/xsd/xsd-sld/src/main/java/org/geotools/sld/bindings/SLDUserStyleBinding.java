@@ -19,6 +19,7 @@ package org.geotools.sld.bindings;
 import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.Fill;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.AbstractComplexBinding;
@@ -130,10 +131,13 @@ public class SLDUserStyleBinding extends AbstractComplexBinding {
             style.setDefault(((Boolean) node.getChildValue("IsDefault")).booleanValue());
         }
 
+        if (node.hasChild("Background")) {
+            style.setBackground((Fill) node.getChildValue("Background", null));
+        }
+
         // &lt;xsd:element ref="sld:FeatureTypeStyle" maxOccurs="unbounded"/&gt;
         List fts = node.getChildValues(FeatureTypeStyle.class);
-        style.setFeatureTypeStyles(
-                (FeatureTypeStyle[]) fts.toArray(new FeatureTypeStyle[fts.size()]));
+        style.featureTypeStyles().addAll(fts);
 
         return style;
     }

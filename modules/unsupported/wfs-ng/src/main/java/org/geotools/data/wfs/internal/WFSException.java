@@ -46,17 +46,6 @@ public class WFSException extends IOException {
         }
     }
 
-    /**
-     * Use {@link #addExceptionMessage(String)} instead, or {@link #addExceptionDetails(String,
-     * String, List)} for exceptions consisting of code and messages
-     *
-     * @param report
-     */
-    @Deprecated
-    public void addExceptionReport(String report) {
-        addExceptionMessage(report);
-    }
-
     public void addExceptionMessage(String message) {
         msg.append("\n\t[").append(message).append("]");
     }

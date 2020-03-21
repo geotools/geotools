@@ -116,11 +116,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         // .getDefaultGeometry().getCoordinateSystem()));
     }
 
-    /**
-     * Test optimized count against actual count
-     *
-     * @throws Exception
-     */
+    /** Test optimized count against actual count */
     public void testOptimizedEnvelope() throws Exception {
         URL url = TestData.url(STATE_POP);
         ShapefileDataStore sds = new ShapefileDataStore(url);
@@ -922,8 +918,8 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
                                 new GeometryFactory().createPoint(new Coordinate(1, -1)),
                                 Byte.valueOf((byte) i),
                                 Short.valueOf((short) i),
-                                new Double(i),
-                                new Float(i),
+                                Double.valueOf(i),
+                                Float.valueOf(i),
                                 new String(i + " "),
                                 new Date(i),
                                 Boolean.valueOf(true),

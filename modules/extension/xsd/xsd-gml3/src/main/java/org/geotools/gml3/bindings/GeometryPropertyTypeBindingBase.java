@@ -20,6 +20,7 @@ package org.geotools.gml3.bindings;
 
 import java.util.List;
 import javax.xml.namespace.QName;
+import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.gml3.XSDIdRegistry;
 import org.geotools.xsd.AbstractComplexBinding;
@@ -77,7 +78,7 @@ public abstract class GeometryPropertyTypeBindingBase extends AbstractComplexBin
         return encodingUtils.GeometryPropertyType_GetProperty((Geometry) object, name, makeEmpty);
     }
 
-    public List getProperties(Object object) throws Exception {
+    public List getProperties(Object object, XSDElementDeclaration element) throws Exception {
         return encodingUtils.GeometryPropertyType_GetProperties((Geometry) object);
     }
 

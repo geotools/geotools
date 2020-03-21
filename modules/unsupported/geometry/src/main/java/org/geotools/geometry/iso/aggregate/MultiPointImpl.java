@@ -29,7 +29,6 @@ public class MultiPointImpl extends MultiPrimitiveImpl implements MultiPoint {
     /**
      * Creates a MultiPoint by a set of Points.
      *
-     * @param crs
      * @param points Set of Points which shall be contained by the MultiPoint
      */
     public MultiPointImpl(CoordinateReferenceSystem crs, Set<Point> points) {

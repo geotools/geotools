@@ -57,18 +57,7 @@ public class CompressesRasterWriter {
 
     private final String mapName;
 
-    /**
-     * Preparing the environment for compressing and writing the map to disk
-     *
-     * @param _outputToDiskType
-     * @param _novalue
-     * @param _jump
-     * @param _range
-     * @param _pointerInFilePosition
-     * @param _rowaddresses
-     * @param _dataWindow
-     * @param monitor
-     */
+    /** Preparing the environment for compressing and writing the map to disk */
     public CompressesRasterWriter(
             int _outputToDiskType,
             double _novalue,
@@ -101,8 +90,6 @@ public class CompressesRasterWriter {
      *
      * @param theCreatedFile - handler for the main map file
      * @param theCreatedNullFile - handler for the file of the null map (in cell_misc)
-     * @param renderedImage
-     * @throws IOException
      */
     public void compressAndWrite(
             ImageOutputStream theCreatedFile,

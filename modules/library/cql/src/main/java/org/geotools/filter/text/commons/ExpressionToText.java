@@ -32,6 +32,7 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.referencing.CRS;
+import org.geotools.util.Converters;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Geometry;
@@ -48,6 +49,7 @@ import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.expression.Subtract;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.temporal.Instant;
 import org.opengis.temporal.Period;
 
 /**
@@ -91,8 +93,6 @@ public class ExpressionToText implements ExpressionVisitor {
     /**
      * Uses the format <code>yyyy-MM-dd'T'HH:mm:ss'[+|-]##:##'</code> for output the provided date.
      *
-     * @param date
-     * @param output
      * @return output
      */
     public StringBuilder dateToText(Date date, StringBuilder output) {
@@ -210,8 +210,11 @@ public class ExpressionToText implements ExpressionVisitor {
         } else if (literal instanceof Number) {
             // don't convert to string
             output.append(literal);
-        } else if (literal instanceof Date) {
-            return dateToText((Date) literal, output);
+        } else if (literal instanceof Date || literal instanceof Instant) {
+            Date date = Converters.convert(literal, Date.class);
+            if (date != null) {
+                return dateToText(date, output);
+            }
         } else if (literal instanceof Period) {
 
             Period period = (Period) literal;

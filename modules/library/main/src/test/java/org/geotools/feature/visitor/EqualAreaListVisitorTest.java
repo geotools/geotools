@@ -162,7 +162,7 @@ public class EqualAreaListVisitorTest {
                                                     PERSONS,
                                                     FF.literal(list.get(0)),
                                                     FF.literal(list.get(list.size() - 1))))
-                            .collect(Collectors.toMap(k -> k, k -> new Double(0)));
+                            .collect(Collectors.toMap(k -> k, k -> Double.valueOf(0)));
             for (SimpleFeature feature : fc) {
                 boolean found = false;
                 for (Map.Entry<PropertyIsBetween, Double> entry : filterMap.entrySet()) {

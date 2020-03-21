@@ -27,12 +27,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class GeoPkgFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
 
-    /**
-     * Allows subclasses to use a axis order specific version of it
-     *
-     * @return
-     * @throws FactoryException
-     */
+    /** Allows subclasses to use a axis order specific version of it */
     protected CoordinateReferenceSystem getWGS84() throws FactoryException {
         return CRS.decode("EPSG:4326", true);
     }

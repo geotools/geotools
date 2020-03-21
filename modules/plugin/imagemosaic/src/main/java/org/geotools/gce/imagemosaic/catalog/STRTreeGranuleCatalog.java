@@ -148,13 +148,7 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
 
     private final ReadWriteLock rwLock = new ReentrantReadWriteLock(true);
 
-    /**
-     * Constructs a {@link STRTreeGranuleCatalog} out of a {@link FeatureCollection}.
-     *
-     * @param readLock
-     * @param features
-     * @throws IOException
-     */
+    /** Constructs a {@link STRTreeGranuleCatalog} out of a {@link FeatureCollection}. */
     @SuppressFBWarnings("UL_UNRELEASED_LOCK")
     private void checkIndex(Lock readLock) throws IOException {
         final Lock writeLock = rwLock.writeLock();

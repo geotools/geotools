@@ -33,9 +33,9 @@ public class GMLMultiPolygonTypeBindingTest extends AbstractGMLBindingTest {
     protected void setUp() throws Exception {
         super.setUp();
 
-        poly1 = createElement(GML.NAMESPACE, "myPoly", GML.POLYGONMEMBERTYPE, null);
-        poly2 = createElement(GML.NAMESPACE, "myPoly", GML.POLYGONMEMBERTYPE, null);
-        mp = createElement(GML.NAMESPACE, "myPoly", GML.MULTIPOLYGONTYPE, null);
+        poly1 = createElement(GML.NAMESPACE, "myPoly", GML.PolygonMemberType, null);
+        poly2 = createElement(GML.NAMESPACE, "myPoly", GML.PolygonMemberType, null);
+        mp = createElement(GML.NAMESPACE, "myPoly", GML.MultiPolygonType, null);
 
         container = new DefaultPicoContainer();
         container.registerComponentImplementation(GeometryFactory.class);

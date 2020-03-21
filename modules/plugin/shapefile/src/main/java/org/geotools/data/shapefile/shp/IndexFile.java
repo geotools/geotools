@@ -65,13 +65,13 @@ public class IndexFile implements FileReader {
      * @param shpFiles The channel to read from.
      * @throws IOException If an error occurs.
      */
+    @SuppressWarnings("PMD.CloseResource") // file channel managed as a resource
     public IndexFile(ShpFiles shpFiles, boolean useMemoryMappedBuffer) throws IOException {
         this.useMemoryMappedBuffer = useMemoryMappedBuffer;
         streamLogger.open();
         ReadableByteChannel byteChannel = shpFiles.getReadChannel(ShpFileType.SHX, this);
         try {
             if (byteChannel instanceof FileChannel) {
-
                 this.channel = (FileChannel) byteChannel;
                 if (useMemoryMappedBuffer) {
                     LOGGER.finest("Memory mapping file...");
@@ -187,6 +187,7 @@ public class IndexFile implements FileReader {
     }
 
     /** @see java.lang.Object#finalize() */
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         this.close();
         super.finalize();
@@ -206,7 +207,6 @@ public class IndexFile implements FileReader {
      *
      * @param index The index, from 0 to getRecordCount - 1
      * @return The offset in 16-bit words.
-     * @throws IOException
      */
     public int getOffset(int index) throws IOException {
         int ret = -1;
@@ -229,7 +229,6 @@ public class IndexFile implements FileReader {
      *
      * @param index The index, from 0 to getRecordCount - 1
      * @return The offset in bytes.
-     * @throws IOException
      */
     public int getOffsetInBytes(int index) throws IOException {
         return this.getOffset(index) * 2;
@@ -240,7 +239,6 @@ public class IndexFile implements FileReader {
      *
      * @param index The index, from 0 to getRecordCount - 1
      * @return The lengh in bytes of the record.
-     * @throws IOException
      */
     public int getContentLength(int index) throws IOException {
         int ret = -1;

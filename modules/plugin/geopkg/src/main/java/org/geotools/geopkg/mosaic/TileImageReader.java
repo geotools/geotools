@@ -79,9 +79,6 @@ class TileImageReader {
      * Methods to create a {@link ImageInputStream} out of a byte array. Gets called over and over
      * because just marking the stream and resetting it was not working against some sample
      * GeoPackage files, and the result was not finding the readers to use
-     *
-     * @param data
-     * @return
      */
     ImageInputStream getImageInputStream(byte[] data) {
         ByteArrayInputStream bis = new ByteArrayInputStream(data);

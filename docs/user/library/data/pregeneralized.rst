@@ -1,7 +1,7 @@
 Pregeneralized Plugin
 ---------------------
 
-This plugin offers the the possibility to use pregeneralized features to reduce CPU and memory
+This plugin offers the possibility to use pregeneralized features to reduce CPU and memory
 usage at runtime. The effect is used to improve the response time for client code.
 
 This is an advanced plugin that is great for eking the greatest performance out of the GeoTools
@@ -25,31 +25,31 @@ Consider it something like an image pyramid for raster data operating at differe
 Connection Parameters
 ^^^^^^^^^^^^^^^^^^^^^
 
-+---------------------------------------+-----------------------------------------------------+
-| Parameter                             | Description                                         |
-+=======================================+=====================================================+
-|"RepositoryClassName"                  | Class name for the Repository implementation,       |
-|                                       | must have a default Constructor                     |
-+---------------------------------------+-----------------------------------------------------+
-|"GeneralizationInfosProviderClassName" | Class name for a GeneralizationInfosProvider        |
-|                                       | must have a default Constructor                     |
-+---------------------------------------+-----------------------------------------------------+
-|"GeneralizationInfosProviderParam"     | Optional Parameter for getGeneralizationInfos(obj)  |
-+---------------------------------------+-----------------------------------------------------+
-|"namespace"                            | Optional, an URI for an optional name space         |
-+---------------------------------------+-----------------------------------------------------+
++------------------------------------------+--------------------------------------------------------+
+| Parameter                                | Description                                            |
++==========================================+========================================================+
+| ``RepositoryClassName``                  | Class name for the Repository implementation,          |
+|                                          | must have a default Constructor                        |
++------------------------------------------+--------------------------------------------------------+
+| ``GeneralizationInfosProviderClassName`` | Class name for a ``GeneralizationInfosProvider``       |
+|                                          | must have a default Constructor                        |
++------------------------------------------+--------------------------------------------------------+
+| ``GeneralizationInfosProviderParam``     | Optional Parameter for ``getGeneralizationInfos(obj)`` |
++------------------------------------------+--------------------------------------------------------+
+| ``namespace``                            | Optional, an URI for an optional name space            |
++------------------------------------------+--------------------------------------------------------+
 
 Pregeneralized
 ^^^^^^^^^^^^^^
 
 Before we start we need couple of things:
 
-* Repository - used to look up featureSource implementations. See :doc:`gt-main repository <../main/repository>` page.
-* GeneralizationInfos - configuration for PreGeneralizedDataStore describing generalisation method used.
+* Repository - used to look up ``featureSource`` implementations. See :doc:`gt-main repository <../main/repository>` page.
+* ``GeneralizationInfos`` - configuration for ``PreGeneralizedDataStore`` describing generalization method used.
 
-To create a **PreGeneralizedDataStore**:
+To create a ``reGeneralizedDataStore``
 
-* As usual we recommend use of **DataStoreFinder** (as this plugin provides **PreGeneralizedDataStoreFactory** for it to use).::
+* As usual we recommend use of ``DataStoreFinder`` (as this plugin provides ``PreGeneralizedDataStoreFactory`` for it to use).::
     
     Map<String,Serializable> paramMap = new HashMap<String,Serializable>();
     DataStore ds = null;
@@ -65,14 +65,14 @@ To create a **PreGeneralizedDataStore**:
     FeatureSource<SimpleFeatureType, SimpleFeature> fs = ds.getFeatureSource("GenStreams")
   
   To benefit from less memory usage and less CPU consumption the usage of
-  Hints.GEOMETRY_DISTANCE is required. It is possible to pass hints to a
+  ``Hints.GEOMETRY_DISTANCE`` is required. It is possible to pass hints to a
   query object, an example for reading all features with geometries fitting
   for a generalization of 22 meters::
     
     FeatureSource<SimpleFeatureType, SimpleFeature> fs = ds.getFeatureSource("GenStreams");
     
     //fs.getSupportedHints().contains(Hints.GEOMETRY_DISTANCE) must be true;
-    Query q = new  DefaultQuery("GenStreams");
+    Query q = new  Query("GenStreams");
     q.getHints().put(Hints.GEOMETRY_DISTANCE, 22.0);
     FeatureCollection<SimpleFeatureType, SimpleFeature> fCollection = fs.getFeatures(q);
     
@@ -80,7 +80,7 @@ To create a **PreGeneralizedDataStore**:
     // business as usual, but with generalized geometries!
     //
 
-* Creating by hand using RepositoryDSFinder::
+* Creating by hand using ``RepositoryDSFinder``::
     
     Repository repo = new RepositoryDSFinder();
     GeneralizationInfosProvider provider = new GeneralizationInfosProviderImpl();
@@ -93,7 +93,7 @@ To create a **PreGeneralizedDataStore**:
     DataStore ds = new PreGeneralizedDataStore(infos,repo)
     FeatureSource<SimpleFeatureType, SimpleFeature> fs = ds.getFeatureSource("GenStreams")
 
-* Creating by hand using DefaultRepository::
+* Creating by hand using ``DefaultRepository``::
     
     Repository repo = new DefaultRepository();
     //
@@ -117,7 +117,7 @@ This section has sample XML configuration files with corresponding physical layo
 XML
 '''
 
-Part of this java package is a GeneralizationInfosProviderImpl which offers the possibility to configure a GeneralizationInfos object in XML syntax.
+Part of this Java package is a ``GeneralizationInfosProviderImpl`` which offers the possibility to configure a ``GeneralizationInfos`` object in XML syntax.
 
 Code example::
   
@@ -172,17 +172,17 @@ Physical Layout
 
 Definition: The **Base Feature** is the original feature which is the starting point
 
-A geometry generalized to m meters will be written as g(m) , e. g.   g(5) is a
+A geometry generalized to m meters will be written as ``g(m)``, e.g. ``g(5)`` is a
 geometry generalized to a minimum distance of 5 meters. The original geometry will
-be written as g(1)
+be written as ``dq(1)``.
 
 A feature has the following components
 
-1. FID (Feature Identifier)
+1. ``FID`` (Feature Identifier)
 2. a set of data attributes
 3. a set of geometry attributes (mostly only one, depending on the data store)
 
-For the following example we will use the **streams.shp** from the gt-sample-data jar (which contains sample data for test cases).
+For the following example we will use the ``streams.shp`` from the ``gt-sample-data`` jar (which contains sample data for test cases).
 
 * :download:`streams.shp </../../modules/library/sample-data/src/main/resources/org/geotools/test-data/shapes/streams.shp>`
 * :download:`streams.dbf </../../modules/library/sample-data/src/main/resources/org/geotools/test-data/shapes/streams.dbf>`
@@ -193,11 +193,11 @@ This shapefile has the following feature type structure:
 
 * streams
   
-  +-----+--------+-----------+------------+
-  | FID | CAT_ID | CAT_DESCR | the_geom   |
-  +=====+========+===========+============+
-  | int | int    | int       | linestring |
-  +-----+--------+-----------+------------+
+  +---------+------------+---------------+----------------+
+  | ``FID`` | ``CAT_ID`` | ``CAT_DESCR`` | ``the_geom``   |
+  +=========+============+===============+================+
+  | ``int`` | ``int``    | ``int``       | ``linestring`` |
+  +---------+------------+---------------+----------------+
 
 We have two alternatives for how to represent generalized feature:
 
@@ -207,114 +207,116 @@ We have two alternatives for how to represent generalized feature:
   
   * streams
     
-    +-----------+--------+-----------+------------+
-    | FID       | CAT_ID | CAT_DESCR | the_geom   |
-    +===========+========+===========+============+
-    | streams.1 | 1      | 4711      | g1(1)      |
-    +-----------+--------+-----------+------------+
-    | streams.2 | 2      | 4712      | g2(1)      |
-    +-----------+--------+-----------+------------+
-    | ...       | ...    | ...       | ..         |
-    +-----------+--------+-----------+------------+
+    +---------------+------------+---------------+----------------+
+    | ``FID``       | ``CAT_ID`` | ``CAT_DESCR`` | ``the_geom``   |
+    +===============+============+===============+================+
+    | ``streams.1`` | ``1``      | ``4711``      | ``g1(1)``      |
+    +---------------+------------+---------------+----------------+
+    | ``streams.2`` | ``2``      | ``4712``      | ``g2(1)``      |
+    +---------------+------------+---------------+----------------+
+    | ...           | ...        | ...           | ..             |
+    +---------------+------------+---------------+----------------+
   
   * streams_5
     
-    +-----------+--------+-----------+------------+
-    | FID       | CAT_ID | CAT_DESCR | the_geom   |
-    +===========+========+===========+============+
-    | streams.1 | 1      | 4711      | g1(5)      |
-    +-----------+--------+-----------+------------+
-    | streams.2 | 2      | 4712      | g2(5)      |
-    +-----------+--------+-----------+------------+
-    | ...       | ...    | ...       | ..         |
-    +-----------+--------+-----------+------------+
+    +---------------+------------+---------------+----------------+
+    | ``FID``       | ``CAT_ID`` | ``CAT_DESCR`` | ``the_geom``   |
+    +===============+============+===============+================+
+    | ``streams.1`` | ``1``      | ``4711``      | ``g1(5)``      |
+    +---------------+------------+---------------+----------------+
+    | ``streams.2`` | ``2``      | ``4712``      | ``g2(5)``      |
+    +---------------+------------+---------------+----------------+
+    | ...           | ...        | ...           | ..             |
+    +---------------+------------+---------------+----------------+
   
   * streams_10
     
-    +-----------+--------+-----------+------------+
-    | FID       | CAT_ID | CAT_DESCR | the_geom   |
-    +===========+========+===========+============+
-    | streams.1 | 1      | 4711      | g1(10)     |
-    +-----------+--------+-----------+------------+
-    | streams.2 | 2      | 4712      | g2(10)     |
-    +-----------+--------+-----------+------------+
-    | ...       | ...    | ...       | ..         |
-    +-----------+--------+-----------+------------+
+    +---------------+------------+---------------+----------------+
+    | ``FID``       | ``CAT_ID`` | ``CAT_DESCR`` | ``the_geom``   |
+    +===============+============+===============+================+
+    | ``streams.1`` | ``1``      | ``4711``      | ``g1(10)``     |
+    +---------------+------------+---------------+----------------+
+    | ``streams.2`` | ``2``      | ``4712``      | ``g2(10)``     |
+    +---------------+------------+---------------+----------------+
+    | ...           | ...        | ...           | ..             |
+    +---------------+------------+---------------+----------------+
   
   * streams_20
     
-    +-----------+--------+-----------+------------+
-    | FID       | CAT_ID | CAT_DESCR | the_geom   |
-    +===========+========+===========+============+
-    | streams.1 | 1      | 4711      | g1(20)     |
-    +-----------+--------+-----------+------------+
-    | streams.2 | 2      | 4712      | g2(20)     |
-    +-----------+--------+-----------+------------+
-    | ...       | ...    | ...       | ..         |
-    +-----------+--------+-----------+------------+
+    +---------------+------------+---------------+----------------+
+    | ``FID``       | ``CAT_ID`` | ``CAT_DESCR`` | ``the_geom``   |
+    +===============+============+===============+================+
+    | ``streams.1`` | ``1``      | ``4711``      | ``g1(20)``     |
+    +---------------+------------+---------------+----------------+
+    | ``streams.2`` | ``2``      | ``4712``      | ``g2(20)``     |
+    +---------------+------------+---------------+----------------+
+    | ...           | ...        | ...           | ..             |
+    +---------------+------------+---------------+----------------+
+
   * streams_50
     
-    +-----------+--------+-----------+------------+
-    | FID       | CAT_ID | CAT_DESCR | the_geom   |
-    +===========+========+===========+============+
-    | streams.1 | 1      | 4711      | g1(50)     |
-    +-----------+--------+-----------+------------+
-    | streams.2 | 2      | 4712      | g2(50)     |
-    +-----------+--------+-----------+------------+
-    | ...       | ...    | ...       | ..         |
-    +-----------+--------+-----------+------------+
-  
-  The only difference between these 5 feature sets are the geometries,
-  which are generalized by 5,10,20 and 50 meters respectively.
-  
-  As you can see this approach results in a fair amount of duplication.
-  
-  * GenStreams
-    
-    A new Feature feature type is hiding all other features and using them
-    dependent on the GEOMETRY_DISTANCE hint.
-    
-    +-----+--------+-----------+------------+
-    | FID | CAT_ID | CAT_DESCR | the_geom   |
-    +=====+========+===========+============+
-    | int | int    | int       | linestring |
-    +-----+--------+-----------+------------+
-  
-  The disadvantage is the duplication of all attribute values for each
-  generalization. If the features are stored as shape files, there is no
-  other alternative because shape files allow only one geometry.
-  
-  Storing the features in a database offers the possibility to use SQL views
-  to avoiding this redundancy.
+    +---------------+------------+---------------+----------------+
+    | ``FID``       | ``CAT_ID`` | ``CAT_DESCR`` | ``the_geom``   |
+    +===============+============+===============+================+
+    | ``streams.1`` | ``1``      | ``4711``      | ``g1(50)``     |
+    +---------------+------------+---------------+----------------+
+    | ``streams.2`` | ``2``      | ``4712``      | ``g2(50)``     |
+    +---------------+------------+---------------+----------------+
+    | ...           | ...        | ...           | ..             |
+    +---------------+------------+---------------+----------------+
 
-* Horizontal layout
-  
-  The generalized geometries were added as additional attributes.
-  
-  * streams
     
-    +-----------+--------+-----------+--------+----------+-----------+-----------+----------+
-    | FID       | CAT_ID | CAT_DESCR |the_geom|the_geom_5|the_geom_10|the_geom_20|the_geom50|
-    +===========+========+===========+========+==========+===========+===========+==========+
-    | streams.1 | 1      | 4711      | g1(1)  | g1(5)    | g1(10)    | g1(20)    | g1(5)    |
-    +-----------+--------+-----------+--------+----------+-----------+-----------+----------+
-    | streams.2 | 2      | 4712      | g2(1)  | g2(5)    | g2(10)    | g2(20)    | g2(5)    |
-    +-----------+--------+-----------+--------+----------+-----------+-----------+----------+
-    | ...       | ...    | ...       | ..     | ...      |...        | ...       | ...      |
-    +-----------+--------+-----------+--------+----------+-----------+-----------+----------+
+    The only difference between these 5 feature sets are the geometries,
+    which are generalized by 5,10,20 and 50 meters respectively.
+    
+    As you can see this approach results in a fair amount of duplication.
+    
+    * ``GenStreams``
+      
+      A new Feature feature type is hiding all other features and using them
+      dependent on the GEOMETRY_DISTANCE hint.
+      
+      +---------+------------+---------------+----------------+
+      | ``FID`` | ``CAT_ID`` | ``CAT_DESCR`` | ``the_geom``   |
+      +=========+============+===============+================+
+      | ``int`` | ``int``    | ``int``       | ``linestring`` |
+      +---------+------------+---------------+----------------+
+    
+    The disadvantage is the duplication of all attribute values for each
+    generalization. If the features are stored as shape files, there is no
+    other alternative because shape files allow only one geometry.
+    
+    Storing the features in a database offers the possibility to use SQL views
+    to avoiding this redundancy.
+
+  * Horizontal layout
+    
+    The generalized geometries were added as additional attributes.
+    
+    * streams
+      
+    +---------------+------------+---------------+--------------+----------------+-----------------+-----------------+----------------+
+    | ``FID``       | ``CAT_ID`` | ``CAT_DESCR`` | ``the_geom`` | ``the_geom_5`` | ``the_geom_10`` | ``the_geom_20`` | ``the_geom50`` |
+    +===============+============+===============+==============+================+=================+=================+================+
+    | ``streams.1`` | ``1``      | ``4711``      | ``g1(1)``    | ``g1(5)``      | ``g1(10)``      | ``g1(20)``      | ``g1(5)``      |
+    +---------------+------------+---------------+--------------+----------------+-----------------+-----------------+----------------+
+    | ``streams.2`` | ``2``      | ``4712``      | ``g2(1)``    | ``g2(5)``      | ``g2(10)``      | ``g2(20)``      | ``g2(5)``      |
+    +---------------+------------+---------------+--------------+----------------+-----------------+-----------------+----------------+
+    | ...           | ...        | ...           | ...          | ...            | ...             | ...             | ...            |
+    +---------------+------------+---------------+--------------+----------------+-----------------+-----------------+----------------+
   
-  * GenStreams
+  * ``GenStreams``
     
     Again, there is a new feature
     
-    +-----+--------+-----------+------------+
-    | FID | CAT_ID | CAT_DESCR | the_geom   |
-    +=====+========+===========+============+
-    | int | int    | int       | linestring |
-    +-----+--------+-----------+------------+
+    +---------+------------+---------------+----------------+
+    | ``FID`` | ``CAT_ID`` | ``CAT_DESCR`` | ``the_geom``   |
+    +=========+============+===============+================+
+    | ``int`` | ``int``    | ``int``       | ``linestring`` |
+    +---------+------------+---------------+----------------+
     
     The generalized geometry attributes are hidden and are not part of the
-    GenStreams feature type.
+    ``GenStreams`` feature type.
   
 * Mixed layout
   
@@ -322,63 +324,63 @@ We have two alternatives for how to represent generalized feature:
   
   * streams
     
-    +-----------+--------+-----------+------------+
-    | FID       | CAT_ID | CAT_DESCR | the_geom   |
-    +===========+========+===========+============+
-    | streams.1 | 1      | 4711      | g1(1)      |
-    +-----------+--------+-----------+------------+
-    | streams.2 | 2      | 4712      | g2(1)      |
-    +-----------+--------+-----------+------------+
-    | ...       | ...    | ...       | ..         |
-    +-----------+--------+-----------+------------+
+    +---------------+------------+---------------+----------------+
+    | ``FID``       | ``CAT_ID`` | ``CAT_DESCR`` | ``the_geom``   |
+    +===============+============+===============+================+
+    | ``streams.1`` | ``1``      | ``4711``      | ``g1(1)``      |
+    +---------------+------------+---------------+----------------+
+    | ``streams.2`` | ``2``      | ``4712``      | ``g2(1)``      |
+    +---------------+------------+---------------+----------------+
+    | ...           | ...        | ...           | ..             |
+    +---------------+------------+---------------+----------------+
   
   * streams_5_10
     
-    +-----------+--------+-----------+------------+------------+
-    | FID       | CAT_ID | CAT_DESCR | the_geom_5 | the_geom10 |
-    +===========+========+===========+============+============+
-    | streams.1 | 1      | 4711      | g1(5)      | g1(10)     |
-    +-----------+--------+-----------+------------+------------+
-    | streams.2 | 2      | 4712      | g2(5)      | g2(10)     |
-    +-----------+--------+-----------+------------+------------+
-    | ...       | ...    | ...       | ..         | ...        |
-    +-----------+--------+-----------+------------+------------+
+    +---------------+------------+---------------+----------------+-----------------+
+    | ``FID``       | ``CAT_ID`` | ``CAT_DESCR`` | ``the_geom_5`` | ``the_geom_10`` |
+    +===============+============+===============+================+=================+
+    | ``streams.1`` | ``1``      | ``4711``      | ``g1(5)``      | ``g1(10)``      |
+    +---------------+------------+---------------+----------------+-----------------+
+    | ``streams.2`` | ``2``      | ``4712``      | ``g2(5)``      | ``g2(10)``      |
+    +---------------+------------+---------------+----------------+-----------------+
+    | ...           | ...        | ...           | ..             | ..              |
+    +---------------+------------+---------------+----------------+-----------------+
   
   * streams_20_50
     
-    +-----------+--------+-----------+------------+-------------+
-    | FID       | CAT_ID | CAT_DESCR | the_geom_20| the_geom_50 |
-    +===========+========+===========+============+=============+
-    | streams.1 | 1      | 4711      | g1(10)     | g1(50)      |
-    +-----------+--------+-----------+------------+-------------+
-    | streams.2 | 2      | 4712      | g2(10)     | g2(50)      |
-    +-----------+--------+-----------+------------+-------------+
-    | ...       | ...    | ...       | ..         | ...         |
-    +-----------+--------+-----------+------------+-------------+
+    +---------------+------------+---------------+-----------------+-----------------+
+    | ``FID``       | ``CAT_ID`` | ``CAT_DESCR`` | ``the_geom_20`` | ``the_geom_50`` |
+    +===============+============+===============+=================+=================+
+    | ``streams.1`` | ``1``      | ``4711``      | ``g1(20)``      | ``g1(50)``      |
+    +---------------+------------+---------------+-----------------+-----------------+
+    | ``streams.2`` | ``2``      | ``4712``      | ``g2(20)``      | ``g2(50)``      |
+    +---------------+------------+---------------+-----------------+-----------------+
+    | ...           | ...        | ...           | ...             | ...             | 
+    +---------------+------------+---------------+-----------------+-----------------+
   
-  * GenStreams
+  * ``GenStreams``
     
-    +-----+--------+-----------+------------+
-    | FID | CAT_ID | CAT_DESCR | the_geom   |
-    +=====+========+===========+============+
-    | int | int    | int       | linestring |
-    +-----+--------+-----------+------------+
+    +---------+------------+---------------+----------------+
+    | ``FID`` | ``CAT_ID`` | ``CAT_DESCR`` | ``the_geom``   |
+    +=========+============+===============+================+
+    | ``int`` | ``int``    | ``int``       | ``linestring`` |
+    +---------+------------+---------------+----------------+
     
-    Independent of the used physical layout, the feature type of GenStreams
+    Independent of the physical layout used, the feature type of ``GenStreams``
     is always the same. All other feature types are not visible and are
-    called backend features.
+    called back end features.
 
 Toolbox
 ^^^^^^^
 
 Included in this packages is a command line utility. Locate the jar file, the name is 
-"gt-feature-pregeneralized-<version>.jar Assuming the version is "2.5-SNAPSHOT", call with::
+``gt-feature-pregeneralized-<version>.jar`` Assuming the version is ``2.5-SNAPSHOT``, call with::
   
   java -jar gt-feature-pregeneralized-2.5-SNAPSHOT.jar 
 
-* Validating the xml config file
+* Validating the XML configuration file
   
-  You can validate your xml config file with::
+  You can validate your XML configuration file with::
     
     java -jar gt-feature-pregeneralized-2.5-SNAPSHOT.jar validate myconfig.xml
   
@@ -390,15 +392,15 @@ Included in this packages is a command line utility. Locate the jar file, the na
   
   In the above example the parameters are:
   
-  * streams.shp
+  * ``streams.shp``
     The source shape file
-  * targetDir
+  * ``targetDir``
     The directory where to store the generalized shape files
-  * 15.0,30
+  * ``15.0,30``
     A comma separated list of distances (integer or doubles, decimal separator is ".").
   
-  This example would generate a sub directory "15.0" and a sub directory
-  "30" in the target directory. The sub 
+  This example would generate a sub-directory ``15.0`` and a sub directory
+  ``30`` in the target directory. 
 
 Background
 ^^^^^^^^^^
@@ -407,7 +409,7 @@ Background
   
   Spatial features have a least one geometry, which mostly contains a large number of points.
   As an example, the border of Austria (which is a small country) is a polygon constructed
-  from 380000 points.
+  from 380,000 points.
   
   Drawing this border on a screen with a resolution of 1280x1024 will draw each pixel many,many times.
   The same holds true for printing on a sheet of paper.
@@ -419,44 +421,44 @@ Background
   
   The idea is to have a data store / feature source / feature reader implementation which acts as wrapper
   for the original features and their generalized geometries. Additionally there is a new
-  Hint GEOMETRY_DISTANCE which has a value for the minimum distance between two points required.
+  ``Hint`` ``GEOMETRY_DISTANCE`` which has a value for the minimum distance between two points required.
   
-  This Hint can be passed within the Query object.
+  This ``Hint`` can be passed within the ``Query`` object.
   
-  The wrappers itself behave like the original objects, except returning geometries dependent on the
+  The wrapper itself behaves like the original object, except returning geometries dependent on the
   new hint. If no hint is given, the original geometries are returned.
 
-* Relationship between GEOMETRY_DISTANCE and generalized geometries
+* Relationship between ``GEOMETRY_DISTANCE`` and generalized geometries
   
   Assume the original geometries have an accuracy of 1 meter and we have generalizations for all
   geometries with 5m, 10m, 20m and 50m.
   
-  =========================== =====================================
-  Requested Distance (dist)   Returned geometry 
-  =========================== =====================================
-  dist  < 5                   original geometry 
-  5 <= dist < 10              geometry generalized to 5 m 
-  10 <= dist < 20             geometry generalized to 10 m 
-  20 <= dist < 50             geometry generalized to 20 m 
-  50 <= dist                  geometry generalized to 50 m 
-  =========================== =====================================
+  =============================== =====================================
+  Requested Distance (``dist``)   Returned geometry 
+  =============================== =====================================
+  ``dist``  < 5                   original geometry 
+  5 <= ``dist`` < 10              geometry generalized to 5 m 
+  10 <= ``dist`` < 20             geometry generalized to 10 m 
+  20 <= ``dist`` < 50             geometry generalized to 20 m 
+  50 <= ``dist``                  geometry generalized to 50 m 
+  =============================== =====================================
 
 * Conclusion
   
   The focus of this module is to support the transparent handling of generalized geometries.
-  There is no restriction how the GeneralizationInfos object is build and how the needed data
+  There is no restriction how the ``GeneralizationInfos`` object is build and how the needed data
   stores are found.
   
   The two interfaces
   
-  * org.geotools.data.Repository
-  * org.geotools.data.gen.info.GeneralizationInfosProvider
+  * ``org.geotools.data.Repository``
+  * ``org.geotools.data.gen.info.GeneralizationInfosProvider``
   
-  Allow special implementations to be plugged in. As an example, a GeneralizationInfosProvider
+  Allow special implementations to be plugged in. As an example, a ``GeneralizationInfosProvider``
   implementation can build the configuration data from a jdbc database, getting as parameter a JNDI 
   name.
   
-  Once again, modification of pregeneralized features is NOT possible.
+  Once again, modification of pregeneralized features is **NOT** possible.
 
 DataStructure
 ^^^^^^^^^^^^^
@@ -468,38 +470,38 @@ Internally the following data structure is set up.
 
 GeneralizationInfos
 '''''''''''''''''''
-Each PreGeneralizedDataStore has exactly one object of type GeneralizationInfos.
+Each ``PreGeneralizedDataStore`` has exactly one object of type ``GeneralizationInfos``.
 
-**GeneralizationInfos** holds a collection of **GeneralizationInfo** objects. The
-size of this collection is equal to the number of PreGeneralizedFeatureSource objects
+``GeneralizationInfos`` holds a collection of ``GeneralizationInfo`` objects. The
+size of this collection is equal to the number of ``PreGeneralizedFeatureSource`` objects
 contained in the data store.
 
-* infoMap - mapping from names of generalized features to the orresponding GeneralizationInfo objects
-* dataSourceName - Optional, default data source location for all GeneralizationInfo objects
-* dataSourceNameSpace - Optional, name space for the default data source location
+* ``infoMap`` - mapping from names of generalized features to the corresponding ``GeneralizationInfo`` objects
+* ``dataSourceName`` - Optional, default data source location for all ``GeneralizationInfo`` objects
+* ``dataSourceNameSpace`` - Optional, name space for the default data source location
 
 GeneralizationInfo
 '''''''''''''''''''
-A GeneralizationInfo holds the configuration information for one feature type and his generalized geometries.
+A ``GeneralizationInfo`` holds the configuration information for one feature type and his generalized geometries.
 
-* featureName - Name of the generalized feature ("GenStreams")
-* baseFeatureName - Name of the base feature ("streams")
-* geomPropertyName - Name of the geometry attribute in the base feature ("the_geom")
-* generalizations - Collection of org.geotools.data.gen.Generalization objects
-* dataSourceName - Location of the datasource for the base Feature (URL of shape file)
-  If no location is given, use location from GeneralizationInfos parent object.
-* dataSourceNameSpace - Optional, name space for the dataSourceName
+* ``featureName`` - Name of the generalized feature (``GenStreams``)
+* ``baseFeatureName`` - Name of the base feature (``streams``)
+* ``geomPropertyName`` - Name of the geometry attribute in the base feature (``the_geom``)
+* ``generalizations`` - Collection of ``org.geotools.data.gen.Generalization`` objects
+* ``dataSourceName`` - Location of the data source for the base ``Feature`` (URL of shape file)
+  If no location is given, use location from ``GeneralizationInfos`` parent object.
+* ``dataSourceNameSpace`` - Optional, name space for the ``dataSourceName``
 
 Generalization
 ''''''''''''''
-A Generalization object belongs to a GeneralizationInfo object and holds information for geometries
+A ``Generalization`` object belongs to a ``GeneralizationInfo`` object and holds information for geometries
 generalized to a given distance.
 
-* distance - The generalization distance
-* featureName - The the name of the feature containing these geometries ("streams_5_10")
-* geomPropertyName - The name of the geometry property ("the_geom_5")
-* dataSourceName - Optional, if not specified,  dataSoureName from the GeneralizationInfo parent object is used.
-* dataSourceNameSpace - Optional, name space for the dataSourceName
+* ``distance`` - The generalization distance
+* ``featureName`` - The name of the feature containing these geometries (``streams_5_10``)
+* ``geomPropertyName`` - The name of the geometry property (``the_geom_5``)
+* ``dataSourceName`` - Optional, if not specified,  ``dataSoureName`` from the ``GeneralizationInfo`` parent object is used.
+* ``dataSourceNameSpace`` - Optional, name space for the ``dataSourceName``
 
 Repository
 ^^^^^^^^^^
@@ -507,24 +509,24 @@ Repository
 Prior to creating a pregeneralized data store an object implementing the interface
 Repository is needed. This class is document in :doc:`gt-main repository <../main/repository>` page.
 
-For PregeneralizedDataStore this interface has one important method
+For ``PregeneralizedDataStore`` this interface has one important method
 
-* public DataStore dataStore(Name name)
+* ``public DataStore dataStore(Name name)``
   
   A Name object has a local name and a namespace (which could be null).
 
-The local name corresponds to the dataSoureName property in the GeneralizationInfos,
-GeneralizationInfo and Generalization objects. The same holds true for the namespace parameter
-and the dataSourceNameSpace property.
+The local name corresponds to the ``dataSoureName`` property in the ``GeneralizationInfos``,
+``GeneralizationInfo`` and ``Generalization`` objects. The same holds true for the namespace parameter
+and the ``dataSourceNameSpace`` property.
 
-The content of the dataSourceName could be a registered name for a datastore (of course)
+The content of the ``dataSourceName`` could be a registered name for a datastore (of course)
 or an URL to a shape file,an URL to a property file containing connect parameters for a
 database or anything else. It depends on the implementation of the Repository interface.
 
-Included in this package is an implementation org.getotools.data.gen.DSFinderRepository,
-which interprets a dataSoureName ending with ".shp" or ".SHP" as location of a shape file
-and anything else as a property file. This implementation will use the geotools 
-DataStoreFinder.getDataStore(Map params) method to find the needed data store.
+Included in this package is an implementation ``org.getotools.data.gen.DSFinderRepository``,
+which interprets a ``dataSoureName`` ending with ``.shp`` or ``.SHP`` as location of a shape file
+and anything else as a property file. This implementation will use the GeoTools 
+``DataStoreFinder.getDataStore(Map params)`` method to find the needed data store.
 
-Another existing Implementation is org.geotools.data.DefaultRepository which is useful
+Another existing Implementation is ``org.geotools.data.DefaultRepository`` which is useful
 for creating the data stores in the application and registering them with the corresponding names.

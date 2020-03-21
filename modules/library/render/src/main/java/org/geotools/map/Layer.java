@@ -183,6 +183,7 @@ public abstract class Layer {
     }
 
     @Override
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         if (listenerList != null) {
             LOGGER.severe("Layer dispose not called; possible memory leak");

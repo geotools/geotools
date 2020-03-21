@@ -16,8 +16,7 @@
  */
 package org.geotools.renderer.lite;
 
-import java.awt.Composite;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.geom.NoninvertibleTransformException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,10 +24,13 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Level;
+import java.util.stream.Stream;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.sort.SortedFeatureReader;
 import org.geotools.data.util.DefaultProgressListener;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.SchemaException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -36,7 +38,9 @@ import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
 import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.Fill;
 import org.geotools.styling.Style;
+import org.geotools.styling.StyleFactory;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.PropertyDescriptor;
@@ -110,6 +114,7 @@ class ZGroupLayer extends Layer {
                 }
 
                 for (Iterator it = painters.iterator(); it.hasNext(); ) {
+                    @SuppressWarnings("PMD.CloseResource") // assured closed in the finally method
                     ZGroupLayerPainter painter = (ZGroupLayerPainter) it.next();
                     painter.paintKey(smallestKey);
                     // if the painter is done, close it
@@ -121,13 +126,15 @@ class ZGroupLayer extends Layer {
             }
         } finally {
             if (painters != null) {
-                for (ZGroupLayerPainter painter : painters) {
+                for (@SuppressWarnings("PMD.CloseResource") // assured closed in the finally method
+                ZGroupLayerPainter painter : painters) {
                     painter.close();
                 }
             }
         }
     }
 
+    @SuppressWarnings("PMD.CloseResource") // painters not managed here
     private SortKey getSmallestKey(
             List<ZGroupLayerPainter> painters, Comparator<SortKey> comparator) {
         SortKey smallest = null;
@@ -184,14 +191,14 @@ class ZGroupLayer extends Layer {
                 // but we'd have to delay opening the MarkFeatureIterator to recognize the
                 // situation
                 int maxFeatures = SortedFeatureReader.getMaxFeaturesInMemory(layer.getQuery());
-                MarkFeatureIterator fi =
-                        MarkFeatureIterator.create(features, maxFeatures, cancellationListener);
-                if (fi.hasNext()) {
-                    ZGroupLayerPainter painter =
-                            new ZGroupLayerPainter(fi, lfts, renderer, layerId);
-                    painters.add(painter);
-                } else {
-                    fi.close();
+                try (MarkFeatureIterator fi =
+                        MarkFeatureIterator.create(features, maxFeatures, cancellationListener)) {
+                    if (fi.hasNext()) {
+                        @SuppressWarnings("PMD.CloseResource") // returned
+                        ZGroupLayerPainter painter =
+                                new ZGroupLayerPainter(fi, lfts, renderer, layerId);
+                        painters.add(painter);
+                    }
                 }
             }
 
@@ -201,7 +208,8 @@ class ZGroupLayer extends Layer {
             closePainters = false;
         } finally {
             if (closePainters) {
-                for (ZGroupLayerPainter painter : painters) {
+                for (@SuppressWarnings("PMD.CloseResource") // actually closing them here
+                ZGroupLayerPainter painter : painters) {
                     try {
                         painter.close();
                     } catch (Exception e) {
@@ -219,14 +227,13 @@ class ZGroupLayer extends Layer {
      * Ensures that all SortBy are meaningful for a cross layer z-order. We need the SortKey for all
      * the layers to have the same structure, be comparable, and be class compatible with each other
      * (and of course, exist in the first place)
-     *
-     * @param painters
      */
     private void validateSortBy(List<ZGroupLayerPainter> painters) {
         Class[] referenceClasses = null;
         SortOrder[] referenceOrders = null;
         LiteFeatureTypeStyle reference = null;
-        for (ZGroupLayerPainter painter : painters) {
+        for (@SuppressWarnings("PMD.CloseResource") // painters not managed here
+        ZGroupLayerPainter painter : painters) {
             for (LiteFeatureTypeStyle style : painter.lfts) {
                 Class[] styleClasses = getSortByAttributeClasses(style);
                 SortOrder[] styleOrders = getSortOrders(style);
@@ -408,5 +415,36 @@ class ZGroupLayer extends Layer {
         }
 
         layers.add(layer);
+    }
+
+    @Override
+    public synchronized Style getStyle() {
+        // using user data to cache this placeholder so we don't have to create it each time
+        Style style = (Style) getUserData().get("style");
+        if (style == null) {
+            StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
+
+            // create a style that does nothing, but matching the "right" background
+            List<org.opengis.style.FeatureTypeStyle> featureTypeStyles =
+                    new ArrayList<org.opengis.style.FeatureTypeStyle>();
+            style = sf.style(title, null, false, featureTypeStyles, null);
+            style.setBackground(getBackgroundFromLayers());
+
+            getUserData().put("style", style);
+        }
+        return style;
+    }
+
+    private Fill getBackgroundFromLayers() {
+        // pick the first non null background specification
+        return layers.stream()
+                .flatMap(
+                        l ->
+                                Optional.ofNullable(l.getStyle())
+                                        .map(s -> s.getBackground())
+                                        .map(Stream::of)
+                                        .orElseGet(Stream::empty))
+                .findFirst()
+                .orElse(null);
     }
 }

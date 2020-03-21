@@ -5,6 +5,7 @@
       <sld:Name>Default Styler</sld:Name>
       <sld:FeatureTypeStyle>
         <sld:Rule>
+          <sld:Title>Zoomed out highway</sld:Title>
           <ogc:Filter>
             <ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -47,6 +48,7 @@
           </sld:LineSymbolizer>
         </sld:Rule>
         <sld:Rule>
+          <sld:Title>Zoomed out highway</sld:Title>
           <ogc:Filter>
             <ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -89,6 +91,7 @@
           </sld:LineSymbolizer>
         </sld:Rule>
         <sld:Rule>
+          <sld:Title>Mid zoom motorway</sld:Title>
           <ogc:Filter>
             <ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -134,6 +137,7 @@
           </sld:LineSymbolizer>
         </sld:Rule>
         <sld:Rule>
+          <sld:Title>Zoomed out motorway link</sld:Title>
           <ogc:Filter>
             <ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -179,6 +183,7 @@
           </sld:LineSymbolizer>
         </sld:Rule>
         <sld:Rule>
+          <sld:Title>Zoomed in motorway</sld:Title>
           <ogc:Filter>
             <ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -227,6 +232,7 @@
           </sld:LineSymbolizer>
         </sld:Rule>
         <sld:Rule>
+          <sld:Title>Zoomed in bridge</sld:Title>
           <ogc:Filter>
             <ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -274,6 +280,7 @@
           </sld:LineSymbolizer>
         </sld:Rule>
         <sld:Rule>
+          <sld:Title>Zoomed in motorway link</sld:Title>
           <ogc:Filter>
             <ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -322,6 +329,7 @@
           </sld:LineSymbolizer>
         </sld:Rule>
         <sld:Rule>
+          <sld:Title>Zoomed in link bridge</sld:Title>
           <ogc:Filter>
             <ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -371,6 +379,7 @@
       </sld:FeatureTypeStyle>
       <sld:FeatureTypeStyle>
         <sld:Rule>
+          <sld:Title>Zoomed out highway</sld:Title>
           <ogc:Filter>
             <ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -383,7 +392,6 @@
               </ogc:PropertyIsEqualTo>
             </ogc:And>
           </ogc:Filter>
-          <sld:MinScaleDenominator>200000.0</sld:MinScaleDenominator>
           <sld:MaxScaleDenominator>1.5E7</sld:MaxScaleDenominator>
           <sld:LineSymbolizer>
             <sld:Stroke>
@@ -411,6 +419,7 @@
           </sld:LineSymbolizer>
         </sld:Rule>
         <sld:Rule>
+          <sld:Title>Zoomed out highway</sld:Title>
           <ogc:Filter>
             <ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -423,7 +432,6 @@
               </ogc:PropertyIsEqualTo>
             </ogc:And>
           </ogc:Filter>
-          <sld:MinScaleDenominator>200000.0</sld:MinScaleDenominator>
           <sld:MaxScaleDenominator>1000000.0</sld:MaxScaleDenominator>
           <sld:LineSymbolizer>
             <sld:Stroke>
@@ -451,6 +459,89 @@
           </sld:LineSymbolizer>
         </sld:Rule>
         <sld:Rule>
+          <sld:Title>Mid zoom highway</sld:Title>
+          <ogc:Filter>
+            <ogc:And>
+              <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>class</ogc:PropertyName>
+                <ogc:Literal>highway</ogc:Literal>
+              </ogc:PropertyIsEqualTo>
+              <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>type</ogc:PropertyName>
+                <ogc:Literal>motorway</ogc:Literal>
+              </ogc:PropertyIsEqualTo>
+            </ogc:And>
+          </ogc:Filter>
+          <sld:MinScaleDenominator>100000.0</sld:MinScaleDenominator>
+          <sld:MaxScaleDenominator>200000.0</sld:MaxScaleDenominator>
+          <sld:LineSymbolizer>
+            <sld:Stroke>
+              <sld:CssParameter name="stroke">#e892a2</sld:CssParameter>
+              <sld:CssParameter name="stroke-linecap">round</sld:CssParameter>
+              <sld:CssParameter name="stroke-width">
+                <ogc:Function name="Categorize">
+                  <ogc:Function name="env">
+                    <ogc:Literal>wms_scale_denominator</ogc:Literal>
+                  </ogc:Function>
+                  <ogc:Literal>1.8</ogc:Literal>
+                  <ogc:Literal>400000</ogc:Literal>
+                  <ogc:Literal>1.4</ogc:Literal>
+                  <ogc:Literal>800000</ogc:Literal>
+                  <ogc:Literal>0.8</ogc:Literal>
+                  <ogc:Literal>1500000</ogc:Literal>
+                  <ogc:Literal>0.4</ogc:Literal>
+                  <ogc:Literal>3000000</ogc:Literal>
+                  <ogc:Literal>0.2</ogc:Literal>
+                  <ogc:Literal>6000000</ogc:Literal>
+                  <ogc:Literal>0.1</ogc:Literal>
+                </ogc:Function>
+              </sld:CssParameter>
+            </sld:Stroke>
+          </sld:LineSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Title>Mid zoom highway</sld:Title>
+          <ogc:Filter>
+            <ogc:And>
+              <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>class</ogc:PropertyName>
+                <ogc:Literal>highway</ogc:Literal>
+              </ogc:PropertyIsEqualTo>
+              <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>type</ogc:PropertyName>
+                <ogc:Literal>motorway_link</ogc:Literal>
+              </ogc:PropertyIsEqualTo>
+            </ogc:And>
+          </ogc:Filter>
+          <sld:MinScaleDenominator>100000.0</sld:MinScaleDenominator>
+          <sld:MaxScaleDenominator>200000.0</sld:MaxScaleDenominator>
+          <sld:LineSymbolizer>
+            <sld:Stroke>
+              <sld:CssParameter name="stroke">#e892a2</sld:CssParameter>
+              <sld:CssParameter name="stroke-linecap">round</sld:CssParameter>
+              <sld:CssParameter name="stroke-width">
+                <ogc:Function name="Categorize">
+                  <ogc:Function name="env">
+                    <ogc:Literal>wms_scale_denominator</ogc:Literal>
+                  </ogc:Function>
+                  <ogc:Literal>1.8</ogc:Literal>
+                  <ogc:Literal>400000</ogc:Literal>
+                  <ogc:Literal>1.4</ogc:Literal>
+                  <ogc:Literal>800000</ogc:Literal>
+                  <ogc:Literal>0.8</ogc:Literal>
+                  <ogc:Literal>1500000</ogc:Literal>
+                  <ogc:Literal>0.4</ogc:Literal>
+                  <ogc:Literal>3000000</ogc:Literal>
+                  <ogc:Literal>0.2</ogc:Literal>
+                  <ogc:Literal>6000000</ogc:Literal>
+                  <ogc:Literal>0.1</ogc:Literal>
+                </ogc:Function>
+              </sld:CssParameter>
+            </sld:Stroke>
+          </sld:LineSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Title>Mid zoom motorway</sld:Title>
           <ogc:Filter>
             <ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -527,6 +618,7 @@
           </sld:LineSymbolizer>
         </sld:Rule>
         <sld:Rule>
+          <sld:Title>Zoomed out motorway link</sld:Title>
           <ogc:Filter>
             <ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -603,16 +695,93 @@
           </sld:LineSymbolizer>
         </sld:Rule>
         <sld:Rule>
+          <sld:Title>Zoomed in highway</sld:Title>
           <ogc:Filter>
             <ogc:And>
               <ogc:PropertyIsEqualTo>
                 <ogc:PropertyName>class</ogc:PropertyName>
                 <ogc:Literal>highway</ogc:Literal>
               </ogc:PropertyIsEqualTo>
-              <ogc:PropertyIsNotEqualTo>
-                <ogc:PropertyName>bridge</ogc:PropertyName>
-                <ogc:Literal>1</ogc:Literal>
-              </ogc:PropertyIsNotEqualTo>
+              <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>type</ogc:PropertyName>
+                <ogc:Literal>motorway</ogc:Literal>
+              </ogc:PropertyIsEqualTo>
+            </ogc:And>
+          </ogc:Filter>
+          <sld:MaxScaleDenominator>100000.0</sld:MaxScaleDenominator>
+          <sld:LineSymbolizer>
+            <sld:Stroke>
+              <sld:CssParameter name="stroke">#e892a2</sld:CssParameter>
+              <sld:CssParameter name="stroke-linecap">round</sld:CssParameter>
+              <sld:CssParameter name="stroke-width">
+                <ogc:Function name="Categorize">
+                  <ogc:Function name="env">
+                    <ogc:Literal>wms_scale_denominator</ogc:Literal>
+                  </ogc:Function>
+                  <ogc:Literal>1.8</ogc:Literal>
+                  <ogc:Literal>400000</ogc:Literal>
+                  <ogc:Literal>1.4</ogc:Literal>
+                  <ogc:Literal>800000</ogc:Literal>
+                  <ogc:Literal>0.8</ogc:Literal>
+                  <ogc:Literal>1500000</ogc:Literal>
+                  <ogc:Literal>0.4</ogc:Literal>
+                  <ogc:Literal>3000000</ogc:Literal>
+                  <ogc:Literal>0.2</ogc:Literal>
+                  <ogc:Literal>6000000</ogc:Literal>
+                  <ogc:Literal>0.1</ogc:Literal>
+                </ogc:Function>
+              </sld:CssParameter>
+            </sld:Stroke>
+          </sld:LineSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Title>Zoomed in highway</sld:Title>
+          <ogc:Filter>
+            <ogc:And>
+              <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>class</ogc:PropertyName>
+                <ogc:Literal>highway</ogc:Literal>
+              </ogc:PropertyIsEqualTo>
+              <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>type</ogc:PropertyName>
+                <ogc:Literal>motorway_link</ogc:Literal>
+              </ogc:PropertyIsEqualTo>
+            </ogc:And>
+          </ogc:Filter>
+          <sld:MaxScaleDenominator>100000.0</sld:MaxScaleDenominator>
+          <sld:LineSymbolizer>
+            <sld:Stroke>
+              <sld:CssParameter name="stroke">#e892a2</sld:CssParameter>
+              <sld:CssParameter name="stroke-linecap">round</sld:CssParameter>
+              <sld:CssParameter name="stroke-width">
+                <ogc:Function name="Categorize">
+                  <ogc:Function name="env">
+                    <ogc:Literal>wms_scale_denominator</ogc:Literal>
+                  </ogc:Function>
+                  <ogc:Literal>1.8</ogc:Literal>
+                  <ogc:Literal>400000</ogc:Literal>
+                  <ogc:Literal>1.4</ogc:Literal>
+                  <ogc:Literal>800000</ogc:Literal>
+                  <ogc:Literal>0.8</ogc:Literal>
+                  <ogc:Literal>1500000</ogc:Literal>
+                  <ogc:Literal>0.4</ogc:Literal>
+                  <ogc:Literal>3000000</ogc:Literal>
+                  <ogc:Literal>0.2</ogc:Literal>
+                  <ogc:Literal>6000000</ogc:Literal>
+                  <ogc:Literal>0.1</ogc:Literal>
+                </ogc:Function>
+              </sld:CssParameter>
+            </sld:Stroke>
+          </sld:LineSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Title>Zoomed in motorway</sld:Title>
+          <ogc:Filter>
+            <ogc:And>
+              <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>class</ogc:PropertyName>
+                <ogc:Literal>highway</ogc:Literal>
+              </ogc:PropertyIsEqualTo>
               <ogc:PropertyIsEqualTo>
                 <ogc:PropertyName>type</ogc:PropertyName>
                 <ogc:Literal>motorway</ogc:Literal>
@@ -682,6 +851,7 @@
           </sld:LineSymbolizer>
         </sld:Rule>
         <sld:Rule>
+          <sld:Title>Zoomed in bridge</sld:Title>
           <ogc:Filter>
             <ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -761,16 +931,13 @@
           </sld:LineSymbolizer>
         </sld:Rule>
         <sld:Rule>
+          <sld:Title>Zoomed in motorway link</sld:Title>
           <ogc:Filter>
             <ogc:And>
               <ogc:PropertyIsEqualTo>
                 <ogc:PropertyName>class</ogc:PropertyName>
                 <ogc:Literal>highway</ogc:Literal>
               </ogc:PropertyIsEqualTo>
-              <ogc:PropertyIsNotEqualTo>
-                <ogc:PropertyName>bridge</ogc:PropertyName>
-                <ogc:Literal>1</ogc:Literal>
-              </ogc:PropertyIsNotEqualTo>
               <ogc:PropertyIsEqualTo>
                 <ogc:PropertyName>type</ogc:PropertyName>
                 <ogc:Literal>motorway_link</ogc:Literal>
@@ -840,6 +1007,7 @@
           </sld:LineSymbolizer>
         </sld:Rule>
         <sld:Rule>
+          <sld:Title>Zoomed in link bridge</sld:Title>
           <ogc:Filter>
             <ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -922,4 +1090,3 @@
     </sld:UserStyle>
   </sld:NamedLayer>
 </sld:StyledLayerDescriptor>
-

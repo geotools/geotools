@@ -27,7 +27,6 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
-import javax.imageio.spi.ServiceRegistry;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.LoggingKeys;
@@ -159,24 +158,10 @@ public class FactoryRegistry {
     }
 
     @Override
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         deregisterAll();
         super.finalize();
-    }
-
-    /** @deprecated Replace with {@link ServiceLoader#load(Class)} */
-    @Deprecated
-    public static <T> Iterator<T> lookupProviders(Class<T> service) {
-        return ServiceLoader.load(service).iterator();
-    }
-
-    /**
-     * @param classLoader
-     * @deprecated Replace with {@link ServiceLoader#load(Class,ClassLoader)}
-     */
-    @Deprecated
-    public static <T> Iterator<T> lookupProviders(Class<T> service, ClassLoader classLoader) {
-        return ServiceLoader.load(service, classLoader).iterator();
     }
 
     /**
@@ -193,12 +178,6 @@ public class FactoryRegistry {
         return registry.streamCategories();
     }
 
-    /** @deprecated Please use {@link #getFactoryByClass(Class)} */
-    @Deprecated
-    public <T> T getServiceProviderByClass(Class<T> providerClass) {
-        return getFactoryByClass(providerClass);
-    }
-
     /**
      * Instance of category, or null if not available.
      *
@@ -212,14 +191,6 @@ public class FactoryRegistry {
     }
 
     /**
-     * @deprecated Replaced by {@link #getFactories(Class, boolean)
-     */
-    @Deprecated
-    public <T> Iterator<T> getServiceProviders(final Class<T> category, final boolean useOrdering) {
-        return getFactories(category, useOrdering).iterator();
-    }
-
-    /**
      * Factories for the provided category type.
      *
      * @param category The category to look for. Usually an interface class (not the actual
@@ -230,16 +201,6 @@ public class FactoryRegistry {
      */
     public <T> Stream<T> getFactories(final Class<T> category, final boolean useOrdering) {
         return registry.streamInstances(category, useOrdering);
-    }
-
-    /** @deprecated Replaced by {@link #getFactories(Class, Predicate, boolean)} */
-    @Deprecated
-    public <T> Iterator<T> getServiceProviders(
-            final Class<T> category,
-            final ServiceRegistry.Filter filter,
-            final boolean useOrdering) {
-        Predicate<T> factoryFilter = filter == null ? null : filter::filter;
-        return getFactories(category, factoryFilter, useOrdering).iterator();
     }
 
     /**
@@ -258,14 +219,6 @@ public class FactoryRegistry {
             final boolean useOrdering) {
         Stream<T> factories = getFactories(category, useOrdering);
         return factoryFilter == null ? factories : factories.filter(factoryFilter);
-    }
-
-    /** @deprecated Replaced with {@link #getFactories(Class, Predicate, Hints)} */
-    @Deprecated
-    public synchronized <T> Iterator<T> getServiceProviders(
-            final Class<T> category, final ServiceRegistry.Filter filter, final Hints hints) {
-        Predicate<? super T> predicate = filter == null ? null : filter::filter;
-        return getFactories(category, predicate, hints).iterator();
     }
 
     /**
@@ -335,21 +288,6 @@ public class FactoryRegistry {
         }
         scanForPluginsIfNeeded(category);
         return getFactories(category, true);
-    }
-
-    /**
-     * @deprecated Replaced with {@link #getFactory(Class, Predicate, Hints,
-     *     org.geotools.util.factory.Hints.Key)}
-     */
-    @Deprecated
-    public <T> T getServiceProvider(
-            final Class<T> category,
-            final ServiceRegistry.Filter filter,
-            Hints hints,
-            final Hints.Key key)
-            throws FactoryRegistryException {
-        Predicate<T> predicate = filter == null ? null : filter::filter;
-        return getFactory(category, predicate, hints, key);
     }
 
     /**
@@ -515,25 +453,27 @@ public class FactoryRegistry {
             final Hints.Key key,
             final String message,
             final Class<?> type) {
-        final StringBuilder buffer = new StringBuilder(status);
-        buffer.append(Utilities.spaces(Math.max(1, 7 - status.length())))
-                .append('(')
-                .append(Classes.getShortName(category));
-        if (key != null) {
-            buffer.append(", ").append(key);
+        if (LOGGER.isLoggable(DEBUG_LEVEL)) {
+            final StringBuilder buffer = new StringBuilder(status);
+            buffer.append(Utilities.spaces(Math.max(1, 7 - status.length())))
+                    .append('(')
+                    .append(Classes.getShortName(category));
+            if (key != null) {
+                buffer.append(", ").append(key);
+            }
+            buffer.append(')');
+            if (message != null) {
+                buffer.append(": ").append(message);
+            }
+            if (type != null) {
+                buffer.append(' ').append(Classes.getShortName(type)).append('.');
+            }
+            final LogRecord record = new LogRecord(DEBUG_LEVEL, buffer.toString());
+            record.setSourceClassName(FactoryRegistry.class.getName());
+            record.setSourceMethodName("getFactory");
+            record.setLoggerName(LOGGER.getName());
+            LOGGER.log(record);
         }
-        buffer.append(')');
-        if (message != null) {
-            buffer.append(": ").append(message);
-        }
-        if (type != null) {
-            buffer.append(' ').append(Classes.getShortName(type)).append('.');
-        }
-        final LogRecord record = new LogRecord(DEBUG_LEVEL, buffer.toString());
-        record.setSourceClassName(FactoryRegistry.class.getName());
-        record.setSourceMethodName("getFactory");
-        record.setLoggerName(LOGGER.getName());
-        LOGGER.log(record);
     }
 
     /**
@@ -597,7 +537,6 @@ public class FactoryRegistry {
      * Returns the factories available in the cache, or {@code null} if none. To be overridden by
      * {@link FactoryCreator} only.
      *
-     * @param category
      * @return List of references to cached factories, or {@code null} if none.
      */
     <T> List<Reference<T>> getCachedFactories(final Class<T> category) {
@@ -951,19 +890,11 @@ public class FactoryRegistry {
         }
     }
 
-    /** @deprecated Replaced with {@link #deregisterFactories(Iterable)} */
-    @Deprecated
-    public void registerServiceProviders(final Iterator<?> providers) {
-        registerFactories(providers);
-    }
-
     /**
      * Manually register factories.
      *
      * <p>Used to facilitate integration with other plug-in systems, such as OSGi or Spring, that
      * block CLASSPATH visibility of {@link ServiceLoader} implementation registration.
-     *
-     * @param factories
      */
     public void registerFactories(final Iterator<?> factories) {
         ensureArgumentNonNull("factories", factories);
@@ -975,46 +906,27 @@ public class FactoryRegistry {
      *
      * <p>Used to facilitate integration with other plug-in systems, such as OSGi or Spring, that
      * block CLASSPATH visibility of {@link ServiceLoader} implementation registration.
-     *
-     * @param factories
      */
     public void registerFactories(final Iterable<?> factories) {
         ensureArgumentNonNull("factories", factories);
         factories.forEach(this::registerFactory);
     }
 
-    /** @deprecated Replaced wtih {@link #deregisterFactory(Object)} */
-    @Deprecated
-    public void registerServiceProvider(final Object provider) {
-        registerFactory(provider);
-    }
-
     /**
      * Manually register a factory.
      *
      * <p>Used to facilitate integration with other plug-in systems, such as OSGi or Spring, that
      * block CLASSPATH visibility of {@link ServiceLoader} implementation registration.
-     *
-     * @param factory
      */
     public void registerFactory(final Object factory) {
         registry.registerInstance(factory);
     }
 
-    /** @deprecated Replaced with {@link #registerFactory(Object, Class)} */
-    @Deprecated
-    public <T> boolean registerServiceProvider(final T provider, final Class<T> category) {
-        return registerFactory(provider, category);
-    }
     /**
      * Manually register a factory.
      *
      * <p>Used to facilitate integration with other plug-in systems, such as OSGi or Spring, that
      * block CLASSPATH visibility of {@link ServiceLoader} implementation registration.
-     *
-     * @param factory
-     * @param category
-     * @return
      */
     public <T> boolean registerFactory(final T factory, final Class<T> category) {
         if (!category.isAssignableFrom(factory.getClass())) {
@@ -1128,18 +1040,14 @@ public class FactoryRegistry {
                         T factory = getFactoryByClass(factoryClass);
                         if (factory == null)
                             try {
-                                factory = factoryClass.newInstance();
+                                factory = factoryClass.getDeclaredConstructor().newInstance();
                                 if (registerFactory(factory, category)) {
                                     message.append(System.getProperty("line.separator", "\n"));
                                     message.append("  ");
                                     message.append(factoryClass.getName());
                                     newFactories = true;
                                 }
-                            } catch (IllegalAccessException exception) {
-                                throw new FactoryRegistryException(
-                                        Errors.format(ErrorKeys.CANT_CREATE_FACTORY_$1, classname),
-                                        exception);
-                            } catch (InstantiationException exception) {
+                            } catch (Exception exception) {
                                 throw new FactoryRegistryException(
                                         Errors.format(ErrorKeys.CANT_CREATE_FACTORY_$1, classname),
                                         exception);
@@ -1258,19 +1166,9 @@ public class FactoryRegistry {
         registry.deregisterInstances();
     }
 
-    /**
-     * Clear registered factories for a provided category.
-     *
-     * @param category
-     */
+    /** Clear registered factories for a provided category. */
     public void deregisterAll(Class<?> category) {
         registry.deregisterInstances(category);
-    }
-
-    /** @deprecated {@link #deregisterFactories(Iterator)} */
-    @Deprecated
-    public void deregisterServiceProviders(final Iterator<?> providers) {
-        deregisterFactories(providers);
     }
 
     /**
@@ -1278,8 +1176,6 @@ public class FactoryRegistry {
      *
      * <p>Used to facilitate integration with other plug-in systems, such as OSGi or Spring, that
      * block CLASSPATH visibility of {@link ServiceLoader} implementation registration.
-     *
-     * @param factories
      */
     public void deregisterFactories(final Iterator<?> factories) {
         ensureArgumentNonNull("factories", factories);
@@ -1291,47 +1187,27 @@ public class FactoryRegistry {
      *
      * <p>Used to facilitate integration with other plug-in systems, such as OSGi or Spring, that
      * block CLASSPATH visibility of {@link ServiceLoader} implementation registration.
-     *
-     * @param factories
      */
     public void deregisterFactories(final Iterable<?> factories) {
         ensureArgumentNonNull("factories", factories);
         factories.forEach(this::deregisterFactory);
     }
 
-    /** @deprecated {@link #deregisterFactory(Object)} */
-    @Deprecated
-    public void deregisterServiceProvider(final Object provider) {
-        deregisterFactory(provider);
-    }
-
     /**
      * Manually deregister a factory
      *
      * <p>Used to facilitate integration with other plug-in systems, such as OSGi or Spring, that
      * block CLASSPATH visibility of {@link ServiceLoader} implementation registration.
-     *
-     * @param factory
      */
     public void deregisterFactory(final Object factory) {
         registry.deregisterInstance(factory);
     }
 
-    /** @deprecated {@link #deregisterFactory(Object, Class)} */
-    @Deprecated
-    public <T> void deregisterServiceProvider(final T provider, final Class<T> category) {
-        deregisterFactory(provider);
-    }
-
     /**
      * Manually deregister a factory
      *
      * <p>Used to facilitate integration with other plug-in systems, such as OSGi or Spring, that
      * block CLASSPATH visibility of {@link ServiceLoader} implementation registration.
-     *
-     * @param factory
-     * @param category
-     * @return
      */
     public <T> boolean deregisterFactory(final T factory, final Class<T> category) {
         ensureArgumentNonNull("factory", factory);
@@ -1346,9 +1222,6 @@ public class FactoryRegistry {
      * Define pairwise ordering giving priority to the <code>firstFactory</code> over the <code>
      * secondFactory</code>.
      *
-     * @param category
-     * @param firstFactory
-     * @param secondFactory
      * @return if this call establishes a new order
      */
     public <T> boolean setOrdering(
@@ -1403,18 +1276,6 @@ public class FactoryRegistry {
             previous.add(f1);
         }
         return set;
-    }
-
-    /** @deprecated Replaced with {@link #setOrdering(Class, boolean, Predicate, Predicate)} */
-    @Deprecated
-    public <T> boolean setOrdering(
-            final Class<T> base,
-            final boolean set,
-            final ServiceRegistry.Filter filter1,
-            final ServiceRegistry.Filter filter2) {
-        ensureArgumentNonNull("filter1", filter1);
-        ensureArgumentNonNull("filter2", filter2);
-        return setOrdering(base, set, (Predicate<T>) filter1::filter, filter2::filter);
     }
 
     /**
@@ -1473,8 +1334,6 @@ public class FactoryRegistry {
      * before the second.
      *
      * @param category The category to clear instance order for.
-     * @param firstFactory
-     * @param secondFactory
      * @return {@code true} if that ordering was previously defined
      */
     public <T> boolean unsetOrdering(

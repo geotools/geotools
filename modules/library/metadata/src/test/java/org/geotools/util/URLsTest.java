@@ -18,13 +18,14 @@
 package org.geotools.util;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeTrue;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import org.apache.commons.lang3.SystemUtils;
 import org.junit.Test;
 
 /** Tests for {@link URLs}. */
@@ -85,10 +86,6 @@ public class URLsTest {
             assertURL("one", "file://one");
             assertURL("./one", "file://./one");
             handleFile("\\\\host\\share\\file");
-            // from GEOT-3300 urlToFile doesn't handle network paths correctly
-            URL url = new URL("file", "////oehhwsfs09", "/some/path/on/the/server/filename.nds");
-            File windowsShareFile = URLs.urlToFile(url);
-            assertNotNull(windowsShareFile);
         } else {
             handleFile("/one");
             handleFile("one");
@@ -106,12 +103,21 @@ public class URLsTest {
         File file = File.createTempFile("hello", "world");
         handleFile(file.getAbsolutePath());
         handleFile(file.getPath());
-        // from GEOT-3300 urlToFile doesn't handle network paths correctly
-        URL url = new URL("file", "////oehhwsfs09", "/some/path/on/the/server/filename.nds");
-        File windowsShareFile = URLs.urlToFile(url);
-        assertNotNull(windowsShareFile);
         assertURL("file café", "file:file%20caf%C3%A9");
         assertURL("/file café", "file:/file%20caf%C3%A9");
         assertURL("file café", "file://file%20caf%C3%A9");
+    }
+
+    @Test
+    public void testUrlToFileWindowsShareFile() throws Exception {
+        // newer version of java fail with "java.net.MalformedURLException: Illegal
+        // character found in host: '/'" when seeing this kind of paths on recent versions of JDK 8
+        // while the "normal" way to identify a UNC, that is, "\\host", works
+        assumeTrue("Ignoring test on non Windows OS, see GEOT-3300", SystemUtils.IS_OS_WINDOWS);
+        URL url = new URL("file", "\\\\oehhwsfs09", "/some/path/on/the/server/filename.nds");
+        File windowsShareFile = URLs.urlToFile(url);
+        assertEquals(
+                "\\\\oehhwsfs09\\some\\path\\on\\the\\server\\filename.nds",
+                windowsShareFile.toString());
     }
 }

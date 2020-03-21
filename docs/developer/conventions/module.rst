@@ -1,7 +1,7 @@
 Module Directory Structure
 ==========================
 
-Geotools 2.4 and above complies to the Maven standard layout regarding nested modules; and the layout
+GeoTools 2.4 and above complies to the Maven standard layout regarding nested modules; and the layout
 of source code directories.
 
 This section provides a summary of module structure and a examples how we have groupled modules

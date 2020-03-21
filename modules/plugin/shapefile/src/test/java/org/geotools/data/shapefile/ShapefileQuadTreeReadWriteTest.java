@@ -25,7 +25,6 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import junit.framework.AssertionFailedError;
 import org.geotools.TestData;
 import org.geotools.data.DataStore;
 import org.geotools.data.Query;
@@ -67,12 +66,6 @@ public class ShapefileQuadTreeReadWriteTest extends TestCaseSupport {
         for (int i = 0, ii = files.length; i < ii; i++) {
             test(files[i]);
         }
-    }
-
-    public void fail(String message, Throwable cause) throws Throwable {
-        Throwable fail = new AssertionFailedError(message);
-        fail.initCause(cause);
-        throw fail;
     }
 
     @Test
@@ -221,11 +214,7 @@ public class ShapefileQuadTreeReadWriteTest extends TestCaseSupport {
         }
     }
 
-    /**
-     * Test optimized getBounds(). Testing when filter is a bbox filter and a fidfilter
-     *
-     * @throws Exception
-     */
+    /** Test optimized getBounds(). Testing when filter is a bbox filter and a fidfilter */
     @Test
     public void testGetBoundsQuery() throws Exception {
         File file = copyShapefiles("shapes/streams.shp");

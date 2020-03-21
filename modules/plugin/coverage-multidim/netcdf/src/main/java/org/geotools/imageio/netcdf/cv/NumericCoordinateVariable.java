@@ -39,10 +39,7 @@ class NumericCoordinateVariable<T extends Number> extends CoordinateVariable<T> 
 
     private static final NumericConverterFactory CONVERTER_FACTORY = new NumericConverterFactory();
 
-    /**
-     * @param binding
-     * @param coordinateAxis
-     */
+    /** */
     public NumericCoordinateVariable(Class<T> binding, CoordinateAxis coordinateAxis) {
         super(binding, coordinateAxis);
         // If the axis is not numeric, we can't process any further.

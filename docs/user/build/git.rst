@@ -1,7 +1,8 @@
 Using Git
 =========
 
-The following helpful git tips, as so many others, are attributed to IanS and have been stolen from his email.
+The following helpful git tips, as so many others, are attributed to Ian
+Schneider and have been stolen from his email.
 
 Git Repository
 ^^^^^^^^^^^^^^
@@ -27,7 +28,8 @@ This repository is setup with the following branches of GeoTools:
 Typical Development Environment
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Typically, a developer will create a local 'geotools' directory, move into that directory, and do a checkout of the GeoTools repository. Within the 
+Typically, a developer will create a local ``geotools`` directory, move into
+that directory, and do a checkout of the GeoTools repository. Within the
 repository switching between branches is trivial::
 
    [geotools]% git branch
@@ -100,7 +102,7 @@ Doing another status reports no more local changes::
 
 But also reports that our local branch is ahead of the remote branch by 1 commit. This is because we have yet to push
 the commit. Before pushing it is always a good idea to first pull in case we have any commits that conflict with 
-other commits that have already been pushed up to the repostory::
+other commits that have already been pushed up to the repository::
 
   [geotools]% git pull geotools master
   [geotools]% git push geotools master
@@ -139,7 +141,7 @@ If the change has been staged but not yet committed::
   git checkout /path/to/file/to/rollback
 
 If the change has been committed **but not pushed** it gets interesting. If the change to rollback is at the tip of the branch 
-(ie is the most recent commit) you can use git reset::
+(i.e. is the most recent commit) you can use git reset::
 
   git reset <previous_commit>
   
@@ -172,6 +174,6 @@ Tells you info about commits/revision history::
 Blame
 ^^^^^
 
-My favourite. Annotates a document with who changed what and when::
+My favorite. Annotates a document with who changed what and when::
    
    git blame Sample.java

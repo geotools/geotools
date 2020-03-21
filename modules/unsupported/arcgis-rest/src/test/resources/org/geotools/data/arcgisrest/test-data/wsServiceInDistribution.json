@@ -1,0 +1,200 @@
+{
+  "@context": "https://project-open-data.cio.gov/v1.1/schema/catalog.jsonld",
+  "@type": "dcat:Catalog",
+  "conformsTo": "https://project-open-data.cio.gov/v1.1/schema",
+  "describedBy": "https://project-open-data.cio.gov/v1.1/schema/catalog.json",
+  "dataset": [
+    {
+      "@type": "dcat:Dataset",
+      "identifier": "http://vicroadsopendata-vicroadsmaps.opendata.arcgis.com/datasets/bfeadc0fb0a44c6e8ab3a17c76e5a562_0",
+      "webService" : "https://services.arcgis.com/B7qHofahIc9hrOqB/arcgis/rest/services/LGA_Profile_2014_(beta)/FeatureServer/0",
+      "license": "http://vicroadsopendata-vicroadsmaps.opendata.arcgis.com/datasets/bfeadc0fb0a44c6e8ab3a17c76e5a562_0/license.json",
+      "landingPage": "http://vicroadsopendata-vicroadsmaps.opendata.arcgis.com/datasets/bfeadc0fb0a44c6e8ab3a17c76e5a562_0",
+      "title": "ERROR",
+      "description": "These links are used to calculate travel time for Bluetooth live data.  <br /><div><span style='line-height: 26.35px;'><a href='http://data.vicroads.vic.gov.au/metadata/Bluetooth_Links - Open Data.html' target='_blank'>About this dataset</a>  </span><a href='mailto:SISSupport@roads.vic.gov.au' style='line-height: 26.35px;' target='_blank'>Contact Us</a><br /></div>",
+      "keyword": [
+        "Bluetooth",
+        "VicRoads Open Data",
+        "Road Assets Open Data",
+        "Electrical",
+        "Sites"
+      ],
+      "issued": "2017-07-25T06:26:10.000Z",
+      "modified": "2017-07-26T07:11:28.000Z",
+      "publisher": {
+        "source": "VicRoads"
+      },
+      "contactPoint": {
+        "@type": "vcard:Contact",
+        "fn": "VicRoads"
+      },
+      "accessLevel": "public",
+      "distribution": [
+        {
+          "@type": "dcat:Distribution",
+          "title": "ArcGIS Hub Dataset",
+          "format": "Web Page",
+          "mediaType": "text/html",
+          "accessURL": "http://vicroadsopendata-vicroadsmaps.opendata.arcgis.com/datasets/bfeadc0fb0a44c6e8ab3a17c76e5a562_0"
+        }
+      ],
+      "spatial": "144.623,-38.3995,145.3766,-37.6697",
+      "theme": [
+        "geospatial"
+      ]
+    },
+    {
+      "@type": "dcat:Dataset",
+      "identifier": "http://vicroadsopendata-vicroadsmaps.opendata.arcgis.com/datasets/bfeadc0fb0a44c6e8ab3a17c76e5a562_0",
+      "webService" : "https://services.arcgis.com/B7qHofahIc9hrOqB/arcgis/rest/services/LGA_Profile_2014_(beta)/FeatureServer/0",
+      "license": "http://vicroadsopendata-vicroadsmaps.opendata.arcgis.com/datasets/bfeadc0fb0a44c6e8ab3a17c76e5a562_0/license.json",
+      "landingPage": "http://vicroadsopendata-vicroadsmaps.opendata.arcgis.com/datasets/bfeadc0fb0a44c6e8ab3a17c76e5a562_0",
+      "title": "ERROR",
+      "description": "These links are used to calculate travel time for Bluetooth live data.  <br /><div><span style='line-height: 26.35px;'><a href='http://data.vicroads.vic.gov.au/metadata/Bluetooth_Links - Open Data.html' target='_blank'>About this dataset</a>  </span><a href='mailto:SISSupport@roads.vic.gov.au' style='line-height: 26.35px;' target='_blank'>Contact Us</a><br /></div>",
+      "keyword": [
+        "Bluetooth",
+        "VicRoads Open Data",
+        "Road Assets Open Data",
+        "Electrical",
+        "Sites"
+      ],
+      "issued": "2017-07-25T06:26:10.000Z",
+      "modified": "2017-07-26T07:11:28.000Z",
+      "publisher": {
+        "source": "VicRoads"
+      },
+      "contactPoint": {
+        "@type": "vcard:Contact",
+        "fn": "VicRoads"
+      },
+      "accessLevel": "public",
+      "distribution": [
+        {
+          "@type": "dcat:Distribution",
+          "title": "ArcGIS Hub Dataset",
+          "format": "Web Page",
+          "mediaType": "text/html",
+          "accessURL": "http://vicroadsopendata-vicroadsmaps.opendata.arcgis.com/datasets/bfeadc0fb0a44c6e8ab3a17c76e5a562_0"
+        }
+      ],
+      "spatial": "144.623,-38.3995,145.3766,-37.6697",
+      "theme": [
+        "geospatial"
+      ]
+    },
+    {
+      "@type": "dcat:Dataset",
+      "identifier": "http://vicroadsopendata-vicroadsmaps.opendata.arcgis.com/datasets/bfeadc0fb0a44c6e8ab3a17c76e5a562_1",
+      "license": "http://vicroadsopendata-vicroadsmaps.opendata.arcgis.com/datasets/bfeadc0fb0a44c6e8ab3a17c76e5a562_0/license.json",
+      "landingPage": "http://vicroadsopendata-vicroadsmaps.opendata.arcgis.com/datasets/bfeadc0fb0a44c6e8ab3a17c76e5a562_0",
+      "title": "Bluetooth Links 1",
+      "description": "These links are used to calculate travel time for Bluetooth live data.  <br /><div><span style='line-height: 26.35px;'><a href='http://data.vicroads.vic.gov.au/metadata/Bluetooth_Links - Open Data.html' target='_blank'>About this dataset</a>  </span><a href='mailto:SISSupport@roads.vic.gov.au' style='line-height: 26.35px;' target='_blank'>Contact Us</a><br /></div>",
+      "keyword": [
+        "Bluetooth",
+        "VicRoads Open Data",
+        "Road Assets Open Data",
+        "Electrical",
+        "Sites"
+      ],
+      "issued": "2017-07-25T06:26:10.000Z",
+      "modified": "2017-07-26T07:11:28.000Z",
+      "publisher": {
+        "source": "VicRoads"
+      },
+      "contactPoint": {
+        "@type": "vcard:Contact",
+        "fn": "VicRoads"
+      },
+      "accessLevel": "public",
+      "distribution": [
+        {
+          "@type": "dcat:Distribution",
+          "title": "Esri Rest API",
+          "format": "Esri REST",
+          "mediaType": "application/json",
+          "accessURL": "https://services2.arcgis.com/18ajPSI0b3ppsmMt/arcgis/rest/services/ERROR/FeatureServer/0"
+        }
+      ],
+      "spatial": "144.623,-38.3995,145.3766,-37.6697",
+      "theme": [
+        "geospatial"
+      ]
+    },
+    {
+      "@type": "dcat:Dataset",
+      "identifier": "http://vicroadsopendata-vicroadsmaps.opendata.arcgis.com/datasets/bfeadc0fb0a44c6e8ab3a17c76e5a562_2",
+      "license": "http://vicroadsopendata-vicroadsmaps.opendata.arcgis.com/datasets/bfeadc0fb0a44c6e8ab3a17c76e5a562_0/license.json",
+      "landingPage": "http://vicroadsopendata-vicroadsmaps.opendata.arcgis.com/datasets/bfeadc0fb0a44c6e8ab3a17c76e5a562_0",
+      "title": "Bluetooth Links 2",
+      "description": "These links are used to calculate travel time for Bluetooth live data.  <br /><div><span style='line-height: 26.35px;'><a href='http://data.vicroads.vic.gov.au/metadata/Bluetooth_Links - Open Data.html' target='_blank'>About this dataset</a>  </span><a href='mailto:SISSupport@roads.vic.gov.au' style='line-height: 26.35px;' target='_blank'>Contact Us</a><br /></div>",
+      "keyword": [
+        "Bluetooth",
+        "VicRoads Open Data",
+        "Road Assets Open Data",
+        "Electrical",
+        "Sites"
+      ],
+      "issued": "2017-07-25T06:26:10.000Z",
+      "modified": "2017-07-26T07:11:28.000Z",
+      "publisher": {
+        "source": "VicRoads"
+      },
+      "contactPoint": {
+        "@type": "vcard:Contact",
+        "fn": "VicRoads"
+      },
+      "accessLevel": "public",
+      "distribution": [
+        {
+          "@type": "dcat:Distribution",
+          "title": "Esri Rest API",
+          "format": "Esri REST",
+          "mediaType": "application/json",
+          "accessURL": "https://services2.arcgis.com/18ajPSI0b3ppsmMt/arcgis/rest/services/Bluetooth_Links_v2/FeatureServer/0"
+        }
+      ],
+      "spatial": "144.623,-38.3995,145.3766,-37.6697",
+      "theme": [
+        "geospatial"
+      ]
+    },
+    {
+      "@type": "dcat:Dataset",
+      "identifier": "http://vicroadsopendata-vicroadsmaps.opendata.arcgis.com/datasets/bfeadc0fb0a44c6e8ab3a17c76e5a562_3",
+      "license": "http://vicroadsopendata-vicroadsmaps.opendata.arcgis.com/datasets/bfeadc0fb0a44c6e8ab3a17c76e5a562_0/license.json",
+      "landingPage": "http://vicroadsopendata-vicroadsmaps.opendata.arcgis.com/datasets/bfeadc0fb0a44c6e8ab3a17c76e5a562_0",
+      "title": "ERROR NO DISTRIBUTION ACCESS URL",
+      "description": "These links are used to calculate travel time for Bluetooth live data.  <br /><div><span style='line-height: 26.35px;'><a href='http://data.vicroads.vic.gov.au/metadata/Bluetooth_Links - Open Data.html' target='_blank'>About this dataset</a>  </span><a href='mailto:SISSupport@roads.vic.gov.au' style='line-height: 26.35px;' target='_blank'>Contact Us</a><br /></div>",
+      "keyword": [
+        "Bluetooth",
+        "VicRoads Open Data",
+        "Road Assets Open Data",
+        "Electrical",
+        "Sites"
+      ],
+      "issued": "2017-07-25T06:26:10.000Z",
+      "modified": "2017-07-26T07:11:28.000Z",
+      "publisher": {
+        "source": "VicRoads"
+      },
+      "contactPoint": {
+        "@type": "vcard:Contact",
+        "fn": "VicRoads"
+      },
+      "accessLevel": "public",
+      "distribution": [
+        {
+          "@type": "dcat:Distribution",
+          "title": "Esri Rest API",
+          "format": "Esri REST",
+          "mediaType": "application/json"
+        }
+      ],
+      "spatial": "144.623,-38.3995,145.3766,-37.6697",
+      "theme": [
+        "geospatial"
+      ]
+    }
+
+  ]
+}

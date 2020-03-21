@@ -402,15 +402,13 @@ public class AbstractFactory implements Factory, RegistrableFactory {
      * #format(Writer, Map, String, Map)} below.
      */
     private static String format(final Map<?, ?> hints, final Map<Factory, String> done) {
-        final Writer table;
-        try {
-            table = new TableWriter(null, " ");
+        try (Writer table = new TableWriter(null, " ")) {
             format(table, hints, "  ", done);
+            return table.toString();
         } catch (IOException e) {
             // Should never happen, since we are writing in a buffer.
             throw new AssertionError(e);
         }
-        return table.toString();
     }
 
     /** Formats recursively the tree. This method invoke itself. */

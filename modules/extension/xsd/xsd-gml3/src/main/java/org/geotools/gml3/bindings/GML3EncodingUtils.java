@@ -216,14 +216,9 @@ public class GML3EncodingUtils {
         return e.GeometryPropertyType_getProperty(geometry, name, true, makeEmpty);
     }
 
-    /** @deprecated use {@link #GeometryPropertyType_GetProperty(Geometry, QName)} */
-    public static Object getProperty(Geometry geometry, QName name) {
-        return INSTANCE.GeometryPropertyType_GetProperty(geometry, name);
-    }
-
     /**
-     * Helper method used to implement {@link ComplexBinding#getProperties(Object)} for bindings of
-     * geometry reference types:
+     * Helper method used to implement {@link ComplexBinding#getProperties(Object,
+     * XSDElementDeclaration)} for bindings of geometry reference types:
      *
      * <ul>
      *   <li>GeometryPropertyType
@@ -234,11 +229,6 @@ public class GML3EncodingUtils {
      */
     public List GeometryPropertyType_GetProperties(Geometry geometry) {
         return e.GeometryPropertyType_getProperties(geometry);
-    }
-
-    /** @deprecated use {@link #GeometryPropertyType_GetProperties(Geometry)} */
-    public static List getProperties(Geometry geometry) {
-        return INSTANCE.GeometryPropertyType_GetProperties(geometry);
     }
 
     public Element AbstractFeatureTypeEncode(
@@ -285,14 +275,6 @@ public class GML3EncodingUtils {
         return encoding;
     }
 
-    /**
-     * @deprecated use {@link #AbstractFeatureTypeEncode(Object, Document, Element, XSDIdRegistry)}
-     */
-    public static Element AbstractFeatureType_encode(
-            Object object, Document document, Element value, XSDIdRegistry idSet) {
-        return INSTANCE.AbstractFeatureTypeEncode(object, document, value, idSet);
-    }
-
     public List AbstractFeatureTypeGetProperties(
             Object object,
             XSDElementDeclaration element,
@@ -310,20 +292,6 @@ public class GML3EncodingUtils {
                                 "location",
                                 "metaDataProperty")),
                 configuration);
-    }
-
-    /**
-     * @deprecated use
-     *             {@link #AbstractFeatureTypeGetProperties(Object, XSDElementDeclaration, SchemaIndex, Configuration)
-     *
-     */
-    public static List AbstractFeatureType_getProperties(
-            Object object,
-            XSDElementDeclaration element,
-            SchemaIndex schemaIndex,
-            Configuration configuration) {
-        return INSTANCE.AbstractFeatureTypeGetProperties(
-                object, element, schemaIndex, configuration);
     }
 
     /**
@@ -375,9 +343,6 @@ public class GML3EncodingUtils {
     /**
      * Return the simple content of a {@link ComplexAttribute} if it represents a complexType with
      * simpleContent, otherwise null.
-     *
-     * @param complex
-     * @return
      */
     public static Object getSimpleContent(ComplexAttribute complex) {
         Property simpleContent = complex.getProperty(new NameImpl("simpleContent"));
@@ -392,9 +357,6 @@ public class GML3EncodingUtils {
      * Deep clones a {@link NamespaceSupport} so that it can be used outside of this parse (as its
      * state changes during the parse, and we need to keep all namespace mapping present at this
      * point for later usage)
-     *
-     * @param namespaceSupport
-     * @return
      */
     public static NamespaceSupport copyNamespaceSupport(NamespaceSupport namespaceSupport) {
         NamespaceSupport copy = new NamespaceSupport();

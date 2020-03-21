@@ -33,7 +33,7 @@ GeoTools library. As a result **ValidationProcessor** is is a ready to use
 software component with its own file formats and so forth.
 
 It is not trying to implement any standards in order to integrate with your
-your existing infrastructure; it is up to you to host a :doc:`Repository </library/main/repository>` allowing the **ValidationProcessor** to access your organisations data.
+your existing infrastructure; it is up to you to host a :doc:`Repository </library/main/repository>` allowing the **ValidationProcessor** to access your organizations data.
 
 The key concepts offered by the Validation Processor are:
 
@@ -49,10 +49,10 @@ The design of the ValidationProcessor is similar in spirit to JUnit tests; a "te
 Configuration
 -------------
 
-THe ValidationProcessor is configured using:
+The ValidationProcessor is configured using:
 
 * plugin configuration: plugins are defined using a combination of xml and an implementing Java class. This configuration can be reused between
-  applications; and are aligned with your organisation data quality policies.
+  applications; and are aligned with your organization data quality policies.
   
   Here is an example::
      
@@ -104,9 +104,9 @@ THe ValidationProcessor is configured using:
   This file defines a suite of two tests that will be performed against LAKES.
   
   * One of these is a reference the the **Is Valid Geometry** plugin defined above. Note that this
-    test is restricted to the typeRef "LAKES:lakes" 
+    test is restricted to the ``typeRef`` "LAKES:lakes" 
   
-  * The second test is an integrity test that needs to make reference to another layer (ie typeRef "STREAMS.streams").
+  * The second test is an integrity test that needs to make reference to another layer (i.e. ``typeRef`` "STREAMS.streams").
     The test is defined to prevent lakes and streams being used to describe the same water work.
 
 Feature Validation Example

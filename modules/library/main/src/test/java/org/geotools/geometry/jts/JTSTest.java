@@ -365,7 +365,7 @@ public class JTSTest extends JTSTestBase {
         // just wanted to make sure there was no exception
         assertEquals(dest0.x, -dest180.x, TOL);
         assertEquals(dest0.y, dest180.y, TOL);
-        assertEquals(dest0.z, dest180.z, TOL);
+        assertEquals(dest0.getZ(), dest180.getZ(), TOL);
     }
 
     @Test

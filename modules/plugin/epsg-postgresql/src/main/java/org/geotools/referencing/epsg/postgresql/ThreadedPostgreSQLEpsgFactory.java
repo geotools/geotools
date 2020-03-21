@@ -153,12 +153,11 @@ public class ThreadedPostgreSQLEpsgFactory extends ThreadedEpsgFactory {
             }
         }
         try {
-            final InputStream in = new FileInputStream(file);
-            p.load(in);
-            in.close();
+            try (InputStream in = new FileInputStream(file)) {
+                p.load(in);
+            }
         } catch (IOException exception) {
-            Logging.unexpectedException(
-                    "org.geotools.referencing.factory", DataSource.class, "<init>", exception);
+            Logging.unexpectedException(LOGGER, DataSource.class, "<init>", exception);
             // Continue. We will try to work with whatever properties are available.
         }
         return p;
@@ -178,8 +177,7 @@ public class ThreadedPostgreSQLEpsgFactory extends ThreadedEpsgFactory {
             portNumber = Integer.parseInt(p.getProperty("portNumber", "5432"));
         } catch (NumberFormatException exception) {
             portNumber = 5432;
-            Logging.unexpectedException(
-                    "org.geotools.referencing.factory", DataSource.class, "<init>", exception);
+            Logging.unexpectedException(LOGGER, DataSource.class, "<init>", exception);
         }
         source.setPortNumber(portNumber);
         source.setServerName(p.getProperty("serverName", "localhost"));

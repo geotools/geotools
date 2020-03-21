@@ -50,11 +50,6 @@ public class ImageAssert {
     /**
      * Checks the image in the reference file and the actual image are equals from a human
      * perception p.o.v
-     *
-     * @param expectedFile
-     * @param actualImage
-     * @param threshold
-     * @throws IOException
      */
     public static void assertEquals(File expectedFile, RenderedImage actualImage, int threshold)
             throws IOException {
@@ -64,13 +59,7 @@ public class ImageAssert {
         assertImagesResemble(expectedFile, actualImage, Mode.IgnoreAntialiasing, threshold, true);
     }
 
-    /**
-     * Checks the expected image and the actual image are equals from a human perception p.o.v
-     *
-     * @param expectedFile
-     * @param actualImage
-     * @param threshold
-     */
+    /** Checks the expected image and the actual image are equals from a human perception p.o.v */
     public static void assertEquals(
             RenderedImage expectedImage, RenderedImage actualImage, int threshold) {
         ImageComparator comparator =
@@ -88,14 +77,7 @@ public class ImageAssert {
         }
     }
 
-    /**
-     * Checks the expected image and the actual image are equals from a human perception p.o.v
-     *
-     * @param expectedFile
-     * @param actualImage
-     * @param threshold
-     * @throws IOException
-     */
+    /** Checks the expected image and the actual image are equals from a human perception p.o.v */
     public static void assertEquals(
             File expectedImage, RenderedImage actualImage, int threshold, Mode mode)
             throws IOException {
@@ -209,9 +191,6 @@ public class ImageAssert {
     /**
      * Makes sure the image starts at 0,0, all images coming from files do but the ones coming from
      * a JAI chain might not
-     *
-     * @param image
-     * @return
      */
     static final RenderedImage realignImage(RenderedImage image) {
         if (image.getMinX() > 0 || image.getMinY() > 0) {

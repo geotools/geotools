@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -243,6 +244,23 @@ public final class GeoTools {
 
     /**
      * The {@linkplain System#getProperty(String) system property} key for the default value to be
+     * assigned to the {@link Hints#DATE_TIME_FORMAT_HANDLING} hint.
+     *
+     * <p>This setting specifies if GML 2 temporal data shall be formatted using same approach as
+     * GML 3+.
+     *
+     * @see Hints#DATE_TIME_FORMAT_HANDLING
+     * @see #getDefaultHints
+     * @since 21.0
+     */
+    public static final String DATE_TIME_FORMAT_HANDLING = "org.geotools.dateTimeFormatHandling";
+
+    static {
+        bind(DATE_TIME_FORMAT_HANDLING, Hints.DATE_TIME_FORMAT_HANDLING);
+    }
+
+    /**
+     * The {@linkplain System#getProperty(String) system property} key for the default value to be
      * assigned to the {@link Hints#ENCODE_EWKT} hint.
      *
      * <p>This setting specifies if geometries with {@link
@@ -438,7 +456,6 @@ public final class GeoTools {
      *   <li>
      *   <li>To assist
      *
-     * @param type
      * @return Version (or null if unavailable)
      */
     public static Version getVersion(Class<?> type) {
@@ -481,7 +498,6 @@ public final class GeoTools {
     /**
      * Class location.
      *
-     * @param type
      * @return class location
      */
     static URL classLocation(Class<?> type) {
@@ -491,7 +507,6 @@ public final class GeoTools {
     /**
      * Determine jar version from static analysis of classLocation path.
      *
-     * @param classLocation
      * @return jar version, or null if unknown
      */
     static String jarVersion(String classLocation) {
@@ -525,7 +540,6 @@ public final class GeoTools {
     /**
      * Generate URL of MANIFEST.MF file for provided class location.
      *
-     * @param classLocation
      * @return MANIFEST.MF location, or null if unknown
      */
     static URL manifestLocation(String classLocation) {
@@ -558,7 +572,6 @@ public final class GeoTools {
      *
      * <p>This can be used to quickly verify packaging information.
      *
-     * @param type
      * @return MANIFEST.MF contents, please note contents may be empty when running from IDE
      */
     public static Manifest getManifest(Class<?> type) {
@@ -815,12 +828,7 @@ public final class GeoTools {
     public static Hints getDefaultHints() {
         return Hints.getDefaults(false);
     }
-    /**
-     * Used to combine provided hints with global GeoTools defaults.
-     *
-     * @param hints
-     * @return
-     */
+    /** Used to combine provided hints with global GeoTools defaults. */
     public static Hints addDefaultHints(final Hints hints) {
         final Hints completed = getDefaultHints();
         if (hints != null) {
@@ -897,11 +905,14 @@ public final class GeoTools {
             }
             // step 2 no argument constructor
             try {
-                Object value = kind.newInstance();
+                Object value = kind.getDeclaredConstructor().newInstance();
                 if (type.isInstance(value)) {
                     return type.cast(value);
                 }
-            } catch (InstantiationException | IllegalAccessException e) {
+            } catch (InstantiationException
+                    | IllegalAccessException
+                    | NoSuchMethodException
+                    | InvocationTargetException e) {
                 LOGGER.log(
                         Level.FINER, "Unable to instantiate ENTITY_RESOLVER: " + e.getMessage(), e);
             }
@@ -933,7 +944,6 @@ public final class GeoTools {
     /**
      * Clears the initial context (closes it if not null)
      *
-     * @throws NamingException
      * @since 15.0
      */
     public static synchronized void clearInitialContext() throws NamingException {

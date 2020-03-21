@@ -154,7 +154,6 @@ public class DefaultProjectedCRS extends AbstractDerivedCRS implements Projected
      * @throws MismatchedDimensionException if the source and target dimension of {@code
      *     baseToDeviced} don't match the dimension of {@code base} and {@code derivedCS}
      *     respectively.
-     * @deprecated Create explicitly a {@link DefiningConversion} instead.
      */
     public DefaultProjectedCRS(
             final Map<String, ?> properties,

@@ -46,8 +46,6 @@ public abstract class FeatureWrapper {
     /**
      * Sets the underlying complex attribute. That is, the complex attribute that was wrapped. NB:
      * This could be a Feature.
-     *
-     * @param underlyingComplexAttribute
      */
     public void setUnderlyingComplexAttribute(ComplexAttribute underlyingComplexAttribute) {
         this.underlyingComplexAttribute = underlyingComplexAttribute;
@@ -67,8 +65,8 @@ public abstract class FeatureWrapper {
             // Create a new instance of the class:
             T wrapper;
             try {
-                wrapper = clazz.newInstance();
-            } catch (InstantiationException e) {
+                wrapper = clazz.getDeclaredConstructor().newInstance();
+            } catch (Exception e) {
                 throw new InvalidClassException(
                         String.format("Unable instantiate class of type '%s'.", clazz));
             }

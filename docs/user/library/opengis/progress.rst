@@ -1,21 +1,21 @@
 Progress
 --------
 
-The callback object ProgressListener is used to report on long running operations and provide a chance for the end user to cancel them.
+The callback object ``ProgressListener`` is used to report on long running operations and provide a chance for the end user to cancel them.
 
 There are several implementations available in GeoTools:
 
-* ProgressWindow - provides a swing dialog showing operation progress
-* ProgressPrinter - reports operation progress to standard out
-* ProgressMailer - will email when the operation is completed
+* ``ProgressWindow`` - provides a swing dialog showing operation progress
+* ``ProgressPrinter`` - reports operation progress to standard out
+* ``ProgressMailer`` - will email when the operation is completed
 
-As you can see these really are intended for operations that may take minuets to complete.
+As you can see these really are intended for operations that may take minutes to complete.
 
-There are a couple implementations of direct interest to implementors:
+There are a couple implementations of direct interest to implementers:
 
-* NullProgressListener - null object to use when you are not interested
-* SubProgressListener - used by implementors when delegating a portion of work to a sub operation
-* DelegateProgressListener
+* ``NullProgressListener`` - null object to use when you are not interested
+* ``SubProgressListener`` - used by implementers when delegating a portion of work to a sub operation
+* ``DelegateProgressListener``
 
 Example use::
   
@@ -37,17 +37,17 @@ Example use::
 
 This code could be called using:
 
-* doSomething( new ProgressWindow( null ) ); // from a Swing Application
-* doSomething( new ProgressMailer( mailserver, emailAddress ) ); // from a web application
-* doSomething( new ProgressPrinter() ); // for a command line application
-* doSomething( new NullProgressListener() ); // if you don't care
+* ``doSomething( new ProgressWindow( null ) ); // from a Swing Application``
+* ``doSomething( new ProgressMailer( mailserver, emailAddress ) ); // from a web application``
+* ``doSomething( new ProgressPrinter() ); // for a command line application``
+* ``doSomething( new NullProgressListener() ); // if you don't care``
 
 Additional adapters for SWT project are available in the uDig project.
 
 Using ProgressListener to Cancel
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The ProgressListener is a general user interface callback object; as such it allows the a user to cancel a long running operation.::
+The ``ProgressListener`` is a general user interface callback object; as such it allows a user to cancel a long running operation.::
   
   final ProgressListener progress= new ProgressWindow( null );
   Thread worker = new Thread( new Runnable(){

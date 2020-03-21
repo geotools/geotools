@@ -41,7 +41,6 @@ import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.Rule;
 import org.geotools.styling.SLD;
-import org.geotools.xml.styling.SLDParser;
 import org.geotools.styling.SelectedChannelType;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
@@ -49,6 +48,7 @@ import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleFactory;
 import org.geotools.swt.control.ExceptionMonitor;
 import org.geotools.util.factory.GeoTools;
+import org.geotools.xml.styling.SLDParser;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.geom.MultiPolygon;
@@ -317,7 +317,6 @@ public class Utils {
      * uses bands 1, 2, and 3 for the red, green and blue channels. It then sets up a raster
      * symbolizer and returns this wrapped in a Style.
      *
-     * @param reader
      * @return a new Style object containing a raster symbolizer set up for RGB image
      */
     public static Style createRGBStyle(GridCoverage2DReader reader) {

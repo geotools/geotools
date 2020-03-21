@@ -15,7 +15,7 @@ There are two implementations of the OGR plugin.  The first uses OGR's standard 
 
 Your installation of GDAL/OGR needs to be compiled with Java support to use this module.
 
-The other OGR plugin uses Bridj to create Java bindings to OGR.  This version does not require
+The other OGR plugin uses ``Bridj`` to create Java bindings to OGR.  This version does not require
 GDAL/OGR to be compiled with Java support.
 
 **Maven**::
@@ -26,11 +26,11 @@ GDAL/OGR to be compiled with Java support.
       <version>${geotools.version}</version>
     </dependency>
 
-The OGR DataStore does require the GDAL/OGR native library.  Once installed you need to add the location to your PATH on Windows, DYLD_LIBRARY_PATH on Mac, and LD_LIBRARY_PATH on Linux.  If you use gt-ogr-bridj and the dll/dylib/so file is not named gdal you will need to set the GDAL_LIBRARY_NAME.  Often it is something like gdal10 depending on the version of GDAL you installed.  You will also have to set the java.library.path to the GDAL's location when running your program.
+The OGR DataStore does require the GDAL/OGR native library.  Once installed you need to add the location to your ``PATH`` on Windows, ``DYLD_LIBRARY_PATH`` on Mac, and ``LD_LIBRARY_PATH`` on Linux.  If you use ``gt-ogr-bridj`` and the ``dll``/``dylib``/``so`` file is not named ``gdal`` you will need to set the ``GDAL_LIBRARY_NAME``.  Often it is something like ``gdal10`` depending on the version of GDAL you installed.  You will also have to set the ``java.library.path`` to the GDAL location when running your program.
 
-You can then access the module by creating a DataStoreFactory.
+You can then access the module by creating a ``DataStoreFactory``.
 
-If you are using Bridj::
+If you are using ``Bridj``::
 
     OGRDataStoreFactory factory = new BridjOGRDataStoreFactory();
 
@@ -47,9 +47,9 @@ You can list available drivers::
 
 To connect to an OGR layer there are two parameters:
 
-* DriverName = The name of the OGR Driver (http://www.gdal.org/ogr_formats.html). 
+* ``DriverName`` = The name of the OGR Driver (http://www.gdal.org/ogr_formats.html). 
 
-* DataSourceName = The name of the file or data source connection. This value depends on what driver you are using.
+* ``DataSourceName`` = The name of the file or data source connection. This value depends on what driver you are using.
 
 Here is how you would read a shapefile::
 

@@ -22,6 +22,7 @@ import junit.framework.TestCase;
 import org.geotools.geometry.GeometryBuilder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.geometry.DirectPosition;
+import org.opengis.geometry.PositionFactory;
 import org.opengis.geometry.coordinate.PointArray;
 import org.opengis.geometry.coordinate.Position;
 
@@ -37,17 +38,13 @@ public class PointArrayTest extends TestCase {
     private void _test1(GeometryBuilder builder) {
 
         GeometryFactoryImpl tCoordFactory = (GeometryFactoryImpl) builder.getGeometryFactory();
+        PositionFactory pf = builder.getPositionFactory();
 
-        PositionImpl p1 =
-                new PositionImpl(tCoordFactory.createDirectPosition(new double[] {-50, 0}));
-        PositionImpl p2 =
-                new PositionImpl(tCoordFactory.createDirectPosition(new double[] {-30, 30}));
-        PositionImpl p3 =
-                new PositionImpl(tCoordFactory.createDirectPosition(new double[] {0, 50}));
-        PositionImpl p4 =
-                new PositionImpl(tCoordFactory.createDirectPosition(new double[] {30, 30}));
-        PositionImpl p5 =
-                new PositionImpl(tCoordFactory.createDirectPosition(new double[] {50, 0}));
+        PositionImpl p1 = new PositionImpl(pf.createDirectPosition(new double[] {-50, 0}));
+        PositionImpl p2 = new PositionImpl(pf.createDirectPosition(new double[] {-30, 30}));
+        PositionImpl p3 = new PositionImpl(pf.createDirectPosition(new double[] {0, 50}));
+        PositionImpl p4 = new PositionImpl(pf.createDirectPosition(new double[] {30, 30}));
+        PositionImpl p5 = new PositionImpl(pf.createDirectPosition(new double[] {50, 0}));
 
         List<Position> posList = new ArrayList<Position>();
 
@@ -88,8 +85,7 @@ public class PointArrayTest extends TestCase {
         // get-method uses the same DirectPosition without creating new instance
         assertTrue(directPositionAt4 == directPosition);
 
-        DirectPosition directPositionAddition =
-                tCoordFactory.createDirectPosition(new double[] {5, 5});
+        DirectPosition directPositionAddition = pf.createDirectPosition(new double[] {5, 5});
         pa.setDirectPosition(
                 4, directPositionAddition); // test to see of object or values is stored
 

@@ -85,9 +85,7 @@ public class SimilarityTransformProvider extends MathTransformProvider {
     public static final ParameterDescriptor<Double> ROTATION =
             createDescriptor(
                     new NamedIdentifier[] {
-                        new NamedIdentifier(
-                                Citations.EPSG,
-                                "Rotation angle of source coordinate reference system axes"),
+                        new NamedIdentifier(Citations.EPSG, "Rotation angle of source CRS axes"),
                         new NamedIdentifier(Citations.EPSG, "8614")
                     },
                     0,

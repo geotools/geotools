@@ -36,7 +36,7 @@ import org.opengis.util.Cloneable;
 /**
  * Holds the coordinates for a position within some coordinate reference system. Since {@code
  * DirectPosition}s, as data types, will often be included in larger objects (such as {@linkplain
- * org.opengis.geometry.coordinate. geometries}) that have references to {@link
+ * org.opengis.geometry.coordinate.geometries}) that have references to {@link
  * CoordinateReferenceSystem}, the {@link #getCoordinateReferenceSystem} method may returns {@code
  * null} if this particular {@code DirectPosition} is included in a larger object with such a
  * reference to a {@linkplain CoordinateReferenceSystem coordinate reference system}. In this case,
@@ -121,22 +121,13 @@ public class DirectPositionImpl implements Cloneable, DirectPosition, Position, 
         crs = point.getCoordinateReferenceSystem();
     }
 
-    /**
-     * Creates a new {@code DirectPositionImpl}.
-     *
-     * @param crs
-     */
+    /** Creates a new {@code DirectPositionImpl}. */
     public DirectPositionImpl(final CoordinateReferenceSystem crs) {
         setCRS(crs);
         this.ordinates = new double[crs.getCoordinateSystem().getDimension()];
     }
 
-    /**
-     * Creates a new {@code DirectPositionImpl}.
-     *
-     * @param crs
-     * @param ordinates
-     */
+    /** Creates a new {@code DirectPositionImpl}. */
     public DirectPositionImpl(final CoordinateReferenceSystem crs, final double[] ordinates) {
         setCRS(crs);
         this.ordinates = new double[crs.getCoordinateSystem().getDimension()];
@@ -161,11 +152,7 @@ public class DirectPositionImpl implements Cloneable, DirectPosition, Position, 
     //  implement the DirectPosition interface
     // *************************************************************************
 
-    /**
-     * DOCUMENT ME.
-     *
-     * @param crs
-     */
+    /** DOCUMENT ME. */
     private void setCRS(final CoordinateReferenceSystem crs) {
         if (crs == null) {
             throw new IllegalArgumentException("DirectPosition cannot have a null CRS");
@@ -188,11 +175,6 @@ public class DirectPositionImpl implements Cloneable, DirectPosition, Position, 
      */
     public double[] getCoordinate() {
         return ordinates;
-    }
-
-    @Deprecated
-    public double[] getCoordinates() {
-        return getCoordinate();
     }
 
     /**
@@ -236,15 +218,6 @@ public class DirectPositionImpl implements Cloneable, DirectPosition, Position, 
      * @see org.opengis.geometry.coordinate.Position#getDirectPosition()
      */
     public DirectPosition getDirectPosition() {
-        return this;
-    }
-
-    /**
-     * @inheritDoc
-     * @see org.opengis.geometry.coordinate.Position#getPosition()
-     */
-    @Deprecated
-    public DirectPosition getPosition() {
         return this;
     }
 

@@ -56,8 +56,6 @@ public interface FunctionExpression extends Factory, Function {
      * used in style layer descriptor documents to facilitate interoperability. It allows a user to
      * specify an SQL function, and provide a value to use when the documented is used with a WFS
      * that does not support the provided function.
-     *
-     * @param parameters
      */
     void setFallbackValue(Literal fallback);
 

@@ -45,7 +45,6 @@ public final class IndexQueryUtils {
     /**
      * Extracts List of Sort attributes names from Query
      *
-     * @param query
      * @return List of Sort attributes names
      */
     public static List<String> getAttributesOnSort(Query query) {
@@ -60,7 +59,6 @@ public final class IndexQueryUtils {
     /**
      * Extracts List of attributes names from Filter
      *
-     * @param filter
      * @return List of attributes names
      */
     public static List<String> getAttributesOnFilter(Filter filter) {
@@ -68,37 +66,19 @@ public final class IndexQueryUtils {
         return new ArrayList<String>(Arrays.asList(attrs));
     }
 
-    /**
-     * Checks if Expression is empty or Null
-     *
-     * @param expression
-     * @return
-     */
+    /** Checks if Expression is empty or Null */
     public static boolean isExpressionEmpty(Expression expression) {
         if (expression == null || Expression.NIL.equals(expression)) return true;
         return false;
     }
 
-    /**
-     * Checks if property name is equals to source/identifier expression in attribute mapping
-     *
-     * @param mapping
-     * @param propertyName
-     * @return
-     */
+    /** Checks if property name is equals to source/identifier expression in attribute mapping */
     public static boolean equalsProperty(AttributeMapping mapping, String propertyName) {
         return (equalsPropertyExpression(mapping.getSourceExpression(), propertyName)
                 || equalsPropertyExpression(mapping.getIdentifierExpression(), propertyName));
     }
 
-    /**
-     * Compare if mapping-xpath == attMapping
-     *
-     * @param mapping
-     * @param attMapping
-     * @param xpath
-     * @return
-     */
+    /** Compare if mapping-xpath == attMapping */
     public static boolean equalsXpath(
             FeatureTypeMapping mapping, AttributeMapping attMapping, String xpath) {
         StepList simplifiedSteps =
@@ -106,13 +86,7 @@ public final class IndexQueryUtils {
         return Objects.equals(attMapping.getTargetXPath(), simplifiedSteps);
     }
 
-    /**
-     * Compare if expression == propertyName
-     *
-     * @param expression
-     * @param propertyName
-     * @return
-     */
+    /** Compare if expression == propertyName */
     public static boolean equalsPropertyExpression(Expression expression, String propertyName) {
         if (IndexQueryUtils.isExpressionEmpty(expression)) return false;
         String[] name = DataUtilities.attributeNames(expression);
@@ -123,8 +97,6 @@ public final class IndexQueryUtils {
     /**
      * Checks if all unrolled properties are indexed in mapping
      *
-     * @param properties
-     * @param mapping
      * @return //
      */
     //    public static boolean checkAllUnrolledPropertiesIndexed(
@@ -133,13 +105,7 @@ public final class IndexQueryUtils {
     // null);
     //    }
 
-    /**
-     * Checks if all properties are indexed in mapping
-     *
-     * @param properties
-     * @param mapping
-     * @return
-     */
+    /** Checks if all properties are indexed in mapping */
     public static boolean checkAllPropertiesIndexed(
             List<String> properties, FeatureTypeMapping mapping) {
         return !properties.stream().anyMatch(p -> mapping.getIndexAttributeName(p) == null);
@@ -148,8 +114,6 @@ public final class IndexQueryUtils {
     /**
      * Builds an OR operator comparing Identifier with ids list
      *
-     * @param ids
-     * @param mapping
      * @return Or Filter
      */
     public static Filter buildIdInExpressionOr(List<String> ids, FeatureTypeMapping mapping) {
@@ -171,8 +135,6 @@ public final class IndexQueryUtils {
     /**
      * Builds a mapping->identifier IN (ids...) like function/clause
      *
-     * @param ids
-     * @param mapping
      * @return Filter IN function
      */
     public static Filter buildIdInExpressionFunction(List<String> ids, FeatureTypeMapping mapping) {
@@ -196,8 +158,6 @@ public final class IndexQueryUtils {
     /**
      * Builds a mapping->identifier IN (ids...) like function/clause
      *
-     * @param ids
-     * @param mapping
      * @return Filter IN function
      */
     public static Filter buildIdInExpression(List<String> ids, FeatureTypeMapping mapping) {

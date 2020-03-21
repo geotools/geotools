@@ -48,9 +48,6 @@ public final class EfficientInverseColorMapComputation {
     /**
      * {@link EfficientInverseColorMapComputation} that allows us to specify the number of bits we
      * are going to save from the quantization.
-     *
-     * @param rgbColorMap
-     * @param quantizationBits
      */
     public EfficientInverseColorMapComputation(byte[][] rgbColorMap, final int quantizationBits) {
         colorMap = rgbColorMap;

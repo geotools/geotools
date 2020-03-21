@@ -51,10 +51,8 @@ public class YamlParser {
      *
      * @param root The {@link YamlParseHandler} that handles the root of the parsed {@link
      *     YamlObject}.
-     * @param hints
      * @return The root {@link YamlParseHandler}, once it has finished handling the parsed {@link
      *     YamlObject}..
-     * @throws IOException
      */
     @SuppressWarnings("PMD.EmptyWhileStmt")
     public <T extends YamlParseHandler> T parse(T root, Map<String, Object> hints)

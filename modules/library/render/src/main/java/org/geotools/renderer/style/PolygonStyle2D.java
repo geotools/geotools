@@ -46,8 +46,6 @@ public class PolygonStyle2D extends LineStyle2D {
     /**
      * Sets a Style2D for filling the {@linkplain org.geotools.renderer.geom.Polygon polygon} to be
      * rendered. Set it to <code>null</code> if no Style2D filling is to be performed.
-     *
-     * @param graphicFill
      */
     public void setGraphicFill(Style2D graphicFill) {
         this.graphicFill = graphicFill;
@@ -66,8 +64,6 @@ public class PolygonStyle2D extends LineStyle2D {
     /**
      * Sets filling color for the {@linkplain org.geotools.renderer.geom.Polygon polygon} to be
      * rendered. Set it to <code>null</code> if no filling is to be performed.
-     *
-     * @param fill
      */
     public void setFill(Paint fill) {
         this.fill = fill;
@@ -86,8 +82,6 @@ public class PolygonStyle2D extends LineStyle2D {
     /**
      * Sets the fill Composite for the {@linkplain org.geotools.renderer.geom.Polyline polyline} to
      * be rendered. Set it to <code>null</code> if the contour is to be opaque
-     *
-     * @param fillComposite
      */
     public void setFillComposite(Composite fillComposite) {
         this.fillComposite = fillComposite;

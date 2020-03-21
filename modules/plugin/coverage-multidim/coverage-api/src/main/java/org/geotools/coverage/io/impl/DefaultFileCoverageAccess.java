@@ -32,11 +32,7 @@ public class DefaultFileCoverageAccess extends DefaultCoverageAccess implements 
 
     protected final URL source;
 
-    /**
-     * @param driver
-     * @param allowedAccessTypes
-     * @param accessParams
-     */
+    /** */
     public DefaultFileCoverageAccess(
             Driver driver,
             EnumSet<AccessType> allowedAccessTypes,

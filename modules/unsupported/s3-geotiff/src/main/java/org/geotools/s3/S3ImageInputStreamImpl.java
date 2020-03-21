@@ -21,6 +21,7 @@ import com.amazonaws.services.s3.model.GetObjectMetadataRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import java.io.IOException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.nio.ByteBuffer;
 import javax.imageio.stream.ImageInputStreamImpl;
 import org.geotools.s3.cache.CacheEntryKey;
@@ -62,7 +63,7 @@ public class S3ImageInputStreamImpl extends ImageInputStreamImpl {
             StringBuilder keyBuilder = new StringBuilder();
             this.bucket = parts[2];
             for (int i = 3; i < parts.length; i++) {
-                keyBuilder.append("/").append(parts[i]);
+                keyBuilder.append("/").append(URLDecoder.decode(parts[i], "UTF-8"));
             }
             this.key = keyBuilder.toString();
             /* Strip leading slash */

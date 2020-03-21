@@ -53,8 +53,6 @@ class ExpressionTypeEvaluator implements ExpressionVisitor {
      * Returns the coordinate reference system of the last encontered geometry property. Unless a
      * filter function that reprojects geometries is used, that's also the crs of the eventual
      * output, in case it's a Geometry, that is.
-     *
-     * @return
      */
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
         return this.crs;

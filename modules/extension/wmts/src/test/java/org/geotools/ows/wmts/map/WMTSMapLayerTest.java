@@ -58,11 +58,7 @@ public class WMTSMapLayerTest extends OnlineTestCase {
         restMapLayer = new WMTSMapLayer(server2, w2layer);
     }
 
-    /**
-     * Test method for {@link WMTSMapLayer#getBounds()}.
-     *
-     * @throws FactoryException
-     */
+    /** Test method for {@link WMTSMapLayer#getBounds()}. */
     @Test
     public void testGetBounds() throws FactoryException {
         ReferencedEnvelope env = kvpMapLayer.getBounds();
@@ -72,10 +68,7 @@ public class WMTSMapLayerTest extends OnlineTestCase {
         // checkEnv(env);
     }
 
-    /**
-     * @param env
-     * @throws FactoryException
-     */
+    /** */
     private void checkEnv(ReferencedEnvelope env) throws FactoryException {
         assertEquals(
                 "wrong CRS",
@@ -87,11 +80,7 @@ public class WMTSMapLayerTest extends OnlineTestCase {
         assertEquals(env.getMaximum(1), 6338174.055756185, 0.001);
     }
 
-    /**
-     * Test method for {@link WMTSMapLayer#getCoordinateReferenceSystem()}.
-     *
-     * @throws FactoryException
-     */
+    /** Test method for {@link WMTSMapLayer#getCoordinateReferenceSystem()}. */
     @Test
     public void testGetCoordinateReferenceSystem() throws FactoryException {
 
@@ -117,16 +106,13 @@ public class WMTSMapLayerTest extends OnlineTestCase {
         Rectangle paintArea = new Rectangle(0, 0, 100, 100);
         AffineTransform transform =
                 RendererUtilities.worldToScreenTransform(kvpMapLayer.getBounds(), paintArea);
-        renderer.paint(image.createGraphics(), paintArea, transform);
+        renderer.paint(image.createGraphics(), paintArea, kvpMapLayer.getBounds(), transform);
         assertNotNull(kvpMapLayer.getLastGetMap());
     }
 
     /**
      * Test method for {@link
      * WMTSMapLayer#isNativelySupported(org.opengis.referencing.crs.CoordinateReferenceSystem)}.
-     *
-     * @throws FactoryException
-     * @throws NoSuchAuthorityCodeException
      */
     @Test
     public void testIsNativelySupported() throws NoSuchAuthorityCodeException, FactoryException {

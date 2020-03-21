@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeImpl;
@@ -32,6 +34,7 @@ import org.geotools.filter.LengthFunction;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.FactoryRegistryException;
+import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
@@ -39,6 +42,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.feature.type.PropertyType;
 import org.opengis.filter.BinaryComparisonOperator;
@@ -68,6 +72,8 @@ import org.opengis.referencing.operation.TransformException;
  * @since 2.1.M3
  */
 public class FeatureTypes {
+
+    static final Logger LOGGER = Logging.getLogger(FeatureTypes.class);
 
     /** the default namespace for feature types */
     // public static final URI = GMLSchema.NAMESPACE;
@@ -181,8 +187,6 @@ public class FeatureTypes {
      *
      * @param schema the original schema
      * @param crs the forced crs
-     * @return
-     * @throws SchemaException
      */
     public static SimpleFeatureType transform(
             SimpleFeatureType schema, CoordinateReferenceSystem crs) throws SchemaException {
@@ -196,8 +200,6 @@ public class FeatureTypes {
      * @param crs the forced crs
      * @param forceOnlyMissing if true, will force the specified crs only on the attributes that do
      *     miss one
-     * @return
-     * @throws SchemaException
      */
     public static SimpleFeatureType transform(
             SimpleFeatureType schema, CoordinateReferenceSystem crs, boolean forceOnlyMissing)
@@ -238,9 +240,6 @@ public class FeatureTypes {
      * @param schema Schema for target transformation - transform( schema, crs )
      * @param transform MathTransform used to transform coordinates - reproject( crs, crs )
      * @return transformed Feature of type schema
-     * @throws TransformException
-     * @throws MismatchedDimensionException
-     * @throws IllegalAttributeException
      */
     public static SimpleFeature transform(
             SimpleFeature feature, SimpleFeatureType schema, MathTransform transform)
@@ -428,6 +427,34 @@ public class FeatureTypes {
     }
 
     /**
+     * Whether the feature type has the specified name, or is a descendent from it
+     *
+     * @param featureType typeName with parentage in question
+     * @param name name to match against
+     * @return true if featureType has the same name, or is a descendent of the indicated name
+     */
+    public static boolean matches(FeatureType featureType, Name name) {
+        if (featureType.getName().equals(name)
+                || (name.getNamespaceURI() == null
+                        && featureType
+                                .getName()
+                                .getLocalPart()
+                                .equalsIgnoreCase(name.getLocalPart()))) {
+            return true;
+        }
+
+        try {
+            return isDecendedFrom(
+                    featureType,
+                    name.getNamespaceURI() != null ? new URI(name.getNamespaceURI()) : null,
+                    name.getLocalPart());
+        } catch (URISyntaxException e) {
+            LOGGER.log(Level.FINE, "Unexpected failure while feature type", e);
+            return false;
+        }
+    }
+
+    /**
      * A query of the the types ancestor information.
      *
      * <p>This utility method may be used as common implementation for <code>
@@ -553,9 +580,6 @@ public class FeatureTypes {
      * This method depends on the correct implementation of FeatureType equals
      *
      * <p>We may need to write an implementation that can detect cycles,
-     *
-     * @param typeA
-     * @param typeB
      */
     public static boolean equalsAncestors(SimpleFeatureType typeA, SimpleFeatureType typeB) {
         return ancestors(typeA).equals(ancestors(typeB));

@@ -25,11 +25,7 @@ import org.locationtech.jts.geom.Geometry;
  */
 public interface CurvedGeometry<T extends Geometry> {
 
-    /**
-     * Linearizes the geometry using the built-in linearization tolerance
-     *
-     * @return
-     */
+    /** Linearizes the geometry using the built-in linearization tolerance */
     T linearize();
 
     /**
@@ -41,29 +37,18 @@ public interface CurvedGeometry<T extends Geometry> {
      * @param tolerance Linearization tolerance, should be zero or positive. When zero is used, the
      *     maximum number of allowed linearization points will be used, see {@link
      *     CircularArc#MAX_SEGMENTS_QUADRANT}
-     * @return
      */
     T linearize(double tolerance);
 
     /**
      * Parallel method to {@link Geometry#toText()} that will output the geometry as curved instead
      * of as linear
-     *
-     * @return
      */
     String toCurvedText();
 
-    /**
-     * The default linearization tolerance
-     *
-     * @return
-     */
+    /** The default linearization tolerance */
     double getTolerance();
 
-    /**
-     * Returns the dimension of the geometry without forcing access to the coordinate sequence
-     *
-     * @return
-     */
+    /** Returns the dimension of the geometry without forcing access to the coordinate sequence */
     int getCoordinatesDimension();
 }

@@ -352,7 +352,6 @@ public class SLDs extends SLD {
      * feature type. This is admittedly dangerous but is extremely useful because it means that the
      * style can be used with any feature type.
      *
-     * @param ftStyles
      */
     private static void genericizeftStyles(List<FeatureTypeStyle> ftStyles) {
         for (FeatureTypeStyle featureTypeStyle : ftStyles) {

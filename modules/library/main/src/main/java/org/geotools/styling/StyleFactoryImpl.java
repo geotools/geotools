@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.measure.Unit;
-import javax.swing.Icon;
+import javax.swing.*;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.factory.GeoTools;
 import org.opengis.feature.type.Name;
@@ -208,7 +208,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory
     public Rule createRule(
             org.geotools.styling.Symbolizer[] symbolizers,
             Description desc,
-            Graphic[] legends,
+            org.opengis.style.GraphicLegend legend,
             String name,
             Filter filter,
             boolean isElseFilter,
@@ -217,7 +217,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory
 
         Rule r =
                 new RuleImpl(
-                        symbolizers, desc, legends, name, filter, isElseFilter, maxScale, minScale);
+                        symbolizers, desc, legend, name, filter, isElseFilter, maxScale, minScale);
 
         return r;
     }
@@ -333,10 +333,6 @@ public class StyleFactoryImpl extends AbstractStyleFactory
             color = Fill.DEFAULT.getColor();
         }
         fill.setColor(color);
-        if (backgroundColor == null) {
-            backgroundColor = Fill.DEFAULT.getBackgroundColor();
-        }
-        fill.setBackgroundColor(backgroundColor);
 
         if (opacity == null) {
             opacity = Fill.DEFAULT.getOpacity();
@@ -440,7 +436,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory
         Graphic graphic = new GraphicImpl(filterFactory);
 
         symbols = symbols != null ? symbols : new Symbol[0];
-        graphic.setSymbols(symbols);
+        graphic.graphicalSymbols().addAll(Arrays.asList(symbols));
 
         // externalGraphics = externalGraphics != null ? externalGraphics : new ExternalGraphic[0];
         // graphic.setExternalGraphics(externalGraphics);
@@ -505,25 +501,25 @@ public class StyleFactoryImpl extends AbstractStyleFactory
         if (fontFamily == null) {
             throw new IllegalArgumentException("Null font family specified");
         }
-        font.setFontFamily(fontFamily);
+        font.getFamily().add(fontFamily);
 
         if (fontSize == null) {
             throw new IllegalArgumentException("Null font size specified");
         }
 
-        font.setFontSize(fontSize);
+        font.setSize(fontSize);
 
         if (fontStyle == null) {
             throw new IllegalArgumentException("Null font Style specified");
         }
 
-        font.setFontStyle(fontStyle);
+        font.setStyle(fontStyle);
 
         if (fontWeight == null) {
             throw new IllegalArgumentException("Null font weight specified");
         }
 
-        font.setFontWeight(fontWeight);
+        font.setWeight(fontWeight);
 
         return font;
     }
@@ -580,8 +576,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory
 
         try {
             fill.setColor(filterFactory.literal("#808080"));
-            fill.setOpacity(filterFactory.literal(new Double(1.0)));
-            fill.setBackgroundColor(filterFactory.literal("#FFFFFF"));
+            fill.setOpacity(filterFactory.literal(Double.valueOf(1.0)));
         } catch (org.geotools.filter.IllegalFilterException ife) {
             throw new RuntimeException("Error creating fill", ife);
         }
@@ -660,7 +655,8 @@ public class StyleFactoryImpl extends AbstractStyleFactory
 
     public Graphic createDefaultGraphic() {
         Graphic graphic = new GraphicImpl(filterFactory);
-        graphic.addMark(createMark()); // a default graphic is assumed to have a single Mark
+        graphic.graphicalSymbols()
+                .add(createMark()); // a default graphic is assumed to have a single Mark
         graphic.setSize(Expression.NIL);
         graphic.setOpacity(filterFactory.literal(1.0));
         graphic.setRotation(filterFactory.literal(0.0));
@@ -744,7 +740,11 @@ public class StyleFactoryImpl extends AbstractStyleFactory
         ChannelSelection channelSel = new ChannelSelectionImpl();
 
         if ((channels != null) && (channels.length > 0)) {
-            channelSel.setSelectedChannels(channels);
+            if (channels.length == 1) {
+                channelSel.setGrayChannel(channels[0]);
+            } else {
+                channelSel.setRGBChannels(channels);
+            }
         }
 
         return channelSel;
@@ -785,14 +785,6 @@ public class StyleFactoryImpl extends AbstractStyleFactory
     }
 
     public SelectedChannelType createSelectedChannelType(Expression name, Expression gammaValue) {
-        SelectedChannelType sct = new SelectedChannelTypeImpl(filterFactory);
-        sct.setChannelName(name);
-        sct.setContrastEnhancement(createContrastEnhancement(gammaValue));
-
-        return sct;
-    }
-
-    public SelectedChannelType createSelectedChannelType(String name, Expression gammaValue) {
         SelectedChannelType sct = new SelectedChannelTypeImpl(filterFactory);
         sct.setChannelName(name);
         sct.setContrastEnhancement(createContrastEnhancement(gammaValue));

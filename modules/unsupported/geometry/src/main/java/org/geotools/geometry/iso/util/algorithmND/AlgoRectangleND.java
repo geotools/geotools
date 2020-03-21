@@ -39,10 +39,6 @@ public class AlgoRectangleND {
     /**
      * Verifies whether another envelope intersects with this envelope
      *
-     * @param minCoord0
-     * @param maxCoord0
-     * @param minCoord1
-     * @param maxCoord1
      * @return TRUE, if envelopes intersect; FALSE, if they dont intersect
      */
     public static boolean intersects(
@@ -66,8 +62,6 @@ public class AlgoRectangleND {
 
     //	 AUSKOMMENTIERT, DA NICHT GENUTZT, NICHT KOMMENTIERT UND NICHT GETESTET (SJ)
     //	/**
-    //	 * @param minCoord
-    //	 * @param maxCoord
     //	 * @return double
     //	 */
     //	public static double maxLength(double minCoord[], double maxCoord[]) {
@@ -81,9 +75,6 @@ public class AlgoRectangleND {
     //	 AUSKOMMENTIERT, DA NICHT GENUTZT UND NICHT GETESTET (SJ)
     //	/**
     //	 * Expands the envelope with a direct Position
-    //	 * @param minCoord
-    //	 * @param maxCoord
-    //	 * @param coord
     //	 */
     //	public static void expand(double minCoord[], double maxCoord[], double coord[]) {
     //		for (int i = 0, n = minCoord.length; i < n; ++i) {
@@ -94,9 +85,6 @@ public class AlgoRectangleND {
 
     //	 AUSKOMMENTIERT, DA NICHT GENUTZT, NICHT KOMMENTIERT UND NICHT GETESTET (SJ)
     //	/**
-    //	 * @param minCoord
-    //	 * @param maxCoord
-    //	 * @param coord
     //	 */
     //	public static void add(double minCoord[], double maxCoord[], double[] coord) {
     //		for (int i = 0, n = minCoord.length; i < n; ++i) {
@@ -107,8 +95,6 @@ public class AlgoRectangleND {
 
     // AUSKOMMENTIERT, DA NICHT GENUTZT, NICHT KOMMENTIERT UND NICHT GETESTET (SJ)
     //	/**
-    //	 * @param minCoord
-    //	 * @param maxCoord
     //	 * @return double[]
     //	 */
     //	public static double[] center(double minCoord[], double maxCoord[]) {
@@ -117,9 +103,6 @@ public class AlgoRectangleND {
 
     // AUSKOMMENTIERT DA FEHLERHAFT (NICHT ROBUST) s. JUNIT TESTS (SJ)
     //	/**
-    //	 * @param minCoord
-    //	 * @param maxCoord
-    //	 * @param factor
     //	 */
     //	public static void scale(double minCoord[], double maxCoord[], double factor) {
     //		if (factor <= 0.0 || factor == 1.0) return;
@@ -138,9 +121,6 @@ public class AlgoRectangleND {
 
     //	 AUSKOMMENTIERT, DA NICHT GETESTET UND NICHT DOKUMENTIERT (SJ)
     //	/**
-    //	 * @param minCoord
-    //	 * @param maxCoord
-    //	 * @param coord
     //	 * @return boolean
     //	 */
     //	public static boolean touches(double minCoord[], double maxCoord[], double[] coord) {
@@ -155,10 +135,6 @@ public class AlgoRectangleND {
 
     // AUSKOMMENTIERT, DA NICHT GETESTET UND NICHT DOKUMENTIERT (SJ)
     //	/**
-    //	 * @param minCoord
-    //	 * @param maxCoord
-    //	 * @param coord
-    //	 * @param side
     //	 * @return boolean
     //	 */
     //	public static boolean touches(double minCoord[], double maxCoord[], double[] coord, int side)
@@ -178,9 +154,6 @@ public class AlgoRectangleND {
     //	 AUSKOMMENTIERT, DA NICHT GETESTET UND NICHT DOKUMENTIERT (SJ), DESWEITEREN HAT ES DIE SELBE
     // FUNKTION GELIEFERT WIE DIE METHODE "contains".
     //	/**
-    //	 * @param minCoord
-    //	 * @param maxCoord
-    //	 * @param p
     //	 * @return boolean
     //	 */
     //	public static boolean intersects(double minCoord[], double maxCoord[], double[] p) {

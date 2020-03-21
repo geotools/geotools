@@ -41,8 +41,6 @@ public class SpatialRequestHelperTest extends Assert {
      * Requesting the same area at a much smaller resolution.
      *
      * <p>The computed resolution should be much coarser and that is it.
-     *
-     * @throws Exception
      */
     @Test
     public void testNoRequest() throws Exception {
@@ -139,8 +137,6 @@ public class SpatialRequestHelperTest extends Assert {
      *
      * <p>1) The computed resolution should be much coarser. 2) The computed BBOX and the Computed
      * raster area should be equal to the requested ones
-     *
-     * @throws Exception
      */
     @Test
     public void testBasic2() throws Exception {
@@ -232,8 +228,6 @@ public class SpatialRequestHelperTest extends Assert {
      *
      * <p>1) The computed resolution should be much coarser. 2) The computed BBOX and the Computed
      * raster area should be equal to the requested ones
-     *
-     * @throws Exception
      */
     @Test
     public void testBasic3() throws Exception {
@@ -382,8 +376,6 @@ public class SpatialRequestHelperTest extends Assert {
      * Requesting the same area at a much smaller resolution in a different project.
      *
      * <p>The computed resolution should be much coarser and that is it.
-     *
-     * @throws Exception
      */
     @Test
     public void testBasicReproject() throws Exception {
@@ -479,8 +471,6 @@ public class SpatialRequestHelperTest extends Assert {
      *
      * <p>1) The computed resolution should be much coarser. 2) The computed BBOX and the Computed
      * raster area should be equal to the requested ones
-     *
-     * @throws Exception
      */
     @Test
     public void testBasic2Reproject() throws Exception {
@@ -591,8 +581,6 @@ public class SpatialRequestHelperTest extends Assert {
      *
      * <p>1) The computed resolution should be much coarser. 2) The computed BBOX and the Computed
      * raster area should be equal to the requested ones
-     *
-     * @throws Exception
      */
     @Test
     public void testBasic3Reproject() throws Exception {
@@ -684,8 +672,6 @@ public class SpatialRequestHelperTest extends Assert {
      * Requesting the same area at a much smaller resolution.
      *
      * <p>The computed resolution should be much coarser and that is it.
-     *
-     * @throws Exception
      */
     @Test
     public void testBasic() throws Exception {

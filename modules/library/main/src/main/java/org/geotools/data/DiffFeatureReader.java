@@ -74,7 +74,6 @@ public class DiffFeatureReader<T extends FeatureType, F extends Feature>
      * <p>This reader is not "live" to changes over the course of the Transaction. (Iterators are
      * not always stable of the course of modifications)
      *
-     * @param reader
      * @param diff2 Differences of Feature by FID
      */
     public DiffFeatureReader(FeatureReader<T, F> reader, Diff diff2) {
@@ -87,7 +86,6 @@ public class DiffFeatureReader<T extends FeatureType, F extends Feature>
      * <p>This reader is not "live" to changes over the course of the Transaction. (Iterators are
      * not always stable of the course of modifications)
      *
-     * @param reader
      * @param diff2 Differences of Feature by FID
      */
     public DiffFeatureReader(FeatureReader<T, F> reader, Diff diff2, Filter filter) {
@@ -252,13 +250,20 @@ public class DiffFeatureReader<T extends FeatureType, F extends Feature>
         org.opengis.filter.expression.Expression leftGeom = filter.getExpression1();
         org.opengis.filter.expression.Expression rightGeom = filter.getExpression2();
 
-        Geometry g;
+        Object g;
         if (leftGeom instanceof org.opengis.filter.expression.Literal) {
-            g = (Geometry) ((org.opengis.filter.expression.Literal) leftGeom).getValue();
+            g = ((org.opengis.filter.expression.Literal) leftGeom).getValue();
         } else {
-            g = (Geometry) ((org.opengis.filter.expression.Literal) rightGeom).getValue();
+            g = ((org.opengis.filter.expression.Literal) rightGeom).getValue();
         }
-        return g.getEnvelopeInternal();
+
+        Envelope envelope = null;
+        if (g instanceof Geometry) {
+            envelope = ((Geometry) g).getEnvelopeInternal();
+        } else if (g instanceof Envelope) {
+            envelope = (Envelope) g;
+        }
+        return envelope;
     }
 
     protected boolean isDefaultGeometry(PropertyName ae) {

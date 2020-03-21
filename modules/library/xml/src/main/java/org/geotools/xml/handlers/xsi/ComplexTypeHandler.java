@@ -304,7 +304,6 @@ public class ComplexTypeHandler extends XSIElementHandler {
      *
      * @param block block
      * @return int
-     * @throws SAXException
      */
     public static int findBlock(String block) throws SAXException {
         if ((block == null) || "".equalsIgnoreCase(block)) {
@@ -326,11 +325,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
         throw new SAXException("Unknown Block Type: '" + block + "'");
     }
 
-    /**
-     * Reverses the translation from mask to String
-     *
-     * @param block
-     */
+    /** Reverses the translation from mask to String */
     public static String writeBlock(int block) {
         switch (block) {
             case EXTENSION:
@@ -347,12 +342,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
         }
     }
 
-    /**
-     * Converts a 'final' attribute value to an int mask
-     *
-     * @param finaL
-     * @throws SAXException
-     */
+    /** Converts a 'final' attribute value to an int mask */
     public static int findFinal(String finaL) throws SAXException {
         try {
             return findBlock(finaL); // same enum
@@ -361,11 +351,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
         }
     }
 
-    /**
-     * reverses the conversion of an int mask representing the 'final' attribute to String
-     *
-     * @param finaL
-     */
+    /** reverses the conversion of an int mask representing the 'final' attribute to String */
     public static String writeFinal(int finaL) {
         return writeBlock(finaL); // same enum
     }
@@ -375,13 +361,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
         return name;
     }
 
-    /**
-     * compresses the inheritance tree, caching a more efficient copy.
-     *
-     * @param parent
-     * @throws SAXException
-     * @throws NullPointerException
-     */
+    /** compresses the inheritance tree, caching a more efficient copy. */
     protected ComplexType compress(SchemaHandler parent) throws SAXException {
         logger.fine("Start compressing ComplexType " + getName());
 
@@ -702,12 +682,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
             // do nothing
         }
 
-        /**
-         * Combines the specified Sequence with the element grouping into a new Sequence
-         *
-         * @param sequence
-         * @param eg
-         */
+        /** Combines the specified Sequence with the element grouping into a new Sequence */
         public DefaultSequence(Sequence sequence, ElementGrouping eg) {
             logger.finest("merging sequence with an ElementGrouping");
             id = sequence.getId();
@@ -749,12 +724,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
             }
         }
 
-        /**
-         * Combines the Choice with the ElementGrouping to form a new Sequence
-         *
-         * @param sequence
-         * @param eg
-         */
+        /** Combines the Choice with the ElementGrouping to form a new Sequence */
         public DefaultSequence(Choice sequence, ElementGrouping eg) {
             id = sequence.getId();
             maxOccurs = sequence.getMaxOccurs();
@@ -976,8 +946,6 @@ public class ComplexTypeHandler extends XSIElementHandler {
         }
 
         /**
-         * @throws SAXException
-         * @throws OperationNotSupportedException
          * @see org.geotools.xml.xsi.Type#getValue(org.geotools.xml.xsi.Element,
          *     org.geotools.xml.xsi.ElementValue[], org.xml.sax.Attributes)
          */

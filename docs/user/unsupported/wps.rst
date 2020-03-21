@@ -3,7 +3,7 @@ WPS
 
 The WPS module provides a "WPS client" API so programmers can easily build Web Process
 Service requests and parse the responses. This module allows developers to
-create getCapabilities, describeProcess and Execute requests for WPS servers
+create ``getCapabilities``, ``describeProcess`` and ``execute`` requests for WPS servers
 send requests and parse responses into objects
 
 **Maven**::
@@ -26,25 +26,25 @@ taking care of creating requests, sending requests, and parsing responses.
 
 The following are some of the core objects for this module:
 
-* WebProcessingService
+* ``WebProcessingService``
   
-  The main object of the design is the WebProcessingService class. WebProcessingService acts as a
+  The main object of the design is the ``WebProcessingService`` class. ``WebProcessingService`` acts as a
   proxy for a remote WPS Server and can be used to examine and retrieve information from the server,
   and to execute processes the server provides. To begin communicating with a server, pass
   in a URL pointing to a WPS Capabilities document (view examples below).
 
-* WPSFactory
+* ``WPSFactory``
   
-  This class wraps around an AbstractProcessFactory from the Process Plugin. By providing it a 
-  ProcessDescriptionType bean (which can be fetched from a WebProcessingService describeProcess 
+  This class wraps around an ``AbstractProcessFactory`` from the Process Plugin. By providing it a 
+  ``ProcessDescriptionType`` bean (which can be fetched from a ``WebProcessingService`` ``describeProcess`` 
   request) it will build a Process Factory based on that process definition.
   
   This factory can then build processes which can be executed (view examples below).
   
-* WPSProcess
+* ``WPSProcess``
   
-  After creating a WPSFactory, you can build processes from it. This class wraps around a
-  AbstractProcess from the Process Plugin. By calling its execute method, it will build up
+  After creating a ``WPSFactory``, you can build processes from it. This class wraps around a
+  ``AbstractProcess`` from the Process Plugin. By calling its execute method, it will build up
   a request object, send it, then parse and return the results.
   
   By using these wrapper classes, a programmer can quickly build process requests and get results
@@ -53,7 +53,7 @@ The following are some of the core objects for this module:
 WPS with custom HTTPClient Example
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The following example shows how to create a WebProcessingService using a custom implementation of org.geotools.data.ows.HTTPClient ::
+The following example shows how to create a ``WebProcessingService`` using a custom implementation of ``org.geotools.data.ows.HTTPClient``::
 
     public class MyWpsHTTPClient implements HTTPClient
     {
@@ -115,19 +115,19 @@ The following example shows how to create a WebProcessingService using a custom 
        }
     }
 
-It's possible now to allow the WecProcessingService make use of MyWpsHTTPClient by simply passing it to the class Constructor.::
+It's possible now to allow the ``WebProcessingService`` make use of ``MyWpsHTTPClient`` by simply passing it to the class Constructor.::
 
     wps = new WebProcessingService(url, new MyWpsHTTPClient(), null);
 
-Notice also that GeoTools already has an available implementation of HTTPClient which may be used for the most common cases, allowing also Basic authentication.::
+Notice also that GeoTools already has an available implementation of ``HTTPClient`` which may be used for the most common cases, allowing also Basic authentication.::
 
     org.geotools.data.ows.SimpleHttpClient
 
-WPS getCapabilties Example
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+WPS ``getCapabilties`` Example
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The following example shows how to create a WebProcessingService and use it to retrieve
-a getCapabilities document.::
+The following example shows how to create a ``WebProcessingService`` and use it to retrieve
+a ``getCapabilities`` document.::
 
     URL url = new URL("http://localhost:8080/geoserver/ows?service=WPS&request=GetCapabilities");
     WebProcessingService wps = new WebProcessingService(url);
@@ -139,10 +139,10 @@ a getCapabilities document.::
 
 You can now iterate over the list of processes the server offers.
 
-WPS describeProcess Example
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+WPS ``describeProcess`` Example
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This example shows how to do a full describeProcess request from a WebProcessingService.::
+This example shows how to do a full ``describeProcess`` request from a ``WebProcessingService``.::
 
     // create a WebProcessingService as shown above, then do a full describeprocess on my process
     DescribeProcessRequest descRequest = wps.createDescribeProcessRequest();
@@ -157,11 +157,11 @@ This example shows how to do a full describeProcess request from a WebProcessing
     // create a process 
     Process process = wpsfactory.create();
 
-You now have a process built from the describeProcess description, which can be executed
+You now have a process built from the ``describeProcess`` description, which can be executed
 as shown below.
 
-WPS Execute Example
-^^^^^^^^^^^^^^^^^^^
+WPS ``Execute`` Example
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 This example builds from the previous ones and shows how to send a request to execute a
 simple "double addition" process.::
@@ -185,8 +185,8 @@ simple "double addition" process.::
 
 Now you you have a result that was calculated on the WPS server.
 
-WPS getExecutionResponse Example
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+WPS ``getExecutionResponse`` Example
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This example shows how to ask to the WPS for the status of a process request and handle 
 the different status codes.::

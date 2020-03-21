@@ -29,6 +29,7 @@ import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.function.FilterFunction_strToLowerCase;
 import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -46,6 +47,7 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.expression.Subtract;
 import org.opengis.filter.sort.SortBy;
@@ -103,12 +105,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         assertTrue(areCRSEqual(getWGS84(), bounds.getCoordinateReferenceSystem()));
     }
 
-    /**
-     * Allows subclasses to use a axis order specific version of it
-     *
-     * @return
-     * @throws FactoryException
-     */
+    /** Allows subclasses to use a axis order specific version of it */
     protected CoordinateReferenceSystem getWGS84() throws FactoryException {
         return CRS.decode("EPSG:4326");
     }
@@ -152,7 +149,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
 
             SimpleFeature feature = (SimpleFeature) iterator.next();
             assertEquals("one", feature.getAttribute(aname("stringProperty")));
-            assertEquals(new Double(1.1), feature.getAttribute(aname("doubleProperty")));
+            assertEquals(Double.valueOf(1.1), feature.getAttribute(aname("doubleProperty")));
         }
     }
 
@@ -184,7 +181,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
 
             SimpleFeature feature = (SimpleFeature) iterator.next();
             assertEquals("one", feature.getAttribute(aname("stringProperty")));
-            assertEquals(new Double(1.1), feature.getAttribute(aname("doubleProperty")));
+            assertEquals(Double.valueOf(1.1), feature.getAttribute(aname("doubleProperty")));
         }
     }
 
@@ -216,7 +213,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
             SimpleFeature feature = (SimpleFeature) iterator.next();
             assertEquals(2, feature.getAttributeCount());
 
-            assertEquals(new Double(1.1), feature.getAttribute(aname("doubleProperty")));
+            assertEquals(Double.valueOf(1.1), feature.getAttribute(aname("doubleProperty")));
             assertNotNull(feature.getAttribute(aname("intProperty")));
         }
     }
@@ -377,11 +374,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         }
     }
 
-    /**
-     * Makes sure the datastore works when the renderer uses the typical rendering hints
-     *
-     * @throws Exception
-     */
+    /** Makes sure the datastore works when the renderer uses the typical rendering hints */
     public void testRendererBehaviour() throws Exception {
         Query query = new Query(featureSource.getSchema().getTypeName());
         query.setHints(
@@ -563,11 +556,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         }
     }
 
-    /**
-     * Integration test checking that a CQL IN filter goes back being a IN in SQL
-     *
-     * @throws Exception
-     */
+    /** Integration test checking that a CQL IN filter goes back being a IN in SQL */
     public void testSimpleEncodeIn() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
         String property = aname("stringProperty");
@@ -612,11 +601,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         }
     }
 
-    /**
-     * Integration test checking that a CQL IN filter goes back being a IN in SQL
-     *
-     * @throws Exception
-     */
+    /** Integration test checking that a CQL IN filter goes back being a IN in SQL */
     public void testMixedEncodeIn() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
         String sp = aname("stringProperty");
@@ -689,5 +674,21 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         } else {
             fail("Unexpected dialect, supports basic or prepared, but was a : " + dialect);
         }
+    }
+
+    /** Online tests for String functions along with Like operator */
+    public void testStringFunction() throws Exception {
+        // ignore if the String function is not supported
+        if (!dataStore.getFilterCapabilities().supports(FilterFunction_strToLowerCase.class)) {
+            LOGGER.info("Ignoring testStringFunction test");
+            return;
+        }
+
+        FilterFactory ff = dataStore.getFilterFactory();
+        Function function = ff.function("strToLowerCase", ff.property("stringProperty"));
+
+        // should hit the row where stringProperty starts with z (e.g zero)
+        PropertyIsLike likeWithStringFunction = ff.like(function, "z%", "%", "-", "\\", true);
+        assertEquals(1, featureSource.getCount(new Query(null, likeWithStringFunction)));
     }
 }

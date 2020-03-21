@@ -144,7 +144,7 @@ public class HeuristicPrimaryKeyFinder extends PrimaryKeyFinder {
 
                 StringBuffer sql = new StringBuffer();
                 sql.append("SELECT ");
-                store.getSQLDialect().encodeColumnName(columnName, sql);
+                store.getSQLDialect().encodeColumnName(null, columnName, sql);
                 sql.append(" FROM ");
                 store.encodeTableName(tableName, sql, null);
 

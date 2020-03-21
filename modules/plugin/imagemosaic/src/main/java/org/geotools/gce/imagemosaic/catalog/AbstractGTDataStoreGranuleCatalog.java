@@ -127,13 +127,22 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
             this.locationAttribute = (String) params.get(Utils.Prop.LOCATION_ATTRIBUTE);
             final String temp = (String) params.get(Utils.Prop.SUGGESTED_SPI);
             this.suggestedRasterSPI =
-                    temp != null ? (ImageReaderSpi) Class.forName(temp).newInstance() : null;
+                    temp != null
+                            ? (ImageReaderSpi)
+                                    Class.forName(temp).getDeclaredConstructor().newInstance()
+                            : null;
             final String temp2 = (String) params.get(Utils.Prop.SUGGESTED_FORMAT);
             this.suggestedFormat =
-                    temp2 != null ? (AbstractGridFormat) Class.forName(temp2).newInstance() : null;
+                    temp2 != null
+                            ? (AbstractGridFormat)
+                                    Class.forName(temp2).getDeclaredConstructor().newInstance()
+                            : null;
             final String temp3 = (String) params.get(Utils.Prop.SUGGESTED_IS_SPI);
             this.suggestedIsSPI =
-                    temp3 != null ? (ImageInputStreamSpi) Class.forName(temp3).newInstance() : null;
+                    temp3 != null
+                            ? (ImageInputStreamSpi)
+                                    Class.forName(temp3).getDeclaredConstructor().newInstance()
+                            : null;
             this.parentLocation = (String) params.get(Utils.Prop.PARENT_LOCATION);
             if (params.containsKey(Utils.Prop.HETEROGENEOUS)) {
                 this.heterogeneous = (Boolean) params.get(Utils.Prop.HETEROGENEOUS);
@@ -221,15 +230,7 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
     /** Called in case the initialization of the class failed, allows subclasses to clean up */
     protected abstract void handleInitializationException(Throwable t);
 
-    /**
-     * Allows initialization of the tile index store before scanning type names.
-     *
-     * @param params
-     * @param create
-     * @param spi
-     * @throws IOException
-     * @throws MalformedURLException
-     */
+    /** Allows initialization of the tile index store before scanning type names. */
     protected abstract void initTileIndexStore(
             final Properties params, final boolean create, final DataStoreFactorySpi spi)
             throws IOException, MalformedURLException;
@@ -252,12 +253,7 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
         }
     }
 
-    /**
-     * Checks the provided schema, and throws an exception if not valid
-     *
-     * @param schema
-     * @throws IOException
-     */
+    /** Checks the provided schema, and throws an exception if not valid */
     private void checkMosaicSchema(String typeName) throws IOException {
         SimpleFeatureType schema = getTileIndexStore().getSchema(typeName);
         if (schema == null) {
@@ -267,11 +263,7 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
         }
     }
 
-    /**
-     * Checks the provided schema, and throws an exception if not valid
-     *
-     * @param schema
-     */
+    /** Checks the provided schema, and throws an exception if not valid */
     private void checkMosaicSchema(SimpleFeatureType schema) {
         if (!Utils.isValidMosaicSchema(schema, getLocationAttributeName())) {
             throw new IllegalArgumentException(
@@ -640,6 +632,7 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
     }
 
     @Override
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         super.finalize();
 
@@ -710,18 +703,12 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
         }
     }
 
-    /**
-     * Returns the tile index store
-     *
-     * @return
-     */
+    /** Returns the tile index store */
     protected abstract DataStore getTileIndexStore();
 
     /**
      * Returns the set of valid type names (this is going to be a live collection, the code is
      * allowed to modify it)
-     *
-     * @return
      */
     protected abstract Set<String> getValidTypeNames();
 }

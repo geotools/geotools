@@ -16,6 +16,7 @@
  */
 package org.geotools.renderer;
 
+import org.geotools.map.Layer;
 import org.opengis.feature.simple.SimpleFeature;
 
 /**
@@ -29,16 +30,37 @@ public interface RenderListener {
     /**
      * Reports that a specific feature has been rendered. The same feature might be reported
      * multiple times, if
-     *
-     * @param feature
      */
     public void featureRenderer(SimpleFeature feature);
 
     /**
      * Reports a rendering error. The rendering is not normally stopped on it, a listener that wants
      * to stop it can call {@link GTRenderer#stopRendering()}
-     *
-     * @param e
      */
     public void errorOccurred(Exception e);
+
+    /** Event issued when the layer begins rendering. */
+    default void layerStart(Layer layer) {
+        // does nothing
+    }
+
+    /** Event issued when the layer completed rendering. May not be issued. */
+    default void layerEnd(Layer layer) {
+        // does nothing
+    }
+
+    /** Event issued when labelling starts. May not be issued if there are no labels to paint. */
+    default void labellingStart() {
+        // does nothing
+    }
+
+    /** Event issued when labelling ends. May not be issued. */
+    default void labellingEnd() {
+        // does nothing
+    }
+
+    /** Event issued when rendering ends. Always issued. */
+    default void renderingComplete() {
+        // does nothing
+    }
 }

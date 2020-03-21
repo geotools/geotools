@@ -60,11 +60,7 @@ public class CentroidArea2D {
     double centSumY = 0.0;
     double centSumZ = 0.0;
 
-    /**
-     * Creates a new Centroid operation
-     *
-     * @param crs
-     */
+    /** Creates a new Centroid operation */
     public CentroidArea2D(CoordinateReferenceSystem crs) {
         this.crs = crs;
         this.basePt = null;

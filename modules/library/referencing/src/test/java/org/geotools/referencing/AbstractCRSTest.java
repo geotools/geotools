@@ -74,7 +74,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
         assertEquals("Lat", axis0.getAbbreviation());
 
         CoordinateSystemAxis axis1 = cs.getAxis(1);
-        assertEquals("Long", axis1.getAbbreviation());
+        assertEquals("Lon", axis1.getAbbreviation());
     }
 
     /** Tests the (longitude, latitude) axis order for EPSG:4326. */
@@ -84,7 +84,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
         assertEquals(2, cs.getDimension());
 
         CoordinateSystemAxis axis0 = cs.getAxis(0);
-        assertEquals("Long", axis0.getAbbreviation());
+        assertEquals("Lon", axis0.getAbbreviation());
 
         CoordinateSystemAxis axis1 = cs.getAxis(1);
         assertEquals("Lat", axis1.getAbbreviation());
@@ -296,22 +296,14 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
         assertNotNull(crs);
     }
 
-    /**
-     * Check that a code with a axis direction with a reference to W works
-     *
-     * @throws FactoryException
-     */
+    /** Check that a code with a axis direction with a reference to W works */
     public void testWestDirection() throws FactoryException {
         // see GEOT-2901
         CoordinateReferenceSystem crs = CRS.decode("EPSG:3573");
         assertNotNull(crs);
     }
 
-    /**
-     * Check we support Plate Carré projection
-     *
-     * @throws FactoryException
-     */
+    /** Check we support Plate Carré projection */
     public void testPlateCarre() throws Exception {
         CoordinateReferenceSystem crs = CRS.decode("EPSG:32662");
         assertNotNull(crs);
@@ -399,30 +391,26 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
         }
     }
 
-    /**
-     * Tests similarity transform on the example provided in the EPSG projection guide, page 99
-     *
-     * @throws Exception
-     */
+    /** Tests similarity transform on the example provided in the EPSG projection guide, page 140 */
     public void testSimilarityTransform() throws Exception {
-        // Tombak LNG Plant
-        CoordinateReferenceSystem tombak = CRS.decode("EPSG:5817", true);
-        // Nakhl-e Ghanem / UTM zone 39N
-        CoordinateReferenceSystem ng39 = CRS.decode("EPSG:3307", true);
+        // ED50 / UTM zone 31N
+        CoordinateReferenceSystem tombak = CRS.decode("EPSG:23031", true);
+        // ETRS89 / UTM zone 31N
+        CoordinateReferenceSystem ng39 = CRS.decode("EPSG:25831", true);
 
         // forward
-        double[] src = new double[] {20000, 10000};
+        double[] src = new double[] {300000, 4500000};
         double[] dst = new double[2];
         MathTransform mt = CRS.findMathTransform(tombak, ng39);
         mt.transform(src, 0, dst, 0, 1);
 
-        assertEquals(618336.748, dst[0], 0.001);
-        assertEquals(3067774.210, dst[1], 0.001);
+        assertEquals(299905.060, dst[0], 0.001);
+        assertEquals(4499796.515, dst[1], 0.001);
 
         // and back
         mt.inverse().transform(dst, 0, src, 0, 1);
-        assertEquals(20000, src[0], 0.001);
-        assertEquals(10000, src[1], 0.001);
+        assertEquals(300000, src[0], 0.001);
+        assertEquals(4500000, src[1], 0.001);
     }
 
     public void testOperationSourceTarget() throws Exception {

@@ -123,11 +123,7 @@ public class PartialIndexedMappingFeatureIterator extends IndexedMappingFeatureI
         sourceIterator.close();
     }
 
-    /**
-     * Iterate until startIndex
-     *
-     * @param start
-     */
+    /** Iterate until startIndex */
     private boolean fastForward(int start) {
         while (sourceFeaturesCounter < start) {
             if (hasNext()) {

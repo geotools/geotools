@@ -5,7 +5,7 @@
 
 ## License
 
-GeoTools licensed under the [LGPL](http://www.gnu.org/licenses/lgpl.html). The user guide [license](http://docs.geotools.org/latest/userguide/welcome/license.html) page describes the less restrictive license for documentation and source code examples.
+GeoTools is licensed under the [LGPL](http://www.gnu.org/licenses/lgpl.html). The user guide [license](http://docs.geotools.org/latest/userguide/welcome/license.html) page describes the less restrictive license for documentation and source code examples.
 
 ## Contributing
 

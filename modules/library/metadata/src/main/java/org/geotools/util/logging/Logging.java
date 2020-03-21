@@ -470,31 +470,6 @@ public final class Logging {
 
     /**
      * Invoked when an unexpected error occurs. This method logs a message at the {@link
-     * Level#WARNING WARNING} level to the logger for the specified package name. The originating
-     * class name and method name can optionnaly be specified. If any of them is {@code null}, then
-     * it will be inferred from the error stack trace as in {@link #unexpectedException(Logger,
-     * Throwable)}.
-     *
-     * @param paquet The package where the error occurred, or {@code null}. This information is used
-     *     for fetching an appropriate {@link Logger} for logging the error.
-     * @param classe The class where the error occurred, or {@code null}.
-     * @param method The method where the error occurred, or {@code null}.
-     * @param error The error.
-     * @return {@code true} if the error has been logged, or {@code false} if the logger doesn't log
-     *     anything at the {@link Level#WARNING WARNING} level.
-     * @deprecated Use one of the other {@code unexpectedException} methods instead.
-     */
-    public static boolean unexpectedException(
-            final String paquet,
-            final Class<?> classe,
-            final String method,
-            final Throwable error) {
-        final Logger logger = (paquet != null) ? getLogger(paquet) : null;
-        return unexpectedException(logger, classe, method, error);
-    }
-
-    /**
-     * Invoked when an unexpected error occurs. This method logs a message at the {@link
      * Level#WARNING WARNING} level to a logger inferred from the given class.
      *
      * @param classe The class where the error occurred.

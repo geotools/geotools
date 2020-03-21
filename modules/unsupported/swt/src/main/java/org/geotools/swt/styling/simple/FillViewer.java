@@ -117,7 +117,6 @@ public class FillViewer {
     /**
      * Accepts a listener that will be notified when content changes.
      *
-     * @param listener1
      */
     public void addListener(SelectionListener listener1) {
         this.listener = listener1;
@@ -126,7 +125,6 @@ public class FillViewer {
     /**
      * Remove listener.
      *
-     * @param listener1
      */
     public void removeListener(SelectionListener listener1) {
         if (this.listener == listener1) this.listener = null;
@@ -135,7 +133,6 @@ public class FillViewer {
     /**
      * TODO summary sentence for fire ...
      *
-     * @param event
      */
     protected void fire(SelectionEvent event) {
         if (this.listener == null) return;
@@ -144,8 +141,6 @@ public class FillViewer {
     /**
      * TODO summary sentence for createControl ...
      *
-     * @param parent
-     * @param kListener
      * @return Generated composite
      */
     public Composite createControl(Composite parent, KeyListener kListener) {
@@ -172,7 +167,6 @@ public class FillViewer {
     /**
      * TODO summary sentence for getFill ...
      *
-     * @param build
      * @return Fill defined by this model
      */
     public Fill getFill(StyleBuilder build) {
@@ -200,9 +194,6 @@ public class FillViewer {
     /**
      * TODO summary sentence for setFill ...
      *
-     * @param fill
-     * @param mode
-     * @param enabled
      */
     public void setFill(Fill fill2, Mode mode, Color defaultColor) {
         listen(false);

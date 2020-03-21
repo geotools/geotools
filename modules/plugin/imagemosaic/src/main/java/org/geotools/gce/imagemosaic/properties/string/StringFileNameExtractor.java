@@ -35,7 +35,7 @@ class StringFileNameExtractor extends RegExPropertiesCollector {
 
     public StringFileNameExtractor(
             PropertiesCollectorSPI spi, List<String> propertyNames, String regex) {
-        super(spi, propertyNames, regex);
+        super(spi, propertyNames, regex, false);
     }
 
     @Override

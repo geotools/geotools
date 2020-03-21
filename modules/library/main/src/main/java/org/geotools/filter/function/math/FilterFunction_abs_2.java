@@ -22,6 +22,8 @@ import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
+import org.geotools.util.Converters;
+import org.geotools.util.factory.Hints;
 import org.opengis.filter.capability.FunctionName;
 
 public class FilterFunction_abs_2 extends FunctionExpressionImpl {
@@ -36,16 +38,19 @@ public class FilterFunction_abs_2 extends FunctionExpressionImpl {
     }
 
     public Object evaluate(Object feature) {
-        long arg0;
 
-        try { // attempt to get value and perform conversion
-            arg0 = (getExpression(0).evaluate(feature, Long.class)).longValue();
-        } catch (Exception e) {
-            // probably a type error
+        Object arg0 = getExpression(0).evaluate(feature);
+
+        if (arg0 == null) {
+            return null;
+        }
+
+        arg0 = Converters.convert(arg0, Long.class, new Hints());
+        if (arg0 == null) {
             throw new IllegalArgumentException(
                     "Filter Function problem for function abs argument #0 - expected type long");
         }
 
-        return Long.valueOf(Math.abs(arg0));
+        return Long.valueOf(Math.abs((Long) arg0));
     }
 }

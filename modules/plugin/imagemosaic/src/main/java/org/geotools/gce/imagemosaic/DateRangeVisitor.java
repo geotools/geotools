@@ -47,8 +47,6 @@ class DateRangeVisitor extends RangeVisitor {
     /**
      * Setup the minimal set of dataRanges (intersecting ranges are merged together) as a Set of
      * ISO8601 String intervals with period.
-     *
-     * @return
      */
     @Override
     protected void populateRange() {
@@ -78,12 +76,7 @@ class DateRangeVisitor extends RangeVisitor {
         }
     }
 
-    /**
-     * Format a DateRange into ISO8601 interval strings
-     *
-     * @param range
-     * @return
-     */
+    /** Format a DateRange into ISO8601 interval strings */
     private String formatRange(DateRange range) {
         final StringBuilder builder = new StringBuilder();
         final String begin = ConvertersHack.convert(range.getMinValue(), String.class);
@@ -96,10 +89,6 @@ class DateRangeVisitor extends RangeVisitor {
      * Merge 2 ranges together. In order to speed up the computations, this method does the
      * assumption that the 2 date ranges are already sorted (first < second) and they intersect
      * together.
-     *
-     * @param firstDateRange
-     * @param secondDateRange
-     * @return
      */
     private static DateRange merge(DateRange firstDateRange, DateRange secondDateRange) {
         Utilities.ensureNonNull("firstDateRange", firstDateRange);

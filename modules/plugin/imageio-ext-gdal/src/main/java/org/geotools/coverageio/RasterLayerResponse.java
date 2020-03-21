@@ -150,8 +150,6 @@ class RasterLayerResponse {
     /**
      * Compute the coverage request and produce a grid coverage which will be returned by {@link
      * #getGridCoverage()}. The produced grid coverage may be {@code null} in case of empty request.
-     *
-     * @throws IOException
      */
     public void compute() throws IOException {
         originatingCoverageRequest.prepare();
@@ -362,7 +360,6 @@ class RasterLayerResponse {
      * @param raster2Model is the {@link MathTransform} that maps from the raster space to the model
      *     space.
      * @return a {@link GridCoverage}
-     * @throws IOException
      */
     protected GridCoverage createCoverageFromImage(PlanarImage image, MathTransform raster2Model)
             throws IOException {
@@ -403,7 +400,6 @@ class RasterLayerResponse {
      *
      * @param image contains the data for the coverage to create.
      * @return a {@link GridCoverage}
-     * @throws IOException
      */
     protected GridCoverage createCoverageFromImage(PlanarImage image) throws IOException {
         return createCoverageFromImage(image, null);
@@ -420,7 +416,6 @@ class RasterLayerResponse {
      * @param useMultithreading {@code true} if a JAI ImageRead operation is requested with support
      *     for multithreading. This parameter will be ignored if requesting a direct read operation.
      * @return the read {@code PlanarImage}
-     * @throws IOException
      */
     protected PlanarImage readRaster(
             final File input,

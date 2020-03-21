@@ -16,11 +16,9 @@
  */
 package org.geotools.styling;
 
-import java.awt.Color;
 import java.util.Collections;
 import java.util.List;
 import org.geotools.filter.ConstantExpression;
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -89,10 +87,6 @@ public interface Stroke extends org.opengis.style.Stroke {
                     return ConstantExpression.BLACK;
                 }
 
-                public Color getColor(SimpleFeature f) {
-                    return Color.BLACK;
-                }
-
                 public Expression getWidth() {
                     return ConstantExpression.ONE;
                 }
@@ -146,10 +140,6 @@ public interface Stroke extends org.opengis.style.Stroke {
                     return ConstantExpression.NULL;
                 }
 
-                public Color getColor(SimpleFeature f) {
-                    return Color.BLACK;
-                }
-
                 public Expression getWidth() {
                     return ConstantExpression.NULL;
                 }
@@ -189,18 +179,6 @@ public interface Stroke extends org.opengis.style.Stroke {
 
     /**
      * This parameter gives the solid color that will be used for a stroke.<br>
-     * The color value returned here as a Java Color object, this is a convinence method that goes
-     * above The default color is defined to be Color.BLACK
-     *
-     * <p>Note: in CSS this parameter is just called Stroke and not Color.
-     *
-     * @return The color of the stroke as a Color object
-     */
-    @Deprecated
-    Color getColor(SimpleFeature f);
-
-    /**
-     * This parameter gives the solid color that will be used for a stroke.<br>
      * The color value is RGB-encoded using two hexidecimal digits per primary-color component in
      * the order Red, Green, Blue, prefixed wih the hash (#) sign. The hexidecimal digits between A
      * and F may be in either upper or lower case. For example, full red is encoded as "#ff0000"
@@ -237,15 +215,7 @@ public interface Stroke extends org.opengis.style.Stroke {
     /** This parameter controls how line strings should be capped. */
     void setLineCap(Expression lineCap);
 
-    /**
-     * Shortcut to retrieve dash array in the case where all expressions are literal numbers. Return
-     * the default value if one of the expressions is not a literal.
-     */
-    @Deprecated
-    float[] getDashArray();
-
     /** Shortcut to define dash array using literal numbers. */
-    @Deprecated
     void setDashArray(float[] dashArray);
 
     /**

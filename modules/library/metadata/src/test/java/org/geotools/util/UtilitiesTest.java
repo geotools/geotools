@@ -94,7 +94,7 @@ public final class UtilitiesTest {
         /*
          * The following should call the equals(Object,Object) method.
          */
-        Character C1 = c1, C2 = new Character(c2);
+        Character C1 = c1, C2 = Character.valueOf(c2);
         assertTrue(Utilities.equals(C1, C2));
         Byte B1 = b1, B2 = Byte.valueOf(b2);
         assertTrue(Utilities.equals(B1, B2));
@@ -104,9 +104,9 @@ public final class UtilitiesTest {
         assertTrue(Utilities.equals(I1, I2));
         Long L1 = l1, L2 = Long.valueOf(l2);
         assertTrue(Utilities.equals(L1, L2));
-        Float F1 = f1, F2 = new Float(f2);
+        Float F1 = f1, F2 = Float.valueOf(f2);
         assertTrue(Utilities.equals(F1, F2));
-        Double D1 = d1, D2 = new Double(d2);
+        Double D1 = d1, D2 = Double.valueOf(d2);
         assertTrue(Utilities.equals(D1, D2));
         /*
          * The compiler applies widening conversions, so the following are equals even if different

@@ -174,8 +174,6 @@ public class DrawSVGTest {
      * This one does not really render as I'd like, but we cannot have a shape in the group that has
      * its own specific winding rule in Java. The test is there because this one also has a
      * transformation on the shapes to re-position them.
-     *
-     * @throws Exception
      */
     @Test
     public void testSvgMarkTransformedShape() throws Exception {

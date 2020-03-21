@@ -77,6 +77,7 @@ class CompositingGroup {
                         clone.setVisible(layer.isVisible());
                         clone.setSelected(layer.isSelected());
                         clone.getUserData().putAll(layer.getUserData());
+                        clone.setTitle(layer.getTitle());
                         layers.add(clone);
                     }
                 }
@@ -135,12 +136,7 @@ class CompositingGroup {
         }
     }
 
-    /**
-     * Returns true if alpha compositing is used anywhere in the style
-     *
-     * @param currentFeature
-     * @return
-     */
+    /** Returns true if alpha compositing is used anywhere in the style */
     private static boolean hasAlphaCompositing(List<Layer> layers) {
         AlphaCompositeVisitor visitor = new AlphaCompositeVisitor();
         for (Layer layer : layers) {
@@ -165,6 +161,8 @@ class CompositingGroup {
         }
 
         addToStyles(styles, featureTypeStyles);
+        // move the background definition to the first element in the compositing stack
+        styles.get(0).setBackground(style.getBackground());
 
         return styles;
     }

@@ -65,7 +65,7 @@ public abstract class FunctionTestSupport extends TestCase {
                             new Object[] {
                                 Integer.valueOf(i + 1),
                                 Integer.valueOf(iVal[i]),
-                                new Double(dVal[i]),
+                                Double.valueOf(dVal[i]),
                                 fac.createPoint(new Coordinate(iVal[i], iVal[i])),
                                 "Group" + (i % 4)
                             },
@@ -90,7 +90,7 @@ public abstract class FunctionTestSupport extends TestCase {
             features.add(
                     SimpleFeatureBuilder.build(
                             jenksType,
-                            new Object[] {Integer.valueOf(i + 1), new Double(jenks71[i])},
+                            new Object[] {Integer.valueOf(i + 1), Double.valueOf(jenks71[i])},
                             "jenks" + i));
         }
         jenksCollection = features;
@@ -102,7 +102,7 @@ public abstract class FunctionTestSupport extends TestCase {
             constantCollection.add(
                     SimpleFeatureBuilder.build(
                             constantType,
-                            new Object[] {Integer.valueOf(i + 1), new Double(123.123), "abc"},
+                            new Object[] {Integer.valueOf(i + 1), Double.valueOf(123.123), "abc"},
                             "constant" + i));
         }
         this.constantCollection = constantCollection;

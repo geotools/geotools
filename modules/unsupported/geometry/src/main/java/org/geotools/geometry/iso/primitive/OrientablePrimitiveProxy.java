@@ -67,8 +67,6 @@ public class OrientablePrimitiveProxy implements OrientablePrimitive, Serializab
      *
      * <p>For c, d : GM_OrientableCurves such that c.endPoint = d.startPoint then ( c + d ) ==:
      * GM_CompositeCurve = < c, d >
-     *
-     * @param primitive
      */
     protected OrientablePrimitiveProxy(PrimitiveImpl primitive) {
         this.primitive = primitive;
@@ -143,7 +141,7 @@ public class OrientablePrimitiveProxy implements OrientablePrimitive, Serializab
     }
 
     public double getDistance(Geometry geometry) {
-        return primitive.getDistance(geometry);
+        return primitive.distance(geometry);
     }
 
     public int getDimension(DirectPosition point) {

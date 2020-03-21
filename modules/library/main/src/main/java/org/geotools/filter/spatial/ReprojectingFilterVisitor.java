@@ -79,9 +79,6 @@ public class ReprojectingFilterVisitor extends DuplicatingFilterVisitor {
     /**
      * Returns the CRS associated to a property in the feature type. May be null if the property is
      * not geometric, or if the CRS is not set
-     *
-     * @param propertyName
-     * @return
      */
     private CoordinateReferenceSystem findPropertyCRS(PropertyName propertyName) {
         if (propertyName == null) {
@@ -419,24 +416,10 @@ public class ReprojectingFilterVisitor extends DuplicatingFilterVisitor {
             return cloneFilter(filter, extraData, ex1, ex2);
         }
 
-        /**
-         * Straight cloning using cascaded visit
-         *
-         * @param filter
-         * @param extraData
-         * @return
-         */
+        /** Straight cloning using cascaded visit */
         abstract Object cloneFilter(BinarySpatialOperator filter, Object extraData);
 
-        /**
-         * Clone with the provided parameters as first and second expressions
-         *
-         * @param filter
-         * @param extraData
-         * @param ex1
-         * @param ex2
-         * @return
-         */
+        /** Clone with the provided parameters as first and second expressions */
         abstract Object cloneFilter(
                 BinarySpatialOperator filter, Object extraData, Expression ex1, Expression ex2);
     }
@@ -478,24 +461,10 @@ public class ReprojectingFilterVisitor extends DuplicatingFilterVisitor {
             return cloneFilter(filter, extraData, ex1, ex2);
         }
 
-        /**
-         * Straight cloning using cascaded visit
-         *
-         * @param filter
-         * @param extraData
-         * @return
-         */
+        /** Straight cloning using cascaded visit */
         abstract Object cloneFilter(BinaryComparisonOperator filter, Object extraData);
 
-        /**
-         * Clone with the provided parameters as first and second expressions
-         *
-         * @param filter
-         * @param extraData
-         * @param ex1
-         * @param ex2
-         * @return
-         */
+        /** Clone with the provided parameters as first and second expressions */
         abstract Object cloneFilter(
                 BinaryComparisonOperator filter, Object extraData, Expression ex1, Expression ex2);
     }

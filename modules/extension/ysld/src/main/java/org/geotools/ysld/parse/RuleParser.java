@@ -51,13 +51,13 @@ public class RuleParser extends YsldParseHandler {
 
             rule.setName(r.str("name"));
             if (r.has("title")) {
-                rule.setTitle(r.str("title"));
+                rule.getDescription().setTitle(r.str("title"));
             }
             if (r.has("abstract")) {
-                rule.setAbstract(r.str("abstract"));
+                rule.getDescription().setAbstract(r.str("abstract"));
             }
-            rule.setTitle(r.str("title"));
-            rule.setAbstract(r.str("abstract"));
+            rule.getDescription().setTitle(r.str("title"));
+            rule.getDescription().setAbstract(r.str("abstract"));
             context.push(
                     r,
                     "legend",
@@ -88,10 +88,7 @@ public class RuleParser extends YsldParseHandler {
         }
     }
 
-    /**
-     * @param r
-     * @return The parsed scale, or null if the {@link YamlMap} has no "scale" key.
-     */
+    /** @return The parsed scale, or null if the {@link YamlMap} has no "scale" key. */
     @Nullable
     private ScaleRange parseScale(YamlMap r) {
         if (r.has("scale")) {

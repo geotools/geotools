@@ -28,7 +28,7 @@ import java.util.TreeMap;
 import java.util.logging.Logger;
 import javax.xml.namespace.QName;
 import org.geotools.data.DataSourceException;
-import org.geotools.data.wfs.internal.GetFeatureParser;
+import org.geotools.data.wfs.internal.GetParser;
 import org.geotools.data.wfs.internal.Loggers;
 import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -59,16 +59,16 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 /**
- * A {@link GetFeatureParser} implementation that uses plain xml pull to parse a GetFeature
+ * A {@link GetParser<SimpleFeature>} implementation that uses plain xml pull to parse a GetFeature
  * response.
  *
  * @author Gabriel Roldan (TOPP)
  * @version $Id$
  * @since 2.5.x
- *     <p>//@deprecated should be removed as long as {@link PullParserFeatureReader} works well
+ *     <p>
  */
 @SuppressWarnings("nls")
-public class XmlSimpleFeatureParser implements GetFeatureParser {
+public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
 
     private static final Logger LOGGER = Loggers.RESPONSES;
 
@@ -215,12 +215,6 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
     /**
      * Parses the value of the current attribute, parser cursor shall be on a feature attribute
      * START_TAG event.
-     *
-     * @return
-     * @throws IOException
-     * @throws XmlPullParserException
-     * @throws FactoryException
-     * @throws NoSuchAuthorityCodeException
      */
     @SuppressWarnings("unchecked")
     private Object parseAttributeValue() throws XmlPullParserException, IOException {
@@ -250,12 +244,6 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
      *
      * <p>Postcondition: parser gets positioned at the end tag of the element it started parsing the
      * geometry at
-     *
-     * @return
-     * @throws FactoryException
-     * @throws NoSuchAuthorityCodeException
-     * @throws IOException
-     * @throws XmlPullParserException
      */
     private Geometry parseGeom()
             throws NoSuchAuthorityCodeException, FactoryException, XmlPullParserException,
@@ -299,15 +287,6 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
      *
      * <p>Postcondition: parser positioned at the {@link GML#MultiPoint MultiPoint} end tag of the
      * starting tag
-     *
-     * @throws IOException
-     * @throws XmlPullParserException
-     * @throws IOException
-     * @throws XmlPullParserException
-     * @throws FactoryException
-     * @throws NoSuchAuthorityCodeException
-     * @throws FactoryException
-     * @throws NoSuchAuthorityCodeException
      */
     private Geometry parseMultiPoint(int dimension, CoordinateReferenceSystem crs)
             throws XmlPullParserException, IOException, NoSuchAuthorityCodeException,
@@ -358,11 +337,6 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
      *
      * <p>Postcondition: parser positioned at the {@link GML#MultiLineString MultiLineString} end
      * tag of the starting tag
-     *
-     * @throws IOException
-     * @throws XmlPullParserException
-     * @throws FactoryException
-     * @throws NoSuchAuthorityCodeException
      */
     private MultiLineString parseMultiLineString(int dimension, CoordinateReferenceSystem crs)
             throws XmlPullParserException, IOException, NoSuchAuthorityCodeException,
@@ -485,14 +459,6 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
      *
      * <p>Postcondition: parser positioned at the {@link GML#Polygon Polygon} end tag of the
      * starting tag
-     *
-     * @param dimension
-     * @param crs
-     * @return
-     * @throws XmlPullParserException
-     * @throws IOException
-     * @throws NoSuchAuthorityCodeException
-     * @throws FactoryException
      */
     private Polygon parsePolygon(int dimension, CoordinateReferenceSystem crs)
             throws XmlPullParserException, IOException, NoSuchAuthorityCodeException,

@@ -8,7 +8,7 @@ a true spatial database as it does not have any form of spatial indexing.
 
 **Maven**
    
-Note that the groupId is **org.geotools.jdbc** for this and other JDBC plugin modules.
+Note that the ``groupId`` is ``org.geotools.jdbc`` for this and other JDBC plugin modules.
 
 ::
 
@@ -21,15 +21,15 @@ Note that the groupId is **org.geotools.jdbc** for this and other JDBC plugin mo
 Connection Parameters
 ^^^^^^^^^^^^^^^^^^^^^
 
-+-------------+----------------------------------------------+
-| Parameter   | Description                                  |
-+=============+==============================================+
-| "dbtype"    | Must be the string "h2"                      |
-+-------------+----------------------------------------------+
-| "database"  | The database to connect to                   |
-+-------------+----------------------------------------------+
-| "user"      | User name                                    |
-+-------------+----------------------------------------------+
++---------------+----------------------------------------------+
+| Parameter     | Description                                  |
++===============+==============================================+
+| ``dbtype``    | Must be the string ``h2``                    |
++---------------+----------------------------------------------+
+| ``database``  | The database to connect to                   |
++---------------+----------------------------------------------+
+| ``user``      | User name                                    |
++---------------+----------------------------------------------+
 
 Creating
 ^^^^^^^^
@@ -41,7 +41,7 @@ Here is a quick example:
    :start-after: // h2Example start
    :end-before: // h2Example end
 
-The above will reference a database file named "geotools" located in the current working directory. 
+The above will reference a database file named ``geotools`` located in the current working directory. 
 A full path may also be specified:
 
 .. literalinclude:: /../src/main/java/org/geotools/jdbc/JDBCExamples.java
@@ -49,8 +49,8 @@ A full path may also be specified:
    :start-after: // h2AbsPathExample start
    :end-before: // h2AbsPathExample end
    
-The above examples create a connection to H2 in "embedded" mode. One limitation to this approach is 
-that it only allows for a single java process to access the database at any one time. H2 also offers 
+The above examples create a connection to H2 in *embedded* mode. One limitation to this approach is 
+that it only allows for a single Java process to access the database at any one time. H2 also offers 
 a `server mode <http://www.h2database.com/html/tutorial.html#using_server>`_ in which access
 to the underlying database is made via traditional client-server TCP connection, and removes the embedded
 single process restriction:

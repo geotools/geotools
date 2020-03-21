@@ -37,7 +37,7 @@ import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.wfs.WFSDataStoreFactory;
-import org.geotools.data.wfs.internal.GetFeatureParser;
+import org.geotools.data.wfs.internal.GetParser;
 import org.geotools.referencing.CRS;
 import org.geotools.wfs.v1_1.WFSConfiguration;
 import org.geotools.xsd.Configuration;
@@ -58,7 +58,7 @@ import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
- * This abstract class comprises a sort of compliance tests for {@link GetFeatureParser}
+ * This abstract class comprises a sort of compliance tests for {@link GetParser<SimpleFeature>}
  * implementations.
  *
  * <p>Subclasses shall just provide an implementation for {@link #getParser(QName,
@@ -105,8 +105,6 @@ public abstract class AbstractGetFeatureParserTest {
         /**
          * A featuretype which might be a subset of the actual FeatureType whose attributes will be
          * used to assert the features.
-         *
-         * @param featureType
          */
         public FeatureAssertor(SimpleFeatureType featureType) {
             this.featureType = featureType;
@@ -180,13 +178,11 @@ public abstract class AbstractGetFeatureParserTest {
      * @param assertor a FeatureVisitor to assert the contents or structure of the features
      * @param expectedFeatureCount the number of features there should be on the feature collection,
      *     an assertion is made at the end of the method.
-     * @param schemaName
-     * @throws Exception
      */
     private void testParseGetFeatures(
             final QName featureName,
             final SimpleFeatureType queryFeatureType,
-            final GetFeatureParser parser,
+            final GetParser<SimpleFeature> parser,
             final FeatureVisitor assertor,
             final int expectedFeatureCount)
             throws Exception {
@@ -211,19 +207,14 @@ public abstract class AbstractGetFeatureParserTest {
     }
 
     /**
-     * Subclasses need to implement in order to provide a specific {@link GetFeatureParser}
+     * Subclasses need to implement in order to provide a specific {@link GetParser<SimpleFeature>}
      * implementation settled up for the given featureName and dataFile containing the test
      * GetFeature request response.
      *
-     * @param featureName
-     * @param schemaLocation
-     * @param featureType
      * @param getFeaturesRequest the URL representing the GetFeature request. Opening its input
      *     stream shall suffice to get the GetFeature response.
-     * @return
-     * @throws IOException
      */
-    protected abstract GetFeatureParser getParser(
+    protected abstract GetParser<SimpleFeature> getParser(
             QName featureName,
             URL schemaLocation,
             SimpleFeatureType featureType,
@@ -235,8 +226,6 @@ public abstract class AbstractGetFeatureParserTest {
      * Verifies correctness on parsing a normal geoserver WFS 1.1.0 GetFeature response.
      *
      * <p>Test method for {@link PullParserFeatureReader#parse()}.
-     *
-     * @throws Exception
      */
     @Test
     public void testParseGeoServer_ArchSites_Point() throws Exception {
@@ -253,7 +242,8 @@ public abstract class AbstractGetFeatureParserTest {
         List<Geometry> geometries = new ArrayList<Geometry>();
         geometries.add(GF.createPoint(new Coordinate(593493, 4914730)));
         assertor.setExpectedGeometries(geometries);
-        GetFeatureParser parser = getParser(featureName, schemaLocation, featureType, data, null);
+        GetParser<SimpleFeature> parser =
+                getParser(featureName, schemaLocation, featureType, data, null);
 
         if (supportsCount) {
             int nof = parser.getNumberOfFeatures();
@@ -267,8 +257,6 @@ public abstract class AbstractGetFeatureParserTest {
      * Verifies correctness on parsing a normal geoserver WFS 1.1.0 GetFeature response.
      *
      * <p>Test method for {@link PullParserFeatureReader#parse()}.
-     *
-     * @throws Exception
      */
     @Test
     public void testParseGeoServer_ArchSites_Point_NorthEastAxis() throws Exception {
@@ -285,7 +273,7 @@ public abstract class AbstractGetFeatureParserTest {
         List<Geometry> geometries = new ArrayList<Geometry>();
         geometries.add(GF.createPoint(new Coordinate(4914730, 593493)));
         assertor.setExpectedGeometries(geometries);
-        GetFeatureParser parser =
+        GetParser<SimpleFeature> parser =
                 getParser(
                         featureName,
                         schemaLocation,
@@ -306,8 +294,6 @@ public abstract class AbstractGetFeatureParserTest {
      * usual topp:states feature type (multipolygon).
      *
      * <p>Test method for {@link PullParserFeatureReader#parse()}.
-     *
-     * @throws Exception
      */
     @Test
     public void testParseGeoServer_States_polygon_with_hole() throws Exception {
@@ -355,7 +341,7 @@ public abstract class AbstractGetFeatureParserTest {
                     }
                 };
 
-        GetFeatureParser parser =
+        GetParser<SimpleFeature> parser =
                 getParser(featureName, schemaLocation, featureType, GEOS_STATES_11.DATA, null);
 
         if (supportsCount) {
@@ -415,7 +401,7 @@ public abstract class AbstractGetFeatureParserTest {
                     }
                 };
 
-        GetFeatureParser parser =
+        GetParser<SimpleFeature> parser =
                 getParser(featureName, schemaLocation, featureType, GEOS_STATES_10.DATA, null);
 
         int nof = parser.getNumberOfFeatures();
@@ -436,7 +422,7 @@ public abstract class AbstractGetFeatureParserTest {
 
         final FeatureVisitor assertor = new FeatureAssertor(featureType);
 
-        GetFeatureParser parser =
+        GetParser<SimpleFeature> parser =
                 getParser(featureName, schemaLocation, featureType, GEOS_ROADS_11.DATA, null);
 
         if (supportsCount) {
@@ -459,7 +445,7 @@ public abstract class AbstractGetFeatureParserTest {
 
         final FeatureVisitor assertor = new FeatureAssertor(featureType);
 
-        GetFeatureParser parser =
+        GetParser<SimpleFeature> parser =
                 getParser(featureName, schemaLocation, featureType, GEOS_ROADS_10.DATA, null);
 
         int nof = parser.getNumberOfFeatures();
@@ -481,7 +467,7 @@ public abstract class AbstractGetFeatureParserTest {
 
         final FeatureVisitor assertor = new FeatureAssertor(featureType);
 
-        GetFeatureParser parser =
+        GetParser<SimpleFeature> parser =
                 getParser(
                         featureName,
                         schemaLocation,
@@ -497,11 +483,7 @@ public abstract class AbstractGetFeatureParserTest {
         testParseGetFeatures(featureName, featureType, parser, assertor, expectedCount);
     }
 
-    /**
-     * Verifies correctness on parsing a sample CubeWerx WFS 1.1.0 GetFeature response.
-     *
-     * @throws Exception
-     */
+    /** Verifies correctness on parsing a sample CubeWerx WFS 1.1.0 GetFeature response. */
     @Test
     public void testParseCubeWerx_GovernmentalUnitCE() throws Exception {
         QName featureName = CUBEWERX_GOVUNITCE.TYPENAME;
@@ -517,7 +499,7 @@ public abstract class AbstractGetFeatureParserTest {
 
         final FeatureVisitor assertor = new FeatureAssertor(featureType);
 
-        GetFeatureParser parser =
+        GetParser<SimpleFeature> parser =
                 getParser(featureName, schemaLocation, featureType, CUBEWERX_GOVUNITCE.DATA, null);
         int nof = parser.getNumberOfFeatures();
         assertEquals(-1, nof);
@@ -532,7 +514,7 @@ public abstract class AbstractGetFeatureParserTest {
         final SimpleFeatureType featureType =
                 getTypeView(featureName, schemaLocation, CUBEWERX_ROADSEG.CRS, properties);
 
-        final GetFeatureParser parser =
+        final GetParser<SimpleFeature> parser =
                 getParser(featureName, schemaLocation, featureType, CUBEWERX_ROADSEG.DATA, null);
 
         int nof = parser.getNumberOfFeatures();
@@ -563,7 +545,7 @@ public abstract class AbstractGetFeatureParserTest {
         final SimpleFeatureType featureType =
                 getTypeView(featureName, schemaLocation, CUBEWERX_ROADSEG.CRS, properties);
 
-        final GetFeatureParser parser =
+        final GetParser<SimpleFeature> parser =
                 getParser(
                         featureName,
                         schemaLocation,
@@ -599,7 +581,7 @@ public abstract class AbstractGetFeatureParserTest {
         final SimpleFeatureType featureType =
                 getTypeView(featureName, schemaLocation, CUBEWERX_ROADSEG.CRS, properties);
 
-        final GetFeatureParser parser =
+        final GetParser<SimpleFeature> parser =
                 getParser(
                         featureName,
                         schemaLocation,
@@ -635,7 +617,7 @@ public abstract class AbstractGetFeatureParserTest {
         final SimpleFeatureType featureType =
                 getTypeView(featureName, schemaLocation, CUBEWERX_ROADSEG.CRS, properties);
 
-        final GetFeatureParser parser =
+        final GetParser<SimpleFeature> parser =
                 getParser(
                         featureName,
                         schemaLocation,

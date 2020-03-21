@@ -46,29 +46,17 @@ public class GeometryTestCase {
         description = "No description";
     }
 
-    /**
-     * Sets the geometry specified by the A tag
-     *
-     * @param a
-     */
+    /** Sets the geometry specified by the A tag */
     public void setGeometryA(Geometry a) {
         geomA = a;
     }
 
-    /**
-     * Sets the geometry specified by the b tag
-     *
-     * @param b
-     */
+    /** Sets the geometry specified by the b tag */
     public void setGeometryB(Geometry b) {
         geomB = b;
     }
 
-    /**
-     * Adds in a test operation that will be run on the given A and B geometries.
-     *
-     * @param op
-     */
+    /** Adds in a test operation that will be run on the given A and B geometries. */
     public void addTestOperation(GeometryTestOperation op) {
         operationList.add(op);
     }
@@ -76,18 +64,12 @@ public class GeometryTestCase {
     /**
      * Sets the description text string for this test case. The description is used for logging
      * results.
-     *
-     * @param desc
      */
     public void setDescription(String desc) {
         description = desc;
     }
 
-    /**
-     * Run any test operations stored for this test case
-     *
-     * @return
-     */
+    /** Run any test operations stored for this test case */
     public boolean runTestCases() {
         boolean result = true;
         LOG.info("Running test:" + description);

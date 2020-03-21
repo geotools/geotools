@@ -116,7 +116,7 @@ public class NearestProcess implements VectorProcess {
                     DistanceOp op =
                             new DistanceOp(
                                     point, (Geometry) f.getDefaultGeometryProperty().getValue());
-                    Coordinate[] co = op.closestPoints();
+                    Coordinate[] co = op.nearestPoints();
                     double[] co0 =
                             new double[] {
                                 co[0].x, co[0].y,

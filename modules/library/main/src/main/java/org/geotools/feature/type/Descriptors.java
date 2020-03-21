@@ -107,8 +107,6 @@ public class Descriptors {
     // * attribute mentioned by the parent with multiplicity 0:0.
     // * </p>
     // *
-    // * @param parent
-    // * @param subtype
     // * @return Descriptor resulting by extending the provided schema
     // (collisions
     // * on qname are treated as overrides)
@@ -149,10 +147,6 @@ public class Descriptors {
      * Restriction only works on exact structure match.
      *
      * <p>This is the way XMLSchema handles it ...
-     *
-     * @param schema
-     * @param sub
-     * @return
      */
     // @SuppressWarnings("unchecked")
     // public ComplexType restriction(ComplexType parent,ComplexType restrict) {
@@ -340,8 +334,6 @@ public class Descriptors {
     /**
      * We can only restrict node if the restricftion is a subtype that used by node.
      *
-     * @param node
-     * @param restrict
      * @return restrict, iff restrict.getType() ISA node.getType()
      */
     AttributeDescriptor restrict(AttributeDescriptor node, AttributeDescriptor restrict) {
@@ -380,10 +372,6 @@ public class Descriptors {
      *
      * <p>Namespaces are not taken in count, so if two properties share the same local name, the
      * first one that matches will be returned.
-     *
-     * @param schema
-     * @param name
-     * @return
      */
     public static AttributeType type(Collection schema, Name name) {
         AttributeDescriptor node = node(schema, name);
@@ -396,35 +384,19 @@ public class Descriptors {
      *
      * <p>Namespaces are not taken in count, so if two properties share the same local name, the
      * first one that matches will be returned.
-     *
-     * @param schema
-     * @param name
-     * @return
      */
     public static AttributeType type(ComplexType schema, String name) {
         return type(schema, new NameImpl(name));
     }
 
-    /**
-     * Locate type associated with provided name, or null if not found.
-     *
-     * @param schema
-     * @param name
-     * @return
-     */
+    /** Locate type associated with provided name, or null if not found. */
     public static AttributeType type(ComplexType schema, Name name) {
         AttributeDescriptor node = node(schema, name);
         if (node != null) return node.getType();
         return null;
     }
 
-    /**
-     * Finds the first node associated with the provided name disregarding namespaces
-     *
-     * @param schema
-     * @param name
-     * @return
-     */
+    /** Finds the first node associated with the provided name disregarding namespaces */
     public static AttributeDescriptor node(ComplexType schema, String name) {
         // return node(schema,new org.geotools.feature.Name(name));
 
@@ -468,8 +440,6 @@ public class Descriptors {
     /**
      * Finds the node associated with the provided name.
      *
-     * @param schema
-     * @param name
      * @return AttributeDescriptor assoicated with provided name, or null if not found.
      */
     public static AttributeDescriptor node(ComplexType schema, Name name) {
@@ -479,8 +449,6 @@ public class Descriptors {
     /**
      * Finds the node associated with the provided name.
      *
-     * @param schema
-     * @param name
      * @return AttributeDescriptor assoicated with provided name, or null if not found.
      */
     public static AttributeDescriptor node(Collection schema, Name name) {
@@ -522,8 +490,6 @@ public class Descriptors {
      * <p>Note a type may be included in more then one node, in which case this will only find the
      * first one.
      *
-     * @param schema
-     * @param type
      * @return AttributeDescriptor assoicated with provided name, or null if not found.
      */
     public static AttributeDescriptor node(ComplexType schema, AttributeType type) {
@@ -539,8 +505,6 @@ public class Descriptors {
     /**
      * List of nodes matching AttributeType.
      *
-     * @param schema
-     * @param type
      * @return List of nodes for the provided type, or empty.
      */
     public static List /* <AttributeDescriptor> */ nodes(ComplexType schema, AttributeType type) {
@@ -560,7 +524,6 @@ public class Descriptors {
      * <p>On the cases where order matters, the returned list preserves the order of descriptors
      * declared in <code>schema</code>
      *
-     * @param type
      * @return List of nodes for the provided type, or empty.
      */
     public static List /* <AttributeType> */ types(AttributeType type) {
@@ -581,10 +544,6 @@ public class Descriptors {
      *   <li>The AttributeType is referenced by more then one node.
      *   <li>The node referencing the type has multiplicy greater then 1
      * </ul>
-     *
-     * @param schema
-     * @param type
-     * @return
      */
     public static boolean multiple(ComplexType schema, AttributeType type) {
         // return maxOccurs( schema, type ) != 1;
@@ -609,9 +568,6 @@ public class Descriptors {
     /**
      * Returns the list of descriptors defined in the provided schema, preserving declaration order
      * when relevant.
-     *
-     * @param schema
-     * @return
      */
     // @SuppressWarnings("unchecked")
     public static List /* <? extends Descriptor> */ list(AttributeType type) {

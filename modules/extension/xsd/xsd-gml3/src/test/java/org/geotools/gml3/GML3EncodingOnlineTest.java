@@ -88,7 +88,7 @@ public class GML3EncodingOnlineTest extends TestCase {
 
         Encoder encoder = new Encoder(configuration, schema);
         ByteArrayOutputStream output = new ByteArrayOutputStream();
-        encoder.write(fc, TEST.TestFeatureCollection, output);
+        encoder.encode(fc, TEST.TestFeatureCollection, output);
 
         validate(output.toByteArray(), configuration);
     }
@@ -117,7 +117,7 @@ public class GML3EncodingOnlineTest extends TestCase {
         Encoder encoder = new Encoder(configuration, schema);
 
         ByteArrayOutputStream output = new ByteArrayOutputStream();
-        encoder.write(fc, TEST.TestFeatureCollection, output);
+        encoder.encode(fc, TEST.TestFeatureCollection, output);
 
         validate(output.toByteArray(), configuration);
     }
@@ -125,7 +125,7 @@ public class GML3EncodingOnlineTest extends TestCase {
     void validate(byte[] data, Configuration configuration) throws Exception {
         SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
-        Schema s = sf.newSchema(new URI(configuration.getSchemaFileURL()).toURL());
+        Schema s = sf.newSchema(new URI(configuration.getXSD().getSchemaLocation()).toURL());
 
         Validator v = s.newValidator();
 

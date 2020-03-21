@@ -91,8 +91,6 @@ public class XmlComplexFeatureParserTest {
     /**
      * This test has a pretty brute-force assertion which makes it kind of brittle. Other tests are
      * more fine-grained in their approach, checking that specific things have been set.
-     *
-     * @throws IOException
      */
     @Test
     public void parse_firstMine_returnsAdmiralHill() throws IOException {
@@ -111,8 +109,6 @@ public class XmlComplexFeatureParserTest {
     /**
      * This test has a pretty brute-force assertion which makes it kind of brittle. Other tests are
      * more fine-grained in their approach, checking that specific things have been set.
-     *
-     * @throws IOException
      */
     @Test
     public void parse_secondMine_returnsAspacia() throws IOException {

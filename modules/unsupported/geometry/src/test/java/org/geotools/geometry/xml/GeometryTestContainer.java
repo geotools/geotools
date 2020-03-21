@@ -38,11 +38,7 @@ public class GeometryTestContainer {
         testCases = new ArrayList<GeometryTestCase>();
     }
 
-    /**
-     * Adds a constructed test case into the list of available tests
-     *
-     * @param testCase
-     */
+    /** Adds a constructed test case into the list of available tests */
     public void addTestCase(GeometryTestCase testCase) {
         testCases.add(testCase);
     }

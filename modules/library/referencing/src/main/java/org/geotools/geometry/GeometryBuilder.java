@@ -123,17 +123,6 @@ public class GeometryBuilder {
      * Set the CoordinateReferenceSystem for the geometries that will be produced.
      *
      * @param crs the CoordinateReferenceSystem to set
-     * @deprecated Use setCoordinateReferenceSystem() instead.
-     */
-    @Deprecated
-    public void setCoordianteReferenceSystem(CoordinateReferenceSystem crs) {
-        setCoordinateReferenceSystem(crs);
-    }
-
-    /**
-     * Set the CoordinateReferenceSystem for the geometries that will be produced.
-     *
-     * @param crs the CoordinateReferenceSystem to set
      */
     public void setCoordinateReferenceSystem(CoordinateReferenceSystem crs) {
         if (this.crs != crs) {
@@ -270,12 +259,6 @@ public class GeometryBuilder {
         return getPrimitiveFactory().createCurve(segments);
     }
 
-    @Deprecated
-    public Curve createCurve(PointArray points)
-            throws MismatchedReferenceSystemException, MismatchedDimensionException {
-        return createCurve(points, true);
-    }
-
     public Curve createCurve(PointArray points, boolean closed)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         if (points == null) throw new NullPointerException("Points are required to create a curve");
@@ -312,8 +295,6 @@ public class GeometryBuilder {
     /**
      * Create a point with the provided ordinates.
      *
-     * @param ord1
-     * @param ord2
      * @return createPoint( new double[]{ ord1, ord2})
      */
     public Point createPoint(double ord1, double ord2) {
@@ -322,9 +303,6 @@ public class GeometryBuilder {
     /**
      * Create a point with the provided ordinates.
      *
-     * @param ord1
-     * @param ord2
-     * @param ord3
      * @return createPoint( new double[]{ ord1, ord2, ord3 })
      */
     public Point createPoint(double ord1, double ord2, double ord3) {
@@ -333,9 +311,7 @@ public class GeometryBuilder {
     /**
      * Create a point with the provided ordinates
      *
-     * @param ordinates
      * @return getPrimitiveFactory().createPoint(coordinates)
-     * @throws MismatchedDimensionException
      */
     public Point createPoint(double[] ordinates) throws MismatchedDimensionException {
         if (ordinates == null)
@@ -460,7 +436,7 @@ public class GeometryBuilder {
 
     public SurfaceBoundary createSurfaceBoundary(PointArray points)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
-        Curve curve = createCurve(points);
+        Curve curve = createCurve(points, true);
         return createSurfaceBoundary(curve);
     }
 
@@ -567,6 +543,7 @@ public class GeometryBuilder {
         return getGeometryFactory().createLineSegment(from, to);
     }
 
+    @SuppressWarnings("deprecation")
     public MultiPrimitive createMultiPrimitive() {
         return getGeometryFactory().createMultiPrimitive();
     }

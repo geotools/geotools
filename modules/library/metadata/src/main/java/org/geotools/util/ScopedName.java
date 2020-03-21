@@ -30,7 +30,7 @@ import org.opengis.util.NameSpace;
 /**
  * Fully qualified identifier for an object. A {@code ScopedName} contains a {@link LocalName} as
  * {@linkplain #asLocalName head} and a {@linkplain GenericName}, which may be a {@link LocalName}
- * or an other {@link org.opengis.util.ScopedName}, as {@linkplain #getScope tail}.
+ * or an other {@link org.opengis.util.ScopedName}.
  *
  * @since 2.1
  * @version $Id$
@@ -142,31 +142,10 @@ public class ScopedName extends org.geotools.util.GenericName
         throw new UnsupportedOperationException("Not yet implemented.");
     }
 
-    /**
-     * Returns the scope of this name.
-     *
-     * @deprecated Replaced by {@link #scope()}.
-     */
-    @Deprecated
-    public GenericName getScope() {
-        return scope;
-    }
-
     /** Returns the separator character. */
     @Override
     public char getSeparator() {
         return separator;
-    }
-
-    /**
-     * Returns a view of this object as a scoped name. Since this object is already a scoped name,
-     * this method always returns {@code this}.
-     *
-     * @deprecated Replaced by {@link #toFullyQualifiedName}.
-     */
-    @Deprecated
-    public org.opengis.util.ScopedName asScopedName() {
-        return this;
     }
 
     /**
@@ -178,6 +157,11 @@ public class ScopedName extends org.geotools.util.GenericName
     @Override
     public LocalName tip() {
         return name;
+    }
+
+    @Override
+    protected GenericName getInternalScope() {
+        return scope;
     }
 
     /** Returns the sequence of local name for this {@linkplain GenericName generic name}. */

@@ -51,11 +51,7 @@ public class SpatialTestCase extends TestCase {
     MemoryDataStore mds; // assumes a consistant data type
     ValidationResults vr;
 
-    /**
-     * Constructor for OverlapsIntegrityTest.
-     *
-     * @param arg0
-     */
+    /** Constructor for OverlapsIntegrityTest. */
     public SpatialTestCase(String arg0) {
         super(arg0);
     }

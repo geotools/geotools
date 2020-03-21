@@ -51,9 +51,6 @@ public interface SelectedChannelType extends org.opengis.style.SelectedChannelTy
      */
     public Expression getChannelName();
 
-    /** @deprecated Use {@link #setContrastEnhancement(ContrastEnhancement))} instead. */
-    public void setContrastEnhancement(Expression gammaValue);
-
     public void setContrastEnhancement(org.opengis.style.ContrastEnhancement enhancement);
 
     public ContrastEnhancement getContrastEnhancement();

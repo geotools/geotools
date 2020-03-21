@@ -261,8 +261,6 @@ public class BufferedCoordinateOperationFactory extends AbstractCoordinateOperat
      * systems using the specified method. The current implementation delegates to the {@linkplain
      * CoordinateOperationFactory coordinate operation factory} specified at construction time with
      * no caching.
-     *
-     * @deprecated Will be removed.
      */
     public CoordinateOperation createOperation(
             final CoordinateReferenceSystem sourceCRS,

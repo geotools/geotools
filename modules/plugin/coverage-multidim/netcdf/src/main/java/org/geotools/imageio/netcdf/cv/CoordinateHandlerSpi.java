@@ -39,9 +39,6 @@ public interface CoordinateHandlerSpi {
 
     /**
      * Check if the specified spi can handle the provided axis through a {@link CoordinateHandler}
-     *
-     * @param axis
-     * @return
      */
     public boolean canHandle(CoordinateAxis axis);
 

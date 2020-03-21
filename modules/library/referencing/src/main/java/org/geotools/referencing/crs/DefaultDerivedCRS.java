@@ -130,7 +130,6 @@ public class DefaultDerivedCRS extends AbstractDerivedCRS implements DerivedCRS 
      * @throws MismatchedDimensionException if the source and target dimension of {@code
      *     baseToDeviced} don't match the dimension of {@code base} and {@code derivedCS}
      *     respectively.
-     * @deprecated Create explicitly a {@link DefiningConversion} instead.
      */
     public DefaultDerivedCRS(
             final Map<String, ?> properties,

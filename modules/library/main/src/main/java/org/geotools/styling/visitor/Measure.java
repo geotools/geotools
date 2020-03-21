@@ -125,21 +125,12 @@ class Measure {
         this.uom = uom;
     }
 
-    /**
-     * Returns true if the uom is set and is not pixel
-     *
-     * @return
-     */
+    /** Returns true if the uom is set and is not pixel */
     boolean isRealWorldUnit() {
         return uom != null && uom != Units.PIXEL;
     }
 
-    /**
-     * Returns true if the uom is pixel within a symbolizer whose default unit is also pixel
-     *
-     * @param measure
-     * @return
-     */
+    /** Returns true if the uom is pixel within a symbolizer whose default unit is also pixel */
     boolean isPixelInPixelDefault() {
         return (uom == null || uom == defaultUnit)
                 && (defaultUnit == null || defaultUnit == Units.PIXEL);

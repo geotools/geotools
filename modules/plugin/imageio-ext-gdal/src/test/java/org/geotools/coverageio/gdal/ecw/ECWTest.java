@@ -62,11 +62,7 @@ public final class ECWTest extends GDALTestCase {
     /** file name of a valid ECW sample data to be used for tests. */
     private static final String fileName = "sample.ecw";
 
-    /**
-     * Creates a new instance of {@code ECWTest}
-     *
-     * @param name
-     */
+    /** Creates a new instance of {@code ECWTest} */
     public ECWTest() {
         super("ECW", new ECWFormatFactory());
     }
@@ -134,7 +130,7 @@ public final class ECWTest extends GDALTestCase {
                             oldEnvelope.getUpperCorner().getOrdinate(0),
                             oldEnvelope.getUpperCorner().getOrdinate(1)
                         });
-        cropEnvelope.setCoordinateReferenceSystem(reader.getCrs());
+        cropEnvelope.setCoordinateReferenceSystem(reader.getCoordinateReferenceSystem());
 
         final ParameterValue<GridGeometry2D> gg =
                 ((AbstractGridFormat) reader.getFormat()).READ_GRIDGEOMETRY2D.createValue();
@@ -179,7 +175,7 @@ public final class ECWTest extends GDALTestCase {
                             oldEnvelope.getUpperCorner().getOrdinate(0) + translate0,
                             oldEnvelope.getUpperCorner().getOrdinate(1) + translate1
                         });
-        wrongEnvelope.setCoordinateReferenceSystem(reader.getCrs());
+        wrongEnvelope.setCoordinateReferenceSystem(reader.getCoordinateReferenceSystem());
 
         final ParameterValue<GridGeometry2D> gg2 =
                 ((AbstractGridFormat) reader.getFormat()).READ_GRIDGEOMETRY2D.createValue();

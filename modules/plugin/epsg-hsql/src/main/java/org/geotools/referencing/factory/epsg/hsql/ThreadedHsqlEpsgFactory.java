@@ -69,6 +69,7 @@ import org.hsqldb.jdbc.JDBCDataSource;
  * @author Didier Richard
  */
 public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
+    public static final Logger LOGGER = Logging.getLogger(ThreadedHsqlEpsgFactory.class);
     /**
      * Current version of EPSG-HSQL plugin. This is usually the same version number than the one in
      * the EPSG database bundled in this plugin. However this field may contains additional minor
@@ -76,7 +77,7 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
      * database itself (for example additional database index).
      */
     @SuppressWarnings("PMD.AvoidUsingHardCodedIP")
-    public static final Version VERSION = new Version("8.6.0.1");
+    public static final Version VERSION = new Version("9.6.0");
 
     /**
      * The key for fetching the database directory from {@linkplain System#getProperty(String)
@@ -241,6 +242,7 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
      * @return The EPSG factory using HSQL syntax.
      * @throws SQLException if connection to the database failed.
      */
+    @SuppressWarnings("PMD.CloseResource")
     protected AbstractAuthorityFactory createBackingStore(final Hints hints) throws SQLException {
         final Logger logger = Logging.getLogger(ThreadedHsqlEpsgFactory.class);
         logger.log(Level.FINE, "Building backing store for " + getClass().getName());
@@ -277,8 +279,13 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
                     byte[] buf = new byte[1024];
                     int read = 0;
                     while ((ze = zin.getNextEntry()) != null) {
-                        Utilities.assertNotZipSlipVulnarable(
-                                new File(directory, ze.getName()), directory.toPath());
+                        try {
+                            Utilities.assertNotZipSlipVulnarable(
+                                    new File(directory, ze.getName()), directory.toPath());
+                        } catch (IOException zipSlipVulnerable) {
+                            // check not expected to work when running as a windows service
+                            LOGGER.fine("Expected Reference to internal jar:" + zipSlipVulnerable);
+                        }
                         FileOutputStream fout =
                                 new FileOutputStream(new File(directory, ze.getName()));
                         while ((read = zin.read(buf)) > 0) {
@@ -325,11 +332,8 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
         return factory;
     }
 
-    /**
-     * @param directory
-     * @return
-     * @throws IOException
-     */
+    /** */
+    @SuppressWarnings("PMD.CloseResource")
     FileLock acquireLock(File directory) throws IOException {
         // Get a file channel for the file
         File file = new File(directory, LOCK_FILE);

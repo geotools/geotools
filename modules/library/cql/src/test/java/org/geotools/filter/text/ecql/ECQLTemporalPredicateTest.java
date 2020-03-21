@@ -17,14 +17,21 @@
 
 package org.geotools.filter.text.ecql;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
+import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.filter.text.commons.CompilerUtil;
 import org.geotools.filter.text.commons.Language;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.cql2.CQLTemporalPredicateTest;
+import org.geotools.temporal.object.DefaultInstant;
+import org.geotools.temporal.object.DefaultPosition;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.temporal.After;
 import org.opengis.filter.temporal.Before;
@@ -46,11 +53,7 @@ public class ECQLTemporalPredicateTest extends CQLTemporalPredicateTest {
         super(Language.ECQL);
     }
 
-    /**
-     * Before predicate with dateTime in the leftHand
-     *
-     * @throws CQLException
-     */
+    /** Before predicate with dateTime in the leftHand */
     @Test
     public void dateTimeExpresionBeforeDateTimeExpresion() throws CQLException {
 
@@ -71,11 +74,7 @@ public class ECQLTemporalPredicateTest extends CQLTemporalPredicateTest {
 
         Assert.assertTrue(resultFilter.evaluate(null));
     }
-    /**
-     * After predicate with dateTime in the leftHand
-     *
-     * @throws CQLException
-     */
+    /** After predicate with dateTime in the leftHand */
     @Test
     public void dateTimeExpresionAfterDateTimeExpresion() throws CQLException {
 
@@ -97,11 +96,7 @@ public class ECQLTemporalPredicateTest extends CQLTemporalPredicateTest {
         Assert.assertFalse(resultFilter.evaluate(null));
     }
 
-    /**
-     * During predicate with dateTime in the leftHand
-     *
-     * @throws CQLException
-     */
+    /** During predicate with dateTime in the leftHand */
     @Test
     public void dateTimeDuringPeriod() throws CQLException {
 
@@ -125,13 +120,43 @@ public class ECQLTemporalPredicateTest extends CQLTemporalPredicateTest {
     /**
      * The left hand should be a property or temporal expression. An math expression in the left
      * hand of the temporal predicate is a syntax error
-     *
-     * @throws CQLException
      */
     @Test(expected = CQLException.class)
     public void beforeInvalidLeftHandExpression() throws CQLException {
 
         final String predicate = "(1+2) BEFORE 2006-11-30T01:30:00Z ";
         CompilerUtil.parseFilter(this.language, predicate);
+    }
+
+    @Test
+    public void filterWithOgcInstantToEcql() throws Exception {
+        final Date date = new Date();
+        FilterFactory ff = new FilterFactoryImpl();
+        Filter filter =
+                ff.after(
+                        ff.property("attName"),
+                        ff.literal(new DefaultInstant(new DefaultPosition(date))));
+
+        String cql = ECQL.toCQL(filter);
+        Assert.assertEquals("attName AFTER " + getEcqlCompliantDate(date), cql);
+    }
+
+    @Test
+    public void beforeFilterWithOgcInstantToEcql() throws Exception {
+        final Date date = new Date();
+        FilterFactory ff = new FilterFactoryImpl();
+        Filter filter =
+                ff.before(
+                        ff.property("attName"),
+                        ff.literal(new DefaultInstant(new DefaultPosition(date))));
+
+        String cql = ECQL.toCQL(filter);
+        Assert.assertEquals("attName BEFORE " + getEcqlCompliantDate(date), cql);
+    }
+
+    private String getEcqlCompliantDate(Date date) {
+        final DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSz");
+        formatter.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
+        return formatter.format(date).replace("GMT", "");
     }
 }

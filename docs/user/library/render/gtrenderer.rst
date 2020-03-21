@@ -1,28 +1,28 @@
-GTRenderer to draw maps
------------------------
+``GTRenderer`` to draw maps
+---------------------------
 
-GTRenderer renderer is the reason why you signed up for this whole GeoTools experience; you want to see a Map.
+``GTRenderer`` renderer is the reason why you signed up for this whole GeoTools experience; you want to see a Map.
 
-GTRenderer is actually an interface; currently there are two implementations:
+``GTRenderer`` is actually an interface; currently there are two implementations:
 
-* StreamingRenderer - a great implementation that does not cache anything. This decision makes it easier to understand and allows it to tackle that large datasets without running out of memory.
-* ShapefileRenderer - (unsupported) restricted to shapefiles as a playground for trying out speed improvements. However all the good optimisations have been picked up by StreamingRenderer.
+* ``StreamingRenderer`` - a great implementation that does not cache anything. This decision makes it easier to understand and allows it to tackle that large data sets without running out of memory.
+* ``ShapefileRenderer`` - (unsupported) restricted to shapefiles as a playground for trying out speed improvements. However all the good optimizations have been picked up by ``StreamingRenderer``.
 
 
 .. image:: /images/GTRenderer.PNG
 
-Here is how to drawn an outputArea rectangle::
+Here is how to drawn an ``outputArea`` rectangle::
   
   GTRenderer draw = new StreamingRenderer();
   draw.setMapContent(map);
   
   draw.paint(g2d, outputArea, map.getLayerBounds() );
 
-If you have completed the Quickstart, this is the approach used by the JMapPane class we use in a
+If you have completed the quick start, this is the approach used by the ``JMapPane`` class we use in a
 lot of our tutorials.
 
-The important part of the above example is that GTRenderer works on the Java2D class
-**Graphics2D**. You can find many implementations of Graphics2D allowing GeoTools to work with a
+The important part of the above example is that ``GTRenderer`` works on the Java2D class
+``Graphics2D``. You can find many implementations of ``Graphics2D`` allowing GeoTools to work with a
 range of graphics systems beyond the screen.
 
 Swing
@@ -30,9 +30,9 @@ Swing
 
 
 You can create a swing control to render the image interactively; we
-provide an example JMapPane for use in our tutorials.
+provide an example ``JMapPane`` for use in our tutorials.
 
-GTRenderer is just a rendering engine - in your own application you may
+``GTRenderer`` is just a rendering engine - in your own application you may
 consider the following ideas:
 
 * Experiment with different Java 2D graphics settings such as
@@ -46,7 +46,7 @@ consider the following ideas:
 A Google summer of code student put together and example of rendering
 into a texture buffers and using OpenGL to handle panning and zooming.
 
-Personally I would look for an Graphics2D implementation that was
+Personally I would look for an ``Graphics2D`` implementation that was
 backed by OpenGL commands and use GeoTools to render out into the scene
 graph.
 
@@ -56,8 +56,8 @@ If you are interested in the students code it is currently in the
 Printing
 ^^^^^^^^
 
-The Java2D library is also used for Java printing. You can print using StreamingRenderer, the code works like normal just
-use the Graphics2D object from your Printer.
+The Java2D library is also used for Java printing. You can print using ``StreamingRenderer``, the code works like normal just
+use the ``Graphics2D`` object from your Printer.
 
 uDig uses this facility to allow for printing maps directly to the
 printer.
@@ -65,8 +65,8 @@ printer.
 PDF
 ^^^
 
-We have also had success using GTRenderer and Batik for the generation
-of PDF output (they provide a Graphics2D object).
+We have also had success using ``GTRenderer`` and Batik for the generation
+of PDF output (they provide a ``Graphics2D`` object).
 
 You can see this functionality in uDig and GeoServer.
 
@@ -117,7 +117,7 @@ Thanks to James Macgill for the following code example:
 Image
 ^^^^^
 
-You can also ask Java to make you a Graphics2D for a BufferedImage in memory. After drawing into this
+You can also ask Java to make you a ``Graphics2D`` for a ``BufferedImage`` in memory. After drawing into this
 image you can write it out to disk.
 
 Here is an example from Oliver on the email list (modified slightly to use current GeoTools classes)::

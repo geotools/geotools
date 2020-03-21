@@ -39,7 +39,7 @@ We are going to be making use of Java so if you don't have a Java Development Ki
    
 #. At the time of writing the latest Java 8 release was:
    
-   * jdk-8u66-windows-i586.exe
+   * ``jdk-8u66-windows-i586.exe``
    
    GeoTools is not yet tested with Java 9, we are limited by build infrastructure and volunteers.
    
@@ -66,11 +66,11 @@ definitely makes working with GeoTools much easier:
 
 * You only download as much of GeoTools as your application requires.
  
-* Jars are downloaded into a single location in your home directory (e.g. C:\\Documents and
-  Settings\<user\>\\.m2\\ on Windows). This is your *local repository*.
+* Jars are downloaded into a single location in your home directory (e.g. :file:`C:\\Documents and Settings\<user\>\\.m2` 
+  on Windows). This is your *local repository*.
 
 * The correct versions of all of the third-party jars required by GeoTools will be downloaded for
-  you. This helps you to avoid obscure errors than can be caused by mis-matched dependencies which
+  you. This helps you to avoid obscure errors than can be caused by mismatched dependencies which
   can be very difficult to track down.
 
 * The single *local repository* makes it easier to work on other multiple open source projects.
@@ -83,7 +83,7 @@ Installing Maven
    
    In this tutorial we refer to Maven version 3.2.3, we have had relatively little trouble with Maven version 3.
    
-#. Unzip the file apache-maven-3.2.3-bin.zip
+#. Unzip the file ``apache-maven-3.2.3-bin.zip``
 
 #. You need to have a couple of environmental variables set for maven to work. Navigate to
    :menuselection:`Control Panel --> System --> Advanced`. Change to the :guilabel:`Advanced` tab and click :guilabel:`Environmental Variables` button.
@@ -144,7 +144,7 @@ Creating a new project
         tutorial\src\test\java\org\geotools
         tutorial\src\test\java\org\geotools\AppTest.java
 
-   App.java and AppTest.java are just placeholder files not used in this tutorial.
+   ``App.java`` and ``AppTest.java`` are just placeholder files not used in this tutorial.
    
 #. During the build process your local maven repository will be used to store both
    downloaded jars, and those you build locally.
@@ -159,8 +159,8 @@ Creating a new project
        Linux and Mac:   :file:`~/.m2/repository`
     ==================  ========================================================
 
-#. Open the **pom.xml** file in your favourite text editor. If your editor has an XML syntax mode
-   switch into that now because it will make it a lot easier to find errors such as mis-matched
+#. Open the ``pom.xml`` file in your favorite text editor. If your editor has an XML syntax mode
+   switch into that now because it will make it a lot easier to find errors such as mismatched
    brackets. Some editors, such as `vim <http://www.vim.org/>`_, will do this automatically on
    loading the file.
 
@@ -212,14 +212,14 @@ Now we are ready to create the application.
 #. Crete the *org.geotools.tutorial.quickstart* package by navigating to the directory
    :file:`tutorial` and create the directory :file:`src\\main\\java\\org\\geotools\\tutorial\\quickstart`
 
-#. In the new sub-directory, create a new file **Quickstart.java** using your text editor.
+#. In the new sub-directory, create a new file ``Quickstart.java`` using your text editor.
 
 #. Fill in the following code:
   
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/quickstart/Quickstart.java
       :language: java
 
-#. Go back to the top project directory (the one that contains your pom.xml file) and build the
+#. Go back to the top project directory (the one that contains your ``pom.xml`` file) and build the
    application with the command::
 
      mvn clean install
@@ -260,7 +260,7 @@ Things to Try
 * Try out the different sample data sets.
 
 * You can zoom in, zoom out and show the full extent and use the info tool to examine individual
-  countries in the sample countries.shp file.
+  countries in the sample ``countries.shp`` file.
 
 * Download the largest shapefile you can find and see how quickly it can be rendered. You should
   find that the very first time it will take a while as a spatial index is generated. After that
@@ -269,19 +269,6 @@ Things to Try
 * Fast: We know that one of the ways people select a spatial library is based on speed. By design
   GeoTools does not load the above shapefile into memory (instead it streams it off of disk
   each time it is drawn using a spatial index to only bring the content required for display).
-  
-  If you would like to ask GeoTools to cache the shapefile in memory try the following code:
-
-  .. literalinclude:: /../src/main/java/org/geotools/tutorial/quickstart/QuickstartCache.java
-     :language: java
-     :start-after: // docs start cache
-     :end-before:  // docs end cache
-  
-  You will also need to add this import statement:
-
-  .. code-block:: java
-
-     import org.geotools.data.CachingFeatureSource;
 
   .. Hint::
      When working in a text editor instead of an IDE use the `GeoTools javadocs 
@@ -290,18 +277,18 @@ Things to Try
 
   .. Note::
 
-     When building you may see a message that CachingFeatureSource is deprecated. It's ok to ignore
+     When building you may see a message that ``CachingFeatureSource`` is deprecated. It's OK to ignore
      it, it's just a warning. The class is still under test but usable.
 
 ..  The ability to figure out what classes to import is a key skill; we are
     starting off here with a simple example with a single import.
   
 * Try and sort out what all the different "side car" files are - and what they are for. The sample
-  data set includes "shp", "dbf" and "shx". How many other side car files are there?
+  data set includes ``shp``, ``dbf`` and ``shx``. How many other side car files are there?
 
 .. This exercise asks users to locate the geotools user guide or wikipedia
   
-* Advanced: The use of FileDataStoreFinder allows us to work easily with files. The other way to do
+* Advanced: The use of ``FileDataStoreFinder`` allows us to work easily with files. The other way to do
   things is with a map of connection parameters. This techniques gives us a little more control over
   how we work with a shapefile and also allows us to connect to databases and web feature servers.
 
@@ -311,8 +298,8 @@ Things to Try
    :end-before:  // end datastore
 
 * So what jars did maven actually use for the Quickstart application? Try the following on the
-  command line:
+  command line::
   
-  mvn dependency:tree
+    mvn dependency:tree
   
   We will be making use of some of the project in greater depth in the remaining tutorials.

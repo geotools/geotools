@@ -36,8 +36,8 @@ a shapefile from scratch so you get to see every last thing that goes into creat
 
 The tutorial covers the following:
 
-* Creating a FeatureType, FeatureCollection and Features
-* Using a GeometryFactory to build Points
+* Creating a ``FeatureType``, ``FeatureCollection`` and ``Features``
+* Using a ``GeometryFactory`` to build Points
 * Writing out a Shapefile
 * Forcing a Projection
 
@@ -48,7 +48,7 @@ Comma Separated Value
 To start with you will need a CSV file.
 
 
-#. Create a text file location.csv and copy and paste the following locations into it:
+#. Create a text file ``location.csv`` and copy and paste the following locations into it:
 
    .. literalinclude:: artifacts/locations.csv
 
@@ -58,7 +58,7 @@ To start with you will need a CSV file.
 Dependencies
 ------------
 
-Please ensure your pom.xml includes the following:
+Please ensure your ``pom.xml`` includes the following:
 
 .. literalinclude:: ./artifacts/pom.xml
    :language: xml
@@ -70,7 +70,7 @@ Note that the jars mentioned above will pull in a host of other dependencies
 
 Main Application
 ----------------
-1. Please create the package **org.geotools.tutorial.feature** and class **Csv2Shape.java** .
+1. Please create the package ``org.geotools.tutorial.feature`` and class ``Csv2Shape.java`` .
 2. Copy and paste in the following code:
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/feature/Csv2Shape.java
@@ -83,10 +83,10 @@ Now we look at the rest of the main method in sections...
 Create a FeatureType
 --------------------
 
-We create a FeatureType to describe the data that we are importing from the CSV file and writing
+We create a ``FeatureType`` to describe the data that we are importing from the CSV file and writing
 to a shapefile.
 
-Here we use the DataUtilities convenience class:
+Here we use the ``DataUtilities`` convenience class:
 
 .. literalinclude:: /../src/main/java/org/geotools/tutorial/feature/Csv2Shape.java
    :language: java
@@ -98,8 +98,8 @@ Create features
 
 We can now read the CSV file and create a feature for each record. Please note the following:
 
-* Use of GeometryFactory to create new Points
-* Creation of features (SimpleFeature objects) using SimpleFeatureBuilder
+* Use of ``GeometryFactory`` to create new Points
+* Creation of features (``SimpleFeature`` objects) using ``SimpleFeatureBuilder``
 
   .. literalinclude:: /../src/main/java/org/geotools/tutorial/feature/Csv2Shape.java
       :language: java
@@ -109,17 +109,17 @@ We can now read the CSV file and create a feature for each record. Please note t
 .. note:: 
 
   If you have used previous versions of GeoTools you might be used to creating a new
-  FeatureCollection and using the add method to accumulate features. This usage has now been
-  deprecated and we encourage you to treat FeatureCollections as immutable views or result sets.
+  ``FeatureCollection`` and using the add method to accumulate features. This usage has now been
+  deprecated and we encourage you to treat ``FeatureCollections`` as immutable views or result sets.
 
 Create a shapefile From a FeatureCollection
 -------------------------------------------
 
 Things to note as we create the shapefile:
 
-* Use of DataStoreFactory with a parameter indicating we want a spatial index
-* The use of createSchema( SimpleFeatureType ) method to set up the shapefile
-  (We will create the getNewShapeFile method in the next section)
+* Use of ``DataStoreFactory`` with a parameter indicating we want a spatial index
+* The use of ``createSchema(SimpleFeatureType)`` method to set up the shapefile
+  (We will create the ``getNewShapeFile`` method in the next section)
  
   .. literalinclude:: /../src/main/java/org/geotools/tutorial/feature/Csv2Shape.java
      :language: java
@@ -131,12 +131,12 @@ Write the feature data to the shapefile
 
 Things to note:
 
-* We check that we have read and **write** access by confirming our FeatureSource object
-  implements the FeatureStore methods
+* We check that we have read and **write** access by confirming our ``FeatureSource`` object
+  implements the ``FeatureStore`` methods
 * Take a moment to check how closely the shapefile was able to match our
-  template (the SimpleFeatureType TYPE). Compare this output to see how they are different.
-* The SimpleFeatureStore that we use to do this expects a FeatureCollection object,
-  so we wrap our list of features in a ListFeatureCollection.
+  template (the ``SimpleFeatureType`` ``TYPE``). Compare this output to see how they are different.
+* The ``SimpleFeatureStore`` that we use to do this expects a ``FeatureCollection`` object,
+  so we wrap our list of features in a ``ListFeatureCollection``.
 * The use of :code:`transaction.commit()` to safely write out the features in one go.
 
   .. literalinclude:: /../src/main/java/org/geotools/tutorial/feature/Csv2Shape.java
@@ -149,7 +149,7 @@ This completes the main method.
 Prompt for the output shapefile
 -------------------------------
 
-This method prompts the user for an appropriate shapefile to write out to. The original csv file is
+This method prompts the user for an appropriate shapefile to write out to. The original CSV file is
 used to determine a good default shapefile name.
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/feature/Csv2Shape.java
@@ -177,23 +177,23 @@ Things to Try
 Another way to build a SimpleFeatureType
 ----------------------------------------
 
-Although the DataUtilities class used above provided a quick and easy way to build a
-SimpleFeatureType. For any *real* application you will want to use the more
-flexible and flexible **SimpleFeatureTypeBuilder**. 
+Although the ``DataUtilities`` class used above provided a quick and easy way to build a
+``SimpleFeatureType``. For any *real* application you will want to use the more
+flexible and flexible ``SimpleFeatureTypeBuilder``. 
 
-Here is how to use SimpleFeatureTypeBuilder to accomplish the same result:
+Here is how to use ``SimpleFeatureTypeBuilder`` to accomplish the same result:
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/feature/Csv2Shape.java
       :language: java
       :start-after: // start createFeatureType
       :end-before: // end createFeatureType
 
-Note the use of an upper-case constant to hold the SimpleFeatureType. Because the SimpleFeatureType
+Note the use of an upper-case constant to hold the ``SimpleFeatureType``. Because the ``SimpleFeatureType``
 class is immutable, tracking them as final variables can help you to remember that they cannot be
 modified once created.
 
-With this method our SimpleFeatureType contains a CoordinateReferenceSystem so there's no need to
-call forceSchemaCRS to generate the ".prj" file. Also, we are now limiting the *Name* field to 15
+With this method our ``SimpleFeatureType`` contains a ``CoordinateReferenceSystem`` so there's no need to
+call ``forceSchemaCRS`` to generate the ``.prj`` file. Also, we are now limiting the *Name* field to 15
 characters.
 
 Other things to try
@@ -204,12 +204,12 @@ Other things to try
   
      LAT, LON, CITY, NUMBER
   
-  You should be able to use the SimpleFeatureTypeBuilder.
+  You should be able to use the ``SimpleFeatureTypeBuilder``.
   
   .. instructor note: this is the real key to the exercise and why simple feature type builder
      exists ... allowing you to generate your own shapefile dynamically
   
-* Use the Geometry "buffer" method to create circles based on the population size of the each city.
+* Use the ``Geometry`` ``buffer`` method to create circles based on the population size of the each city.
 
   .. code-block:: java
 
@@ -218,14 +218,14 @@ Other things to try
   .. instructor note: the code above is a trick; to see if they can correctly change their
      feature type to be a polgon
          
-* It is easy to write a quick CSVReader as we have done here; but harder to write a good one that
-  can handle quotation marks correctly. JavaCSV is an open source library to read CSV files with
+* It is easy to write a quick ``CSVReader`` as we have done here; but harder to write a good one that
+  can handle quotation marks correctly. ``JavaCSV`` is an open source library to read CSV files with
   a variety of options. 
 
 * To quickly find dependencies you can use the website http://mvnrepository.com/.
   
   Sites like this will directly provide you a maven dependency that you can cut and paste into
-  your pom.xml.
+  your ``pom.xml``.
   
   .. code-block:: xml
   
@@ -238,7 +238,7 @@ Other things to try
   For a working example of how to use this library visit the http://www.csvreader.com/ website.
   
 * Use the same techniques to create shapefiles from data in other structured file formats such as
-  geojson
+  GeoJson
   
 * The earth has just passed through a meteor storm – generate 100 circles of different sizes across
   the globe. Was your town hit?
@@ -248,8 +248,7 @@ Other things to try
   .. instructor note: either they display two shapefiles and look to see if their town was hit or
      they can do a contains test for their town against each circle
      
-* Read up about the other Geometry classes supported by shapefiles: MultiLineString for linear
-  features and MultiPolygon for area features and modify this example to work with these.
+* Read up about the other ``Geometry`` classes supported by shapefiles: ``MultiLineString`` for linear features and ``MultiPolygon`` for area features and modify this example to work with these.
 
 Feature
 ========
@@ -275,10 +274,10 @@ into fields.
    .. image:: images/key.png
       :width: 200
 
-Occasionally you have two features that have a lot in common. You may have the LAX airport in Los
-Angeles and the SYD airport in Sydney. Because these two features have a couple of things in common
-it is nice to group them together  - in Java we would create a Class called Airport. On a map we
-will create a Feature Type called Airport.
+Occasionally you have two features that have a lot in common. You may have the ``LAX`` airport in Los
+Angeles and the ``SYD`` airport in Sydney. Because these two features have a couple of things in common
+it is nice to group them together  - in Java we would create a ``Class`` called ``Airport``. On a map we
+will create a ``FeatureType`` called ``Airport``.
 
  .. image:: images/airport.png
  
@@ -291,55 +290,54 @@ You will also occasionally find the same real world thing represented a couple o
 Here is a handy cheat sheet:
 
   ====================== =============================
-   Java                   GeoSpatial
+   Java                   Geospatial
   ====================== =============================
-   Object                 Feature
-   Class                  FeatureType
-   Field                  Attribute
-   Method                 Operation
+   ``Object``            ``Feature``
+   ``Class``             ``FeatureType``
+   ``Field``             ``Attribute``
+   ``Method``            ``Operation``
   ====================== =============================
 
-The Feature model is actually a little bit more crazy than us Java programmers are used to since
-it considers both attribute and operation to be "properties" of a Feature. Perhaps when Java
+The ``Feature`` model is actually a little bit more crazy than us Java programmers are used to since
+it considers both attribute and operation to be "properties" of a ``Feature``. Perhaps when Java
 gets closures we may be able to catch up.
 
 The really interesting thing for me is that map makers were sorting out all this stuff back in the
 1400s and got every bit as geeky as programmers do now. So although we would love to teach them
-about object oriented programing they already have a rich set of ideas to describe the world. On
+about object oriented programming they already have a rich set of ideas to describe the world. On
 the bright side, map makers are starting to use UML diagrams.
 
 FeatureClass
 ------------
 
-In GeoTools we have an interface for Feature, FeatureType and Attribute provided by the GeoAPI
+In GeoTools we have an interface for ``Feature``, ``FeatureType`` and ``Attribute`` provided by the GeoAPI
 project. In general GeoAPI provides a very strict interface and GeoTools will provide a class.
 
  .. image:: images/feature.png
  
-It is very common for a Feature to have only simple Attributes (String, Integer, Date and so on)
-rather than references to other Features, or data structures such as List<Date>.  Features that
+It is very common for a ``Feature`` to have only simple ``Attributes`` (``String``, ``Integer``, ``Date`` and so on)
+rather than references to other ``Features``, or data structures such as ``List<Date>``.  ``Features`` that
 meet this requirement are so common we have broken out a sub-class to represent them called
-SimpleFeature. 
+``SimpleFeature``. 
 
-At the Java level the Feature API provided by GeoTools is similar to how java.util.Map is used – it
-is a Java data structure used to hold information. You can look up attribute values by key; and
-the list of keys is provided by the FeatureType.
+At the Java level the ``Feature`` API provided by GeoTools is similar to how ``java.util.Map`` is used – it is a Java data structure used to hold information. You can look up attribute values by key; and
+the list of keys is provided by the ``FeatureType``.
 
 Geometry
 --------
 
-The other difference between an Object and a Feature is that a Feature has some form of location
+The other difference between an ``Object`` and a ``Feature`` is that a ``Feature`` has some form of location
 information (if not we would not be able to draw it on a map). The location information is going
-to be captured by a "Geometry" (or shape) that is stored in an attribute.
+to be captured by a ``Geometry`` (or shape) that is stored in an attribute.
 
  .. image:: images/geometry.png
  
-We make use of the JTS Topology Suite (JTS) to represent Geometry. The JTS library provides an
-excellent implementation of Geometry – and gets geeky points for having a recursive acronym ! JTS
+We make use of the JTS Topology Suite (JTS) to represent ``Geometry``. The JTS library provides an
+excellent implementation of ``Geometry`` – and gets geeky points for having a recursive acronym! JTS
 is an amazing library and does all the hard graph theory to let you work with geometry in a
 productive fashion.
 
-Here is an example of creating a Point using the Well-Known-Text (WKT) format.
+Here is an example of creating a ``Point`` using the Well-Known-Text (WKT) format.
 
 .. code-block:: java
 
@@ -348,7 +346,7 @@ Here is an example of creating a Point using the Well-Known-Text (WKT) format.
     WKTReader reader = new WKTReader( geometryFactory );
     Point point = (Point) reader.read("POINT (1 1)");
     
-You can also create a Point by hand using the GeometryFactory directly.
+You can also create a ``Point`` by hand using the ``GeometryFactory`` directly.
 
 .. code-block:: java
 
@@ -361,15 +359,15 @@ You can also create a Point by hand using the GeometryFactory directly.
 DataStore
 =========
 
-We ran into DataStore already in our Quickstart. The DataStore api is used to represent a File,
-Database or Service that has spatial data in it. The API has a couple of moving parts as shown
+We ran into ``DataStore`` already in our Quickstart. The ``DataStore`` API is used to represent a ``File``,
+``Database`` or ``Service`` that has spatial data in it. The API has a couple of moving parts as shown
 below.
 
  .. image:: images/datastore.png
  
-The FeatureSource is used to read features, the subclass FeatureStore is used for read/write access.
+The ``FeatureSource`` is used to read features, the sub-class ``FeatureStore`` is used for read/write access.
 
-The way to tell if a File can be written to in GeoTools is to use an instanceof check.
+The way to tell if a ``File`` can be written to in GeoTools is to use an ``instanceof`` check.
 
 .. code-block:: java
 
@@ -382,6 +380,6 @@ The way to tell if a File can be written to in GeoTools is to use an instanceof 
        store.modifyFeature( attribute, value, filter );
     }
 
-We decided to handle write access as a sub-class (rather than an isWritable method) in order to keep
+We decided to handle write access as a sub-class (rather than an ``isWritable`` method) in order to keep
 methods out of the way unless they could be used.
 

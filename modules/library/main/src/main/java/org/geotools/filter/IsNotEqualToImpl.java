@@ -24,11 +24,6 @@ public class IsNotEqualToImpl extends MultiCompareFilterImpl implements Property
 
     IsEqualsToImpl delegate;
 
-    @Deprecated
-    protected IsNotEqualToImpl() {
-        this(null, null);
-    }
-
     protected IsNotEqualToImpl(Expression e1, Expression e2) {
         this(e1, e2, true);
     }

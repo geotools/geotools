@@ -72,11 +72,7 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
         m_out = new DirectedEdge[outdegree];
     }
 
-    /**
-     * Not supported.
-     *
-     * @throws UnsupportedOperationException
-     */
+    /** Not supported. */
     @Override
     public void add(Edge e) {
         throw new UnsupportedOperationException(getClass().getName() + "#add(Edge)");
@@ -104,31 +100,19 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
         }
     }
 
-    /**
-     * Unsupported Operation.
-     *
-     * @throws UnsupportedOperationException
-     */
+    /** Unsupported Operation. */
     @Override
     public void remove(Edge e) {
         throw new UnsupportedOperationException(getClass().getName() + "#remove(Edge)");
     }
 
-    /**
-     * Unsupported Operation.
-     *
-     * @throws UnsupportedOperationException
-     */
+    /** Unsupported Operation. */
     @Override
     public void removeIn(DirectedEdge e) {
         throw new UnsupportedOperationException(getClass().getName() + "#removeIn(DirectedEdge)");
     }
 
-    /**
-     * Unsupported Operation.
-     *
-     * @throws UnsupportedOperationException
-     */
+    /** Unsupported Operation. */
     @Override
     public void removeOut(DirectedEdge e) {
         throw new UnsupportedOperationException(getClass().getName() + "#removeOut(DirectedEdge)");
@@ -311,8 +295,6 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
      * written out upon serialization, they must be recreated upon deserialization.
      *
      * @param in Object input stream containing serialized objects.
-     * @throws IOException
-     * @throws ClassNotFoundException
      */
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
 
@@ -330,8 +312,6 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
      * store its degree explicitly, it must be written to the output stream.
      *
      * @param out Object output stream containing serialized objects.
-     * @throws IOException
-     * @throws ClassNotFoundException
      */
     private void writeObject(ObjectOutputStream out) throws IOException {
 
@@ -374,11 +354,7 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
             m_index = 0;
         }
 
-        /**
-         * Not supported.
-         *
-         * @throws UnsupportedOperationException
-         */
+        /** Not supported. */
         @Override
         public void remove() {
             throw new UnsupportedOperationException(getClass().getName() + "#remove()");

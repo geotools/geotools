@@ -81,6 +81,7 @@ class OGRFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature
         schema = null;
     }
 
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         close();
     }

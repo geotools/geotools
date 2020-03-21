@@ -92,7 +92,6 @@ public class URLs {
      * are correctly percent-encoded, and works around the reported misbehaviour of some Java
      * implementations on Mac.
      *
-     * @param file
      * @return URL
      */
     public static URL fileToUrl(File file) {

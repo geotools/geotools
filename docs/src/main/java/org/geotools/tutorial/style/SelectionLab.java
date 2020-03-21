@@ -190,7 +190,7 @@ public class SelectionLab {
      */
     void selectFeatures(MapMouseEvent ev) {
 
-        System.out.println("Mouse click at: " + ev.getMapPosition());
+        System.out.println("Mouse click at: " + ev.getWorldPos());
 
         /*
          * Construct a 5x5 pixel rectangle centred on the mouse click position

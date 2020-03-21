@@ -57,13 +57,6 @@ import org.geotools.metadata.i18n.VocabularyKeys;
  * @author Martin Desruisseaux (IRD)
  */
 public class Arguments {
-    /**
-     * The code given to {@link System#exit} when this class exits because of an illegal user
-     * argument.
-     *
-     * @deprecated Moved to {@link org.geotools.console.CommandLine}.
-     */
-    @Deprecated public static final int ILLEGAL_ARGUMENT_EXIT_CODE = 1;
 
     /** Command-line arguments. Elements are set to {@code null} after they have been processed. */
     private final String[] arguments;
@@ -92,6 +85,7 @@ public class Arguments {
      * @param args Command line arguments. Arguments {@code "-encoding"} and {@code "-locale"} will
      *     be automatically parsed.
      */
+    @SuppressWarnings("PMD.CloseResource") // we don't close System.out
     public Arguments(final String[] args) {
         this.arguments = args.clone();
         this.locale = getLocale(getOptionalString("-locale"));
@@ -490,6 +484,6 @@ public class Arguments {
      */
     protected void illegalArgument(final Exception exception) {
         printSummary(exception);
-        System.exit(ILLEGAL_ARGUMENT_EXIT_CODE);
+        System.exit(1);
     }
 }

@@ -170,8 +170,6 @@ public class FeatureLayer extends StyleLayer {
      * <p>IMPORTANT: only include attribute names in the query if you want them to be ALWAYS
      * returned. It is desirable to not include attributes at all but let the layer user (a
      * renderer?) to decide wich attributes are actually needed to perform its requiered operation.
-     *
-     * @param query
      */
     public void setQuery(Query query) {
         this.query = query;

@@ -39,7 +39,7 @@ public class GMLCoordTypeBindingTest extends AbstractGMLBindingTest {
         x = createElement(GML.NAMESPACE, "X", XS.DECIMAL, "12.34");
         y = createElement(GML.NAMESPACE, "Y", XS.DECIMAL, "56.78");
         z = createElement(GML.NAMESPACE, "Z", XS.DECIMAL, "910.11");
-        coordinate = createElement(GML.NAMESPACE, "myCoordinate", GML.COORDTYPE, null);
+        coordinate = createElement(GML.NAMESPACE, "myCoordinate", GML.CoordType, null);
 
         container = new DefaultPicoContainer();
         container.registerComponentInstance(CoordinateArraySequenceFactory.instance());
@@ -101,6 +101,6 @@ public class GMLCoordTypeBindingTest extends AbstractGMLBindingTest {
         assertNotNull(c);
         assertEquals(c.x, 12.34, 0d);
         assertEquals(c.y, 56.78, 0d);
-        assertEquals(c.z, 910.11, 0d);
+        assertEquals(c.getZ(), 910.11, 0d);
     }
 }

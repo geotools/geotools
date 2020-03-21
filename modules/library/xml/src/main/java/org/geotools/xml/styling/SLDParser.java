@@ -35,6 +35,7 @@ import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
 import org.geotools.data.Base64;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.NameImpl;
 import org.geotools.filter.ExpressionDOMParser;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
@@ -102,6 +103,7 @@ import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.style.ContrastMethod;
+import org.opengis.style.SemanticType;
 import org.opengis.util.InternationalString;
 import org.w3c.dom.CharacterData;
 import org.w3c.dom.Element;
@@ -117,6 +119,8 @@ import org.xml.sax.InputSource;
  * @author jgarnett
  */
 public class SLDParser {
+
+    private static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
 
     /** HISTOGRAM */
     private static final String HISTOGRAM = "histogram";
@@ -192,6 +196,8 @@ public class SLDParser {
     private EntityResolver entityResolver;
 
     private boolean disposeInputSource;
+
+    private ExpressionDOMParser expressionDOMParser = new ExpressionDOMParser(FF);
 
     /**
      * Create a Stylereader - use if you already have a dom to parse.
@@ -339,8 +345,6 @@ public class SLDParser {
     /**
      * Sets the EntityResolver implementation that will be used by DocumentBuilder to resolve XML
      * external entities.
-     *
-     * @param entityResolver
      */
     public void setEntityResolver(EntityResolver entityResolver) {
         this.entityResolver = entityResolver;
@@ -389,11 +393,7 @@ public class SLDParser {
         return readDOM(dom);
     }
 
-    /**
-     * Close the input source stream/reader if they had been created in this class
-     *
-     * @param source
-     */
+    /** Close the input source stream/reader if they had been created in this class */
     private void disposeInputSource() {
         if (!disposeInputSource) {
             return;
@@ -444,10 +444,7 @@ public class SLDParser {
         return styles;
     }
 
-    /**
-     * @param document
-     * @param name
-     */
+    /** */
     private NodeList findElements(final org.w3c.dom.Document document, final String name) {
         NodeList nodes = document.getElementsByTagNameNS("*", name);
 
@@ -526,12 +523,7 @@ public class SLDParser {
         return sld;
     }
 
-    /**
-     * Returns the first child node value, or null if there is no child
-     *
-     * @param child
-     * @return
-     */
+    /** Returns the first child node value, or null if there is no child */
     String getFirstChildValue(Node child) {
         if (child.getFirstChild() != null) return child.getFirstChild().getNodeValue();
         else return null;
@@ -651,10 +643,7 @@ public class SLDParser {
         return ows;
     }
 
-    /**
-     * @param child
-     * @param layer
-     */
+    /** */
     private void parseInlineFeature(Node root, UserLayer layer) {
         try {
             SLDInlineFeatureParser inparser = new SLDInlineFeatureParser(root);
@@ -689,8 +678,6 @@ public class SLDParser {
      * &lt;/xsd:element&gt;
      * &lt;/code&gt;
      * </pre>
-     *
-     * @param root
      */
     private NamedLayer parseNamedLayer(Node root) {
         NamedLayer layer = new NamedLayerImpl();
@@ -742,8 +729,6 @@ public class SLDParser {
      * &lt;/xsd:element&gt;
      * &lt;/code&gt;
      * </pre>
-     *
-     * @param n
      */
     public NamedStyle parseNamedStyle(Node n) {
         if (dom == null) {
@@ -840,7 +825,9 @@ public class SLDParser {
                     style.setDefault(Boolean.valueOf(firstChildValue).booleanValue());
                 }
             } else if (childName.equalsIgnoreCase("FeatureTypeStyle")) {
-                style.addFeatureTypeStyle(parseFeatureTypeStyle(child));
+                style.featureTypeStyles().add(parseFeatureTypeStyle(child));
+            } else if (childName.equalsIgnoreCase("Background")) {
+                style.setBackground(parseFill(child));
             }
         }
 
@@ -880,9 +867,12 @@ public class SLDParser {
             } else if (childName.equalsIgnoreCase("Abstract")) {
                 ft.getDescription().setAbstract(parseInternationalString(child));
             } else if (childName.equalsIgnoreCase("FeatureTypeName")) {
-                ft.setFeatureTypeName(getFirstChildValue(child));
+                ft.featureTypeNames().add(new NameImpl(getFirstChildValue(child)));
             } else if (childName.equalsIgnoreCase("SemanticTypeIdentifier")) {
-                sti.add(getFirstChildValue(child));
+                String value = getFirstChildValue(child);
+                if (value != null) {
+                    sti.add(value);
+                }
             } else if (childName.equalsIgnoreCase("Rule")) {
                 rules.add(parseRule(child));
             } else if (childName.equalsIgnoreCase("Transformation")) {
@@ -896,9 +886,11 @@ public class SLDParser {
         }
 
         if (sti.size() > 0) {
-            ft.setSemanticTypeIdentifiers(sti.toArray(new String[0]));
+            ft.semanticTypeIdentifiers().clear();
+            sti.forEach(s -> ft.semanticTypeIdentifiers().add(SemanticType.valueOf(s)));
         }
-        ft.setRules(rules.toArray(new Rule[0]));
+        ft.rules().clear();
+        ft.rules().addAll(rules);
 
         return ft;
     }
@@ -967,13 +959,14 @@ public class SLDParser {
             } else if (childName.equalsIgnoreCase("LegendGraphic")) {
                 findElements(((Element) child), graphicSt);
                 NodeList g = findElements(((Element) child), graphicSt);
-                List<Graphic> legends = new ArrayList<Graphic>();
                 final int l = g.getLength();
                 for (int k = 0; k < l; k++) {
-                    legends.add(parseGraphic(g.item(k)));
+                    Graphic graphic = parseGraphic(g.item(k));
+                    if (graphic != null) {
+                        rule.setLegend(graphic);
+                        break;
+                    }
                 }
-
-                rule.setLegendGraphic(legends.toArray(new Graphic[0]));
             } else if (childName.equalsIgnoreCase("LineSymbolizer")) {
                 symbolizers.add(parseLineSymbolizer(child));
             } else if (childName.equalsIgnoreCase("PolygonSymbolizer")) {
@@ -987,7 +980,8 @@ public class SLDParser {
             }
         }
 
-        rule.setSymbolizers(symbolizers.toArray(new Symbolizer[0]));
+        rule.symbolizers().clear();
+        rule.symbolizers().addAll(symbolizers);
 
         return rule;
     }
@@ -995,9 +989,6 @@ public class SLDParser {
     /**
      * Parse a node with mixed content containing internationalized elements in the form: <Localized
      * lang="locale">text</Localized>
-     *
-     * @param root
-     * @return
      */
     private InternationalString parseInternationalString(Node root) {
         if (LOGGER.isLoggable(Level.FINEST)) {
@@ -1258,12 +1249,7 @@ public class SLDParser {
         return ot;
     }
 
-    /**
-     * adds the key/value pair from the node ("<VendorOption name="...">...</VendorOption>")
-     *
-     * @param symbol
-     * @param child
-     */
+    /** adds the key/value pair from the node ("<VendorOption name="...">...</VendorOption>") */
     private void parseVendorOption(Map<String, String> options, Node child) {
         String key = child.getAttributes().getNamedItem("name").getNodeValue();
         String value = getFirstChildValue(child);
@@ -2108,7 +2094,7 @@ public class SLDParser {
     }
 
     private void handleDashArrayNode(Node child, List<Expression> expressions) {
-        Expression expression = ExpressionDOMParser.parseExpression(child);
+        Expression expression = expressionDOMParser.expression(child);
         if (expression instanceof Literal) {
             handleDashArrayLiteral((Literal) expression, expressions);
         } else {
@@ -2202,13 +2188,7 @@ public class SLDParser {
         return fill;
     }
 
-    /**
-     * Concatenates the given expressions (through the strConcat FunctionFilter expression)
-     *
-     * @param left
-     * @param right
-     * @return
-     */
+    /** Concatenates the given expressions (through the strConcat FunctionFilter expression) */
     private Expression manageMixed(Expression left, Expression right) {
         if (left == null) return right;
         if (right == null) return left;
@@ -2220,7 +2200,6 @@ public class SLDParser {
      * Parses a css parameter. Default implementation trims whitespaces from text nodes.
      *
      * @param root node to parse
-     * @return
      */
     private Expression parseCssParameter(Node root) {
         return parseCssParameter(root, true);
@@ -2233,7 +2212,6 @@ public class SLDParser {
      * @param root node to parse
      * @param trimWhiteSpace true to trim whitespace from text nodes. If false, whitespaces will be
      *     collapsed into one
-     * @return
      */
     private Expression parseCssParameter(Node root, boolean trimWhiteSpace) {
         if (LOGGER.isLoggable(Level.FINEST)) {
@@ -2285,7 +2263,7 @@ public class SLDParser {
                     LOGGER.finest("about to parse " + child.getLocalName());
                 }
                 // add the element node as an expression
-                expressions.add(org.geotools.filter.ExpressionDOMParser.parseExpression(child));
+                expressions.add(expressionDOMParser.expression(child));
                 cdatas.add(false);
             } else if (child.getNodeType() == Node.CDATA_SECTION_NODE) {
                 String value = child.getNodeValue();
@@ -2419,11 +2397,11 @@ public class SLDParser {
                     // use add instead of set as we might have multiple fonts here
                     font.getFamily().add(parseCssParameter(child));
                 } else if (res.equalsIgnoreCase("font-style")) {
-                    font.setFontStyle(parseCssParameter(child));
+                    font.setStyle(parseCssParameter(child));
                 } else if (res.equalsIgnoreCase("font-size")) {
-                    font.setFontSize(parseCssParameter(child));
+                    font.setSize(parseCssParameter(child));
                 } else if (res.equalsIgnoreCase("font-weight")) {
-                    font.setFontWeight(parseCssParameter(child));
+                    font.setWeight(parseCssParameter(child));
                 }
             }
         }
@@ -2530,12 +2508,7 @@ public class SLDParser {
         return dlp;
     }
 
-    /**
-     * Internal method to parse an AnchorPoint node; protected visibility for testing.
-     *
-     * @param root
-     * @return
-     */
+    /** Internal method to parse an AnchorPoint node; protected visibility for testing. */
     protected AnchorPoint parseAnchorPoint(Node root) {
         if (LOGGER.isLoggable(Level.FINEST)) {
             LOGGER.finest("parsing anchorPoint");

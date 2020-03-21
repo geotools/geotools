@@ -55,12 +55,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 @SuppressWarnings("nls")
 public class DataStoreTest {
 
-    /**
-     * Test method for {@link WFS_1_1_0_DataStore#getTypeNames()}.
-     *
-     * @throws IOException
-     * @throws ServiceException
-     */
+    /** Test method for {@link WFS_1_1_0_DataStore#getTypeNames()}. */
     @Test
     public void testGetTypeNames() throws IOException, ServiceException {
         String[] expected = {
@@ -95,9 +90,6 @@ public class DataStoreTest {
     /**
      * Test method for {@link
      * org.geotools.wfs.v_1_1_0.data.WFS_1_1_0_DataStore#getSchema(java.lang.String)}.
-     *
-     * @throws IOException
-     * @throws ServiceException
      */
     @Test
     public void testGetSchema() throws IOException, ServiceException {
@@ -158,11 +150,6 @@ public class DataStoreTest {
     /**
      * Test for the useDefaultSRS parameter set to true. Query in a CRS different from the
      * DefaultSRS should be done in DefaultSRS and then reprojected.
-     *
-     * @throws IOException
-     * @throws NoSuchAuthorityCodeException
-     * @throws FactoryException
-     * @throws ServiceException
      */
     @Test
     public void tesUseDefaultSRS()
@@ -207,11 +194,6 @@ public class DataStoreTest {
     /**
      * Test for the useDefaultSRS parameter set to false. Query in a CRS listed in OtherSRS should
      * be done in OtherSRS and not reprojected.
-     *
-     * @throws IOException
-     * @throws NoSuchAuthorityCodeException
-     * @throws FactoryException
-     * @throws ServiceException
      */
     @Test
     public void tesUseOtherSRS()
@@ -258,11 +240,6 @@ public class DataStoreTest {
     /**
      * Test for the useDefaultSRS parameter set to false and OtherSRS specified in urn form. Query
      * in a CRS listed in OtherSRS should be done in OtherSRS and not reprojected.
-     *
-     * @throws IOException
-     * @throws NoSuchAuthorityCodeException
-     * @throws FactoryException
-     * @throws ServiceException
      */
     @Test
     public void tesUseOtherSRSUsingURN()

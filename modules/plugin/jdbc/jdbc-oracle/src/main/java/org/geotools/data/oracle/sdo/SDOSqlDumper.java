@@ -72,24 +72,14 @@ public class SDOSqlDumper {
         }
     }
 
-    /**
-     * TODO: Encode more then 1
-     *
-     * @param line
-     * @param srid
-     */
+    /** TODO: Encode more then 1 */
     private static String toSDOGeom(MultiLineString line, int srid) {
         if (line.getNumGeometries() == 1) {
             return toSDOGeom(line.getGeometryN(0), srid);
         }
         throw new UnsupportedOperationException("Cannot encode MultiLineString (yet)");
     }
-    /**
-     * TODO: Encode more then 1
-     *
-     * @param line
-     * @param srid
-     */
+    /** TODO: Encode more then 1 */
     private static String toSDOGeom(MultiPolygon polygon, int srid) {
         if (polygon.getNumGeometries() == 1) {
             return toSDOGeom(polygon.getGeometryN(0), srid);

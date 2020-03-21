@@ -19,15 +19,15 @@ package org.geotools.data.wfs.internal.v1_x;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 import org.geotools.data.FeatureReader;
-import org.geotools.data.wfs.internal.GetFeatureParser;
+import org.geotools.data.wfs.internal.GetParser;
 import org.geotools.data.wfs.internal.parsers.EmfAppSchemaParser;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;
 
 /**
- * Adapts a {@link GetFeatureParser} to the geotools {@link FeatureReader} interface, being the base
- * for all the data content related implementations in the WFS module.
+ * Adapts a {@link GetParser<SimpleFeature>} to the geotools {@link FeatureReader} interface, being
+ * the base for all the data content related implementations in the WFS module.
  *
  * @author Gabriel Roldan (TOPP)
  * @since 2.5.x
@@ -37,11 +37,11 @@ class WFSFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature
 
     private SimpleFeature next;
 
-    private GetFeatureParser parser;
+    private GetParser<SimpleFeature> parser;
 
     private SimpleFeatureType featureType;
 
-    public WFSFeatureReader(final GetFeatureParser parser) throws IOException {
+    public WFSFeatureReader(final GetParser<SimpleFeature> parser) throws IOException {
         this.parser = parser;
         this.next = parser.parse();
         if (this.next != null) {
@@ -58,7 +58,7 @@ class WFSFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature
     /** @see FeatureReader#close() */
     public void close() throws IOException {
         // System.err.println("Closing WFSFeatureReader for " + featureType.getName());
-        final GetFeatureParser parser = this.parser;
+        final GetParser<SimpleFeature> parser = this.parser;
         this.parser = null;
         this.next = null;
         if (parser != null) {

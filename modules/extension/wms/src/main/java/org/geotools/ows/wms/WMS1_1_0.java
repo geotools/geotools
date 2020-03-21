@@ -127,10 +127,7 @@ public class WMS1_1_0 extends WMS1_0_0 {
 
     public static class GetFeatureInfoRequest extends WMS1_0_0.GetFeatureInfoRequest {
 
-        /**
-         * @param onlineResource
-         * @param request
-         */
+        /** */
         public GetFeatureInfoRequest(
                 URL onlineResource, org.geotools.ows.wms.request.GetMapRequest request) {
             super(onlineResource, request);
@@ -151,10 +148,7 @@ public class WMS1_1_0 extends WMS1_0_0 {
 
     public static class InternalDescribeLayerRequest extends AbstractDescribeLayerRequest {
 
-        /**
-         * @param onlineResource
-         * @param properties
-         */
+        /** */
         public InternalDescribeLayerRequest(URL onlineResource, Properties properties) {
             super(onlineResource, properties);
         }

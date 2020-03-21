@@ -35,7 +35,6 @@ import java.util.logging.Level;
 import javax.imageio.ImageReadParam;
 import javax.media.jai.PropertySource;
 import javax.media.jai.ROI;
-import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -196,7 +195,6 @@ public final class CoverageUtilities {
     /**
      * Utility method for extracting NoData property from input {@link GridCoverage2D}.
      *
-     * @param coverage
      * @return A {@link NoDataContainer} object containing input NoData definition
      */
     public static NoDataContainer getNoDataProperty(GridCoverage2D coverage) {
@@ -216,7 +214,6 @@ public final class CoverageUtilities {
     /**
      * Utility method for extracting ROI property from input {@link GridCoverage2D}.
      *
-     * @param coverage
      * @return A {@link ROI} object
      */
     public static ROI getROIProperty(GridCoverage2D coverage) {
@@ -554,11 +551,7 @@ public final class CoverageUtilities {
     public static Properties loadPropertiesFromURL(URL propsURL) {
         Utilities.ensureNonNull("propsURL", propsURL);
         final Properties properties = new Properties();
-        InputStream stream = null;
-        InputStream openStream = null;
-        try {
-            openStream = propsURL.openStream();
-            stream = new BufferedInputStream(openStream);
+        try (InputStream stream = new BufferedInputStream(propsURL.openStream())) {
             properties.load(stream);
         } catch (FileNotFoundException e) {
             if (FeatureUtilities.LOGGER.isLoggable(Level.SEVERE))
@@ -568,15 +561,6 @@ public final class CoverageUtilities {
             if (FeatureUtilities.LOGGER.isLoggable(Level.SEVERE))
                 FeatureUtilities.LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
             return null;
-        } finally {
-
-            if (stream != null) {
-                IOUtils.closeQuietly(stream);
-            }
-
-            if (openStream != null) {
-                IOUtils.closeQuietly(openStream);
-            }
         }
         return properties;
     }

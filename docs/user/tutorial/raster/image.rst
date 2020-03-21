@@ -41,18 +41,18 @@ In the earlier examples we looked at reading and displaying shapefiles. For
 going to add raster data into the mix by displaying a three-band global satellite image,
 and overlaying it with country boundaries from a shapefile.
 
-1. Please ensure your pom.xml includes the following.
+1. Please ensure your ``pom.xml`` includes the following.
 
    We have already encountered most of these dependencies in earlier examples. The new modules we
-   have added are **gt-geotiff** which allows us to read raster map data from a GeoTIFF file
-   and **gt-image** which allows us to read an Image+World format file set (e.g. jpg + jpw).
+   have added are ``gt-geotiff`` which allows us to read raster map data from a GeoTIFF file
+   and ``gt-image`` which allows us to read an Image+World format file set (e.g. ``jpg`` + ``jpw``).
 
 .. literalinclude:: artifacts/pom.xml
         :language: xml
         :start-after: </properties>
         :end-before: </project>
 
-2. Please create the package **org.geotools.tutorial.raster** and class **ImageLab** and copy and paste in the following code:
+2. Please create the package ``org.geotools.tutorial.raster`` and class ``ImageLab`` and copy and paste in the following code:
 
 .. literalinclude:: /../src/main/java/org/geotools/tutorial/raster/ImageLab.java
    :language: java
@@ -67,7 +67,7 @@ are created from a description of the parameters needed when connecting.
 
 We are going to use these same facilities now to prompt the user:
 
-1. We will use **JParameterListWizard**, to prompt for the raster file and the shapefile that will
+1. We will use ``JParameterListWizard``, to prompt for the raster file and the shapefile that will
    be displayed over it:
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/raster/ImageLab.java
@@ -75,7 +75,7 @@ We are going to use these same facilities now to prompt the user:
       :start-after: // docs start get layers
       :end-before: // docs end get layers
 
-Observer the use of **Parameter** objects for each input file. The arguments passed to the Parameter
+Observer the use of ``Parameter`` objects for each input file. The arguments passed to the Parameter
 constructor are:
    
 :key: an identifier for the Parameter
@@ -90,7 +90,7 @@ constructor are:
 
 .. tip: KVP
 
-  The class **KVP** is a handy class for creating a Map of String:Object pair.
+  The class ``KVP`` is a handy class for creating a Map of String:Object pair.
   
   Here is an example of using a Hashmap:: 
 
@@ -98,17 +98,17 @@ constructor are:
   `map.add(Parameter.EXT, "jpg");`
   `map.add(Parameter.EXT, "tif");`
 
-  The same example can be done in a single line using **KVP**::
+  The same example can be done in a single line using ``KVP``::
   
   `KVP map = new KVP(Parameter.EXT, "jpg", Parameter.EXT, "tif");`
 
 Displaying the map
 ------------------
 
-To display the map on screen we create a **MapContent**, add the image and the shapefile to it,
-and pass it to a **JMapFrame**.
+To display the map on screen we create a ``MapContent``, add the image and the shapefile to it,
+and pass it to a ``JMapFrame``.
 
-1. Rather than using the static JMapFrame.showMap method, as we have in previous examples, we create a
+1. Rather than using the static ``JMapFrame.showMap`` method, as we have in previous examples, we create a
    map frame and customize it by adding a menu to choose the image display mode. 
 
 .. literalinclude:: /../src/main/java/org/geotools/tutorial/raster/ImageLab.java
@@ -116,12 +116,12 @@ and pass it to a **JMapFrame**.
    :start-after: // docs start display layers
    :end-before: // docs end display layers
 
-2. Note that we are creating a **Style** for each of the map layers:
+2. Note that we are creating a ``Style`` for each of the map layers:
    
-   * A greyscale Style for the initial image display, created with a method that we'll examine next
-   * A simple outline style for the shapefile using the **SLD** utility class
+   * A gray scale ``Style`` for the initial image display, created with a method that we'll examine next
+   * A simple outline style for the shapefile using the ``SLD`` utility class
 
-3. Creating a greyscale Style prompts the user for the image band to display; and then generates
+3. Creating a gray scale ``Style`` prompts the user for the image band to display; and then generates
    a style accordingly.
 
 .. literalinclude:: /../src/main/java/org/geotools/tutorial/raster/ImageLab.java
@@ -129,28 +129,28 @@ and pass it to a **JMapFrame**.
    :start-after: // docs start create greyscale style
    :end-before: // docs end create greyscale style
 
-4. To display color we need to use a slightly more complex Style that specifies which bands in the
-   grid coverage map to the R, G and B colors on screen. 
+4. To display color we need to use a slightly more complex ``Style`` that specifies which bands in the
+   grid coverage map to the Red, Green and Blue colors on screen. 
       
    The method checks the image to see if its bands (known as *sample dimensions*) have labels
-   indicating which to use. If not, we just use the first three bands and hope for the best !
+   indicating which to use. If not, we just use the first three bands and hope for the best!
 
 .. literalinclude:: /../src/main/java/org/geotools/tutorial/raster/ImageLab.java
    :language: java
    :start-after: // docs start create rgb style
    :end-before: // docs end source
 
-5. Please note that the above technique (checking colour bands) is specific to RGB images.
+5. Please note that the above technique (checking color bands) is specific to RGB images.
    While this is easy for a simple color image; it can be harder for things like
    satellite images where none of the bands quite line up with what human eyes see.
 
 Running the application
 =======================
 
-If you need some sample data to display you can download the `uDig sample dataset <http://udig.refractions.net/docs/data-v1_2.zip>`_ which contains:
+If you need some sample data to display you can download the `uDig sample data set <http://udig.refractions.net/docs/data-v1_2.zip>`_ which contains:
 
-* clouds.jpg
-* countries.shp
+* ``clouds.jpg``
+* ``countries.shp``
 
 
 1. When you run the program you will first see the wizard dialog prompting your for the image
@@ -159,20 +159,21 @@ If you need some sample data to display you can download the `uDig sample datase
   .. image:: images/ImageLab_dialog.png
       :width: 60%
 
-2. The initial map display shows the image as a greyscale, single-band view.
+2. The initial map display shows the image as a gray scale, single-band view.
    
    .. image:: images/ImageLab_display.png
       :width: 60%
       
-3.   Experiment with displaying different bands in greyscale and swapping to the RGB display.
+3.   Experiment with displaying different bands in gray scale and swapping to the RGB display.
 
 Extra things to try
 ===================
 
-* Modify the file prompt wizard, or the menu, to allow additional shapfiles to be overlaid onto
+* Modify the file prompt wizard, or the menu, to allow additional shapefiles to be overlaid onto
   the image.
 
-* Add a map layer table to the JMapFrame using frame.enableLayerTable(true) so that you can toggle
+* Add a map layer table to the ``JMapFrame`` using
+  ``frame.enableLayerTable(true)`` so that you can toggle
   the visibility of the layers.
 
 * Advanced: Experiment with Styles for the raster display: e.g. contrast enhancement options;
@@ -190,44 +191,44 @@ Raster Data
 Grid Coverage
 -------------
 
-Support for raster data is provided by the concept of a GridCoverage.  As programmers we are used 
+Support for raster data is provided by the concept of a ``GridCoverage``.  As programmers we are used 
 to working with raster data in the form of bitmapped graphics such as JPEG, GIF and PNG files.
 
 On the geospatial side of things there is the concept of a Coverage. A coverage is a collection of
 spatially located features. Informally, we equate a coverage with a map (in the geographic rather
 than the programming sense).
 
-A GridCoverage is a special case of Coverage where the features are  rectangles forming a grid that
+A ``GridCoverage`` is a special case of ``Coverage`` where the features are  rectangles forming a grid that
 fills the area of the coverage. In our Java code we can use a bitmapped graphic as the backing data
-structure for a GridCoverage together with additional elements to record spatial bounds in a 
+structure for a ``GridCoverage`` together with additional elements to record spatial bounds in a 
 specific coordinate reference system.
 
 There are many kinds of grid coverage file formats. Some of the most common are:
 
-world plus image
-    A normal image format like jpeg or png that has a side-car file describing where it is located
-    as well as a prj sidecar file defining the map projection just like a shapefile uses.
+World plus image
+    A normal image format like ``jpeg`` or ``png`` that has a side-car file describing where it is located
+    as well as a ``prj`` sidecar file defining the map projection just like a shapefile uses.
     
-    Please note that alothough the jpeg format is common due to small download size; the
+    Please note that although the ``jpeg`` format is common due to small download size; the
     performance at runtime is terrible as the entire image needs be read into memory.
     Formats such as TIFF do not have this limitation,
 
-Geotiff
+GeoTiff
     A normal tiff image that has geospatial information stored in the image metadata fields. This
-    is generally a safe bet for fast performnace; especially if it has been prepaired with an
+    is generally a safe bet for fast performance; especially if it has been prepared with an
     internal overlay (which can be used when zoomed out) or internal tiling (allowing for fast
     pans when zoomed in.
     
     Performs best when your computer has faster disks than CPUs.
 
 JPEG2000
-    The sequel to jpeg that uses wavelet compression  to handle massive images. The file
+    The sequel to ``jpeg`` that uses wavelet compression  to handle massive images. The file
     format also supports metadata fields that can be used to store geospatial information.
    
     This format performs best when you have more faster CPUs than disk access.
     
 There are also more exotic formats such as ECW and MRSID that can be supported if you have installed
-the imageio-ext project into your JRE.
+the ``imageio-ext`` project into your JRE.
 
 Web Map Server
 --------------
@@ -240,7 +241,7 @@ At a basic level we can fetch information from a WMS using a GetMap operation::
 
     http://localhost:8080/geoserver/wms?bbox=-130,24,-66,50&styles=population&Format=image/png&request=GetMap&layers=topp:states&width=550&height=250&srs=EPSG:4326
 
-The trick is knowing what parameters to fill in for |ldquo| layer |rdquo| and |ldquo| style |rdquo| when making one of these
+The trick is knowing what parameters to fill in for "layer" and "style" when making one of these
 requests.
 
 The WMS Service offers a GetCapabilities document that describes what layers are available and what
@@ -260,7 +261,7 @@ a list of layers, the supported image formats and so forth.
    // the capabilities document (so the rootLayer is at index 0)
    List layers = capabilities.getLayerList();
 
-The WebMapServer class also knows how to set up a GetMap request for several different version of the
+The ``WebMapServer`` class also knows how to set up a GetMap request for several different version of the
 WMS standard.
 
 .. code-block:: java

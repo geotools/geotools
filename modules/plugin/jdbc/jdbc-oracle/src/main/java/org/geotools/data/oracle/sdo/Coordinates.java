@@ -175,12 +175,7 @@ public class Coordinates {
         return newSeq;
     }
 
-    /**
-     * Reverse provided coordinate sequence (used to correct CW vs CCW order).
-     *
-     * @param factory
-     * @param sequence
-     */
+    /** Reverse provided coordinate sequence (used to correct CW vs CCW order). */
     public static CoordinateSequence reverse(
             CoordinateSequenceFactory factory, CoordinateSequence sequence) {
         if (sequence instanceof CoordinateAccess) {
@@ -244,7 +239,7 @@ public class Coordinates {
 
         if (LEN == 3) {
             buf.append(" ");
-            buf.append(nf.format(c.z));
+            buf.append(nf.format(c.getZ()));
         }
     }
 
@@ -268,7 +263,7 @@ public class Coordinates {
         }
 
         if (cs.size() > 0) {
-            return Double.isNaN(cs.getCoordinate(0).z) ? 2 : 3;
+            return Double.isNaN(cs.getCoordinate(0).getZ()) ? 2 : 3;
         }
 
         return 3;

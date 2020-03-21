@@ -7,7 +7,8 @@ import junit.framework.TestCase;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.DefaultMapContext;
+import org.geotools.map.FeatureLayer;
+import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.RenderListener;
 import org.geotools.styling.Style;
@@ -25,7 +26,7 @@ public class QueryOptimizeTest extends TestCase {
     SimpleFeatureSource squareFS;
     ReferencedEnvelope bounds;
     StreamingRenderer renderer;
-    DefaultMapContext context;
+    MapContent context;
     int count = 0;
 
     @Override
@@ -37,8 +38,8 @@ public class QueryOptimizeTest extends TestCase {
         bounds = new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
 
         renderer = new StreamingRenderer();
-        context = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        renderer.setContext(context);
+        context = new MapContent();
+        renderer.setMapContent(context);
         Map hints = new HashMap();
         hints.put("maxFiltersToSendToDatastore", 2);
         hints.put("optimizedDataLoadingEnabled", true);
@@ -50,10 +51,10 @@ public class QueryOptimizeTest extends TestCase {
     public void testLessFilters() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "fillSolidTwoRules.sld");
 
-        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mc.addLayer(squareFS, style);
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(squareFS, style));
 
-        renderer.setContext(mc);
+        renderer.setMapContent(mc);
         renderer.addRenderListener(
                 new RenderListener() {
 

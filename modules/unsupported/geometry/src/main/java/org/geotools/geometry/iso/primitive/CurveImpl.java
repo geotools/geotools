@@ -133,8 +133,6 @@ public class CurveImpl extends OrientableCurveImpl implements Curve {
      * associated to a PointImpl. If they are associated instead of that to a direct position, then
      * this direct position will be used to construct a new Point.
      *
-     * @param crs
-     * @param segments
      * @throws IllegalArgumentException, if the array of CurveSegments is empty or does not fulfill
      *     the requirements of the CurveSegments
      */
@@ -155,13 +153,6 @@ public class CurveImpl extends OrientableCurveImpl implements Curve {
      * this direct position will be used to construct a new Point.
      *
      * <p>Contained primitives must be curve segments or points. If it is a curve
-     *
-     * @param factory
-     * @param segments
-     * @param containedPrimitive
-     * @param containingPrimitive
-     * @param complex
-     * @throws IllegalArgumentException
      */
     // TODO Selbe frage auch hier: brauchen wir diesen constructor?
     // public CurveImpl(FeatGeomFactoryImpl factory, List<CurveSegmentImpl>
@@ -181,8 +172,6 @@ public class CurveImpl extends OrientableCurveImpl implements Curve {
 
     /**
      * Initialize Curve attributes - Set segments - Calculate Envelope - Calculate Parametrisation
-     *
-     * @param segments
      */
     private void initialize(List<? extends CurveSegment> segments) {
         if ((segments == null) || segments.isEmpty())
@@ -248,8 +237,6 @@ public class CurveImpl extends OrientableCurveImpl implements Curve {
     /**
      * Calculates the Boundary for the curve
      *
-     * @param start
-     * @param end
      * @return CurveBoundary
      */
     private CurveBoundaryImpl calculateBoundary(Point start, Point end) {
@@ -341,10 +328,7 @@ public class CurveImpl extends OrientableCurveImpl implements Curve {
         }
     }
 
-    /**
-     * @param dist
-     * @return CurveSegmentImpl
-     */
+    /** @return CurveSegmentImpl */
     protected CurveSegmentImpl getSegmentAt(double dist) {
         // if ( this.orientation() ==
         // OrientablePrimitive.Orientation.NEGATIVE) dist = this.length -
@@ -487,7 +471,6 @@ public class CurveImpl extends OrientableCurveImpl implements Curve {
     //	 *
     //	 * GenericCurve::constrParam(cp : Real) : DirectPosition2D
     //	 *
-    //	 * @param cp
     //	 *            a <code>double</code> value
     //	 * @return an <code>DirectPosition2D</code> value
     //	 */
@@ -812,11 +795,7 @@ public class CurveImpl extends OrientableCurveImpl implements Curve {
         return minDistance;
     }
 
-    /**
-     * Returns the DirectPositions which define the control points of this Curve
-     *
-     * @return
-     */
+    /** Returns the DirectPositions which define the control points of this Curve */
     public List<DirectPosition> asDirectPositions() {
 
         List<DirectPosition> rList = new ArrayList<DirectPosition>();
@@ -847,9 +826,6 @@ public class CurveImpl extends OrientableCurveImpl implements Curve {
      * Constructs a new Curve by merging this Curve with another Curve The two input curves will not
      * be modified. There will be no more references to positions or lists of the input curves, all
      * values are copied.
-     *
-     * @param other
-     * @return
      */
     public CurveImpl merge(CurveImpl other) {
         // Test ok

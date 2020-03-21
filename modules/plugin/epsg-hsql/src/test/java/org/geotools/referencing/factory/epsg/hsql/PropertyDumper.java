@@ -34,7 +34,7 @@ public class PropertyDumper {
         } else {
             original =
                     new File(
-                            "../epsg-wkt/src/main/resources/org/geotools/referencing/crs/epsg.properties");
+                            "../epsg-wkt/src/main/resources/org/geotools/referencing/epsg/wkt/epsg.properties");
         }
         if (original.exists()) {
             InputStream in = new FileInputStream(original);

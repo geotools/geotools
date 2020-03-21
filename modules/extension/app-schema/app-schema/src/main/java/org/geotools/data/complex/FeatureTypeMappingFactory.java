@@ -65,4 +65,30 @@ public class FeatureTypeMappingFactory {
                         });
         return featureTypeMapping;
     }
+
+    public static FeatureTypeMapping getInstance(
+            FeatureSource source,
+            FeatureSource indexSource,
+            AttributeDescriptor target,
+            String defaultGeometryXPath,
+            List<AttributeMapping> mappings,
+            NamespaceSupport namespaces,
+            String itemXpath,
+            boolean isXmlDataStore,
+            boolean isDenormalised,
+            String sourceDatastoreId) {
+        FeatureTypeMapping featureTypeMapping =
+                getInstance(
+                        source,
+                        indexSource,
+                        target,
+                        defaultGeometryXPath,
+                        mappings,
+                        namespaces,
+                        itemXpath,
+                        isXmlDataStore,
+                        isDenormalised);
+        featureTypeMapping.setSourceDatastoreId(sourceDatastoreId);
+        return featureTypeMapping;
+    }
 }

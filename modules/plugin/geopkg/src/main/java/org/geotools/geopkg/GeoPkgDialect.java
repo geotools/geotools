@@ -49,6 +49,7 @@ import org.geotools.jdbc.PreparedStatementSQLDialect;
 import org.geotools.jdbc.PrimaryKey;
 import org.geotools.jdbc.PrimaryKeyColumn;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.util.Converters;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
@@ -301,14 +302,17 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
 
         CoordinateReferenceSystem crs = featureType.getCoordinateReferenceSystem();
         if (crs != null) {
-            Integer epsgCode = null;
-            try {
-                epsgCode = CRS.lookupEpsgCode(crs, true);
-            } catch (FactoryException e) {
-                LOGGER.log(Level.WARNING, "Error looking up epsg code for " + crs, e);
-            }
-            if (epsgCode != null) {
-                fe.setSrid(epsgCode);
+            if (DefaultEngineeringCRS.GENERIC_2D == crs) {
+                fe.setSrid(GeoPackage.GENERIC_PROJECTED_SRID);
+            } else {
+                try {
+                    Integer epsgCode = CRS.lookupEpsgCode(crs, true);
+                    if (epsgCode != null) {
+                        fe.setSrid(epsgCode);
+                    }
+                } catch (FactoryException e) {
+                    LOGGER.log(Level.WARNING, "Error looking up epsg code for " + crs, e);
+                }
             }
         }
 
@@ -387,7 +391,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
 
     public CoordinateReferenceSystem createCRS(int srid, Connection cx) throws SQLException {
         try {
-            return CRS.decode("EPSG:" + srid, true);
+            return GeoPackage.decodeSRID(srid);
         } catch (Exception e) {
             LOGGER.log(Level.FINE, "Unable to create CRS from epsg code " + srid, e);
 

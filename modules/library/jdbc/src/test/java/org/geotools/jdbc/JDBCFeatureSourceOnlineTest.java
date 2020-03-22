@@ -585,6 +585,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         } else if (dialect instanceof PreparedStatementSQLDialect) {
             PreparedFilterToSQL filterToSQL =
                     ((PreparedStatementSQLDialect) dialect).createPreparedFilterToSQL();
+            filterToSQL.setFeatureType(featureSource.getSchema());
             String sql = filterToSQL.encodeToString(filters[0]);
             String escapedProperty = filterToSQL.escapeName(property);
             assertEquals(
@@ -648,6 +649,9 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         } else if (dialect instanceof PreparedStatementSQLDialect) {
             PreparedFilterToSQL filterToSQL =
                     ((PreparedStatementSQLDialect) dialect).createPreparedFilterToSQL();
+            // some dialects actually need the feature type to work, JDBCDataStore code
+            // always set its up, mimic that behavior in the test
+            filterToSQL.setFeatureType(featureSource.getSchema());
             String sql = filterToSQL.encodeToString(filters[0]);
             String spe = filterToSQL.escapeName(sp);
             String ipe = filterToSQL.escapeName(ip);

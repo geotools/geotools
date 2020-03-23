@@ -19,7 +19,6 @@ package org.geotools.ows.wmts;
 import static junit.framework.TestCase.*;
 import static org.geotools.ows.wmts.WMTSTestUtils.createCapabilities;
 
-import java.io.PrintStream;
 import java.util.Set;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -34,8 +33,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /** @author Emanuele Tajariol (etj at geo-solutions dot it) */
 public class WebMapTileServerTest {
-
-    private static PrintStream out = System.out;
 
     @Test
     public void nasaGetEnvelopeTest() throws Exception {
@@ -112,7 +109,6 @@ public class WebMapTileServerTest {
         tileRequest1.setRequestedWidth(1024);
         Set<Tile> receivedTiles = tileRequest1.getTiles();
         assertTrue(receivedTiles.size() > 0);
-        out.println("Checking received tile CRSs for requested CRS of EPSG:4326");
         for (Tile t : receivedTiles) {
 
             String recvdTileCRS =
@@ -121,7 +117,7 @@ public class WebMapTileServerTest {
                             .getIdentifiers()
                             .toArray()[0]
                             .toString();
-            out.println(recvdTileCRS);
+
             assertEquals("EPSG:25831", recvdTileCRS);
         }
 
@@ -135,7 +131,6 @@ public class WebMapTileServerTest {
         tileRequest2.setRequestedWidth(1024);
         Set<Tile> receivedTiles2 = tileRequest2.getTiles();
         assertTrue(receivedTiles2.size() > 0);
-        out.println("Checking received tile CRSs for requested CRS of EPSG:3857");
         for (Tile t : receivedTiles2) {
             String recvdTileCRS =
                     t.getExtent()
@@ -143,7 +138,7 @@ public class WebMapTileServerTest {
                             .getIdentifiers()
                             .toArray()[0]
                             .toString();
-            out.println(recvdTileCRS);
+
             assertEquals("EPSG:3857", recvdTileCRS);
         }
 
@@ -156,7 +151,6 @@ public class WebMapTileServerTest {
         tileRequest3.setRequestedWidth(1024);
         Set<Tile> receivedTiles3 = tileRequest3.getTiles();
         assertTrue(receivedTiles3.size() > 0);
-        out.println("Checking received tile CRSs for requested CRS of EPSG:3857 Longitude first");
         for (Tile t : receivedTiles3) {
             String recvdTileCRS =
                     t.getExtent()
@@ -164,7 +158,7 @@ public class WebMapTileServerTest {
                             .getIdentifiers()
                             .toArray()[0]
                             .toString();
-            out.println(recvdTileCRS);
+
             assertEquals("EPSG:3857", recvdTileCRS);
         }
     }

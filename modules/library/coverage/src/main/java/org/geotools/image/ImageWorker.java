@@ -1137,6 +1137,7 @@ public class ImageWorker {
     /** Returns the histogram of the image. */
     public Histogram getHistogram(int[] numBins, double[] lowValues, double[] highValues) {
         Object histogram = getComputedProperty(HISTOGRAM);
+        // can reuse cached histogram only if the bucket definitions are the same
         if (histogram instanceof HistogramWrapper) {
             HistogramWrapper wrapper = (HistogramWrapper) histogram;
             double[] prevHighs = wrapper.getHighValue();

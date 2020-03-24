@@ -38,7 +38,7 @@ set _WGS84_  = GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.25
 ////////////////////////////////////////////
 // Homolosine
 
-set _homolosine_ = PROJCS["Homolosine",_WGS84_,PROJECTION["Homolosine"],UNIT["m",1.0] ]
+set _homolosine_ = PROJCS["Goode_Homolosine",_WGS84_,PROJECTION["Goode_Homolosine"],UNIT["m",1.0] ]
 
 
 source crs = _WGS84_
@@ -120,6 +120,4 @@ target pt = (97.56, -81.7)
 
 source pt = (-17965404.8606, -8650934.81518)
 target pt = (-178.2, -88.7)
-
-
 

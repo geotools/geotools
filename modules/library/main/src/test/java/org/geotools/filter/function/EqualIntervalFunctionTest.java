@@ -16,9 +16,17 @@
  */
 package org.geotools.filter.function;
 
+import org.geotools.data.DataUtilities;
+import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.SchemaException;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.junit.Test;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
@@ -155,6 +163,41 @@ public class EqualIntervalFunctionTest extends FunctionTestSupport {
         assertEquals(62.5, percentages[0]);
         assertEquals(25.0, percentages[1]);
         assertEquals(12.5, percentages[2]);
+    }
+
+    @Test
+    public void testEvaluateNumericalWithPercentagesAndOutlier() throws SchemaException {
+        SimpleFeatureType dataType =
+                DataUtilities.createType("classification.test1", "id:0,foo:int,geom:Point");
+
+        int iVal[] = new int[] {1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16};
+        FeatureCollection featureCollection = new ListFeatureCollection(dataType);
+        GeometryFactory fac = new GeometryFactory();
+        featureCollection = new ListFeatureCollection(dataType);
+        for (int i = 0; i < iVal.length; i++) {
+            SimpleFeature feature =
+                    SimpleFeatureBuilder.build(
+                            dataType,
+                            new Object[] {
+                                Integer.valueOf(i + 1),
+                                Integer.valueOf(iVal[i]),
+                                fac.createPoint(new Coordinate(iVal[i], iVal[i]))
+                            },
+                            "classification.t" + (i + 1));
+            ((ListFeatureCollection) featureCollection).add(feature);
+        }
+        Literal classes = ff.literal(3);
+        PropertyName name = ff.property("foo");
+        Function func = ff.function("EqualInterval", name, classes, ff.literal(true));
+
+        Object classifier = func.evaluate(featureCollection);
+        assertTrue(classifier instanceof RangedClassifier);
+        RangedClassifier ranged = (RangedClassifier) classifier;
+        double[] percentages = ranged.getPercentages();
+        assertEquals(3, percentages.length);
+        assertEquals(33.0, Math.floor(percentages[0]));
+        assertEquals(26.0, Math.floor(percentages[1]));
+        assertEquals(39.0, Math.floor(percentages[2]));
     }
 
     @Test

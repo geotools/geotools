@@ -83,7 +83,7 @@ public class EqualIntervalFunction extends ClassificationFunction {
                 percentages = ((Boolean) literal.getValue()).booleanValue();
             }
             if ((globalMin instanceof Number) && (globalMax instanceof Number)) {
-                result = calculateNumericalPercentages(classNum, globalMin, globalMax);
+                result = calculateNumerical(classNum, globalMin, globalMax);
                 if (percentages)
                     result.setPercentages(
                             getNumericalPercentages(classNum, result, featureCollection));
@@ -110,7 +110,7 @@ public class EqualIntervalFunction extends ClassificationFunction {
         }
     }
 
-    private RangedClassifier calculateNumericalPercentages(
+    private RangedClassifier calculateNumerical(
             int classNum, Comparable globalMin, Comparable globalMax) {
         // handle constant value case
         if (globalMax.equals(globalMin)) {
@@ -262,13 +262,13 @@ public class EqualIntervalFunction extends ClassificationFunction {
             throws IOException {
         double max = ((Number) classifier.getMax(classifier.getSize() - 1)).doubleValue();
         double min = ((Number) classifier.getMin(0)).doubleValue();
-        double classWidth = (max - min) / classNum;
+        double classWidth = Math.ceil((max - min) / classNum);
         Subtract subtract = FF.subtract(getParameters().get(0), FF.literal(min));
         Divide divide = FF.divide(subtract, FF.literal(classWidth));
-        Function abs = FF.function("abs", divide);
+        Function convert = FF.function("convert", divide, FF.literal(Integer.class));
         GroupByVisitor groupBy =
                 new GroupByVisitor(
-                        Aggregate.COUNT, getParameters().get(0), Arrays.asList(abs), null);
+                        Aggregate.COUNT, getParameters().get(0), Arrays.asList(convert), null);
         collection.accepts(groupBy, null);
         Map<List<Integer>, Integer> result = groupBy.getResult().toMap();
         return calculateNumericalPercentages(result, collection.size(), classNum);
@@ -288,7 +288,16 @@ public class EqualIntervalFunction extends ClassificationFunction {
         int i = 0;
         for (Integer key : keys) {
             List<Integer> keyL = Arrays.asList(key);
-            percentages[i] = (Double.valueOf(queryResult.get(keyL)) / totalSize) * 100;
+            // handle case when the query return one class plus,
+            // when i.e. classWidth is an integer so that in an
+            // interval of values 1-25, for three classes,
+            // we would have value 25 falling in group with key 3
+            if (i >= percentages.length) {
+                int last = percentages.length - 1;
+                percentages[last] += (Double.valueOf(queryResult.get(keyL)) / totalSize) * 100;
+            } else {
+                percentages[i] = (Double.valueOf(queryResult.get(keyL)) / totalSize) * 100;
+            }
             i++;
         }
         return percentages;

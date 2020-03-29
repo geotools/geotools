@@ -2365,4 +2365,28 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
                 CoreMatchers.equalTo(
                         new int[] {expectedCountBin1, expectedCountBin2, expectedCountBin3}));
     }
+
+    @Test
+    public void testHistogramRecalculationWithDifferentParameters() {
+        ImageWorker iw = new ImageWorker(getSynthetic(1000)).setXPeriod(32).setYPeriod(32);
+        double[] minimums = iw.getMinimums();
+        double[] maximums = iw.getMaximums();
+        Histogram histogram = iw.getHistogram(new int[] {1}, minimums, maximums);
+        Histogram histogram2 =
+                iw.getHistogram(
+                        new int[] {1},
+                        new double[] {minimums[0] + 1.0},
+                        new double[] {maximums[0] - 1.0});
+        assertTrue(histogram.getBins(0)[0] != histogram2.getBins(0)[0]);
+    }
+
+    @Test
+    public void testGetCachedHistogramWithSameParameters() {
+        ImageWorker iw = new ImageWorker(getSynthetic(1000)).setXPeriod(32).setYPeriod(32);
+        double[] minimums = iw.getMinimums();
+        double[] maximums = iw.getMaximums();
+        Histogram histogram = iw.getHistogram(new int[] {1}, minimums, maximums);
+        Histogram histogram2 = iw.getHistogram(new int[] {1}, minimums, maximums);
+        assertTrue(histogram.getBins(0)[0] == histogram2.getBins(0)[0]);
+    }
 }

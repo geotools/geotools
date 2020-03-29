@@ -1137,75 +1137,84 @@ public class ImageWorker {
     /** Returns the histogram of the image. */
     public Histogram getHistogram(int[] numBins, double[] lowValues, double[] highValues) {
         Object histogram = getComputedProperty(HISTOGRAM);
-        if (!(histogram instanceof Histogram)) {
-            // Create the parameterBlock
-            ParameterBlock pb = new ParameterBlock();
-            pb.setSource(image, 0);
-            if (JAIExt.isJAIExtOperation("Stats")) {
-                StatsType[] stats = new StatsType[] {StatsType.HISTOGRAM};
-                // Band definition
-                int numBands = getNumBands();
-                int[] bands = new int[numBands];
-                for (int i = 0; i < numBands; i++) {
-                    bands[i] = i;
-                }
-
-                // Image parameters
-                pb.set(xPeriod, 0); // xPeriod
-                pb.set(yPeriod, 1); // yPeriod
-                pb.set(roi, 2); // ROI
-                pb.set(nodata, 3); // NoData
-                pb.set(bands, 5); // band indexes
-                pb.set(stats, 6); // statistic operation
-                pb.set(numBins, 9); // Bin number.
-                pb.set(lowValues, 7); // Lower values per band.
-                pb.set(highValues, 8); // Higher values per band.
-                image = JAI.create("Stats", pb, getRenderingHints());
-                // Retrieving the statistics
-                Statistics[][] results =
-                        (Statistics[][]) getComputedProperty(Statistics.STATS_PROPERTY);
-                int[][] bins = new int[numBands][];
-
-                // Cycle on the bands
-                for (int i = 0; i < results.length; i++) {
-                    Statistics stat = results[i][0];
-                    double[] binsDouble = (double[]) stat.getResult();
-                    bins[i] = new int[binsDouble.length];
-                    for (int j = 0; j < binsDouble.length; j++) {
-                        bins[i][j] = (int) binsDouble[j];
-                    }
-                }
-                ParameterBlock parameterBlock = getRenderedOperation().getParameterBlock();
-                if (numBins == null) {
-                    numBins = (int[]) parameterBlock.getObjectParameter(9);
-                }
-                if (lowValues == null) {
-                    lowValues = (double[]) parameterBlock.getObjectParameter(7);
-                }
-                if (highValues == null) {
-                    highValues = (double[]) parameterBlock.getObjectParameter(8);
-                }
-                HistogramWrapper wrapper =
-                        new HistogramWrapper(numBins, lowValues, highValues, bins);
-                // Setting the property
-                if (image instanceof PlanarImage) {
-                    ((PlanarImage) image).setProperty(HISTOGRAM, wrapper);
-                } else {
-                    PlanarImage p = getPlanarImage();
-                    p.setProperty(HISTOGRAM, wrapper);
-                    image = p;
-                }
-            } else {
-                pb.set(roi, 0); // The region of the image to scan. Default to all.
-                pb.set(xPeriod, 1); // The horizontal sampling rate. Default to 1.
-                pb.set(yPeriod, 2); // The vertical sampling rate. Default to 1.
-                pb.set(numBins, 3); // Bin number.
-                pb.set(lowValues, 4); // Lower values per band.
-                pb.set(highValues, 5); // Higher values per band.
-                image = JAI.create("Histogram", pb, getRenderingHints());
+        // can reuse cached histogram only if the bucket definitions are the same
+        if (histogram instanceof HistogramWrapper) {
+            HistogramWrapper wrapper = (HistogramWrapper) histogram;
+            double[] prevHighs = wrapper.getHighValue();
+            double[] prevLows = wrapper.getLowValue();
+            int[] prevNumBins = wrapper.getNumBins();
+            if (Arrays.equals(prevHighs, highValues)
+                    && Arrays.equals(prevLows, lowValues)
+                    && Arrays.equals(prevNumBins, numBins)) {
+                return wrapper;
             }
-            histogram = getComputedProperty(HISTOGRAM);
         }
+        // Create the parameterBlock
+        ParameterBlock pb = new ParameterBlock();
+        pb.setSource(image, 0);
+        if (JAIExt.isJAIExtOperation("Stats")) {
+            StatsType[] stats = new StatsType[] {StatsType.HISTOGRAM};
+            // Band definition
+            int numBands = getNumBands();
+            int[] bands = new int[numBands];
+            for (int i = 0; i < numBands; i++) {
+                bands[i] = i;
+            }
+
+            // Image parameters
+            pb.set(xPeriod, 0); // xPeriod
+            pb.set(yPeriod, 1); // yPeriod
+            pb.set(roi, 2); // ROI
+            pb.set(nodata, 3); // NoData
+            pb.set(bands, 5); // band indexes
+            pb.set(stats, 6); // statistic operation
+            pb.set(numBins, 9); // Bin number.
+            pb.set(lowValues, 7); // Lower values per band.
+            pb.set(highValues, 8); // Higher values per band.
+            image = JAI.create("Stats", pb, getRenderingHints());
+            // Retrieving the statistics
+            Statistics[][] results =
+                    (Statistics[][]) getComputedProperty(Statistics.STATS_PROPERTY);
+            int[][] bins = new int[numBands][];
+
+            // Cycle on the bands
+            for (int i = 0; i < results.length; i++) {
+                Statistics stat = results[i][0];
+                double[] binsDouble = (double[]) stat.getResult();
+                bins[i] = new int[binsDouble.length];
+                for (int j = 0; j < binsDouble.length; j++) {
+                    bins[i][j] = (int) binsDouble[j];
+                }
+            }
+            ParameterBlock parameterBlock = getRenderedOperation().getParameterBlock();
+            if (numBins == null) {
+                numBins = (int[]) parameterBlock.getObjectParameter(9);
+            }
+            if (lowValues == null) {
+                lowValues = (double[]) parameterBlock.getObjectParameter(7);
+            }
+            if (highValues == null) {
+                highValues = (double[]) parameterBlock.getObjectParameter(8);
+            }
+            HistogramWrapper wrapper = new HistogramWrapper(numBins, lowValues, highValues, bins);
+            // Setting the property
+            if (image instanceof PlanarImage) {
+                ((PlanarImage) image).setProperty(HISTOGRAM, wrapper);
+            } else {
+                PlanarImage p = getPlanarImage();
+                p.setProperty(HISTOGRAM, wrapper);
+                image = p;
+            }
+        } else {
+            pb.set(roi, 0); // The region of the image to scan. Default to all.
+            pb.set(xPeriod, 1); // The horizontal sampling rate. Default to 1.
+            pb.set(yPeriod, 2); // The vertical sampling rate. Default to 1.
+            pb.set(numBins, 3); // Bin number.
+            pb.set(lowValues, 4); // Lower values per band.
+            pb.set(highValues, 5); // Higher values per band.
+            image = JAI.create("Histogram", pb, getRenderingHints());
+        }
+        histogram = getComputedProperty(HISTOGRAM);
         return (Histogram) histogram;
     }
 

@@ -409,7 +409,7 @@ public final class RendererUtilities {
         // Compute the distances on the requested image using the provided DPI.
         //
         // //
-        // pythagorus theorm
+        // pythagoras theorem
         double diagonalPixelDistancePixels =
                 Math.sqrt(imageWidth * imageWidth + imageHeight * imageHeight);
         double diagonalPixelDistanceMeters =

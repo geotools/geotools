@@ -351,12 +351,15 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
             }
         }
 
-        // If the layer provides the requested CRS, use it
+        // See if the layer supports the requested SRS. Matching against the SRS rather than the
+        // full CRS will avoid missing matches due to Longitude first being set on the request
+        // CRS and therefore minimise transformations that need to be performed on the received tile
+        String requestSRS = CRS.toSRS(requestCRS);
         for (TileMatrixSet matrixSet : capabilities.getMatrixSets()) {
 
             CoordinateReferenceSystem matrixCRS = matrixSet.getCoordinateReferenceSystem();
-
-            if (CRS.equalsIgnoreMetadata(requestCRS, matrixCRS)) { // matching SRS
+            String matrixSRS = CRS.toSRS(matrixCRS);
+            if (requestSRS.equals(matrixSRS)) { // matching SRS
                 if (links.containsKey((matrixSet.getIdentifier()))) { // and available for
                     // this layer
                     if (LOGGER.isLoggable(Level.FINE)) {

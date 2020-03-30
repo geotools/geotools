@@ -482,7 +482,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
     /**
      * The buffered authority factory, or {@code this} if none. This field is set to a different
      * value by {@link ThreadedEpsgFactory} only, which will point toward a buffered factory
-     * wrapping this {@code DirectEpsgFactory} for efficienty.
+     * wrapping this {@code DirectEpsgFactory} for efficiency.
      */
     AbstractAuthorityFactory buffered = this;
 

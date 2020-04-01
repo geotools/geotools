@@ -82,7 +82,7 @@ public class BBOXTypeBinding extends OGCBBOXTypeBinding {
     public Object getProperty(Object object, QName name) throws Exception {
         BBOX box = (BBOX) object;
 
-        if (FES.ValueReference.equals(name)) {
+        if (FES.expression.equals(name)) {
             return box.getExpression1();
         }
 

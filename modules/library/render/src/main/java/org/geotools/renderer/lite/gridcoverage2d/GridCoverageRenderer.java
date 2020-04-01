@@ -756,15 +756,28 @@ public final class GridCoverageRenderer {
 
         // symbolize each bit (done here to make sure we can perform the warp/affine reduction)
         List<GridCoverage2D> symbolizedCoverages = new ArrayList<>();
-        for (GridCoverage2D displaced : displacedCoverages) {
-            GridCoverage2D symbolized =
-                    finalSymbolizer != null
-                            ? symbolize(displaced, finalSymbolizer, bgValues)
-                            : displaced;
-            if (symbolized != null) {
-                symbolizedCoverages.add(symbolized);
+        if (finalSymbolizer != null) {
+            for (GridCoverage2D displaced : displacedCoverages) {
+                GridCoverage2D symbolized = symbolize(displaced, finalSymbolizer, bgValues);
+                if (symbolized != null) {
+                    symbolizedCoverages.add(symbolized);
+                }
             }
+        } else if (!coverages.isEmpty()
+                && !CRS.equalsIgnoreMetadata(
+                        coverages.get(0).getCoordinateReferenceSystem2D(), destinationCRS)) {
+            // do the affine step to allow warp/affine merging, in order to best preserve rotations
+            // in the warp in case of oversampling
+            for (GridCoverage2D displaced : displacedCoverages) {
+                final GridCoverage2D affined = affine(displaced, bgValues, symbolizer);
+                if (affined != null) {
+                    symbolizedCoverages.add(affined);
+                }
+            }
+        } else {
+            symbolizedCoverages.addAll(displacedCoverages);
         }
+
         logCoverages("symbolized", symbolizedCoverages);
 
         // Parameters used for taking into account an optional removal of the alpha band

@@ -1800,6 +1800,15 @@ public class GridCoverageRendererTest {
                 renderer.renderImage(
                         offDatelineReader, null, symbolizer, interpolation, null, 256, 256);
         assertNotNull(image);
+
+        // goes out as indexed, switch to RGB as the image comparison needs it
+        // (nodata = 0 in the source, the black in the original image becomes transparent)
+        image =
+                new ImageWorker(image)
+                        .forceComponentColorModel()
+                        .forceColorSpaceRGB()
+                        .getRenderedImage();
+
         File reference =
                 new File(
                         "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/offDateline.png");

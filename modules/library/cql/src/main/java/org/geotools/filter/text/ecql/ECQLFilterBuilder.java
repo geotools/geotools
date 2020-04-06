@@ -81,9 +81,7 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
     /**
      * builds the filter id
      *
-     * @param jjtfeature_id_separator_node
      * @return Id
-     * @throws CQLException
      */
     public Id buildFilterId(final int nodeFeatureId) throws CQLException {
 
@@ -115,7 +113,6 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
      * Builds a negative Number
      *
      * @return Negative number
-     * @throws CQLException
      */
     public Literal bulidNegativeNumber() throws CQLException {
 
@@ -153,10 +150,6 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
      * this method will produce:
      * (propName = expr1) or (propName = expr2)
      * </pre>
-     *
-     * @param nodeExpression
-     * @return
-     * @throws CQLException
      */
     public Or buildInPredicate(final int nodeExpression) throws CQLException {
         // retrieves the expressions from stack
@@ -234,9 +227,7 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
      * Retrieves all points built in previous parsing process from stack and creates the multipoint
      * geometry.
      *
-     * @param pointNode
      * @return a MultiPoint
-     * @throws CQLException
      */
     public MultiPoint buildMultiPoint(int pointNode) throws CQLException {
 
@@ -250,7 +241,6 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
     /**
      * Retrieves all linestring built from stack and creates the multilinestring geometry
      *
-     * @param pointNode
      * @return a MultiLineString
      * @throws CQLException ¡
      */
@@ -269,7 +259,6 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
      *
      * @param polygontextNode .
      * @return MultiPolygon
-     * @throws CQLException
      */
     public MultiPolygon buildMultiPolygon(final int polygontextNode) throws CQLException {
 
@@ -283,9 +272,7 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
     /**
      * Builds a {@link GeometryCollection}
      *
-     * @param jjtgeometryliteral
      * @return GeometryCollection
-     * @throws CQLException
      */
     public GeometryCollection buildGeometryCollection(final int jjtgeometryliteral)
             throws CQLException {
@@ -301,9 +288,7 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
     /**
      * Builds literal geometry
      *
-     * @param geometry
      * @return a Literal Geometry
-     * @throws CQLException
      */
     public Literal buildGeometry() throws CQLException {
 
@@ -392,7 +377,6 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
      * Makes an equals to true filter with the relatePattern function
      *
      * @return relatePattern is equal to true
-     * @throws CQLException
      */
     public PropertyIsEqualTo buildRelatePattern() throws CQLException {
 
@@ -411,7 +395,6 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
      * Builds a not equal filter with that evaluate the relate pattern function
      *
      * @return Not filter
-     * @throws CQLException
      */
     public Not buildNotRelatePattern() throws CQLException {
 
@@ -504,7 +487,6 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
      * An equals filter with to test the relate function
      *
      * @return Relate equals true
-     * @throws CQLException
      */
     public PropertyIsEqualTo buildRelate() throws CQLException {
 

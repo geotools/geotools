@@ -50,11 +50,7 @@ public final class RPFTOCTest extends GDALTestCase {
     /** file name of a valid RPFTOC sample data to be used for tests. */
     private static final String fileName = "A.TOC";
 
-    /**
-     * Creates a new instance of {@code RPFTOCTest}
-     *
-     * @param name
-     */
+    /** Creates a new instance of {@code RPFTOCTest} */
     public RPFTOCTest() {
         super("RPFTOC", new RPFTOCFormatFactory());
     }

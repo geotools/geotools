@@ -274,13 +274,7 @@ public class WindBarbsFactory implements MarkFactory {
         return windBarbsMapping;
     }
 
-    /**
-     * @param windBarbName
-     * @param speed
-     * @param units
-     * @param params
-     * @return
-     */
+    /** */
     private Shape getWindBarb(
             String windBarbName, double speed, String units, Map<String, String> params) {
         // speed
@@ -297,13 +291,7 @@ public class WindBarbsFactory implements MarkFactory {
         }
     }
 
-    /**
-     * Get the proper WindBarb related to the referred speed
-     *
-     * @param speed
-     * @param units
-     * @return
-     */
+    /** Get the proper WindBarb related to the referred speed */
     private Shape getWindBarb(final String windBarbName, final double speed, final String units) {
         return getWindBarb(windBarbName, speed, units, null);
     }
@@ -360,10 +348,7 @@ public class WindBarbsFactory implements MarkFactory {
         throw new IllegalArgumentException("Wrong windbard name:" + windBarbName);
     }
 
-    /**
-     * @param params
-     * @return a {@link WindBarbDefinition} for the provided params
-     */
+    /** @return a {@link WindBarbDefinition} for the provided params */
     private WindBarbDefinition parseWindBarbsDefinition(Map<String, String> params) {
         final WindBarbDefinition retValue = WindBarb.DEFAULT_WINDBARB_DEFINITION;
         if (params == null || params.size() <= 0) {

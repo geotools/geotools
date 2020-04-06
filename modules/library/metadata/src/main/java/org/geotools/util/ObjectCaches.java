@@ -110,8 +110,6 @@ public final class ObjectCaches {
      * In this manner the find operation does not upset normal cache. It will not create any objects
      * already present in the cache.
      *
-     * @param level1
-     * @param level2
      * @return ObjectCache
      */
     public static ObjectCache chain(final ObjectCache level1, final ObjectCache level2) {
@@ -224,8 +222,6 @@ public final class ObjectCaches {
     /**
      * Produce a good key based on a pair of codes.
      *
-     * @param code1
-     * @param code2
      * @return A object to use as a key
      */
     public static Object toKey(Citation citation, String code1, String code2) {

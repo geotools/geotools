@@ -71,19 +71,13 @@ public abstract class MockHttpClient implements HTTPClient {
         this.readTimeout = readTimeout;
     }
 
-    /**
-     * @param tryGZIP
-     * @see HTTPClient#setTryGzip(boolean)
-     */
+    /** @see HTTPClient#setTryGzip(boolean) */
     @Override
     public void setTryGzip(boolean tryGZIP) {
         this.tryGzip = tryGZIP;
     }
 
-    /**
-     * @return
-     * @see HTTPClient#isTryGzip()
-     */
+    /** @see HTTPClient#isTryGzip() */
     @Override
     public boolean isTryGzip() {
         return tryGzip;

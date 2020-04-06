@@ -30,6 +30,8 @@ public abstract class Classifier {
 
     String[] titles;
 
+    private double[] percentages;
+
     public String[] getTitles() {
         return titles;
     }
@@ -55,11 +57,20 @@ public abstract class Classifier {
     /**
      * Returns the slot this value belongs in.
      *
-     * @param value
      * @return index, starting from zero
      */
     public abstract int classify(Object value);
 
     /** @return the number of bins */
     public abstract int getSize();
+
+    /** @return percentages for each class */
+    public double[] getPercentages() {
+        return percentages;
+    }
+
+    /** @param percentages a double array with percentages for each class */
+    public void setPercentages(double[] percentages) {
+        this.percentages = percentages;
+    }
 }

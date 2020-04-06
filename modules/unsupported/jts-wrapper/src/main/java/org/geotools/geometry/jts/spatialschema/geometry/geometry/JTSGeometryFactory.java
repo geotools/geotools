@@ -309,10 +309,6 @@ public class JTSGeometryFactory implements GeometryFactory {
     }
 
     /**
-     * @param exterior
-     * @param interiors
-     * @return
-     * @throws MismatchedReferenceSystemException
      * @see
      *     org.opengis.geometry.coordinate.Factory#createSurfaceBoundary(org.opengis.geometry.primitive.Ring,
      *     java.util.List)

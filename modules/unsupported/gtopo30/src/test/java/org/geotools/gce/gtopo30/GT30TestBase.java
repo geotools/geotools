@@ -47,11 +47,7 @@ public abstract class GT30TestBase extends TestCase {
 
     public abstract void test() throws Exception;
 
-    /**
-     * Unpack the gtopo files from the supplied zip file.
-     *
-     * @throws Exception
-     */
+    /** Unpack the gtopo files from the supplied zip file. */
     protected void unpackGTOPO() throws Exception {
         // check that it exisits
         File file = TestData.file(this, fileName + ".zip");
@@ -64,8 +60,6 @@ public abstract class GT30TestBase extends TestCase {
     /**
      * Deleting all the file we created during tests. Since gtopo files are big we try to save space
      * on the disk!!!
-     *
-     * @param file
      */
     protected void deleteAll(File file) {
         final File[] fileList = file.listFiles();

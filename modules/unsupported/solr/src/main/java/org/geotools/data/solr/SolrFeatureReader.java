@@ -77,7 +77,6 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
      * @param server The SOLR server
      * @param solrQuery the SOLR query to execute
      * @param solrDataStore the SOLR store
-     * @throws SolrServerException
      * @throws java.io.IOException
      */
     public SolrFeatureReader(

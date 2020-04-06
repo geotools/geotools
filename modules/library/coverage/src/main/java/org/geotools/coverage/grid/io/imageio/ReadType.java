@@ -194,10 +194,6 @@ public enum ReadType {
     /**
      * Load the raster data from the underlying source with the specified read type.
      *
-     * @param readParameters
-     * @param imageIndex
-     * @param rasterUrl
-     * @param readDimension
      * @param hints {@link Hints} to control the read process
      * @return a {@link RenderedImage} instance that matches the provided request parameters as
      *     close as possible.

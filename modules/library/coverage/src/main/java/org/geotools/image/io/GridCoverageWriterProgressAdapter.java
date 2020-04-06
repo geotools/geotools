@@ -59,10 +59,7 @@ public class GridCoverageWriterProgressAdapter extends BaseGridCoverageProgressA
         reportProgress(progress, source);
     }
 
-    /**
-     * @param progress
-     * @param writer
-     */
+    /** */
     private void reportProgress(float progress, ImageWriter writer) {
         monitor.progress(progress);
         if (monitor.isCanceled()) writer.abort();

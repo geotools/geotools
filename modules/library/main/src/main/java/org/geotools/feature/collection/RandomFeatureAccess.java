@@ -36,7 +36,6 @@ public interface RandomFeatureAccess extends SimpleFeatureCollection {
     /**
      * Access Feature content by feature id.
      *
-     * @param id
      * @return Feature with the indicated or id
      * @throws NoSuchElementException if a Feature with the indicated id is not present
      */

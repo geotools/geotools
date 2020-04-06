@@ -266,10 +266,7 @@ public class AlgoPoint2D {
         return Boolean.valueOf(result > 0.0);
     }
 
-    /**
-     * @param collection
-     * @return
-     */
+    /** */
     public static Rectangle2D getEnvelope(Collection coll) {
         // Collection<Point2D>
         Iterator i = coll.iterator();

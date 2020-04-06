@@ -97,4 +97,35 @@ public class UniqueIntervalFunctionTest extends FunctionTestSupport {
         assertEquals(1, classifier.getValues(0).size());
         assertEquals("abc", classifier.getValues(0).iterator().next());
     }
+
+    public void testEvaluateNumericalWithPercentages() {
+        Literal classes = ff.literal(2);
+        PropertyName exp = ff.property("foo");
+        UniqueIntervalFunction func =
+                (UniqueIntervalFunction)
+                        ff.function("UniqueInterval", exp, classes, ff.literal(true));
+
+        Object result = func.evaluate(featureCollection);
+        assertTrue(result instanceof ExplicitClassifier);
+        ExplicitClassifier classifier = (ExplicitClassifier) result;
+        double[] percentages = classifier.getPercentages();
+        assertEquals(2, percentages.length);
+        assertEquals(50.0, percentages[0]);
+        assertEquals(50.0, percentages[0]);
+    }
+
+    public void testEvaluateNotNumericalWithPercentages() {
+        Literal classes = ff.literal(2);
+        PropertyName exp = ff.property("s");
+        UniqueIntervalFunction func =
+                (UniqueIntervalFunction)
+                        ff.function("UniqueInterval", exp, classes, ff.literal(true));
+
+        Object result = func.evaluate(constantCollection);
+        assertTrue(result instanceof ExplicitClassifier);
+        ExplicitClassifier classifier = (ExplicitClassifier) result;
+        double[] percentages = classifier.getPercentages();
+        assertEquals(1, percentages.length);
+        assertEquals(100.0, percentages[0]);
+    }
 }

@@ -116,7 +116,6 @@ public abstract class ArcSDEGeometryBuilder {
      * constructed depends on this <code>ArcSDEGeometryBuilder</code> specialized subclass
      *
      * @param shape the ESRI's ArcSDE java api shape upon wich to create the new JTS geometry
-     * @param geometryFactory
      * @return the type of JTS Geometry this subclass instance is specialized for or an empty
      *     geometry of the same class if <code>shape.isNil()</code>
      * @throws SeException if it occurs fetching the coordinates array from <code>shape</code>
@@ -142,7 +141,6 @@ public abstract class ArcSDEGeometryBuilder {
      * @param seSrs Coordinate Reference System of the underlying <code>SeLayer</code> object for
      *     wich the <code>SeShape</code> is constructed.
      * @return the <code>SeShape</code> representation of passed <code>Geometry</code>
-     * @throws ArcSDEGeometryBuildingException
      */
     public final SeShape constructShape(final Geometry geometry, SeCoordinateReference seSrs)
             throws ArcSdeException {
@@ -230,7 +228,6 @@ public abstract class ArcSDEGeometryBuilder {
      * instance specialization that implements it
      *
      * @param coords <code>SeShape</code>'s coordinate array to build the geometry from
-     * @param geometryFactory
      * @return the JST form of the passed geometry coordinates
      * @throws DataSourceException if an error occurs while creating the JTS Geometry
      */
@@ -245,7 +242,6 @@ public abstract class ArcSDEGeometryBuilder {
      * <p>this method is called in case that <code>SeShape.isNil() == true</code>
      *
      * @return an empty JTS geometry
-     * @throws UnsupportedOperationException
      */
     protected Geometry getEmpty() {
         throw new UnsupportedOperationException(
@@ -304,7 +300,6 @@ public abstract class ArcSDEGeometryBuilder {
      * contructing JTS geometries of the JTS Geometry class passed as argument. Note that <code>
      * jtsGeometryClass</code> must be one of the supported concrete JTS Geometry classes.
      *
-     * @param jtsGeometryClass
      * @throws IllegalArgumentException if <code>jtsGeometryClass</code> is not a concrete JTS
      *     <code>Geometry</code> class (like <code>org.locationtech.jts.geom.MultiPoint.class
      *     </code> i.e.)

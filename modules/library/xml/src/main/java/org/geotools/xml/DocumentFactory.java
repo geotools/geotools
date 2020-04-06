@@ -74,10 +74,8 @@ public class DocumentFactory {
     /**
      * calls getInstance(URI,Level) with Level.WARNING
      *
-     * @param desiredDocument
      * @param hints May be null.
      * @return Object
-     * @throws SAXException
      * @see DocumentFactory#getInstance(URI, Map, Level)
      */
     public static Object getInstance(URI desiredDocument, Map<String, Object> hints)
@@ -90,11 +88,8 @@ public class DocumentFactory {
      * described using XML Schemas. Failure to be fully described as Schemas will result in errors,
      * as opposed to a vid parse.
      *
-     * @param desiredDocument
      * @param hints May be null.
-     * @param level
      * @return Object
-     * @throws SAXException
      * @see DocumentFactory#getInstance(URI, Map, Level, boolean)
      */
     public static Object getInstance(
@@ -120,11 +115,8 @@ public class DocumentFactory {
      * described using XML Schemas. Failure to be fully described as Schemas will result in errors,
      * as opposed to a vid parse.
      *
-     * @param is
      * @param hints May be null.
-     * @param level
      * @return Object
-     * @throws SAXException
      * @see DocumentFactory#getInstance(InputStream, Map, Level, boolean)
      */
     public static Object getInstance(InputStream is, Map<String, Object> hints, Level level)

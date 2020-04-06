@@ -20,6 +20,8 @@
 package org.geotools.metadata.iso.citation;
 
 import java.util.Collection;
+import java.util.Collections;
+import net.opengis.ows11.TelephoneType;
 import org.geotools.metadata.iso.MetadataEntity;
 import org.opengis.metadata.citation.Telephone;
 
@@ -53,6 +55,12 @@ public class TelephoneImpl extends MetadataEntity implements Telephone {
      */
     public TelephoneImpl(final Telephone source) {
         super(source);
+    }
+
+    public TelephoneImpl(TelephoneType phone) {
+
+        setFacsimiles(Collections.singleton(phone.getFacsimile()));
+        setVoices(Collections.singleton(phone.getVoice()));
     }
 
     /**

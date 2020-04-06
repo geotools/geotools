@@ -149,8 +149,6 @@ public class ValidationBeanInfo extends SimpleBeanInfo {
         /**
          * Implementation of setAsText.
          *
-         * @param text
-         * @throws IllegalArgumentException
          * @see java.beans.PropertyEditor#setAsText(java.lang.String)
          */
         public void setAsText(String text) throws IllegalArgumentException {
@@ -200,7 +198,6 @@ public class ValidationBeanInfo extends SimpleBeanInfo {
         /**
          * Implementation of setValue.
          *
-         * @param value
          * @see java.beans.PropertyEditor#setValue(java.lang.Object)
          */
         public void setValue(Object value) {

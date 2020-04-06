@@ -40,7 +40,6 @@ public class AppSchemaConfiguration extends Configuration {
      *
      * @param namespace the namespace URI
      * @param schemaLocation URL giving canonical schema location
-     * @param resolver
      */
     public AppSchemaConfiguration(
             String namespace, String schemaLocation, SchemaResolver resolver) {

@@ -140,11 +140,7 @@ public class SLDStyleTest extends TestCase {
         assertEquals(4, lineSym.getStroke().getWidth().evaluate(null, Number.class).intValue());
     }
 
-    /**
-     * XML --> SLD --> XML
-     *
-     * @throws Exception
-     */
+    /** XML --> SLD --> XML */
     public void testSLDParser() throws Exception {
         java.net.URL surl = TestData.getResource(this, "example-sld.xml");
         SLDParser stylereader = new SLDParser(sf, surl);
@@ -159,11 +155,7 @@ public class SLDStyleTest extends TestCase {
         // TODO: convert the buffer/resource to a string and compare
     }
 
-    /**
-     * XML --> SLD --> XML
-     *
-     * @throws Exception
-     */
+    /** XML --> SLD --> XML */
     public void testSLDParserWithLocalizedTitle() throws Exception {
         java.net.URL surl = TestData.getResource(this, "example-localized-sld.xml");
         SLDParser stylereader = new SLDParser(sf, surl);
@@ -452,11 +444,7 @@ public class SLDStyleTest extends TestCase {
         assertEquals(expected, color);
     }
 
-    /**
-     * SLD --> XML --> SLD
-     *
-     * @throws Exception
-     */
+    /** SLD --> XML --> SLD */
     public void testSLDTransformer() throws Exception {
         // create an SLD
         StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
@@ -755,11 +743,7 @@ public class SLDStyleTest extends TestCase {
         assertEquals(expected, value, 0d);
     }
 
-    /**
-     * Tests the parsing of a raster symbolizer sld
-     *
-     * @throws IOException
-     */
+    /** Tests the parsing of a raster symbolizer sld */
     public void testParseRasterSymbolizer() throws IOException {
         Style[] styles = getStyles("rasterSymbolizer.sld");
         assertEquals(1, styles.length);
@@ -813,11 +797,7 @@ public class SLDStyleTest extends TestCase {
         assertEquals(1.0, v.doubleValue());
     }
 
-    /**
-     * Tests the parsing of a raster symbolizer sld
-     *
-     * @throws IOException
-     */
+    /** Tests the parsing of a raster symbolizer sld */
     public void testParseRasterSymbolizerWithExpressionGammaValue() throws IOException {
         Style[] styles = getStyles("rasterSymbolizerGammaValue.sld");
         assertEquals(1, styles.length);
@@ -873,8 +853,6 @@ public class SLDStyleTest extends TestCase {
 
     /**
      * Tests the parsing of a raster symbolizer sld with ENV function expression on SelectedChannel
-     *
-     * @throws IOException
      */
     public void testParseRasterChannelExpression() throws IOException {
         Style[] styles = getStyles("raster-channel-expression.xml");
@@ -909,11 +887,7 @@ public class SLDStyleTest extends TestCase {
         assertEquals("4", blueChannel.getChannelName().evaluate(null, String.class));
     }
 
-    /**
-     * Tests the parsing of a raster symbolizer sld with color Map
-     *
-     * @throws IOException
-     */
+    /** Tests the parsing of a raster symbolizer sld with color Map */
     public void testParseRasterSymbolizerColorMap() throws IOException {
         Style[] styles = getStyles("rasterSymbolizerColorMap.sld");
         assertEquals(1, styles.length);

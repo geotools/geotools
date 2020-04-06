@@ -40,11 +40,7 @@ import org.opengis.geometry.primitive.Ring;
  */
 public class RingImpl extends RingImplUnsafe implements Ring {
 
-    /**
-     * Creates a Ring
-     *
-     * @param generator
-     */
+    /** Creates a Ring */
     public RingImpl(List<OrientableCurve> generator) {
         super(generator);
         this.checkConsistency(generator);

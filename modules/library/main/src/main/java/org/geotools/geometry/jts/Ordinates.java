@@ -52,21 +52,12 @@ class Ordinates {
         return cs;
     }
 
-    /**
-     * The number of coordinates
-     *
-     * @return
-     */
+    /** The number of coordinates */
     int size() {
         return curr + 1;
     }
 
-    /**
-     * Adds a coordinate to this list
-     *
-     * @param x
-     * @param y
-     */
+    /** Adds a coordinate to this list */
     void add(double x, double y) {
         curr++;
         if ((curr * 2 + 1) >= ordinates.length) {

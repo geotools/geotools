@@ -153,9 +153,6 @@ public enum NetCDFCoordinateReferenceSystemType {
     /**
      * Return a proper {@link NetCDFCoordinateReferenceSystemType} depending on the input OGC {@link
      * CoordinateReferenceSystem} instance.
-     *
-     * @param crs
-     * @return
      */
     public static NetCDFCoordinateReferenceSystemType parseCRS(CoordinateReferenceSystem crs) {
         NetCDFCoordinateReferenceSystemType crsType = null;
@@ -223,9 +220,6 @@ public enum NetCDFCoordinateReferenceSystemType {
     /**
      * Return the Supported {@link NetCDFCoordinateReferenceSystemType} based on the
      * conversionFromBase's MathTransform
-     *
-     * @param transform
-     * @return
      */
     private static NetCDFCoordinateReferenceSystemType getProjectionType(MathTransform transform) {
         if (transform instanceof TransverseMercator) {
@@ -259,8 +253,6 @@ public enum NetCDFCoordinateReferenceSystemType {
      * Return the set of {@link NetCDFCoordinate}s for this NetCDF CRS type. As an instance, WGS84
      * type uses Latitude,Longitude while Mercator uses GeoY,GeoX. Default implementation returns
      * {@link NetCDFCoordinate#YX_COORDS} since most part of the CRS Type are projected.
-     *
-     * @return
      */
     public NetCDFCoordinate[] getCoordinates() {
         return NetCDFCoordinate.YX_COORDS;

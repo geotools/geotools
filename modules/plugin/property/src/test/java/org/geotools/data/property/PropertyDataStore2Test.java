@@ -52,11 +52,7 @@ public class PropertyDataStore2Test extends TestCase {
 
     private static final String TARGET_DIR = "./target";
 
-    /**
-     * Constructor for SimpleDataStoreTest.
-     *
-     * @param arg0
-     */
+    /** Constructor for SimpleDataStoreTest. */
     public PropertyDataStore2Test(String arg0) {
         super(arg0);
     }
@@ -147,11 +143,7 @@ public class PropertyDataStore2Test extends TestCase {
         super.tearDown();
     }
 
-    /**
-     * Test CRS being passed into Geometry user data.
-     *
-     * @throws Exception
-     */
+    /** Test CRS being passed into Geometry user data. */
     public void testCRS() throws Exception {
         SimpleFeatureSource road = sridStore.getFeatureSource("road2");
         SimpleFeatureCollection features = road.getFeatures();
@@ -254,12 +246,7 @@ public class PropertyDataStore2Test extends TestCase {
         assertEquals(envelope, features.getFeatures(f).getBounds());
     }
 
-    /**
-     * Test query with a start index
-     *
-     * @throws IOException
-     * @throws FileNotFoundException
-     */
+    /** Test query with a start index */
     @Test
     public void testOffset() throws FileNotFoundException, IOException {
         Query query = new Query(Query.ALL);
@@ -272,12 +259,7 @@ public class PropertyDataStore2Test extends TestCase {
         assertEquals(1, features.getCount(query));
     }
 
-    /**
-     * Test query with maxFeatures
-     *
-     * @throws IOException
-     * @throws FileNotFoundException
-     */
+    /** Test query with maxFeatures */
     @Test
     public void testLimit() throws FileNotFoundException, IOException {
         Query query = new Query(Query.ALL);
@@ -290,12 +272,7 @@ public class PropertyDataStore2Test extends TestCase {
         assertEquals(3, features.getCount(query));
     }
 
-    /**
-     * Test query with maxFeatures and startIndex
-     *
-     * @throws IOException
-     * @throws FileNotFoundException
-     */
+    /** Test query with maxFeatures and startIndex */
     @Test
     public void testLimitOffset() throws FileNotFoundException, IOException {
         Query query = new Query(Query.ALL);

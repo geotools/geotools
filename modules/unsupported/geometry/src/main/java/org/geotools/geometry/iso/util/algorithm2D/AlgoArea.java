@@ -36,9 +36,6 @@ public class AlgoArea {
     /**
      * returns a list of boundaries, whereas each boundary is a list of connected Line2D segments
      * (ArrayList&lt;ArrayList&lt;Line2D&gt;&gt;)
-     *
-     * @param area
-     * @return
      */
     public static ArrayList<ArrayList<Line2D>> getBoundariesLines(Area area) {
         ArrayList<ArrayList<Line2D>> result = new ArrayList<ArrayList<Line2D>>();
@@ -162,10 +159,7 @@ public class AlgoArea {
         }
         return createGeneralPathFromNodes(nodes);
     }
-    /**
-     * @param points
-     * @return
-     */
+    /** */
     public static GeneralPath createGeneralPathFromNodes(Collection<Point2D> points) {
         if (points == null) return null;
         if (points.isEmpty()) return null;

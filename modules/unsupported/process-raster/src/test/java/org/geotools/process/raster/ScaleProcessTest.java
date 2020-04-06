@@ -354,15 +354,7 @@ public class ScaleProcessTest {
         }
     }
 
-    /**
-     * Check if the Coverage is correctly transformed.
-     *
-     * @param result
-     * @param m00
-     * @param m11
-     * @param m02
-     * @param m12
-     */
+    /** Check if the Coverage is correctly transformed. */
     private void ensureCorrectTransformation(GridCoverage2D result, double m00, double m11) {
         // Selection of the RenderedImages associated to the coverages
         RenderedImage inputImage = coverage.getRenderedImage();

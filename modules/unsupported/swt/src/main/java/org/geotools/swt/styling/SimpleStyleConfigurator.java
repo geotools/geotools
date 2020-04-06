@@ -310,7 +310,6 @@ public class SimpleStyleConfigurator extends AbstractSimpleConfigurator {
      *
      * @param style the style to convert.
      * @return the style string.
-     * @throws Exception
      */
     public static String styleToString(Style style) throws Exception {
         StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();

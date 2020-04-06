@@ -319,7 +319,6 @@ public class WKTReader2 extends WKTReader {
      * Throws a formatted ParseException for the current token.
      *
      * @param expected a description of what was expected
-     * @throws ParseException
      * @throws AssertionFailedException if an invalid token is encountered
      */
     private void parseError(String expected) throws ParseException {
@@ -473,13 +472,7 @@ public class WKTReader2 extends WKTReader {
         }
     }
 
-    /**
-     * Creates a <code>LineString</code> using the next token in the stream.
-     *
-     * @return
-     * @throws IOException
-     * @throws ParseException
-     */
+    /** Creates a <code>LineString</code> using the next token in the stream. */
     private LineString readCircularStringText() throws IOException, ParseException {
         List<Coordinate> coordinates = getCoordinateList(true);
         if (coordinates.size() == 0) {
@@ -514,8 +507,6 @@ public class WKTReader2 extends WKTReader {
      * Isolated as a seperate method as I think we will need to call this from the polygon code.
      *
      * @return List of LineString (defined in a mixed format)
-     * @throws IOException
-     * @throws ParseException
      */
     List<LineString> getLineStrings() throws IOException, ParseException {
         ArrayList<LineString> lineStrings = new ArrayList<LineString>();
@@ -552,8 +543,6 @@ public class WKTReader2 extends WKTReader {
      * @return LinearRing
      *     <p>This method expects either "EMPTY", "(", "CIRCULARSTRING", or "COMPOIUNDCURVE" to
      *     start out with.
-     * @throws IOException
-     * @throws ParseException
      */
     private LinearRing readCurvedLinearRingText() throws IOException, ParseException {
         String nextWord = getNextWord();

@@ -32,22 +32,13 @@ public abstract class DBDialect {
 
     protected Config config;
 
-    /**
-     * Constructor
-     *
-     * @param config
-     */
+    /** Constructor */
     public DBDialect(Config config) {
         super();
         this.config = config;
     }
 
-    /**
-     * Factory method for obtaining a DBDialect object for a special spatial extension
-     *
-     * @param config
-     * @return
-     */
+    /** Factory method for obtaining a DBDialect object for a special spatial extension */
     public static DBDialect getDBDialect(Config config) {
         SpatialExtension type = config.getSpatialExtension();
 
@@ -81,10 +72,7 @@ public abstract class DBDialect {
         return config;
     }
 
-    /**
-     * @return datasource for this dialect object
-     * @throws Exception
-     */
+    /** @return datasource for this dialect object */
     private DataSource getDataSource() throws Exception {
         if (dataSource != null) {
             return dataSource;
@@ -96,10 +84,7 @@ public abstract class DBDialect {
         return dataSource;
     }
 
-    /**
-     * @return jdbc connection
-     * @throws Exception
-     */
+    /** @return jdbc connection */
     public Connection getConnection() throws Exception {
         Connection con = getDataSource().getConnection();
         con.setAutoCommit(false);
@@ -107,10 +92,7 @@ public abstract class DBDialect {
         return con;
     }
 
-    /**
-     * @param tableName
-     * @return sql drop table statement for tableName
-     */
+    /** @return sql drop table statement for tableName */
     String getDropTableStatement(String tableName) {
         return "drop table " + tableName;
     }
@@ -135,14 +117,10 @@ public abstract class DBDialect {
     /**
      * @param tn sql table name
      * @return sql create spatial index statement for tn
-     * @throws Exception
      */
     protected abstract String getCreateIndexStatement(String tn) throws Exception;
 
-    /**
-     * @param tn
-     * @return sql drop index statement
-     */
+    /** @return sql drop index statement */
     String getDropIndexStatment(String tn) {
         return "drop index IX_" + tn;
     }
@@ -152,10 +130,7 @@ public abstract class DBDialect {
         return "DOUBLE";
     }
 
-    /**
-     * @return the create table statement for the master table
-     * @throws Exception
-     */
+    /** @return the create table statement for the master table */
     String getCreateMasterStatement() throws Exception {
         Config config = getConfig();
         String doubleType = getDoubleSQLType();
@@ -202,11 +177,7 @@ public abstract class DBDialect {
         return statement;
     }
 
-    /**
-     * @param tableName
-     * @return the create table statment for a tile table named tableName
-     * @throws Exception
-     */
+    /** @return the create table statment for a tile table named tableName */
     String getCreateTileTableStatement(String tableName) throws Exception {
         String statement = "CREATE TABLE " + tableName;
         statement += ("(" + getConfig().getKeyAttributeNameInTileTable() + " CHAR(64) NOT NULL ");
@@ -221,11 +192,7 @@ public abstract class DBDialect {
         return statement;
     }
 
-    /**
-     * @param tableName
-     * @return the sql create table statement for a spatial table
-     * @throws Exception
-     */
+    /** @return the sql create table statement for a spatial table */
     protected String getCreateSpatialTableStatement(String tableName) throws Exception {
         String statement = "CREATE TABLE " + tableName;
         statement +=
@@ -246,11 +213,7 @@ public abstract class DBDialect {
         return statement;
     }
 
-    /**
-     * @param tableName
-     * @return the sql create table statement for a combined spatial/tile table named tableName
-     * @throws Exception
-     */
+    /** @return the sql create table statement for a combined spatial/tile table named tableName */
     protected String getCreateSpatialTableStatementJoined(String tableName) throws Exception {
         String statement = "CREATE TABLE " + tableName;
         statement +=

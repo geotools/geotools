@@ -62,8 +62,6 @@ public class WPSFactory extends SingleProcessFactory {
 
     /**
      * Go through the ProcessDescriptionType object tree and set this flactory's values based on it.
-     *
-     * @param pdt
      */
     private void buildValuesFromProcessDescriptionType() {
         this.version = this.pdt.getProcessVersion();

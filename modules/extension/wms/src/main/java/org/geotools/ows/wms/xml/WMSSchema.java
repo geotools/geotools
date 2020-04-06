@@ -373,10 +373,7 @@ public class WMSSchema implements Schema {
         private String name;
         private Type type;
 
-        /**
-         * @param name
-         * @param type
-         */
+        /** */
         public WMSElement(String name, Type type) {
             super();
             this.name = name;
@@ -384,12 +381,7 @@ public class WMSSchema implements Schema {
             this.min = 1;
             this.max = 1;
         }
-        /**
-         * @param max
-         * @param min
-         * @param name
-         * @param type
-         */
+        /** */
         public WMSElement(String name, Type type, int min, int max) {
             super();
             this.max = max;

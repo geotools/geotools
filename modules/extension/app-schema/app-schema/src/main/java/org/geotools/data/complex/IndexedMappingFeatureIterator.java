@@ -152,11 +152,7 @@ public abstract class IndexedMappingFeatureIterator implements IMappingFeatureIt
         return indexIterator;
     }
 
-    /**
-     * Initialize the index FeatureCollection and iterator
-     *
-     * @throws IOException
-     */
+    /** Initialize the index FeatureCollection and iterator */
     protected void initializeIndexIterator() throws IOException {
         // rebuild Query to fetch only id attributes:
         Query idQuery = transformQueryToIdsOnly();

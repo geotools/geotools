@@ -133,8 +133,6 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
      *
      * <p>The type of the attributes may drive how the filter is translated to a mongodb query
      * document.
-     *
-     * @param featureType
      */
     public void setFeatureType(SimpleFeatureType featureType) {
         this.featureType = featureType;

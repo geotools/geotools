@@ -135,11 +135,7 @@ public class WKBAttributeIO {
         }
     }
 
-    /**
-     * Turns a char that encodes four bits in hexadecimal notation into a byte
-     *
-     * @param c
-     */
+    /** Turns a char that encodes four bits in hexadecimal notation into a byte */
     public static byte getFromChar(char c) {
         if (c <= '9') {
             return (byte) (c - '0');

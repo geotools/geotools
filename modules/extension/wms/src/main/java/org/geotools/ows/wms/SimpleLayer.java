@@ -49,12 +49,7 @@ public class SimpleLayer {
         this.style = style;
     }
 
-    /**
-     * SimpleLayer creation.
-     *
-     * @param name
-     * @param validStyles
-     */
+    /** SimpleLayer creation. */
     public SimpleLayer(String name, Set validStyles) {
         super();
         this.name = name;

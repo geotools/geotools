@@ -199,10 +199,7 @@ public class XSISimpleTypes {
      * @author dzwiers
      */
     protected abstract static class XSISimpleType implements SimpleType {
-        /**
-         * @param name
-         * @see org.geotools.xml.schema.Type#findChildElement(java.lang.String)
-         */
+        /** @see org.geotools.xml.schema.Type#findChildElement(java.lang.String) */
         public Element findChildElement(String name) {
             return null;
         }
@@ -322,11 +319,6 @@ public class XSISimpleTypes {
         }
 
         /**
-         * @param element
-         * @param value
-         * @param attrsgetValue
-         * @param hints
-         * @throws SAXException
          * @see org.geotools.xml.xsi.Type#getValue(org.geotools.xml.xsi.Element,
          *     org.geotools.xml.xsi.ElementValue[], org.xml.sax.Attributes)
          */
@@ -371,11 +363,6 @@ public class XSISimpleTypes {
         }
 
         /**
-         * @param element
-         * @param value
-         * @param attrs
-         * @param hints
-         * @throws SAXException
          * @see org.geotools.xml.xsi.Type#getValue(org.geotools.xml.xsi.Element,
          *     org.geotools.xml.xsi.ElementValue[], org.xml.sax.Attributes)
          */
@@ -459,10 +446,6 @@ public class XSISimpleTypes {
          *
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
-         * @param element
-         * @param value
-         * @param attrs
-         * @param hints
          * @return Object
          */
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints) {
@@ -2158,8 +2141,6 @@ public class XSISimpleTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#cache(org.geotools.xml.schema.Element,
          *     java.util.Map)
-         * @param element
-         * @param hints
          */
         public boolean cache(Element element, Map hints) {
             return false;
@@ -2170,12 +2151,6 @@ public class XSISimpleTypes {
          *
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
-         * @param element
-         * @param value
-         * @param attrs
-         * @param hints
-         * @throws SAXException
-         * @throws OperationNotSupportedException
          */
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws OperationNotSupportedException {

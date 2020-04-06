@@ -143,9 +143,6 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
      * Creates a mapping from the test case simple source to a complex type with an
      * "areaOfInfluence" attribute, which is a buffer over the simple "location" attribute and
      * another which is the concatenation of the attributes "anzlic_no" and "project_no"
-     *
-     * @return
-     * @throws Exception
      */
     @SuppressWarnings("unchecked")
     private FeatureTypeMapping createSampleDerivedAttributeMappings() throws Exception {
@@ -286,12 +283,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
                         .function("getID", new org.opengis.filter.expression.Expression[0]));
     }
 
-    /**
-     * Implementation for tests of fid -> fid unmapping.
-     *
-     * @param idExpression
-     * @throws Exception
-     */
+    /** Implementation for tests of fid -> fid unmapping. */
     private void checkUnrollIdExpression(Expression idExpression) throws Exception {
         AttributeMapping featureMapping = null;
         Name featurePath = mapping.getTargetFeature().getName();
@@ -371,8 +363,6 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
     /**
      * An xpath expression may target a "client property" mapping (in xml land, an xml attribute
      * rather than a xml element).
-     *
-     * @throws Exception
      */
     @Test
     public void testPropertyNameWithXlinkAttribute() throws Exception {
@@ -403,8 +393,6 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
     /**
      * An x-path expression may target a "client property" mapping (in xml land, an xml attribute
      * rather than a xml element).
-     *
-     * @throws Exception
      */
     @Test
     public void testPropertyNameWithGmlIdAttribute() throws Exception {
@@ -512,8 +500,6 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
      *          OR ORIGINAL_N = "SWADLINCOTE"</code>
      *
      * <p>
-     *
-     * @throws Exception
      */
     @Test
     public void testCompareFilterMultipleMappingsPerPropertyName() throws Exception {

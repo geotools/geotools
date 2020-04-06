@@ -271,7 +271,6 @@ public class CRSChooser {
     /**
      * Takes in a CRS, finds it in the list and highlights it
      *
-     * @param crs
      */
     @SuppressWarnings("unchecked")
     public void gotoCRS(CoordinateReferenceSystem crs) {
@@ -590,10 +589,6 @@ public class CRSChooser {
     }
 
     /**
-     * @param found
-     * @throws CoreException
-     * @throws IOException
-     * @throws BackingStoreException
      */
     private void saveKeywords(CoordinateReferenceSystem found)
             throws CoreException, IOException, BackingStoreException {
@@ -618,11 +613,6 @@ public class CRSChooser {
     }
 
     /**
-     * @param text
-     * @param createdCRS
-     * @throws CoreException
-     * @throws IOException
-     * @throws BackingStoreException
      */
     private CoordinateReferenceSystem saveCustomizedCRS(
             String text, boolean processWKT, CoordinateReferenceSystem createdCRS)

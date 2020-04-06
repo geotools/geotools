@@ -537,7 +537,6 @@ public class FactoryRegistry {
      * Returns the factories available in the cache, or {@code null} if none. To be overridden by
      * {@link FactoryCreator} only.
      *
-     * @param category
      * @return List of references to cached factories, or {@code null} if none.
      */
     <T> List<Reference<T>> getCachedFactories(final Class<T> category) {
@@ -896,8 +895,6 @@ public class FactoryRegistry {
      *
      * <p>Used to facilitate integration with other plug-in systems, such as OSGi or Spring, that
      * block CLASSPATH visibility of {@link ServiceLoader} implementation registration.
-     *
-     * @param factories
      */
     public void registerFactories(final Iterator<?> factories) {
         ensureArgumentNonNull("factories", factories);
@@ -909,8 +906,6 @@ public class FactoryRegistry {
      *
      * <p>Used to facilitate integration with other plug-in systems, such as OSGi or Spring, that
      * block CLASSPATH visibility of {@link ServiceLoader} implementation registration.
-     *
-     * @param factories
      */
     public void registerFactories(final Iterable<?> factories) {
         ensureArgumentNonNull("factories", factories);
@@ -922,8 +917,6 @@ public class FactoryRegistry {
      *
      * <p>Used to facilitate integration with other plug-in systems, such as OSGi or Spring, that
      * block CLASSPATH visibility of {@link ServiceLoader} implementation registration.
-     *
-     * @param factory
      */
     public void registerFactory(final Object factory) {
         registry.registerInstance(factory);
@@ -934,10 +927,6 @@ public class FactoryRegistry {
      *
      * <p>Used to facilitate integration with other plug-in systems, such as OSGi or Spring, that
      * block CLASSPATH visibility of {@link ServiceLoader} implementation registration.
-     *
-     * @param factory
-     * @param category
-     * @return
      */
     public <T> boolean registerFactory(final T factory, final Class<T> category) {
         if (!category.isAssignableFrom(factory.getClass())) {
@@ -1177,11 +1166,7 @@ public class FactoryRegistry {
         registry.deregisterInstances();
     }
 
-    /**
-     * Clear registered factories for a provided category.
-     *
-     * @param category
-     */
+    /** Clear registered factories for a provided category. */
     public void deregisterAll(Class<?> category) {
         registry.deregisterInstances(category);
     }
@@ -1191,8 +1176,6 @@ public class FactoryRegistry {
      *
      * <p>Used to facilitate integration with other plug-in systems, such as OSGi or Spring, that
      * block CLASSPATH visibility of {@link ServiceLoader} implementation registration.
-     *
-     * @param factories
      */
     public void deregisterFactories(final Iterator<?> factories) {
         ensureArgumentNonNull("factories", factories);
@@ -1204,8 +1187,6 @@ public class FactoryRegistry {
      *
      * <p>Used to facilitate integration with other plug-in systems, such as OSGi or Spring, that
      * block CLASSPATH visibility of {@link ServiceLoader} implementation registration.
-     *
-     * @param factories
      */
     public void deregisterFactories(final Iterable<?> factories) {
         ensureArgumentNonNull("factories", factories);
@@ -1217,8 +1198,6 @@ public class FactoryRegistry {
      *
      * <p>Used to facilitate integration with other plug-in systems, such as OSGi or Spring, that
      * block CLASSPATH visibility of {@link ServiceLoader} implementation registration.
-     *
-     * @param factory
      */
     public void deregisterFactory(final Object factory) {
         registry.deregisterInstance(factory);
@@ -1229,10 +1208,6 @@ public class FactoryRegistry {
      *
      * <p>Used to facilitate integration with other plug-in systems, such as OSGi or Spring, that
      * block CLASSPATH visibility of {@link ServiceLoader} implementation registration.
-     *
-     * @param factory
-     * @param category
-     * @return
      */
     public <T> boolean deregisterFactory(final T factory, final Class<T> category) {
         ensureArgumentNonNull("factory", factory);
@@ -1247,9 +1222,6 @@ public class FactoryRegistry {
      * Define pairwise ordering giving priority to the <code>firstFactory</code> over the <code>
      * secondFactory</code>.
      *
-     * @param category
-     * @param firstFactory
-     * @param secondFactory
      * @return if this call establishes a new order
      */
     public <T> boolean setOrdering(
@@ -1362,8 +1334,6 @@ public class FactoryRegistry {
      * before the second.
      *
      * @param category The category to clear instance order for.
-     * @param firstFactory
-     * @param secondFactory
      * @return {@code true} if that ordering was previously defined
      */
     public <T> boolean unsetOrdering(

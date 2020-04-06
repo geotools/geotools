@@ -72,10 +72,6 @@ public final class Decimator {
      * Builds a decimator that will generalize geometries so that two subsequent points will be at
      * least pixelDistance away from each other when painted on the screen. Set pixelDistance to 0
      * if you don't want any generalization (but just a transformation)
-     *
-     * @param screenToWorld
-     * @param paintArea
-     * @param pixelDistance
      */
     public Decimator(MathTransform screenToWorld, Rectangle paintArea, double pixelDistance) {
         if (screenToWorld != null && pixelDistance > 0) {
@@ -120,9 +116,6 @@ public final class Decimator {
      *
      * <p>NOTE: this could need more work based on CRS, but the rectangle is in pixels so it should
      * be fairly immune to all but crazy projections.
-     *
-     * @param screenToWorld
-     * @param paintArea
      */
     public Decimator(MathTransform screenToWorld, Rectangle paintArea) {
         // 0.8 is just so you don't decimate "too much". magic number.
@@ -136,11 +129,6 @@ public final class Decimator {
      *
      * <p>In other words, it computes how long a pixel is in the native spatial reference system of
      * the data
-     *
-     * @param screenToWorld
-     * @param paintArea
-     * @return
-     * @throws TransformException
      */
     public static double[] computeGeneralizationDistances(
             MathTransform screenToWorld, Rectangle paintArea, double pixelDistance)
@@ -185,25 +173,12 @@ public final class Decimator {
         }
     }
 
-    /**
-     * Checks the specified number is not infinite nor Nan
-     *
-     * @param d
-     * @return
-     */
+    /** Checks the specified number is not infinite nor Nan */
     private static boolean isFinite(double d) {
         return !Double.isNaN(d) && !Double.isInfinite(d);
     }
 
-    /**
-     * Computes the real world distance of a one pixel segment centered in the specified point
-     *
-     * @param x
-     * @param y
-     * @param transform
-     * @return
-     * @throws TransformException
-     */
+    /** Computes the real world distance of a one pixel segment centered in the specified point */
     static double[] getGeneralizationSpans(double x, double y, MathTransform transform)
             throws TransformException {
         double[] original = new double[] {x - 0.5, y - 0.5, x + 0.5, y + 0.5};
@@ -386,10 +361,7 @@ public final class Decimator {
         }
     }
 
-    /**
-     * @param geom
-     * @param seq
-     */
+    /** */
     private boolean decimateOnEnvelope(Geometry geom, LiteCoordinateSequence seq) {
         Envelope env = geom.getEnvelopeInternal();
         if (env.getWidth() <= spanx && env.getHeight() <= spany) {
@@ -411,11 +383,7 @@ public final class Decimator {
         return false;
     }
 
-    /**
-     * Makes sure the ring is turned into a minimal 3 non equal points one
-     *
-     * @param ring
-     */
+    /** Makes sure the ring is turned into a minimal 3 non equal points one */
     private void decimateRingFully(LiteCoordinateSequence seq) {
         double[] coords = seq.getArray();
         int dim = seq.getDimension();
@@ -438,9 +406,6 @@ public final class Decimator {
     /**
      * 1. remove any points that are within the spanx,spany. We ALWAYS keep 1st and last point 2.
      * transform to screen coordinates 3. remove any points that are close (span <1)
-     *
-     * @param seq
-     * @param tranform
      */
     private final void decimateTransformGeneralize(
             LiteCoordinateSequence seq,
@@ -661,12 +626,7 @@ public final class Decimator {
         }
     }
 
-    /**
-     * @param coords
-     * @param dimension
-     * @param readDoubles
-     * @param currentDoubles
-     */
+    /** */
     private int copyCoordinate(
             double[] coords, int dimension, int readDoubles, int currentDoubles) {
         for (int i = 0; i < dimension; i++) {

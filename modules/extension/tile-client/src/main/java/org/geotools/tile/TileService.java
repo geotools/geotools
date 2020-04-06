@@ -115,11 +115,7 @@ public abstract class TileService {
         return 256;
     }
 
-    /**
-     * Returns the prefix of an tile-url, e.g.: http://tile.openstreetmap.org/
-     *
-     * @return
-     */
+    /** Returns the prefix of an tile-url, e.g.: http://tile.openstreetmap.org/ */
     public String getBaseUrl() {
         return this.baseURL;
     }
@@ -171,11 +167,8 @@ public abstract class TileService {
     /**
      * Returns the zoom-level that should be used to fetch the tiles.
      *
-     * @param zoomLevelMatcher
-     * @param scaleFactor
      * @param useRecommended always use the calculated zoom-level, do not use the one the user
      *     selected
-     * @return
      */
     public int getZoomLevelToUse(
             ScaleZoomLevelMatcher zoomLevelMatcher, int scaleFactor, boolean useRecommended) {
@@ -199,11 +192,7 @@ public abstract class TileService {
         }
     }
 
-    /**
-     * Returns the lowest zoom-level number from the scaleList.
-     *
-     * @return
-     */
+    /** Returns the lowest zoom-level number from the scaleList. */
     public int getMinZoomLevel() {
         double[] scaleList = getScaleList();
         int minZoomLevel = 0;
@@ -215,11 +204,7 @@ public abstract class TileService {
         return minZoomLevel;
     }
 
-    /**
-     * Returns the highest zoom-level number from the scaleList.
-     *
-     * @return
-     */
+    /** Returns the highest zoom-level number from the scaleList. */
     public int getMaxZoomLevel() {
         double[] scaleList = getScaleList();
         int maxZoomLevel = scaleList.length - 1;
@@ -402,9 +387,6 @@ public abstract class TileService {
      *
      * <p>But cutExtentIntoTiles(..) requires an extent that looks like this: MaxY: 85° (or 90°)
      * MinY: -85° (or -90°) MaxX: 180° MinX: -180°
-     *
-     * @param envelope
-     * @return
      */
     private ReferencedEnvelope normalizeExtent(ReferencedEnvelope envelope) {
         ReferencedEnvelope bounds = getBounds();

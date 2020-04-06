@@ -187,8 +187,6 @@ public class FeatureTypes {
      *
      * @param schema the original schema
      * @param crs the forced crs
-     * @return
-     * @throws SchemaException
      */
     public static SimpleFeatureType transform(
             SimpleFeatureType schema, CoordinateReferenceSystem crs) throws SchemaException {
@@ -202,8 +200,6 @@ public class FeatureTypes {
      * @param crs the forced crs
      * @param forceOnlyMissing if true, will force the specified crs only on the attributes that do
      *     miss one
-     * @return
-     * @throws SchemaException
      */
     public static SimpleFeatureType transform(
             SimpleFeatureType schema, CoordinateReferenceSystem crs, boolean forceOnlyMissing)
@@ -244,9 +240,6 @@ public class FeatureTypes {
      * @param schema Schema for target transformation - transform( schema, crs )
      * @param transform MathTransform used to transform coordinates - reproject( crs, crs )
      * @return transformed Feature of type schema
-     * @throws TransformException
-     * @throws MismatchedDimensionException
-     * @throws IllegalAttributeException
      */
     public static SimpleFeature transform(
             SimpleFeature feature, SimpleFeatureType schema, MathTransform transform)
@@ -587,9 +580,6 @@ public class FeatureTypes {
      * This method depends on the correct implementation of FeatureType equals
      *
      * <p>We may need to write an implementation that can detect cycles,
-     *
-     * @param typeA
-     * @param typeB
      */
     public static boolean equalsAncestors(SimpleFeatureType typeA, SimpleFeatureType typeB) {
         return ancestors(typeA).equals(ancestors(typeB));

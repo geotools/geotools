@@ -1,0 +1,10 @@
+.. note::
+
+   This `Mapbox Style Specification <https://www.mapbox.com/mapbox-gl-style-spec>`__ document was started from the BSD `github.com/mapbox/mapbox-gl-js <https://github.com/mapbox/mapbox-gl-js>`__  repository.
+   
+   The specification is reproduced here with details on the GeoTools MBStyle implementation. Where appropriate examples have been changed to reference `GeoWebCache <http://geowebcache.org/>`__.
+
+   Documentation :download:`BSD <LICENSE.md>` license:
+
+   .. literalinclude:: LICENSE.md
+      :language: text

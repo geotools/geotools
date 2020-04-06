@@ -99,7 +99,6 @@ public class AzimuthalEquidistant {
          * Constructor.
          *
          * @param parameters the parameters that define this projection
-         * @throws ParameterNotFoundException
          */
         protected Abstract(ParameterValueGroup parameters) throws ParameterNotFoundException {
             super(parameters);
@@ -164,7 +163,6 @@ public class AzimuthalEquidistant {
          * Constructor.
          *
          * @param parameters the parameters that define this projection
-         * @throws ParameterNotFoundException
          */
         protected Spherical(ParameterValueGroup parameters) throws ParameterNotFoundException {
             super(parameters);
@@ -317,7 +315,6 @@ public class AzimuthalEquidistant {
          * Constructor.
          *
          * @param parameters the parameters that define this projection
-         * @throws ParameterNotFoundException
          */
         protected Ellipsoidal(ParameterValueGroup parameters) throws ParameterNotFoundException {
             super(parameters);

@@ -84,11 +84,7 @@ public class UserLayerBuilder extends AbstractSLDBuilder<UserLayer> {
         return this;
     }
 
-    /**
-     * Reset builder to provided original stroke.
-     *
-     * @param stroke
-     */
+    /** Reset builder to provided original stroke. */
     public UserLayerBuilder reset(UserLayer other) {
         if (other == null) {
             return unset();

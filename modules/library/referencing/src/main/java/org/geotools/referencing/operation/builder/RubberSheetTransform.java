@@ -158,11 +158,7 @@ class RubberSheetTransform extends AbstractMathTransform implements MathTransfor
         throw (new TransformException("Points are outside the scope"));
     }
 
-    /**
-     * Returns the inverse transform.
-     *
-     * @return
-     */
+    /** Returns the inverse transform. */
     @Override
     public MathTransform2D inverse() throws NoninvertibleTransformException {
         return (MathTransform2D) super.inverse();

@@ -38,9 +38,6 @@ public abstract class VPFGeometryFactory {
      *
      * @param featureType the VPFFeatureType to use
      * @param values the current feature
-     * @throws SQLException
-     * @throws IOException
-     * @throws IllegalAttributeException
      */
     public abstract void createGeometry(VPFFeatureType featureType, SimpleFeature values)
             throws SQLException, IOException, IllegalAttributeException;

@@ -50,7 +50,6 @@ public class OrthoLine implements LineElement {
      * @param orientation line orientation
      * @param ordinate position of the line
      * @param level integer level associated with this line
-     * @param value
      */
     public OrthoLine(
             ReferencedEnvelope gridBounds,

@@ -133,11 +133,6 @@ class MBTilesFeatureSource extends ContentFeatureSource {
      * Computes the minimum bounds that need to be still read in order to get the missing tiles,
      * without allocating each one in a in-memory list: with large bounds at high zoom levels, the
      * list could easily cause a OOM
-     *
-     * @param z
-     * @param bounds
-     * @param readLocations
-     * @return
      */
     protected RectangleLong getUnreadLocationBounds(
             long z, RectangleLong bounds, Set<MBTilesTileLocation> readLocations) {

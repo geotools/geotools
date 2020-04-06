@@ -66,8 +66,8 @@ Unsupported plugins:
    :maxdepth: 1
    
    arcsde
-   dxf
    georest
    kml
    solr
+   elasticsearch
    wfs-ng

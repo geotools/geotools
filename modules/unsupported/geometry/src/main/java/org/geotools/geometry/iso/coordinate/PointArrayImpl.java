@@ -43,11 +43,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 public class PointArrayImpl extends ArrayList<Position> implements PointArray {
     CoordinateReferenceSystem crs;
 
-    /**
-     * Please add content; according to ISO 19117 an empty PointArray cannot exist.
-     *
-     * @param crs
-     */
+    /** Please add content; according to ISO 19117 an empty PointArray cannot exist. */
     public PointArrayImpl(CoordinateReferenceSystem crs) {
         this.crs = crs;
     }
@@ -60,8 +56,6 @@ public class PointArrayImpl extends ArrayList<Position> implements PointArray {
     /**
      * Creates a new PointArray based on another PointArray. This constructor creates new Position
      * objects.
-     *
-     * @param aPointArray
      */
     public PointArrayImpl(PointArray aPointArray) {
         if (aPointArray.isEmpty()) {
@@ -89,11 +83,7 @@ public class PointArrayImpl extends ArrayList<Position> implements PointArray {
         crs = getDirectPosition(0).getDirectPosition().getCoordinateReferenceSystem();
     }
 
-    /**
-     * Construct a new PointArray. This constructor does not create new position objects.
-     *
-     * @param positions
-     */
+    /** Construct a new PointArray. This constructor does not create new position objects. */
     public PointArrayImpl(List<Position> positions) {
         super(positions);
         if (positions.size() == 0) {
@@ -126,7 +116,6 @@ public class PointArrayImpl extends ArrayList<Position> implements PointArray {
     /**
      * Returns the coordiantes of the Position at index
      *
-     * @param arg0
      * @return double[]
      */
     public double[] getCoordinate(int index) {
@@ -148,7 +137,6 @@ public class PointArrayImpl extends ArrayList<Position> implements PointArray {
     /**
      * Gets the position at index
      *
-     * @param arg0
      * @return PositionImpl
      */
     public Position getDirectPosition(int index) {
@@ -177,8 +165,6 @@ public class PointArrayImpl extends ArrayList<Position> implements PointArray {
     }
 
     //	/**
-    //	 * @param index
-    //	 * @param position
     //	 */
     //	public void setDirectPosition(int index, PositionImpl position) {
     //		assert ((index < this.column.size()) && (position != null));
@@ -186,17 +172,12 @@ public class PointArrayImpl extends ArrayList<Position> implements PointArray {
     //	}
 
     //	/**
-    //	 * @param positions
-    //	 * @param startPosition
     //	 */
     //	public void set(List<PositionImpl> positions, int startPosition) {
     //		this.set(positions, startPosition, positions.size());
     //	}
     //
     //	/**
-    //	 * @param positions
-    //	 * @param startPosition
-    //	 * @param count
     //	 */
     //	private void set(List<PositionImpl> positions, int startPosition, int count) {
     //
@@ -283,7 +264,6 @@ public class PointArrayImpl extends ArrayList<Position> implements PointArray {
     /**
      * Removes the first occurrence of this position from the PointArray
      *
-     * @param p
      * @return boolean TRUE, if the Remove was successful
      */
     public boolean removePosition(Position p) {
@@ -346,12 +326,7 @@ public class PointArrayImpl extends ArrayList<Position> implements PointArray {
         }
     }
 
-    /**
-     * Sets the Coordinates of the Position at index in the PointArray
-     *
-     * @param index
-     * @param coord
-     */
+    /** Sets the Coordinates of the Position at index in the PointArray */
     public void set(int index, double[] coord) {
         // TODO test
         // Manipulate the coordinates at the Position entry at the index
@@ -391,8 +366,6 @@ public class PointArrayImpl extends ArrayList<Position> implements PointArray {
      * This method splits the sequence of positions according to a maximum distance. After splitting
      * the distance between two positions will be maxSpacing or less. The length and shape of the
      * LineString will not be changed.
-     *
-     * @param maxSpacing
      */
     // unsure of suppression, someone understanding this code should verify
     @SuppressWarnings("PMD.JumbledIncrementer")
@@ -440,12 +413,7 @@ public class PointArrayImpl extends ArrayList<Position> implements PointArray {
         private double length;
         private CurveImpl parentCurve = null;
 
-        /**
-         * Create a Line Segment sequence by a pointarray and a parent curve
-         *
-         * @param pointArray
-         * @param aParentCurve
-         */
+        /** Create a Line Segment sequence by a pointarray and a parent curve */
         public LineSegmentsSequence(PointArrayImpl pointArray, CurveImpl aParentCurve) {
             this.pointArray = pointArray;
             this.index = 0;
@@ -480,36 +448,22 @@ public class PointArrayImpl extends ArrayList<Position> implements PointArray {
             return rSeg;
         }
 
-        /**
-         * @param arg0
-         * @param dp
-         * @return DirectPosition
-         */
+        /** @return DirectPosition */
         public DirectPosition getStartDirectPositionCoordinate(int arg0, DirectPosition dp) {
             return this.pointArray.getDirectPosition(arg0, dp);
         }
 
-        /**
-         * @param arg0
-         * @param dp
-         * @return DirectPositionImpl
-         */
+        /** @return DirectPositionImpl */
         public DirectPosition getEndDirectPositionCoordinate(int arg0, DirectPosition dp) {
             return this.pointArray.getDirectPosition(arg0 + 1, dp);
         }
 
-        /**
-         * @param arg0
-         * @return double[]
-         */
+        /** @return double[] */
         public double[] getStartCoordinate(int arg0) {
             return this.pointArray.getCoordinate(arg0);
         }
 
-        /**
-         * @param arg0
-         * @return double[]
-         */
+        /** @return double[] */
         public double[] getEndCoordinate(int arg0) {
             return this.pointArray.getCoordinate(arg0 + 1);
         }

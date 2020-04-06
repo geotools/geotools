@@ -99,8 +99,6 @@ public class AbstractSimpleConfigurator extends Dialog {
      * <p>Creates a composite with a grid layout of the specifed columns, and a label with text from
      * label.
      *
-     * @param parent
-     * @param label
      * @return Composite with one label
      */
     public static Composite subpart(Composite parent, String label) {
@@ -146,7 +144,6 @@ public class AbstractSimpleConfigurator extends Dialog {
      * <p>However this does seem to be in keeping with the purpose of SelectionEvent it already
      * isolates out code from TypedEvents by providing a summary of what changed in which widet.
      *
-     * @param e
      * @return A SelectionEvent based on the provided modify event
      */
     public static SelectionEvent selectionEvent(final ModifyEvent e) {

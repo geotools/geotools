@@ -168,7 +168,6 @@ public class NTv2GridShiftFactory extends ReferencingFactory implements Buffered
      *
      * @param location the NTv2 file absolute path
      * @return the grid, or {@code null} on error
-     * @throws FactoryException
      */
     private GridShiftFile loadNTv2Grid(URL location) throws FactoryException {
         InputStream in = null;

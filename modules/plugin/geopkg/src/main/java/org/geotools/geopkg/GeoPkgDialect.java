@@ -31,8 +31,11 @@ import java.sql.Statement;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.logging.Level;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
@@ -46,10 +49,13 @@ import org.geotools.jdbc.PreparedStatementSQLDialect;
 import org.geotools.jdbc.PrimaryKey;
 import org.geotools.jdbc.PrimaryKeyColumn;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultEngineeringCRS;
+import org.geotools.util.Converters;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
+import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
@@ -167,12 +173,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         }
     }
 
-    /**
-     * @param bytes
-     * @param factory
-     * @return
-     * @throws IOException
-     */
+    /** */
     private Geometry geometry(
             Class geometryType, byte[] bytes, GeometryFactory factory, Hints hints)
             throws IOException {
@@ -200,6 +201,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         mappings.put("DATE", java.sql.Date.class);
         mappings.put("TIMESTAMP", java.sql.Timestamp.class);
         mappings.put("TIME", java.sql.Time.class);
+        mappings.put("DATETIME", java.sql.Timestamp.class);
     }
 
     @Override
@@ -300,14 +302,17 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
 
         CoordinateReferenceSystem crs = featureType.getCoordinateReferenceSystem();
         if (crs != null) {
-            Integer epsgCode = null;
-            try {
-                epsgCode = CRS.lookupEpsgCode(crs, true);
-            } catch (FactoryException e) {
-                LOGGER.log(Level.WARNING, "Error looking up epsg code for " + crs, e);
-            }
-            if (epsgCode != null) {
-                fe.setSrid(epsgCode);
+            if (DefaultEngineeringCRS.GENERIC_2D == crs) {
+                fe.setSrid(GeoPackage.GENERIC_PROJECTED_SRID);
+            } else {
+                try {
+                    Integer epsgCode = CRS.lookupEpsgCode(crs, true);
+                    if (epsgCode != null) {
+                        fe.setSrid(epsgCode);
+                    }
+                } catch (FactoryException e) {
+                    LOGGER.log(Level.WARNING, "Error looking up epsg code for " + crs, e);
+                }
             }
         }
 
@@ -386,7 +391,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
 
     public CoordinateReferenceSystem createCRS(int srid, Connection cx) throws SQLException {
         try {
-            return CRS.decode("EPSG:" + srid, true);
+            return GeoPackage.decodeSRID(srid);
         } catch (Exception e) {
             LOGGER.log(Level.FINE, "Unable to create CRS from epsg code " + srid, e);
 
@@ -495,7 +500,9 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
                 ps.setString(column, ((Time) value).toString());
                 break;
             case Types.TIMESTAMP:
-                ps.setString(column, ((Timestamp) value).toString());
+                // 2020-02-19 23:00:00.0  --> 2020-02-19 23:00:00.0Z
+                // We need the "Z" or sql lite will interpret the value as local time
+                ps.setString(column, ((Timestamp) value).toString() + "Z");
                 break;
             default:
                 super.setValue(value, binding, ps, column, cx);
@@ -568,10 +575,6 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
 
     /**
      * Checks if the filter uses a single spatial attribute, and such spatial attribute is indexed
-     *
-     * @param filter
-     * @param schema
-     * @return
      */
     private GeometryDescriptor simpleSpatialSearch(Filter filter, SimpleFeatureType schema) {
         FilterAttributeExtractor attributeExtractor = new FilterAttributeExtractor();
@@ -631,5 +634,38 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     protected void addSupportedHints(Set<Hints.Key> hints) {
         hints.add(Hints.GEOMETRY_DISTANCE);
         hints.add(Hints.SCREENMAP);
+    }
+
+    /**
+     * SQLite dates are just strings, they don't get converted to Date in case of aggregation, do it
+     * here instead
+     */
+    @Override
+    public Function<Object, Object> getAggregateConverter(
+            FeatureVisitor visitor, SimpleFeatureType featureType) {
+        Optional<List<Class>> maybeResultTypes = getResultTypes(visitor, featureType);
+        if (maybeResultTypes.isPresent()) {
+            List<Class> resultTypes = maybeResultTypes.get();
+            if (resultTypes.size() == 1) {
+                Class targetType = resultTypes.get(0);
+                if (java.util.Date.class.isAssignableFrom(targetType)) {
+                    return v -> {
+                        Object converted = Converters.convert(v, targetType);
+                        if (converted == null) {
+                            LOGGER.log(
+                                    Level.WARNING,
+                                    "Could not convert "
+                                            + v
+                                            + " to the desired return type "
+                                            + targetType);
+                            return v;
+                        }
+                        return converted;
+                    };
+                }
+            }
+        }
+        // otherwise no conversion needed
+        return Function.identity();
     }
 }

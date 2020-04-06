@@ -50,31 +50,18 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
      */
     private int size;
 
-    /**
-     * Builds a new packed coordinate sequence
-     *
-     * @param coords
-     */
+    /** Builds a new packed coordinate sequence */
     public LiteCoordinateSequence(double[] coords, int dimensions) {
         this(coords, dimensions, 0);
     }
 
-    /**
-     * Builds a new packed coordinate sequence
-     *
-     * @param coords
-     */
+    /** Builds a new packed coordinate sequence */
     public LiteCoordinateSequence(double[] coords, int dimensions, int measures) {
         super(dimensions, measures);
         init(coords, dimensions);
     }
 
-    /**
-     * Private initializer, allows sharing code between constructors
-     *
-     * @param coords
-     * @param dimensions
-     */
+    /** Private initializer, allows sharing code between constructors */
     void init(double[] coords, int dimensions) {
         this.dimension = dimensions;
         if (dimensions < 2)
@@ -87,20 +74,12 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
         this.size = coords.length / dimensions;
     }
 
-    /**
-     * Builds a new packed coordinate sequence
-     *
-     * @param coords
-     */
+    /** Builds a new packed coordinate sequence */
     public LiteCoordinateSequence(double... coords) {
         this(coords, 2, 0);
     }
 
-    /**
-     * Builds a new packed coordinate sequence out of a float coordinate array
-     *
-     * @param coordinates
-     */
+    /** Builds a new packed coordinate sequence out of a float coordinate array */
     public LiteCoordinateSequence(float[] coordinates, int dimension) {
         super(dimension, 0);
         double[] dcoords = new double[coordinates.length];
@@ -110,20 +89,12 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
         init(dcoords, dimension);
     }
 
-    /**
-     * Builds a new packed coordinate sequence out of a float coordinate array
-     *
-     * @param coordinates
-     */
+    /** Builds a new packed coordinate sequence out of a float coordinate array */
     public LiteCoordinateSequence(float[] coordinates) {
         this(coordinates, 2);
     }
 
-    /**
-     * Builds a new packed coordinate sequence out of a coordinate array
-     *
-     * @param coordinates
-     */
+    /** Builds a new packed coordinate sequence out of a coordinate array */
     public LiteCoordinateSequence(Coordinate[] coordinates) {
         super(guessDimension(coordinates == null ? new Coordinate[0] : coordinates), 0);
         if (coordinates == null) coordinates = new Coordinate[0];
@@ -152,34 +123,19 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
         return 2;
     }
 
-    /**
-     * Builds a new empty packed coordinate sequence of a given size and dimension
-     *
-     * @param size
-     * @param dimension
-     */
+    /** Builds a new empty packed coordinate sequence of a given size and dimension */
     public LiteCoordinateSequence(int size, int dimension) {
         this(size, dimension, 0);
     }
 
-    /**
-     * Builds a new empty packed coordinate sequence of a given size and dimension
-     *
-     * @param size
-     * @param dimension
-     * @param measures
-     */
+    /** Builds a new empty packed coordinate sequence of a given size and dimension */
     public LiteCoordinateSequence(int size, int dimension, int measures) {
         super(dimension, measures);
         coords = new double[size * this.dimension];
         this.size = coords.length / dimension;
     }
 
-    /**
-     * Copy constructor
-     *
-     * @param seq
-     */
+    /** Copy constructor */
     public LiteCoordinateSequence(LiteCoordinateSequence seq) {
         super(seq.getDimension(), seq.getMeasures());
         // a trivial benchmark can show that cloning arrays like this is actually faster
@@ -332,10 +288,6 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
     /**
      * Clones the specified geometry using {@link LiteCoordinateSequence} in the result, with the
      * specified number of dimensions
-     *
-     * @param geom
-     * @param dimension
-     * @return
      */
     public static Geometry cloneGeometry(Geometry geom, int dimension) {
         if (dimension < 2) {
@@ -355,20 +307,11 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
         }
     }
 
-    /**
-     * Clones the specified geometry using {@link LiteCoordinateSequence} in the result
-     *
-     * @param geom
-     * @return
-     */
+    /** Clones the specified geometry using {@link LiteCoordinateSequence} in the result */
     public static final Geometry cloneGeometry(Geometry geom) {
         return cloneGeometry(geom, 2);
     }
-    /**
-     * changes this to a new CSF -- more efficient than the JTS way
-     *
-     * @param geom
-     */
+    /** changes this to a new CSF -- more efficient than the JTS way */
     private static final Geometry cloneGeometry(Polygon geom, int dimension) {
         LinearRing lr = (LinearRing) cloneGeometry((LinearRing) geom.getExteriorRing(), dimension);
         LinearRing[] rings = new LinearRing[geom.getNumInteriorRing()];

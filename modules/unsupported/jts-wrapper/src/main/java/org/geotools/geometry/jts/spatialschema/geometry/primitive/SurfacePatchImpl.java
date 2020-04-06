@@ -109,17 +109,12 @@ public abstract class SurfacePatchImpl extends GenericSurfaceImpl
      */
     public abstract int getNumDerivativesOnBoundary();
 
-    /**
-     * @return
-     * @see com.polexis.lite.spatialschema.geometry.primitive.SurfacePatchImpl#getBoundary()
-     */
+    /** @see com.polexis.lite.spatialschema.geometry.primitive.SurfacePatchImpl#getBoundary() */
     public SurfaceBoundary getBoundary() {
         return boundary;
     }
 
     /**
-     * @param point
-     * @return
      * @see
      *     com.polexis.lite.spatialschema.geometry.geometry.GenericSurfaceImpl#getUpNormal(org.opengis.geometry.coordinate.DirectPosition)
      */
@@ -127,10 +122,7 @@ public abstract class SurfacePatchImpl extends GenericSurfaceImpl
         return new double[] {0, 0, 1};
     }
 
-    /**
-     * @return
-     * @see com.polexis.lite.spatialschema.geometry.geometry.GenericSurfaceImpl#getPerimeter()
-     */
+    /** @see com.polexis.lite.spatialschema.geometry.geometry.GenericSurfaceImpl#getPerimeter() */
     public final double getPerimeter() {
         org.locationtech.jts.geom.Geometry jtsGeom = getJTSGeometry();
         return jtsGeom.getBoundary().getLength();

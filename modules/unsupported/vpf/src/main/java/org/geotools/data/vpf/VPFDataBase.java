@@ -44,8 +44,6 @@ public class VPFDataBase {
      * Constructor
      *
      * @param directory A <code>File</code> representing the base directory of the database
-     * @throws IOException
-     * @throws SchemaException
      */
     public VPFDataBase(File directory) throws IOException, SchemaException {
         VPFFile vpfTable;

@@ -27,30 +27,27 @@ import static org.junit.Assert.assertTrue;
 import com.sun.media.jai.operator.ImageReadDescriptor;
 import it.geosolutions.imageio.stream.input.FileImageInputStreamExtImpl;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
+import java.awt.image.renderable.ParameterBlock;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 import javax.media.jai.Interpolation;
 import javax.media.jai.PlanarImage;
+import javax.media.jai.RenderedOp;
 import org.apache.commons.io.FileUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.coverage.grid.io.DimensionDescriptor;
-import org.geotools.coverage.grid.io.GranuleSource;
-import org.geotools.coverage.grid.io.GridCoverage2DReader;
+import org.geotools.coverage.grid.io.*;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -62,6 +59,7 @@ import org.geotools.image.test.ImageAssert;
 import org.geotools.image.util.ImageUtilities;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.test.TestData;
 import org.geotools.util.factory.Hints;
@@ -79,11 +77,14 @@ import org.opengis.filter.Filter;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
 /** Testing whether a simple mosaic correctly has its elements reprojected */
 public class HeterogenousCRSTest {
 
+    public static final double DELTA = 1E-6;
     @Rule public TemporaryFolder crsMosaicFolder = new TemporaryFolder();
 
     @BeforeClass
@@ -682,5 +683,141 @@ public class HeterogenousCRSTest {
             }
         }
         return files;
+    }
+
+    @Test
+    public void testHeterogeneousCRSReadInGranulesCRS() throws Exception {
+
+        // Sample mosaic is made of 3 different UTM zones and mosaicCRS is 4326.
+        // Each granule is filled with a color and have a white stripe in the middle.
+        // red: EPSG:32631
+        // green: EPSG:32632
+        // blue: EPSG:32633
+        String testLocation = "heterogeneous_crs_2";
+        URL storeUrl = TestData.url(this, testLocation);
+
+        File testDataFolder = new File(storeUrl.toURI());
+        File testDirectory = crsMosaicFolder.newFolder(testLocation);
+        FileUtils.copyDirectory(testDataFolder, testDirectory);
+
+        ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, null);
+        CoordinateReferenceSystem utmZone32N = CRS.decode("EPSG:32632", true);
+        GeneralEnvelope envelope =
+                new GeneralEnvelope(new double[] {150000, 600000}, new double[] {850000, 1200000});
+        envelope.setCoordinateReferenceSystem(utmZone32N);
+        GridEnvelope2D gridRange = new GridEnvelope2D(0, 0, 700, 600);
+
+        // Setting up an UTM gridGeometry
+        GridGeometry2D readingGridGeometry = new GridGeometry2D(gridRange, envelope);
+        ParameterValue<GridGeometry2D> ggParam =
+                AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        ggParam.setValue(readingGridGeometry);
+
+        GridCoverage2D gc = imReader.read(new GeneralParameterValue[] {ggParam});
+
+        // Check that we get back ImageMosaic on its "common" CRS (4326)
+        CoordinateReferenceSystem wgs84 = DefaultGeographicCRS.WGS84;
+        assertTrue(CRS.equalsIgnoreMetadata(wgs84, gc.getCoordinateReferenceSystem()));
+        RenderedImage ri = gc.getRenderedImage();
+        Map<String, Set<RenderedOp>> operationsGroups = new HashMap<String, Set<RenderedOp>>();
+        groupOperations(ri, operationsGroups);
+
+        Set<RenderedOp> imageReads = operationsGroups.get("ImageRead");
+        int granulesRead = imageReads.size();
+        // All the 3 granules have been reprojected
+        assertEquals(3, granulesRead);
+        assertEquals(granulesRead, operationsGroups.get("Warp").size());
+        gc.dispose(true);
+
+        //
+        // Repeat the TEST by setting the flag to provide the output in alternative CRS.
+        //
+
+        // Test the metadata value
+        String epsgCodes =
+                imReader.getMetadataValue(AbstractGridCoverage2DReader.MULTICRS_EPSGCODES);
+
+        // The reader supports EPSG:32632
+        assertTrue(epsgCodes.contains("EPSG:32632"));
+        assertTrue(Utils.isSupportedCRS(imReader, utmZone32N));
+
+        ParameterValue<Boolean> useAlternativeCRS =
+                ImageMosaicFormat.OUTPUT_TO_ALTERNATIVE_CRS.createValue();
+        useAlternativeCRS.setValue(true);
+        gc = imReader.read(new GeneralParameterValue[] {ggParam, useAlternativeCRS});
+
+        // Check that the output is in the requested CRS (no 4326 anymore)
+        assertTrue(CRS.equalsIgnoreMetadata(utmZone32N, gc.getCoordinateReferenceSystem()));
+        MathTransform transform = gc.getGridGeometry().getGridToCRS();
+        AffineTransform tx = (AffineTransform) transform;
+
+        // Check that we are getting the original resolution
+        // of the granule in that projection
+        assertEquals(1000, XAffineTransform.getScaleX0(tx), DELTA);
+        assertEquals(1000, XAffineTransform.getScaleY0(tx), DELTA);
+
+        ri = gc.getRenderedImage();
+        operationsGroups.clear();
+        groupOperations(ri, operationsGroups);
+        // Check that all the 3 granules have been read but only 2
+        // of them have been warped
+        imageReads = operationsGroups.get("ImageRead");
+        Set<RenderedOp> warps = operationsGroups.get("Warp");
+        granulesRead = imageReads.size();
+        assertEquals(3, granulesRead);
+        assertEquals(2, warps.size());
+        for (RenderedOp warp : warps) {
+            removeImagesBeingWarped(warp, imageReads);
+        }
+        // get the only imageRead not being warped along the chain
+        assertEquals(1, imageReads.size());
+        RenderedOp unwarpedImage = imageReads.iterator().next();
+        final ParameterBlock block = unwarpedImage.getParameterBlock();
+        Vector<Object> paramValues = block.getParameters();
+        // The green.tif is the image with native CRS = 32632 so the only one not being reprojected
+        assertTrue(
+                ((FileImageInputStreamExtImpl) paramValues.get(0))
+                        .getFile()
+                        .getAbsolutePath()
+                        .contains("green.tif"));
+        imReader.dispose();
+    }
+
+    private void removeImagesBeingWarped(RenderedOp image, Set<RenderedOp> imageReads) {
+        Vector sources = image.getSources();
+        Iterator it = sources.iterator();
+        while (it.hasNext()) {
+            Object source = it.next();
+            if (source instanceof RenderedOp) {
+                RenderedOp op = (RenderedOp) source;
+                String opName = op.getOperationName();
+                if (opName.equalsIgnoreCase("ImageRead")) {
+                    imageReads.remove(op);
+                    return;
+                } else {
+                    removeImagesBeingWarped(op, imageReads);
+                }
+            }
+        }
+    }
+
+    private void groupOperations(Object ri, Map<String, Set<RenderedOp>> operationsSet) {
+        if (ri instanceof RenderedOp) {
+            RenderedOp op = (RenderedOp) ri;
+            String opName = op.getOperationName();
+            Set<RenderedOp> set = operationsSet.get(opName);
+            if (set == null) {
+                set = new HashSet<>();
+            }
+            set.add(op);
+            operationsSet.put(opName, set);
+            Vector sources = op.getSources();
+            Iterator it = sources.iterator();
+            while (it.hasNext()) {
+                Object source = it.next();
+                groupOperations(source, operationsSet);
+            }
+            return;
+        }
     }
 }

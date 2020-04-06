@@ -59,10 +59,7 @@ public class OrientableCurveProxy extends OrientablePrimitiveProxy implements Or
         return this.curve().getStartPoint();
     }
 
-    /**
-     * @param distance
-     * @return
-     */
+    /** */
     public double[] getTangent(double distance) {
         // TODO Auto-generated method stub
         return null;

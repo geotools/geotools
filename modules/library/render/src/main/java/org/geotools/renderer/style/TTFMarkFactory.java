@@ -126,12 +126,7 @@ public class TTFMarkFactory implements MarkFactory {
         return shape;
     }
 
-    /**
-     * Returns a shape from an external mark definition
-     *
-     * @param mark
-     * @return
-     */
+    /** Returns a shape from an external mark definition */
     public Shape getShape(ExternalMark mark) {
         if (!"ttf".equals(mark.getFormat())) {
             return null;

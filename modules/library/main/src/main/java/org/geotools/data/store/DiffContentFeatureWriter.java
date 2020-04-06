@@ -57,13 +57,7 @@ public class DiffContentFeatureWriter implements FeatureWriter<SimpleFeatureType
 
     SimpleFeatureBuilder builder;
 
-    /**
-     * DiffFeatureWriter construction.
-     *
-     * @param reader
-     * @param diff
-     * @param filter
-     */
+    /** DiffFeatureWriter construction. */
     public DiffContentFeatureWriter(
             ContentFeatureStore store,
             Diff diff,
@@ -71,13 +65,7 @@ public class DiffContentFeatureWriter implements FeatureWriter<SimpleFeatureType
         this(store, diff, reader, new SimpleFeatureBuilder(reader.getFeatureType()));
     }
 
-    /**
-     * DiffFeatureWriter construction.
-     *
-     * @param reader
-     * @param diff
-     * @param filter
-     */
+    /** DiffFeatureWriter construction. */
     public DiffContentFeatureWriter(
             ContentFeatureStore store,
             Diff diff,
@@ -149,7 +137,6 @@ public class DiffContentFeatureWriter implements FeatureWriter<SimpleFeatureType
     /**
      * Writes out the current feature.
      *
-     * @throws IOException
      * @see org.geotools.data.FeatureWriter#write()
      */
     public void write() throws IOException {

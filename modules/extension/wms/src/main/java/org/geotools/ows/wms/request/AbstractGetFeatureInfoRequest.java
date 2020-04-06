@@ -47,9 +47,6 @@ public abstract class AbstractGetFeatureInfoRequest extends AbstractWMSRequest
     /**
      * GetMap request fills in the LAYERS and STYLES properties only when getFinalURL() is called,
      * so we force it to fill them in before copying the properties
-     *
-     * @param request
-     * @return
      */
     static Properties getMapProperties(GetMapRequest request) {
         request.getFinalURL();

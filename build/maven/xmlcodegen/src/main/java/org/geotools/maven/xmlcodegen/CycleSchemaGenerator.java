@@ -66,7 +66,6 @@ public class CycleSchemaGenerator extends SchemaGenerator {
     /**
      * Constructor.
      * 
-     * @param schema
      *            the schema we are building
      */
     public CycleSchemaGenerator(XSDSchema schema) {

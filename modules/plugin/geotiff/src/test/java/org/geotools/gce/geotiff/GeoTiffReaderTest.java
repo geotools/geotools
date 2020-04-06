@@ -81,7 +81,6 @@ import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.crs.ProjectedCRS;
@@ -112,13 +111,7 @@ public class GeoTiffReaderTest extends org.junit.Assert {
         GeoTiffReader.OVERRIDE_INNER_CRS = oldOverrideInnerCRS;
     }
 
-    /**
-     * Testing proper CRS override with PRJ.
-     *
-     * @throws IllegalArgumentException
-     * @throws IOException
-     * @throws FactoryException
-     */
+    /** Testing proper CRS override with PRJ. */
     @Test
     public void prjOverrideTesting1()
             throws IllegalArgumentException, IOException, FactoryException {
@@ -143,13 +136,7 @@ public class GeoTiffReaderTest extends org.junit.Assert {
         coverage.dispose(true);
     }
 
-    /**
-     * Testing proper CRS override with PRJ.
-     *
-     * @throws IllegalArgumentException
-     * @throws IOException
-     * @throws FactoryException
-     */
+    /** Testing proper CRS override with PRJ. */
     @Test
     public void prjOverrideTesting2()
             throws IllegalArgumentException, IOException, FactoryException {
@@ -186,13 +173,7 @@ public class GeoTiffReaderTest extends org.junit.Assert {
 
         coverage1.dispose(true);
     }
-    /**
-     * Test for reading bad/strange geotiff files
-     *
-     * @throws IllegalArgumentException
-     * @throws IOException
-     * @throws FactoryException
-     */
+    /** Test for reading bad/strange geotiff files */
     @Test
     //    @Ignore
     public void testReaderBadGeotiff()
@@ -274,13 +255,7 @@ public class GeoTiffReaderTest extends org.junit.Assert {
         coverage3.dispose(true);
     }
 
-    /**
-     * Test for reading geotiff files
-     *
-     * @throws IllegalArgumentException
-     * @throws IOException
-     * @throws NoSuchAuthorityCodeException
-     */
+    /** Test for reading geotiff files */
     @Test
     public void testReader() throws Exception {
 
@@ -1122,8 +1097,6 @@ public class GeoTiffReaderTest extends org.junit.Assert {
      *
      * <p>Side effect of this, we leak an open file due to the exception thrown during a read
      * operation.
-     *
-     * @throws Exception
      */
     @Test
     // @Ignore
@@ -1148,8 +1121,6 @@ public class GeoTiffReaderTest extends org.junit.Assert {
     /**
      * The GeoTiff reader should provide a useful error message when the user does not have
      * permissions to read the file.
-     *
-     * @throws Exception
      */
     @Test
     public void testPermissionDeniedExceptionFix() throws Exception {
@@ -1174,8 +1145,6 @@ public class GeoTiffReaderTest extends org.junit.Assert {
     /**
      * The GeoTiff reader should provide a useful error message when the input file path does not
      * exist.
-     *
-     * @throws Exception
      */
     @Test(expected = FileNotFoundException.class)
     public void testFileDoesNotExist() throws Throwable {

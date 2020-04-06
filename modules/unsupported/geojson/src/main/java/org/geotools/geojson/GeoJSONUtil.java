@@ -72,7 +72,6 @@ public class GeoJSONUtil {
      *
      * @param input The input object.
      * @return A reader.
-     * @throws IOException
      */
     public static Reader toReader(Object input) throws IOException {
         if (input instanceof BufferedReader) {
@@ -114,9 +113,28 @@ public class GeoJSONUtil {
      *
      * @param output The output object.
      * @return A writer.
-     * @throws IOException
      */
     public static Writer toWriter(Object output) throws IOException {
+        // If the user passed in an OutputStreamWriter, we'll trust them to close it themselves.
+        if (output instanceof OutputStreamWriter) {
+            return new Writer() {
+                Writer writer = new BufferedWriter((Writer) output);
+
+                @Override
+                public void write(char[] cbuf, int off, int len) throws IOException {
+                    writer.write(cbuf, off, len);
+                }
+
+                @Override
+                public void flush() throws IOException {
+                    writer.flush();
+                }
+
+                @Override
+                public void close() throws IOException {}
+            };
+        }
+
         if (output instanceof BufferedWriter) {
             return (BufferedWriter) output;
         }

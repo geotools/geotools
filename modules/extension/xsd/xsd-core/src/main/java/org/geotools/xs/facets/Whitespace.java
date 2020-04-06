@@ -167,8 +167,6 @@ public abstract class Whitespace implements Comparable<Whitespace> {
      * Returns the enum constant of the specified enum type with the specified name. The name must
      * match exactly an identifier used to declare an enum constant in this type. (Extraneous
      * whitespace characters are not permitted.)
-     *
-     * @param whitespace
      */
     public static Whitespace valueOf(String whitespace) {
         for (Iterator i = values.iterator(); i.hasNext(); ) {

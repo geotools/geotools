@@ -27,8 +27,6 @@ public class AlgoPointND {
     /**
      * Returns the square of the distance between two points
      *
-     * @param p0
-     * @param p1
      * @return double
      */
     public static double getDistanceSquare(double[] p0, double[] p1) {
@@ -42,8 +40,6 @@ public class AlgoPointND {
     /**
      * Returns the distance between two points
      *
-     * @param p0
-     * @param p1
      * @return double
      */
     public static double getDistance(double[] p0, double[] p1) {
@@ -63,7 +59,6 @@ public class AlgoPointND {
      * <p>Note: This method is NON-ROBUST due to floating-point rounding errors. Inexact results
      * according to floating-point rounding errors may be caused.
      *
-     * @param p0
      * @return double
      */
     public static double getDistanceToOrigin(double[] p0) {
@@ -76,7 +71,6 @@ public class AlgoPointND {
     }
 
     //	/**
-    //	 * @param p0
     //	 * @return double
     //	 */
     //	public static double getDistanceToOriginSquare(double[] p0) {
@@ -93,8 +87,6 @@ public class AlgoPointND {
      * <p>Note: This method is NON-ROBUST due to floating-point rounding errors. Inexact results
      * according to floating-point rounding errors may be caused.
      *
-     * @param p0
-     * @param p1
      * @return p1 - p0 : double[]
      */
     public static double[] subtract(double[] p0, double[] p1) {
@@ -110,8 +102,6 @@ public class AlgoPointND {
     /**
      * Adds a coordinate to another coordinate
      *
-     * @param p0
-     * @param p1
      * @return double[]
      */
     public static double[] add(double[] p0, double[] p1) {
@@ -125,8 +115,6 @@ public class AlgoPointND {
     }
 
     //	/**
-    //	 * @param p0
-    //	 * @param factor
     //	 * @return double[]
     //	 */
     //	public static double[] add(double[] p0, double factor) {
@@ -138,11 +126,7 @@ public class AlgoPointND {
     //		return result;
     //	}
 
-    /**
-     * @param p0
-     * @param factor
-     * @return double[]
-     */
+    /** @return double[] */
     public static double[] scale(double[] p0, double factor) {
         int n = p0.length;
         double result[] = new double[n];
@@ -153,8 +137,6 @@ public class AlgoPointND {
     }
 
     /**
-     * @param c0
-     * @param c1
      * @param maxSpacingSquare is the square of the max. allowed spacing
      * @return only the intermediate coordinates
      */
@@ -176,8 +158,6 @@ public class AlgoPointND {
     }
 
     //	/**
-    //	 * @param c0
-    //	 * @param n
     //	 * @return double[]
     //	 */
     //	public static double[] divide(double[] c0, int n) {
@@ -198,9 +178,6 @@ public class AlgoPointND {
      * <p>Note: This method is NON-ROBUST due to floating-point rounding errors. Inexact results
      * according to floating-point rounding errors may be caused.
      *
-     * @param c0
-     * @param c1
-     * @param r
      * @return double[]
      */
     public static double[] evaluate(double[] c0, double[] c1, double r) {
@@ -215,9 +192,6 @@ public class AlgoPointND {
     }
 
     //	/**
-    //	 * @param c0
-    //	 * @param c1
-    //	 * @param r
     //	 * @return double[]
     //	 */
     //	public static double[] evaluate(double[] c0, double[] c1, double[] r) {

@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>modules</artifactId>
-    <version>23-SNAPSHOT</version>
+    <version>24-SNAPSHOT</version>
   </parent>
 
   <!-- =========================================================== -->
@@ -27,7 +27,8 @@
   <packaging>pom</packaging>
   <name>Geotools plugins</name>
   <description>
-    Geotools plugins.
+    GeoTools plug-ins provide additional services to the core library
+    using ServiceLocator.
   </description>
 
   <licenses>
@@ -45,11 +46,14 @@
   <modules>
     <module>arcgrid</module>
     <module>charts</module>
+    <module>coverage-multidim</module>
+    <module>csv</module>
     <module>epsg-extension</module>
     <module>epsg-hsql</module>
     <module>epsg-postgresql</module>
     <module>epsg-wkt</module>
     <module>feature-pregeneralized</module>
+    <module>geopkg</module>
     <module>geotiff</module>
     <module>grassraster</module>
     <module>image</module>
@@ -59,14 +63,10 @@
     <module>imagemosaic-jdbc</module>
     <module>jdbc</module>
     <module>jp2k</module>
+    <module>mongodb</module>
     <module>property</module>
     <module>shapefile</module>
     <module>svg</module>
-    <module>coverage-multidim</module>
-    <module>geopkg</module>
-    <module>mongodb</module>
-    <module>csv</module>
   </modules>
 
 </project>
-

@@ -181,11 +181,7 @@ public interface RasterSymbolizer extends org.opengis.style.RasterSymbolizer, Sy
      */
     Expression getOverlap();
 
-    /**
-     * Set the overlap behavior.
-     *
-     * @param overlapBehavior
-     */
+    /** Set the overlap behavior. */
     void setOverlapBehavior(OverlapBehavior overlapBehavior);
 
     /**

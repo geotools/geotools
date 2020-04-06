@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>org.geotools</groupId>
 		<artifactId>modules</artifactId>
-		<version>23-SNAPSHOT</version>
+		<version>24-SNAPSHOT</version>
 	</parent>
 
 
@@ -129,6 +129,17 @@
 			</modules>
 		</profile>
 		<profile>
+			<id>elasticsearch</id>
+			<activation>
+				<property>
+					<name>all</name>
+				</property>
+			</activation>
+			<modules>
+				<module>elasticsearch</module>
+			</modules>
+		</profile>
+		<profile>
 			<id>geobuf</id>
 			<activation>
 				<property>
@@ -180,17 +191,6 @@
           </modules>
         </profile>
         <profile>
-            <id>mbstyle</id>
-            <activation>
-                <property>
-                    <name>all</name>
-                </property>
-            </activation>
-            <modules>
-                <module>mbstyle</module>
-            </modules>
-        </profile>        
-        <profile>
             <id>s3-geotiff</id>
             <modules>
                 <module>s3-geotiff</module>
@@ -212,6 +212,7 @@
 			<modules>
 				<module>jdbc-ng</module>
 				<module>solr</module>
+				<module>elasticsearch</module>
 				<module>css</module>
 				<module>geojsonstore</module>
         		<module>s3-geotiff</module>

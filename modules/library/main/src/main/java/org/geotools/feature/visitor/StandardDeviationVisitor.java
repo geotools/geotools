@@ -17,7 +17,9 @@
 package org.geotools.feature.visitor;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.expression.Expression;
@@ -66,12 +68,7 @@ public class StandardDeviationVisitor implements FeatureCalc, FeatureAttributeVi
     double mean = 0;
     double m2 = 0;
 
-    /**
-     * Constructs a standard deviation visitor based on the specified expression
-     *
-     * @param expr
-     * @param average
-     */
+    /** Constructs a standard deviation visitor based on the specified expression */
     public StandardDeviationVisitor(Expression expr) {
         this.expr = expr;
     }
@@ -83,6 +80,15 @@ public class StandardDeviationVisitor implements FeatureCalc, FeatureAttributeVi
     @Override
     public List<Expression> getExpressions() {
         return Arrays.asList(expr);
+    }
+
+    @Override
+    public Optional<List<Class>> getResultType(List<Class> inputTypes) {
+        if (inputTypes == null || inputTypes.size() != 1)
+            throw new IllegalArgumentException(
+                    "Expecting a single type in input, not " + inputTypes);
+
+        return Optional.of(Collections.singletonList(Double.class));
     }
 
     public CalcResult getResult() {

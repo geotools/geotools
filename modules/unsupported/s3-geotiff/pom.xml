@@ -21,9 +21,15 @@
   <parent>
     <artifactId>unsupported</artifactId>
     <groupId>org.geotools</groupId>
-    <version>23-SNAPSHOT</version>
+    <version>24-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
+
+  <name>S3 GeoTIFF plugin</name>
+
+  <description>
+    Support for GeoTiffs hosted on Amazon S3 or on other Amazon S3 compatible services, via a custom GeoTools GridFormat.
+  </description>
 
  <developers>
    <developer>

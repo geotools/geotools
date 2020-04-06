@@ -38,11 +38,7 @@ class VectorLayersMetadata {
     @JsonProperty("vector_layers")
     List<VectorLayerMetadata> layers = new ArrayList<>();
 
-    /**
-     * The list of layers contained in the JSON description.
-     *
-     * @return
-     */
+    /** The list of layers contained in the JSON description. */
     public List<VectorLayerMetadata> getLayers() {
         return layers;
     }
@@ -51,11 +47,7 @@ class VectorLayersMetadata {
         this.layers = layers;
     }
 
-    /**
-     * Returns the {@link VectorLayerMetadata} list as a map keyed from the layer id
-     *
-     * @return
-     */
+    /** Returns the {@link VectorLayerMetadata} list as a map keyed from the layer id */
     public LinkedHashMap<String, VectorLayerMetadata> getLayersMap() {
         return layers.stream()
                 .collect(

@@ -115,11 +115,7 @@ public class ROIExcessGranuleRemover {
         return essential;
     }
 
-    /**
-     * Returns true if the rendering area is complete
-     *
-     * @return
-     */
+    /** Returns true if the rendering area is complete */
     public boolean isRenderingAreaComplete() {
         // TODO: handle case in which the binarization is not yet generated? Like single tile
         // covering everything?

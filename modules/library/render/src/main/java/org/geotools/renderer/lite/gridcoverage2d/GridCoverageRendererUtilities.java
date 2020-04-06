@@ -103,15 +103,7 @@ public final class GridCoverageRendererUtilities {
                     Errors.format(ErrorKeys.SOURCE_CANT_BE_NULL_$1, name));
     }
 
-    /**
-     * Reprojecting the input coverage using the provided parameters.
-     *
-     * @param gc
-     * @param crs
-     * @param interpolation
-     * @return
-     * @throws FactoryException
-     */
+    /** Reprojecting the input coverage using the provided parameters. */
     static GridCoverage2D resample(
             final GridCoverage2D gc,
             CoordinateReferenceSystem crs,
@@ -137,19 +129,7 @@ public final class GridCoverageRendererUtilities {
                 ((Resample) processor.getOperation("Resample")).doOperation(param, hints);
     }
 
-    /**
-     * Reproject the specified list of coverages
-     *
-     * @param coverages
-     * @param destinationCRS
-     * @param interpolation
-     * @param destinationEnvelope
-     * @param bkgValues
-     * @param gridCoverageFactory
-     * @param hints
-     * @return
-     * @throws FactoryException
-     */
+    /** Reproject the specified list of coverages */
     public static List<GridCoverage2D> reproject(
             List<GridCoverage2D> coverages,
             CoordinateReferenceSystem destinationCRS,
@@ -185,19 +165,7 @@ public final class GridCoverageRendererUtilities {
         return reprojectedCoverages;
     }
 
-    /**
-     * Reproject a coverage to the specified destination, eventually adding a ROI if missing
-     *
-     * @param coverage
-     * @param destinationCRS
-     * @param interpolation
-     * @param destinationEnvelope
-     * @param bkgValues
-     * @param gridCoverageFactory
-     * @param hints
-     * @return
-     * @throws FactoryException
-     */
+    /** Reproject a coverage to the specified destination, eventually adding a ROI if missing */
     public static GridCoverage2D reproject(
             GridCoverage2D coverage,
             CoordinateReferenceSystem destinationCRS,
@@ -227,9 +195,6 @@ public final class GridCoverageRendererUtilities {
     /**
      * Forces adding ROI to the coverage in case it's missing. It will use the renderer image
      * footprint.
-     *
-     * @param coverage
-     * @return
      */
     private static GridCoverage2D addRoiIfMissing(
             GridCoverage2D coverage, GridCoverageFactory gridCoverageFactory) {
@@ -262,14 +227,7 @@ public final class GridCoverageRendererUtilities {
         }
     }
 
-    /**
-     * Cropping the provided coverage to the requested geographic area.
-     *
-     * @param gc
-     * @param envelope
-     * @param crs
-     * @return
-     */
+    /** Cropping the provided coverage to the requested geographic area. */
     static GridCoverage2D coverageCrop(
             GridCoverage2D gc, GeneralEnvelope envelope, double[] background, final Hints hints) {
         final GeneralEnvelope oldEnvelope = (GeneralEnvelope) gc.getEnvelope();
@@ -325,16 +283,7 @@ public final class GridCoverageRendererUtilities {
         return translatedCoverage;
     }
 
-    /**
-     * Mosaicking the provided coverages to the requested geographic area.
-     *
-     * @param alphas
-     * @param background
-     * @param gc
-     * @param envelope
-     * @param crs
-     * @return
-     */
+    /** Mosaicking the provided coverages to the requested geographic area. */
     static GridCoverage2D mosaic(
             List<GridCoverage2D> coverages,
             List<GridCoverage2D> alphas,
@@ -396,11 +345,7 @@ public final class GridCoverageRendererUtilities {
         }
     }
 
-    /**
-     * @param inputEnvelope
-     * @return
-     * @throws Exception
-     */
+    /** */
     static GeneralEnvelope reprojectEnvelope(
             GeneralEnvelope inputEnvelope, final CoordinateReferenceSystem outputCRS)
             throws Exception {
@@ -419,12 +364,7 @@ public final class GridCoverageRendererUtilities {
         return null;
     }
 
-    /**
-     * @param inputEnvelope
-     * @param targetCRS
-     * @return
-     * @throws Exception
-     */
+    /** */
     static GeneralEnvelope reprojectEnvelopeWithWGS84Pivot(
             GeneralEnvelope inputEnvelope, CoordinateReferenceSystem targetCRS) throws Exception {
 
@@ -475,10 +415,7 @@ public final class GridCoverageRendererUtilities {
         }
     }
 
-    /**
-     * @param color
-     * @return
-     */
+    /** */
     public static double[] colorToArray(Color color) {
         if (color == null) {
             return null;
@@ -491,9 +428,6 @@ public final class GridCoverageRendererUtilities {
      * After reprojection or displacement we could have some coverage that are completely out of the
      * destination area (due to numerical issues their source bbox was interesting the request area,
      * but their reprojected version does not). Cleanup the ones completely out.
-     *
-     * @param coverages
-     * @param destinationEnvelope
      */
     public static void removeNotIntersecting(
             List<GridCoverage2D> coverages, GeneralEnvelope destinationEnvelope) {
@@ -509,16 +443,6 @@ public final class GridCoverageRendererUtilities {
     /**
      * Displaces a list of coverages, using a ProjectionHandler to eventually split into proper
      * envelopes.
-     *
-     * @param coverages
-     * @param handler
-     * @param destinationEnvelope
-     * @param sourceCRS
-     * @param targetCRS
-     * @param gridCoverageFactory
-     * @return
-     * @throws FactoryException
-     * @throws TransformException
      */
     public static List<GridCoverage2D> displace(
             List<GridCoverage2D> coverages,
@@ -567,13 +491,6 @@ public final class GridCoverageRendererUtilities {
     /**
      * Forces an input list of coverages to the valid bounds of the provided target CRS, when a
      * reprojection is needed, using a ProjectionHandler.
-     *
-     * @param coverages
-     * @param handler
-     * @param bgValues
-     * @param targetCRS
-     * @param hints
-     * @return
      */
     public static List<GridCoverage2D> forceToValidBounds(
             List<GridCoverage2D> coverages,
@@ -617,16 +534,7 @@ public final class GridCoverageRendererUtilities {
         return coverages;
     }
 
-    /**
-     * Crop a coverage on a specified destination Envelope
-     *
-     * @param coverage
-     * @param destinationEnvelope
-     * @param doReprojection
-     * @param backgroundValues
-     * @param hints
-     * @return
-     */
+    /** Crop a coverage on a specified destination Envelope */
     public static GridCoverage2D crop(
             GridCoverage2D coverage,
             GeneralEnvelope destinationEnvelope,
@@ -672,15 +580,7 @@ public final class GridCoverageRendererUtilities {
         return outputCoverage;
     }
 
-    /**
-     * Mosaic coverages with a preliminary sorting by size
-     *
-     * @param coverages
-     * @param destinationEnvelope
-     * @param bgValues
-     * @param hints
-     * @return
-     */
+    /** Mosaic coverages with a preliminary sorting by size */
     public static GridCoverage2D mosaicSorted(
             List<GridCoverage2D> coverages,
             GeneralEnvelope destinationEnvelope,
@@ -721,18 +621,7 @@ public final class GridCoverageRendererUtilities {
         return mosaicked;
     }
 
-    /**
-     * Apply an affineTransformation to a GridCoverage
-     *
-     * @param coverage
-     * @param interpolation
-     * @param affineTransform
-     * @param bkgValues
-     * @param useInputSampleDimensions
-     * @param gridCoverageFactory
-     * @param hints
-     * @return
-     */
+    /** Apply an affineTransformation to a GridCoverage */
     public static GridCoverage2D affine(
             GridCoverage2D coverage,
             Interpolation interpolation,

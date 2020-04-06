@@ -159,11 +159,7 @@ public class ArcSDEDataStoreFactoryTest {
         assertTrue(dsFactory.canProcess(workingParams));
     }
 
-    /**
-     * Test method for {@link ArcSDEDataStoreFactory#createDataStore(java.util.Map)}.
-     *
-     * @throws IOException
-     */
+    /** Test method for {@link ArcSDEDataStoreFactory#createDataStore(java.util.Map)}. */
     @Test
     public void testCreateDataStore() throws IOException {
         try {
@@ -178,13 +174,7 @@ public class ArcSDEDataStoreFactoryTest {
         store.dispose();
     }
 
-    /**
-     * Test method for {@link ArcSDEDataStoreFactory#createDataStore(java.util.Map)}.
-     *
-     * @throws IOException
-     * @throws SeException
-     * @throws UnavailableConnectionException
-     */
+    /** Test method for {@link ArcSDEDataStoreFactory#createDataStore(java.util.Map)}. */
     @Test
     public void testCreateDataStoreWithInProcessViews()
             throws IOException, SeException, UnavailableConnectionException {

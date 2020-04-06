@@ -47,11 +47,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  */
 @SuppressWarnings("PMD.SystemPrintln")
 public class Toolbox {
-    /**
-     * read args and delegate jobs
-     *
-     * @param args
-     */
+    /** read args and delegate jobs */
     static String MissingXMLConfig = "Missing XML config file ";
 
     static String MissingShapeFile = "Missing shape file ";

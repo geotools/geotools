@@ -50,8 +50,6 @@ public final class RangedClassifier extends Classifier {
     /**
      * Null safe title generation.
      *
-     * @param min
-     * @param max
      * @return generated title
      */
     private String generateTitle(Comparable<?> min, Comparable<?> max) {
@@ -68,7 +66,6 @@ public final class RangedClassifier extends Classifier {
     /**
      * Used to remove trailing zeros; preventing out put like 1.00000.
      *
-     * @param str
      * @return origional string with any trailing decimal places removed.
      */
     private String truncateZeros(String str) {

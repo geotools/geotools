@@ -76,8 +76,6 @@ public abstract class JDBCNoPrimaryKeyOnlineTest extends JDBCTestSupport {
     /**
      * Subclasses may want to override this in case the database has a native way, other than the
      * pk, to identify a row
-     *
-     * @throws Exception
      */
     public void testReadOnly() throws Exception {
         try {

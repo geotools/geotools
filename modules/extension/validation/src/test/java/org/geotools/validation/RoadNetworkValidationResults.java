@@ -67,7 +67,6 @@ public class RoadNetworkValidationResults implements ValidationResults {
      *
      * @see
      *     org.geotools.validation.ValidationResults#setValidation(org.geotools.validation.Validation)
-     * @param validation
      */
     public void setValidation(Validation validation) {
         validationList.add(validation);
@@ -80,8 +79,6 @@ public class RoadNetworkValidationResults implements ValidationResults {
      *
      * @see org.geotools.validation.ValidationResults#error(org.geotools.feature.Feature,
      *     java.lang.String)
-     * @param feature
-     * @param message
      */
     public void error(SimpleFeature feature, String message) {
         failedFeatures.add(feature);
@@ -95,8 +92,6 @@ public class RoadNetworkValidationResults implements ValidationResults {
      *
      * @see org.geotools.validation.ValidationResults#warning(org.geotools.feature.Feature,
      *     java.lang.String)
-     * @param feature
-     * @param message
      */
     public void warning(SimpleFeature feature, String message) {
         warningFeatures.add(feature);

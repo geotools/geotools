@@ -64,12 +64,7 @@ public class EnvelopeImpl implements Envelope {
     //  Constructors
     // *************************************************************************
 
-    /**
-     * Creates a new {@code EnvelopeImpl}.
-     *
-     * @param lowerCorner
-     * @param upperCorner
-     */
+    /** Creates a new {@code EnvelopeImpl}. */
     public EnvelopeImpl(final DirectPosition lowerCorner, final DirectPosition upperCorner) {
         this.lowerCorner = new DirectPositionImpl(lowerCorner);
         this.upperCorner = new DirectPositionImpl(upperCorner);

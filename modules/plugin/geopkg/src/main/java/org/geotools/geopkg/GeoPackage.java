@@ -66,6 +66,7 @@ import org.geotools.jdbc.JDBCFeatureStore;
 import org.geotools.jdbc.PrimaryKey;
 import org.geotools.jdbc.util.SqlUtil;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -110,6 +111,10 @@ public class GeoPackage implements Closeable {
     public static final String EXTENSIONS = "gpkg_extensions";
 
     public static final String SPATIAL_INDEX = "gpkg_spatial_index";
+
+    // requirement 11, two generic SRID are to be considered
+    protected static final int GENERIC_GEOGRAPHIC_SRID = 0;
+    protected static final int GENERIC_PROJECTED_SRID = -1;
 
     public static enum DataType {
         Feature("features"),
@@ -849,8 +854,9 @@ public class GeoPackage implements Closeable {
         if (!initialised) {
             init();
         }
-        if (e.getSrid() != null) {
-            addCRS(e.getSrid());
+        Integer srid = e.getSrid();
+        if (srid != null && srid != GENERIC_PROJECTED_SRID && srid != GENERIC_GEOGRAPHIC_SRID) {
+            addCRS(srid);
         }
 
         StringBuilder sb = new StringBuilder();
@@ -872,7 +878,7 @@ public class GeoPackage implements Closeable {
         sb.append(", min_x, min_y, max_x, max_y");
         vals.append(",?,?,?,?");
 
-        if (e.getSrid() != null) {
+        if (srid != null) {
             sb.append(", srs_id");
             vals.append(",?");
         }
@@ -904,8 +910,8 @@ public class GeoPackage implements Closeable {
                     double miny = 0;
                     double maxx = 0;
                     double maxy = 0;
-                    if (e.getSrid() != null) {
-                        CoordinateReferenceSystem crs = getCRS(e.getSrid());
+                    if (srid != null) {
+                        CoordinateReferenceSystem crs = getCRS(srid);
                         if (crs != null) {
                             org.opengis.geometry.Envelope env = CRS.getEnvelope(crs);
                             if (env != null) {
@@ -918,8 +924,8 @@ public class GeoPackage implements Closeable {
                     }
                     psb.set(minx).set(miny).set(maxx).set(maxy);
                 }
-                if (e.getSrid() != null) {
-                    psb.set(e.getSrid());
+                if (srid != null) {
+                    psb.set(srid);
                 }
 
                 PreparedStatement ps = psb.log(Level.FINE).statement();
@@ -1326,8 +1332,6 @@ public class GeoPackage implements Closeable {
      * @param highCol high column boundary
      * @param lowRow low row boundary
      * @param highRow high row boundary
-     * @return
-     * @throws IOException
      */
     @SuppressWarnings("PMD.CloseResource") // cx and st get into the TileReader
     public TileReader reader(
@@ -1391,7 +1395,6 @@ public class GeoPackage implements Closeable {
      *
      * @param entry The feature entry.
      * @return whether this feature entry has a spatial index available.
-     * @throws IOException
      */
     public boolean hasSpatialIndex(FeatureEntry entry) throws IOException {
         try {
@@ -1502,7 +1505,6 @@ public class GeoPackage implements Closeable {
      * @param isMax true for max boundary, false for min boundary
      * @param isRow true for rows, false for columns
      * @return the min/max column/row of the zoom level available in the data
-     * @throws IOException
      */
     public int getTileBound(TileEntry entry, int zoom, boolean isMax, boolean isRow)
             throws IOException {
@@ -1611,7 +1613,7 @@ public class GeoPackage implements Closeable {
 
                     CoordinateReferenceSystem crs;
                     try {
-                        crs = CRS.decode("EPSG:" + srid);
+                        crs = CRS.decode("EPSG:" + srid, true);
                     } catch (Exception ex) {
                         // not a major concern, by spec the tile matrix set srs should match the
                         // gpkg_contents srs_id
@@ -1661,17 +1663,7 @@ public class GeoPackage implements Closeable {
         int srid = rs.getInt("organization_coordsys_id");
         e.setSrid(srid);
 
-        CoordinateReferenceSystem crs;
-        try {
-            crs = CRS.decode("EPSG:" + srid);
-        } catch (Exception ex) {
-            // try parsing srtext directly
-            try {
-                crs = CRS.parseWKT(rs.getString("srtext"));
-            } catch (Exception e2) {
-                throw new IOException(ex);
-            }
-        }
+        CoordinateReferenceSystem crs = decodeCRSFromResultset(rs, srid);
 
         e.setBounds(
                 new ReferencedEnvelope(
@@ -1680,6 +1672,27 @@ public class GeoPackage implements Closeable {
                         rs.getDouble("min_y"),
                         rs.getDouble("max_y"),
                         crs));
+    }
+
+    static CoordinateReferenceSystem decodeSRID(int srid) throws FactoryException {
+        if (srid == GENERIC_GEOGRAPHIC_SRID || srid == GENERIC_PROJECTED_SRID) {
+            return DefaultEngineeringCRS.GENERIC_2D;
+        }
+        return CRS.decode("EPSG:" + srid, true);
+    }
+
+    private static CoordinateReferenceSystem decodeCRSFromResultset(ResultSet rs, int srid)
+            throws IOException {
+        try {
+            return decodeSRID(srid);
+        } catch (Exception ex) {
+            // try parsing srtext directly
+            try {
+                return CRS.parseWKT(rs.getString("srtext"));
+            } catch (Exception e2) {
+                throw new IOException(ex);
+            }
+        }
     }
 
     static void runSQL(String sql, Connection cx) throws SQLException {

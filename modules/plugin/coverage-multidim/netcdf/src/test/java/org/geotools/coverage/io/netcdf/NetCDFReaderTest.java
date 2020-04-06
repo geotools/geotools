@@ -101,8 +101,6 @@ public class NetCDFReaderTest extends Assert {
     /**
      * Test using this netcdf image: data: LAI= 20,20,20,30,30, 40,40,40,50,50, 60,60,60,70,70,
      * 80,80,80,90,90; lon= 10,15,20,25,30; lat= 70,60,50,40;
-     *
-     * @throws IOException
      */
     @Test
     public void testHDF5Image() throws IOException, FactoryException {

@@ -26,6 +26,7 @@ import java.awt.image.Raster;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -38,13 +39,19 @@ import org.geotools.data.Query;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
+import org.geotools.gce.arcgrid.ArcGridReader;
 import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
-import org.geotools.map.*;
+import org.geotools.image.test.ImageAssert;
+import org.geotools.map.FeatureLayer;
+import org.geotools.map.GridCoverageLayer;
+import org.geotools.map.GridReaderLayer;
+import org.geotools.map.MapContent;
 import org.geotools.referencing.CRS;
 import org.geotools.renderer.RenderListener;
 import org.geotools.styling.Style;
+import org.geotools.util.URLs;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 import org.junit.AfterClass;
@@ -361,15 +368,7 @@ public class RenderingTransformationTest {
         assertEquals(Color.RED, getPixelColor(image, image.getWidth() / 2, image.getHeight() / 2));
     }
 
-    /**
-     * Gets a specific pixel color from the specified buffered image
-     *
-     * @param image
-     * @param i
-     * @param j
-     * @param color
-     * @return
-     */
+    /** Gets a specific pixel color from the specified buffered image */
     protected Color getPixelColor(BufferedImage image, int i, int j) {
         ColorModel cm = image.getColorModel();
         Raster raster = image.getRaster();
@@ -387,5 +386,32 @@ public class RenderingTransformationTest {
             actual = new Color(cm.getRed(pixel), cm.getGreen(pixel), cm.getBlue(pixel), 255);
         }
         return actual;
+    }
+
+    @Test
+    public void testRenderingTransformHighOversample() throws Exception {
+        File file = TestData.copy(this, "arcgrid/arcgrid.zip");
+        TestData.unzipFile(this, "arcgrid/arcgrid.zip");
+        URL rainURL =
+                GridCoverageRendererTest.class.getResource("test-data/arcgrid/precip30min.asc");
+        File rainFile = URLs.urlToFile(rainURL);
+        ArcGridReader rainReader = new ArcGridReader(rainFile);
+
+        Style style = RendererBaseTest.loadStyle(this, "rainrt.sld");
+        MapContent mc = new MapContent();
+        mc.addLayer(new GridReaderLayer(rainReader, style));
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        ReferencedEnvelope polarEnvelope =
+                new ReferencedEnvelope(
+                        113000, 1045000, -113000, 1045000, CRS.decode("EPSG:3995", true));
+        BufferedImage image =
+                RendererBaseTest.showRender(
+                        "High oversample, rendering transform and reprojection",
+                        renderer,
+                        TIME,
+                        polarEnvelope);
+        File expected = new File("src/test/resources/org/geotools/renderer/lite/rainrt.png");
+        ImageAssert.assertEquals(expected, image, 100);
     }
 }

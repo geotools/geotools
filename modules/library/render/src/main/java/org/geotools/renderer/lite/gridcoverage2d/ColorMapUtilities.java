@@ -64,9 +64,7 @@ class ColorMapUtilities {
     //	/**
     //	 * Returns a linear transform with the supplied scale and offset values.
     //	 *
-    //	 * @param scale
     //	 *            The scale factor. May be 0 for a constant transform.
-    //	 * @param offset
     //	 *            The offset value. May be NaN if this method is invoked from a
     //	 *            constructor for initializing {@link #transform} for a
     //	 *            qualitative category.
@@ -153,12 +151,9 @@ class ColorMapUtilities {
     //	 * representable number of type {@code type} before or after the double
     //	 * value.
     //	 *
-    //	 * @param type
     //	 *            The range element class. {@code number} must be an instance of
     //	 *            this class (this will not be checked).
-    //	 * @param number
     //	 *            The number to transform to a {@code double} value.
-    //	 * @param direction
     //	 *            -1 to return the previous representable number, +1 to return
     //	 *            the next representable number, or 0 to return the number with
     //	 *            no change.

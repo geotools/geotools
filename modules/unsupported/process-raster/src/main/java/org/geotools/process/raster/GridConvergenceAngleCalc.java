@@ -85,7 +85,6 @@ final class GridConvergenceAngleCalc {
      * Constructs a new GridConvergenceAngleCalc for a given CoordinateReferenceSystem
      *
      * @param crs CoordinateReferenceSystem for which to construct a new GridConvergenceAngleCalc.
-     * @throws Exception
      */
     public GridConvergenceAngleCalc(CoordinateReferenceSystem crs) throws Exception {
         this.crs = crs;
@@ -111,7 +110,6 @@ final class GridConvergenceAngleCalc {
      * @param position DirectPosition2D at which we want to estimate the grid convergence angle
      * @return double containing grid convergence angle, as described in documentation for the
      *     class.
-     * @throws Exception
      */
     public double getConvergenceAngle(DirectPosition2D position) throws Exception {
 

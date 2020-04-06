@@ -48,10 +48,6 @@ public class ReadParamsController {
      *
      * <p>Anyhow this method should not be called directly but subclasses should make use of the
      * setReadParams method instead in order to transparently look for overviews.
-     *
-     * @param levelIndex
-     * @param readParameters
-     * @param requestedRes
      */
     private static void performDecimation(
             final SpatialDomainManager spatialDomainManager,
@@ -155,8 +151,6 @@ public class ReadParamsController {
      *     overviews level upon request.
      * @param readParams an instance of {@link ImageReadParam} for setting the subsampling factors.
      * @return the index of the raster to read in the underlying data source.
-     * @throws IOException
-     * @throws TransformException
      */
     static int setReadParams(
             final double[] requestedResolution,

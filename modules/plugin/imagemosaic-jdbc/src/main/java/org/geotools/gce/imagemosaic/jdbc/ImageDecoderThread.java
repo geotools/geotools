@@ -153,10 +153,6 @@ public class ImageDecoderThread extends AbstractThread {
     /**
      * Fallback Method, in some jre implementations, ImageIO.read(InputStream in) returns null. If
      * this happens, this method is called, which is not so efficient but it works
-     *
-     * @param imageBytes
-     * @return
-     * @throws IOException
      */
     private BufferedImage readImage2(byte[] imageBytes) throws IOException {
         try (SeekableStream stream = new ByteArraySeekableStream(imageBytes)) {

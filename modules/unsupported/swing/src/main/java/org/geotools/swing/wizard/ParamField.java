@@ -35,8 +35,6 @@ public abstract class ParamField {
 
     /**
      * Holds on to the parameter so implementations can consult the type and metadata information.
-     *
-     * @param parameter
      */
     ParamField(Parameter<?> parameter) {
         this.parameter = parameter;
@@ -75,12 +73,7 @@ public abstract class ParamField {
      */
     public abstract Object getValue();
 
-    /**
-     * Factory method creating the appropriate ParamField for the supplied Param.
-     *
-     * @param param
-     * @return
-     */
+    /** Factory method creating the appropriate ParamField for the supplied Param. */
     public static ParamField create(Parameter<?> parameter) {
         if (Double.class.isAssignableFrom(parameter.type)) {
             return new JDoubleField(parameter);

@@ -39,7 +39,6 @@ public final class JP2MrSIDReader extends BaseGDALGridCoverage2DReader
      * Creates a new instance of a {@link JP2MrSIDReader}. I assume nothing about file extension.
      *
      * @param input Source object for which we want to build a JP2MrSIDReader.
-     * @throws DataSourceException
      */
     public JP2MrSIDReader(Object input) throws DataSourceException {
         this(input, null);
@@ -51,7 +50,6 @@ public final class JP2MrSIDReader extends BaseGDALGridCoverage2DReader
      *
      * @param input Source object for which we want to build a {@link JP2MrSIDReader}.
      * @param hints Hints to be used by this reader throughout his life.
-     * @throws DataSourceException
      */
     public JP2MrSIDReader(Object input, final Hints hints) throws DataSourceException {
         super(input, hints, worldFileExt, new JP2GDALMrSidImageReaderSpi());

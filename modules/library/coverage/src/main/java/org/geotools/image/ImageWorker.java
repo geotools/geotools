@@ -510,8 +510,6 @@ public class ImageWorker {
 
     /**
      * The x-period used by statistical operations (e.g. extrema, mean, histogram). Defaults to 1.
-     *
-     * @return
      */
     public int getXPeriod() {
         return xPeriod;
@@ -529,8 +527,6 @@ public class ImageWorker {
 
     /**
      * The y-period used by statistical operations (e.g. extrema, mean, histogram). Defaults to 1.
-     *
-     * @return
      */
     public int getYPeriod() {
         return yPeriod;
@@ -1141,75 +1137,84 @@ public class ImageWorker {
     /** Returns the histogram of the image. */
     public Histogram getHistogram(int[] numBins, double[] lowValues, double[] highValues) {
         Object histogram = getComputedProperty(HISTOGRAM);
-        if (!(histogram instanceof Histogram)) {
-            // Create the parameterBlock
-            ParameterBlock pb = new ParameterBlock();
-            pb.setSource(image, 0);
-            if (JAIExt.isJAIExtOperation("Stats")) {
-                StatsType[] stats = new StatsType[] {StatsType.HISTOGRAM};
-                // Band definition
-                int numBands = getNumBands();
-                int[] bands = new int[numBands];
-                for (int i = 0; i < numBands; i++) {
-                    bands[i] = i;
-                }
-
-                // Image parameters
-                pb.set(xPeriod, 0); // xPeriod
-                pb.set(yPeriod, 1); // yPeriod
-                pb.set(roi, 2); // ROI
-                pb.set(nodata, 3); // NoData
-                pb.set(bands, 5); // band indexes
-                pb.set(stats, 6); // statistic operation
-                pb.set(numBins, 9); // Bin number.
-                pb.set(lowValues, 7); // Lower values per band.
-                pb.set(highValues, 8); // Higher values per band.
-                image = JAI.create("Stats", pb, getRenderingHints());
-                // Retrieving the statistics
-                Statistics[][] results =
-                        (Statistics[][]) getComputedProperty(Statistics.STATS_PROPERTY);
-                int[][] bins = new int[numBands][];
-
-                // Cycle on the bands
-                for (int i = 0; i < results.length; i++) {
-                    Statistics stat = results[i][0];
-                    double[] binsDouble = (double[]) stat.getResult();
-                    bins[i] = new int[binsDouble.length];
-                    for (int j = 0; j < binsDouble.length; j++) {
-                        bins[i][j] = (int) binsDouble[j];
-                    }
-                }
-                ParameterBlock parameterBlock = getRenderedOperation().getParameterBlock();
-                if (numBins == null) {
-                    numBins = (int[]) parameterBlock.getObjectParameter(9);
-                }
-                if (lowValues == null) {
-                    lowValues = (double[]) parameterBlock.getObjectParameter(7);
-                }
-                if (highValues == null) {
-                    highValues = (double[]) parameterBlock.getObjectParameter(8);
-                }
-                HistogramWrapper wrapper =
-                        new HistogramWrapper(numBins, lowValues, highValues, bins);
-                // Setting the property
-                if (image instanceof PlanarImage) {
-                    ((PlanarImage) image).setProperty(HISTOGRAM, wrapper);
-                } else {
-                    PlanarImage p = getPlanarImage();
-                    p.setProperty(HISTOGRAM, wrapper);
-                    image = p;
-                }
-            } else {
-                pb.set(roi, 0); // The region of the image to scan. Default to all.
-                pb.set(xPeriod, 1); // The horizontal sampling rate. Default to 1.
-                pb.set(yPeriod, 2); // The vertical sampling rate. Default to 1.
-                pb.set(numBins, 3); // Bin number.
-                pb.set(lowValues, 4); // Lower values per band.
-                pb.set(highValues, 5); // Higher values per band.
-                image = JAI.create("Histogram", pb, getRenderingHints());
+        // can reuse cached histogram only if the bucket definitions are the same
+        if (histogram instanceof HistogramWrapper) {
+            HistogramWrapper wrapper = (HistogramWrapper) histogram;
+            double[] prevHighs = wrapper.getHighValue();
+            double[] prevLows = wrapper.getLowValue();
+            int[] prevNumBins = wrapper.getNumBins();
+            if (Arrays.equals(prevHighs, highValues)
+                    && Arrays.equals(prevLows, lowValues)
+                    && Arrays.equals(prevNumBins, numBins)) {
+                return wrapper;
             }
-            histogram = getComputedProperty(HISTOGRAM);
         }
+        // Create the parameterBlock
+        ParameterBlock pb = new ParameterBlock();
+        pb.setSource(image, 0);
+        if (JAIExt.isJAIExtOperation("Stats")) {
+            StatsType[] stats = new StatsType[] {StatsType.HISTOGRAM};
+            // Band definition
+            int numBands = getNumBands();
+            int[] bands = new int[numBands];
+            for (int i = 0; i < numBands; i++) {
+                bands[i] = i;
+            }
+
+            // Image parameters
+            pb.set(xPeriod, 0); // xPeriod
+            pb.set(yPeriod, 1); // yPeriod
+            pb.set(roi, 2); // ROI
+            pb.set(nodata, 3); // NoData
+            pb.set(bands, 5); // band indexes
+            pb.set(stats, 6); // statistic operation
+            pb.set(numBins, 9); // Bin number.
+            pb.set(lowValues, 7); // Lower values per band.
+            pb.set(highValues, 8); // Higher values per band.
+            image = JAI.create("Stats", pb, getRenderingHints());
+            // Retrieving the statistics
+            Statistics[][] results =
+                    (Statistics[][]) getComputedProperty(Statistics.STATS_PROPERTY);
+            int[][] bins = new int[numBands][];
+
+            // Cycle on the bands
+            for (int i = 0; i < results.length; i++) {
+                Statistics stat = results[i][0];
+                double[] binsDouble = (double[]) stat.getResult();
+                bins[i] = new int[binsDouble.length];
+                for (int j = 0; j < binsDouble.length; j++) {
+                    bins[i][j] = (int) binsDouble[j];
+                }
+            }
+            ParameterBlock parameterBlock = getRenderedOperation().getParameterBlock();
+            if (numBins == null) {
+                numBins = (int[]) parameterBlock.getObjectParameter(9);
+            }
+            if (lowValues == null) {
+                lowValues = (double[]) parameterBlock.getObjectParameter(7);
+            }
+            if (highValues == null) {
+                highValues = (double[]) parameterBlock.getObjectParameter(8);
+            }
+            HistogramWrapper wrapper = new HistogramWrapper(numBins, lowValues, highValues, bins);
+            // Setting the property
+            if (image instanceof PlanarImage) {
+                ((PlanarImage) image).setProperty(HISTOGRAM, wrapper);
+            } else {
+                PlanarImage p = getPlanarImage();
+                p.setProperty(HISTOGRAM, wrapper);
+                image = p;
+            }
+        } else {
+            pb.set(roi, 0); // The region of the image to scan. Default to all.
+            pb.set(xPeriod, 1); // The horizontal sampling rate. Default to 1.
+            pb.set(yPeriod, 2); // The vertical sampling rate. Default to 1.
+            pb.set(numBins, 3); // Bin number.
+            pb.set(lowValues, 4); // Lower values per band.
+            pb.set(highValues, 5); // Higher values per band.
+            image = JAI.create("Histogram", pb, getRenderingHints());
+        }
+        histogram = getComputedProperty(HISTOGRAM);
         return (Histogram) histogram;
     }
 
@@ -1826,9 +1831,6 @@ public class ImageWorker {
      *
      * <p>This code is adapted from jai-interests mailing list archive.
      *
-     * @param checkTransparent
-     * @param optimizeGray
-     * @param omitAlphaOnExpand
      * @return this {@link ImageWorker}.
      * @see FormatDescriptor
      */
@@ -2012,8 +2014,6 @@ public class ImageWorker {
      * If the image has an indexed color model, removes it, and replaces it with a component color
      * model. can be useful before a band-merge if the image in question is not meant to be color
      * expanded.
-     *
-     * @return
      */
     public final ImageWorker removeIndexColorModel() {
         if (image.getColorModel() instanceof IndexColorModel) {
@@ -3590,11 +3590,6 @@ public class ImageWorker {
     /**
      * Builds a lookup table that is the identity on all bands but the alpha one, where the opacity
      * is applied
-     *
-     * @param opacity
-     * @param bands
-     * @param alphaBand
-     * @return
      */
     LookupTable buildOpacityLookupTable(
             float opacity, final int bands, int alphaBand, int dataType) {
@@ -4093,11 +4088,6 @@ public class ImageWorker {
      * Performs an affine transform on the image, applying optimization such as affine removal in
      * case the affine is an identity, affine merging if the affine is applied on top of another
      * affine, and using optimized operations for integer translates
-     *
-     * @param tx
-     * @param interpolation
-     * @param bgValues
-     * @return
      */
     public ImageWorker affine(AffineTransform tx, Interpolation interpolation, double[] bgValues) {
         // identity elimination -> check the tx params against the image size to see if
@@ -4550,14 +4540,7 @@ public class ImageWorker {
         return this;
     }
 
-    /**
-     * Perform scaling
-     *
-     * @param pb
-     * @param scalingParams
-     * @param interpolation
-     * @param hints
-     */
+    /** Perform scaling */
     private void scale(
             ParameterBlock pb,
             double[] scalingParams,
@@ -4720,12 +4703,6 @@ public class ImageWorker {
      * Crops the image to the specified bounds. Will use an internal operation that ensures the tile
      * cache and tile scheduler hints are used, and will perform operation elimination in case the
      * crop is doing nothing, or in case the crop is performed over another crop
-     *
-     * @param x
-     * @param y
-     * @param width
-     * @param height
-     * @return
      */
     public ImageWorker crop(float x, float y, float width, float height) {
         // no op elimination
@@ -4825,8 +4802,6 @@ public class ImageWorker {
     /**
      * Returns the background colors as a value, if at all possible (3 or 4 values in the right
      * range)
-     *
-     * @return
      */
     private Color getBackgroundColor() {
         if (background == null || background.length < 3 || background.length > 4) {
@@ -5515,8 +5490,6 @@ public class ImageWorker {
     /**
      * Adds an extra channel to the image, with a value of 255 (not public yet because it won't work
      * with all image types)
-     *
-     * @return
      */
     private ImageWorker addAlphaChannel() {
         final ImageLayout tempLayout = new ImageLayout(image);

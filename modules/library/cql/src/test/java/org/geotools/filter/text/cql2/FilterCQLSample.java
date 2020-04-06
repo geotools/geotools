@@ -863,13 +863,7 @@ public class FilterCQLSample {
         return new DefaultPeriod(i1, i2);
     }
 
-    /**
-     * Add duration to date
-     *
-     * @param firstDate
-     * @return
-     * @throws NumberFormatException
-     */
+    /** Add duration to date */
     private static Date addDuration(
             final Date date, final String durationDate, final String durationTime) {
         CALENDAR.setTime(date);
@@ -893,8 +887,6 @@ public class FilterCQLSample {
      * Subtract duration to date
      *
      * @param lastDate a Date
-     * @param durationDate
-     * @param durationTime
      * @return Date
      */
     private static Date subtractDuration(

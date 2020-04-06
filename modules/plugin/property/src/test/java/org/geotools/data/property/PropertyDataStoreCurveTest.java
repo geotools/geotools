@@ -51,11 +51,7 @@ public class PropertyDataStoreCurveTest extends TestCase {
 
     static FilterFactory2 ff = (FilterFactory2) CommonFactoryFinder.getFilterFactory(null);
 
-    /**
-     * Constructor for SimpleDataStoreTest.
-     *
-     * @param arg0
-     */
+    /** Constructor for SimpleDataStoreTest. */
     public PropertyDataStoreCurveTest(String arg0) {
         super(arg0);
     }

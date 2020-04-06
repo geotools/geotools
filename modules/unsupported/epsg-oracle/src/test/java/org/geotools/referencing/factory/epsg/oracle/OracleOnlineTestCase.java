@@ -66,9 +66,6 @@ public class OracleOnlineTestCase extends OnlineTestCase {
      * <p>Subclasses can override to wrap this DataSource, or make use of an alternate
      * Implementation as required.
      *
-     * @param params
-     * @return
-     * @throws SQLException
      */
     protected DataSource connect(String user, String password, String url, Properties params)
             throws SQLException {
@@ -111,9 +108,7 @@ public class OracleOnlineTestCase extends OnlineTestCase {
      * <p>This method is used as part of connect to ensure the EPSG tables have been loaded
      * correctly.
      *
-     * @param source
      * @return true if source is non null and tables are present
-     * @throws Exception
      */
     public boolean isEpsgDatabaseLoaded(DataSource source) throws Exception {
         if (source == null) return false;

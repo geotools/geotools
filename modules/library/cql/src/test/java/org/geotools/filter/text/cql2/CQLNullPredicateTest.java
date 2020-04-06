@@ -49,13 +49,7 @@ public class CQLNullPredicateTest {
         this.language = language;
     }
 
-    /**
-     * test the
-     *
-     * @param samplePredicate
-     * @param expected
-     * @throws Exception
-     */
+    /** test the */
     protected void testNullPredicate(final String samplePredicate, Filter expected)
             throws Exception {
 
@@ -75,11 +69,7 @@ public class CQLNullPredicateTest {
         testNullPredicate(samplePredicate, expected);
     }
 
-    /**
-     * Sample: ATTR1 IS NOT NULL
-     *
-     * @throws Exception
-     */
+    /** Sample: ATTR1 IS NOT NULL */
     @Test
     public void propertyIsNotNull() throws Exception {
 

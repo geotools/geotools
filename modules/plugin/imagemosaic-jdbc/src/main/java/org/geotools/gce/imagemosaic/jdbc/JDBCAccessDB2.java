@@ -58,11 +58,7 @@ class JDBCAccessDB2 extends JDBCAccessBase {
         initStatementStrings(config);
     }
 
-    /**
-     * initialize the sql statement strings
-     *
-     * @param config
-     */
+    /** initialize the sql statement strings */
     private void initStatementStrings(Config config) {
         String geomAttr = config.getGeomAttributeNameInSpatialTable();
         extentSelect =

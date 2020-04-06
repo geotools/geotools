@@ -37,12 +37,8 @@ public class DataSourceUtil {
      *
      * @param url the jdbc url
      * @param driverName the jdbc driver full qualified class name
-     * @param username
-     * @param password
      * @param validationQuery the validation query to be used for connection liveliness on borrow,
      *     or null, if no check is to be performed
-     * @return
-     * @throws DataSourceException
      */
     public static ManageableDataSource buildDefaultDataSource(
             String url, String driverName, String username, String password, String validationQuery)
@@ -57,15 +53,11 @@ public class DataSourceUtil {
      *
      * @param url the jdbc url
      * @param driverName the jdbc driver full qualified class name
-     * @param username
-     * @param password
      * @param maxActive maximum number of concurrent connections in the pool
      * @param minIdle minimum number of concurrent connections in the pool
      * @param validationQuery the validation query to be used for connection liveliness on borrow,
      *     or null, if no check is to be performed
      * @param cachePreparedStatements wheter to cache prepared statements or not
-     * @return
-     * @throws DataSourceException
      */
     public static ManageableDataSource buildDefaultDataSource(
             String url,

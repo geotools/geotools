@@ -726,7 +726,6 @@ public class Query {
      * Set the version of features to retrieve where this is supported by the data source being
      * queried.
      *
-     * @param version
      * @see #getVersion() getVersion() for explanation
      * @since 2.4
      */
@@ -923,12 +922,7 @@ public class Query {
                         : getHints().equals(other.getHints()));
     }
 
-    /**
-     * Compares the sortby by their effect (null and empty arrays are considered the same)
-     *
-     * @param other
-     * @return
-     */
+    /** Compares the sortby by their effect (null and empty arrays are considered the same) */
     private boolean isSortEquals(Query other) {
         if (this.sortBy == null || this.sortBy.length == 0) {
             return other.getSortBy() == null || other.getSortBy().length == 0;

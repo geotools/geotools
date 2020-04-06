@@ -45,12 +45,7 @@ public class ExecuteProcessResponse extends Response {
     private InputStream rawResponseStream;
     private String rawContentType;
 
-    /**
-     * @param contentType
-     * @param inputStream
-     * @throws ServiceException
-     * @throws SAXException
-     */
+    /** */
     public ExecuteProcessResponse(HTTPResponse httpResponse, boolean raw)
             throws IOException, ServiceException {
         super(httpResponse);
@@ -154,11 +149,7 @@ public class ExecuteProcessResponse extends Response {
         return rawResponseStream;
     }
 
-    /**
-     * The raw response stream content type
-     *
-     * @return
-     */
+    /** The raw response stream content type */
     public String getRawContentType() {
         return rawContentType;
     }

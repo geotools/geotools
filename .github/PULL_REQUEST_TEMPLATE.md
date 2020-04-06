@@ -12,7 +12,8 @@ For all pull requests:
 - [ ] The changes are not breaking the build in downstream projects using SNAPSHOT dependencies, GeoWebCache and GeoServer.
 
 The following are required only for core and extension modules (they are welcomed, but not required, for unsupported modules):
-- [ ] There is a ticket in Jira describing the issue/improvement/feature (a notable exemptions is, changes not visible to end users)
+- [ ] There is an issue in [Jira](https://osgeo-org.atlassian.net/projects/GEOT) describing the bug/task/new feature (a notable exemptions is, changes not visible to end users). The ticket is for the GeoTools project, if the issue was found elsewhere it's a good practice to link to the origin ticket/issue.
+- [ ] The pull request contains changes related to a single objective. If multiple focuses cannot be avoided, each one is in its own commit and has a separate ticket describing it.
 - [ ] PR for bug fixes and small new features are presented as a single commit
 - [ ] Commit message must be in the form "[GEOT-XYZW] Title of the Jira ticket"
 - [ ] New unit tests have been added covering the changes

@@ -104,7 +104,6 @@ public class AlgoRectangle2D {
 
     //	/**
     //	 * Expands the envelope with a direct Position
-    //	 * @param p
     //	 */
     //	public static void expand(Rectangle2D r,Point2D p) {
     //		// USE r.add(p);
@@ -178,7 +177,6 @@ public class AlgoRectangle2D {
     /**
      * Verifies whether another envelope intersects with this envelope
      *
-     * @param env
      * @return TRUE, if envelopes intersect; FALSE, if they dont intersect
      */
     public static boolean intersects(Rectangle2D r0, Rectangle2D r1) {
@@ -229,23 +227,12 @@ public class AlgoRectangle2D {
         return !(minx2 > maxx1 || maxx2 < minx1 || miny2 > maxy1 || maxy2 < miny1);
     }
 
-    /**
-     * @param min0
-     * @param max0
-     * @param min1
-     * @param max1
-     * @return
-     */
+    /** */
     private static boolean intersects(double min0, double max0, double min1, double max1) {
         return (min0 <= max1) && (max0 >= min1);
     }
 
-    /**
-     * @param min0
-     * @param max0
-     * @param d
-     * @return
-     */
+    /** */
     private static boolean intersects(double min0, double max0, double d) {
         return (min0 <= d) && (max0 >= d);
     }

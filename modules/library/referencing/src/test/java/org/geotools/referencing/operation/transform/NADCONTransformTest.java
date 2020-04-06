@@ -109,8 +109,6 @@ public class NADCONTransformTest {
     /**
      * Test method for {@link
      * org.geotools.referencing.operation.transform.NADCONTransform#inverse()}.
-     *
-     * @throws TransformException
      */
     @Test
     public void testInverse() throws TransformException {
@@ -129,8 +127,6 @@ public class NADCONTransformTest {
      * Test method for {@link
      * org.geotools.referencing.operation.transform.NADCONTransform#transform(double[], int,
      * double[], int, int)}.
-     *
-     * @throws TransformException
      */
     @Test
     public void testTransform() throws TransformException {
@@ -144,8 +140,6 @@ public class NADCONTransformTest {
      * Test method for {@link
      * org.geotools.referencing.operation.transform.NADCONTransform#inverseTransform(double[], int,
      * double[], int, int)}.
-     *
-     * @throws TransformException
      */
     @Test
     public void testInverseTransform() throws TransformException {

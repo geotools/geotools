@@ -184,7 +184,6 @@ public class XMLHandlerHints implements Map<String, Object> {
      * by {@link GeoTools#getEntityResolver(org.geotools.util.factory.Hints)} (usually {@link
      * PreventLocalEntityResolver} unless otherwise configured).
      *
-     * @param hints
      * @return EntityResolver provided by hints, or non-null default provided by {@link
      *     Hints#ENTITY_RESOLVER}.
      */

@@ -209,7 +209,6 @@ public class AuthorityBackedFactory extends DefaultCoordinateOperationFactory
      * @param sourceCRS Source CRS
      * @param targetCRS Target CRS
      * @param inverse whether the inverse operation has to be applied
-     * @return
      */
     protected CoordinateOperation validateCandidate(
             CoordinateOperation candidate,

@@ -89,10 +89,7 @@ public class GeoSciMLTest extends AppSchemaTestSupport {
         // Logging.GEOTOOLS.forceMonolineConsoleOutput(Level.FINEST);
     }
 
-    /**
-     * @param location schema location path discoverable through getClass().getResource()
-     * @return
-     */
+    /** @param location schema location path discoverable through getClass().getResource() */
     private SchemaIndex loadSchema(String location) throws IOException {
         URL catalogLocation = getClass().getResource(schemaBase + "mappedPolygons.oasis.xml");
         reader.setResolver(catalogLocation);
@@ -102,8 +99,6 @@ public class GeoSciMLTest extends AppSchemaTestSupport {
     /**
      * Tests if the schema-to-FM parsing code developed for complex datastore configuration loading
      * can parse the GeoSciML types
-     *
-     * @throws Exception
      */
     @Test
     public void testParseSchema() throws Exception {
@@ -224,11 +219,7 @@ public class GeoSciMLTest extends AppSchemaTestSupport {
         }
     }
 
-    /**
-     * Test that getting features from a feature source with a query honours the namespace.
-     *
-     * @throws Exception
-     */
+    /** Test that getting features from a feature source with a query honours the namespace. */
     @Test
     public void testFeatureSourceHonoursQueryNamespace() throws Exception {
         final Name typeName = Types.typeName(GSMLNS, "MappedFeature");

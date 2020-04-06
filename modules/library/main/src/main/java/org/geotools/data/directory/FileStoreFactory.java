@@ -27,11 +27,6 @@ import org.geotools.data.DataStore;
  */
 public interface FileStoreFactory {
 
-    /**
-     * Returns a store for the specified file
-     *
-     * @param file
-     * @return
-     */
+    /** Returns a store for the specified file */
     DataStore getDataStore(File file) throws IOException;
 }

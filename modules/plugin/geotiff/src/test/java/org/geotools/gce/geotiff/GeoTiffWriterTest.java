@@ -90,11 +90,7 @@ public class GeoTiffWriterTest extends Assert {
         field.set(null, value);
     }
 
-    /**
-     * Test our ability to write non standard CRS
-     *
-     * @throws Exception
-     */
+    /** Test our ability to write non standard CRS */
     @Test
     public void testDefaultGeographicWGS84() throws Exception {
 
@@ -129,16 +125,7 @@ public class GeoTiffWriterTest extends Assert {
                         reader.getCoordinateReferenceSystem(), DefaultGeographicCRS.WGS84));
     }
 
-    /**
-     * Testing {@link GeoTiffWriter} capabilities to write a cropped coverage.
-     *
-     * @throws IllegalArgumentException
-     * @throws IOException
-     * @throws UnsupportedOperationException
-     * @throws ParseException
-     * @throws FactoryException
-     * @throws TransformException
-     */
+    /** Testing {@link GeoTiffWriter} capabilities to write a cropped coverage. */
     @Test
     //	    @Ignore
     public void testWriteCroppedCoverage()

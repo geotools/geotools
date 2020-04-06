@@ -70,13 +70,7 @@ class TransformFeatureCollection extends AbstractFeatureCollection {
         this.query = query;
     }
 
-    /**
-     * Creates a sub-schema with only the selected attributes
-     *
-     * @param schema
-     * @param query
-     * @return
-     */
+    /** Creates a sub-schema with only the selected attributes */
     static SimpleFeatureType retypeSchema(SimpleFeatureType schema, Query query) {
         if (query.getPropertyNames() == Query.ALL_NAMES) {
             return schema;
@@ -231,10 +225,6 @@ class TransformFeatureCollection extends AbstractFeatureCollection {
      * Checks if the visitor is accessing only properties available in the specified feature type,
      * checks if the target schema contains transformed attributes or as a special case, if it's a
      * count visitor accessing no properties at all
-     *
-     * @param visitor
-     * @param featureType
-     * @return
      */
     protected boolean isTypeCompatible(FeatureVisitor visitor, SimpleFeatureType featureType) {
         if (visitor instanceof CountVisitor) {

@@ -39,8 +39,6 @@ public class IntegrityValidationTest extends DataTestCase {
      * FeatureValidationTest constructor.
      *
      * <p>Run test <code>testName</code>.
-     *
-     * @param testName
      */
     public IntegrityValidationTest(String testName) {
         super(testName);
@@ -49,7 +47,6 @@ public class IntegrityValidationTest extends DataTestCase {
     /**
      * Construct data store for use.
      *
-     * @throws Exception
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {
@@ -62,7 +59,6 @@ public class IntegrityValidationTest extends DataTestCase {
     /**
      * Override tearDown.
      *
-     * @throws Exception
      * @see junit.framework.TestCase#tearDown()
      */
     protected void tearDown() throws Exception {

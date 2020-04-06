@@ -78,8 +78,6 @@ class VectorLayerMetadata {
     /**
      * Returns the fields with their type parsed to a binding class (java own String, Double,
      * Boolean)
-     *
-     * @return
      */
     public LinkedHashMap<String, Class> getFieldBindings() {
         return fields.entrySet()
@@ -92,12 +90,7 @@ class VectorLayerMetadata {
                                 LinkedHashMap::new));
     }
 
-    /**
-     * Tolerant type mapper, maps Number to Double, Doolean to boolean, any other name to String
-     *
-     * @param typeName
-     * @return
-     */
+    /** Tolerant type mapper, maps Number to Double, Doolean to boolean, any other name to String */
     protected Class toBinding(String typeName) {
         if ("Number".equals(typeName)) {
             return Number.class;

@@ -34,26 +34,12 @@ public class HSLColor {
 
     double alpha;
 
-    /**
-     * Builds a color based on HSLA components
-     *
-     * @param hue
-     * @param saturation
-     * @param lightness
-     * @param alpha
-     */
+    /** Builds a color based on HSLA components */
     public HSLColor(double hue, double saturation, double lightness) {
         this(hue, saturation, lightness, 1d);
     }
 
-    /**
-     * Builds a color based on HSLA components
-     *
-     * @param hue
-     * @param saturation
-     * @param lightness
-     * @param alpha
-     */
+    /** Builds a color based on HSLA components */
     public HSLColor(double hue, double saturation, double lightness, double alpha) {
         this.hue = hue;
         this.saturation = saturation;
@@ -61,11 +47,7 @@ public class HSLColor {
         this.alpha = alpha;
     }
 
-    /**
-     * Builds the HSL representation of a color
-     *
-     * @param color
-     */
+    /** Builds the HSL representation of a color */
     public HSLColor(Color color) {
         double r = color.getRed() / 255d;
         double g = color.getGreen() / 255d;
@@ -140,11 +122,7 @@ public class HSLColor {
         return alpha;
     }
 
-    /**
-     * Turns the HSL representation into a RGB one
-     *
-     * @return
-     */
+    /** Turns the HSL representation into a RGB one */
     public Color toRGB() {
         double q = 0;
         if (lightness < 0.5) {

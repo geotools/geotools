@@ -39,11 +39,7 @@ import org.opengis.util.ProgressListener;
  */
 public abstract class FeatureToFeatureProcess extends AbstractFeatureCollectionProcess {
 
-    /**
-     * Constructor
-     *
-     * @param factory
-     */
+    /** Constructor */
     public FeatureToFeatureProcess(FeatureToFeatureProcessFactory factory) {
         super(factory);
     }
@@ -100,10 +96,6 @@ public abstract class FeatureToFeatureProcess extends AbstractFeatureCollectionP
      * Subclasses should override if the target schema is different that then original schema (mind,
      * if the number of attributes changes it's better to roll your own class instead of using this
      * one)
-     *
-     * @param sourceSchema
-     * @param input
-     * @return
      */
     protected SimpleFeatureType getTargetSchema(
             SimpleFeatureType sourceSchema, Map<String, Object> input) {

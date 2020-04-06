@@ -153,11 +153,7 @@ public class CRSTest extends TestCase {
         math.transform(pts, 0, new double[pts.length], 0, pts.length / 2);
         for (int i = 0; i < pts.length; i++) assertTrue("pts[" + i + "]", pts[i] != tst[i]);
     }
-    /**
-     * Taken from empty udig map calculation of scale.
-     *
-     * @throws Exception
-     */
+    /** Taken from empty udig map calculation of scale. */
     public void testSamplePixel() throws Exception {
         Map map = new HashMap();
         // map.put( Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, true );

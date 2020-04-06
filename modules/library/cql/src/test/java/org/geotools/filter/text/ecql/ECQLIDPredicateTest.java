@@ -38,11 +38,7 @@ import org.opengis.filter.Not;
  */
 public class ECQLIDPredicateTest {
 
-    /**
-     * Sample: IN( 'states.1', 'states.2', 'states.3' </pre>
-     *
-     * @throws Exception
-     */
+    /** Sample: IN( 'states.1', 'states.2', 'states.3' </pre> */
     @Test
     public void filterIdWithListOfIdValues() throws Exception {
 
@@ -70,8 +66,6 @@ public class ECQLIDPredicateTest {
      * <pre>
      * Sample: NOT IN( 'states.1', 'states.2', 'states.3')
      * </pre>
-     *
-     * @throws Exception
      */
     @Test
     public void notFilterId() throws Exception {
@@ -188,8 +182,6 @@ public class ECQLIDPredicateTest {
      * <li>IN ('states.1')</li>
      * </ul>
      * </pre>
-     *
-     * @throws Exception
      */
     @Test
     public void filterIdSimple() throws Exception {
@@ -198,11 +190,7 @@ public class ECQLIDPredicateTest {
         assertFilterId("states.1");
     }
 
-    /**
-     * Test the id Predicate
-     *
-     * @throws CQLException
-     */
+    /** Test the id Predicate */
     private void assertFilterId(final String idValue) throws CQLException {
 
         String strId = "'" + idValue + "'";
@@ -216,11 +204,7 @@ public class ECQLIDPredicateTest {
         Assert.assertTrue(idValue + "was expected", idSet.contains(idValue));
     }
 
-    /**
-     * Test for Syntax error exception
-     *
-     * @throws CQLException
-     */
+    /** Test for Syntax error exception */
     @Test(expected = CQLException.class)
     public void filterIdSyntaxError() throws CQLException {
         String strId = "IN 15521.3566"; // should be IN( '15521.3566')

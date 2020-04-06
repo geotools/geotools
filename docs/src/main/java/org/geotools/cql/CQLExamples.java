@@ -181,11 +181,7 @@ public class CQLExamples {
         System.out.println("Result of filter evaluation: " + result);
     }
 
-    /**
-     * Example using the "contains" intersection matrix.
-     *
-     * @throws Exception
-     */
+    /** Example using the "contains" intersection matrix. */
     private static void relatePattern() throws Exception {
 
         // cql relatePattern start
@@ -229,11 +225,7 @@ public class CQLExamples {
         System.out.println("Result of filter evaluation: " + result);
     }
 
-    /**
-     * Matching a property with a text pattern (case sensitive)
-     *
-     * @throws Exception
-     */
+    /** Matching a property with a text pattern (case sensitive) */
     private static void likePredicate() throws Exception {
         // cql likePredicate start
         Filter filter = CQL.toFilter("cityName LIKE 'New%'");

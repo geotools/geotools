@@ -48,7 +48,6 @@ import java.awt.image.SampleModel;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -164,7 +163,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.geometry.Envelope;
-import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterDescriptor;
@@ -193,6 +191,10 @@ public class ImageMosaicReaderTest extends Assert {
     private static final double DELTA = 1E-4;
 
     private static final Logger LOGGER = Logger.getLogger(ImageMosaicReaderTest.class.toString());
+
+    private static final int BASE_METADATANAMES_LENGTH = 13;
+
+    private static final int ADDITIONAL_DOMAINS_METADATANAMES_LENGTH = 19;
 
     public static junit.framework.Test suite() {
         return new JUnit4TestAdapter(ImageMosaicReaderTest.class);
@@ -253,13 +255,7 @@ public class ImageMosaicReaderTest extends Assert {
 
     @Rule public TemporaryFolder tempFolder = new TemporaryFolder();
 
-    /**
-     * Testing crop capabilities.
-     *
-     * @throws MismatchedDimensionException
-     * @throws IOException
-     * @throws FactoryException
-     */
+    /** Testing crop capabilities. */
     @Test
     public void crop() throws Exception {
         imageMosaicCropTest(rgbURL, "crop-rgbURL", false);
@@ -278,13 +274,7 @@ public class ImageMosaicReaderTest extends Assert {
                 index_unique_paletteAlphaURL, "crop-index_unique_paletteAlphaURL", true);
     }
 
-    /**
-     * Tests the {@link ImageMosaicReader} with default parameters for the various input params.
-     *
-     * @throws IOException
-     * @throws MismatchedDimensionException
-     * @throws FactoryException
-     */
+    /** Tests the {@link ImageMosaicReader} with default parameters for the various input params. */
     @Test
     //        @Ignore
     public void alpha() throws Exception {
@@ -381,13 +371,7 @@ public class ImageMosaicReaderTest extends Assert {
         ;
     }
 
-    /**
-     * Tests the {@link ImageMosaicReader} with default parameters for the various input params.
-     *
-     * @throws IOException
-     * @throws MismatchedDimensionException
-     * @throws FactoryException
-     */
+    /** Tests the {@link ImageMosaicReader} with default parameters for the various input params. */
     @Test
     //	@Ignore
     public void overviews() throws Exception {
@@ -436,11 +420,7 @@ public class ImageMosaicReaderTest extends Assert {
         reader.dispose();
     }
 
-    /**
-     * @throws IOException
-     * @throws MismatchedDimensionException
-     * @throws FactoryException
-     */
+    /** */
     @Test
     // @Ignore
     public void readingResolutions() throws Exception {
@@ -497,7 +477,7 @@ public class ImageMosaicReaderTest extends Assert {
 
         final String[] metadataNames = reader.getMetadataNames();
         assertNotNull(metadataNames);
-        assertEquals(metadataNames.length, 12);
+        assertEquals(BASE_METADATANAMES_LENGTH, metadataNames.length);
 
         assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
         final String timeMetadata = reader.getMetadataValue("TIME_DOMAIN");
@@ -614,8 +594,6 @@ public class ImageMosaicReaderTest extends Assert {
     /**
      * This test is used to check backward compatibility with old imagemosaics wich does not include
      * the TypeName=MOSAICNAME into the generated MOSAICNAME.properties file
-     *
-     * @throws Exception
      */
     @Test
     // @Ignore
@@ -676,8 +654,6 @@ public class ImageMosaicReaderTest extends Assert {
     /**
      * This test is used to check backward compatibility with old imagemosaics wich does not include
      * the TypeName=MOSAICNAME into the generated MOSAICNAME.properties file
-     *
-     * @throws Exception
      */
     @Test
     public void testMixedTables() throws Exception {
@@ -771,7 +747,7 @@ public class ImageMosaicReaderTest extends Assert {
 
         final String[] metadataNames = reader.getMetadataNames();
         assertNotNull(metadataNames);
-        assertEquals(metadataNames.length, 12);
+        assertEquals(BASE_METADATANAMES_LENGTH, metadataNames.length);
 
         assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
         final String timeMetadata = reader.getMetadataValue("TIME_DOMAIN");
@@ -881,7 +857,7 @@ public class ImageMosaicReaderTest extends Assert {
 
         final String[] metadataNames = reader.getMetadataNames();
         assertNotNull(metadataNames);
-        assertEquals(metadataNames.length, 12);
+        assertEquals(BASE_METADATANAMES_LENGTH, metadataNames.length);
 
         assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
         final String timeMetadata = reader.getMetadataValue("TIME_DOMAIN");
@@ -959,7 +935,7 @@ public class ImageMosaicReaderTest extends Assert {
 
         final String[] metadataNames = reader.getMetadataNames();
         assertNotNull(metadataNames);
-        assertEquals(metadataNames.length, 12);
+        assertEquals(BASE_METADATANAMES_LENGTH, metadataNames.length);
         assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
         assertEquals("2004-02-01T00:00:00.000Z", reader.getMetadataValue("TIME_DOMAIN_MINIMUM"));
         assertEquals("2004-05-01T00:00:00.000Z", reader.getMetadataValue("TIME_DOMAIN_MAXIMUM"));
@@ -1027,7 +1003,7 @@ public class ImageMosaicReaderTest extends Assert {
 
         final String[] metadataNames = reader.getMetadataNames();
         assertNotNull(metadataNames);
-        assertEquals(metadataNames.length, 12);
+        assertEquals(BASE_METADATANAMES_LENGTH, metadataNames.length);
         assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
         assertEquals("2004-02-01T12:05:00.000Z", reader.getMetadataValue("TIME_DOMAIN_MINIMUM"));
         assertEquals("2004-05-30T12:15:59.000Z", reader.getMetadataValue("TIME_DOMAIN_MAXIMUM"));
@@ -1050,7 +1026,7 @@ public class ImageMosaicReaderTest extends Assert {
 
         final String[] metadataNames = reader.getMetadataNames();
         assertNotNull(metadataNames);
-        assertEquals(metadataNames.length, 18);
+        assertEquals(ADDITIONAL_DOMAINS_METADATANAMES_LENGTH, metadataNames.length);
         assertEquals("true", reader.getMetadataValue("HAS_DATE_DOMAIN"));
         assertEquals("20081031T0000000,20081101T0000000", reader.getMetadataValue("DATE_DOMAIN"));
         assertEquals("java.lang.String", reader.getMetadataValue("DATE_DOMAIN_DATATYPE"));
@@ -1119,11 +1095,7 @@ public class ImageMosaicReaderTest extends Assert {
         reader.dispose();
     }
 
-    /**
-     * Simple test method accessing time and 2 custom dimensions for the sample dataset
-     *
-     * @throws Exception
-     */
+    /** Simple test method accessing time and 2 custom dimensions for the sample dataset */
     @Test
     @SuppressWarnings("rawtypes")
     public void timeAdditionalDimRanges() throws Exception {
@@ -1134,7 +1106,7 @@ public class ImageMosaicReaderTest extends Assert {
 
             final String[] metadataNames = reader.getMetadataNames();
             assertNotNull(metadataNames);
-            assertEquals(metadataNames.length, 18);
+            assertEquals(ADDITIONAL_DOMAINS_METADATANAMES_LENGTH, metadataNames.length);
             assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
             assertEquals(
                     "2008-10-31T00:00:00.000Z/2008-11-04T00:00:00.000Z/PT1S,2008-11-05T00:00:00.000Z/2008-11-07T00:00:00.000Z/PT1S",
@@ -1238,11 +1210,7 @@ public class ImageMosaicReaderTest extends Assert {
         }
     }
 
-    /**
-     * Simple test method to test emptyMosaic creation support followed by harvesting. dataset
-     *
-     * @throws Exception
-     */
+    /** Simple test method to test emptyMosaic creation support followed by harvesting. dataset */
     @Test
     // @Ignore
     public void testEmpytMosaic() throws Exception {
@@ -1329,11 +1297,7 @@ public class ImageMosaicReaderTest extends Assert {
         }
     }
 
-    /**
-     * Simple test method to test emptyMosaic creation support followed by harvesting
-     *
-     * @throws Exception
-     */
+    /** Simple test method to test emptyMosaic creation support followed by harvesting */
     @Test
     public void testImageMosaicConfigFilePath() throws Exception {
         CatalogBuilderConfiguration builderConfig = new CatalogBuilderConfiguration();
@@ -1353,11 +1317,7 @@ public class ImageMosaicReaderTest extends Assert {
         assertEquals(auxFile.getAbsolutePath(), auxiliaryFilePath);
     }
 
-    /**
-     * Simple test method to test emptyMosaic creation support followed by harvesting
-     *
-     * @throws Exception
-     */
+    /** Simple test method to test emptyMosaic creation support followed by harvesting */
     @Test
     public void testEmpytMosaicXML() throws Exception {
 
@@ -1452,11 +1412,7 @@ public class ImageMosaicReaderTest extends Assert {
         }
     }
 
-    /**
-     * Simple test method accessing time and 2 custom dimensions for the sample dataset
-     *
-     * @throws Exception
-     */
+    /** Simple test method accessing time and 2 custom dimensions for the sample dataset */
     @Test
     @SuppressWarnings("rawtypes")
     public void granuleSourceTest() throws Exception {
@@ -1475,7 +1431,7 @@ public class ImageMosaicReaderTest extends Assert {
 
         final String[] metadataNames = reader.getMetadataNames();
         assertNotNull(metadataNames);
-        assertEquals(metadataNames.length, 18);
+        assertEquals(ADDITIONAL_DOMAINS_METADATANAMES_LENGTH, metadataNames.length);
         assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
         assertEquals(
                 "2008-10-31T00:00:00.000Z/2008-11-04T00:00:00.000Z/PT1S,2008-11-05T00:00:00.000Z/2008-11-07T00:00:00.000Z/PT1S",
@@ -1581,11 +1537,7 @@ public class ImageMosaicReaderTest extends Assert {
         reader.dispose();
     }
 
-    /**
-     * Simple test method testing dimensions Descriptor for the sample dataset
-     *
-     * @throws Exception
-     */
+    /** Simple test method testing dimensions Descriptor for the sample dataset */
     @Test
     public void testDimensionsDescriptor() throws Exception {
         final AbstractGridFormat format = TestUtils.getFormat(timeAdditionalDomainsRangeURL);
@@ -1632,11 +1584,7 @@ public class ImageMosaicReaderTest extends Assert {
         timeAdditionalDimRanges();
     }
 
-    /**
-     * Tests that selection by range works properly
-     *
-     * @throws Exception
-     */
+    /** Tests that selection by range works properly */
     @Test
     public void timeTimeRangeSelection() throws Exception {
         final AbstractGridFormat format = TestUtils.getFormat(timeAdditionalDomainsRangeURL);
@@ -1761,11 +1709,7 @@ public class ImageMosaicReaderTest extends Assert {
         return formatD.parse(timeStamp);
     }
 
-    /**
-     * Simple test method accessing time and 2 custom dimensions for the sample dataset
-     *
-     * @throws Exception
-     */
+    /** Simple test method accessing time and 2 custom dimensions for the sample dataset */
     @Test
     // @Ignore
     @SuppressWarnings("rawtypes")
@@ -1776,7 +1720,7 @@ public class ImageMosaicReaderTest extends Assert {
 
         final String[] metadataNames = reader.getMetadataNames();
         assertNotNull(metadataNames);
-        assertEquals(metadataNames.length, 18);
+        assertEquals(ADDITIONAL_DOMAINS_METADATANAMES_LENGTH, metadataNames.length);
         assertEquals("true", reader.getMetadataValue("HAS_DATE_DOMAIN"));
         assertEquals("20081031T0000000,20081101T0000000", reader.getMetadataValue("DATE_DOMAIN"));
         assertEquals("java.lang.String", reader.getMetadataValue("DATE_DOMAIN_DATATYPE"));
@@ -1845,8 +1789,6 @@ public class ImageMosaicReaderTest extends Assert {
      * <p>world_a.tif => Pixel Size = (0.833333333333333,-0.833333333333333); 4 overviews
      * world_b1.tif => Pixel Size = (1.406250000000000,-1.406250000000000); 2 overviews world_b2.tif
      * => Pixel Size = (0.666666666666667,-0.666666666666667); 0 overviews
-     *
-     * @throws Exception
      */
     @Test
     // @Ignore
@@ -1909,11 +1851,7 @@ public class ImageMosaicReaderTest extends Assert {
         reader.dispose();
     }
 
-    /**
-     * Tests the {@link ImageMosaicReader} with default parameters for the various input params.
-     *
-     * @throws Exception
-     */
+    /** Tests the {@link ImageMosaicReader} with default parameters for the various input params. */
     @Test
     //  //@Ignore
     public void defaultParameterValue() throws Exception {
@@ -1929,11 +1867,7 @@ public class ImageMosaicReaderTest extends Assert {
                 indexAlphaURL, null, null, baseTestName + indexAlphaURL.getFile(), false);
     }
 
-    /**
-     * Testing one bit mosaics (black/white)
-     *
-     * @throws Exception
-     */
+    /** Testing one bit mosaics (black/white) */
     @Test
     public void oneBit() throws Exception {
 
@@ -2044,13 +1978,7 @@ public class ImageMosaicReaderTest extends Assert {
         }
     }
 
-    /**
-     * Tests the {@link ImageMosaicReader}
-     *
-     * @param title
-     * @param threshold
-     * @throws Exception
-     */
+    /** Tests the {@link ImageMosaicReader} */
     private GridCoverage2D imageMosaicSimpleParamsTest(
             final URL testURL,
             final Color inputTransparent,
@@ -2100,7 +2028,6 @@ public class ImageMosaicReaderTest extends Assert {
      * @param title to use when showing image.
      * @param acceptContainment true if the result is expected to be contained in the crop area,
      *     possibly because the mosaic is sparse
-     * @throws Exception
      */
     private void imageMosaicCropTest(URL testURL, String title, boolean acceptContainment)
             throws Exception {
@@ -2431,12 +2358,7 @@ public class ImageMosaicReaderTest extends Assert {
         rgbaExtraURLTiff = TestData.url(this, "tiff_rgba_extra/");
     }
 
-    /**
-     * Cleaning up the generated files (shape and properties so that we recreate them.
-     *
-     * @throws FileNotFoundException
-     * @throws Exception
-     */
+    /** Cleaning up the generated files (shape and properties so that we recreate them. */
     private void cleanUp() throws Exception {
         if (INTERACTIVE) return;
         File dir = TestData.file(this, "overview/");
@@ -2488,11 +2410,7 @@ public class ImageMosaicReaderTest extends Assert {
         cleanUp();
     }
 
-    /**
-     * Simple test method accessing time and 2 custom dimensions for the sample dataset
-     *
-     * @throws Exception
-     */
+    /** Simple test method accessing time and 2 custom dimensions for the sample dataset */
     @Test
     // @Ignore
     @SuppressWarnings("rawtypes")
@@ -2503,7 +2421,7 @@ public class ImageMosaicReaderTest extends Assert {
 
         final String[] metadataNames = reader.getMetadataNames();
         assertNotNull(metadataNames);
-        assertEquals(metadataNames.length, 18);
+        assertEquals(ADDITIONAL_DOMAINS_METADATANAMES_LENGTH, metadataNames.length);
         assertEquals("true", reader.getMetadataValue("HAS_DATE_DOMAIN"));
         assertEquals("20081031T0000000,20081101T0000000", reader.getMetadataValue("DATE_DOMAIN"));
         assertEquals("java.lang.String", reader.getMetadataValue("DATE_DOMAIN_DATATYPE"));
@@ -2565,11 +2483,7 @@ public class ImageMosaicReaderTest extends Assert {
         reader.dispose();
     }
 
-    /**
-     * Simple test method accessing time and 2 custom dimensions for the sample dataset
-     *
-     * @throws Exception
-     */
+    /** Simple test method accessing time and 2 custom dimensions for the sample dataset */
     @Test
     // @Ignore
     @SuppressWarnings("rawtypes")
@@ -2581,7 +2495,7 @@ public class ImageMosaicReaderTest extends Assert {
 
         final String[] metadataNames = reader.getMetadataNames();
         assertNotNull(metadataNames);
-        assertEquals(15, metadataNames.length);
+        assertEquals(16, metadataNames.length);
         assertEquals("false", reader.getMetadataValue("HAS_POLARIZ_DOMAIN"));
         assertEquals("true", reader.getMetadataValue("HAS_POLARIZATION_DOMAIN"));
         assertEquals(
@@ -3816,7 +3730,7 @@ public class ImageMosaicReaderTest extends Assert {
         try {
             String[] metadataNames = reader.getMetadataNames();
             assertNotNull(metadataNames);
-            assertEquals(metadataNames.length, 12);
+            assertEquals(BASE_METADATANAMES_LENGTH, metadataNames.length);
             assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
             assertEquals(
                     "2004-02-01T00:00:00.000Z", reader.getMetadataValue("TIME_DOMAIN_MINIMUM"));
@@ -3843,7 +3757,7 @@ public class ImageMosaicReaderTest extends Assert {
 
         final String[] metadataNames = reader.getMetadataNames();
         assertNotNull(metadataNames);
-        assertEquals(metadataNames.length, 18);
+        assertEquals(ADDITIONAL_DOMAINS_METADATANAMES_LENGTH, metadataNames.length);
 
         assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
         final String timeMetadata = reader.getMetadataValue("TIME_DOMAIN");
@@ -4199,7 +4113,7 @@ public class ImageMosaicReaderTest extends Assert {
 
         final String[] metadataNames = reader.getMetadataNames();
         assertNotNull(metadataNames);
-        assertEquals(metadataNames.length, 12);
+        assertEquals(BASE_METADATANAMES_LENGTH, metadataNames.length);
 
         // Getting some metadata
         assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
@@ -4233,7 +4147,6 @@ public class ImageMosaicReaderTest extends Assert {
      * Tests {@link ImageMosaicReader} asking to crop the lower left quarter of the input coverage.
      *
      * @param title to use when showing image.
-     * @throws Exception
      */
     @Test
     public void testExpandToRGB() throws Exception {
@@ -4340,8 +4253,6 @@ public class ImageMosaicReaderTest extends Assert {
     /**
      * Tests {@link ImageMosaicReader} when the native CRS differs from the requested CRS only
      * because of metadata. Test case uses 3857 data bt request with 900913
-     *
-     * @throws Exception
      */
     @Test
     public void testSameCRS() throws Exception {

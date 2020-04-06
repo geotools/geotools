@@ -137,7 +137,6 @@ public interface Name {
     /**
      * <code>true</code> if getURI is equal.
      *
-     * @param other
      * @return <code>true</code> if getURI is equal.
      */
     /// @Override

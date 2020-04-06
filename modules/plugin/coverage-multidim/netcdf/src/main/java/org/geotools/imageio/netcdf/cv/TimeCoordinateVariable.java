@@ -43,10 +43,7 @@ class TimeCoordinateVariable extends CoordinateVariable<Date> {
 
     private Date epoch;
 
-    /**
-     * @param binding
-     * @param coordinateAxis
-     */
+    /** */
     public TimeCoordinateVariable(CoordinateAxis coordinateAxis) {
         super(Date.class, coordinateAxis);
         units = coordinateAxis.getUnitsString();

@@ -43,11 +43,7 @@ public class CentroidLine {
 
     private double totalLength = 0.0;
 
-    /**
-     * Creates a new Centroid operation
-     *
-     * @param crs
-     */
+    /** Creates a new Centroid operation */
     public CentroidLine(CoordinateReferenceSystem crs) {
         this.centSum =
                 new DirectPositionImpl(

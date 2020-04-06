@@ -91,7 +91,6 @@ public class CoverageResponse {
     /**
      * Returns the Coverages available with this coverage response.
      *
-     * @param listener
      * @return a collection of coverages.
      */
     public Collection<? extends Coverage> getResults(ProgressListener listener) {

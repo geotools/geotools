@@ -64,9 +64,6 @@ public final class CoordinateFormatter {
     /**
      * Formats a number with the configured number of decimals. For better performance best use
      * {@link #format(double, StringBuffer)} against a re-used StringBuffer
-     *
-     * @param x
-     * @param sb
      */
     public String format(double x) {
         StringBuffer sb = new StringBuffer();
@@ -99,12 +96,7 @@ public final class CoordinateFormatter {
         return new String(zeros);
     }
 
-    /**
-     * Formats a number with the configured number of decimals
-     *
-     * @param x
-     * @param sb
-     */
+    /** Formats a number with the configured number of decimals */
     public StringBuffer format(double x, StringBuffer sb) {
         String formatted;
         if ((Math.abs(x) >= DECIMAL_MIN && x < DECIMAL_MAX) || x == 0) {
@@ -153,11 +145,7 @@ public final class CoordinateFormatter {
         coordFormatter.setMaximumFractionDigits(maxDigits);
     }
 
-    /**
-     * Returns the force decimal flag, see {@link #setForcedDecimal(boolean)}
-     *
-     * @return
-     */
+    /** Returns the force decimal flag, see {@link #setForcedDecimal(boolean)} */
     public boolean isForcedDecimal() {
         return forcedDecimal;
     }
@@ -169,8 +157,6 @@ public final class CoordinateFormatter {
     /**
      * When set to true, forces decimal representation of numbers, otherwise allows scientific
      * notation too (for very large of very small numbers). False by default.
-     *
-     * @param forcedDecimal
      */
     public void setForcedDecimal(boolean forcedDecimal) {
         this.forcedDecimal = forcedDecimal;

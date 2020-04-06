@@ -87,7 +87,6 @@ Supported Formats
 
   + ``app-schema``  
   + ``csv``  
-  + ``dxf``  
   + ``geojson``  
   + ``property``  
   + ``shapefile``  

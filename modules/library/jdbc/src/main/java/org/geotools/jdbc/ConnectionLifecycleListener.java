@@ -33,11 +33,7 @@ public interface ConnectionLifecycleListener {
     /** Called when the collection is being released back to the connection pool */
     public void onRelease(JDBCDataStore store, Connection cx) throws SQLException;
 
-    /**
-     * Called when the connection comes to a commit
-     *
-     * @throws SQLException
-     */
+    /** Called when the connection comes to a commit */
     public void onCommit(JDBCDataStore store, Connection cx) throws SQLException;
 
     /** Called when the connection comes to a rollback */

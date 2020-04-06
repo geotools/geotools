@@ -86,10 +86,6 @@ public class CRSEnvelope implements Envelope {
      * Create a bounding box with the specified properties
      *
      * @param epsgCode The Coordinate Reference System this bounding box is in
-     * @param minX
-     * @param minY
-     * @param maxX
-     * @param maxY
      */
     public CRSEnvelope(String epsgCode, double minX, double minY, double maxX, double maxY) {
         this.srsName = epsgCode;

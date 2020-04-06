@@ -54,8 +54,6 @@ public class MultiLevelROIProviderMosaicFactory extends MultiLevelROIProviderFac
      * Builds a footprint provider from mosaic location
      *
      * @param mosaicFolder The folder that contains the mosaic config files
-     * @return
-     * @throws Exception
      */
     public static MultiLevelROIProvider createFootprintProvider(File mosaicFolder, Hints hints) {
         File configFile = new File(mosaicFolder, "footprints.properties");

@@ -72,11 +72,7 @@ public class SurfaceBoundaryImpl extends PrimitiveBoundaryImpl implements Surfac
 
     private List<Ring> interior = null;
 
-    /**
-     * @param crs
-     * @param exterior
-     * @param interior
-     */
+    /** */
     public SurfaceBoundaryImpl(CoordinateReferenceSystem crs, Ring exterior, List<Ring> interior) {
         super(crs);
         // TODO The consisty need to checked: Interior rings cannot cross each other or the exterior
@@ -86,8 +82,6 @@ public class SurfaceBoundaryImpl extends PrimitiveBoundaryImpl implements Surfac
     }
 
     //	/**
-    //	 * @param factory
-    //	 * @param patch
     //	 */
     //	public SurfaceBoundaryImpl(FeatGeomFactoryImpl factory,
     //			ArrayList<? extends SurfacePatchImpl> patch) {
@@ -234,7 +228,6 @@ public class SurfaceBoundaryImpl extends PrimitiveBoundaryImpl implements Surfac
 
     // Not used!
     //	/**
-    //	 * @param distance
     //	 */
     //	public void split(double distance) {
     //		((RingImpl) this.exterior).split(distance);

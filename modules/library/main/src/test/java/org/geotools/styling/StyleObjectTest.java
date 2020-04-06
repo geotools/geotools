@@ -37,11 +37,7 @@ public class StyleObjectTest extends TestCase {
     private StyleFactory styleFactory;
     private FilterFactory filterFactory;
 
-    /**
-     * Constructor for StyleCloneTest.
-     *
-     * @param arg0
-     */
+    /** Constructor for StyleCloneTest. */
     public StyleObjectTest(String arg0) {
         super(arg0);
     }

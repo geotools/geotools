@@ -116,11 +116,7 @@ public class ArcSDEJNDIDataStoreFactoryTest {
         assertNotNull(sdeFac);
     }
 
-    /**
-     * Test method for {@link ArcSDEJNDIDataStoreFactory#createDataStore(java.util.Map)}.
-     *
-     * @throws IOException
-     */
+    /** Test method for {@link ArcSDEJNDIDataStoreFactory#createDataStore(java.util.Map)}. */
     @Test
     @Ignore // TODO: revisit
     public void testCreateDataStore_MapParams() throws IOException {
@@ -196,11 +192,7 @@ public class ArcSDEJNDIDataStoreFactoryTest {
         assertSame(ArcSDEDataStoreFactory.ALLOW_NON_SPATIAL_PARAM, parametersInfo[3]);
     }
 
-    /**
-     * Test method for {@link ArcSDEJNDIDataStoreFactory#createNewDataStore(java.util.Map)}.
-     *
-     * @throws IOException
-     */
+    /** Test method for {@link ArcSDEJNDIDataStoreFactory#createNewDataStore(java.util.Map)}. */
     @Test
     public void testCreateNewDataStore() throws IOException {
         try {

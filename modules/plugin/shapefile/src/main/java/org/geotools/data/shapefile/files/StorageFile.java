@@ -68,7 +68,6 @@ public final class StorageFile implements Comparable<StorageFile>, FileWriter {
      * similar to a commit.
      *
      * @see #replaceOriginals(StorageFile...)
-     * @throws IOException
      */
     public void replaceOriginal() throws IOException {
         replaceOriginals(this);
@@ -81,7 +80,6 @@ public final class StorageFile implements Comparable<StorageFile>, FileWriter {
      * single lock.
      *
      * @param storageFiles files to execute the replace functionality.
-     * @throws IOException
      */
     public static void replaceOriginals(StorageFile... storageFiles) throws IOException {
         SortedSet<StorageFile> files = new TreeSet<StorageFile>(Arrays.asList(storageFiles));

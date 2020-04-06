@@ -107,12 +107,10 @@ final class FeatureTypeInfoCache {
      * available layers needs to be updated. This update happens at this class' construction time
      * and, optionally, every {@code cacheUpdateFreqSecs} seconds.
      *
-     * @param sessionPool
      * @param namespace the namespace {@link FeatureType}s are created with, may be {@code null}
      * @param cacheUpdateFreqSecs layer name cache update frequency, in seconds. {@code <= 0} means
      *     do never update.
      * @param allowNonSpatialTables whether non spatial table names are requested
-     * @throws IOException
      */
     public FeatureTypeInfoCache(
             final ISessionPool sessionPool,
@@ -202,9 +200,6 @@ final class FeatureTypeInfoCache {
     /**
      * Check inProcessFeatureTypeInfos and featureTypeInfos for the provided typeName, checking the
      * ArcSDE server as a last resort.
-     *
-     * @param typeName
-     * @return
      */
     public FeatureTypeInfo getFeatureTypeInfo(final String typeName) throws IOException {
         FeatureTypeInfo typeInfo = getCachedTypeInfo(typeName);
@@ -232,11 +227,6 @@ final class FeatureTypeInfoCache {
      *
      * <p>They are making use of this function because they already have their own Session to
      * request the ftInfo if needed.
-     *
-     * @param typeName
-     * @param session
-     * @return
-     * @throws IOException
      */
     public FeatureTypeInfo getFeatureTypeInfo(final String typeName, final ISession session)
             throws IOException {
@@ -260,11 +250,7 @@ final class FeatureTypeInfoCache {
         return typeInfo;
     }
 
-    /**
-     * @param typeName
-     * @return the cached type info if there's one for typeName, {@code null} otherwise
-     * @throws DataSourceException
-     */
+    /** @return the cached type info if there's one for typeName, {@code null} otherwise */
     private FeatureTypeInfo getCachedTypeInfo(final String typeName) throws DataSourceException {
         FeatureTypeInfo typeInfo = inProcessFeatureTypeInfos.get(typeName);
         if (typeInfo != null) {

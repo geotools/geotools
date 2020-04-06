@@ -41,12 +41,7 @@ public interface PositionFactory {
      */
     Precision getPrecision();
 
-    /**
-     * Creates a direct position with ordinates set to zero
-     *
-     * @return
-     * @throws MismatchedDimensionException
-     */
+    /** Creates a direct position with ordinates set to zero */
     DirectPosition createDirectPosition() throws MismatchedDimensionException;
 
     /**

@@ -150,11 +150,7 @@ public class ContentEntry {
         }
     }
 
-    /**
-     * Removes a closed transaction from the state cache.
-     *
-     * @param transaction
-     */
+    /** Removes a closed transaction from the state cache. */
     public void clearTransaction(Transaction transaction) {
         if (state.containsKey(transaction)) {
             state.remove(transaction);

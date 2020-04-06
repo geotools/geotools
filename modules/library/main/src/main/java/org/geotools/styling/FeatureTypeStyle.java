@@ -169,8 +169,6 @@ public interface FeatureTypeStyle extends org.opengis.style.FeatureTypeStyle {
      * The eventual transformation to be applied before rendering the data (should be an expression
      * taking a feature collection or a grid coverage as the evaluation context and returns a
      * feature collection or a grid coverage as an output)
-     *
-     * @return
      */
     Expression getTransformation();
 
@@ -178,8 +176,6 @@ public interface FeatureTypeStyle extends org.opengis.style.FeatureTypeStyle {
      * Sets the eventual transformation to be applied before rendering the data (should be an
      * expression taking a feature collection or a grid coverage as an input and returns a feature
      * collection or a grid coverage as an output)
-     *
-     * @return
      */
     void setTransformation(Expression transformation);
 

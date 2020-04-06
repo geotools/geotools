@@ -18,14 +18,18 @@
 package org.geotools.data.mongodb;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureReader;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.GeometryBuilder;
@@ -35,6 +39,10 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.sort.SortBy;
+import org.opengis.filter.sort.SortOrder;
 
 public abstract class MongoDataStoreTest extends MongoTestSupport {
 
@@ -197,5 +205,28 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
             }
         }
         mongoStore.cleanEntries();
+    }
+
+    public void testSortBy() throws Exception {
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        SortBy f = ff.sort("properties.dateProperty", SortOrder.ASCENDING);
+
+        SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
+
+        Query q = new Query("ft1", Filter.INCLUDE);
+        q.setSortBy(new SortBy[] {f});
+
+        SimpleFeatureCollection features = source.getFeatures(q);
+        SimpleFeatureIterator it = features.features();
+        List<Date> dates = new ArrayList<>(3);
+        while (it.hasNext()) {
+            dates.add((Date) it.next().getAttribute("properties.dateProperty"));
+        }
+        assertEquals(dates.size(), 3);
+        Date first = dates.get(0);
+        Date second = dates.get(1);
+        Date third = dates.get(2);
+        assertTrue(first.before(second));
+        assertTrue(second.before(third));
     }
 }

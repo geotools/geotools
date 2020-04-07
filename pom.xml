@@ -2367,6 +2367,7 @@
     </repository>
 
     <!-- contained above -->
+    <!--
     <repository>
       <snapshots>
         <enabled>false</enabled>
@@ -2375,7 +2376,7 @@
       <name>geosolutions repository</name>
       <url>http://maven.geo-solutions.it/</url>
     </repository>
-
+    -->
   </repositories>
 
   <!-- =========================================================== -->

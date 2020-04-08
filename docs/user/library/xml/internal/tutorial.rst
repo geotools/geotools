@@ -139,10 +139,10 @@ At this point, we have generated objects from the original schema. The next step
     [INFO] --- xmlcodegen:17-SNAPSHOT:generate (default-cli) @ xml-po ---
     [INFO] org.apache.maven.artifact.factory.DefaultArtifactFactory@1ddae9b5
     [INFO] Parsing schema: /Users/vickdw/Documents/workspace/xml-po/src/main/resources/po.xsd
-    Downloading: https://repo.boundlessgeo.com/main/org/geotools/geotools/17-SNAPSHOT/maven-metadata.xml
-    Downloaded: https://repo.boundlessgeo.com/main/org/geotools/geotools/17-SNAPSHOT/maven-metadata.xml (572 B at 0.5 KB/sec)
-    Downloading: https://repo.boundlessgeo.com/main/org/geotools/geotools/17-SNAPSHOT/geotools-17-20170109.184824-56.pom
-    Downloaded: https://repo.boundlessgeo.com/main/org/geotools/geotools/17-SNAPSHOT/geotools-17-20170109.184824-56.pom (71 KB at 182.0 KB/sec)
+    Downloading: https://repo.osgeo.org/repository/release/org/geotools/geotools/17-SNAPSHOT/maven-metadata.xml
+    Downloaded: https://repo.osgeo.org/repository/release/org/geotools/geotools/17-SNAPSHOT/maven-metadata.xml (572 B at 0.5 KB/sec)
+    Downloading: https://repo.osgeo.org/repository/release/geotools/geotools/17-SNAPSHOT/geotools-17-20170109.184824-56.pom
+    Downloaded: https://repo.osgeo.org/repository/release/org/geotools/geotools/17-SNAPSHOT/geotools-17-20170109.184824-56.pom (71 KB at 182.0 KB/sec)
     [INFO] Generating bindings...
     Jan 10, 2017 8:38:03 AM org.geotools.maven.xmlcodegen.BindingGenerator generate
     INFO: Generating binding for comment

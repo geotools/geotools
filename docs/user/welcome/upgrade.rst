@@ -26,6 +26,57 @@ But first to upgrade - change your dependency to |release| (or an appropriate st
         ....
     </dependencies>
 
+GeoTools 23.x
+-------------
+
+Change to repo.osgeo.org Repository
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+We have changed our maven repository:
+
+* Replacing *osgeo* release repository ``http://download.osgeo.org/webdav/geotools/`` with ``https://repo.osgeo.org/repository/release/``. 
+* Replacing *boundless* snapshot repository ``http://repo.boundlessgeo.com/main`` with ``https://repo.osgeo.org/repository/snapshot/``.
+
+Here is an example :file:`pom.xml`:
+
+.. code-block:: xml
+
+   <repositories>
+     <repository>
+       <id>osgeo</id>
+       <name>OSGeo Release Repository</name>
+       <url>https://repo.osgeo.org/repository/release/</url>
+       <snapshots><enabled>false</enabled></snapshots>
+       <releases><enabled>true</enabled></releases>
+     </repository>
+     <repository>
+       <id>osgeo-snapshot</id>
+       <name>OSGeo Snapshot Repository</name>
+       <url>https://repo.osgeo.org/repository/snapshot/</url>
+       <snapshots><enabled>true</enabled></snapshots>
+       <releases><enabled>false</enabled></releases>
+     </repository>
+   </repositories>
+
+Alternatively, to build older projects with no modifications to :file:`pom.xml`, configure mirrors for these repositories using :file:`~/.m2/settings.xml`:
+
+.. code-block:: xml
+
+   <mirrors>
+     <mirror>
+       <id>osgeo-release</id>
+       <name>OSGeo Repository</name>
+       <url>https://repo.osgeo.org/repository/geotools-releases/</url>
+       <mirrorOf>osgeo</mirrorOf>
+     </mirror>
+     <mirror>
+       <id>geoserver-releases</id>
+       <name>Boundless Repository</name>
+       <url>https://repo.osgeo.org/repository/Geoserver-releases/</url>
+       <mirrorOf>boundless</mirrorOf>
+     </mirror>
+   </mirrors>
+
 GeoTools 21.x
 -------------
 

@@ -146,7 +146,7 @@ are using Maven as your build tool you can work with a snapshot release by addin
    <repository>
        <id>osgeo-snapshot</id>
        <name>OSGeo Snapshot Repository</name>
-       <url>https://repo.osgeo.org/repository/snapshot//url>
+       <url>https://repo.osgeo.org/repository/snapshot/</url>
        <snapshots><enabled>true</enabled></snapshots>
        <releases><enabled>false</enabled></releases>
    </repository>

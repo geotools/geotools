@@ -28,7 +28,7 @@ But first to upgrade - change your dependency geotools.version to |release| (or 
         ....
     </dependencies>
 
-GeoTools 23.x
+GeoTools 22.x
 -------------
 
 Change to repo.osgeo.org for GeoTools releases
@@ -67,7 +67,7 @@ AFTER :file:`pom.xml`:
 Alternative: Mirror retired repo.boundelssgeo.com
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-To build older projects referencing ``http://repo.boundlessgeo.com/``, with no modifications to :file:`pom.xml`, configure mirrors using :file:`~/.m2/settings.xml`.
+To build existing projects referencing ``http://repo.boundlessgeo.com/``, with no modifications to :file:`pom.xml`, configure mirrors using :file:`~/.m2/settings.xml`.
 
 Change to :file:`settings.xml`:
 
@@ -98,39 +98,9 @@ Use *osgeo-snapshots* repository ``https://repo.osgeo.org/repository/snapshot/``
 * Replaces *boundless* snapshot repository ``http://repo.boundlessgeo.com/main`` for the GeoTools SNAPSHOTS.
 * This is a group snapshot repository used by several OSGeo projects
 
-BEFORE :file:`pom.xml`:
-
-.. code-block:: xml
-
-   <repository>
-       <snapshots>
-           <enabled>true</enabled>
-       </snapshots>
-       <id>boundless</id>
-       <name>Boundless Maven Repository</name>
-       <url>http://repo.boundlessgeo.com/main</url>
-   </repository>
-
-AFTER :file:`pom.xml`:
-
-.. code-block:: xml
-
-   <repositories>
-     <repository>
-       <id>osgeo-snapshot</id>
-       <name>OSGeo Snapshot Repository</name>
-       <url>https://repo.osgeo.org/repository/snapshot/</url>
-       <snapshots><enabled>true</enabled></snapshots>
-       <releases><enabled>false</enabled></releases>
-     </repository>
-   </repositories>
-
-Upgrading projects using GeoTools snapshots
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
 The contents of the *boundless* repository ``https://repo.boundlessgeo.com/main/`` previously included snapshots of active GeoTools builds. The repository ``https://repo.osgeo.org/repository/geotools-snapshots/`` has taking over this role for the GeoTools project ( and is included in the group repository ``https://repo.osgeo.org/repository/snapshot/``).
 
-To update projects making use of an active branch replace *boundless* snapshot repository with *osgeo-snapshot* repository.
+To update existing projects making use of an active branch replace *boundless* snapshot repository with *osgeo-snapshot* repository.
 
 BEFORE :file:`pom.xml`:
 
@@ -156,28 +126,6 @@ AFTER :file:`pom.xml`:
      <snapshots><enabled>true</enabled></snapshots>
      <releases><enabled>false</enabled></releases>
    </repository>
-
-Please note geotools-snapshots is populated from active branches only and does not contain "historical" snapshots from prior releases.  Due to this limitation we recommend upgrading historical projects to the appropriate GeoTools release.
-
-As an example to restore project built using GeoTools 19-SNAPSHOT to the latest 19.x series release.
-
-BEFORE :file:`pom.xml`:
-
-.. code-block:: xml
-
-   <properties>
-       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-       <geotools.version>19-SNAPSHOT</geotools.version>
-   </properties>
-   
-AFTER :file:`pom.xml`:
-
-.. code-block:: xml
-
-   <properties>
-       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-       <geotools.version>19.4</geotools.version>
-   </properties>
 
 GeoTools 21.x
 -------------
@@ -277,6 +225,33 @@ Previously GeoTools reused packages across modules by design, this approach is n
      - ``org.geotools.filter.expression``
    * - ``gt-main``
      - ``org.geotools.filter.expression``
+
+Upgrading projects using historical GeoTools snapshots
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The contents of the *boundless* repository ``https://repo.boundlessgeo.com/main/`` previously included snapshots of active GeoTools builds. The repository ``https://repo.osgeo.org/repository/geotools-snapshots/`` has taking over this role for the GeoTools project ( and is included in the group repository ``https://repo.osgeo.org/repository/snapshot/``).
+
+The geotools-snapshots is populated from active branches only and does not contain "historical" snapshots from prior releases.  Due to this limitation we recommend upgrading historical projects to the appropriate GeoTools release.
+
+As an example to fix an existing project build using GeoTools 21-SNAPSHOT which is no longer available upgrade to the most recent 21.x series release.
+
+BEFORE :file:`pom.xml`:
+
+.. code-block:: xml
+
+   <properties>
+       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+       <geotools.version>21-SNAPSHOT</geotools.version>
+   </properties>
+   
+AFTER :file:`pom.xml`:
+
+.. code-block:: xml
+
+   <properties>
+       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+       <geotools.version>21.5</geotools.version>
+   </properties>
 
 GeoTools 20.x
 -------------

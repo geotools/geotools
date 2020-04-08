@@ -139,22 +139,25 @@ one associated with the most recent formal release (e.g GeoTools 14-SNAPSHOT) an
 being maintained (e.g. GeoTools 13-SNAPSHOT).
 
 New snapshot jars are built nightly and deployed to a repository separate from the one used for formal releases. If you
-are using Maven as your build tool you can work with a snapshot release by adding the following to your ``pom.xml`` ::
+are using Maven as your build tool you can work with a snapshot release by adding the following to your ``pom.xml`` :
 
-    <repository>
-        <id>boundless</id>
-        <name>Boundless Maven Repository</name>
-        <url>http://repo.boundlessgeo.com/main</url>
-        <snapshots>
-            <enabled>true</enabled>
-        </snapshots>
-    </repository>
+.. code-block:: xml
 
-You can now build your project against a snapshot release by setting it as the your version property as shown here::
+   <repository>
+       <id>osgeo-snapshot</id>
+       <name>OSGeo Snapshot Repository</name>
+       <url>https://repo.osgeo.org/repository/snapshot//url>
+       <snapshots><enabled>true</enabled></snapshots>
+       <releases><enabled>false</enabled></releases>
+   </repository>
 
-    <properties>
-        <geotools.version>8-SNAPSHOT</geotools.version>
-    </properties>
+You can now build your project against a snapshot release by setting it as the your version property as shown here:
+
+.. code-block:: xml
+
+   <properties>
+       <geotools.version>24-SNAPSHOT</geotools.version>
+   </properties>
 
 
 Common License Questions

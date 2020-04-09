@@ -6,20 +6,11 @@ in the root pom.xml file.
 
 You can browse them online at:
 
-  * https://repo1.maven.org/maven2 - maven central
-  * http://maven.geo-solutions.it/ - GeoSolutions repository used for ``imageio-ext``, ``jai-ext``, ... 
-  * http://download.osgeo.org/webdav/geotools/ - OSGeo repository used for
-    GeoTools dependencies 
-  * https://repo.boundlessgeo.com/release - Boundless repository for releases
+  * https://repo1.maven.org/maven2/ - maven central
+  * https://repo.osgeo.org/repository/release/ - OSGeo project releases (including GeoTools)
+  * https://repo.osgeo.org/repository/snapshot/ - OSGeo repository for daily snapshots (including GeoTools)
 
-GeoTools itself is deployed to the following repositories:
-
-* http://download.osgeo.org/webdav/geotools/ - geotools release repository
-* http://repo.boundlessgeo.com/snapshot - geotools SNAPSHOT repository
-
-Or you can make use of the following cache:
-
-* https://repo.boundlessgeo.com/main - boundless repository acting as a cache of the above
+The repositories above act as a cache, gathering up artifacts from a range of projects into a single searchable location for the maven build system.
 
 Reducing Internet Downloads
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^

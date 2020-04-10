@@ -349,6 +349,42 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
 
     public void testTwoSortBy() throws Exception {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        // sort before desc on string value a,b,b obtaining b,b,a
+        // then asc on date 2015-01-01T00:00, 2015-01-01T16:30, 2015-01-01T21:30
+        // obtaining second, third, one
+        SortBy[] sorts =
+                new SortBy[] {
+                    ff.sort("properties.stringProperty2", SortOrder.DESCENDING),
+                    ff.sort("properties.dateProperty", SortOrder.ASCENDING),
+                };
+
+        SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
+        assertTrue(source.getQueryCapabilities().supportsSorting(sorts));
+        Query q = new Query("ft1", Filter.INCLUDE);
+        q.setSortBy(sorts);
+
+        SimpleFeatureCollection features = source.getFeatures(q);
+        SimpleFeatureIterator it = features.features();
+        List<Date> dates = new ArrayList<>(3);
+        List<String> stringAttributes = new ArrayList<>(3);
+        while (it.hasNext()) {
+            SimpleFeature feature = it.next();
+            dates.add((Date) feature.getAttribute("properties.dateProperty"));
+            stringAttributes.add((String) feature.getAttribute("properties.stringProperty2"));
+        }
+        assertEquals(stringAttributes.get(0), "b");
+        assertEquals(stringAttributes.get(1), "b");
+        assertEquals(stringAttributes.get(2), "a");
+        assertEquals(dates.size(), 3);
+        Date first = dates.get(0);
+        Date second = dates.get(1);
+        Date third = dates.get(2);
+        assertTrue(first.before(second));
+        assertTrue(second.after(third));
+    }
+
+    public void testTwoSortByWithNullableAttribute() throws Exception {
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         // sort before on nullable so that second sort overcome
         SortBy[] sorts =
                 new SortBy[] {

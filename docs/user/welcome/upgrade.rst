@@ -64,7 +64,7 @@ AFTER :file:`pom.xml`:
      </repository>
    </repositories>
 
-Alternative: Mirror retired repo.boundelssgeo.com
+Alternative: Mirror retired repo.boundlessgeo.com
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To build existing projects referencing ``http://repo.boundlessgeo.com/``, with no modifications to :file:`pom.xml`, configure mirrors using :file:`~/.m2/settings.xml`.

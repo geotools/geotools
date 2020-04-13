@@ -77,7 +77,7 @@ Change to :file:`settings.xml`:
      <mirror>
        <id>osgeo-release</id>
        <name>OSGeo Repository</name>
-       <url>https://repo.osgeo.org/repository/geotools-releases/</url>
+       <url>https://repo.osgeo.org/repository/release/</url>
        <mirrorOf>osgeo</mirrorOf>     <!-- previously http://download.osgeo.org/webdav/geotools/ -->
      </mirror>
      <mirror>
@@ -88,7 +88,7 @@ Change to :file:`settings.xml`:
      </mirror>
    </mirrors>
 
-Both of the above repositories above are included in ``https://repo.osgeo.org/repository/release/`` group repository. The mirror settings are intended as a temporary measure to allow your projects to build while you perform the update to the osgeo release repository.
+Both of the above repositories above are included in ``https://repo.osgeo.org/repository/release/`` group repository. The mirror settings are intended as a temporary measure to allow your projects to build while you update your :file:`pom.xml` to use the osgeo release repository.
 
 Change to repo.osgeo.org for GeoTools snapshots
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

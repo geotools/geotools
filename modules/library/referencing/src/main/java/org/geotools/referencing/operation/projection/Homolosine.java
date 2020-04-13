@@ -102,6 +102,44 @@ public class Homolosine extends MapProjection {
     }
 
     /**
+     * Wraps longitude angles around.
+     *
+     * @param lam A longitude angle in radians .
+     * @return Longitude angle within the [-PI, PI] interval.
+     * @throws ProjectionException
+     */
+    protected double wrapLongitude(double lam) throws ProjectionException {
+
+        if (lam > Math.PI) {
+            double quoc = lam / Math.PI;
+            return -Math.PI + (quoc - Math.floor(quoc)) * Math.PI;
+        } else if (lam < -Math.PI) {
+            double quoc = Math.abs(lam / Math.PI);
+            return Math.PI - (quoc - Math.floor(quoc)) * Math.PI;
+        } else return lam;
+    }
+
+    /**
+     * Wraps latitude angles around.
+     *
+     * @param phi A latitude angle in radians.
+     * @return Latitude angle within the [-PI/2, PI/2] interval.
+     * @throws ProjectionException
+     */
+    protected double wrapLatitude(double phi) throws ProjectionException {
+
+        double halfPI = Math.PI / 2;
+
+        if (phi > halfPI) {
+            double quoc = phi / halfPI;
+            return halfPI - (quoc - Math.floor(quoc)) * halfPI;
+        } else if (phi < -halfPI) {
+            double quoc = Math.abs(phi / halfPI);
+            return halfPI + (quoc - Math.floor(quoc)) * halfPI;
+        } else return phi;
+    }
+
+    /**
      * Transforms the specified (<var>&lambda;</var>,<var>&phi;</var>) coordinates (units in
      * radians) and stores the result in {@code ptDst} (linear distance on a unit sphere).
      */
@@ -117,6 +155,9 @@ public class Homolosine extends MapProjection {
         Point2D p;
         Point2D shift;
 
+        lam = wrapLongitude(lam);
+        phi = wrapLatitude(phi);
+
         if (phi >= 0) {
             interruptions = INTERRUP_NORTH;
             central_merids = CENTRAL_MERID_NORTH;
@@ -126,8 +167,8 @@ public class Homolosine extends MapProjection {
             offset = -offset;
         }
 
-        if (lam > interruptions[interruptions.length - 1]) i = interruptions.length;
-        else while (lam > interruptions[i]) i++;
+        if (lam >= interruptions[interruptions.length - 1]) i = interruptions.length - 1;
+        else while (lam >= interruptions[i]) i++;
 
         central_merid = central_merids[i - 1];
         lam_shift = lam - central_merid;
@@ -179,8 +220,8 @@ public class Homolosine extends MapProjection {
                 interruptions[j] = sinu.transformNormalized(INTERRUP_SOUTH[j], 0, null).getX();
         }
 
-        if (x > interruptions[interruptions.length - 1]) i = interruptions.length;
-        else while (x > interruptions[i]) i++;
+        if (x >= interruptions[interruptions.length - 1]) i = interruptions.length - 1;
+        else while (x >= interruptions[i]) i++;
 
         central_merid = central_merids[i - 1];
         shift = sinu.transformNormalized(central_merid, 0, null);

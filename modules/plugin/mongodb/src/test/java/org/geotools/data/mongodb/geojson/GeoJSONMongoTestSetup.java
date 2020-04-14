@@ -64,6 +64,7 @@ public class GeoJSONMongoTestSetup extends MongoTestSetup {
                                         new BasicDBObject("value", 0.1),
                                         new BasicDBObject("value", 0.2)))
                         .add("dateProperty", getDateProperty(0))
+                        .add("stringProperty2", "a")
                         .pop()
                         .get());
         ft1.save(
@@ -86,6 +87,7 @@ public class GeoJSONMongoTestSetup extends MongoTestSetup {
                                         new BasicDBObject("value", 1.1),
                                         new BasicDBObject("value", 1.2)))
                         .add("dateProperty", getDateProperty(1))
+                        .add("stringProperty2", "b")
                         .pop()
                         .get());
         ft1.save(
@@ -108,6 +110,7 @@ public class GeoJSONMongoTestSetup extends MongoTestSetup {
                                         new BasicDBObject("value", 2.2),
                                         new BasicDBObject("insideArrayValue", 7.7)))
                         .add("dateProperty", getDateProperty(2))
+                        .add("stringProperty2", "b")
                         .pop()
                         .get());
 

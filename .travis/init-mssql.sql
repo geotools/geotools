@@ -1,0 +1,2 @@
+SET NOCOUNT ON;
+GO

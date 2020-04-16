@@ -16,6 +16,8 @@
  */
 package org.geotools.mbtiles;
 
+import static org.geotools.mbtiles.MBTilesDataStore.DEFAULT_CRS;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -38,11 +40,13 @@ import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.mbtiles.CompositeSimpleFeatureReader.ReaderSupplier;
+import org.geotools.referencing.CRS;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
+import org.opengis.referencing.operation.TransformException;
 
 class MBTilesFeatureSource extends ContentFeatureSource {
 
@@ -69,11 +73,19 @@ class MBTilesFeatureSource extends ContentFeatureSource {
 
     @Override
     protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
-        // all mbtiles likely have a root tile that covers the world, the real intended
-        // bound is normally found at the max zoom level. However, the latest zoom level is the one
-        // with the most tiles, this takes ages on large mbtiles,
-        // so best to have it disabled... or maybe make it optional later
-        return null;
+        Filter f = query.getFilter();
+        if (f != null && f.equals(Filter.INCLUDE)) {
+            try {
+                return new ReferencedEnvelope(
+                        CRS.transform(mbtiles.loadMetaData().getBounds(), DEFAULT_CRS));
+            } catch (TransformException e) {
+                throw new RuntimeException("Unable to retrieve bounds from mbtiles metadata", e);
+            }
+        } else {
+            // summing up all feature bounds would be expensive.
+            // returning null
+            return null;
+        }
     }
 
     @Override

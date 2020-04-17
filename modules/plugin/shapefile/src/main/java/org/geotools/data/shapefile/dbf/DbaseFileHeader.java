@@ -21,6 +21,7 @@ package org.geotools.data.shapefile.dbf;
 
 import java.io.EOFException;
 import java.io.IOException;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.ReadableByteChannel;
@@ -522,7 +523,7 @@ public class DbaseFileHeader {
             in.order(ByteOrder.LITTLE_ENDIAN);
 
             // only want to read first 10 bytes...
-            in.limit(10);
+            ((Buffer) in).limit(10);
 
             read(in, channel);
             in.position(0);

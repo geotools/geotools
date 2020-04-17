@@ -139,11 +139,17 @@ ant -f rename.xml -Drelease=$tag -Dseries=$series
 popd > /dev/null
 
 # build the release
-
 if [ "$SKIP_BUILD" != true ]; then
-  echo "building release"
   export MAVEN_OPTS="-Xmx2048m"
-  mvn $MAVEN_FLAGS -DskipTests -Dall clean -Pcollect install
+  echo "building release: clean"
+  mvn $MAVEN_FLAGS -Dall clean
+  echo "building release: maven plugins"
+  pushd build
+  mvn $MAVEN_FLAGS -DskipTests -Dall install -T1
+  popd > /dev/null
+  echo "building release: full build"
+  mvn $MAVEN_FLAGS -DskipTests -Dall -Pcollect install
+  echo "building release: assemble artifacts"
   mvn $MAVEN_FLAGS -DskipTests assembly:assembly
 fi
 

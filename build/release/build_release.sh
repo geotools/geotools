@@ -141,16 +141,8 @@ popd > /dev/null
 # build the release
 if [ "$SKIP_BUILD" != true ]; then
   export MAVEN_OPTS="-Xmx2048m"
-  echo "building release: clean"
-  mvn $MAVEN_FLAGS -Dall clean -q
-  echo "building release: top-level only"
-  mvn $MAVEN_FLAGS -DskipTests -Dall install -N
-  echo "building release: maven plugins (single-threaded)"
-  pushd build
-  mvn $MAVEN_FLAGS -DskipTests -Dall install -T1
-  popd > /dev/null
-  echo "building release: full build"
-  mvn $MAVEN_FLAGS -DskipTests -Dall -Pcollect install
+  echo "building release"
+  mvn $MAVEN_FLAGS -DskipTests -Dall clean -Pcollect install
   echo "building release: assemble artifacts"
   mvn $MAVEN_FLAGS -DskipTests assembly:assembly
 fi

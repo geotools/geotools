@@ -142,8 +142,10 @@ popd > /dev/null
 if [ "$SKIP_BUILD" != true ]; then
   export MAVEN_OPTS="-Xmx2048m"
   echo "building release: clean"
-  mvn $MAVEN_FLAGS -Dall clean
-  echo "building release: maven plugins"
+  mvn $MAVEN_FLAGS -Dall clean -q
+  echo "building release: top-level only"
+  mvn $MAVEN_FLAGS -DskipTests -Dall install -N
+  echo "building release: maven plugins (single-threaded)"
   pushd build
   mvn $MAVEN_FLAGS -DskipTests -Dall install -T1
   popd > /dev/null
@@ -159,9 +161,9 @@ target=`pwd`/target
 if [ "$SKIP_JAVADOCS" != true ]; then
   echo "building javadocs"
   pushd modules > /dev/null
-  mvn -Dfmt.skip=true javadoc:aggregate
+  mvn $MAVEN_FLAGS -Dfmt.skip=true -DskipTests javadoc:aggregate
   pushd target/site > /dev/null
-  zip -r $target/geotools-$tag-doc.zip apidocs
+  zip -r -q $target/geotools-$tag-doc.zip apidocs
   popd > /dev/null
   popd > /dev/null
 fi

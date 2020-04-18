@@ -1330,13 +1330,17 @@ public class StreamingRenderer implements GTRenderer {
         return query;
     }
 
-    private ReferencedEnvelope transformEnvelope(
+    protected ReferencedEnvelope transformEnvelope(
             ReferencedEnvelope envelope, CoordinateReferenceSystem crs)
             throws TransformException, FactoryException {
         try {
             ProjectionHandler projectionHandler =
                     ProjectionHandlerFinder.getHandler(envelope, crs, isMapWrappingEnabled());
-            return projectionHandler.getProjectedEnvelope(envelope, crs);
+            if (projectionHandler != null) {
+                return projectionHandler.getProjectedEnvelope(envelope, crs);
+            } else {
+                return envelope.transform(crs, true);
+            }
         } catch (FactoryException e) {
             return envelope.transform(crs, true);
         }

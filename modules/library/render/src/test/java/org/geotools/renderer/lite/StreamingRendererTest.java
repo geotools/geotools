@@ -21,14 +21,11 @@ import static org.easymock.EasyMock.createNiceMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.Shape;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -99,7 +96,9 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.parameter.GeneralParameterValue;
+import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.TransformException;
 import org.opengis.style.GraphicLegend;
 
 /**
@@ -880,5 +879,29 @@ public class StreamingRendererTest {
         assertEquals(0, red);
         assertEquals(0, green);
         assertEquals(0, blue);
+    }
+
+    @Test
+    public void testNPEOnMissingProjectionHandler() throws FactoryException, TransformException {
+        StreamingRendererTester tester = new StreamingRendererTester();
+        String wkt =
+                "PROJCS[\"World_Eckert_IV\",GEOGCS[\"WGS_1984\",DATUM[\"WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Eckert_IV\"],PARAMETER[\"Central_Meridian\",0.0],UNIT[\"Meter\",1.0]]";
+        CoordinateReferenceSystem eckert = CRS.parseWKT(wkt);
+        ReferencedEnvelope re = new ReferencedEnvelope(-100, 100, -100, 100, eckert);
+
+        // this call used to throw a NPE
+        ReferencedEnvelope reprojected = tester.transformEnvelope(re, DefaultGeographicCRS.WGS84);
+        assertFalse(reprojected.isNull());
+    }
+
+    private class StreamingRendererTester extends StreamingRenderer {
+
+        /** This method is currently only used when densification is enabled */
+        @Override
+        public ReferencedEnvelope transformEnvelope(
+                ReferencedEnvelope envelope, CoordinateReferenceSystem crs)
+                throws TransformException, FactoryException {
+            return super.transformEnvelope(envelope, crs);
+        }
     }
 }

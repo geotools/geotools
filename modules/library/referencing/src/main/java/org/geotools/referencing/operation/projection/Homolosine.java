@@ -221,6 +221,7 @@ public class Homolosine extends MapProjection {
         }
 
         if (x >= interruptions[interruptions.length - 1]) i = interruptions.length - 1;
+        else if (x < interruptions[0]) i = 1;
         else while (x >= interruptions[i]) i++;
 
         central_merid = central_merids[i - 1];

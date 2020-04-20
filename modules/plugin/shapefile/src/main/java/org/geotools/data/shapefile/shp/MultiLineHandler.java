@@ -58,7 +58,7 @@ public class MultiLineHandler implements ShapeHandler {
      * @throws ShapefileException If the ShapeType is not correct (see constructor).
      */
     public MultiLineHandler(ShapeType type, GeometryFactory gf) throws ShapefileException {
-        if ((type != ShapeType.ARC) && (type != ShapeType.ARCM) && (type != ShapeType.ARCZ)) {
+        if (!type.isLineType()) {
             throw new ShapefileException(
                     "MultiLineHandler constructor - expected type to be 3,13 or 23");
         }

@@ -50,7 +50,7 @@ public class QuadTree {
 
     private IndexFile indexfile;
 
-    private Set iterators = new HashSet();
+    private Set<Iterator<Data>> iterators = new HashSet<>();
 
     /**
      * Constructor. The maxDepth will be calculated.
@@ -188,7 +188,7 @@ public class QuadTree {
     }
 
     /** Closes this QuadTree after use... */
-    public void close(Iterator iter) throws IOException {
+    public void close(Iterator<Data> iter) throws IOException {
         iterators.remove(iter);
     }
 
@@ -310,7 +310,7 @@ public class QuadTree {
         }
     }
 
-    public void registerIterator(Iterator object) {
+    public void registerIterator(Iterator<Data> object) {
         iterators.add(object);
     }
 

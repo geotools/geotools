@@ -117,7 +117,7 @@ public class PointHandler implements ShapeHandler {
 
         if ((shapeType == ShapeType.POINTZ) || (shapeType == ShapeType.POINTM)) {
             double m = point.getCoordinateSequence().getM(0);
-            buffer.putDouble(!Double.isNaN(m) ? m : 0.0); // M
+            buffer.putDouble(Double.isNaN(m) ? 0.0 : m); // M
         }
     }
 }

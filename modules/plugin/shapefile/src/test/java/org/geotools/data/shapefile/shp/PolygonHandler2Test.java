@@ -20,9 +20,9 @@ import static org.junit.Assert.*;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.List;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.PrecisionModel;
@@ -53,8 +53,8 @@ public class PolygonHandler2Test extends org.geotools.data.shapefile.TestCaseSup
         Dimension ps = new Dimension(500, 500);
         PrecisionModel precision = new PrecisionModel();
 
-        ArrayList shells = new ArrayList();
-        ArrayList holes = new ArrayList();
+        ArrayList<LinearRing> shells = new ArrayList<>();
+        ArrayList<LinearRing> holes = new ArrayList<>();
 
         int x = 10;
         int y = 10;
@@ -81,11 +81,11 @@ public class PolygonHandler2Test extends org.geotools.data.shapefile.TestCaseSup
         }
 
         PolygonHandler ph = new PolygonHandler(new GeometryFactory());
-        ArrayList assigned = ph.assignHolesToShells(shells, holes);
+        List<List<LinearRing>> assigned = ph.assignHolesToShells(shells, holes);
         assertEquals(((ArrayList) assigned.get(0)).size(), holes.size());
     }
 
-    public static Geometry rectangle(PrecisionModel pm, int SRID) {
+    public static LinearRing rectangle(PrecisionModel pm, int SRID) {
         Coordinate[] coords = new Coordinate[5];
 
         for (int i = 0; i < coords.length; i++) {
@@ -95,13 +95,9 @@ public class PolygonHandler2Test extends org.geotools.data.shapefile.TestCaseSup
         return new GeometryFactory().createLinearRing(coords);
     }
 
-    public static Geometry copyTo(double x, double y, double w, double h, Geometry g) {
+    public static LinearRing copyTo(double x, double y, double w, double h, LinearRing g) {
         if (g.getNumPoints() != 5) {
             throw new IllegalArgumentException("Geometry must have 5 points");
-        }
-
-        if (!LinearRing.class.isAssignableFrom(g.getClass())) {
-            throw new IllegalArgumentException("Geometry must be linear ring");
         }
 
         Coordinate[] coords = g.getCoordinates();

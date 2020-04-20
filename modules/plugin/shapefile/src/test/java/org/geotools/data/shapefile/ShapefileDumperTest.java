@@ -342,10 +342,10 @@ public class ShapefileDumperTest {
         final String[] extensions = new String[] {".shx", ".dbf", ".prj", ".cst"};
         for (String extension : extensions) {
             File f = new File(dumperFolder, typeName + extension);
-            if (!shp.exists()) {
+            if (!f.exists()) {
                 fail(
                         "Could not find expected shapefile sidecar "
-                                + shp.getPath()
+                                + f.getPath()
                                 + ", available files are: "
                                 + Arrays.asList(dumperFolder.listFiles()));
             }
@@ -361,7 +361,7 @@ public class ShapefileDumperTest {
      * Verifies the specified type has the right geometry type, and the specified list of attributes
      */
     private void checkTypeStructure(
-            SimpleFeatureType type, Class geometryType, String... attributes) {
+            SimpleFeatureType type, Class<? extends Geometry> geometryType, String... attributes) {
         assertEquals(geometryType, type.getGeometryDescriptor().getType().getBinding());
         if (attributes == null) {
             assertEquals(1, type.getDescriptors().size());

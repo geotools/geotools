@@ -235,7 +235,7 @@ class IndexManager {
 
         IndexedFidReader reader = new IndexedFidReader(shpFiles);
 
-        List<Data> records = new ArrayList(idsSet.size());
+        List<Data> records = new ArrayList<>(idsSet.size());
         try {
             IndexFile shx = store.shpManager.openIndexFile();
             try {

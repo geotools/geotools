@@ -1,12 +1,13 @@
 package org.geotools.data.shapefile;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.FeatureStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.junit.Before;
@@ -54,11 +55,12 @@ public class ShapefileNullHandlingTest extends TestCaseSupport {
         store.createSchema(schema);
 
         // write out the features
-        FeatureStore fs = (FeatureStore) store.getFeatureSource();
+        SimpleFeatureStore fs = (SimpleFeatureStore) store.getFeatureSource();
         fs.addFeatures(collection);
 
         // read it back
-        SimpleFeature[] readfc = (SimpleFeature[]) fs.getFeatures().toArray(new SimpleFeature[3]);
+        SimpleFeature[] readfc = (SimpleFeature[]) fs.getFeatures().toArray(new SimpleFeature[0]);
+        assertEquals(features.length, readfc.length);
 
         // check the first geometry
         Geometry read = (Geometry) features[0].getDefaultGeometry();

@@ -1,18 +1,15 @@
 /*
- *    GeoTools - The Open Source Java GIS Toolkit
- *    http://geotools.org
+ * GeoTools - The Open Source Java GIS Toolkit http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ * (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
- *    This library is free software; you can redistribute it and/or
- *    modify it under the terms of the GNU Lesser General Public
- *    License as published by the Free Software Foundation;
- *    version 2.1 of the License.
+ * This library is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU Lesser General Public License as published by the Free Software Foundation; version 2.1 of
+ * the License.
  *
- *    This library is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *    Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  */
 package org.geotools.data.shapefile;
 
@@ -158,25 +155,28 @@ public class DbaseFileTest extends TestCaseSupport {
         header.setNumRecords(20);
         File f = new File(System.getProperty("java.io.tmpdir"), "scratchDBF.dbf");
         f.deleteOnExit();
-        FileOutputStream fout = new FileOutputStream(f);
-        DbaseFileWriter dbf =
-                new DbaseFileWriter(header, fout.getChannel(), Charset.defaultCharset());
-        for (int i = 0; i < header.getNumRecords(); i++) {
-            dbf.write(new Object[6]);
+        try (FileOutputStream fout = new FileOutputStream(f)) {
+            DbaseFileWriter dbf =
+                    new DbaseFileWriter(header, fout.getChannel(), Charset.defaultCharset());
+            for (int i = 0; i < header.getNumRecords(); i++) {
+                dbf.write(new Object[6]);
+            }
         }
-        dbf.close();
         ShpFiles tempShpFiles = new ShpFiles(f);
         DbaseFileReader r =
                 new DbaseFileReader(tempShpFiles, false, ShapefileDataStore.DEFAULT_STRING_CHARSET);
-        int cnt = 0;
-        while (r.hasNext()) {
-            cnt++;
-            Object[] o = r.readEntry();
-            assertTrue(o.length == r.getHeader().getNumFields());
+        try {
+            int cnt = 0;
+            while (r.hasNext()) {
+                cnt++;
+                Object[] o = r.readEntry();
+                assertTrue(o.length == r.getHeader().getNumFields());
+            }
+            assertEquals("Bad number of records", cnt, 20);
+        } finally {
+            r.close();
+            f.delete();
         }
-        assertEquals("Bad number of records", cnt, 20);
-        r.close(); // make sure the channel is closed
-        f.delete();
     }
 
     @Test

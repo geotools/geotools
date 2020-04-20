@@ -74,7 +74,7 @@ class MBTilesFeatureSource extends ContentFeatureSource {
     @Override
     protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
         Filter f = query.getFilter();
-        if (f != null && f.equals(Filter.INCLUDE)) {
+        if (f == null || f.equals(Filter.INCLUDE)) {
             try {
                 return new ReferencedEnvelope(
                         CRS.transform(mbtiles.loadMetaData().getBounds(), DEFAULT_CRS));

@@ -291,9 +291,63 @@ public class TPKReader extends AbstractGridCoverage2DReader {
         return coverageFactory.create("unnamed", image, resultEnvelope);
     }
 
+    public enum ImageFormats {
+
+        // add formats as required
+        FMT_JPG("jpg", new byte[] {(byte) 0xff, (byte) 0xd8}),
+        FMT_PNG("png", new byte[] {(byte) 0x89, (byte) 0x50, (byte) 0x4e, (byte) 0x47});
+
+        private final String format;
+        private final byte[] signature;
+
+        ImageFormats(String format, byte[] signature) {
+            this.format = format;
+            this.signature = signature;
+        }
+
+        // Scan the set of defined formats looking for a matching "signature"
+        public static String inferFormatFromImageData(byte[] imageData) {
+            for (ImageFormats format : ImageFormats.values()) {
+                boolean matches = true;
+                try {
+                    for (int index = 0; index < format.signature.length; index++) {
+                        if (imageData[index] != format.signature[index]) {
+                            matches = false;
+                            break;
+                        }
+                    }
+                } catch (Exception ex) {
+                    matches = false;
+                }
+
+                if (matches) {
+                    return format.format;
+                }
+            }
+            return null;
+        }
+    }
+
+    /**
+     * Infer file type from file data if possible -- In case TPK files allow tiles with mixed
+     * formats we don't want to be entirely dependent on the Conf.xml "CacheTileFormat" element
+     *
+     * @param imageData -- reference to the raw byte data of the image
+     * @param format -- format derived from metadata table
+     * @return -- the inferred file type
+     */
+    private static String getImageFormat(byte[] imageData, String format) {
+        String inferred = ImageFormats.inferFormatFromImageData(imageData);
+        if (inferred != null && !inferred.equalsIgnoreCase(format)) {
+            LOGGER.fine(
+                    String.format("Overriding tile format: was %s, set to %s", format, inferred));
+        }
+        return (inferred != null ? inferred : format);
+    }
+
     protected static BufferedImage readImage(byte[] data, String format) throws IOException {
         ByteArrayInputStream bis = new ByteArrayInputStream(data);
-        Iterator<?> readers = ImageIO.getImageReadersByFormatName(format);
+        Iterator<?> readers = ImageIO.getImageReadersByFormatName(getImageFormat(data, format));
         ImageReader reader = (ImageReader) readers.next();
         ImageInputStream iis = ImageIO.createImageInputStream(bis);
         reader.setInput(iis, true);
@@ -364,7 +418,9 @@ public class TPKReader extends AbstractGridCoverage2DReader {
                 try {
                     image = readImage(tile.tileData, tile.imageFormat);
                 } catch (Exception ex) {
-                    throw new RuntimeException("Failed to covert tile data to image");
+                    String template = "Bad tile data, zl=%d, row=%d, col=%d ==> %s";
+                    LOGGER.info(String.format(template, tile.zoomLevel, row, col, ex.getMessage()));
+                    image = null;
                 }
             }
         }

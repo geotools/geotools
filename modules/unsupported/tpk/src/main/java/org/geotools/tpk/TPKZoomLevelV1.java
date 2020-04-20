@@ -62,7 +62,6 @@ public class TPKZoomLevelV1 implements TPKZoomLevel {
     private long minColumn; // minimum col number found in TPK for this zoom level
     private long maxColumn; // maximum col number found in TPK for this zoom level
 
-    private long numTiles; // total number of tiles found in TPK for zoom level
     private long max_row_column; // max value for row and col (2** zoomLevel) -1
     private List<TPKBundle> bundles; // list of bundles for this zoom level
 
@@ -77,14 +76,13 @@ public class TPKZoomLevelV1 implements TPKZoomLevel {
         this.zipEntryMap = zipEntryMap;
         this.zoomLevel = zoomLevel;
 
-        numTiles = 0;
         minColumn = Long.MAX_VALUE;
         maxColumn = Long.MIN_VALUE;
         minRow = Long.MAX_VALUE;
         maxRow = Long.MIN_VALUE;
 
         // maximum value for row and column at this zoom level
-        max_row_column = (long) Math.pow(2, zoomLevel) - 1;
+        max_row_column = (long) (Math.pow(2, zoomLevel) - 1);
 
         bundles = new ArrayList<>();
         init(bundleNames, indexNames);
@@ -250,7 +248,6 @@ public class TPKZoomLevelV1 implements TPKZoomLevel {
                             bundle.maxRow = Math.max(bundle.maxRow, thisRow);
                             bundle.minColumn = Math.min(bundle.minColumn, thisColumn);
                             bundle.maxColumn = Math.max(bundle.maxColumn, thisColumn);
-                            numTiles++;
                         }
                     }
 
@@ -320,7 +317,7 @@ public class TPKZoomLevelV1 implements TPKZoomLevel {
                 TPKTile.TileInfo ti = new TPKTile.TileInfo(0, tileDataOffset);
 
                 // build a TPKTile object for this tile
-                TPKTile tile = new TPKTile(col, row, format, ti, bundleIndex);
+                TPKTile tile = new TPKTile(zoomLevel, col, row, format, ti, bundleIndex);
                 tiles.add(tile);
             }
         }

@@ -149,9 +149,10 @@ public class TPKBundle {
 
                 // determine if we need to skip over any bytes in the stream
                 long toSkip = offset - currentReadPosition;
-                if (toSkip > 0) {
-                    stream.skip(toSkip);
-                    currentReadPosition += toSkip; // update position!
+                while (toSkip > 0) {
+                    long skipped = stream.skip(toSkip);
+                    toSkip -= skipped;
+                    currentReadPosition += skipped; // update position!
                 }
 
                 // we need a loop here as the stream limits us to reading 8k bytes at a time

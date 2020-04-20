@@ -311,7 +311,6 @@ public class TPKFile {
      * @param theFile -- TPK File
      */
     private void openTPK(File theFile) {
-        long startOpen = System.currentTimeMillis();
         // open the TPK file as a ZIP archive
         try {
             theTPK = new ZipFile(theFile);

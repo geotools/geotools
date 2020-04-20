@@ -22,6 +22,7 @@ import java.util.Comparator;
 
 /** Tile object returned to the reader */
 public class TPKTile {
+    public long zoomLevel;
     public long col; // column -- longitude
     public long row; // row -- latitude
     public String imageFormat; // JPEG or PNG
@@ -29,7 +30,14 @@ public class TPKTile {
     public TileInfo tileInfo; // data length and offset for read
     public int bundleNum; // index into the zoom level bundles list
 
-    public TPKTile(long col, long row, String imageFormat, TileInfo tileInfo, int bundleNum) {
+    public TPKTile(
+            long zoomLevel,
+            long col,
+            long row,
+            String imageFormat,
+            TileInfo tileInfo,
+            int bundleNum) {
+        this.zoomLevel = zoomLevel;
         this.col = col;
         this.row = row;
         this.imageFormat = imageFormat;

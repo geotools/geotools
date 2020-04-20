@@ -43,6 +43,7 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.CRS;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
 import org.hamcrest.Matchers;
@@ -291,6 +292,35 @@ public class MBTilesFeatureSourceTest {
         assertEquals(0, countByVisit(fc));
         // should not have read anything, outside valid tile range
         assertThat(rangesRead, Matchers.empty());
+    }
+
+    @Test
+    public void testGetBBOXQueryALL() throws Exception {
+        File file =
+                URLs.urlToFile(MBTilesFileVectorTileTest.class.getResource("madagascar.mbtiles"));
+        this.store = new MBTilesDataStore(new MBTilesFile(file));
+        ReferencedEnvelope envelope = store.getFeatureSource("water").getBounds();
+        assertNotNull(envelope);
+        assertEquals(
+                new ReferencedEnvelope(
+                        -2.0037508342789244E7,
+                        2.0037508342789244E7,
+                        -2.0037471205137067E7,
+                        2.003747120513706E7,
+                        CRS.decode("EPSG:3857", true)),
+                envelope);
+    }
+
+    @Test
+    public void testGetBBoxWithFilter() throws IOException {
+        MBTilesFeatureSource fs = getMadagascarSource("water");
+        assertEquals("water", fs.getSchema().getTypeName());
+        Filter filter = FF.equal(FF.property("class"), FF.literal("ocean"), true);
+        Query query = new Query("water", filter);
+        ReferencedEnvelope envelope = fs.getBounds(query);
+        // expecting null if filter is provided since bbox won't be
+        // get by mbtiles file metadata
+        assertNull(envelope);
     }
 
     private BBOX getMercatorBoxFilter(double minX, double maxX, double minY, double maxY) {

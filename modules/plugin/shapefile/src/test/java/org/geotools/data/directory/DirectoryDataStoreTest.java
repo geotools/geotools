@@ -7,6 +7,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -14,8 +15,8 @@ import java.util.Map;
 import org.geotools.TestData;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
-import org.geotools.data.FeatureSource;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
+import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.util.URLs;
 import org.junit.Ignore;
@@ -30,8 +31,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * @author Andrea Aime - OpenGeo
  */
 public class DirectoryDataStoreTest extends DirectoryTestSupport {
-
-    private static final String DESTDIR = "shapes";
 
     @Test
     public void testTypeNames() throws Exception {
@@ -69,7 +68,7 @@ public class DirectoryDataStoreTest extends DirectoryTestSupport {
         tempDir = file.getParentFile();
 
         DataStore dds = new DirectoryDataStore(tempDir, getFileStoreFactory());
-        FeatureSource fs = dds.getFeatureSource("archsites");
+        SimpleFeatureSource fs = dds.getFeatureSource("archsites");
         assertNotNull(fs);
         assertSame(dds, fs.getDataStore());
         dds.dispose();
@@ -107,7 +106,7 @@ public class DirectoryDataStoreTest extends DirectoryTestSupport {
         File f = copyShapefiles("shapes/bugsites.shp");
         tempDir = f.getParentFile();
 
-        Map params = new HashMap();
+        Map<String, Serializable> params = new HashMap<>();
         params.put(ShapefileDataStoreFactory.URLP.key, URLs.fileToUrl(tempDir));
         DataStore store = DataStoreFinder.getDataStore(params);
 
@@ -127,7 +126,7 @@ public class DirectoryDataStoreTest extends DirectoryTestSupport {
 
         tempDir = f.getParentFile();
 
-        Map params = new HashMap();
+        Map<String, Serializable> params = new HashMap<>();
         params.put(ShapefileDataStoreFactory.URLP.key, URLs.fileToUrl(tempDir));
         DataStore store = DataStoreFinder.getDataStore(params);
 
@@ -140,7 +139,7 @@ public class DirectoryDataStoreTest extends DirectoryTestSupport {
         File f = copyShapefiles("shapes/bugsites.shp");
         tempDir = f.getParentFile();
 
-        Map params = new HashMap();
+        Map<String, Serializable> params = new HashMap<>();
         params.put(ShapefileDataStoreFactory.URLP.key, URLs.fileToUrl(tempDir));
         params.put(ShapefileDataStoreFactory.FILE_TYPE.key, "shapefile");
         DataStore store = DataStoreFinder.getDataStore(params);
@@ -160,7 +159,7 @@ public class DirectoryDataStoreTest extends DirectoryTestSupport {
         File f = copyShapefiles("shapes/bugsites.shp");
         tempDir = f.getParentFile();
 
-        Map params = new HashMap();
+        Map<String, Serializable> params = new HashMap<>();
         params.put(ShapefileDataStoreFactory.URLP.key, URLs.fileToUrl(tempDir));
         params.put(ShapefileDataStoreFactory.FILE_TYPE.key, "abcdef...");
         DataStore store = DataStoreFinder.getDataStore(params);

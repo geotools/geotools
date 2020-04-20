@@ -31,7 +31,6 @@ import org.geotools.TestData;
 import org.geotools.data.DataStore;
 import org.geotools.data.QueryCapabilities;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.util.KVP;
 import org.junit.After;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -62,7 +61,8 @@ public class ShapefileDataStoreFactoryTest extends TestCaseSupport {
     public void testFSTypeParameter() throws Exception {
         URL url = TestData.url(STATE_POP);
 
-        KVP params = new KVP(URLP.key, url);
+        Map<String, Serializable> params = new HashMap<>();
+        params.put(URLP.key, url);
 
         assertTrue("Sorting is optional", factory.canProcess(params));
 
@@ -83,7 +83,9 @@ public class ShapefileDataStoreFactoryTest extends TestCaseSupport {
     public void testQueryCapabilities() throws Exception {
         URL url = TestData.url(STATE_POP);
 
-        Map params = new KVP(URLP.key, url);
+        Map<String, Serializable> params = new HashMap<>();
+        params.put(URLP.key, url);
+
         DataStore dataStore = factory.createDataStore(params);
         Name typeName = dataStore.getNames().get(0);
         SimpleFeatureSource featureSource = dataStore.getFeatureSource(typeName);
@@ -169,7 +171,8 @@ public class ShapefileDataStoreFactoryTest extends TestCaseSupport {
     /** Check non NullPointerException using a http URL instead Filesystem path */
     @Test
     public void testHttpUrl() throws IOException {
-        Map params = new KVP(URLP.key, "http://geo-solution.it/");
+        Map<String, Serializable> params = new HashMap<>();
+        params.put(URLP.key, "http://geo-solution.it/");
         assertFalse(factory.canProcess(params));
     }
 }

@@ -20,6 +20,7 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
@@ -101,7 +102,7 @@ public class ShapefileQuadTreeReadWriteTest extends TestCaseSupport {
 
     private DataStore createDataStore(ShapefileDataStoreFactory fac, URL url, boolean memoryMapped)
             throws IOException {
-        Map params = new HashMap();
+        Map<String, Serializable> params = new HashMap<>();
         params.put(ShapefileDataStoreFactory.URLP.key, url);
         params.put(ShapefileDataStoreFactory.CREATE_SPATIAL_INDEX.key, Boolean.valueOf(true));
         DataStore createDataStore = fac.createDataStore(params);
@@ -221,7 +222,7 @@ public class ShapefileQuadTreeReadWriteTest extends TestCaseSupport {
 
         ShapefileDataStoreFactory fac = new ShapefileDataStoreFactory();
 
-        Map params = new HashMap();
+        Map<String, Serializable> params = new HashMap<>();
         params.put(ShapefileDataStoreFactory.URLP.key, file.toURI().toURL());
         params.put(ShapefileDataStoreFactory.CREATE_SPATIAL_INDEX.key, Boolean.valueOf(true));
         ShapefileDataStore ds = (ShapefileDataStore) fac.createDataStore(params);

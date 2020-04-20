@@ -57,7 +57,7 @@ public class DataDefinition {
      *   <li>Date
      * </ul>
      */
-    public void addField(Class clazz) {
+    public void addField(Class<?> clazz) {
         if (clazz.isAssignableFrom(Short.class)) {
             this.fields.add(new Field(clazz, 2));
         } else if (clazz.isAssignableFrom(Integer.class)) {
@@ -125,15 +125,15 @@ public class DataDefinition {
      * @author Tommaso Nolli
      */
     public class Field {
-        private Class clazz;
+        private Class<?> clazz;
         private int len;
 
-        public Field(Class clazz, int len) {
+        public Field(Class<?> clazz, int len) {
             this.clazz = clazz;
             this.len = len;
         }
 
-        public Class getFieldClass() {
+        public Class<?> getFieldClass() {
             return clazz;
         }
 

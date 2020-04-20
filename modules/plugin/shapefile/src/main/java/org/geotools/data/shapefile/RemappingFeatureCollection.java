@@ -181,7 +181,9 @@ class RemappingFeatureCollection extends DecoratingSimpleFeatureCollection {
         SimpleFeatureBuilder builder;
 
         public RemappingIterator(
-                SimpleFeatureIterator delegate, Map attributesMapping, SimpleFeatureType schema) {
+                SimpleFeatureIterator delegate,
+                Map<String, String> attributesMapping,
+                SimpleFeatureType schema) {
             this.delegate = delegate;
             this.attributesMapping = RemappingFeatureCollection.invertMappings(attributesMapping);
             this.builder = new SimpleFeatureBuilder(schema);

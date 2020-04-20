@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import org.geotools.data.DataStore;
@@ -26,7 +27,7 @@ public class DirectoryDataStoreFactoryTest extends DirectoryTestSupport {
 
     @Test
     public void testSpi() throws Exception {
-        Map params = new HashMap();
+        Map<String, Serializable> params = new HashMap<>();
         params.put(ShapefileDataStoreFactory.URLP.key, tempDir.toURI().toURL());
         params.put(ShapefileDataStoreFactory.NAMESPACEP.key, "http://www.geotools.org");
         DataStore store = DataStoreFinder.getDataStore(params);
@@ -37,7 +38,7 @@ public class DirectoryDataStoreFactoryTest extends DirectoryTestSupport {
 
     @Test
     public void testSpaces() throws Exception {
-        Map params = new HashMap();
+        Map<String, Serializable> params = new HashMap<>();
         params.put(ShapefileDataStoreFactory.URLP.key, tempDir.toURI().toURL());
         params.put(ShapefileDataStoreFactory.NAMESPACEP.key, "http://www.geotools.org");
         ShapefileDirectoryFactory factory = new ShapefileDirectoryFactory();
@@ -50,7 +51,7 @@ public class DirectoryDataStoreFactoryTest extends DirectoryTestSupport {
 
     @Test
     public void testSpacesPlainToURL() throws Exception {
-        Map params = new HashMap();
+        Map<String, Serializable> params = new HashMap<>();
         params.put(ShapefileDataStoreFactory.URLP.key, tempDir.toURI().toURL());
         params.put(ShapefileDataStoreFactory.NAMESPACEP.key, "http://www.geotools.org");
         ShapefileDirectoryFactory factory = new ShapefileDirectoryFactory();

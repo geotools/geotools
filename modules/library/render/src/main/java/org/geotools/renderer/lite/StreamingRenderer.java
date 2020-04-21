@@ -1296,6 +1296,9 @@ public class StreamingRenderer implements GTRenderer {
                         hints.put(Hints.GEOMETRY_GENERALIZATION, distance);
                         disableInMemoryGeneralization(styleList);
                     }
+                    if (fsHints.contains(Hints.REMOVE_BUFFER_PIXEL)) {
+                        hints.put(Hints.REMOVE_BUFFER_PIXEL, true);
+                    }
                 } else {
                     // ... if possible we let the datastore do the generalization
                     if (fsHints.contains(Hints.GEOMETRY_SIMPLIFICATION)) {

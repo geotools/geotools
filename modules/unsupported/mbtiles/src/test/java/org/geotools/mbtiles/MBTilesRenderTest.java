@@ -177,6 +177,51 @@ public class MBTilesRenderTest {
         ImageAssert.assertEquals(expected, image, (int) (w * h * 0.05));
     }
 
+    @Test
+    public void testTransformWithMBTilesWithBuffer() throws Exception {
+        // tests that features outside tile borders are not displayed when
+        // rendering transformation is issued
+
+        // Issues AttributeRename transformation
+        Style styleTransformation = getStyle("transformation_many_points.sld");
+
+        // Style equal to the former but without AttributeRename
+        // so that the two images will differ just for the presence of not removed
+        // buffer pixel at tiles' borders
+        Style styleNoTransformation = getStyle("many_points.sld");
+
+        File file = URLs.urlToFile(getClass().getResource("manypoints_test.mbtiles"));
+        MBTilesDataStore store = new MBTilesDataStore(new MBTilesFile(file));
+        int w = 440;
+        int h = 330;
+        ContentFeatureSource fs = store.getFeatureSource("manypoints_test");
+        ReferencedEnvelope bbox =
+                new ReferencedEnvelope(
+                        4254790.681588205,
+                        4619242.456803064,
+                        4701182.96838953,
+                        4977579.240638782,
+                        DEFAULT_CRS);
+        BufferedImage transformationImg = getImage(w, h, bbox, fs, styleTransformation);
+        BufferedImage noTransformationImg = getImage(w, h, bbox, fs, styleNoTransformation);
+        File expectedT =
+                new File("src/test/resources/org/geotools/mbtiles/many_points_transformed.png");
+        File expected = new File("src/test/resources/org/geotools/mbtiles/many_points.png");
+        ImageAssert.assertEquals(expectedT, transformationImg, (int) (w * h * 0.05));
+        ImageAssert.assertEquals(expected, noTransformationImg, (int) (w * h * 0.05));
+
+        // check pixels along a stripe where buffer's features didn't get removed
+        // in image without transformation
+        int i = 155;
+        int j = 154;
+        while (j < 166) {
+            Color noTrans = getPixelColor(i, j, noTransformationImg);
+            Color tansformed = getPixelColor(i, j, transformationImg);
+            assertFalse(noTrans.equals(tansformed));
+            j++;
+        }
+    }
+
     private Style getStyle(String fileName) throws IOException {
         URL styleResource = MBTilesRenderTest.class.getResource(fileName);
         StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
@@ -184,4 +229,39 @@ public class MBTilesRenderTest {
         return ((NamedLayer) sld.getStyledLayers()[0]).getStyles()[0];
     }
 
+    private BufferedImage getImage(
+            int w, int h, ReferencedEnvelope bbox, FeatureSource fs, Style style) {
+        FeatureLayer layer = new FeatureLayer(fs, style);
+
+        MapContent mc = new MapContent();
+        mc.addLayer(layer);
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        final BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        g.setColor(Color.white);
+        g.fillRect(0, 0, w, h);
+        renderer.paint(g, new Rectangle(0, 0, w, h), bbox);
+        g.dispose();
+        return image;
+    }
+
+    private Color getPixelColor(int i, int j, BufferedImage img) {
+        ColorModel cm = img.getColorModel();
+        Raster raster = img.getRaster();
+        Object pixel = raster.getDataElements(i, j, null);
+        Color actual;
+        if (cm.hasAlpha()) {
+            actual =
+                    new Color(
+                            cm.getRed(pixel),
+                            cm.getGreen(pixel),
+                            cm.getBlue(pixel),
+                            cm.getAlpha(pixel));
+        } else {
+            actual = new Color(cm.getRed(pixel), cm.getGreen(pixel), cm.getBlue(pixel), 255);
+        }
+        return actual;
+    }
 }

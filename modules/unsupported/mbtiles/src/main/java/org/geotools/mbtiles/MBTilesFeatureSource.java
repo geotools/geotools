@@ -109,10 +109,18 @@ class MBTilesFeatureSource extends ContentFeatureSource {
                             .flatMap(tb -> getReaderSuppliersFor(z, tb).stream())
                             .collect(Collectors.toList());
 
+            FeatureReader reader;
             if (suppliers.isEmpty()) {
-                return new EmptyFeatureReader<>(getSchema());
+                reader = new EmptyFeatureReader<>(getSchema());
+            } else {
+                reader = new CompositeSimpleFeatureReader(getSchema(), suppliers);
+                Boolean hint = (Boolean) query.getHints().get(Hints.REMOVE_BUFFER_PIXEL);
+                if (hint != null && hint.equals(true))
+                    reader = new ClippingFeatureReader((CompositeSimpleFeatureReader) reader);
             }
-            return  new CompositeSimpleFeatureReader(getSchema(), suppliers);
+
+            return reader;
+
         } catch (SQLException e) {
             throw new IOException(e);
         }

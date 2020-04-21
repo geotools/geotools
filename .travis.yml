@@ -7,7 +7,11 @@ language: java
 before_install:
   - sed -i.bak -e 's|https://nexus.codehaus.org/snapshots/|https://oss.sonatype.org/content/repositories/codehaus-snapshots/|g' ~/.m2/settings.xml
   - unset _JAVA_OPTIONS
-install: true
+install: 
+  - if [ "$TRAVIS_JOB_NAME" == "MS SQL server 2019" ]; then
+       sh ".travis/install-mssql2019.sh";
+       sh ".travis/setup-mssql.sh";
+    fi
 env:
   global:
     - MAVEN_OPTS=-Xmx756m
@@ -20,7 +24,7 @@ addons:
   apt:
     packages:
       - python-sphinx
-      - libgdal1h
+#      - libgdal1h
 matrix:
   include:
     - jdk: oraclejdk8
@@ -29,4 +33,7 @@ matrix:
       env: ARGS="-Dfmt.skip=true"
     - jdk: openjdk11
       env: ARGS="-Dfmt.action=check -Dqa=true -DskipTests=true"
-
+    - jdk: openjdk8
+      env: ARGS="-pl :gt-jdbc-sqlserver -Dfmt.skip=true -Ponline -am"
+      dist: bionic
+      name: "MS SQL server 2019"

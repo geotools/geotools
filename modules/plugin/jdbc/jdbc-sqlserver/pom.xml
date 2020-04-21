@@ -21,7 +21,7 @@
 	<artifactId>gt-jdbc-sqlserver</artifactId>
 	<packaging>jar</packaging>
 	<name>SQL Server DataStore</name>
-	<url>http://maven.geotools.fr/reports/modules/plugin/jdbc/jdbc-sqlserver/</url>
+	<url>https://docs.geotools.org/latest/userguide/library/jdbc/sqlserver.html</url>
 
 
 	<description>
@@ -76,8 +76,7 @@
 	</dependencies>
 
 	<properties>
-		<!-- Dont use 7.4.1.jre8 as it's affected by https://github.com/microsoft/mssql-jdbc/issues/1195 -->
-		<sqlServerDriverVersion>8.1.1.jre8-preview</sqlServerDriverVersion>
+		<sqlServerDriverVersion>8.2.2.jre8</sqlServerDriverVersion>
 		<jtdsDriverVersion>1.3.1</jtdsDriverVersion>
 	</properties>
 </project>

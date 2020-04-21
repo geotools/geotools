@@ -20,14 +20,7 @@ import static org.geotools.mbtiles.MBTilesDataStore.DEFAULT_CRS;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -68,7 +61,10 @@ class MBTilesFeatureSource extends ContentFeatureSource {
 
     @Override
     protected void addHints(Set<Hints.Key> hints) {
+
         hints.add(Hints.GEOMETRY_SIMPLIFICATION);
+        hints.add(Hints.GEOMETRY_GENERALIZATION);
+        hints.add(Hints.REMOVE_BUFFER_PIXEL);
     }
 
     @Override
@@ -116,8 +112,7 @@ class MBTilesFeatureSource extends ContentFeatureSource {
             if (suppliers.isEmpty()) {
                 return new EmptyFeatureReader<>(getSchema());
             }
-
-            return new CompositeSimpleFeatureReader(getSchema(), suppliers);
+            return  new CompositeSimpleFeatureReader(getSchema(), suppliers);
         } catch (SQLException e) {
             throw new IOException(e);
         }
@@ -189,7 +184,11 @@ class MBTilesFeatureSource extends ContentFeatureSource {
     private long getTargetZLevel(Query query) throws SQLException {
         return Optional.ofNullable(query)
                 .map(Query::getHints)
-                .map(h -> h.get(Hints.GEOMETRY_SIMPLIFICATION))
+                .map(
+                        h ->
+                                h.get(Hints.GEOMETRY_GENERALIZATION) != null
+                                        ? h.get(Hints.GEOMETRY_GENERALIZATION)
+                                        : h.get(Hints.GEOMETRY_SIMPLIFICATION))
                 .map(
                         d -> {
                             try {

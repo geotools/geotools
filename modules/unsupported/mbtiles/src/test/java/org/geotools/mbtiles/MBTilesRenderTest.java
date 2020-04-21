@@ -18,12 +18,17 @@ package org.geotools.mbtiles;
 
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
+import static org.geotools.mbtiles.MBTilesDataStore.DEFAULT_CRS;
+import static org.junit.Assert.assertFalse;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.Raster;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import org.geotools.data.FeatureSource;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -89,8 +94,7 @@ public class MBTilesRenderTest {
         renderer.paint(
                 g,
                 new Rectangle(0, 0, w, h),
-                new ReferencedEnvelope(
-                        4700000, 5700000, -3000000, -1300000, MBTilesDataStore.DEFAULT_CRS));
+                new ReferencedEnvelope(4700000, 5700000, -3000000, -1300000, DEFAULT_CRS));
         g.dispose();
 
         File expected = new File("src/test/resources/org/geotools/mbtiles/madagascar.png");
@@ -136,4 +140,48 @@ public class MBTilesRenderTest {
                 new File("src/test/resources/org/geotools/mbtiles/madagascar_reprojected.png");
         ImageAssert.assertEquals(expected, image, (int) (w * h * 0.05));
     }
+
+    @Test
+    public void testTransformWithGeneralizationHint() throws Exception {
+        // tests if geometry generalization happens when a rendering
+        // transformation is issued
+        Style style = getStyle("transformation_water.sld");
+        File file = URLs.urlToFile(getClass().getResource("madagascar.mbtiles"));
+        MBTilesDataStore store = new MBTilesDataStore(new MBTilesFile(file));
+
+        ContentFeatureSource fs = store.getFeatureSource("water");
+
+        FeatureLayer layer = new FeatureLayer(fs.getFeatures(), style);
+
+        MapContent mc = new MapContent();
+        mc.addLayer(layer);
+        StreamingRenderer renderer = new StreamingRenderer();
+        // exaggerate generalization distance till obtain a Kandisky'map
+        // to test that generalization happened
+        renderer.setGeneralizationDistance(50);
+        renderer.setMapContent(mc);
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        int w = 300;
+        int h = 500;
+        final BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        g.setColor(Color.white);
+        g.fillRect(0, 0, w, h);
+        renderer.paint(
+                g,
+                new Rectangle(0, 0, w, h),
+                new ReferencedEnvelope(4700000, 5700000, -3000000, -1300000, DEFAULT_CRS));
+        g.dispose();
+        File expected =
+                new File("src/test/resources/org/geotools/mbtiles/overgeneralized_madagascar.png");
+        ImageAssert.assertEquals(expected, image, (int) (w * h * 0.05));
+    }
+
+    private Style getStyle(String fileName) throws IOException {
+        URL styleResource = MBTilesRenderTest.class.getResource(fileName);
+        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        StyledLayerDescriptor sld = new SLDParser(styleFactory, styleResource).parseSLD();
+        return ((NamedLayer) sld.getStyledLayers()[0]).getStyles()[0];
+    }
+
 }

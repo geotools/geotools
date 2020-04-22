@@ -17,6 +17,7 @@
 package org.geotools.data.shapefile.index;
 
 /** @author Tommaso Nolli */
+@SuppressWarnings("serial")
 public class LockTimeoutException extends Exception {
     /** */
     public LockTimeoutException() {

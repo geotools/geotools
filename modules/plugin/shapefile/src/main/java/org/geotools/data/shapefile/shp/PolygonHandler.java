@@ -54,9 +54,7 @@ public class PolygonHandler implements ShapeHandler {
     }
 
     public PolygonHandler(ShapeType type, GeometryFactory gf) throws ShapefileException {
-        if ((type != ShapeType.POLYGON)
-                && (type != ShapeType.POLYGONM)
-                && (type != ShapeType.POLYGONZ)) {
+        if (!type.isPolygonType()) {
             throw new ShapefileException(
                     "PolygonHandler constructor - expected type to be 5, 15, or 25.");
         }
@@ -138,8 +136,8 @@ public class PolygonHandler implements ShapeHandler {
             partOffsets[i] = buffer.getInt();
         }
 
-        ArrayList shells = new ArrayList();
-        ArrayList holes = new ArrayList();
+        ArrayList<LinearRing> shells = new ArrayList<>();
+        ArrayList<LinearRing> holes = new ArrayList<>();
         CoordinateSequence coords = readCoordinates(buffer, numPoints, dimensions);
 
         int offset = 0;
@@ -262,7 +260,7 @@ public class PolygonHandler implements ShapeHandler {
         } else {
 
             // build an association between shells and holes
-            final ArrayList holesForShells = assignHolesToShells(shells, holes);
+            final List<List<LinearRing>> holesForShells = assignHolesToShells(shells, holes);
 
             Geometry g = buildGeometries(shells, holes, holesForShells);
 
@@ -313,7 +311,9 @@ public class PolygonHandler implements ShapeHandler {
 
     /** */
     private Geometry buildGeometries(
-            final List shells, final List holes, final List holesForShells) {
+            final List<LinearRing> shells,
+            final List<LinearRing> holes,
+            final List<List<LinearRing>> holesForShells) {
         Polygon[] polygons;
 
         // if we have shells, lets use them
@@ -326,11 +326,11 @@ public class PolygonHandler implements ShapeHandler {
 
         // this will do nothing for the "only holes case"
         for (int i = 0; i < shells.size(); i++) {
+            LinearRing shell = shells.get(i);
+            List<LinearRing> holesForShell = holesForShells.get(i);
             polygons[i] =
                     geometryFactory.createPolygon(
-                            (LinearRing) shells.get(i),
-                            (LinearRing[])
-                                    ((ArrayList) holesForShells.get(i)).toArray(new LinearRing[0]));
+                            shell, holesForShell.toArray(new LinearRing[holesForShell.size()]));
         }
 
         // this will take care of the "only holes case"
@@ -348,10 +348,11 @@ public class PolygonHandler implements ShapeHandler {
     }
 
     /** <b>Package private for testing</b> */
-    ArrayList assignHolesToShells(final ArrayList shells, final ArrayList holes) {
-        ArrayList holesForShells = new ArrayList(shells.size());
+    List<List<LinearRing>> assignHolesToShells(
+            final ArrayList<LinearRing> shells, final ArrayList<LinearRing> holes) {
+        List<List<LinearRing>> holesForShells = new ArrayList<>(shells.size());
         for (int i = 0; i < shells.size(); i++) {
-            holesForShells.add(new ArrayList());
+            holesForShells.add(new ArrayList<>());
         }
 
         // find homes
@@ -364,7 +365,7 @@ public class PolygonHandler implements ShapeHandler {
             LinearRing tryRing;
 
             for (int j = 0; j < shells.size(); j++) {
-                tryRing = (LinearRing) shells.get(j);
+                tryRing = shells.get(j);
 
                 Envelope tryEnv = tryRing.getEnvelopeInternal();
                 if (minShell != null) {
@@ -392,9 +393,9 @@ public class PolygonHandler implements ShapeHandler {
             if (minShell == null) {
                 // now reverse this bad "hole" and turn it into a shell
                 shells.add(testRing);
-                holesForShells.add(new ArrayList());
+                holesForShells.add(new ArrayList<>());
             } else {
-                ((ArrayList) holesForShells.get(shells.indexOf(minShell))).add(testRing);
+                holesForShells.get(shells.indexOf(minShell)).add(testRing);
             }
         }
 
@@ -402,14 +403,14 @@ public class PolygonHandler implements ShapeHandler {
     }
 
     private MultiPolygon createMulti(LinearRing single) {
-        return createMulti(single, java.util.Collections.EMPTY_LIST);
+        return createMulti(single, java.util.Collections.emptyList());
     }
 
-    private MultiPolygon createMulti(LinearRing single, List holes) {
+    private MultiPolygon createMulti(LinearRing single, List<LinearRing> holes) {
         return geometryFactory.createMultiPolygon(
                 new Polygon[] {
                     geometryFactory.createPolygon(
-                            single, (LinearRing[]) holes.toArray(new LinearRing[holes.size()]))
+                            single, holes.toArray(new LinearRing[holes.size()]))
                 });
     }
 
@@ -436,7 +437,7 @@ public class PolygonHandler implements ShapeHandler {
         final int nrings;
         final CoordinateSequence[] coordinates;
         {
-            List allCoords = new ArrayList();
+            List<CoordinateSequence> allCoords = new ArrayList<>();
             for (int t = 0; t < multi.getNumGeometries(); t++) {
                 Polygon p;
                 p = (Polygon) multi.getGeometryN(t);
@@ -445,9 +446,7 @@ public class PolygonHandler implements ShapeHandler {
                     allCoords.add(p.getInteriorRingN(ringN).getCoordinateSequence());
                 }
             }
-            coordinates =
-                    (CoordinateSequence[])
-                            allCoords.toArray(new CoordinateSequence[allCoords.size()]);
+            coordinates = allCoords.toArray(new CoordinateSequence[allCoords.size()]);
             nrings = coordinates.length;
         }
 
@@ -526,7 +525,7 @@ public class PolygonHandler implements ShapeHandler {
             // m values
             values.forEach(
                     x -> {
-                        buffer.putDouble(!Double.isNaN(x) ? x : -10E40);
+                        buffer.putDouble(Double.isNaN(x) ? -10E40 : x);
                     });
         }
     }

@@ -213,7 +213,7 @@ public class ShapefileTest extends TestCaseSupport {
                 new ShapefileReader(new ShpFiles(c1), false, false, new GeometryFactory());
         URL c2;
         try {
-            ArrayList offsets = new ArrayList();
+            ArrayList<Integer> offsets = new ArrayList<>();
             while (reader.hasNext()) {
                 ShapefileReader.Record record = reader.nextRecord();
                 offsets.add(Integer.valueOf(record.offset()));
@@ -228,7 +228,7 @@ public class ShapefileTest extends TestCaseSupport {
             c2 = TestData.url(TestCaseSupport.class, STATEPOP);
             reader = new ShapefileReader(new ShpFiles(c2), false, false, new GeometryFactory());
             for (int i = 0, ii = offsets.size(); i < ii; i++) {
-                reader.shapeAt(((Integer) offsets.get(i)).intValue());
+                reader.shapeAt(offsets.get(i).intValue());
             }
         } finally {
             reader.close();

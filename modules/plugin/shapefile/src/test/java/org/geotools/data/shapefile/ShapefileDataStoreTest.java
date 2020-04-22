@@ -26,6 +26,7 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URI;
@@ -56,7 +57,6 @@ import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureReader;
-import org.geotools.data.FeatureStore;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
@@ -296,7 +296,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
     @Test
     public void testNamespace() throws Exception {
         ShapefileDataStoreFactory factory = new ShapefileDataStoreFactory();
-        Map map = new HashMap();
+        Map<String, Serializable> map = new HashMap<>();
 
         URI namespace = new URI("http://jesse.com");
 
@@ -351,8 +351,8 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         SimpleFeature feature = builder.buildFeature(type.getTypeName() + '.' + 0);
         collection.add(feature);
 
-        FeatureStore store =
-                (FeatureStore) shapeDataStore.getFeatureSource(type.getName().getLocalPart());
+        SimpleFeatureStore store =
+                (SimpleFeatureStore) shapeDataStore.getFeatureSource(type.getName().getLocalPart());
         DefaultTransaction transaction = new DefaultTransaction("create");
         store.setTransaction(transaction);
         store.addFeatures(collection);
@@ -608,7 +608,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         assertNotNull(features);
     }
 
-    private ArrayList performQueryComparison(
+    private ArrayList<SimpleFeature> performQueryComparison(
             ShapefileDataStore indexedDS,
             ShapefileDataStore baselineDS,
             ReferencedEnvelope newBounds)
@@ -626,8 +626,8 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         SimpleFeatureIterator baselineIter = features2.features();
         indexIter = features.features();
 
-        ArrayList baselineFeatures = new ArrayList();
-        ArrayList indexedFeatures = new ArrayList();
+        ArrayList<SimpleFeature> baselineFeatures = new ArrayList<>();
+        ArrayList<SimpleFeature> indexedFeatures = new ArrayList<>();
 
         try {
             while (baselineIter.hasNext()) {
@@ -639,7 +639,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
             assertFalse(indexIter.hasNext());
             assertFalse(baselineIter.hasNext());
             assertEquals(baselineFeatures.size(), indexedFeatures.size());
-            for (Iterator it = baselineFeatures.iterator(); it.hasNext(); ) {
+            for (Iterator<SimpleFeature> it = baselineFeatures.iterator(); it.hasNext(); ) {
                 SimpleFeature f = (SimpleFeature) it.next();
                 assertTrue(
                         f.getID() + ((Geometry) f.getDefaultGeometry()).getEnvelopeInternal(),
@@ -961,7 +961,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
                 writer =
                         sds.getFeatureWriter(
                                 sds.getTypeNames()[0], Filter.INCLUDE, Transaction.AUTO_COMMIT);
-                SimpleFeature feature = writer.next();
+                writer.next();
                 // System.out.println(feature);
                 writer.remove();
             } finally {
@@ -1614,7 +1614,8 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         builder.add(bigInteger);
 
         SimpleFeature feature = builder.buildFeature(null);
-        ;
+        assertNotNull(feature);
+        assertNotNull(feature.getID());
 
         // store features
         File tmpFile = getTempFile();
@@ -1627,6 +1628,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
                 s.getFeatureWriter(s.getTypeNames()[0], t);
         SimpleFeature feature1 = writer.next();
+        assertNotNull(feature1);
         writer.close();
         s.dispose();
     }

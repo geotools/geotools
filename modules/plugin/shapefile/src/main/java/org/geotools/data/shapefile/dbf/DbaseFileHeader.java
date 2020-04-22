@@ -124,8 +124,8 @@ public class DbaseFileHeader {
      * @param i The index of the field, from 0 to <CODE>getNumFields() - 1</CODE> .
      * @return A Class which closely represents the dbase field type.
      */
-    public Class getFieldClass(int i) {
-        Class typeClass = null;
+    public Class<?> getFieldClass(int i) {
+        Class<?> typeClass = null;
 
         switch (fields[i].fieldType) {
             case 'C':
@@ -578,7 +578,7 @@ public class DbaseFileHeader {
             fieldCnt = (headerLength - FILE_DESCRIPTOR_SIZE - 1) / FILE_DESCRIPTOR_SIZE;
 
             // read all of the header records
-            List lfields = new ArrayList();
+            List<DbaseField> lfields = new ArrayList<>();
             for (int i = 0; i < fieldCnt; i++) {
                 DbaseField field = new DbaseField();
 
@@ -693,7 +693,7 @@ public class DbaseFileHeader {
         fieldCnt = (headerLength - FILE_DESCRIPTOR_SIZE - 1) / FILE_DESCRIPTOR_SIZE;
 
         // read all of the header records
-        List lfields = new ArrayList();
+        List<DbaseField> lfields = new ArrayList<>();
         for (int i = 0; i < fieldCnt; i++) {
             DbaseField field = new DbaseField();
 

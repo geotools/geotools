@@ -29,11 +29,11 @@ public class Node {
     private boolean childrenVisited = false;
     private Envelope bounds;
     protected int[] shapesId;
-    protected List subNodes;
+    protected List<Node> subNodes;
 
     public Node(Envelope bounds) {
         this.bounds = new Envelope(bounds);
-        this.subNodes = new ArrayList(4);
+        this.subNodes = new ArrayList<>(4);
         this.shapesId = null;
     }
 

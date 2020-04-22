@@ -180,7 +180,7 @@ public class ShapefileReader implements FileReader {
                 return shape();
             }
 
-            Class geomType = Geometry.class;
+            Class<? extends Geometry> geomType = Geometry.class;
             if (type.isLineType()) {
                 geomType = MultiLineString.class;
             } else if (type.isMultiPointType()) {

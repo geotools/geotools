@@ -87,30 +87,38 @@ public class DbaseNullSupportTest {
         writer.close();
         fos.flush();
         fos.close();
+        @SuppressWarnings("resource")
         DbaseFileReader reader =
                 new DbaseFileReader(new FileInputStream(tmp).getChannel(), false, cs, tz);
-        assertTrue(
-                "Number of records does not match",
-                values.length == reader.getHeader().getNumRecords());
-        for (int row = 0; row < values.length; row++) {
-            Object[] current = reader.readEntry();
+        try {
             assertTrue(
-                    "Number of columns incorrect",
-                    current != null && current.length == values.length);
-            for (int column = 0; column < values.length; column++) {
-                if (column == row) {
-                    assertTrue("Column was null and should not have been", current[column] != null);
-                    assertTrue(
-                            "Non-null column value "
-                                    + current[column]
-                                    + " did not match original value "
-                                    + values[column],
-                            current[column].equals(values[column]));
-                } else {
-                    assertTrue(
-                            "Column that should have been null was not", current[column] == null);
+                    "Number of records does not match",
+                    values.length == reader.getHeader().getNumRecords());
+            for (int row = 0; row < values.length; row++) {
+                Object[] current = reader.readEntry();
+                assertTrue(
+                        "Number of columns incorrect",
+                        current != null && current.length == values.length);
+                for (int column = 0; column < values.length; column++) {
+                    if (column == row) {
+                        assertTrue(
+                                "Column was null and should not have been",
+                                current[column] != null);
+                        assertTrue(
+                                "Non-null column value "
+                                        + current[column]
+                                        + " did not match original value "
+                                        + values[column],
+                                current[column].equals(values[column]));
+                    } else {
+                        assertTrue(
+                                "Column that should have been null was not",
+                                current[column] == null);
+                    }
                 }
             }
+        } finally {
+            reader.close();
         }
     }
 }

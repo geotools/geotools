@@ -59,6 +59,7 @@ public final class StorageFile implements Comparable<StorageFile>, FileWriter {
         return tempFile;
     }
 
+    @SuppressWarnings("resource")
     public FileChannel getWriteChannel() throws IOException {
         return new RandomAccessFile(tempFile, "rw").getChannel();
     }
@@ -146,6 +147,7 @@ public final class StorageFile implements Comparable<StorageFile>, FileWriter {
         }
     }
 
+    @SuppressWarnings("resource")
     private static void copyFile(File storage, URL url, File dest)
             throws FileNotFoundException, IOException {
         FileChannel in = null;

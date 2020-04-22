@@ -25,12 +25,12 @@ import java.util.ArrayList;
  */
 public class Data {
     private DataDefinition def;
-    private ArrayList values;
+    private ArrayList<Object> values;
 
     /** @param def */
     public Data(DataDefinition def) {
         this.def = def;
-        this.values = new ArrayList(def.getFieldsCount());
+        this.values = new ArrayList<>(def.getFieldsCount());
     }
 
     /** Check to see if a <code>Data</code> respects its <code>DataDefinition</code> */

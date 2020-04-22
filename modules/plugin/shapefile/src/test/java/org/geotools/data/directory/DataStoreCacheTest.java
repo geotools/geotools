@@ -8,7 +8,6 @@ import org.junit.Test;
 
 public class DataStoreCacheTest extends DirectoryTestSupport {
 
-    private static final String DESTDIR = "shapes";
     // we need a long delay for builds under UNIX, the timestap is coarse
     // (on windows it worked with 100ms)
     private static final int DELAY = 1000;

@@ -396,7 +396,7 @@ public class ShpFiles {
             throw new NullPointerException("requestor cannot be null");
         }
 
-        Collection threadLockers = getCurrentThreadLockers();
+        Collection<ShpFilesLocker> threadLockers = getCurrentThreadLockers();
         boolean removed = threadLockers.remove(new ShpFilesLocker(url, requestor));
         if (!removed) {
             throw new IllegalArgumentException(
@@ -742,6 +742,7 @@ public class ShpFiles {
             if (isLocal()) {
                 File file = URLs.urlToFile(url);
 
+                @SuppressWarnings("resource")
                 RandomAccessFile raf = new RandomAccessFile(file, "r");
                 channel = new FileChannelDecorator(raf.getChannel(), this, url, requestor);
             } else {
@@ -790,6 +791,7 @@ public class ShpFiles {
 
                 File file = URLs.urlToFile(url);
 
+                @SuppressWarnings("resource")
                 RandomAccessFile raf = new RandomAccessFile(file, "rw");
                 channel = new FileChannelDecorator(raf.getChannel(), this, url, requestor);
 

@@ -560,7 +560,7 @@ public class DbaseFileReader implements FileReader, Closeable {
                         break;
                     } else {
                         final String string = fastParse(bytes, fieldOffset, fieldLen).trim();
-                        Class clazz = header.getFieldClass(fieldNum);
+                        Class<?> clazz = header.getFieldClass(fieldNum);
                         if (clazz == Integer.class) {
                             try {
                                 object = Integer.parseInt(string);

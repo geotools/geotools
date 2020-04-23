@@ -349,11 +349,12 @@ public class TPKReader extends AbstractGridCoverage2DReader {
         ByteArrayInputStream bis = new ByteArrayInputStream(data);
         Iterator<?> readers = ImageIO.getImageReadersByFormatName(getImageFormat(data, format));
         ImageReader reader = (ImageReader) readers.next();
-        ImageInputStream iis = ImageIO.createImageInputStream(bis);
-        reader.setInput(iis, true);
-        ImageReadParam param = reader.getDefaultReadParam();
+        try (ImageInputStream iis = ImageIO.createImageInputStream(bis)) {
+            reader.setInput(iis, true);
+            ImageReadParam param = reader.getDefaultReadParam();
 
-        return reader.read(0, param);
+            return reader.read(0, param);
+        }
     }
 
     protected BufferedImage getStartImage(BufferedImage copyFrom, int width, int height) {

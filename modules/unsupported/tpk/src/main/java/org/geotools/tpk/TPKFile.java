@@ -338,8 +338,7 @@ public class TPKFile {
         zoomLevelMapping = new HashMap<>();
         zoomLevelResolutionMap = new HashMap<>();
 
-        try {
-            InputStream is = theTPK.getInputStream(confFile);
+        try (InputStream is = theTPK.getInputStream(confFile)) {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document confDoc = dBuilder.parse(is);
@@ -370,7 +369,6 @@ public class TPKFile {
             for (int i = 0; i < lods.getLength(); i++) {
                 parseLodInfo(lods.item(i));
             }
-            is.close();
 
         } catch (Exception ex) {
             throw new RuntimeException("Caught exception opening/processing conf.xml", ex);

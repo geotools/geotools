@@ -1123,53 +1123,17 @@ public class StreamingRenderer implements GTRenderer {
                         ReferencedEnvelope targetEnvelope = envelope;
                         ReferencedEnvelope sourceEnvelope =
                                 transformEnvelope(targetEnvelope, featCrs);
-                        AffineTransform at = worldToScreenTransform;
-                        AffineTransform screenToWorldTransform = new AffineTransform(at);
-                        screenToWorldTransform.invert();
-                        MathTransform2D crsTransform =
-                                (MathTransform2D)
-                                        CRS.findMathTransform(
-                                                CRS.getHorizontalCRS(featCrs),
-                                                CRS.getHorizontalCRS(mapCRS));
-                        MathTransform2D screenTransform = new AffineTransform2D(at);
-                        MathTransform2D fullTranform =
-                                (MathTransform2D)
-                                        ConcatenatedTransform.create(crsTransform, screenTransform);
-                        Rectangle2D.Double sourceDomain =
-                                new Rectangle2D.Double(
-                                        sourceEnvelope.getMinX(),
-                                        sourceEnvelope.getMinY(),
-                                        sourceEnvelope.getWidth(),
-                                        sourceEnvelope.getHeight());
-                        WarpBuilder wb = new WarpBuilder(tolerance);
-                        double densifyDistance = 0.0;
-                        int[] actualSplit =
-                                wb.isValidDomain(sourceDomain)
-                                        ? wb.getRowColsSplit(fullTranform, sourceDomain)
-                                        : null;
-                        double minDistance =
-                                Math.min(
-                                        MAX_PIXELS_DENSIFY
-                                                * sourceEnvelope.getWidth()
-                                                / screenSize.getWidth(),
-                                        MAX_PIXELS_DENSIFY
-                                                * sourceEnvelope.getHeight()
-                                                / screenSize.getHeight());
-                        if (actualSplit == null) {
-                            // alghoritm gave up, we decide to use a fixed distance value
-                            densifyDistance = minDistance;
-                        } else if (actualSplit[0] != 1 || actualSplit[1] != 1) {
-
-                            densifyDistance =
-                                    Math.max(
-                                            Math.min(
-                                                    sourceEnvelope.getWidth() / actualSplit[0],
-                                                    sourceEnvelope.getHeight() / actualSplit[1]),
-                                            minDistance);
-                        }
-                        if (densifyDistance > 0.0) {
-                            projectionHints.put(
-                                    ProjectionHandler.ADVANCED_PROJECTION_DENSIFY, densifyDistance);
+                        if (sourceEnvelope != null
+                                && !sourceEnvelope.isEmpty()
+                                && !sourceEnvelope.isNull()) {
+                            setupDensificationHints(
+                                    mapCRS,
+                                    featCrs,
+                                    screenSize,
+                                    worldToScreenTransform,
+                                    projectionHints,
+                                    tolerance,
+                                    sourceEnvelope);
                         }
                     }
                 }
@@ -1327,6 +1291,58 @@ public class StreamingRenderer implements GTRenderer {
         query.setFilter(simplifiedFilter);
 
         return query;
+    }
+
+    private void setupDensificationHints(
+            CoordinateReferenceSystem mapCRS,
+            CoordinateReferenceSystem featCrs,
+            Rectangle screenSize,
+            AffineTransform worldToScreenTransform,
+            Map projectionHints,
+            double tolerance,
+            ReferencedEnvelope sourceEnvelope)
+            throws NoninvertibleTransformException, FactoryException {
+        AffineTransform at = worldToScreenTransform;
+        AffineTransform screenToWorldTransform = new AffineTransform(at);
+        screenToWorldTransform.invert();
+        MathTransform2D crsTransform =
+                (MathTransform2D)
+                        CRS.findMathTransform(
+                                CRS.getHorizontalCRS(featCrs), CRS.getHorizontalCRS(mapCRS));
+        MathTransform2D screenTransform = new AffineTransform2D(at);
+        MathTransform2D fullTranform =
+                (MathTransform2D) ConcatenatedTransform.create(crsTransform, screenTransform);
+        Rectangle2D.Double sourceDomain =
+                new Rectangle2D.Double(
+                        sourceEnvelope.getMinX(),
+                        sourceEnvelope.getMinY(),
+                        sourceEnvelope.getWidth(),
+                        sourceEnvelope.getHeight());
+        WarpBuilder wb = new WarpBuilder(tolerance);
+        double densifyDistance = 0.0;
+        int[] actualSplit =
+                wb.isValidDomain(sourceDomain)
+                        ? wb.getRowColsSplit(fullTranform, sourceDomain)
+                        : null;
+        double minDistance =
+                Math.min(
+                        MAX_PIXELS_DENSIFY * sourceEnvelope.getWidth() / screenSize.getWidth(),
+                        MAX_PIXELS_DENSIFY * sourceEnvelope.getHeight() / screenSize.getHeight());
+        if (actualSplit == null) {
+            // alghoritm gave up, we decide to use a fixed distance value
+            densifyDistance = minDistance;
+        } else if (actualSplit[0] != 1 || actualSplit[1] != 1) {
+
+            densifyDistance =
+                    Math.max(
+                            Math.min(
+                                    sourceEnvelope.getWidth() / actualSplit[0],
+                                    sourceEnvelope.getHeight() / actualSplit[1]),
+                            minDistance);
+        }
+        if (densifyDistance > 0.0) {
+            projectionHints.put(ProjectionHandler.ADVANCED_PROJECTION_DENSIFY, densifyDistance);
+        }
     }
 
     private double[] getGeneralizationSpans(

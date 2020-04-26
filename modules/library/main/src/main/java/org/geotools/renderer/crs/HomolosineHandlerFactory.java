@@ -50,7 +50,6 @@ public class HomolosineHandlerFactory implements ProjectionHandlerFactory {
         MapProjection mapProjection =
                 CRS.getMapProjection(renderingEnvelope.getCoordinateReferenceSystem());
         if (mapProjection instanceof Homolosine) {
-            Homolosine homolosine = (Homolosine) mapProjection;
             final double[] MASK_COORDS = {
                 // north side
                 -180,

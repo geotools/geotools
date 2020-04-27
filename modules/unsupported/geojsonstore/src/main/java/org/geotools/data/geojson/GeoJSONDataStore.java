@@ -80,8 +80,12 @@ public class GeoJSONDataStore extends ContentDataStore implements FileDataStore 
     @Override
     protected List<Name> createTypeNames() throws IOException {
         String name = new File(getUrl().getFile()).getName();
-        name = name.substring(0, name.lastIndexOf('.'));
-
+        int index = name.lastIndexOf('.');
+        if (index > 0) {
+            name = name.substring(0, index);
+        } else {
+            name = "Unamed URL";
+        }
         typeName = new NameImpl(name);
         return Collections.singletonList(typeName);
     }

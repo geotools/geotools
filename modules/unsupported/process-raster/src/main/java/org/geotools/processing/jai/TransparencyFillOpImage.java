@@ -35,6 +35,8 @@ public class TransparencyFillOpImage extends AreaOpImage {
 
     private Number noData = 0;
 
+    private Integer width = 1;
+
     /** Transparency Fill algorithms. More can be added in the future for different logics */
     static enum TransparencyFillAlgorithm {
 
@@ -46,16 +48,17 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     byte[][] srcData,
                     byte[][] dstData,
                     int srcOffset,
-                    int srcStride,
+                    int srcStride1,
+                    int srcStride2,
                     int dstOffset) {
                 for (int k = 0; k < numBands; k++) {
                     if (k != numBands - 1) {
-                        int left = (srcData[k][srcOffset - srcStride + k] & 0xFF);
-                        int right = (srcData[k][srcOffset + srcStride + k] & 0xFF);
+                        int left = (srcData[k][srcOffset - srcStride1 + k] & 0xFF);
+                        int right = (srcData[k][srcOffset + srcStride2 + k] & 0xFF);
                         dstData[k][dstOffset + k] = (byte) ((left + right) / 2);
                     } else {
                         dstData[k][dstOffset + k] =
-                                ((byte) ((srcData[k][srcOffset - srcStride + k])));
+                                ((byte) ((srcData[k][srcOffset - srcStride1 + k])));
                     }
                 }
             }
@@ -66,16 +69,17 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     int[][] srcData,
                     int[][] dstData,
                     int srcOffset,
-                    int srcStride,
+                    int srcStride1,
+                    int srcStride2,
                     int dstOffset) {
                 for (int k = 0; k < numBands; k++) {
                     if (k != numBands - 1) {
-                        int left = (srcData[k][srcOffset - srcStride + k]);
-                        int right = (srcData[k][srcOffset + srcStride + k]);
+                        int left = (srcData[k][srcOffset - srcStride1 + k]);
+                        int right = (srcData[k][srcOffset + srcStride2 + k]);
                         dstData[k][dstOffset + k] = (int) ((left + right) / 2);
                     } else {
                         dstData[k][dstOffset + k] =
-                                ((int) ((srcData[k][srcOffset - srcStride + k])));
+                                ((int) ((srcData[k][srcOffset - srcStride1 + k])));
                     }
                 }
             }
@@ -86,16 +90,17 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     short[][] srcData,
                     short[][] dstData,
                     int srcOffset,
-                    int srcStride,
+                    int srcStride1,
+                    int srcStride2,
                     int dstOffset) {
                 for (int k = 0; k < numBands; k++) {
                     if (k != numBands - 1) {
-                        float left = (srcData[k][srcOffset - srcStride + k]);
-                        float right = (srcData[k][srcOffset + srcStride + k]);
+                        float left = (srcData[k][srcOffset - srcStride1 + k]);
+                        float right = (srcData[k][srcOffset + srcStride2 + k]);
                         dstData[k][dstOffset + k] = (short) ((left + right) / 2);
                     } else {
                         dstData[k][dstOffset + k] =
-                                ((short) ((srcData[k][srcOffset - srcStride + k])));
+                                ((short) ((srcData[k][srcOffset - srcStride1 + k])));
                     }
                 }
             }
@@ -106,16 +111,17 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     float[][] srcData,
                     float[][] dstData,
                     int srcOffset,
-                    int srcStride,
+                    int srcStride1,
+                    int srcStride2,
                     int dstOffset) {
                 for (int k = 0; k < numBands; k++) {
                     if (k != numBands - 1) {
-                        float left = (srcData[k][srcOffset - srcStride + k]);
-                        float right = (srcData[k][srcOffset + srcStride + k]);
+                        float left = (srcData[k][srcOffset - srcStride1 + k]);
+                        float right = (srcData[k][srcOffset + srcStride2 + k]);
                         dstData[k][dstOffset + k] = (float) ((left + right) / 2);
                     } else {
                         dstData[k][dstOffset + k] =
-                                ((float) ((srcData[k][srcOffset - srcStride + k])));
+                                ((float) ((srcData[k][srcOffset - srcStride1 + k])));
                     }
                 }
             }
@@ -126,16 +132,17 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     double[][] srcData,
                     double[][] dstData,
                     int srcOffset,
-                    int srcStride,
+                    int srcStride1,
+                    int srcStride2,
                     int dstOffset) {
                 for (int k = 0; k < numBands; k++) {
                     if (k != numBands - 1) {
-                        double left = (srcData[k][srcOffset - srcStride + k]);
-                        double right = (srcData[k][srcOffset + srcStride + k]);
+                        double left = (srcData[k][srcOffset - srcStride1 + k]);
+                        double right = (srcData[k][srcOffset + srcStride2 + k]);
                         dstData[k][dstOffset + k] = (double) ((left + right) / 2);
                     } else {
                         dstData[k][dstOffset + k] =
-                                ((double) ((srcData[k][srcOffset - srcStride + k])));
+                                ((double) ((srcData[k][srcOffset - srcStride1 + k])));
                     }
                 }
             }
@@ -149,10 +156,11 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     byte[][] srcData,
                     byte[][] dstData,
                     int srcOffset,
-                    int srcStride,
+                    int srcStride1,
+                    int srcStride2,
                     int dstOffset) {
                 for (int k = 0; k < numBands; k++) {
-                    dstData[k][dstOffset + k] = ((byte) ((srcData[k][srcOffset - srcStride + k])));
+                    dstData[k][dstOffset + k] = ((byte) ((srcData[k][srcOffset - srcStride1 + k])));
                 }
             }
 
@@ -162,10 +170,11 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     int[][] srcData,
                     int[][] dstData,
                     int srcOffset,
-                    int srcStride,
+                    int srcStride1,
+                    int srcStride2,
                     int dstOffset) {
                 for (int k = 0; k < numBands; k++) {
-                    dstData[k][dstOffset + k] = ((int) ((srcData[k][srcOffset - srcStride + k])));
+                    dstData[k][dstOffset + k] = ((int) ((srcData[k][srcOffset - srcStride1 + k])));
                 }
             }
 
@@ -175,10 +184,12 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     short[][] srcData,
                     short[][] dstData,
                     int srcOffset,
-                    int srcStride,
+                    int srcStride1,
+                    int srcStride2,
                     int dstOffset) {
                 for (int k = 0; k < numBands; k++) {
-                    dstData[k][dstOffset + k] = ((short) ((srcData[k][srcOffset - srcStride + k])));
+                    dstData[k][dstOffset + k] =
+                            ((short) ((srcData[k][srcOffset - srcStride1 + k])));
                 }
             }
 
@@ -188,10 +199,12 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     float[][] srcData,
                     float[][] dstData,
                     int srcOffset,
-                    int srcStride,
+                    int srcStride1,
+                    int srcStride2,
                     int dstOffset) {
                 for (int k = 0; k < numBands; k++) {
-                    dstData[k][dstOffset + k] = ((float) ((srcData[k][srcOffset - srcStride + k])));
+                    dstData[k][dstOffset + k] =
+                            ((float) ((srcData[k][srcOffset - srcStride1 + k])));
                 }
             }
 
@@ -201,10 +214,12 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     double[][] srcData,
                     double[][] dstData,
                     int srcOffset,
-                    int srcStride,
+                    int srcStride1,
+                    int srcStride2,
                     int dstOffset) {
                 for (int k = 0; k < numBands; k++) {
-                    dstData[k][dstOffset + k] = ((float) ((srcData[k][srcOffset - srcStride + k])));
+                    dstData[k][dstOffset + k] =
+                            ((float) ((srcData[k][srcOffset - srcStride1 + k])));
                 }
             }
         },
@@ -217,10 +232,11 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     byte[][] srcData,
                     byte[][] dstData,
                     int srcOffset,
-                    int srcStride,
+                    int srcStride1,
+                    int srcStride2,
                     int dstOffset) {
                 for (int k = 0; k < numBands; k++) {
-                    dstData[k][dstOffset + k] = ((byte) ((srcData[k][srcOffset + srcStride + k])));
+                    dstData[k][dstOffset + k] = ((byte) ((srcData[k][srcOffset + srcStride2 + k])));
                 }
             }
 
@@ -230,10 +246,12 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     short[][] srcData,
                     short[][] dstData,
                     int srcOffset,
-                    int srcStride,
+                    int srcStride1,
+                    int srcStride2,
                     int dstOffset) {
                 for (int k = 0; k < numBands; k++) {
-                    dstData[k][dstOffset + k] = ((short) ((srcData[k][srcOffset + srcStride + k])));
+                    dstData[k][dstOffset + k] =
+                            ((short) ((srcData[k][srcOffset + srcStride2 + k])));
                 }
             }
 
@@ -243,10 +261,11 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     int[][] srcData,
                     int[][] dstData,
                     int srcOffset,
-                    int srcStride,
+                    int srcStride1,
+                    int srcStride2,
                     int dstOffset) {
                 for (int k = 0; k < numBands; k++) {
-                    dstData[k][dstOffset + k] = ((int) ((srcData[k][srcOffset + srcStride + k])));
+                    dstData[k][dstOffset + k] = ((int) ((srcData[k][srcOffset + srcStride2 + k])));
                 }
             }
 
@@ -256,10 +275,12 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     float[][] srcData,
                     float[][] dstData,
                     int srcOffset,
-                    int srcStride,
+                    int srcStride1,
+                    int srcStride2,
                     int dstOffset) {
                 for (int k = 0; k < numBands; k++) {
-                    dstData[k][dstOffset + k] = ((float) ((srcData[k][srcOffset + srcStride + k])));
+                    dstData[k][dstOffset + k] =
+                            ((float) ((srcData[k][srcOffset + srcStride2 + k])));
                 }
             }
 
@@ -269,11 +290,12 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     double[][] srcData,
                     double[][] dstData,
                     int srcOffset,
-                    int srcStride,
+                    int srcStride1,
+                    int srcStride2,
                     int dstOffset) {
                 for (int k = 0; k < numBands; k++) {
                     dstData[k][dstOffset + k] =
-                            ((double) ((srcData[k][srcOffset + srcStride + k])));
+                            ((double) ((srcData[k][srcOffset + srcStride2 + k])));
                 }
             }
         };
@@ -283,7 +305,8 @@ public class TransparencyFillOpImage extends AreaOpImage {
                 byte[][] srcData,
                 byte[][] dstData,
                 int srcOffset,
-                int srcStride,
+                int srcStride1,
+                int srcStride2,
                 int dstOffset);
 
         public abstract void fillPixel(
@@ -291,7 +314,8 @@ public class TransparencyFillOpImage extends AreaOpImage {
                 float[][] srcData,
                 float[][] dstData,
                 int srcOffset,
-                int srcStride,
+                int srcStride1,
+                int srcStride2,
                 int dstOffset);
 
         public abstract void fillPixel(
@@ -299,7 +323,8 @@ public class TransparencyFillOpImage extends AreaOpImage {
                 double[][] srcData,
                 double[][] dstData,
                 int srcOffset,
-                int srcStride,
+                int srcStride1,
+                int srcStride2,
                 int dstOffset);
 
         public abstract void fillPixel(
@@ -307,7 +332,8 @@ public class TransparencyFillOpImage extends AreaOpImage {
                 int[][] srcData,
                 int[][] dstData,
                 int srcOffset,
-                int srcStride,
+                int srcStride1,
+                int srcStride2,
                 int dstOffset);
 
         public abstract void fillPixel(
@@ -315,7 +341,8 @@ public class TransparencyFillOpImage extends AreaOpImage {
                 short[][] srcData,
                 short[][] dstData,
                 int srcOffset,
-                int srcStride,
+                int srcStride1,
+                int srcStride2,
                 int dstOffset);
     };
 
@@ -338,7 +365,8 @@ public class TransparencyFillOpImage extends AreaOpImage {
             FillType type,
             Map config,
             ImageLayout layout,
-            Number noData) {
+            Number noData,
+            Integer width) {
         super(source, layout, config, true, extender, 1, 1, 1, 1);
         if (type == null) {
             // Setting up default
@@ -356,7 +384,8 @@ public class TransparencyFillOpImage extends AreaOpImage {
                 fillAlgorithm = TransparencyFillAlgorithm.FILL_CLONE_SECOND;
                 break;
         }
-        this.noData = noData;
+        if (noData != null) this.noData = noData;
+        if (width != null) this.width = width;
     }
 
     /**
@@ -434,6 +463,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
         int srcScanlineDataOffset = srcBandOffsets[srcOffsetsForBands[0]];
         int dstScanlineOffset[] = new int[numBands];
 
+        byte transparentValue = noData.byteValue();
         for (int i = 0; i < numBands; i++) {
             dstScanlineOffset[i] = dstBandOffsets[i];
         }
@@ -448,28 +478,78 @@ public class TransparencyFillOpImage extends AreaOpImage {
             for (int i = 0; i < dwidth; i++) {
                 int imageVerticalOffset = imageOffset;
                 int imageDataVerticalOffset = imageDataOffset;
-                int centralPixel = srcData[imageVerticalOffset];
+                byte centralPixel = srcData[imageVerticalOffset];
                 boolean copySource = true;
-                if (centralPixel == noData.intValue()) {
+                if (centralPixel == transparentValue) {
                     // Check if previous and next pixels are zero.
-                    int rightPixel = srcData[imageVerticalOffset + srcPixelStride];
-                    int leftPixel = srcData[imageVerticalOffset - srcPixelStride];
-                    if (rightPixel != noData.intValue() && leftPixel != noData.intValue()) {
+                    int leftPixelStride = srcPixelStride;
+                    byte leftPixel = srcData[imageVerticalOffset - srcPixelStride];
+                    int widthI = 1;
+                    // if a width > 1 has been specified and near pixel is still
+                    // transparent check the next
+                    while (leftPixel == transparentValue && widthI < width) {
+                        leftPixelStride += srcPixelStride;
+                        int elementAt = imageVerticalOffset - leftPixelStride;
+                        if (elementAt < srcData.length && elementAt >= 0)
+                            leftPixel = srcData[elementAt];
+                        else break;
+                        widthI++;
+                    }
+                    int rightPixelStride = srcPixelStride;
+                    byte rightPixel = srcData[imageVerticalOffset + rightPixelStride];
+                    widthI = 1;
+                    // if a width > 1 has been specified and near pixel is still
+                    // transparent check the next
+                    while (rightPixel == transparentValue && widthI < width) {
+                        rightPixelStride += srcPixelStride;
+                        int elementAt = imageVerticalOffset + rightPixelStride;
+                        if (elementAt < srcData.length && elementAt >= 0)
+                            rightPixel = srcData[elementAt];
+                        else break;
+                        widthI++;
+                    }
+
+                    if (rightPixel != transparentValue && leftPixel != transparentValue) {
                         // This has been identified as a pixel of a vertical transparent stripe
                         fillAlgorithm.fillPixel(
                                 numBands,
                                 srcDataArrays,
                                 dstDataArrays,
                                 imageDataVerticalOffset,
-                                srcPixelStride,
+                                leftPixelStride,
+                                rightPixelStride,
                                 dstPixelOffset);
                         copySource = false;
                     } else {
+                        int upperScanlineStride = srcScanlineStride;
                         // A transparent pixel with adjacent transparent pixels along x
-                        int upperPixel = srcData[imageVerticalOffset - srcScanlineStride];
-                        if (upperPixel != noData.intValue()) {
-                            int lowerPixel = srcData[imageVerticalOffset + srcScanlineStride];
-                            if (lowerPixel != noData.intValue()) {
+                        byte upperPixel = srcData[imageVerticalOffset - upperScanlineStride];
+                        widthI = 1;
+                        // if a width > 1 has been specified and near pixel is still
+                        // transparent check the next
+                        while (upperPixel == transparentValue && widthI < width) {
+                            upperScanlineStride += srcScanlineStride;
+                            int elementAt = imageVerticalOffset - upperScanlineStride;
+                            if (elementAt < srcData.length && elementAt >= 0)
+                                upperPixel = srcData[elementAt];
+                            else break;
+                            widthI++;
+                        }
+                        if (upperPixel != transparentValue) {
+                            int lowerScanlineStride = srcScanlineStride;
+                            byte lowerPixel = srcData[imageVerticalOffset + lowerScanlineStride];
+                            widthI = 1;
+                            // if a width > 1 has been specified and near pixel is still
+                            // transparent check the next
+                            while (lowerPixel == transparentValue && widthI < width) {
+                                lowerScanlineStride += srcScanlineStride;
+                                int elementAt = imageVerticalOffset + lowerScanlineStride;
+                                if (elementAt < srcData.length && elementAt >= 0)
+                                    lowerPixel = srcData[imageVerticalOffset + lowerScanlineStride];
+                                else break;
+                                widthI++;
+                            }
+                            if (lowerPixel != transparentValue) {
                                 // This has been identified as a pixel of an horizontal transparent
                                 // stripe
                                 fillAlgorithm.fillPixel(
@@ -477,7 +557,8 @@ public class TransparencyFillOpImage extends AreaOpImage {
                                         srcDataArrays,
                                         dstDataArrays,
                                         imageDataVerticalOffset,
-                                        srcScanlineStride,
+                                        upperScanlineStride,
+                                        lowerScanlineStride,
                                         dstPixelOffset);
                                 copySource = false;
                             }
@@ -528,7 +609,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
         int srcScanlineDataOffset = srcBandOffsets[srcOffsetsForBands[0]];
         int dstScanlineOffset[] = new int[numBands];
 
-        int transparentVal = noData.intValue();
+        int transparentValue = noData.intValue();
         for (int i = 0; i < numBands; i++) {
             dstScanlineOffset[i] = dstBandOffsets[i];
         }
@@ -545,26 +626,76 @@ public class TransparencyFillOpImage extends AreaOpImage {
                 int imageDataVerticalOffset = imageDataOffset;
                 int centralPixel = srcData[imageVerticalOffset];
                 boolean copySource = true;
-                if (centralPixel == transparentVal) {
+                if (centralPixel == transparentValue) {
                     // Check if previous and next pixels are zero.
-                    int rightPixel = srcData[imageVerticalOffset + srcPixelStride];
+                    int leftPixelStride = srcPixelStride;
                     int leftPixel = srcData[imageVerticalOffset - srcPixelStride];
-                    if (rightPixel != transparentVal && leftPixel != transparentVal) {
+                    int widthI = 1;
+                    // if a width > 1 has been specified and near pixel is still
+                    // transparent check the next
+                    while (leftPixel == transparentValue && widthI < width) {
+                        leftPixelStride += srcPixelStride;
+                        int elementAt = imageVerticalOffset - leftPixelStride;
+                        if (elementAt < srcData.length && elementAt >= 0)
+                            leftPixel = srcData[elementAt];
+                        else break;
+                        widthI++;
+                    }
+                    int rightPixelStride = srcPixelStride;
+                    int rightPixel = srcData[imageVerticalOffset + rightPixelStride];
+                    widthI = 1;
+                    // if a width > 1 has been specified and near pixel is still
+                    // transparent check the next
+                    while (rightPixel == transparentValue && widthI < width) {
+                        rightPixelStride += srcPixelStride;
+                        int elementAt = imageVerticalOffset + rightPixelStride;
+                        if (elementAt < srcData.length && elementAt >= 0)
+                            rightPixel = srcData[elementAt];
+                        else break;
+                        widthI++;
+                    }
+
+                    if (rightPixel != transparentValue && leftPixel != transparentValue) {
                         // This has been identified as a pixel of a vertical transparent stripe
                         fillAlgorithm.fillPixel(
                                 numBands,
                                 srcDataArrays,
                                 dstDataArrays,
                                 imageDataVerticalOffset,
-                                srcPixelStride,
+                                leftPixelStride,
+                                rightPixelStride,
                                 dstPixelOffset);
                         copySource = false;
                     } else {
+                        int upperScanlineStride = srcScanlineStride;
                         // A transparent pixel with adjacent transparent pixels along x
-                        int upperPixel = srcData[imageVerticalOffset - srcScanlineStride];
-                        if (upperPixel != transparentVal) {
-                            int lowerPixel = srcData[imageVerticalOffset + srcScanlineStride];
-                            if (lowerPixel != transparentVal) {
+                        int upperPixel = srcData[imageVerticalOffset - upperScanlineStride];
+                        widthI = 1;
+                        // if a width > 1 has been specified and near pixel is still
+                        // transparent check the next
+                        while (upperPixel == transparentValue && widthI < width) {
+                            upperScanlineStride += srcScanlineStride;
+                            int elementAt = imageVerticalOffset - upperScanlineStride;
+                            if (elementAt < srcData.length && elementAt >= 0)
+                                upperPixel = srcData[elementAt];
+                            else break;
+                            widthI++;
+                        }
+                        if (upperPixel != transparentValue) {
+                            int lowerScanlineStride = srcScanlineStride;
+                            int lowerPixel = srcData[imageVerticalOffset + lowerScanlineStride];
+                            widthI = 1;
+                            // if a width > 1 has been specified and near pixel is still
+                            // transparent check the next
+                            while (lowerPixel == transparentValue && widthI < width) {
+                                lowerScanlineStride += srcScanlineStride;
+                                int elementAt = imageVerticalOffset + lowerScanlineStride;
+                                if (elementAt < srcData.length && elementAt >= 0)
+                                    lowerPixel = srcData[imageVerticalOffset + lowerScanlineStride];
+                                else break;
+                                widthI++;
+                            }
+                            if (lowerPixel != transparentValue) {
                                 // This has been identified as a pixel of an horizontal transparent
                                 // stripe
                                 fillAlgorithm.fillPixel(
@@ -572,7 +703,8 @@ public class TransparencyFillOpImage extends AreaOpImage {
                                         srcDataArrays,
                                         dstDataArrays,
                                         imageDataVerticalOffset,
-                                        srcScanlineStride,
+                                        upperScanlineStride,
+                                        lowerScanlineStride,
                                         dstPixelOffset);
                                 copySource = false;
                             }
@@ -623,8 +755,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
         int srcScanlineDataOffset = srcBandOffsets[srcOffsetsForBands[0]];
         int dstScanlineOffset[] = new int[numBands];
 
-        short transparentVal = noData.shortValue();
-
+        short transparentValue = noData.shortValue();
         for (int i = 0; i < numBands; i++) {
             dstScanlineOffset[i] = dstBandOffsets[i];
         }
@@ -641,26 +772,76 @@ public class TransparencyFillOpImage extends AreaOpImage {
                 int imageDataVerticalOffset = imageDataOffset;
                 short centralPixel = srcData[imageVerticalOffset];
                 boolean copySource = true;
-                if (centralPixel == transparentVal) {
+                if (centralPixel == transparentValue) {
                     // Check if previous and next pixels are zero.
-                    short rightPixel = srcData[imageVerticalOffset + srcPixelStride];
+                    int leftPixelStride = srcPixelStride;
                     short leftPixel = srcData[imageVerticalOffset - srcPixelStride];
-                    if (rightPixel != transparentVal && leftPixel != transparentVal) {
+                    int widthI = 1;
+                    // if a width > 1 has been specified and near pixel is still
+                    // transparent check the next
+                    while (leftPixel == transparentValue && widthI < width) {
+                        leftPixelStride += srcPixelStride;
+                        int elementAt = imageVerticalOffset - leftPixelStride;
+                        if (elementAt < srcData.length && elementAt >= 0)
+                            leftPixel = srcData[elementAt];
+                        else break;
+                        widthI++;
+                    }
+                    int rightPixelStride = srcPixelStride;
+                    short rightPixel = srcData[imageVerticalOffset + rightPixelStride];
+                    widthI = 1;
+                    // if a width > 1 has been specified and near pixel is still
+                    // transparent check the next
+                    while (rightPixel == transparentValue && widthI < width) {
+                        rightPixelStride += srcPixelStride;
+                        int elementAt = imageVerticalOffset + rightPixelStride;
+                        if (elementAt < srcData.length && elementAt >= 0)
+                            rightPixel = srcData[elementAt];
+                        else break;
+                        widthI++;
+                    }
+
+                    if (rightPixel != transparentValue && leftPixel != transparentValue) {
                         // This has been identified as a pixel of a vertical transparent stripe
                         fillAlgorithm.fillPixel(
                                 numBands,
                                 srcDataArrays,
                                 dstDataArrays,
                                 imageDataVerticalOffset,
-                                srcPixelStride,
+                                leftPixelStride,
+                                rightPixelStride,
                                 dstPixelOffset);
                         copySource = false;
                     } else {
+                        int upperScanlineStride = srcScanlineStride;
                         // A transparent pixel with adjacent transparent pixels along x
-                        short upperPixel = srcData[imageVerticalOffset - srcScanlineStride];
-                        if (upperPixel != transparentVal) {
-                            short lowerPixel = srcData[imageVerticalOffset + srcScanlineStride];
-                            if (lowerPixel != transparentVal) {
+                        short upperPixel = srcData[imageVerticalOffset - upperScanlineStride];
+                        widthI = 1;
+                        // if a width > 1 has been specified and near pixel is still
+                        // transparent check the next
+                        while (upperPixel == transparentValue && widthI < width) {
+                            upperScanlineStride += srcScanlineStride;
+                            int elementAt = imageVerticalOffset - upperScanlineStride;
+                            if (elementAt < srcData.length && elementAt >= 0)
+                                upperPixel = srcData[elementAt];
+                            else break;
+                            widthI++;
+                        }
+                        if (upperPixel != transparentValue) {
+                            int lowerScanlineStride = srcScanlineStride;
+                            short lowerPixel = srcData[imageVerticalOffset + lowerScanlineStride];
+                            widthI = 1;
+                            // if a width > 1 has been specified and near pixel is still
+                            // transparent check the next
+                            while (lowerPixel == transparentValue && widthI < width) {
+                                lowerScanlineStride += srcScanlineStride;
+                                int elementAt = imageVerticalOffset + lowerScanlineStride;
+                                if (elementAt < srcData.length && elementAt >= 0)
+                                    lowerPixel = srcData[imageVerticalOffset + lowerScanlineStride];
+                                else break;
+                                widthI++;
+                            }
+                            if (lowerPixel != transparentValue) {
                                 // This has been identified as a pixel of an horizontal transparent
                                 // stripe
                                 fillAlgorithm.fillPixel(
@@ -668,7 +849,8 @@ public class TransparencyFillOpImage extends AreaOpImage {
                                         srcDataArrays,
                                         dstDataArrays,
                                         imageDataVerticalOffset,
-                                        srcScanlineStride,
+                                        upperScanlineStride,
+                                        lowerScanlineStride,
                                         dstPixelOffset);
                                 copySource = false;
                             }
@@ -738,8 +920,33 @@ public class TransparencyFillOpImage extends AreaOpImage {
                 boolean copySource = true;
                 if (centralPixel == transparentValue) {
                     // Check if previous and next pixels are zero.
-                    short rightPixel = srcData[imageVerticalOffset + srcPixelStride];
+                    int leftPixelStride = srcPixelStride;
                     short leftPixel = srcData[imageVerticalOffset - srcPixelStride];
+                    int widthI = 1;
+                    // if a width > 1 has been specified and near pixel is still
+                    // transparent check the next
+                    while (leftPixel == transparentValue && widthI < width) {
+                        leftPixelStride += srcPixelStride;
+                        int elementAt = imageVerticalOffset - leftPixelStride;
+                        if (elementAt < srcData.length && elementAt >= 0)
+                            leftPixel = srcData[elementAt];
+                        else break;
+                        widthI++;
+                    }
+                    int rightPixelStride = srcPixelStride;
+                    short rightPixel = srcData[imageVerticalOffset + rightPixelStride];
+                    widthI = 1;
+                    // if a width > 1 has been specified and near pixel is still
+                    // transparent check the next
+                    while (rightPixel == transparentValue && widthI < width) {
+                        rightPixelStride += srcPixelStride;
+                        int elementAt = imageVerticalOffset + rightPixelStride;
+                        if (elementAt < srcData.length && elementAt >= 0)
+                            rightPixel = srcData[elementAt];
+                        else break;
+                        widthI++;
+                    }
+
                     if (rightPixel != transparentValue && leftPixel != transparentValue) {
                         // This has been identified as a pixel of a vertical transparent stripe
                         fillAlgorithm.fillPixel(
@@ -747,14 +954,39 @@ public class TransparencyFillOpImage extends AreaOpImage {
                                 srcDataArrays,
                                 dstDataArrays,
                                 imageDataVerticalOffset,
-                                srcPixelStride,
+                                leftPixelStride,
+                                rightPixelStride,
                                 dstPixelOffset);
                         copySource = false;
                     } else {
+                        int upperScanlineStride = srcScanlineStride;
                         // A transparent pixel with adjacent transparent pixels along x
-                        short upperPixel = srcData[imageVerticalOffset - srcScanlineStride];
+                        short upperPixel = srcData[imageVerticalOffset - upperScanlineStride];
+                        widthI = 1;
+                        // if a width > 1 has been specified and near pixel is still
+                        // transparent check the next
+                        while (upperPixel == transparentValue && widthI < width) {
+                            upperScanlineStride += srcScanlineStride;
+                            int elementAt = imageVerticalOffset - upperScanlineStride;
+                            if (elementAt < srcData.length && elementAt >= 0)
+                                upperPixel = srcData[elementAt];
+                            else break;
+                            widthI++;
+                        }
                         if (upperPixel != transparentValue) {
-                            short lowerPixel = srcData[imageVerticalOffset + srcScanlineStride];
+                            int lowerScanlineStride = srcScanlineStride;
+                            short lowerPixel = srcData[imageVerticalOffset + lowerScanlineStride];
+                            widthI = 1;
+                            // if a width > 1 has been specified and near pixel is still
+                            // transparent check the next
+                            while (lowerPixel == transparentValue && widthI < width) {
+                                lowerScanlineStride += srcScanlineStride;
+                                int elementAt = imageVerticalOffset + lowerScanlineStride;
+                                if (elementAt < srcData.length && elementAt >= 0)
+                                    lowerPixel = srcData[imageVerticalOffset + lowerScanlineStride];
+                                else break;
+                                widthI++;
+                            }
                             if (lowerPixel != transparentValue) {
                                 // This has been identified as a pixel of an horizontal transparent
                                 // stripe
@@ -763,7 +995,8 @@ public class TransparencyFillOpImage extends AreaOpImage {
                                         srcDataArrays,
                                         dstDataArrays,
                                         imageDataVerticalOffset,
-                                        srcScanlineStride,
+                                        upperScanlineStride,
+                                        lowerScanlineStride,
                                         dstPixelOffset);
                                 copySource = false;
                             }
@@ -833,8 +1066,33 @@ public class TransparencyFillOpImage extends AreaOpImage {
                 boolean copySource = true;
                 if (centralPixel == transparentValue) {
                     // Check if previous and next pixels are zero.
-                    float rightPixel = srcData[imageVerticalOffset + srcPixelStride];
+                    int leftPixelStride = srcPixelStride;
                     float leftPixel = srcData[imageVerticalOffset - srcPixelStride];
+                    int widthI = 1;
+                    // if a width > 1 has been specified and near pixel is still
+                    // transparent check the next
+                    while (leftPixel == transparentValue && widthI < width) {
+                        leftPixelStride += srcPixelStride;
+                        int elementAt = imageVerticalOffset - leftPixelStride;
+                        if (elementAt < srcData.length && elementAt >= 0)
+                            leftPixel = srcData[elementAt];
+                        else break;
+                        widthI++;
+                    }
+                    int rightPixelStride = srcPixelStride;
+                    float rightPixel = srcData[imageVerticalOffset + rightPixelStride];
+                    widthI = 1;
+                    // if a width > 1 has been specified and near pixel is still
+                    // transparent check the next
+                    while (rightPixel == transparentValue && widthI < width) {
+                        rightPixelStride += srcPixelStride;
+                        int elementAt = imageVerticalOffset + rightPixelStride;
+                        if (elementAt < srcData.length && elementAt >= 0)
+                            rightPixel = srcData[elementAt];
+                        else break;
+                        widthI++;
+                    }
+
                     if (rightPixel != transparentValue && leftPixel != transparentValue) {
                         // This has been identified as a pixel of a vertical transparent stripe
                         fillAlgorithm.fillPixel(
@@ -842,14 +1100,39 @@ public class TransparencyFillOpImage extends AreaOpImage {
                                 srcDataArrays,
                                 dstDataArrays,
                                 imageDataVerticalOffset,
-                                srcPixelStride,
+                                leftPixelStride,
+                                rightPixelStride,
                                 dstPixelOffset);
                         copySource = false;
                     } else {
+                        int upperScanlineStride = srcScanlineStride;
                         // A transparent pixel with adjacent transparent pixels along x
-                        float upperPixel = srcData[imageVerticalOffset - srcScanlineStride];
+                        float upperPixel = srcData[imageVerticalOffset - upperScanlineStride];
+                        widthI = 1;
+                        // if a width > 1 has been specified and near pixel is still
+                        // transparent check the next
+                        while (upperPixel == transparentValue && widthI < width) {
+                            upperScanlineStride += srcScanlineStride;
+                            int elementAt = imageVerticalOffset - upperScanlineStride;
+                            if (elementAt < srcData.length && elementAt >= 0)
+                                upperPixel = srcData[elementAt];
+                            else break;
+                            widthI++;
+                        }
                         if (upperPixel != transparentValue) {
-                            float lowerPixel = srcData[imageVerticalOffset + srcScanlineStride];
+                            int lowerScanlineStride = srcScanlineStride;
+                            float lowerPixel = srcData[imageVerticalOffset + lowerScanlineStride];
+                            widthI = 1;
+                            // if a width > 1 has been specified and near pixel is still
+                            // transparent check the next
+                            while (lowerPixel == transparentValue && widthI < width) {
+                                lowerScanlineStride += srcScanlineStride;
+                                int elementAt = imageVerticalOffset + lowerScanlineStride;
+                                if (elementAt < srcData.length && elementAt >= 0)
+                                    lowerPixel = srcData[imageVerticalOffset + lowerScanlineStride];
+                                else break;
+                                widthI++;
+                            }
                             if (lowerPixel != transparentValue) {
                                 // This has been identified as a pixel of an horizontal transparent
                                 // stripe
@@ -858,7 +1141,8 @@ public class TransparencyFillOpImage extends AreaOpImage {
                                         srcDataArrays,
                                         dstDataArrays,
                                         imageDataVerticalOffset,
-                                        srcScanlineStride,
+                                        upperScanlineStride,
+                                        lowerScanlineStride,
                                         dstPixelOffset);
                                 copySource = false;
                             }
@@ -928,8 +1212,33 @@ public class TransparencyFillOpImage extends AreaOpImage {
                 boolean copySource = true;
                 if (centralPixel == transparentValue) {
                     // Check if previous and next pixels are zero.
-                    double rightPixel = srcData[imageVerticalOffset + srcPixelStride];
+                    int leftPixelStride = srcPixelStride;
                     double leftPixel = srcData[imageVerticalOffset - srcPixelStride];
+                    int widthI = 1;
+                    // if a width > 1 has been specified and near pixel is still
+                    // transparent check the next
+                    while (leftPixel == transparentValue && widthI < width) {
+                        leftPixelStride += srcPixelStride;
+                        int elementAt = imageVerticalOffset - leftPixelStride;
+                        if (elementAt < srcData.length && elementAt >= 0)
+                            leftPixel = srcData[elementAt];
+                        else break;
+                        widthI++;
+                    }
+                    int rightPixelStride = srcPixelStride;
+                    double rightPixel = srcData[imageVerticalOffset + rightPixelStride];
+                    widthI = 1;
+                    // if a width > 1 has been specified and near pixel is still
+                    // transparent check the next
+                    while (rightPixel == transparentValue && widthI < width) {
+                        rightPixelStride += srcPixelStride;
+                        int elementAt = imageVerticalOffset + rightPixelStride;
+                        if (elementAt < srcData.length && elementAt >= 0)
+                            rightPixel = srcData[elementAt];
+                        else break;
+                        widthI++;
+                    }
+
                     if (rightPixel != transparentValue && leftPixel != transparentValue) {
                         // This has been identified as a pixel of a vertical transparent stripe
                         fillAlgorithm.fillPixel(
@@ -937,14 +1246,39 @@ public class TransparencyFillOpImage extends AreaOpImage {
                                 srcDataArrays,
                                 dstDataArrays,
                                 imageDataVerticalOffset,
-                                srcPixelStride,
+                                leftPixelStride,
+                                rightPixelStride,
                                 dstPixelOffset);
                         copySource = false;
                     } else {
+                        int upperScanlineStride = srcScanlineStride;
                         // A transparent pixel with adjacent transparent pixels along x
-                        double upperPixel = srcData[imageVerticalOffset - srcScanlineStride];
+                        double upperPixel = srcData[imageVerticalOffset - upperScanlineStride];
+                        widthI = 1;
+                        // if a width > 1 has been specified and near pixel is still
+                        // transparent check the next
+                        while (upperPixel == transparentValue && widthI < width) {
+                            upperScanlineStride += srcScanlineStride;
+                            int elementAt = imageVerticalOffset - upperScanlineStride;
+                            if (elementAt < srcData.length && elementAt >= 0)
+                                upperPixel = srcData[elementAt];
+                            else break;
+                            widthI++;
+                        }
                         if (upperPixel != transparentValue) {
-                            double lowerPixel = srcData[imageVerticalOffset + srcScanlineStride];
+                            int lowerScanlineStride = srcScanlineStride;
+                            double lowerPixel = srcData[imageVerticalOffset + lowerScanlineStride];
+                            widthI = 1;
+                            // if a width > 1 has been specified and near pixel is still
+                            // transparent check the next
+                            while (lowerPixel == transparentValue && widthI < width) {
+                                lowerScanlineStride += srcScanlineStride;
+                                int elementAt = imageVerticalOffset + lowerScanlineStride;
+                                if (elementAt < srcData.length && elementAt >= 0)
+                                    lowerPixel = srcData[imageVerticalOffset + lowerScanlineStride];
+                                else break;
+                                widthI++;
+                            }
                             if (lowerPixel != transparentValue) {
                                 // This has been identified as a pixel of an horizontal transparent
                                 // stripe
@@ -953,7 +1287,8 @@ public class TransparencyFillOpImage extends AreaOpImage {
                                         srcDataArrays,
                                         dstDataArrays,
                                         imageDataVerticalOffset,
-                                        srcScanlineStride,
+                                        upperScanlineStride,
+                                        lowerScanlineStride,
                                         dstPixelOffset);
                                 copySource = false;
                             }

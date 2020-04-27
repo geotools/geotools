@@ -69,7 +69,7 @@ public class TransparencyTest {
             assertEquals(255, maxs[0], 1E-6);
 
             TransparencyFillProcess process = new TransparencyFillProcess();
-            coverage = process.execute(coverage, null);
+            coverage = process.execute(coverage, null, null);
 
             worker =
                     new ImageWorker(coverage.getRenderedImage())
@@ -134,18 +134,83 @@ public class TransparencyTest {
             }
 
             TransparencyFillProcess process = new TransparencyFillProcess();
-            coverage = process.execute(coverage, null);
+            coverage = process.execute(coverage, null, null);
 
             worker =
                     new ImageWorker(coverage.getRenderedImage())
                             .crop(0, 0, 39, 19)
                             .retainLastBand();
 
+            // Make sure the top left area is still transparent
             assertEquals(noData, worker.getMean()[0], 1E-6);
 
+            // check the stripe is now filled
             raster = coverage.getRenderedImage().getData();
             for (int i = 0; i < 26; i++) {
                 assertEquals(raster.getPixel(i, 77, new int[1])[0], 255, 1E-6);
+            }
+
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.dispose();
+                } catch (Throwable t) {
+                    // Ignore exceptions on close
+                }
+            }
+        }
+    }
+
+    @Test
+    public void testTransparencyOpWidth() throws IOException {
+
+        // The test image has a wide transparent area at the top left,
+        // plus some small white stripes in the region where y coordinates
+        // are > 50.
+        // Let's check that the wide area survives to the operation
+        // and only the isolated stripes are fileld
+        File file = TestData.file(this, "transparencyWidth.tif");
+        GeoTiffReader reader = null;
+        try {
+
+            reader = new GeoTiffReader(file);
+
+            GridCoverage2D coverage = null;
+            coverage = reader.read(null);
+            RenderedImage ri = coverage.getRenderedImage();
+            ImageWorker worker = new ImageWorker(ri);
+            double noData = (double) worker.getNoData().getMin();
+            // Ensure the top left area is fully transparent
+            worker = worker.crop(0, 0, 39, 19).retainLastBand();
+
+            Raster raster = ri.getData();
+            // this stripes has two line to be filled
+            for (int y = 58; y < 62; y++) {
+                assertEquals(raster.getPixel(65, y, new int[1])[0], noData, 1E-6);
+                assertEquals(raster.getPixel(66, y, new int[1])[0], noData, 1E-6);
+                assertEquals(raster.getPixel(64, y, new int[1])[0], 255, 1E-6);
+                assertEquals(raster.getPixel(67, y, new int[1])[0], 255, 1E-6);
+            }
+
+            TransparencyFillProcess process = new TransparencyFillProcess();
+
+            // set a width of 2
+            coverage = process.execute(coverage, 2, null);
+
+            worker =
+                    new ImageWorker(coverage.getRenderedImage())
+                            .crop(0, 0, 39, 19)
+                            .retainLastBand();
+
+            // Make sure the top left area is still transparent
+            assertEquals(noData, worker.getMean()[0], 1E-6);
+
+            raster = coverage.getRenderedImage().getData();
+
+            // check that both lines have been filled
+            for (int y = 58; y < 62; y++) {
+                assertEquals(raster.getPixel(65, y, new int[1])[0], 255, 1E-6);
+                assertEquals(raster.getPixel(66, y, new int[1])[0], 255, 1E-6);
             }
 
         } finally {

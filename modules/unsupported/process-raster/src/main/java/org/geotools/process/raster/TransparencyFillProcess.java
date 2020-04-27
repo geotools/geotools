@@ -48,6 +48,13 @@ public class TransparencyFillProcess implements RasterProcess {
     public GridCoverage2D execute(
             @DescribeParameter(name = "data", description = "Input coverage")
                     GridCoverage2D coverage,
+            @DescribeParameter(
+                        name = "width",
+                        description = "Width inside which searching for nearest pixel value",
+                        min = 0,
+                        max = 1
+                    )
+                    Integer width,
             //            @DescribeParameter(name = "type", description = "Type of filling
             // algorithm", min = 0) FillType type,
             ProgressListener listener)
@@ -93,6 +100,7 @@ public class TransparencyFillProcess implements RasterProcess {
                 PROCESSOR.getOperation("TransparencyFill").getParameters();
         param.parameter("source").setValue(coverage);
         param.parameter("noData").setValue(noData);
+        param.parameter("width").setValue(width);
         //        if (type != null && type instanceof FillType) {
         //            param.parameter("type").setValue(type);
         //        }

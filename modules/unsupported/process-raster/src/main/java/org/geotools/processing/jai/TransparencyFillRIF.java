@@ -51,7 +51,11 @@ public class TransparencyFillRIF implements RenderedImageFactory {
         if (param0 != null && param0 instanceof FillType) {
             type = (FillType) param0;
         }
+        Object param1 = paramBlock.getObjectParameter(1);
+        Number noData = 0;
+        if (param1 != null && param1 instanceof Number) noData = (Number) param1;
+
         RenderedImage source = paramBlock.getRenderedSource(0);
-        return new TransparencyFillOpImage(source, extender, type, renderHints, layout);
+        return new TransparencyFillOpImage(source, extender, type, renderHints, layout, noData);
     }
 }

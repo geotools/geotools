@@ -57,13 +57,13 @@ public class TransparencyFillDescriptor extends OperationDescriptorImpl {
     };
 
     /** The parameter names for the TransparencyFill operation. */
-    private static final String[] paramNames = {"type"};
+    private static final String[] paramNames = {"type", "noData"};
 
     /** The parameter class types for the TransparencyFill operation. */
-    private static final Class[] paramClasses = {FillType.class};
+    private static final Class[] paramClasses = {FillType.class, Number.class};
 
     /** The parameter default values for the TransparencyFill operation. */
-    private static final Object[] paramDefaults = {FILL_AVERAGE};
+    private static final Object[] paramDefaults = {FILL_AVERAGE, 0};
 
     /** Constructor. */
     public TransparencyFillDescriptor() {
@@ -82,12 +82,14 @@ public class TransparencyFillDescriptor extends OperationDescriptorImpl {
         return pg;
     }
 
-    public static RenderedOp create(RenderedImage source0, FillType type, RenderingHints hints) {
+    public static RenderedOp create(
+            RenderedImage source0, FillType type, RenderingHints hints, Number noData) {
         ParameterBlockJAI pb =
                 new ParameterBlockJAI("TransparencyFill", RenderedRegistryMode.MODE_NAME);
 
         pb.setSource("source0", source0);
         pb.setParameter("type", type);
+        pb.setParameter("noData", noData);
         return JAI.create("TransparencyFill", pb, hints);
     }
 }

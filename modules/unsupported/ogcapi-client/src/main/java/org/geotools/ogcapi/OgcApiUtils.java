@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2020, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.ogcapi;
 
 import org.geotools.referencing.CRS;
@@ -5,7 +21,9 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-public class OGCUtilities {
+public final class OgcApiUtils {
+    private OgcApiUtils() {}
+    // TODO - upgrade CRS.decode to handle URIs
     static CoordinateReferenceSystem parseCRS(String supportedCRS) {
         for (char seperator : new char[] {'/', ':'}) { // handle both
             // http://www.opengis.net/def/crs/EPSG/0/27700
@@ -18,9 +36,7 @@ public class OGCUtilities {
             String code = supportedCRS.substring(index + 1);
             String remainder = supportedCRS.substring(0, index - 1);
             index = remainder.lastIndexOf(seperator);
-            String version = remainder.substring(index + 1); // we only have one EPSG
-            // db so let's pretend we
-            // didn't seen this!
+            // TODO handle version of DB?
             remainder = remainder.substring(0, index);
             index = remainder.lastIndexOf(seperator);
             String auth = remainder.substring(index + 1);

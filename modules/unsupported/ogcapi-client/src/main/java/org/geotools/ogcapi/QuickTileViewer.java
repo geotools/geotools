@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2020, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.ogcapi;
 
 import com.bedatadriven.jackson.datatype.jts.JtsModule;
@@ -42,9 +58,7 @@ public class QuickTileViewer {
 
     public static final String APPLICATION_JSON = "application/json";
     private static JsonFactory factory = new JsonFactory();
-    private URL serverURL;
     private URL featureURL;
-    private URL tileURL;
     private CoordinateReferenceSystem crs;
     private CollectionsType collections;
     private MapContent map;
@@ -76,17 +90,16 @@ public class QuickTileViewer {
     }
 
     private void setBaseURL(String baseURL) throws Exception {
-        serverURL = new URL(baseURL);
+        new URL(baseURL);
         featureURL = new URL(baseURL + "features?f=json");
-        tileURL = new URL(baseURL + "tiles");
+        new URL(baseURL + "tiles");
         FeaturesType contents = fetchContents();
         // System.out.println(contents);
         // fetch the TileMatrix sets
         ArrayList<TileMatrixSet> matrixSets = fetchMatrixSets(contents);
-        ArrayList<TileMatrix> tm = null;
         for (TileMatrixSet tms : matrixSets) {
             if (CRS.equalsIgnoreMetadata(tms.getCoordinateReferenceSystem(), crs)) {
-                tm = fetchTileMatrixSet(crs, tms);
+                fetchTileMatrixSet(crs, tms);
                 break;
             }
         }
@@ -111,78 +124,80 @@ public class QuickTileViewer {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JtsModule());
 
-        JsonParser parser = factory.createParser(url);
-        JsonToken token = parser.nextToken(); // start 1st object
-        CollectionsType ret = new CollectionsType();
-        while (!parser.isClosed()) {
-            // We can now see title, description and links array
-            token = parser.nextToken();
-            if (token == null) {
-                break;
-            }
-
-            if (JsonToken.FIELD_NAME.equals(token)
-                    && "collections".equalsIgnoreCase(parser.currentName())) {
+        try (JsonParser parser = factory.createParser(url)) {
+            JsonToken token = parser.nextToken(); // start 1st object
+            CollectionsType ret = new CollectionsType();
+            while (!parser.isClosed()) {
+                // We can now see title, description and links array
                 token = parser.nextToken();
-                if (!JsonToken.START_ARRAY.equals(token)) {
-                    throw new UnsupportedOperationException(
-                            "Was expecting an array of collections");
+                if (token == null) {
+                    break;
                 }
-                while (parser.nextToken() == JsonToken.START_OBJECT) { // collections
-                    // array
 
-                    ObjectNode node = mapper.readTree(parser);
-                    // Actually, we want to read this items child link that is labelled
-                    // self
-                    if (node.has("links")) {
-                        JsonNode links = node.get("links");
-                        for (JsonNode link : links) {
-                            if ("self".equalsIgnoreCase(link.get("rel").asText())
-                                    && APPLICATION_JSON.equalsIgnoreCase(
-                                            link.get("type").asText())) {
-                                CollectionType realCollection =
-                                        buildRealCollection(new URL(link.get("href").asText()));
-                                ret.collections.put(realCollection.getIdentifier(), realCollection);
+                if (JsonToken.FIELD_NAME.equals(token)
+                        && "collections".equalsIgnoreCase(parser.currentName())) {
+                    token = parser.nextToken();
+                    if (!JsonToken.START_ARRAY.equals(token)) {
+                        throw new UnsupportedOperationException(
+                                "Was expecting an array of collections");
+                    }
+                    while (parser.nextToken() == JsonToken.START_OBJECT) { // collections
+                        // array
+
+                        ObjectNode node = mapper.readTree(parser);
+                        // Actually, we want to read this items child link that is labelled
+                        // self
+                        if (node.has("links")) {
+                            JsonNode links = node.get("links");
+                            for (JsonNode link : links) {
+                                if ("self".equalsIgnoreCase(link.get("rel").asText())
+                                        && APPLICATION_JSON.equalsIgnoreCase(
+                                                link.get("type").asText())) {
+                                    CollectionType realCollection =
+                                            buildRealCollection(new URL(link.get("href").asText()));
+                                    ret.collections.put(
+                                            realCollection.getIdentifier(), realCollection);
+                                }
                             }
                         }
                     }
                 }
-            }
-            if (JsonToken.FIELD_NAME.equals(token)
-                    && "crs".equalsIgnoreCase(parser.currentName())) {
-                token = parser.nextToken();
-                if (!JsonToken.START_ARRAY.equals(token)) {
-                    throw new UnsupportedOperationException(
-                            "Was expecting an array of CRS Strings");
-                }
-                while (parser.nextToken() == JsonToken.START_OBJECT) {
+                if (JsonToken.FIELD_NAME.equals(token)
+                        && "crs".equalsIgnoreCase(parser.currentName())) {
+                    token = parser.nextToken();
+                    if (!JsonToken.START_ARRAY.equals(token)) {
+                        throw new UnsupportedOperationException(
+                                "Was expecting an array of CRS Strings");
+                    }
+                    while (parser.nextToken() == JsonToken.START_OBJECT) {
 
-                    ObjectNode node = mapper.readTree(parser);
-                    for (JsonNode c : node) {
-                        ret.crs.add(OGCUtilities.parseCRS(c.asText()));
+                        ObjectNode node = mapper.readTree(parser);
+                        for (JsonNode c : node) {
+                            ret.crs.add(OgcApiUtils.parseCRS(c.asText()));
+                        }
                     }
                 }
             }
+            return ret;
         }
-
-        return ret;
     }
 
     private CollectionType buildRealCollection(URL url) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JtsModule());
 
-        JsonParser parser = factory.createParser(url);
-        JsonToken token = parser.nextToken(); // start 1st object
-        CollectionsType ret = new CollectionsType();
-        while (!parser.isClosed()) {
-            // We can now see title, description and links array
-            token = parser.nextToken();
-            if (token == null) {
-                break;
+        try (JsonParser parser = factory.createParser(url)) {
+            JsonToken token = parser.nextToken(); // start 1st object
+
+            while (!parser.isClosed()) {
+                // We can now see title, description and links array
+                token = parser.nextToken();
+                if (token == null) {
+                    break;
+                }
+                ObjectNode node = mapper.readTree(parser);
+                return buildCollection(node);
             }
-            ObjectNode node = mapper.readTree(parser);
-            return buildCollection(node);
         }
         return null;
     }
@@ -205,7 +220,7 @@ public class QuickTileViewer {
         }
         if (node.has("extent")) {
             JsonNode spatial = node.get("extent").get("spatial");
-            CoordinateReferenceSystem crs = OGCUtilities.parseCRS(spatial.get("crs").asText());
+            CoordinateReferenceSystem crs = OgcApiUtils.parseCRS(spatial.get("crs").asText());
 
             double[] coords = new double[4];
             int i = 0;
@@ -221,7 +236,7 @@ public class QuickTileViewer {
         if (node.has("crs")) {
             JsonNode crs = node.get("crs");
             for (JsonNode c : crs) {
-                ret.crs.add(OGCUtilities.parseCRS(c.asText()));
+                ret.crs.add(OgcApiUtils.parseCRS(c.asText()));
             }
         }
         if (node.has("styles")) {
@@ -261,31 +276,32 @@ public class QuickTileViewer {
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JtsModule());
-        JsonParser parser = factory.createParser(url);
-        JsonToken token = parser.nextToken(); // start 1st object
-        ArrayList<TileMatrix> ret = new ArrayList<>();
-        while (!parser.isClosed()) {
-            // We can now see title, identifier, tileMatrix array and links array
-            token = parser.nextToken();
-            if (token == null) {
-                break;
-            }
-
-            if (JsonToken.FIELD_NAME.equals(token)
-                    && "tileMatrix".equalsIgnoreCase(parser.currentName())) {
+        try (JsonParser parser = factory.createParser(url)) {
+            JsonToken token = parser.nextToken(); // start 1st object
+            ArrayList<TileMatrix> ret = new ArrayList<>();
+            while (!parser.isClosed()) {
+                // We can now see title, identifier, tileMatrix array and links array
                 token = parser.nextToken();
-                if (!JsonToken.START_ARRAY.equals(token)) {
-                    throw new UnsupportedOperationException("Was expecting an array of links");
+                if (token == null) {
+                    break;
                 }
-                while (parser.nextToken() == JsonToken.START_OBJECT) {
 
-                    ObjectNode node = mapper.readTree(parser);
+                if (JsonToken.FIELD_NAME.equals(token)
+                        && "tileMatrix".equalsIgnoreCase(parser.currentName())) {
+                    token = parser.nextToken();
+                    if (!JsonToken.START_ARRAY.equals(token)) {
+                        throw new UnsupportedOperationException("Was expecting an array of links");
+                    }
+                    while (parser.nextToken() == JsonToken.START_OBJECT) {
 
-                    ret.add(buildMatrix(node));
+                        ObjectNode node = mapper.readTree(parser);
+
+                        ret.add(buildMatrix(node));
+                    }
                 }
             }
+            return ret;
         }
-        return ret;
     }
 
     private TileMatrix buildMatrix(ObjectNode node) {
@@ -345,44 +361,45 @@ public class QuickTileViewer {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JtsModule());
 
-        JsonParser parser = factory.createParser(url);
-        JsonToken token = parser.nextToken(); // start 1st object
-        ArrayList<TileMatrixSet> ret = new ArrayList<>();
-        while (!parser.isClosed()) {
-            // We can now see title, description and links array
-            token = parser.nextToken();
-            if (token == null) {
-                break;
-            }
-
-            if (JsonToken.FIELD_NAME.equals(token)
-                    && "links".equalsIgnoreCase(parser.currentName())) {
+        try (JsonParser parser = factory.createParser(url)) {
+            JsonToken token = parser.nextToken(); // start 1st object
+            ArrayList<TileMatrixSet> ret = new ArrayList<>();
+            while (!parser.isClosed()) {
+                // We can now see title, description and links array
                 token = parser.nextToken();
-                if (!JsonToken.START_ARRAY.equals(token)) {
-                    throw new UnsupportedOperationException("Was expecting an array of links");
+                if (token == null) {
+                    break;
                 }
-                while (parser.nextToken() == JsonToken.START_OBJECT) {
 
-                    ObjectNode node = mapper.readTree(parser);
+                if (JsonToken.FIELD_NAME.equals(token)
+                        && "links".equalsIgnoreCase(parser.currentName())) {
+                    token = parser.nextToken();
+                    if (!JsonToken.START_ARRAY.equals(token)) {
+                        throw new UnsupportedOperationException("Was expecting an array of links");
+                    }
+                    while (parser.nextToken() == JsonToken.START_OBJECT) {
 
-                    buildLink(node);
+                        ObjectNode node = mapper.readTree(parser);
+
+                        buildLink(node);
+                    }
+                }
+                if (JsonToken.FIELD_NAME.equals(token)
+                        && "tileMatrixSets".equalsIgnoreCase(parser.currentName())) {
+                    token = parser.nextToken();
+                    if (!JsonToken.START_ARRAY.equals(token)) {
+                        throw new UnsupportedOperationException("Was expecting an array of links");
+                    }
+                    while (parser.nextToken() == JsonToken.START_OBJECT) {
+
+                        ObjectNode node = mapper.readTree(parser);
+
+                        ret.add(buildMatrixSet(node));
+                    }
                 }
             }
-            if (JsonToken.FIELD_NAME.equals(token)
-                    && "tileMatrixSets".equalsIgnoreCase(parser.currentName())) {
-                token = parser.nextToken();
-                if (!JsonToken.START_ARRAY.equals(token)) {
-                    throw new UnsupportedOperationException("Was expecting an array of links");
-                }
-                while (parser.nextToken() == JsonToken.START_OBJECT) {
-
-                    ObjectNode node = mapper.readTree(parser);
-
-                    ret.add(buildMatrixSet(node));
-                }
-            }
+            return ret;
         }
-        return ret;
     }
 
     private FeaturesType fetchContents() throws JsonParseException, IOException {
@@ -390,40 +407,41 @@ public class QuickTileViewer {
         JsonFactory factory = new JsonFactory();
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JtsModule());
-        JsonParser parser = factory.createParser(featureURL);
-        JsonToken token = parser.nextToken(); // start 1st object
+        try (JsonParser parser = factory.createParser(featureURL)) {
+            JsonToken token = parser.nextToken(); // start 1st object
 
-        while (!parser.isClosed()) {
-            // We can now see title, description and links array
-            token = parser.nextToken();
-            if (token == null) {
-                break;
-            }
-            if (JsonToken.FIELD_NAME.equals(token)
-                    && "title".equalsIgnoreCase(parser.currentName())) {
+            while (!parser.isClosed()) {
+                // We can now see title, description and links array
                 token = parser.nextToken();
-                ret.setTitle(parser.getValueAsString());
-            }
-            if (JsonToken.FIELD_NAME.equals(token)
-                    && "description".equalsIgnoreCase(parser.currentName())) {
-                token = parser.nextToken();
-                ret.setDescription(parser.getValueAsString());
-            }
-            if (JsonToken.FIELD_NAME.equals(token)
-                    && "links".equalsIgnoreCase(parser.currentName())) {
-                token = parser.nextToken();
-                if (!JsonToken.START_ARRAY.equals(token)) {
-                    throw new UnsupportedOperationException("Was expecting an array of links");
+                if (token == null) {
+                    break;
                 }
-                while (parser.nextToken() == JsonToken.START_OBJECT) {
+                if (JsonToken.FIELD_NAME.equals(token)
+                        && "title".equalsIgnoreCase(parser.currentName())) {
+                    token = parser.nextToken();
+                    ret.setTitle(parser.getValueAsString());
+                }
+                if (JsonToken.FIELD_NAME.equals(token)
+                        && "description".equalsIgnoreCase(parser.currentName())) {
+                    token = parser.nextToken();
+                    ret.setDescription(parser.getValueAsString());
+                }
+                if (JsonToken.FIELD_NAME.equals(token)
+                        && "links".equalsIgnoreCase(parser.currentName())) {
+                    token = parser.nextToken();
+                    if (!JsonToken.START_ARRAY.equals(token)) {
+                        throw new UnsupportedOperationException("Was expecting an array of links");
+                    }
+                    while (parser.nextToken() == JsonToken.START_OBJECT) {
 
-                    ObjectNode node = mapper.readTree(parser);
+                        ObjectNode node = mapper.readTree(parser);
 
-                    ret.links.add(buildLink(node));
+                        ret.links.add(buildLink(node));
+                    }
                 }
             }
+            return ret;
         }
-        return ret;
     }
 
     private TileMatrixSet buildMatrixSet(ObjectNode node) {

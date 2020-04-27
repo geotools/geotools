@@ -24,7 +24,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 public final class OgcApiUtils {
     private OgcApiUtils() {}
     // TODO - upgrade CRS.decode to handle URIs
-    static CoordinateReferenceSystem parseCRS(String supportedCRS) {
+    static public CoordinateReferenceSystem parseCRS(String supportedCRS) {
         for (char seperator : new char[] {'/', ':'}) { // handle both
             // http://www.opengis.net/def/crs/EPSG/0/27700
             // &

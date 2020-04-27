@@ -17,6 +17,8 @@
 
 package org.geotools.ogcapi;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 public class Link {
     String title;
     String href;
@@ -54,7 +56,19 @@ public class Link {
     public void setType(String type) {
         this.type = type;
     }
+    public static Link buildLink(ObjectNode node) {
+        Link link = new Link();
+        link.href = node.get("href").asText();
+        link.type = node.get("type").asText();
+        if (node.has("title")) {
+            link.title = node.get("title").asText();
+        }
+        if (node.has("rel")) {
+            link.rel = node.get("rel").asText();
+        }
 
+        return link;
+    }
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

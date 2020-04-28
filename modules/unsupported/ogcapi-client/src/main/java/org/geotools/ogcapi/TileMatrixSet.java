@@ -17,10 +17,6 @@
 
 package org.geotools.ogcapi;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-
 import com.bedatadriven.jackson.datatype.jts.JtsModule;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -29,6 +25,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
 
 public class TileMatrixSet extends org.geotools.ows.wmts.model.TileMatrixSet {
     static JsonFactory factory = new JsonFactory();
@@ -77,7 +76,6 @@ public class TileMatrixSet extends org.geotools.ows.wmts.model.TileMatrixSet {
                     break;
                 }
 
-                
                 if (JsonToken.FIELD_NAME.equals(token)
                         && "tileMatrixSets".equalsIgnoreCase(parser.currentName())) {
                     token = parser.nextToken();
@@ -95,7 +93,8 @@ public class TileMatrixSet extends org.geotools.ows.wmts.model.TileMatrixSet {
             return ret;
         }
     }
-     static TileMatrixSet buildMatrixSet(ObjectNode node) {
+
+    static TileMatrixSet buildMatrixSet(ObjectNode node) {
         TileMatrixSet tileMatrix = new TileMatrixSet();
         // System.out.println(node);
         tileMatrix.setIdentifier(node.get("identifier").asText());
@@ -113,6 +112,7 @@ public class TileMatrixSet extends org.geotools.ows.wmts.model.TileMatrixSet {
         }
         return tileMatrix;
     }
+
     @Override
     public String toString() {
 

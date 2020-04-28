@@ -16,16 +16,6 @@
  */
 package org.geotools.ogcapi;
 
-
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
 import com.bedatadriven.jackson.datatype.jts.JtsModule;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
@@ -34,6 +24,12 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class TileMatrix extends org.geotools.ows.wmts.model.TileMatrix {
     static JsonFactory factory = new JsonFactory();
@@ -58,6 +54,7 @@ public class TileMatrix extends org.geotools.ows.wmts.model.TileMatrix {
     public String getSupportedCRS() {
         return supportedCRS;
     }
+
     public static ArrayList<TileMatrix> buildTileMatrixList(URL url)
             throws JsonProcessingException, IOException {
 
@@ -90,6 +87,7 @@ public class TileMatrix extends org.geotools.ows.wmts.model.TileMatrix {
             return ret;
         }
     }
+
     private static TileMatrix buildMatrix(ObjectNode node) {
         TileMatrix tileMatrix = new TileMatrix();
 
@@ -121,6 +119,7 @@ public class TileMatrix extends org.geotools.ows.wmts.model.TileMatrix {
         }
         return tileMatrix;
     }
+
     @Override
     public CoordinateReferenceSystem getCrs() {
         return crs;

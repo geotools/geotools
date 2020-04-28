@@ -56,6 +56,7 @@ public class Link {
     public void setType(String type) {
         this.type = type;
     }
+
     public static Link buildLink(ObjectNode node) {
         Link link = new Link();
         link.href = node.get("href").asText();
@@ -69,6 +70,7 @@ public class Link {
 
         return link;
     }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

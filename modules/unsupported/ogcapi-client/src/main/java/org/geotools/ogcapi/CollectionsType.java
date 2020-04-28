@@ -17,12 +17,6 @@
 
 package org.geotools.ogcapi;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
 import com.bedatadriven.jackson.datatype.jts.JtsModule;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
@@ -30,6 +24,11 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class CollectionsType {
     static JsonFactory factory = new JsonFactory();
@@ -44,7 +43,7 @@ public class CollectionsType {
     static CollectionsType buildCollections(URL url) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JtsModule());
-    
+
         try (JsonParser parser = factory.createParser(url)) {
             JsonToken token = parser.nextToken(); // start 1st object
             CollectionsType ret = new CollectionsType();
@@ -54,7 +53,7 @@ public class CollectionsType {
                 if (token == null) {
                     break;
                 }
-    
+
                 if (JsonToken.FIELD_NAME.equals(token)
                         && "collections".equalsIgnoreCase(parser.currentName())) {
                     token = parser.nextToken();
@@ -64,7 +63,7 @@ public class CollectionsType {
                     }
                     while (parser.nextToken() == JsonToken.START_OBJECT) { // collections
                         // array
-    
+
                         ObjectNode node = mapper.readTree(parser);
                         // Actually, we want to read this items child link that is labelled
                         // self
@@ -75,7 +74,8 @@ public class CollectionsType {
                                         && QuickTileViewer.APPLICATION_JSON.equalsIgnoreCase(
                                                 link.get("type").asText())) {
                                     CollectionType realCollection =
-                                            CollectionType.buildRealCollection(new URL(link.get("href").asText()));
+                                            CollectionType.buildRealCollection(
+                                                    new URL(link.get("href").asText()));
                                     ret.collections.put(
                                             realCollection.getIdentifier(), realCollection);
                                 }
@@ -91,7 +91,7 @@ public class CollectionsType {
                                 "Was expecting an array of CRS Strings");
                     }
                     while (parser.nextToken() == JsonToken.START_OBJECT) {
-    
+
                         ObjectNode node = mapper.readTree(parser);
                         for (JsonNode c : node) {
                             ret.crs.add(OgcApiUtils.parseCRS(c.asText()));
@@ -102,6 +102,4 @@ public class CollectionsType {
             return ret;
         }
     }
-    
-    
 }

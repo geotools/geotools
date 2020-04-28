@@ -16,12 +16,6 @@
  */
 package org.geotools.ogcapi;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
 import com.bedatadriven.jackson.datatype.jts.JtsModule;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
@@ -30,6 +24,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class CollectionType {
     static JsonFactory factory = new JsonFactory();
@@ -84,7 +83,8 @@ public class CollectionType {
     public void setExtent(ReferencedEnvelope extent) {
         this.extent = extent;
     }
-    static public CollectionType buildRealCollection(URL url) throws IOException {
+
+    public static CollectionType buildRealCollection(URL url) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JtsModule());
 
@@ -103,8 +103,8 @@ public class CollectionType {
         }
         return null;
     }
-    
-    static  CollectionType buildCollection(ObjectNode node) throws IOException {
+
+    static CollectionType buildCollection(ObjectNode node) throws IOException {
         CollectionType ret = new CollectionType();
 
         if (node.has("links")) {
@@ -160,6 +160,7 @@ public class CollectionType {
         }
         return ret;
     }
+
     @Override
     public String toString() {
         return "CollectionType [identifier="

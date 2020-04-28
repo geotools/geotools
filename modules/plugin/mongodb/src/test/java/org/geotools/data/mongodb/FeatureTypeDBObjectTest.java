@@ -18,13 +18,12 @@
 package org.geotools.data.mongodb;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
-import com.mongodb.util.JSON;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Date;
@@ -52,16 +51,13 @@ public class FeatureTypeDBObjectTest {
 
         SimpleFeatureType original = buildDummyFeatureType("dummy");
 
-        DBObject dbo = FeatureTypeDBObject.convert(original);
+        BasicDBObject dbo = FeatureTypeDBObject.convert(original);
 
         // make sure we're dealing with proper BSON/JSON by round-tripping it
         // through serialization...
-        StringBuilder jsonBuffer = new StringBuilder();
-        JSON.serialize(dbo, jsonBuffer);
-        String json = jsonBuffer.toString();
-        Object o = JSON.parse(json);
-        assertThat(o, is(instanceOf(DBObject.class)));
-        dbo = (DBObject) o;
+        String json = dbo.toJson();
+
+        dbo = BasicDBObject.parse(json);
 
         SimpleFeatureType result = FeatureTypeDBObject.convert(dbo);
 

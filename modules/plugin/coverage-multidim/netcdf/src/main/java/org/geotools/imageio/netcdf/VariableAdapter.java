@@ -25,7 +25,7 @@ import java.util.*;
 import java.util.List;
 import java.util.logging.Level;
 import javax.measure.Unit;
-import javax.measure.format.ParserException;
+import javax.measure.format.MeasurementParseException;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -876,7 +876,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         if (unitString != null) {
             try {
                 unit = NetCDFUnitFormat.parse(unitString);
-            } catch (ParserException parseException) {
+            } catch (MeasurementParseException parseException) {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine(
                             "Unable to parse the unit:"

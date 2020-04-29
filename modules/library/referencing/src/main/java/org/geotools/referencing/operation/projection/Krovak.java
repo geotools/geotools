@@ -43,7 +43,7 @@ import org.opengis.referencing.operation.ConicProjection;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 import si.uom.NonSI;
-import tec.uom.se.AbstractUnit;
+import tech.units.indriya.AbstractUnit;
 
 /**
  * Krovak Oblique Conformal Conic projection (EPSG code 9819). This projection is used in the Czech

@@ -18,11 +18,11 @@ package org.geotools.util;
 
 import static org.junit.Assert.*;
 
+import javax.measure.MetricPrefix;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.junit.*;
 import si.uom.SI;
-import tec.uom.se.unit.MetricPrefix;
 
 /**
  * Tests the {@link MeasurementRange}.

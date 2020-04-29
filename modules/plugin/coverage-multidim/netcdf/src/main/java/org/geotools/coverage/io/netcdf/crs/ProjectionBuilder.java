@@ -23,7 +23,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.measure.Unit;
-import javax.measure.format.ParserException;
+import javax.measure.format.MeasurementParseException;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.measure.Units;
 import org.geotools.metadata.i18n.Vocabulary;
@@ -31,8 +31,10 @@ import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.ReferencingFactoryFinder;
+import org.geotools.referencing.crs.DefaultDerivedCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.crs.DefaultProjectedCRS;
+import org.geotools.referencing.cs.AbstractCS;
 import org.geotools.referencing.cs.DefaultCartesianCS;
 import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
 import org.geotools.referencing.cs.DefaultEllipsoidalCS;
@@ -62,8 +64,8 @@ import org.opengis.referencing.datum.GeodeticDatum;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransformFactory;
 import org.opengis.referencing.operation.OperationMethod;
-import si.uom.NonSI;
 import si.uom.SI;
+import tech.units.indriya.AbstractUnit;
 
 /**
  * Class used to create an OGC {@link ProjectedCRS} instance on top of Projection name, parameters
@@ -81,7 +83,7 @@ public class ProjectionBuilder {
     private static final MathTransformFactory mtFactory;
 
     public static final EllipsoidalCS DEFAULT_ELLIPSOIDAL_CS =
-            DefaultEllipsoidalCS.GEODETIC_2D.usingUnit(NonSI.DEGREE_ANGLE);
+            DefaultEllipsoidalCS.GEODETIC_2D.usingUnit(Units.DEGREE_ANGLE);
 
     static {
         Hints hints = GeoTools.getDefaultHints().clone();
@@ -184,7 +186,7 @@ public class ProjectionBuilder {
 
     /**
      * Build a {@link GeographicCRS} given the name to be assigned and the {@link GeodeticDatum} to
-     * be used. {@link EllipsoidalCS} is {@value #DEFAULT_ELLIPSOIDAL_CS}
+     * be used. {@link EllipsoidalCS} is {@link #DEFAULT_ELLIPSOIDAL_CS}
      */
     public static GeographicCRS createGeographicCRS(String name, GeodeticDatum datum) {
         return createGeographicCRS(name, datum, DEFAULT_ELLIPSOIDAL_CS);
@@ -227,8 +229,8 @@ public class ProjectionBuilder {
 
     /**
      * Build a custom {@link Ellipsoid} provided the name and a Map contains <key,number> parameters
-     * describing that ellipsoid. Supported params are {@link #SEMI_MAJOR}, {@link #SEMI_MINOR},
-     * {@link NetCDFUtilities#INVERSE_FLATTENING}
+     * describing that ellipsoid. Supported params are {@link NetCDFUtilities#SEMI_MAJOR}, {@link
+     * NetCDFUtilities#SEMI_MINOR}, {@link NetCDFUtilities#INVERSE_FLATTENING}
      */
     public static Ellipsoid createEllipsoid(String name, Map<String, Number> ellipsoidParams) {
         Number semiMajor = NetCDFUtilities.DEFAULT_EARTH_RADIUS;
@@ -247,10 +249,10 @@ public class ProjectionBuilder {
         }
         if (semiMinor != null) {
             return DefaultEllipsoid.createEllipsoid(
-                    name, semiMajor.doubleValue(), semiMinor.doubleValue(), SI.METRE);
+                    name, semiMajor.doubleValue(), semiMinor.doubleValue(), Units.METRE);
         } else {
             return DefaultEllipsoid.createFlattenedSphere(
-                    name, semiMajor.doubleValue(), inverseFlattening.doubleValue(), SI.METRE);
+                    name, semiMajor.doubleValue(), inverseFlattening.doubleValue(), Units.METRE);
         }
     }
 
@@ -277,7 +279,7 @@ public class ProjectionBuilder {
             name = (String) props.get(NetCDFUtilities.NAME);
         }
         DefiningConversion conversionFromBase = new DefiningConversion(name, parameters);
-        DefaultCartesianCS derivedCS = createCartesianCS(name, unit);
+        AbstractCS derivedCS = createCoordinateSystem(name, unit);
 
         MathTransform transform = mtFactory.createBaseToDerived(baseCRS, parameters, derivedCS);
         OperationMethod method = conversionFromBase.getMethod();
@@ -292,32 +294,49 @@ public class ProjectionBuilder {
             }
         }
 
-        return ProjectionBuilder.createProjectedCRS(
-                props, baseCRS, conversionFromBase, transform, derivedCS);
+        if (derivedCS instanceof DefaultCartesianCS) {
+            return ProjectionBuilder.createProjectedCRS(
+                    props, baseCRS, conversionFromBase, transform, (CartesianCS) derivedCS);
+        } else {
+            return new DefaultDerivedCRS(name, baseCRS, transform, derivedCS);
+        }
     }
 
-    private static DefaultCartesianCS createCartesianCS(String name, Unit unit) {
-        return new DefaultCartesianCS(
-                name,
-                new DefaultCoordinateSystemAxis(
-                        Vocabulary.formatInternational(VocabularyKeys.EASTING),
-                        "E",
-                        AxisDirection.EAST,
-                        unit),
-                new DefaultCoordinateSystemAxis(
-                        Vocabulary.formatInternational(VocabularyKeys.NORTHING),
-                        "N",
-                        AxisDirection.NORTH,
-                        unit));
+    private static AbstractCS createCoordinateSystem(String name, Unit unit) {
+        if (SI.METRE.isCompatible(unit) || AbstractUnit.ONE.equals(unit)) {
+            return new DefaultCartesianCS(
+                    name,
+                    new DefaultCoordinateSystemAxis(
+                            Vocabulary.formatInternational(VocabularyKeys.EASTING),
+                            "E",
+                            AxisDirection.EAST,
+                            unit),
+                    new DefaultCoordinateSystemAxis(
+                            Vocabulary.formatInternational(VocabularyKeys.NORTHING),
+                            "N",
+                            AxisDirection.NORTH,
+                            unit));
+        } else if (SI.RADIAN.isCompatible(unit)) {
+            return new DefaultEllipsoidalCS(
+                    name,
+                    DefaultGeographicCRS.WGS84.getAxis(0),
+                    DefaultGeographicCRS.WGS84.getAxis(1));
+        } else {
+            throw new IllegalArgumentException("No support for axis unit " + unit);
+        }
     }
 
     private static Unit getUnit(Map<String, ?> props) {
-        Unit unit = SI.METRE;
+        Unit unit = Units.METRE;
         if (props != null && !props.isEmpty() && props.containsKey(AXIS_UNIT)) {
             String axisUnit = (String) props.remove(AXIS_UNIT);
             try {
-                unit = Units.parseUnit(axisUnit);
-            } catch (ParserException | UnsupportedOperationException e) {
+                if (axisUnit.equals("degrees")) {
+                    unit = Units.DEGREE_ANGLE;
+                } else {
+                    unit = Units.parseUnit(axisUnit);
+                }
+            } catch (MeasurementParseException | UnsupportedOperationException e) {
                 if (LOGGER.isLoggable(Level.WARNING)) {
                     LOGGER.warning(
                             "Unabe to parse the specified axis unit: "

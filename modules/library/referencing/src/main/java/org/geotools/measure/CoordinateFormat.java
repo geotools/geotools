@@ -46,7 +46,7 @@ import org.opengis.referencing.datum.Datum;
 import org.opengis.referencing.datum.TemporalDatum;
 import si.uom.NonSI;
 import si.uom.SI;
-import tec.uom.se.format.SimpleUnitFormat;
+import tech.units.indriya.format.SimpleUnitFormat;
 
 /**
  * Formats a {@linkplain org.geotools.geometry.GeneralDirectPosition direct position} in an

@@ -16,25 +16,24 @@
  */
 package org.geotools.imageio.netcdf;
 
-import static tec.uom.se.AbstractUnit.ONE;
+import static tech.units.indriya.AbstractUnit.ONE;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.measure.Unit;
-import javax.measure.format.ParserException;
+import javax.measure.format.MeasurementParseException;
 import org.geotools.util.GeoToolsUnitFormat;
 import org.geotools.util.logging.Logging;
 import si.uom.NonSI;
-import tec.uom.se.AbstractUnit;
-import tec.uom.se.format.SimpleUnitFormat;
-import tec.uom.se.function.LogConverter;
+import tech.units.indriya.format.SimpleUnitFormat;
+import tech.units.indriya.function.LogConverter;
 
 /**
  * Parser/Encoder for units expressed in the NetCDF CF syntax, with ability to configure the unit
@@ -52,6 +51,7 @@ public class NetCDFUnitFormat {
         static class InternalFormat extends BaseGT2Format {
 
             public InternalFormat() {
+                super();
                 super.initUnits(SimpleUnitFormat.getInstance());
             }
         }
@@ -122,7 +122,7 @@ public class NetCDFUnitFormat {
                             return super.put(key, value);
                         }
                     };
-            props.load(new InputStreamReader(is, Charset.forName("UTF-8")));
+            props.load(new InputStreamReader(is, StandardCharsets.UTF_8));
             return result;
         } catch (IOException e) {
             throw new RuntimeException(
@@ -142,24 +142,24 @@ public class NetCDFUnitFormat {
         SimpleUnitFormat format = AbstractNetCDFUnitFormat.getNewInstance();
 
         // missing unit that cannot be expressed via config files
-        Unit bel = ONE.transform(new LogConverter(10));
+        Unit<?> bel = ONE.transform(new LogConverter(10));
         format.alias(bel.divide(10), "dB");
 
         // register non SI units as well
-        for (Unit u : NonSI.getInstance().getUnits()) {
+        for (Unit<?> u : NonSI.getInstance().getUnits()) {
             if (u.getSymbol() != null && unknownSymbol(format, u.getSymbol())) {
                 format.alias(u, u.getSymbol());
             }
         }
 
         // register a notion of unitless
-        format.label(AbstractUnit.ONE, "unitless");
+        format.label(ONE, "unitless");
 
         // go with the aliases (key -> value, that is, alias -> actual unit)
         for (Map.Entry<String, String> entry : aliases.entrySet()) {
             try {
                 format.alias(format.parse(entry.getValue()), entry.getKey());
-            } catch (ParserException ex) {
+            } catch (MeasurementParseException ex) {
                 LOGGER.log(
                         Level.WARNING,
                         "Failed to parse "
@@ -180,7 +180,7 @@ public class NetCDFUnitFormat {
         try {
             format.parse(symbol);
             return false;
-        } catch (ParserException e) {
+        } catch (MeasurementParseException e) {
             return true;
         }
     }
@@ -210,8 +210,8 @@ public class NetCDFUnitFormat {
         // even say what was being parsed
         try {
             return FORMAT.parse(spec);
-        } catch (ParserException e) {
-            throw new ParserException(
+        } catch (MeasurementParseException e) {
+            throw new MeasurementParseException(
                     "Failed to parse " + spec, e.getParsedString(), e.getPosition());
         }
     }

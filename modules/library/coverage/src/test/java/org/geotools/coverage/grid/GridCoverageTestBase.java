@@ -39,6 +39,7 @@ import java.util.AbstractList;
 import java.util.List;
 import java.util.Random;
 import javax.imageio.ImageIO;
+import javax.measure.MetricPrefix;
 import javax.media.jai.RasterFactory;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.CoverageFactoryFinder;
@@ -53,7 +54,6 @@ import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import si.uom.SI;
 import si.uom.SI.*;
-import tec.uom.se.unit.MetricPrefix;
 
 /**
  * Base class for grid coverage tests. This base class provides factory methods for sample {@link

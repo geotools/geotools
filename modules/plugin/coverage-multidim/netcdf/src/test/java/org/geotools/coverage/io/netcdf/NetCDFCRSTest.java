@@ -51,6 +51,7 @@ import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.crs.DerivedCRS;
 import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.crs.ProjectedCRS;
 import org.opengis.referencing.datum.Ellipsoid;
@@ -240,10 +241,9 @@ public class NetCDFCRSTest {
                     NetCDFCoordinateReferenceSystemType.NetCDFCoordinate.RLATLON_COORDS,
                     crsType.getCoordinates());
             assertSame(NetCDFProjection.ROTATED_POLE, crsType.getNetCDFProjection());
-            assertTrue(crs instanceof ProjectedCRS);
-            ProjectedCRS projectedCRS = ((ProjectedCRS) crs);
-            Projection projection = projectedCRS.getConversionFromBase();
-            MathTransform transform = projection.getMathTransform();
+            assertTrue(crs instanceof DerivedCRS);
+            DerivedCRS derivedCRS = ((DerivedCRS) crs);
+            MathTransform transform = derivedCRS.getConversionFromBase().getMathTransform();
             assertTrue(transform instanceof RotatedPole);
             RotatedPole rotatedPole = (RotatedPole) transform;
             ParameterValueGroup values = rotatedPole.getParameterValues();

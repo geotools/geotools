@@ -177,7 +177,7 @@
     
     <dependency>
       <groupId>systems.uom</groupId>
-      <artifactId>systems-common-java8</artifactId>
+      <artifactId>systems-common</artifactId>
     </dependency>
     
     <!-- Test dependencies -->

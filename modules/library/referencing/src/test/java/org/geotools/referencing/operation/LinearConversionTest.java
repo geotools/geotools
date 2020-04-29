@@ -32,6 +32,7 @@ import static org.opengis.referencing.cs.AxisDirection.UP;
 import static org.opengis.referencing.cs.AxisDirection.WEST;
 
 import java.util.Random;
+import javax.measure.MetricPrefix;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.referencing.crs.DefaultProjectedCRS;
@@ -50,7 +51,6 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransformFactory;
 import org.opengis.referencing.operation.Matrix;
 import si.uom.SI;
-import tec.uom.se.unit.MetricPrefix;
 
 /**
  * Tests some operation steps involved in coordinate operation creation.
@@ -177,7 +177,7 @@ public final class LinearConversionTest {
     }
 
     /**
-     * Test the {@link DefaultProjectedCRS#createLinearConversion} method. Note: this requires a
+     * Test the {@link ProjectionAnalyzer#createLinearConversion} method. Note: this requires a
      * working {@link MathTransformFactory}.
      *
      * @throws FactoryException If the conversion can't be created.

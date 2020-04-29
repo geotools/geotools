@@ -22,7 +22,7 @@ import javax.measure.Unit;
 import javax.measure.UnitConverter;
 import org.geotools.util.Utilities;
 import systems.uom.common.USCustomary;
-import tec.uom.se.format.SimpleUnitFormat;
+import tech.units.indriya.format.SimpleUnitFormat;
 
 /**
  * Utility class doing speed conversion since windBarbs are based on knots
@@ -100,7 +100,7 @@ class SpeedConverter {
 
         // ok let's try harder --> this is going to be slower
         try {
-            Unit unit = (Unit) SimpleUnitFormat.getInstance().parse(uom);
+            Unit unit = SimpleUnitFormat.getInstance().parse(uom);
             UnitConverter converter = unit.getConverterTo(USCustomary.KNOT);
             return converter.convert(speed);
         } catch (Exception e) {

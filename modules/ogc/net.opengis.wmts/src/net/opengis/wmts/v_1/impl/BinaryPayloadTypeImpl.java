@@ -12,6 +12,8 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
+import java.util.Arrays;
+
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Binary Payload Type</b></em>'.
@@ -191,7 +193,7 @@ public class BinaryPayloadTypeImpl extends MinimalEObjectImpl.Container implemen
             case wmtsv_1Package.BINARY_PAYLOAD_TYPE__FORMAT:
                 return FORMAT_EDEFAULT == null ? format != null : !FORMAT_EDEFAULT.equals(format);
             case wmtsv_1Package.BINARY_PAYLOAD_TYPE__BINARY_CONTENT:
-                return BINARY_CONTENT_EDEFAULT == null ? binaryContent != null : !BINARY_CONTENT_EDEFAULT.equals(binaryContent);
+                return BINARY_CONTENT_EDEFAULT == null ? binaryContent != null : !Arrays.equals(BINARY_CONTENT_EDEFAULT, binaryContent);
         }
         return super.eIsSet(featureID);
     }

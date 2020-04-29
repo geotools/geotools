@@ -28,6 +28,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.measure.MetricPrefix;
 import javax.measure.Unit;
 import javax.measure.quantity.Angle;
 import javax.measure.quantity.Time;
@@ -86,7 +87,6 @@ import org.opengis.referencing.operation.OperationNotFoundException;
 import org.opengis.referencing.operation.Transformation;
 import si.uom.NonSI;
 import si.uom.SI;
-import tec.uom.se.unit.MetricPrefix;
 
 /**
  * Creates {@linkplain CoordinateOperation coordinate operations}. This factory is capable to find

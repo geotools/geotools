@@ -53,7 +53,7 @@ import org.opengis.util.CodeList;
 import org.opengis.util.GenericName;
 import org.opengis.util.InternationalString;
 import si.uom.SI;
-import tec.uom.se.AbstractUnit;
+import tech.units.indriya.AbstractUnit;
 
 /**
  * Format {@link Formattable} objects as <A
@@ -794,7 +794,7 @@ public class Formatter {
      * specification</A>. This method returns {@code true} if {@link #setInvalidWKT} has been
      * invoked at least once. The action to take regarding invalid WKT is caller-dependant. For
      * example {@link Formattable#toString} will accepts loose WKT formatting and ignore this flag,
-     * while {@link Formattable#toWKT} requires strict WKT formatting and will thrown an exception
+     * while {@link Formattable#toWKT()} requires strict WKT formatting and will thrown an exception
      * if this flag is set.
      *
      * @return {@code true} if the WKT is invalid.

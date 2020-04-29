@@ -33,7 +33,7 @@ import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.operation.Conversion;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform1D;
-import tec.uom.se.AbstractUnit;
+import tech.units.indriya.AbstractUnit;
 
 /**
  * A one dimensional, logarithmic transform. Input values <var>x</var> are converted into output

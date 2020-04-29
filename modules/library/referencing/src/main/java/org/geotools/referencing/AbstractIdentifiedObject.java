@@ -53,7 +53,7 @@ import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.util.GenericName;
 import org.opengis.util.InternationalString;
 import si.uom.SI;
-import tec.uom.se.AbstractUnit;
+import tech.units.indriya.AbstractUnit;
 
 /**
  * A base class for metadata applicable to reference system objects. When {@link
@@ -746,7 +746,7 @@ public class AbstractIdentifiedObject extends Formattable
      */
     public static String getName(final IdentifiedObject info, final Citation authority) {
         if (info instanceof AbstractIdentifiedObject) {
-            // Gives a chances to subclasses to get their overridden method invoked.
+            // Gives a chance for subclasses to get their overridden method invoked.
             return ((AbstractIdentifiedObject) info).getName(authority);
         }
         return getName0(info, authority);

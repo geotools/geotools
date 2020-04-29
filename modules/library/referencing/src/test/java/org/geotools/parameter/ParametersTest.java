@@ -39,6 +39,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import javax.measure.MetricPrefix;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.referencing.wkt.Formatter;
@@ -56,8 +57,7 @@ import org.opengis.referencing.datum.VerticalDatumType;
 import org.opengis.referencing.operation.MathTransform;
 import si.uom.NonSI;
 import si.uom.SI;
-import tec.uom.se.AbstractUnit;
-import tec.uom.se.unit.MetricPrefix;
+import tech.units.indriya.AbstractUnit;
 
 /**
  * Tests the <code>org.geotools.parameter</code> package.

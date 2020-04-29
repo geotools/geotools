@@ -24,7 +24,7 @@ import javax.measure.UnconvertibleException;
 import javax.measure.Unit;
 import org.geotools.measure.Units;
 import org.geotools.referencing.wkt.GeoToolsCRSUnitFormat.BaseGT2Format;
-import tec.uom.se.unit.TransformedUnit;
+import tech.units.indriya.unit.TransformedUnit;
 
 /**
  * UnitFormat configured to parse units. Since usually we don't know the citation in use for a
@@ -67,7 +67,7 @@ public class DefaultUnitParser extends BaseGT2Format {
 
     /**
      * Returns an equivalent unit instance based on the provided unit. First, it tries to get one of
-     * the reference units defined in the JSR363 implementation in use. If no equivalent reference
+     * the reference units defined in the JSR 385 implementation in use. If no equivalent reference
      * unit is defined, it returns the provided unit
      */
     public <Q extends Quantity<Q>> Unit<Q> getEquivalentUnit(Unit<Q> unit) {
@@ -75,7 +75,7 @@ public class DefaultUnitParser extends BaseGT2Format {
     }
 
     /**
-     * This wrapper is used to compare equivalent units using the {@link Units.equals} method. It
+     * This wrapper is used to compare equivalent units using the {@link Units#equals} method. It
      * implements hashCode and equals method in a coherent way, so it can be used in a HashMap to
      * retrieve equivalent units.
      *

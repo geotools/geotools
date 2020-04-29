@@ -49,9 +49,8 @@ import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.crs.ProjectedCRS;
+import org.opengis.referencing.crs.DerivedCRS;
 import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.Projection;
 import ucar.nc2.Attribute;
 import ucar.nc2.Variable;
 import ucar.nc2.dataset.NetcdfDataset;
@@ -385,10 +384,9 @@ public class GribTest extends Assert {
                     NetCDFCoordinateReferenceSystemType.NetCDFCoordinate.RLATLON_COORDS,
                     crsType.getCoordinates());
             assertSame(NetCDFProjection.ROTATED_POLE, crsType.getNetCDFProjection());
-            assertTrue(crs instanceof ProjectedCRS);
-            ProjectedCRS projectedCRS = ((ProjectedCRS) crs);
-            Projection projection = projectedCRS.getConversionFromBase();
-            MathTransform transform = projection.getMathTransform();
+            assertTrue(crs instanceof DerivedCRS);
+            DerivedCRS derivedCRS = ((DerivedCRS) crs);
+            MathTransform transform = derivedCRS.getConversionFromBase().getMathTransform();
             assertTrue(transform instanceof RotatedPole);
             RotatedPole rotatedPole = (RotatedPole) transform;
             ParameterValueGroup values = rotatedPole.getParameterValues();

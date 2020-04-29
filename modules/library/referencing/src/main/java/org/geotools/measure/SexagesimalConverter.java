@@ -17,10 +17,8 @@
 package org.geotools.measure;
 
 import java.io.ObjectStreamException;
-import java.math.BigDecimal;
-import java.math.MathContext;
 import javax.measure.UnitConverter;
-import tec.uom.se.AbstractConverter;
+import tech.units.indriya.function.AbstractConverter;
 
 /**
  * A converter from fractional degrees to sexagesimal degrees. Sexagesimal degrees are pseudo-unit
@@ -37,7 +35,7 @@ import tec.uom.se.AbstractConverter;
  */
 class SexagesimalConverter extends AbstractConverter {
     /** Serial number for compatibility with different versions. */
-    private static final long serialVersionUID = 3873494343412121773L;
+    private static final long serialVersionUID = -2663951106460584999L;
 
     /** Small tolerance factor for rounding errors. */
     private static final double EPS = 1E-8;
@@ -77,13 +75,28 @@ class SexagesimalConverter extends AbstractConverter {
         this.inverse = inverse;
     }
 
+    @Override
+    public int compareTo(UnitConverter o) {
+        // TODO: ?
+        return 0;
+    }
+
     /** Returns the inverse of this converter. */
-    public final SexagesimalConverter inverse() {
+    public final SexagesimalConverter inverseWhenNotIdentity() {
         return inverse;
     }
 
+    @Override
+    protected boolean canReduceWith(AbstractConverter that) {
+        return that instanceof Inverse;
+    }
+
+    public Number convertWhenNotIdentity(Number value) {
+        return degreeToSexagesimalDegrees(value.doubleValue());
+    }
+
     /** Performs a conversion from fractional degrees to sexagesimal degrees. */
-    public double convert(double value) {
+    public double degreeToSexagesimalDegrees(double value) {
         final int deg, min, sec;
         deg = (int) value; // Round toward 0
         value = (value - deg) * 60;
@@ -94,9 +107,44 @@ class SexagesimalConverter extends AbstractConverter {
         return (((deg * 100 + min) * 100 + sec) + value) / divider;
     }
 
+    /** Performs a conversion from sexagesimal degrees to fractional degrees. */
+    public double sexagesimalDegreesToDegrees(double value) {
+        value *= this.divider;
+        int deg, min;
+        deg = (int) (value / 10000);
+        value -= 10000 * deg;
+        min = (int) (value / 100);
+        value -= 100 * min;
+        if (min <= -60 || min >= 60) { // Accepts NaN
+            if (Math.abs(Math.abs(min) - 100) <= EPS) {
+                if (min >= 0) deg++;
+                else deg--;
+                min = 0;
+            } else {
+                throw new ArithmeticException("Invalid minutes: " + min);
+            }
+        }
+        if (value <= -60 || value >= 60) { // Accepts NaN
+            if (Math.abs(Math.abs(value) - 100) <= EPS) {
+                if (value >= 0) min++;
+                else min--;
+                value = 0;
+            } else {
+                throw new ArithmeticException("Invalid secondes: " + value);
+            }
+        }
+        value = ((value / 60) + min) / 60 + deg;
+        return value;
+    }
+
     /** Returns this converter derivative for the specified {@code x} value. */
     public final double derivative(double x) {
         return 1;
+    }
+
+    @Override
+    public boolean isIdentity() {
+        return false;
     }
 
     /** Returns {@code false} since this converter is non-linear. */
@@ -116,6 +164,11 @@ class SexagesimalConverter extends AbstractConverter {
     @Override
     public int hashCode() {
         return (int) serialVersionUID + divider;
+    }
+
+    @Override
+    protected String transformationLiteral() {
+        return null;
     }
 
     /** On deserialization, returns an existing instance. */
@@ -142,11 +195,20 @@ class SexagesimalConverter extends AbstractConverter {
     /** The inverse of {@link SexagesimalConverter}. */
     private static final class Inverse extends SexagesimalConverter {
         /** Serial number for compatibility with different versions. */
-        private static final long serialVersionUID = -7171869900634417819L;
+        private static final long serialVersionUID = -7145237719599612406L;
 
         /** Constructs a converter. */
         public Inverse(final SexagesimalConverter inverse) {
             super(inverse.divider, inverse);
+        }
+
+        @Override
+        protected boolean canReduceWith(AbstractConverter that) {
+            if (that instanceof SexagesimalConverter.Inverse) {
+                return false;
+            } else {
+                return that instanceof SexagesimalConverter;
+            }
         }
 
         /**
@@ -155,33 +217,8 @@ class SexagesimalConverter extends AbstractConverter {
          * @throws ArithmeticException if the value is out of the valid range for minutes or seconds
          */
         @Override
-        public double convert(double value) {
-            value *= this.divider;
-            int deg, min;
-            deg = (int) (value / 10000);
-            value -= 10000 * deg;
-            min = (int) (value / 100);
-            value -= 100 * min;
-            if (min <= -60 || min >= 60) { // Accepts NaN
-                if (Math.abs(Math.abs(min) - 100) <= EPS) {
-                    if (min >= 0) deg++;
-                    else deg--;
-                    min = 0;
-                } else {
-                    throw new ArithmeticException("Invalid minutes: " + min);
-                }
-            }
-            if (value <= -60 || value >= 60) { // Accepts NaN
-                if (Math.abs(Math.abs(value) - 100) <= EPS) {
-                    if (value >= 0) min++;
-                    else min--;
-                    value = 0;
-                } else {
-                    throw new ArithmeticException("Invalid secondes: " + value);
-                }
-            }
-            value = ((value / 60) + min) / 60 + deg;
-            return value;
+        public Number convertWhenNotIdentity(Number value) {
+            return sexagesimalDegreesToDegrees(value.doubleValue());
         }
 
         /** Returns a hash value for this converter. */
@@ -189,21 +226,5 @@ class SexagesimalConverter extends AbstractConverter {
         public int hashCode() {
             return (int) serialVersionUID + divider;
         }
-    }
-
-    @Override
-    public Number convert(Number value) {
-        return convert(value.doubleValue());
-    }
-
-    @Override
-    public BigDecimal convert(BigDecimal value, MathContext ctx) throws ArithmeticException {
-        double valueAsDouble = value.doubleValue();
-        if (valueAsDouble == Double.NEGATIVE_INFINITY
-                || valueAsDouble == Double.POSITIVE_INFINITY) {
-            throw new ArithmeticException(
-                    "Bigdecimal value magnitude too great to fit in double: " + value);
-        }
-        return new BigDecimal(convert(valueAsDouble));
     }
 }

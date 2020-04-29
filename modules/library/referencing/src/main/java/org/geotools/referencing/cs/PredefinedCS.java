@@ -36,7 +36,7 @@ import org.opengis.referencing.cs.TimeCS;
 import org.opengis.referencing.cs.UserDefinedCS;
 import org.opengis.referencing.cs.VerticalCS;
 import si.uom.SI;
-import tec.uom.se.AbstractUnit;
+import tech.units.indriya.AbstractUnit;
 
 /**
  * Converts an arbitrary CS into one of the predefined constants provided in the {@link

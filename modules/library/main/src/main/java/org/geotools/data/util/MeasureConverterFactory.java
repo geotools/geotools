@@ -26,7 +26,7 @@ import org.geotools.measure.Measure;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.factory.Hints;
-import tec.uom.se.format.SimpleUnitFormat;
+import tech.units.indriya.format.SimpleUnitFormat;
 
 /**
  * ConverterFactory which converts between the {@link Measure} and String.

@@ -62,7 +62,7 @@ import org.opengis.referencing.operation.Projection;
 import org.opengis.referencing.operation.TransformException;
 import si.uom.NonSI;
 import si.uom.SI;
-import tec.uom.se.AbstractUnit;
+import tech.units.indriya.AbstractUnit;
 
 /**
  * Base class for transformation services between ellipsoidal and cartographic projections. This

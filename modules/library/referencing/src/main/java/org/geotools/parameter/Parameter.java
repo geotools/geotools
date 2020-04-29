@@ -38,7 +38,7 @@ import org.opengis.parameter.ParameterValue;
 import org.opengis.util.CodeList;
 import si.uom.NonSI;
 import si.uom.SI;
-import tec.uom.se.AbstractUnit;
+import tech.units.indriya.AbstractUnit;
 
 /**
  * A parameter value used by an operation method. Most CRS parameter values are numeric, but other
@@ -252,8 +252,8 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
      *
      * <p>Note: It is difficult to differentiate scale and angular units, since both of them are
      * dimensionless. However, in EPSG database version 6.7, there is only 3 scale units and all of
-     * them maps to {@link Unit#ONE} or {@link Units#PPM}. Consequently, they are hard-coded and
-     * treated especially by this method.
+     * them maps to {@link AbstractUnit#ONE} or {@link Units#PPM}. Consequently, they are hard-coded
+     * and treated especially by this method.
      *
      * @todo Provides a better way to differentiate scale units (currently AbstractUnit.ONE) and
      *     angular units. Both are dimensionless...

@@ -16,6 +16,8 @@
  */
 package org.geotools.referencing.factory.epsg;
 
+import static org.geotools.measure.Units.*;
+
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -136,9 +138,6 @@ import org.opengis.util.GenericName;
 import org.opengis.util.InternationalString;
 import si.uom.NonSI;
 import si.uom.SI;
-import systems.uom.common.USCustomary;
-import tec.uom.se.AbstractUnit;
-import tec.uom.se.unit.MetricPrefix;
 
 /**
  * A coordinate reference system factory backed by the EPSG database tables.
@@ -3029,38 +3028,38 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
     private static Unit<?> getUnit(final int code) {
         switch (code) {
             case 9001:
-                return SI.METRE;
+                return METRE;
             case 9002:
-                return USCustomary.FOOT;
+                return FOOT;
             case 9030:
-                return USCustomary.NAUTICAL_MILE;
+                return NAUTICAL_MILE;
             case 9036:
-                return MetricPrefix.KILO(SI.METRE);
+                return KILOMETER;
             case 9101:
-                return SI.RADIAN;
+                return RADIAN;
             case 9122: // Fall through
             case 9102:
-                return NonSI.DEGREE_ANGLE;
+                return DEGREE_ANGLE;
             case 9103:
-                return NonSI.MINUTE_ANGLE;
+                return MINUTE_ANGLE;
             case 9104:
-                return NonSI.SECOND_ANGLE;
+                return SECOND_ANGLE;
             case 9105:
-                return USCustomary.GRADE;
+                return GRADE;
             case 9107:
-                return Units.DEGREE_MINUTE_SECOND;
+                return DEGREE_MINUTE_SECOND;
             case 9108:
-                return Units.DEGREE_MINUTE_SECOND;
+                return DEGREE_MINUTE_SECOND;
             case 9109:
-                return MetricPrefix.MICRO(SI.RADIAN);
+                return MICRORADIAN;
             case 9110:
-                return Units.SEXAGESIMAL_DMS;
+                return SEXAGESIMAL_DMS;
                 // TODO case 9111: return NonSI.SEXAGESIMAL_DM;
             case 9203: // Fall through
             case 9201:
-                return AbstractUnit.ONE;
+                return ONE;
             case 9202:
-                return Units.PPM;
+                return PPM;
             default:
                 return null;
         }

@@ -43,7 +43,7 @@ import org.opengis.referencing.cs.RangeMeaning;
 import org.opengis.util.InternationalString;
 import si.uom.NonSI;
 import si.uom.SI;
-import tec.uom.se.AbstractUnit;
+import tech.units.indriya.AbstractUnit;
 
 /**
  * Definition of a coordinate system axis. This is used to label axes, and indicate the orientation.
@@ -523,7 +523,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * A default axis for time values in a {@linkplain org.opengis.referencing.cs.TimeCS time CS}.
      *
      * <p>Increasing time go toward {@linkplain AxisDirection#FUTURE future} and units are
-     * {@linkplain NonSI#DAY days}.
+     * {@linkplain SI#DAY days}.
      *
      * <p>The abbreviation is lower case "<var>t</var>".
      */
@@ -748,6 +748,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
         ensureNonNull("abbreviation", abbreviation);
         ensureNonNull("direction", direction);
         ensureNonNull("unit", unit);
+
         if (unit.isCompatible(NonSI.DEGREE_ANGLE)) {
             UnitConverter fromDegrees;
             try {

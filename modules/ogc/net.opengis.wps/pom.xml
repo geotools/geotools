@@ -25,8 +25,8 @@
       <version>${project.version}</version>
     </dependency>
      <dependency>
-      <groupId>systems.uom</groupId>
-      <artifactId>systems-common-java8</artifactId>
+       <groupId>systems.uom</groupId>
+       <artifactId>systems-common</artifactId>
     </dependency>
   </dependencies>
 

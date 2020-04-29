@@ -51,6 +51,7 @@ import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.crs.DerivedCRS;
 import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.crs.ProjectedCRS;
 import org.opengis.referencing.datum.Ellipsoid;
@@ -240,10 +241,9 @@ public class NetCDFCRSTest {
                     NetCDFCoordinateReferenceSystemType.NetCDFCoordinate.RLATLON_COORDS,
                     crsType.getCoordinates());
             assertSame(NetCDFProjection.ROTATED_POLE, crsType.getNetCDFProjection());
-            assertTrue(crs instanceof ProjectedCRS);
-            ProjectedCRS projectedCRS = ((ProjectedCRS) crs);
-            Projection projection = projectedCRS.getConversionFromBase();
-            MathTransform transform = projection.getMathTransform();
+            assertTrue(crs instanceof DerivedCRS);
+            DerivedCRS derivedCRS = ((DerivedCRS) crs);
+            MathTransform transform = derivedCRS.getConversionFromBase().getMathTransform();
             assertTrue(transform instanceof RotatedPole);
             RotatedPole rotatedPole = (RotatedPole) transform;
             ParameterValueGroup values = rotatedPole.getParameterValues();
@@ -255,6 +255,27 @@ public class NetCDFCRSTest {
                     54.0,
                     values.parameter(NetCDFUtilities.LATITUDE_OF_ORIGIN).doubleValue(),
                     DELTA);
+
+            String wkt =
+                    "FITTED_CS[\"rotated_latitude_longitude\", \n"
+                            + "  INVERSE_MT[PARAM_MT[\"Rotated_Pole\", \n"
+                            + "      PARAMETER[\"semi_major\", 6371229.0], \n"
+                            + "      PARAMETER[\"semi_minor\", 6371229.0], \n"
+                            + "      PARAMETER[\"central_meridian\", -106.0], \n"
+                            + "      PARAMETER[\"latitude_of_origin\", 54.0], \n"
+                            + "      PARAMETER[\"scale_factor\", 1.0], \n"
+                            + "      PARAMETER[\"false_easting\", 0.0], \n"
+                            + "      PARAMETER[\"false_northing\", 0.0]]], \n"
+                            + "  GEOGCS[\"unknown\", \n"
+                            + "    DATUM[\"unknown\", \n"
+                            + "      SPHEROID[\"unknown\", 6371229.0, 0.0]], \n"
+                            + "    PRIMEM[\"Greenwich\", 0.0], \n"
+                            + "    UNIT[\"degree\", 0.017453292519943295], \n"
+                            + "    AXIS[\"Geodetic longitude\", EAST], \n"
+                            + "    AXIS[\"Geodetic latitude\", NORTH]], \n"
+                            + "  AUTHORITY[\"EPSG\",\"971806\"]]";
+            CoordinateReferenceSystem wktCRS = CRS.parseWKT(wkt);
+            assertTrue(CRS.equalsIgnoreMetadata(wktCRS, crs));
         } finally {
             if (reader != null) {
                 reader.dispose();

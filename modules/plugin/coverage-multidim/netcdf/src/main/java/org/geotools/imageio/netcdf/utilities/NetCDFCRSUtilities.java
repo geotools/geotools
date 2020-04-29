@@ -55,7 +55,7 @@ import org.opengis.referencing.datum.VerticalDatumType;
 import org.opengis.temporal.Position;
 import si.uom.NonSI;
 import si.uom.SI;
-import tec.uom.se.format.SimpleUnitFormat;
+import tech.units.indriya.format.SimpleUnitFormat;
 import ucar.nc2.Attribute;
 import ucar.nc2.constants.AxisType;
 import ucar.nc2.constants.CF;

@@ -49,20 +49,11 @@
  */
 package org.geotools.util;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import javax.measure.Unit;
-import javax.measure.UnitConverter;
 import javax.measure.format.UnitFormat;
-import tec.uom.se.format.SimpleUnitFormat;
-import tec.uom.se.function.AddConverter;
-import tec.uom.se.function.MultiplyConverter;
-import tec.uom.se.function.RationalConverter;
-import tec.uom.se.unit.AlternateUnit;
-import tec.uom.se.unit.BaseUnit;
-import tec.uom.se.unit.ProductUnit;
-import tec.uom.se.unit.TransformedUnit;
+import tech.units.indriya.format.SimpleUnitFormat;
 
 /**
  * Base class extending UOM SimpleUnitFormat that provides the same setup as {@link
@@ -95,8 +86,6 @@ public abstract class GeoToolsUnitFormat extends SimpleUnitFormat {
      */
     protected static class BaseGT2Format extends DefaultFormat {
 
-        HashMap<Unit, String> unitToName = new HashMap<>();
-
         public BaseGT2Format() {}
 
         protected void initUnits(UnitFormat base) {
@@ -106,21 +95,13 @@ public abstract class GeoToolsUnitFormat extends SimpleUnitFormat {
              * clone these definitions in our GT formats
              */
             try {
+                HashMap<String, Unit<?>> nameToUnitMap = getNameToUnitMap(base);
+                HashMap<Unit<?>, String> unitToNameMap = getUnitToNameMap(base);
 
-                java.lang.reflect.Field nameToUnitField =
-                        DefaultFormat.class.getDeclaredField("_nameToUnit");
-                nameToUnitField.setAccessible(true);
-                HashMap<String, Unit<?>> nameToUnitMap =
-                        (HashMap<String, Unit<?>>) nameToUnitField.get(base);
-
-                java.lang.reflect.Field unitToNameField =
-                        DefaultFormat.class.getDeclaredField("_unitToName");
-                unitToNameField.setAccessible(true);
-                HashMap<Unit<?>, String> unitToNameMap =
-                        (HashMap<Unit<?>, String>) unitToNameField.get(base);
                 for (Map.Entry<String, Unit<?>> entry : nameToUnitMap.entrySet()) {
                     String name = entry.getKey();
                     Unit<?> unit = entry.getValue();
+
                     if (unitToNameMap.containsKey(unit) && name.equals(unitToNameMap.get(unit))) {
                         label(unit, name);
                         addUnit(unit);
@@ -130,117 +111,36 @@ public abstract class GeoToolsUnitFormat extends SimpleUnitFormat {
                 }
             } catch (Throwable t) {
                 throw new RuntimeException(
-                        "Failed to initialize the NetCDF format unit parser with the same values as the default one",
+                        "Failed to initialize the "
+                                + this.getClass().getCanonicalName()
+                                + " format unit parser with the same values as "
+                                + base.getClass().getCanonicalName()
+                                + "  one",
                         t);
             }
         }
 
+        private HashMap<Unit<?>, String> getUnitToNameMap(UnitFormat base)
+                throws NoSuchFieldException, IllegalAccessException {
+            java.lang.reflect.Field unitToNameField =
+                    DefaultFormat.class.getDeclaredField("unitToName");
+            unitToNameField.setAccessible(true);
+
+            //noinspection unchecked
+            return (HashMap<Unit<?>, String>) unitToNameField.get(base);
+        }
+
+        private HashMap<String, Unit<?>> getNameToUnitMap(UnitFormat base)
+                throws NoSuchFieldException, IllegalAccessException {
+            java.lang.reflect.Field nameToUnitField =
+                    DefaultFormat.class.getDeclaredField("nameToUnit");
+            nameToUnitField.setAccessible(true);
+
+            //noinspection unchecked
+            return (HashMap<String, Unit<?>>) nameToUnitField.get(base);
+        }
+
         /** Defaults to being a no-op, subclasses can override */
         protected void addUnit(Unit<?> unit) {}
-
-        @Override
-        public void label(Unit<?> unit, String label) {
-            super.label(unit, label);
-            this.unitToName.put(unit, label);
-        }
-
-        public Appendable format(Unit<?> unit, Appendable appendable) throws IOException {
-            String name = this.nameFor(unit);
-            if (name != null) {
-                return appendable.append(name);
-            } else if (!(unit instanceof ProductUnit)) {
-                throw new IllegalArgumentException("Cannot format given Object as a Unit");
-            } else {
-                ProductUnit<?> productUnit = (ProductUnit) unit;
-                boolean start = true;
-
-                int i;
-                int pow;
-                int root;
-                for (i = 0; i < productUnit.getUnitCount(); ++i) {
-                    pow = productUnit.getUnitPow(i);
-                    if (!start) {
-                        appendable.append('*');
-                    }
-
-                    name = this.nameFor(productUnit.getUnit(i));
-                    root = productUnit.getUnitRoot(i);
-                    this.append(appendable, name, pow, root);
-                    start = false;
-                }
-
-                return appendable;
-            }
-        }
-
-        private void append(Appendable appendable, CharSequence symbol, int pow, int root)
-                throws IOException {
-            appendable.append(symbol);
-            if (pow != 1 || root != 1) {
-                appendable.append('^');
-                appendable.append(String.valueOf(pow));
-                if (root != 1) {
-                    appendable.append(':');
-                    appendable.append(String.valueOf(root));
-                }
-            }
-        }
-
-        // Returns the name for the specified unit or null if product unit.
-        protected String nameFor(Unit<?> unit) {
-            // Searches label database.
-            String label = unitToName.get(unit);
-            if (label != null) return label;
-            if (unit instanceof BaseUnit) return ((BaseUnit<?>) unit).getSymbol();
-            if (unit instanceof AlternateUnit) return ((AlternateUnit<?>) unit).getSymbol();
-            if (unit instanceof TransformedUnit) {
-                TransformedUnit<?> tfmUnit = (TransformedUnit<?>) unit;
-                Unit<?> baseUnit = tfmUnit.getParentUnit();
-                UnitConverter cvtr = tfmUnit.getConverter(); // tfmUnit.getSystemConverter();
-                StringBuilder result = new StringBuilder();
-                // this is the one line that needs to be replaced
-                String baseUnitName = format(baseUnit);
-                String prefix = prefixFor(cvtr);
-                if ((baseUnitName.indexOf('\u00b7') >= 0)
-                        || (baseUnitName.indexOf('*') >= 0)
-                        || (baseUnitName.indexOf('/') >= 0)) {
-                    // We could use parentheses whenever baseUnits is an
-                    // instanceof ProductUnit, but most ProductUnits have
-                    // aliases,
-                    // so we'd end up with a lot of unnecessary parentheses.
-                    result.append('(');
-                    result.append(baseUnitName);
-                    result.append(')');
-                } else {
-                    result.append(baseUnitName);
-                }
-                if (prefix != null) {
-                    result.insert(0, prefix);
-                } else {
-                    if (cvtr instanceof AddConverter) {
-                        result.append('+');
-                        result.append(((AddConverter) cvtr).getOffset());
-                    } else if (cvtr instanceof RationalConverter) {
-                        double dividend = ((RationalConverter) cvtr).getDividend().doubleValue();
-                        if (dividend != 1) {
-                            result.append('*');
-                            result.append(dividend);
-                        }
-                        double divisor = ((RationalConverter) cvtr).getDivisor().doubleValue();
-                        if (divisor != 1) {
-                            result.append('/');
-                            result.append(divisor);
-                        }
-                    } else if (cvtr instanceof MultiplyConverter) {
-                        result.append('*');
-                        result.append(((MultiplyConverter) cvtr).getFactor());
-                    } else { // Other converters.
-                        return "[" + baseUnit + "?]";
-                    }
-                }
-                return result.toString();
-            }
-            return null;
-        }
     }
 }

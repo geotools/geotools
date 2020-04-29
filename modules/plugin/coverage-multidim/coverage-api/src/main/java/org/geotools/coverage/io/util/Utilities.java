@@ -92,8 +92,8 @@ import org.opengis.referencing.operation.TransformException;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import si.uom.SI;
-import tec.uom.se.AbstractUnit;
-import tec.uom.se.format.SimpleUnitFormat;
+import tech.units.indriya.AbstractUnit;
+import tech.units.indriya.format.SimpleUnitFormat;
 
 /** @author Daniele Romagnoli, GeoSolutions */
 public class Utilities {
@@ -270,8 +270,8 @@ public class Utilities {
     }
 
     /** Return a {@link Unit} instance for the specified uom String. */
-    public static Unit<? extends Quantity> parseUnit(final String uom) {
-        Unit<? extends Quantity> unit = AbstractUnit.ONE;
+    public static Unit<? extends Quantity<?>> parseUnit(final String uom) {
+        Unit<? extends Quantity<?>> unit = AbstractUnit.ONE;
         if (uom != null && uom.trim().length() > 0) {
             // TODO: Add more well known cases
             if (uom.equalsIgnoreCase("temp_deg_c") || uom.equalsIgnoreCase("Celsius"))
@@ -641,7 +641,7 @@ public class Utilities {
 
     /**
      * Creates a {@link GridCoverage} for the provided {@link PlanarImage} using the {@link
-     * #raster2Model} that was provided for this coverage.
+     * MathTransform} that was provided for this coverage.
      *
      * <p>This method is vital when working with coverages that have a raster to model
      * transformation that is not a simple scale and translate.

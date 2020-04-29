@@ -68,7 +68,7 @@ import org.opengis.referencing.operation.OperationMethod;
 import si.uom.NonSI;
 import si.uom.SI;
 import systems.uom.common.USCustomary;
-import tec.uom.se.AbstractUnit;
+import tech.units.indriya.AbstractUnit;
 
 /**
  * This class implements a simple reusable adapter to adapt a {@link CoordinateReferenceSystem} into

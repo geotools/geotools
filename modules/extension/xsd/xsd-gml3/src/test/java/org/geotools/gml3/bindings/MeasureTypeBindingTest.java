@@ -22,7 +22,6 @@ import org.geotools.gml3.GML;
 import org.geotools.measure.Measure;
 import org.opengis.feature.ComplexAttribute;
 import org.w3c.dom.Document;
-import tec.uom.se.unit.BaseUnit;
 
 public class MeasureTypeBindingTest extends ComplexAttributeTestSupport {
 
@@ -34,7 +33,7 @@ public class MeasureTypeBindingTest extends ComplexAttributeTestSupport {
         assertNotNull(measure);
         assertEquals(1234, measure.doubleValue(), 0.1);
 
-        assertEquals("http://someuri", ((BaseUnit) measure.getUnit()).getSymbol());
+        assertEquals("http://someuri", measure.getUnit().getSymbol());
     }
 
     public void testEncode() throws Exception {

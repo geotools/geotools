@@ -127,6 +127,7 @@ public class MongoDataStore extends ContentDataStore {
         dataStoreDB =
                 createDB(
                         dataStoreClient, dataStoreClientURI.getDatabase(), !createDatabaseIfNeeded);
+
         if (dataStoreDB == null) {
             dataStoreClient.close(); // This smells bad...
             throw new IllegalArgumentException(
@@ -156,16 +157,23 @@ public class MongoDataStore extends ContentDataStore {
     private boolean isMongoVersionLessThan2_6(MongoClientURI dataStoreClientURI) {
         boolean deactivateOrAux = false;
         // check server version
-        Document result =
-                dataStoreClient
-                        .getDatabase(dataStoreClientURI.getDatabase())
-                        .runCommand(new BsonDocument("buildinfo", new BsonString("")));
-        if (result.containsKey("versionArray")) {
-            List<Integer> versionArray = (List<Integer>) result.get("versionArray");
-            // if MongoDB server version < 2.6.0 disable native $or operator
-            if (versionArray.get(0) < 2 || (versionArray.get(0) == 2 && versionArray.get(1) < 6)) {
-                deactivateOrAux = true;
+        if (dataStoreClient != null
+                && dataStoreClientURI != null
+                && dataStoreClientURI.getDatabase() != null) {
+            Document result =
+                    dataStoreClient
+                            .getDatabase(dataStoreClientURI.getDatabase())
+                            .runCommand(new BsonDocument("buildinfo", new BsonString("")));
+            if (result.containsKey("versionArray")) {
+                List<Integer> versionArray = (List<Integer>) result.get("versionArray");
+                // if MongoDB server version < 2.6.0 disable native $or operator
+                if (versionArray.get(0) < 2
+                        || (versionArray.get(0) == 2 && versionArray.get(1) < 6)) {
+                    deactivateOrAux = true;
+                }
             }
+        } else {
+            throw new IllegalArgumentException("Unknown Mongo Client");
         }
         return deactivateOrAux;
     }

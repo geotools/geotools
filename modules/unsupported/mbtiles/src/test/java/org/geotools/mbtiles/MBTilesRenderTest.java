@@ -185,7 +185,7 @@ public class MBTilesRenderTest {
         // Issues AttributeRename transformation
         Style styleTransformation = getStyle("transformation_many_points.sld");
 
-        // Style equal to the former but without AttributeRename
+        // Style equal to the former Fbut without AttributeRename
         // so that the two images will differ just for the presence of not removed
         // buffer pixel at tiles' borders
         Style styleNoTransformation = getStyle("many_points.sld");
@@ -244,6 +244,7 @@ public class MBTilesRenderTest {
         g.fillRect(0, 0, w, h);
         renderer.paint(g, new Rectangle(0, 0, w, h), bbox);
         g.dispose();
+        mc.dispose();
         return image;
     }
 

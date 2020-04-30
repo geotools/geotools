@@ -64,7 +64,7 @@ class MBTilesFeatureSource extends ContentFeatureSource {
 
         hints.add(Hints.GEOMETRY_SIMPLIFICATION);
         hints.add(Hints.GEOMETRY_GENERALIZATION);
-        hints.add(Hints.REMOVE_BUFFER_PIXEL);
+        hints.add(Hints.GEOMETRY_CLIP);
     }
 
     @Override
@@ -114,9 +114,6 @@ class MBTilesFeatureSource extends ContentFeatureSource {
                 reader = new EmptyFeatureReader<>(getSchema());
             } else {
                 reader = new CompositeSimpleFeatureReader(getSchema(), suppliers);
-                Boolean hint = (Boolean) query.getHints().get(Hints.REMOVE_BUFFER_PIXEL);
-                if (hint != null && hint.equals(true))
-                    reader = new ClippingFeatureReader((CompositeSimpleFeatureReader) reader);
             }
 
             return reader;

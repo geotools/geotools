@@ -42,7 +42,6 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.FeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.util.URLs;
@@ -356,33 +355,5 @@ public class MBTilesFeatureSourceTest {
         AtomicInteger count = new AtomicInteger();
         fc.accepts(f -> count.incrementAndGet(), null);
         return count.get();
-    }
-
-    @Test
-    public void testClippingFeatureReader() throws IOException {
-        File file =
-                URLs.urlToFile(
-                        MBTilesFileVectorTileTest.class.getResource("manypoints_test.mbtiles"));
-        Query query = new Query("manypoints_tests", Filter.INCLUDE);
-        query.setMaxFeatures(Query.DEFAULT_MAX);
-        query.setHints(new Hints(Hints.REMOVE_BUFFER_PIXEL, true));
-        MBTilesDataStore store = new MBTilesDataStore(new MBTilesFile(file));
-        MBTilesFeatureSource source =
-                (MBTilesFeatureSource) store.getFeatureSource("manypoints_test");
-        ContentFeatureCollection fcClipped = source.getFeatures(query);
-        FeatureIterator itClipped = fcClipped.features();
-        int clippedCount = 0;
-        while (itClipped.hasNext()) {
-            clippedCount++;
-            itClipped.next();
-        }
-        ContentFeatureCollection fcAll = source.getFeatures();
-        FeatureIterator itAll = fcAll.features();
-        int allCount = 0;
-        while (itAll.hasNext()) {
-            allCount++;
-            itAll.next();
-        }
-        assertTrue(allCount > clippedCount);
     }
 }

@@ -14,41 +14,38 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.mbtiles;
+package org.geotools.feature.collection;
 
-import java.io.IOException;
 import java.util.NoSuchElementException;
-import org.geotools.data.simple.SimpleFeatureReader;
+import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.FeatureIterator;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
 
 /**
- * The class takes care to return features that intersects the geometry passed with a
- * Hints.GEOMETRY_CLIP, in order to avoid that features' buffer in mbtiles data gets deployed when a
- * rendering transformation is issued.
+ * Decorates a SimpleFeatureIterator with one that return features if intersect the Geometry passed
+ * with the Hint.GEOMETRY_CLIP
  */
-class ClippingFeatureReader implements SimpleFeatureReader {
+public class ClippingFeatureIterator extends DecoratingSimpleFeatureIterator {
 
-    private SimpleFeatureReader delegate;
+    private FeatureIterator<SimpleFeature> delegate;
 
     private SimpleFeature next;
 
-    public ClippingFeatureReader(SimpleFeatureReader reader) {
-        this.delegate = reader;
+    /**
+     * Wrap the provided FeatureIterator.
+     *
+     * @param iterator Iterator to be used as a delegate.
+     */
+    public ClippingFeatureIterator(SimpleFeatureIterator iterator) {
+        super(iterator);
+        this.delegate = iterator;
     }
 
     @Override
-    public SimpleFeatureType getFeatureType() {
-        return delegate.getFeatureType();
-    }
-
-    @Override
-    public SimpleFeature next()
-            throws IOException, IllegalArgumentException, NoSuchElementException {
+    public SimpleFeature next() throws NoSuchElementException {
         if (next == null && !this.hasNext()) {
             throw new NoSuchElementException();
         }
@@ -58,7 +55,7 @@ class ClippingFeatureReader implements SimpleFeatureReader {
     }
 
     @Override
-    public boolean hasNext() throws IOException {
+    public boolean hasNext() {
         if (next != null) {
             return true;
         }
@@ -66,7 +63,7 @@ class ClippingFeatureReader implements SimpleFeatureReader {
             SimpleFeature peek = delegate.next();
             GeometryDescriptor descriptor = peek.getFeatureType().getGeometryDescriptor();
             if (peek.hasUserData()) {
-                Polygon clip = (Polygon) peek.getUserData().get(Hints.GEOMETRY_CLIP);
+                Geometry clip = (Geometry) peek.getUserData().get(Hints.GEOMETRY_CLIP);
                 Geometry geom = (Geometry) peek.getAttribute(descriptor.getName());
                 if (clip.intersects(geom)) {
                     next = peek;
@@ -81,7 +78,9 @@ class ClippingFeatureReader implements SimpleFeatureReader {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         delegate.close();
+        delegate = null;
+        next = null;
     }
 }

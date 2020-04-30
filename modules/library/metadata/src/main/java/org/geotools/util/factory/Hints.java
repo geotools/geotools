@@ -688,11 +688,6 @@ public class Hints extends RenderingHints {
      */
     public static final ClassKey GEOMETRY_CLIP = new ClassKey("org.locationtech.jts.geom.Geometry");
 
-    /**
-     * Used when a rendering transformation is applied to a vector tile geometries, to lead the
-     * store using the clip mask to remove geometries outside tiles.
-     */
-    public static final Key REMOVE_BUFFER_PIXEL = new Key(Boolean.class);
     ////////////////////////////////////////////////////////////////////////
     ////////                                                        ////////
     ////////                     Grid Coverages                     ////////

@@ -27,6 +27,7 @@ public class PropertyNameTypeBindingTest extends FilterTestSupport {
         assertNotNull(propertyName);
 
         assertEquals("foo", propertyName.getPropertyName());
+        assertNotNull(propertyName.getNamespaceContext());
     }
 
     public void testParseWithPrefix() throws Exception {
@@ -36,6 +37,7 @@ public class PropertyNameTypeBindingTest extends FilterTestSupport {
         assertNotNull(propertyName);
 
         assertEquals("bar:foo", propertyName.getPropertyName());
+        assertNotNull(propertyName.getNamespaceContext());
     }
 
     public void testEncode() throws Exception {

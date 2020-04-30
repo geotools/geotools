@@ -22,6 +22,7 @@ import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
+import org.opengis.filter.MultiValuedFilter.MatchAction;
 import org.opengis.filter.capability.FunctionName;
 
 public class FilterFunction_equalTo extends FunctionExpressionImpl {
@@ -43,7 +44,8 @@ public class FilterFunction_equalTo extends FunctionExpressionImpl {
                             "b",
                             Object.class,
                             "b",
-                            "Can be any object type: date, string, number, etc..."));
+                            "Can be any object type: date, string, number, etc..."),
+                    parameter("matchAction", String.class, 0, 1));
 
     public FilterFunction_equalTo() {
         super(NAME);
@@ -52,6 +54,7 @@ public class FilterFunction_equalTo extends FunctionExpressionImpl {
     public Object evaluate(Object feature) {
         Object arg0;
         Object arg1;
+        MatchAction matchAction = null;
 
         try { // attempt to get value and perform conversion
             arg0 = (Object) getExpression(0).evaluate(feature);
@@ -68,7 +71,16 @@ public class FilterFunction_equalTo extends FunctionExpressionImpl {
             throw new IllegalArgumentException(
                     "Filter Function problem for function equalTo argument #1 - expected type Object");
         }
+        if (getParameters().size() > 2) {
+            try { // attempt to get value and perform conversion
+                matchAction = MatchAction.valueOf((String) getExpression(2).evaluate(feature));
+            } catch (Exception e) // probably a type error
+            {
+                throw new IllegalArgumentException(
+                        "Filter Function problem for function equalTo argument #2 - expected one of ANY, ONE or ALL");
+            }
+        }
 
-        return Boolean.valueOf(StaticGeometry.equalTo(arg0, arg1));
+        return Boolean.valueOf(StaticGeometry.equalTo(arg0, arg1, matchAction));
     }
 }

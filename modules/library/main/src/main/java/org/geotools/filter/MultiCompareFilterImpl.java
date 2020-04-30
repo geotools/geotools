@@ -16,6 +16,7 @@
  */
 package org.geotools.filter;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import org.opengis.filter.expression.Expression;
@@ -54,21 +55,34 @@ public abstract class MultiCompareFilterImpl extends CompareFilterImpl {
         return matchAction;
     }
 
+    private Collection<Object> getCollection(Object obj) {
+        if (obj instanceof Collection) {
+            return (Collection<Object>) obj;
+        }
+        if (obj != null && obj.getClass().isArray()) {
+            return Arrays.asList((Object[]) obj);
+        }
+        return null;
+    }
+
     public final boolean evaluate(Object feature) {
         final Object object1 = eval(expression1, feature);
         final Object object2 = eval(expression2, feature);
 
-        if (!(object1 instanceof Collection) && !(object2 instanceof Collection)) {
+        Collection<Object> collection1 = getCollection(object1);
+        Collection<Object> collection2 = getCollection(object2);
+
+        if (collection1 == null && collection2 == null) {
             return evaluateInternal(object1, object2);
         }
 
         Collection<Object> leftValues =
-                object1 instanceof Collection
-                        ? (Collection<Object>) object1
+                collection1 instanceof Collection
+                        ? collection1
                         : Collections.<Object>singletonList(object1);
         Collection<Object> rightValues =
-                object2 instanceof Collection
-                        ? (Collection<Object>) object2
+                collection2 instanceof Collection
+                        ? collection2
                         : Collections.<Object>singletonList(object2);
 
         int count = 0;

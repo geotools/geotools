@@ -30,6 +30,7 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.WKTReader;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.MultiValuedFilter.MatchAction;
 
 /** @author David Blasby (The Open Planning Project) */
 public class StaticGeometry {
@@ -587,6 +588,15 @@ public class StaticGeometry {
             return ((Number) o1).doubleValue() == ((Number) o2).doubleValue();
         }
         return (o1).toString().equals((o2).toString());
+    }
+
+    public static boolean equalTo(Object o1, Object o2, MatchAction policy) {
+        if (policy == null) {
+            return equalTo(o1, o2);
+        }
+        return getFilterFactory2()
+                .equal(ff.literal(o1), ff.literal(o2), false, policy)
+                .evaluate(null);
     }
 
     public static boolean notEqualTo(Object o1, Object o2) {

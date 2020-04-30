@@ -199,6 +199,40 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
     }
 
     @Test
+    public void testEncodeEqualToArraysAny() throws Exception {
+        filterToSql.setFeatureType(testSchema);
+        PropertyIsEqualTo expr =
+                ff.equals(
+                        ff.function(
+                                "equalTo",
+                                ff.property("testArray"),
+                                ff.literal(new String[] {"1", "2", "3"}),
+                                ff.literal("ANY")),
+                        ff.literal(true));
+
+        filterToSql.encode(expr);
+        String sql = writer.toString().toLowerCase();
+        assertEquals("where testarray && array['1', '2', '3']", sql);
+    }
+
+    @Test
+    public void testEncodeEqualToArraysAll() throws Exception {
+        filterToSql.setFeatureType(testSchema);
+        PropertyIsEqualTo expr =
+                ff.equals(
+                        ff.function(
+                                "equalTo",
+                                ff.property("testArray"),
+                                ff.literal(new String[] {"1", "2", "3"}),
+                                ff.literal("ALL")),
+                        ff.literal(true));
+
+        filterToSql.encode(expr);
+        String sql = writer.toString().toLowerCase();
+        assertEquals("where testarray = array['1', '2', '3']", sql);
+    }
+
+    @Test
     public void testFunctionLike() throws Exception {
         filterToSql.setFeatureType(testSchema);
         PropertyIsLike like =

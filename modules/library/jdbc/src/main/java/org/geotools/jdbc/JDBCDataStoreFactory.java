@@ -18,6 +18,7 @@ package org.geotools.jdbc;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.sql.DriverManager;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -246,6 +247,13 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
 
     /** registry for callback plugins */
     static final FactoryRegistry CALLBACK_REGISTRY = new FactoryCreator(JDBCCallbackFactory.class);
+
+    /**
+     * Caches the availability status of this factory in order to avoid thread contention at {@link
+     * #isAvailable}. This factory itself is cached by a {@code FactoryRegistry} when retrieved
+     * through the prescribed SPI services hence no need to have a per-classname cache
+     */
+    private Boolean available;
 
     @Override
     public String getDisplayName() {
@@ -480,16 +488,28 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
     /**
      * Determines if the datastore is available.
      *
-     * <p>Subclasses may with to override or extend this method. This implementation checks whether
-     * the jdbc driver class (provided by {@link #getDriverClassName()} can be loaded.
+     * @implNote Subclasses may wish to override or extend this method. This implementation checks
+     *     whether the jdbc driver class (provided by {@link #getDriverClassName()} is in the
+     *     classpath only the first time it's invoked for each driver class name, in order to avoid
+     *     thread contention at {@link Class#forName} and possible deadlock caused by the
+     *     interactions some drivers static initialization and {@link DriverManager}.
      */
     public boolean isAvailable() {
-        try {
-            Class.forName(getDriverClassName());
+        if (available == null) available = driverIsAvailable(getDriverClassName());
+        return available.booleanValue();
+    }
 
-            return true;
-        } catch (ClassNotFoundException e) {
-            return false;
+    /**
+     * {@code synchronized} helper method to serialize calls to {@link Class#forName}; otherwise
+     * some drivers static initialization interactions with {@link DriverManager} produce a deadlock
+     * under concurrency
+     */
+    private static synchronized Boolean driverIsAvailable(String className) {
+        try {
+            Class.forName(className);
+            return Boolean.TRUE;
+        } catch (ClassNotFoundException ne) {
+            return Boolean.FALSE;
         }
     }
 

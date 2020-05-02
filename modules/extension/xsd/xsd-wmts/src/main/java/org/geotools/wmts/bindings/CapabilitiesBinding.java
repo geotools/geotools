@@ -24,12 +24,9 @@ import net.opengis.ows11.OnlineResourceType;
 import net.opengis.ows11.OperationsMetadataType;
 import net.opengis.ows11.ServiceIdentificationType;
 import net.opengis.ows11.ServiceProviderType;
-import net.opengis.wmts.v_1.CapabilitiesType;
-import net.opengis.wmts.v_1.ContentsType;
-import net.opengis.wmts.v_1.ThemeType;
-import net.opengis.wmts.v_1.wmtsv_1Factory;
+import net.opengis.wmts.v_1.*;
 import org.geotools.wmts.WMTS;
-import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.AbstractComplexEMFBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
 
@@ -97,7 +94,7 @@ import org.geotools.xsd.Node;
  *
  * @generated
  */
-public class CapabilitiesBinding extends AbstractComplexBinding {
+public class CapabilitiesBinding extends AbstractComplexEMFBinding {
     wmtsv_1Factory factory;
 
     public CapabilitiesBinding(wmtsv_1Factory factory) {
@@ -133,7 +130,6 @@ public class CapabilitiesBinding extends AbstractComplexBinding {
         CapabilitiesType capabilities = factory.createCapabilitiesType();
 
         capabilities.setContents((ContentsType) node.getChildValue(ContentsType.class));
-        capabilities.getThemes().addAll(node.getChildren(ThemeType.class));
         capabilities.setOperationsMetadata(
                 (OperationsMetadataType) node.getChildValue(OperationsMetadataType.class));
         capabilities.setServiceIdentification(
@@ -141,6 +137,11 @@ public class CapabilitiesBinding extends AbstractComplexBinding {
         capabilities.setServiceProvider(
                 (ServiceProviderType) node.getChildValue(ServiceProviderType.class));
         capabilities.setUpdateSequence((String) node.getChildValue("UpdateSequence"));
+
+        List<Node> themesChildren = node.getChildren(ThemesType.class);
+        for (Node c : themesChildren) {
+            capabilities.getThemes().add((ThemesType) c.getValue());
+        }
 
         List<Node> children = node.getChildren("ServiceMetadataURL");
         for (Node c : children) {

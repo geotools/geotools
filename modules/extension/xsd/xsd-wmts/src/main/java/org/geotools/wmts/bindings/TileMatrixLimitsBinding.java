@@ -23,9 +23,11 @@ import javax.xml.namespace.QName;
 import net.opengis.wmts.v_1.TileMatrixLimitsType;
 import net.opengis.wmts.v_1.wmtsv_1Factory;
 import org.geotools.wmts.WMTS;
-import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.AbstractComplexEMFBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  * Binding object for the element http://www.opengis.net/wmts/1.0:TileMatrixLimits.
@@ -81,7 +83,7 @@ import org.geotools.xsd.Node;
  *
  * @generated
  */
-public class TileMatrixLimitsBinding extends AbstractComplexBinding {
+public class TileMatrixLimitsBinding extends AbstractComplexEMFBinding {
     wmtsv_1Factory factory;
 
     public TileMatrixLimitsBinding(wmtsv_1Factory factory) {
@@ -127,5 +129,24 @@ public class TileMatrixLimitsBinding extends AbstractComplexBinding {
 
     private static BigInteger toBigInt(Object o) {
         return BigInteger.valueOf(((Integer) o).longValue());
+    }
+
+    public Element encode(Object object, Document document, Element value) throws Exception {
+        // This needs its own encode method because otherwise the EMF encoder will mistake
+        // the contained wmts:TileMatrix for a TileMatrixType and try to encode it that
+        // way, ending up with an empty element in the document
+
+        Element e = super.encode(object, document, value);
+
+        TileMatrixLimitsType matrixLimit = (TileMatrixLimitsType) object;
+
+        if (matrixLimit.getTileMatrix() != null) {
+
+            Element tileMatrixNode = document.createElementNS(WMTS.NAMESPACE, "TileMatrix");
+            tileMatrixNode.setTextContent(matrixLimit.getTileMatrix());
+            e.appendChild(tileMatrixNode);
+        }
+
+        return e;
     }
 }

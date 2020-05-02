@@ -42,7 +42,7 @@ import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
 /**
  * Responsible for configuring a parser runtime environment.
  *
- * <p>Implementations have the following responsibilites:
+ * <p>Implementations have the following responsibilities:
  *
  * <ul>
  *   <li>Configuration of bindings.
@@ -54,7 +54,7 @@ import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
  *
  * <h3>Dependencies</h3>
  *
- * <p>Configurations have dependencies on one another, that result from teh fact that one schema
+ * <p>Configurations have dependencies on one another, that results from the fact that one schema
  * imports another. Configuration dependencies are transitive. Each configuration should declare all
  * dependencies in the constructor using the {@link #addDependency(Configuration)} method. <code>
  *         <pre>
@@ -72,7 +72,7 @@ import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
  *
  * <h3>Binding Configuration</h3>
  *
- * <p>In able for a particular binding to be found during a parse, the configuration must first
+ * <p>To enable a particular binding to be found during a parse, the configuration must first
  * populate a container with said binding. This can be done by returning the appropriate instance of
  * {@link org.geotools.xml.BindingConfiguration} in {@link #getBindingConfiguration()}:
  *
@@ -108,7 +108,7 @@ import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
  * </pre>
  *
  * Before a binding can be created, the container in which it is housed in must be able to satisfy
- * all of its dependencies. It is the responsibility of the configuration to statisfy this criteria.
+ * all of its dependencies. It is the responsibility of the configuration to satisfy this criteria.
  * This is known as configuring the binding context. The following is a suitable configuration for
  * the above binding.
  *
@@ -126,7 +126,7 @@ import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
  * <h3>Schema Resolution</h3>
  *
  * <p>XML instance documents often contain schema uri references that are invalid with respect to
- * the parser, or non-existant. A configuration can supply specialized look up classes to prevent
+ * the parser, or non-existent. A configuration can supply specialized look up classes to prevent
  * the parser from following an invalid uri and prevent any errors that may occur as a result.
  *
  * <p>An instance of {@link org.eclipse.xsd.util.XSDSchemaLocationResolver} can be used to override
@@ -445,7 +445,7 @@ public abstract class Configuration {
      */
     protected void registerBindings(MutablePicoContainer container) {
         // do nothing, in the case where the subclass has overridden the config
-        // will recognize and apapt this method to #registerBindings(Map)
+        // will recognize and adapt this method to #registerBindings(Map)
         // accordingly (see #setupBindings()}
     }
 

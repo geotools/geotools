@@ -337,7 +337,7 @@ public final class Logging {
             } catch (Exception e) {
                 /*
                  * Catching java.lang.Exception is usually bad practice, but there is really a lot
-                 * of checked exceptions when using reflection. Unfortunatly there is nothing like
+                 * of checked exceptions when using reflection. Unfortunately there is nothing like
                  * a "ReflectionException" parent class that we could catch instead. There is also
                  * a few unchecked exception that we want to process here, like ClassCastException.
                  */

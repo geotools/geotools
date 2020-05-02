@@ -122,12 +122,12 @@ public interface Node {
     /**
      * Helper method for access to child's parsed contents by element name.
      * <p>
-     * In the event that the node has multiple children mathing <code>name</name>
+     * In the event that the node has multiple children matching <code>name</name>
      * the first encountered is returned, there is no guarantee of order. For a
      * list of all values matching name use {@link #getChildValues(String)}.
      * </p>
      *
-     * @param name The name of the child which parsed content is to be retrived.
+     * @param name The name of the child which parsed content is to be retrieved.
      *
      * @return the value of the child with the given name, or <code>null</code>
      * if the child does not exist.

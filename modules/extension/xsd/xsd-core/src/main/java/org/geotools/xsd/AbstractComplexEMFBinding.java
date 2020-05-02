@@ -47,7 +47,7 @@ public abstract class AbstractComplexEMFBinding extends AbstractComplexBinding {
     /**
      * Default constructor.
      *
-     * <p>Creatign the binding with this constructor will force it to perform a noop in the {@link
+     * <p>Creating the binding with this constructor will force it to perform a noop in the {@link
      * #parse(ElementInstance, Node, Object)} method.
      */
     public AbstractComplexEMFBinding() {}

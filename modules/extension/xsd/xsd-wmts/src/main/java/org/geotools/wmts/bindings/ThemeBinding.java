@@ -20,11 +20,12 @@ package org.geotools.wmts.bindings;
 
 import java.net.URI;
 import javax.xml.namespace.QName;
+import net.opengis.ows10.Ows10Factory;
 import net.opengis.ows11.CodeType;
 import net.opengis.wmts.v_1.ThemeType;
 import net.opengis.wmts.v_1.wmtsv_1Factory;
+import org.geotools.ows.bindings.DescriptionTypeBinding;
 import org.geotools.wmts.WMTS;
-import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
 
@@ -70,12 +71,12 @@ import org.geotools.xsd.Node;
  *
  * @generated
  */
-public class ThemeBinding extends AbstractComplexBinding {
+public class ThemeBinding extends DescriptionTypeBinding {
 
     wmtsv_1Factory factory;
 
     public ThemeBinding(wmtsv_1Factory factory) {
-        super();
+        super(Ows10Factory.eINSTANCE);
         this.factory = factory;
     }
 
@@ -103,14 +104,20 @@ public class ThemeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        ThemeType theme = factory.createThemeType();
 
-        theme.setIdentifier((CodeType) node.getChildValue("Identifier"));
-        for (Object c : node.getChildValues("LayerRef")) {
-            theme.getLayerRef().add(((URI) c).toString());
+        if (!(value instanceof ThemeType)) {
+            value = factory.createThemeType();
         }
-        theme.getTheme().addAll(node.getChildValues("Theme"));
 
-        return theme;
+        // Call DescriptionType parser to load the object with the DescriptionType values
+        value = super.parse(instance, node, value);
+
+        ((ThemeType) value).setIdentifier((CodeType) node.getChildValue("Identifier"));
+        for (Object c : node.getChildValues("LayerRef")) {
+            ((ThemeType) value).getLayerRef().add(((URI) c).toString());
+        }
+        ((ThemeType) value).getTheme().addAll(node.getChildValues("Theme"));
+
+        return value;
     }
 }

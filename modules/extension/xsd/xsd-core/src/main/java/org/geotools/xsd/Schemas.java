@@ -704,7 +704,7 @@ public class Schemas {
         TypeWalker.Visitor visitor =
                 new TypeWalker.Visitor() {
                     public boolean visit(XSDTypeDefinition type) {
-                        // simple types dont have children
+                        // simple types don't have children
                         if (type instanceof XSDSimpleTypeDefinition) {
                             return true;
                         }
@@ -1111,10 +1111,10 @@ public class Schemas {
                 }
 
                 if (grp != null) {
-                    // enque all particles in the group
+                    // enqueue all particles in the group
                     List parts = grp.getParticles();
 
-                    // TODO: this check isa  bit hacky.. .figure out why this is the case
+                    // TODO: this check is a bit hacky... figure out why this is the case
                     if (parts.isEmpty()) {
                         parts = grp.getContents();
                     }

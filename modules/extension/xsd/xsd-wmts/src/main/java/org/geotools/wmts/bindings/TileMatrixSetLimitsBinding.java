@@ -24,7 +24,7 @@ import net.opengis.wmts.v_1.TileMatrixLimitsType;
 import net.opengis.wmts.v_1.TileMatrixSetLimitsType;
 import net.opengis.wmts.v_1.wmtsv_1Factory;
 import org.geotools.wmts.WMTS;
-import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.AbstractComplexEMFBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
 
@@ -61,7 +61,7 @@ import org.geotools.xsd.Node;
  *
  * @generated
  */
-public class TileMatrixSetLimitsBinding extends AbstractComplexBinding {
+public class TileMatrixSetLimitsBinding extends AbstractComplexEMFBinding {
 
     wmtsv_1Factory factory;
 

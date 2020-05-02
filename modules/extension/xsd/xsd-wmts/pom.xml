@@ -82,6 +82,10 @@
             <artifactId>gt-xsd-ows</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>xmlunit</groupId>
+            <artifactId>xmlunit</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -95,13 +99,11 @@
                     <schemaSourceDirectory>${project.basedir}/src/main/resources/org/geotools/wmts/v_10/</schemaSourceDirectory>
                     <destinationPackage>org.geotools.wmts.bindings</destinationPackage>
                     <generateConfiguration>true</generateConfiguration>
-                    <generateBindingInterface>true</generateBindingInterface>
                     <generateElementBindings>true</generateElementBindings>
                     <generateAttributeBindings>true</generateAttributeBindings>
                     <generateTypeBindings>true</generateTypeBindings>
                     <generateXsd>true</generateXsd>
                     <targetPrefix>wmts</targetPrefix>
-                    <generateSchemaLocationResolver>true</generateSchemaLocationResolver>
                     <complexBindingBaseClass>org.geotools.xsd.AbstractComplexBinding</complexBindingBaseClass>
                     <simpleBindingBaseClass>org.geotools.xsd.AbstractSimpleBinding</simpleBindingBaseClass>
                     <bindingConstructorArguments>

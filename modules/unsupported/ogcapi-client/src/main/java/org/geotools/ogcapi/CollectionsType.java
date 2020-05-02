@@ -31,6 +31,7 @@ import java.util.Map;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class CollectionsType {
+    private static final String APPLICATION_JSON = "application/json";
     static JsonFactory factory = new JsonFactory();
     Map<String, CollectionType> collections = new HashMap<>();
     ArrayList<CoordinateReferenceSystem> crs = new ArrayList<>();
@@ -71,7 +72,7 @@ public class CollectionsType {
                             JsonNode links = node.get("links");
                             for (JsonNode link : links) {
                                 if ("self".equalsIgnoreCase(link.get("rel").asText())
-                                        && QuickTileViewer.APPLICATION_JSON.equalsIgnoreCase(
+                                        && APPLICATION_JSON.equalsIgnoreCase(
                                                 link.get("type").asText())) {
                                     CollectionType realCollection =
                                             CollectionType.buildRealCollection(

@@ -18,12 +18,8 @@ package org.geotools.ogcapi;
 
 import com.bedatadriven.jackson.datatype.jts.JtsModule;
 import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -57,15 +53,11 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.styling.SLD;
 import org.geotools.styling.Style;
 import org.geotools.swing.JMapFrame;
+import org.geotools.util.URLs;
 import org.geotools.util.UnsupportedImplementationException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.SAXException;
 
-/**
- * Prompts the user for a shapefile and displays the contents on the screen in a map frame.
- *
- * <p>This is the GeoTools Quickstart application used in documentation and tutorials. *
- */
 public class QuickTileViewer {
 
     public static final String APPLICATION_JSON = "application/json";
@@ -191,7 +183,7 @@ public class QuickTileViewer {
         new URL(baseURL);
         featureURL = new URL(baseURL + "features?f=json");
         new URL(baseURL + "tiles");
-        FeaturesType contents = fetchContents();
+        FeaturesType contents = FeaturesType.fetchContents(featureURL);
         // System.out.println(contents);
         // fetch the TileMatrix sets
         ArrayList<TileMatrixSet> matrixSets = fetchMatrixSets(contents);
@@ -245,48 +237,6 @@ public class QuickTileViewer {
         return null;
     }
 
-    private FeaturesType fetchContents() throws JsonParseException, IOException {
-        FeaturesType ret = new FeaturesType();
-        JsonFactory factory = new JsonFactory();
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JtsModule());
-        try (JsonParser parser = factory.createParser(featureURL)) {
-            JsonToken token = parser.nextToken(); // start 1st object
-
-            while (!parser.isClosed()) {
-                // We can now see title, description and links array
-                token = parser.nextToken();
-                if (token == null) {
-                    break;
-                }
-                if (JsonToken.FIELD_NAME.equals(token)
-                        && "title".equalsIgnoreCase(parser.currentName())) {
-                    token = parser.nextToken();
-                    ret.setTitle(parser.getValueAsString());
-                }
-                if (JsonToken.FIELD_NAME.equals(token)
-                        && "description".equalsIgnoreCase(parser.currentName())) {
-                    token = parser.nextToken();
-                    ret.setDescription(parser.getValueAsString());
-                }
-                if (JsonToken.FIELD_NAME.equals(token)
-                        && "links".equalsIgnoreCase(parser.currentName())) {
-                    token = parser.nextToken();
-                    if (!JsonToken.START_ARRAY.equals(token)) {
-                        throw new UnsupportedOperationException("Was expecting an array of links");
-                    }
-                    while (parser.nextToken() == JsonToken.START_OBJECT) {
-
-                        ObjectNode node = mapper.readTree(parser);
-
-                        ret.links.add(Link.buildLink(node));
-                    }
-                }
-            }
-            return ret;
-        }
-    }
-
     /**
      * @throws MalformedURLException
      * @throws IOException
@@ -301,17 +251,16 @@ public class QuickTileViewer {
 
         map.getViewport().setCoordinateReferenceSystem(crs);
         map.getViewport().setBounds(env);
+        URL f = this.getClass().getResource("data/110m_coastline.shp");
 
-        File file = new File("/data/natural_earth/110m_physical/110m_coastline.shp");
-        FileDataStore store = FileDataStoreFinder.getDataStore(file);
+        FileDataStore store = FileDataStoreFinder.getDataStore(URLs.urlToFile(f));
         SimpleFeatureSource featureSource = store.getFeatureSource();
         Style style = SLD.createSimpleStyle(featureSource.getSchema());
         Layer layer = new FeatureLayer(featureSource, style);
         map.addLayer(layer);
         frame = new JMapFrame();
         frame.setSize(1000, 450);
-        // map.getViewport().setScreenArea(new Rectangle(800,400));
-        // Now display the map
+
         frame.setMapContent(map);
         frame.setTitle("API Test Viewer");
         ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("add.png"));
@@ -333,7 +282,6 @@ public class QuickTileViewer {
                                             } catch (IOException
                                                     | SAXException
                                                     | ParserConfigurationException e1) {
-                                                // TODO Auto-generated catch block
                                                 e1.printStackTrace();
                                             }
                                         }

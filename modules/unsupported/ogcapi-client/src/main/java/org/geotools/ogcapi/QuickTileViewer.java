@@ -24,6 +24,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.awt.Cursor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -34,16 +37,15 @@ import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import javax.swing.JList;
-import javax.swing.JSplitPane;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.SwingUtilities;
 import javax.xml.parsers.ParserConfigurationException;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.FileDataStore;
 import org.geotools.data.FileDataStoreFinder;
 import org.geotools.data.geojson.GeoJSONDataStore;
-import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geopkg.GeoPkgDataStoreFactory;
@@ -55,7 +57,7 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.styling.SLD;
 import org.geotools.styling.Style;
 import org.geotools.swing.JMapFrame;
-import org.geotools.wfs.GML.Version;
+import org.geotools.util.UnsupportedImplementationException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.SAXException;
 
@@ -67,47 +69,76 @@ import org.xml.sax.SAXException;
 public class QuickTileViewer {
 
     public static final String APPLICATION_JSON = "application/json";
+
     public static final String APPLICATION_MVT = "application/vnd.mapbox-vector-tile";
+
     public static final String APPLICATION_GML_32 = "application/gml+xml;version=3.2";
+
     public static final String APPLICATION_KML = "application/vnd.google-earth.kml+xml";
+
     public static final String APPLICATION_GEOPKG = "application/x-gpkg";
 
     static JsonFactory factory = new JsonFactory();
+
     private URL featureURL;
+
     private CoordinateReferenceSystem crs;
+
     private CollectionsType collections;
+
     private MapContent map;
-    private JMapFrame frame;
-    private JList<String> list;
+
+    JMapFrame frame;
+
+    private LayerDialog layerDialog;
 
     public static void main(String[] args) throws Exception {
-        QuickTileViewer viewer = new QuickTileViewer();
-        viewer.init();
+
         String baseURL = "http://localhost:9090/geoserver/ogc/";
-        viewer.setBaseURL(baseURL);
-        viewer.addLayer("topp:states", APPLICATION_GML_32);
+
+        new QuickTileViewer(baseURL);
+
+        // viewer.addLayer("topp:states");
         // viewer.addLayer("zoomstack2:roads_national");
+    }
+
+    /** */
+    public QuickTileViewer(String base) {
+        try {
+            init();
+
+            setBaseURL(base);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     void addLayer(String identifier)
             throws IOException, SAXException, ParserConfigurationException {
-        addLayer(identifier, APPLICATION_JSON);
+        addLayer(identifier, "", APPLICATION_JSON);
     }
 
-    void addLayer(String identifier, String format)
+    void addLayer(String identifier, String style)
+            throws IOException, SAXException, ParserConfigurationException {
+        addLayer(identifier, style, APPLICATION_JSON);
+    }
+
+    void addLayer(String identifier, String style, String format)
             throws IOException, SAXException, ParserConfigurationException {
         CollectionType col = collections.collections.get(identifier);
         for (Link l : col.links) {
             if ("items".equalsIgnoreCase(l.rel) && format.equalsIgnoreCase(l.type)) {
                 DataStore ds = null;
                 URL url = new URL(l.href);
+                File tempFile;
                 switch (l.type) {
                     case APPLICATION_JSON:
                         ds = new GeoJSONDataStore(url);
                         break;
                     case APPLICATION_GEOPKG:
                         // Fetch file to temp disk
-                        File tempFile = File.createTempFile("TileViewer", "gpkg");
+                        tempFile = File.createTempFile("TileViewer", ".gpkg");
                         tempFile.deleteOnExit();
                         try (ReadableByteChannel rbc = Channels.newChannel(url.openStream());
                                 FileOutputStream fos = new FileOutputStream(tempFile)) {
@@ -122,27 +153,41 @@ public class QuickTileViewer {
                             ds = DataStoreFinder.getDataStore(params);
                         }
                         break;
+                    case APPLICATION_MVT:
+                        throw new UnsupportedImplementationException(
+                                APPLICATION_MVT + " is not currently supported");
+                    case APPLICATION_KML:
+                        throw new UnsupportedImplementationException(
+                                APPLICATION_KML + " is not currently supported");
                     case APPLICATION_GML_32:
-                        // Grab the file and parse,
+                        throw new UnsupportedImplementationException(
+                                APPLICATION_GML_32 + " is not currently supported");
 
-                        org.geotools.wfs.GML gml = new org.geotools.wfs.GML(Version.WFS1_1);
-                        SimpleFeatureCollection features =
-                                gml.decodeFeatureCollection(url.openStream());
-                        ds = DataUtilities.dataStore(features);
-                        break;
                     default:
                         throw new RuntimeException("Unknown mime/type requested " + format);
                 }
                 String name = ds.getTypeNames()[0];
                 SimpleFeatureSource featureSource = ds.getFeatureSource(name);
-                Style style = col.styles.get(0).sld;
-                Layer layer = new FeatureLayer(featureSource, style);
+                Style sld = null;
+                if (style == null || style.isEmpty()) {
+                    sld = col.styles.get(0).sld;
+                } else {
+                    for (StyleType s : col.styles) {
+                        if (s.getIdentifier().equalsIgnoreCase(style)) {
+                            sld = s.sld;
+                            break;
+                        }
+                    }
+                }
+                Layer layer = new FeatureLayer(featureSource, sld);
                 map.addLayer(layer);
             }
         }
     }
 
     private void setBaseURL(String baseURL) throws Exception {
+        Cursor cursor = frame.getCursor();
+        frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         new URL(baseURL);
         featureURL = new URL(baseURL + "features?f=json");
         new URL(baseURL + "tiles");
@@ -158,7 +203,8 @@ public class QuickTileViewer {
         }
         // Fetch Feature Collections
         collections = fetchCollections(contents);
-        // list.setListData((String[])collections.collections.keySet().toArray(new String[] {}));
+        layerDialog.updateLayers(collections);
+        frame.setCursor(cursor);
     }
 
     private CollectionsType fetchCollections(FeaturesType contents) throws Exception {
@@ -268,13 +314,38 @@ public class QuickTileViewer {
         // Now display the map
         frame.setMapContent(map);
         frame.setTitle("API Test Viewer");
+        ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("add.png"));
+        layerDialog = new LayerDialog(this, "Select a layer");
+        JButton button = new JButton(imageIcon);
+        button.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        layerDialog.updateLayers(collections);
+                        layerDialog.setVisible(true);
+                        String newLayer = layerDialog.getLayer();
+                        if (newLayer != null && !newLayer.isEmpty()) {
+                            SwingUtilities.invokeLater(
+                                    new Runnable() {
+                                        public void run() {
+                                            try {
+                                                addLayer(newLayer);
+                                            } catch (IOException
+                                                    | SAXException
+                                                    | ParserConfigurationException e1) {
+                                                // TODO Auto-generated catch block
+                                                e1.printStackTrace();
+                                            }
+                                        }
+                                    });
+                        }
+                    }
+                });
         frame.enableToolBar(true);
         frame.enableStatusBar(true);
 
-        list = new JList<>();
-        JSplitPane splitPane =
-                new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, false, list, frame.getMapPane());
-        frame.add(splitPane);
+        frame.getToolBar().add(button);
+
         frame.setVisible(true);
     }
 }

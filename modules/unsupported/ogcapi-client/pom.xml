@@ -66,5 +66,10 @@
         	<artifactId>gt-xsd-wfs</artifactId>
         	<version>${project.version}</version>
         </dependency>
+        <dependency>
+        	<groupId>org.geotools</groupId>
+        	<artifactId>gt-wfs-ng</artifactId>
+        	<version>${project.version}</version>
+        </dependency>
   </dependencies>
 </project>

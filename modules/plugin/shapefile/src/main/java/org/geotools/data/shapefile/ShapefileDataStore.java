@@ -277,7 +277,7 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
             writer.writeHeaders(new Envelope(), shapeType, 0, 100);
         }
 
-        DbaseFileHeader dbfheader = createDbaseHeader(featureType);
+        DbaseFileHeader dbfheader = createDbaseHeader(featureType, charset);
 
         dbfheader.setNumRecords(0);
 
@@ -320,10 +320,10 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
      * Attempt to create a DbaseFileHeader for the FeatureType. Note, we cannot set the number of
      * records until the write has completed.
      */
-    protected static DbaseFileHeader createDbaseHeader(SimpleFeatureType featureType)
-            throws IOException, DbaseFileException {
+    protected static DbaseFileHeader createDbaseHeader(
+            SimpleFeatureType featureType, Charset charset) throws IOException, DbaseFileException {
 
-        DbaseFileHeader header = new DbaseFileHeader();
+        DbaseFileHeader header = new DbaseFileHeader(charset);
 
         for (int i = 0, ii = featureType.getAttributeCount(); i < ii; i++) {
             AttributeDescriptor type = featureType.getDescriptor(i);

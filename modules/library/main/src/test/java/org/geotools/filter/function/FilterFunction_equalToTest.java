@@ -73,6 +73,18 @@ public class FilterFunction_equalToTest {
     }
 
     @Test
+    public void testAnyMatchPrimitiveArrays() throws Exception {
+        FilterFactoryImpl ff = new FilterFactoryImpl();
+        Function func =
+                ff.function(
+                        "equalTo",
+                        ff.literal(new int[] {1, 2, 3, 4, 5, 6, 7, 8}),
+                        ff.literal(new int[] {1, 2, 3}),
+                        ff.literal("ANY"));
+        assertTrue((Boolean) func.evaluate(new Object()));
+    }
+
+    @Test
     public void testAnyDoesNotMatch() throws Exception {
         FilterFactoryImpl ff = new FilterFactoryImpl();
         Function func =

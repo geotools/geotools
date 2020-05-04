@@ -20,12 +20,23 @@ package org.geotools.filter.function;
 
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
+import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.MultiValuedFilter.MatchAction;
 import org.opengis.filter.capability.FunctionName;
 
 public class FilterFunction_equalTo extends FunctionExpressionImpl {
+    private static FilterFactory2 ff;
+
+    private static FilterFactory2 getFilterFactory2() {
+        if (ff == null) {
+            ff = CommonFactoryFinder.getFilterFactory2();
+        }
+        return ff;
+    }
 
     public static FunctionName NAME =
             new FunctionNameImpl(
@@ -73,14 +84,19 @@ public class FilterFunction_equalTo extends FunctionExpressionImpl {
         }
         if (getParameters().size() > 2) {
             try { // attempt to get value and perform conversion
-                matchAction = MatchAction.valueOf((String) getExpression(2).evaluate(feature));
+                matchAction = (MatchAction) getExpression(2).evaluate(feature, MatchAction.class);
             } catch (Exception e) // probably a type error
             {
                 throw new IllegalArgumentException(
                         "Filter Function problem for function equalTo argument #2 - expected one of ANY, ONE or ALL");
             }
         }
+        Filter equalTo =
+                matchAction == null
+                        ? getFilterFactory2().equal(ff.literal(arg0), ff.literal(arg1), false)
+                        : getFilterFactory2()
+                                .equal(ff.literal(arg0), ff.literal(arg1), false, matchAction);
 
-        return Boolean.valueOf(StaticGeometry.equalTo(arg0, arg1, matchAction));
+        return equalTo.evaluate(null);
     }
 }

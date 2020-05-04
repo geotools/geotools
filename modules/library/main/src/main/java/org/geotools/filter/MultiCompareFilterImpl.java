@@ -19,6 +19,7 @@ package org.geotools.filter;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import org.geotools.util.Converters;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -55,15 +56,22 @@ public abstract class MultiCompareFilterImpl extends CompareFilterImpl {
         return matchAction;
     }
 
+    private Collection<Object> toCollection(Object obj) {
+        if (obj instanceof Collection) {
+            return (Collection<Object>) obj;
+        }
+        if (obj != null && obj.getClass().isArray()) {
+            return (Collection<Object>) Converters.convert(obj, List.class);
+        }
+        return null;
+    }
+
     public final boolean evaluate(Object feature) {
         final Object object1 = eval(expression1, feature);
         final Object object2 = eval(expression2, feature);
 
-        /** Check if any expression can be evaluated to a collection. */
-        final Collection<Object> collection1 =
-                (Collection<Object>) expression1.evaluate(feature, List.class);
-        final Collection<Object> collection2 =
-                (Collection<Object>) expression2.evaluate(feature, List.class);
+        Collection<Object> collection1 = toCollection(object1);
+        Collection<Object> collection2 = toCollection(object2);
 
         if (collection1 == null && collection2 == null) {
             return evaluateInternal(object1, object2);

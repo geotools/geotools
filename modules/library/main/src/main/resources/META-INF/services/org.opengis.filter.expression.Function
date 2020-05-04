@@ -1,5 +1,6 @@
 org.geotools.filter.AreaFunction
 org.geotools.filter.LengthFunction
+org.geotools.filter.function.ArrayFunction
 org.geotools.filter.function.AttributeCountFunction
 org.geotools.filter.function.CategorizeFunction
 org.geotools.filter.function.ClassifyFunction

@@ -27,6 +27,7 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.MultiValuedFilter.MatchAction;
 import org.opengis.filter.capability.FunctionName;
+import org.opengis.filter.expression.Expression;
 
 public class FilterFunction_equalTo extends FunctionExpressionImpl {
     private static FilterFactory2 ff;
@@ -63,25 +64,10 @@ public class FilterFunction_equalTo extends FunctionExpressionImpl {
     }
 
     public Object evaluate(Object feature) {
-        Object arg0;
-        Object arg1;
+        Expression arg0 = getExpression(0);
+        Expression arg1 = getExpression(1);
         MatchAction matchAction = null;
 
-        try { // attempt to get value and perform conversion
-            arg0 = (Object) getExpression(0).evaluate(feature);
-        } catch (Exception e) // probably a type error
-        {
-            throw new IllegalArgumentException(
-                    "Filter Function problem for function equalTo argument #0 - expected type Object");
-        }
-
-        try { // attempt to get value and perform conversion
-            arg1 = (Object) getExpression(1).evaluate(feature);
-        } catch (Exception e) // probably a type error
-        {
-            throw new IllegalArgumentException(
-                    "Filter Function problem for function equalTo argument #1 - expected type Object");
-        }
         if (getParameters().size() > 2) {
             try { // attempt to get value and perform conversion
                 matchAction = (MatchAction) getExpression(2).evaluate(feature, MatchAction.class);
@@ -93,10 +79,9 @@ public class FilterFunction_equalTo extends FunctionExpressionImpl {
         }
         Filter equalTo =
                 matchAction == null
-                        ? getFilterFactory2().equal(ff.literal(arg0), ff.literal(arg1), false)
-                        : getFilterFactory2()
-                                .equal(ff.literal(arg0), ff.literal(arg1), false, matchAction);
+                        ? getFilterFactory2().equal(arg0, arg1, false)
+                        : getFilterFactory2().equal(arg0, arg1, false, matchAction);
 
-        return equalTo.evaluate(null);
+        return equalTo.evaluate(feature);
     }
 }

@@ -20,11 +20,20 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
+import org.geotools.data.DataUtilities;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.filter.FilterFactoryImpl;
+import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.junit.Test;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.expression.Function;
 
 public class FilterFunction_equalToTest {
+    protected final GeometryFactory gf = JTSFactoryFinder.getGeometryFactory(null);
+
     @Test
     public void testNoMatchActionStrings() throws Exception {
         FilterFactoryImpl ff = new FilterFactoryImpl();
@@ -70,6 +79,18 @@ public class FilterFunction_equalToTest {
                         ff.literal(new Integer[] {1, 2, 3}),
                         ff.literal("ANY"));
         assertTrue((Boolean) func.evaluate(new Object()));
+    }
+
+    @Test
+    public void testAnyMatchArrayAndProperty() throws Exception {
+        FilterFactoryImpl ff = new FilterFactoryImpl();
+        Function func =
+                ff.function(
+                        "equalTo",
+                        ff.property("value"),
+                        ff.literal(new Integer[] {1, 2, 3}),
+                        ff.literal("ANY"));
+        assertTrue((Boolean) func.evaluate(feature(new Integer[] {1, 2, 3, 4, 5, 6, 7, 8})));
     }
 
     @Test
@@ -142,5 +163,20 @@ public class FilterFunction_equalToTest {
                         ff.literal(Arrays.asList(1, 2)),
                         ff.literal("ONE"));
         assertFalse((Boolean) func.evaluate(new Object()));
+    }
+
+    protected SimpleFeature feature(Object value) throws Exception {
+        String typeSpec;
+        if (value.getClass().isArray()) {
+            typeSpec = "geom:Point,value:[L" + value.getClass().getComponentType().getName() + ";";
+        } else {
+            typeSpec = "geom:Point,value:" + value.getClass().getSimpleName();
+        }
+        SimpleFeatureType type = DataUtilities.createType("Feature", typeSpec);
+        SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
+        Coordinate coord = new Coordinate(0, 0);
+        builder.add(gf.createPoint(coord));
+        builder.add(value);
+        return builder.buildFeature(null);
     }
 }

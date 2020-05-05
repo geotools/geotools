@@ -75,10 +75,33 @@ public class ArrayConverterFactoryTest {
         String[] array = new String[] {"1", "2", "3"};
         Converter converter =
                 factory.createConverter(array.getClass(), Integer[].class, new Hints());
-        assertEquals(3, converter.convert(array, Integer[].class).length);
-        assertEquals((Integer) 1, converter.convert(array, Integer[].class)[0]);
-        assertEquals((Integer) 2, converter.convert(array, Integer[].class)[1]);
-        assertEquals((Integer) 3, converter.convert(array, Integer[].class)[2]);
+        Integer[] converted = converter.convert(array, Integer[].class);
+        assertEquals(3, converted.length);
+        assertEquals((Integer) 1, converted[0]);
+        assertEquals((Integer) 2, converted[1]);
+        assertEquals((Integer) 3, converted[2]);
+    }
+
+    @Test
+    public void testArrayToArrayWithNulls() throws Exception {
+        String[] array = new String[] {"1", "2", null, "3"};
+        Converter converter =
+                factory.createConverter(array.getClass(), Integer[].class, new Hints());
+        Integer[] converted = converter.convert(array, Integer[].class);
+        assertEquals(4, converted.length);
+        assertEquals((Integer) 1, converted[0]);
+        assertEquals((Integer) 2, converted[1]);
+        assertNull(converted[2]);
+        assertEquals((Integer) 3, converted[3]);
+    }
+
+    @Test
+    public void testArrayToArrayWithConversionErrors() throws Exception {
+        String[] array = new String[] {"1", "2", "a", "3"};
+        Converter converter =
+                factory.createConverter(array.getClass(), Integer[].class, new Hints());
+        Integer[] converted = converter.convert(array, Integer[].class);
+        assertNull(converted);
     }
 
     @Test
@@ -86,9 +109,10 @@ public class ArrayConverterFactoryTest {
         String[] array = new String[] {"1", "2", "3"};
         Converter converter =
                 factory.createConverter(array.getClass(), Integer[].class, new Hints());
-        assertEquals(3, converter.convert(array, int[].class).length);
-        assertEquals((int) 1, converter.convert(array, int[].class)[0]);
-        assertEquals((int) 2, converter.convert(array, int[].class)[1]);
-        assertEquals((int) 3, converter.convert(array, int[].class)[2]);
+        int[] converted = converter.convert(array, int[].class);
+        assertEquals(3, converted.length);
+        assertEquals((int) 1, converted[0]);
+        assertEquals((int) 2, converted[1]);
+        assertEquals((int) 3, converted[2]);
     }
 }

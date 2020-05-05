@@ -67,7 +67,13 @@ public class ArrayConverterFactory implements ConverterFactory {
             Object result = Array.newInstance(elementType, arrLength);
 
             for (int count = 0; count < arrLength; count++) {
-                Array.set(result, count, Converters.convert(Array.get(source, count), elementType));
+                Object sourceElement = Array.get(source, count);
+                Object converted = Converters.convert(sourceElement, elementType);
+                if (sourceElement != null && converted == null) {
+                    // error in conversion
+                    return null;
+                }
+                Array.set(result, count, converted);
             }
             return (T) result;
         }

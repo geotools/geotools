@@ -17,7 +17,7 @@
  */
 package org.geotools.data.mongodb;
 
-import com.mongodb.util.JSON;
+import com.mongodb.BasicDBObject;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -64,7 +64,8 @@ public class MongoSchemaFileStore implements MongoSchemaStore {
         File schemaFile = schemaFile(schema.getTypeName());
         BufferedWriter writer = new BufferedWriter(new FileWriter(schemaFile));
         try {
-            writer.write(JSON.serialize(FeatureTypeDBObject.convert(schema)));
+            BasicDBObject dbObject = FeatureTypeDBObject.convert(schema);
+            writer.write(dbObject.toJson());
         } finally {
             writer.close();
         }

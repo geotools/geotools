@@ -21,7 +21,6 @@ import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-import com.mongodb.util.JSON;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -251,14 +250,11 @@ public class MongoUtil {
                 jsonBuilder.append(line);
                 jsonBuilder.append(lineSeparator);
             }
-            Object o = JSON.parse(jsonBuilder.toString());
-            if (o instanceof DBObject) {
-                return FeatureTypeDBObject.convert((DBObject) o, name);
-            }
+            BasicDBObject o = BasicDBObject.parse(jsonBuilder.toString());
+            return FeatureTypeDBObject.convert(o, name);
         } finally {
             reader.close();
         }
-        return null;
     }
 
     static File downloadSchemaFile(

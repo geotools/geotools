@@ -68,9 +68,9 @@ public class FeatureTypeDBObject {
 
     static final String PREFIX_URN_OGC = "urn:ogc:def:crs:";
 
-    public static DBObject convert(SimpleFeatureType ft) {
+    public static BasicDBObject convert(SimpleFeatureType ft) {
 
-        DBObject ftDBO = new BasicDBObject(KEY_typeName, ft.getTypeName());
+        BasicDBObject ftDBO = new BasicDBObject(KEY_typeName, ft.getTypeName());
         Map<String, String> ftUserData = typeCheck(ft.getUserData());
         if (!ftUserData.isEmpty()) {
             ftDBO.put(KEY_userData, new BasicDBObject(ftUserData));

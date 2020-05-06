@@ -18,15 +18,17 @@ package org.geotools.filter.v1_0;
 
 import javax.xml.namespace.QName;
 import org.geotools.filter.Filters;
+import org.geotools.gml3.bindings.GML3EncodingUtils;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.filter.FilterFactory;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.picocontainer.MutablePicoContainer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.helpers.NamespaceSupport;
 
 /**
  * Binding object for the type http://www.opengis.net/ogc:PropertyNameType.
@@ -47,10 +49,14 @@ import org.w3c.dom.Element;
  * @generated
  */
 public class OGCPropertyNameTypeBinding extends AbstractComplexBinding {
-    protected FilterFactory factory;
+    protected FilterFactory2 factory;
 
-    public OGCPropertyNameTypeBinding(FilterFactory factory) {
+    /** parser namespace mappings */
+    protected NamespaceSupport namespaceSupport;
+
+    public OGCPropertyNameTypeBinding(FilterFactory2 factory, NamespaceSupport namespaceSupport) {
         this.factory = factory;
+        this.namespaceSupport = namespaceSupport;
     }
 
     /** @generated */
@@ -105,7 +111,7 @@ public class OGCPropertyNameTypeBinding extends AbstractComplexBinding {
             xpath = "";
         }
 
-        return factory.property(xpath);
+        return factory.property(xpath, GML3EncodingUtils.copyNamespaceSupport(namespaceSupport));
     }
 
     public Element encode(Object object, Document document, Element value) throws Exception {

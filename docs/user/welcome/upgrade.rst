@@ -5,8 +5,10 @@ With a library as old as GeoTools you will occasionally run into a project from 
 needs to be upgraded. This page collects the upgrade notes for each release change; highlighting any
 fundamental changes with code examples showing how to upgrade your code.
 
-But first to upgrade - change your dependency to |release| (or an appropriate stable version)::
-    
+But first to upgrade - change your dependency geotools.version to |release| (or an appropriate stable version):
+
+.. code-block:: xml
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <geotools.version>|release|</geotools.version>
@@ -25,6 +27,110 @@ But first to upgrade - change your dependency to |release| (or an appropriate st
         </dependency>
         ....
     </dependencies>
+
+GeoTools 24.x
+-------------
+
+The Oracle extension was upgraded to use the current JDBC driver release. If you are using ``oracle.jdbc.driver.OracleDriver`` in your code to load the JDBC driver you should change this to ``oracle.jdbc.OracleDriver``.
+
+GeoTools 22.x
+-------------
+
+Change to repo.osgeo.org for GeoTools releases
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Use *osgeo* repository ``https://repo.osgeo.org/repository/release/``:
+
+* Replaces *osgeo* release repository ``http://download.osgeo.org/webdav/geotools/`` for GeoTools releases.
+* This is a group repository used by several OSGeo projects.
+* This group repository also provides third-party dependencies used by GeoTools (such as JTS and JAI-EXT).
+
+BEFORE :file:`pom.xml`:
+
+.. code-block:: xml
+
+   <repository>
+       <id>osgeo</id>
+       <name>Open Source Geospatial Foundation Repository</name>
+       <url>http://download.osgeo.org/webdav/geotools/</url>
+   </repository>
+   
+AFTER :file:`pom.xml`:
+
+.. code-block:: xml
+
+   <repositories>
+     <repository>
+       <id>osgeo</id>
+       <name>OSGeo Release Repository</name>
+       <url>https://repo.osgeo.org/repository/release/</url>
+       <snapshots><enabled>false</enabled></snapshots>
+       <releases><enabled>true</enabled></releases>
+     </repository>
+   </repositories>
+
+Alternative: Mirror retired repo.boundlessgeo.com
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To build existing projects referencing ``http://repo.boundlessgeo.com/``, with no modifications to :file:`pom.xml`, configure mirrors using :file:`~/.m2/settings.xml`.
+
+Change to :file:`settings.xml`:
+
+.. code-block:: xml
+
+   <mirrors>
+     <mirror>
+       <id>osgeo-release</id>
+       <name>OSGeo Repository</name>
+       <url>https://repo.osgeo.org/repository/release/</url>
+       <mirrorOf>osgeo</mirrorOf>     <!-- previously http://download.osgeo.org/webdav/geotools/ -->
+     </mirror>
+     <mirror>
+       <id>geoserver-releases</id>
+       <name>Boundless Repository</name>
+       <url>https://repo.osgeo.org/repository/Geoserver-releases/</url>
+       <mirrorOf>boundless</mirrorOf> <!-- previously http://repo.boundlessgeo.com/main/ -->
+     </mirror>
+   </mirrors>
+
+Both of the above repositories above are included in ``https://repo.osgeo.org/repository/release/`` group repository. The mirror settings are intended as a temporary measure to allow your projects to build while you update your :file:`pom.xml` to use the osgeo release repository.
+
+Change to repo.osgeo.org for GeoTools snapshots
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Use *osgeo-snapshots* repository ``https://repo.osgeo.org/repository/snapshot/``:
+
+* Replaces *boundless* snapshot repository ``http://repo.boundlessgeo.com/main`` for the GeoTools SNAPSHOTS.
+* This is a group snapshot repository used by several OSGeo projects
+
+The contents of the *boundless* repository ``https://repo.boundlessgeo.com/main/`` previously included snapshots of active GeoTools builds. The repository ``https://repo.osgeo.org/repository/geotools-snapshots/`` has taking over this role for the GeoTools project ( and is included in the group repository ``https://repo.osgeo.org/repository/snapshot/``).
+
+To update existing projects making use of an active branch replace *boundless* snapshot repository with *osgeo-snapshot* repository.
+
+BEFORE :file:`pom.xml`:
+
+.. code-block:: xml
+
+   <repository>
+       <snapshots>
+           <enabled>true</enabled>
+       </snapshots>
+       <id>boundless</id>
+       <name>Boundless Maven Repository</name>
+       <url>http://repo.boundlessgeo.com/main</url>
+   </repository>
+
+AFTER :file:`pom.xml`:
+
+.. code-block:: xml
+
+   <repository>
+     <id>osgeo-snapshot</id>
+     <name>OSGeo Snapshot Repository</name>
+     <url>https://repo.osgeo.org/repository/snapshot/</url>
+     <snapshots><enabled>true</enabled></snapshots>
+     <releases><enabled>false</enabled></releases>
+   </repository>
 
 GeoTools 21.x
 -------------
@@ -124,6 +230,33 @@ Previously GeoTools reused packages across modules by design, this approach is n
      - ``org.geotools.filter.expression``
    * - ``gt-main``
      - ``org.geotools.filter.expression``
+
+Upgrading projects using historical GeoTools snapshots
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The contents of the *boundless* repository ``https://repo.boundlessgeo.com/main/`` previously included snapshots of active GeoTools builds. The repository ``https://repo.osgeo.org/repository/geotools-snapshots/`` has taking over this role for the GeoTools project ( and is included in the group repository ``https://repo.osgeo.org/repository/snapshot/``).
+
+The geotools-snapshots is populated from active branches only and does not contain "historical" snapshots from prior releases.  Due to this limitation we recommend upgrading historical projects to the appropriate GeoTools release.
+
+As an example to fix an existing project build using GeoTools 21-SNAPSHOT which is no longer available upgrade to the most recent 21.x series release.
+
+BEFORE :file:`pom.xml`:
+
+.. code-block:: xml
+
+   <properties>
+       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+       <geotools.version>21-SNAPSHOT</geotools.version>
+   </properties>
+   
+AFTER :file:`pom.xml`:
+
+.. code-block:: xml
+
+   <properties>
+       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+       <geotools.version>21.5</geotools.version>
+   </properties>
 
 GeoTools 20.x
 -------------

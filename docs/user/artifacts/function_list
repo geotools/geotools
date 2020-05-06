@@ -2468,10 +2468,12 @@ Contains 102 functions.
 
 * ``result`` (``SimpleFeatureCollection``)
 
-``TransparencyFill(data)``: returns ``result``
-''''''''''''''''''''''''''''''''''''''''''''''
+``TransparencyFill(data, width)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 * ``data`` (``GridCoverage2D``) required
+
+* ``width`` (``Integer``) optional
 
 * ``result`` (``GridCoverage2D``)
 

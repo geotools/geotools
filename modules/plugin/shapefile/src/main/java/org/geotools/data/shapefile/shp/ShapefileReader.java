@@ -17,6 +17,7 @@
 package org.geotools.data.shapefile.shp;
 
 import java.io.IOException;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
@@ -104,7 +105,7 @@ public class ShapefileReader implements FileReader {
         /** Fetch the shape stored in this record. */
         public Object shape() {
             if (shape == null) {
-                buffer.position(start);
+                ((Buffer) buffer).position(start);
                 buffer.order(ByteOrder.LITTLE_ENDIAN);
                 if (type == ShapeType.NULL) {
                     shape = null;
@@ -180,7 +181,7 @@ public class ShapefileReader implements FileReader {
                 return shape();
             }
 
-            Class geomType = Geometry.class;
+            Class<? extends Geometry> geomType = Geometry.class;
             if (type.isLineType()) {
                 geomType = MultiLineString.class;
             } else if (type.isMultiPointType()) {
@@ -296,15 +297,15 @@ public class ShapefileReader implements FileReader {
         // 80M
         // like I did while messing around, within moments I had 1 gig of
         // swap...
-        if (buffer.isReadOnly() || useMemoryMappedBuffer) {
+        if (((Buffer) buffer).isReadOnly() || useMemoryMappedBuffer) {
             return buffer;
         }
 
-        int limit = buffer.limit();
+        int limit = ((Buffer) buffer).limit();
         while (limit < size) {
             limit *= 2;
         }
-        if (limit != buffer.limit()) {
+        if (limit != ((Buffer) buffer).limit()) {
             // clean up the old buffer and allocate a new one
             buffer = NIOUtilities.allocate(limit);
         }
@@ -313,13 +314,13 @@ public class ShapefileReader implements FileReader {
 
     // for filling a ReadableByteChannel
     public static int fill(ByteBuffer buffer, ReadableByteChannel channel) throws IOException {
-        int r = buffer.remaining();
+        int r = ((Buffer) buffer).remaining();
         // channel reads return -1 when EOF or other error
         // because they a non-blocking reads, 0 is a valid return value!!
-        while (buffer.remaining() > 0 && r != -1) {
+        while (((Buffer) buffer).remaining() > 0 && r != -1) {
             r = channel.read(buffer);
         }
-        buffer.limit(buffer.position());
+        ((Buffer) buffer).limit(((Buffer) buffer).position());
         return r;
     }
 
@@ -330,7 +331,7 @@ public class ShapefileReader implements FileReader {
         if (channel instanceof FileChannel && useMemoryMappedBuffer) {
             FileChannel fc = (FileChannel) channel;
             buffer = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
-            buffer.position(0);
+            ((Buffer) buffer).position(0);
             this.currentOffset = 0;
         } else {
             // force useMemoryMappedBuffer to false
@@ -338,7 +339,7 @@ public class ShapefileReader implements FileReader {
             // start small
             buffer = NIOUtilities.allocate(1024);
             fill(buffer, channel);
-            buffer.flip();
+            ((Buffer) buffer).flip();
             this.currentOffset = 0;
         }
         header = new ShapefileHeader();
@@ -353,7 +354,7 @@ public class ShapefileReader implements FileReader {
         headerTransfer.order(ByteOrder.BIG_ENDIAN);
 
         // make sure the record end is set now...
-        record.end = this.toFileOffset(buffer.position());
+        record.end = this.toFileOffset(((Buffer) buffer).position());
     }
 
     /**
@@ -421,12 +422,12 @@ public class ShapefileReader implements FileReader {
         positionBufferForOffset(buffer, getNextOffset());
 
         // no more data left
-        if (buffer.remaining() < 8) {
+        if (((Buffer) buffer).remaining() < 8) {
             return false;
         }
 
         // mark current position
-        int position = buffer.position();
+        int position = ((Buffer) buffer).position();
 
         // looks good
         boolean hasNext = true;
@@ -438,7 +439,7 @@ public class ShapefileReader implements FileReader {
         }
 
         // reset things to as they were
-        buffer.position(position);
+        ((Buffer) buffer).position(position);
 
         return hasNext;
     }
@@ -460,12 +461,12 @@ public class ShapefileReader implements FileReader {
     public int transferTo(ShapefileWriter writer, int recordNum, double[] bounds)
             throws IOException {
 
-        buffer.position(this.toBufferOffset(record.end));
+        ((Buffer) buffer).position(this.toBufferOffset(record.end));
         buffer.order(ByteOrder.BIG_ENDIAN);
 
         buffer.getInt(); // record number
         int rl = buffer.getInt();
-        int mark = buffer.position();
+        int mark = ((Buffer) buffer).position();
         int len = rl * 2;
 
         buffer.order(ByteOrder.LITTLE_ENDIAN);
@@ -489,12 +490,12 @@ public class ShapefileReader implements FileReader {
         writer.shxChannel.write(headerTransfer);
 
         // reset to mark and limit at end of record, then write
-        int oldLimit = buffer.limit();
-        buffer.position(mark).limit(mark + len);
+        int oldLimit = ((Buffer) buffer).limit();
+        ((Buffer) buffer).position(mark).limit(mark + len);
         writer.shpChannel.write(buffer);
-        buffer.limit(oldLimit);
+        ((Buffer) buffer).limit(oldLimit);
 
-        record.end = this.toFileOffset(buffer.position());
+        record.end = this.toFileOffset(((Buffer) buffer).position());
         record.number++;
 
         return len;
@@ -503,14 +504,14 @@ public class ShapefileReader implements FileReader {
     @SuppressWarnings("PMD.CloseResource") // file channel managed as a field
     private void positionBufferForOffset(ByteBuffer buffer, int offset) throws IOException {
         if (useMemoryMappedBuffer) {
-            buffer.position(offset);
+            ((Buffer) buffer).position(offset);
             return;
         }
 
         // Check to see if requested offset is already loaded; ensure that record header is in the
         // buffer
-        if (currentOffset <= offset && currentOffset + buffer.limit() >= offset + 8) {
-            buffer.position(toBufferOffset(offset));
+        if (currentOffset <= offset && currentOffset + ((Buffer) buffer).limit() >= offset + 8) {
+            ((Buffer) buffer).position(toBufferOffset(offset));
         } else {
             if (!randomAccessEnabled) {
                 throw new UnsupportedOperationException("Random Access not enabled");
@@ -518,8 +519,8 @@ public class ShapefileReader implements FileReader {
             FileChannel fc = (FileChannel) this.channel;
             fc.position(offset);
             currentOffset = offset;
-            buffer.position(0);
-            buffer.limit(buffer.capacity());
+            ((Buffer) buffer).position(0);
+            ((Buffer) buffer).limit(((Buffer) buffer).capacity());
             fill(buffer, fc);
             buffer.flip();
         }
@@ -549,24 +550,24 @@ public class ShapefileReader implements FileReader {
         if (!buffer.isReadOnly() && !useMemoryMappedBuffer) {
             // capacity is less than required for the record
             // copy the old into the newly allocated
-            if (buffer.capacity() < recordLength + 8) {
-                this.currentOffset += buffer.position();
+            if (((Buffer) buffer).capacity() < recordLength + 8) {
+                this.currentOffset += ((Buffer) buffer).position();
                 ByteBuffer old = buffer;
                 // ensure enough capacity for one more record header
                 buffer = ensureCapacity(buffer, recordLength + 8, useMemoryMappedBuffer);
                 buffer.put(old);
                 NIOUtilities.clean(old, useMemoryMappedBuffer);
                 fill(buffer, channel);
-                buffer.position(0);
+                ((Buffer) buffer).position(0);
             } else
             // remaining is less than record length
             // compact the remaining data and read again,
             // allowing enough room for one more record header
-            if (buffer.remaining() < recordLength + 8) {
-                this.currentOffset += buffer.position();
+            if (((Buffer) buffer).remaining() < recordLength + 8) {
+                this.currentOffset += ((Buffer) buffer).position();
                 buffer.compact();
                 fill(buffer, channel);
-                buffer.position(0);
+                ((Buffer) buffer).position(0);
             }
         }
 
@@ -596,7 +597,7 @@ public class ShapefileReader implements FileReader {
             record.minX = record.maxX = buffer.getDouble();
             record.minY = record.maxY = buffer.getDouble();
         }
-        buffer.reset();
+        ((Buffer) buffer).reset();
 
         record.offset = record.end;
         // update all the record info.
@@ -604,9 +605,9 @@ public class ShapefileReader implements FileReader {
         record.type = recordType;
         record.number = recordNumber;
         // remember, we read one int already...
-        record.end = this.toFileOffset(buffer.position()) + recordLength - 4;
+        record.end = this.toFileOffset(((Buffer) buffer).position()) + recordLength - 4;
         // mark this position for the reader
-        record.start = buffer.position();
+        record.start = ((Buffer) buffer).position();
         // clear any cached shape
         record.shape = null;
 

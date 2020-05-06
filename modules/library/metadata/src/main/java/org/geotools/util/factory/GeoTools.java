@@ -130,13 +130,6 @@ public final class GeoTools {
     private static final EventListenerList LISTENERS = new EventListenerList();
 
     /**
-     * The bindings between {@linkplain System#getProperties system properties} and a hint key. This
-     * field must be declared before any call to the {@link #bind} method.
-     */
-    private static final Map<String, RenderingHints.Key> BINDINGS =
-            new HashMap<String, RenderingHints.Key>();
-
-    /**
      * The {@linkplain System#getProperty(String) system property} key for the default value to be
      * assigned to the {@link Hints#CRS_AUTHORITY_EXTRA_DIRECTORY CRS_AUTHORITY_EXTRA_DIRECTORY}
      * hint.
@@ -147,10 +140,6 @@ public final class GeoTools {
     public static final String CRS_AUTHORITY_EXTRA_DIRECTORY =
             "org.geotools.referencing.crs-directory";
 
-    static {
-        bind(CRS_AUTHORITY_EXTRA_DIRECTORY, Hints.CRS_AUTHORITY_EXTRA_DIRECTORY);
-    }
-
     /**
      * The {@linkplain System#getProperty(String) system property} key for the default value to be
      * assigned to the {@link Hints#EPSG_DATA_SOURCE EPSG_DATA_SOURCE} hint.
@@ -159,10 +148,6 @@ public final class GeoTools {
      * @see #getDefaultHints
      */
     public static final String EPSG_DATA_SOURCE = "org.geotools.referencing.epsg-datasource";
-
-    static {
-        bind(EPSG_DATA_SOURCE, Hints.EPSG_DATA_SOURCE);
-    }
 
     /**
      * The {@linkplain System#getProperty(String) system property} key for the default value to be
@@ -191,10 +176,6 @@ public final class GeoTools {
     public static final String FORCE_LONGITUDE_FIRST_AXIS_ORDER =
             "org.geotools.referencing.forceXY";
 
-    static {
-        bind(FORCE_LONGITUDE_FIRST_AXIS_ORDER, Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
-    }
-
     /**
      * The {@linkplain System#getProperty(String) system property} key for the default value to be
      * assigned to the {@link Hints# ENTITY_RESOLVER} hint.
@@ -205,10 +186,6 @@ public final class GeoTools {
      * @see #getDefaultHints
      */
     public static final String ENTITY_RESOLVER = "org.xml.sax.EntityResolver";
-
-    static {
-        bind(ENTITY_RESOLVER, Hints.ENTITY_RESOLVER);
-    }
 
     /**
      * The {@linkplain System#getProperty(String) system property} key for the default value to be
@@ -222,10 +199,6 @@ public final class GeoTools {
      */
     public static final String RESAMPLE_TOLERANCE = "org.geotools.referencing.resampleTolerance";
 
-    static {
-        bind(RESAMPLE_TOLERANCE, Hints.RESAMPLE_TOLERANCE);
-    }
-
     /**
      * The {@linkplain System#getProperty(String) system property} key for the default value to be
      * assigned to the {@link Hints#LOCAL_DATE_TIME_HANDLING} hint.
@@ -237,10 +210,6 @@ public final class GeoTools {
      * @since 15.0
      */
     public static final String LOCAL_DATE_TIME_HANDLING = "org.geotools.localDateTimeHandling";
-
-    static {
-        bind(LOCAL_DATE_TIME_HANDLING, Hints.LOCAL_DATE_TIME_HANDLING);
-    }
 
     /**
      * The {@linkplain System#getProperty(String) system property} key for the default value to be
@@ -254,10 +223,6 @@ public final class GeoTools {
      * @since 21.0
      */
     public static final String DATE_TIME_FORMAT_HANDLING = "org.geotools.dateTimeFormatHandling";
-
-    static {
-        bind(DATE_TIME_FORMAT_HANDLING, Hints.DATE_TIME_FORMAT_HANDLING);
-    }
 
     /**
      * The {@linkplain System#getProperty(String) system property} key for the default value to be
@@ -273,10 +238,6 @@ public final class GeoTools {
      */
     public static final String ENCODE_WKT = "org.geotools.ecql.ewkt";
 
-    static {
-        bind(ENCODE_WKT, Hints.ENCODE_EWKT);
-    }
-
     /** The initial context. Will be created only when first needed. */
     private static InitialContext context;
 
@@ -288,32 +249,53 @@ public final class GeoTools {
     private static final Set<ClassLoader> addedClassLoaders =
             Collections.synchronizedSet(new HashSet<ClassLoader>());
 
-    /** Do not allow instantiation of this class. */
-    private GeoTools() {}
+    /**
+     * The bindings between {@linkplain System#getProperties system properties} and a hint key.
+     *
+     * <p>This registry is used by {@link #scanForSystemHints} to evaluate which System properties
+     * are present using this map's keys as System property names and its mapped value to resolve
+     * the System property value the correct value type/
+     */
+    private static final Map<String, RenderingHints.Key> BINDINGS;
+
+    static {
+        Map<String, RenderingHints.Key> bindings = new HashMap<>();
+        bind(ENCODE_WKT, Hints.ENCODE_EWKT, bindings);
+        bind(CRS_AUTHORITY_EXTRA_DIRECTORY, Hints.CRS_AUTHORITY_EXTRA_DIRECTORY, bindings);
+        bind(EPSG_DATA_SOURCE, Hints.EPSG_DATA_SOURCE, bindings);
+        bind(FORCE_LONGITUDE_FIRST_AXIS_ORDER, Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, bindings);
+        bind(ENTITY_RESOLVER, Hints.ENTITY_RESOLVER, bindings);
+        bind(RESAMPLE_TOLERANCE, Hints.RESAMPLE_TOLERANCE, bindings);
+        bind(LOCAL_DATE_TIME_HANDLING, Hints.LOCAL_DATE_TIME_HANDLING, bindings);
+        bind(DATE_TIME_FORMAT_HANDLING, Hints.DATE_TIME_FORMAT_HANDLING, bindings);
+        BINDINGS = Collections.unmodifiableMap(bindings);
+    }
 
     /**
      * Binds the specified {@linkplain System#getProperty(String) system property} to the specified
-     * key. Only one key can be binded to a given system property. However the same key can be
-     * binded to more than one system property names, in which case the extra system property names
-     * are aliases.
+     * key. Only one key can be bound to a given system property. However the same key can be binded
+     * to more than one system property names, in which case the extra system property names are
+     * aliases.
      *
      * @param property The system property.
      * @param key The key to bind to the system property.
+     * @param bindings The target registry mapping System properties to RenderingHints
      * @throws IllegalArgumentException if an other key is already bounds to the given system
      *     property.
      */
-    private static void bind(final String property, final RenderingHints.Key key) {
-        synchronized (BINDINGS) {
-            final RenderingHints.Key old = BINDINGS.put(property, key);
-            if (old == null) {
-                return;
-            }
-            // Roll back
-            BINDINGS.put(property, old);
+    private static void bind(
+            final String property,
+            final RenderingHints.Key key,
+            Map<String, RenderingHints.Key> bindings) {
+        final RenderingHints.Key old = bindings.putIfAbsent(property, key);
+        if (old != null) {
+            throw new IllegalArgumentException(
+                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "property", property));
         }
-        throw new IllegalArgumentException(
-                Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "property", property));
     }
+
+    /** Do not allow instantiation of this class. */
+    private GeoTools() {}
 
     /**
      * Returns summary information about GeoTools and the current environment. Calls {@linkplain
@@ -746,51 +728,49 @@ public final class GeoTools {
      */
     static boolean scanForSystemHints(final Map<RenderingHints.Key, Object> hints) {
         boolean changed = false;
-        synchronized (BINDINGS) {
-            for (final Map.Entry<String, RenderingHints.Key> entry : BINDINGS.entrySet()) {
-                final String propertyKey = entry.getKey();
-                final String property;
-                try {
-                    property = System.getProperty(propertyKey);
-                } catch (SecurityException e) {
-                    unexpectedException(e);
+
+        for (final Map.Entry<String, RenderingHints.Key> entry : BINDINGS.entrySet()) {
+            final String propertyKey = entry.getKey();
+            final String property;
+            try {
+                property = System.getProperty(propertyKey);
+                if (property == null) {
                     continue;
                 }
-                if (property != null) {
-                    /*
-                     * Converts the system property value from String to Object (java.lang.Boolean
-                     * or java.lang.Number). We perform this conversion only if the key is exactly
-                     * of kind Hints.Key,  not a subclass like ClassKey, in order to avoid useless
-                     * class loading on  'getValueClass()'  method invocation (ClassKey don't make
-                     * sense for Boolean and Number, which are the only types that we convert here).
-                     */
-                    Object value = property;
-                    final RenderingHints.Key hintKey = entry.getValue();
-                    if (hintKey.getClass().equals(Hints.Key.class)) {
-                        final Class<?> type = ((Hints.Key) hintKey).getValueClass();
-                        if (type.equals(Boolean.class)) {
-                            value = Boolean.valueOf(property);
-                        } else if (Number.class.isAssignableFrom(type))
-                            try {
-                                value = Classes.valueOf(type, property);
-                            } catch (NumberFormatException e) {
-                                unexpectedException(e);
-                                continue;
-                            }
-                    }
-                    final Object old;
+            } catch (SecurityException e) {
+                unexpectedException(e);
+                continue;
+            }
+            /*
+             * Converts the system property value from String to Object (java.lang.Boolean
+             * or java.lang.Number). We perform this conversion only if the key is exactly
+             * of kind Hints.Key,  not a subclass like ClassKey, in order to avoid useless
+             * class loading on  'getValueClass()'  method invocation (ClassKey don't make
+             * sense for Boolean and Number, which are the only types that we convert here).
+             */
+            Object value = property;
+            final RenderingHints.Key hintKey = entry.getValue();
+            if (hintKey.getClass().equals(Hints.Key.class)) {
+                final Class<?> type = ((Hints.Key) hintKey).getValueClass();
+                if (type.equals(Boolean.class)) {
+                    value = Boolean.valueOf(property);
+                } else if (Number.class.isAssignableFrom(type))
                     try {
-                        old = hints.put(hintKey, value);
-                    } catch (IllegalArgumentException e) {
-                        // The property value is illegal for this hint.
+                        value = Classes.valueOf(type, property);
+                    } catch (NumberFormatException e) {
                         unexpectedException(e);
                         continue;
                     }
-                    if (!changed && !Utilities.equals(old, value)) {
-                        changed = true;
-                    }
-                }
             }
+            final Object old;
+            try {
+                old = hints.put(hintKey, value);
+            } catch (IllegalArgumentException e) {
+                // The property value is illegal for this hint.
+                unexpectedException(e);
+                continue;
+            }
+            changed = changed || !Utilities.equals(old, value);
         }
         return changed;
     }

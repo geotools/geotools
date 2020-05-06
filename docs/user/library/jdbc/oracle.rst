@@ -113,11 +113,6 @@ to be classified, and fall back on the ``MDSYS`` views only if such table does n
 Setup
 ^^^^^
 
-* JDBC Driver
-  
-  GeoTools is unable to ship the Oracle JDBC driver with the standard
-  distribution. It must be downloaded from oracle separately.
-
 * JDBC vs JDBC-NG
   
   The Oracle support has been rewritten for GeoTools 2.6. This rewrite is

@@ -44,9 +44,7 @@ public class MultiPointHandler implements ShapeHandler {
     }
 
     public MultiPointHandler(ShapeType type, GeometryFactory gf) throws ShapefileException {
-        if ((type != ShapeType.MULTIPOINT)
-                && (type != ShapeType.MULTIPOINTM)
-                && (type != ShapeType.MULTIPOINTZ)) {
+        if (!type.isMultiPointType()) {
             throw new ShapefileException(
                     "Multipointhandler constructor - expected type to be 8, 18, or 28");
         }

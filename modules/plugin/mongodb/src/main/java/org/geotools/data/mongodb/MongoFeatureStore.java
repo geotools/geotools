@@ -22,6 +22,7 @@ import java.io.IOException;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
+import org.geotools.data.QueryCapabilities;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureStore;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -109,5 +110,10 @@ public class MongoFeatureStore extends ContentFeatureStore {
             return new MongoFeatureWriter(delegate.getCollection(), getSchema(), this);
         }
         return null;
+    }
+
+    @Override
+    protected QueryCapabilities buildQueryCapabilities() {
+        return this.delegate.buildQueryCapabilities();
     }
 }

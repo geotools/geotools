@@ -68,7 +68,7 @@ public class OracleDialectEpsgMediatorStarvationOnlineStressTest extends OracleO
         // DataSource origional = super.connect( user, password, url, params );
 
         BasicDataSource origional = new BasicDataSource();
-        origional.setDriverClassName("oracle.jdbc.driver.OracleDriver");
+        origional.setDriverClassName("oracle.jdbc.OracleDriver");
         origional.setUsername(user);
         origional.setPassword(password);
         origional.setUrl(url);

@@ -20,15 +20,13 @@ import static org.easymock.EasyMock.anyObject;
 import static org.easymock.EasyMock.createNiceMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
+import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.Shape;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -72,7 +70,6 @@ import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
 import org.geotools.map.MapViewport;
 import org.geotools.referencing.CRS;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.RenderListener;
 import org.geotools.renderer.lite.StreamingRenderer.RenderingRequest;
 import org.geotools.styling.DescriptionImpl;
@@ -99,7 +96,9 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.parameter.GeneralParameterValue;
+import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.TransformException;
 import org.opengis.style.GraphicLegend;
 
 /**
@@ -140,11 +139,11 @@ public class StreamingRendererTest {
 
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setName("Lines");
-        builder.add("geom", LineString.class, DefaultGeographicCRS.WGS84);
+        builder.add("geom", LineString.class, WGS84);
         testLineFeatureType = builder.buildFeatureType();
         builder = new SimpleFeatureTypeBuilder();
         builder.setName("Points");
-        builder.add("geom", Point.class, DefaultGeographicCRS.WGS84);
+        builder.add("geom", Point.class, WGS84);
         testPointFeatureType = builder.buildFeatureType();
     }
 
@@ -209,7 +208,7 @@ public class StreamingRendererTest {
         Graphics2D graphics = bi.createGraphics();*/
         Graphics2D graphics = Mockito.mock(Graphics2D.class);
         CoordinateReferenceSystem utm32n = CRS.decode("EPSG:32632", true);
-        ReferencedEnvelope env = new ReferencedEnvelope(10, 20, 0, 40, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope env = new ReferencedEnvelope(10, 20, 0, 40, WGS84);
         ReferencedEnvelope mapEnv = env.transform(utm32n, true);
         sr.paint(graphics, new Rectangle(0, 0, 100, 100), mapEnv);
         ArgumentCaptor<Shape> shape = ArgumentCaptor.forClass(Shape.class);
@@ -253,8 +252,7 @@ public class StreamingRendererTest {
 
         Graphics2D graphics = Mockito.mock(Graphics2D.class);
         CoordinateReferenceSystem utm32n = CRS.decode("EPSG:32632", true);
-        ReferencedEnvelope env =
-                new ReferencedEnvelope(10, 10.5, 39, 39.5, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope env = new ReferencedEnvelope(10, 10.5, 39, 39.5, WGS84);
         ReferencedEnvelope mapEnv = env.transform(utm32n, true);
         sr.paint(graphics, new Rectangle(0, 0, 100, 100), mapEnv);
         ArgumentCaptor<Shape> shape = ArgumentCaptor.forClass(Shape.class);
@@ -301,9 +299,7 @@ public class StreamingRendererTest {
     public void testDrawIntepolation() throws Exception {
 
         MapContent mc = new MapContent();
-        ReferencedEnvelope reWgs =
-                new ReferencedEnvelope(
-                        new Envelope(-180, 180, -90, 90), DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope reWgs = new ReferencedEnvelope(new Envelope(-180, 180, -90, 90), WGS84);
 
         BufferedImage testImage = new BufferedImage(200, 200, BufferedImage.TYPE_4BYTE_ABGR);
 
@@ -314,8 +310,7 @@ public class StreamingRendererTest {
         GridCoverage2DReader gridCoverageReader = Mockito.mock(GridCoverage2DReader.class);
         Mockito.when(gridCoverageReader.getOriginalEnvelope())
                 .thenReturn(new GeneralEnvelope(reWgs));
-        Mockito.when(gridCoverageReader.getCoordinateReferenceSystem())
-                .thenReturn(DefaultGeographicCRS.WGS84);
+        Mockito.when(gridCoverageReader.getCoordinateReferenceSystem()).thenReturn(WGS84);
         Mockito.when(gridCoverageReader.read(Mockito.any(GeneralParameterValue[].class)))
                 .thenReturn(coverage);
 
@@ -355,9 +350,7 @@ public class StreamingRendererTest {
         // build projected envelope to work with (small one around the area of
         // validity of utm zone 1, which being a Gauss projection is a vertical
         // slice parallel to the central meridian, -177°)
-        ReferencedEnvelope reWgs =
-                new ReferencedEnvelope(
-                        new Envelope(-180, -170, 20, 40), DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope reWgs = new ReferencedEnvelope(new Envelope(-180, -170, 20, 40), WGS84);
         CoordinateReferenceSystem utm1N = CRS.decode("EPSG:32601");
         ReferencedEnvelope reUtm = reWgs.transform(utm1N, true);
 
@@ -454,9 +447,7 @@ public class StreamingRendererTest {
         errors = 0;
         features = 0;
         BufferedImage image = new BufferedImage(200, 200, BufferedImage.TYPE_4BYTE_ABGR);
-        ReferencedEnvelope reWgs =
-                new ReferencedEnvelope(
-                        new Envelope(-180, -170, 20, 40), DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope reWgs = new ReferencedEnvelope(new Envelope(-180, -170, 20, 40), WGS84);
         sr.paint((Graphics2D) image.getGraphics(), new Rectangle(200, 200), reWgs);
         mapContext.dispose();
 
@@ -469,9 +460,7 @@ public class StreamingRendererTest {
     @Test
     public void testDeadlockOnException() throws Exception {
 
-        ReferencedEnvelope reWgs =
-                new ReferencedEnvelope(
-                        new Envelope(-180, 180, -90, 90), DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope reWgs = new ReferencedEnvelope(new Envelope(-180, 180, -90, 90), WGS84);
 
         // create the grid coverage that throws a OOM
         BufferedImage testImage = new BufferedImage(200, 200, BufferedImage.TYPE_4BYTE_ABGR);
@@ -589,7 +578,7 @@ public class StreamingRendererTest {
         sr.paint(
                 graphics,
                 new Rectangle(0, 0, 100, 100),
-                new ReferencedEnvelope(0, 100, 0, 100, DefaultGeographicCRS.WGS84));
+                new ReferencedEnvelope(0, 100, 0, 100, WGS84));
         graphics.dispose();
         mc.dispose();
 
@@ -598,13 +587,12 @@ public class StreamingRendererTest {
         Filter f1 = filters.get(0);
         assertTrue(f1 instanceof BBOX);
         BoundingBox bbox1 = ((BBOX) f1).getBounds();
-        ReferencedEnvelope expected =
-                new ReferencedEnvelope(-11, 111, -11, 111, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope expected = new ReferencedEnvelope(-11, 111, -11, 111, WGS84);
         assertEquals(expected, bbox1);
         Filter f2 = filters.get(1);
         assertTrue(f2 instanceof BBOX);
         BoundingBox bbox2 = ((BBOX) f2).getBounds();
-        assertEquals(new ReferencedEnvelope(-6, 106, -6, 106, DefaultGeographicCRS.WGS84), bbox2);
+        assertEquals(new ReferencedEnvelope(-6, 106, -6, 106, WGS84), bbox2);
     }
 
     @Test
@@ -649,10 +637,7 @@ public class StreamingRendererTest {
         BufferedImage bi = new BufferedImage(1, 1, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = bi.createGraphics();
         // have the lines be smaller than a 1/3 of a pixel
-        sr.paint(
-                graphics,
-                new Rectangle(0, 0, 1, 1),
-                new ReferencedEnvelope(0, 8, 0, 8, DefaultGeographicCRS.WGS84));
+        sr.paint(graphics, new Rectangle(0, 0, 1, 1), new ReferencedEnvelope(0, 8, 0, 8, WGS84));
 
         // check we only rendered one feature
         assertEquals(1, features.size());
@@ -660,10 +645,7 @@ public class StreamingRendererTest {
 
         // now have the lines be big enough to be painted instead
         features.clear();
-        sr.paint(
-                graphics,
-                new Rectangle(0, 0, 1, 1),
-                new ReferencedEnvelope(0, 1, 0, 1, DefaultGeographicCRS.WGS84));
+        sr.paint(graphics, new Rectangle(0, 0, 1, 1), new ReferencedEnvelope(0, 1, 0, 1, WGS84));
         mc.dispose();
         assertEquals(2, features.size());
         assertEquals("zz1", features.get(0).getID());
@@ -697,8 +679,7 @@ public class StreamingRendererTest {
         StreamingRenderer sr = new StreamingRenderer();
         sr.setMapContent(mc);
 
-        ReferencedEnvelope envelope =
-                new ReferencedEnvelope(0, 100, 0, 100, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope envelope = new ReferencedEnvelope(0, 100, 0, 100, WGS84);
 
         // simulate geofence adding a bbox
         BBOX bbox = StreamingRenderer.filterFactory.bbox("", 30, 60, 30, 60, "EPSG:4326");
@@ -880,5 +861,70 @@ public class StreamingRendererTest {
         assertEquals(0, red);
         assertEquals(0, green);
         assertEquals(0, blue);
+    }
+
+    @Test
+    public void testNPEOnMissingProjectionHandler() throws FactoryException, TransformException {
+        StreamingRendererTester tester = new StreamingRendererTester();
+        String wkt =
+                "PROJCS[\"World_Eckert_IV\",GEOGCS[\"WGS_1984\",DATUM[\"WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Eckert_IV\"],PARAMETER[\"Central_Meridian\",0.0],UNIT[\"Meter\",1.0]]";
+        CoordinateReferenceSystem eckert = CRS.parseWKT(wkt);
+        ReferencedEnvelope re = new ReferencedEnvelope(-100, 100, -100, 100, eckert);
+
+        // this call used to throw a NPE
+        ReferencedEnvelope reprojected = tester.transformEnvelope(re, WGS84);
+        assertFalse(reprojected.isNull());
+    }
+
+    private class StreamingRendererTester extends StreamingRenderer {
+
+        /** This method is currently only used when densification is enabled */
+        @Override
+        public ReferencedEnvelope transformEnvelope(
+                ReferencedEnvelope envelope, CoordinateReferenceSystem crs)
+                throws TransformException, FactoryException {
+            return super.transformEnvelope(envelope, crs);
+        }
+    }
+
+    @Test
+    public void testNPEOutsideValidArea() throws Exception {
+        StreamingRendererTester tester = new StreamingRendererTester();
+        String wkt =
+                "PROJCS[\"Homolosine\",GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563 ] ], PRIMEM[\"Greenwich\",0.0], UNIT[\"degree\",0.01745329251994328 ]],PROJECTION[\"Goode_Homolosine\"],UNIT[\"m\",1.0] ]";
+        CoordinateReferenceSystem homolosine = CRS.parseWKT(wkt);
+        ReferencedEnvelope re = new ReferencedEnvelope(-180, -170, -90, -80, WGS84);
+        ReferencedEnvelope cornerHomolosine = re.transform(homolosine, true);
+        // move it outside of valid space
+        cornerHomolosine.translate(0, -cornerHomolosine.getHeight() * 2);
+
+        // create the map content
+        SimpleFeatureCollection lines = createLineCollection();
+        Style lineStyle = createLineStyle();
+        MapContent mapContent = new MapContent();
+        mapContent.addLayer(new FeatureLayer(lines, lineStyle));
+
+        // render
+        StreamingRenderer sr = new StreamingRenderer();
+        Map hints = new HashMap();
+        hints.put(StreamingRenderer.ADVANCED_PROJECTION_HANDLING_KEY, true);
+        hints.put(StreamingRenderer.ADVANCED_PROJECTION_DENSIFICATION_KEY, true);
+        sr.setRendererHints(hints);
+        sr.addRenderListener(
+                new RenderListener() {
+                    public void featureRenderer(SimpleFeature feature) {
+                        features++;
+                    }
+
+                    public void errorOccurred(Exception e) {
+                        errors++;
+                    }
+                });
+        errors = 0;
+        sr.setMapContent(mapContent);
+        BufferedImage image = new BufferedImage(200, 200, BufferedImage.TYPE_4BYTE_ABGR);
+        sr.paint((Graphics2D) image.getGraphics(), new Rectangle(200, 200), cornerHomolosine);
+        mapContent.dispose();
+        assertEquals(0, errors);
     }
 }

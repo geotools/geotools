@@ -329,7 +329,7 @@ public final class JDBCFeatureStore extends ContentFeatureStore {
         for (int i = 0; i < names.length; i++) {
             innerTypes[i] = getSchema().getDescriptor(names[i].getLocalPart());
             if (innerTypes[i] == null)
-                throw new IllegalArgumentException("Unknon attribute " + names[i].getLocalPart());
+                throw new IllegalArgumentException("Unknown attribute " + names[i].getLocalPart());
         }
 
         // split the filter

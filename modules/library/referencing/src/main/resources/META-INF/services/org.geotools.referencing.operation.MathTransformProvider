@@ -54,6 +54,7 @@ org.geotools.referencing.operation.projection.Mollweide$WagnerVProvider
 org.geotools.referencing.operation.projection.Gnomonic$Provider
 org.geotools.referencing.operation.projection.WorldVanDerGrintenI$Provider
 org.geotools.referencing.operation.projection.Sinusoidal$Provider
+org.geotools.referencing.operation.projection.Homolosine$Provider
 org.geotools.referencing.operation.projection.GeneralOblique$Provider
 org.geotools.referencing.operation.projection.MeteosatSG$Provider
 org.geotools.referencing.operation.projection.GeostationarySatellite$Provider

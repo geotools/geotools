@@ -1494,11 +1494,14 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * helper to do a safe convesion of expression to a number
      */
     Number safeConvertToNumber(Expression expression, Class target) {
+        Object evaluated = expression.evaluate(null);
+        // don't try conversion for arrays, to avoid wrong arraytosingle conversion
+        if (evaluated != null && evaluated.getClass().isArray()) {
+            return null;
+        }
         return (Number)
                 Converters.convert(
-                        expression.evaluate(null),
-                        target,
-                        new Hints(ConverterFactory.SAFE_CONVERSION, true));
+                        evaluated, target, new Hints(ConverterFactory.SAFE_CONVERSION, true));
     }
 
     /**

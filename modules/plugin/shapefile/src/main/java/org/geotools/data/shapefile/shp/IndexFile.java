@@ -17,6 +17,7 @@
 package org.geotools.data.shapefile.shp;
 
 import java.io.IOException;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
@@ -83,7 +84,7 @@ public class IndexFile implements FileReader {
                     LOGGER.finest("Reading from file...");
                     this.buf = NIOUtilities.allocate(8 * RECS_IN_BUFFER);
                     channel.read(buf);
-                    buf.flip();
+                    ((Buffer) buf).flip();
                     this.channelOffset = 0;
                 }
 

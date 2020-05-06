@@ -139,11 +139,11 @@ ant -f rename.xml -Drelease=$tag -Dseries=$series
 popd > /dev/null
 
 # build the release
-
 if [ "$SKIP_BUILD" != true ]; then
-  echo "building release"
   export MAVEN_OPTS="-Xmx2048m"
+  echo "building release"
   mvn $MAVEN_FLAGS -DskipTests -Dall clean -Pcollect install
+  echo "building release: assemble artifacts"
   mvn $MAVEN_FLAGS -DskipTests assembly:assembly
 fi
 
@@ -153,9 +153,9 @@ target=`pwd`/target
 if [ "$SKIP_JAVADOCS" != true ]; then
   echo "building javadocs"
   pushd modules > /dev/null
-  mvn -Dfmt.skip=true javadoc:aggregate
+  mvn $MAVEN_FLAGS -Dfmt.skip=true -DskipTests javadoc:aggregate
   pushd target/site > /dev/null
-  zip -r $target/geotools-$tag-doc.zip apidocs
+  zip -r -q $target/geotools-$tag-doc.zip apidocs
   popd > /dev/null
   popd > /dev/null
 fi

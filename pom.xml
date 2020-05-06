@@ -24,10 +24,6 @@
   <!--                        modules or example code used by the  -->
   <!--                        build box.                           -->
   <!--                                                             -->
-  <!--    -Doracle=true       Indicate that the real oracle driver -->
-  <!--                        has been installed into the local    -->
-  <!--                        repository and should be used.       -->
-  <!--                                                             -->
   <!--   Available profiles are:                                   -->
   <!--                                                             -->
   <!--     docs               include docs                         -->
@@ -68,7 +64,6 @@
   <!--       mvn -P extensive.tests install                        -->
   <!--       mvn -P online,stress install                          -->
   <!--       mvn -P site.build site                                -->
-  <!--       mvn eclipse:eclipse -Doracle=true -P pending          -->
   <!--                                                             -->
   <!--     While you can specify properties one at a time on the   -->
   <!--     command line, for properties describing your            -->
@@ -80,7 +75,6 @@
   <!--     manner relevant to the purpose of the "site" goal.      -->
   <!-- =========================================================== -->
   <properties>
-    <oracle>false</oracle>
     <allow.test.skip>true</allow.test.skip>
     <allow.test.failure.ignore>false</allow.test.failure.ignore>
     <extensive.tests>false</extensive.tests>
@@ -190,23 +184,6 @@
       <properties>
         <stress.skip.pattern>disabled</stress.skip.pattern>
       </properties>
-    </profile>
-    <profile>
-      <id>deploy.boundless</id>
-      <distributionManagement>
-        <repository>
-          <id>boundless</id>
-          <uniqueVersion>false</uniqueVersion>
-          <name>Boundless Release Repository</name>
-          <url>https://repo.boundlessgeo.com/release/</url>
-        </repository>
-        <snapshotRepository>
-          <id>boundless</id>
-          <uniqueVersion>false</uniqueVersion>
-          <name>Boundless Snapshot Repository</name>
-          <url>https://repo.boundlessgeo.com/snapshot/</url>
-        </snapshotRepository>
-      </distributionManagement>
     </profile>
     <profile>
       <id>site.local</id>
@@ -1284,11 +1261,10 @@
       </dependency>
 
       <!-- ORACLE -->
-      <!-- Download and install into your own repo -->
       <dependency>
-        <artifactId>ojdbc7</artifactId>
-        <groupId>com.oracle</groupId>
-        <version>12.1.0.2</version>
+        <artifactId>ojdbc8</artifactId>
+        <groupId>com.oracle.database.jdbc</groupId>
+        <version>19.3.0.0</version>
       </dependency>
       <!-- Older version required by imagemosaic -->
       <dependency>
@@ -2317,16 +2293,16 @@
 
   <distributionManagement>
     <repository>
+      <id>nexus</id>
+      <name>OSGeo Release Repository</name>
+      <url>https://repo.osgeo.org/repository/geotools-releases/</url>
       <uniqueVersion>false</uniqueVersion>
-      <id>osgeo</id>
-      <name>Open Source Geospatial Foundation - WebDAV upload</name>
-      <url>dav:http://download.osgeo.org/upload/geotools/</url>
     </repository>
     <snapshotRepository>
-        <id>boundless</id>
-        <uniqueVersion>false</uniqueVersion>
-        <name>Boundless Snapshot Repository</name>
-        <url>https://repo.boundlessgeo.com/snapshot/</url>
+      <id>nexus</id>
+      <uniqueVersion>false</uniqueVersion>
+      <name>OSGeo Snapshot Repository</name>
+      <url>https://repo.osgeo.org/repository/geotools-snapshots/</url>
     </snapshotRepository>
   </distributionManagement>
 
@@ -2335,49 +2311,26 @@
   <!--     Maven repository is implicit and doesn't need to be specified. -->
   <!-- ================================================================== -->
   <repositories>
-    <repository>
-      <id>central.maven.org</id>
-      <name>Central Maven repository</name>
-      <url>https://repo1.maven.org/maven2</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
 
-    <!-- contained above -->
-    <!--
+    <!-- Maven Central is assumed -->
+  
     <repository>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <id>geosolutions</id>
-      <name>geosolutions repository</name>
-      <url>https://maven.geo-solutions.it/</url>
-    </repository>
-    -->
-    <repository>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
       <id>osgeo</id>
-      <name>Open Source Geospatial Foundation Repository</name>
-      <url>https://download.osgeo.org/webdav/geotools/</url>
-    </repository>
-
-    <repository>
-      <!-- Contains snapshot and release (including third-party-dependencies)              -->
-      <!-- Restlet maven Repository (http://maven.restlet.org)                             -->
+      <name>OSGeo Nexus Release Repository</name>
+      <url>https://repo.osgeo.org/repository/release/</url>
+      <!-- contains release (including third-party-dependences)                            -->
       <!-- ucar (https://artifacts.unidata.ucar.edu/content/repositories/unidata-releases) -->
       <!-- geosolutions (http://maven.geo-solutions.it/)                                   -->
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <id>boundless</id>
-      <name>Boundless Maven Repository</name>
-      <url>https://repo.boundlessgeo.com/main/</url>
+      <snapshots><enabled>false</enabled></snapshots>
+      <releases><enabled>true</enabled></releases>
+    </repository>
+
+    <repository>
+      <id>osgeo-snapshot</id>
+      <name>OSGeo Nexus Snapshot Repository</name>
+      <url>https://repo.osgeo.org/repository/snapshot/</url>
+      <snapshots><enabled>true</enabled></snapshots>
+      <releases><enabled>false</enabled></releases>
     </repository>
 
   </repositories>
@@ -2387,38 +2340,25 @@
   <!--     This is where Maven looks for plugin dependencies.      -->
   <!-- =========================================================== -->
   <pluginRepositories>
-    <pluginRepository>
-      <id>central.maven.org</id>
-      <name>Central Maven repository</name>
-      <url>https://repo1.maven.org/maven2</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </pluginRepository>
+
+    <!-- Maven Central is assumed -->
+
     <pluginRepository>
       <id>osgeo</id>
-      <name>Open Source Geospatial Foundation Maven 2 Repository</name>
-      <url>https://download.osgeo.org/webdav/geotools/</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
+      <name>OSGeo Nexus Maven Repository</name>
+      <url>https://repo.osgeo.org/repository/release/</url>
+      <snapshots><enabled>false</enabled></snapshots>
+      <releases><enabled>true</enabled></releases>
     </pluginRepository> 
+
     <pluginRepository>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <id>boundless</id>
-      <name>Boundless Maven Repository</name>
-      <url>https://repo.boundlessgeo.com/snapshot/</url>
+      <id>osgeo-snapshot</id>
+      <name>OSGeo Nexus Maven Repository</name>
+      <url>https://repo.osgeo.org/repository/snapshot/</url>
+      <snapshots><enabled>true</enabled></snapshots>
+      <releases><enabled>false</enabled></releases>
     </pluginRepository> 
-    <pluginRepository>
-     <id>sonatype-snapshots</id>
-     <name>sonatype-snapshots</name>
-     <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-     <snapshots>
-       <enabled>false</enabled>
-     </snapshots>
-    </pluginRepository>
+    
   </pluginRepositories>
 
 

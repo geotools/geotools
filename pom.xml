@@ -2311,10 +2311,10 @@
   <!--     Maven repository is implicit and doesn't need to be specified. -->
   <!-- ================================================================== -->
   <repositories>
-  
+
     <!-- Maven Central is assumed -->
   
-  <repository>
+    <repository>
       <id>osgeo</id>
       <name>OSGeo Nexus Release Repository</name>
       <url>https://repo.osgeo.org/repository/release/</url>

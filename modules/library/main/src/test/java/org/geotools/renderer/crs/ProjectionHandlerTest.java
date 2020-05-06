@@ -20,6 +20,7 @@ import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -35,6 +36,7 @@ import java.util.Map;
 import java.util.zip.GZIPInputStream;
 import org.geotools.data.Base64;
 import org.geotools.geometry.jts.JTS;
+import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -1523,5 +1525,35 @@ public class ProjectionHandlerTest {
         qe = queryEnvelopes.get(queryEnvelopes.size() - 1);
         assertEquals(-180, qe.getMinX(), 1e-3);
         assertEquals(180, qe.getMaxX(), 1e-3);
+    }
+
+    @Test
+    public void testCutGeometryHomolosine() throws Exception {
+        String wkt =
+                "PROJCS[\"Homolosine\",GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\","
+                        + "6378137,298.257223563 ] ], PRIMEM[\"Greenwich\",0.0], UNIT[\"degree\","
+                        + "0.01745329251994328 ]],PROJECTION[\"Goode_Homolosine\"],UNIT[\"m\",1.0] ]";
+        CoordinateReferenceSystem homolosine = CRS.parseWKT(wkt);
+        // get a lambert conformal conic with
+        Envelope worldEnvelope = new Envelope(-180, 180, -90, 90);
+        ReferencedEnvelope worldWGS84 = new ReferencedEnvelope(worldEnvelope, WGS84);
+        ReferencedEnvelope worldHomolosine = worldWGS84.transform(homolosine, true);
+        ProjectionHandler handler =
+                ProjectionHandlerFinder.getHandler(worldHomolosine, WGS84, true);
+        // a Geometry that spans the whole world
+        Polygon geometry = JTS.toGeometry(worldEnvelope);
+        // cut it
+        Geometry preProcessed = handler.preProcess(geometry);
+        assertEquals(worldEnvelope, preProcessed.getEnvelopeInternal());
+        // ensure the breaklines are not part of the geometry
+        GeometryFactory gf = geometry.getFactory();
+        assertFalse(preProcessed.intersects(lineString(gf, new double[] {-40, 0.1, -40, 90})));
+        assertFalse(preProcessed.intersects(lineString(gf, new double[] {-100, -0.1, -100, -90})));
+        assertFalse(preProcessed.intersects(lineString(gf, new double[] {-20, -0.1, -20, -90})));
+        assertFalse(preProcessed.intersects(lineString(gf, new double[] {80, -0.1, 80, -90})));
+    }
+
+    public LineString lineString(GeometryFactory gf, double[] coords) {
+        return gf.createLineString(new LiteCoordinateSequence(coords));
     }
 }

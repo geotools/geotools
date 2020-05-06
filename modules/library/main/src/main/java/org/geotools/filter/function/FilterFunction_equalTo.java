@@ -20,11 +20,24 @@ package org.geotools.filter.function;
 
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
+import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.MultiValuedFilter.MatchAction;
 import org.opengis.filter.capability.FunctionName;
+import org.opengis.filter.expression.Expression;
 
 public class FilterFunction_equalTo extends FunctionExpressionImpl {
+    private static FilterFactory2 ff;
+
+    private static FilterFactory2 getFilterFactory2() {
+        if (ff == null) {
+            ff = CommonFactoryFinder.getFilterFactory2();
+        }
+        return ff;
+    }
 
     public static FunctionName NAME =
             new FunctionNameImpl(
@@ -43,32 +56,32 @@ public class FilterFunction_equalTo extends FunctionExpressionImpl {
                             "b",
                             Object.class,
                             "b",
-                            "Can be any object type: date, string, number, etc..."));
+                            "Can be any object type: date, string, number, etc..."),
+                    parameter("matchAction", String.class, 0, 1));
 
     public FilterFunction_equalTo() {
         super(NAME);
     }
 
     public Object evaluate(Object feature) {
-        Object arg0;
-        Object arg1;
+        Expression arg0 = getExpression(0);
+        Expression arg1 = getExpression(1);
+        MatchAction matchAction = null;
 
-        try { // attempt to get value and perform conversion
-            arg0 = (Object) getExpression(0).evaluate(feature);
-        } catch (Exception e) // probably a type error
-        {
-            throw new IllegalArgumentException(
-                    "Filter Function problem for function equalTo argument #0 - expected type Object");
+        if (getParameters().size() > 2) {
+            try { // attempt to get value and perform conversion
+                matchAction = (MatchAction) getExpression(2).evaluate(feature, MatchAction.class);
+            } catch (Exception e) // probably a type error
+            {
+                throw new IllegalArgumentException(
+                        "Filter Function problem for function equalTo argument #2 - expected one of ANY, ONE or ALL");
+            }
         }
+        Filter equalTo =
+                matchAction == null
+                        ? getFilterFactory2().equal(arg0, arg1, false)
+                        : getFilterFactory2().equal(arg0, arg1, false, matchAction);
 
-        try { // attempt to get value and perform conversion
-            arg1 = (Object) getExpression(1).evaluate(feature);
-        } catch (Exception e) // probably a type error
-        {
-            throw new IllegalArgumentException(
-                    "Filter Function problem for function equalTo argument #1 - expected type Object");
-        }
-
-        return Boolean.valueOf(StaticGeometry.equalTo(arg0, arg1));
+        return equalTo.evaluate(feature);
     }
 }

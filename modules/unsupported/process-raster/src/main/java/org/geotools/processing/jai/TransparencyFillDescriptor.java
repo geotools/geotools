@@ -36,6 +36,10 @@ public class TransparencyFillDescriptor extends OperationDescriptorImpl {
 
     public static final FillType FILL_CLONE_SECOND = new FillType("FILL_CLONE_SECOND", 2);
 
+    static final int TYPE_ARG = 0;
+    static final int NODATA_ARG = 1;
+    static final int WIDTH_ARG = 2;
+
     public static class FillType extends EnumeratedParameter {
         FillType(String name, int value) {
             super(name, value);
@@ -57,13 +61,13 @@ public class TransparencyFillDescriptor extends OperationDescriptorImpl {
     };
 
     /** The parameter names for the TransparencyFill operation. */
-    private static final String[] paramNames = {"type"};
+    private static final String[] paramNames = {"type", "noData", "width"};
 
     /** The parameter class types for the TransparencyFill operation. */
-    private static final Class[] paramClasses = {FillType.class};
+    private static final Class[] paramClasses = {FillType.class, Number.class, Integer.class};
 
     /** The parameter default values for the TransparencyFill operation. */
-    private static final Object[] paramDefaults = {FILL_AVERAGE};
+    private static final Object[] paramDefaults = {FILL_AVERAGE, 0d, 1};
 
     /** Constructor. */
     public TransparencyFillDescriptor() {
@@ -82,12 +86,19 @@ public class TransparencyFillDescriptor extends OperationDescriptorImpl {
         return pg;
     }
 
-    public static RenderedOp create(RenderedImage source0, FillType type, RenderingHints hints) {
+    public static RenderedOp create(
+            RenderedImage source0,
+            FillType type,
+            RenderingHints hints,
+            Number noData,
+            Integer width) {
         ParameterBlockJAI pb =
                 new ParameterBlockJAI("TransparencyFill", RenderedRegistryMode.MODE_NAME);
 
         pb.setSource("source0", source0);
         pb.setParameter("type", type);
+        pb.setParameter("noData", noData);
+        pb.setParameter("width", width);
         return JAI.create("TransparencyFill", pb, hints);
     }
 }

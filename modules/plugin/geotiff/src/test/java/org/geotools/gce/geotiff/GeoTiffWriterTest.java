@@ -24,8 +24,6 @@ import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.text.ParseException;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -75,20 +73,6 @@ public class GeoTiffWriterTest extends Assert {
             org.geotools.util.logging.Logging.getLogger(GeoTiffWriterTest.class);
 
     private static final double DELTA = 1E-4;
-
-    private void setFinalStaticField(String fieldName, boolean value)
-            throws NoSuchFieldException, SecurityException, IllegalArgumentException,
-                    IllegalAccessException {
-        // Playing with System.Properties and Static boolean fields can raises issues
-        // when running Junit tests via Maven, due to initialization orders.
-        // So let's change the fields via reflections for these tests
-        Field field = GeoTiffFormat.class.getDeclaredField(fieldName);
-        field.setAccessible(true);
-        Field modifiersField = Field.class.getDeclaredField("modifiers");
-        modifiersField.setAccessible(true);
-        modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-        field.set(null, value);
-    }
 
     /** Test our ability to write non standard CRS */
     @Test
@@ -772,7 +756,7 @@ public class GeoTiffWriterTest extends Assert {
         // reading the coverage, checking it has nodata
         GeoTiffReader reader = new GeoTiffReader(input);
         GridCoverage2D coverage = (GridCoverage2D) reader.read(null);
-        Map props = coverage.getProperties();
+        Map<?, ?> props = coverage.getProperties();
 
         assertTrue(props.containsKey(NoDataContainer.GC_NODATA));
         NoDataContainer nodata = (NoDataContainer) props.get(NoDataContainer.GC_NODATA);
@@ -785,11 +769,13 @@ public class GeoTiffWriterTest extends Assert {
         // Writing it again, excluding noData this time
         writeAndRead(coverage, Boolean.FALSE, noDataValue);
 
-        // Writing it one more time, this time with no parameter being specified
-        // but using the default value being set by system properties
-        setFinalStaticField("DEFAULT_WRITE_NODATA", false);
+        // Writing with no using the default value of true
+        System.setProperty("geotiff.writenodata", "true");
         writeAndRead(coverage, null, noDataValue);
-        setFinalStaticField("DEFAULT_WRITE_NODATA", true);
+        // Writing with no using the default value of false
+        System.setProperty("geotiff.writenodata", "false");
+        writeAndRead(coverage, null, noDataValue);
+        System.clearProperty("geotiff.writenodata");
     }
 
     private void writeAndRead(GridCoverage2D coverage, Boolean writeNoDataParam, double noDataValue)
@@ -811,15 +797,20 @@ public class GeoTiffWriterTest extends Assert {
         // Reading it back
         GeoTiffReader reader = new GeoTiffReader(output);
         coverage = (GridCoverage2D) reader.read(null);
-        Map props = coverage.getProperties();
+        Map<?, ?> props = coverage.getProperties();
         if (writeNoDataParam == null) {
             writeNoDataParam = GeoTiffFormat.WRITE_NODATA.getDefaultValue();
+            Boolean expected = Boolean.valueOf(System.getProperty("geotiff.writenodata", "true"));
+            assertEquals(expected, writeNoDataParam);
         }
-        // checking that nodata exists/not exists if the writing params is true/false
-        assertTrue(props.containsKey(NoDataContainer.GC_NODATA) == writeNoDataParam.booleanValue());
         if (writeNoDataParam) {
+            // checking that nodata exists/not exists if the writing params is true/false
+            assertTrue(props.containsKey(NoDataContainer.GC_NODATA));
             NoDataContainer nodata = (NoDataContainer) props.get(NoDataContainer.GC_NODATA);
             assertEquals(noDataValue, nodata.getAsSingleValue(), 1e-6);
+        } else {
+            // checking that nodata exists/not exists if the writing params is true/false
+            assertFalse(props.containsKey(NoDataContainer.GC_NODATA));
         }
         reader.dispose();
     }

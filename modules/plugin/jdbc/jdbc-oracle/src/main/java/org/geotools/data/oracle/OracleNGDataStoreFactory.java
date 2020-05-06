@@ -116,7 +116,7 @@ public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {
 
     @Override
     protected String getDriverClassName() {
-        return "oracle.jdbc.driver.OracleDriver";
+        return "oracle.jdbc.OracleDriver";
     }
 
     @Override

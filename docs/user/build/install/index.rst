@@ -7,7 +7,6 @@ Install Build Tools
    jdk
    mvn
    git
-   ojdbc
    sphinx
 
 Download Links
@@ -49,10 +48,6 @@ The following optional downloads provide increased functionality or performance:
   Allows the JAI subsystem to read geospatial raster files such as GeoTiff.
 
   * http://java.net/projects/imageio-ext/downloads
-
-* Oracle (Optional):
-    
-  * Obtain a jdbc jar from Oracle or your Oracle installation
 
 * DB2 (Optional)
 

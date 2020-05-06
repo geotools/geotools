@@ -158,12 +158,6 @@
       <artifactId>db2jcc_license_cu</artifactId>
       <version>9</version>
       <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-       <artifactId>ojdbc14</artifactId>
-       <groupId>com.oracle</groupId>
-       <scope>provided</scope>
     </dependency>-->
 
   </dependencies>  

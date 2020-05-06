@@ -207,7 +207,9 @@ public class ProjectionHandler {
             throws TransformException, FactoryException {
         CoordinateReferenceSystem renderingCRS = renderingEnvelope.getCoordinateReferenceSystem();
         if (!queryAcrossDateline) {
-            return Collections.singletonList(transformEnvelope(renderingEnvelope, sourceCRS));
+            ReferencedEnvelope envelope = transformEnvelope(renderingEnvelope, sourceCRS);
+            if (envelope == null) return Collections.emptyList();
+            return Collections.singletonList(envelope);
         }
         if (renderingCRS instanceof GeographicCRS
                 && !CRS.equalsIgnoreMetadata(renderingCRS, WGS84)) {
@@ -228,8 +230,9 @@ public class ProjectionHandler {
                 adjustEnvelope(re, envelopes, true);
             } else {
                 if (re.getMinX() >= -180.0 && re.getMaxX() <= 180) {
-                    return Collections.singletonList(
-                            transformEnvelope(renderingEnvelope, sourceCRS));
+                    ReferencedEnvelope envelope = transformEnvelope(renderingEnvelope, sourceCRS);
+                    if (envelope == null) return Collections.emptyList();
+                    return Collections.singletonList(envelope);
                 }
                 // We need to split reprojected envelope and normalize it. To be lenient with
                 // situations in which the data is just broken (people saying 4326 just because they

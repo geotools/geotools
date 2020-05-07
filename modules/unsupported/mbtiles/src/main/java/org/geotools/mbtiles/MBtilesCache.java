@@ -45,8 +45,6 @@ import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.MultiPoint;
-import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.util.AffineTransformation;
 import org.opengis.feature.simple.SimpleFeature;
@@ -242,14 +240,12 @@ class MBtilesCache {
             // test for tile border intersection, and if needed, add a clip that the renderer
             // will use to make extra borders disappear, much like client side apps do
             SimpleFeature feature = builder.buildFeature(featureIdPrefix + mvtFeature.getId());
-            if (!(geometry instanceof Point || geometry instanceof MultiPoint)) {
-                Envelope geometryEnvelope = geometry.getEnvelopeInternal();
-                if (geometryEnvelope.getMinX() < tileEnvelope.getMinX()
-                        || geometryEnvelope.getMaxX() > tileEnvelope.getMaxX()
-                        || geometryEnvelope.getMinY() < tileEnvelope.getMinY()
-                        || geometryEnvelope.getMaxY() > tileEnvelope.getMaxY()) {
-                    feature.getUserData().put(Hints.GEOMETRY_CLIP, clip);
-                }
+            Envelope geometryEnvelope = geometry.getEnvelopeInternal();
+            if (geometryEnvelope.getMinX() < tileEnvelope.getMinX()
+                    || geometryEnvelope.getMaxX() > tileEnvelope.getMaxX()
+                    || geometryEnvelope.getMinY() < tileEnvelope.getMinY()
+                    || geometryEnvelope.getMaxY() > tileEnvelope.getMaxY()) {
+                feature.getUserData().put(Hints.GEOMETRY_CLIP, clip);
             }
 
             // todo: handle the un-finished features

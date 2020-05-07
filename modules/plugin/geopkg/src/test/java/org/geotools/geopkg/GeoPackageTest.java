@@ -35,6 +35,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -49,6 +50,7 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.Transaction;
 import org.geotools.data.memory.MemoryFeatureCollection;
@@ -78,6 +80,7 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.PrecisionModel;
 import org.opengis.feature.simple.SimpleFeature;
@@ -551,6 +554,55 @@ public class GeoPackageTest {
             assertEquals("bugsites.1", sfr.next().getID().toString());
             assertFalse(sfr.hasNext());
         }
+    }
+
+    @Test
+    public void testSpatialIndexWithSpecificTypeName() throws Exception {
+        List<String> featureTypeNamesToTest =
+                Arrays.asList(
+                        "select",
+                        "all",
+                        "and",
+                        "join",
+                        "else",
+                        "with whitespaces and",
+                        "a-few-dashes");
+
+        for (String typeName : featureTypeNamesToTest) {
+            SimpleFeatureBuilder featureBuilder =
+                    new SimpleFeatureBuilder(createFeatureType(typeName));
+            SimpleFeature simpleFeature = createSimpleFeature(featureBuilder);
+            SimpleFeatureCollection collection = DataUtilities.collection(simpleFeature);
+            FeatureEntry entry = new FeatureEntry();
+            geopkg.add(entry, collection);
+
+            assertFalse(geopkg.hasSpatialIndex(entry));
+            geopkg.createSpatialIndex(entry);
+            assertTrue(geopkg.hasSpatialIndex(entry));
+        }
+    }
+
+    private Geometry createGeometry() {
+        return new GeometryFactory()
+                .createLineString(
+                        new Coordinate[] {
+                            new Coordinate(0.1, 0.1), new Coordinate(0.2, 0.2),
+                        });
+    }
+
+    private SimpleFeature createSimpleFeature(SimpleFeatureBuilder featureBuilder) {
+        featureBuilder.add(createGeometry());
+        featureBuilder.add("bar");
+        return featureBuilder.buildFeature(null);
+    }
+
+    private SimpleFeatureType createFeatureType(String featureName) {
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.setName(featureName);
+        builder.setCRS(DefaultGeographicCRS.WGS84);
+        builder.add("the_geom", LineString.class);
+        builder.add("foo", String.class);
+        return builder.buildFeatureType();
     }
 
     @Test

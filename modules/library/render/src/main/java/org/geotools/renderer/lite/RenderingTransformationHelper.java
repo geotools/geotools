@@ -35,9 +35,11 @@ import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
+import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.SchemaException;
+import org.geotools.feature.collection.ClippingFeatureCollection;
 import org.geotools.filter.function.RenderingTransformation;
 import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
 import org.geotools.geometry.GeneralEnvelope;
@@ -45,6 +47,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -276,6 +279,11 @@ public abstract class RenderingTransformationHelper {
             // grab the original features
             Query mixedQuery = DataUtilities.mixQueries(layerQuery, optimizedQuery, null);
             originalFeatures = featureSource.getFeatures(mixedQuery);
+            if (featureSource.getSupportedHints().contains(Hints.GEOMETRY_CLIP)
+                    && originalFeatures instanceof SimpleFeatureCollection) {
+                originalFeatures =
+                        new ClippingFeatureCollection((SimpleFeatureCollection) originalFeatures);
+            }
             originalFeatures =
                     RendererUtilities.fixFeatureCollectionReferencing(originalFeatures, sourceCrs);
 

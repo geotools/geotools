@@ -18,12 +18,17 @@ package org.geotools.mbtiles;
 
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
+import static org.geotools.mbtiles.MBTilesDataStore.DEFAULT_CRS;
+import static org.junit.Assert.assertFalse;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.Raster;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import org.geotools.data.FeatureSource;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -89,8 +94,7 @@ public class MBTilesRenderTest {
         renderer.paint(
                 g,
                 new Rectangle(0, 0, w, h),
-                new ReferencedEnvelope(
-                        4700000, 5700000, -3000000, -1300000, MBTilesDataStore.DEFAULT_CRS));
+                new ReferencedEnvelope(4700000, 5700000, -3000000, -1300000, DEFAULT_CRS));
         g.dispose();
 
         File expected = new File("src/test/resources/org/geotools/mbtiles/madagascar.png");
@@ -135,5 +139,130 @@ public class MBTilesRenderTest {
         File expected =
                 new File("src/test/resources/org/geotools/mbtiles/madagascar_reprojected.png");
         ImageAssert.assertEquals(expected, image, (int) (w * h * 0.05));
+    }
+
+    @Test
+    public void testTransformWithGeneralizationHint() throws Exception {
+        // tests if geometry generalization happens when a rendering
+        // transformation is issued
+        Style style = getStyle("transformation_water.sld");
+        File file = URLs.urlToFile(getClass().getResource("madagascar.mbtiles"));
+        MBTilesDataStore store = new MBTilesDataStore(new MBTilesFile(file));
+
+        ContentFeatureSource fs = store.getFeatureSource("water");
+
+        FeatureLayer layer = new FeatureLayer(fs.getFeatures(), style);
+
+        MapContent mc = new MapContent();
+        mc.addLayer(layer);
+        StreamingRenderer renderer = new StreamingRenderer();
+        // exaggerate generalization distance till obtain a Kandisky'map
+        // to test that generalization happened
+        renderer.setGeneralizationDistance(50);
+        renderer.setMapContent(mc);
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        int w = 300;
+        int h = 500;
+        final BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        g.setColor(Color.white);
+        g.fillRect(0, 0, w, h);
+        renderer.paint(
+                g,
+                new Rectangle(0, 0, w, h),
+                new ReferencedEnvelope(4700000, 5700000, -3000000, -1300000, DEFAULT_CRS));
+        g.dispose();
+        File expected =
+                new File("src/test/resources/org/geotools/mbtiles/overgeneralized_madagascar.png");
+        ImageAssert.assertEquals(expected, image, (int) (w * h * 0.05));
+    }
+
+    @Test
+    public void testTransformWithMBTilesWithBuffer() throws Exception {
+        // tests that features outside tile borders are not displayed when
+        // rendering transformation is issued
+
+        // Issues AttributeRename transformation
+        Style styleTransformation = getStyle("transformation_many_points.sld");
+
+        // Style equal to the former Fbut without AttributeRename
+        // so that the two images will differ just for the presence of not removed
+        // buffer pixel at tiles' borders
+        Style styleNoTransformation = getStyle("many_points.sld");
+
+        File file = URLs.urlToFile(getClass().getResource("manypoints_test.mbtiles"));
+        MBTilesDataStore store = new MBTilesDataStore(new MBTilesFile(file));
+        int w = 440;
+        int h = 330;
+        ContentFeatureSource fs = store.getFeatureSource("manypoints_test");
+        ReferencedEnvelope bbox =
+                new ReferencedEnvelope(
+                        4254790.681588205,
+                        4619242.456803064,
+                        4701182.96838953,
+                        4977579.240638782,
+                        DEFAULT_CRS);
+        BufferedImage transformationImg = getImage(w, h, bbox, fs, styleTransformation);
+        BufferedImage noTransformationImg = getImage(w, h, bbox, fs, styleNoTransformation);
+        File expectedT =
+                new File("src/test/resources/org/geotools/mbtiles/many_points_transformed.png");
+        File expected = new File("src/test/resources/org/geotools/mbtiles/many_points.png");
+        ImageAssert.assertEquals(expectedT, transformationImg, (int) (w * h * 0.05));
+        ImageAssert.assertEquals(expected, noTransformationImg, (int) (w * h * 0.05));
+
+        // check pixels along a stripe where buffer's features didn't get removed
+        // in image without transformation
+        int i = 155;
+        int j = 154;
+        while (j < 166) {
+            Color noTrans = getPixelColor(i, j, noTransformationImg);
+            Color tansformed = getPixelColor(i, j, transformationImg);
+            assertFalse(noTrans.equals(tansformed));
+            j++;
+        }
+    }
+
+    private Style getStyle(String fileName) throws IOException {
+        URL styleResource = MBTilesRenderTest.class.getResource(fileName);
+        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        StyledLayerDescriptor sld = new SLDParser(styleFactory, styleResource).parseSLD();
+        return ((NamedLayer) sld.getStyledLayers()[0]).getStyles()[0];
+    }
+
+    private BufferedImage getImage(
+            int w, int h, ReferencedEnvelope bbox, FeatureSource fs, Style style) {
+        FeatureLayer layer = new FeatureLayer(fs, style);
+
+        MapContent mc = new MapContent();
+        mc.addLayer(layer);
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        final BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        g.setColor(Color.white);
+        g.fillRect(0, 0, w, h);
+        renderer.paint(g, new Rectangle(0, 0, w, h), bbox);
+        g.dispose();
+        mc.dispose();
+        return image;
+    }
+
+    private Color getPixelColor(int i, int j, BufferedImage img) {
+        ColorModel cm = img.getColorModel();
+        Raster raster = img.getRaster();
+        Object pixel = raster.getDataElements(i, j, null);
+        Color actual;
+        if (cm.hasAlpha()) {
+            actual =
+                    new Color(
+                            cm.getRed(pixel),
+                            cm.getGreen(pixel),
+                            cm.getBlue(pixel),
+                            cm.getAlpha(pixel));
+        } else {
+            actual = new Color(cm.getRed(pixel), cm.getGreen(pixel), cm.getBlue(pixel), 255);
+        }
+        return actual;
     }
 }

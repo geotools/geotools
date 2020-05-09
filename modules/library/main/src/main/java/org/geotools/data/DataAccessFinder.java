@@ -172,7 +172,7 @@ public final class DataAccessFinder {
     }
 
     /**
-     * Finds all implemtaions of DataAccessFactory which have registered using the services
+     * Finds all implementations of DataAccessFactory which have registered using the services
      * mechanism, and that have the appropriate libraries on the classpath.
      *
      * @return An iterator over all discovered datastores which have registered factories, and whose
@@ -207,9 +207,7 @@ public final class DataAccessFinder {
 
     static <T extends DataAccessFactory> Iterator<T> getAvailableDataStores(
             FactoryRegistry registry, Class<T> targetClass) {
-        return registry.getFactories(targetClass, null, null)
-                .filter(DataAccessFactory::isAvailable)
-                .iterator();
+        return registry.getFactories(targetClass, DataAccessFactory::isAvailable, false).iterator();
     }
 
     /**

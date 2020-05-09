@@ -43,6 +43,8 @@ import java.util.regex.Pattern;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.naming.NoInitialContextException;
+import javax.naming.OperationNotSupportedException;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.EventListenerList;
@@ -239,7 +241,16 @@ public final class GeoTools {
     public static final String ENCODE_WKT = "org.geotools.ecql.ewkt";
 
     /** The initial context. Will be created only when first needed. */
-    private static InitialContext context;
+    private static volatile InitialContext context;
+
+    private static final class NoInitialContext extends InitialContext {
+        final String message;
+
+        NoInitialContext(String message) throws NamingException {
+            super(true); // lazy init, so it gets instantiated without default lookup
+            this.message = message;
+        }
+    }
 
     /**
      * Class loaders to be added to the list in ${link {@link FactoryRegistry#getClassLoaders()}}
@@ -710,9 +721,7 @@ public final class GeoTools {
      * @since 2.4
      */
     public static void init(final InitialContext applicationContext) {
-        synchronized (GeoTools.class) {
-            context = applicationContext;
-        }
+        context = applicationContext;
         fireConfigurationChanged();
     }
 
@@ -904,21 +913,62 @@ public final class GeoTools {
         }
         return defaultValue;
     }
+
     /**
      * Returns the default initial context.
      *
-     * @param hints An optional set of hints, or {@code null} if none.
+     * @param hints Unused An optional set of hints, or {@code null} if none.
      * @return The initial context (never {@code null}).
      * @throws NamingException if the initial context can't be created.
      * @see #init(InitialContext)
      * @since 2.4
+     * @implNote This method will fail fast if a previous call threw a NamingException whose cause
+     *     was a {@code java.lang.ClassNotFoundException}. Rationale being that it can be called
+     *     repeatedly in tight loops, and from multiple threads, which would cause a severe thread
+     *     lock contention down the pipe when {@code new InitialContext()} reaches the {@code
+     *     synchronized} blocks at {@code java.lang.ClassLoader.loadClass()}
      */
-    public static synchronized InitialContext getInitialContext(final Hints hints)
-            throws NamingException {
+    public static InitialContext getInitialContext(final Hints hints) throws NamingException {
         if (context == null) {
-            context = new InitialContext();
+            try {
+                synchronized (InitialContext.class) {
+                    if (context == null) {
+                        InitialContext initialContext = new InitialContext();
+                        try {
+                            initialContext.getNameInNamespace();
+                        } catch (OperationNotSupportedException ok) {
+                            // eat it, the context is sane, it just doesn't support the notion of a
+                            // context full name within its own namespace
+                        }
+                        context = initialContext;
+                    }
+                }
+            } catch (NamingException ne) {
+                if (ne instanceof NoInitialContextException
+                        || (null != ne.getCause()
+                                && ne.getCause() instanceof ClassNotFoundException)) {
+                    context = new NoInitialContext(ne.getMessage());
+                } else {
+                    throw ne; // some other cause, can't help it
+                }
+            }
         }
-        return context;
+        InitialContext ctx = context;
+        if (ctx instanceof NoInitialContext) {
+            throw new NoInitialContextException(((NoInitialContext) context).message);
+        }
+        return ctx;
+    }
+
+    public static boolean isInitialContextAvailable() {
+        if (context == null) {
+            try {
+                getInitialContext(null);
+            } catch (NamingException e) {
+                return false;
+            }
+        }
+        return context != null && !(context instanceof NoInitialContext);
     }
 
     /**
@@ -926,11 +976,12 @@ public final class GeoTools {
      *
      * @since 15.0
      */
-    public static synchronized void clearInitialContext() throws NamingException {
-        if (context != null) {
-            context.close();
-        }
+    public static void clearInitialContext() throws NamingException {
+        InitialContext initialContext = context;
         context = null;
+        if (initialContext != null) {
+            initialContext.close();
+        }
     }
 
     /**

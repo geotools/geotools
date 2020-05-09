@@ -126,16 +126,11 @@ public abstract class JDBCJNDIDataStoreFactory extends JDBCDataStoreFactory {
     /**
      * Determines if the datastore is available.
      *
-     * <p>Check in an Initial Context is available, that is all what can be done Checking for the
+     * <p>Check if an Initial Context is available, that is all what can be done Checking for the
      * right jdbc jars in the classpath is not possible here
      */
     public boolean isAvailable() {
-        try {
-            GeoTools.getInitialContext(GeoTools.getDefaultHints());
-            return true;
-        } catch (NamingException e) {
-            return false;
-        }
+        return GeoTools.isInitialContextAvailable();
     }
 
     /** Override to omit all those parameters which define the creation of the connection. */

@@ -17,7 +17,7 @@
 package org.geotools.data.sqlserver.jdts;
 
 import static junit.framework.TestCase.fail;
-
+import static org.junit.Assert.assertNull;
 import java.io.IOException;
 import java.util.Properties;
 import org.geotools.data.DataStoreFinder;
@@ -44,14 +44,14 @@ public class SQLServerJTDSJNDITest {
      * @throws IOException always with the message: "Cannot find JNDI data source:
      *     java:comp/env/jdbc/geotools"
      */
-    @Test(expected = IOException.class)
+    @Test
     public void testCanGetJTDSdataStore() throws IOException {
         jndiProps.put("dbtype", "jtds-sqlserver");
 
         // this will fail with the message: "Cannot find JNDI data source:
         // java:comp/env/jdbc/geotools"
         JDBCDataStore dataStore = (JDBCDataStore) DataStoreFinder.getDataStore(jndiProps);
-        fail("Expected exception was not thrown");
+        assertNull(dataStore);
     }
 
     /**
@@ -61,13 +61,13 @@ public class SQLServerJTDSJNDITest {
      * @throws IOException always with the message: "Cannot find JNDI data source:
      *     java:comp/env/jdbc/geotools"
      */
-    @Test(expected = IOException.class)
+    @Test
     public void testCanGetMSdataStore() throws IOException {
         jndiProps.put("dbtype", "sqlserver");
 
         // this will fail with the message: "Cannot find JNDI data source:
         // java:comp/env/jdbc/geotools"
         JDBCDataStore dataStore = (JDBCDataStore) DataStoreFinder.getDataStore(jndiProps);
-        fail("Expected exception was not thrown");
+        assertNull(dataStore);
     }
 }

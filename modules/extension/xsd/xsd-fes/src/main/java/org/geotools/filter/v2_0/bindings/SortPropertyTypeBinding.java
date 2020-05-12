@@ -17,12 +17,10 @@
 package org.geotools.filter.v2_0.bindings;
 
 import javax.xml.namespace.QName;
-
+import net.opengis.fes20.SortPropertyType;
 import org.geotools.filter.v2_0.FES;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.sort.SortBy;
-
-import net.opengis.fes20.SortPropertyType;
 
 /**
  * Binding object for the type http://www.opengis.net/ogc:SortPropertyType.
@@ -45,36 +43,37 @@ import net.opengis.fes20.SortPropertyType;
  */
 public class SortPropertyTypeBinding extends org.geotools.filter.v1_1.SortPropertyTypeBinding {
 
-	public SortPropertyTypeBinding(FilterFactory filterfactory) {
-		super(filterfactory);
-	}
+    public SortPropertyTypeBinding(FilterFactory filterfactory) {
+        super(filterfactory);
+    }
 
-	/** @generated */
-	public QName getTarget() {
-		return FES.SortPropertyType;
-	}
+    /** @generated */
+    public QName getTarget() {
+        return FES.SortPropertyType;
+    }
 
-	/**
-	 *
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
-	 * @generated modifiable
-	 */
-	public Class getType() {
-		return SortPropertyType.class;
-	}
+    /**
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated modifiable
+     */
+    public Class getType() {
+        return SortPropertyType.class;
+    }
 
-	public Object getProperty(Object object, QName name) throws Exception {
-		SortBy sortBy = (SortBy) object;
+    public Object getProperty(Object object, QName name) throws Exception {
+        SortBy sortBy = (SortBy) object;
 
-		if (FES.ValueReference.equals(name)) {
-			return sortBy.getPropertyName();
-		}
+        if (FES.ValueReference.equals(name)) {
+            return sortBy.getPropertyName();
+        }
 
-		if ("SortOrder".equals(name.getLocalPart())) {
-			return sortBy.getSortOrder();
-		}
+        if ("SortOrder".equals(name.getLocalPart())) {
+            return sortBy.getSortOrder();
+        }
 
-		return null;
-	}
+        return null;
+    }
 }

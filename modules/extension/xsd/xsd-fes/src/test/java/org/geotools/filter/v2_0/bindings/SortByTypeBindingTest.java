@@ -33,18 +33,17 @@ public class SortByTypeBindingTest extends FESTestSupport {
         assertEquals("myns:temperature", sortBy[1].getPropertyName().getPropertyName());
         assertEquals(SortOrder.DESCENDING, sortBy[1].getSortOrder());
     }
-    
-    public void testEncode() throws Exception {
-    	FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-    	SortBy sortBy=ff.sort("myProperty",SortOrder.ASCENDING);
-    	
-    	UniqueEList<SortBy> list = new UniqueEList<>();
-    	list.add(sortBy);
-    	
-    	Document doc = encode(list, FES.SortBy);
-		assertEquals("fes:SortBy", doc.getDocumentElement().getNodeName());
-		assertEquals(1, doc.getElementsByTagNameNS(FES.NAMESPACE, "SortProperty").getLength());
-		assertEquals(1, doc.getElementsByTagNameNS(FES.NAMESPACE, "SortOrder").getLength());
 
-	}
+    public void testEncode() throws Exception {
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        SortBy sortBy = ff.sort("myProperty", SortOrder.ASCENDING);
+
+        UniqueEList<SortBy> list = new UniqueEList<>();
+        list.add(sortBy);
+
+        Document doc = encode(list, FES.SortBy);
+        assertEquals("fes:SortBy", doc.getDocumentElement().getNodeName());
+        assertEquals(1, doc.getElementsByTagNameNS(FES.NAMESPACE, "SortProperty").getLength());
+        assertEquals(1, doc.getElementsByTagNameNS(FES.NAMESPACE, "SortOrder").getLength());
+    }
 }

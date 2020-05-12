@@ -17,7 +17,6 @@
 package org.geotools.filter.v2_0.bindings;
 
 import javax.xml.namespace.QName;
-
 import org.eclipse.emf.common.util.UniqueEList;
 import org.geotools.filter.v2_0.FES;
 import org.opengis.filter.FilterFactory;
@@ -42,32 +41,33 @@ import org.opengis.filter.FilterFactory;
  */
 public class SortByTypeBinding extends org.geotools.filter.v1_1.SortByTypeBinding {
 
-	public SortByTypeBinding(FilterFactory filterfactory) {
-		super(filterfactory);
-	}
+    public SortByTypeBinding(FilterFactory filterfactory) {
+        super(filterfactory);
+    }
 
-	/** @generated */
-	public QName getTarget() {
-		return FES.SortByType;
-	}
+    /** @generated */
+    public QName getTarget() {
+        return FES.SortByType;
+    }
 
-	/**
-	 *
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
-	 * @generated modifiable
-	 */
-	public Class getType() {
-		return UniqueEList.class;
-	}
+    /**
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated modifiable
+     */
+    public Class getType() {
+        return UniqueEList.class;
+    }
 
-	public Object getProperty(Object object, QName name) throws Exception {
-		if ("SortProperty".equals(name.getLocalPart())) {
-			UniqueEList sortBy = (UniqueEList) object;
+    public Object getProperty(Object object, QName name) throws Exception {
+        if ("SortProperty".equals(name.getLocalPart())) {
+            UniqueEList sortBy = (UniqueEList) object;
 
-			return sortBy;
-		}
+            return sortBy;
+        }
 
-		return null;
-	}
+        return null;
+    }
 }

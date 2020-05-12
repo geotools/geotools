@@ -17,6 +17,7 @@
 package org.geotools.renderer.lite;
 
 import static java.lang.Math.abs;
+import static java.util.Objects.requireNonNull;
 
 import com.conversantmedia.util.concurrent.PushPullBlockingQueue;
 import com.conversantmedia.util.concurrent.SpinPolicy;
@@ -103,6 +104,7 @@ import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.referencing.operation.transform.WarpBuilder;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.RenderListener;
+import org.geotools.renderer.SymbolizersPreProcessor;
 import org.geotools.renderer.crs.ProjectionHandler;
 import org.geotools.renderer.crs.ProjectionHandlerFinder;
 import org.geotools.renderer.crs.WrappingProjectionHandler;
@@ -430,11 +432,39 @@ public class StreamingRenderer implements GTRenderer {
             Integer.valueOf(System.getProperty("ADVANCED_PROJECTION_DENSIFY_MAX_PIXELS", "5"));
 
     /**
+     * The {@link SymbolizersPreProcessor} extensions handler. The symbolizers pre-processors are
+     * allowed to enhance or add new symbolizers to the feature rendering at runtime.
+     */
+    private final SymbolizersPreProcessorHandler symbolizersHandler;
+
+    /**
      * Creates a new instance of LiteRenderer without a context. Use it only to gain access to
      * utility methods of this class or if you want to render random feature collections instead of
      * using the map context interface
      */
-    public StreamingRenderer() {}
+    public StreamingRenderer() {
+        symbolizersHandler = new SymbolizersPreProcessorHandler();
+    }
+
+    public StreamingRenderer(SymbolizersPreProcessorHandler symbolizersHandler) {
+        this.symbolizersHandler = requireNonNull(symbolizersHandler);
+    }
+
+    /** Adds a {@link SymbolizersPreProcessor} extension instance to the current collection. */
+    public void addSymbolizersPreProcessor(SymbolizersPreProcessor symbolizersPreProcessor) {
+        this.symbolizersHandler.getSymbolizersPreProcessors().add(symbolizersPreProcessor);
+    }
+
+    /** Adds {@link SymbolizersPreProcessor} extension instances to the current collection. */
+    public void addSymbolizersPreProcessors(
+            Collection<SymbolizersPreProcessor> symbolizersPreProcessors) {
+        this.symbolizersHandler.getSymbolizersPreProcessors().addAll(symbolizersPreProcessors);
+    }
+
+    /** Removes a {@link SymbolizersPreProcessor} extension instance from the current collection. */
+    public void removeSymbolizersPreProcessor(SymbolizersPreProcessor symbolizersPreProcessor) {
+        this.symbolizersHandler.getSymbolizersPreProcessors().remove(symbolizersPreProcessor);
+    }
 
     /** Sets a thread pool to be used in parallel rendering */
     public void setThreadPool(ExecutorService threadPool) {
@@ -1072,7 +1102,7 @@ public class StreamingRenderer implements GTRenderer {
 
         // if map extent are not already expanded by a constant buffer, try to compute a layer
         // specific one based on stroke widths
-        if (getRenderingBuffer() == 0) {
+        if (getRenderingBuffer(layer) == 0) {
             int metaBuffer = findRenderingBuffer(styleList);
             if (metaBuffer > 0) {
                 mapArea = expandEnvelope(mapArea, worldToScreenTransform, metaBuffer);
@@ -1101,7 +1131,7 @@ public class StreamingRenderer implements GTRenderer {
         if (styleList == null) {
             attributes = null;
         } else {
-            attributes = findStyleAttributes(styleList, schema);
+            attributes = findStyleAttributes(styleList, schema, layer);
         }
 
         ReferencedEnvelope envelope = new ReferencedEnvelope(mapArea, mapCRS);
@@ -1798,7 +1828,7 @@ public class StreamingRenderer implements GTRenderer {
      * @return the minimum set of attribute names needed to render <code>layer</code>
      */
     private List<PropertyName> findStyleAttributes(
-            List<LiteFeatureTypeStyle> styles, FeatureType schema) {
+            List<LiteFeatureTypeStyle> styles, FeatureType schema, Layer layer) {
         final StyleAttributeExtractor sae = new StyleAttributeExtractor();
 
         for (LiteFeatureTypeStyle lfts : styles) {
@@ -1884,7 +1914,8 @@ public class StreamingRenderer implements GTRenderer {
             // might not be a geometry column. That will cause problems down the
             // road (why render a non-geometry layer)
         }
-
+        // add required attributes from symbolizers pre-processors extensions if apply
+        atts = symbolizersHandler.addRequiredAttributes(atts, schema, layer);
         return atts;
     }
 
@@ -2023,7 +2054,7 @@ public class StreamingRenderer implements GTRenderer {
                 lfts.sortBy = sortBy;
 
                 if (screenMapEnabled(lfts)) {
-                    int renderingBuffer = getRenderingBuffer();
+                    int renderingBuffer = getRenderingBuffer(layer);
                     lfts.screenMap =
                             new ScreenMap(
                                     screenSize.x - renderingBuffer,
@@ -2870,7 +2901,9 @@ public class StreamingRenderer implements GTRenderer {
             throws Exception {
         int paintCommands = 0;
 
-        for (Symbolizer symbolizer : symbolizers) {
+        for (Symbolizer symbolizer :
+                this.symbolizersHandler.preProcessSymbolizers(
+                        drawMe.feature, drawMe.layer, symbolizers)) {
 
             // /////////////////////////////////////////////////////////////////
             //
@@ -3189,6 +3222,27 @@ public class StreamingRenderer implements GTRenderer {
      * differently, see the label chache).
      */
     private int getRenderingBuffer() {
+        int buffer = getRenderingBufferFromConfiguration();
+        // get extra buffer from symbolizer pre-processor extensions
+        for (Layer layer : mapContent.layers()) {
+            buffer = Math.max(buffer, (int) symbolizersHandler.getBuffer(layer));
+        }
+        return buffer;
+    }
+
+    /**
+     * Returns the rendering buffer, a measure in pixels used to expand the geometry search area
+     * enough to capture the geometries that do stay outside of the current rendering bounds but do
+     * affect them because of their large strokes (labels and graphic symbols are handled
+     * differently, see the label chache).
+     */
+    int getRenderingBuffer(Layer layer) {
+        int globalBuffer = getRenderingBufferFromConfiguration();
+        // get extra buffer from symbolizer pre-processor extensions
+        return Math.max(globalBuffer, (int) symbolizersHandler.getBuffer(layer));
+    }
+
+    private int getRenderingBufferFromConfiguration() {
         if (rendererHints == null) return renderingBufferDEFAULT;
         Number result = (Number) rendererHints.get(RENDERING_BUFFER);
         if (result == null) return renderingBufferDEFAULT;

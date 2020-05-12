@@ -34,6 +34,8 @@ import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -41,8 +43,11 @@ import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
+import org.apache.commons.lang3.mutable.MutableObject;
+import org.apache.commons.lang3.tuple.Pair;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
@@ -71,6 +76,7 @@ import org.geotools.map.MapContent;
 import org.geotools.map.MapViewport;
 import org.geotools.referencing.CRS;
 import org.geotools.renderer.RenderListener;
+import org.geotools.renderer.SymbolizersPreProcessor;
 import org.geotools.renderer.lite.StreamingRenderer.RenderingRequest;
 import org.geotools.styling.DescriptionImpl;
 import org.geotools.styling.Rule;
@@ -90,9 +96,13 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+import org.mockito.internal.verification.VerificationModeFactory;
+import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.Filter;
+import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.parameter.GeneralParameterValue;
@@ -111,6 +121,7 @@ import org.opengis.style.GraphicLegend;
  */
 public class StreamingRendererTest {
 
+    private static final String TEST_ATTR = "test_attr";
     private SimpleFeatureType testLineFeatureType;
     private SimpleFeatureType testPointFeatureType;
     private GeometryFactory gf = new GeometryFactory();
@@ -136,7 +147,6 @@ public class StreamingRendererTest {
 
     @Before
     public void setUp() throws Exception {
-
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setName("Lines");
         builder.add("geom", LineString.class, WGS84);
@@ -597,24 +607,7 @@ public class StreamingRendererTest {
 
     @Test
     public void testScreenMapMemory() {
-        // build a feature source with two zig-zag line occupying the same position
-        LiteCoordinateSequence cs =
-                new LiteCoordinateSequence(new double[] {0, 0, 1, 1, 2, 0, 3, 1, 4, 0});
-        SimpleFeature zigzag1 =
-                SimpleFeatureBuilder.build(
-                        testLineFeatureType, new Object[] {gf.createLineString(cs)}, "zz1");
-        SimpleFeature zigzag2 =
-                SimpleFeatureBuilder.build(
-                        testLineFeatureType, new Object[] {gf.createLineString(cs)}, "zz2");
-        DefaultFeatureCollection fc = new DefaultFeatureCollection();
-        fc.add(zigzag1);
-        fc.add(zigzag2);
-        SimpleFeatureSource zzSource = new CollectionFeatureSource(fc);
-
-        // prepare the map
-        MapContent mc = new MapContent();
-        StyleBuilder sb = new StyleBuilder();
-        mc.addLayer(new FeatureLayer(zzSource, sb.createStyle(sb.createLineSymbolizer())));
+        MapContent mc = buildMockMapContent();
         StreamingRenderer sr = new StreamingRenderer();
         sr.setMapContent(mc);
 
@@ -926,5 +919,178 @@ public class StreamingRendererTest {
         sr.paint((Graphics2D) image.getGraphics(), new Rectangle(200, 200), cornerHomolosine);
         mapContent.dispose();
         assertEquals(0, errors);
+    }
+
+    /**
+     * Tests the {@link SymbolizersPreProcessor} extension points execution for StreamingRenderer.
+     */
+    @Test
+    public void testSymbolizerPreProcessor() throws Exception {
+        MapContent mc = buildMockMapContent();
+        final List<Pair<Layer, Integer>> buffers = new ArrayList<>();
+        final StreamingRenderer streamingRenderer =
+                new StreamingRenderer() {
+                    @Override
+                    int getRenderingBuffer(Layer layer) {
+                        int buffer = super.getRenderingBuffer(layer);
+                        if (layer != null) buffers.add(Pair.of(layer, buffer));
+                        return buffer;
+                    }
+                };
+        streamingRenderer.setMapContent(mc);
+        // use mutable references to catch the involved changes
+        final MutableObject<Boolean> preProcessorApplied = new MutableObject<Boolean>(false);
+        final MutableObject<Symbolizer> symbolizerMutable = new MutableObject<Symbolizer>();
+        // instance the extension point to be tested
+        SymbolizersPreProcessor preProcessor =
+                new SymbolizersPreProcessor() {
+                    @Override
+                    public boolean appliesTo(Layer layer) {
+                        return true;
+                    }
+
+                    @Override
+                    public List<String> getAttributes(Layer layer) {
+                        return Collections.emptyList();
+                    }
+
+                    @Override
+                    public double getBuffer(Layer layer, Style style) {
+                        return 50;
+                    }
+
+                    @Override
+                    public List<Symbolizer> apply(
+                            Feature feature, Layer layer, List<Symbolizer> symbolizers) {
+                        // mutate the applied check object
+                        preProcessorApplied.setValue(true);
+                        // we'll spy the symbolizer to check this new instance is used instead the
+                        // former one
+                        Symbolizer symbolizer = Mockito.spy(symbolizers.get(0));
+                        symbolizerMutable.setValue(symbolizer);
+                        return Arrays.asList(symbolizer);
+                    }
+                };
+        streamingRenderer.addSymbolizersPreProcessor(preProcessor);
+        // execute the rendering stage
+        BufferedImage bi = new BufferedImage(1, 1, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D graphics = bi.createGraphics();
+        // have the lines be smaller than a 1/3 of a pixel
+        streamingRenderer.paint(
+                graphics, new Rectangle(0, 0, 1, 1), new ReferencedEnvelope(0, 8, 0, 8, WGS84));
+        graphics.dispose();
+        // proceed with the checks
+        assertEquals(Boolean.TRUE, preProcessorApplied.getValue());
+        Mockito.verify(symbolizerMutable.getValue(), VerificationModeFactory.atLeastOnce())
+                .getGeometry();
+        assertTrue(
+                "Buffer should be 50",
+                buffers.stream().allMatch(pair -> Integer.valueOf(50).equals(pair.getRight())));
+    }
+
+    /** Tests the required attribute extension on {@link SymbolizersPreProcessor}. */
+    @Test
+    public void testSymbolizerPreProcessorAttributes() throws Exception {
+        final List<PropertyName> handlerAttributes = new ArrayList<>();
+        MapContent mapContent = buildMockMapContentForAttributes();
+        SymbolizersPreProcessorHandler handler =
+                new SymbolizersPreProcessorHandler() {
+                    @Override
+                    public List<PropertyName> addRequiredAttributes(
+                            List<PropertyName> attributes, FeatureType schema, Layer layer) {
+                        List<PropertyName> requiredAttributes =
+                                super.addRequiredAttributes(attributes, schema, layer);
+                        handlerAttributes.addAll(requiredAttributes);
+                        return requiredAttributes;
+                    }
+                };
+        final StreamingRenderer streamingRenderer = new StreamingRenderer(handler);
+        streamingRenderer.setMapContent(mapContent);
+        // instance the extension point to be tested
+        SymbolizersPreProcessor preProcessor =
+                new SymbolizersPreProcessor() {
+                    @Override
+                    public boolean appliesTo(Layer layer) {
+                        return true;
+                    }
+
+                    @Override
+                    public List<String> getAttributes(Layer layer) {
+                        return Arrays.asList(TEST_ATTR);
+                    }
+
+                    @Override
+                    public double getBuffer(Layer layer, Style style) {
+                        return 50;
+                    }
+
+                    @Override
+                    public List<Symbolizer> apply(
+                            Feature feature, Layer layer, List<Symbolizer> symbolizers) {
+                        return symbolizers;
+                    }
+                };
+        streamingRenderer.addSymbolizersPreProcessor(preProcessor);
+        // execute the rendering stage
+        BufferedImage bi = new BufferedImage(1, 1, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D graphics = bi.createGraphics();
+        // have the lines be smaller than a 1/3 of a pixel
+        streamingRenderer.paint(
+                graphics, new Rectangle(0, 0, 1, 1), new ReferencedEnvelope(0, 8, 0, 8, WGS84));
+        graphics.dispose();
+        // check the added attribute name
+        List<String> attributeNames =
+                handlerAttributes
+                        .stream()
+                        .map(PropertyName::getPropertyName)
+                        .collect(Collectors.toList());
+        assertTrue(attributeNames.contains(TEST_ATTR));
+    }
+
+    private MapContent buildMockMapContent() {
+        LiteCoordinateSequence cs =
+                new LiteCoordinateSequence(new double[] {0, 0, 1, 1, 2, 0, 3, 1, 4, 0});
+        SimpleFeature zigzag1 =
+                SimpleFeatureBuilder.build(
+                        testLineFeatureType, new Object[] {gf.createLineString(cs)}, "zz1");
+        SimpleFeature zigzag2 =
+                SimpleFeatureBuilder.build(
+                        testLineFeatureType, new Object[] {gf.createLineString(cs)}, "zz2");
+        DefaultFeatureCollection fc = new DefaultFeatureCollection();
+        fc.add(zigzag1);
+        fc.add(zigzag2);
+        SimpleFeatureSource zzSource = new CollectionFeatureSource(fc);
+
+        // prepare the map
+        MapContent mc = new MapContent();
+        StyleBuilder sb = new StyleBuilder();
+        mc.addLayer(new FeatureLayer(zzSource, sb.createStyle(sb.createLineSymbolizer())));
+        return mc;
+    }
+
+    private MapContent buildMockMapContentForAttributes() {
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.setName("Lines");
+        builder.add("geom", LineString.class, WGS84);
+        builder.add(TEST_ATTR, String.class);
+        SimpleFeatureType lineFeatureType = builder.buildFeatureType();
+        LiteCoordinateSequence cs =
+                new LiteCoordinateSequence(new double[] {0, 0, 1, 1, 2, 0, 3, 1, 4, 0});
+        SimpleFeature zigzag1 =
+                SimpleFeatureBuilder.build(
+                        lineFeatureType, new Object[] {gf.createLineString(cs), "test1"}, "zz1");
+        SimpleFeature zigzag2 =
+                SimpleFeatureBuilder.build(
+                        lineFeatureType, new Object[] {gf.createLineString(cs), "test2"}, "zz2");
+        DefaultFeatureCollection fc = new DefaultFeatureCollection();
+        fc.add(zigzag1);
+        fc.add(zigzag2);
+        SimpleFeatureSource zzSource = new CollectionFeatureSource(fc);
+
+        // prepare the map
+        MapContent mc = new MapContent();
+        StyleBuilder sb = new StyleBuilder();
+        mc.addLayer(new FeatureLayer(zzSource, sb.createStyle(sb.createLineSymbolizer())));
+        return mc;
     }
 }

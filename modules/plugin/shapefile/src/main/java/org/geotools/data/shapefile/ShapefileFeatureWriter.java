@@ -160,7 +160,7 @@ class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
         FileChannel shxChannel = storageFiles.get(SHX).getWriteChannel();
         shpWriter = new ShapefileWriter(shpChannel, shxChannel);
 
-        dbfHeader = ShapefileDataStore.createDbaseHeader(featureType);
+        dbfHeader = ShapefileDataStore.createDbaseHeader(featureType, dbfCharset);
         dbfChannel = storageFiles.get(DBF).getWriteChannel();
         dbfWriter = new DbaseFileWriter(dbfHeader, dbfChannel, dbfCharset, dbfTimeZone);
 

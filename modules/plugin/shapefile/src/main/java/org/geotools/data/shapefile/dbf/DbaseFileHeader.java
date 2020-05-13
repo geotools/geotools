@@ -100,6 +100,16 @@ public class DbaseFileHeader {
     // lets start out with a zero-length array, just in case
     private DbaseField[] fields = new DbaseField[0];
 
+    private Charset charset;
+
+    public DbaseFileHeader() {
+        this.charset = Charset.defaultCharset();
+    }
+
+    public DbaseFileHeader(Charset charset) {
+        this.charset = charset;
+    }
+
     private void read(ByteBuffer buffer, ReadableByteChannel channel) throws IOException {
         while (buffer.remaining() > 0) {
             if (channel.read(buffer) == -1) {
@@ -222,13 +232,14 @@ public class DbaseFileHeader {
         }
         // Fix for GEOT-42, ArcExplorer will not handle field names > 10 chars
         // Sorry folks.
-        if (tempFieldName.length() > 10) {
-            tempFieldName = tempFieldName.substring(0, 10);
+        String fitFieldName = fitStringRegardingCharset(tempFieldName, 10);
+        if (!tempFieldName.equals(fitFieldName)) {
+            tempFieldName = fitFieldName;
             if (logger.isLoggable(Level.WARNING)) {
                 logger.warning(
                         "FieldName "
                                 + inFieldName
-                                + " is longer than 10 characters, truncating to "
+                                + " is longer than 10 bytes in given charset, truncating to "
                                 + tempFieldName);
             }
         }
@@ -368,6 +379,15 @@ public class DbaseFileHeader {
         recordLength = tempLength;
     }
 
+    private String fitStringRegardingCharset(String s, int bytesCnt) {
+        int len = s.length();
+        String result = s;
+        while (result.getBytes(charset).length > bytesCnt) {
+            result = s.substring(0, --len);
+        }
+        return result;
+    }
+
     /**
      * Remove a column from this DbaseFileHeader.
      *
@@ -504,7 +524,7 @@ public class DbaseFileHeader {
      * @throws IOException If errors occur while reading.
      */
     public void readHeader(ReadableByteChannel channel) throws IOException {
-        readHeader(channel, Charset.defaultCharset());
+        readHeaderInternal(channel, this.charset);
     }
 
     /**
@@ -512,9 +532,18 @@ public class DbaseFileHeader {
      *
      * @param channel A readable byte channel. If you have an InputStream you need to use, you can
      *     call java.nio.Channels.getChannel(InputStream in).
+     * @param charset A charset that will be used to read header field's names.
      * @throws IOException If errors occur while reading.
+     * @deprecated Use constructor {@link #constructor(Charset)} and {@link
+     *     #readHeader(ReadableByteChannel)} method instead.
      */
+    @Deprecated
     public void readHeader(ReadableByteChannel channel, Charset charset) throws IOException {
+        readHeaderInternal(channel, charset);
+    }
+
+    private void readHeaderInternal(ReadableByteChannel channel, Charset charset)
+            throws IOException {
         // we'll read in chunks of 1K
         ByteBuffer in = NIOUtilities.allocate(1024);
         try {
@@ -701,7 +730,7 @@ public class DbaseFileHeader {
             // read the field name
             byte[] buffer = new byte[11];
             in.get(buffer);
-            String name = new String(buffer);
+            String name = new String(buffer, charset.name());
             int nullPoint = name.indexOf(0);
             if (nullPoint != -1) {
                 name = name.substring(0, nullPoint);
@@ -810,9 +839,10 @@ public class DbaseFileHeader {
             for (int i = 0; i < fields.length; i++) {
 
                 // write the field name
+                byte[] fieldNameBytes = fields[i].fieldName.getBytes(charset);
                 for (int j = 0; j < 11; j++) {
-                    if (fields[i].fieldName.length() > j) {
-                        buffer.put((byte) fields[i].fieldName.charAt(j));
+                    if (j < fieldNameBytes.length) {
+                        buffer.put(fieldNameBytes[j]);
                     } else {
                         buffer.put((byte) 0);
                     }

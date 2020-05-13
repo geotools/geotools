@@ -113,6 +113,8 @@ public class MBFilter {
     /** Parser context. */
     protected final MBObjectParser parse;
 
+    protected final FilterFactory2 ff;
+
     /** Wrapped json */
     protected final JSONArray json;
 
@@ -129,6 +131,7 @@ public class MBFilter {
                 parse == null
                         ? new MBObjectParser(MBFilter.class)
                         : new MBObjectParser(MBFilter.class, parse);
+        this.ff = this.parse.getFilterFactory();
         this.json = json;
         this.semanticType = semanticType;
     }
@@ -258,7 +261,6 @@ public class MBFilter {
     }
 
     private Filter translateType(String jsonText) {
-        final FilterFactory2 ff = parse.getFilterFactory();
         // TODO: How to wildcard geometry
         Expression dimension = ff.function("dimension", ff.function("geometry"));
 
@@ -303,8 +305,6 @@ public class MBFilter {
      * @return GeoTools {@link Filter} specifying conditions on source features.
      */
     public Filter filter() {
-        final FilterFactory2 ff = parse.getFilterFactory();
-
         if (json == null || json.isEmpty()) {
             return Filter.INCLUDE; // by default include everything!
         }
@@ -316,6 +316,7 @@ public class MBFilter {
                         || "!=".equals(operator)
                         || "in".equals(operator)
                         || "!in".equals(operator))
+                && parse.isString(json, 1)
                 && "$type".equals(parse.get(json, 1))) {
 
             List<Filter> typeFilters = new ArrayList<>();
@@ -361,6 +362,7 @@ public class MBFilter {
                         || "!has".equals(operator)
                         || "in".equals(operator)
                         || "!in".equals(operator))
+                && parse.isString(json, 1)
                 && "$id".equals(parse.get(json, 1))) {
 
             Set<FeatureId> fids = new HashSet<>();
@@ -396,28 +398,21 @@ public class MBFilter {
         } else if ("!=".equals(operator)) {
             return filterNotEqual(json);
         } else if (">".equals(operator)) {
-            String key = parse.get(json, 1);
-            Object value = parse.value(json, 2);
-            return ff.greater(ff.property(key), ff.literal(value), false);
+            return filterGreater(json);
         } else if (">=".equals(operator)) {
-            String key = parse.get(json, 1);
-            Object value = parse.value(json, 2);
-            return ff.greaterOrEqual(ff.property(key), ff.literal(value), false);
+            return filterGreaterOrEqual(json);
         } else if ("<".equals(operator)) {
-            String key = parse.get(json, 1);
-            Object value = parse.value(json, 2);
-            return ff.less(ff.property(key), ff.literal(value), false);
+            return filterLess(json);
         } else if ("<=".equals(operator)) {
-            String key = parse.get(json, 1);
-            Object value = parse.value(json, 2);
-            return ff.lessOrEqual(ff.property(key), ff.literal(value), false);
-            // Set Membership Filters
-        } else if ("in".equals(operator)) {
+            return filterLessOrEqual(json);
+        }
+        // Set Membership Filters
+        else if ("in".equals(operator)) {
             String key = parse.get(json, 1);
             Expression[] args = new Expression[json.size() - 1];
             args[0] = ff.property(key);
             for (int i = 1; i < args.length; i++) {
-                Object value = parse.value(json, i + 1);
+                Object value = parse.value(json, i + 1); // TODO: Allow for expressions in `in`
                 args[i] = ff.literal(value);
             }
             Function in = ff.function("in", args);
@@ -427,13 +422,14 @@ public class MBFilter {
             Expression[] args = new Expression[json.size() - 1];
             args[0] = ff.property(key);
             for (int i = 1; i < args.length; i++) {
-                Object value = parse.value(json, i + 1);
+                Object value = parse.value(json, i + 1); // TODO: Allow for expressions in `!in`
                 args[i] = ff.literal(value);
             }
             Function in = ff.function("in", args);
             return ff.equals(in, ff.literal(false));
-            // Combining Filters
-        } else if ("all".equals(operator)) {
+        }
+        // Combining Filters
+        else if ("all".equals(operator)) {
             List<Filter> all = new ArrayList<>();
             for (int i = 1; i < json.size(); i++) {
                 MBFilter mbFilter = new MBFilter((JSONArray) json.get(i));
@@ -480,7 +476,6 @@ public class MBFilter {
         if (array.size() != 3) {
             throwUnexpectedArgumentCount("==", 2);
         }
-        final FilterFactory2 ff = parse.getFilterFactory();
         if (parse.isString(array, 1)) { // legacy filter syntax
             String key = parse.get(array, 1);
             Object value = parse.value(array, 2);
@@ -503,16 +498,74 @@ public class MBFilter {
         if (array.size() != 3) {
             throwUnexpectedArgumentCount("!=", 2);
         }
-        final FilterFactory2 ff = parse.getFilterFactory();
         if (parse.isString(array, 1)) { // legacy filter syntax
             String key = parse.get(json, 1);
-            Object value = parse.value(json, 2);
+            Object value = parse.value(json, 2); // legacy filter restricted to literals
             return ff.notEqual(ff.property(key), ff.literal(value), false);
         } else {
-            // get the comparables
             Expression expression1 = parse.string(json, 1);
             Expression expression2 = parse.string(json, 2);
             return ff.notEqual(expression1, expression2);
+        }
+    }
+
+    private Filter filterLessOrEqual(JSONArray array) {
+        if (json.size() != 3) {
+            throwUnexpectedArgumentCount("<=", 2);
+        }
+        if (parse.isString(array, 1)) { // legacy filter syntax
+            String key = parse.get(json, 1);
+            Object value = parse.value(json, 2); // legacy filter restricted to literals
+            return ff.lessOrEqual(ff.property(key), ff.literal(value), false);
+        } else {
+            Expression expression1 = parse.string(json, 1);
+            Expression expression2 = parse.string(json, 2);
+            return ff.lessOrEqual(expression1, expression2);
+        }
+    }
+
+    private Filter filterLess(JSONArray array) {
+        if (json.size() != 3) {
+            throwUnexpectedArgumentCount("<", 2);
+        }
+        if (parse.isString(array, 1)) { // legacy filter syntax
+            String key = parse.get(json, 1);
+            Object value = parse.value(json, 2);
+            return ff.less(ff.property(key), ff.literal(value), false);
+        } else {
+            Expression expression1 = parse.string(json, 1);
+            Expression expression2 = parse.string(json, 2);
+            return ff.less(expression1, expression2);
+        }
+    }
+
+    private Filter filterGreaterOrEqual(JSONArray array) {
+        if (json.size() != 3) {
+            throwUnexpectedArgumentCount(">=", 2);
+        }
+        if (parse.isString(array, 1)) { // legacy filter syntax
+            String key = parse.get(json, 1);
+            Object value = parse.value(json, 2);
+            return ff.greaterOrEqual(ff.property(key), ff.literal(value), false);
+        } else {
+            Expression expression1 = parse.string(json, 1);
+            Expression expression2 = parse.string(json, 2);
+            return ff.greaterOrEqual(expression1, expression2);
+        }
+    }
+
+    private Filter filterGreater(JSONArray array) {
+        if (json.size() != 3) {
+            throwUnexpectedArgumentCount(">", 2);
+        }
+        if (parse.isString(array, 1)) { // legacy filter syntax
+            String key = parse.get(json, 1);
+            Object value = parse.value(json, 2);
+            return ff.greater(ff.property(key), ff.literal(value), false);
+        } else {
+            Expression expression1 = parse.string(json, 1);
+            Expression expression2 = parse.string(json, 2);
+            return ff.greater(expression1, expression2);
         }
     }
 

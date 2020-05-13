@@ -209,6 +209,46 @@ public class MBFilterTest {
     }
 
     @Test
+    public void comparisonFilterExpressions() throws ParseException {
+        JSONArray json;
+        MBFilter mbfilter;
+
+        json = array("['==', ['get', 'key'], 'value']");
+        mbfilter = new MBFilter(json);
+        PropertyIsEqualTo equal = (PropertyIsEqualTo) mbfilter.filter();
+        assertEquals("key", ((PropertyName) equal.getExpression1()).getPropertyName());
+        assertEquals("value", ((Literal) equal.getExpression2()).getValue());
+
+        // okay that takes too long just check ECQL
+        assertEquals("key = 'value'", ECQL.toCQL(equal));
+
+        json = array("['!=', ['get', 'key'], 'value']");
+        mbfilter = new MBFilter(json);
+        Filter filter = mbfilter.filter();
+        assertEquals("key <> 'value'", ECQL.toCQL(filter));
+
+        json = array("['>', ['get', 'key'], 'value']");
+        mbfilter = new MBFilter(json);
+        filter = mbfilter.filter();
+        assertEquals("key > 'value'", ECQL.toCQL(filter));
+
+        json = array("['<', ['get', 'key'], 'value']");
+        mbfilter = new MBFilter(json);
+        filter = mbfilter.filter();
+        assertEquals("key < 'value'", ECQL.toCQL(filter));
+
+        json = array("['>=', ['get', 'key'], 'value']");
+        mbfilter = new MBFilter(json);
+        filter = mbfilter.filter();
+        assertEquals("key >= 'value'", ECQL.toCQL(filter));
+
+        json = array("['<=', ['get', 'key'], 'value']");
+        mbfilter = new MBFilter(json);
+        filter = mbfilter.filter();
+        assertEquals("key <= 'value'", ECQL.toCQL(filter));
+    }
+
+    @Test
     public void membership() throws ParseException {
         JSONArray json = array("['in', 'a', 1, 2, 3]");
 

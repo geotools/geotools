@@ -480,6 +480,7 @@ public class MBFilter {
         if (array.size() != 3) {
             throwUnexpectedArgumentCount("==", 2);
         }
+        final FilterFactory2 ff = parse.getFilterFactory();
         if (parse.isString(array, 1)) { // legacy filter syntax
             String key = parse.get(array, 1);
             Object value = parse.value(array, 2);
@@ -502,15 +503,16 @@ public class MBFilter {
         if (array.size() != 3) {
             throwUnexpectedArgumentCount("!=", 2);
         }
+        final FilterFactory2 ff = parse.getFilterFactory();
         if (parse.isString(array, 1)) { // legacy filter syntax
             String key = parse.get(json, 1);
             Object value = parse.value(json, 2);
             return ff.notEqual(ff.property(key), ff.literal(value), false);
         } else {
             // get the comparables
-            Expression comparable1 = parse.string(json, 1);
-            Expression comparable2 = parse.string(json, 2);
-            return ff.function("mbNotEqualTo", comparable1, comparable2);
+            Expression expression1 = parse.string(json, 1);
+            Expression expression2 = parse.string(json, 2);
+            return ff.notEqual(expression1, expression2);
         }
     }
 

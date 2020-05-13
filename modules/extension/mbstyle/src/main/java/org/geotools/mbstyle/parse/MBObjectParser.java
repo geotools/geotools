@@ -332,9 +332,10 @@ public class MBObjectParser {
         }
         if (index < json.size() && json.get(index) instanceof String) {
             return (String) json.get(index);
-//        }
-//        if (index < json.size() && json.get(index) instanceof JSONArray) {
-//            return MBExpression.transformExpression((JSONArray) json.get(index)).toString();
+            //        }
+            //        if (index < json.size() && json.get(index) instanceof JSONArray) {
+            //            return MBExpression.transformExpression((JSONArray)
+            // json.get(index)).toString();
         } else {
             throw new MBFormatException(
                     context.getSimpleName() + " requires [" + index + "] string");
@@ -1442,63 +1443,65 @@ public class MBObjectParser {
         return json.containsKey(propertyName) && json.get(propertyName) != null;
     }
     /** @return True if json has the property explicitly provided, False otherwise. */
-    public boolean isDefined(JSONObject json, String propertyName)
-            throws MBFormatException {
+    public boolean isDefined(JSONObject json, String propertyName) throws MBFormatException {
         return json.containsKey(propertyName) && json.get(propertyName) != null;
     }
     /** @return True if array has the property explicitly provided, False otherwise. */
-    public boolean isDefined(JSONArray json, int index)
-            throws MBFormatException {
+    public boolean isDefined(JSONArray json, int index) throws MBFormatException {
         return index < json.size() && json.get(index) != null;
     }
     /** @return True if json has the string property explicitly provided, False otherwise. */
-    public boolean isString(JSONObject json, String propertyName)
-            throws MBFormatException {
-        return json.containsKey(propertyName) && json.get(propertyName) != null && json.get(propertyName) instanceof String;
+    public boolean isString(JSONObject json, String propertyName) throws MBFormatException {
+        return json.containsKey(propertyName)
+                && json.get(propertyName) != null
+                && json.get(propertyName) instanceof String;
     }
     /** @return True if array has the string property explicitly provided, False otherwise. */
-    public boolean isString(JSONArray json, int index)
-            throws MBFormatException {
-        return index < json.size() && json.get(index) != null &&  && json.get(index) instanceof String;
+    public boolean isString(JSONArray json, int index) throws MBFormatException {
+        return index < json.size() && json.get(index) != null && json.get(index) instanceof String;
     }
     /** @return True if json has the number property explicitly provided, False otherwise. */
-    public boolean isNumeric(JSONObject json, String propertyName)
-            throws MBFormatException {
-        return json.containsKey(propertyName) && json.get(propertyName) != null && json.get(propertyName) instanceof Number;
+    public boolean isNumeric(JSONObject json, String propertyName) throws MBFormatException {
+        return json.containsKey(propertyName)
+                && json.get(propertyName) != null
+                && json.get(propertyName) instanceof Number;
     }
     /** @return True if array has the number property explicitly provided, False otherwise. */
-    public boolean isNumeric(JSONArray json, int index)
-            throws MBFormatException {
-        return index < json.size() && json.get(index) != null &&  && json.get(index) instanceof Number;
+    public boolean isNumeric(JSONArray json, int index) throws MBFormatException {
+        return index < json.size() && json.get(index) != null && json.get(index) instanceof Number;
     }
     /** @return True if json has the boolean property explicitly provided, False otherwise. */
-    public boolean isBoolean(JSONObject json, String propertyName)
-            throws MBFormatException {
-        return json.containsKey(propertyName) && json.get(propertyName) != null && json.get(propertyName) instanceof Boolean;
+    public boolean isBoolean(JSONObject json, String propertyName) throws MBFormatException {
+        return json.containsKey(propertyName)
+                && json.get(propertyName) != null
+                && json.get(propertyName) instanceof Boolean;
     }
     /** @return True if array has the boolean property explicitly provided, False otherwise. */
-    public boolean isBoolean(JSONArray json, int index)
-            throws MBFormatException {
-        return index < json.size() && json.get(index) != null &&  && json.get(index) instanceof Boolean;
+    public boolean isBoolean(JSONArray json, int index) throws MBFormatException {
+        return index < json.size() && json.get(index) != null && json.get(index) instanceof Boolean;
     }
     /** @return True if json has the array property explicitly provided, False otherwise. */
-    public boolean isArray(JSONObject json, String propertyName)
-            throws MBFormatException {
-        return json.containsKey(propertyName) && json.get(propertyName) != null && json.get(propertyName) instanceof JSONArray;
+    public boolean isArray(JSONObject json, String propertyName) throws MBFormatException {
+        return json.containsKey(propertyName)
+                && json.get(propertyName) != null
+                && json.get(propertyName) instanceof JSONArray;
     }
     /** @return True if array has the array property explicitly provided, False otherwise. */
-    public boolean isArray(JSONArray json, int index)
-            throws MBFormatException {
-        return index < json.size() && json.get(index) != null &&  && json.get(index) instanceof JSONArray;
+    public boolean isArray(JSONArray json, int index) throws MBFormatException {
+        return index < json.size()
+                && json.get(index) != null
+                && json.get(index) instanceof JSONArray;
     }
     /** @return True json has the object property explicitly provided, False otherwise. */
-    public boolean isObject(JSONObject json, String propertyName)
-            throws MBFormatException {
-        return json.containsKey(propertyName) && json.get(propertyName) != null && json.get(propertyName) instanceof JSONObject;
+    public boolean isObject(JSONObject json, String propertyName) throws MBFormatException {
+        return json.containsKey(propertyName)
+                && json.get(propertyName) != null
+                && json.get(propertyName) instanceof JSONObject;
     }
     /** @return True if array has the object property explicitly provided, False otherwise. */
-    public boolean isObject(JSONArray json, int index)
-            throws MBFormatException {
-        return index < json.size() && json.get(index) != null &&  && json.get(index) instanceof JSONObject;
+    public boolean isObject(JSONArray json, int index) throws MBFormatException {
+        return index < json.size()
+                && json.get(index) != null
+                && json.get(index) instanceof JSONObject;
     }
 }

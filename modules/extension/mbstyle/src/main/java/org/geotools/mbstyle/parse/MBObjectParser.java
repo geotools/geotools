@@ -332,9 +332,9 @@ public class MBObjectParser {
         }
         if (index < json.size() && json.get(index) instanceof String) {
             return (String) json.get(index);
-        }
-        if (index < json.size() && json.get(index) instanceof JSONArray) {
-            return MBExpression.transformExpression((JSONArray) json.get(index)).toString();
+//        }
+//        if (index < json.size() && json.get(index) instanceof JSONArray) {
+//            return MBExpression.transformExpression((JSONArray) json.get(index)).toString();
         } else {
             throw new MBFormatException(
                     context.getSimpleName() + " requires [" + index + "] string");

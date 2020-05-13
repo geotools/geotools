@@ -162,24 +162,25 @@ public abstract class MBExpression extends FunctionImpl {
             } else if (zoom.contains(name)) {
                 return new MBZoom(json);
             } else {
-                throw new MBFormatException("Expression \"" + name + "\" invalid.");
+                throw new MBFormatException("Expression \"" + name + "\" not supported.");
             }
         }
         throw new MBFormatException("Requires a string name of the expression at position 0");
     }
 
     public static boolean canCreate(final String name) {
-        return colors.contains(name)
-                || decisions.contains(name)
-                || featureData.contains(name)
-                || heatMap.contains(name)
-                || lookUp.contains(name)
-                || math.contains(name)
-                || ramps.contains(name)
-                || string.contains(name)
-                || types.contains(name)
-                || variableBindings.contains(name)
-                || zoom.contains(name);
+        return name != null
+                && (colors.contains(name)
+                        || decisions.contains(name)
+                        || featureData.contains(name)
+                        || heatMap.contains(name)
+                        || lookUp.contains(name)
+                        || math.contains(name)
+                        || ramps.contains(name)
+                        || string.contains(name)
+                        || types.contains(name)
+                        || variableBindings.contains(name)
+                        || zoom.contains(name));
     }
 
     /** Determines which expression to use. */

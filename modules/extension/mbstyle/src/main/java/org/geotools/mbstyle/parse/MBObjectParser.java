@@ -1150,11 +1150,20 @@ public class MBObjectParser {
             MBFunction function = new MBFunction(this, (JSONObject) obj);
             return function.function(String.class);
         } else if (obj instanceof JSONArray) {
-            if (((JSONArray) obj).get(0) instanceof String
-                    && MBExpression.canCreate(((JSONArray) obj).get(0).toString())) {
-                return MBExpression.transformExpression((JSONArray) obj);
+            JSONArray array = (JSONArray) obj;
+            if (isString(array, 0)) {
+                String expressionName = get(array, 0);
+                if (MBExpression.canCreate(expressionName)) {
+                    return MBExpression.transformExpression(array);
+                } else {
+                    throw new MBFormatException(
+                            context
+                                    + " string unavailable: expression' "
+                                    + expressionName
+                                    + "' not supported.");
+                }
             } else {
-                throw new MBFormatException(context + " string from JSONArray not supported");
+                throw new MBFormatException(context + " string from JSONArray not a supported");
             }
         } else {
             throw new IllegalArgumentException(

@@ -38,7 +38,19 @@ import org.opengis.style.SemanticType;
  *
  * <p>This wrapper and {@link MBFunction} are a matched set handling dynamic data.
  *
+ * <h2>About MapBox Expression</h2>
+ *
+ * The value for any filter may be specified as an expression. The result type of an expression in
+ * the filter property must be boolean.
+ *
+ * <p>See {@link org.geotools.mbstyle.expression.MBExpression} for details.
+ *
+ * <p>
+ *
  * <h2>About MapBox Filter</h2>
+ *
+ * <p>In previous versions of the style specification, filters were defined using the deprecated
+ * syntax documented here.
  *
  * <p>A filter selects specific features from a layer. A filter is an array of one of the following
  * forms:
@@ -380,13 +392,9 @@ public class MBFilter {
             return ff.not(ff.isNull(ff.property(key)));
             // Comparison Filters
         } else if ("==".equals(operator)) {
-            String key = parse.get(json, 1);
-            Object value = parse.value(json, 2);
-            return ff.equal(ff.property(key), ff.literal(value), false);
+            return filterEqualTo(json);
         } else if ("!=".equals(operator)) {
-            String key = parse.get(json, 1);
-            Object value = parse.value(json, 2);
-            return ff.notEqual(ff.property(key), ff.literal(value), false);
+            return filterNotEqual(json);
         } else if (">".equals(operator)) {
             String key = parse.get(json, 1);
             Object value = parse.value(json, 2);
@@ -459,5 +467,58 @@ public class MBFilter {
         } else {
             throw new MBFormatException("Unsupported filter " + json);
         }
+    }
+
+    /**
+     * Returns true if the input values are equal, false otherwise. The inputs must be numbers,
+     * strings, or booleans, and both of the same type. Examples: ["==", number, number]: boolean
+     * ["==", string, string]: boolean ["==", boolean, boolean]: boolean ["==", null, null]: boolean
+     *
+     * @return equal to expression
+     */
+    private Filter filterEqualTo(JSONArray array) {
+        if (array.size() != 3) {
+            throwUnexpectedArgumentCount("==", 2);
+        }
+        if (parse.isString(array, 1)) { // legacy filter syntax
+            String key = parse.get(array, 1);
+            Object value = parse.value(array, 2);
+            return ff.equal(ff.property(key), ff.literal(value), false);
+        } else {
+            Expression expression1 = parse.string(array, 1);
+            Expression expression2 = parse.string(array, 2);
+            return ff.equal(expression1, expression2, false);
+        }
+    }
+
+    /**
+     * Returns true if the input values are not equal, false otherwise. The inputs must be numbers,
+     * strings, or booleans, and both of the same type. Examples:["!=", number, number]: boolean
+     * ["!=", string, string]: boolean ["!=", boolean, boolean]: boolean ["!=", null, null]: boolean
+     *
+     * @return Not equals expression
+     */
+    private Filter filterNotEqual(JSONArray array) {
+        if (array.size() != 3) {
+            throwUnexpectedArgumentCount("!=", 2);
+        }
+        if (parse.isString(array, 1)) { // legacy filter syntax
+            String key = parse.get(json, 1);
+            Object value = parse.value(json, 2);
+            return ff.notEqual(ff.property(key), ff.literal(value), false);
+        } else {
+            // get the comparables
+            Expression comparable1 = parse.string(json, 1);
+            Expression comparable2 = parse.string(json, 2);
+            return ff.function("mbNotEqualTo", comparable1, comparable2);
+        }
+    }
+
+    private void throwUnexpectedArgumentCount(String expression, int argCount)
+            throws MBFormatException {
+        throw new MBFormatException(
+                String.format(
+                        "Expression \"%s\" should have exactly %d argument(s)",
+                        expression, argCount));
     }
 }

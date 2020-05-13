@@ -875,6 +875,10 @@ public class MBObjectParser {
         return array == null ? fallback : Arrays.stream(array).mapToDouble(i -> i).toArray();
     }
 
+    //
+    // Percentage
+    //
+
     /**
      * Convert json to Expression number between 0 and 1, or a function.
      *

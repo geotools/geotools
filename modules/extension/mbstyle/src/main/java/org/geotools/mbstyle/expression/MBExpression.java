@@ -50,7 +50,12 @@ public abstract class MBExpression extends FunctionImpl {
     protected final MBObjectParser parse;
     protected final MBStyleTransformer transformer;
 
-    public MBExpression(JSONArray json) {
+    /**
+     * Please use factory method {@link #create(JSONArray)}
+     *
+     * @param json
+     */
+    protected MBExpression(JSONArray json) {
         this.json = json;
         this.name = (String) json.get(0);
         this.ff = CommonFactoryFinder.getFilterFactory2();
@@ -123,6 +128,12 @@ public abstract class MBExpression extends FunctionImpl {
     /* A list of zoom expression names */
     public static List zoom = Arrays.asList("zoom");
 
+    /**
+     * Factory method used to produce the correct MBExpression subclass for the provided JSONArray.
+     *
+     * @param json definition
+     * @return MBExpression
+     */
     public static MBExpression create(JSONArray json) {
         String name;
         if (json.get(0) instanceof String) {

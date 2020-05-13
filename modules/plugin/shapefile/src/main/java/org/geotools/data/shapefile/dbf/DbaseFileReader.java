@@ -183,7 +183,7 @@ public class DbaseFileReader implements FileReader {
         this.useMemoryMappedBuffer = useMemoryMappedBuffer;
         this.randomAccessEnabled = (channel instanceof FileChannel);
         streamLogger.open();
-        header = new DbaseFileHeader();
+        header = new DbaseFileHeader(stringCharset);
 
         // create the ByteBuffer
         // if we have a FileChannel, lets map it
@@ -201,7 +201,7 @@ public class DbaseFileReader implements FileReader {
         } else {
             // Force useMemoryMappedBuffer to false
             this.useMemoryMappedBuffer = false;
-            header.readHeader(channel, charset);
+            header.readHeader(channel);
             // Some other type of channel
             // size the buffer so that we can read 4 records at a time (and make the buffer
             // cacheable)

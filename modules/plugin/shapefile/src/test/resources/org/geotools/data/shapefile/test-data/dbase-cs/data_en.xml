@@ -1,0 +1,26 @@
+<Document>
+  <Coordinate>
+    <longitude>lon</longitude>
+    <latitude>lat</latitude>
+  </Coordinate>
+  <Attributes>
+    <Attribute>
+      <ID>1</ID>
+      <City>New York</City>
+      <lat>40.67</lat>
+      <lon>73.93</lon>
+    </Attribute>
+    <Attribute>
+      <ID>2</ID>
+      <City>London</City>
+      <lat>51.5</lat>
+      <lon>0.12</lon>
+    </Attribute>
+    <Attribute>
+      <ID>3</ID>
+      <City>Sidney</City>
+      <lat>33.87</lat>
+      <lon>151.2</lon>
+    </Attribute>
+  </Attributes>
+</Document>

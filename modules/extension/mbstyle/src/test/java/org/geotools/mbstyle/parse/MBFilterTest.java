@@ -282,6 +282,29 @@ public class MBFilterTest {
     }
 
     @Test
+    public void decisionExpression() throws ParseException {
+        // Examples from expressionMBDecisionTest.json
+        JSONArray json = array("['case', true, 10, false, 'aString', true]");
+        MBFilter mbfilter = new MBFilter(json);
+        Filter filter = mbfilter.filter();
+        assertEquals("case(true,10,false,'aString',true) = true", ECQL.toCQL(filter));
+
+        json = array("['coalesce', 'aString', false, 5]");
+        mbfilter = new MBFilter(json);
+        filter = mbfilter.filter();
+        assertEquals("coalesce('aString',false,5) = true", ECQL.toCQL(filter));
+
+        json =
+                array(
+                        "[\"match\",'bLabel','aLabel', 'firstLabel','bLabel','secondLabel','defaultLabel']");
+        mbfilter = new MBFilter(json);
+        filter = mbfilter.filter();
+        assertEquals(
+                "match('bLabel','aLabel','firstLabel','bLabel','secondLabel','defaultLabel') = true",
+                ECQL.toCQL(filter));
+    }
+
+    @Test
     public void nestedAllSemanticIdentifiers() throws ParseException {
         JSONArray json =
                 array(

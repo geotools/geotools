@@ -1445,11 +1445,10 @@ public class MBObjectParser {
     //
     /**
      * @return True if json has the provided property explicitly provided, False otherwise.
-     * @deprecated please use isDefined( json, propertyName)
      */
     public boolean isPropertyDefined(JSONObject json, String propertyName)
             throws MBFormatException {
-        return json.containsKey(propertyName) && json.get(propertyName) != null;
+        return isDefined(json,propertyName);
     }
     /** @return True if json has the property explicitly provided, False otherwise. */
     public boolean isDefined(JSONObject json, String propertyName) throws MBFormatException {

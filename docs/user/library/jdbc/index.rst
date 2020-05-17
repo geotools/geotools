@@ -43,7 +43,6 @@ DataStore plugins:
    mysql
    oracle
    postgis
-   spatialite
    sqlserver
    teradata
    ../data/geopackage

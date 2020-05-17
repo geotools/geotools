@@ -68,14 +68,16 @@ by your application by only including the plug-ins you require.
   
 * Database ``gt-jdbc-ng`` `` support
   
-  * ``h2`` 
-  * ``mysql`` 
-  * ``oracle`` 
-  * ``postgis`` 
-  * ``spatialite`` 
-  * ``sqlserver`` 
+  + ``db2``
+  + ``geopackage``
+  + ``hana``  
+  + ``h2``  
+  + ``mysql``  
+  + ``oracle``  
+  + ``postgis``
+  + ``sqlserver``
+  + ``teradata``
 
-* ``postgis`` 
 * ``property``  - simple text file format often used for testing
 * ``shapefile`` 
 

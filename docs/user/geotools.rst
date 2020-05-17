@@ -74,13 +74,16 @@ Supported Formats
   
 * Database ``jdbc-ng`` support
   
-  + ``db2``  
+  + ``db2``
+  + ``geopackage``
+  + ``hana``  
   + ``h2``  
   + ``mysql``  
   + ``oracle``  
-  + ``postgis``  
-  + ``spatialite``  
-  + ``sqlserver`` 
+  + ``postgis``
+  + ``sqlserver``
+  + ``teradata``
+  
 
 * Vector formats and data access
   

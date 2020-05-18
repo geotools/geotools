@@ -1443,12 +1443,10 @@ public class MBObjectParser {
     //
     // structure checks
     //
-    /**
-     * @return True if json has the provided property explicitly provided, False otherwise.
-     */
+    /** @return True if json has the provided property explicitly provided, False otherwise. */
     public boolean isPropertyDefined(JSONObject json, String propertyName)
             throws MBFormatException {
-        return isDefined(json,propertyName);
+        return isDefined(json, propertyName);
     }
     /** @return True if json has the property explicitly provided, False otherwise. */
     public boolean isDefined(JSONObject json, String propertyName) throws MBFormatException {

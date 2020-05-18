@@ -156,4 +156,12 @@ public class ElasticAttributeTest {
         other.setOrder(1);
         assertTrue(attr.compareTo(other) > 0);
     }
+
+    @Test
+    public void testCustomNameRemoval() {
+        attr.setCustomName(customName);
+        assertEquals(attr.getCustomName(), normalizedName);
+        attr.setCustomName(null);
+        assertEquals(attr.getCustomName(), null);
+    }
 }

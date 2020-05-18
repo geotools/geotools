@@ -16,11 +16,12 @@
  */
 package org.geotools.data.oracle;
 
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
 import org.geotools.data.Query;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.jdbc.JDBCDataStore;
-import org.geotools.jdbc.JDBCFeatureSourceOnlineTest;
-import org.geotools.jdbc.JDBCTestSetup;
+import org.geotools.jdbc.*;
 import org.geotools.referencing.CRS;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsEqualTo;
@@ -84,5 +85,16 @@ public class OracleFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
         assertEquals(1l, Math.round(bounds.getMaxY()));
 
         assertTrue(areCRSEqual(CRS.decode("EPSG:4326"), bounds.getCoordinateReferenceSystem()));
+    }
+
+    /**
+     * Because Oracle uses "Bigdecimal" for any number we need to change the type of the objects
+     * that are in the list of expected objects.
+     *
+     * @return expected list for {@link #testMixedEncodeIn()}
+     */
+    @Override
+    protected List<Object> getTestMixedEncodeInExpected() {
+        return Arrays.asList("zero", "two", BigDecimal.valueOf(1), BigDecimal.valueOf(2), 0d);
     }
 }

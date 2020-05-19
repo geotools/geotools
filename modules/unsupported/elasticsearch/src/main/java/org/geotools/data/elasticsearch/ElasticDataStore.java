@@ -178,31 +178,6 @@ public class ElasticDataStore extends ContentDataStore {
                 add(elasticAttributes, "_aggregation", "binary", mapping, false);
 
                 walk(elasticAttributes, mapping, "", false, false);
-
-                // add default geometry and short name and count duplicate short names
-                final Map<String, Integer> counts = new HashMap<>();
-                boolean foundGeometry = false;
-                for (final ElasticAttribute attribute : elasticAttributes) {
-                    if (!foundGeometry && Geometry.class.isAssignableFrom(attribute.getType())) {
-                        attribute.setDefaultGeometry(true);
-                        foundGeometry = true;
-                    }
-                    final String[] parts = attribute.getName().split("\\.");
-                    attribute.setShortName(parts[parts.length - 1]);
-                    final int count;
-                    if (counts.containsKey(attribute.getShortName())) {
-                        count = counts.get(attribute.getShortName()) + 1;
-                    } else {
-                        count = 1;
-                    }
-                    counts.put(attribute.getShortName(), count);
-                }
-                // use full name if short name has duplicates
-                for (final ElasticAttribute attribute : elasticAttributes) {
-                    if (counts.get(attribute.getShortName()) > 1) {
-                        attribute.setShortName(attribute.getName());
-                    }
-                }
             }
         } else {
             elasticAttributes = layerConfig.getAttributes();

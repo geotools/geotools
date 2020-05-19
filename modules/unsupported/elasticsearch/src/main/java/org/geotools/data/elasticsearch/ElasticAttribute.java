@@ -22,8 +22,7 @@ import java.util.regex.Pattern;
 
 /**
  * Class describing and Elasticsearch attribute including name, type and optional information on
- * geometry and date types. Also includes an alternative short name, if applicable, that can be used
- * instead of the full path both in the feature type and backend Elasticsearch queries.
+ * geometry and date types.
  */
 public class ElasticAttribute implements Serializable, Comparable<ElasticAttribute> {
 
@@ -37,10 +36,6 @@ public class ElasticAttribute implements Serializable, Comparable<ElasticAttribu
     private static final long serialVersionUID = 8839579461838862328L;
 
     private final String name;
-
-    private String shortName;
-
-    private Boolean useShortName;
 
     private Class<?> type;
 
@@ -69,20 +64,17 @@ public class ElasticAttribute implements Serializable, Comparable<ElasticAttribu
         this.name = name;
         this.use = true;
         this.defaultGeometry = false;
-        this.useShortName = false;
         this.stored = false;
         this.nested = false;
     }
 
     public ElasticAttribute(ElasticAttribute other) {
         this.name = other.name;
-        this.shortName = other.shortName;
         this.type = other.type;
         this.use = other.use;
         this.defaultGeometry = other.defaultGeometry;
         this.srid = other.srid;
         this.dateFormat = other.dateFormat;
-        this.useShortName = other.useShortName;
         this.geometryType = other.geometryType;
         this.analyzed = other.analyzed;
         this.stored = other.stored;
@@ -93,22 +85,6 @@ public class ElasticAttribute implements Serializable, Comparable<ElasticAttribu
 
     public String getName() {
         return name;
-    }
-
-    public String getShortName() {
-        return shortName;
-    }
-
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
-    }
-
-    public Boolean getUseShortName() {
-        return useShortName;
-    }
-
-    public void setUseShortName(Boolean useShortName) {
-        this.useShortName = useShortName;
     }
 
     public Class<?> getType() {
@@ -218,7 +194,6 @@ public class ElasticAttribute implements Serializable, Comparable<ElasticAttribu
                 defaultGeometry,
                 srid,
                 dateFormat,
-                useShortName,
                 geometryType,
                 analyzed,
                 stored,
@@ -240,7 +215,6 @@ public class ElasticAttribute implements Serializable, Comparable<ElasticAttribu
             equal &= Objects.equals(defaultGeometry, other.defaultGeometry);
             equal &= Objects.equals(srid, other.srid);
             equal &= Objects.equals(dateFormat, other.dateFormat);
-            equal &= Objects.equals(useShortName, other.useShortName);
             equal &= Objects.equals(geometryType, other.geometryType);
             equal &= Objects.equals(analyzed, other.analyzed);
             equal &= Objects.equals(stored, other.stored);

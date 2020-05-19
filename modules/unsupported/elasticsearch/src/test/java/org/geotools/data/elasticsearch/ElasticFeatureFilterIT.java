@@ -83,18 +83,6 @@ public class ElasticFeatureFilterIT extends ElasticTestSupport {
     }
 
     @Test
-    public void testSchemaWithShortName() throws Exception {
-        init();
-        ElasticLayerConfiguration layerConfig = dataStore.getLayerConfigurations().get("active");
-        for (ElasticAttribute attribute : layerConfig.getAttributes()) {
-            attribute.setUseShortName(true);
-        }
-        SimpleFeatureType schema = featureSource.getSchema();
-        assertNotNull(schema);
-        assertNotNull(schema.getDescriptor("hejda"));
-    }
-
-    @Test
     @Ignore
     public void testSchemaWithInvalidSrid() throws Exception {
         init();

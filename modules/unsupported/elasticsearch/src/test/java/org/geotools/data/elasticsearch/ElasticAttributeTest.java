@@ -28,13 +28,9 @@ public class ElasticAttributeTest {
 
     private String name;
 
-    private String shortName;
-
     private String customName;
 
     private String normalizedName;
-
-    private boolean useShortName;
 
     private Class<?> type;
 
@@ -60,8 +56,6 @@ public class ElasticAttributeTest {
     public void setup() {
         name = "theName";
         attr = new ElasticAttribute(name);
-        shortName = "name";
-        useShortName = true;
         customName = "XML Custom Name";
         normalizedName = "_XML_Custom_Name";
         type = Map.class;
@@ -78,8 +72,6 @@ public class ElasticAttributeTest {
 
     @Test
     public void testAttributes() {
-        attr.setShortName(shortName);
-        attr.setUseShortName(useShortName);
         attr.setCustomName(customName);
         attr.setType(type);
         attr.setGeometryType(geometryType);
@@ -92,8 +84,6 @@ public class ElasticAttributeTest {
         attr.setStored(stored);
         attr.setNested(nested);
         assertEquals(attr.getName(), name);
-        assertEquals(attr.getShortName(), shortName);
-        assertEquals(attr.getUseShortName(), useShortName);
         assertEquals(attr.getCustomName(), normalizedName);
         assertEquals(attr.getType(), type);
         assertEquals(attr.getGeometryType(), geometryType);
@@ -110,9 +100,7 @@ public class ElasticAttributeTest {
     @Test
     public void testDisplayName() {
         assertEquals(attr.getDisplayName(), name);
-        attr.setShortName("name");
-        attr.setUseShortName(true);
-        assertEquals("name", attr.getDisplayName());
+        assertEquals("theName", attr.getDisplayName());
     }
 
     @Test

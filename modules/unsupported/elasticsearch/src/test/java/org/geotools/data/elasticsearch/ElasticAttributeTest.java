@@ -98,12 +98,6 @@ public class ElasticAttributeTest {
     }
 
     @Test
-    public void testDisplayName() {
-        assertEquals(attr.getDisplayName(), name);
-        assertEquals("name", attr.getDisplayName());
-    }
-
-    @Test
     public void testHashCode() {
         assertEquals(attr.hashCode(), (new ElasticAttribute("theName")).hashCode());
         assertTrue(attr.hashCode() != (new ElasticAttribute("name")).hashCode());

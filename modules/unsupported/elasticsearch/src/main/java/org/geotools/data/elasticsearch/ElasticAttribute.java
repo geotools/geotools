@@ -175,16 +175,6 @@ public class ElasticAttribute implements Serializable, Comparable<ElasticAttribu
         return this.customName;
     }
 
-    public String getDisplayName() {
-        final String displayName;
-        if (useShortName) {
-            displayName = shortName;
-        } else {
-            displayName = name;
-        }
-        return displayName;
-    }
-
     @Override
     public int hashCode() {
         return Objects.hash(

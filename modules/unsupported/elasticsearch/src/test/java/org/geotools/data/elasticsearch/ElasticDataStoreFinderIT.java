@@ -44,7 +44,6 @@ public class ElasticDataStoreFinderIT extends ElasticTestSupport {
         dataStore = (ElasticDataStore) factory.createDataStore(params);
 
         ElasticDataStoreFactory fac = new ElasticDataStoreFactory();
-        assertEquals(fac.getDisplayName(), ElasticDataStoreFactory.DISPLAY_NAME);
         assertEquals(fac.getDescription(), ElasticDataStoreFactory.DESCRIPTION);
         assertArrayEquals(fac.getParametersInfo(), ElasticDataStoreFactory.PARAMS);
         assertNull(fac.getImplementationHints());

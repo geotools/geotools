@@ -59,8 +59,6 @@ public class ElasticDataStoreFactory implements DataStoreFactorySpi {
     /** Counter of HTTP threads we generate */
     static final AtomicInteger httpThreads = new AtomicInteger(1);
 
-    public static final String DISPLAY_NAME = "Elasticsearch";
-
     public static final String DESCRIPTION = "Elasticsearch Index";
 
     /** Cluster hostnames. * */
@@ -212,11 +210,6 @@ public class ElasticDataStoreFactory implements DataStoreFactorySpi {
         GRID_SIZE,
         GRID_THRESHOLD
     };
-
-    @Override
-    public String getDisplayName() {
-        return DISPLAY_NAME;
-    }
 
     @Override
     public String getDescription() {

@@ -601,6 +601,10 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
             fail("Unexpected dialect type: " + dialect);
         }
     }
+    /** @return expected list for {@link #testMixedEncodeIn()} */
+    protected List<Object> getTestMixedEncodeInExpected() {
+        return Arrays.asList("zero", "two", 1, 2, 0d);
+    }
 
     /** Integration test checking that a CQL IN filter goes back being a IN in SQL */
     public void testMixedEncodeIn() throws Exception {
@@ -674,7 +678,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
                             + " IS NOT NULL ))",
                     sql);
             List<Object> literals = filterToSQL.getLiteralValues();
-            assertEquals(Arrays.asList("zero", "two", 1, 2, 0d), literals);
+            assertEquals(getTestMixedEncodeInExpected(), literals);
         } else {
             fail("Unexpected dialect, supports basic or prepared, but was a : " + dialect);
         }

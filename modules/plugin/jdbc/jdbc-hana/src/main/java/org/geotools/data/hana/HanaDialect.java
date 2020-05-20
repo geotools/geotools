@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.sql.Date;
+import java.text.MessageFormat;
 import java.util.*;
 import java.util.logging.Level;
 import org.geotools.data.Query;
@@ -735,9 +736,13 @@ public class HanaDialect extends PreparedStatementSQLDialect {
             int srid,
             Class binding,
             StringBuffer sql) {
-        sql.append("ST_GeomFromWKB(?, ");
-        sql.append(srid);
-        sql.append(")");
+        String pattern = null;
+        if (srid > -1) {
+            pattern = "ST_GeomFromWKB( ? ,{0})";
+            sql.append(MessageFormat.format(pattern, Integer.toString(srid)));
+        } else {
+            sql.append("ST_GeomFromWKB( ? )");
+        }
     }
 
     @Override

@@ -284,6 +284,9 @@ public class ElasticAttribute implements Serializable, Comparable<ElasticAttribu
          * 2. Element names cannot start with the letters xml
          * 3. Element names cannot contain spaces
          */
+        if (normalName == null) {
+            return null;
+        }
         if (normalName.toLowerCase().startsWith("xml")) {
             normalName = "_".concat(normalName);
         } else if (!beginLetters.matcher(normalName).matches()) {

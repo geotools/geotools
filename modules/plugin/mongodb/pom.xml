@@ -51,6 +51,7 @@
       <organization>GeoSolutions S.A.S.</organization>
       <organizationUrl>http://www.geo-solutions.it</organizationUrl>
       <roles>
+        <role>Module Maintainer</role>
         <role>Java Developer</role>
       </roles>
     </developer>
@@ -61,6 +62,7 @@
       <organization>GeoSolutions S.A.S.</organization>
       <organizationUrl>http://www.geo-solutions.it</organizationUrl>
       <roles>
+        <role>Module Maintainer</role>
         <role>Java Developer</role>
       </roles>
     </developer>
@@ -99,8 +101,8 @@
         <!--   version number defined here as this is a community module -->
         <dependency>
             <groupId>org.mongodb</groupId>
-            <artifactId>mongo-java-driver</artifactId>
-            <version>3.12.3</version>
+            <artifactId>mongodb-driver-legacy</artifactId>
+            <version>4.0.2</version>
             <type>jar</type>
             <optional>false</optional>
         </dependency>

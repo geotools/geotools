@@ -60,6 +60,29 @@ public class GeometryClipperTest {
         boundsPoly = wkt.read("POLYGON((0 0, 0 10, 10 10, 10 0, 0 0))");
     }
 
+    // case:
+    // polygon being clipped returns a multipolygon.
+    @Test
+    public void testMulti() throws Exception {
+        Polygon polygon =
+                (Polygon)
+                        wkt.read(
+                                "POLYGON ((1.0201465201465183 12.338461538461548, 3.272161172161173 7.7956043956044, 3.893406593406595 11.60073260073261, 6.456043956043961 7.679120879120883, 6.223076923076928 12.64908424908426, 1.0201465201465183 12.338461538461548))");
+        MultiPolygon clipped = (MultiPolygon) clipper.clip(polygon, true);
+
+        assertEquals(2, clipped.getNumGeometries());
+
+        // verify it works if the polygon is a multipolygon
+        // note - this is the same polygon as above.
+        MultiPolygon mpoly =
+                (MultiPolygon)
+                        wkt.read(
+                                "MULTIPOLYGON (((1.0201465201465183 12.338461538461548, 3.272161172161173 7.7956043956044, 3.893406593406595 11.60073260073261, 6.456043956043961 7.679120879120883, 6.223076923076928 12.64908424908426, 1.0201465201465183 12.338461538461548)))");
+        clipped = (MultiPolygon) clipper.clip(mpoly, true);
+
+        assertEquals(2, clipped.getNumGeometries());
+    }
+
     @Test
     public void testFullyInside() throws Exception {
         LineString ls = (LineString) wkt.read("LINESTRING(1 1, 2 5, 9 1)");

@@ -542,6 +542,8 @@ public class GeometryClipper {
                 }
             }
 
+            flattenCollection(result);
+
             if (gc instanceof MultiPoint) {
                 result = filterCollection(Point.class, result);
             } else if (gc instanceof MultiLineString) {

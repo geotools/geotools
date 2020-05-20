@@ -39,6 +39,7 @@ import org.locationtech.jts.io.WKBConstants;
  * DataStoreFactory for DB2 database.
  *
  * @author Christian Mueller
+ * @author David Adler
  */
 public class DB2NGDataStoreFactory extends JDBCDataStoreFactory {
 
@@ -58,7 +59,11 @@ public class DB2NGDataStoreFactory extends JDBCDataStoreFactory {
                     "db2",
                     Collections.singletonMap(Parameter.LEVEL, "program"));
 
-    /** enables using EnvelopesIntersect in bbox queries */
+    public static final Param HOST = new Param("host", String.class, "Host", true, "localhost");
+
+    public static final Param PORT = new Param("port", Integer.class, "Port", true, "50000");
+
+    /** enables using EnvelopesIntersect in bounding box queries */
     public static final Param LOOSEBBOX =
             new Param(
                     "Loose bbox",
@@ -75,6 +80,24 @@ public class DB2NGDataStoreFactory extends JDBCDataStoreFactory {
                     "Use selectivity clause for spatial queries",
                     false,
                     Boolean.TRUE);
+    /* the following values are helpful to pre-set for testing - comment out for release */
+
+    public static final Param DATABASE =
+            new Param("database", String.class, "Database", true, "OSTEST");
+
+    public static final Param SCHEMA = new Param("schema", String.class, "Schema", true, "OSUSER");
+
+    public static final Param USER =
+            new Param("user", String.class, "user name to login as", true, "osuser");
+
+    public static final Param PASSWD =
+            new Param(
+                    "passwd",
+                    String.class,
+                    "password used to login",
+                    true,
+                    "osuserpw",
+                    Collections.singletonMap(Parameter.IS_PASSWORD, Boolean.TRUE));
 
     public static final String DriverClassName = "com.ibm.db2.jcc.DB2Driver";
 
@@ -144,11 +167,24 @@ public class DB2NGDataStoreFactory extends JDBCDataStoreFactory {
         return super.getJDBCUrl(params);
     }
 
+    @Override
     protected void setupParameters(Map parameters) {
         super.setupParameters(parameters);
         parameters.put(DBTYPE.key, DBTYPE);
+        parameters.put(PORT.key, PORT);
+        parameters.put(DATABASE.key, DATABASE);
+        parameters.put(SCHEMA.key, SCHEMA);
+        parameters.put(USER.key, USER);
+        parameters.put(PASSWD.key, PASSWD);
         parameters.put(LOOSEBBOX.key, LOOSEBBOX);
         parameters.put(USE_SELECTIVITY.key, USE_SELECTIVITY);
+
+        /* Remove parameters not used with DB2 - simplifies parameter GUI */
+        parameters.remove(PK_METADATA_TABLE.key);
+        parameters.remove(SQL_ON_BORROW.key);
+        parameters.remove(SQL_ON_RELEASE.key);
+        parameters.remove(CALLBACK_FACTORY.key);
+        parameters.remove(TEST_WHILE_IDLE.key);
     }
 
     @Override
@@ -158,10 +194,10 @@ public class DB2NGDataStoreFactory extends JDBCDataStoreFactory {
         Connection con = null;
         try {
             con = dataStore.getDataSource().getConnection();
-            DB2DialectInfo di =
-                    ((DB2SQLDialectPrepared) dataStore.getSQLDialect()).getDb2DialectInfo();
 
             DB2SQLDialectPrepared dialect = (DB2SQLDialectPrepared) dataStore.getSQLDialect();
+            DB2DialectInfo di = dialect.getDb2DialectInfo();
+
             Boolean loose = (Boolean) LOOSEBBOX.lookUp(params);
             dialect.setLooseBBOXEnabled(loose == null || Boolean.TRUE.equals(loose));
 

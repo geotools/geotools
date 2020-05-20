@@ -43,6 +43,7 @@ public class DB2DataStoreFactoryTest extends TestCase {
         params.put(JDBCDataStoreFactory.PORT.key, "50001");
         assertEquals("jdbc:db2://localhost:50001/geotools", factory.getJDBCUrl(params));
 
+        params.put(JDBCDataStoreFactory.SCHEMA.key, "db2inst1");
         assertTrue(factory.canProcess(params));
     }
 }

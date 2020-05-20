@@ -16,10 +16,20 @@
  */
 package org.geotools.data.db2;
 
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.geometry.jts.ReferencedEnvelope3D;
 import org.geotools.jdbc.JDBC3DOnlineTest;
 import org.geotools.jdbc.JDBC3DTestSetup;
+import org.geotools.util.factory.Hints;
+import org.opengis.filter.spatial.BBOX3D;
 
 public class DB23DOnlineTest extends JDBC3DOnlineTest {
+
+    @Override
+    protected void connect() throws Exception {
+        Hints.putSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
+        super.connect();
+    }
 
     @Override
     protected Integer getNativeSRID() {
@@ -34,5 +44,14 @@ public class DB23DOnlineTest extends JDBC3DOnlineTest {
     @Override
     public void testSchema() throws Exception {
         // do nothing, not applicable
+    }
+
+    @Override
+    public void testBBOX3DOutsideLine() throws Exception {
+        // a bbox 3d well outside the line footprint
+        BBOX3D bbox3d = FF.bbox("", new ReferencedEnvelope3D(1, 2, 1, 2, 100, 101, crs));
+        SimpleFeatureCollection fc =
+                dataStore.getFeatureSource(tname(getLine3d())).getFeatures(bbox3d);
+        assertEquals(1, fc.size());
     }
 }

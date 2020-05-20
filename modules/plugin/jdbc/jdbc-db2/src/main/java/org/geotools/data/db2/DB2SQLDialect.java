@@ -165,7 +165,9 @@ public class DB2SQLDialect extends SQLDialect {
         }
         if (orgid != 0 && org != null) {
             try {
-                return CRS.decode(org + ":" + orgid);
+                CoordinateReferenceSystem crs =
+                        CRS.decode(org + ":" + orgid, true); // Force longitude first
+                return crs;
             } catch (Exception e) {
                 if (LOGGER.isLoggable(Level.WARNING))
                     LOGGER.log(
@@ -181,7 +183,9 @@ public class DB2SQLDialect extends SQLDialect {
 
         if (wkt != null) {
             try {
-                return CRS.parseWKT(wkt);
+
+                CoordinateReferenceSystem crs = CRS.parseWKT(wkt);
+                return crs;
             } catch (Exception e) {
                 if (LOGGER.isLoggable(Level.WARNING))
                     LOGGER.log(Level.WARNING, "Could not decode db2 wkt definition for " + srid);

@@ -624,14 +624,16 @@
     </developer>
     <developer>
       <name>Jody Garnett</name>
-      <id>jive</id>
-      <email>jive@users.sourceforge.net</email>
-      <organization>LISAsoft</organization>
+      <id>jodygarnett</id>
+      <organization>GeoCat B.V.</organization>
+      <organizationUrl>https://www.geocat.net</organizationUrl>
+      <email>jody.garnett@gmail.com</email>
       <roles>
         <role>Java Developer</role>
         <role>Module Maintainer</role>
         <role>Project Management Committee (PMC) Member</role>
       </roles>
+      <timezone>America/Vancouver</timezone>
     </developer>
     <developer>
       <name>Justin Deoliveira</name>

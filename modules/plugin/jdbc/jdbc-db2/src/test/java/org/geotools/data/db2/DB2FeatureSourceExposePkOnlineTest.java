@@ -18,11 +18,13 @@ package org.geotools.data.db2;
 
 import org.geotools.jdbc.JDBCFeatureSourceExposePkOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
+import org.geotools.util.factory.Hints;
 
 public class DB2FeatureSourceExposePkOnlineTest extends JDBCFeatureSourceExposePkOnlineTest {
 
     @Override
     protected JDBCTestSetup createTestSetup() {
+        Hints.putSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
         return new DB2TestSetup();
     }
 }

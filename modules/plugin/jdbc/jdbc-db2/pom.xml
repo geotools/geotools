@@ -41,7 +41,10 @@
     </license>
   </licenses>
 
-  <!-- =========================================================== 
+  <!-- Must be commented out to build without DB2 driver
+       Need to figure out how to do DB2 online tests in
+       GeoTools regression environment.
+       Uncomment for unit test and local regression test.       
     <dependencies>
         <dependency>
         <groupId>com.ibm.db2</groupId>

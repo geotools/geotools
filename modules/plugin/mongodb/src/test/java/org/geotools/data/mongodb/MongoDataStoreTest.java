@@ -39,8 +39,8 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.*;
+import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 
@@ -228,5 +228,48 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
         Date third = dates.get(2);
         assertTrue(first.before(second));
         assertTrue(second.before(third));
+    }
+
+    public void testIsNullFilter() throws Exception {
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        PropertyName pn = ff.property("properties.nullableAttribute");
+        PropertyIsNull isNull = ff.isNull(pn);
+        Query q = new Query("ft1", isNull);
+        SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
+        SimpleFeatureCollection features = source.getFeatures(q);
+        assertEquals(features.size(), 2);
+        SimpleFeatureIterator it = features.features();
+        while (it.hasNext()) {
+            SimpleFeature f = it.next();
+            assertNull(pn.evaluate(f));
+        }
+    }
+
+    public void testNotFilter() throws Exception {
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        PropertyName pn = ff.property("properties.stringProperty");
+        PropertyIsLike like = ff.like(pn, "one");
+        Not not = ff.not(like);
+        SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
+        Query q = new Query("ft1", not);
+        SimpleFeatureCollection features = source.getFeatures(q);
+        SimpleFeatureIterator it = features.features();
+        while (it.hasNext()) {
+            SimpleFeature f = it.next();
+            assertFalse("one".equals(pn.evaluate(f)));
+        }
+    }
+
+    public void testNotNullFilter() throws Exception {
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        PropertyName pn = ff.property("properties.nullableAttribute");
+        PropertyIsNull isNull = ff.isNull(pn);
+        Not not = ff.not(isNull);
+        SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
+        Query q = new Query("ft1", not);
+        SimpleFeatureCollection features = source.getFeatures(q);
+        assertEquals(1, features.size());
+        SimpleFeature f = features.features().next();
+        assertNotNull(pn.evaluate(f));
     }
 }

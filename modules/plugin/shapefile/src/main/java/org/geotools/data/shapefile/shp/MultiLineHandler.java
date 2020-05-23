@@ -16,6 +16,7 @@
  */
 package org.geotools.data.shapefile.shp;
 
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
 import java.util.ArrayList;
@@ -118,7 +119,7 @@ public class MultiLineHandler implements ShapeHandler {
                         ? 3
                         : 2;
         // read bounding box (not needed)
-        buffer.position(buffer.position() + 4 * 8);
+        ((Buffer) buffer).position(buffer.position() + 4 * 8);
 
         int numParts = buffer.getInt();
         int numPoints = buffer.getInt(); // total number of points
@@ -195,7 +196,7 @@ public class MultiLineHandler implements ShapeHandler {
         if (shapeType == ShapeType.ARCZ && !flatGeometry) {
             // z min, max
             // buffer.position(buffer.position() + 2 * 8);
-            doubleBuffer.position(doubleBuffer.position() + 2);
+            ((Buffer) doubleBuffer).position(doubleBuffer.position() + 2);
             for (int part = 0; part < numParts; part++) {
                 start = partOffsets[part];
 
@@ -223,7 +224,7 @@ public class MultiLineHandler implements ShapeHandler {
         if ((shapeType == ShapeType.ARCZ || shapeType == ShapeType.ARCM) && !flatGeometry) {
             // M min, max
             // buffer.position(buffer.position() + 2 * 8);
-            doubleBuffer.position(doubleBuffer.position() + 2);
+            ((Buffer) doubleBuffer).position(doubleBuffer.position() + 2);
             for (int part = 0; part < numParts; part++) {
                 start = partOffsets[part];
 

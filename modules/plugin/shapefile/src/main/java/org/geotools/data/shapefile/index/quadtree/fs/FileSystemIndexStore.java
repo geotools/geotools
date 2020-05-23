@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
@@ -181,7 +182,7 @@ public class FileSystemIndexStore implements IndexStore {
             ByteBuffer buf = ByteBuffer.allocate(8);
             buf.order(order);
             channel.read(buf);
-            buf.flip();
+            ((Buffer) buf).flip();
 
             tree =
                     new QuadTree(buf.getInt(), buf.getInt(), indexfile) {

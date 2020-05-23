@@ -587,7 +587,7 @@ public class ShapefileReader implements FileReader {
         // peek at bounds, then reset for handler
         // many handler's may ignore bounds reading, but we don't want to
         // second guess them...
-        buffer.mark();
+        ((Buffer) buffer).mark();
         if (recordType.isMultiPoint()) {
             record.minX = buffer.getDouble();
             record.minY = buffer.getDouble();

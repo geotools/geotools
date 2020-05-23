@@ -24,6 +24,7 @@ import java.io.ByteArrayInputStream;
 import java.io.Closeable;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
@@ -212,7 +213,7 @@ public class DbaseFileReader implements FileReader, Closeable {
             buffer = NIOUtilities.allocate(header.getRecordLength());
             // fill it and reset
             fill(buffer, channel);
-            buffer.flip();
+            ((Buffer) buffer).flip();
             this.currentOffset = header.getHeaderLength();
         }
 

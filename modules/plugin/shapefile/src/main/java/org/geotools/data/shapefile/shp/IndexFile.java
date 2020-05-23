@@ -162,9 +162,9 @@ public class IndexFile implements FileReader {
                 LOGGER.finest("Filling buffer...");
                 this.channelOffset = pos;
                 this.channel.position(pos);
-                buf.clear();
+                ((Buffer) buf).clear();
                 this.channel.read(buf);
-                buf.flip();
+                ((Buffer) buf).flip();
             }
         }
 

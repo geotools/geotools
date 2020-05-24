@@ -555,7 +555,7 @@ public class DbaseFileHeader {
             ((Buffer) in).limit(10);
 
             read(in, channel);
-            in.position(0);
+            ((Buffer) in).position(0);
 
             // type of file.
             byte magic = in.get();

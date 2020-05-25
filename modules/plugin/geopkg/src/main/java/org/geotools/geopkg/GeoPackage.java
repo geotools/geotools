@@ -96,7 +96,7 @@ public class GeoPackage implements Closeable {
 
     public static final String SPATIAL_REF_SYS = "gpkg_spatial_ref_sys";
 
-    public static final String RASTER_COLUMNS = "gpkg_data_columns";
+    public static final String DATA_COLUMNS = "gpkg_data_columns";
 
     public static final String TILE_MATRIX_METADATA = "gpkg_tile_matrix";
 
@@ -111,6 +111,15 @@ public class GeoPackage implements Closeable {
     public static final String EXTENSIONS = "gpkg_extensions";
 
     public static final String SPATIAL_INDEX = "gpkg_spatial_index";
+
+    public static final String SCHEMA = "gpkg_schema";
+
+    /**
+     * Add this among a AttributeType user data, in order to force a particular {@link DataColumn}
+     * description for it. It can be required to add more metadata, to force a mime type, or have
+     * fine grained control over its constraints
+     */
+    public static final String DATA_COLUMN = "gpgk_constraint";
 
     // requirement 11, two generic SRID are to be considered
     protected static final int GENERIC_GEOGRAPHIC_SRID = 0;
@@ -247,16 +256,16 @@ public class GeoPackage implements Closeable {
             }
         }
         if (!initialized) {
+            runScript(EXTENSIONS + ".sql", cx);
             runScript(SPATIAL_REF_SYS + ".sql", cx);
             runScript(GEOMETRY_COLUMNS + ".sql", cx);
             runScript(GEOPACKAGE_CONTENTS + ".sql", cx);
             runScript(TILE_MATRIX_SET + ".sql", cx);
             runScript(TILE_MATRIX_METADATA + ".sql", cx);
-            runScript(RASTER_COLUMNS + ".sql", cx);
+            runScript(DATA_COLUMNS + ".sql", cx);
             runScript(METADATA + ".sql", cx);
             runScript(METADATA_REFERENCE + ".sql", cx);
             runScript(DATA_COLUMN_CONSTRAINTS + ".sql", cx);
-            runScript(EXTENSIONS + ".sql", cx);
             addDefaultSpatialReferences(cx);
             runSQL("PRAGMA application_id = 0x47503130;", cx);
         }
@@ -608,6 +617,26 @@ public class GeoPackage implements Closeable {
         } catch (SQLException e) {
             throw new IOException(e);
         }
+        return null;
+    }
+
+    /**
+     * Returns the extension by name, or null if the extension is not supported by this
+     * implementation
+     */
+    public GeoPkgExtension getExtension(String name) {
+        if (name.equals(GeoPkgSchemaExtension.NAME)) {
+            return new GeoPkgSchemaExtension(this);
+        }
+
+        return null;
+    }
+
+    public <T extends GeoPkgExtension> T getExtension(Class<T> extension) {
+        if (extension.isAssignableFrom(GeoPkgSchemaExtension.class)) {
+            return (T) new GeoPkgSchemaExtension(this);
+        }
+
         return null;
     }
 

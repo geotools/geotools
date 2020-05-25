@@ -56,6 +56,7 @@ public class GeoPkgTestSetup extends JDBCTestSetup {
     protected void setUpData() throws Exception {
         super.setUpData();
 
+        runSafe("DELETE FROM gpkg_data_column_constraints");
         removeTable("ft1");
         removeTable("ft2");
         removeTable("ft3");
@@ -100,6 +101,7 @@ public class GeoPkgTestSetup extends JDBCTestSetup {
         runSafe("DROP VIEW  IF EXISTS " + tableName);
         runSafe("DELETE FROM gpkg_geometry_columns where table_name ='" + tableName + "'");
         runSafe("DELETE FROM gpkg_contents where table_name ='" + tableName + "'");
+        runSafe("DELETE FROM gpkg_data_columns where table_name ='" + tableName + "'");
         runSafe("DELETE FROM gpkg_extensions where table_name ='" + tableName + "'");
         runSafe("DELETE FROM gt_pk_metadata where table_name ='" + tableName + "'");
     }

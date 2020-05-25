@@ -241,6 +241,17 @@ public abstract class SQLDialect {
     }
 
     /**
+     * Allows the dialect to setup restrictions for attribute at hand
+     *
+     * @param columnMetaData The column metadata
+     * @param cx The connection used to retrieve the metadata
+     * @return The restriction, or null if no restriction applies
+     */
+    public Filter getRestrictions(ResultSet columnMetaData, Connection cx) throws SQLException {
+        return null;
+    }
+
+    /**
      * Handles the mapping for a user defined type.
      *
      * <p>This method is called after {@link #getMapping(ResultSet, Connection)} but before the rest
@@ -1335,5 +1346,16 @@ public abstract class SQLDialect {
     public Function<Object, Object> getAggregateConverter(
             FeatureVisitor visitor, SimpleFeatureType featureType) {
         return Function.identity();
+    }
+
+    /**
+     * Gives an opportunity to the dialect to do its own custom type mapping, based on the full
+     * description of the attribute. Defaults to return <code>null</code>, subclasses can override
+     *
+     * @param ad The attribute descriptor
+     * @return A SQL type from {@link Types}, or null if customization is needed
+     */
+    public Integer getSQLType(AttributeDescriptor ad) {
+        return null;
     }
 }

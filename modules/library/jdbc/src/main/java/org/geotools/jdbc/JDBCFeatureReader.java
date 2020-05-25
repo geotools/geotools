@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
@@ -123,6 +124,9 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
 
     protected JDBCReaderCallback callback = JDBCReaderCallback.NULL;
     private int[] attributeRsIndex;
+
+    /** enum support */
+    EnumMapper[] enumMappers;
 
     public JDBCFeatureReader(
             String sql,
@@ -239,6 +243,22 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
 
         callback = dataStore.getCallbackFactory().createReaderCallback();
         callback.init(this);
+
+        // mapped enumeration support
+        List<AttributeDescriptor> descriptors = featureType.getAttributeDescriptors();
+        enumMappers = new EnumMapper[descriptors.size()];
+        for (int i = 0; i < enumMappers.length; i++) {
+            AttributeDescriptor ad = descriptors.get(i);
+            EnumMapper mapper = (EnumMapper) ad.getUserData().get(JDBCDataStore.JDBC_ENUM_MAP);
+            enumMappers[i] = mapper;
+        }
+    }
+
+    private Map<String, Integer> invert(Map<Integer, String> map) {
+        if (map == null) return null;
+        return map.entrySet()
+                .stream()
+                .collect(Collectors.toMap(e -> e.getValue(), e -> e.getKey()));
     }
 
     @FunctionalInterface
@@ -275,6 +295,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         this.st = other.st;
         this.rs = other.rs;
         this.md = other.md;
+        this.enumMappers = other.enumMappers;
     }
 
     public void setNext(Boolean next) {
@@ -407,6 +428,9 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
                 // user (being the feature type reverse engineerd, it's unlikely a true
                 // conversion will be needed)
                 if (value != null) {
+                    EnumMapper mapper = enumMappers[i];
+                    if (mapper != null)
+                        value = mapper.fromInteger(Converters.convert(value, Integer.class));
                     Class binding = type.getType().getBinding();
                     Object converted = Converters.convert(value, binding);
                     if (converted != null && converted != value) {
@@ -574,6 +598,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
 
         /** name index */
         HashMap<String, Integer> index;
+
         /** user data */
         HashMap<Object, Object> userData = new HashMap<Object, Object>();
 
@@ -725,6 +750,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
                                 values[index] = rs.getObject(rsindex);
                             }
                         }
+
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     } catch (SQLException e) {
@@ -735,7 +761,11 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
                     }
                 }
             }
-            return values[index];
+            Object value = values[index];
+            EnumMapper mapper = enumMappers[index];
+            if (mapper != null)
+                value = mapper.fromInteger(Converters.convert(value, Integer.class));
+            return value;
         }
 
         public void setAttribute(String name, Object value) {
@@ -755,6 +785,8 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             if (dataStore.getLogger().isLoggable(Level.FINE)) {
                 dataStore.getLogger().fine("Setting " + index + " to " + value);
             }
+            EnumMapper mapper = enumMappers[index];
+            if (mapper != null) value = mapper.fromString(Converters.convert(value, String.class));
             values[index] = value;
             dirty[index] = true;
         }

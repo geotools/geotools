@@ -278,6 +278,9 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                     ab.nillable(false);
                     ab.minOccurs(1);
                 }
+                if (column.restriction != null) {
+                    ab.addRestriction(column.restriction);
+                }
 
                 AttributeDescriptor att = null;
 
@@ -806,6 +809,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                 column.sqlType = columns.getInt("DATA_TYPE");
                 column.nullable = "YES".equalsIgnoreCase(columns.getString("IS_NULLABLE"));
                 column.binding = dialect.getMapping(columns, cx);
+                column.restriction = dialect.getRestrictions(columns, cx);
 
                 // support for user defined types, allow the dialect to handle them
                 if (column.sqlType == Types.DISTINCT) {

@@ -172,4 +172,32 @@ public class SDMXDataStoreTest {
                 5,
                 this.dataStore.getFeatureSource(Helper.SEIFA_LGA).getSchema().getAttributeCount());
     }
+
+    @Test
+    public void testApi21DSD() throws Exception {
+
+        this.urlMock = PowerMockito.mock(URL.class);
+        this.clientMock = PowerMockito.mock(HttpURLConnection.class);
+
+        PowerMockito.whenNew(URL.class).withAnyArguments().thenReturn(this.urlMock);
+        PowerMockito.when(this.urlMock.toURI()).thenReturn(new URI(Helper.URL));
+        PowerMockito.when(this.urlMock.openConnection(anyObject())).thenReturn(this.clientMock);
+        when(clientMock.getResponseCode())
+                .thenReturn(HttpStatus.SC_OK)
+                .thenReturn(HttpStatus.SC_OK);
+        when(clientMock.getInputStream())
+                .thenReturn(Helper.readXMLAsStream("test-data/abs21.xml"))
+                .thenReturn(Helper.readXMLAsStream("test-data/abs21_c16_t04_sa_structure.xml"));
+
+        this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore2();
+        assertEquals(2, this.dataStore.createTypeNames().size());
+
+        assertNotNull(this.dataStore.getFeatureSource(Helper.T04SA_DIMENSIONS).getSchema());
+        assertEquals(
+                3,
+                this.dataStore
+                        .getFeatureSource(Helper.T04SA_DIMENSIONS)
+                        .getSchema()
+                        .getAttributeCount());
+    }
 }

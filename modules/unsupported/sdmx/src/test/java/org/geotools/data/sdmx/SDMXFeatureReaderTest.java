@@ -539,4 +539,63 @@ public class SDMXFeatureReaderTest {
         query.setFilter(ECQL.toFilter("CODE = 'XXX'"));
         this.reader = (SDMXFeatureReader) this.dimSource.getReader(query);
     }
+
+    @Test
+    public void testApi21Dimensions() throws Exception {
+
+        this.urlMock = PowerMockito.mock(URL.class);
+        this.clientMock = PowerMockito.mock(HttpURLConnection.class);
+
+        PowerMockito.whenNew(URL.class).withAnyArguments().thenReturn(this.urlMock);
+        PowerMockito.when(this.urlMock.toURI()).thenReturn(new URI(Helper.URL));
+        PowerMockito.when(this.urlMock.openConnection(anyObject())).thenReturn(this.clientMock);
+        when(clientMock.getResponseCode())
+                .thenReturn(HttpStatus.SC_OK)
+                .thenReturn(HttpStatus.SC_OK);
+        when(clientMock.getInputStream())
+                .thenReturn(Helper.readXMLAsStream("test-data/abs21.xml"))
+                .thenReturn(Helper.readXMLAsStream("test-data/abs21_c16_t04_sa_structure.xml"));
+
+        this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore2();
+        assertNotNull(this.dataStore.getFeatureSource(Helper.T04SA_DIMENSIONS).getSchema());
+        this.fType = this.dataStore.getFeatureSource(Helper.T04SA_DIMENSIONS).getSchema();
+        this.dimSource =
+                (SDMXDimensionFeatureSource)
+                        this.dataStore.getFeatureSource(Helper.T04SA_DIMENSIONS);
+        this.dimSource.buildFeatureType();
+        Query query = new Query();
+        query.setFilter(ECQL.toFilter("CODE = 'ALL'"));
+        this.reader = (SDMXFeatureReader) this.dimSource.getReader(query);
+
+        SimpleFeature feat;
+        int nObs = 0;
+        while (this.reader.hasNext()) {
+            feat = this.reader.next();
+            assertNotNull(feat);
+            if (nObs == 0) {
+                assertNotNull(feat.getID());
+                assertNull(feat.getDefaultGeometry());
+                assertEquals("ASGS_2016", feat.getAttribute(SDMXDataStore.CODE_KEY));
+                // Only the first measure is returned
+                assertEquals("ASGS_2016", feat.getAttribute(SDMXDataStore.DESCRIPTION_KEY));
+            }
+            String s =
+                    feat.getID()
+                            + "|"
+                            + feat.getType().getGeometryDescriptor().getLocalName()
+                            + ":"
+                            + feat.getDefaultGeometry();
+            for (int i = 1; i < feat.getAttributeCount(); i++) {
+                s +=
+                        "|"
+                                + feat.getType().getDescriptor(i).getLocalName()
+                                + ":"
+                                + feat.getAttribute(i);
+            }
+            System.out.println(s);
+            nObs++;
+        }
+
+        assertEquals(6, nObs);
+    }
 }

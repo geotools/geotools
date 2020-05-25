@@ -52,15 +52,30 @@ public class SDMXDimensionFeatureReader extends SDMXFeatureReader {
         super(clientIn, featureTypeIn, dataflowIn, dfStructureIn, logger);
 
         try {
+            /**
+             * TODO https://github.com/amattioc/SDMX/issues/184 if
+             * (dfStructureIn.getDimension(expression.toUpperCase()).toString().equalsIgnoreCase(dfStructureIn.getTimeDimension()))
+             * { List<PortableTimeSeries<Double>> ts= this.client.getTimeSeries(dataflowIn,
+             * dfStructureIn, null, null, null, true,null, false); ts.get(0). }
+             */
             // XXX
-            ArrayList dimNames2 = new ArrayList();
-            dfStructureIn
-                    .getDimensions()
-                    .forEach(
-                            (dim) -> {
-                                dimNames2.add(dim.getId());
-                            });
-
+            System.out.println(
+                    String.format(
+                            ">>>>>>>>>>> %s %s %s",
+                            dfStructureIn.getId(),
+                            expression,
+                            dfStructureIn.getTimeDimension())); // XXX
+            if (expression.equalsIgnoreCase(dfStructureIn.getTimeDimension())) {
+                dfStructureIn
+                        .getAttributes()
+                        .forEach(
+                                (attr) -> {
+                                    System.out.println(
+                                            String.format(
+                                                    ">>>>>>>>>>> %s %s",
+                                                    attr.getId(), attr.getName()));
+                                });
+            }
             // If the list of dimensions has to be returned, returns only those
             if (SDMXDataStore.DIMENSIONS_EXPR_ALL.equals(expression.toUpperCase())) {
                 Map<String, String> dimensions = new HashMap<String, String>();
@@ -89,7 +104,6 @@ public class SDMXDimensionFeatureReader extends SDMXFeatureReader {
                                     expression.toUpperCase(), String.join(", ", dimNames))));
                 }
 
-                // FIXME: https://github.com/amattioc/SDMX/issues/181
                 if (dfStructureIn.getDimension(expression.toUpperCase()).getCodeList() == null) {
                     this.dimIter =
                             new Iterator<Entry<String, String>>() {
@@ -149,7 +163,9 @@ public class SDMXDimensionFeatureReader extends SDMXFeatureReader {
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder(this.featureType);
         builder.set(SDMXDataStore.GEOMETRY_ATTR, null);
         builder.set(SDMXDataStore.CODE_KEY, dim.getKey().toString());
-        builder.set(SDMXDataStore.DESCRIPTION_KEY, dim.getValue().toString());
+        builder.set(
+                SDMXDataStore.DESCRIPTION_KEY,
+                (dim.getValue() != null) ? dim.getValue().toString() : dim.getKey().toString());
 
         return builder.buildFeature((new FeatureIdImpl(dim.getKey().toString())).toString());
     }

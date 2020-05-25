@@ -63,7 +63,7 @@ public class SDMXDataStoreFactoryTest {
         assertFalse(dsf.canProcess(params));
 
         // Provider set
-        params.put(SDMXDataStoreFactory.PROVIDER_PARAM.key, Helper.PROVIDER_NEW);
+        params.put(SDMXDataStoreFactory.PROVIDER_PARAM.key, Helper.PROVIDER_OLD);
         assertTrue(dsf.canProcess(params));
 
         // Username set
@@ -76,12 +76,12 @@ public class SDMXDataStoreFactoryTest {
     }
 
     public void testCreateDataStore() throws IOException {
-        Helper.createSDMXTestDataStore();
-        assertTrue(true);
+        SDMXDataStore ds = (SDMXDataStore) Helper.createSDMXTestDataStore();
+        assertNotNull(ds);
     }
 
     public void testCreateDataStore2() throws IOException {
-        Helper.createSDMXTestDataStore2();
-        assertTrue(true);
+        SDMXDataStore ds = (SDMXDataStore) Helper.createSDMXTestDataStore2();
+        assertNotNull(ds);
     }
 }

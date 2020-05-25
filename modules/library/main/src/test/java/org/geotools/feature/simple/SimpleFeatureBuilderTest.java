@@ -16,8 +16,10 @@
  */
 package org.geotools.feature.simple;
 
+import java.util.Arrays;
 import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.AttributeTypeBuilder;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
@@ -172,6 +174,57 @@ public class SimpleFeatureBuilderTest extends TestCase {
             sf.validate();
             fail("PropertyIsEqualTo filter should have failed");
         } catch (Exception e) {
+            // good
+        }
+    }
+
+    public void testCreateFeatureWithOptions() throws Exception {
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.setName("test");
+        builder.options("a", "b", "c").add("name", String.class);
+        SimpleFeatureType featureType = builder.buildFeatureType();
+
+        // build a valid feature
+        SimpleFeature feature = SimpleFeatureBuilder.build(featureType, new Object[] {"a"}, "ID");
+        assertNotNull(feature);
+        feature.validate();
+
+        // try an invalid one
+        try {
+            feature = SimpleFeatureBuilder.build(featureType, new Object[] {"d"}, "ID");
+            feature.validate();
+            fail("this should fail because the value is not either a, b or c, but d");
+        } catch (Exception e) {
+            e.printStackTrace();
+            // good
+        }
+    }
+
+    /**
+     * Same as {@link #testCreateFeatureWithOptions()} but using an AttributeTypeBuilder directly
+     *
+     * @throws Exception
+     */
+    public void testCreateFeatureWithOptionsOnAttributeTypeBuilder() throws Exception {
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.setName("test");
+        AttributeTypeBuilder atb = new AttributeTypeBuilder();
+        atb.name("name").binding(String.class).options(Arrays.asList("a", "b", "c"));
+        builder.add(atb.buildDescriptor("name"));
+        SimpleFeatureType featureType = builder.buildFeatureType();
+
+        // build a valid feature
+        SimpleFeature feature = SimpleFeatureBuilder.build(featureType, new Object[] {"a"}, "ID");
+        assertNotNull(feature);
+        feature.validate();
+
+        // try an invalid one
+        try {
+            feature = SimpleFeatureBuilder.build(featureType, new Object[] {"d"}, "ID");
+            feature.validate();
+            fail("this should fail because the value is not either a, b or c, but d");
+        } catch (Exception e) {
+            e.printStackTrace();
             // good
         }
     }

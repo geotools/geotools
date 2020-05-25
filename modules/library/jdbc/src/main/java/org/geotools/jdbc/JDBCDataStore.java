@@ -67,6 +67,7 @@ import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.data.store.ContentState;
+import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.visitor.CountVisitor;
@@ -182,6 +183,9 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
     /** Used to specify the column alias to use when encoding a column in a select */
     public static final String JDBC_COLUMN_ALIAS = "org.geotools.jdbc.columnAlias";
+
+    /** Contains a {@link EnumMapper} to support enums mapped from integer values */
+    public static final String JDBC_ENUM_MAP = "org.geotools.jdbc.enumMap";
 
     /** name of table to use to store geometries when {@link #associations} is set. */
     protected static final String GEOMETRY_TABLE = "geometry";
@@ -1773,6 +1777,8 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                     }
 
                     Class binding = att.getType().getBinding();
+                    EnumMapper mapper =
+                            (EnumMapper) att.getUserData().get(JDBCDataStore.JDBC_ENUM_MAP);
 
                     Object value = feature.getAttribute(colName);
                     if (value == null && !att.isNillable()) {
@@ -1788,6 +1794,10 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                     } else if (isArray(att)) {
                         dialect.setArrayValue(value, att, ps, i, cx);
                     } else {
+                        if (mapper != null) {
+                            value = mapper.fromString((String) value);
+                            binding = Integer.class;
+                        }
                         dialect.setValue(value, binding, ps, i, cx);
                     }
                     if (LOGGER.isLoggable(Level.FINE)) {
@@ -2293,9 +2303,11 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
             // can be null?
             nillable[i] = attributeType.getMinOccurs() <= 0 || attributeType.isNillable();
+
+            // eventual options
         }
 
-        sqlTypeNames = getSQLTypeNames(classes, cx);
+        sqlTypeNames = getSQLTypeNames(featureType.getAttributeDescriptors(), cx);
         for (int i = 0; i < sqlTypeNames.length; i++) {
             if (sqlTypeNames[i] == null) {
                 String msg = "Unable to map " + columnNames[i] + "( " + classes[i].getName() + ")";
@@ -2560,7 +2572,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * <p>This method is only called when {@link JDBCDataStore#isAssociations()} is true.
      */
     protected String createRelationshipTableSQL(Connection cx) throws SQLException {
-        String[] sqlTypeNames = getSQLTypeNames(new Class[] {String.class, String.class}, cx);
+        String[] sqlTypeNames = getSQLTypeNames(descriptors(String.class, String.class), cx);
         String[] columnNames = new String[] {"table", "col"};
 
         return createTableSQL(
@@ -2575,7 +2587,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
     protected String createAssociationTableSQL(Connection cx) throws SQLException {
         String[] sqlTypeNames =
                 getSQLTypeNames(
-                        new Class[] {String.class, String.class, String.class, String.class}, cx);
+                        descriptors(String.class, String.class, String.class, String.class), cx);
         String[] columnNames = new String[] {"fid", "rtable", "rcol", "rfid"};
 
         return createTableSQL(
@@ -2590,9 +2602,12 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
     protected String createGeometryTableSQL(Connection cx) throws SQLException {
         String[] sqlTypeNames =
                 getSQLTypeNames(
-                        new Class[] {
-                            String.class, String.class, String.class, String.class, Geometry.class
-                        },
+                        descriptors(
+                                String.class,
+                                String.class,
+                                String.class,
+                                String.class,
+                                Geometry.class),
                         cx);
         String[] columnNames = new String[] {"id", "name", "description", "type", "geometry"};
 
@@ -2606,10 +2621,22 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      */
     protected String createMultiGeometryTableSQL(Connection cx) throws SQLException {
         String[] sqlTypeNames =
-                getSQLTypeNames(new Class[] {String.class, String.class, Boolean.class}, cx);
+                getSQLTypeNames(descriptors(String.class, String.class, Boolean.class), cx);
         String[] columnNames = new String[] {"id", "mgid", "ref"};
 
         return createTableSQL(MULTI_GEOMETRY_TABLE, columnNames, sqlTypeNames, null, null, null);
+    }
+
+    private List<AttributeDescriptor> descriptors(Class<?>... classes) {
+        AttributeTypeBuilder tb = new AttributeTypeBuilder();
+        List<AttributeDescriptor> result = new ArrayList<>();
+        for (int i = 0; i < classes.length; i++) {
+            Class<?> aClass = classes[i];
+            AttributeDescriptor ad = tb.name("a" + i).binding(aClass).buildDescriptor("a" + i);
+            result.add(ad);
+        }
+
+        return result;
     }
 
     /**
@@ -2933,7 +2960,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
     protected String createGeometryAssociationTableSQL(Connection cx) throws SQLException {
         String[] sqlTypeNames =
                 getSQLTypeNames(
-                        new Class[] {String.class, String.class, String.class, Boolean.class}, cx);
+                        descriptors(String.class, String.class, String.class, Boolean.class), cx);
         String[] columnNames = new String[] {"fid", "gname", "gid", "ref"};
 
         return createTableSQL(
@@ -3172,18 +3199,25 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * <p>This method uses a combination of dialect mappings and database metadata to determine
      * which sql types map to the specified classes.
      */
-    private String[] getSQLTypeNames(Class[] classes, Connection cx) throws SQLException {
+    private String[] getSQLTypeNames(List<AttributeDescriptor> descriptors, Connection cx)
+            throws SQLException {
         // figure out what the sql types are corresponding to the feature type
         // attributes
-        int[] sqlTypes = new int[classes.length];
+        int[] sqlTypes = new int[descriptors.size()];
         String[] sqlTypeNames = new String[sqlTypes.length];
 
-        for (int i = 0; i < classes.length; i++) {
-            Class clazz = classes[i];
-            Integer sqlType = getMapping(clazz);
+        for (int i = 0; i < descriptors.size(); i++) {
+            AttributeDescriptor ad = descriptors.get(i);
+            Class clazz = ad.getType().getBinding();
+            Integer sqlType = dialect.getSQLType(ad);
 
             if (sqlType == null) {
-                LOGGER.warning("No sql type mapping for: " + clazz);
+                sqlType = getMapping(clazz);
+            }
+
+            if (sqlType == null) {
+                LOGGER.warning(
+                        "No sql type mapping for: " + ad.getLocalName() + " of type " + clazz);
                 sqlType = Types.OTHER;
             }
 
@@ -3436,6 +3470,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
     FilterToSQL filter(
             SimpleFeatureType featureType, Filter filter, StringBuffer sql, FilterToSQL toSQL)
             throws IOException {
+
         try {
             // grab the full feature type, as we might be encoding a filter
             // that uses attributes that aren't returned in the results
@@ -4157,6 +4192,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             }
 
             Class binding = att.getType().getBinding();
+            EnumMapper mapper = (EnumMapper) att.getUserData().get(JDBCDataStore.JDBC_ENUM_MAP);
 
             Object value = feature.getAttribute(colName);
 
@@ -4178,6 +4214,10 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                         throw new RuntimeException(e);
                     }
                 } else {
+                    if (mapper != null) {
+                        value = mapper.fromString((String) value);
+                        binding = Integer.class;
+                    }
                     dialect.encodeValue(value, binding, sql);
                 }
             }
@@ -4311,9 +4351,11 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             dialect.encodeColumnName(null, attName, sql);
             sql.append(" = ");
 
-            if (Geometry.class.isAssignableFrom(att.getType().getBinding())) {
+            Class<?> binding = att.getType().getBinding();
+            Object value = values[i];
+            if (Geometry.class.isAssignableFrom(binding)) {
                 try {
-                    Geometry g = (Geometry) values[i];
+                    Geometry g = (Geometry) value;
                     int srid = getGeometrySRID(g, att);
                     int dimension = getGeometryDimension(g, att);
                     dialect.encodeGeometryValue(g, dimension, srid, sql);
@@ -4321,7 +4363,12 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                     throw new RuntimeException(e);
                 }
             } else {
-                dialect.encodeValue(values[i], att.getType().getBinding(), sql);
+                EnumMapper mapper = (EnumMapper) att.getUserData().get(JDBCDataStore.JDBC_ENUM_MAP);
+                if (mapper != null) {
+                    value = mapper.fromString(Converters.convert(value, String.class));
+                    binding = Integer.class;
+                }
+                dialect.encodeValue(value, binding, sql);
             }
 
             sql.append(",");
@@ -4414,15 +4461,21 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             }
 
             Class binding = att.getType().getBinding();
+            Object value = values[i];
             if (Geometry.class.isAssignableFrom(binding)) {
-                Geometry g = (Geometry) values[i];
+                Geometry g = (Geometry) value;
                 dialect.setGeometryValue(
                         g, getDescriptorDimension(att), getDescriptorSRID(att), binding, ps, j + 1);
             } else {
-                dialect.setValue(values[i], binding, ps, j + 1, cx);
+                EnumMapper mapper = (EnumMapper) att.getUserData().get(JDBCDataStore.JDBC_ENUM_MAP);
+                if (mapper != null) {
+                    value = mapper.fromString(Converters.convert(value, String.class));
+                    binding = Integer.class;
+                }
+                dialect.setValue(value, binding, ps, j + 1, cx);
             }
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine((j + 1) + " = " + values[i]);
+                LOGGER.fine((j + 1) + " = " + value);
             }
             // we do this only if we did not skip the exposed pk
             j++;

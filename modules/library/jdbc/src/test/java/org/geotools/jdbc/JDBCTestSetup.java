@@ -114,7 +114,7 @@ public abstract class JDBCTestSetup {
         try {
             run(input);
         } catch (Exception ignore) {
-            // ignore.printStackTrace(System.out);
+            ignore.printStackTrace(System.out);
         }
     }
 

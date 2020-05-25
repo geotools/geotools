@@ -22,8 +22,6 @@ import java.util.List;
 import java.util.Map;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.IllegalFilterException;
-import org.geotools.filter.LengthFunction;
 import org.geotools.util.Classes;
 import org.geotools.util.SimpleInternationalString;
 import org.locationtech.jts.geom.Geometry;
@@ -35,7 +33,6 @@ import org.opengis.feature.type.GeometryType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Expression;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.util.InternationalString;
 
@@ -156,6 +153,9 @@ public class AttributeTypeBuilder {
     /** filter factory */
     protected FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
+    /** The list of valid values for attributes described by this type (enumeration). */
+    private List<?> options;
+
     /** Constructs the builder. */
     public AttributeTypeBuilder() {
         this(CommonFactoryFinder.getFeatureTypeFactory(null));
@@ -202,6 +202,8 @@ public class AttributeTypeBuilder {
         userData = new HashMap<Object, Object>();
         defaultValue = null;
         isDefaultValueSet = false;
+        length = null;
+        options = null;
     }
 
     public AttributeTypeBuilder setFactory(FeatureTypeFactory factory) {
@@ -348,6 +350,20 @@ public class AttributeTypeBuilder {
         return this;
     }
 
+    /**
+     * Sets a list of possible valid values for the attribute type being built, and returns a
+     * reference to the builder itself
+     */
+    public AttributeTypeBuilder options(List<?> options) {
+        setOptions(options);
+        return this;
+    }
+
+    /** Sets a list of possible valid values for the attribute type being built */
+    public void setOptions(List<?> options) {
+        this.options = options;
+    }
+
     public AttributeTypeBuilder restriction(Filter restriction) {
         addRestriction(restriction);
         return this;
@@ -381,6 +397,11 @@ public class AttributeTypeBuilder {
         return this;
     }
 
+    public AttributeTypeBuilder superType(AttributeType superType) {
+        this.superType = superType;
+        return this;
+    }
+
     // construction methods
     //
 
@@ -393,6 +414,11 @@ public class AttributeTypeBuilder {
         if (length != null) {
             Filter lengthRestriction = lengthRestriction(length);
             restrictions().add(lengthRestriction);
+        }
+
+        if (options != null && !options.isEmpty()) {
+            Filter optionsRestriction = FeatureTypes.createFieldOptions(options);
+            restrictions().add(optionsRestriction);
         }
 
         AttributeType type =
@@ -564,20 +590,6 @@ public class AttributeTypeBuilder {
 
     /** Helper method to create a "length" filter. */
     protected Filter lengthRestriction(int length) {
-        if (length < 0) {
-            return null;
-        }
-        LengthFunction lengthFunction =
-                (LengthFunction) ff.function("LengthFunction", new Expression[] {ff.property(".")});
-        if (lengthFunction == null) {
-            return null;
-        }
-        Filter cf = null;
-        try {
-            cf = ff.lessOrEqual(lengthFunction, ff.literal(length));
-        } catch (IllegalFilterException e) {
-            // TODO something
-        }
-        return cf == null ? Filter.EXCLUDE : cf;
+        return FeatureTypes.createLengthRestriction(length);
     }
 }

@@ -403,11 +403,33 @@ public class SimpleFeatureTypeBuilder {
      *
      * <p>This method is the same as adding a restriction based on length( value ) < length This
      * value is reset after a call to {@link #add(String, Class)}
-     *
-     * @return length Used to limit the length of the next attribute created
      */
     public SimpleFeatureTypeBuilder length(int length) {
         attributeBuilder.setLength(length);
+        return this;
+    }
+
+    /**
+     * Sets a restriction on the possible field values of the next attribute added to the feature
+     * type.
+     *
+     * <p>This method is the same as adding a restriction based on value in (option1, option2, ...}.
+     * This restriction is reset after a call to {@link #add(String, Class)}
+     */
+    public SimpleFeatureTypeBuilder options(Object... options) {
+        attributeBuilder.setOptions(Arrays.asList(options));
+        return this;
+    }
+
+    /**
+     * Sets a restriction on the possible field values of the next attribute added to the feature
+     * type.
+     *
+     * <p>This method is the same as adding a restriction based on value in (option1, option2, ...}.
+     * This restriction is reset after a call to {@link #add(String, Class)}
+     */
+    public SimpleFeatureTypeBuilder options(List<?> options) {
+        attributeBuilder.setOptions(options);
         return this;
     }
 

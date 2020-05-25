@@ -28,12 +28,11 @@ public class GeoPkgDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
         return new GeoPkgTestSetup();
     }
 
-    // following tests disabled, see SpatiaLiteDataStoreTest for details
     @Override
-    public void testCreateSchema() throws Exception {}
-
-    @Override
-    public void testCreateSchemaWithConstraints() throws Exception {}
+    public void testCreateSchemaWithConstraints() throws Exception {
+        // SQLite does not enforce length restrictions on strings
+        // See FAQ (9) from http://www.sqlite.org/faq.html
+    }
 
     protected CoordinateReferenceSystem getUTMCRS() throws FactoryException {
         return CRS.decode("EPSG:26713", true);

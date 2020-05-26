@@ -25,9 +25,9 @@ public class Helper {
     public static String T04_LGA = "ABS_CENSUS2011_T04__SDMX";
     public static String T04_DIMENSIONS = "ABS_CENSUS2011_T04__SDMX__DIMENSIONS";
 
-    public static String T04SA = "ABS____ABS_C16_T04_SA____1_____2_____345__SDMX";
+    public static String T04SA = "ABS____ABS_C16_T04_SA____1_____0_____0__SDMX";
     public static String T04SA_DIMENSIONS =
-            "ABS____ABS_C16_T04_SA____1_____2_____345__SDMX__DIMENSIONS";
+            "ABS____ABS_C16_T04_SA____1_____0_____0__SDMX__DIMENSIONS";
 
     public static String SEIFA_LGA = "ABS_SEIFA_LGA__SDMX";
     public static String SEIFA_LGA_DIMENSIONS = "ABS_SEIFA_LGA__SDMX__DIMENSIONS";

@@ -58,24 +58,7 @@ public class SDMXDimensionFeatureReader extends SDMXFeatureReader {
              * { List<PortableTimeSeries<Double>> ts= this.client.getTimeSeries(dataflowIn,
              * dfStructureIn, null, null, null, true,null, false); ts.get(0). }
              */
-            // XXX
-            System.out.println(
-                    String.format(
-                            ">>>>>>>>>>> %s %s %s",
-                            dfStructureIn.getId(),
-                            expression,
-                            dfStructureIn.getTimeDimension())); // XXX
-            if (expression.equalsIgnoreCase(dfStructureIn.getTimeDimension())) {
-                dfStructureIn
-                        .getAttributes()
-                        .forEach(
-                                (attr) -> {
-                                    System.out.println(
-                                            String.format(
-                                                    ">>>>>>>>>>> %s %s",
-                                                    attr.getId(), attr.getName()));
-                                });
-            }
+
             // If the list of dimensions has to be returned, returns only those
             if (SDMXDataStore.DIMENSIONS_EXPR_ALL.equals(expression.toUpperCase())) {
                 Map<String, String> dimensions = new HashMap<String, String>();

@@ -10,7 +10,7 @@
   </message:Header>
   <message:Structures>
     <structure:Dataflows>
-      <structure:Dataflow id="ABS_C16_T04_SA" agencyID="ABS" version="1.2.345" isFinal="true">
+      <structure:Dataflow id="ABS_C16_T04_SA" agencyID="ABS" version="1.1.0" isFinal="true">
         <common:Annotations>
           <common:Annotation>
             <common:AnnotationType>NonProductionDataflow</common:AnnotationType>

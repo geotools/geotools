@@ -86,6 +86,9 @@ public class GranuleCatalogSource implements GranuleSource {
                                 + ", this granule source only returns "
                                 + this.typeName);
             }
+            if (hints != null) {
+                q.getHints().putAll(hints);
+            }
 
             return DataUtilities.mixQueries(baseQuery, q, null);
         }

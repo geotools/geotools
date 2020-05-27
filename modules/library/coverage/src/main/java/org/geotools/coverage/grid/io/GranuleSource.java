@@ -35,6 +35,9 @@ import org.opengis.feature.simple.SimpleFeatureType;
  */
 public interface GranuleSource {
 
+    public static final Hints.Key NATIVE_BOUNDS = new Hints.Key(Boolean.class);
+    public static final String NATIVE_BOUNDS_KEY = "nativeBounds";
+
     /**
      * Asks a {@link GranuleSource} to return a file based view of the granules instead of a slice
      * based view. In case a granule file contains more than one slice (e.g., NetCDF). The returned

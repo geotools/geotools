@@ -272,4 +272,88 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
         SimpleFeature f = features.features().next();
         assertNotNull(pn.evaluate(f));
     }
+
+    public void testNotNotEqualFilter() throws Exception {
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        PropertyName pnS = ff.property("properties.stringProperty");
+        PropertyIsNotEqualTo notEqualTo = ff.notEqual(pnS, ff.literal("one"));
+        Not not = ff.not(notEqualTo);
+        SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
+        Query q = new Query("ft1", not);
+        SimpleFeatureCollection features = source.getFeatures(q);
+        assertEquals(1, features.size());
+        SimpleFeature f = features.features().next();
+        assertEquals(pnS.evaluate(f), "one");
+    }
+
+    public void testNotEqualBetweenPropertiesFilter() throws Exception {
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        PropertyName pnS = ff.property("properties.stringProperty");
+        PropertyIsNotEqualTo notEqualTo = ff.notEqual(pnS, ff.literal("one"));
+        Not not = ff.not(notEqualTo);
+        SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
+        Query q = new Query("ft1", not);
+        SimpleFeatureCollection features = source.getFeatures(q);
+        assertEquals(1, features.size());
+        SimpleFeature f = features.features().next();
+        assertEquals(pnS.evaluate(f), "one");
+    }
+
+    public void testAndNotFilter() throws Exception {
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        PropertyName pn = ff.property("properties.stringProperty");
+        PropertyIsNull isNull = ff.isNull(ff.property("properties.nullableAttribute"));
+        PropertyIsNotEqualTo equalTo = ff.notEqual(pn, ff.literal("zero"));
+        Not notFirst = ff.not(isNull);
+        Not notSecond = ff.not(equalTo);
+        SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
+        Query q = new Query("ft1", ff.and(notFirst, notSecond));
+        SimpleFeatureCollection features = source.getFeatures(q);
+        assertEquals(1, features.size());
+        SimpleFeature f = features.features().next();
+        assertEquals(pn.evaluate(f), "zero");
+    }
+
+    public void testOrNotFilter() throws Exception {
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        PropertyName pn = ff.property("properties.stringProperty");
+        PropertyIsNull isNull = ff.isNull(ff.property("properties.nullableAttribute"));
+        PropertyIsNotEqualTo equalTo = ff.notEqual(pn, ff.literal("zero"));
+        Not notFirst = ff.not(isNull);
+        Not notSecond = ff.not(equalTo);
+        SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
+        Query q = new Query("ft1", ff.or(notFirst, notSecond));
+        SimpleFeatureCollection features = source.getFeatures(q);
+        assertEquals(1, features.size());
+        SimpleFeature f = features.features().next();
+        assertEquals(pn.evaluate(f), "zero");
+    }
+
+    public void testEqualFilter() throws Exception {
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        PropertyName pn = ff.property("properties.stringProperty");
+        PropertyIsEqualTo equalTo = ff.equals(pn, ff.literal("zero"));
+        SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
+        Query q = new Query("ft1", equalTo);
+        SimpleFeatureCollection features = source.getFeatures(q);
+        assertEquals(1, features.size());
+        SimpleFeature f = features.features().next();
+        assertEquals(pn.evaluate(f), "zero");
+    }
+
+    public void testNotWithEqualFilter() throws Exception {
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        PropertyName pn = ff.property("properties.stringProperty");
+        PropertyIsEqualTo equalTo = ff.equals(pn, ff.literal("zero"));
+        Not not = ff.not(equalTo);
+        SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
+        Query q = new Query("ft1", not);
+        SimpleFeatureCollection features = source.getFeatures(q);
+        SimpleFeatureIterator it = features.features();
+        assertEquals(2, features.size());
+        while (it.hasNext()) {
+            SimpleFeature f = it.next();
+            assertFalse(pn.evaluate(f).equals("zero"));
+        }
+    }
 }

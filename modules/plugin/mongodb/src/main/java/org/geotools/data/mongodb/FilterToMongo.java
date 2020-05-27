@@ -271,7 +271,7 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
 
     @Override
     public Object visit(PropertyIsEqualTo filter, Object extraData) {
-        return encodeBinaryComparisonOp(filter, null, extraData);
+        return encodeBinaryComparisonOp(filter, "$eq", extraData);
     }
 
     BasicDBObject encodeBinaryComparisonOp(

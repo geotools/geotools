@@ -113,43 +113,43 @@ public class SDMXFeatureReaderSystemTest {
 
     // NOTE: on some DSDs this tosses out the error (probaly due to incorrect test OECD dataflows):
     /*
-INFO: Added SDMX feature types: OECD_____SDD____NAPENS_ALL____3_____0__SDMX, OECD_____SDD____NAPENS_ALL____3_____0__SDMX__DIMENSIONS
-May 27, 2020 8:37:14 AM org.geotools.data.sdmx.SDMXDataStore lambda$createTypeNames$0
-SEVERE: Error getting SDMX DSD
-it.bancaditalia.oss.sdmx.exceptions.SdmxInvalidParameterException: getDataFlowStructure(): Null dsd in input
-        at it.bancaditalia.oss.sdmx.client.RestSdmxClient.getDataFlowStructure(RestSdmxClient.java:193)
-        at org.geotools.data.sdmx.SDMXDataStore.lambda$createTypeNames$0(SDMXDataStore.java:205)
-        at java.util.HashMap.forEach(HashMap.java:1289)
-        at org.geotools.data.sdmx.SDMXDataStore.createTypeNames(SDMXDataStore.java:201)
-        at org.geotools.data.store.ContentDataStore.entry(ContentDataStore.java:499)
-        at org.geotools.data.store.ContentDataStore.ensureEntry(ContentDataStore.java:532)
-        at org.geotools.data.store.ContentDataStore.getFeatureSource(ContentDataStore.java:333)
-        at org.geotools.data.store.ContentDataStore.getFeatureSource(ContentDataStore.java:305)
-        at org.geotools.data.sdmx.SDMXFeatureReaderSystemTest.readFeaturesMeasureSDMX21Endpoint(SDMXFeatureReaderSystemTest.java:174)
-        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-        at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-        at java.lang.reflect.Method.invoke(Method.java:498)
-        at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
-        at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
-        at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
-        at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
-        at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
-        at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
-        at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
-        at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
-        at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
-        at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
-        at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
-        at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
-        at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
-        at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:264)
-        at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:153)
-        at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:124)
-        at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:200)
-        at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:153)
-        at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:103)
-    */
+    INFO: Added SDMX feature types: OECD_____SDD____NAPENS_ALL____3_____0__SDMX, OECD_____SDD____NAPENS_ALL____3_____0__SDMX__DIMENSIONS
+    May 27, 2020 8:37:14 AM org.geotools.data.sdmx.SDMXDataStore lambda$createTypeNames$0
+    SEVERE: Error getting SDMX DSD
+    it.bancaditalia.oss.sdmx.exceptions.SdmxInvalidParameterException: getDataFlowStructure(): Null dsd in input
+            at it.bancaditalia.oss.sdmx.client.RestSdmxClient.getDataFlowStructure(RestSdmxClient.java:193)
+            at org.geotools.data.sdmx.SDMXDataStore.lambda$createTypeNames$0(SDMXDataStore.java:205)
+            at java.util.HashMap.forEach(HashMap.java:1289)
+            at org.geotools.data.sdmx.SDMXDataStore.createTypeNames(SDMXDataStore.java:201)
+            at org.geotools.data.store.ContentDataStore.entry(ContentDataStore.java:499)
+            at org.geotools.data.store.ContentDataStore.ensureEntry(ContentDataStore.java:532)
+            at org.geotools.data.store.ContentDataStore.getFeatureSource(ContentDataStore.java:333)
+            at org.geotools.data.store.ContentDataStore.getFeatureSource(ContentDataStore.java:305)
+            at org.geotools.data.sdmx.SDMXFeatureReaderSystemTest.readFeaturesMeasureSDMX21Endpoint(SDMXFeatureReaderSystemTest.java:174)
+            at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+            at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+            at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+            at java.lang.reflect.Method.invoke(Method.java:498)
+            at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+            at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+            at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+            at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+            at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+            at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+            at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+            at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+            at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+            at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+            at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+            at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+            at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+            at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:264)
+            at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:153)
+            at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:124)
+            at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:200)
+            at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:153)
+            at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:103)
+        */
     @Test
     public void readFeaturesMeasureSDMX21Endpoint() throws Exception {
 

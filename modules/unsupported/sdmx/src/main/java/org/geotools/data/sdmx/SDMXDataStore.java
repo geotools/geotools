@@ -27,6 +27,10 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.logging.Level;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentDataStore;
@@ -70,6 +74,7 @@ public class SDMXDataStore extends ContentDataStore {
             new HashMap<Name, ContentFeatureSource>();
 
     protected URL namespace;
+    protected String provider;
     protected String user;
     protected String password;
     protected GenericSDMXClient sdmxClient;
@@ -91,10 +96,11 @@ public class SDMXDataStore extends ContentDataStore {
         }
         this.user = user;
         this.password = password;
+        this.provider = provider;
 
         // FIXME: it seems ot work only with a pre-defined client
         try {
-            this.sdmxClient = SDMXClientFactory.createClient(provider);
+            this.sdmxClient = SDMXClientFactory.createClient(this.provider);
         } catch (SdmxException e) {
             LOGGER.log(Level.SEVERE, "Cannot create client", e);
             throw (e);
@@ -180,6 +186,45 @@ public class SDMXDataStore extends ContentDataStore {
         return parts.length == 0 ? "" : parts[0];
     }
 
+    /**
+     * Add the DataflowStructure od df Dataflow with the name key
+     *
+     * @param dfKey
+     * @param df
+     * @return
+     * @throws SdmxException
+     */
+    private String setDataFlowStructure(String dfKey, Dataflow df) throws SdmxException {
+        LOGGER.log(Level.INFO, "*** Started setDataFlowStructure ", dfKey);
+
+        DataFlowStructure dfs =
+                SDMXClientFactory.createClient(this.provider)
+                        .getDataFlowStructure(df.getDsdIdentifier(), true);
+        synchronized (this.dataflowStructures) {
+            this.dataflowStructures.put(dfKey, dfs);
+        }
+
+        String ftypeName = SDMXDataStore.composeDataflowTypeName(dfKey);
+        Name name = new NameImpl(this.namespace.toExternalForm(), ftypeName);
+        ContentEntry entry = new ContentEntry(this, name);
+        synchronized (this.entries) {
+            this.entries.put(name, entry);
+        }
+
+        // Adds the dimension typename
+        String dimName = SDMXDataStore.composeDimensionTypeName(dfKey);
+        LOGGER.log(
+                Level.INFO, String.format("Added SDMX feature types: %s, %s", ftypeName, dimName));
+
+        ContentEntry dimEntry =
+                new ContentEntry(this, new NameImpl(this.namespace.toExternalForm(), dimName));
+        synchronized (this.entries) {
+            this.entries.put(new NameImpl(this.namespace.toExternalForm(), dimName), dimEntry);
+        }
+
+        return dfKey;
+    }
+
     @Override
     protected List<Name> createTypeNames() {
 
@@ -197,36 +242,37 @@ public class SDMXDataStore extends ContentDataStore {
         }
 
         this.dataflowStructures.clear();
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
+        List<Future<String>> futures = new ArrayList<Future<String>>();
 
         dataflows.forEach(
                 (s, d) -> {
                     DataFlowStructure dfs = new DataFlowStructure();
-                    try {
-                        dfs = this.sdmxClient.getDataFlowStructure(d.getDsdIdentifier(), true);
-                        this.dataflowStructures.put(s, dfs);
-                    } catch (SdmxException e) {
-                        LOGGER.log(Level.SEVERE, "Error getting SDMX DSD", e);
-                    }
-
-                    // Adds the dataflow typename
-                    String ftypeName = SDMXDataStore.composeDataflowTypeName(s);
-                    Name name = new NameImpl(this.namespace.toExternalForm(), ftypeName);
-                    ContentEntry entry = new ContentEntry(this, name);
-                    this.entries.put(name, entry);
-
-                    // Adds the dimension typename
-                    String dimName = SDMXDataStore.composeDimensionTypeName(s);
-                    LOGGER.log(
-                            Level.INFO,
-                            String.format("Added SDMX feature types: %s, %s", ftypeName, dimName));
-
-                    ContentEntry dimEntry =
-                            new ContentEntry(
-                                    this, new NameImpl(this.namespace.toExternalForm(), dimName));
-                    this.entries.put(
-                            new NameImpl(this.namespace.toExternalForm(), dimName), dimEntry);
+                    futures.add(
+                            ((Future<String>)
+                                    executorService.submit(
+                                            () -> {
+                                                try {
+                                                    this.setDataFlowStructure(s, d);
+                                                } catch (SdmxException e) {
+                                                    LOGGER.log(
+                                                            Level.SEVERE,
+                                                            "Error getting SDMX DSD",
+                                                            e);
+                                                }
+                                            })));
                 });
 
+        futures.forEach(
+                fut -> {
+                    try {
+                        fut.get();
+                    } catch (InterruptedException | ExecutionException e) {
+                        LOGGER.log(Level.SEVERE, "Error getting SDMX DSD", e);
+                    }
+                });
+
+        executorService.shutdown();
         return new ArrayList<Name>(this.entries.keySet());
     }
 

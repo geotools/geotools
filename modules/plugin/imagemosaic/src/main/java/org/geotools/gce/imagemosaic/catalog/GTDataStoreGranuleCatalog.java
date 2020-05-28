@@ -30,6 +30,7 @@ import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.gce.imagemosaic.catalog.oracle.OracleDatastoreWrapper;
 import org.geotools.gce.imagemosaic.catalog.postgis.PostgisDatastoreWrapper;
+import org.geotools.gce.imagemosaic.catalog.sqlserver.SQLServerDatastoreWrapper;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
 
@@ -82,6 +83,10 @@ public class GTDataStoreGranuleCatalog extends AbstractGTDataStoreGranuleCatalog
         } else if (Utils.isOracleStore(spi)) {
             this.tileIndexStore =
                     new OracleDatastoreWrapper(
+                            getTileIndexStore(), FilenameUtils.getFullPath(parentLocation));
+        } else if (Utils.isSQLServerStore(spi) && wrapstore) {
+            this.tileIndexStore =
+                    new SQLServerDatastoreWrapper(
                             getTileIndexStore(), FilenameUtils.getFullPath(parentLocation));
         }
 

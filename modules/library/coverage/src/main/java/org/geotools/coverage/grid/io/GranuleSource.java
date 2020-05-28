@@ -20,6 +20,7 @@ import java.io.IOException;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.util.factory.Hints;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
@@ -30,6 +31,9 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * @author Daniele Romagnoli, GeoSolutions SAS
  */
 public interface GranuleSource {
+
+    public static final Hints.Key NATIVE_BOUNDS = new Hints.Key(Boolean.class);
+    public static final String NATIVE_BOUNDS_KEY = "nativeBounds";
 
     /**
      * Retrieves granules, in the form of a {@code SimpleFeatureCollection}, based on a {@code

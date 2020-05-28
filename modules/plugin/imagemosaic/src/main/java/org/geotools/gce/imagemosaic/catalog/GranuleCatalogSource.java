@@ -61,7 +61,7 @@ public class GranuleCatalogSource implements GranuleSource {
             q = new Query(q);
         }
         if (hints != null) {
-            q.setHints(hints);
+            q.getHints().putAll(hints);
         }
         if (q.getTypeName() == null) {
             q.setTypeName(typeName);

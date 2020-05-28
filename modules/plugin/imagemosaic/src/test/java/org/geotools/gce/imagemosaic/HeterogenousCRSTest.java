@@ -19,6 +19,8 @@ package org.geotools.gce.imagemosaic;
 
 import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasKey;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
@@ -35,8 +37,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Vector;
 import java.util.stream.Collectors;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
@@ -47,7 +57,11 @@ import org.apache.commons.io.FileUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.coverage.grid.io.*;
+import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
+import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.DimensionDescriptor;
+import org.geotools.coverage.grid.io.GranuleSource;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -818,6 +832,46 @@ public class HeterogenousCRSTest {
                 groupOperations(source, operationsSet);
             }
             return;
+        }
+    }
+
+    @Test
+    public void testNativeEnvelope() throws Exception {
+        String testLocation = "heterogeneous_crs_2";
+        URL storeUrl = TestData.url(this, testLocation);
+
+        File testDataFolder = new File(storeUrl.toURI());
+        File testDirectory = crsMosaicFolder.newFolder(testLocation);
+        FileUtils.copyDirectory(testDataFolder, testDirectory);
+
+        ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, null);
+        GranuleSource source = imReader.getGranules(imReader.getGridCoverageNames()[0], true);
+
+        // no decoration requested, no time should be spent adding native bounds
+        SimpleFeatureCollection fc = source.getGranules(Query.ALL);
+        try (SimpleFeatureIterator fi = fc.features()) {
+            while (fi.hasNext()) {
+                SimpleFeature f = fi.next();
+                assertThat(f.getUserData(), not(hasKey(GranuleSource.NATIVE_BOUNDS_KEY)));
+            }
+        }
+
+        // decoration requested this time
+        Query q = new Query();
+        q.getHints().put(GranuleSource.NATIVE_BOUNDS, true);
+        SimpleFeatureCollection fcb = source.getGranules(q);
+        try (SimpleFeatureIterator fi = fcb.features()) {
+            while (fi.hasNext()) {
+                SimpleFeature f = fi.next();
+                assertThat(f.getUserData(), hasKey(GranuleSource.NATIVE_BOUNDS_KEY));
+                // check the native bounds are reported in the native CRS
+                String crs = (String) f.getAttribute("crs");
+                ReferencedEnvelope envelope =
+                        (ReferencedEnvelope) f.getUserData().get(GranuleSource.NATIVE_BOUNDS_KEY);
+                assertTrue(
+                        CRS.equalsIgnoreMetadata(
+                                CRS.decode(crs, true), envelope.getCoordinateReferenceSystem()));
+            }
         }
     }
 }

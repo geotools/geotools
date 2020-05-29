@@ -92,8 +92,8 @@ class ElasticFeatureTypeBuilder extends SimpleFeatureTypeBuilder {
                                 attributeBuilder.buildDescriptor(
                                         attributeName, attributeBuilder.buildType());
                     }
-                    if (att != null && attribute.getDateFormat() != null) {
-                        att.getUserData().put(DATE_FORMAT, attribute.getDateFormat());
+                    if (att != null && attribute.getValidDateFormats() != null) {
+                        att.getUserData().put(DATE_FORMAT, attribute.getValidDateFormats());
                     }
                     if (att != null) {
                         att.getUserData().put(FULL_NAME, attribute.getName());

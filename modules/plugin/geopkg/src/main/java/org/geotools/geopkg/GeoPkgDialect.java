@@ -279,6 +279,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         }
 
         // if it's an enumeration, switch data type to string
+        @SuppressWarnings("PMD.CloseResource") // using the pool of the store, no need to close
         GeoPackage geoPackage = geopkg();
         try {
             GeoPkgSchemaExtension extension = geoPackage.getExtension(GeoPkgSchemaExtension.class);
@@ -304,6 +305,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         String col = columns.getString("COLUMN_NAME");
 
         // if it's an enumeration, switch data type to string
+        @SuppressWarnings("PMD.CloseResource") // using the pool of the store, no need to close
         GeoPackage geoPackage = geopkg();
         try {
             GeoPkgSchemaExtension schemas = geoPackage.getExtension(GeoPkgSchemaExtension.class);

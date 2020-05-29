@@ -33,7 +33,6 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
@@ -252,13 +251,6 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             EnumMapper mapper = (EnumMapper) ad.getUserData().get(JDBCDataStore.JDBC_ENUM_MAP);
             enumMappers[i] = mapper;
         }
-    }
-
-    private Map<String, Integer> invert(Map<Integer, String> map) {
-        if (map == null) return null;
-        return map.entrySet()
-                .stream()
-                .collect(Collectors.toMap(e -> e.getValue(), e -> e.getKey()));
     }
 
     @FunctionalInterface

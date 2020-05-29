@@ -64,9 +64,7 @@ public class GeoPkgSchemaExtension extends GeoPkgExtension {
             try (PreparedStatement ps = cx.prepareStatement(sql)) {
                 ps.setString(1, tableName);
 
-                Map<String, String> enumValues = null;
                 try (ResultSet rs = ps.executeQuery()) {
-                    String columnNamePrev = null;
                     while (rs.next()) {
                         DataColumn dc = new DataColumn();
                         String columnName = rs.getString("column_name");
@@ -102,7 +100,6 @@ public class GeoPkgSchemaExtension extends GeoPkgExtension {
      * @throws IOException
      */
     public DataColumnConstraint getConstraint(String contraintName) throws IOException {
-        List<DataColumn> result = new ArrayList<>();
         if (!isRegistered()) {
             return null;
         }

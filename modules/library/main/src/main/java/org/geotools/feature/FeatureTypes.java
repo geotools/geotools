@@ -232,7 +232,6 @@ public class FeatureTypes {
             // the minimum of all the length restrictions; for now we assume an
             // override behavior.
             for (Filter f : type.getRestrictions()) {
-                List filterLength = null;
                 List<Object> currentOptions = null;
                 boolean foundOptionsPattern = true;
                 if (f == null) {

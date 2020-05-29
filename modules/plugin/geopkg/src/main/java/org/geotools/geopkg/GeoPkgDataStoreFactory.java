@@ -164,6 +164,7 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
         dataSource.setUrl(getJDBCUrl(params));
 
         addConnectionProperties(dataSource, params);
+        dataSource.setMinIdle(1);
 
         dataSource.setAccessToUnderlyingConnectionAllowed(true);
 

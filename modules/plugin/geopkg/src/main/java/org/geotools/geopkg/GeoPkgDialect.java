@@ -283,7 +283,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         GeoPackage geoPackage = geopkg();
         try {
             GeoPkgSchemaExtension extension = geoPackage.getExtension(GeoPkgSchemaExtension.class);
-            List<DataColumn> dataColumns = extension.getDataColumns(tbl);
+            List<DataColumn> dataColumns = extension.getDataColumns(tbl, cx);
             for (DataColumn dataColumn : dataColumns) {
                 if (col.equals(dataColumn.getColumnName())) {
                     DataColumnConstraint constraint = dataColumn.getConstraint();
@@ -309,7 +309,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         GeoPackage geoPackage = geopkg();
         try {
             GeoPkgSchemaExtension schemas = geoPackage.getExtension(GeoPkgSchemaExtension.class);
-            List<DataColumn> dataColumns = schemas.getDataColumns(tbl);
+            List<DataColumn> dataColumns = schemas.getDataColumns(tbl, cx);
             for (DataColumn dataColumn : dataColumns) {
                 if (col.equals(dataColumn.getColumnName())) {
                     DataColumnConstraint constraint = dataColumn.getConstraint();
@@ -372,8 +372,8 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         @SuppressWarnings("PMD.CloseResource") // using the pool of the store, no need to close
         GeoPackage geopkg = geopkg();
         try {
-            geopkg.addGeoPackageContentsEntry(fe);
-            geopkg.addGeometryColumnsEntry(fe);
+            geopkg.addGeoPackageContentsEntry(fe, cx);
+            geopkg.addGeometryColumnsEntry(fe, cx);
 
             // other geometry columns are possible
             for (PropertyDescriptor descr : featureType.getDescriptors()) {
@@ -385,7 +385,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
                         fe1.setGeometryColumn(gd1.getLocalName());
                         fe1.setGeometryType(
                                 Geometries.getForBinding((Class) gd1.getType().getBinding()));
-                        geopkg.addGeometryColumnsEntry(fe1);
+                        geopkg.addGeometryColumnsEntry(fe1, cx);
                     }
                 }
             }
@@ -405,7 +405,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
                                     + dc.getColumnName());
                 }
                 geopkg.getExtension(GeoPkgSchemaExtension.class)
-                        .addDataColumn(featureType.getTypeName(), dc);
+                        .addDataColumn(featureType.getTypeName(), dc, cx);
             } else {
                 List<?> options = FeatureTypes.getFieldOptions(ad);
                 if (options != null && !options.isEmpty()) {
@@ -422,7 +422,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
                             new DataColumnConstraint.Enum(constraintName, optionsMap);
                     dc.setConstraint(dcc);
                     geopkg.getExtension(GeoPkgSchemaExtension.class)
-                            .addDataColumn(featureType.getTypeName(), dc);
+                            .addDataColumn(featureType.getTypeName(), dc, cx);
                 }
             }
         }
@@ -453,7 +453,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             String schemaName, String tableName, String columnName, Connection cx)
             throws SQLException {
         try {
-            FeatureEntry fe = geopkg().feature(tableName);
+            FeatureEntry fe = geopkg().feature(tableName, cx);
             return fe != null ? fe.getSrid() : null;
         } catch (IOException e) {
             throw new SQLException(e);
@@ -465,7 +465,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             String schemaName, String tableName, String columnName, Connection cx)
             throws SQLException {
         try {
-            FeatureEntry fe = geopkg().feature(tableName);
+            FeatureEntry fe = geopkg().feature(tableName, cx);
             if (fe != null) {
                 return 2 + (fe.isZ() ? 1 : 0) + (fe.isM() ? 1 : 0);
             } else { // fallback - shouldn't happen
@@ -629,7 +629,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             if (FeatureTypes.getFieldOptions(att) != null) {
                 List<DataColumn> dataColumns =
                         geopkg().getExtension(GeoPkgSchemaExtension.class)
-                                .getDataColumns(tableName);
+                                .getDataColumns(tableName, cx);
                 for (DataColumn dataColumn : dataColumns) {
                     // little hack here, GeoPackage schema extension is being evolved so that
                     // an array of values can be stored as a JSON array, in that case the enum

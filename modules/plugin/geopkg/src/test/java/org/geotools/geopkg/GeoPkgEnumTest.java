@@ -2,6 +2,7 @@ package org.geotools.geopkg;
 
 import static org.junit.Assert.assertThat;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -10,6 +11,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.geotools.data.DataStoreFinder;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
@@ -25,6 +27,7 @@ import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCTestSupport;
 import org.geotools.referencing.CRS;
 import org.hamcrest.Matchers;
+import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
@@ -36,6 +39,7 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 import org.opengis.referencing.FactoryException;
+import org.sqlite.SQLiteConfig;
 
 public class GeoPkgEnumTest extends JDBCTestSupport {
 
@@ -53,6 +57,11 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
     }
 
     private void createEnumFeatureType() throws FactoryException, IOException {
+        SimpleFeatureType featureType = getEnumFeatureType();
+        dataStore.createSchema(featureType);
+    }
+
+    private SimpleFeatureType getEnumFeatureType() throws FactoryException {
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setName(tname("ft2"));
         builder.setNamespaceURI(dataStore.getNamespaceURI());
@@ -61,8 +70,7 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
         builder.add(aname("intProperty"), Integer.class);
         builder.options("one", "two", "three");
         builder.add(aname("enumProperty"), String.class);
-        SimpleFeatureType featureType = builder.buildFeatureType();
-        dataStore.createSchema(featureType);
+        return builder.buildFeatureType();
     }
 
     public void testCreateSchemaWithEnum() throws Exception {
@@ -266,6 +274,13 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
 
         SimpleFeatureStore store = (SimpleFeatureStore) dataStore.getFeatureSource(tname("ft2"));
         SimpleFeatureType schema = dataStore.getSchema(tname("ft2"));
+        ListFeatureCollection features = getEnumeratedFeatureCollection(schema);
+
+        store.addFeatures(features);
+    }
+
+    private ListFeatureCollection getEnumeratedFeatureCollection(SimpleFeatureType schema)
+            throws ParseException {
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(schema);
         SimpleFeature f1 =
                 fb.buildFeature(null, new Object[] {new WKTReader().read("POINT(0 0)"), 1, "one"});
@@ -276,8 +291,7 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
                         null, new Object[] {new WKTReader().read("POINT(0 0)"), 3, "three"});
         SimpleFeature f4 =
                 fb.buildFeature(null, new Object[] {new WKTReader().read("POINT(0 0)"), 4, null});
-
-        store.addFeatures(new ListFeatureCollection(schema, new SimpleFeature[] {f1, f2, f3, f4}));
+        return new ListFeatureCollection(schema, new SimpleFeature[] {f1, f2, f3, f4});
     }
 
     public void testReadEnums() throws Exception {
@@ -358,5 +372,52 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
         assertEquals("one", features.get(1).getAttribute("enumProperty"));
         assertEquals("one", features.get(2).getAttribute("enumProperty"));
         assertEquals("one", features.get(3).getAttribute("enumProperty"));
+    }
+
+    @Test
+    public void testCreateFeatureEntryEnumExclusive() throws Exception {
+        // custom configuration optimizing write performance for a straigth GeoPackage creation,
+        // e.g., the use case of the GeoPackage WPS process in GeoServer
+        SQLiteConfig config = new SQLiteConfig();
+        config.setSharedCache(true);
+        config.setJournalMode(SQLiteConfig.JournalMode.MEMORY);
+        config.setPragma(SQLiteConfig.Pragma.SYNCHRONOUS, "OFF");
+        config.setTransactionMode(SQLiteConfig.TransactionMode.DEFERRED);
+        config.setReadUncommited(true);
+        config.setLockingMode(SQLiteConfig.LockingMode.EXCLUSIVE);
+
+        // create a geopackage that will be accessed in creation mode at top write speed
+        File tempFile = File.createTempFile("geopkg-exclusive", "db", new File("target"));
+        try (GeoPackage geopkg = new GeoPackage(tempFile, config)) {
+            geopkg.init();
+
+            SimpleFeatureType schema = getEnumFeatureType();
+            ListFeatureCollection features = getEnumeratedFeatureCollection(schema);
+
+            FeatureEntry entry = new FeatureEntry();
+            entry.setBounds(features.getBounds());
+            geopkg.add(entry, features);
+            geopkg.createSpatialIndex(entry);
+        }
+
+        // read, check everything is fine
+        Map<String, Object> params = new HashMap<>();
+        params.put("dbtype", "geopkg");
+        params.put("database", tempFile.getAbsolutePath());
+        JDBCDataStore dataStore = (JDBCDataStore) DataStoreFinder.getDataStore(params);
+        try {
+            FilterFactory ff = dataStore.getFilterFactory();
+            SimpleFeatureSource source = dataStore.getFeatureSource(tname("ft2"));
+            Query q = new Query();
+            q.setSortBy(new SortBy[] {ff.sort(aname("enumProperty"), SortOrder.ASCENDING)});
+            List<SimpleFeature> features = DataUtilities.list(source.getFeatures(q));
+            assertEquals(4, features.size());
+            assertEquals(null, features.get(0).getAttribute("enumProperty"));
+            assertEquals("one", features.get(1).getAttribute("enumProperty"));
+            assertEquals("two", features.get(2).getAttribute("enumProperty"));
+            assertEquals("three", features.get(3).getAttribute("enumProperty"));
+        } finally {
+            dataStore.dispose();
+        }
     }
 }

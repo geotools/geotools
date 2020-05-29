@@ -22,8 +22,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -59,6 +58,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureReader;
 import org.geotools.data.simple.SimpleFeatureWriter;
+import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -90,10 +90,12 @@ import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.FilterFactory;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.FactoryException;
+import org.sqlite.SQLiteConfig;
 
 public class GeoPackageTest {
 
     GeoPackage geopkg;
+    private ContentFeatureSource fs;
 
     @BeforeClass
     public static void setUpOnce() {
@@ -244,10 +246,8 @@ public class GeoPackageTest {
         entry.setBounds(new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:2000", true)));
         entry.setSrid(2000);
 
-        geopkg.addGeoPackageContentsEntry(entry);
-
-        Connection cx = geopkg.getDataSource().getConnection();
-        try {
+        try (Connection cx = geopkg.getDataSource().getConnection()) {
+            geopkg.addGeoPackageContentsEntry(entry, cx);
             String sql =
                     String.format(
                             "SELECT srs_name FROM %s WHERE srs_id = ?", GeoPackage.SPATIAL_REF_SYS);
@@ -266,8 +266,6 @@ public class GeoPackageTest {
             }
         } catch (Exception e) {
             fail(e.getMessage());
-        } finally {
-            cx.close();
         }
     }
 
@@ -280,7 +278,9 @@ public class GeoPackageTest {
         entry.setBounds(new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326", true)));
         entry.setSrid(4326);
 
-        geopkg.addGeoPackageContentsEntry(entry);
+        try (Connection cx = geopkg.getDataSource().getConnection()) {
+            geopkg.addGeoPackageContentsEntry(entry, cx);
+        }
         assertTrue(doesEntryExists(GeoPackage.GEOPACKAGE_CONTENTS, entry));
         geopkg.deleteGeoPackageContentsEntry(entry);
         assertFalse(doesEntryExists(GeoPackage.GEOPACKAGE_CONTENTS, entry));
@@ -297,7 +297,9 @@ public class GeoPackageTest {
         entry.setGeometryColumn("geom");
         entry.setGeometryType(Geometries.POINT);
 
-        geopkg.addGeometryColumnsEntry(entry);
+        try (Connection cx = geopkg.getDataSource().getConnection()) {
+            geopkg.addGeometryColumnsEntry(entry, cx);
+        }
         assertTrue(doesEntryExists(GeoPackage.GEOMETRY_COLUMNS, entry));
         geopkg.deleteGeometryColumnsEntry(entry);
         assertFalse(doesEntryExists(GeoPackage.GEOMETRY_COLUMNS, entry));
@@ -325,6 +327,42 @@ public class GeoPackageTest {
 
         re.close();
         ra.close();
+    }
+
+    @Test
+    public void testCreateFeatureEntryExclusive() throws Exception {
+        // custom configuration optimizing write performance for a straigth GeoPackage creation,
+        // e.g., the use case of the GeoPackage WPS process in GeoServer
+        SQLiteConfig config = new SQLiteConfig();
+        config.setJournalMode(SQLiteConfig.JournalMode.MEMORY);
+        config.setPragma(SQLiteConfig.Pragma.SYNCHRONOUS, "OFF");
+        config.setTransactionMode(SQLiteConfig.TransactionMode.DEFERRED);
+        config.setReadUncommited(true);
+        config.setLockingMode(SQLiteConfig.LockingMode.EXCLUSIVE);
+
+        // create a geopackage that will be accessed in creation mode
+        File tempFile = File.createTempFile("geopkg-exclusive", "db", new File("target"));
+        try (GeoPackage geopkg = new GeoPackage(tempFile, config)) {
+            geopkg.init();
+
+            ShapefileDataStore shp = new ShapefileDataStore(setUpShapefile());
+
+            FeatureEntry entry = new FeatureEntry();
+            fs = shp.getFeatureSource();
+            entry.setBounds(fs.getBounds());
+            geopkg.add(entry, shp.getFeatureSource(), null);
+            geopkg.createSpatialIndex(entry);
+
+            // check contents
+            try (SimpleFeatureReader re = Features.simple(shp.getFeatureReader());
+                    SimpleFeatureReader ra = geopkg.reader(entry, null, null)) {
+
+                while (re.hasNext()) {
+                    assertTrue(ra.hasNext());
+                    assertSimilar(re.next(), ra.next());
+                }
+            }
+        }
     }
 
     @Test

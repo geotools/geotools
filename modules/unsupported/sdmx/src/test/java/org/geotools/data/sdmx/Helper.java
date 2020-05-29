@@ -61,7 +61,7 @@ public class Helper {
         params.put(SDMXDataStoreFactory.PROVIDER_PARAM.key, PROVIDER_OLD);
         params.put(SDMXDataStoreFactory.USER_PARAM.key, USER);
         params.put(SDMXDataStoreFactory.PASSWORD_PARAM.key, PASSWORD);
-        return (new SDMXDataStoreFactory()).createDataStore(params);
+        return (SDMXDataStore) (new SDMXDataStoreFactory()).createDataStore(params);
     }
 
     // Create an alternative datastore pointing to the new SDMX ABS endpoint
@@ -72,6 +72,6 @@ public class Helper {
         params.put(SDMXDataStoreFactory.PROVIDER_PARAM.key, PROVIDER_NEW);
         params.put(SDMXDataStoreFactory.USER_PARAM.key, USER);
         params.put(SDMXDataStoreFactory.PASSWORD_PARAM.key, PASSWORD);
-        return (new SDMXDataStoreFactory()).createDataStore(params);
+        return (SDMXDataStore) (new SDMXDataStoreFactory()).createDataStore(params);
     }
 }

@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 import org.geotools.data.Query;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.util.logging.Logging;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -37,8 +38,23 @@ public class SDMXFeatureReaderSystemTest {
     SDMXDimensionFeatureSource dimSource;
     SimpleFeatureType fType;
 
+    // NOTE: There is a persisten XML error, although the XML returned by the request seems OK
+    /*
+        May 29, 2020 9:06:18 AM it.bancaditalia.oss.sdmx.client.RestSdmxClient runQuery
+    INFO: Contacting web service with query: http://stat.data.abs.gov.au/restsdmx/sdmx.ashx/GetDataStructure/ABS_CENSUS2011_B40_SA1_SA/ABS
+    May 29, 2020 9:06:18 AM it.bancaditalia.oss.sdmx.client.RestSdmxClient runQuery
+    SEVERE: Exception caught parsing results from call to provider ABS
+    May 29, 2020 9:06:18 AM org.geotools.data.sdmx.SDMXDataStore lambda$null$0
+    SEVERE: Error getting SDMX DSD
+    it.bancaditalia.oss.sdmx.exceptions.SdmxXmlParsingException: Error detected while parsing SDMX response: ParseError at [row,col]:[29,38]
+    Message: The entity "nbsp" was referenced, but not declared.
+            at it.bancaditalia.oss.sdmx.exceptions.SdmxExceptionFactory.wrap(SdmxExceptionFactory.java:125)
+            at it.bancaditalia.oss.sdmx.client.RestSdmxClient.runQuery(RestSdmxClient.java:411)
+            at it.bancad
+         */
     @Test
-    public void readFeaturesMeasureSDMX20Endpoint() throws Exception {
+    @Ignore
+    public void readFeaturesMeasureSDMX_2_0() throws Exception {
 
         this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore();
         Query query = new Query();
@@ -151,7 +167,7 @@ public class SDMXFeatureReaderSystemTest {
             at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:103)
         */
     @Test
-    public void readFeaturesMeasureSDMX21Endpoint() throws Exception {
+    public void readFeaturesMeasureSDMX_2_1() throws Exception {
 
         this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore2();
         Query query = new Query();

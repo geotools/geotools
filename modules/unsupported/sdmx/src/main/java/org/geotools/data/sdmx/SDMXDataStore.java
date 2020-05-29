@@ -27,10 +27,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 import java.util.logging.Level;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentDataStore;
@@ -65,6 +62,8 @@ public class SDMXDataStore extends ContentDataStore {
     public static String FEATURETYPE_SUFFIX = "SDMX";
     public static String DIMENSIONS_EXPR = "CODE";
     public static String DIMENSIONS_EXPR_ALL = "ALL";
+    public static int NTHREADS = 7;
+    public static int TIMEOUT = 180;
 
     // SDMX error codes
     public static int ERROR_NORESULTS = 100;
@@ -81,6 +80,62 @@ public class SDMXDataStore extends ContentDataStore {
     protected Map<String, Dataflow> dataflows = new HashMap<String, Dataflow>();
     protected Map<String, DataFlowStructure> dataflowStructures =
             new HashMap<String, DataFlowStructure>();
+    private int nthreads = SDMXDataStore.NTHREADS;
+
+    // This is used mainly for unit testing
+    public void setNThreads(int nthreads) {
+        this.nthreads = nthreads;
+    }
+
+    /** Task that requests Data Flow Structures from the SDMX endpoint */
+    private class GetDataFlowStructureTask implements Callable<String> {
+
+        private String dfKey;
+        private Dataflow df;
+        private SDMXDataStore ds;
+
+        public GetDataFlowStructureTask(SDMXDataStore ds, String dfKey, Dataflow df) {
+            this.dfKey = dfKey;
+            this.df = df;
+            this.ds = ds;
+        }
+
+        public String call() {
+            DataFlowStructure dfs = null;
+            try {
+                dfs =
+                        SDMXClientFactory.createClient(this.ds.provider)
+                                .getDataFlowStructure(df.getDsdIdentifier(), true);
+            } catch (SdmxException e) {
+                LOGGER.log(Level.SEVERE, "SDMX Error during retrieval of dataflow structuree", e);
+            }
+            synchronized (this.ds.dataflowStructures) {
+                this.ds.dataflowStructures.put(dfKey, dfs);
+            }
+
+            String ftypeName = SDMXDataStore.composeDataflowTypeName(dfKey);
+            Name name = new NameImpl(ds.namespace.toExternalForm(), ftypeName);
+            ContentEntry entry = new ContentEntry(this.ds, name);
+            synchronized (this.ds.entries) {
+                this.ds.entries.put(name, entry);
+            }
+
+            // Adds the dimension typename
+            String dimName = SDMXDataStore.composeDimensionTypeName(dfKey);
+            LOGGER.log(
+                    Level.INFO,
+                    String.format("Added SDMX feature types: %s, %s", ftypeName, dimName));
+
+            ContentEntry dimEntry =
+                    new ContentEntry(this.ds, new NameImpl(ds.namespace.toExternalForm(), dimName));
+            synchronized (this.ds.entries) {
+                this.ds.entries.put(
+                        new NameImpl(this.ds.namespace.toExternalForm(), dimName), dimEntry);
+            }
+
+            return this.dfKey;
+        }
+    }
 
     public SDMXDataStore(String namespaceIn, String provider, String user, String password)
             throws MalformedURLException, SdmxException {
@@ -187,15 +242,14 @@ public class SDMXDataStore extends ContentDataStore {
     }
 
     /**
-     * Add the DataflowStructure od df Dataflow with the name key
+     * Add to the dataFlowStructures map the DataflowStructure of Dataflow df using the key dfKey
      *
-     * @param dfKey
-     * @param df
+     * @param dfKey Dataflow key to use in the map
+     * @param df Dataflow
      * @return
      * @throws SdmxException
      */
     private String setDataFlowStructure(String dfKey, Dataflow df) throws SdmxException {
-        LOGGER.log(Level.INFO, "*** Started setDataFlowStructure ", dfKey);
 
         DataFlowStructure dfs =
                 SDMXClientFactory.createClient(this.provider)
@@ -241,38 +295,21 @@ public class SDMXDataStore extends ContentDataStore {
             return new ArrayList<Name>();
         }
 
-        this.dataflowStructures.clear();
-        ExecutorService executorService = Executors.newFixedThreadPool(10);
-        List<Future<String>> futures = new ArrayList<Future<String>>();
-
+        List<GetDataFlowStructureTask> tasks = new ArrayList<GetDataFlowStructureTask>();
         dataflows.forEach(
                 (s, d) -> {
-                    DataFlowStructure dfs = new DataFlowStructure();
-                    futures.add(
-                            ((Future<String>)
-                                    executorService.submit(
-                                            () -> {
-                                                try {
-                                                    this.setDataFlowStructure(s, d);
-                                                } catch (SdmxException e) {
-                                                    LOGGER.log(
-                                                            Level.SEVERE,
-                                                            "Error getting SDMX DSD",
-                                                            e);
-                                                }
-                                            })));
+                    tasks.add(new GetDataFlowStructureTask(this, s, d));
                 });
 
-        futures.forEach(
-                fut -> {
-                    try {
-                        fut.get();
-                    } catch (InterruptedException | ExecutionException e) {
-                        LOGGER.log(Level.SEVERE, "Error getting SDMX DSD", e);
-                    }
-                });
+        this.dataflowStructures.clear();
+        ExecutorService executorService = Executors.newFixedThreadPool(this.nthreads);
+        try {
+            executorService.invokeAll(tasks, SDMXDataStore.TIMEOUT, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            LOGGER.log(Level.SEVERE, "Timeout error getting SDMX DSD", e);
+        }
+        executorService.shutdownNow();
 
-        executorService.shutdown();
         return new ArrayList<Name>(this.entries.keySet());
     }
 

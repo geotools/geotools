@@ -138,20 +138,24 @@ public class GeoPkgExtension {
     public boolean isRegistered() throws IOException {
         try {
             try (Connection cx = geoPackage.connPool.getConnection()) {
-                String sql =
-                        format(
-                                "SELECT * " + " FROM %s" + " WHERE extension_name = ? LIMIT 1",
-                                GeoPackage.EXTENSIONS);
-
-                try (PreparedStatement ps = cx.prepareStatement(sql)) {
-                    ps.setString(1, name);
-                    try (ResultSet rs = ps.executeQuery()) {
-                        return rs.next();
-                    }
-                }
+                return isRegistered(cx);
             }
         } catch (SQLException e) {
             throw new IOException(e);
+        }
+    }
+
+    boolean isRegistered(Connection cx) throws SQLException {
+        String sql =
+                format(
+                        "SELECT * " + " FROM %s" + " WHERE extension_name = ? LIMIT 1",
+                        GeoPackage.EXTENSIONS);
+
+        try (PreparedStatement ps = cx.prepareStatement(sql)) {
+            ps.setString(1, name);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
         }
     }
 

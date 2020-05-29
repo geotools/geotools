@@ -79,6 +79,7 @@ import org.opengis.filter.identity.Identifier;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.sqlite.Function;
+import org.sqlite.SQLiteConfig;
 
 /**
  * Provides access to a GeoPackage database.
@@ -207,6 +208,15 @@ public class GeoPackage implements Closeable {
     GeoPackage(JDBCDataStore dataStore) {
         this.dataStore = dataStore;
         this.connPool = dataStore.getDataSource();
+    }
+
+    public GeoPackage(File file, SQLiteConfig config) throws IOException {
+        this(file);
+
+        for (Map.Entry e : config.toProperties().entrySet()) {
+            ((BasicDataSource) connPool)
+                    .addConnectionProperty((String) e.getKey(), (String) e.getValue());
+        }
     }
 
     /**
@@ -463,20 +473,20 @@ public class GeoPackage implements Closeable {
      * @param srid The spatial reference system id.
      */
     public void addCRS(CoordinateReferenceSystem crs, String auth, int srid) throws IOException {
-
-        Connection cx;
-        try {
-            cx = connPool.getConnection();
-
-            try {
-                GeoPackage.addCRS(
-                        cx, srid, auth + ":" + srid, auth, srid, crs.toWKT(), auth + ":" + srid);
-            } finally {
-                cx.close();
-            }
+        try (Connection cx = connPool.getConnection()) {
+            addCRS(crs, auth, srid, cx);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Same as {@link #addCRS(CoordinateReferenceSystem, String, int)}, but for internal usage, when
+     * a connection is already available
+     */
+    void addCRS(CoordinateReferenceSystem crs, String auth, int srid, Connection cx)
+            throws IOException {
+        GeoPackage.addCRS(cx, srid, auth + ":" + srid, auth, srid, crs.toWKT(), auth + ":" + srid);
     }
 
     private CoordinateReferenceSystem getCRS(int srid) {
@@ -593,30 +603,35 @@ public class GeoPackage implements Closeable {
         try {
 
             try (Connection cx = connPool.getConnection()) {
-                String sql =
-                        format(
-                                "SELECT a.*, b.column_name, b.geometry_type_name, b.m, b.z, c.organization_coordsys_id, c.definition"
-                                        + " FROM %s a, %s b, %s c"
-                                        + " WHERE a.table_name = b.table_name "
-                                        + " AND a.srs_id = c.srs_id "
-                                        + " AND a.table_name = ?"
-                                        + " AND a.data_type = ?",
-                                GEOPACKAGE_CONTENTS, GEOMETRY_COLUMNS, SPATIAL_REF_SYS);
-
-                try (PreparedStatement ps = cx.prepareStatement(sql)) {
-                    ps.setString(1, name);
-                    ps.setString(2, DataType.Feature.value());
-
-                    try (ResultSet rs = ps.executeQuery()) {
-                        if (rs.next()) {
-                            return createFeatureEntry(rs);
-                        }
-                    }
-                }
+                return feature(name, cx);
             }
         } catch (SQLException e) {
             throw new IOException(e);
         }
+    }
+
+    protected FeatureEntry feature(String name, Connection cx) throws SQLException, IOException {
+        String sql =
+                format(
+                        "SELECT a.*, b.column_name, b.geometry_type_name, b.m, b.z, c.organization_coordsys_id, c.definition"
+                                + " FROM %s a, %s b, %s c"
+                                + " WHERE a.table_name = b.table_name "
+                                + " AND a.srs_id = c.srs_id "
+                                + " AND a.table_name = ?"
+                                + " AND a.data_type = ?",
+                        GEOPACKAGE_CONTENTS, GEOMETRY_COLUMNS, SPATIAL_REF_SYS);
+
+        try (PreparedStatement ps = cx.prepareStatement(sql)) {
+            ps.setString(1, name);
+            ps.setString(2, DataType.Feature.value());
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return createFeatureEntry(rs);
+                }
+            }
+        }
+
         return null;
     }
 
@@ -738,6 +753,7 @@ public class GeoPackage implements Closeable {
                 while (it.hasNext()) {
                     SimpleFeature f = it.next();
                     SimpleFeature g = w.next();
+                    g.setAttributes(f.getAttributes());
                     for (PropertyDescriptor pd : collection.getSchema().getDescriptors()) {
                         /* geopkg spec requires booleans to be stored as SQLite integers this fixes
                          * bug reported by GEOT-5904 */
@@ -748,8 +764,6 @@ public class GeoPackage implements Closeable {
                                 bool = (Boolean) (f.getAttribute(name)) ? 1 : 0;
                             }
                             g.setAttribute(name, bool);
-                        } else {
-                            g.setAttribute(name, f.getAttribute(name));
                         }
                     }
 
@@ -766,8 +780,6 @@ public class GeoPackage implements Closeable {
         } finally {
             tx.close();
         }
-        /*addGeoPackageContentsEntry(e);
-        addGeometryColumnsEntry(e);*/
         entry.init(e);
     }
 
@@ -877,96 +889,95 @@ public class GeoPackage implements Closeable {
         return e;
     }
 
-    void addGeoPackageContentsEntry(Entry e) throws IOException {
-        final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_STRING);
-        DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
-        if (!initialised) {
-            init();
-        }
-        Integer srid = e.getSrid();
-        if (srid != null && srid != GENERIC_PROJECTED_SRID && srid != GENERIC_GEOGRAPHIC_SRID) {
-            addCRS(srid);
-        }
-
-        StringBuilder sb = new StringBuilder();
-        StringBuilder vals = new StringBuilder();
-
-        sb.append(format("INSERT INTO %s (table_name, data_type, identifier", GEOPACKAGE_CONTENTS));
-        vals.append("VALUES (?,?,?");
-
-        if (e.getDescription() != null) {
-            sb.append(", description");
-            vals.append(",?");
-        }
-
-        if (e.getLastChange() != null) {
-            sb.append(", last_change");
-            vals.append(",?");
-        }
-
-        sb.append(", min_x, min_y, max_x, max_y");
-        vals.append(",?,?,?,?");
-
-        if (srid != null) {
-            sb.append(", srs_id");
-            vals.append(",?");
-        }
-        sb.append(") ").append(vals.append(")").toString());
-
+    void addGeoPackageContentsEntry(Entry e, Connection cx) throws IOException {
         try {
-            Connection cx = connPool.getConnection();
-            try {
-                SqlUtil.PreparedStatementBuilder psb =
-                        prepare(cx, sb.toString())
-                                .set(e.getTableName())
-                                .set(e.getDataType().value())
-                                .set(e.getIdentifier());
+            final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_STRING);
+            DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
+            if (!initialised) {
+                init(cx);
+            }
+            Integer srid = e.getSrid();
+            if (srid != null && srid != GENERIC_PROJECTED_SRID && srid != GENERIC_GEOGRAPHIC_SRID) {
+                addCRS(CRS.decode("EPSG:" + srid, true), "epsg", srid, cx);
+            }
 
-                if (e.getDescription() != null) {
-                    psb.set(e.getDescription());
-                }
+            StringBuilder sb = new StringBuilder();
+            StringBuilder vals = new StringBuilder();
 
-                if (e.getLastChange() != null) {
-                    psb.set(DATE_FORMAT.format(e.getLastChange()));
-                }
-                if (e.getBounds() != null) {
-                    psb.set(e.getBounds().getMinX())
-                            .set(e.getBounds().getMinY())
-                            .set(e.getBounds().getMaxX())
-                            .set(e.getBounds().getMaxY());
-                } else {
-                    double minx = 0;
-                    double miny = 0;
-                    double maxx = 0;
-                    double maxy = 0;
-                    if (srid != null) {
-                        CoordinateReferenceSystem crs = getCRS(srid);
-                        if (crs != null) {
-                            org.opengis.geometry.Envelope env = CRS.getEnvelope(crs);
-                            if (env != null) {
-                                minx = env.getMinimum(0);
-                                miny = env.getMinimum(1);
-                                maxx = env.getMaximum(0);
-                                maxy = env.getMaximum(1);
-                            }
+            sb.append(
+                    format(
+                            "INSERT INTO %s (table_name, data_type, identifier",
+                            GEOPACKAGE_CONTENTS));
+            vals.append("VALUES (?,?,?");
+
+            if (e.getDescription() != null) {
+                sb.append(", description");
+                vals.append(",?");
+            }
+
+            if (e.getLastChange() != null) {
+                sb.append(", last_change");
+                vals.append(",?");
+            }
+
+            sb.append(", min_x, min_y, max_x, max_y");
+            vals.append(",?,?,?,?");
+
+            if (srid != null) {
+                sb.append(", srs_id");
+                vals.append(",?");
+            }
+            sb.append(") ").append(vals.append(")").toString());
+
+            SqlUtil.PreparedStatementBuilder psb =
+                    prepare(cx, sb.toString())
+                            .set(e.getTableName())
+                            .set(e.getDataType().value())
+                            .set(e.getIdentifier());
+
+            if (e.getDescription() != null) {
+                psb.set(e.getDescription());
+            }
+
+            if (e.getLastChange() != null) {
+                psb.set(DATE_FORMAT.format(e.getLastChange()));
+            }
+            if (e.getBounds() != null) {
+                psb.set(e.getBounds().getMinX())
+                        .set(e.getBounds().getMinY())
+                        .set(e.getBounds().getMaxX())
+                        .set(e.getBounds().getMaxY());
+            } else {
+                double minx = 0;
+                double miny = 0;
+                double maxx = 0;
+                double maxy = 0;
+                if (srid != null) {
+                    CoordinateReferenceSystem crs = getCRS(srid);
+                    if (crs != null) {
+                        org.opengis.geometry.Envelope env = CRS.getEnvelope(crs);
+                        if (env != null) {
+                            minx = env.getMinimum(0);
+                            miny = env.getMinimum(1);
+                            maxx = env.getMaximum(0);
+                            maxy = env.getMaximum(1);
                         }
                     }
-                    psb.set(minx).set(miny).set(maxx).set(maxy);
                 }
-                if (srid != null) {
-                    psb.set(srid);
-                }
-
-                PreparedStatement ps = psb.log(Level.FINE).statement();
-                try {
-                    ps.execute();
-                } finally {
-                    close(ps);
-                }
-            } finally {
-                close(cx);
+                psb.set(minx).set(miny).set(maxx).set(maxy);
             }
-        } catch (SQLException ex) {
+            if (srid != null) {
+                psb.set(srid);
+            }
+
+            PreparedStatement ps = psb.log(Level.FINE).statement();
+            try {
+                ps.execute();
+            } finally {
+                close(ps);
+            }
+
+        } catch (Exception ex) {
             throw new IOException(ex);
         }
     }
@@ -991,7 +1002,7 @@ public class GeoPackage implements Closeable {
         }
     }
 
-    void addGeometryColumnsEntry(FeatureEntry e) throws IOException {
+    void addGeometryColumnsEntry(FeatureEntry e, Connection cx) throws IOException {
         // geometryless tables should not be inserted into this table.
         if (e.getGeometryColumn() == null || e.getGeometryColumn().isEmpty()) {
             return;
@@ -999,28 +1010,20 @@ public class GeoPackage implements Closeable {
         String sql = format("INSERT INTO %s VALUES (?, ?, ?, ?, ?, ?);", GEOMETRY_COLUMNS);
 
         try {
-            Connection cx = connPool.getConnection();
+            PreparedStatement ps =
+                    prepare(cx, sql)
+                            .set(e.getTableName())
+                            .set(e.getGeometryColumn())
+                            .set(e.getGeometryType() != null ? e.getGeometryType().getName() : null)
+                            .set(e.getSrid())
+                            .set(e.isZ())
+                            .set(e.isM())
+                            .log(Level.FINE)
+                            .statement();
             try {
-                PreparedStatement ps =
-                        prepare(cx, sql)
-                                .set(e.getTableName())
-                                .set(e.getGeometryColumn())
-                                .set(
-                                        e.getGeometryType() != null
-                                                ? e.getGeometryType().getName()
-                                                : null)
-                                .set(e.getSrid())
-                                .set(e.isZ())
-                                .set(e.isM())
-                                .log(Level.FINE)
-                                .statement();
-                try {
-                    ps.execute();
-                } finally {
-                    close(ps);
-                }
+                ps.execute();
             } finally {
-                close(cx);
+                close(ps);
             }
         } catch (SQLException ex) {
             throw new IOException(ex);
@@ -1065,9 +1068,7 @@ public class GeoPackage implements Closeable {
         properties.put("c", e.getGeometryColumn());
         properties.put("i", pk.getColumns().get(0).getName());
 
-        Connection cx;
-        try {
-            cx = connPool.getConnection();
+        try (Connection cx = connPool.getConnection()) {
             try {
                 runScript(SPATIAL_INDEX + ".sql", cx, properties);
             } finally {
@@ -1302,15 +1303,15 @@ public class GeoPackage implements Closeable {
                 } finally {
                     close(st);
                 }
+
+                // update the metadata tables
+                addGeoPackageContentsEntry(e, cx);
             } finally {
                 close(cx);
             }
         } catch (SQLException ex) {
             throw new IOException(ex);
         }
-
-        // update the metadata tables
-        addGeoPackageContentsEntry(e);
 
         entry.init(e);
     }

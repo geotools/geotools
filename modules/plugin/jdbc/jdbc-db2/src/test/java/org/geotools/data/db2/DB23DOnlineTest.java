@@ -25,16 +25,10 @@ import org.opengis.filter.spatial.BBOX3D;
 
 public class DB23DOnlineTest extends JDBC3DOnlineTest {
 
-    @Before
-    public void setup() {
+    @Override
+    protected void connect() throws Exception {
         Hints.putSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
-        CRS.reset("all");
-    }
-
-    @AfterClass
-    public static void teardown() {
-        Hints.removeSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
-        CRS.reset("all");
+        super.connect();
     }
 
     @Override

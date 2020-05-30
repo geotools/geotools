@@ -37,11 +37,11 @@ import org.opengis.style.SemanticType;
  * <p>This wrapper class is used by {@link MBObjectParser} to generate rule filters when
  * transforming MBStyle.
  *
- * <p>This wrapper and {@link MBFunction} are a matched set handling dynamic data.
+ * <p>This wrapper and {@link MBFunction} are a matched set handling data expression.
  *
- * <h2>Expression: Decision</h2>
+ * <h2>Data expression: Decision</h2>
  *
- * <p>Implementation Note:The value for any filter may be specified as an expression. The result type of an expression in
+ * <p>Implementation Note: The value for any filter may be specified as an data expression. The result type of an data expression in
  * the filter property must be boolean. See {@link org.geotools.mbstyle.expression.MBExpression} for details.
  *
  * <p>The expressions in this section can be used to add conditional logic to your styles. For example, the 'case' expression
@@ -65,8 +65,8 @@ import org.opengis.style.SemanticType;
  *
  * <h2>Filter Other</h2>
  *
- * <p>Implementation Note: In previous versions of the style specification, filters were defined using the deprecated
- * syntax documented here.
+ * <p>Implementation Note: GeoTools also supports the depreciated syntax documented here (provided
+ * by a previous versions of the Mapbox style specification).
  *
  * <p>A filter selects specific features from a layer. A filter is an array of one of the following
  * forms:
@@ -89,7 +89,7 @@ import org.opengis.style.SemanticType;
  *   <li>["&lt;=", key, value] less than or equal: feature[key] ≤ value
  * </ul>
  *
- * <p>Set Memmbership Filters:
+ * <p>Set Membership Filters:
  *
  * <ul>
  *   <li>["in", key, v0, ..., vn] set inclusion: feature[key] ∈ {v0, ..., vn}
@@ -183,7 +183,8 @@ public class MBFilter {
     /**
      * Utility method to convert json to set of {@link SemanticType}.
      *
-     * <p>This method is recursively calls itself to handle all and any operators.
+     * <p>This method is called recursively to handle <code>all</code> and <code>any</code> filter
+     * operators.
      *
      * @param array JSON array defining filter
      * @return SemanticTypes from provided json, may be nested
@@ -420,7 +421,11 @@ public class MBFilter {
             Expression within = MBExpression.transformExpression(json);
             return ff.equals(within, ff.literal(true));
         } else {
-            throw new MBFormatException("Unsupported filter " + json);
+            throw new MBFormatException(
+                    "Data expression or filter \""
+                            + operator
+                            + "\" invalid. It may be misspelled or not supported by this implementation:"
+                            + json);
         }
     }
 
@@ -615,7 +620,7 @@ public class MBFilter {
     }
 
     /**
-     * Comparison value1 defined as an expression (or legacy key reference).
+     * Comparison value1 defined as an data expression (or legacy key reference).
      *
      * @param array JSON filter definition
      * @return Expression for comparison
@@ -629,7 +634,7 @@ public class MBFilter {
         }
     }
     /**
-     * Comparison value1 defined as an expression (or legacy literal reference).
+     * Comparison value2 defined as an data expression (or legacy literal reference).
      *
      * @param array JSON filter definition
      * @return Expression for comparison

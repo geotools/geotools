@@ -37,8 +37,8 @@ import org.opengis.filter.expression.Function;
 /**
  * MBFunction json wrapper, allowing conversion of function to a GeoTools Expression.
  *
- * <p>As of MapBox Style Specification v0.41.0, property expressions are the preferred approach for
- * dynamically styling features.
+ * <p>As of v0.41.0, data expressions is the preferred method for styling features based on zoom
+ * level or the feature's properties.
  *
  * <p>Each function is evaluated according type: {@link FunctionType#IDENTITY}, {@link
  * FunctionType#INTERVAL}, {@link FunctionType#CATEGORICAL}, {@link FunctionType#EXPONENTIAL}.

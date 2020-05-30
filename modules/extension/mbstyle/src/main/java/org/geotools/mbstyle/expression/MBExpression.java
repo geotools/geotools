@@ -162,10 +162,14 @@ public abstract class MBExpression extends FunctionImpl {
             } else if (zoom.contains(name)) {
                 return new MBZoom(json);
             } else {
-                throw new MBFormatException("Expression \"" + name + "\" not supported.");
+                throw new MBFormatException(
+                        "Data expression \""
+                                + name
+                                + "\" invalid. It may be misspelled or not supported by this implementation:"
+                                + json);
             }
         }
-        throw new MBFormatException("Requires a string name of the expression at position 0");
+        throw new MBFormatException("Requires a string name of the data expression at position 0");
     }
 
     public static boolean canCreate(final String name) {

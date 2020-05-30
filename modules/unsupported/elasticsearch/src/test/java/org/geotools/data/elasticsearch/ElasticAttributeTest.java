@@ -46,6 +46,8 @@ public class ElasticAttributeTest {
 
     private int order;
 
+    private String dateFormat;
+
     private List<String> validDateFormats;
 
     private boolean analyzed;
@@ -66,8 +68,9 @@ public class ElasticAttributeTest {
         defaultGeometry = true;
         srid = 10;
         order = 1;
+        dateFormat = "yyyy-mm-dd";
         validDateFormats = new ArrayList<String>();
-        validDateFormats.add("yyyy-mm-dd");
+        validDateFormats.add(dateFormat);
         analyzed = true;
         stored = true;
         nested = true;
@@ -82,6 +85,7 @@ public class ElasticAttributeTest {
         attr.setDefaultGeometry(defaultGeometry);
         attr.setSrid(srid);
         attr.setOrder(order);
+        attr.setDateFormat(dateFormat);
         attr.setValidDateFormats(validDateFormats);
         attr.setAnalyzed(analyzed);
         attr.setStored(stored);
@@ -94,6 +98,7 @@ public class ElasticAttributeTest {
         assertEquals(attr.isDefaultGeometry(), defaultGeometry);
         assertEquals(attr.getSrid(), srid, 1e-10);
         assertEquals(attr.getOrder(), Integer.valueOf(order));
+        assertEquals(attr.getDateFormat(), dateFormat);
         assertEquals(attr.getValidDateFormats(), validDateFormats);
         assertEquals(attr.getAnalyzed(), analyzed);
         assertEquals(attr.isStored(), stored);

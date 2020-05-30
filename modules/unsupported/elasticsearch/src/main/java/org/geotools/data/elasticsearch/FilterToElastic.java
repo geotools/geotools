@@ -1208,9 +1208,9 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
                     }
                 }
             }
-            if (dateFormatter == null) {
-                dateFormatter = DEFAULT_DATE_FORMATTER;
-            }
+        }
+        if (dateFormatter == null) {
+            dateFormatter = DEFAULT_DATE_FORMATTER;
         }
     }
 

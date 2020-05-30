@@ -48,6 +48,8 @@ public class ElasticAttribute implements Serializable, Comparable<ElasticAttribu
 
     private Integer srid;
 
+    private String dateFormat;
+
     private List<String> validDateFormats;
 
     private Boolean analyzed;
@@ -75,6 +77,7 @@ public class ElasticAttribute implements Serializable, Comparable<ElasticAttribu
         this.use = other.use;
         this.defaultGeometry = other.defaultGeometry;
         this.srid = other.srid;
+        this.dateFormat = other.dateFormat;
         this.validDateFormats = other.validDateFormats;
         this.geometryType = other.geometryType;
         this.analyzed = other.analyzed;
@@ -126,6 +129,14 @@ public class ElasticAttribute implements Serializable, Comparable<ElasticAttribu
 
     public void setSrid(Integer srid) {
         this.srid = srid;
+    }
+
+    public String getDateFormat() {
+        return dateFormat;
+    }
+
+    public void setDateFormat(String dateFormat) {
+        this.dateFormat = dateFormat;
     }
 
     public List<String> getValidDateFormats() {
@@ -188,6 +199,7 @@ public class ElasticAttribute implements Serializable, Comparable<ElasticAttribu
                 use,
                 defaultGeometry,
                 srid,
+                dateFormat,
                 validDateFormats,
                 geometryType,
                 analyzed,
@@ -209,6 +221,7 @@ public class ElasticAttribute implements Serializable, Comparable<ElasticAttribu
             equal &= Objects.equals(use, other.use);
             equal &= Objects.equals(defaultGeometry, other.defaultGeometry);
             equal &= Objects.equals(srid, other.srid);
+            equal &= Objects.equals(dateFormat, other.dateFormat);
             equal &= Objects.equals(validDateFormats, other.validDateFormats);
             equal &= Objects.equals(geometryType, other.geometryType);
             equal &= Objects.equals(analyzed, other.analyzed);

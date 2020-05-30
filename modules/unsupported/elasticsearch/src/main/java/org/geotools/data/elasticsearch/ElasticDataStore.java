@@ -397,7 +397,7 @@ public class ElasticDataStore extends ContentDataStore {
                             }
                         }
                     }
-                    if (validFormats.isEmpty() || validFormats == null) {
+                    if (validFormats.isEmpty()) {
                         validFormats.add("date_optional_time");
                     }
                     elasticAttribute.setValidDateFormats(validFormats);

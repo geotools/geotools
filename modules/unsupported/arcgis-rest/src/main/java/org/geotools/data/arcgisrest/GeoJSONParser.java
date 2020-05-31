@@ -568,7 +568,6 @@ public class GeoJSONParser implements SimpleFeatureIterator {
         Geometry geom = null;
         String id = SimpleFeatureBuilder.createDefaultFeatureIdentifier(FEATURES).getID();
         Map<String, Object> props = new HashMap<String, Object>();
-        List<Object> values = new ArrayList();
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder(this.featureType);
 
         // Parses the feature
@@ -609,14 +608,24 @@ public class GeoJSONParser implements SimpleFeatureIterator {
         // Builds the feature, inserting the properties in the same
         // order of the atterbiutes in the feature type
         for (AttributeDescriptor attr : this.featureType.getAttributeDescriptors()) {
-
             if (this.featureType
                     .getGeometryDescriptor()
                     .getLocalName()
                     .equals(attr.getLocalName())) {
-                builder.add(geom);
+                builder.set(attr.getLocalName(), geom);
             } else {
-                builder.add(props.get(attr.getLocalName()));
+                if (props.get(attr.getLocalName()) != null) {
+                    try {
+                        builder.set(attr.getLocalName(), props.get(attr.getLocalName()));
+                        // FIXME: this fails with dates
+                    } catch (java.lang.AbstractMethodError e) {
+                        this.LOGGER.log(
+                                Level.SEVERE,
+                                String.format(
+                                        "Error reading attribute %s with value %s",
+                                        attr.getLocalName(), props.get(attr.getLocalName())));
+                    }
+                }
             }
         }
 

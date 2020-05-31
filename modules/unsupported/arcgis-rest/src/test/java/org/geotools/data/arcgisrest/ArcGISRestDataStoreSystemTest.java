@@ -25,11 +25,14 @@ import java.util.List;
 import java.util.Map;
 import org.geotools.data.DataStore;
 import org.geotools.data.FeatureSource;
+import org.geotools.data.Query;
 import org.geotools.feature.NameImpl;
+import org.geotools.filter.text.cql2.CQL;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
+import org.opengis.filter.Filter;
 
 public class ArcGISRestDataStoreSystemTest {
 
@@ -83,7 +86,7 @@ public class ArcGISRestDataStoreSystemTest {
     }
 
     @Test
-    public void testVPA() throws Exception {
+    public void testBBOXQueryWithGeoCRS() throws Exception {
 
         ArcGISRestDataStore dataStore =
                 (ArcGISRestDataStore)
@@ -98,24 +101,20 @@ public class ArcGISRestDataStoreSystemTest {
                 });
 
         String[] namesArray = ((DataStore) dataStore).getTypeNames();
-        for (int i = 0; i < namesArray.length; i++) {
-            System.out.println(String.format("%d of %d %s", i, namesArray.length, namesArray[i]));
-            FeatureSource<SimpleFeatureType, SimpleFeature> src =
-                    dataStore.createFeatureSource(
-                            dataStore.getEntry(
-                                    new NameImpl(
-                                            ArcGISRestDataStoreFactoryTest.NAMESPACE,
-                                            namesArray[i])));
-            assertNotNull(src.getSchema());
-            assertNotNull(src.getSchema().getTypeName());
-            assertNotNull(src.getBounds());
-            assertNotNull(src.getFeatures());
-            System.out.println(
-                    String.format(
-                            "      %d %s %s",
-                            src.getFeatures().size(),
-                            src.getSchema().getTypeName(),
-                            src.getBounds()));
-        }
+        FeatureSource<SimpleFeatureType, SimpleFeature> src =
+                dataStore.createFeatureSource(
+                        dataStore.getEntry(
+                                new NameImpl(
+                                        ArcGISRestDataStoreFactoryTest.NAMESPACE, namesArray[0])));
+        assertNotNull(src.getSchema());
+        assertNotNull(src.getSchema().getTypeName());
+        assertNotNull(src.getBounds());
+        Filter filter = CQL.toFilter("BBOX(the_geom, 144, -38, 145, -37, 'EPSG:4283')");
+        src.getFeatures(new Query(src.getName().getLocalPart(), filter));
+        assertNotNull(src.getFeatures());
+        System.out.println(
+                String.format(
+                        "      %d %s %s",
+                        src.getFeatures().size(), src.getSchema().getTypeName(), src.getBounds()));
     }
 }

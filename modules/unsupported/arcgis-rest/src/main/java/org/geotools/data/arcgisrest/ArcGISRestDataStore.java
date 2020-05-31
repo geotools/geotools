@@ -71,6 +71,7 @@ public class ArcGISRestDataStore extends ContentDataStore {
     public static final String GEOMETRY_PARAM = "geometry";
     public static final String COUNT_PARAM = "returnCountOnly";
     public static final String FORMAT_PARAM = "f";
+    public static final String GEOMETRYSRS_PARAM = "inSR";
     public static final String ATTRIBUTES_PARAM = "outFields";
     public static final String WITHGEOMETRY_PARAM = "returnGeometry";
     public static final String DATASETTYPE_FEATURELAYER = "Feature Layer";
@@ -92,6 +93,7 @@ public class ArcGISRestDataStore extends ContentDataStore {
         DEFAULT_PARAMS.put(FORMAT_PARAM, FORMAT_JSON);
         DEFAULT_PARAMS.put(WITHGEOMETRY_PARAM, "true");
         DEFAULT_PARAMS.put(GEOMETRYTYPE_PARAM, "esriGeometryEnvelope");
+        DEFAULT_PARAMS.put(GEOMETRYSRS_PARAM, "inSR");
     }
 
     // ArcGIS Server parameters

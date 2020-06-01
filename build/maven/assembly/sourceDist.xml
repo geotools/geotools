@@ -30,6 +30,7 @@
       <outputDirectory></outputDirectory>
       <useDefaultExcludes>true</useDefaultExcludes>
       <excludes>
+        <exclude>build/release/distribution/**</exclude>
         <exclude>**/target/**</exclude>
         <exclude>.git</exclude>
       </excludes>

@@ -21,10 +21,7 @@ package org.geotools.data.sdmx;
 import it.bancaditalia.oss.sdmx.api.Dataflow;
 import it.bancaditalia.oss.sdmx.exceptions.SdmxException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
@@ -33,8 +30,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.visitor.DefaultFilterVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.Or;
-import org.opengis.filter.PropertyIsEqualTo;
+import org.opengis.filter.*;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -112,6 +108,10 @@ public class SDMXDataflowFeatureSource extends SDMXFeatureSource {
                             }
                         });
 
+        if (builder.get(SDMXDataStore.MEASURE_KEY) == null) {
+            builder.add(SDMXDataStore.MEASURE_KEY, Double.class);
+        }
+
         this.schema = builder.buildFeatureType();
         return this.schema;
     }
@@ -131,6 +131,7 @@ public class SDMXDataflowFeatureSource extends SDMXFeatureSource {
                     this.dataflow,
                     this.dataflowStructure,
                     this.buildConstraints(query),
+                    this.getTimeInterval(query),
                     this.dataStore.getLogger());
         } catch (SdmxException e) {
             // FIXME: re-hash the exception into an IOEXception
@@ -147,7 +148,7 @@ public class SDMXDataflowFeatureSource extends SDMXFeatureSource {
      */
     public String buildConstraints(Query query) throws SdmxException {
 
-        // Check tha tMEASUREs are not in there, Add "All" for the MEASURE dimension
+        // Check tha MEASUREs are not in there, Add "All" for the MEASURE dimension
         Map<String, String> expressions;
         ArrayList<String> constraints =
                 new ArrayList<String>(this.dataflowStructure.getDimensions().size());
@@ -180,5 +181,39 @@ public class SDMXDataflowFeatureSource extends SDMXFeatureSource {
         }
 
         return String.join(SDMXDataStore.SEPARATOR_EXP, constraints);
+    }
+
+    /**
+     * Returns the the time portion of the GeoTools query.
+     *
+     * @param query GeoTools query to transform into SDMX constraints
+     * @return The start and end periods of the time interval
+     */
+    public ArrayList<String> getTimeInterval(Query query) throws SdmxException {
+
+        Map<String, String> expressions;
+        ArrayList<String> constraints = new ArrayList<String>();
+
+        expressions =
+                (Map<String, String>)
+                        query.getFilter()
+                                .accept(
+                                        new SDMXDataflowFeatureSource.VisitFilter(),
+                                        new HashMap<String, String>());
+        expressions.forEach(
+                (k, v) -> {
+                    if (k.equals(SDMXDataStore.TIME_KEY)) {
+                        constraints.addAll(Arrays.asList(v.split("\\" + SDMXDataStore.OR_EXP)));
+                    }
+                });
+
+        Collections.sort(constraints);
+
+        if (constraints.size() > 0) {
+            return new ArrayList<String>(
+                    Arrays.asList(constraints.get(0), constraints.get(constraints.size() - 1)));
+        } else {
+            return constraints;
+        }
     }
 }

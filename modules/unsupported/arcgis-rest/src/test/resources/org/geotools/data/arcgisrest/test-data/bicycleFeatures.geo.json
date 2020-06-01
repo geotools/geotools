@@ -59,7 +59,7 @@
         "SURFACE_R": "S",
         "WIDTH_RIGH": 0,
         "LIGHTING": "",
-        "VERI_DATE": "2011-08-02T00:00:00.000Z"
+        "VERI_DATE": 1381968000000
       },
       "geometry": {
         "type": "LineString",
@@ -98,7 +98,7 @@
         "SURFACE_R": "S",
         "WIDTH_RIGH": 0,
         "LIGHTING": "",
-        "VERI_DATE": "2011-07-18T00:00:00.000Z"
+        "VERI_DATE": 1381968000000
       },
       "geometry": {
         "type": "LineString",
@@ -137,7 +137,7 @@
         "SURFACE_R": "",
         "WIDTH_RIGH": 0,
         "LIGHTING": "",
-        "VERI_DATE": "1900-01-01T00:00:00.000Z"
+        "VERI_DATE": 1381968000000
       },
       "geometry": {
         "type": "LineString",
@@ -172,7 +172,7 @@
         "SURFACE_R": "",
         "WIDTH_RIGH": 0,
         "LIGHTING": "",
-        "VERI_DATE": "1900-01-01T00:00:00.000Z"
+        "VERI_DATE": 1381968000000
       },
       "geometry": {
         "type": "MultiLineString",
@@ -797,7 +797,7 @@
         "SURFACE_R": "",
         "WIDTH_RIGH": 0,
         "LIGHTING": "",
-        "VERI_DATE": "1900-01-01T00:00:00.000Z"
+        "VERI_DATE": 1381968000000
       },
       "geometry": {
         "type": "LineString",
@@ -832,7 +832,7 @@
         "SURFACE_R": "S",
         "WIDTH_RIGH": 0,
         "LIGHTING": "",
-        "VERI_DATE": "2011-08-01T00:00:00.000Z"
+        "VERI_DATE": 1381968000000
       },
       "geometry": {
         "type": "MultiLineString",
@@ -993,7 +993,7 @@
         "SURFACE_R": "S",
         "WIDTH_RIGH": 0,
         "LIGHTING": "",
-        "VERI_DATE": "2011-07-14T00:00:00.000Z"
+        "VERI_DATE": 1381968000000
       },
       "geometry": {
         "type": "LineString",
@@ -1028,7 +1028,7 @@
         "SURFACE_R": "S",
         "WIDTH_RIGH": 0,
         "LIGHTING": "",
-        "VERI_DATE": "2011-07-11T00:00:00.000Z"
+        "VERI_DATE": 1381968000000
       },
       "geometry": {
         "type": "LineString",
@@ -1098,7 +1098,7 @@
         "SURFACE_R": "S",
         "WIDTH_RIGH": 1,
         "LIGHTING": "NL",
-        "VERI_DATE": "2011-07-20T00:00:00.000Z"
+        "VERI_DATE": 1381968000000
       },
       "geometry": {
         "type": "LineString",
@@ -1145,7 +1145,7 @@
         "SURFACE_R": "",
         "WIDTH_RIGH": 0,
         "LIGHTING": "",
-        "VERI_DATE": "1900-01-01T00:00:00.000Z"
+        "VERI_DATE": 1381968000000
       },
       "geometry": {
         "type": "MultiLineString",

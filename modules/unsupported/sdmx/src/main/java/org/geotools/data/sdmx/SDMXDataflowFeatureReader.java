@@ -24,6 +24,7 @@ import it.bancaditalia.oss.sdmx.api.GenericSDMXClient;
 import it.bancaditalia.oss.sdmx.exceptions.SdmxException;
 import it.bancaditalia.oss.sdmx.exceptions.SdmxResponseException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -61,17 +62,11 @@ public class SDMXDataflowFeatureReader extends SDMXFeatureReader {
             Dataflow dataflowIn,
             DataFlowStructure dfStructureIn,
             String sdmxConstraints,
+            ArrayList<String> sdmxTimePeriods,
             Logger logger)
             throws IOException, SdmxException {
 
         super(clientIn, featureTypeIn, dataflowIn, dfStructureIn, logger);
-
-        logger.log(
-                Level.FINE,
-                "SDMX Server "
-                        + clientIn.getEndpoint()
-                        + " is about to be queried with: "
-                        + sdmxConstraints);
 
         try {
             this.tsIter =
@@ -80,8 +75,8 @@ public class SDMXDataflowFeatureReader extends SDMXFeatureReader {
                                     dataflowIn,
                                     dfStructureIn,
                                     sdmxConstraints,
-                                    null,
-                                    null,
+                                    sdmxTimePeriods.size() > 1 ? sdmxTimePeriods.get(0) : null,
+                                    sdmxTimePeriods.size() > 1 ? sdmxTimePeriods.get(1) : null,
                                     false,
                                     null,
                                     false)
@@ -158,17 +153,17 @@ public class SDMXDataflowFeatureReader extends SDMXFeatureReader {
         builder.set(SDMXDataStore.GEOMETRY_ATTR, null);
         builder.set(SDMXDataStore.TIME_KEY, this.timeIter.next());
 
-        ts.getDimensions()
+        this.ts
+                .getDimensions()
                 .forEach(
                         (dimIn) -> {
-                            DimensionValue dimValue = new DimensionValue(dimIn);
-
-                            if (dimValue.isMeasure()) {
-                                builder.set(SDMXDataStore.MEASURE_KEY, this.obsIter.next());
-                            } else {
+                            if (dimIn != null) {
+                                DimensionValue dimValue = new DimensionValue(dimIn);
                                 builder.set(dimValue.name, dimValue.value);
                             }
                         });
+
+        builder.set(SDMXDataStore.MEASURE_KEY, this.obsIter.next());
 
         return builder.buildFeature(
                 (new FeatureIdImpl(String.valueOf(this.ts.hashCode()))).toString());

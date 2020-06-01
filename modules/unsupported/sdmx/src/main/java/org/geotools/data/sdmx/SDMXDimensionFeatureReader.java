@@ -18,17 +18,11 @@
 
 package org.geotools.data.sdmx;
 
-import it.bancaditalia.oss.sdmx.api.DataFlowStructure;
-import it.bancaditalia.oss.sdmx.api.Dataflow;
-import it.bancaditalia.oss.sdmx.api.Dimension;
-import it.bancaditalia.oss.sdmx.api.GenericSDMXClient;
+import it.bancaditalia.oss.sdmx.api.*;
 import it.bancaditalia.oss.sdmx.exceptions.SdmxException;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.FeatureReader;
@@ -58,24 +52,62 @@ public class SDMXDimensionFeatureReader extends SDMXFeatureReader {
         super(clientIn, featureTypeIn, dataflowIn, dfStructureIn, logger);
 
         try {
-            // If the list of dimensions has to be returned, returns aonly those
+            /**
+             * TODO https://github.com/amattioc/SDMX/issues/184 if
+             * (dfStructureIn.getDimension(expression.toUpperCase()).toString().equalsIgnoreCase(dfStructureIn.getTimeDimension()))
+             * { List<PortableTimeSeries<Double>> ts= this.client.getTimeSeries(dataflowIn,
+             * dfStructureIn, null, null, null, true,null, false); ts.get(0). }
+             */
+
+            // If the list of dimensions has to be returned, returns only those
             if (SDMXDataStore.DIMENSIONS_EXPR_ALL.equals(expression.toUpperCase())) {
-                Iterator<Dimension> iter = dfStructureIn.getDimensions().iterator();
                 Map<String, String> dimensions = new HashMap<String, String>();
-                iter.forEachRemaining(
-                        dim -> {
-                            dimensions.put(dim.getId(), dim.getName());
-                        });
+                dfStructureIn
+                        .getDimensions()
+                        .iterator()
+                        .forEachRemaining(
+                                dim -> {
+                                    dimensions.put(dim.getId(), dim.getName());
+                                });
+
                 this.dimIter = dimensions.entrySet().iterator();
-                // If all the codes of the fiven dimension has to be returned
+                // If all the codes of the given dimension has to be returned, returns the codes
             } else {
-                this.dimIter =
-                        dfStructureIn
-                                .getDimension(expression.toUpperCase())
-                                .getCodeList()
-                                .getCodes()
-                                .entrySet()
-                                .iterator();
+                if (dfStructureIn.getDimension(expression.toUpperCase()) == null) {
+                    ArrayList dimNames = new ArrayList();
+                    dfStructureIn
+                            .getDimensions()
+                            .forEach(
+                                    (dim) -> {
+                                        dimNames.add(dim.getId());
+                                    });
+                    throw (new Exception(
+                            String.format(
+                                    "Dimension %s is not present in the cube (dimemsions are: %s)",
+                                    expression.toUpperCase(), String.join(", ", dimNames))));
+                }
+
+                if (dfStructureIn.getDimension(expression.toUpperCase()).getCodeList() == null) {
+                    this.dimIter =
+                            new Iterator<Entry<String, String>>() {
+                                @Override
+                                public boolean hasNext() {
+                                    return false;
+                                }
+
+                                @Override
+                                public Entry<String, String> next() {
+                                    return null;
+                                }
+                            };
+                } else {
+                    this.dimIter =
+                            dfStructureIn
+                                    .getDimension(expression.toUpperCase())
+                                    .getCodeList()
+                                    .entrySet()
+                                    .iterator();
+                }
             }
         } catch (Exception e) {
             logger.log(Level.SEVERE, e.getMessage(), e);
@@ -114,7 +146,9 @@ public class SDMXDimensionFeatureReader extends SDMXFeatureReader {
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder(this.featureType);
         builder.set(SDMXDataStore.GEOMETRY_ATTR, null);
         builder.set(SDMXDataStore.CODE_KEY, dim.getKey().toString());
-        builder.set(SDMXDataStore.DESCRIPTION_KEY, dim.getValue().toString());
+        builder.set(
+                SDMXDataStore.DESCRIPTION_KEY,
+                (dim.getValue() != null) ? dim.getValue().toString() : dim.getKey().toString());
 
         return builder.buildFeature((new FeatureIdImpl(dim.getKey().toString())).toString());
     }

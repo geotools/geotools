@@ -248,6 +248,14 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
         params.put(
                 ArcGISRestDataStore.GEOMETRY_PARAM,
                 this.composeExtent(this.getBoundsInternal(query)));
+        try {
+            params.put(
+                    ArcGISRestDataStore.GEOMETRYSRS_PARAM,
+                    CRS.lookupEpsgCode(
+                            this.getBoundsInternal(query).getCoordinateReferenceSystem(), true));
+        } catch (FactoryException e) {
+            throw new IOException(String.format("Unknown CRS %s", e.getMessage()));
+        }
 
         try {
             cnt =
@@ -263,7 +271,7 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
             throw new IOException(String.format("Error %d %s", e.getStatusCode(), e.getMessage()));
         }
 
-        return cnt == null ? -1 : cnt.getCount();
+        return (cnt == null) ? -1 : cnt.getCount();
     }
 
     @Override
@@ -275,6 +283,14 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
         InputStream result;
 
         params.put(ArcGISRestDataStore.GEOMETRY_PARAM, this.composeExtent(this.getBounds(query)));
+        try {
+            params.put(
+                    ArcGISRestDataStore.GEOMETRYSRS_PARAM,
+                    CRS.lookupEpsgCode(
+                            this.getBoundsInternal(query).getCoordinateReferenceSystem(), true));
+        } catch (FactoryException e) {
+            throw new IOException(String.format("Unknown CRS %s", e.getMessage()));
+        }
 
         // TODO: currently it sets _only_ the BBOX query
         params.put(ArcGISRestDataStore.GEOMETRY_PARAM, this.composeExtent(this.getBounds(query)));

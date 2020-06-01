@@ -75,12 +75,7 @@ public class ArcGISRestDataStoreFactoryTest {
      * @throws FileNotFoundException
      */
     public static String readJSONAsString(String fileName) throws FileNotFoundException {
-        Scanner input =
-                new Scanner(
-                        new File(
-                                ArcGISRestDataStoreFactoryTest.class
-                                        .getResource(fileName)
-                                        .getFile()));
+        Scanner input = new Scanner(readJSONAsStream(fileName));
         StringBuilder jsonObj = new StringBuilder();
         while (input.hasNextLine()) {
             jsonObj.append(input.nextLine());

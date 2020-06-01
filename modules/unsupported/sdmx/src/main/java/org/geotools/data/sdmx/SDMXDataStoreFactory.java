@@ -45,29 +45,25 @@ public class SDMXDataStoreFactory implements DataStoreFactorySpi {
     protected static final Logger LOGGER = Logging.getLogger(SDMXDataStoreFactory.class.getName());
 
     public static final String FACTORY_NAME = "SDMX";
-    public static final String FACTORY_DESCRIPTION = "SDMX 2.1 ReST API";
+    public static final String FACTORY_DESCRIPTION = "SDMX 2.0/2.1 ReST API";
 
     private static List<Param> paramMetadata = new ArrayList<Param>(10);
 
     public static final Param NAMESPACE_PARAM = new Param("namespace", String.class, "", true);
-    public static final Param NAME_PARAM =
-            new Param("SDMX source name", String.class, "Source", true);
     public static final Param PROVIDER_PARAM =
-            new Param("Well-known provider name", String.class, "ProviderName", true, "ABS");
-    public static final Param URL_PARAM =
             new Param(
-                    "Endpoint of the SDMX ReST API",
+                    "ProviderName",
                     String.class,
-                    "Endpoint",
+                    "Well-known provider name (either 'ABS' or 'ABS2')",
                     true,
-                    "http://stat.data.abs.gov.au/restsdmx/sdmx.ashx");
+                    "ABS2");
     public static final Param USER_PARAM =
-            new Param("Username of the endpoint", String.class, "Username", false, null);
+            new Param("Username", String.class, "Username", false, null);
     public static final Param PASSWORD_PARAM =
             new Param(
-                    "Password associated with the username",
-                    String.class,
                     "Password",
+                    String.class,
+                    "Password associated with the username",
                     false,
                     null,
                     Collections.singletonMap(Parameter.IS_PASSWORD, Boolean.TRUE));
@@ -75,7 +71,6 @@ public class SDMXDataStoreFactory implements DataStoreFactorySpi {
     static {
         paramMetadata.add(NAMESPACE_PARAM);
         paramMetadata.add(PROVIDER_PARAM);
-        paramMetadata.add(URL_PARAM);
         paramMetadata.add(USER_PARAM);
         paramMetadata.add(PASSWORD_PARAM);
     }
@@ -90,10 +85,8 @@ public class SDMXDataStoreFactory implements DataStoreFactorySpi {
     public DataStore createDataStore(Map<String, Serializable> params) throws IOException {
         try {
             return new SDMXDataStore(
-                    (String) params.get(NAME_PARAM.key),
                     (String) params.get(NAMESPACE_PARAM.key),
                     (String) params.get(PROVIDER_PARAM.key),
-                    (String) params.get(URL_PARAM.key),
                     (String) params.get(USER_PARAM.key),
                     (String) params.get(PASSWORD_PARAM.key));
         } catch (SdmxException e) {
@@ -122,8 +115,12 @@ public class SDMXDataStoreFactory implements DataStoreFactorySpi {
 
         try {
             new URL((String) params.get(SDMXDataStoreFactory.NAMESPACE_PARAM.key));
-            new URL((String) params.get(SDMXDataStoreFactory.URL_PARAM.key));
         } catch (MalformedURLException e) {
+            return false;
+        }
+
+        if (params.get(SDMXDataStoreFactory.PROVIDER_PARAM.key) == null
+                || ((String) params.get(SDMXDataStoreFactory.PROVIDER_PARAM.key)).length() < 1) {
             return false;
         }
 

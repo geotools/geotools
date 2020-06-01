@@ -44,7 +44,7 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
- * Generic ource of features for SDMX
+ * Generic source of features for SDMX
  *
  * @author lmorandini
  */

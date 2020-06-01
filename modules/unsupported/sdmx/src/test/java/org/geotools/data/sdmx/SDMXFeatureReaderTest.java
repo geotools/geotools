@@ -17,11 +17,16 @@
 package org.geotools.data.sdmx;
 
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.when;
 
 import it.bancaditalia.oss.sdmx.client.RestSdmxClient;
+import it.bancaditalia.oss.sdmx.parser.v21.CompactDataParser;
+import it.bancaditalia.oss.sdmx.util.RestQueryBuilder;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.util.logging.Logger;
 import org.apache.commons.httpclient.HttpStatus;
@@ -38,7 +43,13 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({RestSdmxClient.class, HttpURLConnection.class, URL.class})
+@PrepareForTest({
+    CompactDataParser.class,
+    RestSdmxClient.class,
+    RestQueryBuilder.class,
+    HttpURLConnection.class,
+    URL.class
+})
 public class SDMXFeatureReaderTest {
 
     private static final Logger LOGGER = Logging.getLogger("org.geotools.data.arcgisrest");
@@ -59,7 +70,8 @@ public class SDMXFeatureReaderTest {
         this.clientMock = PowerMockito.mock(HttpURLConnection.class);
 
         PowerMockito.whenNew(URL.class).withAnyArguments().thenReturn(this.urlMock);
-        PowerMockito.when(this.urlMock.openConnection()).thenReturn(this.clientMock);
+        PowerMockito.when(this.urlMock.toURI()).thenReturn(new URI(Helper.URL));
+        PowerMockito.when(this.urlMock.openConnection(anyObject())).thenReturn(this.clientMock);
         when(clientMock.getResponseCode())
                 .thenReturn(HttpStatus.SC_OK)
                 .thenReturn(HttpStatus.SC_OK)
@@ -71,7 +83,8 @@ public class SDMXFeatureReaderTest {
                 .thenReturn(Helper.readXMLAsStream("test-data/abs-seifa-lga.xml"))
                 .thenReturn(Helper.readXMLAsStream("test-data/query-t04.xml"));
 
-        this.dataStore = (SDMXDataStore) Helper.createDefaultSDMXTestDataStore();
+        this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore();
+        this.dataStore.setNThreads(1);
         this.fType = this.dataStore.getFeatureSource(Helper.T04).getSchema();
         this.dfSource = (SDMXDataflowFeatureSource) this.dataStore.getFeatureSource(Helper.T04);
 
@@ -106,6 +119,22 @@ public class SDMXFeatureReaderTest {
                                 + "AGE='TOT' and "
                                 + "STATE='1'");
         assertEquals("1+2+3.TOT.TOT.1...", this.dfSource.buildConstraints(new Query("", filter)));
+
+        filter = ECQL.toFilter("MEASURE='3' and " + "MSTP='TOT' and " + "TIME in ('2001', '2002')");
+        assertEquals("2001", this.dfSource.getTimeInterval(new Query("", filter)).get(0));
+        assertEquals("2002", this.dfSource.getTimeInterval(new Query("", filter)).get(1));
+        filter =
+                ECQL.toFilter(
+                        "MEASURE='3' and "
+                                + "MSTP='TOT' and "
+                                + "TIME in ('2003', '2001', '2002')");
+        assertEquals("2001", this.dfSource.getTimeInterval(new Query("", filter)).get(0));
+        assertEquals("2003", this.dfSource.getTimeInterval(new Query("", filter)).get(1));
+        filter = ECQL.toFilter("MEASURE='3' and " + "MSTP='TOT' and " + "TIME in ('2003')");
+        assertEquals("2003", this.dfSource.getTimeInterval(new Query("", filter)).get(0));
+        assertEquals("2003", this.dfSource.getTimeInterval(new Query("", filter)).get(1));
+        filter = ECQL.toFilter("MEASURE='3' and " + "MSTP='TOT'");
+        assertEquals(0, this.dfSource.getTimeInterval(new Query("", filter)).size());
     }
 
     @Test
@@ -115,7 +144,8 @@ public class SDMXFeatureReaderTest {
         this.clientMock = PowerMockito.mock(HttpURLConnection.class);
 
         PowerMockito.whenNew(URL.class).withAnyArguments().thenReturn(this.urlMock);
-        PowerMockito.when(this.urlMock.openConnection()).thenReturn(this.clientMock);
+        PowerMockito.when(this.urlMock.toURI()).thenReturn(new URI(Helper.URL));
+        PowerMockito.when(this.urlMock.openConnection(anyObject())).thenReturn(this.clientMock);
         when(clientMock.getResponseCode())
                 .thenReturn(HttpStatus.SC_OK)
                 .thenReturn(HttpStatus.SC_OK)
@@ -131,7 +161,8 @@ public class SDMXFeatureReaderTest {
                 .thenReturn(Helper.readXMLAsStream("test-data/abs-seifa-lga.xml"))
                 .thenReturn(new ByteArrayInputStream("".getBytes()));
 
-        this.dataStore = (SDMXDataStore) Helper.createDefaultSDMXTestDataStore();
+        this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore();
+        this.dataStore.setNThreads(1);
         this.fType = this.dataStore.getFeatureSource(Helper.T04).getSchema();
         this.dfSource = (SDMXDataflowFeatureSource) this.dataStore.getFeatureSource(Helper.T04);
 
@@ -149,7 +180,8 @@ public class SDMXFeatureReaderTest {
         this.clientMock = PowerMockito.mock(HttpURLConnection.class);
 
         PowerMockito.whenNew(URL.class).withAnyArguments().thenReturn(this.urlMock);
-        PowerMockito.when(this.urlMock.openConnection()).thenReturn(this.clientMock);
+        PowerMockito.when(this.urlMock.toURI()).thenReturn(new URI(Helper.URL));
+        PowerMockito.when(this.urlMock.openConnection(anyObject())).thenReturn(this.clientMock);
         when(clientMock.getResponseCode())
                 .thenReturn(HttpStatus.SC_OK)
                 .thenReturn(HttpStatus.SC_OK)
@@ -161,7 +193,8 @@ public class SDMXFeatureReaderTest {
                 .thenReturn(Helper.readXMLAsStream("test-data/abs-seifa-lga.xml"))
                 .thenReturn(Helper.readXMLAsStream("test-data/query-t04-1.xml"));
 
-        this.dataStore = (SDMXDataStore) Helper.createDefaultSDMXTestDataStore();
+        this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore();
+        this.dataStore.setNThreads(1);
         this.fType = this.dataStore.getFeatureSource(Helper.T04).getSchema();
         this.dfSource = (SDMXDataflowFeatureSource) this.dataStore.getFeatureSource(Helper.T04);
 
@@ -222,7 +255,8 @@ public class SDMXFeatureReaderTest {
         this.clientMock = PowerMockito.mock(HttpURLConnection.class);
 
         PowerMockito.whenNew(URL.class).withAnyArguments().thenReturn(this.urlMock);
-        PowerMockito.when(this.urlMock.openConnection()).thenReturn(this.clientMock);
+        PowerMockito.when(this.urlMock.toURI()).thenReturn(new URI(Helper.URL));
+        PowerMockito.when(this.urlMock.openConnection(anyObject())).thenReturn(this.clientMock);
         when(clientMock.getResponseCode())
                 .thenReturn(HttpStatus.SC_OK)
                 .thenReturn(HttpStatus.SC_OK)
@@ -234,7 +268,8 @@ public class SDMXFeatureReaderTest {
                 .thenReturn(Helper.readXMLAsStream("test-data/abs-seifa-lga.xml"))
                 .thenReturn(Helper.readXMLAsStream("test-data/query-t04-2.xml"));
 
-        this.dataStore = (SDMXDataStore) Helper.createDefaultSDMXTestDataStore();
+        this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore();
+        this.dataStore.setNThreads(1);
         this.fType = this.dataStore.getFeatureSource(Helper.T04).getSchema();
         this.dfSource = (SDMXDataflowFeatureSource) this.dataStore.getFeatureSource(Helper.T04);
 
@@ -257,7 +292,7 @@ public class SDMXFeatureReaderTest {
             feat = this.reader.next();
             assertNotNull(feat);
             if (nObs == 0) {
-                assertEquals(2583729.0, feat.getAttribute(2));
+                assertEquals("2001", feat.getAttribute(1));
             }
             String s =
                     feat.getID()
@@ -286,7 +321,8 @@ public class SDMXFeatureReaderTest {
         this.clientMock = PowerMockito.mock(HttpURLConnection.class);
 
         PowerMockito.whenNew(URL.class).withAnyArguments().thenReturn(this.urlMock);
-        PowerMockito.when(this.urlMock.openConnection()).thenReturn(this.clientMock);
+        PowerMockito.when(this.urlMock.toURI()).thenReturn(new URI(Helper.URL));
+        PowerMockito.when(this.urlMock.openConnection(anyObject())).thenReturn(this.clientMock);
         when(clientMock.getResponseCode())
                 .thenReturn(HttpStatus.SC_OK)
                 .thenReturn(HttpStatus.SC_OK)
@@ -298,7 +334,8 @@ public class SDMXFeatureReaderTest {
                 .thenReturn(Helper.readXMLAsStream("test-data/abs-seifa-lga.xml"))
                 .thenReturn(Helper.readXMLAsStream("test-data/query-t04-321.xml"));
 
-        this.dataStore = (SDMXDataStore) Helper.createDefaultSDMXTestDataStore();
+        this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore();
+        this.dataStore.setNThreads(1);
         this.fType = this.dataStore.getFeatureSource(Helper.T04).getSchema();
         this.dfSource = (SDMXDataflowFeatureSource) this.dataStore.getFeatureSource(Helper.T04);
 
@@ -360,7 +397,8 @@ public class SDMXFeatureReaderTest {
         this.clientMock = PowerMockito.mock(HttpURLConnection.class);
 
         PowerMockito.whenNew(URL.class).withAnyArguments().thenReturn(this.urlMock);
-        PowerMockito.when(this.urlMock.openConnection()).thenReturn(this.clientMock);
+        PowerMockito.when(this.urlMock.toURI()).thenReturn(new URI(Helper.URL));
+        PowerMockito.when(this.urlMock.openConnection(anyObject())).thenReturn(this.clientMock);
         when(clientMock.getResponseCode())
                 .thenReturn(HttpStatus.SC_OK)
                 .thenReturn(HttpStatus.SC_OK)
@@ -371,7 +409,8 @@ public class SDMXFeatureReaderTest {
                 .thenReturn(Helper.readXMLAsStream("test-data/abs-census2011-t04-abs.xml"))
                 .thenReturn(Helper.readXMLAsStream("test-data/abs-seifa-lga.xml"));
 
-        this.dataStore = (SDMXDataStore) Helper.createDefaultSDMXTestDataStore();
+        this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore();
+        this.dataStore.setNThreads(1);
         this.fType = this.dataStore.getFeatureSource(Helper.T04_DIMENSIONS).getSchema();
         this.dimSource =
                 (SDMXDimensionFeatureSource) this.dataStore.getFeatureSource(Helper.T04_DIMENSIONS);
@@ -390,10 +429,14 @@ public class SDMXFeatureReaderTest {
             if (nObs == 0) {
                 assertNotNull(feat.getID());
                 assertNull(feat.getDefaultGeometry());
-                assertEquals("MSTP", feat.getAttribute(SDMXDataStore.CODE_KEY));
-                assertEquals(
-                        "Registered Marital Status",
-                        feat.getAttribute(SDMXDataStore.DESCRIPTION_KEY));
+                assertTrue(
+                        feat.getAttribute(SDMXDataStore.CODE_KEY).equals("MSTP")
+                                || feat.getAttribute(SDMXDataStore.CODE_KEY).equals("INDEX_TYPE"));
+                assertTrue(
+                        feat.getAttribute(SDMXDataStore.DESCRIPTION_KEY)
+                                        .equals("Registered Marital Status")
+                                || feat.getAttribute(SDMXDataStore.DESCRIPTION_KEY)
+                                        .equals("Index Type"));
             }
             String s =
                     feat.getID()
@@ -422,7 +465,8 @@ public class SDMXFeatureReaderTest {
         this.clientMock = PowerMockito.mock(HttpURLConnection.class);
 
         PowerMockito.whenNew(URL.class).withAnyArguments().thenReturn(this.urlMock);
-        PowerMockito.when(this.urlMock.openConnection()).thenReturn(this.clientMock);
+        PowerMockito.when(this.urlMock.toURI()).thenReturn(new URI(Helper.URL));
+        PowerMockito.when(this.urlMock.openConnection(anyObject())).thenReturn(this.clientMock);
         when(clientMock.getResponseCode())
                 .thenReturn(HttpStatus.SC_OK)
                 .thenReturn(HttpStatus.SC_OK)
@@ -433,7 +477,8 @@ public class SDMXFeatureReaderTest {
                 .thenReturn(Helper.readXMLAsStream("test-data/abs-census2011-t04-abs.xml"))
                 .thenReturn(Helper.readXMLAsStream("test-data/abs-seifa-lga.xml"));
 
-        this.dataStore = (SDMXDataStore) Helper.createDefaultSDMXTestDataStore();
+        this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore();
+        this.dataStore.setNThreads(1);
         this.fType = this.dataStore.getFeatureSource(Helper.T04_DIMENSIONS).getSchema();
         this.dimSource =
                 (SDMXDimensionFeatureSource) this.dataStore.getFeatureSource(Helper.T04_DIMENSIONS);
@@ -474,5 +519,96 @@ public class SDMXFeatureReaderTest {
         }
 
         assertEquals(17, nObs);
+    }
+
+    @Test(expected = IOException.class)
+    public void readFeaturesNotExistingDimension() throws Exception {
+
+        this.urlMock = PowerMockito.mock(URL.class);
+        this.clientMock = PowerMockito.mock(HttpURLConnection.class);
+
+        PowerMockito.whenNew(URL.class).withAnyArguments().thenReturn(this.urlMock);
+        PowerMockito.when(this.urlMock.toURI()).thenReturn(new URI(Helper.URL));
+        PowerMockito.when(this.urlMock.openConnection(anyObject())).thenReturn(this.clientMock);
+        when(clientMock.getResponseCode())
+                .thenReturn(HttpStatus.SC_OK)
+                .thenReturn(HttpStatus.SC_OK)
+                .thenReturn(HttpStatus.SC_OK)
+                .thenReturn(HttpStatus.SC_OK);
+        when(clientMock.getInputStream())
+                .thenReturn(Helper.readXMLAsStream("test-data/abs.xml"))
+                .thenReturn(Helper.readXMLAsStream("test-data/abs-census2011-t04-abs.xml"))
+                .thenReturn(Helper.readXMLAsStream("test-data/abs-seifa-lga.xml"));
+
+        this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore();
+        this.dataStore.setNThreads(1);
+        this.fType = this.dataStore.getFeatureSource(Helper.T04_DIMENSIONS).getSchema();
+        this.dimSource =
+                (SDMXDimensionFeatureSource) this.dataStore.getFeatureSource(Helper.T04_DIMENSIONS);
+
+        this.dimSource.buildFeatureType();
+        Query query = new Query();
+        query.setFilter(ECQL.toFilter("CODE = 'XXX'"));
+        this.reader = (SDMXFeatureReader) this.dimSource.getReader(query);
+    }
+
+    @Test
+    public void testApi21Dimensions() throws Exception {
+
+        this.urlMock = PowerMockito.mock(URL.class);
+        this.clientMock = PowerMockito.mock(HttpURLConnection.class);
+
+        PowerMockito.whenNew(URL.class).withAnyArguments().thenReturn(this.urlMock);
+        PowerMockito.when(this.urlMock.toURI()).thenReturn(new URI(Helper.URL));
+        PowerMockito.when(this.urlMock.openConnection(anyObject())).thenReturn(this.clientMock);
+        when(clientMock.getResponseCode())
+                .thenReturn(HttpStatus.SC_OK)
+                .thenReturn(HttpStatus.SC_OK);
+        when(clientMock.getInputStream())
+                .thenReturn(Helper.readXMLAsStream("test-data/abs21.xml"))
+                .thenReturn(Helper.readXMLAsStream("test-data/abs21_c16_t04_sa_structure.xml"));
+
+        this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore2();
+        this.dataStore.setNThreads(1);
+        assertNotNull(this.dataStore.getFeatureSource(Helper.T04SA_DIMENSIONS).getSchema());
+        this.fType = this.dataStore.getFeatureSource(Helper.T04SA_DIMENSIONS).getSchema();
+        this.dimSource =
+                (SDMXDimensionFeatureSource)
+                        this.dataStore.getFeatureSource(Helper.T04SA_DIMENSIONS);
+        this.dimSource.buildFeatureType();
+        Query query = new Query();
+        query.setFilter(ECQL.toFilter("CODE = 'ALL'"));
+        this.reader = (SDMXFeatureReader) this.dimSource.getReader(query);
+
+        SimpleFeature feat;
+        int nObs = 0;
+        while (this.reader.hasNext()) {
+            feat = this.reader.next();
+            assertNotNull(feat);
+            if (nObs == 0) {
+                assertNotNull(feat.getID());
+                assertNull(feat.getDefaultGeometry());
+                assertEquals("ASGS_2016", feat.getAttribute(SDMXDataStore.CODE_KEY));
+                // Only the first measure is returned
+                assertEquals("ASGS_2016", feat.getAttribute(SDMXDataStore.DESCRIPTION_KEY));
+            }
+            String s =
+                    feat.getID()
+                            + "|"
+                            + feat.getType().getGeometryDescriptor().getLocalName()
+                            + ":"
+                            + feat.getDefaultGeometry();
+            for (int i = 1; i < feat.getAttributeCount(); i++) {
+                s +=
+                        "|"
+                                + feat.getType().getDescriptor(i).getLocalName()
+                                + ":"
+                                + feat.getAttribute(i);
+            }
+            System.out.println(s);
+            nObs++;
+        }
+
+        assertEquals(6, nObs);
     }
 }

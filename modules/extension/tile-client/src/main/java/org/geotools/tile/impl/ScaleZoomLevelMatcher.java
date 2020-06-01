@@ -56,11 +56,11 @@ public class ScaleZoomLevelMatcher {
     /** the current map-scale */
     private double scale;
 
-    private static int DPI;
+    private static double DPI;
 
     static {
         try {
-            DPI = 96; // TODO ?????Toolkit.getDefaultToolkit().getd
+            DPI = 96; // RendererUtilities.getDpi(null);
             // Display.getDefault().getDPI().x;
         } catch (Exception exc) {
             DPI = 96;
@@ -165,11 +165,8 @@ public class ScaleZoomLevelMatcher {
         for (int i = scaleList.length - 2; i >= 0; i--) {
             if (Double.isNaN(scaleList[i])) {
                 break;
-            } else if (getScale() < getOptimumScaleFromZoomLevel(i, service, tempScaleList)) {
-                break;
             }
 
-            zoomLevel = i;
             if (getScale() > getOptimumScaleFromZoomLevel(i + 1, service, tempScaleList)) {
                 zoomLevel = i;
             }

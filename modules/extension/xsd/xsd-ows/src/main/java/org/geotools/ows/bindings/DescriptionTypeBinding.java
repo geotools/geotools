@@ -16,8 +16,11 @@
  */
 package org.geotools.ows.bindings;
 
+import java.util.List;
 import javax.xml.namespace.QName;
 import net.opengis.ows10.Ows10Factory;
+import net.opengis.ows11.DescriptionType;
+import net.opengis.ows11.Ows11Factory;
 import org.geotools.xsd.AbstractComplexEMFBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
@@ -48,8 +51,12 @@ import org.geotools.xsd.ows.OWS;
  * @generated
  */
 public class DescriptionTypeBinding extends AbstractComplexEMFBinding {
+
+    Ows10Factory ows10Factory;
+
     public DescriptionTypeBinding(Ows10Factory factory) {
         super(factory);
+        ows10Factory = factory;
     }
 
     /** @generated */
@@ -76,7 +83,24 @@ public class DescriptionTypeBinding extends AbstractComplexEMFBinding {
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        // TODO: implement and remove call to super
-        return super.parse(instance, node, value);
+
+        // DescriptionType description;
+        if (!(value instanceof DescriptionType)) {
+            value = Ows11Factory.eINSTANCE.createDescriptionType();
+        }
+
+        List<Node> children2 = node.getChildren("Keywords");
+        for (Node c : children2) {
+            ((DescriptionType) value).getKeywords().add(c.getValue());
+        }
+        List<Node> children3 = node.getChildren("Title");
+        for (Node c : children3) {
+            ((DescriptionType) value).getTitle().add(c.getValue());
+        }
+        List<Node> children4 = node.getChildren("Abstract");
+        for (Node c : children4) {
+            ((DescriptionType) value).getAbstract().add(c.getValue());
+        }
+        return value;
     }
 }

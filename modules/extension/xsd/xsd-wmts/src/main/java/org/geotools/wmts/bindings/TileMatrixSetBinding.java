@@ -21,13 +21,14 @@ package org.geotools.wmts.bindings;
 import java.net.URI;
 import java.util.List;
 import javax.xml.namespace.QName;
+import net.opengis.ows10.Ows10Factory;
 import net.opengis.ows11.BoundingBoxType;
 import net.opengis.ows11.CodeType;
 import net.opengis.wmts.v_1.TileMatrixSetType;
 import net.opengis.wmts.v_1.TileMatrixType;
 import net.opengis.wmts.v_1.wmtsv_1Factory;
+import org.geotools.ows.bindings.DescriptionTypeBinding;
 import org.geotools.wmts.WMTS;
-import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
 
@@ -93,13 +94,13 @@ import org.geotools.xsd.Node;
  *
  * @generated
  */
-public class TileMatrixSetBinding extends AbstractComplexBinding {
+public class TileMatrixSetBinding extends DescriptionTypeBinding {
 
-    wmtsv_1Factory factory;
+    wmtsv_1Factory wmtsv_1Factory;
 
     public TileMatrixSetBinding(wmtsv_1Factory factory) {
-        super();
-        this.factory = factory;
+        super(Ows10Factory.eINSTANCE);
+        this.wmtsv_1Factory = factory;
     }
 
     /** @generated */
@@ -133,21 +134,29 @@ public class TileMatrixSetBinding extends AbstractComplexBinding {
         }
 
         // we are in a Contents/TileMatrixSet (complex) element
-        TileMatrixSetType matrixSet = factory.createTileMatrixSetType();
-        matrixSet.setBoundingBox((BoundingBoxType) node.getChildValue("BoundingBox"));
-        matrixSet.setIdentifier((CodeType) node.getChildValue("Identifier"));
-        matrixSet.setSupportedCRS(((URI) node.getChildValue("SupportedCRS")).toString());
+        if (!(value instanceof TileMatrixSetType)) {
+            value = wmtsv_1Factory.createTileMatrixSetType();
+        }
+
+        // Call DescriptionType parser to load the object with the DescriptionType values
+        value = super.parse(instance, node, value);
+
+        ((TileMatrixSetType) value)
+                .setBoundingBox((BoundingBoxType) node.getChildValue("BoundingBox"));
+        ((TileMatrixSetType) value).setIdentifier((CodeType) node.getChildValue("Identifier"));
+        ((TileMatrixSetType) value)
+                .setSupportedCRS(((URI) node.getChildValue("SupportedCRS")).toString());
 
         URI wkss = (URI) node.getChildValue("WellKnownScaleSet");
         if (wkss != null) {
-            matrixSet.setWellKnownScaleSet(wkss.toString());
+            ((TileMatrixSetType) value).setWellKnownScaleSet(wkss.toString());
         }
-        matrixSet.getAbstract().addAll(node.getChildren("abstract"));
+        ((TileMatrixSetType) value).getAbstract().addAll(node.getChildren("abstract"));
         List<Node> children = node.getChildren("TileMatrix");
         for (Node c : children) {
-            matrixSet.getTileMatrix().add((TileMatrixType) c.getValue());
+            ((TileMatrixSetType) value).getTileMatrix().add((TileMatrixType) c.getValue());
         }
 
-        return matrixSet;
+        return value;
     }
 }

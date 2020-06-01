@@ -45,8 +45,8 @@ import org.picocontainer.MutablePicoContainer;
 import org.w3c.dom.Element;
 
 /**
- * Uses {@link ComplexBinding#getProperty(Object, QName)} to obtain properties from the objecet
- * being encoded.
+ * Uses {@link ComplexBinding#getProperty(Object, QName)} to obtain properties from the object being
+ * encoded.
  *
  * @author Justin Deoliveira, The Open Planning Project
  */
@@ -171,8 +171,8 @@ public class BindingPropertyExtractor implements PropertyExtractor {
                     if (elementDecl == null) {
                         // TODO: resolving like this will return an element no
                         // matter what, modifying the underlying schema, this might
-                        // be dangerous. What we shold do is force the schema to
-                        // resolve all of it simports when the encoder starts
+                        // be dangerous. What we should do is force the schema to
+                        // resolve all of its imports when the encoder starts
                         elementDecl =
                                 encoder.getSchema()
                                         .resolveElementDeclaration(

@@ -36,8 +36,8 @@ import org.picocontainer.defaults.InstanceComponentAdapter;
 /**
  * A {@link Map} decorator which implements the {@link MutablePicoContainer} interface.
  *
- * <p>This class is used internally to help transitition from pico container to a map based system
- * for registering bindings.
+ * <p>This class is used internally to help transition from pico container to a map based system for
+ * registering bindings.
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  */

@@ -21,40 +21,7 @@ import net.opengis.ows11.AllowedValuesType;
 import net.opengis.ows11.AnyValueType;
 import net.opengis.ows11.NoValuesType;
 import net.opengis.ows11.Ows11Factory;
-import org.geotools.ows.bindings.AcceptFormatsTypeBinding;
-import org.geotools.ows.bindings.AddressTypeBinding;
-import org.geotools.ows.bindings.BoundingBoxTypeBinding;
-import org.geotools.ows.bindings.CapabilitiesBaseTypeBinding;
-import org.geotools.ows.bindings.ContactTypeBinding;
-import org.geotools.ows.bindings.DescriptionTypeBinding;
-import org.geotools.ows.bindings.DomainTypeBinding;
-import org.geotools.ows.bindings.ExceptionTypeBinding;
-import org.geotools.ows.bindings.GetCapabilitiesTypeBinding;
-import org.geotools.ows.bindings.IdentificationTypeBinding;
-import org.geotools.ows.bindings.MetadataTypeBinding;
-import org.geotools.ows.bindings.MimeTypeBinding;
-import org.geotools.ows.bindings.OnlineResourceTypeBinding;
-import org.geotools.ows.bindings.PositionType2DBinding;
-import org.geotools.ows.bindings.PositionTypeBinding;
-import org.geotools.ows.bindings.RangeBinding;
-import org.geotools.ows.bindings.RangeClosureBinding;
-import org.geotools.ows.bindings.RequestMethodTypeBinding;
-import org.geotools.ows.bindings.ResponsiblePartySubsetTypeBinding;
-import org.geotools.ows.bindings.ResponsiblePartyTypeBinding;
-import org.geotools.ows.bindings.SectionsTypeBinding;
-import org.geotools.ows.bindings.ServiceTypeBinding;
-import org.geotools.ows.bindings.TelephoneTypeBinding;
-import org.geotools.ows.bindings.UnitBinding;
-import org.geotools.ows.bindings.UpdateSequenceTypeBinding;
-import org.geotools.ows.bindings.VersionTypeBinding;
-import org.geotools.ows.bindings.WGS84BoundingBoxTypeBinding;
-import org.geotools.ows.bindings._DCPBinding;
-import org.geotools.ows.bindings._ExceptionReportBinding;
-import org.geotools.ows.bindings._HTTPBinding;
-import org.geotools.ows.bindings._OperationBinding;
-import org.geotools.ows.bindings._OperationsMetadataBinding;
-import org.geotools.ows.bindings._ServiceIdentificationBinding;
-import org.geotools.ows.bindings._ServiceProviderBinding;
+import org.geotools.ows.bindings.*;
 import org.geotools.xlink.XLINKConfiguration;
 import org.geotools.xsd.ComplexEMFBinding;
 import org.geotools.xsd.Configuration;
@@ -121,7 +88,10 @@ public class OWSConfiguration extends Configuration {
         container.registerComponentImplementation(
                 org.geotools.xsd.ows.OWS.GetCapabilitiesType, GetCapabilitiesTypeBinding.class);
         container.registerComponentImplementation(
-                org.geotools.xsd.ows.OWS.IdentificationType, IdentificationTypeBinding.class);
+                org.geotools.xsd.ows.OWS.BasicIdentificationType,
+                BasicIdentificationTypeOws11Binding.class);
+        container.registerComponentImplementation(
+                org.geotools.xsd.ows.OWS.IdentificationType, IdentificationTypeOws11Binding.class);
         container.registerComponentInstance(
                 org.geotools.xsd.ows.OWS.KeywordsType,
                 new ComplexEMFBinding(
@@ -225,7 +195,6 @@ public class OWSConfiguration extends Configuration {
         bindings.put(
                 OWS.OnlineResourceType,
                 new ComplexEMFBinding(Ows11Factory.eINSTANCE, OWS.OnlineResourceType));
-        bindings.put(OWS.RangeType, new ComplexEMFBinding(Ows11Factory.eINSTANCE, OWS.RangeType));
         bindings.put(
                 OWS.RequestMethodType,
                 new ComplexEMFBinding(Ows11Factory.eINSTANCE, OWS.RequestMethodType));

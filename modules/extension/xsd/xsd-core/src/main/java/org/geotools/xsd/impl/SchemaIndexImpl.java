@@ -61,8 +61,8 @@ public class SchemaIndexImpl implements SchemaIndex {
     SoftValueHashMap /*<XSDElementDeclaration,OrderedMap>*/ element2children =
             new SoftValueHashMap(1000);
 
-    /** Cache of elemnets to attributes */
-    HashMap /*<XSDElementDeclaratoin,List>*/ element2attributes = new HashMap();
+    /** Cache of elements to attributes */
+    HashMap /*<XSDElementDeclaration,List>*/ element2attributes = new HashMap();
 
     /** Adapter for tracking changes to schemas. */
     SchemaAdapter adapter;

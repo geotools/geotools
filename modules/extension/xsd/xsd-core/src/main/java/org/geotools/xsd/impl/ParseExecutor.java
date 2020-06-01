@@ -68,7 +68,7 @@ public class ParseExecutor implements Visitor {
     public void visit(Binding binding) {
         // TODO: the check for InstanceBinding is a temporary measure to allow
         // for bindings that are not registered by class, but by instance.
-        // in the long term we intend to ditch pico container b/c our inection
+        // in the long term we intend to ditch pico container b/c our injection
         // needs are quite trivial and can be handled by some simple reflection
         if (!(binding instanceof InstanceBinding)) {
             // reload out of context, we do this so that the binding can pick up any new
@@ -159,7 +159,7 @@ public class ParseExecutor implements Visitor {
     }
 
     /**
-     * Pre-parses the instance compontent checking the following:
+     * Pre-parses the instance component checking the following:
      *
      * <p>
      */

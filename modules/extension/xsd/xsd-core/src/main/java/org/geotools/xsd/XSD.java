@@ -97,7 +97,7 @@ public abstract class XSD {
     }
 
     /**
-     * Returns the sbuset of {@link #getTypeSchema()} which maintains a unique java class to xml
+     * Returns the subset of {@link #getTypeSchema()} which maintains a unique java class to xml
      * type mapping.
      */
     public final Schema getTypeMappingProfile() {

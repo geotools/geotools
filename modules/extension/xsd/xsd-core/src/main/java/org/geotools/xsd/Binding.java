@@ -200,7 +200,7 @@ import javax.xml.namespace.QName;
  *
  * <h3>Conflict resolution</h3>
  *
- * In some cases multiple bindings are targetting the same java class. This happens, for example, in
+ * In some cases multiple bindings are targeting the same java class. This happens, for example, in
  * GML3 where {@link MultiPolygon} is associated to two different elements, gml:MultiPolygon and
  * gml:MultiSurface (the former being deprecated and kept for backwards compatibility).
  *
@@ -214,7 +214,7 @@ public interface Binding {
     /** Specifies that a binding should be executed after its direct parent */
     static final int AFTER = 0;
 
-    /** Specifes that a binding should be executed before its direct parent.d */
+    /** Specifies that a binding should be executed before its direct parent.d */
     static final int BEFORE = 1;
 
     /** Specifies that a binding should totally override the execution of its direct parent. */

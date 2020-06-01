@@ -22,7 +22,7 @@ import javax.xml.namespace.QName;
 import net.opengis.wmts.v_1.URLTemplateType;
 import net.opengis.wmts.v_1.wmtsv_1Factory;
 import org.geotools.wmts.WMTS;
-import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.AbstractComplexEMFBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
 
@@ -75,7 +75,7 @@ import org.geotools.xsd.Node;
  *
  * @generated
  */
-public class URLTemplateTypeBinding extends AbstractComplexBinding {
+public class URLTemplateTypeBinding extends AbstractComplexEMFBinding {
 
     wmtsv_1Factory factory;
 

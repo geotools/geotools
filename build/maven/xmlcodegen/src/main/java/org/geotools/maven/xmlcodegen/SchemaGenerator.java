@@ -93,17 +93,17 @@ public class SchemaGenerator extends AbstractGenerator {
      */
     FeatureTypeFactory factory;
     /**
-     * Flag indicating wether simple types should be processed.
+     * Flag indicating whether simple types should be processed.
      */
     boolean simpleTypes;
 
     /**
-     * Flag indiciating wether complex types should be processed.
+     * Flag indicating whether complex types should be processed.
      */
     boolean complexTypes;
 
     /**
-     * Flag indicating wether to follow type references within
+     * Flag indicating whether to follow type references within
      * complex type definitions.
      */
     boolean followComplexTypes;
@@ -125,7 +125,7 @@ public class SchemaGenerator extends AbstractGenerator {
     int maxDepth = 15;
     
     /**
-     * When set to true the generator will print paths as it recruses through the schema.
+     * When set to true the generator will print paths as it recurses through the schema.
      */
     boolean printRecursionPaths = false;
     
@@ -159,7 +159,7 @@ public class SchemaGenerator extends AbstractGenerator {
     }
 
     /**
-     * @param complexTypes Flag indicating wether or not to process complex
+     * @param complexTypes Flag indicating whether or not to process complex
      * types in the supplied schema.
      */
     public void setComplexTypes(boolean complexTypes) {
@@ -167,7 +167,7 @@ public class SchemaGenerator extends AbstractGenerator {
     }
 
     /**
-     * @param simpleTypes Flag indicating wether or not to process complex
+     * @param simpleTypes Flag indicating whether or not to process complex
      * types in the supplied schema.
      */
     public void setSimpleTypes(boolean simpleTypes) {
@@ -175,7 +175,7 @@ public class SchemaGenerator extends AbstractGenerator {
     }
 
     /**
-     * Indicates to generator wether to follow the type definitons of
+     * Indicates to generator whether to follow the type definitions of
      * complex types.
      * <p>
      * Warning, setting this flag to <code>true</code> will result in all

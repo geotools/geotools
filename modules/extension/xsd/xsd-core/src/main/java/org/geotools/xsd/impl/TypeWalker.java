@@ -22,10 +22,10 @@ import java.util.List;
 import org.eclipse.xsd.XSDTypeDefinition;
 
 public class TypeWalker {
-    /** Cached type hieracty */
+    /** Cached type hierarchy */
     HashMap /*<XSDTypeDefinition,List>*/ cache = new HashMap();
 
-    /** Walks from the bottom of the type hierachy to the top. */
+    /** Walks from the bottom of the type hierarchy to the top. */
     public void walk(XSDTypeDefinition base, Visitor visitor) {
         List types = types(base);
 
@@ -39,7 +39,7 @@ public class TypeWalker {
         }
     }
 
-    /** Walks from the top of the type hierachy to the bottom. */
+    /** Walks from the top of the type hierarchy to the bottom. */
     public void rwalk(XSDTypeDefinition base, Visitor visitor) {
         List types = types(base);
 

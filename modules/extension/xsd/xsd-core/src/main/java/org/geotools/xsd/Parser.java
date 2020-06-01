@@ -208,7 +208,7 @@ public class Parser {
     }
 
     /**
-     * Sets the flag controlling wether the parser should validate or not.
+     * Sets the flag controlling whether the parser should validate or not.
      *
      * @param validating Validation flag, <code>true</code> to validate, otherwise <code>false
      *     </code>

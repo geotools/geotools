@@ -20,10 +20,11 @@ package org.geotools.wmts.bindings;
 
 import java.math.BigInteger;
 import javax.xml.namespace.QName;
+import net.opengis.ows10.Ows10Factory;
 import net.opengis.wmts.v_1.LegendURLType;
 import net.opengis.wmts.v_1.wmtsv_1Factory;
+import org.geotools.ows.bindings.OnlineResourceTypeBinding;
 import org.geotools.wmts.WMTS;
-import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
 
@@ -90,11 +91,12 @@ import org.geotools.xsd.Node;
  *
  * @generated
  */
-public class LegendURLBinding extends AbstractComplexBinding {
+public class LegendURLBinding extends OnlineResourceTypeBinding {
+
     wmtsv_1Factory factory;
 
     public LegendURLBinding(wmtsv_1Factory factory) {
-        super();
+        super(Ows10Factory.eINSTANCE);
         this.factory = factory;
     }
 
@@ -123,21 +125,38 @@ public class LegendURLBinding extends AbstractComplexBinding {
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
-        LegendURLType legendURL = factory.createLegendURLType();
-
-        legendURL.setFormat((String) node.getChildValue("format"));
-        legendURL.setHeight((BigInteger) node.getChildValue("height"));
-        legendURL.setWidth((BigInteger) node.getChildValue("width"));
-        legendURL.setHref((String) node.getChildValue("Href"));
-        Object childValue = node.getChildValue("maxScaleDenominator");
-        if (childValue != null) {
-            legendURL.setMaxScaleDenominator(((Double) childValue).doubleValue());
+        if (!(value instanceof LegendURLType)) {
+            value = factory.createLegendURLType();
         }
+
+        // Call OnlineResourceType parser to load the object with the OnlineResourceType values
+        value = super.parse(instance, node, value);
+
+        Object childValue = node.getChildValue("format");
+        if (childValue != null) {
+            ((LegendURLType) value).setFormat((String) node.getAttribute("format").getValue());
+        }
+
+        childValue = node.getChildValue("height");
+        if (childValue != null) {
+            ((LegendURLType) value).setHeight((BigInteger) node.getAttribute("height").getValue());
+        }
+
+        childValue = node.getChildValue("width");
+        if (childValue != null) {
+            ((LegendURLType) value).setWidth((BigInteger) node.getAttribute("width").getValue());
+        }
+
+        childValue = node.getChildValue("maxScaleDenominator");
+        if (childValue != null) {
+            ((LegendURLType) value).setMaxScaleDenominator(((Double) childValue).doubleValue());
+        }
+
         childValue = node.getChildValue("minScaleDenominator");
         if (childValue != null) {
-            legendURL.setMinScaleDenominator(((Double) childValue).doubleValue());
+            ((LegendURLType) value).setMinScaleDenominator(((Double) childValue).doubleValue());
         }
 
-        return legendURL;
+        return value;
     }
 }

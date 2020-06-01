@@ -121,7 +121,7 @@ public class ElementHandlerImpl extends HandlerImpl implements ElementHandler {
             XSDAttributeDeclaration decl = Schemas.getAttributeDeclaration(content, attQName);
 
             if (decl == null) {
-                // check wether unknown attributes should be parsed
+                // check whether unknown attributes should be parsed
                 if (!parser.isStrict()) {
                     if (parser.getLogger().isLoggable(Level.FINE)) {
                         parser.getLogger().fine("Parsing unknown attribute: " + attQName);
@@ -280,7 +280,7 @@ public class ElementHandlerImpl extends HandlerImpl implements ElementHandler {
         XSDElementDeclaration element = index.getChildElement(content, qName);
 
         if (element != null) {
-            // TODO: determine wether the element is complex or simple, and create
+            // TODO: determine whether the element is complex or simple, and create
             ElementHandler handler =
                     parser.getHandlerFactory().createElementHandler(element, this, parser);
 
@@ -288,7 +288,7 @@ public class ElementHandlerImpl extends HandlerImpl implements ElementHandler {
         }
 
         // could not find the element as a direct child of the parent, check
-        // for a global element, and then check its substituation group
+        // for a global element, and then check its substitution group
         element = index.getElementDeclaration(qName);
 
         if (element != null) {
@@ -299,14 +299,13 @@ public class ElementHandlerImpl extends HandlerImpl implements ElementHandler {
                 Handler handler = getChildHandlerInternal(subQName);
 
                 if (handler != null) {
-                    // this means that hte element is substituatable for an
-                    // actual child. now we have have choice, do we return
+                    // this means that the element is substitutable for an
+                    // actual child. Now we have a choice, do we return
                     // a handler for the actual element, or the element it
-                    // substituable for - the answer is to check the bindings
+                    // substitutable for - the answer is to check the bindings
                     // TODO: ask the binding
                     handler =
                             parser.getHandlerFactory().createElementHandler(element, this, parser);
-
                     return handler;
                 }
             }

@@ -20,12 +20,13 @@ package org.geotools.wmts.bindings;
 
 import java.util.List;
 import javax.xml.namespace.QName;
+import net.opengis.ows10.Ows10Factory;
 import net.opengis.ows11.CodeType;
 import net.opengis.wmts.v_1.LegendURLType;
 import net.opengis.wmts.v_1.StyleType;
 import net.opengis.wmts.v_1.wmtsv_1Factory;
+import org.geotools.ows.bindings.DescriptionTypeBinding;
 import org.geotools.wmts.WMTS;
-import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
 
@@ -71,13 +72,13 @@ import org.geotools.xsd.Node;
  *
  * @generated
  */
-public class StyleBinding extends AbstractComplexBinding {
+public class StyleBinding extends DescriptionTypeBinding {
 
-    wmtsv_1Factory factory;
+    wmtsv_1Factory wmtsv_1Factory;
 
     public StyleBinding(wmtsv_1Factory factory) {
-        super();
-        this.factory = factory;
+        super(Ows10Factory.eINSTANCE);
+        this.wmtsv_1Factory = factory;
     }
 
     /** @generated */
@@ -105,33 +106,27 @@ public class StyleBinding extends AbstractComplexBinding {
      */
     @SuppressWarnings("unchecked")
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        StyleType style = factory.createStyleType();
 
-        style.setIdentifier((CodeType) node.getChildValue("Identifier"));
+        if (!(value instanceof StyleType)) {
+            value = wmtsv_1Factory.createStyleType();
+        }
+
+        // Call DescriptionType parser to load the object with the DescriptionType values
+        value = super.parse(instance, node, value);
+
+        ((StyleType) value).setIdentifier((CodeType) node.getChildValue("Identifier"));
         Object def = node.getAttributeValue("isDefault");
         if (def != null) {
-            style.setIsDefault((boolean) def);
+            ((StyleType) value).setIsDefault((boolean) def);
         } else {
-            style.setIsDefault(false);
+            ((StyleType) value).setIsDefault(false);
         }
 
         List<Node> children = node.getChildren("LegendURL");
         for (Node c : children) {
-            style.getLegendURL().add((LegendURLType) c.getValue());
-        }
-        List<Node> children2 = node.getChildren("Keywords");
-        for (Node c : children2) {
-            style.getKeywords().add(c.getValue());
-        }
-        List<Node> children3 = node.getChildren("title");
-        for (Node c : children3) {
-            style.getTitle().add(c.getValue());
-        }
-        List<Node> children4 = node.getChildren("Abstract");
-        for (Node c : children4) {
-            style.getAbstract().add(c.getValue());
+            ((StyleType) value).getLegendURL().add((LegendURLType) c.getValue());
         }
 
-        return style;
+        return value;
     }
 }

@@ -1487,7 +1487,9 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             EnumMapper mapper = null;
             try {
                 attribute = (AttributeDescriptor) expression.evaluate(featureType);
-                mapper = (EnumMapper) attribute.getUserData().get(JDBCDataStore.JDBC_ENUM_MAP);
+                if (attribute != null) {
+                    mapper = (EnumMapper) attribute.getUserData().get(JDBCDataStore.JDBC_ENUM_MAP);
+                }
             } catch (Exception e) {
                 // just log and fall back on just encoding propertyName straight up
                 String msg = "Error occured mapping " + expression + " to feature type";

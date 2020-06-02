@@ -91,7 +91,6 @@
   
   <modules>
     <module>ogr-core</module>
-    <module>ogr-bridj</module>
     <module>ogr-jni</module>
   </modules>
 </project>

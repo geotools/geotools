@@ -11,6 +11,8 @@ import org.geotools.jdbc.JDBCPrimaryKeyFinderTestSetup;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
+import org.opengis.feature.Feature;
+import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -30,6 +32,23 @@ public class OraclePrimaryKeyFinderOnlineTest extends JDBCPrimaryKeyFinderOnline
         return params;
     }
 
+    public void testSequencedPrimaryKey() throws Exception {
+        // get a dump of what's in the table
+        System.out.println("Dumping seqtable contents");
+        JDBCFeatureStore fs = (JDBCFeatureStore) dataStore.getFeatureSource(tname("seqtable"));
+        fs.getFeatures()
+                .accepts(
+                        new FeatureVisitor() {
+                            @Override
+                            public void visit(Feature feature) {
+                                System.out.println(feature);
+                            }
+                        },
+                        null);
+
+        super.testSequencedPrimaryKey();
+    }
+
     /** override to add failure diagnostic message. */
     @Override
     protected void addFeature(SimpleFeatureType featureType, JDBCFeatureStore features)
@@ -41,16 +60,12 @@ public class OraclePrimaryKeyFinderOnlineTest extends JDBCPrimaryKeyFinderOnline
         SimpleFeature f = b.buildFeature(null);
         features.addFeatures(DataUtilities.collection(f));
 
-        LOGGER.info("new feature has fid: " + f.getUserData().get("id"));
+        LOGGER.info("new feature has fid: " + f.getUserData().get("fid"));
 
         // pattern match to handle the multi primary key case
+        String regex = tname(featureType.getTypeName()) + ".4(\\..*)?";
         assertTrue(
-                "actual fid: "
-                        + f.getUserData().get("id")
-                        + " does not match expected "
-                        + tname(featureType.getTypeName())
-                        + ".4(\\..*)?",
-                ((String) f.getUserData().get("fid"))
-                        .matches(tname(featureType.getTypeName()) + ".4(\\..*)?"));
+                "actual fid: " + f.getUserData().get("fid") + " does not match expected " + regex,
+                ((String) f.getUserData().get("fid")).matches(regex));
     }
 }

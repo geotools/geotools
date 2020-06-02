@@ -131,7 +131,6 @@ public class WMTSServerTest extends WMTSOnlineTestCase {
                         wmts, capabilities, envelope, re1, "Trafikkportalen_GeocacheTrafikkJPG");
         File img1 = new File(getClass().getResource("wmtsTestResultZoom5.png").getFile());
         ImageAssert.assertEquals(img1, ri1, 50);
-
         // second envelope 7th zoomLevel
         ReferencedEnvelope re2 =
                 new ReferencedEnvelope(

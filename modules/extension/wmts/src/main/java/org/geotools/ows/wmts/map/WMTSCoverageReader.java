@@ -381,13 +381,12 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
             if (LOGGER.isLoggable(Level.INFO)) LOGGER.info("couldn't draw " + tile.getId());
             return;
         }
+        int width = (int) Math.round(points[2] - points[0]);
+        int height = (int) Math.round(points[3] - points[1]);
+        if (width < 1) width = 1;
+        if (height < 1) height = 1;
         g2d.drawImage(
-                img,
-                (int) Math.round(points[0]),
-                (int) Math.round(points[1]),
-                (int) Math.round(points[2] - points[0]),
-                (int) Math.round(points[3] - points[1]),
-                null);
+                img, (int) Math.round(points[0]), (int) Math.round(points[1]), width, height, null);
     }
 
     protected BufferedImage getTileImage(Tile tile) {

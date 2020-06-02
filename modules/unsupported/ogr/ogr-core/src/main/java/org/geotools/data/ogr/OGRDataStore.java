@@ -40,8 +40,7 @@ import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.Name;
 
 /**
- * A data store based on the OGR native library, bound to it via <a
- * href="http://code.google.com/p/bridj/">BridJ</a>
+ * A data store based on the OGR native library
  *
  * @author Andrea Aime - GeoSolutions
  */

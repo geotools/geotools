@@ -165,7 +165,11 @@ public class ScaleZoomLevelMatcher {
         for (int i = scaleList.length - 2; i >= 0; i--) {
             if (Double.isNaN(scaleList[i])) {
                 break;
+            } else if (getScale() < getOptimumScaleFromZoomLevel(i, service, tempScaleList)) {
+                break;
             }
+
+            zoomLevel = i;
 
             if (getScale() > getOptimumScaleFromZoomLevel(i + 1, service, tempScaleList)) {
                 zoomLevel = i;

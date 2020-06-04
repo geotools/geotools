@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<message:Structure xmlns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/structure" xmlns:common="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:message="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message" xsi:schemaLocation="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/structure http://www.sdmx.org/docs/2_0/SDMXStructure.xsd http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message http://www.sdmx.org/docs/2_0/SDMXMessage.xsd">
+  <Header xmlns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message">
+    <ID>none<!--Statistical usage warning
+ABS.Stat beta is continuing to be developed.  Data will be updated as soon as possible following its 11:30 am release on the ABS website.
+--></ID>
+    <Test>false</Test>
+    <Truncated>false</Truncated>
+    <Prepared>2017-04-20T05:08:09</Prepared>
+    <Sender id="ABS">
+      <Name xml:lang="en">Australian Bureau of Statistics</Name>
+      <Name xml:lang="fr">Australian Bureau of Statistics</Name>
+    </Sender>
+  </Header>
+    
+  <message:KeyFamilies>
+    <KeyFamily id="ABS_SEIFA_LGA" agencyID="ABS">
+      <Name xml:lang="en">SEIFA by Local Government Area (LGA)</Name>
+      <Name xml:lang="fr">SEIFA by Local Government Area (LGA)</Name>
+      <Annotations>
+        <common:Annotation>
+          <common:AnnotationTitle>Statistical usage warning</common:AnnotationTitle>
+          <common:AnnotationText>ABS.Stat beta is continuing to be developed.  Data will be updated as soon as possible following its 11:30 am release on the ABS website.</common:AnnotationText>
+        </common:Annotation>
+      </Annotations>
+    </KeyFamily>
+    
+    <KeyFamily id="ABS_CENSUS2011_T04" agencyID="ABS">
+      <Name xml:lang="en">T04 Registered Marital Status by Age by Sex</Name>
+      <Name xml:lang="fr">T04 Registered Marital Status by Age by Sex</Name>
+      <Annotations>
+        <common:Annotation>
+          <common:AnnotationTitle>Statistical usage warning</common:AnnotationTitle>
+          <common:AnnotationText>ABS.Stat beta is continuing to be developed.  Data will be updated as soon as possible following its 11:30 am release on the ABS website.</common:AnnotationText>
+        </common:Annotation>
+      </Annotations>
+    </KeyFamily>
+  </message:KeyFamilies>
+</message:Structure>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--NSI Web Service v7.11.3.0-->
+<message:Structure xmlns:message="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">
+    <message:Header>
+        <message:ID>IDREF9835</message:ID>
+        <message:Test>false</message:Test>
+        <message:Prepared>2020-05-25T11:46:05.1358528+00:00</message:Prepared>
+        <message:Sender id="Unknown" />
+        <message:Receiver id="Unknown" />
+    </message:Header>
+    <message:Structures>
+        <structure:Dataflows>
+            <structure:Dataflow id="ABS_C16_T04_SA" agencyID="ABS" version="1.0.0" isFinal="true">
+                <common:Annotations>
+                    <common:Annotation>
+                        <common:AnnotationType>NonProductionDataflow</common:AnnotationType>
+                        <common:AnnotationText xml:lang="en">true</common:AnnotationText>
+                    </common:Annotation>
+                </common:Annotations>
+                <common:Name xml:lang="en">Census 2016, Indigenous Status by Age by Sex (SA2+)</common:Name>
+                <structure:Structure>
+                    <Ref id="ABS_C16_T04_SA" version="1.0.0" agencyID="ABS" package="datastructure" class="DataStructure" />
+                </structure:Structure>
+            </structure:Dataflow>
+        </structure:Dataflows>
+    </message:Structures>
+</message:Structure>

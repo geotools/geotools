@@ -20,36 +20,33 @@ package org.geotools.data.arcgisrest;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import java.awt.*;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.*;
-import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
-import org.apache.commons.io.IOUtils;
-import org.apache.http.*;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.entity.EntityBuilder;
-import org.apache.http.client.methods.*;
-import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.entity.ContentType;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicNameValuePair;
+import java.util.stream.Collectors;
+import org.apache.commons.httpclient.Header;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpMethodBase;
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.httpclient.URI;
+import org.apache.commons.httpclient.UsernamePasswordCredentials;
+import org.apache.commons.httpclient.cookie.CookiePolicy;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.geotools.data.Query;
 import org.geotools.data.arcgisrest.schema.catalog.Catalog;
 import org.geotools.data.arcgisrest.schema.catalog.Dataset;
-import org.geotools.data.arcgisrest.schema.catalog.Error__1;
+import org.geotools.data.arcgisrest.schema.catalog.Error_;
 import org.geotools.data.arcgisrest.schema.services.feature.Featureserver;
 import org.geotools.data.arcgisrest.schema.webservice.Webservice;
 import org.geotools.data.store.ContentDataStore;
@@ -74,6 +71,7 @@ public class ArcGISRestDataStore extends ContentDataStore {
     public static final String GEOMETRY_PARAM = "geometry";
     public static final String COUNT_PARAM = "returnCountOnly";
     public static final String FORMAT_PARAM = "f";
+    public static final String GEOMETRYSRS_PARAM = "inSR";
     public static final String ATTRIBUTES_PARAM = "outFields";
     public static final String WITHGEOMETRY_PARAM = "returnGeometry";
     public static final String DATASETTYPE_FEATURELAYER = "Feature Layer";
@@ -89,24 +87,14 @@ public class ArcGISRestDataStore extends ContentDataStore {
     protected static final int REQUEST_TIMEOUT = 60;
 
     // Default request parameter values
-    public static List<NameValuePair> DEFAULT_PARAMS =
-            new ArrayList<NameValuePair>() {
-                {
-                    add(new BasicNameValuePair(FORMAT_PARAM, FORMAT_JSON));
-                    add(new BasicNameValuePair(WITHGEOMETRY_PARAM, "true"));
-                    add(new BasicNameValuePair(GEOMETRYTYPE_PARAM, "esriGeometryEnvelope"));
-                }
-            };
+    public static Map<String, Object> DEFAULT_PARAMS = new HashMap<String, Object>();
 
-    // Default get features request parameter values
-    public static List<NameValuePair> DEFAULT_GETFEATURES_PARAMS =
-            new ArrayList<NameValuePair>() {
-                {
-                    add(new BasicNameValuePair(FORMAT_PARAM, FORMAT_GEOJSON));
-                    add(new BasicNameValuePair(WITHGEOMETRY_PARAM, "true"));
-                    add(new BasicNameValuePair(GEOMETRYTYPE_PARAM, "esriGeometryEnvelope"));
-                }
-            };
+    static {
+        DEFAULT_PARAMS.put(FORMAT_PARAM, FORMAT_JSON);
+        DEFAULT_PARAMS.put(WITHGEOMETRY_PARAM, "true");
+        DEFAULT_PARAMS.put(GEOMETRYTYPE_PARAM, "esriGeometryEnvelope");
+        DEFAULT_PARAMS.put(GEOMETRYSRS_PARAM, "inSR");
+    }
 
     // ArcGIS Server parameters
     public static String FEATURESERVER_SERVICE = "FeatureServer";
@@ -160,10 +148,10 @@ public class ArcGISRestDataStore extends ContentDataStore {
 
         // Retrieves the catalog JSON document
         String response = null;
-        Error__1 err;
+        Error_ err;
         try {
             response =
-                    ArcGISRestDataStore.inputStreamToString(
+                    ArcGISRestDataStore.InputStreamToString(
                             this.retrieveJSON("GET", apiUrl, DEFAULT_PARAMS));
         } catch (IOException e) {
             LOGGER.log(
@@ -198,7 +186,7 @@ public class ArcGISRestDataStore extends ContentDataStore {
                 }
             } catch (JsonSyntaxException e) {
                 // Checks whether we have an ArcGIS error message
-                Error__1 errWS = (new Gson()).fromJson(response, Error__1.class);
+                Error_ errWS = (new Gson()).fromJson(response, Error_.class);
                 LOGGER.log(
                         Level.SEVERE,
                         "Error during retrieval of feature server "
@@ -241,7 +229,7 @@ public class ArcGISRestDataStore extends ContentDataStore {
                                 });
             } catch (JsonSyntaxException e) {
                 // Checks whether we have an AercGIS error message
-                err = (new Gson()).fromJson(response, Error__1.class);
+                err = (new Gson()).fromJson(response, Error_.class);
                 LOGGER.log(
                         Level.SEVERE,
                         "JSON syntax error " + err.getCode() + " " + err.getMessage(),
@@ -313,7 +301,7 @@ public class ArcGISRestDataStore extends ContentDataStore {
 
                 try {
                     responseWSString =
-                            ArcGISRestDataStore.inputStreamToString(
+                            ArcGISRestDataStore.InputStreamToString(
                                     retrieveJSON(
                                             "GET",
                                             new URL(this.webserviceUrl),
@@ -335,7 +323,7 @@ public class ArcGISRestDataStore extends ContentDataStore {
                     }
                 } catch (JsonSyntaxException e) {
                     // Checks whether we have an ArcGIS error message
-                    Error__1 errWS = (new Gson()).fromJson(responseWSString, Error__1.class);
+                    Error_ errWS = (new Gson()).fromJson(responseWSString, Error_.class);
                     LOGGER.log(
                             Level.SEVERE,
                             String.format(
@@ -430,7 +418,6 @@ public class ArcGISRestDataStore extends ContentDataStore {
             return new ArrayList<Name>();
         }
 
-        // Shuts down the executor thread pool
         executor.shutdown();
 
         // Returns the list of datastore entries
@@ -460,96 +447,86 @@ public class ArcGISRestDataStore extends ContentDataStore {
     }
 
     /**
-     * Helper method returning a JSON String out of a resource belonging to a ArcGIS ReST API
-     * instance (via a GET).If present, it sends authorisation.
+     * Helper method returning a JSON String out of a resource belongining to a ArcGIS ReST API
+     * instance (via a GET). If present, it sends authorixzation.
      *
-     * @param methType the method (GET or POST) to use
      * @param url The endpoint of the resource
      * @param params Request parameters
      * @return A string representing the JSON, null
+     * @throws IOException
      */
-    public InputStream retrieveJSON(String methType, URL url, List<NameValuePair> params)
+    public InputStream retrieveJSON(String methType, URL url, Map<String, Object> params)
             throws IOException {
 
-        CloseableHttpClient client = HttpClients.createDefault();
+        HttpClient client = new HttpClient();
 
-        // Instantiates the method based on the methType parameter
-        HttpRequestBase meth;
+        // Instanties the method based on the methType parameter
+        HttpMethodBase meth;
         if (methType.equals("GET")) {
-            meth = new HttpGet();
+            meth = new GetMethod();
         } else {
-            meth = new HttpPost();
+            meth = new PostMethod();
         }
+        HttpMethodParams methParams = new HttpMethodParams();
+        methParams.setCookiePolicy(CookiePolicy.BROWSER_COMPATIBILITY);
+        meth.setParams(methParams);
 
         // Sets the URI, request parameters and request body (depending on method
         // type)
-        URI uri;
+        URI uri = new URI(url.toString(), false);
+        NameValuePair[] kvps = new NameValuePair[params.size()];
+        int i = 0;
+        for (Object entry : params.entrySet().toArray()) {
+            kvps[i++] =
+                    new NameValuePair(
+                            ((Map.Entry) entry).getKey().toString(),
+                            ((Map.Entry) entry).getValue().toString());
+        }
 
         if (methType.equals("GET")) {
-            // Builds the GET request
-            try {
-                uri = new URIBuilder(url.toString()).setParameters(params).build();
-                meth.setURI(uri);
-            } catch (URISyntaxException ex) {
-                throw new IOException(ex.getMessage());
-            }
-
-            this.LOGGER.log(
-                    Level.FINER, "About to query GET " + url.toString() + "?" + uri.getQuery());
-        } else {
-            // Builds the POST request
-            try {
-                uri = new URIBuilder(url.toString()).build();
-                meth.setURI(uri);
-            } catch (URISyntaxException ex) {
-                throw new IOException(ex.getMessage());
-            }
-
-            HttpEntity body = EntityBuilder.create().chunked().setParameters(params).build();
-            ((HttpPost) (meth)).setEntity(body);
-            meth.setHeader(
-                    HttpHeaders.CONTENT_TYPE,
-                    ContentType.APPLICATION_FORM_URLENCODED.getMimeType());
+            meth.setQueryString(kvps);
+            uri.setQuery(meth.getQueryString());
             this.LOGGER.log(
                     Level.FINER,
                     String.format(
-                            "About to query POST '%s' with parameters: %s",
+                            "About to query GET '%s?%s'", url.toString(), meth.getQueryString()));
+        } else {
+            ((PostMethod) (meth)).setContentChunked(true);
+            ((PostMethod) (meth)).setRequestBody(kvps);
+            this.LOGGER.log(
+                    Level.FINER,
+                    String.format(
+                            "About to query POST '%s' with body: %s",
                             url.toString(), params.toString()));
         }
 
+        meth.setURI(uri);
+
         // Adds authorization if login/password is set
         if (this.user != null && this.password != null) {
-            meth.addHeader(
+            meth.addRequestHeader(
                     "Authentication", (new UsernamePasswordCredentials(user, password)).toString());
         }
-
-        CloseableHttpResponse response;
 
         // Re-tries the request if necessary
         while (true) {
 
             // Executes the request (a POST, since the URL may get too long)
-            response = client.execute(meth);
+            int status = client.executeMethod(meth);
 
             // If HTTP error, throws an exception
-            if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
-                throw new IOException(
-                        "HTTP Status: "
-                                + response.getStatusLine().getStatusCode()
-                                + " for URL: "
-                                + uri
-                                + " response: "
-                                + response.toString());
+            if (status != HttpStatus.SC_OK) {
+                throw new IOException(String.format("HTTP Status: %d for URL: %s", status, uri));
             }
 
             // Retrieve the wait period is returned by the server
             int wait = 0;
-            Header header = meth.getFirstHeader("Retry-After");
+            Header header = meth.getResponseHeader("Retry-After");
             if (header != null) {
                 wait = Integer.valueOf(header.getValue());
             }
 
-            // Exits if no retry is necessary
+            // Exists if no retry is necessary
             if (wait == 0) {
                 break;
             }
@@ -562,8 +539,8 @@ public class ArcGISRestDataStore extends ContentDataStore {
             }
         }
 
-        // Extracts and returns the response
-        return response.getEntity().getContent();
+        // Extracts an returns the response
+        return meth.getResponseBodyAsStream();
     }
 
     /**
@@ -598,16 +575,16 @@ public class ArcGISRestDataStore extends ContentDataStore {
     }
 
     /**
-     * Helper method to convert an entire InputStream to a String and close the stream
+     * Helper method to convert an entire InputStream to a String and close the steeam
      *
      * @param istream input stream to convert to a String
-     * @return the converted String
+     * @throws IOException
+     * @returns the converted String
      */
-    public static String inputStreamToString(InputStream istream) throws IOException {
-        try {
-            return IOUtils.toString(istream, Charset.defaultCharset());
-        } finally {
-            istream.close();
+    public static String InputStreamToString(InputStream istream) throws IOException {
+        try (BufferedReader br =
+                new BufferedReader(new InputStreamReader(istream, Charset.defaultCharset()))) {
+            return br.lines().collect(Collectors.joining(System.lineSeparator()));
         }
     }
 }

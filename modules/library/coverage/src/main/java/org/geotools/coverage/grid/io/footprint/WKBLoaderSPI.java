@@ -35,14 +35,13 @@ public class WKBLoaderSPI implements FootprintLoaderSpi {
     /** Loads WKB files */
     public class WKBLoader implements FootprintLoader {
 
-        WKBReader reader = new WKBReader();
-
         @Override
         public Geometry loadFootprint(String pathNoExtension) throws Exception {
             File file = new File(pathNoExtension + ".wkb");
             if (file.exists()) {
                 try (FileInputStream is = new FileInputStream(file); ) {
-                    return reader.read(new InputStreamInStream(is));
+                    // WKBReader is not thread-safe. Instantiate a new one
+                    return new WKBReader().read(new InputStreamInStream(is));
                 }
             }
 

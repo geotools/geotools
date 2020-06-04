@@ -18,28 +18,19 @@
 
 package org.geotools.data.arcgisrest;
 
-import static org.geotools.data.arcgisrest.ArcGISRestDataStore.ATTRIBUTES_PARAM;
-import static org.geotools.data.arcgisrest.ArcGISRestDataStore.COUNT_PARAM;
-import static org.geotools.data.arcgisrest.ArcGISRestDataStore.DEFAULT_PARAMS;
-import static org.geotools.data.arcgisrest.ArcGISRestDataStore.GEOMETRY_PARAM;
-
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
 import java.util.logging.Level;
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
+import javax.xml.ws.http.HTTPException;
 import org.geotools.data.DefaultResourceInfo;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
@@ -112,12 +103,12 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
     @Override
     protected SimpleFeatureType buildFeatureType() throws IOException {
 
-        // Extracts informaton about the type name (as per this.entry) from the API
+        // Extracts information about the type name (as per this.entry) from the API
         Dataset ds = this.dataStore.getDataset(this.entry.getName());
         Webservice ws =
                 (new Gson())
                         .fromJson(
-                                ArcGISRestDataStore.inputStreamToString(
+                                ArcGISRestDataStore.InputStreamToString(
                                         this.dataStore.retrieveJSON(
                                                 "GET",
                                                 new URL(
@@ -138,7 +129,8 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
             // Re-packages the exception to be compatible with method signature
             throw new IOException(e.getMessage(), e.fillInStackTrace());
         }
-        // Exxgtracts the CRS either using WKID or WKT
+
+        // Extracts the CRS either using WKID or WKT
         try {
             if (ws.getExtent().getSpatialReference().getLatestWkid() != null) {
                 this.resInfo.setCRS(
@@ -250,51 +242,71 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
     protected int getCountInternal(Query query) throws IOException {
 
         Count cnt;
-        List<NameValuePair> params = new ArrayList<>();
-        params.addAll(DEFAULT_PARAMS);
-        params.add(new BasicNameValuePair(COUNT_PARAM, "true"));
-        params.add(
-                new BasicNameValuePair(
-                        GEOMETRY_PARAM, this.composeExtent(this.getBoundsInternal(query))));
+        Map<String, Object> params =
+                new HashMap<String, Object>(ArcGISRestDataStore.DEFAULT_PARAMS);
+        params.put(ArcGISRestDataStore.COUNT_PARAM, true);
+        params.put(
+                ArcGISRestDataStore.GEOMETRY_PARAM,
+                this.composeExtent(this.getBoundsInternal(query)));
+        try {
+            params.put(
+                    ArcGISRestDataStore.GEOMETRYSRS_PARAM,
+                    CRS.lookupEpsgCode(
+                            this.getBoundsInternal(query).getCoordinateReferenceSystem(), true));
+        } catch (FactoryException e) {
+            throw new IOException(String.format("Unknown CRS %s", e.getMessage()));
+        }
 
         try {
             cnt =
                     (new Gson())
                             .fromJson(
-                                    ArcGISRestDataStore.inputStreamToString(
+                                    ArcGISRestDataStore.InputStreamToString(
                                             this.dataStore.retrieveJSON(
                                                     "POST",
                                                     (new URL(this.composeQueryURL())),
                                                     params)),
                                     Count.class);
-        } catch (JsonSyntaxException e) {
-            throw new IOException(String.format("Error %s", e.getMessage()));
+        } catch (HTTPException e) {
+            throw new IOException(String.format("Error %d %s", e.getStatusCode(), e.getMessage()));
         }
 
-        return cnt == null ? -1 : cnt.getCount();
+        return (cnt == null) ? -1 : cnt.getCount();
     }
 
     @Override
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {
 
-        List<NameValuePair> params = new ArrayList<>();
-        params.addAll(ArcGISRestDataStore.DEFAULT_GETFEATURES_PARAMS);
-
+        Map<String, Object> params =
+                new HashMap<String, Object>(ArcGISRestDataStore.DEFAULT_PARAMS);
         InputStream result;
 
-        params.add(
-                new BasicNameValuePair(GEOMETRY_PARAM, this.composeExtent(this.getBounds(query))));
+        params.put(ArcGISRestDataStore.GEOMETRY_PARAM, this.composeExtent(this.getBounds(query)));
+        try {
+            params.put(
+                    ArcGISRestDataStore.GEOMETRYSRS_PARAM,
+                    CRS.lookupEpsgCode(
+                            this.getBoundsInternal(query).getCoordinateReferenceSystem(), true));
+        } catch (FactoryException e) {
+            throw new IOException(String.format("Unknown CRS %s", e.getMessage()));
+        }
 
         // TODO: currently it sets _only_ the BBOX query
-        params.add(
-                new BasicNameValuePair(GEOMETRY_PARAM, this.composeExtent(this.getBounds(query))));
+        params.put(ArcGISRestDataStore.GEOMETRY_PARAM, this.composeExtent(this.getBounds(query)));
 
         // Sets the atttributes to return
-        params.add(new BasicNameValuePair(ATTRIBUTES_PARAM, this.composeAttributes(query)));
+        params.put(ArcGISRestDataStore.ATTRIBUTES_PARAM, this.composeAttributes(query));
+
+        // Sets the outpout to GeoJSON
+        params.put(ArcGISRestDataStore.FORMAT_PARAM, ArcGISRestDataStore.FORMAT_GEOJSON);
 
         // Executes the request
-        result = this.dataStore.retrieveJSON("POST", (new URL(this.composeQueryURL())), params);
+        try {
+            result = this.dataStore.retrieveJSON("POST", (new URL(this.composeQueryURL())), params);
+        } catch (HTTPException e) {
+            throw new IOException(String.format("Error %d %s", e.getStatusCode(), e.getMessage()));
+        }
 
         // Returns a reader for the result
         return new ArcGISRestFeatureReader(this.schema, result, this.dataStore.getLogger());
@@ -317,7 +329,7 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
     /**
      * Helper method to return an extent as the API expects it
      *
-     * @param env ReferencedEnvelope (as expressed in the JSON describing the layer)
+     * @param env Extent (as expressed in the JSON describing the layer)
      */
     protected String composeExtent(ReferencedEnvelope env) {
         Extent ext = new Extent();

@@ -16,10 +16,15 @@
  *
  */
 
-package org.geotools.data.arcgisrest;
+package org.geotools.data.sdmx;
 
+import it.bancaditalia.oss.sdmx.api.DataFlowStructure;
+import it.bancaditalia.oss.sdmx.api.Dataflow;
+import it.bancaditalia.oss.sdmx.api.GenericSDMXClient;
+import it.bancaditalia.oss.sdmx.api.PortableTimeSeries;
+import it.bancaditalia.oss.sdmx.exceptions.SdmxException;
 import java.io.IOException;
-import java.io.InputStream;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.logging.Logger;
 import org.geotools.data.FeatureReader;
@@ -27,27 +32,35 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
- * Feature reader of the GeoJSON features
+ * Feature reader of SDMX tuples
  *
  * @author lmorandini
  */
-public class ArcGISRestFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
+public abstract class SDMXFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
 
     protected SimpleFeatureType featureType;
-    protected GeoJSONParser parser;
     protected Logger LOGGER;
-
+    protected GenericSDMXClient client;
+    protected Iterator<PortableTimeSeries<Double>> tsIter;
+    protected PortableTimeSeries<Double> ts;
+    protected Iterator<String> timeIter;
+    protected Iterator<Double> obsIter;
+    protected boolean empty;
     protected int featIndex = 0;
 
-    public ArcGISRestFeatureReader(
-            SimpleFeatureType featureTypeIn, InputStream iStream, Logger logger)
-            throws IOException {
+    public SDMXFeatureReader(
+            GenericSDMXClient clientIn,
+            SimpleFeatureType featureTypeIn,
+            Dataflow dataflowIn,
+            DataFlowStructure dfStructureIn,
+            Logger logger)
+            throws IOException, SdmxException {
+
         this.featureType = featureTypeIn;
         this.featIndex = 0;
         this.LOGGER = logger;
-
-        this.parser = new GeoJSONParser(iStream, featureTypeIn, logger);
-        this.parser.parseFeatureCollection();
+        this.client = clientIn;
+        this.empty = false;
     }
 
     /** @see FeatureReader#getFeatureType() */
@@ -63,7 +76,7 @@ public class ArcGISRestFeatureReader implements FeatureReader<SimpleFeatureType,
     /** @see FeatureReader#hasNext() */
     @Override
     public boolean hasNext() {
-        return this.parser.hasNext();
+        return false;
     }
 
     /**
@@ -72,11 +85,11 @@ public class ArcGISRestFeatureReader implements FeatureReader<SimpleFeatureType,
      */
     @Override
     public SimpleFeature next() throws NoSuchElementException, IOException {
-        return this.parser.next();
+        return null;
     }
 
     @Override
     public void close() {
-        this.parser.close();
+        // TODO
     }
 }

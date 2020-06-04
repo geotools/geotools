@@ -15,7 +15,7 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.gce.imagemosaic.catalog;
+package org.geotools.gce.imagemosaic.catalog.oracle;
 
 import java.util.*;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -23,7 +23,6 @@ import org.geotools.data.transform.Definition;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
-import org.geotools.jdbc.JDBCDataStore;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
@@ -62,8 +61,6 @@ public abstract class AbstractFeatureTypeMapper implements FeatureTypeMapper {
     protected SimpleFeatureSource simpleFeatureSource;
 
     protected int maxLength;
-
-    protected int srID = 0;
 
     protected AbstractFeatureTypeMapper(SimpleFeatureType featureType, int maxLength)
             throws CQLException {
@@ -127,9 +124,13 @@ public abstract class AbstractFeatureTypeMapper implements FeatureTypeMapper {
 
     @Override
     public String remap(String name) {
-        String mappedName = name.toUpperCase();
+        return remap(name, maxLength);
+    }
+
+    protected String remap(String name, int maxLength) {
+        String mappedName = name;
         mappedName =
-                mappedName.length() > maxLength ? mappedName.substring(0, maxLength) : mappedName;
+                mappedName.length() >= maxLength ? mappedName.substring(0, maxLength) : mappedName;
         return mappedName;
     }
 
@@ -154,6 +155,7 @@ public abstract class AbstractFeatureTypeMapper implements FeatureTypeMapper {
             Definition definition = definitionsMapping.get(name);
             AttributeType type = descriptor.getType();
             if (type instanceof GeometryType) {
+                coordinateReferenceSystem = ((GeometryType) type).getCoordinateReferenceSystem();
                 remapGeometryAttribute(tb, definition, descriptor, type);
             } else {
                 tb.add(definition.getExpression().toString(), definition.getBinding());
@@ -171,32 +173,9 @@ public abstract class AbstractFeatureTypeMapper implements FeatureTypeMapper {
             Definition definition,
             AttributeDescriptor descriptor,
             AttributeType type) {
-        coordinateReferenceSystem = ((GeometryType) type).getCoordinateReferenceSystem();
-        Map<Object, Object> userData = descriptor.getUserData();
-        if (userData != null && !userData.isEmpty()) {
-            Set<Object> keys = userData.keySet();
-            for (Object key : keys) {
-                Object value = userData.get(key);
-                tb.userData(key, value);
-                if (key instanceof String) {
-                    String id = (String) key;
-                    if (id.equalsIgnoreCase(JDBCDataStore.JDBC_NATIVE_SRID) && value != null) {
-                        srID = (Integer) value;
-                    }
-                }
-            }
-        }
         tb.add(
                 definition.getExpression().toString(),
                 definition.getBinding(),
                 coordinateReferenceSystem);
-    }
-
-    public int getSrID() {
-        return srID;
-    }
-
-    public void setSrID(int srID) {
-        this.srID = srID;
     }
 }

@@ -114,6 +114,12 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.geotools.jdbc</groupId>
+      <artifactId>gt-jdbc-sqlserver</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <artifactId>ojdbc14</artifactId>
       <groupId>com.oracle</groupId>
       <scope>provided</scope>

@@ -2104,6 +2104,13 @@ public class Utils {
                 || "org.geotools.data.postgis.PostgisNGDataStoreFactory".equals(spiName);
     }
 
+    /** Checks if the provided factory spi builds a SQLServer store */
+    public static boolean isSQLServerStore(DataStoreFactorySpi spi) {
+        String spiName = spi == null ? null : spi.getClass().getName();
+        return "org.geotools.data.sqlserver.SQLServerDataStoreFactory".equals(spiName)
+                || "org.geotools.data.sqlserver.SQLServerJNDIDataStoreFactory".equals(spiName);
+    }
+
     /** Merge statistics across datasets. */
     public static PAMDataset mergePamDatasets(PAMDataset[] pamDatasets) {
         PAMDataset merged = pamDatasets[0];

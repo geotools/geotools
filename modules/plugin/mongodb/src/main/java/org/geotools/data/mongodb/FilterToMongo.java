@@ -33,6 +33,7 @@ import java.util.regex.Pattern;
 import org.bson.types.ObjectId;
 import org.geotools.data.mongodb.complex.JsonSelectAllFunction;
 import org.geotools.data.mongodb.complex.JsonSelectFunction;
+import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.util.Converters;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -211,8 +212,41 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
     @Override
     public Object visit(Not filter, Object extraData) {
         BasicDBObject output = asDBObject(extraData);
+        // in case of a not operator we cannot simply wrap the child filter
+        // with a $not since mongo syntax is {property:{$not:{operator-expression}}}
+        // thus using a Visitor to find the PropertyName
+        class PropertyNameFinder extends FilterAttributeExtractor {
+            List<PropertyName> pNames = new ArrayList<>();
+
+            @Override
+            public Object visit(PropertyName expression, Object data) {
+                pNames.add(expression);
+                return super.visit(expression, data);
+            }
+
+            PropertyName getPropertyName() {
+                if (pNames.size() > 0) return pNames.get(0);
+                else return null;
+            }
+        }
+        PropertyNameFinder finder = new PropertyNameFinder();
+        filter.getFilter().accept(finder, null);
+        PropertyName pn = finder.getPropertyName();
+        // gets child filter as it is
         BasicDBObject expr = (BasicDBObject) filter.getFilter().accept(this, null);
-        output.put("$not", expr);
+        BasicDBObject dbObject;
+        if (pn != null) {
+            String strPn = pn.getPropertyName();
+            // get only the operator expression
+            Object exprValue = expr.get(strPn);
+            dbObject = new BasicDBObject("$not", exprValue);
+            // move up the PropertyName
+            output.put(strPn, dbObject);
+        } else {
+            // no PropertyName found throwing exception
+            throw new UnsupportedOperationException(
+                    "No propertyName found, cannot use $not as top level operator");
+        }
         return output;
     }
 
@@ -237,7 +271,7 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
 
     @Override
     public Object visit(PropertyIsEqualTo filter, Object extraData) {
-        return encodeBinaryComparisonOp(filter, null, extraData);
+        return encodeBinaryComparisonOp(filter, "$eq", extraData);
     }
 
     BasicDBObject encodeBinaryComparisonOp(
@@ -373,9 +407,12 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
     @Override
     public Object visit(PropertyIsNull filter, Object extraData) {
         BasicDBObject output = asDBObject(extraData);
-        String prop = convert(filter.getExpression().evaluate(null), String.class);
-        // mongodb filter { item: null } supports both: null value and nonexistent attribute
-        output.put(prop, null);
+        String prop = convert(filter.getExpression().accept(this, null), String.class);
+        // $eq matches either contain the item field whose value is null
+        // or that do not contain the field
+        BasicDBObject propIsNull = new BasicDBObject();
+        propIsNull.put("$eq", null);
+        output.put(prop, propIsNull);
         return output;
     }
 

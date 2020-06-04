@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.gce.imagemosaic.catalog.oracle;
+package org.geotools.gce.imagemosaic.catalog;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

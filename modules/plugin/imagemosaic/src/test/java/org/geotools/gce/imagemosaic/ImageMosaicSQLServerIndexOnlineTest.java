@@ -94,7 +94,7 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
     /**
      * Simple Class for better testing raster manager
      *
-     * @author Simone Giannecchini, GeoSolutions SAS
+     * @author Marco Volpini, GeoSolutions SAS
      */
     private static class MyImageMosaicReader extends ImageMosaicReader {
 
@@ -288,7 +288,6 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
                     new GeneralParameterValue[] {gg, time, bkg, elevation, direct},
                     "Time-Elevation Test");
         } finally {
-            // dropTables(new String[] {tempFolderName1, "GEOMETRY_METADATA"});
             if (reader != null) reader.dispose();
         }
     }
@@ -317,7 +316,6 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
             assertNotNull(reader);
         } finally {
             if (reader != null) reader.dispose();
-            dropTables(new String[] {tempFolderNoEpsg, "GEOMETRY_METADATA"});
         }
     }
 
@@ -638,9 +636,8 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
                     reader,
                     new GeneralParameterValue[] {gg, time, bkg, elevation, direct},
                     "Time-Elevation Test");
-            reader.dispose();
         } finally {
-
+            if (reader != null) reader.dispose();
         }
     }
 
@@ -670,6 +667,7 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
                             tempFolderName3,
                             tempFolderName4,
                             tempFolderNameWrap,
+                            VERY_LONG_NAME_SQLSERVER.substring(0, 113),
                             tempFolderNoEpsg)) {
                 File directory = new File(parent, name);
                 if (directory.isDirectory() && directory.exists()) {

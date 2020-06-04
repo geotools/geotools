@@ -21,8 +21,8 @@ import java.util.Properties;
 import org.geotools.data.DataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
-import org.geotools.gce.imagemosaic.catalog.oracle.DataStoreWrapper;
-import org.geotools.gce.imagemosaic.catalog.oracle.FeatureTypeMapper;
+import org.geotools.gce.imagemosaic.catalog.DataStoreWrapper;
+import org.geotools.gce.imagemosaic.catalog.FeatureTypeMapper;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 /** Specific SQLServer implementation for a {@link DataStoreWrapper} */

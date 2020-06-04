@@ -25,7 +25,8 @@
         "properties" : {
           "vint" : 3,
           "vstring" : "test 3",
-          "vfloat" : 1.3
+          "vfloat" : 1.3,
+          "vdate": null
         }
       },
     {

@@ -388,7 +388,9 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
 
         // create a geopackage that will be accessed in creation mode at top write speed
         File tempFile = File.createTempFile("geopkg-exclusive", "db", new File("target"));
-        try (GeoPackage geopkg = new GeoPackage(tempFile, config)) {
+        Map<String, Object> params = new HashMap<>();
+        params.put(JDBCDataStoreFactory.BATCH_INSERT_SIZE.key, 10000);
+        try (GeoPackage geopkg = new GeoPackage(tempFile, config, params)) {
             geopkg.init();
 
             SimpleFeatureType schema = getEnumFeatureType();
@@ -401,7 +403,7 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
         }
 
         // read, check everything is fine
-        Map<String, Object> params = new HashMap<>();
+        params = new HashMap<>();
         params.put("dbtype", "geopkg");
         params.put("database", tempFile.getAbsolutePath());
         JDBCDataStore dataStore = (JDBCDataStore) DataStoreFinder.getDataStore(params);

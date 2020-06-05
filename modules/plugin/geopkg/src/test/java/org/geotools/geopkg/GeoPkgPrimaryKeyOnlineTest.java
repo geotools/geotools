@@ -16,10 +16,19 @@
  */
 package org.geotools.geopkg;
 
+import java.util.HashMap;
+import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCPrimaryKeyOnlineTest;
 import org.geotools.jdbc.JDBCPrimaryKeyTestSetup;
 
 public class GeoPkgPrimaryKeyOnlineTest extends JDBCPrimaryKeyOnlineTest {
+
+    @Override
+    protected HashMap createDataStoreFactoryParams() throws Exception {
+        HashMap params = super.createDataStoreFactoryParams();
+        params.put(JDBCDataStoreFactory.BATCH_INSERT_SIZE.key, 1);
+        return params;
+    }
 
     @Override
     protected JDBCPrimaryKeyTestSetup createTestSetup() {

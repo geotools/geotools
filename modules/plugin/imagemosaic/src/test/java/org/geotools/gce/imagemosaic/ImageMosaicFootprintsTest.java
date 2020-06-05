@@ -40,20 +40,21 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GranuleRemovalPolicy;
 import org.geotools.coverage.grid.io.GranuleStore;
-import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
-import org.geotools.coverage.grid.io.footprint.FootprintInsetPolicy;
-import org.geotools.coverage.grid.io.footprint.MultiLevelROIProviderFactory;
-import org.geotools.coverage.grid.io.footprint.WKBLoaderSPI;
-import org.geotools.coverage.grid.io.footprint.WKTLoaderSPI;
+import org.geotools.coverage.grid.io.footprint.*;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.shapefile.ShapefileDataStore;
@@ -105,6 +106,8 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
 
 public class ImageMosaicFootprintsTest {
+
+    @Rule public TemporaryFolder folder = new TemporaryFolder();
 
     private File testMosaic;
 
@@ -1621,5 +1624,64 @@ public class ImageMosaicFootprintsTest {
         File[] existingFilesPastCleanup = directory.listFiles(fileFilter);
         assertThat(existingFilesPastCleanup, Matchers.emptyArray());
         assertEquals(otherFilesCount, directory.listFiles(notFileFilter).length);
+    }
+
+    @Test
+    public void testConcurrentWKBFootprintsLoading() throws Exception {
+        WKBLoaderSPI loaderSPI = new WKBLoaderSPI();
+        FootprintLoader loader = loaderSPI.createLoader();
+        File newFolder = folder.newFolder();
+
+        // Get a sample WKB file and its footprint geometry
+        File footprintFile = TestData.file(this, "footprint_wkbs/r1c1.wkb");
+        String footprintPath = footprintFile.getAbsolutePath();
+        String fileName = FilenameUtils.getName(footprintPath);
+        footprintPath = footprintPath.substring(0, footprintPath.length() - 4);
+        Geometry footprint = loader.loadFootprint(footprintPath);
+
+        int numberOfSamples = 60;
+        String[] testFiles = new String[numberOfSamples];
+
+        // Let's copy the sample WKB to N different files
+        for (int i = 0; i < numberOfSamples; i++) {
+            String newName = fileName.replace("c1", String.format("c%03d", i));
+            File ithFile = new File(newFolder, newName);
+            FileUtils.copyFile(footprintFile, ithFile);
+            File ithFootprintFile = new File(newFolder, FilenameUtils.getBaseName(newName));
+            testFiles[i] = ithFootprintFile.getAbsolutePath();
+        }
+
+        // Concurrently load the footprints of these sample WKB files
+        // and add the results to a Geometries list, also counting
+        // any error occurred during footprint parsing
+        ExecutorService service = Executors.newFixedThreadPool(numberOfSamples / 2);
+        CountDownLatch latch = new CountDownLatch(numberOfSamples);
+        List<Geometry> geometries = new ArrayList<>(numberOfSamples);
+        AtomicInteger errors = new AtomicInteger();
+        try {
+            for (int i = 0; i < numberOfSamples; i++) {
+                int finalI = i;
+                service.submit(
+                        () -> {
+                            try {
+                                geometries.add(loader.loadFootprint(testFiles[finalI]));
+                            } catch (Exception e) {
+                                errors.getAndIncrement();
+                            }
+                            latch.countDown();
+                        });
+            }
+            latch.await();
+        } finally {
+            folder.delete();
+        }
+
+        // Make sure that no errors occurred
+        assertEquals(0, errors.get());
+
+        // Make sure that the loaded geometries match the sample footprint
+        for (Geometry geometry : geometries) {
+            assertEquals(geometry, footprint);
+        }
     }
 }

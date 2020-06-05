@@ -342,7 +342,7 @@ public class GeoPackageTest {
 
         // create a geopackage that will be accessed in creation mode
         File tempFile = File.createTempFile("geopkg-exclusive", "db", new File("target"));
-        try (GeoPackage geopkg = new GeoPackage(tempFile, config)) {
+        try (GeoPackage geopkg = new GeoPackage(tempFile, config, null)) {
             geopkg.init();
 
             ShapefileDataStore shp = new ShapefileDataStore(setUpShapefile());

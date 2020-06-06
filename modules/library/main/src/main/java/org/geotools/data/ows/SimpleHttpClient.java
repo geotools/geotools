@@ -27,6 +27,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import org.geotools.data.Base64;
+import org.geotools.util.factory.GeoTools;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -105,6 +106,9 @@ public class SimpleHttpClient implements HTTPClient {
             ((HttpURLConnection) connection).setRequestMethod("GET");
         }
 
+        // Set User-Agent to a good default
+        connection.addRequestProperty(
+                "User-Agent", "GeoTools HTTPClient (" + GeoTools.getVersion() + ")");
         if (headers != null) {
             for (Map.Entry<String, String> headerNameValue : headers.entrySet()) {
                 if (LOGGER.isLoggable(Level.FINE)) {

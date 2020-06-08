@@ -62,7 +62,10 @@ public class FeatureTypeTypeBinding extends AbstractComplexEMFBinding {
             }
 
             if (stringValue != null) {
-                ((FeatureTypeType) object).getOtherCRS().add(stringValue);
+                // GEOT-6620-Do not added Other SRS again if it already exists
+                if (!((FeatureTypeType) object).getOtherCRS().contains(stringValue)) {
+                    ((FeatureTypeType) object).getOtherCRS().add(stringValue);
+                }
                 return;
             }
         } else if ("OtherSRS".equals(property)) {

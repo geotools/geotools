@@ -21,5 +21,7 @@ public class FeatureTypeTypeBindingTest extends WFSTestSupport {
         assertEquals(
                 "application/gml+xml; version=3.2",
                 gc.getFeatureType().get(0).getOutputFormats().getFormat().get(0));
+        // GEOT-6620 validate count of OTHER SRS
+        assertEquals(2, gc.getFeatureType().get(0).getOtherCRS().size());
     }
 }

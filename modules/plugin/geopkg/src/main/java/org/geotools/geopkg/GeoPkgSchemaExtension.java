@@ -38,6 +38,27 @@ import org.geotools.util.logging.Logging;
  */
 public class GeoPkgSchemaExtension extends GeoPkgExtension {
 
+    public static class Factory implements GeoPkgExtensionFactory {
+
+        @Override
+        public GeoPkgExtension getExtension(String name, GeoPackage geoPackage) {
+            if (NAME.equals(name)) {
+                return new GeoPkgSchemaExtension(geoPackage);
+            }
+
+            return null;
+        }
+
+        @Override
+        public GeoPkgExtension getExtension(Class extensionClass, GeoPackage geoPackage) {
+            if (GeoPkgSchemaExtension.class.equals(extensionClass)) {
+                return new GeoPkgSchemaExtension(geoPackage);
+            }
+
+            return null;
+        }
+    }
+
     static final Logger LOGGER = Logging.getLogger(GeoPkgSchemaExtension.class);
 
     static final String NAME = "gpkg_schema";

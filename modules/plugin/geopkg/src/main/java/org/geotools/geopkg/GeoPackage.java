@@ -34,6 +34,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -657,16 +658,32 @@ public class GeoPackage implements Closeable {
      * implementation
      */
     public GeoPkgExtension getExtension(String name) {
-        if (name.equals(GeoPkgSchemaExtension.NAME)) {
-            return new GeoPkgSchemaExtension(this);
+        Iterator<GeoPkgExtensionFactory> factories =
+                GeoPkgExtensionFactoryFinder.getExtensionFactories();
+        while (factories.hasNext()) {
+            GeoPkgExtensionFactory factory = factories.next();
+            GeoPkgExtension extension = factory.getExtension(name, this);
+            if (extension != null) {
+                return extension;
+            }
         }
 
         return null;
     }
 
-    public <T extends GeoPkgExtension> T getExtension(Class<T> extension) {
-        if (extension.isAssignableFrom(GeoPkgSchemaExtension.class)) {
-            return (T) new GeoPkgSchemaExtension(this);
+    /**
+     * Returns the extension by class, or null if the extension is not supported by this
+     * implementation
+     */
+    public <T extends GeoPkgExtension> T getExtension(Class<T> extensionClass) {
+        Iterator<GeoPkgExtensionFactory> factories =
+                GeoPkgExtensionFactoryFinder.getExtensionFactories();
+        while (factories.hasNext()) {
+            GeoPkgExtensionFactory factory = factories.next();
+            GeoPkgExtension extension = factory.getExtension(extensionClass, this);
+            if (extension != null) {
+                return (T) extension;
+            }
         }
 
         return null;

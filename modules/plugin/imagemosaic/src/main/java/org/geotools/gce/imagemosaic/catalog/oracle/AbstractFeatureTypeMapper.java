@@ -65,13 +65,13 @@ public abstract class AbstractFeatureTypeMapper implements FeatureTypeMapper {
     protected AbstractFeatureTypeMapper(SimpleFeatureType featureType, int maxLength)
             throws CQLException {
         wrappedFeatureType = featureType;
+        this.maxLength = maxLength;
         originalName = featureType.getName();
         mappedName = originalName.getLocalPart();
         mappedName = remap(mappedName);
         List<AttributeDescriptor> attributes = featureType.getAttributeDescriptors();
         definitions = new LinkedList<Definition>();
         definitionsMapping = new HashMap<Name, Definition>();
-        this.maxLength = maxLength;
         // Loop over attributes and prepare the definitions
         for (AttributeDescriptor attribute : attributes) {
             final String originalAttribute = attribute.getLocalName();

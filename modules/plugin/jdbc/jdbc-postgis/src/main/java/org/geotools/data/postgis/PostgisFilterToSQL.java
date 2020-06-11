@@ -22,6 +22,7 @@ import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.postgis.filter.FilterFunction_pgNearest;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.function.InArrayFunction;
+import org.geotools.filter.function.JsonPointerFunction;
 import org.geotools.jdbc.JDBCDataStore;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LinearRing;
@@ -193,6 +194,11 @@ public class PostgisFilterToSQL extends FilterToSQL {
                 && (left instanceof PropertyName || right instanceof PropertyName)) {
             helper.out = out;
             helper.visitArrayComparison(filter, left, right, rightContext, leftContext, type);
+        } else if (left instanceof JsonPointerFunction || right instanceof JsonPointerFunction) {
+            rightContext = getExpressionTypeIncludingLiterals(left);
+            leftContext = getExpressionTypeIncludingLiterals(right);
+            super.encodeBinaryComparisonOperator(
+                    filter, extraData, left, right, leftContext, rightContext);
         } else {
             super.visitBinaryComparisonOperator(filter, extraData);
         }
@@ -244,5 +250,13 @@ public class PostgisFilterToSQL extends FilterToSQL {
         } else {
             return super.visit(filter, extraData);
         }
+    }
+
+    private Class getExpressionTypeIncludingLiterals(Expression expression) {
+        Class result = super.getExpressionType(expression);
+        if (expression instanceof Literal) {
+            result = ((Literal) expression).getValue().getClass();
+        }
+        return result;
     }
 }

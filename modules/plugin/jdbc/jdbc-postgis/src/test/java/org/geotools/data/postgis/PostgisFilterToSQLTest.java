@@ -34,6 +34,8 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Function;
 import org.opengis.filter.spatial.BBOX3D;
 import org.opengis.filter.spatial.Intersects;
 import org.opengis.geometry.MismatchedDimensionException;
@@ -213,5 +215,28 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
         filterToSql.encode(like);
         String sql = writer.toString().toLowerCase().trim();
         assertEquals("where lower(teststring) like 'a_literal'", sql);
+    }
+
+    @Test
+    public void testFunctionJsonPointer() throws Exception {
+        filterToSql.setFeatureType(testSchema);
+        Function pointer =
+                ff.function("jsonPointer", ff.property("testJSON"), ff.literal("/arr/0"));
+
+        filterToSql.encode(pointer);
+        String sql = writer.toString().toLowerCase().trim();
+        assertEquals("testjson ::json  -> 'arr' ->> 0", sql);
+    }
+
+    @Test
+    public void testBinaryComparisonWithJsonPointer() throws Exception {
+        filterToSql.setFeatureType(testSchema);
+        Function pointer =
+                ff.function("jsonPointer", ff.property("testJSON"), ff.literal("/arr/0"));
+        Expression literal = ff.literal(3);
+        Filter less = ff.less(pointer, literal);
+        filterToSql.encode(less);
+        String sql = writer.toString().toLowerCase().trim();
+        assertEquals("where (testjson ::json  -> 'arr' ->> 0)::integer < 3", sql);
     }
 }

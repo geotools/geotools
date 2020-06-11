@@ -834,6 +834,16 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         Class rightContext = getExpressionType(left);
         Class leftContext = getExpressionType(right);
 
+        encodeBinaryComparisonOperator(filter, extraData, left, right, leftContext, rightContext);
+    }
+
+    protected void encodeBinaryComparisonOperator(
+            BinaryComparisonOperator filter,
+            Object extraData,
+            Expression left,
+            Expression right,
+            Class leftContext,
+            Class rightContext) {
         // case sensitivity
         boolean matchCase = true;
         if (!filter.isMatchingCase()) {
@@ -882,7 +892,6 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
                 f.setParameters(Arrays.asList(right));
                 f.accept(this, Arrays.asList(rightContext));
             }
-
         } catch (java.io.IOException ioe) {
             throw new RuntimeException(IO_ERROR, ioe);
         }

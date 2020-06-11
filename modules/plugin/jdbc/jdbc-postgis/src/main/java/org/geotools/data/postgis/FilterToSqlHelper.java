@@ -27,11 +27,15 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.postgis.filter.FilterFunction_pgNearest;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.LengthFunction;
+import org.geotools.filter.LiteralExpressionImpl;
 import org.geotools.filter.function.DateDifferenceFunction;
 import org.geotools.filter.function.FilterFunction_area;
 import org.geotools.filter.function.FilterFunction_equalTo;
@@ -49,6 +53,7 @@ import org.geotools.filter.function.FilterFunction_strToUpperCase;
 import org.geotools.filter.function.FilterFunction_strTrim;
 import org.geotools.filter.function.FilterFunction_strTrim2;
 import org.geotools.filter.function.InArrayFunction;
+import org.geotools.filter.function.JsonPointerFunction;
 import org.geotools.filter.function.math.FilterFunction_abs;
 import org.geotools.filter.function.math.FilterFunction_abs_2;
 import org.geotools.filter.function.math.FilterFunction_abs_3;
@@ -191,6 +196,7 @@ class FilterToSqlHelper {
             caps.addType(FilterFunction_equalTo.class);
         }
 
+        caps.addType(JsonPointerFunction.class);
         // native filter support
         caps.addType(NativeFilter.class);
 
@@ -617,12 +623,50 @@ class FilterToSqlHelper {
             out.write("trim(both ' ' from ");
             string.accept(delegate, String.class);
             out.write(")");
+        } else if (function instanceof JsonPointerFunction) {
+            encodeJsonPointer(function, extraData);
         } else {
             // function not supported
             return false;
         }
 
         return true;
+    }
+
+    private void encodeJsonPointer(Function jsonPointer, Object extraData) throws IOException {
+        Expression json = getParameter(jsonPointer, 0, true);
+        Expression pointer = getParameter(jsonPointer, 1, true);
+        if (json instanceof PropertyName && pointer instanceof Literal) {
+            // if not a string need to cast the json attribute
+            boolean needCast =
+                    extraData != null
+                            && extraData instanceof Class
+                            && !extraData.equals(String.class);
+
+            if (needCast) out.write('(');
+            json.accept(delegate, null);
+            out.write(" ::json ");
+            String strPointer = ((Literal) pointer).getValue().toString();
+            List<String> pointerEl =
+                    Stream.of(strPointer.split("/"))
+                            .filter(p -> !p.equals(""))
+                            .collect(Collectors.toList());
+            for (int i = 0; i < pointerEl.size(); i++) {
+                String p = pointerEl.get(i);
+                if (i != pointerEl.size() - 1) out.write(" -> ");
+                // using for last element the ->> operator
+                // to have a text instead of a json returned
+                else out.write(" ->> ");
+                Literal elPointer = new LiteralExpressionImpl(p);
+                Class binding = NumberUtils.isParsable(p) ? Integer.class : String.class;
+                elPointer.accept(delegate, binding);
+            }
+            if (needCast) {
+                // cast from text to needed type
+                out.write(')');
+                out.write(cast("", (Class) extraData));
+            }
+        }
     }
 
     Expression getParameter(Function function, int idx, boolean mandatory) {

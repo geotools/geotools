@@ -30,6 +30,7 @@ import java.io.StringWriter;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
+import org.opengis.filter.expression.ExpressionVisitor;
 
 /** Applies a JSON pointer on a given JSON string, extracting a value out of it */
 public class JsonPointerFunction extends FunctionExpressionImpl {
@@ -55,6 +56,7 @@ public class JsonPointerFunction extends FunctionExpressionImpl {
         final String pointerSpec = getExpression(1).evaluate(object, String.class);
 
         JsonPointer expectedPointer = JsonPointer.compile(pointerSpec);
+        if (json == null) return null;
         try (JsonParser parser = factory.createParser(json)) {
             while (parser.nextToken() != END_OF_STREAM) {
                 final JsonPointer pointer = parser.getParsingContext().pathAsPointer();
@@ -151,5 +153,10 @@ public class JsonPointerFunction extends FunctionExpressionImpl {
             }
         }
         generator.writeEndObject();
+    }
+
+    @Override
+    public Object accept(ExpressionVisitor visitor, Object extraData) {
+        return visitor.visit(this, extraData);
     }
 }

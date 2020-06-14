@@ -511,7 +511,13 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
 
     @Override
     public boolean lookupGeneratedValuesPostInsert() {
-        return true;
+        // the JDBC driver does not support returning multiple
+        // keys, but statement batching provides a big boost in terms
+        // of insertion performance. So allow retrieving the keys correctly
+        // when the insert batch size is 1, but avoid errors when they are not
+        // (for code using GeoPackage.add(...) to add lots of features, with
+        // no interest in the generated primary keys
+        return dataStore.getBatchInsertSize() == 1;
     }
 
     @Override

@@ -16,9 +16,7 @@
  */
 package org.geotools.ows.wmts.map;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -42,6 +40,7 @@ import org.geotools.ows.wmts.WebMapTileServer;
 import org.geotools.ows.wmts.model.WMTSLayer;
 import org.geotools.ows.wmts.request.GetTileRequest;
 import org.geotools.referencing.CRS;
+import org.geotools.renderer.lite.RendererUtilities;
 import org.geotools.tile.Tile;
 import org.opengis.coverage.grid.Format;
 import org.opengis.geometry.Envelope;
@@ -290,22 +289,40 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
                         new RuntimeException("TRACE!"));
             }
 
-            BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-
             getTileRequest().setCRS(gridEnvelope.getCoordinateReferenceSystem());
             Set<Tile> responses = wmts.issueRequest(getTileRequest());
-            double xscale = width / requestedEnvelope.getWidth();
-            double yscale = height / requestedEnvelope.getHeight();
+            if (responses.isEmpty()) {
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.fine("Found 0 tiles in " + requestedEnvelope);
+                throw new RuntimeException("No tiles were found in requested extent");
+            }
+            AffineTransform at = null;
+            ReferencedEnvelope global = null;
+            for (Tile tile : responses) {
+                ReferencedEnvelope extent = tile.getExtent();
+                if (global == null) {
+                    global = new ReferencedEnvelope(extent);
+                } else {
+                    global.expandToInclude(extent);
+                }
+                BufferedImage bi = tile.getBufferedImage();
+                if (at == null) {
+                    at =
+                            RendererUtilities.worldToScreenTransform(
+                                    extent, new Rectangle(bi.getWidth(), bi.getHeight()));
+                }
+            }
+            int imageWidth = (int) Math.round(global.getWidth() * at.getScaleX());
+            int imageHeight = (int) Math.abs(Math.round(global.getHeight() * at.getScaleY()));
+            BufferedImage image =
+                    new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
 
-            double scale = Math.min(xscale, yscale);
+            AffineTransform targetTransform =
+                    RendererUtilities.worldToScreenTransform(
+                            global, new Rectangle(0, 0, imageWidth, imageHeight));
+            renderTiles(responses, image.createGraphics(), requestedEnvelope, targetTransform);
 
-            double xoff = requestedEnvelope.getMedian(0) * scale - width / 2;
-            double yoff = requestedEnvelope.getMedian(1) * scale + height / 2;
-            // C ould we use RenderUtilities here?
-            AffineTransform worldToScreen = new AffineTransform(scale, 0, 0, -scale, -xoff, yoff);
-            renderTiles(responses, image.createGraphics(), requestedEnvelope, worldToScreen);
-
-            return gcf.create(layer.getTitle(), image, gridEnvelope);
+            return gcf.create(layer.getTitle(), image, global);
         } catch (ServiceException e) {
             throw new IOException("GetMap failed", e);
         }
@@ -364,13 +381,12 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
             if (LOGGER.isLoggable(Level.INFO)) LOGGER.info("couldn't draw " + tile.getId());
             return;
         }
+        int width = (int) Math.round(points[2] - points[0]);
+        int height = (int) Math.round(points[3] - points[1]);
+        if (width < 1) width = 1;
+        if (height < 1) height = 1;
         g2d.drawImage(
-                img,
-                (int) points[0],
-                (int) points[1],
-                (int) Math.ceil(points[2] - points[0]),
-                (int) Math.ceil(points[3] - points[1]),
-                null);
+                img, (int) Math.round(points[0]), (int) Math.round(points[1]), width, height, null);
     }
 
     protected BufferedImage getTileImage(Tile tile) {

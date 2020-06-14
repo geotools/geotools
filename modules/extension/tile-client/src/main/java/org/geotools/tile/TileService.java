@@ -134,7 +134,8 @@ public abstract class TileService {
      * @param scaleFactor Scale-factor (0-100)
      * @return Zoom-level
      */
-    public int getZoomLevelFromMapScale(ScaleZoomLevelMatcher zoomLevelMatcher, int scaleFactor) {
+    public int getZoomLevelFromMapScale(
+            ScaleZoomLevelMatcher zoomLevelMatcher, double scaleFactor) {
         // fallback scale-list
         double[] scaleList = getScaleList();
         assert (scaleList != null && scaleList.length > 0);
@@ -171,7 +172,7 @@ public abstract class TileService {
      *     selected
      */
     public int getZoomLevelToUse(
-            ScaleZoomLevelMatcher zoomLevelMatcher, int scaleFactor, boolean useRecommended) {
+            ScaleZoomLevelMatcher zoomLevelMatcher, double scaleFactor, boolean useRecommended) {
         if (useRecommended) {
             return getZoomLevelFromMapScale(zoomLevelMatcher, scaleFactor);
         }
@@ -218,7 +219,7 @@ public abstract class TileService {
 
     public Set<Tile> findTilesInExtent(
             ReferencedEnvelope _mapExtent,
-            int scaleFactor,
+            double scaleFactor,
             boolean recommendedZoomLevel,
             int maxNumberOfTiles) {
 

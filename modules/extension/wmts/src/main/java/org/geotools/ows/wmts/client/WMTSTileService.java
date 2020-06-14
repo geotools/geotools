@@ -16,11 +16,9 @@
  */
 package org.geotools.ows.wmts.client;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import static org.geotools.tile.impl.ScaleZoomLevelMatcher.getProjectedEnvelope;
+
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.ows.HTTPClient;
@@ -44,6 +42,7 @@ import org.locationtech.jts.geom.Envelope;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
 /**
@@ -300,7 +299,7 @@ public class WMTSTileService extends TileService {
     @Override
     public Set<Tile> findTilesInExtent(
             ReferencedEnvelope requestedExtent,
-            int scaleFactor,
+            double scaleFactor,
             boolean recommendedZoomLevel,
             int maxNumberOfTiles) {
 
@@ -318,7 +317,7 @@ public class WMTSTileService extends TileService {
         ScaleZoomLevelMatcher zoomLevelMatcher = null;
         try {
             zoomLevelMatcher =
-                    ScaleZoomLevelMatcher.createMatcher(
+                    getZoomLevelMatcher(
                             reqExtentInTileCrs,
                             matrixSet.getCoordinateReferenceSystem(),
                             scaleFactor);
@@ -618,5 +617,47 @@ public class WMTSTileService extends TileService {
 
     public Map<String, Object> getExtrainfo() {
         return extrainfo;
+    }
+
+    private ScaleZoomLevelMatcher getZoomLevelMatcher(
+            ReferencedEnvelope requestExtent, CoordinateReferenceSystem crsTiles, double scale)
+            throws FactoryException, TransformException {
+
+        CoordinateReferenceSystem crsMap = requestExtent.getCoordinateReferenceSystem();
+
+        // Transformation: MapCrs -> TileCrs
+        MathTransform transformMapToTile = CRS.findMathTransform(crsMap, crsTiles);
+
+        // Transformation: TileCrs -> MapCrs (needed for the blank tiles)
+        MathTransform transformTileToMap = CRS.findMathTransform(crsTiles, crsMap);
+
+        // Get the mapExtent in the tiles CRS
+        ReferencedEnvelope mapExtentTileCrs =
+                getProjectedEnvelope(requestExtent, crsTiles, transformMapToTile);
+
+        return new ScaleZoomLevelMatcher(
+                crsMap,
+                crsTiles,
+                transformMapToTile,
+                transformTileToMap,
+                mapExtentTileCrs,
+                requestExtent,
+                scale) {
+            @Override
+            public int getZoomLevelFromScale(TileService service, double[] tempScaleList) {
+                double min = Double.MAX_VALUE;
+                double scaleFactor = getScale();
+                int zoomLevel = 0;
+                for (int i = scaleList.length - 1; i >= 0; i--) {
+                    final double v = scaleList[i];
+                    final double diff = Math.abs(v - scaleFactor);
+                    if (diff < min) {
+                        min = diff;
+                        zoomLevel = i;
+                    }
+                }
+                return zoomLevel;
+            }
+        };
     }
 }

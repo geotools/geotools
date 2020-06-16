@@ -30,9 +30,11 @@ import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -62,6 +64,7 @@ import org.geotools.geopkg.geom.GeoPkgGeomReader;
 import org.geotools.geopkg.geom.GeoPkgGeomWriter;
 import org.geotools.geopkg.geom.GeometryFunction;
 import org.geotools.jdbc.JDBCDataStore;
+import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCFeatureStore;
 import org.geotools.jdbc.PrimaryKey;
 import org.geotools.jdbc.util.SqlUtil;
@@ -172,7 +175,7 @@ public class GeoPackage implements Closeable {
      * <p>This constructor assumes no credentials are required to connect to the database.
      */
     public GeoPackage(File file) throws IOException {
-        this(file, null, null);
+        this(file, (String) null, (String) null);
     }
 
     /** Creates a GeoPackage from an existing file specifying database credentials. */
@@ -197,6 +200,7 @@ public class GeoPackage implements Closeable {
 
         params.put(GeoPkgDataStoreFactory.DATABASE.key, file.getPath());
         params.put(GeoPkgDataStoreFactory.DBTYPE.key, GeoPkgDataStoreFactory.DBTYPE.sample);
+        params.put(JDBCDataStoreFactory.BATCH_INSERT_SIZE, 1000);
 
         this.connPool = new GeoPkgDataStoreFactory(writerConfig).createDataSource(params);
     }
@@ -210,9 +214,23 @@ public class GeoPackage implements Closeable {
         this.connPool = dataStore.getDataSource();
     }
 
-    public GeoPackage(File file, SQLiteConfig config) throws IOException {
-        this(file);
+    public GeoPackage(File file, SQLiteConfig config, Map<String, Object> storeParams)
+            throws IOException {
+        this.file = file;
 
+        // enrich params with the basics
+        Map<String, Object> params =
+                new HashMap(storeParams != null ? storeParams : Collections.emptyMap());
+        params.put(GeoPkgDataStoreFactory.DATABASE.key, file.getPath());
+        params.put(GeoPkgDataStoreFactory.DBTYPE.key, GeoPkgDataStoreFactory.DBTYPE.sample);
+
+        // setup pool and store honoring the params
+        GeoPkgDataStoreFactory factory = new GeoPkgDataStoreFactory(writerConfig);
+        this.connPool = factory.createDataSource(params);
+        params.put(GeoPkgDataStoreFactory.DATASOURCE.key, this.connPool);
+        this.dataStore = factory.createDataStore(params);
+
+        // add connection properties to respect the sqlite config
         for (Map.Entry e : config.toProperties().entrySet()) {
             ((BasicDataSource) connPool)
                     .addConnectionProperty((String) e.getKey(), (String) e.getValue());
@@ -640,16 +658,32 @@ public class GeoPackage implements Closeable {
      * implementation
      */
     public GeoPkgExtension getExtension(String name) {
-        if (name.equals(GeoPkgSchemaExtension.NAME)) {
-            return new GeoPkgSchemaExtension(this);
+        Iterator<GeoPkgExtensionFactory> factories =
+                GeoPkgExtensionFactoryFinder.getExtensionFactories();
+        while (factories.hasNext()) {
+            GeoPkgExtensionFactory factory = factories.next();
+            GeoPkgExtension extension = factory.getExtension(name, this);
+            if (extension != null) {
+                return extension;
+            }
         }
 
         return null;
     }
 
-    public <T extends GeoPkgExtension> T getExtension(Class<T> extension) {
-        if (extension.isAssignableFrom(GeoPkgSchemaExtension.class)) {
-            return (T) new GeoPkgSchemaExtension(this);
+    /**
+     * Returns the extension by class, or null if the extension is not supported by this
+     * implementation
+     */
+    public <T extends GeoPkgExtension> T getExtension(Class<T> extensionClass) {
+        Iterator<GeoPkgExtensionFactory> factories =
+                GeoPkgExtensionFactoryFinder.getExtensionFactories();
+        while (factories.hasNext()) {
+            GeoPkgExtensionFactory factory = factories.next();
+            GeoPkgExtension extension = factory.getExtension(extensionClass, this);
+            if (extension != null) {
+                return (T) extension;
+            }
         }
 
         return null;

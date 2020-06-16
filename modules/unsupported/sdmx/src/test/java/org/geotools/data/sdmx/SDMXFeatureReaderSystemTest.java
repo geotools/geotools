@@ -22,7 +22,6 @@ import java.util.logging.Logger;
 import org.geotools.data.Query;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.util.logging.Logging;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -53,12 +52,14 @@ public class SDMXFeatureReaderSystemTest {
             at it.bancad
          */
     @Test
-    @Ignore
     public void readFeaturesMeasureSDMX_2_0() throws Exception {
 
         this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore();
-        Query query = new Query();
+        this.dataStore.createTypeNames();
 
+        assertEquals(this.dataStore.dataflowStructures.size(), this.dataStore.dataflows.size());
+
+        Query query = new Query();
         this.fType = this.dataStore.getFeatureSource(Helper.ERP_LGA_DIMENSIONS).getSchema();
         this.dimSource =
                 (SDMXDimensionFeatureSource)
@@ -170,8 +171,11 @@ public class SDMXFeatureReaderSystemTest {
     public void readFeaturesMeasureSDMX_2_1() throws Exception {
 
         this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore2();
-        Query query = new Query();
+        this.dataStore.createTypeNames();
 
+        assertEquals(this.dataStore.dataflowStructures.size(), this.dataStore.dataflows.size());
+
+        Query query = new Query();
         this.fType = this.dataStore.getFeatureSource(Helper.T04SA_DIMENSIONS).getSchema();
         this.dimSource =
                 (SDMXDimensionFeatureSource)
@@ -226,5 +230,23 @@ public class SDMXFeatureReaderSystemTest {
         }
 
         assertEquals(1, nObs);
+    }
+
+    @Test
+    public void readFeaturesMeasureSDMX_Parallel_2_0() throws Exception {
+
+        this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore();
+        this.dataStore.setConcurrency(20);
+        this.dataStore.createTypeNames();
+        assertEquals(this.dataStore.dataflowStructures.size(), this.dataStore.dataflows.size());
+    }
+
+    @Test
+    public void readFeaturesMeasureSDMX_Parallel_2_1() throws Exception {
+
+        this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore2();
+        this.dataStore.setConcurrency(20);
+        this.dataStore.createTypeNames();
+        assertEquals(this.dataStore.dataflowStructures.size(), this.dataStore.dataflows.size());
     }
 }

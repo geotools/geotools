@@ -84,7 +84,6 @@ public class SDMXFeatureReaderTest {
                 .thenReturn(Helper.readXMLAsStream("test-data/query-t04.xml"));
 
         this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore();
-        this.dataStore.setNThreads(1);
         this.fType = this.dataStore.getFeatureSource(Helper.T04).getSchema();
         this.dfSource = (SDMXDataflowFeatureSource) this.dataStore.getFeatureSource(Helper.T04);
 
@@ -162,7 +161,6 @@ public class SDMXFeatureReaderTest {
                 .thenReturn(new ByteArrayInputStream("".getBytes()));
 
         this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore();
-        this.dataStore.setNThreads(1);
         this.fType = this.dataStore.getFeatureSource(Helper.T04).getSchema();
         this.dfSource = (SDMXDataflowFeatureSource) this.dataStore.getFeatureSource(Helper.T04);
 
@@ -194,7 +192,6 @@ public class SDMXFeatureReaderTest {
                 .thenReturn(Helper.readXMLAsStream("test-data/query-t04-1.xml"));
 
         this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore();
-        this.dataStore.setNThreads(1);
         this.fType = this.dataStore.getFeatureSource(Helper.T04).getSchema();
         this.dfSource = (SDMXDataflowFeatureSource) this.dataStore.getFeatureSource(Helper.T04);
 
@@ -269,7 +266,6 @@ public class SDMXFeatureReaderTest {
                 .thenReturn(Helper.readXMLAsStream("test-data/query-t04-2.xml"));
 
         this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore();
-        this.dataStore.setNThreads(1);
         this.fType = this.dataStore.getFeatureSource(Helper.T04).getSchema();
         this.dfSource = (SDMXDataflowFeatureSource) this.dataStore.getFeatureSource(Helper.T04);
 
@@ -335,7 +331,6 @@ public class SDMXFeatureReaderTest {
                 .thenReturn(Helper.readXMLAsStream("test-data/query-t04-321.xml"));
 
         this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore();
-        this.dataStore.setNThreads(1);
         this.fType = this.dataStore.getFeatureSource(Helper.T04).getSchema();
         this.dfSource = (SDMXDataflowFeatureSource) this.dataStore.getFeatureSource(Helper.T04);
 
@@ -410,7 +405,6 @@ public class SDMXFeatureReaderTest {
                 .thenReturn(Helper.readXMLAsStream("test-data/abs-seifa-lga.xml"));
 
         this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore();
-        this.dataStore.setNThreads(1);
         this.fType = this.dataStore.getFeatureSource(Helper.T04_DIMENSIONS).getSchema();
         this.dimSource =
                 (SDMXDimensionFeatureSource) this.dataStore.getFeatureSource(Helper.T04_DIMENSIONS);
@@ -478,7 +472,6 @@ public class SDMXFeatureReaderTest {
                 .thenReturn(Helper.readXMLAsStream("test-data/abs-seifa-lga.xml"));
 
         this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore();
-        this.dataStore.setNThreads(1);
         this.fType = this.dataStore.getFeatureSource(Helper.T04_DIMENSIONS).getSchema();
         this.dimSource =
                 (SDMXDimensionFeatureSource) this.dataStore.getFeatureSource(Helper.T04_DIMENSIONS);
@@ -541,7 +534,6 @@ public class SDMXFeatureReaderTest {
                 .thenReturn(Helper.readXMLAsStream("test-data/abs-seifa-lga.xml"));
 
         this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore();
-        this.dataStore.setNThreads(1);
         this.fType = this.dataStore.getFeatureSource(Helper.T04_DIMENSIONS).getSchema();
         this.dimSource =
                 (SDMXDimensionFeatureSource) this.dataStore.getFeatureSource(Helper.T04_DIMENSIONS);
@@ -569,7 +561,6 @@ public class SDMXFeatureReaderTest {
                 .thenReturn(Helper.readXMLAsStream("test-data/abs21_c16_t04_sa_structure.xml"));
 
         this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore2();
-        this.dataStore.setNThreads(1);
         assertNotNull(this.dataStore.getFeatureSource(Helper.T04SA_DIMENSIONS).getSchema());
         this.fType = this.dataStore.getFeatureSource(Helper.T04SA_DIMENSIONS).getSchema();
         this.dimSource =

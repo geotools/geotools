@@ -125,7 +125,6 @@ public class SDMXDataStoreTest {
                 .thenReturn(Helper.readXMLAsStream("test-data/abs-seifa-lga.xml"));
 
         this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore();
-        this.dataStore.setNThreads(1);
         List<Name> names = this.dataStore.createTypeNames();
 
         assertEquals(4, names.size());
@@ -159,7 +158,6 @@ public class SDMXDataStoreTest {
                 .thenReturn(Helper.readXMLAsStream("test-data/abs-seifa-lga.xml"));
 
         this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore();
-        this.dataStore.setNThreads(1);
         assertEquals(4, this.dataStore.createTypeNames().size());
 
         assertNotNull(this.dataStore.getFeatureSource(Helper.T04).getSchema());
@@ -187,7 +185,6 @@ public class SDMXDataStoreTest {
                 .thenReturn(Helper.readXMLAsStream("test-data/abs21_c16_t04_sa_structure.xml"));
 
         this.dataStore = (SDMXDataStore) Helper.createSDMXTestDataStore2();
-        this.dataStore.setNThreads(1);
         assertEquals(2, this.dataStore.createTypeNames().size());
 
         assertNotNull(this.dataStore.getFeatureSource(Helper.T04SA_DIMENSIONS).getSchema());

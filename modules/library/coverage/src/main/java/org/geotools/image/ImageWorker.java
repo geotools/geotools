@@ -1446,7 +1446,13 @@ public class ImageWorker {
 
         // this is to support 16 bits IndexColorModel
         forceComponentColorModel(true, true);
-
+        if (isBytes()) {
+            // there might be the case that we entered rescaleToBytes with a
+            // 16bits color-palette but the forceComponentColorModel call above
+            // already transformed it to RGB bytes, so no need to proceed with
+            // the rescale anymore
+            return this;
+        }
         final double[][] extrema = getExtremas();
         final int length = extrema[0].length;
         final double[] scale = new double[length];
@@ -1916,22 +1922,10 @@ public class ImageWorker {
                     break;
 
                 case DataBuffer.TYPE_USHORT:
-                    {
-                        final int mapSize = icm.getMapSize();
-                        final short[][] data = new short[numDestinationBands][mapSize];
-                        for (int i = 0; i < mapSize; i++) {
-                            data[0][i] = (short) icm.getRed(i);
-                            if (numDestinationBands >= 2)
-                                // remember to optimize for grayscale images
-                                if (!gray) data[1][i] = (short) icm.getGreen(i);
-                                else data[1][i] = (short) icm.getAlpha(i);
-                            if (numDestinationBands >= 3) data[2][i] = (short) icm.getBlue(i);
-                            if (numDestinationBands == 4) {
-                                data[3][i] = (short) icm.getAlpha(i);
-                            }
-                        }
-                        lut = LookupTableFactory.create(data, datatype == DataBuffer.TYPE_USHORT);
-                    }
+                    lut =
+                            gray
+                                    ? createGrayLookupTable(icm, numDestinationBands)
+                                    : createRGBLookupTable(icm, numDestinationBands);
                     break;
 
                 default:
@@ -1943,8 +1937,9 @@ public class ImageWorker {
             if (lut == null)
                 throw new IllegalStateException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "lut"));
             /*
-             * Get the default hints, which usually contains only informations about tiling. If the user override the rendering hints with an explicit
-             * color model, keep the user's choice.
+             * Get the default hints, which usually contains only information about tiling.
+             * If the user override the rendering hints with an explicit color model,
+             * keep the user's choice.
              */
             final RenderingHints hints = getRenderingHints();
             final ImageLayout layout;
@@ -1958,7 +1953,11 @@ public class ImageWorker {
 
             int[] bits = new int[numDestinationBands];
             // bits per component
-            for (int i = 0; i < numDestinationBands; i++) bits[i] = sm.getSampleSize(i);
+            for (int i = 0; i < numDestinationBands; i++) {
+                // When RGB(A), go to 8 bits, otherwise copy the sample size
+                // (might be 16 bits)
+                bits[i] = numDestinationBands >= 3 ? 8 : sm.getSampleSize(i);
+            }
             final ComponentColorModel destinationColorModel =
                     new ComponentColorModel(
                             numDestinationBands >= 3
@@ -2008,6 +2007,31 @@ public class ImageWorker {
         // All post conditions for this method contract.
         assert image.getColorModel() instanceof ComponentColorModel;
         return this;
+    }
+
+    private LookupTable createGrayLookupTable(IndexColorModel icm, int numDestinationBands) {
+        final int mapSize = icm.getMapSize();
+        final short[][] data = new short[numDestinationBands][mapSize];
+        for (int i = 0; i < mapSize; i++) {
+            data[0][i] = (short) (icm.getRed(i) & 0xFF);
+            if (numDestinationBands == 2) data[1][i] = (short) (icm.getAlpha(i) & 0xFF);
+        }
+        return LookupTableFactory.create(data, true);
+    }
+
+    private LookupTable createRGBLookupTable(IndexColorModel icm, int numDestinationBands) {
+        final int mapSize = icm.getMapSize();
+        // Even if starting from a 16bits paletted image, RGB will go to bytes
+        final byte[][] data = new byte[numDestinationBands][mapSize];
+        for (int i = 0; i < mapSize; i++) {
+            data[0][i] = (byte) (icm.getRed(i) & 0xFF);
+            data[1][i] = (byte) (icm.getGreen(i) & 0xFF);
+            data[2][i] = (byte) (icm.getBlue(i) & 0xFF);
+            if (numDestinationBands == 4) {
+                data[3][i] = (byte) (icm.getAlpha(i) & 0xFF);
+            }
+        }
+        return LookupTableFactory.create(data);
     }
 
     /**

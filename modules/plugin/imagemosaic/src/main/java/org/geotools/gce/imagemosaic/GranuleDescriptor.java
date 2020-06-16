@@ -1398,6 +1398,7 @@ public class GranuleDescriptor {
             finalRaster2Model.preConcatenate((AffineTransform) mosaicWorldToGrid);
             final Interpolation interpolation = request.getInterpolation();
 
+            adjustScale(finalRaster2Model, raster);
             // paranoiac check to avoid that JAI freaks out when computing its internal layouT on
             // images that are too small
             Rectangle2D finalLayout =
@@ -1567,6 +1568,29 @@ public class GranuleDescriptor {
                     reader.dispose();
                 }
             }
+        }
+    }
+
+    private void adjustScale(AffineTransform finalRaster2Model, RenderedImage raster) {
+        // There are corner cases where the scaleFactor is almost 1 and the
+        double scaleX = finalRaster2Model.getScaleX();
+        double scaleY = finalRaster2Model.getScaleY();
+        int width = raster.getWidth();
+        int height = raster.getHeight();
+        double widthDifference = width - (scaleX * width);
+        double heightDifference = height - (scaleY * height);
+        boolean adjustScaleX = false;
+        boolean adjustScaleY = false;
+        if ((1 - scaleX) < 1E-2 && (widthDifference > 0 && widthDifference <= 0.5)) {
+            adjustScaleX = true;
+            scaleX = 1d / scaleX;
+        }
+        if ((1 - scaleY) < 1E-2 && (heightDifference > 0 && heightDifference <= 0.5)) {
+            adjustScaleY = true;
+            scaleY = 1d / scaleY;
+        }
+        if (adjustScaleX || adjustScaleY) {
+            finalRaster2Model.scale(adjustScaleX ? scaleX : 1d, adjustScaleY ? scaleY : 1d);
         }
     }
 

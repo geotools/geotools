@@ -2468,10 +2468,12 @@ Transform(features, transform): result
 
 * result: SimpleFeatureCollection 1:1 required
 
-TransparencyFill(data): result
-''''''''''''''''''''''''''''''
+TransparencyFill(data, width): result
+''''''''''''''''''''''''''''''''''''''
 
 * data: GridCoverage2D 1:1 required
+
+* width Integer 0:1 optional
 
 * result: GridCoverage2D 1:1 required
 

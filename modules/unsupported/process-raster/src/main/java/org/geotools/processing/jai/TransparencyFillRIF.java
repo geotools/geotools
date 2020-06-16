@@ -16,6 +16,8 @@
  */
 package org.geotools.processing.jai;
 
+import static org.geotools.processing.jai.TransparencyFillDescriptor.*;
+
 import com.sun.media.jai.opimage.RIFUtil;
 import java.awt.RenderingHints;
 import java.awt.image.RenderedImage;
@@ -47,11 +49,20 @@ public class TransparencyFillRIF implements RenderedImageFactory {
             extender = BorderExtender.createInstance(BorderExtender.BORDER_COPY);
         }
         FillType type = TransparencyFillDescriptor.FILL_AVERAGE;
-        Object param0 = paramBlock.getObjectParameter(0);
+        Object param0 = paramBlock.getObjectParameter(TYPE_ARG);
         if (param0 != null && param0 instanceof FillType) {
             type = (FillType) param0;
         }
+        Object param1 = paramBlock.getObjectParameter(NODATA_ARG);
+        Number noData = null;
+        if (param1 != null && param1 instanceof Number) noData = (Number) param1;
+
+        Integer width = null;
+        Integer param2 = paramBlock.getIntParameter(WIDTH_ARG);
+        if (param2 != null) width = param2;
+
         RenderedImage source = paramBlock.getRenderedSource(0);
-        return new TransparencyFillOpImage(source, extender, type, renderHints, layout);
+        return new TransparencyFillOpImage(
+                source, extender, type, renderHints, layout, noData, width);
     }
 }

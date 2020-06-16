@@ -111,7 +111,7 @@
     <fork.javac>false</fork.javac>
     <javac.maxHeapSize>256M</javac.maxHeapSize>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <postgresql.jdbc.version>42.2.5</postgresql.jdbc.version>
+    <postgresql.jdbc.version>42.2.14</postgresql.jdbc.version>
     <solrj.version>7.2.1</solrj.version>
     <maven.javadoc.plugin.version>3.0.1</maven.javadoc.plugin.version>
     <maven.jacoco.plugin.version>0.8.2</maven.jacoco.plugin.version>
@@ -2340,4 +2340,3 @@
     <module>modules</module>
   </modules>
 </project>
-

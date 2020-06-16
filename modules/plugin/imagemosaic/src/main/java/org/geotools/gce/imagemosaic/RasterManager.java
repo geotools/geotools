@@ -1620,11 +1620,17 @@ public class RasterManager implements Cloneable {
         OverviewLevel highResOvLevel = overviewsController.resolutionsLevels.get(0);
         final double highestRes[] =
                 new double[] {highResOvLevel.resolutionX, highResOvLevel.resolutionY};
-        GridEnvelope2D originalGridRange =
-                new GridEnvelope2D(
-                        new Rectangle(
-                                (int) (originalEnvelope.getSpan(0) / highestRes[0]),
-                                (int) (originalEnvelope.getSpan(1) / highestRes[1])));
+
+        double xSpan = (originalEnvelope.getSpan(0) / highestRes[0]);
+        double ySpan = (originalEnvelope.getSpan(1) / highestRes[1]);
+
+        double xSpanCeil = Math.ceil(xSpan);
+        double ySpanCeil = Math.ceil(ySpan);
+        int width = (xSpanCeil - xSpan < 1E-10) ? (int) xSpanCeil : (int) xSpan;
+        int height = (ySpanCeil - ySpan < 1E-10) ? (int) ySpanCeil : (int) ySpan;
+
+//        GridEnvelope2D originalGridRange = new GridEnvelope2D(new Rectangle(width, height));
+        GridEnvelope2D originalGridRange = new GridEnvelope2D(new Rectangle((int)xSpan, (int)ySpan));
         AffineTransform2D raster2Model =
                 new AffineTransform2D(
                         highestRes[0],

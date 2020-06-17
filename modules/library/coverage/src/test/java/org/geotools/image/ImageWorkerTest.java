@@ -20,14 +20,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import com.sun.media.imageioimpl.common.PackageUtil;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
@@ -48,17 +41,7 @@ import java.awt.color.ColorSpace;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
-import java.awt.image.ComponentColorModel;
-import java.awt.image.DataBuffer;
-import java.awt.image.DirectColorModel;
-import java.awt.image.IndexColorModel;
-import java.awt.image.PixelInterleavedSampleModel;
-import java.awt.image.Raster;
-import java.awt.image.RenderedImage;
-import java.awt.image.SampleModel;
-import java.awt.image.WritableRaster;
+import java.awt.image.*;
 import java.awt.image.renderable.ParameterBlock;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -677,6 +660,67 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
             assertEquals(3, icm.getNumColorComponents());
             assertTrue(icm.getMapSize() <= 256);
         }
+    }
+
+    @Test
+    public void test16BitPaletted() throws Exception {
+        InputStream gzippedStream =
+                ImageWorkerTest.class.getResource("test-data/sf-sfdem.tif.gz").openStream();
+        try (ImageInputStream iis =
+                ImageIO.createImageInputStream(new GZIPInputStream(gzippedStream))) {
+            ImageReader reader = new TIFFImageReaderSpi().createReaderInstance(iis);
+            reader.setInput(iis);
+            BufferedImage bi = reader.read(0);
+            reader.dispose();
+            IndexColorModel icm = (IndexColorModel) bi.getColorModel();
+            assertEquals(65536, icm.getMapSize());
+            ImageWorker worker = new ImageWorker(bi).makeColorTransparent(Color.black);
+            RenderedImage ri = worker.rescaleToBytes().getRenderedImage();
+
+            // we expect a RGBA one
+            ComponentColorModel ccm = (ComponentColorModel) ri.getColorModel();
+            SampleModel sm = ri.getSampleModel();
+            assertEquals(3, ccm.getNumColorComponents());
+            assertTrue(ccm.hasAlpha());
+            assertEquals(DataBuffer.TYPE_BYTE, sm.getDataType());
+            assertArrayEquals(new int[] {8, 8, 8, 8}, sm.getSampleSize());
+        }
+    }
+
+    @Test
+    public void test16BitPalettedGray() throws Exception {
+        byte[] red = new byte[65536];
+        byte[] green = new byte[65536];
+        byte[] blue = new byte[65536];
+        byte[] alpha = new byte[65536];
+        byte value;
+        for (int i = 0; i < 65536; i++) {
+            value = (byte) ((i / 256) & 0xFF);
+            red[i] = value;
+            green[i] = value;
+            blue[i] = value;
+            alpha[i] = (byte) (0xFF);
+        }
+        alpha[0] = 0;
+
+        IndexColorModel icm = new IndexColorModel(16, 65536, red, green, blue, alpha);
+        SampleModel sm =
+                new ComponentSampleModel(DataBuffer.TYPE_USHORT, 50, 50, 1, 50, new int[] {0});
+        WritableRaster raster = RasterFactory.createWritableRaster(sm, null);
+        BufferedImage bi = new BufferedImage(icm, raster, false, null);
+
+        assertEquals(65536, icm.getMapSize());
+
+        ImageWorker worker = new ImageWorker(bi).forceComponentColorModel();
+        RenderedImage ri = worker.getRenderedImage();
+
+        // we expect a gray one
+        ComponentColorModel ccm = (ComponentColorModel) ri.getColorModel();
+        sm = ri.getSampleModel();
+        assertEquals(1, ccm.getNumColorComponents());
+        assertTrue(ccm.hasAlpha());
+        assertEquals(DataBuffer.TYPE_USHORT, sm.getDataType());
+        assertArrayEquals(new int[] {16, 16}, sm.getSampleSize());
     }
 
     @Test

@@ -195,8 +195,6 @@ class FilterToSqlHelper {
             // compare functions
             caps.addType(FilterFunction_equalTo.class);
         }
-
-        caps.addType(JsonPointerFunction.class);
         // native filter support
         caps.addType(NativeFilter.class);
 

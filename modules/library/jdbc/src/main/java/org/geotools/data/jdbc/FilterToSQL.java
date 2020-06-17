@@ -837,6 +837,16 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         encodeBinaryComparisonOperator(filter, extraData, left, right, leftContext, rightContext);
     }
 
+    /**
+     * Encode a BinaryComparisonOperator to SQL
+     *
+     * @param filter the comparison operator to be turned to SQL
+     * @param extraData extraData
+     * @param left left parameter of the binary operator
+     * @param right right parameter of the binary operator
+     * @param leftContext expression type of the right parameter used as context for the left parameter
+     * @param rightContext expression type of the left parameter used as context for the right parameter
+     */
     protected void encodeBinaryComparisonOperator(
             BinaryComparisonOperator filter,
             Object extraData,

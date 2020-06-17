@@ -190,8 +190,6 @@ class FilterToSqlHelper {
             // array functions
             caps.addType(FilterFunction_arrayAnyMatch.class);
         }
-
-        caps.addType(JsonPointerFunction.class);
         // native filter support
         caps.addType(NativeFilter.class);
 

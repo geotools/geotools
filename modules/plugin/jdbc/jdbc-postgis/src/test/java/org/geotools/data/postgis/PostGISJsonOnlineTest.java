@@ -18,10 +18,13 @@ package org.geotools.data.postgis;
 
 import java.io.IOException;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.FeatureReader;
+import org.geotools.data.FilteringFeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
+import org.geotools.jdbc.JDBCFeatureReader;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
 import org.junit.Test;
@@ -208,7 +211,7 @@ public class PostGISJsonOnlineTest extends JDBCTestSupport {
     }
 
     @Test
-    public void testJSONPointerFunctionNestedObject() throws Exception {
+    public void testJSONPointerFunctionNestedArray() throws Exception {
         ContentFeatureSource fs = dataStore.getFeatureSource(tname("jsontest"));
         FilterFactory ff = dataStore.getFilterFactory();
         Function pointer =
@@ -235,6 +238,94 @@ public class PostGISJsonOnlineTest extends JDBCTestSupport {
                 size++;
             }
             assertEquals(1, size);
+        }
+    }
+
+    @Test
+    public void testJSONPointerFunctionNestedObject() throws Exception {
+        ContentFeatureSource fs = dataStore.getFeatureSource(tname("jsontest"));
+        FilterFactory ff = dataStore.getFilterFactory();
+        Function pointer =
+                ff.function(
+                        "jsonPointer",
+                        ff.property("jsonColumn"),
+                        ff.literal("/nestedObj/nestedObj2/strProp"));
+        Filter filter = ff.equals(pointer, ff.literal("stringValue2"));
+        Function pointer2 =
+                ff.function(
+                        "jsonPointer",
+                        ff.property("jsonColumn"),
+                        ff.literal("/nestedObj/nestedObj2/numProp"));
+        Filter filter2 = ff.greater(pointer2, ff.literal(3));
+        And and = ff.and(filter, filter2);
+        Query q = new Query(tname("jsontest"), and);
+        FeatureCollection collection = fs.getFeatures(q);
+        try (FeatureIterator it = collection.features()) {
+            int size = 0;
+            while (it.hasNext()) {
+                Feature f = it.next();
+                assertEquals(pointer.evaluate(f), "stringValue2");
+                assertTrue(((Integer) pointer2.evaluate(f)).doubleValue() > 3);
+                size++;
+            }
+            assertEquals(1, size);
+        }
+    }
+
+    @Test
+    public void testNonEncodableJSONPointerFunction() throws Exception {
+        // tests that with a propertyName involved in the production of the
+        // json pointer string, the filter is not encoded to PostGIS SQL dialect
+        ContentFeatureSource fs = dataStore.getFeatureSource(tname("jsontest"));
+        FilterFactory ff = dataStore.getFilterFactory();
+        Function concat1 =
+                ff.function("strConcat", ff.property("name"), ff.literal("/nestedObj2/strProp"));
+        Function concat2 = ff.function("strConcat", ff.literal("/"), concat1);
+        Function pointer = ff.function("jsonPointer", ff.property("jsonColumn"), concat2);
+        Filter filter = ff.equals(pointer, ff.literal("stringValue2"));
+        Query q = new Query(tname("jsontest"), filter);
+        try (FeatureReader reader = fs.getDataStore().getFeatureReader(q, null)) {
+            // reader is instanceof FilteringFeatureReader so Filter has not been encoded
+            assertTrue(reader instanceof FilteringFeatureReader);
+        }
+        FeatureCollection collection = fs.getFeatures(q);
+        try (FeatureIterator it = collection.features()) {
+            int size = 0;
+            while (it.hasNext()) {
+                Feature f = it.next();
+                assertEquals(pointer.evaluate(f), "stringValue2");
+                size++;
+            }
+            assertEquals(2, size);
+        }
+    }
+
+    @Test
+    public void testJSONPointerFunctionWithConstantParam() throws Exception {
+        // test that with a constant expression as second param filter is encoded
+        // to PostGIS SQL dialect
+        ContentFeatureSource fs = dataStore.getFeatureSource(tname("jsontest"));
+        FilterFactory ff = dataStore.getFilterFactory();
+        // json pointer string obtained by a string concatenation
+        Function concat =
+                ff.function(
+                        "strConcat", ff.literal("/nestedObj"), ff.literal("/nestedObj2/strProp"));
+        Function pointer = ff.function("jsonPointer", ff.property("jsonColumn"), concat);
+        Filter filter = ff.equals(pointer, ff.literal("stringValue2"));
+        Query q = new Query(tname("jsontest"), filter);
+        try (FeatureReader reader = fs.getDataStore().getFeatureReader(q, null)) {
+            // reader is instanceof JDBCFeatureReader so Filter has been encoded
+            assertTrue(reader instanceof JDBCFeatureReader);
+        }
+        FeatureCollection collection = fs.getFeatures(q);
+        try (FeatureIterator it = collection.features()) {
+            int size = 0;
+            while (it.hasNext()) {
+                Feature f = it.next();
+                assertEquals(pointer.evaluate(f), "stringValue2");
+                size++;
+            }
+            assertEquals(2, size);
         }
     }
 

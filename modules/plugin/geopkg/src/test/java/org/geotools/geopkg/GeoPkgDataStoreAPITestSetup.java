@@ -142,8 +142,8 @@ public class GeoPkgDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
                 "INSERT INTO gpkg_geometry_columns VALUES ('road', 'geom', 'LINESTRING', 4326, 0, 0)";
         run(sql);
         sql =
-                "INSERT INTO gpkg_contents (table_name, data_type, identifier, srs_id) VALUES "
-                        + "('road', 'features', 'road', 4326)";
+                "INSERT INTO gpkg_contents (table_name, data_type, identifier, min_x, min_y, max_x, max_y, srs_id) VALUES "
+                        + "('road', 'features', 'road', 1, 0, 5, 4, 4326)";
         run(sql);
         run("ALTER TABLE road add name VARCHAR");
 

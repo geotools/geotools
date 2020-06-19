@@ -71,12 +71,16 @@ public class AddressImpl extends MetadataEntity implements Address {
     }
 
     public AddressImpl(AddressType address) {
-        setAdministrativeArea(new SimpleInternationalString(address.getAdministrativeArea()));
-        setCity(new SimpleInternationalString(address.getCity()));
-        setCountry(new SimpleInternationalString(address.getCountry()));
-        setDeliveryPoints(Collections.singleton(address.getDeliveryPoint()));
-        setElectronicMailAddresses(Collections.singleton(address.getElectronicMailAddress()));
-        setPostalCode(address.getPostalCode());
+        if (address.getAdministrativeArea() != null)
+            setAdministrativeArea(new SimpleInternationalString(address.getAdministrativeArea()));
+        if (address.getCity() != null) setCity(new SimpleInternationalString(address.getCity()));
+        if (address.getCountry() != null)
+            setCountry(new SimpleInternationalString(address.getCountry()));
+        if (address.getDeliveryPoint() != null)
+            setDeliveryPoints(Collections.singleton(address.getDeliveryPoint()));
+        if (address.getElectronicMailAddress() != null)
+            setElectronicMailAddresses(Collections.singleton(address.getElectronicMailAddress()));
+        if (address.getPostalCode() != null) setPostalCode(address.getPostalCode());
     }
 
     /** Return the state, province of the location. Returns {@code null} if unspecified. */

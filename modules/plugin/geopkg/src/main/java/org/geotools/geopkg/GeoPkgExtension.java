@@ -31,7 +31,7 @@ import java.util.Objects;
 public class GeoPkgExtension {
 
     /** Extension scope */
-    enum Scope {
+    public enum Scope {
         ReadWrite("read-write"),
         WriteOnly("write-only");
 
@@ -46,7 +46,7 @@ public class GeoPkgExtension {
         }
     };
 
-    static class Association {
+    public static class Association {
         String tableName;
         String columnName;
 
@@ -145,7 +145,7 @@ public class GeoPkgExtension {
         }
     }
 
-    boolean isRegistered(Connection cx) throws SQLException {
+    protected boolean isRegistered(Connection cx) throws SQLException {
         String sql =
                 format(
                         "SELECT * " + " FROM %s" + " WHERE extension_name = ? LIMIT 1",
@@ -163,7 +163,7 @@ public class GeoPkgExtension {
      * Returns the list of {@link Association} between this extension and table/columns in the
      * database
      */
-    List<Association> getAssociations() throws IOException {
+    public List<Association> getAssociations() throws IOException {
         try {
             try (Connection cx = geoPackage.connPool.getConnection()) {
                 String sql =

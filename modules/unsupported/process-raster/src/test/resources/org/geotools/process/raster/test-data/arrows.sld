@@ -15,30 +15,26 @@
           </ogc:Function>
         </Transformation> 
         <Rule>
-          <ogc:Filter>
-            <ogc:PropertyIsNotEqualTo>
-              <ogc:PropertyName>GRAY_INDEX</ogc:PropertyName>
-              <ogc:Literal>NaN</ogc:Literal>
-            </ogc:PropertyIsNotEqualTo>
-          </ogc:Filter>
-          <TextSymbolizer> 
-            <Label><![CDATA[ ]]></Label> <!-- fake label -->
-             <Graphic>
-                  <Mark>
-                    <WellKnownName>circle</WellKnownName>
-                    <Fill>
-                      <CssParameter name="fill">0x000000
-                      </CssParameter>
-                    </Fill>
-                  </Mark>
-                 <Size>
-                    <ogc:Mul>
-                      <ogc:PropertyName>GRAY_INDEX</ogc:PropertyName>
-                      <ogc:Literal>0.5</ogc:Literal>
-                    </ogc:Mul>
-                  </Size>
-            </Graphic> 
-          </TextSymbolizer> 
+          <PointSymbolizer>
+            <Graphic>
+              <Mark>
+                <WellKnownName>circle</WellKnownName>
+                <Fill>
+                  <CssParameter name="fill">
+                    <ogc:Function name="if_then_else">
+                      <ogc:Function name="equalTo">
+                        <ogc:PropertyName>GRAY_INDEX</ogc:PropertyName>
+                        <ogc:Literal>-32767.0</ogc:Literal>
+                      </ogc:Function>
+                      <ogc:Literal>#808080</ogc:Literal>
+                      <ogc:Literal>#000000</ogc:Literal>
+                    </ogc:Function>
+                  </CssParameter>
+                </Fill>
+              </Mark>
+              <Size>1</Size>
+            </Graphic>
+          </PointSymbolizer>
         </Rule> 
       </FeatureTypeStyle> 
     </UserStyle> 

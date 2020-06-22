@@ -5099,7 +5099,7 @@ public class ImageWorker {
         pb.add(nodata);
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
-                pb.add(background);
+                pb.add(background[0]);
             }
         }
         image = JAI.create("Border", pb, getRenderingHints());

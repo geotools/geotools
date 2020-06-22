@@ -128,6 +128,9 @@ public class PostGISHStoreOnlineTest extends JDBCTestSupport {
 
     @Test
     public void testMapGetFunctionOnHstore() throws IOException {
+        if (skipTests()) {
+            return;
+        }
         // Simply test that the MapGet Filter Function will also work against returned
         // HSTORE objects which, at the end, are basically maps.
         ContentFeatureSource fs = dataStore.getFeatureSource(tname("hstoretest"));

@@ -17,6 +17,7 @@
 package org.geotools.coverage.processing.operation;
 
 import it.geosolutions.jaiext.iterators.RandomIterFactory;
+import it.geosolutions.jaiext.range.NoDataContainer;
 import javax.media.jai.BorderExtender;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.RenderedOp;
@@ -44,6 +45,9 @@ class ExtendedRandomIter implements RandomIter {
         RandomIter iterSource;
         if (extender != null) {
             ImageWorker w = new ImageWorker(src).setRenderingHints(GeoTools.getDefaultHints());
+            if (w.getNoData() != null) {
+                w.setBackground(new NoDataContainer(w.getNoData()).getAsArray());
+            }
             RenderedOp op =
                     w.border(leftPad, rightPad, topPad, bottomPad, extender).getRenderedOperation();
             RandomIter it = RandomIterFactory.create(op, op.getBounds(), true, true);

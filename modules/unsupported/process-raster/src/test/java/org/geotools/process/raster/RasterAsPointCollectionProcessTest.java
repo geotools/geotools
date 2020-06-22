@@ -17,7 +17,7 @@
  */
 package org.geotools.process.raster;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -409,15 +409,21 @@ public class RasterAsPointCollectionProcessTest {
 
         Raster raster = image.getData(new Rectangle(minX, 0, reducedWidth, reducedHeight));
 
-        int whiteSamples = 0;
+        int blackSamples = 0;
+        int graySamples = 0;
         for (int i = 0; i < reducedWidth; i++) {
             for (int j = 0; j < reducedHeight; j++) {
-                whiteSamples += raster.getSample(minX + i, j, 0) == 255 ? 1 : 0;
+                blackSamples += raster.getSample(minX + i, j, 0) == 0 ? 1 : 0;
+                graySamples += raster.getSample(minX + i, j, 0) == 128 ? 1 : 0;
             }
         }
         // Check that we aren't getting a whole white image on a big part of the rightern
         // side of the image. this was happening before the fix on wrapping on rendering
         // transformation since it was only rendering a smaller area (NO wrapping at all)
-        assertFalse(whiteSamples == reducedHeight * reducedWidth);
+        assertNotEquals(0, blackSamples);
+        // Confirm that the NODATA values (-32767.0 in the test image) were preserved
+        // by checking for samples in the image that are not black (non-NODATA values)
+        // or white (background).
+        assertNotEquals(0, graySamples);
     }
 }

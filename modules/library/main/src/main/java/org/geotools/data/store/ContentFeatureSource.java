@@ -374,36 +374,43 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
             // don't compute the bounds of the features that are modified or removed in the diff
             Iterator<String> i = diff.getModified().keySet().iterator();
             FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+
             Set<FeatureId> modifiedFids = new HashSet<FeatureId>();
             while (i.hasNext()) {
                 String featureId = i.next();
                 modifiedFids.add(ff.featureId(featureId));
             }
-            Filter skipFilter = ff.not(ff.id(modifiedFids));
-
             Query q = new Query(query);
-            q.setFilter(ff.and(skipFilter, query.getFilter()));
+            if (!modifiedFids.isEmpty()) {
+                Filter skipFilter = ff.not(ff.id(modifiedFids));
+                q.setFilter(ff.and(skipFilter, query.getFilter()));
+            }
             bounds = getBoundsInternal(q);
 
             // update with the diff contents, all added feature and all modified, not deleted ones
-            if (bounds != null) {
-                // new ones
-                Iterator<SimpleFeature> it = diff.getAdded().values().iterator();
-                while (it.hasNext()) {
-                    SimpleFeature feature = it.next();
-                    BoundingBox fb = feature.getBounds();
-                    if (fb != null) {
+            Iterator<SimpleFeature> it = diff.getAdded().values().iterator();
+            while (it.hasNext()) {
+                SimpleFeature feature = it.next();
+                BoundingBox fb = feature.getBounds();
+                if (fb != null) {
+                    if (bounds == null) {
+                        bounds = ReferencedEnvelope.reference(fb);
+                    } else {
                         bounds.expandToInclude(ReferencedEnvelope.reference(fb));
                     }
                 }
+            }
 
-                // modified ones
-                it = diff.getModified().values().iterator();
-                while (it.hasNext()) {
-                    SimpleFeature feature = it.next();
-                    if (feature != Diff.NULL) {
-                        BoundingBox fb = feature.getBounds();
-                        if (fb != null) {
+            // modified ones
+            it = diff.getModified().values().iterator();
+            while (it.hasNext()) {
+                SimpleFeature feature = it.next();
+                if (feature != Diff.NULL) {
+                    BoundingBox fb = feature.getBounds();
+                    if (fb != null) {
+                        if (bounds == null) {
+                            bounds = ReferencedEnvelope.reference(fb);
+                        } else {
                             bounds.expandToInclude(ReferencedEnvelope.reference(fb));
                         }
                     }

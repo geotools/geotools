@@ -17,9 +17,11 @@
 package org.geotools.gce.imagemosaic.catalog.sqlserver;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -52,12 +54,15 @@ public class SQLServerDatastoreWrapper extends DataStoreWrapper {
 
     public SQLServerDatastoreWrapper(DataStore datastore, String location) {
         super(datastore, location);
+
+        // check if the geometry metadata table is present, if not, create and configure
+        // it, to make usage of SQL Server transparent (otherwise the property file would have
+        // needed the setup of the geometry metadata table for mosaic to work at all, the
+        // CRS of geometries is lost otherwise at the default isolation level)
         try {
             if (datastore instanceof JDBCDataStore) {
                 JDBCDataStore jdbcDataStore = (JDBCDataStore) this.datastore;
 
-                // check if the geometry metadata table is present, if not, create and configure
-                // it, to make usage of SQL Server transparent
                 SQLDialect dialect = jdbcDataStore.getSQLDialect();
                 String metadataTable =
                         (String) BeanUtils.getProperty(dialect, METADATA_TABLE_PROPERTY);
@@ -69,7 +74,6 @@ public class SQLServerDatastoreWrapper extends DataStoreWrapper {
 
                 try (Connection cx = jdbcDataStore.getConnection(Transaction.AUTO_COMMIT);
                         Statement st = cx.createStatement()) {
-                    boolean commit = false;
                     boolean createMetadataTable = true;
                     DatabaseMetaData metaData = cx.getMetaData();
 
@@ -93,10 +97,15 @@ public class SQLServerDatastoreWrapper extends DataStoreWrapper {
                     }
                 }
             }
-        } catch (Exception e) {
+        } catch (SQLException
+                | IOException
+                | IllegalAccessException
+                | InvocationTargetException
+                | NoSuchMethodException e) {
             LOGGER.log(
                     Level.FINE,
-                    "Failed to assess/create the metadata geometry table, this could lead to lost geometry SRIDs on table creation");
+                    "Failed to assess/create the metadata geometry table, this could lead to lost geometry SRIDs on table creation",
+                    e);
         }
     }
 

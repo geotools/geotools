@@ -132,8 +132,8 @@ class CachingDataStoreGranuleCatalog extends GranuleCatalog {
             Query copy = new Query(q);
             copy.getHints().remove(GranuleSource.NATIVE_BOUNDS);
             q = copy;
-            return new BoundsFeatureCollection(
-                    adaptee.getGranules(q, t), this::getGranuleDescriptor);
+            SimpleFeatureCollection granules = adaptee.getGranules(q, t);
+            return new BoundsFeatureCollection(granules, this::getGranuleDescriptor);
         } else {
             return adaptee.getGranules(q, t);
         }
@@ -245,14 +245,7 @@ class CachingDataStoreGranuleCatalog extends GranuleCatalog {
     @Override
     @SuppressWarnings("deprecation")
     public int removeGranules(Query query) {
-        final int val = adaptee.removeGranules(query);
-        // clear cache if needed
-        // TODO this can be optimized further filtering out elements using the Query's Filter
-        if (val >= 1) {
-            descriptorsCache.clear();
-        }
-
-        return val;
+        return this.removeGranules(query, Transaction.AUTO_COMMIT);
     }
 
     @Override

@@ -85,6 +85,7 @@ public class GTDataStoreGranuleCatalog extends AbstractGTDataStoreGranuleCatalog
                     new OracleDatastoreWrapper(
                             getTileIndexStore(), FilenameUtils.getFullPath(parentLocation));
         } else if (Utils.isSQLServerStore(spi)) {
+            // always wrap to ensure the geometry metadata table is there
             this.tileIndexStore =
                     new SQLServerDatastoreWrapper(
                             getTileIndexStore(), FilenameUtils.getFullPath(parentLocation));

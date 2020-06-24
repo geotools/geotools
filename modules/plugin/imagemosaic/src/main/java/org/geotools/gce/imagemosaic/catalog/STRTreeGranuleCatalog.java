@@ -531,6 +531,7 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public int removeGranules(Query query) {
         throw new UnsupportedOperationException("Unsupported operation");
     }

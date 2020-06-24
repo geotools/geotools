@@ -371,6 +371,7 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
     protected abstract void disposeTileIndexStore();
 
     @Override
+    @SuppressWarnings("deprecation")
     public int removeGranules(Query query) {
         return removeGranules(query, null);
     }
@@ -402,6 +403,8 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
 
                 return retVal;
             } finally {
+                // rollback/close only if the transaction was created locally, otherwise leave
+                // the caller providing the transaction in control
                 if (t != transaction) {
                     if (rollback) {
                         t.rollback();

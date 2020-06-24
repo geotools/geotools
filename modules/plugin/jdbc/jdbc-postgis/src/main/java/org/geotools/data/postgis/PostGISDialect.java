@@ -40,6 +40,7 @@ import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.function.JsonPointerFunction;
+import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
 import org.geotools.geometry.jts.CircularRing;
 import org.geotools.geometry.jts.CircularString;
@@ -1501,10 +1502,11 @@ public class PostGISDialect extends BasicSQLDialect {
     }
 
     public Filter[] splitFilter(Filter filter, SimpleFeatureType schema) {
+
         PostPreProcessFilterSplittingVisitor splitter =
                 new PostPreProcessFilterSplittingVisitor(
                         dataStore.getFilterCapabilities(), schema, null) {
-                    private FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+                    private boolean supportsJsonPointer = false;
 
                     @Override
                     public Object visit(Function expression, Object notUsed) {
@@ -1512,21 +1514,35 @@ public class PostGISDialect extends BasicSQLDialect {
                             // takes the json pointer param to check if
                             // can be encoded
                             Expression param = expression.getParameters().get(1);
-                            if ((expression.getParameters().get(1) instanceof Literal))
-                                // can encode
-                                fcs.addType(JsonPointerFunction.class);
-                            else {
+                            if ((param instanceof Literal)) {
+                                this.supportsJsonPointer = true;
+                            } else {
                                 FilterAttributeExtractor extractor = new FilterAttributeExtractor();
                                 param.accept(extractor, null);
                                 if (extractor.isConstantExpression()) {
+                                    // defensive copy of filter before manipulating it
+                                    DuplicatingFilterVisitor duplicating =
+                                            new DuplicatingFilterVisitor();
+                                    Function duplicated =
+                                            (Function) expression.accept(duplicating, null);
                                     // if constant can encode
                                     Object result = param.evaluate(null);
-                                    expression.getParameters().set(1, ff.literal(result));
-                                    fcs.addType(JsonPointerFunction.class);
+                                    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+                                    // setting constant expression evaluated to literal
+                                    duplicated.getParameters().set(1, ff.literal(result));
+                                    this.supportsJsonPointer = true;
+                                    expression = duplicated;
                                 }
                             }
                         }
                         return super.visit(expression, notUsed);
+                    }
+
+                    @Override
+                    protected boolean supports(Object value) {
+                        if (value.equals(JsonPointerFunction.class)
+                                || value instanceof JsonPointerFunction) return supportsJsonPointer;
+                        else return super.supports(value);
                     }
                 };
         filter.accept(splitter, null);

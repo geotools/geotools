@@ -355,6 +355,12 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
         }
     }
 
+    @Override
+    public SimpleFeatureCollection getGranules(Query q, Transaction t) throws IOException {
+        // in memory, non transactional
+        return getGranules(q);
+    }
+
     private ReferencedEnvelope extractAndCombineBBox(Filter filter) {
         final Utils.BBOXFilterExtractor bboxExtractor = new Utils.BBOXFilterExtractor();
         filter.accept(bboxExtractor, null);
@@ -425,6 +431,12 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
         } finally {
             lock.unlock();
         }
+    }
+
+    @Override
+    public BoundingBox getBounds(String typeName, Transaction t) {
+        // non transactional implementation
+        return getBounds(typeName);
     }
 
     /** @throws IllegalStateException */

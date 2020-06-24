@@ -84,7 +84,7 @@ public class GTDataStoreGranuleCatalog extends AbstractGTDataStoreGranuleCatalog
             this.tileIndexStore =
                     new OracleDatastoreWrapper(
                             getTileIndexStore(), FilenameUtils.getFullPath(parentLocation));
-        } else if (Utils.isSQLServerStore(spi) && wrapstore) {
+        } else if (Utils.isSQLServerStore(spi)) {
             this.tileIndexStore =
                     new SQLServerDatastoreWrapper(
                             getTileIndexStore(), FilenameUtils.getFullPath(parentLocation));

@@ -113,7 +113,17 @@ class CachingDataStoreGranuleCatalog extends GranuleCatalog {
     }
 
     @Override
+    public BoundingBox getBounds(String typeName, Transaction t) {
+        return adaptee.getBounds(typeName, t);
+    }
+
+    @Override
     public SimpleFeatureCollection getGranules(Query q) throws IOException {
+        return getGranules(q, Transaction.AUTO_COMMIT);
+    }
+
+    @Override
+    public SimpleFeatureCollection getGranules(Query q, Transaction t) throws IOException {
         boolean decorateWithBounds =
                 Boolean.TRUE.equals(q.getHints().get(GranuleSource.NATIVE_BOUNDS));
         if (decorateWithBounds) {
@@ -122,9 +132,10 @@ class CachingDataStoreGranuleCatalog extends GranuleCatalog {
             Query copy = new Query(q);
             copy.getHints().remove(GranuleSource.NATIVE_BOUNDS);
             q = copy;
-            return new BoundsFeatureCollection(adaptee.getGranules(q), this::getGranuleDescriptor);
+            return new BoundsFeatureCollection(
+                    adaptee.getGranules(q, t), this::getGranuleDescriptor);
         } else {
-            return adaptee.getGranules(q);
+            return adaptee.getGranules(q, t);
         }
     }
 
@@ -232,8 +243,21 @@ class CachingDataStoreGranuleCatalog extends GranuleCatalog {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public int removeGranules(Query query) {
         final int val = adaptee.removeGranules(query);
+        // clear cache if needed
+        // TODO this can be optimized further filtering out elements using the Query's Filter
+        if (val >= 1) {
+            descriptorsCache.clear();
+        }
+
+        return val;
+    }
+
+    @Override
+    public int removeGranules(Query query, Transaction transaction) {
+        final int val = adaptee.removeGranules(query, transaction);
         // clear cache if needed
         // TODO this can be optimized further filtering out elements using the Query's Filter
         if (val >= 1) {

@@ -17,19 +17,87 @@
 package org.geotools.gce.imagemosaic.catalog.sqlserver;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Properties;
+import java.util.logging.Level;
+import org.apache.commons.beanutils.BeanUtils;
 import org.geotools.data.DataStore;
+import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.gce.imagemosaic.catalog.oracle.DataStoreWrapper;
 import org.geotools.gce.imagemosaic.catalog.oracle.FeatureTypeMapper;
+import org.geotools.jdbc.JDBCDataStore;
+import org.geotools.jdbc.SQLDialect;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 /** Specific SQLServer implementation for a {@link DataStoreWrapper} */
 public class SQLServerDatastoreWrapper extends DataStoreWrapper {
 
+    public static final String DEFAULT_METADATA_TABLE = "mosaic_geometry_metadata";
+    private static final String METADATA_TABLE_PROPERTY = "geometryMetadataTable";
+    private static final String CREATE_METADATA_TABLE =
+            "CREATE TABLE %s(\n"
+                    + "   F_TABLE_SCHEMA VARCHAR(128),\n"
+                    + "   F_TABLE_NAME VARCHAR(128) NOT NULL,\n"
+                    + "   F_GEOMETRY_COLUMN VARCHAR(128) NOT NULL,\n"
+                    + "   COORD_DIMENSION INTEGER,\n"
+                    + "   SRID INTEGER NOT NULL,\n"
+                    + "   TYPE VARCHAR(30) NOT NULL,\n"
+                    + "   UNIQUE(F_TABLE_SCHEMA, F_TABLE_NAME, F_GEOMETRY_COLUMN),\n"
+                    + "   CHECK(TYPE IN ('POINT','LINE', 'POLYGON', 'COLLECTION', 'MULTIPOINT', 'MULTILINE', 'MULTIPOLYGON', 'GEOMETRY') ))";
+
     public SQLServerDatastoreWrapper(DataStore datastore, String location) {
         super(datastore, location);
+        try {
+            if (datastore instanceof JDBCDataStore) {
+                JDBCDataStore jdbcDataStore = (JDBCDataStore) this.datastore;
+
+                // check if the geometry metadata table is present, if not, create and configure
+                // it, to make usage of SQL Server transparent
+                SQLDialect dialect = jdbcDataStore.getSQLDialect();
+                String metadataTable =
+                        (String) BeanUtils.getProperty(dialect, METADATA_TABLE_PROPERTY);
+                if (metadataTable == null) {
+                    metadataTable = DEFAULT_METADATA_TABLE;
+                    BeanUtils.setProperty(dialect, METADATA_TABLE_PROPERTY, DEFAULT_METADATA_TABLE);
+                }
+                String databaseSchema = jdbcDataStore.getDatabaseSchema();
+
+                try (Connection cx = jdbcDataStore.getConnection(Transaction.AUTO_COMMIT);
+                        Statement st = cx.createStatement()) {
+                    boolean commit = false;
+                    boolean createMetadataTable = true;
+                    DatabaseMetaData metaData = cx.getMetaData();
+
+                    // get the schema.metadata qualified and quoted string for use in direct SQL
+                    StringBuffer qualifiedTableName = new StringBuffer();
+                    if (databaseSchema != null) {
+                        dialect.encodeTableName(databaseSchema, qualifiedTableName);
+                        qualifiedTableName.append(".");
+                    }
+                    dialect.encodeTableName(metadataTable, qualifiedTableName);
+
+                    // check if it's already there
+                    try (ResultSet res =
+                            metaData.getTables(
+                                    null, databaseSchema, metadataTable, new String[] {"TABLE"})) {
+                        createMetadataTable = !res.next();
+                    }
+                    // it not create
+                    if (createMetadataTable) {
+                        st.executeUpdate(String.format(CREATE_METADATA_TABLE, qualifiedTableName));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.log(
+                    Level.FINE,
+                    "Failed to assess/create the metadata geometry table, this could lead to lost geometry SRIDs on table creation");
+        }
     }
 
     /**

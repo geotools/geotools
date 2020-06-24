@@ -106,13 +106,13 @@ public class GranuleCatalogStore extends GranuleCatalogSource implements Granule
     @Override
     public int removeGranules(Filter filter, Hints hints) {
         try {
-            int removed = catalog.removeGranules(new Query(typeName, filter));
+            int removed = catalog.removeGranules(new Query(typeName, filter), transaction);
 
             // we cannot re-initialize a raster manager if there are no granules
             Query q = new Query(manager.getTypeName());
             q.setMaxFeatures(1);
-            if (DataUtilities.count(catalog.getGranules(q)) > 0) {
-                manager.initialize(true);
+            if (DataUtilities.count(catalog.getGranules(q, transaction)) > 0) {
+                manager.initialize(true, transaction);
             }
             return removed;
         } catch (IOException e) {

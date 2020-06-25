@@ -84,6 +84,8 @@ public class PostGISCompound3DTestSetup extends JDBCCompound3DTestSetup {
                 "INSERT INTO \"lineCompound3d\" (\"id\",\"geom\",\"name\") VALUES (1,"
                         + "ST_GeomFromText('LINESTRING(3 0 1, 3 2 2, 3 3 3, 3 4 5)', 7415),"
                         + "'l2')");
+
+        run("ANALYZE \"lineCompound3d\"");
     }
 
     @Override

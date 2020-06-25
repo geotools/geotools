@@ -31,6 +31,7 @@ import java.sql.Statement;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +43,7 @@ import org.geotools.feature.FeatureTypes;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
 import org.geotools.geometry.jts.Geometries;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geopkg.Entry.DataType;
 import org.geotools.geopkg.geom.GeoPkgGeomReader;
 import org.geotools.geopkg.geom.GeoPkgGeomWriter;
@@ -796,6 +798,27 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         // enumerations are mapped to integer values
         if (FeatureTypes.getFieldOptions(ad) != null) {
             return Types.INTEGER;
+        }
+
+        return null;
+    }
+
+    @Override
+    public List<ReferencedEnvelope> getOptimizedBounds(
+            String schema, SimpleFeatureType featureType, Connection cx)
+            throws SQLException, IOException {
+        FeatureEntry entry = geopkg().feature(featureType.getTypeName(), cx);
+        if (entry != null && entry.getBounds() != null) {
+            ReferencedEnvelope bounds = entry.getBounds();
+            // make sure the bounds are not empty of the default 0,0,0,0
+            if (!bounds.isEmpty()
+                    && !bounds.isNull()
+                    && !(bounds.getMinX() == 0
+                            && bounds.getMinY() == 0
+                            && bounds.getMaxX() == 0
+                            && bounds.getMaxY() == 0)) {
+                return Arrays.asList(entry.getBounds());
+            }
         }
 
         return null;

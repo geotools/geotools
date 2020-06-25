@@ -449,9 +449,10 @@ public class PostGISDialect extends BasicSQLDialect {
 
                         // reproject and merge
                         if (!env.isNull()) {
-                            CoordinateReferenceSystem crs =
-                                    ((GeometryDescriptor) att).getCoordinateReferenceSystem();
-                            result.add(new ReferencedEnvelope(env, crs));
+                            CoordinateReferenceSystem flatCRS =
+                                    CRS.getHorizontalCRS(
+                                            featureType.getCoordinateReferenceSystem());
+                            result.add(new ReferencedEnvelope(env, flatCRS));
                         }
                     }
                     rs.close();

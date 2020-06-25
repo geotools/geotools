@@ -45,10 +45,7 @@ import org.opengis.feature.Attribute;
 import org.opengis.feature.ComplexAttribute;
 import org.opengis.feature.Feature;
 import org.opengis.feature.Property;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.feature.type.Name;
-import org.opengis.feature.type.PropertyDescriptor;
+import org.opengis.feature.type.*;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
@@ -798,7 +795,8 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
         Iterator it = propertyValueCollection.iterator();
         while (it.hasNext()) {
             Attribute attribute = (Attribute) it.next();
-            assertFalse(attribute instanceof ComplexAttribute);
+            // attribute.getType() was causing Class cast exception to ComplexType
+            assertFalse(attribute.getType() instanceof ComplexType);
         }
     }
 

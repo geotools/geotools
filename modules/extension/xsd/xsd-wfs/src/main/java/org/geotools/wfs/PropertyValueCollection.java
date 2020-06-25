@@ -34,7 +34,6 @@ import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.xs.XS;
 import org.opengis.feature.*;
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.FeatureTypeFactory;
@@ -177,13 +176,18 @@ public class PropertyValueCollection extends AbstractCollection<Attribute> {
                             descriptor.isNillable(),
                             descriptor.getDefaultValue());
 
-            if (next instanceof SimpleFeature || !(value instanceof ComplexAttribute)) {
-                if (value instanceof Attribute) value = ((Attribute) value).getValue();
-                return factory.createAttribute(value, newDescriptor, null);
+            Object result;
+            if (value instanceof ComplexAttribute) {
+                result =
+                        factory.createComplexAttribute(
+                                Collections.<Property>singletonList((Property) value),
+                                newDescriptor,
+                                null);
             } else {
-                return factory.createComplexAttribute(
-                        Collections.<Property>singletonList((Property) value), newDescriptor, null);
+                value = value instanceof Attribute ? ((Attribute) value).getValue() : value;
+                result = factory.createAttribute(value, newDescriptor, null);
             }
+            return result;
         }
 
         @Override

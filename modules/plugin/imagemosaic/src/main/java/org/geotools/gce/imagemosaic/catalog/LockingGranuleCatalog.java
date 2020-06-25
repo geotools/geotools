@@ -165,9 +165,24 @@ class LockingGranuleCatalog extends GranuleCatalog {
         }
     }
 
+    public BoundingBox getBounds(final String typeName, Transaction t) {
+        Lock lock = rwLock.readLock();
+        try {
+            lock.lock();
+            return delegate.getBounds(typeName, t);
+        } finally {
+            lock.unlock();
+        }
+    }
+
     @Override
     public SimpleFeatureCollection getGranules(Query q) throws IOException {
         return guardIO(() -> delegate.getGranules(q), rwLock.readLock());
+    }
+
+    @Override
+    public SimpleFeatureCollection getGranules(Query q, Transaction t) throws IOException {
+        return guardIO(() -> delegate.getGranules(q, t), rwLock.readLock());
     }
 
     @Override
@@ -196,8 +211,14 @@ class LockingGranuleCatalog extends GranuleCatalog {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public int removeGranules(Query query) {
         return guard(() -> delegate.removeGranules(query), rwLock.writeLock());
+    }
+
+    @Override
+    public int removeGranules(Query query, Transaction transaction) {
+        return guard(() -> delegate.removeGranules(query, transaction), rwLock.writeLock());
     }
 
     @Override

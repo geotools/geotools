@@ -22,11 +22,21 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Properties;
+import java.util.Set;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
@@ -38,6 +48,7 @@ import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.Query;
 import org.geotools.filter.SortByImpl;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogVisitor;
+import org.geotools.gce.imagemosaic.catalog.sqlserver.SQLServerDatastoreWrapper;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.test.OnlineTestCase;
 import org.geotools.test.TestData;
@@ -58,8 +69,6 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
     private static final Logger LOGGER =
             Logging.getLogger(ImageMosaicSQLServerIndexOnlineTest.class);
 
-    static final String metadataTable = "GEOMETRY_METADATA";
-
     static final String tempFolderNoEpsg = "rgbNoEpsg";
 
     static final String tempFolderName1 = "waterTempPG";
@@ -74,22 +83,6 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
 
     static final String VERY_LONG_NAME_SQLSERVER =
             "very_very_long_name_with_number_of_chars_greater_than_128_to_test_the_sqlserver_wrapper_even_if_has_some_more_characters_compared_with_oracle_and_postgres";
-
-    private static final String CREATE_METADATA_TABLE_SQL =
-            "IF NOT EXISTS (select * from sysobjects where name= '"
-                    + metadataTable
-                    + "' and xtype='U') "
-                    + "CREATE TABLE "
-                    + metadataTable
-                    + " ("
-                    + "F_TABLE_SCHEMA VARCHAR(30) NOT NULL,"
-                    + "F_TABLE_NAME VARCHAR(200) NOT NULL,"
-                    + "F_GEOMETRY_COLUMN VARCHAR(30) NOT NULL,"
-                    + "COORD_DIMENSION INTEGER,"
-                    + "SRID INTEGER NOT NULL,"
-                    + "TYPE VARCHAR(30) NOT NULL,"
-                    + "UNIQUE(F_TABLE_SCHEMA, F_TABLE_NAME, F_GEOMETRY_COLUMN),"
-                    + "CHECK(TYPE IN ('POINT','LINE', 'POLYGON', 'COLLECTION', 'MULTIPOINT', 'MULTILINE', 'MULTIPOLYGON', 'GEOMETRY') ))";
 
     /**
      * Simple Class for better testing raster manager
@@ -127,44 +120,6 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
         return props;
     }
 
-    // create the geometry metadata table for SQLServer
-    private void createMetadataTable() {
-        String jdbcUrl =
-                "jdbc:sqlserver://localhost:"
-                        + fixture.getProperty("port")
-                        + ";databaseName="
-                        + fixture.getProperty("database");
-        String username = fixture.getProperty("user");
-        String password = fixture.getProperty("passwd");
-
-        Connection conn = null;
-
-        try {
-
-            conn = DriverManager.getConnection(jdbcUrl, username, password);
-            Statement stmt = null;
-            try {
-                stmt = conn.createStatement();
-
-                stmt.executeUpdate(CREATE_METADATA_TABLE_SQL);
-            } catch (SQLException e) {
-                LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-            } finally {
-                if (stmt != null) stmt.close();
-            }
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-        } finally {
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (Exception e) {
-                LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-            }
-        }
-    }
-
     /* (non-Javadoc)
      * @see org.geotools.test.OnlineTestCase#getFixtureId()
      */
@@ -182,9 +137,6 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
             for (Object key : keyset) {
                 final String key_ = (String) key;
                 String value = fixture.getProperty(key_);
-                if (key_.equalsIgnoreCase("database")) {
-                    value = "mock";
-                }
 
                 out.write(key_.replace(" ", "\\ ") + "=" + value.replace(" ", "\\ ") + "\n");
             }
@@ -197,9 +149,9 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
     public void testSQLServerIndexing() throws Exception {
         ImageMosaicReader reader = null;
         try {
-            createMetadataTable();
             // insertMetadataTable(tempFolderName1);
             final File workDir = new File(TestData.file(this, "."), tempFolderName1);
+            FileUtils.deleteDirectory(workDir);
             assertTrue(workDir.mkdir());
             FileUtils.copyFile(
                     TestData.file(this, "watertemp.zip"), new File(workDir, "watertemp.zip"));
@@ -297,7 +249,6 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
     public void testSQLServerIndexingNoEpsgCode() throws Exception {
         ImageMosaicReader reader = null;
         try {
-            createMetadataTable();
             final File workDir = new File(TestData.file(this, "."), tempFolderNoEpsg);
             workDir.mkdir();
             assertTrue(workDir.exists());
@@ -323,7 +274,6 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
     public void testSQLServerCreateAndDrop() throws Exception {
         ImageMosaicReader reader = null;
         try {
-            createMetadataTable();
             final File workDir = new File(TestData.file(this, "."), tempFolderName4);
             workDir.mkdir();
             assertTrue(workDir.exists());
@@ -359,7 +309,6 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
     public void testSortingAndLimiting() throws Exception {
         ImageMosaicReader reader = null;
         try {
-            createMetadataTable();
             final File workDir = new File(TestData.file(this, "."), tempFolderName2);
             assertTrue(workDir.mkdir());
             FileUtils.copyFile(
@@ -506,7 +455,11 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
                             fixture.getProperty("passwd"));
             st = connection.createStatement();
             for (String table : tables) {
-                st.execute("DROP TABLE IF EXISTS " + fixture.getProperty("schema") + "." + table);
+                StringBuilder sb = new StringBuilder("DROP TABLE IF EXISTS ");
+                String schema = fixture.getProperty("schema");
+                if (schema != null) sb.append(schema).append(".");
+                sb.append(table);
+                st.execute(sb.toString());
             }
         } finally {
 
@@ -534,7 +487,6 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
     public void testSQLServerWrapping() throws Exception {
         ImageMosaicReader reader = null;
         try {
-            createMetadataTable();
             final File workDir = new File(TestData.file(this, "."), tempFolderNameWrap);
             assertTrue(workDir.mkdir());
             FileUtils.copyFile(
@@ -652,7 +604,7 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
                     tempFolderName2,
                     tempFolderName3,
                     VERY_LONG_NAME_SQLSERVER.substring(0, 113),
-                    metadataTable
+                    SQLServerDatastoreWrapper.DEFAULT_METADATA_TABLE
                 });
 
         System.clearProperty("org.geotools.referencing.forceXY");

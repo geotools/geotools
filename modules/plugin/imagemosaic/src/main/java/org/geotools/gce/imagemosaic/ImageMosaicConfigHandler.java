@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -496,7 +497,10 @@ public class ImageMosaicConfigHandler {
             final SimpleFeatureTypeBuilder featureBuilder = new SimpleFeatureTypeBuilder();
             String typeName = runConfiguration.getParameter(Prop.TYPENAME);
             featureBuilder.setName(typeName != null ? typeName : name);
-            featureBuilder.setNamespaceURI("http://www.geo-solutions.it/");
+            // the image mosaic code makes several lookups by un-qualified local names, best
+            // not to have a namespace here. It also matches the behavior of
+            // DataUtilities.createType, used above in case the indexer contains the target schema
+            featureBuilder.setNamespaceURI((URI) null);
             featureBuilder.add(
                     runConfiguration.getParameter(Prop.LOCATION_ATTRIBUTE).trim(), String.class);
             featureBuilder.add("the_geom", Polygon.class, actualCRS);

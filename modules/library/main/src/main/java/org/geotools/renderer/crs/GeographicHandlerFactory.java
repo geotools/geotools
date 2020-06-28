@@ -89,7 +89,7 @@ public class GeographicHandlerFactory implements ProjectionHandlerFactory {
     private boolean isWrappingException(
             CoordinateReferenceSystem sourceCrs, CoordinateReferenceSystem targetCRS)
             throws FactoryException {
-        MathTransform mt = CRS.findMathTransform(sourceCrs, targetCRS);
+        MathTransform mt = CRS.findMathTransform(sourceCrs, targetCRS, true);
         // this projection does not wrap coordinates, generates values larger than 180 instead
         if (mt instanceof Mercator) {
             return true;

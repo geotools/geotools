@@ -32,7 +32,9 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.crs.DerivedCRS;
 import org.opengis.referencing.crs.GeographicCRS;
+import org.opengis.referencing.cs.CoordinateSystemAxis;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 import si.uom.SI;
@@ -71,11 +73,13 @@ public class WrappingProjectionHandler extends ProjectionHandler {
         // this will compute the target half circle size
         setCentralMeridian(centralMeridian);
 
-        if (sourceCrs instanceof GeographicCRS) {
+        CoordinateSystemAxis axis = sourceCrs.getCoordinateSystem().getAxis(0);
+        if (sourceCrs instanceof GeographicCRS
+                || (sourceCrs instanceof DerivedCRS && axis.getUnit().isCompatible(SI.RADIAN))) {
             sourceHalfCircle = 180;
         } else {
             // assume a simplified earth circumference, which is 40075 km
-            Unit<?> sourceUnit = sourceCrs.getCoordinateSystem().getAxis(0).getUnit();
+            Unit<?> sourceUnit = axis.getUnit();
             UnitConverter converter = SI.METRE.getConverterTo((Unit<Length>) sourceUnit);
             this.sourceHalfCircle = converter.convert(40075000 / 2);
         }

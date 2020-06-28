@@ -1556,4 +1556,24 @@ public class ProjectionHandlerTest {
     public LineString lineString(GeometryFactory gf, double[] coords) {
         return gf.createLineString(new LiteCoordinateSequence(coords));
     }
+
+    @Test
+    public void testRotatedPolarSource() throws Exception {
+        CoordinateReferenceSystem rotatedPolar =
+                CRS.parseWKT(
+                        "FITTED_CS[\"rotated_latitude_longitude\", INVERSE_MT[PARAM_MT[\"Rotated_Pole\", "
+                                + " PARAMETER[\"semi_major\", 6371229.0],  PARAMETER[\"semi_minor\", "
+                                + "6371229.0],  PARAMETER[\"central_meridian\", -106.0],  "
+                                + "PARAMETER[\"latitude_of_origin\", 54.0],  PARAMETER[\"scale_factor\", "
+                                + "1.0],  PARAMETER[\"false_easting\", 0.0],  "
+                                + "PARAMETER[\"false_northing\", 0.0]]],  GEOGCS[\"unknown\", "
+                                + "DATUM[\"unknown\",  SPHEROID[\"unknown\", 6371229.0, 0.0]],  "
+                                + "PRIMEM[\"Greenwich\", 0.0],  UNIT[\"degree\", 0.017453292519943295],  "
+                                + "AXIS[\"Geodetic longitude\", EAST],  AXIS[\"Geodetic latitude\", NORTH]]]");
+        Envelope worldEnvelope = new Envelope(-180, 180, -90, 90);
+        ReferencedEnvelope worldWGS84 = new ReferencedEnvelope(worldEnvelope, WGS84);
+        ProjectionHandler handler =
+                ProjectionHandlerFinder.getHandler(worldWGS84, rotatedPolar, true);
+        assertThat(handler, instanceOf(WrappingProjectionHandler.class));
+    }
 }

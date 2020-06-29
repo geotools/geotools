@@ -23,6 +23,7 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.Feature;
+import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.sort.SortBy;
@@ -49,7 +50,21 @@ public class DecoratingFeatureCollection<T extends FeatureType, F extends Featur
     public void accepts(
             org.opengis.feature.FeatureVisitor visitor, org.opengis.util.ProgressListener progress)
             throws IOException {
-        DataUtilities.visit(this, visitor, progress);
+        if (canDelegate(visitor)) {
+            delegate.accepts(visitor, progress);
+        } else {
+            DataUtilities.visit(this, visitor, progress);
+        }
+    }
+
+    /**
+     * Methods for subclass to override in order to determine if the supplied visitor can be passed
+     * to the delegate collection.
+     *
+     * <p>The default is false and the visitor receives the decoraeted features.
+     */
+    protected boolean canDelegate(FeatureVisitor visitor) {
+        return false;
     }
 
     public boolean contains(Object o) {

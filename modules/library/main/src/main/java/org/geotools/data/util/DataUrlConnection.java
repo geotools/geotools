@@ -26,6 +26,8 @@ import org.geotools.data.Base64;
 /** Decodes the base64 data and provides an appropriate InputStream. */
 public class DataUrlConnection extends URLConnection {
 
+    public static final String DATA_PREFIX = "data:";
+
     /**
      * Must be overridden.
      *

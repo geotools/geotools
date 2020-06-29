@@ -1507,7 +1507,6 @@ public class PostGISDialect extends BasicSQLDialect {
         PostPreProcessFilterSplittingVisitor splitter =
                 new PostPreProcessFilterSplittingVisitor(
                         dataStore.getFilterCapabilities(), schema, null) {
-                    private boolean supportsJsonPointer = false;
 
                     @Override
                     public Object visit(Function expression, Object notUsed) {
@@ -1515,25 +1514,8 @@ public class PostGISDialect extends BasicSQLDialect {
                             // takes the json pointer param to check if
                             // can be encoded
                             Expression param = expression.getParameters().get(1);
-                            if ((param instanceof Literal)) {
-                                this.supportsJsonPointer = true;
-                            } else {
-                                FilterAttributeExtractor extractor = new FilterAttributeExtractor();
-                                param.accept(extractor, null);
-                                if (extractor.isConstantExpression()) {
-                                    // defensive copy of filter before manipulating it
-                                    DuplicatingFilterVisitor duplicating =
-                                            new DuplicatingFilterVisitor();
-                                    Function duplicated =
-                                            (Function) expression.accept(duplicating, null);
-                                    // if constant can encode
-                                    Object result = param.evaluate(null);
-                                    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-                                    // setting constant expression evaluated to literal
-                                    duplicated.getParameters().set(1, ff.literal(result));
-                                    this.supportsJsonPointer = true;
-                                    expression = duplicated;
-                                }
+                            if (!(param instanceof Literal)) {
+                                expression = constantParameterToLiteral(expression, param, 1);
                             }
                         }
                         return super.visit(expression, notUsed);
@@ -1541,9 +1523,10 @@ public class PostGISDialect extends BasicSQLDialect {
 
                     @Override
                     protected boolean supports(Object value) {
-                        if (value.equals(JsonPointerFunction.class)
-                                || value instanceof JsonPointerFunction) return supportsJsonPointer;
-                        else return super.supports(value);
+                        if (value instanceof JsonPointerFunction) {
+                            Expression param = ((Function) value).getParameters().get(1);
+                            return param instanceof Literal;
+                        } else return super.supports(value);
                     }
                 };
         filter.accept(splitter, null);
@@ -1553,5 +1536,26 @@ public class PostGISDialect extends BasicSQLDialect {
         split[1] = splitter.getFilterPost();
 
         return split;
+    }
+
+    // Given a function and one of its parameters check if it is a constant one
+    // and eventually resolve it to Literal setting to the function,
+    // after doing a defensive copy of it.
+    private Function constantParameterToLiteral(
+            Function expression, Expression param, int paramIdx) {
+        FilterAttributeExtractor extractor = new FilterAttributeExtractor();
+        param.accept(extractor, null);
+        if (extractor.isConstantExpression()) {
+            // defensive copy of filter before manipulating it
+            DuplicatingFilterVisitor duplicating = new DuplicatingFilterVisitor();
+            Function duplicated = (Function) expression.accept(duplicating, null);
+            // if constant can encode
+            Object result = param.evaluate(null);
+            FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+            // setting constant expression evaluated to literal
+            duplicated.getParameters().set(paramIdx, ff.literal(result));
+            return duplicated;
+        }
+        return expression;
     }
 }

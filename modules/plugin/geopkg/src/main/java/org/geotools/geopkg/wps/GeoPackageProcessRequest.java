@@ -296,6 +296,7 @@ public class GeoPackageProcessRequest {
     protected List<Layer> layers = new ArrayList<Layer>();
     protected URL path = null;
     protected boolean remove = true;
+    protected boolean styles = true;
 
     public Boolean getRemove() {
         return remove;
@@ -331,5 +332,13 @@ public class GeoPackageProcessRequest {
 
     public void setPath(URL path) {
         this.path = path;
+    }
+
+    public boolean isStyles() {
+        return styles;
+    }
+
+    public void setStyles(boolean styles) {
+        this.styles = styles;
     }
 }

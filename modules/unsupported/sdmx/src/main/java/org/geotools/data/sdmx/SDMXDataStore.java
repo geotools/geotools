@@ -62,8 +62,7 @@ public class SDMXDataStore extends ContentDataStore {
     public static String FEATURETYPE_SUFFIX = "SDMX";
     public static String DIMENSIONS_EXPR = "CODE";
     public static String DIMENSIONS_EXPR_ALL = "ALL";
-    public static int NTHREADS = 7;
-    public static int TIMEOUT = 180;
+    public static int TIMEOUT = 600;
 
     // SDMX error codes
     public static int ERROR_NORESULTS = 100;
@@ -74,18 +73,13 @@ public class SDMXDataStore extends ContentDataStore {
 
     protected URL namespace;
     protected String provider;
+    protected int concurrency;
     protected String user;
     protected String password;
     protected GenericSDMXClient sdmxClient;
     protected Map<String, Dataflow> dataflows = new HashMap<String, Dataflow>();
     protected Map<String, DataFlowStructure> dataflowStructures =
             new HashMap<String, DataFlowStructure>();
-    private int nthreads = SDMXDataStore.NTHREADS;
-
-    // This is used mainly for unit testing
-    public void setNThreads(int nthreads) {
-        this.nthreads = nthreads;
-    }
 
     /** Task that requests Data Flow Structures from the SDMX endpoint */
     private class GetDataFlowStructureTask implements Callable<String> {
@@ -137,7 +131,8 @@ public class SDMXDataStore extends ContentDataStore {
         }
     }
 
-    public SDMXDataStore(String namespaceIn, String provider, String user, String password)
+    public SDMXDataStore(
+            String namespaceIn, String provider, Integer concurrency, String user, String password)
             throws MalformedURLException, SdmxException {
 
         super();
@@ -149,6 +144,7 @@ public class SDMXDataStore extends ContentDataStore {
                     Level.SEVERE, "Namespace \"" + namespaceIn + "\" is not properly formatted", e);
             throw (e);
         }
+        this.setConcurrency(concurrency.intValue());
         this.user = user;
         this.password = password;
         this.provider = provider;
@@ -164,6 +160,15 @@ public class SDMXDataStore extends ContentDataStore {
         // TODO: add credentials support
         // this.sdmxClient = new RestSdmxClient(name, new URL(apiEndpoint), false,
         // false, false);
+    }
+
+    // Concurrency selectors
+    public int getConcurrency() {
+        return concurrency;
+    }
+
+    public void setConcurrency(int concurrency) {
+        this.concurrency = concurrency;
     }
 
     /**
@@ -291,7 +296,7 @@ public class SDMXDataStore extends ContentDataStore {
         try {
             dataflows = this.sdmxClient.getDataflows();
         } catch (SdmxException e) {
-            e.printStackTrace(); // TODO
+            LOGGER.log(Level.SEVERE, "Error while getting dataflows", e);
             return new ArrayList<Name>();
         }
 
@@ -302,7 +307,7 @@ public class SDMXDataStore extends ContentDataStore {
                 });
 
         this.dataflowStructures.clear();
-        ExecutorService executorService = Executors.newFixedThreadPool(this.nthreads);
+        ExecutorService executorService = Executors.newFixedThreadPool(this.getConcurrency());
         try {
             executorService.invokeAll(tasks, SDMXDataStore.TIMEOUT, TimeUnit.SECONDS);
         } catch (InterruptedException e) {

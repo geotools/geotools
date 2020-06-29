@@ -4621,7 +4621,8 @@ public class ImageMosaicReaderTest extends Assert {
         ImageMosaicReader reader = new ImageMosaicFormat().getReader(testMosaic);
 
         // remove cached granules on error and reload
-        reader.granuleCatalog.removeGranules(new Query("empty_mosaic", Filter.INCLUDE));
+        reader.granuleCatalog.removeGranules(
+                new Query("empty_mosaic", Filter.INCLUDE), Transaction.AUTO_COMMIT);
         reader.dispose();
         reader = new ImageMosaicFormat().getReader(testMosaic);
 
@@ -4697,7 +4698,8 @@ public class ImageMosaicReaderTest extends Assert {
         coverage.dispose(true);
 
         // now remove granule, reinitialize and test the first tests again
-        reader.granuleCatalog.removeGranules(new Query("empty_mosaic", Filter.INCLUDE));
+        reader.granuleCatalog.removeGranules(
+                new Query("empty_mosaic", Filter.INCLUDE), Transaction.AUTO_COMMIT);
         manager.initialize(false);
 
         // manager should have an empty bbox

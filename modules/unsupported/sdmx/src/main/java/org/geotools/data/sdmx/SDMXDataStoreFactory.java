@@ -46,6 +46,7 @@ public class SDMXDataStoreFactory implements DataStoreFactorySpi {
 
     public static final String FACTORY_NAME = "SDMX";
     public static final String FACTORY_DESCRIPTION = "SDMX 2.0/2.1 ReST API";
+    public static int CONCURRENCY = 7;
 
     private static List<Param> paramMetadata = new ArrayList<Param>(10);
 
@@ -57,6 +58,13 @@ public class SDMXDataStoreFactory implements DataStoreFactorySpi {
                     "Well-known provider name (either 'ABS' or 'ABS2')",
                     true,
                     "ABS2");
+    public static final Param CONCURRENCY_PARAM =
+            new Param(
+                    "Concurrency",
+                    Integer.class,
+                    "N. of concurrent threads",
+                    false,
+                    SDMXDataStoreFactory.CONCURRENCY);
     public static final Param USER_PARAM =
             new Param("Username", String.class, "Username", false, null);
     public static final Param PASSWORD_PARAM =
@@ -71,6 +79,7 @@ public class SDMXDataStoreFactory implements DataStoreFactorySpi {
     static {
         paramMetadata.add(NAMESPACE_PARAM);
         paramMetadata.add(PROVIDER_PARAM);
+        paramMetadata.add(CONCURRENCY_PARAM);
         paramMetadata.add(USER_PARAM);
         paramMetadata.add(PASSWORD_PARAM);
     }
@@ -87,6 +96,7 @@ public class SDMXDataStoreFactory implements DataStoreFactorySpi {
             return new SDMXDataStore(
                     (String) params.get(NAMESPACE_PARAM.key),
                     (String) params.get(PROVIDER_PARAM.key),
+                    (Integer) params.get(CONCURRENCY_PARAM.key),
                     (String) params.get(USER_PARAM.key),
                     (String) params.get(PASSWORD_PARAM.key));
         } catch (SdmxException e) {

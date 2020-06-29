@@ -59,6 +59,7 @@ public class Helper {
         Map<String, Serializable> params = new HashMap<String, Serializable>();
         params.put(SDMXDataStoreFactory.NAMESPACE_PARAM.key, NAMESPACE);
         params.put(SDMXDataStoreFactory.PROVIDER_PARAM.key, PROVIDER_OLD);
+        params.put(SDMXDataStoreFactory.CONCURRENCY_PARAM.key, 1);
         params.put(SDMXDataStoreFactory.USER_PARAM.key, USER);
         params.put(SDMXDataStoreFactory.PASSWORD_PARAM.key, PASSWORD);
         return (SDMXDataStore) (new SDMXDataStoreFactory()).createDataStore(params);
@@ -70,6 +71,7 @@ public class Helper {
         Map<String, Serializable> params = new HashMap<String, Serializable>();
         params.put(SDMXDataStoreFactory.NAMESPACE_PARAM.key, NAMESPACE);
         params.put(SDMXDataStoreFactory.PROVIDER_PARAM.key, PROVIDER_NEW);
+        params.put(SDMXDataStoreFactory.CONCURRENCY_PARAM.key, 1);
         params.put(SDMXDataStoreFactory.USER_PARAM.key, USER);
         params.put(SDMXDataStoreFactory.PASSWORD_PARAM.key, PASSWORD);
         return (SDMXDataStore) (new SDMXDataStoreFactory()).createDataStore(params);

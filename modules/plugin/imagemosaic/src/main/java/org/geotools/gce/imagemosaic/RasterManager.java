@@ -64,6 +64,7 @@ import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.Query;
+import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.visitor.CalcResult;
 import org.geotools.feature.visitor.FeatureCalc;
@@ -1451,7 +1452,7 @@ public class RasterManager implements Cloneable {
             // remove them all, assuming the schema has not changed
             final Query query = new Query(type.getTypeName());
             query.setFilter(Filter.INCLUDE);
-            granuleCatalog.removeGranules(query);
+            granuleCatalog.removeGranules(query, Transaction.AUTO_COMMIT);
         }
     }
 
@@ -1470,7 +1471,7 @@ public class RasterManager implements Cloneable {
             cleanupGranules(query, checkForReferences, forceDelete);
 
             // removing records from the catalog
-            granuleCatalog.removeGranules(query);
+            granuleCatalog.removeGranules(query, Transaction.AUTO_COMMIT);
             granuleCatalog.removeType(typeName);
         }
         if (alternativeCRSCache != null) {
@@ -1599,7 +1600,11 @@ public class RasterManager implements Cloneable {
     }
 
     public void initialize(final boolean checkDomains) throws IOException {
-        final BoundingBox bounds = granuleCatalog.getBounds(typeName);
+        initialize(checkDomains, Transaction.AUTO_COMMIT);
+    }
+
+    public void initialize(final boolean checkDomains, Transaction transaction) throws IOException {
+        final BoundingBox bounds = granuleCatalog.getBounds(typeName, transaction);
         if (checkDomains) {
             initDomains(configuration);
         }

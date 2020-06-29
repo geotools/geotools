@@ -14,6 +14,8 @@
 package org.geotools.ows.wmts.model;
 
 import static org.geotools.ows.wmts.WMTSTestUtils.createCapabilities;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -25,6 +27,7 @@ import org.geotools.data.ows.OperationType;
 import org.geotools.ows.wms.CRSEnvelope;
 import org.geotools.ows.wmts.WMTSSpecification;
 import org.geotools.ows.wmts.WebMapTileServer;
+import org.opengis.metadata.citation.Address;
 import org.xml.sax.SAXException;
 
 public class WMTSCapabilitiesTest extends TestCase {
@@ -279,6 +282,17 @@ public class WMTSCapabilitiesTest extends TestCase {
                 throw (e);
             }
         }
+    }
+
+    public void testParseWithIncompleteAddressMetadata() throws Exception {
+        WMTSCapabilities capabilities = createCapabilities("vienna_capa.xml");
+        WMTSService service = (WMTSService) capabilities.getService();
+        Address address = service.getContactInformation().getContactInfo().getAddress();
+        assertNull(address.getAdministrativeArea());
+        assertNull(address.getPostalCode());
+        assertNotNull(address.getCity());
+        assertNotNull(address.getCountry());
+        assertNotNull(address.getElectronicMailAddresses());
     }
 
     protected WebMapTileServer getCustomWMS(URL featureURL)

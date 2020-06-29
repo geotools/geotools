@@ -857,7 +857,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
     }
 
     public Object visit(Function expression, Object notUsed) {
-        if (!supports(expression.getClass())) {
+        if (!supports(expression)) {
             postStack.push(expression);
             return null;
         }
@@ -1029,6 +1029,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
         boolean supports = false;
         if (value instanceof Class) supports = fcs.supports((Class) value);
         else if (value instanceof Filter) supports = fcs.supports((Filter) value);
+        else if (value instanceof Expression) supports = fcs.supports(value.getClass());
         else if (value instanceof FilterCapabilities)
             supports = fcs.supports((FilterCapabilities) value);
 

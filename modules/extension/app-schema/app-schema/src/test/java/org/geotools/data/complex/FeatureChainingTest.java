@@ -17,10 +17,7 @@
 
 package org.geotools.data.complex;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -40,17 +37,19 @@ import org.geotools.feature.FeatureImpl;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.gml3.bindings.GML3EncodingUtils;
 import org.geotools.test.AppSchemaTestSupport;
+import org.geotools.wfs.PropertyValueCollection;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.locationtech.jts.util.Stopwatch;
+import org.opengis.feature.Attribute;
 import org.opengis.feature.ComplexAttribute;
 import org.opengis.feature.Feature;
 import org.opengis.feature.Property;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.feature.type.Name;
+import org.opengis.feature.type.*;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.PropertyName;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.NamespaceSupport;
 
@@ -779,6 +778,26 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
         assertEquals(3, size(guFeatures));
         assertEquals(4, size(cpFeatures));
         assertEquals(6, size(cgiFeatures));
+    }
+
+    @Test
+    public void testPropertyValueCollection() {
+        // test that the Attribute return from a PropertyValueCollection iteration,
+        // when a PropertyName points to a SimpleAttribute in a ComplexFeature,
+        // doesn't throws a ClassCastException on getType method
+
+        PropertyName pn = ff.property("gsml:specification/gsml:GeologicUnit/gsml:purpose");
+
+        PropertyDescriptor descriptor = pn.evaluate(mfFeatures.getSchema(), null);
+
+        PropertyValueCollection propertyValueCollection =
+                new PropertyValueCollection(mfFeatures, (AttributeDescriptor) descriptor, pn);
+        Iterator it = propertyValueCollection.iterator();
+        while (it.hasNext()) {
+            Attribute attribute = (Attribute) it.next();
+            // attribute.getType() was causing Class cast exception to ComplexType
+            assertFalse(attribute.getType() instanceof ComplexType);
+        }
     }
 
     private static int size(FeatureCollection<FeatureType, Feature> features) {

@@ -42,7 +42,7 @@ matrix:
       dist: bionic
       name: "MS SQL server 2019"
     - jdk: openjdk8
-      env: ARGS="-pl :gt-jdbc-oracle -Ponline -Ptravis-oracle-build -Dfmt.skip=true -am"
+      env: ARGS="-pl :gt-jdbc-oracle -Ponline,travis-oracle-build -Dfmt.skip=true -am"
       dist: bionic
       name: "Oracle XE"
       services:

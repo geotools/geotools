@@ -1243,7 +1243,7 @@
       <dependency>
         <artifactId>ojdbc8</artifactId>
         <groupId>com.oracle.database.jdbc</groupId>
-        <version>19.6.0.0</version>
+        <version>19.7.0.0</version>
       </dependency>
       <!-- Older version required by imagemosaic -->
       <dependency>

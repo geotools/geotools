@@ -375,7 +375,13 @@ class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
         }
 
         // convert geometry
-        g = JTSUtilities.convertToCollection(g, shapeType);
+        if (g != null) {
+            if (g.isEmpty()) {
+                g = null;
+            } else {
+                g = JTSUtilities.convertToCollection(g, shapeType);
+            }
+        }
 
         // bounds calculations
         if (g != null) {

@@ -22,6 +22,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
@@ -33,6 +34,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.apache.commons.io.FileUtils;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -61,6 +63,8 @@ public class ShapefileDumperTest {
     static final String LONGNAMES = "longnames";
 
     static final String NULLGEOM = "nullgeom";
+
+    static final String EMPTYGEOMS = "MultiTypeEmpty";
 
     File properties = new File("./src/test/resources/org/geotools/data/shapefile/test-data/dumper");
 
@@ -416,5 +420,44 @@ public class ShapefileDumperTest {
                 }
             }
         }
+    }
+
+    @Test
+    public void testMultipleTypeEmptyGeometries() throws Exception {
+        SimpleFeatureCollection fc = getFeaturesFromProperties(EMPTYGEOMS);
+        ShapefileDumper dumper = new ShapefileDumper(dumperFolder);
+        dumper.dump(fc);
+
+        // points
+        SimpleFeatureCollection point = getFeaturesFromShapefile(EMPTYGEOMS + "Point");
+        assertEquals(1, point.size());
+        assertNull(DataUtilities.first(point).getDefaultGeometry());
+        checkTypeStructure(point.getSchema(), Point.class, "name");
+        assertCst(EMPTYGEOMS + "Point", "ISO-8859-1");
+
+        // multipoints
+        SimpleFeatureCollection mpoint = getFeaturesFromShapefile(EMPTYGEOMS + "MPoint");
+        assertEquals(1, mpoint.size());
+        assertNull(DataUtilities.first(mpoint).getDefaultGeometry());
+        checkTypeStructure(mpoint.getSchema(), MultiPoint.class, "name");
+        assertCst(EMPTYGEOMS + "MPoint", "ISO-8859-1");
+
+        // polygon and multipolygon
+        SimpleFeatureCollection polygon = getFeaturesFromShapefile(EMPTYGEOMS + "Polygon");
+        assertEquals(2, polygon.size());
+        List<SimpleFeature> polygonFeatures = DataUtilities.list(polygon);
+        assertNull((Geometry) polygonFeatures.get(0).getDefaultGeometry());
+        assertNull((Geometry) polygonFeatures.get(1).getDefaultGeometry());
+        checkTypeStructure(polygon.getSchema(), MultiPolygon.class, "name");
+        assertCst(EMPTYGEOMS + "Polygon", "ISO-8859-1");
+
+        // line and multiline
+        SimpleFeatureCollection line = getFeaturesFromShapefile(EMPTYGEOMS + "Line");
+        assertEquals(2, line.size());
+        List<SimpleFeature> lineFeatures = DataUtilities.list(polygon);
+        assertNull((Geometry) lineFeatures.get(0).getDefaultGeometry());
+        assertNull((Geometry) lineFeatures.get(1).getDefaultGeometry());
+        checkTypeStructure(line.getSchema(), MultiLineString.class, "name");
+        assertCst(EMPTYGEOMS + "Line", "ISO-8859-1");
     }
 }

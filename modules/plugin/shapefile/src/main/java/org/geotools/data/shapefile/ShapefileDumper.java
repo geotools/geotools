@@ -385,9 +385,7 @@ public class ShapefileDumper {
             geometryType = "Line";
         } else {
             throw new RuntimeException(
-                    "This should never happen, "
-                            + "there's a bug in the SHAPE-ZIP output format. I got a geometry of type "
-                            + g.getClass());
+                    "This should never happen, I got a geometry of type " + g.getClass());
         }
 
         Map<String, Object> map = new HashMap<String, Object>();

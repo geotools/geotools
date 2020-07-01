@@ -14,6 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+
 package org.geotools.gce.imagemosaic.jdbc;
 
 import java.awt.Color;
@@ -21,60 +22,75 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.DataBuffer;
+import java.awt.image.DataBufferByte;
+import java.awt.image.DataBufferDouble;
+import java.awt.image.DataBufferFloat;
+import java.awt.image.DataBufferInt;
+import java.awt.image.DataBufferShort;
+import java.awt.image.DataBufferUShort;
+import java.awt.image.Raster;
+import java.awt.image.RenderedImage;
+import java.awt.image.SampleModel;
+import java.awt.image.WritableRaster;
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.media.jai.Interpolation;
+import javax.media.jai.PlanarImage;
+import javax.media.jai.RenderedOp;
+import javax.media.jai.TiledImage;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.image.ImageWorker;
 import org.geotools.image.util.ImageUtilities;
 import org.geotools.util.logging.Logging;
 
 /**
- * This class reads decoded tiles from the queue and performs the mosaicing and scaling
+ * This class reads decoded tiles from the queue and performs the mosaicing and scaling.
  *
  * @author mcr
  */
-public class ImageComposerThread extends AbstractThread {
-    /** Logger. */
+public class ImageComposerThread extends Thread {
+
+    Config config;
+
     protected static final Logger LOGGER = Logging.getLogger(ImageComposerThread.class);
+
+    private final ImageMosaicJDBCReaderState state;
 
     protected GridCoverageFactory coverageFactory;
 
     private GridCoverage2D gridCoverage2D;
 
-    private Color outputTransparentColor, backgroundColor;
-
-    private boolean xAxisSwitch;
-
     public ImageComposerThread(
-            Color backgroundColor,
-            Color outputTransparentColor,
-            Rectangle pixelDimension,
-            GeneralEnvelope requestEnvelope,
-            ImageLevelInfo levelInfo,
-            LinkedBlockingQueue<TileQueueElement> tileQueue,
-            Config config,
-            boolean xAxisSwitch,
-            GridCoverageFactory coverageFactory) {
-        super(pixelDimension, requestEnvelope, levelInfo, tileQueue, config);
-        this.outputTransparentColor = outputTransparentColor;
-        this.backgroundColor = backgroundColor;
-        this.xAxisSwitch = xAxisSwitch;
+            ImageMosaicJDBCReaderState state, Config config, GridCoverageFactory coverageFactory) {
+        this.state = state;
+        this.config = config;
         this.coverageFactory = coverageFactory;
     }
 
     private Dimension getStartDimension() {
-        double width;
-        double height;
+        int width;
+        int height;
 
-        width = pixelDimension.getWidth() / rescaleX;
-        height = pixelDimension.getHeight() / rescaleY;
+        width =
+                (int)
+                        Math.round(
+                                state.getRequestedEnvelopeTransformedExpanded().getSpan(0)
+                                        / state.getImageLevelInfo().getResX());
+        height =
+                (int)
+                        Math.round(
+                                state.getRequestedEnvelopeTransformedExpanded().getSpan(1)
+                                        / state.getImageLevelInfo().getResY());
 
-        return new Dimension((int) Math.round(width), (int) Math.round(height));
+        return new Dimension(width, height);
     }
 
     private BufferedImage getStartImage(BufferedImage copyFrom) {
@@ -100,10 +116,10 @@ public class ImageComposerThread extends AbstractThread {
                 createDataBufferFilledWithNoDataValues(raster, colorModel.getPixelSize());
         raster = Raster.createWritableRaster(sm, dataBuffer, null);
         BufferedImage image = new BufferedImage(colorModel, raster, alphaPremultiplied, properties);
-        if (levelInfo.getNoDataValue() == null) {
+        if (state.getImageLevelInfo().getNoDataValue() == null) {
             Graphics2D g2D = (Graphics2D) image.getGraphics();
             Color save = g2D.getColor();
-            g2D.setColor(backgroundColor);
+            g2D.setColor(state.getBackgroundColor());
             g2D.fillRect(0, 0, image.getWidth(), image.getHeight());
             g2D.setColor(save);
         }
@@ -111,17 +127,20 @@ public class ImageComposerThread extends AbstractThread {
     }
 
     private BufferedImage getStartImage(int imageType) {
+        int imageTypeReviewed;
+        if (imageType == BufferedImage.TYPE_CUSTOM) {
+            imageTypeReviewed = ImageMosaicJDBCReader.DEFAULT_IMAGE_TYPE;
+        } else {
+            imageTypeReviewed = imageType;
+        }
+
         Dimension dim = getStartDimension();
-
-        if (imageType == BufferedImage.TYPE_CUSTOM)
-            imageType = ImageMosaicJDBCReader.DEFAULT_IMAGE_TYPE;
-
         BufferedImage image =
-                new BufferedImage((int) dim.getWidth(), (int) dim.getHeight(), imageType);
+                new BufferedImage((int) dim.getWidth(), (int) dim.getHeight(), imageTypeReviewed);
 
         Graphics2D g2D = (Graphics2D) image.getGraphics();
         Color save = g2D.getColor();
-        g2D.setColor(backgroundColor);
+        g2D.setColor(state.getBackgroundColor());
         g2D.fillRect(0, 0, image.getWidth(), image.getHeight());
         g2D.setColor(save);
 
@@ -133,6 +152,8 @@ public class ImageComposerThread extends AbstractThread {
         BufferedImage image = null;
 
         TileQueueElement queueObject = null;
+        LinkedBlockingQueue<TileQueueElement> tileQueue = state.getTileQueue();
+        GeneralEnvelope rete = state.getRequestedEnvelopeTransformedExpanded();
 
         try {
             while ((queueObject = tileQueue.take()).isEndElement() == false) {
@@ -143,47 +164,63 @@ public class ImageComposerThread extends AbstractThread {
 
                 int posx =
                         (int)
-                                ((queueObject.getEnvelope().getMinimum(0)
-                                                - requestEnvelope.getMinimum(0))
-                                        / levelInfo.getResX());
+                                (Math.round(
+                                        (queueObject.getEnvelope().getMinimum(0)
+                                                        - rete.getMinimum(0))
+                                                / state.getImageLevelInfo().getResX()));
                 int posy =
                         (int)
-                                ((requestEnvelope.getMaximum(1)
-                                                - queueObject.getEnvelope().getMaximum(1))
-                                        / levelInfo.getResY());
+                                (Math.round(
+                                        (rete.getMaximum(1)
+                                                        - queueObject.getEnvelope().getMaximum(1))
+                                                / state.getImageLevelInfo().getResY()));
 
                 image.getRaster().setRect(posx, posy, queueObject.getTileImage().getRaster());
             }
+        } catch (OutOfMemoryError e) {
+            LOGGER.warning(
+                    "Out of memory when trying to render coverage '"
+                            + state.getImageLevelInfo().getCoverageName()
+                            + "'.");
+            LOGGER.warning(
+                    "Tips: increase memory, add coarser dataset overviews, or do not zoom that out.");
+            // return no image
+            gridCoverage2D = null;
+            return;
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
 
-        if (image == null) // no tiles ??
-        image = getStartImage(ImageMosaicJDBCReader.DEFAULT_IMAGE_TYPE);
+        if (image == null) {
+            // no tiles ??
+            image = getStartImage(ImageMosaicJDBCReader.DEFAULT_IMAGE_TYPE);
+        }
 
         GeneralEnvelope resultEnvelope = null;
 
-        if (xAxisSwitch) {
+        if (state.isXAxisSwitch()) {
             Rectangle2D tmp =
                     new Rectangle2D.Double(
-                            requestEnvelope.getMinimum(1),
-                            requestEnvelope.getMinimum(0),
-                            requestEnvelope.getSpan(1),
-                            requestEnvelope.getSpan(0));
+                            rete.getMinimum(1),
+                            rete.getMinimum(0),
+                            rete.getSpan(1),
+                            rete.getSpan(0));
             resultEnvelope = new GeneralEnvelope(tmp);
-            resultEnvelope.setCoordinateReferenceSystem(
-                    requestEnvelope.getCoordinateReferenceSystem());
+            resultEnvelope.setCoordinateReferenceSystem(rete.getCoordinateReferenceSystem());
         } else {
-            resultEnvelope = requestEnvelope;
+            resultEnvelope = state.getRequestedEnvelopeTransformed();
         }
 
         image = rescaleImageViaPlanarImage(image);
-        if (outputTransparentColor == null)
+        if (state.getOutputTransparentColor() == null) {
             gridCoverage2D =
                     coverageFactory.create(config.getCoverageName(), image, resultEnvelope);
-        else {
-            if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("Support for alpha on final mosaic");
-            RenderedImage result = ImageUtilities.maskColor(outputTransparentColor, image);
+        } else {
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine("Support for alpha on final mosaic");
+            }
+            RenderedImage result =
+                    ImageUtilities.maskColor(state.getOutputTransparentColor(), image);
             gridCoverage2D =
                     coverageFactory.create(config.getCoverageName(), result, resultEnvelope);
         }
@@ -197,7 +234,7 @@ public class ImageComposerThread extends AbstractThread {
             WritableRaster raster, int pixelSize) {
         int dataType = raster.getDataBuffer().getDataType();
 
-        Number noDataValue = levelInfo.getNoDataValue();
+        Number noDataValue = state.getImageLevelInfo().getNoDataValue();
 
         int dataBufferSize = raster.getDataBuffer().getSize();
         int nrBanks = raster.getDataBuffer().getNumBanks();
@@ -206,24 +243,27 @@ public class ImageComposerThread extends AbstractThread {
             case DataBuffer.TYPE_INT:
                 int[][] intDataArray = new int[nrBanks][dataBufferSize];
                 if (noDataValue != null) {
-                    for (int i = 0; i < nrBanks; i++)
+                    for (int i = 0; i < nrBanks; i++) {
                         Arrays.fill(intDataArray[i], noDataValue.intValue());
+                    }
                 }
                 dataBuffer = new DataBufferInt(intDataArray, dataBufferSize);
                 break;
             case DataBuffer.TYPE_FLOAT:
                 float[][] floatDataArray = new float[nrBanks][dataBufferSize];
                 if (noDataValue != null) {
-                    for (int i = 0; i < nrBanks; i++)
+                    for (int i = 0; i < nrBanks; i++) {
                         Arrays.fill(floatDataArray[i], noDataValue.floatValue());
+                    }
                 }
                 dataBuffer = new DataBufferFloat(floatDataArray, dataBufferSize);
                 break;
             case DataBuffer.TYPE_DOUBLE:
                 double[][] doubleDataArray = new double[nrBanks][dataBufferSize];
                 if (noDataValue != null) {
-                    for (int i = 0; i < nrBanks; i++)
+                    for (int i = 0; i < nrBanks; i++) {
                         Arrays.fill(doubleDataArray[i], noDataValue.doubleValue());
+                    }
                 }
                 dataBuffer = new DataBufferDouble(doubleDataArray, dataBufferSize);
                 break;
@@ -231,8 +271,9 @@ public class ImageComposerThread extends AbstractThread {
             case DataBuffer.TYPE_SHORT:
                 short[][] shortDataArray = new short[nrBanks][dataBufferSize];
                 if (noDataValue != null) {
-                    for (int i = 0; i < nrBanks; i++)
+                    for (int i = 0; i < nrBanks; i++) {
                         Arrays.fill(shortDataArray[i], noDataValue.shortValue());
+                    }
                 }
                 dataBuffer = new DataBufferShort(shortDataArray, dataBufferSize);
                 break;
@@ -240,8 +281,9 @@ public class ImageComposerThread extends AbstractThread {
             case DataBuffer.TYPE_BYTE:
                 byte[][] byteDataArray = new byte[nrBanks][dataBufferSize];
                 if (noDataValue != null) {
-                    for (int i = 0; i < nrBanks; i++)
+                    for (int i = 0; i < nrBanks; i++) {
                         Arrays.fill(byteDataArray[i], noDataValue.byteValue());
+                    }
                 }
                 dataBuffer = new DataBufferByte(byteDataArray, dataBufferSize);
                 break;
@@ -249,8 +291,9 @@ public class ImageComposerThread extends AbstractThread {
             case DataBuffer.TYPE_USHORT:
                 short[][] ushortDataArray = new short[nrBanks][dataBufferSize];
                 if (noDataValue != null) {
-                    for (int i = 0; i < nrBanks; i++)
+                    for (int i = 0; i < nrBanks; i++) {
                         Arrays.fill(ushortDataArray[i], noDataValue.shortValue());
+                    }
                 }
                 dataBuffer = new DataBufferUShort(ushortDataArray, dataBufferSize);
                 break;
@@ -264,5 +307,48 @@ public class ImageComposerThread extends AbstractThread {
                                 + " pixel size");
         }
         return dataBuffer;
+    }
+
+    protected BufferedImage rescaleImageViaPlanarImage(BufferedImage image) {
+        int interpolation = Interpolation.INTERP_NEAREST;
+        if (config.getInterpolation().intValue() == 2) {
+            interpolation = Interpolation.INTERP_BILINEAR;
+        }
+        if (config.getInterpolation().intValue() == 3) {
+            interpolation = Interpolation.INTERP_BICUBIC;
+        }
+
+        GeneralEnvelope ret = state.getRequestedEnvelopeTransformed();
+        GeneralEnvelope rete = state.getRequestedEnvelopeTransformedExpanded();
+        Rectangle rir = state.getRenderedImageRectangle();
+        // On GetServiceInfo requests, 'rir' is not located at (0,0).
+        Rectangle rirO = new Rectangle(rir);
+        rirO.setLocation(0, 0);
+
+        double resRequestedX = ret.getSpan(0) / rir.getWidth();
+        double resRequestedY = ret.getSpan(1) / rir.getHeight();
+
+        PlanarImage planarImage = new TiledImage(image, image.getWidth(), image.getHeight());
+        ImageWorker w = new ImageWorker(planarImage);
+        w.scale(
+                state.getImageLevelInfo().getResX() / resRequestedX,
+                state.getImageLevelInfo().getResY() / resRequestedY,
+                (rete.getMinimum(0) - ret.getMinimum(0)) / resRequestedX,
+                (ret.getMaximum(1) - rete.getMaximum(1)) / resRequestedY,
+                Interpolation.getInstance(interpolation));
+        RenderedOp result = w.getRenderedOperation();
+        Raster scaledImageRaster = result.getData(rirO);
+        if (!(scaledImageRaster instanceof WritableRaster)) {
+            scaledImageRaster =
+                    result.copyData(scaledImageRaster.createCompatibleWritableRaster(rirO));
+        }
+
+        BufferedImage scaledImage =
+                new BufferedImage(
+                        image.getColorModel(),
+                        (WritableRaster) scaledImageRaster,
+                        image.isAlphaPremultiplied(),
+                        null);
+        return scaledImage;
     }
 }

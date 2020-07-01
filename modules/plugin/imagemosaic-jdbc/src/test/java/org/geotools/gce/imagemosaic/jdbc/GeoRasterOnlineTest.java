@@ -59,6 +59,7 @@ public class GeoRasterOnlineTest extends AbstractTest {
         suite.addTest(new GeoRasterOnlineTest("testCreate"));
         suite.addTest(new GeoRasterOnlineTest("testImage1"));
         suite.addTest(new GeoRasterOnlineTest("testImage2"));
+        suite.addTest(new GeoRasterOnlineTest("testImage3"));
         suite.addTest(new GeoRasterOnlineTest("testFullExtent"));
         suite.addTest(new GeoRasterOnlineTest("testNoData"));
         suite.addTest(new GeoRasterOnlineTest("testPartial"));

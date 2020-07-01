@@ -51,6 +51,7 @@ public class DB2OnlineTest extends AbstractTest {
         suite.addTest(new DB2OnlineTest("testCreate"));
         suite.addTest(new DB2OnlineTest("testImage1"));
         suite.addTest(new DB2OnlineTest("testImage2"));
+        suite.addTest(new DB2OnlineTest("testImage3"));
         suite.addTest(new DB2OnlineTest("testFullExtent"));
         suite.addTest(new DB2OnlineTest("testNoData"));
         suite.addTest(new DB2OnlineTest("testPartial"));
@@ -60,6 +61,7 @@ public class DB2OnlineTest extends AbstractTest {
         suite.addTest(new DB2OnlineTest("testCreateJoined"));
         suite.addTest(new DB2OnlineTest("testImage1Joined"));
         suite.addTest(new DB2OnlineTest("testImage2Joined"));
+        suite.addTest(new DB2OnlineTest("testImage3Joined"));
         suite.addTest(new DB2OnlineTest("testFullExtentJoined"));
         suite.addTest(new DB2OnlineTest("testNoDataJoined"));
         suite.addTest(new DB2OnlineTest("testPartialJoined"));

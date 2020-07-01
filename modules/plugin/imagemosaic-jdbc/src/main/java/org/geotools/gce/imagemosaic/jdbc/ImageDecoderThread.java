@@ -14,13 +14,13 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+
 package org.geotools.gce.imagemosaic.jdbc;
 
 import com.sun.media.jai.codec.ByteArraySeekableStream;
 import com.sun.media.jai.codec.ImageCodec;
 import com.sun.media.jai.codec.ImageDecoder;
 import com.sun.media.jai.codec.SeekableStream;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -40,48 +40,49 @@ import org.geotools.util.logging.Logging;
  * <p>Creating an ImageDocoderThread object with a null or empty bytearray result in a <code>null
  * </code> value for <code>g {@link #getBufferedImage()}</code>
  *
- * <p>
- *
- * @author mcr
+ * @author mcr, christian
  */
-/** @author christian */
-public class ImageDecoderThread extends AbstractThread {
-    /** Logger. */
+public class ImageDecoderThread extends Thread {
+
     protected static final Logger LOGGER = Logging.getLogger(ImageDecoderThread.class);
+
+    LinkedBlockingQueue<TileQueueElement> tileQueue;
+
+    GeneralEnvelope requestEnvelope;
+
+    ImageLevelInfo levelInfo;
 
     private byte[] imageBytes;
 
     private String location;
 
-    private GeneralEnvelope tileEnvelope;
+    private GeneralEnvelope dbTileEnvelope;
 
     /**
+     * Decoder thread.
+     *
      * @param bytes the image bytes
      * @param location the tile name
-     * @param tileEnvelope the georeferencing information for the tile
-     * @param pixelDimension the pixel dimension required
+     * @param dbTileEnvelope the georeferencing information for the tile
      * @param requestEnvelope the requested envelope
      * @param levelInfo the proper levelInfo
      * @param tileQueue the queue where to put the result
-     * @param config the reader config
      */
     public ImageDecoderThread(
             byte[] bytes,
             String location,
-            GeneralEnvelope tileEnvelope,
-            Rectangle pixelDimension,
+            GeneralEnvelope dbTileEnvelope,
             GeneralEnvelope requestEnvelope,
             ImageLevelInfo levelInfo,
-            LinkedBlockingQueue<TileQueueElement> tileQueue,
-            Config config) {
-        super(pixelDimension, requestEnvelope, levelInfo, tileQueue, config);
-
-        this.imageBytes = bytes;
+            LinkedBlockingQueue<TileQueueElement> tileQueue) {
+        this.tileQueue = tileQueue;
+        this.requestEnvelope = requestEnvelope;
+        this.levelInfo = levelInfo;
+        this.imageBytes = bytes; // maybe it would be better to save a copy
         this.location = location;
-        this.tileEnvelope = tileEnvelope;
+        this.dbTileEnvelope = dbTileEnvelope;
     }
 
-    /** @see java.lang.Thread#run() */
     @Override
     public void run() {
         if ((imageBytes == null) || (imageBytes.length == 0)) { // nothing to do
@@ -90,61 +91,61 @@ public class ImageDecoderThread extends AbstractThread {
 
         try {
 
-            BufferedImage bufferedImage = null;
+            BufferedImage dbTileImage = null;
 
             boolean triedFromStream = false;
             if (levelInfo.getCanImageIOReadFromInputStream()) {
-                bufferedImage = ImageIO.read(new ByteArrayInputStream(imageBytes));
+                dbTileImage = ImageIO.read(new ByteArrayInputStream(imageBytes));
                 triedFromStream = true;
             }
-            if (bufferedImage == null) {
-                if (triedFromStream)
+            if (dbTileImage == null) {
+                if (triedFromStream) {
                     LOGGER.warning("Could not read " + location + " from stream, switch to JAI");
-                bufferedImage = readImage2(imageBytes);
+                }
+                dbTileImage = readImage2(imageBytes);
             }
 
-            if (requestEnvelope.contains(tileEnvelope, true) == false) {
-                GeneralEnvelope savedTileEnvelope = new GeneralEnvelope(tileEnvelope);
-                tileEnvelope.intersect(requestEnvelope);
+            if (requestEnvelope.contains(dbTileEnvelope, true)) {
+                tileQueue.add(new TileQueueElement(location, dbTileImage, dbTileEnvelope));
+            } else {
+                GeneralEnvelope intersectionEnvelope = new GeneralEnvelope(dbTileEnvelope);
+                intersectionEnvelope.intersect(requestEnvelope);
 
-                double scaleX = savedTileEnvelope.getSpan(0) / bufferedImage.getWidth();
-                double scaleY = savedTileEnvelope.getSpan(1) / bufferedImage.getHeight();
+                // x and y refers here to Image coordinates (so y is inverted wrt Envelope)
                 int xmin =
                         (int)
                                 (Math.round(
-                                        (tileEnvelope.getMinimum(0)
-                                                        - savedTileEnvelope.getMinimum(0))
-                                                / scaleX));
+                                        (intersectionEnvelope.getMinimum(0)
+                                                        - dbTileEnvelope.getMinimum(0))
+                                                / levelInfo.getResX()));
                 int ymin =
                         (int)
                                 (Math.round(
-                                        (savedTileEnvelope.getMaximum(1)
-                                                        - tileEnvelope.getMaximum(1))
-                                                / scaleY));
+                                        (dbTileEnvelope.getMaximum(1)
+                                                        - intersectionEnvelope.getMaximum(1))
+                                                / levelInfo.getResY()));
                 int xmax =
                         (int)
                                 (Math.round(
-                                        (tileEnvelope.getMaximum(0)
-                                                        - savedTileEnvelope.getMinimum(0))
-                                                / scaleX));
+                                        (intersectionEnvelope.getMaximum(0)
+                                                        - dbTileEnvelope.getMinimum(0))
+                                                / levelInfo.getResX()));
                 int ymax =
                         (int)
                                 (Math.round(
-                                        (savedTileEnvelope.getMaximum(1)
-                                                        - tileEnvelope.getMinimum(1))
-                                                / scaleY));
+                                        (dbTileEnvelope.getMaximum(1)
+                                                        - intersectionEnvelope.getMinimum(1))
+                                                / levelInfo.getResY()));
                 int width = xmax - xmin;
                 int height = ymax - ymin;
 
                 if ((width > 0) && (height > 0)) {
 
-                    BufferedImage clippedImage =
-                            bufferedImage.getSubimage(xmin, ymin, width, height);
+                    BufferedImage clippedImage = dbTileImage.getSubimage(xmin, ymin, width, height);
 
-                    tileQueue.add(new TileQueueElement(location, clippedImage, tileEnvelope));
+                    tileQueue.add(
+                            new TileQueueElement(location, clippedImage, intersectionEnvelope));
                 }
-            } else {
-                tileQueue.add(new TileQueueElement(location, bufferedImage, tileEnvelope));
             }
         } catch (IOException ex) {
             LOGGER.severe("Decorde error for tile " + location);

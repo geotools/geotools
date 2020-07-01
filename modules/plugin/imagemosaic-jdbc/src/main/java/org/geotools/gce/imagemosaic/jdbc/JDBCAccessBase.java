@@ -539,11 +539,9 @@ abstract class JDBCAccessBase implements JDBCAccess {
                                     tileBytes,
                                     location,
                                     tileGeneralEnvelope,
-                                    pixelDimension,
                                     requestEnvelope,
                                     levelInfo,
-                                    tileQueue,
-                                    config);
+                                    tileQueue);
                     //				thread.start();
                     threads.add(thread);
                     runResults.add(pool.submit(thread));

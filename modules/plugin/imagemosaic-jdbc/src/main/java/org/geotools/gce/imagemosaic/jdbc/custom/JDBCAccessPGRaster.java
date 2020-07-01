@@ -204,11 +204,9 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
                                         tileBytes,
                                         "",
                                         tileGeneralEnvelope,
-                                        pixelDimension,
                                         requestEnvelope,
                                         levelInfo,
-                                        tileQueue,
-                                        getConfig());
+                                        tileQueue);
                         // thread.start();
                         threads.add(thread);
                         pool.execute(thread);

@@ -17,12 +17,15 @@
 
 package org.geotools.ows.wmts.online;
 
+import static org.junit.Assert.*;
+
 import java.awt.*;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.Set;
 import javax.media.jai.Interpolation;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -47,15 +50,15 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
 
-public class WMTSServerTest extends WMTSOnlineTestCase {
+public class WMTSServerOnlineTest {
 
     private URL server;
 
     @Before
-    public void setUp() throws MalformedURLException {
+    public void setUpInternal() throws MalformedURLException {
         this.server =
                 new URL(
-                        "https://nvdbcache.geodataonline.no/arcgis/rest/services/Trafikkportalen/GeocacheTrafikkJPG/MapServer/WMTS/1.0.0/WMTSCapabilities.xml");
+                        "https://api.lantmateriet.se/open/topowebb-ccby/v1/wmts/token/8d61b10d-e93b-3c04-b4ae-4f4bdd1afe1b/?request=getcapabilities&service=wmts");
     }
 
     @Test
@@ -65,24 +68,25 @@ public class WMTSServerTest extends WMTSOnlineTestCase {
 
         WMTSCapabilities capabilities = wmts.getCapabilities();
 
-        CoordinateReferenceSystem crs = CRS.decode("EPSG:25833");
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:3857");
         ReferencedEnvelope envelope =
                 new ReferencedEnvelope(
-                        -2500000, 3785956.059944782, 4366791.973583084, 9045984.0, crs);
+                        181896.32913603852,
+                        1086312.9422175875,
+                        6091282.433471196,
+                        7689478.305598114,
+                        crs);
 
         // envelope to request tiles for 5th zoom level
         ReferencedEnvelope re1 =
                 new ReferencedEnvelope(
-                        0.0, 469103.37588849873, 6345722.619929184, 6704879.892093816, crs);
-
+                        -9772.986997677013,
+                        3743054.020110313,
+                        6674950.119413431,
+                        1.042777712652142E7,
+                        crs);
         Set<Tile> responses =
-                issueTileRequest(
-                        wmts,
-                        capabilities,
-                        envelope,
-                        re1,
-                        crs,
-                        "Trafikkportalen_GeocacheTrafikkJPG");
+                issueTileRequest(wmts, capabilities, envelope, re1, crs, "topowebb_nedtonad");
         assertFalse(responses.isEmpty());
         for (Tile response : responses) {
             // checking the identifier
@@ -92,19 +96,13 @@ public class WMTSServerTest extends WMTSOnlineTestCase {
         // envelope to request tiles for 7th zoom level
         ReferencedEnvelope re2 =
                 new ReferencedEnvelope(
-                        224917.44983375072,
-                        338455.67691015685,
-                        6545348.998732969,
-                        6658887.225809376,
+                        381146.49290940526,
+                        1441515.582157366,
+                        7403037.65074037,
+                        9279451.154294366,
                         crs);
         Set<Tile> responses2 =
-                issueTileRequest(
-                        wmts,
-                        capabilities,
-                        envelope,
-                        re2,
-                        crs,
-                        "Trafikkportalen_GeocacheTrafikkJPG");
+                issueTileRequest(wmts, capabilities, envelope, re2, crs, "topowebb_nedtonad");
         for (Tile response : responses2) {
             // checking the identifier
             assertTrue(response.getId().startsWith("wmts_7"));
@@ -117,33 +115,40 @@ public class WMTSServerTest extends WMTSOnlineTestCase {
             throws IOException, ServiceException, FactoryException, TransformException {
         WebMapTileServer wmts = new WebMapTileServer(server);
         WMTSCapabilities capabilities = wmts.getCapabilities();
-        CoordinateReferenceSystem crs = CRS.decode("EPSG:25833");
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:3857");
         // layer bboxes
         ReferencedEnvelope envelope =
-                new ReferencedEnvelope(-2500000.0, 4766446.53289, 3479816.86767, 9045984.0, crs);
+                new ReferencedEnvelope(
+                        181896.32913603852,
+                        1086312.9422175875,
+                        6091282.433471196,
+                        7689478.305598114,
+                        crs);
 
         // first envelope 5th zoom level
         ReferencedEnvelope re1 =
                 new ReferencedEnvelope(
-                        0.0, 469103.37588849873, 6345722.619929184, 6704879.892093816, crs);
+                        -9772.986997677013,
+                        3743054.020110313,
+                        6674950.119413431,
+                        1.042777712652142E7,
+                        crs);
         RenderedImage ri1 =
-                getRenderImageResult(
-                        wmts, capabilities, envelope, re1, "Trafikkportalen_GeocacheTrafikkJPG");
+                getRenderImageResult(wmts, capabilities, envelope, re1, "topowebb_nedtonad");
         File img1 = new File(getClass().getResource("wmtsTestResultZoom5.png").getFile());
         ImageAssert.assertEquals(img1, ri1, 50);
         // second envelope 7th zoomLevel
         ReferencedEnvelope re2 =
                 new ReferencedEnvelope(
-                        100965.20193007682,
-                        274362.8820587485,
-                        6600975.109986092,
-                        6658887.225809376,
+                        381146.49290940526,
+                        1441515.582157366,
+                        7403037.65074037,
+                        9279451.154294366,
                         crs);
         RenderedImage ri2 =
-                getRenderImageResult(
-                        wmts, capabilities, envelope, re2, "Trafikkportalen_GeocacheTrafikkJPG");
+                getRenderImageResult(wmts, capabilities, envelope, re2, "topowebb_nedtonad");
         File img2 = new File(getClass().getResource("wmtsTestResultZoom7.png").getFile());
-        ImageAssert.assertEquals(img2, ri2, 50);
+        ImageAssert.assertEquals(img2, ri2, 100);
     }
 
     private Set<Tile> issueTileRequest(
@@ -180,8 +185,11 @@ public class WMTSServerTest extends WMTSOnlineTestCase {
         WMTSLayer layer = capabilities.getLayer(layerName);
         assertNotNull(layer);
         layer.setBoundingBoxes(new CRSEnvelope(bboxes));
-        layer.setSrs(layer.getBoundingBoxes().keySet());
-
+        Set<String> srs = new HashSet<>();
+        for (String s : layer.getBoundingBoxes().keySet()) {
+            srs.add(layer.getBoundingBoxes().get(s).getEPSGCode());
+        }
+        layer.setSrs(srs);
         WMTSMapLayer mapLayer = new WMTSMapLayer(wmts, layer);
         WMTSCoverageReader wmtsReader = mapLayer.getReader();
         Rectangle rectangle = new Rectangle(0, 0, 768, 589);

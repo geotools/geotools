@@ -58,8 +58,10 @@ import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureReader;
+import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.data.simple.SimpleFeatureWriter;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.Geometries;
@@ -67,6 +69,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geopkg.mosaic.GeoPackageFormat;
 import org.geotools.geopkg.mosaic.GeoPackageReader;
 import org.geotools.image.test.ImageAssert;
+import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.util.SqlUtil;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
@@ -920,5 +923,37 @@ public class GeoPackageTest {
         FileUtils.copyURLToFile(TestData.url(this, "Pk50095.png"), new File(d, "Pk50095.png"));
         FileUtils.copyURLToFile(TestData.url(this, "Pk50095.pgw"), new File(d, "Pk50095.pgw"));
         return URLs.fileToUrl(new File(d, "Pk50095.png"));
+    }
+
+    @Test
+    public void testIntegerTypes() throws Exception {
+        // all types work in creation
+        String typeName = "numericTypes";
+        final SimpleFeatureType numericType =
+                DataUtilities.createType(
+                        typeName,
+                        "n_byte:java.lang.Byte,n_short:java.lang.Short,n_int:java.lang.Integer,n_long:java.lang.Long");
+        JDBCDataStore store = geopkg.dataStore();
+        store.createSchema(numericType);
+        SimpleFeatureType createdType = store.getSchema(typeName);
+        assertTrue(FeatureTypes.equals(numericType, createdType));
+
+        // write it out, each number at the limits of its range
+        SimpleFeatureBuilder fb = new SimpleFeatureBuilder(numericType);
+        fb.add(Byte.MAX_VALUE);
+        fb.add(Short.MAX_VALUE);
+        fb.add(Integer.MAX_VALUE);
+        fb.add(Long.MAX_VALUE);
+        SimpleFeature feature = fb.buildFeature(null);
+        SimpleFeatureCollection collection = DataUtilities.collection(feature);
+        SimpleFeatureStore fs = (SimpleFeatureStore) store.getFeatureSource(typeName);
+        fs.addFeatures(collection);
+
+        // read it back
+        SimpleFeature read = DataUtilities.first(fs.getFeatures());
+        assertEquals(Byte.MAX_VALUE, read.getAttribute("n_byte"));
+        assertEquals(Short.MAX_VALUE, read.getAttribute("n_short"));
+        assertEquals(Integer.MAX_VALUE, read.getAttribute("n_int"));
+        assertEquals(Long.MAX_VALUE, read.getAttribute("n_long"));
     }
 }

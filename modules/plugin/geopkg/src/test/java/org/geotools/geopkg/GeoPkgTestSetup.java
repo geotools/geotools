@@ -66,7 +66,7 @@ public class GeoPkgTestSetup extends JDBCTestSetup {
         String sql = "CREATE TABLE ft1 (id INTEGER PRIMARY KEY, geometry BLOB)";
         run(sql);
 
-        sql = "ALTER TABLE ft1 add intProperty INTEGER";
+        sql = "ALTER TABLE ft1 add intProperty MEDIUMINT";
         run(sql);
 
         sql = "ALTER TABLE ft1 add doubleProperty DOUBLE";

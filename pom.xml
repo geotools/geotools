@@ -93,7 +93,7 @@
     <jts.version>1.17.0</jts.version>
     <jaiext.version>1.1-SNAPSHOT</jaiext.version>
     <netcdf.version>4.6.15</netcdf.version>
-    <jt.version>1.5-SNAPSHOT</jt.version>
+    <jt.version>1.6.0</jt.version>
     <jaxb.api.version>2.4.0-b180830.0359</jaxb.api.version>
     <jaxb.runtime.version>2.4.0-b180830.0438</jaxb.runtime.version>
     <mockito.core.version>2.23.0</mockito.core.version>

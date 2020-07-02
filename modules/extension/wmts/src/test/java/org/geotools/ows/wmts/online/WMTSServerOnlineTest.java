@@ -17,6 +17,8 @@
 
 package org.geotools.ows.wmts.online;
 
+import static org.junit.Assert.*;
+
 import java.awt.*;
 import java.awt.image.RenderedImage;
 import java.io.File;
@@ -24,7 +26,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashSet;
-import java.util.Properties;
 import java.util.Set;
 import javax.media.jai.Interpolation;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -41,7 +42,6 @@ import org.geotools.ows.wmts.model.*;
 import org.geotools.ows.wmts.request.GetTileRequest;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
-import org.geotools.test.OnlineTestCase;
 import org.geotools.tile.Tile;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,7 +50,7 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
 
-public class WMTSServerTest extends OnlineTestCase {
+public class WMTSServerOnlineTest {
 
     private URL server;
 
@@ -59,22 +59,6 @@ public class WMTSServerTest extends OnlineTestCase {
         this.server =
                 new URL(
                         "https://api.lantmateriet.se/open/topowebb-ccby/v1/wmts/token/8d61b10d-e93b-3c04-b4ae-4f4bdd1afe1b/?request=getcapabilities&service=wmts");
-    }
-
-    @Override
-    protected Properties createExampleFixture() {
-        Properties example = new Properties();
-        return example;
-    }
-
-    @Override
-    protected boolean isOnline() throws Exception {
-        return super.isOnline();
-    }
-
-    @Override
-    protected String getFixtureId() {
-        return "wmts-online";
     }
 
     @Test

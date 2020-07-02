@@ -328,4 +328,23 @@ public class GeoPackageReaderTest {
             }
         }
     }
+
+    @Test
+    public void testtCoverageWithDots() throws IOException {
+        // used to break here, query failed to run
+        GeoPackageReader reader =
+                new GeoPackageReader(GeoPackageTest.class.getResource("dot.in.name.gpkg"), null);
+        GridCoverage2D gc = reader.read("dot.in.name", null);
+        assertNotNull(gc);
+
+        // check read was succesful
+        assertEquals(440720, gc.getEnvelope().getMinimum(0), 1);
+        assertEquals(3735960, gc.getEnvelope().getMinimum(1), 1);
+        assertEquals(456080, gc.getEnvelope().getMaximum(0), 1);
+        assertEquals(3751320, gc.getEnvelope().getMaximum(1), 1);
+        RenderedImage img = gc.getRenderedImage();
+        assertEquals(256, img.getWidth());
+        assertEquals(256, img.getHeight());
+        reader.dispose();
+    }
 }

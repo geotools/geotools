@@ -201,7 +201,7 @@ public class GeoJSONReader implements AutoCloseable {
                     Geometry g = gParser.geometryFromJson(n.getValue());
                     builder.set(n.getKey(), g);
                 } else {
-                    LOGGER.warning("Unable to parse object of type "+binding);
+                    LOGGER.warning("Unable to parse object of type " + binding);
                     builder.set(n.getKey(), n.getValue().toString());
                 }
             }
@@ -241,7 +241,7 @@ public class GeoJSONReader implements AutoCloseable {
                 } else if (value instanceof ObjectNode) {
                     String type = value.get("type").asText();
                     Geometries namedType = Geometries.getForName(type);
-                    if(namedType!=null) {
+                    if (namedType != null) {
                         typeBuilder.add(n.getKey(), Geometry.class, DefaultGeographicCRS.WGS84);
                     }
                 } else {

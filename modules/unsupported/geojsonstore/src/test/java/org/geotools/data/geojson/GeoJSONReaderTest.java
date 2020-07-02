@@ -106,7 +106,8 @@ public class GeoJSONReaderTest {
     @Test
     public void testFeatureWithRegularGeometryAttributeReadAndGeometryAfterProperties()
             throws Exception {
-        String geojson1 = "{"
+        String geojson1 =
+                "{"
                         + "'type': 'FeatureCollection',"
                         + "'features': "
                         + "[{"

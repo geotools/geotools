@@ -1347,7 +1347,8 @@ public class GeoPackage {
         addRange("tile_column", lowCol, highCol, q);
         addRange("tile_row", lowRow, highRow, q);
 
-        StringBuffer sql = new StringBuffer("SELECT * FROM ").append(entry.getTableName());
+        StringBuffer sql =
+                new StringBuffer("SELECT * FROM \"").append(entry.getTableName()).append("\"");
         if (!q.isEmpty()) {
             sql.append(" WHERE ");
             for (String s : q) {
@@ -1558,7 +1559,7 @@ public class GeoPackage {
         PreparedStatement psm =
                 cx.prepareStatement(
                         format(
-                                "SELECT *, exists(SELECT 1 FROM %s data where data.zoom_level = tileMatrix.zoom_level) as has_tiles"
+                                "SELECT *, exists(SELECT 1 FROM \"%s\" data where data.zoom_level = tileMatrix.zoom_level) as has_tiles"
                                         + " FROM %s as tileMatrix"
                                         + " WHERE table_name = ?"
                                         + " ORDER BY zoom_level ASC",

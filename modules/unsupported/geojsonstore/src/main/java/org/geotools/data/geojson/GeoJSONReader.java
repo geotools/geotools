@@ -87,20 +87,28 @@ public class GeoJSONReader implements AutoCloseable {
         baseName = FilenameUtils.getBaseName(url.getPath());
     }
 
-    public boolean isConnected() {
+    public GeoJSONReader(InputStream is) throws IOException {
+        factory = new JsonFactory();
+        parser = factory.createParser(is);
+    }
 
-        try (InputStream inputStream = url.openStream()) {
-            if (inputStream != null && inputStream.available() > 0) {
-                return true;
+    public boolean isConnected() {
+        if (url != null) {
+            try (InputStream inputStream = url.openStream()) {
+                if (inputStream != null && inputStream.available() > 0) {
+                    return true;
+                }
+                url = new URL(url.toExternalForm());
+                try (InputStream inputStream2 = url.openStream()) {
+                    return inputStream2 != null && inputStream2.available() > 0;
+                }
+
+            } catch (IOException e) {
+                LOGGER.log(Level.FINE, "Failure trying to determine if connected", e);
+                return false;
             }
-            url = new URL(url.toExternalForm());
-            try (InputStream inputStream2 = url.openStream()) {
-                return inputStream2 != null && inputStream2.available() > 0;
-            }
-        } catch (IOException e) {
-            LOGGER.log(Level.FINE, "Failure trying to determine if connected", e);
-            return false;
         }
+        return true;
     }
 
     public FeatureCollection getFeatures() throws IOException {

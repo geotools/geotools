@@ -206,7 +206,10 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             mappings.put(g.getBinding(), g.getSQLType());
         }
         // override some internal defaults
-        mappings.put(Long.class, Types.INTEGER);
+        mappings.put(Byte.class, Types.TINYINT);
+        mappings.put(Short.class, Types.SMALLINT);
+        mappings.put(Long.class, Types.BIGINT);
+        mappings.put(Integer.class, Types.INTEGER);
         mappings.put(Double.class, Types.REAL);
         mappings.put(Boolean.class, Types.INTEGER);
     }
@@ -222,8 +225,10 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
 
         // Numbers
         overrides.put(Types.BOOLEAN, "BOOLEAN");
+        overrides.put(Types.TINYINT, "TINYINT");
         overrides.put(Types.SMALLINT, "SMALLINT");
-        overrides.put(Types.BIGINT, "BIGINT");
+        overrides.put(Types.INTEGER, "MEDIUMINT");
+        overrides.put(Types.BIGINT, "INTEGER");
         overrides.put(Types.DOUBLE, "DOUBLE");
         overrides.put(Types.NUMERIC, "NUMERIC");
 
@@ -237,6 +242,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     public Class<?> getMapping(ResultSet columns, Connection cx) throws SQLException {
         String tbl = columns.getString("TABLE_NAME");
         String col = columns.getString("COLUMN_NAME");
+        String typeName = columns.getString("TYPE_NAME");
 
         String sql =
                 format(
@@ -271,6 +277,12 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         } finally {
             dataStore.closeSafe(ps);
         }
+
+        // handle GeoPackage integer type expectations
+        if ("TINYINT".equals(typeName)) return Byte.class;
+        else if ("SMALLINT".equals(typeName)) return Short.class;
+        else if ("MEDIUMINT".equals(typeName)) return Integer.class;
+        else if ("INT".equals(typeName) || "INTEGER".equals(typeName)) return Long.class;
 
         return null;
     }

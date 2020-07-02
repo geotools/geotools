@@ -81,7 +81,7 @@ public class GeoJSONReaderTest {
     public void testReadFromInputStream() throws Exception {
         String input =
                 "{\n"
-                        + "\"type\": \"FeatureCollection\",                              \n"
+                        + "\"type\": \"FeatureCollection\",\n"
                         + "\"features\": [\n"
                         + "{ \"type\": \"Feature\", \"properties\": { \"LAT\": 46.066667, \"LON\": 11.116667, \"CITY\": \"Trento\", \"NUMBER\": 140, \"YEAR\": 2002 }, \"bbox\": [ 11.117, 46.067, 11.117, 46.067 ], \"geometry\": { \"type\": \"Point\", \"coordinates\": [ 11.117, 46.067 ] } },\n"
                         + "{ \"type\": \"Feature\", \"properties\": { \"LAT\": 44.9441, \"LON\": -93.0852, \"CITY\": \"St Paul\", \"NUMBER\": 125, \"YEAR\": 2003 }, \"bbox\": [ -93.085, 44.944, -93.085, 44.944 ], \"geometry\": { \"type\": \"Point\", \"coordinates\": [ -93.085, 44.944 ] } },\n"
@@ -106,8 +106,7 @@ public class GeoJSONReaderTest {
     @Test
     public void testFeatureWithRegularGeometryAttributeReadAndGeometryAfterProperties()
             throws Exception {
-        String geojson1 =
-                "{"
+        String geojson1 = "{"
                         + "'type': 'FeatureCollection',"
                         + "'features': "
                         + "[{"
@@ -142,10 +141,6 @@ public class GeoJSONReaderTest {
         assertEquals("features.0", f.getID());
         WKTReader wkt = new WKTReader();
         assertEquals(wkt.read("POINT (0.1 0.1)"), f.getDefaultGeometry());
-
-        for (Object o : f.getAttributes()) {
-            System.out.println(o);
-        }
         assertEquals(wkt.read("LINESTRING (1.1 1.2, 1.3 1.4)"), f.getAttribute("otherGeometry"));
     }
 }

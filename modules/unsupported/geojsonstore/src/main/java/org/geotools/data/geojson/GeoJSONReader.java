@@ -44,6 +44,7 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.geometry.jts.Geometries;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Geometry;
@@ -168,6 +169,8 @@ public class GeoJSONReader implements AutoCloseable {
             builder = getBuilder(props);
         }
         boolean restart = true;
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JtsModule());
         SimpleFeature feature = null;
         while (restart) {
             restart = false;
@@ -193,13 +196,16 @@ public class GeoJSONReader implements AutoCloseable {
                     builder.set(n.getKey(), n.getValue().asDouble());
                 } else if (binding == String.class) {
                     builder.set(n.getKey(), n.getValue().textValue());
+                } else if (binding.isAssignableFrom(Geometry.class)) {
+                    GeometryParser<Geometry> gParser = new GenericGeometryParser(gFac);
+                    Geometry g = gParser.geometryFromJson(n.getValue());
+                    builder.set(n.getKey(), g);
                 } else {
+                    LOGGER.warning("Unable to parse object of type "+binding);
                     builder.set(n.getKey(), n.getValue().toString());
                 }
             }
             JsonNode geom = node.get("geometry");
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.registerModule(new JtsModule());
             GeometryParser<Geometry> gParser = new GenericGeometryParser(gFac);
             Geometry g = gParser.geometryFromJson(geom);
             builder.set(GEOMETRY_NAME, g);
@@ -232,6 +238,12 @@ public class GeoJSONReader implements AutoCloseable {
                     typeBuilder.add(n.getKey(), Integer.class);
                 } else if (value instanceof DoubleNode) {
                     typeBuilder.add(n.getKey(), Double.class);
+                } else if (value instanceof ObjectNode) {
+                    String type = value.get("type").asText();
+                    Geometries namedType = Geometries.getForName(type);
+                    if(namedType!=null) {
+                        typeBuilder.add(n.getKey(), Geometry.class, DefaultGeographicCRS.WGS84);
+                    }
                 } else {
                     typeBuilder.defaultValue("");
                     typeBuilder.add(n.getKey(), String.class);

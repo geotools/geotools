@@ -20,6 +20,7 @@ import com.bedatadriven.jackson.datatype.jts.JtsModule;
 import com.bedatadriven.jackson.datatype.jts.parsers.GenericGeometryParser;
 import com.bedatadriven.jackson.datatype.jts.parsers.GeometryParser;
 import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -27,6 +28,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.DoubleNode;
 import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -44,6 +46,7 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.geometry.jts.Geometries;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Geometry;
@@ -66,40 +69,62 @@ public class GeoJSONReader implements AutoCloseable {
 
     private JsonParser parser;
 
-    private JsonFactory factory;
+    private static JsonFactory factory = new JsonFactory();;
 
     private SimpleFeatureType schema;
 
     SimpleFeatureTypeBuilder typeBuilder = null;
 
     private SimpleFeatureBuilder builder;
+
     private int nextID = 0;
+
     private String baseName = "features";
 
     private boolean schemaChanged = false;
+
     private GeometryFactory gFac = new GeometryFactory();
+
     private URL url;
 
     public GeoJSONReader(URL url) throws IOException {
         this.url = url;
-        factory = new JsonFactory();
         parser = factory.createParser(url);
         baseName = FilenameUtils.getBaseName(url.getPath());
     }
 
-    public boolean isConnected() {
+    public GeoJSONReader(InputStream is) throws IOException {
+        parser = factory.createParser(is);
+    }
 
-        try (InputStream inputStream = url.openStream()) {
-            if (inputStream != null && inputStream.available() > 0) {
-                return true;
+    public boolean isConnected() {
+        if (url != null) {
+            try (InputStream inputStream = url.openStream()) {
+                if (inputStream != null && inputStream.available() > 0) {
+                    return true;
+                }
+                url = new URL(url.toExternalForm());
+                try (InputStream inputStream2 = url.openStream()) {
+                    return inputStream2 != null && inputStream2.available() > 0;
+                }
+
+            } catch (IOException e) {
+                LOGGER.log(Level.FINE, "Failure trying to determine if connected", e);
+                return false;
             }
-            url = new URL(url.toExternalForm());
-            try (InputStream inputStream2 = url.openStream()) {
-                return inputStream2 != null && inputStream2.available() > 0;
+        }
+        return true;
+    }
+
+    public static SimpleFeature parseFeature(String json) throws JsonParseException, IOException {
+        try (JsonParser lParser = factory.createParser(new ByteArrayInputStream(json.getBytes()))) {
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.registerModule(new JtsModule());
+            ObjectNode node = mapper.readTree(lParser);
+            try (GeoJSONReader reader = new GeoJSONReader((InputStream) null)) {
+                SimpleFeature feature = reader.getNextFeature(node);
+                return feature;
             }
-        } catch (IOException e) {
-            LOGGER.log(Level.FINE, "Failure trying to determine if connected", e);
-            return false;
         }
     }
 
@@ -160,6 +185,8 @@ public class GeoJSONReader implements AutoCloseable {
             builder = getBuilder(props);
         }
         boolean restart = true;
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JtsModule());
         SimpleFeature feature = null;
         while (restart) {
             restart = false;
@@ -185,13 +212,16 @@ public class GeoJSONReader implements AutoCloseable {
                     builder.set(n.getKey(), n.getValue().asDouble());
                 } else if (binding == String.class) {
                     builder.set(n.getKey(), n.getValue().textValue());
+                } else if (binding.isAssignableFrom(Geometry.class)) {
+                    GeometryParser<Geometry> gParser = new GenericGeometryParser(gFac);
+                    Geometry g = gParser.geometryFromJson(n.getValue());
+                    builder.set(n.getKey(), g);
                 } else {
+                    LOGGER.warning("Unable to parse object of type " + binding);
                     builder.set(n.getKey(), n.getValue().toString());
                 }
             }
             JsonNode geom = node.get("geometry");
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.registerModule(new JtsModule());
             GeometryParser<Geometry> gParser = new GenericGeometryParser(gFac);
             Geometry g = gParser.geometryFromJson(geom);
             builder.set(GEOMETRY_NAME, g);
@@ -224,6 +254,12 @@ public class GeoJSONReader implements AutoCloseable {
                     typeBuilder.add(n.getKey(), Integer.class);
                 } else if (value instanceof DoubleNode) {
                     typeBuilder.add(n.getKey(), Double.class);
+                } else if (value instanceof ObjectNode) {
+                    String type = value.get("type").asText();
+                    Geometries namedType = Geometries.getForName(type);
+                    if (namedType != null) {
+                        typeBuilder.add(n.getKey(), Geometry.class, DefaultGeographicCRS.WGS84);
+                    }
                 } else {
                     typeBuilder.defaultValue("");
                     typeBuilder.add(n.getKey(), String.class);

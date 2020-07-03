@@ -325,4 +325,31 @@ public class WMTSTileFactory4326Test {
         assertTrue(url.contains(service.getStyleName()));
         assertFalse(url.contains("{style}"));
     }
+
+    @Test
+    public void testWMTSTileWithStyleInCapabilities2() throws Exception {
+        // capabilities file with resource URL having an
+        // {Style} placeholder
+        URL capaResource = getClass().getClassLoader().getResource("test-data/basemapGetCapa.xml");
+
+        WMTSCapabilities capa = createCapabilities(new File(capaResource.toURI()));
+
+        String baseURL =
+                "https://maps1.wien.gv.at/basemap/bmapoberflaeche/{Style}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpeg";
+        WMTSTileService service =
+                new WMTSTileService(
+                        baseURL,
+                        WMTSServiceType.REST,
+                        capa.getLayer("bmaphidpi"),
+                        "normal",
+                        capa.getMatrixSet("EPSG:4326"));
+
+        WMTSTileIdentifier tileId =
+                new WMTSTileIdentifier(1, 1, service.getZoomLevel(1), "SomeName");
+        WMTSTile tile = new WMTSTile(tileId, service);
+        String url = tile.getUrl().toString();
+        // check that url contains style name instead of {Style}
+        assertTrue(url.contains(service.getStyleName()));
+        assertFalse(url.contains("{Style}"));
+    }
 }

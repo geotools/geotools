@@ -54,11 +54,14 @@ public class WMTSServerOnlineTest {
 
     private URL server;
 
+    private URL serverWithStyle;
+
     @Before
     public void setUpInternal() throws MalformedURLException {
         this.server =
                 new URL(
                         "https://api.lantmateriet.se/open/topowebb-ccby/v1/wmts/token/8d61b10d-e93b-3c04-b4ae-4f4bdd1afe1b/?request=getcapabilities&service=wmts");
+        this.serverWithStyle = new URL("https://www.basemap.at/wmts/1.0.0/WMTSCapabilities.xml");
     }
 
     @Test
@@ -149,6 +152,42 @@ public class WMTSServerOnlineTest {
                 getRenderImageResult(wmts, capabilities, envelope, re2, "topowebb_nedtonad");
         File img2 = new File(getClass().getResource("wmtsTestResultZoom7.png").getFile());
         ImageAssert.assertEquals(img2, ri2, 100);
+    }
+
+    @Test
+    public void testGetTilesWithStylePlaceHolder()
+            throws IOException, ServiceException, FactoryException, TransformException {
+        WebMapTileServer wmts = new WebMapTileServer(serverWithStyle);
+
+        WMTSCapabilities capabilities = wmts.getCapabilities();
+
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:3857");
+
+        // envelope to request tiles for 5th zoom level
+        ReferencedEnvelope re1 = new ReferencedEnvelope(977650, 1913530, 5838030, 6281290, crs);
+        Set<Tile> responses = issueTileRequest(wmts, capabilities, re1, re1, crs, "bmapgelaende");
+        assertFalse(responses.isEmpty());
+        for (Tile response : responses) {
+            // checking the identifier
+            assertTrue(response.getId().startsWith("wmts_7"));
+            re1.contains(response.getExtent().toBounds(re1.getCoordinateReferenceSystem()));
+        }
+    }
+
+    @Test
+    public void testWMTSCoverageReaderWithStylePlaceholder()
+            throws IOException, ServiceException, FactoryException, TransformException {
+        WebMapTileServer wmts = new WebMapTileServer(serverWithStyle);
+
+        WMTSCapabilities capabilities = wmts.getCapabilities();
+
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:3857");
+
+        // envelope to request tiles for 5th zoom level
+        ReferencedEnvelope re1 = new ReferencedEnvelope(977650, 1913530, 5838030, 6281290, crs);
+        RenderedImage extent = getRenderImageResult(wmts, capabilities, re1, re1, "geolandbasemap");
+        File img = new File(getClass().getResource("stylePlaceHolderResult.png").getFile());
+        ImageAssert.assertEquals(img, extent, 100);
     }
 
     private Set<Tile> issueTileRequest(

@@ -195,7 +195,7 @@ public class WrappingProjectionHandler extends ProjectionHandler {
         }
 
         // clone and offset as necessary
-        geomType = accumulate(geoms, geometry, geomType);
+        geomType = accumulate(geoms, geometry, geomType, renderingEnvelope);
         while (curr <= highLimit) {
             double offset = curr - base;
             if (Math.abs(offset) >= targetHalfCircle) {
@@ -203,7 +203,7 @@ public class WrappingProjectionHandler extends ProjectionHandler {
                 Geometry offseted = geometry.copy();
                 offseted.apply(new OffsetOrdinateFilter(northEast ? 1 : 0, offset));
                 offseted.geometryChanged();
-                geomType = accumulate(geoms, offseted, geomType);
+                geomType = accumulate(geoms, offseted, geomType, renderingEnvelope);
             }
 
             curr += targetHalfCircle * 2;
@@ -242,15 +242,17 @@ public class WrappingProjectionHandler extends ProjectionHandler {
      * @return the geometry type that all geometries added to the collection conform to. Worst case
      *     it's going to be Geometry.class
      */
-    private Class accumulate(List<Geometry> geoms, Geometry geometry, Class geomType) {
+    static Class accumulate(
+            List<Geometry> geoms, Geometry geometry, Class geomType, ReferencedEnvelope envelope) {
         Class gtype = null;
         for (int i = 0; i < geometry.getNumGeometries(); i++) {
             Geometry g = geometry.getGeometryN(i);
+            Class lastType = gtype;
 
             if (g instanceof GeometryCollection) {
-                gtype = accumulate(geoms, g, geomType);
+                gtype = accumulate(geoms, g, geomType, envelope);
             } else {
-                if (renderingEnvelope.intersects(g.getEnvelopeInternal())) {
+                if (envelope.intersects(g.getEnvelopeInternal())) {
                     geoms.add(g);
                     gtype = g.getClass();
                 }
@@ -258,7 +260,9 @@ public class WrappingProjectionHandler extends ProjectionHandler {
 
             if (gtype == null) {
                 gtype = g.getClass();
-            } else if (geomType != null && !g.getClass().equals(geomType)) {
+            } else if (geomType != null && !g.getClass().equals(geomType)
+                    || lastType != null && !g.getClass().equals(lastType)) {
+                // if we have different types, switch to Geometry type
                 gtype = Geometry.class;
             }
         }

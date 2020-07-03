@@ -20,6 +20,7 @@ import com.bedatadriven.jackson.datatype.jts.JtsModule;
 import com.bedatadriven.jackson.datatype.jts.parsers.GenericGeometryParser;
 import com.bedatadriven.jackson.datatype.jts.parsers.GeometryParser;
 import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -27,6 +28,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.DoubleNode;
 import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -67,29 +69,31 @@ public class GeoJSONReader implements AutoCloseable {
 
     private JsonParser parser;
 
-    private JsonFactory factory;
+    private static JsonFactory factory = new JsonFactory();;
 
     private SimpleFeatureType schema;
 
     SimpleFeatureTypeBuilder typeBuilder = null;
 
     private SimpleFeatureBuilder builder;
+
     private int nextID = 0;
+
     private String baseName = "features";
 
     private boolean schemaChanged = false;
+
     private GeometryFactory gFac = new GeometryFactory();
+
     private URL url;
 
     public GeoJSONReader(URL url) throws IOException {
         this.url = url;
-        factory = new JsonFactory();
         parser = factory.createParser(url);
         baseName = FilenameUtils.getBaseName(url.getPath());
     }
 
     public GeoJSONReader(InputStream is) throws IOException {
-        factory = new JsonFactory();
         parser = factory.createParser(is);
     }
 
@@ -110,6 +114,18 @@ public class GeoJSONReader implements AutoCloseable {
             }
         }
         return true;
+    }
+
+    public static SimpleFeature parseFeature(String json) throws JsonParseException, IOException {
+        try (JsonParser lParser = factory.createParser(new ByteArrayInputStream(json.getBytes()))) {
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.registerModule(new JtsModule());
+            ObjectNode node = mapper.readTree(lParser);
+            try (GeoJSONReader reader = new GeoJSONReader((InputStream) null)) {
+                SimpleFeature feature = reader.getNextFeature(node);
+                return feature;
+            }
+        }
     }
 
     public FeatureCollection getFeatures() throws IOException {

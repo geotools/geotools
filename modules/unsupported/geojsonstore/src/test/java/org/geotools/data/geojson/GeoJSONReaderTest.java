@@ -104,7 +104,7 @@ public class GeoJSONReaderTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void testFeatureWithRegularGeometryAttributeReadAndGeometryAfterProperties()
+    public void testFeatureCollectionWithRegularGeometryAttributeReadAndGeometryAfterProperties()
             throws Exception {
         String geojson1 =
                 "{"
@@ -138,6 +138,36 @@ public class GeoJSONReaderTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        assertNotNull(f);
+        assertEquals("features.0", f.getID());
+        WKTReader wkt = new WKTReader();
+        assertEquals(wkt.read("POINT (0.1 0.1)"), f.getDefaultGeometry());
+        assertEquals(wkt.read("LINESTRING (1.1 1.2, 1.3 1.4)"), f.getAttribute("otherGeometry"));
+    }
+
+    @Test
+    public void testFeatureWithRegularGeometryAttributeReadAndGeometryAfterProperties()
+            throws Exception {
+        String geojson1 =
+                "{"
+                        + "  'type': 'Feature',"
+                        + "  'id': 'feature.0',"
+                        + "  'properties': {"
+                        + "    'otherGeometry': {"
+                        + "      'type': 'LineString',"
+                        + "      'coordinates': [[1.1, 1.2], [1.3, 1.4]]"
+                        + "    }"
+                        + "  },"
+                        + "  'geometry': {"
+                        + "    'type': 'Point',"
+                        + "    'coordinates': [0.1, 0.1]"
+                        + "  }"
+                        + "}";
+        geojson1 = geojson1.replace('\'', '"');
+
+        SimpleFeature f = GeoJSONReader.parseFeature(geojson1);
+        assertNotNull(f);
+
         assertNotNull(f);
         assertEquals("features.0", f.getID());
         WKTReader wkt = new WKTReader();

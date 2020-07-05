@@ -42,10 +42,10 @@ import java.util.concurrent.locks.ReentrantLock;
 final class SoftObjectCache implements ObjectCache {
 
     /** The cached values for each key. */
-    private final Map /*<Object,SoftReference<Object>>*/ cache;
+    private final Map<Object, SoftReference<Object>> cache;
 
     /** The locks for keys under construction. */
-    private final Map /*<Object,ReentrantLock>*/ locks;
+    private final Map<Object, ReentrantLock> locks;
 
     /** Creates a new cache. */
     public SoftObjectCache() {
@@ -105,7 +105,7 @@ final class SoftObjectCache implements ObjectCache {
     /** Stores a value */
     public void put(final Object key, final Object object) {
         writeLock(key);
-        SoftReference reference = new SoftReference(object);
+        SoftReference<Object> reference = new SoftReference<>(object);
         cache.put(key, reference);
         writeUnLock(key);
     }

@@ -279,6 +279,7 @@ public class AbstractFactory implements Factory, RegistrableFactory {
      * @see #MINIMUM_PRIORITY
      * @see #MAXIMUM_PRIORITY
      */
+    @SuppressWarnings("unchecked")
     public void onRegistration(final FactoryRegistry registry, final Class<?> category) {
         registry.getFactories(category, false)
                 .filter(factory -> factory != this)

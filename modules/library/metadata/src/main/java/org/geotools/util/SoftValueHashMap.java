@@ -454,7 +454,7 @@ public class SoftValueHashMap<K, V> extends AbstractMap<K, V> {
          * Set {@link #entry} to the next entry to iterate. Returns {@code true} if an entry has
          * been found, or {@code false} if the iteration is finished.
          */
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings("unchecked") // PLACEHOLDER is not a K, nothing we can do about it
         private boolean findNext() {
             while (iterator.hasNext()) {
                 final Map.Entry<K, Object> candidate = iterator.next();
@@ -554,6 +554,7 @@ public class SoftValueHashMap<K, V> extends AbstractMap<K, V> {
          * SoftReference#clear} method because it is invoked by {@link WeakCollectionCleaner}.
          */
         @Override
+        @SuppressWarnings("unchecked") // PLACEHOLDER is not a K, nothing we can do about it
         public void clear() {
             if (cleaner != null) {
                 final Object value = get();

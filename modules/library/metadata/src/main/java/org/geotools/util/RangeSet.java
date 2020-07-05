@@ -47,6 +47,7 @@ import org.opengis.util.Cloneable;
  * @author Martin Desruisseaux (IRD)
  * @author Andrea Aime
  */
+@SuppressWarnings("unchecked")
 public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range<T>>
         implements SortedSet<Range<T>>, Cloneable, Serializable {
     /** Serial number for interoperability with different versions. */

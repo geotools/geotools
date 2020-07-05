@@ -16,7 +16,6 @@
  */
 package org.geotools.util;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -27,7 +26,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * Caching implementation for {@link ObjectCache}. This instance is used when caching is desired,
  * and memory use is an issue.
  *
- * <p>Values are held in a WealValueHashSet, the garbage collector may reclaim them at any time.
+ * <p>Values are held in a WeakValueHashSet, the garbage collector may reclaim them at any time.
  * After the LIMIT is reached additional values are ignored by the cache.
  *
  * @since 2.5
@@ -39,10 +38,10 @@ final class FixedSizeObjectCache implements ObjectCache {
     private final int LIMIT;
 
     /** The cached values for each key. */
-    private final Map cache;
+    private final Map<Object, Object> cache;
 
     /** The locks for keys under construction. */
-    private final Map /*<K,ReentrantLock>*/ locks;
+    private final Map<Object, ReentrantLock> locks;
 
     /** Creates a new cache. */
     public FixedSizeObjectCache() {
@@ -52,8 +51,8 @@ final class FixedSizeObjectCache implements ObjectCache {
     /** Creates a new cache using the indicated initialSize. */
     public FixedSizeObjectCache(final int initialSize) {
         LIMIT = initialSize;
-        cache = Collections.synchronizedMap(new WeakValueHashMap(initialSize));
-        locks = new HashMap(initialSize);
+        cache = new WeakValueHashMap<>(initialSize);
+        locks = new HashMap<>(initialSize);
     }
 
     /** Removes all entries from this map. */

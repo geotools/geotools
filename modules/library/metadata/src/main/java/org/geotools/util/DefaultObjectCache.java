@@ -35,7 +35,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  */
 final class DefaultObjectCache implements ObjectCache {
     /** The cached values for each key. */
-    private final Map /*<Object,ObjectCacheEntry>*/ cache;
+    private final Map<Object, ObjectCacheEntry> cache;
 
     /**
      * An entry in the {@link DefaultObjectCache}.
@@ -176,12 +176,12 @@ final class DefaultObjectCache implements ObjectCache {
 
     /** Creates a new cache. */
     public DefaultObjectCache() {
-        cache = new HashMap();
+        cache = new HashMap<>();
     }
 
     /** Creates a new cache using the indicated initialSize. */
     public DefaultObjectCache(final int initialSize) {
-        cache = new HashMap(initialSize);
+        cache = new HashMap<>(initialSize);
     }
 
     /** Removes all entries from this map. */
@@ -264,11 +264,9 @@ final class DefaultObjectCache implements ObjectCache {
      * @return Set of keys
      */
     public Set<Object> getKeys() {
-        Set<Object> ret = null;
         synchronized (cache) {
-            ret = new HashSet<Object>(cache.keySet());
+            return new HashSet<>(cache.keySet());
         }
-        return ret;
     }
 
     /** Removes this item from the object cache. */

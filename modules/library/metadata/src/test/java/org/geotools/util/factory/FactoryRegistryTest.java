@@ -317,6 +317,7 @@ public final class FactoryRegistryTest {
 
     /** Tests for GEOT-2817 */
     @Test
+    @SuppressWarnings("unchecked")
     public void testLookupWithSameFactoryInTwoClassLoaders()
             throws MalformedURLException, ClassNotFoundException {
         // create url to this project's classes

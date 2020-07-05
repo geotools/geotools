@@ -47,6 +47,7 @@ public class AbstractDecorator<D> implements Wrapper, Serializable {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public <T> T unwrap(Class<T> iface) throws IllegalArgumentException {
         // first drill down to the latest wrapper, then check if the last delegate actually
         // implements the required interface and return it

@@ -121,6 +121,6 @@ public interface Factory {
      *     none.
      */
     default Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
-        return Collections.EMPTY_MAP;
+        return Collections.emptyMap();
     }
 }

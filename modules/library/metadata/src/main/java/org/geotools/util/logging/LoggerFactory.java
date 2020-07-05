@@ -48,7 +48,7 @@ public abstract class LoggerFactory<L> {
      */
     protected LoggerFactory(final Class<L> loggerClass) {
         this.loggerClass = loggerClass;
-        loggers = new WeakValueHashMap<String, Logger>();
+        loggers = new WeakValueHashMap<>();
     }
 
     /**

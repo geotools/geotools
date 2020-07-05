@@ -343,7 +343,7 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
                     target.clear();
                 } else {
                     int capacity = source.size();
-                    target = new MutableList<E>(elementType, capacity);
+                    target = new MutableList<>(elementType, capacity);
                 }
                 target.addAll(source);
             }
@@ -396,10 +396,10 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
                 } else {
                     int capacity = source.size();
                     if (isList) {
-                        target = new MutableList<E>(elementType, capacity);
+                        target = new MutableList<>(elementType, capacity);
                     } else {
                         capacity = Math.round(capacity / 0.75f) + 1;
-                        target = new MutableSet<E>(elementType, capacity);
+                        target = new MutableSet<>(elementType, capacity);
                     }
                 }
                 target.addAll(source);
@@ -423,7 +423,7 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
             return c;
         }
         if (isModifiable()) {
-            return new MutableSet<E>(elementType);
+            return new MutableSet<>(elementType);
         }
         return Collections.emptySet();
     }
@@ -443,7 +443,7 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
             return c;
         }
         if (isModifiable()) {
-            return new MutableSet<E>(elementType);
+            return new MutableSet<>(elementType);
         }
         return Collections.emptySet();
     }
@@ -462,7 +462,7 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
             return c;
         }
         if (isModifiable()) {
-            return new MutableList<E>(elementType);
+            return new MutableList<>(elementType);
         }
         return Collections.emptyList();
     }

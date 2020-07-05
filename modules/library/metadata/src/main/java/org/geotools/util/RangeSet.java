@@ -679,7 +679,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
         if (isNumeric) {
             return new NumberRange(elementClass, lower, upper);
         } else {
-            return new Range<T>(elementClass, lower, upper);
+            return new Range<>(elementClass, lower, upper);
         }
     }
 

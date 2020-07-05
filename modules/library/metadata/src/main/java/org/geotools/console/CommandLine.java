@@ -265,8 +265,8 @@ public class CommandLine {
      * list.
      */
     protected void help() {
-        final Map<String, String> mandatory = new TreeMap<String, String>();
-        final Map<String, String> optional = new TreeMap<String, String>();
+        final Map<String, String> mandatory = new TreeMap<>();
+        final Map<String, String> optional = new TreeMap<>();
         optional.put("help", "Print this summary.");
         optional.put(
                 "locale=S",

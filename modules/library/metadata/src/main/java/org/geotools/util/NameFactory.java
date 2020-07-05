@@ -50,7 +50,7 @@ public final class NameFactory {
      * @param separator The separator character.
      */
     public static GenericName create(final String name, final char separator) {
-        final List<String> names = new ArrayList<String>();
+        final List<String> names = new ArrayList<>();
         int lower = 0;
         while (true) {
             final int upper = name.indexOf(separator, lower);

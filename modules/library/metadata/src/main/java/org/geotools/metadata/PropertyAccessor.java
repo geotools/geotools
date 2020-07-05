@@ -76,7 +76,7 @@ final class PropertyAccessor {
      * Getters shared between many instances of this class. Two different implementations may share
      * the same getters but different setters.
      */
-    private static final Map<Class<?>, Method[]> SHARED_GETTERS = new HashMap<Class<?>, Method[]>();
+    private static final Map<Class<?>, Method[]> SHARED_GETTERS = new HashMap<>();
 
     /** The implemented metadata interface. */
     final Class<?> type;
@@ -122,7 +122,7 @@ final class PropertyAccessor {
         this.type = type;
         assert type.isAssignableFrom(implementation) : implementation;
         getters = getGetters(type);
-        mapping = new HashMap<String, Integer>(getters.length + (getters.length + 3) / 4);
+        mapping = new HashMap<>(getters.length + (getters.length + 3) / 4);
         Method[] setters = null;
         final Class<?>[] arguments = new Class[1];
         for (int i = 0; i < getters.length; i++) {
@@ -219,7 +219,7 @@ final class PropertyAccessor {
              * Gets every interfaces from the supplied package in declaration order,
              * including the ones declared in the super-class.
              */
-            final Set<Class<?>> interfaces = new LinkedHashSet<Class<?>>();
+            final Set<Class<?>> interfaces = new LinkedHashSet<>();
             do {
                 getInterfaces(implementation, interfacePackage, interfaces);
                 implementation = implementation.getSuperclass();

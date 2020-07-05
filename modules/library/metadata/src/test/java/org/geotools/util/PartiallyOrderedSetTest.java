@@ -222,7 +222,7 @@ public class PartiallyOrderedSetTest {
     }
 
     public <E> List<E> toList(PartiallyOrderedSet<E> poset) {
-        List<E> result = new ArrayList<E>();
+        List<E> result = new ArrayList<>();
         for (E e : poset) {
             result.add(e);
         }

@@ -72,7 +72,7 @@ public class DateTimeParser {
     public static final int FLAG_SINGLE_DATE_AS_DATERANGE = 65536;
 
     private static final Set<String> CURRENT_TIME_NAMES =
-            new HashSet<String>(Arrays.asList("current", "now", "present"));
+            new HashSet<>(Arrays.asList("current", "now", "present"));
 
     private static final String SIMPLIFIED_FORMAT_MILLISECOND = "yyyyMMdd'T'HHmmssSSS";
 

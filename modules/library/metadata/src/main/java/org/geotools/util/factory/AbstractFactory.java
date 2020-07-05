@@ -173,8 +173,7 @@ public class AbstractFactory implements Factory, RegistrableFactory {
      *       Factory#getImplementationHints implementation hints} contract.
      * </ul>
      */
-    protected final Map<RenderingHints.Key, Object> hints =
-            new LinkedHashMap<RenderingHints.Key, Object>();
+    protected final Map<RenderingHints.Key, Object> hints = new LinkedHashMap<>();
 
     /**
      * An unmodifiable view of {@link #hints}. This is the actual map to be returned by {@link
@@ -355,7 +354,7 @@ public class AbstractFactory implements Factory, RegistrableFactory {
         if (object != null && object.getClass().equals(getClass())) {
             final AbstractFactory that = (AbstractFactory) object;
             if (this.priority == that.priority) {
-                final Set<FactoryComparator> comparators = new HashSet<FactoryComparator>();
+                final Set<FactoryComparator> comparators = new HashSet<>();
                 return new FactoryComparator(this, that).compare(comparators);
             }
         }
@@ -374,7 +373,7 @@ public class AbstractFactory implements Factory, RegistrableFactory {
     @Override
     public String toString() {
         final String name = format(this);
-        final Map<Factory, String> done = new IdentityHashMap<Factory, String>();
+        final Map<Factory, String> done = new IdentityHashMap<>();
         // We used IdentityHashMap above because we don't want to rely on Factory.equals(...)
         done.put(this, name);
         final String tree = format(getImplementationHints(), done);
@@ -386,7 +385,7 @@ public class AbstractFactory implements Factory, RegistrableFactory {
      * Hints#toString} in order to share the code provided in this class.
      */
     static String toString(final Map<?, ?> hints) {
-        return format(hints, new IdentityHashMap<Factory, String>());
+        return format(hints, new IdentityHashMap<>());
     }
 
     /** Formats a name for the specified factory. */

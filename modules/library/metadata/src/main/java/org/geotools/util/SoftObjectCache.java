@@ -54,10 +54,8 @@ final class SoftObjectCache implements ObjectCache {
 
     /** Creates a new cache using the indicated initialSize. */
     public SoftObjectCache(final int initialSize) {
-        cache =
-                Collections.synchronizedMap(
-                        new HashMap<Object, SoftReference<Object>>(initialSize));
-        locks = new HashMap<Object, ReentrantLock>();
+        cache = Collections.synchronizedMap(new HashMap<>(initialSize));
+        locks = new HashMap<>();
     }
 
     /** Removes all entries from this map. */
@@ -89,7 +87,7 @@ final class SoftObjectCache implements ObjectCache {
     /** @return a copy of the keys currently in the map */
     public Set<Object> getKeys() {
         Set<Object> keys = null;
-        keys = new HashSet<Object>(cache.keySet());
+        keys = new HashSet<>(cache.keySet());
         return keys;
     }
 

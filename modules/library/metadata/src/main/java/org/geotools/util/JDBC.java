@@ -33,7 +33,7 @@ import org.geotools.metadata.i18n.Loggings;
  */
 public final class JDBC {
     /** Lists of JDBC drivers already loaded. */
-    private static final Set<String> DRIVERS = new HashSet<String>();
+    private static final Set<String> DRIVERS = new HashSet<>();
 
     /** Do not allow instantiation of this class. */
     private JDBC() {}

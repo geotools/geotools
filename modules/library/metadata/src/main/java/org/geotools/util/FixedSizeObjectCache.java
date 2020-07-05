@@ -135,7 +135,7 @@ final class FixedSizeObjectCache implements ObjectCache {
     /** @return the keys of the object currently in the set */
     public Set<Object> getKeys() {
         Set<Object> keys = null;
-        keys = new HashSet<Object>(cache.keySet());
+        keys = new HashSet<>(cache.keySet());
         return keys;
     }
 

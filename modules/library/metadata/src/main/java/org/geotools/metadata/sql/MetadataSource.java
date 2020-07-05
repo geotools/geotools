@@ -93,8 +93,7 @@ public class MetadataSource implements AutoCloseable {
      * The prepared statements created is previous call to {@link #getValue}. Those statements are
      * encapsulated into {@link MetadataResult} objects.
      */
-    private final Map<Class<?>, MetadataResult> statements =
-            new HashMap<Class<?>, MetadataResult>();
+    private final Map<Class<?>, MetadataResult> statements = new HashMap<>();
 
     /**
      * The map from GeoAPI names to ISO names. For example the GeoAPI {@link
@@ -189,11 +188,11 @@ public class MetadataSource implements AutoCloseable {
         if (Collection.class.isAssignableFrom(valueType)) {
             final Collection<Object> collection;
             if (List.class.isAssignableFrom(valueType)) {
-                collection = new ArrayList<Object>();
+                collection = new ArrayList<>();
             } else if (SortedSet.class.isAssignableFrom(valueType)) {
-                collection = new TreeSet<Object>();
+                collection = new TreeSet<>();
             } else {
-                collection = new LinkedHashSet<Object>();
+                collection = new LinkedHashSet<>();
             }
             assert valueType.isAssignableFrom(collection.getClass());
             final Object elements = result.getArray(identifier, columnName);

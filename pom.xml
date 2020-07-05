@@ -125,7 +125,7 @@
     <checkstyle.skip>false</checkstyle.skip>
     <qa>false</qa>
     <jackson2.version>2.10.1</jackson2.version>
-    <lint>deprecation</lint>
+    <lint>deprecation,unchecked</lint>
   </properties>
 
   <!-- Profiles set on the command-line overwrite default properties. -->

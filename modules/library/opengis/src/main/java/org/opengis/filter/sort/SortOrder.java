@@ -32,7 +32,7 @@ public final class SortOrder extends CodeList<SortOrder> {
      * The list of enumeration available in this virtual machine. <strong>Must be declared
      * first!</strong>.
      */
-    private static final List<SortOrder> VALUES = new ArrayList<SortOrder>(2);
+    private static final List<SortOrder> VALUES = new ArrayList<>(2);
 
     /**
      * Represents acending order.

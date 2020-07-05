@@ -30,7 +30,7 @@ public final class EvaluationMethodType extends CodeList<EvaluationMethodType> {
     private static final long serialVersionUID = -2481257874205996202L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<EvaluationMethodType> VALUES = new ArrayList<EvaluationMethodType>(3);
+    private static final List<EvaluationMethodType> VALUES = new ArrayList<>(3);
 
     /**
      * Method of evaluating the quality of a dataset based on inspection of items within the

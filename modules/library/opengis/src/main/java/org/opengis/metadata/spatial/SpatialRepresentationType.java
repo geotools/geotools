@@ -33,8 +33,7 @@ public final class SpatialRepresentationType extends CodeList<SpatialRepresentat
     private static final long serialVersionUID = 4790487150664264363L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<SpatialRepresentationType> VALUES =
-            new ArrayList<SpatialRepresentationType>(6);
+    private static final List<SpatialRepresentationType> VALUES = new ArrayList<>(6);
 
     /** Vector data is used to represent geographic data. */
     @UML(identifier = "vector", obligation = CONDITIONAL, specification = ISO_19115)

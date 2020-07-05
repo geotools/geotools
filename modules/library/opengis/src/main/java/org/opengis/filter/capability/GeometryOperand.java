@@ -54,8 +54,7 @@ public final class GeometryOperand implements Name, Serializable {
     private static final long serialVersionUID = -9006169053542932716L;
 
     /** The pool of operands created up to date. */
-    private static final Map<GeometryOperand, GeometryOperand> POOL =
-            new HashMap<GeometryOperand, GeometryOperand>();
+    private static final Map<GeometryOperand, GeometryOperand> POOL = new HashMap<>();
 
     /** {@code "http://www.opengis.net/gml/Envelope"} */
     public static final GeometryOperand Envelope = new GeometryOperand("Envelope");

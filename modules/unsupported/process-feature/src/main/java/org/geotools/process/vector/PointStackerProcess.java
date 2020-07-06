@@ -17,9 +17,11 @@
  */
 package org.geotools.process.vector;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -28,6 +30,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
@@ -47,7 +50,9 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
+
 import java.util.logging.Logger;
 
 /**
@@ -117,13 +122,23 @@ public class PointStackerProcess implements VectorProcess {
     Natural
   };
 
+  public enum ComputeBBoxType {
+    /** Compute output bbox and and area as original source */
+    Original,
+    /** compute output bbox and area as map */
+    Map,
+  };
+
   public static final String ATTR_GEOM = "geom";
   public static final String ATTR_COUNT = "count";
   public static final String ATTR_COUNT_UNIQUE = "countUnique";
   public static final String ATTR_NORM_COUNT = "normCount";
   public static final String ATTR_NORM_COUNT_UNIQUE = "normCountUnique";
 
-  /** bounding box of the clustered points as String */
+  /** area, internally it is a Polygon */
+  public static final String ATTR_BOUNDING_AREA = "computedArea";
+
+  /** bounding box */
   public static final String ATTR_BOUNDING_BOX = "computedBBox";
 
   public static final String ATTR_IDS_CLUSTERED = "clusteredAttributes";
@@ -177,6 +192,11 @@ public class PointStackerProcess implements VectorProcess {
               defaultValue = "")
           String returnClusteredAttribute,
       @DescribeParameter(
+              name = "collectClusterAttributeGlue",
+              description = "Glue for the specified clustered attributes",
+              defaultValue = ",")
+          String returnClusteredAttributeGlue,
+      @DescribeParameter(
               name = "clusterType",
               description = "Specify the clusterization method",
               defaultValue = "GridCenter")
@@ -187,6 +207,11 @@ public class PointStackerProcess implements VectorProcess {
                   "Compute BBox of the cluster and return it in data set as geom structure",
               defaultValue = "false")
           Boolean argComputeBBox,
+      @DescribeParameter(
+              name = "computeBBoxType",
+              description = "Compute BBox Type",
+              defaultValue = "Original")
+          ComputeBBoxType argComputeBBoxType,
 
       // output image parameters
       @DescribeParameter(name = "outputBBOX", description = "Bounding box for target image extent")
@@ -246,18 +271,16 @@ public class PointStackerProcess implements VectorProcess {
             outputEnv.getMinX(),
             outputEnv.getMinY(),
             clusterType,
-            returnClusteredAttribute);
+            returnClusteredAttribute,
+            returnClusteredAttributeGlue);
 
     SimpleFeatureType schema = createType(srcCRS, normalize);
     ListFeatureCollection result = new ListFeatureCollection(schema);
     SimpleFeatureBuilder fb = new SimpleFeatureBuilder(schema);
 
     GeometryFactory factory = new GeometryFactory(new PackedCoordinateSequenceFactory());
-    Coordinate[] coordinates;
     double[] srcPt = new double[2];
     double[] dstPt = new double[2];
-    double[] srcPt2 = new double[2];
-    double[] dstPt2 = new double[2];
 
     // Find maxima of the point stacks if needed.
     int maxCount = 0;
@@ -268,7 +291,7 @@ public class PointStackerProcess implements VectorProcess {
         if (maxCountUnique < sp.getCount()) maxCountUnique = sp.getCountUnique();
       }
     }
-
+    // get all stecked points and create features.
     for (StackedPoint sp : stackedPts) {
       // create feature for stacked point
       Coordinate pt = getStackedPointLocation(preserveLocation, sp);
@@ -287,7 +310,8 @@ public class PointStackerProcess implements VectorProcess {
       if (computeBBox) {
         // adding bounding box of the points staked, as geometry
         // envelope transformation
-        Envelope boundingBox = sp.getBoundingBox();
+        // Envelope boundingBox = sp.getBoundingBox(invTransform);
+        /*
         srcPt[0] = boundingBox.getMinX();
         srcPt[1] = boundingBox.getMinY();
         srcPt2[0] = boundingBox.getMaxX();
@@ -296,11 +320,22 @@ public class PointStackerProcess implements VectorProcess {
         invTransform.transform(srcPt, 0, dstPt, 0, 1);
         invTransform.transform(srcPt2, 0, dstPt2, 0, 1);
         Envelope boundingBoxTransformed = new Envelope(dstPt[0], dstPt[1], dstPt2[0], dstPt2[1]);
-        fb.add(boundingBoxTransformed);
+        */
+        if (argComputeBBoxType == ComputeBBoxType.Original) {
+          fb.add(sp.getPoligon(invTransform));
+          fb.add(sp.getBoundingBoxList(invTransform));
+        } else if (argComputeBBoxType == ComputeBBoxType.Map) {
+          fb.add(sp.getPoligon());
+          fb.add(sp.getBoundingBoxList(null));
+        } else {
+          fb.add(null);
+          fb.add(null);
+        }
         // adding bounding box of the points staked, as string
         // fb.add(boundingBoxTransformed.toString()); //not used
       } else {
         // we need to maintain the order of the fields.
+        fb.add(null);
         fb.add(null);
       }
       if (normalize) {
@@ -308,7 +343,6 @@ public class PointStackerProcess implements VectorProcess {
         fb.add(((double) sp.getCountUnique()) / maxCountUnique);
       }
       fb.add(sp.getIdsClustered());
-
       result.add(fb.buildFeature(null));
     }
     return result;
@@ -356,7 +390,8 @@ public class PointStackerProcess implements VectorProcess {
       double minX,
       double minY,
       ClusterType clusterType,
-      String returnClusteredAttribute)
+      String returnClusteredAttribute,
+      String returnClusteredAttributeGlue)
       throws TransformException {
     SimpleFeatureIterator featureIt = data.features();
 
@@ -436,7 +471,8 @@ public class PointStackerProcess implements VectorProcess {
         }
         stkPt.add(pout);
         if (returnClusteredAttribute != "") {
-          stkPt.addClusteredAttribute(feature.getAttribute(returnClusteredAttribute));
+          stkPt.addClusteredAttribute(
+              feature.getAttribute(returnClusteredAttribute), returnClusteredAttributeGlue);
         }
       }
 
@@ -490,7 +526,9 @@ public class PointStackerProcess implements VectorProcess {
     tb.add(ATTR_GEOM, Point.class, crs);
     tb.add(ATTR_COUNT, Integer.class);
     tb.add(ATTR_COUNT_UNIQUE, Integer.class);
-    tb.add(ATTR_BOUNDING_BOX, Geometry.class);
+    tb.add(ATTR_BOUNDING_AREA, Geometry.class);
+    tb.add(ATTR_BOUNDING_BOX, List.class);
+
     if (stretch) {
       tb.add(ATTR_NORM_COUNT, Double.class);
       tb.add(ATTR_NORM_COUNT_UNIQUE, Double.class);
@@ -524,6 +562,7 @@ public class PointStackerProcess implements VectorProcess {
     private int count = 0;
 
     private Set<Coordinate> uniquePts;
+    private ArrayList<Coordinate> allPts;
 
     /** Bounding box of the clustered points */
     private Envelope boundingBox = null;
@@ -550,7 +589,100 @@ public class PointStackerProcess implements VectorProcess {
     }
 
     public Coordinate[] getClusterCoordinates() {
+
       return uniquePts.toArray(new Coordinate[uniquePts.size()]);
+    }
+
+    /**
+     * Return Polygon from the data, original
+     *
+     * @return
+     */
+    public Geometry getPoligon() {
+      GeometryFactory factory = new GeometryFactory(new PackedCoordinateSequenceFactory());
+      allPts.add(allPts.get(0));
+      Coordinate[] list = allPts.toArray(new Coordinate[] {});
+      if (list.length < 4) {
+        return JTS.toGeometry(this.getBoundingBox());
+      }
+      Polygon polygon = factory.createPolygon(list);
+      return polygon.convexHull();
+    }
+
+    public Geometry getPoligon(MathTransform invTransform) {
+      GeometryFactory factory = new GeometryFactory(new PackedCoordinateSequenceFactory());
+      allPts.add(allPts.get(0));
+      Coordinate[] list = allPts.toArray(new Coordinate[] {});
+      if (list.length < 4) {
+        // return the bounding box
+        // return null;
+        return JTS.toGeometry(this.getBoundingBox(invTransform));
+      }
+      double[] srcPt = new double[2];
+      double[] dstPt = new double[2];
+      try {
+        for (int i = 0; i < list.length; i++) {
+          srcPt[0] = list[i].x;
+          srcPt[1] = list[i].y;
+          invTransform.transform(srcPt, 0, dstPt, 0, 1);
+          list[i] = new Coordinate(dstPt[0], dstPt[1]);
+        }
+        Polygon polygon = factory.createPolygon(list);
+        return polygon.convexHull();
+      } catch (TransformException e) {
+        // return the bounding box
+        return null;
+        // return JTS.toGeometry(this.getBoundingBox(invTransform));
+      }
+    }
+
+    /**
+     * return the original bounding box
+     *
+     * @return
+     */
+    public Envelope getBoundingBox() {
+      return boundingBox;
+    }
+
+    public List<Double> getBoundingBoxList(MathTransform invTransform) {
+      Envelope x = null;
+      if (invTransform == null) {
+        x = this.getBoundingBox();
+      } else {
+        x = this.getBoundingBox(invTransform);
+      }
+      List<Double> output = new ArrayList<Double>();
+      // double[] output=new double[4];
+      output.add(x.getMinX());
+      output.add(x.getMinY());
+      output.add(x.getMaxX());
+      output.add(x.getMaxY());
+      return output;
+    }
+    /**
+     * Return the bounding box in the system source env
+     *
+     * @param invTransform
+     * @return
+     */
+    public Envelope getBoundingBox(MathTransform invTransform) {
+      double[] srcPt = new double[2];
+      double[] dstPt = new double[2];
+      double[] srcPt2 = new double[2];
+      double[] dstPt2 = new double[2];
+      srcPt[0] = boundingBox.getMinX();
+      srcPt[1] = boundingBox.getMinY();
+      srcPt2[0] = boundingBox.getMaxX();
+      srcPt2[1] = boundingBox.getMaxY();
+      try {
+        invTransform.transform(srcPt, 0, dstPt, 0, 1);
+        invTransform.transform(srcPt2, 0, dstPt2, 0, 1);
+        return new Envelope(dstPt[0], dstPt2[0], dstPt[1], dstPt2[1]);
+      } catch (TransformException e) {
+        // TODO Auto-generated catch block
+        return null;
+      }
     }
 
     public Coordinate getLocation() {
@@ -589,7 +721,11 @@ public class PointStackerProcess implements VectorProcess {
       if (uniquePts == null) {
         uniquePts = new HashSet<Coordinate>();
       }
+      if (allPts == null) {
+        allPts = new ArrayList<Coordinate>();
+      }
       uniquePts.add(pt);
+      allPts.add(pt);
 
       if (clusterType == ClusterType.GridWeight) {
         pickWeightedLocation(pt);
@@ -605,17 +741,16 @@ public class PointStackerProcess implements VectorProcess {
 
       if (boundingBox == null) {
         boundingBox = new Envelope();
-      } else {
-        boundingBox.expandToInclude(pt);
       }
+      boundingBox.expandToInclude(pt);
     }
 
-    public void addClusteredAttribute(Object id) {
+    public void addClusteredAttribute(Object id, String glue) {
       /** Add in cluster */
       if (idsClustered == null) {
         idsClustered = id.toString();
       } else {
-        idsClustered += "," + id.toString();
+        idsClustered += glue + id.toString();
       }
     }
 
@@ -649,17 +784,6 @@ public class PointStackerProcess implements VectorProcess {
       if (pt.distance(centerPt) < location.distance(centerPt)) {
         location = average(centerPt, pt);
       }
-    }
-
-    public Envelope getBoundingBox() {
-      return this.boundingBox;
-      /*
-       * Coordinate coords[]=uniquePts.toArray(new
-       * Coordinate[uniquePts.size()]);
-       *
-       * Geometry result=factory.createPolygon(coords).getEnvelope();
-       * System.out.println(result); return result;
-       */
     }
 
     /**

@@ -38,6 +38,7 @@ jobs:
         git checkout jts1.17.0
         git fetch
         echo "Checking out GeoServer"
+        cd ~
         mkdir geoserver
         git clone https://github.com/jnh5y/geoserver.git geoserver
         cd geoserver

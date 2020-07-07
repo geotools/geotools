@@ -37,6 +37,7 @@ import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.geotools.referencing.CRS;
+import org.json.simple.JSONArray;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.FactoryException;
@@ -123,9 +124,9 @@ public class PointStackerProcess implements VectorProcess {
   };
 
   public enum ComputeBBoxType {
-    /** Compute output bbox and and area as original source */
+    /** Compute output BBox and and area as original source */
     Original,
-    /** compute output bbox and area as map */
+    /** compute output BBox and area as map */
     Map,
   };
 
@@ -141,7 +142,7 @@ public class PointStackerProcess implements VectorProcess {
   /** bounding box */
   public static final String ATTR_BOUNDING_BOX = "computedBBox";
 
-  public static final String ATTR_IDS_CLUSTERED = "clusteredAttributes";
+  public static final String ATTR_CLUSTERED_VALUES = "clusteredAttributes";
 
   // TODO: add ability to pick index point selection strategy
   // TODO: add ability to set attribute name containing value to be aggregated
@@ -161,8 +162,8 @@ public class PointStackerProcess implements VectorProcess {
       // process data
       @DescribeParameter(name = "data", description = "Input feature collection")
           SimpleFeatureCollection data,
-      // process parameters
 
+      // process parameters
       @DescribeParameter(
               name = "cellSize",
               description =
@@ -191,11 +192,6 @@ public class PointStackerProcess implements VectorProcess {
               description = "Return the specfied attribute for each feature in the cluster",
               defaultValue = "")
           String returnClusteredAttribute,
-      @DescribeParameter(
-              name = "collectClusterAttributeGlue",
-              description = "Glue for the specified clustered attributes",
-              defaultValue = ",")
-          String returnClusteredAttributeGlue,
       @DescribeParameter(
               name = "clusterType",
               description = "Specify the clusterization method",
@@ -271,8 +267,7 @@ public class PointStackerProcess implements VectorProcess {
             outputEnv.getMinX(),
             outputEnv.getMinY(),
             clusterType,
-            returnClusteredAttribute,
-            returnClusteredAttributeGlue);
+            returnClusteredAttribute);
 
     SimpleFeatureType schema = createType(srcCRS, normalize);
     ListFeatureCollection result = new ListFeatureCollection(schema);
@@ -342,7 +337,7 @@ public class PointStackerProcess implements VectorProcess {
         fb.add(((double) sp.getCount()) / maxCount);
         fb.add(((double) sp.getCountUnique()) / maxCountUnique);
       }
-      fb.add(sp.getIdsClustered());
+      fb.add(sp.getClusteredAttributeValues());
       result.add(fb.buildFeature(null));
     }
     return result;
@@ -390,8 +385,7 @@ public class PointStackerProcess implements VectorProcess {
       double minX,
       double minY,
       ClusterType clusterType,
-      String returnClusteredAttribute,
-      String returnClusteredAttributeGlue)
+      String returnClusteredAttribute)
       throws TransformException {
     SimpleFeatureIterator featureIt = data.features();
 
@@ -471,8 +465,7 @@ public class PointStackerProcess implements VectorProcess {
         }
         stkPt.add(pout);
         if (returnClusteredAttribute != "") {
-          stkPt.addClusteredAttribute(
-              feature.getAttribute(returnClusteredAttribute), returnClusteredAttributeGlue);
+          stkPt.addClusteredAttribute(feature.getAttribute(returnClusteredAttribute));
         }
       }
 
@@ -533,7 +526,7 @@ public class PointStackerProcess implements VectorProcess {
       tb.add(ATTR_NORM_COUNT, Double.class);
       tb.add(ATTR_NORM_COUNT_UNIQUE, Double.class);
     }
-    tb.add(ATTR_IDS_CLUSTERED, String.class);
+    tb.add(ATTR_CLUSTERED_VALUES, JSONArray.class);
     tb.setName("stackedPoint");
     SimpleFeatureType sfType = tb.buildFeatureType();
     return sfType;
@@ -552,7 +545,7 @@ public class PointStackerProcess implements VectorProcess {
 
     /** Internal Key */
     private Coordinate key;
-    /** Cluster */
+    /** Default Value, but it will be overridden at initialization (constructor) */
     ClusterType clusterType = ClusterType.Natural;
 
     private Coordinate centerPt;
@@ -567,7 +560,7 @@ public class PointStackerProcess implements VectorProcess {
     /** Bounding box of the clustered points */
     private Envelope boundingBox = null;
 
-    private String idsClustered = null;
+    private JSONArray idsClustered = null;
 
     /**
      * Creates a new stacked point grid cell. The center point of the cell is supplied so that it
@@ -589,7 +582,6 @@ public class PointStackerProcess implements VectorProcess {
     }
 
     public Coordinate[] getClusterCoordinates() {
-
       return uniquePts.toArray(new Coordinate[uniquePts.size()]);
     }
 
@@ -603,6 +595,7 @@ public class PointStackerProcess implements VectorProcess {
       allPts.add(allPts.get(0));
       Coordinate[] list = allPts.toArray(new Coordinate[] {});
       if (list.length < 4) {
+        // cannot build a valid polygon so return the bounding box
         return JTS.toGeometry(this.getBoundingBox());
       }
       Polygon polygon = factory.createPolygon(list);
@@ -614,8 +607,7 @@ public class PointStackerProcess implements VectorProcess {
       allPts.add(allPts.get(0));
       Coordinate[] list = allPts.toArray(new Coordinate[] {});
       if (list.length < 4) {
-        // return the bounding box
-        // return null;
+        // the polygon is not valid, so return the bounding box
         return JTS.toGeometry(this.getBoundingBox(invTransform));
       }
       double[] srcPt = new double[2];
@@ -699,7 +691,7 @@ public class PointStackerProcess implements VectorProcess {
     }
 
     /** get the clustered attributes of the points that have been clustered */
-    public String getIdsClustered() {
+    public JSONArray getClusteredAttributeValues() {
       return this.idsClustered;
     }
 
@@ -745,13 +737,13 @@ public class PointStackerProcess implements VectorProcess {
       boundingBox.expandToInclude(pt);
     }
 
-    public void addClusteredAttribute(Object id, String glue) {
+    @SuppressWarnings("unchecked")
+    public void addClusteredAttribute(Object id) {
       /** Add in cluster */
       if (idsClustered == null) {
-        idsClustered = id.toString();
-      } else {
-        idsClustered += glue + id.toString();
+        idsClustered = new JSONArray();
       }
+      idsClustered.add(id.toString());
     }
 
     /**

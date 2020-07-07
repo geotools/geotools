@@ -42,7 +42,8 @@ jobs:
         git clone https://github.com/jnh5y/geoserver.git geoserver
         cd geoserver
         git checkout jts1.17.0
-        ls geoserver/
+        ls 
+        ls ~/geoserver
         git fetch
     - name: Build GeoWebCache with tests
       run: |

@@ -52,7 +52,7 @@ jobs:
         export MAVEN_OPTS="-Xmx512m $TEST_OPTS"
         cd ~
         mvn -B -f geowebcache/geowebcache/pom.xml install -nsu -Dfmt.skip=true -DskipTests
-        mvn -B -f geowebcache/geowebcache/pom.xml test -nsu -T2 -Dfmt.skip=true
+        mvn -B -f geowebcache/geowebcache/pom.xml test -nsu -Dfmt.skip=true
     - name: Build GeoServer with tests
       run: |
         export TEST_OPTS="-XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10"

@@ -36,11 +36,13 @@ jobs:
         git clone https://github.com/jnh5y/geowebcache.git geowebcache
         cd geowebcache
         git checkout jts1.17.0
+        git fetch
         echo "Checking out GeoServer"
         mkdir geoserver
         git clone https://github.com/jnh5y/geoserver.git geoserver
         cd geoserver
         git checkout jts1.17.0
+        git fetch
     - name: Build GeoWebCache with tests
       run: |
         export TEST_OPTS="-XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10"

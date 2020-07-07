@@ -374,7 +374,7 @@ public class QueryTypeImpl extends AbstractQueryTypeImpl implements QueryType {
             case Csw20Package.QUERY_TYPE__CONSTRAINT:
                 return constraint != null;
             case Csw20Package.QUERY_TYPE__SORT_BY:
-                return SORT_BY_EDEFAULT == null ? sortBy != null : !SORT_BY_EDEFAULT.equals(sortBy);
+                return SORT_BY_EDEFAULT == null ? sortBy != null : !SORT_BY_EDEFAULT.equalsGe(sortBy);
             case Csw20Package.QUERY_TYPE__TYPE_NAMES:
                 return typeNames != null;
         }

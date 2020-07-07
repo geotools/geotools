@@ -300,7 +300,7 @@ class SimpleGeometryFactory extends GeometryFactory {
             return geometry.relate(g);
         }
 
-        public Geometry reverseInternal() {
+        protected Geometry reverseInternal() {
             return geometry.reverse();
         }
 
@@ -595,7 +595,7 @@ class SimpleGeometryFactory extends GeometryFactory {
             return lineString.relate(g);
         }
 
-        public Geometry reverseInternal() {
+        protected Geometry reverseInternal() {
             return ((Geometry) lineString).reverse();
         }
 
@@ -869,7 +869,7 @@ class SimpleGeometryFactory extends GeometryFactory {
             return polygon.relate(g);
         }
 
-        public Geometry reverseInternal() {
+        protected Geometry reverseInternal() {
             return ((Geometry) polygon).reverse();
         }
 
@@ -1142,7 +1142,7 @@ class SimpleGeometryFactory extends GeometryFactory {
             return point.relate(g);
         }
 
-        public Geometry reverseInternal() {
+        protected Geometry reverseInternal() {
             return ((Geometry) point).reverse();
         }
 

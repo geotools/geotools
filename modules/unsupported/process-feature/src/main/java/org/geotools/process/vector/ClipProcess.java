@@ -576,7 +576,7 @@ public class ClipProcess implements VectorProcess {
                                 // it may be that the two lines have different orientations, we'll
                                 // flip ls and
                                 // start back
-                                ls = (LineString)((Geometry)ls).reverse();
+                                ls = (LineString) ((Geometry) ls).reverse();
                                 cs = ls.getCoordinateSequence();
                                 flipped = true;
                                 c1 = cs.getCoordinate(0);

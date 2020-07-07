@@ -42,6 +42,7 @@ jobs:
         git clone https://github.com/jnh5y/geoserver.git geoserver
         cd geoserver
         git checkout jts1.17.0
+        ls geoserver/
         git fetch
     - name: Build GeoWebCache with tests
       run: |
@@ -55,6 +56,9 @@ jobs:
         export TEST_OPTS="-XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10"
         export MAVEN_OPTS="-Xmx256m $TEST_OPTS"
         cd ~
+        ls 
+        ls geoserver/
+        ls geoserver/src/
         mvn -B -f geoserver/src/pom.xml install -nsu -Prelease -Dfmt.skip=true -DskipTests
         mvn -B -f geoserver/src/community/pom.xml install -nsu -DcommunityRelease -Dfmt.skip=true -DskipTests
         mvn -B -f geoserver/src/pom.xml test -T2 -nsu -Dtest.maxHeapSize=512m -Djvm.opts="$TEST_OPTS" -Prelease -Dfmt.skip=true

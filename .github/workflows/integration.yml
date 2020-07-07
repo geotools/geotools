@@ -34,15 +34,18 @@ jobs:
         echo "Checking out GeoWebCache"
         mkdir geowebcache
         git clone https://github.com/jnh5y/geowebcache.git geowebcache
+        cd geowebcache
+        git checkout jts1.17.0
         echo "Checking out GeoServer"
         mkdir geoserver
         git clone https://github.com/jnh5y/geoserver.git geoserver
+        cd geoserver
+        git checkout jts1.17.0
     - name: Build GeoWebCache with tests
       run: |
         export TEST_OPTS="-XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10"
         export MAVEN_OPTS="-Xmx512m $TEST_OPTS"
         cd ~
-        git checkout jts1.17.0
         mvn -B -f geowebcache/geowebcache/pom.xml install -nsu -Dfmt.skip=true -DskipTests
         mvn -B -f geowebcache/geowebcache/pom.xml test -nsu -T2 -Dfmt.skip=true
     - name: Build GeoServer with tests
@@ -50,7 +53,6 @@ jobs:
         export TEST_OPTS="-XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10"
         export MAVEN_OPTS="-Xmx256m $TEST_OPTS"
         cd ~
-        git checkout jts1.17.0
         mvn -B -f geoserver/src/pom.xml install -nsu -Prelease -Dfmt.skip=true -DskipTests
         mvn -B -f geoserver/src/community/pom.xml install -nsu -DcommunityRelease -Dfmt.skip=true -DskipTests
         mvn -B -f geoserver/src/pom.xml test -T2 -nsu -Dtest.maxHeapSize=512m -Djvm.opts="$TEST_OPTS" -Prelease -Dfmt.skip=true

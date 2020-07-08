@@ -44,7 +44,6 @@ import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.gce.imagemosaic.GranuleDescriptor;
 import org.geotools.gce.imagemosaic.GranuleDescriptor.GranuleLoadingResult;
 import org.geotools.gce.imagemosaic.GranuleLoader;
-import org.geotools.gce.imagemosaic.MergeBehavior;
 import org.geotools.gce.imagemosaic.MosaicElement;
 import org.geotools.gce.imagemosaic.MosaicInputs;
 import org.geotools.gce.imagemosaic.Mosaicker;
@@ -223,7 +222,7 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
         }
 
         // collect paths
-        rasterLayerResponse.setGranulesPaths(
+        rasterLayerResponse.addGranulePaths(
                 paths.length() > 1 ? paths.substring(0, paths.length() - 1) : "");
         rasterLayerResponse.setSourceUrl(sourceUrl);
 
@@ -389,7 +388,10 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
     @Override
     public List<MosaicElement> createMosaic() throws IOException {
         final MosaicElement mosaic =
-                (new Mosaicker(this.rasterLayerResponse, collectGranules(), MergeBehavior.FLAT))
+                (new Mosaicker(
+                                this.rasterLayerResponse,
+                                collectGranules(),
+                                rasterLayerResponse.getRequest().getMergeBehavior()))
                         .createMosaic();
         if (mosaic == null) {
             return Collections.emptyList();

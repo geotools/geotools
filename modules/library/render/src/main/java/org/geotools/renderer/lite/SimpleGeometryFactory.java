@@ -300,7 +300,7 @@ class SimpleGeometryFactory extends GeometryFactory {
             return geometry.relate(g);
         }
 
-        public Geometry reverse() {
+        protected Geometry reverseInternal() {
             return geometry.reverse();
         }
 
@@ -595,8 +595,8 @@ class SimpleGeometryFactory extends GeometryFactory {
             return lineString.relate(g);
         }
 
-        public Geometry reverse() {
-            return lineString.reverse();
+        protected Geometry reverseInternal() {
+            return ((Geometry) lineString).reverse();
         }
 
         public void setSRID(int SRID) {
@@ -869,8 +869,8 @@ class SimpleGeometryFactory extends GeometryFactory {
             return polygon.relate(g);
         }
 
-        public Geometry reverse() {
-            return polygon.reverse();
+        protected Geometry reverseInternal() {
+            return ((Geometry) polygon).reverse();
         }
 
         public void setSRID(int SRID) {
@@ -1142,8 +1142,8 @@ class SimpleGeometryFactory extends GeometryFactory {
             return point.relate(g);
         }
 
-        public Geometry reverse() {
-            return point.reverse();
+        protected Geometry reverseInternal() {
+            return ((Geometry) point).reverse();
         }
 
         public void setSRID(int SRID) {

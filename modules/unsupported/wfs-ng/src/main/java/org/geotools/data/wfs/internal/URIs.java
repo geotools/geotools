@@ -29,7 +29,16 @@ import org.apache.commons.collections4.map.CaseInsensitiveMap;
 public class URIs {
 
     public static URL buildURL(URL baseURL, Map<String, String> kvp) {
-        String uri = buildURL(baseURL.toExternalForm(), null, kvp);
+        String uri = buildURL(baseURL.toExternalForm(), null, kvp, "UTF-8");
+        try {
+            return new URL(uri);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static URL buildURL(URL baseURL, Map<String, String> kvp, String encoding) {
+        String uri = buildURL(baseURL.toExternalForm(), null, kvp, encoding);
         try {
             return new URL(uri);
         } catch (MalformedURLException e) {
@@ -38,10 +47,11 @@ public class URIs {
     }
 
     public static String buildURL(String baseURL, Map<String, String> kvp) {
-        return buildURL(baseURL, null, kvp);
+        return buildURL(baseURL, null, kvp, "UTF-8");
     }
 
-    public static String buildURL(final String baseURL, String path, Map<String, String> kvp) {
+    public static String buildURL(
+            final String baseURL, String path, Map<String, String> kvp, String encoding) {
 
         // prepare modifiable parameters
         StringBuilder baseURLBuffer = new StringBuilder(baseURL);
@@ -65,7 +75,7 @@ public class URIs {
             params.append("=");
             String value = entry.getValue();
             if (value != null) {
-                String encoded = urlEncode(value);
+                String encoded = urlEncode(value, encoding);
                 params.append(encoded);
             }
             params.append("&");
@@ -98,11 +108,11 @@ public class URIs {
     }
 
     /** URL encodes the value towards the ISO-8859-1 charset */
-    public static String urlEncode(String value) {
+    public static String urlEncode(String value, String valueEncoding) {
         try {
             // TODO: URLEncoder also encodes ( and ) which are considered safe chars,
             // see also http://www.w3.org/International/O-URL-code.html
-            return URLEncoder.encode(new String(value.getBytes(), "UTF-8"), "UTF-8");
+            return URLEncoder.encode(new String(value.getBytes(), valueEncoding), "UTF-8");
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException("This is unexpected", e);
         }

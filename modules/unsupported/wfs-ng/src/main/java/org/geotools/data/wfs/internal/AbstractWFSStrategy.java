@@ -657,9 +657,12 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
 
         Map<String, String> requestParams;
 
+        String encoding = "UTF-8";
+
         switch (operation) {
             case GET_FEATURE:
                 requestParams = buildGetFeatureParametersForGET((GetFeatureRequest) request);
+                encoding = Charset.defaultCharset().name();
                 break;
             case DESCRIBE_FEATURETYPE:
                 requestParams =
@@ -681,7 +684,7 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
 
         URL baseUrl = getOperationURL(operation, GET);
 
-        URL finalURL = URIs.buildURL(baseUrl, requestParams);
+        URL finalURL = URIs.buildURL(baseUrl, requestParams, encoding);
         requestDebug("Built GET request for ", operation, ": ", finalURL);
 
         return finalURL;

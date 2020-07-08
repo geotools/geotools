@@ -19,11 +19,13 @@ package org.geotools.gce.imagemosaic;
 import static org.geotools.gce.imagemosaic.TestUtils.getReader;
 import static org.geotools.gce.imagemosaic.TestUtils.setupTestDirectory;
 import static org.geotools.util.URLs.fileToUrl;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.endsWith;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.arrayWithSize;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.hamcrest.Matchers.hasSize;
@@ -135,6 +137,7 @@ import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.ImageWorker;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
@@ -1711,8 +1714,6 @@ public class ImageMosaicReaderTest extends Assert {
 
     /** Simple test method accessing time and 2 custom dimensions for the sample dataset */
     @Test
-    // @Ignore
-    @SuppressWarnings("rawtypes")
     public void multipleDimensionsStacked() throws Exception {
 
         final AbstractGridFormat format = TestUtils.getFormat(timeAdditionalDomainsURL);
@@ -1725,6 +1726,7 @@ public class ImageMosaicReaderTest extends Assert {
         assertEquals("20081031T0000000,20081101T0000000", reader.getMetadataValue("DATE_DOMAIN"));
         assertEquals("java.lang.String", reader.getMetadataValue("DATE_DOMAIN_DATATYPE"));
 
+        // the images will stack on depth
         assertEquals("true", reader.getMetadataValue("HAS_DEPTH_DOMAIN"));
         assertEquals("false", reader.getMetadataValue("HAS_ELEVATION_DOMAIN"));
         assertEquals("20,100", reader.getMetadataValue("DEPTH_DOMAIN"));
@@ -1742,44 +1744,74 @@ public class ImageMosaicReaderTest extends Assert {
         final SimpleDateFormat formatD = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         formatD.setTimeZone(TimeZone.getTimeZone("GMT"));
         final Date timeD = formatD.parse("2008-10-31T00:00:00.000Z");
-        time.setValue(
-                new ArrayList() {
-                    {
-                        add(timeD);
-                    }
-                });
-
-        // specify additional Dimensions
-        Set<ParameterDescriptor<List>> params = reader.getDynamicParameters();
-        ParameterValue<List<String>> dateValue = null;
-        final String selectedDate = "20081031T0000000";
-        for (ParameterDescriptor param : params) {
-            if (param.getName().getCode().equalsIgnoreCase("DATE")) {
-                dateValue = param.createValue();
-                dateValue.setValue(
-                        new ArrayList<String>() {
-                            {
-                                add(selectedDate);
-                            }
-                        });
-            }
-        }
+        time.setValue(Arrays.asList(timeD));
 
         // Stacked bands
-        final ParameterValue<String> paramStacked = ImageMosaicFormat.MERGE_BEHAVIOR.createValue();
-        paramStacked.setValue(MergeBehavior.STACK.toString());
+        final ParameterValue<String> mergeStack = ImageMosaicFormat.MERGE_BEHAVIOR.createValue();
+        mergeStack.setValue(MergeBehavior.STACK.toString());
+
+        // Ensure predictable order with a sort
+        final ParameterValue<String> sort = ImageMosaicFormat.SORT_BY.createValue();
+        sort.setValue("depth A");
 
         // Test the output coverage
         GeneralParameterValue[] values =
-                new GeneralParameterValue[] {useJai, tileSize, time, dateValue, paramStacked};
+                new GeneralParameterValue[] {useJai, tileSize, time, mergeStack, sort};
         final GridCoverage2D coverage = TestUtils.getCoverage(reader, values, false);
         assertNotNull(coverage);
 
+        // Check that we got the expected files as inputs to the coverage. It's a comma separated
+        // value, test it so that it won't fail even if the directories contain a comma inside them.
+        // Also ensure the other two files were not used
+        String fileLocation =
+                (String) coverage.getProperty(AbstractGridCoverage2DReader.FILE_SOURCE_PROPERTY);
+        assertThat(fileLocation, containsString("NCOM_wattemp_020_20081031T0000000_12.tiff,"));
+        assertThat(fileLocation, endsWith("NCOM_wattemp_100_20081031T0000000_12.tiff"));
+        assertThat(fileLocation, not(containsString("NCOM_wattemp_100_20081101T0000000_12.tiff")));
+        assertThat(fileLocation, not(containsString("NCOM_wattemp_020_20081101T0000000_12.tiff")));
+
         // inspect reanderedImage
         final RenderedImage image = coverage.getRenderedImage();
-        assertEquals("wrong number of bands detected", 1, image.getSampleModel().getNumBands());
+        assertEquals("wrong number of bands detected", 2, image.getSampleModel().getNumBands());
+
+        // grab a reference for the first band, and make sure the values are the same
+        GeneralParameterValue[] values20 = {
+            useJai, tileSize, time, dynamicParameter(reader, "depth", 20)
+        };
+        final GridCoverage2D coverage20 = TestUtils.getCoverage(reader, values20, false);
+        assertBandEqual(image, 0, coverage20.getRenderedImage());
+
+        // do the same for the second
+        GeneralParameterValue[] values100 = {
+            useJai, tileSize, time, dynamicParameter(reader, "depth", 100)
+        };
+        final GridCoverage2D coverage100 = TestUtils.getCoverage(reader, values20, false);
+        assertBandEqual(image, 1, coverage100.getRenderedImage());
 
         reader.dispose();
+    }
+
+    private void assertBandEqual(RenderedImage image, int band, RenderedImage expected) {
+        ImageWorker iw = new ImageWorker(image);
+        iw.retainBands(new int[] {band});
+        iw.subtract(expected);
+        double[] maximums = iw.getMaximums();
+        assertArrayEquals(new double[] {0}, maximums, 0d);
+    }
+
+    private GeneralParameterValue dynamicParameter(
+            ImageMosaicReader reader, String parameterName, Object parameterValue) {
+        // specify additional Dimensions
+        Set<ParameterDescriptor<List>> params = reader.getDynamicParameters();
+        ParameterValue<List<Object>> depthParam = null;
+        for (ParameterDescriptor param : params) {
+            if (param.getName().getCode().equalsIgnoreCase(parameterName)) {
+                depthParam = param.createValue();
+                depthParam.setValue(Arrays.asList(parameterValue));
+            }
+        }
+
+        return depthParam;
     }
 
     /**
@@ -2485,8 +2517,6 @@ public class ImageMosaicReaderTest extends Assert {
 
     /** Simple test method accessing time and 2 custom dimensions for the sample dataset */
     @Test
-    // @Ignore
-    @SuppressWarnings("rawtypes")
     public void multipleDimensionsStackedSar() throws Exception {
 
         final URL sourceURL = TestData.file(this, "merge").toURI().toURL();
@@ -2526,12 +2556,7 @@ public class ImageMosaicReaderTest extends Assert {
         final SimpleDateFormat formatD = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         formatD.setTimeZone(TimeZone.getTimeZone("GMT"));
         final Date timeD = formatD.parse("2012-01-01T00:00:00.000Z");
-        time.setValue(
-                new ArrayList() {
-                    {
-                        add(timeD);
-                    }
-                });
+        time.setValue(Arrays.asList(timeD));
 
         // specify additional Dimensions
         Set<ParameterDescriptor<List>> params = reader.getDynamicParameters();
@@ -2539,14 +2564,7 @@ public class ImageMosaicReaderTest extends Assert {
         for (ParameterDescriptor param : params) {
             if (param.getName().getCode().equalsIgnoreCase("POLARIZATION")) {
                 polariz = param.createValue();
-                polariz.setValue(
-                        new ArrayList<String>() {
-                            {
-                                add("HH");
-                                add("HV");
-                                add("VV");
-                            }
-                        });
+                polariz.setValue(Arrays.asList("HH", "HV", "VV"));
             }
         }
 
@@ -2554,16 +2572,51 @@ public class ImageMosaicReaderTest extends Assert {
         final ParameterValue<String> paramStacked = ImageMosaicFormat.MERGE_BEHAVIOR.createValue();
         paramStacked.setValue(MergeBehavior.STACK.toString());
 
+        // Ensure predictable order with a sort
+        final ParameterValue<String> sort = ImageMosaicFormat.SORT_BY.createValue();
+        sort.setValue("polarization A");
+
         // Test the output coverage
         GeneralParameterValue[] values =
-                new GeneralParameterValue[] {useJai, tileSize, time, polariz, paramStacked};
+                new GeneralParameterValue[] {useJai, tileSize, time, polariz, paramStacked, sort};
         final GridCoverage2D coverage = TestUtils.getCoverage(reader, values, false);
         assertNotNull(coverage);
+
+        // Check that we got the expected files as inputs to the coverage. It's a comma separated
+        // value, test it so that it won't fail even if the directories contain a comma inside them.
+        // Also ensure the other file was not used
+        String fileLocation =
+                (String) coverage.getProperty(AbstractGridCoverage2DReader.FILE_SOURCE_PROPERTY);
+        assertThat(fileLocation, containsString("imagery_HH_2012.tif,"));
+        assertThat(fileLocation, containsString("imagery_HV_2012.tif,"));
+        assertThat(fileLocation, endsWith("imagery_VV_2012.tif"));
+        assertThat(fileLocation, not(containsString("imagery_VH_2012.tif")));
 
         // inspect reanderedImage
         final RenderedImage image = coverage.getRenderedImage();
         assertEquals("wrong number of bands detected", 3, image.getSampleModel().getNumBands());
         assertEquals(DataBuffer.TYPE_SHORT, image.getSampleModel().getDataType());
+
+        // grab a reference for the first band, and make sure the values are the same
+        GeneralParameterValue[] valuesHH = {
+            useJai, tileSize, time, dynamicParameter(reader, "polarization", "HH")
+        };
+        final GridCoverage2D coverageHH = TestUtils.getCoverage(reader, valuesHH, false);
+        assertBandEqual(image, 0, coverageHH.getRenderedImage());
+
+        // do the same for the second
+        GeneralParameterValue[] valuesHV = {
+            useJai, tileSize, time, dynamicParameter(reader, "polarization", "HV")
+        };
+        final GridCoverage2D coverageHV = TestUtils.getCoverage(reader, valuesHV, false);
+        assertBandEqual(image, 1, coverageHV.getRenderedImage());
+
+        // do the same for the third
+        GeneralParameterValue[] valuesVV = {
+            useJai, tileSize, time, dynamicParameter(reader, "polarization", "VV")
+        };
+        final GridCoverage2D coverageVV = TestUtils.getCoverage(reader, valuesVV, false);
+        assertBandEqual(image, 2, coverageVV.getRenderedImage());
 
         reader.dispose();
     }

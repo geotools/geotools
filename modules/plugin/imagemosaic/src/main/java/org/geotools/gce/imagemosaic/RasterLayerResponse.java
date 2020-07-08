@@ -23,10 +23,7 @@ import it.geosolutions.jaiext.range.NoDataContainer;
 import it.geosolutions.jaiext.range.Range;
 import it.geosolutions.jaiext.range.RangeFactory;
 import it.geosolutions.jaiext.utilities.ImageLayout2;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.color.ColorSpace;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
@@ -1349,6 +1346,16 @@ public class RasterLayerResponse {
 
     public void setGranulesPaths(String granulesPaths) {
         this.granulesPaths = granulesPaths;
+    }
+
+    public void addGranulePaths(String granulesPaths) {
+        if (granulesPaths == null) return;
+
+        if (this.granulesPaths == null || this.granulesPaths.isEmpty()) {
+            this.granulesPaths = granulesPaths;
+        } else if (!granulesPaths.isEmpty()) {
+            this.granulesPaths += "," + granulesPaths;
+        }
     }
 
     /** See {@link GridCoverage2DReader#SOURCE_URL_PROPERTY}. */

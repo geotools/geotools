@@ -7,6 +7,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
 
@@ -40,7 +41,7 @@ public class JTSUtilitiesTest {
 
         LinearRing after = JTSUtilities.reverseRing(before);
 
-        assertTrue(after.equalsTopo(before.reverse()));
+        assertTrue(after.equalsTopo(((Geometry) before).reverse()));
 
         assertEquals(after.getCoordinateN(0), coordinates[3]);
         assertEquals(after.getCoordinateN(1), coordinates[2]);

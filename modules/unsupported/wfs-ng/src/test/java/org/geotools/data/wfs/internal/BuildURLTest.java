@@ -19,6 +19,7 @@ package org.geotools.data.wfs.internal;
 
 import static org.junit.Assert.*;
 
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.Test;
@@ -28,7 +29,8 @@ public class BuildURLTest {
     @Test
     public void testSimpleKvp() {
 
-        String url = URIs.buildURL("http://www.google.com", "/q", buildMap("hello", "world"));
+        String url =
+                URIs.buildURL("http://www.google.com", "/q", buildMap("hello", "world"), "UTF-8");
 
         assertEquals("http://www.google.com/q?hello=world", url);
     }
@@ -36,7 +38,8 @@ public class BuildURLTest {
     @Test
     public void testKvpNoPath() {
 
-        String url = URIs.buildURL("http://www.google.com/q", null, buildMap("hello", "world"));
+        String url =
+                URIs.buildURL("http://www.google.com/q", null, buildMap("hello", "world"), "UTF-8");
 
         assertEquals("http://www.google.com/q?hello=world", url);
     }
@@ -56,7 +59,9 @@ public class BuildURLTest {
     public void testParamUrlEncodingAndDecoding() {
         String decoded = "ænd,øst,nøj";
         String encoded = "%C3%A6nd%2C%C3%B8st%2Cn%C3%B8j";
-        assertEquals(encoded, URIs.urlEncode(decoded));
+        assertEquals(encoded, URIs.urlEncode(decoded, "UTF-8"));
         assertEquals(decoded, URIs.urlDecode(encoded));
+        // GEOT-6654 - show work with system default
+        assertEquals(encoded, URIs.urlEncode(decoded, Charset.defaultCharset().name()));
     }
 }

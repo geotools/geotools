@@ -925,8 +925,7 @@ public class GeoPackage implements Closeable {
 
     void addGeoPackageContentsEntry(Entry e, Connection cx) throws IOException {
         try {
-            final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_STRING);
-            DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
+            final SimpleDateFormat dateFormat = getDateFormat();
             if (!initialised) {
                 init(cx);
             }
@@ -974,7 +973,7 @@ public class GeoPackage implements Closeable {
             }
 
             if (e.getLastChange() != null) {
-                psb.set(DATE_FORMAT.format(e.getLastChange()));
+                psb.set(dateFormat.format(e.getLastChange()));
             }
             if (e.getBounds() != null) {
                 psb.set(e.getBounds().getMinX())
@@ -1014,6 +1013,13 @@ public class GeoPackage implements Closeable {
         } catch (Exception ex) {
             throw new IOException(ex);
         }
+    }
+
+    /** Returns a new instance of SimpleDateFormat with the default GeoPackage ISO formatting */
+    public static SimpleDateFormat getDateFormat() {
+        final SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_STRING);
+        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        return dateFormat;
     }
 
     void deleteGeoPackageContentsEntry(Entry e) throws IOException {
@@ -1716,11 +1722,8 @@ public class GeoPackage implements Closeable {
         e.setDescription(rs.getString("description"));
         e.setTableName(rs.getString("table_name"));
         try {
-            final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_STRING);
-
-            DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
-
-            e.setLastChange(DATE_FORMAT.parse(rs.getString("last_change")));
+            final SimpleDateFormat dateFormat = getDateFormat();
+            e.setLastChange(dateFormat.parse(rs.getString("last_change")));
         } catch (ParseException ex) {
             throw new IOException(ex);
         }

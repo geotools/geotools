@@ -36,6 +36,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -993,5 +994,96 @@ public class GeoPackageTest {
         assertEquals(Short.MAX_VALUE, read.getAttribute("n_short"));
         assertEquals(Integer.MAX_VALUE, read.getAttribute("n_int"));
         assertEquals(Long.MAX_VALUE, read.getAttribute("n_long"));
+    }
+
+    @Test
+    public void testMetadata() throws Exception {
+        // create a geopacakge from a shapefile
+        ShapefileDataStore shp = new ShapefileDataStore(setUpShapefile());
+        FeatureEntry entry = new FeatureEntry();
+        geopkg.add(entry, shp.getFeatureSource(), null);
+        assertTableExists("bugsites");
+
+        // grab the metadata extension, check it's initially empty
+        GeoPkgMetadataExtension ext = geopkg.getExtension(GeoPkgMetadataExtension.class);
+        assertEquals(Collections.emptyList(), ext.getMetadatas());
+
+        // add metadata
+        GeoPkgMetadata metadata =
+                new GeoPkgMetadata(
+                        GeoPkgMetadata.Scope.Dataset,
+                        "http://geotools.org/geopackage",
+                        "application/json",
+                        "{ \"metadata\" : \"on\"");
+        ext.addMetadata(metadata);
+        assertNotNull(metadata.getId());
+
+        // fetch it
+        List<GeoPkgMetadata> metadatas = ext.getMetadatas();
+        assertEquals(1, metadatas.size());
+        GeoPkgMetadata readMetadata = metadatas.get(0);
+        assertEquals(metadata, readMetadata);
+
+        // update it
+        metadata.setMetadata("{ \"metadata\" : \"updated\"");
+        ext.updateMetadata(metadata);
+        GeoPkgMetadata updatedMetadata = ext.getMetadatas().get(0);
+        assertEquals(metadata, updatedMetadata);
+
+        // clean up
+        ext.removeMetadata(metadata);
+        assertEquals(0, ext.getMetadatas().size());
+    }
+
+    @Test
+    public void testMetadataReferences() throws Exception {
+        // create a geopacakge from a shapefile
+        ShapefileDataStore shp = new ShapefileDataStore(setUpShapefile());
+        FeatureEntry entry = new FeatureEntry();
+        geopkg.add(entry, shp.getFeatureSource(), null);
+        assertTableExists("bugsites");
+
+        // grab the metadata extension and add a couple of metadata entries
+        GeoPkgMetadataExtension ext = geopkg.getExtension(GeoPkgMetadataExtension.class);
+        GeoPkgMetadata metadata =
+                new GeoPkgMetadata(
+                        GeoPkgMetadata.Scope.Dataset,
+                        "http://geotools.org/geopackage",
+                        "application/json",
+                        "{ \"metadata\" : \"on\"");
+        ext.addMetadata(metadata);
+        GeoPkgMetadata parentMetadata =
+                new GeoPkgMetadata(
+                        GeoPkgMetadata.Scope.Dataset,
+                        "http://geotools.org/geopackage",
+                        "application/json",
+                        "{ \"metadata\" : \"theBoss\"");
+        ext.addMetadata(parentMetadata);
+
+        // create references
+        GeoPkgMetadataReference reference =
+                new GeoPkgMetadataReference(
+                        GeoPkgMetadataReference.Scope.Table,
+                        "bugsites",
+                        null,
+                        null,
+                        new Date(),
+                        metadata,
+                        parentMetadata);
+        ext.addReference(reference);
+        List<GeoPkgMetadataReference> references = ext.getReferences(metadata);
+        assertEquals(1, references.size());
+        GeoPkgMetadataReference readReference = references.get(0);
+        assertEquals(reference, readReference);
+
+        // update references
+        reference.setColumn("cat");
+        ext.updateReference(reference);
+        GeoPkgMetadataReference updatedReference = ext.getReferences(metadata).get(0);
+        assertEquals(reference, updatedReference);
+
+        // clean up
+        ext.removeReference(reference);
+        assertEquals(0, ext.getReferences(metadata).size());
     }
 }

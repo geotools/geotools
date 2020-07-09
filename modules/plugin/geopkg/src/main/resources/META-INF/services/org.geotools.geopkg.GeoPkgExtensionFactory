@@ -1,1 +1,2 @@
 org.geotools.geopkg.GeoPkgSchemaExtension$Factory
+org.geotools.geopkg.GeoPkgMetadataExtension$Factory

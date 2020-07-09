@@ -257,12 +257,22 @@ public class CommonsConverterFactory implements ConverterFactory {
                 URL parsed = new URL(string);
                 return target.cast(parsed);
             } catch (Exception e) {
+                // try to fetch a data protocol URL, or return null
+                return tryGetDataURL(string, target);
+            }
+        }
+
+        private <T> T tryGetDataURL(String string, Class<T> target) {
+            // check if it's a data protocol URL
+            if (string.startsWith(DataUrlConnection.DATA_PREFIX)) {
                 try {
                     URL parsed = new URL(null, string, new DataUrlHandler());
                     return target.cast(parsed);
                 } catch (Exception e2) {
                     return null;
                 }
+            } else {
+                return null;
             }
         }
     }

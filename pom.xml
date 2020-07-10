@@ -1603,11 +1603,6 @@
         <artifactId>jackson-annotations</artifactId>
         <version>${jackson2.version}</version>
       </dependency>
-      <dependency>
-        <groupId>no.ecc.vectortile</groupId>
-        <artifactId>java-vector-tile</artifactId>
-        <version>1.3.9</version>
-      </dependency>
     </dependencies>
   </dependencyManagement>
 

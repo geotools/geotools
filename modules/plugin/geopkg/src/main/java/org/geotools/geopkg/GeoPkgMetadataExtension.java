@@ -76,7 +76,7 @@ public class GeoPkgMetadataExtension extends GeoPkgExtension {
      *
      * @throws SQLException
      */
-    List<GeoPkgMetadata> getMetadatas() throws SQLException {
+    public List<GeoPkgMetadata> getMetadatas() throws SQLException {
         try (Connection cx = getConnection()) {
 
             if (!isRegistered(cx)) {
@@ -95,7 +95,7 @@ public class GeoPkgMetadataExtension extends GeoPkgExtension {
     }
 
     /** Returns a {@link GeoPkgMetadata} with the given identifier */
-    GeoPkgMetadata getMetadata(Long id) throws SQLException {
+    public GeoPkgMetadata getMetadata(Long id) throws SQLException {
         if (id == null) return null;
         try (Connection cx = getConnection()) {
             String sql = format("SELECT * FROM %s where id = ?", METADATA);

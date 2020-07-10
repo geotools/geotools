@@ -329,6 +329,28 @@ public class PostGISJsonOnlineTest extends JDBCTestSupport {
         }
     }
 
+    public void testJSONPointerFunctionLike() throws Exception {
+        ContentFeatureSource fs = dataStore.getFeatureSource(tname("jsontest"));
+        FilterFactory ff = dataStore.getFilterFactory();
+        Function pointer =
+                ff.function(
+                        "jsonPointer",
+                        ff.property("jsonColumn"),
+                        ff.literal("/nestedObj/nestedProp"));
+        Filter filter = ff.like(pointer, "%Value");
+        Query q = new Query(tname("jsontest"), filter);
+        FeatureCollection collection = fs.getFeatures(q);
+        try (FeatureIterator it = collection.features()) {
+            int size = 0;
+            while (it.hasNext()) {
+                Feature f = it.next();
+                assertEquals(pointer.evaluate(f), "stringValue");
+                size++;
+            }
+            assertEquals(2, size);
+        }
+    }
+
     private SimpleFeature getSingleFeatureByName(String name) throws IOException {
         ContentFeatureSource fs = dataStore.getFeatureSource(tname("jsontest"));
         FilterFactory ff = dataStore.getFilterFactory();

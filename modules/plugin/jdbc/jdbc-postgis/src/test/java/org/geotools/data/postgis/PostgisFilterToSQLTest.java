@@ -273,4 +273,17 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
         String sql = writer.toString().toLowerCase().trim();
         assertEquals("where (testjson ::json  -> 'arr' ->> 0)::integer < 3", sql);
     }
+
+    @Test
+    public void testLikeWithJsonPointer() throws Exception {
+        // test that encoding not fails with NPE for LIKE
+        // when is specified an expression as parameter with Object as return type
+        filterToSql.setFeatureType(testSchema);
+        Function pointer =
+                ff.function("jsonPointer", ff.property("testJSON"), ff.literal("/arr/0"));
+        Filter like = ff.like(pointer, "a_literal", "%", "-", "\\", true);
+        filterToSql.encode(like);
+        String sql = writer.toString().toLowerCase().trim();
+        assertEquals("where testjson ::json  -> 'arr' ->> 0 like 'a_literal'", sql);
+    }
 }

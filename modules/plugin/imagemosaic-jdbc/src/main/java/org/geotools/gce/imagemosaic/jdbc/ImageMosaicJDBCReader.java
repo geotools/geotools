@@ -421,11 +421,7 @@ public class ImageMosaicJDBCReader extends AbstractGridCoverage2DReader {
         state.setRequestedEnvelopeTransformedExpanded(expanded);
     }
 
-    /**
-     * @param backgroundColor the background color
-     * @param outputTransparentColor the transparent color
-     * @return the gridcoverage as the final result
-     */
+    /** @return the gridcoverage as the final result */
     @SuppressFBWarnings("NP_NULL_PARAM_DEREF") // pixelDimension gets into the ImageComposerThread
     // and is eventually dereferenced by some call to base constructor. Verified the bug is here,
     // just don't know how to fix it

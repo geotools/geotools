@@ -60,7 +60,6 @@
     <module>imagemosaic</module>
     <module>imageio-ext-gdal</module>
     <module>imagepyramid</module>
-    <module>imagemosaic-jdbc</module>
     <module>jdbc</module>
     <module>jp2k</module>
     <module>mongodb</module>

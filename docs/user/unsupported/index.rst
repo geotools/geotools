@@ -27,6 +27,9 @@ Research and Development:
    wps
    gtopo30
    sample
+   imagemosaic-jdbc/index
+   imagemosaic-jdbc/pgraster
+   imagemosaic-jdbc/oracle-raster
 
 Unsupported DataStore implementations:
 
@@ -43,6 +46,9 @@ Unsupported Raster modules:
 * :doc:`/library/coverage/matlab`
 * :doc:`/library/coverage/multidim` - New plugins supporting NetCDF and Grib formats
 * :doc:`/library/coverage/arcsde` (Inactive) Support for consuming rasters from an ArcSDE gateway service, versions 10.2/10.3
+* :doc:`/unsupported/imagemosaic-jdbc/index` Support for rasters stored in relational databases
+* :doc:`/unsupported/imagemosaic-jdbc/pgraster` Support for rasters stored in PostGIS, based on the imagemosaic-jdbc plugin
+* :doc:`/unsupported/imagemosaic-jdbc/oracle` Support for rasters stored in Oracle, based on the imagemsaoic-jdbc plugin
 * :doc:`/library/coverage/tools`
 
 Unsupported Referencing implementations:

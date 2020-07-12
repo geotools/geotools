@@ -22,9 +22,7 @@ import org.geotools.data.Query;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.FeatureIterator;
-import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
@@ -102,8 +100,6 @@ public class GeoJSONFeatureSource extends ContentFeatureSource {
 
     @Override
     protected SimpleFeatureType buildFeatureType() throws IOException {
-        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
-        builder.setName(entry.getName());
 
         // read headers
 
@@ -127,11 +123,6 @@ public class GeoJSONFeatureSource extends ContentFeatureSource {
                     return schema;
                 }
             }
-            // we are going to hard code a point location
-            // columns like lat and lon will be gathered into a
-            // Point called Location
-            builder.setCRS(DefaultGeographicCRS.WGS84); // <- Coordinate reference
-            // system
 
             return schema;
         }

@@ -30,10 +30,33 @@ import org.geotools.data.FileDataStore;
 import org.geotools.data.FileDataStoreFactorySpi;
 import org.geotools.util.KVP;
 import org.geotools.util.URLs;
+import org.geotools.util.UnsupportedImplementationException;
 
 public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
 
     private static final String[] EXTENSIONS = new String[] {"geojson", "json", "gjson"};
+    private Boolean isAvailable;
+
+    /** Parameter description of information required to connect */
+    public static final Param FILE_PARAM =
+            new Param(
+                    "file", File.class, "GeoJSON file", false, null, new KVP(Param.EXT, "geojson"));
+
+    public static final Param URL_PARAM =
+            new Param("url", URL.class, "GeoJSON URL", false, null, new KVP(Param.EXT, "geojson"));
+
+    public static final Param WRITE_BOUNDS =
+            new Param(
+                    "bounds",
+                    Boolean.class,
+                    "Should a bounding box be written out if available",
+                    false);
+    public static final Param QUICK_SCHEMA =
+            new Param(
+                    "quick",
+                    Boolean.class,
+                    "Should the schema be described by the first element of the collection (Default true)",
+                    false);
 
     public GeoJSONDataStoreFactory() {
         // TODO Auto-generated constructor stub
@@ -62,11 +85,22 @@ public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
         if (url == null && file == null) {
             throw new IOException("No file or url parameter provided");
         }
+        GeoJSONDataStore ret;
         if (file != null) {
-            return new GeoJSONDataStore(file);
+            ret = new GeoJSONDataStore(file);
         } else {
-            return new GeoJSONDataStore(url);
+            ret = new GeoJSONDataStore(url);
         }
+
+        Boolean bounds = (Boolean) WRITE_BOUNDS.lookUp(params);
+        if (bounds != null) {
+            ret.setWriteBounds(bounds.booleanValue());
+        }
+        Boolean quick = (Boolean) QUICK_SCHEMA.lookUp(params);
+        if (quick != null) {
+            ret.setQuickSchema(quick.booleanValue());
+        }
+        return ret;
     }
 
     @Override
@@ -79,17 +113,26 @@ public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
         if (url != null && "file".equalsIgnoreCase(url.getProtocol())) {
             file = URLs.urlToFile(url);
         }
+        GeoJSONDataStore ret;
         if (file != null) {
             if (!file.exists()) {
                 file.createNewFile();
             }
-            return new GeoJSONDataStore(file);
+            ret = new GeoJSONDataStore(file);
         } else {
-            return new GeoJSONDataStore(url);
+            ret = new GeoJSONDataStore(url);
         }
-    }
 
-    Boolean isAvailable;
+        Boolean bounds = (Boolean) WRITE_BOUNDS.lookUp(params);
+        if (bounds != null) {
+            ret.setWriteBounds(bounds.booleanValue());
+        }
+        Boolean quick = (Boolean) QUICK_SCHEMA.lookUp(params);
+        if (quick != null) {
+            ret.setQuickSchema(quick.booleanValue());
+        }
+        return ret;
+    }
 
     @Override
     public synchronized boolean isAvailable() {
@@ -107,14 +150,6 @@ public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
         }
         return isAvailable;
     }
-
-    /** Parameter description of information required to connect */
-    public static final Param FILE_PARAM =
-            new Param(
-                    "file", File.class, "GeoJSON file", false, null, new KVP(Param.EXT, "geojson"));
-
-    public static final Param URL_PARAM =
-            new Param("url", URL.class, "GeoJSON URL", false, null, new KVP(Param.EXT, "geojson"));
 
     @Override
     public Param[] getParametersInfo() {
@@ -159,14 +194,12 @@ public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
 
     @Override
     public boolean canProcess(URL url) {
-        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     public FileDataStore createDataStore(URL url) throws IOException {
-        // TODO Auto-generated method stub
-        return null;
+        throw new UnsupportedImplementationException("Can't create a new URL based store");
     }
 
     @Override

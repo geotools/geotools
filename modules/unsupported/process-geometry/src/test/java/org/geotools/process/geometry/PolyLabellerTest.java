@@ -18,15 +18,7 @@
 
 package org.geotools.process.geometry;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
 import junit.framework.TestCase;
-import org.geotools.geojson.geom.GeometryJSON;
 import org.geotools.geometry.jts.GeometryBuilder;
 import org.junit.Test;
 import org.locationtech.jts.geom.MultiPolygon;
@@ -120,36 +112,5 @@ public class PolyLabellerTest extends TestCase {
         } catch (IllegalStateException e) {
             // this is good.
         }
-    }
-    /*
-     * @Ignore @Test //awaiting valid data set public void testGetPolylabel() throws FileNotFoundException, IOException { File water1 =
-     * TestData.file(this, "water1.json"); Polygon p = fetchPoly(water1); Coordinate expected = new Coordinate(3865.85009765625, 2124.87841796875);
-     * Coordinate c = PolyLabeller.getPolylabel(p, 1); double delta = 0.0001; assertEquals(expected.x, c.x, delta); assertEquals(expected.y, c.y,
-     * delta); }
-     *
-     * @Ignore @Test //awaiting valid data set public void testGetPolylabelPrecision() throws FileNotFoundException, IOException { File water1 =
-     * TestData.file(this, "water1.json"); Polygon p = fetchPoly(water1); Coordinate expected = new Coordinate(3854.296875, 2123.828125); Coordinate c
-     * = PolyLabeller.getPolylabel(p, 50); double delta = 0.0001; assertEquals(expected.x, c.x, delta); assertEquals(expected.y, c.y, delta); }
-     *
-     * @Ignore @Test //awaiting valid data set public void testGetPolylabel2() throws FileNotFoundException, IOException { File water2 =
-     * TestData.file(this, "water2.json"); Polygon p = fetchPoly(water2); Coordinate expected = new Coordinate(3263.5, 3263.5); Coordinate c =
-     * PolyLabeller.getPolylabel(p, 1); double delta = 0.0001; assertEquals(expected.x, c.x, delta); assertEquals(expected.y, c.y, delta); }
-     */
-
-    /** */
-    private Polygon fetchPoly(File file) throws IOException, FileNotFoundException {
-        GeometryJSON gjson = new GeometryJSON();
-
-        StringBuilder sb = new StringBuilder();
-        try (BufferedReader breader = new BufferedReader(new FileReader(file))) {
-            String line = "";
-            while ((line = breader.readLine()) != null) {
-                sb.append(line.replaceAll("\\s+", ""));
-            }
-        }
-        Reader reader = new StringReader(sb.toString());
-        Polygon p = gjson.readPolygon(reader);
-        // System.out.println(p);
-        return p;
     }
 }

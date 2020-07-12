@@ -431,9 +431,9 @@ public class DbaseFileReader implements FileReader, Closeable {
             final char deleted = (char) buffer.get();
             row.deleted = deleted == '*';
 
-            buffer.limit(buffer.position() + header.getRecordLength() - 1);
+            ((Buffer) buffer).limit(buffer.position() + header.getRecordLength() - 1);
             buffer.get(bytes); // SK: There is a side-effect here!!!
-            buffer.limit(buffer.capacity());
+            ((Buffer) buffer).limit(buffer.capacity());
 
             foundRecord = true;
         }

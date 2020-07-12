@@ -572,7 +572,7 @@ public class DbaseFileHeader {
                 NIOUtilities.clean(in, false);
                 in = NIOUtilities.allocate(headerLength - 10);
             }
-            in.limit(headerLength - 10);
+            ((Buffer) in).limit(headerLength - 10);
             in.position(0);
             read(in, channel);
             in.position(0);

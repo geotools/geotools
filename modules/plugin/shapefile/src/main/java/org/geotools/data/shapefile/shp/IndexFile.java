@@ -168,7 +168,7 @@ public class IndexFile implements FileReader {
             }
         }
 
-        buf.position(pos - this.channelOffset);
+        ((Buffer) buf).position(pos - this.channelOffset);
         this.recOffset = buf.getInt();
         this.recLen = buf.getInt();
         this.lastIndex = index;

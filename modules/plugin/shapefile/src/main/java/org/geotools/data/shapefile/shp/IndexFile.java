@@ -17,6 +17,7 @@
 package org.geotools.data.shapefile.shp;
 
 import java.io.IOException;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
@@ -65,13 +66,13 @@ public class IndexFile implements FileReader {
      * @param shpFiles The channel to read from.
      * @throws IOException If an error occurs.
      */
+    @SuppressWarnings("PMD.CloseResource") // file channel managed as a resource
     public IndexFile(ShpFiles shpFiles, boolean useMemoryMappedBuffer) throws IOException {
         this.useMemoryMappedBuffer = useMemoryMappedBuffer;
         streamLogger.open();
         ReadableByteChannel byteChannel = shpFiles.getReadChannel(ShpFileType.SHX, this);
         try {
             if (byteChannel instanceof FileChannel) {
-
                 this.channel = (FileChannel) byteChannel;
                 if (useMemoryMappedBuffer) {
                     LOGGER.finest("Memory mapping file...");
@@ -83,7 +84,7 @@ public class IndexFile implements FileReader {
                     LOGGER.finest("Reading from file...");
                     this.buf = NIOUtilities.allocate(8 * RECS_IN_BUFFER);
                     channel.read(buf);
-                    buf.flip();
+                    ((Buffer) buf).flip();
                     this.channelOffset = 0;
                 }
 
@@ -161,13 +162,13 @@ public class IndexFile implements FileReader {
                 LOGGER.finest("Filling buffer...");
                 this.channelOffset = pos;
                 this.channel.position(pos);
-                buf.clear();
+                ((Buffer) buf).clear();
                 this.channel.read(buf);
-                buf.flip();
+                ((Buffer) buf).flip();
             }
         }
 
-        buf.position(pos - this.channelOffset);
+        ((Buffer) buf).position(pos - this.channelOffset);
         this.recOffset = buf.getInt();
         this.recLen = buf.getInt();
         this.lastIndex = index;
@@ -207,7 +208,6 @@ public class IndexFile implements FileReader {
      *
      * @param index The index, from 0 to getRecordCount - 1
      * @return The offset in 16-bit words.
-     * @throws IOException
      */
     public int getOffset(int index) throws IOException {
         int ret = -1;
@@ -230,7 +230,6 @@ public class IndexFile implements FileReader {
      *
      * @param index The index, from 0 to getRecordCount - 1
      * @return The offset in bytes.
-     * @throws IOException
      */
     public int getOffsetInBytes(int index) throws IOException {
         return this.getOffset(index) * 2;
@@ -241,7 +240,6 @@ public class IndexFile implements FileReader {
      *
      * @param index The index, from 0 to getRecordCount - 1
      * @return The lengh in bytes of the record.
-     * @throws IOException
      */
     public int getContentLength(int index) throws IOException {
         int ret = -1;

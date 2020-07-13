@@ -666,11 +666,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
     protected abstract Set generateFromCoordinateReferenceSystemCodes(
             String sourceCode, String targetCode) throws FactoryException;
 
-    /**
-     * We will clear out our cache and factories reference
-     *
-     * @throws FactoryException
-     */
+    /** We will clear out our cache and factories reference */
     public void dispose() throws FactoryException {
         this.cache = null;
         this.factories = null;

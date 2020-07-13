@@ -1,7 +1,7 @@
 Geometry
 --------
 
-XML Documents come in two parts an XSD file representing the FeatureType; and an XML file with the actual features.
+XML Documents come in two parts an XSD file representing the ``FeatureType``; and an XML file with the actual features.
 
 Here is what that looks like with a simple example:
 
@@ -26,10 +26,10 @@ While the GML utility class is useful; you may find the need to go under the hoo
 
 As indicated the utility class is set up to work with the following versions:
 
-* GML_2
-* GML_3
-* WFS1_0
-* WFS1_1
+* ``GML_2``
+* ``GML_3``
+* ``WFS1_0``
+* ``WFS1_1``
 
 The examples on this page will start off with the use of the GML class where appropriate.
 
@@ -39,7 +39,7 @@ GML2 Encoding
 Schema
 ''''''
 
-Encoding FeatureType into an XSD file::
+Encoding ``FeatureType`` into an XSD file::
   
   SimpleFeatureType TYPE = DataUtilities.createType("Location", "geom:Point,name:String");
   
@@ -47,20 +47,21 @@ Encoding FeatureType into an XSD file::
   encode.setBaseURL(new URL("http://localhost/"));
   encode.encode(out, TYPE);
 
-This writes out an XSD file for the FeatureType and can be combined with the WFS 1.0 XSD file when writing feature collections.
+This writes out an XSD file for the ``FeatureType`` and can be combined with the WFS 1.0 XSD file when writing feature collections.
 
 FeatureCollection
 '''''''''''''''''
 
-To write out a SimpleFeatureCollection to match::
+To write out a ``SimpleFeatureCollection``
+to match::
   
   GML encode = new GML(Version.WFS1_0);
   encode.setNamespace("geotools", "http://geotools.org");
   encode.encode(out, featureCollection);
 
-The namespace refers to the XSD file generated earlier (or any other XSD file you happen to have). The contents of the FeatureCollection are written out as is; and you may get a failure if their name does not match up with the XSD file.
+The namespace refers to the XSD file generated earlier (or any other XSD file you happen to have). The contents of the ``FeatureCollection`` are written out as is; and you may get a failure if their name does not match up with the XSD file.
 
-In this case we needed to use WFS1_1 when writing out our features (as GML2 does not provide the concept of a feature collection on its own). If you have your own custom schema that extends GML2 AbstractFeatureCollection you can use the parser technologies directly in order to read/write the content (it is not something we have added to this GML utility class yet).
+In this case we needed to use ``WFS1_1`` when writing out our features (as ``GML2`` does not provide the concept of a feature collection on its own). If you have your own custom schema that extends ``GML2`` ``AbstractFeatureCollection`` you can use the parser technologies directly in order to read/write the content (it is not something we have added to this GML utility class yet).
 
 GML2 Encoding Example
 '''''''''''''''''''''
@@ -105,7 +106,7 @@ Here is a complete example::
 WFS1.0 Encoding
 '''''''''''''''
 
-The Web Feature Server 1.0 specification extends GML2. You can work with this format using the GML Utility class.::
+The Web Feature Server 1.0 specification extends ``GML2``. You can work with this format using the GML Utility class.::
 
         GML encode = new GML(Version.WFS1_0);
         encode.setNamespace("geotools", "http://geotools.org");
@@ -114,7 +115,7 @@ The Web Feature Server 1.0 specification extends GML2. You can work with this fo
 FeatureTransformer
 ''''''''''''''''''
 
-You can read how to use FeatureTransformer directly; however we also provide
+You can read how to use ``FeatureTransformer`` directly; however we also provide
 access to this class using the GML Utility class::
   
   GML encode = new GML(Version.GML2);
@@ -122,9 +123,9 @@ access to this class using the GML Utility class::
   encode.setLegacy(true);
   encode.encode(out, collection);
 
-This method depends on you doing everything exactly right as it blindly writes out a document referring to an XSD file that may or may not exist. It is a good choice when encoding content against a WFS DescribeFeatureType URL for example.
+This method depends on you doing everything exactly right as it blindly writes out a document referring to an XSD file that may or may not exist. It is a good choice when encoding content against a WFS ``DescribeFeatureType`` URL for example.
 
-Internally you can use the GMLTransform code directly for greater control
+Internally you can use the ``GMLTransform`` code directly for greater control
 over this process:
 
 .. literalinclude:: /../src/main/java/org/geotools/xml/GMLExamples.java
@@ -141,29 +142,29 @@ Notes:
 * Application Schema
   
   There is no such thing as a "GML" document; you need to created your own XML
-  Schema. Your XML Schema will extend GML concepts like AbstractFeature and define
+  Schema. Your XML Schema will extend GML concepts like ``AbstractFeature`` and define
   specific concepts from your application - like ROAD, RIVER, CITY etc...
   
   This line is where you tell the Transform about your XML Schema::
    
    ft.getFeatureNamesapces().declarePrefix("myns","http://somewhere.org");
   
-  The "myns" prefix is supposed to line up with an XML Schema document which you
+  The ``myns`` prefix is supposed to line up with an XML Schema document which you
   have defined to describe your document.
 
-* SRS
+* ``SRS``
   
-  Internally in GeoTools we use real CoordinateReferenceSystem instances to record
-  what the numbers mean. In GML they use a simple string called "SRS" (ie Spatial
+  Internally in GeoTools we use real ``CoordinateReferenceSystem`` instances to record
+  what the numbers mean. In GML they use a simple string called ``SRS`` (i.e. Spatial
   Reference System).::
     
     transform.setSrsName( "EPSG:4326" );
   
-  The CRS utility class has a method that can help you determine a good srsName::
+  The CRS utility class has a method that can help you determine a good ``srsName``::
     
     String srsName = CRS.toSRS(schema.getCoordinateReferenceSystem();
 
-We also have an email from foerster@itc.nl with an example:
+We also have an email from ``foerster@itc.nl`` with an example:
 
 .. literalinclude:: /../src/main/java/org/geotools/xml/GMLExamples.java
    :language: java
@@ -184,7 +185,7 @@ You can parse the XSD document (useful when you want to make additional features
   Name typeName = new NameImpl("http://www.openplans.org/topp", "states");
   SimpleFeatureType featureType = gml.decodeSimpleFeatureType(schemaLocation, typeName );
 
-XSD files can have more then one entry; so you need to explicitly ask for the one you want. We also need to know the CoordinateReferenceSystem of the content.
+XSD files can have more then one entry; so you need to explicitly ask for the one you want. We also need to know the ``CoordinateReferenceSystem`` of the content.
 
 You can make use of Configuration and the GTXML class to directly read out the schema information:
 
@@ -203,7 +204,7 @@ Here is a slightly more involved example using a custom configuration:
 FeatureCollection
 '''''''''''''''''
 
-You can parse out a FeatureCollection in one gulp::
+You can parse out a ``FeatureCollection`` in one gulp::
   
    GML gml = new GML(Version.WFS1_0);
    SimpleFeatureCollection featureCollection = gml.decodeFeatureCollection(in);
@@ -233,27 +234,27 @@ SAX
 
 An alternative to the GML utility class is to directly handle the SAX events yourself.
 
-If you have an existing SAX based parser you can make use of **ContentHandlers** defined by GeoTools in order to feed Geometries into your own parser.
+If you have an existing SAX based parser you can make use of ``ContentHandlers`` defined by GeoTools in order to feed Geometries into your own parser.
 
-* GMLHandlerJTS
-* GMLHandlerGeometry
-* GMLHandlerFeature
+* ``GMLHandlerJTS``
+* ``GMLHandlerGeometry``
+* ``GMLHandlerFeature``
 
-To make matters exciting the **ContentHandler** classes are defined at different "levels" for GML.
+To make matters exciting the ``ContentHandler`` classes are defined at different "levels" for GML.
 
-===== ================= =================== ===================================
-Level Interface         Implementation      Description
-===== ================= =================== ===================================
-1     (raw sax)         GMLFilterDocument   Alerts for GML types
-2     GMLHandlerJTS     GMLHandlerGeometry  GML events into OGC simple types
-3     GMLHandlerFeature (your code)         Implement accept parsed features.
-===== ================= =================== ===================================
+===== ===================== ======================= ===================================
+Level Interface             Implementation          Description
+===== ===================== ======================= ===================================
+1     (raw sax)             ``GMLFilterDocument``   Alerts for GML types
+2     ``GMLHandlerJTS``     ``GMLHandlerGeometry``  GML events into OGC simple types
+3     ``GMLHandlerFeature`` (your code)             Implement accept parsed features.
+===== ===================== ======================= ===================================
 
 Here is what this looks like in the context of your own code.
 
 .. image:: /images/gml_sax.PNG
 
-You can see that in order to use literal JTS Geometries the SAX Filter parser will need to implement GMLHandlerFeature:
+You can see that in order to use literal JTS Geometries the SAX Filter parser will need to implement ``GMLHandlerFeature``:
 
 .. literalinclude:: /../src/main/java/org/geotools/xml/YourCode.java
    :language: java
@@ -334,8 +335,8 @@ XML file formats are defined using XSD files such as the following::
 
 The above file defines two new ideas:
 
-* TestFeatureType - it extends the AbstractFeatureType idea from GML
-* TestFeatureCollectionType - it extends the AbstractFeatureCollectionType from GML
+* ``TestFeatureType`` - it extends the ``AbstractFeatureType`` idea from GML
+* ``TestFeatureCollectionType`` - it extends the ``AbstractFeatureCollectionType`` from GML
 
 Here is what that looks like as a UML diagram:
 
@@ -344,7 +345,7 @@ Here is what that looks like as a UML diagram:
 .. note::
    
    While we cannot parse a GML2 document - nobody can! Since GML2 documents do not exist as a
-   file format. The parser is able to parse an XML file defined by test.xsd above.
+   file format. The parser is able to parse an XML file defined by ``test.xsd`` above.
 
 Here is an example to parse against the above schema::
   
@@ -434,7 +435,7 @@ The good news is that GML3 is able to encode feature collections on its own; it 
 GML3 Parsing
 ^^^^^^^^^^^^
 
-GML3 is a actually a pretty significant departure from GML2 with a different representation of Geometry more closely aligned with ISO19017. This means that content is encoded as Curves and so forth even though though we only use JTS LineStrings in GeoTools - we make sure to encode them as a curve of line segments.
+GML3 is a actually a pretty significant departure from GML2 with a different representation of Geometry more closely aligned with ISO19017. This means that content is encoded as Curves and so forth even though though we only use JTS ``LineStrings`` in GeoTools - we make sure to encode them as a curve of line segments.
 
 Not all GML3 geometry types can be represented in JTS Geometry; we have looked at using ISO19107 representations directly but so far it is a matter of research and collaboration.
 
@@ -460,7 +461,7 @@ You can parse an XML schema file extended from the abstract GML3 schema::
 FeatureCollection
 '''''''''''''''''
 
-Parsing out an entire FeatureCollection::
+Parsing out an entire ``FeatureCollection``::
 
         URL url = TestData.getResource(this, "states.gml");
         InputStream in = url.openStream();
@@ -687,7 +688,7 @@ we use in our test cases::
 KML Parser
 ''''''''''
 
-The Parser can use the KMLConfiguration to read out the contents of a KML file
+The Parser can use the ``KMLConfiguration`` to read out the contents of a KML file
 as a single Feature.
 
 Accessing the placemarks of that Feature returns a Collection<Feature>::
@@ -713,7 +714,7 @@ The Streaming Parser is also available::
 KML Encoding
 ''''''''''''
 
-The KMLConfiguration provides the Encoder with the ability to generate KML output::
+The ``KMLConfiguration`` provides the Encoder with the ability to generate KML output::
 
         Encoder encoder = new Encoder(new KMLConfiguration());
         encoder.setIndenting(true);
@@ -728,9 +729,9 @@ Advanced
 Application Schema
 ''''''''''''''''''
 
-The above TestSchema examples makes reference to an application schema with the namespace "http://www.geotools.org/test", and defined in the schema document "test.xsd". In order for the document to parse correctly, the parser must be able to resolve the schema file correctly, which means that the file test.xsd needs to be in the same directory as the parser is executing from.
+The above ``TestSchema`` examples makes reference to an application schema with the namespace "http://www.geotools.org/test", and defined in the schema document ``test.xsd``. In order for the document to parse correctly, the parser must be able to resolve the schema file correctly, which means that the file ``test.xsd`` needs to be in the same directory as the parser is executing from.
 
-Unfortunately, this is rarely the case. GML documents are often encountered in the wild with no schemaLocation attribute attached, or it is inaccurate.
+Unfortunately, this is rarely the case. GML documents are often encountered in the wild with no ``schemaLocation`` attribute attached, or it is inaccurate.
 
 If you do not have an XSD file you are likely to get warnings like the following::
   
@@ -742,9 +743,10 @@ Fortunately there are a number of alternatives.
 * Alternative 1: Create an Application Schema Configuration
   
   This method can be used if the application schema to be parsed is known before
-  hand. The org.geotools.xsd.Configuration class is used to configure the parser
-  with the information for a particular schema. The org.geotools.gml.ApplicationSchemaConfiguration can be used to create a
-  configuration from a namespace,schemaLocation pair.::
+  hand. The ``org.geotools.xsd.Configuration`` class is used to configure the parser
+  with the information for a particular schema. The
+  ``org.geotools.gml.ApplicationSchemaConfiguration`` can be used to create a
+  configuration from a ``namespace,schemaLocation`` pair.::
     
     //create the parser with the filter 1.0 configuration
     
@@ -753,15 +755,15 @@ Fortunately there are a number of alternatives.
     
     org.geotools.xml.Configuruation configuration = new ApplicationSchemaConfiguration( namespace, schemaLocation );
     org.geotools.xsd.Parser parser = new org.geotools.xsd.Parser( configuration );
-   
-   //the xml instance document above
-   InputStream xml = ...
-   
-   //parse
-   SimpleFeatureCollection fc = (SimpleFeatureCollection) parser.parse( xml );
+      
+    //the xml instance document above
+    InputStream xml = ...
+      
+    //parse
+    SimpleFeatureCollection fc = (SimpleFeatureCollection) parser.parse( xml );
   
   In this case we are manually configuring the parser by hand prior to use;
-  normally the XML document itself is supposed to refer to "test.xsd" after all.
+  normally the XML document itself is supposed to refer to ``test.xsd`` after all.
   The above technique allows you to correct the mistake.
 
 * Alternative 2: Ignoring the Application Schema
@@ -779,8 +781,8 @@ Fortunately there are a number of alternatives.
   Now this has a few consequences. It means that the parser knows nothing about
   types and elements that have been defined in application schema. Which means they
   will get parsed differently. In the example, what this means is that the parser
-  will not know that TestFeature is indeed a feature. So instead of parsing it into
-  a Feature, it will parse it into a Map, which is the default for complex types.
+  will not know that ``TestFeature`` is indeed a feature. So instead of parsing it into
+  a Feature, it will parse it into a ``Map``, which is the default for complex types.
   
   Therefore parsing the document becomes::
     

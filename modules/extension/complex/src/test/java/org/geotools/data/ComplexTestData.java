@@ -145,10 +145,6 @@ public abstract class ComplexTestData {
      *           	 ]
      * </code>
      * </pre>
-     *
-     * @param typeFactory
-     * @param descFactory
-     * @return
      */
     public static FeatureType createExample01MultiValuedComplexProperty(
             FeatureTypeFactory typeFactory) {
@@ -207,10 +203,6 @@ public abstract class ComplexTestData {
      * <code>
      * </code>
      * </pre>
-     *
-     * @param typeFactory
-     * @param descFactory
-     * @return
      */
     public static FeatureType createExample02MultipleMultivalued(FeatureTypeFactory typeFactory) {
 
@@ -264,10 +256,6 @@ public abstract class ComplexTestData {
      *
      *    	 &lt;xs:element name='wq_plus' type='sco:wq_plus_Type' substitutionGroup=&quot;gml:_Feature&quot; /&gt;
      * </code></pre>
-     *
-     * @param typeFactory
-     * @param descFactory
-     * @return
      */
     public static FeatureType createExample03MultipleGeometries(FeatureTypeFactory typeFactory) {
         TypeBuilder builder = new TypeBuilder(typeFactory);
@@ -302,11 +290,7 @@ public abstract class ComplexTestData {
         return wqPlusType;
     }
 
-    /**
-     * @param typeFactory
-     * @param descFactory
-     * @return
-     */
+    /** */
     public static FeatureType createExample04Type(FeatureTypeFactory typeFactory) {
         TypeBuilder builder = new TypeBuilder(typeFactory);
         builder.setNamespaceURI(NSURI);
@@ -352,8 +336,6 @@ public abstract class ComplexTestData {
      * Creates a representation of a gml:LocationPropertyType association. This would be better done
      * by obtaining the type from a registry, so we can have GML2TypeRegistry, GML3TypeRegistry,
      * DefaultTypeRegistry, etc.
-     *
-     * @return
      */
     public static AttributeType createGmlLocation(FeatureTypeFactory typeFactory) {
         TypeBuilder builder = new TypeBuilder(typeFactory);
@@ -370,8 +352,6 @@ public abstract class ComplexTestData {
      * Creates a representation of a gml:PointPropertyType association as an AttributeType. This
      * would be better done by obtaining the type from a registry, so we can have GML2TypeRegistry,
      * GML3TypeRegistry, DefaultTypeRegistry, etc.
-     *
-     * @return
      */
     public static AttributeType createGmlPoint(FeatureTypeFactory typeFactory) {
         TypeBuilder builder = new TypeBuilder(typeFactory);
@@ -395,15 +375,6 @@ public abstract class ComplexTestData {
     /**
      * Asserts the corresponding properties of <code>type</code> for equality with the provided
      * parameter values
-     *
-     * @param type
-     * @param name
-     * @param binding
-     * @param restrictions
-     * @param identified
-     * @param _abstract
-     * @param superType
-     * @param nillable
      */
     public static void checkType(
             AttributeType type,
@@ -428,7 +399,6 @@ public abstract class ComplexTestData {
      * Similar to the feature type return by {@link createExample01MultiValuedComplexProperty}
      * except that there is no namespace uri specified.
      *
-     * @param typeFactory
      * @return FeatureType
      */
     public static FeatureType createExample05NoNamespaceURI(FeatureTypeFactory typeFactory) {

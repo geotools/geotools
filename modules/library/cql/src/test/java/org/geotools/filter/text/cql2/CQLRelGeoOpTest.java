@@ -153,8 +153,6 @@ public class CQLRelGeoOpTest {
      *       &lt;literal&gt;
      *   |   &lt;attribute name&gt;
      * </pre>
-     *
-     * @throws Exception
      */
     @Ignore
     public void testRoutineInvocationGeneric() throws Exception {

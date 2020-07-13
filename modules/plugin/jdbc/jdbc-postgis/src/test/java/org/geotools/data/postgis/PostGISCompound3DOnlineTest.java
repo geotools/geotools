@@ -16,13 +16,33 @@
  */
 package org.geotools.data.postgis;
 
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JDBCCompound3DOnlineTest;
 import org.geotools.jdbc.JDBCCompound3DTestSetup;
+import org.geotools.referencing.CRS;
+import org.locationtech.jts.geom.Envelope;
 
 public class PostGISCompound3DOnlineTest extends JDBCCompound3DOnlineTest {
 
     @Override
     protected JDBCCompound3DTestSetup createTestSetup() {
         return new PostGISCompound3DTestSetup(new PostGISTestSetup());
+    }
+
+    /** Make sure we can properly retrieve the bounds of 3d layers */
+    public void testBounds() throws Exception {
+        ((PostGISDialect) dataStore.getSQLDialect()).setEstimatedExtentsEnabled(true);
+
+        ReferencedEnvelope env = dataStore.getFeatureSource(tname(getLine3d())).getBounds();
+
+        // check we got the right 2d component
+        Envelope expected = new Envelope(1, 5, 0, 4);
+        assertEquals(expected.getMinX(), env.getMinX(), 0.05);
+        assertEquals(expected.getMaxX(), env.getMaxX(), 0.05);
+        assertEquals(expected.getMinY(), env.getMinY(), 0.05);
+        assertEquals(expected.getMaxY(), env.getMaxY(), 0.05);
+
+        // check the srs the expected one
+        assertEquals(CRS.getHorizontalCRS(crs), env.getCoordinateReferenceSystem());
     }
 }

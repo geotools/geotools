@@ -1,5 +1,5 @@
-net.opengis.wfs
----------------
+``net.opengis.wfs`` 
+-------------------
 
 Additional generated objects for web feature service.
 

@@ -94,7 +94,7 @@ import org.xml.sax.helpers.NamespaceSupport;
 /**
  * Encodes objects as xml based on a schema.
  *
- * <p>The function of the encoder is to traverse a tree of objects seializing them out as xml as it
+ * <p>The function of the encoder is to traverse a tree of objects serializing them out as xml as it
  * goes. Navigation and serialization of the tree is performed by instances of {@link Binding} which
  * are bound to types in the schema. <br>
  *
@@ -102,18 +102,18 @@ import org.xml.sax.helpers.NamespaceSupport;
  *
  * <ol>
  *   <li>The root object in the tree to be encoded
- *   <li>The schema / configuration of the intsance document being encoded.
+ *   <li>The schema / configuration of the instance document being encoded.
  *   <li>A name of the element defined in the schema which corresponds to the root object in the
  *       tree.
  * </ol>
  *
  * <br>
  *
- * <p>As an exmaple, consider the encoding of a {@link org.opengis.filter.Filter} instance.
+ * <p>As an example, consider the encoding of a {@link org.opengis.filter.Filter} instance.
  *
  * <pre>
  *         <code>
- *  //instantiate hte configuration for the filter schmea
+ *  //instantiate the configuration for the filter schema
  *  Configuration configuration = new OGCConfiguration();
  *
  *  //create the encoder
@@ -201,7 +201,7 @@ public class Encoder {
      * Creates an encoder from a configuration.
      *
      * <p>This constructor calls through to {@link #Encoder(Configuration, XSDSchema)} obtaining the
-     * schema instance from {@link Configuration#schema()}.
+     * schema instance from {@link Configuration#getXSD()#getSchema()}).
      *
      * @param configuration The encoder configuration.
      */
@@ -247,7 +247,7 @@ public class Encoder {
         // register the schema index
         context.registerComponentInstance(index);
 
-        // bindign walker support
+        // binding walker support
         context.registerComponentInstance(new BindingWalkerFactoryImpl(bindingLoader, context));
 
         // pass the context off to the configuration
@@ -338,7 +338,7 @@ public class Encoder {
      *
      * <p>When set on, the default indentation level and default line wrapping is used (see {@link
      * #getIndentSize()} and {@link #getLineWidth()}). To specify a different indentation level or
-     * line wrapping, use {@link #setIndent(int)} and {@link #setLineWidth(int)}).
+     * line wrapping, use {@link #setIndentSize(int)} and {@link #setLineWidth(int)}).
      *
      * @param doIndent <code>true</code> if indentation should be on
      */
@@ -431,8 +431,6 @@ public class Encoder {
      *
      * <p>Warning that setting this to <code>false</code> will result in no namespace prefixes on
      * encoded elements and attributes, and no schema declarations on the root element.document;
-     *
-     * @param namespaces
      */
     public void setNamespaceAware(boolean namespaceAware) {
         this.namespaceAware = namespaceAware;
@@ -442,7 +440,7 @@ public class Encoder {
      * Returns the namespace mappings maintained by the encoder.
      *
      * <p>Clients may register additional namespace mappings. This is useful when an application
-     * whishes to provide some "default" namespace mappings.
+     * wishes to provide some "default" namespace mappings.
      *
      * <p>Clients should register namespace mappings in the current "context", ie do not call {@link
      * NamespaceSupport#pushContext()}. Example: <code>
@@ -524,7 +522,6 @@ public class Encoder {
      * @param object The object being encoded.
      * @param name The name of the element being encoded in the schema.
      * @param out The output stream.
-     * @throws IOException
      */
     public void encode(Object object, QName name, OutputStream out) throws IOException {
         if (inline) {
@@ -580,7 +577,10 @@ public class Encoder {
                 .stream()
                 .allMatch(
                         property ->
-                                property.getType().getName().equals(complex.getType().getName()))) {
+                                property == null
+                                        || property.getType()
+                                                .getName()
+                                                .equals(complex.getType().getName()))) {
             // different types which means we are not in the case of nested complex features
             return false;
         }
@@ -714,7 +714,8 @@ public class Encoder {
                     // element has been started, get the next child
                     if (!entry.children.isEmpty()) {
                         Object[] child = (Object[]) entry.children.get(0);
-                        XSDElementDeclaration element = (XSDElementDeclaration) child[0];
+                        XSDElementDeclaration element =
+                                ((XSDElementDeclaration) child[0]).getResolvedElementDeclaration();
                         Iterator itr = (Iterator) child[1];
 
                         if (itr.hasNext()) {
@@ -787,7 +788,7 @@ public class Encoder {
                                     continue;
                                 }
 
-                                // look up hte binding
+                                // look up the binding
                                 Binding binding =
                                         bindingLoader.loadBinding(
                                                 new QName(e.getTargetNamespace(), e.getName()),
@@ -976,9 +977,9 @@ public class Encoder {
 
                     start(entry.encoding, entry.element);
 
-                    // TODO: this method of getting at properties wont maintain order very well,
+                    // TODO: this method of getting at properties won't maintain order very well,
                     // need
-                    // to come up with a better system that is capable of hanlding feature types
+                    // to come up with a better system that is capable of handling feature types
                     for (Iterator pe = propertyExtractors.iterator(); pe.hasNext(); ) {
                         PropertyExtractor propertyExtractor = (PropertyExtractor) pe.next();
 
@@ -1058,7 +1059,7 @@ public class Encoder {
                                     // with xs:nil
                                 }
 
-                                // figure out the maximum number of occurences
+                                // figure out the maximum number of occurrences
                                 int maxOccurs = 1;
 
                                 if (particle.isSetMaxOccurs()) {
@@ -1134,7 +1135,7 @@ public class Encoder {
                     }
                 }
             }
-            // TODO: there are probably other refences to elements of XSDScheam objects, we should
+            // TODO: there are probably other references to elements of XSDSchema objects, we should
             // kill them too
         }
     }
@@ -1142,9 +1143,6 @@ public class Encoder {
     /**
      * Makes a defensive copy of an e-list handling the eventual issues due to concurrent
      * modifications
-     *
-     * @param substitutionGroup
-     * @return
      */
     private List safeCopy(EList substitutionGroup) {
         while (true) {
@@ -1515,20 +1513,12 @@ public class Encoder {
         return configuration;
     }
 
-    /**
-     * Returns the object used to load xml bindings in this encoder
-     *
-     * @return
-     */
+    /** Returns the object used to load xml bindings in this encoder */
     public BindingLoader getBindingLoader() {
         return bindingLoader;
     }
 
-    /**
-     * Returns the Pico context used by this encoder
-     *
-     * @return
-     */
+    /** Returns the Pico context used by this encoder */
     public PicoContainer getContext() {
         return context;
     }

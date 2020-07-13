@@ -70,7 +70,23 @@ public abstract class GranuleCatalog {
 
     public abstract BoundingBox getBounds(final String typeName);
 
+    public BoundingBox getBounds(final String typeName, Transaction t) {
+        if (t == null || t == Transaction.AUTO_COMMIT) {
+            return getBounds(typeName);
+        }
+        throw new IllegalArgumentException(
+                "This implementation of GranuleCatalog does not override getBounds(t, t), the default implementation can only work with the auto commit transaction");
+    }
+
     public abstract SimpleFeatureCollection getGranules(Query q) throws IOException;
+
+    public SimpleFeatureCollection getGranules(Query q, Transaction t) throws IOException {
+        if (t == null || t == Transaction.AUTO_COMMIT) {
+            return getGranules(q);
+        }
+        throw new IllegalArgumentException(
+                "This implementation of GranuleCatalog does not override getGranules(q, t), the default implementation can only work with the auto commit transaction");
+    }
 
     public abstract int getGranulesCount(Query q) throws IOException;
 
@@ -83,16 +99,22 @@ public abstract class GranuleCatalog {
 
     public abstract void removeType(final String typeName) throws IOException;
 
+    /** @deprecated please use {@link #removeGranules(Query, Transaction)} */
+    @Deprecated
     public abstract int removeGranules(Query query);
+
+    @SuppressWarnings("deprecation")
+    public int removeGranules(Query query, Transaction transaction) {
+        if (transaction == null || transaction == Transaction.AUTO_COMMIT) {
+            return removeGranules(query);
+        }
+        throw new IllegalArgumentException(
+                "This implementation of GranuleCatalog does not override removeGranules(q, t), the default implementation can only work with the auto commit transaction");
+    }
 
     public abstract String[] getTypeNames();
 
-    /**
-     * Merges the wrapper hints with the query ones, making sure not to overwrite the query ones
-     *
-     * @param q
-     * @return
-     */
+    /** Merges the wrapper hints with the query ones, making sure not to overwrite the query ones */
     protected Query mergeHints(Query q) {
         if (this.hints == null || this.hints.isEmpty()) {
             return q;
@@ -120,9 +142,6 @@ public abstract class GranuleCatalog {
      * Returns the footprint for the given granule. Mind, when applying insets we might have the
      * case of the geometry being empty (negative buffer eroded it fully), in that case the granule
      * must not be loaded
-     *
-     * @param sf
-     * @return
      */
     protected MultiLevelROI getGranuleFootprint(SimpleFeature sf) {
         if (multiScaleROIProvider != null) {
@@ -136,13 +155,7 @@ public abstract class GranuleCatalog {
         return null;
     }
 
-    /**
-     * Returns the list of footprint files for the given granule
-     *
-     * @param sf
-     * @return
-     * @throws IOException
-     */
+    /** Returns the list of footprint files for the given granule */
     public List<File> getFootprintFiles(SimpleFeature sf) throws IOException {
         if (multiScaleROIProvider != null) {
             return multiScaleROIProvider.getFootprintFiles(sf);

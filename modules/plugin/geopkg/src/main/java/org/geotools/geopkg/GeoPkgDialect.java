@@ -31,25 +31,36 @@ import java.sql.Statement;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.logging.Level;
+import org.geotools.feature.FeatureTypes;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
 import org.geotools.geometry.jts.Geometries;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geopkg.Entry.DataType;
 import org.geotools.geopkg.geom.GeoPkgGeomReader;
 import org.geotools.geopkg.geom.GeoPkgGeomWriter;
+import org.geotools.jdbc.EnumMapper;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PreparedStatementSQLDialect;
 import org.geotools.jdbc.PrimaryKey;
 import org.geotools.jdbc.PrimaryKeyColumn;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultEngineeringCRS;
+import org.geotools.util.Converters;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
+import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
@@ -167,12 +178,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         }
     }
 
-    /**
-     * @param bytes
-     * @param factory
-     * @return
-     * @throws IOException
-     */
+    /** */
     private Geometry geometry(
             Class geometryType, byte[] bytes, GeometryFactory factory, Hints hints)
             throws IOException {
@@ -200,6 +206,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         mappings.put("DATE", java.sql.Date.class);
         mappings.put("TIMESTAMP", java.sql.Timestamp.class);
         mappings.put("TIME", java.sql.Time.class);
+        mappings.put("DATETIME", java.sql.Timestamp.class);
     }
 
     @Override
@@ -210,7 +217,10 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             mappings.put(g.getBinding(), g.getSQLType());
         }
         // override some internal defaults
-        mappings.put(Long.class, Types.INTEGER);
+        mappings.put(Byte.class, Types.TINYINT);
+        mappings.put(Short.class, Types.SMALLINT);
+        mappings.put(Long.class, Types.BIGINT);
+        mappings.put(Integer.class, Types.INTEGER);
         mappings.put(Double.class, Types.REAL);
         mappings.put(Boolean.class, Types.INTEGER);
     }
@@ -226,8 +236,10 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
 
         // Numbers
         overrides.put(Types.BOOLEAN, "BOOLEAN");
+        overrides.put(Types.TINYINT, "TINYINT");
         overrides.put(Types.SMALLINT, "SMALLINT");
-        overrides.put(Types.BIGINT, "BIGINT");
+        overrides.put(Types.INTEGER, "MEDIUMINT");
+        overrides.put(Types.BIGINT, "INTEGER");
         overrides.put(Types.DOUBLE, "DOUBLE");
         overrides.put(Types.NUMERIC, "NUMERIC");
 
@@ -241,6 +253,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     public Class<?> getMapping(ResultSet columns, Connection cx) throws SQLException {
         String tbl = columns.getString("TABLE_NAME");
         String col = columns.getString("COLUMN_NAME");
+        String typeName = columns.getString("TYPE_NAME");
 
         String sql =
                 format(
@@ -255,8 +268,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             LOGGER.fine(String.format("%s; 1=%s, 2=%s", sql, tbl, col));
         }
 
-        PreparedStatement ps = cx.prepareStatement(sql);
-        try {
+        try (PreparedStatement ps = cx.prepareStatement(sql)) {
             ps.setString(1, tbl);
             ps.setString(2, col);
 
@@ -272,11 +284,68 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             } finally {
                 dataStore.closeSafe(rs);
             }
-        } finally {
-            dataStore.closeSafe(ps);
+        }
+
+        // if it's an enumeration, switch data type to string
+        @SuppressWarnings("PMD.CloseResource") // using the pool of the store, no need to close
+        GeoPackage geoPackage = geopkg();
+        try {
+            GeoPkgSchemaExtension extension = geoPackage.getExtension(GeoPkgSchemaExtension.class);
+            List<DataColumn> dataColumns = extension.getDataColumns(tbl, cx);
+            for (DataColumn dataColumn : dataColumns) {
+                if (col.equals(dataColumn.getColumnName())) {
+                    DataColumnConstraint constraint = dataColumn.getConstraint();
+                    if (constraint instanceof DataColumnConstraint.Enum) {
+                        return String.class;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            throwSQLException(e);
+        }
+
+        // handle GeoPackage integer type expectations
+        if ("TINYINT".equals(typeName)) return Byte.class;
+        else if ("SMALLINT".equals(typeName)) return Short.class;
+        else if ("MEDIUMINT".equals(typeName)) return Integer.class;
+        else if ("INT".equals(typeName) || "INTEGER".equals(typeName)) return Long.class;
+
+        return null;
+    }
+
+    @Override
+    public Filter getRestrictions(ResultSet columns, Connection cx) throws SQLException {
+        String tbl = columns.getString("TABLE_NAME");
+        String col = columns.getString("COLUMN_NAME");
+
+        // if it's an enumeration, switch data type to string
+        @SuppressWarnings("PMD.CloseResource") // using the pool of the store, no need to close
+        GeoPackage geoPackage = geopkg();
+        try {
+            GeoPkgSchemaExtension schemas = geoPackage.getExtension(GeoPkgSchemaExtension.class);
+            List<DataColumn> dataColumns = schemas.getDataColumns(tbl, cx);
+            for (DataColumn dataColumn : dataColumns) {
+                if (col.equals(dataColumn.getColumnName())) {
+                    DataColumnConstraint constraint = dataColumn.getConstraint();
+                    if (constraint instanceof DataColumnConstraint.Enum) {
+                        DataColumnConstraint.Enum ec = (DataColumnConstraint.Enum) constraint;
+                        return FeatureTypes.createFieldOptions(ec.getValues().values());
+                    }
+                }
+            }
+        } catch (IOException e) {
+            throwSQLException(e);
         }
 
         return null;
+    }
+
+    private void throwSQLException(IOException e) throws SQLException {
+        if (e.getCause() instanceof SQLException) {
+            throw (SQLException) e.getCause();
+        } else {
+            throw new SQLException(e);
+        }
     }
 
     @Override
@@ -300,21 +369,25 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
 
         CoordinateReferenceSystem crs = featureType.getCoordinateReferenceSystem();
         if (crs != null) {
-            Integer epsgCode = null;
-            try {
-                epsgCode = CRS.lookupEpsgCode(crs, true);
-            } catch (FactoryException e) {
-                LOGGER.log(Level.WARNING, "Error looking up epsg code for " + crs, e);
-            }
-            if (epsgCode != null) {
-                fe.setSrid(epsgCode);
+            if (DefaultEngineeringCRS.GENERIC_2D == crs) {
+                fe.setSrid(GeoPackage.GENERIC_PROJECTED_SRID);
+            } else {
+                try {
+                    Integer epsgCode = CRS.lookupEpsgCode(crs, true);
+                    if (epsgCode != null) {
+                        fe.setSrid(epsgCode);
+                    }
+                } catch (FactoryException e) {
+                    LOGGER.log(Level.WARNING, "Error looking up epsg code for " + crs, e);
+                }
             }
         }
 
+        @SuppressWarnings("PMD.CloseResource") // using the pool of the store, no need to close
         GeoPackage geopkg = geopkg();
         try {
-            geopkg.addGeoPackageContentsEntry(fe);
-            geopkg.addGeometryColumnsEntry(fe);
+            geopkg.addGeoPackageContentsEntry(fe, cx);
+            geopkg.addGeometryColumnsEntry(fe, cx);
 
             // other geometry columns are possible
             for (PropertyDescriptor descr : featureType.getDescriptors()) {
@@ -326,12 +399,46 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
                         fe1.setGeometryColumn(gd1.getLocalName());
                         fe1.setGeometryType(
                                 Geometries.getForBinding((Class) gd1.getType().getBinding()));
-                        geopkg.addGeometryColumnsEntry(fe1);
+                        geopkg.addGeometryColumnsEntry(fe1, cx);
                     }
                 }
             }
         } catch (IOException e) {
             throw new SQLException(e);
+        }
+
+        // check if enum columns need to be declared, and do so
+        for (AttributeDescriptor ad : featureType.getAttributeDescriptors()) {
+            DataColumn dc = (DataColumn) ad.getUserData().get(GeoPackage.DATA_COLUMN);
+            if (dc != null) {
+                if (!ad.getLocalName().equals(dc.getColumnName())) {
+                    throw new IllegalArgumentException(
+                            "Expected column name "
+                                    + ad.getLocalName()
+                                    + " but got"
+                                    + dc.getColumnName());
+                }
+                geopkg.getExtension(GeoPkgSchemaExtension.class)
+                        .addDataColumn(featureType.getTypeName(), dc, cx);
+            } else {
+                List<?> options = FeatureTypes.getFieldOptions(ad);
+                if (options != null && !options.isEmpty()) {
+                    dc = new DataColumn();
+                    dc.setColumnName(ad.getLocalName());
+                    dc.setName(ad.getLocalName());
+                    Map<String, String> optionsMap = new LinkedHashMap<>();
+                    for (int i = 0; i < options.size(); i++) {
+                        optionsMap.put(String.valueOf(i), String.valueOf(options.get(i)));
+                    }
+                    String constraintName =
+                            featureType.getTypeName() + "_" + ad.getLocalName() + "_enum";
+                    DataColumnConstraint.Enum dcc =
+                            new DataColumnConstraint.Enum(constraintName, optionsMap);
+                    dc.setConstraint(dcc);
+                    geopkg.getExtension(GeoPkgSchemaExtension.class)
+                            .addDataColumn(featureType.getTypeName(), dc, cx);
+                }
+            }
         }
     }
 
@@ -346,6 +453,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             fe.setDescription(featureType.getTypeName());
             fe.setTableName(featureType.getTypeName());
         }
+        @SuppressWarnings("PMD.CloseResource") // using the pool of the store, no need to close
         GeoPackage geopkg = geopkg();
         try {
             geopkg.deleteGeoPackageContentsEntry(fe);
@@ -359,7 +467,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             String schemaName, String tableName, String columnName, Connection cx)
             throws SQLException {
         try {
-            FeatureEntry fe = geopkg().feature(tableName);
+            FeatureEntry fe = geopkg().feature(tableName, cx);
             return fe != null ? fe.getSrid() : null;
         } catch (IOException e) {
             throw new SQLException(e);
@@ -371,7 +479,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             String schemaName, String tableName, String columnName, Connection cx)
             throws SQLException {
         try {
-            FeatureEntry fe = geopkg().feature(tableName);
+            FeatureEntry fe = geopkg().feature(tableName, cx);
             if (fe != null) {
                 return 2 + (fe.isZ() ? 1 : 0) + (fe.isM() ? 1 : 0);
             } else { // fallback - shouldn't happen
@@ -384,7 +492,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
 
     public CoordinateReferenceSystem createCRS(int srid, Connection cx) throws SQLException {
         try {
-            return CRS.decode("EPSG:" + srid, true);
+            return GeoPackage.decodeSRID(srid);
         } catch (Exception e) {
             LOGGER.log(Level.FINE, "Unable to create CRS from epsg code " + srid, e);
 
@@ -417,7 +525,13 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
 
     @Override
     public boolean lookupGeneratedValuesPostInsert() {
-        return true;
+        // the JDBC driver does not support returning multiple
+        // keys, but statement batching provides a big boost in terms
+        // of insertion performance. So allow retrieving the keys correctly
+        // when the insert batch size is 1, but avoid errors when they are not
+        // (for code using GeoPackage.add(...) to add lots of features, with
+        // no interest in the generated primary keys
+        return dataStore.getBatchInsertSize() == 1;
     }
 
     @Override
@@ -493,7 +607,9 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
                 ps.setString(column, ((Time) value).toString());
                 break;
             case Types.TIMESTAMP:
-                ps.setString(column, ((Timestamp) value).toString());
+                // 2020-02-19 23:00:00.0  --> 2020-02-19 23:00:00.0Z
+                // We need the "Z" or sql lite will interpret the value as local time
+                ps.setString(column, ((Timestamp) value).toString() + "Z");
                 break;
             default:
                 super.setValue(value, binding, ps, column, cx);
@@ -511,13 +627,14 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             throws SQLException {
         super.postCreateAttribute(att, tableName, schemaName, cx);
 
+        String attributeName = att.getLocalName();
         if (att instanceof GeometryDescriptor) {
             String sql =
                     "SELECT * FROM gpkg_extensions WHERE (lower(table_name)=lower('"
                             + tableName
                             + "') "
                             + "AND lower(column_name)=lower('"
-                            + att.getLocalName()
+                            + attributeName
                             + "') "
                             + "AND extension_name='gpkg_rtree_index')";
             try (Statement st = cx.createStatement();
@@ -526,6 +643,34 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
                 boolean hasSpatialIndex = rs.next();
                 att.getUserData().put(HAS_SPATIAL_INDEX, hasSpatialIndex);
             }
+        }
+
+        try {
+            if (FeatureTypes.getFieldOptions(att) != null) {
+                List<DataColumn> dataColumns =
+                        geopkg().getExtension(GeoPkgSchemaExtension.class)
+                                .getDataColumns(tableName, cx);
+                for (DataColumn dataColumn : dataColumns) {
+                    // little hack here, GeoPackage schema extension is being evolved so that
+                    // an array of values can be stored as a JSON array, in that case the enum
+                    // is applied to every entry in the array, not to the whole string, so the
+                    // normal enum mapping does not apply. If a column declares a mime type, its
+                    // contents are likely complex, and the enum will have to be applied
+                    // to the items inside, not to the whole, so the EnumMapper must not be created.
+                    if (attributeName.equals(dataColumn.getColumnName())
+                            && dataColumn.getMimeType() == null) {
+                        DataColumnConstraint.Enum dcc =
+                                (DataColumnConstraint.Enum) dataColumn.getConstraint();
+                        EnumMapper mapper = new EnumMapper();
+                        for (Map.Entry<String, String> entry : dcc.getValues().entrySet()) {
+                            mapper.addMapping(Integer.valueOf(entry.getKey()), entry.getValue());
+                        }
+                        att.getUserData().put(JDBCDataStore.JDBC_ENUM_MAP, mapper);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            throwSQLException(e);
         }
     }
 
@@ -566,10 +711,6 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
 
     /**
      * Checks if the filter uses a single spatial attribute, and such spatial attribute is indexed
-     *
-     * @param filter
-     * @param schema
-     * @return
      */
     private GeometryDescriptor simpleSpatialSearch(Filter filter, SimpleFeatureType schema) {
         FilterAttributeExtractor attributeExtractor = new FilterAttributeExtractor();
@@ -629,5 +770,69 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     protected void addSupportedHints(Set<Hints.Key> hints) {
         hints.add(Hints.GEOMETRY_DISTANCE);
         hints.add(Hints.SCREENMAP);
+    }
+
+    /**
+     * SQLite dates are just strings, they don't get converted to Date in case of aggregation, do it
+     * here instead
+     */
+    @Override
+    public Function<Object, Object> getAggregateConverter(
+            FeatureVisitor visitor, SimpleFeatureType featureType) {
+        Optional<List<Class>> maybeResultTypes = getResultTypes(visitor, featureType);
+        if (maybeResultTypes.isPresent()) {
+            List<Class> resultTypes = maybeResultTypes.get();
+            if (resultTypes.size() == 1) {
+                Class targetType = resultTypes.get(0);
+                if (java.util.Date.class.isAssignableFrom(targetType)) {
+                    return v -> {
+                        Object converted = Converters.convert(v, targetType);
+                        if (converted == null) {
+                            LOGGER.log(
+                                    Level.WARNING,
+                                    "Could not convert "
+                                            + v
+                                            + " to the desired return type "
+                                            + targetType);
+                            return v;
+                        }
+                        return converted;
+                    };
+                }
+            }
+        }
+        // otherwise no conversion needed
+        return Function.identity();
+    }
+
+    @Override
+    public Integer getSQLType(AttributeDescriptor ad) {
+        // enumerations are mapped to integer values
+        if (FeatureTypes.getFieldOptions(ad) != null) {
+            return Types.INTEGER;
+        }
+
+        return null;
+    }
+
+    @Override
+    public List<ReferencedEnvelope> getOptimizedBounds(
+            String schema, SimpleFeatureType featureType, Connection cx)
+            throws SQLException, IOException {
+        FeatureEntry entry = geopkg().feature(featureType.getTypeName(), cx);
+        if (entry != null && entry.getBounds() != null) {
+            ReferencedEnvelope bounds = entry.getBounds();
+            // make sure the bounds are not empty of the default 0,0,0,0
+            if (!bounds.isEmpty()
+                    && !bounds.isNull()
+                    && !(bounds.getMinX() == 0
+                            && bounds.getMinY() == 0
+                            && bounds.getMaxX() == 0
+                            && bounds.getMaxY() == 0)) {
+                return Arrays.asList(entry.getBounds());
+            }
+        }
+
+        return null;
     }
 }

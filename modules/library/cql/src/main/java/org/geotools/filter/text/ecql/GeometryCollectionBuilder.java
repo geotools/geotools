@@ -31,10 +31,7 @@ import org.locationtech.jts.geom.GeometryCollection;
  */
 final class GeometryCollectionBuilder extends GeometryBuilder {
 
-    /**
-     * @param statement
-     * @param resultStack
-     */
+    /** */
     public GeometryCollectionBuilder(String statement, BuildResultStack resultStack) {
         super(statement, resultStack);
     }

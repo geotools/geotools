@@ -24,10 +24,6 @@
   <!--                        modules or example code used by the  -->
   <!--                        build box.                           -->
   <!--                                                             -->
-  <!--    -Doracle=true       Indicate that the real oracle driver -->
-  <!--                        has been installed into the local    -->
-  <!--                        repository and should be used.       -->
-  <!--                                                             -->
   <!--   Available profiles are:                                   -->
   <!--                                                             -->
   <!--     docs               include docs                         -->
@@ -68,7 +64,6 @@
   <!--       mvn -P extensive.tests install                        -->
   <!--       mvn -P online,stress install                          -->
   <!--       mvn -P site.build site                                -->
-  <!--       mvn eclipse:eclipse -Doracle=true -P pending          -->
   <!--                                                             -->
   <!--     While you can specify properties one at a time on the   -->
   <!--     command line, for properties describing your            -->
@@ -80,7 +75,6 @@
   <!--     manner relevant to the purpose of the "site" goal.      -->
   <!-- =========================================================== -->
   <properties>
-    <oracle>false</oracle>
     <allow.test.skip>true</allow.test.skip>
     <allow.test.failure.ignore>false</allow.test.failure.ignore>
     <extensive.tests>false</extensive.tests>
@@ -95,11 +89,11 @@
     <test.forkMode>once</test.forkMode>
     <test.args></test.args>
     <src.output>${basedir}/target</src.output>
-    <imageio.ext.version>1.3.1</imageio.ext.version>
-    <jts.version>1.16.1</jts.version>
-    <jaiext.version>1.1.9</jaiext.version>
-    <netcdf.version>4.6.11</netcdf.version>
-    <jt.version>1.5.0</jt.version>
+    <imageio.ext.version>1.3.2</imageio.ext.version>
+    <jts.version>1.17.0</jts.version>
+    <jaiext.version>1.1.16</jaiext.version>
+    <netcdf.version>4.6.15</netcdf.version>
+    <jt.version>1.6.0</jt.version>
     <jaxb.api.version>2.4.0-b180830.0359</jaxb.api.version>
     <jaxb.runtime.version>2.4.0-b180830.0438</jaxb.runtime.version>
     <mockito.core.version>2.23.0</mockito.core.version>
@@ -111,8 +105,9 @@
     <fork.javac>false</fork.javac>
     <javac.maxHeapSize>256M</javac.maxHeapSize>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <postgresql.jdbc.version>42.2.5</postgresql.jdbc.version>
+    <postgresql.jdbc.version>42.2.14</postgresql.jdbc.version>
     <solrj.version>7.2.1</solrj.version>
+    <elasticsearch.version>7.4.0</elasticsearch.version>
     <maven.javadoc.plugin.version>3.0.1</maven.javadoc.plugin.version>
     <maven.jacoco.plugin.version>0.8.2</maven.jacoco.plugin.version>
     <git.commit.useNative>false</git.commit.useNative>
@@ -122,14 +117,14 @@
     <batik.version>1.10</batik.version>
     <logging-profile>quiet-logging</logging-profile>
     <errorProneFlags></errorProneFlags>
-    <errorProne.version>2.3.2</errorProne.version>
+    <errorProne.version>2.3.4</errorProne.version>
     <javac.version>9+181-r4173-1</javac.version>
     <pmd.skip>false</pmd.skip>
     <spotbugs.skip>false</spotbugs.skip>
-    <pmd.version>6.11.0</pmd.version>
+    <pmd.version>6.20.0</pmd.version>
     <checkstyle.skip>false</checkstyle.skip>
     <qa>false</qa>
-    <jackson2.version>2.9.7</jackson2.version>
+    <jackson2.version>2.10.1</jackson2.version>
     <lint>deprecation,unchecked</lint>
   </properties>
 
@@ -191,23 +186,6 @@
       </properties>
     </profile>
     <profile>
-      <id>deploy.boundless</id>
-      <distributionManagement>
-        <repository>
-          <id>boundless</id>
-          <uniqueVersion>false</uniqueVersion>
-          <name>Boundless Release Repository</name>
-          <url>https://repo.boundlessgeo.com/release/</url>
-        </repository>
-        <snapshotRepository>
-          <id>boundless</id>
-          <uniqueVersion>false</uniqueVersion>
-          <name>Boundless Snapshot Repository</name>
-          <url>https://repo.boundlessgeo.com/snapshot/</url>
-        </snapshotRepository>
-      </distributionManagement>
-    </profile>
-    <profile>
       <id>site.local</id>
       <distributionManagement>
         <site>
@@ -226,7 +204,7 @@
           <plugin>
             <groupId>org.owasp</groupId>
             <artifactId>dependency-check-maven</artifactId>
-            <version>3.2.1</version>
+            <version>5.3.0</version>
             <configuration>
               <failBuildOnCVSS>8</failBuildOnCVSS>
               <suppressionFile>${geotoolsBaseDir}/build/qa/dependency-check-suppression.xml</suppressionFile>
@@ -255,7 +233,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-pmd-plugin</artifactId>
-            <version>3.11.0</version>
+            <version>3.12.0</version>
             <dependencies>
               <dependency>
                 <groupId>net.sourceforge.pmd</groupId>
@@ -370,7 +348,7 @@
                 <path>
                   <groupId>com.google.errorprone</groupId>
                   <artifactId>error_prone_core</artifactId>
-                  <version>2.3.2</version>
+		  <version>${errorProne.version}</version>
                 </path>
               </annotationProcessorPaths>
             </configuration>
@@ -391,7 +369,7 @@
           <plugin>
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-maven-plugin</artifactId>
-            <version>3.1.10</version>
+            <version>4.0.0</version>
             <configuration>
               <effort>More</effort>
               <!-- threshold>High</threshold -->
@@ -429,12 +407,12 @@
            <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-checkstyle-plugin</artifactId>
-              <version>3.0.0</version>
+              <version>3.1.1</version>
               <dependencies>
                 <dependency>
                   <groupId>com.puppycrawl.tools</groupId>
                   <artifactId>checkstyle</artifactId>
-                  <version>8.18</version>
+                  <version>8.29</version>
                 </dependency>
                </dependencies>
               <configuration>
@@ -464,7 +442,7 @@
   <groupId>org.geotools</groupId>
   <artifactId>geotools</artifactId>
   <packaging>pom</packaging>
-  <version>22-SNAPSHOT</version>
+  <version>24-SNAPSHOT</version>
   <name>GeoTools</name>
 
   <scm>
@@ -648,14 +626,16 @@
     </developer>
     <developer>
       <name>Jody Garnett</name>
-      <id>jive</id>
-      <email>jive@users.sourceforge.net</email>
-      <organization>LISAsoft</organization>
+      <id>jodygarnett</id>
+      <organization>GeoCat B.V.</organization>
+      <organizationUrl>https://www.geocat.net</organizationUrl>
+      <email>jody.garnett@gmail.com</email>
       <roles>
         <role>Java Developer</role>
         <role>Module Maintainer</role>
         <role>Project Management Committee (PMC) Member</role>
       </roles>
+      <timezone>America/Vancouver</timezone>
     </developer>
     <developer>
       <name>Justin Deoliveira</name>
@@ -837,39 +817,11 @@
   <!-- =========================================================== -->
   <dependencyManagement>
     <dependencies>
-      <!--
-      <dependency>
-        <groupId>net.java.dev.jsr-275</groupId>
-        <artifactId>jsr-275</artifactId>
-        <version>1.0-beta-2</version>
-      </dependency>
-       -->
-      <!--dependency>
-        <groupId>javax.measure</groupId>
-        <artifactId>unit-api</artifactId>
-        <version>1.0</version>
-      </dependency>
-      <dependency>
-        <groupId>tec.uom</groupId>
-        <artifactId>uom-se</artifactId>
-        <version>1.0.9</version>
-      </dependency>
-      <dependency>
-        <groupId>si.uom</groupId>
-        <artifactId>si-units-java8</artifactId>
-        <version>0.8</version>
-      </dependency-->
       <dependency>
           <groupId>systems.uom</groupId>
-          <artifactId>systems-common-java8</artifactId>
-          <version>0.7.2</version>
+          <artifactId>systems-common</artifactId>
+          <version>2.0.1</version>
       </dependency>
-      <!-- inconsistent cannot load due to missing drag quantity -->
-      <!--dependency>
-        <groupId>systems.uom</groupId>
-        <artifactId>systems-ucum-java8</artifactId>
-        <version>0.7.2</version>
-      </dependency-->
     
       <!-- Java Advanced Imaging (JAI) -->
       <dependency>
@@ -1036,7 +988,7 @@
         <artifactId>jt-zonalstats</artifactId>
         <version>${jt.version}</version>
       </dependency>
-			<!-- JAXB -->
+      <!-- JAXB -->
       <dependency>
         <groupId>javax.xml.bind</groupId>
         <artifactId>jaxb-api</artifactId>
@@ -1051,12 +1003,22 @@
       <dependency>
         <groupId>org.locationtech.jts</groupId>
         <artifactId>jts-core</artifactId>
-	      <version>${jts.version}</version>
+        <version>${jts.version}</version>
       </dependency>
       <dependency>
         <groupId>org.locationtech.jts</groupId>
         <artifactId>jts-example</artifactId>
         <version>${jts.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.locationtech.spatial4j</groupId>
+        <artifactId>spatial4j</artifactId>
+        <version>0.6</version>
+      </dependency>
+      <dependency>
+        <groupId>com.github.davidmoten</groupId>
+        <artifactId>geo</artifactId>
+        <version>0.7.4</version>
       </dependency>
       <dependency>
         <groupId>org.wkb4j</groupId>
@@ -1180,6 +1142,11 @@
         <version>3.2.2</version>  <!-- Updated for security (CVE-2015-8103) binary compatible with 3.1 -->
       </dependency>
       <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-collections4</artifactId>
+        <version>4.4</version>
+      </dependency>
+      <dependency>
         <groupId>commons-pool</groupId>
         <artifactId>commons-pool</artifactId>
         <version>1.5.4</version>
@@ -1227,6 +1194,11 @@
         <version>1.4</version>
       </dependency>
       <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>4.5.11</version>
+      </dependency>
+      <dependency>
         <groupId>velocity</groupId>
         <artifactId>velocity</artifactId>
         <version>1.4</version>
@@ -1270,11 +1242,10 @@
       </dependency>
 
       <!-- ORACLE -->
-      <!-- Download and install into your own repo -->
       <dependency>
-        <artifactId>ojdbc7</artifactId>
-        <groupId>com.oracle</groupId>
-        <version>12.1.0.2</version>
+        <artifactId>ojdbc8</artifactId>
+        <groupId>com.oracle.database.jdbc</groupId>
+        <version>19.7.0.0</version>
       </dependency>
       <!-- Older version required by imagemosaic -->
       <dependency>
@@ -1345,6 +1316,23 @@
         <groupId>net.sf.ehcache</groupId>
         <artifactId>ehcache</artifactId>
         <version>2.10.3</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>25.1-jre</version>
+      </dependency>
+      <dependency>
+        <groupId>joda-time</groupId>
+        <artifactId>joda-time</artifactId>
+        <version>2.10.1</version>
+      </dependency>
+
+      <!-- Quality control dependencies -->
+      <dependency>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-annotations</artifactId>
+        <version>4.0.2</version>
       </dependency>
 
       <!-- Tests or legacy -->
@@ -1574,10 +1562,17 @@
         <artifactId>jt-shadedrelief</artifactId>
         <version>${jaiext.version}</version>
       </dependency>
+      
+      <!-- Third-party -->
+      <dependency>
+        <groupId>com.googlecode.json-simple</groupId>
+        <artifactId>json-simple</artifactId>
+        <version>1.1.1</version>
+      </dependency>
       <dependency>
         <groupId>org.xerial</groupId>
         <artifactId>sqlite-jdbc</artifactId>
-        <version>3.27.2.1</version>
+        <version>3.31.1</version>
       </dependency>
       <dependency>
         <groupId>org.apache.solr</groupId>
@@ -1591,12 +1586,31 @@
         </exclusions>
       </dependency>
       <dependency>
+          <groupId>org.elasticsearch.client</groupId>
+          <artifactId>elasticsearch-rest-client</artifactId>
+          <version>${elasticsearch.version}</version>
+      </dependency>
+      <dependency>
        <groupId>com.fasterxml.jackson.core</groupId>
        <artifactId>jackson-core</artifactId>
         <version>${jackson2.version}</version>
       </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>${jackson2.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-annotations</artifactId>
+        <version>${jackson2.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>no.ecc.vectortile</groupId>
+        <artifactId>java-vector-tile</artifactId>
+        <version>1.3.9</version>
+      </dependency>
     </dependencies>
-
   </dependencyManagement>
 
 
@@ -1627,7 +1641,7 @@
     <!--   versions that are known to work.  This list is in       -->
     <!--   alphabetical order for easier comparison with latest    -->
     <!--   plugins at                                              -->
-    <!--   http://repo1.maven.org/maven2                           -->
+    <!--   https://repo1.maven.org/maven2                           -->
     <!-- ========================================================= -->
     <pluginManagement>
       <plugins>
@@ -1654,7 +1668,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-plugin-plugin</artifactId>
-          <version>3.4</version>
+          <version>3.6.0</version>
         </plugin>
         <plugin>
           <groupId>com.coveo</groupId>
@@ -1806,7 +1820,7 @@
             <exclude>${stress.skip.pattern}</exclude>
             <exclude>${test.exclude.pattern}</exclude>
           </excludes>
-	  <argLine>-Xmx${test.maxHeapSize} ${jvm.opts} -Dorg.geotools.test.extensive=${extensive.tests} -Dorg.geotools.test.interactive=${interactive.tests} -Dorg.geotools.image.test.skip=${skip.image.tests} -Dorg.geotools.image.test.interactive=${interactive.image} -Djava.awt.headless=${java.awt.headless} -Dsun.java2d.d3d=${sun.java2d.d3d} -Djava.io.tmpdir="${java.io.tmpdir}" -Djava.library.path="${java.library.path}" ${test.args}  -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -XX:+IgnoreUnrecognizedVMOptions -Djava.util.logging.config.file="${geotoolsBaseDir}"/${logging-profile}.properties --illegal-access=debug</argLine>
+	  <argLine>-Xmx${test.maxHeapSize} ${jvm.opts} -Dfile.encoding=UTF-8 -Dorg.geotools.test.extensive=${extensive.tests} -Dorg.geotools.test.interactive=${interactive.tests} -Dorg.geotools.image.test.skip=${skip.image.tests} -Dorg.geotools.image.test.interactive=${interactive.image} -Djava.awt.headless=${java.awt.headless} -Dsun.java2d.d3d=${sun.java2d.d3d} -Djava.io.tmpdir="${java.io.tmpdir}" -Djava.library.path="${java.library.path}" ${test.args}  -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -XX:+IgnoreUnrecognizedVMOptions -Djava.util.logging.config.file="${geotoolsBaseDir}"/${logging-profile}.properties --illegal-access=debug</argLine>
           <!-- Ignores test failure only if we are generating a       -->
           <!-- report for publication on the web site. See the        -->
           <!-- profiles section at the beginning of this pom.xml file. -->
@@ -2267,16 +2281,16 @@
 
   <distributionManagement>
     <repository>
+      <id>nexus</id>
+      <name>OSGeo Release Repository</name>
+      <url>https://repo.osgeo.org/repository/geotools-releases/</url>
       <uniqueVersion>false</uniqueVersion>
-      <id>osgeo</id>
-      <name>Open Source Geospatial Foundation - Maven 2 repo</name>
-      <url>dav:http://download.osgeo.org/webdav/geotools/</url>
     </repository>
     <snapshotRepository>
-        <id>boundless</id>
-        <uniqueVersion>false</uniqueVersion>
-        <name>Boundless Snapshot Repository</name>
-        <url>https://repo.boundlessgeo.com/snapshot/</url>
+      <id>nexus</id>
+      <uniqueVersion>false</uniqueVersion>
+      <name>OSGeo Snapshot Repository</name>
+      <url>https://repo.osgeo.org/repository/geotools-snapshots/</url>
     </snapshotRepository>
   </distributionManagement>
 
@@ -2285,49 +2299,26 @@
   <!--     Maven repository is implicit and doesn't need to be specified. -->
   <!-- ================================================================== -->
   <repositories>
-    <repository>
-      <id>central.maven.org</id>
-      <name>Central Maven repository</name>
-      <url>http://central.maven.org/maven2</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
 
-    <!-- contained above -->
-    <!--
+    <!-- Maven Central is assumed -->
+  
     <repository>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <id>geosolutions</id>
-      <name>geosolutions repository</name>
-      <url>http://maven.geo-solutions.it/</url>
-    </repository>
-    -->
-    <repository>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
       <id>osgeo</id>
-      <name>Open Source Geospatial Foundation Repository</name>
-      <url>http://download.osgeo.org/webdav/geotools/</url>
-    </repository>
-
-    <repository>
-      <!-- Contains snapshot and release (including third-party-dependencies)              -->
-      <!-- Restlet maven Repository (http://maven.restlet.org)                             -->
+      <name>OSGeo Nexus Release Repository</name>
+      <url>https://repo.osgeo.org/repository/release/</url>
+      <!-- contains release (including third-party-dependences)                            -->
       <!-- ucar (https://artifacts.unidata.ucar.edu/content/repositories/unidata-releases) -->
       <!-- geosolutions (http://maven.geo-solutions.it/)                                   -->
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <id>boundless</id>
-      <name>Boundless Maven Repository</name>
-      <url>https://repo.boundlessgeo.com/main/</url>
+      <snapshots><enabled>false</enabled></snapshots>
+      <releases><enabled>true</enabled></releases>
+    </repository>
+
+    <repository>
+      <id>osgeo-snapshot</id>
+      <name>OSGeo Nexus Snapshot Repository</name>
+      <url>https://repo.osgeo.org/repository/snapshot/</url>
+      <snapshots><enabled>true</enabled></snapshots>
+      <releases><enabled>false</enabled></releases>
     </repository>
 
   </repositories>
@@ -2337,30 +2328,25 @@
   <!--     This is where Maven looks for plugin dependencies.      -->
   <!-- =========================================================== -->
   <pluginRepositories>
+
+    <!-- Maven Central is assumed -->
+
     <pluginRepository>
       <id>osgeo</id>
-      <name>Open Source Geospatial Foundation Maven 2 Repository</name>
-      <url>http://download.osgeo.org/webdav/geotools/</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
+      <name>OSGeo Nexus Maven Repository</name>
+      <url>https://repo.osgeo.org/repository/release/</url>
+      <snapshots><enabled>false</enabled></snapshots>
+      <releases><enabled>true</enabled></releases>
     </pluginRepository> 
+
     <pluginRepository>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <id>boundless</id>
-      <name>Boundless Maven Repository</name>
-      <url>https://repo.boundlessgeo.com/snapshot/</url>
+      <id>osgeo-snapshot</id>
+      <name>OSGeo Nexus Maven Repository</name>
+      <url>https://repo.osgeo.org/repository/snapshot/</url>
+      <snapshots><enabled>true</enabled></snapshots>
+      <releases><enabled>false</enabled></releases>
     </pluginRepository> 
-    <pluginRepository>
-     <id>sonatype-snapshots</id>
-     <name>sonatype-snapshots</name>
-     <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-     <snapshots>
-       <enabled>false</enabled>
-     </snapshots>
-    </pluginRepository>
+    
   </pluginRepositories>
 
 
@@ -2372,4 +2358,3 @@
     <module>modules</module>
   </modules>
 </project>
-

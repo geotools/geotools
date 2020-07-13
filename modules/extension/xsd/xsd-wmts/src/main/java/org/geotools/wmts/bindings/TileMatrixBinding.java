@@ -21,11 +21,12 @@ package org.geotools.wmts.bindings;
 import java.math.BigInteger;
 import java.util.List;
 import javax.xml.namespace.QName;
+import net.opengis.ows10.Ows10Factory;
 import net.opengis.ows11.CodeType;
 import net.opengis.wmts.v_1.TileMatrixType;
 import net.opengis.wmts.v_1.wmtsv_1Factory;
+import org.geotools.ows.bindings.DescriptionTypeBinding;
 import org.geotools.wmts.WMTS;
-import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
 
@@ -95,12 +96,12 @@ import org.geotools.xsd.Node;
  *
  * @generated
  */
-public class TileMatrixBinding extends AbstractComplexBinding {
+public class TileMatrixBinding extends DescriptionTypeBinding {
 
     wmtsv_1Factory factory;
 
     public TileMatrixBinding(wmtsv_1Factory factory) {
-        super();
+        super(Ows10Factory.eINSTANCE);
         this.factory = factory;
     }
 
@@ -135,15 +136,24 @@ public class TileMatrixBinding extends AbstractComplexBinding {
             return (String) value;
         }
 
+        if (!(value instanceof TileMatrixType)) {
+            value = factory.createTileMatrixType();
+        }
+
+        // Call DescriptionType parser to load the object with the DescriptionType values
+        value = super.parse(instance, node, value);
+
         // we are in a Contents/TileMatrixSet/TileMatrix (complex) element
-        TileMatrixType tileMatrix = factory.createTileMatrixType();
-        tileMatrix.setIdentifier((CodeType) node.getChildValue("Identifier"));
-        tileMatrix.setMatrixHeight((BigInteger) node.getChildValue("MatrixHeight"));
-        tileMatrix.setMatrixWidth((BigInteger) node.getChildValue("MatrixWidth"));
-        tileMatrix.setScaleDenominator((double) node.getChildValue("ScaleDenominator"));
-        tileMatrix.setTileHeight((BigInteger) node.getChildValue("TileHeight"));
-        tileMatrix.setTileWidth((BigInteger) node.getChildValue("TileWidth"));
-        tileMatrix.setTopLeftCorner((List<Double>) node.getChildValue("TopLeftCorner"));
-        return tileMatrix;
+
+        ((TileMatrixType) value).setIdentifier((CodeType) node.getChildValue("Identifier"));
+        ((TileMatrixType) value).setMatrixHeight((BigInteger) node.getChildValue("MatrixHeight"));
+        ((TileMatrixType) value).setMatrixWidth((BigInteger) node.getChildValue("MatrixWidth"));
+        ((TileMatrixType) value)
+                .setScaleDenominator((double) node.getChildValue("ScaleDenominator"));
+        ((TileMatrixType) value).setTileHeight((BigInteger) node.getChildValue("TileHeight"));
+        ((TileMatrixType) value).setTileWidth((BigInteger) node.getChildValue("TileWidth"));
+        ((TileMatrixType) value)
+                .setTopLeftCorner((List<Double>) node.getChildValue("TopLeftCorner"));
+        return value;
     }
 }

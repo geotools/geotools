@@ -1,4 +1,4 @@
-Prepare for mysql
+Prepare for MySQL
 -----------------
 
 1. Create the tile table::

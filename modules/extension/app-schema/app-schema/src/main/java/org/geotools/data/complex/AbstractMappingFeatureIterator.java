@@ -85,6 +85,16 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
     /** Name representation of xlink:href */
     public static final Name XLINK_HREF_NAME = Types.toTypeName(XLINK.HREF);
 
+    /**
+     * Key value for Attribute userData Map for indicating the presence of a multi value classifier.
+     */
+    public static final String MULTI_VALUE_TYPE = "multi_value_type";
+
+    /**
+     * Value for Attribute userData Map for indicating an anonymous unbounded sequence classifier.
+     */
+    public static final String UNBOUNDED_MULTI_VALUE = "unbounded-multi-value";
+
     /** Milliseconds between polls of resolver thread. */
     public static final long RESOLVE_TIMEOUT_POLL_INTERVAL = 100;
 

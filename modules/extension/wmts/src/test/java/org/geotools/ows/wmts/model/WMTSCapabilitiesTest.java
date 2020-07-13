@@ -14,6 +14,8 @@
 package org.geotools.ows.wmts.model;
 
 import static org.geotools.ows.wmts.WMTSTestUtils.createCapabilities;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -25,6 +27,7 @@ import org.geotools.data.ows.OperationType;
 import org.geotools.ows.wms.CRSEnvelope;
 import org.geotools.ows.wmts.WMTSSpecification;
 import org.geotools.ows.wmts.WebMapTileServer;
+import org.opengis.metadata.citation.Address;
 import org.xml.sax.SAXException;
 
 public class WMTSCapabilitiesTest extends TestCase {
@@ -245,6 +248,51 @@ public class WMTSCapabilitiesTest extends TestCase {
                 throw (e);
             }
         }
+    }
+
+    // This particular capabilities response does not contain a ServiceProvider section
+    // Make sure things still work
+    public void testParser4() throws Exception {
+        WMTSCapabilities capabilities = createCapabilities("geodata.nationaalgeoregister.nl.xml");
+        try {
+            assertEquals("1.0.0", capabilities.getVersion());
+
+            WMTSService service = (WMTSService) capabilities.getService();
+            assertEquals("OGC WMTS", service.getName());
+            assertEquals("Web Map Tile Service", service.getTitle());
+
+            WMTSRequest request = capabilities.getRequest();
+
+            OperationType getTile = request.getGetTile();
+            assertNotNull(getTile);
+
+            assertEquals(44, capabilities.getLayerList().size());
+
+            List<WMTSLayer> layers = capabilities.getLayerList();
+            WMTSLayer l0 = layers.get(0);
+
+            assertEquals("brtachtergrondkaart", l0.getName());
+            assertTrue(l0.getSrs().contains("urn:ogc:def:crs:EPSG::28992")); // case
+
+        } catch (Exception e) {
+            // a standard catch block shared with the other tests
+            if ((e.getMessage() != null) && e.getMessage().indexOf("timed out") > 0) {
+                // System.err.println("Unable to test - timed out: " + e);
+            } else {
+                throw (e);
+            }
+        }
+    }
+
+    public void testParseWithIncompleteAddressMetadata() throws Exception {
+        WMTSCapabilities capabilities = createCapabilities("vienna_capa.xml");
+        WMTSService service = (WMTSService) capabilities.getService();
+        Address address = service.getContactInformation().getContactInfo().getAddress();
+        assertNull(address.getAdministrativeArea());
+        assertNull(address.getPostalCode());
+        assertNotNull(address.getCity());
+        assertNotNull(address.getCountry());
+        assertNotNull(address.getElectronicMailAddresses());
     }
 
     protected WebMapTileServer getCustomWMS(URL featureURL)

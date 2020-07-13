@@ -205,75 +205,76 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
                 Loggings.format(Level.FINE, LoggingKeys.LOADING_DATUM_ALIASES_$1, aliasURL);
         record.setLoggerName(LOGGER.getName());
         LOGGER.log(record);
-        final BufferedReader in = new BufferedReader(new InputStreamReader(aliasURL.openStream()));
-        /*
-         * Parses the title line. This line contains authority names as column titles.
-         * The authority names will be used as the scope for each identifiers to be
-         * created.
-         */
-        String line = readLine(in);
-        if (line != null) {
-            final List<Object> elements = new ArrayList<Object>();
-            StringTokenizer st = new StringTokenizer(line, SEPARATORS);
-            while (st.hasMoreTokens()) {
-                final String name = st.nextToken().trim();
-                elements.add(name.length() != 0 ? new LocalName(name) : null);
-            }
-            authorities = elements.toArray(new LocalName[elements.size()]);
-            final Map<String, String> canonical = new HashMap<String, String>();
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(aliasURL.openStream()))) {
             /*
-             * Parses all aliases. They are stored as arrays of strings for now, but will be
-             * converted to array of generic names by {@link #getAliases} when first needed.
-             * If the alias belong to an authority (which should be true in most cases), a
-             * scoped name will be created at this time.
+             * Parses the title line. This line contains authority names as column titles.
+             * The authority names will be used as the scope for each identifiers to be
+             * created.
              */
-            while ((line = readLine(in)) != null) {
-                elements.clear();
-                canonical.clear();
-                st = new StringTokenizer(line, SEPARATORS);
+            String line = readLine(in);
+            if (line != null) {
+                final List<Object> elements = new ArrayList<Object>();
+                StringTokenizer st = new StringTokenizer(line, SEPARATORS);
                 while (st.hasMoreTokens()) {
-                    String alias = st.nextToken().trim();
-                    if (alias.length() != 0) {
-                        final String previous = canonical.put(alias, alias);
-                        if (previous != null) {
-                            canonical.put(previous, previous);
-                            alias = previous;
+                    final String name = st.nextToken().trim();
+                    elements.add(name.length() != 0 ? new LocalName(name) : null);
+                }
+                authorities = elements.toArray(new LocalName[elements.size()]);
+                final Map<String, String> canonical = new HashMap<String, String>();
+                /*
+                 * Parses all aliases. They are stored as arrays of strings for now, but will be
+                 * converted to array of generic names by {@link #getAliases} when first needed.
+                 * If the alias belong to an authority (which should be true in most cases), a
+                 * scoped name will be created at this time.
+                 */
+                while ((line = readLine(in)) != null) {
+                    elements.clear();
+                    canonical.clear();
+                    st = new StringTokenizer(line, SEPARATORS);
+                    while (st.hasMoreTokens()) {
+                        String alias = st.nextToken().trim();
+                        if (alias.length() != 0) {
+                            final String previous = canonical.put(alias, alias);
+                            if (previous != null) {
+                                canonical.put(previous, previous);
+                                alias = previous;
+                            }
+                        } else {
+                            alias = null;
                         }
-                    } else {
-                        alias = null;
+                        elements.add(alias);
                     }
-                    elements.add(alias);
-                }
-                // Trim trailing null values only (we must keep other null values).
-                for (int i = elements.size(); --i >= 0; ) {
-                    if (elements.get(i) != null) break;
-                    elements.remove(i);
-                }
-                if (!elements.isEmpty()) {
-                    /*
-                     * Copies the aliases array in the aliases map for all local names. If a
-                     * previous value is found as an array of GenericName objects, those generic
-                     * names are conserved in the map (instead of the string values parsed above)
-                     * in order to avoid constructing them again when they will be needed.
-                     */
-                    final String[] names = elements.toArray(new String[elements.size()]);
-                    for (int i = 0; i < names.length; i++) {
-                        final String name = names[i];
-                        final String key = toCaseless(name);
-                        final Object[] previous = aliasMap.put(key, names);
-                        if (previous != null && previous != NEED_LOADING) {
-                            if (previous instanceof GenericName[]) {
-                                aliasMap.put(key, previous);
-                            } else if (!Arrays.equals(previous, names)) {
-                                // TODO: localize
-                                LOGGER.warning("Inconsistent aliases for datum \"" + name + "\".");
+                    // Trim trailing null values only (we must keep other null values).
+                    for (int i = elements.size(); --i >= 0; ) {
+                        if (elements.get(i) != null) break;
+                        elements.remove(i);
+                    }
+                    if (!elements.isEmpty()) {
+                        /*
+                         * Copies the aliases array in the aliases map for all local names. If a
+                         * previous value is found as an array of GenericName objects, those generic
+                         * names are conserved in the map (instead of the string values parsed above)
+                         * in order to avoid constructing them again when they will be needed.
+                         */
+                        final String[] names = elements.toArray(new String[elements.size()]);
+                        for (int i = 0; i < names.length; i++) {
+                            final String name = names[i];
+                            final String key = toCaseless(name);
+                            final Object[] previous = aliasMap.put(key, names);
+                            if (previous != null && previous != NEED_LOADING) {
+                                if (previous instanceof GenericName[]) {
+                                    aliasMap.put(key, previous);
+                                } else if (!Arrays.equals(previous, names)) {
+                                    // TODO: localize
+                                    LOGGER.warning(
+                                            "Inconsistent aliases for datum \"" + name + "\".");
+                                }
                             }
                         }
                     }
                 }
             }
         }
-        in.close();
     }
 
     /** Logs an {@link IOException}. */

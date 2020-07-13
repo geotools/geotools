@@ -1,5 +1,6 @@
 org.geotools.filter.AreaFunction
 org.geotools.filter.LengthFunction
+org.geotools.filter.function.ArrayFunction
 org.geotools.filter.function.AttributeCountFunction
 org.geotools.filter.function.CategorizeFunction
 org.geotools.filter.function.ClassifyFunction
@@ -19,6 +20,7 @@ org.geotools.filter.function.Collection_SumFunction
 org.geotools.filter.function.Collection_UniqueFunction
 org.geotools.filter.function.EnvFunction
 org.geotools.filter.function.StringTemplateFunction
+org.geotools.filter.function.InArrayFunction
 org.geotools.filter.function.FilterFunction_contains
 org.geotools.filter.function.FilterFunction_isEmpty
 org.geotools.filter.function.FilterFunction_parseDouble
@@ -139,6 +141,7 @@ org.geotools.filter.function.FilterFunction_disjoint3D
 org.geotools.filter.function.GeometryFunction
 org.geotools.filter.function.IDFunction
 org.geotools.filter.function.InterpolateFunction
+org.geotools.filter.function.MapGetFunction
 org.geotools.filter.function.RecodeFunction
 org.geotools.filter.function.math.FilterFunction_IEEEremainder
 org.geotools.filter.function.math.FilterFunction_abs

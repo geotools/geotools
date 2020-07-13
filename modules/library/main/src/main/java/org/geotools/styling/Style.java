@@ -67,8 +67,6 @@ public interface Style extends org.opengis.style.Style {
      * <p>Assume this is kept for GeoServer enabling a WMS to track which style is considered the
      * default. May consider providing a clientProperties mechanism similar to Swing JComponent
      * allowing applications to mark up the Style content for custom uses.
-     *
-     * @param isDefault
      */
     void setDefault(boolean isDefault);
 
@@ -89,10 +87,16 @@ public interface Style extends org.opengis.style.Style {
     /** @param defaultSymbolizer To be used if a feature is not rendered by any of the rules */
     public void setDefaultSpecification(Symbolizer defaultSymbolizer);
 
-    /**
-     * Used to navigate Style information during portrayal.
-     *
-     * @param visitor
-     */
+    /** Used to navigate Style information during portrayal. */
     void accept(org.geotools.styling.StyleVisitor visitor);
+
+    /** The background Fill , if any, <code>null</code> otherwise */
+    public default Fill getBackground() {
+        return null;
+    }
+
+    /** Sets the background color. Might throw an {@link UnsupportedOperationException}. */
+    public default void setBackground(Fill background) {
+        throw new UnsupportedOperationException();
+    }
 }

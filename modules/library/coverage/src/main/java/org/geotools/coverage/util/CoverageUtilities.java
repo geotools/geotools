@@ -195,7 +195,6 @@ public final class CoverageUtilities {
     /**
      * Utility method for extracting NoData property from input {@link GridCoverage2D}.
      *
-     * @param coverage
      * @return A {@link NoDataContainer} object containing input NoData definition
      */
     public static NoDataContainer getNoDataProperty(GridCoverage2D coverage) {
@@ -215,7 +214,6 @@ public final class CoverageUtilities {
     /**
      * Utility method for extracting ROI property from input {@link GridCoverage2D}.
      *
-     * @param coverage
      * @return A {@link ROI} object
      */
     public static ROI getROIProperty(GridCoverage2D coverage) {

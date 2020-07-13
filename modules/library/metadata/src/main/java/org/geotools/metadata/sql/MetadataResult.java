@@ -34,7 +34,7 @@ import org.geotools.util.logging.Logging;
  * @author Martin Desruisseaux (IRD)
  * @todo Automatically close the ResultSet after some delay (e.g. 2 minutes).
  */
-final class MetadataResult {
+final class MetadataResult implements AutoCloseable {
     /** The table name, used for formatting error message. */
     private final String tableName;
 

@@ -32,6 +32,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -217,7 +218,7 @@ abstract class KeysFetcher {
         }
     }
 
-    /** Class for a PK that has it's value computed from the database. */
+    /** Class for a PK that has its value computed from the database. */
     private static class FromDB extends KeysFetcher {
         private final List<KeyFetcher> fetchers;
 
@@ -253,6 +254,8 @@ abstract class KeysFetcher {
                     }
                 } else if (CharSequence.class.isAssignableFrom(t)) {
                     return new FromRandom(ds, col);
+                } else if (t == UUID.class) {
+                    return new FromUuid(ds, col);
                 }
             }
             throw new IOException("Cannot generate key value for column of type: " + t.getName());
@@ -355,7 +358,7 @@ abstract class KeysFetcher {
         }
     }
 
-    /** Base class to handle a PK column comming from the DB. */
+    /** Base class to handle a PK column coming from the DB. */
     private abstract static class KeyFetcher {
         private final String colName;
         protected final PrimaryKeyColumn col;
@@ -383,10 +386,6 @@ abstract class KeysFetcher {
         /**
          * Returns the last generated value based on the connection. Deprecated, please
          * use/implement the version taking also the statement as an argument
-         *
-         * @param cx
-         * @return
-         * @throws SQLException
          */
         public Object getLastValue(Connection cx) throws SQLException {
             return getLastValue(cx, null);
@@ -417,6 +416,27 @@ abstract class KeysFetcher {
         @Override
         public Object getNext(Connection cx) {
             return SimpleFeatureBuilder.createDefaultFeatureId();
+        }
+    }
+
+    private static class FromUuid extends KeyFetcher {
+        FromUuid(JDBCDataStore ds, PrimaryKeyColumn col) {
+            super(ds, col);
+        }
+
+        @Override
+        public Object getLastValue(Connection cx, Statement st) {
+            throw new IllegalArgumentException("Column " + col.getName() + " is not generated.");
+        }
+
+        @Override
+        public boolean isPostInsert() {
+            return false;
+        }
+
+        @Override
+        public Object getNext(Connection cx) {
+            return UUID.randomUUID();
         }
     }
 

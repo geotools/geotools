@@ -224,11 +224,7 @@ class TINTriangle extends Polygon {
         return adjacentTriangles;
     }
 
-    /**
-     * Removes adjacent triangles
-     *
-     * @param remAdjacent
-     */
+    /** Removes adjacent triangles */
     protected void removeAdjacent(TINTriangle remAdjacent) {
         adjacentTriangles.remove(remAdjacent);
     }

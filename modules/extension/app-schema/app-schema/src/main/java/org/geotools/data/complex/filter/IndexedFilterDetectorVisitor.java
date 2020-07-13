@@ -61,8 +61,6 @@ public class IndexedFilterDetectorVisitor extends DefaultFilterVisitor {
     /**
      * Detect if AND/OR filter is the parent operator of indexed filter then collect the
      * full-indexed subfilter(s)
-     *
-     * @param filter
      */
     protected void processFilter(BinaryLogicOperator filter) {
         if (parentLogicOperator != null) return;
@@ -82,7 +80,6 @@ public class IndexedFilterDetectorVisitor extends DefaultFilterVisitor {
      * checks if Filter is fully indexed
      *
      * @param filter unrolled filter
-     * @return
      */
     protected boolean isFullyIndexed(Filter filter) {
         return IndexQueryUtils.checkAllPropertiesIndexed(

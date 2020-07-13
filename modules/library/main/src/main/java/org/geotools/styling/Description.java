@@ -31,11 +31,7 @@ public interface Description extends org.opengis.style.Description {
 
     void setTitle(InternationalString title);
 
-    /**
-     * Define title using the current locale.
-     *
-     * @param title
-     */
+    /** Define title using the current locale. */
     void setTitle(String title);
 
     /** Human readable description. */

@@ -30,7 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.data.arcgisrest.schema.catalog.Error__1;
+import org.geotools.data.arcgisrest.schema.catalog.Error_;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.GeometryBuilder;
@@ -230,7 +230,7 @@ public class GeoJSONParser implements SimpleFeatureIterator {
         this.inFeatureCollection = false;
     }
 
-    /** Helper function to convert a List of double to an array of doubles */
+    /** Helper funciton to convert a List of double to an array of doubles */
     public static double[] listToArray(List<Double> coords) {
 
         double[] arr = new double[coords.size()];
@@ -568,7 +568,6 @@ public class GeoJSONParser implements SimpleFeatureIterator {
         Geometry geom = null;
         String id = SimpleFeatureBuilder.createDefaultFeatureIdentifier(FEATURES).getID();
         Map<String, Object> props = new HashMap<String, Object>();
-        List<Object> values = new ArrayList();
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder(this.featureType);
 
         // Parses the feature
@@ -609,14 +608,24 @@ public class GeoJSONParser implements SimpleFeatureIterator {
         // Builds the feature, inserting the properties in the same
         // order of the atterbiutes in the feature type
         for (AttributeDescriptor attr : this.featureType.getAttributeDescriptors()) {
-
             if (this.featureType
                     .getGeometryDescriptor()
                     .getLocalName()
                     .equals(attr.getLocalName())) {
-                builder.add(geom);
+                builder.set(attr.getLocalName(), geom);
             } else {
-                builder.add(props.get(attr.getLocalName()));
+                if (props.get(attr.getLocalName()) != null) {
+                    try {
+                        builder.set(attr.getLocalName(), props.get(attr.getLocalName()));
+                        // FIXME: this fails with dates
+                    } catch (java.lang.AbstractMethodError e) {
+                        this.LOGGER.log(
+                                Level.SEVERE,
+                                String.format(
+                                        "Error reading attribute %s with value %s",
+                                        attr.getLocalName(), props.get(attr.getLocalName())));
+                    }
+                }
             }
         }
 
@@ -631,7 +640,7 @@ public class GeoJSONParser implements SimpleFeatureIterator {
      */
     public IOException parseError() throws IOException {
 
-        Error__1 err = new Error__1();
+        Error_ err = new Error_();
 
         try {
             this.reader.beginObject();

@@ -27,6 +27,7 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.coverage.io.netcdf.crs.NetCDFProjection;
+import org.geotools.coverage.io.netcdf.crs.ProjectionBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.imageio.netcdf.cv.CoordinateVariable;
 import org.geotools.imageio.netcdf.utilities.NetCDFCRSUtilities;
@@ -68,6 +69,8 @@ class NetCDFGeoreferenceManager {
             double[] yLat = new double[2];
             byte set = 0;
             isLonLat = false;
+            Map<String, Object> crsProperties = new HashMap<String, Object>();
+            String axisUnit = null;
             // Scan over coordinateVariables
             for (CoordinateVariable<?> cv : getCoordinatesVariables()) {
                 if (cv.isNumeric()) {
@@ -97,6 +100,11 @@ class NetCDFGeoreferenceManager {
                         case Lat:
                         case Lon:
                             isLonLat = true;
+                            break;
+                        case GeoY:
+                        case GeoX:
+                            axisUnit = cv.getUnit();
+                            break;
                         default:
                             break;
                     }
@@ -110,6 +118,13 @@ class NetCDFGeoreferenceManager {
                 throw new IllegalStateException("Unable to create envelope for this dataset");
             }
 
+            // The previous code was able to automatically convert km coordinates to meter.
+            // Let's check if we still want this automatically conversion occur or we
+            // want the actual axisUnit to be used.
+            if (!NetCDFCRSUtilities.isConvertAxisKm() && axisUnit != null) {
+                // We assume that unit will be the same for Lon/GeoX
+                crsProperties.put(ProjectionBuilder.AXIS_UNIT, axisUnit);
+            }
             // create the envelope
             CoordinateReferenceSystem crs = NetCDFCRSUtilities.WGS84;
             // Looks for Projection definition
@@ -120,7 +135,7 @@ class NetCDFGeoreferenceManager {
 
                 // Then, look for a per variable CRS
                 CoordinateReferenceSystem localCrs =
-                        NetCDFProjection.lookForVariableCRS(dataset, defaultCrs);
+                        NetCDFProjection.lookForVariableCRS(dataset, defaultCrs, crsProperties);
                 if (localCrs != null) {
                     // lookup for a custom EPSG if any
                     crs = NetCDFProjection.lookupForCustomEpsg(localCrs);
@@ -372,11 +387,7 @@ class NetCDFGeoreferenceManager {
             return dimensions.get(coordinateVariableName);
         }
 
-        /**
-         * Mapper parsing the coordinateVariables.
-         *
-         * @param coordinates
-         */
+        /** Mapper parsing the coordinateVariables. */
         public DimensionMapper(Map<String, CoordinateVariable<?>> coordinates) {
             // check other dimensions
             int coordinates2Dx = 0;
@@ -614,12 +625,7 @@ class NetCDFGeoreferenceManager {
         dimensionMapper = new DimensionMapper(coordinates);
     }
 
-    /**
-     * Initialize the bbox getter
-     *
-     * @throws IOException
-     * @throws FactoryException
-     */
+    /** Initialize the bbox getter */
     private void initBBox() throws IOException, FactoryException {
         bbox = hasSingleBBox ? new BBoxGetter() : new MultipleBBoxGetter();
     }
@@ -629,10 +635,6 @@ class NetCDFGeoreferenceManager {
      * coordinates will be stored in the provided array. The convention is that the stored
      * coordinates represent the center of the cell so we apply a half pixel offset to go to the
      * corner.
-     *
-     * @param cv
-     * @param coordinate
-     * @throws IOException
      */
     private void getCoordinate(CoordinateVariable<?> cv, double[] coordinate) throws IOException {
         if (cv.isRegular()) {

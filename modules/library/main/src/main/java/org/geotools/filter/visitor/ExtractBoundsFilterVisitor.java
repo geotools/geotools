@@ -122,7 +122,6 @@ public class ExtractBoundsFilterVisitor extends NullFilterVisitor {
     /**
      * Produce an ReferencedEnvelope from the provided data parameter.
      *
-     * @param data
      * @return ReferencedEnvelope
      */
     private ReferencedEnvelope bbox(Object data) {
@@ -146,7 +145,7 @@ public class ExtractBoundsFilterVisitor extends NullFilterVisitor {
         return infinity();
     }
 
-    Envelope infinity() {
+    protected Envelope infinity() {
         return new Envelope(
                 Double.NEGATIVE_INFINITY,
                 Double.POSITIVE_INFINITY,

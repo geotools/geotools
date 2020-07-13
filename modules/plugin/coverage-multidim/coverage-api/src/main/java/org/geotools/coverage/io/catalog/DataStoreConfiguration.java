@@ -107,13 +107,7 @@ public class DataStoreConfiguration {
         return storeName;
     }
 
-    /**
-     * Return default params for the 1 File <-> 1 H2 DB classic configuration.
-     *
-     * @param database
-     * @param parentLocation
-     * @return
-     */
+    /** Return default params for the 1 File <-> 1 H2 DB classic configuration. */
     public static Map<String, Serializable> getDefaultParams(String database, File parentLocation) {
         Utilities.ensureNonNull("database", database);
         Utilities.ensureNonNull("parentLocation", parentLocation);

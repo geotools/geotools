@@ -29,6 +29,7 @@ import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.function.FilterFunction_strToLowerCase;
 import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -46,6 +47,7 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.expression.Subtract;
 import org.opengis.filter.sort.SortBy;
@@ -103,12 +105,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         assertTrue(areCRSEqual(getWGS84(), bounds.getCoordinateReferenceSystem()));
     }
 
-    /**
-     * Allows subclasses to use a axis order specific version of it
-     *
-     * @return
-     * @throws FactoryException
-     */
+    /** Allows subclasses to use a axis order specific version of it */
     protected CoordinateReferenceSystem getWGS84() throws FactoryException {
         return CRS.decode("EPSG:4326");
     }
@@ -377,11 +374,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         }
     }
 
-    /**
-     * Makes sure the datastore works when the renderer uses the typical rendering hints
-     *
-     * @throws Exception
-     */
+    /** Makes sure the datastore works when the renderer uses the typical rendering hints */
     public void testRendererBehaviour() throws Exception {
         Query query = new Query(featureSource.getSchema().getTypeName());
         query.setHints(
@@ -563,11 +556,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         }
     }
 
-    /**
-     * Integration test checking that a CQL IN filter goes back being a IN in SQL
-     *
-     * @throws Exception
-     */
+    /** Integration test checking that a CQL IN filter goes back being a IN in SQL */
     public void testSimpleEncodeIn() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
         String property = aname("stringProperty");
@@ -596,6 +585,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         } else if (dialect instanceof PreparedStatementSQLDialect) {
             PreparedFilterToSQL filterToSQL =
                     ((PreparedStatementSQLDialect) dialect).createPreparedFilterToSQL();
+            filterToSQL.setFeatureType(featureSource.getSchema());
             String sql = filterToSQL.encodeToString(filters[0]);
             String escapedProperty = filterToSQL.escapeName(property);
             assertEquals(
@@ -611,12 +601,12 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
             fail("Unexpected dialect type: " + dialect);
         }
     }
+    /** @return expected list for {@link #testMixedEncodeIn()} */
+    protected List<Object> getTestMixedEncodeInExpected() {
+        return Arrays.asList("zero", "two", 1, 2, 0d);
+    }
 
-    /**
-     * Integration test checking that a CQL IN filter goes back being a IN in SQL
-     *
-     * @throws Exception
-     */
+    /** Integration test checking that a CQL IN filter goes back being a IN in SQL */
     public void testMixedEncodeIn() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
         String sp = aname("stringProperty");
@@ -663,6 +653,9 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         } else if (dialect instanceof PreparedStatementSQLDialect) {
             PreparedFilterToSQL filterToSQL =
                     ((PreparedStatementSQLDialect) dialect).createPreparedFilterToSQL();
+            // some dialects actually need the feature type to work, JDBCDataStore code
+            // always set its up, mimic that behavior in the test
+            filterToSQL.setFeatureType(featureSource.getSchema());
             String sql = filterToSQL.encodeToString(filters[0]);
             String spe = filterToSQL.escapeName(sp);
             String ipe = filterToSQL.escapeName(ip);
@@ -685,9 +678,25 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
                             + " IS NOT NULL ))",
                     sql);
             List<Object> literals = filterToSQL.getLiteralValues();
-            assertEquals(Arrays.asList("zero", "two", 1, 2, 0d), literals);
+            assertEquals(getTestMixedEncodeInExpected(), literals);
         } else {
             fail("Unexpected dialect, supports basic or prepared, but was a : " + dialect);
         }
+    }
+
+    /** Online tests for String functions along with Like operator */
+    public void testStringFunction() throws Exception {
+        // ignore if the String function is not supported
+        if (!dataStore.getFilterCapabilities().supports(FilterFunction_strToLowerCase.class)) {
+            LOGGER.info("Ignoring testStringFunction test");
+            return;
+        }
+
+        FilterFactory ff = dataStore.getFilterFactory();
+        Function function = ff.function("strToLowerCase", ff.property("stringProperty"));
+
+        // should hit the row where stringProperty starts with z (e.g zero)
+        PropertyIsLike likeWithStringFunction = ff.like(function, "z%", "%", "-", "\\", true);
+        assertEquals(1, featureSource.getCount(new Query(null, likeWithStringFunction)));
     }
 }

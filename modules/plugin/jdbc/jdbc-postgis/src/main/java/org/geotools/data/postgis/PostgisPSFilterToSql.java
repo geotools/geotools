@@ -17,7 +17,6 @@
 package org.geotools.data.postgis;
 
 import java.io.IOException;
-import org.geotools.data.postgis.filter.FilterFunction_pgNearest;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.jdbc.PreparedFilterToSQL;
 import org.opengis.feature.type.GeometryDescriptor;
@@ -124,8 +123,6 @@ public class PostgisPSFilterToSql extends PreparedFilterToSQL {
      * Overrides base behavior to handler arrays
      *
      * @param filter the comparison to be turned into SQL.
-     * @param extraData
-     * @throws RuntimeException
      */
     protected void visitBinaryComparisonOperator(BinaryComparisonOperator filter, Object extraData)
             throws RuntimeException {
@@ -168,27 +165,24 @@ public class PostgisPSFilterToSql extends PreparedFilterToSQL {
 
     public Object visit(PropertyIsEqualTo filter, Object extraData) {
         helper.out = out;
-        FilterFunction_pgNearest nearest = helper.getNearestFilter(filter);
-        if (nearest != null) {
-            return helper.visit(
-                    nearest,
-                    extraData,
-                    new FilterToSqlHelper.NearestHelperContext(
-                            dialect,
-                            (a, b) -> {
-                                try {
-                                    ((PostGISPSDialect) dialect)
-                                            .encodeGeometryValue(
-                                                    a,
-                                                    helper.getFeatureTypeGeometryDimension(),
-                                                    helper.getFeatureTypeGeometrySRID(),
-                                                    b);
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
-                                }
-                            }));
-        } else {
-            return super.visit(filter, extraData);
+        if (helper.isSupportedEqualFunction(filter)) {
+            return helper.visitSupportedEqualFunction(
+                    filter,
+                    dialect,
+                    (a, b) -> {
+                        try {
+                            ((PostGISPSDialect) dialect)
+                                    .encodeGeometryValue(
+                                            a,
+                                            helper.getFeatureTypeGeometryDimension(),
+                                            helper.getFeatureTypeGeometrySRID(),
+                                            b);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    },
+                    extraData);
         }
+        return super.visit(filter, extraData);
     }
 }

@@ -23,9 +23,11 @@ import net.opengis.wmts.v_1.TileMatrixSetLimitsType;
 import net.opengis.wmts.v_1.TileMatrixSetLinkType;
 import net.opengis.wmts.v_1.wmtsv_1Factory;
 import org.geotools.wmts.WMTS;
-import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.AbstractComplexEMFBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  * Binding object for the element http://www.opengis.net/wmts/1.0:TileMatrixSetLink.
@@ -61,7 +63,7 @@ import org.geotools.xsd.Node;
  *
  * @generated
  */
-public class TileMatrixSetLinkBinding extends AbstractComplexBinding {
+public class TileMatrixSetLinkBinding extends AbstractComplexEMFBinding {
 
     wmtsv_1Factory factory;
 
@@ -100,5 +102,29 @@ public class TileMatrixSetLinkBinding extends AbstractComplexBinding {
         link.setTileMatrixSetLimits(
                 (TileMatrixSetLimitsType) node.getChildValue("TileMatrixSetLimits"));
         return link;
+    }
+
+    @Override
+    public Element encode(Object object, Document document, Element value) throws Exception {
+        // This needs its own encode method because otherwise the EMF encoder will mistake
+        // the contained wmts:TileMatrixSet for a TileMatrixSetType and try to encode it that
+        // way, ending up with an empty element in the document
+
+        Element e = super.encode(object, document, value);
+
+        TileMatrixSetLinkType matrixLink = (TileMatrixSetLinkType) object;
+
+        Element tileMatrixNode = document.createElementNS(WMTS.NAMESPACE, "TileMatrixSet");
+        tileMatrixNode.setTextContent(matrixLink.getTileMatrixSet());
+        e.appendChild(tileMatrixNode);
+
+        if (matrixLink.getTileMatrixSetLimits() != null) {
+
+            TileMatrixSetLimitsBinding tileMatrixSetLimitsBinding =
+                    new TileMatrixSetLimitsBinding(factory);
+            e = tileMatrixSetLimitsBinding.encode(matrixLink.getTileMatrixSetLimits(), document, e);
+        }
+
+        return e;
     }
 }

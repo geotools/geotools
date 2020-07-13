@@ -7,18 +7,21 @@ language: java
 before_install:
   - sed -i.bak -e 's|https://nexus.codehaus.org/snapshots/|https://oss.sonatype.org/content/repositories/codehaus-snapshots/|g' ~/.m2/settings.xml
   - unset _JAVA_OPTIONS
-install: true
+  - if [ "$TRAVIS_JOB_NAME" == "Oracle XE" ]; then
+       sh ".travis/start-oracle-xe.sh";
+       sh ".travis/setup-oracle.sh";
+    fi
+
+install: 
+  - if [ "$TRAVIS_JOB_NAME" == "MS SQL server 2019" ]; then
+       sh ".travis/install-mssql2019.sh";
+       sh ".travis/setup-mssql.sh";
+    fi
 env:
   global:
     - MAVEN_OPTS=-Xmx756m
-before_script:
-  - wget https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.6.0/apache-maven-3.6.0-bin.tar.gz
-  - tar zxf apache-maven-3.6.0-bin.tar.gz
-  - export M2_HOME=$PWD/apache-maven-3.6.0
-  - wget -P $M2_HOME/lib/ext http://repo1.maven.org/maven2/io/takari/maven/takari-smart-builder/0.6.1/takari-smart-builder-0.6.1.jar
-  - export PATH=$M2_HOME/bin:$PATH
 script:
-  - mvn -B -fae -Dall clean install -T2 --builder smart $ARGS
+  - mvn -B -fae -Dall clean install -T2 $ARGS
 notifications:
   email: false
   on_failure: never
@@ -26,13 +29,25 @@ addons:
   apt:
     packages:
       - python-sphinx
-      - libgdal1h
 matrix:
   include:
     - jdk: oraclejdk8
       env: ARGS="-Dfmt.skip=true"
-    - jdk: oraclejdk11
+    - jdk: openjdk11
       env: ARGS="-Dfmt.skip=true"
-    - jdk: oraclejdk11
+    - jdk: openjdk11
       env: ARGS="-Dfmt.action=check -Dqa=true -DskipTests=true"
-
+    - jdk: openjdk8
+      env: ARGS="-pl :gt-jdbc-sqlserver -Dfmt.skip=true -Ponline -am"
+      dist: bionic
+      name: "MS SQL server 2019"
+    - jdk: openjdk8
+      env: ARGS="-pl :gt-jdbc-oracle -Ponline -Ptravis-oracle-build -Dfmt.skip=true -am"
+      dist: bionic
+      name: "Oracle XE"
+      services:
+        - docker
+      addons:
+        apt:
+          packages:
+            - docker-ce

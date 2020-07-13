@@ -127,29 +127,17 @@ public class MarkStyle2D extends PolygonStyle2D implements PointStyle2D {
         return size;
     }
 
-    /**
-     * Sets the shape rotation, in radians
-     *
-     * @param f
-     */
+    /** Sets the shape rotation, in radians */
     public void setRotation(float f) {
         rotation = f;
     }
 
-    /**
-     * Sets the shape to be used to render the mark
-     *
-     * @param shape
-     */
+    /** Sets the shape to be used to render the mark */
     public void setShape(Shape shape) {
         this.shape = shape;
     }
 
-    /**
-     * Sets the size of the shape, in pixels
-     *
-     * @param i
-     */
+    /** Sets the size of the shape, in pixels */
     public void setSize(double i) {
         size = i;
     }
@@ -169,7 +157,6 @@ public class MarkStyle2D extends PolygonStyle2D implements PointStyle2D {
      * this class)
      *
      * @since 2.7.3
-     * @param useMaxMarkSize
      */
     public static void setMaxMarkSizeEnabled(boolean useMaxMarkSize) {
         MarkStyle2D.maxMarkSizeEnabled = useMaxMarkSize;

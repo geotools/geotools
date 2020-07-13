@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import org.geotools.data.Query;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -112,7 +113,6 @@ public class FidQueryTest extends FIDTestCase {
 
         Query query = new Query(schema.getTypeName());
         FeatureId id = newFids.iterator().next();
-        String fid = id.getID();
 
         Filter filter = fac.id(Collections.singleton(id));
         query.setFilter(filter);
@@ -139,7 +139,6 @@ public class FidQueryTest extends FIDTestCase {
 
         Id createFidFilter = ff.id(Collections.singleton(ff.featureId(feature.getID())));
 
-        SimpleFeatureType schema = feature.getFeatureType();
         featureStore.modifyFeatures(new NameImpl("ID"), Integer.valueOf(newId), createFidFilter);
 
         SimpleFeatureIterator features = featureStore.getFeatures(createFidFilter).features();
@@ -188,8 +187,6 @@ public class FidQueryTest extends FIDTestCase {
     /**
      * Attempt to test GEOT-5830 User reports that deleting a feature, re-requesting the data gives
      * a duplicate FID and the subsequent attempt to delete fails due to corrupt FIX
-     *
-     * @throws Exception
      */
     @Test
     public void testDeleteCloseAndRerequestFID() throws Exception {
@@ -241,10 +238,11 @@ public class FidQueryTest extends FIDTestCase {
 
         int i = 0;
 
-        for (Iterator iter = fids.entrySet().iterator(); iter.hasNext(); ) {
+        for (Iterator<Entry<String, SimpleFeature>> iter = fids.entrySet().iterator();
+                iter.hasNext(); ) {
             i++;
-            Map.Entry entry = (Map.Entry) iter.next();
-            String fid = (String) entry.getKey();
+            Entry<String, SimpleFeature> entry = iter.next();
+            String fid = entry.getKey();
             FeatureId id = fac.featureId(fid);
             Filter filter = fac.id(Collections.singleton(id));
             query.setFilter(filter);

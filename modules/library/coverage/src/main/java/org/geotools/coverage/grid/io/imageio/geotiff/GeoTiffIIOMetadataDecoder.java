@@ -242,11 +242,7 @@ public final class GeoTiffIIOMetadataDecoder {
         return geoKeys.get(keyID);
     }
 
-    /**
-     * Return the GeoKeys.
-     *
-     * @return
-     */
+    /** Return the GeoKeys. */
     public Collection<GeoKeyEntry> getGeoKeys() {
         return geoKeys.values();
     }

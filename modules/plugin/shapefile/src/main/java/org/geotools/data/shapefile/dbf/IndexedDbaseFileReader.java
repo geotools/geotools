@@ -20,6 +20,7 @@
 package org.geotools.data.shapefile.dbf;
 
 import java.io.IOException;
+import java.nio.Buffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
 import java.nio.charset.Charset;
@@ -63,12 +64,7 @@ import org.geotools.util.NIOUtilities;
  */
 public class IndexedDbaseFileReader extends DbaseFileReader {
 
-    /**
-     * Like calling DbaseFileReader(ReadableByteChannel, true);
-     *
-     * @param channel
-     * @throws IOException
-     */
+    /** Like calling DbaseFileReader(ReadableByteChannel, true); */
     public IndexedDbaseFileReader(ShpFiles shpFiles) throws IOException {
         this(shpFiles, false);
     }
@@ -103,6 +99,7 @@ public class IndexedDbaseFileReader extends DbaseFileReader {
         super(shpFiles, useMemoryMappedBuffer, stringCharset, timeZone);
     }
 
+    @SuppressWarnings("PMD.CloseResource") // this.channel is managed as a field
     public void goTo(int recno) throws IOException, UnsupportedOperationException {
 
         if (this.randomAccessEnabled) {
@@ -122,24 +119,24 @@ public class IndexedDbaseFileReader extends DbaseFileReader {
                         currentOffset = fc.size() - Integer.MAX_VALUE;
                     }
                     buffer = fc.map(MapMode.READ_ONLY, currentOffset, Integer.MAX_VALUE);
-                    buffer.position((int) (newPosition - currentOffset));
+                    ((Buffer) buffer).position((int) (newPosition - currentOffset));
                 } else {
-                    buffer.position((int) (newPosition - currentOffset));
+                    ((Buffer) buffer).position((int) (newPosition - currentOffset));
                 }
             } else {
                 if (this.currentOffset <= newPosition
                         && this.currentOffset + buffer.limit() >= newPosition) {
-                    buffer.position((int) (newPosition - this.currentOffset));
+                    ((Buffer) buffer).position((int) (newPosition - this.currentOffset));
                     // System.out.println("Hit");
                 } else {
                     // System.out.println("Jump");
                     FileChannel fc = (FileChannel) this.channel;
                     fc.position(newPosition);
                     this.currentOffset = newPosition;
-                    buffer.limit(buffer.capacity());
-                    buffer.position(0);
+                    ((Buffer) buffer).limit(buffer.capacity());
+                    ((Buffer) buffer).position(0);
                     fill(buffer, fc);
-                    buffer.position(0);
+                    ((Buffer) buffer).position(0);
                 }
             }
         } else {
@@ -153,12 +150,13 @@ public class IndexedDbaseFileReader extends DbaseFileReader {
 
     @SuppressWarnings("PMD.SystemPrintln")
     public static void main(String[] args) throws Exception {
-        IndexedDbaseFileReader reader = new IndexedDbaseFileReader(new ShpFiles(args[0]), false);
-        System.out.println(reader.getHeader());
-        int r = 0;
-        while (reader.hasNext()) {
-            System.out.println(++r + "," + java.util.Arrays.asList(reader.readEntry()));
+        try (IndexedDbaseFileReader reader =
+                new IndexedDbaseFileReader(new ShpFiles(args[0]), false)) {
+            System.out.println(reader.getHeader());
+            int r = 0;
+            while (reader.hasNext()) {
+                System.out.println(++r + "," + java.util.Arrays.asList(reader.readEntry()));
+            }
         }
-        reader.close();
     }
 }

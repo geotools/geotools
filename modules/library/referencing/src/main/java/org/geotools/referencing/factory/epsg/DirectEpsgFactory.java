@@ -32,7 +32,6 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -47,6 +46,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
+import javax.measure.MetricPrefix;
 import javax.measure.Unit;
 import javax.sql.DataSource;
 import org.geotools.measure.Units;
@@ -142,8 +142,7 @@ import org.opengis.util.InternationalString;
 import si.uom.NonSI;
 import si.uom.SI;
 import systems.uom.common.USCustomary;
-import tec.uom.se.AbstractUnit;
-import tec.uom.se.unit.MetricPrefix;
+import tech.units.indriya.AbstractUnit;
 
 /**
  * A coordinate reference system factory backed by the EPSG database tables.
@@ -178,6 +177,7 @@ import tec.uom.se.unit.MetricPrefix;
  * @author Matthias Basler
  * @author Andrea Aime
  */
+@SuppressWarnings("PMD.CloseResource") // class implements its own PreparedStatement pool
 public abstract class DirectEpsgFactory extends DirectAuthorityFactory
         implements CRSAuthorityFactory,
                 CSAuthorityFactory,
@@ -409,13 +409,6 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
     private transient String lastTableForName;
 
     /**
-     * The calendar instance for creating {@link java.util.Date} objects from a year (the "epoch" in
-     * datum definition). We use the local timezone, which may not be quite accurate. But there is
-     * no obvious timezone for "epoch", and the "epoch" is approximative anyway.
-     */
-    private final Calendar calendar = Calendar.getInstance();
-
-    /**
      * A pool of prepared statements. Key are {@link String} object related to their originating
      * method name (for example "Ellipsoid" for {@link #createEllipsoid}, while values are {@link
      * PreparedStatement} objects.
@@ -489,7 +482,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
     /**
      * The buffered authority factory, or {@code this} if none. This field is set to a different
      * value by {@link ThreadedEpsgFactory} only, which will point toward a buffered factory
-     * wrapping this {@code DirectEpsgFactory} for efficienty.
+     * wrapping this {@code DirectEpsgFactory} for efficiency.
      */
     AbstractAuthorityFactory buffered = this;
 
@@ -590,6 +583,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      * @throws FactoryException if the database's metadata can't be fetched.
      */
     @Override
+    @SuppressWarnings("PMD.CloseResource")
     public synchronized String getBackingStoreDescription() throws FactoryException {
         final Citation authority = getAuthority();
         final TableWriter table = new TableWriter(null, " ");
@@ -993,7 +987,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      * Returns the name for the {@link IdentifiedObject} to construct. This method also search for
      * alias.
      *
-     * @param name The name for the {@link IndentifiedObject} to construct.
+     * @param name The name for the {@link IdentifiedObject} to construct.
      * @param code The EPSG code of the object to construct.
      * @param remarks Remarks, or {@code null} if none.
      * @return The name together with a set of properties.
@@ -1062,7 +1056,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      * Returns the name for the {@link IdentifiedObject} to construct. This method also search for
      * alias.
      *
-     * @param name The name for the {@link IndentifiedObject} to construct.
+     * @param name The name for the {@link IdentifiedObject} to construct.
      * @param code The EPSG code of the object to construct.
      * @param area The area of use, or {@code null} if none.
      * @param scope The scope, or {@code null} if none.
@@ -1679,7 +1673,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                     final String name = getString(result, 2, code);
                     final String type = getString(result, 3, code).trim().toLowerCase();
                     final String anchor = result.getString(4);
-                    final String epoch = result.getString(5);
+                    final Date epoch = result.getDate(5);
                     final String area = result.getString(6);
                     final String scope = result.getString(7);
                     final String remarks = result.getString(8);
@@ -1688,11 +1682,9 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                     if (anchor != null) {
                         properties.put(Datum.ANCHOR_POINT_KEY, anchor);
                     }
-                    if (epoch != null && epoch.length() != 0)
+                    if (epoch != null)
                         try {
-                            calendar.clear();
-                            calendar.set(Integer.parseInt(epoch), 0, 1);
-                            properties.put(Datum.REALIZATION_EPOCH_KEY, calendar.getTime());
+                            properties.put(Datum.REALIZATION_EPOCH_KEY, epoch);
                         } catch (NumberFormatException exception) {
                             // Not a fatal error...
                             Logging.unexpectedException(
@@ -3588,11 +3580,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
         return true;
     }
 
-    /**
-     * Returns the current validation query
-     *
-     * @return
-     */
+    /** Returns the current validation query */
     public String getValidationQuery() {
         return validationQuery;
     }
@@ -3600,8 +3588,6 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
     /**
      * Sets the query it's run before using connection and prepared statements in order to check the
      * connection is still valid. The query should hit the database, but be as fast as possible.
-     *
-     * @param validationQuery
      */
     public void setValidationQuery(String validationQuery) {
         this.validationQuery = validationQuery;

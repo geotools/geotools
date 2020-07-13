@@ -654,8 +654,6 @@ public class Rendering2DTest extends TestCase {
      * Tests the layer definition query behavior as implemented by StreamingRenderer.
      *
      * <p>This method relies on the features created on createTestFeatureCollection()
-     *
-     * @throws Exception
      */
     public void testDefinitionQueryProcessing() throws Exception {
 
@@ -1018,11 +1016,7 @@ public class Rendering2DTest extends TestCase {
         return clone;
     }
 
-    /**
-     * I am not sure this is really correct. We should check it with more care.
-     *
-     * @throws Exception
-     */
+    /** I am not sure this is really correct. We should check it with more care. */
     public void testScaleCalc() throws Exception {
 
         // 1388422.8746916912, 639551.3924667436

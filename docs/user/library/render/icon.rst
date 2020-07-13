@@ -22,8 +22,8 @@ To use this class we are going to need to define a style that refers to this new
 
 To register your class you will need to:
   
-1. Create the following folder: META_INF/services/
-2. In this folder create a file: org.geotools.renderer.style.MarkFactory
+1. Create the following folder: ``META_INF/services/``
+2. In this folder create a file: ``org.geotools.renderer.style.MarkFactory``
    
    The contents of this file should list your implementation::
       
@@ -45,5 +45,5 @@ This class is responsible for:
 
 Your implementation can:
 
-* implement a dynamic Icon directly (useful for symbols that need to be composed based on feature attributes)
-* or as simple as a straight SwingIcon backed by a PNG file contained in your jar.
+* implement a dynamic ``Icon`` directly (useful for symbols that need to be composed based on feature attributes)
+* or as simple as a straight ``SwingIcon`` backed by a PNG file contained in your jar.

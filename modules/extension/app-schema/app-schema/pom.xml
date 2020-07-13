@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.geotools</groupId>
         <artifactId>app-schema</artifactId>
-        <version>22-SNAPSHOT</version>
+        <version>24-SNAPSHOT</version>
     </parent>
 
     <groupId>org.geotools</groupId>
@@ -18,12 +18,31 @@
 
     <developers>
         <developer>
+            <name>Nuno Oliveira</name>
+            <id>nmco</id>
+            <email>nuno.oliveira@geo-solutions.it</email>
+            <organization>GeoSolutions</organization>
+            <roles>
+                <role>Module Maintainer</role>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Fernando Mino</name>
+            <id>fernandor777</id>
+            <email>fernando.mino@geo-solutions.it</email>
+            <organization>GeoSolutions</organization>
+            <roles>
+                <role>Module Maintainer</role>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
+        <developer>
             <name>Ben Caradoc-Davies</name>
             <id>bencaradocdavies</id>
             <email>ben@transient.nz</email>
             <organization>Transient Software Limited</organization>
             <roles>
-                <role>Module Maintainer</role>
                 <role>Java Developer</role>
             </roles>
             <timezone>Pacific/Auckland</timezone>
@@ -53,27 +72,20 @@
             <classifier>tests</classifier>
             <scope>test</scope>
         </dependency>
+       <dependency>
+           <groupId>org.jdom</groupId>
+           <artifactId>jdom2</artifactId>
+       </dependency>
         <dependency>
             <groupId>commons-digester</groupId>
             <artifactId>commons-digester</artifactId>
-            <version>1.7</version>
+            <version>1.8.1</version>
             <exclusions>
-                <exclusion>
-                    <groupId>commons-collections</groupId>
-                    <artifactId>commons-collections</artifactId>
-                </exclusion>
                 <exclusion>
                     <groupId>commons-beanutils</groupId>
                     <artifactId>commons-beanutils</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <!-- override transitive dependency from commons-digester 1.7 which depends on commons-collections
-                2.1, since xml (SchemaIndexImpl) depends on commons-collections 3.1 -->
-            <groupId>commons-collections</groupId>
-            <artifactId>commons-collections</artifactId>
-            <version>3.2.2</version>  <!-- Updated for security (CVE-2015-8103) binary compatible with 3.1 -->
         </dependency>
         <dependency>
             <!-- override transitive dependency from commons-digester 1.7 which depends on commons-collections
@@ -192,6 +204,12 @@
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-server</artifactId>
             <version>9.4.12.v20180830</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools.xsd</groupId>
+            <artifactId>gt-xsd-wfs</artifactId>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

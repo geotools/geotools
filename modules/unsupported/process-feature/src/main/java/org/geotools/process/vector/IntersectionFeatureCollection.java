@@ -176,10 +176,6 @@ public class IntersectionFeatureCollection implements VectorProcess {
 
     /**
      * Checks if the specified class is same, or subclass, of any of the specified target classes
-     *
-     * @param test
-     * @param targets
-     * @return
      */
     static boolean isGeometryTypeIn(Class test, Class... targets) {
         for (Class target : targets) {

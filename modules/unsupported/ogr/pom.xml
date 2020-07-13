@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>unsupported</artifactId>
-    <version>22-SNAPSHOT</version>
+    <version>24-SNAPSHOT</version>
   </parent>
 
 
@@ -91,7 +91,6 @@
   
   <modules>
     <module>ogr-core</module>
-    <module>ogr-bridj</module>
     <module>ogr-jni</module>
   </modules>
 </project>

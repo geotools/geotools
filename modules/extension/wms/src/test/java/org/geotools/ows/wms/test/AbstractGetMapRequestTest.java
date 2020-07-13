@@ -46,14 +46,7 @@ public class AbstractGetMapRequestTest extends TestCase {
 
     private class RequestTestHelp extends AbstractGetMapRequest {
 
-        /**
-         * @param onlineResource
-         * @param properties
-         * @param availableLayers
-         * @param availableSRSs
-         * @param availableFormats
-         * @param availableExceptions
-         */
+        /** */
         public RequestTestHelp(URL onlineResource, Properties properties) {
             super(onlineResource, properties);
             // TODO Auto-generated constructor stub

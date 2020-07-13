@@ -21,6 +21,7 @@ package org.geotools.data.shapefile.dbf;
 
 import java.io.EOFException;
 import java.io.IOException;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.ReadableByteChannel;
@@ -99,6 +100,16 @@ public class DbaseFileHeader {
     // lets start out with a zero-length array, just in case
     private DbaseField[] fields = new DbaseField[0];
 
+    private Charset charset;
+
+    public DbaseFileHeader() {
+        this.charset = Charset.defaultCharset();
+    }
+
+    public DbaseFileHeader(Charset charset) {
+        this.charset = charset;
+    }
+
     private void read(ByteBuffer buffer, ReadableByteChannel channel) throws IOException {
         while (buffer.remaining() > 0) {
             if (channel.read(buffer) == -1) {
@@ -124,8 +135,8 @@ public class DbaseFileHeader {
      * @param i The index of the field, from 0 to <CODE>getNumFields() - 1</CODE> .
      * @return A Class which closely represents the dbase field type.
      */
-    public Class getFieldClass(int i) {
-        Class typeClass = null;
+    public Class<?> getFieldClass(int i) {
+        Class<?> typeClass = null;
 
         switch (fields[i].fieldType) {
             case 'C':
@@ -221,13 +232,14 @@ public class DbaseFileHeader {
         }
         // Fix for GEOT-42, ArcExplorer will not handle field names > 10 chars
         // Sorry folks.
-        if (tempFieldName.length() > 10) {
-            tempFieldName = tempFieldName.substring(0, 10);
+        String fitFieldName = fitStringRegardingCharset(tempFieldName, 10);
+        if (!tempFieldName.equals(fitFieldName)) {
+            tempFieldName = fitFieldName;
             if (logger.isLoggable(Level.WARNING)) {
                 logger.warning(
                         "FieldName "
                                 + inFieldName
-                                + " is longer than 10 characters, truncating to "
+                                + " is longer than 10 bytes in given charset, truncating to "
                                 + tempFieldName);
             }
         }
@@ -367,6 +379,15 @@ public class DbaseFileHeader {
         recordLength = tempLength;
     }
 
+    private String fitStringRegardingCharset(String s, int bytesCnt) {
+        int len = s.length();
+        String result = s;
+        while (result.getBytes(charset).length > bytesCnt) {
+            result = s.substring(0, --len);
+        }
+        return result;
+    }
+
     /**
      * Remove a column from this DbaseFileHeader.
      *
@@ -503,17 +524,6 @@ public class DbaseFileHeader {
      * @throws IOException If errors occur while reading.
      */
     public void readHeader(ReadableByteChannel channel) throws IOException {
-        readHeader(channel, Charset.defaultCharset());
-    }
-
-    /**
-     * Read the header data from the DBF file.
-     *
-     * @param channel A readable byte channel. If you have an InputStream you need to use, you can
-     *     call java.nio.Channels.getChannel(InputStream in).
-     * @throws IOException If errors occur while reading.
-     */
-    public void readHeader(ReadableByteChannel channel, Charset charset) throws IOException {
         // we'll read in chunks of 1K
         ByteBuffer in = NIOUtilities.allocate(1024);
         try {
@@ -522,10 +532,10 @@ public class DbaseFileHeader {
             in.order(ByteOrder.LITTLE_ENDIAN);
 
             // only want to read first 10 bytes...
-            in.limit(10);
+            ((Buffer) in).limit(10);
 
             read(in, channel);
-            in.position(0);
+            ((Buffer) in).position(0);
 
             // type of file.
             byte magic = in.get();
@@ -562,7 +572,7 @@ public class DbaseFileHeader {
                 NIOUtilities.clean(in, false);
                 in = NIOUtilities.allocate(headerLength - 10);
             }
-            in.limit(headerLength - 10);
+            ((Buffer) in).limit(headerLength - 10);
             in.position(0);
             read(in, channel);
             in.position(0);
@@ -578,7 +588,7 @@ public class DbaseFileHeader {
             fieldCnt = (headerLength - FILE_DESCRIPTOR_SIZE - 1) / FILE_DESCRIPTOR_SIZE;
 
             // read all of the header records
-            List lfields = new ArrayList();
+            List<DbaseField> lfields = new ArrayList<>();
             for (int i = 0; i < fieldCnt; i++) {
                 DbaseField field = new DbaseField();
 
@@ -693,14 +703,14 @@ public class DbaseFileHeader {
         fieldCnt = (headerLength - FILE_DESCRIPTOR_SIZE - 1) / FILE_DESCRIPTOR_SIZE;
 
         // read all of the header records
-        List lfields = new ArrayList();
+        List<DbaseField> lfields = new ArrayList<>();
         for (int i = 0; i < fieldCnt; i++) {
             DbaseField field = new DbaseField();
 
             // read the field name
             byte[] buffer = new byte[11];
             in.get(buffer);
-            String name = new String(buffer);
+            String name = new String(buffer, charset.name());
             int nullPoint = name.indexOf(0);
             if (nullPoint != -1) {
                 name = name.substring(0, nullPoint);
@@ -809,9 +819,10 @@ public class DbaseFileHeader {
             for (int i = 0; i < fields.length; i++) {
 
                 // write the field name
+                byte[] fieldNameBytes = fields[i].fieldName.getBytes(charset);
                 for (int j = 0; j < 11; j++) {
-                    if (fields[i].fieldName.length() > j) {
-                        buffer.put((byte) fields[i].fieldName.charAt(j));
+                    if (j < fieldNameBytes.length) {
+                        buffer.put(fieldNameBytes[j]);
                     } else {
                         buffer.put((byte) 0);
                     }
@@ -883,12 +894,7 @@ public class DbaseFileHeader {
                 + fs;
     }
 
-    /**
-     * Returns the expected file size for the given number of records in the file
-     *
-     * @param records
-     * @return
-     */
+    /** Returns the expected file size for the given number of records in the file */
     public long getLengthForRecords(int records) {
         return headerLength + records * recordLength;
     }

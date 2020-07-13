@@ -157,7 +157,6 @@ public class CoverageReadRequest extends CoverageRequest {
      *
      * <p>Note that a null {@link RangeType} means get everything.
      *
-     * @param value
      * @uml.property name="rangeSubset"
      */
     public void setRangeSubset(final RangeType value) {

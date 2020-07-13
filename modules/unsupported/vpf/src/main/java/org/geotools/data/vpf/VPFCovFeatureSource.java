@@ -57,16 +57,17 @@ public class VPFCovFeatureSource extends VPFFeatureSource {
         CoordinateReferenceSystem crs = this.featureType.getCoordinateReferenceSystem();
         ReferencedEnvelope bounds = null;
 
-        FeatureReader<SimpleFeatureType, SimpleFeature> rdr = this.getReader();
-        while (rdr.hasNext()) {
-            SimpleFeature feature = rdr.next();
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> rdr = this.getReader()) {
+            while (rdr.hasNext()) {
+                SimpleFeature feature = rdr.next();
 
-            if (feature != null) {
+                if (feature != null) {
 
-                BoundingBox bb = feature.getBounds();
+                    BoundingBox bb = feature.getBounds();
 
-                if (bounds == null) bounds = new ReferencedEnvelope(bb);
-                else bounds.expandToInclude(ReferencedEnvelope.reference(bb));
+                    if (bounds == null) bounds = new ReferencedEnvelope(bb);
+                    else bounds.expandToInclude(ReferencedEnvelope.reference(bb));
+                }
             }
         }
 

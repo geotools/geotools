@@ -117,22 +117,19 @@ public class JTSUtilities {
         return type;
     }
 
-    public static final Class findBestGeometryClass(ShapeType type) {
-        Class best;
+    public static final Class<? extends Geometry> findBestGeometryClass(ShapeType type) {
         if (type == null || type == ShapeType.NULL) {
-            best = Geometry.class;
+            return Geometry.class;
         } else if (type.isLineType()) {
-            best = MultiLineString.class;
+            return MultiLineString.class;
         } else if (type.isMultiPointType()) {
-            best = MultiPoint.class;
+            return MultiPoint.class;
         } else if (type.isPointType()) {
-            best = Point.class;
+            return Point.class;
         } else if (type.isPolygonType()) {
-            best = MultiPolygon.class;
-        } else {
-            throw new RuntimeException("Unknown ShapeType->GeometryClass : " + type);
+            return MultiPolygon.class;
         }
-        return best;
+        throw new RuntimeException("Unknown ShapeType->GeometryClass : " + type);
     }
 
     /**
@@ -246,14 +243,14 @@ public class JTSUtilities {
         GeometryFactory factory = geom.getFactory();
 
         if (type.isPointType()) {
-            if ((geom instanceof Point)) {
+            if (geom instanceof Point) {
                 retVal = geom;
             } else {
                 Point[] pNull = null;
                 retVal = factory.createMultiPoint(pNull);
             }
         } else if (type.isLineType()) {
-            if ((geom instanceof LineString)) {
+            if (geom instanceof LineString) {
                 retVal = factory.createMultiLineString(new LineString[] {(LineString) geom});
             } else if (geom instanceof MultiLineString) {
                 retVal = geom;
@@ -270,7 +267,7 @@ public class JTSUtilities {
                 retVal = factory.createMultiPolygon(null);
             }
         } else if (type.isMultiPointType()) {
-            if ((geom instanceof Point)) {
+            if (geom instanceof Point) {
                 retVal = factory.createMultiPoint(new Point[] {(Point) geom});
             } else if (geom instanceof MultiPoint) {
                 retVal = geom;
@@ -373,63 +370,46 @@ public class JTSUtilities {
      * @return The best ShapeType.
      * @throws ShapefileException If theres a problem, like a bogus feature class.
      */
-    public static final ShapeType getShapeType(Class featureClass) throws ShapefileException {
-
-        ShapeType type = null;
-
+    public static final ShapeType getShapeType(Class<? extends Geometry> featureClass)
+            throws ShapefileException {
         if (Point.class.equals(featureClass)) {
-            type = ShapeType.POINT;
+            return ShapeType.POINT;
         } else if (MultiPoint.class.equals(featureClass)) {
-            type = ShapeType.MULTIPOINT;
+            return ShapeType.MULTIPOINT;
         } else if (Polygon.class.equals(featureClass) || MultiPolygon.class.equals(featureClass)) {
-            type = ShapeType.POLYGON;
+            return ShapeType.POLYGON;
         } else if (LineString.class.equals(featureClass)
                 || MultiLineString.class.equals(featureClass)) {
-            type = ShapeType.ARC;
+            return ShapeType.ARC;
         }
-
-        if (type == null) {
-            throw new ShapefileException(
-                    "Cannot handle geometry class : "
-                            + (featureClass == null ? "null" : featureClass.getName()));
-        }
-        return type;
+        throw new ShapefileException(
+                "Cannot handle geometry class : "
+                        + (featureClass == null ? "null" : featureClass.getName()));
     }
 
     /**
      * Determine the default ShapeType using the descriptor and eventually the geometry to guess the
      * coordinate dimensions if not reported in the descriptor hints
-     *
-     * @param gd
-     * @param g
-     * @return
      */
     public static final ShapeType getShapeType(GeometryDescriptor gd) throws ShapefileException {
-        Class featureClass = gd.getType().getBinding();
-        Integer dimension = (Integer) gd.getUserData().get(Hints.COORDINATE_DIMENSION);
+        @SuppressWarnings("unchecked")
+        Class<? extends Geometry> featureClass =
+                (Class<? extends Geometry>) gd.getType().getBinding();
 
-        ShapeType type = null;
+        Integer dimension = (Integer) gd.getUserData().get(Hints.COORDINATE_DIMENSION);
+        final int dim = dimension == null ? 2 : dimension.intValue();
         if (Point.class.equals(featureClass)) {
-            if (dimension != null && dimension == 3) type = ShapeType.POINTZ;
-            else type = ShapeType.POINT;
+            return dim == 3 ? ShapeType.POINTZ : ShapeType.POINT;
         } else if (MultiPoint.class.equals(featureClass)) {
-            if (dimension != null && dimension == 3) type = ShapeType.MULTIPOINTZ;
-            else type = ShapeType.MULTIPOINT;
+            return dim == 3 ? ShapeType.MULTIPOINTZ : ShapeType.MULTIPOINT;
         } else if (Polygon.class.equals(featureClass) || MultiPolygon.class.equals(featureClass)) {
-            if (dimension != null && dimension == 3) type = ShapeType.POLYGON;
-            else type = ShapeType.POLYGONZ;
+            return dim == 3 ? ShapeType.POLYGON : ShapeType.POLYGONZ;
         } else if (LineString.class.equals(featureClass)
                 || MultiLineString.class.equals(featureClass)) {
-            if (dimension != null && dimension == 3) type = ShapeType.ARC;
-            else type = ShapeType.ARCZ;
+            return dim == 3 ? ShapeType.ARC : ShapeType.ARCZ;
         }
-
-        if (type == null) {
-            throw new ShapefileException(
-                    "Cannot handle geometry class : "
-                            + (featureClass == null ? "null" : featureClass.getName()));
-        }
-
-        return type;
+        throw new ShapefileException(
+                "Cannot handle geometry class : "
+                        + (featureClass == null ? "null" : featureClass.getName()));
     }
 }

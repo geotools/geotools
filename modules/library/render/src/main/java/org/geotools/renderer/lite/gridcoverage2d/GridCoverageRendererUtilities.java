@@ -16,13 +16,19 @@
  */
 package org.geotools.renderer.lite.gridcoverage2d;
 
-import com.sun.media.jai.util.Rational;
-import java.awt.Color;
-import java.awt.Rectangle;
-import java.awt.geom.Rectangle2D;
+import it.geosolutions.jaiext.range.Range;
+import it.geosolutions.jaiext.scale.Scale2OpImage;
+import it.geosolutions.jaiext.vectorbin.ROIGeometry;
+import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
+import java.util.*;
 import java.util.List;
-import javax.media.jai.Interpolation;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.media.jai.*;
+import org.geotools.coverage.GridSampleDimension;
+import org.geotools.coverage.TypeMap;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -31,87 +37,47 @@ import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.processing.operation.Crop;
 import org.geotools.coverage.processing.operation.Mosaic;
 import org.geotools.coverage.processing.operation.Resample;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.ImageWorker;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.renderer.crs.ProjectionHandler;
 import org.geotools.renderer.i18n.ErrorKeys;
 import org.geotools.renderer.i18n.Errors;
 import org.geotools.util.factory.Hints;
+import org.locationtech.jts.algorithm.match.HausdorffSimilarityMeasure;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.util.AffineTransformation;
+import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.grid.GridEnvelope;
+import org.opengis.geometry.BoundingBox;
+import org.opengis.metadata.spatial.PixelOrientation;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.CoordinateOperation;
+import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.TransformException;
 
 /** @author Simone Giannecchini, GeoSolutions */
-final class GridCoverageRendererUtilities {
+public final class GridCoverageRendererUtilities {
+
+    private static final double EPS = 1e-6;
+
+    /** Logger. */
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(GridCoverageRendererUtilities.class);
 
     private static final CoverageProcessor processor =
             CoverageProcessor.getInstance(new Hints(Hints.LENIENT_DATUM_SHIFT, Boolean.TRUE));
 
-    // FORMULAE FOR FORWARD MAP are derived as follows
-    //     Nearest
-    //        Minimum:
-    //            srcMin = floor ((dstMin + 0.5 - trans) / scale)
-    //            srcMin <= (dstMin + 0.5 - trans) / scale < srcMin + 1
-    //            srcMin*scale <= dstMin + 0.5 - trans < (srcMin + 1)*scale
-    //            srcMin*scale - 0.5 + trans
-    //                       <= dstMin < (srcMin + 1)*scale - 0.5 + trans
-    //            Let A = srcMin*scale - 0.5 + trans,
-    //            Let B = (srcMin + 1)*scale - 0.5 + trans
-    //
-    //            dstMin = ceil(A)
-    //
-    //        Maximum:
-    //            Note that srcMax is defined to be srcMin + dimension - 1
-    //            srcMax = floor ((dstMax + 0.5 - trans) / scale)
-    //            srcMax <= (dstMax + 0.5 - trans) / scale < srcMax + 1
-    //            srcMax*scale <= dstMax + 0.5 - trans < (srcMax + 1)*scale
-    //            srcMax*scale - 0.5 + trans
-    //                       <= dstMax < (srcMax+1) * scale - 0.5 + trans
-    //            Let float A = (srcMax + 1) * scale - 0.5 + trans
-    //
-    //            dstMax = floor(A), if floor(A) < A, else
-    //            dstMax = floor(A) - 1
-    //            OR dstMax = ceil(A - 1)
-    //
-    //     Other interpolations
-    //
-    //        First the source should be shrunk by the padding that is
-    //        required for the particular interpolation. Then the
-    //        shrunk source should be forward mapped as follows:
-    //
-    //        Minimum:
-    //            srcMin = floor (((dstMin + 0.5 - trans)/scale) - 0.5)
-    //            srcMin <= ((dstMin + 0.5 - trans)/scale) - 0.5 < srcMin+1
-    //            (srcMin+0.5)*scale <= dstMin+0.5-trans <
-    //                                                  (srcMin+1.5)*scale
-    //            (srcMin+0.5)*scale - 0.5 + trans
-    //                       <= dstMin < (srcMin+1.5)*scale - 0.5 + trans
-    //            Let A = (srcMin+0.5)*scale - 0.5 + trans,
-    //            Let B = (srcMin+1.5)*scale - 0.5 + trans
-    //
-    //            dstMin = ceil(A)
-    //
-    //        Maximum:
-    //            srcMax is defined as srcMin + dimension - 1
-    //            srcMax = floor (((dstMax + 0.5 - trans) / scale) - 0.5)
-    //            srcMax <= ((dstMax + 0.5 - trans)/scale) - 0.5 < srcMax+1
-    //            (srcMax+0.5)*scale <= dstMax + 0.5 - trans <
-    //                                                   (srcMax+1.5)*scale
-    //            (srcMax+0.5)*scale - 0.5 + trans
-    //                       <= dstMax < (srcMax+1.5)*scale - 0.5 + trans
-    //            Let float A = (srcMax+1.5)*scale - 0.5 + trans
-    //
-    //            dstMax = floor(A), if floor(A) < A, else
-    //            dstMax = floor(A) - 1
-    //            OR dstMax = ceil(A - 1)
-    //
-    private static float RATIONAL_TOLERANCE = 0.000001F;
     /**
      * Checks whether the provided object is null or not. If it is null it throws an {@link
      * IllegalArgumentException} exception.
@@ -137,131 +103,8 @@ final class GridCoverageRendererUtilities {
                     Errors.format(ErrorKeys.SOURCE_CANT_BE_NULL_$1, name));
     }
 
-    static Rectangle2D layoutHelper(
-            RenderedImage source,
-            float scaleX,
-            float scaleY,
-            float transX,
-            float transY,
-            Interpolation interp) {
-
-        // Represent the scale factors as Rational numbers.
-        // Since a value of 1.2 is represented as 1.200001 which
-        // throws the forward/backward mapping in certain situations.
-        // Convert the scale and translation factors to Rational numbers
-        Rational scaleXRational = Rational.approximate(scaleX, RATIONAL_TOLERANCE);
-        Rational scaleYRational = Rational.approximate(scaleY, RATIONAL_TOLERANCE);
-
-        long scaleXRationalNum = scaleXRational.num;
-        long scaleXRationalDenom = scaleXRational.denom;
-        long scaleYRationalNum = scaleYRational.num;
-        long scaleYRationalDenom = scaleYRational.denom;
-
-        Rational transXRational = Rational.approximate(transX, RATIONAL_TOLERANCE);
-        Rational transYRational = Rational.approximate(transY, RATIONAL_TOLERANCE);
-
-        long transXRationalNum = transXRational.num;
-        long transXRationalDenom = transXRational.denom;
-        long transYRationalNum = transYRational.num;
-        long transYRationalDenom = transYRational.denom;
-
-        int x0 = source.getMinX();
-        int y0 = source.getMinY();
-        int w = source.getWidth();
-        int h = source.getHeight();
-
-        // Variables to store the calculated destination upper left coordinate
-        long dx0Num, dx0Denom, dy0Num, dy0Denom;
-
-        // Variables to store the calculated destination bottom right
-        // coordinate
-        long dx1Num, dx1Denom, dy1Num, dy1Denom;
-
-        // Start calculations for destination
-
-        dx0Num = x0;
-        dx0Denom = 1;
-
-        dy0Num = y0;
-        dy0Denom = 1;
-
-        // Formula requires srcMaxX + 1 = (x0 + w - 1) + 1 = x0 + w
-        dx1Num = x0 + w;
-        dx1Denom = 1;
-
-        // Formula requires srcMaxY + 1 = (y0 + h - 1) + 1 = y0 + h
-        dy1Num = y0 + h;
-        dy1Denom = 1;
-
-        dx0Num *= scaleXRationalNum;
-        dx0Denom *= scaleXRationalDenom;
-
-        dy0Num *= scaleYRationalNum;
-        dy0Denom *= scaleYRationalDenom;
-
-        dx1Num *= scaleXRationalNum;
-        dx1Denom *= scaleXRationalDenom;
-
-        dy1Num *= scaleYRationalNum;
-        dy1Denom *= scaleYRationalDenom;
-
-        // Equivalent to subtracting 0.5
-        dx0Num = 2 * dx0Num - dx0Denom;
-        dx0Denom *= 2;
-
-        dy0Num = 2 * dy0Num - dy0Denom;
-        dy0Denom *= 2;
-
-        // Equivalent to subtracting 1.5
-        dx1Num = 2 * dx1Num - 3 * dx1Denom;
-        dx1Denom *= 2;
-
-        dy1Num = 2 * dy1Num - 3 * dy1Denom;
-        dy1Denom *= 2;
-
-        // Adding translation factors
-
-        // Equivalent to float dx0 += transX
-        dx0Num = dx0Num * transXRationalDenom + transXRationalNum * dx0Denom;
-        dx0Denom *= transXRationalDenom;
-
-        // Equivalent to float dy0 += transY
-        dy0Num = dy0Num * transYRationalDenom + transYRationalNum * dy0Denom;
-        dy0Denom *= transYRationalDenom;
-
-        // Equivalent to float dx1 += transX
-        dx1Num = dx1Num * transXRationalDenom + transXRationalNum * dx1Denom;
-        dx1Denom *= transXRationalDenom;
-
-        // Equivalent to float dy1 += transY
-        dy1Num = dy1Num * transYRationalDenom + transYRationalNum * dy1Denom;
-        dy1Denom *= transYRationalDenom;
-
-        // Get the integral coordinates
-        int l_x0, l_y0, l_x1, l_y1;
-
-        l_x0 = Rational.ceil(dx0Num, dx0Denom);
-        l_y0 = Rational.ceil(dy0Num, dy0Denom);
-
-        l_x1 = Rational.ceil(dx1Num, dx1Denom);
-        l_y1 = Rational.ceil(dy1Num, dy1Denom);
-
-        // Set the top left coordinate of the destination
-        final Rectangle2D retValue = new Rectangle2D.Double();
-        retValue.setFrame(l_x0, l_y0, l_x1 - l_x0 + 1, l_y1 - l_y0 + 1);
-        return retValue;
-    }
-
-    /**
-     * Reprojecting the input coverage using the provided parameters.
-     *
-     * @param gc
-     * @param crs
-     * @param interpolation
-     * @return
-     * @throws FactoryException
-     */
-    static GridCoverage2D reproject(
+    /** Reprojecting the input coverage using the provided parameters. */
+    static GridCoverage2D resample(
             final GridCoverage2D gc,
             CoordinateReferenceSystem crs,
             final Interpolation interpolation,
@@ -286,15 +129,106 @@ final class GridCoverageRendererUtilities {
                 ((Resample) processor.getOperation("Resample")).doOperation(param, hints);
     }
 
+    /** Reproject the specified list of coverages */
+    public static List<GridCoverage2D> reproject(
+            List<GridCoverage2D> coverages,
+            CoordinateReferenceSystem destinationCRS,
+            final Interpolation interpolation,
+            final GeneralEnvelope destinationEnvelope,
+            final double bkgValues[],
+            GridCoverageFactory gridCoverageFactory,
+            final Hints hints)
+            throws FactoryException {
+        List<GridCoverage2D> reprojectedCoverages = new ArrayList<GridCoverage2D>();
+        for (GridCoverage2D coverage : coverages) {
+            if (coverage == null) {
+                continue;
+            }
+            final CoordinateReferenceSystem coverageCRS = coverage.getCoordinateReferenceSystem();
+            if (!CRS.equalsIgnoreMetadata(coverageCRS, destinationCRS)) {
+                GridCoverage2D reprojected =
+                        reproject(
+                                coverage,
+                                destinationCRS,
+                                interpolation,
+                                destinationEnvelope,
+                                bkgValues,
+                                gridCoverageFactory,
+                                hints);
+                if (reprojected != null) {
+                    reprojectedCoverages.add(reprojected);
+                }
+            } else {
+                reprojectedCoverages.add(coverage);
+            }
+        }
+        return reprojectedCoverages;
+    }
+
+    /** Reproject a coverage to the specified destination, eventually adding a ROI if missing */
+    public static GridCoverage2D reproject(
+            GridCoverage2D coverage,
+            CoordinateReferenceSystem destinationCRS,
+            final Interpolation interpolation,
+            final GeneralEnvelope destinationEnvelope,
+            final double bkgValues[],
+            GridCoverageFactory gridCoverageFactory,
+            final Hints hints)
+            throws FactoryException {
+
+        // always have a ROI to account for pixels outside the image
+        coverage = addRoiIfMissing(coverage, gridCoverageFactory);
+        coverage =
+                resample(
+                        coverage,
+                        destinationCRS,
+                        interpolation,
+                        destinationEnvelope,
+                        bkgValues,
+                        hints);
+        if (LOGGER.isLoggable(Level.FINE))
+            LOGGER.fine("Reprojecting to crs " + destinationCRS.toString());
+
+        return coverage;
+    }
+
     /**
-     * Cropping the provided coverage to the requested geographic area.
-     *
-     * @param gc
-     * @param envelope
-     * @param crs
-     * @return
+     * Forces adding ROI to the coverage in case it's missing. It will use the renderer image
+     * footprint.
      */
-    static GridCoverage2D crop(
+    private static GridCoverage2D addRoiIfMissing(
+            GridCoverage2D coverage, GridCoverageFactory gridCoverageFactory) {
+        RenderedImage input = coverage.getRenderedImage();
+        Object roiObject = input.getProperty("ROI");
+        Object gcRoiObject = coverage.getProperty("GC_ROI");
+        if (!(roiObject instanceof ROI) && !(gcRoiObject instanceof ROI)) {
+            Envelope env =
+                    new Envelope(
+                            input.getMinX(),
+                            input.getMinX() + input.getWidth(),
+                            input.getMinY(),
+                            input.getMinY() + input.getHeight());
+            ROI roi = new ROI(new ROIGeometry(JTS.toGeometry(env)).getAsImage());
+            PlanarImage pi = PlanarImage.wrapRenderedImage(input);
+            pi.setProperty("ROI", roi);
+            final Map sourceProperties = coverage.getProperties();
+            Map properties =
+                    sourceProperties == null ? new HashMap() : new HashMap(sourceProperties);
+            properties.put("GC_ROI", roi);
+            return gridCoverageFactory.create(
+                    coverage.getName(),
+                    pi,
+                    coverage.getGridGeometry(),
+                    coverage.getSampleDimensions(),
+                    new GridCoverage2D[] {coverage},
+                    properties);
+        } else {
+            return coverage;
+        }
+    }
+
+    /** Cropping the provided coverage to the requested geographic area. */
+    static GridCoverage2D coverageCrop(
             GridCoverage2D gc, GeneralEnvelope envelope, double[] background, final Hints hints) {
         final GeneralEnvelope oldEnvelope = (GeneralEnvelope) gc.getEnvelope();
         // intersect the envelopes in order to prepare for cropping the coverage
@@ -349,16 +283,7 @@ final class GridCoverageRendererUtilities {
         return translatedCoverage;
     }
 
-    /**
-     * Mosaicking the provided coverages to the requested geographic area.
-     *
-     * @param alphas
-     * @param background
-     * @param gc
-     * @param envelope
-     * @param crs
-     * @return
-     */
+    /** Mosaicking the provided coverages to the requested geographic area. */
     static GridCoverage2D mosaic(
             List<GridCoverage2D> coverages,
             List<GridCoverage2D> alphas,
@@ -387,11 +312,19 @@ final class GridCoverageRendererUtilities {
                 return null;
             }
 
-            MathTransform2D mt = coverages.get(0).getGridGeometry().getCRSToGrid2D();
-            Rectangle rasterSpaceEnvelope;
-            rasterSpaceEnvelope = CRS.transform(mt, targetEnvelope).toRectangle2D().getBounds();
+            // Use the first one as a reference so that it will not be resampled, the others will
+            // likely be
+            GridCoverage2D firstCoverage = coverages.get(0);
+            GridGeometry2D referenceGG = firstCoverage.getGridGeometry();
+            MathTransform2D mt = referenceGG.getCRSToGrid2D();
+            Rectangle rasterSpaceEnvelope =
+                    CRS.transform(mt, targetEnvelope).toRectangle2D().getBounds();
             GridEnvelope2D gridRange = new GridEnvelope2D(rasterSpaceEnvelope);
-            GridGeometry2D gridGeometry = new GridGeometry2D(gridRange, targetEnvelope);
+            GridGeometry2D gridGeometry =
+                    new GridGeometry2D(
+                            gridRange,
+                            referenceGG.getGridToCRS(),
+                            firstCoverage.getCoordinateReferenceSystem2D());
 
             // mosaic
             final ParameterValueGroup param =
@@ -412,11 +345,7 @@ final class GridCoverageRendererUtilities {
         }
     }
 
-    /**
-     * @param inputEnvelope
-     * @return
-     * @throws Exception
-     */
+    /** */
     static GeneralEnvelope reprojectEnvelope(
             GeneralEnvelope inputEnvelope, final CoordinateReferenceSystem outputCRS)
             throws Exception {
@@ -435,12 +364,7 @@ final class GridCoverageRendererUtilities {
         return null;
     }
 
-    /**
-     * @param inputEnvelope
-     * @param targetCRS
-     * @return
-     * @throws Exception
-     */
+    /** */
     static GeneralEnvelope reprojectEnvelopeWithWGS84Pivot(
             GeneralEnvelope inputEnvelope, CoordinateReferenceSystem targetCRS) throws Exception {
 
@@ -491,15 +415,332 @@ final class GridCoverageRendererUtilities {
         }
     }
 
-    /**
-     * @param color
-     * @return
-     */
+    /** */
     public static double[] colorToArray(Color color) {
         if (color == null) {
             return null;
         }
 
         return new double[] {color.getRed(), color.getGreen(), color.getBlue()};
+    }
+
+    /**
+     * After reprojection or displacement we could have some coverage that are completely out of the
+     * destination area (due to numerical issues their source bbox was interesting the request area,
+     * but their reprojected version does not). Cleanup the ones completely out.
+     */
+    public static void removeNotIntersecting(
+            List<GridCoverage2D> coverages, GeneralEnvelope destinationEnvelope) {
+        for (Iterator<GridCoverage2D> it = coverages.iterator(); it.hasNext(); ) {
+            GridCoverage2D coverage = it.next();
+            ReferencedEnvelope re = ReferencedEnvelope.reference(coverage.getEnvelope2D());
+            if (!destinationEnvelope.intersects(re, false)) {
+                it.remove();
+            }
+        }
+    }
+
+    /**
+     * Displaces a list of coverages, using a ProjectionHandler to eventually split into proper
+     * envelopes.
+     */
+    public static List<GridCoverage2D> displace(
+            List<GridCoverage2D> coverages,
+            ProjectionHandler handler,
+            GeneralEnvelope destinationEnvelope,
+            CoordinateReferenceSystem sourceCRS,
+            CoordinateReferenceSystem targetCRS,
+            GridCoverageFactory gridCoverageFactory)
+            throws FactoryException, TransformException {
+        if (handler == null) {
+            return coverages;
+        }
+        List<GridCoverage2D> displacedCoverages = new ArrayList<GridCoverage2D>();
+        Envelope testEnvelope = ReferencedEnvelope.reference(destinationEnvelope);
+        MathTransform mt = CRS.findMathTransform(sourceCRS, targetCRS);
+        PolygonExtractor polygonExtractor = new PolygonExtractor();
+        for (GridCoverage2D coverage : coverages) {
+            org.locationtech.jts.geom.Polygon polygon =
+                    JTS.toGeometry((BoundingBox) coverage.getEnvelope2D());
+            Geometry postProcessed = handler.postProcess(mt, polygon);
+            // extract sub-polygons and displace
+            List<org.locationtech.jts.geom.Polygon> polygons =
+                    polygonExtractor.getPolygons(postProcessed);
+            for (Polygon displaced : polygons) {
+                // check we are really inside the display area before moving one
+                Envelope intersection = testEnvelope.intersection(displaced.getEnvelopeInternal());
+                if (intersection == null || intersection.isNull() || intersection.getArea() == 0) {
+                    continue;
+                }
+                if (displaced.equals(polygon)) {
+                    displacedCoverages.add(coverage);
+                } else {
+                    double[] tx = getTranslationFactors(polygon, displaced);
+                    if (tx != null) {
+                        GridCoverage2D displacedCoverage =
+                                GridCoverageRendererUtilities.displace(
+                                        coverage, tx[0], tx[1], gridCoverageFactory);
+                        displacedCoverages.add(displacedCoverage);
+                    }
+                }
+            }
+        }
+        return displacedCoverages;
+    }
+
+    /**
+     * Forces an input list of coverages to the valid bounds of the provided target CRS, when a
+     * reprojection is needed, using a ProjectionHandler.
+     */
+    public static List<GridCoverage2D> forceToValidBounds(
+            List<GridCoverage2D> coverages,
+            ProjectionHandler handler,
+            double[] bgValues,
+            CoordinateReferenceSystem targetCRS,
+            Hints hints) {
+        // check if we have to reproject
+        boolean reprojectionNeeded = false;
+        for (GridCoverage2D coverage : coverages) {
+            if (coverage == null) {
+                continue;
+            }
+            final CoordinateReferenceSystem coverageCRS = coverage.getCoordinateReferenceSystem();
+            if (!CRS.equalsIgnoreMetadata(coverageCRS, targetCRS)) {
+                reprojectionNeeded = true;
+                break;
+            }
+        }
+
+        if (reprojectionNeeded && handler != null && handler.getValidAreaBounds() != null) {
+            List<GridCoverage2D> cropped = new ArrayList<>();
+            ReferencedEnvelope validArea = handler.getValidAreaBounds();
+            GridGeometryReducer reducer = new GridGeometryReducer(validArea);
+            for (GridCoverage2D coverage : coverages) {
+                GridGeometry2D gg = coverage.getGridGeometry();
+                GridGeometry2D reduced = reducer.reduce(gg);
+                if (!reduced.equals(gg)) {
+                    GeneralEnvelope cutEnvelope = reducer.getCutEnvelope(reduced);
+                    GridCoverage2D croppedCoverage =
+                            crop(coverage, cutEnvelope, false, bgValues, hints);
+                    if (croppedCoverage != null) {
+                        cropped.add(croppedCoverage);
+                    }
+                } else {
+                    cropped.add(coverage);
+                }
+            }
+            coverages = cropped;
+        }
+        return coverages;
+    }
+
+    /** Crop a coverage on a specified destination Envelope */
+    public static GridCoverage2D crop(
+            GridCoverage2D coverage,
+            GeneralEnvelope destinationEnvelope,
+            boolean doReprojection,
+            double[] backgroundValues,
+            Hints hints) {
+        // CREATING THE CROP ENVELOPE
+        GridCoverage2D outputCoverage = coverage;
+        final GeneralEnvelope coverageEnvelope = (GeneralEnvelope) coverage.getEnvelope();
+        final CoordinateReferenceSystem coverageCRS = coverage.getCoordinateReferenceSystem2D();
+
+        try {
+            GeneralEnvelope renderingEnvelopeInCoverageCRS = null;
+            if (doReprojection) {
+                renderingEnvelopeInCoverageCRS =
+                        GridCoverageRendererUtilities.reprojectEnvelopeWithWGS84Pivot(
+                                destinationEnvelope, coverageCRS);
+            } else {
+                // NO REPROJECTION
+                renderingEnvelopeInCoverageCRS = new GeneralEnvelope(destinationEnvelope);
+            }
+            final GeneralEnvelope cropEnvelope =
+                    new GeneralEnvelope(renderingEnvelopeInCoverageCRS);
+            cropEnvelope.intersect(coverageEnvelope);
+            if (cropEnvelope.isEmpty() || cropEnvelope.isNull()) {
+                if (LOGGER.isLoggable(Level.INFO)) {
+                    LOGGER.info(
+                            "The destination envelope does not intersect the envelope of the source coverage.");
+                }
+                return null;
+            }
+
+            // Cropping for real
+            outputCoverage = coverageCrop(coverage, cropEnvelope, backgroundValues, hints);
+        } catch (Throwable t) {
+            // If it happens that the crop fails we try to proceed since the crop does only an
+            // optimization. Things might work out anyway.
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.log(Level.FINE, "Crop Failed for reason: " + t.getLocalizedMessage(), t);
+            }
+            outputCoverage = coverage;
+        }
+        return outputCoverage;
+    }
+
+    /** Mosaic coverages with a preliminary sorting by size */
+    public static GridCoverage2D mosaicSorted(
+            List<GridCoverage2D> coverages,
+            GeneralEnvelope destinationEnvelope,
+            double[] bgValues,
+            Hints hints) {
+        GridCoverage2D mosaicked = null;
+        if (coverages.size() == 0) {
+            return null;
+        } else if (coverages.size() == 1) {
+            mosaicked = coverages.get(0);
+        } else {
+            // sort the coverages by size, avoid having a sliver coverage 1-2 px large or high
+            // first as it will have a skewed grid to world that will then be applied
+            // to all members of the mosaic
+            Comparator<GridCoverage2D> sliverComparator =
+                    (c1, c2) -> {
+                        RenderedImage r1 = c1.getRenderedImage();
+                        RenderedImage r2 = c2.getRenderedImage();
+                        // area2 - area1, largest first
+                        long areaDiff =
+                                ((long) r2.getWidth()) * r2.getHeight()
+                                        - ((long) r1.getWidth()) * r1.getHeight();
+                        return (int) Math.signum(areaDiff);
+                    };
+            Collections.sort(coverages, sliverComparator);
+
+            // do not expand index color models, we know they are all the same
+            Hints mosaicHints = new Hints(hints);
+            mosaicHints.put(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, false);
+            mosaicked =
+                    mosaic(
+                            coverages,
+                            new ArrayList<GridCoverage2D>(),
+                            destinationEnvelope,
+                            mosaicHints,
+                            bgValues);
+        }
+        return mosaicked;
+    }
+
+    /** Apply an affineTransformation to a GridCoverage */
+    public static GridCoverage2D affine(
+            GridCoverage2D coverage,
+            Interpolation interpolation,
+            AffineTransform affineTransform,
+            double[] bkgValues,
+            boolean useInputSampleDimensions,
+            GridCoverageFactory gridCoverageFactory,
+            Hints hints) {
+        final RenderedImage finalImage = coverage.getRenderedImage();
+        final GridGeometry2D gridGeometry = coverage.getGridGeometry();
+        // I need to translate half of a pixel since in wms the envelope map
+        // to the corners of the raster space not to the center of the pixels
+        final MathTransform2D finalGCTransform =
+                gridGeometry.getGridToCRS2D(PixelOrientation.UPPER_LEFT);
+        if (!(finalGCTransform instanceof AffineTransform)) {
+            throw new UnsupportedOperationException(
+                    "Non-affine transformations not yet implemented"); // TODO
+        }
+        final AffineTransform finalGCgridToWorld =
+                new AffineTransform((AffineTransform) finalGCTransform);
+
+        // Getting NOData and ROI
+        Range noData =
+                CoverageUtilities.getNoDataProperty(coverage) != null
+                        ? CoverageUtilities.getNoDataProperty(coverage).getAsRange()
+                        : null;
+        ROI roi = CoverageUtilities.getROIProperty(coverage);
+
+        // //
+        //
+        // I am going to concatenate the final world to grid transform
+        // with the grid to world transform of the input coverage.
+        //
+        // This way i right away position the coverage at the right place in the
+        // area of interest for the device.
+        //
+        // //
+        final AffineTransform finalRasterTransformation = (AffineTransform) affineTransform.clone();
+        finalRasterTransformation.concatenate(finalGCgridToWorld);
+
+        // paranoiac check to avoid that JAI freaks out when computing its internal
+        // layout on images that are too small
+        ImageLayout finalLayout =
+                Scale2OpImage.layoutHelper(
+                        finalImage,
+                        (float) Math.abs(finalRasterTransformation.getScaleX()),
+                        (float) Math.abs(finalRasterTransformation.getScaleY()),
+                        (float) finalRasterTransformation.getTranslateX(),
+                        (float) finalRasterTransformation.getTranslateY(),
+                        interpolation,
+                        null);
+        if (finalLayout.getWidth(null) < 1 || finalLayout.getHeight(null) < 1) {
+            if (LOGGER.isLoggable(java.util.logging.Level.FINE))
+                LOGGER.fine("Unable to create a granuleDescriptor due to jai scale bug");
+            return null;
+        }
+
+        RenderedImage im = null;
+
+        ImageWorker iw = new ImageWorker(finalImage);
+        iw.setRenderingHints(hints);
+        iw.setROI(roi);
+        iw.setNoData(noData);
+        iw.affine(finalRasterTransformation, interpolation, bkgValues);
+        im = iw.getRenderedImage();
+        roi = iw.getROI();
+        noData = iw.extractNoDataProperty(im);
+
+        // recreate gridCoverage
+        int numBands = im.getSampleModel().getNumBands();
+        GridSampleDimension[] sd = new GridSampleDimension[numBands];
+        for (int i = 0; i < numBands; i++) {
+            sd[i] =
+                    new GridSampleDimension(
+                            useInputSampleDimensions
+                                    ? coverage.getSampleDimension(i).getDescription()
+                                    : TypeMap.getColorInterpretation(im.getColorModel(), i).name());
+        }
+
+        Map properties = coverage.getProperties();
+        if (properties == null) {
+            properties = new HashMap<>();
+        }
+        CoverageUtilities.setNoDataProperty(properties, noData);
+        CoverageUtilities.setROIProperty(properties, roi);
+
+        // create a new grid coverage but preserve as much input as possible
+        return gridCoverageFactory.create(
+                coverage.getName(),
+                im,
+                new GridGeometry2D(
+                        new GridEnvelope2D(PlanarImage.wrapRenderedImage(im).getBounds()),
+                        coverage.getEnvelope()),
+                sd,
+                new GridCoverage[] {coverage},
+                properties);
+    }
+
+    private static double[] getTranslationFactors(Polygon reference, Polygon displaced) {
+        // compare the two envelopes
+        Envelope re = reference.getEnvelopeInternal();
+        Envelope de = displaced.getEnvelopeInternal();
+        double dw = Math.abs(re.getWidth() - de.getWidth());
+        double dh = Math.abs(re.getHeight() - de.getHeight());
+        if (dw > EPS * re.getWidth() || dh > EPS * re.getWidth()) {
+            // this was not just a translation
+            return null;
+        }
+
+        // compute the translation
+        double dx = de.getMinX() - re.getMinX();
+        double dy = de.getMinY() - re.getMinY();
+
+        Polygon cloned = (Polygon) displaced.copy();
+        cloned.apply(AffineTransformation.translationInstance(-dx, -dy));
+        if (1 - new HausdorffSimilarityMeasure().measure(cloned, reference) > EPS) {
+            return null;
+        } else {
+            return new double[] {dx, dy};
+        }
     }
 }

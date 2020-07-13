@@ -155,11 +155,6 @@ public final class TestData extends org.geotools.test.TestData {
     /**
      * See the other copy, this one accepts a target directory name inside "test-data" (useful for
      * test with directory containing spaces)
-     *
-     * @param caller
-     * @param name
-     * @return
-     * @throws IOException
      */
     public static File copy(final Object caller, final String name, String directoryName)
             throws IOException {
@@ -173,16 +168,15 @@ public final class TestData extends org.geotools.test.TestData {
             if (directory.mkdirs()) {
                 deleteOnExit(directory, false);
             }
-            final InputStream in = openStream(name);
-            final OutputStream out = new FileOutputStream(file);
-            final byte[] buffer = new byte[4096];
-            deleteOnExit(file, false);
-            int count;
-            while ((count = in.read(buffer)) >= 0) {
-                out.write(buffer, 0, count);
+            try (InputStream in = openStream(name);
+                    OutputStream out = new FileOutputStream(file)) {
+                final byte[] buffer = new byte[4096];
+                deleteOnExit(file, false);
+                int count;
+                while ((count = in.read(buffer)) >= 0) {
+                    out.write(buffer, 0, count);
+                }
             }
-            out.close();
-            in.close();
         }
         return file;
     }

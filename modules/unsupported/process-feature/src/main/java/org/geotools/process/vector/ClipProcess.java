@@ -576,7 +576,7 @@ public class ClipProcess implements VectorProcess {
                                 // it may be that the two lines have different orientations, we'll
                                 // flip ls and
                                 // start back
-                                ls = (LineString) ls.reverse();
+                                ls = (LineString) ((Geometry) ls).reverse();
                                 cs = ls.getCoordinateSequence();
                                 flipped = true;
                                 c1 = cs.getCoordinate(0);
@@ -639,9 +639,6 @@ public class ClipProcess implements VectorProcess {
             /**
              * TODO: should we use a spatial index? Would be warranted only if the input has a very
              * large amount of sub-lines
-             *
-             * @param ls
-             * @return
              */
             private LineString getOriginator(LineString ls) {
                 LineString original = null;

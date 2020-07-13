@@ -2,8 +2,10 @@ package org.geotools.feature;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
 import java.util.List;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -13,9 +15,11 @@ import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.FeatureType;
+import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
+import org.opengis.filter.expression.PropertyName;
 
 /** Test FeatureTypes utility class abilities to inspect FeatureType data structure. */
 public class FeatureTypesTest {
@@ -109,5 +113,81 @@ public class FeatureTypesTest {
         builder.setDefaultGeometry("geom2");
         ft2 = builder.buildFeatureType();
         assertFalse(FeatureTypes.equalsExact(ft1, ft2));
+    }
+
+    @Test
+    public void testCreateFieldOptionsMulti() {
+        Filter restriction = FeatureTypes.createFieldOptions(Arrays.asList("a", "b"));
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+        PropertyName thisProperty = ff.property(".");
+        Filter expected =
+                ff.or(
+                        ff.equal(thisProperty, ff.literal("a"), true),
+                        ff.equal(thisProperty, ff.literal("b"), true));
+        assertEquals(expected, restriction);
+    }
+
+    @Test
+    public void testCreateFieldOptionsSingle() {
+        Filter restriction = FeatureTypes.createFieldOptions(Arrays.asList("a"));
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+        PropertyName thisProperty = ff.property(".");
+        Filter expected = ff.equal(thisProperty, ff.literal("a"), true);
+        assertEquals(expected, restriction);
+    }
+
+    @Test
+    public void testGetFieldOptionsMulti() {
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+        PropertyName thisProperty = ff.property(".");
+        Filter restriction =
+                ff.or(
+                        ff.equal(thisProperty, ff.literal("a"), true),
+                        ff.equal(thisProperty, ff.literal("b"), true));
+        AttributeDescriptor descriptor = buildDescriptorWithRestriction(restriction);
+        assertEquals(Arrays.asList("a", "b"), FeatureTypes.getFieldOptions(descriptor));
+    }
+
+    @Test
+    public void testGetFieldOptionsInvalid() {
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+        PropertyName thisProperty = ff.property(".");
+        Filter restriction =
+                ff.or(
+                        ff.equal(thisProperty, ff.literal("a"), true),
+                        ff.greaterOrEqual(thisProperty, ff.literal(10), true));
+        AttributeDescriptor descriptor = buildDescriptorWithRestriction(restriction);
+        assertNull(FeatureTypes.getFieldOptions(descriptor));
+    }
+
+    @Test
+    public void testGetFieldOptionsSingle() {
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+        PropertyName thisProperty = ff.property(".");
+        Filter restriction = ff.equal(thisProperty, ff.literal("a"), true);
+        AttributeDescriptor descriptor = buildDescriptorWithRestriction(restriction);
+        assertEquals(Arrays.asList("a"), FeatureTypes.getFieldOptions(descriptor));
+    }
+
+    @Test
+    public void testGetFieldOptionsFromSuper() {
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+        PropertyName thisProperty = ff.property(".");
+        Filter restriction =
+                ff.or(
+                        ff.equal(thisProperty, ff.literal("a"), true),
+                        ff.greaterOrEqual(thisProperty, ff.literal(10), true));
+        AttributeDescriptor superDescriptor = buildDescriptorWithRestriction(restriction);
+        AttributeTypeBuilder at = new AttributeTypeBuilder();
+        at.name("test").binding(String.class).superType(superDescriptor.getType());
+        AttributeDescriptor descriptor = at.buildDescriptor("test");
+        assertNull(FeatureTypes.getFieldOptions(descriptor));
+    }
+
+    public AttributeDescriptor buildDescriptorWithRestriction(Filter restriction) {
+        AttributeTypeBuilder builder = new AttributeTypeBuilder();
+        builder.addRestriction(restriction);
+        builder.setBinding(String.class);
+        return builder.buildDescriptor("attribute");
     }
 }

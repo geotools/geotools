@@ -16,7 +16,7 @@
  */
 package org.geotools.util.factory;
 
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -681,6 +681,13 @@ public class Hints extends RenderingHints {
      */
     public static final ClassKey VIRTUAL_TABLE_PARAMETERS = new ClassKey("java.util.Map");
 
+    /**
+     * Used along with vector tile geometries, includes the clip mask to be used when rendering the
+     * geometry (geometries in vector tiles can span across tiles, in that case, they have a gutter
+     * that should be removed when rendering them)
+     */
+    public static final ClassKey GEOMETRY_CLIP = new ClassKey("org.locationtech.jts.geom.Geometry");
+
     ////////////////////////////////////////////////////////////////////////
     ////////                                                        ////////
     ////////                     Grid Coverages                     ////////
@@ -988,6 +995,23 @@ public class Hints extends RenderingHints {
     public static final Key ENCODE_EWKT = new Key(Boolean.class);
 
     /**
+     * Controls date time formatting output for GML 2.
+     *
+     * <p>To set on the command line:
+     *
+     * <blockquote>
+     *
+     * <pre>
+     * -D{@value GeoTools#DATE_TIME_FORMAT_HANDLING}=<var>true</var>
+     * </pre>
+     *
+     * </blockquote>
+     *
+     * @since 21.0
+     */
+    public static final Key DATE_TIME_FORMAT_HANDLING = new Key(Boolean.class);
+
+    /**
      * Constructs an initially empty set of hints.
      *
      * @since 2.5
@@ -1196,9 +1220,6 @@ public class Hints extends RenderingHints {
     /**
      * Turns the rendering hints provided into a map with {@link RenderingHints.Key} keys, ignoring
      * every other entry that might have keys of different nature
-     *
-     * @param hints
-     * @return
      */
     private static Map<java.awt.RenderingHints.Key, Object> toMap(RenderingHints hints) {
         Map<RenderingHints.Key, Object> result = new HashMap<RenderingHints.Key, Object>();
@@ -1835,11 +1856,7 @@ public class Hints extends RenderingHints {
         private static Map<String, ConfigurationMetadataKey> map =
                 new HashMap<String, Hints.ConfigurationMetadataKey>();
 
-        /**
-         * The constructor is private to avoid multiple instances sharing the same key.
-         *
-         * @param key
-         */
+        /** The constructor is private to avoid multiple instances sharing the same key. */
         private ConfigurationMetadataKey(String key) {
             super(key);
         }

@@ -19,6 +19,7 @@ package org.geotools.geopkg;
 import static java.lang.String.format;
 import static org.geotools.jdbc.util.SqlUtil.prepare;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
@@ -29,9 +30,11 @@ import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -61,10 +64,12 @@ import org.geotools.geopkg.geom.GeoPkgGeomReader;
 import org.geotools.geopkg.geom.GeoPkgGeomWriter;
 import org.geotools.geopkg.geom.GeometryFunction;
 import org.geotools.jdbc.JDBCDataStore;
+import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCFeatureStore;
 import org.geotools.jdbc.PrimaryKey;
 import org.geotools.jdbc.util.SqlUtil;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -77,6 +82,7 @@ import org.opengis.filter.identity.Identifier;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.sqlite.Function;
+import org.sqlite.SQLiteConfig;
 
 /**
  * Provides access to a GeoPackage database.
@@ -84,7 +90,7 @@ import org.sqlite.Function;
  * @author Justin Deoliveira, OpenGeo
  * @author Niels Charlier
  */
-public class GeoPackage {
+public class GeoPackage implements Closeable {
 
     static final Logger LOGGER = Logging.getLogger(GeoPackage.class);
 
@@ -94,7 +100,7 @@ public class GeoPackage {
 
     public static final String SPATIAL_REF_SYS = "gpkg_spatial_ref_sys";
 
-    public static final String RASTER_COLUMNS = "gpkg_data_columns";
+    public static final String DATA_COLUMNS = "gpkg_data_columns";
 
     public static final String TILE_MATRIX_METADATA = "gpkg_tile_matrix";
 
@@ -109,6 +115,19 @@ public class GeoPackage {
     public static final String EXTENSIONS = "gpkg_extensions";
 
     public static final String SPATIAL_INDEX = "gpkg_spatial_index";
+
+    public static final String SCHEMA = "gpkg_schema";
+
+    /**
+     * Add this among a AttributeType user data, in order to force a particular {@link DataColumn}
+     * description for it. It can be required to add more metadata, to force a mime type, or have
+     * fine grained control over its constraints
+     */
+    public static final String DATA_COLUMN = "gpgk_constraint";
+
+    // requirement 11, two generic SRID are to be considered
+    protected static final int GENERIC_GEOGRAPHIC_SRID = 0;
+    protected static final int GENERIC_PROJECTED_SRID = -1;
 
     public static enum DataType {
         Feature("features"),
@@ -156,7 +175,7 @@ public class GeoPackage {
      * <p>This constructor assumes no credentials are required to connect to the database.
      */
     public GeoPackage(File file) throws IOException {
-        this(file, null, null);
+        this(file, (String) null, (String) null);
     }
 
     /** Creates a GeoPackage from an existing file specifying database credentials. */
@@ -181,6 +200,7 @@ public class GeoPackage {
 
         params.put(GeoPkgDataStoreFactory.DATABASE.key, file.getPath());
         params.put(GeoPkgDataStoreFactory.DBTYPE.key, GeoPkgDataStoreFactory.DBTYPE.sample);
+        params.put(JDBCDataStoreFactory.BATCH_INSERT_SIZE, 1000);
 
         this.connPool = new GeoPkgDataStoreFactory(writerConfig).createDataSource(params);
     }
@@ -192,6 +212,29 @@ public class GeoPackage {
     GeoPackage(JDBCDataStore dataStore) {
         this.dataStore = dataStore;
         this.connPool = dataStore.getDataSource();
+    }
+
+    public GeoPackage(File file, SQLiteConfig config, Map<String, Object> storeParams)
+            throws IOException {
+        this.file = file;
+
+        // enrich params with the basics
+        Map<String, Object> params =
+                new HashMap(storeParams != null ? storeParams : Collections.emptyMap());
+        params.put(GeoPkgDataStoreFactory.DATABASE.key, file.getPath());
+        params.put(GeoPkgDataStoreFactory.DBTYPE.key, GeoPkgDataStoreFactory.DBTYPE.sample);
+
+        // setup pool and store honoring the params
+        GeoPkgDataStoreFactory factory = new GeoPkgDataStoreFactory(writerConfig);
+        this.connPool = factory.createDataSource(params);
+        params.put(GeoPkgDataStoreFactory.DATASOURCE.key, this.connPool);
+        this.dataStore = factory.createDataStore(params);
+
+        // add connection properties to respect the sqlite config
+        for (Map.Entry e : config.toProperties().entrySet()) {
+            ((BasicDataSource) connPool)
+                    .addConnectionProperty((String) e.getKey(), (String) e.getValue());
+        }
     }
 
     /**
@@ -241,16 +284,16 @@ public class GeoPackage {
             }
         }
         if (!initialized) {
+            runScript(EXTENSIONS + ".sql", cx);
             runScript(SPATIAL_REF_SYS + ".sql", cx);
             runScript(GEOMETRY_COLUMNS + ".sql", cx);
             runScript(GEOPACKAGE_CONTENTS + ".sql", cx);
             runScript(TILE_MATRIX_SET + ".sql", cx);
             runScript(TILE_MATRIX_METADATA + ".sql", cx);
-            runScript(RASTER_COLUMNS + ".sql", cx);
+            runScript(DATA_COLUMNS + ".sql", cx);
             runScript(METADATA + ".sql", cx);
             runScript(METADATA_REFERENCE + ".sql", cx);
             runScript(DATA_COLUMN_CONSTRAINTS + ".sql", cx);
-            runScript(EXTENSIONS + ".sql", cx);
             addDefaultSpatialReferences(cx);
             runSQL("PRAGMA application_id = 0x47503130;", cx);
         }
@@ -448,20 +491,20 @@ public class GeoPackage {
      * @param srid The spatial reference system id.
      */
     public void addCRS(CoordinateReferenceSystem crs, String auth, int srid) throws IOException {
-
-        Connection cx;
-        try {
-            cx = connPool.getConnection();
-
-            try {
-                GeoPackage.addCRS(
-                        cx, srid, auth + ":" + srid, auth, srid, crs.toWKT(), auth + ":" + srid);
-            } finally {
-                cx.close();
-            }
+        try (Connection cx = connPool.getConnection()) {
+            addCRS(crs, auth, srid, cx);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Same as {@link #addCRS(CoordinateReferenceSystem, String, int)}, but for internal usage, when
+     * a connection is already available
+     */
+    void addCRS(CoordinateReferenceSystem crs, String auth, int srid, Connection cx)
+            throws IOException {
+        GeoPackage.addCRS(cx, srid, auth + ":" + srid, auth, srid, crs.toWKT(), auth + ":" + srid);
     }
 
     private CoordinateReferenceSystem getCRS(int srid) {
@@ -578,30 +621,71 @@ public class GeoPackage {
         try {
 
             try (Connection cx = connPool.getConnection()) {
-                String sql =
-                        format(
-                                "SELECT a.*, b.column_name, b.geometry_type_name, b.m, b.z, c.organization_coordsys_id, c.definition"
-                                        + " FROM %s a, %s b, %s c"
-                                        + " WHERE a.table_name = b.table_name "
-                                        + " AND a.srs_id = c.srs_id "
-                                        + " AND a.table_name = ?"
-                                        + " AND a.data_type = ?",
-                                GEOPACKAGE_CONTENTS, GEOMETRY_COLUMNS, SPATIAL_REF_SYS);
-
-                try (PreparedStatement ps = cx.prepareStatement(sql)) {
-                    ps.setString(1, name);
-                    ps.setString(2, DataType.Feature.value());
-
-                    try (ResultSet rs = ps.executeQuery()) {
-                        if (rs.next()) {
-                            return createFeatureEntry(rs);
-                        }
-                    }
-                }
+                return feature(name, cx);
             }
         } catch (SQLException e) {
             throw new IOException(e);
         }
+    }
+
+    protected FeatureEntry feature(String name, Connection cx) throws SQLException, IOException {
+        String sql =
+                format(
+                        "SELECT a.*, b.column_name, b.geometry_type_name, b.m, b.z, c.organization_coordsys_id, c.definition"
+                                + " FROM %s a, %s b, %s c"
+                                + " WHERE a.table_name = b.table_name "
+                                + " AND a.srs_id = c.srs_id "
+                                + " AND a.table_name = ?"
+                                + " AND a.data_type = ?",
+                        GEOPACKAGE_CONTENTS, GEOMETRY_COLUMNS, SPATIAL_REF_SYS);
+
+        try (PreparedStatement ps = cx.prepareStatement(sql)) {
+            ps.setString(1, name);
+            ps.setString(2, DataType.Feature.value());
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return createFeatureEntry(rs);
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns the extension by name, or null if the extension is not supported by this
+     * implementation
+     */
+    public GeoPkgExtension getExtension(String name) {
+        Iterator<GeoPkgExtensionFactory> factories =
+                GeoPkgExtensionFactoryFinder.getExtensionFactories();
+        while (factories.hasNext()) {
+            GeoPkgExtensionFactory factory = factories.next();
+            GeoPkgExtension extension = factory.getExtension(name, this);
+            if (extension != null) {
+                return extension;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns the extension by class, or null if the extension is not supported by this
+     * implementation
+     */
+    public <T extends GeoPkgExtension> T getExtension(Class<T> extensionClass) {
+        Iterator<GeoPkgExtensionFactory> factories =
+                GeoPkgExtensionFactoryFinder.getExtensionFactories();
+        while (factories.hasNext()) {
+            GeoPkgExtensionFactory factory = factories.next();
+            GeoPkgExtension extension = factory.getExtension(extensionClass, this);
+            if (extension != null) {
+                return (T) extension;
+            }
+        }
+
         return null;
     }
 
@@ -703,6 +787,7 @@ public class GeoPackage {
                 while (it.hasNext()) {
                     SimpleFeature f = it.next();
                     SimpleFeature g = w.next();
+                    g.setAttributes(f.getAttributes());
                     for (PropertyDescriptor pd : collection.getSchema().getDescriptors()) {
                         /* geopkg spec requires booleans to be stored as SQLite integers this fixes
                          * bug reported by GEOT-5904 */
@@ -713,8 +798,6 @@ public class GeoPackage {
                                 bool = (Boolean) (f.getAttribute(name)) ? 1 : 0;
                             }
                             g.setAttribute(name, bool);
-                        } else {
-                            g.setAttribute(name, f.getAttribute(name));
                         }
                     }
 
@@ -731,8 +814,6 @@ public class GeoPackage {
         } finally {
             tx.close();
         }
-        /*addGeoPackageContentsEntry(e);
-        addGeometryColumnsEntry(e);*/
         entry.init(e);
     }
 
@@ -771,6 +852,7 @@ public class GeoPackage {
             FeatureEntry entry, boolean append, Filter filter, Transaction tx) throws IOException {
 
         DataStore dataStore = dataStore();
+        @SuppressWarnings("PMD.CloseResource") // wrapped and returned
         FeatureWriter w =
                 append
                         ? dataStore.getFeatureWriterAppend(entry.getTableName(), tx)
@@ -841,97 +923,103 @@ public class GeoPackage {
         return e;
     }
 
-    void addGeoPackageContentsEntry(Entry e) throws IOException {
-        final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_STRING);
-        DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
-        if (!initialised) {
-            init();
-        }
-        if (e.getSrid() != null) {
-            addCRS(e.getSrid());
-        }
-
-        StringBuilder sb = new StringBuilder();
-        StringBuilder vals = new StringBuilder();
-
-        sb.append(format("INSERT INTO %s (table_name, data_type, identifier", GEOPACKAGE_CONTENTS));
-        vals.append("VALUES (?,?,?");
-
-        if (e.getDescription() != null) {
-            sb.append(", description");
-            vals.append(",?");
-        }
-
-        if (e.getLastChange() != null) {
-            sb.append(", last_change");
-            vals.append(",?");
-        }
-
-        sb.append(", min_x, min_y, max_x, max_y");
-        vals.append(",?,?,?,?");
-
-        if (e.getSrid() != null) {
-            sb.append(", srs_id");
-            vals.append(",?");
-        }
-        sb.append(") ").append(vals.append(")").toString());
-
+    void addGeoPackageContentsEntry(Entry e, Connection cx) throws IOException {
         try {
-            Connection cx = connPool.getConnection();
-            try {
-                SqlUtil.PreparedStatementBuilder psb =
-                        prepare(cx, sb.toString())
-                                .set(e.getTableName())
-                                .set(e.getDataType().value())
-                                .set(e.getIdentifier());
+            final SimpleDateFormat dateFormat = getDateFormat();
+            if (!initialised) {
+                init(cx);
+            }
+            Integer srid = e.getSrid();
+            if (srid != null && srid != GENERIC_PROJECTED_SRID && srid != GENERIC_GEOGRAPHIC_SRID) {
+                addCRS(CRS.decode("EPSG:" + srid, true), "epsg", srid, cx);
+            }
 
-                if (e.getDescription() != null) {
-                    psb.set(e.getDescription());
-                }
+            StringBuilder sb = new StringBuilder();
+            StringBuilder vals = new StringBuilder();
 
-                if (e.getLastChange() != null) {
-                    psb.set(DATE_FORMAT.format(e.getLastChange()));
-                }
-                if (e.getBounds() != null) {
-                    psb.set(e.getBounds().getMinX())
-                            .set(e.getBounds().getMinY())
-                            .set(e.getBounds().getMaxX())
-                            .set(e.getBounds().getMaxY());
-                } else {
-                    double minx = 0;
-                    double miny = 0;
-                    double maxx = 0;
-                    double maxy = 0;
-                    if (e.getSrid() != null) {
-                        CoordinateReferenceSystem crs = getCRS(e.getSrid());
-                        if (crs != null) {
-                            org.opengis.geometry.Envelope env = CRS.getEnvelope(crs);
-                            if (env != null) {
-                                minx = env.getMinimum(0);
-                                miny = env.getMinimum(1);
-                                maxx = env.getMaximum(0);
-                                maxy = env.getMaximum(1);
-                            }
+            sb.append(
+                    format(
+                            "INSERT INTO %s (table_name, data_type, identifier",
+                            GEOPACKAGE_CONTENTS));
+            vals.append("VALUES (?,?,?");
+
+            if (e.getDescription() != null) {
+                sb.append(", description");
+                vals.append(",?");
+            }
+
+            if (e.getLastChange() != null) {
+                sb.append(", last_change");
+                vals.append(",?");
+            }
+
+            sb.append(", min_x, min_y, max_x, max_y");
+            vals.append(",?,?,?,?");
+
+            if (srid != null) {
+                sb.append(", srs_id");
+                vals.append(",?");
+            }
+            sb.append(") ").append(vals.append(")").toString());
+
+            SqlUtil.PreparedStatementBuilder psb =
+                    prepare(cx, sb.toString())
+                            .set(e.getTableName())
+                            .set(e.getDataType().value())
+                            .set(e.getIdentifier());
+
+            if (e.getDescription() != null) {
+                psb.set(e.getDescription());
+            }
+
+            if (e.getLastChange() != null) {
+                psb.set(dateFormat.format(e.getLastChange()));
+            }
+            if (e.getBounds() != null) {
+                psb.set(e.getBounds().getMinX())
+                        .set(e.getBounds().getMinY())
+                        .set(e.getBounds().getMaxX())
+                        .set(e.getBounds().getMaxY());
+            } else {
+                double minx = 0;
+                double miny = 0;
+                double maxx = 0;
+                double maxy = 0;
+                if (srid != null) {
+                    CoordinateReferenceSystem crs = getCRS(srid);
+                    if (crs != null) {
+                        org.opengis.geometry.Envelope env = CRS.getEnvelope(crs);
+                        if (env != null) {
+                            minx = env.getMinimum(0);
+                            miny = env.getMinimum(1);
+                            maxx = env.getMaximum(0);
+                            maxy = env.getMaximum(1);
                         }
                     }
-                    psb.set(minx).set(miny).set(maxx).set(maxy);
                 }
-                if (e.getSrid() != null) {
-                    psb.set(e.getSrid());
-                }
-
-                PreparedStatement ps = psb.log(Level.FINE).statement();
-                try {
-                    ps.execute();
-                } finally {
-                    close(ps);
-                }
-            } finally {
-                close(cx);
+                psb.set(minx).set(miny).set(maxx).set(maxy);
             }
-        } catch (SQLException ex) {
+            if (srid != null) {
+                psb.set(srid);
+            }
+
+            PreparedStatement ps = psb.log(Level.FINE).statement();
+            try {
+                ps.execute();
+            } finally {
+                close(ps);
+            }
+
+        } catch (Exception ex) {
             throw new IOException(ex);
         }
+    }
+
+    /** Returns a new instance of SimpleDateFormat with the default GeoPackage ISO formatting */
+    public static SimpleDateFormat getDateFormat() {
+        final SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_STRING);
+        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        return dateFormat;
     }
 
     void deleteGeoPackageContentsEntry(Entry e) throws IOException {
@@ -954,7 +1042,7 @@ public class GeoPackage {
         }
     }
 
-    void addGeometryColumnsEntry(FeatureEntry e) throws IOException {
+    void addGeometryColumnsEntry(FeatureEntry e, Connection cx) throws IOException {
         // geometryless tables should not be inserted into this table.
         if (e.getGeometryColumn() == null || e.getGeometryColumn().isEmpty()) {
             return;
@@ -962,28 +1050,20 @@ public class GeoPackage {
         String sql = format("INSERT INTO %s VALUES (?, ?, ?, ?, ?, ?);", GEOMETRY_COLUMNS);
 
         try {
-            Connection cx = connPool.getConnection();
+            PreparedStatement ps =
+                    prepare(cx, sql)
+                            .set(e.getTableName())
+                            .set(e.getGeometryColumn())
+                            .set(e.getGeometryType() != null ? e.getGeometryType().getName() : null)
+                            .set(e.getSrid())
+                            .set(e.isZ())
+                            .set(e.isM())
+                            .log(Level.FINE)
+                            .statement();
             try {
-                PreparedStatement ps =
-                        prepare(cx, sql)
-                                .set(e.getTableName())
-                                .set(e.getGeometryColumn())
-                                .set(
-                                        e.getGeometryType() != null
-                                                ? e.getGeometryType().getName()
-                                                : null)
-                                .set(e.getSrid())
-                                .set(e.isZ())
-                                .set(e.isM())
-                                .log(Level.FINE)
-                                .statement();
-                try {
-                    ps.execute();
-                } finally {
-                    close(ps);
-                }
+                ps.execute();
             } finally {
-                close(cx);
+                close(ps);
             }
         } catch (SQLException ex) {
             throw new IOException(ex);
@@ -1028,9 +1108,7 @@ public class GeoPackage {
         properties.put("c", e.getGeometryColumn());
         properties.put("i", pk.getColumns().get(0).getName());
 
-        Connection cx;
-        try {
-            cx = connPool.getConnection();
+        try (Connection cx = connPool.getConnection()) {
             try {
                 runScript(SPATIAL_INDEX + ".sql", cx, properties);
             } finally {
@@ -1265,15 +1343,15 @@ public class GeoPackage {
                 } finally {
                     close(st);
                 }
+
+                // update the metadata tables
+                addGeoPackageContentsEntry(e, cx);
             } finally {
                 close(cx);
             }
         } catch (SQLException ex) {
             throw new IOException(ex);
         }
-
-        // update the metadata tables
-        addGeoPackageContentsEntry(e);
 
         entry.init(e);
     }
@@ -1324,8 +1402,6 @@ public class GeoPackage {
      * @param highCol high column boundary
      * @param lowRow low row boundary
      * @param highRow high row boundary
-     * @return
-     * @throws IOException
      */
     @SuppressWarnings("PMD.CloseResource") // cx and st get into the TileReader
     public TileReader reader(
@@ -1343,7 +1419,8 @@ public class GeoPackage {
         addRange("tile_column", lowCol, highCol, q);
         addRange("tile_row", lowRow, highRow, q);
 
-        StringBuffer sql = new StringBuffer("SELECT * FROM ").append(entry.getTableName());
+        StringBuffer sql =
+                new StringBuffer("SELECT * FROM \"").append(entry.getTableName()).append("\"");
         if (!q.isEmpty()) {
             sql.append(" WHERE ");
             for (String s : q) {
@@ -1389,7 +1466,6 @@ public class GeoPackage {
      *
      * @param entry The feature entry.
      * @return whether this feature entry has a spatial index available.
-     * @throws IOException
      */
     public boolean hasSpatialIndex(FeatureEntry entry) throws IOException {
         try {
@@ -1500,7 +1576,6 @@ public class GeoPackage {
      * @param isMax true for max boundary, false for min boundary
      * @param isRow true for rows, false for columns
      * @return the min/max column/row of the zoom level available in the data
-     * @throws IOException
      */
     public int getTileBound(TileEntry entry, int zoom, boolean isMax, boolean isRow)
             throws IOException {
@@ -1556,7 +1631,7 @@ public class GeoPackage {
         PreparedStatement psm =
                 cx.prepareStatement(
                         format(
-                                "SELECT *, exists(SELECT 1 FROM %s data where data.zoom_level = tileMatrix.zoom_level) as has_tiles"
+                                "SELECT *, exists(SELECT 1 FROM \"%s\" data where data.zoom_level = tileMatrix.zoom_level) as has_tiles"
                                         + " FROM %s as tileMatrix"
                                         + " WHERE table_name = ?"
                                         + " ORDER BY zoom_level ASC",
@@ -1609,7 +1684,7 @@ public class GeoPackage {
 
                     CoordinateReferenceSystem crs;
                     try {
-                        crs = CRS.decode("EPSG:" + srid);
+                        crs = CRS.decode("EPSG:" + srid, true);
                     } catch (Exception ex) {
                         // not a major concern, by spec the tile matrix set srs should match the
                         // gpkg_contents srs_id
@@ -1647,11 +1722,8 @@ public class GeoPackage {
         e.setDescription(rs.getString("description"));
         e.setTableName(rs.getString("table_name"));
         try {
-            final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_STRING);
-
-            DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
-
-            e.setLastChange(DATE_FORMAT.parse(rs.getString("last_change")));
+            final SimpleDateFormat dateFormat = getDateFormat();
+            e.setLastChange(dateFormat.parse(rs.getString("last_change")));
         } catch (ParseException ex) {
             throw new IOException(ex);
         }
@@ -1659,17 +1731,7 @@ public class GeoPackage {
         int srid = rs.getInt("organization_coordsys_id");
         e.setSrid(srid);
 
-        CoordinateReferenceSystem crs;
-        try {
-            crs = CRS.decode("EPSG:" + srid);
-        } catch (Exception ex) {
-            // try parsing srtext directly
-            try {
-                crs = CRS.parseWKT(rs.getString("srtext"));
-            } catch (Exception e2) {
-                throw new IOException(ex);
-            }
-        }
+        CoordinateReferenceSystem crs = decodeCRSFromResultset(rs, srid);
 
         e.setBounds(
                 new ReferencedEnvelope(
@@ -1678,6 +1740,27 @@ public class GeoPackage {
                         rs.getDouble("min_y"),
                         rs.getDouble("max_y"),
                         crs));
+    }
+
+    static CoordinateReferenceSystem decodeSRID(int srid) throws FactoryException {
+        if (srid == GENERIC_GEOGRAPHIC_SRID || srid == GENERIC_PROJECTED_SRID) {
+            return DefaultEngineeringCRS.GENERIC_2D;
+        }
+        return CRS.decode("EPSG:" + srid, true);
+    }
+
+    private static CoordinateReferenceSystem decodeCRSFromResultset(ResultSet rs, int srid)
+            throws IOException {
+        try {
+            return decodeSRID(srid);
+        } catch (Exception ex) {
+            // try parsing srtext directly
+            try {
+                return CRS.parseWKT(rs.getString("srtext"));
+            } catch (Exception e2) {
+                throw new IOException(ex);
+            }
+        }
     }
 
     static void runSQL(String sql, Connection cx) throws SQLException {

@@ -16,6 +16,11 @@
  */
 package org.geotools.sld.v1_1;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,8 +30,10 @@ import java.util.List;
 import junit.framework.TestCase;
 import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.Fill;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.LineSymbolizer;
+import org.geotools.styling.Mark;
 import org.geotools.styling.NamedLayer;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
@@ -38,6 +45,7 @@ import org.geotools.styling.TextSymbolizer;
 import org.geotools.xsd.Parser;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.ExternalGraphic;
+import org.opengis.style.GraphicalSymbol;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.EntityResolver2;
@@ -241,5 +249,31 @@ public class SLDExampleTest extends TestCase {
         // check it passes validation
         List errors = validate(file);
         assertEquals(0, errors.size());
+    }
+
+    public void testParseBackgroundSolid() throws Exception {
+        String file = "../backgroundSolidSLD11.xml";
+        StyledLayerDescriptor sld = (StyledLayerDescriptor) parse(file);
+        NamedLayer layer = (NamedLayer) sld.getStyledLayers()[0];
+        Style style = layer.getStyles()[0];
+        Fill fill = style.getBackground();
+        assertNotNull(fill);
+        assertEquals(Color.RED, fill.getColor().evaluate(null, Color.class));
+        assertEquals(1, fill.getOpacity().evaluate(null, Double.class), 1);
+    }
+
+    public void testParseBackgroundGraphic() throws Exception {
+        String file = "../backgroundGraphicSLD11.xml";
+        StyledLayerDescriptor sld = (StyledLayerDescriptor) parse(file);
+        NamedLayer layer = (NamedLayer) sld.getStyledLayers()[0];
+        Style style = layer.getStyles()[0];
+        Fill fill = style.getBackground();
+        assertNotNull(fill);
+        Graphic graphic = fill.getGraphicFill();
+        assertNotNull(graphic);
+        GraphicalSymbol firstSymbol = graphic.graphicalSymbols().get(0);
+        assertTrue(firstSymbol instanceof Mark);
+        assertEquals(
+                "square", ((Mark) firstSymbol).getWellKnownName().evaluate(null, String.class));
     }
 }

@@ -17,6 +17,7 @@
 package org.geotools.data.shapefile.index.quadtree.fs;
 
 import java.io.IOException;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
@@ -102,10 +103,7 @@ public class FileSystemNode extends Node {
         return super.getSubNode(pos);
     }
 
-    /**
-     * @param channel
-     * @throws IOException
-     */
+    /** */
     public static FileSystemNode readNode(
             int id, Node parent, FileChannel channel, ByteOrder order, boolean useMemoryMapping)
             throws IOException {
@@ -180,7 +178,7 @@ public class FileSystemNode extends Node {
                 this.buffer = NIOUtilities.allocate(8 * 1024);
                 this.buffer.order(order);
                 channel.read(buffer);
-                buffer.flip();
+                ((Buffer) buffer).flip();
             }
         }
 
@@ -218,10 +216,7 @@ public class FileSystemNode extends Node {
             buffer.position(buffer.position() + size);
         }
 
-        /**
-         * @param requiredSize
-         * @throws IOException
-         */
+        /** */
         void refillBuffer(int requiredSize) throws IOException {
             // compute the actual position up to we have read something
             long currentPosition = bufferStart + buffer.position();
@@ -243,12 +238,7 @@ public class FileSystemNode extends Node {
             bufferStart = currentPosition;
         }
 
-        /**
-         * Jumps the buffer to the specified position in the file
-         *
-         * @param newPosition
-         * @throws IOException
-         */
+        /** Jumps the buffer to the specified position in the file */
         public void goTo(long newPosition) throws IOException {
             // if the new position is already in the buffer, just move the
             // buffer position
@@ -261,11 +251,7 @@ public class FileSystemNode extends Node {
             }
         }
 
-        /**
-         * Returns the absolute position of the next byte that will be read
-         *
-         * @return
-         */
+        /** Returns the absolute position of the next byte that will be read */
         public long getPosition() {
             return bufferStart + buffer.position();
         }

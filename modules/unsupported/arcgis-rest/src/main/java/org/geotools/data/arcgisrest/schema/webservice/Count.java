@@ -1,4 +1,3 @@
-
 package org.geotools.data.arcgisrest.schema.webservice;
 
 import com.google.gson.annotations.Expose;
@@ -21,13 +20,16 @@ public class Count {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(Count.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append(Count.class.getName())
+                .append('@')
+                .append(Integer.toHexString(System.identityHashCode(this)))
+                .append('[');
         sb.append("count");
         sb.append('=');
-        sb.append(((this.count == null)?"<null>":this.count));
+        sb.append(((this.count == null) ? "<null>" : this.count));
         sb.append(',');
-        if (sb.charAt((sb.length()- 1)) == ',') {
-            sb.setCharAt((sb.length()- 1), ']');
+        if (sb.charAt((sb.length() - 1)) == ',') {
+            sb.setCharAt((sb.length() - 1), ']');
         } else {
             sb.append(']');
         }
@@ -37,7 +39,7 @@ public class Count {
     @Override
     public int hashCode() {
         int result = 1;
-        result = ((result* 31)+((this.count == null)? 0 :this.count.hashCode()));
+        result = ((result * 31) + ((this.count == null) ? 0 : this.count.hashCode()));
         return result;
     }
 
@@ -50,7 +52,7 @@ public class Count {
             return false;
         }
         Count rhs = ((Count) other);
-        return ((this.count == rhs.count)||((this.count!= null)&&this.count.equals(rhs.count)));
+        return ((this.count == rhs.count)
+                || ((this.count != null) && this.count.equals(rhs.count)));
     }
-
 }

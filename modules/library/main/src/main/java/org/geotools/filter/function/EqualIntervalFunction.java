@@ -17,21 +17,26 @@
  */
 package org.geotools.filter.function;
 
-import static org.geotools.filter.capability.FunctionNameImpl.*;
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.util.NullProgressListener;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.visitor.MaxVisitor;
-import org.geotools.feature.visitor.MinVisitor;
-import org.geotools.feature.visitor.UniqueVisitor;
+import org.geotools.feature.visitor.*;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.capability.FunctionNameImpl;
+import org.geotools.util.factory.GeoTools;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.capability.FunctionName;
+import org.opengis.filter.expression.Divide;
+import org.opengis.filter.expression.Function;
+import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.Subtract;
 
 /**
  * Classification function for breaking a feature collection into edible chunks of "equal" size.
@@ -41,12 +46,16 @@ import org.opengis.filter.capability.FunctionName;
  */
 public class EqualIntervalFunction extends ClassificationFunction {
 
+    private static FilterFactory2 FF =
+            CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
+
     public static FunctionName NAME =
             new FunctionNameImpl(
                     "EqualInterval",
                     RangedClassifier.class,
                     parameter("value", Double.class),
-                    parameter("classes", Integer.class));
+                    parameter("classes", Integer.class),
+                    parameter("percentages", Boolean.class, 0, 1));
 
     public EqualIntervalFunction() {
         super(NAME);
@@ -67,12 +76,25 @@ public class EqualIntervalFunction extends ClassificationFunction {
             featureCollection.accepts(maxVisit, progress);
             if (progress.isCanceled()) return null;
             globalMax = (Comparable) maxVisit.getResult().getValue();
-
-            if ((globalMin instanceof Number) && (globalMax instanceof Number)) {
-                return calculateNumerical(classNum, globalMin, globalMax);
-            } else {
-                return calculateNonNumerical(classNum, featureCollection);
+            RangedClassifier result;
+            boolean percentages = false;
+            if (getParameters().size() > 2) {
+                Literal literal = (Literal) getParameters().get(2);
+                percentages = ((Boolean) literal.getValue()).booleanValue();
             }
+            if ((globalMin instanceof Number) && (globalMax instanceof Number)) {
+                result = calculateNumerical(classNum, globalMin, globalMax);
+                if (percentages)
+                    result.setPercentages(
+                            getNumericalPercentages(classNum, result, featureCollection));
+            } else {
+                result = calculateNonNumerical(classNum, featureCollection);
+                if (percentages)
+                    result.setPercentages(
+                            getNotNumericalPercentages(classNum, featureCollection.size()));
+            }
+
+            return result;
         } catch (IllegalFilterException e) { // accepts exploded
             LOGGER.log(
                     Level.SEVERE,
@@ -219,5 +241,65 @@ public class EqualIntervalFunction extends ClassificationFunction {
             return null;
         }
         return calculate((SimpleFeatureCollection) object);
+    }
+
+    private double[] getNotNumericalPercentages(int classNum, int totalSize) {
+        int lastBigBin = totalSize % classNum;
+        if (lastBigBin != 0) lastBigBin--;
+        double classMembers = (double) totalSize / classNum;
+        double[] percentages = new double[classNum];
+        for (int i = 0; i < classNum; i++) {
+            percentages[i] = (classMembers / totalSize) * 100;
+            if (lastBigBin != 0 && lastBigBin == i) {
+                classMembers--;
+            }
+        }
+        return percentages;
+    }
+
+    private double[] getNumericalPercentages(
+            int classNum, RangedClassifier classifier, FeatureCollection collection)
+            throws IOException {
+        double max = ((Number) classifier.getMax(classifier.getSize() - 1)).doubleValue();
+        double min = ((Number) classifier.getMin(0)).doubleValue();
+        double classWidth = Math.ceil((max - min) / classNum);
+        Subtract subtract = FF.subtract(getParameters().get(0), FF.literal(min));
+        Divide divide = FF.divide(subtract, FF.literal(classWidth));
+        Function convert = FF.function("convert", divide, FF.literal(Integer.class));
+        GroupByVisitor groupBy =
+                new GroupByVisitor(
+                        Aggregate.COUNT, getParameters().get(0), Arrays.asList(convert), null);
+        collection.accepts(groupBy, null);
+        Map<List<Integer>, Integer> result = groupBy.getResult().toMap();
+        return calculateNumericalPercentages(result, collection.size(), classNum);
+    }
+
+    private double[] calculateNumericalPercentages(
+            Map<List<Integer>, Integer> queryResult, int totalSize, int classNum) {
+        double[] percentages = new double[classNum];
+        // getting a tree set from the keys to get them asc ordered and
+        // collect percentages in the right order
+        Set<Integer> keys =
+                queryResult
+                        .keySet()
+                        .stream()
+                        .map(l -> l.get(0))
+                        .collect(Collectors.toCollection(() -> new TreeSet<>()));
+        int i = 0;
+        for (Integer key : keys) {
+            List<Integer> keyL = Arrays.asList(key);
+            // handle case when the query return one class plus,
+            // when i.e. classWidth is an integer so that in an
+            // interval of values 1-25, for three classes,
+            // we would have value 25 falling in group with key 3
+            if (i >= percentages.length) {
+                int last = percentages.length - 1;
+                percentages[last] += (Double.valueOf(queryResult.get(keyL)) / totalSize) * 100;
+            } else {
+                percentages[i] = (Double.valueOf(queryResult.get(keyL)) / totalSize) * 100;
+            }
+            i++;
+        }
+        return percentages;
     }
 }

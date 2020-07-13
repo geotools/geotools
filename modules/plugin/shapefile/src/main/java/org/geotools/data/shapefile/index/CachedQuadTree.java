@@ -157,21 +157,12 @@ public class CachedQuadTree {
             curr = -1;
         }
 
-        /**
-         * The number of coordinates
-         *
-         * @return
-         */
+        /** The number of coordinates */
         int size() {
             return curr + 1;
         }
 
-        /**
-         * Adds a coordinate to this list
-         *
-         * @param x
-         * @param y
-         */
+        /** Adds a coordinate to this list */
         void add(int index) {
             curr++;
             if ((curr * 2 + 1) >= indices.length) {

@@ -1,0 +1,3 @@
+org.geotools.data.mongodb.data.WorkingDirectory
+org.geotools.data.mongodb.TempDirectory
+

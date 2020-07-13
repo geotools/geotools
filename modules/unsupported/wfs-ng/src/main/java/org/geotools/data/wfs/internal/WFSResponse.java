@@ -50,10 +50,7 @@ public class WFSResponse extends Response {
 
     private QName remoteTypeName;
 
-    /**
-     * @throws IOException
-     * @throws ServiceException
-     */
+    /** */
     public WFSResponse(WFSRequest originatingRequest, final HTTPResponse httpResponse)
             throws ServiceException, IOException {
 

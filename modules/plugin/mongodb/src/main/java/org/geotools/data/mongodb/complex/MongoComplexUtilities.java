@@ -17,6 +17,7 @@
 package org.geotools.data.mongodb.complex;
 
 import com.mongodb.BasicDBList;
+import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,20 +25,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.data.mongodb.AbstractCollectionMapper;
 import org.geotools.data.mongodb.MongoFeature;
 import org.geotools.data.mongodb.MongoGeometryBuilder;
+import org.geotools.util.logging.Logging;
 import org.opengis.feature.Feature;
 
 /** This class contains utilities methods for dealing with MongoDB complex features. */
 public final class MongoComplexUtilities {
 
-    // if this property is set to TRUE the system will expect nested collection full path to be
-    // provided
-    private static final boolean USE_LEGACY_PATHS =
-            Boolean.parseBoolean(
-                    System.getProperty(
-                            "org.geotools.data.mongodb.complex.useLegacyPaths", "false"));
+    private static final Logger LOG = Logging.getLogger(MongoComplexUtilities.class);
 
     // key used to store the parent JSON path in a feature user data map
     public static final String MONGO_PARENT_PATH = "MONGO_PARENT_PATH";
@@ -53,11 +52,6 @@ public final class MongoComplexUtilities {
     /** Store the parent path in a feature user data map. */
     public static void setParentPath(Feature feature, String parentPath) {
         feature.getUserData().put(MONGO_PARENT_PATH, parentPath);
-    }
-
-    /** If TRUE no recursive paths will be used, this onyl exists for backwards compatibility. */
-    public static boolean useLegacyPaths() {
-        return USE_LEGACY_PATHS;
     }
 
     /**
@@ -186,9 +180,24 @@ public final class MongoComplexUtilities {
         private boolean hasNext() {
             // we have a next element if we still have paths parts or we are currently
             // walking a collection and there is a index defined for this collection
+            // if empty list is detected, make current object null and return false
+            if (isAnEmptyList(currentObject)) {
+                currentObject = null;
+                return false;
+            }
             return currentJsonPathPartIndex < jsonPathParts.length
                     || (currentObject instanceof BasicDBList
                             && collectionsIndexes.get(currentJsonPath) != null);
+        }
+
+        private boolean isAnEmptyList(Object object) {
+            if (object instanceof BasicDBList) {
+                BasicDBList list = (BasicDBList) currentObject;
+                if (list.isEmpty()) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private void next() {
@@ -332,6 +341,22 @@ public final class MongoComplexUtilities {
         return mappings;
     }
 
+    /**
+     * Compute the mappings for a mongodb cursor(iterator), this can be used to create a feature
+     * mapping. This method will close the cursor.
+     */
+    public static Map<String, Class> findMappings(DBCursor cursor) {
+        Map<String, Class> mappings = new HashMap<>();
+        try {
+            while (cursor.hasNext()) {
+                findMappingsHelper(cursor.next(), "", mappings);
+            }
+        } finally {
+            cursor.close();
+        }
+        return mappings;
+    }
+
     /** Helper method that will recursively walk a mongo db object and compute is mappings. */
     private static void findMappingsHelper(
             Object object, String parentPath, Map<String, Class> mappings) {
@@ -339,6 +364,7 @@ public final class MongoComplexUtilities {
             return;
         }
         if (object instanceof DBObject) {
+            LOG.log(Level.INFO, "Generating mappings from object: {0}", object);
             DBObject dbObject = (DBObject) object;
             for (String key : dbObject.keySet()) {
                 Object value = dbObject.get(key);
@@ -349,12 +375,14 @@ public final class MongoComplexUtilities {
                 if (value instanceof List) {
                     List list = (List) value;
                     if (!list.isEmpty()) {
-                        findMappingsHelper(list.get(0), path, mappings);
+                        for (Object eo : list) {
+                            findMappingsHelper(eo, path, mappings);
+                        }
                     }
                 } else if (value instanceof DBObject) {
                     findMappingsHelper(value, path, mappings);
                 } else {
-                    mappings.put(path, value.getClass());
+                    mappings.putIfAbsent(path, value.getClass());
                 }
             }
         } else {

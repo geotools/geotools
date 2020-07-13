@@ -16,9 +16,7 @@
  */
 package org.geotools.renderer.style;
 
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.GraphicsEnvironment;
+import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -27,11 +25,13 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * Lookup and caches font definitions for faster retrieval
@@ -49,7 +49,9 @@ public class FontCache {
     Set<String> systemFonts = new HashSet<String>();
 
     /** Fonts already loaded */
-    Map<String, Font> loadedFonts = new ConcurrentHashMap<String, Font>();
+    Map<String, Font> loadedFonts = new ConcurrentHashMap<>();
+
+    Map<String, List<String>> alternatives = new ConcurrentHashMap<>();
 
     /**
      * Returns the default, system wide font cache
@@ -100,17 +102,14 @@ public class FontCache {
         return javaFont;
     }
 
-    /**
-     * Tries to load the specified font name as a URL
-     *
-     * @param fontUrl
-     * @return
-     */
-    java.awt.Font loadFromUrl(String fontUrl) {
+    /** Tries to load the specified font name as a URL. Does not cache the result. */
+    public static java.awt.Font loadFromUrl(String fontUrl) {
         // may be its a file or url
         InputStream is = null;
 
-        if (fontUrl.startsWith("http") || fontUrl.startsWith("file:")) {
+        if (fontUrl.startsWith("http")
+                || fontUrl.startsWith("file:")
+                || fontUrl.startsWith("jar:")) {
             try {
                 URL url = new URL(fontUrl);
                 is = url.openStream();
@@ -186,8 +185,6 @@ public class FontCache {
     /**
      * Adds the specified font in the font cache. Useful if you want to load fonts that are not
      * installed in the Operating System and cannot provide a full path to fonts either.
-     *
-     * @param f
      */
     public void registerFont(Font f) {
         loadedFonts.put(f.getName(), f);
@@ -204,13 +201,12 @@ public class FontCache {
         if (loadedFonts != null) {
             loadedFonts.clear();
         }
+        if (alternatives != null) {
+            alternatives.clear();
+        }
     }
 
-    /**
-     * Lazily loads up the system fonts cache
-     *
-     * @return
-     */
+    /** Lazily loads up the system fonts cache */
     private Set<String> getSystemFonts() {
         // make sure we load the known font families once.
         if (systemFonts.size() == 0) {
@@ -241,8 +237,6 @@ public class FontCache {
     /**
      * Returns the set of font families and font faces available in the system and those manually
      * loaded into the cache
-     *
-     * @return
      */
     public Set<String> getAvailableFonts() {
         Set<String> availableFonts = new HashSet<String>();
@@ -251,5 +245,35 @@ public class FontCache {
         availableFonts.addAll(loadedFonts.keySet());
 
         return availableFonts;
+    }
+
+    /**
+     * Given a font name, returns alternatives for other scripts, based on the assumption they start
+     * with the same base name, e.g., "Noto Sans" also has a number of alternative fonts dedicated
+     * to specific scripts, like "Noti Sans Urdu", "Noto Sans Arabic", "Noto Sans Javanese" and so
+     * on. The code will not return style alterations like "Noto Sans Bold" or "Noto Sans Bold
+     * Italic" thought (strips all font names containing "bold" and "italic", case insesitive).
+     *
+     * @return A list of font names with the same base name
+     */
+    public List<String> getAlternatives(String name) {
+        List<String> result = alternatives.get(name);
+        if (result == null) {
+            result =
+                    FontCache.getDefaultInstance()
+                            .getAvailableFonts()
+                            .stream()
+                            .filter(f -> f.startsWith(name))
+                            .filter(
+                                    f -> { // leave out alterations, use base fonts
+                                        String lc = f.toLowerCase();
+                                        return !lc.contains(" bold") && !lc.contains(" italic");
+                                    })
+                            .sorted() // leave further altered fonts down the line, base ones first
+                            .collect(Collectors.toList());
+            alternatives.put(name, result);
+        }
+
+        return result;
     }
 }

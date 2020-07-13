@@ -16,6 +16,7 @@
  */
 package org.geotools.data.shapefile.shp;
 
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
 import java.util.ArrayList;
@@ -44,9 +45,7 @@ public class MultiPointHandler implements ShapeHandler {
     }
 
     public MultiPointHandler(ShapeType type, GeometryFactory gf) throws ShapefileException {
-        if ((type != ShapeType.MULTIPOINT)
-                && (type != ShapeType.MULTIPOINTM)
-                && (type != ShapeType.MULTIPOINTZ)) {
+        if (!type.isMultiPointType()) {
             throw new ShapefileException(
                     "Multipointhandler constructor - expected type to be 8, 18, or 28");
         }
@@ -58,7 +57,7 @@ public class MultiPointHandler implements ShapeHandler {
     /**
      * Returns the shapefile shape type value for a point
      *
-     * @return int Shapefile.POINT
+     * @return int Shapefile.MULTIPOINT
      */
     public ShapeType getShapeType() {
         return shapeType;
@@ -106,27 +105,49 @@ public class MultiPointHandler implements ShapeHandler {
         }
 
         // read bounding box (not needed)
-        buffer.position(buffer.position() + 4 * 8);
+        ((Buffer) buffer).position(buffer.position() + 4 * 8);
 
         int numpoints = buffer.getInt();
-        int dimensions = shapeType == shapeType.MULTIPOINTZ && !flatGeometry ? 3 : 2;
-        CoordinateSequence cs =
-                JTS.createCS(geometryFactory.getCoordinateSequenceFactory(), numpoints, dimensions);
+        int dimensions = shapeType == ShapeType.MULTIPOINTZ && !flatGeometry ? 3 : 2;
+        int measure = flatGeometry ? 0 : 1;
+        CoordinateSequence cs;
+        if (shapeType == ShapeType.MULTIPOINTZ || shapeType == ShapeType.MULTIPOINTM) {
+            cs =
+                    JTS.createCS(
+                            geometryFactory.getCoordinateSequenceFactory(),
+                            numpoints,
+                            dimensions + measure,
+                            measure);
+        } else {
+            cs =
+                    JTS.createCS(
+                            geometryFactory.getCoordinateSequenceFactory(), numpoints, dimensions);
+        }
 
         DoubleBuffer dbuffer = buffer.asDoubleBuffer();
         double[] ordinates = new double[numpoints * 2];
         dbuffer.get(ordinates);
         for (int t = 0; t < numpoints; t++) {
-            cs.setOrdinate(t, 0, ordinates[t * 2]);
-            cs.setOrdinate(t, 1, ordinates[t * 2 + 1]);
+            cs.setOrdinate(t, CoordinateSequence.X, ordinates[t * 2]);
+            cs.setOrdinate(t, CoordinateSequence.Y, ordinates[t * 2 + 1]);
         }
 
-        if (dimensions > 2) {
-            dbuffer.position(dbuffer.position() + 2);
+        if (shapeType == ShapeType.MULTIPOINTZ && !flatGeometry) {
+            ((Buffer) dbuffer).position(dbuffer.position() + 2);
 
             dbuffer.get(ordinates, 0, numpoints);
             for (int t = 0; t < numpoints; t++) {
-                cs.setOrdinate(t, 2, ordinates[t]); // z
+                cs.setOrdinate(t, CoordinateSequence.Z, ordinates[t]); // z
+            }
+        }
+
+        if ((shapeType == ShapeType.MULTIPOINTZ || shapeType == ShapeType.MULTIPOINTM)
+                && !flatGeometry) {
+            ((Buffer) dbuffer).position(dbuffer.position() + 2);
+
+            dbuffer.get(ordinates, 0, numpoints);
+            for (int t = 0; t < numpoints; t++) {
+                cs.setOrdinate(t, CoordinateSequence.M, ordinates[t]); // m
             }
         }
 

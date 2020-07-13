@@ -16,7 +16,7 @@
  */
 package org.geotools.geopkg.wps;
 
-import java.awt.Color;
+import java.awt.*;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
@@ -98,6 +98,8 @@ public class GeoPackageProcessRequest {
         protected Set<QName> propertyNames = null;
         protected Filter filter = null;
         protected boolean indexed = false;
+        protected boolean styles = true;
+        protected boolean metadata = true;
 
         @Override
         public LayerType getType() {
@@ -134,6 +136,22 @@ public class GeoPackageProcessRequest {
 
         public void setIndexed(boolean indexed) {
             this.indexed = indexed;
+        }
+
+        public boolean isStyles() {
+            return styles;
+        }
+
+        public void setStyles(boolean styles) {
+            this.styles = styles;
+        }
+
+        public boolean isMetadata() {
+            return metadata;
+        }
+
+        public void setMetadata(boolean metadata) {
+            this.metadata = metadata;
         }
     }
 
@@ -296,6 +314,7 @@ public class GeoPackageProcessRequest {
     protected List<Layer> layers = new ArrayList<Layer>();
     protected URL path = null;
     protected boolean remove = true;
+    protected boolean context = true;
 
     public Boolean getRemove() {
         return remove;
@@ -331,5 +350,13 @@ public class GeoPackageProcessRequest {
 
     public void setPath(URL path) {
         this.path = path;
+    }
+
+    public boolean isContext() {
+        return context;
+    }
+
+    public void setContext(boolean context) {
+        this.context = context;
     }
 }

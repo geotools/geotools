@@ -1,7 +1,7 @@
 Range
 -----
 
-GeoTools inlcudes a **Range** class to represent a numeric, or value, range. This is handy when expressing scales a dataset is useful for.
+GeoTools includes a ``Range`` class to represent a numeric, or value, range. This is handy when expressing scales a data set is useful for.
 
 .. literalinclude:: /../src/main/java/org/geotools/metadata/MetadataExamples.java
    :language: java
@@ -15,7 +15,7 @@ This actually works with any Comparable such as Strings or enumerations.
    :start-after: // exampleRangeComparable start
    :end-before: // exampleRangeComparable end
 
-We have a special **NumericRange** that uses the fact that numbers can work together to allow comparisons between NumericRange<Double> and NumericRange<Integer>.
+We have a special ``NumericRange`` that uses the fact that numbers can work together to allow comparisons between ``NumericRange<Double>`` and ``NumericRange<Integer>``.
 
 .. literalinclude:: /../src/main/java/org/geotools/metadata/MetadataExamples.java
    :language: java

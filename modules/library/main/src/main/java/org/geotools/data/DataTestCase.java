@@ -84,6 +84,8 @@ public class DataTestCase extends TestCase {
     protected ReferencedEnvelope buildingBounds;
     protected FilterFactory2 ff;
 
+    public DataTestCase() {}
+
     /** Creates a default test case with the given name. */
     public DataTestCase(final String name) {
         super(name);

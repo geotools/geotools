@@ -286,13 +286,7 @@ public class WMS1_1_1_OnlineTest extends WMS1_1_0_OnlineTest {
     // forces use of 1.1.1 spec
     private class CustomWMS extends WebMapServer {
 
-        /**
-         * @param serverURL
-         * @param wait
-         * @throws SAXException
-         * @throws URISyntaxException
-         * @throws IOException
-         */
+        /** */
         public CustomWMS(URL serverURL) throws SAXException, URISyntaxException, IOException {
             super(serverURL);
             // TODO Auto-generated constructor stub

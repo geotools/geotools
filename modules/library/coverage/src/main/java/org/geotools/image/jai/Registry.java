@@ -183,9 +183,6 @@ public final class Registry {
     /**
      * Forcefully registers the specified rendered operation in the JAI registry
      *
-     * @param descriptor
-     * @param rif
-     * @param productName
      * @return true if the registration succeded, false if the registration was not required as the
      *     operation was already available in the registry
      */

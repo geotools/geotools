@@ -57,19 +57,14 @@ public class EventContentFeatureWriter implements FeatureWriter<SimpleFeatureTyp
 
     FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
 
-    /**
-     * EventContentFeatureWriter construction.
-     *
-     * @param reader
-     * @param diff
-     * @param filter
-     */
+    /** EventContentFeatureWriter construction. */
     public EventContentFeatureWriter(
             ContentFeatureStore store, FeatureWriter<SimpleFeatureType, SimpleFeature> writer) {
         this.store = store;
         this.writer = writer;
         this.state = store.getState();
 
+        @SuppressWarnings("PMD.CloseResource") // not to be closed, not generated
         Transaction t = state.getTransaction();
         if (t != Transaction.AUTO_COMMIT) {
             // auto commit does not issue batch events
@@ -111,7 +106,6 @@ public class EventContentFeatureWriter implements FeatureWriter<SimpleFeatureTyp
     /**
      * Writes out the current feature.
      *
-     * @throws IOException
      * @see org.geotools.data.FeatureWriter#write()
      */
     public void write() throws IOException {
@@ -154,6 +148,7 @@ public class EventContentFeatureWriter implements FeatureWriter<SimpleFeatureTyp
      * @see org.geotools.data.FeatureWriter#close()
      */
     public void close() throws IOException {
+        @SuppressWarnings("PMD.CloseResource") // not to be closed here
         Transaction t = state.getTransaction();
         if (t != Transaction.AUTO_COMMIT) {
             t.removeState(this);

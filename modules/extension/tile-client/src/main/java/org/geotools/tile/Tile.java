@@ -22,9 +22,14 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.data.ows.HTTPClient;
+import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.util.logging.Logging;
@@ -171,8 +176,19 @@ public abstract class Tile implements ImageLoader {
         }
     }
 
+    @Override
     public BufferedImage loadImageTileImage(Tile tile) throws IOException {
-        return ImageIOExt.readBufferedImage(getUrl());
+
+        Map<String, String> headers = new HashMap<>();
+        headers.put("User-Agent", "Geotools Http client");
+        try (InputStream is = setupInputStream(getUrl(), headers)) {
+            return ImageIOExt.readBufferedImage(is);
+        }
+    }
+
+    private InputStream setupInputStream(URL url, Map<String, String> headers) throws IOException {
+        HTTPClient client = new SimpleHttpClient();
+        return client.get(url, headers).getResponseStream();
     }
 
     /**
@@ -185,11 +201,7 @@ public abstract class Tile implements ImageLoader {
         return this.renderState == RenderState.RENDERED && this.tileImage != null;
     }
 
-    /**
-     * Gets an image showing an error, possibly indicating a failure to load the tile image.
-     *
-     * @return
-     */
+    /** Gets an image showing an error, possibly indicating a failure to load the tile image. */
     protected BufferedImage createErrorImage(final String message) {
         BufferedImage buffImage = null;
 
@@ -239,8 +251,6 @@ public abstract class Tile implements ImageLoader {
      * Sets the state of the tiles image.
      *
      * <p>See getRenderState() for a description of the valid states.
-     *
-     * @param newState
      */
     public void setRenderState(RenderState newState) {
         this.renderState = newState;
@@ -260,8 +270,6 @@ public abstract class Tile implements ImageLoader {
      *   <li>RenderState.Invalid - something has changed and the tile's rendered image is not longer
      *       valid and needs to be re-rendered
      * </ul>
-     *
-     * @return
      */
     public RenderState getRenderState() {
         return this.renderState;
@@ -288,8 +296,6 @@ public abstract class Tile implements ImageLoader {
      * Sets the state of the tile rendering stack.
      *
      * <p>See getContextState() for valid value descriptions.
-     *
-     * @param newState
      */
     public void setContextState(ContextState newState) {
         this.contextState = newState;
@@ -309,8 +315,6 @@ public abstract class Tile implements ImageLoader {
      *       screen
      *   <li>OFFSCREEN - this tile was not requested by the viewport
      * </ul>
-     *
-     * @return
      */
     public ScreenState getScreenState() {
         return this.screenState;
@@ -320,8 +324,6 @@ public abstract class Tile implements ImageLoader {
      * Sets the screen state.
      *
      * <p>See getScreenState() for a description of the valid values.
-     *
-     * @param newState
      */
     public void setScreenState(ScreenState newState) {
         this.screenState = newState;
@@ -342,8 +344,6 @@ public abstract class Tile implements ImageLoader {
      *       Don't remove this tile.
      *   <li>OLD - This tile is an old tile that if off screen can be removed.
      * </ul>
-     *
-     * @return
      */
     public ValidatedState getTileState() {
         return this.tileState;
@@ -353,8 +353,6 @@ public abstract class Tile implements ImageLoader {
      * Sets the validation state.
      *
      * <p>See getTileState() for a description of valid values.
-     *
-     * @param newState
      */
     public void setTileState(ValidatedState newState) {
         this.tileState = newState;
@@ -363,20 +361,12 @@ public abstract class Tile implements ImageLoader {
         }
     }
 
-    /**
-     * Diese Methode wird verwendet um... TODO.
-     *
-     * @return
-     */
+    /** Diese Methode wird verwendet um... TODO. */
     public String getId() {
         return this.tileIdentifier.getId();
     }
 
-    /**
-     * Diese Methode wird verwendet um... TODO.
-     *
-     * @return
-     */
+    /** Diese Methode wird verwendet um... TODO. */
     public TileIdentifier getTileIdentifier() {
         return this.tileIdentifier;
     }
@@ -398,6 +388,7 @@ public abstract class Tile implements ImageLoader {
         return getUrl().equals(((Tile) other).getUrl());
     }
 
+    @Override
     public String toString() {
         return this.getId(); // this.getUrl().toString();
     }

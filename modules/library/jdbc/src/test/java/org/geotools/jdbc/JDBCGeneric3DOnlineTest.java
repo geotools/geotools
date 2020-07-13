@@ -75,25 +75,13 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
 
     protected CoordinateReferenceSystem crs;
 
-    /**
-     * Returns the name of the feature type with 3d lines
-     *
-     * @return
-     */
+    /** Returns the name of the feature type with 3d lines */
     protected abstract String getLine3d();
 
-    /**
-     * Returns the name of the feature type with 3d points
-     *
-     * @return
-     */
+    /** Returns the name of the feature type with 3d points */
     protected abstract String getPoint3d();
 
-    /**
-     * Returns the name of the feature type with 3d polygons
-     *
-     * @return
-     */
+    /** Returns the name of the feature type with 3d polygons */
     protected abstract String getPoly3d();
 
     @Override
@@ -286,8 +274,6 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
     /**
      * Creates the polygon schema, inserts a 3D geometry into the datastore, and retrieves it back
      * to make sure 3d data is preserved.
-     *
-     * @throws Exception
      */
     private void checkCreateSchemaAndInsert(Geometry poly) throws Exception {
         dataStore.createSchema(poly3DType);
@@ -341,8 +327,6 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
      * two coordinates are identical in location, then the Z values are equal. This should always be
      * the case for valid data.
      *
-     * @param g1
-     * @param g2
      * @return true if the geometries are location-equal in Z
      */
     private static boolean hasMatchingZValues(Geometry g1, Geometry g2) {
@@ -364,11 +348,7 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
         return true;
     }
 
-    /**
-     * Make sure we can properly retrieve the bounds of 3d layers
-     *
-     * @throws Exception
-     */
+    /** Make sure we can properly retrieve the bounds of 3d layers */
     public void testBounds() throws Exception {
         ReferencedEnvelope env = dataStore.getFeatureSource(tname(getLine3d())).getBounds();
 

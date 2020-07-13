@@ -46,11 +46,7 @@ public class RootHandler extends XSIElementHandler {
         // do nothing
     }
 
-    /**
-     * Creates a new RootHandler object.
-     *
-     * @param uri
-     */
+    /** Creates a new RootHandler object. */
     public RootHandler(URI uri) {
         this.uri = uri;
         schema = new SchemaHandler();
@@ -95,8 +91,6 @@ public class RootHandler extends XSIElementHandler {
     /**
      * intended to be called after the parse, this generates a Schema object from the schema which
      * was parsed in.
-     *
-     * @throws SAXException
      */
     public Schema getSchema() throws SAXException {
         Schema s = schema.compress(uri);

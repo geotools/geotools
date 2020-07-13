@@ -40,8 +40,6 @@ public interface WFSResponseFactory {
      *
      * <p>The decision may usually be made depending on the request type, ouput format, etc
      *
-     * @param originatingRequest
-     * @param contentType
      * @return {@code true} if this factory can create a parser for the responses of the given
      *     request
      */
@@ -52,7 +50,6 @@ public interface WFSResponseFactory {
      *
      * @param response the handle to the response contents the WFS sent
      * @return a {@link WFSResponseParser} that can deal with the given WFS response
-     * @throws IOException
      */
     public WFSResponse createResponse(WFSRequest request, HTTPResponse response) throws IOException;
 

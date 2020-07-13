@@ -45,6 +45,46 @@ public class GeoPkgFilterToSQL extends PreparedFilterToSQL {
     }
 
     /**
+     * cf. visit(Literal expression,...) When doing temporal queries (like "time BETWEEN t1 AND t2")
+     *
+     * <p>The encoding of the column name ("time") and the literals must be the same!
+     *
+     * <p>There is different handling for Date (DATE) and Timestamp (DATETIME).
+     *
+     * <p>For Timestamp (DATETIME), we use the datetime(XYZ, 'utc'):
+     *
+     * <p>datetime("Time",'utc') BETWEEN datetime(?,'utc') AND datetime(?,'utc')
+     *
+     * <p>For Date (DATE), we do no conversion in the sql lite:
+     *
+     * <p>datetime("Date") BETWEEN datetime(?) AND datetime(?)
+     *
+     * <p>For non-time columns, this just relegates to the superclass
+     *
+     * <p>For GeoPKG, the time column is actually stored as a STRING.
+     */
+    @Override
+    public String escapeName(String name) {
+        String super_result = super.escapeName(name);
+        AttributeDescriptor desc = featureType.getDescriptor(name);
+        // desc might be null in the case of joins et al
+        if ((desc != null) && (desc.getType().getBinding() != null)) {
+            Class<?> binding = desc.getType().getBinding();
+            // utc -- everything must be consistent -- see literal visitor
+            if (Time.class.isAssignableFrom(binding)) {
+                return "time(" + super_result + ",'utc')";
+            } else if (Timestamp.class.isAssignableFrom(binding)) {
+                return "datetime("
+                        + super_result
+                        + ",'utc')"; // utc -- everything must be consistent -- see
+                // literal visitor
+            } else if (java.sql.Date.class.isAssignableFrom(binding)) {
+                return "date(" + super_result + ")";
+            }
+        }
+        return super_result;
+    }
+    /**
      * Override done to ensure we don't complain if there is a BBOX filter, even if we claim not to
      * support it
      */
@@ -107,11 +147,11 @@ public class GeoPkgFilterToSQL extends PreparedFilterToSQL {
                     dialect.prepareGeometryValue(
                             (Geometry) literalValue, dimension, srid, Geometry.class, sb);
                 } else if (Time.class.isAssignableFrom(literalValue.getClass())) {
-                    sb.append("time(?,'localtime')");
+                    sb.append("time(?,'utc')");
                 } else if (Timestamp.class.isAssignableFrom(literalValue.getClass())) {
-                    sb.append("datetime(?,'localtime')");
+                    sb.append("datetime(?,'utc')");
                 } else if (java.sql.Date.class.isAssignableFrom(literalValue.getClass())) {
-                    sb.append("date(?,'localtime')");
+                    sb.append("date(?)");
                 } else if (encodingFunction) {
                     dialect.prepareFunctionArgument(clazz, sb);
                 } else {

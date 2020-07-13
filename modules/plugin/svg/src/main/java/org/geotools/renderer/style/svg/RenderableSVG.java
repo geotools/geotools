@@ -18,8 +18,6 @@
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
-import java.io.IOException;
-import java.net.URISyntaxException;
 import org.apache.batik.bridge.BridgeContext;
 import org.apache.batik.bridge.DocumentLoader;
 import org.apache.batik.bridge.GVTBuilder;
@@ -47,7 +45,6 @@ class RenderableSVG {
      *
      * @return a {@link Rectangle2D} with the corresponding bounds. If the SVG document does not
      *     specify any bounds, then null is returned.
-     * @throws IOException
      */
     private Rectangle2D getSvgDocBounds(Document doc) {
         NodeList list = doc.getElementsByTagName("svg");
@@ -80,8 +77,6 @@ class RenderableSVG {
      *
      * @param doc the {@link Document} representing the SVG
      * @return the corresponding GraphicsNode.
-     * @throws IOException
-     * @throws URISyntaxException
      */
     GraphicsNode getGraphicNode(Document doc) {
         // instantiates objects needed for building the node

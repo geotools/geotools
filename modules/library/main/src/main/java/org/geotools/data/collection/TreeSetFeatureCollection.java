@@ -278,7 +278,6 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
     /**
      * Test for collection membership.
      *
-     * @param collection
      * @return true if collection is completly covered
      */
     public boolean containsAll(Collection collection) {
@@ -498,6 +497,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
         // nop
     }
 
+    @SuppressWarnings("PMD.CloseResource") // closed in the wrapper
     public FeatureReader<SimpleFeatureType, SimpleFeature> reader() throws IOException {
         final SimpleFeatureIterator iterator = features();
         return new FeatureReader<SimpleFeatureType, SimpleFeature>() {

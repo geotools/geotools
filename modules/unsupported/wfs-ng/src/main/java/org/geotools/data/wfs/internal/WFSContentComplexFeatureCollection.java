@@ -71,8 +71,8 @@ public class WFSContentComplexFeatureCollection
     public FeatureIterator<Feature> features() {
 
         try {
+            @SuppressWarnings("PMD.CloseResource") // wrapped and returned
             InputStream stream = request.getFinalURL().openStream();
-
             XmlComplexFeatureParser parser =
                     new XmlComplexFeatureParser(stream, schema, name, filter);
             return new ComplexFeatureIteratorImpl(parser);

@@ -77,7 +77,7 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
      * database itself (for example additional database index).
      */
     @SuppressWarnings("PMD.AvoidUsingHardCodedIP")
-    public static final Version VERSION = new Version("8.6.0.1");
+    public static final Version VERSION = new Version("9.6.0");
 
     /**
      * The key for fetching the database directory from {@linkplain System#getProperty(String)
@@ -242,6 +242,7 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
      * @return The EPSG factory using HSQL syntax.
      * @throws SQLException if connection to the database failed.
      */
+    @SuppressWarnings("PMD.CloseResource")
     protected AbstractAuthorityFactory createBackingStore(final Hints hints) throws SQLException {
         final Logger logger = Logging.getLogger(ThreadedHsqlEpsgFactory.class);
         logger.log(Level.FINE, "Building backing store for " + getClass().getName());
@@ -331,11 +332,8 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
         return factory;
     }
 
-    /**
-     * @param directory
-     * @return
-     * @throws IOException
-     */
+    /** */
+    @SuppressWarnings("PMD.CloseResource")
     FileLock acquireLock(File directory) throws IOException {
         // Get a file channel for the file
         File file = new File(directory, LOCK_FILE);

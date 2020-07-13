@@ -41,6 +41,8 @@ public class MySqlOnlineTest extends AbstractTest {
         suite.addTest(new MySqlOnlineTest("testDrop"));
         suite.addTest(new MySqlOnlineTest("testCreate"));
         suite.addTest(new MySqlOnlineTest("testImage1"));
+        suite.addTest(new MySqlOnlineTest("testImage2"));
+        suite.addTest(new MySqlOnlineTest("testImage3"));
         suite.addTest(new MySqlOnlineTest("testFullExtent"));
         suite.addTest(new MySqlOnlineTest("testNoData"));
         suite.addTest(new MySqlOnlineTest("testPartial"));
@@ -49,6 +51,8 @@ public class MySqlOnlineTest extends AbstractTest {
         suite.addTest(new MySqlOnlineTest("testDrop"));
         suite.addTest(new MySqlOnlineTest("testCreateJoined"));
         suite.addTest(new MySqlOnlineTest("testImage1Joined"));
+        suite.addTest(new MySqlOnlineTest("testImage2Joined"));
+        suite.addTest(new MySqlOnlineTest("testImage3Joined"));
         suite.addTest(new MySqlOnlineTest("testFullExtentJoined"));
         suite.addTest(new MySqlOnlineTest("testNoDataJoined"));
         suite.addTest(new MySqlOnlineTest("testPartialJoined"));

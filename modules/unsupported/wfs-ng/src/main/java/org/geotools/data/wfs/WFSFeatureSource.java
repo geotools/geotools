@@ -128,9 +128,32 @@ class WFSFeatureSource extends ContentFeatureSource {
         return client.canLimit();
     }
 
+    /** {@inheritDoc} */
     @Override
     public WFSDataStore getDataStore() {
         return (WFSDataStore) super.getDataStore();
+    }
+
+    /**
+     * This method changes the query object so that all propertyName references are resolved to
+     * simple attribute names against the schema of the feature source.
+     *
+     * <p>For example, this method ensures that propertyName's such as "gml:name" are rewritten as
+     * simply "name".
+     */
+    @Override
+    protected Query resolvePropertyNames(Query query) {
+        // Resolving is not conform with the specification of a wfs propertyname which is a QName
+        // from w3.org, see qualified names.
+        return query;
+    }
+
+    /** Transform provided filter; resolving property names */
+    @Override
+    protected Filter resolvePropertyNames(Filter filter) {
+        // Resolving is not conform with the specification of a wfs propertyname which is a QName
+        // from w3.org, see qualified names.
+        return filter;
     }
 
     /**
@@ -181,11 +204,7 @@ class WFSFeatureSource extends ContentFeatureSource {
         return resultCount;
     }
 
-    /**
-     * Invert axis order in the given query filter, if needed.
-     *
-     * @param query
-     */
+    /** Invert axis order in the given query filter, if needed. */
     private void invertAxisInFilterIfNeeded(Query query, SimpleFeatureType featureType) {
         CoordinateReferenceSystem crs = query.getCoordinateSystem();
         if (crs == null) {
@@ -225,7 +244,7 @@ class WFSFeatureSource extends ContentFeatureSource {
         request.setHints(query.getHints());
 
         int maxFeatures = query.getMaxFeatures();
-        if (Integer.MAX_VALUE > maxFeatures) {
+        if (Integer.MAX_VALUE > maxFeatures && canLimit()) {
             request.setMaxFeatures(maxFeatures);
         }
         // let the request decide request.setOutputFormat(outputFormat);
@@ -273,6 +292,7 @@ class WFSFeatureSource extends ContentFeatureSource {
         }
 
         if (!reader.hasNext()) {
+            reader.close();
             return new EmptyFeatureReader<SimpleFeatureType, SimpleFeature>(contentType);
         }
 
@@ -284,6 +304,7 @@ class WFSFeatureSource extends ContentFeatureSource {
 
         reader = applyReprojectionDecorator(reader, localQuery, request);
 
+        @SuppressWarnings("PMD.CloseResource") // not managed here
         Transaction transaction = getTransaction();
         if (!Transaction.AUTO_COMMIT.equals(transaction)) {
             ContentEntry entry = getEntry();
@@ -392,10 +413,6 @@ class WFSFeatureSource extends ContentFeatureSource {
      * Returns the feature type that shall result of issueing the given request, adapting the
      * original feature type for the request's type name in terms of the query CRS and requested
      * attributes.
-     *
-     * @param query
-     * @return
-     * @throws IOException
      */
     SimpleFeatureType getQueryType(final Query query, SimpleFeatureType featureType)
             throws IOException {

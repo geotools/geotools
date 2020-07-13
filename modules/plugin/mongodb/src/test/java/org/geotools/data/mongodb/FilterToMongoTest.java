@@ -38,6 +38,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.opengis.filter.And;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsBetween;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.PropertyIsGreaterThan;
@@ -78,7 +79,8 @@ public class FilterToMongoTest extends TestCase {
         assertNotNull(obj);
 
         assertEquals(1, obj.keySet().size());
-        assertEquals("bar", obj.get("properties.foo"));
+        BasicDBObject operator = (BasicDBObject) obj.get("properties.foo");
+        assertEquals("bar", operator.get("$eq"));
     }
 
     public void testBBOX() {
@@ -283,22 +285,34 @@ public class FilterToMongoTest extends TestCase {
         assertEquals(andFilter.size(), 2);
     }
 
+    public void testOrComparison() {
+        PropertyIsGreaterThan greaterThan = ff.greater(ff.property("property"), ff.literal(0));
+        PropertyIsLessThan lessThan = ff.less(ff.property("property"), ff.literal(10));
+        Or or = ff.or(greaterThan, lessThan);
+        BasicDBObject obj = (BasicDBObject) or.accept(filterToMongo, null);
+        assertNotNull(obj);
+
+        BasicDBList orFilter = (BasicDBList) obj.get("$or");
+        assertNotNull(orFilter);
+        assertEquals(orFilter.size(), 2);
+    }
+
     public void testEqualToInteger() throws Exception {
         PropertyIsEqualTo equalTo = ff.equals(ff.property("foo"), ff.literal(10));
         BasicDBObject obj = (BasicDBObject) equalTo.accept(filterToMongo, null);
         assertNotNull(obj);
-
+        BasicDBObject operator = (BasicDBObject) obj.get("properties.foo");
         assertEquals(1, obj.keySet().size());
-        assertEquals(10, obj.get("properties.foo"));
+        assertEquals(10, operator.get("$eq"));
     }
 
     public void testEqualToLong() throws Exception {
         PropertyIsEqualTo equalTo = ff.equals(ff.property("foo"), ff.literal(10L));
         BasicDBObject obj = (BasicDBObject) equalTo.accept(filterToMongo, null);
         assertNotNull(obj);
-
+        BasicDBObject operator = (BasicDBObject) obj.get("properties.foo");
         assertEquals(1, obj.keySet().size());
-        assertEquals(10L, obj.get("properties.foo"));
+        assertEquals(10L, operator.get("$eq"));
     }
 
     public void testEqualToBigInteger() throws Exception {
@@ -306,9 +320,9 @@ public class FilterToMongoTest extends TestCase {
                 ff.equals(ff.property("foo"), ff.literal(BigInteger.valueOf(10L)));
         BasicDBObject obj = (BasicDBObject) equalTo.accept(filterToMongo, null);
         assertNotNull(obj);
-
+        BasicDBObject operator = (BasicDBObject) obj.get("properties.foo");
         assertEquals(1, obj.keySet().size());
-        assertEquals("10", obj.get("properties.foo"));
+        assertEquals("10", operator.get("$eq"));
     }
 
     @Test

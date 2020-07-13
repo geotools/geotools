@@ -21,11 +21,7 @@ import net.opengis.ows11.AllowedValuesType;
 import net.opengis.ows11.AnyValueType;
 import net.opengis.ows11.NoValuesType;
 import net.opengis.ows11.Ows11Factory;
-import org.geotools.ows.bindings.BoundingBoxTypeBinding;
-import org.geotools.ows.bindings.RangeBinding;
-import org.geotools.ows.bindings.RangeClosureBinding;
-import org.geotools.ows.bindings.UnitBinding;
-import org.geotools.ows.bindings.WGS84BoundingBoxTypeBinding;
+import org.geotools.ows.bindings.*;
 import org.geotools.xlink.XLINKConfiguration;
 import org.geotools.xsd.ComplexEMFBinding;
 import org.geotools.xsd.Configuration;
@@ -57,7 +53,91 @@ public class OWSConfiguration extends Configuration {
      *
      * @generated
      */
-    protected final void registerBindings(MutablePicoContainer container) {}
+    protected final void registerBindings(MutablePicoContainer container) {
+        // Types
+        container.registerComponentImplementation(
+                org.geotools.xsd.ows.OWS.AcceptFormatsType, AcceptFormatsTypeBinding.class);
+        container.registerComponentInstance(
+                org.geotools.xsd.ows.OWS.AcceptVersionsType,
+                new ComplexEMFBinding(
+                        Ows11Factory.eINSTANCE, org.geotools.xsd.ows.OWS.AcceptVersionsType));
+        container.registerComponentImplementation(
+                org.geotools.xsd.ows.OWS.AddressType, AddressTypeBinding.class);
+        container.registerComponentInstance(
+                org.geotools.xsd.ows.OWS.WGS84BoundingBoxType,
+                new WGS84BoundingBoxTypeBinding(
+                        Ows11Factory.eINSTANCE, org.geotools.xsd.ows.OWS.WGS84BoundingBoxType));
+        container.registerComponentInstance(
+                org.geotools.xsd.ows.OWS.BoundingBoxType,
+                new BoundingBoxTypeBinding(
+                        Ows11Factory.eINSTANCE, org.geotools.xsd.ows.OWS.BoundingBoxType));
+        container.registerComponentImplementation(
+                org.geotools.xsd.ows.OWS.CapabilitiesBaseType, CapabilitiesBaseTypeBinding.class);
+        container.registerComponentInstance(
+                org.geotools.xsd.ows.OWS.CodeType,
+                new SimpleContentComplexEMFBinding(
+                        Ows11Factory.eINSTANCE, org.geotools.xsd.ows.OWS.CodeType));
+        container.registerComponentImplementation(
+                org.geotools.xsd.ows.OWS.ContactType, ContactTypeBinding.class);
+        container.registerComponentImplementation(
+                org.geotools.xsd.ows.OWS.DescriptionType, DescriptionTypeBinding.class);
+        container.registerComponentImplementation(
+                org.geotools.xsd.ows.OWS.DomainType, DomainTypeBinding.class);
+        container.registerComponentImplementation(
+                org.geotools.xsd.ows.OWS.ExceptionType, ExceptionTypeBinding.class);
+        container.registerComponentImplementation(
+                org.geotools.xsd.ows.OWS.GetCapabilitiesType, GetCapabilitiesTypeBinding.class);
+        container.registerComponentImplementation(
+                org.geotools.xsd.ows.OWS.BasicIdentificationType,
+                BasicIdentificationTypeOws11Binding.class);
+        container.registerComponentImplementation(
+                org.geotools.xsd.ows.OWS.IdentificationType, IdentificationTypeOws11Binding.class);
+        container.registerComponentInstance(
+                org.geotools.xsd.ows.OWS.KeywordsType,
+                new ComplexEMFBinding(
+                        Ows11Factory.eINSTANCE, org.geotools.xsd.ows.OWS.KeywordsType));
+        container.registerComponentImplementation(
+                org.geotools.xsd.ows.OWS.MetadataType, MetadataTypeBinding.class);
+        container.registerComponentImplementation(
+                org.geotools.xsd.ows.OWS.MimeType, MimeTypeBinding.class);
+        container.registerComponentImplementation(
+                org.geotools.xsd.ows.OWS.OnlineResourceType, OnlineResourceTypeBinding.class);
+        container.registerComponentImplementation(
+                org.geotools.xsd.ows.OWS.PositionType, PositionTypeBinding.class);
+        container.registerComponentImplementation(
+                org.geotools.xsd.ows.OWS.PositionType2D, PositionType2DBinding.class);
+        container.registerComponentImplementation(
+                org.geotools.xsd.ows.OWS.RequestMethodType, RequestMethodTypeBinding.class);
+        container.registerComponentImplementation(
+                org.geotools.xsd.ows.OWS.ResponsiblePartySubsetType,
+                ResponsiblePartySubsetTypeBinding.class);
+        container.registerComponentImplementation(
+                org.geotools.xsd.ows.OWS.ResponsiblePartyType, ResponsiblePartyTypeBinding.class);
+        container.registerComponentImplementation(
+                org.geotools.xsd.ows.OWS.SectionsType, SectionsTypeBinding.class);
+        container.registerComponentImplementation(
+                org.geotools.xsd.ows.OWS.ServiceType, ServiceTypeBinding.class);
+        container.registerComponentImplementation(
+                org.geotools.xsd.ows.OWS.TelephoneType, TelephoneTypeBinding.class);
+        container.registerComponentImplementation(
+                org.geotools.xsd.ows.OWS.UpdateSequenceType, UpdateSequenceTypeBinding.class);
+        container.registerComponentImplementation(
+                org.geotools.xsd.ows.OWS.VersionType, VersionTypeBinding.class);
+        container.registerComponentImplementation(org.geotools.xsd.ows.OWS._DCP, _DCPBinding.class);
+        container.registerComponentImplementation(
+                org.geotools.xsd.ows.OWS._ExceptionReport, _ExceptionReportBinding.class);
+        container.registerComponentImplementation(
+                org.geotools.xsd.ows.OWS._HTTP, _HTTPBinding.class);
+        container.registerComponentImplementation(
+                org.geotools.xsd.ows.OWS._Operation, _OperationBinding.class);
+        container.registerComponentImplementation(
+                org.geotools.xsd.ows.OWS._OperationsMetadata, _OperationsMetadataBinding.class);
+        container.registerComponentImplementation(
+                org.geotools.xsd.ows.OWS._ServiceIdentification,
+                _ServiceIdentificationBinding.class);
+        container.registerComponentImplementation(
+                org.geotools.xsd.ows.OWS._ServiceProvider, _ServiceProviderBinding.class);
+    }
 
     @SuppressWarnings("unchecked")
     protected void registerBindings(Map bindings) {
@@ -115,7 +195,6 @@ public class OWSConfiguration extends Configuration {
         bindings.put(
                 OWS.OnlineResourceType,
                 new ComplexEMFBinding(Ows11Factory.eINSTANCE, OWS.OnlineResourceType));
-        bindings.put(OWS.RangeType, new ComplexEMFBinding(Ows11Factory.eINSTANCE, OWS.RangeType));
         bindings.put(
                 OWS.RequestMethodType,
                 new ComplexEMFBinding(Ows11Factory.eINSTANCE, OWS.RequestMethodType));

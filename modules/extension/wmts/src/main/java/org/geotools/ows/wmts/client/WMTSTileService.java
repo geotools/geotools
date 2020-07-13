@@ -16,13 +16,13 @@
  */
 package org.geotools.ows.wmts.client;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import static org.geotools.tile.impl.ScaleZoomLevelMatcher.getProjectedEnvelope;
+
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.data.ows.HTTPClient;
+import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.wms.CRSEnvelope;
 import org.geotools.ows.wms.StyleImpl;
@@ -42,6 +42,7 @@ import org.locationtech.jts.geom.Envelope;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
 /**
@@ -103,7 +104,27 @@ public class WMTSTileService extends TileService {
             WMTSLayer layer,
             String styleName,
             TileMatrixSet tileMatrixSet) {
-        super("wmts", templateURL);
+        this(templateURL, type, layer, styleName, tileMatrixSet, new SimpleHttpClient());
+    }
+
+    /**
+     * create a service directly with out parsing the capabilties again.
+     *
+     * @param templateURL - where to ask for tiles
+     * @param type - KVP or REST
+     * @param layer - layer to request
+     * @param styleName - name of the style to use?
+     * @param tileMatrixSet - matrixset
+     * @param client - HttpClient instance to use for Tile requests.
+     */
+    public WMTSTileService(
+            String templateURL,
+            WMTSServiceType type,
+            WMTSLayer layer,
+            String styleName,
+            TileMatrixSet tileMatrixSet,
+            HTTPClient client) {
+        super("wmts", templateURL, client);
 
         this.layer = layer;
         this.tileMatrixSetName = tileMatrixSet.getIdentifier();
@@ -189,7 +210,7 @@ public class WMTSTileService extends TileService {
                                 + ex.getMessage());
 
                 // maybe the req area is too wide for the data; let's try an
-                // inverse trasformation
+                // inverse transformation
                 try {
                     ReferencedEnvelope covExtentInReqCrs = envelope.transform(reqCrs, true);
                     requestedExtent = requestedExtent.intersection(covExtentInReqCrs);
@@ -278,7 +299,7 @@ public class WMTSTileService extends TileService {
     @Override
     public Set<Tile> findTilesInExtent(
             ReferencedEnvelope requestedExtent,
-            int scaleFactor,
+            double scaleFactor,
             boolean recommendedZoomLevel,
             int maxNumberOfTiles) {
 
@@ -296,7 +317,7 @@ public class WMTSTileService extends TileService {
         ScaleZoomLevelMatcher zoomLevelMatcher = null;
         try {
             zoomLevelMatcher =
-                    ScaleZoomLevelMatcher.createMatcher(
+                    getZoomLevelMatcher(
                             reqExtentInTileCrs,
                             matrixSet.getCoordinateReferenceSystem(),
                             scaleFactor);
@@ -552,10 +573,7 @@ public class WMTSTileService extends TileService {
         this.templateURL = templateURL;
     }
 
-    /**
-     * @param zoomLevel
-     * @return
-     */
+    /** */
     public TileMatrix getTileMatrix(int zoomLevel) {
         if (matrixSet == null) {
             throw new RuntimeException("TileMatrix is not set in WMTSService");
@@ -599,5 +617,47 @@ public class WMTSTileService extends TileService {
 
     public Map<String, Object> getExtrainfo() {
         return extrainfo;
+    }
+
+    private ScaleZoomLevelMatcher getZoomLevelMatcher(
+            ReferencedEnvelope requestExtent, CoordinateReferenceSystem crsTiles, double scale)
+            throws FactoryException, TransformException {
+
+        CoordinateReferenceSystem crsMap = requestExtent.getCoordinateReferenceSystem();
+
+        // Transformation: MapCrs -> TileCrs
+        MathTransform transformMapToTile = CRS.findMathTransform(crsMap, crsTiles);
+
+        // Transformation: TileCrs -> MapCrs (needed for the blank tiles)
+        MathTransform transformTileToMap = CRS.findMathTransform(crsTiles, crsMap);
+
+        // Get the mapExtent in the tiles CRS
+        ReferencedEnvelope mapExtentTileCrs =
+                getProjectedEnvelope(requestExtent, crsTiles, transformMapToTile);
+
+        return new ScaleZoomLevelMatcher(
+                crsMap,
+                crsTiles,
+                transformMapToTile,
+                transformTileToMap,
+                mapExtentTileCrs,
+                requestExtent,
+                scale) {
+            @Override
+            public int getZoomLevelFromScale(TileService service, double[] tempScaleList) {
+                double min = Double.MAX_VALUE;
+                double scaleFactor = getScale();
+                int zoomLevel = 0;
+                for (int i = scaleList.length - 1; i >= 0; i--) {
+                    final double v = scaleList[i];
+                    final double diff = Math.abs(v - scaleFactor);
+                    if (diff < min) {
+                        min = diff;
+                        zoomLevel = i;
+                    }
+                }
+                return zoomLevel;
+            }
+        };
     }
 }

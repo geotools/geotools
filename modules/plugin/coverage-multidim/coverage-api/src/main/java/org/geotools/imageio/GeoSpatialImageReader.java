@@ -119,10 +119,7 @@ public abstract class GeoSpatialImageReader extends ImageReader implements FileS
     /** The number of coverages made available by this provider. */
     public abstract int getCoveragesNumber();
 
-    /**
-     * @param name
-     * @return
-     */
+    /** */
     public abstract CoverageSourceDescriptor getCoverageDescriptor(Name name);
 
     protected void setCatalog(CoverageSlicesCatalog catalog) {
@@ -138,8 +135,6 @@ public abstract class GeoSpatialImageReader extends ImageReader implements FileS
      *
      * @param filterQuery the filter query (temporal, vertical, name selection) to restrict the
      *     requested imageIndexes
-     * @return
-     * @throws IOException
      */
     public List<Integer> getImageIndex(Query filterQuery) throws IOException {
         List<CoverageSlice> descs = slicesCatalog.getGranules(filterQuery);
@@ -172,21 +167,12 @@ public abstract class GeoSpatialImageReader extends ImageReader implements FileS
         this.repository = repository;
     }
 
-    /**
-     * Returns the underlying slicesCatalog.
-     *
-     * @return
-     */
+    /** Returns the underlying slicesCatalog. */
     public CoverageSlicesCatalog getCatalog() {
         return slicesCatalog;
     }
 
-    /**
-     * Initialize a slicesCatalog on top of the provided {@link DataStoreConfiguration} instance
-     *
-     * @param datastoreConfig
-     * @throws IOException
-     */
+    /** Initialize a slicesCatalog on top of the provided {@link DataStoreConfiguration} instance */
     protected void initCatalog(DataStoreConfiguration datastoreConfig) throws IOException {
         slicesCatalog =
                 datastoreConfig.isShared()

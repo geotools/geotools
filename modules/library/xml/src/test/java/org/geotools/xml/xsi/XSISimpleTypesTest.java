@@ -302,8 +302,6 @@ public class XSISimpleTypesTest extends TestCase {
     /**
      * Tests encoding of java.util.Date as {@link XSISimpleTypes.Date} and {@link
      * XSISimpleTypes.DateTime}
-     *
-     * @throws Exception
      */
     public void testDateEncode() throws Exception {
         // given: 2016-09-02, 12:00h in GMT

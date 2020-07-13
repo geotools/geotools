@@ -16,7 +16,9 @@
  */
 package org.geotools.data.shapefile.shp;
 
+import java.io.Closeable;
 import java.io.IOException;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
@@ -45,7 +47,7 @@ import org.locationtech.jts.geom.GeometryFactory;
  * @author aaime
  * @author Ian Schneider
  */
-public class ShapefileWriter {
+public class ShapefileWriter implements Closeable {
     FileChannel shpChannel;
     FileChannel shxChannel;
     ByteBuffer shapeBuffer;
@@ -59,11 +61,7 @@ public class ShapefileWriter {
     private StreamLogging shxLogger = new StreamLogging("SHX Channel in ShapefileWriter");
     private GeometryFactory gf = new GeometryFactory();
 
-    /**
-     * Creates a new instance of ShapeFileWriter
-     *
-     * @throws IOException
-     */
+    /** Creates a new instance of ShapeFileWriter */
     public ShapefileWriter(FileChannel shpChannel, FileChannel shxChannel) throws IOException {
         this.shpChannel = shpChannel;
         this.shxChannel = shxChannel;
@@ -101,7 +99,7 @@ public class ShapefileWriter {
 
     /** Drain internal buffers into underlying channels. */
     private void drain() throws IOException {
-        shapeBuffer.flip();
+        ((Buffer) shapeBuffer).flip();
         indexBuffer.flip();
         while (shapeBuffer.remaining() > 0) shpChannel.write(shapeBuffer);
         while (indexBuffer.remaining() > 0) shxChannel.write(indexBuffer);

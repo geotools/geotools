@@ -403,11 +403,33 @@ public class SimpleFeatureTypeBuilder {
      *
      * <p>This method is the same as adding a restriction based on length( value ) < length This
      * value is reset after a call to {@link #add(String, Class)}
-     *
-     * @return length Used to limit the length of the next attribute created
      */
     public SimpleFeatureTypeBuilder length(int length) {
         attributeBuilder.setLength(length);
+        return this;
+    }
+
+    /**
+     * Sets a restriction on the possible field values of the next attribute added to the feature
+     * type.
+     *
+     * <p>This method is the same as adding a restriction based on value in (option1, option2, ...}.
+     * This restriction is reset after a call to {@link #add(String, Class)}
+     */
+    public SimpleFeatureTypeBuilder options(Object... options) {
+        attributeBuilder.setOptions(Arrays.asList(options));
+        return this;
+    }
+
+    /**
+     * Sets a restriction on the possible field values of the next attribute added to the feature
+     * type.
+     *
+     * <p>This method is the same as adding a restriction based on value in (option1, option2, ...}.
+     * This restriction is reset after a call to {@link #add(String, Class)}
+     */
+    public SimpleFeatureTypeBuilder options(List<?> options) {
+        attributeBuilder.setOptions(options);
         return this;
     }
 
@@ -730,21 +752,11 @@ public class SimpleFeatureTypeBuilder {
         return null;
     }
 
-    /**
-     * Replace the descriptor at the provided index.
-     *
-     * @param index
-     * @param descriptor
-     */
+    /** Replace the descriptor at the provided index. */
     public void set(int index, AttributeDescriptor descriptor) {
         attributes().set(index, descriptor);
     }
-    /**
-     * Replace the descriptor at the provided index.
-     *
-     * @param index
-     * @param descriptor
-     */
+    /** Replace the descriptor at the provided index. */
     public void set(AttributeDescriptor descriptor) {
         int index = indexOf(descriptor.getLocalName());
         if (index == -1) {
@@ -754,12 +766,7 @@ public class SimpleFeatureTypeBuilder {
         }
         set(index, descriptor);
     }
-    /**
-     * Replace the descriptor at the provided index.
-     *
-     * @param index
-     * @param descriptor
-     */
+    /** Replace the descriptor at the provided index. */
     public void set(String attributeName, AttributeDescriptor descriptor) {
         int index = indexOf(attributeName);
         if (index == -1) {
@@ -781,12 +788,7 @@ public class SimpleFeatureTypeBuilder {
         }
         return -1;
     }
-    /**
-     * Replace the descriptor at the provided index.
-     *
-     * @param index
-     * @param descriptor
-     */
+    /** Replace the descriptor at the provided index. */
     public void set(String attributeName, AttributeTypeBuilder attributeBuilder) {
         AttributeDescriptor descriptor = attributeBuilder.buildDescriptor(attributeName);
         set(attributeName, descriptor);
@@ -1044,14 +1046,7 @@ public class SimpleFeatureTypeBuilder {
         return b.buildFeatureType();
     }
 
-    /**
-     * Configure expected
-     *
-     * @param origional
-     * @param query
-     * @return
-     */
-    public static SimpleFeatureType retype(SimpleFeatureType origional, Query query) {
+    public static SimpleFeatureType retype(SimpleFeatureType original, Query query) {
         CoordinateReferenceSystem crs = null;
         if (query.getCoordinateSystem() != null) {
             crs = query.getCoordinateSystem();
@@ -1059,17 +1054,17 @@ public class SimpleFeatureTypeBuilder {
         if (query.getCoordinateSystemReproject() != null) {
             crs = query.getCoordinateSystemReproject();
         }
-        return retype(origional, query.getPropertyNames(), crs);
+        return retype(original, query.getPropertyNames(), crs);
     }
 
     private static SimpleFeatureType retype(
-            SimpleFeatureType origional, String[] propertyNames, CoordinateReferenceSystem crs) {
+            SimpleFeatureType original, String[] propertyNames, CoordinateReferenceSystem crs) {
         // TODO Auto-generated method stub
         return null;
     }
 
     /**
-     * Copys a feature type.
+     * Copies a feature type.
      *
      * <p>This method does a deep copy in that all individual attributes are copied as well.
      */

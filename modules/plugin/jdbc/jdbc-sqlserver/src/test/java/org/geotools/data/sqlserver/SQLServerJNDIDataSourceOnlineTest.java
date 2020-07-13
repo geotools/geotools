@@ -52,11 +52,7 @@ public class SQLServerJNDIDataSourceOnlineTest extends JDBCJNDIDataSourceOnlineT
         }
     }
 
-    /**
-     * Returns true if the Microsoft JDBC Driver is available in the classpath, false otherwise
-     *
-     * @return
-     */
+    /** Returns true if the Microsoft JDBC Driver is available in the classpath, false otherwise */
     private boolean isMicrosoftDriverAvailable() {
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");

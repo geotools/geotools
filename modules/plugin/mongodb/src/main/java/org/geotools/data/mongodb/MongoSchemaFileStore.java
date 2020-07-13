@@ -17,8 +17,7 @@
  */
 package org.geotools.data.mongodb;
 
-import com.mongodb.DBObject;
-import com.mongodb.util.JSON;
+import com.mongodb.BasicDBObject;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -37,8 +36,12 @@ import org.opengis.feature.type.Name;
 public class MongoSchemaFileStore implements MongoSchemaStore {
 
     static final String SUFFIX_json = ".json";
+    // covers http(s) also
+    static final String PRE_FIX_HTTP = "http";
 
-    final File schemaStoreFile;
+    static final String SUFFIX_ZIP = ".zip";
+
+    protected File schemaStoreFile;
 
     public MongoSchemaFileStore(String uri) throws IOException, URISyntaxException {
         this(new URI(uri));
@@ -61,7 +64,8 @@ public class MongoSchemaFileStore implements MongoSchemaStore {
         File schemaFile = schemaFile(schema.getTypeName());
         BufferedWriter writer = new BufferedWriter(new FileWriter(schemaFile));
         try {
-            writer.write(JSON.serialize(FeatureTypeDBObject.convert(schema)));
+            BasicDBObject dbObject = FeatureTypeDBObject.convert(schema);
+            writer.write(dbObject.toJson());
         } finally {
             writer.close();
         }
@@ -76,23 +80,9 @@ public class MongoSchemaFileStore implements MongoSchemaStore {
         if (!schemaFile.canRead()) {
             return null;
         }
+        @SuppressWarnings("PMD.CloseResource") // closed in getSimpleFeatureType
         BufferedReader reader = new BufferedReader(new FileReader(schemaFile));
-        try {
-            String lineSeparator = System.getProperty("line.separator");
-            StringBuilder jsonBuilder = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                jsonBuilder.append(line);
-                jsonBuilder.append(lineSeparator);
-            }
-            Object o = JSON.parse(jsonBuilder.toString());
-            if (o instanceof DBObject) {
-                return FeatureTypeDBObject.convert((DBObject) o, name);
-            }
-        } finally {
-            reader.close();
-        }
-        return null;
+        return MongoUtil.getSimpleFeatureType(reader, name);
     }
 
     @Override

@@ -85,12 +85,7 @@ public class SweValuesTest {
         loadDataAccesses();
     }
 
-    /**
-     * Load all the data accesses.
-     *
-     * @return
-     * @throws Exception
-     */
+    /** Load all the data accesses. */
     private static void loadDataAccesses() throws Exception {
         /** Load observation data access */
         Map dsParams = new HashMap();

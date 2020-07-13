@@ -24,7 +24,7 @@ import net.opengis.wmts.v_1.GetFeatureInfoType;
 import net.opengis.wmts.v_1.GetTileType;
 import net.opengis.wmts.v_1.wmtsv_1Factory;
 import org.geotools.wmts.WMTS;
-import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.AbstractComplexEMFBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
 
@@ -70,7 +70,7 @@ import org.geotools.xsd.Node;
  *
  * @generated
  */
-public class GetFeatureInfoBinding extends AbstractComplexBinding {
+public class GetFeatureInfoBinding extends AbstractComplexEMFBinding {
 
     wmtsv_1Factory factory;
 

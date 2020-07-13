@@ -304,7 +304,6 @@ public class NumericConverterFactory implements ConverterFactory {
     /**
      * Extract the integral part out of a decimal format string.
      *
-     * @param s
      * @return integral component of decimal representation
      */
     static String toIntegral(String s) {

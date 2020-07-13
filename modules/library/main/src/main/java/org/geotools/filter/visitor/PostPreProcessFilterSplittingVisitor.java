@@ -264,7 +264,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
      * @param filter the {@link Filter} to visit
      */
     public void visit(ExcludeFilter filter) {
-        if (fcs.supports(Filter.EXCLUDE)) {
+        if (supports(Filter.EXCLUDE)) {
             preStack.push(filter);
         } else {
             postStack.push(filter);
@@ -281,7 +281,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
         if (original == null) original = filter;
 
         // Do we support this filter type at all?
-        if (fcs.supports(PropertyIsBetween.class)) {
+        if (supports(PropertyIsBetween.class)) {
             // Yes, we do.  Now, can we support the sub-filters?
 
             // first, remember how big the current list of "I can't support these"
@@ -408,7 +408,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
         if (original == null) original = filter;
 
         // supports it as a group -- no need to check the type
-        if (!fcs.supports(FilterCapabilities.SIMPLE_COMPARISONS_OPENGIS)) {
+        if (!supports(FilterCapabilities.SIMPLE_COMPARISONS_OPENGIS)) {
             postStack.push(filter);
             return;
         }
@@ -446,9 +446,9 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
     }
 
     public Object visit(BBOX filter, Object notUsed) {
-        if (filter instanceof BBOX3D && !fcs.supports(BBOX3D.class)) {
+        if (filter instanceof BBOX3D && !supports(BBOX3D.class)) {
             postStack.push(filter);
-        } else if (!fcs.supports(BBOX.class)) {
+        } else if (!supports(BBOX.class)) {
             postStack.push(filter);
         } else {
             preStack.push(filter);
@@ -526,7 +526,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
 
         for (int i = 0; i < spatialOps.length; i++) {
             if (spatialOps[i].isAssignableFrom(filter.getClass())) {
-                if (!fcs.supports(spatialOps[i])) {
+                if (!supports(spatialOps[i])) {
                     postStack.push(filter);
                     return;
                 } else {
@@ -575,7 +575,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
     public Object visit(PropertyIsLike filter, Object notUsed) {
         if (original == null) original = filter;
 
-        if (!fcs.supports(PropertyIsLike.class)) {
+        if (!supports(PropertyIsLike.class)) {
             postStack.push(filter);
 
             return null;
@@ -614,7 +614,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
     private void visitLogicOperator(Filter filter, Class filterInterface) {
         if (original == null) original = filter;
 
-        if (!fcs.supports(filterInterface)) {
+        if (!supports(filterInterface)) {
             postStack.push(filter);
             return;
         }
@@ -717,7 +717,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
     }
 
     public Object visit(ExcludeFilter filter, Object notUsed) {
-        if (fcs.supports(Filter.EXCLUDE)) {
+        if (supports(Filter.EXCLUDE)) {
             preStack.push(filter);
         } else {
             postStack.push(filter);
@@ -736,7 +736,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
     Object visitNullNil(Filter filter, Expression e) {
         if (original == null) original = filter;
 
-        if (!fcs.supports(PropertyIsNull.class)) {
+        if (!supports(PropertyIsNull.class)) {
             postStack.push(filter);
 
             return null;
@@ -760,7 +760,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
     public Object visit(Id filter, Object notUsed) {
         if (original == null) original = filter;
 
-        if (!fcs.supports(filter)) {
+        if (!supports(filter)) {
             postStack.push(filter);
         } else {
             preStack.push(filter);
@@ -817,10 +817,10 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
     }
 
     protected void visitMathExpression(BinaryExpression expression) {
-        if (!fcs.supports(Add.class)
-                && !fcs.supports(Subtract.class)
-                && !fcs.supports(Multiply.class)
-                && !fcs.supports(Divide.class)) {
+        if (!supports(Add.class)
+                && !supports(Subtract.class)
+                && !supports(Multiply.class)
+                && !supports(Divide.class)) {
             postStack.push(expression);
             return;
         }
@@ -857,7 +857,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
     }
 
     public Object visit(Function expression, Object notUsed) {
-        if (!fcs.supports(expression.getClass())) {
+        if (!supports(expression)) {
             postStack.push(expression);
             return null;
         }
@@ -980,7 +980,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
         if (original == null) original = filter;
 
         // supports it as a group -- no need to check the type
-        if (!fcs.supports(filter)) {
+        if (!supports(filter)) {
             postStack.push(filter);
             return null;
         }
@@ -1023,5 +1023,16 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
     public Object visit(NativeFilter nativeFilter, Object extraData) {
         preStack.push(nativeFilter);
         return null;
+    }
+
+    protected boolean supports(Object value) {
+        boolean supports = false;
+        if (value instanceof Class) supports = fcs.supports((Class) value);
+        else if (value instanceof Filter) supports = fcs.supports((Filter) value);
+        else if (value instanceof Expression) supports = fcs.supports(value.getClass());
+        else if (value instanceof FilterCapabilities)
+            supports = fcs.supports((FilterCapabilities) value);
+
+        return supports;
     }
 }

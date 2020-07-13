@@ -47,17 +47,17 @@ import org.opengis.feature.type.Schema;
 public class SchemaGeneratorMojo extends AbstractGeneratorMojo {
 
 	/**
-	 * Flag controlling wether complex types from the schema should be included.
+	 * Flag controlling whether complex types from the schema should be included.
 	 * @parameter expression="true"
 	 */
 	boolean includeComplexTypes;
 	/**
-	 * Flag controlling wether simple types from the schema should be included.
+	 * Flag controlling whether simple types from the schema should be included.
 	 * @parameter expression="true"
 	 */
 	boolean includeSimpleTypes;
 	/**
-	 * Flag controlling wether complex types should be composed of geotools 
+	 * Flag controlling whether complex types should be composed of geotools 
 	 * attribute descriptors which mirror the xml schema particles.
 	 * @parameter expression="true"
 	 */
@@ -68,7 +68,7 @@ public class SchemaGeneratorMojo extends AbstractGeneratorMojo {
 	 */
 	String[] imports;
 	/**
-         * Flag controlling wether paths are printed out as the generator recurses 
+         * Flag controlling whether paths are printed out as the generator recurses 
          * through the schema.
          * @parameter expression="false"
          */

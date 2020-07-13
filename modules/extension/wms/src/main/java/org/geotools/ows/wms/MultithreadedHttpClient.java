@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
@@ -177,12 +178,7 @@ public class MultithreadedHttpClient implements HTTPClient {
         return new HttpMethodResponse(postMethod);
     }
 
-    /**
-     * @param method
-     * @return the http status code of the execution
-     * @throws IOException
-     * @throws HttpException
-     */
+    /** @return the http status code of the execution */
     private int executeMethod(HttpMethod method) throws IOException, HttpException {
         String host = method.getURI().getHost();
         if (host != null && nonProxyHosts.contains(host.toLowerCase())) {
@@ -198,12 +194,23 @@ public class MultithreadedHttpClient implements HTTPClient {
 
     @Override
     public HTTPResponse get(final URL url) throws IOException {
+        return this.get(url, null);
+    }
 
+    @Override
+    public HTTPResponse get(URL url, Map<String, String> headers) throws IOException {
         GetMethod getMethod = new GetMethod(url.toExternalForm());
         getMethod.setDoAuthentication(user != null && password != null);
         if (tryGzip) {
             getMethod.setRequestHeader("Accept-Encoding", "gzip");
         }
+
+        if (headers != null) {
+            for (Map.Entry<String, String> headerNameValue : headers.entrySet()) {
+                getMethod.setRequestHeader(headerNameValue.getKey(), headerNameValue.getValue());
+            }
+        }
+
         int responseCode = executeMethod(getMethod);
         if (200 != responseCode) {
             getMethod.releaseConnection();
@@ -330,10 +337,7 @@ public class MultithreadedHttpClient implements HTTPClient {
             return responseBodyAsStream;
         }
 
-        /**
-         * @return
-         * @see org.geotools.data.ows.HTTPResponse#getResponseCharset()
-         */
+        /** @see org.geotools.data.ows.HTTPResponse#getResponseCharset() */
         @Override
         public String getResponseCharset() {
             String responseCharSet = null;
@@ -344,19 +348,13 @@ public class MultithreadedHttpClient implements HTTPClient {
         }
     }
 
-    /**
-     * @param tryGZIP
-     * @see org.geotools.data.ows.HTTPClient#setTryGzip(boolean)
-     */
+    /** @see org.geotools.data.ows.HTTPClient#setTryGzip(boolean) */
     @Override
     public void setTryGzip(boolean tryGZIP) {
         this.tryGzip = tryGZIP;
     }
 
-    /**
-     * @return
-     * @see org.geotools.data.ows.HTTPClient#isTryGzip()
-     */
+    /** @see org.geotools.data.ows.HTTPClient#isTryGzip() */
     @Override
     public boolean isTryGzip() {
         return tryGzip;

@@ -2,23 +2,15 @@ Remote Repositories
 -------------------
 
 There are repositories of jars required by GeoTools stored online. These repositories are listed
-in the root pom.xml file.
+in the root ``pom.xml`` file.
 
 You can browse them online at:
 
-* http://central.maven.org/maven2 - maven central
-* http://maven.geo-solutions.it/ - geosolutions repository used for imageio-ext, jai-ext, ...
-* http://download.osgeo.org/webdav/geotools/ - osgeo repository used for geotools dependencies
-* https://repo.boundlessgeo.com/release - boundless repo for releases
+  * https://repo1.maven.org/maven2/ - maven central
+  * https://repo.osgeo.org/repository/release/ - OSGeo project releases (including GeoTools)
+  * https://repo.osgeo.org/repository/snapshot/ - OSGeo repository for daily snapshots (including GeoTools)
 
-GeoTools itself is deployed to the following repositories:
-
-* http://download.osgeo.org/webdav/geotools/ - geotools release repository
-* http://repo.boundlessgeo.com/snapshot - geotools SNAPSHOT repository
-
-Or you can make use of the following cache:
-
-* https://repo.boundlessgeo.com/main - boundless repository acting as a cache of the above
+The repositories above act as a cache, gathering up artifacts from a range of projects into a single searchable location for the maven build system.
 
 Reducing Internet Downloads
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^

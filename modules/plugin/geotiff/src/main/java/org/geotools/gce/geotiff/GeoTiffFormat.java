@@ -74,6 +74,15 @@ import org.opengis.referencing.operation.MathTransform;
  */
 public class GeoTiffFormat extends AbstractGridFormat implements Format {
 
+    private static final String GEOTIFF_WRITE_NODATA_KEY = "geotiff.writenodata";
+
+    private static final boolean DEFAULT_WRITE_NODATA;
+
+    static {
+        String geotiffWriteNodataProperty = System.getProperty(GEOTIFF_WRITE_NODATA_KEY, "true");
+        DEFAULT_WRITE_NODATA = Boolean.valueOf(geotiffWriteNodataProperty);
+    }
+
     /** Logger. */
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(GeoTiffFormat.class);
@@ -98,7 +107,13 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
                     "WRITE_NODATA",
                     Boolean.class,
                     new Boolean[] {Boolean.TRUE, Boolean.FALSE},
-                    Boolean.TRUE);
+                    DEFAULT_WRITE_NODATA) {
+                private static final long serialVersionUID = 476944281037266742L;
+
+                public @Override Boolean getDefaultValue() {
+                    return Boolean.valueOf(System.getProperty(GEOTIFF_WRITE_NODATA_KEY, "true"));
+                }
+            };
 
     /**
      * This {@link GeneralParameterValue} can be provided to the {@link GeoTiffWriter}s in order to
@@ -135,7 +150,8 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
                                 new GeneralParameterDescriptor[] {
                                     READ_GRIDGEOMETRY2D,
                                     INPUT_TRANSPARENT_COLOR,
-                                    SUGGESTED_TILE_SIZE
+                                    SUGGESTED_TILE_SIZE,
+                                    RESCALE_PIXELS
                                 }));
 
         // writing parameters
@@ -161,6 +177,7 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
      *     resource.
      */
     @Override
+    @SuppressWarnings("PMD.CloseResource") // might need to close, or not, conditional
     public boolean accepts(Object o, Hints hints) {
 
         if (o == null) {

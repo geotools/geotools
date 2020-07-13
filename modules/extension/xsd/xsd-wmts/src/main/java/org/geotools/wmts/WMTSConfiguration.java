@@ -32,7 +32,6 @@ import org.geotools.wmts.bindings.GetFeatureInfoBinding;
 import org.geotools.wmts.bindings.GetFeatureInfoValueTypeBinding;
 import org.geotools.wmts.bindings.GetTileBinding;
 import org.geotools.wmts.bindings.GetTileValueTypeBinding;
-import org.geotools.wmts.bindings.LayerBinding;
 import org.geotools.wmts.bindings.LayerTypeBinding;
 import org.geotools.wmts.bindings.LegendURLBinding;
 import org.geotools.wmts.bindings.RequestServiceTypeBinding;
@@ -91,6 +90,9 @@ public class WMTSConfiguration extends Configuration {
         container.registerComponentImplementation(
                 WMTS.GetTileValueType, GetTileValueTypeBinding.class);
         container.registerComponentImplementation(WMTS.LayerType, LayerTypeBinding.class);
+        // container.registerComponentImplementation(WMTS.Layer, LayerBinding.class);
+        // container.registerComponentImplementation(
+        //     OWS.DatasetDescriptionSummary, LayerTypeBinding.class);
         container.registerComponentImplementation(
                 WMTS.RequestServiceType, RequestServiceTypeBinding.class);
         container.registerComponentImplementation(WMTS.SectionsType, SectionsTypeBinding.class);
@@ -100,31 +102,56 @@ public class WMTSConfiguration extends Configuration {
 
         // Elements
         container.registerComponentImplementation(WMTS.BinaryPayload, BinaryPayloadBinding.class);
+        container.registerComponentImplementation(WMTS._BinaryPayload, BinaryPayloadBinding.class);
         container.registerComponentImplementation(WMTS.Capabilities, CapabilitiesBinding.class);
+        container.registerComponentImplementation(WMTS._Capabilities, CapabilitiesBinding.class);
         container.registerComponentImplementation(WMTS.Dimension, DimensionBinding.class);
+        container.registerComponentImplementation(WMTS._Dimension, DimensionBinding.class);
         container.registerComponentImplementation(
                 WMTS.DimensionNameValue, DimensionNameValueBinding.class);
         container.registerComponentImplementation(
+                WMTS._DimensionNameValue, DimensionNameValueBinding.class);
+        container.registerComponentImplementation(
                 WMTS.FeatureInfoResponse, FeatureInfoResponseBinding.class);
         container.registerComponentImplementation(
+                WMTS._FeatureInfoResponse, FeatureInfoResponseBinding.class);
+        container.registerComponentImplementation(
                 WMTS.GetCapabilities, GetCapabilitiesBinding.class);
+        container.registerComponentImplementation(
+                WMTS._GetCapabilities, GetCapabilitiesBinding.class);
         container.registerComponentImplementation(WMTS.GetFeatureInfo, GetFeatureInfoBinding.class);
+        container.registerComponentImplementation(
+                WMTS._GetFeatureInfo, GetFeatureInfoBinding.class);
         container.registerComponentImplementation(WMTS.GetTile, GetTileBinding.class);
-        container.registerComponentImplementation(WMTS.Layer, LayerBinding.class);
+        container.registerComponentImplementation(WMTS._GetTile, GetTileBinding.class);
+        container.registerComponentImplementation(WMTS.Layer, LayerTypeBinding.class);
         container.registerComponentImplementation(WMTS.LegendURL, LegendURLBinding.class);
+        container.registerComponentImplementation(WMTS._LegendURL, LegendURLBinding.class);
         container.registerComponentImplementation(WMTS.Style, StyleBinding.class);
+        container.registerComponentImplementation(WMTS._Style, StyleBinding.class);
         container.registerComponentImplementation(WMTS.TextPayload, TextPayloadBinding.class);
+        container.registerComponentImplementation(WMTS._TextPayload, TextPayloadBinding.class);
         container.registerComponentImplementation(WMTS.Theme, ThemeBinding.class);
+        container.registerComponentImplementation(WMTS._Theme, ThemeBinding.class);
         container.registerComponentImplementation(WMTS.Themes, ThemesBinding.class);
+        container.registerComponentImplementation(WMTS._Themes, ThemesBinding.class);
         container.registerComponentImplementation(WMTS.TileMatrix, TileMatrixBinding.class);
+        container.registerComponentImplementation(WMTS._TileMatrix, TileMatrixBinding.class);
         container.registerComponentImplementation(
                 WMTS.TileMatrixLimits, TileMatrixLimitsBinding.class);
+        container.registerComponentImplementation(
+                WMTS._TileMatrixLimits, TileMatrixLimitsBinding.class);
         container.registerComponentImplementation(WMTS.TileMatrixSet, TileMatrixSetBinding.class);
+        container.registerComponentImplementation(WMTS._TileMatrixSet, TileMatrixSetBinding.class);
         container.registerComponentImplementation(
                 WMTS.TileMatrixSetLimits, TileMatrixSetLimitsBinding.class);
         container.registerComponentImplementation(
+                WMTS._TileMatrixSetLimits, TileMatrixSetLimitsBinding.class);
+        container.registerComponentImplementation(
                 WMTS.TileMatrixSetLink, TileMatrixSetLinkBinding.class);
-        /*container.registerComponentImplementation(WMTS.Format,  FormatBinding.class);*/
-
+        container.registerComponentImplementation(
+                WMTS._TileMatrixSetLink, TileMatrixSetLinkBinding.class);
+        /*container.registerComponentImplementation(WMTS.Format, MimeTypeBinding.class);
+        container.registerComponentImplementation(WMTS.InfoFormat, MimeTypeBinding.class);*/
     }
 }

@@ -128,7 +128,6 @@ public class VPFLibrary extends ContentDataStore {
      *
      * @param libraryFeature a feature from the library attribute table
      * @param dir the containing directory
-     * @throws IOException
      * @throws SchemaException For problems making one of the feature classes as a FeatureType.
      */
     /*
@@ -150,7 +149,6 @@ public class VPFLibrary extends ContentDataStore {
      * then use setNamespace(URI) ((javadocTODO: add the correct link to previous method.))
      *
      * @param dir the containing directory
-     * @throws IOException
      * @throws SchemaException for problems making a featureType.
      */
     /*
@@ -165,7 +163,6 @@ public class VPFLibrary extends ContentDataStore {
      *
      * @param dir the containing directory
      * @param namespace the namespace to create features with.
-     * @throws IOException
      * @throws SchemaException For problems making one of the feature classes as a FeatureType.
      */
     public VPFLibrary(SimpleFeature libraryFeature, File dir, URI namespace)
@@ -202,7 +199,6 @@ public class VPFLibrary extends ContentDataStore {
     /**
      * Determines the coverages contained by this library
      *
-     * @throws IOException
      * @throws SchemaException For problems making one of the feature classes as a FeatureType.
      */
     private void setCoverages() throws IOException, SchemaException {

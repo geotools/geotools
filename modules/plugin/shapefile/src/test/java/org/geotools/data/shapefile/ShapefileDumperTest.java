@@ -22,6 +22,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
@@ -33,6 +34,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.apache.commons.io.FileUtils;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -61,6 +63,8 @@ public class ShapefileDumperTest {
     static final String LONGNAMES = "longnames";
 
     static final String NULLGEOM = "nullgeom";
+
+    static final String EMPTYGEOMS = "MultiTypeEmpty";
 
     File properties = new File("./src/test/resources/org/geotools/data/shapefile/test-data/dumper");
 
@@ -309,11 +313,7 @@ public class ShapefileDumperTest {
         testBasicPolygonCollection(1, BASIC_POLYGONS + "2");
     }
 
-    /**
-     * Verifies the contents of the CST file are the expected ones
-     *
-     * @throws IOException
-     */
+    /** Verifies the contents of the CST file are the expected ones */
     private void assertCst(String typeName, String expectedCharset) throws IOException {
         File cst = new File(dumperFolder, typeName + ".cst");
         String actualCharset = FileUtils.readFileToString(cst, "UTF-8");
@@ -324,8 +324,6 @@ public class ShapefileDumperTest {
      * Returns a collection from one of the property sample data
      *
      * @param typeName The name of the property file (without .properties)
-     * @return
-     * @throws IOException
      */
     private SimpleFeatureCollection getFeaturesFromProperties(String typeName) throws IOException {
         return propertyStore.getFeatureSource(typeName).getFeatures();
@@ -334,10 +332,6 @@ public class ShapefileDumperTest {
     /**
      * Returns a collection from the dumper folder given a type name. The support shapefile data
      * store will be closed automatically by the test machinery during tear down
-     *
-     * @param typeName
-     * @return
-     * @throws IOException
      */
     private SimpleFeatureCollection getFeaturesFromShapefile(String typeName) throws IOException {
         File shp = new File(dumperFolder, typeName + ".shp");
@@ -352,10 +346,10 @@ public class ShapefileDumperTest {
         final String[] extensions = new String[] {".shx", ".dbf", ".prj", ".cst"};
         for (String extension : extensions) {
             File f = new File(dumperFolder, typeName + extension);
-            if (!shp.exists()) {
+            if (!f.exists()) {
                 fail(
                         "Could not find expected shapefile sidecar "
-                                + shp.getPath()
+                                + f.getPath()
                                 + ", available files are: "
                                 + Arrays.asList(dumperFolder.listFiles()));
             }
@@ -369,13 +363,9 @@ public class ShapefileDumperTest {
 
     /**
      * Verifies the specified type has the right geometry type, and the specified list of attributes
-     *
-     * @param type
-     * @param geometryType
-     * @param attributes
      */
     private void checkTypeStructure(
-            SimpleFeatureType type, Class geometryType, String... attributes) {
+            SimpleFeatureType type, Class<? extends Geometry> geometryType, String... attributes) {
         assertEquals(geometryType, type.getGeometryDescriptor().getType().getBinding());
         if (attributes == null) {
             assertEquals(1, type.getDescriptors().size());
@@ -430,5 +420,44 @@ public class ShapefileDumperTest {
                 }
             }
         }
+    }
+
+    @Test
+    public void testMultipleTypeEmptyGeometries() throws Exception {
+        SimpleFeatureCollection fc = getFeaturesFromProperties(EMPTYGEOMS);
+        ShapefileDumper dumper = new ShapefileDumper(dumperFolder);
+        dumper.dump(fc);
+
+        // points
+        SimpleFeatureCollection point = getFeaturesFromShapefile(EMPTYGEOMS + "Point");
+        assertEquals(1, point.size());
+        assertNull(DataUtilities.first(point).getDefaultGeometry());
+        checkTypeStructure(point.getSchema(), Point.class, "name");
+        assertCst(EMPTYGEOMS + "Point", "ISO-8859-1");
+
+        // multipoints
+        SimpleFeatureCollection mpoint = getFeaturesFromShapefile(EMPTYGEOMS + "MPoint");
+        assertEquals(1, mpoint.size());
+        assertNull(DataUtilities.first(mpoint).getDefaultGeometry());
+        checkTypeStructure(mpoint.getSchema(), MultiPoint.class, "name");
+        assertCst(EMPTYGEOMS + "MPoint", "ISO-8859-1");
+
+        // polygon and multipolygon
+        SimpleFeatureCollection polygon = getFeaturesFromShapefile(EMPTYGEOMS + "Polygon");
+        assertEquals(2, polygon.size());
+        List<SimpleFeature> polygonFeatures = DataUtilities.list(polygon);
+        assertNull((Geometry) polygonFeatures.get(0).getDefaultGeometry());
+        assertNull((Geometry) polygonFeatures.get(1).getDefaultGeometry());
+        checkTypeStructure(polygon.getSchema(), MultiPolygon.class, "name");
+        assertCst(EMPTYGEOMS + "Polygon", "ISO-8859-1");
+
+        // line and multiline
+        SimpleFeatureCollection line = getFeaturesFromShapefile(EMPTYGEOMS + "Line");
+        assertEquals(2, line.size());
+        List<SimpleFeature> lineFeatures = DataUtilities.list(polygon);
+        assertNull((Geometry) lineFeatures.get(0).getDefaultGeometry());
+        assertNull((Geometry) lineFeatures.get(1).getDefaultGeometry());
+        checkTypeStructure(line.getSchema(), MultiLineString.class, "name");
+        assertCst(EMPTYGEOMS + "Line", "ISO-8859-1");
     }
 }

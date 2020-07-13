@@ -3,7 +3,8 @@ Prepare a jdbc database
 
 For each image level we have to create a spatial and a tiles table, or a joined table.
 
-Attention: The syntax  may differ depending on your used database. For postgres use FLOAT8 instead of DOUBLE and BYTEA instead of BLOB
+Attention: The syntax  may differ depending on your used database. For PostgreSQL
+use FLOAT8 instead of DOUBLE and BYTEA instead of BLOB
 
 1. The tile table ::
      

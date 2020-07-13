@@ -22,7 +22,7 @@ import javax.xml.namespace.QName;
 import net.opengis.wmts.v_1.ThemesType;
 import net.opengis.wmts.v_1.wmtsv_1Factory;
 import org.geotools.wmts.WMTS;
-import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.AbstractComplexEMFBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
 
@@ -59,7 +59,7 @@ import org.geotools.xsd.Node;
  *
  * @generated
  */
-public class ThemesBinding extends AbstractComplexBinding {
+public class ThemesBinding extends AbstractComplexEMFBinding {
 
     wmtsv_1Factory factory;
 
@@ -93,7 +93,7 @@ public class ThemesBinding extends AbstractComplexBinding {
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         ThemesType themes = factory.createThemesType();
-        themes.getTheme().addAll(node.getChildValues("theme"));
+        themes.getTheme().addAll(node.getChildValues("Theme"));
         return themes;
     }
 }

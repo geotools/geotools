@@ -24,8 +24,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.xml.namespace.QName;
-import org.apache.commons.collections.OrderedMap;
-import org.apache.commons.collections.map.ListOrderedMap;
+import org.apache.commons.collections4.OrderedMap;
+import org.apache.commons.collections4.map.ListOrderedMap;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
@@ -61,8 +61,8 @@ public class SchemaIndexImpl implements SchemaIndex {
     SoftValueHashMap /*<XSDElementDeclaration,OrderedMap>*/ element2children =
             new SoftValueHashMap(1000);
 
-    /** Cache of elemnets to attributes */
-    HashMap /*<XSDElementDeclaratoin,List>*/ element2attributes = new HashMap();
+    /** Cache of elements to attributes */
+    HashMap /*<XSDElementDeclaration,List>*/ element2attributes = new HashMap();
 
     /** Adapter for tracking changes to schemas. */
     SchemaAdapter adapter;

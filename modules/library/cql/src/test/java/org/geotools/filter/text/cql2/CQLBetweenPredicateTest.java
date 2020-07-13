@@ -74,11 +74,7 @@ public class CQLBetweenPredicateTest {
         testBetweenPredicate(FilterCQLSample.NOT_BETWEEN_FILTER, expected);
     }
 
-    /**
-     * test for between predicate with compound attribute
-     *
-     * @throws Exception
-     */
+    /** test for between predicate with compound attribute */
     @Test
     public void compoundAttributeInBetweenPredicate() throws Exception {
 
@@ -96,12 +92,7 @@ public class CQLBetweenPredicateTest {
         Assert.assertEquals(propExpected, property.toString());
     }
 
-    /**
-     * Execute the test with the provided sample
-     *
-     * @param samplePredicate
-     * @throws Exception
-     */
+    /** Execute the test with the provided sample */
     protected void testBetweenPredicate(final String samplePredicate, Filter expected)
             throws Exception {
 

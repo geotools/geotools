@@ -16,6 +16,7 @@
  */
 package org.geotools.filter.text.cql2;
 
+import java.awt.Color;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -27,6 +28,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.Intersects;
@@ -228,6 +230,17 @@ public class FilterToCQLTest {
 
         FilterToCQL toCQL = new FilterToCQL();
         filter.accept(toCQL, null).toString();
+    }
+
+    @Test
+    public void testColorLiteral() throws Exception {
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
+        PropertyIsEqualTo filter = ff.equal(ff.property("color"), ff.literal(Color.RED), false);
+
+        FilterToCQL toCQL = new FilterToCQL();
+        StringBuilder cql = (StringBuilder) toCQL.visit(filter, null);
+
+        Assert.assertEquals("color = '#FF0000'", cql.toString());
     }
 
     @Test(expected = UnsupportedOperationException.class)

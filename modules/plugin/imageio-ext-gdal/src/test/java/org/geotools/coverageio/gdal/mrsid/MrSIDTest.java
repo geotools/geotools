@@ -61,20 +61,12 @@ public final class MrSIDTest extends GDALTestCase {
      */
     private static final String fileName = "n13250i.sid";
 
-    /**
-     * Creates a new instance of {@link MrSIDTest}
-     *
-     * @param name
-     */
+    /** Creates a new instance of {@link MrSIDTest} */
     public MrSIDTest() {
         super("MrSID", new MrSIDFormatFactory());
     }
 
-    /**
-     * Test for reading a grid coverage from a MrSID source
-     *
-     * @throws Exception
-     */
+    /** Test for reading a grid coverage from a MrSID source */
     @org.junit.Test
     public void test() throws Exception {
         if (!testingEnabled()) {
@@ -223,11 +215,7 @@ public final class MrSIDTest extends GDALTestCase {
         }
     }
 
-    /**
-     * Test class methods
-     *
-     * @throws Exception
-     */
+    /** Test class methods */
     @org.junit.Test
     public void test2() throws Exception {
         if (!testingEnabled()) {

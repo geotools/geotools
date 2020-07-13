@@ -38,6 +38,8 @@ import org.geotools.data.Query;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.sqlserver.reader.SqlServerBinaryReader;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.geometry.jts.WKBReader;
+import org.geotools.geometry.jts.WKTWriter2;
 import org.geotools.jdbc.BasicSQLDialect;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.referencing.CRS;
@@ -53,7 +55,6 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.ParseException;
-import org.locationtech.jts.io.WKBReader;
 import org.locationtech.jts.io.WKTReader;
 import org.locationtech.jts.io.WKTWriter;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -83,11 +84,7 @@ public class SQLServerDialect extends BasicSQLDialect {
 
     static final Pattern POSITIVE_NUMBER = Pattern.compile("[1-9][0-9]*");
 
-    /**
-     * The direct geometry metadata table
-     *
-     * @param dataStore
-     */
+    /** The direct geometry metadata table */
     private String geometryMetadataTable;
 
     private Boolean useOffsetLimit = false;
@@ -591,7 +588,7 @@ public class SQLServerDialect extends BasicSQLDialect {
 
         GeometryDimensionFinder finder = new GeometryDimensionFinder();
         value.apply(finder);
-        WKTWriter writer = new WKTWriter(finder.hasZ() ? 3 : 2);
+        WKTWriter writer = new WKTWriter2(finder.hasZ() ? 3 : 2);
         String wkt = writer.write(value);
         sql.append("geometry::STGeomFromText('").append(wkt).append("',").append(srid).append(")");
     }
@@ -772,56 +769,32 @@ public class SQLServerDialect extends BasicSQLDialect {
         }
     }
 
-    /**
-     * The geometry metadata table in use, if any
-     *
-     * @return
-     */
+    /** The geometry metadata table in use, if any */
     public String getGeometryMetadataTable() {
         return geometryMetadataTable;
     }
 
-    /**
-     * Sets the geometry metadata table
-     *
-     * @param geometryMetadataTable
-     */
+    /** Sets the geometry metadata table */
     public void setGeometryMetadataTable(String geometryMetadataTable) {
         this.geometryMetadataTable = geometryMetadataTable;
     }
 
-    /**
-     * Sets whether to use offset limit or not
-     *
-     * @param useOffsetLimit
-     */
+    /** Sets whether to use offset limit or not */
     public void setUseOffSetLimit(Boolean useOffsetLimit) {
         this.useOffsetLimit = useOffsetLimit;
     }
 
-    /**
-     * Sets whether to use native SQL Server binary serialization or WKB serialization
-     *
-     * @param useNativeSerialization
-     */
+    /** Sets whether to use native SQL Server binary serialization or WKB serialization */
     public void setUseNativeSerialization(Boolean useNativeSerialization) {
         this.useNativeSerialization = useNativeSerialization;
     }
 
-    /**
-     * Sets whether to force the usage of spatial indexes by including a WITH INDEX hint
-     *
-     * @param useNativeSerialization
-     */
+    /** Sets whether to force the usage of spatial indexes by including a WITH INDEX hint */
     public void setForceSpatialIndexes(boolean forceSpatialIndexes) {
         this.forceSpatialIndexes = forceSpatialIndexes;
     }
 
-    /**
-     * Sets a comma separated list of table hints that will be added to every select query
-     *
-     * @param tableHints
-     */
+    /** Sets a comma separated list of table hints that will be added to every select query */
     public void setTableHints(String tableHints) {
         if (tableHints == null) {
             this.tableHints = null;
@@ -835,29 +808,20 @@ public class SQLServerDialect extends BasicSQLDialect {
         }
     }
 
-    /**
-     * Drop the index. Subclasses can override to handle extra syntax or db specific situations
-     *
-     * @param cx
-     * @param schema
-     * @param databaseSchema
-     * @param indexName
-     * @throws SQLException
-     */
+    /** Drop the index. Subclasses can override to handle extra syntax or db specific situations */
     @Override
     public void dropIndex(
             Connection cx, SimpleFeatureType schema, String databaseSchema, String indexName)
             throws SQLException {
         StringBuffer sql = new StringBuffer();
-        String escape = getNameEscape();
         sql.append("DROP INDEX ");
-        sql.append(escape).append(indexName).append(escape);
+        sql.append(escapeName(indexName));
         sql.append(" ON ");
         if (databaseSchema != null) {
             encodeSchemaName(databaseSchema, sql);
             sql.append(".");
         }
-        sql.append(escape).append(schema.getTypeName()).append(escape);
+        sql.append(escapeName(schema.getTypeName()));
 
         Statement st = null;
         try {

@@ -16,7 +16,9 @@
  */
 package org.geotools.data;
 
+import java.io.Closeable;
 import java.io.IOException;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.CharBuffer;
@@ -34,7 +36,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Simone Giannecchini
  * @since 2.3
  */
-public class PrjFileReader {
+public class PrjFileReader implements Closeable {
 
     /* Used to check if we can use memory mapped buffers safely. In case the OS cannot be detected, we act as if it was Windows and
      * do not use memory mapped buffers */
@@ -65,7 +67,6 @@ public class PrjFileReader {
      * Load the index file from the given channel.
      *
      * @param channel The channel to read from.
-     * @param hints
      * @throws IOException If an error occurs.
      */
     public PrjFileReader(ReadableByteChannel channel, final Hints hints)
@@ -112,13 +113,14 @@ public class PrjFileReader {
         return r;
     }
 
+    @SuppressWarnings("PMD.CloseResource") // channel kept as field
     private void init() throws IOException {
         // create the ByteBuffer
         // if we have a FileChannel, lets map it
         if (channel instanceof FileChannel && USE_MEMORY_MAPPED_BUFFERS) {
             FileChannel fc = (FileChannel) channel;
             buffer = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
-            buffer.position((int) fc.position());
+            ((Buffer) buffer).position((int) fc.position());
         } else {
             // Some other type of channel
             // start with a 8K buffer, should be more than adequate
@@ -143,8 +145,6 @@ public class PrjFileReader {
     /**
      * The reader will close itself right after reading the CRS from the prj file, so no actual need
      * to call it explicitly anymore.
-     *
-     * @throws IOException
      */
     public void close() throws IOException {
         if (buffer != null) {

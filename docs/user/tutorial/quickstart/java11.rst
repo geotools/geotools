@@ -42,7 +42,7 @@ Instead of Java 8, we will want to install Java 11.
    
 #. At the time of writing the latest Java 11 release was:
    
-   * jdk-11.0.1
+   * ``jdk-11.0.1``
    
 #. Click through the installer you will need to set an acceptance a license agreement and so forth.
    By default this will install to:
@@ -53,7 +53,7 @@ Instead of Java 8, we will want to install Java 11.
 
    * JAVA_HOME = :file:`C:\\Program Files\\Java\\jdk-11.0.1`
 
-#. Verify mvn is using the correct Java version by running:
+#. Verify ``mvn`` is using the correct Java version by running:
 
    .. code-block:: sh
 
@@ -108,7 +108,7 @@ For a more detailed overview of the module system, refer to the `State of the Mo
    .. literalinclude:: artifacts/module-info.java
       :language: java
 
-   You'll notice the four geotools modules match those added as dependencies in the :file:`pom.xml`. We also include the ``java.desktop`` module, which contains user interface components required for the app to function.
+   You'll notice the four GeoTools modules match those added as dependencies in the :file:`pom.xml`. We also include the ``java.desktop`` module, which contains user interface components required for the app to function.
 
 Running the application
 -----------------------

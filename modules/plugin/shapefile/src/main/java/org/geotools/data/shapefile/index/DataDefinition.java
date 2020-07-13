@@ -56,10 +56,8 @@ public class DataDefinition {
      *   <li>Double
      *   <li>Date
      * </ul>
-     *
-     * @param clazz
      */
-    public void addField(Class clazz) {
+    public void addField(Class<?> clazz) {
         if (clazz.isAssignableFrom(Short.class)) {
             this.fields.add(new Field(clazz, 2));
         } else if (clazz.isAssignableFrom(Integer.class)) {
@@ -80,8 +78,6 @@ public class DataDefinition {
     /**
      * For classes with unknown length; this values will be threated as <code>String</code>s and
      * truncated at the specified len
-     *
-     * @param len
      */
     public void addField(int len) {
         this.fields.add(new Field(String.class, len));
@@ -129,15 +125,15 @@ public class DataDefinition {
      * @author Tommaso Nolli
      */
     public class Field {
-        private Class clazz;
+        private Class<?> clazz;
         private int len;
 
-        public Field(Class clazz, int len) {
+        public Field(Class<?> clazz, int len) {
             this.clazz = clazz;
             this.len = len;
         }
 
-        public Class getFieldClass() {
+        public Class<?> getFieldClass() {
             return clazz;
         }
 

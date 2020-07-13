@@ -533,7 +533,6 @@ public class XLinkSchema implements Schema {
          *
          * <p>Creates an instance of the Href Attribute of the XLink Schema
          *
-         * @param use
          * @see Attribute#getUse()
          */
         public Href(int use) {

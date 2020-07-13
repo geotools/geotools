@@ -1,7 +1,7 @@
 CQL
 ===
 
-The gt-cql module a human readable "Contextual Query Language" for writing filter expressions
+The ``gt-cql`` module a human readable "Contextual Query Language" for writing filter expressions
 for working with geospatial information.
 
 CQL was originally known as Common Query Language (so you will find lots of examples that still

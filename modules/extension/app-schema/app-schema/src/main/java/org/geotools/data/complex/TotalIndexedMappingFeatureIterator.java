@@ -53,11 +53,7 @@ public class TotalIndexedMappingFeatureIterator extends IndexedMappingFeatureIte
         }
     }
 
-    /**
-     * Builds next query for execute in data source
-     *
-     * @return
-     */
+    /** Builds next query for execute in data source */
     private Query getNextSourceQuery() {
         Query nextQuery = new Query(query);
         Filter idInFilter = IndexQueryUtils.buildIdInExpression(getNextSourceIdList(), mapping);

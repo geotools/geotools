@@ -19,8 +19,12 @@
  */
 package org.geotools.metadata.iso.citation;
 
+import java.awt.*;
 import java.util.Collection;
+import java.util.Collections;
+import net.opengis.ows11.AddressType;
 import org.geotools.metadata.iso.MetadataEntity;
+import org.geotools.util.SimpleInternationalString;
 import org.opengis.metadata.citation.Address;
 import org.opengis.util.InternationalString;
 
@@ -64,6 +68,19 @@ public class AddressImpl extends MetadataEntity implements Address {
      */
     public AddressImpl(final Address source) {
         super(source);
+    }
+
+    public AddressImpl(AddressType address) {
+        if (address.getAdministrativeArea() != null)
+            setAdministrativeArea(new SimpleInternationalString(address.getAdministrativeArea()));
+        if (address.getCity() != null) setCity(new SimpleInternationalString(address.getCity()));
+        if (address.getCountry() != null)
+            setCountry(new SimpleInternationalString(address.getCountry()));
+        if (address.getDeliveryPoint() != null)
+            setDeliveryPoints(Collections.singleton(address.getDeliveryPoint()));
+        if (address.getElectronicMailAddress() != null)
+            setElectronicMailAddresses(Collections.singleton(address.getElectronicMailAddress()));
+        if (address.getPostalCode() != null) setPostalCode(address.getPostalCode());
     }
 
     /** Return the state, province of the location. Returns {@code null} if unspecified. */

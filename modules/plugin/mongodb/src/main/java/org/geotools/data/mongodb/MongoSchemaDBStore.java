@@ -113,21 +113,22 @@ public class MongoSchemaDBStore implements MongoSchemaStore {
 
     @Override
     public List<String> typeNames() {
-        DBCursor cursor =
+        try (DBCursor cursor =
                 collection.find(
                         new BasicDBObject(),
-                        new BasicDBObject(FeatureTypeDBObject.KEY_typeName, 1));
-        List<String> typeNames = new ArrayList<String>(cursor.count());
-        while (cursor.hasNext()) {
-            DBObject document = cursor.next();
-            if (document != null) {
-                Object typeName = document.get(FeatureTypeDBObject.KEY_typeName);
-                if (typeName instanceof String) {
-                    typeNames.add((String) typeName);
+                        new BasicDBObject(FeatureTypeDBObject.KEY_typeName, 1))) {
+            List<String> typeNames = new ArrayList<String>(cursor.count());
+            while (cursor.hasNext()) {
+                DBObject document = cursor.next();
+                if (document != null) {
+                    Object typeName = document.get(FeatureTypeDBObject.KEY_typeName);
+                    if (typeName instanceof String) {
+                        typeNames.add((String) typeName);
+                    }
                 }
             }
+            return typeNames;
         }
-        return typeNames;
     }
 
     @Override

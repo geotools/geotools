@@ -34,12 +34,12 @@ JAI Image I/O system
 
 When combined, these subsystems provide immense power to the GeoTools coverage module but this dependency does require that programmers who wish to use and extend the module must learn to use these other Java modules.
 
-To get the most out of the gt-coverage module developers should be familiar with the underlying mathematical ideas. Knowledge of ideas such as an Affine Transforms (for rotating and scaling) is required to work effectively with the coverage module. Affines are explained any computer graphics textbooks, and on many web sites, if you need a refresher.
+To get the most out of the ``gt-coverage`` module developers should be familiar with the underlying mathematical ideas. Knowledge of ideas such as an Affine Transforms (for rotating and scaling) is required to work effectively with the coverage module. Affines are explained any computer graphics textbooks, and on many web sites, if you need a refresher.
 
 Q: How to make raster data work in a NetBeans based application?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Reporterly, the NetBeans classloader breaks ImageIO plugin mechanism which is used
+Reportedly, the NetBeans class loader breaks ImageIO plugin mechanism which is used
 to locate image format readers, image input and output streams, and the like.
 To work around it, run the following line of code, only once, before any raster
 access::

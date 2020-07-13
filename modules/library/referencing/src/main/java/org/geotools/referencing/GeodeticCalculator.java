@@ -777,6 +777,7 @@ public class GeodeticCalculator {
 
     /** Returns a string representation of the current state of this calculator. */
     @Override
+    @SuppressWarnings("PMD.CloseResource")
     public String toString() {
         final Vocabulary resources = Vocabulary.getResources(null);
         final TableWriter buffer = new TableWriter(null, " ");

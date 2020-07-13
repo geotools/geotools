@@ -55,11 +55,7 @@ public class EnviHdrTest extends GDALTestCase {
     /** file name of a valid EnviHdr sample data to be used for tests. */
     private static final String fileName = "envihdr.dat";
 
-    /**
-     * Creates a new instance of {@code EnviHdrTest}
-     *
-     * @param name
-     */
+    /** Creates a new instance of {@code EnviHdrTest} */
     public EnviHdrTest() {
         super("EnviHdr", new EnviHdrFormatFactory());
     }

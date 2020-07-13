@@ -19,8 +19,8 @@ package org.geotools.data.postgis;
 import java.io.IOException;
 import java.util.Date;
 import org.geotools.data.jdbc.FilterToSQL;
-import org.geotools.data.postgis.filter.FilterFunction_pgNearest;
 import org.geotools.filter.FilterCapabilities;
+import org.geotools.filter.function.JsonPointerFunction;
 import org.geotools.jdbc.JDBCDataStore;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LinearRing;
@@ -87,7 +87,7 @@ public class PostgisFilterToSQL extends FilterToSQL {
                 // if we don't know at all, use the srid of the geometry we're comparing against
                 // (much slower since that has to be extracted record by record as opposed to
                 // being a constant)
-                out.write("', ST_SRID(\"" + currentGeometry.getLocalName() + "\"))");
+                out.write("', ST_SRID(" + escapeName(currentGeometry.getLocalName()) + "))");
             } else {
                 out.write("', " + currentSRID + ")");
             }
@@ -177,8 +177,6 @@ public class PostgisFilterToSQL extends FilterToSQL {
      * Overrides base behavior to handler arrays
      *
      * @param filter the comparison to be turned into SQL.
-     * @param extraData
-     * @throws RuntimeException
      */
     protected void visitBinaryComparisonOperator(BinaryComparisonOperator filter, Object extraData)
             throws RuntimeException {
@@ -194,6 +192,11 @@ public class PostgisFilterToSQL extends FilterToSQL {
                 && (left instanceof PropertyName || right instanceof PropertyName)) {
             helper.out = out;
             helper.visitArrayComparison(filter, left, right, rightContext, leftContext, type);
+        } else if (left instanceof JsonPointerFunction || right instanceof JsonPointerFunction) {
+            rightContext = getExpressionTypeIncludingLiterals(left);
+            leftContext = getExpressionTypeIncludingLiterals(right);
+            super.encodeBinaryComparisonOperator(
+                    filter, extraData, left, right, leftContext, rightContext);
         } else {
             super.visitBinaryComparisonOperator(filter, extraData);
         }
@@ -221,26 +224,31 @@ public class PostgisFilterToSQL extends FilterToSQL {
 
     public Object visit(PropertyIsEqualTo filter, Object extraData) {
         helper.out = out;
-        FilterFunction_pgNearest nearest = helper.getNearestFilter(filter);
-        if (nearest != null) {
-            return helper.visit(
-                    nearest,
-                    extraData,
-                    new FilterToSqlHelper.NearestHelperContext(
-                            pgDialect,
-                            (a, b) -> {
-                                try {
-                                    pgDialect.encodeGeometryValue(
-                                            a,
-                                            helper.getFeatureTypeGeometryDimension(),
-                                            helper.getFeatureTypeGeometrySRID(),
-                                            b);
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
-                                }
-                            }));
-        } else {
-            return super.visit(filter, extraData);
+        if (helper.isSupportedEqualFunction(filter)) {
+            return helper.visitSupportedEqualFunction(
+                    filter,
+                    pgDialect,
+                    (a, b) -> {
+                        try {
+                            pgDialect.encodeGeometryValue(
+                                    a,
+                                    helper.getFeatureTypeGeometryDimension(),
+                                    helper.getFeatureTypeGeometrySRID(),
+                                    b);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    },
+                    extraData);
         }
+        return super.visit(filter, extraData);
+    }
+
+    private Class getExpressionTypeIncludingLiterals(Expression expression) {
+        Class result = super.getExpressionType(expression);
+        if (expression instanceof Literal) {
+            result = ((Literal) expression).getValue().getClass();
+        }
+        return result;
     }
 }

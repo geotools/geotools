@@ -120,8 +120,6 @@ public class XPathUtilTest {
      * Tests a location path of the form <code>"foo/bar/@baz"</code> gets built as a {@link
      * StepList} of attribute names <code>"foo/bar/baz"</code> (i.e. no distinction between what's a
      * "property" and what's an (xml) "attribute".
-     *
-     * @throws Exception
      */
     @Test
     public void testStepsWithXmlAttribute() throws Exception {

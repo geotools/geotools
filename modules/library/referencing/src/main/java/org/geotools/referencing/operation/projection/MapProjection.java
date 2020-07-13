@@ -62,7 +62,7 @@ import org.opengis.referencing.operation.Projection;
 import org.opengis.referencing.operation.TransformException;
 import si.uom.NonSI;
 import si.uom.SI;
-import tec.uom.se.AbstractUnit;
+import tech.units.indriya.AbstractUnit;
 
 /**
  * Base class for transformation services between ellipsoidal and cartographic projections. This
@@ -1387,9 +1387,6 @@ public abstract class MapProjection extends AbstractMathTransform
     /**
      * Tolerant asin that will just return the limits of its output range if the input is out of
      * range
-     *
-     * @param v
-     * @return
      */
     double aasin(double v) {
         double av = abs(v);
@@ -1505,6 +1502,7 @@ public abstract class MapProjection extends AbstractMathTransform
                 createDescriptor(
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.OGC, "longitude_of_center"),
+                            new NamedIdentifier(Citations.OGC, "longitude_of_origin"),
                             new NamedIdentifier(Citations.EPSG, "Longitude of natural origin"),
                             new NamedIdentifier(Citations.EPSG, "Spherical longitude of origin"),
                             new NamedIdentifier(Citations.ESRI, "Central_Meridian"),
@@ -1523,6 +1521,7 @@ public abstract class MapProjection extends AbstractMathTransform
                 createDescriptor(
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.OGC, "latitude_of_center"),
+                            new NamedIdentifier(Citations.OGC, "latitude_of_origin"),
                             new NamedIdentifier(Citations.EPSG, "Latitude of natural origin"),
                             new NamedIdentifier(Citations.EPSG, "Spherical latitude of origin"),
                             new NamedIdentifier(Citations.ESRI, "Latitude_Of_Origin"),

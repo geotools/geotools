@@ -46,6 +46,7 @@ import org.opengis.temporal.Instant;
  *   <li>{@link XMLGregorianCalendar} to {@link Date}
  *   <li>{@link Date} to {@link XMLGregorianCalendar}
  *   <li>{@link String} to {@link TimeZone}
+ *   <li>{@link Instant} to {@link Date}
  * </ul>
  *
  * <p>Supported unsafe (lossy) conversions:
@@ -243,8 +244,6 @@ public class TemporalConverterFactory implements ConverterFactory {
      * un-necessary parts when building java.sql time related classes
      *
      * @param time the number of milliseconds since January 1, 1970, 00:00:00 <b>GMT</b>
-     * @param target
-     * @return
      */
     Date timeMillisToDate(long time, Class target) {
         return timeMillisToDate(time, target, TimeZone.getDefault());

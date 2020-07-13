@@ -18,7 +18,6 @@ package org.geotools.gce.imagepyramid;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.channels.Channels;
@@ -144,14 +143,13 @@ public final class ImagePyramidFormat extends AbstractGridFormat implements Form
 
             // get the crs if able to
             final URL prjURL = URLs.changeUrlExt(sourceURL, "prj");
-            PrjFileReader crsReader;
-            try {
-                crsReader = new PrjFileReader(Channels.newChannel(prjURL.openStream()));
+            CoordinateReferenceSystem tempcrs = null;
+            try (PrjFileReader crsReader =
+                    new PrjFileReader(Channels.newChannel(prjURL.openStream()))) {
+                tempcrs = crsReader.getCoordinateReferenceSystem();
             } catch (FactoryException e) {
-
                 return false;
             }
-            CoordinateReferenceSystem tempcrs = crsReader.getCoordinateReferenceSystem();
             if (tempcrs == null) {
                 // use the default crs
                 tempcrs = AbstractGridFormat.getDefaultCRS();
@@ -167,25 +165,15 @@ public final class ImagePyramidFormat extends AbstractGridFormat implements Form
 
             // property file
             final Properties properties = new Properties();
-            BufferedInputStream propertyStream = null;
             if (!sourceURL.getPath().endsWith(".properties")) {
                 return false;
             }
             LOGGER.fine("loading properties from: " + sourceURL);
-            final InputStream openStream = sourceURL.openStream();
-            try {
-                propertyStream = new BufferedInputStream(openStream);
+            try (BufferedInputStream propertyStream =
+                    new BufferedInputStream(sourceURL.openStream())) {
                 properties.load(propertyStream);
             } catch (Throwable e) {
-                if (propertyStream != null) {
-                    propertyStream.close();
-                }
-
                 return false;
-            } finally {
-                if (openStream != null) {
-                    openStream.close();
-                }
             }
 
             // load the envelope

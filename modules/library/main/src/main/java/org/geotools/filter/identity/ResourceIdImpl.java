@@ -54,9 +54,6 @@ public class ResourceIdImpl extends FeatureIdVersionedImpl implements ResourceId
     /**
      * Obtain a ResourceId that represents an explicit request for feature id and feature version
      * (essentially the quivalent of {@link FeatureId})
-     *
-     * @param fid
-     * @param featureVersion
      */
     public ResourceIdImpl(String fid, String featureVersion) {
         this(fid, featureVersion, (Version) null);

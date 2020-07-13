@@ -38,12 +38,10 @@ public final class FeatureStreams {
     /**
      * Converts FeatureCollection to Stream of Features Use with try-with-resources clause for auto
      * closing
-     *
-     * @param fc
-     * @return
      */
     public static <T extends Feature, K extends FeatureType> Stream<T> toFeatureStream(
             FeatureCollection<K, T> fc) {
+        @SuppressWarnings("PMD.CloseResource") // wrapped and returned
         StreamFeatureIterator<T> fi = new StreamFeatureIterator<>(fc.features());
         return StreamSupport.stream(Spliterators.spliteratorUnknownSize(fi, 0), false)
                 .onClose(

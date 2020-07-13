@@ -189,10 +189,6 @@ public class CoordinateSequences extends org.locationtech.jts.geom.CoordinateSeq
     /**
      * Returns true if the two geometries are equal in N dimensions (normal geometry equality is
      * only 2D)
-     *
-     * @param g1
-     * @param g2
-     * @return
      */
     public static boolean equalsND(Geometry g1, Geometry g2) {
         // if not even in 2d, they are not equal

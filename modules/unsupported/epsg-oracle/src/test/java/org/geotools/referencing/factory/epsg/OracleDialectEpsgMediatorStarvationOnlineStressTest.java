@@ -68,7 +68,7 @@ public class OracleDialectEpsgMediatorStarvationOnlineStressTest extends OracleO
         // DataSource origional = super.connect( user, password, url, params );
 
         BasicDataSource origional = new BasicDataSource();
-        origional.setDriverClassName("oracle.jdbc.driver.OracleDriver");
+        origional.setDriverClassName("oracle.jdbc.OracleDriver");
         origional.setUsername(user);
         origional.setPassword(password);
         origional.setUrl(url);
@@ -193,7 +193,6 @@ public class OracleDialectEpsgMediatorStarvationOnlineStressTest extends OracleO
      * Returns a selection of CRS codes for UTM and NAD zones.
      *
      * @return array of EPSG codes
-     * @throws FactoryException
      */
     public static String[] getCodes() {
         return new String[] {

@@ -52,7 +52,7 @@ public class GetPropertyExecutor implements BindingWalker.Visitor {
     }
 
     public void visit(Binding binding) {
-        // TODO: visit should return a boolena to signify wether to continue
+        // TODO: visit should return a boolean to signify whether to continue
         if (child != null) {
             return;
         }

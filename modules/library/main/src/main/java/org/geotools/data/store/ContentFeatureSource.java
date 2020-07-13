@@ -16,7 +16,7 @@
  */
 package org.geotools.data.store;
 
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.net.URI;
@@ -374,36 +374,43 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
             // don't compute the bounds of the features that are modified or removed in the diff
             Iterator<String> i = diff.getModified().keySet().iterator();
             FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+
             Set<FeatureId> modifiedFids = new HashSet<FeatureId>();
             while (i.hasNext()) {
                 String featureId = i.next();
                 modifiedFids.add(ff.featureId(featureId));
             }
-            Filter skipFilter = ff.not(ff.id(modifiedFids));
-
             Query q = new Query(query);
-            q.setFilter(ff.and(skipFilter, query.getFilter()));
+            if (!modifiedFids.isEmpty()) {
+                Filter skipFilter = ff.not(ff.id(modifiedFids));
+                q.setFilter(ff.and(skipFilter, query.getFilter()));
+            }
             bounds = getBoundsInternal(q);
 
             // update with the diff contents, all added feature and all modified, not deleted ones
-            if (bounds != null) {
-                // new ones
-                Iterator<SimpleFeature> it = diff.getAdded().values().iterator();
-                while (it.hasNext()) {
-                    SimpleFeature feature = it.next();
-                    BoundingBox fb = feature.getBounds();
-                    if (fb != null) {
+            Iterator<SimpleFeature> it = diff.getAdded().values().iterator();
+            while (it.hasNext()) {
+                SimpleFeature feature = it.next();
+                BoundingBox fb = feature.getBounds();
+                if (fb != null) {
+                    if (bounds == null) {
+                        bounds = ReferencedEnvelope.reference(fb);
+                    } else {
                         bounds.expandToInclude(ReferencedEnvelope.reference(fb));
                     }
                 }
+            }
 
-                // modified ones
-                it = diff.getModified().values().iterator();
-                while (it.hasNext()) {
-                    SimpleFeature feature = it.next();
-                    if (feature != Diff.NULL) {
-                        BoundingBox fb = feature.getBounds();
-                        if (fb != null) {
+            // modified ones
+            it = diff.getModified().values().iterator();
+            while (it.hasNext()) {
+                SimpleFeature feature = it.next();
+                if (feature != Diff.NULL) {
+                    BoundingBox fb = feature.getBounds();
+                    if (fb != null) {
+                        if (bounds == null) {
+                            bounds = ReferencedEnvelope.reference(fb);
+                        } else {
                             bounds.expandToInclude(ReferencedEnvelope.reference(fb));
                         }
                     }
@@ -446,7 +453,10 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         return bounds;
     }
 
-    /** Calculates the bounds of a specified query. Subclasses must implement this method. */
+    /**
+     * Calculates the bounds of a specified query. Subclasses must implement this method. If the
+     * computation is not fast, subclasses can return <code>null</code>.
+     */
     protected abstract ReferencedEnvelope getBoundsInternal(Query query) throws IOException;
 
     /**
@@ -535,7 +545,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
 
     /**
      * Calculates the number of features of a specified query. Subclasses must implement this
-     * method.
+     * method. If the computation is not fast, it's possible to return -1.
      */
     protected abstract int getCountInternal(Query query) throws IOException;
 
@@ -618,7 +628,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
                     (DiffTransactionState) getTransaction().getState(getEntry());
             reader =
                     new DiffFeatureReader<SimpleFeatureType, SimpleFeature>(
-                            reader, state.getDiff());
+                            reader, state.getDiff(), query.getFilter());
         }
 
         // filtering
@@ -720,9 +730,6 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
     /**
      * Returns all the properties used in the sortBy (excluding primary keys and the like, e.g.,
      * natural sorting)
-     *
-     * @param sortBy
-     * @return
      */
     private Set<String> getSortPropertyNames(SortBy[] sortBy) {
         Set<String> result = new HashSet<>();
@@ -760,7 +767,6 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      *
      * @param visitor Visitor called for each feature
      * @param progress Used to report progress; and errors on a feature by feature basis
-     * @throws IOException
      */
     public void accepts(
             Query query,
@@ -994,10 +1000,6 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      *
      * <p>If the current feature source already has a defining query it is joined to the specified
      * query.
-     *
-     * @param query
-     * @return
-     * @throws IOException
      */
     public final ContentFeatureSource getView(Query query) throws IOException {
         query = joinQuery(query);
@@ -1125,9 +1127,6 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
     /**
      * Builds the query capabilities for this feature source. The default implementation returns a
      * newly built QueryCapabilities, subclasses are advised to build their own.
-     *
-     * @return
-     * @throws IOException
      */
     protected QueryCapabilities buildQueryCapabilities() {
         return new QueryCapabilities();
@@ -1148,8 +1147,6 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      *
      * <p>
      *
-     * @param transactionState
-     * @param filter
      * @return readonly access
      */
 

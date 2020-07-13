@@ -74,8 +74,6 @@ public class PolygonImpl extends SurfacePatchImpl implements Polygon {
      *
      * <p>NOTE The meaning of exterior in the SurfaceBoundary is consistent with the plane of the
      * constructed planar polygon.
-     *
-     * @param boundary
      */
     public PolygonImpl(SurfaceBoundaryImpl boundary) {
         this(boundary, null);
@@ -91,7 +89,6 @@ public class PolygonImpl extends SurfacePatchImpl implements Polygon {
      * It is often the case that in bounded manifolds, such as the sphere, there is an ambiguity
      * unless the orientation is properly used.
      *
-     * @param boundary
      * @param spanSurf - the Spanning Surface of the polygon
      */
     public PolygonImpl(SurfaceBoundaryImpl boundary, SurfaceImpl spanSurf) {
@@ -144,7 +141,6 @@ public class PolygonImpl extends SurfacePatchImpl implements Polygon {
 
     // /**
     // * Sets the neighbours of this SurfacePatch
-    // * @param neighbourPatches
     // */
     // public void setNeighbours(SurfacePatchImpl[] neighbourPatches) {
     // this.m_neighbours = neighbourPatches;

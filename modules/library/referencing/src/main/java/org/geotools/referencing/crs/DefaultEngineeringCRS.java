@@ -241,8 +241,6 @@ public class DefaultEngineeringCRS extends AbstractSingleCRS implements Engineer
     /**
      * Returns true if this is a wildcard CRS, that is, one that will transform from and to any
      * other CRS using the identity transformation
-     *
-     * @return
      */
     public boolean isWildcard() {
         return wildcard;

@@ -17,12 +17,14 @@
 package org.geotools.data.oracle;
 
 import java.io.IOException;
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.sql.Statement;
+import java.sql.Struct;
 import java.sql.Types;
 import java.sql.Wrapper;
 import java.util.ArrayList;
@@ -34,9 +36,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
 import oracle.jdbc.OracleConnection;
-import oracle.sql.ARRAY;
-import oracle.sql.Datum;
-import oracle.sql.STRUCT;
+import oracle.jdbc.OracleStruct;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.jdbc.datasource.DataSourceFinder;
 import org.geotools.data.jdbc.datasource.UnWrapper;
@@ -73,10 +73,11 @@ import org.opengis.util.GenericName;
 
 /**
  * Abstract dialect implementation for Oracle. Subclasses differ on the way used to parse and encode
- * the JTS geoemtries into Oracle MDSYS.SDO_GEOMETRY structures.
+ * the JTS geometries into Oracle MDSYS.SDO_GEOMETRY structures.
  *
  * @author Justin Deoliveira, OpenGEO
  * @author Andrea Aime, OpenGEO
+ * @author Mark Prins, B3Partners
  */
 public class OracleDialect extends PreparedStatementSQLDialect {
 
@@ -118,9 +119,9 @@ public class OracleDialect extends PreparedStatementSQLDialect {
     public static final String GEODETIC = "geodetic";
 
     /**
-     * Map of <code>UnWrapper</code> objects keyed by the class of <code>Connection</code> it is an
-     * unwrapper for. This avoids the overhead of searching the <code>DataSourceFinder</code>
-     * service registry at each unwrap.
+     * Map of {@code UnWrapper} objects keyed by the class of {@code Connection} it is an unwrapper
+     * for. This avoids the overhead of searching the {@code DataSourceFinder} service registry at
+     * each unwrap.
      */
     Map<Class<? extends Connection>, UnWrapper> uwMap =
             new HashMap<Class<? extends Connection>, UnWrapper>();
@@ -193,11 +194,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
     /** Remembers whether the USER_SDO_* views could be accessed or not */
     Boolean canAccessUserViews;
 
-    /**
-     * The direct geometry metadata table, if any
-     *
-     * @param dataStore
-     */
+    /** The direct geometry metadata table, if any */
     String geometryMetadataTable;
 
     /** Whether to use metadata tables to get bbox */
@@ -232,9 +229,6 @@ public class OracleDialect extends PreparedStatementSQLDialect {
      * Checks the user has permissions to read from the USER_SDO_INDEX_METADATA and
      * USER_SDO_GEOM_METADATA. The code can use this information to decide to access the
      * ALL_SDO_INDEX_METADATA and ALL_SOD_GEOM_METADATA views instead.
-     *
-     * @param cx
-     * @return
      */
     boolean canAccessUserViews(Connection cx) {
         if (canAccessUserViews == null) {
@@ -295,16 +289,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         }
     }
 
-    /**
-     * Tries to use the geometry metadata table, if available
-     *
-     * @param cx
-     * @param tableName
-     * @param columnName
-     * @param schema
-     * @return
-     * @throws SQLException
-     */
+    /** Tries to use the geometry metadata table, if available */
     private Class<?> lookupGeometryOnMetadataTable(
             Connection cx, String tableName, String columnName, String schema) throws SQLException {
         if (geometryMetadataTable == null) {
@@ -391,11 +376,6 @@ public class OracleDialect extends PreparedStatementSQLDialect {
     /**
      * Reads the geometry type from the first column returned by executing the specified SQL
      * statement
-     *
-     * @param cx
-     * @param sql
-     * @return
-     * @throws SQLException
      */
     private Class readGeometryClassFromStatement(Connection cx, String sql, List<String> parameters)
             throws SQLException {
@@ -478,6 +458,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         return true;
     }
 
+    @Override
     public void registerSqlTypeNameToClassMappings(Map<String, Class<?>> mappings) {
         super.registerSqlTypeNameToClassMappings(mappings);
 
@@ -547,6 +528,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         return convertGeometry(geom, descriptor, factory);
     }
 
+    @Override
     public Geometry decodeGeometryValue(
             GeometryDescriptor descriptor,
             ResultSet rs,
@@ -594,6 +576,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         return readGeometry(rs.getObject(column), factory, cx);
     }
 
+    @SuppressWarnings("PMD.CloseResource") // the connection is managed by the caller
     Geometry readGeometry(Object struct, GeometryFactory factory, Connection cx)
             throws IOException, SQLException {
         if (struct == null) {
@@ -605,10 +588,11 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         GeometryConverter converter =
                 factory != null ? new GeometryConverter(ocx, factory) : new GeometryConverter(ocx);
 
-        return converter.asGeometry((STRUCT) struct);
+        return converter.asGeometry((OracleStruct) struct);
     }
 
     @Override
+    @SuppressWarnings("PMD.CloseResource") // the connection and ps are managed by the caller
     public void setGeometryValue(
             Geometry g, int dimension, int srid, Class binding, PreparedStatement ps, int column)
             throws SQLException {
@@ -623,7 +607,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         OracleConnection ocx = unwrapConnection(ps.getConnection());
 
         GeometryConverter converter = new GeometryConverter(ocx);
-        STRUCT s = converter.toSDO(g, srid);
+        OracleStruct s = converter.toSDO(g, srid);
         ps.setObject(column, s);
 
         if (LOGGER.isLoggable(Level.FINE)) {
@@ -641,7 +625,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         }
     }
 
-    /** Obtains the native oracle connection object given a database connecetion. */
+    /** Obtains the native oracle connection object given a database connection. */
     @SuppressWarnings("PMD.CloseResource")
     OracleConnection unwrapConnection(Connection cx) throws SQLException {
         if (cx == null) {
@@ -774,15 +758,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         return readIntegerFromStatement(cx, allSdoSql, parameters);
     }
 
-    /**
-     * Reads the SRID from the SDO_USER* views
-     *
-     * @param tableName
-     * @param columnName
-     * @param cx
-     * @return
-     * @throws SQLException
-     */
+    /** Reads the SRID from the SDO_USER* views */
     private Integer lookupSRIDFromUserViews(String tableName, String columnName, Connection cx)
             throws SQLException {
         // we run this only if we can access the user views
@@ -896,15 +872,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         return readIntegerFromStatement(cx, allSdoSql, parameters);
     }
 
-    /**
-     * Reads the SRID from the SDO_USER* views
-     *
-     * @param tableName
-     * @param columnName
-     * @param cx
-     * @return
-     * @throws SQLException
-     */
+    /** Reads the SRID from the SDO_USER* views */
     private Integer lookupDimensionFromUserViews(String tableName, String columnName, Connection cx)
             throws SQLException {
         // we run this only if we can access the user views
@@ -1098,7 +1066,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
             for (AttributeDescriptor att : featureType.getAttributeDescriptors()) {
                 if (att instanceof GeometryDescriptor) {
                     // use estimated extent (optimizer statistics)
-                    StringBuffer sql = new StringBuffer();
+                    StringBuilder sql = new StringBuilder();
                     sql.append("select SDO_TUNE.EXTENT_OF('");
                     sql.append(tableName);
                     sql.append("', '");
@@ -1439,11 +1407,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         return true;
     }
 
-    /**
-     * Checks if the specified srid is geodetic or not
-     *
-     * @throws SQLException
-     */
+    /** Checks if the specified srid is geodetic or not */
     protected boolean isGeodeticSrid(Integer srid, Connection cx) {
         if (srid == null) return false;
 
@@ -1545,28 +1509,18 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         }
     }
 
-    /**
-     * The geometry metadata table in use, if any
-     *
-     * @return
-     */
+    /** The geometry metadata table in use, if any */
     public String getGeometryMetadataTable() {
         return geometryMetadataTable;
     }
 
-    /**
-     * Sets the geometry metadata table
-     *
-     * @param geometryMetadataTable
-     */
+    /** Sets the geometry metadata table */
     public void setGeometryMetadataTable(String geometryMetadataTable) {
         this.geometryMetadataTable = geometryMetadataTable;
     }
 
     /**
      * Sets the decision if the table MDSYS.USER_SDO_GEOM_METADATA can be used for index calculation
-     *
-     * @param geometryMetadataTable
      */
     public void setMetadataBboxEnabled(boolean metadataBboxEnabled) {
         this.metadataBboxEnabled = metadataBboxEnabled;
@@ -1581,28 +1535,30 @@ public class OracleDialect extends PreparedStatementSQLDialect {
      * @author Hendrik Peilke
      */
     private Envelope decodeDiminfoEnvelope(ResultSet rs, int column) throws SQLException {
-        ARRAY returnArray = (ARRAY) rs.getObject(column);
+        Array returnArray = rs.getArray(column);
 
         if (returnArray == null) {
             throw new SQLException("no data inside the specified column");
         }
 
-        Datum data[] = returnArray.getOracleArray();
-
+        Object data[] = (Object[]) returnArray.getArray();
         if (data.length < 2) {
             throw new SQLException("too little dimension information found in sdo_geom_metadata");
         }
 
-        Datum[] xInfo = ((STRUCT) data[0]).getOracleAttributes();
-        Datum[] yInfo = ((STRUCT) data[1]).getOracleAttributes();
-        Double minx = xInfo[1].doubleValue();
-        Double maxx = xInfo[2].doubleValue();
-        Double miny = yInfo[1].doubleValue();
-        Double maxy = yInfo[2].doubleValue();
+        Object[] xInfo = ((Struct) data[0]).getAttributes();
+        Object[] yInfo = ((Struct) data[1]).getAttributes();
 
+        // because Oracle insists on BigDecimal/BigInteger for numbers
+        Double minx = ((Number) xInfo[1]).doubleValue();
+        Double maxx = ((Number) xInfo[2]).doubleValue();
+        Double miny = ((Number) yInfo[1]).doubleValue();
+        Double maxy = ((Number) yInfo[2]).doubleValue();
+        returnArray.free();
         return new Envelope(minx, maxx, miny, maxy);
     }
 
+    @Override
     public int getDefaultVarcharSize() {
         return 4000;
     }

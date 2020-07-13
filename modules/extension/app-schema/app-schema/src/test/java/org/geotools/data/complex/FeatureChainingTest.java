@@ -17,10 +17,7 @@
 
 package org.geotools.data.complex;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -40,17 +37,19 @@ import org.geotools.feature.FeatureImpl;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.gml3.bindings.GML3EncodingUtils;
 import org.geotools.test.AppSchemaTestSupport;
+import org.geotools.wfs.PropertyValueCollection;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.locationtech.jts.util.Stopwatch;
+import org.opengis.feature.Attribute;
 import org.opengis.feature.ComplexAttribute;
 import org.opengis.feature.Feature;
 import org.opengis.feature.Property;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.feature.type.Name;
+import org.opengis.feature.type.*;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.PropertyName;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.NamespaceSupport;
 
@@ -171,11 +170,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
         // System.out.println("Set up time: " + sw.getTimeString());
     }
 
-    /**
-     * Test that chaining works
-     *
-     * @throws Exception
-     */
+    /** Test that chaining works */
     @Test
     public void testFeatureChaining() throws Exception {
         FeatureIterator<Feature> mfIterator = mfFeatures.features();
@@ -282,8 +277,6 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
      * testFeatureChaining() tests one to many relationship, but the many side was on the chaining
      * side ie. geologic unit side (with many composition parts). This is to test that configuring
      * many on the the chained works. We're using composition part -> lithology here.
-     *
-     * @throws Exception
      */
     @Test
     public void testManyOnChainedSide() throws Exception {
@@ -338,8 +331,6 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
      * Test nesting multiple multi valued properties. Both exposure color and outcrop character are
      * multi valued. By making sure that both are nested inside geological unit feature, it's
      * verified that nesting multiple multi valued properties is possible.
-     *
-     * @throws Exception
      */
     @Test
     public void testMultipleMultiValuedProperties() throws Exception {
@@ -401,11 +392,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
         guIterator.close();
     }
 
-    /**
-     * Test mapping multi-valued simple properties still works.
-     *
-     * @throws Exception
-     */
+    /** Test mapping multi-valued simple properties still works. */
     @Test
     public void testMultiValuedSimpleProperties() throws Exception {
         FeatureIterator<Feature> iterator = ccFeatures.features();
@@ -424,11 +411,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
         iterator.close();
     }
 
-    /**
-     * Test filtering attributes on nested features.
-     *
-     * @throws Exception
-     */
+    /** Test filtering attributes on nested features. */
     @Test
     public void testFilters() throws Exception {
         // make sure filter query can be made on MappedFeature based on GU properties
@@ -548,8 +531,6 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
      * Test nesting features of a complex type with simple content. Previously didn't get encoded.
      * Also making sure that a feature type can have multiple FEATURE_LINK to be referred by
      * different types.
-     *
-     * @throws Exception
      */
     @Test
     public void testComplexTypeWithSimpleContent() throws Exception {
@@ -653,8 +634,6 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
     /**
      * Test chaining multi-valued by reference (xlink:href). It should result with multiple
      * attributes with no nested attributes, but only client property with xlink:href.
-     *
-     * @throws Exception
      */
     @Test
     public void testMultiValuedPropertiesByRef() throws Exception {
@@ -712,8 +691,6 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
      *
      * <p>Note: the above holds true in the context of a single {@link AppSchemaDataAccess}
      * instance, not across data stores.
-     *
-     * @throws IOException
      */
     @Test
     public void testSourceDataStoreConsolidation() throws IOException {
@@ -752,12 +729,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
         assertNotEquals(guSourceFs.getDataStore(), mfSourceFs.getDataStore());
     }
 
-    /**
-     * Load all the data accesses.
-     *
-     * @return
-     * @throws Exception
-     */
+    /** Load all the data accesses. */
     private static void loadDataAccesses() throws Exception {
         /** Load mapped feature data access */
         Map dsParams = new HashMap();
@@ -806,6 +778,26 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
         assertEquals(3, size(guFeatures));
         assertEquals(4, size(cpFeatures));
         assertEquals(6, size(cgiFeatures));
+    }
+
+    @Test
+    public void testPropertyValueCollection() {
+        // test that the Attribute return from a PropertyValueCollection iteration,
+        // when a PropertyName points to a SimpleAttribute in a ComplexFeature,
+        // doesn't throws a ClassCastException on getType method
+
+        PropertyName pn = ff.property("gsml:specification/gsml:GeologicUnit/gsml:purpose");
+
+        PropertyDescriptor descriptor = pn.evaluate(mfFeatures.getSchema(), null);
+
+        PropertyValueCollection propertyValueCollection =
+                new PropertyValueCollection(mfFeatures, (AttributeDescriptor) descriptor, pn);
+        Iterator it = propertyValueCollection.iterator();
+        while (it.hasNext()) {
+            Attribute attribute = (Attribute) it.next();
+            // attribute.getType() was causing Class cast exception to ComplexType
+            assertFalse(attribute.getType() instanceof ComplexType);
+        }
     }
 
     private static int size(FeatureCollection<FeatureType, Feature> features) {

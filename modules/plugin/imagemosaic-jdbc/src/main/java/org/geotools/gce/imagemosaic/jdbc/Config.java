@@ -16,6 +16,7 @@
  */
 package org.geotools.gce.imagemosaic.jdbc;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
@@ -23,6 +24,7 @@ import java.util.Hashtable;
 import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import org.geotools.data.jdbc.datasource.DBCPDataSourceFactory;
 import org.geotools.data.jdbc.datasource.JNDIDataSourceFactory;
 import org.w3c.dom.Document;
@@ -31,6 +33,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  * Class for holding the config info read from the xml config file
@@ -127,18 +130,7 @@ public class Config {
             return result;
         }
 
-        InputStream in = xmlURL.openStream();
-        InputSource input = new InputSource(xmlURL.toString());
-
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        dbf.setIgnoringElementContentWhitespace(true);
-        dbf.setIgnoringComments(true);
-
-        DocumentBuilder db = dbf.newDocumentBuilder();
-
-        // db.setEntityResolver(new ConfigEntityResolver(xmlURL));
-        Document dom = db.parse(input);
-        in.close();
+        Document dom = getDocument(xmlURL);
 
         result = new Config();
 
@@ -184,6 +176,22 @@ public class Config {
         ConfigMap.put(xmlURL.toString(), result);
 
         return result;
+    }
+
+    public static Document getDocument(URL xmlURL)
+            throws IOException, ParserConfigurationException, SAXException {
+        try (InputStream in = xmlURL.openStream()) {
+            InputSource input = new InputSource(xmlURL.toString());
+
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            dbf.setIgnoringElementContentWhitespace(true);
+            dbf.setIgnoringComments(true);
+
+            DocumentBuilder db = dbf.newDocumentBuilder();
+
+            // db.setEntityResolver(new ConfigEntityResolver(xmlURL));
+            return db.parse(input);
+        }
     }
 
     static void readMapping(Config result, Document dom) {

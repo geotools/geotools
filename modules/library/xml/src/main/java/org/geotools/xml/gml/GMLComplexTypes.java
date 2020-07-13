@@ -522,12 +522,7 @@ public class GMLComplexTypes {
         private Element elem;
         private Object value;
 
-        /**
-         * The input method for the data to store.
-         *
-         * @param elem
-         * @param value
-         */
+        /** The input method for the data to store. */
         public DefaultElementValue(Element elem, Object value) {
             this.elem = elem;
             this.value = value;
@@ -577,11 +572,7 @@ public class GMLComplexTypes {
             // Should not be called
         }
 
-        /**
-         * Initializes this instance with a set of elements to choose from.
-         *
-         * @param elems
-         */
+        /** Initializes this instance with a set of elements to choose from. */
         public DefaultChoice(Element[] elems) {
             elements = elems;
         }
@@ -657,11 +648,7 @@ public class GMLComplexTypes {
             // Should not be called
         }
 
-        /**
-         * Initializes the Sequence with a list of elements within the Sequence
-         *
-         * @param elems
-         */
+        /** Initializes the Sequence with a list of elements within the Sequence */
         public DefaultSequence(Element[] elems) {
             elements = elems;
         }
@@ -1848,11 +1835,7 @@ public class GMLComplexTypes {
             return "PointType";
         }
 
-        /**
-         * @throws SAXException
-         * @throws OperationNotSupportedException
-         * @see schema.Type#getValue(java.util.List)
-         */
+        /** @see schema.Type#getValue(java.util.List) */
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws OperationNotSupportedException, SAXException {
             if (value.length > 1) {
@@ -2010,11 +1993,7 @@ public class GMLComplexTypes {
             return "LineStringType";
         }
 
-        /**
-         * @throws SAXException
-         * @throws OperationNotSupportedException
-         * @see schema.Type#getValue(java.util.List)
-         */
+        /** @see schema.Type#getValue(java.util.List) */
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws OperationNotSupportedException, SAXException {
             Element e = value[0].getElement();
@@ -2184,11 +2163,7 @@ public class GMLComplexTypes {
             return "LinearRingType";
         }
 
-        /**
-         * @throws SAXException
-         * @throws OperationNotSupportedException
-         * @see schema.Type#getValue(java.util.List)
-         */
+        /** @see schema.Type#getValue(java.util.List) */
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws OperationNotSupportedException, SAXException {
             Element e = value[0].getElement();
@@ -2349,11 +2324,7 @@ public class GMLComplexTypes {
             return "BoxType";
         }
 
-        /**
-         * @throws SAXException
-         * @throws OperationNotSupportedException
-         * @see schema.Type#getValue(java.util.List)
-         */
+        /** @see schema.Type#getValue(java.util.List) */
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws OperationNotSupportedException, SAXException {
             Element e = value[0].getElement();
@@ -2582,11 +2553,7 @@ public class GMLComplexTypes {
             return "PolygonType";
         }
 
-        /**
-         * @throws SAXException
-         * @throws OperationNotSupportedException
-         * @see schema.Type#getValue(java.util.List)
-         */
+        /** @see schema.Type#getValue(java.util.List) */
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws OperationNotSupportedException, SAXException {
             Element e = value[0].getElement();
@@ -2887,10 +2854,7 @@ public class GMLComplexTypes {
             return "MultiPointType";
         }
 
-        /**
-         * @throws OperationNotSupportedException
-         * @see schema.Type#getValue(java.util.List)
-         */
+        /** @see schema.Type#getValue(java.util.List) */
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             Element e = value[0].getElement();
@@ -3041,10 +3005,7 @@ public class GMLComplexTypes {
             return "MultiLineStringType";
         }
 
-        /**
-         * @throws OperationNotSupportedException
-         * @see schema.Type#getValue(java.util.List)
-         */
+        /** @see schema.Type#getValue(java.util.List) */
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             Element e = value[0].getElement();
@@ -3195,10 +3156,7 @@ public class GMLComplexTypes {
             return "MultiPolygonType";
         }
 
-        /**
-         * @throws OperationNotSupportedException
-         * @see schema.Type#getValue(java.util.List)
-         */
+        /** @see schema.Type#getValue(java.util.List) */
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             Element e = value[0].getElement();
@@ -4210,6 +4168,7 @@ public class GMLComplexTypes {
                 return getCollection(attrs, value);
             }
 
+            @SuppressWarnings("PMD.CloseResource") // not managed here
             FCBuffer fcb = (FCBuffer) hints.get(XMLHandlerHints.STREAM_HINT);
             fcb.state = FCBuffer.FINISH;
 
@@ -4328,48 +4287,54 @@ public class GMLComplexTypes {
                 throw new IOException("Bounding box required for the FeatureCollection");
             }
 
-            SimpleFeatureIterator i = fc.features();
             Element e = null;
+            try (SimpleFeatureIterator i = fc.features()) {
 
-            while (i.hasNext()) {
-                SimpleFeature f = i.next();
-                output.startElement(GMLSchema.NAMESPACE, "featureMember", null);
+                while (i.hasNext()) {
+                    SimpleFeature f = i.next();
+                    output.startElement(GMLSchema.NAMESPACE, "featureMember", null);
 
-                if (e == null) { // first time
-                    e = output.findElement(f.getFeatureType().getTypeName());
-                    // should go to an abstract FT eventually
-                    ComplexType t =
-                            e.getType() instanceof ComplexType ? (ComplexType) e.getType() : null;
-                    while (t != null && t != AbstractFeatureType.getInstance())
-                        t =
-                                t.getParent() instanceof ComplexType
-                                        ? (ComplexType) t.getParent()
-                                        : null;
-                    if (t != AbstractFeatureType.getInstance()) {
-                        // not the right element ... try by type
-                        e = output.findElement(value);
+                    if (e == null) { // first time
+                        e = output.findElement(f.getFeatureType().getTypeName());
                         // should go to an abstract FT eventually
-                        t = e.getType() instanceof ComplexType ? (ComplexType) e.getType() : null;
+                        ComplexType t =
+                                e.getType() instanceof ComplexType
+                                        ? (ComplexType) e.getType()
+                                        : null;
                         while (t != null && t != AbstractFeatureType.getInstance())
                             t =
                                     t.getParent() instanceof ComplexType
                                             ? (ComplexType) t.getParent()
                                             : null;
                         if (t != AbstractFeatureType.getInstance()) {
-                            throw new OperationNotSupportedException(
-                                    "Could not find a correct Element for FeatureType "
-                                            + f.getFeatureType().getTypeName());
+                            // not the right element ... try by type
+                            e = output.findElement(value);
+                            // should go to an abstract FT eventually
+                            t =
+                                    e.getType() instanceof ComplexType
+                                            ? (ComplexType) e.getType()
+                                            : null;
+                            while (t != null && t != AbstractFeatureType.getInstance())
+                                t =
+                                        t.getParent() instanceof ComplexType
+                                                ? (ComplexType) t.getParent()
+                                                : null;
+                            if (t != AbstractFeatureType.getInstance()) {
+                                throw new OperationNotSupportedException(
+                                        "Could not find a correct Element for FeatureType "
+                                                + f.getFeatureType().getTypeName());
+                            }
                         }
                     }
-                }
 
-                if (e == null) {
-                    throw new NullPointerException(
-                            "Feature Definition not found in Schema " + element.getNamespace());
-                }
+                    if (e == null) {
+                        throw new NullPointerException(
+                                "Feature Definition not found in Schema " + element.getNamespace());
+                    }
 
-                AbstractFeatureType.getInstance().encode(e, f, output, hints);
-                output.endElement(GMLSchema.NAMESPACE, "featureMember");
+                    AbstractFeatureType.getInstance().encode(e, f, output, hints);
+                    output.endElement(GMLSchema.NAMESPACE, "featureMember");
+                }
             }
 
             if (element == null) {

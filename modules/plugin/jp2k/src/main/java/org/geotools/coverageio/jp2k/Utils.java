@@ -119,26 +119,14 @@ class Utils {
         }
     }
 
-    /**
-     * Retrieves an {@link ImageInputStream} for the provided input {@link File} .
-     *
-     * @param file
-     * @return
-     * @throws IOException
-     */
+    /** Retrieves an {@link ImageInputStream} for the provided input {@link File} . */
     static ImageInputStream getInputStream(final File file) throws IOException {
         final ImageInputStream inStream = ImageIO.createImageInputStream(file);
         if (inStream == null) return null;
         return inStream;
     }
 
-    /**
-     * Setup a double from an array of bytes.
-     *
-     * @param bytes
-     * @param start
-     * @return
-     */
+    /** Setup a double from an array of bytes. */
     public static double bytes2double(final byte[] bytes, final int start) {
         int i = 0;
         final int length = 8;
@@ -157,13 +145,7 @@ class Utils {
         return Double.longBitsToDouble(accum);
     }
 
-    /**
-     * Setup a long from an array of bytes.
-     *
-     * @param bytes
-     * @param start
-     * @return
-     */
+    /** Setup a long from an array of bytes. */
     public static long bytes2long(final byte[] bytes, final int start) {
         int i = 0;
         final int length = 4;

@@ -20,14 +20,18 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.commons.io.FileUtils;
 import org.geotools.coverage.io.netcdf.crs.NetCDFCRSAuthorityFactory;
 import org.geotools.coverage.io.netcdf.crs.NetCDFCoordinateReferenceSystemType;
 import org.geotools.coverage.io.netcdf.crs.NetCDFProjection;
 import org.geotools.coverage.io.netcdf.crs.ProjectionBuilder;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.imageio.netcdf.utilities.NetCDFCRSUtilities;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -40,11 +44,14 @@ import org.geotools.test.TestData;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.crs.DerivedCRS;
 import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.crs.ProjectedCRS;
 import org.opengis.referencing.datum.Ellipsoid;
@@ -59,9 +66,30 @@ import org.opengis.referencing.operation.Projection;
  */
 public class NetCDFCRSTest {
 
+    @Rule public TemporaryFolder tempFolder = new TemporaryFolder();
+
+    private static final String CUSTOM_EPSG_KM = "970917";
+    private static final String CUSTOM_EPSG_M = "970916";
+    private static final double COORDINATE_IN_METERS = 2.5E6;
+    private static final double COORDINATE_IN_KM = COORDINATE_IN_METERS / 1000;
+
     private static final double DELTA = 1E-6;
 
     private static CoordinateReferenceSystem UTM32611;
+
+    private void setFinalStaticField(String fieldName, boolean value)
+            throws NoSuchFieldException, SecurityException, IllegalArgumentException,
+                    IllegalAccessException {
+        // Playing with System.Properties and Static boolean fields can raises issues
+        // when running Junit tests via Maven, due to initialization orders.
+        // So let's change the fields via reflections for these tests
+        Field field = NetCDFCRSUtilities.class.getDeclaredField(fieldName);
+        field.setAccessible(true);
+        Field modifiersField = Field.class.getDeclaredField("modifiers");
+        modifiersField.setAccessible(true);
+        modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+        field.set(null, value);
+    }
 
     /** Sets up the custom definitions */
     @BeforeClass
@@ -213,10 +241,9 @@ public class NetCDFCRSTest {
                     NetCDFCoordinateReferenceSystemType.NetCDFCoordinate.RLATLON_COORDS,
                     crsType.getCoordinates());
             assertSame(NetCDFProjection.ROTATED_POLE, crsType.getNetCDFProjection());
-            assertTrue(crs instanceof ProjectedCRS);
-            ProjectedCRS projectedCRS = ((ProjectedCRS) crs);
-            Projection projection = projectedCRS.getConversionFromBase();
-            MathTransform transform = projection.getMathTransform();
+            assertTrue(crs instanceof DerivedCRS);
+            DerivedCRS derivedCRS = ((DerivedCRS) crs);
+            MathTransform transform = derivedCRS.getConversionFromBase().getMathTransform();
             assertTrue(transform instanceof RotatedPole);
             RotatedPole rotatedPole = (RotatedPole) transform;
             ParameterValueGroup values = rotatedPole.getParameterValues();
@@ -228,6 +255,27 @@ public class NetCDFCRSTest {
                     54.0,
                     values.parameter(NetCDFUtilities.LATITUDE_OF_ORIGIN).doubleValue(),
                     DELTA);
+
+            String wkt =
+                    "FITTED_CS[\"rotated_latitude_longitude\", \n"
+                            + "  INVERSE_MT[PARAM_MT[\"Rotated_Pole\", \n"
+                            + "      PARAMETER[\"semi_major\", 6371229.0], \n"
+                            + "      PARAMETER[\"semi_minor\", 6371229.0], \n"
+                            + "      PARAMETER[\"central_meridian\", -106.0], \n"
+                            + "      PARAMETER[\"latitude_of_origin\", 54.0], \n"
+                            + "      PARAMETER[\"scale_factor\", 1.0], \n"
+                            + "      PARAMETER[\"false_easting\", 0.0], \n"
+                            + "      PARAMETER[\"false_northing\", 0.0]]], \n"
+                            + "  GEOGCS[\"unknown\", \n"
+                            + "    DATUM[\"unknown\", \n"
+                            + "      SPHEROID[\"unknown\", 6371229.0, 0.0]], \n"
+                            + "    PRIMEM[\"Greenwich\", 0.0], \n"
+                            + "    UNIT[\"degree\", 0.017453292519943295], \n"
+                            + "    AXIS[\"Geodetic longitude\", EAST], \n"
+                            + "    AXIS[\"Geodetic latitude\", NORTH]], \n"
+                            + "  AUTHORITY[\"EPSG\",\"971806\"]]";
+            CoordinateReferenceSystem wktCRS = CRS.parseWKT(wkt);
+            assertTrue(CRS.equalsIgnoreMetadata(wktCRS, crs));
         } finally {
             if (reader != null) {
                 reader.dispose();
@@ -417,6 +465,43 @@ public class NetCDFCRSTest {
                 CRS.equalsIgnoreMetadata(
                         reader.getCoordinateReferenceSystem("foo"), DefaultGeographicCRS.WGS84));
         reader.dispose();
+    }
+
+    @Test
+    public void testPreserveKM() throws Exception {
+        setFinalStaticField("CONVERT_AXIS_KM", false);
+        String fileName = "samplekm.nc";
+        File nc1 = TestData.file(this, fileName);
+        File converted = tempFolder.newFolder("converted");
+        FileUtils.copyFileToDirectory(nc1, converted);
+        File km = new File(converted, fileName);
+        NetCDFReader reader = new NetCDFReader(km, null);
+        CoordinateReferenceSystem crs =
+                reader.getCoordinateReferenceSystem(reader.getGridCoverageNames()[0]);
+        assertEquals(CUSTOM_EPSG_KM, crs.getIdentifiers().iterator().next().getCode());
+        assertTrue(
+                "km".equalsIgnoreCase(crs.getCoordinateSystem().getAxis(0).getUnit().toString()));
+        GeneralEnvelope originalEnvelope =
+                reader.getOriginalEnvelope(reader.getGridCoverageNames()[0]);
+        assertEquals(COORDINATE_IN_KM, originalEnvelope.getMaximum(0), DELTA);
+    }
+
+    @Test
+    public void testAutoConversionKmToM() throws Exception {
+        setFinalStaticField("CONVERT_AXIS_KM", true);
+        String fileName = "samplekm.nc";
+        File nc1 = TestData.file(this, fileName);
+        File converted = tempFolder.newFolder("converted");
+        FileUtils.copyFileToDirectory(nc1, converted);
+        File m = new File(converted, fileName);
+        NetCDFReader reader = new NetCDFReader(m, null);
+        CoordinateReferenceSystem crs =
+                reader.getCoordinateReferenceSystem(reader.getGridCoverageNames()[0]);
+        assertEquals(CUSTOM_EPSG_M, crs.getIdentifiers().iterator().next().getCode());
+        assertTrue("m".equalsIgnoreCase(crs.getCoordinateSystem().getAxis(0).getUnit().toString()));
+        GeneralEnvelope originalEnvelope =
+                reader.getOriginalEnvelope(reader.getGridCoverageNames()[0]);
+        assertEquals(COORDINATE_IN_METERS, originalEnvelope.getMaximum(0), DELTA);
     }
 
     /** Cleanup the custom definitions */

@@ -134,10 +134,6 @@ class ShapeFileIndexer implements FileWriter {
      *
      * @param verbose enable/disable printing of dots every 500 indexed records
      * @return The number of indexed records (or zero)
-     * @throws MalformedURLException
-     * @throws IOException
-     * @throws TreeException
-     * @throws LockTimeoutException
      */
     public int index(boolean verbose, ProgressListener listener)
             throws MalformedURLException, IOException, TreeException, StoreException,
@@ -379,11 +375,7 @@ class ShapeFileIndexer implements FileWriter {
         }
     }
 
-    /**
-     * For quad tree this is the max depth. I don't know what it is for RTree
-     *
-     * @param i
-     */
+    /** For quad tree this is the max depth. I don't know what it is for RTree */
     public void setMax(int i) {
         max = i;
     }

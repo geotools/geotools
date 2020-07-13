@@ -1,4 +1,3 @@
-
 package org.geotools.data.arcgisrest.schema.webservice;
 
 import com.google.gson.annotations.Expose;
@@ -6,55 +5,31 @@ import com.google.gson.annotations.SerializedName;
 
 public class DrawingInfo {
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     @SerializedName("renderer")
     @Expose
     private Renderer renderer;
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     @SerializedName("transparency")
     @Expose
     private Integer transparency;
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     public Renderer getRenderer() {
         return renderer;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     public void setRenderer(Renderer renderer) {
         this.renderer = renderer;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     public Integer getTransparency() {
         return transparency;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     public void setTransparency(Integer transparency) {
         this.transparency = transparency;
     }
@@ -62,17 +37,20 @@ public class DrawingInfo {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(DrawingInfo.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append(DrawingInfo.class.getName())
+                .append('@')
+                .append(Integer.toHexString(System.identityHashCode(this)))
+                .append('[');
         sb.append("renderer");
         sb.append('=');
-        sb.append(((this.renderer == null)?"<null>":this.renderer));
+        sb.append(((this.renderer == null) ? "<null>" : this.renderer));
         sb.append(',');
         sb.append("transparency");
         sb.append('=');
-        sb.append(((this.transparency == null)?"<null>":this.transparency));
+        sb.append(((this.transparency == null) ? "<null>" : this.transparency));
         sb.append(',');
-        if (sb.charAt((sb.length()- 1)) == ',') {
-            sb.setCharAt((sb.length()- 1), ']');
+        if (sb.charAt((sb.length() - 1)) == ',') {
+            sb.setCharAt((sb.length() - 1), ']');
         } else {
             sb.append(']');
         }
@@ -82,8 +60,8 @@ public class DrawingInfo {
     @Override
     public int hashCode() {
         int result = 1;
-        result = ((result* 31)+((this.renderer == null)? 0 :this.renderer.hashCode()));
-        result = ((result* 31)+((this.transparency == null)? 0 :this.transparency.hashCode()));
+        result = ((result * 31) + ((this.renderer == null) ? 0 : this.renderer.hashCode()));
+        result = ((result * 31) + ((this.transparency == null) ? 0 : this.transparency.hashCode()));
         return result;
     }
 
@@ -96,7 +74,10 @@ public class DrawingInfo {
             return false;
         }
         DrawingInfo rhs = ((DrawingInfo) other);
-        return (((this.renderer == rhs.renderer)||((this.renderer!= null)&&this.renderer.equals(rhs.renderer)))&&((this.transparency == rhs.transparency)||((this.transparency!= null)&&this.transparency.equals(rhs.transparency))));
+        return (((this.renderer == rhs.renderer)
+                        || ((this.renderer != null) && this.renderer.equals(rhs.renderer)))
+                && ((this.transparency == rhs.transparency)
+                        || ((this.transparency != null)
+                                && this.transparency.equals(rhs.transparency))));
     }
-
 }

@@ -18,8 +18,14 @@
 
 package org.geotools.wmts;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 import javax.xml.namespace.QName;
+import org.eclipse.xsd.XSDElementDeclaration;
+import org.eclipse.xsd.XSDSchema;
+import org.eclipse.xsd.util.XSDSchemaQueryTools;
+import org.geotools.ows.v1_1.OWS;
 import org.geotools.xsd.XSD;
 
 /**
@@ -29,6 +35,34 @@ import org.geotools.xsd.XSD;
  * @generated
  */
 public final class WMTS extends XSD {
+
+    @Override
+    protected XSDSchema buildSchema() throws IOException {
+        XSDSchema theSchema = super.buildSchema();
+
+        // This is the WMTS schema, so wherever we see datasetSummaryDescription element, we
+        // need to use the layer definition to decode/encode it
+        List<XSDElementDeclaration> datasetSummaryBaseTypeDeclarations =
+                XSDSchemaQueryTools.findElementsUsingType(
+                        theSchema, OWS.NAMESPACE, "DatasetDescriptionSummaryBaseType");
+
+        XSDElementDeclaration layerDeclaration = null;
+        XSDElementDeclaration dsSummaryDeclaration = null;
+        for (XSDElementDeclaration decl : datasetSummaryBaseTypeDeclarations) {
+            if (decl.getName() != null && decl.getName().equals("Layer")) {
+                layerDeclaration = decl;
+            }
+            if (decl.getName() != null && decl.getName().equals("DatasetDescriptionSummary")) {
+                dsSummaryDeclaration = decl;
+            }
+        }
+
+        if (dsSummaryDeclaration != null && layerDeclaration != null) {
+            dsSummaryDeclaration.setResolvedElementDeclaration(layerDeclaration);
+        }
+
+        return theSchema;
+    }
 
     /** singleton instance */
     private static final WMTS instance = new WMTS();
@@ -59,6 +93,9 @@ public final class WMTS extends XSD {
 
     /** @generated */
     public static final String NAMESPACE = "http://www.opengis.net/wmts/1.0";
+
+    public static final String WMTSGetCapabilitiesResponseSchemalocation =
+            "http://schemas.opengis.net/wmts/1.0/wmtsGetCapabilities_response.xsd";
 
     /* Type Definitions */
     /** @generated */
@@ -238,8 +275,8 @@ public final class WMTS extends XSD {
     public static final QName TileMatrixSetLink =
             new QName("http://www.opengis.net/wmts/1.0", "TileMatrixSetLink");
 
-    /*public static final QName Format = new QName("http://www.opengis.net/wmts/1.0",
-    "Format");;*/
+    /*public static final QName Format = new QName("", "Format");
+    public static final QName InfoFormat = new QName("", "InfoFormat");*/
 
     /* Attributes */
 

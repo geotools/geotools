@@ -157,7 +157,6 @@ public class AppSchemaFeatureFactoryImpl extends ValidatingFeatureFactoryImpl {
     /**
      * Construct a gml object id from a string, or return null if the string is null.
      *
-     * @param id
      * @return null if id is null
      */
     private GmlObjectId buildSafeGmlObjectId(String id) {
@@ -171,7 +170,6 @@ public class AppSchemaFeatureFactoryImpl extends ValidatingFeatureFactoryImpl {
     /**
      * Construct a feature id, or return null if the string is null.
      *
-     * @param id
      * @return null if id is null
      */
     private FeatureId buildSafeFeatureId(String id) {
@@ -186,7 +184,6 @@ public class AppSchemaFeatureFactoryImpl extends ValidatingFeatureFactoryImpl {
      * If the value collection is null, construct and return a new empty collection. If value
      * collection is not null, it is returned.
      *
-     * @param value
      * @return a non-null collection
      */
     private Collection<Property> buildCollectionIfNull(Collection<Property> value) {

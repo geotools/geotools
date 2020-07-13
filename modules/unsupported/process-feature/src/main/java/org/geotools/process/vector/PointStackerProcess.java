@@ -276,13 +276,7 @@ public class PointStackerProcess implements VectorProcess {
         return result;
     }
 
-    /**
-     * Extract the geometry depending on the location preservation flag
-     *
-     * @param preserveLocation
-     * @param sp
-     * @return
-     */
+    /** Extract the geometry depending on the location preservation flag */
     private Coordinate getStackedPointLocation(PreserveLocation preserveLocation, StackedPoint sp) {
         Coordinate pt = null;
         if (PreserveLocation.Single == preserveLocation) {
@@ -303,13 +297,6 @@ public class PointStackerProcess implements VectorProcess {
     /**
      * Computes the stacked points for the given data collection. All geometry types are handled -
      * for non-point geometries, the centroid is used.
-     *
-     * @param data
-     * @param cellSize
-     * @param minX
-     * @param minY
-     * @return
-     * @throws TransformException
      */
     private Collection<StackedPoint> stackPoints(
             SimpleFeatureCollection data,
@@ -459,11 +446,7 @@ public class PointStackerProcess implements VectorProcess {
             if (uniquePts == null) return 1;
             return uniquePts.size();
         }
-        /**
-         * compute bounding box
-         *
-         * @return
-         */
+        /** compute bounding box */
         public Envelope getBoundingBox() {
             return this.boundingBox;
             /*
@@ -480,11 +463,7 @@ public class PointStackerProcess implements VectorProcess {
             this.add(pt, false);
         }
 
-        /**
-         * @todo change GeometryFactory
-         * @param pt
-         * @param weightClusterPosition
-         */
+        /** @todo change GeometryFactory */
         public void add(Coordinate pt, boolean weightClusterPosition) {
             count++;
             /**
@@ -512,8 +491,6 @@ public class PointStackerProcess implements VectorProcess {
         /**
          * The original location of the points, in case they are all superimposed (or there is a
          * single point), otherwise null
-         *
-         * @return
          */
         public Coordinate getOriginalLocation() {
             if (uniquePts != null && uniquePts.size() == 1) {
@@ -523,11 +500,7 @@ public class PointStackerProcess implements VectorProcess {
             }
         }
 
-        /**
-         * Calcultate the weighted position of the cluster based on points which it holds.
-         *
-         * @param pt
-         */
+        /** Calcultate the weighted position of the cluster based on points which it holds. */
         private void pickWeightedLocation(Coordinate pt) {
             if (location == null) {
                 location = pt;
@@ -541,8 +514,6 @@ public class PointStackerProcess implements VectorProcess {
          * Picks the location as the point which is nearest to the center of the cell. In addition,
          * the nearest location is averaged with the cell center. This gives the best chance of
          * avoiding conflicts.
-         *
-         * @param pt
          */
         private void pickNearestLocation(Coordinate pt) {
             // strategy - pick most central point
@@ -558,8 +529,6 @@ public class PointStackerProcess implements VectorProcess {
         /**
          * Picks the location as the centre point of the cell. This does not give a good
          * visualization - the gridding is very obvious
-         *
-         * @param pt
          */
         private void pickCenterLocation(Coordinate pt) {
             // strategy - pick first point

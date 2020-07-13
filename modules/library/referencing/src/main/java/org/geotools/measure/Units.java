@@ -17,23 +17,24 @@
 package org.geotools.measure;
 
 import javax.measure.IncommensurableException;
+import javax.measure.MetricPrefix;
 import javax.measure.Quantity;
 import javax.measure.UnconvertibleException;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
-import javax.measure.format.ParserException;
 import javax.measure.format.UnitFormat;
 import javax.measure.quantity.Angle;
 import javax.measure.quantity.Dimensionless;
 import javax.measure.quantity.Length;
 import javax.measure.quantity.Time;
 import org.geotools.referencing.wkt.DefaultUnitParser;
+import org.geotools.util.GeoToolsUnitFormat;
 import si.uom.NonSI;
 import si.uom.SI;
 import systems.uom.common.USCustomary;
-import tec.uom.se.AbstractUnit;
-import tec.uom.se.format.SimpleUnitFormat;
-import tec.uom.se.unit.TransformedUnit;
+import tech.units.indriya.AbstractUnit;
+import tech.units.indriya.format.SimpleUnitFormat;
+import tech.units.indriya.unit.TransformedUnit;
 
 /**
  * A set of units to use in addition of {@link SI} and {@link NonSI}.
@@ -45,11 +46,32 @@ import tec.uom.se.unit.TransformedUnit;
 public final class Units {
     /** Do not allows instantiation of this class. */
     private Units() {}
-    /** Length of <code>1/72</code> of a {@link USCustomary#INCH} */
-    public static final Unit<Length> PIXEL = USCustomary.INCH.divide(72);
 
-    /** Time duration of <code>1/12</code> of a {@link SI#YEAR}. */
-    public static final Unit<Time> MONTH = SI.YEAR.divide(12);
+    // Angle Units
+
+    public static final Unit<Angle> DEGREE_ANGLE = NonSI.DEGREE_ANGLE;
+
+    /**
+     * Pseudo-unit for degree - minute - second. Numbers in this pseudo-unit has the following
+     * format:
+     *
+     * <p><cite>signed degrees (integer) - arc-minutes (integer) - arc-seconds (real, any
+     * precision)</cite>.
+     *
+     * <p>This unit is non-linear and not practical for computation. Consequently, it should be
+     * avoid as much as possible. Unfortunately, this pseudo-unit is extensively used in the EPSG
+     * database (code 9107).
+     */
+    public static final Unit<Angle> DEGREE_MINUTE_SECOND =
+            NonSI.DEGREE_ANGLE
+                    .transform(SexagesimalConverter.INTEGER.inverse())
+                    .asType(Angle.class);
+
+    public static final Unit<Angle> GRADE = USCustomary.GRADE;
+    public static final Unit<Angle> MICRORADIAN =
+            MetricPrefix.MICRO(tech.units.indriya.unit.Units.RADIAN);
+    public static final Unit<Angle> MINUTE_ANGLE = NonSI.MINUTE_ANGLE;
+    public static final Unit<Angle> RADIAN = tech.units.indriya.unit.Units.RADIAN;
 
     /**
      * Pseudo-unit for sexagesimal degree. Numbers in this pseudo-unit has the following format:
@@ -66,24 +88,32 @@ public final class Units {
                     .transform(SexagesimalConverter.FRACTIONAL.inverse())
                     .asType(Angle.class);
 
-    /**
-     * Pseudo-unit for degree - minute - second. Numbers in this pseudo-unit has the following
-     * format:
-     *
-     * <p><cite>signed degrees (integer) - arc-minutes (integer) - arc-seconds (real, any
-     * precision)</cite>.
-     *
-     * <p>This unit is non-linear and not pratical for computation. Consequently, it should be avoid
-     * as much as possible. Unfortunatly, this pseudo-unit is extensively used in the EPSG database
-     * (code 9107).
-     */
-    public static final Unit<Angle> DEGREE_MINUTE_SECOND =
-            NonSI.DEGREE_ANGLE
-                    .transform(SexagesimalConverter.INTEGER.inverse())
-                    .asType(Angle.class);
+    public static final Unit<Angle> SECOND_ANGLE = NonSI.SECOND_ANGLE;
+
+    // Dimensionless Units
 
     /** Parts per million. */
     public static final Unit<Dimensionless> PPM = AbstractUnit.ONE.multiply(1E-6);
+
+    public static final Unit<Dimensionless> ONE = AbstractUnit.ONE;
+
+    // Length Units
+
+    public static final Unit<Length> FOOT = USCustomary.FOOT;
+    public static final Unit<Length> METRE = tech.units.indriya.unit.Units.METRE;
+    public static final Unit<Length> KILOMETER = MetricPrefix.KILO(METRE);
+    public static final Unit<Length> NAUTICAL_MILE = USCustomary.NAUTICAL_MILE;
+
+    /** Length of <code>1/72</code> of a {@link USCustomary#INCH} */
+    public static final Unit<Length> PIXEL = USCustomary.INCH.divide(72);
+
+    /** Helper definition so someone can align to GeoTools Day Unit type * */
+    public static final Unit<Time> DAY = SI.DAY;
+
+    /** Time duration of <code>1/12</code> of a {@link SI#YEAR}. */
+    public static final Unit<Time> MONTH = SI.YEAR.divide(12);
+
+    public static final Unit<Time> YEAR = SI.YEAR;
 
     static final UnitFormat format = SimpleUnitFormat.getInstance();
 
@@ -151,12 +181,9 @@ public final class Units {
 
     /**
      * Returns an equivalent unit instance based on the provided unit. First, it tries to get one of
-     * the reference units defined in the JSR363 implementation in use. Units are considered
+     * the reference units defined in the JSR 385 implementation in use. Units are considered
      * equivalent if the {@link Units#equals(Unit, Unit)} method returns true. If no equivalent
      * reference unit is defined, it returns the provided unit.
-     *
-     * @param unit
-     * @return
      */
     @SuppressWarnings("unchecked")
     public static <Q extends Quantity<Q>> Unit<Q> autoCorrect(Unit<Q> unit) {
@@ -170,10 +197,6 @@ public final class Units {
      * produce the identity converter when the inverse of the second factor is concatenated with the
      * first factor, considering the precision of a float number. For other types of units, the
      * comparison is delegated to their normal equals method.
-     *
-     * @param unit1
-     * @param unit2
-     * @return
      */
     public static final boolean equals(Unit<?> unit1, Unit<?> unit2) {
         if (unit1 == unit2) {
@@ -211,9 +234,6 @@ public final class Units {
      * Gets a UnitConverter between two units, wrapping any raised exception in a
      * IllegalArgumentException.
      *
-     * @param fromUnit
-     * @param toUnit
-     * @return
      * @throws IllegalArgumentException if unit1 can't be converter to unit2
      */
     public static UnitConverter getConverterToAny(Unit<?> fromUnit, Unit<?> toUnit) {
@@ -227,10 +247,9 @@ public final class Units {
     /**
      * Parses the text into an instance of unit
      *
-     * @param name
      * @see UnitFormat#parse(CharSequence)
-     * @throws ParserException if any problem occurs while parsing the specified character sequence
-     *     (e.g. illegal syntax).
+     * @throws javax.measure.format.MeasurementParseException if any problem occurs while parsing
+     *     the specified character sequence (e.g. illegal syntax).
      * @throws UnsupportedOperationException if the {@link UnitFormat} is unable to parse.
      * @return A unit instance
      */

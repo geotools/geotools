@@ -17,6 +17,7 @@
 package org.geotools.util;
 
 import java.lang.reflect.Method;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.security.AccessController;
@@ -68,11 +69,7 @@ public final class NIOUtilities {
         directBuffersEnabled = "TRUE".equalsIgnoreCase(directBuffers);
     }
 
-    /**
-     * Wheter direct buffers are used, or not (defaults to true)
-     *
-     * @return
-     */
+    /** Wheter direct buffers are used, or not (defaults to true) */
     public static boolean isDirectBuffersEnabled() {
         return directBuffersEnabled;
     }
@@ -82,8 +79,6 @@ public final class NIOUtilities {
      * buffers will be used. Direct buffers are normally faster, but their cleanup is platform
      * dependent and not guaranteed, under high load and in combination with some garbage collectors
      * that might result in a JVM crash (failure to perform native memory allocation)
-     *
-     * @param directBuffersEnabled
      */
     public static void setDirectBuffersEnabled(boolean directBuffersEnabled) {
         NIOUtilities.directBuffersEnabled = directBuffersEnabled;
@@ -95,8 +90,6 @@ public final class NIOUtilities {
     /**
      * Sets the maximum byte buffer cache size, in bytes (set to 0 to only use soft references in
      * the case, a positive value will make the cache use hard references up to the max cache size)
-     *
-     * @param maxCacheSize
      */
     public static void setMaxCacheSize(int maxCacheSize) {
         NIOUtilities.maxCacheSize = maxCacheSize;
@@ -107,9 +100,6 @@ public final class NIOUtilities {
      * than of two that can contain the specified limit, the buffer limit will be set at the
      * specified value. The buffers are pooled, so remember to call {@link #clean(ByteBuffer,
      * false)} to return the buffer to the pool.
-     *
-     * @param limit
-     * @return
      */
     public static ByteBuffer allocate(int size) {
         // look for a free cached buffer that has still not been garbage collected
@@ -127,7 +117,7 @@ public final class NIOUtilities {
             }
             // clean up the buffer and return it
             if (buffer != null) {
-                buffer.clear();
+                ((Buffer) buffer).clear();
                 return buffer;
             }
         }
@@ -140,12 +130,7 @@ public final class NIOUtilities {
         }
     }
 
-    /**
-     * Returns the buffer queue associated to the specified size
-     *
-     * @param size
-     * @return
-     */
+    /** Returns the buffer queue associated to the specified size */
     private static Queue<Object> getBuffers(int size) {
         Queue<Object> result = cache.get(size);
         if (result == null) {
@@ -171,9 +156,6 @@ public final class NIOUtilities {
      *       as {@link #clean(ByteBuffer)}
      *   <li>if the buffer is not memory mapped it will be returned to the buffer cache
      * </ul>
-     *
-     * @param buffer
-     * @return
      */
     public static boolean clean(final ByteBuffer buffer, boolean memoryMapped) {
         if (memoryMapped) {
@@ -262,7 +244,7 @@ public final class NIOUtilities {
 
         // clean up the buffer -> we need to zero out its contents as if it was just
         // created or some shapefile tests will start failing
-        buffer.clear();
+        ((Buffer) buffer).clear();
         buffer.order(ByteOrder.BIG_ENDIAN);
 
         // set the buffer back in the cache, either as a soft reference or as

@@ -157,8 +157,6 @@ public final class SoftValueHashMapTest {
     /**
      * Tests the {@link SoftValueHashMap} with threads performing a sequence of put and get
      * operations on the cache.
-     *
-     * @throws InterruptedException
      */
     @Test
     public void testGetPutInMultithreadEnv() throws InterruptedException {
@@ -184,8 +182,6 @@ public final class SoftValueHashMapTest {
     /**
      * Tests the {@link SoftValueHashMap} with threads that perform a sequence of put and get and
      * threads that access elements in cache through the iterator
-     *
-     * @throws InterruptedException
      */
     @Test
     public void testGetPutIteratorsInMultithreadEnv() throws InterruptedException {

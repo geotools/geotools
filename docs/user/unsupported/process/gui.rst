@@ -3,7 +3,7 @@ GUI
 
 Once you have some processes implemented, there are various ways to execute them in the context of an application. 
 
-The process API uses **Parameter** to describe the available input parameters. You can use this with ** JParameterListWizard** to quickly
+The process API uses ``Parameter`` to describe the available input parameters. You can use this with ``JParameterListWizard`` to quickly
 accept input from a user.
 
 Using Processes in a GUI
@@ -20,8 +20,8 @@ This GUI was thrown together quickly for testing and so you may notice some layo
 
 But it is a good example of how a GUI can be built on top of the Process API.
 
-* You can examine the code in the the org.geotools.gui.swing.process
-  package and you can run the application from the JProcessWizard.java
+* You can examine the code in the ``org.geotools.gui.swing.process``
+  package and you can run the application from the ``JProcessWizard.java``
   class.
 
 Screenshot of Wizard:
@@ -33,9 +33,9 @@ Some notes about this GUI:
 * the GUI is based on a Swing Wizard model
 * it should list all available processes implemented in the process API, so
   if you correctly add new ones they should also appear
-* it supports the ability to dynamically add new param widgets for inputs
+* it supports the ability to dynamically add new parameter widgets for inputs
   that can take any number of values
-* it currently creates input widgets for Doubles and Geometries, and falls
+* it currently creates input widgets for ``Doubles`` and ``Geometries``, and falls
   back on the converter API for any other type
 * geometries are expected to be input in Well-Known-Text (WKT) format.
   

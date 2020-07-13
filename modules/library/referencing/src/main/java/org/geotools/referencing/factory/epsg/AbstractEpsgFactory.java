@@ -16,8 +16,11 @@
  */
 package org.geotools.referencing.factory.epsg;
 
+import static org.geotools.measure.Units.*;
+
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.net.URI;
@@ -33,7 +36,6 @@ import java.sql.Statement;
 import java.util.AbstractMap;
 import java.util.AbstractSet;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -136,9 +138,6 @@ import org.opengis.util.GenericName;
 import org.opengis.util.InternationalString;
 import si.uom.NonSI;
 import si.uom.SI;
-import systems.uom.common.USCustomary;
-import tec.uom.se.AbstractUnit;
-import tec.uom.se.unit.MetricPrefix;
 
 /**
  * A coordinate reference system factory backed by the EPSG database tables.
@@ -172,6 +171,7 @@ import tec.uom.se.unit.MetricPrefix;
  * @author Matthias Basler
  * @author Andrea Aime
  */
+@SuppressWarnings("PMD.CloseResource") // class implements its own PreparedStatement pooling
 public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory {
     /// Datum shift operation methods
     /** First Bursa-Wolf method. */
@@ -189,13 +189,6 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
     /** The name for the transformation accuracy metadata. */
     private static final InternationalString TRANSFORMATION_ACCURACY =
             Vocabulary.formatInternational(VocabularyKeys.TRANSFORMATION_ACCURACY);
-
-    /**
-     * The calendar instance for creating {@link java.util.Date} objects from a year (the "epoch" in
-     * datum definition). We use the local timezone, which may not be quite accurate. But there is
-     * no obvious timezone for "epoch", and the "epoch" is approximative anyway.
-     */
-    private final Calendar calendar = Calendar.getInstance(); // FIXME: move into factories?
 
     /**
      * The authority for this database. Will be created only when first needed. This authority will
@@ -393,39 +386,42 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
     @Override
     public synchronized String getBackingStoreDescription() throws FactoryException {
         final Citation authority = getAuthority();
-        final TableWriter table = new TableWriter(null, " ");
-        final Vocabulary resources = Vocabulary.getResources(null);
-        CharSequence cs;
-        if ((cs = authority.getEdition()) != null) {
-            table.write(resources.getString(VocabularyKeys.VERSION_OF_$1, "EPSG"));
-            table.write(':');
-            table.nextColumn();
-            table.write(cs.toString());
-            table.nextLine();
-        }
-        try {
-            String s;
-            final DatabaseMetaData metadata = getConnection().getMetaData();
-            if ((s = metadata.getDatabaseProductName()) != null) {
-                table.write(resources.getLabel(VocabularyKeys.DATABASE_ENGINE));
+        try (TableWriter table = new TableWriter(null, " ")) {
+            final Vocabulary resources = Vocabulary.getResources(null);
+            CharSequence cs;
+            if ((cs = authority.getEdition()) != null) {
+                table.write(resources.getString(VocabularyKeys.VERSION_OF_$1, "EPSG"));
+                table.write(':');
                 table.nextColumn();
-                table.write(s);
-                if ((s = metadata.getDatabaseProductVersion()) != null) {
-                    table.write(' ');
-                    table.write(resources.getString(VocabularyKeys.VERSION_$1, s));
+                table.write(cs.toString());
+                table.nextLine();
+            }
+            try {
+                String s;
+                final DatabaseMetaData metadata = getConnection().getMetaData();
+                if ((s = metadata.getDatabaseProductName()) != null) {
+                    table.write(resources.getLabel(VocabularyKeys.DATABASE_ENGINE));
+                    table.nextColumn();
+                    table.write(s);
+                    if ((s = metadata.getDatabaseProductVersion()) != null) {
+                        table.write(' ');
+                        table.write(resources.getString(VocabularyKeys.VERSION_$1, s));
+                    }
+                    table.nextLine();
                 }
-                table.nextLine();
+                if ((s = metadata.getURL()) != null) {
+                    table.write(resources.getLabel(VocabularyKeys.DATABASE_URL));
+                    table.nextColumn();
+                    table.write(s);
+                    table.nextLine();
+                }
+            } catch (SQLException exception) {
+                throw new FactoryException(exception);
             }
-            if ((s = metadata.getURL()) != null) {
-                table.write(resources.getLabel(VocabularyKeys.DATABASE_URL));
-                table.nextColumn();
-                table.write(s);
-                table.nextLine();
-            }
-        } catch (SQLException exception) {
-            throw new FactoryException(exception);
+            return table.toString();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        return table.toString();
     }
 
     /**
@@ -1362,7 +1358,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                     final String name = getString(result, 2, code);
                     final String type = getString(result, 3, code).trim().toLowerCase();
                     final String anchor = result.getString(4);
-                    final String epoch = result.getString(5);
+                    final Date epoch = result.getDate(5);
                     final String area = result.getString(6);
                     final String scope = result.getString(7);
                     final String remarks = result.getString(8);
@@ -1371,11 +1367,9 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                     if (anchor != null) {
                         properties.put(Datum.ANCHOR_POINT_KEY, anchor);
                     }
-                    if (epoch != null && epoch.length() != 0)
+                    if (epoch != null)
                         try {
-                            calendar.clear();
-                            calendar.set(Integer.parseInt(epoch), 0, 1);
-                            properties.put(Datum.REALIZATION_EPOCH_KEY, calendar.getTime());
+                            properties.put(Datum.REALIZATION_EPOCH_KEY, epoch);
                         } catch (NumberFormatException exception) {
                             // Not a fatal error...
                             Logging.unexpectedException(
@@ -2927,11 +2921,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
         super.dispose();
     }
 
-    /**
-     * Connect to the database in anticipation of of use.
-     *
-     * @throws FactoryException
-     */
+    /** Connect to the database in anticipation of of use. */
     public void connect() throws FactoryException {
         try {
             getConnection();
@@ -2943,8 +2933,6 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      * Disconnect from the database, and remain idle. We will still keep our internal data
      * structures, we are not going to hold onto a database connection unless we are going to be
      * used.
-     *
-     * @throws FactoryException
      */
     public void disconnect() throws FactoryException {
         if (connection != null) {
@@ -3040,38 +3028,38 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
     private static Unit<?> getUnit(final int code) {
         switch (code) {
             case 9001:
-                return SI.METRE;
+                return METRE;
             case 9002:
-                return USCustomary.FOOT;
+                return FOOT;
             case 9030:
-                return USCustomary.NAUTICAL_MILE;
+                return NAUTICAL_MILE;
             case 9036:
-                return MetricPrefix.KILO(SI.METRE);
+                return KILOMETER;
             case 9101:
-                return SI.RADIAN;
+                return RADIAN;
             case 9122: // Fall through
             case 9102:
-                return NonSI.DEGREE_ANGLE;
+                return DEGREE_ANGLE;
             case 9103:
-                return NonSI.MINUTE_ANGLE;
+                return MINUTE_ANGLE;
             case 9104:
-                return NonSI.SECOND_ANGLE;
+                return SECOND_ANGLE;
             case 9105:
-                return USCustomary.GRADE;
+                return GRADE;
             case 9107:
-                return Units.DEGREE_MINUTE_SECOND;
+                return DEGREE_MINUTE_SECOND;
             case 9108:
-                return Units.DEGREE_MINUTE_SECOND;
+                return DEGREE_MINUTE_SECOND;
             case 9109:
-                return MetricPrefix.MICRO(SI.RADIAN);
+                return MICRORADIAN;
             case 9110:
-                return Units.SEXAGESIMAL_DMS;
+                return SEXAGESIMAL_DMS;
                 // TODO case 9111: return NonSI.SEXAGESIMAL_DM;
             case 9203: // Fall through
             case 9201:
-                return AbstractUnit.ONE;
+                return ONE;
             case 9202:
-                return Units.PPM;
+                return PPM;
             default:
                 return null;
         }

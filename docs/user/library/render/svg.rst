@@ -1,7 +1,7 @@
 SVG Plugin
 ----------
 
-The **gt-svg** plugin uses the Batik library to support the use of SVG graphics.
+The ``gt-svg`` plugin uses the Batik library to support the use of SVG graphics.
 
 **Maven**::
    
@@ -20,7 +20,7 @@ as is, with the original colors):
 * :download:`house.svg </../../modules/plugin/svg/src/test/resources/org/geotools/renderer/lite/test-data/house.svg>`
 * :download:`fillHouse.sld </../../modules/plugin/svg/src/test/resources/org/geotools/renderer/lite/test-data/fillHouse.sld>`
 
-Here is the example fillHouse.sld:
+Here is the example ``fillHouse.sld``:
 
 .. literalinclude:: /../../modules/plugin/svg/src/test/resources/org/geotools/renderer/lite/test-data/fillHouse.sld
      :language: xml
@@ -34,7 +34,7 @@ of the SVG but allowing to assign fill and stroke in SLD:
 * :download:`house.svg </../../modules/plugin/svg/src/test/resources/org/geotools/renderer/lite/test-data/convenience.svg>`
 * :download:`fillHouse.sld </../../modules/plugin/svg/src/test/resources/org/geotools/renderer/lite/test-data/convenience.sld>`
 
-Here is the example convenience.sld:
+Here is the example ``convenience.sld``:
 
 .. literalinclude:: /../../modules/plugin/svg/src/test/resources/org/geotools/renderer/lite/test-data/convenience.sld
      :language: xml
@@ -46,7 +46,7 @@ Parameter extension
 The plug-in can handle a basic support for parametric styling based on the `SVG Parameters 1.0 specification <https://www.w3.org/TR/SVGParamPrimer>`_ 
 The support is limited to attribute values, as the underlying library (Batik) cannot perform parameter expansion on its own.
 
-This is good enough to work again QGis own SVG library, here is a simple excerpt from the square symbol, notice the ``param(paramName)`` calls making the style parametric::
+This is good enough to work again QGIS own SVG library, here is a simple excerpt from the square symbol, notice the ``param(paramName)`` calls making the style parametric::
 
     <rect x="37.064" y="37.065" fill="param(fill)" fill-opacity="param(fill-opacity)" stroke="param(outline)" 
           stroke-opacity="param(outline-opacity)" stroke-width="param(outline-width)" width="505.871" height="505.871"/>

@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools.jdbc</groupId>
     <artifactId>gt-jdbc</artifactId>
-    <version>22-SNAPSHOT</version>
+    <version>24-SNAPSHOT</version>
   </parent>
 
 
@@ -41,18 +41,40 @@
     </license>
   </licenses>
 
+  <!-- Must be commented out to build without DB2 driver
+       Need to figure out how to do DB2 online tests in
+       GeoTools regression environment.
+       Uncomment for unit test and local regression test.       
+    <dependencies>
+        <dependency>
+        <groupId>com.ibm.db2</groupId>
+        <artifactId>db2jcc4</artifactId>
+        <version>11.5</version>
+    </dependency>
+    </dependencies>
+  =========================================================== -->    
 
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
   <developers>
     <developer>
+      <name>David Adler</name>
+      <id>dadler@adtechgeospatial.com</id>
+      <email>dadler@adtechgeospatial.com</email>
+      <organization>Adtech GeoSpatial</organization>
+      <roles>
+        <role>Module Maintainer</role>
+        <role>Java Developer</role>
+      </roles>
+    </developer>  
+    <developer>
       <name>Christian Mueller</name>
       <id>christian.mueller@nvoe.at</id>
       <email>christian.mueller@nvoe.at</email>
       <organization>TOPP</organization>
       <roles>
-        <role>Module Maintainer</role>
+        <role>Former Module Maintainer</role>
         <role>Java Developer</role>
       </roles>
     </developer>

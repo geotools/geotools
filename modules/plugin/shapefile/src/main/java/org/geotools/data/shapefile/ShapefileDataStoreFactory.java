@@ -195,7 +195,7 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
     }
 
     public Map<Key, ?> getImplementationHints() {
-        return Collections.EMPTY_MAP;
+        return Collections.emptyMap();
     }
 
     public DataStore createDataStore(Map<String, Serializable> params) throws IOException {
@@ -249,24 +249,18 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
      * null otherwise
      *
      * @param <T>
-     * @param param
-     * @param params
-     * @param target
-     * @return
-     * @throws IOException
      */
     <T> T lookup(Param param, Map<String, Serializable> params, Class<T> target)
             throws IOException {
-        T result = (T) param.lookUp(params);
+        T result = target.cast(param.lookUp(params));
         if (result == null) {
-            return (T) param.getDefaultValue();
-        } else {
-            return result;
+            result = target.cast(param.getDefaultValue());
         }
+        return result;
     }
 
     @Override
-    public boolean canProcess(Map params) {
+    public boolean canProcess(Map<String, Serializable> params) {
         if (!DataUtilities.canProcess(params, getParametersInfo())) {
             return false; // fail basic param check
         }
@@ -321,9 +315,10 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
 
         ShapefileDataStoreFactory shpFactory;
 
-        Map originalParams;
+        Map<String, Serializable> originalParams;
 
-        public ShpFileStoreFactory(ShapefileDataStoreFactory factory, Map originalParams) {
+        public ShpFileStoreFactory(
+                ShapefileDataStoreFactory factory, Map<String, Serializable> originalParams) {
             this.shpFactory = factory;
             this.originalParams = originalParams;
         }
@@ -331,8 +326,7 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
         public DataStore getDataStore(File file) throws IOException {
             final URL url = URLs.fileToUrl(file);
             if (shpFactory.canProcess(url)) {
-                Map<String, Serializable> params =
-                        new HashMap<String, Serializable>(originalParams);
+                Map<String, Serializable> params = new HashMap<>(originalParams);
                 params.put(URLP.key, url);
                 return shpFactory.createDataStore(params);
             } else {

@@ -16,10 +16,14 @@
  */
 package org.geotools.coverage.grid.io;
 
+import java.awt.*;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Set;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.util.factory.Hints;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
@@ -31,13 +35,31 @@ import org.opengis.feature.simple.SimpleFeatureType;
  */
 public interface GranuleSource {
 
+    public static final Hints.Key NATIVE_BOUNDS = new Hints.Key(Boolean.class);
+    public static final String NATIVE_BOUNDS_KEY = "nativeBounds";
+
+    /**
+     * Asks a {@link GranuleSource} to return a file based view of the granules instead of a slice
+     * based view. In case a granule file contains more than one slice (e.g., NetCDF). The returned
+     * features will also miss an eventual location attribute, and include a full {@link
+     * org.geotools.data.FileGroupProvider.FileGroup} as the feature metadata under the {@link
+     * #FILES} key.
+     */
+    public static final Hints.Key FILE_VIEW = new Hints.Key(Boolean.class);
+
+    /**
+     * Used as key in the granule feature user data, pointing to a {@link
+     * org.geotools.data.FileGroupProvider.FileGroup} with the infos about the group of files
+     * composing
+     */
+    public static final String FILES = "GranuleFiles";
+
     /**
      * Retrieves granules, in the form of a {@code SimpleFeatureCollection}, based on a {@code
      * Query}.
      *
      * @param q the {@link Query} to select granules
      * @return the resulting granules.
-     * @throws IOException
      */
     public SimpleFeatureCollection getGranules(Query q) throws IOException;
 
@@ -47,7 +69,6 @@ public interface GranuleSource {
      *
      * @param q the {@link Query} to select granules
      * @return the number of granules
-     * @throws IOException
      */
     public int getCount(Query q) throws IOException;
 
@@ -56,23 +77,28 @@ public interface GranuleSource {
      *
      * @param q the {@link Query} to select granules
      * @return The bounding envelope of the requested data
-     * @throws IOException
      */
     public ReferencedEnvelope getBounds(Query q) throws IOException;
 
     /**
      * Retrieves the schema (feature type) that will apply to granules retrieved from this {@code
      * GranuleSource}.
-     *
-     * @return
-     * @throws IOException
      */
     public SimpleFeatureType getSchema() throws IOException;
 
-    /**
-     * This will free/release any resource (cached granules, ...).
-     *
-     * @throws IOException
-     */
+    /** This will free/release any resource (cached granules, ...). */
     public void dispose() throws IOException;
+
+    /**
+     * Returns the set of hints that this {@code GranuleSource} supports via {@code Query} requests.
+     *
+     * <p>Note: the existence of a specific hint does not guarantee that it will always be honored
+     * by the implementing class.
+     *
+     * @see Hints#SGCR_FILE_VIEW
+     * @return a set of {@code RenderingHints#Key} objects; may be empty but never {@code null}
+     */
+    public default Set<RenderingHints.Key> getSupportedHints() {
+        return Collections.emptySet();
+    }
 }

@@ -595,22 +595,14 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         assertEquals("band3", channels[2].getChannelName().evaluate(null, String.class));
     }
 
-    /**
-     * Tests expression support in channel selection
-     *
-     * @throws Exception
-     */
+    /** Tests expression support in channel selection */
     @Test
     public void rasterChannelSelectionRGBExpression() throws Exception {
         String css = "* { raster-channels: [env('B1','1')] '2' '3'; }";
         rasterChannelSelectionExpression(css);
     }
 
-    /**
-     * Tests expression support in channel selection, abbreviated syntax
-     *
-     * @throws Exception
-     */
+    /** Tests expression support in channel selection, abbreviated syntax */
     @Test
     public void rasterChannelSelectionRGBExpressionAbbr() throws Exception {
         String css = "* { raster-channels: @B1(1) '2' '3';}";
@@ -653,6 +645,30 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         assertLiteral("#ff0000", cm.getColorMapEntry(2).getColor());
         assertLiteral("0", cm.getColorMapEntry(2).getOpacity());
         assertLiteral("10000", cm.getColorMapEntry(2).getQuantity());
+    }
+
+    @Test
+    public void rasterColorMapWithLabels() throws Exception {
+        String css =
+                "* { raster-channels: 'auto'; raster-color-map: color-map-entry(black, 100, 0, label1) "
+                        + "color-map-entry(white, 1000, 2.0, label2) color-map-entry(red, 10000);}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        RasterSymbolizer rs = assertSingleSymbolizer(rule, RasterSymbolizer.class);
+        ColorMap cm = rs.getColorMap();
+        assertEquals(3, cm.getColorMapEntries().length);
+        assertLiteral("#000000", cm.getColorMapEntry(0).getColor());
+        assertLiteral("0", cm.getColorMapEntry(0).getOpacity());
+        assertLiteral("100", cm.getColorMapEntry(0).getQuantity());
+        assertEquals("label1", cm.getColorMapEntry(0).getLabel());
+        assertLiteral("#ffffff", cm.getColorMapEntry(1).getColor());
+        assertLiteral("2.0", cm.getColorMapEntry(1).getOpacity());
+        assertLiteral("1000", cm.getColorMapEntry(1).getQuantity());
+        assertEquals("label2", cm.getColorMapEntry(1).getLabel());
+        assertLiteral("#ff0000", cm.getColorMapEntry(2).getColor());
+        assertLiteral("1.0", cm.getColorMapEntry(2).getOpacity());
+        assertLiteral("10000", cm.getColorMapEntry(2).getQuantity());
+        assertNull(cm.getColorMapEntry(2).getLabel());
     }
 
     @Test
@@ -1701,5 +1717,42 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         assertNull(ps.getStroke());
         LineSymbolizer ls = (LineSymbolizer) rule.symbolizers().get(1);
         assertExpression("'#3EA250'", ls.getStroke().getColor());
+    }
+
+    @Test
+    public void testBackgroundColor() throws CQLException {
+        String css = "* { background: yellow; background-opacity: 0.5; stroke: red }";
+        Style style = translate(css);
+        Fill background = ((org.geotools.styling.Style) style).getBackground();
+        assertNotNull(background);
+        assertEquals(Color.YELLOW, background.getColor().evaluate(null, Color.class));
+        assertEquals(0.5, background.getOpacity().evaluate(null, Double.class), 0d);
+    }
+
+    @Test
+    public void testBackgroundGraphic() throws CQLException {
+        String css = "* {background: symbol('circle'); :background {fill: yellow}; stroke: red}";
+        Style style = translate(css);
+        Fill background = ((org.geotools.styling.Style) style).getBackground();
+        assertNotNull(background);
+        Graphic graphicFill = background.getGraphicFill();
+        assertNotNull(graphicFill);
+        Mark mark = (Mark) graphicFill.graphicalSymbols().get(0);
+        assertEquals("circle", mark.getWellKnownName().evaluate(null, String.class));
+        assertEquals(Color.yellow, mark.getFill().getColor().evaluate(null, Color.class));
+    }
+
+    @Test
+    public void labelShieldIndependent() throws Exception {
+        String css =
+                "* { label: 'test'; shield: symbol(square); shield-placement: independent; shield-anchor: 0.5 1} :shield {fill:black}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        TextSymbolizer2 ts = assertSingleSymbolizer(rule, TextSymbolizer2.class);
+        assertLiteral("test", ts.getLabel());
+        assertEquals("independent", ts.getOptions().get(TextSymbolizer.GRAPHIC_PLACEMENT_KEY));
+        Graphic g = ts.getGraphic();
+        assertEquals(0.5, g.getAnchorPoint().getAnchorPointX().evaluate(null, Double.class), 0d);
+        assertEquals(1, g.getAnchorPoint().getAnchorPointY().evaluate(null, Double.class), 0d);
     }
 }

@@ -102,8 +102,6 @@ public class EdgeEndBundle extends EdgeEnd {
      *   <li>if there are any Int edges, the attribute is Int
      *   <li>otherwise, the attribute is NULL.
      * </ul>
-     *
-     * @param geomIndex
      */
     private void computeLabelOn(int geomIndex) {
         // compute the ON location value
@@ -140,9 +138,6 @@ public class EdgeEndBundle extends EdgeEnd {
      * GeometryCollections may contain two Polygons that touch along an edge. This is the reason for
      * Interior-primacy rule above - it results in the summary label having the Geometry interior on
      * <b>both</b> sides.
-     *
-     * @param geomIndex
-     * @param side
      */
     private void computeLabelSide(int geomIndex, int side) {
         for (Iterator it = iterator(); it.hasNext(); ) {
@@ -158,11 +153,7 @@ public class EdgeEndBundle extends EdgeEnd {
         }
     }
 
-    /**
-     * Update the IM with the contribution for the computed label for the EdgeStubs.
-     *
-     * @param im
-     */
+    /** Update the IM with the contribution for the computed label for the EdgeStubs. */
     void updateIM(IntersectionMatrix im) {
         Edge.updateIM(label, im);
     }

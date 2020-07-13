@@ -53,7 +53,7 @@ import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.util.GenericName;
 import org.opengis.util.InternationalString;
 import si.uom.SI;
-import tec.uom.se.AbstractUnit;
+import tech.units.indriya.AbstractUnit;
 
 /**
  * A base class for metadata applicable to reference system objects. When {@link
@@ -746,7 +746,7 @@ public class AbstractIdentifiedObject extends Formattable
      */
     public static String getName(final IdentifiedObject info, final Citation authority) {
         if (info instanceof AbstractIdentifiedObject) {
-            // Gives a chances to subclasses to get their overridden method invoked.
+            // Gives a chance for subclasses to get their overridden method invoked.
             return ((AbstractIdentifiedObject) info).getName(authority);
         }
         return getName0(info, authority);
@@ -896,13 +896,13 @@ public class AbstractIdentifiedObject extends Formattable
      *
      * <p>Some subclasses (especially {@link org.geotools.referencing.datum.AbstractDatum} and
      * {@link org.geotools.parameter.AbstractParameterDescriptor}) will test for the {@linkplain
-     * #getName() name}, since objects with different name have completly different meaning. For
+     * #getName() name}, since objects with different name have completely different meaning. For
      * example nothing differentiate the {@code "semi_major"} and {@code "semi_minor"} parameters
-     * except the name. The name comparaison may be loose however, i.e. we may accept a name
-     * matching an alias.
+     * except the name. The name comparison may be loose however, i.e. we may accept a name matching
+     * an alias.
      *
      * @param object The object to compare to {@code this}.
-     * @param compareMetadata {@code true} for performing a strict comparaison, or {@code false} for
+     * @param compareMetadata {@code true} for performing a strict comparison, or {@code false} for
      *     comparing only properties relevant to transformations.
      * @return {@code true} if both objects are equal.
      */

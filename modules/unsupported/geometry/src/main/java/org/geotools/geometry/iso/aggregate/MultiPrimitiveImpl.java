@@ -36,7 +36,6 @@ public class MultiPrimitiveImpl extends AggregateImpl implements MultiPrimitive 
     /**
      * Creates a MultiPrimitive by a set of Primitives.
      *
-     * @param crs
      * @param primitives Set of Primitives which shall be contained by the MultiPrimitive
      */
     public MultiPrimitiveImpl(CoordinateReferenceSystem crs, Set<? extends Primitive> primitives) {

@@ -60,6 +60,7 @@ class ShapefileFeatureStore extends ContentFeatureStore {
             throw new IllegalArgumentException("no write flags set");
         }
 
+        @SuppressWarnings("PMD.CloseResource") // managed as part of the writer
         ShapefileFeatureReader reader =
                 (ShapefileFeatureReader) delegate.getReaderInternal(Query.ALL);
         ShapefileFeatureWriter writer;

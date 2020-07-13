@@ -44,22 +44,13 @@ public class DefaultCalendar extends DefaultTemporalReferenceSystem implements C
     /** */
     private Clock timeBasis;
 
-    /**
-     * Creates a new instance of DefaultCalendar
-     *
-     * @param name
-     * @param domainOfValidity
-     */
+    /** Creates a new instance of DefaultCalendar */
     public DefaultCalendar(ReferenceIdentifier name, Extent domainOfValidity) {
         super(name, domainOfValidity);
     }
 
     /**
      * Convert a TemporalPosition representing by a CalendarDate and a ClockTime to a Julian date.
-     *
-     * @param calDate
-     * @param time
-     * @return
      */
     public JulianDate dateTrans(CalendarDate calDate, ClockTime time) {
         JulianDate response;
@@ -158,9 +149,6 @@ public class DefaultCalendar extends DefaultTemporalReferenceSystem implements C
     /**
      * This method is called by the Overrided method dateTrans() which take 2 arguments CalendarDate
      * and ClockTime.
-     *
-     * @param dateAndTime
-     * @return
      */
     public JulianDate dateTrans(DateAndTime dateAndTime) {
         JulianDate response;
@@ -240,12 +228,7 @@ public class DefaultCalendar extends DefaultTemporalReferenceSystem implements C
         return response;
     }
 
-    /**
-     * Convert a JulianDate to CalendarDate
-     *
-     * @param jdt
-     * @return
-     */
+    /** Convert a JulianDate to CalendarDate */
     public CalendarDate julTrans(JulianDate jdt) {
         if (jdt == null) return null;
 

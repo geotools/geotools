@@ -42,22 +42,13 @@ public class EnvelopeImpl implements Envelope, Serializable {
     // protected DirectPositionImpl pMax = null; // Upper Corner (Right top)
     private DirectPosition pMax = null; // Upper Corner (Right top)
 
-    /**
-     * Constructor
-     *
-     * @param env
-     */
+    /** Constructor */
     public EnvelopeImpl(Envelope env) {
         pMin = new DirectPositionImpl(env.getLowerCorner());
         pMax = new DirectPositionImpl(env.getUpperCorner());
     }
 
-    /**
-     * Constructor
-     *
-     * @param p0
-     * @param p1
-     */
+    /** Constructor */
     public EnvelopeImpl(DirectPosition p0, DirectPosition p1) {
         this.setValues(p0, p1);
     }
@@ -179,10 +170,7 @@ public class EnvelopeImpl implements Envelope, Serializable {
         return this.pMin;
     }
 
-    /**
-     * @param p0
-     * @param p1
-     */
+    /** */
     public void setValues(DirectPosition p0, DirectPosition p1) {
         if (p0 == null || p1 == null || p0.getDimension() != p1.getDimension())
             throw new IllegalArgumentException("Error 1 on setValues"); // $NON-NLS-1$
@@ -209,10 +197,7 @@ public class EnvelopeImpl implements Envelope, Serializable {
         this.pMax = new DirectPositionImpl(env.getUpperCorner());
     }
 
-    /**
-     * @param p
-     * @return EnvelopeImpl
-     */
+    /** @return EnvelopeImpl */
     public static EnvelopeImpl createEnvelope(DirectPosition[] p) {
         if (p.length == 0) {
             return null;
@@ -226,21 +211,13 @@ public class EnvelopeImpl implements Envelope, Serializable {
         return result;
     }
 
-    /**
-     * Unions an envelope with an another envelope
-     *
-     * @param env
-     */
+    /** Unions an envelope with an another envelope */
     public void expand(Envelope env) {
         this.expand(env.getLowerCorner().getCoordinate());
         this.expand(env.getUpperCorner().getCoordinate());
     }
 
-    /**
-     * Expands the envelope with a direct Position
-     *
-     * @param coord
-     */
+    /** Expands the envelope with a direct Position */
     public void expand(double coord[]) {
         int n = Math.min(this.getDimension(), coord.length);
         double min[] = this.pMin.getCoordinate();
@@ -299,7 +276,6 @@ public class EnvelopeImpl implements Envelope, Serializable {
     /**
      * Compares coordinates between the envelope and another envelope Test OK
      *
-     * @param env
      * @return boolean
      */
     public boolean equals(Envelope env) {
@@ -310,7 +286,6 @@ public class EnvelopeImpl implements Envelope, Serializable {
     /**
      * Verifies whether another envelope intersects with this envelope
      *
-     * @param other
      * @return TRUE, if envelopes intersect; FALSE, if they dont intersect
      */
     public boolean intersects(Envelope other) {
@@ -324,7 +299,6 @@ public class EnvelopeImpl implements Envelope, Serializable {
     /**
      * Verifies wheater the coordinate of a Direct Position intersects with the envelope
      *
-     * @param dp
      * @return boolean
      */
     public boolean intersects(DirectPosition dp) {
@@ -334,21 +308,13 @@ public class EnvelopeImpl implements Envelope, Serializable {
                 this.pMin.getCoordinate(), this.pMax.getCoordinate(), dp.getCoordinate());
     }
 
-    /**
-     * The North East corner of this Envelope
-     *
-     * @return
-     */
+    /** The North East corner of this Envelope */
     public DirectPosition getNECorner() {
         // Test ok
         return this.getUpperCorner();
     }
 
-    /**
-     * The South West corner of this Envelope
-     *
-     * @return
-     */
+    /** The South West corner of this Envelope */
     public DirectPosition getSWCorner() {
         // Test ok
         return this.getLowerCorner();
@@ -358,9 +324,6 @@ public class EnvelopeImpl implements Envelope, Serializable {
      * The South East corner of this Envelope 2D and 2.5D only!
      *
      * <p>In 2.5D, the z value will be set equal to the z value of the lower corner z value.
-     *
-     * @return
-     * @throws UnsupportedDimensionException
      */
     public DirectPosition getSECorner() throws UnsupportedDimensionException {
 
@@ -390,9 +353,6 @@ public class EnvelopeImpl implements Envelope, Serializable {
      * The North West corner of this Envelope 2D and 2.5D only!
      *
      * <p>In 2.5D, the z value will be set equal to the z value of the lower corner z value.
-     *
-     * @return
-     * @throws UnsupportedDimensionException
      */
     public DirectPositionImpl getNWCornerOld() throws UnsupportedDimensionException {
 
@@ -445,7 +405,6 @@ public class EnvelopeImpl implements Envelope, Serializable {
     /**
      * Verifies whether a DirectPosition2D lays within the envelope or at its border Test OK
      *
-     * @param p
      * @return TRUE, if the DirectPosition2D lays within the envelope
      */
     public boolean contains(DirectPosition p) {
@@ -456,7 +415,6 @@ public class EnvelopeImpl implements Envelope, Serializable {
     }
 
     //	/**
-    //	 * @param p
     //	 * @return boolean
     //	 */
     //	public boolean touches(DirectPosition p) {
@@ -465,8 +423,6 @@ public class EnvelopeImpl implements Envelope, Serializable {
     //	}
 
     //	/**
-    //	 * @param p
-    //	 * @param side
     //	 * @return boolean
     //	 */
     //	public boolean touches(DirectPositionImpl p, int side) {
@@ -475,7 +431,6 @@ public class EnvelopeImpl implements Envelope, Serializable {
     //	}
 
     //	/**
-    //	 * @param env
     //	 * @return boolean
     //	 */
     //	public boolean contains(Envelope env) {
@@ -488,7 +443,6 @@ public class EnvelopeImpl implements Envelope, Serializable {
     //	}
 
     //	/**
-    //	 * @param factor
     //	 * @return EnvelopeImpl
     //	 */
     //	public EnvelopeImpl scale(double factor) {

@@ -58,7 +58,7 @@ public class LazySearchIterator implements CloseableIterator<Data> {
 
     private Envelope bounds;
 
-    Iterator data;
+    Iterator<Data> data;
 
     private IndexFile indexfile;
 
@@ -94,7 +94,7 @@ public class LazySearchIterator implements CloseableIterator<Data> {
 
     private void fillCache() {
         indices.clear();
-        ArrayList dataList = null;
+        ArrayList<Data> dataList = null;
         try {
             while (indices.size() < MAX_INDICES && current != null) {
                 if (idIndex < current.getNumShapeIds()
@@ -132,7 +132,7 @@ public class LazySearchIterator implements CloseableIterator<Data> {
             // sort so offset lookup is faster
             indices.sort();
             int size = indices.size();
-            dataList = new ArrayList(size);
+            dataList = new ArrayList<>(size);
             for (int i = 0; i < size; i++) {
                 int recno = indices.get(i);
                 Data data = new Data(DATA_DEFINITION);
@@ -176,21 +176,12 @@ public class LazySearchIterator implements CloseableIterator<Data> {
             curr = -1;
         }
 
-        /**
-         * The number of coordinates
-         *
-         * @return
-         */
+        /** The number of coordinates */
         int size() {
             return curr + 1;
         }
 
-        /**
-         * Adds a coordinate to this list
-         *
-         * @param x
-         * @param y
-         */
+        /** Adds a coordinate to this list */
         void add(int index) {
             curr++;
             if ((curr * 2 + 1) >= indices.length) {

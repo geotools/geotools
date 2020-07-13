@@ -95,8 +95,6 @@ public abstract class GenericName implements org.opengis.util.GenericName, Seria
      * Returns the scope (name space) of this generic name. If this name has no scope (e.g. is the *
      * root), then this method returns {@code null}. Can be a no-op if the subclass overrides {@link
      * #scope()}
-     *
-     * @return
      */
     protected abstract org.opengis.util.GenericName getInternalScope();
 

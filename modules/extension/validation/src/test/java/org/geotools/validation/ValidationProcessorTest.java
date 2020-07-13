@@ -52,11 +52,7 @@ public class ValidationProcessorTest extends DataTestCase {
     ValidationProcessor processor;
     RoadNetworkValidationResults results;
 
-    /**
-     * Constructor for ValidationProcessorTest.
-     *
-     * @param arg0
-     */
+    /** Constructor for ValidationProcessorTest. */
     public ValidationProcessorTest(String arg0) {
         super(arg0);
     }

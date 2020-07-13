@@ -16,25 +16,15 @@
  */
 package org.geotools.data.postgis;
 
-import org.geotools.jdbc.JDBCDelegatingTestSetup;
+import org.geotools.jdbc.JDBCCurvesTestSetup;
 
-public class PostGISCurvesTestSetup extends JDBCDelegatingTestSetup {
+public class PostGISCurvesTestSetup extends JDBCCurvesTestSetup {
 
     protected PostGISCurvesTestSetup() {
         super(new PostGISTestSetup());
     }
 
-    @Override
-    protected void setUpData() throws Exception {
-        dropCompoundCurvesTable();
-        dropCircularRingsTable();
-        dropCurveTable();
-        createCurvesTable();
-        createCircularRingsTable();
-        createCompoundCurvesTable();
-    }
-
-    private void createCircularRingsTable() throws Exception {
+    protected void createCircularStringsTable() throws Exception {
         String sql =
                 "CREATE TABLE \"circularStrings\" ("
                         + "\"id\" INT, \"name\" VARCHAR, \"geometry\" geometry(CIRCULARSTRING), PRIMARY KEY(id))";
@@ -45,7 +35,7 @@ public class PostGISCurvesTestSetup extends JDBCDelegatingTestSetup {
         run(sql);
     }
 
-    private void createCompoundCurvesTable() throws Exception {
+    protected void createCompoundCurvesTable() throws Exception {
         String sql =
                 "CREATE TABLE \"compoundCurves\" ("
                         + "\"id\" INT, \"name\" VARCHAR, \"geometry\" geometry(COMPOUNDCURVE), PRIMARY KEY(id))";
@@ -56,7 +46,7 @@ public class PostGISCurvesTestSetup extends JDBCDelegatingTestSetup {
         run(sql);
     }
 
-    private void createCurvesTable() throws Exception {
+    protected void createCurvesTable() throws Exception {
         String sql =
                 "CREATE TABLE \"curves\" ("
                         + "\"id\" INT, \"name\" VARCHAR, \"geometry\" geometry, PRIMARY KEY(id))";
@@ -107,20 +97,21 @@ public class PostGISCurvesTestSetup extends JDBCDelegatingTestSetup {
                 "INSERT INTO CURVES VALUES (8, 'Multicurve', ST_geometryFromText('MULTICURVE((0 0, 5 5),CIRCULARSTRING(4 0, 4 4, 8 4))'))";
         run(sql);
 
+        // this one is a postgis specific extra
         sql =
                 "INSERT INTO CURVES VALUES (9, 'SquareHole2Points', ST_geometryFromText('CURVEPOLYGON((-10 -10, -10 -8, -8 -8, -8 -10, -10 -10), CIRCULARSTRING(-9 -8.5, -9 -9.5, -9 -8.5))'))";
         run(sql);
     }
 
-    private void dropCurveTable() throws Exception {
+    protected void dropCurvesTable() throws Exception {
         runSafe("DROP TABLE \"curves\" cascade");
     }
 
-    private void dropCircularRingsTable() {
+    protected void dropCircularStringsTable() {
         runSafe("DROP TABLE \"circularStrings\" cascade");
     }
 
-    private void dropCompoundCurvesTable() {
+    protected void dropCompoundCurvesTable() {
         runSafe("DROP TABLE \"compoundCurves\" cascade");
     }
 }

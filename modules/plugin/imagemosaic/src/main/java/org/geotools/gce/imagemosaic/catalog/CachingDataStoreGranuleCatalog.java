@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
@@ -62,10 +63,7 @@ class CachingDataStoreGranuleCatalog extends GranuleCatalog {
     private final SoftValueHashMap<String, GranuleDescriptor> descriptorsCache =
             new SoftValueHashMap<String, GranuleDescriptor>();
 
-    /**
-     * @param adaptee
-     * @param hints
-     */
+    /** */
     public CachingDataStoreGranuleCatalog(AbstractGTDataStoreGranuleCatalog adaptee) {
         super(null);
         this.adaptee = adaptee;
@@ -115,8 +113,30 @@ class CachingDataStoreGranuleCatalog extends GranuleCatalog {
     }
 
     @Override
+    public BoundingBox getBounds(String typeName, Transaction t) {
+        return adaptee.getBounds(typeName, t);
+    }
+
+    @Override
     public SimpleFeatureCollection getGranules(Query q) throws IOException {
-        return adaptee.getGranules(q);
+        return getGranules(q, Transaction.AUTO_COMMIT);
+    }
+
+    @Override
+    public SimpleFeatureCollection getGranules(Query q, Transaction t) throws IOException {
+        boolean decorateWithBounds =
+                Boolean.TRUE.equals(q.getHints().get(GranuleSource.NATIVE_BOUNDS));
+        if (decorateWithBounds) {
+            // delegate down a version that won't decorate with bounds, we want to use the local
+            // granule descriptor cache
+            Query copy = new Query(q);
+            copy.getHints().remove(GranuleSource.NATIVE_BOUNDS);
+            q = copy;
+            SimpleFeatureCollection granules = adaptee.getGranules(q, t);
+            return new BoundsFeatureCollection(granules, this::getGranuleDescriptor);
+        } else {
+            return adaptee.getGranules(q, t);
+        }
     }
 
     @Override
@@ -149,39 +169,7 @@ class CachingDataStoreGranuleCatalog extends GranuleCatalog {
             while (fi.hasNext() && !visitor.isVisitComplete()) {
                 final SimpleFeature sf = fi.next();
 
-                GranuleDescriptor granule = null;
-
-                // caching by granule's location
-                // synchronized (descriptorsCache) {
-                String featureId = sf.getID();
-                if (descriptorsCache.containsKey(featureId)) {
-                    granule = descriptorsCache.get(featureId);
-                } else {
-                    try {
-                        // create the granule descriptor
-                        MultiLevelROI footprint = getGranuleFootprint(sf);
-                        if (footprint == null || !footprint.isEmpty()) {
-                            // caching only if the footprint is either absent or present and
-                            // NON-empty
-                            granule =
-                                    new GranuleDescriptor(
-                                            sf,
-                                            adaptee.suggestedFormat,
-                                            adaptee.suggestedRasterSPI,
-                                            adaptee.suggestedIsSPI,
-                                            adaptee.pathType,
-                                            adaptee.locationAttribute,
-                                            adaptee.parentLocation,
-                                            footprint,
-                                            adaptee.heterogeneous,
-                                            adaptee.hints); // retain hints since this may contain a
-                            // reader or anything
-                            descriptorsCache.put(featureId, granule);
-                        }
-                    } catch (Exception e) {
-                        LOGGER.log(Level.FINE, "Skipping invalid granule", e);
-                    }
-                }
+                GranuleDescriptor granule = getGranuleDescriptor(sf);
 
                 if (granule != null) {
                     // check ROI inclusion
@@ -203,6 +191,41 @@ class CachingDataStoreGranuleCatalog extends GranuleCatalog {
         }
     }
 
+    protected GranuleDescriptor getGranuleDescriptor(SimpleFeature sf) {
+        String featureId = sf.getID();
+        GranuleDescriptor granule = null;
+        // caching by granule's location
+        if (descriptorsCache.containsKey(featureId)) {
+            granule = descriptorsCache.get(featureId);
+        } else {
+            try {
+                // create the granule descriptor
+                MultiLevelROI footprint = getGranuleFootprint(sf);
+                if (footprint == null || !footprint.isEmpty()) {
+                    // caching only if the footprint is either absent or present and
+                    // NON-empty
+                    granule =
+                            new GranuleDescriptor(
+                                    sf,
+                                    adaptee.suggestedFormat,
+                                    adaptee.suggestedRasterSPI,
+                                    adaptee.suggestedIsSPI,
+                                    adaptee.pathType,
+                                    adaptee.locationAttribute,
+                                    adaptee.parentLocation,
+                                    footprint,
+                                    adaptee.heterogeneous,
+                                    adaptee.hints); // retain hints since this may contain a
+                    // reader or anything
+                    descriptorsCache.put(featureId, granule);
+                }
+            } catch (Exception e) {
+                LOGGER.log(Level.FINE, "Skipping invalid granule", e);
+            }
+        }
+        return granule;
+    }
+
     private boolean polygonOverlap(Geometry g1, Geometry g2) {
         // TODO: try to use relate instead
         Geometry intersection = g1.intersection(g2);
@@ -220,8 +243,14 @@ class CachingDataStoreGranuleCatalog extends GranuleCatalog {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public int removeGranules(Query query) {
-        final int val = adaptee.removeGranules(query);
+        return this.removeGranules(query, Transaction.AUTO_COMMIT);
+    }
+
+    @Override
+    public int removeGranules(Query query, Transaction transaction) {
+        final int val = adaptee.removeGranules(query, transaction);
         // clear cache if needed
         // TODO this can be optimized further filtering out elements using the Query's Filter
         if (val >= 1) {

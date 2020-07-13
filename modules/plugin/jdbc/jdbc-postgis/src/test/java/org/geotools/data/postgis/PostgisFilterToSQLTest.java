@@ -32,6 +32,10 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.PropertyIsEqualTo;
+import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Function;
 import org.opengis.filter.spatial.BBOX3D;
 import org.opengis.filter.spatial.Intersects;
 import org.opengis.geometry.MismatchedDimensionException;
@@ -59,6 +63,7 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
         ff = CommonFactoryFinder.getFilterFactory2();
         dialect = new PostGISDialect(null);
         filterToSql = new PostgisFilterToSQL(dialect);
+        filterToSql.setFunctionEncodingEnabled(true);
         writer = new StringWriter();
         filterToSql.setWriter(writer);
 
@@ -68,8 +73,6 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
     /**
      * Test for GEOS-5167. Checks that geometries are wrapped with ST_Envelope when used with
      * overlapping operator, when the encodeBBOXFilterAsEnvelope is true.
-     *
-     * @throws FilterToSQLException
      */
     @Test
     public void testEncodeBBOXFilterAsEnvelopeEnabled() throws FilterToSQLException {
@@ -96,8 +99,6 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
     /**
      * Test for GEOS-5167. Checks that geometries are NOT wrapped with ST_Envelope when used with
      * overlapping operator, when the encodeBBOXFilterAsEnvelope is false.
-     *
-     * @throws FilterToSQLException
      */
     @Test
     public void testEncodeBBOXFilterAsEnvelopeDisabled() throws FilterToSQLException {
@@ -150,5 +151,139 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
 
         assertEquals(bbox3d, split[0]);
         assertEquals(Filter.INCLUDE, split[1]);
+    }
+
+    @Test
+    public void testEncodeInArrayCapabilities() throws Exception {
+        filterToSql.setFeatureType(testSchema);
+        PropertyIsEqualTo expr =
+                ff.equals(
+                        ff.function("inArray", ff.literal(5), ff.property("testArray")),
+                        ff.literal(true));
+
+        FilterCapabilities caps = filterToSql.getCapabilities();
+        PostPreProcessFilterSplittingVisitor splitter =
+                new PostPreProcessFilterSplittingVisitor(caps, testSchema, null);
+        expr.accept(splitter, null);
+
+        Filter[] split = new Filter[2];
+        split[0] = splitter.getFilterPre();
+        split[1] = splitter.getFilterPost();
+
+        assertEquals(expr, split[0]);
+        assertEquals(Filter.INCLUDE, split[1]);
+    }
+
+    @Test
+    public void testEncodeInArray() throws Exception {
+        filterToSql.setFeatureType(testSchema);
+        PropertyIsEqualTo expr =
+                ff.equals(
+                        ff.function("inArray", ff.literal("5"), ff.property("testArray")),
+                        ff.literal(true));
+
+        filterToSql.encode(expr);
+        String sql = writer.toString().toLowerCase();
+        assertEquals("where 5=any(testarray)", sql);
+    }
+
+    @Test
+    public void testEncodeInArrayWithCast() throws Exception {
+        filterToSql.setFeatureType(testSchema);
+        PropertyIsEqualTo expr =
+                ff.equals(
+                        ff.function("inArray", ff.literal(5), ff.property("testArray")),
+                        ff.literal(true));
+
+        filterToSql.encode(expr);
+        String sql = writer.toString().toLowerCase();
+        assertEquals("where 5::text=any(testarray)", sql);
+    }
+
+    @Test
+    public void testEncodeEqualToArraysAny() throws Exception {
+        filterToSql.setFeatureType(testSchema);
+        PropertyIsEqualTo expr =
+                ff.equals(
+                        ff.function(
+                                "equalTo",
+                                ff.property("testArray"),
+                                ff.literal(new String[] {"1", "2", "3"}),
+                                ff.literal("ANY")),
+                        ff.literal(true));
+
+        filterToSql.encode(expr);
+        String sql = writer.toString().toLowerCase();
+        assertEquals("where testarray && array['1', '2', '3']", sql);
+    }
+
+    @Test
+    public void testEncodeEqualToArraysAll() throws Exception {
+        filterToSql.setFeatureType(testSchema);
+        PropertyIsEqualTo expr =
+                ff.equals(
+                        ff.function(
+                                "equalTo",
+                                ff.property("testArray"),
+                                ff.literal(new String[] {"1", "2", "3"}),
+                                ff.literal("ALL")),
+                        ff.literal(true));
+
+        filterToSql.encode(expr);
+        String sql = writer.toString().toLowerCase();
+        assertEquals("where testarray = array['1', '2', '3']", sql);
+    }
+
+    @Test
+    public void testFunctionLike() throws Exception {
+        filterToSql.setFeatureType(testSchema);
+        PropertyIsLike like =
+                ff.like(
+                        ff.function("strToLowerCase", ff.property("testString")),
+                        "a_literal",
+                        "%",
+                        "-",
+                        "\\",
+                        true);
+
+        filterToSql.encode(like);
+        String sql = writer.toString().toLowerCase().trim();
+        assertEquals("where lower(teststring) like 'a_literal'", sql);
+    }
+
+    @Test
+    public void testFunctionJsonPointer() throws Exception {
+        filterToSql.setFeatureType(testSchema);
+        Function pointer =
+                ff.function("jsonPointer", ff.property("testJSON"), ff.literal("/arr/0"));
+
+        filterToSql.encode(pointer);
+        String sql = writer.toString().toLowerCase().trim();
+        assertEquals("testjson ::json  -> 'arr' ->> 0", sql);
+    }
+
+    @Test
+    public void testBinaryComparisonWithJsonPointer() throws Exception {
+        filterToSql.setFeatureType(testSchema);
+        Function pointer =
+                ff.function("jsonPointer", ff.property("testJSON"), ff.literal("/arr/0"));
+        Expression literal = ff.literal(3);
+        Filter less = ff.less(pointer, literal);
+        filterToSql.encode(less);
+        String sql = writer.toString().toLowerCase().trim();
+        assertEquals("where (testjson ::json  -> 'arr' ->> 0)::integer < 3", sql);
+    }
+
+    @Test
+    public void testLikeWithJsonPointer() throws Exception {
+        // test that encoding not fails with NPE for LIKE
+        // when is specified an expression as parameter with Object as return type
+        filterToSql.setFeatureType(testSchema);
+        Function pointer =
+                ff.function("jsonPointer", ff.property("testJSON"), ff.literal("/arr/0"));
+        Filter like = ff.like(pointer, "a_literal", "%", "-", "\\", true);
+        filterToSql.encode(like);
+        String sql = writer.toString().toLowerCase().trim();
+        assertEquals("where testjson ::json  -> 'arr' ->> 0 like 'a_literal'", sql);
     }
 }

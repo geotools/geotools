@@ -17,7 +17,7 @@
 package org.geotools.util;
 
 import java.util.Date;
-import javax.measure.IncommensurableException;
+import javax.measure.MetricPrefix;
 import javax.measure.UnconvertibleException;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
@@ -25,7 +25,6 @@ import javax.measure.quantity.Time;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import si.uom.SI;
-import tec.uom.se.unit.MetricPrefix;
 
 /**
  * A range of dates.
@@ -72,13 +71,11 @@ public class DateRange extends Range<Date> {
      *
      * @param range The range to convert.
      * @param origin The date to use as the origin.
-     * @throws IncommensurableException
-     * @throws ConversionException if the given range doesn't have a {@linkplain
+     * @throws UnconvertibleException if the given range doesn't have a {@linkplain
      *     MeasurementRange#getUnits unit} compatible with milliseconds.
      */
     @SuppressWarnings("unchecked")
-    public DateRange(final MeasurementRange<?> range, final Date origin)
-            throws IncommensurableException {
+    public DateRange(final MeasurementRange<?> range, final Date origin) {
         this(range, getConverter((Unit<Time>) range.getUnits()), origin.getTime());
     }
 
@@ -104,11 +101,8 @@ public class DateRange extends Range<Date> {
     /**
      * Workaround for RFE #4093999 ("Relax constraint on placement of this()/super() call in
      * constructors").
-     *
-     * @throws IncommensurableException
      */
-    private static UnitConverter getConverter(final Unit<Time> source)
-            throws IncommensurableException {
+    private static UnitConverter getConverter(final Unit<Time> source) {
         if (source == null) {
             throw new UnconvertibleException(Errors.format(ErrorKeys.NO_UNIT));
         }

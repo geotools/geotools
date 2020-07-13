@@ -146,4 +146,21 @@ public class SimpleFeatureImplTest extends TestCase {
         assertNotEquals(f2, f3);
         assertEquals(f3, f4);
     }
+
+    public void testUserMetadata() throws ParseException {
+        SimpleFeature feature =
+                SimpleFeatureBuilder.build(
+                        schema,
+                        new Object[] {wkt.read("POINT(1 2)"), "ABC", "Random Road, 12"},
+                        "building.1");
+        // no user data
+        assertFalse(feature.hasUserData());
+        // force map creation
+        assertNotNull(feature.getUserData());
+        // check it's considered emtpy
+        assertFalse(feature.hasUserData());
+        // put something
+        feature.getUserData().put("a", "b");
+        assertTrue(feature.hasUserData());
+    }
 }

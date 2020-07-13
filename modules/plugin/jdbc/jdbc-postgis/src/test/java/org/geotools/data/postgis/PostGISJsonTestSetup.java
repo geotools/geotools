@@ -98,7 +98,24 @@ public class PostGISJsonTestSetup extends JDBCDelegatingTestSetup {
                         + ");"
                         + "INSERT INTO \"jsontest\" VALUES (4, 'nullEntry', NULL"
                         + (supportJsonB ? ", NULL" : "")
+                        + ");"
+                        + "INSERT INTO \"jsontest\" VALUES (5, 'arrayEntry', '{\"arrayValues\":[3,5,6]}'"
+                        + (supportJsonB ? ", '{\"arrayValues\":[3,5,6]}'" : "")
+                        + ");"
+                        + "INSERT INTO \"jsontest\" VALUES (6, 'arrayEntry2', '{\"strVal\": \"stringValue\", \"arrayValues\":[3,6,7]}'"
+                        + (supportJsonB ? ", '{\"arrayValues\":[3,6,7]}'" : "")
+                        + ");"
+                        + "INSERT INTO \"jsontest\" VALUES (7, 'nestedObj', '{\"nestedObj\": {\"nestedProp\":\"stringValue\", \"nestedObj2\": {\"numProp\": 3, \"strProp\": \"stringValue2\"},\"nestedAr\":[3,6,7]}}'"
+                        + (supportJsonB
+                                ? ", '{\"nestedObj\": {\"nestedProp\":\"stringValue\", \"nestedObj2\": {\"numProp\": 3, \"strProp\": \"stringValue2\"}, \"nestedAr\":[3,6,7]}}'"
+                                : "")
+                        + ");"
+                        + "INSERT INTO \"jsontest\" VALUES (8, 'nestedObj', '{\"nestedObj\": {\"nestedProp\":\"stringValue\", \"nestedObj2\": {\"numProp\": 4, \"strProp\": \"stringValue2\"}, \"nestedAr\":[3,5,7]}}'"
+                        + (supportJsonB
+                                ? ", '{\"nestedObj\": {\"nestedProp\":\"stringValue\", \"nestedObj2\": {\"numProp\": 4, \"strProp\": \"stringValue2\"}, \"nestedAr\":[3,5,7]}}'"
+                                : "")
                         + ");";
+
         run(sql);
     }
 

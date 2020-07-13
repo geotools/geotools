@@ -26,6 +26,7 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URI;
@@ -56,7 +57,6 @@ import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureReader;
-import org.geotools.data.FeatureStore;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
@@ -296,7 +296,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
     @Test
     public void testNamespace() throws Exception {
         ShapefileDataStoreFactory factory = new ShapefileDataStoreFactory();
-        Map map = new HashMap();
+        Map<String, Serializable> map = new HashMap<>();
 
         URI namespace = new URI("http://jesse.com");
 
@@ -351,8 +351,8 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         SimpleFeature feature = builder.buildFeature(type.getTypeName() + '.' + 0);
         collection.add(feature);
 
-        FeatureStore store =
-                (FeatureStore) shapeDataStore.getFeatureSource(type.getName().getLocalPart());
+        SimpleFeatureStore store =
+                (SimpleFeatureStore) shapeDataStore.getFeatureSource(type.getName().getLocalPart());
         DefaultTransaction transaction = new DefaultTransaction("create");
         store.setTransaction(transaction);
         store.addFeatures(collection);
@@ -608,7 +608,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         assertNotNull(features);
     }
 
-    private ArrayList performQueryComparison(
+    private ArrayList<SimpleFeature> performQueryComparison(
             ShapefileDataStore indexedDS,
             ShapefileDataStore baselineDS,
             ReferencedEnvelope newBounds)
@@ -626,8 +626,8 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         SimpleFeatureIterator baselineIter = features2.features();
         indexIter = features.features();
 
-        ArrayList baselineFeatures = new ArrayList();
-        ArrayList indexedFeatures = new ArrayList();
+        ArrayList<SimpleFeature> baselineFeatures = new ArrayList<>();
+        ArrayList<SimpleFeature> indexedFeatures = new ArrayList<>();
 
         try {
             while (baselineIter.hasNext()) {
@@ -639,7 +639,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
             assertFalse(indexIter.hasNext());
             assertFalse(baselineIter.hasNext());
             assertEquals(baselineFeatures.size(), indexedFeatures.size());
-            for (Iterator it = baselineFeatures.iterator(); it.hasNext(); ) {
+            for (Iterator<SimpleFeature> it = baselineFeatures.iterator(); it.hasNext(); ) {
                 SimpleFeature f = (SimpleFeature) it.next();
                 assertTrue(
                         f.getID() + ((Geometry) f.getDefaultGeometry()).getEnvelopeInternal(),
@@ -883,6 +883,68 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         sds.dispose();
     }
 
+    @Test
+    public void testUpdateMultipleAttributesNoAutocommit() throws Exception {
+        // create feature type
+        SimpleFeatureType type =
+                DataUtilities.createType(
+                        "junk", "the_geom:Point,b:java.lang.Integer,c:java.lang.Integer");
+        DefaultFeatureCollection features = new DefaultFeatureCollection();
+
+        SimpleFeatureBuilder build = new SimpleFeatureBuilder(type);
+        SimpleFeature feature = null;
+        for (int i = 0; i < 3; i++) {
+            build.add(new GeometryFactory().createPoint(new Coordinate(i, i)));
+            build.add(i);
+            feature = build.buildFeature(null);
+            features.add(feature);
+        }
+
+        // store features
+        File tmpFile = getTempFile();
+        tmpFile.createNewFile();
+        ShapefileDataStore s = new ShapefileDataStore(tmpFile.toURI().toURL());
+        writeFeatures(s, features);
+
+        // read them back
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader = s.getFeatureReader();
+        // System.out.println(DataUtilities.list(features));
+        reader.close();
+
+        Transaction transaction = new DefaultTransaction();
+        SimpleFeatureStore store =
+                (SimpleFeatureStore) s.getFeatureSource(s.getSchema().getTypeName(), transaction);
+
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        Query query = new Query(s.getSchema().getTypeName());
+        for (int i = 0; i < 3; i++) {
+            query.setFilter(ff.equal(ff.property("b"), ff.literal(i), true));
+            store.modifyFeatures(
+                    new String[] {"b", "c"}, new Integer[] {-1 * i, i}, query.getFilter());
+        }
+
+        transaction.commit();
+
+        reader = s.getFeatureReader();
+        Set<Object> numOfDistinctValues = new HashSet<Object>();
+        try {
+            while (reader.hasNext()) {
+                SimpleFeature f = reader.next();
+                // System.out.println(f);
+                assertEquals(f.getAttribute("b"), -1 * (Integer) f.getAttribute("c"));
+                numOfDistinctValues.add(f.getAttribute("b"));
+            }
+            // ensure that each feature has a distinct value for attribute 'b'
+            assertEquals(
+                    "Wrong number of distinct values for attribute 'b'",
+                    store.getFeatures().size(),
+                    numOfDistinctValues.size());
+        } finally {
+            reader.close();
+        }
+        s.dispose();
+    }
+
     /**
      * Create a test file, then continue removing the first entry until there are no features left.
      */
@@ -899,7 +961,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
                 writer =
                         sds.getFeatureWriter(
                                 sds.getTypeNames()[0], Filter.INCLUDE, Transaction.AUTO_COMMIT);
-                SimpleFeature feature = writer.next();
+                writer.next();
                 // System.out.println(feature);
                 writer.remove();
             } finally {
@@ -1053,7 +1115,6 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
      * <p>As we care about supporting more stuff please add on to the end of this list...
      *
      * @return SimpleFeatureCollection For use in testing.
-     * @throws Exception
      */
     private SimpleFeatureCollection createFeatureCollection() throws Exception {
         SimpleFeatureType featureType = createExampleSchema();
@@ -1489,11 +1550,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         store.dispose();
     }
 
-    /**
-     * Checks if feature reading optimizations still allow to execute the queries or not
-     *
-     * @throws Exception
-     */
+    /** Checks if feature reading optimizations still allow to execute the queries or not */
     @Test
     public void testGetReaderOptimizations() throws Exception {
         URL url = TestData.url(STATE_POP);
@@ -1557,7 +1614,8 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         builder.add(bigInteger);
 
         SimpleFeature feature = builder.buildFeature(null);
-        ;
+        assertNotNull(feature);
+        assertNotNull(feature.getID());
 
         // store features
         File tmpFile = getTempFile();
@@ -1570,6 +1628,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
                 s.getFeatureWriter(s.getTypeNames()[0], t);
         SimpleFeature feature1 = writer.next();
+        assertNotNull(feature1);
         writer.close();
         s.dispose();
     }
@@ -1704,8 +1763,6 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
      * Issueing a request, whether its a query, update or delete, with a fid filter where feature
      * ids match the {@code <typeName>.<number>} structure but the {@code <typeName>} part does not
      * match the actual typeName, shoud ensure the invalid fids are ignored
-     *
-     * @throws Exception
      */
     @Test
     public void testWipesOutInvalidFidsFromFilters() throws Exception {
@@ -1910,9 +1967,6 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
     /**
      * This is useful to dump a UTF16 character to an UT16 escape sequence, basically the only way
      * to represent the chars we don't have on the keyboard (such as chinese ones :))
-     *
-     * @param c
-     * @return
      */
     public static String charToHex(char c) {
         // Returns hex String representation of char c

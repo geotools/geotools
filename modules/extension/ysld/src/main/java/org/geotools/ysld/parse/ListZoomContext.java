@@ -34,7 +34,6 @@ public class ListZoomContext extends MedialZoomContext {
     /**
      * Checks if the list contains a decreasing sequence of finite, positive, non-null values.
      *
-     * @param scales
      * @throws IllegalArgumentException if the values are not decreasing, positive, and finite.
      * @throws NullPointerException if any values are null.
      */

@@ -18,6 +18,7 @@ package org.geotools.gce.imagemosaic.jdbc;
 
 import java.awt.Color;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -67,6 +68,12 @@ public abstract class AbstractTest extends TestCase {
 
     protected static GeneralEnvelope ENV_1 =
             new GeneralEnvelope(new double[] {14, 47}, new double[] {16, 48});
+
+    protected static GeneralEnvelope ENV_2 =
+            new GeneralEnvelope(new double[] {13.5773580744, 47}, new double[] {16, 48});
+
+    protected static GeneralEnvelope ENV_3 =
+            new GeneralEnvelope(new double[] {8.2, 47}, new double[] {10, 48});
 
     protected static GeneralEnvelope ENV_VIENNA =
             new GeneralEnvelope(new double[] {16.2533, 48.1371}, new double[] {16.4909, 48.2798});
@@ -451,10 +458,7 @@ public abstract class AbstractTest extends TestCase {
     /**
      * Test if files are the same by comparing their canonical name.
      *
-     * @param file1
-     * @param file2
      * @return true if files have the same canonical name
-     * @throws Exception
      */
     public static boolean isSameFile(String file1, String file2) throws Exception {
         return new File(file1).getCanonicalPath().equals(new File(file2).getCanonicalPath());
@@ -463,20 +467,13 @@ public abstract class AbstractTest extends TestCase {
     /**
      * Test if files are the same by comparing their canonical name.
      *
-     * @param file1
-     * @param file2
      * @return true if files have the same canonical name
-     * @throws Exception
      */
     public static boolean isSameFile(URL file1, String file2) throws Exception {
         return URLs.urlToFile(file1).getCanonicalPath().equals(new File(file2).getCanonicalPath());
     }
 
-    /**
-     * Unit test for {{@link #isSameFile(String, String)}.
-     *
-     * @throws Exception
-     */
+    /** Unit test for {{@link #isSameFile(String, String)}. */
     public void testIsSameFile() throws Exception {
         assertTrue(isSameFile("foo", "./foo"));
         assertTrue(isSameFile("foo", "bar/../foo"));
@@ -650,6 +647,22 @@ public abstract class AbstractTest extends TestCase {
         doTestImage1("image1_joined");
     }
 
+    public void testImage2() {
+        doTestImage2("image2");
+    }
+
+    public void testImage2Joined() {
+        doTestImage2("image2_joined");
+    }
+
+    public void testImage3() {
+        doTestImage3("image3");
+    }
+
+    public void testImage3Joined() {
+        doTestImage3("image3_joined");
+    }
+
     public void testFullExtent() {
         doFullExtent("fullExtent");
     }
@@ -712,6 +725,31 @@ public abstract class AbstractTest extends TestCase {
         try {
             ENV_1.setCoordinateReferenceSystem(CRS.decode(CRSNAME));
             imageMosaic(name, getConfigUrl(), ENV_1, 500, 250, true);
+        } catch (Exception e) {
+            Assert.fail(e.getMessage());
+        }
+    }
+
+    private void doTestImage2(String name) {
+        try {
+            ENV_2.setCoordinateReferenceSystem(CRS.decode(CRSNAME));
+            imageMosaic(name, getConfigUrl(), ENV_2, 500, 250, true);
+        } catch (Exception e) {
+            Assert.fail(e.getMessage());
+        }
+    }
+
+    private void doTestImage3(String name) {
+        try {
+            ENV_3.setCoordinateReferenceSystem(CRS.decode(CRSNAME));
+            imageMosaic(name, getConfigUrl(), ENV_3, 500, 250, Color.BLACK, null, null, true);
+            // ENV_3 will intersect the tile from its right, so the rendered image
+            // should have non background (black) pixels at its rightmost column.
+            BufferedImage rendered =
+                    ImageIO.read(new File(getOutPutDir() + File.separator + name + ".tif"));
+            Assert.assertEquals(rendered.getWidth(), 500);
+            Color topRightColor = new Color(rendered.getRGB(rendered.getWidth() - 1, 0));
+            Assert.assertNotEquals(topRightColor.getRGB(), Color.BLACK.getRGB());
         } catch (Exception e) {
             Assert.fail(e.getMessage());
         }

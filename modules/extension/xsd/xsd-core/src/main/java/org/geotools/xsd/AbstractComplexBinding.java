@@ -57,7 +57,7 @@ public abstract class AbstractComplexBinding implements ComplexBinding {
     }
 
     /**
-     * Subclasses should ovverride this method if need be, the default implementation returns
+     * Subclasses should override this method if need be, the default implementation returns
      * <param>value</param>.
      *
      * @see ComplexBinding#encode(Object, Document, Element).

@@ -153,8 +153,6 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
     /**
      * Returns the components of this compound curve, which will be a list of straight LineString
      * objects and CircularString/CircularRing
-     *
-     * @return
      */
     public List<LineString> getComponents() {
         return components;
@@ -189,11 +187,11 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
         return "CompoundCurve";
     }
 
-    public Geometry reverse() {
+    protected Geometry reverseInternal() {
         // reverse the component, and reverse each component internal elements
         List<LineString> reversedComponents = new ArrayList<>(components.size());
         for (LineString ls : components) {
-            LineString reversed = (LineString) ls.reverse();
+            LineString reversed = (LineString) ((Geometry) ls).reverse();
             reversedComponents.add(0, reversed);
         }
         return new CompoundCurve(reversedComponents, getFactory(), tolerance);

@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-import org.apache.commons.io.FilenameUtils;
 import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.CloseableIterator;
@@ -61,86 +60,6 @@ import org.opengis.filter.sort.SortOrder;
 public class ImageMosaicFileResourceInfo extends DefaultResourceInfo implements FileResourceInfo {
 
     static final Logger LOGGER = Logging.getLogger(ImageMosaicFileResourceInfo.class);
-
-    private static final String PRJ = ".PRJ";
-
-    private static final String PRJ_ = ".prj";
-
-    private static final String TFW = ".TFW";
-
-    private static final String TFW_ = ".tfw";
-
-    private static final String WLD = ".WLD";
-
-    private static final String WLD_ = ".wld";
-
-    private static final String JGW = ".JGW";
-
-    private static final String JGW_ = ".jgw";
-
-    private static final String MSK = ".TIF.MSK";
-
-    private static final String MSK_ = ".tif.msk";
-
-    private static final String OVR = ".TIF.OVR";
-
-    private static final String OVR_ = ".tif.ovr";
-
-    /**
-     * A collector of supportFiles.
-     *
-     * <p>It will look for ancillary files having same name but different extension, trying from a
-     * set of possible values.
-     */
-    static class SupportFilesCollector {
-        private String[] supportingExtensions;
-
-        public SupportFilesCollector(String[] supportingExtensions) {
-            this.supportingExtensions = supportingExtensions;
-        }
-
-        /**
-         * Return supportFiles (if found) for the specified file
-         *
-         * @param filePath
-         * @return
-         */
-        public List<File> getSupportFiles(String filePath) {
-            List<File> supportFiles = null;
-            String parent = FilenameUtils.getFullPath(filePath);
-            String mainName = FilenameUtils.getName(filePath);
-            String baseName = FilenameUtils.removeExtension(mainName);
-            for (String extension : supportingExtensions) {
-                String newFilePath = parent + baseName + extension;
-                File file = new File(newFilePath);
-                if (file.exists()) {
-                    if (supportFiles == null) {
-                        supportFiles = new ArrayList<File>();
-                    }
-                    supportFiles.add(file);
-                }
-            }
-            return supportFiles;
-        }
-    }
-
-    static final Map<String, SupportFilesCollector> COLLECTORS;
-
-    static {
-        // Improve that, to be pluggable in future versions
-        COLLECTORS = new HashMap<String, SupportFilesCollector>();
-        String[] JPG_ = new String[] {WLD_, PRJ_, JGW_, WLD, JGW, PRJ};
-        String[] GIF_ = new String[] {WLD_, PRJ_, WLD, PRJ};
-        String[] TIF_ = new String[] {TFW_, PRJ_, WLD_, OVR_, MSK_, TFW, WLD, PRJ, OVR, MSK};
-        SupportFilesCollector JPG = new SupportFilesCollector(JPG_);
-        SupportFilesCollector TIF = new SupportFilesCollector(TIF_);
-        SupportFilesCollector GIF = new SupportFilesCollector(GIF_);
-        COLLECTORS.put("JPG", JPG);
-        COLLECTORS.put("JPEG", JPG);
-        COLLECTORS.put("GIF", GIF);
-        COLLECTORS.put("TIF", TIF);
-        COLLECTORS.put("TIFF", TIF);
-    }
 
     /**
      * A {@link CloseableIterator} implementation taking care of retrieving {@link FileGroup}s from
@@ -230,19 +149,17 @@ public class ImageMosaicFileResourceInfo extends DefaultResourceInfo implements 
          *
          * <p>The method also look for supportFiles.
          *
-         * @param file
          * @paran aggregate whether aggregation queries should be invoked to extract domains
          * @param firstFeature sample feature to be used when no aggregation is needed
-         * @return
          */
         private FileGroup buildFileGroup(File file, boolean aggregate, SimpleFeature firstFeature) {
             // Looking for supportFiles for the current file
             // As an instance .prj and .tfw for un-georeferenced tifs
             String filePath = file.getAbsolutePath();
-            String ext = FilenameUtils.getExtension(filePath).toUpperCase();
             List<File> supportFiles = null;
-            if (COLLECTORS.containsKey(ext)) {
-                supportFiles = COLLECTORS.get(ext).getSupportFiles(filePath);
+            SupportFilesCollector collector = SupportFilesCollector.getCollectorFor(file);
+            if (collector != null) {
+                supportFiles = collector.getSupportFiles(filePath);
             }
             Map<String, Object> metadataMap =
                     computeGroupMetadata(filePath, aggregate, firstFeature);
@@ -250,14 +167,7 @@ public class ImageMosaicFileResourceInfo extends DefaultResourceInfo implements 
             return new FileGroup(file, supportFiles, metadataMap);
         }
 
-        /**
-         * Collects features domain to be exposed as metadata
-         *
-         * @param filePath
-         * @param aggregate
-         * @param firstFeature
-         * @return
-         */
+        /** Collects features domain to be exposed as metadata */
         private Map<String, Object> computeGroupMetadata(
                 String filePath, boolean aggregate, SimpleFeature firstFeature) {
             Map<String, Object> metadataMap = null;

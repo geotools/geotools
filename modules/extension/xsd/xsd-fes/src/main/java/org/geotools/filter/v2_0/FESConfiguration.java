@@ -18,9 +18,7 @@ package org.geotools.filter.v2_0;
 
 import net.opengis.fes20.Fes20Factory;
 import org.geotools.filter.FilterFactoryImpl;
-import org.geotools.filter.v1_1.SortByTypeBinding;
 import org.geotools.filter.v1_1.SortOrderTypeBinding;
-import org.geotools.filter.v1_1.SortPropertyTypeBinding;
 import org.geotools.filter.v2_0.bindings.AfterBinding;
 import org.geotools.filter.v2_0.bindings.AndBinding;
 import org.geotools.filter.v2_0.bindings.AnyInteractsBinding;
@@ -76,6 +74,8 @@ import org.geotools.filter.v2_0.bindings.PropertyIsNullTypeBinding;
 import org.geotools.filter.v2_0.bindings.ResourceIdTypeBinding;
 import org.geotools.filter.v2_0.bindings.ResourceIdentifierTypeBinding;
 import org.geotools.filter.v2_0.bindings.Scalar_CapabilitiesTypeBinding;
+import org.geotools.filter.v2_0.bindings.SortByTypeBinding;
+import org.geotools.filter.v2_0.bindings.SortPropertyTypeBinding;
 import org.geotools.filter.v2_0.bindings.SpatialOperatorTypeBinding;
 import org.geotools.filter.v2_0.bindings.SpatialOperatorsTypeBinding;
 import org.geotools.filter.v2_0.bindings.Spatial_CapabilitiesTypeBinding;

@@ -63,7 +63,6 @@ public interface GlyphFactory {
      *
      * @param line Line colour
      * @param width Line width
-     * @return
      */
     Icon line(Color line, int width);
 
@@ -99,12 +98,7 @@ public interface GlyphFactory {
 
     Icon palette(Color[] colors);
 
-    /**
-     * Make a basic representation of the provided FeatureType.
-     *
-     * @param schema
-     * @return
-     */
+    /** Make a basic representation of the provided FeatureType. */
     Icon icon(SimpleFeatureType schema);
 
     /**
@@ -117,7 +111,6 @@ public interface GlyphFactory {
      *   <li>layer style, defaults will be used if not recognized
      * </ul>
      *
-     * @param layer
      * @return Icon For the provided layer
      */
     Icon icon(Layer layer);

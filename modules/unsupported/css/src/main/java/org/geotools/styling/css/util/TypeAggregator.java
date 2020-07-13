@@ -47,12 +47,7 @@ class TypeAggregator {
     static final List<Class<?>> FLOAT_NUMBER_TYPES =
             Arrays.asList((Class<?>) Float.class, Double.class, BigDecimal.class);
 
-    /**
-     * Adds/merges a property and its type
-     *
-     * @param name
-     * @param binding
-     */
+    /** Adds/merges a property and its type */
     public void addType(String name, Class<?> binding) {
         Class existingBinding = types.get(name);
         if (existingBinding == null) {
@@ -97,11 +92,7 @@ class TypeAggregator {
         }
     }
 
-    /**
-     * Builds a feature type containing all of the attributes found so far
-     *
-     * @return
-     */
+    /** Builds a feature type containing all of the attributes found so far */
     public SimpleFeatureType getFeatureType() {
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         for (Map.Entry<String, Class> entry : types.entrySet()) {

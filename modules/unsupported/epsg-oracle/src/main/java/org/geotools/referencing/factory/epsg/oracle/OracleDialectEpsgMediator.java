@@ -47,8 +47,6 @@ public class OracleDialectEpsgMediator extends AbstractEpsgMediator {
     /**
      * Creates an OracleDialectEpsgMediator with a 60 second timeout, two workers, and no cache.
      *
-     * @param priority
-     * @param datasource
      */
     public OracleDialectEpsgMediator(int priority, DataSource datasource) {
         this(

@@ -102,12 +102,7 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
     /** Last request CRS (used for reprojected GetFeatureInfo) */
     CoordinateReferenceSystem requestCRS;
 
-    /**
-     * Builds a new WMS coverage reader
-     *
-     * @param wms
-     * @param layer
-     */
+    /** Builds a new WMS coverage reader */
     public WMSCoverageReader(WebMapServer wms, Layer layer) {
         this(wms, layer, "");
     }
@@ -120,17 +115,33 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
 
         // best guess at the format with a preference for PNG (since it's normally transparent)
         List<String> formats = wms.getCapabilities().getRequest().getGetMap().getFormats();
-        this.format = formats.iterator().next();
+        this.format = getDefaultFormat(formats);
+    }
+
+    public WMSCoverageReader(WebMapServer wms, Layer layer, String style, String preferredFormat) {
+        this.wms = wms;
+        // init the reader
+        addLayer(layer, style);
+        List<String> formats = wms.getCapabilities().getRequest().getGetMap().getFormats();
+        this.format = preferredFormat;
+        // verify if preferred Format is supported else fallback to default functionality
+        if (!formats.contains(preferredFormat)) this.format = getDefaultFormat(formats);
+    }
+
+    public String getDefaultFormat(List<String> formats) {
+
         for (String format : formats) {
             if ("image/png".equals(format)
                     || "image/png24".equals(format)
                     || "png".equals(format)
                     || "png24".equals(format)
                     || "image/png; mode=24bit".equals(format)) {
-                this.format = format;
-                break;
+                return format;
             }
         }
+        // if preferred format is not supported default to first available on remote
+        // if cap doc did not pass any formats, assume PNG
+        return (!formats.isEmpty()) ? formats.get(0) : "image/png";
     }
 
     void addLayer(Layer layer) {
@@ -196,13 +207,7 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
         updateBounds();
     }
 
-    /**
-     * Issues GetFeatureInfo against a point using the params of the last GetMap request
-     *
-     * @param pos
-     * @return
-     * @throws IOException
-     */
+    /** Issues GetFeatureInfo against a point using the params of the last GetMap request */
     public InputStream getFeatureInfo(
             DirectPosition2D pos, String infoFormat, int featureCount, GetMapRequest getmap)
             throws IOException {
@@ -317,12 +322,6 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
     /**
      * Sets up a max request with the provided parameters, making sure it is compatible with the
      * layers own native SRS list
-     *
-     * @param bbox
-     * @param width
-     * @param height
-     * @return
-     * @throws IOException
      */
     ReferencedEnvelope initMapRequest(
             ReferencedEnvelope bbox, int width, int height, Color backgroundColor)
@@ -409,11 +408,7 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
         return null;
     }
 
-    /**
-     * Returns the layer bounds
-     *
-     * @return
-     */
+    /** Returns the layer bounds */
     public void updateBounds() {
         ReferencedEnvelope result = reference(layers.get(0).getLayer().getEnvelope(crs));
         for (int i = 1; i < layers.size(); i++) {
@@ -425,12 +420,7 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
         this.originalEnvelope = new GeneralEnvelope(result);
     }
 
-    /**
-     * Converts a {@link Envelope} into a {@link ReferencedEnvelope}
-     *
-     * @param envelope
-     * @return
-     */
+    /** Converts a {@link Envelope} into a {@link ReferencedEnvelope} */
     ReferencedEnvelope reference(Envelope envelope) {
         ReferencedEnvelope env = new ReferencedEnvelope(envelope.getCoordinateReferenceSystem());
         env.expandToInclude(envelope.getMinimum(0), envelope.getMinimum(1));
@@ -438,12 +428,7 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
         return env;
     }
 
-    /**
-     * Converts a {@link GeneralEnvelope} into a {@link ReferencedEnvelope}
-     *
-     * @param ge
-     * @return
-     */
+    /** Converts a {@link GeneralEnvelope} into a {@link ReferencedEnvelope} */
     ReferencedEnvelope reference(GeneralEnvelope ge) {
         return new ReferencedEnvelope(
                 ge.getMinimum(0),
@@ -502,10 +487,7 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
 
         private String style = "";
 
-        /**
-         * @param layer
-         * @param style
-         */
+        /** */
         public LayerStyle(Layer layer, String style) {
             this.layer = layer;
             this.style = style;

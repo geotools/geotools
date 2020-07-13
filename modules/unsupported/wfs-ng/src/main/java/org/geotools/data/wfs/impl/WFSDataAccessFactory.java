@@ -67,25 +67,12 @@ public class WFSDataAccessFactory implements DataAccessFactory {
     public static class WFSFactoryParam<T> extends Param {
         private T defaultValue;
 
-        /**
-         * Creates a required parameter
-         *
-         * @param key
-         * @param type
-         * @param description
-         */
+        /** Creates a required parameter */
         public WFSFactoryParam(String key, Class<T> type, String title, String description) {
             this(key, type, title, description, null);
         }
 
-        /**
-         * Creates an optional parameter with the supplied default value
-         *
-         * @param key
-         * @param type
-         * @param description
-         * @param required
-         */
+        /** Creates an optional parameter with the supplied default value */
         public WFSFactoryParam(
                 String key, Class<T> type, String title, String description, T defaultValue) {
             super(
@@ -101,14 +88,7 @@ public class WFSDataAccessFactory implements DataAccessFactory {
             this.defaultValue = defaultValue;
         }
 
-        /**
-         * Creates an optional parameter with the supplied default value
-         *
-         * @param key
-         * @param type
-         * @param description
-         * @param required
-         */
+        /** Creates an optional parameter with the supplied default value */
         public WFSFactoryParam(
                 String key,
                 Class<T> type,
@@ -147,7 +127,7 @@ public class WFSDataAccessFactory implements DataAccessFactory {
     }
 
     /** Access with {@link WFSDataStoreFactory#getParametersInfo()  */
-    private static final WFSFactoryParam<?>[] parametersInfo = new WFSFactoryParam[21];
+    private static final WFSFactoryParam<?>[] parametersInfo = new WFSFactoryParam[22];
 
     private static final int GMLComplianceLevel = 2;
 
@@ -572,6 +552,21 @@ public class WFSDataAccessFactory implements DataAccessFactory {
         parametersInfo[20] =
                 USE_HTTP_CONNECTION_POOLING =
                         new WFSFactoryParam<Boolean>(name, Boolean.class, title, description, true);
+    }
+
+    /**
+     * Optional {@code Integer} controlling the size of the connection pool to use for http(s)
+     * requests. Only activated when {@link #USE_HTTP_CONNECTION_POOLING} is <code>true</code>
+     */
+    public static final WFSFactoryParam<Integer> MAX_CONNECTION_POOL_SIZE;
+
+    static {
+        String name = "WFSDataStoreFactory:MAX_CONNECTION_POOL_SIZE";
+        String title = "Set the default connection pool size";
+        String description = "Sets the default connection pool size for http(s) requests";
+        parametersInfo[21] =
+                MAX_CONNECTION_POOL_SIZE =
+                        new WFSFactoryParam<>(name, Integer.class, title, description, 6);
     }
 
     /**

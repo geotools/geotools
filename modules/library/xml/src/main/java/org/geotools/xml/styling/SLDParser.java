@@ -345,8 +345,6 @@ public class SLDParser {
     /**
      * Sets the EntityResolver implementation that will be used by DocumentBuilder to resolve XML
      * external entities.
-     *
-     * @param entityResolver
      */
     public void setEntityResolver(EntityResolver entityResolver) {
         this.entityResolver = entityResolver;
@@ -395,11 +393,7 @@ public class SLDParser {
         return readDOM(dom);
     }
 
-    /**
-     * Close the input source stream/reader if they had been created in this class
-     *
-     * @param source
-     */
+    /** Close the input source stream/reader if they had been created in this class */
     private void disposeInputSource() {
         if (!disposeInputSource) {
             return;
@@ -450,10 +444,7 @@ public class SLDParser {
         return styles;
     }
 
-    /**
-     * @param document
-     * @param name
-     */
+    /** */
     private NodeList findElements(final org.w3c.dom.Document document, final String name) {
         NodeList nodes = document.getElementsByTagNameNS("*", name);
 
@@ -532,12 +523,7 @@ public class SLDParser {
         return sld;
     }
 
-    /**
-     * Returns the first child node value, or null if there is no child
-     *
-     * @param child
-     * @return
-     */
+    /** Returns the first child node value, or null if there is no child */
     String getFirstChildValue(Node child) {
         if (child.getFirstChild() != null) return child.getFirstChild().getNodeValue();
         else return null;
@@ -657,10 +643,7 @@ public class SLDParser {
         return ows;
     }
 
-    /**
-     * @param child
-     * @param layer
-     */
+    /** */
     private void parseInlineFeature(Node root, UserLayer layer) {
         try {
             SLDInlineFeatureParser inparser = new SLDInlineFeatureParser(root);
@@ -695,8 +678,6 @@ public class SLDParser {
      * &lt;/xsd:element&gt;
      * &lt;/code&gt;
      * </pre>
-     *
-     * @param root
      */
     private NamedLayer parseNamedLayer(Node root) {
         NamedLayer layer = new NamedLayerImpl();
@@ -748,8 +729,6 @@ public class SLDParser {
      * &lt;/xsd:element&gt;
      * &lt;/code&gt;
      * </pre>
-     *
-     * @param n
      */
     public NamedStyle parseNamedStyle(Node n) {
         if (dom == null) {
@@ -847,6 +826,8 @@ public class SLDParser {
                 }
             } else if (childName.equalsIgnoreCase("FeatureTypeStyle")) {
                 style.featureTypeStyles().add(parseFeatureTypeStyle(child));
+            } else if (childName.equalsIgnoreCase("Background")) {
+                style.setBackground(parseFill(child));
             }
         }
 
@@ -1008,9 +989,6 @@ public class SLDParser {
     /**
      * Parse a node with mixed content containing internationalized elements in the form: <Localized
      * lang="locale">text</Localized>
-     *
-     * @param root
-     * @return
      */
     private InternationalString parseInternationalString(Node root) {
         if (LOGGER.isLoggable(Level.FINEST)) {
@@ -1271,12 +1249,7 @@ public class SLDParser {
         return ot;
     }
 
-    /**
-     * adds the key/value pair from the node ("<VendorOption name="...">...</VendorOption>")
-     *
-     * @param symbol
-     * @param child
-     */
+    /** adds the key/value pair from the node ("<VendorOption name="...">...</VendorOption>") */
     private void parseVendorOption(Map<String, String> options, Node child) {
         String key = child.getAttributes().getNamedItem("name").getNodeValue();
         String value = getFirstChildValue(child);
@@ -2215,13 +2188,7 @@ public class SLDParser {
         return fill;
     }
 
-    /**
-     * Concatenates the given expressions (through the strConcat FunctionFilter expression)
-     *
-     * @param left
-     * @param right
-     * @return
-     */
+    /** Concatenates the given expressions (through the strConcat FunctionFilter expression) */
     private Expression manageMixed(Expression left, Expression right) {
         if (left == null) return right;
         if (right == null) return left;
@@ -2233,7 +2200,6 @@ public class SLDParser {
      * Parses a css parameter. Default implementation trims whitespaces from text nodes.
      *
      * @param root node to parse
-     * @return
      */
     private Expression parseCssParameter(Node root) {
         return parseCssParameter(root, true);
@@ -2246,7 +2212,6 @@ public class SLDParser {
      * @param root node to parse
      * @param trimWhiteSpace true to trim whitespace from text nodes. If false, whitespaces will be
      *     collapsed into one
-     * @return
      */
     private Expression parseCssParameter(Node root, boolean trimWhiteSpace) {
         if (LOGGER.isLoggable(Level.FINEST)) {
@@ -2543,12 +2508,7 @@ public class SLDParser {
         return dlp;
     }
 
-    /**
-     * Internal method to parse an AnchorPoint node; protected visibility for testing.
-     *
-     * @param root
-     * @return
-     */
+    /** Internal method to parse an AnchorPoint node; protected visibility for testing. */
     protected AnchorPoint parseAnchorPoint(Node root) {
         if (LOGGER.isLoggable(Level.FINEST)) {
             LOGGER.finest("parsing anchorPoint");

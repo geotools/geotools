@@ -221,7 +221,6 @@ public class RangeLookupProcess implements RasterProcess {
      * @param classificationRanges The list of ranges to be applied
      * @param listener The progress listener
      * @return The reclassified coverage
-     * @throws ProcessException
      */
     public GridCoverage2D execute(
             GridCoverage2D coverage,

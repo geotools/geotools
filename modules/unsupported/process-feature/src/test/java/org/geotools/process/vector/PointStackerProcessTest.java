@@ -211,11 +211,6 @@ public class PointStackerProcessTest {
     /**
      * Tests point stacking when output CRS is different to data CRS. The result data should be
      * reprojected.
-     *
-     * @throws NoSuchAuthorityCodeException
-     * @throws FactoryException
-     * @throws TransformException
-     * @throws ProcessException
      */
     @Test
     public void testReprojected()
@@ -317,14 +312,7 @@ public class PointStackerProcessTest {
         return;
     }
 
-    /**
-     * Get the stacked point closest to the provided coordinate
-     *
-     * @param result
-     * @param coordinate
-     * @param i
-     * @param j
-     */
+    /** Get the stacked point closest to the provided coordinate */
     private SimpleFeature getResultPoint(SimpleFeatureCollection result, Coordinate testPt) {
         /** Find closest point to loc pt, then check that the attributes match */
         double minDist = Double.MAX_VALUE;
@@ -348,11 +336,6 @@ public class PointStackerProcessTest {
      * Check that a result set contains a stacked point in the right cell with expected attribute
      * values. Because it's not known in advance what the actual location of a stacked point will
      * be, a nearest-point strategy is used.
-     *
-     * @param result
-     * @param coordinate
-     * @param i
-     * @param j
      */
     private void checkResultPoint(
             SimpleFeatureCollection result,

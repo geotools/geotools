@@ -17,6 +17,9 @@
 
 package org.geotools.data.complex.filter;
 
+import static org.geotools.data.complex.AbstractMappingFeatureIterator.MULTI_VALUE_TYPE;
+import static org.geotools.data.complex.AbstractMappingFeatureIterator.UNBOUNDED_MULTI_VALUE;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -60,6 +63,7 @@ import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.feature.type.PropertyType;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.Attributes;
@@ -131,7 +135,6 @@ public class XPath extends XPathUtil {
      * @param targetNodeType the expected type of the attribute addressed by <code>xpath</code>, or
      *     <code>null</code> if unknown
      * @param isXlinkRef true if the attribute would only contain xlink:href client property
-     * @return
      */
     public Attribute set(
             final Attribute att,
@@ -458,7 +461,7 @@ public class XPath extends XPathUtil {
 
         Attribute leafAttribute = null;
         final Name attributeName = descriptor.getName();
-        if (!isXlinkRef) {
+        if (!isXlinkRef && !isUnboundedMultivalue(parent)) {
             // skip this process if the attribute would only contain xlink:ref
             // that is chained, because it won't contain any values, and we
             // want to create a new empty leaf attribute
@@ -709,13 +712,7 @@ public class XPath extends XPathUtil {
         }
     }
 
-    /**
-     * Return value converted into a type suitable for this descriptor.
-     *
-     * @param descriptor
-     * @param value
-     * @return
-     */
+    /** Return value converted into a type suitable for this descriptor. */
     @SuppressWarnings("serial")
     private Object convertValue(final AttributeDescriptor descriptor, final Object value) {
         final AttributeType type = descriptor.getType();
@@ -764,15 +761,14 @@ public class XPath extends XPathUtil {
             String collectionString = value.toString();
             return collectionString.substring(1, collectionString.length() - 1);
         }
+        if (value instanceof Literal) {
+            final Literal literal = (Literal) value;
+            return literal.evaluate(literal.getValue(), binding);
+        }
         return FF.literal(value).evaluate(value, binding);
     }
 
-    /**
-     * Get base (non-collection) type of simple content.
-     *
-     * @param type
-     * @return
-     */
+    /** Get base (non-collection) type of simple content. */
     static AttributeType getSimpleContentType(AttributeType type) {
         Class<?> binding = type.getBinding();
         if (binding == Collection.class) {
@@ -782,13 +778,7 @@ public class XPath extends XPathUtil {
         }
     }
 
-    /**
-     * Create a fake property for simple content of a complex type.
-     *
-     * @param type
-     * @param value
-     * @return
-     */
+    /** Create a fake property for simple content of a complex type. */
     Attribute buildSimpleContent(AttributeType type, Object value) {
         AttributeType simpleContentType = getSimpleContentType(type);
         return buildSimpleContentInternal(simpleContentType, value);
@@ -799,10 +789,6 @@ public class XPath extends XPathUtil {
      *
      * <p>Passed in value is converted to a string and then stored in the special <code>
      * simpleContent</code> attribute.
-     *
-     * @param type
-     * @param value
-     * @return
      */
     Attribute buildTextContent(AttributeType type, Object value) {
         AttributeTypeBuilder atb = new AttributeTypeBuilder();
@@ -840,5 +826,13 @@ public class XPath extends XPathUtil {
     /** @return true if this step represents an id attribute */
     public static boolean isId(Step step) {
         return step.isXmlAttribute() && step.getName().equals(GML.id);
+    }
+
+    private boolean isUnboundedMultivalue(final Attribute parent) {
+        final Object value = parent.getUserData().get(MULTI_VALUE_TYPE);
+        if (value instanceof String) {
+            return UNBOUNDED_MULTI_VALUE.equals((String) value);
+        }
+        return false;
     }
 }

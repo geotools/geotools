@@ -72,7 +72,7 @@ The release process has changed a bit since moving to subversion for details ple
 @since javadoc tag
 ^^^^^^^^^^^^^^^^^^^
 
-Every public and protected class, interface, method or field should have a @since javadoc tag. If the Geotools 2.2 release is under development, then every new API should be identified with a @since 2.2 tag. For the end user, it means that:
+Every public and protected class, interface, method or field should have a @since javadoc tag. If the GeoTools 2.2 release is under development, then every new API should be identified with a @since 2.2 tag. For the end user, it means that:
 
 * All classes and methods with a @since 2.0 or @since 2.1 javadoc tag are safe. Because they were there is previous releases, they will not change except for bug fixes (a few of them may be deprecated however).
 

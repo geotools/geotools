@@ -230,15 +230,7 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
     /** Called in case the initialization of the class failed, allows subclasses to clean up */
     protected abstract void handleInitializationException(Throwable t);
 
-    /**
-     * Allows initialization of the tile index store before scanning type names.
-     *
-     * @param params
-     * @param create
-     * @param spi
-     * @throws IOException
-     * @throws MalformedURLException
-     */
+    /** Allows initialization of the tile index store before scanning type names. */
     protected abstract void initTileIndexStore(
             final Properties params, final boolean create, final DataStoreFactorySpi spi)
             throws IOException, MalformedURLException;
@@ -261,12 +253,7 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
         }
     }
 
-    /**
-     * Checks the provided schema, and throws an exception if not valid
-     *
-     * @param schema
-     * @throws IOException
-     */
+    /** Checks the provided schema, and throws an exception if not valid */
     private void checkMosaicSchema(String typeName) throws IOException {
         SimpleFeatureType schema = getTileIndexStore().getSchema(typeName);
         if (schema == null) {
@@ -276,11 +263,7 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
         }
     }
 
-    /**
-     * Checks the provided schema, and throws an exception if not valid
-     *
-     * @param schema
-     */
+    /** Checks the provided schema, and throws an exception if not valid */
     private void checkMosaicSchema(SimpleFeatureType schema) {
         if (!Utils.isValidMosaicSchema(schema, getLocationAttributeName())) {
             throw new IllegalArgumentException(
@@ -388,7 +371,13 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
     protected abstract void disposeTileIndexStore();
 
     @Override
+    @SuppressWarnings("deprecation")
     public int removeGranules(Query query) {
+        return removeGranules(query, null);
+    }
+
+    @Override
+    public int removeGranules(Query query, Transaction transaction) {
         Utilities.ensureNonNull("query", query);
         query = mergeHints(query);
         // check if the index has been cleared
@@ -399,11 +388,14 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
             // create a writer that appends this features
             fs = (SimpleFeatureStore) getTileIndexStore().getFeatureSource(typeName);
             boolean rollback = true;
-            Transaction t = new DefaultTransaction();
+            Transaction t =
+                    transaction == null || transaction == Transaction.AUTO_COMMIT
+                            ? new DefaultTransaction()
+                            : transaction;
             try {
+                fs.setTransaction(t);
                 final int retVal = fs.getFeatures(query).size(); // ensures we get a value
                 if (retVal > 0) {
-                    fs.setTransaction(t);
                     fs.removeFeatures(query.getFilter());
                     t.commit();
                 }
@@ -411,10 +403,14 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
 
                 return retVal;
             } finally {
-                if (rollback) {
-                    t.rollback();
+                // rollback/close only if the transaction was created locally, otherwise leave
+                // the caller providing the transaction in control
+                if (t != transaction) {
+                    if (rollback) {
+                        t.rollback();
+                    }
+                    t.close();
                 }
-                t.close();
             }
 
         } catch (Throwable e) {
@@ -508,6 +504,11 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
 
     @Override
     public SimpleFeatureCollection getGranules(Query q) throws IOException {
+        return getGranules(q, Transaction.AUTO_COMMIT);
+    }
+
+    @Override
+    public SimpleFeatureCollection getGranules(Query q, Transaction t) throws IOException {
         Utilities.ensureNonNull("query", q);
         q = mergeHints(q);
         String typeName = q.getTypeName();
@@ -522,6 +523,14 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
             throw new NullPointerException(
                     "The provided SimpleFeatureSource is null, it's impossible to create an index!");
         }
+        if (t != null && t != Transaction.AUTO_COMMIT) {
+            if (featureSource instanceof SimpleFeatureStore) {
+                ((SimpleFeatureStore) featureSource).setTransaction(t);
+            } else {
+                throw new IllegalArgumentException(
+                        "A transaction has been specified, but the delegate tile index store is not writable");
+            }
+        }
         return featureSource.getFeatures(q);
     }
 
@@ -530,6 +539,27 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
         try {
             checkStore();
             return this.getTileIndexStore().getFeatureSource(typeName).getBounds();
+        } catch (IOException e) {
+            LOGGER.log(Level.FINER, e.getMessage(), e);
+        }
+
+        return null;
+    }
+
+    @Override
+    public BoundingBox getBounds(String typeName, Transaction t) {
+        try {
+            checkStore();
+            SimpleFeatureSource fs = this.getTileIndexStore().getFeatureSource(typeName);
+            if (t != null && t != Transaction.AUTO_COMMIT) {
+                if (fs instanceof SimpleFeatureStore) {
+                    ((SimpleFeatureStore) fs).setTransaction(t);
+                } else {
+                    throw new IllegalArgumentException(
+                            "A transaction has been specified, but the delegate tile index store is not writable");
+                }
+            }
+            return fs.getBounds();
         } catch (IOException e) {
             LOGGER.log(Level.FINER, e.getMessage(), e);
         }
@@ -720,18 +750,12 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
         }
     }
 
-    /**
-     * Returns the tile index store
-     *
-     * @return
-     */
+    /** Returns the tile index store */
     protected abstract DataStore getTileIndexStore();
 
     /**
      * Returns the set of valid type names (this is going to be a live collection, the code is
      * allowed to modify it)
-     *
-     * @return
      */
     protected abstract Set<String> getValidTypeNames();
 }

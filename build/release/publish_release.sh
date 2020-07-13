@@ -11,6 +11,8 @@ function usage() {
   echo " user:  Git username"
   echo " email: Git email"
   echo 
+  echo "Environment variables:"
+  echo " SKIP_DEPLOY : Skips deploy to maven repository"
 }
 
 if [ -z $4 ]; then
@@ -22,6 +24,11 @@ tag=$1
 branch=$2
 git_user=$3
 git_email=$4
+dist=`pwd`/distribution/$tag
+
+echo "maven/java settings:"
+mvn -version
+echo "MAVEN_FLAGS=$MAVEN_FLAGS"
 
 # load properties + functions
 . "$( cd "$( dirname "$0" )" && pwd )"/properties
@@ -40,22 +47,38 @@ pushd ../../ > /dev/null
 
 init_git $git_user $git_email
 
-# switch to the release branch
-git checkout rel_$tag
-
-# ensure no changes on it
-set +e
-git status | grep "working directory clean"
-if [ "$?" == "1" ]; then
-  echo "branch rel_$tag dirty, exiting"
-  exit 1
+# check to see if a release branch already exists
+set +e && git checkout rel_$tag && set -e
+if [ $? == 0 ]; then
+  # release branch already exists, kill it
+  git checkout $branch
+  echo "branch rel_$tag exists, deleting it"
+  git branch -D rel_$tag
 fi
-set -e
+
+# switch to the release tag
+git fetch --tags
+if [ `git tag --list $tag | wc -l` == 0 ]; then
+  echo "Could not locate tag $tag"
+  exit 1;
+fi
+git checkout tags/$tag -b rel_$tag
+
+# ensure no changes on it (actually release folder is a change)
+# set +e
+# git status | grep "working directory clean"
+# if [ "$?" == "1" ]; then
+#   echo "branch rel_$tag dirty, exiting"
+#   exit 1
+# fi
+# set -e
 
 # deploy the release to maven repo
 if [ "$SKIP_DEPLOY"  != true ]; then
-  mvn clean deploy -DskipTests -Dall
-  mvn clean -P deploy.boundless deploy -DskipTests -Dall
+  echo "deploying with $MAVEN_FLAGS"
+
+  mvn clean deploy -DskipTests -Dall $MAVEN_FLAGS
+  mvn clean -P deploy.boundless deploy -DskipTests -Dall $MAVEN_FLAGS
 fi
 
 # get <major.minor> for sf release dir
@@ -65,20 +88,18 @@ if [ "$( echo $str | egrep "[0-9]+\.[0-9]+((\.|-).*)?" )" != "$str" ]; then
 fi
 dir=`echo $tag | sed 's/\([0-9]*\)\([\.\-]\)\([0-9]*\).*/\1/g'`
 
-pushd $DIST_PATH/$tag > /dev/null
+pushd $dist > /dev/null
 
-#JD: disabling this for now... i think something recently changes on the sf
-# server in that we can't use ssh directly to log in, need to find an 
-# to this command for remotely creating a directory on the server
-#ssh -i $SF_PK $SF_USER@$SF_HOST mkdir -p "/home/pfs/project/g/ge/geotools/GeoTools\ $dir\ Releases"
-rsync -ave "ssh -i $SF_PK" *.zip $SF_USER@$SF_HOST:"/home/pfs/project/g/ge/geotools/GeoTools\ $dir\ Releases/$tag/"
+#Assume SSH Key for $SF_USER is added to the SSH Agent
+rsync -ave "ssh " *.zip $SF_USER@$SF_HOST:"/home/pfs/project/g/ge/geotools/GeoTools\ $dir\ Releases/$tag/"
 
 popd > /dev/null
 
+# tagging now handled by build_release.sh
 # tag the release branch
-git tag $tag
-
+# git tag --force $tag
 # push up tag
-git push origin $tag
+# git push --delete origin $tag
+# git push origin $tag
 
 popd > /dev/null

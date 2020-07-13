@@ -53,7 +53,7 @@ public class TileMatrixSet {
 
     private String wellKnownScaleSet;
 
-    CoordinateReferenceSystem coordinateReferenceSystem;
+    private CoordinateReferenceSystem coordinateReferenceSystem;
 
     private CRSEnvelope bbox;
 
@@ -65,7 +65,7 @@ public class TileMatrixSet {
 
     public void setCRS(String crs) throws IllegalArgumentException {
         try {
-            this.coordinateReferenceSystem = parseCoordinateReferenceSystem(crs);
+            this.setCoordinateReferenceSystem(parseCoordinateReferenceSystem(crs));
         } catch (Exception ex) {
             throw new IllegalArgumentException(
                     "Can't parse crs " + crs + ":" + ex.getMessage(), ex);
@@ -135,6 +135,7 @@ public class TileMatrixSet {
         this.wellKnownScaleSet = wellKnownScaleSet;
     }
 
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(getIdentifier()).append("\t").append(getCrs()).append("\n");
@@ -147,5 +148,9 @@ public class TileMatrixSet {
     /** @return the number of levels in this MatrixSet */
     public int size() {
         return matrices.size();
+    }
+
+    public void setCoordinateReferenceSystem(CoordinateReferenceSystem coordinateReferenceSystem) {
+        this.coordinateReferenceSystem = coordinateReferenceSystem;
     }
 }

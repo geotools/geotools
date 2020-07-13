@@ -226,7 +226,7 @@ public class TestCaseSupport {
         return copy;
     }
 
-    protected int countIterator(CloseableIterator it) {
+    protected int countIterator(CloseableIterator<?> it) {
         int count = 0;
         while (it.hasNext()) {
             count++;

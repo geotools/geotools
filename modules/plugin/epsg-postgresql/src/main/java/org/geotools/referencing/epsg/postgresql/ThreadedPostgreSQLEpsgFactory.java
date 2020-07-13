@@ -153,9 +153,9 @@ public class ThreadedPostgreSQLEpsgFactory extends ThreadedEpsgFactory {
             }
         }
         try {
-            final InputStream in = new FileInputStream(file);
-            p.load(in);
-            in.close();
+            try (InputStream in = new FileInputStream(file)) {
+                p.load(in);
+            }
         } catch (IOException exception) {
             Logging.unexpectedException(LOGGER, DataSource.class, "<init>", exception);
             // Continue. We will try to work with whatever properties are available.
@@ -179,8 +179,8 @@ public class ThreadedPostgreSQLEpsgFactory extends ThreadedEpsgFactory {
             portNumber = 5432;
             Logging.unexpectedException(LOGGER, DataSource.class, "<init>", exception);
         }
-        source.setPortNumber(portNumber);
-        source.setServerName(p.getProperty("serverName", "localhost"));
+        source.setPortNumbers(new int[] {portNumber});
+        source.setServerNames(new String[] {p.getProperty("serverName", "localhost")});
         source.setDatabaseName(p.getProperty("databaseName", "EPSG"));
         source.setUser(p.getProperty("user", "Geotools"));
         source.setPassword(p.getProperty("password", "Geotools"));

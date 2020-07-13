@@ -52,6 +52,23 @@ public class ServiceExceptionParserTest {
     }
 
     @Test
+    public void testCoalescing() throws Exception {
+        ServiceException exception =
+                ServiceExceptionParser.parse(
+                        mockStream(
+                                "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
+                                        + "<ServiceExceptionReport>\n"
+                                        + "  <ServiceException code=\"42\"><![CDATA[coalesced]]> message</ServiceException>\n"
+                                        + "</ServiceExceptionReport>"));
+
+        Assert.assertThat(
+                exception,
+                both(hasProperty("message", equalTo("coalesced message")))
+                        .and(hasProperty("code", equalTo("42"))));
+        Assert.assertThat(exception.getNext(), nullValue());
+    }
+
+    @Test
     public void testSequence() throws Exception {
         ServiceException exception =
                 ServiceExceptionParser.parse(

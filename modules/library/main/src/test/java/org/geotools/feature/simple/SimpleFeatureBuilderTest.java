@@ -16,8 +16,10 @@
  */
 package org.geotools.feature.simple;
 
+import java.util.Arrays;
 import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.AttributeTypeBuilder;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
@@ -176,14 +178,59 @@ public class SimpleFeatureBuilderTest extends TestCase {
         }
     }
 
-    public void testUserData() throws Exception {
-        GeometryFactory gf = new GeometryFactory();
-        builder.add(gf.createPoint(new Coordinate(0, 0)));
-        builder.add(Integer.valueOf(1));
-        builder.add(Float.valueOf(2.0f));
-        builder.featureUserData("foo", "bar");
+    public void testCreateFeatureWithOptions() throws Exception {
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.setName("test");
+        builder.options("a", "b", "c").add("name", String.class);
+        SimpleFeatureType featureType = builder.buildFeatureType();
 
-        SimpleFeature feature = builder.buildFeature("fid");
+        // build a valid feature
+        SimpleFeature feature = SimpleFeatureBuilder.build(featureType, new Object[] {"a"}, "ID");
+        assertNotNull(feature);
+        feature.validate();
+
+        // try an invalid one
+        try {
+            feature = SimpleFeatureBuilder.build(featureType, new Object[] {"d"}, "ID");
+            feature.validate();
+            fail("this should fail because the value is not either a, b or c, but d");
+        } catch (Exception e) {
+            e.printStackTrace();
+            // good
+        }
+    }
+
+    /**
+     * Same as {@link #testCreateFeatureWithOptions()} but using an AttributeTypeBuilder directly
+     *
+     * @throws Exception
+     */
+    public void testCreateFeatureWithOptionsOnAttributeTypeBuilder() throws Exception {
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.setName("test");
+        AttributeTypeBuilder atb = new AttributeTypeBuilder();
+        atb.name("name").binding(String.class).options(Arrays.asList("a", "b", "c"));
+        builder.add(atb.buildDescriptor("name"));
+        SimpleFeatureType featureType = builder.buildFeatureType();
+
+        // build a valid feature
+        SimpleFeature feature = SimpleFeatureBuilder.build(featureType, new Object[] {"a"}, "ID");
+        assertNotNull(feature);
+        feature.validate();
+
+        // try an invalid one
+        try {
+            feature = SimpleFeatureBuilder.build(featureType, new Object[] {"d"}, "ID");
+            feature.validate();
+            fail("this should fail because the value is not either a, b or c, but d");
+        } catch (Exception e) {
+            e.printStackTrace();
+            // good
+        }
+    }
+
+    public void testUserData() throws Exception {
+        SimpleFeature feature = buildUserDataFeature();
         assertNotNull(feature);
         assertEquals("bar", feature.getUserData().get("foo"));
 
@@ -191,6 +238,29 @@ public class SimpleFeatureBuilderTest extends TestCase {
         builder.init(feature);
         feature = builder.buildFeature("fid");
         assertNotNull(feature);
+        assertEquals("bar", feature.getUserData().get("foo"));
+    }
+
+    private SimpleFeature buildUserDataFeature() {
+        GeometryFactory gf = new GeometryFactory();
+        builder.add(gf.createPoint(new Coordinate(0, 0)));
+        builder.add(Integer.valueOf(1));
+        builder.add(Float.valueOf(2.0f));
+        builder.featureUserData("foo", "bar");
+
+        return builder.buildFeature("fid");
+    }
+
+    public void testCopyUserData() throws Exception {
+        SimpleFeature template = buildUserDataFeature();
+        builder = new SimpleFeatureBuilder(template.getFeatureType());
+        GeometryFactory gf = new GeometryFactory();
+        builder.add(gf.createPoint(new Coordinate(1, 1)));
+        builder.add(Integer.valueOf(2));
+        builder.add(Float.valueOf(4.0f));
+        builder.featureUserData(template);
+        SimpleFeature feature = builder.buildFeature("myfid");
+
         assertEquals("bar", feature.getUserData().get("foo"));
     }
 }

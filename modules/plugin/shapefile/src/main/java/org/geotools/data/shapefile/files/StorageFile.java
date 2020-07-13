@@ -59,6 +59,7 @@ public final class StorageFile implements Comparable<StorageFile>, FileWriter {
         return tempFile;
     }
 
+    @SuppressWarnings("resource")
     public FileChannel getWriteChannel() throws IOException {
         return new RandomAccessFile(tempFile, "rw").getChannel();
     }
@@ -68,7 +69,6 @@ public final class StorageFile implements Comparable<StorageFile>, FileWriter {
      * similar to a commit.
      *
      * @see #replaceOriginals(StorageFile...)
-     * @throws IOException
      */
     public void replaceOriginal() throws IOException {
         replaceOriginals(this);
@@ -81,7 +81,6 @@ public final class StorageFile implements Comparable<StorageFile>, FileWriter {
      * single lock.
      *
      * @param storageFiles files to execute the replace functionality.
-     * @throws IOException
      */
     public static void replaceOriginals(StorageFile... storageFiles) throws IOException {
         SortedSet<StorageFile> files = new TreeSet<StorageFile>(Arrays.asList(storageFiles));
@@ -148,6 +147,7 @@ public final class StorageFile implements Comparable<StorageFile>, FileWriter {
         }
     }
 
+    @SuppressWarnings("resource")
     private static void copyFile(File storage, URL url, File dest)
             throws FileNotFoundException, IOException {
         FileChannel in = null;

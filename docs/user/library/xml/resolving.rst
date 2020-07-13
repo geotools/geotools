@@ -40,4 +40,4 @@ Example::
 
     SchemaResolver resolver = new SchemaResolver(new SchemaCache(new File("/path/to/schema-cache"), true));
 
-If downloads are not enabled, a prepopulated cache will still be used, but missing schemas will not be downloaded.
+If downloads are not enabled, a pre-populated cache will still be used, but missing schemas will not be downloaded.

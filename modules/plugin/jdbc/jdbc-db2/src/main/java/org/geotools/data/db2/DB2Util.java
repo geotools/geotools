@@ -51,14 +51,15 @@ public class DB2Util {
         String stmt = "call db2gse.ST_register_spatial_column(?,?,?,?,?,?)";
 
         String s = "{" + stmt + "}";
-        CallableStatement ps = con.prepareCall(s);
-        ps.setString(1, quote(schemaName));
-        ps.setString(2, quote(tableName));
-        ps.setString(3, quote(columnName));
-        ps.setString(4, srsName);
-        ps.registerOutParameter(5, Types.INTEGER);
-        ps.registerOutParameter(6, Types.CHAR);
-        ps.executeUpdate();
+        try (CallableStatement ps = con.prepareCall(s)) {
+            ps.setString(1, quote(schemaName));
+            ps.setString(2, quote(tableName));
+            ps.setString(3, quote(columnName));
+            ps.setString(4, srsName);
+            ps.registerOutParameter(5, Types.INTEGER);
+            ps.registerOutParameter(6, Types.CHAR);
+            ps.executeUpdate();
+        }
         // DB2TestSetup.LOGGER.log(Level.INFO,ps.getInt(5) + "|" + ps.getString(6));
     }
 
@@ -71,16 +72,17 @@ public class DB2Util {
             String stmt = "call db2gse.ST_register_spatial_column(?,?,?,?,?,?,?)";
 
             String s = "{" + stmt + "}";
-            CallableStatement ps = con.prepareCall(s);
-            ps.setString(1, quote(schemaName));
-            ps.setString(2, quote(tableName));
-            ps.setString(3, quote(columnName));
-            ps.setString(4, srsName);
-            ps.setInt(5, 1);
-            ps.registerOutParameter(6, Types.INTEGER);
-            ps.registerOutParameter(7, Types.CHAR);
-            ps.executeUpdate(); // DB2TestSetup.LOGGER.log(Level.INFO,ps.getInt(5) + "|" +
-            // ps.getString(6));
+            try (CallableStatement ps = con.prepareCall(s)) {
+                ps.setString(1, quote(schemaName));
+                ps.setString(2, quote(tableName));
+                ps.setString(3, quote(columnName));
+                ps.setString(4, srsName);
+                ps.setInt(5, 1);
+                ps.registerOutParameter(6, Types.INTEGER);
+                ps.registerOutParameter(7, Types.CHAR);
+                ps.executeUpdate(); // DB2TestSetup.LOGGER.log(Level.INFO,ps.getInt(5) + "|" +
+                // ps.getString(6));
+            }
 
         } catch (SQLException ex) { //
             // may happen for spatial extender versions < 10
@@ -96,13 +98,14 @@ public class DB2Util {
         String stmt = "call db2gse.ST_unregister_spatial_column(?,?,?,?,?)";
 
         String s = "{" + stmt + "}";
-        CallableStatement ps = con.prepareCall(s);
-        ps.setString(1, quote(schemaName));
-        ps.setString(2, quote(tableName));
-        ps.setString(3, quote(columnName));
-        ps.registerOutParameter(4, Types.INTEGER);
-        ps.registerOutParameter(5, Types.CHAR);
-        ps.executeUpdate();
+        try (CallableStatement ps = con.prepareCall(s)) {
+            ps.setString(1, quote(schemaName));
+            ps.setString(2, quote(tableName));
+            ps.setString(3, quote(columnName));
+            ps.registerOutParameter(4, Types.INTEGER);
+            ps.registerOutParameter(5, Types.CHAR);
+            ps.executeUpdate();
+        }
         // DB2TestSetup.LOGGER.log(Level.INFO,ps.getInt(4) + "|" + ps.getString(5));
 
     }

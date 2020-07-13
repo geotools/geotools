@@ -210,12 +210,6 @@ public class RobustLineIntersector extends LineIntersector {
     /**
      * Normalize the supplied coordinates to so that the midpoint of their intersection envelope
      * lies at the origin.
-     *
-     * @param n00
-     * @param n01
-     * @param n10
-     * @param n11
-     * @param normPt
      */
     private void normalizeToEnvCentre(
             Coordinate n00, Coordinate n01, Coordinate n10, Coordinate n11, Coordinate normPt) {

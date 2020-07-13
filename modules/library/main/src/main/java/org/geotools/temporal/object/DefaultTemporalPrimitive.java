@@ -28,6 +28,7 @@ import org.opengis.temporal.TemporalPrimitive;
  * @author Mehdi Sidhoum (Geomatys)
  * @author Simone Giannecchini, GeoSolutions SAS
  */
+@SuppressWarnings("ComparableType")
 public abstract class DefaultTemporalPrimitive extends DefaultTemporalObject
         implements TemporalPrimitive, TemporalOrder, Comparable<TemporalPrimitive> {
 
@@ -72,7 +73,6 @@ public abstract class DefaultTemporalPrimitive extends DefaultTemporalObject
      * (1983).
      *
      * @param other TemporalPrimitive
-     * @return
      */
     public RelativePosition relativePosition(TemporalPrimitive other) {
         if (this instanceof Instant && other instanceof Instant) {

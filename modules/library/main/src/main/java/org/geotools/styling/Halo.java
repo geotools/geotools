@@ -61,11 +61,7 @@ import org.opengis.filter.expression.Expression;
  */
 public interface Halo extends org.opengis.style.Halo {
 
-    /**
-     * Expression that represents the the distance the halo extends from the text
-     *
-     * @param radius
-     */
+    /** Expression that represents the the distance the halo extends from the text */
     void setRadius(Expression radius);
 
     /**
@@ -75,11 +71,7 @@ public interface Halo extends org.opengis.style.Halo {
      */
     Fill getFill();
 
-    /**
-     * The fill (color) of the halo
-     *
-     * @param fill
-     */
+    /** The fill (color) of the halo */
     void setFill(org.opengis.style.Fill fill);
 
     void accept(org.geotools.styling.StyleVisitor visitor);

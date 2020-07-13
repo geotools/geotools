@@ -365,9 +365,6 @@ public class Capabilities {
      * <p>This method will have no effect if the function is already listed.
      *
      * <p>Example:<code>capabilities.addName( "Length", 1 )</code>
-     *
-     * @param name
-     * @param argumentCount
      */
     public void addName(String name, int argumentCount) {
         FunctionsImpl functions =
@@ -384,9 +381,6 @@ public class Capabilities {
      * <p>This method will have no effect if the function is already listed.
      *
      * <p>Example:<code>capabilities.addName( "Min", "value1", "value2" )</code>
-     *
-     * @param name
-     * @param argumentCount
      */
     public void addName(String name, String... argumentNames) {
         FunctionsImpl functions =
@@ -461,7 +455,6 @@ public class Capabilities {
      * Quickly look at the filter and determine the OperationName we need to check for in the
      * FilterCapabilities data structure.
      *
-     * @param filter
      * @return Operation name
      */
     public String toOperationName(Filter filter) {

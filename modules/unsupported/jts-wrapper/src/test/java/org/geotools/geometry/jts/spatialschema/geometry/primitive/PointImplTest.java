@@ -91,7 +91,6 @@ public class PointImplTest extends TestCase {
     /**
      * Now that we understand containers let's start testing stuff ...
      *
-     * @param crs
      * @return container
      */
     protected PicoContainer container(CoordinateReferenceSystem crs) {

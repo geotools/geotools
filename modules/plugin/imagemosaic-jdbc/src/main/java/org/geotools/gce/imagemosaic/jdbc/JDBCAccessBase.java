@@ -33,11 +33,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -78,7 +81,6 @@ abstract class JDBCAccessBase implements JDBCAccess {
      * Constructor
      *
      * @param config the Config object
-     * @throws IOException
      */
     JDBCAccessBase(Config config) throws IOException {
         super();
@@ -156,8 +158,6 @@ abstract class JDBCAccessBase implements JDBCAccess {
      *
      * @param coverageName the coverage name stored in the sql meta table
      * @param con jdbc connection
-     * @throws SQLException
-     * @throws IOException
      */
     protected void initFromDB(String coverageName, Connection con)
             throws SQLException, IOException {
@@ -295,7 +295,6 @@ abstract class JDBCAccessBase implements JDBCAccess {
      * @param li ImageLevelInfo object
      * @param con JDBC Connection
      * @return CoordinateReferenceSystem or null
-     * @throws IOException
      */
     protected abstract CoordinateReferenceSystem getCRS(ImageLevelInfo li, Connection con)
             throws IOException;
@@ -306,7 +305,6 @@ abstract class JDBCAccessBase implements JDBCAccess {
      * @param li ImageLevelInfo object
      * @param con JDBC Connection
      * @return Ineger or null
-     * @throws IOException
      */
     protected Integer getSRSID(ImageLevelInfo li, Connection con) throws IOException {
         return null;
@@ -322,8 +320,6 @@ abstract class JDBCAccessBase implements JDBCAccess {
      * @param li ImageLevelInfo object
      * @param con JDBC Connection
      * @return Envelope for the extent for li
-     * @throws SQLException
-     * @throws IOException
      */
     protected Envelope getExtent(ImageLevelInfo li, Connection con)
             throws SQLException, IOException {
@@ -351,62 +347,61 @@ abstract class JDBCAccessBase implements JDBCAccess {
      *
      * @param coverageName The coverage name in the sql meta table
      * @param con JDBC connection
-     * @throws SQLException
-     * @throws IOException
      */
     void calculateExtentsFromDB(String coverageName, Connection con)
             throws SQLException, IOException {
-        PreparedStatement stmt = con.prepareStatement(config.getSqlUpdateMosaicStatement());
+        try (PreparedStatement stmt = con.prepareStatement(config.getSqlUpdateMosaicStatement())) {
+            List<ImageLevelInfo> toBeRemoved = new ArrayList<ImageLevelInfo>();
 
-        List<ImageLevelInfo> toBeRemoved = new ArrayList<ImageLevelInfo>();
+            for (ImageLevelInfo li : levelInfos) {
+                if (li.getCoverageName().equals(coverageName) == false) {
+                    continue;
+                }
 
-        for (ImageLevelInfo li : levelInfos) {
-            if (li.getCoverageName().equals(coverageName) == false) {
-                continue;
+                if (li.calculateExtentsNeeded() == false) {
+                    continue;
+                }
+
+                Date start = new Date();
+                if (LOGGER.isLoggable(Level.INFO))
+                    LOGGER.info("Calculate extent for " + li.toString());
+
+                Envelope env = getExtent(li, con);
+
+                if (env == null) {
+                    if (LOGGER.isLoggable(Level.WARNING))
+                        LOGGER.log(Level.WARNING, "No extent, removing this level");
+                    toBeRemoved.add(li);
+
+                    continue;
+                }
+
+                li.setExtentMaxX(Double.valueOf(env.getMaxX()));
+                li.setExtentMaxY(Double.valueOf(env.getMaxY()));
+                li.setExtentMinX(Double.valueOf(env.getMinX()));
+                li.setExtentMinY(Double.valueOf(env.getMinY()));
+
+                stmt.setDouble(1, li.getExtentMaxX().doubleValue());
+                stmt.setDouble(2, li.getExtentMaxY().doubleValue());
+                stmt.setDouble(3, li.getExtentMinX().doubleValue());
+                stmt.setDouble(4, li.getExtentMinY().doubleValue());
+                stmt.setString(5, li.getCoverageName());
+                stmt.setString(6, li.getTileTableName());
+                stmt.setString(7, li.getSpatialTableName());
+                stmt.execute();
+
+                long msecs = (new Date()).getTime() - start.getTime();
+
+                if (LOGGER.isLoggable(Level.INFO))
+                    LOGGER.info(
+                            "Calculate extent for "
+                                    + li.toString()
+                                    + " finished in "
+                                    + msecs
+                                    + " ms ");
             }
 
-            if (li.calculateExtentsNeeded() == false) {
-                continue;
-            }
-
-            Date start = new Date();
-            if (LOGGER.isLoggable(Level.INFO)) LOGGER.info("Calculate extent for " + li.toString());
-
-            Envelope env = getExtent(li, con);
-
-            if (env == null) {
-                if (LOGGER.isLoggable(Level.WARNING))
-                    LOGGER.log(Level.WARNING, "No extent, removing this level");
-                toBeRemoved.add(li);
-
-                continue;
-            }
-
-            li.setExtentMaxX(Double.valueOf(env.getMaxX()));
-            li.setExtentMaxY(Double.valueOf(env.getMaxY()));
-            li.setExtentMinX(Double.valueOf(env.getMinX()));
-            li.setExtentMinY(Double.valueOf(env.getMinY()));
-
-            stmt.setDouble(1, li.getExtentMaxX().doubleValue());
-            stmt.setDouble(2, li.getExtentMaxY().doubleValue());
-            stmt.setDouble(3, li.getExtentMinX().doubleValue());
-            stmt.setDouble(4, li.getExtentMinY().doubleValue());
-            stmt.setString(5, li.getCoverageName());
-            stmt.setString(6, li.getTileTableName());
-            stmt.setString(7, li.getSpatialTableName());
-            stmt.execute();
-
-            long msecs = (new Date()).getTime() - start.getTime();
-
-            if (LOGGER.isLoggable(Level.INFO))
-                LOGGER.info(
-                        "Calculate extent for " + li.toString() + " finished in " + msecs + " ms ");
-        }
-
-        levelInfos.removeAll(toBeRemoved);
-
-        if (stmt != null) {
-            stmt.close();
+            levelInfos.removeAll(toBeRemoved);
         }
     }
 
@@ -419,68 +414,60 @@ abstract class JDBCAccessBase implements JDBCAccess {
      *
      * @param coverageName The coverage name in the sql meta table
      * @param con JDBC Connection
-     * @throws SQLException
-     * @throws IOException
      */
     void calculateResolutionsFromDB(String coverageName, Connection con)
             throws SQLException, IOException {
-        PreparedStatement stmt = null;
+        try (PreparedStatement stmt = con.prepareStatement(config.getSqlUpdateResStatement())) {
+            List<ImageLevelInfo> toBeRemoved = new ArrayList<ImageLevelInfo>();
 
-        stmt = con.prepareStatement(config.getSqlUpdateResStatement());
+            for (ImageLevelInfo li : levelInfos) {
+                if (li.getCoverageName().equals(coverageName) == false) {
+                    continue;
+                }
 
-        List<ImageLevelInfo> toBeRemoved = new ArrayList<ImageLevelInfo>();
+                if (li.calculateResolutionNeeded() == false) {
+                    continue;
+                }
 
-        for (ImageLevelInfo li : levelInfos) {
-            if (li.getCoverageName().equals(coverageName) == false) {
-                continue;
+                Date start = new Date();
+                if (LOGGER.isLoggable(Level.INFO))
+                    LOGGER.info("Calculate resolutions for " + li.toString());
+
+                double[] resolutions = getPixelResolution(li, con);
+
+                if (resolutions == null) {
+                    if (LOGGER.isLoggable(Level.WARNING))
+                        LOGGER.log(Level.WARNING, "No image found, removing " + li.toString());
+                    toBeRemoved.add(li);
+
+                    continue;
+                }
+
+                li.setResX(resolutions[0]);
+                li.setResY(resolutions[1]);
+                if (LOGGER.isLoggable(Level.INFO))
+                    LOGGER.info("ResX: " + li.getResX() + " ResY: " + li.getResY());
+
+                // li.setColorModel(loadedImage.getColorModel());
+                stmt.setDouble(1, li.getResX().doubleValue());
+                stmt.setDouble(2, li.getResY().doubleValue());
+                stmt.setString(3, li.getCoverageName());
+                stmt.setString(4, li.getTileTableName());
+                stmt.setString(5, li.getSpatialTableName());
+                stmt.execute();
+
+                long msecs = (new Date()).getTime() - start.getTime();
+
+                if (LOGGER.isLoggable(Level.INFO))
+                    LOGGER.info(
+                            "Calculate resolutions for "
+                                    + li.toString()
+                                    + " finished in "
+                                    + msecs
+                                    + " ms ");
             }
 
-            if (li.calculateResolutionNeeded() == false) {
-                continue;
-            }
-
-            Date start = new Date();
-            if (LOGGER.isLoggable(Level.INFO))
-                LOGGER.info("Calculate resolutions for " + li.toString());
-
-            double[] resolutions = getPixelResolution(li, con);
-
-            if (resolutions == null) {
-                if (LOGGER.isLoggable(Level.WARNING))
-                    LOGGER.log(Level.WARNING, "No image found, removing " + li.toString());
-                toBeRemoved.add(li);
-
-                continue;
-            }
-
-            li.setResX(resolutions[0]);
-            li.setResY(resolutions[1]);
-            if (LOGGER.isLoggable(Level.INFO))
-                LOGGER.info("ResX: " + li.getResX() + " ResY: " + li.getResY());
-
-            // li.setColorModel(loadedImage.getColorModel());
-            stmt.setDouble(1, li.getResX().doubleValue());
-            stmt.setDouble(2, li.getResY().doubleValue());
-            stmt.setString(3, li.getCoverageName());
-            stmt.setString(4, li.getTileTableName());
-            stmt.setString(5, li.getSpatialTableName());
-            stmt.execute();
-
-            long msecs = (new Date()).getTime() - start.getTime();
-
-            if (LOGGER.isLoggable(Level.INFO))
-                LOGGER.info(
-                        "Calculate resolutions for "
-                                + li.toString()
-                                + " finished in "
-                                + msecs
-                                + " ms ");
-        }
-
-        levelInfos.removeAll(toBeRemoved);
-
-        if (stmt != null) {
-            stmt.close();
+            levelInfos.removeAll(toBeRemoved);
         }
     }
 
@@ -488,7 +475,6 @@ abstract class JDBCAccessBase implements JDBCAccess {
      * Sql statement to query the needed tiles for a request
      *
      * @param levelInfo ImageLevelInfo object
-     * @return
      */
     protected abstract String getGridSelectStatement(ImageLevelInfo levelInfo);
 
@@ -498,7 +484,6 @@ abstract class JDBCAccessBase implements JDBCAccess {
      * @param s the grid select statement
      * @param envelope the requested envelope
      * @param li ImageLevelInfo object
-     * @throws SQLException
      */
     protected abstract void setGridSelectParams(
             PreparedStatement s, GeneralEnvelope envelope, ImageLevelInfo li) throws SQLException;
@@ -529,6 +514,7 @@ abstract class JDBCAccessBase implements JDBCAccess {
         ExecutorService pool = getExecutorServivicePool();
 
         String statementString = getGridSelectStatement(levelInfo);
+        Queue<Future<?>> runResults = new LinkedList<Future<?>>();
 
         try (Connection con = dataSource.getConnection();
                 PreparedStatement s = con.prepareStatement(statementString)) {
@@ -553,14 +539,12 @@ abstract class JDBCAccessBase implements JDBCAccess {
                                     tileBytes,
                                     location,
                                     tileGeneralEnvelope,
-                                    pixelDimension,
                                     requestEnvelope,
                                     levelInfo,
-                                    tileQueue,
-                                    config);
+                                    tileQueue);
                     //				thread.start();
                     threads.add(thread);
-                    pool.execute(thread);
+                    runResults.add(pool.submit(thread));
                 }
             }
 
@@ -598,6 +582,16 @@ abstract class JDBCAccessBase implements JDBCAccess {
         //			}
         //		}
 
+        // rethrow unhandled exceptions into main thread
+        for (Future<?> jobDone : runResults) {
+            try {
+                jobDone.get();
+            } catch (Exception ex) {
+                LOGGER.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
+                throw new RuntimeException(ex);
+            }
+        }
+
         tileQueue.add(TileQueueElement.ENDELEMENT);
 
         if (LOGGER.isLoggable(Level.INFO))
@@ -612,34 +606,30 @@ abstract class JDBCAccessBase implements JDBCAccess {
     /**
      * @param resultSet Sql Result Set
      * @return byte array containing image bytes from curren sql cursor location
-     * @throws SQLException
      */
     protected byte[] getTileBytes(ResultSet resultSet) throws SQLException {
         byte[] buffer = new byte[16384];
 
-        InputStream in = resultSet.getBinaryStream(config.getBlobAttributeNameInTileTable());
+        try (InputStream in = resultSet.getBinaryStream(config.getBlobAttributeNameInTileTable())) {
 
-        if (in == null) {
-            return null;
-        }
+            if (in == null) {
+                return null;
+            }
 
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-        try {
             while (in.read(buffer) > 0) out.write(buffer);
+
+            return out.toByteArray();
         } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-
-        return out.toByteArray();
-
-        // tileBytes=resultSet.getBytes(columnindex);
     }
 
     /**
      * @param tableName sql table name
      * @param con JDBC Connection
      * @return return number of rows in the table
-     * @throws SQLException
      */
     private int getRowCount(String tableName, Connection con) throws SQLException {
         try (PreparedStatement s = con.prepareStatement("select count(*) from " + tableName);
@@ -709,8 +699,6 @@ abstract class JDBCAccessBase implements JDBCAccess {
      * @param li ImageLevelInfo object
      * @param con JDBC Connection
      * @return the resolution for li, based on a random chosen tile
-     * @throws SQLException
-     * @throws IOException
      */
     protected double[] getPixelResolution(ImageLevelInfo li, Connection con)
             throws SQLException, IOException {
@@ -738,18 +726,20 @@ abstract class JDBCAccessBase implements JDBCAccess {
                                 "Image IO cannot read from ByteInputStream,use less efficient jai methods");
                     }
                     li.setCanImageIOReadFromInputStream(false);
-                    SeekableStream stream = new ByteArraySeekableStream(tileBytes);
-                    String decoderName = null;
+                    try (SeekableStream stream = new ByteArraySeekableStream(tileBytes)) {
+                        String decoderName = null;
 
-                    for (String dn : ImageCodec.getDecoderNames(stream)) {
-                        decoderName = dn;
-                        break;
+                        for (String dn : ImageCodec.getDecoderNames(stream)) {
+                            decoderName = dn;
+                            break;
+                        }
+
+                        ImageDecoder decoder =
+                                ImageCodec.createImageDecoder(decoderName, stream, null);
+                        PlanarImage img =
+                                PlanarImage.wrapRenderedImage(decoder.decodeAsRenderedImage());
+                        buffImage = img.getAsBufferedImage();
                     }
-
-                    ImageDecoder decoder = ImageCodec.createImageDecoder(decoderName, stream, null);
-                    PlanarImage img =
-                            PlanarImage.wrapRenderedImage(decoder.decodeAsRenderedImage());
-                    buffImage = img.getAsBufferedImage();
                 }
 
                 Envelope env = getEnvelopeFromResultSet(r);

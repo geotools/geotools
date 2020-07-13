@@ -49,9 +49,6 @@ public class QualifiedName extends QName {
     /**
      * Derives a new {@link QualifiedName} with the given prefix, or returns itself if the prefix is
      * the same alredy in use
-     *
-     * @param prefix
-     * @return
      */
     public QualifiedName derive(String prefix) {
         return derive(prefix, getNamespaceURI());
@@ -68,11 +65,6 @@ public class QualifiedName extends QName {
     /**
      * This method is used to replicate a "feature" of the standard encoder, when no prefix can be
      * found, "null" will be used instead of having the code throw an exception
-     *
-     * @param targetNamespace
-     * @param name
-     * @param prefix2
-     * @return
      */
     public static QualifiedName build(String targetNamespace, String name, String prefix) {
         if (prefix == null) {

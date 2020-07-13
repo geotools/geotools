@@ -65,33 +65,21 @@ public class ECQLLiteralTest extends CQLLiteralTest {
         super(Language.ECQL);
     }
 
-    /**
-     * Test for LineString Expression Sample: LINESTRING( 1 2, 3 4)
-     *
-     * @throws Exception
-     */
+    /** Test for LineString Expression Sample: LINESTRING( 1 2, 3 4) */
     @Test
     public void lineString() throws Exception {
         String wkt = "LINESTRING (1 2, 3 4)";
         assertParseReferencedAndUnreferenced(wkt, LineString.class);
     }
 
-    /**
-     * Sample: POINT(1 2)
-     *
-     * @throws CQLException
-     */
+    /** Sample: POINT(1 2) */
     @Test
     public void point() throws Exception {
         String wkt = "POINT(1 2)";
         assertParseReferencedAndUnreferenced(wkt, Point.class);
     }
 
-    /**
-     * Sample: POLYGON((1 2, 15 2, 15 20, 15 21, 1 2))
-     *
-     * @throws Exception
-     */
+    /** Sample: POLYGON((1 2, 15 2, 15 20, 15 21, 1 2)) */
     @Test
     public void polygon() throws Exception {
         String wkt = "POLYGON((1 2, 15 2, 15 20, 15 21, 1 2))";
@@ -101,8 +89,6 @@ public class ECQLLiteralTest extends CQLLiteralTest {
     /**
      * Sample: POLYGON ((40 60, 420 60, 420 320, 40 320, 40 60), (200 140, 160 220, 260 200, 200
      * 140))
-     *
-     * @throws Exception
      */
     @Test
     public void polygonWithHole() throws Exception {
@@ -111,11 +97,7 @@ public class ECQLLiteralTest extends CQLLiteralTest {
         assertParseReferencedAndUnreferenced(wkt, Polygon.class);
     }
 
-    /**
-     * Sample: MULTIPOINT( (1 2), (15 2), (15 20), (15 21), (1 2) ))
-     *
-     * @throws Exception
-     */
+    /** Sample: MULTIPOINT( (1 2), (15 2), (15 20), (15 21), (1 2) )) */
     @Test
     public void multiPoint() throws Exception {
         String wkt = "MULTIPOINT( (1 2), (15 2), (15 20), (15 21), (1 2))";
@@ -124,11 +106,7 @@ public class ECQLLiteralTest extends CQLLiteralTest {
         assertParseReferencedAndUnreferenced(wkt, expectedWkt, MultiPoint.class, WGS84);
     }
 
-    /**
-     * Sample: MULTILINESTRING((10 10, 20 20),(15 15,30 15))
-     *
-     * @throws Exception
-     */
+    /** Sample: MULTILINESTRING((10 10, 20 20),(15 15,30 15)) */
     @Test
     public void multiLineString() throws Exception {
         String wkt = "MULTILINESTRING((10 10, 20 20),(15 15,30 15))";
@@ -138,8 +116,6 @@ public class ECQLLiteralTest extends CQLLiteralTest {
     /**
      * sample: CROSS(ATTR1, GEOMETRYCOLLECTION (POINT (10 10),POINT (30 30),LINESTRING (15 15, 20
      * 20)) )
-     *
-     * @throws Exception
      */
     @Test
     public void geometryCollection() throws Exception {
@@ -149,8 +125,6 @@ public class ECQLLiteralTest extends CQLLiteralTest {
 
     /**
      * Sample: MULTIPOLYGON( ((10 10, 10 20, 20 20, 20 15, 10 10)),((60 60, 70 70, 80 60, 60 60 )) )
-     *
-     * @throws Exception
      */
     @Test
     public void multiPolygon() throws Exception {

@@ -66,6 +66,7 @@ public class AStarShortestPathFinder implements GraphWalker {
     }
 
     /** @see GraphWalker#visit(Graphable, GraphTraversal) */
+    @Override
     public int visit(Graphable element, GraphTraversal traversal) {
         if (element.equals(m_target)) {
             return (GraphTraversal.STOP);
@@ -82,7 +83,6 @@ public class AStarShortestPathFinder implements GraphWalker {
      * @see Path#riterator()
      * @see Path#reverse()
      * @return A path from the target to the source.
-     * @throws WrongPathException
      */
     public Path getPath() throws WrongPathException {
         Path path = new Path();
@@ -104,17 +104,6 @@ public class AStarShortestPathFinder implements GraphWalker {
      *
      * @see GraphWalker#finish()
      */
+    @Override
     public void finish() {}
-}
-
-class WrongPathException extends Exception {
-    String message;
-
-    public WrongPathException(String msj) {
-        message = msj;
-    }
-
-    public String getMessage() {
-        return message;
-    }
 }

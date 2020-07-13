@@ -110,7 +110,7 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
      */
 	protected File testOutputDirectory;
 	/**
-	 * Flag controlling wether files should overide files that already 
+	 * Flag controlling whether files should override files that already
 	 * exist with the same name. False by default.
 	 * 
 	 * @param expression="false"
@@ -313,12 +313,12 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
                             return xsd.getSchema();
                         } 
                         catch (IOException e) {
-                            getLog().warn("Error occured locating schema: " + namespaceURI, e);
+                            getLog().warn("XSDSchemaLocator: Error occurred locating schema: " + namespaceURI, e);
                         }
                     }
                 }
              
-                getLog().warn( "Could not locate schema for: " + namespaceURI );
+                getLog().warn( "XSDSchemaLocator: Could not locate schema for: " + namespaceURI );
                 return null;
             }
 		    
@@ -336,7 +336,7 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
                                    return null;
                                 }
                                 
-				//check location directlry
+				//check location directly
 				File file = new File( schemaLocation );  
 				if ( file.exists() ) {
 					getLog().debug( "Resolving " + schemaLocation + " to " + schemaLocation );
@@ -345,14 +345,14 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
 				
 				String fileName = new File( schemaLocation ).getName();
 				
-				//check under teh schema source directory
+				//check under the schema source directory
 				file = new File( schemaSourceDirectory, fileName ); 
 				if ( file.exists() ) {
 					getLog().debug( "Resolving " + schemaLocation + " to " + file.getAbsolutePath() );
 					return file.getAbsolutePath();
 				}
 				
-				//check hte lookup directories
+				//check the lookup directories
 				if ( schemaLookupDirectories != null ) {
 					for ( int i = 0; i < schemaLookupDirectories.length; i++ ) {
 						File schemaLookupDirectory = schemaLookupDirectories[ i ];

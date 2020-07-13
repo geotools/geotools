@@ -19,6 +19,7 @@ package org.geotools.feature;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -27,9 +28,12 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeImpl;
+import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.LengthFunction;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.util.Utilities;
@@ -47,10 +51,16 @@ import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.feature.type.PropertyType;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory;
+import org.opengis.filter.Or;
+import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.PropertyIsGreaterThan;
 import org.opengis.filter.PropertyIsGreaterThanOrEqualTo;
 import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.filter.PropertyIsLessThanOrEqualTo;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.PropertyName;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
@@ -122,6 +132,32 @@ public class FeatureTypes {
                     null,
                     null);
 
+    protected static FilterFactory FF = CommonFactoryFinder.getFilterFactory(null);
+
+    /**
+     * Creates a restriction based on the attribute value length
+     *
+     * @param length The maximum allowed length
+     * @return The restriction
+     */
+    public static Filter createLengthRestriction(int length) {
+        if (length < 0) {
+            return null;
+        }
+        LengthFunction lengthFunction =
+                (LengthFunction) FF.function("LengthFunction", new Expression[] {FF.property(".")});
+        if (lengthFunction == null) {
+            return null;
+        }
+        Filter cf = null;
+        try {
+            cf = FF.lessOrEqual(lengthFunction, FF.literal(length));
+        } catch (IllegalFilterException e) {
+            // TODO something
+        }
+        return cf == null ? Filter.EXCLUDE : cf;
+    }
+
     /**
      * This is a 'suitable replacement for extracting the expected field length of an attribute
      * absed on its "facets" (ie Filter describing type restrictions);
@@ -183,12 +219,103 @@ public class FeatureTypes {
     }
 
     /**
+     * Returns the eventual list of possible values accepted by this
+     *
+     * @param descriptor
+     * @return
+     */
+    public static List<?> getFieldOptions(PropertyDescriptor descriptor) {
+        PropertyType type = descriptor.getType();
+        List<Object> options = null;
+        while (type != null) {
+            // TODO: We should really go through all the restrictions and find
+            // the minimum of all the length restrictions; for now we assume an
+            // override behavior.
+            for (Filter f : type.getRestrictions()) {
+                List<Object> currentOptions = null;
+                boolean foundOptionsPattern = true;
+                if (f == null) {
+                    continue;
+                }
+                if (f instanceof PropertyIsEqualTo) {
+                    Object value = getOption((PropertyIsEqualTo) f);
+                    if (value != null) {
+                        currentOptions = Collections.singletonList(value);
+                    } else {
+                        continue;
+                    }
+                } else if (f instanceof Or) {
+                    Or or = (Or) f;
+                    currentOptions = new ArrayList<>();
+                    for (Filter child : or.getChildren()) {
+                        if (child instanceof PropertyIsEqualTo) {
+                            Object value = getOption((PropertyIsEqualTo) child);
+                            if (value != null) {
+                                currentOptions.add(value);
+                            } else {
+                                foundOptionsPattern = false;
+                                continue;
+                            }
+                        } else {
+                            foundOptionsPattern = false;
+                        }
+                    }
+                }
+
+                if (foundOptionsPattern) {
+                    // intersect all options patterns
+                    if (options != null) {
+                        options.retainAll(currentOptions);
+                    } else {
+                        options = currentOptions;
+                    }
+                }
+            }
+            type = type.getSuper();
+        }
+
+        return options != null && !options.isEmpty() ? options : null;
+    }
+
+    private static Object getOption(PropertyIsEqualTo f) {
+        PropertyIsEqualTo equal = f;
+        Expression x1 = equal.getExpression1();
+        Expression x2 = equal.getExpression2();
+        if (x1 instanceof PropertyName
+                && ".".equals(((PropertyName) x1).getPropertyName())
+                && x2 instanceof Literal) {
+            return x2.evaluate(null);
+        }
+        return null;
+    }
+
+    /**
+     * Creates a restriction limiting an attribute to a given list of values.
+     *
+     * @param options The list of all possible values
+     * @return A filter restricting the attribute to the given list of values
+     */
+    public static Filter createFieldOptions(Collection<?> options) {
+        if (options == null || options.isEmpty()) {
+            return null;
+        }
+        PropertyName thisProperty = FF.property(".");
+        List<Filter> filters =
+                options.stream()
+                        .map(o -> FF.equal(thisProperty, FF.literal(o), false))
+                        .collect(Collectors.toList());
+        if (filters.size() == 1) {
+            return filters.get(0);
+        } else {
+            return FF.or(filters);
+        }
+    }
+
+    /**
      * Forces the specified CRS on all geometry attributes
      *
      * @param schema the original schema
      * @param crs the forced crs
-     * @return
-     * @throws SchemaException
      */
     public static SimpleFeatureType transform(
             SimpleFeatureType schema, CoordinateReferenceSystem crs) throws SchemaException {
@@ -202,8 +329,6 @@ public class FeatureTypes {
      * @param crs the forced crs
      * @param forceOnlyMissing if true, will force the specified crs only on the attributes that do
      *     miss one
-     * @return
-     * @throws SchemaException
      */
     public static SimpleFeatureType transform(
             SimpleFeatureType schema, CoordinateReferenceSystem crs, boolean forceOnlyMissing)
@@ -244,9 +369,6 @@ public class FeatureTypes {
      * @param schema Schema for target transformation - transform( schema, crs )
      * @param transform MathTransform used to transform coordinates - reproject( crs, crs )
      * @return transformed Feature of type schema
-     * @throws TransformException
-     * @throws MismatchedDimensionException
-     * @throws IllegalAttributeException
      */
     public static SimpleFeature transform(
             SimpleFeature feature, SimpleFeatureType schema, MathTransform transform)
@@ -587,9 +709,6 @@ public class FeatureTypes {
      * This method depends on the correct implementation of FeatureType equals
      *
      * <p>We may need to write an implementation that can detect cycles,
-     *
-     * @param typeA
-     * @param typeB
      */
     public static boolean equalsAncestors(SimpleFeatureType typeA, SimpleFeatureType typeB) {
         return ancestors(typeA).equals(ancestors(typeB));

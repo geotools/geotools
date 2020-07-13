@@ -19,24 +19,48 @@ package org.geotools.filter.function;
 import static org.junit.Assert.*;
 
 import java.awt.Color;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import org.geotools.filter.FunctionExpressionImpl;
+import org.geotools.filter.capability.FunctionNameImpl;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.VolatileFunction;
 
 /**
  * Unit tests for the Interpolate function.
  *
  * @author Michael Bedward
  */
+@RunWith(Parameterized.class)
 public class InterpolateFunctionTest extends SEFunctionTestBase {
 
     private static final double TOL = 1.0e-6d;
     private final Double[] data = {10.0, 20.0, 40.0, 80.0};
     private final Double[] values = {1.0, 2.0, 3.0, 4.0};
     private final Color[] colors = {Color.RED, Color.ORANGE, Color.GREEN, Color.BLUE};
+    private final boolean dynamic;
+
+    public InterpolateFunctionTest(String name, boolean dynamic) {
+        this.dynamic = dynamic;
+    }
+
+    @Parameterized.Parameters(name = "{0}")
+    public static Collection<Object[]> data() throws IOException {
+        List<Object[]> result = new ArrayList<>();
+        result.add(new Object[] {"static", false});
+        result.add(new Object[] {"dynamic", true});
+
+        return result;
+    }
 
     @Before
     public void setup() {
@@ -45,8 +69,6 @@ public class InterpolateFunctionTest extends SEFunctionTestBase {
 
     @Test
     public void testFindInterpolateFunction() throws Exception {
-        // System.out.println("   testFindInterpolateFunction");
-
         Literal fallback = ff2.literal("NOT_FOUND");
         setupParameters(data, values);
         Function fn = finder.findFunction("Interpolate", parameters, fallback);
@@ -57,8 +79,6 @@ public class InterpolateFunctionTest extends SEFunctionTestBase {
 
     @Test
     public void testLinearNumericInterpolation() throws Exception {
-        // System.out.println("   testLinearNumericInterpolation");
-
         setupParameters(data, values);
         parameters.add(ff2.literal(InterpolateFunction.METHOD_NUMERIC));
         parameters.add(ff2.literal(InterpolateFunction.MODE_LINEAR));
@@ -368,8 +388,13 @@ public class InterpolateFunctionTest extends SEFunctionTestBase {
         parameters.add(ff2.property("value"));
 
         for (int i = 0; i < data.length; i++) {
-            parameters.add(ff2.literal(data[i]));
-            parameters.add(ff2.literal(values[i]));
+            if (dynamic) {
+                parameters.add(new VolaliteLiteral(data[i]));
+                parameters.add(new VolaliteLiteral(values[i]));
+            } else {
+                parameters.add(ff2.literal(data[i]));
+                parameters.add(ff2.literal(values[i]));
+            }
         }
     }
 
@@ -434,5 +459,69 @@ public class InterpolateFunctionTest extends SEFunctionTestBase {
         // but not equal to fn3
         assertNotEquals(fn1, fn3);
         assertNotEquals(fn2, fn3);
+    }
+
+    @Test
+    public void testInterpPointNumeric() {
+        // numeric mode
+        setupParameters(data, values);
+        parameters.add(ff2.literal(InterpolateFunction.METHOD_NUMERIC));
+        InterpolateFunctionSpy function = new InterpolateFunctionSpy(parameters);
+        function.evaluate(null, Double.class); // force initialization
+        if (dynamic) {
+            assertTrue(function.isDynamic());
+        } else {
+            assertTrue(function.isStaticNumeric());
+        }
+    }
+
+    @Test
+    public void testInterpPointColor() {
+        // numeric mode
+        setupParameters(data, values);
+        parameters.add(ff2.literal(InterpolateFunction.METHOD_COLOR));
+        InterpolateFunctionSpy function = new InterpolateFunctionSpy(parameters);
+        function.evaluate(null, Color.class); // force initialization
+        if (dynamic) {
+            assertTrue(function.isDynamic());
+        } else {
+            assertTrue(function.isStaticColor());
+        }
+    }
+
+    /** A simple literal function wrapper that should force the interpolate function to work in */
+    static class VolaliteLiteral extends FunctionExpressionImpl implements VolatileFunction {
+
+        public static FunctionName NAME = new FunctionNameImpl("volatileLiteral", Double.class);
+        private final Object value;
+
+        public VolaliteLiteral(Object value) {
+            super(NAME);
+            this.value = value;
+        }
+
+        public Object evaluate(Object feature) {
+            return value;
+        }
+    }
+
+    /** Subclass allowing to check which kind of InterpPoint was used for tests */
+    static class InterpolateFunctionSpy extends InterpolateFunction {
+
+        public InterpolateFunctionSpy(List<Expression> parameters) {
+            super(parameters, null);
+        }
+
+        public boolean isStaticNumeric() {
+            return interpPoints.stream().allMatch(ip -> ip instanceof ConstantNumericPoint);
+        }
+
+        public boolean isStaticColor() {
+            return interpPoints.stream().allMatch(ip -> ip instanceof ConstantColorPoint);
+        }
+
+        public boolean isDynamic() {
+            return interpPoints.stream().allMatch(ip -> ip instanceof DynamicPoint);
+        }
     }
 }

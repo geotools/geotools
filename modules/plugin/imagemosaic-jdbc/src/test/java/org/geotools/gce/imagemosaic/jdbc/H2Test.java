@@ -81,6 +81,8 @@ public class H2Test extends AbstractTest {
         suite.addTest(new H2Test("testDrop"));
         suite.addTest(new H2Test("testCreate"));
         suite.addTest(new H2Test("testImage1"));
+        suite.addTest(new H2Test("testImage2"));
+        suite.addTest(new H2Test("testImage3"));
         suite.addTest(new H2Test("testFullExtent"));
         suite.addTest(new H2Test("testNoData"));
         suite.addTest(new H2Test("testPartial"));
@@ -92,6 +94,8 @@ public class H2Test extends AbstractTest {
         suite.addTest(new H2Test("testDrop"));
         suite.addTest(new H2Test("testCreateJoined"));
         suite.addTest(new H2Test("testImage1Joined"));
+        suite.addTest(new H2Test("testImage2Joined"));
+        suite.addTest(new H2Test("testImage3Joined"));
         suite.addTest(new H2Test("testFullExtentJoined"));
         suite.addTest(new H2Test("testNoDataJoined"));
         suite.addTest(new H2Test("testPartialJoined"));

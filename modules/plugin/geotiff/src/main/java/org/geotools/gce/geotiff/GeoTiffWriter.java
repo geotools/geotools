@@ -61,12 +61,6 @@ import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.jdom2.Document;
-import org.jdom2.Element;
-import org.jdom2.JDOMException;
-import org.jdom2.Parent;
-import org.jdom2.input.DOMBuilder;
-import org.jdom2.output.DOMOutputter;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.grid.GridCoverageWriter;
@@ -76,6 +70,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.crs.ProjectedCRS;
 import org.opengis.util.ProgressListener;
+import org.w3c.dom.Node;
 
 /**
  * {@link AbstractGridCoverageWriter} implementation for the geotiff format.
@@ -87,12 +82,7 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
 
     private final Map<String, String> metadataKeyValue = new HashMap<String, String>();
 
-    /**
-     * Constructor for a {@link GeoTiffWriter}.
-     *
-     * @param destination
-     * @throws IOException
-     */
+    /** Constructor for a {@link GeoTiffWriter}. */
     public GeoTiffWriter(Object destination) throws IOException {
         this(destination, null);
     }
@@ -114,13 +104,7 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
         }
     }
 
-    /**
-     * Constructor for a {@link GeoTiffWriter}.
-     *
-     * @param destination
-     * @param hints
-     * @throws IOException
-     */
+    /** Constructor for a {@link GeoTiffWriter}. */
     public GeoTiffWriter(Object destination, Hints hints) throws IOException {
 
         this.destination = destination;
@@ -274,7 +258,6 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
      * Takes care of writing the world file for this geotiff
      *
      * @param gc the {@link GridCoverage} to take the georefeerincing from.
-     * @param tr
      * @throws IOException in case something bad occurs while writing.
      */
     private void handleTFW(final GridCoverage gc, AffineTransform tr) throws IOException {
@@ -283,16 +266,9 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
         final String name = destFile.getName();
         final File tfw = new File(parentFile, name.replace("tif", "tfw"));
         final File prj = new File(parentFile, name.replace("tif", "prj"));
-        final BufferedWriter outW = new BufferedWriter(new FileWriter(prj));
-        new WorldFileWriter(tfw, tr); // side effect of creation writes the file
-        try {
+        try (final BufferedWriter outW = new BufferedWriter(new FileWriter(prj))) {
+            new WorldFileWriter(tfw, tr); // side effect of creation writes the file
             outW.write(gc.getCoordinateReferenceSystem().toWKT());
-        } finally {
-            try {
-                outW.close();
-            } catch (Exception e) {
-                LOGGER.log(Level.FINER, "Failed to close output writer", e);
-            }
         }
     }
 
@@ -374,9 +350,6 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
     /**
      * Writes the provided rendered image to the provided image output stream using the supplied
      * geotiff metadata.
-     *
-     * @param gtParams
-     * @param listener
      */
     private boolean writeImage(
             final RenderedImage image,
@@ -455,7 +428,6 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
      * @param writer the image writer, must not be null
      * @param type the image type, must not be null
      * @param geoTIFFMetadata the GeoTIFFWritingUtilities metadata, must not be null
-     * @param params
      * @return the image metadata, never null
      * @throws IIOException if the metadata cannot be created
      */
@@ -470,24 +442,13 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
         org.w3c.dom.Element w3cElement =
                 (org.w3c.dom.Element)
                         imageMetadata.getAsTree(GeoTiffConstants.GEOTIFF_IIO_METADATA_FORMAT_NAME);
-        final Element element = new DOMBuilder().build(w3cElement);
 
-        geoTIFFMetadata.assignTo(element);
-
-        final Parent parent = element.getParent();
-        parent.removeContent(element);
-
-        final Document document = new Document(element);
-
+        geoTIFFMetadata.assignTo(w3cElement);
         try {
-            final org.w3c.dom.Document w3cDoc = new DOMOutputter().output(document);
+            Node TIFFIFD = w3cElement.getChildNodes().item(0);
             final IIOMetadata iioMetadata =
-                    new TIFFImageMetadata(
-                            TIFFImageMetadata.parseIFD(
-                                    w3cDoc.getDocumentElement().getFirstChild()));
+                    new TIFFImageMetadata(TIFFImageMetadata.parseIFD(TIFFIFD));
             imageMetadata = iioMetadata;
-        } catch (JDOMException e) {
-            throw new IIOException("Failed to set GeoTIFFWritingUtilities specific tags.", e);
         } catch (IIOInvalidTreeException e) {
             throw new IIOException("Failed to set GeoTIFFWritingUtilities specific tags.", e);
         }

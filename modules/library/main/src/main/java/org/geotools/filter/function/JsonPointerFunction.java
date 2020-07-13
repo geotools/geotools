@@ -55,6 +55,7 @@ public class JsonPointerFunction extends FunctionExpressionImpl {
         final String pointerSpec = getExpression(1).evaluate(object, String.class);
 
         JsonPointer expectedPointer = JsonPointer.compile(pointerSpec);
+        if (json == null) return null;
         try (JsonParser parser = factory.createParser(json)) {
             while (parser.nextToken() != END_OF_STREAM) {
                 final JsonPointer pointer = parser.getParsingContext().pathAsPointer();

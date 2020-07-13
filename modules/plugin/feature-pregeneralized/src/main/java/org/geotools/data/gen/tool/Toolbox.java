@@ -47,11 +47,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  */
 @SuppressWarnings("PMD.SystemPrintln")
 public class Toolbox {
-    /**
-     * read args and delegate jobs
-     *
-     * @param args
-     */
+    /** read args and delegate jobs */
     static String MissingXMLConfig = "Missing XML config file ";
 
     static String MissingShapeFile = "Missing shape file ";
@@ -143,6 +139,7 @@ public class Toolbox {
         shapeDS.dispose();
     }
 
+    @SuppressWarnings("PMD.CloseResource") // writers are actually closed
     protected void generalizeShapeFile(
             File shapeFile, DataStore shapeDS, File targetDir, Double[] distanceArray)
             throws IOException {
@@ -153,11 +150,11 @@ public class Toolbox {
 
         SimpleFeatureCollection fcoll = fs.getFeatures();
         SimpleFeatureIterator it = fcoll.features();
+        List<FeatureWriter<SimpleFeatureType, SimpleFeature>> writers =
+                new ArrayList<FeatureWriter<SimpleFeatureType, SimpleFeature>>();
         try {
             int countTotal = fcoll.size();
 
-            List<FeatureWriter<SimpleFeatureType, SimpleFeature>> writers =
-                    new ArrayList<FeatureWriter<SimpleFeatureType, SimpleFeature>>();
             for (int i = 0; i < dataStores.length; i++) {
                 writers.add(dataStores[i].getFeatureWriter(typeName, Transaction.AUTO_COMMIT));
             }
@@ -178,10 +175,14 @@ public class Toolbox {
                 counter++;
                 showProgress(countTotal, counter);
             }
-            for (FeatureWriter<SimpleFeatureType, SimpleFeature> w : writers) {
-                w.close();
-            }
         } finally {
+            for (FeatureWriter<SimpleFeatureType, SimpleFeature> w : writers) {
+                try {
+                    w.close();
+                } catch (Exception e) {
+                    // ignore on purpose and move on
+                }
+            }
             it.close();
         }
 

@@ -41,8 +41,6 @@ public interface RenderingTransformation extends Function {
      * input data of the function This method will be called only if the input data is a feature
      * collection.
      *
-     * @param targetQuery
-     * @param gridGeometry
      * @return The transformed query, or null if no inversion is possible/meaningful
      */
     Query invertQuery(Query targetQuery, GridGeometry gridGeometry);
@@ -52,19 +50,11 @@ public interface RenderingTransformation extends Function {
      * the input data of the function involved in rendering. This method will be called only if the
      * input data is a grid coverage or a grid coverage reader
      *
-     * @param targetQuery
-     * @param gridGeometry
      * @return The transformed query, or null if no inversion is possible/meaningful
      */
     GridGeometry invertGridGeometry(Query targetQuery, GridGeometry targetGridGeometry);
 
-    /**
-     * Allows the transformation to customize the read
-     *
-     * @param reader
-     * @param params
-     * @return
-     */
+    /** Allows the transformation to customize the read */
     default GeneralParameterValue[] customizeReadParams(
             GridCoverageReader reader, GeneralParameterValue[] params) {
         return params;

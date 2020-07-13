@@ -59,10 +59,7 @@ public abstract class DefaultCoverageSource implements CoverageSource {
 
     private boolean disposed;
 
-    /**
-     * @param name
-     * @param coverageDescriptor
-     */
+    /** */
     protected DefaultCoverageSource(Name name, CoverageSourceDescriptor descriptor) {
         this.name = name;
         this.coverageDescriptor = descriptor;

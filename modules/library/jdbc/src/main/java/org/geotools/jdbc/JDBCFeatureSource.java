@@ -89,7 +89,6 @@ public class JDBCFeatureSource extends ContentFeatureSource {
      * Copy existing feature source
      *
      * @param featureSource jdbc feature source
-     * @throws IOException
      */
     protected JDBCFeatureSource(JDBCFeatureSource featureSource) throws IOException {
         super(featureSource.entry, featureSource.query);
@@ -279,6 +278,9 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                     ab.nillable(false);
                     ab.minOccurs(1);
                 }
+                if (column.restriction != null) {
+                    ab.addRestriction(column.restriction);
+                }
 
                 AttributeDescriptor att = null;
 
@@ -416,16 +418,16 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                 // grab a reader
                 Query preQuery = new Query(query);
                 query.setFilter(preFilter);
-                FeatureReader<SimpleFeatureType, SimpleFeature> preReader = getReader(preQuery);
-                // wrap with post filter
-                FilteringFeatureReader reader = new FilteringFeatureReader(preReader, postFilter);
-                try {
-                    while (reader.hasNext()) {
-                        reader.next();
-                        count++;
+                try (FeatureReader<SimpleFeatureType, SimpleFeature> preReader =
+                        getReader(preQuery)) {
+                    // wrap with post filter
+                    try (FilteringFeatureReader reader =
+                            new FilteringFeatureReader(preReader, postFilter)) {
+                        while (reader.hasNext()) {
+                            reader.next();
+                            count++;
+                        }
                     }
-                } finally {
-                    reader.close();
                 }
 
                 return count;
@@ -706,13 +708,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         }
     }
 
-    /**
-     * Special case of nearest visitor, which can be computed by combining a min and a max visit
-     *
-     * @param query
-     * @param visitor
-     * @throws IOException
-     */
+    /** Special case of nearest visitor, which can be computed by combining a min and a max visit */
     private boolean handleNearestVisitor(Query query, FeatureVisitor visitor) throws IOException {
         NearestVisitor nearest = (NearestVisitor) visitor;
         Object targetValue = nearest.getValueToMatch();
@@ -765,16 +761,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         return true;
     }
 
-    /**
-     * Computes the column metadata from a plain database table
-     *
-     * @param cx
-     * @param databaseSchema
-     * @param tableName
-     * @param dialect
-     * @return
-     * @throws SQLException
-     */
+    /** Computes the column metadata from a plain database table */
     List<ColumnMetadata> getColumnMetadata(
             Connection cx, String databaseSchema, String tableName, SQLDialect dialect)
             throws SQLException {
@@ -822,6 +809,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                 column.sqlType = columns.getInt("DATA_TYPE");
                 column.nullable = "YES".equalsIgnoreCase(columns.getString("IS_NULLABLE"));
                 column.binding = dialect.getMapping(columns, cx);
+                column.restriction = dialect.getRestrictions(columns, cx);
 
                 // support for user defined types, allow the dialect to handle them
                 if (column.sqlType == Types.DISTINCT) {
@@ -837,15 +825,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         return result;
     }
 
-    /**
-     * Computes the column metadata by running the virtual table query
-     *
-     * @param cx
-     * @param vtable
-     * @param dialect
-     * @return
-     * @throws SQLException
-     */
+    /** Computes the column metadata by running the virtual table query */
     static List<ColumnMetadata> getColumnMetadata(
             Connection cx, VirtualTable vtable, SQLDialect dialect, JDBCDataStore store)
             throws SQLException {

@@ -79,10 +79,7 @@ public class BaseJP2K extends Assert {
         return available;
     }
 
-    /**
-     * @param reader
-     * @throws IOException
-     */
+    /** */
     protected void checkReader(GridCoverage2DReader reader) throws IOException {
         Assert.assertNotNull(reader);
 

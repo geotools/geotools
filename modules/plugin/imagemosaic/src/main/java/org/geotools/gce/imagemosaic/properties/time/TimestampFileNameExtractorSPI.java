@@ -18,6 +18,8 @@ package org.geotools.gce.imagemosaic.properties.time;
 
 import java.awt.RenderingHints.Key;
 import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
@@ -37,11 +39,15 @@ public class TimestampFileNameExtractorSPI implements PropertiesCollectorSPI {
 
     public static final String FULL_PATH = "fullPath";
 
+    public static final String USE_HIGH_TIME = "useHighTime";
+
     public static final String REGEX_PREFIX = REGEX + "=";
 
     public static final String FORMAT_PREFIX = FORMAT + "=";
 
     public static final String FULL_PATH_PREFIX = FULL_PATH + "=";
+
+    public static final String USE_HIGH_TIME_PREFIX = USE_HIGH_TIME + "=";
 
     public String getName() {
         return "TimestampFileNameExtractorSPI";
@@ -59,7 +65,9 @@ public class TimestampFileNameExtractorSPI implements PropertiesCollectorSPI {
         URL source = null;
         String regex = null;
         String format = null;
+        boolean useHighTime = false;
         boolean fullPath = false;
+        Properties properties = null;
         if (o instanceof URL) {
             source = (URL) o;
         } else if (o instanceof File) {
@@ -71,38 +79,36 @@ public class TimestampFileNameExtractorSPI implements PropertiesCollectorSPI {
 
                 String value = (String) o;
 
-                // look for the regex
-                int idx = 0;
+                int minIndex = value.length();
+
+                // parameters can be in any order
+                // look for the first parameter
+                int indexesOf[] = new int[3];
+                indexesOf[0] = value.indexOf("," + FORMAT_PREFIX);
+                indexesOf[1] = value.indexOf("," + FULL_PATH_PREFIX);
+                indexesOf[2] = value.indexOf("," + USE_HIGH_TIME_PREFIX);
+                for (int indexOf : indexesOf) {
+                    minIndex = (indexOf > 0 && indexOf < minIndex) ? indexOf : minIndex;
+                }
+
                 if (value.startsWith(REGEX_PREFIX)) {
-                    String tmp = value.substring(REGEX_PREFIX.length());
-                    if (tmp.contains("," + FORMAT_PREFIX)) {
-                        idx = tmp.indexOf("," + FORMAT_PREFIX);
-                        regex = tmp.substring(0, idx);
-                        value = tmp.substring(idx + 1);
-                    } else if (tmp.contains("," + FULL_PATH_PREFIX)) {
-                        idx = tmp.indexOf("," + FULL_PATH_PREFIX);
-                        regex = tmp.substring(0, idx);
-                        value = tmp.substring(idx + 1);
-                    } else {
-                        regex = tmp;
-                    }
-                }
+                    String prop = value;
+                    regex = value.substring(REGEX_PREFIX.length(), minIndex);
+                    // Do we have more parameters?
+                    if (minIndex != value.length()) {
+                        value = value.substring(minIndex + 1);
+                        prop = value.replaceAll(",", "\n");
 
-                // look for the format
-                if (value.startsWith(FORMAT_PREFIX)) {
-                    if (value.contains("," + FULL_PATH_PREFIX)) {
-                        idx = value.indexOf("," + FULL_PATH_PREFIX);
-                        format = value.substring(0, idx);
-                        value = value.substring(idx + 1);
-                    } else {
-                        format = value;
+                        // Setup properties from String for future extraction
+                        properties = new Properties();
+                        try {
+                            properties.load(new StringReader(prop));
+                            properties.setProperty(REGEX, regex);
+                        } catch (IOException e1) {
+                            throw new IllegalArgumentException(
+                                    "Unable to parse the specified regex: " + value, e1);
+                        }
                     }
-                    format = format.substring(FORMAT_PREFIX.length());
-                }
-
-                // look for the full path param
-                if (value.startsWith(FULL_PATH_PREFIX)) {
-                    fullPath = Boolean.valueOf(value.substring(FULL_PATH_PREFIX.length()));
                 }
             }
         } else {
@@ -111,25 +117,31 @@ public class TimestampFileNameExtractorSPI implements PropertiesCollectorSPI {
 
         // it is a url
         if (source != null) {
-            final Properties properties = CoverageUtilities.loadPropertiesFromURL(source);
+            properties = CoverageUtilities.loadPropertiesFromURL(source);
+        }
+        if (properties != null) {
             regex = properties.getProperty(REGEX);
             format = properties.getProperty(FORMAT);
             String fullPathParam = properties.getProperty(FULL_PATH);
             if (fullPathParam != null && fullPathParam.trim().length() > 0) {
                 fullPath = Boolean.valueOf(fullPathParam);
             }
+            String useHighTimeParam = properties.getProperty(USE_HIGH_TIME);
+            if (useHighTimeParam != null && useHighTimeParam.trim().length() > 0) {
+                useHighTime = Boolean.valueOf(useHighTimeParam);
+            }
         }
 
-        if (regex != null) {
-            regex = regex.trim();
-        }
         if (format != null) {
             format = format.trim();
         }
 
         if (regex != null) {
-            return new TimestampFileNameExtractor(this, propertyNames, regex, format, fullPath);
+            regex = regex.trim();
+            return new TimestampFileNameExtractor(
+                    this, propertyNames, regex, format, fullPath, useHighTime);
         }
+
         return null;
     }
 }

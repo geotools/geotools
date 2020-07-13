@@ -59,11 +59,7 @@ public class WorldImageReaderTest extends WorldImageBaseTestCase {
 
     private Logger logger = org.geotools.util.logging.Logging.getLogger(WorldImageReaderTest.class);
 
-    /**
-     * Constructor for WorldImageReaderTest.
-     *
-     * @param arg0
-     */
+    /** Constructor for WorldImageReaderTest. */
     public WorldImageReaderTest(String arg0) {
         super(arg0);
     }

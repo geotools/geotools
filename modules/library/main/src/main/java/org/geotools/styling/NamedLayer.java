@@ -59,10 +59,6 @@ public interface NamedLayer extends StyledLayer {
 
     public void addStyle(Style sl);
 
-    /**
-     * Used to navigate a Style/SLD.
-     *
-     * @param visitor
-     */
+    /** Used to navigate a Style/SLD. */
     void accept(StyleVisitor visitor);
 }

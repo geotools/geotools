@@ -23,6 +23,7 @@
       </GetCapabilities>
       <GetMap>
         <Format>image/png</Format>
+        <Format>image/jpg</Format>
         <DCPType>
           <HTTP>
             <Get>

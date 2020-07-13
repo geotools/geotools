@@ -16,9 +16,7 @@
  */
 package org.geotools.ows.wmts.client;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.FileReader;
@@ -297,5 +295,61 @@ public class WMTSTileFactory4326Test {
                 object instanceof CapabilitiesType);
 
         return new WMTSCapabilities((CapabilitiesType) object);
+    }
+
+    @Test
+    public void testWMTSTileWithStyleInCapabilities() throws Exception {
+        // capabilities file with resource URL having an
+        // {style} placeholder
+        URL capaResource = getClass().getClassLoader().getResource("test-data/zamg.getcapa.xml");
+
+        File capaFile = new File(capaResource.toURI());
+
+        WMTSCapabilities capa = createCapabilities(capaFile);
+
+        String baseURL =
+                "http://wmsx.zamg.ac.at/mapcacheStatmap/wmts/1.0.0/overlay-all/default/{style}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png";
+        WMTSTileService service =
+                new WMTSTileService(
+                        baseURL,
+                        WMTSServiceType.REST,
+                        capa.getLayer("grey"),
+                        "default",
+                        capa.getMatrixSet("statmap"));
+
+        WMTSZoomLevel zoomLevel = service.getZoomLevel(1);
+        WMTSTileIdentifier tileId = new WMTSTileIdentifier(1, 1, zoomLevel, "SomeName");
+        WMTSTile tile = new WMTSTile(tileId, service);
+        String url = tile.getUrl().toString();
+        // check that url contains style instead of {style}
+        assertTrue(url.contains(service.getStyleName()));
+        assertFalse(url.contains("{style}"));
+    }
+
+    @Test
+    public void testWMTSTileWithStyleInCapabilities2() throws Exception {
+        // capabilities file with resource URL having an
+        // {Style} placeholder
+        URL capaResource = getClass().getClassLoader().getResource("test-data/basemapGetCapa.xml");
+
+        WMTSCapabilities capa = createCapabilities(new File(capaResource.toURI()));
+
+        String baseURL =
+                "https://maps1.wien.gv.at/basemap/bmapoberflaeche/{Style}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpeg";
+        WMTSTileService service =
+                new WMTSTileService(
+                        baseURL,
+                        WMTSServiceType.REST,
+                        capa.getLayer("bmaphidpi"),
+                        "normal",
+                        capa.getMatrixSet("EPSG:4326"));
+
+        WMTSTileIdentifier tileId =
+                new WMTSTileIdentifier(1, 1, service.getZoomLevel(1), "SomeName");
+        WMTSTile tile = new WMTSTile(tileId, service);
+        String url = tile.getUrl().toString();
+        // check that url contains style name instead of {Style}
+        assertTrue(url.contains(service.getStyleName()));
+        assertFalse(url.contains("{Style}"));
     }
 }

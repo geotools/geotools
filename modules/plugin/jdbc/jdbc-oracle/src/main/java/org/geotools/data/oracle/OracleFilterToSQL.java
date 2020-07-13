@@ -441,11 +441,7 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
         return e;
     }
 
-    /**
-     * Returns true if the current geometry has the geodetic marker raised
-     *
-     * @return
-     */
+    /** Returns true if the current geometry has the geodetic marker raised */
     boolean isCurrentGeometryGeodetic() {
         if (currentGeometry != null) {
             Boolean geodetic = (Boolean) currentGeometry.getUserData().get(OracleDialect.GEODETIC);
@@ -456,20 +452,19 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
 
     protected Geometry distillSameTypeGeometries(GeometryCollection coll, Geometry original) {
         if (original instanceof Polygon || original instanceof MultiPolygon) {
-            List<Polygon> polys = new ArrayList<Polygon>();
+            List<Polygon> polys = new ArrayList<>();
             accumulateGeometries(polys, coll, Polygon.class);
             return original.getFactory()
-                    .createMultiPolygon(((Polygon[]) polys.toArray(new Polygon[polys.size()])));
+                    .createMultiPolygon((polys.toArray(new Polygon[polys.size()])));
         } else if (original instanceof LineString || original instanceof MultiLineString) {
-            List<LineString> ls = new ArrayList<LineString>();
+            List<LineString> ls = new ArrayList<>();
             accumulateGeometries(ls, coll, LineString.class);
             return original.getFactory()
-                    .createMultiLineString((LineString[]) ls.toArray(new LineString[ls.size()]));
+                    .createMultiLineString(ls.toArray(new LineString[ls.size()]));
         } else if (original instanceof Point || original instanceof MultiPoint) {
-            List<LineString> points = new ArrayList<LineString>();
-            accumulateGeometries(points, coll, LineString.class);
-            return original.getFactory()
-                    .createMultiPoint((Point[]) points.toArray(new Point[points.size()]));
+            List<Point> points = new ArrayList<>();
+            accumulateGeometries(points, coll, Point.class);
+            return original.getFactory().createMultiPoint(points.toArray(new Point[points.size()]));
         } else {
             return original;
         }
@@ -497,14 +492,7 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
         out.write(", 'mask=anyinteract querytype=WINDOW') = 'TRUE' ");
     }
 
-    /**
-     * Encodes an SDO relate
-     *
-     * @param filter
-     * @param property
-     * @param geometry
-     * @param extraData
-     */
+    /** Encodes an SDO relate */
     protected void doSDORelate(
             Filter filter, Expression e1, Expression e2, boolean swapped, Object extraData)
             throws IOException {

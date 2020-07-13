@@ -263,7 +263,6 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
      *   <li>Required Parameters are present
      * </ul>
      *
-     * @param params
      * @return true if params is in agreement with getParametersInfo and checkDBType
      */
     public boolean canProcess(Map params) {
@@ -297,7 +296,7 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
         JDBCDataStore dataStore = new JDBCDataStore();
 
         // dialect
-        final SQLDialect dialect = createSQLDialect(dataStore);
+        final SQLDialect dialect = createSQLDialect(dataStore, params);
         dataStore.setSQLDialect(dialect);
 
         // datasource
@@ -312,6 +311,7 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
         // fetch size
         Integer fetchSize = (Integer) FETCHSIZE.lookUp(params);
         if (fetchSize != null && fetchSize > 0) dataStore.setFetchSize(fetchSize);
+        else dataStore.setFetchSize((Integer) FETCHSIZE.sample);
 
         Integer batchInsertSize = (Integer) BATCH_INSERT_SIZE.lookUp(params);
         if (batchInsertSize != null && batchInsertSize > 0) {
@@ -520,6 +520,16 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
      * Creates the dialect that the datastore uses for communication with the underlying database.
      *
      * @param dataStore The datastore.
+     * @param params The connection parameters
+     */
+    protected SQLDialect createSQLDialect(JDBCDataStore dataStore, Map params) {
+        return createSQLDialect(dataStore);
+    }
+
+    /**
+     * Creates the dialect that the datastore uses for communication with the underlying database.
+     *
+     * @param dataStore The datastore.
      */
     protected abstract SQLDialect createSQLDialect(JDBCDataStore dataStore);
 
@@ -570,7 +580,6 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
      *
      * @param params Map of connection parameter.
      * @return DataSource for SQL use
-     * @throws IOException
      */
     public BasicDataSource createDataSource(Map params) throws IOException {
         // create a datasource
@@ -645,18 +654,12 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
     /**
      * Override this to return a good validation query (a very quick one, such as one that asks the
      * database what time is it) or return null if the factory does not support validation.
-     *
-     * @return
      */
     protected abstract String getValidationQuery();
 
     /**
      * Builds up the JDBC url in a jdbc:<database>://<host>:<port>/<dbname> Override if you need a
      * different setup
-     *
-     * @param params
-     * @return
-     * @throws IOException
      */
     protected String getJDBCUrl(Map params) throws IOException {
         // jdbc url

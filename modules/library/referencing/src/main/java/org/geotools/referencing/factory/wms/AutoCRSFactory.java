@@ -79,10 +79,11 @@ public class AutoCRSFactory extends DirectAuthorityFactory implements CRSAuthori
         add(Auto42002.DEFAULT);
         add(Auto42003.DEFAULT);
         add(Auto42004.DEFAULT);
-        add(Auto97001.DEFAULT);
-        add(Auto97002.DEFAULT);
         // We don't actually support the Mollweide projection
         // add(Auto42005.DEFAULT);
+        add(Auto97001.DEFAULT);
+        add(Auto97002.DEFAULT);
+        add(Auto97003.DEFAULT);
     }
 
     /** Add the specified factlet. */

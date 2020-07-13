@@ -189,7 +189,6 @@ public class GeometryBuilder {
      * Creates a 2D LinearRing. If the supplied coordinate list is not closed, a closing coordinate
      * is added.
      *
-     * @param ord
      * @return a LinearRing
      */
     public LinearRing linearRing(double... ord) {
@@ -313,11 +312,6 @@ public class GeometryBuilder {
     /**
      * Creates an elliptical Polygon from a bounding box with a given number of sides.
      *
-     * @param x1
-     * @param y1
-     * @param x2
-     * @param y2
-     * @param nsides
      * @return a 2D Polygon
      */
     public Polygon ellipse(double x1, double y1, double x2, double y2, int nsides) {
@@ -430,11 +424,7 @@ public class GeometryBuilder {
         return isClosed;
     }
 
-    /**
-     * @param ord
-     * @param dim
-     * @return
-     */
+    /** */
     private CoordinateSequence createRingCS(double[] ord, int dim) {
         if (isClosed(ord, dim)) return createCS(ord, dim);
         double[] ord2 = new double[ord.length + dim];
@@ -447,11 +437,7 @@ public class GeometryBuilder {
         return createCS(ord2, dim);
     }
 
-    /**
-     * @param ord
-     * @param dim
-     * @return
-     */
+    /** */
     private CoordinateSequence createCS(double[] ord, int dim) {
         if (ord.length % dim != 0)
             throw new IllegalArgumentException(

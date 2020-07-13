@@ -197,10 +197,7 @@ public class GridCoverageReaderProgressAdapter extends BaseGridCoverageProgressA
 
     }
 
-    /**
-     * @param progress
-     * @param writer
-     */
+    /** */
     private void reportProgress(float progress, ImageReader reader) {
         monitor.progress(progress);
         if (monitor.isCanceled()) reader.abort();

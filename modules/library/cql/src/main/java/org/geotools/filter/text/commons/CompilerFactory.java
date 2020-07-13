@@ -36,10 +36,7 @@ final class CompilerFactory {
     /**
      * Initializes and create the new compiler
      *
-     * @param predicate
-     * @param filterFactory
      * @return CQLCompiler
-     * @throws CQLException
      */
     public static ICompiler makeCompiler(
             final Language language, final String predicate, final FilterFactory filterFactory)

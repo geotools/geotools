@@ -35,9 +35,11 @@ import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
+import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.SchemaException;
+import org.geotools.feature.collection.ClippingFeatureCollection;
 import org.geotools.filter.function.RenderingTransformation;
 import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
 import org.geotools.geometry.GeneralEnvelope;
@@ -45,6 +47,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -52,6 +55,7 @@ import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
+import org.opengis.metadata.extent.GeographicBoundingBox;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
@@ -176,16 +180,36 @@ public abstract class RenderingTransformationHelper {
                                 renderingEnvelope.getCoordinateReferenceSystem(), coverageCRS)) {
                             renderingEnvelope = renderingEnvelope.transform(coverageCRS, true);
                         }
-                        if (coverage.getEnvelope2D().intersects(renderingEnvelope)) {
-                            // the resulting coverage might be larger than the readGG envelope,
-                            // shall we crop it?
-                            final ParameterValueGroup param =
-                                    PROCESSOR.getOperation("CoverageCrop").getParameters();
-                            param.parameter("Source").setValue(coverage);
-                            param.parameter("Envelope").setValue(renderingEnvelope);
-                            coverage = (GridCoverage2D) PROCESSOR.doOperation(param);
+
+                        // Check if this is a world-spanning projection - if so, we need to consider
+                        // dateline wrapping
+                        GeographicBoundingBox crsLatLonBoundingBox =
+                                CRS.getGeographicBoundingBox(coverageCRS);
+                        if (null == crsLatLonBoundingBox
+                                || crsLatLonBoundingBox.getEastBoundLongitude()
+                                                - crsLatLonBoundingBox.getWestBoundLongitude()
+                                        >= 360) {
+                            // in this case, only crop if the rendering envelope is entirely inside
+                            // the coverage
+                            if (coverage.getEnvelope2D().contains(renderingEnvelope)) {
+                                final ParameterValueGroup param =
+                                        PROCESSOR.getOperation("CoverageCrop").getParameters();
+                                param.parameter("Source").setValue(coverage);
+                                param.parameter("Envelope").setValue(renderingEnvelope);
+                                coverage = (GridCoverage2D) PROCESSOR.doOperation(param);
+                            }
                         } else {
-                            coverage = null;
+                            if (coverage.getEnvelope2D().intersects(renderingEnvelope)) {
+                                // the resulting coverage might be larger than the readGG envelope,
+                                // shall we crop it?
+                                final ParameterValueGroup param =
+                                        PROCESSOR.getOperation("CoverageCrop").getParameters();
+                                param.parameter("Source").setValue(coverage);
+                                param.parameter("Envelope").setValue(renderingEnvelope);
+                                coverage = (GridCoverage2D) PROCESSOR.doOperation(param);
+                            } else {
+                                coverage = null;
+                            }
                         }
 
                         if (coverage != null) {
@@ -255,6 +279,11 @@ public abstract class RenderingTransformationHelper {
             // grab the original features
             Query mixedQuery = DataUtilities.mixQueries(layerQuery, optimizedQuery, null);
             originalFeatures = featureSource.getFeatures(mixedQuery);
+            if (featureSource.getSupportedHints().contains(Hints.GEOMETRY_CLIP)
+                    && originalFeatures instanceof SimpleFeatureCollection) {
+                originalFeatures =
+                        new ClippingFeatureCollection((SimpleFeatureCollection) originalFeatures);
+            }
             originalFeatures =
                     RendererUtilities.fixFeatureCollectionReferencing(originalFeatures, sourceCrs);
 
@@ -265,15 +294,7 @@ public abstract class RenderingTransformationHelper {
         return result;
     }
 
-    /**
-     * Subclasses will override and provide means to read the coverage
-     *
-     * @param reader
-     * @param params
-     * @param readGG
-     * @return
-     * @throws IOException
-     */
+    /** Subclasses will override and provide means to read the coverage */
     protected abstract GridCoverage2D readCoverage(
             GridCoverage2DReader reader, Object params, GridGeometry2D readGG) throws IOException;
 }

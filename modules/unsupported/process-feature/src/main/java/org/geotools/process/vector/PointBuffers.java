@@ -41,7 +41,7 @@ import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.cs.CoordinateSystem;
 import org.opengis.util.ProgressListener;
 import si.uom.SI;
-import tec.uom.se.AbstractConverter;
+import tech.units.indriya.function.AbstractConverter;
 
 /**
  * Generates a set of polygons, each representing the set of points within a given distance from the

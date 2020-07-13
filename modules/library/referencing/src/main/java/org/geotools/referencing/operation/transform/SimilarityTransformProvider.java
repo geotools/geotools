@@ -26,7 +26,7 @@ import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.operation.MathTransform;
 import si.uom.NonSI;
 import si.uom.SI;
-import tec.uom.se.AbstractUnit;
+import tech.units.indriya.AbstractUnit;
 
 /**
  * The provider for the "<cite>Similarity transformation</cite>" (EPSG 9621).
@@ -85,9 +85,7 @@ public class SimilarityTransformProvider extends MathTransformProvider {
     public static final ParameterDescriptor<Double> ROTATION =
             createDescriptor(
                     new NamedIdentifier[] {
-                        new NamedIdentifier(
-                                Citations.EPSG,
-                                "Rotation angle of source coordinate reference system axes"),
+                        new NamedIdentifier(Citations.EPSG, "Rotation angle of source CRS axes"),
                         new NamedIdentifier(Citations.EPSG, "8614")
                     },
                     0,

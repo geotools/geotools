@@ -120,6 +120,7 @@ class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
 
     private long maxDbfSize = DEFAULT_MAX_DBF_SIZE;
 
+    @SuppressWarnings("PMD.CloseResource") // closeables are managed as fields
     public ShapefileFeatureWriter(
             ShpFiles shpFiles,
             ShapefileFeatureReader featureReader,
@@ -160,7 +161,7 @@ class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
         FileChannel shxChannel = storageFiles.get(SHX).getWriteChannel();
         shpWriter = new ShapefileWriter(shpChannel, shxChannel);
 
-        dbfHeader = ShapefileDataStore.createDbaseHeader(featureType);
+        dbfHeader = ShapefileDataStore.createDbaseHeader(featureType, dbfCharset);
         dbfChannel = storageFiles.get(DBF).getWriteChannel();
         dbfWriter = new DbaseFileWriter(dbfHeader, dbfChannel, dbfCharset, dbfTimeZone);
 
@@ -375,7 +376,13 @@ class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
         }
 
         // convert geometry
-        g = JTSUtilities.convertToCollection(g, shapeType);
+        if (g != null) {
+            if (g.isEmpty()) {
+                g = null;
+            } else {
+                g = JTSUtilities.convertToCollection(g, shapeType);
+            }
+        }
 
         // bounds calculations
         if (g != null) {

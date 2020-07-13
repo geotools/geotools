@@ -64,11 +64,7 @@ public class BatchFeatureEvent extends FeatureEvent {
     @SuppressWarnings("unchecked")
     protected WeakHashSet<Identifier> fids = new WeakHashSet<Identifier>(Identifier.class);
 
-    /**
-     * Used to change this into a COMMIT or ROLLBACK if needed.
-     *
-     * @param type
-     */
+    /** Used to change this into a COMMIT or ROLLBACK if needed. */
     public void setType(Type type) {
         this.type = type;
     }

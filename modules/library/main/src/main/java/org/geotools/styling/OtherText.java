@@ -29,8 +29,6 @@ public interface OtherText {
     /**
      * The target location for the text. It can be anything, but it's up to the renderer to decide
      * whether it can be used or not (some paths can be used, others are not understood)
-     *
-     * @return
      */
     public String getTarget();
 
@@ -39,8 +37,6 @@ public interface OtherText {
     /**
      * The text expression to be used in the specified location. Normally it should be a string, but
      * a renderer may accept something different (a number, a date)
-     *
-     * @return
      */
     public Expression getText();
 

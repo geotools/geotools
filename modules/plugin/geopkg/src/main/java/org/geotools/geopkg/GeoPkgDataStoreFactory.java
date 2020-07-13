@@ -151,8 +151,6 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
      * internal pool
      *
      * @param params Map of connection parameter.
-     * @return
-     * @throws IOException
      */
     @Override
     public BasicDataSource createDataSource(Map params) throws IOException {
@@ -166,6 +164,7 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
         dataSource.setUrl(getJDBCUrl(params));
 
         addConnectionProperties(dataSource, params);
+        dataSource.setMinIdle(1);
 
         dataSource.setAccessToUnderlyingConnectionAllowed(true);
 

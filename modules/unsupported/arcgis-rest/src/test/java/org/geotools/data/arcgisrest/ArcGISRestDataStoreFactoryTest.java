@@ -37,9 +37,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+/** @source $URL$ */
 public class ArcGISRestDataStoreFactoryTest {
 
-    private static final Logger LOGGER = Logging.getLogger(ArcGISRestDataStoreFactoryTest.class);
+    private static final Logger LOGGER = Logging.getLogger("org.geotools.data.arcgisrest");
 
     public static String URL = "http://data.dhs.opendata.arcgis.com/data.json";
     public static String WSURL =
@@ -74,12 +75,7 @@ public class ArcGISRestDataStoreFactoryTest {
      * @throws FileNotFoundException
      */
     public static String readJSONAsString(String fileName) throws FileNotFoundException {
-        Scanner input =
-                new Scanner(
-                        new File(
-                                ArcGISRestDataStoreFactoryTest.class
-                                        .getResource(fileName)
-                                        .getFile()));
+        Scanner input = new Scanner(readJSONAsStream(fileName));
         StringBuilder jsonObj = new StringBuilder();
         while (input.hasNextLine()) {
             jsonObj.append(input.nextLine());

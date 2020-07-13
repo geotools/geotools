@@ -98,8 +98,6 @@ public class TinImpl extends TriangulatedSurfaceImpl {
      *
      * <p>GM_Tin::GM_Tin(post : Set<GM_Position>, stopLines : Set<GM_LineString>, breakLines :
      * Set<GM_LineString>, maxLength : Number): GM_Tin
-     *
-     * @param tin
      */
 
     // public TinImpl(TinImpl tin) {
@@ -149,14 +147,6 @@ public class TinImpl extends TriangulatedSurfaceImpl {
     /**
      * This constructor delegates the mesh generation to different mesh generators. GM_Factory
      * transforms the results of the mesh generation into input parameters
-     *
-     * @param factory
-     * @param surfBdry
-     * @param post
-     * @param stopLines
-     * @param breakLines
-     * @param maxLength
-     * @param triangles
      */
     public TinImpl(
             SurfaceBoundaryImpl surfBdry,
@@ -173,13 +163,7 @@ public class TinImpl extends TriangulatedSurfaceImpl {
         super.setTriangles(triangles);
     }
 
-    /**
-     * @param factory
-     * @param post
-     * @param stopLines
-     * @param breakLines
-     * @param maxLength
-     */
+    /** */
     // Suppressing for now, but this is actually guaranteed to NPE
     @SuppressFBWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
     public TinImpl(

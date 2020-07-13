@@ -434,4 +434,24 @@ public class StyleExamples {
                                 "labelPoint", new Symbolizer[] {textSymbolizer, pointSymbolizer}));
         // markTestSLD end
     }
+
+    private void backgroundExample() {
+        // styleBackground start
+
+        // create a "user defined" style
+        StyleFactory sf = CommonFactoryFinder.getStyleFactory();
+        Style style = sf.createStyle();
+        style.setName("style");
+        // ...
+
+        //
+        // set a background
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
+        Fill background = sf.fill(null, ff.literal(Color.RED), ff.literal(1.0));
+        style.setBackground(background);
+
+        // ... set the feature type styles and symbolizers
+
+        // styleBackground end
+    }
 }

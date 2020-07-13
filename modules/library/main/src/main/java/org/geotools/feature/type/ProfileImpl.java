@@ -53,12 +53,7 @@ public class ProfileImpl implements Schema {
     /** Profile contents (created in a lazy fashion). */
     private Map contents = null;
 
-    /**
-     * Subset parent schema with profile keys.
-     *
-     * @param parent
-     * @param profile
-     */
+    /** Subset parent schema with profile keys. */
     public ProfileImpl(Schema parent, Set<Name> profile) {
         this.parent = parent;
 

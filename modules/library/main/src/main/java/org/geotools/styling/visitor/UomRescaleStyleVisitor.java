@@ -266,9 +266,10 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
 
     private void scaleIntOption(Map<String, String> options, String optionName, Unit<Length> uom) {
         if (options.containsKey(optionName)) {
-            String rescaled = rescale(options.get(optionName), uom);
-
-            options.put(optionName, toInt(rescaled));
+            String strValue = options.get(optionName);
+            if (strValue != null) {
+                options.put(optionName, toInt(rescale(strValue, uom)));
+            }
         }
     }
 
@@ -276,14 +277,16 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
             Map<String, String> options, String optionName, Unit<Length> uom) {
         if (options.containsKey(optionName)) {
             String strValue = options.get(optionName);
-            String[] splitted = strValue.split("\\s+");
-            StringBuilder sb = new StringBuilder();
-            for (String value : splitted) {
-                String rescaled = rescale(value, uom);
-                sb.append(toInt(rescaled)).append(" ");
+            if (strValue != null) {
+                String[] splitted = strValue.split("\\s+");
+                StringBuilder sb = new StringBuilder();
+                for (String value : splitted) {
+                    String rescaled = rescale(value, uom);
+                    sb.append(toInt(rescaled)).append(" ");
+                }
+                sb.setLength(sb.length() - 1);
+                options.put(optionName, sb.toString());
             }
-            sb.setLength(sb.length() - 1);
-            options.put(optionName, sb.toString());
         }
     }
 

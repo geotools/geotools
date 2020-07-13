@@ -350,6 +350,31 @@ public class SLDParserTest {
                     + "\n\t</Normalize>"
                     + "\n\t</ContrastEnhancement>";
 
+    static String SLD_NULL_VENDOR_OPTION =
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                    + "<StyledLayerDescriptor version=\"1.0.0\" \n"
+                    + "        xsi:schemaLocation=\"http://www.opengis.net/sld StyledLayerDescriptor.xsd\" \n"
+                    + "        xmlns=\"http://www.opengis.net/sld\" xmlns:ogc=\"http://www.opengis.net/ogc\" \n"
+                    + "        xmlns:xlink=\"http://www.w3.org/1999/xlink\" \n"
+                    + "        xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n"
+                    + "    <UserStyle>\n"
+                    + "        <Name>Default Styler</Name>\n"
+                    + "        <Title>Default Styler</Title>\n"
+                    + "        <Abstract></Abstract>\n"
+                    + "        <FeatureTypeStyle>\n"
+                    + "            <FeatureTypeName>Feature</FeatureTypeName>\n"
+                    + "            <Rule>\n"
+                    + "                <PointSymbolizer>\n"
+                    + "                    <Graphic>\n"
+                    + "                    </Graphic>\n"
+                    + "					   <VendorOption name=\"NullVendor\"/>  \n"
+                    + "					   <VendorOption name=\"OkVendor\">TEST_OK</VendorOption>  \n"
+                    + "                </PointSymbolizer>\n"
+                    + "            </Rule>\n"
+                    + "        </FeatureTypeStyle>\n"
+                    + "    </UserStyle>\n"
+                    + "</StyledLayerDescriptor>";
+
     static StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory(null);
 
     @Test
@@ -630,7 +655,8 @@ public class SLDParserTest {
         // this SLD file references as external entity a file on the local filesystem
         SLDParser parser = new SLDParser(styleFactory, input(SLD_EXTERNALENTITY));
 
-        // without a custom EntityResolver, the parser will try to read the entity file on the local
+        // without a custom EntityResolver, the parser will try to read the entity file
+        // on the local
         // file system
         try {
             parser.readXML();
@@ -640,9 +666,11 @@ public class SLDParserTest {
         }
 
         parser = new SLDParser(styleFactory, input(SLD_EXTERNALENTITY));
-        // Set an EntityResolver implementation to prevent reading entities from the local file
+        // Set an EntityResolver implementation to prevent reading entities from the
+        // local file
         // system.
-        // When resolving an XML entity, the empty InputSource returned by this resolver provokes
+        // When resolving an XML entity, the empty InputSource returned by this resolver
+        // provokes
         // a MalformedURLException
         parser.setEntityResolver(
                 new EntityResolver() {
@@ -754,6 +782,20 @@ public class SLDParserTest {
         assertNotNull(params);
 
         assertTrue("Params should be empty", params.isEmpty());
+    }
+
+    @Test
+    public void testNullVendorObject() throws Exception {
+
+        SLDParser parser = new SLDParser(styleFactory, input(SLD_NULL_VENDOR_OPTION));
+        Style[] styles = parser.readXML();
+        List<FeatureTypeStyle> fts = styles[0].featureTypeStyles();
+        List<Rule> rules = fts.get(0).rules();
+        List<Symbolizer> symbolizers = rules.get(0).symbolizers();
+
+        PointSymbolizer ps = (PointSymbolizer) symbolizers.get(0);
+
+        assertEquals(1, ps.getOptions().size());
     }
 
     void assertStyles(Style[] styles) {

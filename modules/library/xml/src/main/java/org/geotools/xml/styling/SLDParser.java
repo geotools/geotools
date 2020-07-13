@@ -1253,8 +1253,9 @@ public class SLDParser {
     private void parseVendorOption(Map<String, String> options, Node child) {
         String key = child.getAttributes().getNamedItem("name").getNodeValue();
         String value = getFirstChildValue(child);
-
-        options.put(key, value);
+        if (value != null) {
+            options.put(key, value);
+        }
     }
 
     /**

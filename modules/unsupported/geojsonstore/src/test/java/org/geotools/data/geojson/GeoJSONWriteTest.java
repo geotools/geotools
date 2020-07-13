@@ -35,7 +35,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.commons.text.WordUtils;
 import org.geotools.TestData;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
@@ -458,9 +457,9 @@ public class GeoJSONWriteTest {
         }
         BufferedReader r = new BufferedReader(new FileReader(out));
         String line;
-        while ((line = r.readLine()) != null) {
+        /*while ((line = r.readLine()) != null) {
             System.out.println(WordUtils.wrap(line, 80));
-        }
+        }*/
     }
 
     @Test
@@ -492,7 +491,7 @@ public class GeoJSONWriteTest {
 
         assertNotNull(outDS);
         SimpleFeatureType schema = ds.getSchema(name);
-        System.out.println(schema);
+
         outDS.createSchema(schema);
 
         SimpleFeatureSource featureSource = null;
@@ -512,7 +511,7 @@ public class GeoJSONWriteTest {
         try (BufferedReader r = new BufferedReader(new FileReader(out))) {
             String line;
             while ((line = r.readLine()) != null) {
-                System.out.println(line);
+                //   System.out.println(line);
             }
         }
     }

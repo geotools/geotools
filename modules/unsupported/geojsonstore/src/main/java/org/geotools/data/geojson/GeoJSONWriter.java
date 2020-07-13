@@ -71,6 +71,8 @@ public class GeoJSONWriter implements AutoCloseable {
 
     private boolean encodeFeatureCollectionBounds = false;
 
+    private boolean inArray = false;
+
     public GeoJSONWriter(OutputStream outputStream) throws IOException {
         // force the output CRS to be long, lat as required by spec
         CRSAuthorityFactory cFactory = CRS.getAuthorityFactory(true);
@@ -109,6 +111,7 @@ public class GeoJSONWriter implements AutoCloseable {
 
         generator.writeFieldName("features");
         generator.writeStartArray();
+        inArray = true;
         initalised = true;
     }
 
@@ -195,8 +198,10 @@ public class GeoJSONWriter implements AutoCloseable {
     @Override
     public void close() throws IOException {
         try {
-            generator.writeEndArray();
-            generator.writeEndObject();
+            if (inArray) {
+                generator.writeEndArray();
+                generator.writeEndObject();
+            }
 
             generator.close();
         } finally {
@@ -242,13 +247,11 @@ public class GeoJSONWriter implements AutoCloseable {
     public static String toGeoJSON(SimpleFeature f) {
         JsonFactory factory = new JsonFactory();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        try {
-            JsonGenerator lGenerator = factory.createGenerator(out);
-            GeoJSONWriter writer = new GeoJSONWriter(out);
+        try (JsonGenerator lGenerator = factory.createGenerator(out);
+                GeoJSONWriter writer = new GeoJSONWriter(out)) {
             writer.writeFeature(f, lGenerator);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return new String(out.toByteArray());
     }

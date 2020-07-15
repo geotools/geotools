@@ -120,7 +120,7 @@
       <artifactId>org.eclipse.emf.ecore</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.xsd</groupId>
+      <groupId>org.eclipse.emf</groupId>
       <artifactId>org.eclipse.xsd</artifactId>
     </dependency>
     <dependency>

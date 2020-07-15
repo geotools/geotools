@@ -50,7 +50,12 @@ public abstract class MBExpression extends FunctionImpl {
     protected final MBObjectParser parse;
     protected final MBStyleTransformer transformer;
 
-    public MBExpression(JSONArray json) {
+    /**
+     * Please use factory method {@link #create(JSONArray)}
+     *
+     * @param json
+     */
+    protected MBExpression(JSONArray json) {
         this.json = json;
         this.name = (String) json.get(0);
         this.ff = CommonFactoryFinder.getFilterFactory2();
@@ -123,6 +128,12 @@ public abstract class MBExpression extends FunctionImpl {
     /* A list of zoom expression names */
     public static List zoom = Arrays.asList("zoom");
 
+    /**
+     * Factory method used to produce the correct MBExpression subclass for the provided JSONArray.
+     *
+     * @param json definition
+     * @return MBExpression
+     */
     public static MBExpression create(JSONArray json) {
         String name;
         if (json.get(0) instanceof String) {
@@ -151,24 +162,29 @@ public abstract class MBExpression extends FunctionImpl {
             } else if (zoom.contains(name)) {
                 return new MBZoom(json);
             } else {
-                throw new MBFormatException("Expression \"" + name + "\" invalid.");
+                throw new MBFormatException(
+                        "Data expression \""
+                                + name
+                                + "\" invalid. It may be misspelled or not supported by this implementation:"
+                                + json);
             }
         }
-        throw new MBFormatException("Requires a string name of the expression at position 0");
+        throw new MBFormatException("Requires a string name of the data expression at position 0");
     }
 
     public static boolean canCreate(final String name) {
-        return colors.contains(name)
-                || decisions.contains(name)
-                || featureData.contains(name)
-                || heatMap.contains(name)
-                || lookUp.contains(name)
-                || math.contains(name)
-                || ramps.contains(name)
-                || string.contains(name)
-                || types.contains(name)
-                || variableBindings.contains(name)
-                || zoom.contains(name);
+        return name != null
+                && (colors.contains(name)
+                        || decisions.contains(name)
+                        || featureData.contains(name)
+                        || heatMap.contains(name)
+                        || lookUp.contains(name)
+                        || math.contains(name)
+                        || ramps.contains(name)
+                        || string.contains(name)
+                        || types.contains(name)
+                        || variableBindings.contains(name)
+                        || zoom.contains(name));
     }
 
     /** Determines which expression to use. */

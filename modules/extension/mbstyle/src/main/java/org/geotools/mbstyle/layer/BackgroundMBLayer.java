@@ -93,7 +93,7 @@ public class BackgroundMBLayer extends MBLayer {
 
     /** @return True if the layer has a background-pattern explicitly provided. */
     public boolean hasBackgroundPattern() {
-        return parse.isPropertyDefined(paint, "background-pattern");
+        return parse.isDefined(paint, "background-pattern");
     }
 
     /**

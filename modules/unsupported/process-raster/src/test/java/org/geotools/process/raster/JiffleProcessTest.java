@@ -5,6 +5,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Vector;
+import java.util.function.Consumer;
+import javax.media.jai.RenderedOp;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -26,14 +35,6 @@ import org.geotools.test.TestData;
 import org.geotools.xml.styling.SLDParser;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
-
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.awt.image.Raster;
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Consumer;
 
 public class JiffleProcessTest {
 
@@ -145,6 +146,12 @@ public class JiffleProcessTest {
                     {0, 0, 2},
                 };
         assertArrayEquals(expected, resultData);
+
+        // the two coverages have the same grid geometry, no need to resample them via
+        // GridCoverage2DRIA
+        Vector sources = ((RenderedOp) result.getRenderedImage()).getSources();
+        assertEquals(c1.getRenderedImage(), sources.get(0));
+        assertEquals(c2.getRenderedImage(), sources.get(1));
     }
 
     @Test
@@ -308,7 +315,7 @@ public class JiffleProcessTest {
         try {
             Map<String, Object> output = jiffle.execute(inputs, null);
             GridCoverage2D result = (GridCoverage2D) output.get(JiffleProcess.OUT_RESULT);
-            
+
             // need to force fetch the data in order to trigger actual computation
             result.getRenderedImage().getData();
             fail("Should not have reached here");

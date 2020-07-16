@@ -153,9 +153,15 @@ public class JiffleProcess implements RasterProcess {
             GridCoverage2D coverage = coverages[i];
             double[] nodata = CoverageUtilities.getBackgroundValues(coverage);
             ROI roi = CoverageUtilities.getROIProperty(coverage);
-            sources[i] =
-                    GridCoverage2DRIA.create(
-                            coverage, reference, nodata, GeoTools.getDefaultHints(), roi);
+            // TODO: this could be improved to allow some tolerances, e.g., same structure
+            // with a max deviation
+            if (coverage.getGridGeometry().equals(reference.getGridGeometry())) {
+                sources[i] = coverage.getRenderedImage();
+            } else {
+                sources[i] =
+                        GridCoverage2DRIA.create(
+                                coverage, reference, nodata, GeoTools.getDefaultHints(), roi);
+            }
         }
 
         // in case we have optimized out band selection, need to remap the band access
@@ -183,7 +189,7 @@ public class JiffleProcess implements RasterProcess {
         GridSampleDimension[] sampleDimensions = getSampleDimensions(result, outputBandNames);
         GridCoverageFactory factory = new GridCoverageFactory(GeoTools.getDefaultHints());
         return factory.create(
-                "jiffle", result, reference.getEnvelope(), sampleDimensions, null, null);
+                "jiffle", result, reference.getEnvelope(), sampleDimensions, coverages, null);
     }
 
     private GridSampleDimension[] getSampleDimensions(RenderedOp result, String outputBandNames) {
@@ -191,7 +197,7 @@ public class JiffleProcess implements RasterProcess {
         Stream<String> names = getSampleDimensionNames(sm.getNumBands(), outputBandNames);
         SampleDimensionType sourceType = TypeMap.getSampleDimensionType(sm, 0);
         NumberRange<? extends Number> range = TypeMap.getRange(sourceType);
-        double[] nodata = {Double.NaN};
+        double[] nodata = null; // {Double.NaN};
         double min = range.getMinimum();
         double max = range.getMaximum();
         return names.map(

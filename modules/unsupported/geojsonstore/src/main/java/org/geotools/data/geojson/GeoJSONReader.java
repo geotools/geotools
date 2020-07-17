@@ -41,8 +41,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.DefaultFeatureCollection;
-import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -83,7 +83,7 @@ public class GeoJSONReader implements AutoCloseable {
 
     private boolean schemaChanged = false;
 
-    private GeometryFactory gFac = new GeometryFactory();
+    private static GeometryFactory gFac = new GeometryFactory();
 
     private URL url;
 
@@ -146,6 +146,25 @@ public class GeoJSONReader implements AutoCloseable {
         return null;
     }
 
+    /**
+     * @param input
+     * @return
+     */
+    public static Geometry parseGeometry(String input) {
+        try (JsonParser lParser = factory.createParser(new ByteArrayInputStream(input.getBytes()))) {
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.registerModule(new JtsModule());
+            ObjectNode node = mapper.readTree(lParser);
+            GeometryParser<Geometry> gParser = new GenericGeometryParser(gFac);
+            Geometry g = gParser.geometryFromJson(node);
+            return g;
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public SimpleFeatureCollection getFeatures() throws IOException {
         if (!isConnected()) {
             throw new IOException("not connected to " + url.toExternalForm());
@@ -175,6 +194,7 @@ public class GeoJSONReader implements AutoCloseable {
         }
         if (isSchemaChanged()) {
             // retype the features if the schema changes
+
             List<SimpleFeature> nFeatures = new ArrayList<>(features.size());
             for (SimpleFeature feature : features) {
                 if (feature.getFeatureType() != schema) {
@@ -250,7 +270,7 @@ public class GeoJSONReader implements AutoCloseable {
         return feature;
     }
 
-    /** */
+    /** Create a simpleFeatureBuilder for the current schema + these new properties. */
     private SimpleFeatureBuilder getBuilder(JsonNode props) {
 
         if (schema == null) {

@@ -198,7 +198,12 @@ public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
 
     @Override
     public FileDataStore createDataStore(URL url) throws IOException {
-        throw new UnsupportedImplementationException("Can't create a new URL based store");
+        return new GeoJSONDataStore(url);
+    }
+    
+   
+    public FileDataStore createDataStore(File f) throws IOException {
+        return new GeoJSONDataStore(f);
     }
 
     @Override

@@ -25,7 +25,10 @@ import org.sqlite.Function;
  *
  * @author Justin Deoliveira
  * @author Niels Charlier
+ * @deprecated The implementation forces object wrapping for all primitives, causing generation of
+ *     lots of short lived objects.
  */
+@Deprecated
 public abstract class GeometryFunction extends Function {
 
     public abstract Object execute(GeoPkgGeomReader reader) throws IOException;

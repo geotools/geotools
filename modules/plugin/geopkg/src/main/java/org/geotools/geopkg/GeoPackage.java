@@ -62,7 +62,8 @@ import org.geotools.geometry.jts.Geometries;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geopkg.geom.GeoPkgGeomReader;
 import org.geotools.geopkg.geom.GeoPkgGeomWriter;
-import org.geotools.geopkg.geom.GeometryFunction;
+import org.geotools.geopkg.geom.GeometryBooleanFunction;
+import org.geotools.geopkg.geom.GeometryDoubleFunction;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCFeatureStore;
@@ -308,56 +309,67 @@ public class GeoPackage implements Closeable {
         Function.create(
                 cx,
                 "ST_MinX",
-                new GeometryFunction() {
-                    @Override
-                    public Object execute(GeoPkgGeomReader reader) throws IOException {
+                new GeometryDoubleFunction() {
+
+                    public double execute(GeoPkgGeomReader reader) throws IOException {
                         return reader.getEnvelope().getMinX();
                     }
-                });
+                },
+                1,
+                Function.FLAG_DETERMINISTIC);
 
         // maxx
         Function.create(
                 cx,
                 "ST_MaxX",
-                new GeometryFunction() {
+                new GeometryDoubleFunction() {
                     @Override
-                    public Object execute(GeoPkgGeomReader reader) throws IOException {
+                    public double execute(GeoPkgGeomReader reader) throws IOException {
                         return reader.getEnvelope().getMaxX();
                     }
-                });
+                },
+                1,
+                Function.FLAG_DETERMINISTIC);
 
         // miny
         Function.create(
                 cx,
                 "ST_MinY",
-                new GeometryFunction() {
-                    @Override
-                    public Object execute(GeoPkgGeomReader reader) throws IOException {
+                new GeometryDoubleFunction() {
+
+                    public double execute(GeoPkgGeomReader reader)
+                            throws IOException, SQLException {
                         return reader.getEnvelope().getMinY();
                     }
-                });
-
+                },
+                1,
+                Function.FLAG_DETERMINISTIC);
         // maxy
         Function.create(
                 cx,
                 "ST_MaxY",
-                new GeometryFunction() {
-                    @Override
-                    public Object execute(GeoPkgGeomReader reader) throws IOException {
+                new GeometryDoubleFunction() {
+
+                    public double execute(GeoPkgGeomReader reader)
+                            throws IOException, SQLException {
                         return reader.getEnvelope().getMaxY();
                     }
-                });
+                },
+                1,
+                Function.FLAG_DETERMINISTIC);
 
         // empty
         Function.create(
                 cx,
                 "ST_IsEmpty",
-                new GeometryFunction() {
+                new GeometryBooleanFunction() {
                     @Override
-                    public Object execute(GeoPkgGeomReader reader) throws IOException {
+                    public boolean execute(GeoPkgGeomReader reader) throws IOException {
                         return reader.getHeader().getFlags().isEmpty();
                     }
-                });
+                },
+                1,
+                Function.FLAG_DETERMINISTIC);
     }
 
     /**

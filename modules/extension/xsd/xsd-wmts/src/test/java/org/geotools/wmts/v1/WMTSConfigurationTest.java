@@ -184,7 +184,7 @@ public class WMTSConfigurationTest {
         encoder.getNamespaces().declarePrefix("xlink", XLINK.NAMESPACE);
         Document doc = encoder.encodeAsDOM(caps, WMTS.Capabilities);
 
-        print(doc);
+        //print(doc);
 
         // Now evaluate what was encoded
         Map<String, String> namespaces = new HashMap<>();

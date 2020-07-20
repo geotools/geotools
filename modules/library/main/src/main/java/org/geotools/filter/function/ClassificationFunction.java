@@ -23,6 +23,8 @@ import java.util.*;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.DefaultExpression;
 import org.geotools.filter.FunctionExpression;
+import org.geotools.util.factory.GeoTools;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.Literal;
@@ -39,6 +41,9 @@ public abstract class ClassificationFunction extends DefaultExpression
 
     protected static final java.util.logging.Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(ClassificationFunction.class);
+
+    static final FilterFactory2 FF =
+            CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
 
     FunctionName name;
 

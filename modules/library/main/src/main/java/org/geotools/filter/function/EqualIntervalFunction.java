@@ -25,13 +25,10 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.util.NullProgressListener;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.visitor.*;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.geotools.util.factory.GeoTools;
-import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Divide;
 import org.opengis.filter.expression.Function;
@@ -45,9 +42,6 @@ import org.opengis.filter.expression.Subtract;
  * @author Cory Horner, Refractions Research Inc.
  */
 public class EqualIntervalFunction extends ClassificationFunction {
-
-    private static FilterFactory2 FF =
-            CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
 
     public static FunctionName NAME =
             new FunctionNameImpl(

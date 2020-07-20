@@ -33,6 +33,7 @@ import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
+import org.apache.commons.lang3.StringUtils;
 import org.geotools.data.Base64;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
@@ -1253,7 +1254,7 @@ public class SLDParser {
     private void parseVendorOption(Map<String, String> options, Node child) {
         String key = child.getAttributes().getNamedItem("name").getNodeValue();
         String value = getFirstChildValue(child);
-        if (value != null) {
+        if (StringUtils.isNotBlank(value)) {
             options.put(key, value);
         }
     }

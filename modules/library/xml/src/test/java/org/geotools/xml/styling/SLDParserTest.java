@@ -795,8 +795,8 @@ public class SLDParserTest {
         PointSymbolizer ps = (PointSymbolizer) symbolizers.get(0);
 
         assertEquals(1, ps.getOptions().size());
-
         assertTrue(ps.getOptions().containsKey(OK_KEY));
+
     }
 
     void assertStyles(Style[] styles) {

@@ -655,7 +655,8 @@ public class SLDParserTest {
         // this SLD file references as external entity a file on the local filesystem
         SLDParser parser = new SLDParser(styleFactory, input(SLD_EXTERNALENTITY));
 
-        // without a custom EntityResolver, the parser will try to read the entity file on the local
+        // without a custom EntityResolver, the parser will try to read the entity file
+        // on the local
         // file system
         try {
             parser.readXML();
@@ -665,9 +666,11 @@ public class SLDParserTest {
         }
 
         parser = new SLDParser(styleFactory, input(SLD_EXTERNALENTITY));
-        // Set an EntityResolver implementation to prevent reading entities from the local file
+        // Set an EntityResolver implementation to prevent reading entities from the
+        // local file
         // system.
-        // When resolving an XML entity, the empty InputSource returned by this resolver provokes
+        // When resolving an XML entity, the empty InputSource returned by this resolver
+        // provokes
         // a MalformedURLException
         parser.setEntityResolver(
                 new EntityResolver() {
@@ -795,8 +798,8 @@ public class SLDParserTest {
         PointSymbolizer ps = (PointSymbolizer) symbolizers.get(0);
 
         assertEquals(1, ps.getOptions().size());
-
         assertTrue(ps.getOptions().containsKey(OK_KEY));
+
     }
 
     void assertStyles(Style[] styles) {

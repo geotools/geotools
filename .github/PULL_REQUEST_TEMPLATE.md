@@ -15,7 +15,7 @@ The following are required only for core and extension modules (they are welcome
 - [ ] There is an issue in [Jira](https://osgeo-org.atlassian.net/projects/GEOT) describing the bug/task/new feature (a notable exemptions is, changes not visible to end users). The ticket is for the GeoTools project, if the issue was found elsewhere it's a good practice to link to the origin ticket/issue.
 - [ ] The pull request contains changes related to a single objective. If multiple focuses cannot be avoided, each one is in its own commit and has a separate ticket describing it.
 - [ ] PR for bug fixes and small new features are presented as a single commit
-- [ ] Commit message must be in the form "[GEOT-XYZW] Title of the Jira ticket"
+- [ ] Commit message(s) must be in the form "[GEOT-XYZW] Title of the Jira ticket"
 - [ ] New unit tests have been added covering the changes
 - [ ] This PR passes all existing unit tests (test results will be reported by travis-ci after opening this PR)
 - [ ] This PR passes the [QA checks](https://docs.geotools.org/latest/developer/conventions/code/qa.html) (QA checks results will be reported by travis-ci after opening this PR)

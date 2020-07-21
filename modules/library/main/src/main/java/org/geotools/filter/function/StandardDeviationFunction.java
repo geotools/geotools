@@ -19,16 +19,13 @@ package org.geotools.filter.function;
 import static org.geotools.filter.capability.FunctionNameImpl.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.visitor.CalcResult;
 import org.geotools.feature.visitor.StandardDeviationVisitor;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.opengis.feature.Feature;
 import org.opengis.filter.Filter;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
@@ -84,7 +81,11 @@ public class StandardDeviationFunction extends ClassificationFunction {
             RangedClassifier classifier = new RangedClassifier(min, max);
             if (percentages()) {
                 double[] percentages =
-                        getPercentages(featureCollection, classifier, getParameters().get(0));
+                        getPercentages(
+                                featureCollection,
+                                classifier,
+                                getParameters().get(0),
+                                standardDeviation);
                 classifier.setPercentages(percentages);
             }
             return classifier;
@@ -112,55 +113,31 @@ public class StandardDeviationFunction extends ClassificationFunction {
     }
 
     private double[] getPercentages(
-            FeatureCollection features, RangedClassifier classifier, Expression attr) {
-        int size = classifier.getSize();
-        List<Filter> filters = getFiltersForPercentages(classifier, size, attr);
-        int[][] bins = new int[size][1];
-        try (FeatureIterator it = features.features()) {
-            while (it.hasNext()) {
-                Feature f = it.next();
-                int i = 0;
-                for (Filter filter : filters) {
-                    if (filter.evaluate(f)) {
-                        bins[i][0]++;
-                        break;
-                    }
-                    i++;
-                }
-            }
-        }
-        return computePercentages(bins, features.size());
+            FeatureCollection features,
+            RangedClassifier classifier,
+            Expression attr,
+            double standardDeviation)
+            throws IOException {
+        int classSize = classifier.getSize();
+        Object firstMax = classifier.getMax(0);
+        Filter less = FF.less(attr, FF.literal(firstMax));
+        int sizeFirstClass = features.subCollection(less).size();
+        int totalSize = features.size();
+        double[] percentages = new double[classSize];
+        // we don't know the min value in the collection because the
+        // the first interval is open to infinity to the left.
+        // needs a query to get the classMembers
+        percentages[0] = (sizeFirstClass / totalSize) * 100;
+
+        double min = ((Number) classifier.getMin(1)).doubleValue();
+        return computeGroupByPercentages(features, percentages, totalSize, min, standardDeviation);
     }
 
-    private List<Filter> getFiltersForPercentages(
-            RangedClassifier classifier, int size, Expression attr) {
-        List<Filter> filters = new ArrayList<>(size);
-        for (int i = 0; i < size; i++) {
-            Object min = classifier.getMin(i);
-            Object max = classifier.getMax(i);
-            if (min == null) {
-                filters.add(FF.less(attr, FF.literal(max)));
-            } else if (max == null) {
-                filters.add(FF.greaterOrEqual(attr, FF.literal(min)));
-            } else {
-                Filter f1 = FF.greaterOrEqual(attr, FF.literal(min));
-                Filter f2 = FF.less(attr, FF.literal(max));
-                Filter and = FF.and(f1, f2);
-                filters.add(and);
-            }
-        }
-        return filters;
-    }
-
-    private double[] computePercentages(int[][] bins, double totalSize) {
-        double[] percentages = new double[bins.length];
-        for (int i = 0; i < bins.length; i++) {
-            double classMembers = bins[i][0];
-            if (classMembers != 0d && totalSize != 0d)
-                percentages[i] = (classMembers / totalSize) * 100;
-            else percentages[i] = 0d;
-        }
-        return percentages;
+    @Override
+    protected void computePercentage(
+            double[] percentages, double classMembers, double totalSize, int index) {
+        // since we are grouping by using the min of the second interval adds +1 to the index
+        super.computePercentage(percentages, classMembers, totalSize, index + 1);
     }
 
     protected boolean percentages() {

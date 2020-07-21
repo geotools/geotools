@@ -149,7 +149,7 @@ public class StandardDeviationFunctionTest extends FunctionTestSupport {
         assertEquals(123.123, (Double) classifier.getMax(0), 0d);
     }
 
-    public void testPercentages() {
+    public void testPercentagesOddClassNum() {
         Literal classes = ff.literal(5);
         PropertyName exp = ff.property("foo");
         Function standardDeviation =
@@ -161,6 +161,21 @@ public class StandardDeviationFunctionTest extends FunctionTestSupport {
         double[] percentages = classifier.getPercentages();
         assertNotNull(percentages);
         assertEquals(5, percentages.length);
+        assertEquals(100d, DoubleStream.of(percentages).sum());
+    }
+
+    public void testPercentagesEvenClassNum() {
+        Literal classes = ff.literal(6);
+        PropertyName exp = ff.property("foo");
+        Function standardDeviation =
+                ff.function("StandardDeviation", exp, classes, ff.literal(true));
+        assertNotNull("step 1 - standard deviation function", standardDeviation);
+
+        final Classifier classifier =
+                standardDeviation.evaluate(featureCollection, Classifier.class);
+        double[] percentages = classifier.getPercentages();
+        assertNotNull(percentages);
+        assertEquals(6, percentages.length);
         assertEquals(100d, DoubleStream.of(percentages).sum());
     }
 }

@@ -291,7 +291,7 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
         return result;
     }
 
-    public Map getImplementationHints() {
-        return Collections.EMPTY_MAP;
+    public Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
+        return Collections.emptyMap();
     }
 }

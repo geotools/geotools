@@ -30,6 +30,7 @@ import java.util.logging.Logger;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
+import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 
 /**
@@ -309,7 +310,7 @@ public class EnvFunction extends FunctionExpressionImpl {
                             "Function %s expected %d or %d arguments but got %d",
                             name, argCount, argCount + 1, paramsSize));
         }
-        this.params = new ArrayList(params);
+        this.params = new ArrayList<Expression>(params);
     }
 
     /**

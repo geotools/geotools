@@ -296,7 +296,7 @@ public class EnvFunction extends FunctionExpressionImpl {
      * or two parameters (variable name plus default value).
      */
     @Override
-    public void setParameters(List params) {
+    public void setParameters(List<Expression> params) {
         if (params == null) {
             throw new NullPointerException("params can't be null");
         }

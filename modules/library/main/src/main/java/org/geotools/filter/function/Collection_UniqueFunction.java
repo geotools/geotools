@@ -82,7 +82,7 @@ public class Collection_UniqueFunction extends FunctionExpressionImpl {
      *
      * <p>To refer to all 'X': <code>featureMember/asterisk/X</code>
      */
-    public void setParameters(List args) {
+    public void setParameters(List<Expression> args) {
         // if we see "featureMembers/*/ATTRIBUTE" change to "ATTRIBUTE"
         org.opengis.filter.expression.Expression expr =
                 (org.opengis.filter.expression.Expression) args.get(0);

@@ -252,7 +252,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
             PropertyIsEqualTo filter = factory.equals(geomTypeExpr, factory.literal("Polygon"));
 
             Query query = new Query(tname("road"), filter);
-            query.setPropertyNames((List) Collections.singletonList(aname("id")));
+            query.setPropertyNames((List<Expression>) Collections.singletonList(aname("id")));
 
             try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                     dataStore.getFeatureReader(query, t)) {
@@ -296,7 +296,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
 
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         FilterFunction_ceil ceil = new FilterFunction_ceil();
-        ceil.setParameters((List) Collections.singletonList(ff.property(aname("flow"))));
+        ceil.setParameters((List<Expression>) Collections.singletonList(ff.property(aname("flow"))));
 
         PropertyIsEqualTo f = ff.equals(ceil, ff.literal(5));
 

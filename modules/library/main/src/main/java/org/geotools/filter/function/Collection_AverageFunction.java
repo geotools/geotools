@@ -90,7 +90,7 @@ public class Collection_AverageFunction extends FunctionExpressionImpl {
      *
      * @param params function parameters
      */
-    public void setParameters(List params) {
+    public void setParameters(List<Expression> params) {
         super.setParameters(params);
         if (params.size() != 1) {
             throw new IllegalArgumentException("Require a single argument for average");

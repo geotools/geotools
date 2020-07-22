@@ -45,7 +45,7 @@ public class ParameterHandler extends SldTransformHandler {
 
     public ParameterHandler strip(String prefix) {
         if (strip == null) {
-            strip = new ArrayList();
+            strip = new ArrayList<>();
         }
         strip.add(prefix);
         return this;

@@ -84,7 +84,7 @@ public class YsldParser extends YamlParser {
         // transform the resulting
         // YamlObject into GeoTools-style objects.
 
-        Map<String, Object> hints = new HashMap();
+        Map<String, Object> hints = new HashMap<>();
         hints.put("resourceLocator", locator);
         hints.put(UomMapper.KEY, uomMapper);
         return super.parse(new RootParser(zCtxtFinders), hints).sld();

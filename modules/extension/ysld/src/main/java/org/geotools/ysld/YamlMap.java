@@ -40,6 +40,7 @@ public class YamlMap extends YamlObject<Map<String, Object>> implements Iterable
      *
      * @return Map
      */
+    @SuppressWarnings("unchecked")
     static Map<String, Object> cast(Object obj) {
         if (!(obj instanceof Map)) {
             throw new IllegalArgumentException(obj + " is not a map");

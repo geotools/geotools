@@ -29,7 +29,7 @@ public class TracingEmitter implements Emitable {
 
     Emitable delegate;
 
-    List<Pair> events = new ArrayList();
+    List<Pair> events = new ArrayList<>();
 
     int stack = 0;
 

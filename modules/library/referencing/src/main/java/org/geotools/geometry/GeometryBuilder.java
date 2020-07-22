@@ -47,16 +47,7 @@ import org.opengis.geometry.coordinate.Polygon;
 import org.opengis.geometry.coordinate.PolyhedralSurface;
 import org.opengis.geometry.coordinate.Position;
 import org.opengis.geometry.coordinate.Tin;
-import org.opengis.geometry.primitive.Curve;
-import org.opengis.geometry.primitive.OrientableCurve;
-import org.opengis.geometry.primitive.Point;
-import org.opengis.geometry.primitive.Primitive;
-import org.opengis.geometry.primitive.PrimitiveFactory;
-import org.opengis.geometry.primitive.Ring;
-import org.opengis.geometry.primitive.Solid;
-import org.opengis.geometry.primitive.SolidBoundary;
-import org.opengis.geometry.primitive.Surface;
-import org.opengis.geometry.primitive.SurfaceBoundary;
+import org.opengis.geometry.primitive.*;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -248,7 +239,7 @@ public class GeometryBuilder {
         return getPositionFactory().createPointArray(array, start, end);
     }
 
-    public Curve createCurve(List segments)
+    public Curve createCurve(List<CurveSegment> segments)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         if (segments == null)
             throw new NullPointerException("Segments are required to create a curve");
@@ -269,7 +260,7 @@ public class GeometryBuilder {
         // A curve will be created
         // - The curve will be set as parent curves for the Curve segments
         // - Start and end params for the CurveSegments will be set
-        List /* <LineSegment> */ segmentList = new ArrayList /* <LineSegment> */();
+        List<CurveSegment> /* <LineSegment> */ segmentList = new ArrayList<> /* <LineSegment> */();
         for (int i = 0; i < points.size() - 1; i++) {
             int start = i;
             int end = i + 1;
@@ -390,7 +381,7 @@ public class GeometryBuilder {
     private Primitive processRingToPrimitive(Envelope bounds, Ring ring, int dimension) {
         int D = crs.getCoordinateSystem().getDimension();
         if (dimension == D) { // create Surface from ring and return
-            SurfaceBoundary boundary = createSurfaceBoundary(ring, Collections.EMPTY_LIST);
+            SurfaceBoundary boundary = createSurfaceBoundary(ring, Collections.emptyList());
             return createSurface(boundary);
         }
         CoordinateSystemAxis axis = crs.getCoordinateSystem().getAxis(dimension);
@@ -440,7 +431,7 @@ public class GeometryBuilder {
         return createSurfaceBoundary(curve);
     }
 
-    public Surface createSurface(List surfaces)
+    public Surface createSurface(List<SurfacePatch> surfaces)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         return getPrimitiveFactory().createSurface(surfaces);
     }
@@ -450,7 +441,7 @@ public class GeometryBuilder {
         return getPrimitiveFactory().createSurface(boundary);
     }
 
-    public SurfaceBoundary createSurfaceBoundary(Ring exterior, List interiors)
+    public SurfaceBoundary createSurfaceBoundary(Ring exterior, List<Ring> interiors)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         return getPrimitiveFactory().createSurfaceBoundary(exterior, interiors);
     }
@@ -529,7 +520,7 @@ public class GeometryBuilder {
         return getGeometryFactory().createLineSegment(startPoint, endPoint);
     }
 
-    public LineString createLineString(List points)
+    public LineString createLineString(List<Position> points)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         return getGeometryFactory().createLineString(points);
     }
@@ -558,17 +549,17 @@ public class GeometryBuilder {
         return getGeometryFactory().createPolygon(boundary, spanSurface);
     }
 
-    public PolyhedralSurface createPolyhedralSurface(List tiles)
+    public PolyhedralSurface createPolyhedralSurface(List<Polygon> tiles)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         return getGeometryFactory().createPolyhedralSurface(tiles);
     }
 
-    public Tin createTin(Set post, Set stopLines, Set breakLines, double maxLength)
+    public Tin createTin(Set<Position> post, Set<LineString> stopLines, Set<LineString> breakLines, double maxLength)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         return getGeometryFactory().createTin(post, stopLines, breakLines, maxLength);
     }
 
-    public CompositeCurve createCompositeCurve(List generator) {
+    public CompositeCurve createCompositeCurve(List<OrientableCurve> generator) {
         return getComplexFactory().createCompositeCurve(generator);
     }
 
@@ -576,23 +567,23 @@ public class GeometryBuilder {
         return getComplexFactory().createCompositePoint(generator);
     }
 
-    public CompositeSurface createCompositeSurface(List generator) {
+    public CompositeSurface createCompositeSurface(List<OrientableSurface> generator) {
         return getComplexFactory().createCompositeSurface(generator);
     }
 
-    public MultiCurve createMultiCurve(Set curves) {
+    public MultiCurve createMultiCurve(Set<OrientableCurve> curves) {
         return getAggregateFactory().createMultiCurve(curves);
     }
 
-    public MultiPoint createMultiPoint(Set points) {
+    public MultiPoint createMultiPoint(Set<Point> points) {
         return getAggregateFactory().createMultiPoint(points);
     }
 
-    public MultiPrimitive createMultiPrimitive(Set primitives) {
+    public MultiPrimitive createMultiPrimitive(Set<Primitive> primitives) {
         return getAggregateFactory().createMultiPrimitive(primitives);
     }
 
-    public MultiSurface createMultiSurface(Set surfaces) {
+    public MultiSurface createMultiSurface(Set<OrientableSurface> surfaces) {
         return getAggregateFactory().createMultiSurface(surfaces);
     }
 }

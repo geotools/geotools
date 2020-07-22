@@ -34,15 +34,7 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Properties;
-import java.util.Set;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.stream.Collectors;
 import javax.xml.bind.JAXBException;
 import org.apache.commons.io.FileUtils;
@@ -65,6 +57,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.test.TestData;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
+import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -304,8 +297,8 @@ public class H2MigratorTest {
             airTemperature.accepts(u1, null);
             assertThat(
                     (Set<String>) u1.getUnique(),
-                    Matchers.containsInAnyOrder(
-                            endsWith("multi-coverage-1.nc"), endsWith("multi-coverage-2.nc")));
+                    Matchers.containsInAnyOrder(new ArrayList<Matcher<String>>(Arrays.asList(
+                            endsWith("multi-coverage-1.nc"), endsWith("multi-coverage-2.nc")))));
 
             UniqueVisitor u2 = new UniqueVisitor("location");
             final SimpleFeatureCollection seaSurfaceTemperature =
@@ -314,8 +307,8 @@ public class H2MigratorTest {
             seaSurfaceTemperature.accepts(u2, null);
             assertThat(
                     (Set<String>) u2.getUnique(),
-                    Matchers.containsInAnyOrder(
-                            endsWith("multi-coverage-1.nc"), endsWith("multi-coverage-2.nc")));
+                    Matchers.containsInAnyOrder(new ArrayList<Matcher<String>>(Arrays.asList(
+                            endsWith("multi-coverage-1.nc"), endsWith("multi-coverage-2.nc")))));
 
         } finally {
             store.dispose();
@@ -328,8 +321,8 @@ public class H2MigratorTest {
         assertEquals(2, netcdfList.size());
         assertThat(
                 netcdfList,
-                Matchers.containsInAnyOrder(
-                        endsWith("multi-coverage-1.nc"), endsWith("multi-coverage-2.nc")));
+                Matchers.containsInAnyOrder(new ArrayList<Matcher<String>>(Arrays.asList(
+                        endsWith("multi-coverage-1.nc"), endsWith("multi-coverage-2.nc")))));
         File h2Log = new File(logDir, "h2.txt");
         assertTrue(h2Log.exists());
         final List<String> h2List = Files.readLines(h2Log, Charset.forName("UTF-8"));
@@ -481,8 +474,8 @@ public class H2MigratorTest {
             bro.accepts(u1, null);
             assertThat(
                     (Set<String>) u1.getUnique(),
-                    Matchers.containsInAnyOrder(
-                            endsWith("20130101.BrO.DUMMY.nc"), endsWith("20130108.BrO.DUMMY.nc")));
+                    Matchers.containsInAnyOrder(new ArrayList<Matcher<String>>(Arrays.asList(
+                            endsWith("20130101.BrO.DUMMY.nc"), endsWith("20130108.BrO.DUMMY.nc")))));
 
             final SimpleFeatureCollection no2 = store.getFeatureSource("NO2").getFeatures();
             assertEquals(2, no2.size());
@@ -490,8 +483,8 @@ public class H2MigratorTest {
             no2.accepts(u2, null);
             assertThat(
                     (Set<String>) u2.getUnique(),
-                    Matchers.containsInAnyOrder(
-                            endsWith("20130101.NO2.DUMMY.nc"), endsWith("20130108.NO2.DUMMY.nc")));
+                    Matchers.containsInAnyOrder(new ArrayList<Matcher<String>>(Arrays.asList(
+                            endsWith("20130101.NO2.DUMMY.nc"), endsWith("20130108.NO2.DUMMY.nc")))));
 
         } finally {
             store.dispose();
@@ -504,11 +497,11 @@ public class H2MigratorTest {
         assertEquals(4, netcdfList.size());
         assertThat(
                 netcdfList,
-                Matchers.containsInAnyOrder(
+                Matchers.containsInAnyOrder(new ArrayList<Matcher<String>>(Arrays.asList(
                         endsWith("20130101.BrO.DUMMY.nc"),
                         endsWith("20130101.NO2.DUMMY.nc"),
                         endsWith("20130108.BrO.DUMMY.nc"),
-                        endsWith("20130108.NO2.DUMMY.nc")));
+                        endsWith("20130108.NO2.DUMMY.nc")))));
         File h2Log = new File(logDir, "h2.txt");
         assertTrue(h2Log.exists());
         final List<String> h2List = Files.readLines(h2Log, Charset.forName("UTF-8"));

@@ -380,7 +380,6 @@
               <jvmArgs>-XX:+TieredCompilation -XX:TieredStopAtLevel=1</jvmArgs>
               <compilerArgs combine.children="append">
                 <arg>-Xlint:${lint}</arg>
-		<arg>-Werror</arg>
               </compilerArgs>
             </configuration>
             <executions>
@@ -1768,8 +1767,11 @@
           <encoding>UTF-8</encoding> <!-- The -encoding argument for the Java compiler. -->
           <fork>${fork.javac}</fork>
           <maxmem>${javac.maxHeapSize}</maxmem>
+	<compilerArgs>
+	<arg>-Xlint:${lint}</arg>
+        </compilerArgs>
         </configuration>
-      </plugin>
+</plugin>
 
       <!-- ======================================================= -->
       <!--     Resources.                                          -->

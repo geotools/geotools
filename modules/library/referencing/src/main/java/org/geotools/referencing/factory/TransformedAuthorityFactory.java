@@ -199,7 +199,7 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
         if (directionChanged || !oldUnits.equals(newUnits)) {
             final ReferencingFactoryContainer factories = getFactoryContainer(false);
             final CSFactory csFactory = factories.getCSFactory();
-            final Map properties = getProperties(axis);
+            final Map<String, ?> properties = getProperties(axis);
             axis =
                     csFactory.createCoordinateSystemAxis(
                             properties, axis.getAbbreviation(), newDirection, newUnits);
@@ -315,7 +315,7 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
         } else if (sameCS) {
             return crs;
         } else {
-            final Map properties = getProperties(crs);
+            final Map<String, ?> properties = getProperties(crs);
             final ReferencingFactoryContainer factories = getFactoryContainer(true);
             final CRSFactory crsFactory = factories.getCRSFactory();
             if (crs instanceof GeographicCRS) {
@@ -402,7 +402,7 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
      */
     private CoordinateSystem createCS(
             final Class /* <CoordinateSystem> */ type,
-            final Map properties,
+            final Map<String, ?> properties,
             final CoordinateSystemAxis[] axis)
             throws FactoryException {
         final int dimension = axis.length;
@@ -488,9 +488,9 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
      */
     public Set<CoordinateOperation> createFromCoordinateReferenceSystemCodes(
             final String sourceCode, final String targetCode) throws FactoryException {
-        final Set /* <CoordinateOperation> */ operations, modified;
+        final Set<CoordinateOperation> operations, modified;
         operations = super.createFromCoordinateReferenceSystemCodes(sourceCode, targetCode);
-        modified = new LinkedHashSet((int) (operations.size() / 0.75f) + 1);
+        modified = new LinkedHashSet<>((int) (operations.size() / 0.75f) + 1);
         for (final Iterator it = operations.iterator(); it.hasNext(); ) {
             final CoordinateOperation operation;
             try {

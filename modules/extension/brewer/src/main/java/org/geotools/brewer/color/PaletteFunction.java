@@ -59,7 +59,7 @@ public class PaletteFunction extends FunctionExpressionImpl {
         ff = factory;
     }
 
-    public void setParameters(List args) {
+    public void setParameters(List<Expression> args) {
         super.setParameters(args);
         classifier = (ClassificationFunction) getExpression(0);
         paletteName = ((Literal) getExpression(1)).evaluate(null, String.class);

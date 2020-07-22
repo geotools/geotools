@@ -22,18 +22,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
-import org.geotools.data.DataSourceException;
-import org.geotools.data.DataUtilities;
-import org.geotools.data.DefaultTransaction;
-import org.geotools.data.FeatureLock;
-import org.geotools.data.FeatureLockException;
-import org.geotools.data.FeatureLocking;
-import org.geotools.data.FeatureReader;
-import org.geotools.data.FeatureWriter;
-import org.geotools.data.FilteringFeatureReader;
-import org.geotools.data.InProcessLockingManager;
-import org.geotools.data.Query;
-import org.geotools.data.Transaction;
+import org.geotools.data.*;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -61,6 +50,7 @@ import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsEqualTo;
+import org.opengis.filter.expression.Expression;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
@@ -252,7 +242,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
             PropertyIsEqualTo filter = factory.equals(geomTypeExpr, factory.literal("Polygon"));
 
             Query query = new Query(tname("road"), filter);
-            query.setPropertyNames((List<Expression>) Collections.singletonList(aname("id")));
+            query.setPropertyNames((List<String>) Collections.singletonList(aname("id")));
 
             try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                     dataStore.getFeatureReader(query, t)) {
@@ -296,7 +286,9 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
 
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         FilterFunction_ceil ceil = new FilterFunction_ceil();
-        ceil.setParameters((List<Expression>) Collections.singletonList(ff.property(aname("flow"))));
+        ceil.setParameters(
+                (List<Expression>)
+                        Collections.singletonList((Expression) ff.property(aname("flow"))));
 
         PropertyIsEqualTo f = ff.equals(ceil, ff.literal(5));
 

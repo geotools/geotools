@@ -48,9 +48,10 @@ public class DBCPDataSource extends AbstractManageableDataSource {
     }
 
     @Override
-    public Object unwrap(Class c) throws SQLException {
+    @SuppressWarnings("unchecked")
+    public <T> T unwrap(Class<T> c) throws SQLException {
         if (isWrapperFor(c)) {
-            return getWrapped();
+            return (T) getWrapped();
         }
         return null;
     }

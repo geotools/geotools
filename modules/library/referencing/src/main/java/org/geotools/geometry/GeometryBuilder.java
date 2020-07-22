@@ -554,7 +554,11 @@ public class GeometryBuilder {
         return getGeometryFactory().createPolyhedralSurface(tiles);
     }
 
-    public Tin createTin(Set<Position> post, Set<LineString> stopLines, Set<LineString> breakLines, double maxLength)
+    public Tin createTin(
+            Set<Position> post,
+            Set<LineString> stopLines,
+            Set<LineString> breakLines,
+            double maxLength)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         return getGeometryFactory().createTin(post, stopLines, breakLines, maxLength);
     }

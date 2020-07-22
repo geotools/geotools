@@ -66,7 +66,7 @@ public class Preprocessor extends Format {
     protected final Format parser;
 
     /** The set of objects defined by calls to {@link #addDefinition}. */
-    private final Map definitions /*<String,Definition>*/ = new TreeMap();
+    private final Map<String, Definition> definitions /*<String,Definition>*/ = new TreeMap<>();
 
     /**
      * The unmodifiable set of keys in the {@link #definitions} map. Will be constructed only when
@@ -179,7 +179,7 @@ public class Preprocessor extends Format {
      * @throws ParseException if parsing the specified WKT failed.
      * @throws FactoryException if the object is not of the expected type.
      */
-    public Object parseObject(String text, final Class type)
+    public Object parseObject(String text, final Class<?> type)
             throws ParseException, FactoryException {
         Object value;
         final Definition def = (Definition) definitions.get(text);
@@ -198,7 +198,7 @@ public class Preprocessor extends Format {
              */
             text = substitute(text);
             value = forwardParse(text);
-            final Class actualType = value.getClass();
+            final Class<?> actualType = value.getClass();
             if (type.isAssignableFrom(actualType)) {
                 return value;
             }

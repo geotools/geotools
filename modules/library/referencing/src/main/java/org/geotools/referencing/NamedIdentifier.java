@@ -583,9 +583,10 @@ public class NamedIdentifier
      * element in this list is like a directory name in a file path name. The length of this
      * sequence is the generic name depth.
      */
+    @SuppressWarnings("unchecked")
     public List<LocalName> getParsedNames() {
         // TODO: temporary hack to be removed after GeoAPI update.
-        return (List) getName().getParsedNames();
+        return (List<LocalName>) getName().getParsedNames();
     }
 
     /**

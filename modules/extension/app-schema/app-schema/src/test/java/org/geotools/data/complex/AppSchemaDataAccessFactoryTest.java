@@ -135,7 +135,7 @@ public class AppSchemaDataAccessFactoryTest extends AppSchemaTestSupport {
     @Test
     public void testCreateNewDataStore() throws IOException {
         try {
-            factory.createNewDataStore(Collections.EMPTY_MAP);
+            factory.createNewDataStore(Collections.emptyMap());
             fail("unsupported?");
         } catch (UnsupportedOperationException e) {
             // OK

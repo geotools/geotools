@@ -428,7 +428,7 @@ public class AttributeMapping implements Serializable {
     }
 
     public Map getClientProperties() {
-        return clientProperties == null ? Collections.EMPTY_MAP : clientProperties;
+        return clientProperties == null ? Collections.emptyMap() : clientProperties;
     }
 
     public void setClientProperties(Map clientProperties) {

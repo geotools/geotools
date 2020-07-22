@@ -102,7 +102,7 @@ public class JTSGeometryFactory implements GeometryFactory {
         usedHints.put(Hints.CRS, crs);
     }
 
-    public Map getImplementationHints() {
+    public Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
         return usedHints;
     }
 

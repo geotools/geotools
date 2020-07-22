@@ -192,7 +192,7 @@ public class BeanProcessFactoryTest {
     @Test
     public void testDefaultValues() throws Exception {
         Process defaults = factory.create(new NameImpl("bean", "Defaults"));
-        Map<String, Object> results = defaults.execute(Collections.EMPTY_MAP, null);
+        Map<String, Object> results = defaults.execute(Collections.emptyMap(), null);
 
         // double check all defaults have been applied
         assertEquals("default string", results.get("string"));

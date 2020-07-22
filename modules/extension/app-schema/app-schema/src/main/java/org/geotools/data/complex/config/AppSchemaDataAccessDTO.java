@@ -47,7 +47,7 @@ public class AppSchemaDataAccessDTO implements Serializable {
     private String baseSchemasUrl;
 
     /** Mapping of prefix/namespace used in the target schema */
-    private Map namespaces = Collections.EMPTY_MAP;
+    private Map namespaces = Collections.emptyMap();
 
     /**
      * List of configuration objects used to aquire the datastores that provides the source
@@ -89,7 +89,7 @@ public class AppSchemaDataAccessDTO implements Serializable {
     /** */
     public void setNamespaces(Map nameSpaces) {
         if (nameSpaces == null) {
-            this.namespaces = Collections.EMPTY_MAP;
+            this.namespaces = Collections.emptyMap();
         } else {
             this.namespaces = new CheckedHashMap(String.class, String.class);
             this.namespaces.putAll(nameSpaces);

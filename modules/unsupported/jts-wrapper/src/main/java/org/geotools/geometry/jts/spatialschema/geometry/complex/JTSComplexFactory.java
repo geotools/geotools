@@ -47,7 +47,7 @@ public class JTSComplexFactory implements Factory, ComplexFactory {
         usedHints.put(Hints.CRS, crs);
     }
 
-    public Map getImplementationHints() {
+    public Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
         return usedHints;
     }
     /** @param curves List of OrientableCurve */

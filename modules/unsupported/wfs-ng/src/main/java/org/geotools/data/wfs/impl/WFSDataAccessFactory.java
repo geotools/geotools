@@ -718,7 +718,7 @@ public class WFSDataAccessFactory implements DataAccessFactory {
 
     @Override
     public Map<Key, ?> getImplementationHints() {
-        return Collections.EMPTY_MAP;
+        return Collections.emptyMap();
     }
 
     @Override

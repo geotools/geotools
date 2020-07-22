@@ -391,7 +391,7 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
                     final ImageLayout imageLayout = new ImageLayout();
                     imageLayout.setColorModel(IHS.getColorModel());
                     imageLayout.setSampleModel(IHS.getSampleModel());
-                    final RenderingHints rendHints = new RenderingHints(Collections.EMPTY_MAP);
+                    final RenderingHints rendHints = new RenderingHints(Collections.emptyMap());
                     rendHints.add(hints);
                     rendHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, imageLayout));
 

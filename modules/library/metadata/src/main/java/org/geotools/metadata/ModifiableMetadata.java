@@ -235,7 +235,7 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
         if (object instanceof Map) {
             Map map = (Map) object;
             if (map.isEmpty()) {
-                return Collections.EMPTY_MAP;
+                return Collections.emptyMap();
             }
             map = new LinkedHashMap(map);
             for (final Iterator<Map.Entry> it = map.entrySet().iterator(); it.hasNext(); ) {

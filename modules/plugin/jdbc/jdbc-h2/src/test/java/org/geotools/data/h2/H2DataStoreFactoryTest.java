@@ -50,7 +50,7 @@ public class H2DataStoreFactoryTest {
 
     @Test
     public void testCanProcess() throws Exception {
-        assertFalse(factory.canProcess(Collections.EMPTY_MAP));
+        assertFalse(factory.canProcess(Collections.emptyMap()));
         assertTrue(factory.canProcess(params));
     }
 

@@ -888,8 +888,8 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
                 : new LiteralExpressionImpl(Boolean.FALSE);
     }
 
-    public Map getImplementationHints() {
-        return Collections.EMPTY_MAP;
+    public Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
+        return Collections.emptyMap();
     }
 
     public SortBy sort(String propertyName, SortOrder order) {

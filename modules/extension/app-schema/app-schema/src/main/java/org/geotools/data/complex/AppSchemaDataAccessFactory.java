@@ -181,7 +181,7 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
         return true;
     }
 
-    public Map getImplementationHints() {
-        return Collections.EMPTY_MAP;
+    public Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
+        return Collections.emptyMap();
     }
 }

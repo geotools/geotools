@@ -74,7 +74,7 @@ public class ComplexFactoryImpl implements Factory, ComplexFactory {
      * <p>FactoryRegistry will check to make sure that there are no duplicates created (so there
      * will be only a "single" PositionFactory created with this configuration).
      */
-    public Map getImplementationHints() {
+    public Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
         return Collections.unmodifiableMap(hintsWeCareAbout);
     }
 

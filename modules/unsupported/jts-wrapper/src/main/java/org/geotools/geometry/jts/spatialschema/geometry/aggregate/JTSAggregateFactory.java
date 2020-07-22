@@ -51,7 +51,7 @@ public class JTSAggregateFactory implements Factory, AggregateFactory {
         usedHints.put(Hints.CRS, crs);
     }
 
-    public Map getImplementationHints() {
+    public Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
         return usedHints;
     }
 

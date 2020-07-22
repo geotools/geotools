@@ -285,7 +285,7 @@ public class Parameter<T> implements org.opengis.parameter.Parameter<T> {
         this.maxOccurs = max;
         this.sample = sample;
         this.metadata =
-                metadata == null ? Collections.EMPTY_MAP : Collections.unmodifiableMap(metadata);
+                metadata == null ? Collections.emptyMap() : Collections.unmodifiableMap(metadata);
     }
 
     /**

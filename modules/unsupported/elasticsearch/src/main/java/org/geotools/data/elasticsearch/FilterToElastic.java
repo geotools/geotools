@@ -169,7 +169,7 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
 
     public FilterToElastic() {
         queryBuilder = ElasticConstants.MATCH_ALL;
-        nativeQueryBuilder = ImmutableMap.of("match_all", Collections.EMPTY_MAP);
+        nativeQueryBuilder = ImmutableMap.of("match_all", Collections.emptyMap());
         helper = new FilterToElasticHelper(this);
     }
 

@@ -456,7 +456,7 @@ public final class ArcSDEDataStoreFactory implements DataStoreFactorySpi {
      * @see DataStoreFactorySpi#getImplementationHints()
      */
     public Map<RenderingHints.Key, ?> getImplementationHints() {
-        return Collections.EMPTY_MAP;
+        return Collections.emptyMap();
     }
 
     public static int getSdeClientVersion() {

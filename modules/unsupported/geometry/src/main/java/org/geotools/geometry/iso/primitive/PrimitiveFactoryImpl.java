@@ -121,7 +121,7 @@ public class PrimitiveFactoryImpl implements Serializable, Factory, PrimitiveFac
     }
 
     /** These are the hints we used */
-    public Map getImplementationHints() {
+    public Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
         return Collections.unmodifiableMap(hintsWeCareAbout);
     }
 

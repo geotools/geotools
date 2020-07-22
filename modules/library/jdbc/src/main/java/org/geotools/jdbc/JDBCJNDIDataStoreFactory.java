@@ -184,7 +184,7 @@ public abstract class JDBCJNDIDataStoreFactory extends JDBCDataStoreFactory {
         return delegate.createNewDataStore(params);
     }
 
-    public Map getImplementationHints() {
+    public Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
         return delegate.getImplementationHints();
     }
 

@@ -49,6 +49,7 @@ public abstract class VPFFeatureSource extends ContentFeatureSource {
         }
     }
 
+    @Override
     public Name getName() {
         String typeName = entry != null ? entry.getTypeName() : null;
 
@@ -64,6 +65,7 @@ public abstract class VPFFeatureSource extends ContentFeatureSource {
         return featureSourceMap.get(typeName);
     }
 
+    @Override
     public ContentDataStore getDataStore() {
         return super.getDataStore();
     }

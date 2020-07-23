@@ -50,11 +50,14 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.AnnotationFeatureType;
 import org.locationtech.jts.geom.Geometry;
+import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.Name;
+import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.util.InternationalString;
@@ -719,7 +722,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
         return featureType.getDescriptor(index);
     }
 
-    public List getAttributeDescriptors() {
+    public List<AttributeDescriptor> getAttributeDescriptors() {
         return featureType.getAttributeDescriptors();
     }
 
@@ -735,7 +738,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
         return featureType.getType(index);
     }
 
-    public List getTypes() {
+    public List<AttributeType> getTypes() {
         return featureType.getTypes();
     }
 
@@ -747,11 +750,11 @@ public class VPFFeatureClass implements SimpleFeatureType {
         return featureType.getGeometryDescriptor();
     }
 
-    public Class getBinding() {
+    public Class<Collection<Property>> getBinding() {
         return featureType.getBinding();
     }
 
-    public Collection getDescriptors() {
+    public Collection<PropertyDescriptor> getDescriptors() {
         return featureType.getDescriptors();
     }
 

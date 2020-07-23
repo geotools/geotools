@@ -17,6 +17,7 @@
 package org.geotools.data.vpf.util;
 
 import java.util.HashMap;
+import org.geotools.data.vpf.io.RowField;
 import org.geotools.data.vpf.io.TableRow;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -50,8 +51,8 @@ public class PrimitiveDataFactory {
         return ed;
     }
 
-    protected HashMap readFeature(TableRow line, SimpleFeatureType type) {
-        HashMap tmp = new HashMap();
+    protected HashMap<String, RowField> readFeature(TableRow line, SimpleFeatureType type) {
+        HashMap<String, RowField> tmp = new HashMap<>();
 
         String name = null;
 
@@ -63,11 +64,11 @@ public class PrimitiveDataFactory {
         return tmp;
     }
 
-    protected HashMap readFace(TableRow face) {
-        HashMap fd = new HashMap();
+    protected HashMap<String, Object> readFace(TableRow face) {
+        HashMap<String, Object> fd = new HashMap<>();
         fd.put("id", face.get("id").toString());
-        fd.put("ext_id", Integer.valueOf(face.get(1).intValue()));
-        fd.put("ring_ptr", Integer.valueOf(face.get("ring_ptr").intValue()));
+        fd.put("ext_id", face.get(1).intValue());
+        fd.put("ring_ptr", face.get("ring_ptr").intValue());
 
         return fd;
     }
@@ -80,11 +81,11 @@ public class PrimitiveDataFactory {
         return pd;
     }
 
-    protected HashMap readRing(TableRow ring) {
-        HashMap rd = new HashMap();
+    protected HashMap<String, Object> readRing(TableRow ring) {
+        HashMap<String, Object> rd = new HashMap<>();
         rd.put("id", ring.get("id").toString());
-        rd.put("face_id", Integer.valueOf(ring.get("face_id").intValue()));
-        rd.put("start_edge", Integer.valueOf(ring.get("start_edge").intValue()));
+        rd.put("face_id", ring.get("face_id").intValue());
+        rd.put("start_edge", ring.get("start_edge").intValue());
 
         return rd;
     }

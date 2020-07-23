@@ -277,9 +277,8 @@ public abstract class ClassificationFunction extends DefaultExpression
     protected void computePercentage(
             double[] percentages, double classMembers, double totalSize, int index) {
         // handle case when the query return one class plus,
-        // when i.e. classWidth is an integer so that in an
-        // interval of values 1-25, for three classes,
-        // we would have value 25 falling in group with key 3
+        // e.g. classWidth is an integer so that in an interval of values 1-25,
+        // for three classes, we would have value 25 falling in group with key 3
         if (index >= percentages.length) {
             int last = percentages.length - 1;
             percentages[last] += (classMembers / totalSize) * 100;

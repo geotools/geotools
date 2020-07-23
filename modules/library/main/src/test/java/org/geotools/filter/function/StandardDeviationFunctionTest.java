@@ -157,10 +157,16 @@ public class StandardDeviationFunctionTest extends FunctionTestSupport {
         assertNotNull("step 1 - standard deviation function", standardDeviation);
 
         final Classifier classifier =
-                standardDeviation.evaluate(featureCollection, Classifier.class);
+                standardDeviation.evaluate(stddevCollection, Classifier.class);
         double[] percentages = classifier.getPercentages();
         assertNotNull(percentages);
         assertEquals(5, percentages.length);
+        assertEquals(10d, percentages[0]);
+        assertEquals(0d, percentages[1]);
+        assertEquals(70d, percentages[2]);
+        assertEquals(10d, percentages[3]);
+        assertEquals(10d, percentages[4]);
+
         assertEquals(100d, DoubleStream.of(percentages).sum());
     }
 
@@ -172,10 +178,16 @@ public class StandardDeviationFunctionTest extends FunctionTestSupport {
         assertNotNull("step 1 - standard deviation function", standardDeviation);
 
         final Classifier classifier =
-                standardDeviation.evaluate(featureCollection, Classifier.class);
+                standardDeviation.evaluate(stddevCollection, Classifier.class);
         double[] percentages = classifier.getPercentages();
         assertNotNull(percentages);
         assertEquals(6, percentages.length);
+        assertEquals(10d, percentages[0]);
+        assertEquals(0d, percentages[1]);
+        assertEquals(50d, percentages[2]);
+        assertEquals(30d, percentages[3]);
+        assertEquals(0d, percentages[4]);
+        assertEquals(10d, percentages[5]);
         assertEquals(100d, DoubleStream.of(percentages).sum());
     }
 }

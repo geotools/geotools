@@ -120,24 +120,34 @@ public class StandardDeviationFunction extends ClassificationFunction {
             throws IOException {
         int classSize = classifier.getSize();
         Object firstMax = classifier.getMax(0);
-        Filter less = FF.less(attr, FF.literal(firstMax));
-        int sizeFirstClass = features.subCollection(less).size();
         int totalSize = features.size();
+        Filter greaterThanOrEqualTo = FF.greaterOrEqual(attr, FF.literal(firstMax));
+        FeatureCollection subCollection = features.subCollection(greaterThanOrEqualTo);
+        int sizeFirstClass = totalSize - subCollection.size();
         double[] percentages = new double[classSize];
         // we don't know the min value in the collection because the
         // the first interval is open to infinity to the left.
         // needs a query to get the classMembers
-        percentages[0] = (sizeFirstClass / totalSize) * 100;
+        percentages[0] = ((double) sizeFirstClass / (double) totalSize) * 100;
 
         double min = ((Number) classifier.getMin(1)).doubleValue();
-        return computeGroupByPercentages(features, percentages, totalSize, min, standardDeviation);
+        percentages =
+                computeGroupByPercentages(
+                        subCollection, percentages, totalSize, min, standardDeviation);
+        computeLastPercentage(percentages, totalSize);
+        return percentages;
+    }
+
+    private void computeLastPercentage(double[] percentages, double totalSize) {
+        double sum = Arrays.stream(percentages).sum();
+        percentages[percentages.length - 1] = 100.0 - sum;
     }
 
     @Override
     protected void computePercentage(
             double[] percentages, double classMembers, double totalSize, int index) {
-        // since we are grouping by using the min of the second interval adds +1 to the index
-        super.computePercentage(percentages, classMembers, totalSize, index + 1);
+        index += 1;
+        if (index < percentages.length - 1) percentages[index] = (classMembers / totalSize) * 100;
     }
 
     protected boolean percentages() {

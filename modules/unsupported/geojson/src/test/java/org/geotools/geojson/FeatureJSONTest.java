@@ -901,6 +901,7 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public void testFeatureCollectionWithoutGeometryReadWriteFromFeatureSource() throws Exception {
         String json =
                 strip(

@@ -37,7 +37,7 @@ public class PolygonHandler extends GeometryHandlerBase<Polygon> {
     @Override
     public boolean startObjectEntry(String key) throws ParseException, IOException {
         if ("coordinates".equals(key)) {
-            rings = new ArrayList();
+            rings = new ArrayList<>();
         }
         return true;
     }
@@ -67,9 +67,9 @@ public class PolygonHandler extends GeometryHandlerBase<Polygon> {
     @Override
     public boolean startArray() throws ParseException, IOException {
         if (coordinates == null) {
-            coordinates = new ArrayList();
+            coordinates = new ArrayList<>();
         } else if (ordinates == null) {
-            ordinates = new ArrayList();
+            ordinates = new ArrayList<>();
         }
         return true;
     }

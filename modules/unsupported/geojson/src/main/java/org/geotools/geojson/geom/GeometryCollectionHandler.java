@@ -76,7 +76,7 @@ public class GeometryCollectionHandler extends DelegatingHandler<GeometryCollect
         } else if ("type".equals(key) && delegate == proxy) {
             delegate = UNINITIALIZED;
         } else if ("geometries".equals(key)) {
-            geoms = new ArrayList();
+            geoms = new ArrayList<>();
         } else if (geoms != null) {
             super.startObjectEntry(key);
         }

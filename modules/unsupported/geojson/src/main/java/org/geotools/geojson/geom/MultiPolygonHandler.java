@@ -39,7 +39,7 @@ public class MultiPolygonHandler extends GeometryHandlerBase<MultiPolygon> {
     @Override
     public boolean startObjectEntry(String key) throws ParseException, IOException {
         if ("coordinates".equals(key)) {
-            polys = new ArrayList();
+            polys = new ArrayList<>();
         }
 
         return true;
@@ -48,11 +48,11 @@ public class MultiPolygonHandler extends GeometryHandlerBase<MultiPolygon> {
     @Override
     public boolean startArray() throws ParseException, IOException {
         if (rings == null) {
-            rings = new ArrayList();
+            rings = new ArrayList<>();
         } else if (coordinates == null) {
-            coordinates = new ArrayList();
+            coordinates = new ArrayList<>();
         } else if (ordinates == null) {
-            ordinates = new ArrayList();
+            ordinates = new ArrayList<>();
         }
         return true;
     }

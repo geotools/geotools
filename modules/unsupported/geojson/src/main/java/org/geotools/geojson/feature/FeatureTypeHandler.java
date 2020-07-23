@@ -47,7 +47,7 @@ public class FeatureTypeHandler extends DelegatingHandler<SimpleFeatureType>
 
     private boolean inFeatures = false;
 
-    private Map<String, Class<?>> propertyTypes = new LinkedHashMap<String, Class<?>>();
+    private Map<String, Class<?>> propertyTypes = new LinkedHashMap<>();
 
     private boolean inProperties;
 

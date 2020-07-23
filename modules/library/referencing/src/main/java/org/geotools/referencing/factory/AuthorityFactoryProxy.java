@@ -164,7 +164,7 @@ abstract class AuthorityFactoryProxy {
     }
 
     /** Returns the type of the objects to be created by this proxy instance. */
-    public abstract Class<? extends IdentifiedObject> getType();
+    public abstract Class /*<? extends IdentifiedObject>*/ getType();
 
     /** Returns the authority factory used by the {@link #create create} method. */
     public abstract AuthorityFactory getAuthorityFactory();

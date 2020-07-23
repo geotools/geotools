@@ -108,7 +108,7 @@ public class SurfaceTest extends TestCase {
         // A curve will be created
         // - The curve will be set as parent curves for the Curve segments
         // - Start and end params for the CurveSegments will be set
-        List<LineSegment> segmentList = new ArrayList<LineSegment>();
+        List<CurveSegment> segmentList = new ArrayList<CurveSegment>();
         for (int i = 0; i < points.size(); i++) {
             int start = i;
             int end = (i + 1) % points.size();

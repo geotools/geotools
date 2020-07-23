@@ -148,7 +148,6 @@ import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
-import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -521,7 +520,7 @@ public class ImageMosaicReaderTest extends Assert {
 
         // use imageio with defined tiles
         final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
-        final List<Date> timeValues = new ArrayList<Date>();
+        final List<Date> timeValues = new ArrayList<>();
         final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT+0"));
         Date date = sdf.parse("2008-10-31T00:00:00.000Z");
@@ -789,7 +788,7 @@ public class ImageMosaicReaderTest extends Assert {
 
         // use imageio with defined tiles
         final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
-        final List<Date> timeValues = new ArrayList<Date>();
+        final List<Date> timeValues = new ArrayList<>();
         final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT+0"));
         Date date = sdf.parse("2008-11-01T00:00:00.000Z");
@@ -5643,9 +5642,9 @@ public class ImageMosaicReaderTest extends Assert {
                             .stream()
                             .map(f -> f.getName())
                             .collect(Collectors.toList()),
-                    Matchers.containsInAnyOrder(new ArrayList<Matcher<String>>(Arrays.asList(
+                    Matchers.containsInAnyOrder(
                             equalToIgnoringCase("global_mosaic_0.prj"),
-                            equalToIgnoringCase("global_mosaic_0.pgw")))));
+                            equalToIgnoringCase("global_mosaic_0.pgw")));
 
             FileGroup groupLast = (FileGroup) last.getUserData().get(GranuleSource.FILES);
             assertNotNull(groupLast);
@@ -5659,9 +5658,9 @@ public class ImageMosaicReaderTest extends Assert {
                             .stream()
                             .map(f -> f.getName())
                             .collect(Collectors.toList()),
-                    Matchers.containsInAnyOrder(new ArrayList<Matcher<String>>(Arrays.asList(
+                    Matchers.containsInAnyOrder(
                             equalToIgnoringCase("global_mosaic_9.prj"),
-                            equalToIgnoringCase("global_mosaic_9.pgw")))));
+                            equalToIgnoringCase("global_mosaic_9.pgw")));
         } finally {
             reader.dispose();
         }

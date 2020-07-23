@@ -143,7 +143,8 @@ public class FactoryUsingAnsiSQL extends FactoryUsingSQL {
         } else if (length == 1) {
             throw new IllegalArgumentException(schema);
         }
-        for (final Iterator<Map.Entry<String, String>> it = map.entrySet().iterator(); it.hasNext(); ) {
+        for (final Iterator<Map.Entry<String, String>> it = map.entrySet().iterator();
+                it.hasNext(); ) {
             final Map.Entry<String, String> entry = it.next();
             final String tableName = entry.getValue();
             /**

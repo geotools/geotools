@@ -1,7 +1,9 @@
 package org.geotools.data.vpf;
 
 import java.io.File;
+import java.io.Serializable;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -15,7 +17,6 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.OnlineTestCase;
-import org.geotools.util.KVP;
 import org.geotools.util.URLs;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -76,7 +77,8 @@ public class VPFTest extends OnlineTestCase {
 
         URL url = URLs.fileToUrl(vmap);
 
-        Map<String, Object> params = new KVP("url", url);
+        Map<String, Serializable> params = new HashMap<>();
+        params.put("url", url);
         assertTrue("Can connect", factory.canProcess(params));
 
         DataStore vpf = factory.createDataStore(params);
@@ -97,7 +99,8 @@ public class VPFTest extends OnlineTestCase {
 
         VPFDataStoreFactory factory = new VPFDataStoreFactory();
         URL url = URLs.fileToUrl(vmap);
-        Map<String, Object> params = new KVP("url", url);
+        Map<String, Serializable> params = new HashMap<>();
+        params.put("url", url);
         DataStore store = factory.createDataStore(params);
         List<Name> names = store.getNames();
 
@@ -119,7 +122,8 @@ public class VPFTest extends OnlineTestCase {
         File lht = new File(vmap, "lht");
         VPFDataStoreFactory factory = new VPFDataStoreFactory();
         URL url = URLs.fileToUrl(vmap);
-        Map<String, Object> params = new KVP("url", url);
+        Map<String, Serializable> params = new HashMap<>();
+        params.put("url", url);
         DataStore store = factory.createDataStore(params);
         List<Name> names = store.getNames();
 
@@ -148,7 +152,8 @@ public class VPFTest extends OnlineTestCase {
         File lht = new File(vmap, "lht");
         VPFDataStoreFactory factory = new VPFDataStoreFactory();
         URL url = URLs.fileToUrl(vmap);
-        Map<String, Object> params = new KVP("url", url);
+        Map<String, Serializable> params = new HashMap<>();
+        params.put("url", url);
         DataStore store = factory.createDataStore(params);
         List<Name> names = store.getNames();
 

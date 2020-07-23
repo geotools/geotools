@@ -39,7 +39,7 @@ import org.opengis.feature.simple.SimpleFeature;
  */
 public class VPFDataBase {
     /** The libraries in the database */
-    private final List libraries = new Vector();
+    private final List<VPFLibrary> libraries = new Vector<>();
     /**
      * Constructor
      *
@@ -196,6 +196,7 @@ public class VPFDataBase {
      *  (non-Javadoc)
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
         return "VPF database with the following extents: \n"
                 + getMinX()

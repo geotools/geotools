@@ -25,7 +25,7 @@ import org.locationtech.jts.geom.LineString;
 
 public class LineHandler extends GeometryHandlerBase<LineString> {
 
-    ArrayList coordinates;
+    ArrayList<Coordinate> coordinates;
 
     public LineHandler(GeometryFactory factory) {
         super(factory);
@@ -34,7 +34,7 @@ public class LineHandler extends GeometryHandlerBase<LineString> {
     @Override
     public boolean startObjectEntry(String key) throws ParseException, IOException {
         if ("coordinates".equals(key)) {
-            coordinates = new ArrayList();
+            coordinates = new ArrayList<>();
         }
         return true;
     }
@@ -52,7 +52,7 @@ public class LineHandler extends GeometryHandlerBase<LineString> {
     @Override
     public boolean startArray() throws ParseException, IOException {
         if (ordinates == null) {
-            ordinates = new ArrayList();
+            ordinates = new ArrayList<>();
         }
         return true;
     }

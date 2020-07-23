@@ -48,10 +48,11 @@ public class GeometryHandlerBase<G extends Geometry> extends HandlerBase
         return createCoordinate(ordinates);
     }
 
-    protected Coordinate[] coordinates(List coordinates) {
+    protected Coordinate[] coordinates(List<Coordinate> coordinates) {
         return createCoordinates(coordinates);
     }
 
+    @Override
     public boolean primitive(Object value) throws ParseException, IOException {
         // we could be receiving the "type" attribute value
         if (value instanceof Number) {

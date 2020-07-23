@@ -23,14 +23,14 @@ import org.geotools.geojson.HandlerBase;
 import org.geotools.geojson.IContentHandler;
 import org.json.simple.parser.ParseException;
 
-public class ArrayHandler extends HandlerBase implements IContentHandler<List> {
+public class ArrayHandler extends HandlerBase implements IContentHandler<List<Object>> {
 
-    List values;
-    List list;
+    List<Object> values;
+    List<Object> list;
 
     @Override
     public boolean startArray() throws ParseException, IOException {
-        values = new ArrayList();
+        values = new ArrayList<>();
         return true;
     }
 
@@ -51,7 +51,8 @@ public class ArrayHandler extends HandlerBase implements IContentHandler<List> {
         return true;
     }
 
-    public List getValue() {
+    @Override
+    public List<Object> getValue() {
         return list;
     }
 }

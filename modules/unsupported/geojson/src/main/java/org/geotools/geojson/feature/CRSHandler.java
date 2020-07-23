@@ -29,6 +29,7 @@ public class CRSHandler extends HandlerBase implements IContentHandler<Coordinat
     CoordinateReferenceSystem crs;
     int state = 0;
 
+    @Override
     public boolean startObjectEntry(String key) throws ParseException, IOException {
         if ("properties".equals(key)) {
             state = 1;
@@ -38,6 +39,7 @@ public class CRSHandler extends HandlerBase implements IContentHandler<Coordinat
         return true;
     }
 
+    @Override
     public boolean primitive(Object value) throws ParseException, IOException {
         if (state == 2) {
             try {
@@ -62,6 +64,7 @@ public class CRSHandler extends HandlerBase implements IContentHandler<Coordinat
         return true;
     }
 
+    @Override
     public CoordinateReferenceSystem getValue() {
         return crs;
     }

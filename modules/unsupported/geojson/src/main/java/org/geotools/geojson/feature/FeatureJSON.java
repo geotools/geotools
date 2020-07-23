@@ -272,7 +272,7 @@ public class FeatureJSON {
      */
     public void writeFeatureCollection(FeatureCollection features, Object output)
             throws IOException {
-        LinkedHashMap obj = new LinkedHashMap();
+        LinkedHashMap<String, Object> obj = new LinkedHashMap<>();
         obj.put("type", "FeatureCollection");
 
         if (features.getSchema().getGeometryDescriptor() != null) {

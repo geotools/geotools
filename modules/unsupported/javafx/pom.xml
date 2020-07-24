@@ -145,7 +145,7 @@
 						<include></include>
 					</includes>
 					<excludes>
-						<exclude></exclude>
+						<exclude>${jdk11test.skip.pattern}</exclude>
 					</excludes>
 					<systemPropertyVariables>
 						<glass.platform>Monocle</glass.platform>

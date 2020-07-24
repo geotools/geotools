@@ -9,15 +9,15 @@ import java.util.logging.Logger;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import org.geotools.data.ows.CRSEnvelope;
-import org.geotools.data.ows.Layer;
-import org.geotools.data.wms.WebMapServer;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.ows.wms.CRSEnvelope;
+import org.geotools.ows.wms.Layer;
+import org.geotools.ows.wms.WebMapServer;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
-public class FXMapTest extends ApplicationTest {
+public class FXMapJDK11Test extends ApplicationTest {
 
     private static FXMap map;
 
@@ -25,7 +25,7 @@ public class FXMapTest extends ApplicationTest {
     private static final int sceneWidth = 750;
 
     private static GeneralEnvelope initialBounds;
-    private static final Logger log = Logger.getLogger(FXMapTest.class.getName());
+    private static final Logger log = Logger.getLogger(FXMapJDK11Test.class.getName());
     private static final String mapEPSG = "EPSG:4326";
     private static final String wmsLayer = "OpenStreetMap WMS - by terrestris";
     private static final String wmsURL = "http://ows.terrestris.de/osm/service";

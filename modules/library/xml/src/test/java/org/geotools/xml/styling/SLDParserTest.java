@@ -796,7 +796,6 @@ public class SLDParserTest {
 
         assertEquals(1, ps.getOptions().size());
         assertTrue(ps.getOptions().containsKey(OK_KEY));
-
     }
 
     void assertStyles(Style[] styles) {

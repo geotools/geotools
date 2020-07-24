@@ -50,14 +50,14 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import org.geotools.data.ows.Layer;
-import org.geotools.data.ows.WMSCapabilities;
-import org.geotools.data.wms.WebMapServer;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapContent;
-import org.geotools.map.WMSLayer;
+import org.geotools.ows.wms.Layer;
+import org.geotools.ows.wms.WMSCapabilities;
+import org.geotools.ows.wms.WebMapServer;
+import org.geotools.ows.wms.map.WMSLayer;
 import org.geotools.referencing.CRS;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.styling.StyleBuilder;
@@ -90,7 +90,7 @@ public class FXMap extends Parent {
     private static final String POLYGON_LAYER_TITLE = "polygon-layer";
     private static final Logger log = Logger.getLogger(FXMap.class.getName());
     private WMSCapabilities capabilities;
-    private List layers;
+    private List<Layer> layers;
     private VBox vBox;
     private Label sourceLabel;
 
@@ -168,7 +168,7 @@ public class FXMap extends Parent {
      * @return the children of the node
      */
     @Override
-    public ObservableList getChildren() {
+    public ObservableList<Node> getChildren() {
         return super.getChildren();
     }
 
@@ -218,7 +218,7 @@ public class FXMap extends Parent {
         this.dimensionX = dimensionX;
         this.dimensionY = dimensionY;
 
-        layers = new ArrayList<Layer>(0);
+        layers = new ArrayList<>(0);
         layers.add(layer);
 
         WMSLayer wmsLayer = new WMSLayer(wms, displayLayer);
@@ -270,7 +270,7 @@ public class FXMap extends Parent {
 
     /** Clears all drawn shapes */
     public void clearShapes() {
-        ArrayList<Object> list = new ArrayList<Object>(1);
+        ArrayList<Object> list = new ArrayList<>(1);
         list.add(this.vBox);
         this.getChildren().retainAll(list);
         markerCount = 0;
@@ -359,10 +359,7 @@ public class FXMap extends Parent {
         return this.mapContent.layers();
     }
 
-    /**
-     * Scales the map to zoom in/out without reloading the map
-     *
-     */
+    /** Scales the map to zoom in/out without reloading the map */
     private void scaleMap(double zoomDelta) {
         Point2D.Double lower;
         Point2D.Double upper;
@@ -673,6 +670,7 @@ public class FXMap extends Parent {
             zoomTimer = new Timer(true);
             zoomTask =
                     new TimerTask() {
+                        @Override
                         public void run() {
                             int zoomDelta = zoomLevel - lastZoomLevel;
                             zoom(zoomDelta, e.getX(), e.getY());

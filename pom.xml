@@ -49,11 +49,14 @@
   <!--                        reported by the surefire report      -->
   <!--                        plugin.                              -->
   <!--                                                             -->
-  <!--     online             Profile to active tests which end in -->
-  <!--                        "OnlineTest.java"                    -->
+  <!--     online             Profile to activate tests which end  -->
+  <!--                        in "OnlineTest.java                  -->
   <!--                                                             -->
-  <!--     stress             Profile to active tests which end in -->
-  <!--                        "StressTest.java"                    -->
+  <!--     stress             Profile to activate tests which end  -->
+  <!--                        in "StressTest.java"                 -->
+  <!--                                                             -->
+  <!--     jdk11test          Profile to activate tests which end  -->
+  <!--                        in "JDK11Test.java"                  -->
   <!--                                                             -->
   <!--     dependencycheck    Profile to check dependency versions -->
   <!--                                                             -->
@@ -83,6 +86,7 @@
     <interactive.image>false</interactive.image>
     <online.skip.pattern>**/*OnlineTest.java</online.skip.pattern>
     <stress.skip.pattern>**/*StressTest.java</stress.skip.pattern>
+    <jdk11test.skip.pattern>**/*JDK11Test.java</jdk11test.skip.pattern>
     <test.exclude.pattern>disabled</test.exclude.pattern>
     <test.maxHeapSize>256M</test.maxHeapSize>
     <javadoc.maxHeapSize>1536M</javadoc.maxHeapSize>
@@ -183,6 +187,12 @@
       <id>stress</id>
       <properties>
         <stress.skip.pattern>disabled</stress.skip.pattern>
+      </properties>
+    </profile>
+    <profile>
+      <id>jdk11test</id>
+      <properties>
+        <jdk11test.skip.pattern>disabled</jdk11test.skip.pattern>
       </properties>
     </profile>
     <profile>
@@ -1821,6 +1831,7 @@
             <exclude>${online.skip.pattern}</exclude>
             <exclude>${stress.skip.pattern}</exclude>
             <exclude>${test.exclude.pattern}</exclude>
+            <exclude>${jdk11test.skip.pattern}</exclude>
           </excludes>
 	  <argLine>-Xmx${test.maxHeapSize} ${jvm.opts} -Dfile.encoding=UTF-8 -Dorg.geotools.test.extensive=${extensive.tests} -Dorg.geotools.test.interactive=${interactive.tests} -Dorg.geotools.image.test.skip=${skip.image.tests} -Dorg.geotools.image.test.interactive=${interactive.image} -Djava.awt.headless=${java.awt.headless} -Dsun.java2d.d3d=${sun.java2d.d3d} -Djava.io.tmpdir="${java.io.tmpdir}" -Djava.library.path="${java.library.path}" ${test.args}  -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -XX:+IgnoreUnrecognizedVMOptions -Djava.util.logging.config.file="${geotoolsBaseDir}"/${logging-profile}.properties --illegal-access=debug</argLine>
           <!-- Ignores test failure only if we are generating a       -->

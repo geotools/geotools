@@ -121,23 +121,23 @@ public abstract class GeoToolsUnitFormat extends SimpleUnitFormat {
             }
         }
 
+        @SuppressWarnings("unchecked") // reflection in use, cannot be type safe
         private HashMap<Unit<?>, String> getUnitToNameMap(UnitFormat base)
                 throws NoSuchFieldException, IllegalAccessException {
             java.lang.reflect.Field unitToNameField =
                     DefaultFormat.class.getDeclaredField("unitToName");
             unitToNameField.setAccessible(true);
 
-            //noinspection unchecked
             return (HashMap<Unit<?>, String>) unitToNameField.get(base);
         }
 
+        @SuppressWarnings("unchecked") // reflection in use, cannot be type safe
         private HashMap<String, Unit<?>> getNameToUnitMap(UnitFormat base)
                 throws NoSuchFieldException, IllegalAccessException {
             java.lang.reflect.Field nameToUnitField =
                     DefaultFormat.class.getDeclaredField("nameToUnit");
             nameToUnitField.setAccessible(true);
 
-            //noinspection unchecked
             return (HashMap<String, Unit<?>>) nameToUnitField.get(base);
         }
 

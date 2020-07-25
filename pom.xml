@@ -278,6 +278,9 @@
               <excludeRoots>
                 <excludeRoot>target/generated-sources</excludeRoot>
               </excludeRoots>
+              <excludes>
+                <exclude>**/*JDK11Test.java</exclude>
+              </excludes>
             </configuration>
             <executions>
               <execution>

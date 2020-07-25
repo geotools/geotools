@@ -21,7 +21,13 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Properties;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.lang3.StringUtils;
@@ -254,12 +260,14 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
 
         wmtsService.getDimensions().put(WMTSTileService.DIMENSION_TIME, requestedTime);
 
-        ((Map)
+        @SuppressWarnings("unchecked")
+        Map<String, String> extraHeaders =
+                ((Map<String, String>)
                         (wmtsService
                                 .getExtrainfo()
                                 .computeIfAbsent(
-                                        WMTSTileService.EXTRA_HEADERS, extra -> new HashMap<>())))
-                .putAll(this.headers);
+                                        WMTSTileService.EXTRA_HEADERS, extra -> new HashMap<>())));
+        extraHeaders.putAll(this.headers);
 
         double scale =
                 Math.round(

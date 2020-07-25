@@ -221,7 +221,7 @@ class WMTSTile extends Tile {
     }
 
     public BufferedImage doLoadImageTileImage(Tile tile) throws IOException {
-
+        @SuppressWarnings("unchecked")
         Map<String, String> headers =
                 (Map<String, String>)
                         this.service.getExtrainfo().get(WMTSTileService.EXTRA_HEADERS);

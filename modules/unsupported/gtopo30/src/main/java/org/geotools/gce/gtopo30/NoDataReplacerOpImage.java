@@ -28,6 +28,7 @@ import java.awt.image.SampleModel;
 import java.awt.image.WritableRaster;
 import java.awt.image.renderable.ParameterBlock;
 import java.awt.image.renderable.RenderedImageFactory;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import javax.media.jai.CRIFImpl;
@@ -291,5 +292,11 @@ public final class NoDataReplacerOpImage extends PointOpImage {
             record.setThrown(exception);
             AbstractGridCoverage.LOGGER.log(record);
         }
+    }
+
+    @Override
+    @SuppressWarnings("unchecked") // PlanarImage does not have generics, overrides this method
+    public Vector<RenderedImage> getSources() {
+        return super.getSources();
     }
 }

@@ -22,6 +22,7 @@ import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.awt.image.WritableRaster;
 import java.util.Map;
+import java.util.Vector;
 import javax.media.jai.AreaOpImage;
 import javax.media.jai.BorderExtender;
 import javax.media.jai.ImageLayout;
@@ -1313,5 +1314,11 @@ public class TransparencyFillOpImage extends AreaOpImage {
                 dstScanlineOffset[i] += dstScanlineStride;
             }
         }
+    }
+
+    @Override
+    @SuppressWarnings("unchecked") // PlanarImage does not have generics, overrides this method
+    public Vector<RenderedImage> getSources() {
+        return super.getSources();
     }
 }

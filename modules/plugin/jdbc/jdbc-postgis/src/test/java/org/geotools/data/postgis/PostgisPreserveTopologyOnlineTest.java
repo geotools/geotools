@@ -32,7 +32,9 @@ public class PostgisPreserveTopologyOnlineTest extends JDBCTestSupport {
     @Override
     protected HashMap createDataStoreFactoryParams() throws Exception {
         HashMap params = super.createDataStoreFactoryParams();
-        params.put(PostgisNGDataStoreFactory.PRESERVE_TOPOLOGY.key, true);
+        params.put(
+                PostgisNGDataStoreFactory.SIMPLIFICATION_METHOD.key,
+                SimplificationMethod.PRESERVETOPOLOGY);
         return params;
     }
 

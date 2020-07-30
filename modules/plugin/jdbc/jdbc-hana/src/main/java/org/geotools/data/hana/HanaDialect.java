@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.sql.Date;
-import java.text.MessageFormat;
 import java.util.*;
 import java.util.logging.Level;
 import org.geotools.data.Query;
@@ -181,8 +180,7 @@ public class HanaDialect extends PreparedStatementSQLDialect {
         return GEOMETRY_TYPE_NAME;
     }
 
-    @Override
-    public Integer getGeometrySRID(
+    private Integer getGeometrySRIDFromView(
             String schemaName, String tableName, String columnName, Connection cx)
             throws SQLException {
         PreparedStatement ps = null;
@@ -211,6 +209,45 @@ public class HanaDialect extends PreparedStatementSQLDialect {
             dataStore.closeSafe(rs);
             dataStore.closeSafe(ps);
         }
+    }
+
+    private Integer getGeometrySRIDViaSelect(
+            String schemaName, String tableName, String columnName, Connection cx)
+            throws SQLException {
+        // Try the first non-NULL geometry
+        StringBuffer sql = new StringBuffer();
+        sql.append("SELECT ");
+        encodeIdentifiers(sql, columnName);
+        sql.append(".ST_SRID() FROM ");
+        encodeIdentifiers(sql, schemaName, tableName);
+        sql.append(" WHERE ");
+        encodeIdentifiers(sql, columnName);
+        sql.append(" IS NOT NULL LIMIT 1");
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            ps = cx.prepareStatement(sql.toString());
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return null;
+        } finally {
+            dataStore.closeSafe(rs);
+            dataStore.closeSafe(ps);
+        }
+    }
+
+    @Override
+    public Integer getGeometrySRID(
+            String schemaName, String tableName, String columnName, Connection cx)
+            throws SQLException {
+        Integer srid = getGeometrySRIDFromView(schemaName, tableName, columnName, cx);
+        if (srid == null) {
+            srid = getGeometrySRIDViaSelect(schemaName, tableName, columnName, cx);
+        }
+        return srid;
     }
 
     @Override
@@ -736,13 +773,9 @@ public class HanaDialect extends PreparedStatementSQLDialect {
             int srid,
             Class binding,
             StringBuffer sql) {
-        String pattern = null;
-        if (srid > -1) {
-            pattern = "ST_GeomFromWKB( ? ,{0})";
-            sql.append(MessageFormat.format(pattern, Integer.toString(srid)));
-        } else {
-            sql.append("ST_GeomFromWKB( ? )");
-        }
+        sql.append("ST_GeomFromWKB(?, ");
+        sql.append(srid);
+        sql.append(")");
     }
 
     @Override

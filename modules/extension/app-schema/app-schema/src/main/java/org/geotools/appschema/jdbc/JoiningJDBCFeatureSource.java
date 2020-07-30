@@ -323,8 +323,17 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
 
     /** Craete the filter to sql converter */
     protected FilterToSQL createFilterToSQL(SimpleFeatureType ft) {
+        return createFilterToSQL(ft, true);
+    }
+
+    /** Craete the filter to sql converter */
+    protected FilterToSQL createFilterToSQL(
+            SimpleFeatureType ft, boolean usePreparedStatementParameters) {
         if (getDataStore().getSQLDialect() instanceof PreparedStatementSQLDialect) {
-            return getDataStore().createPreparedFilterToSQL(ft);
+            PreparedFilterToSQL pfsql =
+                    (PreparedFilterToSQL) getDataStore().createPreparedFilterToSQL(ft);
+            pfsql.setPrepareEnabled(usePreparedStatementParameters);
+            return pfsql;
         } else {
             return getDataStore().createFilterToSQL(ft);
         }
@@ -383,9 +392,12 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
 
                 joinClause.append(" INNER JOIN ");
 
-                FilterToSQL toSQL1 = createFilterToSQL(getDataStore().getSchema(lastTypeName));
+                FilterToSQL toSQL1 =
+                        createFilterToSQL(getDataStore().getSchema(lastTypeName), toSQLref != null);
                 FilterToSQL toSQL2 =
-                        createFilterToSQL(getDataStore().getSchema(join.getJoiningTypeName()));
+                        createFilterToSQL(
+                                getDataStore().getSchema(join.getJoiningTypeName()),
+                                toSQLref != null);
 
                 if (tableNames.contains(join.getJoiningTypeName())) {
                     alias = createAlias(join.getJoiningTypeName(), tableNames);
@@ -575,7 +587,9 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                                         ? lastTableName
                                         : aliases[query.getQueryJoins().size() - 1];
 
-                toSQL = createFilterToSQL(getDataStore().getSchema(lastTableName));
+                toSQL =
+                        createFilterToSQL(
+                                getDataStore().getSchema(lastTableName), toSQLref != null);
 
                 // apply paging to the root feature if applicable
                 Collection<String> ids = new ArrayList<String>();
@@ -852,8 +866,11 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             boolean replaceOrWithUnion = isPostgisDialect() && isOrUnionReplacementEnabled();
             // get current select clause
             String selectClause = sortBySQL.toString().replace(" INNER JOIN ( ", "");
+            // use a FilterToSql without prepared statement parameters
+            SimpleFeatureType featureType = toSQL.getFeatureType();
+            FilterToSQL toSQL2 = createFilterToSQL(featureType, false);
             sortBySQL.append(
-                    createNestedFilter(filter, query, toSQL, selectClause, replaceOrWithUnion));
+                    createNestedFilter(filter, query, toSQL2, selectClause, replaceOrWithUnion));
         } else {
             sortBySQL.append(" ").append(toSQL.encodeToString(filter));
         }
@@ -1262,7 +1279,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                     });
             finalSql.append(" FROM ");
             store.encodeTableName(mv.getTargetTable(), finalSql, null);
-            finalSql.append(" INNER JOIN (").append(sql).append(") AS ");
+            finalSql.append(" INNER JOIN (").append(sql).append(") ");
             store.dialect.encodeTableName("mv", finalSql);
             finalSql.append(" ON ");
             store.dialect.encodeTableName("mv", finalSql);

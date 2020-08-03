@@ -17,6 +17,7 @@
 package org.geotools.filter.function;
 
 import java.util.logging.Logger;
+import java.util.stream.DoubleStream;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.opengis.feature.Feature;
@@ -146,5 +147,47 @@ public class StandardDeviationFunctionTest extends FunctionTestSupport {
         assertEquals(1, classifier.getSize());
         assertEquals(123.123, (Double) classifier.getMin(0), 0d);
         assertEquals(123.123, (Double) classifier.getMax(0), 0d);
+    }
+
+    public void testPercentagesOddClassNum() {
+        Literal classes = ff.literal(5);
+        PropertyName exp = ff.property("foo");
+        Function standardDeviation =
+                ff.function("StandardDeviation", exp, classes, ff.literal(true));
+        assertNotNull("step 1 - standard deviation function", standardDeviation);
+
+        final Classifier classifier =
+                standardDeviation.evaluate(stddevCollection, Classifier.class);
+        double[] percentages = classifier.getPercentages();
+        assertNotNull(percentages);
+        assertEquals(5, percentages.length);
+        assertEquals(10d, percentages[0]);
+        assertEquals(0d, percentages[1]);
+        assertEquals(70d, percentages[2]);
+        assertEquals(10d, percentages[3]);
+        assertEquals(10d, percentages[4]);
+
+        assertEquals(100d, DoubleStream.of(percentages).sum());
+    }
+
+    public void testPercentagesEvenClassNum() {
+        Literal classes = ff.literal(6);
+        PropertyName exp = ff.property("foo");
+        Function standardDeviation =
+                ff.function("StandardDeviation", exp, classes, ff.literal(true));
+        assertNotNull("step 1 - standard deviation function", standardDeviation);
+
+        final Classifier classifier =
+                standardDeviation.evaluate(stddevCollection, Classifier.class);
+        double[] percentages = classifier.getPercentages();
+        assertNotNull(percentages);
+        assertEquals(6, percentages.length);
+        assertEquals(10d, percentages[0]);
+        assertEquals(0d, percentages[1]);
+        assertEquals(50d, percentages[2]);
+        assertEquals(30d, percentages[3]);
+        assertEquals(0d, percentages[4]);
+        assertEquals(10d, percentages[5]);
+        assertEquals(100d, DoubleStream.of(percentages).sum());
     }
 }

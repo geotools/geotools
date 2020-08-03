@@ -33,7 +33,10 @@ import org.opengis.filter.FilterFactory2;
 /** @author James */
 public abstract class FunctionTestSupport extends TestCase {
 
-    protected SimpleFeatureCollection featureCollection, jenksCollection, constantCollection;
+    protected SimpleFeatureCollection featureCollection,
+            jenksCollection,
+            constantCollection,
+            stddevCollection;
 
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
 
@@ -106,5 +109,27 @@ public abstract class FunctionTestSupport extends TestCase {
                             "constant" + i));
         }
         this.constantCollection = constantCollection;
+
+        SimpleFeatureType stddevType =
+                DataUtilities.createType(
+                        "classification.stddev", "id:0,foo:int,geom:Point,group:String");
+
+        int iVal2[] = new int[] {4, 39, 20, 43, 29, 200, 8, 12, 500, -500};
+
+        stddevCollection = new ListFeatureCollection(stddevType);
+
+        for (int i = 0; i < iVal2.length; i++) {
+            SimpleFeature feature =
+                    SimpleFeatureBuilder.build(
+                            stddevType,
+                            new Object[] {
+                                Integer.valueOf(i + 1),
+                                Integer.valueOf(iVal2[i]),
+                                fac.createPoint(new Coordinate(iVal2[i], iVal2[i])),
+                                "Group" + (i % 4)
+                            },
+                            "classification.t" + (i + 1));
+            ((ListFeatureCollection) stddevCollection).add(feature);
+        }
     }
 }

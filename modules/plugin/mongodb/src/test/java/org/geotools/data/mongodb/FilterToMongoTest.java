@@ -115,19 +115,7 @@ public class FilterToMongoTest extends TestCase {
     }
 
     public void testIntersects() {
-        Coordinate[] coordinates =
-                new Coordinate[] {
-                    new Coordinate(10.0, 10.0),
-                    new Coordinate(20.0, 10.0),
-                    new Coordinate(20.0, 20.0),
-                    new Coordinate(10.0, 20.0),
-                    new Coordinate(10.0, 10.0),
-                };
-
-        Intersects intersects =
-                ff.intersects(
-                        ff.property("geom"),
-                        ff.literal(new GeometryFactory().createPolygon(coordinates)));
+        Intersects intersects = ff.intersects(ff.property("geom"), getGeometryParameter());
         BasicDBObject obj = (BasicDBObject) intersects.accept(filterToMongo, null);
         assertNotNull(obj);
 
@@ -158,19 +146,8 @@ public class FilterToMongoTest extends TestCase {
     }
 
     public void testWithin() {
-        Coordinate[] coordinates =
-                new Coordinate[] {
-                    new Coordinate(10.0, 10.0),
-                    new Coordinate(20.0, 10.0),
-                    new Coordinate(20.0, 20.0),
-                    new Coordinate(10.0, 20.0),
-                    new Coordinate(10.0, 10.0),
-                };
 
-        Within within =
-                ff.within(
-                        ff.property("geom"),
-                        ff.literal(new GeometryFactory().createPolygon(coordinates)));
+        Within within = ff.within(ff.property("geom"), getGeometryParameter());
         BasicDBObject obj = (BasicDBObject) within.accept(filterToMongo, null);
         assertNotNull(obj);
 
@@ -361,5 +338,63 @@ public class FilterToMongoTest extends TestCase {
             assertThat(value, notNullValue());
             assertThat(value, is(expectedValue));
         }
+    }
+
+    public void testIntersectsWithJsonSelect() {
+        Intersects intersects =
+                ff.intersects(
+                        ff.function("jsonSelect", ff.literal("geom")), getGeometryParameter());
+        BasicDBObject mongoQuery = (BasicDBObject) intersects.accept(filterToMongo, null);
+        testIntersectMongoQuery(mongoQuery);
+    }
+
+    public void testIntersectsWithJsonSelectAll() {
+
+        Intersects intersects =
+                ff.intersects(
+                        ff.function("jsonSelectAll", ff.literal("geom")), getGeometryParameter());
+        BasicDBObject mongoQuery = (BasicDBObject) intersects.accept(filterToMongo, null);
+        testIntersectMongoQuery(mongoQuery);
+    }
+
+    private Literal getGeometryParameter() {
+        Coordinate[] coordinates =
+                new Coordinate[] {
+                    new Coordinate(10.0, 10.0),
+                    new Coordinate(20.0, 10.0),
+                    new Coordinate(20.0, 20.0),
+                    new Coordinate(10.0, 20.0),
+                    new Coordinate(10.0, 10.0),
+                };
+        return ff.literal(new GeometryFactory().createPolygon(coordinates));
+    }
+
+    private void testIntersectMongoQuery(BasicDBObject mongoQuery) {
+        assertNotNull(mongoQuery);
+
+        BasicDBObject filterGeometry = (BasicDBObject) mongoQuery.get("geom");
+        assertNotNull(filterGeometry);
+
+        BasicDBObject filterIntersects = (BasicDBObject) filterGeometry.get("$geoIntersects");
+        assertNotNull(filterIntersects);
+
+        BasicDBObject filterIntersectsGeometry = (BasicDBObject) filterIntersects.get("$geometry");
+        assertNotNull(filterIntersectsGeometry);
+
+        Geometry geometry = geometryBuilder.toGeometry(filterIntersectsGeometry);
+        assertTrue(Orientation.isCCW(geometry.getCoordinates()));
+
+        BasicDBObject filterIntersectsCrs = (BasicDBObject) filterIntersectsGeometry.get("crs");
+        assertNotNull(filterIntersectsCrs);
+
+        BasicDBObject filterIntersectsCrsProperties =
+                (BasicDBObject) filterIntersectsCrs.get("properties");
+        assertNotNull(filterIntersectsCrsProperties);
+
+        String filterIntersectsCrsPropertiesName =
+                (String) filterIntersectsCrsProperties.get("name");
+        assertNotNull(filterIntersectsCrsPropertiesName);
+        assertEquals(
+                "urn:x-mongodb:crs:strictwinding:EPSG:4326", filterIntersectsCrsPropertiesName);
     }
 }

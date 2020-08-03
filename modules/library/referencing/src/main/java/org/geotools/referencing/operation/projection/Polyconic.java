@@ -257,6 +257,10 @@ public class Polyconic {
                 }
                 lam = asin(x * tan(phi)) / sin(phi);
             }
+            if (ptDst != null) {
+                ptDst.setLocation(lam, phi);
+                return ptDst;
+            }
             return new Point2D.Double(lam, phi);
         }
 

@@ -41,6 +41,8 @@ import org.bson.BsonString;
 import org.bson.Document;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Transaction;
+import org.geotools.data.mongodb.complex.JsonSelectAllFunction;
+import org.geotools.data.mongodb.complex.JsonSelectFunction;
 import org.geotools.data.mongodb.data.SchemaStoreDirectoryProvider;
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.store.ContentDataStore;
@@ -317,6 +319,8 @@ public class MongoDataStore extends ContentDataStore {
         capabilities.addType(Within.class);
 
         capabilities.addType(Id.class);
+        capabilities.addType(JsonSelectFunction.class);
+        capabilities.addType(JsonSelectAllFunction.class);
 
         /*
         capabilities.addType(IncludeFilter.class);

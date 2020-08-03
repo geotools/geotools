@@ -24,12 +24,14 @@ public class GeometryColumnEncoder {
 
     private final boolean atLeast2_2_0;
     private final boolean stSimplifyEnabled;
+    private final boolean stPreserveTopologyEnabled;
     private final boolean encodeBase64;
     private final PostGISDialect dialect;
 
     GeometryColumnEncoder(
             Version version,
             boolean stSimplifyEnabled,
+            boolean stPreserveTopologyEnabled,
             boolean encodeBase64,
             PostGISDialect dialect) {
         // version should not be null in normal usage, as it's set when SQLDialect
@@ -37,6 +39,7 @@ public class GeometryColumnEncoder {
         // possible usage outside JDBCDataStore (or unforeseens usages inside of it)
         this.atLeast2_2_0 = version != null && version.compareTo(PostGISDialect.V_2_2_0) >= 0;
         this.stSimplifyEnabled = stSimplifyEnabled;
+        this.stPreserveTopologyEnabled = stPreserveTopologyEnabled;
         this.encodeBase64 = encodeBase64;
         this.dialect = dialect;
     }
@@ -129,7 +132,11 @@ public class GeometryColumnEncoder {
     private void encode2DGeometry(
             GeometryDescriptor gatt, String prefix, StringBuffer sql, Double distance) {
         if (distance != null) {
-            sql.append("ST_Simplify(");
+            if (stPreserveTopologyEnabled) {
+                sql.append("ST_SimplifyPreserveTopology(");
+            } else {
+                sql.append("ST_Simplify(");
+            }
         }
 
         sql.append(dialect.getForce2DFunction() + "(");
@@ -137,7 +144,7 @@ public class GeometryColumnEncoder {
         sql.append(")");
 
         if (distance != null) {
-            String preserveCollapsed = atLeast2_2_0 ? ", true" : "";
+            String preserveCollapsed = (atLeast2_2_0 && !stPreserveTopologyEnabled) ? ", true" : "";
             sql.append(", " + distance + preserveCollapsed + ")");
         }
     }

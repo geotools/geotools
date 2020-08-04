@@ -466,10 +466,9 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         mappings.put("MDSYS.SDO_GEOMETRY", Geometry.class);
     }
 
-    @Override
-    public String getNameEscape() {
-        return "";
-    }
+    /*
+     * @Override public String getNameEscape() { return ""; }
+     */
 
     @Override
     public void encodeColumnName(String prefix, String raw, StringBuffer sql) {

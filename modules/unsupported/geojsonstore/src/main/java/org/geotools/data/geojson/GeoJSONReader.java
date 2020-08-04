@@ -151,7 +151,8 @@ public class GeoJSONReader implements AutoCloseable {
      * @return
      */
     public static Geometry parseGeometry(String input) {
-        try (JsonParser lParser = factory.createParser(new ByteArrayInputStream(input.getBytes()))) {
+        try (JsonParser lParser =
+                factory.createParser(new ByteArrayInputStream(input.getBytes()))) {
             ObjectMapper mapper = new ObjectMapper();
             mapper.registerModule(new JtsModule());
             ObjectNode node = mapper.readTree(lParser);

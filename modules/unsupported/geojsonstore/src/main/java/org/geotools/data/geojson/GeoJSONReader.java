@@ -23,7 +23,6 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.DoubleNode;
@@ -155,7 +154,8 @@ public class GeoJSONReader implements AutoCloseable {
      * @return
      */
     public static Geometry parseGeometry(String input) {
-        try (JsonParser lParser = factory.createParser(new ByteArrayInputStream(input.getBytes()))) {
+        try (JsonParser lParser =
+                factory.createParser(new ByteArrayInputStream(input.getBytes()))) {
             ObjectMapper mapper = new ObjectMapper();
             mapper.registerModule(new JtsModule());
             ObjectNode node = mapper.readTree(lParser);

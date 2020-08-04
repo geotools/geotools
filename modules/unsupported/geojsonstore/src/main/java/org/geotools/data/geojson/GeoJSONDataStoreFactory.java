@@ -30,7 +30,6 @@ import org.geotools.data.FileDataStore;
 import org.geotools.data.FileDataStoreFactorySpi;
 import org.geotools.util.KVP;
 import org.geotools.util.URLs;
-import org.geotools.util.UnsupportedImplementationException;
 
 public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
 
@@ -201,8 +200,7 @@ public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
     public FileDataStore createDataStore(URL url) throws IOException {
         return new GeoJSONDataStore(url);
     }
-    
-   
+
     public FileDataStore createDataStore(File f) throws IOException {
         return new GeoJSONDataStore(f);
     }

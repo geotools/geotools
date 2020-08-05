@@ -1615,18 +1615,22 @@ public final class CRS {
                 if (equalsIgnoreMetadata(DefaultCoordinateSystemAxis.LONGITUDE, axis)) {
                     double minLon = envelope.getMinimum(i);
                     double maxLon = envelope.getMaximum(i);
+                    DirectPosition lower = generalEnvelope.getLowerCorner();
+                    DirectPosition upper = generalEnvelope.getUpperCorner();
+                    DirectPosition dest = new DirectPosition2D();
                     // world spanning longitude? add points around the globe quadrants then
                     if ((maxLon - minLon) >= 360) {
-                        DirectPosition lower = generalEnvelope.getLowerCorner();
-                        DirectPosition upper = generalEnvelope.getUpperCorner();
-                        DirectPosition dest = new DirectPosition2D();
                         for (int lon = -180; lon <= 180; lon += 90) {
-                            lower.setOrdinate(i, lon);
-                            mt.transform(lower, dest);
-                            transformed.add(dest);
-                            upper.setOrdinate(i, lon);
-                            mt.transform(upper, dest);
-                            transformed.add(dest);
+                            addLowerUpperPoints(mt, transformed, i, lower, upper, dest, lon);
+                        }
+                    } else {
+                        // quadrants are still extreme points of the reprojected "circle",
+                        // add them if the envelope happens to cross them, or if the envelope
+                        // is "world spanning"
+                        for (int lon = -180; lon <= 180; lon += 90) {
+                            if (minLon < lon && maxLon > lon) {
+                                addLowerUpperPoints(mt, transformed, i, lower, upper, dest, lon);
+                            }
                         }
                     }
                 }
@@ -1782,6 +1786,23 @@ public final class CRS {
         }
 
         return transformed;
+    }
+
+    private static void addLowerUpperPoints(
+            MathTransform mt,
+            GeneralEnvelope transformed,
+            int axis,
+            DirectPosition lower,
+            DirectPosition upper,
+            DirectPosition dest,
+            double ordinate)
+            throws TransformException {
+        lower.setOrdinate(axis, ordinate);
+        mt.transform(lower, dest);
+        transformed.add(dest);
+        upper.setOrdinate(axis, ordinate);
+        mt.transform(upper, dest);
+        transformed.add(dest);
     }
 
     private static double rollLongitude(final double x) {

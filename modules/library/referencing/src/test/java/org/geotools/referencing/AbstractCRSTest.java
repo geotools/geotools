@@ -710,4 +710,77 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
             return false;
         }
     }
+
+    public void testNorthPolarStereographicLeftQuadrant() throws Exception {
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:3995", true);
+        Envelope2D envelope = new Envelope2D(DefaultGeographicCRS.WGS84);
+        envelope.add(-156, 0);
+        envelope.add(-40, 48);
+        Envelope transformed = CRS.transform(envelope, crs);
+
+        // transformation of -90, 0, which is included in the range, and
+        // a extreme point in the reprojected space (quadrant point)
+        assertEquals(-12367396.22, transformed.getMinimum(0), 1d);
+    }
+
+    public void testNorthPolarStereographicRightQuadrant() throws Exception {
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:3995", true);
+        Envelope2D envelope = new Envelope2D(DefaultGeographicCRS.WGS84);
+        envelope.add(40, 0);
+        envelope.add(156, 48);
+        Envelope transformed = CRS.transform(envelope, crs);
+
+        // transformation of 90, 0, which is included in the range, and
+        // a extreme point in the reprojected space (quadrant point)
+        assertEquals(12367396.22, transformed.getMaximum(0), 1d);
+    }
+
+    public void testNorthPolarStereographicLeftRightQuadrant() throws Exception {
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:3995", true);
+        Envelope2D envelope = new Envelope2D(DefaultGeographicCRS.WGS84);
+        envelope.add(-156, 0);
+        envelope.add(156, 48);
+        Envelope transformed = CRS.transform(envelope, crs);
+
+        // Touches both ends
+        assertEquals(-12367396.22, transformed.getMinimum(0), 1d);
+        assertEquals(12367396.22, transformed.getMaximum(0), 1d);
+    }
+
+    public void testNorthPolarStereographicUpQuadrant() throws Exception {
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:3995", true);
+        Envelope2D envelope = new Envelope2D(DefaultGeographicCRS.WGS84);
+        envelope.add(-200, 0);
+        envelope.add(-160, 48);
+        Envelope transformed = CRS.transform(envelope, crs);
+
+        // transformation of -180, 0, which is included in the range, and
+        // a extreme point in the reprojected space (quadrant point)
+        assertEquals(12367396.22, transformed.getMaximum(1), 1d);
+    }
+
+    public void testNorthPolarStereographicDownQuadrant() throws Exception {
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:3995", true);
+        Envelope2D envelope = new Envelope2D(DefaultGeographicCRS.WGS84);
+        envelope.add(-20, 0);
+        envelope.add(20, 48);
+        Envelope transformed = CRS.transform(envelope, crs);
+
+        // transformation of 0, 0, which is included in the range, and
+        // a extreme point in the reprojected space (quadrant point)
+        assertEquals(-12367396.22, transformed.getMinimum(1), 1d);
+    }
+
+    public void testNorthPolarStereographicUpDownQuadrant() throws Exception {
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:3995", true);
+        Envelope2D envelope = new Envelope2D(DefaultGeographicCRS.WGS84);
+        envelope.add(-200, 0);
+        envelope.add(20, 48);
+        Envelope transformed = CRS.transform(envelope, crs);
+
+        // transformation of 0, 0, which is included in the range, and
+        // a extreme point in the reprojected space (quadrant point)
+        assertEquals(-12367396.22, transformed.getMinimum(1), 1d);
+        assertEquals(12367396.22, transformed.getMaximum(1), 1d);
+    }
 }

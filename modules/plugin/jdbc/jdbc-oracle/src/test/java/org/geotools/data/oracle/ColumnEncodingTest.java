@@ -43,4 +43,13 @@ public class ColumnEncodingTest {
         dialect.encodeColumnName(null, "name with space", buffer);
         assertEquals("\"NAME WITH SPACE\"", buffer.toString());
     }
+
+    /** test for GEOT-6676 reserved words used a column names must be quoted */
+    @Test
+    public void testReservedWords() {
+        StringBuffer buffer = new StringBuffer();
+        OracleDialect dialect = new OracleDialect(null);
+        dialect.encodeColumnName(null, "level", buffer);
+        assertEquals("\"LEVEL\"", buffer.toString());
+    }
 }

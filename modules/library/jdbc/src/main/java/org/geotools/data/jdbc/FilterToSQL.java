@@ -197,7 +197,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     protected static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(FilterToSQL.class);
 
     /** Character used to escape database schema, table and column names */
-    private String sqlNameEscape = "";
+    protected String sqlNameEscape = "";
 
     /** where to write the constructed string from visiting the filters. */
     protected Writer out;
@@ -1999,6 +1999,11 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      */
     public void setSqlNameEscape(String escape) {
         sqlNameEscape = escape;
+    }
+
+    /** @return the sqlNameEscape */
+    public String getSqlNameEscape() {
+        return sqlNameEscape;
     }
 
     /**

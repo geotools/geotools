@@ -73,6 +73,8 @@ public class GeoJSONWriter implements AutoCloseable {
 
     private boolean inArray = false;
 
+    private boolean encodeFeatureCollectionCRS = false;
+
     public GeoJSONWriter(OutputStream outputStream) throws IOException {
         // force the output CRS to be long, lat as required by spec
         CRSAuthorityFactory cFactory = CRS.getAuthorityFactory(true);
@@ -159,29 +161,31 @@ public class GeoJSONWriter implements AutoCloseable {
 
         Geometry defaultGeometry = (Geometry) currentFeature.getDefaultGeometry();
         // Check CRS and Axis order before writing out to comply with
-        // https://tools.ietf.org/html/rfc7946
+        // https://tools.ietf.org/html/rfc7946 unless they asked nicely
+        if (!encodeFeatureCollectionCRS) {
+            CoordinateReferenceSystem inCRS =
+                    currentFeature
+                            .getDefaultGeometryProperty()
+                            .getDescriptor()
+                            .getCoordinateReferenceSystem();
+            if (transform == null || inCRS != lastCRS) {
+                lastCRS = inCRS;
+                try {
+                    transform = CRS.findMathTransform(inCRS, outCRS, true);
+                } catch (FactoryException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if (!CRS.equalsIgnoreMetadata(inCRS, outCRS)) {
+                // reproject
+                try {
+                    defaultGeometry = JTS.transform(defaultGeometry, transform);
+                } catch (MismatchedDimensionException | TransformException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
 
-        CoordinateReferenceSystem inCRS =
-                currentFeature
-                        .getDefaultGeometryProperty()
-                        .getDescriptor()
-                        .getCoordinateReferenceSystem();
-        if (transform == null || inCRS != lastCRS) {
-            lastCRS = inCRS;
-            try {
-                transform = CRS.findMathTransform(inCRS, outCRS, true);
-            } catch (FactoryException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        if (!CRS.equalsIgnoreMetadata(inCRS, outCRS)) {
-            // reproject
-            try {
-                defaultGeometry = JTS.transform(defaultGeometry, transform);
-            } catch (MismatchedDimensionException | TransformException e) {
-                throw new RuntimeException(e);
-            }
-        }
         if (defaultGeometry != null) {
             g.writeFieldName("geometry");
             String gString = mapper.writeValueAsString(defaultGeometry);
@@ -277,5 +281,28 @@ public class GeoJSONWriter implements AutoCloseable {
                     e);
         }
         return new String(out.toByteArray());
+    }
+
+    /** @param b */
+    public void setEncodeFeatureCollectionCRS(boolean b) {
+        encodeFeatureCollectionCRS = b;
+    }
+
+    /** @return the encodeFeatureCollectionCRS */
+    public boolean isEncodeFeatureCollectionCRS() {
+        return encodeFeatureCollectionCRS;
+    }
+
+    /**
+     * @param features
+     * @throws IOException
+     */
+    public void writeFeatureCollection(SimpleFeatureCollection features) throws IOException {
+        try (SimpleFeatureIterator itr = features.features()) {
+            while (itr.hasNext()) {
+                SimpleFeature feature = (SimpleFeature) itr.next();
+                write(feature);
+            }
+        }
     }
 }

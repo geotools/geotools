@@ -18,7 +18,10 @@ package org.geotools.ows.wmts;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Properties;
+import java.util.Set;
+import java.util.TreeSet;
 import org.geotools.data.ows.*;
 import org.geotools.ows.ServiceException;
 import org.geotools.ows.wmts.model.WMTSCapabilities;
@@ -138,7 +141,36 @@ public class WMTSSpecification extends Specification {
 
     /** */
     public static String processKey(String key) {
+        if (keywords.contains(key.toLowerCase())) return key.trim().toUpperCase();
+        else return key;
+    }
 
-        return key.trim().toUpperCase();
+    static Set<String> keywords = new TreeSet<>();
+
+    static { // a list of keywords from the WMTS spec -
+        // http://portal.opengeospatial.org/files/?artifact_id=35326
+        String[] words = {
+            "request",
+            "version",
+            "layer",
+            "acceptversions",
+            "sections",
+            "updatesequence",
+            "acceptformats",
+            "style",
+            "format",
+            "tilematrixset",
+            "tilematrix",
+            "tilerow",
+            "tilecol",
+            "j",
+            "i",
+            "infoformat",
+            "service",
+            "time",
+            "elevation",
+            "band"
+        };
+        keywords.addAll(Arrays.asList(words));
     }
 }

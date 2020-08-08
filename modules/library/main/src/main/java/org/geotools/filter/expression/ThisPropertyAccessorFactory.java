@@ -35,10 +35,11 @@ public class ThisPropertyAccessorFactory implements PropertyAccessorFactory {
             return ".".equals(xpath);
         }
 
-        public Object get(Object object, String xpath, Class target)
+        @SuppressWarnings("unchecked")
+        public <T> T get(Object object, String xpath, Class<T> target)
                 throws IllegalArgumentException {
-            if (object instanceof Attribute) return ((Attribute) object).getValue();
-            else return object;
+            if (object instanceof Attribute) return (T) ((Attribute) object).getValue();
+            else return (T) object;
         }
 
         public void set(Object object, String xpath, Object value, Class target)

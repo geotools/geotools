@@ -174,7 +174,7 @@ public class DataTestCase extends TestCase {
 
         Id create =
                 ff.id(
-                        new HashSet(
+                        new HashSet<>(
                                 Arrays.asList(ff.featureId("road.rd1"), ff.featureId("road.rd2"))));
 
         rd12Filter = create;

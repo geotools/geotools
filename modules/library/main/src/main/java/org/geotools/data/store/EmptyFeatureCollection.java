@@ -45,8 +45,8 @@ public class EmptyFeatureCollection extends DataFeatureCollection {
         return 0;
     }
 
-    protected Iterator openIterator() {
-        return new EmptyIterator();
+    protected Iterator<SimpleFeature> openIterator() {
+        return new EmptyIterator<>();
     }
 
     protected void closeIterator(Iterator close) {

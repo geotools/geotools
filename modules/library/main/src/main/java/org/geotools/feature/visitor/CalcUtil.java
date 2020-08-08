@@ -246,6 +246,7 @@ public class CalcUtil {
     }
 
     /** Similar to java.lang.Comparable.compareTo, but can handle 2 different data types. */
+    @SuppressWarnings("unchecked")
     static int compare(Comparable val1, Comparable val2) {
         if (val1.getClass() == val2.getClass()) {
             // both the same type, no conversion is necessary.

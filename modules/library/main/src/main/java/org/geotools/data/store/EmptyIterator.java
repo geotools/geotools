@@ -23,7 +23,7 @@ import java.util.Iterator;
  *
  * @author Justin Deoliveira, The Open Planning Project
  */
-public class EmptyIterator implements Iterator {
+public class EmptyIterator<T> implements Iterator<T> {
 
     public void remove() {}
 
@@ -31,7 +31,7 @@ public class EmptyIterator implements Iterator {
         return false;
     }
 
-    public Object next() {
+    public T next() {
         return null;
     }
 }

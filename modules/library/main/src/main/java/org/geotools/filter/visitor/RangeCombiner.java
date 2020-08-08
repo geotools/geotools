@@ -174,6 +174,7 @@ abstract class RangeCombiner {
                         otherFilters.add(f);
                     } else {
                         Expression expression = pb.getExpression();
+                        @SuppressWarnings("unchecked")
                         Range<?> range = new Range(binding, (Comparable) min, (Comparable) max);
                         addRange(rangeMap, expression, new MultiRange(range));
                     }
@@ -245,6 +246,8 @@ abstract class RangeCombiner {
         }
     }
 
+    // we don't know what type of range is built here, any comparable will do
+    @SuppressWarnings("unchecked")
     private ExpressionRange getRange(BinaryComparisonOperator op) {
         Range range = null;
         Expression expression = null;

@@ -68,7 +68,7 @@ public class FilterSAXParser {
     private FilterFactory2 ff;
 
     /** the Attributes of the filter (only applicable to LIKE filters, I think) */
-    private Map attributes = new HashMap();
+    private Map<String, Object> attributes = new HashMap<>();
 
     /** Constructor which flags the operator as between. */
     public FilterSAXParser() {
@@ -186,7 +186,7 @@ public class FilterSAXParser {
         curState = setInitialState(filterType);
         this.filterType = filterType;
 
-        attributes = new HashMap();
+        attributes = new HashMap<>();
     }
 
     /**

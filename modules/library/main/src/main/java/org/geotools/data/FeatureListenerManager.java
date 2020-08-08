@@ -375,13 +375,13 @@ public class FeatureListenerManager {
             Transaction transaction,
             FeatureEvent.Type type,
             ReferencedEnvelope bounds) {
-        FeatureSource<? extends FeatureType, ? extends Feature> featureSource;
+        SimpleFeatureSource featureSource;
         FeatureListener[] listeners;
         FeatureEvent event;
         Map<SimpleFeatureSource, FeatureListener[]> map = getListeners(typeName, transaction);
 
-        for (Map.Entry entry : map.entrySet()) {
-            featureSource = (FeatureSource) entry.getKey();
+        for (Map.Entry<SimpleFeatureSource, FeatureListener[]> entry : map.entrySet()) {
+            featureSource = entry.getKey();
             listeners = (FeatureListener[]) entry.getValue();
 
             event = new FeatureEvent(featureSource, type, bounds);

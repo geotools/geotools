@@ -134,20 +134,21 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
      * The stack holding the bits of the filter that are not processable by something with the given
      * {@link FilterCapabilities}
      */
-    protected Stack postStack = new Stack();
+    /* Filter and Expression do not share a common ancestor, hence, Stack<Object> */
+    protected Stack<Object> postStack = new Stack<>();
 
     /**
      * The stack holding the bits of the filter that <b>are</b> processable by something with the
      * given {@link FilterCapabilities}
      */
-    protected Stack preStack = new Stack();
+    protected Stack<Object> preStack = new Stack<>();
 
     /**
      * Operates similar to postStack. When a update is determined to affect an attribute expression
      * the update filter is pushed on to the stack, then ored with the filter that contains the
      * expression.
      */
-    private Set changedStack = new HashSet();
+    private Set<Object> changedStack = new HashSet<>();
 
     /** The given filterCapabilities that we're splitting on. */
     protected FilterCapabilities fcs = null;
@@ -510,7 +511,8 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
     protected void visitBinarySpatialOperator(BinarySpatialOperator filter) {
         if (original == null) original = filter;
 
-        Class[] spatialOps =
+        @SuppressWarnings("unchecked")
+        Class<? extends Filter>[] spatialOps =
                 new Class[] {
                     Beyond.class,
                     Contains.class,
@@ -900,8 +902,8 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
         // ~(a|b) == (~a + ~b) modus ponens
         // ~~(a|b) == ~(~a + ~b) substitution
         // a|b == ~(~a + ~b) negative simpilification
-        Iterator i = filter.getChildren().iterator();
-        List translated = new ArrayList();
+        Iterator<Filter> i = filter.getChildren().iterator();
+        List<Filter> translated = new ArrayList<>();
 
         while (i.hasNext()) {
             Filter f = (Filter) i.next();

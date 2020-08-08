@@ -74,18 +74,21 @@ public class IsBetweenImpl extends CompareFilterImpl implements PropertyIsBetwee
             return evaluateInternal(object0, object1, object2);
         }
 
+        @SuppressWarnings("unchecked")
         Collection<Object> oValues =
                 object0 instanceof Collection
                         ? (Collection<Object>) object0
-                        : Collections.<Object>singletonList(object0);
+                        : Collections.singletonList(object0);
+        @SuppressWarnings("unchecked")
         Collection<Object> leftValues =
                 object1 instanceof Collection
                         ? (Collection<Object>) object1
-                        : Collections.<Object>singletonList(object1);
+                        : Collections.singletonList(object1);
+        @SuppressWarnings("unchecked")
         Collection<Object> rightValues =
                 object2 instanceof Collection
                         ? (Collection<Object>) object2
-                        : Collections.<Object>singletonList(object2);
+                        : Collections.singletonList(object2);
 
         int count = 0;
 
@@ -152,10 +155,15 @@ public class IsBetweenImpl extends CompareFilterImpl implements PropertyIsBetwee
             }
         }
 
-        Comparable lc = comparable(l);
-        Comparable uc = comparable(u);
+        return betweenCompare(o, l, u);
+    }
 
-        return lc.compareTo(o) <= 0 && uc.compareTo(o) >= 0;
+    @SuppressWarnings("unchecked")
+    private boolean betweenCompare(Object ojbect, Object low, Object up) {
+        Comparable lc = comparable(low);
+        Comparable uc = comparable(up);
+
+        return lc.compareTo(ojbect) <= 0 && uc.compareTo(ojbect) >= 0;
     }
 
     public Object accept(FilterVisitor visitor, Object extraData) {

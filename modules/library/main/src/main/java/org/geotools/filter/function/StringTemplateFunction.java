@@ -133,7 +133,9 @@ public class StringTemplateFunction implements Function {
         if (context != null) {
             return Converters.convert(result, context);
         } else {
-            return (T) result;
+            @SuppressWarnings("unchecked")
+            T converted = (T) result;
+            return converted;
         }
     }
 

@@ -431,4 +431,9 @@ public final class ParserTest {
         assertFalse(check.contains("semi_major"));
         assertFalse(check.contains("semi_minor"));
     }
+
+    @Test
+    public void testExtension() throws IOException, ParseException {
+        testParsing(new Parser(), "wkt/Extension.txt");
+    }
 }

@@ -72,6 +72,21 @@
     </xs:all>
   </xs:complexType>
 
+  <xs:complexType name="overview">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string"/>
+      <xs:element name="distance" type="xs:double" minOccurs="0"/>
+      <xs:element name="scaleDenominator" type="xs:double" minOccurs="0"/>
+      <xs:element name="filter" minOccurs="0" type="fes:FilterType" />
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="overviews">
+    <xs:sequence>
+      <xs:element name="overview" type="gpkg:overview" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
   <xs:complexType name="geopkgtype">
     <xs:sequence>
       <xs:element name="features" minOccurs="0" maxOccurs="unbounded">
@@ -85,6 +100,7 @@
       			<xs:element name="indexed" type="xs:boolean" minOccurs="0" />
                 <xs:element name="styles" type="xs:boolean" minOccurs="0" />
                 <xs:element name="metadata" type="xs:boolean" minOccurs="0" />
+                <xs:element name="overviews" type="gpkg:overviews" minOccurs="0"/>
               </xs:sequence>
             </xs:extension>
           </xs:complexContent>

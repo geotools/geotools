@@ -18,11 +18,14 @@ package org.geotools.geopkg.wps.xml;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import org.geotools.geopkg.wps.GeoPackageProcessRequest;
 import org.geotools.geopkg.wps.GeoPackageProcessRequest.Layer;
+import org.geotools.geopkg.wps.GeoPackageProcessRequest.Overview;
 import org.geotools.xs.bindings.XSQNameBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
@@ -84,6 +87,13 @@ public class Geopkgtype_featuresBinding extends LayertypeBinding {
         Boolean indexed = (Boolean) node.getChildValue("indexed");
         if (indexed != null) {
             layer.setIndexed(indexed);
+        }
+        Object overviews = node.getChildValue("overviews");
+        if (overviews instanceof Overview) {
+            layer.setOverviews(Arrays.asList((Overview) overviews));
+        } else if (overviews instanceof Map) {
+            List<Overview> overview = (List<Overview>) ((Map<?, ?>) overviews).get("overview");
+            layer.setOverviews(overview);
         }
         return layer;
     }

@@ -92,6 +92,53 @@ public class GeoPackageProcessRequest {
         public abstract LayerType getType();
     }
 
+    public static class Overview implements Comparable<Overview> {
+        String name;
+        double distance;
+        double scaleDenominator;
+        Filter filter;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public double getDistance() {
+            return distance;
+        }
+
+        public void setDistance(double distance) {
+            this.distance = distance;
+        }
+
+        public Filter getFilter() {
+            return filter;
+        }
+
+        public void setFilter(Filter filter) {
+            this.filter = filter;
+        }
+
+        @Override
+        public int compareTo(Overview o) {
+            // compare both in case the distance and scale denominators are set
+            int diff = (int) Math.signum(distance - o.distance);
+            if (diff != 0) return diff;
+            return (int) Math.signum(scaleDenominator - o.scaleDenominator);
+        }
+
+        public double getScaleDenominator() {
+            return scaleDenominator;
+        }
+
+        public void setScaleDenominator(double scaleDenominator) {
+            this.scaleDenominator = scaleDenominator;
+        }
+    }
+
     public static class FeaturesLayer extends Layer {
 
         protected QName featureType = null;
@@ -100,6 +147,7 @@ public class GeoPackageProcessRequest {
         protected boolean indexed = false;
         protected boolean styles = true;
         protected boolean metadata = true;
+        protected List<Overview> overviews;
 
         @Override
         public LayerType getType() {
@@ -152,6 +200,14 @@ public class GeoPackageProcessRequest {
 
         public void setMetadata(boolean metadata) {
             this.metadata = metadata;
+        }
+
+        public List<Overview> getOverviews() {
+            return overviews;
+        }
+
+        public void setOverviews(List<Overview> overviews) {
+            this.overviews = overviews;
         }
     }
 

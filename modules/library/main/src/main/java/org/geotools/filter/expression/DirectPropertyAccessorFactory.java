@@ -59,12 +59,14 @@ public class DirectPropertyAccessorFactory implements PropertyAccessorFactory {
             return false;
         }
 
-        public Object get(Object object, String xpath, Class target)
+        public <T> T get(Object object, String xpath, Class<T> target)
                 throws IllegalArgumentException {
-            return ((Property) object).getValue();
+            @SuppressWarnings("unchecked")
+            T cast = (T) ((Property) object).getValue();
+            return cast;
         }
 
-        public void set(Object object, String xpath, Object value, Class target)
+        public <T> void set(Object object, String xpath, T value, Class<T> target)
                 throws IllegalArgumentException {
             ((Property) object).setValue(value);
         }

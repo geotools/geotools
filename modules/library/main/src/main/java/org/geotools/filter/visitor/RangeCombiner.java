@@ -59,7 +59,8 @@ abstract class RangeCombiner {
         }
 
         @Override
-        protected MultiRange combineRanges(MultiRange r1, MultiRange r2) {
+        protected <T extends Comparable<T>> MultiRange<T> combineRanges(
+                MultiRange<T> r1, MultiRange<T> r2) {
             return r1.merge(r2);
         }
 
@@ -85,7 +86,8 @@ abstract class RangeCombiner {
         }
 
         @Override
-        protected MultiRange combineRanges(MultiRange r1, MultiRange r2) {
+        protected <T extends Comparable<T>> MultiRange<T> combineRanges(
+                MultiRange<T> r1, MultiRange<T> r2) {
             return r1.intersect(r2);
         }
 
@@ -149,12 +151,15 @@ abstract class RangeCombiner {
 
     FeatureType featureType;
 
-    List<Filter> otherFilters = new ArrayList<Filter>();
+    List<Filter> otherFilters = new ArrayList<>();
 
     List<Filter> filters;
 
     FilterFactory2 ff;
 
+    @SuppressWarnings("unchecked")
+    // this class combines ranges of comparables, but without really knowing the type of comparable
+    // hence it cannot avoid unchecked assignments
     public RangeCombiner(FilterFactory2 ff, FeatureType featureType, List<Filter> filters) {
         this.ff = ff;
         this.filters = filters;
@@ -324,7 +329,7 @@ abstract class RangeCombiner {
         }
 
         List<Filter> result = new ArrayList<>(otherFilters);
-        for (Expression ex : new ArrayList<Expression>(rangeMap.keySet())) {
+        for (Expression ex : new ArrayList<>(rangeMap.keySet())) {
             MultiRange multiRange = rangeMap.get(ex);
             addFiltersToResults(result, multiRange.toFilter(ff, ex));
         }
@@ -335,8 +340,10 @@ abstract class RangeCombiner {
     protected abstract void addFiltersToResults(List<Filter> result, Filter filter);
 
     /** Combines two multiranges */
-    protected abstract MultiRange combineRanges(MultiRange r1, MultiRange r2);
+    protected abstract <T extends Comparable<T>> MultiRange<T> combineRanges(
+            MultiRange<T> r1, MultiRange<T> r2);
 
+    @SuppressWarnings("unchecked")
     private void addRange(
             Map<Expression, MultiRange> rangeMap, Expression expression, MultiRange other) {
         MultiRange ranges = rangeMap.get(expression);

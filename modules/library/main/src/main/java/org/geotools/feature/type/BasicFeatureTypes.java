@@ -74,10 +74,10 @@ public class BasicFeatureTypes {
         FEATURE =
                 new SimpleFeatureTypeImpl(
                         new NameImpl("Feature"),
-                        Collections.EMPTY_LIST,
+                        Collections.emptyList(),
                         null,
                         true,
-                        Collections.EMPTY_LIST,
+                        Collections.emptyList(),
                         null,
                         null);
 

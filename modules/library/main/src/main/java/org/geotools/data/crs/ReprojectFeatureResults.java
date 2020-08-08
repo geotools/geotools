@@ -88,7 +88,7 @@ public class ReprojectFeatureResults extends AbstractFeatureCollection {
         this.transform = CRS.findMathTransform(originalCs, destinationCS, true);
     }
 
-    public Iterator openIterator() {
+    public Iterator<SimpleFeature> openIterator() {
         return new ReprojectFeatureIterator(results.features(), getSchema(), transform);
     }
 

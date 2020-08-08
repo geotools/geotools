@@ -79,8 +79,9 @@ public class WrappingProjectionHandler extends ProjectionHandler {
             sourceHalfCircle = 180;
         } else {
             // assume a simplified earth circumference, which is 40075 km
-            Unit<?> sourceUnit = axis.getUnit();
-            UnitConverter converter = SI.METRE.getConverterTo((Unit<Length>) sourceUnit);
+            @SuppressWarnings("unchecked")
+            Unit<Length> sourceUnit = (Unit<Length>) axis.getUnit();
+            UnitConverter converter = SI.METRE.getConverterTo(sourceUnit);
             this.sourceHalfCircle = converter.convert(40075000 / 2);
         }
     }

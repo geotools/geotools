@@ -72,7 +72,7 @@ public class MultiRange<T extends Comparable<? super T>> {
         this.ranges.add(new Range(binding, exclusion, false, null, false));
     }
 
-    public MultiRange merge(MultiRange<T> other) {
+    public MultiRange<T> merge(MultiRange<T> other) {
         MultiRange<T> result = new MultiRange<>(this);
         for (Range<T> r : other.ranges) {
             result.addRange(r);

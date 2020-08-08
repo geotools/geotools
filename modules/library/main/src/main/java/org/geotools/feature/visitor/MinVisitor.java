@@ -82,6 +82,7 @@ public class MinVisitor implements FeatureCalc, FeatureAttributeVisitor {
         visit((org.opengis.feature.Feature) feature);
     }
 
+    @SuppressWarnings("unchecked")
     public void visit(org.opengis.feature.Feature feature) {
         Object attribValue = expr.evaluate(feature);
 
@@ -161,6 +162,7 @@ public class MinVisitor implements FeatureCalc, FeatureAttributeVisitor {
             return false;
         }
 
+        @SuppressWarnings("unchecked")
         public CalcResult merge(CalcResult resultsToAdd) {
             if (!isCompatible(resultsToAdd)) {
                 throw new IllegalArgumentException("Parameter is not a compatible type");

@@ -125,10 +125,10 @@ public class FeatureTypes {
     public static final SimpleFeatureType EMPTY =
             new SimpleFeatureTypeImpl(
                     new NameImpl("Empty"),
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     null,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     null,
                     null);
 

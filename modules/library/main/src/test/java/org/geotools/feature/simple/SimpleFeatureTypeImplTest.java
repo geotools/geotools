@@ -150,7 +150,7 @@ public class SimpleFeatureTypeImplTest extends TestCase {
                         null,
                         false,
                         false,
-                        Collections.EMPTY_LIST,
+                        Collections.emptyList(),
                         null,
                         null));
         builder.addBinding(
@@ -160,7 +160,7 @@ public class SimpleFeatureTypeImplTest extends TestCase {
                         null,
                         false,
                         false,
-                        Collections.EMPTY_LIST,
+                        Collections.emptyList(),
                         null,
                         null));
         builder.addBinding(
@@ -169,7 +169,7 @@ public class SimpleFeatureTypeImplTest extends TestCase {
                         Integer.class,
                         false,
                         false,
-                        Collections.EMPTY_LIST,
+                        Collections.emptyList(),
                         null,
                         null));
         builder.setName("ThingsType");

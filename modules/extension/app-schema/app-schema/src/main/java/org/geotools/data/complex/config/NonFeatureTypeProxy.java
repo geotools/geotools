@@ -135,7 +135,7 @@ public class NonFeatureTypeProxy extends ComplexTypeProxy implements FeatureType
         if (subject instanceof ComplexType) {
             return ((ComplexType) subject).getDescriptors();
         } else {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
     }
 

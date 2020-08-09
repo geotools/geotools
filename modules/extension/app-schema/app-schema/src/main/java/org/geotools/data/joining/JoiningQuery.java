@@ -100,7 +100,7 @@ public class JoiningQuery extends Query {
 
     public List<QueryJoin> getQueryJoins() {
         if (queryJoins == null) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
         return queryJoins;
     }

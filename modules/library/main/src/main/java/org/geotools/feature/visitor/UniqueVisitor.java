@@ -83,7 +83,7 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
 
     public void setPreserveOrder(boolean preserveOrder) {
         this.preserveOrder = preserveOrder;
-        set = createNewSet(Collections.EMPTY_LIST);
+        set = createNewSet(Collections.emptyList());
     }
 
     @Override
@@ -154,7 +154,7 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
 
     public void reset() {
         /** Reset the unique and current minimum for the features in the collection */
-        this.set = createNewSet(Collections.EMPTY_LIST);
+        this.set = createNewSet(Collections.emptyList());
         this.skipped = new HashSet();
 
         currentItem = 0;

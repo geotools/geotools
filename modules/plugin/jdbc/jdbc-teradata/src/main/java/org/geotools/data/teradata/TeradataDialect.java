@@ -685,7 +685,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
                                 + TESSELLATION
                                 + " does not exist. Unable to "
                                 + " perform spatially index queries.");
-                return Collections.EMPTY_LIST;
+                return Collections.emptyList();
             }
         } finally {
             dataStore.closeSafe(tables);

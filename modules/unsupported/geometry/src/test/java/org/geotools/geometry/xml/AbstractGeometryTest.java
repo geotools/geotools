@@ -111,7 +111,7 @@ public abstract class AbstractGeometryTest extends TestCase {
      */
     protected SurfaceBoundary createSurfaceBoundary(Curve exterior) {
         final Ring exteriorRing = createRing(exterior);
-        List interiorRingList = Collections.EMPTY_LIST;
+        List interiorRingList = Collections.emptyList();
         SurfaceBoundary surfaceBoundary = null;
         surfaceBoundary = pFact.createSurfaceBoundary(exteriorRing, interiorRingList);
         return surfaceBoundary;

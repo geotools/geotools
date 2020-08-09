@@ -6127,10 +6127,10 @@ public class GMLComplexTypes {
         NameImpl typeName = new NameImpl(name);
         if (Geometry.class.isAssignableFrom(type)) {
             return new ChoiceGeometryTypeImpl(
-                    typeName, choices, type, nillable, 1, 1, null, null, Collections.EMPTY_LIST);
+                    typeName, choices, type, nillable, 1, 1, null, null, Collections.emptyList());
         } else {
             return new ChoiceAttributeTypeImpl(
-                    typeName, choices, type, nillable, 1, 1, null, Collections.EMPTY_LIST);
+                    typeName, choices, type, nillable, 1, 1, null, Collections.emptyList());
         }
     }
 

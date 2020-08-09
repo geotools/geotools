@@ -182,7 +182,7 @@ public class EMFUtils {
      */
     private static Collection collection(Object value) {
         if (null == value) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         } else if (value.getClass().isArray()) {
             final int len = java.lang.reflect.Array.getLength(value);
             List list = new ArrayList(len);

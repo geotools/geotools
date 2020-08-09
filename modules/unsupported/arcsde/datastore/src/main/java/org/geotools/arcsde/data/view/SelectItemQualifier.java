@@ -44,7 +44,7 @@ import org.geotools.arcsde.session.ISession;
  */
 class SelectItemQualifier implements net.sf.jsqlparser.statement.select.SelectItemVisitor {
 
-    private List /* <SelectExpressionItem> */ qualifiedItems = Collections.EMPTY_LIST;
+    private List /* <SelectExpressionItem> */ qualifiedItems = Collections.emptyList();
 
     private ISession session;
 

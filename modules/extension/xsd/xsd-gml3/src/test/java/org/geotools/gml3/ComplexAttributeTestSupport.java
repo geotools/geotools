@@ -81,7 +81,7 @@ public abstract class ComplexAttributeTestSupport extends GML3TestSupport {
                         propertyDescriptors,
                         false,
                         false,
-                        Collections.EMPTY_LIST,
+                        Collections.emptyList(),
                         null,
                         null);
 
@@ -129,7 +129,7 @@ public abstract class ComplexAttributeTestSupport extends GML3TestSupport {
                         propertyDescriptors,
                         false,
                         false,
-                        Collections.EMPTY_LIST,
+                        Collections.emptyList(),
                         null,
                         null);
 

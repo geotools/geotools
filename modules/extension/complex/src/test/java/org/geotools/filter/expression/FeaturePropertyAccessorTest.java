@@ -291,7 +291,7 @@ public class FeaturePropertyAccessorTest {
                         String.class,
                         false,
                         false,
-                        Collections.EMPTY_LIST,
+                        Collections.emptyList(),
                         null,
                         null);
 
@@ -310,7 +310,7 @@ public class FeaturePropertyAccessorTest {
                         String.class,
                         false,
                         false,
-                        Collections.EMPTY_LIST,
+                        Collections.emptyList(),
                         null,
                         null);
         attDesc = new AttributeDescriptorImpl(attType, SINGLE_LEAF_ATTRIBUTE, 0, 1, true, null);
@@ -322,7 +322,7 @@ public class FeaturePropertyAccessorTest {
                         String.class,
                         false,
                         false,
-                        Collections.EMPTY_LIST,
+                        Collections.emptyList(),
                         null,
                         null);
         attDesc = new AttributeDescriptorImpl(attType, MULTI_LEAF_ATTRIBUTE, 0, -1, true, null);
@@ -334,7 +334,7 @@ public class FeaturePropertyAccessorTest {
                         rootProperties,
                         false,
                         false,
-                        Collections.EMPTY_LIST,
+                        Collections.emptyList(),
                         null,
                         null);
         attDesc = new AttributeDescriptorImpl(attType, ROOT_ATTRIBUTE, 0, -1, true, null);
@@ -349,7 +349,7 @@ public class FeaturePropertyAccessorTest {
                         nestedProperties,
                         false,
                         false,
-                        Collections.EMPTY_LIST,
+                        Collections.emptyList(),
                         null,
                         null);
 
@@ -359,6 +359,6 @@ public class FeaturePropertyAccessorTest {
         schema.add(attDesc);
 
         return tfac.createFeatureType(
-                fName, schema, null, false, Collections.EMPTY_LIST, null, null);
+                fName, schema, null, false, Collections.emptyList(), null, null);
     }
 }

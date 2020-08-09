@@ -685,7 +685,7 @@ public final class GeometryUtils {
 
         List interiorRingList =
                 interiorRingsPoints.length == 0
-                        ? Collections.EMPTY_LIST
+                        ? Collections.emptyList()
                         : new ArrayList(interiorRingsPoints.length);
         for (int i = 0; i < interiorRingsPoints.length; i++) {
             final DirectPosition[] interiorRingPoints = interiorRingsPoints[i];
@@ -715,7 +715,7 @@ public final class GeometryUtils {
         final Ring exteriorRing = createRing(primitiveFactory, exteriorRingPoints);
 
         final List interiorRingList =
-                interiorRingsPoints.length == 0 ? Collections.EMPTY_LIST : new ArrayList();
+                interiorRingsPoints.length == 0 ? Collections.emptyList() : new ArrayList();
         for (int i = 0; i < interiorRingsPoints.length; i++) {
             interiorRingList.add(createRing(primitiveFactory, interiorRingsPoints[i]));
         }

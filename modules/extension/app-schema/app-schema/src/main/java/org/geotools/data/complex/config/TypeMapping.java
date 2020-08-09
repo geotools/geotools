@@ -62,7 +62,7 @@ public class TypeMapping implements Serializable {
 
     private String defaultGeometryXPath;
 
-    private List attributeMappings = Collections.EMPTY_LIST;
+    private List attributeMappings = Collections.emptyList();
 
     /**
      * Optional unique identifier for a FeatureTypeMapping, useful for multiple mappings of the same

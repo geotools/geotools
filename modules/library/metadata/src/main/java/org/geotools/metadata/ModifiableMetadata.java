@@ -208,7 +208,7 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
             Collection<?> collection = (Collection) object;
             if (collection.isEmpty()) {
                 if (collection instanceof List) {
-                    collection = Collections.EMPTY_LIST;
+                    collection = Collections.emptyList();
                 } else {
                     collection = Collections.EMPTY_SET;
                 }

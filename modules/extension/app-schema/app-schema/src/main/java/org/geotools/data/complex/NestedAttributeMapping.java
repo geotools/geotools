@@ -152,7 +152,7 @@ public class NestedAttributeMapping extends AttributeMapping {
             if (featureTypeName == null || !(featureTypeName instanceof Name)) {
                 // this could be legitimate, for some null values polymorphism use case
                 // or that it's set to be xlink:href
-                return Collections.EMPTY_LIST;
+                return Collections.emptyList();
             }
             FeatureTypeMapping featureTypeMapping =
                     AppSchemaDataAccessRegistry.getMappingByName((Name) featureTypeName);
@@ -161,7 +161,7 @@ public class NestedAttributeMapping extends AttributeMapping {
                         "FeatureTypeMapping for '"
                                 + featureTypeName
                                 + "' not found when evaluating filter!");
-                return Collections.EMPTY_LIST;
+                return Collections.emptyList();
             }
 
             nestedIdExpression = featureTypeMapping.getFeatureIdExpression();
@@ -173,7 +173,7 @@ public class NestedAttributeMapping extends AttributeMapping {
                         "Feature source for '"
                                 + featureTypeName
                                 + "' not found when evaluating filter");
-                return Collections.EMPTY_LIST;
+                return Collections.emptyList();
             }
 
             AttributeMapping mapping = getMapping(featureTypeMapping);
@@ -217,7 +217,7 @@ public class NestedAttributeMapping extends AttributeMapping {
     private List<Feature> getFilteredFeatures(Object foreignKeyValue, boolean isMultiple)
             throws IOException {
         if (nestedSourceExpression == null) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
         ArrayList<Feature> matchingFeatures = new ArrayList<Feature>();
@@ -306,7 +306,7 @@ public class NestedAttributeMapping extends AttributeMapping {
                             "Feature source for '"
                                     + fMapping.getTargetFeature().getName()
                                     + "' not found when evaluating filter");
-                    return Collections.EMPTY_LIST;
+                    return Collections.emptyList();
                 }
 
                 nestedIdExpression = fMapping.getFeatureIdExpression();

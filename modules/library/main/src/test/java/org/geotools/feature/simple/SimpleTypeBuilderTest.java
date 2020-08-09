@@ -47,7 +47,7 @@ public class SimpleTypeBuilderTest extends TestCase {
                         null,
                         false,
                         false,
-                        Collections.EMPTY_LIST,
+                        Collections.emptyList(),
                         null,
                         null);
         schema.put(new NameImpl("test", "pointType"), pointType);
@@ -58,7 +58,7 @@ public class SimpleTypeBuilderTest extends TestCase {
                         Integer.class,
                         false,
                         false,
-                        Collections.EMPTY_LIST,
+                        Collections.emptyList(),
                         null,
                         null);
         schema.put(new NameImpl("test", "intType"), intType);

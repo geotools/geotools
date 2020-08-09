@@ -199,7 +199,7 @@ public class Schemas {
      * @throws IOException In the event of a schema parsing error.
      */
     public static final XSDSchema parse(String location) throws IOException {
-        return parse(location, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
+        return parse(location, Collections.emptyList(), Collections.emptyList());
     }
 
     /**
@@ -456,7 +456,7 @@ public class Schemas {
     }
 
     public static final List validateImportsIncludes(String location) throws IOException {
-        return validateImportsIncludes(location, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
+        return validateImportsIncludes(location, Collections.emptyList(), Collections.emptyList());
     }
 
     public static final List validateImportsIncludes(
@@ -464,8 +464,8 @@ public class Schemas {
             throws IOException {
         return validateImportsIncludes(
                 location,
-                (locators != null) ? Arrays.asList(locators) : Collections.EMPTY_LIST,
-                (resolvers != null) ? Arrays.asList(resolvers) : Collections.EMPTY_LIST);
+                (locators != null) ? Arrays.asList(locators) : Collections.emptyList(),
+                (resolvers != null) ? Arrays.asList(resolvers) : Collections.emptyList());
     }
 
     public static final List validateImportsIncludes(String location, List locators, List resolvers)
@@ -510,7 +510,7 @@ public class Schemas {
             }
         }
 
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
     }
 
     static final class SchemaImportIncludeValidator extends DefaultHandler {

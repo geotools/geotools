@@ -522,7 +522,7 @@ public class SchemaGenerator extends AbstractGenerator {
 
         //TODO: actually derive valus from type
 		AttributeType gtType = factory.createAttributeType(
-			name(xsdType), Object.class, false, false, Collections.EMPTY_LIST, 
+			name(xsdType), Object.class, false, false, Collections.emptyList(), 
 			superType, null
 		);
         types.put(xsdType, gtType);
@@ -644,7 +644,7 @@ public class SchemaGenerator extends AbstractGenerator {
 		//TODO: description
 		ComplexType gtType = factory.createComplexType(
 			name(xsdType), properties, false, xsdType.isAbstract(), 
-			Collections.EMPTY_LIST, superType, null
+			Collections.emptyList(), superType, null
 		);
 		types.put(xsdType,gtType);
 		return gtType;

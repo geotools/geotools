@@ -54,7 +54,7 @@ public class AppSchemaDataAccessDTO implements Serializable {
      * FeatureTypes. Source feature types are those internally defined whose Feature instances are
      * converted to features of the target schemas by applying the FeatureTypeMappings.
      */
-    private List /* <SourceDataStore> */ sourceDataStores = Collections.EMPTY_LIST;
+    private List /* <SourceDataStore> */ sourceDataStores = Collections.emptyList();
 
     private Set /* <TypeMapping> */ typeMappings = Collections.EMPTY_SET;
 
@@ -62,7 +62,7 @@ public class AppSchemaDataAccessDTO implements Serializable {
      * List of file names, that may be fully qualified URL's, or paths relative to {@link
      * #baseSchemasUrl}
      */
-    private List targetSchemasUris = Collections.EMPTY_LIST;
+    private List targetSchemasUris = Collections.emptyList();
 
     /**
      * List of the paths of other related types that are mapped separately that shouldn't be visible
@@ -117,7 +117,7 @@ public class AppSchemaDataAccessDTO implements Serializable {
     /** */
     public void setSourceDataStores(List /* <SourceDataStore> */ dataStores) {
         if (dataStores == null) {
-            this.sourceDataStores = Collections.EMPTY_LIST;
+            this.sourceDataStores = Collections.emptyList();
         } else {
             this.sourceDataStores = new CheckedArrayList(SourceDataStore.class);
             this.sourceDataStores.addAll(dataStores);

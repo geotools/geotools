@@ -166,7 +166,7 @@ public class XSAnyTypeBindingTest extends GML3TestSupport {
                         propertyDescriptors,
                         false,
                         false,
-                        Collections.EMPTY_LIST,
+                        Collections.emptyList(),
                         null,
                         null);
 
@@ -196,7 +196,7 @@ public class XSAnyTypeBindingTest extends GML3TestSupport {
                         propertyDescriptors,
                         false,
                         false,
-                        Collections.EMPTY_LIST,
+                        Collections.emptyList(),
                         XSSchema.ANYTYPE_TYPE,
                         null);
 

@@ -230,7 +230,7 @@ public class PicoMap implements Map, MutablePicoContainer {
 
     public List getComponentAdaptersOfType(Class componentType) {
         if (componentType == null) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
         List adapters = new ArrayList();
@@ -274,7 +274,7 @@ public class PicoMap implements Map, MutablePicoContainer {
 
     public Object getComponentInstanceOfType(Class componentType) {
         if (componentType == null) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
         // first look for instance
@@ -317,7 +317,7 @@ public class PicoMap implements Map, MutablePicoContainer {
 
     public List getComponentInstancesOfType(Class componentType) {
         if (componentType == null) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
         ArrayList instances = new ArrayList();

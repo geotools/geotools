@@ -855,7 +855,7 @@ public class Types {
      * @return The list of descriptors named 'name', or an empty list if none such match.
      */
     public static List /* <PropertyDescriptor> */ descriptors(ComplexType type, String name) {
-        if (name == null) return Collections.EMPTY_LIST;
+        if (name == null) return Collections.emptyList();
 
         List match = new ArrayList();
 
@@ -887,7 +887,7 @@ public class Types {
      * @return The list of descriptors named 'name', or an empty list if none such match.
      */
     public static List /* <PropertyDescriptor> */ descriptors(ComplexType type, Name name) {
-        if (name == null) return Collections.EMPTY_LIST;
+        if (name == null) return Collections.emptyList();
 
         List match = new ArrayList();
 

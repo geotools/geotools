@@ -922,7 +922,7 @@ public class DataUtilitiesTest extends DataTestCase {
                         String.class,
                         false,
                         false,
-                        Collections.EMPTY_LIST,
+                        Collections.emptyList(),
                         null,
                         null);
 

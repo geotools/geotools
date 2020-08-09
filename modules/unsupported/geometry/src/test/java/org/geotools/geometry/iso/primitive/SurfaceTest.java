@@ -268,7 +268,7 @@ public class SurfaceTest extends TestCase {
     // Collections.singletonList(tPrimFactory.createCurve(curveSegmentList));
     //        Ring exteriorRing = tPrimFactory.createRing(curveList);
     //        SurfaceBoundary surfaceBoundary = tPrimFactory
-    //                .createSurfaceBoundary(exteriorRing, Collections.EMPTY_LIST);
+    //                .createSurfaceBoundary(exteriorRing, Collections.emptyList());
     //        Surface polygon = tPrimFactory.createSurface(surfaceBoundary);
     //        //timer.stop();
     //
@@ -376,7 +376,7 @@ public class SurfaceTest extends TestCase {
 
         Ring ring = primitiveFactory.createRing(curves);
         SurfaceBoundary surfaceBoundary =
-                primitiveFactory.createSurfaceBoundary(ring, Collections.EMPTY_LIST);
+                primitiveFactory.createSurfaceBoundary(ring, Collections.emptyList());
         return primitiveFactory.createSurface(surfaceBoundary);
     }
 }

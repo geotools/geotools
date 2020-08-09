@@ -108,7 +108,7 @@ public class FunctionImpl extends ExpressionAbstract implements Function {
     /** Sets the function parameters. */
     @SuppressWarnings("unchecked")
     public void setParameters(List<Expression> params) {
-        this.params = params == null ? Collections.EMPTY_LIST : new ArrayList<Expression>(params);
+        this.params = params == null ? Collections.emptyList() : new ArrayList<Expression>(params);
     }
 
     public void setFallbackValue(Literal fallbackValue) {

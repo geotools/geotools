@@ -2571,7 +2571,7 @@ public final class GML extends XSD {
         schema =
                 Schemas.parse(
                         getSchemaLocation(),
-                        Collections.EMPTY_LIST,
+                        Collections.emptyList(),
                         Collections.singletonList(
                                 new XSDSchemaLocationResolver() {
                                     public String resolveSchemaLocation(

@@ -169,7 +169,7 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
     //    protected List/* <AttributeType> */createTypesView(
     //            final List/* <Attribute> */source) {
     //        if (source == null)
-    //            return Collections.EMPTY_LIST;
+    //            return Collections.emptyList();
     //
     //        return new AbstractList/* <AttributeType> */() {
     //            // @Override

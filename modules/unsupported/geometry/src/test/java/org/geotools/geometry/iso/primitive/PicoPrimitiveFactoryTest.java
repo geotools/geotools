@@ -198,7 +198,7 @@ public class PicoPrimitiveFactoryTest extends TestCase {
 
         // test equals
         SurfaceBoundary boundary =
-                new SurfaceBoundaryImpl(crs, expectedRing, Collections.EMPTY_LIST);
+                new SurfaceBoundaryImpl(crs, expectedRing, Collections.emptyList());
         SurfaceImpl expected = new SurfaceImpl(boundary);
         assertEquals(expected.getBoundary(), impl.getBoundary());
         assertTrue(expected.equals(impl));

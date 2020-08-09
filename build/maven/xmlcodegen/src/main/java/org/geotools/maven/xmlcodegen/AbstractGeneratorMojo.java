@@ -376,7 +376,7 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
 		try {
 			getLog().info("Parsing schema: " + schemaLocation);
 			if (relativeSchemaReference) {
-				xsdSchema = Schemas.parse(schemaLocation.getAbsolutePath(), Collections.EMPTY_LIST,
+				xsdSchema = Schemas.parse(schemaLocation.getAbsolutePath(), Collections.emptyList(),
 						Collections.singletonList(new XSDSchemaLocationResolver() {
 							public String resolveSchemaLocation(XSDSchema xsdSchema,
 									String namespaceURI, String schemaLocationURI) {

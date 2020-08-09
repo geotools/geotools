@@ -78,7 +78,7 @@ public class GMLSchema extends SchemaImpl {
                     Geometry.class,
                     false,
                     true,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     XSSchema.ANYTYPE_TYPE,
                     null);
 
@@ -114,7 +114,7 @@ public class GMLSchema extends SchemaImpl {
                     GeometryCollection.class,
                     false,
                     true,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     ABSTRACTGEOMETRYTYPE_TYPE,
                     null);
 
@@ -153,7 +153,7 @@ public class GMLSchema extends SchemaImpl {
                     Geometry.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     XSSchema.ANYTYPE_TYPE,
                     null);
 
@@ -191,7 +191,7 @@ public class GMLSchema extends SchemaImpl {
                     GeometryCollection.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     ABSTRACTGEOMETRYCOLLECTIONBASETYPE_TYPE,
                     null);
 
@@ -224,7 +224,7 @@ public class GMLSchema extends SchemaImpl {
                     Coordinate.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     XSSchema.ANYTYPE_TYPE,
                     null);
 
@@ -263,7 +263,7 @@ public class GMLSchema extends SchemaImpl {
                     CoordinateSequence.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     XSSchema.STRING_TYPE,
                     null);
 
@@ -303,7 +303,7 @@ public class GMLSchema extends SchemaImpl {
                     LinearRing.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     ABSTRACTGEOMETRYTYPE_TYPE,
                     null);
 
@@ -338,7 +338,7 @@ public class GMLSchema extends SchemaImpl {
                     LinearRing.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     GEOMETRYASSOCIATIONTYPE_TYPE,
                     null);
 
@@ -375,7 +375,7 @@ public class GMLSchema extends SchemaImpl {
                     Polygon.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     ABSTRACTGEOMETRYTYPE_TYPE,
                     null);
 
@@ -409,7 +409,7 @@ public class GMLSchema extends SchemaImpl {
                     Polygon.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     GEOMETRYASSOCIATIONTYPE_TYPE,
                     null);
 
@@ -447,7 +447,7 @@ public class GMLSchema extends SchemaImpl {
                     MultiPolygon.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     GEOMETRYCOLLECTIONTYPE_TYPE,
                     null);
 
@@ -485,7 +485,7 @@ public class GMLSchema extends SchemaImpl {
                     MultiPolygon.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     GEOMETRYASSOCIATIONTYPE_TYPE,
                     null);
 
@@ -520,7 +520,7 @@ public class GMLSchema extends SchemaImpl {
                     MultiPolygon.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     GEOMETRYASSOCIATIONTYPE_TYPE,
                     null);
 
@@ -559,7 +559,7 @@ public class GMLSchema extends SchemaImpl {
                     LineString.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     ABSTRACTGEOMETRYTYPE_TYPE,
                     null);
 
@@ -593,7 +593,7 @@ public class GMLSchema extends SchemaImpl {
                     LineString.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     GEOMETRYASSOCIATIONTYPE_TYPE,
                     null);
 
@@ -631,7 +631,7 @@ public class GMLSchema extends SchemaImpl {
                     MultiLineString.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     GEOMETRYCOLLECTIONTYPE_TYPE,
                     null);
 
@@ -669,7 +669,7 @@ public class GMLSchema extends SchemaImpl {
                     MultiLineString.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     GEOMETRYASSOCIATIONTYPE_TYPE,
                     null);
 
@@ -707,7 +707,7 @@ public class GMLSchema extends SchemaImpl {
                     Envelope.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     ABSTRACTGEOMETRYTYPE_TYPE,
                     null);
 
@@ -746,7 +746,7 @@ public class GMLSchema extends SchemaImpl {
                     java.lang.Object.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     XSSchema.STRING_TYPE,
                     null);
 
@@ -780,7 +780,7 @@ public class GMLSchema extends SchemaImpl {
                     Envelope.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     XSSchema.ANYTYPE_TYPE,
                     null);
 
@@ -847,7 +847,7 @@ public class GMLSchema extends SchemaImpl {
                     ABSTRACTFEATURETYPE_TYPE_schema,
                     null,
                     true,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     XSSchema.ANYTYPE_TYPE,
                     null);
 
@@ -915,7 +915,7 @@ public class GMLSchema extends SchemaImpl {
                     ABSTRACTFEATURECOLLECTIONBASETYPE_TYPE_schema,
                     null,
                     true,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     ABSTRACTFEATURETYPE_TYPE,
                     null);
 
@@ -955,7 +955,7 @@ public class GMLSchema extends SchemaImpl {
                     Feature.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     XSSchema.ANYTYPE_TYPE,
                     null);
 
@@ -1027,7 +1027,7 @@ public class GMLSchema extends SchemaImpl {
                     ABSTRACTFEATURECOLLECTIONTYPE_TYPE_schema,
                     null,
                     true,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     ABSTRACTFEATURECOLLECTIONBASETYPE_TYPE,
                     null);
 
@@ -1062,7 +1062,7 @@ public class GMLSchema extends SchemaImpl {
                     Geometry.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     XSSchema.ANYTYPE_TYPE,
                     null);
 
@@ -1100,7 +1100,7 @@ public class GMLSchema extends SchemaImpl {
                     Polygon.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     GEOMETRYASSOCIATIONTYPE_TYPE,
                     null);
 
@@ -1138,7 +1138,7 @@ public class GMLSchema extends SchemaImpl {
                     Point.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     ABSTRACTGEOMETRYTYPE_TYPE,
                     null);
 
@@ -1176,7 +1176,7 @@ public class GMLSchema extends SchemaImpl {
                     Point.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     GEOMETRYASSOCIATIONTYPE_TYPE,
                     null);
 
@@ -1210,7 +1210,7 @@ public class GMLSchema extends SchemaImpl {
                     Point.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     GEOMETRYASSOCIATIONTYPE_TYPE,
                     null);
 
@@ -1248,7 +1248,7 @@ public class GMLSchema extends SchemaImpl {
                     MultiPoint.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     GEOMETRYCOLLECTIONTYPE_TYPE,
                     null);
 
@@ -1287,7 +1287,7 @@ public class GMLSchema extends SchemaImpl {
                     MultiPoint.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     GEOMETRYASSOCIATIONTYPE_TYPE,
                     null);
 
@@ -1325,7 +1325,7 @@ public class GMLSchema extends SchemaImpl {
                     LineString.class,
                     false,
                     false,
-                    Collections.EMPTY_LIST,
+                    Collections.emptyList(),
                     GEOMETRYASSOCIATIONTYPE_TYPE,
                     null);
 

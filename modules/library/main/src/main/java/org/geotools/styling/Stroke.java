@@ -161,7 +161,7 @@ public interface Stroke extends org.opengis.style.Stroke {
                 }
 
                 public List<Expression> dashArray() {
-                    return Collections.EMPTY_LIST;
+                    return Collections.emptyList();
                 }
 
                 public Expression getDashOffset() {

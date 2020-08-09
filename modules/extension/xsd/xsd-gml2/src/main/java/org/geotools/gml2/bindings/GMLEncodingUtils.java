@@ -97,7 +97,7 @@ public class GMLEncodingUtils {
         // check if this was a resolved feature, if so dont return anything
         // TODO: this is just a hack for our lame xlink implementation
         if (feature.getUserData().get("xlink:id") != null) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
         FeatureType featureType = feature.getType();

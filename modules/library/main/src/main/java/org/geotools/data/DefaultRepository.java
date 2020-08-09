@@ -24,7 +24,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -88,8 +87,7 @@ public class DefaultRepository implements Repository {
         Properties properties = new Properties();
         properties.load(new FileInputStream(propertiesFile));
 
-        for (Iterator i = properties.entrySet().iterator(); i.hasNext(); ) {
-            Map.Entry<String, String> entry = (Map.Entry) i.next();
+        for (Map.Entry<Object, Object> entry : properties.entrySet()) {
             String name = (String) entry.getKey();
             String definition = (String) entry.getValue();
             Map<String, Serializable> params = definition(definition);
@@ -229,7 +227,7 @@ public class DefaultRepository implements Repository {
     /** Internal method parsing parameters from a string */
     private static final Map<String, Serializable> definition(String definition)
             throws ParseException {
-        Map<String, Serializable> map = new HashMap<String, Serializable>();
+        Map<String, Serializable> map = new HashMap<>();
 
         String[] params = definition.split(",");
         int offset = 0;
@@ -247,8 +245,7 @@ public class DefaultRepository implements Repository {
 
     @SuppressWarnings("unchecked")
     public Set<Name> getNames() {
-        Set names = new HashSet(repository.keySet());
-        return (Set<Name>) names;
+        return new HashSet<>(repository.keySet());
     }
 
     @SuppressWarnings("unchecked")

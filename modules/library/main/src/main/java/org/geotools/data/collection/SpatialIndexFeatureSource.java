@@ -16,6 +16,7 @@
  */
 package org.geotools.data.collection;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -248,8 +249,7 @@ public class SpatialIndexFeatureSource implements SimpleFeatureSource {
         };
     }
 
-    public Set getSupportedHints() {
-        HashSet hints = new HashSet();
-        return hints;
+    public Set<RenderingHints.Key> getSupportedHints() {
+        return new HashSet<>();
     }
 }

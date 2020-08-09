@@ -68,8 +68,8 @@ public class MultiRange<T extends Comparable<? super T>> {
     }
 
     public MultiRange(Class<T> binding, T exclusion) {
-        this.ranges.add(new Range(binding, null, false, exclusion, false));
-        this.ranges.add(new Range(binding, exclusion, false, null, false));
+        this.ranges.add(new Range<T>(binding, null, false, exclusion, false));
+        this.ranges.add(new Range<T>(binding, exclusion, false, null, false));
     }
 
     public MultiRange<T> merge(MultiRange<T> other) {
@@ -87,9 +87,11 @@ public class MultiRange<T extends Comparable<? super T>> {
         List<Range<T>> overlapping = getOverlappingRanges(range);
         if (overlapping != null && !overlapping.isEmpty()) {
             ranges.removeAll(overlapping);
-            Range combined = range;
-            for (Range r : overlapping) {
-                combined = combined.union(r);
+            Range<T> combined = range;
+            for (Range<T> r : overlapping) {
+                @SuppressWarnings("unchecked")
+                Range<T> union = (Range<T>) combined.union(r);
+                combined = union;
             }
             ranges.add(combined);
         } else {
@@ -102,7 +104,9 @@ public class MultiRange<T extends Comparable<? super T>> {
         for (Range<T> r1 : ranges) {
             for (Range<T> r2 : other.ranges) {
                 if (r1.intersects(r2)) {
-                    intersections.add((Range<T>) r1.intersect(r2));
+                    @SuppressWarnings("unchecked")
+                    Range<T> intersection = (Range<T>) r1.intersect(r2);
+                    intersections.add(intersection);
                 }
             }
         }
@@ -115,24 +119,25 @@ public class MultiRange<T extends Comparable<? super T>> {
 
         if (overlapping != null) {
             ranges.removeAll(overlapping);
-            List<Range<?>> removed = new ArrayList<>();
+            List<Range<T>> removed = new ArrayList<>();
             for (Range<T> r : overlapping) {
-                Range<?>[] difference = r.subtract(range);
-                for (Range<?> d : difference) {
+                @SuppressWarnings("unchecked")
+                Range<T>[] difference = (Range<T>[]) r.subtract(range);
+                for (Range<T> d : difference) {
                     if (!d.isEmpty()) {
                         removed.add(d);
                     }
                 }
             }
-            for (Range<?> r : removed) {
-                ranges.add((Range<T>) r);
+            for (Range<T> r : removed) {
+                ranges.add(r);
             }
         }
     }
 
     private List<Range<T>> getOverlappingRanges(Range<T> range) {
         List<Range<T>> overlapping = new ArrayList<>();
-        for (Range r : ranges) {
+        for (Range<T> r : ranges) {
             if (r.intersects(range) || contiguous(r, range)) {
                 overlapping.add(r);
             }
@@ -167,12 +172,12 @@ public class MultiRange<T extends Comparable<? super T>> {
         List<Filter> filters = new ArrayList<>();
         int rangeCount = rangeList.size();
         for (int i = 0; i < rangeCount; ) {
-            Range range = rangeList.get(i);
+            Range<T> range = rangeList.get(i);
             i++;
             List<T> exclusions = new ArrayList<>();
-            Range curr = range;
+            Range<T> curr = range;
             while (i < rangeCount) {
-                Range next = rangeList.get(i);
+                Range<T> next = rangeList.get(i);
                 if (next.getMinValue().equals(curr.getMaxValue())) {
                     // do we have a hole?
                     if (!next.isMinIncluded() && !curr.isMaxIncluded()) {
@@ -188,6 +193,7 @@ public class MultiRange<T extends Comparable<? super T>> {
                 // no exclusions, this range is isolated
                 filters.add(toFilter(ff, variable, range));
             } else {
+                @SuppressWarnings("unchecked")
                 Range<T> union =
                         new Range<T>(
                                 range.getElementClass(),

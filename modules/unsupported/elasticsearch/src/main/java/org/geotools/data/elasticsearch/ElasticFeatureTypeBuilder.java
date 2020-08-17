@@ -22,6 +22,7 @@ import static org.geotools.data.elasticsearch.ElasticConstants.FULL_NAME;
 import static org.geotools.data.elasticsearch.ElasticConstants.GEOMETRY_TYPE;
 import static org.geotools.data.elasticsearch.ElasticConstants.NESTED;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -92,8 +93,15 @@ class ElasticFeatureTypeBuilder extends SimpleFeatureTypeBuilder {
                                 attributeBuilder.buildDescriptor(
                                         attributeName, attributeBuilder.buildType());
                     }
-                    if (att != null && attribute.getDateFormat() != null) {
-                        att.getUserData().put(DATE_FORMAT, attribute.getDateFormat());
+                    if (att != null
+                            && (attribute.getValidDateFormats() != null
+                                    || attribute.getDateFormat() != null)) {
+                        if (attribute.getValidDateFormats() == null) {
+                            List<String> validFormats = new ArrayList<String>();
+                            validFormats.add(attribute.getDateFormat());
+                            attribute.setValidDateFormats(validFormats);
+                        }
+                        att.getUserData().put(DATE_FORMAT, attribute.getValidDateFormats());
                     }
                     if (att != null) {
                         att.getUserData().put(FULL_NAME, attribute.getName());

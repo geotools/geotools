@@ -37,10 +37,12 @@ import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.wfs.WFSDataStoreFactory;
+import org.geotools.data.wfs.WFSTestData;
 import org.geotools.data.wfs.internal.GetParser;
 import org.geotools.referencing.CRS;
 import org.geotools.wfs.v1_1.WFSConfiguration;
 import org.geotools.xsd.Configuration;
+import org.geotools.xsd.XSD;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -156,11 +158,38 @@ public abstract class AbstractGetFeatureParserTest {
             final String[] properties)
             throws Exception {
 
+        SimpleFeatureType subsetType =
+                getTypeView(featureName, schemaLocation, epsgCrsId, properties, wfsConfiguration);
+        return subsetType;
+    }
+
+    /**
+     * Parses the featuretype from the test file referenced by {@code schemaName} and returns a new,
+     * subset FeatureType comprised of only the required {@code properties}
+     *
+     * @param featureName the name of the Features produced for the target FeatureType (i.e. {@code
+     *     topp:states} instead of {@code topp:states_Type})
+     * @param schemaLocation2 the location of the schema file under {@code
+     *     org/geotools/data/wfs/impl/test-data/}
+     * @param epsgCrsId the EPSG identifier for the feature type CRS (eg. {@code "EPSG:4326"})
+     * @param properties the property names to include from the original schema in the one to be
+     *     returned
+     * @param wfsConfig The WFSConfiguration to be used
+     * @return a subset of the original featuretype containing only the required {@code properties}
+     */
+    private SimpleFeatureType getTypeView(
+            final QName featureName,
+            final URL schemaLocation,
+            final String epsgCrsId,
+            final String[] properties,
+            Configuration wfsConfig)
+            throws Exception {
+
         CoordinateReferenceSystem crs = CRS.decode(epsgCrsId);
 
         SimpleFeatureType originalType =
                 EmfAppSchemaParser.parseSimpleFeatureType(
-                        wfsConfiguration, featureName, schemaLocation, crs);
+                        wfsConfig, featureName, schemaLocation, crs);
 
         SimpleFeatureType subsetType = DataUtilities.createSubType(originalType, properties);
         return subsetType;
@@ -214,12 +243,37 @@ public abstract class AbstractGetFeatureParserTest {
      * @param getFeaturesRequest the URL representing the GetFeature request. Opening its input
      *     stream shall suffice to get the GetFeature response.
      */
-    protected abstract GetParser<SimpleFeature> getParser(
+    protected GetParser<SimpleFeature> getParser(
             QName featureName,
             URL schemaLocation,
             SimpleFeatureType featureType,
             URL getFeaturesRequest,
             String axisOrder)
+            throws IOException {
+        return getParser(
+                featureName,
+                schemaLocation,
+                featureType,
+                getFeaturesRequest,
+                axisOrder,
+                new org.geotools.wfs.v1_1.WFSConfiguration());
+    }
+
+    /**
+     * Subclasses need to implement in order to provide a specific {@link GetParser<SimpleFeature>}
+     * implementation settled up for the given featureName and dataFile containing the test
+     * GetFeature request response.
+     *
+     * @param getFeaturesRequest the URL representing the GetFeature request. Opening its input
+     *     stream shall suffice to get the GetFeature response.
+     */
+    protected abstract GetParser<SimpleFeature> getParser(
+            QName featureName,
+            URL schemaLocation,
+            SimpleFeatureType featureType,
+            URL getFeaturesRequest,
+            String axisOrder,
+            Configuration wfsConfiguration)
             throws IOException;
 
     /**
@@ -630,5 +684,66 @@ public abstract class AbstractGetFeatureParserTest {
 
         FeatureVisitor assertor = new FeatureAssertor(featureType);
         testParseGetFeatures(featureName, featureType, parser, assertor, 2);
+    }
+
+    /**
+     * Tests parsing of a typical WFS 2.0.0/GML 3.2 GetFeature response containing a
+     * "wfs:boundedyBy" element nested into "wfs:FeatureCollection".
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testParseWfs200Gml32() throws Exception {
+        final String[] properties = {"the_geom", "cat", "label"};
+        final QName featureName = WFSTestData.GEOS_ROADS_20.TYPENAME;
+        final URL schemaLocation = WFSTestData.GEOS_ROADS_20.SCHEMA;
+        final Configuration wfsConfiguration = new org.geotools.wfs.v2_0.WFSConfiguration();
+
+        final SimpleFeatureType featureType =
+                getTypeView(
+                        featureName,
+                        schemaLocation,
+                        WFSTestData.GEOS_ROADS_20.CRS,
+                        properties,
+                        wfsConfiguration);
+
+        // usually the parser loads the schema using the schemaLocation given in the XML
+        // in this case the schemaLocation is not resolvable by the parser; it's a local file
+        // (relative to the XML)
+        // workaround: Provide a configuration pointing to the local XSD
+        XSD sfRoadsSchema =
+                new XSD() {
+                    @Override
+                    public String getNamespaceURI() {
+                        return featureType.getName().getNamespaceURI();
+                    }
+
+                    @Override
+                    public String getSchemaLocation() {
+                        return schemaLocation.toExternalForm();
+                    }
+                };
+
+        Configuration sfRoadsWithWfs200Config =
+                new Configuration(sfRoadsSchema) {
+                    {
+                        addDependency(wfsConfiguration);
+                    }
+                };
+
+        final GetParser<SimpleFeature> parser =
+                getParser(
+                        featureName,
+                        schemaLocation,
+                        featureType,
+                        WFSTestData.GEOS_ROADS_20.DATA,
+                        null,
+                        sfRoadsWithWfs200Config);
+
+        int nof = parser.getNumberOfFeatures();
+        assertEquals(-1, nof);
+
+        FeatureVisitor assertor = new FeatureAssertor(featureType);
+        testParseGetFeatures(featureName, featureType, parser, assertor, 3);
     }
 }

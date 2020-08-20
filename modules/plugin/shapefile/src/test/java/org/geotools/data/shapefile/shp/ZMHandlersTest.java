@@ -230,10 +230,14 @@ public class ZMHandlersTest {
         }
     }
 
-    @Test
-    public void testReadFlatLines() throws IOException {
-        // can we read the tazmania_roads shapefile as a flat geometry set.
-        URL url = TestData.url(ShapefileDataStore.class, "taz_shapes/tasmania_roads.shp");
+    /**
+     * Checks we can read all the features in the given shapefile as a flat geometry set.
+     *
+     * @returns the total number of features read
+     */
+    private int readFlatFeatures(String filename) throws IOException {
+        int numFeatures = 0;
+        URL url = TestData.url(ShapefileDataStore.class, filename);
         ShapefileDataStore store = new ShapefileDataStore(url);
         Query q = new Query(store.getTypeNames()[0]);
         q.getHints().put(Hints.FEATURE_2D, Boolean.TRUE);
@@ -242,53 +246,98 @@ public class ZMHandlersTest {
         while (reader.hasNext()) {
             SimpleFeature f = reader.next();
             assertNotNull(f.getDefaultGeometry());
+            numFeatures++;
         }
+        return numFeatures;
+    }
+
+    @Test
+    public void testReadFlatLines() throws IOException {
+        // can we read the tazmania_roads shapefile as a flat geometry set.
+        assertEquals("wrong num features", 14, readFlatFeatures("taz_shapes/tasmania_roads.shp"));
     }
 
     @Test
     public void testReadFlatPolygons() throws IOException {
-        // can we read the tazmania_roads shapefile as a flat geometry set.
-        URL url = TestData.url(ShapefileDataStore.class, "mzvalues/mzpolygons.shp");
-        ShapefileDataStore store = new ShapefileDataStore(url);
-        Query q = new Query(store.getTypeNames()[0]);
-        q.getHints().put(Hints.FEATURE_2D, Boolean.TRUE);
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                store.getFeatureReader(q, Transaction.AUTO_COMMIT);
-        while (reader.hasNext()) {
-            SimpleFeature f = reader.next();
-            assertNotNull(f.getDefaultGeometry());
-        }
+        assertEquals("wrong num features", 2, readFlatFeatures("mzvalues/mzpolygons.shp"));
     }
 
     @Test
     public void testReadFlatPoints() throws IOException {
-        // can we read the tazmania_roads shapefile as a flat geometry set.
-        URL url = TestData.url(ShapefileDataStore.class, "mzvalues/zmpoints.shp");
-        ShapefileDataStore store = new ShapefileDataStore(url);
-        Query q = new Query(store.getTypeNames()[0]);
-        q.getHints().put(Hints.FEATURE_2D, Boolean.TRUE);
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                store.getFeatureReader(q, Transaction.AUTO_COMMIT);
-        while (reader.hasNext()) {
-            SimpleFeature f = reader.next();
-            assertNotNull(f.getDefaultGeometry());
-        }
+        assertEquals("wrong num features", 99, readFlatFeatures("mzvalues/zmpoints.shp"));
     }
 
     @Test
     public void testReadFlatMultiPoints() throws IOException {
-        // can we read the tazmania_roads shapefile as a flat geometry set.
-        URL url = TestData.url(ShapefileDataStore.class, "mzvalues/zmmultipoints.shp");
+        assertEquals("wrong num features", 2, readFlatFeatures("mzvalues/zmmultipoints.shp"));
+    }
+
+    /**
+     * Checks we can read all the features in the given shapefile as regular (3D) geometry.
+     *
+     * @returns the total number of features read
+     */
+    private int readAllFeatures(String filename) throws IOException {
+        int numFeatures = 0;
+        URL url = TestData.url(ShapefileDataStore.class, filename);
         ShapefileDataStore store = new ShapefileDataStore(url);
         Query q = new Query(store.getTypeNames()[0]);
-        q.getHints().put(Hints.FEATURE_2D, Boolean.TRUE);
         FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                 store.getFeatureReader(q, Transaction.AUTO_COMMIT);
         while (reader.hasNext()) {
             SimpleFeature f = reader.next();
-
             assertNotNull(f.getDefaultGeometry());
+            numFeatures++;
         }
+        return numFeatures;
+    }
+
+    @Test
+    public void testReadAllLines() throws IOException {
+        // tests the parsing for all the variants of ZM Lines
+
+        // ArcTypeZ with optional M
+        assertEquals("wrong num features", 2, readAllFeatures("mzvalues/mzlines.shp"));
+        // ArcTypeM
+        assertEquals("wrong num features", 2, readAllFeatures("mzvalues/mlines.shp"));
+        // ArcTypeZ with no optional M
+        assertEquals("wrong num features", 1, readAllFeatures("mzvalues/linez.shp"));
+    }
+
+    @Test
+    public void testReadAllPolygons() throws IOException {
+        // tests the parsing for all the variants of ZM Polygons
+
+        // ArcTypeZ with optional M
+        assertEquals("wrong num features", 2, readAllFeatures("mzvalues/mzpolygons.shp"));
+        // ArcTypeM
+        assertEquals("wrong num features", 2, readAllFeatures("mzvalues/mpolygons.shp"));
+        // ArcTypeZ with no optional M
+        assertEquals("wrong num features", 1, readAllFeatures("mzvalues/polygonz.shp"));
+    }
+
+    @Test
+    public void testReadAllPoints() throws IOException {
+        // tests the parsing for all the variants of ZM Points
+
+        // ArcTypeZ with optional M
+        assertEquals("wrong num features", 99, readAllFeatures("mzvalues/zmpoints.shp"));
+        // ArcTypeM
+        assertEquals("wrong num features", 99, readAllFeatures("mzvalues/mpoints.shp"));
+        // ArcTypeZ with no optional M
+        assertEquals("wrong num features", 1, readAllFeatures("mzvalues/pointZ.shp"));
+    }
+
+    @Test
+    public void testReadAllMultiPoints() throws IOException {
+        // tests the parsing for all the variants of ZM MultiPoints
+
+        // ArcTypeZ with optional M
+        assertEquals("wrong num features", 2, readAllFeatures("mzvalues/zmmultipoints.shp"));
+        // ArcTypeM
+        assertEquals("wrong num features", 2, readAllFeatures("mzvalues/mmultipoints.shp"));
+        // ArcTypeZ with no optional M
+        assertEquals("wrong num features", 1, readAllFeatures("mzvalues/multipointsz.shp"));
     }
 
     @Test
@@ -395,51 +444,6 @@ public class ZMHandlersTest {
         ShapefileDataStore store = new ShapefileDataStore(url);
         Query q = new Query(store.getTypeNames()[0]);
         q.getHints().put(Hints.FEATURE_2D, Boolean.FALSE);
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                store.getFeatureReader(q, Transaction.AUTO_COMMIT);
-        while (reader.hasNext()) {
-            SimpleFeature f = reader.next();
-            assertNotNull(f.getDefaultGeometry());
-        }
-    }
-
-    @Test
-    public void testReadZMultipointsWithNoOptionalM() throws IOException {
-        // test MultiPoints with type ArcZ and no optional M are parsed
-        URL url = TestData.url(ShapefileDataStore.class, "mzvalues/multipointsz.shp");
-        ShapefileDataStore store = new ShapefileDataStore(url);
-        Query q = new Query(store.getTypeNames()[0]);
-        q.getHints().put(Hints.FEATURE_2D, Boolean.TRUE);
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                store.getFeatureReader(q, Transaction.AUTO_COMMIT);
-        while (reader.hasNext()) {
-            SimpleFeature f = reader.next();
-            assertNotNull(f.getDefaultGeometry());
-        }
-    }
-
-    @Test
-    public void testReadZLinesWithNoOptionalM() throws IOException {
-        // test Line with type ArcZ and no optional M is parsed.
-        URL url = TestData.url(ShapefileDataStore.class, "mzvalues/linez.shp");
-        ShapefileDataStore store = new ShapefileDataStore(url);
-        Query q = new Query(store.getTypeNames()[0]);
-        q.getHints().put(Hints.FEATURE_2D, Boolean.TRUE);
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                store.getFeatureReader(q, Transaction.AUTO_COMMIT);
-        while (reader.hasNext()) {
-            SimpleFeature f = reader.next();
-            assertNotNull(f.getDefaultGeometry());
-        }
-    }
-
-    @Test
-    public void testReadZPolygonWithNoOptionalM() throws IOException {
-        // test Polygon shapefile with type ArcZ and no optional M is parsed.
-        URL url = TestData.url(ShapefileDataStore.class, "mzvalues/polygonz.shp");
-        ShapefileDataStore store = new ShapefileDataStore(url);
-        Query q = new Query(store.getTypeNames()[0]);
-        q.getHints().put(Hints.FEATURE_2D, Boolean.TRUE);
         FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                 store.getFeatureReader(q, Transaction.AUTO_COMMIT);
         while (reader.hasNext()) {

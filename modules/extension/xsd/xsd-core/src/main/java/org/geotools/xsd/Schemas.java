@@ -1692,8 +1692,7 @@ public class Schemas {
     static class SchemaLocationResolverAdapterFactory extends AdapterFactoryImpl {
         SchemaLocationResolverAdapter adapter;
 
-        public SchemaLocationResolverAdapterFactory(
-                List<XSDSchemaLocationResolver> resolvers) {
+        public SchemaLocationResolverAdapterFactory(List<XSDSchemaLocationResolver> resolvers) {
             adapter = new SchemaLocationResolverAdapter(resolvers);
         }
 

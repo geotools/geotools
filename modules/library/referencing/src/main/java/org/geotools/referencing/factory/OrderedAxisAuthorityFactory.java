@@ -301,8 +301,9 @@ public class OrderedAxisAuthorityFactory extends TransformedAuthorityFactory
      *     allowed to compile for J2SE 1.5.
      * @since 2.3
      */
-    public int compare(final Object axis1, final Object axis2) {
-        return rank((CoordinateSystemAxis) axis1) - rank((CoordinateSystemAxis) axis2);
+    @Override
+    public int compare(CoordinateSystemAxis axis1, CoordinateSystemAxis axis2) {
+        return rank(axis1) - rank(axis2);
     }
 
     /**

@@ -401,7 +401,7 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
      * @throws FactoryException if the coordinate system can't be created.
      */
     private CoordinateSystem createCS(
-            final Class<CoordinateSystem> type,
+            final Class<? extends CoordinateSystem> type,
             final Map<String, ?> properties,
             final CoordinateSystemAxis[] axis)
             throws FactoryException {

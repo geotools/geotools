@@ -372,8 +372,7 @@ public class IdentifiedObjectFinder {
      * @return A set of code candidates.
      * @throws FactoryException if an error occured while fetching the set of code candidates.
      */
-    protected Set<String> getCodeCandidates(final IdentifiedObject object)
-            throws FactoryException {
+    protected Set<String> getCodeCandidates(final IdentifiedObject object) throws FactoryException {
         return getProxy().getAuthorityCodes();
     }
 

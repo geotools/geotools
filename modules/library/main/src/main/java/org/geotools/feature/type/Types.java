@@ -681,7 +681,7 @@ public class Types {
             return;
         }
 
-        Collection schema = type.getDescriptors();
+        Collection<PropertyDescriptor> schema = type.getDescriptors();
 
         int index = 0;
         for (Iterator itr = content.iterator(); itr.hasNext(); ) {
@@ -743,8 +743,7 @@ public class Types {
         processAll(type.getDescriptors(), content);
     }
 
-    private static void processAll(
-            Collection<AttributeDescriptor> all, Collection /*
+    private static void processAll(Collection<PropertyDescriptor> all, Collection /*
                                                                                         * <Attribute>
                                                                                         */ content)
             throws IllegalAttributeException {

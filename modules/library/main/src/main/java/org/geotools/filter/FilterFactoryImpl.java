@@ -206,24 +206,24 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
     }
 
     public And and(Filter f, Filter g) {
-        List /*<Filter>*/ list = new ArrayList /*<Filter>*/(2);
+        List<Filter> list = new ArrayList<Filter>(2);
         list.add(f);
         list.add(g);
         return new AndImpl(list);
     }
 
-    public And and(List /*<Filter>*/ filters) {
+    public And and(List<Filter> filters) {
         return new AndImpl(filters);
     }
 
     public Or or(Filter f, Filter g) {
-        List /*<Filter>*/ list = new ArrayList /*<Filter>*/(2);
+        List<Filter> list = new ArrayList<Filter>(2);
         list.add(f);
         list.add(g);
         return new OrImpl(list);
     }
 
-    public Or or(List /*<Filter>*/ filters) {
+    public Or or(List<Filter> filters) {
         return new OrImpl(filters);
     }
 

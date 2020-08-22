@@ -280,7 +280,7 @@ public class EMFUtils {
      * @param propertyType The type of the properties.
      * @return The list of structure features, or an empty list if none are found.
      */
-    public static List /*<EStructuralFeature>*/ features(EObject eobject, Class propertyType) {
+    public static List<EStructuralFeature> features(EObject eobject, Class propertyType) {
         List match = new ArrayList();
         List features = eobject.eClass().getEAllStructuralFeatures();
 

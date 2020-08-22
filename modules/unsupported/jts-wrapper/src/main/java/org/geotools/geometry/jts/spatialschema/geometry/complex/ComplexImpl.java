@@ -142,7 +142,7 @@ public class ComplexImpl extends GeometryImpl implements Complex {
      * Returns a modifiable reference to our set of elements. This class makes no attempt to keep
      * the set of subComplexes up to date when this set is modified, so modify with caution.
      */
-    public final Collection /*<Primitive>*/ getElements() {
+    public final Collection<Primitive> getElements() {
         return setViewOfElements;
     }
 

@@ -728,7 +728,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
         return operation;
     }
 
-    public synchronized Set /*<CoordinateOperation>*/ createFromCoordinateReferenceSystemCodes(
+    public synchronized Set<CoordinateOperation> createFromCoordinateReferenceSystemCodes(
             final String sourceCode, final String targetCode) throws FactoryException {
 
         final Object key = ObjectCaches.toKey(getAuthority(), sourceCode, targetCode);

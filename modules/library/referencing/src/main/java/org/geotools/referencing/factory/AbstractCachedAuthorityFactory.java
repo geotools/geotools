@@ -640,7 +640,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
     protected abstract CoordinateOperation generateCoordinateOperation(String code)
             throws FactoryException;
 
-    public synchronized Set /*<CoordinateOperation>*/ createFromCoordinateReferenceSystemCodes(
+    public synchronized Set<CoordinateOperation> createFromCoordinateReferenceSystemCodes(
             final String sourceCode, final String targetCode) throws FactoryException {
 
         final Object key = ObjectCaches.toKey(getAuthority(), sourceCode, targetCode);

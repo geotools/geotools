@@ -302,7 +302,7 @@ public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
 
         AppSchemaDataAccessDTO config = new XMLConfigDigester().parse(configUrl);
 
-        Set /* <FeatureTypeMapping> */ mappings =
+        Set<FeatureTypeMapping> mappings =
                 AppSchemaDataAccessConfigurator.buildMappings(config);
 
         dataStore = new AppSchemaDataAccess(mappings);

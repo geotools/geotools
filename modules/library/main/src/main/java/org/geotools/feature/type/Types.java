@@ -744,7 +744,7 @@ public class Types {
     }
 
     private static void processAll(
-            Collection /* <AttributeDescriptor> */ all, Collection /*
+            Collection<AttributeDescriptor> all, Collection /*
                                                                                         * <Attribute>
                                                                                         */ content)
             throws IllegalAttributeException {
@@ -854,7 +854,7 @@ public class Types {
      * @param name The name, non null.
      * @return The list of descriptors named 'name', or an empty list if none such match.
      */
-    public static List /* <PropertyDescriptor> */ descriptors(ComplexType type, String name) {
+    public static List<PropertyDescriptor> descriptors(ComplexType type, String name) {
         if (name == null) return Collections.emptyList();
 
         List match = new ArrayList();
@@ -886,7 +886,7 @@ public class Types {
      * @param name The name, non null.
      * @return The list of descriptors named 'name', or an empty list if none such match.
      */
-    public static List /* <PropertyDescriptor> */ descriptors(ComplexType type, Name name) {
+    public static List<PropertyDescriptor> descriptors(ComplexType type, Name name) {
         if (name == null) return Collections.emptyList();
 
         List match = new ArrayList();

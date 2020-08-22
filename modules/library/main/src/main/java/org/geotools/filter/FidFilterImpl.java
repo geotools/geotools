@@ -56,7 +56,7 @@ public class FidFilterImpl extends AbstractFilter implements Id {
     private Set<String> ids = new LinkedHashSet<>();
 
     /** Constructor which takes {@link org.opengis.filter.identity.Identifier}, not String. */
-    protected FidFilterImpl(Set /* <Identifier> */ fids) {
+    protected FidFilterImpl(Set<Identifier> fids) {
         // check these are really identifiers
         for (Iterator it = fids.iterator(); it.hasNext(); ) {
             Object next = it.next();

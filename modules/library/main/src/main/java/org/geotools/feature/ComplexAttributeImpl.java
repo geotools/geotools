@@ -129,10 +129,10 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
         clone.addAll(original);
         return clone;
     }
-    //    public List/* <Property> */get(Name name) {
+    //    public List<Property>get(Name name) {
     //        // JD: this is a farily lenient check, should we be stricter about
     //        // matching up the namespace
-    //        List/* <Property> */childs = new LinkedList/* <Property> */();
+    //        List<Property>childs = new LinkedList<Property>();
     //
     //        for (Iterator itr = this.properties.iterator(); itr.hasNext();) {
     //            Property prop = (Property) itr.next();
@@ -158,7 +158,7 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
     //     * Represents just enough info to convey the idea of this being a "view"
     //     * into getAttribtues.
     //     */
-    //    protected synchronized List/* <AttributeType> */types() {
+    //    protected synchronized List<AttributeType>types() {
     //        if (types == null) {
     //            types = createTypesView((List) getValue());
     //        }
@@ -166,12 +166,12 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
     //    }
     //
     //    /** Factory method so subclasses can optimize */
-    //    protected List/* <AttributeType> */createTypesView(
-    //            final List/* <Attribute> */source) {
+    //    protected List<AttributeType>createTypesView(
+    //            final List<Attribute>source) {
     //        if (source == null)
     //            return Collections.emptyList();
     //
-    //        return new AbstractList/* <AttributeType> */() {
+    //        return new AbstractList<AttributeType>() {
     //            // @Override
     //            public Object /* AttributeType */get(int index) {
     //                return ((Attribute) source.get(index)).getType();
@@ -207,7 +207,7 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
     //        };
     //    }
     //
-    //    public synchronized List/* <Object> */values() {
+    //    public synchronized List<Object>values() {
     //        if (values == null) {
     //            values = createValuesView((List) getValue());
     //        }
@@ -215,9 +215,9 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
     //    }
     //
     //    /** Factory method so subclasses can optimize */
-    //    protected List/* <Object> */createValuesView(
-    //            final List/* <Attribute> */source) {
-    //        return new AbstractList/* <Object> */() {
+    //    protected List<Object>createValuesView(
+    //            final List<Attribute>source) {
+    //        return new AbstractList<Object>() {
     //            // @Override
     //            public Object get(int index) {
     //                return ((Attribute) source.get(index)).getValue();
@@ -284,7 +284,7 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
     //        // in one case, and collection in the other?
     //        ComplexType ctype = TYPE;
     //        if (Descriptors.multiple(ctype, type)) {
-    //            List/* <Object> */got = new ArrayList/* <Object> */();
+    //            List<Object>got = new ArrayList<Object>();
     //            for (Iterator itr = properties.iterator(); itr.hasNext();) {
     //                Attribute attribute = (Attribute) itr.next();
     //                if (attribute.getType().equals(type)) {
@@ -333,7 +333,7 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
     //
     //    public String toString() {
     //        StringBuffer sb = new StringBuffer(getClass().getName());
-    //        List/* <Attribute> */atts = this.properties;
+    //        List<Attribute>atts = this.properties;
     //        sb.append("[id=").append(this.ID).append(", name=").append(
     //                DESCRIPTOR != null ? DESCRIPTOR.getName().toString() : "null")
     //                .append(", type=").append(getType().getName()).append('\n');

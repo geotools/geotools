@@ -221,7 +221,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         return product;
     }
 
-    public List /* <Filter> */ visitBinaryLogicOp(BinaryLogicOperator filter) {
+    public List<Filter> visitBinaryLogicOp(BinaryLogicOperator filter) {
 
         List unrolledFilers = new ArrayList();
         try {

@@ -97,7 +97,7 @@ import systems.uom.common.USCustomary;
  * @see Hints#FORCE_STANDARD_AXIS_UNITS
  */
 public class OrderedAxisAuthorityFactory extends TransformedAuthorityFactory
-        implements CSAuthorityFactory, CRSAuthorityFactory, Comparator /*<CoordinateSystemAxis>*/ {
+        implements CSAuthorityFactory, CRSAuthorityFactory, Comparator<CoordinateSystemAxis> {
     /**
      * The default order for axis directions. Note that this array needs to contain only the
      * "{@linkplain AxisDirection#absolute absolute}" directions.

@@ -343,7 +343,7 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
                 modified =
                         crsFactory.createEngineeringCRS(properties, (EngineeringDatum) datum, cs);
             } else if (crs instanceof CompoundCRS) {
-                final List /* <CoordinateReferenceSystem> */ elements =
+                final List<CoordinateReferenceSystem> elements =
                         ((CompoundCRS) crs).getCoordinateReferenceSystems();
                 final CoordinateReferenceSystem[] m =
                         new CoordinateReferenceSystem[elements.size()];
@@ -401,7 +401,7 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
      * @throws FactoryException if the coordinate system can't be created.
      */
     private CoordinateSystem createCS(
-            final Class /* <CoordinateSystem> */ type,
+            final Class<CoordinateSystem> type,
             final Map<String, ?> properties,
             final CoordinateSystemAxis[] axis)
             throws FactoryException {

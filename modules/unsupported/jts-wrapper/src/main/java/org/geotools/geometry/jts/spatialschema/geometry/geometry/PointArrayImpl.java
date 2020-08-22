@@ -215,7 +215,7 @@ public class PointArrayImpl extends NotifyingArrayList<Position>
      *
      * @return The points in this array. @UML mandatory column
      */
-    public List /*<Position>*/ positions() {
+    public List<Position> positions() {
         return this;
     }
 

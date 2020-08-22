@@ -174,7 +174,7 @@ abstract class AuthorityFactoryProxy {
      *
      * @throws FactoryException if access to the underlying database failed.
      */
-    public final Set /*<String>*/ getAuthorityCodes() throws FactoryException {
+    public final Set<String> getAuthorityCodes() throws FactoryException {
         return getAuthorityFactory().getAuthorityCodes(getType());
     }
 

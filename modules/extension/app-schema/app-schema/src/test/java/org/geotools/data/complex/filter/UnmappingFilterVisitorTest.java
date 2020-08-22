@@ -384,7 +384,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
 
         visitor = new UnmappingFilterVisitor(mapping);
 
-        List /* <Expression> */ unrolled = (List) propNameExpression.accept(visitor, null);
+        List<Expression> unrolled = (List) propNameExpression.accept(visitor, null);
         assertNotNull(unrolled);
         assertEquals(1, unrolled.size());
         assertTrue(unrolled.get(0) instanceof Expression);
@@ -414,7 +414,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
         String xpathExpression = "@gml:id";
         PropertyName propNameExpression = ff.property(xpathExpression);
 
-        List /* <Expression> */ unrolled = (List) propNameExpression.accept(visitor, null);
+        List<Expression> unrolled = (List) propNameExpression.accept(visitor, null);
         assertNotNull(unrolled);
         assertEquals(1, unrolled.size());
         assertTrue(unrolled.get(0) instanceof Expression);

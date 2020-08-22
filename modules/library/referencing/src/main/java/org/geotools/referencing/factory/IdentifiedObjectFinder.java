@@ -321,7 +321,7 @@ public class IdentifiedObjectFinder {
      */
     final IdentifiedObject createFromCodes(final IdentifiedObject object, boolean specific)
             throws FactoryException {
-        final Set /*<String>*/ codes =
+        final Set<String> codes =
                 specific ? getSpecificCodeCandidates(object) : getCodeCandidates(object);
         for (final Iterator it = codes.iterator(); it.hasNext(); ) {
             final String code = (String) it.next();
@@ -372,7 +372,7 @@ public class IdentifiedObjectFinder {
      * @return A set of code candidates.
      * @throws FactoryException if an error occured while fetching the set of code candidates.
      */
-    protected Set /*<String>*/ getCodeCandidates(final IdentifiedObject object)
+    protected Set<String> getCodeCandidates(final IdentifiedObject object)
             throws FactoryException {
         return getProxy().getAuthorityCodes();
     }
@@ -457,7 +457,7 @@ public class IdentifiedObjectFinder {
          * the specified one. The default implementation delegates to the backing finder.
          */
         @Override
-        protected Set /*<String>*/ getCodeCandidates(final IdentifiedObject object)
+        protected Set<String> getCodeCandidates(final IdentifiedObject object)
                 throws FactoryException {
             return finder.getCodeCandidates(object);
         }

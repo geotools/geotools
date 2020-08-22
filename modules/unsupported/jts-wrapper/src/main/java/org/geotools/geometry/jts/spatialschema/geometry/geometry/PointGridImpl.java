@@ -188,7 +188,7 @@ public class PointGridImpl implements PointGrid {
      * @revisit Should changes in this list be forwarded to the underlying {@code PointGrid}? In the
      *     mean time, it is probably safe for implementor to make this list immutable.
      */
-    public List /*<PointArray>*/ rows() {
+    public List<PointArray> rows() {
         List returnable = new ArrayList(pointGrid.length);
         for (int i = 0; i < pointGrid.length; i++) {
             returnable.add(pointGrid[i]);

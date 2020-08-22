@@ -667,7 +667,7 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
                 });
     }
 
-    public synchronized Set /* <CoordinateOperation> */ createFromCoordinateReferenceSystemCodes(
+    public synchronized Set<CoordinateOperation> createFromCoordinateReferenceSystemCodes(
             final String sourceCode, final String targetCode) throws FactoryException {
 
         final Object key = ObjectCaches.toKey(getAuthority(), sourceCode, targetCode);

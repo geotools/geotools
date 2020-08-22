@@ -611,10 +611,10 @@ public final class GeometryUtils {
     public static DirectPosition[] getDirectPositions(final Ring ring) {
         final List directPositionList = new ArrayList();
         // Cast below can be removed when GeoAPI will be allowed to abandon Java 1.4 support.
-        final List /*<Curve>*/ generators = (List) ring.getGenerators();
+        final List<Curve> generators = (List) ring.getGenerators();
         for (int i = 0; i < generators.size(); i++) {
             final Curve curve = (Curve) generators.get(i);
-            final List /*<CurveSegments>*/ segments = curve.getSegments();
+            final List<CurveSegments> segments = curve.getSegments();
             for (int j = 0; j < segments.size(); j++) {
                 final CurveSegment curveSegment = (CurveSegment) segments.get(j);
                 if (curveSegment instanceof LineString) {

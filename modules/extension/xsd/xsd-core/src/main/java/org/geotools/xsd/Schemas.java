@@ -1638,7 +1638,7 @@ public class Schemas {
     static class SchemaLocatorAdapterFactory extends AdapterFactoryImpl {
         SchemaLocatorAdapter adapter;
 
-        public SchemaLocatorAdapterFactory(List /*<XSDSchemaLocator>*/ locators) {
+        public SchemaLocatorAdapterFactory(List<XSDSchemaLocator> locators) {
             adapter = new SchemaLocatorAdapter(locators);
         }
 
@@ -1652,9 +1652,9 @@ public class Schemas {
     }
 
     static class SchemaLocatorAdapter extends AdapterImpl implements XSDSchemaLocator {
-        List /*<XSDSchemaLocator>*/ locators;
+        List<XSDSchemaLocator> locators;
 
-        public SchemaLocatorAdapter(List /*<XSDSchemaLocator>*/ locators) {
+        public SchemaLocatorAdapter(List<XSDSchemaLocator> locators) {
             this.locators = new ArrayList(locators);
         }
 
@@ -1693,7 +1693,7 @@ public class Schemas {
         SchemaLocationResolverAdapter adapter;
 
         public SchemaLocationResolverAdapterFactory(
-                List /*<XSDSchemaLocationResolver>*/ resolvers) {
+                List<XSDSchemaLocationResolver> resolvers) {
             adapter = new SchemaLocationResolverAdapter(resolvers);
         }
 
@@ -1708,9 +1708,9 @@ public class Schemas {
 
     static class SchemaLocationResolverAdapter extends AdapterImpl
             implements XSDSchemaLocationResolver {
-        List /*<XSDSchemaLocationResolver>*/ resolvers;
+        List<XSDSchemaLocationResolver> resolvers;
 
-        public SchemaLocationResolverAdapter(List /*<XSDSchemaLocationResolver>*/ resolvers) {
+        public SchemaLocationResolverAdapter(List<XSDSchemaLocationResolver> resolvers) {
             this.resolvers = new ArrayList(resolvers);
         }
 

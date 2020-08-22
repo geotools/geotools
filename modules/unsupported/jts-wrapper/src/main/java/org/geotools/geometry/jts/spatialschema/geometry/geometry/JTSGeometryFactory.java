@@ -161,7 +161,7 @@ public class JTSGeometryFactory implements GeometryFactory {
      * @inheritDoc
      * @see org.opengis.geometry.coordinate.Factory#createLineString(java.util.List)
      */
-    public LineString createLineString(final List /*<Position>*/ points) {
+    public LineString createLineString(final List<Position> points) {
         LineString result = new LineStringImpl();
         PointArray pa = result.getControlPoints();
         List list = pa;
@@ -199,7 +199,7 @@ public class JTSGeometryFactory implements GeometryFactory {
      * @inheritDoc
      * @see org.opengis.geometry.coordinate.Factory#createGeodesicString(java.util.List)
      */
-    public GeodesicString createGeodesicString(final List /*<Position>*/ points) {
+    public GeodesicString createGeodesicString(final List<Position> points) {
         return null;
     }
 
@@ -232,7 +232,7 @@ public class JTSGeometryFactory implements GeometryFactory {
      * @inheritDoc
      * @see org.opengis.geometry.coordinate.Factory#createArcString(java.util.List)
      */
-    public ArcString createArcString(final List /*<Position>*/ points) {
+    public ArcString createArcString(final List<Position> points) {
         return null;
     }
 
@@ -256,7 +256,7 @@ public class JTSGeometryFactory implements GeometryFactory {
      *     java.util.List)
      */
     public ArcStringByBulge createArcStringByBulge(
-            final List /*<Position>*/ points,
+            final List<Position> points,
             final double[] bulges,
             final List /*<double[]>*/ normals) {
         return null;

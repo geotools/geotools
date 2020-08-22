@@ -229,7 +229,7 @@ public abstract class Configuration {
     }
 
     /** @return a list of direct dependencies of the configuration. */
-    public final List /*<Configuration>*/ getDependencies() {
+    public final List<Configuration> getDependencies() {
         return dependencies;
     }
 
@@ -248,7 +248,7 @@ public abstract class Configuration {
      *
      * @return A list of hte set parser properties.
      */
-    public final Set /*<QName>*/ getProperties() {
+    public final Set<QName> getProperties() {
         return properties;
     }
 

@@ -142,7 +142,7 @@ public class TestData {
      * <pre>
      * </pre>
      */
-    public static List /* <AttributeMapping> */ createMappingsColumnsAndValues(
+    public static List<AttributeMapping> createMappingsColumnsAndValues(
             AttributeDescriptor targetFeature) throws Exception {
 
         List mappings = new LinkedList();

@@ -48,6 +48,8 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import javax.measure.MetricPrefix;
 import javax.measure.Unit;
+import javax.measure.quantity.Angle;
+import javax.measure.quantity.Length;
 import javax.sql.DataSource;
 import org.geotools.measure.Units;
 import org.geotools.metadata.i18n.ErrorKeys;
@@ -1317,7 +1319,8 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                     final double semiMinorAxis = result.getDouble(5);
                     final String unitCode = getString(result, 6, code);
                     final String remarks = result.getString(7);
-                    final Unit unit = buffered.createUnit(unitCode);
+                    @SuppressWarnings("unchecked")
+                    final Unit<Length> unit = (Unit<Length>) buffered.createUnit(unitCode);
                     final Map<String, Object> properties = createProperties(name, epsg, remarks);
                     final Ellipsoid ellipsoid;
                     if (inverseFlattening == 0) {
@@ -1408,7 +1411,8 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                     final double longitude = getDouble(result, 3, code);
                     final String unit_code = getString(result, 4, code);
                     final String remarks = result.getString(5);
-                    final Unit unit = buffered.createUnit(unit_code);
+                    @SuppressWarnings("unchecked")
+                    final Unit<Angle> unit = (Unit<Angle>) buffered.createUnit(unit_code);
                     final Map<String, Object> properties = createProperties(name, epsg, remarks);
                     PrimeMeridian primeMeridian =
                             factories
@@ -2396,7 +2400,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
             while (result.next()) {
                 final String name = getString(result, 1, operation);
                 final double value = result.getDouble(2);
-                final Unit unit;
+                final Unit<?> unit;
                 Object reference;
                 if (result.wasNull()) {
                     /*

@@ -43,7 +43,7 @@ final class FixedSizeObjectCache implements ObjectCache {
     private final Map cache;
 
     /** The locks for keys under construction. */
-    private final Map /*<K,ReentrantLock>*/ locks;
+    private final Map<K,ReentrantLock> locks;
 
     /** Creates a new cache. */
     public FixedSizeObjectCache() {

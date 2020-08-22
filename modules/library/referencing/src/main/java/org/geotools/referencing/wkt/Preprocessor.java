@@ -66,7 +66,7 @@ public class Preprocessor extends Format {
     protected final Format parser;
 
     /** The set of objects defined by calls to {@link #addDefinition}. */
-    private final Map<String, Definition> definitions /*<String,Definition>*/ = new TreeMap<>();
+    private final Map<String, Definition> definitions<String,Definition> = new TreeMap<>();
 
     /**
      * The unmodifiable set of keys in the {@link #definitions} map. Will be constructed only when

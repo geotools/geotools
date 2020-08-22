@@ -146,7 +146,7 @@ public class FilterCapabilities {
 
     public static final FilterCapabilities LOGICAL_OPENGIS;
 
-    static final Map /*<int,Class>*/ intTypeToOpenGisTypeMap = new HashMap();
+    static final Map<int,Class> intTypeToOpenGisTypeMap = new HashMap();
 
     static {
         SIMPLE_COMPARISONS_OPENGIS = new FilterCapabilities();

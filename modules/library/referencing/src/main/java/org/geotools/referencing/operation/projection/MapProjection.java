@@ -1476,7 +1476,7 @@ public abstract class MapProjection extends AbstractMathTransform
          * The operation parameter descriptor for the {@linkplain #latitudeOfOrigin latitude of
          * origin} parameter value. Valid values range is from -90 to 90°. Default value is 0.
          */
-        public static final ParameterDescriptor LATITUDE_OF_ORIGIN =
+        public static final ParameterDescriptor<Double> LATITUDE_OF_ORIGIN =
                 createDescriptor(
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.OGC, "latitude_of_origin"),
@@ -1555,7 +1555,7 @@ public abstract class MapProjection extends AbstractMathTransform
          * The operation parameter descriptor for the standard parallel 2 parameter value. Valid
          * values range is from -90 to 90°. Default value is 0.
          */
-        public static final ParameterDescriptor STANDARD_PARALLEL_2 =
+        public static final ParameterDescriptor<Double> STANDARD_PARALLEL_2 =
                 createOptionalDescriptor(
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.OGC, "standard_parallel_2"),

@@ -210,7 +210,7 @@ public class DefaultFeatureResults extends DataFeatureCollection {
      * designed for bounds computation
      */
     protected FeatureReader<SimpleFeatureType, SimpleFeature> boundsReader() throws IOException {
-        List attributes = new ArrayList();
+        List<String> attributes = new ArrayList<>();
         SimpleFeatureType schema = featureSource.getSchema();
         for (int i = 0; i < schema.getAttributeCount(); i++) {
             AttributeDescriptor at = schema.getDescriptor(i);

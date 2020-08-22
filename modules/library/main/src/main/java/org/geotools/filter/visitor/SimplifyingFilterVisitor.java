@@ -222,11 +222,13 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
             T filter, Class<T> type, Object extraData, List<Filter> collected) {
         for (Filter child : filter.getChildren()) {
             if (type.isInstance(child)) {
+                @SuppressWarnings("unchecked")
                 T and = (T) child;
                 collect(and, type, extraData, collected);
             } else {
                 Filter cloned = (Filter) child.accept(this, extraData);
                 if (type.isInstance(cloned)) {
+                    @SuppressWarnings("unchecked")
                     T and = (T) cloned;
                     collect(and, type, extraData, collected);
                 } else {

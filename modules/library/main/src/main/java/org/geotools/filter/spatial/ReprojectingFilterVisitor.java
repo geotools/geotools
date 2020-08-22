@@ -367,7 +367,7 @@ public class ReprojectingFilterVisitor extends DuplicatingFilterVisitor {
             return new FunctionReprojector(propertyCrs, delegate);
         } else if (expression instanceof Literal) {
             // second expression is a geometry literal
-            Object value = ((Literal) expression).getValue();
+            Geometry value = (Geometry) ((Literal) expression).getValue();
             return ff.literal(reproject(value, propertyCrs));
         } else if (forceReprojection) {
             throw new IllegalArgumentException(
@@ -499,12 +499,14 @@ public class ReprojectingFilterVisitor extends DuplicatingFilterVisitor {
 
         public Object evaluate(Object object) {
             Object value = delegate.evaluate(object);
-            return reproject(value, propertyCrs);
+            return reproject((Geometry) value, propertyCrs);
         }
 
         public <T> T evaluate(Object object, Class<T> context) {
             T value = delegate.evaluate(object, context);
-            return (T) reproject(value, propertyCrs);
+            @SuppressWarnings("unchecked")
+            T reprojected = (T) reproject(value, propertyCrs);
+            return reprojected;
         }
 
         public Literal getFallbackValue() {

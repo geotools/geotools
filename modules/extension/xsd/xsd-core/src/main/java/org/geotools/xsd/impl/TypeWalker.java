@@ -23,7 +23,7 @@ import org.eclipse.xsd.XSDTypeDefinition;
 
 public class TypeWalker {
     /** Cached type hierarchy */
-    HashMap<XSDTypeDefinition,List> cache = new HashMap();
+    HashMap<XSDTypeDefinition, List> cache = new HashMap();
 
     /** Walks from the bottom of the type hierarchy to the top. */
     public void walk(XSDTypeDefinition base, Visitor visitor) {

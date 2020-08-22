@@ -59,8 +59,7 @@ public class WebCRSFactory extends DirectAuthorityFactory implements CRSAuthorit
     private static final String PREFIX = "CRS";
 
     /** The map of pre-defined CRS. */
-    private final Map<Integer, CoordinateReferenceSystem> crsMap =
-            new TreeMap<>();
+    private final Map<Integer, CoordinateReferenceSystem> crsMap = new TreeMap<>();
 
     /** Constructs a default factory for the {@code CRS} authority. */
     public WebCRSFactory() {
@@ -139,7 +138,8 @@ public class WebCRSFactory extends DirectAuthorityFactory implements CRSAuthorit
      * org.geotools.referencing.factory.AllAuthoritiesFactory#getAuthorityCodes all authorities
      * factory}.
      */
-    public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type) throws FactoryException {
+    public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type)
+            throws FactoryException {
         ensureInitialized();
         final Set<String> set = new LinkedHashSet<>();
         for (final Iterator it = crsMap.entrySet().iterator(); it.hasNext(); ) {

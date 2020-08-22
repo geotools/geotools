@@ -460,7 +460,7 @@ public abstract class Configuration {
      * an instance. In the case of a class, the binding will be instantiated by the parser at
      * runtime. In the instance case the binding will be used as is.
      */
-    protected void registerBindings(Map<QName,Object> bindings) {}
+    protected void registerBindings(Map<QName, Object> bindings) {}
 
     /**
      * Template method allowing subclass to override any bindings.

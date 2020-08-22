@@ -86,7 +86,7 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
      * The map of object codes (keys), and the actual identified objects (values) when it has been
      * created. Each entry has a null value until the corresponding object is created.
      */
-    private final Map<String,IdentifiedObject> objects = new LinkedHashMap<>();
+    private final Map<String, IdentifiedObject> objects = new LinkedHashMap<>();
 
     /**
      * The factory to use for creating {@linkplain IdentifiedObject identified objects} when first
@@ -271,7 +271,7 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
      * @see #addAuthorityCode
      */
     public void setAuthorityCodes(final String[] codes) {
-        final Map<String,IdentifiedObject> copy = new HashMap<>(objects);
+        final Map<String, IdentifiedObject> copy = new HashMap<>(objects);
         objects.clear();
         for (int i = 0; i < codes.length; i++) {
             final String code = codes[i];

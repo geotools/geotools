@@ -1361,7 +1361,7 @@ public class TypeBuilder {
      *
      * <p>Calls clear to reset cardinality after use.
      */
-    public void addMemberType(Name name, AssociationType<FeatureType> memberType) {
+    public void addMemberType(Name name, AssociationType /* <FeatureType> */ memberType) {
         member(name, memberType);
     }
 

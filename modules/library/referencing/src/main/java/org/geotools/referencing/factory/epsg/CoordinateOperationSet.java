@@ -43,7 +43,7 @@ final class CoordinateOperationSet extends IdentifiedObjectSet {
      * The codes of {@link ProjectedCRS} objects for the specified {@link Conversion} codes, or
      * {@code null} if none.
      */
-    private Map<String,String> projections;
+    private Map<String, String> projections;
 
     /** Creates a new instance of this lazy set. */
     public CoordinateOperationSet(final AuthorityFactory factory) {

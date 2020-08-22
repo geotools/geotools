@@ -34,16 +34,15 @@ import java.util.concurrent.locks.ReentrantLock;
  * @version $Id$
  * @author Jody Garnett (Refractions Research)
  */
-@SuppressWarnings("unchecked")
 final class FixedSizeObjectCache implements ObjectCache {
 
     private final int LIMIT;
 
     /** The cached values for each key. */
-    private final Map cache;
+    private final Map<Object, Object> cache;
 
     /** The locks for keys under construction. */
-    private final Map<K,ReentrantLock> locks;
+    private final Map<Object, ReentrantLock> locks;
 
     /** Creates a new cache. */
     public FixedSizeObjectCache() {
@@ -90,7 +89,7 @@ final class FixedSizeObjectCache implements ObjectCache {
     public void writeLock(final Object key) {
         ReentrantLock lock;
         synchronized (locks) {
-            lock = (ReentrantLock) locks.get(key);
+            lock = locks.get(key);
             if (lock == null) {
                 lock = new ReentrantLock();
                 locks.put(key, lock);

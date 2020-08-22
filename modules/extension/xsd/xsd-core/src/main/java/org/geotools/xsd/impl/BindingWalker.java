@@ -37,7 +37,7 @@ import org.picocontainer.MutablePicoContainer;
 public class BindingWalker implements TypeWalker.Visitor {
     BindingLoader loader;
 
-    SoftValueHashMap<XSDFeature,BindingExecutionChain> chains;
+    SoftValueHashMap<XSDFeature, BindingExecutionChain> chains;
     TypeWalker typeWalker;
     MutablePicoContainer context;
     ArrayList bindings;

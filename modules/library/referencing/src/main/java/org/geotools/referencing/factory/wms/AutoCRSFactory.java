@@ -138,7 +138,7 @@ public class AutoCRSFactory extends DirectAuthorityFactory implements CRSAuthori
             }
             return set;
         } else {
-            return Collections.EMPTY_SET;
+            return Collections.emptySet();
         }
     }
 

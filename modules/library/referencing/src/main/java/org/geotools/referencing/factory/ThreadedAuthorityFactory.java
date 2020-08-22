@@ -292,7 +292,7 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
      * @param type The spatial reference objects type.
      * @return The set of authority codes for spatial reference objects of the given type. If this
      *     factory doesn't contains any object of the given type, then this method returns an
-     *     {@linkplain java.util.Collections#EMPTY_SET empty set}.
+     *     {@linkplain java.util.Collections.emptySet() empty set}.
      * @throws FactoryException if access to the underlying database failed.
      */
     public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type)

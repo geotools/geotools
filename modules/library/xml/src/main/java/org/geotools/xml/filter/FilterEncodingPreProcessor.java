@@ -328,7 +328,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
 
     private Set andFids(int startOfFilterStack) {
         if (!hasFidFilter(startOfFilterStack)) {
-            return Collections.EMPTY_SET;
+            return Collections.emptySet();
         }
 
         Set toRemove = new HashSet();
@@ -354,7 +354,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
         }
 
         if (fidSet.size() == 0) {
-            return Collections.EMPTY_SET;
+            return Collections.emptySet();
         }
 
         if (fidSet.size() == 1) {

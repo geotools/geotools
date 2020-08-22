@@ -227,7 +227,7 @@ public class CurveImpl extends GeometryImpl implements Curve {
 
     /** Not implemented. Always returns an empty set. */
     public Set getContainedPrimitives() {
-        return Collections.EMPTY_SET;
+        return Collections.emptySet();
     }
 
     /**
@@ -235,7 +235,7 @@ public class CurveImpl extends GeometryImpl implements Curve {
      * a lot of extra work). Always returns an empty set.
      */
     public Set getContainingPrimitives() {
-        return Collections.EMPTY_SET;
+        return Collections.emptySet();
     }
 
     /**
@@ -243,7 +243,7 @@ public class CurveImpl extends GeometryImpl implements Curve {
      * a lot of extra work). Always returns an empty set.
      */
     public Set getComplexes() {
-        return Collections.EMPTY_SET;
+        return Collections.emptySet();
     }
 
     /** Not implemented. Returns null. */

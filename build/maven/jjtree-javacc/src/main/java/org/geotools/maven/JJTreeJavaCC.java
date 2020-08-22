@@ -322,7 +322,7 @@ public class JJTreeJavaCC extends AbstractMojo {
             directory = new File(directory, nodePackage.replace('.', '/'));
         }
         if (!directory.isDirectory()) {
-            return Collections.EMPTY_SET;
+            return Collections.emptySet();
         }
         final File outDir = new File(timestampDirectory);
         try {

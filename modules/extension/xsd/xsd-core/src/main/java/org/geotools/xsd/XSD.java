@@ -72,7 +72,7 @@ public abstract class XSD {
 
     /** Sets up a profile which uniquely maps a set of java classes to a schema element. */
     protected Schema buildTypeMappingProfile(Schema typeSchema) {
-        return typeSchema.profile(Collections.EMPTY_SET);
+        return typeSchema.profile(Collections.emptySet());
     }
 
     /**

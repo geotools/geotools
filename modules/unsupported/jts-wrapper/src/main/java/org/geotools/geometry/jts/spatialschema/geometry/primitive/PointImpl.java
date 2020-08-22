@@ -150,7 +150,7 @@ public class PointImpl extends GeometryImpl implements Point {
     }
 
     public Set getContainedPrimitives() {
-        return Collections.EMPTY_SET;
+        return Collections.emptySet();
     }
 
     public Set getContainingPrimitives() {

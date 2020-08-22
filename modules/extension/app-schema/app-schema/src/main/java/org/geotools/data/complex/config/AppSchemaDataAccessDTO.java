@@ -56,7 +56,7 @@ public class AppSchemaDataAccessDTO implements Serializable {
      */
     private List<SourceDataStore> sourceDataStores = Collections.emptyList();
 
-    private Set<TypeMapping> typeMappings = Collections.EMPTY_SET;
+    private Set<TypeMapping> typeMappings = Collections.emptySet();
 
     /**
      * List of file names, that may be fully qualified URL's, or paths relative to {@link

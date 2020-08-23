@@ -53,7 +53,7 @@ final class FixedSizeObjectCache implements ObjectCache {
     public FixedSizeObjectCache(final int initialSize) {
         LIMIT = initialSize;
         cache = Collections.synchronizedMap(new WeakValueHashMap<>(initialSize));
-        locks = new HashMap(initialSize);
+        locks = new HashMap<>(initialSize);
     }
 
     /** Removes all entries from this map. */

@@ -341,7 +341,7 @@ public class Descriptors {
         if (node.getType() == restrict.getType()) {
             return restrict;
         }
-        for (AttributeType /* <?> */ type = restrict.getType();
+        for (AttributeType<?> type = restrict.getType();
                 type != null;
                 type = type.getSuper()) {
             if (node.getType().equals(type)) {
@@ -570,7 +570,7 @@ public class Descriptors {
      * when relevant.
      */
     // @SuppressWarnings("unchecked")
-    public static List /* <? extends Descriptor> */ list(AttributeType type) {
+    public static List<? extends Descriptor> list(AttributeType type) {
 
         ArrayList list = new ArrayList();
 

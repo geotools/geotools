@@ -74,7 +74,7 @@ abstract class AuthorityFactoryProxy {
      * The types that factories can be create. The most specific types must appear first in this
      * list.
      */
-    private static final Class /*<? extends IdentifiedObject>*/[] TYPES = {
+    private static final Class<? extends IdentifiedObject>[] TYPES = {
         CoordinateOperation.class,
         OperationMethod.class,
         ParameterDescriptor.class,
@@ -164,7 +164,7 @@ abstract class AuthorityFactoryProxy {
     }
 
     /** Returns the type of the objects to be created by this proxy instance. */
-    public abstract Class /*<? extends IdentifiedObject>*/ getType();
+    public abstract Class<? extends IdentifiedObject> getType();
 
     /** Returns the authority factory used by the {@link #create create} method. */
     public abstract AuthorityFactory getAuthorityFactory();

@@ -127,7 +127,7 @@ class DescriptorValidator {
     //		List<AttributeType> usedTypes = new ArrayList<AttributeType>();
     //		for (Iterator itr = content.iterator(); itr.hasNext();) {
     //			Attribute att = (Attribute) itr.next();
-    //			AttributeType/*<?>*/ type = att.getType();
+    //			AttributeType<?> type = att.getType();
     //
     //			// cannot be more than one instance of its type
     //			// (shortcut to multiplicity rangecheck)
@@ -142,7 +142,7 @@ class DescriptorValidator {
     //			AttributeDescriptor node = (AttributeDescriptor) itr.next();
     //			int min = node.getMinOccurs();
     //			int max = node.getMaxOccurs();
-    //			AttributeType/*<?>*/ expectedType = node.getType();
+    //			AttributeType<?> expectedType = node.getType();
     //			if (max == 0 && usedTypes.contains(expectedType)) {
     //				throw new IllegalArgumentException(
     //						expectedType.getName()
@@ -284,7 +284,7 @@ class DescriptorValidator {
     //	private static void checkAttIsOfAllowedType(
     //			List<AttributeType> allowedTypes, int index, Attribute att)
     //			throws IllegalArgumentException {
-    //		AttributeType/*<?>*/ type = att.getType();
+    //		AttributeType<?> type = att.getType();
     //		if (!allowedTypes.contains(type)) {
     //			throw new IllegalArgumentException("Attribute of type "
     //					+ type.getName() + " found at index " + index

@@ -75,7 +75,7 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
     private transient CoordinateOperationFactory opFactory;
 
     /** A pool of modified objects created up to date. */
-    private final CanonicalSet pool = CanonicalSet.newInstance(Object.class);
+    private final CanonicalSet<Object> pool = CanonicalSet.newInstance(Object.class);
 
     /**
      * Creates a wrapper around the specified factory.
@@ -218,6 +218,7 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
      * @throws FactoryException if an error occured while creating the new coordinate system.
      */
     // @Override
+    @SuppressWarnings("unchecked")
     protected CoordinateSystem replace(final CoordinateSystem cs) throws FactoryException {
         final int dimension = cs.getDimension();
         final CoordinateSystemAxis[] orderedAxis = new CoordinateSystemAxis[dimension];
@@ -491,7 +492,7 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
         final Set<CoordinateOperation> operations, modified;
         operations = super.createFromCoordinateReferenceSystemCodes(sourceCode, targetCode);
         modified = new LinkedHashSet<>((int) (operations.size() / 0.75f) + 1);
-        for (final Iterator it = operations.iterator(); it.hasNext(); ) {
+        for (final Iterator<CoordinateOperation> it = operations.iterator(); it.hasNext(); ) {
             final CoordinateOperation operation;
             try {
                 operation = (CoordinateOperation) it.next();

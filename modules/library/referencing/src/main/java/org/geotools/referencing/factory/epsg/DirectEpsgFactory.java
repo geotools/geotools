@@ -3210,7 +3210,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      */
     @Override
     public IdentifiedObjectFinder getIdentifiedObjectFinder(
-            final Class /*<? extends IdentifiedObject>*/ type) throws FactoryException {
+            final Class<? extends IdentifiedObject> type) throws FactoryException {
         return new Finder(buffered, type);
     }
 
@@ -3225,7 +3225,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
         /** Creates a new finder backed by the specified <em>buffered</em> authority factory. */
         Finder(
                 final AbstractAuthorityFactory buffered,
-                final Class /*<? extends IdentifiedObject>*/ type) {
+                final Class<? extends IdentifiedObject> type) {
             super(buffered, type);
         }
 

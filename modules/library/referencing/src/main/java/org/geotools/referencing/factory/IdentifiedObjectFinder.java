@@ -74,7 +74,7 @@ public class IdentifiedObjectFinder {
      * @param type The type of objects to lookup.
      */
     protected IdentifiedObjectFinder(
-            final AuthorityFactory factory, final Class /*<? extends IdentifiedObject>*/ type) {
+            final AuthorityFactory factory, final Class<? extends IdentifiedObject> type) {
         setProxy(AuthorityFactoryProxy.getInstance(factory, type));
     }
 

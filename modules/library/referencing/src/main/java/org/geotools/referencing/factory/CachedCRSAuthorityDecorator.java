@@ -361,7 +361,7 @@ public final class CachedCRSAuthorityDecorator extends AbstractAuthorityFactory
      */
     @Override
     public synchronized IdentifiedObjectFinder getIdentifiedObjectFinder(
-            final Class /*<? extends IdentifiedObject>*/ type) throws FactoryException {
+            final Class<? extends IdentifiedObject> type) throws FactoryException {
         return new Finder(
                 delegate.getIdentifiedObjectFinder(type), ObjectCaches.create("weak", 250));
     }

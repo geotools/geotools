@@ -187,7 +187,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
         return authority.getAuthority();
     }
 
-    public Set getAuthorityCodes(Class type) throws FactoryException {
+    public Set<String> getAuthorityCodes(Class<? extends IdentifiedObject> type) throws FactoryException {
         return authority.getAuthorityCodes(type);
     }
 
@@ -728,15 +728,16 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
         return operation;
     }
 
+    @SuppressWarnings("unchecked")
     public synchronized Set<CoordinateOperation> createFromCoordinateReferenceSystemCodes(
             final String sourceCode, final String targetCode) throws FactoryException {
 
         final Object key = ObjectCaches.toKey(getAuthority(), sourceCode, targetCode);
-        Set operations = (Set) cache.get(key);
+        Set<CoordinateOperation> operations = (Set<CoordinateOperation>) cache.get(key);
         if (operations == null) {
             try {
                 cache.writeLock(key);
-                operations = (Set) cache.peek(key);
+                operations = (Set<CoordinateOperation>) cache.peek(key);
                 if (operations == null) {
                     operations =
                             operationAuthority.createFromCoordinateReferenceSystemCodes(
@@ -755,7 +756,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
     //
     // AbstractAuthorityFactory
     //
-    public IdentifiedObjectFinder getIdentifiedObjectFinder(Class type) throws FactoryException {
+    public IdentifiedObjectFinder getIdentifiedObjectFinder(Class<? extends IdentifiedObject> type) throws FactoryException {
         return delegate.getIdentifiedObjectFinder(type);
     }
 

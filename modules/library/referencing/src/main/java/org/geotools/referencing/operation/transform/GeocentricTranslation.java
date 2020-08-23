@@ -455,7 +455,7 @@ public class GeocentricTranslation extends ProjectiveTransform {
          * The operation parameter descriptor for the <cite>X-axis rotation</cite> ("ex") parameter
          * value. Units are arc-seconds.
          */
-        public static final ParameterDescriptor EX =
+        public static final ParameterDescriptor<Double> EX =
                 createDescriptor(
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.OGC, "ex"),
@@ -470,7 +470,7 @@ public class GeocentricTranslation extends ProjectiveTransform {
          * The operation parameter descriptor for the <cite>Y-axis rotation</cite> ("ey") parameter
          * value. Units are arc-seconds.
          */
-        public static final ParameterDescriptor EY =
+        public static final ParameterDescriptor<Double> EY =
                 createDescriptor(
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.OGC, "ey"),
@@ -485,7 +485,7 @@ public class GeocentricTranslation extends ProjectiveTransform {
          * The operation parameter descriptor for the <cite>Z-axis rotation</cite> ("ez") parameter
          * value. Units are arc-seconds.
          */
-        public static final ParameterDescriptor EZ =
+        public static final ParameterDescriptor<Double> EZ =
                 createDescriptor(
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.OGC, "ez"),
@@ -501,7 +501,7 @@ public class GeocentricTranslation extends ProjectiveTransform {
          * parameter value. Valid values range from -infinity to infinity. Units are parts per
          * million.
          */
-        public static final ParameterDescriptor PPM =
+        public static final ParameterDescriptor<Double> PPM =
                 createDescriptor(
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.OGC, "ppm"),

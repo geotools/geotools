@@ -2790,7 +2790,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      */
     private final class Finder extends IdentifiedObjectFinder {
         /** Creates a new finder backed by the specified <em>buffered</em> authority factory. */
-        Finder(final Class /*<? extends IdentifiedObject>*/ type) {
+        Finder(final Class<? extends IdentifiedObject> type) {
             super(AbstractEpsgFactory.this, type);
         }
 

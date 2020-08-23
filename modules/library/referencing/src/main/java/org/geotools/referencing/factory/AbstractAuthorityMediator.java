@@ -235,7 +235,7 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
     /** The authority body of the objects this factory provides. */
     public abstract Citation getAuthority();
 
-    public Set getAuthorityCodes(Class type) throws FactoryException {
+    public Set<String> getAuthorityCodes(Class type) throws FactoryException {
         Set codes = (Set) cache.get(type);
         if (codes == null) {
             try {
@@ -730,6 +730,7 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
      * @param runner Used to generate a value in the case of a cache miss
      * @return value from either the cache or generated
      */
+    @SuppressWarnings("unchecked")
     protected <T> T createWith(Object key, WorkerSafeRunnable runner) throws FactoryException {
         T value = (T) cache.get(key);
         if (value == null) {
@@ -873,7 +874,7 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
      * @since 2.4
      */
     public IdentifiedObjectFinder getIdentifiedObjectFinder(
-            final Class /* <? extends IdentifiedObject> */ type) throws FactoryException {
+            final Class<? extends IdentifiedObject> type) throws FactoryException {
         return new LazyCachedFinder(type);
     }
     /**
@@ -889,9 +890,9 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
      * its original state before returning back to the <code>workers</code> pool.
      */
     private final class LazyCachedFinder extends IdentifiedObjectFinder {
-        private Class type;
+        private Class<? extends IdentifiedObject> type;
         /** Creates a finder for the underlying backing store. */
-        LazyCachedFinder(final Class type) {
+        LazyCachedFinder(final Class<? extends IdentifiedObject> type) {
             super(AbstractAuthorityMediator.this, type);
             this.type = type;
         }

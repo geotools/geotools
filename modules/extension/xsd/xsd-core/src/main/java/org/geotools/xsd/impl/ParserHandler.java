@@ -130,7 +130,7 @@ public class ParserHandler extends DefaultHandler2 {
     QName rootElementType = null;
 
     /** uri handlers for handling uri references during parsing */
-    List<URIHandler> uriHandlers = new ArrayList<URIHandler>();
+    List<URIHandler> uriHandlers = new ArrayList<>();
 
     /** entity resolver */
     EntityResolver2 entityResolver;

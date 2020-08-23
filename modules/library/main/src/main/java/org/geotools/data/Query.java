@@ -332,7 +332,7 @@ public class Query {
         this.namespace = namespace;
         this.maxFeatures = maxFeatures;
         this.handle = handle;
-        this.properties = properties == null ? null : new ArrayList<PropertyName>(properties);
+        this.properties = properties == null ? null : new ArrayList<>(properties);
     }
 
     /**
@@ -410,7 +410,7 @@ public class Query {
         }
 
         final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-        properties = new ArrayList<PropertyName>(propNames.length);
+        properties = new ArrayList<>(propNames.length);
         for (int i = 0; i < propNames.length; i++) {
             String xpath = propNames[i];
             if (xpath != null) {
@@ -451,10 +451,7 @@ public class Query {
      *     #ALL_PROPERTIES} or {@linkplain #NO_PROPERTIES}.
      */
     public void setProperties(List<PropertyName> propNames) {
-        this.properties =
-                propNames == ALL_PROPERTIES
-                        ? ALL_PROPERTIES
-                        : new ArrayList<PropertyName>(propNames);
+        this.properties = propNames == ALL_PROPERTIES ? ALL_PROPERTIES : new ArrayList<>(propNames);
     }
 
     /**
@@ -479,7 +476,7 @@ public class Query {
 
         final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
-        properties = new ArrayList<PropertyName>(propNames.size());
+        properties = new ArrayList<>(propNames.size());
         for (int i = 0; i < propNames.size(); i++) {
             String xpath = propNames.get(i);
             if (xpath != null) {

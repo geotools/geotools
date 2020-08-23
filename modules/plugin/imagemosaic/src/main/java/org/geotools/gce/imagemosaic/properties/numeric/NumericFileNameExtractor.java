@@ -116,7 +116,7 @@ abstract class NumericFileNameExtractor<N extends Number & Comparable<N>>
     public void setProperties(SimpleFeature feature) {
 
         // get all the matches and convert them in times
-        final List<Number> values = new ArrayList<Number>();
+        final List<Number> values = new ArrayList<>();
         for (String match : getMatches()) {
             // try to convert to date
             try {

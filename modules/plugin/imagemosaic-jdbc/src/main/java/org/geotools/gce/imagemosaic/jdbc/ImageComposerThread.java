@@ -98,7 +98,7 @@ public class ImageComposerThread extends Thread {
         Hashtable<String, Object> properties = null;
 
         if (copyFrom.getPropertyNames() != null) {
-            properties = new Hashtable<String, Object>();
+            properties = new Hashtable<>();
             for (String name : copyFrom.getPropertyNames()) {
                 properties.put(name, copyFrom.getProperty(name));
             }

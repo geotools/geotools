@@ -224,7 +224,7 @@ public abstract class ContentFeatureStore extends ContentFeatureSource
     public List<FeatureId> addFeatures(Collection collection) throws IOException {
 
         // gather up id's
-        List<FeatureId> ids = new ArrayList<FeatureId>(collection.size());
+        List<FeatureId> ids = new ArrayList<>(collection.size());
 
         FeatureWriter<SimpleFeatureType, SimpleFeature> writer = getWriterAppend();
         try {
@@ -244,7 +244,7 @@ public abstract class ContentFeatureStore extends ContentFeatureSource
             FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection)
             throws IOException {
         // gather up id's
-        List<FeatureId> ids = new ArrayList<FeatureId>();
+        List<FeatureId> ids = new ArrayList<>();
 
         FeatureWriter<SimpleFeatureType, SimpleFeature> writer = getWriterAppend();
         FeatureIterator<SimpleFeature> f = featureCollection.features();

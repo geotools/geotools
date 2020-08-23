@@ -54,8 +54,7 @@ public class MultiLevelROIGeometry implements MultiLevelROI {
 
     private FootprintInsetPolicy insetPolicy;
 
-    private SoftValueHashMap<AffineTransform, ROIGeometry> roiCache =
-            new SoftValueHashMap<AffineTransform, ROIGeometry>(10);
+    private SoftValueHashMap<AffineTransform, ROIGeometry> roiCache = new SoftValueHashMap<>(10);
 
     private boolean empty;
 

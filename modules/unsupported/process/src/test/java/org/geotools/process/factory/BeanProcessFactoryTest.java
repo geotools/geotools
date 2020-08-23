@@ -143,7 +143,7 @@ public class BeanProcessFactoryTest {
         final ReferencedEnvelope re = new ReferencedEnvelope(-10, 10, -10, 10, null);
 
         org.geotools.process.Process p = factory.create(new NameImpl("bean", "Identity"));
-        Map<String, Object> inputs = new HashMap<String, Object>();
+        Map<String, Object> inputs = new HashMap<>();
         inputs.put("input", re);
         Map<String, Object> result = p.execute(inputs, null);
 
@@ -171,7 +171,7 @@ public class BeanProcessFactoryTest {
 
         org.geotools.process.Process transformation =
                 factory.create(new NameImpl("bean", "VectorIdentityRT"));
-        Map<String, Object> inputs = new HashMap<String, Object>();
+        Map<String, Object> inputs = new HashMap<>();
         inputs.put("data", data);
         inputs.put("value", 10);
 

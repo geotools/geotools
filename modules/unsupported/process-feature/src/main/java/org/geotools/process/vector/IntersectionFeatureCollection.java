@@ -712,7 +712,7 @@ public class IntersectionFeatureCollection implements VectorProcess {
     static class GeometryFilterImpl implements GeometryFilter {
         GeometryFactory factory = new GeometryFactory();
 
-        ArrayList<Geometry> collection = new ArrayList<Geometry>();
+        ArrayList<Geometry> collection = new ArrayList<>();
 
         Class binding = null;
 

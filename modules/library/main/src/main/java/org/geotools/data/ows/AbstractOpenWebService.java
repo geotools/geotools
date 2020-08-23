@@ -49,7 +49,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
     protected final URL serverURL;
     protected C capabilities;
     protected ServiceInfo info;
-    protected Map<R, ResourceInfo> resourceInfo = new HashMap<R, ResourceInfo>();
+    protected Map<R, ResourceInfo> resourceInfo = new HashMap<>();
 
     /** Contains the specifications that are to be used with this service */
     protected Specification[] specs;
@@ -221,7 +221,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
      */
     @SuppressWarnings("unchecked")
     protected C negotiateVersion() throws IOException, ServiceException {
-        List<String> versions = new ArrayList<String>(specs.length);
+        List<String> versions = new ArrayList<>(specs.length);
         Exception exception = null;
 
         for (int i = 0; i < specs.length; i++) {

@@ -121,7 +121,7 @@ public class StrictWFS_1_x_Strategy extends AbstractWFSStrategy {
 
     public StrictWFS_1_x_Strategy(Version defaultVersion) {
         super();
-        typeInfos = new HashMap<QName, FeatureTypeType>();
+        typeInfos = new HashMap<>();
         serviceVersion = defaultVersion;
     }
 
@@ -497,7 +497,7 @@ public class StrictWFS_1_x_Strategy extends AbstractWFSStrategy {
     /** @see WFSStrategy#getFeatureTypeNames() */
     @Override
     public Set<QName> getFeatureTypeNames() {
-        return new HashSet<QName>(typeInfos.keySet());
+        return new HashSet<>(typeInfos.keySet());
     }
 
     /**
@@ -560,7 +560,7 @@ public class StrictWFS_1_x_Strategy extends AbstractWFSStrategy {
     @Override
     public Set<String> getServerSupportedOutputFormats(QName typeName, WFSOperationType operation) {
 
-        Set<String> ftypeFormats = new HashSet<String>();
+        Set<String> ftypeFormats = new HashSet<>();
 
         final Set<String> serviceOutputFormats = getServerSupportedOutputFormats(operation);
         ftypeFormats.addAll(serviceOutputFormats);
@@ -625,7 +625,7 @@ public class StrictWFS_1_x_Strategy extends AbstractWFSStrategy {
 
         List<String> otherSRS = featureTypeInfo.getOtherSRS();
 
-        Set<String> ftypeCrss = new HashSet<String>();
+        Set<String> ftypeCrss = new HashSet<>();
         ftypeCrss.add(defaultSRS);
 
         if (!config.isUseDefaultSrs()) {
@@ -645,7 +645,7 @@ public class StrictWFS_1_x_Strategy extends AbstractWFSStrategy {
     @SuppressWarnings("unchecked")
     protected Set<String> findParameters(
             final OperationType operationMetadata, final String parameterName) {
-        Set<String> outputFormats = new HashSet<String>();
+        Set<String> outputFormats = new HashSet<>();
 
         List<DomainType> parameters = operationMetadata.getParameter();
         for (DomainType param : parameters) {
@@ -667,7 +667,7 @@ public class StrictWFS_1_x_Strategy extends AbstractWFSStrategy {
         List<WFSResponseFactory> operationResponseFactories;
         operationResponseFactories = WFSExtensions.findResponseFactories(operation);
 
-        List<String> outputFormats = new LinkedList<String>();
+        List<String> outputFormats = new LinkedList<>();
         for (WFSResponseFactory factory : operationResponseFactories) {
             List<String> factoryFormats = factory.getSupportedOutputFormats();
             outputFormats.addAll(factoryFormats);

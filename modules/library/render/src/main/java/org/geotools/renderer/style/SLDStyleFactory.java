@@ -102,7 +102,7 @@ public class SLDStyleFactory {
 
     /** Holds a lookup bewteen alpha composite names and AlphaComposite constants. */
     private static final java.util.Map<String, Integer> ALPHA_COMPOSITE_LOOKUP =
-            new java.util.LinkedHashMap<String, Integer>();
+            new java.util.LinkedHashMap<>();
 
     /** Allow mitering of angles of 70 degrees and above */
     private static final float MITER_LIMIT = 1.75f;

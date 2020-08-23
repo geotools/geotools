@@ -55,7 +55,7 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract {
      */
     protected LogicFilterImpl(Filter filter1, Filter filter2, short filterType)
             throws IllegalFilterException {
-        this(new ArrayList<Filter>());
+        this(new ArrayList<>());
 
         // Push the initial filter on the stack
         children.add(filter1);

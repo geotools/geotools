@@ -281,7 +281,7 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
         OGR ogr = createOGR();
 
         int count = ogr.GetDriverCount();
-        Set<String> result = new HashSet<String>();
+        Set<String> result = new HashSet<>();
         for (int i = 0; i < count; i++) {
             Object driver = ogr.GetDriver(i);
             String name = ogr.DriverGetName(driver);

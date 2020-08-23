@@ -360,7 +360,7 @@ public class Import extends AbstractCmd {
                             config.getJdbcUrl(), config.getUsername(), config.getPassword());
             if (con.getAutoCommit()) // no autocommit
             con.setAutoCommit(false);
-            List<ImportParam> importParamList = new ArrayList<ImportParam>();
+            List<ImportParam> importParamList = new ArrayList<>();
 
             if (isLevelImport) {
                 if (typ == ImportTyp.SHAPE)
@@ -768,7 +768,7 @@ public class Import extends AbstractCmd {
 
     private SimpleFeatureIterator getFeatureIterator() throws IOException {
         try {
-            Map<String, Object> map = new HashMap<String, Object>();
+            Map<String, Object> map = new HashMap<>();
             map.put("url", shapeFileUrl);
 
             DataStore shapefile = DataStoreFinder.getDataStore(map);

@@ -84,8 +84,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
     volatile AbstractAuthorityFactory backingStore;
 
     /** The pool of cached objects. */
-    private final LinkedHashMap<Object, Object> pool =
-            new LinkedHashMap<Object, Object>(32, 0.75f, true);
+    private final LinkedHashMap<Object, Object> pool = new LinkedHashMap<>(32, 0.75f, true);
 
     /**
      * The maximum number of objects to keep by strong reference. If a greater amount of objects are
@@ -94,8 +93,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
     private final int maxStrongReferences;
 
     /** The pool of objects identified by {@link #find}. */
-    private final Map<IdentifiedObject, IdentifiedObject> findPool =
-            new WeakHashMap<IdentifiedObject, IdentifiedObject>();
+    private final Map<IdentifiedObject, IdentifiedObject> findPool = new WeakHashMap<>();
 
     /**
      * Constructs an instance wrapping the specified factory with a default number of entries to
@@ -1161,7 +1159,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
                     }
                     continue;
                 }
-                entry.setValue(new WeakReference<Object>(value));
+                entry.setValue(new WeakReference<>(value));
                 if (--toReplace == 0) {
                     break;
                 }

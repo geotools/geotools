@@ -63,7 +63,7 @@ public class WKTMarkFactory implements MarkFactory {
 
     // Cache used to store libraries of WKT geometries
     protected static final SoftValueHashMap<String, Map<String, String>> CACHE =
-            new SoftValueHashMap<String, Map<String, String>>();
+            new SoftValueHashMap<>();
 
     /*
      * Clears cache. While the cache uses {@link
@@ -107,7 +107,7 @@ public class WKTMarkFactory implements MarkFactory {
     protected void addToCache(String urlLib) {
         Map<String, String> library = CACHE.get(urlLib);
         if (library == null) {
-            library = new HashMap<String, String>();
+            library = new HashMap<>();
             Properties propLib = null;
             try {
                 propLib = this.loadLibrary(urlLib);

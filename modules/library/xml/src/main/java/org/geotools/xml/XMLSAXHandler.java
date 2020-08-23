@@ -153,7 +153,7 @@ public class XMLSAXHandler extends DefaultHandler {
 
     protected void init(Map<String, Object> hints) {
         if (hints == null) {
-            hints = new HashMap<String, Object>();
+            hints = new HashMap<>();
         }
         this.hints = hints;
         setEntityResolver(XMLHandlerHints.toEntityResolver(hints));

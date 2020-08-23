@@ -133,9 +133,9 @@ public class Extent {
         }
         if (multipleValues) {
             String[] split = value.split(",");
-            return new ArrayList<String>(Arrays.asList(split));
+            return new ArrayList<>(Arrays.asList(split));
         } else {
-            return new ArrayList<String>(Collections.singletonList(value));
+            return new ArrayList<>(Collections.singletonList(value));
         }
     }
 

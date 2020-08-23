@@ -74,7 +74,7 @@ public class ActionResultsTypeImpl extends EObjectImpl implements ActionResultsT
    */
     public EList<CreatedOrModifiedFeatureType> getFeature() {
     if (feature == null) {
-      feature = new EObjectContainmentEList<CreatedOrModifiedFeatureType>(CreatedOrModifiedFeatureType.class, this, Wfs20Package.ACTION_RESULTS_TYPE__FEATURE);
+      feature = new EObjectContainmentEList<>(CreatedOrModifiedFeatureType.class, this, Wfs20Package.ACTION_RESULTS_TYPE__FEATURE);
     }
     return feature;
   }

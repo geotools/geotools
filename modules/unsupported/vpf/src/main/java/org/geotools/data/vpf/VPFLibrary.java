@@ -416,7 +416,7 @@ public class VPFLibrary extends ContentDataStore {
     @Override
     public List<Name> getNames() {
         // Get the type names for each coverage
-        ArrayList<Name> result = new ArrayList<Name>();
+        ArrayList<Name> result = new ArrayList<>();
         int coveragesCount = coverages.size();
         int featureTypesCount = 0;
         // int index = 0;

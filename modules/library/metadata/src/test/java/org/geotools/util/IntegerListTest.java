@@ -44,7 +44,7 @@ public final class IntegerListTest {
         // Use half the lenght as initial capacity in order to test dynamic resizing.
         list = new IntegerList(length / 2, maximalValue);
         assertTrue(list.maximalValue() >= maximalValue);
-        final List<Integer> copy = new ArrayList<Integer>();
+        final List<Integer> copy = new ArrayList<>();
         for (int i = 0; i < length; i++) {
             assertEquals(i, list.size());
             final Integer value = nextInt(maximalValue);
@@ -81,7 +81,7 @@ public final class IntegerListTest {
      */
     private void testFill(final int value) {
         assertEquals(400, list.size());
-        final Set<Integer> set = new HashSet<Integer>();
+        final Set<Integer> set = new HashSet<>();
         list.fill(value);
         set.addAll(list);
         assertEquals(Collections.singleton(value), set);

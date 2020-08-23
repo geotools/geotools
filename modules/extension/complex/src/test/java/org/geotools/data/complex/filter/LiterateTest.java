@@ -35,7 +35,7 @@ public class LiterateTest {
     public void testLiterate() {
         List<Integer> list1 = Arrays.asList(1, 2, 3, 4);
         List<Integer> list2 = Arrays.asList(4, 3, 2, 1);
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         map.put("list1", list1);
         map.put("list2", list2);
 
@@ -55,7 +55,7 @@ public class LiterateTest {
     @Test
     public void testEmptyList() {
         List<Integer> list = Arrays.asList();
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         map.put("list1", list);
 
         Function exp =

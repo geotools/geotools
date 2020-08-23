@@ -61,7 +61,7 @@ public final class ImagePyramidFormat extends AbstractGridFormat implements Form
 
     /** Sets the metadata information for this format */
     private void setInfo() {
-        HashMap<String, String> info = new HashMap<String, String>();
+        HashMap<String, String> info = new HashMap<>();
         info.put("name", "ImagePyramid");
         info.put("description", "Image pyramidal plugin");
         info.put("vendor", "Geotools");

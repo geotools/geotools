@@ -163,7 +163,7 @@ public class ProjectionBuilder {
     }
 
     static Map<String, Object> buildProperties(String name, Citation authority, String code) {
-        Map<String, Object> props = new HashMap<String, Object>();
+        Map<String, Object> props = new HashMap<>();
         props.put(IdentifiedObject.NAME_KEY, name);
         props.put(IdentifiedObject.IDENTIFIERS_KEY, new NamedIdentifier(authority, code));
         return props;
@@ -177,7 +177,7 @@ public class ProjectionBuilder {
      *     spheroid)
      */
     private static Ellipsoid createEllipsoid(Double semiMajor, Double inverseFlattening) {
-        Map<String, Number> ellipsoidParams = new HashMap<String, Number>();
+        Map<String, Number> ellipsoidParams = new HashMap<>();
         ellipsoidParams.put(NetCDFUtilities.SEMI_MAJOR, semiMajor);
         if (!Double.isInfinite(inverseFlattening)) {
             ellipsoidParams.put(NetCDFUtilities.INVERSE_FLATTENING, inverseFlattening);
@@ -207,7 +207,7 @@ public class ProjectionBuilder {
      */
     public static GeographicCRS createGeographicCRS(
             String name, GeodeticDatum datum, EllipsoidalCS ellipsoidalCS) {
-        final Map<String, String> props = new HashMap<String, String>();
+        final Map<String, String> props = new HashMap<>();
         props.put(NAME, name);
         return new DefaultGeographicCRS(props, datum, ellipsoidalCS);
     }
@@ -295,7 +295,7 @@ public class ProjectionBuilder {
         if (!(method instanceof MathTransformProvider)) {
             OperationMethod opMethod = mtFactory.getLastMethodUsed();
             if (opMethod instanceof MathTransformProvider) {
-                final Map<String, Object> copy = new HashMap<String, Object>(props);
+                final Map<String, Object> copy = new HashMap<>(props);
                 copy.put(
                         DefaultProjectedCRS.CONVERSION_TYPE_KEY,
                         ((MathTransformProvider) opMethod).getOperationType());

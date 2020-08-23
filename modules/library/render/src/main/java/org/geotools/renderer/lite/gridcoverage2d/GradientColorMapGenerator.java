@@ -64,7 +64,7 @@ public class GradientColorMapGenerator {
     private LinearGradientEntry[] entries;
 
     private static SoftValueHashMap<String, GradientColorMapGenerator> cache =
-            new SoftValueHashMap<String, GradientColorMapGenerator>();
+            new SoftValueHashMap<>();
 
     private static final Converter COLOR_CONVERTER =
             new ColorConverterFactory().createConverter(Color.class, String.class, null);

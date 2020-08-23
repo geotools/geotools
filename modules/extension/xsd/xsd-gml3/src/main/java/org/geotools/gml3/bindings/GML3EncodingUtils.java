@@ -284,7 +284,7 @@ public class GML3EncodingUtils {
                 object,
                 element,
                 schemaIndex,
-                new HashSet<String>(
+                new HashSet<>(
                         Arrays.asList(
                                 "name",
                                 "description",

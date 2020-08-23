@@ -199,8 +199,7 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
         List<FeatureId> fids = fs.addFeatures(DataUtilities.collection(newFeature));
 
         // retrieve it back
-        try (SimpleFeatureIterator fi =
-                fs.getFeatures(FF.id(new HashSet<FeatureId>(fids))).features()) {
+        try (SimpleFeatureIterator fi = fs.getFeatures(FF.id(new HashSet<>(fids))).features()) {
             assertTrue(fi.hasNext());
             SimpleFeature f = fi.next();
             assertTrue(ls.equalsExact((Geometry) f.getDefaultGeometry()));
@@ -331,7 +330,7 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
      */
     private static boolean hasMatchingZValues(Geometry g1, Geometry g2) {
         Coordinate[] pt1 = g1.getCoordinates();
-        Map<Coordinate, Double> coordZMap = new HashMap<Coordinate, Double>();
+        Map<Coordinate, Double> coordZMap = new HashMap<>();
         for (int i = 0; i < pt1.length; i++) {
             coordZMap.put(pt1[i], pt1[i].getZ());
         }

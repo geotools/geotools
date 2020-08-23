@@ -66,7 +66,7 @@ public class DefaultFeatureCollection
      * <p>This use will result in collections that are sorted by FID, in keeping with shapefile
      * etc...
      */
-    private SortedMap<String, SimpleFeature> contents = new TreeMap<String, SimpleFeature>();
+    private SortedMap<String, SimpleFeature> contents = new TreeMap<>();
 
     /** Internal listener storage list */
     // private List listeners = new ArrayList(2);
@@ -507,7 +507,7 @@ public class DefaultFeatureCollection
 
     public SimpleFeatureCollection collection() throws IOException {
         DefaultFeatureCollection copy = new DefaultFeatureCollection(null, getSchema());
-        List<SimpleFeature> list = new ArrayList<SimpleFeature>(contents.size());
+        List<SimpleFeature> list = new ArrayList<>(contents.size());
         SimpleFeatureIterator iterator = features();
         try {
             while (iterator.hasNext()) {

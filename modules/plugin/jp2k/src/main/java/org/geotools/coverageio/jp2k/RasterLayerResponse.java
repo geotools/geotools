@@ -141,7 +141,7 @@ class RasterLayerResponse {
         /** Default {@link Constructor} */
         public GranuleWorker() {}
 
-        private final List<Future<RenderedImage>> tasks = new ArrayList<Future<RenderedImage>>();
+        private final List<Future<RenderedImage>> tasks = new ArrayList<>();
         private int granulesNumber;
         private boolean doInputTransparency;
         private Color inputTransparentColor;
@@ -182,7 +182,7 @@ class RasterLayerResponse {
                             finalWorldToGridCorner,
                             granule,
                             request.getTileDimensions());
-            tasks.add(new FutureTask<RenderedImage>(loader));
+            tasks.add(new FutureTask<>(loader));
 
             granulesNumber++;
         }

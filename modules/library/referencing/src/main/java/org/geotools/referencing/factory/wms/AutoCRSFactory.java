@@ -65,7 +65,7 @@ public class AutoCRSFactory extends DirectAuthorityFactory implements CRSAuthori
      *
      * @todo Replace this with full FactorySPI system.
      */
-    private final Map<Integer, Factlet> factlets = new TreeMap<Integer, Factlet>();
+    private final Map<Integer, Factlet> factlets = new TreeMap<>();
 
     /** Constructs a default factory for the {@code AUTO} authority. */
     public AutoCRSFactory() {

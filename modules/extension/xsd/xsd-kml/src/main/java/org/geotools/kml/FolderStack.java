@@ -27,7 +27,7 @@ public class FolderStack implements Iterable<Folder> {
     private final List<Folder> stack;
 
     public FolderStack() {
-        stack = new ArrayList<Folder>();
+        stack = new ArrayList<>();
     }
 
     public void push(Folder folder) {
@@ -71,6 +71,6 @@ public class FolderStack implements Iterable<Folder> {
     }
 
     public List<Folder> asList() {
-        return new ArrayList<Folder>(stack);
+        return new ArrayList<>(stack);
     }
 }

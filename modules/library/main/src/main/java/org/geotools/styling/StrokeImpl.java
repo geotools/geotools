@@ -405,7 +405,7 @@ public class StrokeImpl implements Stroke, Cloneable {
             StrokeImpl clone = (StrokeImpl) super.clone();
 
             if (dashArray != null) {
-                clone.setDashArray((new ArrayList<Expression>(dashArray)));
+                clone.setDashArray((new ArrayList<>(dashArray)));
             }
 
             if (fillGraphic != null && fillGraphic instanceof Cloneable) {

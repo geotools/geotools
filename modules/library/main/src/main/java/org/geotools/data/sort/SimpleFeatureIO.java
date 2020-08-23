@@ -280,7 +280,7 @@ public class SimpleFeatureIO {
     }
 
     private Collection<String> split(String value, int charSize) {
-        List<String> strings = new ArrayList<String>();
+        List<String> strings = new ArrayList<>();
         int index = 0;
         while (index < value.length()) {
             strings.add(value.substring(index, Math.min(index + charSize, value.length())));

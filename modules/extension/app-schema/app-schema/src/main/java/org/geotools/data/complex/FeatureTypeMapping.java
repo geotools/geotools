@@ -90,7 +90,7 @@ public class FeatureTypeMapping {
 
     /** No parameters constructor for use by the digester configuration engine as a JavaBean */
     public FeatureTypeMapping() {
-        this(null, null, null, new LinkedList<AttributeMapping>(), new NamespaceSupport(), false);
+        this(null, null, null, new LinkedList<>(), new NamespaceSupport(), false);
     }
 
     public FeatureTypeMapping(
@@ -123,7 +123,7 @@ public class FeatureTypeMapping {
         this.indexSource = indexSource;
         this.target = target;
         this.defaultGeometryXPath = defaultGeometryXPath;
-        this.attributeMappings = new LinkedList<AttributeMapping>(mappings);
+        this.attributeMappings = new LinkedList<>(mappings);
         this.namespaces = namespaces;
         this.isDenormalised = isDenormalised;
 
@@ -150,7 +150,7 @@ public class FeatureTypeMapping {
     }
 
     public List<NestedAttributeMapping> getNestedMappings() {
-        List<NestedAttributeMapping> mappings = new ArrayList<NestedAttributeMapping>();
+        List<NestedAttributeMapping> mappings = new ArrayList<>();
         for (AttributeMapping mapping : attributeMappings) {
             if (mapping instanceof NestedAttributeMapping) {
                 mappings.add((NestedAttributeMapping) mapping);
@@ -170,7 +170,7 @@ public class FeatureTypeMapping {
      */
     public List<AttributeMapping> getAttributeMappingsIgnoreIndex(final StepList targetPath) {
         AttributeMapping attMapping;
-        List<AttributeMapping> mappings = new ArrayList<AttributeMapping>();
+        List<AttributeMapping> mappings = new ArrayList<>();
         for (Iterator<AttributeMapping> it = attributeMappings.iterator(); it.hasNext(); ) {
             attMapping = (AttributeMapping) it.next();
             if (targetPath.equalsIgnoreIndex(attMapping.getTargetXPath())) {
@@ -188,7 +188,7 @@ public class FeatureTypeMapping {
     public List<AttributeMapping> getAttributeMappingsByExpression(
             final Expression sourceExpression) {
         AttributeMapping attMapping;
-        List<AttributeMapping> mappings = new ArrayList<AttributeMapping>();
+        List<AttributeMapping> mappings = new ArrayList<>();
         for (Iterator<AttributeMapping> it = attributeMappings.iterator(); it.hasNext(); ) {
             attMapping = (AttributeMapping) it.next();
             if (sourceExpression.equals(attMapping.getSourceExpression())) {
@@ -274,7 +274,7 @@ public class FeatureTypeMapping {
      * @return attribute mappings with isList enabled.
      */
     public List<AttributeMapping> getIsListMappings() {
-        List<AttributeMapping> mappings = new ArrayList<AttributeMapping>();
+        List<AttributeMapping> mappings = new ArrayList<>();
         AttributeMapping attMapping;
         for (Iterator<AttributeMapping> it = attributeMappings.iterator(); it.hasNext(); ) {
             attMapping = (AttributeMapping) it.next();
@@ -357,8 +357,7 @@ public class FeatureTypeMapping {
     @SuppressWarnings("PMD.UnusedPrivateMethod")
     private List<Expression> getClientPropertyExpressions(
             final List attributeMappings, final Name clientPropertyName, StepList parentPath) {
-        List<Expression> clientPropertyExpressions =
-                new ArrayList<Expression>(attributeMappings.size());
+        List<Expression> clientPropertyExpressions = new ArrayList<>(attributeMappings.size());
 
         AttributeMapping attMapping;
         Map clientProperties;

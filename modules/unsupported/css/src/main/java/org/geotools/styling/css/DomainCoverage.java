@@ -54,7 +54,7 @@ class DomainCoverage {
 
     /** The full range of scales possible. Once this is covered, the whole domain is */
     static final NumberRange<Double> FULL_SCALE_RANGE =
-            new NumberRange<Double>(Double.class, 0d, Double.POSITIVE_INFINITY);
+            new NumberRange<>(Double.class, 0d, Double.POSITIVE_INFINITY);
 
     static final Logger LOGGER = Logging.getLogger(DomainCoverage.class);
 
@@ -406,7 +406,7 @@ class DomainCoverage {
             }
         }
         if (!merged) {
-            scaleDependentFilters.add(new SLDSelector(new NumberRange<Double>(range), filter));
+            scaleDependentFilters.add(new SLDSelector(new NumberRange<>(range), filter));
         }
     }
 

@@ -128,7 +128,7 @@ public class FunctionToStringTest {
             return null;
         }
 
-        List<Expression> parameters = new ArrayList<Expression>();
+        List<Expression> parameters = new ArrayList<>();
         Literal fallback = null;
 
         // Retrieve default parameters for function

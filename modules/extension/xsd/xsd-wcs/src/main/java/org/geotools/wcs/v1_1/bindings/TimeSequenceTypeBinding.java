@@ -154,7 +154,7 @@ public class TimeSequenceTypeBinding extends AbstractComplexBinding {
         }
 
         if (name.getLocalPart().equals("timePosition") && timeSequence.get(0) instanceof Position) {
-            List<Position> result = new LinkedList<Position>();
+            List<Position> result = new LinkedList<>();
 
             for (Position position : (List<Position>) timeSequence) result.add(position);
 

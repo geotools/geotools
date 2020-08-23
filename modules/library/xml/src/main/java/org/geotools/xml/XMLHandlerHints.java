@@ -121,7 +121,7 @@ public class XMLHandlerHints implements Map<String, Object> {
      */
     public static final Integer VALUE_FILTER_COMPLIANCE_HIGH = Integer.valueOf(2);
 
-    private Map<String, Object> map = new HashMap<String, Object>();
+    private Map<String, Object> map = new HashMap<>();
 
     public void clear() {
         map.clear();

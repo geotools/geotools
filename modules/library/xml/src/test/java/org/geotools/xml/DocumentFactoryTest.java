@@ -71,7 +71,7 @@ public class DocumentFactoryTest {
     @Before
     public void before() throws Exception {
         uri = new URI("http://geotools.org");
-        hints = new HashMap<String, Object>();
+        hints = new HashMap<>();
 
         MockitoAnnotations.initMocks(this);
         hints.put(XMLHandlerHints.SAX_PARSER_FACTORY, mockSaxParserFactory);

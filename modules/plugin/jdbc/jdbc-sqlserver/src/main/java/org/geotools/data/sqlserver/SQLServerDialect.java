@@ -863,7 +863,7 @@ public class SQLServerDialect extends BasicSQLDialect {
                         + "'";
         ResultSet indexInfo = null;
         Statement st = null;
-        Map<String, Set<String>> indexes = new HashMap<String, Set<String>>();
+        Map<String, Set<String>> indexes = new HashMap<>();
         try {
             st = cx.createStatement();
             indexInfo = st.executeQuery(sql);
@@ -872,7 +872,7 @@ public class SQLServerDialect extends BasicSQLDialect {
                 String columnName = indexInfo.getString("column_name");
                 Set<String> indexColumns = indexes.get(indexName);
                 if (indexColumns == null) {
-                    indexColumns = new HashSet<String>();
+                    indexColumns = new HashSet<>();
                     indexes.put(indexName, indexColumns);
                 }
                 indexColumns.add(columnName);
@@ -964,7 +964,7 @@ public class SQLServerDialect extends BasicSQLDialect {
         }
 
         // and that those attributes have a spatial index
-        Set<String> indexes = new HashSet<String>();
+        Set<String> indexes = new HashSet<>();
         for (Map.Entry<String, Integer> attribute : attributes.entrySet()) {
             // we can only apply one index on one condition
             if (attribute.getValue() > 1) {

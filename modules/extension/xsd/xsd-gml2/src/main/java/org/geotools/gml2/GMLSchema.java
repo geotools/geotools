@@ -1416,7 +1416,7 @@ public class GMLSchema extends SchemaImpl {
      * @return Subset of GMLSchema capturing a unique mapping of Java classes
      */
     public ProfileImpl profile() {
-        Set<Name> profile = new LinkedHashSet<Name>();
+        Set<Name> profile = new LinkedHashSet<>();
         profile.add(new NameImpl(GML.PointPropertyType));
         profile.add(new NameImpl(GML.MultiPointPropertyType));
         profile.add(new NameImpl(GML.LineStringPropertyType));

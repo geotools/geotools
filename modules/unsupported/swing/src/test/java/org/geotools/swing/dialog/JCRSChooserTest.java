@@ -81,7 +81,7 @@ public class JCRSChooserTest extends GraphicsTestBase<DialogFixture, Dialog, Dia
                 ReferencingFactoryFinder.getCRSAuthorityFactory(
                         JCRSChooser.DEFAULT_AUTHORITY, hints);
 
-        CODES = new ArrayList<String>(FACTORY.getAuthorityCodes(CoordinateReferenceSystem.class));
+        CODES = new ArrayList<>(FACTORY.getAuthorityCodes(CoordinateReferenceSystem.class));
     }
 
     @Before

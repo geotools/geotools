@@ -70,7 +70,7 @@ public class GSRSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         GMLSchema.ABSTRACTCRSTYPE_TYPE,

@@ -30,7 +30,7 @@ public class SolrViewParametersTest extends SolrTestSupport {
 
     public void testSinglesQParameters() throws Exception {
         init("not-active");
-        Map<String, String> vparams = new HashMap<String, String>();
+        Map<String, String> vparams = new HashMap<>();
         vparams.put("q", "security_ss:WPA");
         Hints hints = new Hints(Hints.VIRTUAL_TABLE_PARAMETERS, vparams);
         Query q = new Query(featureSource.getSchema().getTypeName());
@@ -47,7 +47,7 @@ public class SolrViewParametersTest extends SolrTestSupport {
 
     public void testMultipleQParameters() throws Exception {
         init();
-        Map<String, String> vparams = new HashMap<String, String>();
+        Map<String, String> vparams = new HashMap<>();
         vparams.put("q", "security_ss:WPA -modem_b:true");
         Hints hints = new Hints(Hints.VIRTUAL_TABLE_PARAMETERS, vparams);
         Query q = new Query(featureSource.getSchema().getTypeName());
@@ -66,7 +66,7 @@ public class SolrViewParametersTest extends SolrTestSupport {
 
     public void testSinglesFQParameters() throws Exception {
         init("not-active");
-        Map<String, String> vparams = new HashMap<String, String>();
+        Map<String, String> vparams = new HashMap<>();
         vparams.put("fq", "security_ss:WPA");
         Hints hints = new Hints(Hints.VIRTUAL_TABLE_PARAMETERS, vparams);
         Query q = new Query(featureSource.getSchema().getTypeName());
@@ -83,7 +83,7 @@ public class SolrViewParametersTest extends SolrTestSupport {
 
     public void testMultipleFQParameters() throws Exception {
         init();
-        Map<String, String> vparams = new HashMap<String, String>();
+        Map<String, String> vparams = new HashMap<>();
         vparams.put("fq", "security_ss:WPA -modem_b:true");
         Hints hints = new Hints(Hints.VIRTUAL_TABLE_PARAMETERS, vparams);
         Query q = new Query(featureSource.getSchema().getTypeName());
@@ -102,7 +102,7 @@ public class SolrViewParametersTest extends SolrTestSupport {
 
     public void testMixQandFQParameters() throws Exception {
         init();
-        Map<String, String> vparams = new HashMap<String, String>();
+        Map<String, String> vparams = new HashMap<>();
         vparams.put("q", "security_ss:WPA");
         vparams.put("fq", "-modem_b:true");
         Hints hints = new Hints(Hints.VIRTUAL_TABLE_PARAMETERS, vparams);

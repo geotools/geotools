@@ -79,7 +79,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
      * <p>This use will result in collections that are sorted by FID, in keeping with shapefile
      * etc...
      */
-    private SortedMap<String, SimpleFeature> contents = new TreeMap<String, SimpleFeature>();
+    private SortedMap<String, SimpleFeature> contents = new TreeMap<>();
 
     /** Internal envelope of bounds. */
     private ReferencedEnvelope bounds = null;
@@ -227,7 +227,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
 
         FeatureIterator<?> iterator = collection.features();
         try {
-            List<SimpleFeature> featuresAdded = new ArrayList<SimpleFeature>(collection.size());
+            List<SimpleFeature> featuresAdded = new ArrayList<>(collection.size());
             while (iterator.hasNext()) {
                 SimpleFeature f = (SimpleFeature) iterator.next();
                 boolean added = add(f);
@@ -526,7 +526,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
 
     public SimpleFeatureCollection collection() throws IOException {
         TreeSetFeatureCollection copy = new TreeSetFeatureCollection(null, getSchema());
-        List<SimpleFeature> list = new ArrayList<SimpleFeature>(contents.size());
+        List<SimpleFeature> list = new ArrayList<>(contents.size());
         SimpleFeatureIterator iterator = features();
         try {
             while (iterator.hasNext()) {

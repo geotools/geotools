@@ -132,7 +132,7 @@ public class EnvFunction extends FunctionExpressionImpl {
 
         @Override
         protected Map<String, Object> initialValue() {
-            return new LinkedHashMap<String, Object>();
+            return new LinkedHashMap<>();
         }
 
         @Override
@@ -153,8 +153,7 @@ public class EnvFunction extends FunctionExpressionImpl {
     private static final LocalLookup localLookup = new LocalLookup();
 
     /** A global lookup table */
-    private static Map<String, Object> globalLookup =
-            Collections.synchronizedMap(new HashMap<String, Object>());
+    private static Map<String, Object> globalLookup = Collections.synchronizedMap(new HashMap<>());
 
     // public static FunctionName NAME = new FunctionNameImpl("env","variable");
     public static FunctionName NAME =
@@ -310,7 +309,7 @@ public class EnvFunction extends FunctionExpressionImpl {
                             "Function %s expected %d or %d arguments but got %d",
                             name, argCount, argCount + 1, paramsSize));
         }
-        this.params = new ArrayList<Expression>(params);
+        this.params = new ArrayList<>(params);
     }
 
     /**

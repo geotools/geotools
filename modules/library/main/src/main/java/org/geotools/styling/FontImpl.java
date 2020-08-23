@@ -39,7 +39,7 @@ public class FontImpl implements Font, Cloneable {
 
     // private static final Logger LOGGER =
     // org.geotools.util.logging.Logging.getLogger(FontImpl.class);
-    private final List<Expression> fontFamily = new ArrayList<Expression>();
+    private final List<Expression> fontFamily = new ArrayList<>();
 
     private Expression fontSize = null;
     private Expression fontStyle = null;

@@ -425,8 +425,7 @@ class ZGroupLayer extends Layer {
             StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
 
             // create a style that does nothing, but matching the "right" background
-            List<org.opengis.style.FeatureTypeStyle> featureTypeStyles =
-                    new ArrayList<org.opengis.style.FeatureTypeStyle>();
+            List<org.opengis.style.FeatureTypeStyle> featureTypeStyles = new ArrayList<>();
             style = sf.style(title, null, false, featureTypeStyles, null);
             style.setBackground(getBackgroundFromLayers());
 

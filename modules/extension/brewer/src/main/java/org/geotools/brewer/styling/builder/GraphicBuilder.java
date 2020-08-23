@@ -29,7 +29,7 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.style.GraphicalSymbol;
 
 public class GraphicBuilder extends AbstractStyleBuilder<org.opengis.style.Graphic> {
-    List<Builder<? extends Symbol>> symbols = new ArrayList<Builder<? extends Symbol>>();
+    List<Builder<? extends Symbol>> symbols = new ArrayList<>();
 
     Expression opacity;
 
@@ -142,7 +142,7 @@ public class GraphicBuilder extends AbstractStyleBuilder<org.opengis.style.Graph
             // add the default mark
             mark();
         }
-        List<GraphicalSymbol> list = new ArrayList<GraphicalSymbol>();
+        List<GraphicalSymbol> list = new ArrayList<>();
         for (Builder<? extends Symbol> symbol : symbols) {
             list.add(symbol.build());
         }

@@ -83,7 +83,7 @@ public class CompositeValueTypeImpl extends AbstractGMLTypeImpl implements Compo
      */
     public EList<ValuePropertyType> getValueComponent() {
         if (valueComponent == null) {
-            valueComponent = new EObjectContainmentEList<ValuePropertyType>(ValuePropertyType.class, this, Gml311Package.COMPOSITE_VALUE_TYPE__VALUE_COMPONENT);
+            valueComponent = new EObjectContainmentEList<>(ValuePropertyType.class, this, Gml311Package.COMPOSITE_VALUE_TYPE__VALUE_COMPONENT);
         }
         return valueComponent;
     }

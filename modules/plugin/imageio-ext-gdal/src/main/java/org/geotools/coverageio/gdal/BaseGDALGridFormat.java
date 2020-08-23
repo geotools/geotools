@@ -81,7 +81,7 @@ public abstract class BaseGDALGridFormat extends AbstractGridFormat implements F
      * the use of the ImageReadMT operation of the ImageIO-Ext.
      */
     public static final DefaultParameterDescriptor<Boolean> USE_MULTITHREADING =
-            new DefaultParameterDescriptor<Boolean>(
+            new DefaultParameterDescriptor<>(
                     USE_MT,
                     Boolean.class,
                     new Boolean[] {Boolean.TRUE, Boolean.FALSE},
@@ -163,7 +163,7 @@ public abstract class BaseGDALGridFormat extends AbstractGridFormat implements F
     }
 
     protected void setInfo(InfoWrapper infoWrapper) {
-        final HashMap<String, String> info = new HashMap<String, String>();
+        final HashMap<String, String> info = new HashMap<>();
         info.put("name", infoWrapper.name);
         info.put("description", infoWrapper.description);
         info.put("vendor", "Geotools");

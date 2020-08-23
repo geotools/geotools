@@ -45,7 +45,7 @@ import org.opengis.temporal.Position;
 @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_EXCEPTION")
 public final class BuildResultStack {
 
-    private final Stack<Result> stack = new Stack<Result>();
+    private final Stack<Result> stack = new Stack<>();
 
     private final String cqlSource;
 

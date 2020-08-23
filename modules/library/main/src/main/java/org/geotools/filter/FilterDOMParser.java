@@ -146,7 +146,7 @@ public final class FilterDOMParser {
                 LOGGER.finer("type is " + type);
 
                 if (type == AbstractFilter.FID) {
-                    Set<FeatureId> ids = new HashSet<FeatureId>();
+                    Set<FeatureId> ids = new HashSet<>();
                     Element fidElement = (Element) child;
                     ids.add(FILTER_FACT.featureId(fidElement.getAttribute("fid")));
 
@@ -527,8 +527,7 @@ public final class FilterDOMParser {
             LOGGER.finest("a logical filter " + childName);
 
             try {
-                List<org.opengis.filter.Filter> children =
-                        new ArrayList<org.opengis.filter.Filter>();
+                List<org.opengis.filter.Filter> children = new ArrayList<>();
                 NodeList map = child.getChildNodes();
 
                 for (int i = 0; i < map.getLength(); i++) {

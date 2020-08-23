@@ -34,16 +34,16 @@ public class ComparisonOperatorsImpl implements ComparisonOperators {
     Set<Operator> operators;
 
     public ComparisonOperatorsImpl() {
-        this(new ArrayList<Operator>());
+        this(new ArrayList<>());
     }
 
     /** Copy the provided ComparisonOperator */
     public ComparisonOperatorsImpl(ComparisonOperators copy) {
-        this.operators = new HashSet<Operator>(copy.getOperators());
+        this.operators = new HashSet<>(copy.getOperators());
     }
 
     public ComparisonOperatorsImpl(Collection<Operator> operators) {
-        this.operators = new HashSet<Operator>(operators);
+        this.operators = new HashSet<>(operators);
     }
 
     public ComparisonOperatorsImpl(Operator[] operators) {
@@ -55,13 +55,13 @@ public class ComparisonOperatorsImpl implements ComparisonOperators {
 
     public Collection<Operator> getOperators() {
         if (operators == null) {
-            operators = new HashSet<Operator>();
+            operators = new HashSet<>();
         }
         return operators;
     }
 
     public void setOperators(Collection<Operator> operators) {
-        this.operators = new HashSet<Operator>(operators);
+        this.operators = new HashSet<>(operators);
     }
     /** @return Operator with the provided name, or null if not supported */
     public Operator getOperator(String name) {

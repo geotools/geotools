@@ -67,7 +67,7 @@ public class SubFeatureList extends SubFeatureCollection implements RandomFeatur
         if (subSort == null || subSort.equals(SortBy.NATURAL_ORDER)) {
             sort = Collections.emptyList();
         } else {
-            sort = new ArrayList<SortBy>();
+            sort = new ArrayList<>();
             if (collection instanceof SubFeatureList) {
                 SubFeatureList sorted = (SubFeatureList) collection;
                 sort.addAll(sorted.sort);
@@ -114,7 +114,7 @@ public class SubFeatureList extends SubFeatureCollection implements RandomFeatur
     /** Lazy create a filter based on index */
     protected Filter createFilter() {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-        Set<FeatureId> featureIds = new HashSet<FeatureId>();
+        Set<FeatureId> featureIds = new HashSet<>();
         for (Iterator<FeatureId> it = index.iterator(); it.hasNext(); ) {
             FeatureId fid = it.next();
             featureIds.add(ff.featureId(fid.getID()));
@@ -126,7 +126,7 @@ public class SubFeatureList extends SubFeatureCollection implements RandomFeatur
 
     /** Put this SubFeatureList in touch with its inner index */
     protected List<FeatureId> createIndex() {
-        List<FeatureId> fids = new ArrayList<FeatureId>();
+        List<FeatureId> fids = new ArrayList<>();
         SimpleFeatureIterator it = collection.features();
         try {
             while (it.hasNext()) {
@@ -262,7 +262,7 @@ public class SubFeatureList extends SubFeatureCollection implements RandomFeatur
         public FeatureIdAccessor(boolean cacheFeatures) {
             this.cacheFeatures = cacheFeatures;
             if (cacheFeatures) {
-                featureCache = new SoftValueHashMap<String, SimpleFeature>();
+                featureCache = new SoftValueHashMap<>();
             }
         }
 

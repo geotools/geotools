@@ -121,7 +121,7 @@ public class GML2FeatureCollectionEncoderDelegate extends FeatureCollectionEncod
                     f,
                     element,
                     e.getSchemaIndex(),
-                    new HashSet<String>(Arrays.asList("name", "description", "boundedBy")),
+                    new HashSet<>(Arrays.asList("name", "description", "boundedBy")),
                     e.getConfiguration());
         }
 

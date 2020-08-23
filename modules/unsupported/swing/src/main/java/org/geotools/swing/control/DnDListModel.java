@@ -40,7 +40,7 @@ public class DnDListModel<T> extends AbstractListModel {
 
     /** Default constructor */
     public DnDListModel() {
-        items = new ArrayList<T>();
+        items = new ArrayList<>();
         notify = true;
     }
 
@@ -75,7 +75,7 @@ public class DnDListModel<T> extends AbstractListModel {
      * @throws IndexOutOfBoundsException if any of the indices are invalid
      */
     public List<T> getElementsAt(int[] indices) {
-        List<T> refs = new ArrayList<T>();
+        List<T> refs = new ArrayList<>();
         for (int k = 0; k < indices.length; k++) {
             refs.add(items.get(indices[k]));
         }
@@ -91,7 +91,7 @@ public class DnDListModel<T> extends AbstractListModel {
      * @throws IndexOutOfBoundsException if any of the indices are invalid
      */
     public List<T> getElementsAt(Collection<Integer> indices) {
-        List<T> refs = new ArrayList<T>();
+        List<T> refs = new ArrayList<>();
         for (Integer index : indices) {
             refs.add(items.get(index));
         }

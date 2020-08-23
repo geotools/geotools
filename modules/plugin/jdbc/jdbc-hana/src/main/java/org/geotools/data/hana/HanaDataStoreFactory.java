@@ -111,7 +111,7 @@ public class HanaDataStoreFactory extends JDBCDataStoreFactory {
         String database = (String) DATABASE.lookUp(params);
         Boolean useSsl = (Boolean) USE_SSL.lookUp(params);
 
-        HashMap<String, String> options = new HashMap<String, String>();
+        HashMap<String, String> options = new HashMap<>();
         if ((useSsl != null) && (useSsl == true)) {
             options.put("encrypt", "true");
         }

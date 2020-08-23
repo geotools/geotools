@@ -530,7 +530,7 @@ public class YsldEncodeTest {
         Stroke stroke = sf.stroke(ff.literal("#555555"), null, null, null, null, null, null);
         rule.symbolizers().add(sf.lineSymbolizer("line", null, null, null, stroke, null));
         Mark mark = sf.mark(ff.literal("circle"), sf.fill(null, ff.literal("#995555"), null), null);
-        List<GraphicalSymbol> symbols = new ArrayList<GraphicalSymbol>();
+        List<GraphicalSymbol> symbols = new ArrayList<>();
         symbols.add(mark);
         TextSymbolizer2 text =
                 (TextSymbolizer2)

@@ -42,7 +42,7 @@ public class GraphicImpl implements Graphic, Cloneable {
     // private static final java.util.logging.Logger LOGGER =
     // org.geotools.util.logging.Logging.getLogger(GraphicImpl.class);
 
-    private final List<GraphicalSymbol> graphics = new ArrayList<GraphicalSymbol>();
+    private final List<GraphicalSymbol> graphics = new ArrayList<>();
 
     private AnchorPointImpl anchor;
     private Expression gap;

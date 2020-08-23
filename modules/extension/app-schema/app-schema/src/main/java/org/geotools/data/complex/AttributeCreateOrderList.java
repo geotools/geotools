@@ -34,12 +34,11 @@ import java.util.Set;
 public class AttributeCreateOrderList {
 
     private String rootLabel;
-    private Map<String, List<AttributeMapping>> childrenList =
-            new HashMap<String, List<AttributeMapping>>();
+    private Map<String, List<AttributeMapping>> childrenList = new HashMap<>();
 
     public AttributeCreateOrderList(String rootLabel) {
         this.rootLabel = rootLabel;
-        List<AttributeMapping> newAttMapping = new ArrayList<AttributeMapping>();
+        List<AttributeMapping> newAttMapping = new ArrayList<>();
         childrenList.put(rootLabel, newAttMapping);
     }
 
@@ -62,7 +61,7 @@ public class AttributeCreateOrderList {
         if (childrenList.containsKey(parentLabel)) {
             newAttMapping = childrenList.get(parentLabel);
         } else {
-            newAttMapping = new ArrayList<AttributeMapping>();
+            newAttMapping = new ArrayList<>();
             childrenList.put(parentLabel, newAttMapping);
         }
         newAttMapping.add(attMapping);
@@ -81,8 +80,8 @@ public class AttributeCreateOrderList {
         boolean isInitialised = false;
         boolean isHasNextBeenCalled = false;
         private Iterator<AttributeMapping> currentListIterator;
-        private Set<String> unprocessedTreeNodes = new HashSet<String>(childrenList.keySet());
-        private Set<String> returnedUnprocessedNodes = new HashSet<String>();
+        private Set<String> unprocessedTreeNodes = new HashSet<>(childrenList.keySet());
+        private Set<String> returnedUnprocessedNodes = new HashSet<>();
 
         public boolean hasNext() {
             isHasNextBeenCalled = true;

@@ -125,7 +125,7 @@ public class InsertTypeImpl extends AbstractTransactionActionTypeImpl implements
    */
     public EList<Object> getAny() {
     if (any == null) {
-      any = new EDataTypeUniqueEList<Object>(Object.class, this, Wfs20Package.INSERT_TYPE__ANY);
+      any = new EDataTypeUniqueEList<>(Object.class, this, Wfs20Package.INSERT_TYPE__ANY);
     }
     return any;
   }

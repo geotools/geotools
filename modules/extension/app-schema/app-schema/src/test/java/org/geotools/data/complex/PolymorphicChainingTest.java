@@ -141,7 +141,7 @@ public class PolymorphicChainingTest extends AppSchemaTestSupport {
 
     protected List<Feature> getFeatures(FeatureCollection<FeatureType, Feature> features) {
         FeatureIterator<Feature> iterator = features.features();
-        List<Feature> retVal = new ArrayList<Feature>();
+        List<Feature> retVal = new ArrayList<>();
         while (iterator.hasNext()) {
             retVal.add(iterator.next());
         }

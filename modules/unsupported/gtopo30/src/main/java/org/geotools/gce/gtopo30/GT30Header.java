@@ -83,7 +83,7 @@ final class GT30Header {
     private static final double STD_CELL_SIZE = 0.00833333333333;
 
     /** A map for fast and convenient retrieval of the properties contained in the header file */
-    private Map<String, Object> propertyMap = new HashMap<String, Object>();
+    private Map<String, Object> propertyMap = new HashMap<>();
 
     /**
      * Creates a new instance of GTOPO30Header

@@ -184,7 +184,7 @@ public class PreGeneralizedSimpleFeature implements SimpleFeature {
     }
 
     public Collection<Property> getProperties() {
-        List<Property> result = new ArrayList<Property>();
+        List<Property> result = new ArrayList<>();
         for (PropertyDescriptor descr : featureTyp.getDescriptors()) {
             result.add(createProperty(descr.getName().getLocalPart()));
         }
@@ -230,7 +230,7 @@ public class PreGeneralizedSimpleFeature implements SimpleFeature {
     }
 
     public Map<Object, Object> getUserData() {
-        if (userData == null) userData = new HashMap<Object, Object>();
+        if (userData == null) userData = new HashMap<>();
         return userData;
     }
 

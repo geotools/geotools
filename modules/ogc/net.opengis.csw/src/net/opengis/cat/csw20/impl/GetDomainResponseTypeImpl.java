@@ -74,7 +74,7 @@ public class GetDomainResponseTypeImpl extends EObjectImpl implements GetDomainR
      */
     public EList<DomainValuesType> getDomainValues() {
         if (domainValues == null) {
-            domainValues = new EObjectContainmentEList<DomainValuesType>(DomainValuesType.class, this, Csw20Package.GET_DOMAIN_RESPONSE_TYPE__DOMAIN_VALUES);
+            domainValues = new EObjectContainmentEList<>(DomainValuesType.class, this, Csw20Package.GET_DOMAIN_RESPONSE_TYPE__DOMAIN_VALUES);
         }
         return domainValues;
     }

@@ -25,7 +25,7 @@ import org.geotools.styling.Symbolizer;
 import org.opengis.filter.Filter;
 
 public class RuleBuilder extends AbstractStyleBuilder<Rule> {
-    List<Symbolizer> symbolizers = new ArrayList<Symbolizer>();
+    List<Symbolizer> symbolizers = new ArrayList<>();
 
     Builder<? extends Symbolizer> symbolizerBuilder;
 

@@ -1067,7 +1067,7 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
             throws FactoryException {
         GeographicCRS base = targetCRS.getBaseCRS();
         CoordinateOperation step2 = targetCRS.getConversionFromBase();
-        HashSet<CoordinateOperation> result = new HashSet<CoordinateOperation>();
+        HashSet<CoordinateOperation> result = new HashSet<>();
         Set<CoordinateOperation> step1Candidates = tryDB(sourceCRS, base, limit);
         if (step1Candidates.isEmpty()) {
             CoordinateOperation step1 = createOperationStep(sourceCRS, base);
@@ -1138,7 +1138,7 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
             throws FactoryException {
         final GeographicCRS base = sourceCRS.getBaseCRS();
         CoordinateOperation step1 = sourceCRS.getConversionFromBase();
-        HashSet<CoordinateOperation> result = new HashSet<CoordinateOperation>();
+        HashSet<CoordinateOperation> result = new HashSet<>();
         Set<CoordinateOperation> step2Candidates = tryDB(base, targetCRS, limit);
         if (step2Candidates.isEmpty()) {
             CoordinateOperation step2 = createOperationStep(base, targetCRS);

@@ -210,7 +210,7 @@ public class GMLEncodingUtils {
                 Object attributeValue = ((SimpleFeature) feature).getAttribute(attribute.getName());
                 if (attributeValue != null && attributeValue instanceof Geometry) {
                     Object obj = ((Geometry) attributeValue).getUserData();
-                    Map<Object, Object> userData = new HashMap<Object, Object>();
+                    Map<Object, Object> userData = new HashMap<>();
                     if (obj != null && obj instanceof Map) {
                         userData.putAll((Map) obj);
                     }
@@ -297,7 +297,7 @@ public class GMLEncodingUtils {
                                     ((GeometryAttribute) property)
                                             .getDescriptor()
                                             .getCoordinateReferenceSystem();
-                            Map<Object, Object> userData = new HashMap<Object, Object>();
+                            Map<Object, Object> userData = new HashMap<>();
                             Object obj = geometry.getUserData();
                             if (obj != null && obj instanceof Map) {
                                 userData.putAll((Map) obj);

@@ -145,7 +145,7 @@ public class CheckedHashSet<E> extends LinkedHashSet<E> implements CheckedCollec
     public Iterator<E> iterator() {
         final Object lock = getLock();
         synchronized (lock) {
-            return new SynchronizedIterator<E>(super.iterator(), lock);
+            return new SynchronizedIterator<>(super.iterator(), lock);
         }
     }
 

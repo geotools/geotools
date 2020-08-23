@@ -74,7 +74,7 @@ public class DescribeRecordResponseTypeImpl extends EObjectImpl implements Descr
      */
     public EList<SchemaComponentType> getSchemaComponent() {
         if (schemaComponent == null) {
-            schemaComponent = new EObjectContainmentEList<SchemaComponentType>(SchemaComponentType.class, this, Csw20Package.DESCRIBE_RECORD_RESPONSE_TYPE__SCHEMA_COMPONENT);
+            schemaComponent = new EObjectContainmentEList<>(SchemaComponentType.class, this, Csw20Package.DESCRIBE_RECORD_RESPONSE_TYPE__SCHEMA_COMPONENT);
         }
         return schemaComponent;
     }

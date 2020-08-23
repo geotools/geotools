@@ -68,7 +68,7 @@ public class TrackTypeImpl extends HistoryPropertyTypeImpl implements TrackType 
      */
     public EList<MovingObjectStatusType> getMovingObjectStatus() {
         if (movingObjectStatus == null) {
-            movingObjectStatus = new EObjectContainmentEList<MovingObjectStatusType>(MovingObjectStatusType.class, this, Gml311Package.TRACK_TYPE__MOVING_OBJECT_STATUS);
+            movingObjectStatus = new EObjectContainmentEList<>(MovingObjectStatusType.class, this, Gml311Package.TRACK_TYPE__MOVING_OBJECT_STATUS);
         }
         return movingObjectStatus;
     }

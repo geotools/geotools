@@ -107,7 +107,7 @@ public class MongoNestedMapping extends NestedAttributeMapping {
             features.add(MongoCollectionFeature.build(feature, collectionPath, i));
         }
         FeatureSource fSource = buildMappingFeatureSource(feature, features);
-        ArrayList<Feature> matchingFeatures = new ArrayList<Feature>();
+        ArrayList<Feature> matchingFeatures = new ArrayList<>();
         // get all the mapped nested features based on the link values
         FeatureCollection<FeatureType, Feature> fCollection = fSource.getFeatures(Query.ALL);
         if (fCollection instanceof MappingFeatureCollection) {

@@ -112,7 +112,7 @@ public final class GridFormatFinder {
      */
     public static Format[] getFormatArray() {
         final Set<GridFormatFactorySpi> formats = GridFormatFinder.getAvailableFormats();
-        final List<Format> formatSet = new ArrayList<Format>(formats.size());
+        final List<Format> formatSet = new ArrayList<>(formats.size());
         for (Iterator<GridFormatFactorySpi> iter = formats.iterator(); iter.hasNext(); ) {
             final GridFormatFactorySpi element = iter.next();
             formatSet.add(element.createFormat());
@@ -141,7 +141,7 @@ public final class GridFormatFinder {
      */
     public static synchronized Set<AbstractGridFormat> findFormats(Object o, Hints hints) {
         final Set<GridFormatFactorySpi> availableFormats = getAvailableFormats();
-        final Set<AbstractGridFormat> formats = new HashSet<AbstractGridFormat>();
+        final Set<AbstractGridFormat> formats = new HashSet<>();
         final Iterator<GridFormatFactorySpi> it = availableFormats.iterator();
         while (it.hasNext()) {
             // get the factory

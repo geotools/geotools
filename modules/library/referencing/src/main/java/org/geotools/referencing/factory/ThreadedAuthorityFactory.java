@@ -83,8 +83,7 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
     private final OldReferencingObjectCache objectCache;
 
     /** The pool of objects identified by {@link find}. */
-    private final Map<IdentifiedObject, IdentifiedObject> findPool =
-            new WeakHashMap<IdentifiedObject, IdentifiedObject>();
+    private final Map<IdentifiedObject, IdentifiedObject> findPool = new WeakHashMap<>();
 
     /**
      * Constructs an instance wrapping the specified factory with a default number of entries to

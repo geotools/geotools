@@ -81,7 +81,7 @@ public class KeywordsTypeImpl extends EObjectImpl implements KeywordsType {
    */
   public EList<String> getKeyword() {
     if (keyword == null) {
-      keyword = new EDataTypeUniqueEList<String>(String.class, this, Ows10Package.KEYWORDS_TYPE__KEYWORD);
+      keyword = new EDataTypeUniqueEList<>(String.class, this, Ows10Package.KEYWORDS_TYPE__KEYWORD);
     }
     return keyword;
   }

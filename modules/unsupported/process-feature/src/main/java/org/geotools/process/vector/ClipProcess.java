@@ -333,7 +333,7 @@ public class ClipProcess implements VectorProcess {
             }
 
             List<PointDistance> gatherElevationPointCloud(Geometry geom) {
-                final List<PointDistance> results = new ArrayList<PointDistance>();
+                final List<PointDistance> results = new ArrayList<>();
                 geom.apply(
                         new CoordinateSequenceFilter() {
 
@@ -480,7 +480,7 @@ public class ClipProcess implements VectorProcess {
             private final ArrayList<LineString> originalLines;
 
             public LinearElevationInterpolator(Geometry original, CoordinateReferenceSystem crs) {
-                originalLines = new ArrayList<LineString>();
+                originalLines = new ArrayList<>();
                 original.apply(
                         new GeometryComponentFilter() {
 

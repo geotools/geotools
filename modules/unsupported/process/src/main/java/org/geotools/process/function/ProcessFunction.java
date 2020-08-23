@@ -85,8 +85,7 @@ public class ProcessFunction implements Function {
         this.fallbackValue = fallbackValue;
 
         // build the function name
-        List<org.opengis.parameter.Parameter<?>> inputParams =
-                new ArrayList<org.opengis.parameter.Parameter<?>>();
+        List<org.opengis.parameter.Parameter<?>> inputParams = new ArrayList<>();
         Map<String, Parameter<?>> parameterInfo = Processors.getParameterInfo(processName);
         if (parameterInfo instanceof LinkedHashMap) {
             // predictable order so we can assume parameter order
@@ -173,7 +172,7 @@ public class ProcessFunction implements Function {
      */
     protected Map<String, Object> evaluateInputs(Object object) {
         // collect the entries
-        Map<String, Object> processInputs = new HashMap<String, Object>();
+        Map<String, Object> processInputs = new HashMap<>();
         for (Expression input : inputExpressions) {
             Object result = input.evaluate(object, Map.class);
             if (result != null) {

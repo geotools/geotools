@@ -100,7 +100,7 @@ public class AbstractReferenceSystem extends AbstractIdentifiedObject implements
      * @param properties The properties to be given to this object.
      */
     public AbstractReferenceSystem(final Map<String, ?> properties) {
-        this(properties, new HashMap<String, Object>());
+        this(properties, new HashMap<>());
     }
 
     /**

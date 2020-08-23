@@ -30,8 +30,7 @@ public final class MaintenanceFrequency extends CodeList<MaintenanceFrequency> {
     private static final long serialVersionUID = -6034786030982260550L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<MaintenanceFrequency> VALUES =
-            new ArrayList<MaintenanceFrequency>(12);
+    private static final List<MaintenanceFrequency> VALUES = new ArrayList<>(12);
 
     /** Data is repeatedly and frequently updated. */
     @UML(identifier = "continual", obligation = CONDITIONAL, specification = ISO_19115)

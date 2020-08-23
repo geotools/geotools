@@ -268,7 +268,7 @@ public class OperationJAI extends Operation2D {
          * next block.
          */
         final String[] sourceNames = operation.getSourceNames();
-        final Collection<GridCoverage2D> sourceCollection = new ArrayList<GridCoverage2D>();
+        final Collection<GridCoverage2D> sourceCollection = new ArrayList<>();
         extractSources(parameters, sourceCollection, sourceNames);
         int numSources = sourceCollection.size();
         final GridCoverage2D[] sources = sourceCollection.toArray(new GridCoverage2D[numSources]);

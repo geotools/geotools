@@ -506,7 +506,7 @@ public class Descriptors {
      * @return List of nodes for the provided type, or empty.
      */
     public static List<AttributeDescriptor> nodes(ComplexType schema, AttributeType type) {
-        List<AttributeDescriptor> nodes = new ArrayList<AttributeDescriptor>();
+        List<AttributeDescriptor> nodes = new ArrayList<>();
         for (Iterator itr = list(schema).iterator(); itr.hasNext(); ) {
             AttributeDescriptor node = (AttributeDescriptor) itr.next();
             if (node.getType().equals(type)) {
@@ -525,7 +525,7 @@ public class Descriptors {
      * @return List of nodes for the provided type, or empty.
      */
     public static List<AttributeType> types(AttributeType type) {
-        List<AttributeType> types = new ArrayList<AttributeType>();
+        List<AttributeType> types = new ArrayList<>();
         for (Iterator itr = list(type).iterator(); itr.hasNext(); ) {
             AttributeDescriptor node = (AttributeDescriptor) itr.next();
             types.add(node.getType());

@@ -238,7 +238,7 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
    */
     public EList<TitleType> getTitle() {
     if (title == null) {
-      title = new EObjectContainmentEList<TitleType>(TitleType.class, this, Wfs20Package.FEATURE_TYPE_TYPE__TITLE);
+      title = new EObjectContainmentEList<>(TitleType.class, this, Wfs20Package.FEATURE_TYPE_TYPE__TITLE);
     }
     return title;
   }
@@ -250,7 +250,7 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
    */
     public EList<AbstractType> getAbstract() {
     if (abstract_ == null) {
-      abstract_ = new EObjectContainmentEList<AbstractType>(AbstractType.class, this, Wfs20Package.FEATURE_TYPE_TYPE__ABSTRACT);
+      abstract_ = new EObjectContainmentEList<>(AbstractType.class, this, Wfs20Package.FEATURE_TYPE_TYPE__ABSTRACT);
     }
     return abstract_;
   }
@@ -262,7 +262,7 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
    */
     public EList<KeywordsType> getKeywords() {
     if (keywords == null) {
-      keywords = new EObjectContainmentEList<KeywordsType>(KeywordsType.class, this, Wfs20Package.FEATURE_TYPE_TYPE__KEYWORDS);
+      keywords = new EObjectContainmentEList<>(KeywordsType.class, this, Wfs20Package.FEATURE_TYPE_TYPE__KEYWORDS);
     }
     return keywords;
   }
@@ -295,7 +295,7 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
    */
     public EList<String> getOtherCRS() {
     if (otherCRS == null) {
-      otherCRS = new EDataTypeEList<String>(String.class, this, Wfs20Package.FEATURE_TYPE_TYPE__OTHER_CRS);
+      otherCRS = new EDataTypeEList<>(String.class, this, Wfs20Package.FEATURE_TYPE_TYPE__OTHER_CRS);
     }
     return otherCRS;
   }
@@ -393,7 +393,7 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
    */
     public EList<WGS84BoundingBoxType> getWGS84BoundingBox() {
     if (wGS84BoundingBox == null) {
-      wGS84BoundingBox = new EObjectContainmentEList<WGS84BoundingBoxType>(WGS84BoundingBoxType.class, this, Wfs20Package.FEATURE_TYPE_TYPE__WGS84_BOUNDING_BOX);
+      wGS84BoundingBox = new EObjectContainmentEList<>(WGS84BoundingBoxType.class, this, Wfs20Package.FEATURE_TYPE_TYPE__WGS84_BOUNDING_BOX);
     }
     return wGS84BoundingBox;
   }
@@ -405,7 +405,7 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
    */
     public EList<MetadataURLType> getMetadataURL() {
     if (metadataURL == null) {
-      metadataURL = new EObjectContainmentEList<MetadataURLType>(MetadataURLType.class, this, Wfs20Package.FEATURE_TYPE_TYPE__METADATA_URL);
+      metadataURL = new EObjectContainmentEList<>(MetadataURLType.class, this, Wfs20Package.FEATURE_TYPE_TYPE__METADATA_URL);
     }
     return metadataURL;
   }

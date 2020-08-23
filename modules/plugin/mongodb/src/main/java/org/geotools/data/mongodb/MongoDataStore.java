@@ -391,8 +391,8 @@ public class MongoDataStore extends ContentDataStore {
     @Override
     protected List<Name> createTypeNames() throws IOException {
 
-        Set<String> collectionNames = new LinkedHashSet<String>(dataStoreDB.getCollectionNames());
-        Set<String> typeNameSet = new LinkedHashSet<String>();
+        Set<String> collectionNames = new LinkedHashSet<>(dataStoreDB.getCollectionNames());
+        Set<String> typeNameSet = new LinkedHashSet<>();
 
         for (String candidateTypeName : getSchemaStore().typeNames()) {
             try {
@@ -456,7 +456,7 @@ public class MongoDataStore extends ContentDataStore {
         }
 
         // Create set of collections w/o named schema
-        Collection<String> collectionsToCheck = new LinkedList<String>(collectionNames);
+        Collection<String> collectionsToCheck = new LinkedList<>(collectionNames);
         collectionsToCheck.removeAll(typeNameSet);
 
         // Check collection set to see if we can use any of them
@@ -477,7 +477,7 @@ public class MongoDataStore extends ContentDataStore {
             }
         }
 
-        List<Name> typeNameList = new ArrayList<Name>();
+        List<Name> typeNameList = new ArrayList<>();
         for (String name : typeNameSet) {
             typeNameList.add(name(name));
         }

@@ -146,8 +146,8 @@ public class CreateIndexer {
         SAXBuilder saxBuilder = new SAXBuilder();
         Document doc = saxBuilder.build(finalAuxFile);
         Element root = doc.getRootElement();
-        Set<String> timeAttributes = new HashSet<String>();
-        Set<String> elevationAttributes = new HashSet<String>();
+        Set<String> timeAttributes = new HashSet<>();
+        Set<String> elevationAttributes = new HashSet<>();
         getAttributes(timeAttributes, elevationAttributes, root);
         final StringBuilder builder =
                 new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
@@ -303,7 +303,7 @@ public class CreateIndexer {
     }
 
     private static void addDomainsToCoverage(String schemaAttribs, StringBuilder builder) {
-        Set<String> domains = new HashSet<String>();
+        Set<String> domains = new HashSet<>();
         String[] schemaAttributesValues = schemaAttribs.split(",");
         for (String schemaAttr : schemaAttributesValues) {
             if (schemaAttr.contains(TIME_ATTRIB_TYPE)) {

@@ -134,7 +134,7 @@ public class AttributeMapping implements Serializable {
      */
     private MultipleValue multipleValue;
 
-    private Map<String, String> anonymousAttributes = new HashMap<String, String>();
+    private Map<String, String> anonymousAttributes = new HashMap<>();
 
     /**
      * Returns the expression whose evaluation result against a Feature of the source FeatureType is

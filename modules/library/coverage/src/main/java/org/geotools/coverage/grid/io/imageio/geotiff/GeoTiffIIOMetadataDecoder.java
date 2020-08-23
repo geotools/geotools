@@ -131,7 +131,7 @@ public final class GeoTiffIIOMetadataDecoder {
 
         // getting the geokey ddirectory
         IIOMetadataNode geoKeyDir = getTiffField(rootNode, GeoTIFFTagSet.TAG_GEO_KEY_DIRECTORY);
-        geoKeys = new HashMap<Integer, GeoKeyEntry>();
+        geoKeys = new HashMap<>();
         if (geoKeyDir != null) {
             NodeList geoKeyDirEntries = geoKeyDir.getFirstChild().getChildNodes();
             int length = geoKeyDirEntries.getLength();

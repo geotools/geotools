@@ -87,7 +87,7 @@ public abstract class FeatureToFeatureProcess extends AbstractFeatureCollectionP
         monitor.complete();
 
         // return the result
-        Map<String, Object> output = new HashMap<String, Object>();
+        Map<String, Object> output = new HashMap<>();
         output.put(FeatureToFeatureProcessFactory.RESULT.key, result);
         return output;
     }

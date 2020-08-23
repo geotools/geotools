@@ -37,7 +37,7 @@ public abstract class CodeList<E extends CodeList<E>> implements Comparable<E>, 
 
     /** The values for each code list. */
     private static final Map<Class<? extends CodeList>, Collection<? extends CodeList>> VALUES =
-            new HashMap<Class<? extends CodeList>, Collection<? extends CodeList>>();
+            new HashMap<>();
 
     /** The types expected in constructors. */
     @SuppressWarnings("unchecked")

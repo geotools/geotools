@@ -171,7 +171,7 @@ class RandomFillBuilder {
                 while ((p = ps.getNextPosition()) != null) {
                     at.setToTranslation(p.x, p.y);
                     at.rotate(Math.toRadians(p.rotation));
-                    List<AffineTransform2D> transforms = new ArrayList<AffineTransform2D>();
+                    List<AffineTransform2D> transforms = new ArrayList<>();
                     AffineTransform2D at2d = new AffineTransform2D(at);
                     transforms.add(at2d);
 
@@ -343,7 +343,7 @@ class RandomFillBuilder {
         @Override
         public boolean checkAndReserve(List<AffineTransform2D> transforms)
                 throws MismatchedDimensionException, TransformException {
-            List<Geometry> transformedConflictBounds = new ArrayList<Geometry>();
+            List<Geometry> transformedConflictBounds = new ArrayList<>();
             boolean conflict = false;
             for (AffineTransform2D tx2d : transforms) {
                 if (conflict) {

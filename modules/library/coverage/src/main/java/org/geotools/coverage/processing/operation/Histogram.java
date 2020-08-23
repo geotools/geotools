@@ -116,7 +116,7 @@ public class Histogram extends BaseStatisticsOperationJAI {
             // XXX remove me with 1.5
             final RenderedOp result = (RenderedOp) data;
 
-            final Map<String, Object> synthProp = new HashMap<String, Object>();
+            final Map<String, Object> synthProp = new HashMap<>();
 
             if (JAIExt.isJAIExtOperation(STATS)) {
                 // get the properties

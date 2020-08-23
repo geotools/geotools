@@ -68,7 +68,7 @@ public class TimeTopologyComplexTypeImpl extends AbstractTimeComplexTypeImpl imp
      */
     public EList<TimeTopologyPrimitivePropertyType> getPrimitive() {
         if (primitive == null) {
-            primitive = new EObjectContainmentEList<TimeTopologyPrimitivePropertyType>(TimeTopologyPrimitivePropertyType.class, this, Gml311Package.TIME_TOPOLOGY_COMPLEX_TYPE__PRIMITIVE);
+            primitive = new EObjectContainmentEList<>(TimeTopologyPrimitivePropertyType.class, this, Gml311Package.TIME_TOPOLOGY_COMPLEX_TYPE__PRIMITIVE);
         }
         return primitive;
     }

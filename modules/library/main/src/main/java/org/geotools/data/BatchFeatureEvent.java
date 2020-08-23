@@ -62,7 +62,7 @@ public class BatchFeatureEvent extends FeatureEvent {
      * used by the client to track selection.
      */
     @SuppressWarnings("unchecked")
-    protected WeakHashSet<Identifier> fids = new WeakHashSet<Identifier>(Identifier.class);
+    protected WeakHashSet<Identifier> fids = new WeakHashSet<>(Identifier.class);
 
     /** Used to change this into a COMMIT or ROLLBACK if needed. */
     public void setType(Type type) {

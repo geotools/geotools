@@ -17,7 +17,6 @@
 
 package org.geotools.appschema.resolver.data;
 
-import java.awt.RenderingHints;
 import java.awt.RenderingHints.Key;
 import java.io.IOException;
 import java.util.HashSet;
@@ -163,7 +162,7 @@ public class SampleDataAccessFeatureSource implements FeatureSource<FeatureType,
      * @see org.geotools.data.FeatureSource#getSupportedHints()
      */
     public Set<Key> getSupportedHints() {
-        return new HashSet<RenderingHints.Key>();
+        return new HashSet<>();
     }
 
     /**

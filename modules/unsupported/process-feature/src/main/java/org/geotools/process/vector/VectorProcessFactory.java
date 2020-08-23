@@ -36,7 +36,7 @@ public class VectorProcessFactory extends AnnotatedBeanProcessFactory {
         if (registry == null) {
             synchronized (VectorProcessFactory.class) {
                 if (registry == null) {
-                    registry = new BeanFactoryRegistry<VectorProcess>(VectorProcess.class);
+                    registry = new BeanFactoryRegistry<>(VectorProcess.class);
                 }
             }
         }

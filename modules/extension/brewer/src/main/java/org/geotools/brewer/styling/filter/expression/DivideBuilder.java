@@ -41,21 +41,21 @@ public class DivideBuilder implements Builder<Divide> {
 
     public DivideBuilder reset() {
         unset = false;
-        expr1 = new ChildExpressionBuilder<DivideBuilder>(this);
-        expr2 = new ChildExpressionBuilder<DivideBuilder>(this);
+        expr1 = new ChildExpressionBuilder<>(this);
+        expr2 = new ChildExpressionBuilder<>(this);
         return this;
     }
 
     public DivideBuilder reset(Divide original) {
         unset = false;
-        expr1 = new ChildExpressionBuilder<DivideBuilder>(this, original.getExpression1());
-        expr2 = new ChildExpressionBuilder<DivideBuilder>(this, original.getExpression2());
+        expr1 = new ChildExpressionBuilder<>(this, original.getExpression1());
+        expr2 = new ChildExpressionBuilder<>(this, original.getExpression2());
         return this;
     }
 
     public DivideBuilder unset() {
         unset = true;
-        expr1 = new ChildExpressionBuilder<DivideBuilder>(this).unset();
+        expr1 = new ChildExpressionBuilder<>(this).unset();
         expr2 = null;
         return this;
     }

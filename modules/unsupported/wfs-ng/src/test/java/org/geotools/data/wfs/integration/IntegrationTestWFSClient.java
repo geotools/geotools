@@ -85,9 +85,9 @@ public class IntegrationTestWFSClient extends WFSClient {
     private boolean failOnTransaction;
     protected URL baseDirectory;
 
-    private Map<QName, Diff> diffs = new HashMap<QName, Diff>();
+    private Map<QName, Diff> diffs = new HashMap<>();
 
-    private Map<QName, SimpleFeatureType> featureTypes = new HashMap<QName, SimpleFeatureType>();
+    private Map<QName, SimpleFeatureType> featureTypes = new HashMap<>();
 
     public IntegrationTestWFSClient(final String baseDirectory, WFSConfig config)
             throws ServiceException, IOException {
@@ -207,7 +207,7 @@ public class IntegrationTestWFSClient extends WFSClient {
                             });
         }
 
-        final List<SimpleFeature> originalFeatures = new ArrayList<SimpleFeature>();
+        final List<SimpleFeature> originalFeatures = new ArrayList<>();
         {
             SimpleFeature feature;
             while ((feature = allFeatures.parse()) != null) {
@@ -234,9 +234,7 @@ public class IntegrationTestWFSClient extends WFSClient {
         }
 
         final DiffFeatureReader<SimpleFeatureType, SimpleFeature> serverFilteredReader;
-        serverFilteredReader =
-                new DiffFeatureReader<SimpleFeatureType, SimpleFeature>(
-                        allFeaturesReader, diff, serverFiler);
+        serverFilteredReader = new DiffFeatureReader<>(allFeaturesReader, diff, serverFiler);
         final GetParser<SimpleFeature> filteredParser =
                 new GetParser<SimpleFeature>() {
 
@@ -267,9 +265,7 @@ public class IntegrationTestWFSClient extends WFSClient {
                                 }
                                 final DiffFeatureReader<SimpleFeatureType, SimpleFeature>
                                         serverFiltered;
-                                serverFiltered =
-                                        new DiffFeatureReader<SimpleFeatureType, SimpleFeature>(
-                                                all, diff);
+                                serverFiltered = new DiffFeatureReader<>(all, diff);
                                 try {
                                     int count = 0;
                                     while (serverFiltered.hasNext()) {
@@ -309,7 +305,7 @@ public class IntegrationTestWFSClient extends WFSClient {
 
     protected Response mockTransactionSuccess(TransactionRequest request) throws IOException {
 
-        List<String> added = new ArrayList<String>();
+        List<String> added = new ArrayList<>();
         int deleted = 0, updated = 0;
 
         for (TransactionElement e : request.getTransactionElements()) {
@@ -403,7 +399,7 @@ public class IntegrationTestWFSClient extends WFSClient {
 
         GetFeatureResponse response = (GetFeatureResponse) mockGetFeature(gf);
         GetParser<SimpleFeature> features = response.getFeatures();
-        List<SimpleFeature> result = new ArrayList<SimpleFeature>();
+        List<SimpleFeature> result = new ArrayList<>();
         SimpleFeature f;
         while ((f = features.parse()) != null) {
             result.add(f);

@@ -49,7 +49,7 @@ public class GML3EncodingTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
 
-        Map<String, String> namespaces = new HashMap<String, String>();
+        Map<String, String> namespaces = new HashMap<>();
         namespaces.put("test", TEST.TestFeature.getNamespaceURI());
         XMLUnit.setXpathNamespaceContext(new SimpleNamespaceContext(namespaces));
     }

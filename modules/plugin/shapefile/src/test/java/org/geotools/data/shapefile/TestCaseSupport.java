@@ -76,7 +76,7 @@ public class TestCaseSupport {
      */
     // protected static boolean verbose = false;
     /** Stores all temporary files here - delete on tear down. */
-    private final List<File> tmpFiles = new ArrayList<File>();
+    private final List<File> tmpFiles = new ArrayList<>();
 
     /**
      * Deletes all temporary files created by {@link #getTempFile}. This method is automatically run

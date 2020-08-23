@@ -166,10 +166,9 @@ public class GeoPkgSchemaExtension extends GeoPkgExtension {
                             Double max = rs.getDouble("max");
                             boolean maxInclusve = rs.getBoolean("max_is_inclusive");
                             NumberRange<Double> range =
-                                    new NumberRange<Double>(
+                                    new NumberRange<>(
                                             Double.class, min, minInclusve, max, maxInclusve);
-                            constraint =
-                                    new DataColumnConstraint.Range<Double>(constraintName, range);
+                            constraint = new DataColumnConstraint.Range<>(constraintName, range);
                         } else {
                             LOGGER.warning(
                                     "Cannot process a constraint of type "

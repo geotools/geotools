@@ -53,8 +53,7 @@ public abstract class DelegatingHandler<T> implements IContentHandler<T> {
     protected static NullHandler NULL = new NullHandler();
     protected static NullHandler UNINITIALIZED = new NullHandler();
 
-    protected static List<String> NULL_LIST =
-            Collections.unmodifiableList(new ArrayList<String>(0));
+    protected static List<String> NULL_LIST = Collections.unmodifiableList(new ArrayList<>(0));
 
     protected ContentHandler delegate = NULL;
 

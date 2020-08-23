@@ -133,14 +133,13 @@ public class LabelCacheImpl implements LabelCache {
     public static double MIN_CURVED_DELTA = Math.PI / 60;
 
     /** Used to locate grouped labels quickly */
-    protected Map<LabelCacheItem, LabelCacheItem> groupedLabelsLookup =
-            new HashMap<LabelCacheItem, LabelCacheItem>();
+    protected Map<LabelCacheItem, LabelCacheItem> groupedLabelsLookup = new HashMap<>();
 
     /** labels get thrown in here, in insertion order */
-    protected ArrayList<LabelCacheItem> labelCache = new ArrayList<LabelCacheItem>();
+    protected ArrayList<LabelCacheItem> labelCache = new ArrayList<>();
 
     /** List of reserved areas of the screen for which labels should fear to tread */
-    private List<Rectangle2D> reserved = new ArrayList<Rectangle2D>();
+    private List<Rectangle2D> reserved = new ArrayList<>();
 
     // Anchor candidate values used when looping to find a point label that can be drawn
     static final double[] RIGHT_ANCHOR_CANDIDATES = new double[] {0, 0.5, 0, 0, 0, 1};
@@ -164,9 +163,9 @@ public class LabelCacheImpl implements LabelCache {
 
     boolean stop = false;
 
-    Set<String> enabledLayers = new HashSet<String>();
+    Set<String> enabledLayers = new HashSet<>();
 
-    Set<String> activeLayers = new HashSet<String>();
+    Set<String> activeLayers = new HashSet<>();
 
     LineLengthComparator lineLengthComparator = new LineLengthComparator();
 
@@ -178,7 +177,7 @@ public class LabelCacheImpl implements LabelCache {
 
     private VendorOptionParser voParser = new VendorOptionParser();
 
-    private List<RenderListener> renderListeners = new CopyOnWriteArrayList<RenderListener>();
+    private List<RenderListener> renderListeners = new CopyOnWriteArrayList<>();
 
     private BiFunction<Graphics2D, LabelRenderingMode, LabelPainter> constructPainter =
             LabelPainter::new;
@@ -431,7 +430,7 @@ public class LabelCacheImpl implements LabelCache {
     /** Returns a list of all active labels */
     public List<LabelCacheItem> getActiveLabels() {
         // fill a list with the active labels
-        List<LabelCacheItem> al = new ArrayList<LabelCacheItem>();
+        List<LabelCacheItem> al = new ArrayList<>();
         for (LabelCacheItem item : labelCache) {
             if (isActive(item.getLayerIds())) al.add(item);
         }
@@ -1698,7 +1697,7 @@ public class LabelCacheImpl implements LabelCache {
     Point getPointSetRepresentativeLocation(
             List<Geometry> geoms, Rectangle displayArea, boolean partialsEnabled) {
         // points that are inside the displayGeometry
-        ArrayList<Point> pts = new ArrayList<Point>();
+        ArrayList<Point> pts = new ArrayList<>();
 
         for (Geometry g : geoms) {
             if (!((g instanceof Point) || (g instanceof MultiPoint))) // handle
@@ -1750,14 +1749,14 @@ public class LabelCacheImpl implements LabelCache {
         // if its a polygon or multipolygon, get the boundary (reduce to a line)
         // if its a line, add it to "lines"
         // if its a multiline, add each component line to "lines"
-        List<LineString> lines = new ArrayList<LineString>();
+        List<LineString> lines = new ArrayList<>();
         for (Geometry g : geoms) {
             accumulateLineStrings(g, lines);
         }
         if (lines.size() == 0) return null;
 
         // clip all the lines to the current bounds
-        List<LineString> clippedLines = new ArrayList<LineString>();
+        List<LineString> clippedLines = new ArrayList<>();
         for (LineString ls : lines) {
             // If we want labels to be entirely in the display area, clip the linestring
             if (!partialsEnabled) {
@@ -1775,8 +1774,8 @@ public class LabelCacheImpl implements LabelCache {
         }
 
         if (removeOverlaps) {
-            List<LineString> cleanedLines = new ArrayList<LineString>();
-            List<Geometry> bufferCache = new ArrayList<Geometry>();
+            List<LineString> cleanedLines = new ArrayList<>();
+            List<Geometry> bufferCache = new ArrayList<>();
             for (LineString ls : clippedLines) {
                 Geometry g = ls;
                 for (int i = 0; i < cleanedLines.size(); i++) {
@@ -1895,7 +1894,7 @@ public class LabelCacheImpl implements LabelCache {
      */
     Polygon getPolySetRepresentativeLocation(
             List<Geometry> geoms, Rectangle displayArea, boolean partialsEnabled) {
-        List<Polygon> polys = new ArrayList<Polygon>(); // points that are
+        List<Polygon> polys = new ArrayList<>(); // points that are
         // inside the
         Geometry displayGeometry = gf.toGeometry(toEnvelope(displayArea));
 
@@ -1919,7 +1918,7 @@ public class LabelCacheImpl implements LabelCache {
         if (polys.size() == 0) return null;
 
         // at this point "polys" is a list of polygons. Clip them
-        List<Polygon> clippedPolys = new ArrayList<Polygon>();
+        List<Polygon> clippedPolys = new ArrayList<>();
         Envelope displayGeomEnv = displayGeometry.getEnvelopeInternal();
         for (Polygon p : polys) {
             // If we want labels to be entirely in the display area, clip polygons
@@ -2003,7 +2002,7 @@ public class LabelCacheImpl implements LabelCache {
 
         // its a GC
         GeometryCollection gc = (GeometryCollection) clip;
-        List<Polygon> polys = new ArrayList<Polygon>();
+        List<Polygon> polys = new ArrayList<>();
         Geometry g;
         for (int t = 0; t < gc.getNumGeometries(); t++) {
             g = gc.getGeometryN(t);
@@ -2036,14 +2035,13 @@ public class LabelCacheImpl implements LabelCache {
         }
 
         // coordinate -> list of incoming/outgoing lines
-        Map<Coordinate, List<LineString>> nodes =
-                new HashMap<Coordinate, List<LineString>>(merged.size() * 2);
+        Map<Coordinate, List<LineString>> nodes = new HashMap<>(merged.size() * 2);
         for (LineString ls : merged) {
             putInNodeHash(ls.getCoordinateN(0), ls, nodes);
             putInNodeHash(ls.getCoordinateN(ls.getNumPoints() - 1), ls, nodes);
         }
 
-        List<LineString> merged_list = new ArrayList<LineString>(merged);
+        List<LineString> merged_list = new ArrayList<>(merged);
 
         // SORT -- sorting is important because order does matter.
         // sorted long->short
@@ -2059,7 +2057,7 @@ public class LabelCacheImpl implements LabelCache {
      */
     public List<LineString> processNodes(
             List<LineString> edges, Map<Coordinate, List<LineString>> nodes) {
-        List<LineString> result = new ArrayList<LineString>();
+        List<LineString> result = new ArrayList<>();
         int index = 0; // index into edges
         while (index < edges.size()) // still more to do
         {
@@ -2137,7 +2135,7 @@ public class LabelCacheImpl implements LabelCache {
             Coordinate node, LineString ls, Map<Coordinate, List<LineString>> nodes) {
         List<LineString> nodeList = nodes.get(node);
         if (nodeList == null) {
-            nodeList = new ArrayList<LineString>();
+            nodeList = new ArrayList<>();
             nodeList.add(ls);
             nodes.put(node, nodeList);
         } else {
@@ -2181,7 +2179,7 @@ public class LabelCacheImpl implements LabelCache {
 
     /** simple linestring merge - l1 points then l2 points */
     private LineString mergeSimple(LineString l1, LineString l2) {
-        List<Coordinate> clist = new ArrayList<Coordinate>(Arrays.asList(l1.getCoordinates()));
+        List<Coordinate> clist = new ArrayList<>(Arrays.asList(l1.getCoordinates()));
         clist.addAll(Arrays.asList(l2.getCoordinates()));
 
         return l1.getFactory().createLineString(clist.toArray(new Coordinate[1]));

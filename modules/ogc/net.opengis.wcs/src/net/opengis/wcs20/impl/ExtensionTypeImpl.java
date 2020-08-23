@@ -70,7 +70,7 @@ public class ExtensionTypeImpl extends EObjectImpl implements ExtensionType {
 	 */
     public EList<ExtensionItemType> getContents() {
 		if (contents == null) {
-			contents = new EObjectResolvingEList<ExtensionItemType>(ExtensionItemType.class, this, Wcs20Package.EXTENSION_TYPE__CONTENTS);
+			contents = new EObjectResolvingEList<>(ExtensionItemType.class, this, Wcs20Package.EXTENSION_TYPE__CONTENTS);
 		}
 		return contents;
 	}

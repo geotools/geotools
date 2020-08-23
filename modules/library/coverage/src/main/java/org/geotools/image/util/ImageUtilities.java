@@ -788,7 +788,7 @@ public final class ImageUtilities {
      */
     public static void disposePlanarImageChain(PlanarImage pi) {
         Utilities.ensureNonNull("PlanarImage", pi);
-        disposePlanarImageChain(pi, new HashSet<PlanarImage>());
+        disposePlanarImageChain(pi, new HashSet<>());
     }
 
     private static void disposePlanarImageChain(PlanarImage pi, Set<PlanarImage> visited) {

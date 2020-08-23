@@ -85,7 +85,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(AppSchemaDataAccess.class);
 
-    private Map<Name, FeatureTypeMapping> mappings = new LinkedHashMap<Name, FeatureTypeMapping>();
+    private Map<Name, FeatureTypeMapping> mappings = new LinkedHashMap<>();
 
     private FilterFactory2 filterFac = CommonFactoryFinder.getFilterFactory2(null);
 
@@ -340,7 +340,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
             newQuery.setMaxFeatures(query.getMaxFeatures());
             newQuery.setStartIndex(query.getStartIndex());
 
-            List<SortBy> sort = new ArrayList<SortBy>();
+            List<SortBy> sort = new ArrayList<>();
             if (query.getSortBy() != null) {
                 for (SortBy sortBy : query.getSortBy()) {
                     List<Expression> expressions =
@@ -457,8 +457,8 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
         List<PropertyName> propNames = new ArrayList<>();
         final AttributeDescriptor targetDescriptor = mapping.getTargetFeature();
         if (requestedProperties != null && requestedProperties.size() > 0) {
-            requestedProperties = new ArrayList<PropertyName>(requestedProperties);
-            Set<PropertyName> requestedSurrogateProperties = new HashSet<PropertyName>();
+            requestedProperties = new ArrayList<>(requestedProperties);
+            Set<PropertyName> requestedSurrogateProperties = new HashSet<>();
             // extension point allowing stores to contribute properties
             for (CustomSourceDataStore extension : CustomSourceDataStore.loadExtensions()) {
                 // ask the extension for surrogate properties
@@ -633,7 +633,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
      * @see org.geotools.data.DataAccess#getNames()
      */
     public List<Name> getNames() {
-        List<Name> names = new LinkedList<Name>();
+        List<Name> names = new LinkedList<>();
         names.addAll(mappings.keySet());
         return names;
     }

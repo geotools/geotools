@@ -291,7 +291,7 @@ public class EnvelopeTypeImpl extends MinimalEObjectImpl.Container implements En
      */
     public EList<CoordType> getCoord() {
         if (coord == null) {
-            coord = new EObjectContainmentEList<CoordType>(CoordType.class, this, Gml311Package.ENVELOPE_TYPE__COORD);
+            coord = new EObjectContainmentEList<>(CoordType.class, this, Gml311Package.ENVELOPE_TYPE__COORD);
         }
         return coord;
     }
@@ -303,7 +303,7 @@ public class EnvelopeTypeImpl extends MinimalEObjectImpl.Container implements En
      */
     public EList<DirectPositionType> getPos() {
         if (pos == null) {
-            pos = new EObjectContainmentEList<DirectPositionType>(DirectPositionType.class, this, Gml311Package.ENVELOPE_TYPE__POS);
+            pos = new EObjectContainmentEList<>(DirectPositionType.class, this, Gml311Package.ENVELOPE_TYPE__POS);
         }
         return pos;
     }

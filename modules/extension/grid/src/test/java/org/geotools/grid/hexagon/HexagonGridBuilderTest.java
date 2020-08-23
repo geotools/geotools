@@ -113,7 +113,7 @@ public class HexagonGridBuilderTest extends HexagonTestBase {
         final double MAJOR = 2.0 * SIDE_LEN;
         final double MINOR = Math.sqrt(3.0) * SIDE_LEN;
 
-        Map<Neighbor, Shift> flatShifts = new HashMap<Neighbor, Shift>();
+        Map<Neighbor, Shift> flatShifts = new HashMap<>();
         flatShifts.put(Neighbor.LOWER, new Shift(0.0, -MINOR));
         flatShifts.put(Neighbor.LOWER_LEFT, new Shift(-0.75 * MAJOR, -0.5 * MINOR));
         flatShifts.put(Neighbor.LOWER_RIGHT, new Shift(0.75 * MAJOR, -0.5 * MINOR));
@@ -121,7 +121,7 @@ public class HexagonGridBuilderTest extends HexagonTestBase {
         flatShifts.put(Neighbor.UPPER_LEFT, new Shift(-0.75 * MAJOR, 0.5 * MINOR));
         flatShifts.put(Neighbor.UPPER_RIGHT, new Shift(0.75 * MAJOR, 0.5 * MINOR));
 
-        Map<Neighbor, Shift> angledShifts = new HashMap<Neighbor, Shift>();
+        Map<Neighbor, Shift> angledShifts = new HashMap<>();
         angledShifts.put(Neighbor.LEFT, new Shift(-MINOR, 0.0));
         angledShifts.put(Neighbor.LOWER_LEFT, new Shift(-0.5 * MINOR, -0.75 * MAJOR));
         angledShifts.put(Neighbor.LOWER_RIGHT, new Shift(0.5 * MINOR, -0.75 * MAJOR));
@@ -129,8 +129,7 @@ public class HexagonGridBuilderTest extends HexagonTestBase {
         angledShifts.put(Neighbor.UPPER_LEFT, new Shift(-0.5 * MINOR, 0.75 * MAJOR));
         angledShifts.put(Neighbor.UPPER_RIGHT, new Shift(0.5 * MINOR, 0.75 * MAJOR));
 
-        Map<HexagonOrientation, Map<Neighbor, Shift>> table =
-                new HashMap<HexagonOrientation, Map<Neighbor, Shift>>();
+        Map<HexagonOrientation, Map<Neighbor, Shift>> table = new HashMap<>();
         table.put(HexagonOrientation.FLAT, flatShifts);
         table.put(HexagonOrientation.ANGLED, angledShifts);
 

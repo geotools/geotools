@@ -290,7 +290,7 @@ public class Types {
                     "Expected '" + expectedName + "' but was supplied '" + actualName + "'.");
         }
         // check attributes names
-        Set<String> names = new TreeSet<String>();
+        Set<String> names = new TreeSet<>();
         for (PropertyDescriptor descriptor : actual.getDescriptors()) {
             names.add(descriptor.getName().getLocalPart());
         }
@@ -918,7 +918,7 @@ public class Types {
      */
     public static List<PropertyDescriptor> descriptors(ComplexType type) {
         // get list of descriptors from types and all supertypes
-        List<PropertyDescriptor> children = new ArrayList<PropertyDescriptor>();
+        List<PropertyDescriptor> children = new ArrayList<>();
         ComplexType loopType = type;
         while (loopType != null) {
             children.addAll(loopType.getDescriptors());

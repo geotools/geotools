@@ -212,7 +212,7 @@ public class TimeClockTypeImpl extends AbstractTimeReferenceSystemTypeImpl imple
      */
     public EList<TimeCalendarPropertyType> getDateBasis() {
         if (dateBasis == null) {
-            dateBasis = new EObjectContainmentEList<TimeCalendarPropertyType>(TimeCalendarPropertyType.class, this, Gml311Package.TIME_CLOCK_TYPE__DATE_BASIS);
+            dateBasis = new EObjectContainmentEList<>(TimeCalendarPropertyType.class, this, Gml311Package.TIME_CLOCK_TYPE__DATE_BASIS);
         }
         return dateBasis;
     }

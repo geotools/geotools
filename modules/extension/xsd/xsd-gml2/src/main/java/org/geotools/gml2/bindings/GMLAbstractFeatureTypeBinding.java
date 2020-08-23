@@ -125,7 +125,7 @@ public class GMLAbstractFeatureTypeBinding extends AbstractComplexBinding {
                 object,
                 element,
                 schemaIndex,
-                new HashSet<String>(Arrays.asList("name", "description", "boundedBy")),
+                new HashSet<>(Arrays.asList("name", "description", "boundedBy")),
                 configuration);
     }
 }

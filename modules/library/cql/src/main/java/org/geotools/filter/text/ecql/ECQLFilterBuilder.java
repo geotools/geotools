@@ -86,7 +86,7 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
     public Id buildFilterId(final int nodeFeatureId) throws CQLException {
 
         // retrieves the id from stack
-        List<FeatureId> idList = new LinkedList<FeatureId>();
+        List<FeatureId> idList = new LinkedList<>();
         while (!getResultStack().empty()) {
 
             Result result = getResultStack().peek();
@@ -103,7 +103,7 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
 
         // shorts the id list and builds the filter Id
         Collections.reverse(idList);
-        Set<FeatureId> idSet = new LinkedHashSet<FeatureId>(idList);
+        Set<FeatureId> idSet = new LinkedHashSet<>(idList);
         Id filter = getFilterFactory().id(idSet);
 
         return filter;
@@ -153,7 +153,7 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
      */
     public Or buildInPredicate(final int nodeExpression) throws CQLException {
         // retrieves the expressions from stack
-        List<Expression> exprList = new LinkedList<Expression>();
+        List<Expression> exprList = new LinkedList<>();
         while (!getResultStack().empty()) {
 
             Result result = getResultStack().peek();
@@ -175,7 +175,7 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
 
         // makes one comparison for each expression in the expression list,
         // associated by the Or filter.
-        List<Filter> filterList = new LinkedList<Filter>();
+        List<Filter> filterList = new LinkedList<>();
         for (Expression expression : exprList) {
             PropertyIsEqualTo eq = getFilterFactory().equals(leftHandExpr, expression);
             filterList.add(eq);

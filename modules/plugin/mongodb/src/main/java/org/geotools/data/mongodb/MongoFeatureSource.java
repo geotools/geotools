@@ -141,16 +141,14 @@ public class MongoFeatureSource extends ContentFeatureSource {
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {
 
-        List<Filter> postFilterList = new ArrayList<Filter>();
-        List<String> postFilterAttributes = new ArrayList<String>();
+        List<Filter> postFilterList = new ArrayList<>();
+        List<String> postFilterAttributes = new ArrayList<>();
         @SuppressWarnings("PMD.CloseResource") // wrapped and returned
         DBCursor cursor = toCursor(query, postFilterList, postFilterAttributes);
         FeatureReader<SimpleFeatureType, SimpleFeature> r = new MongoFeatureReader(cursor, this);
 
         if (!postFilterList.isEmpty() && !isAll(postFilterList.get(0))) {
-            r =
-                    new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(
-                            r, postFilterList.get(0));
+            r = new FilteringFeatureReader<>(r, postFilterList.get(0));
 
             // check whether attributes not present in the original query have been
             // added to the set of retrieved attributes for the sake of

@@ -266,7 +266,7 @@ final class DefaultObjectCache implements ObjectCache {
     public Set<Object> getKeys() {
         Set<Object> ret = null;
         synchronized (cache) {
-            ret = new HashSet<Object>(cache.keySet());
+            ret = new HashSet<>(cache.keySet());
         }
         return ret;
     }

@@ -160,7 +160,7 @@ public class GML {
     private String gmlLocation;
 
     /** Schema or profile used to map between Java classes and XML elements. */
-    private List<Schema> schemaList = new ArrayList<Schema>();
+    private List<Schema> schemaList = new ArrayList<>();
 
     String prefix = null;
 
@@ -241,7 +241,7 @@ public class GML {
      * </ul>
      */
     protected void init() {
-        List<Schema> schemas = new ArrayList<Schema>();
+        List<Schema> schemas = new ArrayList<>();
         schemas.add(new XSSchema().profile()); // encoding of common java types
         Schema hack = new SchemaImpl(XS.NAMESPACE);
 
@@ -304,7 +304,7 @@ public class GML {
                         }
                     }
                 };
-        List<Entry<Name, AttributeType>> match = new ArrayList<Entry<Name, AttributeType>>();
+        List<Entry<Name, AttributeType>> match = new ArrayList<>();
 
         // process the listed profiles recording all available matches
         for (Schema profile : schemaList) {
@@ -537,8 +537,7 @@ public class GML {
 
         // compute the largest feature type from features, assuming some attributes
         // are shared, while others appear only in some features
-        PartiallyOrderedSet<AttributeDescriptor> attributes =
-                new PartiallyOrderedSet<AttributeDescriptor>();
+        PartiallyOrderedSet<AttributeDescriptor> attributes = new PartiallyOrderedSet<>();
         Set<String> attributeNames = new HashSet<>();
 
         String typeName = null;

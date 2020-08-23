@@ -46,8 +46,7 @@ public class ImageMosaicJDBCReaderState {
 
     private ImageLevelInfo imageLevelInfo = null;
 
-    private final LinkedBlockingQueue<TileQueueElement> tileQueue =
-            new LinkedBlockingQueue<TileQueueElement>();
+    private final LinkedBlockingQueue<TileQueueElement> tileQueue = new LinkedBlockingQueue<>();
 
     public Color getBackgroundColor() {
         return backgroundColor;

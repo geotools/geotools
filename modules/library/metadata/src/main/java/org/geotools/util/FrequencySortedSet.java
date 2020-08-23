@@ -99,7 +99,7 @@ public class FrequencySortedSet<E> extends AbstractSet<E>
      *     element first, less frequent last).
      */
     public FrequencySortedSet(final int initialCapacity, final boolean reversed) {
-        count = new LinkedHashMap<E, Integer>(initialCapacity);
+        count = new LinkedHashMap<>(initialCapacity);
         order = reversed ? -1 : +1;
     }
 

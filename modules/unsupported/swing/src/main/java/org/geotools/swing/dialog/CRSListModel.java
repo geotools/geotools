@@ -49,8 +49,8 @@ public class CRSListModel extends AbstractListModel {
         }
     }
 
-    private List<Item> allItems = new ArrayList<Item>();
-    private List<Item> filterItems = new ArrayList<Item>();
+    private List<Item> allItems = new ArrayList<>();
+    private List<Item> filterItems = new ArrayList<>();
 
     /**
      * Constructor. Populates the model with available reference systems for the specified

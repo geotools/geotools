@@ -92,7 +92,7 @@ public class GTDataStoreGranuleCatalog extends AbstractGTDataStoreGranuleCatalog
         }
 
         // this init must be here as it's getting called by the parent class constructor
-        this.validTypeNames = new HashSet<String>();
+        this.validTypeNames = new HashSet<>();
 
         // is this a new store? If so we do not set any properties
         if (create) {

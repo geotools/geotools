@@ -54,8 +54,7 @@ import org.xml.sax.helpers.NamespaceSupport;
 
 public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
 
-    static Map<String, PreGeneralizedDataStore> DSMap =
-            new HashMap<String, PreGeneralizedDataStore>();
+    static Map<String, PreGeneralizedDataStore> DSMap = new HashMap<>();
 
     @Override
     protected void setUp() throws Exception {
@@ -555,7 +554,7 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
             assertTrue(fCollection.getBounds().equals(fs.getBounds()));
             assertTrue(fCollection.contains(array[0]));
 
-            List<Object> list = new ArrayList<Object>();
+            List<Object> list = new ArrayList<>();
             list.add(array[0]);
             list.add(array[1]);
             assertTrue(fCollection.containsAll(list));
@@ -591,7 +590,7 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
             // assertTrue("GenStreams".equals(typeName))
             // assertTrue(fCollection.size()==sortedCollection.size());
 
-            final List<Long> catIds = new ArrayList<Long>();
+            final List<Long> catIds = new ArrayList<>();
 
             FeatureVisitor checkSortVisitor =
                     new FeatureVisitor() {

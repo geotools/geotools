@@ -342,7 +342,7 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
 
     @Override
     public FileDataStore createDataStore(URL url) throws IOException {
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put(URLP.key, url);
 
         boolean isLocal = url.getProtocol().equalsIgnoreCase("file");

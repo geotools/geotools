@@ -116,8 +116,7 @@ public class DefaultMathTransformFactory extends ReferencingFactory
     private transient MathTransformProvider lastProvider;
 
     /** The operation method for the last transform created. */
-    private static final ThreadLocal<OperationMethod> lastMethod =
-            new ThreadLocal<OperationMethod>();
+    private static final ThreadLocal<OperationMethod> lastMethod = new ThreadLocal<>();
 
     /**
      * A pool of math transform. This pool is used in order to returns instance of existing math
@@ -170,7 +169,7 @@ public class DefaultMathTransformFactory extends ReferencingFactory
      * @see #createParameterizedTransform
      */
     public Set<OperationMethod> getAvailableMethods(final Class<? extends Operation> type) {
-        return new LazySet<OperationMethod>(
+        return new LazySet<>(
                 registry.getFactories(
                         MathTransformProvider.class,
                         (type != null) ? new MethodFilter(type) : null,
@@ -659,12 +658,12 @@ public class DefaultMathTransformFactory extends ReferencingFactory
             writer.setLocale(arguments.locale);
             Set<OperationMethod> methods = Collections.emptySet();
             if (printAll || args.length == 0) {
-                final Set<String> scopes = new HashSet<String>();
+                final Set<String> scopes = new HashSet<>();
                 //              scopes.add("OGC");  // Omitted because usually the same than
                 // 'identifier'.
                 scopes.add("EPSG");
                 scopes.add("Geotools"); // Limit the number of columns to output.
-                methods = new TreeSet<OperationMethod>(AbstractIdentifiedObject.NAME_COMPARATOR);
+                methods = new TreeSet<>(AbstractIdentifiedObject.NAME_COMPARATOR);
                 methods.addAll(factory.getAvailableMethods(type));
                 writer.summary(methods, scopes);
             }

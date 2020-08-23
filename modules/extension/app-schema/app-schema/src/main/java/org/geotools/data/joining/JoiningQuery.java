@@ -87,11 +87,11 @@ public class JoiningQuery extends Query {
 
     public JoiningQuery(Query query) {
         super(query);
-        ids = new ArrayList<String>();
+        ids = new ArrayList<>();
     }
 
     public JoiningQuery() {
-        ids = new ArrayList<String>();
+        ids = new ArrayList<>();
     }
 
     public void setQueryJoins(List<QueryJoin> queryJoins) {

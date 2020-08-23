@@ -62,10 +62,10 @@ class RemappingFeatureCollection extends DecoratingSimpleFeatureCollection {
 
     /** Maps schema attributes to shapefile-compatible attributes. */
     private static Map<String, String> createAttributeMappings(SimpleFeatureType schema) {
-        Map<String, String> result = new HashMap<String, String>();
+        Map<String, String> result = new HashMap<>();
 
         // track the field names used and reserve "the_geom" for the geometry
-        Set<String> usedFieldNames = new HashSet<String>();
+        Set<String> usedFieldNames = new HashSet<>();
         usedFieldNames.add("the_geom");
 
         // scan and remap
@@ -116,7 +116,7 @@ class RemappingFeatureCollection extends DecoratingSimpleFeatureCollection {
      * value->key
      */
     static Map<String, String> invertMappings(Map<String, String> map) {
-        Map<String, String> result = new HashMap<String, String>();
+        Map<String, String> result = new HashMap<>();
         for (String key : map.keySet()) result.put(map.get(key), key);
         return result;
     }

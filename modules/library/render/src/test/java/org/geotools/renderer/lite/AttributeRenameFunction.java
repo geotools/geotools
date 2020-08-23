@@ -64,7 +64,7 @@ public class AttributeRenameFunction extends FunctionExpressionImpl
 
         // build the result feature collection
         final SimpleFeatureBuilder fb = new SimpleFeatureBuilder(targetSchema);
-        final List<SimpleFeature> features = new ArrayList<SimpleFeature>();
+        final List<SimpleFeature> features = new ArrayList<>();
         try {
             fc.accepts(
                     new FeatureVisitor() {

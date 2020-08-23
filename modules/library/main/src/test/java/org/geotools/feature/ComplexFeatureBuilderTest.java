@@ -29,7 +29,7 @@ public class ComplexFeatureBuilderTest {
 
         final Attribute mineName = builder.build();
 
-        Collection<Attribute> mineNames = new ArrayList<Attribute>();
+        Collection<Attribute> mineNames = new ArrayList<>();
         mineNames.add(mineName);
 
         builder.init();

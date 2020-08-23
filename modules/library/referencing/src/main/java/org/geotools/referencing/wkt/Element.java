@@ -70,7 +70,7 @@ public final class Element {
     Element(final Element singleton) {
         offset = 0;
         keyword = null;
-        list = new LinkedList<Object>();
+        list = new LinkedList<>();
         list.add(singleton);
     }
 
@@ -117,7 +117,7 @@ public final class Element {
             }
         } while (!parseOptionalSeparator(
                 text, position, parser.symbols.openingBrackets[bracketIndex]));
-        list = new LinkedList<Object>();
+        list = new LinkedList<>();
         /*
          * Parse all elements inside the bracket. Elements are parsed sequentially
          * and their type are selected according their first character:

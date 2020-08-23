@@ -318,7 +318,7 @@ public final class AuthorityCodes extends AbstractSet<String> implements Seriali
      * database.
      */
     protected Object writeReplace() throws ObjectStreamException {
-        return new LinkedHashSet<String>(this);
+        return new LinkedHashSet<>(this);
     }
 
     /**

@@ -24,7 +24,7 @@ public class AttributeTable {
 
     /** Creates a new instance of AttributeTable */
     public AttributeTable() {
-        atts = new Vector<CellAttribute>();
+        atts = new Vector<>();
     }
 
     /** */

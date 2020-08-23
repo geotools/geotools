@@ -176,7 +176,7 @@ class OGRFeatureSource extends ContentFeatureSource {
         // check how much we can encode
         OGRFilterTranslator filterTx = new OGRFilterTranslator(getSchema(), query.getFilter());
         if (Filter.EXCLUDE.equals(filterTx.getFilter())) {
-            return new EmptyFeatureReader<SimpleFeatureType, SimpleFeature>(getSchema());
+            return new EmptyFeatureReader<>(getSchema());
         }
 
         // encode and count
@@ -200,12 +200,12 @@ class OGRFeatureSource extends ContentFeatureSource {
                 // attribute needed to evaluate both the pre-filter and post-filter (the pre-filter
                 // evaluation just does not work when using setIgnoredFields down in this method)
                 if (query.getFilter() != Filter.INCLUDE) {
-                    Set<String> queriedAttributes = new HashSet<String>(Arrays.asList(properties));
+                    Set<String> queriedAttributes = new HashSet<>(Arrays.asList(properties));
                     FilterAttributeExtractor extraAttributeExtractor =
                             new FilterAttributeExtractor();
                     query.getFilter().accept(extraAttributeExtractor, null);
                     Set<String> extraAttributeSet =
-                            new HashSet<String>(extraAttributeExtractor.getAttributeNameSet());
+                            new HashSet<>(extraAttributeExtractor.getAttributeNameSet());
                     extraAttributeSet.removeAll(queriedAttributes);
                     if (extraAttributeSet.size() > 0) {
                         String[] queryProperties =
@@ -295,9 +295,7 @@ class OGRFeatureSource extends ContentFeatureSource {
 
             // do we have to post-filter?
             if (!filterTx.isFilterFullySupported()) {
-                reader =
-                        new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(
-                                reader, filterTx.getPostFilter());
+                reader = new FilteringFeatureReader<>(reader, filterTx.getPostFilter());
             }
 
             if (targetSchema != querySchema) {
@@ -350,7 +348,7 @@ class OGRFeatureSource extends ContentFeatureSource {
             if (querySchema.equals(sourceSchema)) {
                 ogr.LayerSetIgnoredFields(layer, null);
             } else {
-                List<String> ignoredFields = new ArrayList<String>();
+                List<String> ignoredFields = new ArrayList<>();
                 ignoredFields.add("OGR_STYLE");
                 // if no geometry, skip it
                 if (querySchema.getGeometryDescriptor() == null) {

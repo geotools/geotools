@@ -68,7 +68,7 @@ public class VectorLayerHelper extends InfoToolHelper<SimpleFeatureCollection> {
     public VectorLayerHelper(MapContent context, Layer layer) {
         super(context, layer.getFeatureSource().getSchema().getCoordinateReferenceSystem());
 
-        this.layerRef = new WeakReference<Layer>(layer);
+        this.layerRef = new WeakReference<>(layer);
 
         final GeometryDescriptor geomDesc =
                 layer.getFeatureSource().getSchema().getGeometryDescriptor();

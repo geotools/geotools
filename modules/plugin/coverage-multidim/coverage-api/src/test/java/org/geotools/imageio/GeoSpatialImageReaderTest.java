@@ -177,10 +177,9 @@ public class GeoSpatialImageReaderTest {
             super(new TestGeospatialImageReaderSpi());
         }
 
-        private static Map<Name, CoverageSourceDescriptor> descriptors =
-                new HashMap<Name, CoverageSourceDescriptor>();
+        private static Map<Name, CoverageSourceDescriptor> descriptors = new HashMap<>();
 
-        private static List<Name> coverageNames = new ArrayList<Name>();
+        private static List<Name> coverageNames = new ArrayList<>();
 
         static {
             coverageNames.add(new NameImpl("testCoverage1"));

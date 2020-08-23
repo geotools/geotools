@@ -167,7 +167,7 @@ public class FeaturePropertyTypeBinding extends AbstractComplexBinding {
             Object clientProperties = att.getUserData().get(Attributes.class);
             Map<Name, Object> map = null;
             if (clientProperties == null) {
-                map = new HashMap<Name, Object>();
+                map = new HashMap<>();
                 att.getUserData().put(Attributes.class, map);
             } else {
                 map = (Map<Name, Object>) clientProperties;

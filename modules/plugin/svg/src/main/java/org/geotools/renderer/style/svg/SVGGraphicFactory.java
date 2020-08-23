@@ -64,7 +64,7 @@ public class SVGGraphicFactory implements Factory, ExternalGraphicFactory, Graph
     RenderableSVGCache glyphCache;
 
     /** The possible mime types for SVG */
-    static final Set<String> formats = new HashSet<String>();
+    static final Set<String> formats = new HashSet<>();
 
     static final CanonicalSet<String> CANONICAL_PATHS = CanonicalSet.newInstance(String.class);
 

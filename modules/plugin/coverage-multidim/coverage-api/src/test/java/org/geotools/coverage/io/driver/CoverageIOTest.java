@@ -49,7 +49,7 @@ public class CoverageIOTest extends Assert {
         assertSame(testDriver, driversSet.iterator().next());
 
         // Connecting to the only coverageAccess supported by the TestDriver
-        Map<String, Serializable> connectionParams = new HashMap<String, Serializable>();
+        Map<String, Serializable> connectionParams = new HashMap<>();
         connectionParams.put(DefaultFileDriver.URL.key, testURL);
         boolean canConnect = CoverageIO.canConnect(connectionParams);
         CoverageAccess access = CoverageIO.connect(connectionParams);
@@ -58,7 +58,7 @@ public class CoverageIOTest extends Assert {
         assertTrue(canConnect);
 
         // Trying to connect to coverageAccess not being supported by the testDriver
-        connectionParams = new HashMap<String, Serializable>();
+        connectionParams = new HashMap<>();
         connectionParams.put(DefaultFileDriver.URL.key, new URL("file:///unsupportedCoverage"));
         canConnect = CoverageIO.canConnect(connectionParams);
         assertFalse(canConnect);

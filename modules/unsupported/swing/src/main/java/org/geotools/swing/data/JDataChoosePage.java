@@ -62,7 +62,7 @@ public class JDataChoosePage extends JPage {
         JLabel description = new JLabel("Available DataStores on your classpath");
         page.add(description, "grow, span");
 
-        java.util.List<DataStoreFactorySpi> factoryList = new ArrayList<DataStoreFactorySpi>();
+        java.util.List<DataStoreFactorySpi> factoryList = new ArrayList<>();
         for (Iterator<DataStoreFactorySpi> iter = DataStoreFinder.getAvailableDataStores();
                 iter.hasNext(); ) {
             factoryList.add(iter.next());

@@ -866,7 +866,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
         // setting bands names.
 
         Category noDataCategory = null;
-        final Map<String, Object> properties = new HashMap<String, Object>();
+        final Map<String, Object> properties = new HashMap<>();
         if (!Double.isNaN(noData)) {
             noDataCategory =
                     new Category(
@@ -882,7 +882,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             CoverageUtilities.setROIProperty(properties, roi);
         }
 
-        Set<String> bandNames = new HashSet<String>();
+        Set<String> bandNames = new HashSet<>();
         for (int i = 0; i < numBands; i++) {
             final ColorInterpretation colorInterpretation = TypeMap.getColorInterpretation(cm, i);
             if (colorInterpretation == null)

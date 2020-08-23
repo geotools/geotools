@@ -343,7 +343,7 @@ public class CommonsConverterFactory implements ConverterFactory {
         }
     }
     /** No need for FastHashMap - we are only registering during construction */
-    private static HashMap<Class<?>, Converter> register = new HashMap<Class<?>, Converter>();
+    private static HashMap<Class<?>, Converter> register = new HashMap<>();
 
     static {
         register.put(URI.class, new URIConverter());

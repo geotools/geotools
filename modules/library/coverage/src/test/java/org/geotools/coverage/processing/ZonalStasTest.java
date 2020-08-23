@@ -139,8 +139,7 @@ public class ZonalStasTest extends TestCase {
         /*
          * results
          */
-        private Map<String, Map<Statistic, List<Result>>> feature2StatisticsMap =
-                new HashMap<String, Map<Statistic, List<Result>>>();
+        private Map<String, Map<Statistic, List<Result>>> feature2StatisticsMap = new HashMap<>();
 
         private StatisticsTool(
                 Set<Statistic> statisticsSet,
@@ -246,8 +245,7 @@ public class ZonalStasTest extends TestCase {
                     final ZonalStats stats =
                             (ZonalStats)
                                     coverage.getProperty(ZonalStatsDescriptor.ZONAL_STATS_PROPERTY);
-                    final Map<Statistic, List<Result>> statsMap =
-                            new HashMap<Statistic, List<Result>>();
+                    final Map<Statistic, List<Result>> statsMap = new HashMap<>();
                     for (Statistic statistic : statistis) {
                         final List<Range> inclRanges = CollectionFactory.list();
                         inclRanges.addAll(inclusionRanges);
@@ -323,7 +321,7 @@ public class ZonalStasTest extends TestCase {
                                 null,
                                 null);
 
-        List<SimpleFeature> polygonList = new ArrayList<SimpleFeature>();
+        List<SimpleFeature> polygonList = new ArrayList<>();
         FeatureIterator<SimpleFeature> featureIterator = testPolygons.features();
         while (featureIterator.hasNext()) {
             SimpleFeature feature = featureIterator.next();
@@ -332,7 +330,7 @@ public class ZonalStasTest extends TestCase {
         featureIterator.close();
 
         // choose the stats
-        Set<Statistic> statsSet = new LinkedHashSet<Statistic>();
+        Set<Statistic> statsSet = new LinkedHashSet<>();
         statsSet.add(Statistic.MIN);
         statsSet.add(Statistic.MAX);
         statsSet.add(Statistic.MEAN);
@@ -342,11 +340,9 @@ public class ZonalStasTest extends TestCase {
 
         // select the bands to work on
         Integer[] bands = new Integer[] {0};
-        List<Range<Double>> inclusionRanges = new ArrayList<Range<Double>>();
-        inclusionRanges.add(
-                new Range<Double>(Double.valueOf(0), false, Double.valueOf(1300), true));
-        inclusionRanges.add(
-                new Range<Double>(Double.valueOf(1370), true, Double.valueOf(1600), true));
+        List<Range<Double>> inclusionRanges = new ArrayList<>();
+        inclusionRanges.add(new Range<>(Double.valueOf(0), false, Double.valueOf(1300), true));
+        inclusionRanges.add(new Range<>(Double.valueOf(1370), true, Double.valueOf(1600), true));
 
         // create the proper instance
         StatisticsTool statisticsTool =
@@ -441,7 +437,7 @@ public class ZonalStasTest extends TestCase {
                                 null,
                                 null);
 
-        List<SimpleFeature> polygonList = new ArrayList<SimpleFeature>();
+        List<SimpleFeature> polygonList = new ArrayList<>();
         FeatureIterator<SimpleFeature> featureIterator = testPolygons.features();
         while (featureIterator.hasNext()) {
             SimpleFeature feature = featureIterator.next();
@@ -450,7 +446,7 @@ public class ZonalStasTest extends TestCase {
         featureIterator.close();
 
         // choose the stats
-        Set<Statistic> statsSet = new LinkedHashSet<Statistic>();
+        Set<Statistic> statsSet = new LinkedHashSet<>();
         statsSet.add(Statistic.MIN);
         statsSet.add(Statistic.MAX);
         statsSet.add(Statistic.MEAN);
@@ -460,11 +456,9 @@ public class ZonalStasTest extends TestCase {
 
         // select the bands to work on
         Integer[] bands = new Integer[] {0};
-        List<Range<Double>> inclusionRanges = new ArrayList<Range<Double>>();
-        inclusionRanges.add(
-                new Range<Double>(Double.valueOf(0), false, Double.valueOf(1300), true));
-        inclusionRanges.add(
-                new Range<Double>(Double.valueOf(1370), true, Double.valueOf(1600), true));
+        List<Range<Double>> inclusionRanges = new ArrayList<>();
+        inclusionRanges.add(new Range<>(Double.valueOf(0), false, Double.valueOf(1300), true));
+        inclusionRanges.add(new Range<>(Double.valueOf(1370), true, Double.valueOf(1600), true));
 
         // create the proper instance
         StatisticsTool statisticsTool =

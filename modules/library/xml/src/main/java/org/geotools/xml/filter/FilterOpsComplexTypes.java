@@ -840,8 +840,7 @@ public class FilterOpsComplexTypes {
             try {
                 FilterFactory2 fac = CommonFactoryFinder.getFilterFactory2(null);
                 // LogicFilter filter=fac.createLogicFilter(FilterType.LOGIC_OR);
-                List<org.opengis.filter.Filter> filters =
-                        new ArrayList<org.opengis.filter.Filter>();
+                List<org.opengis.filter.Filter> filters = new ArrayList<>();
                 Set ids = new HashSet();
                 boolean isOnlyFids = true;
                 for (int i = 0; i < value.length; i++) {
@@ -1021,7 +1020,7 @@ public class FilterOpsComplexTypes {
                                 FeatureIdType.attrs[0].getName());
             }
             FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
-            Set<FeatureId> fids = new HashSet<FeatureId>();
+            Set<FeatureId> fids = new HashSet<>();
             fids.add(ff.featureId(fid));
 
             return ff.id(fids);
@@ -2413,9 +2412,8 @@ public class FilterOpsComplexTypes {
                 throw new SAXException("Expected AND or OR logic filter");
             }
             try {
-                ArrayList<org.opengis.filter.Filter> children =
-                        new ArrayList<org.opengis.filter.Filter>(value.length);
-                Set<Identifier> ids = new HashSet<Identifier>(value.length);
+                ArrayList<org.opengis.filter.Filter> children = new ArrayList<>(value.length);
+                Set<Identifier> ids = new HashSet<>(value.length);
                 boolean fidOnly = true;
 
                 // LogicFilter filter = factory.createLogicFilter( type );

@@ -1727,7 +1727,7 @@ public class SymbolMBLayer extends MBLayer {
     public List<FeatureTypeStyle> transformInternal(MBStyle styleContext) {
         MBStyleTransformer transformer = new MBStyleTransformer(parse);
         StyleBuilder sb = new StyleBuilder();
-        List<Symbolizer> symbolizers = new ArrayList<Symbolizer>();
+        List<Symbolizer> symbolizers = new ArrayList<>();
 
         LabelPlacement labelPlacement;
         // Create point or line placement

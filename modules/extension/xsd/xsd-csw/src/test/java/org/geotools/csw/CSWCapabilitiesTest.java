@@ -211,7 +211,7 @@ public class CSWCapabilitiesTest {
         // System.out.println(encoded);
 
         // prepare xmlunit
-        Map<String, String> namespaces = new HashMap<String, String>();
+        Map<String, String> namespaces = new HashMap<>();
         namespaces.put("csw", CSW.NAMESPACE);
         namespaces.put("ows", OWS.NAMESPACE);
         namespaces.put("rim", rimNamespace);

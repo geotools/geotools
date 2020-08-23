@@ -111,7 +111,7 @@ public class MongoInferredMapper extends AbstractCollectionMapper {
 
         // remove geometries from indexed and mapped sets
         indexedFields.removeAll(indexedGeometries);
-        for (String mappedProperty : new ArrayList<String>(mappedFields.keySet())) {
+        for (String mappedProperty : new ArrayList<>(mappedFields.keySet())) {
             for (String indexedGeometry : indexedGeometries) {
                 if (mappedProperty.startsWith(indexedGeometry)) {
                     mappedFields.remove(mappedProperty);

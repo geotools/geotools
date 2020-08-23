@@ -36,20 +36,19 @@ public class CoverageResponse {
         UNAVAILABLE
     }
 
-    private List<Exception> exceptions = Collections.synchronizedList(new ArrayList<Exception>());
+    private List<Exception> exceptions = Collections.synchronizedList(new ArrayList<>());
 
     private String handle = null;
 
     private CoverageRequest originatingRequest = null;
 
-    private List<GridCoverage> results =
-            Collections.synchronizedList(new ArrayList<GridCoverage>());
+    private List<GridCoverage> results = Collections.synchronizedList(new ArrayList<>());
 
     private Status status = Status.UNAVAILABLE;
 
     public Collection<Exception> getExceptions() {
         synchronized (this.exceptions) {
-            return new ArrayList<Exception>(this.exceptions);
+            return new ArrayList<>(this.exceptions);
         }
     }
 
@@ -98,7 +97,7 @@ public class CoverageResponse {
         listener.started();
         try {
             synchronized (this.results) {
-                return new ArrayList<GridCoverage>(this.results);
+                return new ArrayList<>(this.results);
             }
         } finally {
             listener.complete();

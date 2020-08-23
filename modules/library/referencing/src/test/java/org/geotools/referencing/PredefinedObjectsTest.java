@@ -197,7 +197,7 @@ public final class PredefinedObjectsTest {
                 DefaultGeodeticDatum.WGS84.toWKT(0));
 
         // Test properties
-        final Map<String, Object> properties = new HashMap<String, Object>();
+        final Map<String, Object> properties = new HashMap<>();
         properties.put("name", "This is a name");
         properties.put("scope", "This is a scope");
         properties.put("scope_fr", "Valide dans ce domaine");

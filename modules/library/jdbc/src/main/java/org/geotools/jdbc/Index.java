@@ -42,7 +42,7 @@ public class Index {
         super();
         this.typeName = typeName;
         this.indexName = indexName;
-        this.attributes = new ArrayList<String>(Arrays.asList(attributes));
+        this.attributes = new ArrayList<>(Arrays.asList(attributes));
         this.unique = unique;
     }
 
@@ -52,7 +52,7 @@ public class Index {
         this.typeName = typeName;
         this.indexName = indexName;
         this.hints = hints;
-        this.attributes = new ArrayList<String>(Arrays.asList(attributes));
+        this.attributes = new ArrayList<>(Arrays.asList(attributes));
         this.unique = unique;
     }
 

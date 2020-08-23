@@ -364,7 +364,7 @@ public class MarkAlongLine implements Stroke {
         LiteShape2 liteShape = (LiteShape2) shape;
         if (MultiPolygon.class.isAssignableFrom(liteShape.getGeometry().getClass())) {
             MultiPolygon multiPolygon = (MultiPolygon) liteShape.getGeometry();
-            ArrayList<LiteShape2> polygons = new ArrayList<LiteShape2>();
+            ArrayList<LiteShape2> polygons = new ArrayList<>();
 
             for (int i = 0; i < multiPolygon.getNumGeometries(); i++) {
                 polygons.add(
@@ -599,7 +599,7 @@ public class MarkAlongLine implements Stroke {
         private static final String FINAL_COORDS = "final_coords";
         private static final String SKIP_ME = "skip_me";
 
-        private Map<String, Object> hints = new HashMap<String, Object>();
+        private Map<String, Object> hints = new HashMap<>();
 
         private double segmentLength = -1;
 

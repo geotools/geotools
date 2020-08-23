@@ -65,17 +65,15 @@ public class VirtualTable implements Serializable {
 
     String sql;
 
-    List<String> primaryKeyColumns = new CopyOnWriteArrayList<String>();
+    List<String> primaryKeyColumns = new CopyOnWriteArrayList<>();
 
-    Map<String, Class<? extends Geometry>> geometryTypes =
-            new ConcurrentHashMap<String, Class<? extends Geometry>>();
+    Map<String, Class<? extends Geometry>> geometryTypes = new ConcurrentHashMap<>();
 
-    Map<String, Integer> nativeSrids = new ConcurrentHashMap<String, Integer>();
+    Map<String, Integer> nativeSrids = new ConcurrentHashMap<>();
 
-    Map<String, Integer> dimensions = new ConcurrentHashMap<String, Integer>();
+    Map<String, Integer> dimensions = new ConcurrentHashMap<>();
 
-    Map<String, VirtualTableParameter> parameters =
-            new ConcurrentHashMap<String, VirtualTableParameter>();
+    Map<String, VirtualTableParameter> parameters = new ConcurrentHashMap<>();
 
     boolean escapeSql = false;
 
@@ -135,24 +133,22 @@ public class VirtualTable implements Serializable {
     /** Clone a virtual table under a different name */
     public VirtualTable(String name, VirtualTable other) {
         this(name, other.sql);
-        this.geometryTypes =
-                new ConcurrentHashMap<String, Class<? extends Geometry>>(other.geometryTypes);
-        this.nativeSrids = new ConcurrentHashMap<String, Integer>(other.nativeSrids);
-        this.dimensions = new ConcurrentHashMap<String, Integer>(other.dimensions);
-        this.parameters = new ConcurrentHashMap<String, VirtualTableParameter>(other.parameters);
-        this.primaryKeyColumns = new ArrayList<String>(other.primaryKeyColumns);
+        this.geometryTypes = new ConcurrentHashMap<>(other.geometryTypes);
+        this.nativeSrids = new ConcurrentHashMap<>(other.nativeSrids);
+        this.dimensions = new ConcurrentHashMap<>(other.dimensions);
+        this.parameters = new ConcurrentHashMap<>(other.parameters);
+        this.primaryKeyColumns = new ArrayList<>(other.primaryKeyColumns);
         this.escapeSql = other.escapeSql;
     }
 
     /** Clone a virtual table */
     public VirtualTable(VirtualTable other) {
         this(other.name, other.sql);
-        this.geometryTypes =
-                new ConcurrentHashMap<String, Class<? extends Geometry>>(other.geometryTypes);
-        this.nativeSrids = new ConcurrentHashMap<String, Integer>(other.nativeSrids);
-        this.dimensions = new ConcurrentHashMap<String, Integer>(other.dimensions);
-        this.parameters = new ConcurrentHashMap<String, VirtualTableParameter>(other.parameters);
-        this.primaryKeyColumns = new ArrayList<String>(other.primaryKeyColumns);
+        this.geometryTypes = new ConcurrentHashMap<>(other.geometryTypes);
+        this.nativeSrids = new ConcurrentHashMap<>(other.nativeSrids);
+        this.dimensions = new ConcurrentHashMap<>(other.dimensions);
+        this.parameters = new ConcurrentHashMap<>(other.parameters);
+        this.primaryKeyColumns = new ArrayList<>(other.primaryKeyColumns);
         this.escapeSql = other.escapeSql;
     }
 

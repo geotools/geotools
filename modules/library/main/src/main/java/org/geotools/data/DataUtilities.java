@@ -191,10 +191,10 @@ import org.opengis.util.ProgressListener;
  */
 public class DataUtilities {
     /** Typemap used by {@link #createType(String, String)} methods */
-    static Map<String, Class> typeMap = new HashMap<String, Class>();
+    static Map<String, Class> typeMap = new HashMap<>();
 
     /** Reverse type map used by {@link #encodeType(FeatureType)} */
-    static Map<Class, String> typeEncode = new HashMap<Class, String>();
+    static Map<Class, String> typeEncode = new HashMap<>();
 
     static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
 
@@ -715,7 +715,7 @@ public class DataUtilities {
 
         if (src instanceof List) {
             List list = (List) src;
-            List<Object> copy = new ArrayList<Object>(list.size());
+            List<Object> copy = new ArrayList<>(list.size());
 
             for (Iterator i = list.iterator(); i.hasNext(); ) {
                 copy.add(duplicate(i.next()));
@@ -1336,10 +1336,10 @@ public class DataUtilities {
         //
         List<PropertyDescriptor> attributes;
         Collection<PropertyDescriptor> descriptors = featureType.getDescriptors();
-        attributes = new ArrayList<PropertyDescriptor>(descriptors);
+        attributes = new ArrayList<>(descriptors);
 
-        List<String> simpleProperties = new ArrayList<String>();
-        List<AttributeDescriptor> simpleAttributes = new ArrayList<AttributeDescriptor>();
+        List<String> simpleProperties = new ArrayList<>();
+        List<AttributeDescriptor> simpleAttributes = new ArrayList<>();
 
         // HACK HACK!! the parser sets no namespace to the properties so we're
         // doing a hardcode property name black list
@@ -1436,7 +1436,7 @@ public class DataUtilities {
      * @return List of features copied into memory
      */
     public static <F extends Feature> List<F> list(FeatureCollection<?, F> featureCollection) {
-        final ArrayList<F> list = new ArrayList<F>();
+        final ArrayList<F> list = new ArrayList<>();
         FeatureIterator<F> iter = featureCollection.features();
         try {
             while (iter.hasNext()) {
@@ -1456,7 +1456,7 @@ public class DataUtilities {
      */
     public static <F extends Feature> List<F> list(
             FeatureCollection<?, F> featureCollection, int maxFeatures) {
-        final ArrayList<F> list = new ArrayList<F>();
+        final ArrayList<F> list = new ArrayList<>();
         FeatureIterator<F> iter = featureCollection.features();
         try {
             for (int count = 0; iter.hasNext() && count < maxFeatures; count++) {
@@ -1475,7 +1475,7 @@ public class DataUtilities {
      * @return Iterator wrapped around provided FeatureIterator, implements Closeable
      */
     public static <F extends Feature> Iterator<F> iterator(FeatureIterator<F> featureIterator) {
-        return new BridgeIterator<F>(featureIterator);
+        return new BridgeIterator<>(featureIterator);
     }
 
     /**
@@ -1484,7 +1484,7 @@ public class DataUtilities {
      * <p>This method can be slurp an in memory record of the contents of a
      */
     public static Set<String> fidSet(FeatureCollection<?, ?> featureCollection) {
-        final HashSet<String> fids = new HashSet<String>();
+        final HashSet<String> fids = new HashSet<>();
         try {
             featureCollection.accepts(
                     new FeatureVisitor() {
@@ -2493,7 +2493,7 @@ public class DataUtilities {
             return null;
         }
 
-        List<PropertyName> atts = new LinkedList<PropertyName>();
+        List<PropertyName> atts = new LinkedList<>();
 
         if (atts1 != null) {
             atts.addAll(atts1);
@@ -2521,7 +2521,7 @@ public class DataUtilities {
             SimpleFeatureType type, List<PropertyName> oldProps) {
         Iterator<PropertyDescriptor> ii = type.getDescriptors().iterator();
 
-        List<PropertyName> properties = new ArrayList<PropertyName>();
+        List<PropertyName> properties = new ArrayList<>();
 
         while (ii.hasNext()) {
 
@@ -2986,7 +2986,7 @@ public class DataUtilities {
      */
     public static Feature templateFeature(FeatureType schema) {
         FeatureFactory ff = CommonFactoryFinder.getFeatureFactory(null);
-        Collection<Property> value = new ArrayList<Property>();
+        Collection<Property> value = new ArrayList<>();
 
         for (PropertyDescriptor pd : schema.getDescriptors()) {
             if (pd instanceof AttributeDescriptor) {

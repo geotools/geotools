@@ -105,7 +105,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     protected final DuplicatingFilterVisitor copyFilter;
 
     /** This is our internal stack; used to maintain state as we copy sub elements. */
-    protected Stack<Object> pages = new Stack<Object>();
+    protected Stack<Object> pages = new Stack<>();
 
     public DuplicatingStyleVisitor() {
         this(CommonFactoryFinder.getStyleFactory(null));
@@ -359,7 +359,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
      */
     protected List<Expression> copyExpressions(List<Expression> expressions) {
         if (expressions == null) return null;
-        List<Expression> copy = new ArrayList<Expression>(expressions.size());
+        List<Expression> copy = new ArrayList<>(expressions.size());
         for (Expression expression : expressions) {
             copy.add(copy(expression));
         }
@@ -433,7 +433,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     @SuppressWarnings("unchecked")
     protected <K, V> Map<K, V> copy(Map<K, V> customProperties) {
         if (customProperties == null) return null;
-        return new HashMap<K, V>(customProperties);
+        return new HashMap<>(customProperties);
     }
 
     /**
@@ -576,7 +576,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         if (fonts == null) {
             return null;
         }
-        List<Font> copy = new ArrayList<Font>(fonts.size());
+        List<Font> copy = new ArrayList<>(fonts.size());
         for (Font font : fonts) {
             copy.add(copy(font));
         }

@@ -118,8 +118,8 @@ class MergeSortDumper {
         int count = 0;
         File file = null;
         SimpleFeatureIO io = null;
-        List<SimpleFeature> features = new ArrayList<SimpleFeature>();
-        List<FeatureBlockReader> readers = new ArrayList<FeatureBlockReader>();
+        List<SimpleFeature> features = new ArrayList<>();
+        List<FeatureBlockReader> readers = new ArrayList<>();
         boolean cleanFile = true;
         try {
             // read and store into files as necessary

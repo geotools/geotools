@@ -217,7 +217,7 @@ public class ProjectionHandler {
             // referencing
             // subsystem directly
             ReferencedEnvelope re = renderingEnvelope;
-            List<ReferencedEnvelope> envelopes = new ArrayList<ReferencedEnvelope>();
+            List<ReferencedEnvelope> envelopes = new ArrayList<>();
             addTransformedEnvelope(re, envelopes);
 
             if (CRS.getAxisOrder(renderingCRS) == CRS.AxisOrder.NORTH_EAST) {
@@ -252,7 +252,7 @@ public class ProjectionHandler {
                 double maxY = renderingEnvelope.getMaxY();
                 ReferencedEnvelope re1 =
                         new ReferencedEnvelope(minX, datelineX - EPS, minY, maxY, renderingCRS);
-                List<ReferencedEnvelope> result = new ArrayList<ReferencedEnvelope>();
+                List<ReferencedEnvelope> result = new ArrayList<>();
                 ReferencedEnvelope tx1 = transformEnvelope(re1, WGS84);
                 if (tx1 != null) {
                     tx1.expandToInclude(180, tx1.getMinY());
@@ -303,7 +303,7 @@ public class ProjectionHandler {
         // We need to split reprojected envelope and normalize it. To be lenient with
         // situations in which the data is just broken (people saying 4326 just because they
         // have no idea at all) we don't actually split, but add elements
-        List<ReferencedEnvelope> envelopes = new ArrayList<ReferencedEnvelope>();
+        List<ReferencedEnvelope> envelopes = new ArrayList<>();
         envelopes.add(re);
         adjustEnvelope(re, envelopes, false);
         mergeEnvelopes(envelopes);
@@ -848,10 +848,10 @@ public class ProjectionHandler {
 
     /** Can modify/wrap the transform to handle specific projection issues */
     public MathTransform getRenderingTransform(MathTransform mt) throws FactoryException {
-        List<MathTransform> elements = new ArrayList<MathTransform>();
+        List<MathTransform> elements = new ArrayList<>();
         accumulateTransforms(mt, elements);
 
-        List<MathTransform> wrapped = new ArrayList<MathTransform>();
+        List<MathTransform> wrapped = new ArrayList<>();
         List<MathTransform> datumShiftChain = null;
         boolean datumShiftDetected = false;
         for (MathTransform element : elements) {
@@ -867,7 +867,7 @@ public class ProjectionHandler {
                     datumShiftChain = null;
                 }
             } else if (element instanceof GeocentricTransform) {
-                datumShiftChain = new ArrayList<MathTransform>();
+                datumShiftChain = new ArrayList<>();
                 datumShiftChain.add(element);
             } else {
                 wrapped.add(element);

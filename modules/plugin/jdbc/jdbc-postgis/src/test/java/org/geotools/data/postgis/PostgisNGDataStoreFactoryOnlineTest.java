@@ -33,7 +33,6 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
 import org.geotools.util.factory.Hints;
-import org.geotools.util.factory.Hints.Key;
 
 public class PostgisNGDataStoreFactoryOnlineTest extends JDBCTestSupport {
 
@@ -56,7 +55,7 @@ public class PostgisNGDataStoreFactoryOnlineTest extends JDBCTestSupport {
             throws IOException {
         Properties db = fixture;
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(HOST.key, db.getProperty(HOST.key));
         params.put(DATABASE.key, db.getProperty(DATABASE.key));
         params.put(PORT.key, db.getProperty(PORT.key));
@@ -83,7 +82,7 @@ public class PostgisNGDataStoreFactoryOnlineTest extends JDBCTestSupport {
         PostgisNGDataStoreFactory factory = new PostgisNGDataStoreFactory();
         Properties db = fixture;
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(HOST.key, db.getProperty(HOST.key));
         params.put(DATABASE.key, db.getProperty(DATABASE.key));
         params.put(PORT.key, db.getProperty(PORT.key));
@@ -98,7 +97,7 @@ public class PostgisNGDataStoreFactoryOnlineTest extends JDBCTestSupport {
             // check dialect
             PostGISDialect dialect = (PostGISDialect) store.getSQLDialect();
             assertFalse(dialect.isSimplifyEnabled());
-            Set<Hints.Key> baseHints = new HashSet<Key>();
+            Set<Hints.Key> baseHints = new HashSet<>();
             dialect.addSupportedHints(baseHints);
             assertTrue(baseHints.isEmpty());
         } finally {
@@ -110,7 +109,7 @@ public class PostgisNGDataStoreFactoryOnlineTest extends JDBCTestSupport {
         PostgisNGDataStoreFactory factory = new PostgisNGDataStoreFactory();
         Properties db = fixture;
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(HOST.key, db.getProperty(HOST.key));
         params.put(DATABASE.key, db.getProperty(DATABASE.key));
         params.put(PORT.key, db.getProperty(PORT.key));
@@ -124,7 +123,7 @@ public class PostgisNGDataStoreFactoryOnlineTest extends JDBCTestSupport {
             // check dialect
             PostGISDialect dialect = (PostGISDialect) store.getSQLDialect();
             assertTrue(dialect.isSimplifyEnabled());
-            Set<Hints.Key> baseHints = new HashSet<Key>();
+            Set<Hints.Key> baseHints = new HashSet<>();
             dialect.addSupportedHints(baseHints);
             assertFalse(baseHints.isEmpty());
             assertTrue(baseHints.contains(Hints.GEOMETRY_SIMPLIFICATION));
@@ -137,7 +136,7 @@ public class PostgisNGDataStoreFactoryOnlineTest extends JDBCTestSupport {
         PostgisNGDataStoreFactory factory = new PostgisNGDataStoreFactory();
         Properties db = fixture;
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(HOST.key, db.getProperty(HOST.key));
         params.put(DATABASE.key, db.getProperty(DATABASE.key));
         params.put(PORT.key, db.getProperty(PORT.key));

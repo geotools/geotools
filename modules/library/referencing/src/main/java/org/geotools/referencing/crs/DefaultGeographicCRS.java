@@ -78,7 +78,7 @@ public class DefaultGeographicCRS extends AbstractSingleCRS implements Geographi
     public static final DefaultGeographicCRS WGS84_3D;
 
     static {
-        final Map<String, Object> properties = new HashMap<String, Object>(4);
+        final Map<String, Object> properties = new HashMap<>(4);
         properties.put(NAME_KEY, "WGS84(DD)"); // Name used in WCS 1.0.
         final String[] alias = {
             "WGS84", "WGS 84" // EPSG name.

@@ -28,7 +28,7 @@ import org.locationtech.jts.io.WKTReader;
  */
 public class GeometryTypeConverterTest extends TestCase {
     Set<ConverterFactory> factories = null;
-    List<String> tests = new ArrayList<String>();
+    List<String> tests = new ArrayList<>();
 
     WKTReader wktReader = new WKTReader();
 

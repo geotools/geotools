@@ -247,7 +247,7 @@ public final class GeoTools {
      * #addClassLoader(ClassLoader)}
      */
     private static final Set<ClassLoader> addedClassLoaders =
-            Collections.synchronizedSet(new HashSet<ClassLoader>());
+            Collections.synchronizedSet(new HashSet<>());
 
     /**
      * The bindings between {@linkplain System#getProperties system properties} and a hint key.
@@ -365,7 +365,7 @@ public final class GeoTools {
      */
     private static List<String> getGeoToolsJars() {
         final Pattern pattern = Pattern.compile(".*\\/" + getVersion() + "\\/(gt-.*jar$)");
-        final List<String> jarNames = new ArrayList<String>();
+        final List<String> jarNames = new ArrayList<>();
 
         String pathSep = System.getProperty("path.separator");
         String classpath = System.getProperty("java.class.path");

@@ -46,14 +46,14 @@ public class JDataStoreWizard extends Wizard {
     }
 
     public JDataStoreWizard(DataStoreFactorySpi format) {
-        this(format, new HashMap<String, Object>());
+        this(format, new HashMap<>());
     }
 
     public JDataStoreWizard(DataStoreFactorySpi format, Map<String, Object> params) {
         setWindowTitle(format == null ? "Connect" : format == null ? "" : format.getDisplayName());
 
         if (params == null) {
-            connectionParameters = new HashMap<String, Object>();
+            connectionParameters = new HashMap<>();
         } else {
             connectionParameters = params;
         }

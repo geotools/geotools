@@ -83,7 +83,7 @@ public final class StorageFile implements Comparable<StorageFile>, FileWriter {
      * @param storageFiles files to execute the replace functionality.
      */
     public static void replaceOriginals(StorageFile... storageFiles) throws IOException {
-        SortedSet<StorageFile> files = new TreeSet<StorageFile>(Arrays.asList(storageFiles));
+        SortedSet<StorageFile> files = new TreeSet<>(Arrays.asList(storageFiles));
 
         ShpFiles currentShpFiles = null;
         URL shpURL = null;

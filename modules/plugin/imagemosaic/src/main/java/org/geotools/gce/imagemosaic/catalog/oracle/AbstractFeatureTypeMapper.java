@@ -70,8 +70,8 @@ public abstract class AbstractFeatureTypeMapper implements FeatureTypeMapper {
         mappedName = originalName.getLocalPart();
         mappedName = remap(mappedName);
         List<AttributeDescriptor> attributes = featureType.getAttributeDescriptors();
-        definitions = new LinkedList<Definition>();
-        definitionsMapping = new HashMap<Name, Definition>();
+        definitions = new LinkedList<>();
+        definitionsMapping = new HashMap<>();
         // Loop over attributes and prepare the definitions
         for (AttributeDescriptor attribute : attributes) {
             final String originalAttribute = attribute.getLocalName();

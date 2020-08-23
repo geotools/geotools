@@ -32,7 +32,7 @@ public class TemporalOperatorsImpl implements TemporalOperators {
     }
 
     public TemporalOperatorsImpl(Collection<TemporalOperator> operators) {
-        this.operators = new LinkedHashSet<TemporalOperator>();
+        this.operators = new LinkedHashSet<>();
         this.operators.addAll(operators);
     }
 

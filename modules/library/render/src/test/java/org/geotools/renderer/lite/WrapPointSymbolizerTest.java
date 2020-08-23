@@ -40,7 +40,7 @@ public class WrapPointSymbolizerTest {
         mc.getViewport().setBounds(bounds);
 
         StreamingRenderer renderer = new StreamingRenderer();
-        Map<Object, Object> rendererParams = new HashMap<Object, Object>();
+        Map<Object, Object> rendererParams = new HashMap<>();
         rendererParams.put(StreamingRenderer.ADVANCED_PROJECTION_HANDLING_KEY, true);
         rendererParams.put(StreamingRenderer.CONTINUOUS_MAP_WRAPPING, true);
         renderer.setRendererHints(rendererParams);

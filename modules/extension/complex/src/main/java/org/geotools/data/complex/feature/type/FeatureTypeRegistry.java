@@ -116,12 +116,12 @@ public class FeatureTypeRegistry {
             FeatureTypeRegistryConfiguration helper,
             boolean includeAttributes) {
 
-        schemas = new ArrayList<SchemaIndex>();
+        schemas = new ArrayList<>();
         this.typeFactory = typeFactory;
-        descriptorRegistry = new HashMap<Name, AttributeDescriptor>();
-        typeRegistry = new HashMap<Name, AttributeType>();
-        anonTypeRegistry = new HashMap<Name, AttributeType>();
-        processingTypes = new Stack<Name>();
+        descriptorRegistry = new HashMap<>();
+        typeRegistry = new HashMap<>();
+        anonTypeRegistry = new HashMap<>();
+        processingTypes = new Stack<>();
         this.helper = helper;
         this.includeAttributes = includeAttributes;
 
@@ -206,7 +206,7 @@ public class FeatureTypeRegistry {
             return;
         }
 
-        List<AttributeDescriptor> substitutionGroup = new ArrayList<AttributeDescriptor>();
+        List<AttributeDescriptor> substitutionGroup = new ArrayList<>();
         descriptor.getUserData().put("substitutionGroup", substitutionGroup);
 
         int minOccurs = Schemas.getMinOccurs(container, elemDecl);
@@ -536,8 +536,7 @@ public class FeatureTypeRegistry {
             List<XSDElementDeclaration> children =
                     Schemas.getChildElementDeclarations(typeDefinition, includeParents);
 
-            final Collection<PropertyDescriptor> schema =
-                    new ArrayList<PropertyDescriptor>(children.size());
+            final Collection<PropertyDescriptor> schema = new ArrayList<>(children.size());
 
             XSDElementDeclaration childDecl;
             AttributeDescriptor descriptor;
@@ -668,15 +667,11 @@ public class FeatureTypeRegistry {
 
     /** Caches the basic types */
     private static Map<Class<? extends FeatureTypeRegistryConfiguration>, Map<Name, AttributeType>>
-            FOUNDATION_TYPES =
-                    new HashMap<
-                            Class<? extends FeatureTypeRegistryConfiguration>,
-                            Map<Name, AttributeType>>();
+            FOUNDATION_TYPES = new HashMap<>();
 
     private void createFoundationTypes() {
         Map<Name, AttributeType> foundationTypes =
-                FOUNDATION_TYPES.computeIfAbsent(
-                        helper.getClass(), o -> new HashMap<Name, AttributeType>());
+                FOUNDATION_TYPES.computeIfAbsent(helper.getClass(), o -> new HashMap<>());
         synchronized (foundationTypes) {
             if (!foundationTypes.isEmpty()) {
                 typeRegistry.putAll(foundationTypes);

@@ -30,7 +30,7 @@ public final class DimensionNameType extends CodeList<DimensionNameType> {
     private static final long serialVersionUID = -8534729639298737965L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<DimensionNameType> VALUES = new ArrayList<DimensionNameType>(8);
+    private static final List<DimensionNameType> VALUES = new ArrayList<>(8);
 
     /** Ordinate (y) axis. */
     @UML(identifier = "row", obligation = CONDITIONAL, specification = ISO_19115)

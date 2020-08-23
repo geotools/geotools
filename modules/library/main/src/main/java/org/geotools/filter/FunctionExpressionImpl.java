@@ -93,7 +93,7 @@ public abstract class FunctionExpressionImpl extends org.geotools.filter.Default
         this.functionName = new FunctionNameImpl(name, (Class<?>) null);
         this.name = name.getLocalPart();
         this.fallback = fallback;
-        params = new ArrayList<org.opengis.filter.expression.Expression>();
+        params = new ArrayList<>();
     }
 
     /**
@@ -135,7 +135,7 @@ public abstract class FunctionExpressionImpl extends org.geotools.filter.Default
             throw new IllegalArgumentException(
                     "Function " + name + " expected " + argCount + " arguments, got " + paramsSize);
         }
-        this.params = new ArrayList<Expression>(params);
+        this.params = new ArrayList<>(params);
     }
 
     /** @see org.opengis.filter.expression.Expression#accept(ExpressionVisitor, Object) */

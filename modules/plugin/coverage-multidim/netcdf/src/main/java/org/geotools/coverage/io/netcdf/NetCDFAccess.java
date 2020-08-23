@@ -119,7 +119,7 @@ public class NetCDFAccess extends DefaultFileCoverageAccess
             reader.setInput(this.source);
 
             if (names == null) {
-                names = new ArrayList<Name>();
+                names = new ArrayList<>();
                 final Collection<Name> originalNames = reader.getCoveragesNames();
                 for (Name name : originalNames) {
                     Name coverageName = new NameImpl(/*namePrefix + */ name.toString());

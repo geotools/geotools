@@ -49,7 +49,7 @@ public abstract class JDBCAccessCustom implements JDBCAccess {
     private Config config;
     private DataSource dataSource;
 
-    private List<ImageLevelInfo> levelInfos = new ArrayList<ImageLevelInfo>();
+    private List<ImageLevelInfo> levelInfos = new ArrayList<>();
 
     public JDBCAccessCustom(Config config) throws IOException {
         super();

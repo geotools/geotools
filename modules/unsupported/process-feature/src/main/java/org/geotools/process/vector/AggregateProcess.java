@@ -159,8 +159,8 @@ public class AggregateProcess implements VectorProcess {
         if (functions == null) {
             throw new NullPointerException("Aggregate function to call is required");
         }
-        List<AggregationFunction> functionList = new ArrayList<AggregationFunction>(functions);
-        List<FeatureCalc> visitors = new ArrayList<FeatureCalc>();
+        List<AggregationFunction> functionList = new ArrayList<>(functions);
+        List<FeatureCalc> visitors = new ArrayList<>();
 
         for (AggregationFunction function : functionList) {
             FeatureCalc calc;
@@ -188,8 +188,7 @@ public class AggregateProcess implements VectorProcess {
             visitors.add(calc);
         }
 
-        EnumMap<AggregationFunction, Number> results =
-                new EnumMap<AggregationFunction, Number>(AggregationFunction.class);
+        EnumMap<AggregationFunction, Number> results = new EnumMap<>(AggregationFunction.class);
         if (singlePass) {
             AggregateFeatureCalc calc = new AggregateFeatureCalc(visitors);
             features.accepts(calc, new NullProgressListener());
@@ -300,7 +299,7 @@ public class AggregateProcess implements VectorProcess {
     }
 
     private List<String> attNames(List<AttributeDescriptor> atts) {
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         for (AttributeDescriptor ad : atts) {
             result.add(ad.getLocalName());
         }
@@ -321,7 +320,7 @@ public class AggregateProcess implements VectorProcess {
         }
 
         public CalcResult getResult() {
-            final List<CalcResult> results = new ArrayList<CalcResult>();
+            final List<CalcResult> results = new ArrayList<>();
             for (FeatureCalc delegate : delegates) {
                 results.add(delegate.getResult());
             }

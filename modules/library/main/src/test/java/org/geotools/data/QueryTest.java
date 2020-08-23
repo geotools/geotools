@@ -87,7 +87,7 @@ public class QueryTest extends TestCase {
         // System.out.println("testProperties");
         Query query = new Query();
         assertNull(query.getProperties());
-        List<PropertyName> properties = new ArrayList<PropertyName>();
+        List<PropertyName> properties = new ArrayList<>();
 
         NamespaceSupport nsContext = new NamespaceSupport();
         nsContext.declarePrefix("foo", "FooNamespace");

@@ -111,7 +111,7 @@ public class DB2Util {
     }
 
     static {
-        PARAMETER_MARKES = new HashMap<Class, String>();
+        PARAMETER_MARKES = new HashMap<>();
         PARAMETER_MARKES.put(Point.class, "DB2GSE.ST_PointFromWKB(cast (? as BLOB(2G)),{0})");
         PARAMETER_MARKES.put(LineString.class, "DB2GSE.ST_LineFromWKB(cast (? as BLOB(2G)),{0})");
         PARAMETER_MARKES.put(Polygon.class, "DB2GSE.ST_PolyFromWKB(cast (? as BLOB(2G)),{0})");
@@ -124,7 +124,7 @@ public class DB2Util {
         PARAMETER_MARKES.put(
                 GeometryCollection.class, "DB2GSE.ST_GeomCollFromWKB(cast (? as BLOB(2G)),{0})");
 
-        PARAMETER_LITERALS = new HashMap<Class, String>();
+        PARAMETER_LITERALS = new HashMap<>();
         PARAMETER_LITERALS.put(Point.class, "DB2GSE.ST_PointFromText({0},{1})");
         PARAMETER_LITERALS.put(LineString.class, "DB2GSE.ST_LineFromText({0},{1})");
         PARAMETER_LITERALS.put(Polygon.class, "DB2GSE.ST_PolyFromText({0},{1})");
@@ -134,7 +134,7 @@ public class DB2Util {
         PARAMETER_LITERALS.put(Geometry.class, "DB2GSE.ST_GeomFromText({0},{1})");
         PARAMETER_LITERALS.put(GeometryCollection.class, "DB2GSE.ST_GeomCollFromText({0},{1})");
 
-        CAST_EPXPRESSIONS = new HashMap<Class, String>();
+        CAST_EPXPRESSIONS = new HashMap<>();
         CAST_EPXPRESSIONS.put(Short.class, "CAST (? as SMALLINT)");
         CAST_EPXPRESSIONS.put(Integer.class, "CAST (? as INTEGER)");
         CAST_EPXPRESSIONS.put(Long.class, "CAST (? as BIGINT)");

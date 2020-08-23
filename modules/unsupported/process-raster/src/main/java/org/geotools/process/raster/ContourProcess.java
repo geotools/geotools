@@ -189,7 +189,7 @@ public class ContourProcess implements RasterProcess {
                 (AffineTransform) gc2d.getGridGeometry().getGridToCRS2D(PixelOrientation.CENTER);
 
         // get the list of nodata, if any
-        List<Object> noDataList = new ArrayList<Object>();
+        List<Object> noDataList = new ArrayList<>();
         for (GridSampleDimension sd : gc2d.getSampleDimensions()) {
             // grab all the explicit nodata
             final double[] sdNoData = sd.getNoDataValues();
@@ -209,7 +209,7 @@ public class ContourProcess implements RasterProcess {
                                 noDataList.add(catRange.getMinimum());
                             } else {
                                 Range<Double> noData =
-                                        new Range<Double>(
+                                        new Range<>(
                                                 catRange.getMinimum(),
                                                 catRange.isMinIncluded(),
                                                 catRange.getMaximum(),
@@ -238,7 +238,7 @@ public class ContourProcess implements RasterProcess {
         }
 
         if (levels != null && levels.length > 0) {
-            final ArrayList<Double> elements = new ArrayList<Double>(levels.length);
+            final ArrayList<Double> elements = new ArrayList<>(levels.length);
             for (double level : levels) elements.add(level);
             pb.setParameter("levels", elements);
         } else {

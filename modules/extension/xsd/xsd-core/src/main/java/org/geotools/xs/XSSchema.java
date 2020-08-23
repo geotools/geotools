@@ -1996,7 +1996,7 @@ public class XSSchema extends SchemaImpl {
      * @return Subset of XSSchema capturing a unique mapping for Java classes
      */
     public ProfileImpl profile() {
-        Set<Name> profile = new LinkedHashSet<Name>();
+        Set<Name> profile = new LinkedHashSet<>();
         profile.add(new NameImpl(XS.BYTE)); // Byte.class
         profile.add(new NameImpl(XS.HEXBINARY)); // byte[].class
         profile.add(new NameImpl(XS.SHORT)); // Short.class

@@ -56,7 +56,7 @@ public class FunctionFactoryTest {
                     public <T> Iterator<T> iterator(Class<T> category) {
 
                         if (FunctionFactory.class == category) {
-                            List<FunctionFactory> l = new ArrayList<FunctionFactory>();
+                            List<FunctionFactory> l = new ArrayList<>();
                             l.add(
                                     new FunctionFactory() {
 
@@ -130,7 +130,7 @@ public class FunctionFactoryTest {
     public void testThreadedFunctionLookup() throws Exception {
         final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         ExecutorService es = Executors.newCachedThreadPool();
-        List<Future<Exception>> tests = new ArrayList<Future<Exception>>();
+        List<Future<Exception>> tests = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             Future<Exception> f =
                     es.submit(

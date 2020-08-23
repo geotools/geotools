@@ -45,7 +45,7 @@ public class DnDListItemsTransferable<T> implements Transferable {
      */
     public DnDListItemsTransferable(Collection<T> stuff) {
         super();
-        items = new ArrayList<T>();
+        items = new ArrayList<>();
         items.addAll(stuff);
     }
 

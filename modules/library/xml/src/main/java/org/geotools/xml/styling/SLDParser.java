@@ -572,7 +572,7 @@ public class SLDParser {
     }
 
     private FeatureTypeConstraint[] parseLayerFeatureConstraints(Node root) {
-        List<FeatureTypeConstraint> featureTypeConstraints = new ArrayList<FeatureTypeConstraint>();
+        List<FeatureTypeConstraint> featureTypeConstraints = new ArrayList<>();
 
         NodeList children = root.getChildNodes();
         final int length = children.getLength();
@@ -841,8 +841,8 @@ public class SLDParser {
         }
 
         FeatureTypeStyle ft = factory.createFeatureTypeStyle();
-        ArrayList<Rule> rules = new ArrayList<Rule>();
-        ArrayList<String> sti = new ArrayList<String>();
+        ArrayList<Rule> rules = new ArrayList<>();
+        ArrayList<String> sti = new ArrayList<>();
         NodeList children = style.getChildNodes();
         final int length = children.getLength();
         for (int i = 0; i < length; i++) {
@@ -918,7 +918,7 @@ public class SLDParser {
         }
 
         Rule rule = factory.createRule();
-        List<Symbolizer> symbolizers = new ArrayList<Symbolizer>();
+        List<Symbolizer> symbolizers = new ArrayList<>();
         NodeList children = ruleNode.getChildNodes();
         final int length = children.getLength();
         for (int i = 0; i < length; i++) {
@@ -999,7 +999,7 @@ public class SLDParser {
         final int length = children.getLength();
         StringBuilder text = new StringBuilder();
 
-        Map<String, String> translations = new HashMap<String, String>();
+        Map<String, String> translations = new HashMap<>();
 
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
@@ -1166,7 +1166,7 @@ public class SLDParser {
             symbol.setUnitOfMeasure(uomMapping.getUnit());
         }
 
-        List<org.geotools.styling.Font> fonts = new ArrayList<org.geotools.styling.Font>();
+        List<org.geotools.styling.Font> fonts = new ArrayList<>();
         NodeList children = root.getChildNodes();
         final int length = children.getLength();
         for (int i = 0; i < length; i++) {
@@ -1348,7 +1348,7 @@ public class SLDParser {
             String text = textNode.getNodeValue();
             return ff.literal(text.trim());
         }
-        List<Expression> expressionList = new ArrayList<Expression>();
+        List<Expression> expressionList = new ArrayList<>();
         for (int index = 0; index < children.getLength(); index++) {
             Node child = children.item(index);
             if (child instanceof CharacterData) {
@@ -1832,7 +1832,7 @@ public class SLDParser {
         String format = "";
         String uri = "";
         String content = null;
-        Map<String, Object> paramList = new HashMap<String, Object>();
+        Map<String, Object> paramList = new HashMap<>();
 
         NodeList children = root.getChildNodes();
         final int length = children.getLength();
@@ -2220,8 +2220,8 @@ public class SLDParser {
 
         NodeList children = root.getChildNodes();
         final int length = children.getLength();
-        List<Expression> expressions = new ArrayList<Expression>();
-        List<Boolean> cdatas = new ArrayList<Boolean>();
+        List<Expression> expressions = new ArrayList<>();
+        List<Boolean> cdatas = new ArrayList<>();
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
 

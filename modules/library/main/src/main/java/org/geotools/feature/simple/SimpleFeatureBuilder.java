@@ -489,7 +489,7 @@ public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
             userData = new Map[values.length];
         }
         if (userData[index] == null) {
-            userData[index] = new HashMap<Object, Object>();
+            userData[index] = new HashMap<>();
         }
         userData[index].put(key, value);
         return this;
@@ -500,7 +500,7 @@ public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
         Map<Object, Object> sourceUserData = source.getUserData();
         if (sourceUserData != null && !sourceUserData.isEmpty()) {
             if (featureUserData == null) {
-                featureUserData = new HashMap<Object, Object>();
+                featureUserData = new HashMap<>();
             }
             featureUserData.putAll(sourceUserData);
         }
@@ -513,7 +513,7 @@ public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
      */
     public SimpleFeatureBuilder featureUserData(Object key, Object value) {
         if (featureUserData == null) {
-            featureUserData = new HashMap<Object, Object>();
+            featureUserData = new HashMap<>();
         }
         featureUserData.put(key, value);
         return this;

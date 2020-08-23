@@ -299,7 +299,7 @@ public abstract class Configuration {
         }
 
         PriorityQueue<DepNode> q =
-                new PriorityQueue<DepNode>(
+                new PriorityQueue<>(
                         g.nodes.size(),
                         new Comparator<DepNode>() {
                             public int compare(DepNode o1, DepNode o2) {

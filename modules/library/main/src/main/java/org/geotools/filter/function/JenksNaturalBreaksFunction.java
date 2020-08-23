@@ -74,7 +74,7 @@ public class JenksNaturalBreaksFunction extends ClassificationFunction {
      * @return a RangedClassifier
      */
     private Object calculate(SimpleFeatureCollection featureCollection) {
-        ArrayList<Double> data = new ArrayList<Double>();
+        ArrayList<Double> data = new ArrayList<>();
         try (SimpleFeatureIterator features = featureCollection.features()) {
             try {
                 while (features.hasNext()) {

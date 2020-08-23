@@ -160,7 +160,7 @@ public class WFS_2_0_0_ParsingTest extends TestCase {
         assertEquals(1, sa.getKeywords().size());
 
         KeywordsType keywords = (KeywordsType) sa.getKeywords().get(0);
-        List<String> simpleKeywords = new ArrayList<String>();
+        List<String> simpleKeywords = new ArrayList<>();
         for (Object o : keywords.getKeyword()) {
             LanguageStringType lst = (LanguageStringType) o;
             simpleKeywords.add(lst.getValue());

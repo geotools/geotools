@@ -74,15 +74,15 @@ public class EnvFunctionTest {
         final String key1 = "foo";
         final String key2 = "bar";
 
-        final Map<String, Object> table0 = new HashMap<String, Object>();
+        final Map<String, Object> table0 = new HashMap<>();
         table0.put(key1, 1);
         table0.put(key2, 2);
 
-        final Map<String, Object> table1 = new HashMap<String, Object>();
+        final Map<String, Object> table1 = new HashMap<>();
         table1.put(key1, 10);
         table1.put(key2, 20);
 
-        final List<Map<String, Object>> tables = new ArrayList<Map<String, Object>>();
+        final List<Map<String, Object>> tables = new ArrayList<>();
         tables.add(table0);
         tables.add(table1);
 
@@ -172,7 +172,7 @@ public class EnvFunctionTest {
     public void testSetGlobalValues() throws Exception {
         // System.out.println("   setGlobalValues");
 
-        final Map<String, Object> table = new HashMap<String, Object>();
+        final Map<String, Object> table = new HashMap<>();
         table.put("foo", 1);
         table.put("bar", 2);
         EnvFunction.setGlobalValues(table);

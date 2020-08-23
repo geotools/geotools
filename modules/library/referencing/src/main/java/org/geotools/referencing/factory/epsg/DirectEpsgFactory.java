@@ -419,8 +419,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      * HashMap} because the keys will always be the exact same object, namely the hard-coded
      * argument given to calls to {@link #prepareStatement} in this class.
      */
-    private final Map<String, PreparedStatement> statements =
-            new IdentityHashMap<String, PreparedStatement>();
+    private final Map<String, PreparedStatement> statements = new IdentityHashMap<>();
 
     /**
      * The set of authority codes for different types. This map is used by the {@link
@@ -437,8 +436,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      * this map, and returns {@code false} if some are found (thus blocking the call to {@link
      * #dispose} by the {@link ThreadedEpsgFactory} timer).
      */
-    private final Map<Class<?>, Reference<AuthorityCodes>> authorityCodes =
-            new HashMap<Class<?>, Reference<AuthorityCodes>>();
+    private final Map<Class<?>, Reference<AuthorityCodes>> authorityCodes = new HashMap<>();
 
     /**
      * Cache for axis names. This service is not provided by {@link BufferedAuthorityFactory} since
@@ -446,7 +444,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      *
      * @see #getAxisName
      */
-    private final Map<String, AxisName> axisNames = new HashMap<String, AxisName>();
+    private final Map<String, AxisName> axisNames = new HashMap<>();
 
     /**
      * Cache for axis numbers. This service is not provided by {@link BufferedAuthorityFactory}
@@ -454,7 +452,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      *
      * @see #getDimensionForCRS
      */
-    private final Map<String, Short> axisCounts = new HashMap<String, Short>();
+    private final Map<String, Short> axisCounts = new HashMap<>();
 
     /**
      * Cache for projection checks. This service is not provided by {@link BufferedAuthorityFactory}
@@ -462,16 +460,16 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      *
      * @see #isProjection
      */
-    private final Map<String, Boolean> codeProjection = new HashMap<String, Boolean>();
+    private final Map<String, Boolean> codeProjection = new HashMap<>();
 
     /** Pool of naming systems, used for caching. There is usually few of them (about 15). */
-    private final Map<String, LocalName> scopes = new HashMap<String, LocalName>();
+    private final Map<String, LocalName> scopes = new HashMap<>();
 
     /**
      * The properties to be given the objects to construct. Reused every time {@link
      * #createProperties} is invoked.
      */
-    private final Map<String, Object> properties = new HashMap<String, Object>();
+    private final Map<String, Object> properties = new HashMap<>();
 
     /**
      * A safety guard for preventing never-ending loops in recursive calls to {@link #createDatum}.
@@ -479,7 +477,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      * target datum could have its own Bursa-Wolf parameters, with one of them pointing again to the
      * source datum.
      */
-    private final Set<String> safetyGuard = new HashSet<String>();
+    private final Set<String> safetyGuard = new HashSet<>();
 
     /**
      * The buffered authority factory, or {@code this} if none. This field is set to a different
@@ -719,7 +717,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                     cache = !(reference instanceof SoftReference);
                 }
                 if (cache) {
-                    reference = new SoftReference<AuthorityCodes>(candidate);
+                    reference = new SoftReference<>(candidate);
                     authorityCodes.put(codes.type, reference);
                 }
                 /*
@@ -731,7 +729,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                     result = candidate;
                 } else {
                     if (result instanceof AuthorityCodes) {
-                        result = new LinkedHashSet<String>(result);
+                        result = new LinkedHashSet<>(result);
                     }
                     result.addAll(candidate);
                 }
@@ -1042,7 +1040,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                     generic = new ScopedName(cached, local);
                 }
                 if (alias == null) {
-                    alias = new ArrayList<GenericName>();
+                    alias = new ArrayList<>();
                 }
                 alias.add(generic);
             }
@@ -1558,7 +1556,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                 final int method = getInt(result, 2, code);
                 final String datum = getString(result, 3, code);
                 if (bwInfos == null) {
-                    bwInfos = new ArrayList<Object>();
+                    bwInfos = new ArrayList<>();
                 }
                 bwInfos.add(new BursaWolfInfo(operation, method, datum));
             }
@@ -1578,7 +1576,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
             final BursaWolfInfo[] codes = bwInfos.toArray(new BursaWolfInfo[size]);
             sort(codes);
             bwInfos.clear();
-            final Set<String> added = new HashSet<String>();
+            final Set<String> added = new HashSet<>();
             for (int i = 0; i < codes.length; i++) {
                 final BursaWolfInfo candidate = codes[i];
                 if (added.add(candidate.target)) {
@@ -1709,8 +1707,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                      *     case, we lost our paranoiac check for duplication.
                      */
                     if (type.equals("geodetic")) {
-                        properties =
-                                new HashMap<String, Object>(properties); // Protect from changes
+                        properties = new HashMap<>(properties); // Protect from changes
                         final Ellipsoid ellipsoid =
                                 buffered.createEllipsoid(getString(result, 9, code));
                         final PrimeMeridian meridian =
@@ -2568,7 +2565,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
             int count = aliases.length;
             value = properties.get(IdentifiedObject.ALIAS_KEY);
             if (value != null) {
-                final Map<String, GenericName> merged = new LinkedHashMap<String, GenericName>();
+                final Map<String, GenericName> merged = new LinkedHashMap<>();
                 putAll(NameFactory.toArray(value), merged);
                 count -= putAll(aliases, merged);
                 final Collection<GenericName> c = merged.values();
@@ -2579,7 +2576,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
              * all our aliases were replaced by user's aliases (count <= 0).
              */
             if (count > 0) {
-                final Map<String, Object> copy = new HashMap<String, Object>(properties);
+                final Map<String, Object> copy = new HashMap<>(properties);
                 copy.put(IdentifiedObject.ALIAS_KEY, aliases);
                 properties = copy;
             }
@@ -2632,7 +2629,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                                 + " AND SOURCE_CRS_CODE IS NOT NULL"
                                 + " AND TARGET_CRS_CODE IS NOT NULL");
         stmt.setInt(1, Integer.parseInt(code));
-        final Map<Dimensions, Dimensions> dimensions = new HashMap<Dimensions, Dimensions>();
+        final Map<Dimensions, Dimensions> dimensions = new HashMap<>();
         final Dimensions temp = new Dimensions((2 << 16) | 2); // Default to (2,2) dimensions.
         Dimensions max = temp;
         try (ResultSet result = stmt.executeQuery()) {
@@ -2941,7 +2938,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                                             + " WHERE (CONCAT_OPERATION_CODE = ?)"
                                             + " ORDER BY OP_PATH_STEP");
                     cstmt.setString(1, epsg);
-                    final List<String> codes = new ArrayList<String>();
+                    final List<String> codes = new ArrayList<>();
                     try (ResultSet cr = cstmt.executeQuery()) {
                         while (cr.next()) {
                             codes.add(cr.getString(1));
@@ -3309,7 +3306,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                 }
             }
             sql = adaptSQL(sql);
-            final Set<String> result = new LinkedHashSet<String>();
+            final Set<String> result = new LinkedHashSet<>();
             try (final Statement s = getConnection().createStatement();
                     final ResultSet r = s.executeQuery(sql)) {
                 while (r.next()) {
@@ -3436,11 +3433,11 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                 // statement as key). So we need to manage a pool of references for avoiding
                 // duplication.
                 if (pool == null) {
-                    pool = new IdentityHashMap<SoftReference, WeakReference<AuthorityCodes>>();
+                    pool = new IdentityHashMap<>();
                 }
                 WeakReference<AuthorityCodes> weak = pool.get(reference);
                 if (weak == null) {
-                    weak = new WeakReference<AuthorityCodes>(codes);
+                    weak = new WeakReference<>(codes);
                     pool.put((SoftReference) reference, weak);
                 }
                 entry.setValue(weak);

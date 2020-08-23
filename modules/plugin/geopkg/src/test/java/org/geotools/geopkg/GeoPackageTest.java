@@ -760,7 +760,7 @@ public class GeoPackageTest {
                 new GridGeometry2D(
                         new GridEnvelope2D(new Rectangle(1536, 768)),
                         new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326", true)));
-        parameters[0] = new Parameter<GridGeometry2D>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
+        parameters[0] = new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
         GridCoverage2D gc = reader.read("bluemarble_tif_tiles", parameters);
         BufferedImage img = ((PlanarImage) gc.getRenderedImage()).getAsBufferedImage();
 

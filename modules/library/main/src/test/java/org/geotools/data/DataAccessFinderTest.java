@@ -54,7 +54,7 @@ public class DataAccessFinderTest extends TestCase {
     public void testGetDataStore() throws IOException {
         DataStore dataStore;
 
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put(MOCK_DS_PARAM_KEY, MockUnavailableDataStoreFactory.class);
 
         dataStore = DataStoreFinder.getDataStore(params);
@@ -70,7 +70,7 @@ public class DataAccessFinderTest extends TestCase {
     public void testGetDataAccess() throws IOException {
         DataAccess<FeatureType, Feature> dataStore;
 
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put(MOCK_DS_PARAM_KEY, MockUnavailableDataStoreFactory.class);
 
         dataStore = DataAccessFinder.getDataStore(params);
@@ -132,7 +132,7 @@ public class DataAccessFinderTest extends TestCase {
         assertNotNull(dsf2);
         assertNotNull(dsf3);
 
-        Set<Class> classes = new HashSet<Class>();
+        Set<Class> classes = new HashSet<>();
         classes.add(dsf1.getClass());
         classes.add(dsf2.getClass());
         classes.add(dsf3.getClass());
@@ -169,7 +169,7 @@ public class DataAccessFinderTest extends TestCase {
         assertNotNull(availableDataAccess);
         assertTrue(availableDataAccess.hasNext());
 
-        Set<Class> classes = new HashSet<Class>();
+        Set<Class> classes = new HashSet<>();
         DataAccessFactory daf;
 
         daf = availableDataAccess.next();

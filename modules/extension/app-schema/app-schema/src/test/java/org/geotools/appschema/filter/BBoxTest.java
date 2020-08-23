@@ -66,7 +66,7 @@ public class BBoxTest extends AppSchemaTestSupport {
         /** Load data access */
         final Name FEATURE_TYPE = Types.typeName(GSML_URI, "MappedFeature");
         final String schemaBase = "/test-data/";
-        Map<String, Serializable> dsParams = new HashMap<String, Serializable>();
+        Map<String, Serializable> dsParams = new HashMap<>();
         dsParams.put("dbtype", "app-schema");
         URL url = BBoxTest.class.getResource(schemaBase + "MappedFeatureAsOccurrence.xml");
         assertNotNull(url);

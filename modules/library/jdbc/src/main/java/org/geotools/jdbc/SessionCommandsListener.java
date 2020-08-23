@@ -121,7 +121,7 @@ public class SessionCommandsListener implements ConnectionLifecycleListener {
         }
 
         boolean inEnvVariable = false;
-        List<Expression> expressions = new ArrayList<Expression>();
+        List<Expression> expressions = new ArrayList<>();
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < sql.length(); i++) {
             final char curr = sql.charAt(i);

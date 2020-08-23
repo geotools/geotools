@@ -318,15 +318,13 @@ public class FeatureTypeBinding extends AbstractComplexBinding {
             // this is KML 2.2-specific
             if ("ExtendedData".equals(name.getLocalPart())) {
                 SimpleFeatureType t = feature.getFeatureType();
-                List<Map.Entry<Name, Object>> attributes =
-                        new LinkedList<Map.Entry<Name, Object>>();
+                List<Map.Entry<Name, Object>> attributes = new LinkedList<>();
 
                 for (AttributeDescriptor ad : t.getAttributeDescriptors()) {
                     Object obj = feature.getAttribute(ad.getName());
                     // do not include geographic attributes
                     if (!(obj instanceof Geometry))
-                        attributes.add(
-                                new AbstractMap.SimpleEntry<Name, Object>(ad.getName(), obj));
+                        attributes.add(new AbstractMap.SimpleEntry<>(ad.getName(), obj));
                 }
                 return attributes;
             }

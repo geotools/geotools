@@ -84,7 +84,7 @@ public class AdvancedAffineBuilder extends MathTransformBuilder {
     private int steps = 100;
 
     /** Map of constrains - parameter name as key and its required value */
-    private Map<String, Double> valueConstrain = new HashMap<String, Double>();
+    private Map<String, Double> valueConstrain = new HashMap<>();
 
     /** Affine transformation for approximate values */
     private final AffineTransform2D affineTrans;

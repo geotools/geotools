@@ -131,7 +131,7 @@ public class Range<T extends Comparable<? super T>> implements Serializable {
             final boolean isMinIncluded,
             final T maxValue,
             final boolean isMaxIncluded) {
-        return new Range<T>(elementClass, minValue, isMinIncluded, maxValue, isMaxIncluded);
+        return new Range<>(elementClass, minValue, isMinIncluded, maxValue, isMaxIncluded);
     }
 
     /** Ensures that the given argument is non-null. */

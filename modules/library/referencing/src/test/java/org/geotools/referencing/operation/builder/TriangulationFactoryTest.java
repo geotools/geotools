@@ -86,7 +86,7 @@ public final class TriangulationFactoryTest {
 
         Quadrilateral quad = new Quadrilateral(leftDown, rightDown, rightTop, leftTop);
 
-        List<TINTriangle> triangles = new ArrayList<TINTriangle>();
+        List<TINTriangle> triangles = new ArrayList<>();
 
         TriangulationFactory trigfac = new TriangulationFactory(quad, vertices);
         triangles = trigfac.getTriangulation();

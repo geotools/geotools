@@ -49,10 +49,10 @@ public class ExponentialFunction extends FunctionImpl {
     public static final FunctionName NAME;
 
     static {
-        Parameter<Object> result = new Parameter<Object>("result", Object.class, 1, 1);
-        Parameter<Object> input = new Parameter<Object>("input", Object.class, 1, 1);
+        Parameter<Object> result = new Parameter<>("result", Object.class, 1, 1);
+        Parameter<Object> input = new Parameter<>("input", Object.class, 1, 1);
         Parameter<Double> base =
-                new Parameter<Double>(
+                new Parameter<>(
                         "base",
                         Double.class,
                         Text.text("Base"),
@@ -63,7 +63,7 @@ public class ExponentialFunction extends FunctionImpl {
                         1,
                         1.0,
                         null);
-        Parameter<Object> stops = new Parameter<Object>("stops", Object.class, 4, -1);
+        Parameter<Object> stops = new Parameter<>("stops", Object.class, 4, -1);
         NAME = new FunctionNameImpl("Exponential", result, input, base, stops);
     }
 

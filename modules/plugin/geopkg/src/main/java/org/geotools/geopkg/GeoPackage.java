@@ -538,7 +538,7 @@ public class GeoPackage implements Closeable {
 
     /** Returns list of contents of the geopackage. */
     public List<Entry> contents() {
-        List<Entry> contents = new ArrayList<Entry>();
+        List<Entry> contents = new ArrayList<>();
         try {
             try (Connection cx = connPool.getConnection()) {
 
@@ -1096,7 +1096,7 @@ public class GeoPackage implements Closeable {
      * @param e feature entry to create spatial index for
      */
     public void createSpatialIndex(FeatureEntry e) throws IOException {
-        Map<String, String> properties = new HashMap<String, String>();
+        Map<String, String> properties = new HashMap<>();
 
         PrimaryKey pk =
                 ((JDBCFeatureStore) (dataStore.getFeatureSource(e.getTableName()))).getPrimaryKey();
@@ -1546,7 +1546,7 @@ public class GeoPackage implements Closeable {
                     ResultSet rs = st.executeQuery(sql.toString());
 
                     try {
-                        HashSet<Identifier> ids = new HashSet<Identifier>();
+                        HashSet<Identifier> ids = new HashSet<>();
 
                         while (rs.next()) {
                             ids.add(new FeatureIdImpl(rs.getString(1)));

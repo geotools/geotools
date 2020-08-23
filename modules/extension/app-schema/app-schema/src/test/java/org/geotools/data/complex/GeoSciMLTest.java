@@ -79,7 +79,7 @@ public class GeoSciMLTest extends AppSchemaTestSupport {
 
     @BeforeClass
     public static void oneTimeSetUp() throws IOException {
-        final Map<String, Serializable> dsParams = new HashMap<String, Serializable>();
+        final Map<String, Serializable> dsParams = new HashMap<>();
         final URL url = GeoSciMLTest.class.getResource(schemaBase + "mappedPolygons.xml");
         dsParams.put("dbtype", "app-schema");
         dsParams.put("url", url.toExternalForm());

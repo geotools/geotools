@@ -40,7 +40,7 @@ public class WMSCoverageReaderTest {
     Map<String, String> parseParams(String query) {
         ParameterParser pp = new ParameterParser();
         List params = pp.parse(query, '&');
-        Map<String, String> result = new HashMap<String, String>();
+        Map<String, String> result = new HashMap<>();
         for (Iterator it = params.iterator(); it.hasNext(); ) {
             NameValuePair pair = (NameValuePair) it.next();
             result.put(pair.getName().toUpperCase(), pair.getValue());

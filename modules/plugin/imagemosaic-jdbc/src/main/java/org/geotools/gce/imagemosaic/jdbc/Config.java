@@ -41,7 +41,7 @@ import org.xml.sax.SAXException;
  * @author mcr
  */
 public class Config {
-    private static Map<String, Config> ConfigMap = new Hashtable<String, Config>(); // Hashtable
+    private static Map<String, Config> ConfigMap = new Hashtable<>(); // Hashtable
 
     // is
     // synchronized
@@ -347,7 +347,7 @@ public class Config {
     }
 
     public Map<String, Object> getDataSourceParams() {
-        Map<String, Object> result = new HashMap<String, Object>();
+        Map<String, Object> result = new HashMap<>();
 
         if ("DBCP".equals(dstype)) {
             result.put(DBCPDataSourceFactory.DSTYPE.key, dstype);

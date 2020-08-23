@@ -187,7 +187,7 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
     private void createIndex() {
 
         Iterator<GranuleDescriptor> it = null;
-        final Collection<GranuleDescriptor> features = new ArrayList<GranuleDescriptor>();
+        final Collection<GranuleDescriptor> features = new ArrayList<>();
         //
         // Load tiles informations, especially the bounds, which will be
         // reused

@@ -85,7 +85,7 @@ public class InfoTool extends CursorTool {
 
         cursor = CursorManager.getInstance().getInfoCursor();
 
-        helperTable = new WeakHashMap<Layer, InfoToolHelper<?>>();
+        helperTable = new WeakHashMap<>();
     }
 
     /** Constructs a new info tool which is triggered by any mouse button. */

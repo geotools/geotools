@@ -68,7 +68,7 @@ public class LineStringGraphGeneratorTest extends TestCase {
     }
 
     private Collection<Coordinate> getCoordinates(Collection<BasicNode> graphNodes) {
-        Collection<Coordinate> coordinates = new ArrayList<Coordinate>();
+        Collection<Coordinate> coordinates = new ArrayList<>();
         for (BasicNode node : graphNodes) {
             coordinates.add(((Point) node.getObject()).getCoordinate());
         }

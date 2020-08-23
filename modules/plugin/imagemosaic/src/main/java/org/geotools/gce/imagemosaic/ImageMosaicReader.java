@@ -113,13 +113,13 @@ import org.opengis.referencing.operation.MathTransform;
 public class ImageMosaicReader extends AbstractGridCoverage2DReader
         implements StructuredGridCoverage2DReader {
 
-    Set<String> names = new HashSet<String>();
+    Set<String> names = new HashSet<>();
 
     String defaultName = null;
 
     public static final String UNSPECIFIED = "_UN$PECIFIED_";
 
-    Map<String, RasterManager> rasterManagers = new ConcurrentHashMap<String, RasterManager>();
+    Map<String, RasterManager> rasterManagers = new ConcurrentHashMap<>();
 
     public RasterManager getRasterManager(String name) {
         if (name != null && rasterManagers.containsKey(name)) {
@@ -1270,7 +1270,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
         HarvestedResource resource = HarvestedResource.getResourceFromObject(source);
 
         // Check if the source object can be accepted
-        final List<HarvestedSource> result = new ArrayList<HarvestedSource>();
+        final List<HarvestedSource> result = new ArrayList<>();
         if (resource == null) {
             result.add(new DefaultHarvestedSource(source, false, "Unrecognized source type"));
             return result;
@@ -1466,7 +1466,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
     public ServiceInfo getInfo() {
         IOFileFilter filesFilter = Utils.MOSAIC_SUPPORT_FILES_FILTER;
         Collection<File> files = FileUtils.listFiles(parentDirectory, filesFilter, null);
-        List<FileGroup> fileGroups = new ArrayList<FileGroup>();
+        List<FileGroup> fileGroups = new ArrayList<>();
         for (File file : files) {
             fileGroups.add(new FileGroup(file, null, null));
         }

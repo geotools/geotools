@@ -47,7 +47,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Andrea Aime - GeoSolutions
  */
 public class GeometryCollector {
-    List<Geometry> geometries = new ArrayList<Geometry>();
+    List<Geometry> geometries = new ArrayList<>();
 
     GeometryFactory factory = new GeometryFactory(new PackedCoordinateSequenceFactory());
 

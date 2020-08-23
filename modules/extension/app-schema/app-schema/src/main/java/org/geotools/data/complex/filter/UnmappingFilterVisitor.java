@@ -314,7 +314,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
 
         UnmappingFilterVisitor.LOGGER.finest("fid mapping expression is " + fidExpression);
         Filter unrolled = null;
-        List<Filter> filters = new ArrayList<Filter>();
+        List<Filter> filters = new ArrayList<>();
         try {
             for (Iterator it = fids.iterator(); it.hasNext(); ) {
                 Identifier fid = (Identifier) it.next();

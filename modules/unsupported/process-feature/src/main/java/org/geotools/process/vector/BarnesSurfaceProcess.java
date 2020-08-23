@@ -488,7 +488,7 @@ public class BarnesSurfaceProcess implements VectorProcess {
             SimpleFeatureCollection obsPoints, String attrName, MathTransform trans, int dataLimit)
             throws CQLException {
         Expression attrExpr = ECQL.toExpression(attrName);
-        List<Coordinate> ptList = new ArrayList<Coordinate>();
+        List<Coordinate> ptList = new ArrayList<>();
         SimpleFeatureIterator obsIt = obsPoints.features();
 
         double[] srcPt = new double[2];

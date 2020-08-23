@@ -212,7 +212,7 @@ public class ValueCollectionTypeImpl extends EObjectImpl implements ValueCollect
    */
     public EList<Collection> getMember() {
     if (member == null) {
-      member = new EDataTypeUniqueEList<Collection>(Collection.class, this, Wfs20Package.VALUE_COLLECTION_TYPE__MEMBER);
+      member = new EDataTypeUniqueEList<>(Collection.class, this, Wfs20Package.VALUE_COLLECTION_TYPE__MEMBER);
     }
     return member;
   }

@@ -83,7 +83,7 @@ public class MultiSolidTypeImpl extends AbstractGeometricAggregateTypeImpl imple
      */
     public EList<SolidPropertyType> getSolidMember() {
         if (solidMember == null) {
-            solidMember = new EObjectContainmentEList<SolidPropertyType>(SolidPropertyType.class, this, Gml311Package.MULTI_SOLID_TYPE__SOLID_MEMBER);
+            solidMember = new EObjectContainmentEList<>(SolidPropertyType.class, this, Gml311Package.MULTI_SOLID_TYPE__SOLID_MEMBER);
         }
         return solidMember;
     }

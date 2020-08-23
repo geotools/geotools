@@ -67,7 +67,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         XSSchema.ID_TYPE, new NameImpl("id"), 0, 1, true, null));
@@ -119,7 +119,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         GMLSchema.ANGLETYPE_TYPE,
@@ -177,7 +177,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         BINARY_TYPE_TYPE,
@@ -236,7 +236,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         XSSchema.ANYURI_TYPE,
@@ -285,7 +285,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         XSSchema.BOOLEAN_TYPE,
@@ -345,7 +345,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         XSSchema.STRING_TYPE,
@@ -408,7 +408,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         XSSchema.ANYURI_TYPE,
@@ -473,7 +473,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         XSSchema.DATETIME_TYPE,
@@ -533,7 +533,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         DATE_TYPE_TYPE,
@@ -633,7 +633,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         XSSchema.DECIMAL_TYPE,
@@ -691,7 +691,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         GMLSchema.LENGTHTYPE_TYPE,
@@ -752,7 +752,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         GMLSchema.CODETYPE_TYPE,
@@ -812,7 +812,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         XSSchema.INTEGER_TYPE,
@@ -870,7 +870,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         GMLSchema.LENGTHTYPE_TYPE,
@@ -929,7 +929,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         GMLSchema.CODETYPE_TYPE,
@@ -988,7 +988,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         GMLSchema.MEASURETYPE_TYPE,
@@ -1048,7 +1048,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         MEMBERNAME_TYPE_TYPE,
@@ -1178,7 +1178,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         CHARACTERSTRING_PROPERTYTYPE_TYPE,
@@ -1241,7 +1241,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         MULTIPLICITYRANGE_TYPE_TYPE,
@@ -1373,7 +1373,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         INTEGER_PROPERTYTYPE_TYPE,
@@ -1433,7 +1433,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         MULTIPLICITY_TYPE_TYPE,
@@ -1562,7 +1562,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         MULTIPLICITYRANGE_PROPERTYTYPE_TYPE,
@@ -1613,7 +1613,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         XSSchema.DOUBLE_TYPE,
@@ -1688,7 +1688,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         XLINKSchema._ACTUATE_TYPE,
@@ -1802,7 +1802,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         XSSchema.DOUBLE_TYPE,
@@ -1861,7 +1861,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         RECORDTYPE_TYPE_TYPE,
@@ -1921,7 +1921,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         XLINKSchema._ACTUATE_TYPE,
@@ -2019,7 +2019,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         XSSchema.ANYTYPE_TYPE,
@@ -2141,7 +2141,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         GMLSchema.SCALETYPE_TYPE,
@@ -2200,7 +2200,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         GMLSchema.CODETYPE_TYPE,
@@ -2260,7 +2260,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         TYPENAME_TYPE_TYPE,
@@ -2389,7 +2389,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         CHARACTERSTRING_PROPERTYTYPE_TYPE,
@@ -2441,7 +2441,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         GMLSchema.UNITDEFINITIONTYPE_TYPE,
@@ -2567,7 +2567,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         UNLIMITEDINTEGER_TYPE_TYPE,
@@ -2628,7 +2628,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         XSSchema.BOOLEAN_TYPE,
@@ -2678,7 +2678,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         GMLSchema.UNITDEFINITIONTYPE_TYPE,
@@ -2802,7 +2802,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         GMLSchema.UNITDEFINITIONTYPE_TYPE,
@@ -2927,7 +2927,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         GMLSchema.UNITDEFINITIONTYPE_TYPE,
@@ -3051,7 +3051,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         GMLSchema.UNITDEFINITIONTYPE_TYPE,
@@ -3175,7 +3175,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         GMLSchema.UNITDEFINITIONTYPE_TYPE,
@@ -3301,7 +3301,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         GMLSchema.UNITDEFINITIONTYPE_TYPE,
@@ -3426,7 +3426,7 @@ public class GCOSchema extends SchemaImpl {
 
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
-                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        List<PropertyDescriptor> descriptors = new ArrayList<>();
                         descriptors.add(
                                 new AttributeDescriptorImpl(
                                         GMLSchema.UNITDEFINITIONTYPE_TYPE,

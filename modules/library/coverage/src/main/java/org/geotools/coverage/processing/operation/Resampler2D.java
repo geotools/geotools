@@ -177,7 +177,7 @@ final class Resampler2D extends GridCoverage2D {
          * it wants to actually do the resample (which might take hours with WarpAdapter on very
          * large grids) or not
          */
-        Map<String, Serializable> properties = new HashMap<String, Serializable>();
+        Map<String, Serializable> properties = new HashMap<>();
         if (operation != null) {
             properties.put(Resample.OPERATION, operation);
             if (warp != null) {
@@ -623,7 +623,7 @@ final class Resampler2D extends GridCoverage2D {
         w.setRenderingHints(targetHints);
         ROI newROI = null;
         Range newNoData = null;
-        final Map<String, Object> imageProperties = new HashMap<String, Object>();
+        final Map<String, Object> imageProperties = new HashMap<>();
         Warp warp = null;
         if (allSteps.isIdentity()
                 || (allSteps instanceof AffineTransform

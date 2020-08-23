@@ -74,7 +74,7 @@ public class AvailableFunctionsTypeImpl extends EObjectImpl implements Available
      */
     public EList<AvailableFunctionType> getFunction() {
         if (function == null) {
-            function = new EObjectContainmentEList<AvailableFunctionType>(AvailableFunctionType.class, this, Fes20Package.AVAILABLE_FUNCTIONS_TYPE__FUNCTION);
+            function = new EObjectContainmentEList<>(AvailableFunctionType.class, this, Fes20Package.AVAILABLE_FUNCTIONS_TYPE__FUNCTION);
         }
         return function;
     }

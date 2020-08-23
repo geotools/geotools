@@ -42,7 +42,7 @@ public class FilterTransformerTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         // init xmlunit
-        Map<String, String> namespaces = new HashMap<String, String>();
+        Map<String, String> namespaces = new HashMap<>();
         namespaces.put("ogc", "http://www.opengis.net/ogc");
         namespaces.put("gml", "http://www.opengis.net/gml");
         namespaces.put("xsi", "http://www.w3.org/2001/XMLSchema-instance");
@@ -51,7 +51,7 @@ public class FilterTransformerTest extends TestCase {
     }
 
     public void testIdEncode() throws Exception {
-        HashSet<FeatureId> set = new LinkedHashSet<FeatureId>();
+        HashSet<FeatureId> set = new LinkedHashSet<>();
         set.add(ff.featureId("FID.1"));
         set.add(ff.featureId("FID.2"));
         Filter filter = ff.id(set);

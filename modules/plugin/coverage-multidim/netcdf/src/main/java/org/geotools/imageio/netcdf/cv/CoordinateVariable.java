@@ -111,8 +111,8 @@ public abstract class CoordinateVariable<T> {
      * numerical
      */
     protected class CoordinateAxisGeneralHelper implements AxisHelper<T> {
-        private List<T> convertedData = new ArrayList<T>();
-        private SortedSet<T> orderedSet = new TreeSet<T>();
+        private List<T> convertedData = new ArrayList<>();
+        private SortedSet<T> orderedSet = new TreeSet<>();
 
         public CoordinateAxisGeneralHelper() {
             Array data;
@@ -181,7 +181,7 @@ public abstract class CoordinateVariable<T> {
 
         @Override
         public List<T> getAll() {
-            return new ArrayList<T>(orderedSet);
+            return new ArrayList<>(orderedSet);
         }
     }
 

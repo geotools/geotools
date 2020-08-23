@@ -334,7 +334,7 @@ public class GranuleDescriptor {
     int maxDecimationFactor = -1;
 
     final Map<Integer, GranuleOverviewLevelDescriptor> granuleLevels =
-            Collections.synchronizedMap(new HashMap<Integer, GranuleOverviewLevelDescriptor>());
+            Collections.synchronizedMap(new HashMap<>());
 
     AffineTransform baseGridToWorld;
 

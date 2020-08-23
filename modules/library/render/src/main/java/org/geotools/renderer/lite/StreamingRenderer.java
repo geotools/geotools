@@ -285,7 +285,7 @@ public class StreamingRenderer implements GTRenderer {
 
     private BlockingQueue<RenderingRequest> requests;
 
-    private List<RenderListener> renderListeners = new CopyOnWriteArrayList<RenderListener>();
+    private List<RenderListener> renderListeners = new CopyOnWriteArrayList<>();
 
     private RenderingHints java2dHints;
 
@@ -1474,7 +1474,7 @@ public class StreamingRenderer implements GTRenderer {
         ReferencedEnvelope result = new ReferencedEnvelope(envelope);
         if (styles != null) {
             for (LiteFeatureTypeStyle lts : styles) {
-                List<Rule> rules = new ArrayList<Rule>();
+                List<Rule> rules = new ArrayList<>();
                 rules.addAll(Arrays.asList(lts.ruleList));
                 rules.addAll(Arrays.asList(lts.elseRules));
                 for (Rule r : rules) {
@@ -1629,7 +1629,7 @@ public class StreamingRenderer implements GTRenderer {
             // filter2 OR filter3);
 
             final int maxFilters = getMaxFiltersToSendToDatastore();
-            final List<Filter> filtersToDS = new ArrayList<Filter>();
+            final List<Filter> filtersToDS = new ArrayList<>();
             // look at each featuretypestyle
             for (LiteFeatureTypeStyle style : styles) {
                 if (style.elseRules.length > 0) // uh-oh has elseRule
@@ -1828,7 +1828,7 @@ public class StreamingRenderer implements GTRenderer {
          * default? I will add them, but don't really know what's the expected
          * behavior
          */
-        List<PropertyName> atts = new ArrayList<PropertyName>(attributes);
+        List<PropertyName> atts = new ArrayList<>(attributes);
         Collection<PropertyDescriptor> attTypes = schema.getDescriptors();
         Name attName;
 
@@ -1973,7 +1973,7 @@ public class StreamingRenderer implements GTRenderer {
             LOGGER.fine(
                     "creating rules for scale denominator - "
                             + NumberFormat.getNumberInstance().format(scaleDenominator));
-        ArrayList<LiteFeatureTypeStyle> result = new ArrayList<LiteFeatureTypeStyle>();
+        ArrayList<LiteFeatureTypeStyle> result = new ArrayList<>();
 
         LiteFeatureTypeStyle lfts;
         boolean foundComposite = false;
@@ -2082,8 +2082,8 @@ public class StreamingRenderer implements GTRenderer {
     }
 
     private List<List<Rule>> splitRules(FeatureTypeStyle fts) {
-        List<Rule> ruleList = new ArrayList<Rule>();
-        List<Rule> elseRuleList = new ArrayList<Rule>();
+        List<Rule> ruleList = new ArrayList<>();
+        List<Rule> elseRuleList = new ArrayList<>();
 
         for (Rule r : fts.rules())
             if (isWithInScale(r)) {
@@ -2376,8 +2376,8 @@ public class StreamingRenderer implements GTRenderer {
      * @return A List of List of LiteFeatureTypeStyles
      */
     List<List<LiteFeatureTypeStyle>> classifyByFeatureProduction(List<LiteFeatureTypeStyle> lfts) {
-        List<List<LiteFeatureTypeStyle>> txClassified = new ArrayList<List<LiteFeatureTypeStyle>>();
-        txClassified.add(new ArrayList<LiteFeatureTypeStyle>());
+        List<List<LiteFeatureTypeStyle>> txClassified = new ArrayList<>();
+        txClassified.add(new ArrayList<>());
         Expression transformation = null;
         SortBy[] sortBy = null;
         for (int i = 0; i < lfts.size(); i++) {
@@ -2407,7 +2407,7 @@ public class StreamingRenderer implements GTRenderer {
                 }
                 if (differentTransformation || incompatibleSort) {
                     // create a new slot (we always add the lfts into the last one)
-                    txClassified.add(new ArrayList<LiteFeatureTypeStyle>());
+                    txClassified.add(new ArrayList<>());
                     transformation = curr.transformation;
                     sortBy = curr.sortBy;
                 }
@@ -2429,7 +2429,7 @@ public class StreamingRenderer implements GTRenderer {
         for (PropertyName attribute : query.getProperties()) {
             if (attribute.evaluate(schema) == null) {
                 if (schema instanceof SimpleFeatureType) {
-                    List<Name> allNames = new ArrayList<Name>();
+                    List<Name> allNames = new ArrayList<>();
                     for (PropertyDescriptor pd : schema.getDescriptors()) {
                         allNames.add(pd.getName());
                     }
@@ -2738,8 +2738,8 @@ public class StreamingRenderer implements GTRenderer {
         // original geometry as well, thus we need cloning
         StyleAttributeExtractor extractor = new StyleAttributeExtractor();
         FeatureType featureType = layer.getFeatureSource().getSchema();
-        Set<String> plainGeometries = new java.util.HashSet<String>();
-        Set<String> txGeometries = new java.util.HashSet<String>();
+        Set<String> plainGeometries = new java.util.HashSet<>();
+        Set<String> txGeometries = new java.util.HashSet<>();
         for (LiteFeatureTypeStyle lft : lfts) {
             for (Rule r : lft.ruleList) {
                 for (Symbolizer s : r.symbolizers()) {
@@ -3996,8 +3996,7 @@ public class StreamingRenderer implements GTRenderer {
             boolean done = false;
             while (!done) {
                 try {
-                    List<RenderingRequest> localRequests =
-                            new ArrayList<StreamingRenderer.RenderingRequest>();
+                    List<RenderingRequest> localRequests = new ArrayList<>();
                     RenderingRequest request = requests.take();
 
                     requests.drainTo(localRequests);

@@ -62,7 +62,7 @@ public class MeteoMarkFactory implements MarkFactory {
      */
     public static final String ARROWHEAD_BASE_KEY = "ab";
 
-    protected static final Map<String, Shape> WELLKNOWN_SHAPES = new HashMap<String, Shape>();
+    protected static final Map<String, Shape> WELLKNOWN_SHAPES = new HashMap<>();
 
     static {
         GeneralPath gp = new GeneralPath();

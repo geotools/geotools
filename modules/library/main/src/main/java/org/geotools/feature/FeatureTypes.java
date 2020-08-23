@@ -546,7 +546,7 @@ public class FeatureTypes {
      * is not included as an ancestor, only its strict ancestors.
      */
     public static List<FeatureType> getAncestors(FeatureType featureType) {
-        List<FeatureType> ancestors = new ArrayList<FeatureType>();
+        List<FeatureType> ancestors = new ArrayList<>();
         while (featureType.getSuper() instanceof FeatureType) {
             FeatureType superType = (FeatureType) featureType.getSuper();
             ancestors.add(superType);

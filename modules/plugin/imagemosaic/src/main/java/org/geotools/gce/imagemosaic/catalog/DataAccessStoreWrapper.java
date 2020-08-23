@@ -172,8 +172,7 @@ class DataAccessStoreWrapper implements DataStore {
         if (fs instanceof SimpleFeatureStore) {
             ((SimpleFeatureStore) fs).setTransaction(transaction);
         }
-        return new DelegateFeatureReader<SimpleFeatureType, SimpleFeature>(
-                fs.getSchema(), fs.getFeatures().features());
+        return new DelegateFeatureReader<>(fs.getSchema(), fs.getFeatures().features());
     }
 
     @Override

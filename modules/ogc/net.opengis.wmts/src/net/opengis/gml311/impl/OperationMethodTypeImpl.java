@@ -151,7 +151,7 @@ public class OperationMethodTypeImpl extends OperationMethodBaseTypeImpl impleme
      */
     public EList<IdentifierType> getMethodID() {
         if (methodID == null) {
-            methodID = new EObjectContainmentEList<IdentifierType>(IdentifierType.class, this, Gml311Package.OPERATION_METHOD_TYPE__METHOD_ID);
+            methodID = new EObjectContainmentEList<>(IdentifierType.class, this, Gml311Package.OPERATION_METHOD_TYPE__METHOD_ID);
         }
         return methodID;
     }
@@ -291,7 +291,7 @@ public class OperationMethodTypeImpl extends OperationMethodBaseTypeImpl impleme
      */
     public EList<AbstractGeneralOperationParameterRefType> getUsesParameter() {
         if (usesParameter == null) {
-            usesParameter = new EObjectContainmentEList<AbstractGeneralOperationParameterRefType>(AbstractGeneralOperationParameterRefType.class, this, Gml311Package.OPERATION_METHOD_TYPE__USES_PARAMETER);
+            usesParameter = new EObjectContainmentEList<>(AbstractGeneralOperationParameterRefType.class, this, Gml311Package.OPERATION_METHOD_TYPE__USES_PARAMETER);
         }
         return usesParameter;
     }

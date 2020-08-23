@@ -90,7 +90,7 @@ public class WFSDataStoreTest {
 
         wfs = mock(WFSClient.class);
         when(wfs.getConfig()).thenReturn(config);
-        when(wfs.getRemoteTypeNames()).thenReturn(new HashSet<QName>(Arrays.asList(TYPE1, TYPE2)));
+        when(wfs.getRemoteTypeNames()).thenReturn(new HashSet<>(Arrays.asList(TYPE1, TYPE2)));
         when(wfs.supportsTransaction(TYPE1)).thenReturn(Boolean.TRUE);
         when(wfs.supportsTransaction(TYPE2)).thenReturn(Boolean.FALSE);
 

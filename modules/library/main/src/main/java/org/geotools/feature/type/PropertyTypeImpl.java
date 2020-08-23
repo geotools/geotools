@@ -71,7 +71,7 @@ public abstract class PropertyTypeImpl implements PropertyType {
 
         this.superType = superType;
         this.description = description;
-        this.userData = new HashMap<Object, Object>();
+        this.userData = new HashMap<>();
     }
 
     public Name getName() {

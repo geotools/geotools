@@ -229,8 +229,7 @@ class IndexManager {
     List<Data> queryFidIndex(Id fidFilter) throws IOException {
         // sort by fid to increase performance and allow skipping on natural order
         TreeSet<Identifier> idsSet =
-                new TreeSet<Identifier>(
-                        new IdentifierComparator(store.getTypeName().getLocalPart()));
+                new TreeSet<>(new IdentifierComparator(store.getTypeName().getLocalPart()));
         idsSet.addAll(fidFilter.getIdentifiers());
 
         IndexedFidReader reader = new IndexedFidReader(shpFiles);

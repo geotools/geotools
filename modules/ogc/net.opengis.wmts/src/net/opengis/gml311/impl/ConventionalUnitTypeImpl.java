@@ -180,7 +180,7 @@ public class ConventionalUnitTypeImpl extends UnitDefinitionTypeImpl implements 
      */
     public EList<DerivationUnitTermType> getDerivationUnitTerm() {
         if (derivationUnitTerm == null) {
-            derivationUnitTerm = new EObjectContainmentEList<DerivationUnitTermType>(DerivationUnitTermType.class, this, Gml311Package.CONVENTIONAL_UNIT_TYPE__DERIVATION_UNIT_TERM);
+            derivationUnitTerm = new EObjectContainmentEList<>(DerivationUnitTermType.class, this, Gml311Package.CONVENTIONAL_UNIT_TYPE__DERIVATION_UNIT_TERM);
         }
         return derivationUnitTerm;
     }

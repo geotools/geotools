@@ -49,11 +49,9 @@ public class DefaultCoverageAccess implements CoverageAccess {
 
     protected final EnumSet<AccessType> allowedAccessTypes;
 
-    protected final Map<String, Parameter<?>> accessParameters =
-            new HashMap<String, Parameter<?>>();
+    protected final Map<String, Parameter<?>> accessParameters = new HashMap<>();
 
-    protected final Map<String, Serializable> connectionParameters =
-            new HashMap<String, Serializable>();
+    protected final Map<String, Serializable> connectionParameters = new HashMap<>();
 
     @SuppressFBWarnings("UWF_NULL_FIELD")
     protected List<Name> names = null;

@@ -83,11 +83,10 @@ public abstract class DataStoreWrapper implements DataStore {
     protected final DataStore datastore;
 
     /** Mapping between typeNames and FeatureTypeMapper */
-    protected final Map<Name, FeatureTypeMapper> mapping =
-            new ConcurrentHashMap<Name, FeatureTypeMapper>();
+    protected final Map<Name, FeatureTypeMapper> mapping = new ConcurrentHashMap<>();
 
     /** Quick access typeNames list */
-    private List<String> typeNames = new ArrayList<String>();
+    private List<String> typeNames = new ArrayList<>();
 
     /** Base constructor */
     public DataStoreWrapper(DataStore datastore, String auxFolderPath) {
@@ -247,7 +246,7 @@ public abstract class DataStoreWrapper implements DataStore {
 
     @Override
     public List<Name> getNames() throws IOException {
-        return new ArrayList<Name>(mapping.keySet());
+        return new ArrayList<>(mapping.keySet());
     }
 
     @Override

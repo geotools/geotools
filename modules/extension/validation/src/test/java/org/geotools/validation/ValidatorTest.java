@@ -151,7 +151,7 @@ public class ValidatorTest extends TestCase {
         DefaultFeatureResults results = new DefaultFeatureResults();
         Set<Name> set = fixture.repository.getNames();
 
-        Map<String, FeatureSource<?, ?>> map = new HashMap<String, FeatureSource<?, ?>>();
+        Map<String, FeatureSource<?, ?>> map = new HashMap<>();
 
         for (Name name : set) {
             DataStore store = fixture.repository.dataStore(name);
@@ -202,7 +202,7 @@ public class ValidatorTest extends TestCase {
 
         DefaultFeatureResults results = new DefaultFeatureResults();
         Set<Name> set = fixture.repository.getNames();
-        Map<Name, FeatureSource<?, ?>> map = new HashMap<Name, FeatureSource<?, ?>>();
+        Map<Name, FeatureSource<?, ?>> map = new HashMap<>();
 
         for (Name name : set) {
             DataStore store = fixture.repository.dataStore(name);

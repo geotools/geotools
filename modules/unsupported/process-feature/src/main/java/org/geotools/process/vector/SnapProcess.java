@@ -66,7 +66,7 @@ public class SnapProcess implements VectorProcess {
 
     @SuppressWarnings("unchecked")
     public Map<String, Parameter<?>> getResultInfo(Map<String, Object> inputs) {
-        Map<String, Parameter<?>> outputInfo = new HashMap<String, Parameter<?>>();
+        Map<String, Parameter<?>> outputInfo = new HashMap<>();
         outputInfo.put(
                 "result",
                 new Parameter(

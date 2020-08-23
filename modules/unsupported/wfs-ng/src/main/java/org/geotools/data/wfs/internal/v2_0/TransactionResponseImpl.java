@@ -55,7 +55,7 @@ public class TransactionResponseImpl extends WFSResponse implements TransactionR
 
         super(originatingRequest, response);
 
-        inserted = new ArrayList<FeatureId>();
+        inserted = new ArrayList<>();
 
         Object parsed;
         try {

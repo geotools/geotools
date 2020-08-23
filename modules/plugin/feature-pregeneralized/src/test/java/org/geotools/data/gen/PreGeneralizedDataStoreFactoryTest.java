@@ -28,7 +28,7 @@ import org.junit.Assert;
 public class PreGeneralizedDataStoreFactoryTest extends TestCase {
     public void testDataStoreFactory() {
 
-        Map<String, Serializable> paramMap = new HashMap<String, Serializable>();
+        Map<String, Serializable> paramMap = new HashMap<>();
         try {
             paramMap.put(
                     PreGeneralizedDataStoreFactory.REPOSITORY_CLASS.key,

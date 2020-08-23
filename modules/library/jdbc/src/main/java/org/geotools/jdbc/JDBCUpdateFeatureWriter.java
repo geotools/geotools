@@ -106,8 +106,8 @@ public class JDBCUpdateFeatureWriter extends JDBCFeatureReader
                             .id(Collections.singleton(dataStore.getFilterFactory().featureId(fid)));
 
             // figure out which attributes changed
-            List<AttributeDescriptor> changed = new ArrayList<AttributeDescriptor>();
-            List<Object> values = new ArrayList<Object>();
+            List<AttributeDescriptor> changed = new ArrayList<>();
+            List<Object> values = new ArrayList<>();
 
             for (AttributeDescriptor att : featureType.getAttributeDescriptors()) {
                 if (last.isDirty(att.getLocalName())) {

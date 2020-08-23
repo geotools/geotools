@@ -31,7 +31,7 @@ public final class Role extends CodeList<Role> {
     private static final long serialVersionUID = -7763516018565534103L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<Role> VALUES = new ArrayList<Role>(11);
+    private static final List<Role> VALUES = new ArrayList<>(11);
 
     /** Party that supplies the resource. */
     @UML(identifier = "resourceProvider", obligation = CONDITIONAL, specification = ISO_19115)

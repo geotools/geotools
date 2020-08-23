@@ -46,7 +46,7 @@ public class HanaTestSetupBase extends JDBCTestSetup {
         String database = fixture.getProperty("database");
         String useSsl = fixture.getProperty("use ssl");
 
-        HashMap<String, String> options = new HashMap<String, String>();
+        HashMap<String, String> options = new HashMap<>();
         if ("true".equals(useSsl)) {
             options.put("encrypt", "true");
         }

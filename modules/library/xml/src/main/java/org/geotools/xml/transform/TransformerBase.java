@@ -413,7 +413,7 @@ public abstract class TransformerBase {
          * The queue of write operations pending for this translator. This should be empty if no
          * mark is set.
          */
-        private List<Action> pending = new ArrayList<Action>();
+        private List<Action> pending = new ArrayList<>();
 
         /**
          * An Action records a call to one of the SAX-event-generating methods on this translator.

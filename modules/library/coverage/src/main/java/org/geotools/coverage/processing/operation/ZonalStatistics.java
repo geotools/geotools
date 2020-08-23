@@ -173,7 +173,7 @@ public class ZonalStatistics extends BaseStatisticsOperationJAI {
                 int numGeom = geomList.size();
                 Iterator<SimpleFeature> geomIter = geomList.iterator();
                 // Output List definition
-                outputList = new ArrayList<ROI>(numGeom);
+                outputList = new ArrayList<>(numGeom);
                 // For each feature, there is the conversion
                 while (geomIter.hasNext()) {
                     SimpleFeature zone = geomIter.next();
@@ -221,7 +221,7 @@ public class ZonalStatistics extends BaseStatisticsOperationJAI {
 
             } else if (o != null && o instanceof Polygon) {
                 // Output List definition
-                outputList = new ArrayList<ROI>(1);
+                outputList = new ArrayList<>(1);
                 // Selection of the polygon associated with the ROI
                 final Polygon roiInput = (Polygon) o;
                 // If the input ROI intersects the coverage, then it is added to the list
@@ -319,7 +319,7 @@ public class ZonalStatistics extends BaseStatisticsOperationJAI {
         // /////////////////////////////////////////////////////////////////////
         if (data instanceof RenderedOp) {
             final RenderedOp result = (RenderedOp) data;
-            final Map<String, Object> synthProp = new HashMap<String, Object>();
+            final Map<String, Object> synthProp = new HashMap<>();
 
             // Addition of the ROI property and NoData property
             GridCoverage2D source = sources[0];

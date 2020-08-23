@@ -46,8 +46,7 @@ public class MongoSchemaDBStoreTest extends MongoSchemaStoreTest<MongoSchemaDBSt
 
     static final Logger LOGGER = Logging.getLogger(MongoSchemaDBStore.class);
 
-    Map<MongoSchemaDBStore, MongoClientURI> clientURIs =
-            new HashMap<MongoSchemaDBStore, MongoClientURI>();
+    Map<MongoSchemaDBStore, MongoClientURI> clientURIs = new HashMap<>();
 
     static String host;
     static int port;

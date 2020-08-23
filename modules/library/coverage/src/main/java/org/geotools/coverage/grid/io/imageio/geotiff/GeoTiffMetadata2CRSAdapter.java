@@ -804,7 +804,7 @@ public final class GeoTiffMetadata2CRSAdapter {
             throw new IllegalArgumentException(
                     "Error when trying to create a PCS using this linear UoM "
                             + linearUnit.toString());
-        final Map<String, String> props = new HashMap<String, String>();
+        final Map<String, String> props = new HashMap<>();
         props.put("name", Vocabulary.formatInternational(VocabularyKeys.PROJECTED).toString());
         props.put("alias", Vocabulary.formatInternational(VocabularyKeys.PROJECTED).toString());
         return new DefaultCartesianCS(
@@ -858,7 +858,7 @@ public final class GeoTiffMetadata2CRSAdapter {
                         if (pmNumeric == 0) {
                             return DefaultPrimeMeridian.GREENWICH;
                         }
-                        final Map<String, String> props = new HashMap<String, String>();
+                        final Map<String, String> props = new HashMap<>();
                         props.put("name", name);
                         pm = datumObjFactory.createPrimeMeridian(props, pmNumeric, linearUnit);
                     } catch (NumberFormatException nfe) {
@@ -1070,7 +1070,7 @@ public final class GeoTiffMetadata2CRSAdapter {
 
         // coordinate reference system
         // property map is reused
-        final Map<String, String> props = new HashMap<String, String>();
+        final Map<String, String> props = new HashMap<>();
         // make the user defined GCS from all the components...
         props.put("name", name);
         return new DefaultGeographicCRS(

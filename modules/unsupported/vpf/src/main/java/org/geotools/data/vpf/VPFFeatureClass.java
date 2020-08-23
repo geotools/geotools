@@ -75,7 +75,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
     private SimpleFeatureType featureType;
 
     /** The columns that are part of this feature class */
-    private final List<VPFColumn> columns = new Vector<VPFColumn>();
+    private final List<VPFColumn> columns = new Vector<>();
 
     private final Map<String, ColumnSet> columnSet = new LinkedHashMap<>();
     private final Map<String, TableRelation> relations = new LinkedHashMap<>();
@@ -106,7 +106,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
 
     private boolean enableFeatureCache = true;
 
-    private final List<SimpleFeature> featureCache = new ArrayList<SimpleFeature>();
+    private final List<SimpleFeature> featureCache = new ArrayList<>();
 
     private int cacheRow = 0;
 
@@ -537,7 +537,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
 
         Geometry geometry = null;
 
-        List<Object> vlist = new ArrayList<Object>();
+        List<Object> vlist = new ArrayList<>();
 
         // List<AttributeDescriptor> attributes = featureType.getAttributeDescriptors();
 
@@ -659,8 +659,8 @@ public class VPFFeatureClass implements SimpleFeatureType {
     public synchronized List<VPFFile> getFileList() {
         // return fileList;
 
-        List<ColumnSet> csets = new ArrayList<ColumnSet>(columnSet.values());
-        List<VPFFile> fileList = new ArrayList<VPFFile>();
+        List<ColumnSet> csets = new ArrayList<>(columnSet.values());
+        List<VPFFile> fileList = new ArrayList<>();
         for (int i = 0; i < csets.size(); i++) {
             ColumnSet cs = csets.get(i);
             fileList.add(cs.table);

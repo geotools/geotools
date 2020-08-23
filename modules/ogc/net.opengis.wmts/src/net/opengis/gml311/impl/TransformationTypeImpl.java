@@ -126,7 +126,7 @@ public class TransformationTypeImpl extends AbstractGeneralTransformationTypeImp
      */
     public EList<ParameterValueType> getUsesValue() {
         if (usesValue == null) {
-            usesValue = new EObjectContainmentEList<ParameterValueType>(ParameterValueType.class, this, Gml311Package.TRANSFORMATION_TYPE__USES_VALUE);
+            usesValue = new EObjectContainmentEList<>(ParameterValueType.class, this, Gml311Package.TRANSFORMATION_TYPE__USES_VALUE);
         }
         return usesValue;
     }

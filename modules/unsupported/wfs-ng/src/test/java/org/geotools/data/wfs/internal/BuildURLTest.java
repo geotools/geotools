@@ -45,7 +45,7 @@ public class BuildURLTest {
     }
 
     public static Map<String, String> buildMap(String... args) {
-        Map<String, String> ret = new HashMap<String, String>();
+        Map<String, String> ret = new HashMap<>();
 
         assertEquals("Builder must be given an even number of parameters", 0, args.length % 2);
         for (int i = 0; i < args.length; i += 2) {

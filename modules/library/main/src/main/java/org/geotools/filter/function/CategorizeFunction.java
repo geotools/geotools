@@ -96,7 +96,7 @@ public class CategorizeFunction implements Function {
                     "succeeding or preceding");
 
     public CategorizeFunction() {
-        this(new ArrayList<Expression>(), null);
+        this(new ArrayList<>(), null);
     }
 
     public CategorizeFunction(List<Expression> parameters, Literal fallback) {

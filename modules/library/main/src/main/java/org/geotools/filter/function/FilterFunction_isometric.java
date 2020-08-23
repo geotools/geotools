@@ -108,7 +108,7 @@ public class FilterFunction_isometric extends FunctionExpressionImpl
 
     /** Extracts Segment objects out of the Geometry coordinate sequences */
     static class SegmentExtractorFilter implements GeometryComponentFilter {
-        List<Segment> segments = new ArrayList<Segment>();
+        List<Segment> segments = new ArrayList<>();
 
         public void filter(Geometry geom) {
             if (geom instanceof LineString) {
@@ -127,7 +127,7 @@ public class FilterFunction_isometric extends FunctionExpressionImpl
             Collections.sort(segments);
 
             // extrude each segment
-            List<Polygon> result = new ArrayList<Polygon>();
+            List<Polygon> result = new ArrayList<>();
             for (Segment segment : segments) {
                 CoordinateSequence cs = JTS.createCS(gf.getCoordinateSequenceFactory(), 5, 2);
                 cs.setOrdinate(0, 0, segment.x0);

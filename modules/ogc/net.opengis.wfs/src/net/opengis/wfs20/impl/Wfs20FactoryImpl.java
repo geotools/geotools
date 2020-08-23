@@ -1168,7 +1168,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
     public List<QName> createReturnFeatureTypesListTypeFromString(EDataType eDataType,
             String initialValue) {
     if (initialValue == null) return null;
-    List<QName> result = new ArrayList<QName>();
+    List<QName> result = new ArrayList<>();
     for (String item : split(initialValue)) {
       result.add((QName)XMLTypeFactory.eINSTANCE.createFromString(XMLTypePackage.Literals.QNAME, item));
     }

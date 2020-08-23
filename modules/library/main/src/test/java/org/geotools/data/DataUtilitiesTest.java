@@ -194,7 +194,7 @@ public class DataUtilitiesTest extends DataTestCase {
         FilenameFilter includeFilter = DataUtilities.includeFilters(directoryFilter, hiddenFilter);
         List<String> include = Arrays.asList(home.list(includeFilter));
 
-        Set<String> both = new HashSet<String>();
+        Set<String> both = new HashSet<>();
         both.addAll(dir);
         both.addAll(hidden);
         assertEquals(both.size(), include.size());
@@ -202,7 +202,7 @@ public class DataUtilitiesTest extends DataTestCase {
         FilenameFilter excludeFilter = DataUtilities.excludeFilters(directoryFilter, hiddenFilter);
         List<String> exclude = Arrays.asList(home.list(excludeFilter));
 
-        Set<String> subtract = new HashSet<String>(dir);
+        Set<String> subtract = new HashSet<>(dir);
         subtract.removeAll(hidden);
         assertEquals(subtract.size(), exclude.size());
     }
@@ -949,7 +949,7 @@ public class DataUtilitiesTest extends DataTestCase {
         PropertyName propName3 = ff.property("att3");
         PropertyName propName4 = ff.property("att4");
 
-        List<PropertyName> list = new ArrayList<PropertyName>();
+        List<PropertyName> list = new ArrayList<>();
         list.add(propName1);
         list.add(propName4);
 

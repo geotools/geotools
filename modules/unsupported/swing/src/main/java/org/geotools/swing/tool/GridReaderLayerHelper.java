@@ -64,7 +64,7 @@ public class GridReaderLayerHelper extends InfoToolHelper {
         }
 
         super.setLayer(layer);
-        sourceRef = new WeakReference<GridCoverage2DReader>(((GridReaderLayer) layer).getReader());
+        sourceRef = new WeakReference<>(((GridReaderLayer) layer).getReader());
     }
 
     @Override

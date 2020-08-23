@@ -57,7 +57,7 @@ public class WMSChooser {
     }
 
     private static List<String> defaultServers() {
-        List<String> servers = new ArrayList<String>();
+        List<String> servers = new ArrayList<>();
         servers.add(
                 "http://wms.jpl.nasa.gov/wms.cgi?Service=WMS&Version=1.1.1&Request=GetCapabilities");
         servers.add("http://localhost:8080/geoserver/wms?service=WMS&request=GetCapabilities");

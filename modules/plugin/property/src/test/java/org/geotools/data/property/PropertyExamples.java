@@ -118,7 +118,7 @@ public class PropertyExamples {
     private static void transactionExample() throws Exception {
         System.out.println("transactionExample start\n");
         // transactionExample start
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("directory", directory);
         DataStore store = DataStoreFinder.getDataStore(params);
 
@@ -213,7 +213,7 @@ public class PropertyExamples {
     private static void removeAllExample() throws Exception {
         System.out.println("removeAllExample start\n");
         // removeAllExample start
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("directory", directory);
         DataStore store = DataStoreFinder.getDataStore(params);
 
@@ -249,7 +249,7 @@ public class PropertyExamples {
     private void replaceAll() throws Exception {
         System.out.println("replaceAll start\n");
         // replaceAll start
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("directory", directory);
         DataStore store = DataStoreFinder.getDataStore(params);
 
@@ -291,7 +291,7 @@ public class PropertyExamples {
     private static void appendContent() throws Exception {
         System.out.println("copyContent start\n");
         // copyContent start
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("directory", directory);
         DataStore store = DataStoreFinder.getDataStore(params);
 

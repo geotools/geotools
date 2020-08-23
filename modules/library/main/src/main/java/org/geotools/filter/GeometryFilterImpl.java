@@ -98,7 +98,7 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
         Object o = expr.evaluate(feature);
 
         if (o instanceof Collection) {
-            List<Geometry> list = new ArrayList<Geometry>();
+            List<Geometry> list = new ArrayList<>();
             for (Object item : (Collection<Object>) o) {
                 Geometry geometry = (Geometry) Converters.convert(item, Geometry.class);
                 if (geometry != null) {

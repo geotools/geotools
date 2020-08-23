@@ -69,12 +69,11 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
             }
         }
 
-        public Map<Name, DataAccessMappingFeatureIterator> featureIterators =
-                new HashMap<Name, DataAccessMappingFeatureIterator>();
+        public Map<Name, DataAccessMappingFeatureIterator> featureIterators = new HashMap<>();
 
-        public Map<Name, Expression> nestedSourceExpressions = new HashMap<Name, Expression>();
+        public Map<Name, Expression> nestedSourceExpressions = new HashMap<>();
 
-        public List<Skip> skipped = new ArrayList<Skip>();
+        public List<Skip> skipped = new ArrayList<>();
 
         public Query baseTableQuery;
 
@@ -82,7 +81,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
     }
 
     /** The instances. */
-    protected Map<Object, Instance> instances = new HashMap<Object, Instance>();
+    protected Map<Object, Instance> instances = new HashMap<>();
 
     /** Constructor */
     public JoiningNestedAttributeMapping(
@@ -135,7 +134,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
         }
         Expression nestedSourceExpression = mapping.getSourceExpression();
 
-        List<JoiningQuery.QueryJoin> joins = new ArrayList<JoiningQuery.QueryJoin>();
+        List<JoiningQuery.QueryJoin> joins = new ArrayList<>();
         if (instance.baseTableQuery instanceof JoiningQuery) {
             if (((JoiningQuery) instance.baseTableQuery).getQueryJoins() != null) {
                 joins.addAll(((JoiningQuery) instance.baseTableQuery).getQueryJoins());
@@ -161,7 +160,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
         query.setQueryJoins(joins);
 
         if (selectedProperties != null && !selectedProperties.isEmpty()) {
-            selectedProperties = new ArrayList<PropertyName>(selectedProperties);
+            selectedProperties = new ArrayList<>(selectedProperties);
             selectedProperties.add(filterFac.property(this.nestedTargetXPath.toString()));
         }
 
@@ -210,7 +209,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
         DataAccessMappingFeatureIterator daFeatureIterator =
                 (DataAccessMappingFeatureIterator) featureIterator;
 
-        List<Expression> foreignIds = new ArrayList<Expression>();
+        List<Expression> foreignIds = new ArrayList<>();
         for (int i = 0; i < query.getQueryJoins().size(); i++) {
             for (int j = 0; j < query.getQueryJoins().get(i).getIds().size(); j++) {
                 foreignIds.add(
@@ -336,7 +335,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
                             + featureTypeName);
         }
 
-        ArrayList<Feature> matchingFeatures = new ArrayList<Feature>();
+        ArrayList<Feature> matchingFeatures = new ArrayList<>();
 
         if (featureIterator != null) {
             while (featureIterator.hasNext()
@@ -429,7 +428,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
                             + featureTypeName);
         }
 
-        ArrayList<Feature> matchingFeatures = new ArrayList<Feature>();
+        ArrayList<Feature> matchingFeatures = new ArrayList<>();
 
         if (featureIterator != null) {
             while (featureIterator.hasNext()

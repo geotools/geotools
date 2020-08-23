@@ -303,7 +303,7 @@ public abstract class Layer {
      */
     public synchronized java.util.Map<String, Object> getUserData() {
         if (userData == null) {
-            userData = new HashMap<String, Object>();
+            userData = new HashMap<>();
         }
         return this.userData;
     }
@@ -329,7 +329,7 @@ public abstract class Layer {
      */
     public synchronized void addMapLayerListener(MapLayerListener listener) {
         if (listenerList == null) {
-            listenerList = new CopyOnWriteArrayList<MapLayerListener>();
+            listenerList = new CopyOnWriteArrayList<>();
         }
         boolean added = listenerList.addIfAbsent(listener);
         if (added && listenerList.size() == 1) {
@@ -389,7 +389,7 @@ public abstract class Layer {
             StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
 
             // create a style that does nothing
-            List<FeatureTypeStyle> featureTypeStyles = new ArrayList<FeatureTypeStyle>();
+            List<FeatureTypeStyle> featureTypeStyles = new ArrayList<>();
             style = sf.style(title, null, false, featureTypeStyles, null);
 
             getUserData().put("style", style);

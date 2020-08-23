@@ -195,7 +195,7 @@ public final class NetCDFPolyphemusTest extends Assert {
                     // //
 
                     LinkedHashSet<NumberRange<Double>> requestedVerticalSubset =
-                            new LinkedHashSet<NumberRange<Double>>();
+                            new LinkedHashSet<>();
                     SortedSet<? extends NumberRange<Double>> verticalElements =
                             verticalDomain.getVerticalElements(false, null);
                     final int numLevels = verticalElements.size();

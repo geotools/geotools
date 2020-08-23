@@ -40,7 +40,7 @@ class CommandLineArguments {
         int port = 0;
         int instance = 0;
         String database = null;
-        HashMap<String, String> options = new HashMap<String, String>();
+        HashMap<String, String> options = new HashMap<>();
 
         int aidx = 0;
         if (args.length < 2) {

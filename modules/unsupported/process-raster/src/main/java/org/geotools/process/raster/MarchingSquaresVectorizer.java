@@ -112,7 +112,7 @@ public final class MarchingSquaresVectorizer {
             java.util.logging.Logger.getLogger("MarchingSquaresVectorizer");
 
     public static final List<Range<Integer>> DEFAULT_RANGES =
-            Collections.singletonList(new Range<Integer>(Integer.class, 0, 0));
+            Collections.singletonList(new Range<>(Integer.class, 0, 0));
 
     public static final double DEFAULT_SIMPLIFIER_FACTOR = 2.0d;
 
@@ -202,7 +202,7 @@ public final class MarchingSquaresVectorizer {
      * A stack containing images we need to dispose. We dispose them at the end of the processing to
      * avoid cache thrashing
      */
-    private Stack<RenderedImage> imagesStack = new Stack<RenderedImage>();
+    private Stack<RenderedImage> imagesStack = new Stack<>();
 
     /** Simple image properties holder to have all imageProperties grouped into a single place */
     private ImageProperties imageProperties = new ImageProperties();
@@ -482,7 +482,7 @@ public final class MarchingSquaresVectorizer {
             sampleDataType = inputRI.getSampleModel().getDataType();
             bitSet = new DrawableBitSet(imageProperties.width, imageProperties.height);
 
-            List<Polygon> geometriesList = new ArrayList<Polygon>();
+            List<Polygon> geometriesList = new ArrayList<>();
 
             final ScanInfo scanInfo = new ScanInfo();
             identifyGeometries(iter, sampleDataType, geometriesList, scanInfo);
@@ -604,7 +604,7 @@ public final class MarchingSquaresVectorizer {
      */
     private List<Polygon> validateGeometries(List<Polygon> geometriesList) {
         if (forceValid && (geometriesList.size() > 0)) {
-            List<Polygon> validated = new ArrayList<Polygon>(geometriesList.size());
+            List<Polygon> validated = new ArrayList<>(geometriesList.size());
             for (int i = 0; i < geometriesList.size(); i++) {
                 Polygon polygon = geometriesList.get(i);
                 if (!polygon.isValid()) {
@@ -1028,7 +1028,7 @@ public final class MarchingSquaresVectorizer {
 
         final Point2D worldPosition = new Point2D.Double(initialX - 1, initialY - 1);
         Coordinate startCoordinate = new Coordinate(worldPosition.getX(), worldPosition.getY());
-        List<Coordinate> coordinateList = new ArrayList<Coordinate>(200);
+        List<Coordinate> coordinateList = new ArrayList<>(200);
 
         int x = initialX;
         int y = initialY;

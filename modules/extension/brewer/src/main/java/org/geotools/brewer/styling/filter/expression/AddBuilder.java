@@ -41,21 +41,21 @@ public class AddBuilder implements Builder<Add> {
 
     public AddBuilder reset() {
         unset = false;
-        expr1 = new ChildExpressionBuilder<AddBuilder>(this);
-        expr2 = new ChildExpressionBuilder<AddBuilder>(this);
+        expr1 = new ChildExpressionBuilder<>(this);
+        expr2 = new ChildExpressionBuilder<>(this);
         return this;
     }
 
     public AddBuilder reset(Add original) {
         unset = false;
-        expr1 = new ChildExpressionBuilder<AddBuilder>(this, original.getExpression1());
-        expr2 = new ChildExpressionBuilder<AddBuilder>(this, original.getExpression2());
+        expr1 = new ChildExpressionBuilder<>(this, original.getExpression1());
+        expr2 = new ChildExpressionBuilder<>(this, original.getExpression2());
         return this;
     }
 
     public AddBuilder unset() {
         unset = true;
-        expr1 = new ChildExpressionBuilder<AddBuilder>(this).unset();
+        expr1 = new ChildExpressionBuilder<>(this).unset();
         expr2 = null;
         return this;
     }

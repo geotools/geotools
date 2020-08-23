@@ -33,7 +33,7 @@ public final class ClassesTest {
     /** Tests {@link Classes#mostSpecificClass} and {@link Classes#commonClass}. */
     @Test
     public void testCommonParent() {
-        final Set<Object> types = new HashSet<Object>();
+        final Set<Object> types = new HashSet<>();
 
         assertTrue(types.add(new NotSerializableException()));
         assertEquals(NotSerializableException.class, Classes.commonClass(types));

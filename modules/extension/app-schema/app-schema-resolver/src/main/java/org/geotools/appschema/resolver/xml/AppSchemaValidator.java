@@ -55,7 +55,7 @@ public class AppSchemaValidator {
     private final SchemaResolver resolver;
 
     /** Failures found during parsing of an XML instance document. */
-    private final List<String> failures = new ArrayList<String>();
+    private final List<String> failures = new ArrayList<>();
 
     /** Are validation warnings considered failures? The default is true. */
     private boolean failOnWarning = true;

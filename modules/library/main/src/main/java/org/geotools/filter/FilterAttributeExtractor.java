@@ -51,9 +51,9 @@ public class FilterAttributeExtractor extends DefaultFilterVisitor {
     static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
 
     /** Last set visited */
-    protected Set<String> attributeNames = new HashSet<String>();
+    protected Set<String> attributeNames = new HashSet<>();
 
-    protected Set<PropertyName> propertyNames = new HashSet<PropertyName>();
+    protected Set<PropertyName> propertyNames = new HashSet<>();
     protected boolean usingVolatileFunctions;
     protected boolean usingDynamicProperties;
 
@@ -96,7 +96,7 @@ public class FilterAttributeExtractor extends DefaultFilterVisitor {
 
     /** Resets the attributes found so that a new attribute search can be performed */
     public void clear() {
-        attributeNames = new HashSet<String>();
+        attributeNames = new HashSet<>();
         usingVolatileFunctions = false;
     }
 

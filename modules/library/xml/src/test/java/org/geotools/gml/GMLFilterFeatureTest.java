@@ -65,7 +65,7 @@ public class GMLFilterFeatureTest {
     @Before
     public void before() {
 
-        final Map<String, String> namespaces = new HashMap<String, String>();
+        final Map<String, String> namespaces = new HashMap<>();
         namespaces.put("xlink", "http://www.w3.org/1999/xlink");
         namespaces.put("wfs", "http://www.opengis.net/wfs");
         namespaces.put("gml", "http://www.opengis.net/gml");

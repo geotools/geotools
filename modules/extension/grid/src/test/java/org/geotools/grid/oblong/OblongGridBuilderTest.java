@@ -63,7 +63,7 @@ public class OblongGridBuilderTest extends TestBase {
             }
         }
 
-        Map<Neighbor, Shift> shifts = new HashMap<Neighbor, Shift>();
+        Map<Neighbor, Shift> shifts = new HashMap<>();
         shifts.put(Neighbor.LOWER, new Shift(0.0, -HEIGHT));
         shifts.put(Neighbor.LOWER_LEFT, new Shift(-WIDTH, -HEIGHT));
         shifts.put(Neighbor.LOWER_RIGHT, new Shift(WIDTH, -HEIGHT));

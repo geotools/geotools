@@ -40,7 +40,7 @@ public abstract class AbstractCollectionMapper implements CollectionMapper {
         String gdLocalName = featureType.getGeometryDescriptor().getLocalName();
         List<AttributeDescriptor> adList = featureType.getAttributeDescriptors();
 
-        List<Object> values = new ArrayList<Object>(adList.size());
+        List<Object> values = new ArrayList<>(adList.size());
         for (AttributeDescriptor descriptor : adList) {
             String adLocalName = descriptor.getLocalName();
             if (gdLocalName.equals(adLocalName)) {

@@ -33,7 +33,7 @@ public class GeneralizationInfos {
     private String dataSourceName, dataSourceNameSpace;
 
     public GeneralizationInfos() {
-        infoMap = new HashMap<String, GeneralizationInfo>();
+        infoMap = new HashMap<>();
     }
 
     /** add a GeneralizationInfo object */
@@ -73,7 +73,7 @@ public class GeneralizationInfos {
      * @return list of base feature names
      */
     public Collection<String> getBaseFeatureNames() {
-        TreeSet<String> names = new TreeSet<String>();
+        TreeSet<String> names = new TreeSet<>();
         names.addAll(infoMap.keySet());
         return names;
     }
@@ -83,7 +83,7 @@ public class GeneralizationInfos {
      * @return list of feature names
      */
     public Collection<String> getFeatureNames() {
-        TreeSet<String> names = new TreeSet<String>();
+        TreeSet<String> names = new TreeSet<>();
         for (GeneralizationInfo info : infoMap.values()) names.add(info.getFeatureName());
         return names;
     }

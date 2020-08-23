@@ -210,7 +210,7 @@ public class FeatureStyleTypeImpl extends AbstractGMLTypeImpl implements Feature
      */
     public EList<GeometryStylePropertyType> getGeometryStyle() {
         if (geometryStyle == null) {
-            geometryStyle = new EObjectContainmentEList<GeometryStylePropertyType>(GeometryStylePropertyType.class, this, Gml311Package.FEATURE_STYLE_TYPE__GEOMETRY_STYLE);
+            geometryStyle = new EObjectContainmentEList<>(GeometryStylePropertyType.class, this, Gml311Package.FEATURE_STYLE_TYPE__GEOMETRY_STYLE);
         }
         return geometryStyle;
     }
@@ -222,7 +222,7 @@ public class FeatureStyleTypeImpl extends AbstractGMLTypeImpl implements Feature
      */
     public EList<TopologyStylePropertyType> getTopologyStyle() {
         if (topologyStyle == null) {
-            topologyStyle = new EObjectContainmentEList<TopologyStylePropertyType>(TopologyStylePropertyType.class, this, Gml311Package.FEATURE_STYLE_TYPE__TOPOLOGY_STYLE);
+            topologyStyle = new EObjectContainmentEList<>(TopologyStylePropertyType.class, this, Gml311Package.FEATURE_STYLE_TYPE__TOPOLOGY_STYLE);
         }
         return topologyStyle;
     }

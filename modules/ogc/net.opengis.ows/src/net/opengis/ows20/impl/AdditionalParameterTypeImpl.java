@@ -127,7 +127,7 @@ public class AdditionalParameterTypeImpl extends EObjectImpl implements Addition
    */
     public EList<EObject> getValue() {
     if (value == null) {
-      value = new EObjectContainmentEList<EObject>(EObject.class, this, Ows20Package.ADDITIONAL_PARAMETER_TYPE__VALUE);
+      value = new EObjectContainmentEList<>(EObject.class, this, Ows20Package.ADDITIONAL_PARAMETER_TYPE__VALUE);
     }
     return value;
   }

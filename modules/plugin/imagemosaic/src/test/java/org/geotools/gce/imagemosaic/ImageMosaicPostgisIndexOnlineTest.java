@@ -194,7 +194,7 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
 
         // use imageio with defined tiles
         final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
-        final List<Date> timeValues = new ArrayList<Date>();
+        final List<Date> timeValues = new ArrayList<>();
         final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT+0"));
         Date date = sdf.parse("2008-10-31T00:00:00.000Z");
@@ -356,7 +356,7 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
         }
 
         // checking that we get a single feature and that feature is correct
-        final Collection<GranuleDescriptor> features = new ArrayList<GranuleDescriptor>();
+        final Collection<GranuleDescriptor> features = new ArrayList<>();
         rasterManager.getGranuleDescriptors(
                 query,
                 new GranuleCatalogVisitor() {
@@ -543,7 +543,7 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
 
         // use imageio with defined tiles
         final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
-        final List<Date> timeValues = new ArrayList<Date>();
+        final List<Date> timeValues = new ArrayList<>();
         final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT+0"));
         Date date = sdf.parse("2008-10-31T00:00:00.000Z");

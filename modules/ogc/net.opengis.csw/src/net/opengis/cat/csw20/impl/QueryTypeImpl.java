@@ -175,7 +175,7 @@ public class QueryTypeImpl extends AbstractQueryTypeImpl implements QueryType {
      */
     public EList<QName> getElementName() {
         if (elementName == null) {
-            elementName = new EDataTypeUniqueEList<QName>(QName.class, this, Csw20Package.QUERY_TYPE__ELEMENT_NAME);
+            elementName = new EDataTypeUniqueEList<>(QName.class, this, Csw20Package.QUERY_TYPE__ELEMENT_NAME);
         }
         return elementName;
     }

@@ -196,7 +196,7 @@ public class AbstractCoordinateOperation extends AbstractIdentifiedObject
             final CoordinateReferenceSystem sourceCRS,
             final CoordinateReferenceSystem targetCRS,
             final MathTransform transform) {
-        this(properties, new HashMap<String, Object>(), sourceCRS, targetCRS, transform);
+        this(properties, new HashMap<>(), sourceCRS, targetCRS, transform);
     }
 
     /**
@@ -560,7 +560,7 @@ public class AbstractCoordinateOperation extends AbstractIdentifiedObject
     static void append(
             final Formatter formatter, final IdentifiedObject object, final String type) {
         if (object != null) {
-            final Map<String, Object> properties = new HashMap<String, Object>(4);
+            final Map<String, Object> properties = new HashMap<>(4);
             properties.put(IdentifiedObject.NAME_KEY, formatter.getName(object));
             properties.put(IdentifiedObject.IDENTIFIERS_KEY, formatter.getIdentifier(object));
             formatter.append(

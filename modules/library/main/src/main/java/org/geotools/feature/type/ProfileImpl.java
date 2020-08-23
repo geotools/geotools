@@ -70,7 +70,7 @@ public class ProfileImpl implements Schema {
 
     public Schema profile(Set<Name> profile) {
         if (!this.profile.containsAll(profile)) {
-            Set<Name> set = new TreeSet<Name>(profile);
+            Set<Name> set = new TreeSet<>(profile);
             set.removeAll(this.profile);
             throw new IllegalArgumentException("Unable to profile the following names: " + set);
         }

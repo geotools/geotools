@@ -5976,7 +5976,7 @@ public class GMLComplexTypes {
     }
 
     private static List<AttributeDescriptor> getAttributes(String name, ElementGrouping eg) {
-        List<AttributeDescriptor> attributes = new LinkedList<AttributeDescriptor>();
+        List<AttributeDescriptor> attributes = new LinkedList<>();
         AttributeDescriptor t = null;
         switch (eg.getGrouping()) {
             case ElementGrouping.CHOICE:

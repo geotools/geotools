@@ -242,7 +242,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
     protected void sort(
             JoiningQuery query, StringBuffer sql, String[] aliases, Set<String> pkColumnNames)
             throws IOException, SQLException, FilterToSQLException {
-        Set<String> orderByFields = new LinkedHashSet<String>();
+        Set<String> orderByFields = new LinkedHashSet<>();
         StringBuffer joinOrders = new StringBuffer();
         for (int j = query.getQueryJoins() == null ? -1 : query.getQueryJoins().size() - 1;
                 j >= -1;
@@ -363,7 +363,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         StringBuffer joinClause = new StringBuffer();
 
         // joining
-        Set<String> tableNames = new HashSet<String>();
+        Set<String> tableNames = new HashSet<>();
 
         String lastTypeName = featureType.getTypeName();
         String curTypeName = lastTypeName;
@@ -437,7 +437,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        Set<String> pkColumnNames = new HashSet<String>();
+        Set<String> pkColumnNames = new HashSet<>();
         String colName;
         for (PrimaryKeyColumn col : key.getColumns()) {
             colName = col.getName();
@@ -578,7 +578,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                 toSQL = createFilterToSQL(getDataStore().getSchema(lastTableName));
 
                 // apply paging to the root feature if applicable
-                Collection<String> ids = new ArrayList<String>();
+                Collection<String> ids = new ArrayList<>();
 
                 if (isRootFeature && query.isDenormalised()) {
                     // apply inner join for paging to root feature
@@ -964,7 +964,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
 
                     // apply SORTBY
                     SortBy[] sort = query.getSortBy();
-                    Set<String> orderByFields = new LinkedHashSet<String>();
+                    Set<String> orderByFields = new LinkedHashSet<>();
                     StringBuffer sortSQL = new StringBuffer();
                     if (sort != null) {
                         sort(typeName, null, sort, orderByFields, sortSQL);
@@ -1034,7 +1034,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             SimpleFeatureType featureType, JoiningQuery query, Connection cx)
             throws SQLException, IOException, FilterToSQLException {
 
-        AtomicReference<PreparedFilterToSQL> toSQLref = new AtomicReference<PreparedFilterToSQL>();
+        AtomicReference<PreparedFilterToSQL> toSQLref = new AtomicReference<>();
         String sql = selectSQL(featureType, query, toSQLref);
 
         LOGGER.fine(sql);

@@ -45,7 +45,7 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
 
     TextStyle2D textStyle;
 
-    List<Geometry> geoms = new ArrayList<Geometry>();
+    List<Geometry> geoms = new ArrayList<>();
 
     double priority = 0.0;
 
@@ -53,7 +53,7 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
 
     String label;
 
-    private Set<String> layerIds = new HashSet<String>();
+    private Set<String> layerIds = new HashSet<>();
 
     int maxDisplacement = 0;
 

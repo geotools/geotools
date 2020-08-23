@@ -117,7 +117,7 @@ public class MongoSchemaDBStore implements MongoSchemaStore {
                 collection.find(
                         new BasicDBObject(),
                         new BasicDBObject(FeatureTypeDBObject.KEY_typeName, 1))) {
-            List<String> typeNames = new ArrayList<String>(cursor.count());
+            List<String> typeNames = new ArrayList<>(cursor.count());
             while (cursor.hasNext()) {
                 DBObject document = cursor.next();
                 if (document != null) {

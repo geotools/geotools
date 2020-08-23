@@ -82,7 +82,7 @@ public abstract class FilterAbstract implements org.opengis.filter.Filter {
 
         if (value instanceof Collection) {
             // unpack all elements
-            List<Object> list = new ArrayList<Object>();
+            List<Object> list = new ArrayList<>();
             for (Object member : (Collection<Object>) value) {
                 list.add(unpack(member));
             }

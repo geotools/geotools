@@ -199,7 +199,7 @@ public class AttributeTypeBuilder {
         minOccurs = null;
         maxOccurs = null;
         isNillable = true;
-        userData = new HashMap<Object, Object>();
+        userData = new HashMap<>();
         defaultValue = null;
         isDefaultValueSet = false;
         length = null;
@@ -582,7 +582,7 @@ public class AttributeTypeBuilder {
 
     protected List<Filter> restrictions() {
         if (restrictions == null) {
-            restrictions = new ArrayList<Filter>();
+            restrictions = new ArrayList<>();
         }
 
         return restrictions;

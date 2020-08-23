@@ -288,7 +288,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
     private static Map<String, Object> getProperties(final ReferenceIdentifier name) {
         final Map<String, Object> properties;
         if (name == DATUM_SHIFT || name == ELLIPSOID_SHIFT) {
-            properties = new HashMap<String, Object>(4);
+            properties = new HashMap<>(4);
             properties.put(NAME_KEY, name);
             properties.put(
                     CoordinateOperation.COORDINATE_OPERATION_ACCURACY_KEY,
@@ -529,7 +529,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
             final Set<CoordinateOperation> candidatesStep1,
             final Set<CoordinateOperation> candidatesStep2)
             throws FactoryException {
-        HashSet<CoordinateOperation> result = new HashSet<CoordinateOperation>();
+        HashSet<CoordinateOperation> result = new HashSet<>();
         for (CoordinateOperation step1 : candidatesStep1) {
             for (CoordinateOperation step2 : candidatesStep2) {
                 result.add(concatenate(step1, step2));
@@ -559,7 +559,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
             final Set<CoordinateOperation> candidatesStep2,
             final Set<CoordinateOperation> candidatesStep3)
             throws FactoryException {
-        HashSet<CoordinateOperation> result = new HashSet<CoordinateOperation>();
+        HashSet<CoordinateOperation> result = new HashSet<>();
         for (CoordinateOperation step1 : candidatesStep1) {
             for (CoordinateOperation step2 : candidatesStep2) {
                 for (CoordinateOperation step3 : candidatesStep3) {
@@ -631,7 +631,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
                 AbstractIdentifiedObject.getProperties(operation, null);
         properties.putAll(getTemporaryName(targetCRS, sourceCRS));
         if (operation instanceof ConcatenatedOperation) {
-            final LinkedList<CoordinateOperation> inverted = new LinkedList<CoordinateOperation>();
+            final LinkedList<CoordinateOperation> inverted = new LinkedList<>();
             for (final CoordinateOperation op :
                     ((ConcatenatedOperation) operation).getOperations()) {
                 inverted.addFirst(inverse(op));
@@ -734,7 +734,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
      * @param source The CRS to base name on, or {@code null} if none.
      */
     static Map<String, Object> getTemporaryName(final IdentifiedObject source) {
-        final Map<String, Object> properties = new HashMap<String, Object>(4);
+        final Map<String, Object> properties = new HashMap<>(4);
         properties.put(NAME_KEY, new TemporaryIdentifier(source.getName()));
         properties.put(
                 IdentifiedObject.REMARKS_KEY,

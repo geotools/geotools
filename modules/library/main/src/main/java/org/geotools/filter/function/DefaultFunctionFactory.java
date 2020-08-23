@@ -57,7 +57,7 @@ public class DefaultFunctionFactory implements FunctionFactory {
     private volatile Map<Name, FunctionDescriptor> functionCache;
 
     public List<FunctionName> getFunctionNames() {
-        ArrayList<FunctionName> list = new ArrayList<FunctionName>(functionCache().size());
+        ArrayList<FunctionName> list = new ArrayList<>(functionCache().size());
         for (FunctionDescriptor fd : functionCache().values()) {
             list.add(fd.name);
             //            if( "rint".equals(fd.name.getName())){
@@ -138,7 +138,7 @@ public class DefaultFunctionFactory implements FunctionFactory {
     }
 
     private Map<Name, FunctionDescriptor> loadFunctions() {
-        Map<Name, FunctionDescriptor> functionMap = new HashMap<Name, FunctionDescriptor>();
+        Map<Name, FunctionDescriptor> functionMap = new HashMap<>();
 
         Set<Function> functions = CommonFactoryFinder.getFunctions(null);
         for (Iterator<Function> i = functions.iterator(); i.hasNext(); ) {

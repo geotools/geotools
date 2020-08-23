@@ -92,7 +92,7 @@ public class NetCDFCFParser {
         this.entriesMap = entriesMap;
         this.aliasMap = aliasMap;
         // Create the KeySet
-        keys = new TreeSet<String>();
+        keys = new TreeSet<>();
         // Populate the keySet
         keys.addAll(entriesMap.keySet());
         keys.addAll(aliasMap.keySet());
@@ -109,8 +109,8 @@ public class NetCDFCFParser {
         StandardNameTable table = (StandardNameTable) unmarshaller.unmarshal(file);
         List<Entry> entries = table.getEntry();
         List<Alias> aliases = table.getAlias();
-        Map<String, Entry> entriesMap = new HashMap<String, Entry>(entries.size());
-        Map<String, Alias> aliasMap = new HashMap<String, Alias>(aliases.size());
+        Map<String, Entry> entriesMap = new HashMap<>(entries.size());
+        Map<String, Alias> aliasMap = new HashMap<>(aliases.size());
         for (Entry entry : entries) {
             entriesMap.put(entry.getId(), entry);
         }

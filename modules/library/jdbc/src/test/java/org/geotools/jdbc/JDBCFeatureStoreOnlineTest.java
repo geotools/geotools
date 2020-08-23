@@ -307,7 +307,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
         assertEquals(3, features.size());
 
         try (SimpleFeatureIterator iterator = features.features()) {
-            HashSet<Integer> numbers = new HashSet<Integer>();
+            HashSet<Integer> numbers = new HashSet<>();
             numbers.add(Integer.valueOf(3));
             numbers.add(Integer.valueOf(4));
             numbers.add(Integer.valueOf(5));

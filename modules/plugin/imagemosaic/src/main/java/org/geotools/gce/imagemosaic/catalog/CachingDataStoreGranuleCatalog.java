@@ -61,7 +61,7 @@ class CachingDataStoreGranuleCatalog extends GranuleCatalog {
     private final AbstractGTDataStoreGranuleCatalog adaptee;
 
     private final SoftValueHashMap<String, GranuleDescriptor> descriptorsCache =
-            new SoftValueHashMap<String, GranuleDescriptor>();
+            new SoftValueHashMap<>();
 
     /** */
     public CachingDataStoreGranuleCatalog(AbstractGTDataStoreGranuleCatalog adaptee) {

@@ -454,7 +454,7 @@ public class JSimpleStyleDialog extends JDialog {
     private void initComponents() {
         MigLayout layout = new MigLayout();
         JPanel panel = new JPanel(layout);
-        controls = new HashMap<Component, ControlCategory>();
+        controls = new HashMap<>();
 
         JLabel label = null;
         JButton btn = null;

@@ -81,7 +81,7 @@ public class ScreenMapShapefileTest {
         shpFile.getParentFile().mkdirs();
 
         ShapefileDataStoreFactory dataStoreFactory = new ShapefileDataStoreFactory();
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put(ShapefileDataStoreFactory.URLP.key, shpFile.toURI().toURL());
         shapeFileDataStore = dataStoreFactory.createNewDataStore(params);
         shapeFileDataStore.createSchema(feature.getFeatureType());

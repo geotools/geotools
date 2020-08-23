@@ -56,7 +56,7 @@ public class URIs {
         // prepare modifiable parameters
         StringBuilder baseURLBuffer = new StringBuilder(baseURL);
 
-        Map<String, String> kvpBuffer = new LinkedHashMap<String, String>();
+        Map<String, String> kvpBuffer = new LinkedHashMap<>();
         if (kvp != null) {
             kvpBuffer.putAll(kvp);
         }

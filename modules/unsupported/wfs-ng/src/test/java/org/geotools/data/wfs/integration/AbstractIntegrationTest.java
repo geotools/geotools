@@ -198,7 +198,7 @@ public abstract class AbstractIntegrationTest {
             store1.setTransaction(transaction);
             class Listener implements FeatureListener {
 
-                List<FeatureEvent> events = new ArrayList<FeatureEvent>();
+                List<FeatureEvent> events = new ArrayList<>();
 
                 public void changed(FeatureEvent featureEvent) {
                     this.events.add(featureEvent);

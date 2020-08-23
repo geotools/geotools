@@ -129,7 +129,7 @@ public class Extrema extends BaseStatisticsOperationJAI {
         // /////////////////////////////////////////////////////////////////////
         if (data instanceof RenderedOp) {
             final RenderedOp result = (RenderedOp) data;
-            final Map<String, Object> synthProp = new HashMap<String, Object>();
+            final Map<String, Object> synthProp = new HashMap<>();
 
             if (JAIExt.isJAIExtOperation(STATS)) {
                 // get the properties

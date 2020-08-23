@@ -29,7 +29,7 @@ public class TemporalOperatorImpl implements TemporalOperator {
 
     public TemporalOperatorImpl(String name) {
         this.name = name;
-        operands = new LinkedHashSet<Name>();
+        operands = new LinkedHashSet<>();
     }
 
     public String getName() {

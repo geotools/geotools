@@ -70,7 +70,7 @@ public class ContentsTypeImpl extends ContentsBaseTypeImpl implements ContentsTy
      */
     public EList<TileMatrixSetType> getTileMatrixSet() {
         if (tileMatrixSet == null) {
-            tileMatrixSet = new EObjectContainmentEList<TileMatrixSetType>(TileMatrixSetType.class, this, wmtsv_1Package.CONTENTS_TYPE__TILE_MATRIX_SET);
+            tileMatrixSet = new EObjectContainmentEList<>(TileMatrixSetType.class, this, wmtsv_1Package.CONTENTS_TYPE__TILE_MATRIX_SET);
         }
         return tileMatrixSet;
     }

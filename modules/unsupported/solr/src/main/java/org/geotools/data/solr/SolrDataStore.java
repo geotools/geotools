@@ -74,14 +74,14 @@ public class SolrDataStore extends ContentDataStore {
     private List<Name> nativeTypeNames;
 
     // Attributes present in SOLR schema
-    private ArrayList<SolrAttribute> solrAttributes = new ArrayList<SolrAttribute>();
+    private ArrayList<SolrAttribute> solrAttributes = new ArrayList<>();
 
     // SOLR uuid attributes
     private SolrAttribute pk = null;
 
     // Attributes configurations of the store entries
     private Map<String, SolrLayerConfiguration> solrConfigurations =
-            new ConcurrentHashMap<String, SolrLayerConfiguration>();
+            new ConcurrentHashMap<>();
 
     HttpSolrClient solrServer;
 
@@ -150,7 +150,7 @@ public class SolrDataStore extends ContentDataStore {
      */
     public ArrayList<SolrAttribute> getSolrAttributes(String layerName) {
         if (solrAttributes.isEmpty()) {
-            solrAttributes = new ArrayList<SolrAttribute>();
+            solrAttributes = new ArrayList<>();
             try {
                 LukeRequest lq = new LukeRequest();
                 lq.setShowSchema(true);
@@ -160,7 +160,7 @@ public class SolrDataStore extends ContentDataStore {
                 lq.setShowSchema(false);
                 LukeResponse processField = lq.process(solrServer);
                 Map<String, FieldInfo> fis = processField.getFieldInfo();
-                SortedSet<String> keys = new TreeSet<String>(fis.keySet());
+                SortedSet<String> keys = new TreeSet<>(fis.keySet());
                 for (String k : keys) {
                     FieldInfo fieldInfo = fis.get(k);
                     String name = fieldInfo.getName();

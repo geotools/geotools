@@ -185,7 +185,7 @@ public class AppSchemaDataAccessConfigurator {
             namespaces.declarePrefix(prefix, namespace);
         }
         // check included namespaces
-        final Set<String> evaluatedURLs = new HashSet<String>();
+        final Set<String> evaluatedURLs = new HashSet<>();
         config.getIncludes()
                 .forEach(
                         filename ->
@@ -315,7 +315,7 @@ public class AppSchemaDataAccessConfigurator {
             Map<String, DataAccess<FeatureType, Feature>> sourceDataStores) throws IOException {
         Set mappingsConfigs = config.getTypeMappings();
 
-        Set<FeatureTypeMapping> featureTypeMappings = new HashSet<FeatureTypeMapping>();
+        Set<FeatureTypeMapping> featureTypeMappings = new HashSet<>();
 
         for (Iterator it = mappingsConfigs.iterator(); it.hasNext(); ) {
             TypeMapping dto = (TypeMapping) it.next();
@@ -908,8 +908,7 @@ public class AppSchemaDataAccessConfigurator {
         AppSchemaDataAccessConfigurator.LOGGER.entering(
                 getClass().getName(), "acquireSourceDatastores");
 
-        final Map<String, DataAccess<FeatureType, Feature>> datastores =
-                new LinkedHashMap<String, DataAccess<FeatureType, Feature>>();
+        final Map<String, DataAccess<FeatureType, Feature>> datastores = new LinkedHashMap<>();
         @SuppressWarnings("unchecked")
         final List<SourceDataStore> dsParams = config.getSourceDataStores();
         String id;
@@ -1033,7 +1032,7 @@ public class AppSchemaDataAccessConfigurator {
      */
     private Map<String, Serializable> resolveRelativePaths(
             final Map<String, Serializable> datastoreParams) {
-        Map<String, Serializable> resolvedParams = new HashMap<String, Serializable>();
+        Map<String, Serializable> resolvedParams = new HashMap<>();
 
         AppSchemaDataAccessConfigurator.LOGGER.entering(
                 getClass().getName(), "resolveRelativePaths");

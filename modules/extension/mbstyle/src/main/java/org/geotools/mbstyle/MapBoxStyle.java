@@ -80,7 +80,7 @@ public class MapBoxStyle {
      * @return List of parse exceptions found. If this list is empty, the style is valid.
      */
     public static List<Exception> validate(Reader reader) {
-        List<Exception> problems = new ArrayList<Exception>();
+        List<Exception> problems = new ArrayList<>();
         MBStyleParser parser = new MBStyleParser();
         MBStyle style;
         try {

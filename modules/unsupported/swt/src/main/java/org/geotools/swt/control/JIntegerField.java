@@ -135,7 +135,7 @@ public class JIntegerField extends JValueField implements ModifyListener {
     public void modifyText(ModifyEvent arg0) {
         if (fireEvents) {
             ValueChangedEvent<Integer> ev =
-                    new ValueChangedEvent<Integer>(JIntegerField.this, Integer.valueOf(getText()));
+                    new ValueChangedEvent<>(JIntegerField.this, Integer.valueOf(getText()));
             fireValueChangedEvent(ev);
         }
     }

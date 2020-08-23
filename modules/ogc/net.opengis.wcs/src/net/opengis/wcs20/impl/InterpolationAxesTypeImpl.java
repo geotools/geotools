@@ -65,7 +65,7 @@ public class InterpolationAxesTypeImpl extends EObjectImpl implements Interpolat
 	 */
     public EList<InterpolationAxisType> getInterpolationAxis() {
 		if (interpolationAxis == null) {
-			interpolationAxis = new EObjectResolvingEList<InterpolationAxisType>(InterpolationAxisType.class, this, Wcs20Package.INTERPOLATION_AXES_TYPE__INTERPOLATION_AXIS);
+			interpolationAxis = new EObjectResolvingEList<>(InterpolationAxisType.class, this, Wcs20Package.INTERPOLATION_AXES_TYPE__INTERPOLATION_AXIS);
 		}
 		return interpolationAxis;
 	}

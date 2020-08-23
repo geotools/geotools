@@ -347,7 +347,7 @@ public class XPathUtil {
      * @return list of string steps
      */
     private static List<String> splitPath(String s) {
-        ArrayList<String> parts = new ArrayList<String>();
+        ArrayList<String> parts = new ArrayList<>();
 
         StringBuffer b = new StringBuffer();
         int insideIndex = 0;

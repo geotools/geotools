@@ -76,7 +76,7 @@ public class GeometryFunctionsTest extends AppSchemaTestSupport {
 
     @BeforeClass
     public static void setUpOnce() {
-        List<AttributeDescriptor> schema = new ArrayList<AttributeDescriptor>();
+        List<AttributeDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
                         XSSchema.DOUBLE_TYPE, Types.typeName("pointOne"), 0, 1, false, null));

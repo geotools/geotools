@@ -192,7 +192,7 @@ public class FeatureTypeDBObject {
     }
 
     private static Map<String, String> typeCheck(Map<?, ?> map) {
-        Map<String, String> typeChecked = new LinkedHashMap<String, String>();
+        Map<String, String> typeChecked = new LinkedHashMap<>();
         if (map != null && !map.isEmpty()) {
             for (Map.Entry<?, ?> entry : map.entrySet()) {
                 Object key = entry.getKey();

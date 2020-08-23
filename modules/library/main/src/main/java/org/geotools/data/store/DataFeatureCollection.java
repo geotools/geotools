@@ -107,7 +107,7 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
     }
 
     public FeatureReader<SimpleFeatureType, SimpleFeature> reader() throws IOException {
-        return new DelegateFeatureReader<SimpleFeatureType, SimpleFeature>(getSchema(), features());
+        return new DelegateFeatureReader<>(getSchema(), features());
     }
 
     //
@@ -336,7 +336,7 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
     }
 
     public <T> T[] toArray(T[] array) {
-        List<T> list = new ArrayList<T>();
+        List<T> list = new ArrayList<>();
         Iterator i = iterator();
         try {
             while (i.hasNext()) {

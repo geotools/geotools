@@ -101,7 +101,7 @@ public class FeaturesLockedTypeImpl extends EObjectImpl implements FeaturesLocke
    */
     public EList<FeatureId> getResourceId() {
     if (resourceId == null) {
-      resourceId = new EDataTypeUniqueEList<FeatureId>(FeatureId.class, this, Wfs20Package.FEATURES_LOCKED_TYPE__RESOURCE_ID);
+      resourceId = new EDataTypeUniqueEList<>(FeatureId.class, this, Wfs20Package.FEATURES_LOCKED_TYPE__RESOURCE_ID);
     }
     return resourceId;
   }

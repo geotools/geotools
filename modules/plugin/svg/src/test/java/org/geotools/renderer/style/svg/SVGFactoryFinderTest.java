@@ -52,7 +52,7 @@ public class SVGFactoryFinderTest extends TestCase {
     }
 
     public <T> List<T> loadIterator(Iterator<T> iterator) {
-        List<T> result = new ArrayList<T>();
+        List<T> result = new ArrayList<>();
         while (iterator.hasNext()) result.add(iterator.next());
         return result;
     }

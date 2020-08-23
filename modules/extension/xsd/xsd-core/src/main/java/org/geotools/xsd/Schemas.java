@@ -345,7 +345,7 @@ public class Schemas {
         Map<?, ?> response =
                 (options == null) ? null : (Map<?, ?>) options.get(URIConverter.OPTION_RESPONSE);
         if (response == null) {
-            response = new HashMap<Object, Object>();
+            response = new HashMap<>();
         }
         return response;
     }
@@ -394,7 +394,7 @@ public class Schemas {
         imprt.setNamespace(importee.getTargetNamespace());
         schema.getContents().add(imprt);
 
-        List<XSDSchemaLocator> locators = new ArrayList<XSDSchemaLocator>();
+        List<XSDSchemaLocator> locators = new ArrayList<>();
         locators.add(
                 new XSDSchemaLocator() {
                     public XSDSchema locateSchema(
@@ -437,8 +437,7 @@ public class Schemas {
                                 if (dec == null) {
                                     continue;
                                 }
-                                List<XSDElementDeclaration> toRemove =
-                                        new ArrayList<XSDElementDeclaration>();
+                                List<XSDElementDeclaration> toRemove = new ArrayList<>();
                                 for (XSDElementDeclaration subs : dec.getSubstitutionGroup()) {
                                     if (subs != null
                                             && subs.getContainer() != null

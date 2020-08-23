@@ -50,7 +50,7 @@ public class Formattable {
     static final String INDENTATION = "Indentation";
 
     /** The formatter for the {@link #toWKT()} method. */
-    private static final ThreadLocal<Formatter> FORMATTER = new ThreadLocal<Formatter>();
+    private static final ThreadLocal<Formatter> FORMATTER = new ThreadLocal<>();
 
     /**
      * The indentation value to give to {@link #toWKT(int)} method for formatting the complete

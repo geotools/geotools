@@ -101,7 +101,7 @@ public class EnvelopeWithTimePeriodTypeImpl extends EnvelopeTypeImpl implements 
      */
     public EList<TimePositionType> getTimePosition() {
         if (timePosition == null) {
-            timePosition = new EObjectContainmentEList<TimePositionType>(TimePositionType.class, this, Gml311Package.ENVELOPE_WITH_TIME_PERIOD_TYPE__TIME_POSITION);
+            timePosition = new EObjectContainmentEList<>(TimePositionType.class, this, Gml311Package.ENVELOPE_WITH_TIME_PERIOD_TYPE__TIME_POSITION);
         }
         return timePosition;
     }

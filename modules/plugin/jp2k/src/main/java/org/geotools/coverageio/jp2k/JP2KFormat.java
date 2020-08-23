@@ -65,7 +65,7 @@ public final class JP2KFormat extends AbstractGridFormat implements Format {
      * the use of the ImageReadMT operation of the ImageIO-Ext.
      */
     public static final DefaultParameterDescriptor<Boolean> USE_MULTITHREADING =
-            new DefaultParameterDescriptor<Boolean>(
+            new DefaultParameterDescriptor<>(
                     USE_MT,
                     Boolean.class,
                     new Boolean[] {Boolean.TRUE, Boolean.FALSE},
@@ -81,7 +81,7 @@ public final class JP2KFormat extends AbstractGridFormat implements Format {
 
     /** Sets the metadata information. */
     protected void setInfo() {
-        HashMap<String, String> info = new HashMap<String, String>();
+        HashMap<String, String> info = new HashMap<>();
         info.put("name", "JP2K (Direct) ");
         info.put("description", "JP2K (Direct) Coverage Format");
         info.put("vendor", "Geotools");

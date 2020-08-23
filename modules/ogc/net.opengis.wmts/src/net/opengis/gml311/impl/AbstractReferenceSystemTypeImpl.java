@@ -116,7 +116,7 @@ public abstract class AbstractReferenceSystemTypeImpl extends AbstractReferenceS
      */
     public EList<IdentifierType> getSrsID() {
         if (srsID == null) {
-            srsID = new EObjectContainmentEList<IdentifierType>(IdentifierType.class, this, Gml311Package.ABSTRACT_REFERENCE_SYSTEM_TYPE__SRS_ID);
+            srsID = new EObjectContainmentEList<>(IdentifierType.class, this, Gml311Package.ABSTRACT_REFERENCE_SYSTEM_TYPE__SRS_ID);
         }
         return srsID;
     }

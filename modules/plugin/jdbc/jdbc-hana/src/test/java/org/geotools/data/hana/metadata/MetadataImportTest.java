@@ -28,7 +28,7 @@ import org.geotools.jdbc.JDBCTestSupport;
 public class MetadataImportTest extends JDBCTestSupport {
 
     public void testMetadataImport() throws Exception {
-        List<String> args = new ArrayList<String>();
+        List<String> args = new ArrayList<>();
         args.add(fixture.getProperty("user"));
         args.add(fixture.getProperty("host"));
         args.add(fixture.getProperty("instance"));

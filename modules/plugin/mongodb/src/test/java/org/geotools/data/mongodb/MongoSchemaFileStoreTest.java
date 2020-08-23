@@ -46,7 +46,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 /** @author tkunicki@boundlessgeo.com */
 public class MongoSchemaFileStoreTest extends MongoSchemaStoreTest<MongoSchemaFileStore> {
 
-    Map<MongoSchemaFileStore, File> directories = new HashMap<MongoSchemaFileStore, File>();
+    Map<MongoSchemaFileStore, File> directories = new HashMap<>();
 
     static SchemaStoreDirectoryProvider direcotryProvider;
 

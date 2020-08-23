@@ -179,8 +179,8 @@ public class JTextReporter {
          * @param dialog the dialog to connect to
          */
         private Connection(TextDialog dialog) {
-            dialogRef = new WeakReference<TextDialog>(dialog);
-            listeners = new ArrayList<TextReporterListener>();
+            dialogRef = new WeakReference<>(dialog);
+            listeners = new ArrayList<>();
             updateLock = new ReentrantReadWriteLock();
             active = new AtomicBoolean(true);
         }

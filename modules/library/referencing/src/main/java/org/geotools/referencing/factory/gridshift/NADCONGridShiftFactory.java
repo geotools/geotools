@@ -93,7 +93,7 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
 
     /** Constructs a factory with the default priority. */
     public NADCONGridShiftFactory() {
-        gridCache = new SoftValueHashMap<NADCONKey, NADConGridShift>(GRID_CACHE_HARD_REFERENCES);
+        gridCache = new SoftValueHashMap<>(GRID_CACHE_HARD_REFERENCES);
     }
 
     public NADConGridShift loadGridShift(URL latGridURL, URL longGridURL) throws FactoryException {

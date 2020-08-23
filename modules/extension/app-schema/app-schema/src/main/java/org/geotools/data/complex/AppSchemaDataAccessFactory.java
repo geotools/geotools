@@ -71,8 +71,7 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
     public AppSchemaDataAccessFactory() {}
 
     public DataAccess<FeatureType, Feature> createDataStore(Map params) throws IOException {
-        final Set<AppSchemaDataAccess> registeredAppSchemaStores =
-                new HashSet<AppSchemaDataAccess>();
+        final Set<AppSchemaDataAccess> registeredAppSchemaStores = new HashSet<>();
         try {
             return createDataStore(params, false, new DataAccessMap(), registeredAppSchemaStores);
         } catch (Exception ex) {

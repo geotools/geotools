@@ -123,8 +123,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
      * for. This avoids the overhead of searching the {@code DataSourceFinder} service registry at
      * each unwrap.
      */
-    Map<Class<? extends Connection>, UnWrapper> uwMap =
-            new HashMap<Class<? extends Connection>, UnWrapper>();
+    Map<Class<? extends Connection>, UnWrapper> uwMap = new HashMap<>();
 
     private int nameLenghtLimit = 30;
 
@@ -189,7 +188,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
      * Stores srid and their nature, true if geodetic, false otherwise. Avoids repeated accesses to
      * the MDSYS.GEODETIC_SRIDS table
      */
-    SoftValueHashMap<Integer, Boolean> geodeticCache = new SoftValueHashMap<Integer, Boolean>(20);
+    SoftValueHashMap<Integer, Boolean> geodeticCache = new SoftValueHashMap<>(20);
 
     /** Remembers whether the USER_SDO_* views could be accessed or not */
     Boolean canAccessUserViews;
@@ -296,7 +295,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
             return null;
         }
 
-        List<String> parameters = new ArrayList<String>();
+        List<String> parameters = new ArrayList<>();
 
         // setup the sql to use for the ALL_SDO table
         String metadataTableStatement =
@@ -319,7 +318,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
     /** Looks up the geometry type on the "ALL_*" metadata views */
     private Class<?> lookupGeometryClassOnAllIndex(
             Connection cx, String tableName, String columnName, String schema) throws SQLException {
-        List<String> parameters = new ArrayList<String>();
+        List<String> parameters = new ArrayList<>();
 
         // setup the sql to use for the ALL_SDO table
         String allSdoSqlStatement =
@@ -352,7 +351,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
             return null;
         }
 
-        List<String> parameters = new ArrayList<String>();
+        List<String> parameters = new ArrayList<>();
 
         // setup the sql to use for the USER_SDO table
         String userSdoSqlStatement =
@@ -718,7 +717,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
             return null;
         }
 
-        List<String> parameters = new ArrayList<String>();
+        List<String> parameters = new ArrayList<>();
 
         // setup the sql to use for the ALL_SDO table
         String metadataTableStatement =
@@ -742,7 +741,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
     private Integer lookupSRIDFromAllViews(
             String schemaName, String tableName, String columnName, Connection cx)
             throws SQLException {
-        List<String> parameters = new ArrayList<String>();
+        List<String> parameters = new ArrayList<>();
 
         String allSdoSql =
                 "SELECT SRID FROM MDSYS.ALL_SDO_GEOM_METADATA WHERE TABLE_NAME = ? AND COLUMN_NAME = ?";
@@ -766,7 +765,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
             return null;
         }
 
-        List<String> parameters = new ArrayList<String>();
+        List<String> parameters = new ArrayList<>();
 
         String userSdoSql =
                 "SELECT SRID FROM MDSYS.USER_SDO_GEOM_METADATA WHERE TABLE_NAME = ? AND COLUMN_NAME = ?";
@@ -831,7 +830,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
             return null;
         }
 
-        List<String> parameters = new ArrayList<String>();
+        List<String> parameters = new ArrayList<>();
 
         // setup the sql to use for the ALL_SDO table
         String metadataTableStatement =
@@ -855,7 +854,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
     private Integer lookupDimensionFromAllViews(
             String schemaName, String tableName, String columnName, Connection cx)
             throws SQLException {
-        List<String> parameters = new ArrayList<String>();
+        List<String> parameters = new ArrayList<>();
 
         String allSdoSql =
                 "SELECT DIMINFO FROM MDSYS.ALL_SDO_GEOM_METADATA USGM, table(USGM.DIMINFO) "
@@ -880,7 +879,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
             return null;
         }
 
-        List<String> parameters = new ArrayList<String>();
+        List<String> parameters = new ArrayList<>();
 
         String userSdoSql =
                 "SELECT COUNT(*) FROM MDSYS.USER_SDO_GEOM_METADATA USGM, table(USGM.DIMINFO)"
@@ -947,7 +946,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
             ResultSet rs = null;
             String sql;
 
-            List<ReferencedEnvelope> result = new ArrayList<ReferencedEnvelope>();
+            List<ReferencedEnvelope> result = new ArrayList<>();
             Savepoint savePoint = null;
             try {
                 if (!cx.getAutoCommit()) {
@@ -1055,7 +1054,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         Statement st = null;
         ResultSet rs = null;
 
-        List<ReferencedEnvelope> result = new ArrayList<ReferencedEnvelope>();
+        List<ReferencedEnvelope> result = new ArrayList<>();
         Savepoint savePoint = null;
         try {
             st = cx.createStatement();

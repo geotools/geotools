@@ -31,7 +31,7 @@ public class BufferFeatureCollectionFactory extends FeatureToFeatureProcessFacto
 
     /** Buffer amount */
     public static final Parameter<Double> BUFFER =
-            new Parameter<Double>(
+            new Parameter<>(
                     "buffer",
                     Double.class,
                     Text.text("Buffer Amount"),

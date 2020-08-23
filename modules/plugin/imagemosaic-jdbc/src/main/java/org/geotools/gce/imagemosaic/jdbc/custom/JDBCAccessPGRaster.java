@@ -130,7 +130,7 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
         }
 
         // sort levelinfos
-        SortedSet<ImageLevelInfo> sortColl = new TreeSet<ImageLevelInfo>();
+        SortedSet<ImageLevelInfo> sortColl = new TreeSet<>();
         sortColl.addAll(getLevelInfos());
         getLevelInfos().clear();
         getLevelInfos().addAll(sortColl);
@@ -162,7 +162,7 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
             throws IOException {
         Date start = new Date();
         Connection con = null;
-        List<ImageDecoderThread> threads = new ArrayList<ImageDecoderThread>();
+        List<ImageDecoderThread> threads = new ArrayList<>();
         ExecutorService pool = getExecutorServivicePool();
 
         String gridStatement = statementMap.get(levelInfo);
@@ -407,7 +407,7 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
 
         try (PreparedStatement stmt =
                 con.prepareStatement(getConfig().getSqlUpdateMosaicStatement())) {
-            List<ImageLevelInfo> toBeRemoved = new ArrayList<ImageLevelInfo>();
+            List<ImageLevelInfo> toBeRemoved = new ArrayList<>();
 
             for (ImageLevelInfo li : getLevelInfos()) {
                 if (li.getCoverageName().equals(coverageName) == false) {
@@ -509,7 +509,7 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
         try (PreparedStatement stmt =
                 con.prepareStatement(getConfig().getSqlUpdateResStatement())) {
 
-            List<ImageLevelInfo> toBeRemoved = new ArrayList<ImageLevelInfo>();
+            List<ImageLevelInfo> toBeRemoved = new ArrayList<>();
 
             for (ImageLevelInfo li : getLevelInfos()) {
                 if (li.getCoverageName().equals(coverageName) == false) {
@@ -587,7 +587,7 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
     }
 
     private void populateStatementsMap(String coverageName, Connection con) throws SQLException {
-        statementMap = new HashMap<ImageLevelInfo, String>();
+        statementMap = new HashMap<>();
 
         for (ImageLevelInfo li : getLevelInfos()) {
             if (li.getCoverageName().equals(coverageName) == false) {

@@ -1551,7 +1551,7 @@ public class ImageMosaicReaderTest extends Assert {
         assertNotNull(descriptors);
         assertEquals(4, descriptors.size());
 
-        Map<String, DimensionDescriptor> dds = new HashMap<String, DimensionDescriptor>();
+        Map<String, DimensionDescriptor> dds = new HashMap<>();
         for (DimensionDescriptor dd : descriptors) {
             dds.put(dd.getName(), dd);
         }
@@ -2986,7 +2986,7 @@ public class ImageMosaicReaderTest extends Assert {
         }
         directory2.mkdirs();
         // Creation of a File Collection
-        Collection<File> files = new ArrayList<File>();
+        Collection<File> files = new ArrayList<>();
 
         // move all files besides month 2 and 5 to the second directory and store them into a
         // Collection
@@ -3071,7 +3071,7 @@ public class ImageMosaicReaderTest extends Assert {
         GranuleCatalog originalCatalog = reader.granuleCatalog;
         try {
             // now go and harvest the other files
-            Collection<File> files = new ArrayList<File>();
+            Collection<File> files = new ArrayList<>();
             for (File file :
                     FileUtils.listFiles(directory2, FileFilterUtils.prefixFileFilter("c"), null)) {
                 files.add(file);
@@ -3181,7 +3181,7 @@ public class ImageMosaicReaderTest extends Assert {
 
         // Create a List of Files containing only the directory to harvest and check if the Reader
         // reads it as a Directory
-        List<File> files = new ArrayList<File>();
+        List<File> files = new ArrayList<>();
         files.add(directory2);
 
         // ok, let's create a mosaic with the two original granules
@@ -3845,7 +3845,7 @@ public class ImageMosaicReaderTest extends Assert {
 
         // use imageio with defined tiles
         final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
-        final List<Date> timeValues = new ArrayList<Date>();
+        final List<Date> timeValues = new ArrayList<>();
         final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
         Date date = sdf.parse("2008-10-31T00:00:00.000Z");
@@ -4065,7 +4065,7 @@ public class ImageMosaicReaderTest extends Assert {
 
         // use imageio with defined tiles
         final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
-        final List<Date> timeValues = new ArrayList<Date>();
+        final List<Date> timeValues = new ArrayList<>();
         final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT+0"));
         Date date = sdf.parse("2008-10-31T00:00:00.000Z");
@@ -4730,7 +4730,7 @@ public class ImageMosaicReaderTest extends Assert {
                             new Coordinate(0, 0)
                         });
         f.setDefaultGeometry(gf.createPolygon(shell));
-        List<SimpleFeature> granules = new LinkedList<SimpleFeature>();
+        List<SimpleFeature> granules = new LinkedList<>();
         granules.add(f);
         reader.granuleCatalog.addGranules("empty_mosaic", granules, null);
         manager.initialize(false);
@@ -4895,9 +4895,9 @@ public class ImageMosaicReaderTest extends Assert {
         assertTrue(info instanceof FileResourceInfo);
         FileResourceInfo fileInfo = (FileResourceInfo) info;
         CloseableIterator<FileGroup> files = fileInfo.getFiles(null);
-        List<FileGroup> fileGroups = new ArrayList<FileGroup>();
-        Set<File> mainFiles = new HashSet<File>();
-        Set<File> supportFiles = new HashSet<File>();
+        List<FileGroup> fileGroups = new ArrayList<>();
+        Set<File> mainFiles = new HashSet<>();
+        Set<File> supportFiles = new HashSet<>();
         while (files.hasNext()) {
             FileGroup group = files.next();
             fileGroups.add(group);
@@ -4939,9 +4939,9 @@ public class ImageMosaicReaderTest extends Assert {
         assertTrue(info instanceof FileResourceInfo);
         FileResourceInfo fileInfo = (FileResourceInfo) info;
         CloseableIterator<FileGroup> files = fileInfo.getFiles(null);
-        List<FileGroup> fileGroups = new ArrayList<FileGroup>();
-        Set<File> mainFiles = new HashSet<File>();
-        Set<File> supportFiles = new HashSet<File>();
+        List<FileGroup> fileGroups = new ArrayList<>();
+        Set<File> mainFiles = new HashSet<>();
+        Set<File> supportFiles = new HashSet<>();
         while (files.hasNext()) {
             FileGroup group = files.next();
             fileGroups.add(group);
@@ -5410,7 +5410,7 @@ public class ImageMosaicReaderTest extends Assert {
         }
         directory2.mkdirs();
         // Creation of a File Collection
-        Collection<File> files = new ArrayList<File>();
+        Collection<File> files = new ArrayList<>();
 
         // move all files besides month 2 into the second directory and store them into a
         // Collection

@@ -150,8 +150,7 @@ public class Toolbox {
 
         SimpleFeatureCollection fcoll = fs.getFeatures();
         SimpleFeatureIterator it = fcoll.features();
-        List<FeatureWriter<SimpleFeatureType, SimpleFeature>> writers =
-                new ArrayList<FeatureWriter<SimpleFeatureType, SimpleFeature>>();
+        List<FeatureWriter<SimpleFeatureType, SimpleFeature>> writers = new ArrayList<>();
         try {
             int countTotal = fcoll.size();
 
@@ -217,7 +216,7 @@ public class Toolbox {
 
             File file = new File(newShapeFileDirName + newShapeFileRelativeName);
 
-            Map<String, Serializable> params = new HashMap<String, Serializable>();
+            Map<String, Serializable> params = new HashMap<>();
             params.put(ShapefileDataStoreFactory.URLP.key, file.toURI().toURL());
             result[i] = factory.createNewDataStore(params);
             result[i].createSchema(ft);

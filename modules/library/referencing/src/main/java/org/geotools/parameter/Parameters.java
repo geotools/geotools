@@ -262,7 +262,7 @@ public final class Parameters {
      */
     public static List<Object> search(
             final GeneralParameterValue param, final String name, int maxDepth) {
-        final List<Object> list = new ArrayList<Object>();
+        final List<Object> list = new ArrayList<>();
         search(param, name, maxDepth, list);
         return list;
     }
@@ -320,7 +320,7 @@ public final class Parameters {
     public static Map<String, Object> toNameValueMap(
             final GeneralParameterValue parameters, Map<String, Object> destination) {
         if (destination == null) {
-            destination = new LinkedHashMap<String, Object>();
+            destination = new LinkedHashMap<>();
         }
         if (parameters instanceof ParameterValue) {
             final ParameterValue param = (ParameterValue) parameters;

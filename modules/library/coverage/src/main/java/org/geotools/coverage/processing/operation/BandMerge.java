@@ -166,7 +166,7 @@ public class BandMerge extends OperationJAI {
     // Replace the old parameter descriptor group with a new one with the old parameters and the new
     // ones defined above.
     static {
-        final Set<ParameterDescriptor> replacedDescriptors = new HashSet<ParameterDescriptor>();
+        final Set<ParameterDescriptor> replacedDescriptors = new HashSet<>();
         replacedDescriptors.add(SOURCES);
         replacedDescriptors.add(INDEX);
         replacedDescriptors.add(TRANSFORM_CHOICE_PARAM);
@@ -249,7 +249,7 @@ public class BandMerge extends OperationJAI {
          */
         public List<AffineTransform> getTransformationList(List<GridGeometry2D> list, int index) {
             // Creation of a List of Transformations
-            List<AffineTransform> transforms = new ArrayList<AffineTransform>();
+            List<AffineTransform> transforms = new ArrayList<>();
             // Get the g2w transform to use for the remapping
             AffineTransform g2w = getGridToCRS2D(list, index);
             // Get all the other w2g transforms to concatenate for the remapping
@@ -322,7 +322,7 @@ public class BandMerge extends OperationJAI {
         /*
          * Extracts the source grid coverages now as a List. The sources will be set in the ParameterBlockJAI (as RenderedImages) later.
          */
-        final Collection<GridCoverage2D> sourceCollection = new ArrayList<GridCoverage2D>();
+        final Collection<GridCoverage2D> sourceCollection = new ArrayList<>();
         extractSources(parameters, sourceCollection);
         // Selection of the first coverage
         GridCoverage2D coverage = sourceCollection.iterator().next();
@@ -343,7 +343,7 @@ public class BandMerge extends OperationJAI {
         int size = sourceCollection.size();
 
         // GridGeometry List for all the sources
-        List<GridGeometry2D> gg2D = new ArrayList<GridGeometry2D>(size);
+        List<GridGeometry2D> gg2D = new ArrayList<>(size);
 
         // Loop through the
         for (GridCoverage2D source : sourceCollection) {
@@ -589,7 +589,7 @@ public class BandMerge extends OperationJAI {
             return null;
         }
         // Creation of a new GridSampleDimension array
-        List<GridSampleDimension> sampleDims = new ArrayList<GridSampleDimension>(numDim);
+        List<GridSampleDimension> sampleDims = new ArrayList<>(numDim);
 
         for (GridSampleDimension[] array : list) {
             for (GridSampleDimension sample : array) {

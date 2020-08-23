@@ -62,7 +62,7 @@ public class CartesianAuthorityFactory extends DirectAuthorityFactory
                     true);
 
     static Map<String, ?> buildProperties(String name, Citation authority, String code) {
-        Map<String, Object> props = new HashMap<String, Object>();
+        Map<String, Object> props = new HashMap<>();
         props.put(IdentifiedObject.NAME_KEY, name);
         props.put(IdentifiedObject.IDENTIFIERS_KEY, new NamedIdentifier(authority, code));
         return props;

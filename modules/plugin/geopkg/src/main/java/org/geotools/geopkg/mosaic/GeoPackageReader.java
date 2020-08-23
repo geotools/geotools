@@ -89,7 +89,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
 
     protected File sourceFile;
 
-    protected Map<String, TileEntry> tiles = new LinkedHashMap<String, TileEntry>();
+    protected Map<String, TileEntry> tiles = new LinkedHashMap<>();
 
     GeoPackage file;
 

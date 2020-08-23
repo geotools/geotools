@@ -45,7 +45,7 @@ public class ResourceIdTypeBindingTest extends FESTestSupport {
         Id filter = (Id) parse();
         assertNotNull(filter);
         assertEquals(7, filter.getIdentifiers().size());
-        List<ResourceId> ids = new ArrayList<ResourceId>(7);
+        List<ResourceId> ids = new ArrayList<>(7);
         for (Identifier id : filter.getIdentifiers()) {
             assertTrue(id instanceof ResourceId);
             ids.add((ResourceId) id);

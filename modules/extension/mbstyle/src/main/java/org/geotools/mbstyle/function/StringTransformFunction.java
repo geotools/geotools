@@ -45,10 +45,10 @@ public class StringTransformFunction extends FunctionImpl {
     private static final FilterFactory2 ff2 = CommonFactoryFinder.getFilterFactory2(null);
 
     static {
-        Parameter<Object> result = new Parameter<Object>("result", Object.class, 1, 1);
-        Parameter<Object> input = new Parameter<Object>("input", Object.class, 1, 1);
+        Parameter<Object> result = new Parameter<>("result", Object.class, 1, 1);
+        Parameter<Object> input = new Parameter<>("input", Object.class, 1, 1);
         Parameter<Object> transform =
-                new Parameter<Object>(
+                new Parameter<>(
                         "transform",
                         Object.class,
                         Text.text("transform"),

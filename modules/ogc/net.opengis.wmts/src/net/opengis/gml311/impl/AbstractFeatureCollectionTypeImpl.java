@@ -83,7 +83,7 @@ public abstract class AbstractFeatureCollectionTypeImpl extends AbstractFeatureT
      */
     public EList<FeaturePropertyType> getFeatureMember() {
         if (featureMember == null) {
-            featureMember = new EObjectContainmentEList<FeaturePropertyType>(FeaturePropertyType.class, this, Gml311Package.ABSTRACT_FEATURE_COLLECTION_TYPE__FEATURE_MEMBER);
+            featureMember = new EObjectContainmentEList<>(FeaturePropertyType.class, this, Gml311Package.ABSTRACT_FEATURE_COLLECTION_TYPE__FEATURE_MEMBER);
         }
         return featureMember;
     }

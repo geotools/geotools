@@ -73,7 +73,7 @@ public class CssRule {
         this.setSelector(selector);
         PseudoClassExtractor extractor = new PseudoClassExtractor();
         selector.accept(extractor);
-        this.setProperties(new HashMap<PseudoClass, List<Property>>());
+        this.setProperties(new HashMap<>());
         Set<PseudoClass> pseudoClasses = extractor.getPseudoClasses();
         for (PseudoClass ps : pseudoClasses) {
             this.getProperties().put(ps, properties);

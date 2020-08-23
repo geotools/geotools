@@ -556,7 +556,7 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
             dataSource.setPoolPreparedStatements(true);
 
             // check if the dialect exposes the max prepared statements param
-            Map<String, Serializable> testMap = new HashMap<String, Serializable>();
+            Map<String, Serializable> testMap = new HashMap<>();
             setupParameters(testMap);
             if (testMap.containsKey(MAX_OPEN_PREPARED_STATEMENTS.key)) {
                 Integer maxPreparedStatements =

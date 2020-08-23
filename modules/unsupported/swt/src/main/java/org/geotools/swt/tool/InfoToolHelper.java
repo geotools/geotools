@@ -56,7 +56,7 @@ public abstract class InfoToolHelper<T> {
      *     this helper
      */
     protected InfoToolHelper(MapContent content, CoordinateReferenceSystem dataCRS) {
-        this.contentRef = new WeakReference<MapContent>(content);
+        this.contentRef = new WeakReference<>(content);
         setCRS(dataCRS);
     }
 

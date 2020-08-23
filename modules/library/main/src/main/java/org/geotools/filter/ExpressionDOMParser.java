@@ -370,7 +370,7 @@ public final class ExpressionDOMParser {
                 return null;
             }
 
-            ArrayList<Expression> args = new ArrayList<Expression>();
+            ArrayList<Expression> args = new ArrayList<>();
             Node value = child.getFirstChild();
 
             ARGS:

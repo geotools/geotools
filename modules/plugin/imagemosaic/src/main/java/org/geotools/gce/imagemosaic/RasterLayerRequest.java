@@ -147,7 +147,7 @@ public class RasterLayerRequest {
     /** Flag specifying whether we need to set the ROI in any case in the output mosaic */
     private boolean setRoiProperty;
 
-    private final Map<String, List> requestedAdditionalDomains = new HashMap<String, List>();
+    private final Map<String, List> requestedAdditionalDomains = new HashMap<>();
 
     // the bands parameter define the order and which bands should be returned
     private int[] bands;
@@ -230,7 +230,7 @@ public class RasterLayerRequest {
     }
 
     public Map<String, List> getRequestedAdditionalDomains() {
-        return new HashMap<String, List>(requestedAdditionalDomains);
+        return new HashMap<>(requestedAdditionalDomains);
     }
 
     /**

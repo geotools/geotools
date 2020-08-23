@@ -184,7 +184,7 @@ public class WKTReader2 extends WKTReader {
                 return Collections.emptyList();
             }
         }
-        ArrayList<Coordinate> coordinates = new ArrayList<Coordinate>();
+        ArrayList<Coordinate> coordinates = new ArrayList<>();
         coordinates.add(getPreciseCoordinate());
         nextToken = getNextCloserOrComma();
         while (nextToken.equals(COMMA)) {
@@ -509,7 +509,7 @@ public class WKTReader2 extends WKTReader {
      * @return List of LineString (defined in a mixed format)
      */
     List<LineString> getLineStrings() throws IOException, ParseException {
-        ArrayList<LineString> lineStrings = new ArrayList<LineString>();
+        ArrayList<LineString> lineStrings = new ArrayList<>();
         String nextWord = getNextEmptyOrOpener();
         if (nextWord.equals(EMPTY)) {
             return lineStrings;
@@ -766,7 +766,7 @@ public class WKTReader2 extends WKTReader {
     private MultiPolygon readMultiSurfaceText() throws IOException, ParseException {
         String nextToken = getNextEmptyOrOpener();
         if (nextToken.equals(EMPTY)) {
-            return geometryFactory.createMultiSurface(new ArrayList<Polygon>());
+            return geometryFactory.createMultiSurface(new ArrayList<>());
         }
         ArrayList polygons = new ArrayList();
         // must be an opener!

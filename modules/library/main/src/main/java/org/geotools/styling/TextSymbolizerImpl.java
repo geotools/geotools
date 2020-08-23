@@ -36,7 +36,7 @@ import org.opengis.util.Cloneable;
  * @version $Id$
  */
 public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbolizer2, Cloneable {
-    private List<Font> fonts = new ArrayList<Font>(1);
+    private List<Font> fonts = new ArrayList<>(1);
     private final FilterFactory filterFactory;
     private FillImpl fill;
     private HaloImpl halo;

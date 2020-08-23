@@ -213,7 +213,7 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
     @Override
     public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type)
             throws FactoryException {
-        final Set<String> codes = new LinkedHashSet<String>(super.getAuthorityCodes(type));
+        final Set<String> codes = new LinkedHashSet<>(super.getAuthorityCodes(type));
         codes.addAll(fallback.getAuthorityCodes(type));
         return codes;
     }

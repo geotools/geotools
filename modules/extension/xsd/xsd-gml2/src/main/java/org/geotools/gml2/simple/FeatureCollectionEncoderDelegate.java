@@ -88,7 +88,7 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
         this.encoder = encoder;
         this.namespaces = encoder.getNamespaces();
         this.encoder = encoder;
-        this.geometryEncoders = new HashMap<Class, GeometryEncoder>();
+        this.geometryEncoders = new HashMap<>();
         this.boundedBy = gml.getSchema().qName("boundedBy");
         this.name = gml.getSchema().qName("name");
         gml.registerGeometryEncoders(geometryEncoders, encoder);
@@ -361,8 +361,7 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
         /** Builds the list of {@link AttributeContext} for each attribute to be encoded */
         private List<AttributeContext> setupAttributeContexts(
                 List properties, SimpleFeatureType schema, BindingLoader bindingLoader) {
-            ArrayList<AttributeContext> attributes =
-                    new ArrayList<AttributeContext>(properties.size());
+            ArrayList<AttributeContext> attributes = new ArrayList<>(properties.size());
             List<AttributeDescriptor> attributeDescriptors = schema.getAttributeDescriptors();
             for (Iterator p = properties.iterator(); p.hasNext(); ) {
                 Object[] o = (Object[]) p.next();

@@ -101,7 +101,7 @@ import org.opengis.util.InternationalString;
  */
 public abstract class MathTransformBuilder {
     /** The list of mapped positions. */
-    private final List<MappedPosition> positions = new ArrayList<MappedPosition>();
+    private final List<MappedPosition> positions = new ArrayList<>();
 
     /** An unmodifiable view of mapped positions to be returned by {@link #getMappedPositions}. */
     private final List<MappedPosition> unmodifiablePositions =
@@ -416,7 +416,7 @@ public abstract class MathTransformBuilder {
      * @throws FactoryException if the CRS can't be created.
      */
     private EngineeringCRS createEngineeringCRS(final boolean target) throws FactoryException {
-        final Map<String, Object> properties = new HashMap<String, Object>(4);
+        final Map<String, Object> properties = new HashMap<>(4);
         properties.put(
                 CoordinateReferenceSystem.NAME_KEY, Vocabulary.format(VocabularyKeys.UNKNOWN));
         final GeographicExtent validArea = getValidArea(target);
@@ -671,7 +671,7 @@ public abstract class MathTransformBuilder {
      */
     public Transformation getTransformation() throws FactoryException {
         if (transformation == null) {
-            final Map<String, Object> properties = new HashMap<String, Object>();
+            final Map<String, Object> properties = new HashMap<>();
             properties.put(Transformation.NAME_KEY, getName());
             /*
              * Set the valid area as the intersection of source CRS and target CRS valid area.

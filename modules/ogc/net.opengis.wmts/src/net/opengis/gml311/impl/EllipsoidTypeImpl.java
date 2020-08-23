@@ -107,7 +107,7 @@ public class EllipsoidTypeImpl extends EllipsoidBaseTypeImpl implements Ellipsoi
      */
     public EList<IdentifierType> getEllipsoidID() {
         if (ellipsoidID == null) {
-            ellipsoidID = new EObjectContainmentEList<IdentifierType>(IdentifierType.class, this, Gml311Package.ELLIPSOID_TYPE__ELLIPSOID_ID);
+            ellipsoidID = new EObjectContainmentEList<>(IdentifierType.class, this, Gml311Package.ELLIPSOID_TYPE__ELLIPSOID_ID);
         }
         return ellipsoidID;
     }

@@ -147,7 +147,7 @@ public class SolrFeatureSourceTest extends SolrTestSupport {
         FilterFactory ff = dataStore.getFilterFactory();
         Id id =
                 ff.id(
-                        new HashSet<FeatureId>(
+                        new HashSet<>(
                                 Arrays.asList(
                                         ff.featureId(this.layerName + ".1"),
                                         ff.featureId(this.layerName + ".7"))));

@@ -39,15 +39,15 @@ import org.geotools.styling.UserLayer;
 
 public class StyleCollector extends AbstractStyleVisitor implements StyleVisitor {
 
-    List<FeatureTypeStyle> featureTypeStyles = new ArrayList<FeatureTypeStyle>();
+    List<FeatureTypeStyle> featureTypeStyles = new ArrayList<>();
 
-    List<Rule> rules = new ArrayList<Rule>();
+    List<Rule> rules = new ArrayList<>();
 
-    List<Symbolizer> symbolizers = new ArrayList<Symbolizer>();
+    List<Symbolizer> symbolizers = new ArrayList<>();
 
-    List<Style> styles = new ArrayList<Style>();
+    List<Style> styles = new ArrayList<>();
 
-    List<StyledLayer> layers = new ArrayList<StyledLayer>();
+    List<StyledLayer> layers = new ArrayList<>();
 
     @Override
     public void visit(StyledLayerDescriptor sld) {

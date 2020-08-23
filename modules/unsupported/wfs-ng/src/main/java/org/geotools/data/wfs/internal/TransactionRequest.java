@@ -45,8 +45,8 @@ public class TransactionRequest extends WFSRequest {
 
     public TransactionRequest(WFSConfig config, WFSStrategy strategy) {
         super(TRANSACTION, config, strategy);
-        txElements = new ArrayList<TransactionElement>();
-        typeNames = new HashSet<QName>();
+        txElements = new ArrayList<>();
+        typeNames = new HashSet<>();
     }
 
     public void add(TransactionElement txElem) {
@@ -57,12 +57,12 @@ public class TransactionRequest extends WFSRequest {
     }
 
     public Set<QName> getTypeNames() {
-        return Collections.unmodifiableSet(new HashSet<QName>(typeNames));
+        return Collections.unmodifiableSet(new HashSet<>(typeNames));
     }
 
     public List<TransactionElement> getTransactionElements() {
         synchronized (txElements) {
-            return new ArrayList<TransactionElement>(txElements);
+            return new ArrayList<>(txElements);
         }
     }
 
@@ -107,7 +107,7 @@ public class TransactionRequest extends WFSRequest {
 
         Insert(QName typeName) {
             super(typeName);
-            added = new LinkedList<SimpleFeature>();
+            added = new LinkedList<>();
         }
 
         public void add(final SimpleFeature feature) {
@@ -144,7 +144,7 @@ public class TransactionRequest extends WFSRequest {
         }
 
         public List<SimpleFeature> getFeatures() {
-            return Collections.unmodifiableList(new ArrayList<SimpleFeature>(added));
+            return Collections.unmodifiableList(new ArrayList<>(added));
         }
     }
 
@@ -162,8 +162,8 @@ public class TransactionRequest extends WFSRequest {
                 List<Object> newValues,
                 Filter updateFilter) {
             super(typeName);
-            this.propertyNames = Collections.unmodifiableList(new ArrayList<QName>(propertyNames));
-            this.newValues = Collections.unmodifiableList(new ArrayList<Object>(newValues));
+            this.propertyNames = Collections.unmodifiableList(new ArrayList<>(propertyNames));
+            this.newValues = Collections.unmodifiableList(new ArrayList<>(newValues));
             this.filter = updateFilter;
         }
 

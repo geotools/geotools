@@ -34,8 +34,7 @@ import tech.units.indriya.unit.TransformedUnit;
 public class DefaultUnitParser extends BaseGT2Format {
 
     private static final DefaultUnitParser UNITPARSER = new DefaultUnitParser();
-    protected HashMap<UnitWrapper, Unit<?>> unitWrapperToUnitMap =
-            new HashMap<UnitWrapper, Unit<?>>();
+    protected HashMap<UnitWrapper, Unit<?>> unitWrapperToUnitMap = new HashMap<>();
 
     //    /**
     //     * Gets a UnitFormat configured to parse units. Since usually we don't know the citation

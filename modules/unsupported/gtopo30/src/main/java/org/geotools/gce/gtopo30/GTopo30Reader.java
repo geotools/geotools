@@ -483,7 +483,7 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader
         final GridSampleDimension band = getSampleDimension(max, min);
 
         // setting metadata
-        final Map<String, Double> metadata = new HashMap<String, Double>();
+        final Map<String, Double> metadata = new HashMap<>();
         metadata.put("maximum", Double.valueOf(stats.getMax()));
         metadata.put("minimum", Double.valueOf(stats.getMin()));
         metadata.put("mean", Double.valueOf(stats.getAverage()));

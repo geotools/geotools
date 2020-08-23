@@ -239,7 +239,7 @@ public abstract class AbstractGetFeatureParserTest {
         featureType = getTypeView(featureName, schemaLocation, GEOS_ARCHSITES_11.CRS, properties);
 
         final FeatureAssertor assertor = new FeatureAssertor(featureType);
-        List<Geometry> geometries = new ArrayList<Geometry>();
+        List<Geometry> geometries = new ArrayList<>();
         geometries.add(GF.createPoint(new Coordinate(593493, 4914730)));
         assertor.setExpectedGeometries(geometries);
         GetParser<SimpleFeature> parser =
@@ -270,7 +270,7 @@ public abstract class AbstractGetFeatureParserTest {
         featureType = getTypeView(featureName, schemaLocation, GEOS_ARCHSITES_11.CRS, properties);
 
         final FeatureAssertor assertor = new FeatureAssertor(featureType);
-        List<Geometry> geometries = new ArrayList<Geometry>();
+        List<Geometry> geometries = new ArrayList<>();
         geometries.add(GF.createPoint(new Coordinate(4914730, 593493)));
         assertor.setExpectedGeometries(geometries);
         GetParser<SimpleFeature> parser =
@@ -521,7 +521,7 @@ public abstract class AbstractGetFeatureParserTest {
         assertEquals(-1, nof);
 
         final FeatureAssertor assertor = new FeatureAssertor(featureType);
-        List<Geometry> geometries = new ArrayList<Geometry>();
+        List<Geometry> geometries = new ArrayList<>();
         geometries.add(
                 GF.createLineString(
                         new Coordinate[] {
@@ -557,7 +557,7 @@ public abstract class AbstractGetFeatureParserTest {
         assertEquals(-1, nof);
 
         final FeatureAssertor assertor = new FeatureAssertor(featureType);
-        List<Geometry> geometries = new ArrayList<Geometry>();
+        List<Geometry> geometries = new ArrayList<>();
         geometries.add(
                 GF.createLineString(
                         new Coordinate[] {
@@ -593,7 +593,7 @@ public abstract class AbstractGetFeatureParserTest {
         assertEquals(-1, nof);
 
         final FeatureAssertor assertor = new FeatureAssertor(featureType);
-        List<Geometry> geometries = new ArrayList<Geometry>();
+        List<Geometry> geometries = new ArrayList<>();
         geometries.add(
                 GF.createLineString(
                         new Coordinate[] {

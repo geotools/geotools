@@ -78,7 +78,7 @@ public class JDBCJoiningFeatureReader extends JDBCFeatureReader {
             JoinInfo join,
             Query query)
             throws SQLException, IOException {
-        joinReaders = new ArrayList<JDBCFeatureReader>();
+        joinReaders = new ArrayList<>();
         int offset =
                 featureType.getAttributeCount()
                         + getPrimaryKeyOffset(featureSource, getPrimaryKey(), featureType);

@@ -117,7 +117,7 @@ public class CssParser extends BaseParser<Object> {
      */
     public static Stylesheet parse(String css) throws CSSParseException {
         CssParser parser = getInstance();
-        ParseRunner<Stylesheet> runner = new ReportingParseRunner<Stylesheet>(parser.StyleSheet());
+        ParseRunner<Stylesheet> runner = new ReportingParseRunner<>(parser.StyleSheet());
         ParsingResult<Stylesheet> result = runner.run(css);
         if (result.hasErrors()) {
             throw new CSSParseException(result.parseErrors);
@@ -911,7 +911,7 @@ public class CssParser extends BaseParser<Object> {
 
     <T> List<T> popAll(Class... classes) {
         ValueStack<Object> valueStack = getContext().getValueStack();
-        List<T> result = new ArrayList<T>();
+        List<T> result = new ArrayList<>();
         while (!valueStack.isEmpty() && isInstance(classes, valueStack.peek())) {
             result.add((T) valueStack.pop());
         }

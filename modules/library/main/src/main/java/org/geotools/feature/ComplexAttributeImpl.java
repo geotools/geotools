@@ -60,7 +60,7 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
     }
 
     public Collection<Property> getProperties(Name name) {
-        List<Property> matches = new ArrayList<Property>();
+        List<Property> matches = new ArrayList<>();
         for (Iterator p = getValue().iterator(); p.hasNext(); ) {
             Property property = (Property) p.next();
             if (property.getName().equals(name)) {
@@ -72,7 +72,7 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
     }
 
     public Collection<Property> getProperties(String name) {
-        List<Property> matches = new ArrayList<Property>();
+        List<Property> matches = new ArrayList<>();
         for (Iterator p = properties().iterator(); p.hasNext(); ) {
             Property property = (Property) p.next();
             if (property.getName().getLocalPart().equals(name)) {

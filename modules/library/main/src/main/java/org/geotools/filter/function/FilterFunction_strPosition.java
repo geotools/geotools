@@ -45,7 +45,7 @@ public class FilterFunction_strPosition extends FunctionExpressionImpl {
 
     static {
         Parameter<String> method =
-                new Parameter<String>(
+                new Parameter<>(
                         "method",
                         String.class,
                         Text.text("direction"),

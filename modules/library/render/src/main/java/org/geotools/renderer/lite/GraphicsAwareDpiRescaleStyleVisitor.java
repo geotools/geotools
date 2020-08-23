@@ -43,7 +43,7 @@ public class GraphicsAwareDpiRescaleStyleVisitor extends DpiRescaleStyleVisitor 
 
     static final StyleFactory sf = CommonFactoryFinder.getStyleFactory();
     static final Range<Double> INFINITE_RANGE =
-            new Range<Double>(Double.class, 0d, Double.POSITIVE_INFINITY);
+            new Range<>(Double.class, 0d, Double.POSITIVE_INFINITY);
     SLDStyleFactory ssf = new SLDStyleFactory();
 
     public GraphicsAwareDpiRescaleStyleVisitor(double scale) {

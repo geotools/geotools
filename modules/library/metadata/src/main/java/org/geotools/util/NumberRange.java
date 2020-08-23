@@ -65,7 +65,7 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
             final boolean isMinIncluded,
             final byte maximum,
             final boolean isMaxIncluded) {
-        return new NumberRange<Byte>(
+        return new NumberRange<>(
                 Byte.class,
                 Byte.valueOf(minimum),
                 isMinIncluded,
@@ -98,7 +98,7 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
             final boolean isMinIncluded,
             final short maximum,
             final boolean isMaxIncluded) {
-        return new NumberRange<Short>(
+        return new NumberRange<>(
                 Short.class,
                 Short.valueOf(minimum),
                 isMinIncluded,
@@ -131,7 +131,7 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
             final boolean isMinIncluded,
             final int maximum,
             final boolean isMaxIncluded) {
-        return new NumberRange<Integer>(
+        return new NumberRange<>(
                 Integer.class,
                 Integer.valueOf(minimum),
                 isMinIncluded,
@@ -164,7 +164,7 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
             final boolean isMinIncluded,
             final long maximum,
             final boolean isMaxIncluded) {
-        return new NumberRange<Long>(
+        return new NumberRange<>(
                 Long.class,
                 Long.valueOf(minimum),
                 isMinIncluded,
@@ -197,7 +197,7 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
             final boolean isMinIncluded,
             final float maximum,
             final boolean isMaxIncluded) {
-        return new NumberRange<Float>(
+        return new NumberRange<>(
                 Float.class,
                 Float.valueOf(minimum),
                 isMinIncluded,
@@ -230,7 +230,7 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
             final boolean isMinIncluded,
             final double maximum,
             final boolean isMaxIncluded) {
-        return new NumberRange<Double>(
+        return new NumberRange<>(
                 Double.class,
                 Double.valueOf(minimum),
                 isMinIncluded,
@@ -331,7 +331,7 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
             final boolean isMinIncluded,
             final T maxValue,
             final boolean isMaxIncluded) {
-        return new NumberRange<T>(elementClass, minValue, isMinIncluded, maxValue, isMaxIncluded);
+        return new NumberRange<>(elementClass, minValue, isMinIncluded, maxValue, isMaxIncluded);
     }
 
     /**
@@ -382,7 +382,7 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
             return cast;
         }
         // The constructor will ensure that the range element class is a subclass of Number.
-        return new NumberRange<N>(range);
+        return new NumberRange<>(range);
     }
 
     /**
@@ -407,7 +407,7 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
             final NumberRange<N> cast = (NumberRange) wrap((Range) range);
             return cast;
         }
-        return new NumberRange<N>(type, range);
+        return new NumberRange<>(type, range);
     }
 
     /**

@@ -68,7 +68,7 @@ public class ListFeatureCollection extends AbstractFeatureCollection
 
     /** Create a ListFeatureCollection for the provided schema An ArrayList is used internally. */
     public ListFeatureCollection(SimpleFeatureType schema) {
-        this(schema, new ArrayList<SimpleFeature>());
+        this(schema, new ArrayList<>());
     }
     /**
      * Create a ListFeatureCollection around the provided list. The contents of the list should all
@@ -94,7 +94,7 @@ public class ListFeatureCollection extends AbstractFeatureCollection
      */
     public ListFeatureCollection(SimpleFeatureType schema, SimpleFeature array[]) {
         super(schema);
-        this.list = new CopyOnWriteArrayList<SimpleFeature>(array);
+        this.list = new CopyOnWriteArrayList<>(array);
     }
     /**
      * Create a ListFeatureCollection around the provided list. The contents of the list should all

@@ -494,7 +494,7 @@ public class StreamingRendererTest {
                     }
                 };
         sr.setMapContent(mapContent);
-        final List<Exception> exceptions = new ArrayList<Exception>();
+        final List<Exception> exceptions = new ArrayList<>();
         sr.addRenderListener(
                 new RenderListener() {
                     public void featureRenderer(SimpleFeature feature) {
@@ -552,7 +552,7 @@ public class StreamingRendererTest {
 
     @Test
     public void testRepeatedEnvelopeExpansion() throws Exception {
-        final List<Filter> filters = new ArrayList<Filter>();
+        final List<Filter> filters = new ArrayList<>();
 
         SimpleFeatureSource testSource =
                 new CollectionFeatureSource(createLineCollection()) {
@@ -619,7 +619,7 @@ public class StreamingRendererTest {
         sr.setMapContent(mc);
 
         // collect rendered features
-        final List<SimpleFeature> features = new ArrayList<SimpleFeature>();
+        final List<SimpleFeature> features = new ArrayList<>();
         RenderListener renderedFeaturesCollector =
                 new RenderListener() {
 
@@ -660,7 +660,7 @@ public class StreamingRendererTest {
      */
     @Test
     public void testFindLineStyleAttributeWithAddedFilter() throws Exception {
-        final List<Filter> filters = new ArrayList<Filter>();
+        final List<Filter> filters = new ArrayList<>();
 
         SimpleFeatureSource testSource =
                 new CollectionFeatureSource(createLineCollection()) {
@@ -831,7 +831,7 @@ public class StreamingRendererTest {
         finalGraphics.setColor(Color.RED);
         finalGraphics.fillRect(0, 0, 100, 100);
 
-        List<LiteFeatureTypeStyle> lfts = new ArrayList<LiteFeatureTypeStyle>();
+        List<LiteFeatureTypeStyle> lfts = new ArrayList<>();
         Layer layer =
                 new DirectLayer() {
 

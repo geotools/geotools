@@ -260,7 +260,7 @@ public class IdentificationTypeImpl extends DescriptionTypeImpl implements Ident
    */
 	public EList<MetadataType> getMetadata() {
     if (metadata == null) {
-      metadata = new EObjectContainmentEList<MetadataType>(MetadataType.class, this, Ows10Package.IDENTIFICATION_TYPE__METADATA);
+      metadata = new EObjectContainmentEList<>(MetadataType.class, this, Ows10Package.IDENTIFICATION_TYPE__METADATA);
     }
     return metadata;
   }

@@ -197,7 +197,7 @@ class Utils {
         }
 
         // scan each subdirectory and try to build a mosaic in it, accumulate the resulting mosaics
-        List<MosaicInfo> mosaics = new ArrayList<MosaicInfo>();
+        List<MosaicInfo> mosaics = new ArrayList<>();
         ImageMosaicFormat mosaicFactory = new ImageMosaicFormat();
         if (directories != null) {
             for (File subdir : directories) {

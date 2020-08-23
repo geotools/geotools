@@ -229,7 +229,7 @@ public class MapViewport {
         lock.writeLock().lock();
         try {
             if (boundsListeners == null) {
-                boundsListeners = new CopyOnWriteArrayList<MapBoundsListener>();
+                boundsListeners = new CopyOnWriteArrayList<>();
             }
             if (!boundsListeners.contains(listener)) {
                 boundsListeners.add(listener);

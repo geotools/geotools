@@ -154,7 +154,7 @@ public class Drawer {
     }
 
     Symbolizer[] getSymbolizers(Rule rule) {
-        List<Symbolizer> symbs = new ArrayList<Symbolizer>();
+        List<Symbolizer> symbs = new ArrayList<>();
         symbs.addAll(rule.symbolizers());
         return symbs.toArray(new Symbolizer[symbs.size()]);
     }

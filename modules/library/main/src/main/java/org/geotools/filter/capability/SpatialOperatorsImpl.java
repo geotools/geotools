@@ -34,11 +34,11 @@ public class SpatialOperatorsImpl implements SpatialOperators {
     Set<SpatialOperator> operators;
 
     public SpatialOperatorsImpl() {
-        this(new ArrayList<SpatialOperator>());
+        this(new ArrayList<>());
     }
 
     public SpatialOperatorsImpl(Collection<SpatialOperator> operators) {
-        this.operators = new HashSet<SpatialOperator>();
+        this.operators = new HashSet<>();
         if (operators != null) {
             for (SpatialOperator operator : operators) {
                 this.operators.add(new SpatialOperatorImpl(operator));
@@ -47,7 +47,7 @@ public class SpatialOperatorsImpl implements SpatialOperators {
     }
 
     public SpatialOperatorsImpl(SpatialOperator[] operators) {
-        this.operators = new HashSet<SpatialOperator>();
+        this.operators = new HashSet<>();
         if (operators != null) {
             for (SpatialOperator operator : operators) {
                 this.operators.add(new SpatialOperatorImpl(operator));
@@ -56,7 +56,7 @@ public class SpatialOperatorsImpl implements SpatialOperators {
     }
 
     public SpatialOperatorsImpl(SpatialOperators copy) {
-        this.operators = new HashSet<SpatialOperator>();
+        this.operators = new HashSet<>();
         if (copy.getOperators() != null) {
             for (SpatialOperator operator : copy.getOperators()) {
                 this.operators.add(new SpatialOperatorImpl(operator));
@@ -65,7 +65,7 @@ public class SpatialOperatorsImpl implements SpatialOperators {
     }
 
     public void setOperators(Collection<SpatialOperator> operators) {
-        this.operators = new HashSet<SpatialOperator>();
+        this.operators = new HashSet<>();
         if (operators != null) {
             for (SpatialOperator operator : operators) {
                 this.operators.add(new SpatialOperatorImpl(operator));

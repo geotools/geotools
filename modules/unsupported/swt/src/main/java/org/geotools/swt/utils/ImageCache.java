@@ -55,7 +55,7 @@ public class ImageCache {
 
     private static ImageCache imageCache;
 
-    private HashMap<String, Image> imageMap = new HashMap<String, Image>();
+    private HashMap<String, Image> imageMap = new HashMap<>();
 
     private ImageCache() {}
 

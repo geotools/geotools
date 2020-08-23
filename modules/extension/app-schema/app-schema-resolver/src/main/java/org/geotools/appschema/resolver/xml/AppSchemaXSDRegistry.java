@@ -41,7 +41,7 @@ public final class AppSchemaXSDRegistry implements XSDSchemaLocator {
     private static volatile AppSchemaXSDRegistry theXSDRegistry;
 
     /** Registry that maps (resolved) locations to schema's */
-    private Map<String, XSDSchema> schemaRegistry = new HashMap<String, XSDSchema>();
+    private Map<String, XSDSchema> schemaRegistry = new HashMap<>();
 
     private AppSchemaXSDRegistry() {}
 

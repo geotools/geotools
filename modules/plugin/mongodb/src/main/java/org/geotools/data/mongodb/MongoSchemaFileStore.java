@@ -95,7 +95,7 @@ public class MongoSchemaFileStore implements MongoSchemaStore {
 
     @Override
     public List<String> typeNames() {
-        List<String> typeNames = new ArrayList<String>();
+        List<String> typeNames = new ArrayList<>();
         File[] files = schemaStoreFile.listFiles(new SchemaFilter());
         if (files != null) {
             for (File schemaFile : files) {

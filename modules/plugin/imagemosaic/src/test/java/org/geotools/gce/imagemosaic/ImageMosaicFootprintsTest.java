@@ -493,7 +493,7 @@ public class ImageMosaicFootprintsTest {
             Geometry maskedGeometry = unionGeometry.intersection(intersectingMask);
             double inputMaskArea = maskedGeometry.getArea();
 
-            List<GeneralParameterValue> paramList = new ArrayList<GeneralParameterValue>();
+            List<GeneralParameterValue> paramList = new ArrayList<>();
 
             // Setup reading params
             // FOOTPRINT
@@ -599,7 +599,7 @@ public class ImageMosaicFootprintsTest {
         try {
             reader = format.getReader(multiWkts);
 
-            List<GeneralParameterValue> paramList = new ArrayList<GeneralParameterValue>();
+            List<GeneralParameterValue> paramList = new ArrayList<>();
 
             // Setup reading params
             // FOOTPRINT

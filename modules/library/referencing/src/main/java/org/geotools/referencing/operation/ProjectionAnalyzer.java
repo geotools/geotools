@@ -188,9 +188,7 @@ final class ProjectionAnalyzer {
      * @return The affine transform.
      */
     private XMatrix normalizedToProjection() {
-        parameters =
-                new LinkedList<GeneralParameterValue>(
-                        parameters); // Keep the original list unchanged.
+        parameters = new LinkedList<>(parameters); // Keep the original list unchanged.
         /*
          * Creates a matrix which will conceptually stands between the normalized transform and
          * the 'projectedScale' transform. The matrix dimensions are selected accordingly using

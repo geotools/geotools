@@ -104,7 +104,7 @@ public class GeoTiffIIOMetadataEncoder {
 
     public GeoTiffIIOMetadataEncoder(
             final int geoTIFFVersion, final int keyRevisionMajor, final int keyRevisionMinor) {
-        geoTiffEntries = new KeySortedList<Integer, GeoKeyEntry>();
+        geoTiffEntries = new KeySortedList<>();
         geoTiffDoubleParams = new double[GeoTiffConstants.ARRAY_ELEM_INCREMENT];
         geoTiffAsciiParams = new StringBuilder();
         modelTiePoints = new TiePoint[GeoTiffConstants.ARRAY_ELEM_INCREMENT];

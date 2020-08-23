@@ -58,7 +58,7 @@ public class Gsml30MappedFeatureTest extends AppSchemaTestSupport {
 
     @Test
     public void features() throws Exception {
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("dbtype", "app-schema");
         URL url = getClass().getResource(TEST_DATA + "Gsml30MappedFeature.xml");
         Assert.assertNotNull(url);
@@ -73,7 +73,7 @@ public class Gsml30MappedFeatureTest extends AppSchemaTestSupport {
                     dataAccess.getFeatureSource(MAPPED_FEATURE);
             FeatureCollection<FeatureType, Feature> features = source.getFeatures();
             FeatureIterator<Feature> iterator = features.features();
-            Map<String, Feature> featureMap = new LinkedHashMap<String, Feature>();
+            Map<String, Feature> featureMap = new LinkedHashMap<>();
             try {
                 while (iterator.hasNext()) {
                     Feature f = iterator.next();

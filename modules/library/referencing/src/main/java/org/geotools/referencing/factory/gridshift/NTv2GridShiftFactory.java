@@ -57,7 +57,7 @@ public class NTv2GridShiftFactory extends ReferencingFactory implements Buffered
     /** Constructs a factory with the default priority. */
     public NTv2GridShiftFactory() {
         super();
-        ntv2GridCache = new SoftValueHashMap<String, GridShiftFile>(GRID_CACHE_HARD_REFERENCES);
+        ntv2GridCache = new SoftValueHashMap<>(GRID_CACHE_HARD_REFERENCES);
     }
 
     /**
@@ -69,7 +69,7 @@ public class NTv2GridShiftFactory extends ReferencingFactory implements Buffered
      */
     public NTv2GridShiftFactory(final int priority) {
         super(priority);
-        ntv2GridCache = new SoftValueHashMap<String, GridShiftFile>(GRID_CACHE_HARD_REFERENCES);
+        ntv2GridCache = new SoftValueHashMap<>(GRID_CACHE_HARD_REFERENCES);
     }
 
     /**

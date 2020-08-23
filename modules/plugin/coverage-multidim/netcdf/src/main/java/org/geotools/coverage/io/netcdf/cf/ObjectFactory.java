@@ -78,7 +78,7 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "", name = "entry_id")
     @XmlIDREF
     public JAXBElement<Object> createEntryId(Object value) {
-        return new JAXBElement<Object>(_EntryId_QNAME, Object.class, null, value);
+        return new JAXBElement<>(_EntryId_QNAME, Object.class, null, value);
     }
 
     /**
@@ -86,49 +86,48 @@ public class ObjectFactory {
      */
     @XmlElementDecl(namespace = "", name = "last_modified")
     public JAXBElement<XMLGregorianCalendar> createLastModified(XMLGregorianCalendar value) {
-        return new JAXBElement<XMLGregorianCalendar>(
-                _LastModified_QNAME, XMLGregorianCalendar.class, null, value);
+        return new JAXBElement<>(_LastModified_QNAME, XMLGregorianCalendar.class, null, value);
     }
 
     /** Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}} */
     @XmlElementDecl(namespace = "", name = "canonical_units")
     public JAXBElement<String> createCanonicalUnits(String value) {
-        return new JAXBElement<String>(_CanonicalUnits_QNAME, String.class, null, value);
+        return new JAXBElement<>(_CanonicalUnits_QNAME, String.class, null, value);
     }
 
     /** Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}} */
     @XmlElementDecl(namespace = "", name = "description")
     public JAXBElement<String> createDescription(String value) {
-        return new JAXBElement<String>(_Description_QNAME, String.class, null, value);
+        return new JAXBElement<>(_Description_QNAME, String.class, null, value);
     }
 
     /** Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}} */
     @XmlElementDecl(namespace = "", name = "version_number")
     public JAXBElement<String> createVersionNumber(String value) {
-        return new JAXBElement<String>(_VersionNumber_QNAME, String.class, null, value);
+        return new JAXBElement<>(_VersionNumber_QNAME, String.class, null, value);
     }
 
     /** Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}} */
     @XmlElementDecl(namespace = "", name = "amip")
     public JAXBElement<String> createAmip(String value) {
-        return new JAXBElement<String>(_Amip_QNAME, String.class, null, value);
+        return new JAXBElement<>(_Amip_QNAME, String.class, null, value);
     }
 
     /** Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}} */
     @XmlElementDecl(namespace = "", name = "grib")
     public JAXBElement<String> createGrib(String value) {
-        return new JAXBElement<String>(_Grib_QNAME, String.class, null, value);
+        return new JAXBElement<>(_Grib_QNAME, String.class, null, value);
     }
 
     /** Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}} */
     @XmlElementDecl(namespace = "", name = "contact")
     public JAXBElement<String> createContact(String value) {
-        return new JAXBElement<String>(_Contact_QNAME, String.class, null, value);
+        return new JAXBElement<>(_Contact_QNAME, String.class, null, value);
     }
 
     /** Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}} */
     @XmlElementDecl(namespace = "", name = "institution")
     public JAXBElement<String> createInstitution(String value) {
-        return new JAXBElement<String>(_Institution_QNAME, String.class, null, value);
+        return new JAXBElement<>(_Institution_QNAME, String.class, null, value);
     }
 }

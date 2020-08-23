@@ -568,7 +568,7 @@ public class JGrassMapEnvironment {
      * @return the list of categories in text format.
      */
     public List<String> getCategories() throws IOException {
-        List<String> categoriesList = new ArrayList<String>();
+        List<String> categoriesList = new ArrayList<>();
         /*
          * File is a standard file where the categories values are stored in
          * the cats directory.

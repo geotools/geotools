@@ -177,7 +177,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
             // ops, we have to compute the results by hand. Let's load just the
             // geometry attributes though
             Query q = new Query(query);
-            List<String> geometries = new ArrayList<String>();
+            List<String> geometries = new ArrayList<>();
             for (AttributeDescriptor ad : getSchema().getAttributeDescriptors()) {
                 if (ad instanceof GeometryDescriptor) {
                     geometries.add(ad.getLocalName());
@@ -440,7 +440,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
     public Object[] toArray() {
         // code based on AbstractFeatureCollection
         // TODO: base this on reader
-        ArrayList<SimpleFeature> array = new ArrayList<SimpleFeature>();
+        ArrayList<SimpleFeature> array = new ArrayList<>();
         FeatureIterator<SimpleFeature> e = null;
         try {
             e = features();

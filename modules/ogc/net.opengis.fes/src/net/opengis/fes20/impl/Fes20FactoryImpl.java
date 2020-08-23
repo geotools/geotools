@@ -837,7 +837,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      */
     public List<String> createAliasesTypeFromString(EDataType eDataType, String initialValue) {
         if (initialValue == null) return null;
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         for (String item : split(initialValue)) {
             result.add((String)XMLTypeFactory.eINSTANCE.createFromString(XMLTypePackage.Literals.NC_NAME, item));
         }
@@ -1210,7 +1210,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      */
     public List<Object> createTypeNamesListTypeFromString(EDataType eDataType, String initialValue) {
         if (initialValue == null) return null;
-        List<Object> result = new ArrayList<Object>();
+        List<Object> result = new ArrayList<>();
         for (String item : split(initialValue)) {
             result.add(createTypeNamesTypeFromString(Fes20Package.Literals.TYPE_NAMES_TYPE, item));
         }

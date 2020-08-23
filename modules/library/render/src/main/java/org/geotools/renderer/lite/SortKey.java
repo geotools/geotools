@@ -132,7 +132,7 @@ class SortKey {
         }
 
         // build a list of comparators
-        List<java.util.Comparator<?>> comparators = new ArrayList<java.util.Comparator<?>>();
+        List<java.util.Comparator<?>> comparators = new ArrayList<>();
         for (SortBy sb : sortBy) {
             if (sb.getSortOrder() == SortOrder.ASCENDING) {
                 comparators.add(FORWARD_COMPARATOR);

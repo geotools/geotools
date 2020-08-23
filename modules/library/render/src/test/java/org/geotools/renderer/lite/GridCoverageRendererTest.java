@@ -468,7 +468,7 @@ public class GridCoverageRendererTest {
 
         final StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(content);
-        Map<Object, Object> rendererParams = new HashMap<Object, Object>();
+        Map<Object, Object> rendererParams = new HashMap<>();
         rendererParams.put(StreamingRenderer.ADVANCED_PROJECTION_HANDLING_KEY, true);
         rendererParams.put(StreamingRenderer.CONTINUOUS_MAP_WRAPPING, true);
         renderer.setRendererHints(rendererParams);
@@ -1831,7 +1831,7 @@ public class GridCoverageRendererTest {
 
         final StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(content);
-        Map<Object, Object> rendererParams = new HashMap<Object, Object>();
+        Map<Object, Object> rendererParams = new HashMap<>();
         rendererParams.put(StreamingRenderer.ADVANCED_PROJECTION_HANDLING_KEY, true);
         rendererParams.put(StreamingRenderer.CONTINUOUS_MAP_WRAPPING, true);
         renderer.setRendererHints(rendererParams);
@@ -2015,7 +2015,7 @@ public class GridCoverageRendererTest {
 
                 @Override
                 public ParameterValueGroup getReadParameters() {
-                    HashMap<String, String> info = new HashMap<String, String>();
+                    HashMap<String, String> info = new HashMap<>();
 
                     info.put("name", "bandTester");
                     info.put("description", "desc");
@@ -2023,8 +2023,7 @@ public class GridCoverageRendererTest {
                     info.put("docURL", "http://www.geotools.org");
                     info.put("version", "1.0");
 
-                    List<GeneralParameterDescriptor> params =
-                            new ArrayList<GeneralParameterDescriptor>();
+                    List<GeneralParameterDescriptor> params = new ArrayList<>();
                     params.add(AbstractGridFormat.BANDS);
 
                     return new ParameterGroup(
@@ -2131,7 +2130,7 @@ public class GridCoverageRendererTest {
 
                 @Override
                 public ParameterValueGroup getReadParameters() {
-                    HashMap<String, String> info = new HashMap<String, String>();
+                    HashMap<String, String> info = new HashMap<>();
 
                     info.put("name", "bandTester");
                     info.put("description", "desc");
@@ -2139,8 +2138,7 @@ public class GridCoverageRendererTest {
                     info.put("docURL", "http://www.geotools.org");
                     info.put("version", "1.0");
 
-                    List<GeneralParameterDescriptor> params =
-                            new ArrayList<GeneralParameterDescriptor>();
+                    List<GeneralParameterDescriptor> params = new ArrayList<>();
                     params.add(AbstractGridFormat.BANDS);
 
                     return new ParameterGroup(
@@ -2185,7 +2183,7 @@ public class GridCoverageRendererTest {
         CountingRenderListener counter = new CountingRenderListener();
         renderer.addRenderListener(counter);
         renderer.setMapContent(content);
-        Map<Object, Object> rendererParams = new HashMap<Object, Object>();
+        Map<Object, Object> rendererParams = new HashMap<>();
         rendererParams.put(StreamingRenderer.ADVANCED_PROJECTION_HANDLING_KEY, true);
         renderer.setRendererHints(rendererParams);
         BufferedImage image = new BufferedImage(256, 256, BufferedImage.TYPE_4BYTE_ABGR);

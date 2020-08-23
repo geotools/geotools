@@ -68,7 +68,7 @@ public class StringTemplateFunction implements Function {
             new FunctionNameImpl("stringTemplate", "input", "pattern", "template", "defaultValue");
 
     public StringTemplateFunction() {
-        this.parameters = new ArrayList<Expression>();
+        this.parameters = new ArrayList<>();
         this.fallback = null;
     }
 

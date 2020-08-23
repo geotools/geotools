@@ -118,7 +118,7 @@ public class SweValuesTest {
 
     @Test
     public void testSweValues() {
-        Map<String, String> expected = new HashMap<String, String>();
+        Map<String, String> expected = new HashMap<>();
         expected.put(
                 "ID1.2",
                 "missing missing 8.9 7.9 14.2 15.4 18.1 19.1 21.7 20.8 19.6 14.9 10.8 8.8 8.5 10.4");

@@ -235,10 +235,10 @@ public class InterpolateFunction implements Function {
     public static final FunctionName NAME;
 
     static {
-        Parameter<Object> lookup = new Parameter<Object>("lookup", Object.class, 1, 1);
-        Parameter<Object> table = new Parameter<Object>("data value pairs", Object.class, 4, -1);
+        Parameter<Object> lookup = new Parameter<>("lookup", Object.class, 1, 1);
+        Parameter<Object> table = new Parameter<>("data value pairs", Object.class, 4, -1);
         Parameter<String> mode =
-                new Parameter<String>(
+                new Parameter<>(
                         "mode",
                         String.class,
                         Text.text("mode"),
@@ -252,7 +252,7 @@ public class InterpolateFunction implements Function {
                                 Arrays.asList(
                                         new String[] {MODE_LINEAR, MODE_COSINE, MODE_CUBIC})));
         Parameter<String> method =
-                new Parameter<String>(
+                new Parameter<>(
                         "method",
                         String.class,
                         Text.text("method"),
@@ -268,7 +268,7 @@ public class InterpolateFunction implements Function {
     }
 
     public InterpolateFunction() {
-        this(new ArrayList<Expression>(), null);
+        this(new ArrayList<>(), null);
     }
 
     public InterpolateFunction(List<Expression> parameters, Literal fallback) {
@@ -494,7 +494,7 @@ public class InterpolateFunction implements Function {
 
         double[] xi = new double[4];
         double[] yi = new double[4];
-        List<InterpPoint> workingPoints = new ArrayList<InterpPoint>(interpPoints);
+        List<InterpPoint> workingPoints = new ArrayList<>(interpPoints);
 
         /*
          * We deal generously with lookup values that fall into the first or
@@ -577,7 +577,7 @@ public class InterpolateFunction implements Function {
         }
 
         List<Expression> sub = parameters.subList(1, parameters.size() - numControlParameters);
-        interpPoints = new ArrayList<InterpPoint>();
+        interpPoints = new ArrayList<>();
         for (int i = 0; i < numInterpolationParmaters; i += 2) {
             interpPoints.add(buildInterpPoint(sub.get(i), sub.get(i + 1)));
         }

@@ -56,7 +56,7 @@ public class MemoryEntry extends ContentEntry {
     MemoryEntry(MemoryDataStore store, SimpleFeatureType schema) {
         super(store, schema.getName());
         this.schema = schema;
-        memory = Collections.synchronizedMap(new LinkedHashMap<String, SimpleFeature>());
+        memory = Collections.synchronizedMap(new LinkedHashMap<>());
     }
 
     protected MemoryState createContentState(ContentEntry entry) {

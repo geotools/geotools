@@ -89,13 +89,13 @@ public abstract class OnlineTestCase extends TestCase {
      * A static map which tracks which fixtures are offline. This prevents continually trying to run
      * a test when an external resource is offline.
      */
-    protected static Map<String, Boolean> online = new HashMap<String, Boolean>();
+    protected static Map<String, Boolean> online = new HashMap<>();
 
     /**
      * A static map which tracks which fixture files can not be found. This prevents continually
      * looking up the file and reporting it not found to the user.
      */
-    protected static Map<String, Boolean> found = new HashMap<String, Boolean>();
+    protected static Map<String, Boolean> found = new HashMap<>();
     /** The test fixture, {@code null} if the fixture is not available. */
     protected Properties fixture;
     /**

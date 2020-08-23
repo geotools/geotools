@@ -415,7 +415,7 @@ public class PropertyAuthorityFactory extends DirectAuthorityFactory
         protected Map<String, Object> alterProperties(Map<String, Object> properties) {
             Object candidate = properties.get(IdentifiedObject.IDENTIFIERS_KEY);
             if (candidate == null && code != null) {
-                properties = new HashMap<String, Object>(properties);
+                properties = new HashMap<>(properties);
                 code = trimAuthority(code);
                 final Object identifiers;
                 if (authorities.length <= 1) {

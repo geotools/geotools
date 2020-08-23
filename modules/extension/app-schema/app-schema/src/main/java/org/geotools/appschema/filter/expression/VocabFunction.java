@@ -62,7 +62,7 @@ public class VocabFunction implements Function {
     public static final FunctionName NAME = new FunctionNameImpl("Vocab", "expr", "vocab");
 
     public VocabFunction() {
-        this(new ArrayList<Expression>(), null);
+        this(new ArrayList<>(), null);
     }
 
     public VocabFunction(List<Expression> parameters, Literal fallback) {
@@ -104,8 +104,7 @@ public class VocabFunction implements Function {
         return Converters.convert(lookup.get(key), context);
     }
 
-    static Map<String, Properties> cache =
-            Collections.synchronizedMap(new SoftValueHashMap<String, Properties>());
+    static Map<String, Properties> cache = Collections.synchronizedMap(new SoftValueHashMap<>());
 
     public static synchronized Properties lookup(String urn) {
         // We should look up in our Registery

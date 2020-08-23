@@ -89,7 +89,7 @@ public class RepositoryDataStoreCatalog extends AbstractGTDataStoreGranuleCatalo
         // nothing to do here, the store is provided on demand
         if (create) {
             // don't go looking for feature types, there are none
-            validTypeNames = new HashSet<String>();
+            validTypeNames = new HashSet<>();
         }
     }
 
@@ -131,7 +131,7 @@ public class RepositoryDataStoreCatalog extends AbstractGTDataStoreGranuleCatalo
     @Override
     protected Set<String> getValidTypeNames() {
         if (validTypeNames == null) {
-            validTypeNames = new HashSet<String>();
+            validTypeNames = new HashSet<>();
             try {
                 initializeTypeNames(params);
             } catch (IOException e) {

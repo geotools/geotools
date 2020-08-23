@@ -1226,7 +1226,7 @@ public abstract class SQLDialect {
         try {
             indexInfo = md.getIndexInfo(cx.getCatalog(), databaseSchema, typeName, false, true);
 
-            Map<String, Index> indexes = new LinkedHashMap<String, Index>();
+            Map<String, Index> indexes = new LinkedHashMap<>();
             while (indexInfo.next()) {
                 short type = indexInfo.getShort("TYPE");
                 if (type != DatabaseMetaData.tableIndexStatistic) {
@@ -1243,7 +1243,7 @@ public abstract class SQLDialect {
                 }
             }
 
-            return new ArrayList<Index>(indexes.values());
+            return new ArrayList<>(indexes.values());
         } finally {
             dataStore.closeSafe(indexInfo);
         }

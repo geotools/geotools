@@ -62,8 +62,7 @@ public class ImageMosaicJDBCFormat extends AbstractGridFormat implements Format 
 
     /** Control the transparency of the output coverage. */
     public static final ParameterDescriptor<Color> OUTPUT_TRANSPARENT_COLOR =
-            new DefaultParameterDescriptor<Color>(
-                    "OutputTransparentColor", Color.class, null, null);
+            new DefaultParameterDescriptor<>("OutputTransparentColor", Color.class, null, null);
     /** Control the background values for the output coverage */
 
     //        public static final ParameterDescriptor<Color> BACKGROUND_COLOR = new
@@ -127,7 +126,7 @@ public class ImageMosaicJDBCFormat extends AbstractGridFormat implements Format 
 
     /** Sets the metadata information. */
     private void setInfo() {
-        HashMap<String, String> info = new HashMap<String, String>();
+        HashMap<String, String> info = new HashMap<>();
 
         info.put("name", "ImageMosaicJDBC");
         info.put("description", "Image mosaicking/pyramidal jdbc plugin");

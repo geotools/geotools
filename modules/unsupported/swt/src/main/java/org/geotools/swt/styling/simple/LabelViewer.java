@@ -282,7 +282,7 @@ public class LabelViewer {
             if (schema != null) {
                 AttributeDescriptor[] attrs =
                         schema.getAttributeDescriptors().toArray(new AttributeDescriptor[0]);
-                List<String> list = new ArrayList<String>();
+                List<String> list = new ArrayList<>();
                 for (int i = 0; i < attrs.length; i++) {
                     Class<?> cls = attrs[i].getType().getBinding();
                     if (String.class.isAssignableFrom(cls)) {
@@ -422,7 +422,7 @@ public class LabelViewer {
         this.field.addKeyListener(klisten);
         if (this.schema != null) {
             List<AttributeDescriptor> types = this.schema.getAttributeDescriptors();
-            List<String> typeStrings = new ArrayList<String>();
+            List<String> typeStrings = new ArrayList<>();
             for (AttributeDescriptor attributeDescriptor : types) {
                 typeStrings.add(attributeDescriptor.getLocalName());
             }

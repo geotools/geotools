@@ -44,7 +44,7 @@ import org.locationtech.jts.geom.Envelope;
  * @version $Id$
  */
 public class MockRenderer implements GTRenderer {
-    protected List<RenderListener> listeners = new ArrayList<RenderListener>();
+    protected List<RenderListener> listeners = new ArrayList<>();
 
     private MapContent mapContent;
     private long paintTime;

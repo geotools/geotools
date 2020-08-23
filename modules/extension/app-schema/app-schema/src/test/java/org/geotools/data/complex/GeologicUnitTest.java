@@ -138,7 +138,7 @@ public class GeologicUnitTest extends AppSchemaTestSupport {
         /*
          * Initiate data accesses and make sure they have the mappings
          */
-        final Map<String, Serializable> dsParams = new HashMap<String, Serializable>();
+        final Map<String, Serializable> dsParams = new HashMap<>();
         URL url = getClass().getResource(schemaBase + "GeologicUnit.xml");
         assertNotNull(url);
         dsParams.put("dbtype", "app-schema");

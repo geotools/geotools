@@ -89,7 +89,7 @@ class NetCDFFileResourceInfo extends DefaultResourceInfo implements FileResource
             int groupedFeatures = 0;
 
             // resolve the location
-            List<CoverageSlice> relevantSlices = new ArrayList<CoverageSlice>();
+            List<CoverageSlice> relevantSlices = new ArrayList<>();
             relevantSlices.add(next);
             File file = null;
             if (sourceURL != null) {
@@ -206,7 +206,7 @@ class NetCDFFileResourceInfo extends DefaultResourceInfo implements FileResource
                     reader.getDimensionDescriptors(coverageName);
             // extract metadata for the available domains
             if (dimensionDescriptors != null && !dimensionDescriptors.isEmpty()) {
-                metadataMap = new HashMap<String, Object>();
+                metadataMap = new HashMap<>();
                 // scan dimensions
                 for (DimensionDescriptor descriptor : dimensionDescriptors) {
                     String attribute = descriptor.getStartAttribute();
@@ -291,7 +291,7 @@ class NetCDFFileResourceInfo extends DefaultResourceInfo implements FileResource
             Query updatedQuery = (query != null && sharedCatalog) ? query : new Query();
 
             if (sharedCatalog) {
-                final List<SortBy> clauses = new ArrayList<SortBy>(1);
+                final List<SortBy> clauses = new ArrayList<>(1);
                 clauses.add(
                         new SortByImpl(
                                 FeatureUtilities.DEFAULT_FILTER_FACTORY.property(

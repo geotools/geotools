@@ -118,7 +118,7 @@ public class OperationParameterGroupTypeImpl extends OperationParameterGroupBase
      */
     public EList<IdentifierType> getGroupID() {
         if (groupID == null) {
-            groupID = new EObjectContainmentEList<IdentifierType>(IdentifierType.class, this, Gml311Package.OPERATION_PARAMETER_GROUP_TYPE__GROUP_ID);
+            groupID = new EObjectContainmentEList<>(IdentifierType.class, this, Gml311Package.OPERATION_PARAMETER_GROUP_TYPE__GROUP_ID);
         }
         return groupID;
     }
@@ -194,7 +194,7 @@ public class OperationParameterGroupTypeImpl extends OperationParameterGroupBase
      */
     public EList<AbstractGeneralOperationParameterRefType> getIncludesParameter() {
         if (includesParameter == null) {
-            includesParameter = new EObjectContainmentEList<AbstractGeneralOperationParameterRefType>(AbstractGeneralOperationParameterRefType.class, this, Gml311Package.OPERATION_PARAMETER_GROUP_TYPE__INCLUDES_PARAMETER);
+            includesParameter = new EObjectContainmentEList<>(AbstractGeneralOperationParameterRefType.class, this, Gml311Package.OPERATION_PARAMETER_GROUP_TYPE__INCLUDES_PARAMETER);
         }
         return includesParameter;
     }

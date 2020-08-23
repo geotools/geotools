@@ -63,7 +63,7 @@ public class StaticMethodsProcessFactory<T> extends AnnotationDrivenProcessFacto
     public Set<Name> getNames() {
         // look for the methods that have the DescribeProcess annotation. use
         // a linkedHashSet to make sure we don't report duplicate names
-        Set<Name> names = new LinkedHashSet<Name>();
+        Set<Name> names = new LinkedHashSet<>();
         for (Method method : targetClass.getMethods()) {
             DescribeProcess dp = method.getAnnotation(DescribeProcess.class);
             if (dp != null) {

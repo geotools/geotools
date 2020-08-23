@@ -201,7 +201,7 @@ public class XPath extends XPathUtil {
                                         parentDescriptor.getDefaultValue());
                         GeometryAttributeImpl geom =
                                 new GeometryAttributeImpl(value, geomDescriptor, null);
-                        ArrayList<Property> geomAtts = new ArrayList<Property>();
+                        ArrayList<Property> geomAtts = new ArrayList<>();
                         geomAtts.add(geom);
                         parent.setValue(geomAtts);
                         return geom;
@@ -394,10 +394,10 @@ public class XPath extends XPathUtil {
                             .getProperty(ComplexFeatureConstants.SIMPLE_CONTENT);
         }
         if (simpleContent == null) {
-            Collection<Property> contents = new ArrayList<Property>();
+            Collection<Property> contents = new ArrayList<>();
             simpleContent = buildSimpleContent(attribute.getType(), value);
             contents.add(simpleContent);
-            ArrayList<Attribute> nestedAttContents = new ArrayList<Attribute>();
+            ArrayList<Attribute> nestedAttContents = new ArrayList<>();
             Attribute nestedAtt =
                     new ComplexAttributeImpl(
                             contents, attribute.getDescriptor(), attribute.getIdentifier());
@@ -628,7 +628,7 @@ public class XPath extends XPathUtil {
             throw new IllegalArgumentException("Expecting a feature!");
         }
         Feature feature = (Feature) f;
-        ArrayList<Property> properties = new ArrayList<Property>();
+        ArrayList<Property> properties = new ArrayList<>();
         for (Property prop : feature.getProperties()) {
             if (!ComplexFeatureConstants.FEATURE_CHAINING_LINK_NAME.equals(prop.getName())) {
                 properties.add(prop);
@@ -723,7 +723,7 @@ public class XPath extends XPathUtil {
                 boolean isSimpleContent = Types.isSimpleContentType(type);
                 boolean canHaveTextContent = Types.canHaveTextContent(type);
                 if (isSimpleContent || canHaveTextContent) {
-                    ArrayList<Property> list = new ArrayList<Property>();
+                    ArrayList<Property> list = new ArrayList<>();
                     if (value == null && !descriptor.isNillable()) {
                         return list;
                     }

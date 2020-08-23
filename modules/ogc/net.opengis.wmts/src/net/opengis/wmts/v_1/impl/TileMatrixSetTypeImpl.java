@@ -267,7 +267,7 @@ public class TileMatrixSetTypeImpl extends DescriptionTypeImpl implements TileMa
      */
     public EList<TileMatrixType> getTileMatrix() {
         if (tileMatrix == null) {
-            tileMatrix = new EObjectContainmentEList<TileMatrixType>(TileMatrixType.class, this, wmtsv_1Package.TILE_MATRIX_SET_TYPE__TILE_MATRIX);
+            tileMatrix = new EObjectContainmentEList<>(TileMatrixType.class, this, wmtsv_1Package.TILE_MATRIX_SET_TYPE__TILE_MATRIX);
         }
         return tileMatrix;
     }

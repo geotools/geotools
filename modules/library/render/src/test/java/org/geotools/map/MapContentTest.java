@@ -313,7 +313,7 @@ public class MapContentTest {
         MockLayer layerFirst = new MockLayer(WORLD);
         mapContent.addLayer(layerFirst);
 
-        List<MockLayer> layers = new ArrayList<MockLayer>();
+        List<MockLayer> layers = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             MockLayer layer = new MockLayer(WORLD);
             layers.add(layer);
@@ -342,7 +342,7 @@ public class MapContentTest {
         MockLayer layerFirst = new MockLayer(WORLD);
         mapContent.addLayer(layerFirst);
 
-        List<MockLayer> layers = new ArrayList<MockLayer>();
+        List<MockLayer> layers = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             MockLayer layer = new MockLayer(WORLD);
             layers.add(layer);

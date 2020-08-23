@@ -342,7 +342,7 @@ public class DimensionTypeImpl extends DescriptionTypeImpl implements DimensionT
      */
     public EList<String> getValue() {
         if (value == null) {
-            value = new EDataTypeEList<String>(String.class, this, wmtsv_1Package.DIMENSION_TYPE__VALUE);
+            value = new EDataTypeEList<>(String.class, this, wmtsv_1Package.DIMENSION_TYPE__VALUE);
         }
         return value;
     }

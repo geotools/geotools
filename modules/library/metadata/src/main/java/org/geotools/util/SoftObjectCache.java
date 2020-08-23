@@ -87,7 +87,7 @@ final class SoftObjectCache implements ObjectCache {
     /** @return a copy of the keys currently in the map */
     public Set<Object> getKeys() {
         Set<Object> keys = null;
-        keys = new HashSet<Object>(cache.keySet());
+        keys = new HashSet<>(cache.keySet());
         return keys;
     }
 

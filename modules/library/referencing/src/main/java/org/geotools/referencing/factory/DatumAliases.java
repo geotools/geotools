@@ -95,7 +95,7 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
      * values are initially {@code String[]} objects. They are converted to {@code GenericName[]}
      * only when first needed.
      */
-    private final Map<String, Object[]> aliasMap = new HashMap<String, Object[]>();
+    private final Map<String, Object[]> aliasMap = new HashMap<>();
 
     /**
      * The authorities. This is the first line in the alias table. This array is constructed by
@@ -213,14 +213,14 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
              */
             String line = readLine(in);
             if (line != null) {
-                final List<Object> elements = new ArrayList<Object>();
+                final List<Object> elements = new ArrayList<>();
                 StringTokenizer st = new StringTokenizer(line, SEPARATORS);
                 while (st.hasMoreTokens()) {
                     final String name = st.nextToken().trim();
                     elements.add(name.length() != 0 ? new LocalName(name) : null);
                 }
                 authorities = elements.toArray(new LocalName[elements.size()]);
-                final Map<String, String> canonical = new HashMap<String, String>();
+                final Map<String, String> canonical = new HashMap<>();
                 /*
                  * Parses all aliases. They are stored as arrays of strings for now, but will be
                  * converted to array of generic names by {@link #getAliases} when first needed.
@@ -398,7 +398,7 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
             int count = aliases.length;
             value = properties.get(IdentifiedObject.ALIAS_KEY);
             if (value != null) {
-                final Map<String, GenericName> merged = new LinkedHashMap<String, GenericName>();
+                final Map<String, GenericName> merged = new LinkedHashMap<>();
                 putAll(NameFactory.toArray(value), merged);
                 count -= putAll(aliases, merged);
                 final Collection<GenericName> c = merged.values();
@@ -409,7 +409,7 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
              * all our aliases were replaced by user's aliases (count <= 0).
              */
             if (count > 0) {
-                final Map<String, Object> copy = new HashMap<String, Object>(properties);
+                final Map<String, Object> copy = new HashMap<>(properties);
                 copy.put(IdentifiedObject.ALIAS_KEY, aliases);
                 properties = copy;
             }

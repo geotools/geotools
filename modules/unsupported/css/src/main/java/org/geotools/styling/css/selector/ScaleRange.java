@@ -44,7 +44,7 @@ public class ScaleRange extends Selector {
     }
 
     public ScaleRange(double min, boolean minIncluded, double max, boolean maxIncluded) {
-        this.range = new Range<Double>(Double.class, min, minIncluded, max, maxIncluded);
+        this.range = new Range<>(Double.class, min, minIncluded, max, maxIncluded);
     }
 
     @Override

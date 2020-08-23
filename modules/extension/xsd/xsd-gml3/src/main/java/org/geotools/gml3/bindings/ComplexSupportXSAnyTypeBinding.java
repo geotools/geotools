@@ -113,7 +113,7 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
             return null;
         }
 
-        List<Object[ /* 2 */]> properties = new ArrayList<Object[ /* 2 */]>();
+        List<Object[ /* 2 */]> properties = new ArrayList<>();
         XSDTypeDefinition typeDef = element.getTypeDefinition();
         boolean isAnyType =
                 typeDef.getName() != null
@@ -370,7 +370,7 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
                 Object clientProperties = att.getUserData().get(Attributes.class);
                 Map<Name, Object> map = null;
                 if (clientProperties == null) {
-                    map = new HashMap<Name, Object>();
+                    map = new HashMap<>();
                     att.getUserData().put(Attributes.class, map);
                 } else {
                     map = (Map<Name, Object>) clientProperties;

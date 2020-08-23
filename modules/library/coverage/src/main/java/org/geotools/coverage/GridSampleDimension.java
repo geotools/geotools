@@ -348,7 +348,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
         }
         final int nameCount = (categories != null) ? categories.length : 0;
         final int nodataCount = (nodata != null) ? nodata.length : 0;
-        final List<Category> categoryList = new ArrayList<Category>(nameCount + nodataCount + 2);
+        final List<Category> categoryList = new ArrayList<>(nameCount + nodataCount + 2);
         /*
          * STEP 1 - Add a qualitative category for each 'nodata' value.
          *   NAME: Fetched from 'categories' if available, otherwise default to the value.

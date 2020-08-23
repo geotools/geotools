@@ -369,7 +369,7 @@ public class GeometryBuilder {
         LineSegment edge3 = getGeometryFactory().createLineSegment(three, four);
         LineSegment edge4 = getGeometryFactory().createLineSegment(four, one);
 
-        List<OrientableCurve> edges = new ArrayList<OrientableCurve>();
+        List<OrientableCurve> edges = new ArrayList<>();
         edges.add(createCurve(Collections.singletonList(edge1)));
         edges.add(createCurve(Collections.singletonList(edge2)));
         edges.add(createCurve(Collections.singletonList(edge3)));
@@ -447,12 +447,12 @@ public class GeometryBuilder {
 
     public SurfaceBoundary createSurfaceBoundary(Ring exterior)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
-        return createSurfaceBoundary(exterior, new ArrayList<Ring>());
+        return createSurfaceBoundary(exterior, new ArrayList<>());
     }
 
     public SurfaceBoundary createSurfaceBoundary(OrientableCurve curve)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
-        List<OrientableCurve> exterior = new ArrayList<OrientableCurve>(1);
+        List<OrientableCurve> exterior = new ArrayList<>(1);
         exterior.add(curve);
         Ring ring = createRing(exterior);
         return createSurfaceBoundary(ring);

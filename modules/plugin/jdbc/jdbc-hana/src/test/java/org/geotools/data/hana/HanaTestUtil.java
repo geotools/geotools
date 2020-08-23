@@ -341,7 +341,7 @@ public class HanaTestUtil {
     public List<String> getSequencesOfTable(String schemaName, String tableName)
             throws SQLException {
         List<String> pks = getPrimaryKeyColumnsOfTable(schemaName, tableName);
-        ArrayList<String> ret = new ArrayList<String>();
+        ArrayList<String> ret = new ArrayList<>();
         for (String pk : pks) {
             ret.add(getSequenceName(tableName, pk));
         }
@@ -603,7 +603,7 @@ public class HanaTestUtil {
     private List<String> getPrimaryKeys(String schemaName, String tableName) throws SQLException {
         DatabaseMetaData dbmd = conn.getMetaData();
         ResultSet rs = null;
-        List<String> pkColumns = new ArrayList<String>();
+        List<String> pkColumns = new ArrayList<>();
         try {
             rs = dbmd.getPrimaryKeys(null, schemaName, tableName);
             while (rs.next()) {

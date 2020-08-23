@@ -30,7 +30,7 @@ public class MBTilesGrid {
 
     // the data
     protected byte[] grid = null;
-    protected Map<String, String> gridData = new HashMap<String, String>();
+    protected Map<String, String> gridData = new HashMap<>();
 
     public MBTilesGrid(long zoomLevel, long tileColumn, long tileRow) {
         ZoomLevel = zoomLevel;

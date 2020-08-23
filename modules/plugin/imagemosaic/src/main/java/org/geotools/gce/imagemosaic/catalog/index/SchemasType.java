@@ -65,7 +65,7 @@ public class SchemasType {
      */
     public List<SchemaType> getSchema() {
         if (schema == null) {
-            schema = new ArrayList<SchemaType>();
+            schema = new ArrayList<>();
         }
         return this.schema;
     }

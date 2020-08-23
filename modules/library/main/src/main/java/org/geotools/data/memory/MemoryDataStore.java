@@ -297,7 +297,7 @@ public class MemoryDataStore extends ContentDataStore {
      * @see org.geotools.data.ContentDataStore#getFeatureTypes()
      */
     protected List<Name> createTypeNames() {
-        List<Name> names = new ArrayList<Name>(this.entries.keySet());
+        List<Name> names = new ArrayList<>(this.entries.keySet());
         Collections.sort(
                 names,
                 new Comparator<Name>() {

@@ -143,7 +143,7 @@ public class MultiFilterTest {
     @Test
     public void testCompareStringOperators_Any() {
         Filter filter;
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
 
         list.add("foo-1");
         list.add("foo-2");
@@ -192,7 +192,7 @@ public class MultiFilterTest {
 
         // testing collection with collection comparison
 
-        List<String> list2 = new ArrayList<String>();
+        List<String> list2 = new ArrayList<>();
 
         list2.add("foo-4");
         list2.add("foo-5");
@@ -212,7 +212,7 @@ public class MultiFilterTest {
         filter = fac.notEqual(e, new LiteralExpressionImpl(list2));
         assertTrue(filter.evaluate(null));
 
-        list2 = new ArrayList<String>();
+        list2 = new ArrayList<>();
         list2.add("foo-1");
         list2.add("foo-2");
         list2.add("foo-3");
@@ -222,7 +222,7 @@ public class MultiFilterTest {
         assertTrue(filter.evaluate(null));
 
         // testing non equals
-        list = new ArrayList<String>();
+        list = new ArrayList<>();
         list.add("foo-1");
         list.add("foo-1");
         list.add("foo-1");
@@ -231,7 +231,7 @@ public class MultiFilterTest {
         filter = fac.notEqual(e, new LiteralExpressionImpl("foo-1"));
         assertFalse(filter.evaluate(null));
 
-        list2 = new ArrayList<String>();
+        list2 = new ArrayList<>();
         list2.add("foo-1");
         list2.add("foo-1");
 
@@ -242,13 +242,13 @@ public class MultiFilterTest {
     @Test
     public void testCompareStringOperators_All() {
         Filter filter;
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
 
         list.add("foo-1");
         list.add("foo-2");
         list.add("foo-3");
 
-        List<String> list2 = new ArrayList<String>();
+        List<String> list2 = new ArrayList<>();
 
         list2.add("fOo-2");
         list2.add("foO-2");
@@ -279,13 +279,13 @@ public class MultiFilterTest {
     @Test
     public void testCompareStringOperators_One() {
         Filter filter;
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
 
         list.add("foo-1");
         list.add("foo-2");
         list.add("foo-3");
 
-        List<String> list2 = new ArrayList<String>();
+        List<String> list2 = new ArrayList<>();
 
         list2.add("Foo-1");
         list2.add("fOo-2");
@@ -317,7 +317,7 @@ public class MultiFilterTest {
     @Test
     public void testCompareNumberOperators_Any() {
         Filter filter;
-        List<Double> list = new ArrayList<Double>();
+        List<Double> list = new ArrayList<>();
 
         list.add(35.2);
         list.add(202.3);
@@ -422,13 +422,13 @@ public class MultiFilterTest {
     @Test
     public void testCompareNumberOperators_All() {
         Filter filter;
-        List<Double> list = new ArrayList<Double>();
+        List<Double> list = new ArrayList<>();
         list.add(35.2);
         list.add(202.3);
         list.add(201.7);
         list.add(10000.5);
 
-        List<Double> list2 = new ArrayList<Double>();
+        List<Double> list2 = new ArrayList<>();
         list2.add(35.2);
         list2.add(35.2);
         list2.add(35.2);
@@ -516,13 +516,13 @@ public class MultiFilterTest {
     @Test
     public void testCompareNumberOperators_One() {
         Filter filter;
-        List<Double> list = new ArrayList<Double>();
+        List<Double> list = new ArrayList<>();
         list.add(35.2);
         list.add(202.3);
         list.add(201.7);
         list.add(10000.5);
 
-        List<Double> list2 = new ArrayList<Double>();
+        List<Double> list2 = new ArrayList<>();
         list2.add(35.2);
         list2.add(35.2);
         list2.add(202.3);
@@ -651,7 +651,7 @@ public class MultiFilterTest {
                 };
         Polygon geom4 = gf.createPolygon(gf.createLinearRing(coords4), new LinearRing[0]);
 
-        List<Geometry> list = new ArrayList<Geometry>();
+        List<Geometry> list = new ArrayList<>();
         list.add(geom4);
 
         filter = fac.overlaps(new LiteralExpressionImpl(list), new LiteralExpressionImpl(geom1));
@@ -682,11 +682,11 @@ public class MultiFilterTest {
         assertTrue(filter.evaluate(null));
 
         // comparing lists with lists
-        list = new ArrayList<Geometry>();
+        list = new ArrayList<>();
         list.add(geom3);
         list.add(geom2);
 
-        List<Geometry> list2 = new ArrayList<Geometry>();
+        List<Geometry> list2 = new ArrayList<>();
         list2.add(geom1);
         list2.add(geom2);
 
@@ -740,7 +740,7 @@ public class MultiFilterTest {
                 };
         Polygon geom4 = gf.createPolygon(gf.createLinearRing(coords4), new LinearRing[0]);
 
-        List<Geometry> list = new ArrayList<Geometry>();
+        List<Geometry> list = new ArrayList<>();
         list.add(geom4);
 
         filter =
@@ -861,7 +861,7 @@ public class MultiFilterTest {
                 };
         Polygon geom4 = gf.createPolygon(gf.createLinearRing(coords4), new LinearRing[0]);
 
-        List<Geometry> list = new ArrayList<Geometry>();
+        List<Geometry> list = new ArrayList<>();
         list.add(geom4);
 
         filter =

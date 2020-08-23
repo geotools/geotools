@@ -88,7 +88,7 @@ public class AuthorityBackedFactory extends DefaultCoordinateOperationFactory
     private CoordinateOperationAuthorityFactory authorityFactory;
 
     /** Used as a guard against infinite recursivity. */
-    private final ThreadLocal<Boolean> processing = new ThreadLocal<Boolean>();
+    private final ThreadLocal<Boolean> processing = new ThreadLocal<>();
 
     /**
      * Creates a new factory backed by a default EPSG authority factory. This factory will uses a
@@ -312,7 +312,7 @@ public class AuthorityBackedFactory extends DefaultCoordinateOperationFactory
             final CoordinateReferenceSystem sourceCRS,
             final CoordinateReferenceSystem targetCRS,
             int limit) {
-        HashSet<CoordinateOperation> result = new HashSet<CoordinateOperation>();
+        HashSet<CoordinateOperation> result = new HashSet<>();
         /*
          * Safety check against recursivity: returns null if the given source and target CRS
          * are already under examination by a previous call to this method. Note: there is no

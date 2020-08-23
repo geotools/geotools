@@ -77,7 +77,7 @@ public class ParametersType {
      */
     public List<ParametersType.Parameter> getParameter() {
         if (parameter == null) {
-            parameter = new ArrayList<ParametersType.Parameter>();
+            parameter = new ArrayList<>();
         }
         return this.parameter;
     }

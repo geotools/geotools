@@ -220,8 +220,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      *
      * <p>This field is managed as part of our connection lifecycle.
      */
-    private final Map<String, PreparedStatement> statements =
-            new IdentityHashMap<String, PreparedStatement>();
+    private final Map<String, PreparedStatement> statements = new IdentityHashMap<>();
 
     /**
      * Last object type returned by {@link #createObject}, or -1 if none. This type is an index in
@@ -241,7 +240,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      *
      * @see #getAxisName
      */
-    private final Map<String, AxisName> axisNames = new HashMap<String, AxisName>();
+    private final Map<String, AxisName> axisNames = new HashMap<>();
 
     /**
      * Cache for axis numbers. This service is not provided by {@link BufferedAuthorityFactory}
@@ -249,7 +248,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      *
      * @see #getDimensionForCRS
      */
-    private final Map<String, Short> axisCounts = new HashMap<String, Short>();
+    private final Map<String, Short> axisCounts = new HashMap<>();
 
     /**
      * Cache for projection checks. This service is not provided by {@link BufferedAuthorityFactory}
@@ -257,16 +256,16 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      *
      * @see #isProjection
      */
-    private final Map<String, Boolean> codeProjection = new HashMap<String, Boolean>();
+    private final Map<String, Boolean> codeProjection = new HashMap<>();
 
     /** Pool of naming systems, used for caching. There is usually few of them (about 15). */
-    private final Map<String, LocalName> scopes = new HashMap<String, LocalName>();
+    private final Map<String, LocalName> scopes = new HashMap<>();
 
     /**
      * The properties to be given the objects to construct. Reused every time {@link
      * #createProperties} is invoked.
      */
-    private final Map<String, Object> properties = new HashMap<String, Object>();
+    private final Map<String, Object> properties = new HashMap<>();
 
     /**
      * A safety guard for preventing never-ending loops in recursive calls to {@link #createDatum}.
@@ -274,7 +273,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      * target datum could have its own Bursa-Wolf parameters, with one of them pointing again to the
      * source datum.
      */
-    private final Set<String> safetyGuard = new HashSet<String>();
+    private final Set<String> safetyGuard = new HashSet<>();
 
     public AbstractEpsgFactory(final Hints userHints) throws FactoryException {
         super(MAXIMUM_PRIORITY - 20);
@@ -451,7 +450,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      */
     protected synchronized Set<String> generateAuthorityCodes(final Class type)
             throws FactoryException {
-        Set<String> result = new HashSet<String>();
+        Set<String> result = new HashSet<>();
         for (int i = 0; i < TABLES_INFO.length; i++) {
             final TableInfo table = TABLES_INFO[i];
             if (table.isTypeOf(type)) {
@@ -740,7 +739,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                     generic = new ScopedName(cached, local);
                 }
                 if (alias == null) {
-                    alias = new ArrayList<GenericName>();
+                    alias = new ArrayList<>();
                 }
                 alias.add(generic);
             }
@@ -1245,7 +1244,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                 final int method = getInt(result, 2, code);
                 final String datum = getString(result, 3, code);
                 if (bwInfos == null) {
-                    bwInfos = new ArrayList<Object>();
+                    bwInfos = new ArrayList<>();
                 }
                 bwInfos.add(new BursaWolfInfo(operation, method, datum));
             }
@@ -1265,7 +1264,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
             final BursaWolfInfo[] codes = bwInfos.toArray(new BursaWolfInfo[size]);
             sort(codes);
             bwInfos.clear();
-            final Set<String> added = new HashSet<String>();
+            final Set<String> added = new HashSet<>();
             for (int i = 0; i < codes.length; i++) {
                 final BursaWolfInfo candidate = codes[i];
                 if (added.add(candidate.target)) {
@@ -1395,8 +1394,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                      *     case, we lost our paranoiac check for duplication.
                      */
                     if (type.equals("geodetic")) {
-                        properties =
-                                new HashMap<String, Object>(properties); // Protect from changes
+                        properties = new HashMap<>(properties); // Protect from changes
                         final Ellipsoid ellipsoid = createEllipsoid(getString(result, 9, code));
                         final PrimeMeridian meridian =
                                 createPrimeMeridian(getString(result, 10, code));
@@ -2036,8 +2034,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                                 + " ORDER BY SORT_ORDER");
         stmt.setString(1, method);
         try (ResultSet results = stmt.executeQuery()) {
-            final List<ParameterDescriptor<? extends Object>> descriptors =
-                    new ArrayList<ParameterDescriptor<? extends Object>>();
+            final List<ParameterDescriptor<? extends Object>> descriptors = new ArrayList<>();
             while (results.next()) {
                 final String param = getString(results, 1, method);
                 descriptors.add(generateParameterDescriptor(param));
@@ -2222,7 +2219,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                                 + " AND SOURCE_CRS_CODE IS NOT NULL"
                                 + " AND TARGET_CRS_CODE IS NOT NULL");
         stmt.setString(1, code);
-        final Map<Dimensions, Dimensions> dimensions = new HashMap<Dimensions, Dimensions>();
+        final Map<Dimensions, Dimensions> dimensions = new HashMap<>();
         final Dimensions temp = new Dimensions((2 << 16) | 2); // Default to (2,2) dimensions.
         Dimensions max = temp;
         try (ResultSet result = stmt.executeQuery()) {
@@ -2535,7 +2532,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                                                 + " WHERE (CONCAT_OPERATION_CODE = ?)"
                                                 + " ORDER BY OP_PATH_STEP");
                         cstmt.setString(1, epsg);
-                        final List<String> codes = new ArrayList<String>();
+                        final List<String> codes = new ArrayList<>();
                         try (ResultSet cr = cstmt.executeQuery()) {
                             while (cr.next()) {
                                 codes.add(cr.getString(1));
@@ -2835,7 +2832,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
             String sql =
                     "SELECT " + select + " FROM " + from + " WHERE " + where + "='" + code + '\'';
             sql = adaptSQL(sql);
-            final Set<String> result = new LinkedHashSet<String>();
+            final Set<String> result = new LinkedHashSet<>();
             try (Statement s = getConnection().createStatement();
                     ResultSet r = s.executeQuery(sql)) {
                 while (r.next()) {

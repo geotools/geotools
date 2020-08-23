@@ -62,7 +62,7 @@ public class ExpressionExtractor {
      */
     static List<Expression> splitCqlExpressions(String expression) {
         boolean inCqlExpression = false;
-        List<Expression> result = new ArrayList<Expression>();
+        List<Expression> result = new ArrayList<>();
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < expression.length(); i++) {
             final char curr = expression.charAt(i);

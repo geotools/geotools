@@ -173,7 +173,7 @@ public class SummaryRecordTypeImpl extends AbstractRecordTypeImpl implements Sum
      */
     public EList<SimpleLiteral> getIdentifier() {
         if (identifier == null) {
-            identifier = new EObjectContainmentEList<SimpleLiteral>(SimpleLiteral.class, this, Csw20Package.SUMMARY_RECORD_TYPE__IDENTIFIER);
+            identifier = new EObjectContainmentEList<>(SimpleLiteral.class, this, Csw20Package.SUMMARY_RECORD_TYPE__IDENTIFIER);
         }
         return identifier;
     }
@@ -184,7 +184,7 @@ public class SummaryRecordTypeImpl extends AbstractRecordTypeImpl implements Sum
      */
     public EList<SimpleLiteral> getTitle() {
         if (title == null) {
-            title = new EObjectResolvingEList<SimpleLiteral>(SimpleLiteral.class, this, Csw20Package.SUMMARY_RECORD_TYPE__TITLE);
+            title = new EObjectResolvingEList<>(SimpleLiteral.class, this, Csw20Package.SUMMARY_RECORD_TYPE__TITLE);
         }
         return title;
     }
@@ -234,7 +234,7 @@ public class SummaryRecordTypeImpl extends AbstractRecordTypeImpl implements Sum
      */
     public EList<SimpleLiteral> getSubject() {
         if (subject == null) {
-            subject = new EObjectContainmentEList<SimpleLiteral>(SimpleLiteral.class, this, Csw20Package.SUMMARY_RECORD_TYPE__SUBJECT);
+            subject = new EObjectContainmentEList<>(SimpleLiteral.class, this, Csw20Package.SUMMARY_RECORD_TYPE__SUBJECT);
         }
         return subject;
     }
@@ -245,7 +245,7 @@ public class SummaryRecordTypeImpl extends AbstractRecordTypeImpl implements Sum
      */
     public EList<SimpleLiteral> getFormat() {
         if (format == null) {
-            format = new EObjectContainmentEList<SimpleLiteral>(SimpleLiteral.class, this, Csw20Package.SUMMARY_RECORD_TYPE__FORMAT);
+            format = new EObjectContainmentEList<>(SimpleLiteral.class, this, Csw20Package.SUMMARY_RECORD_TYPE__FORMAT);
         }
         return format;
     }
@@ -256,7 +256,7 @@ public class SummaryRecordTypeImpl extends AbstractRecordTypeImpl implements Sum
      */
     public EList<SimpleLiteral> getRelation() {
         if (relation == null) {
-            relation = new EObjectContainmentEList<SimpleLiteral>(SimpleLiteral.class, this, Csw20Package.SUMMARY_RECORD_TYPE__RELATION);
+            relation = new EObjectContainmentEList<>(SimpleLiteral.class, this, Csw20Package.SUMMARY_RECORD_TYPE__RELATION);
         }
         return relation;
     }
@@ -268,7 +268,7 @@ public class SummaryRecordTypeImpl extends AbstractRecordTypeImpl implements Sum
      */
     public EList<SimpleLiteral> getModified() {
         if (modified == null) {
-            modified = new EObjectContainmentEList<SimpleLiteral>(SimpleLiteral.class, this, Csw20Package.SUMMARY_RECORD_TYPE__MODIFIED);
+            modified = new EObjectContainmentEList<>(SimpleLiteral.class, this, Csw20Package.SUMMARY_RECORD_TYPE__MODIFIED);
         }
         return modified;
     }
@@ -280,7 +280,7 @@ public class SummaryRecordTypeImpl extends AbstractRecordTypeImpl implements Sum
      */
     public EList<SimpleLiteral> getAbstract() {
         if (abstract_ == null) {
-            abstract_ = new EObjectContainmentEList<SimpleLiteral>(SimpleLiteral.class, this, Csw20Package.SUMMARY_RECORD_TYPE__ABSTRACT);
+            abstract_ = new EObjectContainmentEList<>(SimpleLiteral.class, this, Csw20Package.SUMMARY_RECORD_TYPE__ABSTRACT);
         }
         return abstract_;
     }
@@ -292,7 +292,7 @@ public class SummaryRecordTypeImpl extends AbstractRecordTypeImpl implements Sum
      */
     public EList<SimpleLiteral> getSpatial() {
         if (spatial == null) {
-            spatial = new EObjectContainmentEList<SimpleLiteral>(SimpleLiteral.class, this, Csw20Package.SUMMARY_RECORD_TYPE__SPATIAL);
+            spatial = new EObjectContainmentEList<>(SimpleLiteral.class, this, Csw20Package.SUMMARY_RECORD_TYPE__SPATIAL);
         }
         return spatial;
     }
@@ -304,7 +304,7 @@ public class SummaryRecordTypeImpl extends AbstractRecordTypeImpl implements Sum
      */
     public EList<BoundingBoxType> getBoundingBox() {
         if (boundingBox == null) {
-            boundingBox = new EObjectResolvingEList<BoundingBoxType>(BoundingBoxType.class, this, Csw20Package.SUMMARY_RECORD_TYPE__BOUNDING_BOX);
+            boundingBox = new EObjectResolvingEList<>(BoundingBoxType.class, this, Csw20Package.SUMMARY_RECORD_TYPE__BOUNDING_BOX);
         }
         return boundingBox;
     }

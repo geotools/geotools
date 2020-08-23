@@ -300,7 +300,7 @@ public final class Interpolator2D extends GridCoverage2D {
      * coverage. Other elements (if any) are fallbacks.
      */
     public Interpolation[] getInterpolations() {
-        final List<Interpolation> interp = new ArrayList<Interpolation>(4);
+        final List<Interpolation> interp = new ArrayList<>(4);
         Interpolator2D scan = this;
         do {
             interp.add(interpolation);

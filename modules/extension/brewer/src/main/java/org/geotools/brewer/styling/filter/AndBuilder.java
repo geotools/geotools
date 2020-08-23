@@ -33,7 +33,7 @@ public class AndBuilder<P> implements Builder<And> {
     protected P parent;
     protected List<FilterBuilder> list;
 
-    private List<Identifier> ids = new ArrayList<Identifier>();
+    private List<Identifier> ids = new ArrayList<>();
 
     public AndBuilder() {
         reset();
@@ -49,7 +49,7 @@ public class AndBuilder<P> implements Builder<And> {
         if (list == null) {
             return null;
         }
-        List<Filter> filters = new ArrayList<Filter>(list.size());
+        List<Filter> filters = new ArrayList<>(list.size());
         for (FilterBuilder build : list) {
             Filter filter = build.build();
             if (filter != null) {
@@ -84,7 +84,7 @@ public class AndBuilder<P> implements Builder<And> {
     }
 
     public AndBuilder<P> reset() {
-        this.list = new ArrayList<FilterBuilder>();
+        this.list = new ArrayList<>();
         return this;
     }
 
@@ -92,7 +92,7 @@ public class AndBuilder<P> implements Builder<And> {
         if (filter == null) {
             return unset();
         }
-        this.list = new ArrayList<FilterBuilder>();
+        this.list = new ArrayList<>();
         if (filter.getChildren() != null) {
             for (Filter child : filter.getChildren()) {
                 list.add(new FilterBuilder().reset(child));

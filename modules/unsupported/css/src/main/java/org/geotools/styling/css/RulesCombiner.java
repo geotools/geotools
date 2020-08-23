@@ -50,7 +50,7 @@ class RulesCombiner {
                 PseudoClass ps = entry.getKey();
                 Map<String, Property> psProperties = properties.get(ps);
                 if (psProperties == null) {
-                    psProperties = new LinkedHashMap<String, Property>();
+                    psProperties = new LinkedHashMap<>();
                     properties.put(ps, psProperties);
                 }
                 for (Property p : entry.getValue()) {
@@ -74,7 +74,7 @@ class RulesCombiner {
         // build the new rule
         Map<PseudoClass, List<Property>> newProperties = new LinkedHashMap<>();
         for (Map.Entry<PseudoClass, Map<String, Property>> entry : properties.entrySet()) {
-            newProperties.put(entry.getKey(), new ArrayList<Property>(entry.getValue().values()));
+            newProperties.put(entry.getKey(), new ArrayList<>(entry.getValue().values()));
         }
         String comment = getCombinedComment(rules);
         combined = new CssRule(combinedSelector, newProperties, comment);

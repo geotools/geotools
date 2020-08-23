@@ -63,7 +63,7 @@ class PolygonBuilder extends GeometryBuilder {
             LinearRing[] holes = new LinearRing[0];
             if (geometryList.size() > 1) {
 
-                List<LinearRing> holeList = new LinkedList<LinearRing>();
+                List<LinearRing> holeList = new LinkedList<>();
                 for (int i = 1; i < geometryList.size(); i++) {
 
                     LineString holeLines = (LineString) geometryList.get(i);

@@ -515,7 +515,7 @@ public interface DataAccessFactory extends Factory {
             // parsing be tried on each element, then build the array as a result
             if (type.isArray()) {
                 StringTokenizer tokenizer = new StringTokenizer(text, " ");
-                List<Object> result = new ArrayList<Object>();
+                List<Object> result = new ArrayList<>();
 
                 while (tokenizer.hasMoreTokens()) {
                     String token = tokenizer.nextToken();

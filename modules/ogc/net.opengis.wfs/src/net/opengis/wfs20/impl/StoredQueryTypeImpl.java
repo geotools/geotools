@@ -98,7 +98,7 @@ public class StoredQueryTypeImpl extends AbstractQueryExpressionTypeImpl impleme
    */
     public EList<ParameterType> getParameter() {
     if (parameter == null) {
-      parameter = new EObjectContainmentEList<ParameterType>(ParameterType.class, this, Wfs20Package.STORED_QUERY_TYPE__PARAMETER);
+      parameter = new EObjectContainmentEList<>(ParameterType.class, this, Wfs20Package.STORED_QUERY_TYPE__PARAMETER);
     }
     return parameter;
   }

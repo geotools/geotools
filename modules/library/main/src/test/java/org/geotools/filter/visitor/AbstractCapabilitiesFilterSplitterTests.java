@@ -137,7 +137,7 @@ public class AbstractCapabilitiesFilterSplitterTests {
         if (attToEdit != null && accessor != null) {
             // Test when the an update exists that affects the attribute of a
             // feature
-            Set<FeatureId> idSet = new HashSet<FeatureId>();
+            Set<FeatureId> idSet = new HashSet<>();
             idSet.add(ff.featureId("fid"));
             Id updateFilter = ff.id(idSet);
 

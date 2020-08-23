@@ -53,7 +53,7 @@ public class MultiRange<T extends Comparable<? super T>> {
         }
     }
 
-    TreeSet<Range<T>> ranges = new TreeSet<>(new RangeComparator<T>());
+    TreeSet<Range<T>> ranges = new TreeSet<>(new RangeComparator<>());
 
     public MultiRange(Range<T> range) {
         this.ranges.add(range);
@@ -68,8 +68,8 @@ public class MultiRange<T extends Comparable<? super T>> {
     }
 
     public MultiRange(Class<T> binding, T exclusion) {
-        this.ranges.add(new Range<T>(binding, null, false, exclusion, false));
-        this.ranges.add(new Range<T>(binding, exclusion, false, null, false));
+        this.ranges.add(new Range<>(binding, null, false, exclusion, false));
+        this.ranges.add(new Range<>(binding, exclusion, false, null, false));
     }
 
     public MultiRange<T> merge(MultiRange<T> other) {
@@ -195,7 +195,7 @@ public class MultiRange<T extends Comparable<? super T>> {
             } else {
                 @SuppressWarnings("unchecked")
                 Range<T> union =
-                        new Range<T>(
+                        new Range<>(
                                 range.getElementClass(),
                                 (T) range.getMinValue(),
                                 range.isMinIncluded(),

@@ -62,7 +62,7 @@ public class FeatureTypeInfoImpl implements FeatureTypeInfo {
         if (keywords == null) {
             ret = Collections.emptySet();
         } else {
-            ret = new HashSet<String>();
+            ret = new HashSet<>();
             for (KeywordsType k : keywords) {
                 ret.addAll(k.getKeyword());
             }
@@ -182,7 +182,7 @@ public class FeatureTypeInfoImpl implements FeatureTypeInfo {
             return Collections.emptySet();
         }
 
-        return new HashSet<String>(ftypeDeclaredFormats);
+        return new HashSet<>(ftypeDeclaredFormats);
     }
 
     @Override

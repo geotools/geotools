@@ -28,7 +28,7 @@ import org.opengis.util.ProgressListener;
  */
 class ExceptionProgressListener implements ProgressListener {
 
-    List<Throwable> exceptions = new ArrayList<Throwable>();
+    List<Throwable> exceptions = new ArrayList<>();
 
     public void exceptionOccurred(Throwable exception) {
         exceptions.add(exception);

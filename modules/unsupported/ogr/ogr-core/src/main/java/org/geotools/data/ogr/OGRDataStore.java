@@ -253,7 +253,7 @@ public class OGRDataStore extends ContentDataStore {
             }
 
             // create fields
-            Map<String, String> nameMap = new HashMap<String, String>();
+            Map<String, String> nameMap = new HashMap<>();
             for (int i = 0; i < schema.getAttributeCount(); i++) {
                 AttributeDescriptor ad = schema.getDescriptor(i);
                 if (ad == schema.getGeometryDescriptor()) {
@@ -272,7 +272,7 @@ public class OGRDataStore extends ContentDataStore {
 
             // remap positions, as the store might add extra attributes (and the field api is
             // positional)
-            Map<Integer, Integer> indexMap = new HashMap<Integer, Integer>();
+            Map<Integer, Integer> indexMap = new HashMap<>();
             int count = ogr.LayerGetFieldCount(layerDefinition);
             for (int i = 0; i < count; i++) {
                 Object fd = ogr.LayerGetFieldDefn(layerDefinition, i);

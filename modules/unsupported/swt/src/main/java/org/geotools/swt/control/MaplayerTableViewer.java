@@ -49,7 +49,7 @@ import org.geotools.swt.utils.Utils;
  * @author Andrea Antonello (www.hydrologis.com)
  */
 public class MaplayerTableViewer extends TableViewer implements ISelectionChangedListener {
-    private List<Layer> layersList = new ArrayList<Layer>();
+    private List<Layer> layersList = new ArrayList<>();
     private Layer selectedMapLayer;
 
     private String[] titles = {"Layer name", "Visible", "Style"};

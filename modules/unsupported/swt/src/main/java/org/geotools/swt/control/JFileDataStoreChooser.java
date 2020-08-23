@@ -63,7 +63,7 @@ public class JFileDataStoreChooser {
     }
 
     static Map<String, String> associations(List<String> extensions) {
-        Map<String, String> fileAssociations = new TreeMap<String, String>();
+        Map<String, String> fileAssociations = new TreeMap<>();
 
         for (String extension : extensions) {
             String ext = extension.toLowerCase().trim();

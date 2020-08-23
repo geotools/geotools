@@ -113,7 +113,7 @@ public class DefaultRenderingExecutor implements RenderingExecutor {
 
     /** Creates a new executor. */
     public DefaultRenderingExecutor() {
-        currentTasks = new CopyOnWriteArrayList<TaskInfo>();
+        currentTasks = new CopyOnWriteArrayList<>();
 
         taskExecutor = Executors.newCachedThreadPool();
         pollingInterval = DEFAULT_POLLING_INTERVAL;

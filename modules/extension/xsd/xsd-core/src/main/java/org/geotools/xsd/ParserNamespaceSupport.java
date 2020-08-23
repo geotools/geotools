@@ -28,7 +28,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  */
 public class ParserNamespaceSupport extends NamespaceSupport {
 
-    List<NamespaceSupport> others = new ArrayList<NamespaceSupport>();
+    List<NamespaceSupport> others = new ArrayList<>();
 
     @Override
     public String getURI(String prefix) {

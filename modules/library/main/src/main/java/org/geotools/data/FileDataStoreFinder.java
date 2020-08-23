@@ -149,7 +149,7 @@ public class FileDataStoreFinder {
      * @return Set of supported file extensions
      */
     public static Set<String> getAvailableFileExtentions() {
-        Set<String> extentions = new HashSet<String>();
+        Set<String> extentions = new HashSet<>();
 
         Iterator<FileDataStoreFactorySpi> ps = getAvailableDataStores();
         while (ps.hasNext()) {

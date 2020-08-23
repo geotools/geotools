@@ -139,7 +139,7 @@ public final class GridCoverageRendererUtilities {
             GridCoverageFactory gridCoverageFactory,
             final Hints hints)
             throws FactoryException {
-        List<GridCoverage2D> reprojectedCoverages = new ArrayList<GridCoverage2D>();
+        List<GridCoverage2D> reprojectedCoverages = new ArrayList<>();
         for (GridCoverage2D coverage : coverages) {
             if (coverage == null) {
                 continue;
@@ -455,7 +455,7 @@ public final class GridCoverageRendererUtilities {
         if (handler == null) {
             return coverages;
         }
-        List<GridCoverage2D> displacedCoverages = new ArrayList<GridCoverage2D>();
+        List<GridCoverage2D> displacedCoverages = new ArrayList<>();
         Envelope testEnvelope = ReferencedEnvelope.reference(destinationEnvelope);
         MathTransform mt = CRS.findMathTransform(sourceCRS, targetCRS);
         PolygonExtractor polygonExtractor = new PolygonExtractor();
@@ -613,7 +613,7 @@ public final class GridCoverageRendererUtilities {
             mosaicked =
                     mosaic(
                             coverages,
-                            new ArrayList<GridCoverage2D>(),
+                            new ArrayList<>(),
                             destinationEnvelope,
                             mosaicHints,
                             bgValues);

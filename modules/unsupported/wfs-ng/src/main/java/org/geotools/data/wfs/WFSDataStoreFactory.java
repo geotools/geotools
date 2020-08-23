@@ -191,7 +191,7 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
             throw new NullPointerException("version");
         }
 
-        Map<String, String> getCapsKvp = new HashMap<String, String>();
+        Map<String, String> getCapsKvp = new HashMap<>();
         getCapsKvp.put("SERVICE", "WFS");
         getCapsKvp.put("REQUEST", "GetCapabilities");
         getCapsKvp.put("VERSION", version.toString());
@@ -229,7 +229,7 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
 
         if (queryString.length() > 0) {
 
-            Map<String, String> params = new HashMap<String, String>();
+            Map<String, String> params = new HashMap<>();
             String[] split = queryString.split("&");
             for (String kvp : split) {
                 int index = kvp.indexOf('=');

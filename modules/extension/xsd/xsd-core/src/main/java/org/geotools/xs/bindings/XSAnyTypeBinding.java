@@ -155,7 +155,7 @@ public class XSAnyTypeBinding extends AbstractComplexBinding {
                 if (obj instanceof List) {
                     values = (List<Object>) obj;
                 } else {
-                    values = new ArrayList<Object>();
+                    values = new ArrayList<>();
                     values.add(obj);
                     map.put(name, values);
                 }

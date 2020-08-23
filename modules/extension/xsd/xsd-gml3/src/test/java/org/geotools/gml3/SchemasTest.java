@@ -22,7 +22,7 @@ public class SchemasTest {
         final List locators = Arrays.asList(GML.getInstance().createSchemaLocator());
 
         ExecutorService es = Executors.newFixedThreadPool(32);
-        List<Future<Void>> results = new ArrayList<Future<Void>>();
+        List<Future<Void>> results = new ArrayList<>();
         for (int i = 0; i < 128; i++) {
             Future<Void> future =
                     es.submit(

@@ -52,7 +52,7 @@ public class TransformFeatureStore extends TransformFeatureSource implements Sim
         this.store = store;
 
         // build the inverted definitions
-        List<Definition> inverted = new ArrayList<Definition>();
+        List<Definition> inverted = new ArrayList<>();
         for (Definition definition : definitions) {
             List<Definition> inverses = definition.inverse();
             if (inverses != null) {
@@ -84,7 +84,7 @@ public class TransformFeatureStore extends TransformFeatureSource implements Sim
     }
 
     private List<String> getRequiredAttributes(SimpleFeatureType schema) {
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         for (AttributeDescriptor ad : schema.getAttributeDescriptors()) {
             if (ad.getMinOccurs() > 0) {
                 result.add(ad.getLocalName());
@@ -165,7 +165,7 @@ public class TransformFeatureStore extends TransformFeatureSource implements Sim
 
         // invert the values
         List<String> names = Arrays.asList(nameArray);
-        Map<String, Object> invertedValueMap = new HashMap<String, Object>();
+        Map<String, Object> invertedValueMap = new HashMap<>();
         for (Definition definition : transformer.getDefinitions()) {
             if (names.contains(definition.getName())) {
                 List<Definition> ids = definition.inverse();

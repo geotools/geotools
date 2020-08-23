@@ -160,7 +160,7 @@ public class JMapStatusBar extends JPanel {
      * menu status item.
      */
     public JMapStatusBar() {
-        this.itemInfo = new ArrayList<ItemInfo>();
+        this.itemInfo = new ArrayList<>();
 
         setLayout(new MigLayout("insets " + INSET));
         setBackground(new Color(224, 224, 224));

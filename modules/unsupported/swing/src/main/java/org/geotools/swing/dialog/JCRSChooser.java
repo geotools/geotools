@@ -137,8 +137,7 @@ public class JCRSChooser {
             selected = doShow(title, initialCode, authority);
 
         } else {
-            final SynchronousQueue<CoordinateReferenceSystem> sq =
-                    new SynchronousQueue<CoordinateReferenceSystem>();
+            final SynchronousQueue<CoordinateReferenceSystem> sq = new SynchronousQueue<>();
 
             final Thread currentThread = Thread.currentThread();
 

@@ -30,7 +30,7 @@ public final class Datatype extends CodeList<Datatype> {
     private static final long serialVersionUID = -307310382687629669L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<Datatype> VALUES = new ArrayList<Datatype>(15);
+    private static final List<Datatype> VALUES = new ArrayList<>(15);
 
     /**
      * Descriptor of a set of objects that share the same attributes, operations, methods,

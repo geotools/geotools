@@ -83,7 +83,7 @@ public class MultiSurfaceTypeImpl extends AbstractGeometricAggregateTypeImpl imp
      */
     public EList<SurfacePropertyType> getSurfaceMember() {
         if (surfaceMember == null) {
-            surfaceMember = new EObjectContainmentEList<SurfacePropertyType>(SurfacePropertyType.class, this, Gml311Package.MULTI_SURFACE_TYPE__SURFACE_MEMBER);
+            surfaceMember = new EObjectContainmentEList<>(SurfacePropertyType.class, this, Gml311Package.MULTI_SURFACE_TYPE__SURFACE_MEMBER);
         }
         return surfaceMember;
     }

@@ -59,7 +59,7 @@ public class DnDList<T> extends JList
 
     /** Default constructor. An DnDListModel object will be created for the list. */
     public DnDList() {
-        this(new DnDListModel<T>());
+        this(new DnDListModel<>());
     }
 
     /**
@@ -95,7 +95,7 @@ public class DnDList<T> extends JList
         dragIndices = getSelectedIndices();
         if (dragIndices.length > 0) {
             List<T> items = getModel().getElementsAt(dragIndices);
-            Transferable stuff = new DnDListItemsTransferable<T>(items);
+            Transferable stuff = new DnDListItemsTransferable<>(items);
             movingItems = true;
             src.startDrag(dge, DragSource.DefaultMoveDrop, stuff, this);
         }

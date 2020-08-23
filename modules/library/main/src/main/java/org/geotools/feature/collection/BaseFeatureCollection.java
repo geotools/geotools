@@ -213,7 +213,7 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
         if (filter == Filter.INCLUDE) {
             return this;
         }
-        return new FilteringFeatureCollection<T, F>(this, filter);
+        return new FilteringFeatureCollection<>(this, filter);
     }
     /**
      * Obtained sorted contents, only implemented for SimpleFeature at present.

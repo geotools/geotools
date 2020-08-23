@@ -293,7 +293,7 @@ public class CatalogSliceTest extends Assert {
     @Test
     public void basicConnectionTest() throws Exception {
         // connect to test catalog
-        final Map<String, Serializable> params = new HashMap<String, Serializable>();
+        final Map<String, Serializable> params = new HashMap<>();
         params.put("ScanTypeNames", Boolean.valueOf(true));
         // H2 database URLs must not be percent-encoded: see GEOT-4504
         final URL url =

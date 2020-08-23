@@ -28,7 +28,7 @@ public class MBTilesReaderTest {
                 new GridGeometry2D(
                         new GridEnvelope2D(new Rectangle(500, 500)),
                         new ReferencedEnvelope(0, 180.0, -85.0, 0, MBTilesReader.WGS_84));
-        parameters[0] = new Parameter<GridGeometry2D>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
+        parameters[0] = new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
         GridCoverage2D gc = reader.read(parameters);
         RenderedImage img = gc.getRenderedImage();
         assertEquals(0, gc.getEnvelope().getMinimum(0), 0.01);
@@ -52,7 +52,7 @@ public class MBTilesReaderTest {
                 new GridGeometry2D(
                         new GridEnvelope2D(new Rectangle(500, 500)),
                         new ReferencedEnvelope(0, 90.0, -85.0, 0, MBTilesReader.WGS_84));
-        parameters[0] = new Parameter<GridGeometry2D>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
+        parameters[0] = new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
         GridCoverage2D gc = reader.read(parameters);
         RenderedImage img = gc.getRenderedImage();
         assertEquals(0, gc.getEnvelope().getMinimum(0), 0.01);
@@ -73,7 +73,7 @@ public class MBTilesReaderTest {
                 new GridGeometry2D(
                         new GridEnvelope2D(new Rectangle(500, 500)),
                         new ReferencedEnvelope(0, 45.0, -85.0, 0, MBTilesReader.WGS_84));
-        parameters[0] = new Parameter<GridGeometry2D>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
+        parameters[0] = new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
         GridCoverage2D gc = reader.read(parameters);
         RenderedImage img = gc.getRenderedImage();
         assertEquals(0, gc.getEnvelope().getMinimum(0), 0.01);

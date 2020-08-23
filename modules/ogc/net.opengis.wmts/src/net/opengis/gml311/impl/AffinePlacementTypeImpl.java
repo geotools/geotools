@@ -171,7 +171,7 @@ public class AffinePlacementTypeImpl extends MinimalEObjectImpl.Container implem
      */
     public EList<VectorType> getRefDirection() {
         if (refDirection == null) {
-            refDirection = new EObjectContainmentEList<VectorType>(VectorType.class, this, Gml311Package.AFFINE_PLACEMENT_TYPE__REF_DIRECTION);
+            refDirection = new EObjectContainmentEList<>(VectorType.class, this, Gml311Package.AFFINE_PLACEMENT_TYPE__REF_DIRECTION);
         }
         return refDirection;
     }

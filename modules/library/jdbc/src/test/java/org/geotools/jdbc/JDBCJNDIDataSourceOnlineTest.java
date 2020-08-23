@@ -131,7 +131,7 @@ public abstract class JDBCJNDIDataSourceOnlineTest extends JDBCTestSupport {
     /** Extracts the set of params available for a given factory */
     protected List<String> getParamKeys(JDBCDataStoreFactory factory) {
         Param[] params = factory.getParametersInfo();
-        List<String> results = new ArrayList<String>();
+        List<String> results = new ArrayList<>();
         for (Param p : params) {
             results.add(p.key);
         }

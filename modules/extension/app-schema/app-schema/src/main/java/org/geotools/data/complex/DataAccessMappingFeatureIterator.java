@@ -185,7 +185,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                 transaction);
         this.isFiltered = isFiltered;
         if (isFiltered) {
-            filteredFeatures = new ArrayList<String>();
+            filteredFeatures = new ArrayList<>();
         }
     }
 
@@ -322,7 +322,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
      */
     public List<Object> getForeignIdValues(Object source) {
         if (foreignIds != null) {
-            List<Object> foreignIdValues = new ArrayList<Object>();
+            List<Object> foreignIdValues = new ArrayList<>();
             for (int i = 0; i < foreignIds.size(); i++) {
                 foreignIdValues.add(i, peekValue(source, foreignIds.get(i)));
             }
@@ -353,7 +353,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
      * as one feature and merged.
      */
     public List<Object> getIdValues(Object source) {
-        List<Object> ids = new ArrayList<Object>();
+        List<Object> ids = new ArrayList<>();
         Expression idExpression = mapping.getFeatureIdExpression();
         if (Expression.NIL.equals(idExpression) || idExpression instanceof Literal) {
             // GEOT-4554: if idExpression is not specified, should use PK
@@ -666,8 +666,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             }
             // get built feature based on link value
             if (values instanceof Collection) {
-                ArrayList<Attribute> nestedFeatures =
-                        new ArrayList<Attribute>(((Collection) values).size());
+                ArrayList<Attribute> nestedFeatures = new ArrayList<>(((Collection) values).size());
                 for (Object val : (Collection) values) {
                     if (val instanceof Attribute) {
                         val = ((Attribute) val).getValue();
@@ -1032,7 +1031,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         if (uri != null) {
             Attribute instance =
                     xpathAttributeBuilder.set(target, xpath, null, "", targetNodeType, true, null);
-            Map<Name, Expression> newClientProps = new HashMap<Name, Expression>();
+            Map<Name, Expression> newClientProps = new HashMap<>();
             newClientProps.putAll(clientPropsMappings);
             newClientProps.put(XLINK_HREF_NAME, namespaceAwareFilterFactory.literal(uri));
             setClientProperties(instance, null, newClientProps);
@@ -1166,7 +1165,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 
     protected List<Feature> setNextFeature(String fId, List<Object> foreignIdValues)
             throws IOException {
-        List<Feature> features = new ArrayList<Feature>();
+        List<Feature> features = new ArrayList<>();
         features.add(curSrcFeature);
         curSrcFeature = null;
 
@@ -1222,7 +1221,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         if (mapping.getFeatureIdExpression().equals(Expression.NIL)) {
             // no real feature id mapping,
             // so let's find by database row id
-            Set<FeatureId> ids = new HashSet<FeatureId>();
+            Set<FeatureId> ids = new HashSet<>();
             FeatureId featureId = namespaceAwareFilterFactory.featureId(fId);
             ids.add(featureId);
             fidFilter = namespaceAwareFilterFactory.id(ids);
@@ -1241,7 +1240,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         // this is a temporary solution for Bureau of Meteorology
         // requirement for timePositionList
         if (listFilter != null) {
-            List<Filter> filters = new ArrayList<Filter>();
+            List<Filter> filters = new ArrayList<>();
             filters.add(listFilter);
             filters.add(fidFilter);
             fidFilter = namespaceAwareFilterFactory.and(filters);
@@ -1251,7 +1250,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         query.setFilter(fidFilter);
         matchingFeatures = this.mappedSource.getFeatures(query);
 
-        List<Feature> features = new ArrayList<Feature>();
+        List<Feature> features = new ArrayList<>();
         try (FeatureIterator<? extends Feature> iterator = matchingFeatures.features()) {
             while (iterator.hasNext()) {
                 features.add(iterator.next());
@@ -1331,7 +1330,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     }
 
     private FeatureType reprojectType(FeatureType type) {
-        Collection<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+        Collection<PropertyDescriptor> schema = new ArrayList<>();
 
         for (PropertyDescriptor descr : type.getDescriptors()) {
             if (descr instanceof GeometryDescriptor) {
@@ -1408,7 +1407,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                                     null,
                                     selectedProperties.get(attMapping));
                     if (sources.size() > 1 && instance != null) {
-                        List<Object> values = new ArrayList<Object>();
+                        List<Object> values = new ArrayList<>();
                         Expression sourceExpr = attMapping.getSourceExpression();
                         for (Feature source : sources) {
                             values.add(getValue(sourceExpr, source));
@@ -1674,7 +1673,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 
         while (stepsIterator.hasNext()) {
             step = stepsIterator.next();
-            Collection<Property> nestedProperties = new ArrayList<Property>();
+            Collection<Property> nestedProperties = new ArrayList<>();
             for (Property property : properties) {
                 assert property instanceof ComplexAttribute;
                 Collection<Property> tempProperties =

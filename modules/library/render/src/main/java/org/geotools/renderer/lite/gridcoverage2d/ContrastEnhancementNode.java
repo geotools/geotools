@@ -93,7 +93,7 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
      */
     static {
         // load the contrast enhancement operations
-        final HashSet<String> heAlg = new HashSet<String>(2, 1.0f);
+        final HashSet<String> heAlg = new HashSet<>(2, 1.0f);
         heAlg.add("NORMALIZE");
         heAlg.add("HISTOGRAM");
         heAlg.add("LOGARITHMIC");
@@ -442,7 +442,7 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
                 final RenderedImage finalImage = intensityWorker.getRenderedImage();
                 final int numActualBands = finalImage.getSampleModel().getNumBands();
                 final GridCoverageFactory factory = getCoverageFactory();
-                final HashMap<Object, Object> props = new HashMap<Object, Object>();
+                final HashMap<Object, Object> props = new HashMap<>();
                 if (source.getProperties() != null) {
                     props.putAll(source.getProperties());
                 }

@@ -62,7 +62,7 @@ class SldTransformContext {
 
         yaml = new Emitter(output, dumpOpts);
 
-        handlers = new ArrayDeque<SldTransformHandler>();
+        handlers = new ArrayDeque<>();
     }
 
     public void trace() {

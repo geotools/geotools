@@ -281,13 +281,13 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
     // properties can only be set by constructor, before initialising source features
     // (for joining nested mappings)
     private void setPropertyNames(Collection<PropertyName> propertyNames) {
-        selectedProperties = new HashMap<AttributeMapping, List<PropertyName>>();
+        selectedProperties = new HashMap<>();
 
         if (propertyNames == null) {
             selectedMapping = mapping.getAttributeMappings();
         } else {
             final AttributeDescriptor targetDescriptor = mapping.getTargetFeature();
-            selectedMapping = new ArrayList<AttributeMapping>();
+            selectedMapping = new ArrayList<>();
 
             for (AttributeMapping attMapping : mapping.getAttributeMappings()) {
                 final StepList targetSteps = attMapping.getTargetXPath();
@@ -300,7 +300,7 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
                     if (descr instanceof PropertyDescriptor) {
                         if (((PropertyDescriptor) descr).getMinOccurs() >= 1) {
                             selectedMapping.add(attMapping);
-                            selectedProperties.put(attMapping, new ArrayList<PropertyName>());
+                            selectedProperties.put(attMapping, new ArrayList<>());
                             alreadyAdded = true;
                         }
                     }
@@ -334,7 +334,7 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
                                     requestedPropertySteps, targetSteps)) {
                         if (!alreadyAdded) {
                             selectedMapping.add(attMapping);
-                            selectedProperties.put(attMapping, new ArrayList<PropertyName>());
+                            selectedProperties.put(attMapping, new ArrayList<>());
                             alreadyAdded = true;
                         }
                         if (requestedPropertySteps != null
@@ -501,7 +501,7 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
             boolean ignoreXlinkHref) {
         Attribute instance = null;
 
-        Map<Name, Expression> properties = new HashMap<Name, Expression>(clientProperties);
+        Map<Name, Expression> properties = new HashMap<>(clientProperties);
 
         if (ignoreXlinkHref) {
             properties.remove(XLINK_HREF_NAME);
@@ -595,7 +595,7 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
         }
 
         // NC - first calculate target attributes
-        final Map<Name, Object> targetAttributes = new HashMap<Name, Object>();
+        final Map<Name, Object> targetAttributes = new HashMap<>();
         if (target.getUserData().containsValue(Attributes.class)) {
             targetAttributes.putAll(
                     (Map<? extends Name, ? extends Object>)
@@ -650,7 +650,7 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
             if (geom != null) {
 
                 Object userData = geom.getUserData();
-                Map newUserData = new HashMap<Object, Object>();
+                Map newUserData = new HashMap<>();
                 if (userData != null) {
                     if (userData instanceof Map) {
                         newUserData.putAll((Map) userData);

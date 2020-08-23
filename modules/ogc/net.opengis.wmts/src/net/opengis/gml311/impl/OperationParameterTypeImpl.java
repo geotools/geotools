@@ -83,7 +83,7 @@ public class OperationParameterTypeImpl extends OperationParameterBaseTypeImpl i
      */
     public EList<IdentifierType> getParameterID() {
         if (parameterID == null) {
-            parameterID = new EObjectContainmentEList<IdentifierType>(IdentifierType.class, this, Gml311Package.OPERATION_PARAMETER_TYPE__PARAMETER_ID);
+            parameterID = new EObjectContainmentEList<>(IdentifierType.class, this, Gml311Package.OPERATION_PARAMETER_TYPE__PARAMETER_ID);
         }
         return parameterID;
     }

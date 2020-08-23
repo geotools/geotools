@@ -185,7 +185,7 @@ public class MultiLevelROIProviderMosaicFactory extends MultiLevelROIProviderFac
                                 + shapefile.getCanonicalPath()
                                 + " but the file was not found");
             } else {
-                final Map<String, Serializable> params = new HashMap<String, Serializable>();
+                final Map<String, Serializable> params = new HashMap<>();
                 params.put("url", URLs.fileToUrl(shapefile));
                 String cql = (String) properties.get(FILTER_PROPERTY);
                 Filter filter = null;

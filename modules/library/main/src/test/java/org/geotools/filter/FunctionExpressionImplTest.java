@@ -224,7 +224,7 @@ public class FunctionExpressionImplTest extends TestCase {
             argCount = 5; // we'll try 5
         }
 
-        final List<Expression> expected = new ArrayList<Expression>();
+        final List<Expression> expected = new ArrayList<>();
 
         for (int i = 0; i < argCount; i++) {
             AttributeExpressionImpl ex = new AttributeExpressionImpl("attName");
@@ -257,7 +257,7 @@ public class FunctionExpressionImplTest extends TestCase {
                     functionClass
                             + ".getParameters() returns null then arguments set through setParameters()");
         } else {
-            returnedParams = new ArrayList<Expression>(expected);
+            returnedParams = new ArrayList<>(expected);
 
             if (!expected.equals(returnedParams)) {
                 errors.add(functionClass + ".getParameters() incompatible with getParameters()");

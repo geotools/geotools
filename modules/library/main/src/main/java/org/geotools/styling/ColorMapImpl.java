@@ -30,7 +30,7 @@ import org.opengis.style.StyleVisitor;
  */
 public class ColorMapImpl implements ColorMap {
     private final Function function;
-    private List<ColorMapEntry> list = new ArrayList<ColorMapEntry>();
+    private List<ColorMapEntry> list = new ArrayList<>();
     private int type = ColorMap.TYPE_RAMP;
     private boolean extendedColors;
 

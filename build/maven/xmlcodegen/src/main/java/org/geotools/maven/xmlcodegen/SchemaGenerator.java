@@ -143,12 +143,12 @@ public class SchemaGenerator extends AbstractGenerator {
     public SchemaGenerator(XSDSchema schema) {
         this.schema = schema;
         this.factory = new FeatureTypeFactoryImpl();
-        types = new HashMap<XSDTypeDefinition,AttributeType>();
+        types = new HashMap<>();
         simpleTypes = true;
         complexTypes = true;
         followComplexTypes = true;
-        imports = new TreeMap<String,Schema>();
-        includes = new HashSet<String>();
+        imports = new TreeMap<>();
+        includes = new HashSet<>();
     }
 
     /**
@@ -195,7 +195,7 @@ public class SchemaGenerator extends AbstractGenerator {
             this.includes = Collections.emptySet();
         }
         else {
-            this.includes = new HashSet<String>(Arrays.asList(includes));    
+            this.includes = new HashSet<>(Arrays.asList(includes));
         }
         
     }
@@ -253,7 +253,7 @@ public class SchemaGenerator extends AbstractGenerator {
      * 
      */
     public void setTypeBindings(TypeBinding[] typeBindings) {
-        Map<Name, String> bindings = new HashMap<Name, String>();
+        Map<Name, String> bindings = new HashMap<>();
         if (typeBindings != null) {
             for (TypeBinding typeBinding : typeBindings) {
                 String namespace = typeBinding.getNamespace();

@@ -178,7 +178,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
         FeatureIterator<Feature> guIterator = guFeatures.features();
 
         // Extract all geological unit features into a map by id
-        Map<String, Feature> guMap = new HashMap<String, Feature>();
+        Map<String, Feature> guMap = new HashMap<>();
         Feature guFeature;
         while (guIterator.hasNext()) {
             guFeature = (Feature) guIterator.next();
@@ -190,7 +190,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
 
         // Extract all compositional part "features" into a map by id
         FeatureIterator<Feature> cpIterator = cpFeatures.features();
-        Map<String, Feature> cpMap = new HashMap<String, Feature>();
+        Map<String, Feature> cpMap = new HashMap<>();
         Feature cpFeature;
         while (cpIterator.hasNext()) {
             cpFeature = (Feature) cpIterator.next();
@@ -215,7 +215,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
             nestedGuFeatures = (Collection<Property>) mfFeature.getProperties(NESTED_LINK);
             assertEquals(guIds.length, nestedGuFeatures.size());
 
-            ArrayList<String> nestedGuIds = new ArrayList<String>();
+            ArrayList<String> nestedGuIds = new ArrayList<>();
 
             for (Property property : nestedGuFeatures) {
                 Object value = property.getValue();
@@ -242,7 +242,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
                 nestedCpFeatures = (Collection<Property>) guFeature.getProperties("composition");
                 assertEquals(cpIds.length, nestedCpFeatures.size());
 
-                ArrayList<String> nestedCpIds = new ArrayList<String>();
+                ArrayList<String> nestedCpIds = new ArrayList<>();
                 for (Property cpProperty : nestedCpFeatures) {
                     Object cpPropertyValue = cpProperty.getValue();
                     assertNotNull(cpPropertyValue);
@@ -286,7 +286,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
         AbstractMappingFeatureIterator iterator =
                 (AbstractMappingFeatureIterator) ccFeatures.features();
         int count = 0;
-        Map<String, Feature> featureList = new HashMap<String, Feature>();
+        Map<String, Feature> featureList = new HashMap<>();
         try {
             while (iterator.hasNext()) {
                 Feature f = iterator.next();
@@ -310,7 +310,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
                 // cc.1=name_c|cp.167775491936278812
                 // cc.2=name_2|cp.167775491936278812
                 assertEquals(2, ((Collection) lithologies).size());
-                Collection<String> lithologyIds = new ArrayList<String>();
+                Collection<String> lithologyIds = new ArrayList<>();
                 for (Property lithologyProperty : lithologies) {
                     Feature nestedFeature =
                             (Feature) ((Collection) lithologyProperty.getValue()).iterator().next();
@@ -648,7 +648,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
                     }
                 };
 
-        ArrayList<String> processedFeatureIds = new ArrayList<String>();
+        ArrayList<String> processedFeatureIds = new ArrayList<>();
 
         FeatureIterator<Feature> guIterator = guFeatures.features();
         while (guIterator.hasNext()) {

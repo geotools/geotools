@@ -153,7 +153,7 @@ public class StyleGeneratorTest extends DataTestCase {
 
         // TEST classifier with everything in a single bin
         final Set<String>[] binValues2 = new Set[1];
-        binValues2[0] = new HashSet<String>();
+        binValues2[0] = new HashSet<>();
         // assign each of the features to one of the bins
         try {
             fc.accepts(

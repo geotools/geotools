@@ -55,7 +55,7 @@ public class ParserNamespaceSupportTest extends TestCase {
     }
 
     List list(Enumeration e) {
-        List<Object> l = new ArrayList<Object>();
+        List<Object> l = new ArrayList<>();
         while (e.hasMoreElements()) {
             l.add(e.nextElement());
         }

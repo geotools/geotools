@@ -75,9 +75,9 @@ public class IntersectionFeatureCollectionTest {
     @Test(expected = IllegalArgumentException.class)
     public void testExceptionOpModeFstCollection() throws Exception {
         logger.info("Running testExceptionOpModeFstCollection ...");
-        ArrayList<String> toRemoveFst = new ArrayList<String>();
+        ArrayList<String> toRemoveFst = new ArrayList<>();
         toRemoveFst.add("cat2");
-        ArrayList<String> toRemoveSnd = new ArrayList<String>();
+        ArrayList<String> toRemoveSnd = new ArrayList<>();
         toRemoveSnd.add("cat");
         SimpleFeatureCollection output =
                 process.execute(
@@ -93,9 +93,9 @@ public class IntersectionFeatureCollectionTest {
     @Test(expected = IllegalArgumentException.class)
     public void testExceptionOpModeSndCollection() throws Exception {
         logger.info("Running testExceptionOpModeSndCollection ...");
-        ArrayList<String> toRetainFst = new ArrayList<String>();
+        ArrayList<String> toRetainFst = new ArrayList<>();
         toRetainFst.add("cat2");
-        ArrayList<String> toRetainSnd = new ArrayList<String>();
+        ArrayList<String> toRetainSnd = new ArrayList<>();
         toRetainSnd.add("cat");
         SimpleFeatureCollection output =
                 process.execute(
@@ -186,9 +186,9 @@ public class IntersectionFeatureCollectionTest {
     @Test
     public void testReturnedAttributes() throws Exception {
         logger.info("Running testReturnedAttributes ...");
-        ArrayList<String> toRetainFst = new ArrayList<String>();
+        ArrayList<String> toRetainFst = new ArrayList<>();
         toRetainFst.add("str1");
-        ArrayList<String> toRetainSnd = new ArrayList<String>();
+        ArrayList<String> toRetainSnd = new ArrayList<>();
         toRetainSnd.add("str2");
         SimpleFeatureCollection output2 =
                 process.execute(

@@ -165,7 +165,7 @@ public class WrappingProjectionHandler extends ProjectionHandler {
         // viewing
         // area might be large enough to contain the same continent multiple
         // times (a-la Google Maps)
-        List<Geometry> geoms = new ArrayList<Geometry>();
+        List<Geometry> geoms = new ArrayList<>();
         Class geomType = null;
 
         // search the west-most location inside the current rendering envelope

@@ -48,7 +48,7 @@ public final class GrassCoverageFormat extends AbstractGridFormat implements For
 
     /** Creates an instance and sets the metadata. */
     public GrassCoverageFormat() {
-        mInfo = new HashMap<String, String>();
+        mInfo = new HashMap<>();
         mInfo.put("name", "grass");
         mInfo.put("description", "Grass Coverage Format");
         mInfo.put("vendor", "Geotools");

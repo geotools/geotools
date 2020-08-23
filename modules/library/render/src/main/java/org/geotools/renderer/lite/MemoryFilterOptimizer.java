@@ -133,7 +133,7 @@ class MemoryFilterOptimizer extends DuplicatingFilterVisitor {
     private InFunction replaceWithInFilter(Or filter) {
         List<Filter> children = filter.getChildren();
         Expression expression = null;
-        List<Literal> literals = new ArrayList<Literal>(children.size());
+        List<Literal> literals = new ArrayList<>(children.size());
         for (Filter childFilter : children) {
             if (!(childFilter instanceof PropertyIsEqualTo)) return null;
             PropertyIsEqualTo eqto = (PropertyIsEqualTo) childFilter;

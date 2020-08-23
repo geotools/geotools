@@ -201,7 +201,7 @@ class RangeVisitor implements FeatureCalc {
     /** Return the minimal set of Ranges */
     public Set<String> getRange() {
         if (minimalRanges == null) {
-            minimalRanges = new LinkedHashSet<String>();
+            minimalRanges = new LinkedHashSet<>();
             populateRange();
         }
         return minimalRanges;

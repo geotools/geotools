@@ -78,7 +78,7 @@ public final class MathTransformBuilderTest {
             CoordinateReferenceSystem crs,
             long seed,
             boolean includeAccuracy) {
-        List<MappedPosition> vert = new ArrayList<MappedPosition>();
+        List<MappedPosition> vert = new ArrayList<>();
         Random randomCoord = new Random(seed);
         for (int i = 0; i < numberOfVertices; i++) {
             double xs = randomCoord.nextDouble() * 1000;
@@ -123,7 +123,7 @@ public final class MathTransformBuilderTest {
     public void testRubberBuilder() throws FactoryException, TransformException {
         List<MappedPosition> pts = generateCoords(20, 8324);
         CoordinateReferenceSystem crs = DefaultEngineeringCRS.CARTESIAN_2D;
-        List<DirectPosition> dpl = new ArrayList<DirectPosition>();
+        List<DirectPosition> dpl = new ArrayList<>();
         dpl.add(new DirectPosition2D(crs, 1000, 0));
         dpl.add(new DirectPosition2D(crs, 0, 0));
         dpl.add(new DirectPosition2D(crs, 0, 1000));

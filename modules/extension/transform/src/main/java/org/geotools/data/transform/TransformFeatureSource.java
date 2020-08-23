@@ -229,7 +229,7 @@ public class TransformFeatureSource implements SimpleFeatureSource {
             return attributeNames;
         }
         List<String> pnames = Arrays.asList(query.getPropertyNames());
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         for (String an : attributeNames) {
             if (pnames.contains(an)) {
                 result.add(an);
@@ -259,7 +259,7 @@ public class TransformFeatureSource implements SimpleFeatureSource {
     @Override
     public Set<Key> getSupportedHints() {
         // set up hints
-        Set<Key> hints = new HashSet<Key>();
+        Set<Key> hints = new HashSet<>();
         hints.addAll(source.getSupportedHints());
         hints.add(Hints.FEATURE_DETACHED);
 

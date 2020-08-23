@@ -35,7 +35,7 @@ import org.apache.commons.lang3.time.FastDateFormat;
 public class GEOT5036RegressionTest extends TestCase {
 
     private final Random rand = new Random();
-    private final Map<Date, Future<String>> expectationMap = new HashMap<Date, Future<String>>();
+    private final Map<Date, Future<String>> expectationMap = new HashMap<>();
 
     public class Task implements Callable<String> {
         private final Date date;

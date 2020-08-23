@@ -388,7 +388,7 @@ public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
                         ge.getMaximum(1),
                         ge.getCoordinateReferenceSystem());
         final Parameter<GridGeometry2D> readGG =
-                new Parameter<GridGeometry2D>(AbstractGridFormat.READ_GRIDGEOMETRY2D);
+                new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D);
         readGG.setValue(new GridGeometry2D(new GridEnvelope2D(0, 0, 400, 400), requestedEnvelope));
 
         // make sure we get back a null, not an exception

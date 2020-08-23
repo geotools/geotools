@@ -405,7 +405,7 @@ public abstract class AbstractTest extends TestCase {
 
         List<ImportParam> importParamList = null;
 
-        importParamList = new ArrayList<ImportParam>();
+        importParamList = new ArrayList<>();
         Import.fillImportParamList(
                 "SPAT", "TILE", dirFileUrl, "tif", ImportTyp.DIR, importParamList);
         assertTrue(importParamList.size() == 3);
@@ -421,7 +421,7 @@ public abstract class AbstractTest extends TestCase {
         assertTrue(isSameFile(importParamList.get(1).getSourceURL(), OUTPUTDIR_RESOURCES + 1));
         assertTrue(isSameFile(importParamList.get(2).getSourceURL(), OUTPUTDIR_RESOURCES + 2));
 
-        importParamList = new ArrayList<ImportParam>();
+        importParamList = new ArrayList<>();
         Import.fillImportParamList("SPAT", "TILE", csvFileUrl, ";", ImportTyp.CSV, importParamList);
         assertTrue(importParamList.size() == 3);
 
@@ -437,7 +437,7 @@ public abstract class AbstractTest extends TestCase {
                         importParamList.get(2).getSourceURL(),
                         OUTPUTDIR_RESOURCES + "2/index.csv"));
 
-        importParamList = new ArrayList<ImportParam>();
+        importParamList = new ArrayList<>();
         Import.fillImportParamList(
                 "SPAT", "TILE", shapeFileUrl, "LOCATION", ImportTyp.SHAPE, importParamList);
         assertTrue(importParamList.size() == 3);

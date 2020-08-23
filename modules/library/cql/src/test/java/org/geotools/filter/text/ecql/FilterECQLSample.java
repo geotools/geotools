@@ -94,7 +94,7 @@ final class FilterECQLSample {
     public static final String EXPRESSIONS_WITH_PROPERTIES = "(x+4) > (y - 5)";
 
     /** Maintains the ECQL predicates (input) and the expected filters (output) */
-    public static Map<String, Object> SAMPLES = new HashMap<String, Object>();
+    public static Map<String, Object> SAMPLES = new HashMap<>();
 
     static {
         Filter filter;

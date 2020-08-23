@@ -66,7 +66,7 @@ public abstract class FeatureCollectionTest extends TestCase {
         SimpleFeatureType schema = tb.buildFeatureType();
 
         SimpleFeatureBuilder b = new SimpleFeatureBuilder(schema);
-        List<SimpleFeature> list = new ArrayList<SimpleFeature>();
+        List<SimpleFeature> list = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             list.add(b.buildFeature(null));
         }
@@ -104,7 +104,7 @@ public abstract class FeatureCollectionTest extends TestCase {
     }
 
     public <F extends Feature> Collection<F> randomPiece(FeatureCollection<?, F> original) {
-        LinkedList<F> next = new LinkedList<F>();
+        LinkedList<F> next = new LinkedList<>();
         FeatureIterator<F> og = original.features();
         try {
             while (og.hasNext()) {

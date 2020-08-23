@@ -182,7 +182,7 @@ public class SqlServerBinaryReader {
     }
 
     private Geometry decodeMultiPolygon(int shapeIndex) {
-        Collection<Geometry> polygons = new ArrayList<Geometry>();
+        Collection<Geometry> polygons = new ArrayList<>();
         for (int i = shapeIndex; i < binary.getShapes().length; i++) {
             if (binary.getShape(i).getParentOffset() == shapeIndex) {
                 polygons.add(decodeCurvePolygon(i));
@@ -192,7 +192,7 @@ public class SqlServerBinaryReader {
     }
 
     private Geometry decodeMultiPoint(int shapeIndex) {
-        Collection<Geometry> points = new ArrayList<Geometry>();
+        Collection<Geometry> points = new ArrayList<>();
         for (int i = shapeIndex; i < binary.getShapes().length; i++) {
             if (binary.getShape(i).getParentOffset() == shapeIndex) {
                 points.add(
@@ -204,7 +204,7 @@ public class SqlServerBinaryReader {
     }
 
     private Geometry decodeMultiLinestring(int shapeIndex) {
-        Collection<Geometry> linestrings = new ArrayList<Geometry>();
+        Collection<Geometry> linestrings = new ArrayList<>();
         for (int i = shapeIndex; i < binary.getShapes().length; i++) {
             if (binary.getShape(i).getParentOffset() == shapeIndex) {
                 CoordinateSequence[] sequences =
@@ -236,7 +236,7 @@ public class SqlServerBinaryReader {
     }
 
     private Geometry decodeGeometryCollection(int shapeIndex) throws SqlServerBinaryParseException {
-        Collection<Geometry> geometries = new ArrayList<Geometry>();
+        Collection<Geometry> geometries = new ArrayList<>();
         for (int i = shapeIndex + 1; i < binary.getShapes().length; i++) {
             Shape subShape = binary.getShapes()[i];
             if (subShape.getParentOffset() == shapeIndex) {

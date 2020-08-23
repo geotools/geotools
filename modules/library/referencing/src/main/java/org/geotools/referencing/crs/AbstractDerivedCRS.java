@@ -90,7 +90,7 @@ public class AbstractDerivedCRS extends AbstractSingleCRS implements GeneralDeri
      *     because {@link org.geotools.referencing.operation.AbstractCoordinateOperation} lives in a
      *     different package.
      */
-    public static final ThreadLocal<Boolean> _COMPARING = new ThreadLocal<Boolean>();
+    public static final ThreadLocal<Boolean> _COMPARING = new ThreadLocal<>();
 
     /** The base coordinate reference system. */
     protected final CoordinateReferenceSystem baseCRS;

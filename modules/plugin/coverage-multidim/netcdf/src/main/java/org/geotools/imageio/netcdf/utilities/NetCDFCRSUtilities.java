@@ -117,11 +117,11 @@ public class NetCDFCRSUtilities {
      */
     private static final String[] SECONDS = {"second", "sec", "seconds since"};
 
-    public static final Set<String> VERTICAL_AXIS_NAMES = new HashSet<String>();
+    public static final Set<String> VERTICAL_AXIS_NAMES = new HashSet<>();
     /** The mapping between UCAR axis type and ISO axis directions. */
-    private static final Map<AxisType, String> DIRECTIONS = new HashMap<AxisType, String>(16);
+    private static final Map<AxisType, String> DIRECTIONS = new HashMap<>(16);
 
-    private static final Map<AxisType, String> OPPOSITES = new HashMap<AxisType, String>(16);
+    private static final Map<AxisType, String> OPPOSITES = new HashMap<>(16);
 
     /**
      * this flag states if an automatic conversion from km to m should happen with axis/coordinates

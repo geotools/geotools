@@ -221,7 +221,7 @@ class NetCDFResponse extends CoverageResponse {
         if (!temporalSubset.isEmpty()) {
             tempSubset = temporalSubset;
         } else {
-            tempSubset = new HashSet<DateRange>();
+            tempSubset = new HashSet<>();
             tempSubset.add(null);
         }
 
@@ -229,7 +229,7 @@ class NetCDFResponse extends CoverageResponse {
         if (!verticalSubset.isEmpty()) {
             vertSubset = verticalSubset;
         } else {
-            vertSubset = new HashSet<NumberRange<Double>>();
+            vertSubset = new HashSet<>();
             vertSubset.add(null);
         }
 
@@ -360,7 +360,7 @@ class NetCDFResponse extends CoverageResponse {
             Filter requestFilter,
             String timeFilterAttribute,
             String elevationFilterAttribute) {
-        final List<Filter> filters = new ArrayList<Filter>();
+        final List<Filter> filters = new ArrayList<>();
 
         // //
         // Setting up time filter
@@ -568,7 +568,7 @@ class NetCDFResponse extends CoverageResponse {
     private GridCoverage2D prepareCoverage(
             RenderedImage image, GridSampleDimension[] sampleDimensions, double[] noData)
             throws IOException {
-        Map<String, Object> properties = new HashMap<String, Object>();
+        Map<String, Object> properties = new HashMap<>();
         if (noData != null && noData.length > 0) {
             CoverageUtilities.setNoDataProperty(properties, noData[0]);
         }

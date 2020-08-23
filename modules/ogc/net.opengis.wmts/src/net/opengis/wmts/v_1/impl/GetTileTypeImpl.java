@@ -344,7 +344,7 @@ public class GetTileTypeImpl extends MinimalEObjectImpl.Container implements Get
      */
     public EList<DimensionNameValueType> getDimensionNameValue() {
         if (dimensionNameValue == null) {
-            dimensionNameValue = new EObjectContainmentEList<DimensionNameValueType>(DimensionNameValueType.class, this, wmtsv_1Package.GET_TILE_TYPE__DIMENSION_NAME_VALUE);
+            dimensionNameValue = new EObjectContainmentEList<>(DimensionNameValueType.class, this, wmtsv_1Package.GET_TILE_TYPE__DIMENSION_NAME_VALUE);
         }
         return dimensionNameValue;
     }

@@ -100,7 +100,7 @@ public class MongoTestUtil {
         FeatureIterator<?> iterator = collection.features();
         while (iterator.hasNext()) {
             Feature f = iterator.next();
-            Set<Property> pSet = new LinkedHashSet<Property>(f.getProperties());
+            Set<Property> pSet = new LinkedHashSet<>(f.getProperties());
             BasicDBObjectBuilder bdoBuilder = BasicDBObjectBuilder.start();
 
             GeometryAttribute gAttr = f.getDefaultGeometryProperty();

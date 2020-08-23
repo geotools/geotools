@@ -58,7 +58,7 @@ public abstract class JDBCTypeNamesTestSetup extends JDBCDelegatingTestSetup {
      * </code> and <code>ftnview</code>.
      */
     protected List<String> getExpectedTypeNames() {
-        List<String> expectedTypeNames = new LinkedList<String>();
+        List<String> expectedTypeNames = new LinkedList<>();
         expectedTypeNames.add("ftntable");
         expectedTypeNames.add("ftnview");
         return expectedTypeNames;

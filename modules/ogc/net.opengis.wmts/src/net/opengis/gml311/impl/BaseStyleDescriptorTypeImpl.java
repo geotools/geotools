@@ -175,7 +175,7 @@ public class BaseStyleDescriptorTypeImpl extends AbstractGMLTypeImpl implements 
      */
     public EList<StyleVariationType> getStyleVariation() {
         if (styleVariation == null) {
-            styleVariation = new EObjectContainmentEList<StyleVariationType>(StyleVariationType.class, this, Gml311Package.BASE_STYLE_DESCRIPTOR_TYPE__STYLE_VARIATION);
+            styleVariation = new EObjectContainmentEList<>(StyleVariationType.class, this, Gml311Package.BASE_STYLE_DESCRIPTOR_TYPE__STYLE_VARIATION);
         }
         return styleVariation;
     }
@@ -187,7 +187,7 @@ public class BaseStyleDescriptorTypeImpl extends AbstractGMLTypeImpl implements 
      */
     public EList<AnimateType> getAnimate() {
         if (animate == null) {
-            animate = new EObjectContainmentEList<AnimateType>(AnimateType.class, this, Gml311Package.BASE_STYLE_DESCRIPTOR_TYPE__ANIMATE);
+            animate = new EObjectContainmentEList<>(AnimateType.class, this, Gml311Package.BASE_STYLE_DESCRIPTOR_TYPE__ANIMATE);
         }
         return animate;
     }
@@ -199,7 +199,7 @@ public class BaseStyleDescriptorTypeImpl extends AbstractGMLTypeImpl implements 
      */
     public EList<AnimateMotionType> getAnimateMotion() {
         if (animateMotion == null) {
-            animateMotion = new EObjectContainmentEList<AnimateMotionType>(AnimateMotionType.class, this, Gml311Package.BASE_STYLE_DESCRIPTOR_TYPE__ANIMATE_MOTION);
+            animateMotion = new EObjectContainmentEList<>(AnimateMotionType.class, this, Gml311Package.BASE_STYLE_DESCRIPTOR_TYPE__ANIMATE_MOTION);
         }
         return animateMotion;
     }
@@ -211,7 +211,7 @@ public class BaseStyleDescriptorTypeImpl extends AbstractGMLTypeImpl implements 
      */
     public EList<AnimateColorType> getAnimateColor() {
         if (animateColor == null) {
-            animateColor = new EObjectContainmentEList<AnimateColorType>(AnimateColorType.class, this, Gml311Package.BASE_STYLE_DESCRIPTOR_TYPE__ANIMATE_COLOR);
+            animateColor = new EObjectContainmentEList<>(AnimateColorType.class, this, Gml311Package.BASE_STYLE_DESCRIPTOR_TYPE__ANIMATE_COLOR);
         }
         return animateColor;
     }
@@ -223,7 +223,7 @@ public class BaseStyleDescriptorTypeImpl extends AbstractGMLTypeImpl implements 
      */
     public EList<SetType> getSet() {
         if (set == null) {
-            set = new EObjectContainmentEList<SetType>(SetType.class, this, Gml311Package.BASE_STYLE_DESCRIPTOR_TYPE__SET);
+            set = new EObjectContainmentEList<>(SetType.class, this, Gml311Package.BASE_STYLE_DESCRIPTOR_TYPE__SET);
         }
         return set;
     }

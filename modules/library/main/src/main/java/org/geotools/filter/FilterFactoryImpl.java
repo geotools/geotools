@@ -206,7 +206,7 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
     }
 
     public And and(Filter f, Filter g) {
-        List<Filter> list = new ArrayList<Filter>(2);
+        List<Filter> list = new ArrayList<>(2);
         list.add(f);
         list.add(g);
         return new AndImpl(list);
@@ -217,7 +217,7 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
     }
 
     public Or or(Filter f, Filter g) {
-        List<Filter> list = new ArrayList<Filter>(2);
+        List<Filter> list = new ArrayList<>(2);
         list.add(f);
         list.add(g);
         return new OrImpl(list);
@@ -237,7 +237,7 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
     }
 
     public Id id(FeatureId... fids) {
-        Set<FeatureId> selection = new HashSet<FeatureId>();
+        Set<FeatureId> selection = new HashSet<>();
         for (FeatureId featureId : fids) {
             if (featureId == null) continue;
             selection.add(featureId);
@@ -1062,7 +1062,7 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
             int minOccurs,
             int maxOccurs,
             T defaultValue) {
-        return new org.geotools.data.Parameter<T>(
+        return new org.geotools.data.Parameter<>(
                 name, type, title, description, required, minOccurs, maxOccurs, defaultValue, null);
     };
 

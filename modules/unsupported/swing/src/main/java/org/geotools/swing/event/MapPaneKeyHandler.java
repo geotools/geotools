@@ -85,7 +85,7 @@ public class MapPaneKeyHandler extends KeyAdapter {
     /*
      * Default key bindings
      */
-    private static final Map<KeyInfo, Action> defaultBindings = new HashMap<KeyInfo, Action>();
+    private static final Map<KeyInfo, Action> defaultBindings = new HashMap<>();
 
     static {
         defaultBindings.put(new KeyInfo(KeyEvent.VK_LEFT, 0, "Left"), Action.SCROLL_LEFT);
@@ -115,7 +115,7 @@ public class MapPaneKeyHandler extends KeyAdapter {
      * @param mapPane the map pane associated with this handler
      */
     public MapPaneKeyHandler(MapPane mapPane) {
-        this.bindings = new HashMap<KeyInfo, Action>(defaultBindings);
+        this.bindings = new HashMap<>(defaultBindings);
         this.mapPane = mapPane;
     }
 
@@ -132,7 +132,7 @@ public class MapPaneKeyHandler extends KeyAdapter {
      * @return the current key bindings
      */
     public Map<KeyInfo, Action> getBindings() {
-        Map<KeyInfo, Action> map = new HashMap<KeyInfo, Action>();
+        Map<KeyInfo, Action> map = new HashMap<>();
 
         for (Map.Entry<KeyInfo, Action> e : bindings.entrySet()) {
             map.put(new KeyInfo(e.getKey()), e.getValue());

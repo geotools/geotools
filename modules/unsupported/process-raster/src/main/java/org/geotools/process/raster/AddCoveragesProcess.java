@@ -67,7 +67,7 @@ public class AddCoveragesProcess implements RasterProcess {
         //
         // //
         final ParameterValueGroup param = PROCESSOR.getOperation("Add").getParameters();
-        List<GridCoverage2D> sources = new ArrayList<GridCoverage2D>();
+        List<GridCoverage2D> sources = new ArrayList<>();
         sources.add(coverageA);
         sources.add(coverageB);
         param.parameter("Sources").setValue(sources);

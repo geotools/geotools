@@ -105,7 +105,7 @@ public class DomainTypeImpl extends EObjectImpl implements DomainType {
    */
   public EList<String> getValue() {
     if (value == null) {
-      value = new EDataTypeEList<String>(String.class, this, Ows10Package.DOMAIN_TYPE__VALUE);
+      value = new EDataTypeEList<>(String.class, this, Ows10Package.DOMAIN_TYPE__VALUE);
     }
     return value;
   }
@@ -117,7 +117,7 @@ public class DomainTypeImpl extends EObjectImpl implements DomainType {
    */
   public EList<MetadataType> getMetadata() {
     if (metadata == null) {
-      metadata = new EObjectContainmentEList<MetadataType>(MetadataType.class, this, Ows10Package.DOMAIN_TYPE__METADATA);
+      metadata = new EObjectContainmentEList<>(MetadataType.class, this, Ows10Package.DOMAIN_TYPE__METADATA);
     }
     return metadata;
   }

@@ -78,7 +78,7 @@ public class JGrassColorTable {
     private int alpha = 255;
 
     /** The list of colorrules to be used. */
-    private List<String> rules = new ArrayList<String>();
+    private List<String> rules = new ArrayList<>();
 
     /**
      * Creates a new instance of ColorTable
@@ -139,7 +139,7 @@ public class JGrassColorTable {
      */
     @SuppressWarnings("nls")
     public static List<String> createDefaultColorTable(double[] dataRange, int alpha) {
-        List<String> rules = new ArrayList<String>();
+        List<String> rules = new ArrayList<>();
         // calculate the color increment
         float rinc = (float) (dataRange[1] - dataRange[0]) / 5;
         for (int i = 0; i < 5; i++) {

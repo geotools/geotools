@@ -147,8 +147,7 @@ public final class ImagingParametersTest {
                         registry.getDescriptor(RenderedRegistryMode.MODE_NAME, "Extrema");
 
         // Gets the ImagingParameterDescriptors to replace xPeriod
-        final List<ParameterDescriptor> replacingDescriptors =
-                new ArrayList<ParameterDescriptor>(1);
+        final List<ParameterDescriptor> replacingDescriptors = new ArrayList<>(1);
         replacingDescriptors.add(SPATIAL_SUBSAMPLING_X);
         final ImagingParameterDescriptors ripd =
                 new ImagingParameterDescriptors(operation, replacingDescriptors);

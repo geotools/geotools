@@ -66,7 +66,7 @@ public class ScaleToSizeTypeImpl extends EObjectImpl implements ScaleToSizeType 
 	 */
     public EList<TargetAxisSizeType> getTargetAxisSize() {
 		if (targetAxisSize == null) {
-			targetAxisSize = new EObjectResolvingEList<TargetAxisSizeType>(TargetAxisSizeType.class, this, Wcs20Package.SCALE_TO_SIZE_TYPE__TARGET_AXIS_SIZE);
+			targetAxisSize = new EObjectResolvingEList<>(TargetAxisSizeType.class, this, Wcs20Package.SCALE_TO_SIZE_TYPE__TARGET_AXIS_SIZE);
 		}
 		return targetAxisSize;
 	}

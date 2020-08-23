@@ -1061,7 +1061,7 @@ public final class GridCoverageRenderer {
         Parameter<int[]> bandIndicesParam = null;
         bandIndicesParam = (Parameter<int[]>) AbstractGridFormat.BANDS.createValue();
         bandIndicesParam.setValue(bandIndices);
-        List<GeneralParameterValue> paramList = new ArrayList<GeneralParameterValue>();
+        List<GeneralParameterValue> paramList = new ArrayList<>();
         if (readParams != null) {
             paramList.addAll(Arrays.asList(readParams));
         }

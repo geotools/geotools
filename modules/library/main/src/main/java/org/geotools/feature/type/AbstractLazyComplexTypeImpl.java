@@ -76,10 +76,8 @@ public abstract class AbstractLazyComplexTypeImpl extends AbstractLazyAttributeT
                 descriptors = Collections.emptyList();
                 descriptorMap = Collections.emptyMap();
             } else {
-                Collection<PropertyDescriptor> localDescriptors =
-                        new ArrayList<PropertyDescriptor>(builtDescriptors);
-                Map<Name, PropertyDescriptor> localDescriptorMap =
-                        new HashMap<Name, PropertyDescriptor>();
+                Collection<PropertyDescriptor> localDescriptors = new ArrayList<>(builtDescriptors);
+                Map<Name, PropertyDescriptor> localDescriptorMap = new HashMap<>();
                 for (PropertyDescriptor descriptor : localDescriptors) {
                     localDescriptorMap.put(descriptor.getName(), descriptor);
                 }

@@ -630,9 +630,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
 
         // if post filter, wrap it
         if (postFilterRequired) {
-            reader =
-                    new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(
-                            reader, postFilter);
+            reader = new FilteringFeatureReader<>(reader, postFilter);
             if (!returnedSchema.equals(querySchema)) {
                 reader = new ReTypeFeatureReader(reader, returnedSchema);
             }
@@ -648,9 +646,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
 
             // max feature limit
             if (query.getMaxFeatures() >= 0 && query.getMaxFeatures() < Integer.MAX_VALUE) {
-                reader =
-                        new MaxFeatureReader<SimpleFeatureType, SimpleFeature>(
-                                reader, query.getMaxFeatures());
+                reader = new MaxFeatureReader<>(reader, query.getMaxFeatures());
             }
         }
 
@@ -674,8 +670,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
 
                 String[] extraAttributes = extractor.getAttributeNames();
                 if (extraAttributes != null && extraAttributes.length > 0) {
-                    List<String> allAttributes =
-                            new ArrayList<String>(Arrays.asList(propertyNames));
+                    List<String> allAttributes = new ArrayList<>(Arrays.asList(propertyNames));
                     for (String extraAttribute : extraAttributes) {
                         if (!allAttributes.contains(extraAttribute))
                             allAttributes.add(extraAttribute);
@@ -765,7 +760,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
     List<ColumnMetadata> getColumnMetadata(
             Connection cx, String databaseSchema, String tableName, SQLDialect dialect)
             throws SQLException {
-        List<ColumnMetadata> result = new ArrayList<ColumnMetadata>();
+        List<ColumnMetadata> result = new ArrayList<>();
 
         DatabaseMetaData metaData = cx.getMetaData();
 
@@ -829,7 +824,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
     static List<ColumnMetadata> getColumnMetadata(
             Connection cx, VirtualTable vtable, SQLDialect dialect, JDBCDataStore store)
             throws SQLException {
-        List<ColumnMetadata> result = new ArrayList<ColumnMetadata>();
+        List<ColumnMetadata> result = new ArrayList<>();
 
         Statement st = null;
         ResultSet rs = null;

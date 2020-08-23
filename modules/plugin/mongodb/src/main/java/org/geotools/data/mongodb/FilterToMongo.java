@@ -422,7 +422,7 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
 
         Set<Identifier> ids = filter.getIdentifiers();
 
-        List<ObjectId> objectIds = new ArrayList<ObjectId>(ids.size());
+        List<ObjectId> objectIds = new ArrayList<>(ids.size());
         for (Identifier id : ids) {
             objectIds.add(new ObjectId(id.toString()));
         }

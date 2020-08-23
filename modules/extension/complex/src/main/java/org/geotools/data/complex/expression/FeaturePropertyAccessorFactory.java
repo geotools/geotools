@@ -253,7 +253,7 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
             }
 
             Iterator it = context.iteratePointers(xpath);
-            List results = new ArrayList<Object>();
+            List results = new ArrayList<>();
             while (it.hasNext()) {
                 Pointer pointer = (Pointer) it.next();
                 if (pointer instanceof AttributeNodePointer) {

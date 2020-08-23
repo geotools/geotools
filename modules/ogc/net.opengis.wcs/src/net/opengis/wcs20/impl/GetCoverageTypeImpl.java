@@ -277,7 +277,7 @@ public class GetCoverageTypeImpl extends RequestBaseTypeImpl implements GetCover
 	 */
 	public EList<SortBy> getSortBy() {
 		if (sortBy == null) {
-			sortBy = new EDataTypeUniqueEList<SortBy>(SortBy.class, this, Wcs20Package.GET_COVERAGE_TYPE__SORT_BY);
+			sortBy = new EDataTypeUniqueEList<>(SortBy.class, this, Wcs20Package.GET_COVERAGE_TYPE__SORT_BY);
 		}
 		return sortBy;
 	}

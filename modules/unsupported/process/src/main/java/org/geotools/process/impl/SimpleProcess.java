@@ -47,7 +47,7 @@ public abstract class SimpleProcess extends AbstractProcess {
         try {
             if (monitor.isCanceled()) return null; // respect isCanceled
             this.input = input;
-            result = new HashMap<String, Object>();
+            result = new HashMap<>();
 
             process();
 

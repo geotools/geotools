@@ -38,7 +38,7 @@ public class LinesTest {
 
     @Before
     public void setup() {
-        lineDefs = new ArrayList<OrthoLineDef>();
+        lineDefs = new ArrayList<>();
     }
 
     @Test

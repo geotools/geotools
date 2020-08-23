@@ -220,7 +220,7 @@ public class NestedAttributeMapping extends AttributeMapping {
             return Collections.emptyList();
         }
 
-        ArrayList<Feature> matchingFeatures = new ArrayList<Feature>();
+        ArrayList<Feature> matchingFeatures = new ArrayList<>();
 
         Filter filter =
                 filterFac.equals(this.nestedSourceExpression, filterFac.literal(foreignKeyValue));
@@ -231,7 +231,7 @@ public class NestedAttributeMapping extends AttributeMapping {
 
         try (FeatureIterator<Feature> it = fCollection.features()) {
             if (nestedIdExpression.equals(Expression.NIL)) {
-                HashSet<FeatureId> featureIds = new HashSet<FeatureId>();
+                HashSet<FeatureId> featureIds = new HashSet<>();
                 while (it.hasNext()) {
                     Feature f = it.next();
                     matchingFeatures.add(f);
@@ -245,7 +245,7 @@ public class NestedAttributeMapping extends AttributeMapping {
                     matchingIdFilter = filterFac.id(featureIds);
                 }
             } else {
-                HashSet<String> featureIds = new HashSet<String>();
+                HashSet<String> featureIds = new HashSet<>();
                 while (it.hasNext()) {
                     Feature f = it.next();
                     matchingFeatures.add(f);
@@ -257,7 +257,7 @@ public class NestedAttributeMapping extends AttributeMapping {
 
                 // Find features of the same id from denormalised view
                 if (!featureIds.isEmpty()) {
-                    List<Filter> idFilters = new ArrayList<Filter>(featureIds.size());
+                    List<Filter> idFilters = new ArrayList<>(featureIds.size());
                     for (String id : featureIds) {
                         idFilters.add(filterFac.equals(nestedIdExpression, filterFac.literal(id)));
                     }
@@ -394,7 +394,7 @@ public class NestedAttributeMapping extends AttributeMapping {
         query.setFilter(filter);
 
         if (selectedProperties != null && !selectedProperties.isEmpty()) {
-            selectedProperties = new ArrayList<PropertyName>(selectedProperties);
+            selectedProperties = new ArrayList<>(selectedProperties);
             selectedProperties.add(propertyName);
         }
 
@@ -413,7 +413,7 @@ public class NestedAttributeMapping extends AttributeMapping {
 
         query.setProperties(selectedProperties);
 
-        ArrayList<Feature> matchingFeatures = new ArrayList<Feature>();
+        ArrayList<Feature> matchingFeatures = new ArrayList<>();
 
         // get all the mapped nested features based on the link values
         FeatureCollection<FeatureType, Feature> fCollection = fSource.getFeatures(query);

@@ -747,7 +747,7 @@ public class GeodeticCalculator {
                     Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "numPoints", numPoints));
         }
 
-        List<Point2D> points = new ArrayList<Point2D>(numPoints + 2);
+        List<Point2D> points = new ArrayList<>(numPoints + 2);
 
         if (!directionValid) {
             computeDirection();

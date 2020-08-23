@@ -129,7 +129,7 @@ public abstract class SolrTestSupport extends OnlineTestCase {
     protected void init(String layerName, String geometryField) throws Exception {
         this.layerName = layerName;
         SolrLayerConfiguration solrLayerConfiguration =
-                new SolrLayerConfiguration(new ArrayList<SolrAttribute>());
+                new SolrLayerConfiguration(new ArrayList<>());
         solrLayerConfiguration.setLayerName(this.layerName);
         List<SolrAttribute> layerAttributes = new ArrayList<>();
         for (SolrAttribute solrAttribute : attributes) {

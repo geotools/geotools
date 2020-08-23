@@ -59,7 +59,7 @@ public class FunctionBuilder implements Builder<Function> {
     LiteralBuilder literal = new LiteralBuilder();
     boolean unset = false;
     private String name = null; // ie unset!
-    List<Expression> args = new ArrayList<Expression>();
+    List<Expression> args = new ArrayList<>();
     ParamBuilder parent;
 
     public FunctionBuilder() {

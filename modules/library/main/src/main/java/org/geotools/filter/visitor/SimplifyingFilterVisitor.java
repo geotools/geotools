@@ -157,7 +157,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
     @Override
     public Object visit(And filter, Object extraData) {
         // drill down and flatten
-        List<Filter> filters = collect(filter, And.class, extraData, new ArrayList<Filter>());
+        List<Filter> filters = collect(filter, And.class, extraData, new ArrayList<>());
 
         filters = basicAndSimplification(filters);
 
@@ -184,7 +184,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
         }
 
         // eliminate include and exclude
-        List<Filter> simplified = new ArrayList<Filter>(filters.size());
+        List<Filter> simplified = new ArrayList<>(filters.size());
         for (Filter child : filters) {
             // if any of the child filters is exclude,
             // the whole chain of AND is equivalent to
@@ -277,7 +277,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
     @Override
     public Object visit(Or filter, Object extraData) {
         // scan, clone and simplify the children
-        List<Filter> filters = collect(filter, Or.class, extraData, new ArrayList<Filter>());
+        List<Filter> filters = collect(filter, Or.class, extraData, new ArrayList<>());
 
         filters = basicOrSimplification(filters);
 
@@ -305,7 +305,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
         }
 
         // eliminate include and exclude
-        List<Filter> simplified = new ArrayList<Filter>(filters.size());
+        List<Filter> simplified = new ArrayList<>(filters.size());
         for (Filter child : filters) {
             // if any of the child filters is INCLUDE,
             // the whole chain of OR is equivalent to
@@ -361,7 +361,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
             return Filter.EXCLUDE;
         }
 
-        Set<Identifier> validFids = new HashSet<Identifier>();
+        Set<Identifier> validFids = new HashSet<>();
 
         for (Identifier id : filter.getIdentifiers()) {
             if (id instanceof FeatureId || id instanceof GmlObjectId) {

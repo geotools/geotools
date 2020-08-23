@@ -135,14 +135,14 @@ public class CoverageSlicesCatalog {
     private DataStore slicesIndexStore;
 
     /** The feature type name */
-    private Set<String> typeNames = new HashSet<String>();
+    private Set<String> typeNames = new HashSet<>();
 
     public static final String IMAGE_INDEX_ATTR = "imageindex";
 
     private static final String HIDDEN_FOLDER = ".mapping";
 
     private final SoftValueHashMap<Integer, CoverageSlice> coverageSliceDescriptorsCache =
-            new SoftValueHashMap<Integer, CoverageSlice>(0);
+            new SoftValueHashMap<>(0);
 
     private boolean repositoryStore;
 
@@ -390,7 +390,7 @@ public class CoverageSlicesCatalog {
 
     public List<CoverageSlice> getGranules(final Query q) throws IOException {
         Utilities.ensureNonNull("query", q);
-        final List<CoverageSlice> returnValue = new ArrayList<CoverageSlice>();
+        final List<CoverageSlice> returnValue = new ArrayList<>();
         final Lock lock = rwLock.readLock();
         try {
             lock.lock();

@@ -93,7 +93,7 @@ public class DB2WKBConstants {
     protected static Set<Integer> zmTypes;
 
     static {
-        zTypes = new HashSet<Integer>();
+        zTypes = new HashSet<>();
         zTypes.add(wkbPointZ);
         zTypes.add(wkbOGCPointZ);
         zTypes.add(wkbLineStringZ);
@@ -109,7 +109,7 @@ public class DB2WKBConstants {
         zTypes.add(wkbGeomCollectionZ);
         zTypes.add(wkbOGCGeomCollectionZ);
 
-        zmTypes = new HashSet<Integer>();
+        zmTypes = new HashSet<>();
         zmTypes.add(wkbPointZM);
         zmTypes.add(wkbOGCPointZM);
         zmTypes.add(wkbLineStringZM);

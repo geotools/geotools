@@ -109,7 +109,7 @@ public class SwtMapPane extends Canvas
     private LabelCache labelCache;
     private MapToolManager toolManager;
     private MapLayerComposite layerTable;
-    private Set<MapPaneListener> listeners = new HashSet<MapPaneListener>();
+    private Set<MapPaneListener> listeners = new HashSet<>();
     private AffineTransform worldToScreen;
     private AffineTransform screenToWorld;
     private Rectangle curPaintArea;
@@ -311,7 +311,7 @@ public class SwtMapPane extends Canvas
             if (renderer instanceof StreamingRenderer) {
                 hints = renderer.getRendererHints();
                 if (hints == null) {
-                    hints = new HashMap<Object, Object>();
+                    hints = new HashMap<>();
                 }
                 if (hints.containsKey(StreamingRenderer.LABEL_CACHE_KEY)) {
                     labelCache = (LabelCache) hints.get(StreamingRenderer.LABEL_CACHE_KEY);

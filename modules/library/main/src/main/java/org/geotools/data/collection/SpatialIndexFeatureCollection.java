@@ -83,7 +83,7 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
 
     public synchronized void addListener(CollectionListener listener) throws NullPointerException {
         if (listeners == null) {
-            listeners = Collections.synchronizedList(new ArrayList<CollectionListener>());
+            listeners = Collections.synchronizedList(new ArrayList<>());
         }
         listeners.add(listener);
     }

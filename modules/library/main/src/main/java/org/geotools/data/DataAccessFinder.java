@@ -149,7 +149,7 @@ public final class DataAccessFinder {
      * @return An iterator over all discovered datastores which have registered factories
      */
     public static synchronized Iterator<DataAccessFactory> getAllDataStores() {
-        Set<DataAccessFactory> all = new HashSet<DataAccessFactory>();
+        Set<DataAccessFactory> all = new HashSet<>();
         Iterator<DataStoreFactorySpi> allDataStores = DataStoreFinder.getAllDataStores();
         Iterator<DataAccessFactory> allDataAccess =
                 getAllDataStores(getServiceRegistry(), DataAccessFactory.class);

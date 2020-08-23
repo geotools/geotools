@@ -175,7 +175,7 @@ public abstract class AbstractCoordinateOperationTypeImpl extends AbstractCoordi
      */
     public EList<IdentifierType> getCoordinateOperationID() {
         if (coordinateOperationID == null) {
-            coordinateOperationID = new EObjectContainmentEList<IdentifierType>(IdentifierType.class, this, Gml311Package.ABSTRACT_COORDINATE_OPERATION_TYPE__COORDINATE_OPERATION_ID);
+            coordinateOperationID = new EObjectContainmentEList<>(IdentifierType.class, this, Gml311Package.ABSTRACT_COORDINATE_OPERATION_TYPE__COORDINATE_OPERATION_ID);
         }
         return coordinateOperationID;
     }

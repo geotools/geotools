@@ -37,7 +37,7 @@ public class ParameterHandler extends SldTransformHandler {
 
     public ParameterHandler rename(String from, String to) {
         if (rename == null) {
-            rename = new LinkedHashMap<String, String>();
+            rename = new LinkedHashMap<>();
         }
         rename.put(from, to);
         return this;

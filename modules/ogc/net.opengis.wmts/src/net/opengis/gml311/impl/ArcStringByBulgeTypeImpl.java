@@ -304,7 +304,7 @@ public class ArcStringByBulgeTypeImpl extends AbstractCurveSegmentTypeImpl imple
      */
     public EList<Double> getBulge() {
         if (bulge == null) {
-            bulge = new EDataTypeEList<Double>(Double.class, this, Gml311Package.ARC_STRING_BY_BULGE_TYPE__BULGE);
+            bulge = new EDataTypeEList<>(Double.class, this, Gml311Package.ARC_STRING_BY_BULGE_TYPE__BULGE);
         }
         return bulge;
     }
@@ -316,7 +316,7 @@ public class ArcStringByBulgeTypeImpl extends AbstractCurveSegmentTypeImpl imple
      */
     public EList<VectorType> getNormal() {
         if (normal == null) {
-            normal = new EObjectContainmentEList<VectorType>(VectorType.class, this, Gml311Package.ARC_STRING_BY_BULGE_TYPE__NORMAL);
+            normal = new EObjectContainmentEList<>(VectorType.class, this, Gml311Package.ARC_STRING_BY_BULGE_TYPE__NORMAL);
         }
         return normal;
     }

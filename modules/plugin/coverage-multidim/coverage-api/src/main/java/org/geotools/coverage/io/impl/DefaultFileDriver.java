@@ -49,7 +49,7 @@ public class DefaultFileDriver extends DefaultDriver implements FileDriver {
      * coverage.
      */
     public static final Parameter<URL> URL =
-            new Parameter<URL>(
+            new Parameter<>(
                     "url",
                     java.net.URL.class,
                     new SimpleInternationalString("URL"),
@@ -67,11 +67,11 @@ public class DefaultFileDriver extends DefaultDriver implements FileDriver {
         super(name, description, title, driverCapabilities, implementationHints);
 
         Utilities.ensureNonNull("fileExtensions", fileExtensions);
-        this.fileExtensions = new ArrayList<String>(fileExtensions);
+        this.fileExtensions = new ArrayList<>(fileExtensions);
     }
 
     public List<String> getFileExtensions() {
-        return new ArrayList<String>(fileExtensions);
+        return new ArrayList<>(fileExtensions);
     }
 
     @Override
@@ -276,21 +276,21 @@ public class DefaultFileDriver extends DefaultDriver implements FileDriver {
 
     @Override
     protected Map<String, Parameter<?>> defineConnectParameterInfo() {
-        final Map<String, Parameter<?>> params = new HashMap<String, Parameter<?>>();
+        final Map<String, Parameter<?>> params = new HashMap<>();
         params.put(URL.key, URL);
         return params;
     }
 
     @Override
     protected Map<String, Parameter<?>> defineCreateParameterInfo() {
-        final Map<String, Parameter<?>> params = new HashMap<String, Parameter<?>>();
+        final Map<String, Parameter<?>> params = new HashMap<>();
         params.put(URL.key, URL);
         return params;
     }
 
     @Override
     protected Map<String, Parameter<?>> defineDeleteParameterInfo() {
-        final Map<String, Parameter<?>> params = new HashMap<String, Parameter<?>>();
+        final Map<String, Parameter<?>> params = new HashMap<>();
         params.put(URL.key, URL);
         return params;
     }

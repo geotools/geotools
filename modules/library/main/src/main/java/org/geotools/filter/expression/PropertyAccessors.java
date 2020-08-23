@@ -30,7 +30,7 @@ public class PropertyAccessors {
     static final PropertyAccessorFactory[] FACTORY_CACHE;
 
     static {
-        List<PropertyAccessorFactory> cache = new ArrayList<PropertyAccessorFactory>();
+        List<PropertyAccessorFactory> cache = new ArrayList<>();
 
         // add the simple feature property accessor factory first for performance
         // reasons
@@ -67,7 +67,7 @@ public class PropertyAccessors {
             Object object, String xpath, Class target, Hints hints) {
         if (object == null) return null;
 
-        List<PropertyAccessor> list = new ArrayList<PropertyAccessor>();
+        List<PropertyAccessor> list = new ArrayList<>();
 
         for (PropertyAccessorFactory factory : FACTORY_CACHE) {
             PropertyAccessor accessor =

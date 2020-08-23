@@ -95,7 +95,7 @@ public class VectorToRasterProcessTest {
          * to see the two small rectangles (values 1 and 3) 'on top' of
          * the larger rectangle (value 2)
          */
-        Map<Integer, Envelope> rects = new HashMap<Integer, Envelope>();
+        Map<Integer, Envelope> rects = new HashMap<>();
         SimpleFeatureIterator iter = features.features();
         while (iter.hasNext()) {
             SimpleFeature sf = iter.next();
@@ -170,7 +170,7 @@ public class VectorToRasterProcessTest {
 
         ProgressListener monitor = null;
 
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         map.put(AbstractFeatureCollectionProcessFactory.FEATURES.key, features);
         map.put("attribute", "value");
         map.put("rasterWidth", gridDim.width);
@@ -218,7 +218,7 @@ public class VectorToRasterProcessTest {
 
         ProgressListener monitor = null;
 
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         map.put(AbstractFeatureCollectionProcessFactory.FEATURES.key, features);
         map.put("attribute", "value");
         map.put("rasterWidth", gridDim.width);

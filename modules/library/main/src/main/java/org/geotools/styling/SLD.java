@@ -1530,7 +1530,7 @@ public class SLD {
      */
     public static Style[] styles(StyledLayerDescriptor sld) {
         StyledLayer[] layers = sld.getStyledLayers();
-        List<Style> styles = new ArrayList<Style>();
+        List<Style> styles = new ArrayList<>();
 
         for (int i = 0; i < layers.length; i++) {
             if (layers[i] instanceof UserLayer) {
@@ -1554,7 +1554,7 @@ public class SLD {
      */
     public static FeatureTypeStyle[] featureTypeStyles(StyledLayerDescriptor sld) {
         Style[] style = styles(sld);
-        List<FeatureTypeStyle> fts = new ArrayList<FeatureTypeStyle>();
+        List<FeatureTypeStyle> fts = new ArrayList<>();
         for (int i = 0; i < style.length; i++) {
             fts.addAll(style[i].featureTypeStyles());
         }
@@ -1636,7 +1636,7 @@ public class SLD {
      * @return an array of unique rules
      */
     public static Rule[] rules(Style style) {
-        Set<Rule> ruleSet = new HashSet<Rule>();
+        Set<Rule> ruleSet = new HashSet<>();
         for (FeatureTypeStyle fts : style.featureTypeStyles()) {
             ruleSet.addAll(fts.rules());
         }
@@ -1655,7 +1655,7 @@ public class SLD {
      * @return an array of unique symbolizers
      */
     public static Symbolizer[] symbolizers(Style style) {
-        Set<Symbolizer> symbolizers = new HashSet<Symbolizer>();
+        Set<Symbolizer> symbolizers = new HashSet<>();
         for (FeatureTypeStyle fts : style.featureTypeStyles()) {
             for (Rule rule : fts.rules()) {
                 symbolizers.addAll(rule.symbolizers());
@@ -1676,7 +1676,7 @@ public class SLD {
      * @return an array of unique symbolizers
      */
     public static Symbolizer[] symbolizers(Rule rule) {
-        Set<Symbolizer> symbolizers = new HashSet<Symbolizer>();
+        Set<Symbolizer> symbolizers = new HashSet<>();
         symbolizers.addAll(rule.symbolizers());
 
         if (symbolizers.size() > 0) {
@@ -1693,7 +1693,7 @@ public class SLD {
      * @return an array of unique colour names
      */
     public static String[] colors(Style style) {
-        Set<String> colorSet = new HashSet<String>();
+        Set<String> colorSet = new HashSet<>();
 
         for (FeatureTypeStyle fts : style.featureTypeStyles()) {
             for (Rule rule : fts.rules()) {
@@ -1718,7 +1718,7 @@ public class SLD {
      * @return an array of unique colour names
      */
     public static String[] colors(Rule rule) {
-        Set<String> colorSet = new HashSet<String>();
+        Set<String> colorSet = new HashSet<>();
 
         Color color = null;
         for (Symbolizer sym : rule.symbolizers()) {

@@ -152,7 +152,7 @@ public class Filters {
      * @return And
      */
     public static Filter and(org.opengis.filter.FilterFactory ff, Filter filter1, Filter filter2) {
-        ArrayList<Filter> list = new ArrayList<Filter>(2);
+        ArrayList<Filter> list = new ArrayList<>(2);
         if (filter1 instanceof And) {
             And some = (And) filter1;
             list.addAll(some.getChildren());
@@ -200,7 +200,7 @@ public class Filters {
      * in the even either of them is already an Or filter.
      */
     public static Filter or(org.opengis.filter.FilterFactory ff, Filter filter1, Filter filter2) {
-        ArrayList<Filter> list = new ArrayList<Filter>();
+        ArrayList<Filter> list = new ArrayList<>();
         if (filter1 instanceof Or) {
             Or some = (Or) filter1;
             list.addAll(some.getChildren());
@@ -644,7 +644,7 @@ public class Filters {
                                 final Filter targetFilter,
                                 Object extraData) {
                             List<Filter> children = filter.getChildren();
-                            List<Filter> newChildren = new ArrayList<Filter>();
+                            List<Filter> newChildren = new ArrayList<>();
                             for (Iterator<Filter> iter = children.iterator(); iter.hasNext(); ) {
                                 Filter child = iter.next();
                                 if (targetFilter.equals(child)) {
@@ -666,7 +666,7 @@ public class Filters {
                 children = Collections.emptyList();
             }
 
-            List<Filter> copy = new ArrayList<Filter>(children.size());
+            List<Filter> copy = new ArrayList<>(children.size());
             for (Filter filter : children) {
                 if (targetFilter.equals(filter)) {
                     continue; // skip this one
@@ -873,7 +873,7 @@ public class Filters {
      * @return are belong to us
      */
     public static ArrayList<Filter> children(Filter filter, boolean all) {
-        final ArrayList<Filter> children = new ArrayList<Filter>();
+        final ArrayList<Filter> children = new ArrayList<>();
         if (filter == null) {
             return children;
         }
@@ -984,7 +984,7 @@ public class Filters {
      */
     static <T extends Filter> List<T> findAllByTypeAndName(
             Filter filter, Class<T> filterType, String property) {
-        List<T> retVal = new ArrayList<T>();
+        List<T> retVal = new ArrayList<>();
         List<Filter> allBase = children(filter);
         allBase.add(0, filter);
         for (Filter base : allBase) {

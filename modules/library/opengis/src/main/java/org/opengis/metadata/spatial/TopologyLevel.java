@@ -30,7 +30,7 @@ public final class TopologyLevel extends CodeList<TopologyLevel> {
     private static final long serialVersionUID = -179324311133793389L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */
-    private static final List<TopologyLevel> VALUES = new ArrayList<TopologyLevel>(9);
+    private static final List<TopologyLevel> VALUES = new ArrayList<>(9);
 
     /** Geometry objects without any additional structure which describes topology. */
     @UML(identifier = "geometryOnly", obligation = CONDITIONAL, specification = ISO_19115)

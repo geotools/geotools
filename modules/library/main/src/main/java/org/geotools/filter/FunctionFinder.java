@@ -60,7 +60,7 @@ public class FunctionFinder {
      */
     public List<FunctionName> getAllFunctionDescriptions() {
         Set<FunctionFactory> functionFactories = CommonFactoryFinder.getFunctionFactories(null);
-        List<FunctionName> allFunctionDescriptions = new ArrayList<FunctionName>();
+        List<FunctionName> allFunctionDescriptions = new ArrayList<>();
 
         for (FunctionFactory factory : functionFactories) {
             List<FunctionName> functionNames = factory.getFunctionNames();
@@ -242,7 +242,7 @@ public class FunctionFinder {
 
     private HashMap<Name, FunctionFactory> lookupFunctions() {
         // get all filter functions via function factory
-        HashMap<Name, FunctionFactory> result = new HashMap<Name, FunctionFactory>();
+        HashMap<Name, FunctionFactory> result = new HashMap<>();
 
         Set<FunctionFactory> functionFactories = CommonFactoryFinder.getFunctionFactories(null);
         for (FunctionFactory ff : functionFactories) {

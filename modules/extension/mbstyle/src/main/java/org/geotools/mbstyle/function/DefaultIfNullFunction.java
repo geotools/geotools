@@ -37,10 +37,10 @@ public class DefaultIfNullFunction extends FunctionImpl {
     private static final Logger LOGGER = Logger.getLogger(DefaultIfNullFunction.class.getName());
 
     static {
-        Parameter<Object> result = new Parameter<Object>("result", Object.class, 1, 1);
-        Parameter<Object> input = new Parameter<Object>("input", Object.class, 1, 1);
+        Parameter<Object> result = new Parameter<>("result", Object.class, 1, 1);
+        Parameter<Object> input = new Parameter<>("input", Object.class, 1, 1);
         Parameter<Object> fallback =
-                new Parameter<Object>(
+                new Parameter<>(
                         "DefaultIfNull",
                         Object.class,
                         Text.text("DefaultIfNull"),

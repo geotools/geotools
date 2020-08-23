@@ -100,7 +100,7 @@ public class LoggedFormat<T> extends Format {
      * @param type The expected type of parsed values.
      */
     public static <T> LoggedFormat<T> getInstance(final Format format, final Class<T> type) {
-        return new LoggedFormat<T>(format, type);
+        return new LoggedFormat<>(format, type);
     }
 
     /**

@@ -125,7 +125,7 @@ public class GeoServerWFSOnlineTest extends OnlineTestSupport {
                         + "REQUEST=GetCapabilities&SERVICE=WFS&VERSION="
                         + version;
 
-        Map<String, Object> connectionParameters = new HashMap<String, Object>();
+        Map<String, Object> connectionParameters = new HashMap<>();
         connectionParameters.put(WFSDataStoreFactory.URL.key, getCapabilities);
         connectionParameters.put(
                 WFSDataStoreFactory.LENIENT.key,

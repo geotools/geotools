@@ -22,7 +22,7 @@ import org.opengis.feature.type.Name;
 
 /** Holds a cache of FeatureTypes by Name. */
 public class FeatureTypeCache {
-    ConcurrentHashMap<Name, FeatureType> map = new ConcurrentHashMap<Name, FeatureType>();
+    ConcurrentHashMap<Name, FeatureType> map = new ConcurrentHashMap<>();
 
     public FeatureType get(Name name) {
         return map.get(name);

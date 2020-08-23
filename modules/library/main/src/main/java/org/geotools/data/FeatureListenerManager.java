@@ -54,7 +54,7 @@ public class FeatureListenerManager {
         WeakReference<FeatureListener> reference;
 
         public WeakFeatureListener(FeatureListener listener) {
-            reference = new WeakReference<FeatureListener>(listener);
+            reference = new WeakReference<>(listener);
         }
 
         public void changed(FeatureEvent featureEvent) {
@@ -72,8 +72,7 @@ public class FeatureListenerManager {
      * up after their FeatureSource is no longer referenced.
      */
     Map<FeatureSource<? extends FeatureType, ? extends Feature>, EventListenerList> listenerMap =
-            new WeakHashMap<
-                    FeatureSource<? extends FeatureType, ? extends Feature>, EventListenerList>();
+            new WeakHashMap<>();
 
     /** Used by FeaureSource implementations to provide listener support. */
     public void addFeatureListener(
@@ -137,8 +136,7 @@ public class FeatureListenerManager {
      */
     Map<SimpleFeatureSource, FeatureListener[]> getListeners(
             String typeName, Transaction transaction) {
-        Map<SimpleFeatureSource, FeatureListener[]> map =
-                new HashMap<SimpleFeatureSource, FeatureListener[]>();
+        Map<SimpleFeatureSource, FeatureListener[]> map = new HashMap<>();
         // Map.Entry<SimpleFeatureSource,FeatureListener[]> entry;
         SimpleFeatureSource featureSource;
         EventListenerList listenerList;

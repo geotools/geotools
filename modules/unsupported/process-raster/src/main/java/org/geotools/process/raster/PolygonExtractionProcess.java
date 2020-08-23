@@ -168,7 +168,7 @@ public class PolygonExtractionProcess implements RasterProcess {
         // Use noDataValues to set the "outsideValues" parameter of the Vectorize
         // operation unless classificationRanges are in use, in which case the
         // noDataValues arg is ignored.
-        List<Number> outsideValues = new ArrayList<Number>();
+        List<Number> outsideValues = new ArrayList<>();
         if (noDataValues != null && !hasClassificationRanges) {
             outsideValues.addAll(noDataValues);
         } else {

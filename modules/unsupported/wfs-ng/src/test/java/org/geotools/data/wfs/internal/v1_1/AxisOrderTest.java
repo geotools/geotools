@@ -78,7 +78,7 @@ public class AxisOrderTest {
         WFSDataStore ds = new WFSDataStore(wfs);
 
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-        Set<FeatureId> fids = new HashSet<FeatureId>();
+        Set<FeatureId> fids = new HashSet<>();
         fids.add(new FeatureIdImpl("comuni11.2671"));
         Query query = new Query(typeName, ff.id(fids));
 
@@ -127,7 +127,7 @@ public class AxisOrderTest {
                 WFSDataStoreFactory.AXIS_ORDER_EAST_NORTH);
 
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-        Set<FeatureId> fids = new HashSet<FeatureId>();
+        Set<FeatureId> fids = new HashSet<>();
         fids.add(new FeatureIdImpl("comuni11.2671"));
         Query query =
                 new Query(
@@ -170,7 +170,7 @@ public class AxisOrderTest {
                 WFSDataStoreFactory.AXIS_ORDER_NORTH_EAST);
 
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-        Set<FeatureId> fids = new HashSet<FeatureId>();
+        Set<FeatureId> fids = new HashSet<>();
         fids.add(new FeatureIdImpl("comuni11.2671"));
         Query query =
                 new Query(
@@ -214,7 +214,7 @@ public class AxisOrderTest {
                 WFSDataStoreFactory.AXIS_ORDER_COMPLIANT, WFSDataStoreFactory.AXIS_ORDER_COMPLIANT);
 
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-        Set<FeatureId> fids = new HashSet<FeatureId>();
+        Set<FeatureId> fids = new HashSet<>();
         fids.add(new FeatureIdImpl("comuni11.2671"));
         Query query =
                 new Query(
@@ -254,7 +254,7 @@ public class AxisOrderTest {
                 WFSDataStoreFactory.AXIS_ORDER_COMPLIANT, WFSDataStoreFactory.AXIS_ORDER_COMPLIANT);
 
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-        Set<FeatureId> fids = new HashSet<FeatureId>();
+        Set<FeatureId> fids = new HashSet<>();
         fids.add(new FeatureIdImpl("comuni11.2671"));
         Query query = new Query(typeName, ff.id(fids));
 
@@ -300,7 +300,7 @@ public class AxisOrderTest {
                 WFSDataStoreFactory.AXIS_ORDER_COMPLIANT, WFSDataStoreFactory.AXIS_ORDER_COMPLIANT);
 
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-        Set<FeatureId> fids = new HashSet<FeatureId>();
+        Set<FeatureId> fids = new HashSet<>();
         fids.add(new FeatureIdImpl("comuni11.2671"));
         Query query = new Query(typeName, ff.id(fids));
 

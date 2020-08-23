@@ -60,7 +60,7 @@ public class ToEnvelopeFunction implements Function {
                     FunctionNameImpl.parameter("parameter", Object.class, 2, 5));
 
     public ToEnvelopeFunction() {
-        this(new ArrayList<Expression>(), null);
+        this(new ArrayList<>(), null);
     }
 
     public ToEnvelopeFunction(List<Expression> parameters, Literal fallback) {

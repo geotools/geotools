@@ -27,7 +27,7 @@ import org.geotools.ysld.Ysld;
 /** Handles xml parse events for {@link org.geotools.styling.Symbolizer} elements. */
 public class SymbolizerHandler extends SldTransformHandler {
 
-    Map<String, String> options = new LinkedHashMap<String, String>();
+    Map<String, String> options = new LinkedHashMap<>();
 
     @Override
     public void element(XMLStreamReader xml, SldTransformContext context)

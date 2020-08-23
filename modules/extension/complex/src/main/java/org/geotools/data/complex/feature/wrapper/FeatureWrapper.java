@@ -176,7 +176,7 @@ public abstract class FeatureWrapper {
                                         ((ParameterizedType) field.getGenericType())
                                                 .getActualTypeArguments()[0];
 
-                        ArrayList<Object> collection = new ArrayList<Object>();
+                        ArrayList<Object> collection = new ArrayList<>();
                         if (FeatureWrapper.class.isAssignableFrom(collectionType)) {
                             // The collection is complex.
                             for (Property property : targetAttribute.getProperties(xsdName)) {

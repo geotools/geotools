@@ -114,8 +114,7 @@ class GeometrySmoother {
     }
 
     /** Cache of previously calculated interpolation parameters */
-    private Map<Integer, WeakReference<InterpPoint[]>> lookup =
-            new HashMap<Integer, WeakReference<InterpPoint[]>>();
+    private Map<Integer, WeakReference<InterpPoint[]>> lookup = new HashMap<>();
 
     /**
      * Creates a new smoother that will use the given {@code GeometryFactory}.
@@ -146,7 +145,7 @@ class GeometrySmoother {
         Coordinate[][] controlPoints = getLineControlPoints(coords, alpha);
 
         final int N = coords.length;
-        List<Coordinate> smoothCoords = new ArrayList<Coordinate>();
+        List<Coordinate> smoothCoords = new ArrayList<>();
         double dist;
         for (int i = 0; i < N - 1; i++) {
             dist = coords[i].distance(coords[i + 1]);
@@ -192,7 +191,7 @@ class GeometrySmoother {
 
         Coordinate[][] controlPoints = getPolygonControlPoints(coords, N, alpha);
 
-        List<Coordinate> smoothCoords = new ArrayList<Coordinate>();
+        List<Coordinate> smoothCoords = new ArrayList<>();
         double dist;
         for (int i = 0; i < N; i++) {
             int next = (i + 1) % N;
@@ -453,7 +452,7 @@ class GeometrySmoother {
                 ip[i].tsum = ip[i].t[0] + ip[i].t[1] + ip[i].t[2] + ip[i].t[3];
             }
 
-            lookup.put(npoints, new WeakReference<InterpPoint[]>(ip));
+            lookup.put(npoints, new WeakReference<>(ip));
         }
 
         return ip;

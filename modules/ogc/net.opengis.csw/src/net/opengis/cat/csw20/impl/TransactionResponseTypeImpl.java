@@ -154,7 +154,7 @@ public class TransactionResponseTypeImpl extends EObjectImpl implements Transact
      */
     public EList<InsertResultType> getInsertResult() {
         if (insertResult == null) {
-            insertResult = new EObjectContainmentEList<InsertResultType>(InsertResultType.class, this, Csw20Package.TRANSACTION_RESPONSE_TYPE__INSERT_RESULT);
+            insertResult = new EObjectContainmentEList<>(InsertResultType.class, this, Csw20Package.TRANSACTION_RESPONSE_TYPE__INSERT_RESULT);
         }
         return insertResult;
     }

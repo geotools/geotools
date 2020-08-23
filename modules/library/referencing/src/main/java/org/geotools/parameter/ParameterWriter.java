@@ -245,7 +245,7 @@ public class ParameterWriter extends FilterWriter {
              */
             if (generalDescriptor instanceof ParameterDescriptorGroup) {
                 if (deferredGroups == null) {
-                    deferredGroups = new ArrayList<Object>();
+                    deferredGroups = new ArrayList<>();
                 }
                 deferredGroups.add(element);
                 continue;
@@ -365,8 +365,8 @@ public class ParameterWriter extends FilterWriter {
          *   titles    -  The column number for each column title.
          *   names     -  The names (including alias) for each line.
          */
-        final Map<Object, Integer> titles = new LinkedHashMap<Object, Integer>();
-        final List<String[]> names = new ArrayList<String[]>();
+        final Map<Object, Integer> titles = new LinkedHashMap<>();
+        final List<String[]> names = new ArrayList<>();
         final Locale locale = this.locale; // Protect from changes.
         String[] descriptions = null;
         titles.put(null, 0); // Special value for the identifier column.

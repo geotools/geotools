@@ -155,7 +155,7 @@ public abstract class AbstractWfsDataStoreOnlineTest {
         if (wfs == null && serviceAvailable.booleanValue()) {
             LOGGER.info("Creating test datastore for " + SERVER_URL);
 
-            Map<String, Serializable> params = new HashMap<String, Serializable>();
+            Map<String, Serializable> params = new HashMap<>();
             params.put(WFSDataStoreFactory.URL.key, SERVER_URL);
             params.put(WFSDataStoreFactory.GML_COMPATIBLE_TYPENAMES.key, true);
             params.put(WFSDataStoreFactory.AXIS_ORDER.key, axisOrder);

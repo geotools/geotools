@@ -40,7 +40,7 @@ public class AttributeCreateOrderListTest extends AppSchemaTestSupport {
     @Test
     public void testEmptyTree() throws IOException {
         at = new AttributeCreateOrderList(ROOT_LABEL);
-        unProcessedList = new ArrayList<AttributeMapping>();
+        unProcessedList = new ArrayList<>();
 
         processTestData();
     }
@@ -48,7 +48,7 @@ public class AttributeCreateOrderListTest extends AppSchemaTestSupport {
     @Test
     public void testSimpleTree() throws IOException {
         at = new AttributeCreateOrderList(ROOT_LABEL);
-        unProcessedList = new ArrayList<AttributeMapping>();
+        unProcessedList = new ArrayList<>();
 
         createAttribute(ROOT_LABEL, "child1");
         createAttribute(ROOT_LABEL, "child2");
@@ -62,7 +62,7 @@ public class AttributeCreateOrderListTest extends AppSchemaTestSupport {
     @Test
     public void testComplexTree() throws IOException {
         at = new AttributeCreateOrderList(ROOT_LABEL);
-        unProcessedList = new ArrayList<AttributeMapping>();
+        unProcessedList = new ArrayList<>();
 
         createAttribute(ROOT_LABEL, "child1");
         createAttribute(ROOT_LABEL, "child2");
@@ -82,7 +82,7 @@ public class AttributeCreateOrderListTest extends AppSchemaTestSupport {
     @Test
     public void testInvalidTree() throws IOException {
         at = new AttributeCreateOrderList(ROOT_LABEL);
-        unProcessedList = new ArrayList<AttributeMapping>();
+        unProcessedList = new ArrayList<>();
 
         createAttribute(ROOT_LABEL, "child1");
         createAttribute(ROOT_LABEL, "child2");
@@ -102,7 +102,7 @@ public class AttributeCreateOrderListTest extends AppSchemaTestSupport {
     @Test
     public void testInvalidRootInTree() throws IOException {
         at = new AttributeCreateOrderList(ROOT_LABEL);
-        unProcessedList = new ArrayList<AttributeMapping>();
+        unProcessedList = new ArrayList<>();
 
         try {
             createAttribute("child1", "child1");
@@ -119,7 +119,7 @@ public class AttributeCreateOrderListTest extends AppSchemaTestSupport {
         // 3) All elements are processed.
         final int size = unProcessedList.size();
         Iterator<AttributeMapping> it = at.iterator();
-        Set<String> retrievedElements = new HashSet<String>();
+        Set<String> retrievedElements = new HashSet<>();
         retrievedElements.add(ROOT_LABEL);
 
         int count = 0;

@@ -104,8 +104,7 @@ public class JTSFactoryFinder extends FactoryFinder {
      * @return Set of available geometry factory implementations.
      */
     public static synchronized Set<GeometryFactory> getGeometryFactories() {
-        return new LazySet<GeometryFactory>(
-                getServiceRegistry().getFactories(GeometryFactory.class, null, null));
+        return new LazySet<>(getServiceRegistry().getFactories(GeometryFactory.class, null, null));
     }
 
     /**
@@ -131,8 +130,7 @@ public class JTSFactoryFinder extends FactoryFinder {
      * @return Set of available precision model implementations.
      */
     public static synchronized Set<PrecisionModel> getPrecisionModels() {
-        return new LazySet<PrecisionModel>(
-                getServiceRegistry().getFactories(PrecisionModel.class, null, null));
+        return new LazySet<>(getServiceRegistry().getFactories(PrecisionModel.class, null, null));
     }
 
     /**
@@ -163,7 +161,7 @@ public class JTSFactoryFinder extends FactoryFinder {
      * @return Set of available coordinate sequence factory implementations.
      */
     public static synchronized Set<CoordinateSequenceFactory> getCoordinateSequenceFactories() {
-        return new LazySet<CoordinateSequenceFactory>(
+        return new LazySet<>(
                 getServiceRegistry().getFactories(CoordinateSequenceFactory.class, null, null));
     }
 

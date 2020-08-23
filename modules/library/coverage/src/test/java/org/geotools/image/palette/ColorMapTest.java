@@ -76,7 +76,7 @@ public class ColorMapTest {
         }
         assertEquals(64, map.table.length);
 
-        Set<Integer> colors = new HashSet<Integer>();
+        Set<Integer> colors = new HashSet<>();
         for (ColorEntry ce : map) {
             Integer color = ce.color;
             assertFalse(colors.contains(color));

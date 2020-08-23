@@ -197,7 +197,7 @@ public class FilterToSQLTest extends TestCase {
     }
 
     public void testIdFilterMulti() throws Exception {
-        Set<FeatureId> fids = new LinkedHashSet<FeatureId>();
+        Set<FeatureId> fids = new LinkedHashSet<>();
         fids.add(ff.featureId("fid1"));
         fids.add(ff.featureId("fid2"));
         Id id = ff.id(fids);
@@ -207,7 +207,7 @@ public class FilterToSQLTest extends TestCase {
     }
 
     public void testIdFilterSingle() throws Exception {
-        Set<FeatureId> fids = new LinkedHashSet<FeatureId>();
+        Set<FeatureId> fids = new LinkedHashSet<>();
         fids.add(ff.featureId("fid1"));
         Id id = ff.id(fids);
 

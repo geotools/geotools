@@ -64,7 +64,7 @@ public class InterpolateFunctionTest extends SEFunctionTestBase {
 
     @Before
     public void setup() {
-        parameters = new ArrayList<Expression>();
+        parameters = new ArrayList<>();
     }
 
     @Test
@@ -272,7 +272,7 @@ public class InterpolateFunctionTest extends SEFunctionTestBase {
     public void testForOutOfRangeColorValues() {
         // System.out.println("   out of range color values");
 
-        parameters = new ArrayList<Expression>();
+        parameters = new ArrayList<>();
         parameters.add(ff2.literal("RasterData"));
 
         // Create interpolation points that will lead to a cubic
@@ -384,7 +384,7 @@ public class InterpolateFunctionTest extends SEFunctionTestBase {
             throw new IllegalArgumentException("data and values arrays should be the same length");
         }
 
-        parameters = new ArrayList<Expression>();
+        parameters = new ArrayList<>();
         parameters.add(ff2.property("value"));
 
         for (int i = 0; i < data.length; i++) {

@@ -278,7 +278,7 @@ public class FilterCQLSample {
     public static final String NOT_BETWEEN_FILTER = "ATTR1 NOT BETWEEN 10 AND 20";
 
     /** Catalog of samples */
-    public static Map<String, Object> SAMPLES = new HashMap<String, Object>();
+    public static Map<String, Object> SAMPLES = new HashMap<>();
 
     static {
         // Samples initialization

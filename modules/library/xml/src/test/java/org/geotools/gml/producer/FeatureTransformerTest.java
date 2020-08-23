@@ -26,7 +26,7 @@ public class FeatureTransformerTest {
 
     @Before
     public void setup() {
-        Map<String, String> namespaces = new HashMap<String, String>();
+        Map<String, String> namespaces = new HashMap<>();
         namespaces.put("xlink", "http://www.w3.org/1999/xlink");
         namespaces.put("wfs", "http://www.opengis.net/wfs");
         namespaces.put("gml", "http://www.opengis.net/gml");

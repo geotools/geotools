@@ -34,11 +34,11 @@ public class FunctionsImpl implements Functions {
     Set<FunctionName> functionNames;
 
     public FunctionsImpl() {
-        this(new ArrayList<FunctionName>());
+        this(new ArrayList<>());
     }
 
     public FunctionsImpl(Collection<FunctionName> functionNames) {
-        this.functionNames = new HashSet<FunctionName>(functionNames);
+        this.functionNames = new HashSet<>(functionNames);
     }
 
     public FunctionsImpl(FunctionName[] functionNames) {
@@ -46,11 +46,11 @@ public class FunctionsImpl implements Functions {
             functionNames = new FunctionName[] {};
         }
 
-        this.functionNames = new HashSet<FunctionName>(Arrays.asList(functionNames));
+        this.functionNames = new HashSet<>(Arrays.asList(functionNames));
     }
 
     public FunctionsImpl(Functions copy) {
-        this.functionNames = new HashSet<FunctionName>();
+        this.functionNames = new HashSet<>();
         if (copy.getFunctionNames() != null) {
             for (FunctionName functionName : copy.getFunctionNames()) {
                 this.functionNames.add(new FunctionNameImpl(functionName));
@@ -63,7 +63,7 @@ public class FunctionsImpl implements Functions {
     }
 
     public void setFunctionNames(Collection<FunctionName> functionNames) {
-        this.functionNames = new HashSet<FunctionName>(functionNames);
+        this.functionNames = new HashSet<>(functionNames);
     }
 
     public FunctionName getFunctionName(String name) {

@@ -65,7 +65,7 @@ public class ToLineStringFunction implements Function {
                     FunctionNameImpl.parameter("parameter", Double.class, 2, 3));
 
     public ToLineStringFunction() {
-        this(new ArrayList<Expression>(), null);
+        this(new ArrayList<>(), null);
     }
 
     public ToLineStringFunction(List<Expression> parameters, Literal fallback) {

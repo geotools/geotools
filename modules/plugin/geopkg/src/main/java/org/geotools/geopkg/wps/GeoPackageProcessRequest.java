@@ -311,7 +311,7 @@ public class GeoPackageProcessRequest {
         }
     }
 
-    protected List<Layer> layers = new ArrayList<Layer>();
+    protected List<Layer> layers = new ArrayList<>();
     protected URL path = null;
     protected boolean remove = true;
     protected boolean context = true;

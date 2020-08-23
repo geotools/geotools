@@ -69,7 +69,7 @@ public class ContentEntry {
         this.typeName = typeName;
         this.dataStore = dataStore;
 
-        this.state = new ConcurrentHashMap<Transaction, ContentState>();
+        this.state = new ConcurrentHashMap<>();
 
         // create a state for the auto commit transaction
         ContentState autoState = dataStore.createContentState(this);

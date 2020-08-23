@@ -112,7 +112,7 @@ public class ClassifyByRangeProcess implements VectorProcess {
             throw new ProcessException("features input cannot be null!");
         }
         SimpleFeatureType schema = features.getSchema();
-        List<Definition> transform = new ArrayList<Definition>();
+        List<Definition> transform = new ArrayList<>();
         for (AttributeDescriptor descriptor : schema.getAttributeDescriptors()) {
             Definition definition = new Definition();
             definition.name = descriptor.getLocalName();
@@ -143,13 +143,13 @@ public class ClassifyByRangeProcess implements VectorProcess {
         if (rangeType == null) {
             rangeType = Number.class;
         }
-        List<Expression> params = new ArrayList<Expression>();
+        List<Expression> params = new ArrayList<>();
         params.add(FF.property(classifyOnAttribute));
         if ((thresholds == null || thresholds.length == 0)
                 && (classifier == null || classifier.trim().isEmpty())) {
             throw new ProcessException("at least one of thresholds and classifier is mandatory");
         }
-        List<Object> ranges = new ArrayList<Object>();
+        List<Object> ranges = new ArrayList<>();
         if (classifier != null && !classifier.trim().isEmpty()) {
             if (classes == null) {
                 classes = 5;

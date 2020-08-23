@@ -55,7 +55,7 @@ public class PropertiesFileFinder {
      * about each file and the {@code Locales} that it supports.
      */
     public List<PropertiesFileInfo> scan(String resourceDir) throws IOException {
-        List<SingleFileInfo> infoList = new ArrayList<SingleFileInfo>();
+        List<SingleFileInfo> infoList = new ArrayList<>();
 
         String path = getSelfPath();
         if (isJarPath(path)) {
@@ -245,7 +245,7 @@ public class PropertiesFileFinder {
      * @return a new list of {@code PropertiesFileInfo} objects
      */
     private List<PropertiesFileInfo> createReturnList(List<SingleFileInfo> infoList) {
-        List<PropertiesFileInfo> pfiList = new ArrayList<PropertiesFileInfo>();
+        List<PropertiesFileInfo> pfiList = new ArrayList<>();
 
         if (!infoList.isEmpty()) {
             Collections.sort(
@@ -258,7 +258,7 @@ public class PropertiesFileFinder {
                     });
 
             String curName = infoList.get(0).name;
-            List<Locale> locales = new ArrayList<Locale>();
+            List<Locale> locales = new ArrayList<>();
             ListIterator<SingleFileInfo> iter = infoList.listIterator();
             while (iter.hasNext()) {
                 SingleFileInfo sfi = iter.next();

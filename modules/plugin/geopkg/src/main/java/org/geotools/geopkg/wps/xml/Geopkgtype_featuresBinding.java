@@ -74,7 +74,7 @@ public class Geopkgtype_featuresBinding extends LayertypeBinding {
                 (QName) nameBinding.parse(null, (String) node.getChildValue("featuretype")));
         String pns = (String) node.getChildValue("propertynames");
         if (pns != null) {
-            Set<QName> qnames = new HashSet<QName>();
+            Set<QName> qnames = new HashSet<>();
             for (String pn : Arrays.asList(pns.split(","))) {
                 qnames.add((QName) nameBinding.parse(null, pn.trim()));
             }

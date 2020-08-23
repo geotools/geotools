@@ -282,12 +282,11 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                     new MetadataTablePrimaryKeyFinder(), new HeuristicPrimaryKeyFinder());
 
     /** Contains the SQL definition of the various virtual tables */
-    protected Map<String, VirtualTable> virtualTables =
-            new ConcurrentHashMap<String, VirtualTable>();
+    protected Map<String, VirtualTable> virtualTables = new ConcurrentHashMap<>();
 
     /** The listeners that are allowed to handle the connection lifecycle */
     protected List<ConnectionLifecycleListener> connectionLifecycleListeners =
-            new CopyOnWriteArrayList<ConnectionLifecycleListener>();
+            new CopyOnWriteArrayList<>();
 
     protected JDBCCallbackFactory callbackFactory = JDBCCallbackFactory.NULL;
 
@@ -347,7 +346,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
     /** Returns a live, immutable view of the virtual tables map (from name to definition) */
     public Map<String, VirtualTable> getVirtualTables() {
-        Map<String, VirtualTable> result = new HashMap<String, VirtualTable>();
+        Map<String, VirtualTable> result = new HashMap<>();
         for (String key : virtualTables.keySet()) {
             result.put(key, new VirtualTable(virtualTables.get(key)));
         }
@@ -546,7 +545,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      */
     public Map<Integer, Class<?>> getSqlTypeToClassMappings() {
         if (sqlTypeToClassMappings == null) {
-            sqlTypeToClassMappings = new HashMap<Integer, Class<?>>();
+            sqlTypeToClassMappings = new HashMap<>();
             dialect.registerSqlTypeToClassMappings(sqlTypeToClassMappings);
         }
 
@@ -564,7 +563,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      */
     public Map<String, Class<?>> getSqlTypeNameToClassMappings() {
         if (sqlTypeNameToClassMappings == null) {
-            sqlTypeNameToClassMappings = new HashMap<String, Class<?>>();
+            sqlTypeNameToClassMappings = new HashMap<>();
             dialect.registerSqlTypeNameToClassMappings(sqlTypeNameToClassMappings);
         }
 
@@ -581,7 +580,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      */
     public Map<Class<?>, Integer> getClassToSqlTypeMappings() {
         if (classToSqlTypeMappings == null) {
-            HashMap<Class<?>, Integer> classToSqlTypeMappings = new HashMap<Class<?>, Integer>();
+            HashMap<Class<?>, Integer> classToSqlTypeMappings = new HashMap<>();
             dialect.registerClassToSqlMappings(classToSqlTypeMappings);
             this.classToSqlTypeMappings = classToSqlTypeMappings;
         }
@@ -596,7 +595,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      */
     public Map<Integer, String> getSqlTypeToSqlTypeNameOverrides() {
         if (sqlTypeToSqlTypeNameOverrides == null) {
-            sqlTypeToSqlTypeNameOverrides = new HashMap<Integer, String>();
+            sqlTypeToSqlTypeNameOverrides = new HashMap<>();
             dialect.registerSqlTypeToSqlTypeNameOverrides(sqlTypeToSqlTypeNameOverrides);
         }
 
@@ -611,7 +610,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      */
     public ConcurrentHashMap<Integer, String> getDBsqlTypesCache() {
         if (dBsqlTypesCache == null) {
-            dBsqlTypesCache = new ConcurrentHashMap<Integer, String>();
+            dBsqlTypesCache = new ConcurrentHashMap<>();
         }
 
         return dBsqlTypesCache;
@@ -957,7 +956,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
         try {
             DatabaseMetaData metaData = cx.getMetaData();
-            Set<String> availableTableTypes = new HashSet<String>();
+            Set<String> availableTableTypes = new HashSet<>();
 
             ResultSet tableTypes = null;
             try {
@@ -968,7 +967,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             } finally {
                 closeSafe(tableTypes);
             }
-            Set<String> queryTypes = new HashSet<String>();
+            Set<String> queryTypes = new HashSet<>();
             for (String desiredTableType : dialect.getDesiredTablesType()) {
                 if (availableTableTypes.contains(desiredTableType)) {
                     queryTypes.add(desiredTableType);
@@ -1035,7 +1034,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                                 List<ColumnMetadata> metas =
                                         JDBCFeatureSource.getColumnMetadata(cx, vt, dialect, this);
 
-                                List<PrimaryKeyColumn> kcols = new ArrayList<PrimaryKeyColumn>();
+                                List<PrimaryKeyColumn> kcols = new ArrayList<>();
                                 for (String pkName : vt.getPrimaryKeyColumns()) {
                                     // look for the pk type
                                     Class binding = null;
@@ -2134,7 +2133,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             // if there is any lifecycle listener use it
             if (connectionLifecycleListeners.size() > 0) {
                 List<ConnectionLifecycleListener> locals =
-                        new ArrayList<ConnectionLifecycleListener>(connectionLifecycleListeners);
+                        new ArrayList<>(connectionLifecycleListeners);
                 cx = new LifecycleConnection(this, cx, locals);
             }
             return cx;
@@ -2185,7 +2184,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         }
 
         // more than one
-        List<Object> keyValues = new ArrayList<Object>();
+        List<Object> keyValues = new ArrayList<>();
         for (int i = 0; i < columns.size(); i++) {
             String o = dialect.getPkColumnValue(rs, columns.get(0), offset + i + 1);
             keyValues.add(o);
@@ -2425,7 +2424,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
     /** Extracts a set of FeatureId objects from the locks Map. */
     private Set<FeatureId> getLockedIds(Map locks) {
-        Set<FeatureId> ids = new HashSet<FeatureId>();
+        Set<FeatureId> ids = new HashSet<>();
         for (Object lock : locks.keySet()) {
             ids.add(getFilterFactory().featureId(lock.toString()));
         }
@@ -4238,7 +4237,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * iteration order as the primary key.
      */
     protected static LinkedHashSet<String> getColumnNames(PrimaryKey key) {
-        LinkedHashSet<String> pkColumnNames = new LinkedHashSet<String>();
+        LinkedHashSet<String> pkColumnNames = new LinkedHashSet<>();
         for (PrimaryKeyColumn pkcol : key.getColumns()) {
             pkColumnNames.add(pkcol.getName());
         }

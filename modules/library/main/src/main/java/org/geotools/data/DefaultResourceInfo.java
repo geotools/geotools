@@ -43,7 +43,7 @@ public class DefaultResourceInfo implements ResourceInfo {
         this.title = copy.getTitle();
         this.schema = copy.getSchema();
         this.name = copy.getName();
-        this.keywords = new HashSet<String>();
+        this.keywords = new HashSet<>();
         if (copy.getKeywords() != null) {
             this.keywords.addAll(copy.getKeywords());
         }

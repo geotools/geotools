@@ -640,6 +640,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
     protected abstract CoordinateOperation generateCoordinateOperation(String code)
             throws FactoryException;
 
+    @SuppressWarnings("unchecked")
     public synchronized Set<CoordinateOperation> createFromCoordinateReferenceSystemCodes(
             final String sourceCode, final String targetCode) throws FactoryException {
 
@@ -699,7 +700,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
      */
     private final class CachedFinder extends IdentifiedObjectFinder {
         /** Creates a finder for the underlying backing store. */
-        CachedFinder(Class type) {
+        CachedFinder(Class<? extends IdentifiedObject> type) {
             super(AbstractCachedAuthorityFactory.this, type);
         }
 

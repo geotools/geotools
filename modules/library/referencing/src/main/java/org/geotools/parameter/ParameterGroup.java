@@ -19,13 +19,7 @@
  */
 package org.geotools.parameter;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
@@ -118,9 +112,7 @@ public class ParameterGroup extends AbstractParameter implements ParameterValueG
         super(descriptor);
         ensureNonNull("values", values);
         this.values = new ArrayList<GeneralParameterValue>(values.length);
-        for (int i = 0; i < values.length; i++) {
-            this.values.add(values[i]);
-        }
+        this.values.addAll(Arrays.asList(values));
         final List<GeneralParameterDescriptor> parameters = descriptor.descriptors();
         final Map<GeneralParameterDescriptor, int[]> occurences =
                 new LinkedHashMap<GeneralParameterDescriptor, int[]>(
@@ -146,9 +138,7 @@ public class ParameterGroup extends AbstractParameter implements ParameterValueG
     public ParameterGroup(final Map<String, ?> properties, final GeneralParameterValue[] values) {
         super(createDescriptor(properties, values));
         this.values = new ArrayList<GeneralParameterValue>(values.length);
-        for (int i = 0; i < values.length; i++) {
-            this.values.add(values[i]);
-        }
+        this.values.addAll(Arrays.asList(values));
     }
 
     /**
@@ -423,6 +413,7 @@ public class ParameterGroup extends AbstractParameter implements ParameterValueG
      *
      * @return A copy of this group of parameter values.
      */
+    @SuppressWarnings("unchecked")
     @Override
     public ParameterGroup clone() {
         final ParameterGroup copy = (ParameterGroup) super.clone();

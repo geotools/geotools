@@ -199,7 +199,7 @@ public class AbstractDerivedCRS extends AbstractSingleCRS implements GeneralDeri
      * @since 2.5
      */
     protected AbstractDerivedCRS(
-            final Map<String, ?> properties,
+            final Map<String, Object> properties,
             final CoordinateReferenceSystem base,
             final MathTransform baseToDerived,
             final CoordinateSystem derivedCS)
@@ -208,7 +208,7 @@ public class AbstractDerivedCRS extends AbstractSingleCRS implements GeneralDeri
     }
 
     AbstractDerivedCRS(
-            final Map<String, ?> properties,
+            final Map<String, Object> properties,
             final OperationMethod method,
             final CoordinateReferenceSystem base,
             final MathTransform baseToDerived,

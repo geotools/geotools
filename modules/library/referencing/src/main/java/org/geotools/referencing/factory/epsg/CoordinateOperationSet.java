@@ -59,7 +59,7 @@ final class CoordinateOperationSet extends IdentifiedObjectSet {
     public boolean addAuthorityCode(final String code, final String crs) {
         if (crs != null) {
             if (projections == null) {
-                projections = new HashMap();
+                projections = new HashMap<>();
             }
             projections.put(code, crs);
         }

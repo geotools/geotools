@@ -372,6 +372,7 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
      * around for RFE #4093999 in Sun's bug database ("Relax constraint on placement of
      * this()/super() call in constructors").
      */
+    @SuppressWarnings("unchecked")
     private static ParameterDescriptor[] asDescriptors(
             final ParameterListDescriptor descriptor,
             final RegistryElementDescriptor operation,

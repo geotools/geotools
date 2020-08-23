@@ -106,7 +106,7 @@ public class DefaultDerivedCRS extends AbstractDerivedCRS implements DerivedCRS 
      * @since 2.5
      */
     public DefaultDerivedCRS(
-            final Map<String, ?> properties,
+            final Map<String, Object> properties,
             final CoordinateReferenceSystem base,
             final MathTransform baseToDerived,
             final CoordinateSystem derivedCS)
@@ -132,7 +132,7 @@ public class DefaultDerivedCRS extends AbstractDerivedCRS implements DerivedCRS 
      *     respectively.
      */
     public DefaultDerivedCRS(
-            final Map<String, ?> properties,
+            final Map<String, Object> properties,
             final OperationMethod method,
             final CoordinateReferenceSystem base,
             final MathTransform baseToDerived,

@@ -129,7 +129,7 @@ public final class ImagingParametersTest {
          * The parameter descriptor for the subsampling.
          */
         final ParameterDescriptor SPATIAL_SUBSAMPLING_X =
-                new DefaultParameterDescriptor(
+                new DefaultParameterDescriptor<>(
                         Citations.OGC,
                         "xPeriod",
                         Double.class, // Value class (mandatory)

@@ -363,7 +363,7 @@ public final class EarthGravitationalModel extends VerticalTransform {
     public ParameterValueGroup getParameterValues() {
         return new ParameterGroup(
                 getParameterDescriptors(),
-                new ParameterValue[] {new Parameter(Provider.ORDER, nmax)});
+                new ParameterValue[] {new Parameter<>(Provider.ORDER, nmax)});
     }
 
     /**

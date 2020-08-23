@@ -97,7 +97,7 @@ public final class ParametersTest {
     @Test
     public void testRangeIntegers() {
         Parameter<Integer> param;
-        param = new Parameter(DefaultParameterDescriptor.create("Range", 15, -30, +40));
+        param = new Parameter<>(DefaultParameterDescriptor.create("Range", 15, -30, +40));
         assertEquals("intValue", 15, param.intValue());
         assertEquals("doubleValue", 15, param.doubleValue(), 0.0);
         param.setValue(12);
@@ -134,7 +134,9 @@ public final class ParametersTest {
     @Test
     public void testRangeDoubles() {
         Parameter<Double> param;
-        param = new Parameter(DefaultParameterDescriptor.create("Range", 15.0, -30.0, +40.0, null));
+        param =
+                new Parameter<>(
+                        DefaultParameterDescriptor.create("Range", 15.0, -30.0, +40.0, null));
         assertEquals("intValue", 15, param.intValue());
         assertEquals("doubleValue", 15, param.doubleValue(), 0.0);
         param.setValue(12.0);
@@ -340,7 +342,7 @@ public final class ParametersTest {
 
     /** Test parameter values group. */
     @Test
-    @SuppressWarnings("serial")
+    @SuppressWarnings({"serial", "unchecked"})
     public void testGroup() throws IOException {
         final ParameterWriter writer = new ParameterWriter(new StringWriter());
         final Integer ONE = 1;

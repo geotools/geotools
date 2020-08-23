@@ -897,7 +897,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @throws FactoryException if the object creation failed.
      */
     public ProjectedCRS createProjectedCRS(
-            Map<String, ?> properties,
+            Map<String, Object> properties,
             OperationMethod method,
             GeographicCRS base,
             MathTransform baseToDerived,

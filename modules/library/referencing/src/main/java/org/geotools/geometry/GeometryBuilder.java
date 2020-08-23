@@ -17,7 +17,6 @@
 package org.geotools.geometry;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -371,10 +370,10 @@ public class GeometryBuilder {
         LineSegment edge4 = getGeometryFactory().createLineSegment(four, one);
 
         List<OrientableCurve> edges = new ArrayList<OrientableCurve>();
-        edges.add(createCurve(Arrays.asList(edge1)));
-        edges.add(createCurve(Arrays.asList(edge2)));
-        edges.add(createCurve(Arrays.asList(edge3)));
-        edges.add(createCurve(Arrays.asList(edge4)));
+        edges.add(createCurve(Collections.singletonList(edge1)));
+        edges.add(createCurve(Collections.singletonList(edge2)));
+        edges.add(createCurve(Collections.singletonList(edge3)));
+        edges.add(createCurve(Collections.singletonList(edge4)));
         return createRing(edges);
     }
 

@@ -321,6 +321,7 @@ public class IdentifiedObjectFinder {
      */
     final IdentifiedObject createFromCodes(final IdentifiedObject object, boolean specific)
             throws FactoryException {
+        @SuppressWarnings("unchecked")
         final Set<String> codes =
                 specific ? getSpecificCodeCandidates(object) : getCodeCandidates(object);
         for (final Iterator it = codes.iterator(); it.hasNext(); ) {

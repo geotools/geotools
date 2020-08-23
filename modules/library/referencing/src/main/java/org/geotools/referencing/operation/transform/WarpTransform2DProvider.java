@@ -111,6 +111,7 @@ public class WarpTransform2DProvider extends MathTransformProvider {
      * @return The created math transform.
      * @throws ParameterNotFoundException if a required parameter was not found.
      */
+    @SuppressWarnings("unchecked")
     protected MathTransform createMathTransform(final ParameterValueGroup values)
             throws ParameterNotFoundException {
         final int degree = intValue(DEGREE, values);
@@ -218,7 +219,8 @@ public class WarpTransform2DProvider extends MathTransformProvider {
      * @param group The parameter value group to search into.
      * @return The requested parameter value, or {@code 1} if none.
      */
-    private static float scale(final ParameterDescriptor param, final ParameterValueGroup group)
+    private static float scale(
+            final ParameterDescriptor<Float> param, final ParameterValueGroup group)
             throws ParameterNotFoundException {
         final Object value = value(param, group);
         return (value != null) ? ((Number) value).floatValue() : 1;

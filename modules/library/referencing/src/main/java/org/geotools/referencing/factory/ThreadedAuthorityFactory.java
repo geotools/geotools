@@ -296,7 +296,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
      *     {@linkplain java.util.Collections#EMPTY_SET empty set}.
      * @throws FactoryException if access to the underlying database failed.
      */
-    public Set<String> getAuthorityCodes(final Class type) throws FactoryException {
+    public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type)
+            throws FactoryException {
         return getBackingStore().getAuthorityCodes(type);
     }
 
@@ -825,6 +826,7 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
     }
 
     /** Returns an operation from coordinate reference system codes. */
+    @SuppressWarnings("unchecked")
     @Override
     public synchronized Set<CoordinateOperation> createFromCoordinateReferenceSystemCodes(
             final String sourceCode, final String targetCode) throws FactoryException {

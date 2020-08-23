@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import javax.measure.Unit;
+import javax.measure.quantity.Length;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.quality.PositionalAccuracyImpl;
@@ -370,7 +371,8 @@ public class AbstractCoordinateOperation extends AbstractIdentifiedObject
                             final QuantitativeResult quantity = (QuantitativeResult) result;
                             final Collection<? extends Record> records = quantity.getValues();
                             if (records != null) {
-                                final Unit unit = quantity.getValueUnit();
+                                @SuppressWarnings("unchecked")
+                                final Unit<Length> unit = (Unit<Length>) quantity.getValueUnit();
                                 if (unit != null && SI.METRE.isCompatible(unit)) {
                                     for (final Record record : records) {
                                         for (final Object value : record.getAttributes().values()) {

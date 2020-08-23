@@ -84,11 +84,11 @@ public class CartesianAuthorityFactory extends DirectAuthorityFactory
     public Set<String> getAuthorityCodes(Class<? extends IdentifiedObject> type)
             throws FactoryException {
         if (type.isAssignableFrom(EngineeringCRS.class)) {
-            final Set set = new LinkedHashSet();
+            final Set<String> set = new LinkedHashSet<>();
             set.add(GENERIC_2D_CODE);
             return set;
         } else {
-            return Collections.EMPTY_SET;
+            return Collections.emptySet();
         }
     }
 

@@ -341,6 +341,7 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
      * serialization. The serialised set of identified objects is disconnected from the {@linkplain
      * #factory underlying factory}.
      */
+    @SuppressWarnings("unchecked")
     protected Object writeReplace() throws ObjectStreamException {
         return new LinkedHashSet(this);
     }
@@ -371,6 +372,7 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
          * @throws BackingStoreException if the underlying factory failed to creates the coordinate
          *     operation.
          */
+        @SuppressWarnings("unchecked")
         private void toNext() throws BackingStoreException {
             while (iterator.hasNext()) {
                 final Map.Entry entry = (Map.Entry) iterator.next();

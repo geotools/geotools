@@ -41,7 +41,7 @@ final class OldReferencingObjectCache {
      *   <li>WeakReference used to hold a referencing object (may be cleaned up at any time
      * </ul>
      */
-    private final LinkedHashMap pool = new LinkedHashMap(32, 0.75f, true);
+    private final LinkedHashMap<Object, Object> pool = new LinkedHashMap<>(32, 0.75f, true);
 
     /**
      * The maximum number of objects to keep by strong reference. If a greater amount of objects are
@@ -94,8 +94,9 @@ final class OldReferencingObjectCache {
         pool.put(key, object);
         int toReplace = pool.size() - maxStrongReferences;
         if (toReplace > 0) {
-            for (final Iterator it = pool.entrySet().iterator(); it.hasNext(); ) {
-                final Map.Entry entry = (Map.Entry) it.next();
+            for (final Iterator<Map.Entry<Object, Object>> it = pool.entrySet().iterator();
+                    it.hasNext(); ) {
+                final Map.Entry<Object, Object> entry = it.next();
                 final Object value = entry.getValue();
                 if (value instanceof Reference) {
                     if (((Reference) value).get() == null) {
@@ -103,7 +104,7 @@ final class OldReferencingObjectCache {
                     }
                     continue;
                 }
-                entry.setValue(new WeakReference(value));
+                entry.setValue(new WeakReference<>(value));
                 if (--toReplace == 0) {
                     break;
                 }

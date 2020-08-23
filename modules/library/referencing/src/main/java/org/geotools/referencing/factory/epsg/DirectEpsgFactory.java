@@ -752,7 +752,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
     public InternationalString getDescriptionText(final String code) throws FactoryException {
         final String primaryKey = trimAuthority(code);
         for (int i = 0; i < TABLES_INFO.length; i++) {
-            final Set codes = getAuthorityCodes0(TABLES_INFO[i].type);
+            final Set<String> codes = getAuthorityCodes0(TABLES_INFO[i].type);
             if (codes instanceof AuthorityCodes) {
                 final String text = ((AuthorityCodes) codes).asMap().get(primaryKey);
                 if (text != null) {
@@ -2321,10 +2321,10 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                     /*
                      * Now creates the parameter descriptor.
                      */
-                    final ParameterDescriptor descriptor;
+                    final ParameterDescriptor<? extends Object> descriptor;
                     final Map<String, Object> properties = createProperties(name, epsg, remarks);
                     descriptor =
-                            new DefaultParameterDescriptor(
+                            new DefaultParameterDescriptor<>(
                                     properties, type, null, null, null, null, unit, true);
                     returnValue = ensureSingleton(descriptor, returnValue, code);
                 }
@@ -2357,7 +2357,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                                 + " ORDER BY SORT_ORDER");
         stmt.setInt(1, Integer.parseInt(method));
         try (ResultSet results = stmt.executeQuery()) {
-            final List<ParameterDescriptor> descriptors = new ArrayList<ParameterDescriptor>();
+            final List<ParameterDescriptor> descriptors = new ArrayList<>();
             while (results.next()) {
                 final String param = getString(results, 1, method);
                 descriptors.add(buffered.createParameterDescriptor(param));
@@ -2374,6 +2374,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      * @param parameters The parameter values to fill.
      * @throws SQLException if a SQL statement failed.
      */
+    @SuppressWarnings("unchecked")
     private void fillParameterValues(
             final String method, final String operation, final ParameterValueGroup parameters)
             throws FactoryException, SQLException {
@@ -2400,7 +2401,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
             while (result.next()) {
                 final String name = getString(result, 1, operation);
                 final double value = result.getDouble(2);
-                final Unit<?> unit;
+                final Unit unit;
                 Object reference;
                 if (result.wasNull()) {
                     /*
@@ -3076,7 +3077,9 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      *     for what we want (put operations with unknow accuracy last). Unfortunatly, I don't know
      *     yet how to instruct Access to put null values last using standard SQL ("IIF" is not
      *     standard, and Access doesn't seem to understand "CASE ... THEN" clauses).
+     * @return
      */
+    @SuppressWarnings("unchecked")
     @Override
     public synchronized Set createFromCoordinateReferenceSystemCodes(
             final String sourceCode, final String targetCode) throws FactoryException {
@@ -3343,13 +3346,14 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
     }
 
     /** Constructs an exception for recursive calls. */
-    private static FactoryException recursiveCall(final Class type, final String code) {
+    private static FactoryException recursiveCall(
+            final Class<? extends IdentifiedObject> type, final String code) {
         return new FactoryException(Errors.format(ErrorKeys.RECURSIVE_CALL_$2, type, code));
     }
 
     /** Constructs an exception for a database failure. */
     private static FactoryException databaseFailure(
-            final Class type, final String code, final SQLException cause) {
+            final Class<? extends Object> type, final String code, final SQLException cause) {
         return new FactoryException(
                 Errors.format(ErrorKeys.DATABASE_FAILURE_$2, type, code), cause);
     }
@@ -3463,8 +3467,9 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                 }
                 it.remove();
             }
-            for (final Iterator it = statements.values().iterator(); it.hasNext(); ) {
-                ((PreparedStatement) it.next()).close();
+            for (final Iterator<PreparedStatement> it = statements.values().iterator();
+                    it.hasNext(); ) {
+                (it.next()).close();
                 it.remove();
             }
             shutdown(true);

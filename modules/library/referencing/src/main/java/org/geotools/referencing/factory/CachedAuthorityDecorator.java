@@ -187,7 +187,8 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
         return authority.getAuthority();
     }
 
-    public Set<String> getAuthorityCodes(Class<? extends IdentifiedObject> type) throws FactoryException {
+    public Set<String> getAuthorityCodes(Class<? extends IdentifiedObject> type)
+            throws FactoryException {
         return authority.getAuthorityCodes(type);
     }
 
@@ -756,7 +757,8 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
     //
     // AbstractAuthorityFactory
     //
-    public IdentifiedObjectFinder getIdentifiedObjectFinder(Class<? extends IdentifiedObject> type) throws FactoryException {
+    public IdentifiedObjectFinder getIdentifiedObjectFinder(Class<? extends IdentifiedObject> type)
+            throws FactoryException {
         return delegate.getIdentifiedObjectFinder(type);
     }
 

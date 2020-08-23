@@ -74,7 +74,7 @@ abstract class AuthorityFactoryProxy {
      * The types that factories can be create. The most specific types must appear first in this
      * list.
      */
-    private static final Class<? extends IdentifiedObject>[] TYPES = {
+    private static final Class /*<? extends IdentifiedObject>*/[] TYPES = {
         CoordinateOperation.class,
         OperationMethod.class,
         ParameterDescriptor.class,
@@ -154,6 +154,7 @@ abstract class AuthorityFactoryProxy {
     public static Class<? extends IdentifiedObject> getType(
             final Class<? extends IdentifiedObject> type) throws IllegalArgumentException {
         for (int i = 0; i < TYPES.length; i++) {
+            @SuppressWarnings("unchecked")
             final Class<? extends IdentifiedObject> candidate = TYPES[i];
             if (candidate.isAssignableFrom(type)) {
                 return candidate;
@@ -173,6 +174,7 @@ abstract class AuthorityFactoryProxy {
      * Returns the set of authority codes.
      *
      * @throws FactoryException if access to the underlying database failed.
+     * @return
      */
     public final Set<String> getAuthorityCodes() throws FactoryException {
         return getAuthorityFactory().getAuthorityCodes(getType());

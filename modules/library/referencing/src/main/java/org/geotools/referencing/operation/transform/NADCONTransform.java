@@ -527,7 +527,8 @@ public class NADCONTransform extends AbstractMathTransform
          * The default value is "conus.los".
          */
         public static final ParameterDescriptor<URI> LONG_DIFF_FILE =
-                new DefaultParameterDescriptor<>("Longitude difference file", URI.class, null, null);
+                new DefaultParameterDescriptor<>(
+                        "Longitude difference file", URI.class, null, null);
 
         /** The parameters group. */
         static final ParameterDescriptorGroup PARAMETERS =

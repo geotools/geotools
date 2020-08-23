@@ -49,9 +49,8 @@ public class Descriptors {
      * @see #wrapAttributeType(AttributeType)
      */
     public static final List wrapAttributeTypes(List<AttributeType> typeList) {
-        List descriptors = new ArrayList(typeList.size());
-        for (Iterator i = typeList.iterator(); i.hasNext(); ) {
-            AttributeType attributeType = (AttributeType) i.next();
+        List<AttributeDescriptor> descriptors = new ArrayList<>(typeList.size());
+        for (AttributeType attributeType : typeList) {
             descriptors.add(wrapAttributeType(attributeType));
         }
         return descriptors;
@@ -341,9 +340,7 @@ public class Descriptors {
         if (node.getType() == restrict.getType()) {
             return restrict;
         }
-        for (AttributeType<?> type = restrict.getType();
-                type != null;
-                type = type.getSuper()) {
+        for (AttributeType type = restrict.getType(); type != null; type = type.getSuper()) {
             if (node.getType().equals(type)) {
                 return restrict;
             }
@@ -351,6 +348,7 @@ public class Descriptors {
         throw new IllegalArgumentException("Cannot restrict provided schema");
     }
 
+    @SuppressWarnings("unchecked")
     Collection restriction(Collection schema, Collection restrict, Collection restriction) {
 
         if (schema.size() != restrict.size()) {
@@ -570,12 +568,12 @@ public class Descriptors {
      * when relevant.
      */
     // @SuppressWarnings("unchecked")
-    public static List<? extends Descriptor> list(AttributeType type) {
+    public static List /*<? extends Descriptor>*/ list(AttributeType type) {
 
-        ArrayList list = new ArrayList();
+        ArrayList list = new ArrayList<>();
 
         if (type instanceof ComplexType) {
-            list = new ArrayList(((ComplexType) type).getDescriptors());
+            list = new ArrayList<>(((ComplexType) type).getDescriptors());
         }
 
         return list;

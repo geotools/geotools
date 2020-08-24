@@ -122,6 +122,7 @@ import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.expression.Subtract;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.identity.GmlObjectId;
+import org.opengis.filter.identity.Identifier;
 import org.opengis.filter.identity.ResourceId;
 import org.opengis.filter.identity.Version;
 import org.opengis.filter.sort.SortBy;
@@ -232,7 +233,7 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return new NotImpl(filter);
     }
 
-    public Id id(Set id) {
+    public Id id(Set<? extends Identifier> id) {
         return new FidFilterImpl(id);
     }
 

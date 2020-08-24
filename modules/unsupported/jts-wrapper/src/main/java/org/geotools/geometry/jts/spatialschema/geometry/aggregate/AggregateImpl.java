@@ -36,7 +36,7 @@ import org.opengis.geometry.aggregate.Aggregate;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public abstract class AggregateImpl extends GeometryImpl implements Aggregate {
-    private Set<Primitive> elements;
+    private Set elements;
 
     public AggregateImpl() {
         super();

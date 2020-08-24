@@ -256,9 +256,9 @@ public class JTSGeometryFactory implements GeometryFactory {
      *     java.util.List)
      */
     public ArcStringByBulge createArcStringByBulge(
-            final List<Position> points,
+            final List<org.opengis.geometry.coordinate.Position> points,
             final double[] bulges,
-            final List /*<double[]>*/ normals) {
+            final List<double[]> normals) {
         return null;
     }
 

@@ -80,8 +80,7 @@ public class SolrDataStore extends ContentDataStore {
     private SolrAttribute pk = null;
 
     // Attributes configurations of the store entries
-    private Map<String, SolrLayerConfiguration> solrConfigurations =
-            new ConcurrentHashMap<>();
+    private Map<String, SolrLayerConfiguration> solrConfigurations = new ConcurrentHashMap<>();
 
     HttpSolrClient solrServer;
 

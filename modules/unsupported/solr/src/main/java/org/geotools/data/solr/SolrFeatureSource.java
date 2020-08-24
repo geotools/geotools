@@ -117,9 +117,7 @@ public class SolrFeatureSource extends ContentFeatureSource {
                             getSchema(), store.getSolrServer(), q, this.getDataStore());
             // if post filter, wrap it
             if (postFilter != null && postFilter != Filter.INCLUDE) {
-                reader =
-                        new FilteringFeatureReader<>(
-                                reader, postFilter);
+                reader = new FilteringFeatureReader<>(reader, postFilter);
             }
             try {
                 if (reader.hasNext()) {
@@ -216,9 +214,7 @@ public class SolrFeatureSource extends ContentFeatureSource {
             }
             reader = new SolrFeatureReader(querySchema, store.getSolrServer(), q, store);
             if (postFilter != null && postFilter != Filter.INCLUDE) {
-                reader =
-                        new FilteringFeatureReader<>(
-                                reader, postFilter);
+                reader = new FilteringFeatureReader<>(reader, postFilter);
                 if (!returnedSchema.equals(querySchema))
                     reader = new ReTypeFeatureReader(reader, returnedSchema);
             }
@@ -389,8 +385,7 @@ public class SolrFeatureSource extends ContentFeatureSource {
 
                 String[] extraAttributes = extractor.getAttributeNames();
                 if (extraAttributes != null && extraAttributes.length > 0) {
-                    List<String> allAttributes =
-                            new ArrayList<>(Arrays.asList(propertyNames));
+                    List<String> allAttributes = new ArrayList<>(Arrays.asList(propertyNames));
                     for (String extraAttribute : extraAttributes) {
                         if (!allAttributes.contains(extraAttribute))
                             allAttributes.add(extraAttribute);

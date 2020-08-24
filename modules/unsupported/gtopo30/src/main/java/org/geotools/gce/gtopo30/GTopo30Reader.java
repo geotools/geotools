@@ -570,7 +570,7 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader
                     parameters.parameter("false_northing").setValue(0.0);
                     final ReferencingFactoryContainer factories =
                             ReferencingFactoryContainer.instance(null);
-                    final Map<String, String> properties =
+                    final Map<String, Object> properties =
                             Collections.singletonMap(
                                     "name", "WGS 84 / Antartic Polar Stereographic");
 

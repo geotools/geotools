@@ -614,7 +614,7 @@ public final class GeometryUtils {
         final List<Curve> generators = (List) ring.getGenerators();
         for (int i = 0; i < generators.size(); i++) {
             final Curve curve = (Curve) generators.get(i);
-            final List<CurveSegments> segments = curve.getSegments();
+            final List segments = curve.getSegments();
             for (int j = 0; j < segments.size(); j++) {
                 final CurveSegment curveSegment = (CurveSegment) segments.get(j);
                 if (curveSegment instanceof LineString) {

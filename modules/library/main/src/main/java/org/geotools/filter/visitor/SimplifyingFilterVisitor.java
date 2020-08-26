@@ -25,7 +25,6 @@ import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 import org.geotools.filter.FilterAttributeExtractor;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;
@@ -426,10 +425,13 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
                 PropertyName pn = (PropertyName) pb.getExpression();
                 String pName = pn.getPropertyName();
                 Filter nullFilter = null;
-                if(isNillable(pName)) {
-                	nullFilter = ff.isNull(pb.getExpression());
+                if (isNillable(pName)) {
+                    nullFilter = ff.isNull(pb.getExpression());
                 }
-                return ff.or(Stream.of(lt,gt,nullFilter).filter(Objects::nonNull).collect(Collectors.toList()));
+                return ff.or(
+                        Stream.of(lt, gt, nullFilter)
+                                .filter(Objects::nonNull)
+                                .collect(Collectors.toList()));
             } else if (simplified instanceof PropertyIsEqualTo) {
                 PropertyIsEqualTo pe = (PropertyIsEqualTo) simplified;
                 return ff.notEqual(pe.getExpression1(), pe.getExpression2(), pe.isMatchingCase());
@@ -622,7 +624,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
     public void setRangeSimplicationEnabled(boolean rangeSimplicationEnabled) {
         this.rangeSimplicationEnabled = rangeSimplicationEnabled;
     }
-    
+
     /**
      * Returns if a property can contain null values, or not. If we don't have the featureType
      * information, or we don't know the property, we are going to assume the property is nillable

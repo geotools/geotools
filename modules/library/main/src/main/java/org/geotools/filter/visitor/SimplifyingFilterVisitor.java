@@ -20,11 +20,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;
@@ -419,19 +416,19 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
             } else if (simplified == Filter.EXCLUDE) {
                 return Filter.INCLUDE;
             } else if (simplified instanceof PropertyIsBetween) {
+                List<Filter> orFilters = new ArrayList<>();
                 PropertyIsBetween pb = (PropertyIsBetween) simplified;
                 Filter lt = ff.less(pb.getExpression(), pb.getLowerBoundary());
                 Filter gt = ff.greater(pb.getExpression(), pb.getUpperBoundary());
+                orFilters.add(lt);
+                orFilters.add(gt);
                 PropertyName pn = (PropertyName) pb.getExpression();
                 String pName = pn.getPropertyName();
-                Filter nullFilter = null;
                 if (isNillable(pName)) {
-                    nullFilter = ff.isNull(pb.getExpression());
+                    // the property may have a NULL value, we need to vouch for it
+                    orFilters.add(ff.isNull(pb.getExpression()));
                 }
-                return ff.or(
-                        Stream.of(lt, gt, nullFilter)
-                                .filter(Objects::nonNull)
-                                .collect(Collectors.toList()));
+                return ff.or(orFilters);
             } else if (simplified instanceof PropertyIsEqualTo) {
                 PropertyIsEqualTo pe = (PropertyIsEqualTo) simplified;
                 return ff.notEqual(pe.getExpression1(), pe.getExpression2(), pe.isMatchingCase());

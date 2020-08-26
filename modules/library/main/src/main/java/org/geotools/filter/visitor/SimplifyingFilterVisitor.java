@@ -20,11 +20,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.geotools.filter.FilterAttributeExtractor;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;
+import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.And;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.BinaryLogicOperator;
@@ -418,7 +423,13 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
                 PropertyIsBetween pb = (PropertyIsBetween) simplified;
                 Filter lt = ff.less(pb.getExpression(), pb.getLowerBoundary());
                 Filter gt = ff.greater(pb.getExpression(), pb.getUpperBoundary());
-                return ff.or(lt, gt);
+                PropertyName pn = (PropertyName) pb.getExpression();
+                String pName = pn.getPropertyName();
+                Filter nullFilter = null;
+                if(isNillable(pName)) {
+                	nullFilter = ff.isNull(pb.getExpression());
+                }
+                return ff.or(Stream.of(lt,gt,nullFilter).filter(Objects::nonNull).collect(Collectors.toList()));
             } else if (simplified instanceof PropertyIsEqualTo) {
                 PropertyIsEqualTo pe = (PropertyIsEqualTo) simplified;
                 return ff.notEqual(pe.getExpression1(), pe.getExpression2(), pe.isMatchingCase());
@@ -610,5 +621,18 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
      */
     public void setRangeSimplicationEnabled(boolean rangeSimplicationEnabled) {
         this.rangeSimplicationEnabled = rangeSimplicationEnabled;
+    }
+    
+    /**
+     * Returns if a property can contain null values, or not. If we don't have the featureType
+     * information, or we don't know the property, we are going to assume the property is nillable
+     * to stay on the safe side
+     */
+    private boolean isNillable(String name) {
+        if (featureType == null) {
+            return true;
+        }
+        PropertyDescriptor descriptor = featureType.getDescriptor(name);
+        return descriptor == null || descriptor.isNillable();
     }
 }

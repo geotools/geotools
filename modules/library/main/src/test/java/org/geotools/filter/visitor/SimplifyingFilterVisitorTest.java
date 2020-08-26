@@ -20,19 +20,28 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import junit.framework.TestCase;
+
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.filter.function.math.FilterFunction_random;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor.FIDValidator;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.*;
+import org.opengis.filter.And;
+import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory;
+import org.opengis.filter.Id;
+import org.opengis.filter.Not;
+import org.opengis.filter.Or;
+import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.identity.Identifier;
+
+import junit.framework.TestCase;
 
 public class SimplifyingFilterVisitorTest extends TestCase {
 
@@ -239,7 +248,41 @@ public class SimplifyingFilterVisitorTest extends TestCase {
         Filter f = ff.not(ff.between(prop, l10, l20));
         Filter result = (Filter) f.accept(simpleVisitor, null);
         assertEquals(
+                ff.or(Arrays.asList((Filter) ff.less(prop, l10), ff.greater(prop, l20), ff.isNull(prop))), result);
+    }
+    
+    public void testNegateBetweenWithNullability() {
+    	SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+        tb.nillable(true);
+        tb.add("prop", String.class);
+        tb.nillable(false);
+        tb.add("prop2", String.class);
+        tb.setName("test");
+    	
+        //when FeatureType is null
+        PropertyName prop = ff.property("prop");
+        Literal l10 = ff.literal(10);
+        Literal l20 = ff.literal(20);
+        Filter f = ff.not(ff.between(prop, l10, l20));
+        Filter result = (Filter) f.accept(simpleVisitor, null);
+        assertEquals(
+                ff.or(Arrays.asList((Filter) ff.less(prop, l10), ff.greater(prop, l20), ff.isNull(prop))), result);
+
+        //when FeatureType is not null and property is nullable
+        simpleVisitor.setFeatureType(tb.buildFeatureType());
+        prop = ff.property("prop");
+        f = ff.not(ff.between(prop, l10, l20));
+        result = (Filter) f.accept(simpleVisitor, null);
+        assertEquals(
+                ff.or(Arrays.asList((Filter) ff.less(prop, l10), ff.greater(prop, l20), ff.isNull(prop))), result);
+        
+      //when FeatureType is not null and property is not nullable
+        prop = ff.property("prop2");
+        f = ff.not(ff.between(prop, l10, l20));
+        result = (Filter) f.accept(simpleVisitor, null);
+        assertEquals(
                 ff.or(Arrays.asList((Filter) ff.less(prop, l10), ff.greater(prop, l20))), result);
+        
     }
 
     public void testDoubleNegation() {

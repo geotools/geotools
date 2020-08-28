@@ -283,13 +283,17 @@ public class ClipProcess implements VectorProcess {
             if (preserveZ && !geom.equalsExact(clipped)) {
                 // Check if the clipped geometry has 3 ordinates across entire area.
                 GeometryEditor editor = new GeometryEditor();
-                result = editor.edit(result, new GeometryEditor.CoordinateOperation() {
-                    @Override
-                    public Coordinate[] edit(Coordinate[] coordinates, Geometry geometry) {
-                          CoordinateArrays.enforceConsistency(coordinates, 3, 0);
-                        return coordinates;
-                    }
-                });
+                result =
+                        editor.edit(
+                                result,
+                                new GeometryEditor.CoordinateOperation() {
+                                    @Override
+                                    public Coordinate[] edit(
+                                            Coordinate[] coordinates, Geometry geometry) {
+                                        return CoordinateArrays.enforceConsistency(
+                                                coordinates, 3, 0);
+                                    }
+                                });
                 // for polygons we need to go idw, for points and multipoints idw will do and will
                 // not
                 // add much overhead (it has optimizations for points that were already in the

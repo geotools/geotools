@@ -212,7 +212,7 @@ public class CircularString extends LineString implements SingleCurvedGeometry<L
         return "CircularString";
     }
 
-    protected Geometry reverseInternal() {
+    public CircularString reverse() {
         // reverse the control points
         double[] reversed = new double[controlPoints.length];
         System.arraycopy(controlPoints, 0, reversed, 0, controlPoints.length);

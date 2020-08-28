@@ -173,7 +173,7 @@ public class CircularRing extends LinearRing
         return new CircularRing(ncp, factory, delegate.getTolerance());
     }
 
-    public Geometry reverseInternal() {
+    public CircularRing reverse() {
         double[] controlPoints = delegate.controlPoints;
         GrowableOrdinateArray array = new GrowableOrdinateArray();
         array.addAll(controlPoints);

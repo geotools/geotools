@@ -188,6 +188,10 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
     }
 
     public CompoundCurve reverse() {
+        return (CompoundCurve) super.reverse();
+    }
+
+    public CompoundCurve reverseInternal() {
         // reverse the component, and reverse each component internal elements
         List<LineString> reversedComponents = new ArrayList<>(components.size());
         for (LineString ls : components) {

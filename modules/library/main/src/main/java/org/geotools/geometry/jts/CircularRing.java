@@ -174,6 +174,10 @@ public class CircularRing extends LinearRing
     }
 
     public CircularRing reverse() {
+        return (CircularRing) super.reverse();
+    }
+
+    public CircularRing reverseInternal() {
         double[] controlPoints = delegate.controlPoints;
         GrowableOrdinateArray array = new GrowableOrdinateArray();
         array.addAll(controlPoints);

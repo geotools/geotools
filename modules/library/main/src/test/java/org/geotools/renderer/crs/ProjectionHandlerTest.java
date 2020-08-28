@@ -1576,4 +1576,27 @@ public class ProjectionHandlerTest {
                 ProjectionHandlerFinder.getHandler(worldWGS84, rotatedPolar, true);
         assertThat(handler, instanceOf(WrappingProjectionHandler.class));
     }
+
+    @Test
+    public void testAzEqFalseOrigins() throws Exception {
+        String wkt =
+                "PROJCS[\"equi7_antarctica\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Azimuthal_Equidistant\"],PARAMETER[\"false_easting\",3714266.97719],PARAMETER[\"false_northing\",3402016.50625],PARAMETER[\"central_meridian\",0.0],PARAMETER[\"latitude_of_origin\",-90.0],UNIT[\"Meter\",1.0]]";
+        CoordinateReferenceSystem crs = CRS.parseWKT(wkt);
+        double beyond = 27000000;
+        double cx = 3714266.97719; // false easting
+        double cy = 3402016.50625; // false northing
+        ReferencedEnvelope re =
+                new ReferencedEnvelope(cx - beyond, cx + beyond, cy - beyond, cy + beyond, crs);
+
+        ProjectionHandler ph =
+                ProjectionHandlerFinder.getHandler(re, DefaultGeographicCRS.WGS84, false);
+        assertNotNull(ph);
+        List<ReferencedEnvelope> envelopes = ph.getQueryEnvelopes();
+        assertEquals(1, envelopes.size());
+        ReferencedEnvelope qe = envelopes.get(0);
+        assertEquals(-180, qe.getMinX(), 1e-3);
+        assertEquals(-90, qe.getMinY(), 1e-3);
+        assertEquals(180, qe.getMaxX(), 1e-3);
+        assertEquals(90, qe.getMaxY(), 1e-3);
+    }
 }

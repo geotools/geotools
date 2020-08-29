@@ -76,7 +76,8 @@ public class DirectoryFeatureStore extends DirectoryFeatureSource implements Sim
         fstore.setTransaction(transaction);
     }
 
-    public List<FeatureId> addFeatures(FeatureCollection collection) throws IOException {
+    public List<FeatureId> addFeatures(
+            FeatureCollection<SimpleFeatureType, SimpleFeature> collection) throws IOException {
         return fstore.addFeatures(collection);
     }
 

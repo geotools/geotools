@@ -155,9 +155,9 @@ public class GeometryCollector {
         }
 
         // see if all are of the same base geometric type
-        Class result = baseType(geometries.get(0).getClass());
+        Class<? extends Geometry> result = baseType(geometries.get(0).getClass());
         for (int i = 1; i < geometries.size(); i++) {
-            Class curr = geometries.get(i).getClass();
+            Class<? extends Geometry> curr = geometries.get(i).getClass();
             if (curr != result && !(result.isAssignableFrom(curr))) {
                 return GeometryCollection.class;
             }
@@ -175,7 +175,7 @@ public class GeometryCollector {
         }
     }
 
-    private Class baseType(Class geometry) {
+    private Class<? extends Geometry> baseType(Class<? extends Geometry> geometry) {
         if (Polygon.class.isAssignableFrom(geometry)) {
             return Polygon.class;
         } else if (LineString.class.isAssignableFrom(geometry)) {

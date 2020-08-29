@@ -417,7 +417,7 @@ public class InterpolateFunction implements Function {
                                                     color1.getBlue())),
                                     0,
                                     255);
-            return (T) new Color(r, g, b);
+            return context.cast(new Color(r, g, b));
 
         } else { // assume numeric
             Double value1 = interpPoints.get(segment).getValue(object);
@@ -475,7 +475,7 @@ public class InterpolateFunction implements Function {
                                                     color1.getBlue())),
                                     0,
                                     255);
-            return (T) new Color(r, g, b);
+            return context.cast(new Color(r, g, b));
 
         } else { // assume numeric
             Double value1 = interpPoints.get(segment).getValue(object);
@@ -542,7 +542,7 @@ public class InterpolateFunction implements Function {
             }
             int b = (int) clamp(Math.round(doCubic(lookupValue, xi, yi)), 0, 255);
 
-            return (T) new Color(r, g, b);
+            return context.cast(new Color(r, g, b));
 
         } else { // numeric
             for (int i = segment - 2, k = 0; k < 4; i++, k++) {

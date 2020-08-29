@@ -26,7 +26,6 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.LinearRing;
@@ -86,7 +85,7 @@ public class CurvedGeometryTest {
                 wkt);
 
         // check reversing
-        CircularString reversed = (CircularString) ((Geometry) cs).reverse();
+        CircularString reversed = cs.reverse();
         assertEquals(reversed.controlPoints[0], cs.controlPoints[4], 0d);
         assertEquals(reversed.controlPoints[1], cs.controlPoints[5], 0d);
         assertEquals(reversed.controlPoints[2], cs.controlPoints[2], 0d);
@@ -139,7 +138,7 @@ public class CurvedGeometryTest {
                 wkt);
 
         // check reversing
-        CircularString reversed = (CircularString) ((Geometry) cs).reverse();
+        CircularString reversed = cs.reverse();
         double[] controlPoints = cs.controlPoints;
         double[] controlPointsReverse = reversed.controlPoints;
         assertEquals(controlPointsReverse[0], controlPoints[8], 0d);
@@ -194,7 +193,7 @@ public class CurvedGeometryTest {
                 wkt);
 
         // check reversing
-        CircularRing reversed = (CircularRing) ((Geometry) cr).reverse();
+        CircularRing reversed = cr.reverse();
         // System.out.println(cr.toCurvedText());
         // System.out.println(reversed.toCurvedText());
         double[] controlPoints = cr.delegate.controlPoints;

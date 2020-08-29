@@ -244,6 +244,7 @@
     <module>postgis-raster</module>
     <module>ogcapi-client</module>
     <module>tpk</module>
+    <module>imagemosaic-jdbc</module>
   </modules>
 </project>
 

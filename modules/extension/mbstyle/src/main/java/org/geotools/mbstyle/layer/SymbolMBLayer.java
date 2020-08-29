@@ -598,7 +598,7 @@ public class SymbolMBLayer extends MBLayer {
 
     /** @return True if the layer has a icon-image explicitly provided. */
     public boolean hasIconImage() throws MBFormatException {
-        return parse.isPropertyDefined(layout, "icon-image");
+        return parse.isDefined(layout, "icon-image");
     }
 
     /**
@@ -830,7 +830,7 @@ public class SymbolMBLayer extends MBLayer {
 
     /** @return True if the layer has a text-field explicitly provided. */
     private boolean hasTextField() throws MBFormatException {
-        return parse.isPropertyDefined(layout, "text-field");
+        return parse.isDefined(layout, "text-field");
     }
 
     /**
@@ -911,7 +911,7 @@ public class SymbolMBLayer extends MBLayer {
 
     /** @return True if the layer has a text-max-width explicitly provided. */
     public boolean hasTextMaxWidth() throws MBFormatException {
-        return parse.isPropertyDefined(layout, "text-max-width");
+        return parse.isDefined(layout, "text-max-width");
     }
 
     /**
@@ -1098,7 +1098,7 @@ public class SymbolMBLayer extends MBLayer {
 
     /** @return True if the layer has a text-max-angle explicitly provided. */
     private boolean hasTextMaxAngle() throws MBFormatException {
-        return parse.isPropertyDefined(layout, "text-max-angle");
+        return parse.isDefined(layout, "text-max-angle");
     }
 
     /**
@@ -1204,7 +1204,7 @@ public class SymbolMBLayer extends MBLayer {
      * @return true if text-transform provided
      */
     public boolean hasTextTransform() {
-        return parse.isPropertyDefined(layout, "text-transform");
+        return parse.isDefined(layout, "text-transform");
     }
 
     /**
@@ -1260,7 +1260,7 @@ public class SymbolMBLayer extends MBLayer {
     }
 
     private boolean hasTextOffset() {
-        return parse.isPropertyDefined(layout, "text-offset");
+        return parse.isDefined(layout, "text-offset");
     }
 
     /**
@@ -1665,7 +1665,7 @@ public class SymbolMBLayer extends MBLayer {
     }
 
     private boolean hasTextTranslate() {
-        return parse.isPropertyDefined(layout, "text-translate");
+        return parse.isDefined(layout, "text-translate");
     }
 
     /**

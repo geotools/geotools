@@ -27,26 +27,23 @@ The following are necessary to perform a GeoTools release:
 Versions and revisions
 ----------------------
 
-When performing a release we don't require a "code freeze" in which no developers can commit to the repository. Instead we release from a revision that is known to pass all tests, including unit/integration tests as well as CITE tests on the GeoServer side. These instructions are valid in case you are making a release in combination with GeoServer, if you are making a stand alone release it's up to you to choose the proper GIT revision number for the GeoTools released to be picked from.
+When performing a release we don't require a "code freeze" in which no developers can commit to the repository. Instead we release from a revision that is known to pass all tests, including unit/integration tests on the GeoServer side. These instructions are valid in case you are making a release in combination with GeoServer, if you are making a stand alone release it's up to you to choose the proper GIT revision number for the GeoTools released to be picked from.
 
-To obtain the GeoServer and GeoTools revisions that have passed the `CITE test <https://build.geoserver.org/view/testing-cite/>`_, navigate to the latest Jenkins run of the CITE test  and view it's console output and select to view its full log. For example:
-
-    https://build.geoserver.org/job/2.11-cite-wms-1.1/286/consoleText
-
-Perform a search on the log for 'git revision' (this is the GeoServer revision) and you should obtain the following:
+To obtain the GeoServer and GeoTools revisions that have passed testing, navigate to `geoserver.org <http://geoserver.org>`__ and download a "binary" nightly build. From the download check the :file:`VERSION.txt` file. For example:
 
 .. code-block:: none
 
-    version = 2.11-SNAPSHOT
-    git revision = 08f43fa77fdcd0698640d823065b6dfda7f87497
-    git branch = origin/2.11.x
-    build date = 18-Dec-2017 19:51
-    geotools version = 17-SNAPSHOT
-    geotools revision = a91a88002c7b2958140321fbba4d5ed0fa85b78d
-    geowebcache version = 1.11-SNAPSHOT
-    geowebcache revision = 0f1cbe9466e424621fae9fefdab4ac5a7e26bd8b/0f1cb
+    version = 2.17-SNAPSHOT
+    git revision = 1ee183d9af205080f1543dc94616bbe3b3e4f890
+    git branch = origin/2.17.x
+    build date = 19-Jul-2020 04:41
+    geotools version = 23-SNAPSHOT
+    geotools revision = 3bde6940610d228e01aec9de7c222823a2638664
+    geowebcache version = 1.17-SNAPSHOT
+    geowebcache revision = 27eec3fb31b8b4064ce8cc0894fa84d0ff97be61/27eec
+    hudson build = -1
 
-Since we don't make any release from master, ensure you select the right CITE test that passed to obtain the right revision.
+Since we don't make any release from master, ensure you select the right nightly download page to obtain the right revision.
 
 Release in JIRA
 ---------------

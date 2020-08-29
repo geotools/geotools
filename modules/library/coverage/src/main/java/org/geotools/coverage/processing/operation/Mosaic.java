@@ -27,6 +27,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -487,32 +488,46 @@ public class Mosaic extends OperationJAI {
                         fillValue = nodata;
                     }
 
-                    // Resample to the new resolution
-                    rasters[i] =
-                            GridCoverage2DRIA.create(
-                                    coverage,
-                                    newGG,
-                                    fillValue,
-                                    hints,
-                                    CoverageUtilities.getROIProperty(coverage));
-                    // Resample also the alpha band
-                    if (hasAlpha && alphas[i] != null) {
-                        checkAlpha(coverage, alphas[i]);
-                        RenderedImage al =
+                    if (newGG.equals(coverage.getGridGeometry())) {
+                        rasters[i] = coverage.getRenderedImage();
+                        if (hasAlpha && alphas[i] != null) {
+                            alphaArray[i] =
+                                    PlanarImage.wrapRenderedImage(alphas[i].getRenderedImage());
+                        }
+                    } else {
+                        rasters[i] =
                                 GridCoverage2DRIA.create(
-                                        alphas[i],
+                                        coverage,
                                         newGG,
-                                        new double[1],
+                                        fillValue,
                                         hints,
                                         CoverageUtilities.getROIProperty(coverage));
-                        alphaArray[i] = PlanarImage.wrapRenderedImage(al);
+                        // Resample also the alpha band
+                        if (hasAlpha && alphas[i] != null) {
+                            checkAlpha(coverage, alphas[i]);
+                            RenderedImage al =
+                                    GridCoverage2DRIA.create(
+                                            alphas[i],
+                                            newGG,
+                                            new double[1],
+                                            hints,
+                                            CoverageUtilities.getROIProperty(coverage));
+                            alphaArray[i] = PlanarImage.wrapRenderedImage(al);
+                        }
                     }
+
                     backgrounds[i] = fillValue[0];
                     // Resample to the new resolution
-                    GridCoverage2DRIA.GridCoverage2DRIAPropertyGenerator propertyGenerator =
-                            new GridCoverage2DRIA.GridCoverage2DRIAPropertyGenerator();
-                    Object property = propertyGenerator.getProperty("roi", rasters[i]);
-                    ROI roi = (property != null && property instanceof ROI) ? (ROI) property : null;
+                    ROI roi;
+                    if (rasters[i] instanceof GridCoverage2DRIA) {
+                        GridCoverage2DRIA.GridCoverage2DRIAPropertyGenerator propertyGenerator =
+                                new GridCoverage2DRIA.GridCoverage2DRIAPropertyGenerator();
+                        Object property = propertyGenerator.getProperty("roi", rasters[i]);
+                        roi = (property != null && property instanceof ROI) ? (ROI) property : null;
+                    } else {
+                        Object property = rasters[i].getProperty("roi");
+                        roi = (property != null && property instanceof ROI) ? (ROI) property : null;
+                    }
                     rois[i] = roi;
                     // Get NoData as property if present
                     NoDataContainer noDataProperty = CoverageUtilities.getNoDataProperty(coverage);
@@ -694,6 +709,7 @@ public class Mosaic extends OperationJAI {
         }
         // Setting of the output nodata
         block.set(nodata, BACKGROUND_PARAM);
+
         // Setting of the ROI associated to each GridCoverage
         // We need to add its roi in order to avoid problems with the mosaics sources overlapping
         ROI[] rois = new ROI[numSources];
@@ -840,7 +856,7 @@ public class Mosaic extends OperationJAI {
      * management)
      */
     protected RenderedImage createRenderedImage(
-            final ParameterBlockJAI parameters, final RenderingHints hints) {
+            final ParameterBlockJAI parameters, RenderingHints hints) {
         parameters.getSources();
         RenderedImage[] images =
                 (RenderedImage[])
@@ -853,6 +869,20 @@ public class Mosaic extends OperationJAI {
         double[][] thresholds = getParameter(parameters, THRESHOLD_PARAM);
         Range[] noData = getParameter(parameters, NODATA_RANGE_PARAM);
         double[] backgrounds = getParameter(parameters, BACKGROUND_PARAM);
+
+        // the background value defaults to <code>new double[] {0}</code>, which makes
+        // the ImageWorker use it and not set the ROI in output, as they are supposed to
+        // be filled with background values.... which in turn causes black output since
+        // the default JAI background value is zero instead of <code>null</code>.
+        // If there are actual ROIs attached to the images, we need to use them and preserve
+        // their overlay in output
+        if (rois != null && rois.length > 0 && Arrays.stream(rois).anyMatch(r -> r != null)) {
+            RenderingHints newHints = new RenderingHints(Collections.emptyMap());
+            newHints.putAll(hints);
+            newHints.put(ImageWorker.FORCE_MOSAIC_ROI_PROPERTY, true);
+            hints = newHints;
+        }
+
         ImageWorker iw = new ImageWorker();
         iw.setRenderingHints(hints);
         iw.setBackground(backgrounds);

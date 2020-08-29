@@ -993,6 +993,8 @@ public class Parser extends MathTransformParser {
                 axis0 = createAxis(null, "X", AxisDirection.EAST, linearUnit);
                 axis1 = createAxis(null, "Y", AxisDirection.NORTH, linearUnit);
             }
+            element.pullOptionalElement(
+                    "EXTENSION"); // application specific extensions can be ignored
             element.close();
             final Conversion conversion = new DefiningConversion(name, projection);
             return crsFactory.createProjectedCRS(

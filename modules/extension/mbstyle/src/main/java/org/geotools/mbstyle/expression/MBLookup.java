@@ -56,16 +56,24 @@ public class MBLookup extends MBExpression {
     public Expression lookupGet() {
         if (json.size() == 2 || json.size() == 3) {
             if (json.size() == 2) {
-                Expression property = parse.string(json, 1);
-                return ff.function("property", property);
+                if (parse.isString(json, 1)) {
+                    // example: ["get", "propertyName"]
+                    String propertyName = parse.get(json, 1);
+                    return ff.property(propertyName);
+                } else {
+                    // example: ["get", key]
+                    Expression property = parse.string(json, 1);
+                    return ff.function("property", property);
+                }
             }
             if (json.size() == 3) {
+                // example: ["get", key, object]
                 Expression value = parse.string(json, 1);
                 Expression object = parse.string(json, 2);
                 return ff.function("get", value, object);
             }
         }
-        throw new MBFormatException("Expression \"get\" requires a maximum of 2 arguments.");
+        throw new MBFormatException("Data expression \"get\" requires a maximum of 3 arguments.");
     }
 
     /**

@@ -79,10 +79,12 @@ public class GeometryTypeConverterTest extends TestCase {
                     parts.length);
 
             Geometry source = wktReader.read(parts[0]);
+            source.setSRID(4326);
             Class<?> target = Class.forName("org.locationtech.jts.geom." + parts[1]);
             String expected = parts[2];
             Geometry converted = convert(source, target);
             assertEquals(expected, converted.toText());
+            assertEquals(4326, converted.getSRID());
             //			System.out.println(parts[3]+": OK");
         }
     }

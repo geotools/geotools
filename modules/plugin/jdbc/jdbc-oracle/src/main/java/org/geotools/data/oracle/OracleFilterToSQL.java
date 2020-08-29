@@ -563,4 +563,27 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
         Object sdoUnit = UNITS_MAP.get(ogcUnit);
         return sdoUnit != null ? sdoUnit.toString() : ogcUnit;
     }
+
+    @Override
+    public String escapeName(String name) {
+        String sqlNameEscape = getSqlNameEscape();
+        if (OracleDialect.reservedWords.contains(name.toUpperCase()) || !sqlNameEscape.isEmpty()) {
+            if (sqlNameEscape.isEmpty()) sqlNameEscape = "\"";
+            StringBuilder sb = new StringBuilder();
+            sb.append(sqlNameEscape);
+            int offset = 0;
+            int escapeOffset;
+            while ((escapeOffset = name.indexOf(sqlNameEscape, offset)) != -1) {
+                sb.append(name.substring(offset, escapeOffset));
+                sb.append(sqlNameEscape);
+                sb.append(sqlNameEscape);
+                offset = escapeOffset + sqlNameEscape.length();
+            }
+            sb.append(name.substring(offset));
+            sb.append(sqlNameEscape);
+            return sb.toString();
+        } else {
+            return name;
+        }
+    }
 }

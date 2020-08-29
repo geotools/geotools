@@ -206,6 +206,8 @@ public class PostGISDialect extends BasicSQLDialect {
 
     boolean base64EncodingEnabled = true;
 
+    boolean topologyPreserved = false;
+
     Version version, pgsqlVersion;
 
     public boolean isLooseBBOXEnabled() {
@@ -256,6 +258,20 @@ public class PostGISDialect extends BasicSQLDialect {
      */
     public void setSimplifyEnabled(boolean simplifyEnabled) {
         this.simplifyEnabled = simplifyEnabled;
+    }
+
+    public boolean isTopologyPreserved() {
+        return topologyPreserved;
+    }
+
+    /**
+     * Enables/disables usage of ST_SimplifyPreserveTopology, instead of ST_Simplify when
+     * simplification has to be applied.
+     *
+     * @param topologyPreserved
+     */
+    public void setTopologyPreserved(boolean topologyPreserved) {
+        this.topologyPreserved = topologyPreserved;
     }
 
     @Override
@@ -380,7 +396,11 @@ public class PostGISDialect extends BasicSQLDialect {
         if (this.geometryColumnEncoder == null) {
             this.geometryColumnEncoder =
                     new GeometryColumnEncoder(
-                            this.version, isSimplifyEnabled(), base64EncodingEnabled, this);
+                            this.version,
+                            isSimplifyEnabled(),
+                            isTopologyPreserved(),
+                            base64EncodingEnabled,
+                            this);
         }
         return geometryColumnEncoder;
     }

@@ -59,3 +59,28 @@ target pt = (3194221.58, 6414430.59)
 
 source pt = (-32, -36)
 target pt = (6693036.87, 6316881.31)
+
+////////////////////////////////////////////
+// Sphere Polyconic
+
+set _sphere_ = GEOGCS["sphere", DATUM["sphere", SPHEROID["sphere", 6370997.0, 0]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]]
+set _sphereConic_ = PROJCS["Sphere_Polyconic", GEOGCS["GCS_Sphere",DATUM["sphere", SPHEROID["sphere", 6370997.0, 0]],PRIMEM["Greenwich",0],UNIT["Degree",0.017453292519943295]],PROJECTION["Polyconic"],PARAMETER["False_Easting",0],PARAMETER["False_Northing",0],PARAMETER["Central_Meridian",0],PARAMETER["Latitude_Of_Origin",0],UNIT["Meter",1],AUTHORITY["EPSG","53021"]]
+source crs = _sphere_
+target crs = _sphereConic_
+test tolerance = (1e-2, 1e-2)
+
+source pt = (-8, -36)
+target pt = (-718860.72, -4032530.60)
+
+source pt = (3, -61)
+target pt = (161668.51, -6786589.78)
+
+source pt = (-8, -72)
+target pt = (-274081.67, -8024255.74)
+
+source pt = (-10, -52)
+target pt = (-682427.83, -5829136.03)
+
+source pt = (-31, -52)
+target pt = (-2058496.91, -6227729.04)
+

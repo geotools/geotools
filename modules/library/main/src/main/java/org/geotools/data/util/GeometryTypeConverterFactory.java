@@ -298,6 +298,12 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
                         // NC - added cloning above for cases where an existing geometry is used
                         // for purpose for changing user data - we don't want any side effects
                         copyUserProperties(sourceGeometry, destGeometry);
+
+                        // preserve the SRID
+                        if (destGeometry != null) {
+                            destGeometry.setSRID(sourceGeometry.getSRID());
+                        }
+
                         return (T) destGeometry;
                     }
 

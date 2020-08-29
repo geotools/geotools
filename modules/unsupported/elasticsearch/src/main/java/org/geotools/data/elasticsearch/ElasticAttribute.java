@@ -17,6 +17,7 @@
 package org.geotools.data.elasticsearch;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -49,6 +50,8 @@ public class ElasticAttribute implements Serializable, Comparable<ElasticAttribu
 
     private String dateFormat;
 
+    private List<String> validDateFormats;
+
     private Boolean analyzed;
 
     private boolean stored;
@@ -75,6 +78,7 @@ public class ElasticAttribute implements Serializable, Comparable<ElasticAttribu
         this.defaultGeometry = other.defaultGeometry;
         this.srid = other.srid;
         this.dateFormat = other.dateFormat;
+        this.validDateFormats = other.validDateFormats;
         this.geometryType = other.geometryType;
         this.analyzed = other.analyzed;
         this.stored = other.stored;
@@ -135,6 +139,14 @@ public class ElasticAttribute implements Serializable, Comparable<ElasticAttribu
         this.dateFormat = dateFormat;
     }
 
+    public List<String> getValidDateFormats() {
+        return validDateFormats;
+    }
+
+    public void setValidDateFormats(List<String> validDateFormats) {
+        this.validDateFormats = validDateFormats;
+    }
+
     public Boolean getAnalyzed() {
         return analyzed;
     }
@@ -188,6 +200,7 @@ public class ElasticAttribute implements Serializable, Comparable<ElasticAttribu
                 defaultGeometry,
                 srid,
                 dateFormat,
+                validDateFormats,
                 geometryType,
                 analyzed,
                 stored,
@@ -209,6 +222,7 @@ public class ElasticAttribute implements Serializable, Comparable<ElasticAttribu
             equal &= Objects.equals(defaultGeometry, other.defaultGeometry);
             equal &= Objects.equals(srid, other.srid);
             equal &= Objects.equals(dateFormat, other.dateFormat);
+            equal &= Objects.equals(validDateFormats, other.validDateFormats);
             equal &= Objects.equals(geometryType, other.geometryType);
             equal &= Objects.equals(analyzed, other.analyzed);
             equal &= Objects.equals(stored, other.stored);

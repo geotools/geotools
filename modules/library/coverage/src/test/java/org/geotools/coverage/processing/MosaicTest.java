@@ -17,15 +17,19 @@
 package org.geotools.coverage.processing;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import com.sun.media.jai.util.CacheDiagnostics;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReader;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
+import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -59,10 +63,12 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.util.ImageUtilities;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
+import org.hamcrest.CoreMatchers;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -298,18 +304,22 @@ public class MosaicTest extends GridProcessingTestBase {
     }
 
     private GridCoverage2D getCoverageWithFullROI(GridCoverage2D coverage) {
+        RenderedImage ri = coverage.getRenderedImage();
+        ROIShape roi = new ROIShape(getImageBounds(ri));
+        return getCoverageWithROI(coverage, roi);
+    }
+
+    private GridCoverage2D getCoverageWithROI(GridCoverage2D coverage, ROI roi) {
         Map<String, Object> properties =
                 new HashMap<>(
                         (coverage.getProperties() != null)
                                 ? coverage.getProperties()
                                 : Collections.emptyMap());
-        RenderedImage ri = coverage.getRenderedImage();
-        ROIShape roi = new ROIShape(getImageBounds(ri));
         CoverageUtilities.setROIProperty(properties, roi);
         GridCoverage2D coverageWithRoi =
                 GRID_COVERAGE_FACTORY.create(
                         coverage.getName(),
-                        ri,
+                        coverage.getRenderedImage(),
                         coverage.getEnvelope(),
                         coverage.getSampleDimensions(),
                         null,
@@ -1048,5 +1058,73 @@ public class MosaicTest extends GridProcessingTestBase {
 
         // Coverage and RenderedImage disposal
         disposeCoveragePlanarImage(mosaic);
+    }
+
+    @Test
+    public void testPreserveROI() throws Exception {
+        // Creates coverages with model space coordinates, mind the ROI, it's in raster space
+        // The two coverages are side by side, the ROIs cover the second half of the first
+        // image, and the first half of the second:
+        // +---------------+---------------+
+        // |       xxxxxxxx|xxxxxxxx       |
+        // |       xxxxxxxx|xxxxxxxx       |
+        // |       xxxxxxxx|xxxxxxxx       |
+        // |       xxxxxxxx|xxxxxxxx       |
+        // |       xxxxxxxx|xxxxxxxx       |
+        // +---------------|---------------|
+        GridCoverage2D c1 =
+                createGradientCoverage(0, 0, 50, 50, new ROIShape(new Rectangle(25, 0, 25, 50)));
+        GridCoverage2D c2 =
+                createGradientCoverage(50, 0, 50, 50, new ROIShape(new Rectangle(0, 0, 25, 50)));
+
+        // setup the mosaic
+        ParameterValueGroup param = processor.getOperation("Mosaic").getParameters();
+        List<GridCoverage2D> sources = new ArrayList<>(2);
+        sources.add(c1);
+        sources.add(c2);
+        param.parameter("Sources").setValue(sources);
+
+        GridCoverage2D mosaic = (GridCoverage2D) processor.doOperation(param);
+
+        Object roiObject = mosaic.getRenderedImage().getProperty("roi");
+        assertThat(roiObject, CoreMatchers.instanceOf(ROI.class));
+
+        ROI roi = (ROI) roiObject;
+        assertFalse(roi.contains(15, 5));
+        assertFalse(roi.contains(15, 45));
+        assertTrue(roi.contains(45, 5));
+        assertTrue(roi.contains(45, 45));
+        assertTrue(roi.contains(55, 5));
+        assertTrue(roi.contains(55, 45));
+        assertFalse(roi.contains(85, 5));
+        assertFalse(roi.contains(85, 45));
+    }
+
+    /**
+     * Creates a grid coverage with real world coordinates x0, y0, and given width and height. The
+     * raster backing it has the same dimensions, but it's always located in the origin.
+     */
+    public GridCoverage2D createGradientCoverage(int x0, int y0, int width, int height, ROI roi) {
+        final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
+        final WritableRaster raster = (WritableRaster) image.getData();
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                raster.setSample(x, y, 0, x + y);
+            }
+        }
+        image.setData(raster);
+        PlanarImage pi = PlanarImage.wrapRenderedImage(image);
+        Map<String, Object> coverageProperties = new HashMap<>();
+        if (roi != null) {
+            pi.setProperty("roi", roi);
+            CoverageUtilities.setROIProperty(coverageProperties, roi);
+        }
+        return GRID_COVERAGE_FACTORY.create(
+                "Test coverage",
+                pi,
+                new Envelope2D(DefaultEngineeringCRS.GENERIC_2D, x0, y0, width, height),
+                null,
+                null,
+                coverageProperties);
     }
 }

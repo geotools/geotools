@@ -22,7 +22,6 @@ import java.util.logging.Logger;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
 
 /**
@@ -395,7 +394,7 @@ public class LineStringCursor {
 
     /** Returns a line string cursor based on the opposite walking direction. */
     public LineStringCursor reverse() {
-        return new LineStringCursor((LineString) ((Geometry) lineString).reverse());
+        return new LineStringCursor(lineString.reverse());
     }
 
     /** The linestrings wrapped by this cursor */

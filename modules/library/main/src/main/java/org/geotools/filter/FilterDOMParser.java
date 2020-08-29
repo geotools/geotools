@@ -19,6 +19,7 @@
 package org.geotools.filter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -58,13 +59,13 @@ public final class FilterDOMParser {
     private static final int NUM_BETWEEN_CHILDREN = 3;
 
     /** Map of comparison names to their filter types. */
-    private static java.util.Map comparisions = new java.util.HashMap();
+    private static java.util.Map<String, Integer> comparisions = new HashMap<>();
 
     /** Map of spatial filter names to their filter types. */
-    private static java.util.Map spatial = new java.util.HashMap();
+    private static java.util.Map<String, Integer> spatial = new HashMap<>();
 
     /** Map of logical filter names to their filter types. */
-    private static java.util.Map logical = new java.util.HashMap();
+    private static java.util.Map<String, Integer> logical = new HashMap<>();
 
     static {
         comparisions.put("PropertyIsEqualTo", Integer.valueOf(FilterType.COMPARE_EQUALS));

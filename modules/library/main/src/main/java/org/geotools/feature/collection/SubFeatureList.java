@@ -77,7 +77,7 @@ public class SubFeatureList extends SubFeatureCollection implements RandomFeatur
         index = createIndex();
     }
 
-    public SubFeatureList(SimpleFeatureCollection list, List order) {
+    public SubFeatureList(SimpleFeatureCollection list, List<FeatureId> order) {
         super(list);
 
         index = order;

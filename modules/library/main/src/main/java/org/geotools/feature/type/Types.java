@@ -131,8 +131,8 @@ public class Types {
             // former, but their associated java bindings, (BigDecimal, and
             // Integer)
             // dont.
-            Class clazz = attributeContent.getClass();
-            Class binding = type.getBinding();
+            Class<?> clazz = attributeContent.getClass();
+            Class<?> binding = type.getBinding();
             if (binding != null && binding != clazz && !binding.isAssignableFrom(clazz)) {
                 throw new IllegalAttributeException(
                         clazz.getName()
@@ -199,7 +199,7 @@ public class Types {
                 return descriptor.getDefaultValue();
             }
         } else {
-            Class target = descriptor.getType().getBinding();
+            Class<?> target = descriptor.getType().getBinding();
             if (!target.isAssignableFrom(value.getClass())) {
                 // attempt to convert
                 Object converted = Converters.convert(value, target);
@@ -218,14 +218,14 @@ public class Types {
     protected static void validate(final AttributeType type, final Object value, boolean isSuper)
             throws IllegalAttributeException {
         if (!isSuper) {
-            // JD: This is an issue with how the xml simpel type hierarchy
+            // JD: This is an issue with how the xml simple type hierarchy
             // maps to our current Java Type hiearchy, the two are inconsitent.
             // For instance, xs:integer, and xs:int, the later extend the
             // former, but their associated java bindings, (BigDecimal, and
             // Integer)
             // dont.
-            Class clazz = value.getClass();
-            Class binding = type.getBinding();
+            Class<?> clazz = value.getClass();
+            Class<?> binding = type.getBinding();
             if (binding != null && !binding.isAssignableFrom(clazz)) {
                 throw new IllegalAttributeException(
                         clazz.getName()
@@ -383,13 +383,12 @@ public class Types {
      * @param type The type.
      */
     public static Name[] names(ComplexType type) {
-        ArrayList names = new ArrayList();
-        for (Iterator itr = type.getDescriptors().iterator(); itr.hasNext(); ) {
-            AttributeDescriptor ad = (AttributeDescriptor) itr.next();
+        ArrayList<Name> names = new ArrayList<>();
+        for (PropertyDescriptor ad : type.getDescriptors()) {
             names.add(ad.getName());
         }
 
-        return (Name[]) names.toArray(new Name[names.size()]);
+        return names.toArray(new Name[names.size()]);
     }
 
     /**
@@ -670,7 +669,8 @@ public class Types {
     public static void validate(ComplexAttribute attribute, Collection content)
             throws IllegalArgumentException {}
 
-    protected static void validate(ComplexType type, ComplexAttribute attribute, Collection content)
+    protected static void validate(
+            ComplexType type, ComplexAttribute attribute, Collection<Attribute> content)
             throws IllegalAttributeException {
 
         // do normal validation
@@ -738,23 +738,21 @@ public class Types {
         }
     }
 
-    private static void validateAll(ComplexType type, ComplexAttribute att, Collection content)
+    private static void validateAll(
+            ComplexType type, ComplexAttribute att, Collection<Attribute> content)
             throws IllegalAttributeException {
         processAll(type.getDescriptors(), content);
     }
 
-    private static void processAll(Collection<PropertyDescriptor> all, Collection /*
-                                                                                        * <Attribute>
-                                                                                        */ content)
+    private static void processAll(
+            Collection<PropertyDescriptor> all, Collection<Attribute> content)
             throws IllegalAttributeException {
 
         // TODO: JD: this can be definitley be optimzed, as written its O(n^2)
 
         // for each descriptor, count occurences of each matching attribute
-        ArrayList remaining = new ArrayList(content);
-        for (Iterator itr = all.iterator(); itr.hasNext(); ) {
-            AttributeDescriptor ad = (AttributeDescriptor) itr.next();
-
+        ArrayList<Attribute> remaining = new ArrayList<>(content);
+        for (PropertyDescriptor ad : all) {
             int min = ad.getMinOccurs();
             int max = ad.getMaxOccurs();
             int occurences = 0;
@@ -769,7 +767,7 @@ public class Types {
 
             if (occurences < ad.getMinOccurs() || occurences > ad.getMaxOccurs()) {
                 throw new IllegalAttributeException(
-                        ad,
+                        (AttributeDescriptor) ad,
                         "Found "
                                 + occurences
                                 + " of "
@@ -856,7 +854,7 @@ public class Types {
     public static List<PropertyDescriptor> descriptors(ComplexType type, String name) {
         if (name == null) return Collections.emptyList();
 
-        List match = new ArrayList();
+        List<PropertyDescriptor> match = new ArrayList<>();
 
         for (Iterator itr = type.getDescriptors().iterator(); itr.hasNext(); ) {
             PropertyDescriptor descriptor = (PropertyDescriptor) itr.next();
@@ -871,8 +869,7 @@ public class Types {
         if (match.size() == 0) {
             AttributeType superType = type.getSuper();
             if (superType instanceof ComplexType) {
-                List superDescriptors = descriptors((ComplexType) superType, name);
-                match.addAll(superDescriptors);
+                match.addAll(descriptors((ComplexType) superType, name));
             }
         }
         return match;
@@ -888,10 +885,9 @@ public class Types {
     public static List<PropertyDescriptor> descriptors(ComplexType type, Name name) {
         if (name == null) return Collections.emptyList();
 
-        List match = new ArrayList();
+        List<PropertyDescriptor> match = new ArrayList<>();
 
-        for (Iterator itr = type.getDescriptors().iterator(); itr.hasNext(); ) {
-            PropertyDescriptor descriptor = (PropertyDescriptor) itr.next();
+        for (PropertyDescriptor descriptor : type.getDescriptors()) {
             Name descriptorName = descriptor.getName();
             if (name.equals(descriptorName)) {
                 match.add(descriptor);
@@ -903,7 +899,8 @@ public class Types {
         if (match.size() == 0) {
             AttributeType superType = type.getSuper();
             if (superType instanceof ComplexType) {
-                List superDescriptors = descriptors((ComplexType) superType, name);
+                List<PropertyDescriptor> superDescriptors =
+                        descriptors((ComplexType) superType, name);
                 match.addAll(superDescriptors);
             }
         }
@@ -951,6 +948,7 @@ public class Types {
 
         // nothing found, perhaps polymorphism?? let's loop again
         for (Iterator<PropertyDescriptor> it = descriptors.iterator(); it.hasNext(); ) {
+            @SuppressWarnings("unchecked")
             List<AttributeDescriptor> substitutionGroup =
                     (List<AttributeDescriptor>) it.next().getUserData().get("substitutionGroup");
             if (substitutionGroup != null) {
@@ -988,6 +986,7 @@ public class Types {
 
         // nothing found, perhaps polymorphism?? let's loop again
         for (Iterator<PropertyDescriptor> it = descriptors.iterator(); it.hasNext(); ) {
+            @SuppressWarnings("unchecked")
             List<AttributeDescriptor> substitutionGroup =
                     (List<AttributeDescriptor>) it.next().getUserData().get("substitutionGroup");
             if (substitutionGroup != null) {

@@ -50,7 +50,7 @@ public class FilterFunction_property extends FunctionExpressionImpl implements V
     }
 
     @Override
-    public Object evaluate(Object object, Class context) {
+    public <T> T evaluate(Object object, Class<T> context) {
         Object result = evaluate(object);
         if (result == null) {
             return null;

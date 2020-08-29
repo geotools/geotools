@@ -289,12 +289,9 @@ public class LiteralDemultiplyingFilterVisitor extends DuplicatingFilterVisitor 
                 List<Filter> filters = new ArrayList<>(); // list of all filters
                 for (Object valueElement : (Collection) value) {
                     // create a single-valued new filter
-                    filters.add(
-                            demultiplyFirst(
-                                    (T)
-                                            replacer.replaceExpressions(
-                                                    filter, one, ff.literal(valueElement)),
-                                    replacer));
+                    @SuppressWarnings("unchecked")
+                    T cast = (T) replacer.replaceExpressions(filter, one, ff.literal(valueElement));
+                    filters.add(demultiplyFirst(cast, replacer));
                 }
                 // merge the filters depending on match action
                 if (filter.getMatchAction() == MatchAction.ANY) {

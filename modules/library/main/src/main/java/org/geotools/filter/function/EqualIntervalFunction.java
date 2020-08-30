@@ -100,6 +100,7 @@ public class EqualIntervalFunction extends ClassificationFunction {
         }
     }
 
+    @SuppressWarnings("unchecked") // assumes it can use random comparables with numbers
     private RangedClassifier calculateNumerical(
             int classNum, Comparable globalMin, Comparable globalMax) {
         // handle constant value case

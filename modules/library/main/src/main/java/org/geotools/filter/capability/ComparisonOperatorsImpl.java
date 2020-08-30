@@ -50,7 +50,7 @@ public class ComparisonOperatorsImpl implements ComparisonOperators {
         if (operators == null) {
             operators = new Operator[] {};
         }
-        this.operators = new HashSet(Arrays.asList(operators));
+        this.operators = new HashSet<>(Arrays.asList(operators));
     }
 
     public Collection<Operator> getOperators() {

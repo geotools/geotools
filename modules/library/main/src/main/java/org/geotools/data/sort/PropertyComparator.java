@@ -50,6 +50,7 @@ class PropertyComparator implements Comparator<SimpleFeature> {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private int compareAscending(SimpleFeature f1, SimpleFeature f2) {
         Comparable o1 = (Comparable) f1.getAttribute(propertyName);
         Comparable o2 = (Comparable) f2.getAttribute(propertyName);

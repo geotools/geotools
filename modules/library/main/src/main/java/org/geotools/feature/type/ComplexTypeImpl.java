@@ -77,6 +77,7 @@ public class ComplexTypeImpl extends AttributeTypeImpl implements ComplexType {
         this.propertyMap = Collections.unmodifiableMap(localPropertyMap);
     }
 
+    @SuppressWarnings("unchecked")
     public Class<Collection<Property>> getBinding() {
         return (Class<Collection<Property>>) super.getBinding();
     }

@@ -725,8 +725,9 @@ public class DataUtilities {
         }
 
         if (src instanceof Map) {
-            Map map = (Map) src;
-            Map copy = new HashMap(map.size());
+            @SuppressWarnings("unchecked")
+            Map<Object, Object> map = (Map) src;
+            Map<Object, Object> copy = new HashMap<>(map.size());
 
             for (Iterator i = map.entrySet().iterator(); i.hasNext(); ) {
                 Map.Entry entry = (Map.Entry) i.next();
@@ -1289,7 +1290,9 @@ public class DataUtilities {
             return (SimpleFeatureSource) source;
         }
         if (source.getSchema() instanceof SimpleFeatureType) {
-            return new SimpleFeatureSourceBridge(source);
+            @SuppressWarnings("unchecked")
+            FeatureSource<SimpleFeatureType, SimpleFeature> cast = source;
+            return new SimpleFeatureSourceBridge(cast);
         }
         throw new IllegalArgumentException(
                 "The provided feature source contains complex features, cannot be bridged to a simple one");
@@ -1313,7 +1316,9 @@ public class DataUtilities {
             return (SimpleFeatureStore) store;
         }
         if (store.getSchema() instanceof SimpleFeatureType) {
-            return new SimpleFeatureStoreBridge(store);
+            @SuppressWarnings("unchecked")
+            FeatureStore<SimpleFeatureType, SimpleFeature> cast = store;
+            return new SimpleFeatureStoreBridge(cast);
         }
         throw new IllegalArgumentException(
                 "The provided feature store contains complex features, cannot be bridged to a simple one");
@@ -1422,7 +1427,9 @@ public class DataUtilities {
             return (SimpleFeatureLocking) locking;
         }
         if (locking.getSchema() instanceof SimpleFeatureType) {
-            return new SimpleFeatureLockingBridge(locking);
+            @SuppressWarnings("unchecked")
+            FeatureLocking<SimpleFeatureType, SimpleFeature> cast = locking;
+            return new SimpleFeatureLockingBridge(cast);
         }
         throw new IllegalArgumentException(
                 "The provided feature store contains complex features, cannot be bridged to a simple one");
@@ -2883,7 +2890,7 @@ public class DataUtilities {
      * @return true if params is in agreement with getParametersInfo, override for additional
      *     checks.
      */
-    public static boolean canProcess(Map params, Param[] arrayParameters) {
+    public static boolean canProcess(Map<String, ?> params, Param[] arrayParameters) {
         if (params == null) {
             return false;
         }
@@ -2917,6 +2924,7 @@ public class DataUtilities {
                 if (param.metadata != null) {
                     // check metadata
                     if (param.metadata.containsKey(Param.OPTIONS)) {
+                        @SuppressWarnings("unchecked")
                         List<Object> options = (List<Object>) param.metadata.get(Param.OPTIONS);
                         if (options != null && !options.contains(value)) {
                             return false; // invalid option

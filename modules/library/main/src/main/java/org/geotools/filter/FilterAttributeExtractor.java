@@ -101,8 +101,10 @@ public class FilterAttributeExtractor extends DefaultFilterVisitor {
     }
 
     public Object visit(PropertyName expression, Object data) {
-        if (data != null && data != attributeNames) {
-            attributeNames = (Set<String>) data;
+        if (data instanceof Set && data != attributeNames) {
+            @SuppressWarnings("unchecked")
+            Set<String> cast = (Set<String>) data;
+            attributeNames = cast;
         }
         propertyNames.add(expression);
 

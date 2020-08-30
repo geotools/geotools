@@ -28,7 +28,7 @@ public class TemporalOperatorsImpl implements TemporalOperators {
     Set<TemporalOperator> operators;
 
     public TemporalOperatorsImpl() {
-        this(new ArrayList());
+        this(new ArrayList<>());
     }
 
     public TemporalOperatorsImpl(Collection<TemporalOperator> operators) {

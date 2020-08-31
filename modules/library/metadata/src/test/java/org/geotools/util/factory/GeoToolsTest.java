@@ -30,7 +30,6 @@ import org.geotools.util.NullEntityResolver;
 import org.geotools.util.PreventLocalEntityResolver;
 import org.geotools.util.Version;
 import org.junit.*;
-import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.Filter;
 import org.xml.sax.EntityResolver;
 

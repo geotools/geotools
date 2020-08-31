@@ -99,7 +99,9 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
 
         if (o instanceof Collection) {
             List<Geometry> list = new ArrayList<>();
-            for (Object item : (Collection<Object>) o) {
+            @SuppressWarnings("unchecked")
+            Collection<Object> cast = (Collection<Object>) o;
+            for (Object item : cast) {
                 Geometry geometry = (Geometry) Converters.convert(item, Geometry.class);
                 if (geometry != null) {
                     list.add(geometry);
@@ -210,14 +212,16 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
             return evaluateInternal((Geometry) object1, (Geometry) object2);
         }
 
+        @SuppressWarnings("unchecked")
         Collection<Geometry> leftValues =
                 object1 instanceof Collection
                         ? (Collection<Geometry>) object1
-                        : Collections.<Geometry>singletonList((Geometry) object1);
+                        : Collections.singletonList((Geometry) object1);
+        @SuppressWarnings("unchecked")
         Collection<Geometry> rightValues =
                 object2 instanceof Collection
                         ? (Collection<Geometry>) object2
-                        : Collections.<Geometry>singletonList((Geometry) object2);
+                        : Collections.singletonList((Geometry) object2);
 
         int count = 0;
         for (Geometry leftValue : leftValues) {

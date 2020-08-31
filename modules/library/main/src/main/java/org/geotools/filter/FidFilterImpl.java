@@ -71,9 +71,8 @@ public class FidFilterImpl extends AbstractFilter implements Id {
     }
 
     /** @see org.opengis.filter.Id#getIDs() */
-    @SuppressWarnings("unchecked")
-    public Set getIDs() {
-        return getFidsSet();
+    public Set<Object> getIDs() {
+        return new HashSet<>(getFidsSet());
     }
 
     /** @see org.opengis.filter.Id#getIdentifiers() */
@@ -83,7 +82,7 @@ public class FidFilterImpl extends AbstractFilter implements Id {
 
     /** @see org.opengis.filter.identity.FeatureId#setIDs(Set) */
     public void setIDs(Set ids) {
-        fids = new HashSet();
+        fids = new HashSet<>();
         addAllFids(ids);
     }
 

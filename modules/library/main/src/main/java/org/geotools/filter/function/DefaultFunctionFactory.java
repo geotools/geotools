@@ -146,8 +146,7 @@ public class DefaultFunctionFactory implements FunctionFactory {
             FunctionName functionName = getFunctionName(function);
             Name name = functionName.getFunctionName();
 
-            FunctionDescriptor fd =
-                    new FunctionDescriptor(functionName, (Class<Function>) function.getClass());
+            FunctionDescriptor fd = new FunctionDescriptor(functionName, function.getClass());
 
             // needed to insert justin's name hack here to ensure consistent lookup
             Name key = functionName(name);
@@ -191,9 +190,9 @@ public class DefaultFunctionFactory implements FunctionFactory {
 
     static class FunctionDescriptor {
         FunctionName name;
-        Class<Function> clazz;
+        Class<? extends Function> clazz;
 
-        FunctionDescriptor(FunctionName name, Class<Function> clazz) {
+        FunctionDescriptor(FunctionName name, Class<? extends Function> clazz) {
             this.name = name;
             this.clazz = clazz;
         }
@@ -222,7 +221,7 @@ public class DefaultFunctionFactory implements FunctionFactory {
                 return function;
             }
             // Function function = (Function) functionClass.newInstance();
-            Constructor<Function> constructor =
+            Constructor<? extends Function> constructor =
                     clazz.getConstructor(new Class[] {List.class, Literal.class});
             return constructor.newInstance(parameters, fallback);
         }

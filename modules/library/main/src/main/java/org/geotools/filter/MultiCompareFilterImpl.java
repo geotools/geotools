@@ -57,13 +57,16 @@ public abstract class MultiCompareFilterImpl extends CompareFilterImpl {
     }
 
     private Collection<Object> toCollection(Object obj) {
+        Object collection = null;
         if (obj instanceof Collection) {
-            return (Collection<Object>) obj;
+            collection = obj;
         }
         if (obj != null && obj.getClass().isArray()) {
-            return (Collection<Object>) Converters.convert(obj, List.class);
+            collection = Converters.convert(obj, List.class);
         }
-        return null;
+        @SuppressWarnings("unchecked")
+        Collection<Object> cast = (Collection<Object>) collection;
+        return cast;
     }
 
     public final boolean evaluate(Object feature) {

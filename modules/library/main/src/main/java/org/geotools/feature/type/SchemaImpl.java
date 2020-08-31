@@ -38,7 +38,7 @@ public class SchemaImpl implements Schema {
     public SchemaImpl(String uri) {
         super();
         this.uri = uri;
-        this.contents = new HashMap();
+        this.contents = new HashMap<>();
     }
 
     public Set<Name> keySet() {

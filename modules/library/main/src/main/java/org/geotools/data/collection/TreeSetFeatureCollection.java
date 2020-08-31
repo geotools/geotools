@@ -481,9 +481,10 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
      *     enough; otherwise, a new array of the same runtime type is allocated for this purpose.
      * @return an array containing the elements of this collection
      */
-    @SuppressWarnings("unchecked")
-    public Object[] toArray(Object[] a) {
-        return contents.values().toArray(a != null ? a : new Object[contents.size()]);
+    public <O> O[] toArray(O[] a) {
+        @SuppressWarnings("unchecked")
+        O[] cast = (O[]) new Object[contents.size()];
+        return contents.values().toArray(a != null ? a : cast);
     }
 
     public void close(FeatureIterator<SimpleFeature> close) {

@@ -44,11 +44,15 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
     }
 
     public Collection<? extends Property> getValue() {
-        return FeatureImplUtils.unmodifiable((Collection) super.getValue());
+        @SuppressWarnings("unchecked")
+        Collection<? extends Property> cast = (Collection<? extends Property>) super.getValue();
+        return FeatureImplUtils.unmodifiable(cast);
     }
 
     public Collection<Property> getProperties() {
-        return FeatureImplUtils.unmodifiable((Collection) super.getValue());
+        @SuppressWarnings("unchecked")
+        Collection<Property> cast = (Collection<Property>) super.getValue();
+        return FeatureImplUtils.unmodifiable(cast);
     }
 
     /**
@@ -106,7 +110,9 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
     }
 
     public void setValue(Object newValue) throws IllegalArgumentException, IllegalStateException {
-        setValue((Collection<Property>) newValue);
+        @SuppressWarnings("unchecked")
+        Collection<Property> cast = (Collection<Property>) newValue;
+        setValue(cast);
     }
 
     public void setValue(Collection<Property> newValue) {
@@ -114,21 +120,28 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
     }
 
     /** helper method to clone the property collection. */
-    private static Collection cloneProperties(Collection original) {
+    private static <T> Collection<T> cloneProperties(Collection<T> original) {
         if (original == null) {
             return null;
         }
 
-        Collection clone = null;
-        try {
-            clone = original.getClass().getDeclaredConstructor().newInstance();
-        } catch (Exception e) {
-            clone = new ArrayList();
-        }
+        Collection<T> clone = newCollection(original.getClass());
 
         clone.addAll(original);
         return clone;
     }
+
+    @SuppressWarnings("unchecked")
+    private static <T> Collection<T> newCollection(Class<? extends Collection> collectionClass) {
+        Collection<T> clone = null;
+        try {
+            clone = collectionClass.getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
+            clone = new ArrayList<>();
+        }
+        return clone;
+    }
+
     //    public List<Property>get(Name name) {
     //        // JD: this is a farily lenient check, should we be stricter about
     //        // matching up the namespace

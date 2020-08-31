@@ -179,7 +179,7 @@ public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
             System.arraycopy(impl.values, 0, values, 0, impl.values.length);
 
             if (impl.userData != null) {
-                featureUserData = new HashMap(impl.userData);
+                featureUserData = new HashMap<>(impl.userData);
             }
         } else {
             for (Object value : feature.getAttributes()) {
@@ -187,7 +187,7 @@ public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
             }
 
             if (!feature.getUserData().isEmpty()) {
-                featureUserData = new HashMap(feature.getUserData());
+                featureUserData = new HashMap<>(feature.getUserData());
             }
         }
     }

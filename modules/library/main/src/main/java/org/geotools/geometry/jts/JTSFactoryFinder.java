@@ -222,8 +222,8 @@ public class JTSFactoryFinder extends FactoryFinder {
          * @param hints The user requirements.
          * @return {@code true} if the {@code provider} meets the user requirements.
          */
-        protected boolean isAcceptable(
-                final Object provider, final Class category, final Hints hints) {
+        protected <T> boolean isAcceptable(
+                final T provider, final Class<T> category, final Hints hints) {
             if (GeometryFactory.class.isAssignableFrom(category)) {
                 final GeometryFactory factory = (GeometryFactory) provider;
                 final CoordinateSequenceFactory sequence = factory.getCoordinateSequenceFactory();
@@ -276,7 +276,8 @@ public class JTSFactoryFinder extends FactoryFinder {
              * accepts instances of this class or any subclasses.
              */
             if (actual != null && requested instanceof Class) {
-                return ((Class) requested).isAssignableFrom(actual.getClass());
+                Class<?> cast = (Class<?>) requested;
+                return cast.isAssignableFrom(actual.getClass());
             }
             return false;
         }

@@ -139,9 +139,10 @@ public class AttributeImpl extends PropertyImpl implements Attribute {
      */
     protected Object parse(Object value) throws IllegalArgumentException {
         if (value != null) {
-            Class target = getType().getBinding();
+            Class<?> target = getType().getBinding();
             if (!target.isAssignableFrom(value.getClass())) {
                 // attempt to convert
+                @SuppressWarnings("unchecked")
                 Object converted = Converters.convert(value, target);
                 if (converted != null) {
                     value = converted;

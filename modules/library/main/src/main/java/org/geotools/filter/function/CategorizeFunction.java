@@ -217,7 +217,7 @@ public class CategorizeFunction implements Function {
 
             // if we can use the pre-converted go for it, otherwise dynamic eval
             if (convertedValuesContext == context) {
-                return (T) convertedValues[valIdx];
+                return context.cast(convertedValues[valIdx]);
             } else {
                 return values[valIdx].evaluate(object, context);
             }

@@ -99,7 +99,7 @@ public class MySQLTestSetup extends JDBCTestSetup {
     protected Properties createExampleFixture() {
         Properties p = new Properties();
 
-        p.put("driver", "com.mysql.jdbc.Driver");
+        p.put("driver", "com.mysql.cj.jdbc.Driver");
         p.put("url", "jdbc:mysql://localhost/geotools");
         p.put("host", "localhost");
         p.put("port", "3306");

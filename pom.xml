@@ -441,7 +441,7 @@
   <groupId>org.geotools</groupId>
   <artifactId>geotools</artifactId>
   <packaging>pom</packaging>
-  <version>24-SNAPSHOT</version>
+  <version>25-SNAPSHOT</version>
   <name>GeoTools</name>
 
   <scm>

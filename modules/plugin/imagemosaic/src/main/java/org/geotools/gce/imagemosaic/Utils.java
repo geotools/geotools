@@ -168,6 +168,8 @@ public class Utils {
 
     static final String DEFAULT = "default";
 
+    public static final String DATASTORE_PROPERTIES = "datastore.properties";
+
     public static final String PROPERTIES_SEPARATOR = ";";
     /** EHCache instance to cache histograms */
     private static Cache ehcache;
@@ -1405,32 +1407,26 @@ public class Utils {
 
                 // this can be used to look for properties files that do NOT
                 // define a datastore
-                final File[] properties =
-                        sourceFile.listFiles(
-                                (FilenameFilter)
-                                        FileFilterUtils.and(
-                                                FileFilterUtils.notFileFilter(
-                                                        FileFilterUtils.nameFileFilter(
-                                                                "datastore.properties")),
-                                                FileFilterUtils.makeFileOnly(
-                                                        FileFilterUtils.suffixFileFilter(
-                                                                ".properties"))));
 
                 // do we have a valid datastore + mosaic properties pair?
+                File[] properties = null;
                 if (Utils.checkFileReadable(dataStoreProperties)) {
                     // we have a datastore.properties file
                     datastoreFound = true;
 
                     // check the first valid mosaic properties
-                    boolean found = false;
-                    for (File propFile : properties)
-                        if (Utils.checkFileReadable(propFile)) {
-                            // load it
-                            if (null != Utils.loadMosaicProperties(URLs.fileToUrl(propFile))) {
-                                found = true;
-                                break;
+                    boolean found = null != Utils.lookForMosaicConfig(sourceURL);
+                    if (!found) {
+                        properties = lookForPropertiesFiles(sourceFile);
+                        for (File propFile : properties)
+                            if (Utils.checkFileReadable(propFile)) {
+                                // load it
+                                if (null != Utils.loadMosaicProperties(URLs.fileToUrl(propFile))) {
+                                    found = true;
+                                    break;
+                                }
                             }
-                        }
+                    }
 
                     // we did not find any good candidate for mosaic.properties
                     // file, this will signal it
@@ -1448,6 +1444,8 @@ public class Utils {
                 //
                 File shapeFile = null;
                 if (!datastoreFound) {
+                    properties =
+                            properties == null ? lookForPropertiesFiles(sourceFile) : properties;
                     for (File propFile : properties) {
 
                         // load properties
@@ -1545,6 +1543,37 @@ public class Utils {
             }
         }
         return sourceURL;
+    }
+
+    private static File[] lookForPropertiesFiles(File sourceFile) {
+        return sourceFile.listFiles(
+                (FilenameFilter)
+                        FileFilterUtils.and(
+                                FileFilterUtils.notFileFilter(
+                                        FileFilterUtils.nameFileFilter("datastore.properties")),
+                                FileFilterUtils.makeFileOnly(
+                                        FileFilterUtils.suffixFileFilter(".properties"))));
+    }
+
+    static MosaicConfigurationBean lookForMosaicConfig(URL sourceURL) {
+        File sourceFile = URLs.urlToFile(sourceURL);
+        File parent = sourceFile;
+        String separator = File.separator;
+        if (!sourceFile.isDirectory()) {
+            parent = sourceFile.getParentFile();
+            separator = "";
+        }
+        String sourceFilePath = sourceFile.getAbsolutePath() + separator;
+        String configPropertiesPath =
+                FilenameUtils.getFullPath(sourceFilePath)
+                        + FilenameUtils.getName(parent.getAbsolutePath())
+                        + ".properties";
+        File configFile = new File(configPropertiesPath);
+        if (!configFile.exists()) {
+            return null;
+        }
+        URL testPropertiesUrl = URLs.fileToUrl(configFile);
+        return Utils.loadMosaicProperties(testPropertiesUrl);
     }
 
     private static String getDefaultIndexName(final String locationPath) {

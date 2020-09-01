@@ -40,6 +40,7 @@ import java.util.logging.Logger;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.media.jai.ImageLayout;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -549,47 +550,71 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
                             "The specified sourceURL doesn't refer to an existing file");
                 }
             }
+            File sourceParent = null;
             if (sourceURL != null) {
                 parentDirectory = URLs.urlToFile(sourceURL);
+                sourceParent = parentDirectory;
                 if (!parentDirectory.isDirectory()) {
                     parentDirectory = parentDirectory.getParentFile();
                 }
             }
+            final File datastoreProperties = new File(parentDirectory, Utils.DATASTORE_PROPERTIES);
+            // 1st attempt of mosaic configuration loading.
+            // Old Style
             configuration = Utils.loadMosaicProperties(sourceURL);
-            if (configuration == null) {
-                //
-                // do we have a datastore properties file? It will preempt on the shapefile
-                //
-                final File parent = URLs.urlToFile(sourceURL).getParentFile();
-
-                // this can be used to look for properties files that do NOT define a datastore
-                final File[] properties =
-                        parent.listFiles(
-                                (FilenameFilter)
-                                        FileFilterUtils.and(
-                                                FileFilterUtils.notFileFilter(
-                                                        FileFilterUtils.nameFileFilter(
-                                                                "indexer.properties")),
-                                                FileFilterUtils.and(
-                                                        FileFilterUtils.notFileFilter(
-                                                                FileFilterUtils.nameFileFilter(
-                                                                        "datastore.properties")),
-                                                        FileFilterUtils.makeFileOnly(
-                                                                FileFilterUtils.suffixFileFilter(
-                                                                        ".properties")))));
-
-                // do we have a valid datastore + mosaic properties pair?
-                final File datastoreProperties = new File(parent, "datastore.properties");
-
-                // Scan for MosaicConfigurationBeans from properties files
+            if (configuration != null) {
+                // Old style code: we have a single MosaicConfigurationBean. Use that
+                // to create the catalog
+                granuleCatalog =
+                        ImageMosaicConfigHandler.createCatalog(
+                                sourceURL, configuration, this.hints);
+                File parent = URLs.urlToFile(sourceURL).getParentFile();
+                MultiLevelROIProvider rois =
+                        MultiLevelROIProviderMosaicFactory.createFootprintProvider(parent);
+                granuleCatalog.setMultiScaleROIProvider(rois);
+                addRasterManager(configuration, true);
+            } else {
+                // 2nd attempt: look for a property file with same name of the mosaic
                 List<MosaicConfigurationBean> beans = new ArrayList<>();
-                if (properties != null) {
-                    for (File propFile : properties) {
-                        if (Utils.checkFileReadable(propFile)
-                                && Utils.loadMosaicProperties(URLs.fileToUrl(propFile)) != null) {
-                            configuration = Utils.loadMosaicProperties(URLs.fileToUrl(propFile));
-                            if (configuration != null) {
-                                beans.add(configuration);
+                if (configuration == null
+                        && sourceParent != null
+                        && parentDirectory != sourceParent) {
+                    configuration = lookupForMosaicConfig();
+                    if (configuration != null) {
+                        beans.add(configuration);
+                    }
+                }
+                // last attempt, do a scan of property files, looking for the mosaic config.
+                if (configuration == null) {
+                    // this can be used to look for properties files that do NOT define a datastore
+                    final File[] properties =
+                            parentDirectory.listFiles(
+                                    (FilenameFilter)
+                                            FileFilterUtils.and(
+                                                    FileFilterUtils.notFileFilter(
+                                                            FileFilterUtils.nameFileFilter(
+                                                                    "indexer.properties")),
+                                                    FileFilterUtils.and(
+                                                            FileFilterUtils.notFileFilter(
+                                                                    FileFilterUtils.nameFileFilter(
+                                                                            Utils
+                                                                                    .DATASTORE_PROPERTIES)),
+                                                            FileFilterUtils.makeFileOnly(
+                                                                    FileFilterUtils
+                                                                            .suffixFileFilter(
+                                                                                    ".properties")))));
+
+                    // Scan for MosaicConfigurationBeans from properties files
+                    if (properties != null) {
+                        for (File propFile : properties) {
+                            if (Utils.checkFileReadable(propFile)
+                                    && Utils.loadMosaicProperties(URLs.fileToUrl(propFile))
+                                            != null) {
+                                configuration =
+                                        Utils.loadMosaicProperties(URLs.fileToUrl(propFile));
+                                if (configuration != null) {
+                                    beans.add(configuration);
+                                }
                             }
                         }
                     }
@@ -626,10 +651,10 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
                 } else {
                     catalog =
                             ImageMosaicConfigHandler.createGranuleCatalogFromDatastore(
-                                    parent, datastoreProperties, true, getHints());
+                                    parentDirectory, datastoreProperties, true, getHints());
                 }
                 MultiLevelROIProvider rois =
-                        MultiLevelROIProviderMosaicFactory.createFootprintProvider(parent);
+                        MultiLevelROIProviderMosaicFactory.createFootprintProvider(parentDirectory);
                 catalog.setMultiScaleROIProvider(rois);
                 if (granuleCatalog != null) {
                     granuleCatalog.dispose();
@@ -637,25 +662,11 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
                 granuleCatalog = catalog;
 
                 // Creating a RasterManager for each mosaic configuration found on disk
+                // and initialize it
                 for (MosaicConfigurationBean bean : beans) {
-                    // Add a RasterManager on top of this Mosaic configuration bean and initialize
-                    // it
                     addRasterManager(bean, true);
                 }
-            } else {
-
-                // Old style code: we have a single MosaicConfigurationBean. Use that to create the
-                // catalog
-                granuleCatalog =
-                        ImageMosaicConfigHandler.createCatalog(
-                                sourceURL, configuration, this.hints);
-                File parent = URLs.urlToFile(sourceURL).getParentFile();
-                MultiLevelROIProvider rois =
-                        MultiLevelROIProviderMosaicFactory.createFootprintProvider(parent);
-                granuleCatalog.setMultiScaleROIProvider(rois);
-                addRasterManager(configuration, true);
             }
-
         } catch (Throwable e) {
 
             // Dispose catalog
@@ -684,6 +695,26 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
 
             // rethrow
             throw new DataSourceException(e);
+        }
+    }
+
+    private MosaicConfigurationBean lookupForMosaicConfig() throws IOException {
+        File sourceFile = URLs.urlToFile(sourceURL);
+        String sourceFilePath = sourceFile.getAbsolutePath();
+        if (FilenameUtils.getName(sourceFilePath).equalsIgnoreCase(Utils.DATASTORE_PROPERTIES)) {
+            String configPropertiesPath =
+                    FilenameUtils.getFullPath(sourceFilePath)
+                            + FilenameUtils.getName(sourceFile.getParentFile().getAbsolutePath())
+                            + ".properties";
+            File configFile = new File(configPropertiesPath);
+            if (!configFile.exists()) {
+                return null;
+            }
+            URL testPropertiesUrl = URLs.fileToUrl(configFile);
+            return Utils.loadMosaicProperties(testPropertiesUrl);
+        } else {
+            throw new DataSourceException(
+                    "Files is neither a mosaic property nor a directory: " + sourceURL);
         }
     }
 

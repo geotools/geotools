@@ -168,6 +168,8 @@ public class Utils {
 
     static final String DEFAULT = "default";
 
+    public static final String DATASTORE_PROPERTIES = "datastore.properties";
+
     public static final String PROPERTIES_SEPARATOR = ";";
     /** EHCache instance to cache histograms */
     private static Cache ehcache;

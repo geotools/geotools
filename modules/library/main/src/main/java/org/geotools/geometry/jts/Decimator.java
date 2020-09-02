@@ -134,7 +134,7 @@ public final class Decimator {
             MathTransform screenToWorld, Rectangle paintArea, double pixelDistance)
             throws TransformException {
         try {
-            // init the spans with the upper left corner
+            // init the spans with the upper right corner
             double[] spans =
                     getGeneralizationSpans(
                             paintArea.x + paintArea.width / 2,

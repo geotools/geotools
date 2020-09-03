@@ -380,10 +380,12 @@ public class GranuleDescriptor {
 
         // When looking for formats which may parse this file, make sure to exclude the
         // ImageMosaicFormat as return
-        this.format =
-                suggestedFormat == null
-                        ? GridFormatFinder.findFormat(granuleUrl, EXCLUDE_MOSAIC)
-                        : suggestedFormat;
+        if (suggestedFormat != null && suggestedFormat.accepts(granuleUrl, EXCLUDE_MOSAIC)) {
+            this.format = suggestedFormat;
+        } else {
+            this.format = GridFormatFinder.findFormat(granuleUrl, EXCLUDE_MOSAIC);
+        }
+
         // create the base grid to world transformation
         AbstractGridCoverage2DReader gcReader = null;
         ImageInputStream inStream = null;

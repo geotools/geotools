@@ -74,7 +74,7 @@ public class MySQLDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     protected String getDriverClassName() {
-        return "com.mysql.jdbc.Driver";
+        return "com.mysql.cj.jdbc.Driver";
     }
 
     protected String getDatabaseID() {

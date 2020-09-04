@@ -99,7 +99,7 @@ public class MySqlOnlineTest extends AbstractTest {
      * @see org.geotools.gce.imagemosaic.jdbc.AbstractTest#getDriverClassName()
      */
     protected String getDriverClassName() {
-        return "com.mysql.jdbc.Driver";
+        return "com.mysql.cj.jdbc.Driver";
     }
 
     /*

@@ -72,7 +72,7 @@ public abstract class JDBCTemporalFilterOnlineTest extends JDBCTestSupport {
     void assertDatesMatch(Query query, String... dates) throws Exception {
         SimpleFeatureSource source = dataStore.getFeatureSource(tname("dates"));
 
-        assertEquals(dates.length, source.getCount(query));
+        assertEquals(dates.length, Math.toIntExact(source.count(query)));
 
         SimpleFeatureCollection features = source.getFeatures(query);
         try (SimpleFeatureIterator it = features.features()) {

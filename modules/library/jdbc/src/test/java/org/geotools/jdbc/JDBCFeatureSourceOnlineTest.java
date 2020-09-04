@@ -111,7 +111,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
     }
 
     public void testCount() throws Exception {
-        assertEquals(3, featureSource.getCount(Query.ALL));
+        assertEquals(3, Math.toIntExact(featureSource.count(Query.ALL)));
     }
 
     public void testCountWithFilter() throws Exception {
@@ -121,14 +121,14 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
 
         Query query = new Query();
         query.setFilter(filter);
-        assertEquals(1, featureSource.getCount(query));
+        assertEquals(1, Math.toIntExact(featureSource.count(query)));
     }
 
     public void testCountWithOffsetLimit() throws Exception {
         Query query = new Query();
         query.setStartIndex(1);
         query.setMaxFeatures(1);
-        assertEquals(1, featureSource.getCount(query));
+        assertEquals(1, Math.toIntExact(featureSource.count(query)));
     }
 
     public void testGetFeatures() throws Exception {
@@ -191,8 +191,8 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
                 ff.equal(ff.property(aname("stringProperty")), ff.literal("OnE"), true);
         PropertyIsEqualTo insensitive =
                 ff.equal(ff.property(aname("stringProperty")), ff.literal("OnE"), false);
-        assertEquals(0, featureSource.getCount(new Query(null, sensitive)));
-        assertEquals(1, featureSource.getCount(new Query(null, insensitive)));
+        assertEquals(0, Math.toIntExact(featureSource.count(new Query(null, sensitive))));
+        assertEquals(1, Math.toIntExact(featureSource.count(new Query(null, insensitive))));
     }
 
     public void testGetFeaturesWithQuery() throws Exception {
@@ -472,9 +472,10 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
                 ff.like(ff.property(aname("stringProperty")), "Z*", "*", "?", "\\", false);
         PropertyIsLike caseInsensitiveLike2 =
                 ff.like(ff.property(aname("stringProperty")), "z*", "*", "?", "\\", false);
-        assertEquals(0, featureSource.getCount(new Query(null, caseSensitiveLike)));
-        assertEquals(1, featureSource.getCount(new Query(null, caseInsensitiveLike)));
-        assertEquals(1, featureSource.getCount(new Query(null, caseInsensitiveLike2)));
+        assertEquals(0, Math.toIntExact(featureSource.count(new Query(null, caseSensitiveLike))));
+        assertEquals(1, Math.toIntExact(featureSource.count(new Query(null, caseInsensitiveLike))));
+        assertEquals(
+                1, Math.toIntExact(featureSource.count(new Query(null, caseInsensitiveLike2))));
     }
 
     public void testConversionFilter() throws Exception {
@@ -483,7 +484,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
                 ff.equals(
                         ff.property(aname("doubleProperty")),
                         ff.add(ff.property(aname("intProperty")), ff.literal("0.1")));
-        assertEquals(1, featureSource.getCount(new Query(null, f)));
+        assertEquals(1, Math.toIntExact(featureSource.count(new Query(null, f))));
     }
 
     public void testNotFilter() throws Exception {
@@ -492,7 +493,8 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         f = ff.not(f);
 
         assertEquals(
-                featureSource.getCount(Query.ALL) - 1, featureSource.getCount(new Query(null, f)));
+                Math.toIntExact(featureSource.count(Query.ALL)) - 1,
+                Math.toIntExact(featureSource.count(new Query(null, f))));
     }
 
     public void testGeometryFactoryHint() throws Exception {
@@ -524,7 +526,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
 
         // this test is very dependent on the specific database, some db's will round, some won't
         // so just assert that something is returned
-        assertTrue(featureSource.getCount(new Query(null, filter)) > 0);
+        assertTrue(Math.toIntExact(featureSource.count(new Query(null, filter))) > 0);
     }
 
     public void testAcceptsVisitor() throws Exception {
@@ -538,7 +540,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         TotalVisitor visitor = new TotalVisitor();
 
         // initial test on Transaction.AUTO_COMMIT
-        int count = featureSource.getCount(Query.ALL);
+        int count = Math.toIntExact(featureSource.count(Query.ALL));
         featureSource.accepts(Query.ALL, visitor, null);
         assertEquals(count, visitor.total);
         visitor.total = 0; // reset
@@ -697,6 +699,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
 
         // should hit the row where stringProperty starts with z (e.g zero)
         PropertyIsLike likeWithStringFunction = ff.like(function, "z%", "%", "-", "\\", true);
-        assertEquals(1, featureSource.getCount(new Query(null, likeWithStringFunction)));
+        assertEquals(
+                1, Math.toIntExact(featureSource.count(new Query(null, likeWithStringFunction))));
     }
 }

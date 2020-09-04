@@ -16,6 +16,7 @@
  */
 package org.geotools.data.teradata;
 
+import org.geotools.data.FeatureSource;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
@@ -116,8 +117,16 @@ public class TeradataDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
                 ff.equal(ff.property(aname("stringProperty")), ff.literal("OnE"), true);
 
         assertEquals(
-                1, dataStore.getFeatureSource("ft2").getCount(new Query(tname("ft2"), correct)));
+                1,
+                Math.toIntExact(
+                        ((FeatureSource<SimpleFeatureType, SimpleFeature>)
+                                        dataStore.getFeatureSource("ft2"))
+                                .count(new Query(tname("ft2"), correct))));
         assertEquals(
-                0, dataStore.getFeatureSource("ft2").getCount(new Query(tname("ft2"), incorrect)));
+                0,
+                Math.toIntExact(
+                        ((FeatureSource<SimpleFeatureType, SimpleFeature>)
+                                        dataStore.getFeatureSource("ft2"))
+                                .count(new Query(tname("ft2"), incorrect))));
     }
 }

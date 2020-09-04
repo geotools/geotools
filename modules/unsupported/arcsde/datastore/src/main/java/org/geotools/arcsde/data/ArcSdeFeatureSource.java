@@ -197,10 +197,10 @@ public class ArcSdeFeatureSource implements SimpleFeatureSource {
     }
 
     /** @see FeatureSource#getCount(Query) */
-    public final int getCount(final Query query) throws IOException {
+    public final long count(final Query query) throws IOException {
         final Query namedQuery = namedQuery(query);
         final ISession session = getSession();
-        final int count;
+        final long count;
         try {
             count = getCount(namedQuery, session);
         } finally {
@@ -210,8 +210,8 @@ public class ArcSdeFeatureSource implements SimpleFeatureSource {
     }
 
     /** @see FeatureSource#getCount(Query) */
-    protected int getCount(final Query namedQuery, final ISession session) throws IOException {
-        final int count;
+    protected long getCount(final Query namedQuery, final ISession session) throws IOException {
+        final long count;
         final String typeName = typeInfo.getFeatureTypeName();
         final ArcSdeVersionHandler versionHandler =
                 dataStore.getVersionHandler(typeName, transaction);

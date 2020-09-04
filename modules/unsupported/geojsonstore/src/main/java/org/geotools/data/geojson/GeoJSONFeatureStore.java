@@ -58,7 +58,7 @@ public class GeoJSONFeatureStore extends ContentFeatureStore {
     }
 
     @Override
-    protected int getCountInternal(Query query) throws IOException {
+    protected long getCountInternal(Query query) throws IOException {
 
         return delegate.getCountInternal(query);
     }

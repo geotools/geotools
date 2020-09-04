@@ -147,7 +147,7 @@ public class PropertyDataStore3DTest {
         // read back and check
         getOneFeature("full3d.ls");
         getOneFeature("full3d.poly");
-        assertEquals(2, fs.getCount(Query.ALL));
+        assertEquals(2, Math.toIntExact(fs.count(Query.ALL)));
     }
 
     @Test
@@ -202,7 +202,7 @@ public class PropertyDataStore3DTest {
         // read back and check
         getOneFeature("full3d.ls");
         getOneFeature("full3d.point");
-        assertEquals(2, fs.getCount(Query.ALL));
+        assertEquals(2, Math.toIntExact(fs.count(Query.ALL)));
     }
 
     @Test
@@ -253,7 +253,7 @@ public class PropertyDataStore3DTest {
         // read back and check
         getOneFeature("full3d.poly");
         getOneFeature("full3d.point");
-        assertEquals(2, fs.getCount(Query.ALL));
+        assertEquals(2, Math.toIntExact(fs.count(Query.ALL)));
     }
 
     @Test

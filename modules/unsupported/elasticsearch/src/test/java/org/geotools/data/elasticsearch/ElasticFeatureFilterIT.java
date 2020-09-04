@@ -99,7 +99,7 @@ public class ElasticFeatureFilterIT extends ElasticTestSupport {
     @Test
     public void testCount() throws Exception {
         init();
-        assertEquals(11, featureSource.getCount(Query.ALL));
+        assertEquals(11, Math.toIntExact(featureSource.count(Query.ALL)));
     }
 
     @Test
@@ -119,7 +119,7 @@ public class ElasticFeatureFilterIT extends ElasticTestSupport {
         PropertyIsEqualTo filter = ff.equals(ff.property("vendor_s"), ff.literal("D-Link"));
         Query query = new Query();
         query.setFilter(filter);
-        assertEquals(4, featureSource.getCount(query));
+        assertEquals(4, Math.toIntExact(featureSource.count(query)));
     }
 
     @Test
@@ -129,7 +129,7 @@ public class ElasticFeatureFilterIT extends ElasticTestSupport {
         PropertyIsNotEqualTo filter = ff.notEqual(ff.property("vendor_s"), ff.literal("D-Link"));
         Query query = new Query();
         query.setFilter(filter);
-        assertEquals(7, featureSource.getCount(query));
+        assertEquals(7, Math.toIntExact(featureSource.count(query)));
     }
 
     @Test
@@ -139,7 +139,7 @@ public class ElasticFeatureFilterIT extends ElasticTestSupport {
         query.setStartIndex(5);
         query.setMaxFeatures(11);
 
-        assertEquals(6, featureSource.getCount(query));
+        assertEquals(6, Math.toIntExact(featureSource.count(query)));
     }
 
     @Test
@@ -476,7 +476,7 @@ public class ElasticFeatureFilterIT extends ElasticTestSupport {
                 attribute.setUse(false);
             }
         }
-        assertEquals(11, featureSource.getCount(Query.ALL));
+        assertEquals(11, Math.toIntExact(featureSource.count(Query.ALL)));
         SimpleFeatureIterator features = featureSource.getFeatures().features();
         for (int i = 0; i < 11; i++) {
             assertTrue(features.hasNext());
@@ -495,7 +495,7 @@ public class ElasticFeatureFilterIT extends ElasticTestSupport {
         }
         featureSource = (ElasticFeatureSource) dataStore.getFeatureSource(TYPE_NAME);
 
-        assertEquals(11, featureSource.getCount(Query.ALL));
+        assertEquals(11, Math.toIntExact(featureSource.count(Query.ALL)));
 
         SimpleFeatureIterator features = featureSource.getFeatures().features();
         for (int i = 0; i < 11; i++) {
@@ -514,7 +514,7 @@ public class ElasticFeatureFilterIT extends ElasticTestSupport {
                 attribute.setUse(false);
             }
         }
-        assertEquals(11, featureSource.getCount(Query.ALL));
+        assertEquals(11, Math.toIntExact(featureSource.count(Query.ALL)));
         SimpleFeatureIterator features = featureSource.getFeatures().features();
         for (int i = 0; i < 11; i++) {
             assertTrue(features.hasNext());
@@ -534,7 +534,7 @@ public class ElasticFeatureFilterIT extends ElasticTestSupport {
         }
         featureSource = (ElasticFeatureSource) dataStore.getFeatureSource(TYPE_NAME);
 
-        assertEquals(11, featureSource.getCount(Query.ALL));
+        assertEquals(11, Math.toIntExact(featureSource.count(Query.ALL)));
 
         SimpleFeatureIterator features = featureSource.getFeatures().features();
         for (int i = 0; i < 11; i++) {

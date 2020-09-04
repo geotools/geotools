@@ -1046,8 +1046,8 @@ public abstract class AbstractIntegrationTest {
         assertSchemaEqual(test.featureType, source.getSchema());
 
         assertEquals(data, source.getDataStore());
-        if (source.getCount(Query.ALL) >= 0) {
-            assertEquals(test.numberOfFeatures, source.getCount(Query.ALL));
+        if (Math.toIntExact(source.count(Query.ALL)) >= 0) {
+            assertEquals(test.numberOfFeatures, Math.toIntExact(source.count(Query.ALL)));
         }
 
         assertEquals(test.typeName, source.getSchema().getTypeName());

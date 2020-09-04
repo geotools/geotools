@@ -57,6 +57,7 @@ import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureReader;
+import org.geotools.data.FeatureSource;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
@@ -1062,7 +1063,10 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
     public void testTransaction() throws Exception {
         ShapefileDataStore sds = createDataStore();
 
-        int idx = sds.getFeatureSource().getCount(Query.ALL);
+        int idx =
+                Math.toIntExact(
+                        ((FeatureSource<SimpleFeatureType, SimpleFeature>) sds.getFeatureSource())
+                                .count(Query.ALL));
 
         SimpleFeatureStore store = (SimpleFeatureStore) sds.getFeatureSource(sds.getTypeNames()[0]);
 
@@ -1096,7 +1100,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         ShapefileDataStore store = new ShapefileDataStore(URLs.fileToUrl(shpFile));
         ContentFeatureSource fs = store.getFeatureSource();
         // this one reads the shp header, which still contains trace of all records
-        assertEquals(25, fs.getCount(Query.ALL));
+        assertEquals(25, Math.toIntExact(fs.count(Query.ALL)));
         // now read manually and check we skip the records with the dbf entry marked as deleted
         SimpleFeatureIterator fi = fs.getFeatures().features();
         int count = 0;
@@ -1509,7 +1513,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
 
             features = featureSource.getFeatures(query);
             assertEquals(count - 2, features.size());
-            assertEquals(count - 2, featureSource.getCount(query));
+            assertEquals(count - 2, Math.toIntExact(featureSource.count(query)));
 
             // execute Query that uses limit
             query = new Query(Query.ALL);
@@ -1517,7 +1521,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
 
             features = featureSource.getFeatures(query);
             assertEquals(count / 2, features.size());
-            assertEquals(count / 2, featureSource.getCount(query));
+            assertEquals(count / 2, Math.toIntExact(featureSource.count(query)));
 
             // execute Query that uses both limit and offset
             query = new Query(Query.ALL);
@@ -1526,7 +1530,8 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
 
             features = featureSource.getFeatures(query);
             assertEquals(Math.min(count - 2, count / 2), features.size());
-            assertEquals(Math.min(count - 2, count / 2), featureSource.getCount(query));
+            assertEquals(
+                    Math.min(count - 2, count / 2), Math.toIntExact(featureSource.count(query)));
 
             // execute Query that doesn't return any feature
             query = new Query(Query.ALL);
@@ -1796,9 +1801,9 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         Filter modifiedFilter = ff.equals(ff.property("f"), ff.literal("modified"));
         assertEquals(2, count(ds, typeName, modifiedFilter));
 
-        final int initialCount = store.getCount(Query.ALL);
+        final int initialCount = Math.toIntExact(store.count(Query.ALL));
         store.removeFeatures(fidFilter);
-        final int afterCount = store.getCount(Query.ALL);
+        final int afterCount = Math.toIntExact(store.count(Query.ALL));
         assertEquals(initialCount - 2, afterCount);
         ds.dispose();
     }
@@ -1813,7 +1818,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         Transaction t = new DefaultTransaction();
         store.setTransaction(t);
 
-        int initialCount = store.getCount(Query.ALL);
+        int initialCount = Math.toIntExact(store.count(Query.ALL));
 
         SimpleFeatureIterator features = store.getFeatures().features();
         String fid = features.next().getID();
@@ -1823,12 +1828,13 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         String typeName = store.getSchema().getTypeName();
         Id id = ff.id(Collections.singleton(ff.featureId(fid)));
 
-        assertEquals(-1, store.getCount(new Query(typeName, id)));
+        assertEquals(-1, Math.toIntExact(store.count(new Query(typeName, id))));
         assertEquals(1, count(ds, typeName, id, t));
 
         store.removeFeatures(id);
 
-        assertEquals(-1, store.getCount(new Query(store.getSchema().getTypeName(), id)));
+        assertEquals(
+                -1, Math.toIntExact(store.count(new Query(store.getSchema().getTypeName(), id))));
         assertEquals(initialCount - 1, count(ds, typeName, Filter.INCLUDE, t));
         assertEquals(0, count(ds, typeName, id, t));
         ds.dispose();

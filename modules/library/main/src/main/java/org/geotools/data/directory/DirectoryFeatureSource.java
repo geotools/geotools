@@ -51,8 +51,8 @@ public class DirectoryFeatureSource implements SimpleFeatureSource {
         return fsource.getBounds(query);
     }
 
-    public int getCount(Query query) throws IOException {
-        return fsource.getCount(query);
+    public long count(Query query) throws IOException {
+        return fsource.count(query);
     }
 
     public DataAccess<SimpleFeatureType, SimpleFeature> getDataStore() {

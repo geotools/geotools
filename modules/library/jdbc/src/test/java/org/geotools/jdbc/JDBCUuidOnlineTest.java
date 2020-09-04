@@ -65,7 +65,7 @@ public abstract class JDBCUuidOnlineTest extends JDBCTestSupport {
             SimpleFeatureStore featureStore =
                     (SimpleFeatureStore) dataStore.getFeatureSource(tname("guid"));
             featureStore.setTransaction(transaction);
-            assertEquals(featureStore.getCount(Query.ALL), 2);
+            assertEquals(Math.toIntExact(featureStore.count(Query.ALL)), 2);
 
             SimpleFeatureType type = dataStore.getSchema(tname("guid"));
             SimpleFeature feature =
@@ -74,7 +74,7 @@ public abstract class JDBCUuidOnlineTest extends JDBCTestSupport {
             SimpleFeatureCollection collection = DataUtilities.collection(feature);
             featureStore.addFeatures(collection);
             transaction.commit();
-            assertEquals(featureStore.getCount(Query.ALL), 3);
+            assertEquals(Math.toIntExact(featureStore.count(Query.ALL)), 3);
         }
     }
 
@@ -99,7 +99,7 @@ public abstract class JDBCUuidOnlineTest extends JDBCTestSupport {
 
         featureStore.removeFeatures(filter);
 
-        assertEquals(1, featureStore.getCount(Query.ALL));
+        assertEquals(1, Math.toIntExact(featureStore.count(Query.ALL)));
     }
 
     public void testUUIDAsPrimaryKey() throws Exception {
@@ -111,7 +111,7 @@ public abstract class JDBCUuidOnlineTest extends JDBCTestSupport {
             featureStore.addFeatures(createFeatureCollection());
 
             transaction.commit();
-            assertEquals(3, featureStore.getCount(Query.ALL));
+            assertEquals(3, Math.toIntExact(featureStore.count(Query.ALL)));
         }
     }
 

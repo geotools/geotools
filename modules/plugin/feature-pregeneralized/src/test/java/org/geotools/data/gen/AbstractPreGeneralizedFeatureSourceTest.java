@@ -144,19 +144,19 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
             for (Query q : queries) {
 
                 q.getHints().put(Hints.GEOMETRY_DISTANCE, 1.0);
-                int count = fs.getCount(q);
+                int count = Math.toIntExact(fs.count(q));
 
                 q.getHints().put(Hints.GEOMETRY_DISTANCE, 5.0);
-                assertTrue(count == fs.getCount(q));
+                assertTrue(count == Math.toIntExact(fs.count(q)));
 
                 q.getHints().put(Hints.GEOMETRY_DISTANCE, 10.0);
-                assertTrue(count == fs.getCount(q));
+                assertTrue(count == Math.toIntExact(fs.count(q)));
 
                 q.getHints().put(Hints.GEOMETRY_DISTANCE, 20.0);
-                assertTrue(count == fs.getCount(q));
+                assertTrue(count == Math.toIntExact(fs.count(q)));
 
                 q.getHints().put(Hints.GEOMETRY_DISTANCE, 25.0);
-                assertTrue(count == fs.getCount(q));
+                assertTrue(count == Math.toIntExact(fs.count(q)));
             }
         } catch (Exception ex) {
             Assert.fail(ex.getMessage());

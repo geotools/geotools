@@ -333,13 +333,13 @@ public class CatalogSliceTest extends Assert {
 
             // queries
             // simple
-            assertTrue(fs.getCount(Query.ALL) > 0);
+            assertTrue(Math.toIntExact(fs.count(Query.ALL)) > 0);
 
             // complex
             final Query q = new Query();
             q.setTypeName("surface_emissivity");
             q.setFilter(ff.greaterOrEqual(ff.property("new"), ff.literal(0)));
-            assertTrue(fs.getCount(q) > 0);
+            assertTrue(Math.toIntExact(fs.count(q)) > 0);
 
             final SimpleFeatureCollection fc = fs.getFeatures(q);
             assertFalse(fc.isEmpty());

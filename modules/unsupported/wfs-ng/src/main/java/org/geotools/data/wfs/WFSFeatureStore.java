@@ -107,8 +107,8 @@ class WFSFeatureStore extends ContentFeatureStore {
     }
 
     @Override
-    protected int getCountInternal(Query query) throws IOException {
-        return delegate.getCount(query);
+    protected long getCountInternal(Query query) throws IOException {
+        return delegate.count(query);
     }
 
     @Override

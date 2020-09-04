@@ -17,6 +17,7 @@
 package org.geotools.jdbc;
 
 import java.util.HashMap;
+import org.geotools.data.FeatureSource;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
@@ -50,7 +51,11 @@ public abstract class JDBCUDTOnlineTest extends JDBCTestSupport {
     }
 
     public void testWrite() throws Exception {
-        int count = dataStore.getFeatureSource(tname("udt")).getCount(Query.ALL);
+        int count =
+                Math.toIntExact(
+                        ((FeatureSource<SimpleFeatureType, SimpleFeature>)
+                                        dataStore.getFeatureSource(tname("udt")))
+                                .count(Query.ALL));
 
         try (FeatureWriter w =
                 dataStore.getFeatureWriterAppend(tname("udt"), Transaction.AUTO_COMMIT)) {
@@ -67,7 +72,12 @@ public abstract class JDBCUDTOnlineTest extends JDBCTestSupport {
             w.write();
         }
 
-        assertEquals(count + 1, dataStore.getFeatureSource(tname("udt")).getCount(Query.ALL));
+        assertEquals(
+                count + 1,
+                Math.toIntExact(
+                        ((FeatureSource<SimpleFeatureType, SimpleFeature>)
+                                        dataStore.getFeatureSource(tname("udt")))
+                                .count(Query.ALL)));
     }
 
     @Override

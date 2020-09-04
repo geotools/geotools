@@ -73,8 +73,8 @@ public class FlatgeobufFeatureSource extends ContentFeatureSource {
     }
 
     @Override
-    protected int getCountInternal(Query query) throws IOException {
-        int count = -1;
+    protected long getCountInternal(Query query) throws IOException {
+        long count = -1;
         try (InputStream in = new FileInputStream(getDataStore().getFile())) {
             FlatgeobufReader reader =
                     new FlatgeobufReader(

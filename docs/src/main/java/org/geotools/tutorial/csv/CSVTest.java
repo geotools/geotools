@@ -258,7 +258,8 @@ public class CSVTest {
         } // try-with-resource will call features.close()
 
         System.out.println("           List Contents: " + list);
-        System.out.println("    FeatureSource  count: " + featureSource.getCount(Query.ALL));
+        System.out.println(
+                "    FeatureSource  count: " + Math.toIntExact(featureSource.count(Query.ALL)));
         System.out.println("    FeatureSource bounds: " + featureSource.getBounds(Query.ALL));
         System.out.println("FeatureCollection   size: " + featureCollection.size());
         System.out.println("FeatureCollection bounds: " + featureCollection.getBounds());

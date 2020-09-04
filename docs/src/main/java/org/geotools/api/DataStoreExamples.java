@@ -79,7 +79,7 @@ public class DataStoreExamples {
 
     void exampleAllCount() throws Exception {
         // all start
-        int count = featureSource.getCount(Query.ALL);
+        int count = Math.toIntExact(featureSource.count(Query.ALL));
         if (count == -1) {
             count = featureSource.getFeatures().size();
         }
@@ -89,7 +89,7 @@ public class DataStoreExamples {
     void exampleQueryCount() throws Exception {
         // count start
         Query query = new Query("typeName", CQL.toFilter("REGION = 3"));
-        int count = featureSource.getCount(query);
+        int count = Math.toIntExact(featureSource.count(query));
         if (count == -1) {
             count = featureSource.getFeatures(query).size();
         }

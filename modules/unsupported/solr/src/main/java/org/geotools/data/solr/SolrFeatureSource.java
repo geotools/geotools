@@ -140,8 +140,8 @@ public class SolrFeatureSource extends ContentFeatureSource {
     }
 
     @Override
-    protected int getCountInternal(Query query) throws IOException {
-        int count = 0;
+    protected long getCountInternal(Query query) throws IOException {
+        long count = 0;
         try {
             SolrDataStore store = getDataStore();
             Filter[] split = splitFilter(query.getFilter(), this);
@@ -169,9 +169,7 @@ public class SolrFeatureSource extends ContentFeatureSource {
                 @SuppressWarnings("PMD.CloseResource") // not managed here
                 HttpSolrClient server = store.getSolrServer();
                 QueryResponse rsp = server.query(q);
-                count =
-                        Long.valueOf(rsp.getResults().getNumFound() - rsp.getResults().getStart())
-                                .intValue();
+                count = Long.valueOf(rsp.getResults().getNumFound() - rsp.getResults().getStart());
                 // Manage max manually
                 if (query.getMaxFeatures() > 0 && query.getMaxFeatures() < Integer.MAX_VALUE) {
                     if (count > query.getMaxFeatures()) {

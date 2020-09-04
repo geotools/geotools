@@ -278,7 +278,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
     }
 
     @Override
-    protected int getCountInternal(Query query) throws IOException {
+    protected long getCountInternal(Query query) throws IOException {
         if (query.getFilter() == Filter.INCLUDE) {
             IndexFile file = getDataStore().shpManager.openIndexFile();
             if (file != null) {

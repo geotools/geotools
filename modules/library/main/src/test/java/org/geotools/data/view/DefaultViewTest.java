@@ -108,7 +108,7 @@ public class DefaultViewTest extends TestCase {
         SimpleFeatureSource view = getView();
 
         Query query = getQuery();
-        int count = view.getCount(query);
+        int count = Math.toIntExact(view.count(query));
         assertEquals(1, count);
     }
 

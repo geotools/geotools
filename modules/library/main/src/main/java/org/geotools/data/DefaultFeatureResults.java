@@ -286,7 +286,7 @@ public class DefaultFeatureResults extends DataFeatureCollection {
      */
     public int getCount() throws IOException {
         int count;
-        count = featureSource.getCount(query);
+        count = Math.toIntExact(featureSource.count(query));
 
         if (count != -1) {
             // optimization worked, return maxFeatures if count is

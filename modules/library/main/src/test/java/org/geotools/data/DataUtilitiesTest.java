@@ -727,7 +727,7 @@ public class DataUtilitiesTest extends DataTestCase {
 
     public void testSource() throws Exception {
         SimpleFeatureSource s = DataUtilities.source(roadFeatures);
-        assertEquals(3, s.getCount(Query.ALL));
+        assertEquals(3, Math.toIntExact(s.count(Query.ALL)));
         assertEquals(3, s.getFeatures().size());
         assertEquals(3, s.getFeatures(Query.ALL).size());
         assertEquals(3, s.getFeatures(Filter.INCLUDE).size());

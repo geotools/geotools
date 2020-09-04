@@ -78,7 +78,7 @@ public class MemoryFeatureSource extends ContentFeatureSource {
     }
 
     @Override
-    protected int getCountInternal(Query query) throws IOException {
+    protected long getCountInternal(Query query) throws IOException {
         if (query.getFilter() == Filter.INCLUDE) {
             MemoryEntry entry = getEntry();
             return entry.getMemory().size();

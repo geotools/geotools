@@ -122,12 +122,12 @@ public class ShapefileQuadTreeReadWriteTest extends TestCaseSupport {
         s.createSchema(type);
         SimpleFeatureStore store = (SimpleFeatureStore) s.getFeatureSource(s.getTypeNames()[0]);
 
-        assertEquals(0, store.getCount(Query.ALL));
+        assertEquals(0, Math.toIntExact(store.count(Query.ALL)));
         store.addFeatures(one);
-        assertEquals(one.size(), store.getCount(Query.ALL));
+        assertEquals(one.size(), Math.toIntExact(store.count(Query.ALL)));
         store.addFeatures(one);
 
-        assertEquals(one.size() * 2, store.getCount(Query.ALL));
+        assertEquals(one.size() * 2, Math.toIntExact(store.count(Query.ALL)));
         s.dispose();
     }
 

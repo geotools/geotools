@@ -18,6 +18,7 @@ package org.geotools.jdbc;
 
 import java.io.IOException;
 import org.geotools.data.DefaultTransaction;
+import org.geotools.data.FeatureSource;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
@@ -102,13 +103,23 @@ public abstract class JDBCTransactionOnlineTest extends JDBCTestSupport {
             st.addFeatures(features);
             tx1.commit();
         }
-        assertEquals(4, dataStore.getFeatureSource(tname("ft1")).getCount(Query.ALL));
+        assertEquals(
+                4,
+                Math.toIntExact(
+                        ((FeatureSource<SimpleFeatureType, SimpleFeature>)
+                                        dataStore.getFeatureSource(tname("ft1")))
+                                .count(Query.ALL)));
 
         try (Transaction tx2 = new DefaultTransaction()) {
             st.setTransaction(tx2);
             st.addFeatures(features);
             tx2.commit();
         }
-        assertEquals(5, dataStore.getFeatureSource(tname("ft1")).getCount(Query.ALL));
+        assertEquals(
+                5,
+                Math.toIntExact(
+                        ((FeatureSource<SimpleFeatureType, SimpleFeature>)
+                                        dataStore.getFeatureSource(tname("ft1")))
+                                .count(Query.ALL)));
     }
 }

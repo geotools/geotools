@@ -45,7 +45,7 @@ public class VPFFileFeatureSource extends VPFFeatureSource {
         return new VPFFileFeatureReader(getState(), file);
     }
 
-    protected int getCountInternal(Query query) throws IOException {
+    protected long getCountInternal(Query query) throws IOException {
         return -1; // feature by feature scan required to count records
     }
 

@@ -69,7 +69,7 @@ public class GeobufFeatureSource extends ContentFeatureSource {
     }
 
     @Override
-    protected int getCountInternal(Query query) throws IOException {
+    protected long getCountInternal(Query query) throws IOException {
         InputStream in = new FileInputStream(getDataStore().getFile());
         try {
             GeobufFeatureCollection geobufFeatureCollection = new GeobufFeatureCollection();

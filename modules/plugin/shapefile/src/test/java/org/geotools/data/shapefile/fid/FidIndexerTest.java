@@ -38,7 +38,7 @@ public class FidIndexerTest extends FIDTestCase {
         ShapefileDataStore ds = new ShapefileDataStore(URLs.fileToUrl(backshp));
 
         SimpleFeatureSource fs = ds.getFeatureSource();
-        int features = fs.getCount(Query.ALL);
+        int features = Math.toIntExact(fs.count(Query.ALL));
 
         IndexedFidReader reader = new IndexedFidReader(shpFiles);
 

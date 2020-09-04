@@ -36,6 +36,7 @@ import java.util.TimeZone;
 import java.util.logging.Level;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.FeatureReader;
+import org.geotools.data.FeatureSource;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.FileDataStore;
 import org.geotools.data.Query;
@@ -228,7 +229,9 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
     }
 
     public long getCount(Query query) throws IOException {
-        return getFeatureSource().getCount(query);
+        return Math.toIntExact(
+                ((FeatureSource<SimpleFeatureType, SimpleFeature>) getFeatureSource())
+                        .count(query));
     }
 
     /**

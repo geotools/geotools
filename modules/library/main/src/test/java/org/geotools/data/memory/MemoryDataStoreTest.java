@@ -120,7 +120,7 @@ public class MemoryDataStoreTest extends DataTestCase {
 
         FeatureSource<SimpleFeatureType, SimpleFeature> source =
                 memory.getFeatureSource("typename");
-        assertEquals(0, source.getCount(Query.ALL));
+        assertEquals(0, Math.toIntExact(source.count(Query.ALL)));
     }
 
     public void testFixture() throws Exception {
@@ -926,7 +926,7 @@ public class MemoryDataStoreTest extends DataTestCase {
 
         assertSame(roadType, road.getSchema());
         assertSame(data, road.getDataStore());
-        assertEquals(3, road.getCount(Query.ALL));
+        assertEquals(3, Math.toIntExact(road.count(Query.ALL)));
         assertEquals(new ReferencedEnvelope(1, 5, 0, 4, null), road.getBounds(Query.ALL));
 
         SimpleFeatureCollection all = road.getFeatures();

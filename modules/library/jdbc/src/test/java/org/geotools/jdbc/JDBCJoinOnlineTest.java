@@ -19,6 +19,7 @@ package org.geotools.jdbc;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import org.geotools.data.FeatureSource;
 import org.geotools.data.Join;
 import org.geotools.data.Join.Type;
 import org.geotools.data.Query;
@@ -308,7 +309,12 @@ public abstract class JDBCJoinOnlineTest extends JDBCTestSupport {
         q.getJoins().add(j);
         q.setFilter(ff.less(ff.property(aname("intProperty")), ff.literal(3)));
 
-        assertEquals(1, dataStore.getFeatureSource(tname("ft1")).getCount(q));
+        assertEquals(
+                1,
+                Math.toIntExact(
+                        ((FeatureSource<SimpleFeatureType, SimpleFeature>)
+                                        dataStore.getFeatureSource(tname("ft1")))
+                                .count(q)));
     }
 
     public void testSimpleJoinWithPostFilter() throws Exception {

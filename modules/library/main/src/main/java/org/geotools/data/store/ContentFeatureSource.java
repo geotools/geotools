@@ -465,12 +465,12 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      * <p>This method calls through to {@link #getCountInternal(Query)} which subclasses must
      * implement. It also contains optimizations which check state for cached values.
      */
-    public final int getCount(Query query) throws IOException {
+    public final long count(Query query) throws IOException {
         query = joinQuery(query);
         query = resolvePropertyNames(query);
 
         // calculate the count
-        int count = getCountInternal(query);
+        long count = getCountInternal(query);
 
         // if internal is not counted, return
         if (count < 0) {
@@ -516,7 +516,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
                     Id idFilter = ff.id(modifiedFids);
                     Query q = new Query(query);
                     q.setFilter(ff.and(idFilter, query.getFilter()));
-                    int modifiedPreCount = getCountInternal(q);
+                    long modifiedPreCount = getCountInternal(q);
                     if (modifiedPreCount == -1) {
                         return -1;
                     } else {
@@ -547,7 +547,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      * Calculates the number of features of a specified query. Subclasses must implement this
      * method. If the computation is not fast, it's possible to return -1.
      */
-    protected abstract int getCountInternal(Query query) throws IOException;
+    protected abstract long getCountInternal(Query query) throws IOException;
 
     /** Returns the feature collection of all the features of the feature source. */
     public final ContentFeatureCollection getFeatures() throws IOException {
@@ -787,7 +787,10 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         // subclass could not handle, resort to manually walkign through
         FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(query);
         try {
-            float size = progress instanceof NullProgressListener ? 0.0f : (float) getCount(query);
+            float size =
+                    progress instanceof NullProgressListener
+                            ? 0.0f
+                            : (float) Math.toIntExact(count(query));
             float position = 0;
             progress.started();
             while (reader.hasNext()) {

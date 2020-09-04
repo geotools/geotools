@@ -206,8 +206,36 @@ public interface FeatureSource<T extends FeatureType, F extends Feature> {
      *         or {@code -1} if this cannot be calculated.
      *
      * @throws IOException if there are errors getting the count
+     * @deprecated Please use {@link #count(Query)} instead
      */
-    int getCount(Query query) throws IOException;
+    @Deprecated
+    default int getCount(Query query) throws IOException {
+        return Math.toIntExact(count(query));
+    }
+
+    /**
+     * Gets the number of the features that would be returned by the given
+     * {@code Query}, taking into account any settings for max features and
+     * start index set on the {@code Query}.
+     * <p>
+     * It is possible that this method will return {@code -1} if the calculation
+     * of number of features is judged to be too costly by the implementing class.
+     * In this case, you might call <code>getFeatures(query).size()</code>
+     * instead.
+     * <p>
+     * Example use:<pre><code> int count = featureSource.getCount();
+     * if( count == -1 ){
+     *    count = featureSource.getFeatures( "typeName", count ).size();
+     * }
+     *
+     * @param query the query to select features
+     *
+     * @return the numer of features that would be returned by the {@code Query};
+     *         or {@code -1} if this cannot be calculated.
+     *
+     * @throws IOException if there are errors getting the count
+     */
+    public long count(Query query) throws IOException;
 
     /**
      * Returns the set of hints that this {@code FeatureSource} supports via {@code Query} requests.

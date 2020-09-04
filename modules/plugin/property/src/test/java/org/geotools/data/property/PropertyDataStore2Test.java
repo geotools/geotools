@@ -174,7 +174,7 @@ public class PropertyDataStore2Test extends TestCase {
     public void test3D() throws Exception {
         SimpleFeatureSource fs = store3d.getFeatureSource("road3");
         Query q = new Query("road3", Filter.INCLUDE);
-        assertEquals(2, fs.getCount(q));
+        assertEquals(2, Math.toIntExact(fs.count(q)));
         ReferencedEnvelope bounds =
                 new ReferencedEnvelope3D(
                         0, 30, 0, 30, 0, 20, fs.getSchema().getCoordinateReferenceSystem());
@@ -256,7 +256,7 @@ public class PropertyDataStore2Test extends TestCase {
         SimpleFeatureCollection matches = features.getFeatures(query);
 
         assertEquals(1, matches.size());
-        assertEquals(1, features.getCount(query));
+        assertEquals(1, Math.toIntExact(features.count(query)));
     }
 
     /** Test query with maxFeatures */
@@ -269,7 +269,7 @@ public class PropertyDataStore2Test extends TestCase {
         SimpleFeatureCollection matches = features.getFeatures(query);
 
         assertEquals(3, matches.size());
-        assertEquals(3, features.getCount(query));
+        assertEquals(3, Math.toIntExact(features.count(query)));
     }
 
     /** Test query with maxFeatures and startIndex */
@@ -283,6 +283,6 @@ public class PropertyDataStore2Test extends TestCase {
         SimpleFeatureCollection matches = features.getFeatures(query);
 
         assertEquals(1, matches.size());
-        assertEquals(1, features.getCount(query));
+        assertEquals(1, Math.toIntExact(features.count(query)));
     }
 }

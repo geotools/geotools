@@ -242,7 +242,7 @@ public class MongoNestedMapping extends NestedAttributeMapping {
         }
 
         @Override
-        public int getCount(Query query) throws IOException {
+        public long count(Query query) throws IOException {
             return features.size();
         }
 

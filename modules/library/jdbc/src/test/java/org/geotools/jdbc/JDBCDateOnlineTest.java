@@ -68,7 +68,7 @@ public abstract class JDBCDateOnlineTest extends JDBCTestSupport {
                 assertEquals(
                         "wrong number of records for " + zone.getDisplayName(),
                         2,
-                        fs.getCount(new Query(tname("dates"), f)));
+                        Math.toIntExact(fs.count(new Query(tname("dates"), f))));
                 /*
                             f = ff.lessOrEqual(ff.property(aname("d")),
                                     ff.literal(df.parse("2009-28-06")));
@@ -93,7 +93,7 @@ public abstract class JDBCDateOnlineTest extends JDBCTestSupport {
 
         // equal to
         Filter f = ff.equals(ff.property(aname("dt")), ff.literal("2009-06-28 15:12:41"));
-        assertEquals(1, fs.getCount(new Query(tname("dates"), f)));
+        assertEquals(1, Math.toIntExact(fs.count(new Query(tname("dates"), f))));
 
         f =
                 ff.equals(
@@ -101,7 +101,7 @@ public abstract class JDBCDateOnlineTest extends JDBCTestSupport {
                         ff.literal(
                                 new SimpleDateFormat("HH:mm:ss,dd-yyyy-MM")
                                         .parse("15:12:41,28-2009-06")));
-        assertEquals(1, fs.getCount(new Query(tname("dates"), f)));
+        assertEquals(1, Math.toIntExact(fs.count(new Query(tname("dates"), f))));
     }
 
     public void testFilterByTime() throws Exception {
@@ -111,12 +111,12 @@ public abstract class JDBCDateOnlineTest extends JDBCTestSupport {
 
         // greather than or equal to
         Filter f = ff.greaterOrEqual(ff.property(aname("t")), ff.literal("13:10:12"));
-        assertEquals(3, fs.getCount(new Query(tname("dates"), f)));
+        assertEquals(3, Math.toIntExact(fs.count(new Query(tname("dates"), f))));
 
         f =
                 ff.greaterOrEqual(
                         ff.property(aname("t")),
                         ff.literal(new SimpleDateFormat("ss:HH:mm").parse("12:13:10")));
-        assertEquals(3, fs.getCount(new Query(tname("dates"), f)));
+        assertEquals(3, Math.toIntExact(fs.count(new Query(tname("dates"), f))));
     }
 }

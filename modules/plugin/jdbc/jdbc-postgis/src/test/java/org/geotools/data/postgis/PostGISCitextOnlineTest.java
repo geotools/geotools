@@ -78,7 +78,7 @@ public class PostGISCitextOnlineTest extends JDBCTestSupport {
         SimpleFeatureSource fs = dataStore.getFeatureSource(tname("users"));
         FilterFactory ff = dataStore.getFilterFactory();
         Filter filter = ff.equal(ff.property(aname("nick")), ff.literal("LARRY"), true);
-        int count = fs.getCount(new Query(tname("users"), filter));
+        int count = Math.toIntExact(fs.count(new Query(tname("users"), filter)));
         // we had a case insensitive comparison due to the type, regardless of what we asked in the
         // filter
         assertEquals(1, count);
@@ -88,7 +88,7 @@ public class PostGISCitextOnlineTest extends JDBCTestSupport {
         SimpleFeatureSource fs = dataStore.getFeatureSource(tname("users"));
         FilterFactory ff = dataStore.getFilterFactory();
         Filter filter = ff.like(ff.property(aname("nick")), "*A*");
-        int count = fs.getCount(new Query(tname("users"), filter));
+        int count = Math.toIntExact(fs.count(new Query(tname("users"), filter)));
         // we had a case insensitive comparison due to the type, so we get two matches
         assertEquals(2, count);
     }

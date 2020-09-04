@@ -73,7 +73,7 @@ public class SampleDataAccessFeatureSource implements FeatureSource<FeatureType,
      *
      * @see org.geotools.data.FeatureSource#getCount(org.geotools.data.Query)
      */
-    public int getCount(Query query) throws IOException {
+    public long count(Query query) throws IOException {
         // FIXME implement this
         return 0;
     }

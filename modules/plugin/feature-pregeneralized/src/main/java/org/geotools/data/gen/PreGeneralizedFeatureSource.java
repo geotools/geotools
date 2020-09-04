@@ -173,14 +173,14 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
         return getBaseFeatureSource().getBounds(newQuery);
     }
 
-    public int getCount(Query query) throws IOException {
+    public long count(Query query) throws IOException {
 
         // SimpleFeatureSource fs = getFeatureSourceFor(query);
         // Query newQuery=getProxyObject(query, fs);
         // return fs.getCount(newQuery);
 
         Query newQuery = getProxyObject(query, getBaseFeatureSource());
-        return getBaseFeatureSource().getCount(newQuery);
+        return getBaseFeatureSource().count(newQuery);
     }
 
     public DataAccess<SimpleFeatureType, SimpleFeature> getDataStore() {

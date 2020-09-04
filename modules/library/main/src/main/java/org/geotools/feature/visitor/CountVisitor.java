@@ -27,7 +27,7 @@ import org.opengis.feature.simple.SimpleFeature;
  * @since 2.2.M2
  */
 public class CountVisitor implements FeatureCalc {
-    Integer count = null;
+    Long count = null;
 
     public void init(SimpleFeatureCollection collection) {
         // do nothing
@@ -39,19 +39,19 @@ public class CountVisitor implements FeatureCalc {
 
     public void visit(org.opengis.feature.Feature feature) {
         if (count == null) {
-            count = 0;
+            count = 0l;
         }
         count++;
     }
 
-    public int getCount() {
+    public long getCount() {
         if (count == null) {
             return 0;
         }
         return count;
     }
 
-    public void setValue(int count) {
+    public void setValue(long count) {
         this.count = count;
     }
 
@@ -67,14 +67,14 @@ public class CountVisitor implements FeatureCalc {
     }
 
     public static class CountResult extends AbstractCalcResult {
-        private int count;
+        private long count;
 
-        public CountResult(int newcount) {
+        public CountResult(long newcount) {
             count = newcount;
         }
 
         public Object getValue() {
-            return Integer.valueOf(count);
+            return Long.valueOf(count);
         }
 
         public boolean isCompatible(CalcResult targetResults) {
@@ -95,7 +95,7 @@ public class CountVisitor implements FeatureCalc {
 
             if (resultsToAdd instanceof CountResult) {
                 // add the two counts
-                int toAdd = resultsToAdd.toInt();
+                long toAdd = resultsToAdd.toLong();
                 return new CountResult(count + toAdd);
             } else if (resultsToAdd instanceof SumResult) {
                 // we don't want to implement this twice, so we'll call the

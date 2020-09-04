@@ -62,7 +62,7 @@ public class SolrFeatureSourceTest extends SolrTestSupport {
 
     public void testCount() throws Exception {
         init();
-        assertEquals(13, featureSource.getCount(Query.ALL));
+        assertEquals(13, Math.toIntExact(featureSource.count(Query.ALL)));
     }
 
     public void testBounds() throws Exception {
@@ -80,7 +80,7 @@ public class SolrFeatureSourceTest extends SolrTestSupport {
         PropertyIsEqualTo filter = ff.equals(ff.property("vendor_s"), ff.literal("D-Link"));
         Query query = new Query();
         query.setFilter(filter);
-        assertEquals(4, featureSource.getCount(query));
+        assertEquals(4, Math.toIntExact(featureSource.count(query)));
     }
 
     public void testCountWithIsNotEqualFilter() throws Exception {
@@ -89,7 +89,7 @@ public class SolrFeatureSourceTest extends SolrTestSupport {
         PropertyIsNotEqualTo filter = ff.notEqual(ff.property("vendor_s"), ff.literal("D-Link"));
         Query query = new Query();
         query.setFilter(filter);
-        assertEquals(7, featureSource.getCount(query));
+        assertEquals(7, Math.toIntExact(featureSource.count(query)));
     }
 
     public void testCountWithOffsetLimit() throws Exception {
@@ -97,7 +97,7 @@ public class SolrFeatureSourceTest extends SolrTestSupport {
         Query query = new Query();
         query.setStartIndex(5);
         query.setMaxFeatures(11);
-        assertEquals(8, featureSource.getCount(query));
+        assertEquals(8, Math.toIntExact(featureSource.count(query)));
     }
 
     public void testGetFeaturesWithAndLogicFilter() throws Exception {

@@ -41,7 +41,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
         Query query = new Query();
         SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
         SimpleFeature[] features = (SimpleFeature[]) fs.getFeatures(query).toArray();
-        Assert.assertEquals(3, fs.getCount(query));
+        Assert.assertEquals(3, Math.toIntExact(fs.count(query)));
         Assert.assertEquals("mock.3", features[0].getID());
         Assert.assertEquals("mock.1", features[1].getID());
         Assert.assertEquals("mock.2", features[2].getID());
@@ -54,7 +54,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
         query.setSortBy(new SortBy[] {SortBy.NATURAL_ORDER});
         SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
         SimpleFeature[] features = (SimpleFeature[]) fs.getFeatures(query).toArray();
-        Assert.assertEquals(3, fs.getCount(query));
+        Assert.assertEquals(3, Math.toIntExact(fs.count(query)));
         Assert.assertEquals("mock.1", features[0].getID());
         Assert.assertEquals("mock.2", features[1].getID());
         Assert.assertEquals("mock.3", features[2].getID());
@@ -67,7 +67,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
         query.setSortBy(new SortBy[] {SortBy.REVERSE_ORDER});
         SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
         SimpleFeature[] features = (SimpleFeature[]) fs.getFeatures(query).toArray();
-        Assert.assertEquals(3, fs.getCount(query));
+        Assert.assertEquals(3, Math.toIntExact(fs.count(query)));
         Assert.assertEquals("mock.3", features[0].getID());
         Assert.assertEquals("mock.2", features[1].getID());
         Assert.assertEquals("mock.1", features[2].getID());
@@ -81,7 +81,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
         query.setStartIndex(0);
         SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
         SimpleFeature[] features = (SimpleFeature[]) fs.getFeatures(query).toArray();
-        Assert.assertEquals(1, fs.getCount(query));
+        Assert.assertEquals(1, Math.toIntExact(fs.count(query)));
         Assert.assertEquals("mock.1", features[0].getID());
     }
 
@@ -93,7 +93,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
         query.setStartIndex(1);
         SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
         SimpleFeature[] features = (SimpleFeature[]) fs.getFeatures(query).toArray();
-        Assert.assertEquals(1, fs.getCount(query));
+        Assert.assertEquals(1, Math.toIntExact(fs.count(query)));
         Assert.assertEquals("mock.2", features[0].getID());
     }
 
@@ -105,7 +105,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
         query.setStartIndex(2);
         SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
         SimpleFeature[] features = (SimpleFeature[]) fs.getFeatures(query).toArray();
-        Assert.assertEquals(1, fs.getCount(query));
+        Assert.assertEquals(1, Math.toIntExact(fs.count(query)));
         Assert.assertEquals("mock.3", features[0].getID());
     }
 
@@ -118,7 +118,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
         query.setStartIndex(0);
         SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
         SimpleFeature[] features = (SimpleFeature[]) fs.getFeatures(query).toArray();
-        Assert.assertEquals(1, fs.getCount(query));
+        Assert.assertEquals(1, Math.toIntExact(fs.count(query)));
         Assert.assertEquals("mock.1", features[0].getID());
     }
 
@@ -131,7 +131,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
         query.setStartIndex(1);
         SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
         SimpleFeature[] features = (SimpleFeature[]) fs.getFeatures(query).toArray();
-        Assert.assertEquals(1, fs.getCount(query));
+        Assert.assertEquals(1, Math.toIntExact(fs.count(query)));
         Assert.assertEquals("mock.2", features[0].getID());
     }
 
@@ -144,7 +144,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
         query.setStartIndex(2);
         SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
         SimpleFeature[] features = (SimpleFeature[]) fs.getFeatures(query).toArray();
-        Assert.assertEquals(1, fs.getCount(query));
+        Assert.assertEquals(1, Math.toIntExact(fs.count(query)));
         Assert.assertEquals("mock.3", features[0].getID());
     }
 
@@ -157,7 +157,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
         query.setStartIndex(0);
         SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
         SimpleFeature[] features = (SimpleFeature[]) fs.getFeatures(query).toArray();
-        Assert.assertEquals(1, fs.getCount(query));
+        Assert.assertEquals(1, Math.toIntExact(fs.count(query)));
         Assert.assertEquals("mock.3", features[0].getID());
     }
 
@@ -170,7 +170,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
         query.setStartIndex(1);
         SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
         SimpleFeature[] features = (SimpleFeature[]) fs.getFeatures(query).toArray();
-        Assert.assertEquals(1, fs.getCount(query));
+        Assert.assertEquals(1, Math.toIntExact(fs.count(query)));
         Assert.assertEquals("mock.2", features[0].getID());
     }
 
@@ -183,7 +183,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
         query.setStartIndex(2);
         SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
         SimpleFeature[] features = (SimpleFeature[]) fs.getFeatures(query).toArray();
-        Assert.assertEquals(1, fs.getCount(query));
+        Assert.assertEquals(1, Math.toIntExact(fs.count(query)));
         Assert.assertEquals("mock.1", features[0].getID());
     }
 
@@ -195,7 +195,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
         query.setStartIndex(0);
         SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
         SimpleFeature[] features = (SimpleFeature[]) fs.getFeatures(query).toArray();
-        Assert.assertEquals(2, fs.getCount(query));
+        Assert.assertEquals(2, Math.toIntExact(fs.count(query)));
         Assert.assertEquals("mock.1", features[0].getID());
         Assert.assertEquals("mock.2", features[1].getID());
     }
@@ -208,7 +208,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
         query.setStartIndex(1);
         SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
         SimpleFeature[] features = (SimpleFeature[]) fs.getFeatures(query).toArray();
-        Assert.assertEquals(2, fs.getCount(query));
+        Assert.assertEquals(2, Math.toIntExact(fs.count(query)));
         Assert.assertEquals("mock.2", features[0].getID());
         Assert.assertEquals("mock.3", features[1].getID());
     }
@@ -224,7 +224,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
         query.setStartIndex(2);
         SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
         SimpleFeature[] features = (SimpleFeature[]) fs.getFeatures(query).toArray();
-        Assert.assertEquals(1, fs.getCount(query));
+        Assert.assertEquals(1, Math.toIntExact(fs.count(query)));
         Assert.assertEquals("mock.3", features[0].getID());
     }
 
@@ -236,7 +236,7 @@ public class ContentFeatureSourcePagingTest extends AbstractContentTest {
         query.setStartIndex(0);
         SimpleFeatureSource fs = store.getFeatureSource(TYPENAME);
         SimpleFeature[] features = (SimpleFeature[]) fs.getFeatures(query).toArray();
-        Assert.assertEquals(3, fs.getCount(query));
+        Assert.assertEquals(3, Math.toIntExact(fs.count(query)));
         Assert.assertEquals("mock.1", features[0].getID());
         Assert.assertEquals("mock.2", features[1].getID());
         Assert.assertEquals("mock.3", features[2].getID());

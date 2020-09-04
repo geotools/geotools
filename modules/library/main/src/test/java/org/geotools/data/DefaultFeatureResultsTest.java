@@ -37,7 +37,7 @@ public class DefaultFeatureResultsTest extends TestCase {
                 DataUtilities.createType("roads", "_=the_geom:Point,FID:String,NAME:String");
         SimpleFeatureSource fs = createMock(SimpleFeatureSource.class);
         expect(fs.getSchema()).andReturn(type).anyTimes();
-        expect(fs.getCount(q)).andReturn(20);
+        expect(Math.toIntExact(fs.count(q))).andReturn(20);
         replay(fs);
 
         DefaultFeatureResults results = new DefaultFeatureResults(fs, q);
@@ -63,7 +63,7 @@ public class DefaultFeatureResultsTest extends TestCase {
                 DataUtilities.createType("roads", "_=the_geom:Point,FID:String,NAME:String");
         SimpleFeatureSource fs = createMock(SimpleFeatureSource.class);
         expect(fs.getSchema()).andReturn(type).anyTimes();
-        expect(fs.getCount(q)).andReturn(-1);
+        expect(Math.toIntExact(fs.count(q))).andReturn(-1);
         expect(fs.getDataStore()).andReturn(ds);
         replay(fs);
 

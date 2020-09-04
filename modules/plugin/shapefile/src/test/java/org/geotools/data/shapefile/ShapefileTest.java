@@ -202,7 +202,7 @@ public class ShapefileTest extends TestCaseSupport {
         SimpleFeatureSource states = dataStore.getFeatureSource();
         SimpleFeatureType schema = states.getSchema();
         assertEquals(6, schema.getAttributeCount());
-        assertTrue(states.getCount(Query.ALL) > 0);
+        assertTrue(Math.toIntExact(states.count(Query.ALL)) > 0);
         dataStore.dispose();
     }
 

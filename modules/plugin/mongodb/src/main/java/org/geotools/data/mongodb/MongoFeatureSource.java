@@ -118,11 +118,11 @@ public class MongoFeatureSource extends ContentFeatureSource {
     }
 
     @Override
-    protected int getCountInternal(Query query) throws IOException {
+    protected long getCountInternal(Query query) throws IOException {
         Filter f = query.getFilter();
         if (isAll(f)) {
             LOG.fine("count(all)");
-            return (int) collection.count();
+            return collection.count();
         }
 
         Filter[] split = splitFilter(f);
@@ -134,7 +134,7 @@ public class MongoFeatureSource extends ContentFeatureSource {
         if (LOG.isLoggable(Level.FINE)) {
             LOG.fine("count(" + q + ")");
         }
-        return (int) collection.count(q);
+        return collection.count(q);
     }
 
     @Override

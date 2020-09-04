@@ -468,7 +468,7 @@ public class DefaultView implements SimpleFeatureSource {
      * <p>This method provides access to an optimized getBounds opperation. If no optimized
      * opperation is available <code>null</code> will be returned.
      *
-     * <p>You may still make use of getFeatures( Query ).getCount() which will return the correct
+     * <p>You may still make use of getFeatures( Query ).count() which will return the correct
      * answer (even if it has to itterate through all the results to do so.
      *
      * @param query User's query
@@ -494,23 +494,23 @@ public class DefaultView implements SimpleFeatureSource {
     /**
      * Adjust query and forward to source.
      *
-     * <p>This method provides access to an optimized getCount opperation. If no optimized
-     * opperation is available <code>-1</code> will be returned.
+     * <p>This method provides access to an optimized count opperation. If no optimized opperation
+     * is available <code>-1</code> will be returned.
      *
-     * <p>You may still make use of getFeatures( Query ).getCount() which will return the correct
+     * <p>You may still make use of getFeatures( Query ).count() which will return the correct
      * answer (even if it has to itterate through all the results to do so).
      *
      * @param query User's query.
      * @return Number of Features for Query, or -1 if no optimization is available.
      */
-    public int getCount(Query query) {
+    public long count(Query query) {
         try {
             query = makeDefinitionQuery(query);
         } catch (IOException ex) {
             return -1;
         }
         try {
-            return source.getCount(query);
+            return source.count(query);
         } catch (IOException e) {
             return 0;
         }

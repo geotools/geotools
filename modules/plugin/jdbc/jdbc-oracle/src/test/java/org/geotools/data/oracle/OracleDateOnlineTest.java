@@ -71,7 +71,7 @@ public class OracleDateOnlineTest extends JDBCDateOnlineTest {
 
             JDBCFeatureStore fs2 = (JDBCFeatureStore) dataStore.getFeatureSource(timestampsTable);
 
-            assertEquals(1, fs2.getCount(new Query(timestampsTable, f)));
+            assertEquals(1, Math.toIntExact(fs2.count(new Query(timestampsTable, f))));
         } finally {
             TimeZone.setDefault(originalTimeZone);
         }

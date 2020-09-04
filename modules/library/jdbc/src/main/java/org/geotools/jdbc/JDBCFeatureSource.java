@@ -394,7 +394,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         return split;
     }
 
-    protected int getCountInternal(Query query) throws IOException {
+    protected long getCountInternal(Query query) throws IOException {
         JDBCDataStore store = getDataStore();
 
         // split the filter
@@ -413,7 +413,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                 // calculate manually, dont use datastore optimization
                 getDataStore().getLogger().fine("Calculating size manually");
 
-                int count = 0;
+                long count = 0;
 
                 // grab a reader
                 Query preQuery = new Query(query);
@@ -441,7 +441,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
             try {
                 Query q = new Query(query);
                 q.setFilter(preFilter);
-                int count = store.getCount(getSchema(), q, cx);
+                long count = store.getCount(getSchema(), q, cx);
                 // if native support for limit and offset is not implemented, we have to ajust the
                 // result
                 if (!store.getSQLDialect().isLimitOffsetSupported()) {

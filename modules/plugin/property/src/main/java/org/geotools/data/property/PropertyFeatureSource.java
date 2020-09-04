@@ -95,7 +95,7 @@ public class PropertyFeatureSource extends ContentFeatureSource {
     }
 
     @Override
-    protected int getCountInternal(Query query) throws IOException {
+    protected long getCountInternal(Query query) throws IOException {
         if (query.getFilter() == Filter.INCLUDE) { // filtering not implemented
             int count = 0;
             FeatureReader<SimpleFeatureType, SimpleFeature> featureReader =

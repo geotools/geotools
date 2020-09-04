@@ -127,14 +127,17 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
     @Test
     public void testCountWithSelect() throws Exception {
         SimpleFeatureSource transformed = transformWithSelection();
-        int actual = transformed.getCount(Query.ALL);
-        int expected = STATES.getCount(Query.ALL);
+        int actual = Math.toIntExact(transformed.count(Query.ALL));
+        int expected = Math.toIntExact(STATES.count(Query.ALL));
         assertEquals(expected, actual);
 
-        actual = STATES.getCount(new Query("states", CQL.toFilter("state_name = 'Illinois'")));
+        actual =
+                Math.toIntExact(
+                        STATES.count(new Query("states", CQL.toFilter("state_name = 'Illinois'"))));
         expected =
-                transformed.getCount(
-                        new Query("states_mini", CQL.toFilter("state_name = 'Illinois'")));
+                Math.toIntExact(
+                        transformed.count(
+                                new Query("states_mini", CQL.toFilter("state_name = 'Illinois'"))));
 
         assertEquals(expected, actual);
     }
@@ -146,7 +149,7 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
         // some checks on the feature collection with the ALL query
         SimpleFeatureCollection fc = transformed.getFeatures();
         assertEquals(transformed.getSchema(), fc.getSchema());
-        assertEquals(transformed.getCount(Query.ALL), fc.size());
+        assertEquals(Math.toIntExact(transformed.count(Query.ALL)), fc.size());
         assertEquals(transformed.getBounds(), fc.getBounds());
 
         // and now with a specific one, here the property feature source will return null values
@@ -235,12 +238,16 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
     @Test
     public void testCountWithRename() throws Exception {
         SimpleFeatureSource transformed = transformWithSelection();
-        int actual = transformed.getCount(Query.ALL);
-        int expected = STATES.getCount(Query.ALL);
+        int actual = Math.toIntExact(transformed.count(Query.ALL));
+        int expected = Math.toIntExact(STATES.count(Query.ALL));
         assertEquals(expected, actual);
 
-        actual = STATES.getCount(new Query("states", CQL.toFilter("state_name = 'Illinois'")));
-        expected = transformed.getCount(new Query("usa", CQL.toFilter("name = 'Illinois'")));
+        actual =
+                Math.toIntExact(
+                        STATES.count(new Query("states", CQL.toFilter("state_name = 'Illinois'"))));
+        expected =
+                Math.toIntExact(
+                        transformed.count(new Query("usa", CQL.toFilter("name = 'Illinois'"))));
 
         assertEquals(expected, actual);
     }
@@ -252,7 +259,7 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
         // some checks on the feature collection with the ALL query
         SimpleFeatureCollection fc = transformed.getFeatures();
         assertEquals(transformed.getSchema(), fc.getSchema());
-        assertEquals(transformed.getCount(Query.ALL), fc.size());
+        assertEquals(Math.toIntExact(transformed.count(Query.ALL)), fc.size());
         assertEquals(transformed.getBounds(), fc.getBounds());
 
         // and now with a specific one, here the property feature source will return null values
@@ -357,12 +364,16 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
     @Test
     public void testCountWithTransform() throws Exception {
         SimpleFeatureSource transformed = transformWithSelection();
-        int actual = transformed.getCount(Query.ALL);
-        int expected = STATES.getCount(Query.ALL);
+        int actual = Math.toIntExact(transformed.count(Query.ALL));
+        int expected = Math.toIntExact(STATES.count(Query.ALL));
         assertEquals(expected, actual);
 
-        actual = STATES.getCount(new Query("states", CQL.toFilter("state_name = 'Illinois'")));
-        expected = transformed.getCount(new Query("bstates", CQL.toFilter("name = 'illinois'")));
+        actual =
+                Math.toIntExact(
+                        STATES.count(new Query("states", CQL.toFilter("state_name = 'Illinois'"))));
+        expected =
+                Math.toIntExact(
+                        transformed.count(new Query("bstates", CQL.toFilter("name = 'illinois'"))));
 
         assertEquals(expected, actual);
     }
@@ -374,7 +385,7 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
         // some checks on the feature collection with the ALL query
         SimpleFeatureCollection fc = transformed.getFeatures();
         assertEquals(transformed.getSchema(), fc.getSchema());
-        assertEquals(transformed.getCount(Query.ALL), fc.size());
+        assertEquals(Math.toIntExact(transformed.count(Query.ALL)), fc.size());
         ReferencedEnvelope bufferedStateBounds =
                 new ReferencedEnvelope(
                         -110.04782099895442,

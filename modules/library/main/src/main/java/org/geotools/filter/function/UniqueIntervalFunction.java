@@ -152,12 +152,11 @@ public class UniqueIntervalFunction extends ClassificationFunction {
         GroupByVisitor groupBy =
                 new GroupByVisitor(Aggregate.COUNT, prop, Arrays.asList(prop), null);
         collection.accepts(groupBy, null);
-        Map<List, Integer> result = groupBy.getResult().toMap();
+        Map<List, Long> result = groupBy.getResult().toMap();
         return computePercentages(result, collection.size(), values);
     }
 
-    private double[] computePercentages(
-            Map<List, Integer> queryResult, int totalSize, Set[] values) {
+    private double[] computePercentages(Map<List, Long> queryResult, int totalSize, Set[] values) {
         double[] percentages = new double[values.length];
         for (int i = 0; i < values.length; i++) {
             Set s = values[i];

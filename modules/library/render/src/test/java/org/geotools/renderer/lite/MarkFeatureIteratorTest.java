@@ -67,7 +67,7 @@ public class MarkFeatureIteratorTest {
         DefaultProgressListener listener = new DefaultProgressListener();
         try (MarkFeatureIterator iterator =
                 MarkFeatureIterator.create(zroads.getFeatures(), limit, listener)) {
-            if (limit >= zroads.getCount(Query.ALL)) {
+            if (limit >= Math.toIntExact(zroads.count(Query.ALL))) {
                 assertTrue(iterator instanceof MemoryMarkFeatureIterator);
             } else {
                 assertTrue(iterator instanceof DiskMarkFeatureIterator);

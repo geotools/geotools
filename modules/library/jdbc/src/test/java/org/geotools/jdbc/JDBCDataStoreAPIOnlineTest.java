@@ -895,7 +895,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         assertFeatureTypesEqual(td.roadType, road.getSchema());
         assertSame(dataStore, road.getDataStore());
 
-        int count = road.getCount(Query.ALL);
+        int count = Math.toIntExact(road.count(Query.ALL));
         assertTrue((count == 3) || (count == -1));
 
         ReferencedEnvelope bounds = road.getBounds(Query.ALL);

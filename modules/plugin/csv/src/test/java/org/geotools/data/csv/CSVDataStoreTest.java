@@ -207,7 +207,7 @@ public class CSVDataStoreTest {
         }
         assertEquals(6, count);
         assertEquals(6, matches.size());
-        assertEquals(6, rows.getCount(query));
+        assertEquals(6, Math.toIntExact(rows.count(query)));
     }
 
     /** Test query with maxFeatures */
@@ -230,7 +230,7 @@ public class CSVDataStoreTest {
         }
         assertEquals(3, count);
         assertEquals(3, matches.size());
-        assertEquals(3, rows.getCount(query));
+        assertEquals(3, Math.toIntExact(rows.count(query)));
     }
 
     /** Test query with maxFeatures and startIndex */
@@ -252,6 +252,6 @@ public class CSVDataStoreTest {
         }
         assertEquals(3, count);
         assertEquals(3, matches.size());
-        assertEquals(3, rows.getCount(query));
+        assertEquals(3, Math.toIntExact(rows.count(query)));
     }
 }

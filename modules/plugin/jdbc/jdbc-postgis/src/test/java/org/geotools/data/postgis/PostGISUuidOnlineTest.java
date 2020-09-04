@@ -56,7 +56,7 @@ public class PostGISUuidOnlineTest extends JDBCUuidOnlineTest {
             featureStore.addFeatures(createFeatureCollection());
 
             transaction.commit();
-            assertEquals(1, featureStore.getCount(Query.ALL));
+            assertEquals(1, Math.toIntExact(featureStore.count(Query.ALL)));
         }
     }
 }

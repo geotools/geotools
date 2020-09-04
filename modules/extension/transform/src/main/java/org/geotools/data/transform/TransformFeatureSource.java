@@ -240,7 +240,7 @@ public class TransformFeatureSource implements SimpleFeatureSource {
     }
 
     @Override
-    public int getCount(Query query) throws IOException {
+    public long count(Query query) throws IOException {
         // transforming does not change count, but we have to transform the filter
         Query txQuery = transformer.transformQuery(query);
         txQuery.setPropertyNames(Query.ALL_NAMES);
@@ -253,7 +253,7 @@ public class TransformFeatureSource implements SimpleFeatureSource {
                     new Object[] {query, txQuery});
         }
 
-        return source.getCount(txQuery);
+        return source.count(txQuery);
     }
 
     @Override

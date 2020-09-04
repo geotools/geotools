@@ -203,7 +203,7 @@ public class WFSContentComplexFeatureSource implements FeatureSource<FeatureType
     }
 
     @Override
-    public int getCount(Query query) throws IOException {
+    public long count(Query query) throws IOException {
         return getFeatures(query).size();
     }
 

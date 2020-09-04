@@ -71,7 +71,7 @@ public class TransformFeatureStoreTest extends AbstractTransformTest {
         transformed.removeFeatures(f);
 
         // check it has been deleted
-        int size = STATES.getCount(Query.ALL);
+        int size = Math.toIntExact(STATES.count(Query.ALL));
         assertEquals(9, size);
 
         // check it's not possible to get at it anymore
@@ -86,7 +86,7 @@ public class TransformFeatureStoreTest extends AbstractTransformTest {
         transformed.removeFeatures(f);
 
         // check it has been deleted
-        int size = STATES.getCount(Query.ALL);
+        int size = Math.toIntExact(STATES.count(Query.ALL));
         assertEquals(9, size);
 
         // check it's not possible to get at it anymore
@@ -101,7 +101,7 @@ public class TransformFeatureStoreTest extends AbstractTransformTest {
         transformed.removeFeatures(f);
 
         // check it has been deleted
-        int size = STATES.getCount(Query.ALL);
+        int size = Math.toIntExact(STATES.count(Query.ALL));
         assertEquals(9, size);
 
         // check it's not possible to get at it anymore
@@ -128,7 +128,7 @@ public class TransformFeatureStoreTest extends AbstractTransformTest {
         transformed.addFeatures(DataUtilities.collection(sf));
 
         // check it's there
-        int size = STATES.getCount(Query.ALL);
+        int size = Math.toIntExact(STATES.count(Query.ALL));
         assertEquals(11, size);
 
         assertEquals(
@@ -154,7 +154,7 @@ public class TransformFeatureStoreTest extends AbstractTransformTest {
         transformed.addFeatures(DataUtilities.collection(sf));
 
         // check it's there
-        int size = STATES.getCount(Query.ALL);
+        int size = Math.toIntExact(STATES.count(Query.ALL));
         assertEquals(11, size);
 
         assertEquals(
@@ -179,7 +179,7 @@ public class TransformFeatureStoreTest extends AbstractTransformTest {
         transformed.addFeatures(DataUtilities.collection(sf));
 
         // check it's there
-        int size = STATES.getCount(Query.ALL);
+        int size = Math.toIntExact(STATES.count(Query.ALL));
         assertEquals(11, size);
 
         // the name won't be preserved since it's transformed, we use the population instead
@@ -201,7 +201,7 @@ public class TransformFeatureStoreTest extends AbstractTransformTest {
         transformed.setFeatures(new CollectionFeatureReader(new SimpleFeature[] {sf}));
 
         // check it's there and it's the only one
-        int size = STATES.getCount(Query.ALL);
+        int size = Math.toIntExact(STATES.count(Query.ALL));
         assertEquals(1, size);
 
         assertEquals(
@@ -227,7 +227,7 @@ public class TransformFeatureStoreTest extends AbstractTransformTest {
         transformed.setFeatures(new CollectionFeatureReader(new SimpleFeature[] {sf}));
 
         // check it's there
-        int size = STATES.getCount(Query.ALL);
+        int size = Math.toIntExact(STATES.count(Query.ALL));
         assertEquals(1, size);
 
         assertEquals(
@@ -252,7 +252,7 @@ public class TransformFeatureStoreTest extends AbstractTransformTest {
         transformed.setFeatures(new CollectionFeatureReader(new SimpleFeature[] {sf}));
 
         // check it's there
-        int size = STATES.getCount(Query.ALL);
+        int size = Math.toIntExact(STATES.count(Query.ALL));
         assertEquals(1, size);
 
         // the name won't be preserved since it's transformed, we use the population instead

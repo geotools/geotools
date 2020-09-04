@@ -170,7 +170,7 @@ public class FidQueryTest extends FIDTestCase {
         featureStore.removeFeatures(fidFilter);
         fids.remove(feature.getID());
 
-        assertEquals(fids.size(), featureStore.getCount(Query.ALL));
+        assertEquals(fids.size(), Math.toIntExact(featureStore.count(Query.ALL)));
 
         features = featureStore.getFeatures(fidFilter).features();
         try {
@@ -201,15 +201,15 @@ public class FidQueryTest extends FIDTestCase {
 
         featureStore.removeFeatures(fidFilter);
         fids.remove(feature.getID());
-        assertEquals((size - 1), featureStore.getCount(Query.ALL));
-        assertEquals(fids.size(), featureStore.getCount(Query.ALL));
+        assertEquals((size - 1), Math.toIntExact(featureStore.count(Query.ALL)));
+        assertEquals(fids.size(), Math.toIntExact(featureStore.count(Query.ALL)));
 
         featureStore.getDataStore().dispose();
         URL url = backshp.toURI().toURL();
         ds = new ShapefileDataStore(url);
         numFeatures = 0;
         featureStore = (SimpleFeatureStore) ds.getFeatureSource();
-        assertEquals((size - 1), featureStore.getCount(Query.ALL));
+        assertEquals((size - 1), Math.toIntExact(featureStore.count(Query.ALL)));
 
         SimpleFeatureCollection features2 = featureStore.getFeatures(fidFilter);
         assertEquals("wrong number of features", 0, features2.size());

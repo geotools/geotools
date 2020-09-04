@@ -88,11 +88,11 @@ class PurgingGranuleStore extends GranuleStoreDecorator {
                 // if there are no more references to the files in the mosaic
 
                 // collect affected granules
-                Map<String, Integer> countsByFilter = countGranulesMatching(filter, manager);
+                Map<String, Long> countsByFilter = countGranulesMatching(filter, manager);
                 if (countsByFilter.isEmpty()) {
                     return 0;
                 }
-                Map<String, Integer> countsByLocation =
+                Map<String, Long> countsByLocation =
                         countGranulesMatchingLocations(countsByFilter.keySet());
                 Set<String> removedLocations =
                         getRemovedLocations(countsByFilter, countsByLocation);
@@ -116,11 +116,11 @@ class PurgingGranuleStore extends GranuleStoreDecorator {
     }
 
     private Set<String> getRemovedLocations(
-            Map<String, Integer> countsByFilter, Map<String, Integer> countsByLocation) {
+            Map<String, Long> countsByFilter, Map<String, Long> countsByLocation) {
         Set<String> result = new HashSet<>();
         for (String location : countsByFilter.keySet()) {
-            int matched = countsByFilter.get(location);
-            int total = countsByLocation.get(location);
+            long matched = countsByFilter.get(location);
+            long total = countsByLocation.get(location);
             if (matched >= total) {
                 result.add(location);
             }
@@ -143,7 +143,7 @@ class PurgingGranuleStore extends GranuleStoreDecorator {
      * Locates the granules matching the provided filter, and returns a map going from locations to
      * granule count for such location
      */
-    private Map<String, Integer> countGranulesMatching(Filter filter, RasterManager manager)
+    private Map<String, Long> countGranulesMatching(Filter filter, RasterManager manager)
             throws IOException {
         CalcResult result = countGranulesMatchingCalc(filter, manager);
         return calcToCountMap(result);
@@ -153,7 +153,7 @@ class PurgingGranuleStore extends GranuleStoreDecorator {
      * Counts granule usages in all coverages managed by the reader, as the same file can act as a
      * source for multiple coverages
      */
-    private Map<String, Integer> countGranulesMatchingLocations(Set<String> locations)
+    private Map<String, Long> countGranulesMatchingLocations(Set<String> locations)
             throws IOException {
         ImageMosaicReader reader = manager.getParentReader();
         CalcResult calc = null;
@@ -170,9 +170,9 @@ class PurgingGranuleStore extends GranuleStoreDecorator {
         return calcToCountMap(calc);
     }
 
-    private Map<String, Integer> calcToCountMap(CalcResult result) {
+    private Map<String, Long> calcToCountMap(CalcResult result) {
         // the result is a map going from list of grouping attributes to value
-        Map<List<String>, Integer> map = result.toMap();
+        Map<List<String>, Long> map = result.toMap();
         return map.entrySet()
                 .stream()
                 .collect(Collectors.toMap(x -> x.getKey().get(0), x -> x.getValue()));

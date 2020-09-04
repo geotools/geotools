@@ -214,9 +214,9 @@ public class GroupByVisitorTest {
                 "Count",
                 "building_type",
                 new Object[][] {
-                    new Object[] {"SCHOOL", 6},
-                    new Object[] {"FABRIC", 4},
-                    new Object[] {"HOUSE", 2}
+                    new Object[] {"SCHOOL", 6l},
+                    new Object[] {"FABRIC", 4l},
+                    new Object[] {"HOUSE", 2l}
                 });
     }
 
@@ -228,17 +228,17 @@ public class GroupByVisitorTest {
                 "building_type",
                 "energy_type",
                 new Object[][] {
-                    new Object[] {"FABRIC", "FLOWING_WATER", 1},
-                    new Object[] {"FABRIC", "NUCLEAR", 1},
-                    new Object[] {"FABRIC", "SOLAR", 1},
-                    new Object[] {"FABRIC", "WIND", 1},
-                    new Object[] {"HOUSE", "FUEL", 1},
-                    new Object[] {"HOUSE", "NUCLEAR", 1},
-                    new Object[] {"SCHOOL", "FLOWING_WATER", 1},
-                    new Object[] {"SCHOOL", "FUEL", 1},
-                    new Object[] {"SCHOOL", "NUCLEAR", 2},
-                    new Object[] {"SCHOOL", "SOLAR", 1},
-                    new Object[] {"SCHOOL", "WIND", 1}
+                    new Object[] {"FABRIC", "FLOWING_WATER", 1l},
+                    new Object[] {"FABRIC", "NUCLEAR", 1l},
+                    new Object[] {"FABRIC", "SOLAR", 1l},
+                    new Object[] {"FABRIC", "WIND", 1l},
+                    new Object[] {"HOUSE", "FUEL", 1l},
+                    new Object[] {"HOUSE", "NUCLEAR", 1l},
+                    new Object[] {"SCHOOL", "FLOWING_WATER", 1l},
+                    new Object[] {"SCHOOL", "FUEL", 1l},
+                    new Object[] {"SCHOOL", "NUCLEAR", 2l},
+                    new Object[] {"SCHOOL", "SOLAR", 1l},
+                    new Object[] {"SCHOOL", "WIND", 1l}
                 });
     }
 

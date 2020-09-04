@@ -85,7 +85,7 @@ class MBTilesFeatureSource extends ContentFeatureSource {
     }
 
     @Override
-    protected int getCountInternal(Query query) throws IOException {
+    protected long getCountInternal(Query query) throws IOException {
         // no reasonable way to count quickly, each tile can contain a different number of features
         return -1;
     }

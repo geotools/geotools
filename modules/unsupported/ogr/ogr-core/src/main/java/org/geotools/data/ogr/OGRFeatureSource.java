@@ -131,7 +131,7 @@ class OGRFeatureSource extends ContentFeatureSource {
     }
 
     @Override
-    protected int getCountInternal(Query query) throws IOException {
+    protected long getCountInternal(Query query) throws IOException {
         // check how much we can encode
         OGRFilterTranslator filterTx = new OGRFilterTranslator(getSchema(), query.getFilter());
         if (Filter.EXCLUDE.equals(filterTx.getFilter())) {
@@ -153,7 +153,7 @@ class OGRFeatureSource extends ContentFeatureSource {
                 // filter it
                 setLayerFilters(layer, filterTx);
 
-                return (int) ogr.LayerGetFeatureCount(layer);
+                return ogr.LayerGetFeatureCount(layer);
             } finally {
                 if (layer != null) {
                     ogr.LayerRelease(layer);

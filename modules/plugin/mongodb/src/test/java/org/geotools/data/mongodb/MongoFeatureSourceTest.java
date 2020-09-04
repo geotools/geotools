@@ -57,7 +57,7 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
         SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
 
         Query q = new Query("ft1", f);
-        assertEquals(1, source.getCount(q));
+        assertEquals(1, Math.toIntExact(source.count(q)));
         assertEquals(
                 new ReferencedEnvelope(1d, 1d, 1d, 1d, DefaultGeographicCRS.WGS84),
                 source.getBounds(q));
@@ -80,7 +80,7 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
         SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
         Query q = new Query("ft1", f);
 
-        assertEquals(1, source.getCount(q));
+        assertEquals(1, Math.toIntExact(source.count(q)));
         ReferencedEnvelope e = source.getBounds();
         assertEquals(
                 new ReferencedEnvelope(2d, 0d, 2d, 0d, DefaultGeographicCRS.WGS84),
@@ -103,7 +103,7 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
         SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
         Query q = new Query("ft1", f);
 
-        assertEquals(1, source.getCount(q));
+        assertEquals(1, Math.toIntExact(source.count(q)));
         assertEquals(
                 new ReferencedEnvelope(1d, 1d, 1d, 1d, DefaultGeographicCRS.WGS84),
                 source.getBounds(q));
@@ -124,7 +124,7 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
         q = new Query("ft1", f);
 
         // no feature should match
-        assertEquals(0, source.getCount(q));
+        assertEquals(0, Math.toIntExact(source.count(q)));
     }
 
     public void testLikePostFilter() throws Exception {
@@ -176,7 +176,7 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
         SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
         Query q = new Query("ft1", gt);
 
-        assertEquals(2, source.getCount(q));
+        assertEquals(2, Math.toIntExact(source.count(q)));
         assertEquals(
                 new ReferencedEnvelope(0d, 2d, 0d, 2d, DefaultGeographicCRS.WGS84),
                 source.getBounds(q));
@@ -197,7 +197,7 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
                         ff.literal(MongoTestSetup.parseDate("2015-01-01T11:30:00.000Z")));
         q = new Query("ft1", gt);
 
-        assertEquals(2, source.getCount(q));
+        assertEquals(2, Math.toIntExact(source.count(q)));
         assertEquals(
                 new ReferencedEnvelope(0d, 2d, 0d, 2d, DefaultGeographicCRS.WGS84),
                 source.getBounds(q));
@@ -217,7 +217,7 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
         q = new Query("ft1", gt);
 
         // no feature should match
-        assertEquals(0, source.getCount(q));
+        assertEquals(0, Math.toIntExact(source.count(q)));
     }
 
     public void testDateLessComparison() throws Exception {
@@ -230,7 +230,7 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
         SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
         Query q = new Query("ft1", lt);
 
-        assertEquals(1, source.getCount(q));
+        assertEquals(1, Math.toIntExact(source.count(q)));
         assertEquals(
                 new ReferencedEnvelope(0d, 2d, 0d, 2d, DefaultGeographicCRS.WGS84),
                 source.getBounds(q));
@@ -252,7 +252,7 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
         q = new Query("ft1", lt);
 
         // no feature should match
-        assertEquals(0, source.getCount(q));
+        assertEquals(0, Math.toIntExact(source.count(q)));
     }
 
     public void testDateBetweenComparison() throws Exception {
@@ -266,7 +266,7 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
         SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
         Query q = new Query("ft1", lt);
 
-        assertEquals(1, source.getCount(q));
+        assertEquals(1, Math.toIntExact(source.count(q)));
         assertEquals(
                 new ReferencedEnvelope(0d, 0d, 0d, 0d, DefaultGeographicCRS.WGS84),
                 source.getBounds(q));
@@ -289,7 +289,7 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
         q = new Query("ft1", lt);
 
         // no feature should match
-        assertEquals(0, source.getCount(q));
+        assertEquals(0, Math.toIntExact(source.count(q)));
     }
 
     public void testIsNullFilter() throws Exception {
@@ -297,7 +297,7 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
         PropertyIsNull isNull = ff.isNull(ff.literal("properties.nullableAttribute"));
         SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
         Query q = new Query("ft1", isNull);
-        assertEquals(2, source.getCount(q));
+        assertEquals(2, Math.toIntExact(source.count(q)));
     }
 
     public void testOrPostFilter() throws Exception {

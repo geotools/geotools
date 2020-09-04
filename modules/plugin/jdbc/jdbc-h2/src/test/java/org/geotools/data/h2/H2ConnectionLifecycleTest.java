@@ -75,9 +75,9 @@ public class H2ConnectionLifecycleTest extends JDBCConnectionLifecycleOnlineTest
         // set the value and test
         listener.value = 1.0;
         SimpleFeatureSource fs = dataStore.getFeatureSource("ft1var");
-        assertEquals(2, fs.getCount(Query.ALL));
+        assertEquals(2, Math.toIntExact(fs.count(Query.ALL)));
 
         listener.value = 10;
-        assertEquals(0, fs.getCount(Query.ALL));
+        assertEquals(0, Math.toIntExact(fs.count(Query.ALL)));
     }
 }

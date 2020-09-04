@@ -77,11 +77,11 @@ public class GeoJSONFeatureSource extends ContentFeatureSource {
     }
 
     @Override
-    protected int getCountInternal(Query query) throws IOException {
+    protected long getCountInternal(Query query) throws IOException {
         if (query.getFilter() == Filter.INCLUDE) {
 
             try (GeoJSONReader reader = getDataStore().read()) {
-                int count = 0;
+                long count = 0;
                 try (FeatureIterator<SimpleFeature> itr = reader.getIterator()) {
                     while (itr.hasNext()) {
                         itr.next();

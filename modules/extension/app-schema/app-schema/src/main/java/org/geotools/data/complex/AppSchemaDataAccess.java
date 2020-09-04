@@ -281,7 +281,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
             mappedSource = new JoiningJDBCFeatureSource((JDBCFeatureStore) mappedSource);
         }
         Query unmappedQuery = unrollQuery(targetQuery, mapping);
-        return mappedSource.getCount(unmappedQuery);
+        return Math.toIntExact(mappedSource.count(unmappedQuery));
     }
 
     /**

@@ -476,7 +476,7 @@ public class PropertyDataStoreTest extends TestCase {
         }
         assertEquals("[fid1, fid2, fid3, fid4, fid5]", list.toString());
 
-        int count = road.getCount(Query.ALL);
+        int count = Math.toIntExact(road.count(Query.ALL));
         assertEquals(5, count);
 
         assertTrue(!road.getBounds(Query.ALL).isNull());
@@ -635,8 +635,8 @@ public class PropertyDataStoreTest extends TestCase {
         assertEquals("auto before", 5, roadAuto.getFeatures().size());
         assertEquals("client 1 before", 5, roadFromClient1.getFeatures().size());
         assertEquals("client 2 before", 5, roadFromClient2.getFeatures().size());
-        assertEquals("client 1 before", 5, roadFromClient1.getCount(Query.ALL));
-        assertEquals("client 2 before", 5, roadFromClient2.getCount(Query.ALL));
+        assertEquals("client 1 before", 5, Math.toIntExact(roadFromClient1.count(Query.ALL)));
+        assertEquals("client 2 before", 5, Math.toIntExact(roadFromClient2.count(Query.ALL)));
 
         ReferencedEnvelope bounds = roadAuto.getFeatures().getBounds();
         ReferencedEnvelope client1Bounds = roadFromClient1.getFeatures().getBounds();
@@ -653,9 +653,13 @@ public class PropertyDataStoreTest extends TestCase {
         assertEquals(
                 "client 2 after client 1 removes fid1", 5, roadFromClient2.getFeatures().size());
         assertEquals(
-                "client 1 after client 1 removes fid1", 4, roadFromClient1.getCount(Query.ALL));
+                "client 1 after client 1 removes fid1",
+                4,
+                Math.toIntExact(roadFromClient1.count(Query.ALL)));
         assertEquals(
-                "client 2 after client 1 removes fid1", 5, roadFromClient2.getCount(Query.ALL));
+                "client 2 after client 1 removes fid1",
+                5,
+                Math.toIntExact(roadFromClient2.count(Query.ALL)));
 
         bounds = roadAuto.getFeatures().getBounds();
         client1Bounds = roadFromClient1.getFeatures().getBounds();

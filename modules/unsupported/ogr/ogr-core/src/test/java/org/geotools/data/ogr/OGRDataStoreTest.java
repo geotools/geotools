@@ -137,7 +137,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         Query query = new Query();
         query.setStartIndex(1);
         query.setMaxFeatures(1);
-        assertEquals(1, featureSource.getCount(query));
+        assertEquals(1, Math.toIntExact(featureSource.count(query)));
     }
 
     /** Test count versus old DataSource */
@@ -147,7 +147,12 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         OGRDataStore s = createDataStore(getAbsolutePath(STATE_POP), null);
         String typeName = s.getTypeNames()[0];
 
-        assertEquals(sds.getCount(Query.ALL), s.getFeatureSource(typeName).getCount(Query.ALL));
+        assertEquals(
+                sds.getCount(Query.ALL),
+                Math.toIntExact(
+                        ((FeatureSource<SimpleFeatureType, SimpleFeature>)
+                                        s.getFeatureSource(typeName))
+                                .count(Query.ALL)));
     }
 
     public void testLoadAndVerify() throws Exception {

@@ -53,7 +53,7 @@ public abstract class JDBCTimeZoneDateOnlineTest extends JDBCTestSupport {
         assertEquals(
                 "wrong number of records for " + TimeZone.getDefault().getDisplayName(),
                 2,
-                fs.getCount(new Query(tname("dates"), f)));
+                Math.toIntExact(fs.count(new Query(tname("dates"), f))));
         TimeZone.setDefault(originalTimeZone);
         setup.setUpData();
     }

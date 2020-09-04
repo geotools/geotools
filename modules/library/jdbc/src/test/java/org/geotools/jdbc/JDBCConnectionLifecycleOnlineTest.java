@@ -87,7 +87,7 @@ public abstract class JDBCConnectionLifecycleOnlineTest extends JDBCTestSupport 
         for (int i = 0; i < 100; i++) {
             // we don't actually expect an exception to percolate up since it's happening
             // on the closeSafe method, that swallows exceptions
-            featureStore.getCount(Query.ALL);
+            featureStore.count(Query.ALL);
         }
     }
 

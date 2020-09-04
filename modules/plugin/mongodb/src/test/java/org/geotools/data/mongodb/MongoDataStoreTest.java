@@ -86,7 +86,7 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
 
     public void testGetFeatureSource() throws Exception {
         SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
-        assertEquals(3, source.getCount(Query.ALL));
+        assertEquals(3, Math.toIntExact(source.count(Query.ALL)));
 
         ReferencedEnvelope env = source.getBounds();
         assertEquals(0d, env.getMinX(), 0.1);
@@ -130,7 +130,7 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
         assertTrue(typeNames.contains("ft2"));
 
         SimpleFeatureSource source = dataStore.getFeatureSource("ft2");
-        assertEquals(0, source.getCount(new Query("ft2")));
+        assertEquals(0, Math.toIntExact(source.count(new Query("ft2"))));
 
         FeatureWriter w = dataStore.getFeatureWriterAppend("ft2", Transaction.AUTO_COMMIT);
         SimpleFeature f = (SimpleFeature) w.next();
@@ -139,7 +139,7 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
         w.write();
 
         source = dataStore.getFeatureSource("ft2");
-        assertEquals(1, source.getCount(new Query("ft2")));
+        assertEquals(1, Math.toIntExact(source.count(new Query("ft2"))));
     }
 
     public void testRebuildSchemaWithId() throws Exception {

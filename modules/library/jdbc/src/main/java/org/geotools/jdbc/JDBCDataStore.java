@@ -1372,7 +1372,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
     }
 
     /** Returns the count of the features for a particular feature type / table. */
-    protected int getCount(SimpleFeatureType featureType, Query query, Connection cx)
+    protected long getCount(SimpleFeatureType featureType, Query query, Connection cx)
             throws IOException {
 
         CountVisitor v = new CountVisitor();

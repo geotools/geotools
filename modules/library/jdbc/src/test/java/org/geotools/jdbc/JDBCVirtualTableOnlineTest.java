@@ -161,7 +161,7 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         FeatureSource fsView = dataStore.getFeatureSource("riverReduced");
         assertFalse(fsView instanceof FeatureStore);
 
-        assertEquals(1, fsView.getCount(Query.ALL));
+        assertEquals(1, Math.toIntExact(fsView.count(Query.ALL)));
 
         try (FeatureIterator<SimpleFeature> it = fsView.getFeatures().features()) {
             assertTrue(it.hasNext());
@@ -199,7 +199,7 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         FeatureSource fsView = dataStore.getFeatureSource("riverReducedPk");
         assertFalse(fsView instanceof FeatureStore);
 
-        assertEquals(1, fsView.getCount(Query.ALL));
+        assertEquals(1, Math.toIntExact(fsView.count(Query.ALL)));
 
         try (FeatureIterator<SimpleFeature> it = fsView.getFeatures().features()) {
             assertTrue(it.hasNext());
@@ -224,14 +224,14 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Id filter = ff.id(Collections.singleton(ff.featureId("riverReducedPk.0")));
 
-        assertEquals(1, fsView.getCount(new Query(null, filter)));
+        assertEquals(1, Math.toIntExact(fsView.count(new Query(null, filter))));
     }
 
     public void testWhereParam() throws Exception {
         FeatureSource fsView = dataStore.getFeatureSource("riverParam");
 
         // by default we get everything
-        assertEquals(2, fsView.getCount(Query.ALL));
+        assertEquals(2, Math.toIntExact(fsView.count(Query.ALL)));
 
         // let's try filtering a bit dynamically
         Query q = new Query(Query.ALL);
@@ -243,7 +243,7 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
                 new Hints(
                         Hints.VIRTUAL_TABLE_PARAMETERS,
                         Collections.singletonMap("where", sb.toString())));
-        assertEquals(1, fsView.getCount(q));
+        assertEquals(1, Math.toIntExact(fsView.count(q)));
     }
 
     public void testMulParamValid() throws Exception {
@@ -369,8 +369,8 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         ContentFeatureSource fsReduced = dataStore.getFeatureSource("riverReduced");
 
         // check count
-        int expectedCount = fsReduced.getCount(Query.ALL);
-        int count = fsFull.getCount(joinQuery);
+        int expectedCount = Math.toIntExact(fsReduced.count(Query.ALL));
+        int count = Math.toIntExact(fsFull.count(joinQuery));
 
         assertEquals(expectedCount, count);
     }
@@ -388,7 +388,9 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         join.setAlias("a");
         joinQuery.getJoins().add(join);
         try {
-            dataStore.getFeatureSource("riverFullPlaceHolder").getCount(joinQuery);
+            ((FeatureSource<SimpleFeatureType, SimpleFeature>)
+                            dataStore.getFeatureSource("riverFullPlaceHolder"))
+                    .count(joinQuery);
         } catch (Exception exception) {
             assertTrue(
                     exception
@@ -405,7 +407,11 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         Query query = new Query("riverFullPlaceHolder");
         query.setStartIndex(1);
         query.setMaxFeatures(2);
-        int count = dataStore.getFeatureSource("riverFullPlaceHolder").getCount(query);
+        int count =
+                Math.toIntExact(
+                        ((FeatureSource<SimpleFeatureType, SimpleFeature>)
+                                        dataStore.getFeatureSource("riverFullPlaceHolder"))
+                                .count(query));
         assertTrue(count == 1);
     }
 }

@@ -133,7 +133,7 @@ public class TransformFeatureCollectionTest {
         };
         boolean[] expectedPass = {true, true, true, true, false};
         Object[] expectedResult = {
-            10,
+            10l,
             282970d,
             5552233d,
             new HashSet<>(
@@ -162,7 +162,7 @@ public class TransformFeatureCollectionTest {
         };
         boolean[] expectedPass = {true, true, true, true, false};
         Object[] expectedResult = {
-            10,
+            10l,
             282970d,
             5552233d,
             new HashSet<>(
@@ -210,7 +210,7 @@ public class TransformFeatureCollectionTest {
         };
         boolean[] expectedPass = {true, true, true, true, false};
         Object[] expectedResult = {
-            10,
+            10l,
             606900d,
             1.1430602E7,
             new HashSet<>(

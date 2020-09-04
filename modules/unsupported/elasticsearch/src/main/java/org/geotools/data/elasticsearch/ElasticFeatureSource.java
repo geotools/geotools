@@ -83,9 +83,9 @@ class ElasticFeatureSource extends ContentFeatureSource {
     }
 
     @Override
-    protected int getCountInternal(Query query) throws IOException {
+    protected long getCountInternal(Query query) throws IOException {
         LOGGER.fine("getCountInternal");
-        int hits = 0;
+        long hits = 0;
         final ElasticRequest searchRequest = prepareSearchRequest(query, false);
         try {
             if (!filterFullySupported) {
@@ -104,7 +104,7 @@ class ElasticFeatureSource extends ContentFeatureSource {
                         dataStore
                                 .getClient()
                                 .search(dataStore.getIndexName(), docType, searchRequest);
-                final int totalHits = (int) sr.getTotalNumHits();
+                final long totalHits = sr.getTotalNumHits();
                 final int size = getSize(query);
                 final int from = getStartIndex(query);
                 hits = Math.max(0, Math.min(totalHits - from, size));

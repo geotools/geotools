@@ -226,7 +226,7 @@ public class AppSchemaFileDataTest extends AppSchemaTestSupport {
         String testType = dSNameArray[0].toString();
         FeatureSource<FeatureType, Feature> featureSource =
                 dS.getFeatureSourceByName(dSNameArray[0]);
-        int numFeatures = featureSource.getCount(new Query(testType));
+        int numFeatures = Math.toIntExact(featureSource.count(new Query(testType)));
 
         return numFeatures;
     }

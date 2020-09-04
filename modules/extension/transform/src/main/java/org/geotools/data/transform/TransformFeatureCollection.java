@@ -136,7 +136,7 @@ class TransformFeatureCollection extends AbstractFeatureCollection {
     public int size() {
         try {
             Query txQuery = transformer.transformQuery(query);
-            int size = source.getCount(query);
+            int size = Math.toIntExact(source.count(query));
             if (size >= 0) {
                 // see if we had to hide paging to the wrapped store
                 if (query.getStartIndex() != null && txQuery.getStartIndex() == null) {

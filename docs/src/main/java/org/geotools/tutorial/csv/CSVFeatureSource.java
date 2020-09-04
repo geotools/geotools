@@ -51,7 +51,7 @@ public class CSVFeatureSource extends ContentFeatureSource {
     // reader end
 
     // count start
-    protected int getCountInternal(Query query) throws IOException {
+    protected long getCountInternal(Query query) throws IOException {
         if (query.getFilter() == Filter.INCLUDE) {
             CsvReader reader = getDataStore().read();
             try {
@@ -59,7 +59,7 @@ public class CSVFeatureSource extends ContentFeatureSource {
                 if (connect == false) {
                     throw new IOException("Unable to connect");
                 }
-                int count = 0;
+                long count = 0;
                 while (reader.readRecord()) {
                     count += 1;
                 }

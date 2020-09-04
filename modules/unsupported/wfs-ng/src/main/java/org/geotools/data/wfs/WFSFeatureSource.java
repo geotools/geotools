@@ -191,7 +191,7 @@ class WFSFeatureSource extends ContentFeatureSource {
      * @see org.geotools.data.store.ContentFeatureSource#getCountInternal(org.geotools.data.Query)
      */
     @Override
-    protected int getCountInternal(Query query) throws IOException {
+    protected long getCountInternal(Query query) throws IOException {
         if (!client.canCount()) {
             return -1;
         }

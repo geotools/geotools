@@ -230,7 +230,7 @@ public abstract class AbstractWfsDataStoreOnlineTest {
         featureSource = wfs.getFeatureSource(testType.FEATURETYPENAME);
         assertNotNull(featureSource);
 
-        assertEquals(featureCount, featureSource.getCount(Query.ALL));
+        assertEquals(featureCount, Math.toIntExact(featureSource.count(Query.ALL)));
     }
 
     /**
@@ -258,7 +258,7 @@ public abstract class AbstractWfsDataStoreOnlineTest {
             Query query = new Query(featureSource.getInfo().getName());
             query.setFilter(fidFilter);
 
-            assertEquals(1, featureSource.getCount(query));
+            assertEquals(1, Math.toIntExact(featureSource.count(query)));
         }
     }
 

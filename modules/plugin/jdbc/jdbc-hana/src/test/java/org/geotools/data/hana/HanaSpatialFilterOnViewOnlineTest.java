@@ -16,6 +16,7 @@
  */
 package org.geotools.data.hana;
 
+import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
@@ -25,6 +26,8 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.spatial.BBOX;
@@ -55,7 +58,11 @@ public class HanaSpatialFilterOnViewOnlineTest extends JDBCTestSupport {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
         Intersects intersects = ff.intersects(ff.property(aname("geom")), ff.literal(polygon));
         Query q = new Query(aname("geom"), intersects);
-        int count = dataStore.getFeatureSource(tname("viewoftab")).getCount(q);
+        int count =
+                Math.toIntExact(
+                        ((FeatureSource<SimpleFeatureType, SimpleFeature>)
+                                        dataStore.getFeatureSource(tname("viewoftab")))
+                                .count(q));
         assertEquals(1, count);
     }
 }

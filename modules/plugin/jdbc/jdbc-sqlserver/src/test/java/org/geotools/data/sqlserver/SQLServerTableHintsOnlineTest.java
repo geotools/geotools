@@ -17,6 +17,7 @@
 package org.geotools.data.sqlserver;
 
 import java.io.IOException;
+import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -24,6 +25,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
+import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
@@ -198,7 +200,11 @@ public class SQLServerTableHintsOnlineTest extends SQLServerSpatialFiltersOnline
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         // should match only "r2"
         BBOX bbox = ff.bbox(aname("geom"), 2, 3, 4, 5, "EPSG:4326");
-        int count = dataStore.getFeatureSource(tname("road")).getCount(new Query(null, bbox));
+        int count =
+                Math.toIntExact(
+                        ((FeatureSource<SimpleFeatureType, SimpleFeature>)
+                                        dataStore.getFeatureSource(tname("road")))
+                                .count(new Query(null, bbox)));
         assertEquals(1, count);
     }
 }

@@ -717,7 +717,7 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
             throw new NullPointerException(
                     "The provided SimpleFeatureSource is null, it's impossible to create an index!");
         }
-        int count = featureSource.getCount(q);
+        int count = Math.toIntExact(featureSource.count(q));
         if (count == -1) {
             return featureSource.getFeatures(q).size();
         }

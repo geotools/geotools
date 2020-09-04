@@ -132,8 +132,8 @@ public class MappingFeatureSource implements FeatureSource<FeatureType, Feature>
         return store.getBounds(namedQuery);
     }
 
-    public int getCount(Query query) throws IOException {
-        int count = 0;
+    public long count(Query query) throws IOException {
+        long count = 0;
         Query namedQuery = namedQuery(query);
         FeatureSource mappedSource = mapping.getSource();
         if (!(mappedSource instanceof JDBCFeatureSource
@@ -146,7 +146,7 @@ public class MappingFeatureSource implements FeatureSource<FeatureType, Feature>
         } else {
             // count < 0 indicates broken a datastore, such as PropertyDataStore.
             // If the data store cannot count its own features, we have to do it.
-            int featureCount = 0;
+            long featureCount = 0;
             FeatureIterator<Feature> features = null;
             try {
                 for (features = getFeatures(namedQuery).features();

@@ -35,7 +35,7 @@ public abstract class JDBCEmptyOnlineTest extends JDBCTestSupport {
         ReferencedEnvelope bounds = fs.getBounds();
         assertTrue(bounds.isNull());
 
-        int count = fs.getCount(Query.ALL);
+        int count = Math.toIntExact(fs.count(Query.ALL));
         assertEquals(0, count);
     }
 

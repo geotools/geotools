@@ -114,7 +114,7 @@ public abstract class AbstractContentTest {
 
         /** Not implemented. */
         @Override
-        protected int getCountInternal(Query query) throws IOException {
+        protected long getCountInternal(Query query) throws IOException {
             if (query.getFilter() == Filter.INCLUDE) {
                 int count = 0;
                 FeatureReader<SimpleFeatureType, SimpleFeature> featureReader =

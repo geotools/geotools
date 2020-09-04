@@ -218,7 +218,7 @@ public abstract class JDBCPrimaryKeyOnlineTest extends JDBCTestSupport {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Filter filter = ff.equal(ff.property(key), ff.literal(keyValue), false);
 
-        assertEquals(1, fs.getCount(new Query(tname("nonfirst"), filter)));
+        assertEquals(1, Math.toIntExact(fs.count(new Query(tname("nonfirst"), filter))));
 
         try {
             fs.modifyFeatures(key, 10, filter);

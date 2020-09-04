@@ -51,8 +51,8 @@ class SimpleFeatureSourceBridge implements SimpleFeatureSource {
         return delegate.getBounds(query);
     }
 
-    public int getCount(Query query) throws IOException {
-        return delegate.getCount(query);
+    public long count(Query query) throws IOException {
+        return delegate.count(query);
     }
 
     public DataAccess<SimpleFeatureType, SimpleFeature> getDataStore() {

@@ -135,7 +135,7 @@ public class ContentFeatureSourceTest {
                             }
 
                             @Override
-                            protected int getCountInternal(Query query) throws IOException {
+                            protected long getCountInternal(Query query) throws IOException {
                                 throw new RuntimeException("Unexpected call");
                             }
 

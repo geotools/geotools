@@ -51,7 +51,7 @@ public class GeoJSONDataStoreTest {
         Query query = new Query(type);
         SimpleFeatureSource source = ds.getFeatureSource(ds.getNames().get(0));
 
-        assertEquals(51, source.getCount(query)); // includes DC
+        assertEquals(51, Math.toIntExact(source.count(query))); // includes DC
         ReferencedEnvelope expected =
                 new ReferencedEnvelope(
                         -171.79111060289117,

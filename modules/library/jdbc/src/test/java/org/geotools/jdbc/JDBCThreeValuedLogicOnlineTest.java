@@ -26,7 +26,7 @@ public abstract class JDBCThreeValuedLogicOnlineTest extends JDBCTestSupport {
     public void testSimpleNegation() throws Exception {
         Not filter = ff.not(ff.equal(ff.property(aname(A)), ff.literal(10), false));
         ContentFeatureSource fs = dataStore.getFeatureSource(tname(ABC));
-        int count = fs.getCount(new Query(tname(ABC), filter));
+        int count = Math.toIntExact(fs.count(new Query(tname(ABC), filter)));
         assertEquals(2, count);
     }
 
@@ -39,7 +39,7 @@ public abstract class JDBCThreeValuedLogicOnlineTest extends JDBCTestSupport {
                                 ff.property(aname(C))));
         ContentFeatureSource fs = dataStore.getFeatureSource(tname(ABC));
         Query q = new Query(tname(ABC), filter);
-        int count = fs.getCount(q);
+        int count = Math.toIntExact(fs.count(q));
         assertEquals(1, count);
         SimpleFeature f = DataUtilities.first(fs.getFeatures(q));
         assertEquals("n_n_n", f.getAttribute(aname(NAME)));
@@ -54,7 +54,7 @@ public abstract class JDBCThreeValuedLogicOnlineTest extends JDBCTestSupport {
 
         ContentFeatureSource fs = dataStore.getFeatureSource(tname(ABC));
         Query q = new Query(tname(ABC), filter);
-        int count = fs.getCount(q);
+        int count = Math.toIntExact(fs.count(q));
         assertEquals(2, count);
     }
 
@@ -67,7 +67,7 @@ public abstract class JDBCThreeValuedLogicOnlineTest extends JDBCTestSupport {
                                 ff.property(aname(C))));
         ContentFeatureSource fs = dataStore.getFeatureSource(tname(ABC));
         Query q = new Query(tname(ABC), filter);
-        int count = fs.getCount(q);
+        int count = Math.toIntExact(fs.count(q));
         assertEquals(1, count);
         SimpleFeature f = DataUtilities.first(fs.getFeatures(q));
         assertEquals("n_n_n", f.getAttribute(aname(NAME)));

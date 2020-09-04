@@ -65,7 +65,7 @@ public class SolrSingleLayerMappingTest extends SolrTestSupport {
     public void testFeatureSource() throws Exception {
         init(coreName(dataStore));
         SimpleFeatureSource featureSource = dataStore.getFeatureSource(coreName(dataStore));
-        assertEquals(13, featureSource.getCount(Query.ALL));
+        assertEquals(13, Math.toIntExact(featureSource.count(Query.ALL)));
 
         SimpleFeatureCollection features = featureSource.getFeatures(Query.ALL);
         SimpleFeatureIterator it = features.features();

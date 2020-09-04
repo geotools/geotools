@@ -276,7 +276,7 @@ public abstract class JDBCFeatureLockingOnlineTest extends JDBCTestSupport {
         FilterFactory ff = dataStore.getFilterFactory();
 
         Filter f0 = ff.equal(ff.property(aname("intProperty")), ff.literal(1000), true);
-        assertEquals(0, store.getCount(new Query(tname("ft1"), f0)));
+        assertEquals(0, Math.toIntExact(store.count(new Query(tname("ft1"), f0))));
 
         FeatureLock lock = new FeatureLock(tname("ft1"), 60 * 60 * 1000);
 
@@ -307,7 +307,7 @@ public abstract class JDBCFeatureLockingOnlineTest extends JDBCTestSupport {
             store.modifyFeatures(intProperty, v, f1);
             tx.commit();
 
-            assertEquals(1, store.getCount(new Query(tname("ft1"), f0)));
+            assertEquals(1, Math.toIntExact(store.count(new Query(tname("ft1"), f0))));
         }
     }
 }

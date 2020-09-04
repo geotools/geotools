@@ -106,7 +106,7 @@ public class SpatialIndexFeatureSource implements SimpleFeatureSource {
         return getFeatures(query).getBounds();
     }
 
-    public int getCount(Query query) throws IOException {
+    public long count(Query query) throws IOException {
         return getFeatures(query).size();
     }
 

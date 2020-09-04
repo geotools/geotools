@@ -222,7 +222,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
     public int size() {
         FeatureReader<?, ?> fr = null;
         try {
-            int size = featureSource.getCount(query);
+            int size = Math.toIntExact(featureSource.count(query));
             if (size >= 0) {
                 return size;
             } else {

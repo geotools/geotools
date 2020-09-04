@@ -98,7 +98,7 @@ public class OracleLongNamesTest extends JDBCTestSupport {
         SimpleFeatureSource fs = dataStore.getFeatureSource(tname(TABLE_NAME));
         Query q = new Query(TABLE_NAME);
         q.setFilter(toFilter(INT_NAME + " = 123"));
-        assertEquals(1, fs.getCount(q));
+        assertEquals(1, Math.toIntExact(fs.count(q)));
     }
 
     public void testSpatialQuery() throws IOException, CQLException {
@@ -109,9 +109,9 @@ public class OracleLongNamesTest extends JDBCTestSupport {
         SimpleFeatureSource fs = dataStore.getFeatureSource(tname(TABLE_NAME));
         Query q = new Query(TABLE_NAME);
         q.setFilter(toFilter("BBOX(" + GEOM_NAME + ",-10,-10,10,10)"));
-        assertEquals(1, fs.getCount(q));
+        assertEquals(1, Math.toIntExact(fs.count(q)));
         q.setFilter(toFilter("BBOX(" + GEOM_NAME + ",10,10,20,20)"));
-        assertEquals(0, fs.getCount(q));
+        assertEquals(0, Math.toIntExact(fs.count(q)));
     }
 
     public void testModify() throws IOException, CQLException {
@@ -121,7 +121,8 @@ public class OracleLongNamesTest extends JDBCTestSupport {
 
         SimpleFeatureStore fs = (SimpleFeatureStore) dataStore.getFeatureSource(tname(TABLE_NAME));
         fs.modifyFeatures(INT_NAME, 345, toFilter(INT_NAME + " = 123"));
-        assertEquals(1, fs.getCount(new Query(TABLE_NAME, toFilter(INT_NAME + " = 345"))));
+        assertEquals(
+                1, Math.toIntExact(fs.count(new Query(TABLE_NAME, toFilter(INT_NAME + " = 345")))));
     }
 
     public void testInsert() throws IOException, CQLException, ParseException {
@@ -136,6 +137,10 @@ public class OracleLongNamesTest extends JDBCTestSupport {
         fs.addFeatures(DataUtilities.collection(feature));
         assertEquals(
                 1,
-                fs.getCount(new Query(TABLE_NAME, toFilter("BBOX(" + GEOM_NAME + ",1,1,10,10)"))));
+                Math.toIntExact(
+                        fs.count(
+                                new Query(
+                                        TABLE_NAME,
+                                        toFilter("BBOX(" + GEOM_NAME + ",1,1,10,10)")))));
     }
 }

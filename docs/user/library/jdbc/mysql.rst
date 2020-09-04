@@ -1,7 +1,8 @@
 MySQL Plugin
 ------------
 
-Supports direct access to a MySQL database.
+Supports direct access to a MySQL database. Currently supported versions include 5.6 and 5.7.
+Version 8 is currently not supported due to MySQL having renamed all spatial functions.
 
 **Maven**
 

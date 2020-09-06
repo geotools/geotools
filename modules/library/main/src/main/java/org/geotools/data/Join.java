@@ -256,7 +256,7 @@ public class Join {
 
     /** Chaining method for {@link #getProperties()} */
     public Join properties(String... properties) {
-        this.properties = new ArrayList();
+        this.properties = new ArrayList<>();
         for (String p : properties) {
             this.properties.add(ff.property(p));
         }

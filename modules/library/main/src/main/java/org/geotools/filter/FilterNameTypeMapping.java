@@ -32,7 +32,7 @@ import org.opengis.filter.expression.Function;
 class FilterNameTypeMapping {
     static Map<String, FilterCapabilities> spatialFiltersMap = loadSpatialFiltersMap();
     static Map<String, FilterCapabilities> comparisonsMap = loadComparisonFilterMap();
-    static Map<String, FilterCapabilities> filterTypeToFilterCapabilitiesMap =
+    static Map<Short, FilterCapabilities> filterTypeToFilterCapabilitiesMap =
             loadFilterTypeToFilterCapabilitiesMap();
     static Map<String, FilterCapabilities> functionNameMap = loadFunctionNameMap();
 
@@ -78,8 +78,8 @@ class FilterNameTypeMapping {
         return comparisonsMap;
     }
 
-    public static Map<String, FilterCapabilities> loadFilterTypeToFilterCapabilitiesMap() {
-        Map conversionMap = new HashMap<>();
+    public static Map<Short, FilterCapabilities> loadFilterTypeToFilterCapabilitiesMap() {
+        Map<Short, FilterCapabilities> conversionMap = new HashMap<>();
         conversionMap.put(
                 Short.valueOf(FilterType.BETWEEN),
                 new FilterCapabilities(FilterCapabilities.BETWEEN));

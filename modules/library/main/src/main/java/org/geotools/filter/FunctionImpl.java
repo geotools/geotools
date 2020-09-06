@@ -244,12 +244,13 @@ public class FunctionImpl extends ExpressionAbstract implements Function {
 
                 // if there is already a value for this argument it is a multi argument which
                 // means a list
-                List l = (List) prepped.get(argName);
+                @SuppressWarnings("unchecked")
+                List<Object> l = (List<Object>) prepped.get(argName);
                 l.add(o);
             } else {
                 // check for variable argument, use a list if maxOccurs > 1
                 if (arg.getMaxOccurs() < 0 || arg.getMaxOccurs() > 1) {
-                    List l = new ArrayList();
+                    List<Object> l = new ArrayList<>();
                     l.add(o);
                     prepped.put(argName, l);
                 } else {
@@ -320,14 +321,14 @@ public class FunctionImpl extends ExpressionAbstract implements Function {
         return ff.functionName(name, list, toParameter(ret));
     }
 
-    static Parameter toParameter(String param) throws IllegalArgumentException {
+    static Parameter<?> toParameter(String param) throws IllegalArgumentException {
         Matcher m = PARAM.matcher(param);
         if (!m.matches()) {
             throw new IllegalArgumentException("Illegal parameter syntax: " + param);
         }
 
         String name = m.group(1);
-        Class type = null;
+        Class<? extends Object> type = null;
         int min = 1;
         int max = 1;
 
@@ -376,7 +377,7 @@ public class FunctionImpl extends ExpressionAbstract implements Function {
             max = !"".equals(grp) ? Integer.parseInt(grp) : -1;
         }
 
-        return new org.geotools.data.Parameter(name, type, min, max);
+        return new org.geotools.data.Parameter<>(name, type, min, max);
     }
 
     @Override

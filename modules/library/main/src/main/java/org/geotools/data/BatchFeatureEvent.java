@@ -110,7 +110,7 @@ public class BatchFeatureEvent extends FeatureEvent {
             filter = change.getFilter();
         } else if (filter instanceof And) {
             And and = (And) filter;
-            List<Filter> children = new ArrayList(and.getChildren());
+            List<Filter> children = new ArrayList<>(and.getChildren());
             children.add(change.getFilter());
             filter = ff.and(children);
         } else {

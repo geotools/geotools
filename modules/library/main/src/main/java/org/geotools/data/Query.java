@@ -202,7 +202,7 @@ public class Query {
     protected Hints hints;
 
     /** join clauses for this query */
-    protected List<Join> joins = new ArrayList();
+    protected List<Join> joins = new ArrayList<>();
 
     /**
      * Default constructor. Use setter methods to configure the Query before use (the default Query
@@ -355,7 +355,7 @@ public class Query {
         this.hints = query.getHints();
         this.startIndex = query.getStartIndex();
         this.alias = query.getAlias();
-        this.joins = new ArrayList();
+        this.joins = new ArrayList<>();
         for (Join j : query.getJoins()) {
             this.joins.add(new Join(j));
         }

@@ -97,7 +97,7 @@ public abstract class FilterAbstract implements org.opengis.filter.Filter {
      * @return value or null
      */
     protected Object eval(
-            org.opengis.filter.expression.Expression expression, Object object, Class context) {
+            org.opengis.filter.expression.Expression expression, Object object, Class<?> context) {
         if (expression == null) return null;
         return expression.evaluate(object, context);
     }

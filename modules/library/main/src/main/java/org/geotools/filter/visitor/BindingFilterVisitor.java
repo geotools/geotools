@@ -257,7 +257,7 @@ public class BindingFilterVisitor extends DuplicatingFilterVisitor {
         return getFactory(extraData).lessOrEqual(expr1, expr2, matchCase, filter.getMatchAction());
     }
 
-    protected Expression optimize(Expression expression, Object extraData, Class targetType) {
+    protected Expression optimize(Expression expression, Object extraData, Class<?> targetType) {
         if (expression instanceof Literal && targetType != null) {
             // perform the conversion and return the optimized literal
             Object converted = expression.evaluate(null, targetType);

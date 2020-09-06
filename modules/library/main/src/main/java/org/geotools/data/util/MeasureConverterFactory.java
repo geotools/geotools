@@ -56,9 +56,9 @@ public class MeasureConverterFactory implements ConverterFactory {
                         }
                         String v = format.format(m.doubleValue());
                         if (m.getUnit() != null) {
-                            return (T) (v + m.getUnit());
+                            return target.cast((v + m.getUnit()));
                         } else {
-                            return (T) v;
+                            return target.cast(v);
                         }
                     }
 
@@ -81,7 +81,8 @@ public class MeasureConverterFactory implements ConverterFactory {
                                 unit = SimpleUnitFormat.getInstance().parse(group);
                             }
                         }
-                        return (T) new Measure(value, unit);
+
+                        return target.cast(new Measure(value, unit));
                     } else {
                         throw new IllegalArgumentException("Invalid measure " + str);
                     }

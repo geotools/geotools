@@ -1585,7 +1585,8 @@ public final class JTS {
                     }
                 });
 
-        List<Polygon> result = new ArrayList<Polygon>(p.getPolygons());
+        @SuppressWarnings("unchecked")
+        List<Polygon> result = new ArrayList<>(p.getPolygons());
 
         // if necessary throw away the holes and return just the shells
         if (removeHoles) {

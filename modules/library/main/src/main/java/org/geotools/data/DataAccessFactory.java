@@ -211,6 +211,7 @@ public interface DataAccessFactory extends Factory {
                 if (param.metadata != null) {
                     // check metadata
                     if (param.metadata.containsKey(Param.OPTIONS)) {
+                        @SuppressWarnings("unchecked")
                         java.util.List<Object> options =
                                 (List<Object>) param.metadata.get(Param.OPTIONS);
                         if (options != null && !options.contains(value)) {

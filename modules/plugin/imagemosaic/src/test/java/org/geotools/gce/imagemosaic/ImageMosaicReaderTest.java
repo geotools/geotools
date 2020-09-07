@@ -636,6 +636,11 @@ public class ImageMosaicReaderTest extends Assert {
         try (FileInputStream fin = new FileInputStream(mosaicFile)) {
             properties.load(fin);
         }
+        assertTrue(properties.containsKey(Prop.SUGGESTED_FORMAT));
+        assertTrue(
+                "org.geotools.gce.geotiff.GeoTiffFormat"
+                        .equalsIgnoreCase((String) properties.get(Prop.SUGGESTED_FORMAT)));
+
         try (FileWriter fw = new FileWriter(mosaicFile)) {
             assertNotNull(properties.remove("TypeName"));
             properties.store(fw, "");
@@ -5712,5 +5717,33 @@ public class ImageMosaicReaderTest extends Assert {
         } finally {
             reader.dispose();
         }
+    }
+
+    @Test
+    public void testWrongSuggestedFormat() throws IOException {
+        File workDir = new File(TestData.file(this, "."), "testWrong");
+        if (!workDir.mkdir()) {
+            FileUtils.deleteDirectory(workDir);
+            workDir = new File(workDir, "rgba");
+            if (!workDir.mkdir()) {
+                FileUtils.deleteDirectory(workDir);
+            }
+            assertTrue("Unable to create workdir:" + workDir, workDir.mkdir());
+        }
+        final File source = TestData.file(this, "rgba");
+        FileUtils.copyDirectory(source, workDir);
+
+        // Having a properties file with ArcGridFormat as suggested Format
+        // although images are RGBA. The bad format will not be used
+        try (FileWriter out = new FileWriter(new File(workDir, "rgba.properties"), true)) {
+            out.write("SuggestedFormat=org.geotools.gce.arcgrid.ArcGridFormat");
+            out.flush();
+        }
+        ImageMosaicFormat format = new ImageMosaicFormat();
+        ImageMosaicReader reader = format.getReader(workDir);
+
+        GridCoverage2D gc = reader.read(null);
+        Assert.assertNotNull(gc);
+        reader.dispose();
     }
 }

@@ -583,7 +583,16 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
                 if (configuration == null
                         && sourceParent != null
                         && parentDirectory != sourceParent) {
-                    configuration = lookupForMosaicConfig();
+                    File sourceFile = URLs.urlToFile(sourceURL);
+                    String sourceFilePath = sourceFile.getAbsolutePath();
+                    if (FilenameUtils.getName(sourceFilePath)
+                            .equalsIgnoreCase(Utils.DATASTORE_PROPERTIES)) {
+                        configuration = Utils.lookForMosaicConfig(sourceURL);
+                    } else {
+                        throw new DataSourceException(
+                                "Files is neither a mosaic property nor a directory: " + sourceURL);
+                    }
+
                     if (configuration != null) {
                         beans.add(configuration);
                     }
@@ -699,26 +708,6 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
 
             // rethrow
             throw new DataSourceException(e);
-        }
-    }
-
-    private MosaicConfigurationBean lookupForMosaicConfig() throws IOException {
-        File sourceFile = URLs.urlToFile(sourceURL);
-        String sourceFilePath = sourceFile.getAbsolutePath();
-        if (FilenameUtils.getName(sourceFilePath).equalsIgnoreCase(Utils.DATASTORE_PROPERTIES)) {
-            String configPropertiesPath =
-                    FilenameUtils.getFullPath(sourceFilePath)
-                            + FilenameUtils.getName(sourceFile.getParentFile().getAbsolutePath())
-                            + ".properties";
-            File configFile = new File(configPropertiesPath);
-            if (!configFile.exists()) {
-                return null;
-            }
-            URL testPropertiesUrl = URLs.fileToUrl(configFile);
-            return Utils.loadMosaicProperties(testPropertiesUrl);
-        } else {
-            throw new DataSourceException(
-                    "Files is neither a mosaic property nor a directory: " + sourceURL);
         }
     }
 

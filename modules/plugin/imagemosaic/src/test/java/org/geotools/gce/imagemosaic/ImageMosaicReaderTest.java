@@ -2978,67 +2978,145 @@ public class ImageMosaicReaderTest extends Assert {
 
     @Test
     public void testHarvestMultipleFiles() throws Exception {
-        File source = URLs.urlToFile(timeURL);
-        File testDataDir = TestData.file(this, ".");
-        File directory1 = new File(testDataDir, "harvest1");
-        File directory2 = new File(testDataDir, "harvest2");
-        if (directory1.exists()) {
-            FileUtils.deleteDirectory(directory1);
-        }
-        FileUtils.copyDirectory(source, directory1);
-        if (directory2.exists()) {
-            FileUtils.deleteDirectory(directory2);
-        }
-        directory2.mkdirs();
-        // Creation of a File Collection
-        Collection<File> files = new ArrayList<File>();
+        // setup mosaic with just one file, get a list of the excluded ones for later harvest
+        MultipleHarvestSetup multipleHarvestSetup = new MultipleHarvestSetup().invoke();
+        Collection<File> files = multipleHarvestSetup.getFiles();
+        ImageMosaicReader reader = multipleHarvestSetup.getReader();
 
-        // move all files besides month 2 and 5 to the second directory and store them into a
-        // Collection
-        for (File file :
-                FileUtils.listFiles(
-                        directory1, new RegexFileFilter("world\\.20040[^25].*\\.tiff"), null)) {
-            File renamed = new File(directory2, file.getName());
-            assertTrue(file.renameTo(renamed));
-            files.add(renamed);
-        }
-        // remove all mosaic related files
-        for (File file :
-                FileUtils.listFiles(directory1, new RegexFileFilter("time_geotiff.*"), null)) {
-            assertTrue(file.delete());
-        }
-
-        // ok, let's create a mosaic with the two original granules
-        URL harvestSingleURL = fileToUrl(directory1);
-        final AbstractGridFormat format = TestUtils.getFormat(harvestSingleURL);
-        ImageMosaicReader reader = getReader(harvestSingleURL, format);
         GranuleCatalog originalCatalog = reader.granuleCatalog;
         try {
-            String[] metadataNames = reader.getMetadataNames();
-            assertNotNull(metadataNames);
-            assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
-            assertEquals(
-                    "2004-02-01T00:00:00.000Z,2004-05-01T00:00:00.000Z",
-                    reader.getMetadataValue(metadataNames[0]));
-
-            // now go and harvest the other directory
-            List<HarvestedSource> summary = reader.harvest(null, files, null);
-            assertSame(originalCatalog, reader.granuleCatalog);
-            assertEquals(2, summary.size());
-            for (HarvestedSource hf : summary) {
-                assertTrue(hf.success());
-            }
-
-            // the harvest put the file in the same coverage
-            assertEquals(1, reader.getGridCoverageNames().length);
-            metadataNames = reader.getMetadataNames();
-            assertNotNull(metadataNames);
-            assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
-            assertEquals(
-                    "2004-02-01T00:00:00.000Z,2004-03-01T00:00:00.000Z,2004-04-01T00:00:00.000Z,2004-05-01T00:00:00.000Z",
-                    reader.getMetadataValue(metadataNames[0]));
+            assertMultipleFileHarvest(files, reader, originalCatalog);
         } finally {
             reader.dispose();
+        }
+    }
+
+    @Test
+    public void testHarvestMultipleFilesOnStoredProperties() throws Exception {
+        // force mosaic creation
+        MultipleHarvestSetup multipleHarvestSetup = new MultipleHarvestSetup().invoke();
+        Collection<File> files = multipleHarvestSetup.getFiles();
+        multipleHarvestSetup.getReader().dispose();
+
+        // open it again, it will have to work against the stored config
+        ImageMosaicReader reader = multipleHarvestSetup.getReader();
+
+        GranuleCatalog originalCatalog = reader.granuleCatalog;
+        try {
+            assertMultipleFileHarvest(files, reader, originalCatalog);
+        } finally {
+            reader.dispose();
+        }
+    }
+
+    @Test
+    public void testHarvestMultipleFilesWithoutCRS() throws Exception {
+        // force mosaic creation
+        MultipleHarvestSetup multipleHarvestSetup = new MultipleHarvestSetup().invoke();
+        Collection<File> files = multipleHarvestSetup.getFiles();
+        ImageMosaicReader tempReader = multipleHarvestSetup.getReader();
+        File directory = URLs.urlToFile((URL) tempReader.getSource());
+        tempReader.dispose();
+
+        // remove the MosaicCRS property from the mosaic configuration
+        File config = new File(directory, directory.getName() + ".properties");
+        Properties p = new Properties();
+        try (FileInputStream fis = new FileInputStream(config)) {
+            p.load(fis);
+        }
+        p.remove(Prop.MOSAIC_CRS);
+        try (FileOutputStream fos = new FileOutputStream(config)) {
+            p.store(fos, null);
+        }
+
+        // open it again, it will have to work against the stored config without the CRS
+        ImageMosaicReader reader = multipleHarvestSetup.getReader();
+        GranuleCatalog originalCatalog = reader.granuleCatalog;
+        try {
+            assertMultipleFileHarvest(files, reader, originalCatalog);
+        } finally {
+            reader.dispose();
+        }
+    }
+
+    public void assertMultipleFileHarvest(
+            Collection<File> files, ImageMosaicReader reader, GranuleCatalog originalCatalog)
+            throws IOException {
+        String[] metadataNames = reader.getMetadataNames();
+        assertNotNull(metadataNames);
+        assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
+        assertEquals(
+                "2004-02-01T00:00:00.000Z,2004-05-01T00:00:00.000Z",
+                reader.getMetadataValue(metadataNames[0]));
+
+        // now go and harvest the other directory
+        List<HarvestedSource> summary = reader.harvest(null, files, null);
+        assertSame(originalCatalog, reader.granuleCatalog);
+        assertEquals(2, summary.size());
+        for (HarvestedSource hf : summary) {
+            assertTrue(hf.success());
+        }
+
+        // the harvest put the file in the same coverage
+        assertEquals(1, reader.getGridCoverageNames().length);
+        metadataNames = reader.getMetadataNames();
+        assertNotNull(metadataNames);
+        assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
+        assertEquals(
+                "2004-02-01T00:00:00.000Z,2004-03-01T00:00:00.000Z,2004-04-01T00:00:00.000Z,"
+                        + "2004-05-01T00:00:00.000Z",
+                reader.getMetadataValue(metadataNames[0]));
+    }
+
+    private class MultipleHarvestSetup {
+        private Collection<File> files;
+        private URL harvestSingleURL;
+        private AbstractGridFormat format;
+        private ImageMosaicReader reader;
+
+        public Collection<File> getFiles() {
+            return files;
+        }
+
+        public ImageMosaicReader getReader() throws FactoryException {
+            return TestUtils.getReader(harvestSingleURL, format);
+        }
+
+        public MultipleHarvestSetup invoke() throws IOException, FactoryException {
+            File source = URLs.urlToFile(timeURL);
+            File testDataDir = TestData.file(ImageMosaicReaderTest.this, ".");
+            File directory1 = new File(testDataDir, "harvest1");
+            File directory2 = new File(testDataDir, "harvest2");
+            if (directory1.exists()) {
+                FileUtils.deleteDirectory(directory1);
+            }
+            FileUtils.copyDirectory(source, directory1);
+            if (directory2.exists()) {
+                FileUtils.deleteDirectory(directory2);
+            }
+            directory2.mkdirs();
+            // Creation of a File Collection
+            files = new ArrayList<File>();
+
+            // move all files besides month 2 and 5 to the second directory and store them into a
+            // Collection
+            for (File file :
+                    FileUtils.listFiles(
+                            directory1, new RegexFileFilter("world\\.20040[^25].*\\.tiff"), null)) {
+                File renamed = new File(directory2, file.getName());
+                assertTrue(file.renameTo(renamed));
+                files.add(renamed);
+            }
+            // remove all mosaic related files
+            for (File file :
+                    FileUtils.listFiles(directory1, new RegexFileFilter("time_geotiff.*"), null)) {
+                assertTrue(file.delete());
+            }
+
+            // ok, let's create a mosaic with the two original granules
+            harvestSingleURL = fileToUrl(directory1);
+            format = TestUtils.getFormat(harvestSingleURL);
+            return this;
         }
     }
 
@@ -3150,7 +3228,8 @@ public class ImageMosaicReaderTest extends Assert {
             assertNotNull(metadataNames);
             assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
             assertEquals(
-                    "2004-02-01T00:00:00.000Z,2004-03-01T00:00:00.000Z,2004-04-01T00:00:00.000Z,2004-05-01T00:00:00.000Z",
+                    "2004-02-01T00:00:00.000Z,2004-03-01T00:00:00.000Z,2004-04-01T00:00:00.000Z,"
+                            + "2004-05-01T00:00:00.000Z",
                     reader.getMetadataValue(metadataNames[0]));
         } finally {
             reader.dispose();
@@ -3195,29 +3274,7 @@ public class ImageMosaicReaderTest extends Assert {
         ImageMosaicReader reader = getReader(harvestSingleURL, format);
         GranuleCatalog originalCatalog = reader.granuleCatalog;
         try {
-            String[] metadataNames = reader.getMetadataNames();
-            assertNotNull(metadataNames);
-            assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
-            assertEquals(
-                    "2004-02-01T00:00:00.000Z,2004-05-01T00:00:00.000Z",
-                    reader.getMetadataValue(metadataNames[0]));
-
-            // now go and harvest the file list
-            List<HarvestedSource> summary = reader.harvest(null, files, null);
-            assertSame(originalCatalog, reader.granuleCatalog);
-            assertEquals(2, summary.size());
-            for (HarvestedSource hf : summary) {
-                assertTrue(hf.success());
-            }
-
-            // the harvest put the files in the same coverage
-            assertEquals(1, reader.getGridCoverageNames().length);
-            metadataNames = reader.getMetadataNames();
-            assertNotNull(metadataNames);
-            assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
-            assertEquals(
-                    "2004-02-01T00:00:00.000Z,2004-03-01T00:00:00.000Z,2004-04-01T00:00:00.000Z,2004-05-01T00:00:00.000Z",
-                    reader.getMetadataValue(metadataNames[0]));
+            assertMultipleFileHarvest(files, reader, originalCatalog);
         } finally {
             reader.dispose();
         }

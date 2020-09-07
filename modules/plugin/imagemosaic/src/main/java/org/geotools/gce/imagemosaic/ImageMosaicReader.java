@@ -407,12 +407,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
             // run the walker and collect information
             ImageMosaicEventHandlers eventHandler = new ImageMosaicEventHandlers();
             final ImageMosaicConfigHandler catalogHandler =
-                    new ImageMosaicConfigHandler(configuration, eventHandler) {
-                        @Override
-                        protected GranuleCatalog buildCatalog() throws IOException {
-                            return reader.granuleCatalog;
-                        }
-                    };
+                    new HarvestMosaicConfigHandler(configuration, eventHandler, reader);
             // build the index
             ImageMosaicDirectoryWalker walker =
                     new ImageMosaicDirectoryWalker(catalogHandler, eventHandler, filter);
@@ -438,6 +433,37 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
                     });
 
             walker.run();
+        }
+
+        private static class HarvestMosaicConfigHandler extends ImageMosaicConfigHandler {
+            private final ImageMosaicReader reader;
+
+            public HarvestMosaicConfigHandler(
+                    CatalogBuilderConfiguration configuration,
+                    ImageMosaicEventHandlers eventHandler,
+                    ImageMosaicReader reader) {
+                super(configuration, eventHandler);
+                this.reader = reader;
+            }
+
+            protected GranuleCatalog buildCatalog() throws IOException {
+                return reader.granuleCatalog;
+            }
+
+            @Override
+            public Map<String, MosaicConfigurationBean> getConfigurations() {
+                Map<String, MosaicConfigurationBean> configurations = super.getConfigurations();
+                if (configurations.isEmpty()) {
+                    // populate with the exising configurations
+                    for (String coverage : reader.getGridCoverageNames()) {
+                        MosaicConfigurationBean base =
+                                reader.getRasterManager(coverage).getConfiguration();
+                        configurations.put(coverage, new MosaicConfigurationBean(base));
+                    }
+                }
+
+                return configurations;
+            }
         }
     }
 

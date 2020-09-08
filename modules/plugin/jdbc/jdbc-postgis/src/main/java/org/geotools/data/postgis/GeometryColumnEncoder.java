@@ -75,9 +75,9 @@ public class GeometryColumnEncoder {
             encodeGeography(gatt, prefix, sql);
         } else {
             if (force2D) {
-                sql.append("ST_AsBinary(");
+                sql.append("ST_AsBinary(").append(dialect.getForce2DFunction()).append("(");
                 dialect.encodeColumnName(prefix, gatt.getLocalName(), sql);
-                sql.append(")");
+                sql.append("))");
             } else {
                 sql.append("ST_AsEWKB(");
                 dialect.encodeColumnName(prefix, gatt.getLocalName(), sql);

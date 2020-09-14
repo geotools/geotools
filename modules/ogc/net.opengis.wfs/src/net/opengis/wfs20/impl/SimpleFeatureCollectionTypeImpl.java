@@ -178,7 +178,7 @@ public class SimpleFeatureCollectionTypeImpl extends EObjectImpl implements Simp
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wfs20Package.SIMPLE_FEATURE_COLLECTION_TYPE__BOUNDED_BY:
-        setBoundedBy(newValue instanceof EnvelopePropertyType ? (EnvelopePropertyType) newValue : null);
+        setBoundedBy((EnvelopePropertyType)newValue);
         return;
       case Wfs20Package.SIMPLE_FEATURE_COLLECTION_TYPE__MEMBER:
         getMember().clear();

@@ -19,20 +19,41 @@ package org.geotools.wfs.v2_0.bindings;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.namespace.QName;
+import net.opengis.wfs20.EnvelopePropertyType;
+import net.opengis.wfs20.Wfs20Factory;
+import net.opengis.wfs20.Wfs20Package;
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EcoreFactory;
+import org.eclipse.emf.ecore.util.FeatureMap;
+import org.eclipse.emf.ecore.util.FeatureMap.Entry;
+import org.eclipse.emf.ecore.util.FeatureMapUtil;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.wfs.v2_0.WFS;
 import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 public class EnvelopePropertyTypeBinding extends AbstractComplexBinding {
+
+    private Class<ReferencedEnvelope> referencedEnvelopeClass = ReferencedEnvelope.class;
+    private EClass newClass = EcoreFactory.eINSTANCE.createEClass();
+    private EAttribute newAttribute = EcoreFactory.eINSTANCE.createEAttribute();
+    private EAttribute anyAttribute = Wfs20Package.eINSTANCE.getEnvelopePropertyType_Any();
+
+    public EnvelopePropertyTypeBinding() {
+        newClass.setInstanceClass(referencedEnvelopeClass);
+        newAttribute.setEType(newClass);
+    }
 
     public QName getTarget() {
         return WFS.EnvelopePropertyType;
     }
 
-    public Class getType() {
-        return ReferencedEnvelope.class;
+    public Class<?> getType() {
+        return referencedEnvelopeClass;
     }
 
     @Override
@@ -40,5 +61,32 @@ public class EnvelopePropertyTypeBinding extends AbstractComplexBinding {
         List l = new ArrayList();
         l.add(new Object[] {GML.Envelope, object});
         return l;
+    }
+
+    @Override
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+        EnvelopePropertyType envelopPropertyType =
+                Wfs20Factory.eINSTANCE.createEnvelopePropertyType();
+
+        Object childValue = node.getChildValue(referencedEnvelopeClass);
+        if (childValue != null) {
+            // FeatureMap below requires FeatureMap.Entry as members each having FeatureMap.Entry as
+            // value.
+            // Considering the respective schema fragment this is somewhat surprising.
+            // Maybe a generator or EMF or issue?
+            // Assuming "boundedBy" is rarely used it seems acceptable to nest it twice.
+            //
+            //   <xsd:element name="boundedBy" type="wfs:EnvelopePropertyType"/>
+            //   <xsd:complexType name="EnvelopePropertyType">
+            //      <xsd:sequence>
+            //         <xsd:any namespace="##other"/>
+            //      </xsd:sequence>
+            //   </xsd:complexType>
+            FeatureMap anyMap = envelopPropertyType.getAny();
+            Entry innerEntry = FeatureMapUtil.createEntry(newAttribute, childValue);
+            Entry anyMapEntry = FeatureMapUtil.createEntry(anyAttribute, innerEntry);
+            anyMap.add(0, anyMapEntry);
+        }
+        return envelopPropertyType;
     }
 }

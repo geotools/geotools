@@ -38,14 +38,18 @@ import org.geotools.xsd.Node;
 
 public class EnvelopePropertyTypeBinding extends AbstractComplexBinding {
 
-    private Class<ReferencedEnvelope> referencedEnvelopeClass = ReferencedEnvelope.class;
-    private EClass newClass = EcoreFactory.eINSTANCE.createEClass();
-    private EAttribute newAttribute = EcoreFactory.eINSTANCE.createEAttribute();
-    private EAttribute anyAttribute = Wfs20Package.eINSTANCE.getEnvelopePropertyType_Any();
+    private static Class<ReferencedEnvelope> referencedEnvelopeClass = ReferencedEnvelope.class;
+    private static EClass newClass = EcoreFactory.eINSTANCE.createEClass();
+    private static EAttribute newAttribute = EcoreFactory.eINSTANCE.createEAttribute();
+    private static EAttribute anyAttribute = Wfs20Package.eINSTANCE.getEnvelopePropertyType_Any();
 
-    public EnvelopePropertyTypeBinding() {
+    static {
         newClass.setInstanceClass(referencedEnvelopeClass);
         newAttribute.setEType(newClass);
+    }
+
+    public EnvelopePropertyTypeBinding() {
+        super();
     }
 
     public QName getTarget() {

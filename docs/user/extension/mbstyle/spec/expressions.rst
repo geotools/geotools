@@ -148,7 +148,8 @@ Asserts that the input is an array (optionally with a specific item type and len
 
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -176,7 +177,8 @@ Asserts that the input value is a boolean. If multiple values are provided, each
     ["boolean", value, fallback: value, fallback: value, ...]: boolean
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -202,7 +204,8 @@ Returns a ``collator`` for use in locale-dependent comparison operations. The ``
     ]: collator
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -230,7 +233,8 @@ Returns ``formatted`` text containing annotations for use in mixed-format ``text
     ]: formatted
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -258,7 +262,8 @@ Provides a literal array or object value.
     ["literal", {...} (JSON object literal)]: Object
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -287,7 +292,8 @@ Asserts that the input value is a number. If multiple values are provided, each 
     ["number", value, fallback: value, fallback: value, ...]: number
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -315,7 +321,8 @@ Asserts that the input value is an object. If multiple values are provided, each
     ["object", value, fallback: value, fallback: value, ...]: object
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -343,7 +350,8 @@ Asserts that the input value is a string. If multiple values are provided, each 
     ["string", value, fallback: value, fallback: value, ...]: string
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -367,7 +375,8 @@ Converts the input value to a boolean. The result is false when then input is an
     ["to-boolean", value]: boolean
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -391,7 +400,8 @@ Converts the input value to a color. If multiple values are provided, each one i
     ["to-color", value, fallback: value, fallback: value, ...]: color
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -415,7 +425,8 @@ Converts the input value to a number, if possible. If the input is ``null`` or `
     ["to-number", value, fallback: value, fallback: value, ...]: number
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -439,7 +450,8 @@ Converts the input value to a string. If the input is ``null``, the result is ``
     ["to-string", value]: string
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -463,7 +475,8 @@ Returns a string describing the type of the given value.
     ["typeof", value]: string
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -492,7 +505,8 @@ Retrieves a property value from the current feature's state. Returns null if the
     ["feature-state", string]: value
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -517,7 +531,8 @@ Gets the feature's geometry type: Point, MultiPoint, LineString, MultiLineString
 
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -541,7 +556,8 @@ Gets the feature's id, if it has one.
     ["id"]: value
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -565,7 +581,8 @@ Gets the progress along a gradient line. Can only be used in the line-gradient p
     ["line-progress"]: number
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -589,7 +606,8 @@ Gets the feature properties object. Note that in some cases, it may be more effi
     ["properties"]: object
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -618,7 +636,8 @@ Retrieves an item from an array.
     ["at", number, array]: ItemType
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -646,7 +665,8 @@ Retrieves a property value from the current feature's properties, or from anothe
     ["get", string, object]: value
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -674,7 +694,8 @@ Tests for the presence of an property value in the current feature's properties,
     ["has", string, object]: boolean
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -698,7 +719,8 @@ Gets the length of an array or string.
     ["length", string | array | value]: number
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -729,7 +751,8 @@ Logical negation. Returns true if the input is false, and false if the input is 
     ["!", boolean]: boolean
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -757,7 +780,8 @@ Returns ``true`` if the input values are not equal, ``false`` otherwise. The com
     ["!=", value, value, collator]: boolean
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -789,7 +813,8 @@ Returns ``true`` if the first input is strictly less than the second, ``false`` 
     ["<", value, value, collator]: boolean
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -821,7 +846,8 @@ Returns ``true`` if the first input is less than or equal to the second, ``false
     ["<=", value, value, collator]: boolean
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -853,7 +879,8 @@ Returns ``true`` if the input values are equal, ``false`` otherwise. The compari
     ["==", value, value, collator]: boolean
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -885,7 +912,8 @@ Returns ``true`` if the first input is strictly greater than the second, ``false
     [">", value, value, collator]: boolean
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -917,7 +945,8 @@ Returns ``true`` if the first input is greater than or equal to the second, ``fa
     [">=", value, value, collator]: boolean
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -949,7 +978,8 @@ Returns ``true`` if all the inputs are true, ``false`` otherwise. The inputs are
     ["all", boolean, boolean, ...]: boolean
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -977,7 +1007,8 @@ Returns ``true`` if any of the inputs are ``true``, ``false`` otherwise. The inp
     ["any", boolean, boolean, ...]: boolean
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1004,7 +1035,8 @@ Selects the first output whose corresponding test condition evaluates to true.
     ]: OutputType
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1028,7 +1060,8 @@ Evaluates each expression in turn until the first non-null value is obtained, an
     ["coalesce", OutputType, OutputType, ...]: OutputType
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1057,7 +1090,8 @@ Selects the output whose label value matches the input value, or the fallback va
     ]: OutputType
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1097,7 +1131,8 @@ Interpolation types:
     ]: OutputType (number, array<number>, or Color)
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1126,7 +1161,8 @@ Produces continuous, smooth results by interpolating between pairs of input and 
     ]: Color
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1155,7 +1191,8 @@ Produces continuous, smooth results by interpolating between pairs of input and 
     ]: Color
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1184,7 +1221,8 @@ Produces discrete, stepped results by evaluating a piece wise-constant function 
     ]: OutputType
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1216,7 +1254,8 @@ Binds expressions to named variables, which can then be referenced in the result
     ]: OutputType
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1240,7 +1279,8 @@ References variable bound using "let".
     ["var", previously bound variable name]: the type of the bound expression
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1269,7 +1309,8 @@ Returns a string consisting of the concatenation of the inputs. Each input is co
     ["concat", value, value, ...]: string
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1293,7 +1334,8 @@ Returns the input string converted to lowercase. Follows the Unicode Default Cas
     ["downcase", string]: string
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1328,7 +1370,8 @@ Returns the IETF language tag of the locale being used by the provided ``collato
     ["resolved-locale", collator]: string
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1352,7 +1395,8 @@ Returns the input string converted to uppercase. Follows the Unicode Default Cas
     ["upcase", string]: string
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1381,7 +1425,8 @@ Creates a color value from red, green, and blue components, which must range bet
     ["rgb", number, number, number]: color
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1405,7 +1450,8 @@ Creates a color value from red, green, blue components, which must range between
     ["rgba", number, number, number, number]: color
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1429,7 +1475,8 @@ Returns a four-element array containing the input color's red, green, blue, and 
     ["to-rgba", color]: array<number, 4>
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1462,7 +1509,8 @@ For two inputs, returns the result of subtracting the second input from the firs
     ["-", number]: number
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1486,7 +1534,8 @@ Returns the product of the inputs.
     ["*", number, number, ...]: number
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1510,7 +1559,8 @@ Returns the result of floating point division of the first input by the second.
     ["/", number, number]: number
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1534,7 +1584,8 @@ Returns the remainder after integer division of the first input by the second.
     ["%", number, number]: number
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1558,7 +1609,8 @@ Returns the result of raising the first input to the power specified by the seco
     ["^", number, number]: number
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1582,7 +1634,8 @@ Returns the sum of the inputs.
     ["+", number, number, ...]: number
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1606,7 +1659,8 @@ Returns the absolute value of the input.
     ["abs", number]: number
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1630,7 +1684,8 @@ Returns the ``arccosine`` of the input.
     ["acos", number]: number
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1654,7 +1709,8 @@ Returns the ``arcsine`` of the input.
     ["asin", number]: number
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1678,7 +1734,8 @@ Returns the ``arctangent`` of the input.
     ["atan", number]: number
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1702,7 +1759,8 @@ Returns the smallest integer that is greater than or equal to the input.
     ["ceil", number]: number
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1726,7 +1784,8 @@ Returns the cosine of the input.
     ["cos", number]: number
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1750,7 +1809,8 @@ Returns the mathematical constant e.
     ["e"]: number
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1774,7 +1834,8 @@ Returns the largest integer that is less than or equal to the input.
     ["floor", number]: number
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1798,7 +1859,8 @@ Returns the natural logarithm of the input.
     ["ln", number]: number
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1822,7 +1884,8 @@ Returns mathematical constant ``ln(2)``.
     ["ln2"]: number
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1846,7 +1909,8 @@ Returns the base-ten logarithm of the input.
     ["log10", number]: number
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1870,7 +1934,8 @@ Returns the base-two logarithm of the input.
     ["log2", number]: number
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1895,7 +1960,8 @@ Returns the maximum value of the inputs.
     ["max", number, number, ...]: number
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1919,7 +1985,8 @@ Returns the minimum value of the inputs.
     ["min", number, number, ...]: number
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1943,7 +2010,8 @@ Returns the mathematical constant pi.
     ["pi"]: number
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1967,7 +2035,8 @@ Rounds the input to the nearest integer. Halfway values are rounded away from ze
     ["round", number]: number
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -1991,7 +2060,8 @@ Returns the sine of the input.
     ["sin", number]: number
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -2015,7 +2085,8 @@ Returns the square root of the input.
     ["sqrt", number]: number
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -2039,7 +2110,8 @@ Returns the tangent of the input.
     ["tan", number]: number
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -2068,7 +2140,8 @@ Gets the current zoom level. Note that in style layout and paint properties, ["z
     ["zoom"]: number
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -2097,7 +2170,8 @@ Gets the kernel density estimation of a pixel in a heatmap layer, which is a rel
     ["heatmap-density"]: number
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support

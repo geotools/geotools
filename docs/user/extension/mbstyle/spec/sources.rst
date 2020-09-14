@@ -113,7 +113,8 @@ higher zoom levels.
 
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -186,7 +187,8 @@ The minimum visual size to display tiles for this layer. Only
 configurable for raster layers.
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -300,7 +302,8 @@ to one zoom less than ``maxzoom`` (so that last zoom features are not
 clustered).
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -353,7 +356,8 @@ coordinates
 Corners of image specified in longitude, latitude pairs.
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -412,7 +416,8 @@ coordinates
 Corners of video specified in longitude, latitude pairs.
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -477,7 +482,8 @@ HTML ID of the canvas from which to read pixels.
 
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support

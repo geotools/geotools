@@ -123,7 +123,8 @@ more easily than those interpolated in RGB space.
 
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -384,7 +385,8 @@ are Polygons, but have a different ``class`` value, and so on.
     ]
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support

@@ -35,7 +35,8 @@ viewport
     "anchor": "map"
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -56,7 +57,8 @@ Color tint for lighting extruded geometries.
 
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -77,7 +79,8 @@ Intensity of lighting (on a scale from 0 to 1). Higher numbers will
 present as more extreme contrast.
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support
@@ -112,7 +115,8 @@ the light (from 0°, directly above, to 180°, directly below).
     ]
 
 .. list-table::
-   :widths: 19, 27, 27, 27
+   :widths: 34, 22, 22, 22
+   :width: 100%
    :header-rows: 1
 
    * - Support

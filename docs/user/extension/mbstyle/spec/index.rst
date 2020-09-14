@@ -21,6 +21,13 @@ Feature support is provided for the `Mapbox GL JS <https://www.mapbox.com/mapbox
    glyphs
    transition
    layers
+   layers: background<background>
+   layers: fill<fill>
+   layers: line<line>
+   layers: symbol<symbol>
+   layers: raster<raster>
+   layers: circle<circle>
+   layers: fill-extrusion<fill-extrusion>
    types
    expressions
    other

@@ -128,13 +128,17 @@ public class AbstractCalcResult implements CalcResult {
         }
 
         if (value.getClass().isArray()) {
-            Set set = new HashSet(Arrays.asList((Object[]) value));
+            @SuppressWarnings("unchecked")
+            Object[] cast = (Object[]) value;
+            Set set = new HashSet<>(Arrays.asList(cast));
 
             return set;
         }
 
         if (value instanceof Collection) {
-            Set set = new HashSet((Collection) value);
+            @SuppressWarnings("unchecked")
+            Collection<Object> cast = (Collection<Object>) value;
+            Set set = new HashSet<>(cast);
 
             return set;
         }
@@ -170,7 +174,9 @@ public class AbstractCalcResult implements CalcResult {
         }
 
         if (value instanceof Collection) {
-            return new ArrayList((Collection) value);
+            @SuppressWarnings("unchecked")
+            Collection<Object> cast = (Collection<Object>) value;
+            return new ArrayList<Object>(cast);
         }
 
         return null;
@@ -193,9 +199,10 @@ public class AbstractCalcResult implements CalcResult {
             return null;
         }
 
-        String[] strings = new String[list.size()];
-
-        return (String[]) list.toArray(strings);
+        @SuppressWarnings("unchecked")
+        String[] strings = (String[]) list.toArray(new String[list.size()]);
+        ;
+        return strings;
     }
 
     public Map toMap() {

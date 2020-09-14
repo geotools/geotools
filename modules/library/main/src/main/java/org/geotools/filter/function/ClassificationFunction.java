@@ -253,6 +253,7 @@ public abstract class ClassificationFunction extends DefaultExpression
                 new GroupByVisitor(
                         Aggregate.COUNT, getParameters().get(0), Arrays.asList(convert), null);
         collection.accepts(groupBy, null);
+        @SuppressWarnings("unchecked")
         Map<List<Integer>, Integer> result = groupBy.getResult().toMap();
         Map<Integer, Integer> resultIntKeys =
                 result.entrySet()

@@ -26,7 +26,6 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.geotools.data.DataStore;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
@@ -63,8 +62,7 @@ public class GeoJSONDataStoreFactoryTest {
         URL t2 = new URL("http://example.com/ian.geojson");
 
         params.put(GeoJSONDataStoreFactory.URL_PARAM.key, t2);
-        if (!fac.canProcess(params))
-          fail("Didn't handle URL;");
+        if (!fac.canProcess(params)) fail("Didn't handle URL;");
 
         URL t3 = new URL("http://example.com/ian.randomjson");
         store1 = null;

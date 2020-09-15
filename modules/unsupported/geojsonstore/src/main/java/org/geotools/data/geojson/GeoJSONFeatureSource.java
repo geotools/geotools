@@ -17,7 +17,6 @@
 package org.geotools.data.geojson;
 
 import java.io.IOException;
-
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentEntry;
@@ -31,116 +30,113 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 
 public class GeoJSONFeatureSource extends ContentFeatureSource {
-  /** Should we read just the first feature to extract the Schema */
-  boolean quick = true;
+    /** Should we read just the first feature to extract the Schema */
+    boolean quick = true;
 
-  public GeoJSONFeatureSource(ContentEntry entry, Query query) {
-    super(entry, query);
-    transaction = getState().getTransaction();
-  }
-
-  public GeoJSONFeatureSource(GeoJSONDataStore datastore) {
-    this(datastore, Query.ALL);
-  }
-
-  public GeoJSONFeatureSource(GeoJSONDataStore datastore, Query query) {
-    this(new ContentEntry(datastore, datastore.getTypeName()), query);
-  }
-
-  public GeoJSONFeatureSource(ContentEntry entry) {
-    this(entry, Query.ALL);
-  }
-
-  @Override
-  public GeoJSONDataStore getDataStore() {
-    return (GeoJSONDataStore) super.getDataStore();
-  }
-
-  @Override
-  protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
-    ReferencedEnvelope env = new ReferencedEnvelope(getDataStore().getCrs());
-
-    if (query.getFilter() == Filter.INCLUDE) {
-
-      try (GeoJSONReader reader = getDataStore().read()) {
-        try (FeatureIterator<SimpleFeature> itr = reader.getIterator()) {
-          while (itr.hasNext()) {
-            SimpleFeature f = itr.next();
-            env.expandToInclude(((Geometry) f.getDefaultGeometry()).getEnvelopeInternal());
-          }
-        }
-      }
+    public GeoJSONFeatureSource(ContentEntry entry, Query query) {
+        super(entry, query);
+        transaction = getState().getTransaction();
     }
-    return env;
-  }
 
-  @Override
-  protected int getCountInternal(Query query) throws IOException {
-    if (query.getFilter() == Filter.INCLUDE) {
-
-      try (GeoJSONReader reader = getDataStore().read()) {
-        int count = 0;
-        try (FeatureIterator<SimpleFeature> itr = reader.getIterator()) {
-          while (itr.hasNext()) {
-            itr.next();
-            count += 1;
-          }
-          return count;
-        }
-      }
+    public GeoJSONFeatureSource(GeoJSONDataStore datastore) {
+        this(datastore, Query.ALL);
     }
-    return -1; // feature by feature scan required to count records
-  }
 
-  @Override
-  protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query) throws IOException {
-    return new GeoJSONFeatureReader(getState(), query);
-  }
-
-  @Override
-  protected SimpleFeatureType buildFeatureType() throws IOException {
-
-    // read headers
-
-    try (GeoJSONReader reader = getDataStore().read()) {
-      try (FeatureIterator<SimpleFeature> itr = reader.getIterator()) {
-        boolean empty = true;
-        while (itr.hasNext()) {
-          empty = false;
-          itr.next();
-          schema = (SimpleFeatureType) reader.getSchema();
-          if (quick) {
-            break;
-          }
-        }
-        /*
-         * In the event we are dealing with an empty file the schema may have
-         * been set in the datastore.
-         */
-
-
-
-      }
-
-      return schema;
+    public GeoJSONFeatureSource(GeoJSONDataStore datastore, Query query) {
+        this(new ContentEntry(datastore, datastore.getTypeName()), query);
     }
-  }
 
-  @Override
-  protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
-    return super.handleVisitor(query, visitor);
-  }
+    public GeoJSONFeatureSource(ContentEntry entry) {
+        this(entry, Query.ALL);
+    }
 
-  /** @return the quick */
-  public boolean isQuick() {
-    return quick;
-  }
+    @Override
+    public GeoJSONDataStore getDataStore() {
+        return (GeoJSONDataStore) super.getDataStore();
+    }
 
-  /**
-   * @param quick
-   *          the quick to set
-   */
-  public void setQuick(boolean quick) {
-    this.quick = quick;
-  }
+    @Override
+    protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
+        ReferencedEnvelope env = new ReferencedEnvelope(getDataStore().getCrs());
+
+        if (query.getFilter() == Filter.INCLUDE) {
+
+            try (GeoJSONReader reader = getDataStore().read()) {
+                try (FeatureIterator<SimpleFeature> itr = reader.getIterator()) {
+                    while (itr.hasNext()) {
+                        SimpleFeature f = itr.next();
+                        env.expandToInclude(
+                                ((Geometry) f.getDefaultGeometry()).getEnvelopeInternal());
+                    }
+                }
+            }
+        }
+        return env;
+    }
+
+    @Override
+    protected int getCountInternal(Query query) throws IOException {
+        if (query.getFilter() == Filter.INCLUDE) {
+
+            try (GeoJSONReader reader = getDataStore().read()) {
+                int count = 0;
+                try (FeatureIterator<SimpleFeature> itr = reader.getIterator()) {
+                    while (itr.hasNext()) {
+                        itr.next();
+                        count += 1;
+                    }
+                    return count;
+                }
+            }
+        }
+        return -1; // feature by feature scan required to count records
+    }
+
+    @Override
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
+            throws IOException {
+        return new GeoJSONFeatureReader(getState(), query);
+    }
+
+    @Override
+    protected SimpleFeatureType buildFeatureType() throws IOException {
+
+        // read headers
+
+        try (GeoJSONReader reader = getDataStore().read()) {
+            try (FeatureIterator<SimpleFeature> itr = reader.getIterator()) {
+                boolean empty = true;
+                while (itr.hasNext()) {
+                    empty = false;
+                    itr.next();
+                    schema = (SimpleFeatureType) reader.getSchema();
+                    if (quick) {
+                        break;
+                    }
+                }
+                /*
+                 * In the event we are dealing with an empty file the schema may have
+                 * been set in the datastore.
+                 */
+
+            }
+
+            return schema;
+        }
+    }
+
+    @Override
+    protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
+        return super.handleVisitor(query, visitor);
+    }
+
+    /** @return the quick */
+    public boolean isQuick() {
+        return quick;
+    }
+
+    /** @param quick the quick to set */
+    public void setQuick(boolean quick) {
+        this.quick = quick;
+    }
 }

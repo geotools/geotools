@@ -144,7 +144,7 @@ public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
             } else {
                 name = url.getPath().toLowerCase();
             }
-            if (file != null) {
+            if (name != null) {
                 for (String ext : EXTENSIONS) {
                     if (name.endsWith(ext)) {
                         return true;

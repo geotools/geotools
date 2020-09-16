@@ -19,6 +19,7 @@ package org.geotools.data.geojson;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -54,24 +55,23 @@ public class GeoJSONDataStoreFactoryTest {
     public void testExtensions() throws IOException {
         URL t1 = new URL("http://example.com/ian.json");
         Map<String, Serializable> params = new HashMap<>();
-        params.put("url", t1);
+        params.put(GeoJSONDataStoreFactory.URL_PARAM.key, t1);
 
         DataStore store1 = fac.createDataStore(params);
         assertNotNull("didn't create store", store1);
         URL t2 = new URL("http://example.com/ian.geojson");
 
-        params.put("url", t2);
-        store1 = fac.createDataStore(params);
-        assertNotNull("didn't create store", store1);
+        params.put(GeoJSONDataStoreFactory.URL_PARAM.key, t2);
+        if (!fac.canProcess(params)) fail("Didn't handle URL;");
 
         URL t3 = new URL("http://example.com/ian.randomjson");
         store1 = null;
-        params.put("url", t3);
+        params.put(GeoJSONDataStoreFactory.URL_PARAM.key, t3);
         store = fac.createDataStore(params);
         assertNull("created bad store", store1);
         URL t4 = new URL("http://example.com/ian.random");
         store1 = null;
-        params.put("url", t4);
+        params.put(GeoJSONDataStoreFactory.URL_PARAM.key, t4);
         store = fac.createDataStore(params);
         assertNull("created bad store", store1);
     }

@@ -85,8 +85,9 @@ public class OGCDistanceTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        String units = node.getAttributeValue("units").toString();
-        return DistanceUnits.of(Double.parseDouble((String) value), units);
+        Object units = node.getAttributeValue("units");
+        return DistanceUnits.of(
+                Double.parseDouble((String) value), units != null ? units.toString() : null);
     }
 
     public Element encode(Object object, Document document, Element value) throws Exception {

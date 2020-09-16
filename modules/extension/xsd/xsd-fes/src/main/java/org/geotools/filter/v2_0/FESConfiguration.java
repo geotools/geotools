@@ -56,6 +56,7 @@ import org.geotools.filter.v2_0.bindings.Id_CapabilitiesTypeBinding;
 import org.geotools.filter.v2_0.bindings.IntersectsBinding;
 import org.geotools.filter.v2_0.bindings.LiteralBinding;
 import org.geotools.filter.v2_0.bindings.MatchActionBinding;
+import org.geotools.filter.v2_0.bindings.MeasureTypeBinding;
 import org.geotools.filter.v2_0.bindings.MeetsBinding;
 import org.geotools.filter.v2_0.bindings.MetByBinding;
 import org.geotools.filter.v2_0.bindings.NotBinding;
@@ -164,6 +165,7 @@ public class FESConfiguration extends Configuration {
                 FES.ConformanceType, ConformanceTypeBinding.class);
         container.registerComponentImplementation(
                 FES.DistanceBufferType, DistanceBufferTypeBinding.class);
+        container.registerComponentImplementation(FES.MeasureType, MeasureTypeBinding.class);
         container.registerComponentImplementation(FES.FilterType, FilterTypeBinding.class);
         container.registerComponentImplementation(FES.FunctionType, FunctionTypeBinding.class);
         container.registerComponentImplementation(

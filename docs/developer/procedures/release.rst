@@ -162,7 +162,9 @@ This job will checkout the specified branch/revision and build the GeoTools
 release artifacts. When successfully complete all release artifacts will be 
 uploaded to the following location::
 
-   http://build.geoserver.org/geotools/release/<RELEASE> 
+   https://build.geoserver.org/view/release/job/geotools-release/<JOB-NO>
+
+There is also a link at the top of the completed job page.
 
 Test the Artifacts
 ------------------
@@ -173,15 +175,18 @@ quick smoke test that there are no issues. Engage other developers to help
 test on the developer list.
 
 Check the artifacts by:
+
 *  Unpacking the sources
 *  Checking the README.html links go to the correct stable or maintenance user guide
 
 The Jenkins job will perform a build of the source artifacts on an empty Maven
 repository to make sure any random user out there can do the same. If you want
 you can still manually test the artifacts by:
-*  Temporarily moving the ``$HOME/.m2/repository`` to a different location, so that Maven will be forced to build from an empty repo. If you don't want to fiddle with your main repo just use ``mvn -Dmaven.repo.local=/tmp/m2 install -Dall -T1C`` where it points to any empty directory.
+
+*  Temporarily moving the ``$HOME/.m2/repository`` to a different location, so that Maven will be forced to build from an empty repo. 
 *  Do a full build using ``mvn install -Dall -T1C``
-*  On a successfull build, delete ``$HOME/.m2/repository`` and restore the old maven repository backed up at the beginning
+*  On a successful build, delete ``$HOME/.m2/repository`` and restore the old maven repository backed up at the beginning
+* If you don't want to fiddle with your main repo just use ``mvn -Dmaven.repo.local=/tmp/m2 install -Dall -T1C`` where it points to any empty directory.
 
 Download the user guide:
 

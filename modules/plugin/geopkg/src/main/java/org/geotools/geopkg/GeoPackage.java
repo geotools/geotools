@@ -76,6 +76,7 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.Filter;
@@ -118,6 +119,14 @@ public class GeoPackage implements Closeable {
     public static final String SPATIAL_INDEX = "gpkg_spatial_index";
 
     public static final String SCHEMA = "gpkg_schema";
+
+    /**
+     * Adding this key into a {@link FeatureType#getUserData()} with a value of true will allow
+     * creating tables without registering them as feature entries in the GeoPackage. Used by
+     * extensions to create extra feature tables that should be visible only by clients aware of the
+     * specific extension intent and usage.
+     */
+    public static final String SKIP_REGISTRATION = "skip_registration";
 
     /**
      * Add this among a AttributeType user data, in order to force a particular {@link DataColumn}
@@ -210,7 +219,18 @@ public class GeoPackage implements Closeable {
         this.connPool = dataSource;
     }
 
-    GeoPackage(JDBCDataStore dataStore) {
+    /**
+     * Builds a GeoPackage from the given store (that has supposedly been created by the {@link
+     * GeoPkgDataStoreFactory)}. Used to get access to lower level methods and internals of the
+     * GeoPackage.
+     *
+     * @param dataStore
+     */
+    public GeoPackage(JDBCDataStore dataStore) {
+        if (!(dataStore.getSQLDialect() instanceof GeoPkgDialect)) {
+            throw new IllegalArgumentException(
+                    "Invalid data store, should be associated to a GeoPkgDialect");
+        }
         this.dataStore = dataStore;
         this.connPool = dataStore.getDataSource();
     }

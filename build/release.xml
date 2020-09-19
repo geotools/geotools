@@ -3,7 +3,7 @@
   <!--
   Examples:
 
-    ant -f release.xml -Drelease=24-SNAPSHOT
+    ant -f release.xml -Drelease=25-SNAPSHOT
   -->
   <tstamp/>
   <property name="release" value="25-SNAPSHOT"/>
@@ -24,7 +24,7 @@
       <include name="docs/common.py"/>
       <include name="docs/**/pom3.xml"/>
       <include name="docs/**/pom3.xml"/>
-      <replacefilter token="24-SNAPSHOT" value="${release}"/>
+      <replacefilter token="25-SNAPSHOT" value="${release}"/>
     </replace>
   </target>
 

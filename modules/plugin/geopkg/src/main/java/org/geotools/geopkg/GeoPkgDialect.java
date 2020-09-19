@@ -59,7 +59,14 @@ import org.geotools.util.Converters;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -82,6 +89,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     static final String HAS_SPATIAL_INDEX = "hasGeopkgSpatialIndex";
 
     protected GeoPkgGeomWriter.Configuration geomWriterConfig;
+    protected boolean contentsOnly = true;
 
     public GeoPkgDialect(JDBCDataStore dataStore, GeoPkgGeomWriter.Configuration writerConfig) {
         super(dataStore);
@@ -98,9 +106,24 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         GeoPackage.init(cx);
     }
 
+    /**
+     * Whether to return only tables listed as features in gpkg_contents, or give access to all
+     * other tables (careful, enabling this and then writing might cause the GeoPackage not to
+     * conform to spec any longer, use at your discretion)
+     *
+     * @param contentsOnly
+     */
+    public void setContentsOnly(boolean contentsOnly) {
+        this.contentsOnly = contentsOnly;
+    }
+
     @Override
     public boolean includeTable(String schemaName, String tableName, Connection cx)
             throws SQLException {
+        if (!contentsOnly) {
+            return true;
+        }
+
         Statement st = cx.createStatement();
 
         try {
@@ -309,6 +332,15 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         else if ("SMALLINT".equals(typeName)) return Short.class;
         else if ("MEDIUMINT".equals(typeName)) return Integer.class;
         else if ("INT".equals(typeName) || "INTEGER".equals(typeName)) return Long.class;
+        // support for overview tables
+        else if ("POINT".equalsIgnoreCase(typeName)) return Point.class;
+        else if ("MULTIPOINT".equalsIgnoreCase(typeName)) return MultiPoint.class;
+        else if ("LINESTRING".equalsIgnoreCase(typeName)) return LineString.class;
+        else if ("MULTILINESTRING".equalsIgnoreCase(typeName)) return MultiLineString.class;
+        else if ("POLYGON".equalsIgnoreCase(typeName)) return Polygon.class;
+        else if ("MULTIPOLYGON".equalsIgnoreCase(typeName)) return MultiPolygon.class;
+        else if ("GEOMETRY".equalsIgnoreCase(typeName)) return Geometry.class;
+        else if ("GEOMETRYCOLLECTION".equalsIgnoreCase(typeName)) return GeometryCollection.class;
 
         return null;
     }
@@ -351,6 +383,8 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     @Override
     public void postCreateTable(String schemaName, SimpleFeatureType featureType, Connection cx)
             throws SQLException, IOException {
+        Object skipRegistration = featureType.getUserData().get(GeoPackage.SKIP_REGISTRATION);
+        if (Boolean.TRUE.equals(skipRegistration)) return;
 
         FeatureEntry fe = (FeatureEntry) featureType.getUserData().get(FeatureEntry.class);
         if (fe == null) {

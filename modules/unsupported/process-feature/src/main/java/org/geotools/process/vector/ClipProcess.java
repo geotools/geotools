@@ -42,20 +42,9 @@ import org.geotools.util.factory.GeoTools;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.algorithm.LineIntersector;
 import org.locationtech.jts.algorithm.RobustLineIntersector;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.CoordinateSequenceFilter;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.GeometryComponentFilter;
-import org.locationtech.jts.geom.LineSegment;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.MultiLineString;
-import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.*;
 import org.locationtech.jts.geom.impl.CoordinateArraySequence;
+import org.locationtech.jts.geom.util.GeometryEditor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -292,6 +281,19 @@ public class ClipProcess implements VectorProcess {
 
             // manage Z preservation
             if (preserveZ && !geom.equalsExact(clipped)) {
+                // Check if the clipped geometry has 3 ordinates across entire area.
+                GeometryEditor editor = new GeometryEditor();
+                result =
+                        editor.edit(
+                                result,
+                                new GeometryEditor.CoordinateOperation() {
+                                    @Override
+                                    public Coordinate[] edit(
+                                            Coordinate[] coordinates, Geometry geometry) {
+                                        return CoordinateArrays.enforceConsistency(
+                                                coordinates, 3, 0);
+                                    }
+                                });
                 // for polygons we need to go idw, for points and multipoints idw will do and will
                 // not
                 // add much overhead (it has optimizations for points that were already in the
@@ -576,7 +578,7 @@ public class ClipProcess implements VectorProcess {
                                 // it may be that the two lines have different orientations, we'll
                                 // flip ls and
                                 // start back
-                                ls = (LineString) ((Geometry) ls).reverse();
+                                ls = ls.reverse();
                                 cs = ls.getCoordinateSequence();
                                 flipped = true;
                                 c1 = cs.getCoordinate(0);

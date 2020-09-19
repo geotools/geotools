@@ -1507,7 +1507,7 @@ public class PostGISDialect extends BasicSQLDialect {
      *
      * @return Force2D function name
      */
-    protected String getForce2DFunction() {
+    String getForce2DFunction() {
         return version == null || version.compareTo(V_2_1_0) >= 0 ? "ST_Force2D" : "ST_Force_2D";
     }
 

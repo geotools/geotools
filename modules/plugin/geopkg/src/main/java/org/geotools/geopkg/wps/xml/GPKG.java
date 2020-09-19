@@ -85,6 +85,8 @@ public final class GPKG extends XSD {
     /** @generated */
     public static final QName geopackage = new QName("http://www.opengis.net/gpkg", "geopackage");
 
+    public static final QName overview = new QName("http://www.opengis.net/gpkg", "overview");
+
     /* Attributes */
 
 }

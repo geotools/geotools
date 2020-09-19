@@ -30,7 +30,6 @@ import org.geotools.util.NullEntityResolver;
 import org.geotools.util.PreventLocalEntityResolver;
 import org.geotools.util.Version;
 import org.junit.*;
-import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.Filter;
 import org.xml.sax.EntityResolver;
 
@@ -161,10 +160,6 @@ public final class GeoToolsTest {
         version = GeoTools.getVersion(LogFactory.class);
         assertNotNull(version);
         assertEquals("1.1.1", version.toString());
-
-        version = GeoTools.getVersion(Geometry.class);
-        assertNotNull(version);
-        assertTrue(version.toString().startsWith("1.17"));
     }
     /** Tests the use of system properties. */
     @Test

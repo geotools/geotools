@@ -162,12 +162,37 @@ public class AzimulthalEquidistantProjectionHandlerFactory implements Projection
                 @SuppressWarnings("unchecked")
                 List<Polygon> polygons = PolygonExtracter.getPolygons(difference);
                 for (Polygon p : polygons) {
-                    Geometry transformed =
-                            JTS.transform(
-                                    p,
-                                    CRS.findMathTransform(
-                                            renderingEnvelope.getCoordinateReferenceSystem(),
-                                            sourceCRS));
+                    Geometry transformed = null;
+                    try {
+                        transformed =
+                                JTS.transform(
+                                        p,
+                                        CRS.findMathTransform(
+                                                renderingEnvelope.getCoordinateReferenceSystem(),
+                                                sourceCRS));
+                    } catch (TransformException e) {
+                        // uh oh, got into a special case of the target projection... go step by
+                        // step
+                        Geometry polygonWGS84 =
+                                JTS.transform(
+                                        p,
+                                        CRS.findMathTransform(
+                                                renderingEnvelope.getCoordinateReferenceSystem(),
+                                                DefaultGeographicCRS.WGS84));
+                        ProjectionHandler handler =
+                                ProjectionHandlerFinder.getHandler(
+                                        new ReferencedEnvelope(sourceCRS),
+                                        DefaultGeographicCRS.WGS84,
+                                        false);
+                        if (handler == null) throw e;
+                        Geometry preProcessed = handler.preProcess(polygonWGS84);
+                        transformed =
+                                JTS.transform(
+                                        preProcessed,
+                                        CRS.findMathTransform(
+                                                renderingEnvelope.getCoordinateReferenceSystem(),
+                                                sourceCRS));
+                    }
                     // the back-transform can literally make the inner rings bigger than the
                     // outer ones, be careful computing the envelope
                     Envelope envelope = getFullEnvelope(transformed);
@@ -292,6 +317,16 @@ public class AzimulthalEquidistantProjectionHandlerFactory implements Projection
         }
 
         public Polygon getAzeqProjectedExtents(double radius) {
+            // might have false easting and northing
+            MapProjection mapProjection =
+                    CRS.getMapProjection(renderingEnvelope.getCoordinateReferenceSystem());
+            ParameterValue<?> falseEasting =
+                    getParameter(mapProjection, AbstractProvider.FALSE_EASTING);
+            ParameterValue<?> falseNorthing =
+                    getParameter(mapProjection, AbstractProvider.FALSE_NORTHING);
+            double centerX = falseEasting != null ? falseEasting.doubleValue() : 0;
+            double centerY = falseNorthing != null ? falseNorthing.doubleValue() : 0;
+
             final int POINTS = 180;
             Coordinate[] coordinates = new Coordinate[POINTS + 1];
             // need to keep a bit of distance, the external radius collapses to a single point
@@ -299,8 +334,8 @@ public class AzimulthalEquidistantProjectionHandlerFactory implements Projection
             double distance = radius - 100;
             for (int i = 0; i < POINTS; i++) {
                 Coordinate c = new Coordinate();
-                c.x = Math.cos(Math.toRadians(360.0 / POINTS * i)) * distance;
-                c.y = Math.sin(Math.toRadians(360.0 / POINTS * i)) * distance;
+                c.x = centerX + Math.cos(Math.toRadians(360.0 / POINTS * i)) * distance;
+                c.y = centerY + Math.sin(Math.toRadians(360.0 / POINTS * i)) * distance;
                 coordinates[i] = new Coordinate(c.x, c.y);
             }
             coordinates[POINTS] = coordinates[0];

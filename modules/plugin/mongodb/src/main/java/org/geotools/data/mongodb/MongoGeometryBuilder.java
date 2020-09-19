@@ -273,7 +273,7 @@ public class MongoGeometryBuilder {
         BasicDBList l = new BasicDBList();
 
         if (!Orientation.isCCW(p.getExteriorRing().getCoordinates())) {
-            l.add(toList(((Geometry) p.getExteriorRing()).reverse().getCoordinates()));
+            l.add(toList(p.getExteriorRing().reverse().getCoordinates()));
         } else {
             l.add(toList(p.getExteriorRing().getCoordinateSequence()));
         }

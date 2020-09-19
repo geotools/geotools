@@ -77,8 +77,6 @@ abstract class ImageMosaicWalker implements Runnable {
 
     protected final Hints excludeMosaicHints = new Hints(Utils.EXCLUDE_MOSAIC, true);
 
-    private AbstractGridFormat cachedFormat;
-
     /** index of the file being processed */
     private int fileIndex = 0;
 
@@ -152,6 +150,7 @@ abstract class ImageMosaicWalker implements Runnable {
             // Getting a coverage reader for this coverage.
             //
             final AbstractGridFormat format;
+            final AbstractGridFormat cachedFormat = configHandler.getCachedFormat();
             if (cachedFormat == null) {
                 // When looking for formats which may parse this file, make sure to exclude the
                 // ImageMosaicFormat as return
@@ -241,7 +240,7 @@ abstract class ImageMosaicWalker implements Runnable {
                         }
                     }
                     // store the format only if we can accept this file, not before
-                    cachedFormat = format;
+                    configHandler.setCachedFormat(format);
                 } catch (Exception e) {
                     LOGGER.log(
                             Level.FINE,

@@ -121,7 +121,7 @@ Setting up a database for online testing
 
 You can use `docker <https://www.docker.com/>`_ to run a database flavour of your choice,
 some examples are given below. Also the Travis-CI build script shows how to install / run
-SQL Server and Oracle XE (see `.travis.yml <https://github.com/geotools/geotools/blob/master/.travis.yml>`_).
+SQL Server, MySQL and Oracle XE (see `.travis.yml <https://github.com/geotools/geotools/blob/master/.travis.yml>`_).
 Using docker will prevent the hassle of local installation on your computer possibly messing up your configuration.
 
 Oracle XE
@@ -262,3 +262,37 @@ To run the online test for the ``gt-jdbc-postgis`` module use the following Mave
     mvn install -Dall -pl :gt-jdbc-postgis -Ponline -T1.1C -Dfmt.skip=true -am
 
 When done use ``docker stop geotools`` to stop and cleanup the container.
+
+MySQL
+____________________
+
+Official MySQL images are provided `on dockerhub <https://hub.docker.com/_/mysql/>`_.
+
+Use the following to create and start a MySQL 5 (5.7.31 at the time of writing) container listening on port 3306:::
+
+    docker pull mysql:5
+    docker run --rm -p 3306:3306 -e MYSQL_ROOT_PASSWORD=geotools --name geotools -h geotools -d mysql:5
+
+Note that the ``--rm`` option will delete the container after stopping it, the image is preserved so you won't need
+to pull it next time, but you may want to preserve the container so you don't have to build a new one.
+
+Then create a ``geotools`` database using:::
+
+    docker exec -i geotools mysql -uroot -pgeotools < .travis/mysql_setup.sql
+
+The appropriate fixture for using the above database schema would be::
+
+    driver=com.mysql.cj.jdbc.Driver
+    url=jdbc:mysql://localhost/geotools
+    host=localhost
+    port=3306
+    user=root
+    password=geotools
+
+In file ``~/.geotools/mysql.properties``
+
+To run the online tests for the ``gt-jdbc-mysql`` module use the following Maven command:::
+
+    mvn install -Dall -pl :gt-jdbc-mysql -Ponline -T1.1C -Dfmt.skip=true -am
+
+When done use ``docker stop geotools`` to stop and cleanup/remove the container.

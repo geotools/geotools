@@ -47,6 +47,7 @@ public class ParserNamespaceSupportTest extends TestCase {
 
         nsSupport.add(delegate);
 
+        @SuppressWarnings("unchecked")
         List<String> prefixes = list(nsSupport.getPrefixes());
         assertTrue(prefixes.contains("foo"));
         assertTrue(prefixes.contains("bar"));

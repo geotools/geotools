@@ -31,6 +31,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDResourceImpl;
+import org.eclipse.xsd.util.XSDSchemaLocationResolver;
 import org.eclipse.xsd.util.XSDSchemaLocator;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.SchemaImpl;
@@ -114,7 +115,7 @@ public abstract class XSD {
      * schema depends on.
      */
     public final List<Schema> getAllTypeMappingProfiles() {
-        LinkedList profiles = new LinkedList();
+        List<Schema> profiles = new LinkedList<>();
         for (XSD xsd : getAllDependencies()) {
             Schema profile = xsd.getTypeMappingProfile();
             if (!profile.isEmpty()) {
@@ -136,7 +137,7 @@ public abstract class XSD {
         if (dependencies == null) {
             synchronized (this) {
                 if (dependencies == null) {
-                    Set<XSD> newDeps = new LinkedHashSet();
+                    Set<XSD> newDeps = new LinkedHashSet<>();
 
                     // bootstrap, every xsd depends on XS
                     newDeps.add(XS.getInstance());
@@ -156,10 +157,10 @@ public abstract class XSD {
         return allDependencies();
     }
 
-    protected List allDependencies() {
-        LinkedList unpacked = new LinkedList();
+    protected List<XSD> allDependencies() {
+        LinkedList<XSD> unpacked = new LinkedList<>();
 
-        Stack stack = new Stack();
+        Stack<XSD> stack = new Stack<>();
         stack.addAll(getDependencies());
 
         while (!stack.isEmpty()) {
@@ -199,8 +200,8 @@ public abstract class XSD {
     protected XSDSchema buildSchema() throws IOException {
         // grab all the dependencies and create schema locators from the build
         // schemas
-        List locators = new ArrayList();
-        List resolvers = new ArrayList();
+        List<XSDSchemaLocator> locators = new ArrayList<>();
+        List<XSDSchemaLocationResolver> resolvers = new ArrayList<>();
 
         for (Iterator d = allDependencies().iterator(); d.hasNext(); ) {
             XSD dependency = (XSD) d.next();

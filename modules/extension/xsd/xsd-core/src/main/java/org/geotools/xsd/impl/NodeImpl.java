@@ -27,14 +27,14 @@ import org.geotools.xsd.Text;
 public class NodeImpl implements Node {
     private InstanceComponent component;
     private Object value;
-    List children;
-    List attributes;
+    List<Node> children;
+    List<Node> attributes;
     Node parent;
 
     public NodeImpl(InstanceComponent component) {
         this.component = component;
-        children = new ArrayList();
-        attributes = new ArrayList();
+        children = new ArrayList<>();
+        attributes = new ArrayList<>();
     }
 
     public NodeImpl(InstanceComponent component, Object value) {
@@ -70,7 +70,7 @@ public class NodeImpl implements Node {
         return false;
     }
 
-    public boolean hasChild(Class clazz) {
+    public boolean hasChild(Class<?> clazz) {
         if (clazz == null) {
             return false;
         }
@@ -98,7 +98,7 @@ public class NodeImpl implements Node {
      *
      * @see Node#getChildren()
      */
-    public List getChildren() {
+    public List<Node> getChildren() {
         return Collections.unmodifiableList(children);
     }
 
@@ -106,16 +106,14 @@ public class NodeImpl implements Node {
         return children.size();
     }
 
-    public List getChildren(String name) {
-        ArrayList matches = new ArrayList();
+    public List<Node> getChildren(String name) {
+        List<Node> matches = new ArrayList<>();
 
         if (name == null) {
             return matches;
         }
 
-        for (Iterator itr = children.iterator(); itr.hasNext(); ) {
-            Node child = (Node) itr.next();
-
+        for (Node child : children) {
             if (name.equals(child.getComponent().getName())) {
                 matches.add(child);
             }
@@ -124,16 +122,14 @@ public class NodeImpl implements Node {
         return matches;
     }
 
-    public List getChildren(Class clazz) {
-        ArrayList matches = new ArrayList();
+    public List<Node> getChildren(Class<?> clazz) {
+        List<Node> matches = new ArrayList<>();
 
         if (clazz == null) {
             return matches;
         }
 
-        for (Iterator itr = children.iterator(); itr.hasNext(); ) {
-            Node child = (Node) itr.next();
-
+        for (Node child : children) {
             if (child.getValue() == null) {
                 continue;
             }
@@ -162,7 +158,7 @@ public class NodeImpl implements Node {
         return null;
     }
 
-    public Node getChild(Class clazz) {
+    public Node getChild(Class<?> clazz) {
         if (clazz == null) {
             return null;
         }
@@ -182,7 +178,7 @@ public class NodeImpl implements Node {
         return null;
     }
 
-    public boolean hasAttribute(Class clazz) {
+    public boolean hasAttribute(Class<?> clazz) {
         if (clazz == null) {
             return false;
         }
@@ -218,20 +214,18 @@ public class NodeImpl implements Node {
         return false;
     }
 
-    public List getAttributes() {
-        return new ArrayList(attributes);
+    public List<Node> getAttributes() {
+        return new ArrayList<>(attributes);
     }
 
-    public List getAttributes(Class clazz) {
-        ArrayList matches = new ArrayList();
+    public List<Node> getAttributes(Class<?> clazz) {
+        List<Node> matches = new ArrayList<>();
 
         if (clazz == null) {
             return matches;
         }
 
-        for (Iterator a = attributes.iterator(); a.hasNext(); ) {
-            Node att = (Node) a.next();
-
+        for (Node att : attributes) {
             if (att.getValue() == null) {
                 continue;
             }
@@ -264,7 +258,7 @@ public class NodeImpl implements Node {
         return null;
     }
 
-    public Node getAttribute(Class clazz) {
+    public Node getAttribute(Class<?> clazz) {
         if (clazz == null) {
             return null;
         }
@@ -294,7 +288,7 @@ public class NodeImpl implements Node {
         return null;
     }
 
-    public Object getAttributeValue(Class clazz) {
+    public Object getAttributeValue(Class<?> clazz) {
         if (clazz == null) {
             return null;
         }
@@ -314,8 +308,8 @@ public class NodeImpl implements Node {
         return null;
     }
 
-    public List getAttributeValues(Class clazz) {
-        ArrayList matches = new ArrayList();
+    public List<Object> getAttributeValues(Class<?> clazz) {
+        List<Object> matches = new ArrayList<>();
 
         if (clazz == null) {
             return matches;
@@ -364,8 +358,8 @@ public class NodeImpl implements Node {
         return null;
     }
 
-    public List getChildValues(String name) {
-        ArrayList matches = new ArrayList();
+    public List<Object> getChildValues(String name) {
+        List<Object> matches = new ArrayList<>();
 
         if (name == null) {
             return matches;
@@ -382,8 +376,8 @@ public class NodeImpl implements Node {
         return matches;
     }
 
-    public List getChildValues(Class clazz) {
-        ArrayList matches = new ArrayList();
+    public List getChildValues(Class<?> clazz) {
+        List<Object> matches = new ArrayList<>();
 
         if (clazz == null) {
             return matches;

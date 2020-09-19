@@ -144,6 +144,7 @@ public class EMFUtils {
      * @param feature The multi-valued feature.
      * @param value The value to add.
      */
+    @SuppressWarnings("unchecked") // playing with generic collections, contents unknown
     public static void add(EObject eobject, EStructuralFeature feature, Object value) {
         if (isCollection(eobject, feature)) {
             Collection collection = (Collection) eobject.eGet(feature);
@@ -180,6 +181,7 @@ public class EMFUtils {
      *     value is an array.
      * @see #add(EObject, String, Object)
      */
+    @SuppressWarnings("unchecked") // playing with generic collections/arrays
     private static Collection collection(Object value) {
         if (null == value) {
             return Collections.emptyList();
@@ -280,9 +282,9 @@ public class EMFUtils {
      * @param propertyType The type of the properties.
      * @return The list of structure features, or an empty list if none are found.
      */
-    public static List<EStructuralFeature> features(EObject eobject, Class propertyType) {
-        List match = new ArrayList();
-        List features = eobject.eClass().getEAllStructuralFeatures();
+    public static List<EStructuralFeature> features(EObject eobject, Class<?> propertyType) {
+        List<EStructuralFeature> match = new ArrayList<>();
+        List<EStructuralFeature> features = eobject.eClass().getEAllStructuralFeatures();
 
         for (Iterator itr = features.iterator(); itr.hasNext(); ) {
             EStructuralFeature feature = (EStructuralFeature) itr.next();
@@ -336,8 +338,8 @@ public class EMFUtils {
      * @param property The property to obtain.
      * @return The list of values.
      */
-    public static List get(List objects, String property) {
-        List values = new ArrayList();
+    public static List<Object> get(List objects, String property) {
+        List<Object> values = new ArrayList<>();
 
         for (int i = 0; i < objects.size(); i++) {
             EObject eobject = (EObject) objects.get(i);

@@ -76,7 +76,7 @@ public class ParserHandler extends DefaultHandler2 {
     }
 
     /** execution stack * */
-    protected Stack handlers;
+    protected Stack<Handler> handlers;
 
     /** namespace support * */
     ParserNamespaceSupport namespaces;
@@ -302,7 +302,7 @@ public class ParserHandler extends DefaultHandler2 {
         docHandler.setContext(context);
 
         // create the stack and add handler for document element
-        handlers = new Stack();
+        handlers = new Stack<>();
         handlers.push(docHandler);
 
         // get a logger from the context
@@ -867,9 +867,9 @@ public class ParserHandler extends DefaultHandler2 {
     }
 
     protected XSDSchemaLocator[] findSchemaLocators() {
-        List l = Schemas.getComponentInstancesOfType(context, XSDSchemaLocator.class);
+        List<XSDSchemaLocator> l =
+                Schemas.getComponentInstancesOfType(context, XSDSchemaLocator.class);
 
-        // List l = context.getComponentInstancesOfType(XSDSchemaLocator.class);
         if ((l == null) || l.isEmpty()) {
             return new XSDSchemaLocator[] {};
         }
@@ -878,8 +878,8 @@ public class ParserHandler extends DefaultHandler2 {
     }
 
     protected XSDSchemaLocationResolver[] findSchemaLocationResolvers() {
-        // List l = context.getComponentInstancesOfType(XSDSchemaLocationResolver.class);
-        List l = Schemas.getComponentInstancesOfType(context, XSDSchemaLocationResolver.class);
+        List<XSDSchemaLocationResolver> l =
+                Schemas.getComponentInstancesOfType(context, XSDSchemaLocationResolver.class);
 
         if ((l == null) || l.isEmpty()) {
             return new XSDSchemaLocationResolver[] {};

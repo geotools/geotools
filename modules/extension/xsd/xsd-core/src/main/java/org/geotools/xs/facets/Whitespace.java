@@ -108,7 +108,7 @@ public abstract class Whitespace implements Comparable<Whitespace> {
     //
     // Fake the ENUM thing for the Java 14 crowd
     //
-    private static List values = new ArrayList();
+    private static List<Whitespace> values = new ArrayList<>();
 
     static {
         values.add(PRESERVE);

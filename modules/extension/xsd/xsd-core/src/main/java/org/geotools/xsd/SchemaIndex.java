@@ -22,6 +22,7 @@ import org.eclipse.xsd.XSDAttributeDeclaration;
 import org.eclipse.xsd.XSDAttributeGroupDefinition;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDElementDeclaration;
+import org.eclipse.xsd.XSDParticle;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
 import org.eclipse.xsd.XSDTypeDefinition;
@@ -93,7 +94,7 @@ public interface SchemaIndex {
      * @param parent The parent element.
      * @return A list of {@link org.eclipse.xsd.XSDParticle}.
      */
-    List getChildElementParticles(XSDElementDeclaration parent);
+    List<XSDParticle> getChildElementParticles(XSDElementDeclaration parent);
 
     /**
      * Returns the attributes of a specified elements.

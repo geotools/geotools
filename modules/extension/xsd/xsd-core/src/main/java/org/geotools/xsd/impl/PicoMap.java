@@ -41,9 +41,12 @@ import org.picocontainer.defaults.InstanceComponentAdapter;
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  */
+// MutablePicoContainer has no generics, and is dead as a library, no point trying to make this
+// one better
+@SuppressWarnings("unchecked")
 public class PicoMap implements Map, MutablePicoContainer {
 
-    Map delegate;
+    Map<Object, Object> delegate;
 
     public PicoMap(Map delegate) {
         this.delegate = delegate;

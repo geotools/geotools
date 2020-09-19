@@ -80,7 +80,7 @@ public class ElementHandlerImpl extends HandlerImpl implements ElementHandler {
         // childHandlers.clear();
 
         // create the attributes
-        List atts = new ArrayList();
+        List<AttributeInstance> atts = new ArrayList<>();
 
         for (int i = 0; i < attributes.getLength(); i++) {
             String rawAttQName = attributes.getQName(i);

@@ -196,10 +196,10 @@ public abstract class Configuration {
     private final XSD xsd;
 
     /** List of configurations depended on. */
-    private final List dependencies;
+    private final List<Configuration> dependencies;
 
     /** List of parser properties. */
-    private final Set properties;
+    private final Set<QName> properties;
 
     /** Internal context */
     private final MutablePicoContainer context;
@@ -212,14 +212,14 @@ public abstract class Configuration {
      */
     public Configuration(XSD xsd) {
         this.xsd = xsd;
-        dependencies = Collections.synchronizedList(new ArrayList());
+        dependencies = Collections.synchronizedList(new ArrayList<>());
 
         // bootstrap check
         if (!(this instanceof XSConfiguration)) {
             dependencies.add(new XSConfiguration());
         }
 
-        properties = Collections.synchronizedSet(new HashSet());
+        properties = Collections.synchronizedSet(new HashSet<>());
         context = new DefaultPicoContainer();
     }
 
@@ -271,10 +271,10 @@ public abstract class Configuration {
      *
      * @return All dependencies in the configuration dependency tree.
      */
-    public final List allDependencies() {
-        LinkedList unpacked = new LinkedList();
+    public final List<Configuration> allDependencies() {
+        LinkedList<Configuration> unpacked = new LinkedList<>();
 
-        Stack stack = new Stack();
+        Stack<Configuration> stack = new Stack<>();
         stack.push(this);
 
         while (!stack.isEmpty()) {
@@ -311,7 +311,7 @@ public abstract class Configuration {
             q.add(n);
         }
 
-        unpacked = new LinkedList();
+        unpacked = new LinkedList<>();
         while (!q.isEmpty()) {
             DepNode n = q.remove();
             if (n.outgoing().size() != 0) {
@@ -341,8 +341,15 @@ public abstract class Configuration {
      */
     public <C extends Configuration> C getDependency(Class<C> clazz) {
         List dependencies = allDependencies();
-        return (C)
-                dependencies.stream().filter(dep -> clazz.isInstance(dep)).findFirst().orElse(null);
+        @SuppressWarnings("unchecked")
+        C cast =
+                (C)
+                        dependencies
+                                .stream()
+                                .filter(dep -> clazz.isInstance(dep))
+                                .findFirst()
+                                .orElse(null);
+        return cast;
     }
 
     /**
@@ -382,7 +389,7 @@ public abstract class Configuration {
      * @return A map of Qname,[Class|Object]
      */
     public final Map setupBindings() {
-        HashMap bindings = new HashMap();
+        Map<QName, Binding> bindings = new HashMap<>();
 
         // wrap the binding map up in a pico container for backwards compatibility
         // with old api which registered bindings in a pico container
@@ -460,7 +467,7 @@ public abstract class Configuration {
      * an instance. In the case of a class, the binding will be instantiated by the parser at
      * runtime. In the instance case the binding will be used as is.
      */
-    protected void registerBindings(Map<QName, Object> bindings) {}
+    protected void registerBindings(Map<QName, Binding> bindings) {}
 
     /**
      * Template method allowing subclass to override any bindings.
@@ -586,7 +593,7 @@ public abstract class Configuration {
     }
 
     static class DepGraph {
-        Map<Configuration, DepNode> nodes = new HashMap();
+        Map<Configuration, DepNode> nodes = new HashMap<>();
 
         public void addEdge(Configuration from, Configuration to) {
             DepNode src = addNode(from);
@@ -632,7 +639,7 @@ public abstract class Configuration {
 
     static class DepNode {
         Configuration config;
-        List<DepEdge> edges = new ArrayList();
+        List<DepEdge> edges = new ArrayList<>();
 
         DepNode(Configuration config) {
             this.config = config;
@@ -649,7 +656,7 @@ public abstract class Configuration {
         }
 
         public List<DepNode> incoming() {
-            List<DepNode> incoming = new ArrayList();
+            List<DepNode> incoming = new ArrayList<>();
             for (DepEdge edge : edges) {
                 if (edge.dst == this) {
                     incoming.add(edge.src);
@@ -659,7 +666,7 @@ public abstract class Configuration {
         }
 
         public List<DepNode> outgoing() {
-            List<DepNode> outgoing = new ArrayList();
+            List<DepNode> outgoing = new ArrayList<>();
             for (DepEdge edge : edges) {
                 if (edge.src == this) {
                     outgoing.add(edge.dst);

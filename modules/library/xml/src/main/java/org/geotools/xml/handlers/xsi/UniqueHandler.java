@@ -40,7 +40,7 @@ public class UniqueHandler extends XSIElementHandler {
     private String id;
     private String xpath;
     private SelectorHandler selector;
-    private List fields;
+    private List<FieldHandler> fields;
 
     /** @see java.lang.Object#hashCode() */
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
@@ -60,7 +60,7 @@ public class UniqueHandler extends XSIElementHandler {
             // field
             if (FieldHandler.LOCALNAME.equalsIgnoreCase(localName)) {
                 if (fields == null) {
-                    fields = new LinkedList();
+                    fields = new LinkedList<>();
                 }
 
                 FieldHandler fh = new FieldHandler();

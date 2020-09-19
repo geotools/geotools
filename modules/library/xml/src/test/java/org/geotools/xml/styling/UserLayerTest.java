@@ -169,7 +169,7 @@ public class UserLayerTest extends TestCase {
         sld1.addStyledLayer(layer);
 
         // marshal the SLD to XML ---------------------------------------------
-        final Map nsMap = new HashMap();
+        final Map<URI, String> nsMap = new HashMap<>();
         nsMap.put(MY_URI, MY_NAMESPACE);
         final SLDTransformer sldTransformer = new SLDTransformer(nsMap);
         sldTransformer.setIndentation(2);

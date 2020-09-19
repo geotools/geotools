@@ -62,9 +62,9 @@ public class GMLFilterFeature extends XMLFilterImpl implements GMLHandlerJTS {
     // private Feature currentFeature; // = new FeatureFlat();
 
     /** Stores current feature attributes. */
-    private Vector attributes = new Vector();
+    private Vector<Object> attributes = new Vector<>();
 
-    private Vector attributeNames = new Vector();
+    private Vector<String> attributeNames = new Vector<>();
     private String fid = null;
 
     /** Stores current feature attributes. */
@@ -159,8 +159,8 @@ public class GMLFilterFeature extends XMLFilterImpl implements GMLHandlerJTS {
         // if it ends with Member we'll assume it's a feature for the time being
         // nasty hack to fix members of multi lines and polygons
         if (isFeatureMember(localName)) {
-            attributes = new Vector();
-            attributeNames = new Vector();
+            attributes = new Vector<>();
+            attributeNames = new Vector<>();
 
             // currentFeature = new FeatureFlat();
             insideFeature = true;

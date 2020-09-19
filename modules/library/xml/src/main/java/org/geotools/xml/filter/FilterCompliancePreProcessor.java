@@ -426,7 +426,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
 
             case FilterType.LOGIC_OR:
                 {
-                    Set fids = orFids(startOfFilterStack);
+                    Set<String> fids = orFids(startOfFilterStack);
                     resultingFilter = buildFilter(filterType, startOfFilterStack);
                     resultingFilter.fids.addAll(fids);
                     break;
@@ -445,8 +445,8 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
         return resultingFilter;
     }
 
-    private Set orFids(int startOfFilterStack) {
-        Set set = new HashSet();
+    private Set<String> orFids(int startOfFilterStack) {
+        Set<String> set = new HashSet<>();
 
         for (int i = startOfFilterStack; i < current.size(); i++) {
             Data data = (Data) current.get(i);
@@ -653,7 +653,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
     private Data createHighLevelLogicFilter(short filterType, int startOfFilterStack)
             throws IllegalFilterException {
         if (hasFidFilter(startOfFilterStack)) {
-            Set fids;
+            Set<String> fids;
 
             switch (filterType) {
                 case FilterType.LOGIC_AND:

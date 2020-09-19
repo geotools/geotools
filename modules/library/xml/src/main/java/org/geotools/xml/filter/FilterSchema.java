@@ -534,7 +534,7 @@ public class FilterSchema implements Schema {
          * @see org.geotools.xml.schema.ComplexType#cache(org.geotools.xml.schema.Element,
          *     java.util.Map)
          */
-        public boolean cache(Element element, Map hints) {
+        public boolean cache(Element element, Map<String, Object> hints) {
             return true;
         }
 
@@ -553,7 +553,7 @@ public class FilterSchema implements Schema {
          *
          * @return <code>false</code>, subclass override to allow encoding
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             return false;
         }
 
@@ -564,7 +564,8 @@ public class FilterSchema implements Schema {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException(element.toString() + " encode value " + value);
         }

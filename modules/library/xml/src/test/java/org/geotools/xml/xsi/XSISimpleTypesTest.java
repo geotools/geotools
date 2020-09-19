@@ -44,7 +44,7 @@ public class XSISimpleTypesTest extends TestCase {
 
         Element element = null;
         Attributes attrs = null;
-        Map<?, ?> hints = null;
+        Map<String, Object> hints = null;
         ElementValue[] value;
         Date expected;
         String sval;
@@ -120,7 +120,7 @@ public class XSISimpleTypesTest extends TestCase {
 
         Element element = null;
         Attributes attrs = null;
-        Map<?, ?> hints = null;
+        Map<String, Object> hints = null;
         ElementValue[] value;
         java.util.Date expected;
         String sval;
@@ -213,7 +213,7 @@ public class XSISimpleTypesTest extends TestCase {
 
         Element element = null;
         Attributes attrs = null;
-        Map<?, ?> hints = null;
+        Map<String, Object> hints = null;
         ElementValue[] value;
         java.util.Date expected;
         String sval;
@@ -288,7 +288,7 @@ public class XSISimpleTypesTest extends TestCase {
         SimpleType durationBinding = XSISimpleTypes.Duration.getInstance();
 
         Element element = null;
-        Map<?, ?> hints = null;
+        Map<String, Object> hints = null;
         Attributes attrs = null;
         ElementValue[] value;
         String sval = "";

@@ -74,7 +74,7 @@ public class SchemaFactory {
      * not really, but the JVM might be better ... use the class to make
      * instances
      */
-    private Map schemas = loadSchemas();
+    private Map<URI, Schema> schemas = loadSchemas();
 
     /** Schema Resolver: uses local versions of schemas or cached ones if available. */
     File cacheDir;
@@ -117,8 +117,8 @@ public class SchemaFactory {
 
     /*
      */
-    private Map loadSchemas() {
-        schemas = new HashMap();
+    private Map<URI, Schema> loadSchemas() {
+        schemas = new HashMap<>();
 
         ClassLoader[] cls = findLoaders();
         String serviceId = "META-INF/services/" + Schema.class.getName();
@@ -234,7 +234,7 @@ public class SchemaFactory {
         if (prefix == null) return null;
         SchemaFactory sf = getInstance();
         Iterator i = sf.schemas.values().iterator();
-        List l = new LinkedList();
+        List<Schema> l = new LinkedList<>();
         while (i.hasNext()) {
             Schema s = (Schema) i.next();
             if (prefix.equals(s.getPrefix())) l.add(s);
@@ -501,7 +501,7 @@ public class SchemaFactory {
             aForm = s1.isAttributeFormDefault() || s2.isAttributeFormDefault();
             eForm = s1.isElementFormDefault() || s2.isElementFormDefault();
 
-            HashMap m = new HashMap();
+            Map<Object, Object> m = new HashMap<>();
 
             AttributeGroup[] ag1 = s1.getAttributeGroups();
 
@@ -528,7 +528,7 @@ public class SchemaFactory {
 
             for (int i = 0; i < obj.length; i++) attributeGroups[i] = (AttributeGroup) (obj[i]);
 
-            m = new HashMap();
+            m = new HashMap<>();
 
             Attribute[] a1 = s1.getAttributes();
 
@@ -557,7 +557,7 @@ public class SchemaFactory {
             block = s1.getBlockDefault() | s2.getBlockDefault();
             finaL = s1.getFinalDefault() | s2.getFinalDefault();
 
-            m = new HashMap();
+            m = new HashMap<>();
 
             ComplexType[] c1 = s1.getComplexTypes();
 
@@ -583,7 +583,7 @@ public class SchemaFactory {
 
             for (int i = 0; i < obj.length; i++) complexTypes[i] = (ComplexType) (obj[i]);
 
-            m = new HashMap();
+            m = new HashMap<>();
 
             SimpleType[] ss1 = s1.getSimpleTypes();
 
@@ -609,7 +609,7 @@ public class SchemaFactory {
 
             for (int i = 0; i < obj.length; i++) simpleTypes[i] = (SimpleType) (obj[i]);
 
-            m = new HashMap();
+            m = new HashMap<>();
 
             Element[] e1 = s1.getElements();
 
@@ -635,7 +635,7 @@ public class SchemaFactory {
 
             for (int i = 0; i < obj.length; i++) elements[i] = (Element) (obj[i]);
 
-            m = new HashMap();
+            m = new HashMap<>();
 
             Group[] g1 = s1.getGroups();
 
@@ -661,7 +661,7 @@ public class SchemaFactory {
 
             for (int i = 0; i < obj.length; i++) groups[i] = (Group) (obj[i]);
 
-            m = new HashMap();
+            m = new HashMap<>();
 
             Schema[] i1 = s1.getImports();
 

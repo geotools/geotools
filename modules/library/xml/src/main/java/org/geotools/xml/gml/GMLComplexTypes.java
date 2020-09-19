@@ -77,6 +77,7 @@ import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.Attributes;
@@ -769,7 +770,8 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.xsi.Type#getValue(org.geotools.xml.xsi.Element,
          *     org.geotools.xml.xsi.ElementValue[], org.xml.sax.Attributes)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
             try {
                 Geometry g = (Geometry) value[0].getValue();
@@ -815,7 +817,7 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             if (element.getType() == null || !(value instanceof Geometry)) return false;
             // need to check inheritance ...
             if (element.getType() instanceof SimpleType) return false;
@@ -826,7 +828,8 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if (!canEncode(element, value, hints)) throw new OperationNotSupportedException();
             Geometry g = (Geometry) value;
@@ -888,7 +891,8 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.xsi.Type#getValue(org.geotools.xml.xsi.Element,
          *     org.geotools.xml.xsi.ElementValue[], org.xml.sax.Attributes)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
             try {
                 Geometry g = (Geometry) value[0].getValue();
@@ -943,7 +947,7 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             return false;
         }
 
@@ -951,7 +955,8 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
             throw new OperationNotSupportedException();
         }
@@ -1041,7 +1046,8 @@ public class GMLComplexTypes {
         }
 
         /** @see schema.Type#getValue(java.util.List) */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
             if ((value == null) || (value.length == 0) || (value[0] == null)) {
                 return null; // do nothing ... this is allowed
@@ -1083,7 +1089,7 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             ComplexType t =
                     (element.getType() instanceof ComplexType)
                             ? (ComplexType) element.getType()
@@ -1099,7 +1105,8 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if (!canEncode(element, value, hints)) {
                 throw new OperationNotSupportedException("Cannot encode");
@@ -1204,7 +1211,8 @@ public class GMLComplexTypes {
         }
 
         /** @see schema.Type#getValue(java.util.List) */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
             if ((value == null) || (value.length == 0) || (value[0] == null)) {
                 return null; // do nothing ... this is allowed
@@ -1247,7 +1255,7 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             ComplexType t =
                     (element.getType() instanceof ComplexType)
                             ? (ComplexType) element.getType()
@@ -1263,7 +1271,8 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if (!canEncode(element, value, hints)) {
                 throw new OperationNotSupportedException("Cannot encode");
@@ -1368,7 +1377,8 @@ public class GMLComplexTypes {
         }
 
         /** @see schema.Type#getValue(java.util.List) */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
             if ((value == null) || (value.length == 0) || (value[0] == null)) {
                 return null; // do nothing ... this is allowed
@@ -1412,7 +1422,7 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             ComplexType t =
                     (element.getType() instanceof ComplexType)
                             ? (ComplexType) element.getType()
@@ -1428,7 +1438,8 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if (!canEncode(element, value, hints)) {
                 throw new OperationNotSupportedException("Cannot encode");
@@ -1533,7 +1544,8 @@ public class GMLComplexTypes {
         }
 
         /** @see schema.Type#getValue(java.util.List) */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
             if ((value == null) || (value.length == 0) || (value[0] == null)) {
                 return null; // do nothing ... this is allowed
@@ -1578,7 +1590,7 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             ComplexType t =
                     (element.getType() instanceof ComplexType)
                             ? (ComplexType) element.getType()
@@ -1594,7 +1606,8 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if (!canEncode(element, value, hints)) {
                 throw new OperationNotSupportedException("Cannot encode");
@@ -1699,7 +1712,8 @@ public class GMLComplexTypes {
         }
 
         /** @see schema.Type#getValue(java.util.List) */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
             if ((value == null) || (value.length == 0) || (value[0] == null)) {
                 return null; // do nothing ... this is allowed
@@ -1743,7 +1757,7 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             ComplexType t =
                     (element.getType() instanceof ComplexType)
                             ? (ComplexType) element.getType()
@@ -1759,7 +1773,8 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if (!canEncode(element, value, hints)) {
                 throw new OperationNotSupportedException("Cannot encode");
@@ -1836,7 +1851,8 @@ public class GMLComplexTypes {
         }
 
         /** @see schema.Type#getValue(java.util.List) */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws OperationNotSupportedException, SAXException {
             if (value.length > 1) {
                 throw new SAXException("Cannot have more than one coord per " + getName());
@@ -1897,7 +1913,7 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             ComplexType t =
                     (element.getType() instanceof ComplexType)
                             ? (ComplexType) element.getType()
@@ -1913,7 +1929,8 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if (!canEncode(element, value, hints)) {
                 throw new OperationNotSupportedException("Cannot encode");
@@ -1994,7 +2011,8 @@ public class GMLComplexTypes {
         }
 
         /** @see schema.Type#getValue(java.util.List) */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws OperationNotSupportedException, SAXException {
             Element e = value[0].getElement();
 
@@ -2073,7 +2091,7 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             ComplexType t =
                     (element.getType() instanceof ComplexType)
                             ? (ComplexType) element.getType()
@@ -2089,7 +2107,8 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if (!canEncode(element, value, hints)) {
                 throw new OperationNotSupportedException("Cannot encode");
@@ -2164,7 +2183,8 @@ public class GMLComplexTypes {
         }
 
         /** @see schema.Type#getValue(java.util.List) */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws OperationNotSupportedException, SAXException {
             Element e = value[0].getElement();
 
@@ -2234,7 +2254,7 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             ComplexType t =
                     (element.getType() instanceof ComplexType)
                             ? (ComplexType) element.getType()
@@ -2250,7 +2270,8 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if (!canEncode(element, value, hints)) {
                 throw new OperationNotSupportedException("Cannot encode");
@@ -2325,7 +2346,8 @@ public class GMLComplexTypes {
         }
 
         /** @see schema.Type#getValue(java.util.List) */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws OperationNotSupportedException, SAXException {
             Element e = value[0].getElement();
 
@@ -2401,7 +2423,7 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             // since bounds is a derived attibute in our feature model and not
             // an attribute which is modelled explicitly in feature types, there
             // might not be an element around for it, so we dont require that
@@ -2414,7 +2436,8 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if (!canEncode(element, value, hints)) {
                 throw new OperationNotSupportedException("Cannot encode " + value);
@@ -2554,7 +2577,8 @@ public class GMLComplexTypes {
         }
 
         /** @see schema.Type#getValue(java.util.List) */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws OperationNotSupportedException, SAXException {
             Element e = value[0].getElement();
 
@@ -2610,7 +2634,7 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             ComplexType t =
                     (element.getType() instanceof ComplexType)
                             ? (ComplexType) element.getType()
@@ -2630,7 +2654,8 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if (!canEncode(element, value, hints)) {
                 throw new OperationNotSupportedException("Cannot encode");
@@ -2709,7 +2734,8 @@ public class GMLComplexTypes {
         }
 
         /** @see schema.Type#getValue(java.util.List) */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
             Element e = value[0].getElement();
 
@@ -2754,7 +2780,7 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             ComplexType t =
                     (element.getType() instanceof ComplexType)
                             ? (ComplexType) element.getType()
@@ -2770,7 +2796,8 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if (!canEncode(element, value, hints)) {
                 throw new OperationNotSupportedException("Cannot encode");
@@ -2855,7 +2882,8 @@ public class GMLComplexTypes {
         }
 
         /** @see schema.Type#getValue(java.util.List) */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException, OperationNotSupportedException {
             Element e = value[0].getElement();
 
@@ -2905,7 +2933,7 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             ComplexType t =
                     (element.getType() instanceof ComplexType)
                             ? (ComplexType) element.getType()
@@ -2921,7 +2949,8 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if (!canEncode(element, value, hints)) {
                 throw new OperationNotSupportedException("Cannot encode");
@@ -3006,7 +3035,8 @@ public class GMLComplexTypes {
         }
 
         /** @see schema.Type#getValue(java.util.List) */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException, OperationNotSupportedException {
             Element e = value[0].getElement();
 
@@ -3056,7 +3086,7 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             ComplexType t =
                     (element.getType() instanceof ComplexType)
                             ? (ComplexType) element.getType()
@@ -3072,7 +3102,8 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if (!canEncode(element, value, hints)) {
                 throw new OperationNotSupportedException("Cannot encode");
@@ -3157,7 +3188,8 @@ public class GMLComplexTypes {
         }
 
         /** @see schema.Type#getValue(java.util.List) */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException, OperationNotSupportedException {
             Element e = value[0].getElement();
 
@@ -3207,7 +3239,7 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             ComplexType t =
                     (element.getType() instanceof ComplexType)
                             ? (ComplexType) element.getType()
@@ -3223,7 +3255,8 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if (!canEncode(element, value, hints)) {
                 throw new OperationNotSupportedException("Cannot encode");
@@ -3298,7 +3331,8 @@ public class GMLComplexTypes {
         }
 
         /** @see schema.Type#getValue(java.util.List) */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
             Element e = value[0].getElement();
 
@@ -3366,7 +3400,7 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             ComplexType t =
                     (element.getType() instanceof ComplexType)
                             ? (ComplexType) element.getType()
@@ -3382,7 +3416,8 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if (!canEncode(element, value, hints)) {
                 throw new OperationNotSupportedException("Cannot encode");
@@ -3456,7 +3491,8 @@ public class GMLComplexTypes {
         }
 
         /** @see schema.Type#getValue(java.util.List) */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
             if (value.length != 1) {
                 throw new SAXException(
@@ -3564,7 +3600,7 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             ComplexType t =
                     (element.getType() instanceof ComplexType)
                             ? (ComplexType) element.getType()
@@ -3580,7 +3616,8 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if (!canEncode(element, value, hints)) {
                 throw new OperationNotSupportedException("Cannot encode");
@@ -3644,7 +3681,7 @@ public class GMLComplexTypes {
         private static final GMLComplexType instance = new AbstractFeatureType();
 
         // used for mapping ftName + namespace to actual FTs
-        private static final HashMap featureTypeMappings = new HashMap();
+        private static final HashMap<String, FeatureType> featureTypeMappings = new HashMap<>();
 
         /*
          * part of the singleton pattern
@@ -3681,7 +3718,8 @@ public class GMLComplexTypes {
         }
 
         /** @see schema.Type#getValue(java.util.List) */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
 
             if ((hints == null) || (hints.get(XMLHandlerHints.STREAM_HINT) == null)) {
@@ -3714,7 +3752,7 @@ public class GMLComplexTypes {
                 Element element,
                 ElementValue[] value,
                 Attributes attrs,
-                Map hints,
+                Map<String, Object> hints,
                 SimpleFeatureType ft)
                 throws SAXException {
             if (ft == null)
@@ -3812,11 +3850,11 @@ public class GMLComplexTypes {
 
             if (!AttributeDescriptor.getLocalName().equals(typeName)) return false;
 
-            Class instanceClass = value[i].getValue().getClass();
+            Class<?> instanceClass = value[i].getValue().getClass();
 
             if (AttributeDescriptor instanceof ChoiceAttributeType) {
                 ChoiceAttributeType choiceAT = (ChoiceAttributeType) AttributeDescriptor;
-                Class[] choices = choiceAT.getChoices();
+                Class<?>[] choices = choiceAT.getChoices();
                 for (int j = 0; j < choices.length; j++) {
                     if (choices[j].isAssignableFrom(instanceClass)) return true;
                 }
@@ -3920,7 +3958,7 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             if ((value == null)
                     || (element == null)
                     || value instanceof FeatureCollection
@@ -3942,7 +3980,8 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if (canEncode(element, value, hints)) {
                 SimpleFeature f = (SimpleFeature) value;
@@ -3954,7 +3993,7 @@ public class GMLComplexTypes {
             }
         }
 
-        private void print(Element e, SimpleFeature f, PrintHandler ph, Map hints)
+        private void print(Element e, SimpleFeature f, PrintHandler ph, Map<String, Object> hints)
                 throws OperationNotSupportedException, IOException {
             AttributesImpl ai = new AttributesImpl();
 
@@ -3983,7 +4022,7 @@ public class GMLComplexTypes {
             ph.endElement(e.getNamespace(), e.getName());
         }
 
-        private void print(SimpleFeature f, PrintHandler ph, Map hints)
+        private void print(SimpleFeature f, PrintHandler ph, Map<String, Object> hints)
                 throws OperationNotSupportedException, IOException {
             AttributesImpl ai = new AttributesImpl();
 
@@ -4163,7 +4202,11 @@ public class GMLComplexTypes {
         }
 
         /** @see schema.Type#getValue(java.util.List) */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints) {
+        public Object getValue(
+                Element element,
+                ElementValue[] value,
+                Attributes attrs,
+                Map<String, Object> hints) {
             if ((hints == null) || (hints.get(XMLHandlerHints.STREAM_HINT) == null)) {
                 return getCollection(attrs, value);
             }
@@ -4179,7 +4222,7 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.ComplexType#cache(org.geotools.xml.schema.Element,
          *     java.util.Map)
          */
-        public boolean cache(Element element, Map hints) {
+        public boolean cache(Element element, Map<String, Object> hints) {
             if ((hints == null) || (hints.get(XMLHandlerHints.STREAM_HINT) == null)) {
                 return true;
             }
@@ -4249,7 +4292,7 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             ComplexType t =
                     (element.getType() instanceof ComplexType)
                             ? (ComplexType) element.getType()
@@ -4267,7 +4310,8 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if ((value == null) || (!(value instanceof FeatureCollection))) {
                 return;
@@ -4429,7 +4473,8 @@ public class GMLComplexTypes {
         }
 
         /** @see schema.Type#getValue(java.util.List) */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
             if ((value == null) || (value.length != 1)) {
                 throw new SAXException("must be one geometry");
@@ -4461,7 +4506,7 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             ComplexType t =
                     (element.getType() instanceof ComplexType)
                             ? (ComplexType) element.getType()
@@ -4477,7 +4522,8 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if (!(value instanceof Geometry)) {
                 return;
@@ -4587,7 +4633,7 @@ public class GMLComplexTypes {
         /** @see schema.Type#getValue(java.util.List) */
         @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
         public SimpleFeature getValue(
-                Element element, ElementValue[] value, Attributes attrs, Map hints)
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
             if ((value == null) || (value.length != 1)) {
                 throw new SAXException("must be one feature " + value.length);
@@ -4624,7 +4670,7 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             if (!(value instanceof SimpleFeature)) {
                 return false;
             }
@@ -4644,7 +4690,8 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if (!(value instanceof SimpleFeature)) {
                 return;
@@ -4737,7 +4784,8 @@ public class GMLComplexTypes {
         }
 
         /** @see schema.Type#getValue(java.util.List) */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
             if ((value == null) || (value.length != 1)) {
                 throw new SAXException("must be one geometry");
@@ -4771,7 +4819,7 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             if ((value == null) || (element == null) || !(value instanceof Geometry)) {
                 return false;
             }
@@ -4791,7 +4839,8 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if (!(value instanceof Geometry)) {
                 return;
@@ -4894,7 +4943,8 @@ public class GMLComplexTypes {
         }
 
         /** @see schema.Type#getValue(java.util.List) */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
             if ((value == null) || (value.length != 1)) {
                 throw new SAXException("must be one geometry");
@@ -4926,7 +4976,7 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             if ((value == null) || !(value instanceof Point)) {
                 return false;
             }
@@ -4946,7 +4996,8 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if ((value == null) || !(value instanceof Point)) {
                 throw new OperationNotSupportedException(
@@ -5038,7 +5089,8 @@ public class GMLComplexTypes {
         }
 
         /** @see schema.Type#getValue(java.util.List) */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
             if ((value == null) || (value.length != 1)) {
                 throw new SAXException("must be one geometry");
@@ -5070,7 +5122,7 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             if ((value == null) || !(value instanceof Polygon)) {
                 return false;
             }
@@ -5090,7 +5142,8 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if ((value == null) || !(value instanceof Polygon)) {
                 throw new OperationNotSupportedException(
@@ -5182,7 +5235,8 @@ public class GMLComplexTypes {
         }
 
         /** @see schema.Type#getValue(java.util.List) */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
             if ((value == null) || (value.length != 1)) {
                 throw new SAXException("must be one geometry");
@@ -5214,7 +5268,7 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             if ((value == null) || !(value instanceof LineString)) {
                 return false;
             }
@@ -5234,7 +5288,8 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if ((value == null) || !(value instanceof LineString)) {
                 throw new OperationNotSupportedException(
@@ -5326,7 +5381,8 @@ public class GMLComplexTypes {
         }
 
         /** @see schema.Type#getValue(java.util.List) */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
             if ((value == null) || (value.length != 1)) {
                 throw new SAXException("must be one geometry");
@@ -5367,7 +5423,7 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             if ((value == null) || !(value instanceof MultiPoint)) {
                 return false;
             }
@@ -5387,7 +5443,8 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if ((value == null) || !(value instanceof MultiPoint)) {
                 throw new OperationNotSupportedException(
@@ -5479,7 +5536,8 @@ public class GMLComplexTypes {
         }
 
         /** @see schema.Type#getValue(java.util.List) */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
             if ((value == null) || (value.length != 1)) {
                 throw new SAXException("must be one geometry");
@@ -5521,7 +5579,7 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             if ((value == null) || !(value instanceof MultiLineString)) {
                 return false;
             }
@@ -5541,7 +5599,8 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if ((value == null) || !(value instanceof MultiLineString)) {
                 throw new OperationNotSupportedException(
@@ -5633,7 +5692,8 @@ public class GMLComplexTypes {
         }
 
         /** @see schema.Type#getValue(java.util.List) */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
             if ((value == null) || (value.length != 1)) {
                 throw new SAXException("must be one geometry");
@@ -5676,7 +5736,7 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             if ((value == null) || !(value instanceof MultiPolygon)) {
                 return false;
             }
@@ -5696,7 +5756,8 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if ((value == null) || !(value instanceof MultiPolygon)) {
                 throw new OperationNotSupportedException(
@@ -5788,7 +5849,8 @@ public class GMLComplexTypes {
         }
 
         /** @see schema.Type#getValue(java.util.List) */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
             if ((value == null) || (value.length != 1)) {
                 throw new SAXException("must be one geometry");
@@ -5830,7 +5892,7 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             if ((value == null) || !(value instanceof GeometryCollection)) {
                 return false;
             }
@@ -5850,7 +5912,8 @@ public class GMLComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if ((value == null) || !(value instanceof GeometryCollection)) {
                 throw new OperationNotSupportedException(
@@ -6097,7 +6160,7 @@ public class GMLComplexTypes {
 
     private static AttributeDescriptor getAttribute(String name, Choice eg) {
 
-        List l = new LinkedList();
+        List<AttributeDescriptor> l = new LinkedList<>();
         ElementGrouping[] children = eg.getChildren();
         if (children != null)
             for (int i = 0; i < children.length; i++) {
@@ -6150,7 +6213,7 @@ public class GMLComplexTypes {
         if (AttributeDescriptors.size() == 1)
             return AttributeDescriptors.iterator().next().getClass();
 
-        Class common = null;
+        Class<?> common = null;
         AttributeDescriptor at = null;
         Iterator i = AttributeDescriptors.iterator();
         while (i.hasNext()) {
@@ -6160,7 +6223,7 @@ public class GMLComplexTypes {
                     common = at.getType().getBinding();
                 } else {
                     // merge two types
-                    Class t = at.getType().getBinding();
+                    Class<?> t = at.getType().getBinding();
                     if (t != null) {
                         if (!common.isAssignableFrom(t)) {
                             // either t is super class .. or they share one
@@ -6235,17 +6298,17 @@ public class GMLComplexTypes {
         if (Object.class == c1) return c2;
         if (Object.class == c2) return c1;
 
-        Class p1 = c1.getSuperclass();
+        Class<?> p1 = c1.getSuperclass();
         if (p1.isAssignableFrom(c2)) return p1;
-        Class p2 = c2.getSuperclass();
+        Class<?> p2 = c2.getSuperclass();
         if (p2.isAssignableFrom(c1)) return p2;
 
-        Class t = findCommon(p1, p2);
+        Class<?> t = findCommon(p1, p2);
         if (!(t == Object.class)) return t;
 
         // interfaces?
-        Class[] it1 = c1.getInterfaces();
-        Class[] it2 = c2.getInterfaces();
+        Class<?>[] it1 = c1.getInterfaces();
+        Class<?>[] it2 = c2.getInterfaces();
 
         if (it1 != null && it1.length > 0 && it2 != null && it2.length > 0) {
             for (int i = 0; i < it1.length; i++) {

@@ -859,7 +859,7 @@ public abstract class TransformerBase {
      *     a SchemaLocation if the namespace actually exists.
      */
     public static class SchemaLocationSupport {
-        private Map locations = new HashMap();
+        private Map<String, String> locations = new HashMap<>();
 
         public void setLocation(String nsURI, String uri) {
             locations.put(nsURI, uri);

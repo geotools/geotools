@@ -124,6 +124,8 @@ import org.opengis.filter.temporal.TOverlaps;
  *
  * @author Jesse Eichar
  */
+@SuppressWarnings(
+        "unchecked") // gigantic mess, too much untyped structures and methods to work on them
 public class FilterEncodingPreProcessor implements FilterVisitor {
     private static final int LOW = 0;
     private static final int MEDIUM = 1;

@@ -193,7 +193,7 @@ public class ComplexTypeGT implements ComplexType {
      * @see org.geotools.xml.schema.ComplexType#cache(org.geotools.xml.schema.Element,
      *     java.util.Map)
      */
-    public boolean cache(Element element, Map hints) {
+    public boolean cache(Element element, Map<String, Object> hints) {
         return true;
     }
 
@@ -203,7 +203,8 @@ public class ComplexTypeGT implements ComplexType {
      * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
      *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
      */
-    public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
+    public Object getValue(
+            Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
             throws OperationNotSupportedException, SAXException {
         throw new OperationNotSupportedException();
     }
@@ -241,7 +242,7 @@ public class ComplexTypeGT implements ComplexType {
      * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
      *     java.lang.Object, java.util.Map)
      */
-    public boolean canEncode(Element element, Object value, Map hints) {
+    public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
         return false;
     }
 
@@ -251,7 +252,8 @@ public class ComplexTypeGT implements ComplexType {
      * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element, java.lang.Object,
      *     org.geotools.xml.PrintHandler, java.util.Map)
      */
-    public void encode(Element element, Object value, PrintHandler output, Map hints)
+    public void encode(
+            Element element, Object value, PrintHandler output, Map<String, Object> hints)
             throws OperationNotSupportedException {
         throw new OperationNotSupportedException();
     }

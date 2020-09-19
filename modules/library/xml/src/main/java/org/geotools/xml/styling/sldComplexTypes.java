@@ -88,7 +88,7 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             return super.canEncode(element, value, hints);
             // TODO fill me in
         }
@@ -98,7 +98,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
             super.encode(element, value, output, hints);
             // TODO fill me in
@@ -109,7 +110,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException, SAXException {
             return super.getValue(element, value, attrs1, hints);
             // TODO fill me in
@@ -177,7 +179,7 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             return super.canEncode(element, value, hints);
             // TODO fill me in
         }
@@ -187,7 +189,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
             super.encode(element, value, output, hints);
             // TODO fill me in
@@ -198,7 +201,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException, SAXException {
             ContrastEnhancement symbol = new ContrastEnhancementImpl();
 
@@ -270,7 +274,7 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             return super.canEncode(element, value, hints);
             // TODO fill me in
         }
@@ -280,7 +284,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
             super.encode(element, value, output, hints);
             // TODO fill me in
@@ -291,7 +296,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException, SAXException {
             return super.getValue(element, value, attrs1, hints);
             // TODO fill me in
@@ -339,7 +345,7 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             return super.canEncode(element, value, hints);
             // TODO fill me in
         }
@@ -349,7 +355,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
             super.encode(element, value, output, hints);
             // TODO fill me in
@@ -360,7 +367,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException, SAXException {
             //            Geometry symbol =
             // StyleFactory.createStyleFactory().getDefaultRasterSymbolizer();
@@ -438,7 +446,7 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             return super.canEncode(element, value, hints);
             // TODO fill me in
         }
@@ -448,7 +456,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
             super.encode(element, value, output, hints);
             // TODO fill me in
@@ -459,7 +468,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException, SAXException {
             return super.getValue(element, value, attrs1, hints);
             // TODO fill me in
@@ -504,7 +514,7 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             return super.canEncode(element, value, hints);
             // TODO fill me in
         }
@@ -514,7 +524,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
             super.encode(element, value, output, hints);
             // TODO fill me in
@@ -525,7 +536,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException, SAXException {
             return super.getValue(element, value, attrs1, hints);
             // TODO fill me in
@@ -597,7 +609,7 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             return super.canEncode(element, value, hints);
             // TODO fill me in
         }
@@ -607,7 +619,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
             super.encode(element, value, output, hints);
             // TODO fill me in
@@ -618,7 +631,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException, SAXException {
             return super.getValue(element, value, attrs1, hints);
             // TODO fill me in
@@ -718,7 +732,7 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             return super.canEncode(element, value, hints);
             // TODO fill me in
         }
@@ -728,7 +742,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
             super.encode(element, value, output, hints);
             // TODO fill me in
@@ -739,7 +754,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException {
             Graphic symbol = CommonFactoryFinder.getStyleFactory().getDefaultGraphic();
 
@@ -811,7 +827,7 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             return super.canEncode(element, value, hints);
             // TODO fill me in
         }
@@ -821,7 +837,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
             super.encode(element, value, output, hints);
             // TODO fill me in
@@ -832,7 +849,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException, SAXException {
             return _Graphic.getInstance().getValue(element, value, attrs1, hints);
         }
@@ -899,7 +917,7 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             return super.canEncode(element, value, hints);
             // TODO fill me in
         }
@@ -909,7 +927,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
             super.encode(element, value, output, hints);
             // TODO fill me in
@@ -920,7 +939,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException {
             Stroke symbol = CommonFactoryFinder.getStyleFactory().getDefaultStroke();
 
@@ -1012,7 +1032,7 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             return super.canEncode(element, value, hints);
             // TODO fill me in
         }
@@ -1022,7 +1042,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
             super.encode(element, value, output, hints);
             // TODO fill me in
@@ -1033,7 +1054,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException, SAXException {
             return super.getValue(element, value, attrs1, hints);
             // TODO fill me in
@@ -1071,7 +1093,7 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             return super.canEncode(element, value, hints);
             // TODO fill me in
         }
@@ -1081,7 +1103,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
             super.encode(element, value, output, hints);
             // TODO fill me in
@@ -1092,7 +1115,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException, SAXException {
             return super.getValue(element, value, attrs1, hints);
             // TODO fill me in
@@ -1165,7 +1189,7 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             return super.canEncode(element, value, hints);
             // TODO fill me in
         }
@@ -1175,7 +1199,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
             super.encode(element, value, output, hints);
             // TODO fill me in
@@ -1186,7 +1211,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException, SAXException {
             return super.getValue(element, value, attrs1, hints);
             // TODO fill me in
@@ -1247,7 +1273,7 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             return super.canEncode(element, value, hints);
             // TODO fill me in
         }
@@ -1257,7 +1283,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
             super.encode(element, value, output, hints);
             // TODO fill me in
@@ -1268,7 +1295,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException, SAXException {
             return super.getValue(element, value, attrs1, hints);
             // TODO fill me in
@@ -1345,7 +1373,7 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             return super.canEncode(element, value, hints);
             // TODO fill me in
         }
@@ -1355,7 +1383,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
             super.encode(element, value, output, hints);
             // TODO fill me in
@@ -1366,7 +1395,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException, SAXException {
             return super.getValue(element, value, attrs1, hints);
             // TODO fill me in
@@ -1425,7 +1455,7 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             return super.canEncode(element, value, hints);
             // TODO fill me in
         }
@@ -1435,7 +1465,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
             super.encode(element, value, output, hints);
             // TODO fill me in
@@ -1446,7 +1477,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException, SAXException {
             return super.getValue(element, value, attrs1, hints);
             // TODO fill me in
@@ -1484,7 +1516,7 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             return super.canEncode(element, value, hints);
             // TODO fill me in
         }
@@ -1494,7 +1526,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
             super.encode(element, value, output, hints);
             // TODO fill me in
@@ -1505,7 +1538,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException, SAXException {
             return super.getValue(element, value, attrs1, hints);
             // TODO fill me in
@@ -1579,7 +1613,7 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             return super.canEncode(element, value, hints);
             // TODO fill me in
         }
@@ -1589,7 +1623,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
             super.encode(element, value, output, hints);
             // TODO fill me in
@@ -1600,7 +1635,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException, SAXException {
             return super.getValue(element, value, attrs1, hints);
             // TODO fill me in
@@ -1653,7 +1689,7 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             return super.canEncode(element, value, hints);
             // TODO fill me in
         }
@@ -1663,7 +1699,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
             super.encode(element, value, output, hints);
             // TODO fill me in
@@ -1674,7 +1711,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException, SAXException {
             return super.getValue(element, value, attrs1, hints);
             // TODO fill me in
@@ -1712,7 +1750,7 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             return super.canEncode(element, value, hints);
             // TODO fill me in
         }
@@ -1722,7 +1760,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
             super.encode(element, value, output, hints);
             // TODO fill me in
@@ -1733,7 +1772,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException, SAXException {
             return super.getValue(element, value, attrs1, hints);
             // TODO fill me in
@@ -1786,7 +1826,7 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             return super.canEncode(element, value, hints);
             // TODO fill me in
         }
@@ -1796,7 +1836,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
             super.encode(element, value, output, hints);
             // TODO fill me in
@@ -1807,7 +1848,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException, SAXException {
             return super.getValue(element, value, attrs1, hints);
             // TODO fill me in
@@ -1858,7 +1900,7 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             return super.canEncode(element, value, hints);
             // TODO fill me in
         }
@@ -1868,7 +1910,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
             super.encode(element, value, output, hints);
             // TODO fill me in
@@ -1879,7 +1922,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException, SAXException {
             return super.getValue(element, value, attrs1, hints);
             // TODO fill me in
@@ -1917,7 +1961,7 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             return super.canEncode(element, value, hints);
             // TODO fill me in
         }
@@ -1927,7 +1971,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
             super.encode(element, value, output, hints);
             // TODO fill me in
@@ -1938,7 +1983,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException, SAXException {
             return super.getValue(element, value, attrs1, hints);
             // TODO fill me in
@@ -1996,7 +2042,7 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             return super.canEncode(element, value, hints);
             // TODO fill me in
         }
@@ -2006,7 +2052,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
             super.encode(element, value, output, hints);
             // TODO fill me in
@@ -2017,7 +2064,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException, SAXException {
             return super.getValue(element, value, attrs1, hints);
             // TODO fill me in
@@ -2076,7 +2124,7 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
-        public boolean canEncode(Element element, Object value, Map hints) {
+        public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             return super.canEncode(element, value, hints);
             // TODO fill me in
         }
@@ -2086,7 +2134,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output, Map hints)
+        public void encode(
+                Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
             super.encode(element, value, output, hints);
             // TODO fill me in
@@ -2097,7 +2146,8 @@ public class sldComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
-        public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
+        public Object getValue(
+                Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException, SAXException {
             return super.getValue(element, value, attrs1, hints);
             // TODO fill me in

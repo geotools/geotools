@@ -122,7 +122,7 @@ public class GMLComplexTypesTest {
                 .thenReturn(GMLComplexTypes.MultiPolygonPropertyType.getInstance());
         when(element_name.getType()).thenReturn(XSISimpleTypes.String.getInstance());
 
-        Map<?, ?> hints = new HashMap();
+        Map<String, Object> hints = new HashMap<>();
         PrintHandler printHandler = mock(PrintHandler.class);
 
         // when: encode is called to serialize empty feature

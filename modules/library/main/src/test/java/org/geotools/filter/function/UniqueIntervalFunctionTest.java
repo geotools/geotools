@@ -66,6 +66,7 @@ public class UniqueIntervalFunctionTest extends FunctionTestSupport {
     }
 
     /** Test of getValue method, of class org.geotools.filter.function.UniqueIntervalFunction. */
+    @SuppressWarnings("unchecked")
     public void testEvaluate() throws Exception {
         Literal classes = ff.literal(2);
         PropertyName exp = ff.property("foo");

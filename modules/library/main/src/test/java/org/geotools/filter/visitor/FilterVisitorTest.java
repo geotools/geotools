@@ -48,12 +48,13 @@ public class FilterVisitorTest extends TestCase {
     private static GeometryFactory gf = new GeometryFactory();
 
     /** Example located on the wiki */
+    @SuppressWarnings("unchecked")
     public void testDefaultFilterVisitorFeatureIdExample() {
         Filter myFilter = ff.id(Collections.singleton(ff.featureId("fred")));
         FilterVisitor allFids =
                 new DefaultFilterVisitor() {
                     public Object visit(Id filter, Object data) {
-                        Set set = (Set) data;
+                        Set<Object> set = (Set) data;
                         set.addAll(filter.getIDs());
                         return set;
                     }
@@ -62,12 +63,13 @@ public class FilterVisitorTest extends TestCase {
         assertEquals(1, set.size());
     }
     /** Example located on the wiki */
+    @SuppressWarnings("unchecked")
     public void testDefaultFilterVisitorPropertyNameExample() {
         Filter myFilter = ff.greater(ff.add(ff.property("foo"), ff.property("bar")), ff.literal(1));
 
         class FindNames extends DefaultFilterVisitor {
             public Object visit(PropertyName expression, Object data) {
-                Set set = (Set) data;
+                Set<Object> set = (Set) data;
                 set.add(expression.getPropertyName());
 
                 return set;
@@ -77,6 +79,7 @@ public class FilterVisitorTest extends TestCase {
         assertTrue(set.contains("foo"));
     }
 
+    @SuppressWarnings("unchecked")
     public void testNullFilterVisitor() {
         Filter filter = ff.isNull(ff.property("name"));
         assertEquals(Integer.valueOf(1), filter.accept(NullFilterVisitor.NULL_VISITOR, 1));
@@ -88,16 +91,16 @@ public class FilterVisitorTest extends TestCase {
                 new NullFilterVisitor() {
                     public Object visit(Id filter, Object data) {
                         if (data == null) return null;
-                        Set set = (Set) data;
+                        Set<Object> set = (Set) data;
                         set.addAll(filter.getIDs());
                         return set;
                     }
                 };
         Filter myFilter = ff.id(Collections.singleton(ff.featureId("fred")));
 
-        Set set = (Set) myFilter.accept(allFids, new HashSet());
+        Set<Object> set = (Set) myFilter.accept(allFids, new HashSet<>());
         assertNotNull(set);
-        Set set2 = (Set) myFilter.accept(allFids, null); // set2 will be null
+        Set<Object> set2 = (Set) myFilter.accept(allFids, null); // set2 will be null
         assertNull(set2);
     }
 

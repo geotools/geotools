@@ -242,7 +242,7 @@ public class AbstractCapabilitiesFilterSplitterTests {
             return null;
         }
 
-        public Set getMaximalComplex() {
+        public Set<? extends Complex> getMaximalComplex() {
             // TODO Auto-generated method stub
             return null;
         }

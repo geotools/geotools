@@ -22,6 +22,7 @@ import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FunctionImpl;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.expression.Expression;
 
 public class StringInFunctionTest extends TestCase {
 
@@ -30,7 +31,7 @@ public class StringInFunctionTest extends TestCase {
     public void test() throws Exception {
         StringInFunction f = new StringInFunction();
 
-        List params =
+        List<Expression> params =
                 Arrays.asList(
                         ff.literal("foo"),
                         ff.literal(true),
@@ -55,7 +56,7 @@ public class StringInFunctionTest extends TestCase {
     public void testTooFewArguments() throws Exception {
         StringInFunction f = new StringInFunction();
 
-        List params = Arrays.asList(ff.literal("foo"), ff.literal(true));
+        List<Expression> params = Arrays.asList(ff.literal("foo"), ff.literal(true));
         ((FunctionImpl) f).setParameters(params);
 
         try {

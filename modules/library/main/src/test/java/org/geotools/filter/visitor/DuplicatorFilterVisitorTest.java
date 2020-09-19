@@ -47,7 +47,7 @@ public class DuplicatorFilterVisitorTest extends TestCase {
     }
 
     public void testLogicFilterDuplication() throws IllegalFilterException {
-        List filters = new ArrayList();
+        List<Filter> filters = new ArrayList<>();
         // create a filter
         Filter filter1 = fac.greater(fac.literal(2), fac.literal(1));
         filters.add(filter1);

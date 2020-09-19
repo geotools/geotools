@@ -61,7 +61,7 @@ public class QueryTest extends TestCase {
         String names[] = query.getPropertyNames();
         assertNotNull(names);
         assertEquals("foo", names[0]);
-        List list = Arrays.asList(names);
+        List<String> list = Arrays.asList(names);
         query.setPropertyNames(list);
         names = query.getPropertyNames();
 

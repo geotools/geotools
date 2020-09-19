@@ -227,12 +227,12 @@ public class FeatureTypeTest extends DataTestCase {
                 new int[] {
                     1, 2, 3, 4,
                 };
-        List list = new ArrayList();
+        List<Object> list = new ArrayList<>();
         list.add(str);
         list.add(i);
         list.add(f);
         list.add(d);
-        Map map = new HashMap();
+        Map<String, Object> map = new HashMap<>();
         map.put("a", str);
         map.put("b", i);
         map.put("c", f);
@@ -256,10 +256,10 @@ public class FeatureTypeTest extends DataTestCase {
         assertDuplicate("point", point, DataUtilities.duplicate(point));
     }
 
-    static Set immutable;
+    static Set<Class<?>> immutable;
 
     static {
-        immutable = new HashSet();
+        immutable = new HashSet<>();
         immutable.add(String.class);
         immutable.add(Integer.class);
         immutable.add(Double.class);

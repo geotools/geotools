@@ -49,7 +49,7 @@ public class LiteralDemultiplyingFilterVisitorTest {
         Object object2 = 2;
         Object object3 = 3;
 
-        List values = new ArrayList();
+        List<Object> values = new ArrayList<>();
         values.add(object1);
         values.add(object2);
         values.add(object3);
@@ -173,7 +173,7 @@ public class LiteralDemultiplyingFilterVisitorTest {
         Object object2 = builder.point(3, 4);
         Object object3 = builder.point(5, 6);
 
-        List values = new ArrayList();
+        List<Object> values = new ArrayList<>();
         values.add(object1);
         values.add(object2);
         values.add(object3);
@@ -304,7 +304,7 @@ public class LiteralDemultiplyingFilterVisitorTest {
         Object object2 = "2014-02-02";
         Object object3 = "2014-03-03";
 
-        List values = new ArrayList();
+        List<Object> values = new ArrayList<>();
         values.add(object1);
         values.add(object2);
         values.add(object3);

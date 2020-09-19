@@ -160,7 +160,7 @@ public class NumericConverterFactoryTest extends TestCase {
         assertEquals(Double.valueOf(4.4), convert("4.4", Number.class));
     }
 
-    Object convert(Object source, Class target) throws Exception {
+    Object convert(Object source, Class<?> target) throws Exception {
         return factory.createConverter(source.getClass(), target, null).convert(source, target);
     }
 

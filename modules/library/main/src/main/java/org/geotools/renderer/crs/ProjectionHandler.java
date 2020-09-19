@@ -99,7 +99,7 @@ public class ProjectionHandler {
 
     protected double densify = 0.0;
 
-    Map projectionParameters;
+    Map<String, Object> projectionParameters;
 
     /**
      * Initializes a projection handler
@@ -169,7 +169,7 @@ public class ProjectionHandler {
      * Set one of the supported projection parameters: - advancedProjectionDensify (double) if > 0
      * enables densification on preprocessing with the given distance between points.
      */
-    public void setProjectionParameters(Map projectionParameters) {
+    public void setProjectionParameters(Map<String, Object> projectionParameters) {
         if (projectionParameters.containsKey(ADVANCED_PROJECTION_DENSIFY)) {
             densify = (Double) projectionParameters.get(ADVANCED_PROJECTION_DENSIFY);
         }

@@ -91,7 +91,7 @@ public class WrappingProjectionHandler extends ProjectionHandler {
      * false disables the heuristic for dateline wrapping check (true by default)
      */
     @Override
-    public void setProjectionParameters(Map projectionParameters) {
+    public void setProjectionParameters(Map<String, Object> projectionParameters) {
         super.setProjectionParameters(projectionParameters);
         if (projectionParameters.containsKey(DATELINE_WRAPPING_CHECK_ENABLED)) {
             datelineWrappingCheckEnabled =

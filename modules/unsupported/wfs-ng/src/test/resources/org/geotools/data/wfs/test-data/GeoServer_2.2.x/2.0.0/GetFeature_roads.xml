@@ -6,10 +6,14 @@
   xmlns:sf="http://www.openplans.org/spearfish"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.opengis.net/gml/3.2 http://schemas.opengis.net/gml/3.2.1/gml.xsd http://www.openplans.org/spearfish DescribeFeatureType_roads.xsd http://www.opengis.net/wfs/2.0 http://schemas.opengis.net/wfs/2.0/wfs.xsd">  
+  <wfs:boundedBy> 
+     <gml:Envelope srsName="urn:x-ogc:def:crs:EPSG:6.11.2:26713">
+        <gml:lowerCorner>598340 4914058</gml:lowerCorner>
+        <gml:upperCorner>598659 4915118</gml:upperCorner>
+     </gml:Envelope> 
+  </wfs:boundedBy>
   <wfs:member>
     <sf:roads gml:id="roads.1">
-      <!-- <gml:boundedBy> <gml:Envelope srsName="urn:x-ogc:def:crs:EPSG:6.11.2:26713"> <gml:lowerCorner>598340 
-        4914058</gml:lowerCorner> <gml:upperCorner>598659 4915118</gml:upperCorner> </gml:Envelope> </gml:boundedBy> -->
       <sf:the_geom>
         <gml:MultiCurve srsName="urn:x-ogc:def:crs:EPSG:6.11.2:26713">
           <gml:curveMember>

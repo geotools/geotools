@@ -26,6 +26,7 @@ import javax.xml.namespace.QName;
 import org.geotools.geopkg.TileMatrix;
 import org.locationtech.jts.geom.Envelope;
 import org.opengis.filter.Filter;
+import org.opengis.filter.sort.SortBy;
 
 /**
  * GeoPackage Process Request. Object representation of the XML submitted to the GeoPackage process.
@@ -144,6 +145,7 @@ public class GeoPackageProcessRequest {
         protected QName featureType = null;
         protected Set<QName> propertyNames = null;
         protected Filter filter = null;
+        protected SortBy[] sort = null;
         protected boolean indexed = false;
         protected boolean styles = true;
         protected boolean metadata = true;
@@ -176,6 +178,14 @@ public class GeoPackageProcessRequest {
 
         public void setFilter(Filter filter) {
             this.filter = filter;
+        }
+
+        public SortBy[] getSort() {
+            return sort;
+        }
+
+        public void setSort(SortBy[] sort) {
+            this.sort = sort;
         }
 
         public boolean isIndexed() {

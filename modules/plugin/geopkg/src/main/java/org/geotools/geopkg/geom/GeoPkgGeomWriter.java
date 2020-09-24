@@ -68,7 +68,11 @@ public class GeoPkgGeomWriter {
     }
 
     public byte[] write(Geometry g) throws IOException {
-        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+        // rough guess at the size... each geom has 5 bytes header, uses 64bit doubles for points
+        int numGeometries = g.getNumGeometries();
+        int wkbSize = g.getNumPoints() * 3 * 8 + numGeometries * 5;
+        int headerSize = 8 + (config.writeEnvelope ? 32 : 0);
+        ByteArrayOutputStream bout = new ByteArrayOutputStream(headerSize + wkbSize);
         write(g, bout);
         return bout.toByteArray();
     }

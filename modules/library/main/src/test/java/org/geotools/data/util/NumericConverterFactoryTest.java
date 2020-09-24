@@ -311,4 +311,12 @@ public class NumericConverterFactoryTest extends TestCase {
         assertEquals(1, convert("1", Integer.class));
         assertEquals(Integer.valueOf(1), convert("1", Integer.class));
     }
+
+    public void testStringInScientificNotationToNumber() throws Exception {
+        assertEquals(Long.valueOf("1103442244"), convert("1.1034422448E9", Long.class));
+        assertEquals(Long.valueOf("1103442244"), convert("1.1034422448e9", Long.class));
+
+        assertEquals(Double.valueOf("1103442244.8"), convert("1.1034422448E9", Double.class));
+        assertEquals(Double.valueOf("1103442244.8"), convert("1.1034422448e9", Double.class));
+    }
 }

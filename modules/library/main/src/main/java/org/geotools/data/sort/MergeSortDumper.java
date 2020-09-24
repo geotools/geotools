@@ -97,7 +97,8 @@ class MergeSortDumper {
         if (maxFeatures < 0) {
             maxFeatures = getMaxFeatures(Query.ALL);
         }
-        Comparator<SimpleFeature> comparator = SortedFeatureReader.getComparator(sortBy);
+        Comparator<SimpleFeature> comparator =
+                SortedFeatureReader.getComparator(sortBy, reader.getFeatureType());
 
         // easy case, no sorting needed
         if (comparator == null) {

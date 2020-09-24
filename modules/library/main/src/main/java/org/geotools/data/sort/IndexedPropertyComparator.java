@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2020, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -23,24 +23,24 @@ import org.opengis.feature.simple.SimpleFeature;
  *
  * @author Andrea Aime - GeoSolutions
  */
-class PropertyComparator extends AbstractPropertyComparator {
+class IndexedPropertyComparator extends AbstractPropertyComparator {
 
-    String propertyName;
+    int idx;
 
     /**
      * Builds a new comparator
      *
-     * @param propertyName The property name to be used
+     * @param idx the property index to use
      * @param ascending If true the comparator will force an ascending order (descending otherwise)
      */
-    public PropertyComparator(String propertyName, boolean ascending) {
+    public IndexedPropertyComparator(int idx, boolean ascending) {
         super(ascending);
-        this.propertyName = propertyName;
+        this.idx = idx;
     }
 
     protected int compareAscending(SimpleFeature f1, SimpleFeature f2) {
-        Comparable o1 = (Comparable) f1.getAttribute(propertyName);
-        Comparable o2 = (Comparable) f2.getAttribute(propertyName);
+        Comparable o1 = (Comparable) f1.getAttribute(idx);
+        Comparable o2 = (Comparable) f2.getAttribute(idx);
 
         return compareAscending(o1, o2);
     }

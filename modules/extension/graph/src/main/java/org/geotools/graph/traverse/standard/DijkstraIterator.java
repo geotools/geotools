@@ -126,7 +126,7 @@ public class DijkstraIterator extends SourceGraphIterator {
         // initialize data structures
         nodemap = new HashMap<>();
 
-        queue = new PriorityQueue(graph.getNodes().size(), comparator);
+        queue = new PriorityQueue<>(graph.getNodes().size(), comparator);
 
         // place nodes into priority queue
         graph.visitNodes(

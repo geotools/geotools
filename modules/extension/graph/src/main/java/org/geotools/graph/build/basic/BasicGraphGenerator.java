@@ -17,6 +17,7 @@
 package org.geotools.graph.build.basic;
 
 import java.util.HashMap;
+import java.util.Map;
 import org.geotools.graph.build.GraphBuilder;
 import org.geotools.graph.build.GraphGenerator;
 import org.geotools.graph.structure.Edge;
@@ -48,11 +49,11 @@ public class BasicGraphGenerator implements GraphGenerator {
     private GraphBuilder m_builder;
 
     /** object to node lookup table * */
-    private HashMap m_obj2graphable;
+    private Map<Object, Graphable> m_obj2graphable;
 
     /** Constructs a new generator. */
     public BasicGraphGenerator() {
-        m_obj2graphable = new HashMap();
+        m_obj2graphable = new HashMap<>();
         setGraphBuilder(new BasicGraphBuilder());
     }
 

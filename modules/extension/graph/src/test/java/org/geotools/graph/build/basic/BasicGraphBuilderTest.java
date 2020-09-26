@@ -116,7 +116,7 @@ public class BasicGraphBuilderTest extends TestCase {
         assertTrue(m_builder.getNodes().contains(n1));
         assertTrue(m_builder.getNodes().contains(n2));
 
-        List toRemove = new ArrayList();
+        List<Node> toRemove = new ArrayList<>();
         toRemove.add(n1);
         toRemove.add(n2);
 
@@ -177,7 +177,7 @@ public class BasicGraphBuilderTest extends TestCase {
         m_builder.addEdge(e1);
         m_builder.addEdge(e2);
 
-        List toRemove = new ArrayList();
+        List<Edge> toRemove = new ArrayList<>();
         toRemove.add(e1);
         toRemove.add(e2);
 

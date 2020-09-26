@@ -18,6 +18,7 @@ package org.geotools.graph.path;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import junit.framework.TestCase;
 import org.geotools.graph.GraphTestUtil;
 import org.geotools.graph.build.GraphBuilder;
@@ -65,7 +66,7 @@ public class WalkTest extends TestCase {
     }
 
     public void test_reverse() {
-        ArrayList nodes = new ArrayList();
+        List<Node> nodes = new ArrayList<>();
         Walk walk = new Walk();
 
         for (int i = 0; i < 10; i++) {
@@ -103,7 +104,7 @@ public class WalkTest extends TestCase {
         GraphWalker walker =
                 new GraphWalker() {
                     public int visit(Graphable element, GraphTraversal traversal) {
-                        walk.add(element);
+                        walk.add((Node) element);
                         return (GraphTraversal.CONTINUE);
                     }
 
@@ -136,7 +137,7 @@ public class WalkTest extends TestCase {
         GraphWalker walker =
                 new GraphWalker() {
                     public int visit(Graphable element, GraphTraversal traversal) {
-                        walk.add(element);
+                        walk.add((Node) element);
                         return (GraphTraversal.CONTINUE);
                     }
 
@@ -162,7 +163,7 @@ public class WalkTest extends TestCase {
         GraphWalker walker =
                 new GraphWalker() {
                     public int visit(Graphable element, GraphTraversal traversal) {
-                        walk.add(element);
+                        walk.add((Node) element);
                         return (GraphTraversal.CONTINUE);
                     }
 
@@ -191,7 +192,7 @@ public class WalkTest extends TestCase {
                     int count = 0;
 
                     public int visit(Graphable element, GraphTraversal traversal) {
-                        walk.add(element);
+                        walk.add((Node) element);
                         return (GraphTraversal.CONTINUE);
                     }
 
@@ -220,7 +221,7 @@ public class WalkTest extends TestCase {
                     int count = 0;
 
                     public int visit(Graphable element, GraphTraversal traversal) {
-                        walk.add(element);
+                        walk.add((Node) element);
                         return (GraphTraversal.CONTINUE);
                     }
 

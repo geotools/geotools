@@ -61,7 +61,7 @@ public class ZipUtil {
     }
 
     @Deprecated
-    public static void unzip(String zipFilename, Collection filenames, String outdir)
+    public static void unzip(String zipFilename, Collection<String> filenames, String outdir)
             throws IOException {
         unzip(zipFilename, (String[]) filenames.toArray(new String[filenames.size()]), outdir);
     }

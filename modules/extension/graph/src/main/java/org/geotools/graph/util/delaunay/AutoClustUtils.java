@@ -35,16 +35,17 @@ public class AutoClustUtils {
     /** Creates a new instance of AutoClustUtils */
     public AutoClustUtils() {}
 
-    public static Vector findConnectedComponents(final Collection nodes, final Collection edges) {
-        Vector components = new Vector();
-        Vector nodesVisited = new Vector();
+    public static Vector<Graph> findConnectedComponents(
+            final Collection<Node> nodes, final Collection<Edge> edges) {
+        Vector<Graph> components = new Vector<>();
+        Vector<Node> nodesVisited = new Vector<>();
 
-        Iterator nodesIt = nodes.iterator();
+        Iterator<Node> nodesIt = nodes.iterator();
         while (nodesIt.hasNext()) {
             Node next = (Node) nodesIt.next();
             if (!(nodesVisited.contains(next))) {
-                Vector componentNodes = new Vector();
-                Vector componentEdges = new Vector();
+                Vector<Node> componentNodes = new Vector<>();
+                Vector<Edge> componentEdges = new Vector<>();
                 expandComponent(next, edges, componentNodes, componentEdges);
                 nodesVisited.addAll(componentNodes);
                 Graph component = new BasicGraph(componentNodes, componentEdges);
@@ -57,13 +58,13 @@ public class AutoClustUtils {
 
     private static void expandComponent(
             final Node node,
-            final Collection edges,
-            final Collection componentNodes,
-            final Collection componentEdges) {
+            final Collection<Edge> edges,
+            final Collection<Node> componentNodes,
+            final Collection<Edge> componentEdges) {
         if (!componentNodes.contains(node)) {
             componentNodes.add(node);
             //            LOGGER.finer("Adding " + node + " to component");
-            Vector adjacentEdges =
+            Vector<Edge> adjacentEdges =
                     findAdjacentEdges(
                             node,
                             edges); // yes, I know node.getEdges() should do this, but this method
@@ -72,7 +73,7 @@ public class AutoClustUtils {
             componentEdges.addAll(adjacentEdges);
             //            LOGGER.finer("Adding " + adjacentEdges + " to component");
 
-            Iterator aeIt = adjacentEdges.iterator();
+            Iterator<Edge> aeIt = adjacentEdges.iterator();
             while (aeIt.hasNext()) {
                 Edge next = (Edge) aeIt.next();
                 //                LOGGER.finer("looking at edge " + next);
@@ -91,11 +92,11 @@ public class AutoClustUtils {
         }
     }
 
-    public static Vector findAdjacentEdges(final Node node, final Collection edges) {
-        Vector ret = new Vector();
-        Iterator it = edges.iterator();
+    public static Vector<Edge> findAdjacentEdges(final Node node, final Collection<Edge> edges) {
+        Vector<Edge> ret = new Vector<>();
+        Iterator<Edge> it = edges.iterator();
         while (it.hasNext()) {
-            Edge next = (Edge) it.next();
+            Edge next = it.next();
             if ((next.getNodeA().equals(node)) || (next.getNodeB().equals(node))) {
                 ret.add(next);
             }

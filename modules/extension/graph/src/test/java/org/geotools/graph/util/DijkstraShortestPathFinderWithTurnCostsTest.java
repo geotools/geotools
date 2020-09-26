@@ -18,6 +18,7 @@ package org.geotools.graph.util;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import junit.framework.TestCase;
 import org.geotools.graph.build.line.BasicLineGraphGenerator;
 import org.geotools.graph.path.DijkstraShortestPathFinder;
@@ -70,7 +71,7 @@ public class DijkstraShortestPathFinderWithTurnCostsTest extends TestCase {
 
         double[] expected = {0.0, 1.0, 3.0, 3.0};
 
-        ArrayList gotArray = new ArrayList(4);
+        List<Double> gotArray = new ArrayList<>(4);
 
         Iterator it = graph.getNodes().iterator();
 

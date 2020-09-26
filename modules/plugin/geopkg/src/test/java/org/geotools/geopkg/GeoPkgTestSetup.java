@@ -60,6 +60,7 @@ public class GeoPkgTestSetup extends JDBCTestSetup {
         removeTable("ft1");
         removeTable("ft2");
         removeTable("ft3");
+        removeTable("ft_array");
 
         GeometryBuilder gb = new GeometryBuilder();
 

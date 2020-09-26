@@ -22,6 +22,7 @@ import static org.geotools.geopkg.GeoPackage.GEOPACKAGE_CONTENTS;
 import static org.geotools.geopkg.GeoPackage.SPATIAL_REF_SYS;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -87,9 +88,18 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 public class GeoPkgDialect extends PreparedStatementSQLDialect {
 
     static final String HAS_SPATIAL_INDEX = "hasGeopkgSpatialIndex";
+    // used to store the DataColumn definition for later usage
+    static final String DATA_COLUMN = "gpkg.dataColumn";
+
+    /** Keeps track of the enumeration */
+    static final String ENUM = "gpkg.enumeration";
+
+    private static final Object GPKG_ARRAY_ENUM_MAP = "gpkg.arrayEnumMapper";
 
     protected GeoPkgGeomWriter.Configuration geomWriterConfig;
     protected boolean contentsOnly = true;
+
+    private JSONArrayIO jsonArrayIO = new JSONArrayIO();
 
     public GeoPkgDialect(JDBCDataStore dataStore, GeoPkgGeomWriter.Configuration writerConfig) {
         super(dataStore);
@@ -318,6 +328,11 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             for (DataColumn dataColumn : dataColumns) {
                 if (col.equals(dataColumn.getColumnName())) {
                     DataColumnConstraint constraint = dataColumn.getConstraint();
+                    // array?
+                    if ("application/json".equals(dataColumn.getMimeType())) {
+                        return String[].class;
+                    }
+                    // otherwise consider the conversion
                     if (constraint instanceof DataColumnConstraint.Enum) {
                         return String.class;
                     }
@@ -460,6 +475,9 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
                     dc = new DataColumn();
                     dc.setColumnName(ad.getLocalName());
                     dc.setName(featureType.getTypeName() + ":" + ad.getLocalName());
+                    if (ad.getType().getBinding().isArray()) {
+                        dc.setMimeType("application/json");
+                    }
                     Map<String, String> optionsMap = new LinkedHashMap<>();
                     for (int i = 0; i < options.size(); i++) {
                         optionsMap.put(String.valueOf(i), String.valueOf(options.get(i)));
@@ -469,6 +487,13 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
                     DataColumnConstraint.Enum dcc =
                             new DataColumnConstraint.Enum(constraintName, optionsMap);
                     dc.setConstraint(dcc);
+                    geopkg.getExtension(GeoPkgSchemaExtension.class)
+                            .addDataColumn(featureType.getTypeName(), dc, cx);
+                } else if (ad.getType().getBinding().isArray()) {
+                    dc = new DataColumn();
+                    dc.setColumnName(ad.getLocalName());
+                    dc.setName(featureType.getTypeName() + "_" + ad.getLocalName());
+                    dc.setMimeType("application/json");
                     geopkg.getExtension(GeoPkgSchemaExtension.class)
                             .addDataColumn(featureType.getTypeName(), dc, cx);
                 }
@@ -627,7 +652,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         // get the sql type
         Integer sqlType = dataStore.getMapping(binding);
 
-        // handl null case
+        // handle null case
         if (value == null) {
             ps.setNull(column, sqlType);
             return;
@@ -648,6 +673,67 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             default:
                 super.setValue(value, binding, ps, column, cx);
         }
+    }
+
+    @Override
+    public void setArrayValue(
+            Object value,
+            AttributeDescriptor att,
+            PreparedStatement ps,
+            int columnIdx,
+            Connection cx)
+            throws SQLException {
+        Class binding = att.getType().getBinding();
+        if (value == null) {
+            Integer sqlType = dataStore.getMapping(binding);
+            ps.setNull(columnIdx, sqlType);
+            return;
+        }
+
+        // preserve array nature by writing it as a JSON array
+        if (value.getClass().isArray()) {
+            writeArray(
+                    value, ps, columnIdx, (EnumMapper) att.getUserData().get(GPKG_ARRAY_ENUM_MAP));
+        } else {
+            throw new IllegalArgumentException("Cannot handle this array value: " + value);
+        }
+    }
+
+    private void writeArray(Object value, PreparedStatement ps, int columnIdx, EnumMapper mapper)
+            throws SQLException {
+        // write as JSON
+        StringBuilder sb = new StringBuilder("[");
+        int length = Array.getLength(value);
+        for (int i = 0; i < length; i++) {
+            Object item = Array.get(value, i);
+            if (mapper != null && item instanceof String) {
+                sb.append(mapper.fromString((String) item));
+            } else if (item instanceof Number) {
+                sb.append(item);
+            } else {
+                sb.append("\"").append(item).append("\"");
+            }
+            if (i < length - 1) {
+                sb.append(", ");
+            }
+        }
+        sb.append("]");
+        ps.setString(columnIdx, sb.toString());
+    }
+
+    @Override
+    public boolean isArray(AttributeDescriptor att) {
+        Object dataColumnMaybe = att.getUserData().get(DATA_COLUMN);
+        if (dataColumnMaybe instanceof DataColumn) {
+            DataColumn dc = (DataColumn) dataColumnMaybe;
+            // arrays are stored as json
+            String mime = dc.getMimeType();
+            return ("application/json".equals(mime) || "text/json".equals(mime));
+
+            // TODO: the spec for storing arrays in GeoPackage needs to evolve to clarify
+            // better the array presernce and the array contents
+        }
+        return false;
     }
 
     @Override
@@ -680,27 +766,31 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         }
 
         try {
-            if (FeatureTypes.getFieldOptions(att) != null) {
-                List<DataColumn> dataColumns =
-                        geopkg().getExtension(GeoPkgSchemaExtension.class)
-                                .getDataColumns(tableName, cx);
-                for (DataColumn dataColumn : dataColumns) {
+            List<DataColumn> dataColumns =
+                    geopkg().getExtension(GeoPkgSchemaExtension.class)
+                            .getDataColumns(tableName, cx);
+            for (DataColumn dataColumn : dataColumns) {
+                if (attributeName.equals(dataColumn.getColumnName())) {
                     // little hack here, GeoPackage schema extension is being evolved so that
                     // an array of values can be stored as a JSON array, in that case the enum
                     // is applied to every entry in the array, not to the whole string, so the
                     // normal enum mapping does not apply. If a column declares a mime type, its
-                    // contents are likely complex, and the enum will have to be applied
-                    // to the items inside, not to the whole, so the EnumMapper must not be created.
-                    if (attributeName.equals(dataColumn.getColumnName())
-                            && dataColumn.getMimeType() == null) {
+                    // contents are likely complex, and the enum will have to be applied to the
+                    // items inside, not to the whole, so the EnumMapper must not be created.
+                    if (dataColumn.getConstraint() instanceof DataColumnConstraint.Enum) {
                         DataColumnConstraint.Enum dcc =
                                 (DataColumnConstraint.Enum) dataColumn.getConstraint();
                         EnumMapper mapper = new EnumMapper();
                         for (Map.Entry<String, String> entry : dcc.getValues().entrySet()) {
                             mapper.addMapping(Integer.valueOf(entry.getKey()), entry.getValue());
                         }
-                        att.getUserData().put(JDBCDataStore.JDBC_ENUM_MAP, mapper);
+                        if (dataColumn.getMimeType() == null) {
+                            att.getUserData().put(JDBCDataStore.JDBC_ENUM_MAP, mapper);
+                        } else {
+                            att.getUserData().put(GPKG_ARRAY_ENUM_MAP, mapper);
+                        }
                     }
+                    att.getUserData().put(DATA_COLUMN, dataColumn);
                 }
             }
         } catch (IOException e) {
@@ -845,6 +935,10 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         if (FeatureTypes.getFieldOptions(ad) != null) {
             return Types.INTEGER;
         }
+        // for JSON encoded arrays
+        if (ad.getType().getBinding().isArray()) {
+            return Types.VARCHAR;
+        }
 
         return null;
     }
@@ -868,5 +962,16 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         }
 
         return null;
+    }
+
+    @Override
+    public Object convertValue(Object value, AttributeDescriptor ad) {
+        if (isArray(ad)) {
+            return jsonArrayIO.parse(
+                    (String) value,
+                    ad.getType().getBinding().getComponentType(),
+                    (EnumMapper) ad.getUserData().get(GPKG_ARRAY_ENUM_MAP));
+        }
+        return super.convertValue(value, ad);
     }
 }

@@ -30,7 +30,7 @@ public class DataSourceFinderTest extends TestCase {
         assertTrue(new DBCPDataSourceFactory().isAvailable());
         DataSourceFinder.scanForPlugins();
 
-        Map map = new HashMap();
+        Map<String, Object> map = new HashMap<>();
         map.put(DBCPDataSourceFactory.DSTYPE.key, "DBCP");
         map.put(DBCPDataSourceFactory.DRIVERCLASS.key, "org.h2.Driver");
         map.put(DBCPDataSourceFactory.JDBC_URL.key, "jdbc:h2:mem:test_mem");

@@ -42,7 +42,7 @@ public abstract class AbstractDataSourceFactorySpi implements DataSourceFactoryS
         return name;
     }
 
-    public boolean canProcess(Map params) {
+    public boolean canProcess(Map<String, ?> params) {
         if (params == null) {
             return false;
         }

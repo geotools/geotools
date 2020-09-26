@@ -69,7 +69,7 @@ public class OracleBlobConverterFactory implements ConverterFactory {
 
         public <T> T convert(Object source, Class<T> target) throws Exception {
             int length = ((Long) ORA_LENGTH.invoke(source)).intValue();
-            return (T) ORA_GET_BYTES.invoke(source, 1l, length);
+            return target.cast(ORA_GET_BYTES.invoke(source, 1l, length));
         }
     }
 }

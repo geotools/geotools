@@ -33,6 +33,8 @@ import org.geotools.jdbc.SQLDialect;
  *
  * @author Justin Deoliveira, The Open Planning Project
  */
+// temporary work around, the factory parameters map will be fixed separately
+@SuppressWarnings("unchecked")
 public class H2DataStoreFactory extends JDBCDataStoreFactory {
     /** parameter for database type */
     public static final Param DBTYPE =

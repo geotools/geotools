@@ -71,7 +71,7 @@ public class OracleClobConverterFactory implements ConverterFactory {
             int length = ((Long) ORA_LENGTH.invoke(source)).intValue();
             char[] buffer = new char[length];
             ORA_GET_CHARS.invoke(source, 1l, length, buffer);
-            return (T) new String(buffer);
+            return target.cast(new String(buffer));
         }
     }
 }

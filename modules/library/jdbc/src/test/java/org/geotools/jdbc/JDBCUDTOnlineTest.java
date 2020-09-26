@@ -16,7 +16,7 @@
  */
 package org.geotools.jdbc;
 
-import java.util.HashMap;
+import java.util.Map;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
@@ -71,8 +71,8 @@ public abstract class JDBCUDTOnlineTest extends JDBCTestSupport {
     }
 
     @Override
-    protected HashMap createDataStoreFactoryParams() throws Exception {
-        HashMap params = super.createDataStoreFactoryParams();
+    protected Map<String, Object> createDataStoreFactoryParams() throws Exception {
+        Map<String, Object> params = super.createDataStoreFactoryParams();
         // Set the batch insert size in order to be sure the failures happens while write is called.
         params.put(JDBCDataStoreFactory.BATCH_INSERT_SIZE.key, 1);
         return params;

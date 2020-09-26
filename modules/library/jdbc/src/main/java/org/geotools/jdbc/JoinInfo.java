@@ -143,7 +143,7 @@ public class JoinInfo {
     String primaryAlias;
 
     /** parts of the join */
-    List<JoinPart> parts = new ArrayList();
+    List<JoinPart> parts = new ArrayList<>();
 
     /** the "joinified" filter of the main query */
     Filter filter;

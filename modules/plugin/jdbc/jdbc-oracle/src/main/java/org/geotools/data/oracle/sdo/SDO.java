@@ -257,7 +257,7 @@ public final class SDO {
     }
 
     public static int[] elemInfo(Geometry geom, final int GTYPE) {
-        List list = new LinkedList();
+        List<Integer> list = new ArrayList<>();
         elemInfo(list, geom, 1, GTYPE);
 
         return intArray(list);
@@ -273,7 +273,7 @@ public final class SDO {
      * @throws IllegalArgumentException If geom cannot be encoded by ElemInfo
      */
     private static void elemInfo(
-            List elemInfoList, Geometry geom, final int STARTING_OFFSET, final int GTYPE) {
+            List<Integer> elemInfoList, Geometry geom, final int STARTING_OFFSET, final int GTYPE) {
         final int tt = TT(geom);
 
         switch (tt) {
@@ -330,20 +330,25 @@ public final class SDO {
      * @param point Point to encode
      * @param STARTING_OFFSET Starting offset in SDO_ORDINATE array
      */
-    private static void addElemInfo(List elemInfoList, Point point, final int STARTING_OFFSET) {
+    private static void addElemInfo(
+            List<Integer> elemInfoList, Point point, final int STARTING_OFFSET) {
         addInt(elemInfoList, STARTING_OFFSET);
         addInt(elemInfoList, ETYPE.POINT);
         addInt(elemInfoList, 1); // INTERPRETATION single point
     }
 
-    private static void addElemInfo(List elemInfoList, LineString line, final int STARTING_OFFSET) {
+    private static void addElemInfo(
+            List<Integer> elemInfoList, LineString line, final int STARTING_OFFSET) {
         addInt(elemInfoList, STARTING_OFFSET);
         addInt(elemInfoList, ETYPE.LINE);
         addInt(elemInfoList, 1); // INTERPRETATION straight edges
     }
 
     private static void addElemInfo(
-            List elemInfoList, Polygon polygon, final int STARTING_OFFSET, final int GTYPE) {
+            List<Integer> elemInfoList,
+            Polygon polygon,
+            final int STARTING_OFFSET,
+            final int GTYPE) {
         final int HOLES = polygon.getNumInteriorRing();
 
         if (HOLES == 0) {
@@ -374,14 +379,17 @@ public final class SDO {
     }
 
     private static void addElemInfo(
-            List elemInfoList, MultiPoint points, final int STARTING_OFFSET) {
+            List<Integer> elemInfoList, MultiPoint points, final int STARTING_OFFSET) {
         addInt(elemInfoList, STARTING_OFFSET);
         addInt(elemInfoList, ETYPE.POINT);
         addInt(elemInfoList, elemInfoInterpretation(points, ETYPE.POINT));
     }
 
     private static void addElemInfo(
-            List elemInfoList, MultiLineString lines, final int STARTING_OFFSET, final int GTYPE) {
+            List<Integer> elemInfoList,
+            MultiLineString lines,
+            final int STARTING_OFFSET,
+            final int GTYPE) {
         LineString line;
         int offset = STARTING_OFFSET;
 
@@ -395,7 +403,10 @@ public final class SDO {
     }
 
     private static void addElemInfo(
-            List elemInfoList, MultiPolygon polys, final int STARTING_OFFSET, final int GTYPE) {
+            List<Integer> elemInfoList,
+            MultiPolygon polys,
+            final int STARTING_OFFSET,
+            final int GTYPE) {
         Polygon poly;
         int offset = STARTING_OFFSET;
 
@@ -415,7 +426,7 @@ public final class SDO {
     }
 
     private static void addElemInfo(
-            List elemInfoList,
+            List<Integer> elemInfoList,
             GeometryCollection geoms,
             final int STARTING_OFFSET,
             final int GTYPE) {
@@ -434,7 +445,7 @@ public final class SDO {
         }
     }
 
-    private static void addInt(List list, int i) {
+    private static void addInt(List<Integer> list, int i) {
         list.add(Integer.valueOf(i));
     }
 
@@ -671,7 +682,7 @@ public final class SDO {
      * <p>While Oracle is silient on these errors - all other errors will not be detected!
      */
     public static double[] ordinates(Geometry geom) {
-        List list = new ArrayList();
+        List<double[]> list = new ArrayList<>();
 
         coordinates(list, geom);
 
@@ -750,7 +761,7 @@ public final class SDO {
      * @param geom Geometry
      * @throws IllegalArgumentException If geometry cannot be encoded
      */
-    public static void coordinates(List list, Geometry geom) {
+    public static void coordinates(List<double[]> list, Geometry geom) {
         switch (TT(geom)) {
             case TT.UNKNOWN:
                 break; // extend with your own custom types
@@ -804,7 +815,7 @@ public final class SDO {
      *
      * <p>The double array will contain all the ordinates in the Coordinate sequence.
      */
-    private static void addCoordinates(List list, CoordinateSequence sequence) {
+    private static void addCoordinates(List<double[]> list, CoordinateSequence sequence) {
         double[] ords;
 
         if (sequence instanceof CoordinateAccess) {
@@ -843,7 +854,7 @@ public final class SDO {
      * @param list List to add coordiantes to
      * @param point Point to be encoded
      */
-    private static void addCoordinates(List list, Point point) {
+    private static void addCoordinates(List<double[]> list, Point point) {
         addCoordinates(list, point.getCoordinateSequence());
     }
 
@@ -853,7 +864,7 @@ public final class SDO {
      * @param list List to add coordiantes to
      * @param line LineString to be encoded
      */
-    private static void addCoordinates(List list, LineString line) {
+    private static void addCoordinates(List<double[]> list, LineString line) {
         addCoordinates(list, line.getCoordinateSequence());
     }
 
@@ -870,7 +881,7 @@ public final class SDO {
      * @param list List to add coordiantes to
      * @param polygon Polygon to be encoded
      */
-    private static void addCoordinates(List list, Polygon polygon) {
+    private static void addCoordinates(List<double[]> list, Polygon polygon) {
         switch (elemInfoInterpretation(polygon)) {
             case 4: // circle not supported
                 break;
@@ -900,7 +911,7 @@ public final class SDO {
      * @param list List to add coordiantes to
      * @param poly Polygon to be encoded
      */
-    private static void addCoordinatesInterpretation3(List list, Polygon poly) {
+    private static void addCoordinatesInterpretation3(List<double[]> list, Polygon poly) {
         Envelope e = poly.getEnvelopeInternal();
         list.add(new double[] {e.getMinX(), e.getMinY()});
         list.add(new double[] {e.getMaxX(), e.getMaxY()});
@@ -914,7 +925,7 @@ public final class SDO {
      * @param list List to add coordiantes to
      * @param polygon Polygon to be encoded
      */
-    private static void addCoordinatesInterpretation1(List list, Polygon polygon) {
+    private static void addCoordinatesInterpretation1(List<double[]> list, Polygon polygon) {
         int holes = polygon.getNumInteriorRing();
         if (!polygon.isEmpty()) {
             addCoordinates(
@@ -933,14 +944,14 @@ public final class SDO {
         }
     }
 
-    private static void addCoordinates(List list, MultiPoint points) {
+    private static void addCoordinates(List<double[]> list, MultiPoint points) {
         for (int i = 0; i < points.getNumGeometries(); i++) {
             Geometry geometryN = points.getGeometryN(i);
             if (geometryN != null && !geometryN.isEmpty()) addCoordinates(list, (Point) geometryN);
         }
     }
 
-    private static void addCoordinates(List list, MultiLineString lines) {
+    private static void addCoordinates(List<double[]> list, MultiLineString lines) {
         for (int i = 0; i < lines.getNumGeometries(); i++) {
             Geometry geometryN = lines.getGeometryN(i);
             if (geometryN != null && !geometryN.isEmpty())
@@ -948,7 +959,7 @@ public final class SDO {
         }
     }
 
-    private static void addCoordinates(List list, MultiPolygon polys) {
+    private static void addCoordinates(List<double[]> list, MultiPolygon polys) {
         for (int i = 0; i < polys.getNumGeometries(); i++) {
 
             Geometry geometryN = polys.getGeometryN(i);
@@ -957,7 +968,7 @@ public final class SDO {
         }
     }
 
-    private static void addCoordinates(List list, GeometryCollection geoms) {
+    private static void addCoordinates(List<double[]> list, GeometryCollection geoms) {
         Geometry geom;
 
         for (int i = 0; i < geoms.getNumGeometries(); i++) {
@@ -1468,26 +1479,15 @@ public final class SDO {
         */
     }
 
-    private static LineString[] toLineStringArray(List list) {
+    private static LineString[] toLineStringArray(List<LineString> list) {
         return (LineString[]) toArray(list, LineString.class);
-
-        /*
-          if( list == null ) return null;
-          LineString array[] = new LineString[ list.size() ];
-          int index=0;
-          for( Iterator i=list.iterator(); i.hasNext(); index++ )
-          {
-              array[ index ] = (LineString) i.next();
-          }
-          return array;
-        */
     }
 
-    private static Polygon[] toPolygonArray(List list) {
+    private static Polygon[] toPolygonArray(List<Polygon> list) {
         return (Polygon[]) toArray(list, Polygon.class);
     }
 
-    private static Geometry[] toGeometryArray(List list) {
+    private static Geometry[] toGeometryArray(List<Geometry> list) {
         return (Geometry[]) toArray(list, Geometry.class);
     }
 
@@ -2183,7 +2183,7 @@ public final class SDO {
             triplet = triplet + elemInfo[2];
         }
 
-        List rings = new LinkedList();
+        List<LinearRing> rings = new ArrayList<>();
         int etype;
         HOLES:
         for (int i = triplet + 1; (etype = ETYPE(elemInfo, i)) != -1; ) {
@@ -2500,7 +2500,7 @@ public final class SDO {
         // final int LEN = D(GTYPE);
         final int endTriplet = (N != -1) ? (triplet + N) : (elemInfo.length / 3);
 
-        List list = new LinkedList();
+        List<LineString> list = new LinkedList<>();
         int etype;
         LINES: // bad bad gotos jody
         for (int i = triplet; (i < endTriplet) && ((etype = ETYPE(elemInfo, i)) != -1); i++) {
@@ -2579,7 +2579,7 @@ public final class SDO {
         }
         final int endTriplet = (N != -1) ? (triplet + N) : ((elemInfo.length / 3) + 1);
 
-        List list = new LinkedList();
+        List<Polygon> list = new LinkedList<>();
         int etype;
         POLYGONS:
         for (int i = triplet; (i < endTriplet) && ((etype = ETYPE(elemInfo, i)) != -1); i++) {
@@ -2671,7 +2671,7 @@ public final class SDO {
 
         final int endTriplet = (N != -1) ? (triplet + N) : ((elemInfo.length / 3) + 1);
 
-        List list = new LinkedList();
+        List<Geometry> list = new LinkedList<>();
         int etype;
         int interpretation;
         Geometry geom;

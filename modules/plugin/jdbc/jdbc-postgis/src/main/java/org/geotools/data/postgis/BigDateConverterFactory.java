@@ -16,27 +16,24 @@
  */
 package org.geotools.data.postgis;
 
-import java.util.Map;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.factory.Hints;
 
 /**
- * ConverterFactory for handling Map of String to {@link HStore} conversion.
+ * ConverterFactory for handling a long to {@link BigDate} conversion
  *
  * @author Daniele Romagnoli - GeoSolutions SAS
  */
-public class HStoreConverterFactory implements ConverterFactory {
+public class BigDateConverterFactory implements ConverterFactory {
 
     @Override
     public Converter createConverter(Class<?> source, Class<?> target, Hints hints) {
-        if (HStore.class.equals(target) && Map.class.isAssignableFrom(source)) {
+        if (BigDate.class.equals(target) && Long.class.equals(source)) {
             return new Converter() {
 
                 public <T> T convert(Object source, Class<T> target) throws Exception {
-                    @SuppressWarnings("unchecked")
-                    Map<String, String> cast = (Map<String, String>) source;
-                    return target.cast(new HStore(cast));
+                    return target.cast(new BigDate((Long) source));
                 }
             };
         }

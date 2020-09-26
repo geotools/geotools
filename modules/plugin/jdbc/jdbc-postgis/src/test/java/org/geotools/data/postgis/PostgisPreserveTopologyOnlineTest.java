@@ -16,7 +16,7 @@
  */
 package org.geotools.data.postgis;
 
-import java.util.HashMap;
+import java.util.Map;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -30,8 +30,8 @@ import org.locationtech.jts.geom.Polygon;
 public class PostgisPreserveTopologyOnlineTest extends JDBCTestSupport {
 
     @Override
-    protected HashMap createDataStoreFactoryParams() throws Exception {
-        HashMap params = super.createDataStoreFactoryParams();
+    protected Map<String, Object> createDataStoreFactoryParams() throws Exception {
+        Map<String, Object> params = super.createDataStoreFactoryParams();
         params.put(
                 PostgisNGDataStoreFactory.SIMPLIFICATION_METHOD.key,
                 SimplificationMethod.PRESERVETOPOLOGY);

@@ -16,7 +16,7 @@
  */
 package org.geotools.data.mysql;
 
-import java.util.HashMap;
+import java.util.Map;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
 
@@ -32,9 +32,9 @@ public class MySQLDataStoreManualEnhandedSpatialSupportTest extends JDBCTestSupp
     }
 
     @Override
-    protected HashMap createDataStoreFactoryParams() throws Exception {
+    protected Map<String, Object> createDataStoreFactoryParams() throws Exception {
         // TODO Auto-generated method stub
-        HashMap params = super.createDataStoreFactoryParams();
+        Map<String, Object> params = super.createDataStoreFactoryParams();
         params.put(MySQLDataStoreFactory.ENHANCED_SPATIAL_SUPPORT.key, true);
         return params;
     }

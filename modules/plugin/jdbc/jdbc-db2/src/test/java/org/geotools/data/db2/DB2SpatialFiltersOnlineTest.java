@@ -16,7 +16,7 @@
  */
 package org.geotools.data.db2;
 
-import java.util.HashMap;
+import java.util.Map;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
@@ -103,8 +103,8 @@ public class DB2SpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTest {
     }
 
     @Override
-    protected HashMap createDataStoreFactoryParams() throws Exception {
-        HashMap params = super.createDataStoreFactoryParams();
+    protected Map<String, Object> createDataStoreFactoryParams() throws Exception {
+        Map<String, Object> params = super.createDataStoreFactoryParams();
         params.put(DB2NGDataStoreFactory.USE_SELECTIVITY.key, true);
         return params;
     }

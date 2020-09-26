@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -190,13 +191,11 @@ public class VirtualTable implements Serializable {
         }
 
         // grab the parameter values
-        Map<String, String> values = null;
-        if (hints != null) {
-            values = (Map<String, String>) hints.get(Hints.VIRTUAL_TABLE_PARAMETERS);
-        }
-        if (values == null) {
-            values = Collections.emptyMap();
-        }
+        @SuppressWarnings("unchecked")
+        Map<String, String> values =
+                Optional.ofNullable(hints)
+                        .map(h -> (Map<String, String>) hints.get(Hints.VIRTUAL_TABLE_PARAMETERS))
+                        .orElse(Collections.emptyMap());
 
         // perform the expansion, checking for validity and applying default values as needed
         for (VirtualTableParameter param : parameters.values()) {
@@ -266,7 +265,7 @@ public class VirtualTable implements Serializable {
 
     /** The current parameter names */
     public Collection<String> getParameterNames() {
-        return new ArrayList(parameters.keySet());
+        return new ArrayList<>(parameters.keySet());
     }
 
     /** Returns the requested parameter, or null if it could not be found */

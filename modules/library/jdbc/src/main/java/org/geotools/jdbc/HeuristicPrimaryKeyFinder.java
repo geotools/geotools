@@ -98,7 +98,7 @@ public class HeuristicPrimaryKeyFinder extends PrimaryKeyFinder {
             String tableName,
             Connection cx)
             throws SQLException {
-        ArrayList<PrimaryKeyColumn> cols = new ArrayList();
+        ArrayList<PrimaryKeyColumn> cols = new ArrayList<>();
 
         while (index.next()) {
             String columnName = index.getString("COLUMN_NAME");

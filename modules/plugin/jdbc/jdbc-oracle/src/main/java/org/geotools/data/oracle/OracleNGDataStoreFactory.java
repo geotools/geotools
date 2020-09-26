@@ -138,6 +138,7 @@ public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {
         }
     }
 
+    @SuppressWarnings("unchecked") // temporary workaround
     protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map params)
             throws IOException {
 
@@ -184,6 +185,7 @@ public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
+    @SuppressWarnings("unchecked") // temporary workaround
     protected String getJDBCUrl(Map params) throws IOException {
         String db = (String) DATABASE.lookUp(params);
         String host = (String) HOST.lookUp(params);
@@ -205,6 +207,7 @@ public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
+    @SuppressWarnings("unchecked") // temporary workaround
     protected void setupParameters(Map parameters) {
         // NOTE: when adding parameters here remember to add them to OracleNGOCIDataStoreFactory and
         // OracleNGJNDIDataStoreFactory

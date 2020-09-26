@@ -619,7 +619,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
     /** Returns the supported aggregate functions and the visitors they map to. */
     public Map<Class<? extends FeatureVisitor>, String> getAggregateFunctions() {
         if (aggregateFunctions == null) {
-            aggregateFunctions = new HashMap();
+            aggregateFunctions = new HashMap<>();
             dialect.registerAggregateFunctions(aggregateFunctions);
         }
         return aggregateFunctions;
@@ -667,7 +667,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
         if (mapping == null) {
             // no match, try a "fuzzy" match in which we find the super class which matches best
-            List<Map.Entry<Class<?>, Integer>> matches = new ArrayList();
+            List<Map.Entry<Class<?>, Integer>> matches = new ArrayList<>();
             for (Map.Entry<Class<?>, Integer> e : getClassToSqlTypeMappings().entrySet()) {
                 if (e.getKey().isAssignableFrom(clazz)) {
                     matches.add(e);
@@ -932,7 +932,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      *
      * <p>The list is generated from the underlying database metadata.
      */
-    protected List createTypeNames() throws IOException {
+    protected List<Name> createTypeNames() throws IOException {
         Connection cx = createConnection();
 
         /*
@@ -952,7 +952,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
          *                  SELF_REFERENCING_COL_NAME are created. Values are
          *                  "SYSTEM", "USER", "DERIVED". (may be <code>null</code>)
          */
-        List typeNames = new ArrayList();
+        List<Name> typeNames = new ArrayList<>();
 
         try {
             DatabaseMetaData metaData = cx.getMetaData();
@@ -1113,7 +1113,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
     PrimaryKey createPrimaryKey(
             ResultSet index, DatabaseMetaData metaData, String tableName, Connection cx)
             throws SQLException {
-        ArrayList<PrimaryKeyColumn> cols = new ArrayList();
+        ArrayList<PrimaryKeyColumn> cols = new ArrayList<>();
 
         while (index.next()) {
             String columnName = index.getString("COLUMN_NAME");
@@ -1419,7 +1419,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         // result of the function
         try {
             Object result = null;
-            List results = new ArrayList();
+            List<Object> results = new ArrayList<>();
             Statement st = null;
             ResultSet rs = null;
 
@@ -1676,7 +1676,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                 AGGREGATE_SETVALUE_CACHE.put(visitor.getClass(), s);
             }
             if (s != null) {
-                Class type = s.getParameterTypes()[0];
+                Class<?> type = s.getParameterTypes()[0];
                 if (!type.isInstance(result)) {
                     // convert
                     Object converted = Converters.convert(result, type);
@@ -2221,18 +2221,18 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
         // check for case of multi column primary key and try to backwards map using
         // "." as a seperator of values
-        List values = null;
+        List<Object> values = null;
         if (key.getColumns().size() > 1) {
             String[] split = FID.split("\\.");
 
             // copy over to avoid array store exception
-            values = new ArrayList(split.length);
+            values = new ArrayList<>(split.length);
             for (int i = 0; i < split.length; i++) {
                 values.add(split[i]);
             }
         } else {
             // single value case
-            values = new ArrayList();
+            values = new ArrayList<>();
             values.add(FID);
         }
         if (values.size() != key.getColumns().size()) {
@@ -2249,7 +2249,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         for (int i = 0; i < values.size(); i++) {
             Object value = values.get(i);
             if (value != null) {
-                Class type = key.getColumns().get(i).getType();
+                Class<?> type = key.getColumns().get(i).getType();
                 Object converted = Converters.convert(value, type);
                 if (converted != null) {
                     values.set(i, converted);
@@ -3637,10 +3637,11 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * Helper method for setting the values of the WHERE class of a prepared statement from a list
      * of PreparedFilterToSQL.
      */
-    protected void setPreparedFilterValues(PreparedStatement ps, List toSQLs, Connection cx)
-            throws SQLException {
+    protected void setPreparedFilterValues(
+            PreparedStatement ps, List<FilterToSQL> toSQLs, Connection cx) throws SQLException {
         int offset = 0;
-        for (PreparedFilterToSQL toSQL : (List<PreparedFilterToSQL>) toSQLs) {
+        for (FilterToSQL fts : toSQLs) {
+            PreparedFilterToSQL toSQL = (PreparedFilterToSQL) fts;
             setPreparedFilterValues(ps, toSQL, offset, cx);
             offset += toSQL.getLiteralValues().size();
         }
@@ -3907,7 +3908,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         JoinInfo join =
                 !query.getJoins().isEmpty() ? JoinInfo.create(query, featureType, this) : null;
 
-        List<FilterToSQL> toSQL = new ArrayList();
+        List<FilterToSQL> toSQL = new ArrayList<>();
         boolean queryLimitOffset = checkLimitOffset(query.getStartIndex(), query.getMaxFeatures());
         boolean visitorLimitOffset =
                 visitor == null ? false : visitor.hasLimits() && dialect.isLimitOffsetSupported();
@@ -4601,7 +4602,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
     protected List<FilterToSQL> encodeWhereJoin(
             SimpleFeatureType featureType, JoinInfo join, StringBuffer sql) throws IOException {
 
-        List<FilterToSQL> toSQL = new ArrayList();
+        List<FilterToSQL> toSQL = new ArrayList<>();
 
         boolean whereEncoded = false;
         Filter filter = join.getFilter();
@@ -4634,17 +4635,19 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
     /** Helper method for setting the gml:id of a geometry as user data. */
     protected void setGmlProperties(Geometry g, String gid, String name, String description) {
         // set up the user data
-        Map userData = null;
+        Map<Object, Object> userData = null;
 
         if (g.getUserData() != null) {
             if (g.getUserData() instanceof Map) {
-                userData = (Map) g.getUserData();
+                @SuppressWarnings("unchecked")
+                Map<Object, Object> cast = (Map) g.getUserData();
+                userData = cast;
             } else {
-                userData = new HashMap();
+                userData = new HashMap<>();
                 userData.put(g.getUserData().getClass(), g.getUserData());
             }
         } else {
-            userData = new HashMap();
+            userData = new HashMap<>();
         }
 
         if (gid != null) {

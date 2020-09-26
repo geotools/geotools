@@ -227,7 +227,7 @@ public class TemporalConverterFactory implements ConverterFactory {
             }
         }
 
-        if (Long.class.isAssignableFrom(source) && java.util.Date.class.isAssignableFrom(target)) {
+        if (Long.class.isAssignableFrom(source) && java.util.Date.class.equals(target)) {
             return new Converter() {
                 @Override
                 public <T> T convert(Object source, Class<T> target) throws Exception {

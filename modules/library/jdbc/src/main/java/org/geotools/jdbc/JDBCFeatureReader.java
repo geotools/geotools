@@ -430,7 +430,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
                     EnumMapper mapper = enumMappers[i];
                     if (mapper != null)
                         value = mapper.fromInteger(Converters.convert(value, Integer.class));
-                    Class binding = type.getType().getBinding();
+                    Class<?> binding = type.getType().getBinding();
                     Object converted = Converters.convert(value, binding);
                     if (converted != null && converted != value) {
                         value = converted;
@@ -920,6 +920,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             return true;
         }
 
+        @SuppressWarnings("unchecked")
         public void setValue(Object value) {
             setValue((Collection<Property>) value);
         }

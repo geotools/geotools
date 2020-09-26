@@ -37,12 +37,12 @@ import org.junit.Test;
 
 public class H2DataStoreFactoryTest {
     H2DataStoreFactory factory;
-    HashMap params;
+    Map<String, Object> params;
 
     @Before
     public void setUp() throws Exception {
         factory = new H2DataStoreFactory();
-        params = new HashMap();
+        params = new HashMap<>();
         params.put(JDBCDataStoreFactory.NAMESPACE.key, "http://www.geotools.org/test");
         params.put(JDBCDataStoreFactory.DATABASE.key, "geotools");
         params.put(JDBCDataStoreFactory.DBTYPE.key, "h2");
@@ -70,7 +70,7 @@ public class H2DataStoreFactoryTest {
 
     @Test
     public void testCreateDataStoreMVCC() throws Exception {
-        Map clonedParams = new HashMap(params);
+        Map<String, Object> clonedParams = new HashMap<>(params);
         clonedParams.put(H2DataStoreFactory.MVCC.key, true);
         JDBCDataStore ds = null;
         try {
@@ -94,7 +94,7 @@ public class H2DataStoreFactoryTest {
 
     @Test
     public void testTCP() throws Exception {
-        HashMap params = new HashMap();
+        Map<String, Object> params = new HashMap<>();
         params.put(H2DataStoreFactory.HOST.key, "localhost");
         params.put(H2DataStoreFactory.DATABASE.key, "geotools");
         params.put(H2DataStoreFactory.USER.key, "geotools");
@@ -138,7 +138,7 @@ public class H2DataStoreFactoryTest {
     public void testDefaultFetchSizeDataStore() throws Exception {
         JDBCDataStore ds = null;
         try {
-            assertNull(params.get(H2DataStoreFactory.FETCHSIZE));
+            assertNull(params.get(H2DataStoreFactory.FETCHSIZE.key));
             ds = factory.createDataStore(params);
             assertNotNull(ds);
             assertTrue(ds.getFetchSize() == 1000);

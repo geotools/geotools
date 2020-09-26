@@ -16,7 +16,7 @@
  */
 package org.geotools.data.oracle;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
@@ -40,8 +40,8 @@ public class OracleConnectionLifecycleOnlineTest extends JDBCConnectionLifecycle
             Properties addStartupSql = (Properties) fixture.clone();
             addStartupSql.setProperty(
                     JDBCDataStoreFactory.SQL_ON_BORROW.key, "select sysdate from dual");
-            HashMap params = createDataStoreFactoryParams();
-            params.putAll(addStartupSql);
+            Map<String, Object> params = createDataStoreFactoryParams();
+            addStartupSql.forEach((k, v) -> params.put((String) k, v));
             DataStore withWrap = (JDBCDataStore) DataStoreFinder.getDataStore(params);
             if (withWrap == null) {
                 throw new RuntimeException("Failed to create DataStore with startup sql");

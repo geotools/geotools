@@ -84,8 +84,8 @@ import org.opengis.filter.temporal.TOverlaps;
 public class OracleFilterToSQL extends PreparedFilterToSQL {
 
     /** Contains filter type to SDO_RELATE mask type mappings */
-    private static final Map<Class, String> SDO_RELATE_MASK_MAP =
-            new HashMap<Class, String>() {
+    private static final Map<Class<?>, String> SDO_RELATE_MASK_MAP =
+            new HashMap<Class<?>, String>() {
                 {
                     put(Contains.class, "contains");
                     put(Crosses.class, "overlapbdydisjoint");
@@ -473,7 +473,7 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
     protected <T> void accumulateGeometries(
             List<T> collection, Geometry g, Class<? extends T> target) {
         if (target.isInstance(g)) {
-            collection.add((T) g);
+            collection.add(target.cast(g));
         } else if (g instanceof GeometryCollection) {
             GeometryCollection coll = (GeometryCollection) g;
             for (int i = 0; i < coll.getNumGeometries(); i++) {
@@ -498,7 +498,7 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
             throws IOException {
         // grab the operating mask
         String mask = null;
-        for (Class filterClass : SDO_RELATE_MASK_MAP.keySet()) {
+        for (Class<?> filterClass : SDO_RELATE_MASK_MAP.keySet()) {
             if (filterClass.isAssignableFrom(filter.getClass()))
                 mask = SDO_RELATE_MASK_MAP.get(filterClass);
         }

@@ -34,6 +34,8 @@ import org.geotools.jdbc.PrimaryKeyFinder;
 import org.geotools.jdbc.SQLDialect;
 import org.geotools.util.logging.Logging;
 
+// temporary work around, the factory parameters map will be fixed separately
+@SuppressWarnings("unchecked")
 public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
 
     public static final Logger LOGGER = Logging.getLogger(TeradataDataStoreFactory.class);

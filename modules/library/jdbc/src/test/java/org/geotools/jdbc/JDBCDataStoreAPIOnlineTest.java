@@ -19,12 +19,23 @@ package org.geotools.jdbc;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
-import org.geotools.data.*;
+import org.geotools.data.DataSourceException;
+import org.geotools.data.DataUtilities;
+import org.geotools.data.DefaultTransaction;
+import org.geotools.data.FeatureLock;
+import org.geotools.data.FeatureLockException;
+import org.geotools.data.FeatureReader;
+import org.geotools.data.FeatureWriter;
+import org.geotools.data.FilteringFeatureReader;
+import org.geotools.data.InProcessLockingManager;
+import org.geotools.data.Query;
+import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.data.simple.SimpleFeatureLocking;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
@@ -211,8 +222,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
         FilterFunction_geometryType geomTypeExpr = new FilterFunction_geometryType();
 
-        geomTypeExpr.setParameters(
-                (List) Collections.singletonList(factory.property(aname("geom"))));
+        geomTypeExpr.setParameters(Collections.singletonList(factory.property(aname("geom"))));
 
         PropertyIsEqualTo filter = factory.equals(geomTypeExpr, factory.literal("Polygon"));
         try (Transaction t = new DefaultTransaction()) {
@@ -236,8 +246,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         try (Transaction t = new DefaultTransaction()) {
             FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
             FilterFunction_geometryType geomTypeExpr = new FilterFunction_geometryType();
-            geomTypeExpr.setParameters(
-                    (List) Collections.singletonList(factory.property(aname("geom"))));
+            geomTypeExpr.setParameters(Collections.singletonList(factory.property(aname("geom"))));
 
             PropertyIsEqualTo filter = factory.equals(geomTypeExpr, factory.literal("Polygon"));
 
@@ -1087,9 +1096,8 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
      */
     public void testLockFeatures() throws IOException {
         FeatureLock lock = new FeatureLock("test", LOCK_DURATION);
-        FeatureLocking<SimpleFeatureType, SimpleFeature> road =
-                (FeatureLocking<SimpleFeatureType, SimpleFeature>)
-                        dataStore.getFeatureSource(tname("road"));
+        SimpleFeatureLocking road =
+                (SimpleFeatureLocking) dataStore.getFeatureSource(tname("road"));
         road.setFeatureLock(lock);
 
         assertFalse(isLocked(tname("road"), tname("road") + ".1"));
@@ -1099,9 +1107,8 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
 
     public void testUnLockFeatures() throws IOException {
         FeatureLock lock = new FeatureLock("test", LOCK_DURATION);
-        FeatureLocking<SimpleFeatureType, SimpleFeature> road =
-                (FeatureLocking<SimpleFeatureType, SimpleFeature>)
-                        dataStore.getFeatureSource(tname("road"));
+        SimpleFeatureLocking road =
+                (SimpleFeatureLocking) dataStore.getFeatureSource(tname("road"));
         road.setFeatureLock(lock);
         road.lockFeatures();
 
@@ -1130,12 +1137,10 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         FeatureLock lockB = new FeatureLock("LockB", LOCK_DURATION);
         try (Transaction t1 = new DefaultTransaction();
                 Transaction t2 = new DefaultTransaction()) {
-            FeatureLocking<SimpleFeatureType, SimpleFeature> road1 =
-                    (FeatureLocking<SimpleFeatureType, SimpleFeature>)
-                            dataStore.getFeatureSource(tname("road"));
-            FeatureLocking<SimpleFeatureType, SimpleFeature> road2 =
-                    (FeatureLocking<SimpleFeatureType, SimpleFeature>)
-                            dataStore.getFeatureSource(tname("road"));
+            SimpleFeatureLocking road1 =
+                    (SimpleFeatureLocking) dataStore.getFeatureSource(tname("road"));
+            SimpleFeatureLocking road2 =
+                    (SimpleFeatureLocking) dataStore.getFeatureSource(tname("road"));
             road1.setTransaction(t1);
             road2.setTransaction(t2);
             road1.setFeatureLock(lockA);
@@ -1185,9 +1190,8 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     public void testGetFeatureLockingExpire() throws Exception {
         FeatureLock lock = new FeatureLock("Timed", 1000);
 
-        FeatureLocking<SimpleFeatureType, SimpleFeature> road =
-                (FeatureLocking<SimpleFeatureType, SimpleFeature>)
-                        dataStore.getFeatureSource(tname("road"));
+        SimpleFeatureLocking road =
+                (SimpleFeatureLocking) dataStore.getFeatureSource(tname("road"));
         road.setFeatureLock(lock);
         assertFalse(isLocked(tname("road"), tname("road") + "." + (td.initialFidValue)));
 
@@ -1631,8 +1635,8 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     }
 
     @Override
-    protected HashMap createDataStoreFactoryParams() throws Exception {
-        HashMap params = super.createDataStoreFactoryParams();
+    protected Map<String, Object> createDataStoreFactoryParams() throws Exception {
+        Map<String, Object> params = super.createDataStoreFactoryParams();
         // This test expects the write to happen right away. Disable buffering.
         params.put(JDBCDataStoreFactory.BATCH_INSERT_SIZE.key, 1);
         return params;

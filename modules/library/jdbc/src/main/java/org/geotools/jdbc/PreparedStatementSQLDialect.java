@@ -272,7 +272,7 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
      * @return The converted value
      * @throws SQLException In case the conversion failed.
      */
-    protected Object convertArrayElement(Object value, Class target) throws SQLException {
+    protected Object convertArrayElement(Object value, Class<?> target) throws SQLException {
         Object converted = Converters.convert(value, target);
         if (converted == null) {
             String message =
@@ -287,7 +287,7 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
      */
     protected <T> T convert(Object value, Class<T> binding) {
         if (value == null) {
-            return (T) value;
+            return null;
         }
         // convert the value if necessary
         if (!binding.isInstance(value)) {
@@ -300,7 +300,7 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
                         .warning("Unable to convert " + value + " to " + binding.getName());
             }
         }
-        return (T) value;
+        return binding.cast(value);
     }
 
     public PreparedFilterToSQL createPreparedFilterToSQL() {

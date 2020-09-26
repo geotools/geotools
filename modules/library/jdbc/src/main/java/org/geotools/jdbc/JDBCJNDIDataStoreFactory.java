@@ -35,6 +35,8 @@ import org.geotools.util.factory.GeoTools;
  *
  * @author Christian Mueller
  */
+// temporary work around, the factory parameters map will be fixed separately
+@SuppressWarnings("unchecked")
 public abstract class JDBCJNDIDataStoreFactory extends JDBCDataStoreFactory {
 
     public static final String J2EERootContext = "java:comp/env/";

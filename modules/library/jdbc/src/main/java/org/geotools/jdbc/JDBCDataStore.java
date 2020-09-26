@@ -43,7 +43,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -1791,7 +1790,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                         int srid = getGeometrySRID(g, att);
                         int dimension = getGeometryDimension(g, att);
                         dialect.setGeometryValue(g, dimension, srid, binding, ps, i);
-                    } else if (isArray(att)) {
+                    } else if (this.dialect.isArray(att)) {
                         dialect.setArrayValue(value, att, ps, i, cx);
                     } else {
                         if (mapper != null) {
@@ -3669,7 +3668,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             if (binding != null && Geometry.class.isAssignableFrom(binding)) {
                 dialect.setGeometryValue(
                         (Geometry) value, dimension, srid, binding, ps, offset + i + 1);
-            } else if (ad != null && isArray(ad)) {
+            } else if (ad != null && this.dialect.isArray(ad)) {
                 dialect.setArrayValue(value, ad, ps, offset + i + 1, cx);
             } else {
                 dialect.setValue(value, binding, ps, offset + i + 1, cx);
@@ -3678,15 +3677,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                 LOGGER.fine((i + 1) + " = " + value);
             }
         }
-    }
-
-    /**
-     * Returns true if the attribute descriptor matches a native SQL array (as recorded in its user
-     * data via {@link #JDBC_NATIVE_TYPE}
-     */
-    private boolean isArray(AttributeDescriptor att) {
-        Integer nativeType = (Integer) att.getUserData().get(JDBC_NATIVE_TYPE);
-        return Objects.equals(Types.ARRAY, nativeType);
     }
 
     /**

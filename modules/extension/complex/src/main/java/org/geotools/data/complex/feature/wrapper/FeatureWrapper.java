@@ -159,6 +159,7 @@ public abstract class FeatureWrapper {
                         }
 
                         // Look for this field in the complexAttribute:
+                        @SuppressWarnings("unchecked")
                         FeatureWrapper property =
                                 wrap(nestedComplexAttribute, (Class<FeatureWrapper>) fieldType);
                         field.set(wrapper, property);
@@ -180,10 +181,10 @@ public abstract class FeatureWrapper {
                         if (FeatureWrapper.class.isAssignableFrom(collectionType)) {
                             // The collection is complex.
                             for (Property property : targetAttribute.getProperties(xsdName)) {
-                                collection.add(
-                                        wrap(
-                                                (ComplexAttribute) property,
-                                                (Class<FeatureWrapper>) collectionType));
+                                @SuppressWarnings("unchecked")
+                                Class<FeatureWrapper> fwClass =
+                                        (Class<FeatureWrapper>) collectionType;
+                                collection.add(wrap((ComplexAttribute) property, fwClass));
                             }
                         } else {
                             // The collection is simple.

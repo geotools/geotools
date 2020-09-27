@@ -123,7 +123,7 @@ public class AttributeMapping implements Serializable {
      *
      * <p>for example: srsName/strConcat("#bh.", BGS_ID)
      */
-    private Map clientProperties;
+    private Map<String, String> clientProperties;
 
     /** Field name in external index layer */
     private String indexField;
@@ -427,12 +427,12 @@ public class AttributeMapping implements Serializable {
                 + "]";
     }
 
-    public Map getClientProperties() {
+    public Map<String, String> getClientProperties() {
         return clientProperties == null ? Collections.emptyMap() : clientProperties;
     }
 
-    public void setClientProperties(Map clientProperties) {
-        this.clientProperties = clientProperties == null ? null : new HashMap(clientProperties);
+    public void setClientProperties(Map<String, String> clientProperties) {
+        this.clientProperties = clientProperties == null ? null : new HashMap<>(clientProperties);
     }
 
     public void putClientProperty(String name, String expression) {
@@ -440,7 +440,7 @@ public class AttributeMapping implements Serializable {
             throw new NullPointerException("name=" + name + ", expression=" + expression);
         }
         if (clientProperties == null) {
-            clientProperties = new HashMap();
+            clientProperties = new HashMap<>();
         }
         clientProperties.put(name, expression);
     }

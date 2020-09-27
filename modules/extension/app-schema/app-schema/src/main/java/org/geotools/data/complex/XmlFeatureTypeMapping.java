@@ -34,7 +34,9 @@ import org.geotools.data.complex.xml.XmlFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.LiteralExpressionImpl;
 import org.opengis.feature.Attribute;
+import org.opengis.feature.Feature;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
@@ -84,7 +86,7 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
     }
 
     public XmlFeatureTypeMapping(
-            FeatureSource source,
+            FeatureSource<? extends FeatureType, ? extends Feature> source,
             AttributeDescriptor target,
             List<AttributeMapping> mappings,
             NamespaceSupport namespaces,

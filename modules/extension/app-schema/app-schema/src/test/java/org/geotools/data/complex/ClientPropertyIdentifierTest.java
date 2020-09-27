@@ -23,6 +23,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -67,7 +68,7 @@ public class ClientPropertyIdentifierTest {
     @Before
     public void loadDataAccess() throws Exception {
         /** Load observation data access */
-        Map dsParams = new HashMap();
+        Map<String, Serializable> dsParams = new HashMap<>();
         URL url = SweValuesTest.class.getResource(SWE_VALUES_MAPPING);
         assertNotNull(url);
 

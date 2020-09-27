@@ -19,6 +19,7 @@ package org.geotools.data.complex;
 
 import static org.junit.Assert.*;
 
+import java.io.Serializable;
 import java.net.URL;
 import java.util.*;
 import org.geotools.appschema.filter.FilterFactoryImplNamespaceAware;
@@ -124,7 +125,7 @@ public class PolymorphicChainingTest extends AppSchemaTestSupport {
     /** Load all the data accesses. */
     private static void loadDataAccesses() throws Exception {
         /** Load mapped feature data access */
-        Map dsParams = new HashMap();
+        Map<String, Serializable> dsParams = new HashMap<>();
         URL url = PolymorphicChainingTest.class.getResource(schemaBase + "artifact_mapping.xml");
         assertNotNull(url);
 
@@ -136,7 +137,7 @@ public class PolymorphicChainingTest extends AppSchemaTestSupport {
         FeatureType mappedFeatureType = mfDataAccess.getSchema(ARTIFACT);
         assertNotNull(mappedFeatureType);
 
-        artifactSource = (FeatureSource) mfDataAccess.getFeatureSource(ARTIFACT);
+        artifactSource = mfDataAccess.getFeatureSource(ARTIFACT);
     }
 
     protected List<Feature> getFeatures(FeatureCollection<FeatureType, Feature> features) {

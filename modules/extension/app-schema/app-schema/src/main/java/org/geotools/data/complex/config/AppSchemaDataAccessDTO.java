@@ -47,7 +47,7 @@ public class AppSchemaDataAccessDTO implements Serializable {
     private String baseSchemasUrl;
 
     /** Mapping of prefix/namespace used in the target schema */
-    private Map namespaces = Collections.emptyMap();
+    private Map<String, String> namespaces = Collections.emptyMap();
 
     /**
      * List of configuration objects used to aquire the datastores that provides the source
@@ -62,7 +62,7 @@ public class AppSchemaDataAccessDTO implements Serializable {
      * List of file names, that may be fully qualified URL's, or paths relative to {@link
      * #baseSchemasUrl}
      */
-    private List targetSchemasUris = Collections.emptyList();
+    private List<String> targetSchemasUris = Collections.emptyList();
 
     /**
      * List of the paths of other related types that are mapped separately that shouldn't be visible
@@ -73,13 +73,13 @@ public class AppSchemaDataAccessDTO implements Serializable {
     private String oasisCatalogUri;
 
     /** */
-    public List getTargetSchemasUris() {
-        return new ArrayList(targetSchemasUris);
+    public List<String> getTargetSchemasUris() {
+        return new ArrayList<>(targetSchemasUris);
     }
 
     /** */
-    public void setTargetSchemasUris(List targetSchemasUris) {
-        this.targetSchemasUris = new CheckedArrayList(String.class);
+    public void setTargetSchemasUris(List<String> targetSchemasUris) {
+        this.targetSchemasUris = new CheckedArrayList<>(String.class);
 
         if (targetSchemasUris != null) {
             this.targetSchemasUris.addAll(targetSchemasUris);
@@ -87,24 +87,24 @@ public class AppSchemaDataAccessDTO implements Serializable {
     }
 
     /** */
-    public void setNamespaces(Map nameSpaces) {
+    public void setNamespaces(Map<String, String> nameSpaces) {
         if (nameSpaces == null) {
             this.namespaces = Collections.emptyMap();
         } else {
-            this.namespaces = new CheckedHashMap(String.class, String.class);
+            this.namespaces = new CheckedHashMap<>(String.class, String.class);
             this.namespaces.putAll(nameSpaces);
         }
     }
 
     /** */
-    public Map getNamespaces() {
-        return new HashMap(namespaces);
+    public Map<String, String> getNamespaces() {
+        return new HashMap<>(namespaces);
     }
 
     /** Set the path of other related types that are mapped separately */
     public void setIncludedTypes(ArrayList<String> includes) {
         if (includes != null) {
-            this.includes = new CheckedArrayList(String.class);
+            this.includes = new CheckedArrayList<>(String.class);
             this.includes.addAll(includes);
         }
     }
@@ -119,19 +119,19 @@ public class AppSchemaDataAccessDTO implements Serializable {
         if (dataStores == null) {
             this.sourceDataStores = Collections.emptyList();
         } else {
-            this.sourceDataStores = new CheckedArrayList(SourceDataStore.class);
+            this.sourceDataStores = new CheckedArrayList<>(SourceDataStore.class);
             this.sourceDataStores.addAll(dataStores);
         }
     }
 
     /** */
-    public List getSourceDataStores() {
-        return new ArrayList(sourceDataStores);
+    public List<SourceDataStore> getSourceDataStores() {
+        return new ArrayList<>(sourceDataStores);
     }
 
     /** */
-    public void setTypeMappings(Set typeMappings) {
-        this.typeMappings = new CheckedHashSet(TypeMapping.class);
+    public void setTypeMappings(Set<TypeMapping> typeMappings) {
+        this.typeMappings = new CheckedHashSet<>(TypeMapping.class);
 
         if (typeMappings != null) {
             this.typeMappings.addAll(typeMappings);
@@ -139,8 +139,8 @@ public class AppSchemaDataAccessDTO implements Serializable {
     }
 
     /** */
-    public Set getTypeMappings() {
-        return new HashSet(typeMappings);
+    public Set<TypeMapping> getTypeMappings() {
+        return new HashSet<>(typeMappings);
     }
 
     /**

@@ -21,6 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.Serializable;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -88,7 +89,7 @@ public class SweValuesTest {
     /** Load all the data accesses. */
     private static void loadDataAccesses() throws Exception {
         /** Load observation data access */
-        Map dsParams = new HashMap();
+        Map<String, Serializable> dsParams = new HashMap<>();
         URL url = SweValuesTest.class.getResource(SWE_VALUES_MAPPING);
         assertNotNull(url);
 
@@ -100,14 +101,14 @@ public class SweValuesTest {
         FeatureType observationFeatureType = omsoDataAccess.getSchema(OBSERVATION_FEATURE);
         assertNotNull(observationFeatureType);
 
-        obsSource = (FeatureSource) omsoDataAccess.getFeatureSource(OBSERVATION_FEATURE);
-        obsFeatures = (FeatureCollection) obsSource.getFeatures();
+        obsSource = omsoDataAccess.getFeatureSource(OBSERVATION_FEATURE);
+        obsFeatures = obsSource.getFeatures();
         assertEquals(2, size(obsFeatures));
     }
 
-    static int size(FeatureCollection<FeatureType, Feature> features) {
+    static int size(FeatureCollection features) {
         int size = 0;
-        FeatureIterator<Feature> iterator = features.features();
+        FeatureIterator iterator = features.features();
         while (iterator.hasNext()) {
             iterator.next();
             size++;

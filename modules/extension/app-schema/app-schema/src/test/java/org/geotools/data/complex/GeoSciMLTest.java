@@ -247,6 +247,7 @@ public class GeoSciMLTest extends AppSchemaTestSupport {
         assertNotNull(features);
         try (final Stream<Feature> featureStream = toFeatureStream(features)) {
             Optional<Feature> first = featureStream.findFirst();
+            @SuppressWarnings("unchecked")
             Optional<Map<String, String>> mapOpt =
                     first.map(Feature::getDescriptor)
                             .map(AttributeDescriptor::getType)

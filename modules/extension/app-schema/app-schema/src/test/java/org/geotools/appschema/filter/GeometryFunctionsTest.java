@@ -191,6 +191,7 @@ public class GeometryFunctionsTest extends AppSchemaTestSupport {
         assertEquals(pt.getDimension(), 0);
         assertEquals(pt.getCoordinate().x, 5.0, 0);
         assertEquals(pt.getCoordinate().y, 2.5, 0);
+        @SuppressWarnings("unchecked")
         Map<Object, Object> userData = (Map<Object, Object>) pt.getUserData();
         assertEquals(userData.get("gml:id"), "1");
         assertEquals(userData.get(CoordinateReferenceSystem.class), CRS.decode("EPSG:4283"));

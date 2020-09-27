@@ -61,10 +61,10 @@ public class NestedAttributeMapping extends AttributeMapping {
             org.geotools.util.logging.Logging.getLogger(NestedAttributeMapping.class);
 
     /** Input feature source of the nested features */
-    private FeatureSource<FeatureType, Feature> source;
+    private FeatureSource<? extends FeatureType, ? extends Feature> source;
 
     /** Mapped feature source of the nested features */
-    private FeatureSource<FeatureType, Feature> mappingSource;
+    private FeatureSource<? extends FeatureType, ? extends Feature> mappingSource;
 
     /** Name of the nested features element */
     protected final Expression nestedFeatureType;
@@ -226,10 +226,11 @@ public class NestedAttributeMapping extends AttributeMapping {
                 filterFac.equals(this.nestedSourceExpression, filterFac.literal(foreignKeyValue));
 
         // get all the nested features based on the link values
-        FeatureCollection<FeatureType, Feature> fCollection = source.getFeatures(filter);
+        FeatureCollection<? extends FeatureType, ? extends Feature> fCollection =
+                source.getFeatures(filter);
         Filter matchingIdFilter = null;
 
-        try (FeatureIterator<Feature> it = fCollection.features()) {
+        try (FeatureIterator<? extends Feature> it = fCollection.features()) {
             if (nestedIdExpression.equals(Expression.NIL)) {
                 HashSet<FeatureId> featureIds = new HashSet<>();
                 while (it.hasNext()) {
@@ -271,7 +272,7 @@ public class NestedAttributeMapping extends AttributeMapping {
 
             if (fCollection.size() > matchingFeatures.size()) {
                 // there are rows of same id from denormalised view
-                try (FeatureIterator<Feature> it = fCollection.features()) {
+                try (FeatureIterator<? extends Feature> it = fCollection.features()) {
                     matchingFeatures.clear();
                     while (it.hasNext()) {
                         matchingFeatures.add(it.next());
@@ -380,7 +381,7 @@ public class NestedAttributeMapping extends AttributeMapping {
                     "Link field is missing from feature chaining mapping!");
         }
 
-        FeatureSource<FeatureType, Feature> fSource = getMappingSource(feature);
+        FeatureSource<? extends FeatureType, ? extends Feature> fSource = getMappingSource(feature);
         if (fSource == null) {
             return null;
         }
@@ -416,9 +417,10 @@ public class NestedAttributeMapping extends AttributeMapping {
         ArrayList<Feature> matchingFeatures = new ArrayList<>();
 
         // get all the mapped nested features based on the link values
-        FeatureCollection<FeatureType, Feature> fCollection = fSource.getFeatures(query);
+        FeatureCollection<? extends FeatureType, ? extends Feature> fCollection =
+                fSource.getFeatures(query);
         if (fCollection instanceof MappingFeatureCollection) {
-            try (FeatureIterator<Feature> iterator = fCollection.features()) {
+            try (FeatureIterator<? extends Feature> iterator = fCollection.features()) {
                 while (iterator.hasNext()) {
                     matchingFeatures.add(iterator.next());
                 }
@@ -428,8 +430,8 @@ public class NestedAttributeMapping extends AttributeMapping {
         return matchingFeatures;
     }
 
-    protected FeatureSource<FeatureType, Feature> getMappingSource(Object feature)
-            throws IOException {
+    protected FeatureSource<? extends FeatureType, ? extends Feature> getMappingSource(
+            Object feature) throws IOException {
 
         if (mappingSource == null || isConditional) {
             // initiate if null, or evaluate a new one if the targetElement is a function
@@ -480,7 +482,7 @@ public class NestedAttributeMapping extends AttributeMapping {
     }
 
     public FeatureTypeMapping getFeatureTypeMapping(Feature feature) throws IOException {
-        FeatureSource<FeatureType, Feature> fSource = getMappingSource(feature);
+        FeatureSource<? extends FeatureType, ? extends Feature> fSource = getMappingSource(feature);
         if (fSource == null) {
             return null;
         }

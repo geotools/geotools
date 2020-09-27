@@ -53,7 +53,7 @@ public class AttributeTypeProxy implements AttributeType {
         return subject;
     }
 
-    public Class getBinding() {
+    public Class<?> getBinding() {
         return getSubject().getBinding();
     }
 

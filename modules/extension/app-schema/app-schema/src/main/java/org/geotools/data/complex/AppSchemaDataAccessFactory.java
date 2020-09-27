@@ -18,6 +18,7 @@
 package org.geotools.data.complex;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashSet;
@@ -70,7 +71,8 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
 
     public AppSchemaDataAccessFactory() {}
 
-    public DataAccess<FeatureType, Feature> createDataStore(Map params) throws IOException {
+    public DataAccess<FeatureType, Feature> createDataStore(Map<String, Serializable> params)
+            throws IOException {
         final Set<AppSchemaDataAccess> registeredAppSchemaStores = new HashSet<>();
         try {
             return createDataStore(params, false, new DataAccessMap(), registeredAppSchemaStores);
@@ -84,7 +86,7 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
     }
 
     public DataAccess<FeatureType, Feature> createDataStore(
-            Map params,
+            Map<String, Serializable> params,
             boolean hidden,
             DataAccessMap sourceDataStoreMap,
             final Set<AppSchemaDataAccess> registeredAppSchemaStores)
@@ -147,7 +149,7 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
         return url;
     }
 
-    public DataStore createNewDataStore(Map params) throws IOException {
+    public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException {
         throw new UnsupportedOperationException();
     }
 
@@ -165,7 +167,7 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
         };
     }
 
-    public boolean canProcess(Map params) {
+    public boolean canProcess(Map<String, Serializable> params) {
         try {
             Object dbType = AppSchemaDataAccessFactory.DBTYPE.lookUp(params);
             Object configUrl = AppSchemaDataAccessFactory.URL.lookUp(params);

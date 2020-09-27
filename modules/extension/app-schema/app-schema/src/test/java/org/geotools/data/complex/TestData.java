@@ -145,7 +145,7 @@ public class TestData {
     public static List<AttributeMapping> createMappingsColumnsAndValues(
             AttributeDescriptor targetFeature) throws Exception {
 
-        List mappings = new LinkedList();
+        List<AttributeMapping> mappings = new LinkedList<>();
         AttributeMapping attMapping;
         Expression source;
         String target;
@@ -251,7 +251,7 @@ public class TestData {
                 tf.createAttributeDescriptor(
                         targetType, targetType.getName(), 0, Integer.MAX_VALUE, true, null);
 
-        List mappings = new LinkedList();
+        List<AttributeMapping> mappings = new LinkedList<>();
         Expression id;
         Expression source;
         String target;

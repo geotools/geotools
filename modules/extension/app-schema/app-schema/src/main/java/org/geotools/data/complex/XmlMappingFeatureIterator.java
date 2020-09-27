@@ -31,8 +31,10 @@ import org.geotools.data.Query;
 import org.geotools.data.complex.PathAttributeList.Pair;
 import org.geotools.data.complex.feature.type.Types;
 import org.geotools.data.complex.util.ComplexFeatureConstants;
-import org.geotools.data.complex.util.XPathUtil.*;
-import org.geotools.data.complex.xml.*;
+import org.geotools.data.complex.util.XPathUtil.StepList;
+import org.geotools.data.complex.xml.XmlFeatureCollection;
+import org.geotools.data.complex.xml.XmlResponse;
+import org.geotools.data.complex.xml.XmlXpathFilterData;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.type.ComplexTypeImpl;
 import org.geotools.filter.LiteralExpressionImpl;
@@ -286,9 +288,11 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
         // NC - first calculate target attributes
         final Map<Name, Object> targetAttributes = new HashMap<>();
         if (target.getUserData().containsValue(Attributes.class)) {
-            targetAttributes.putAll(
+            @SuppressWarnings("unchecked")
+            Map<? extends Name, ?> map =
                     (Map<? extends Name, ? extends Object>)
-                            target.getUserData().get(Attributes.class));
+                            target.getUserData().get(Attributes.class);
+            targetAttributes.putAll(map);
         }
         for (Map.Entry<Name, Expression> entry : clientProperties.entrySet()) {
             Name propName = entry.getKey();

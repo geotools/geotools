@@ -68,6 +68,7 @@ import org.geotools.data.complex.util.XPathUtil.Step;
 import org.geotools.data.complex.util.XPathUtil.StepList;
 import org.geotools.data.complex.xml.XmlFeatureSource;
 import org.geotools.data.joining.JoiningNestedAttributeMapping;
+import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
@@ -86,6 +87,8 @@ import org.geotools.xml.resolver.SchemaResolver;
 import org.geotools.xsd.SchemaIndex;
 import org.opengis.feature.Feature;
 import org.opengis.feature.GeometryAttribute;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.FeatureType;
@@ -132,7 +135,7 @@ public class AppSchemaDataAccessConfigurator {
      */
     private NamespaceSupport namespaces;
 
-    private Map schemaURIs;
+    private Map<String, String> schemaURIs;
 
     /** Convenience method for "joining" property. */
     public static boolean isJoining() {
@@ -320,7 +323,8 @@ public class AppSchemaDataAccessConfigurator {
         for (Iterator it = mappingsConfigs.iterator(); it.hasNext(); ) {
             TypeMapping dto = (TypeMapping) it.next();
             try {
-                FeatureSource featureSource = getFeatureSource(dto, sourceDataStores);
+                FeatureSource<? extends FeatureType, ? extends Feature> featureSource =
+                        getFeatureSource(dto, sourceDataStores);
                 // get CRS from underlying feature source and pass it on
                 CoordinateReferenceSystem crs;
                 try {
@@ -343,7 +347,7 @@ public class AppSchemaDataAccessConfigurator {
                         featureSource instanceof JDBCFeatureSource
                                 || featureSource instanceof JDBCFeatureStore;
 
-                List attMappings =
+                List<AttributeMapping> attMappings =
                         getAttributeMappings(
                                 target,
                                 dto.getAttributeMappings(),
@@ -352,7 +356,8 @@ public class AppSchemaDataAccessConfigurator {
                                 isDatabaseBackend);
 
                 // if an external index (e.g. Solr) is used in the mappings, get its data store
-                FeatureSource indexFeatureSource = getIndexFeatureSource(dto, sourceDataStores);
+                FeatureSource<SimpleFeatureType, SimpleFeature> indexFeatureSource =
+                        getIndexFeatureSource(dto, sourceDataStores);
 
                 FeatureTypeMapping mapping;
 
@@ -490,14 +495,14 @@ public class AppSchemaDataAccessConfigurator {
      * Creates a list of {@link org.geotools.data.complex.AttributeMapping} from the attribute
      * mapping configurations in the provided list of {@link AttributeMapping}
      */
-    private List getAttributeMappings(
+    private List<AttributeMapping> getAttributeMappings(
             final AttributeDescriptor root,
             final List attDtos,
             String itemXpath,
             CoordinateReferenceSystem crs,
             boolean isJDBC)
             throws IOException {
-        List attMappings = new LinkedList();
+        List<AttributeMapping> attMappings = new LinkedList<>();
 
         for (Iterator it = attDtos.iterator(); it.hasNext(); ) {
 
@@ -559,7 +564,7 @@ public class AppSchemaDataAccessConfigurator {
 
             final AttributeType expectedInstanceOf;
 
-            final Map clientProperties = getClientProperties(attDto);
+            final Map<Name, Expression> clientProperties = getClientProperties(attDto);
 
             if (expectedInstanceTypeName != null) {
                 Name expectedNodeTypeName = Types.degloseName(expectedInstanceTypeName, namespaces);
@@ -732,9 +737,9 @@ public class AppSchemaDataAccessConfigurator {
      * @return Map&lt;Name, Expression&gt; with the values per qualified name (attribute name in the
      *     mapping)
      */
-    private Map getClientProperties(org.geotools.data.complex.config.AttributeMapping dto)
-            throws DataSourceException {
-        final Map clientProperties = new HashMap();
+    private Map<Name, Expression> getClientProperties(
+            org.geotools.data.complex.config.AttributeMapping dto) throws DataSourceException {
+        final Map<Name, Expression> clientProperties = new HashMap<>();
 
         if (dto.getClientProperties().size() > 0) {
             for (Iterator it = dto.getClientProperties().entrySet().iterator(); it.hasNext(); ) {
@@ -754,7 +759,8 @@ public class AppSchemaDataAccessConfigurator {
     }
 
     private void addAnonymousAttributes(
-            org.geotools.data.complex.config.AttributeMapping dto, final Map clientProperties)
+            org.geotools.data.complex.config.AttributeMapping dto,
+            final Map<Name, Expression> clientProperties)
             throws DataSourceException {
         for (Map.Entry<String, String> entry : dto.getAnonymousAttributes().entrySet()) {
             Name qname = Types.degloseName(entry.getKey(), namespaces);
@@ -765,7 +771,7 @@ public class AppSchemaDataAccessConfigurator {
         }
     }
 
-    private FeatureSource<FeatureType, Feature> getFeatureSource(
+    private FeatureSource<? extends FeatureType, ? extends Feature> getFeatureSource(
             TypeMapping dto, Map<String, DataAccess<FeatureType, Feature>> sourceDataStores)
             throws IOException {
         String dsId = dto.getSourceDataStore();
@@ -780,7 +786,8 @@ public class AppSchemaDataAccessConfigurator {
         AppSchemaDataAccessConfigurator.LOGGER.fine(
                 "asking datastore " + sourceDataStore + " for source type " + typeName);
         Name name = Types.degloseName(typeName, namespaces);
-        FeatureSource fSource = sourceDataStore.getFeatureSource(name);
+        FeatureSource<? extends FeatureType, ? extends Feature> fSource =
+                sourceDataStore.getFeatureSource(name);
         if (fSource instanceof XmlFeatureSource) {
             ((XmlFeatureSource) fSource).setNamespaces(namespaces);
         }
@@ -810,7 +817,7 @@ public class AppSchemaDataAccessConfigurator {
         // create a single type registry for all the schemas in the config
         typeRegistry = new AppSchemaFeatureTypeRegistry(namespaces);
 
-        schemaURIs = new HashMap<String, String>(schemaFiles.size());
+        schemaURIs = new HashMap<>(schemaFiles.size());
         String nameSpace;
         String schemaLocation;
         for (Iterator it = schemaFiles.iterator(); it.hasNext(); ) {
@@ -1112,7 +1119,7 @@ public class AppSchemaDataAccessConfigurator {
      * will retrieve the corresponding data store definition, otherwise NULL will be returned. If
      * the data source cannot be found an exception will be throw.
      */
-    private FeatureSource<FeatureType, Feature> getIndexFeatureSource(
+    private FeatureSource<SimpleFeatureType, SimpleFeature> getIndexFeatureSource(
             TypeMapping dto, Map<String, DataAccess<FeatureType, Feature>> sourceDataStores)
             throws IOException {
         String dsId = dto.getIndexDataStore();
@@ -1121,14 +1128,14 @@ public class AppSchemaDataAccessConfigurator {
         // let's check if an external index (e.g. Solr) was configured
         if (StringUtils.isEmpty(dsId) || StringUtils.isEmpty(typeName)) return null;
 
-        DataAccess<FeatureType, Feature> sourceDataStore = sourceDataStores.get(dsId);
+        DataAccess sourceDataStore = sourceDataStores.get(dsId);
         if (sourceDataStore == null) {
             throw new DataSourceException(
                     "datastore " + dsId + " not found for type mapping " + dto);
         }
 
         Name name = Types.degloseName(typeName, namespaces);
-        FeatureSource fSource = sourceDataStore.getFeatureSource(name);
+        SimpleFeatureSource fSource = (SimpleFeatureSource) sourceDataStore.getFeatureSource(name);
         if (fSource == null) {
             throw new RuntimeException("Feature source not found '" + typeName + "'.");
         }

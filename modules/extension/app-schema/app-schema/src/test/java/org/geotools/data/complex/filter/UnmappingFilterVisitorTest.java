@@ -24,6 +24,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
@@ -68,8 +69,6 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.Feature;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.FeatureType;
@@ -129,7 +128,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
     @BeforeClass
     public static void oneTimeSetUp() throws IOException {
         final String schemaBase = "/test-data/";
-        final Map dsParams = new HashMap();
+        final Map<String, Serializable> dsParams = new HashMap<>();
         final URL url =
                 UnmappingFilterVisitorTest.class.getResource(
                         schemaBase + "BoreholeTest_properties.xml");
@@ -199,12 +198,11 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
         Filter unrolled = (Filter) fidFilter.accept(visitor, null);
         assertNotNull(unrolled);
 
-        FeatureCollection<SimpleFeatureType, SimpleFeature> results =
-                mapping.getSource().getFeatures(unrolled);
+        FeatureCollection results = mapping.getSource().getFeatures(unrolled);
         assertEquals(1, getCount(results));
 
-        FeatureIterator<SimpleFeature> features = results.features();
-        SimpleFeature unmappedFeature = (SimpleFeature) features.next();
+        FeatureIterator features = results.features();
+        Feature unmappedFeature = features.next();
         features.close();
 
         assertNotNull(unmappedFeature);
@@ -218,7 +216,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
      */
     @Test
     public void testUnrollFid() throws Exception {
-        Set<FeatureId> fids = new HashSet();
+        Set<FeatureId> fids = new HashSet<>();
         String fid1 = "station_no.1"; // exists
         String fid2 = "station_no.500"; // doesn't exists
         fids.add(ff.featureId(fid1));
@@ -233,12 +231,11 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
             assertTrue(f instanceof IsEqualsToImpl);
         }
 
-        FeatureCollection<SimpleFeatureType, SimpleFeature> results =
-                mapping.getSource().getFeatures(unrolled);
+        FeatureCollection results = mapping.getSource().getFeatures(unrolled);
         assertEquals(1, getCount(results));
 
-        FeatureIterator<SimpleFeature> features = results.features();
-        SimpleFeature unmappedFeature = (SimpleFeature) features.next();
+        FeatureIterator features = results.features();
+        Feature unmappedFeature = features.next();
 
         features.close();
 
@@ -311,13 +308,13 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
         assertNotNull(unrolled);
         assertTrue(unrolled instanceof Id);
 
-        FeatureCollection<SimpleFeatureType, SimpleFeature> results =
+        FeatureCollection<? extends FeatureType, ? extends Feature> results =
                 mapping.getSource().getFeatures(unrolled);
         assertEquals(1, getCount(results));
 
-        SimpleFeature unmappedFeature = DataUtilities.first(results);
+        Feature unmappedFeature = DataUtilities.first(results);
 
-        assertEquals(fid, unmappedFeature.getID());
+        assertEquals(fid, unmappedFeature.getIdentifier().getID());
     }
 
     @Test
@@ -384,6 +381,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
 
         visitor = new UnmappingFilterVisitor(mapping);
 
+        @SuppressWarnings("unchecked")
         List<Expression> unrolled = (List) propNameExpression.accept(visitor, null);
         assertNotNull(unrolled);
         assertEquals(1, unrolled.size());
@@ -411,32 +409,41 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
         visitor = new UnmappingFilterVisitor(mapping);
         FilterFactory2 ff = new FilterFactoryImplNamespaceAware(namespaces);
 
-        String xpathExpression = "@gml:id";
-        PropertyName propNameExpression = ff.property(xpathExpression);
+        {
+            String xpathExpression = "@gml:id";
+            PropertyName propNameExpression = ff.property(xpathExpression);
 
-        List<Expression> unrolled = (List) propNameExpression.accept(visitor, null);
-        assertNotNull(unrolled);
-        assertEquals(1, unrolled.size());
-        assertTrue(unrolled.get(0) instanceof Expression);
-        assertEquals(((Expression) unrolled.get(0)).toString(), "strConcat([bh.], [BGS_ID])");
+            @SuppressWarnings("unchecked")
+            List<Expression> unrolled = (List) propNameExpression.accept(visitor, null);
+            assertNotNull(unrolled);
+            assertEquals(1, unrolled.size());
+            assertTrue(unrolled.get(0) instanceof Expression);
+            assertEquals(((Expression) unrolled.get(0)).toString(), "strConcat([bh.], [BGS_ID])");
+        }
 
-        xpathExpression = "/@gml:id";
-        propNameExpression = ff.property(xpathExpression);
+        {
+            String xpathExpression = "/@gml:id";
+            Expression propNameExpression = ff.property(xpathExpression);
 
-        unrolled = (List) propNameExpression.accept(visitor, null);
-        assertNotNull(unrolled);
-        assertEquals(1, unrolled.size());
-        assertTrue(unrolled.get(0) instanceof Expression);
-        assertEquals(((Expression) unrolled.get(0)).toString(), "strConcat([bh.], [BGS_ID])");
+            @SuppressWarnings("unchecked")
+            List unrolled = (List) propNameExpression.accept(visitor, null);
+            assertNotNull(unrolled);
+            assertEquals(1, unrolled.size());
+            assertTrue(unrolled.get(0) instanceof Expression);
+            assertEquals(((Expression) unrolled.get(0)).toString(), "strConcat([bh.], [BGS_ID])");
+        }
 
-        xpathExpression = "xmml:Borehole/@gml:id";
-        propNameExpression = ff.property(xpathExpression);
+        {
+            String xpathExpression = "xmml:Borehole/@gml:id";
+            Expression propNameExpression = ff.property(xpathExpression);
 
-        unrolled = (List) propNameExpression.accept(visitor, null);
-        assertNotNull(unrolled);
-        assertEquals(1, unrolled.size());
-        assertTrue(unrolled.get(0) instanceof Expression);
-        assertEquals(((Expression) unrolled.get(0)).toString(), "strConcat([bh.], [BGS_ID])");
+            @SuppressWarnings("unchecked")
+            List<Expression> unrolled = (List) propNameExpression.accept(visitor, null);
+            assertNotNull(unrolled);
+            assertEquals(1, unrolled.size());
+            assertTrue(unrolled.get(0) instanceof Expression);
+            assertEquals(((Expression) unrolled.get(0)).toString(), "strConcat([bh.], [BGS_ID])");
+        }
     }
 
     @Test

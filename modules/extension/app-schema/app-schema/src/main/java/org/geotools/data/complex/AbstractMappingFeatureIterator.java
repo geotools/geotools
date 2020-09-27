@@ -427,12 +427,14 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
         return next;
     }
 
-    protected Map getClientProperties(Property attribute) throws DataSourceException {
+    protected Map<Name, Expression> getClientProperties(Property attribute)
+            throws DataSourceException {
 
         Map<Object, Object> userData = attribute.getUserData();
-        Map clientProperties = new HashMap<Name, Expression>();
+        Map<Name, Expression> clientProperties = new HashMap<>();
         if (userData != null && userData.containsKey(Attributes.class)) {
-            Map props = (Map) userData.get(Attributes.class);
+            @SuppressWarnings("unchecked")
+            Map<Name, Expression> props = (Map) userData.get(Attributes.class);
             if (!props.isEmpty()) {
                 clientProperties.putAll(props);
             }
@@ -597,9 +599,11 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
         // NC - first calculate target attributes
         final Map<Name, Object> targetAttributes = new HashMap<>();
         if (target.getUserData().containsValue(Attributes.class)) {
-            targetAttributes.putAll(
+            @SuppressWarnings("unchecked")
+            Map<? extends Name, ?> map =
                     (Map<? extends Name, ? extends Object>)
-                            target.getUserData().get(Attributes.class));
+                            target.getUserData().get(Attributes.class);
+            targetAttributes.putAll(map);
         }
         for (Map.Entry<Name, Expression> entry : clientProperties.entrySet()) {
             Name propName = entry.getKey();
@@ -650,10 +654,12 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
             if (geom != null) {
 
                 Object userData = geom.getUserData();
-                Map newUserData = new HashMap<>();
+                Map<Object, Object> newUserData = new HashMap<>();
                 if (userData != null) {
                     if (userData instanceof Map) {
-                        newUserData.putAll((Map) userData);
+                        @SuppressWarnings("unchecked")
+                        Map<Object, Object> map = (Map) userData;
+                        newUserData.putAll(map);
                     } else if (userData instanceof CoordinateReferenceSystem) {
                         newUserData.put(CoordinateReferenceSystem.class, userData);
                     }

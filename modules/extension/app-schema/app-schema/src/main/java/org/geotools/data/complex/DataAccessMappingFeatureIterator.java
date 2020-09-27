@@ -752,7 +752,9 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         } else if (values instanceof Collection) {
             // nested feature type could have multiple instances as the whole purpose
             // of feature chaining is to cater for multi-valued properties
-            for (Object singleVal : (Collection<Object>) values) {
+            @SuppressWarnings("unchecked")
+            Collection<Object> cobjs = (Collection<Object>) values;
+            for (Object singleVal : cobjs) {
                 ArrayList<Object> valueList = new ArrayList<>();
                 // copy client properties from input features if they're complex features
                 // wrapped in app-schema data access
@@ -771,7 +773,9 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                         singleVal = ((Attribute) singleVal).getValue();
                     }
                     if (singleVal instanceof Collection) {
-                        valueList.addAll((Collection) singleVal);
+                        @SuppressWarnings("unchecked")
+                        Collection<Object> collection = (Collection) singleVal;
+                        valueList.addAll(collection);
                     }
                     if (singleVal instanceof MultiValueContainer) {
                         MultiValueContainer multiValue = (MultiValueContainer) singleVal;
@@ -843,6 +847,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             final AttributeType targetNodeType,
             StepList xpath,
             Map<Name, Expression> clientPropsMappings) {
+        @SuppressWarnings("unchecked")
         final Collection<MultiValueContainer> multiValues = (Collection) values;
         // generate the parent attribute
         final Attribute parentAttribute =
@@ -893,6 +898,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     private boolean isMultiElement(Object values, final Map<Name, Expression> clientPropsMappings) {
         // values needs to be a collection
         if (!(values instanceof Collection)) return false;
+        @SuppressWarnings("unchecked")
         Collection<Object> collection = (Collection<Object>) values;
         // values should be not-empty and MultiValueContainer instances
         if (collection.isEmpty()
@@ -1533,7 +1539,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 
     protected void cleanEmptyElements(Feature target) throws DataSourceException {
         try {
-            ArrayList values = new ArrayList<Property>();
+            List<Property> values = new ArrayList<>();
             for (Iterator i = target.getValue().iterator(); i.hasNext(); ) {
                 Property property = (Property) i.next();
                 if (hasChild(property)
@@ -1561,19 +1567,20 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                 return true;
             }
 
-            ArrayList values = new ArrayList();
+            List<Property> values = new ArrayList<>();
             for (Object o : collection) {
                 if (o instanceof Property) {
-                    if (hasChild((Property) o)) {
-                        values.add(o);
+                    Property p = (Property) o;
+                    if (hasChild(p)) {
+                        values.add(p);
                         result = true;
-                    } else if (getEncodeIfEmpty((Property) o)) {
-                        values.add(o);
+                    } else if (getEncodeIfEmpty(p)) {
+                        values.add(p);
                         result = true;
-                    } else if (((Property) o).getDescriptor().getMinOccurs() > 0) {
-                        if (((Property) o).getDescriptor().isNillable()) {
+                    } else if ((p).getDescriptor().getMinOccurs() > 0) {
+                        if ((p).getDescriptor().isNillable()) {
                             // add nil mandatory property
-                            values.add(o);
+                            values.add(p);
                         }
                     }
                 }
@@ -1592,6 +1599,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         if (property.getUserData() != null
                 && property.getUserData().containsKey(Attributes.class)
                 && property.getUserData().get(Attributes.class) instanceof Map) {
+            @SuppressWarnings("unchecked")
             Map<Object, Object> childsMap =
                     (Map<Object, Object>) property.getUserData().get(Attributes.class);
             // check if we have at least one ComplexNameImpl on keys

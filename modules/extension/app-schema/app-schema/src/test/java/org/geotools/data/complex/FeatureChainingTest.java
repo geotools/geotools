@@ -20,12 +20,14 @@ package org.geotools.data.complex;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import org.geotools.appschema.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.data.DataAccess;
@@ -342,7 +344,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
         while (guIterator.hasNext()) {
             guFeature = (Feature) guIterator.next();
             String guId = guFeature.getIdentifier().toString();
-            ArrayList realValues = new ArrayList();
+            List<Object> realValues = new ArrayList<>();
 
             /** Test exposure color */
             Collection<Property> nestedTermValues =
@@ -412,6 +414,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
     }
 
     /** Test filtering attributes on nested features. */
+    @SuppressWarnings("unchecked")
     @Test
     public void testFilters() throws Exception {
         // make sure filter query can be made on MappedFeature based on GU properties
@@ -534,13 +537,13 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
      */
     @Test
     public void testComplexTypeWithSimpleContent() throws Exception {
-        Map dsParams = new HashMap();
+        Map<String, Serializable> dsParams = new HashMap<>();
         URL url = getClass().getResource(schemaBase + "FirstParentFeature.xml");
         assertNotNull(url);
 
         dsParams.put("dbtype", "app-schema");
         dsParams.put("url", url.toExternalForm());
-        DataAccess<FeatureType, Feature> dataAccess = DataAccessFinder.getDataStore(dsParams);
+        DataAccess dataAccess = DataAccessFinder.getDataStore(dsParams);
         assertNotNull(dataAccess);
 
         // <AttributeMapping>
@@ -588,7 +591,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
         // <OCQL>LINK_TWO</OCQL>
         // </sourceExpression>
         // </AttributeMapping>
-        dsParams = new HashMap();
+        dsParams = new HashMap<>();
         url = getClass().getResource(schemaBase + "SecondParentFeature.xml");
         assertNotNull(url);
 
@@ -732,7 +735,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
     /** Load all the data accesses. */
     private static void loadDataAccesses() throws Exception {
         /** Load mapped feature data access */
-        Map dsParams = new HashMap();
+        Map<String, Serializable> dsParams = new HashMap<>();
         URL url =
                 FeatureChainingTest.class.getResource(schemaBase + "MappedFeaturePropertyfile.xml");
         assertNotNull(url);
@@ -745,8 +748,8 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
         FeatureType mappedFeatureType = mfDataAccess.getSchema(MAPPED_FEATURE);
         assertNotNull(mappedFeatureType);
 
-        mfSource = (FeatureSource) mfDataAccess.getFeatureSource(MAPPED_FEATURE);
-        mfFeatures = (FeatureCollection) mfSource.getFeatures();
+        mfSource = mfDataAccess.getFeatureSource(MAPPED_FEATURE);
+        mfFeatures = mfSource.getFeatures();
 
         /** Load geologic unit data access */
         url = FeatureChainingTest.class.getResource(schemaBase + "GeologicUnit.xml");
@@ -759,9 +762,8 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
         FeatureType guType = guDataAccess.getSchema(GEOLOGIC_UNIT);
         assertNotNull(guType);
 
-        FeatureSource<FeatureType, Feature> guSource =
-                (FeatureSource<FeatureType, Feature>) guDataAccess.getFeatureSource(GEOLOGIC_UNIT);
-        guFeatures = (FeatureCollection) guSource.getFeatures();
+        FeatureSource<FeatureType, Feature> guSource = guDataAccess.getFeatureSource(GEOLOGIC_UNIT);
+        guFeatures = guSource.getFeatures();
 
         /**
          * Non-feature types that are included in geologicUnit.xml should be loaded when geologic
@@ -800,9 +802,9 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
         }
     }
 
-    private static int size(FeatureCollection<FeatureType, Feature> features) {
+    private static int size(FeatureCollection features) {
         int size = 0;
-        FeatureIterator<Feature> iterator = features.features();
+        FeatureIterator iterator = features.features();
         while (iterator.hasNext()) {
             iterator.next();
             size++;

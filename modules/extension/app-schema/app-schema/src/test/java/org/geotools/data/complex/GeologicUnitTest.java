@@ -43,7 +43,6 @@ import org.geotools.xsd.SchemaIndex;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.opengis.feature.Feature;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.ComplexType;
 import org.opengis.feature.type.FeatureType;
@@ -159,7 +158,7 @@ public class GeologicUnitTest extends AppSchemaTestSupport {
         /*
          * Initiate data accesses and make sure they have the mappings
          */
-        final Map dsParams = new HashMap();
+        final Map<String, Serializable> dsParams = new HashMap<>();
         URL url = getClass().getResource(schemaBase + "GeologicUnit.xml");
         assertNotNull(url);
         dsParams.put("dbtype", "app-schema");
@@ -178,10 +177,9 @@ public class GeologicUnitTest extends AppSchemaTestSupport {
         DataAccess mfDataAccess = DataAccessFinder.getDataStore(dsParams);
         assertNotNull(mfDataAccess);
 
-        FeatureSource guSource =
-                (FeatureSource) guDataStore.getFeatureSource(FeatureChainingTest.GEOLOGIC_UNIT);
+        FeatureSource guSource = guDataStore.getFeatureSource(FeatureChainingTest.GEOLOGIC_UNIT);
 
-        FeatureCollection guFeatures = (FeatureCollection) guSource.getFeatures();
+        FeatureCollection guFeatures = guSource.getFeatures();
         assertEquals(3, size(guFeatures));
 
         FeatureSource cpSource =
@@ -195,9 +193,9 @@ public class GeologicUnitTest extends AppSchemaTestSupport {
         assertEquals(6, size(cgiFeatures));
     }
 
-    private int size(FeatureCollection<FeatureType, Feature> features) {
+    private int size(FeatureCollection features) {
         int size = 0;
-        FeatureIterator<Feature> i = features.features();
+        FeatureIterator i = features.features();
         try {
             for (; i.hasNext(); i.next()) {
                 size++;

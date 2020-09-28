@@ -1,5 +1,6 @@
 package org.geotools.geopkg;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertThat;
 
 import java.io.File;
@@ -11,6 +12,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
@@ -57,13 +59,13 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
     }
 
     private void createEnumFeatureType() throws FactoryException, IOException {
-        SimpleFeatureType featureType = getEnumFeatureType();
+        SimpleFeatureType featureType = getEnumFeatureType("ft2");
         dataStore.createSchema(featureType);
     }
 
-    private SimpleFeatureType getEnumFeatureType() throws FactoryException {
+    private SimpleFeatureType getEnumFeatureType(String typeName) throws FactoryException {
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
-        builder.setName(tname("ft2"));
+        builder.setName(tname(typeName));
         builder.setNamespaceURI(dataStore.getNamespaceURI());
         builder.setCRS(CRS.decode("EPSG:4326"));
         builder.add(aname("geometry"), Geometry.class);
@@ -117,6 +119,31 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
         assertEquals("one", mapper.fromInteger(0));
         assertEquals("two", mapper.fromInteger(1));
         assertEquals("three", mapper.fromInteger(2));
+    }
+
+    public void createTwoSchemaWithEnum() throws Exception {
+        // create two tables with the same columns
+        dataStore.createSchema(getEnumFeatureType("ft2"));
+        dataStore.createSchema(getEnumFeatureType("ft3"));
+
+        // there used to be a key violation, just check that both enums have been recored
+        GeoPackage geoPackage = new GeoPackage(dataStore);
+        GeoPkgSchemaExtension schemas = geoPackage.getExtension(GeoPkgSchemaExtension.class);
+        Map<String, DataColumn> ft2Columns =
+                schemas.getDataColumns("ft2")
+                        .stream()
+                        .collect(Collectors.toMap(dc -> dc.getColumnName(), dc -> dc));
+        DataColumn ft2Enum = ft2Columns.get("enumProperty");
+        assertThat(ft2Enum.getConstraint(), instanceOf(DataColumnConstraint.Enum.class));
+        assertEquals("enumProperty", ft2Enum.getColumnName());
+
+        Map<String, DataColumn> ft3Columns =
+                schemas.getDataColumns("ft3")
+                        .stream()
+                        .collect(Collectors.toMap(dc -> dc.getColumnName(), dc -> dc));
+        DataColumn ft3Enum = ft3Columns.get("enumProperty");
+        assertThat(ft3Enum.getConstraint(), instanceOf(DataColumnConstraint.Enum.class));
+        assertEquals("enumProperty", ft3Enum.getColumnName());
     }
 
     public void testCreateSchemaWithCustomEnum() throws Exception {
@@ -393,7 +420,7 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
         try (GeoPackage geopkg = new GeoPackage(tempFile, config, params)) {
             geopkg.init();
 
-            SimpleFeatureType schema = getEnumFeatureType();
+            SimpleFeatureType schema = getEnumFeatureType("ft2");
             ListFeatureCollection features = getEnumeratedFeatureCollection(schema);
 
             FeatureEntry entry = new FeatureEntry();

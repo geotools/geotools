@@ -459,7 +459,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
                 if (options != null && !options.isEmpty()) {
                     dc = new DataColumn();
                     dc.setColumnName(ad.getLocalName());
-                    dc.setName(ad.getLocalName());
+                    dc.setName(featureType.getTypeName() + ":" + ad.getLocalName());
                     Map<String, String> optionsMap = new LinkedHashMap<>();
                     for (int i = 0; i < options.size(); i++) {
                         optionsMap.put(String.valueOf(i), String.valueOf(options.get(i)));

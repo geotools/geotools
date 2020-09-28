@@ -3,6 +3,7 @@ package org.geotools.filter.text.cqljson;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.filter.text.cql2.CQLException;
+import org.geotools.filter.text.ecql.ECQL;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.filter.Filter;
@@ -49,8 +50,8 @@ public class CQLJsonParsingTest {
         cqlJsonCompiler.compileFilter();
         Filter filter = cqlJsonCompiler.getFilter();
         Assert.assertEquals(
-                "[[ swimming_pool = true ] AND [[ floor > 5 ] OR [ material is like brick% ] OR [ material is like %brick ]]]",
-                filter.toString());
+                "swimming_pool = true AND (floor > 5 OR material ILIKE 'brick%' OR material ILIKE '%brick')",
+                ECQL.toCQL(filter));
     }
 
     @Test
@@ -80,11 +81,11 @@ public class CQLJsonParsingTest {
         Filter filter = cqlJsonCompiler.getFilter();
         Assert.assertEquals(
                 true,
-                filter.toString()
+                ECQL.toCQL(filter)
                         .startsWith(
-                                "[[ beamMode = ScanSAR Narrow ] AND [ swathDirection = ascending ] "
-                                        + "AND [ polarization = HH+VV+HV+VH ] "
-                                        + "AND [ footprint intersects org.geotools.geometry.jts.spatialschema.geometry.primitive.SurfaceImpl"));
+                                "beamMode = 'ScanSAR Narrow' AND swathDirection = 'ascending' " +
+                                        "AND polarization = 'HH+VV+HV+VH' AND INTERSECTS(footprint, " +
+                                        "'org.geotools.geometry.jts.spatialschema.geometry.primitive.SurfaceImpl"));
     }
 
     @Test
@@ -99,7 +100,7 @@ public class CQLJsonParsingTest {
         CQLJsonCompiler cqlJsonCompiler = new CQLJsonCompiler(taxes, new FilterFactoryImpl());
         cqlJsonCompiler.compileFilter();
         Filter filter = cqlJsonCompiler.getFilter();
-        Assert.assertEquals("[ taxes <= 500 ]", filter.toString());
+        Assert.assertEquals("taxes <= 500", ECQL.toCQL(filter));
     }
 
     @Test
@@ -116,7 +117,7 @@ public class CQLJsonParsingTest {
         CQLJsonCompiler cqlJsonCompiler = new CQLJsonCompiler(taxes, new FilterFactoryImpl());
         cqlJsonCompiler.compileFilter();
         Filter filter = cqlJsonCompiler.getFilter();
-        Assert.assertEquals("[ NOT [ taxes <= 500 ] ]", filter.toString());
+        Assert.assertEquals("NOT (taxes <= 500)", ECQL.toCQL(filter));
     }
 
     @Test
@@ -141,7 +142,7 @@ public class CQLJsonParsingTest {
         CQLJsonCompiler cqlJsonCompiler = new CQLJsonCompiler(taxes, new FilterFactoryImpl());
         cqlJsonCompiler.compileFilter();
         Filter filter = cqlJsonCompiler.getFilter();
-        Assert.assertEquals("[[ NOT [ taxes <= 500 ] ] AND [ taxes <= 800 ]]", filter.toString());
+        Assert.assertEquals("NOT (taxes <= 500) AND taxes <= 800", ECQL.toCQL(filter));
     }
 
     @Test
@@ -177,8 +178,8 @@ public class CQLJsonParsingTest {
         cqlJsonCompiler.compileFilter();
         Filter filter = cqlJsonCompiler.getFilter();
         Assert.assertEquals(
-                filter.toString(),
-                "[[ taxes <= 500 ] AND [[ taxes <= 600 ] AND [ taxes <= 400 ]]]");
+                "taxes <= 500 AND (taxes <= 600 AND taxes <= 400)",
+                ECQL.toCQL(filter));
     }
 
     @Test
@@ -193,7 +194,7 @@ public class CQLJsonParsingTest {
         CQLJsonCompiler cqlJsonCompiler = new CQLJsonCompiler(taxes, new FilterFactoryImpl());
         cqlJsonCompiler.compileFilter();
         Filter filter = cqlJsonCompiler.getFilter();
-        Assert.assertEquals("[ owner is like % Jones % ]", filter.toString());
+        Assert.assertEquals("owner ILIKE '% Jones %'", ECQL.toCQL(filter));
     }
 
     @Test
@@ -209,7 +210,7 @@ public class CQLJsonParsingTest {
         CQLJsonCompiler cqlJsonCompiler = new CQLJsonCompiler(taxes, new FilterFactoryImpl());
         cqlJsonCompiler.compileFilter();
         Filter filter = cqlJsonCompiler.getFilter();
-        Assert.assertEquals("[ owner is like Mike% ]", filter.toString());
+        Assert.assertEquals("owner ILIKE 'Mike%'", ECQL.toCQL(filter));
     }
 
     @Test
@@ -226,7 +227,7 @@ public class CQLJsonParsingTest {
         CQLJsonCompiler cqlJsonCompiler = new CQLJsonCompiler(taxes, new FilterFactoryImpl());
         cqlJsonCompiler.compileFilter();
         Filter filter = cqlJsonCompiler.getFilter();
-        Assert.assertEquals("[ NOT [ owner is like % Mike % ] ]", filter.toString());
+        Assert.assertEquals("NOT (owner ILIKE '% Mike %')", ECQL.toCQL(filter));
     }
 
     @Test
@@ -241,7 +242,7 @@ public class CQLJsonParsingTest {
         CQLJsonCompiler cqlJsonCompiler = new CQLJsonCompiler(taxes, new FilterFactoryImpl());
         cqlJsonCompiler.compileFilter();
         Filter filter = cqlJsonCompiler.getFilter();
-        Assert.assertEquals("[ swimming_pool = true ]", filter.toString());
+        Assert.assertEquals("swimming_pool = true", ECQL.toCQL(filter));
     }
 
     @Test
@@ -266,7 +267,7 @@ public class CQLJsonParsingTest {
         CQLJsonCompiler cqlJsonCompiler = new CQLJsonCompiler(taxes, new FilterFactoryImpl());
         cqlJsonCompiler.compileFilter();
         Filter filter = cqlJsonCompiler.getFilter();
-        Assert.assertEquals("[[ floor > 5 ] AND [ swimming_pool = true ]]", filter.toString());
+        Assert.assertEquals("floor > 5 AND swimming_pool = true", ECQL.toCQL(filter));
     }
 
     @Test
@@ -308,8 +309,8 @@ public class CQLJsonParsingTest {
         cqlJsonCompiler.compileFilter();
         Filter filter = cqlJsonCompiler.getFilter();
         Assert.assertEquals(
-                "[[ swimming_pool = true ] AND [[ floor > 5 ] OR [ material is like brick% ] OR [ material is like %brick ]]]",
-                filter.toString());
+                "swimming_pool = true AND (floor > 5 OR material ILIKE 'brick%' OR material ILIKE '%brick')",
+                ECQL.toCQL(filter));
     }
 
     @Test
@@ -345,8 +346,8 @@ public class CQLJsonParsingTest {
         cqlJsonCompiler.compileFilter();
         Filter filter = cqlJsonCompiler.getFilter();
         Assert.assertEquals(
-                "[[[ floors > 5 ] AND [ material = brick ]] OR [ swimming_pool = true ]]",
-                filter.toString());
+                "(floors > 5 AND material = 'brick') OR swimming_pool = true",
+                ECQL.toCQL(filter));
     }
 
     @Test
@@ -374,7 +375,7 @@ public class CQLJsonParsingTest {
         cqlJsonCompiler.compileFilter();
         Filter filter = cqlJsonCompiler.getFilter();
         Assert.assertEquals(
-                "[[ NOT [ floors < 5 ] ] OR [ swimming_pool = true ]]", filter.toString());
+                "NOT (floors < 5) OR swimming_pool = true", ECQL.toCQL(filter));
     }
 
     @Test
@@ -410,8 +411,8 @@ public class CQLJsonParsingTest {
         cqlJsonCompiler.compileFilter();
         Filter filter = cqlJsonCompiler.getFilter();
         Assert.assertEquals(
-                "[[[ owner is like mike% ] OR [ owner is like Mike% ]] AND [ floors < 4 ]]",
-                filter.toString());
+                "(owner ILIKE 'mike%' OR owner ILIKE 'Mike%') AND floors < 4",
+                ECQL.toCQL(filter));
     }
 
     @Test
@@ -426,7 +427,7 @@ public class CQLJsonParsingTest {
         CQLJsonCompiler cqlJsonCompiler = new CQLJsonCompiler(taxes, new FilterFactoryImpl());
         cqlJsonCompiler.compileFilter();
         Filter filter = cqlJsonCompiler.getFilter();
-        Assert.assertEquals("[ built Before 2015-01-01 ]", filter.toString());
+        Assert.assertEquals("built BEFORE '2015-01-01'", ECQL.toCQL(filter));
     }
 
     @Test
@@ -441,7 +442,7 @@ public class CQLJsonParsingTest {
         CQLJsonCompiler cqlJsonCompiler = new CQLJsonCompiler(taxes, new FilterFactoryImpl());
         cqlJsonCompiler.compileFilter();
         Filter filter = cqlJsonCompiler.getFilter();
-        Assert.assertEquals("[ built After 2012-06-05 ]", filter.toString());
+        Assert.assertEquals("built AFTER '2012-06-05'", ECQL.toCQL(filter));
     }
 
     @Test
@@ -457,7 +458,7 @@ public class CQLJsonParsingTest {
         cqlJsonCompiler.compileFilter();
         Filter filter = cqlJsonCompiler.getFilter();
         Assert.assertEquals(
-                "[ updated During [2017-06-10T07:30:00, 2017-06-11T10:30:00] ]", filter.toString());
+                "updated DURING '[2017-06-10T07:30:00, 2017-06-11T10:30:00]'", ECQL.toCQL(filter));
     }
 
     @Test
@@ -474,9 +475,9 @@ public class CQLJsonParsingTest {
         Filter filter = cqlJsonCompiler.getFilter();
         Assert.assertEquals(
                 true,
-                filter.toString()
+                ECQL.toCQL(filter)
                         .startsWith(
-                                "[ location within org.geotools.geometry.jts.spatialschema.geometry.primitive.SurfaceImpl"));
+                                "WITHIN(location, 'org.geotools.geometry.jts.spatialschema.geometry.primitive.SurfaceImpl"));
     }
 
     @Test
@@ -496,9 +497,9 @@ public class CQLJsonParsingTest {
         Filter filter = cqlJsonCompiler.getFilter();
         Assert.assertEquals(
                 true,
-                filter.toString()
+                ECQL.toCQL(filter)
                         .startsWith(
-                                "[ location intersects org.geotools.geometry.jts.spatialschema.geometry.primitive.SurfaceImpl"));
+                                "INTERSECTS(location, 'org.geotools.geometry.jts.spatialschema.geometry.primitive.SurfaceImpl"));
     }
 
     @Test
@@ -525,9 +526,9 @@ public class CQLJsonParsingTest {
         Filter filter = cqlJsonCompiler.getFilter();
         Assert.assertEquals(
                 true,
-                filter.toString()
+                ECQL.toCQL(filter)
                         .startsWith(
-                                "[[ floors > 5 ] AND [ geometry within org.geotools.geometry.jts.spatialschema.geometry.primitive.SurfaceImpl"));
+                                "floors > 5 AND WITHIN(geometry, 'org.geotools.geometry.jts.spatialschema.geometry.primitive.SurfaceImpl"));
     }
 
     @Test
@@ -547,9 +548,9 @@ public class CQLJsonParsingTest {
         Filter filter = cqlJsonCompiler.getFilter();
         Assert.assertEquals(
                 true,
-                filter.toString()
+                ECQL.toCQL(filter)
                         .startsWith(
-                                "[ location touches org.geotools.geometry.jts.spatialschema.geometry.primitive.CurveImpl"));
+                                "TOUCHES(location, 'org.geotools.geometry.jts.spatialschema.geometry.primitive.CurveImpl"));
     }
 
     @Test
@@ -569,9 +570,9 @@ public class CQLJsonParsingTest {
         Filter filter = cqlJsonCompiler.getFilter();
         Assert.assertEquals(
                 true,
-                filter.toString()
+                ECQL.toCQL(filter)
                         .startsWith(
-                                "[ location contains org.geotools.geometry.jts.spatialschema.geometry.primitive.PointImpl"));
+                                "CONTAINS(location, 'org.geotools.geometry.jts.spatialschema.geometry.primitive.PointImpl"));
     }
 
     @Test
@@ -591,8 +592,8 @@ public class CQLJsonParsingTest {
         Filter filter = cqlJsonCompiler.getFilter();
         Assert.assertEquals(
                 true,
-                filter.toString()
+                ECQL.toCQL(filter)
                         .startsWith(
-                                "[ location overlaps org.geotools.geometry.jts.spatialschema.geometry.aggregate.MultiPointImpl"));
+                                "OVERLAPS(location, 'org.geotools.geometry.jts.spatialschema.geometry.aggregate.MultiPointImpl"));
     }
 }

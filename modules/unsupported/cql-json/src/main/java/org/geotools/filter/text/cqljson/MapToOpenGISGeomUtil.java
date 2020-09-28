@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2016, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2020, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -35,7 +35,7 @@ import org.opengis.geometry.primitive.Point;
 import org.opengis.geometry.primitive.Surface;
 import org.opengis.geometry.primitive.SurfaceBoundary;
 
-public class GeomUtil {
+public class MapToOpenGISGeomUtil {
     public static GeometryBuilder FACTORY = null;
 
     static {

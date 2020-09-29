@@ -8,77 +8,29 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.filter.Filter;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+
 public class CQLJsonParsingTest {
     @Test
-    public void convertJsonToPredicates() throws JsonProcessingException, CQLException {
-        String swimmingpool =
-                "{"
-                        + "             \"and\": ["
-                        + "                {"
-                        + "                   \"eq\": {"
-                        + "                      \"property\": \"swimming_pool\","
-                        + "                      \"value\": true"
-                        + "                   }"
-                        + "                },"
-                        + "                {"
-                        + "                   \"or\": ["
-                        + "                      {"
-                        + "                         \"gt\": {"
-                        + "                            \"property\": \"floor\","
-                        + "                            \"value\": 5"
-                        + "                         }"
-                        + "                      },"
-                        + "                      {"
-                        + "                         \"like\": {"
-                        + "                            \"property\": \"material\","
-                        + "                            \"value\": \"brick%\""
-                        + "                         }"
-                        + "                      },"
-                        + "                      {"
-                        + "                         \"like\": {"
-                        + "                            \"property\": \"material\","
-                        + "                            \"value\": \"%brick\""
-                        + "                         }"
-                        + "                      } "
-                        + "                   ]"
-                        + "                }"
-                        + "             ]"
-                        + "          }";
-
-        CQLJsonCompiler cqlJsonCompiler =
-                new CQLJsonCompiler(swimmingpool, new FilterFactoryImpl());
-        cqlJsonCompiler.compileFilter();
-        Filter filter = cqlJsonCompiler.getFilter();
+    public void convertJsonToPredicates() throws IOException, CQLException {
+        //{"and":[{"eq":{"property":"swimming_pool","value":true}},{"or":[{"gt":{"property":"floor","value":5}},{"like":{"property":"material","value":"brick%"}},{"like":{"property":"material","value":"%brick"}}]}]}
+        Filter filter = parse("cqlJsonTest.json",0);
         Assert.assertEquals(
                 "swimming_pool = true AND (floor > 5 OR material ILIKE 'brick%' OR material ILIKE '%brick')",
                 ECQL.toCQL(filter));
     }
 
     @Test
-    public void convertAndIntersects() throws JsonProcessingException, CQLException {
-        String beam =
-                "{"
-                        + "             \"and\": ["
-                        + "                {\"eq\": {\"property\": \"beamMode\", \"value\": \"ScanSAR Narrow\"}},"
-                        + "                {\"eq\":{\"property\": \"swathDirection\", \"value\": \"ascending\"}},"
-                        + "                {\"eq\": {\"property\": \"polarization\", \"value\": \"HH+VV+HV+VH\"}},"
-                        + "                {\"intersects\": {\"property\": \"footprint\","
-                        + "                                \"value\": {\"type\": \"Polygon\","
-                        + "                                        \"coordinates\": [["
-                        + "                                           [-77.117938,38.936860],"
-                        + "                                           [-77.040604,39.995648],"
-                        + "                                           [-76.910536,38.892912],"
-                        + "                                           [-77.039359,38.791753],"
-                        + "                                           [-77.047906,38.841462],"
-                        + "                                           [-77.034183,38.840655],"
-                        + "                                           [-77.033142,38.857490]"
-                        + "                                        ]]}}}"
-                        + "             ]"
-                        + "          }";
-
-        CQLJsonCompiler cqlJsonCompiler = new CQLJsonCompiler(beam, new FilterFactoryImpl());
-        cqlJsonCompiler.compileFilter();
-        Filter filter = cqlJsonCompiler.getFilter();
+    public void convertAndIntersects() throws IOException, CQLException {
+        //{"and":[{"eq":{"property":"beamMode","value":"ScanSAR Narrow"}},{"eq":{"property":"swathDirection","value":"ascending"}},{"eq":{"property":"polarization","value":"HH+VV+HV+VH"}},{"intersects":{"property":"footprint","value":{"type":"Polygon","coordinates":[[[-77.117938,38.93686],[-77.040604,39.995648],[-76.910536,38.892912],[-77.039359,38.791753],[-77.047906,38.841462],[-77.034183,38.840655],[-77.033142,38.85749]]]}}}]}
+        Filter filter = parse("cqlJsonTest.json",1);
         Assert.assertEquals(
                 true,
                 ECQL.toCQL(filter)
@@ -595,5 +547,14 @@ public class CQLJsonParsingTest {
                 ECQL.toCQL(filter)
                         .startsWith(
                                 "OVERLAPS(location, 'org.geotools.geometry.jts.spatialschema.geometry.aggregate.MultiPointImpl"));
+    }
+
+   private Filter parse(String file, Integer lineNumber) throws IOException, CQLException {
+        ClassLoader classLoader = getClass().getClassLoader();
+        File fileHandle = new File(classLoader.getResource(file).getFile());
+        List<String> lines = Files.readAllLines(fileHandle.toPath(), StandardCharsets.UTF_8);
+        CQLJsonCompiler cqlJsonCompiler = new CQLJsonCompiler(lines.get(lineNumber), new FilterFactoryImpl());
+        cqlJsonCompiler.compileFilter();
+        return cqlJsonCompiler.getFilter();
     }
 }

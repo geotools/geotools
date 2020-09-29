@@ -41,225 +41,74 @@ public class CQLJsonParsingTest {
     }
 
     @Test
-    public void convertLTE() throws JsonProcessingException, CQLException {
-        String taxes =
-                "{"
-                        + "             \"lte\": {"
-                        + "                \"property\": \"taxes\","
-                        + "                \"value\": 500"
-                        + "             }"
-                        + "          }";
-        CQLJsonCompiler cqlJsonCompiler = new CQLJsonCompiler(taxes, new FilterFactoryImpl());
-        cqlJsonCompiler.compileFilter();
-        Filter filter = cqlJsonCompiler.getFilter();
+    public void convertLTE() throws IOException, CQLException {
+        //{"lte":{"property":"taxes","value":500}}
+        Filter filter = parse("cqlJsonTest.json",2);
         Assert.assertEquals("taxes <= 500", ECQL.toCQL(filter));
     }
 
     @Test
-    public void convertNotLTE() throws JsonProcessingException, CQLException {
-        String taxes =
-                "{"
-                        + "\"not\":{"
-                        + "             \"lte\": {"
-                        + "                \"property\": \"taxes\","
-                        + "                \"value\": 500"
-                        + "             }"
-                        + "          }"
-                        + "         }";
-        CQLJsonCompiler cqlJsonCompiler = new CQLJsonCompiler(taxes, new FilterFactoryImpl());
-        cqlJsonCompiler.compileFilter();
-        Filter filter = cqlJsonCompiler.getFilter();
+    public void convertNotLTE() throws IOException, CQLException {
+        //{"not":{"lte":{"property":"taxes","value":500}}}
+        Filter filter = parse("cqlJsonTest.json",3);
         Assert.assertEquals("NOT (taxes <= 500)", ECQL.toCQL(filter));
     }
 
     @Test
-    public void convertAndLTE() throws JsonProcessingException, CQLException {
-        String taxes =
-                "{"
-                        + "\"and\": ["
-                        + "{\"not\":{"
-                        + "             \"lte\": {"
-                        + "                \"property\": \"taxes\","
-                        + "                \"value\": 500"
-                        + "             }"
-                        + "          }"
-                        + "         },"
-                        + "             {\"lte\": {"
-                        + "                \"property\": \"taxes\","
-                        + "                \"value\": 800"
-                        + "             }"
-                        + "             }"
-                        + "          ]"
-                        + "}";
-        CQLJsonCompiler cqlJsonCompiler = new CQLJsonCompiler(taxes, new FilterFactoryImpl());
-        cqlJsonCompiler.compileFilter();
-        Filter filter = cqlJsonCompiler.getFilter();
+    public void convertAndLTE() throws IOException, CQLException {
+        //{"and":[{"not":{"lte":{"property":"taxes","value":500}}},{"lte":{"property":"taxes","value":800}}]}
+        Filter filter = parse("cqlJsonTest.json",4);
         Assert.assertEquals("NOT (taxes <= 500) AND taxes <= 800", ECQL.toCQL(filter));
     }
 
     @Test
-    public void convertCompoundAndLTE() throws JsonProcessingException, CQLException {
-        String taxes =
-                "{"
-                        + "  \"and\": ["
-                        + "    {"
-                        + "      \"lte\": {"
-                        + "        \"property\": \"taxes\","
-                        + "        \"value\": 500"
-                        + "      }"
-                        + "    },"
-                        + "    {"
-                        + "      \"and\": ["
-                        + "        {"
-                        + "          \"lte\": {"
-                        + "            \"property\": \"taxes\","
-                        + "            \"value\": 600"
-                        + "          }"
-                        + "        },"
-                        + "        {"
-                        + "          \"lte\": {"
-                        + "            \"property\": \"taxes\","
-                        + "            \"value\": 400"
-                        + "          }"
-                        + "        }"
-                        + "      ]"
-                        + "    }"
-                        + "  ]"
-                        + "}";
-        CQLJsonCompiler cqlJsonCompiler = new CQLJsonCompiler(taxes, new FilterFactoryImpl());
-        cqlJsonCompiler.compileFilter();
-        Filter filter = cqlJsonCompiler.getFilter();
+    public void convertCompoundAndLTE() throws IOException, CQLException {
+        //{"and":[{"lte":{"property":"taxes","value":500}},{"and":[{"lte":{"property":"taxes","value":600}},{"lte":{"property":"taxes","value":400}}]}]}
+        Filter filter = parse("cqlJsonTest.json",5);
         Assert.assertEquals(
                 "taxes <= 500 AND (taxes <= 600 AND taxes <= 400)",
                 ECQL.toCQL(filter));
     }
 
     @Test
-    public void convertLike() throws JsonProcessingException, CQLException {
-        String taxes =
-                "{"
-                        + "             \"like\": {"
-                        + "                \"property\": \"owner\","
-                        + "                \"value\": \"% Jones %\""
-                        + "             }"
-                        + "          }";
-        CQLJsonCompiler cqlJsonCompiler = new CQLJsonCompiler(taxes, new FilterFactoryImpl());
-        cqlJsonCompiler.compileFilter();
-        Filter filter = cqlJsonCompiler.getFilter();
+    public void convertLike() throws IOException, CQLException {
+        //{"like":{"property":"owner","value":"% Jones %"}}
+        Filter filter = parse("cqlJsonTest.json",6);
         Assert.assertEquals("owner ILIKE '% Jones %'", ECQL.toCQL(filter));
     }
 
     @Test
-    public void convertStartsWithLike() throws JsonProcessingException, CQLException {
-        String taxes =
-                "{"
-                        + "             \"like\": {"
-                        + "                \"wildcard\": \"%\","
-                        + "                \"property\": \"owner\","
-                        + "                \"value\": \"Mike%\""
-                        + "             }"
-                        + "          }";
-        CQLJsonCompiler cqlJsonCompiler = new CQLJsonCompiler(taxes, new FilterFactoryImpl());
-        cqlJsonCompiler.compileFilter();
-        Filter filter = cqlJsonCompiler.getFilter();
+    public void convertStartsWithLike() throws IOException, CQLException {
+        //{"like":{"wildcard":"%","property":"owner","value":"Mike%"}}
+        Filter filter = parse("cqlJsonTest.json",7);
         Assert.assertEquals("owner ILIKE 'Mike%'", ECQL.toCQL(filter));
     }
 
     @Test
-    public void convertNotLike() throws JsonProcessingException, CQLException {
-        String taxes =
-                "{"
-                        + "             \"not\": {"
-                        + "                \"like\": {"
-                        + "                   \"property\": \"owner\","
-                        + "                   \"value\": \"% Mike %\""
-                        + "                }"
-                        + "             }"
-                        + "          }";
-        CQLJsonCompiler cqlJsonCompiler = new CQLJsonCompiler(taxes, new FilterFactoryImpl());
-        cqlJsonCompiler.compileFilter();
-        Filter filter = cqlJsonCompiler.getFilter();
+    public void convertNotLike() throws IOException, CQLException {
+        //{"not":{"like":{"property":"owner","value":"% Mike %"}}}
+        Filter filter = parse("cqlJsonTest.json",8);
         Assert.assertEquals("NOT (owner ILIKE '% Mike %')", ECQL.toCQL(filter));
     }
 
     @Test
-    public void convertEQ() throws JsonProcessingException, CQLException {
-        String taxes =
-                "{"
-                        + "             \"eq\": {"
-                        + "                \"property\": \"swimming_pool\","
-                        + "                \"value\": true"
-                        + "             }"
-                        + "          }";
-        CQLJsonCompiler cqlJsonCompiler = new CQLJsonCompiler(taxes, new FilterFactoryImpl());
-        cqlJsonCompiler.compileFilter();
-        Filter filter = cqlJsonCompiler.getFilter();
+    public void convertEQ() throws IOException, CQLException {
+        //{"eq":{"property":"swimming_pool","value":true}}
+        Filter filter = parse("cqlJsonTest.json",9);
         Assert.assertEquals("swimming_pool = true", ECQL.toCQL(filter));
     }
 
     @Test
-    public void convertGTAndEQ() throws JsonProcessingException, CQLException {
-        String taxes =
-                "{"
-                        + "             \"and\": ["
-                        + "                {"
-                        + "                   \"gt\": {"
-                        + "                      \"property\": \"floor\","
-                        + "                      \"value\": 5"
-                        + "                   }"
-                        + "                },"
-                        + "                {"
-                        + "                   \"eq\": {"
-                        + "                      \"property\": \"swimming_pool\","
-                        + "                      \"value\": true"
-                        + "                   }"
-                        + "                }"
-                        + "             ]"
-                        + "          }";
-        CQLJsonCompiler cqlJsonCompiler = new CQLJsonCompiler(taxes, new FilterFactoryImpl());
-        cqlJsonCompiler.compileFilter();
-        Filter filter = cqlJsonCompiler.getFilter();
+    public void convertGTAndEQ() throws IOException, CQLException {
+        //{"and":[{"gt":{"property":"floor","value":5}},{"eq":{"property":"swimming_pool","value":true}}]}
+        Filter filter = parse("cqlJsonTest.json",10);
         Assert.assertEquals("floor > 5 AND swimming_pool = true", ECQL.toCQL(filter));
     }
 
     @Test
-    public void convertAndOr() throws JsonProcessingException, CQLException {
-        String taxes =
-                "{"
-                        + "             \"and\": ["
-                        + "                {"
-                        + "                   \"eq\": {"
-                        + "                      \"property\": \"swimming_pool\","
-                        + "                      \"value\": true"
-                        + "                   }"
-                        + "                },"
-                        + "                {"
-                        + "                   \"or\": ["
-                        + "                      {"
-                        + "                         \"gt\": {"
-                        + "                            \"property\": \"floor\","
-                        + "                            \"value\": 5"
-                        + "                         }"
-                        + "                      },"
-                        + "                      {"
-                        + "                         \"like\": {"
-                        + "                            \"property\": \"material\","
-                        + "                            \"value\": \"brick%\""
-                        + "                         }"
-                        + "                      },"
-                        + "                      {"
-                        + "                         \"like\": {"
-                        + "                            \"property\": \"material\","
-                        + "                            \"value\": \"%brick\""
-                        + "                         }"
-                        + "                      } "
-                        + "                   ]"
-                        + "                }"
-                        + "             ]"
-                        + "          }";
-        CQLJsonCompiler cqlJsonCompiler = new CQLJsonCompiler(taxes, new FilterFactoryImpl());
-        cqlJsonCompiler.compileFilter();
-        Filter filter = cqlJsonCompiler.getFilter();
+    public void convertAndOr() throws IOException, CQLException {
+        //{"and":[{"eq":{"property":"swimming_pool","value":true}},{"or":[{"gt":{"property":"floor","value":5}},{"like":{"property":"material","value":"brick%"}},{"like":{"property":"material","value":"%brick"}}]}]}
+        Filter filter = parse("cqlJsonTest.json",11);
         Assert.assertEquals(
                 "swimming_pool = true AND (floor > 5 OR material ILIKE 'brick%' OR material ILIKE '%brick')",
                 ECQL.toCQL(filter));

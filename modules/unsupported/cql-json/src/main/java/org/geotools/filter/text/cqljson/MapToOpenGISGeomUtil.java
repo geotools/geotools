@@ -122,8 +122,13 @@ public class MapToOpenGISGeomUtil {
 
     private static Point parsePoint(ArrayList<Double> coords) {
         assert coords.size() == 2 : "Point array should have two coordinates";
-        double[] arr = coords.stream().mapToDouble(i -> i).toArray();
-        GeneralDirectPosition generalDirectPosition = new GeneralDirectPosition(arr[0], arr[1]);
+        double[] doubleArr = new double[coords.size()];
+        int index = 0;
+        for (Number i : coords) {
+            doubleArr[index] = i.doubleValue(); // unboxing is automtically done here
+            index++;
+        }
+        GeneralDirectPosition generalDirectPosition = new GeneralDirectPosition(doubleArr[0], doubleArr[1]);
         generalDirectPosition.setCoordinateReferenceSystem(FACTORY.getCoordinateReferenceSystem());
         return FACTORY.createPoint(generalDirectPosition);
     }
@@ -136,8 +141,13 @@ public class MapToOpenGISGeomUtil {
                                 ArrayList::new,
                                 List::addAll,
                                 List::addAll); // multi point is a two dimensional list
-        double[] arr = collect.stream().mapToDouble(i -> i).toArray();
-        return FACTORY.createPointArray(arr);
+        double[] doubleArr = new double[collect.size()];
+        int index = 0;
+        for (Number i : collect) {
+            doubleArr[index] = i.doubleValue(); // unboxing is automtically done here
+            index++;
+        }
+        return FACTORY.createPointArray(doubleArr);
     }
 
     private static MultiPoint parseMultiPoint(ArrayList<ArrayList<Double>> coords) {

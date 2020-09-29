@@ -1,1 +1,2 @@
 org.geotools.renderer.lite.FastBBOXTest$MockPropertyAccessorFactory
+org.geotools.renderer.lite.StreamingRendererTest$MockPropertyAccessorFactory

@@ -21,6 +21,7 @@ import static org.easymock.EasyMock.createNiceMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
@@ -59,6 +60,8 @@ import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.filter.expression.PropertyAccessor;
+import org.geotools.filter.expression.PropertyAccessorFactory;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.LiteShape2;
@@ -80,6 +83,7 @@ import org.geotools.styling.StyleFactoryImpl;
 import org.geotools.styling.StyleImpl;
 import org.geotools.styling.Symbolizer;
 import org.geotools.test.TestData;
+import org.geotools.util.factory.Hints;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -92,7 +96,9 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.Filter;
+import org.opengis.filter.expression.Expression;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.parameter.GeneralParameterValue;
@@ -926,5 +932,137 @@ public class StreamingRendererTest {
         sr.paint((Graphics2D) image.getGraphics(), new Rectangle(200, 200), cornerHomolosine);
         mapContent.dispose();
         assertEquals(0, errors);
+    }
+
+    /**
+     * Test that StreamingRenderer#findStyleAttributes correctly extracts the base property for
+     * xpath expressions
+     */
+    @Test
+    public void testFindStyleAttributeWithXPath() throws Exception {
+        final List<String[]> properties = new ArrayList<>();
+
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.setName("xpath");
+        builder.add("geom", LineString.class, WGS84);
+        builder.userData("xml", Boolean.TRUE);
+        builder.add("complex", String.class);
+        SimpleFeatureType complexType = builder.buildFeatureType();
+
+        DefaultFeatureCollection fc = new DefaultFeatureCollection();
+        SimpleFeature f0 =
+                SimpleFeatureBuilder.build(
+                        complexType,
+                        new Object[] {gf.createLineString(), "<props><color>blue</color></props>"},
+                        null);
+        fc.add(f0);
+
+        SimpleFeatureSource testSource =
+                new CollectionFeatureSource(fc) {
+                    @Override
+                    public SimpleFeatureCollection getFeatures(Query query) {
+                        properties.add(query.getPropertyNames());
+                        return super.getFeatures(query);
+                    }
+                };
+
+        StyleBuilder sb = new StyleBuilder();
+        // add a complex expression to the style
+        Expression color = StreamingRenderer.filterFactory.property("/complex/props/color");
+        org.geotools.styling.Stroke stroke =
+                sb.createStroke(color, StreamingRenderer.filterFactory.literal(10));
+        Style style = sb.createStyle(sb.createLineSymbolizer(stroke));
+
+        MapContent mc = new MapContent();
+        FeatureLayer layer = new FeatureLayer(testSource, style);
+        mc.addLayer(layer);
+
+        StreamingRenderer sr = new StreamingRenderer();
+        sr.setMapContent(mc);
+
+        ReferencedEnvelope envelope =
+                new ReferencedEnvelope(new Envelope(-180, 180, -90, 90), WGS84);
+        BufferedImage bi = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D graphics = bi.createGraphics();
+        try {
+            sr.paint(graphics, new Rectangle(5, 5, 7, 7), envelope);
+        } finally {
+            graphics.dispose();
+            mc.dispose();
+        }
+
+        assertEquals(1, properties.size());
+        assertArrayEquals(
+                new String[] {"/complex/props/color", "geom", "complex"}, properties.get(0));
+    }
+
+    /**
+     * A minimalistic MockPropertyAccessor (and its factory), which mocks xml xpath evaluation. It
+     * is registered through the
+     * META-INF/services/org.geotools.filter.expression.PropertyAccessorFactory SPI registration in
+     * the test/resources.
+     */
+    public static class MockPropertyAccessorFactory implements PropertyAccessorFactory {
+        @Override
+        public PropertyAccessor createPropertyAccessor(
+                Class<?> type, String xpath, Class<?> target, Hints hints) {
+            if (!SimpleFeature.class.isAssignableFrom(type)
+                    && !SimpleFeatureType.class.isAssignableFrom(type)) {
+                return null;
+            }
+            return new PropertyAccessor() {
+                @Override
+                public boolean canHandle(Object object, String xpath, Class<?> target) {
+                    String root = getRoot(xpath);
+                    if (root == null) {
+                        return false;
+                    }
+                    AttributeDescriptor descriptor = null;
+                    if (object instanceof SimpleFeature) {
+                        descriptor = ((SimpleFeature) object).getType().getDescriptor(root);
+                    } else if (object instanceof SimpleFeatureType) {
+                        descriptor = ((SimpleFeatureType) object).getDescriptor(root);
+                    }
+                    return descriptor != null
+                            && Boolean.TRUE.equals(descriptor.getUserData().get("xml"));
+                }
+
+                @Override
+                public <T> T get(Object object, String xpath, Class<T> target)
+                        throws IllegalArgumentException {
+                    String root = getRoot(xpath);
+                    if (root == null) {
+                        throw new IllegalArgumentException("Invalid xpath: " + xpath);
+                    }
+                    if (object instanceof SimpleFeature) {
+                        String xml = (String) ((SimpleFeature) object).getAttribute(root);
+                        // we don't care about actually extracting the xpath value in our test
+                        return (T) xml;
+                    } else if (object instanceof SimpleFeatureType) {
+                        return (T) ((SimpleFeatureType) object).getDescriptor(root);
+                    } else {
+                        throw new IllegalArgumentException("Invalid object: " + object);
+                    }
+                }
+
+                @Override
+                public <T> void set(Object object, String xpath, T value, Class<T> target)
+                        throws IllegalArgumentException {
+                    throw new UnsupportedOperationException();
+                }
+
+                private String getRoot(String xpath) {
+                    if (xpath == null || !xpath.startsWith("/")) {
+                        return null;
+                    }
+                    int rootIndex = xpath.indexOf('/', 1);
+                    if (rootIndex == -1) {
+                        return xpath.substring(1);
+                    } else {
+                        return xpath.substring(1, rootIndex);
+                    }
+                }
+            };
+        }
     }
 }

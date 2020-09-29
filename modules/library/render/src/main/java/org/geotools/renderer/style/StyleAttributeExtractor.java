@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.Set;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.styling.*;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
@@ -34,6 +35,14 @@ import org.opengis.style.GraphicalSymbol;
  * @author Andrea Aime - OpenGeo
  */
 public class StyleAttributeExtractor extends FilterAttributeExtractor implements StyleVisitor {
+
+    /** Just extract the property names; don't check against a feature type. */
+    public StyleAttributeExtractor() {}
+
+    /** Use the provided feature type as a sanity check when extracting property names. */
+    public StyleAttributeExtractor(SimpleFeatureType featureType) {
+        super(featureType);
+    }
 
     /**
      * Returns PropertyNames rather than strings (includes namespace info)

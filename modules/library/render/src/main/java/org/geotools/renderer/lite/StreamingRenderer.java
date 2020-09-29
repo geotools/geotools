@@ -1799,7 +1799,12 @@ public class StreamingRenderer implements GTRenderer {
      */
     private List<PropertyName> findStyleAttributes(
             List<LiteFeatureTypeStyle> styles, FeatureType schema) {
-        final StyleAttributeExtractor sae = new StyleAttributeExtractor();
+        final StyleAttributeExtractor sae;
+        if (schema instanceof SimpleFeatureType) {
+            sae = new StyleAttributeExtractor((SimpleFeatureType) schema);
+        } else {
+            sae = new StyleAttributeExtractor();
+        }
 
         for (LiteFeatureTypeStyle lfts : styles) {
             for (Rule rule : lfts.elseRules) {
@@ -1829,6 +1834,7 @@ public class StreamingRenderer implements GTRenderer {
          * behavior
          */
         List<PropertyName> atts = new ArrayList<PropertyName>(attributes);
+
         Collection<PropertyDescriptor> attTypes = schema.getDescriptors();
         Name attName;
 
@@ -1884,6 +1890,23 @@ public class StreamingRenderer implements GTRenderer {
             // might not be a geometry column. That will cause problems down the
             // road (why render a non-geometry layer)
         }
+
+        // add in any additional properties which are required for xpath expressions
+        attributeNames.forEach(
+                n -> {
+                    if (schema.getDescriptor(n) != null) {
+                        boolean duplicate = false;
+                        for (PropertyName name : atts) {
+                            if (n.equals(name.getPropertyName())) {
+                                duplicate = true;
+                                break;
+                            }
+                        }
+                        if (!duplicate) {
+                            atts.add(filterFactory.property(n));
+                        }
+                    }
+                });
 
         return atts;
     }

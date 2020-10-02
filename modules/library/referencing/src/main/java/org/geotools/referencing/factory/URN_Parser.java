@@ -102,6 +102,8 @@ final class URN_Parser extends URI_Parser {
                                 urnAuthority = code.substring(typeEnd + 1, nameEnd).trim();
                                 urnCode = code.substring(lastEnd + 1).trim();
                             }
+                            // handle empty version
+                            urnVersion = (versionIsEmpty(urnVersion)) ? null : urnVersion;
                             if (urnCode.contains("CRS")) {
                                 urnAuthority = "CRS";
                                 urnCode = urnCode.substring(3);
@@ -118,5 +120,10 @@ final class URN_Parser extends URI_Parser {
         }
         throw new NoSuchAuthorityCodeException(
                 Errors.format(ErrorKeys.ILLEGAL_IDENTIFIER_$1, type), "urn:ogc:def", type);
+    }
+
+    private static boolean versionIsEmpty(Version urnVersion) {
+        if (urnVersion == null) return false;
+        return (urnVersion.length() == 0);
     }
 }

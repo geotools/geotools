@@ -176,7 +176,7 @@ public abstract class XSD {
     }
 
     /** Subclass hook to add additional dependencies. */
-    protected void addDependencies(Set dependencies) {}
+    protected void addDependencies(Set<XSD> dependencies) {}
 
     /** Returns the XSD object representing the contents of the schema. */
     public final XSDSchema getSchema() throws IOException {

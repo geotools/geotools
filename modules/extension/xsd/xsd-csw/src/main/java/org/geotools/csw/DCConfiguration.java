@@ -22,6 +22,7 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 import net.opengis.cat.csw20.Csw20Factory;
 import org.geotools.csw.bindings.SimpleLiteralBinding;
+import org.geotools.xsd.Binding;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.SimpleContentComplexEMFBinding;
 import org.picocontainer.MutablePicoContainer;
@@ -45,7 +46,7 @@ public class DCConfiguration extends Configuration {
     }
 
     /** Registers the bindings for the configuration. */
-    protected void registerBindings(Map bindings) {
+    protected void registerBindings(Map<QName, Binding> bindings) {
         bindings.put(
                 DC.elementContainer,
                 new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.elementContainer));

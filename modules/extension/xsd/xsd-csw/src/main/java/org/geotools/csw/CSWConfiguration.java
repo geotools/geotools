@@ -27,6 +27,7 @@ import org.geotools.csw.bindings.ElementSetNameTypeBinding;
 import org.geotools.csw.bindings.RecordBinding;
 import org.geotools.csw.bindings.TypeNameListTypeBinding;
 import org.geotools.filter.v1_1.OGCConfiguration;
+import org.geotools.xsd.Binding;
 import org.geotools.xsd.ComplexEMFBinding;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.EnumSimpleBinding;
@@ -59,7 +60,7 @@ public class CSWConfiguration extends Configuration {
      *
      * @generated
      */
-    protected void registerBindings(Map bindings) {
+    protected void registerBindings(Map<QName, Binding> bindings) {
         // generated code, see the main method
         bindings.put(
                 CSW.AbstractQueryType,

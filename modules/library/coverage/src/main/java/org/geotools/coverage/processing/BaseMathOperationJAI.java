@@ -56,8 +56,8 @@ public abstract class BaseMathOperationJAI extends OperationJAI {
     public static final String SOURCES_NAME = "Sources";
 
     /** The parameter descriptor for the Sources. */
-    public static final ParameterDescriptor SOURCES =
-            new DefaultParameterDescriptor(
+    public static final ParameterDescriptor<Collection> SOURCES =
+            new DefaultParameterDescriptor<>(
                     Citations.JAI,
                     SOURCES_NAME,
                     Collection.class, // Value class (mandatory)
@@ -155,6 +155,7 @@ public abstract class BaseMathOperationJAI extends OperationJAI {
                         srcCoverages);
             }
             // Collection of the sources to use
+            @SuppressWarnings("unchecked")
             Collection<GridCoverage2D> sourceCoverages = (Collection<GridCoverage2D>) srcCoverages;
             sources.addAll(sourceCoverages);
         }

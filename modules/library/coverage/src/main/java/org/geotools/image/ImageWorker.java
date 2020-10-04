@@ -5424,7 +5424,8 @@ public class ImageWorker {
                 } else {
                     if (nodata != null) {
                         // must map nodata to alpha
-                        RangeLookupTable.Builder builder = new RangeLookupTable.Builder();
+                        RangeLookupTable.Builder<Byte, Byte> builder =
+                                new RangeLookupTable.Builder<>();
                         if (nodata.getMin().doubleValue() != Double.NEGATIVE_INFINITY) {
                             builder.add(
                                     RangeFactory.create(

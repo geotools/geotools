@@ -105,8 +105,8 @@ public class BandMerge extends OperationJAI {
     public static final String GEOMETRY = "geometry";
 
     /** The parameter descriptor for the Sources. */
-    public static final ParameterDescriptor SOURCES =
-            new DefaultParameterDescriptor(
+    public static final ParameterDescriptor<Collection> SOURCES =
+            new DefaultParameterDescriptor<>(
                     Citations.JAI,
                     "Sources",
                     Collection.class, // Value class (mandatory)
@@ -118,8 +118,8 @@ public class BandMerge extends OperationJAI {
                     true);
 
     /** The parameter descriptor for the Transformation Choice. */
-    public static final ParameterDescriptor TRANSFORM_CHOICE_PARAM =
-            new DefaultParameterDescriptor(
+    public static final ParameterDescriptor<String> TRANSFORM_CHOICE_PARAM =
+            new DefaultParameterDescriptor<>(
                     Citations.JAI,
                     TRANSFORM_CHOICE,
                     String.class, // Value class (mandatory)
@@ -134,8 +134,8 @@ public class BandMerge extends OperationJAI {
      * The parameter descriptor for the Source index to use for selecting the Affine Transformation
      * to use.
      */
-    public static final ParameterDescriptor INDEX =
-            new DefaultParameterDescriptor(
+    public static final ParameterDescriptor<Integer> INDEX =
+            new DefaultParameterDescriptor<>(
                     Citations.JAI,
                     COVERAGE_INDEX,
                     Integer.class, // Value class (mandatory)
@@ -147,8 +147,8 @@ public class BandMerge extends OperationJAI {
                     false);
 
     /** The parameter descriptor for the Transformation Choice. */
-    public static final ParameterDescriptor GEOMETRY_PARAM =
-            new DefaultParameterDescriptor(
+    public static final ParameterDescriptor<Geometry> GEOMETRY_PARAM =
+            new DefaultParameterDescriptor<>(
                     Citations.JAI,
                     GEOMETRY,
                     Geometry.class, // Value class (mandatory)
@@ -422,6 +422,7 @@ public class BandMerge extends OperationJAI {
                     srcCoverages);
         }
         // Collection of the sources to use
+        @SuppressWarnings("unchecked")
         Collection<GridCoverage2D> sourceCoverages = (Collection<GridCoverage2D>) srcCoverages;
         // Cycle on all the Sources
         for (GridCoverage2D source : sourceCoverages) {
@@ -550,6 +551,7 @@ public class BandMerge extends OperationJAI {
         layout.setHeight(gridRange2D.height);
     }
 
+    @SuppressWarnings("unchecked")
     protected Map getProperties(
             RenderedImage data,
             CoordinateReferenceSystem crs,

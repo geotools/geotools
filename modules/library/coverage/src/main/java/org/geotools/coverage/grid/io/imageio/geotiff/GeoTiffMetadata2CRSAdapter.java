@@ -43,6 +43,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.measure.Quantity;
 import javax.measure.Unit;
+import javax.measure.quantity.Angle;
+import javax.measure.quantity.Length;
 import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffCoordinateTransformationsCodes;
 import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffGCSCodes;
 import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffPCSCodes;
@@ -860,7 +862,9 @@ public final class GeoTiffMetadata2CRSAdapter {
                         }
                         final Map<String, String> props = new HashMap<>();
                         props.put("name", name);
-                        pm = datumObjFactory.createPrimeMeridian(props, pmNumeric, linearUnit);
+                        @SuppressWarnings("unchecked")
+                        Unit<Angle> angleUnit = linearUnit;
+                        pm = datumObjFactory.createPrimeMeridian(props, pmNumeric, angleUnit);
                     } catch (NumberFormatException nfe) {
                         final IOException io =
                                 new GeoTiffException(
@@ -1015,8 +1019,10 @@ public final class GeoTiffMetadata2CRSAdapter {
                 inverseFlattening = semiMajorAxis / (semiMajorAxis - semiMinorAxis);
             }
             // look for the Ellipsoid first then build the datum
+            @SuppressWarnings("unchecked")
+            Unit<Length> lengthUnit = unit;
             return DefaultEllipsoid.createFlattenedSphere(
-                    name, semiMajorAxis, inverseFlattening, unit);
+                    name, semiMajorAxis, inverseFlattening, lengthUnit);
         }
 
         try {
@@ -1588,7 +1594,10 @@ public final class GeoTiffMetadata2CRSAdapter {
         } else {
             try {
                 // using epsg code for this unit
-                return (Unit<Q>) this.allAuthoritiesFactory.createUnit("EPSG:" + unitCode);
+                @SuppressWarnings("unchecked")
+                Unit<Q> result =
+                        (Unit<Q>) this.allAuthoritiesFactory.createUnit("EPSG:" + unitCode);
+                return result;
             } catch (FactoryException fe) {
                 final IOException io = new GeoTiffException(metadata, fe.getLocalizedMessage(), fe);
                 throw io;

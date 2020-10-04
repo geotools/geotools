@@ -756,10 +756,11 @@ public class Crop extends Operation2D {
             croppedImage = worker.getPlanarImage();
 
             // conserve the input grid to world transformation
-            Map sourceProperties = sourceCoverage.getProperties();
-            Map properties = null;
+            @SuppressWarnings("unchecked")
+            Map<String, Object> sourceProperties = sourceCoverage.getProperties();
+            Map<String, Object> properties = null;
             if (sourceProperties != null && !sourceProperties.isEmpty()) {
-                properties = new HashMap(sourceProperties);
+                properties = new HashMap<>(sourceProperties);
             }
             if (rasterSpaceROI != null || internalROI != null) {
                 ROI finalROI = null;
@@ -773,7 +774,7 @@ public class Crop extends Operation2D {
                 }
 
                 if (properties == null) {
-                    properties = new HashMap();
+                    properties = new HashMap<>();
                 }
                 if (finalROI != null) {
                     CoverageUtilities.setROIProperty(properties, finalROI);
@@ -782,7 +783,7 @@ public class Crop extends Operation2D {
 
             if (worker.getNoData() != null) {
                 if (properties == null) {
-                    properties = new HashMap();
+                    properties = new HashMap<>();
                 }
                 CoverageUtilities.setNoDataProperty(properties, worker.getNoData());
             }

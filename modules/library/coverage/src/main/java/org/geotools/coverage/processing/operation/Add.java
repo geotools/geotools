@@ -90,7 +90,8 @@ public class Add extends BaseMathOperationJAI {
     }
 
     /** Returns the expected range of values for the resulting image. */
-    protected NumberRange deriveRange(final NumberRange[] ranges, final Parameters parameters) {
+    protected NumberRange<? extends Number> deriveRange(
+            final NumberRange<? extends Number>[] ranges, final Parameters parameters) {
 
         // Note that they will not be exact ranges since this will require really computing
         // the pixel by pixel operation
@@ -112,6 +113,7 @@ public class Add extends BaseMathOperationJAI {
             ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
         if (JAIExt.isJAIExtOperation(ALGEBRIC)) {
             parameters.set(Operator.SUM, 0);
+            @SuppressWarnings("unchecked")
             Collection<GridCoverage2D> sources =
                     (Collection<GridCoverage2D>) parameters2.parameter("sources").getValue();
             for (GridCoverage2D source : sources) {

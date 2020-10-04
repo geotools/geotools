@@ -137,6 +137,7 @@ public class ZonalStatisticsTest extends TestCase {
                             ((ZonalStatistics) PROCESSOR.getOperation("Zonal"))
                                     .doOperation(params, null);
             // Results for each geometry
+            @SuppressWarnings("unchecked")
             final List<ZoneGeometry> zoneList =
                     (List<ZoneGeometry>) coverage.getProperty(ZonalStatsDescriptor.ZS_PROPERTY);
 

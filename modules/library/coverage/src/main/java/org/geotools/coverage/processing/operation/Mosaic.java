@@ -136,8 +136,8 @@ public class Mosaic extends OperationJAI {
     public static final String ALPHA_NAME = "alphas";
 
     /** The parameter descriptor for the Sources. */
-    public static final ParameterDescriptor SOURCES =
-            new DefaultParameterDescriptor(
+    public static final ParameterDescriptor<Collection> SOURCES =
+            new DefaultParameterDescriptor<>(
                     Citations.JAI,
                     SOURCES_NAME,
                     Collection.class, // Value class (mandatory)
@@ -658,6 +658,7 @@ public class Mosaic extends OperationJAI {
         Object alphaBandList = parameters.parameter(ALPHA_NAME).getValue();
         GridCoverage2D[] alphaCovs = null;
         if (alphaBandList != null && alphaBandList instanceof Collection) {
+            @SuppressWarnings("unchecked")
             Collection<GridCoverage2D> alphas = (Collection<GridCoverage2D>) alphaBandList;
             alphaCovs = new GridCoverage2D[alphas.size()];
             alphas.toArray(alphaCovs);
@@ -892,7 +893,9 @@ public class Mosaic extends OperationJAI {
 
     private <T> T getParameter(ParameterBlockJAI pb, int index) {
         if (pb.getNumParameters() > index) {
-            return (T) pb.getObjectParameter(index);
+            @SuppressWarnings("unchecked")
+            T result = (T) pb.getObjectParameter(index);
+            return result;
         } else {
             return null;
         }
@@ -950,11 +953,13 @@ public class Mosaic extends OperationJAI {
             MathTransform gridToCRS,
             GridCoverage2D[] sources,
             Params parameters) {
-        Map properties;
+        Map<String, Object> properties;
         if (sources[0].getProperties() == null) {
             properties = new HashMap<>();
         } else {
-            properties = new HashMap<>(sources[0].getProperties());
+            @SuppressWarnings("unchecked")
+            Map<String, Object> props = sources[0].getProperties();
+            properties = new HashMap<>(props);
         }
 
         // Get the ROI and NoData property from the parameterBlock
@@ -1015,6 +1020,7 @@ public class Mosaic extends OperationJAI {
                     srcCoverages);
         }
         // Collection of the sources to use
+        @SuppressWarnings("unchecked")
         Collection<GridCoverage2D> sourceCoverages = (Collection<GridCoverage2D>) srcCoverages;
         sources.addAll(sourceCoverages);
     }

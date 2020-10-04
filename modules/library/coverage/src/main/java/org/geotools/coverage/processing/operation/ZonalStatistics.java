@@ -168,6 +168,7 @@ public class ZonalStatistics extends BaseStatisticsOperationJAI {
             // Creation of the New RoiList object
             if (roilist != null && roilist instanceof List<?>) {
 
+                @SuppressWarnings("unchecked")
                 List<SimpleFeature> geomList = (List<SimpleFeature>) roilist;
                 // Iteration on all the features
                 int numGeom = geomList.size();
@@ -330,6 +331,7 @@ public class ZonalStatistics extends BaseStatisticsOperationJAI {
             Object results = result.getProperty(GT_SYNTHETIC_PROPERTY_ZONALSTATS);
 
             if (results != null && results instanceof List<?>) {
+                @SuppressWarnings("unchecked")
                 List<ZoneGeometry> geoms = (List<ZoneGeometry>) results;
                 synthProp.put(GT_SYNTHETIC_PROPERTY_ZONALSTATS, geoms);
             }

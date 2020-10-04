@@ -125,6 +125,7 @@ public final class TypeMap {
     }
 
     /** Constructs a new mapping with the specified value. */
+    @SuppressWarnings("unchecked")
     private TypeMap(
             final SampleDimensionType code,
             final int type,

@@ -369,6 +369,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
             if (name == null) {
                 name = value.toString();
             }
+            @SuppressWarnings("unchecked")
             final NumberRange<?> range = new NumberRange(value.getClass(), value, value);
             final Color[] colors = ColorUtilities.subarray(palette, intValue, intValue + 1);
             categoryList.add(new Category(name, colors, range, false));
@@ -406,6 +407,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
                     min = ClassChanger.cast(min, classe);
                     max = ClassChanger.cast(max, classe);
                 }
+                @SuppressWarnings("unchecked")
                 final NumberRange<?> range = new NumberRange(classe, min, max);
                 final Color[] colors = ColorUtilities.subarray(palette, lower, upper);
                 categoryList.add(new Category(name, colors, range, false));
@@ -433,7 +435,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
             for (int i = categoryList.size(); --i >= 0; ) {
                 Category category = categoryList.get(i);
                 if (!category.isQuantitative()) {
-                    final NumberRange range = category.getRange();
+                    final NumberRange<? extends Number> range = category.getRange();
                     final Comparable min = range.getMinValue();
                     final Comparable max = range.getMaxValue();
                     @SuppressWarnings("unchecked")
@@ -492,7 +494,8 @@ public class GridSampleDimension implements SampleDimension, Serializable {
                 final Class<? extends Number> classe = ClassChanger.getWidestClass(min, max);
                 min = ClassChanger.cast(min, classe);
                 max = ClassChanger.cast(max, classe);
-                final NumberRange range =
+                @SuppressWarnings("unchecked")
+                final NumberRange<? extends Number> range =
                         new NumberRange(classe, min, minIncluded, max, maxIncluded);
                 final Color[] colors =
                         ColorUtilities.subarray(

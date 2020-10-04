@@ -825,14 +825,15 @@ public class OperationJAI extends Operation2D {
      *     unknown.
      */
     protected Category deriveCategory(final Category[] categories, final Parameters parameters) {
-        final NumberRange[] ranges = new NumberRange[categories.length];
+        @SuppressWarnings("unchecked")
+        final NumberRange<? extends Number>[] ranges = new NumberRange[categories.length];
         for (int i = 0; i < ranges.length; i++) {
             if (categories[i] == null) {
                 continue;
             }
             ranges[i] = categories[i].getRange();
         }
-        final NumberRange range = deriveRange(ranges, parameters);
+        final NumberRange<? extends Number> range = deriveRange(ranges, parameters);
         if (range != null) {
             final Category category = categories[PRIMARY_SOURCE_INDEX];
             return new Category(category.getName(), category.getColors(), range, true);
@@ -863,7 +864,8 @@ public class OperationJAI extends Operation2D {
      * @param parameters Parameters, rendering hints and coordinate reference system to use.
      * @return The range of values to use in the destination image, or {@code null} if unknow.
      */
-    protected NumberRange deriveRange(final NumberRange[] ranges, final Parameters parameters) {
+    protected NumberRange<? extends Number> deriveRange(
+            final NumberRange<? extends Number>[] ranges, final Parameters parameters) {
         return null;
     }
 

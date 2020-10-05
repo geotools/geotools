@@ -155,6 +155,9 @@ public class SQLServerDialect extends BasicSQLDialect {
         // override since sql server maps all date times to timestamp
         mappings.put(Date.class, Types.TIMESTAMP);
         mappings.put(Time.class, Types.TIMESTAMP);
+
+        mappings.put(Boolean.class, Integer.valueOf(Types.BIT));
+        mappings.put(boolean.class, Integer.valueOf(Types.BIT));
     }
 
     @Override
@@ -165,6 +168,7 @@ public class SQLServerDialect extends BasicSQLDialect {
         mappings.put("uniqueidentifier", UUID.class);
         mappings.put("time", Time.class);
         mappings.put("date", Date.class);
+        mappings.put("bit", Boolean.class);
     }
 
     @Override

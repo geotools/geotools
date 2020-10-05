@@ -119,7 +119,18 @@
       <groupId>it.geosolutions.imageio-ext</groupId>
   	  <artifactId>imageio-ext-tiff</artifactId>
       <!-- The version number is specified in the parent POM. -->      
-    </dependency>   
+    </dependency>
+    <dependency>
+       <groupId>it.geosolutions.imageio-ext</groupId>
+       <artifactId>imageio-ext-cog-reader</artifactId>
+       <version>${imageio.ext.version}</version>
+    </dependency>
+	<dependency>
+       <groupId>it.geosolutions.imageio-ext</groupId>
+       <artifactId>imageio-ext-cog-rangereader-http</artifactId>
+       <version>${imageio.ext.version}</version>
+	   <scope>test</scope>
+    </dependency>
     <!-- Test dependencies -->
     <dependency>
       <!-- We need this to make the referencing module useful. -->

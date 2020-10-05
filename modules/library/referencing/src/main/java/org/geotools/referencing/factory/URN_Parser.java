@@ -17,6 +17,7 @@
 
 package org.geotools.referencing.factory;
 
+import org.apache.commons.lang3.StringUtils;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Version;
@@ -102,6 +103,8 @@ final class URN_Parser extends URI_Parser {
                                 urnAuthority = code.substring(typeEnd + 1, nameEnd).trim();
                                 urnCode = code.substring(lastEnd + 1).trim();
                             }
+                            // handle empty version
+                            urnVersion = (StringUtils.isEmpty(urnVersion)) ? null : urnVersion;
                             if (urnCode.contains("CRS")) {
                                 urnAuthority = "CRS";
                                 urnCode = urnCode.substring(3);

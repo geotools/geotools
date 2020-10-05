@@ -17,6 +17,7 @@
 
 package org.geotools.referencing.factory;
 
+import org.apache.commons.lang3.StringUtils;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Version;
@@ -103,7 +104,7 @@ final class URN_Parser extends URI_Parser {
                                 urnCode = code.substring(lastEnd + 1).trim();
                             }
                             // handle empty version
-                            urnVersion = (versionIsEmpty(urnVersion)) ? null : urnVersion;
+                            urnVersion = (StringUtils.isEmpty(urnVersion)) ? null : urnVersion;
                             if (urnCode.contains("CRS")) {
                                 urnAuthority = "CRS";
                                 urnCode = urnCode.substring(3);
@@ -120,10 +121,5 @@ final class URN_Parser extends URI_Parser {
         }
         throw new NoSuchAuthorityCodeException(
                 Errors.format(ErrorKeys.ILLEGAL_IDENTIFIER_$1, type), "urn:ogc:def", type);
-    }
-
-    private static boolean versionIsEmpty(Version urnVersion) {
-        if (urnVersion == null) return false;
-        return (urnVersion.length() == 0);
     }
 }

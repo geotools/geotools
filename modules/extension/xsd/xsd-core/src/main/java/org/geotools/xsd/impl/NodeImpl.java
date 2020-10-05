@@ -348,11 +348,11 @@ public class NodeImpl implements Node {
         return null;
     }
 
-    public Object getChildValue(Class clazz) {
+    public <T> T getChildValue(Class<T> clazz) {
         Node node = getChild(clazz);
 
         if (node != null) {
-            return node.getValue();
+            return clazz.cast(node.getValue());
         }
 
         return null;
@@ -376,8 +376,8 @@ public class NodeImpl implements Node {
         return matches;
     }
 
-    public List getChildValues(Class<?> clazz) {
-        List<Object> matches = new ArrayList<>();
+    public <T> List<T> getChildValues(Class<T> clazz) {
+        List<T> matches = new ArrayList<>();
 
         if (clazz == null) {
             return matches;
@@ -392,7 +392,7 @@ public class NodeImpl implements Node {
             }
 
             if (clazz.isAssignableFrom(parsed.getClass())) {
-                matches.add(parsed);
+                matches.add(clazz.cast(parsed));
             }
         }
 
@@ -429,14 +429,14 @@ public class NodeImpl implements Node {
         return o;
     }
 
-    public Object getChildValue(Class clazz, Object defaultValue) {
+    public <T> T getChildValue(Class<T> clazz, T defaultValue) {
         Object o = getChildValue(clazz);
 
         if (o == null) {
             o = defaultValue;
         }
 
-        return o;
+        return clazz.cast(o);
     }
 
     // additional methods, not part of public api

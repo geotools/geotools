@@ -85,7 +85,7 @@ public class GMLEncodingUtils {
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public List AbstractFeatureType_getProperties(
+    public List<Object[]> AbstractFeatureType_getProperties(
             Object object,
             XSDElementDeclaration element,
             SchemaIndex schemaIndex,
@@ -510,6 +510,7 @@ public class GMLEncodingUtils {
         }
 
         if (geometry.getUserData() instanceof Map) {
+            @SuppressWarnings("unchecked")
             Map<Name, Object> clientProperties =
                     (Map<Name, Object>) ((Map) geometry.getUserData()).get(Attributes.class);
 

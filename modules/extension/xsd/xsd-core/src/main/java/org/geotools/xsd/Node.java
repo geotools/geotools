@@ -162,7 +162,7 @@ public interface Node {
      * @return the value of the child which is an instance of <code>clazz</code>, or <code>null
      *     </code> if no such child exists.
      */
-    Object getChildValue(Class clazz);
+    <T> T getChildValue(Class<T> clazz);
 
     /**
      * Helper method for access to child's parsed contents by class, returning a
@@ -177,7 +177,7 @@ public interface Node {
      * @return the value of the child which is an instance of <code>clazz</code>, or <code>
      *     defaultValue</code> if no such child exists.
      */
-    Object getChildValue(Class clazz, Object defaultValue);
+    <T> T getChildValue(Class<T> clazz, T defaultValue);
 
     /**
      * Helper method for access to the set of parse child values with the specified name.
@@ -197,7 +197,7 @@ public interface Node {
      * @return A list of child values which are instances of <code>class<code>,
      * or an empty list if no such values exist.
      */
-    List getChildValues(Class<?> clazz);
+    <T> List<T> getChildValues(Class<T> clazz);
 
     /**
      * Determines if the node has an attribute with the specified name.

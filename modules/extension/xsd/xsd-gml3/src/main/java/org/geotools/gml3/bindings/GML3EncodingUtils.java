@@ -275,7 +275,7 @@ public class GML3EncodingUtils {
         return encoding;
     }
 
-    public List AbstractFeatureTypeGetProperties(
+    public List<Object[]> AbstractFeatureTypeGetProperties(
             Object object,
             XSDElementDeclaration element,
             SchemaIndex schemaIndex,

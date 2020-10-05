@@ -262,7 +262,7 @@ public class GML2ParsingUtils {
                 property = property.getResolvedElementDeclaration();
             }
 
-            final ArrayList bindings = new ArrayList();
+            final List<Binding> bindings = new ArrayList<>();
             BindingWalker.Visitor visitor =
                     new BindingWalker.Visitor() {
                         public void visit(Binding binding) {
@@ -412,8 +412,8 @@ public class GML2ParsingUtils {
     }
 
     /** Wraps the elements of a geometry collection in a normal collection. */
-    public static Collection asCollection(GeometryCollection gc) {
-        ArrayList members = new ArrayList();
+    public static Collection<Geometry> asCollection(GeometryCollection gc) {
+        List<Geometry> members = new ArrayList<>();
 
         for (int i = 0; i < gc.getNumGeometries(); i++) {
             members.add(gc.getGeometryN(i));
@@ -426,13 +426,13 @@ public class GML2ParsingUtils {
             Node node, Class clazz, GeometryFactory gFactory) {
         // round up children that are geometries, since this type is often
         // extended by multi geometries, dont reference members by element name
-        List geoms = new ArrayList();
+        List<Geometry> geoms = new ArrayList<>();
 
         for (Iterator itr = node.getChildren().iterator(); itr.hasNext(); ) {
             Node cnode = (Node) itr.next();
 
             if (cnode.getValue() instanceof Geometry) {
-                geoms.add(cnode.getValue());
+                geoms.add((Geometry) cnode.getValue());
             }
         }
 

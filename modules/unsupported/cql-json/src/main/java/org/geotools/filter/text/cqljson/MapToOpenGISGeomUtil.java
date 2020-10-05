@@ -128,7 +128,8 @@ public class MapToOpenGISGeomUtil {
             doubleArr[index] = i.doubleValue(); // unboxing is automtically done here
             index++;
         }
-        GeneralDirectPosition generalDirectPosition = new GeneralDirectPosition(doubleArr[0], doubleArr[1]);
+        GeneralDirectPosition generalDirectPosition =
+                new GeneralDirectPosition(doubleArr[0], doubleArr[1]);
         generalDirectPosition.setCoordinateReferenceSystem(FACTORY.getCoordinateReferenceSystem());
         return FACTORY.createPoint(generalDirectPosition);
     }

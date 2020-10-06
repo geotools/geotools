@@ -770,6 +770,8 @@ public class SQLServerDialect extends BasicSQLDialect {
             for (byte item : b) {
                 sql.append(Integer.toString((item & 0xff) + 0x100, 16).substring(1));
             }
+        } else if (Boolean.class.equals(type) || boolean.class.equals(type)) {
+            sql.append("'").append(value).append("'");
         } else {
             super.encodeValue(value, type, sql);
         }

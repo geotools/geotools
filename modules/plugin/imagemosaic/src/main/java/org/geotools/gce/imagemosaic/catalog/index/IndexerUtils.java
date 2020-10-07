@@ -573,6 +573,25 @@ public class IndexerUtils {
         if (props.containsKey(Utils.Prop.RECURSIVE))
             setParam(parameters, props, Utils.Prop.RECURSIVE);
 
+        // isCog
+        if (props.containsKey(Utils.Prop.COG)) {
+            setParam(parameters, props, Utils.Prop.COG);
+            if (props.containsKey(Utils.Prop.COG_RANGE_READER)) {
+                setParam(parameters, props, Utils.Prop.COG_RANGE_READER);
+            } else {
+                setParam(parameters, Utils.Prop.COG_RANGE_READER, Utils.DEFAULT_RANGE_READER);
+            }
+            if (props.containsKey(Utils.Prop.COG_USE_CACHE)) {
+                setParam(parameters, props, Utils.Prop.COG_USE_CACHE);
+            }
+            if (props.containsKey(Utils.Prop.COG_PASSWORD)) {
+                setParam(parameters, props, Utils.Prop.COG_PASSWORD);
+            }
+            if (props.containsKey(Utils.Prop.COG_USER)) {
+                setParam(parameters, props, Utils.Prop.COG_USER);
+            }
+        }
+
         // wildcard
         if (props.containsKey(Utils.Prop.WILDCARD))
             setParam(parameters, props, Utils.Prop.WILDCARD);

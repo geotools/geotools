@@ -143,6 +143,7 @@ public class CatalogBuilderConfiguration implements Cloneable {
 
         if (!equalsParameter(this, that, Prop.CACHING)) return false;
         if (!equalsParameter(this, that, Prop.RECURSIVE)) return false;
+        if (!equalsParameter(this, that, Prop.IS_COG)) return false;
         if (!equalsParameter(this, that, Prop.FOOTPRINT_MANAGEMENT)) return false;
         if (!equalsParameter(this, that, Prop.INDEX_NAME)) return false;
         if (!equalsParameter(this, that, Prop.LOCATION_ATTRIBUTE)) return false;
@@ -167,6 +168,7 @@ public class CatalogBuilderConfiguration implements Cloneable {
         int seed = 37;
         seed = Utilities.hash(Boolean.parseBoolean(getParameter(Prop.ABSOLUTE_PATH)), seed);
         seed = Utilities.hash(Boolean.parseBoolean(getParameter(Prop.RECURSIVE)), seed);
+        seed = Utilities.hash(Boolean.parseBoolean(getParameter(Prop.IS_COG)), seed);
         seed = Utilities.hash(Boolean.parseBoolean(getParameter(Prop.CACHING)), seed);
         seed = Utilities.hash(Boolean.parseBoolean(getParameter(Prop.FOOTPRINT_MANAGEMENT)), seed);
         seed = Utilities.hash(getParameter(Prop.LOCATION_ATTRIBUTE), seed);

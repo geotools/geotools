@@ -46,6 +46,11 @@ public class CatalogConfigurationBean {
 
     private boolean heterogeneousCRS;
 
+    /** <code>true</code> if the mosaic is made of remote COG granules. */
+    private boolean isCog;
+
+    private CogConfigurationBean cogBean;
+
     /**
      * Whether the specified store should be wrapped. Only PostGis stores support this parameter.
      * (Oracle stores are wrapped by default).
@@ -92,6 +97,14 @@ public class CatalogConfigurationBean {
 
     public void setCaching(final boolean caching) {
         this.caching = caching;
+    }
+
+    public boolean isCog() {
+        return isCog;
+    }
+
+    public void setCog(boolean isCog) {
+        this.isCog = isCog;
     }
 
     /** @return the suggestedSPI */
@@ -150,5 +163,13 @@ public class CatalogConfigurationBean {
 
     public void setSuggestedIsSPI(String suggestedIsSPI) {
         this.suggestedIsSPI = suggestedIsSPI;
+    }
+
+    public CogConfigurationBean getCogBean() {
+        return cogBean;
+    }
+
+    public void setCogBean(CogConfigurationBean cogBean) {
+        this.cogBean = cogBean;
     }
 }

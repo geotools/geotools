@@ -22,15 +22,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -681,12 +673,10 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
                     params.put(Utils.SCAN_FOR_TYPENAMES, Boolean.TRUE);
                 }
                 if (beans.size() > 0) {
+                    CatalogConfigurationBean bean = beans.get(0).getCatalogConfigurationBean();
                     catalog =
                             GranuleCatalogFactory.createGranuleCatalog(
-                                    sourceURL,
-                                    beans.get(0).getCatalogConfigurationBean(),
-                                    params,
-                                    getHints());
+                                    sourceURL, bean, params, getCatalogHints(bean));
                 } else {
                     catalog =
                             ImageMosaicConfigHandler.createGranuleCatalogFromDatastore(
@@ -735,6 +725,16 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
             // rethrow
             throw new DataSourceException(e);
         }
+    }
+
+    private Hints getCatalogHints(CatalogConfigurationBean bean) {
+        Hints catalogHints = getHints();
+        if (bean != null && bean.isCog()) {
+            catalogHints = new Hints(catalogHints);
+            CogGranuleAccessProvider provider = new CogGranuleAccessProvider(bean);
+            catalogHints.put(GranuleAccessProvider.GRANULE_ACCESS_PROVIDER, provider);
+        }
+        return catalogHints;
     }
 
     private void setGridGeometry(
@@ -825,18 +825,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
 
         // suggested SPI
         final String suggestedSPIClass = catalogConfigurationBean.getSuggestedSPI();
-        if (suggestedSPIClass != null) {
-            try {
-                final Class<?> clazz = Class.forName(suggestedSPIClass);
-                if (clazz.getDeclaredConstructor().newInstance() instanceof ImageReaderSpi)
-                    suggestedSPI = (ImageReaderSpi) clazz.getDeclaredConstructor().newInstance();
-                else suggestedSPI = null;
-            } catch (Exception e) {
-                if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
-                suggestedSPI = null;
-            }
-        }
+        suggestedSPI = DefaultGranuleAccessProvider.createImageReaderSpiInstance(suggestedSPIClass);
 
         // caching for the index
         cachingIndex = catalogConfigurationBean.isCaching();

@@ -90,6 +90,7 @@ import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.visitor.DefaultFilterVisitor;
 import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBean;
+import org.geotools.gce.imagemosaic.catalog.CogConfigurationBean;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer;
 import org.geotools.gce.imagemosaic.catalog.index.IndexerUtils;
 import org.geotools.gce.imagemosaic.catalog.index.ObjectFactory;
@@ -151,6 +152,8 @@ public class Utils {
     public static final Hints EXCLUDE_MOSAIC_HINTS = new Hints(Utils.EXCLUDE_MOSAIC, true);
 
     public static final Key CHECK_AUXILIARY_METADATA = new Key(Boolean.class);
+
+    public static final Key COG_SETTINGS = new Hints.Key(Map.class);
 
     public static final Key AUXILIARY_FILES_PATH = new Key(String.class);
 
@@ -338,6 +341,16 @@ public class Utils {
         public static final String HETEROGENEOUS_CRS = "HeterogeneousCRS";
 
         public static final String GRANULE_COLLECTOR_FACTORY = "GranuleCollectorFactory";
+
+        public static final String IS_COG = "IsCog";
+
+        public static final String COG_RANGE_READER = "CogRangeReader";
+
+        public static final String COG_USE_CACHE = "CogUseCache";
+
+        public static final String COG_USER = "CogUser";
+
+        public static final String COG_PASSWORD = "CogPassword";
 
         /**
          * The NoData value used in case no granule is found, but the request falls inside the image
@@ -658,6 +671,11 @@ public class Utils {
             retValue.setCheckAuxiliaryMetadata(checkAuxiliaryMetadata);
         }
 
+        // COG Settings
+        if (!ignoreSome || !ignorePropertiesSet.contains(Prop.IS_COG)) {
+            setCogConfig(catalogConfigurationBean, properties, ignorePropertiesSet);
+        }
+
         //
         // resolutions levels
         //
@@ -953,6 +971,33 @@ public class Utils {
 
         // return value
         return retValue;
+    }
+
+    private static void setCogConfig(
+            CatalogConfigurationBean catalogConfigurationBean,
+            Properties properties,
+            Set<String> ignorePropertiesSet) {
+        final boolean ignoreSome = ignorePropertiesSet != null && !ignorePropertiesSet.isEmpty();
+        final boolean isCog = Boolean.valueOf(properties.getProperty(Prop.IS_COG, "false").trim());
+        catalogConfigurationBean.setCog(isCog);
+        if (isCog) {
+            CogConfigurationBean cogBean = new CogConfigurationBean();
+            if (!ignoreSome || !ignorePropertiesSet.contains(Prop.COG_RANGE_READER)) {
+                cogBean.setRangeReader(properties.getProperty(Prop.COG_RANGE_READER));
+            }
+            if (!ignoreSome || !ignorePropertiesSet.contains(Prop.COG_USE_CACHE)) {
+                final boolean cogUseCaching =
+                        Boolean.valueOf(properties.getProperty(Prop.COG_USE_CACHE, "false").trim());
+                cogBean.setUseCache(cogUseCaching);
+            }
+            if (!ignoreSome || !ignorePropertiesSet.contains(Prop.COG_USER)) {
+                cogBean.setUser(properties.getProperty(Prop.COG_USER));
+            }
+            if (!ignoreSome || !ignorePropertiesSet.contains(Prop.COG_PASSWORD)) {
+                cogBean.setPassword(properties.getProperty(Prop.COG_PASSWORD));
+            }
+            catalogConfigurationBean.setCogBean(cogBean);
+        }
     }
 
     private static CoordinateReferenceSystem decodeSrs(String property) throws FactoryException {
@@ -1918,35 +1963,26 @@ public class Utils {
     }
 
     public static ImageLayout getImageLayoutHint(RenderingHints renderHints) {
-        if (renderHints == null || !renderHints.containsKey(JAI.KEY_IMAGE_LAYOUT)) {
-            return null;
-        } else {
-            return (ImageLayout) renderHints.get(JAI.KEY_IMAGE_LAYOUT);
-        }
+        return (ImageLayout) getHintIfAvailable(renderHints, JAI.KEY_IMAGE_LAYOUT);
     }
 
     public static TileCache getTileCacheHint(RenderingHints renderHints) {
-        if (renderHints == null || !renderHints.containsKey(JAI.KEY_TILE_CACHE)) {
-            return null;
-        } else {
-            return (TileCache) renderHints.get(JAI.KEY_TILE_CACHE);
-        }
+        return (TileCache) getHintIfAvailable(renderHints, JAI.KEY_TILE_CACHE);
     }
 
     public static BorderExtender getBorderExtenderHint(RenderingHints renderHints) {
-        if (renderHints == null || !renderHints.containsKey(JAI.KEY_BORDER_EXTENDER)) {
-            return null;
-        } else {
-            return (BorderExtender) renderHints.get(JAI.KEY_BORDER_EXTENDER);
-        }
+        return (BorderExtender) getHintIfAvailable(renderHints, JAI.KEY_BORDER_EXTENDER);
     }
 
     public static TileScheduler getTileSchedulerHint(RenderingHints renderHints) {
-        if (renderHints == null || !renderHints.containsKey(JAI.KEY_TILE_SCHEDULER)) {
-            return null;
-        } else {
-            return (TileScheduler) renderHints.get(JAI.KEY_TILE_SCHEDULER);
+        return (TileScheduler) getHintIfAvailable(renderHints, JAI.KEY_TILE_SCHEDULER);
+    }
+
+    public static Object getHintIfAvailable(RenderingHints hints, RenderingHints.Key key) {
+        if (hints != null && hints.containsKey(key)) {
+            return hints.get(key);
         }
+        return null;
     }
 
     public static Hints setupJAIHints(RenderingHints inputHints) {

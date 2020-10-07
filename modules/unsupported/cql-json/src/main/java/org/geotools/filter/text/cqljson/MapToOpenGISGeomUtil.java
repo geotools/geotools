@@ -55,7 +55,6 @@ public class MapToOpenGISGeomUtil {
         String type = "Bbox";
         ArrayList coordinates = null;
         if (geoJsonAsMap.get("bbox") != null) {
-            type = "Bbox";
             coordinates = (ArrayList<Double>) geoJsonAsMap.get("bbox");
         } else {
             type = (String) geoJsonAsMap.get("type");

@@ -136,7 +136,7 @@ public class MaskOverviewProvider {
         sourceSpiProvider = spiHelper.getSourceSpiProvider();
         ImageReaderSpi readerSpi = sourceSpiProvider.getReaderSpi();
         ImageInputStreamSpi streamSpi = sourceSpiProvider.getStreamSpi();
-        this.fileURL = (URL) sourceSpiProvider.getSource();
+        this.fileURL = sourceSpiProvider.getSourceUrl();
         this.layout = layout;
 
         // Handling Overviews

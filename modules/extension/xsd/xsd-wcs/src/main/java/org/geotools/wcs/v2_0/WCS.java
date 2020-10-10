@@ -40,7 +40,7 @@ public final class WCS extends XSD {
     /** private constructor */
     private WCS() {}
 
-    protected void addDependencies(Set dependencies) {
+    protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(OWS.getInstance());
     }
 

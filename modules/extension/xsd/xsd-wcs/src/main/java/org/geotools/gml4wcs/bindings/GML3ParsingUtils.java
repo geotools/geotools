@@ -120,7 +120,7 @@ public class GML3ParsingUtils {
         }
 
         if (node.hasChild(Coordinate.class)) {
-            List list = node.getChildValues(Coordinate.class);
+            List<Coordinate> list = node.getChildValues(Coordinate.class);
             Coordinate[] coordinates = (Coordinate[]) list.toArray(new Coordinate[list.size()]);
 
             return ring ? gf.createLinearRing(coordinates) : gf.createLineString(coordinates);

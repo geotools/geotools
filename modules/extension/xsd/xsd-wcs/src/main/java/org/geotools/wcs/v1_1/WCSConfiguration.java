@@ -27,6 +27,7 @@ import org.geotools.ows.v1_1.OWSConfiguration;
 import org.geotools.wcs.v1_1.bindings.TimePeriodTypeBinding;
 import org.geotools.wcs.v1_1.bindings.TimePositionTypeBinding;
 import org.geotools.wcs.v1_1.bindings.TimeSequenceTypeBinding;
+import org.geotools.xsd.Binding;
 import org.geotools.xsd.ComplexEMFBinding;
 import org.geotools.xsd.Configuration;
 import org.picocontainer.MutablePicoContainer;
@@ -51,7 +52,7 @@ public class WCSConfiguration extends Configuration {
     }
 
     @Override
-    protected void registerBindings(Map bindings) {
+    protected void registerBindings(Map<QName, Binding> bindings) {
         super.registerBindings(bindings);
 
         final EFactory wcsFactory = Wcs111Factory.eINSTANCE;
@@ -71,7 +72,7 @@ public class WCSConfiguration extends Configuration {
         bindings.put(WCS.TimeSequenceType, new TimeSequenceTypeBinding());
     }
 
-    private void register(Map bindings, EFactory factory, QName qname) {
+    private void register(Map<QName, Binding> bindings, EFactory factory, QName qname) {
         bindings.put(qname, new ComplexEMFBinding(factory, qname));
     }
 

@@ -86,6 +86,7 @@ public class TimeSequenceTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @SuppressWarnings("unchecked")
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         List<Node> timePositions = node.getChildren("timePosition");
         TimeSequenceType results = Wcs10Factory.eINSTANCE.createTimeSequenceType();
@@ -164,7 +165,9 @@ public class TimeSequenceTypeBinding extends AbstractComplexBinding {
         if (name.getLocalPart().equals("timePosition") && timeSequence.get(0) instanceof Position) {
             List<Position> result = new LinkedList<>();
 
-            for (Position position : (List<Position>) timeSequence) result.add(position);
+            @SuppressWarnings("unchecked")
+            List<Position> cast = timeSequence;
+            for (Position position : cast) result.add(position);
 
             return result;
         }

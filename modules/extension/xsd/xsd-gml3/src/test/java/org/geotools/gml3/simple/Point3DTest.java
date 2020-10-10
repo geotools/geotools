@@ -18,14 +18,14 @@ package org.geotools.gml3.simple;
 
 import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.gml3.GML;
-import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Point;
 import org.w3c.dom.Document;
 
 public class Point3DTest extends GeometryEncoderTestSupport {
 
     public void testEncode3DPoint() throws Exception {
         PointEncoder encoder = new PointEncoder(gtEncoder, "gml", GML.NAMESPACE);
-        Geometry geometry = new WKTReader2().read("POINT(0 0 50)");
+        Point geometry = (Point) new WKTReader2().read("POINT(0 0 50)");
         Document doc = encode(encoder, geometry);
         // print(doc);
         assertEquals("0 0 50", xpath.evaluate("//gml:pos", doc));
@@ -33,7 +33,7 @@ public class Point3DTest extends GeometryEncoderTestSupport {
 
     public void testEncodeCoordinatesFormatting() throws Exception {
         PointEncoder encoder = new PointEncoder(gtEncoder, "gml", GML.NAMESPACE);
-        Geometry geometry = new WKTReader2().read("POINT(21396814.969 0 50)");
+        Point geometry = (Point) new WKTReader2().read("POINT(21396814.969 0 50)");
         Document doc = encode(encoder, geometry, true, null, 4, true, false);
         assertEquals("21396814.969 0 50", xpath.evaluate("//gml:pos", doc));
 

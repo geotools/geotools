@@ -106,9 +106,9 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
      * @see AbstractComplexBinding#getProperties(java.lang.Object,
      *     org.eclipse.xsd.XSDElementDeclaration)
      */
-    @SuppressWarnings("unchecked")
     @Override
-    public List getProperties(Object object, XSDElementDeclaration element) throws Exception {
+    public List<Object[]> getProperties(Object object, XSDElementDeclaration element)
+            throws Exception {
         if (object == null) {
             return null;
         }
@@ -230,8 +230,7 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
         }
 
         List<XSDParticle> anyElementParticles =
-                new ArrayList<XSDParticle>(
-                        Schemas.getAnyElementParticles(element.getTypeDefinition()));
+                new ArrayList<>(Schemas.getAnyElementParticles(element.getTypeDefinition()));
         if (anyElementParticles.size() > 0) {
             Collection complexAtts = null;
             if (object instanceof Collection) {
@@ -291,7 +290,7 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
              */
             else {
                 List<XSDParticle> elementParticles =
-                        new ArrayList<XSDParticle>(
+                        new ArrayList<>(
                                 Schemas.getChildElementParticles(
                                         element.getTypeDefinition(), false));
                 for (Object complex : complexAtts) {
@@ -373,7 +372,9 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
                     map = new HashMap<>();
                     att.getUserData().put(Attributes.class, map);
                 } else {
-                    map = (Map<Name, Object>) clientProperties;
+                    @SuppressWarnings("unchecked")
+                    Map<Name, Object> cast = (Map<Name, Object>) clientProperties;
+                    map = cast;
                 }
                 map.put(toTypeName(XLINK.HREF), "#" + id.toString());
                 // make sure the value is not encoded

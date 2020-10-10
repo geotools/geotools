@@ -74,7 +74,7 @@ public final class SMIL20LANG extends XSD {
         return instance;
     }
 
-    protected void addDependencies(Set dependencies) {
+    protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(SMIL20.getInstance());
     }
 

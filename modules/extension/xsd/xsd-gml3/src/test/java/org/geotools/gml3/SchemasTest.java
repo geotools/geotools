@@ -10,6 +10,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import org.eclipse.xsd.XSDSchema;
+import org.eclipse.xsd.util.XSDSchemaLocator;
 import org.geotools.xsd.Schemas;
 import org.junit.Test;
 
@@ -19,7 +20,8 @@ public class SchemasTest {
     public void testConcurrentParse() throws Exception {
         URL location = SchemasTest.class.getResource("states.xsd");
         final File schemaFile = new File(location.toURI());
-        final List locators = Arrays.asList(GML.getInstance().createSchemaLocator());
+        final List<XSDSchemaLocator> locators =
+                Arrays.asList(GML.getInstance().createSchemaLocator());
 
         ExecutorService es = Executors.newFixedThreadPool(32);
         List<Future<Void>> results = new ArrayList<>();

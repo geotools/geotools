@@ -35,6 +35,7 @@ import org.geotools.gml3.v3_2.bindings.GML32EncodingUtils;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Encoder;
 import org.geotools.xsd.XSD;
+import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.LinearRing;
@@ -220,7 +221,7 @@ public class GML32FeatureCollectionEncoderDelegate
 
         @Override
         public void registerGeometryEncoders(
-                Map<Class, GeometryEncoder> encoders, Encoder encoder) {
+                Map<Class, GeometryEncoder<? extends Geometry>> encoders, Encoder encoder) {
             encoders.put(Point.class, new PointEncoder(encoder, gmlPrefix, gmlUri));
             encoders.put(MultiPoint.class, new MultiPointEncoder(encoder, gmlPrefix, gmlUri));
             encoders.put(LineString.class, new LineStringEncoder(encoder, gmlPrefix, gmlUri));

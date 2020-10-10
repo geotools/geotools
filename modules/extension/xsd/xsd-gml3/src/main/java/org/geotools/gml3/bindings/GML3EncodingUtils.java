@@ -227,7 +227,7 @@ public class GML3EncodingUtils {
      *   <li>PolygonPropertyType
      * </ul>
      */
-    public List GeometryPropertyType_GetProperties(Geometry geometry) {
+    public List<Object[]> GeometryPropertyType_GetProperties(Geometry geometry) {
         return e.GeometryPropertyType_getProperties(geometry);
     }
 

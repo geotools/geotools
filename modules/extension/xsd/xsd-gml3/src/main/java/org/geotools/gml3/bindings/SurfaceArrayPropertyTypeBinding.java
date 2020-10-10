@@ -70,7 +70,7 @@ public class SurfaceArrayPropertyTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        List surfaces = node.getChildValues(Polygon.class);
+        List<Polygon> surfaces = node.getChildValues(Polygon.class);
 
         return surfaces.toArray(new Polygon[surfaces.size()]);
     }

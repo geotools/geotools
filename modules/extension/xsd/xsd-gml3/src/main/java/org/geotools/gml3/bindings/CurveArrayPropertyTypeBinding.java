@@ -81,7 +81,7 @@ public class CurveArrayPropertyTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        List curves = node.getChildValues(MultiLineString.class);
+        List<MultiLineString> curves = node.getChildValues(MultiLineString.class);
 
         // pick up any regular line strings as well
         for (LineString l : (List<LineString>) node.getChildValues(LineString.class)) {

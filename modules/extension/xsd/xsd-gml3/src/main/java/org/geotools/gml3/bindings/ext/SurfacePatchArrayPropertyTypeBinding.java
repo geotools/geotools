@@ -44,7 +44,7 @@ public class SurfacePatchArrayPropertyTypeBinding
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        List l = node.getChildValues(Polygon.class);
+        List<Polygon> l = node.getChildValues(Polygon.class);
         return l.toArray(new Polygon[l.size()]);
     }
 

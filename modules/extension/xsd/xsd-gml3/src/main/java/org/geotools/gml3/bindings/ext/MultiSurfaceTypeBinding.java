@@ -40,8 +40,10 @@ public class MultiSurfaceTypeBinding extends org.geotools.gml3.bindings.MultiSur
         // we keep the same sequence order as in the xsd:
 
         // &lt;element maxOccurs="unbounded" minOccurs="0" ref="gml:surfaceMember"/&gt;
+        @SuppressWarnings("unchecked")
         List<MultiPolygon> surfaceMemberList = node.getChildValues("surfaceMember");
         // &lt;element minOccurs="0" ref="gml:surfaceMembers"/&gt;
+        @SuppressWarnings("unchecked")
         MultiPolygon surfaceMembers = (MultiPolygon) node.getChildValue("surfaceMembers");
 
         List<Polygon> polygons = new ArrayList<>();

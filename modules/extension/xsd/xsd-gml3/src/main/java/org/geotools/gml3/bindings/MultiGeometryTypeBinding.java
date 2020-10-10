@@ -17,6 +17,7 @@
 package org.geotools.gml3.bindings;
 
 import java.util.ArrayList;
+import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.gml3.GML;
 import org.geotools.xsd.AbstractComplexBinding;
@@ -86,7 +87,7 @@ public class MultiGeometryTypeBinding extends AbstractComplexBinding {
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
-        ArrayList geometries = new ArrayList();
+        List<Geometry> geometries = new ArrayList<>();
 
         if (node.hasChild(Geometry.class)) {
             geometries.addAll(node.getChildValues(Geometry.class));

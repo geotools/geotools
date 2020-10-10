@@ -78,7 +78,8 @@ public abstract class GeometryPropertyTypeBindingBase extends AbstractComplexBin
         return encodingUtils.GeometryPropertyType_GetProperty((Geometry) object, name, makeEmpty);
     }
 
-    public List getProperties(Object object, XSDElementDeclaration element) throws Exception {
+    public List<Object[]> getProperties(Object object, XSDElementDeclaration element)
+            throws Exception {
         return encodingUtils.GeometryPropertyType_GetProperties((Geometry) object);
     }
 

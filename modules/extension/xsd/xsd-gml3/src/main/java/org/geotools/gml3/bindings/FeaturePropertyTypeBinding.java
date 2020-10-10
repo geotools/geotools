@@ -170,7 +170,9 @@ public class FeaturePropertyTypeBinding extends AbstractComplexBinding {
                 map = new HashMap<>();
                 att.getUserData().put(Attributes.class, map);
             } else {
-                map = (Map<Name, Object>) clientProperties;
+                @SuppressWarnings("unchecked")
+                Map<Name, Object> cast = (Map<Name, Object>) clientProperties;
+                map = cast;
             }
             map.put(toTypeName(XLINK.HREF), "#" + id.toString());
             // make sure the value is not encoded

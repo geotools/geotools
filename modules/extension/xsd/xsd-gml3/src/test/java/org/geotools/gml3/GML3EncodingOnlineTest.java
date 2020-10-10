@@ -129,7 +129,7 @@ public class GML3EncodingOnlineTest extends TestCase {
 
         Validator v = s.newValidator();
 
-        final ArrayList errors = new ArrayList();
+        final ArrayList<SAXParseException> errors = new ArrayList<>();
         DefaultHandler handler =
                 new DefaultHandler() {
                     public void error(SAXParseException e) throws SAXException {

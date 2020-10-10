@@ -59,18 +59,6 @@
       </modules>
     </profile>
     <profile>
-      <id>geometry</id>
-      <activation>
-        <property>
-          <name>all</name>
-        </property>
-      </activation>
-      <modules>
-        <module>jts-wrapper</module>
-        <module>geometry</module>
-      </modules>
-    </profile>
-    <profile>
       <id>wps</id>
       <activation>
         <property>

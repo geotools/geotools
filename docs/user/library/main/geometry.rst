@@ -6,15 +6,9 @@ The ``gt-main`` module supports a "well known text" geometry parser that is able
 ISO 19107 Geometry
 ^^^^^^^^^^^^^^^^^^
 
-The ``gt-opengis`` project provides interfaces for ISO Geometry interfaces, we make use of them day in and
-day out for transforming ``DirectPositions`` as described in the referencing module.
+The ``gt-opengis`` project provides interfaces for ISO Geometry interfaces, we make use of them day in and day out for transforming ``DirectPositions`` as described in the referencing module.
 
-ISO 19107 also defines ``TransfineSet`` of which GeoTools has two implementations:
-
-* ``unsupported/jts-wrapper``
-* ``unsupported/geometry``
-
-As indicated by their unsupported status neither has past our QA checks at this time.
+ISO 19107 also defines ``TransfineSet`` of which GeoTools has currently no implementation for.
 
 * What about JTS Topology Suite?
   

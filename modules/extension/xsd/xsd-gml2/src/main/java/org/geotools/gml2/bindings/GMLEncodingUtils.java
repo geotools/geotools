@@ -84,7 +84,7 @@ public class GMLEncodingUtils {
         this.gml = gml;
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings("unchecked")
     public List<Object[]> AbstractFeatureType_getProperties(
             Object object,
             XSDElementDeclaration element,
@@ -539,7 +539,7 @@ public class GMLEncodingUtils {
         }
     }
 
-    public List GeometryPropertyType_getProperties(Geometry geometry) {
+    public List<Object[]> GeometryPropertyType_getProperties(Geometry geometry) {
         return null;
     }
 
@@ -661,12 +661,12 @@ public class GMLEncodingUtils {
     /** Splits a joined feature into its components */
     public static SimpleFeature[] splitJoinedFeature(Object obj) {
         SimpleFeature feature = (SimpleFeature) obj;
-        List features = new ArrayList();
+        List<SimpleFeature> features = new ArrayList<>();
         features.add(feature);
         for (int i = 0; i < feature.getAttributeCount(); i++) {
             Object att = feature.getAttribute(i);
             if (att != null && att instanceof SimpleFeature) {
-                features.add(att);
+                features.add((SimpleFeature) att);
 
                 // TODO: come up with a better approcach user, use user data or something to mark
                 // the attribute as encoded

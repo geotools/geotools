@@ -44,6 +44,7 @@ import org.opengis.feature.Feature;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
+import org.opengis.feature.type.PropertyDescriptor;
 
 public class GMLSchema extends SchemaImpl {
     /**
@@ -812,7 +813,7 @@ public class GMLSchema extends SchemaImpl {
      *
      * @generated
      */
-    private static List ABSTRACTFEATURETYPE_TYPE_schema = new ArrayList();
+    private static List<PropertyDescriptor> ABSTRACTFEATURETYPE_TYPE_schema = new ArrayList<>();
 
     static {
         ABSTRACTFEATURETYPE_TYPE_schema.add(
@@ -880,7 +881,8 @@ public class GMLSchema extends SchemaImpl {
      *
      * @generated
      */
-    private static List ABSTRACTFEATURECOLLECTIONBASETYPE_TYPE_schema = new ArrayList();
+    private static List<PropertyDescriptor> ABSTRACTFEATURECOLLECTIONBASETYPE_TYPE_schema =
+            new ArrayList<>();
 
     static {
         ABSTRACTFEATURECOLLECTIONBASETYPE_TYPE_schema.add(
@@ -984,7 +986,8 @@ public class GMLSchema extends SchemaImpl {
      *
      * @generated
      */
-    private static List ABSTRACTFEATURECOLLECTIONTYPE_TYPE_schema = new ArrayList();
+    private static List<PropertyDescriptor> ABSTRACTFEATURECOLLECTIONTYPE_TYPE_schema =
+            new ArrayList<>();
 
     static {
         ABSTRACTFEATURECOLLECTIONTYPE_TYPE_schema.add(

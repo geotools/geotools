@@ -230,7 +230,7 @@ public class GML2EncodingUtils {
         return encoding;
     }
 
-    public static List AbstractFeatureType_getProperties(
+    public static List<Object[]> AbstractFeatureType_getProperties(
             Object object,
             XSDElementDeclaration element,
             SchemaIndex schemaIndex,
@@ -255,7 +255,7 @@ public class GML2EncodingUtils {
         return e.GeometryPropertyType_getProperty(geometry, name, includeAbstractGeometry);
     }
 
-    public static List GeometryPropertyType_getProperties(Geometry geometry) {
+    public static List<Object[]> GeometryPropertyType_getProperties(Geometry geometry) {
         return e.GeometryPropertyType_getProperties(geometry);
     }
 
